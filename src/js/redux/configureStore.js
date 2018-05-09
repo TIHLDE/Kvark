@@ -1,34 +1,34 @@
-import createSagaMiddleware from 'redux-saga';
-import { routerMiddleware } from 'react-router-redux';
+import createSagaMiddleware from 'redux-saga'
+import { routerMiddleware } from 'react-router-redux'
 import {
   applyMiddleware,
   compose,
   createStore,
-} from 'redux';
+} from 'redux'
 
-import sagas from './sagas';
-import rootReducer from './rootReducers';
+import sagas from './sagas'
+import rootReducer from './rootReducers'
 
 // Redux DevTools Extension for Chrome and Firefox
 const reduxDevTool = () => {
   return typeof window === 'object' &&
-  typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f;
+  typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
 };
 
 export default function configureStore(initialState, history) {
-  const sagaMiddleware = createSagaMiddleware();
+  const sagaMiddleware = createSagaMiddleware()
 
-  const middleware = applyMiddleware(sagaMiddleware, routerMiddleware(history));
+  const middleware = applyMiddleware(sagaMiddleware, routerMiddleware(history))
 
-  const composedStoreEnhancer = compose(middleware, reduxDevTool());
+  const composedStoreEnhancer = compose(middleware, reduxDevTool())
 
-  const store = composedStoreEnhancer(createStore)(rootReducer, initialState);
+  const store = composedStoreEnhancer(createStore)(rootReducer, initialState)
 
-  sagaMiddleware.run(sagas);
+  sagaMiddleware.run(sagas)
 
   if (module.hot) {
     module.hot.accept('./rootReducers', () => {
-      store.replaceReducer(require('./rootReducers'));
+      store.replaceReducer(require('./rootReducers'))
     });
   }
 
