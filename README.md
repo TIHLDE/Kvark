@@ -1,181 +1,566 @@
-# Deprecation Warning
+## Build Status
+[![linux build](https://api.travis-ci.org/iroy2000/react-redux-boilerplate.svg?branch=master)](https://travis-ci.org/iroy2000/react-redux-boilerplate)
+[![Dependency Status][david_img]][david_site]
+[![Join the chat at https://gitter.im/iroy2000-react-redux-boilerplate/Lobby](https://badges.gitter.im/iroy2000-react-redux-boilerplate/Lobby.svg)](https://gitter.im/iroy2000-react-redux-boilerplate/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-This project was started at the advent of the Redux ecosystem, and was intended to help users get up and running quickly. Since then, tooling and best practices have evolved tremendously. In order to get the most modern experience possible, I recommend checking out something like [create-react-app](https://github.com/facebookincubator/create-react-app) which is supported by many core React and Redux developers.
+### TL;DR
 
-You are welcome to use this project if it is a better fit for your needs, but if you are brand new to the ecosystem I highly recommend checking out something that has received more recent updates.
+Before you dive into anything, see for yourself how easy you can setup a full workflow framework for your `development` and `deployment` for your real world project.
 
-Thank you to everyone who made this project possible over the past year(s).
+Step 1: Clone this repo
+```
+git clone https://github.com/iroy2000/react-redux-boilerplate.git
+cd react-redux-boilerplate
+```
 
-# React Redux Starter Kit
+Step 2: Install
 
-[![Build Status](https://travis-ci.org/davezuko/react-redux-starter-kit.svg?branch=master)](https://travis-ci.org/davezuko/react-redux-starter-kit?branch=master)
-[![dependencies](https://david-dm.org/davezuko/react-redux-starter-kit.svg)](https://david-dm.org/davezuko/react-redux-starter-kit)
-[![devDependency Status](https://david-dm.org/davezuko/react-redux-starter-kit/dev-status.svg)](https://david-dm.org/davezuko/react-redux-starter-kit#info=devDependencies)
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+```
+npm install
+```
 
-This starter kit is designed to get you up and running with a bunch of awesome front-end technologies.
+Step 3: Start
 
-The primary goal of this project is to provide a stable foundation upon which to build modern web appliications. Its purpose is not to dictate your project structure or to demonstrate a complete real-world application, but to provide a set of tools intended to make front-end development robust, easy, and, most importantly, fun. Check out the full feature list below!
+```
+npm run dev
+```
 
-Finally, This project wouldn't be possible without the help of our many contributors. What you see today is the product of hundreds changes made to keep up with an ever-evolving ecosystem. [Thank you](#thank-you) for all of your help.
+And Done, as easy as 123!!
+
+
+### Preface
+
+React Redux Boilerplate is a full fledged __PRODUCTION READY__ workflow boilerplate for building complex React / Redux application.
+
+The technologies used in this workflow boilerplate shows case a `subset of technologies` we are currently using within our team ( __we put this project in github mainly as recruiting purpose for our team__ ),  and we are trying to give our candidates confidence that by working with us, they will be using decent technologies as well as staying relevant to the industry.  And that is what our team strongly believed in - __technology innovation and promoting developers' relevancy in the industry__.
+
+If you are interested in working with us, feel free to send a message to [iroy2000](https://www.linkedin.com/in/iroy2000).
+
+__Note:__ This boilerplate is not to show case how to code in React / Redux, it is a boilerplate that hook everything up for you to develop a complex React / Redux project. And if you just want to learn React, we don't have complicated code example here and this boilerplate might be too complicated for your need.
+
+![React Redux Workflow Boilerplate Logo](http://res.cloudinary.com/search-engine/image/upload/v1501696716/logo-rrb-002_zxvml0.png)
+
+# React Redux Boilerplate
+
+`React Redux Boilerplate` is a workflow boilerplate that make life easier for developers by providing a virtual development environment and production ready build process framework out of the box.
+
+`React Redux Boilerplate` is for developing React client side application. So,  if you are looking for:
+
+* `Isomorphic (Universal) support`, feel free to add server side support to it, or you can use something like [Next.js](https://github.com/zeit/next.js/), [react-server](https://github.com/redfin/react-server) or [electrode](http://www.electrode.io/)
+
+
+### Features / Benefits
+
+Features
+
+* React 16
+* Redux
+* Saga
+* ES6 / ES7
+* ImmutableJS
+* PreCSS ( supports SASS-like markup in your CSS )
+* PostCSS ( it support CSS modules, and we recommended B.E.M style )
+* Webpack 3
+* Reselect
+* Lazy Loading component supports
+* Type Checking with Babel Type Check ( Flow syntax )
+* ESLint for syntax check
+* Jest and Enzyme for Unit testing
+
+Workflow
+
+* Development
+  * Hot Module Reload during development
+  * Built-in lightweight config system
+  * Built-in fancy cli dashboard for reporting run time compile status
+  * Built-in support for multiple device concurrent debugging
+* Build / Production
+  * Production bundle analyzing capability
+  * CSS / HTML / JS minification / Image optimization when built
+  * JS code duplication removal during built ( tree shaking capability )
+* Deployment
+  * Built-in git commit hook, helpful for CI/CD process
+  * Built-in process to deploy files directly to S3 ( optional )
+* Productivity
+  * Highly configurable build and workflow system ( webpack )
+  * Minimal setup time and allow you to invest into things that matters
+  * Everything automatic, you just care about development, nothing else \o/ Yeah ?!
+
+If you are interested, please read the `package.json` for all installed modules and plugins.
 
 ## Table of Contents
-1. [Requirements](#requirements)
-1. [Installation](#getting-started)
-1. [Running the Project](#running-the-project)
-1. [Project Structure](#project-structure)
-1. [Live Development](#local-development)
-    * [Hot Reloading](#hot-reloading)
-    * [Redux DevTools](#redux-devtools)
-1. [Routing](#routing)
-1. [Testing](#testing)
-    * [dirty-chai](#dirty-chai)
-1. [Building for Production](#building-for-production)
-1. [Deployment](#deployment)
-1. [Thank You](#thank-you)
 
-## Requirements
-* node `^5.0.0`
-* yarn `^0.23.0` or npm `^3.0.0`
+Basic
+1. [Installation](#installation)
+1. [Initialize your project](#initialize-your-project)
+1. [Suggested Workflow](#suggested-workflow)
+1. [Folder Structure](#folder-structure)
+1. [Production Readiness](#production-readiness)
+1. [Configuration](#configuration)
+1. [Port Configuration](#port-configuration)
+1. [Installing Dependencies](#installing-dependencies)
+
+Advanced
+1. [Lazy Loading Component](#lazy-loading-component)
+1. [Writing Unit Test](#writing-unit-test)
+1. [Configure git commit hook](#configure-git-commit-hook)
+1. [Multiple Device Concurrent Debugging](#multiple-device-concurrent-debugging)
+1. [Developing Template](#developing-template)
+1. [Production Optimization and Bundle Analysis](#production-optimization-and-bundle-analysis)
+1. [Integration Note](#integration-note)
+1. [QA](#qa)
+
+Other
+1. [Knowledge Base Reading](#knowledge-base-reading)
+1. [How to Contribute](#how-to-contribute)
+1. [Updates](#updates)
+
+# Basic
 
 ## Installation
 
-After confirming that your environment meets the above [requirements](#requirements), you can create a new project based on `react-redux-starter-kit` by doing the following:
 
-```bash
-$ git clone https://github.com/davezuko/react-redux-starter-kit.git <my-project-name>
-$ cd <my-project-name>
+### Prerequisite
+
+You need to have Node.js installed.
+
+[Instruction for installing NodeJS in Mac](http://lmgtfy.com/?q=install+nodejs+mac)
+
+[Instruction for installing NodeJS in Window](http://lmgtfy.com/?q=install+nodejs+window)
+
+### Post Installation
+
+If you would like to have Redux debug capabilities, you can download this Chrome extension [Redux DevTool](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
+
+![Redux DevTool](https://www.dropbox.com/s/wni425e3d4xiy85/redux-devtool.png?raw=1)
+
+
+## Initialize your project
+
+Now run the following commands in your terminal
+
+**NOTE: You only need to run this once!**
+
+```sh
+$ npm install # This will install the necessary packages to use the app
 ```
 
-When that's done, install the project dependencies. It is recommended that you use [Yarn](https://yarnpkg.com/) for deterministic dependency management, but `npm install` will suffice.
+**That's it!**
 
-```bash
-$ yarn  # Install project dependencies (or `npm install`)
+
+### To run the app in Development Mode
+
+```sh
+$ npm run dev
 ```
 
-## Running the Project
+Wait about 30 seconds for your development environment to initialize.
 
-After completing the [installation](#installation) step, you're ready to start the project!
+When it finishes, open your browser and go to `http://localhost:8080/`
 
-```bash
-$ yarn start  # Start the development server (or `npm start`)
+If you see the landing page, it means you have set up everything successfully.
+
+
+### List of NPM Commands
+
+
+```sh
+$ npm run dev       # build and watch, but javascript not minified
+$ npm run build     # build a minified production version
+$ npm run lint      # linting using ESLint
+$ npm run test      # run test using Jest
+$ npm run clean     # it runs before each build, so you don't need to
 ```
 
-While developing, you will probably rely mostly on `yarn start`; however, there are additional scripts at your disposal:
 
-|`yarn <script>`    |Description|
-|-------------------|-----------|
-|`start`            |Serves your app at `localhost:3000`|
-|`build`            |Builds the application to ./dist|
-|`test`             |Runs unit tests with Karma. See [testing](#testing)|
-|`test:watch`       |Runs `test` in watch mode to re-run tests when changed|
-|`lint`             |[Lints](http://stackoverflow.com/questions/8503559/what-is-linting) the project for potential errors|
-|`lint:fix`         |Lints the project and [fixes all correctable errors](http://eslint.org/docs/user-guide/command-line-interface.html#fix)|
+## Suggested Workflow
 
-## Project Structure
 
-The project structure presented in this boilerplate is **fractal**, where functionality is grouped primarily by feature rather than file type. This structure is only meant to serve as a guide, it is by no means prescriptive. That said, it aims to represent generally accepted guidelines and patterns for building scalable applications. If you wish to read more about this pattern, please check out this [awesome writeup](https://github.com/davezuko/react-redux-starter-kit/wiki/Fractal-Project-Structure) by [Justin Greenberg](https://github.com/justingreenberg).
+After you check out the repo, I will usually do the following :
+
+0. Go to your project root in your host machine  ( e.g. your Mac )
+1. Run `npm run dev` in your terminal ( wait until the dashboard show complete status )
+2. Go to your browser and go to `localhost:8080`
+3. Make code changes
+4. If there are compilation errors, you will see it in the terminal dashboard
+5. Watch your code changes reflect on browser without refreshing
+6. Repeat your development steps
+
+That's very easy, isn't it?
+
+## Folder Structure
+
+The entry point of your application is `src/js/routes`, it's basically a mapping between your `views` to a `route`.
+
+All your javascript code lives in folder `src/js`
 
 ```
-.
-├── build                    # All build-related code
-├── public                   # Static public assets (not imported anywhere in source code)
-├── server                   # Express application that provides webpack middleware
-│   └── main.js              # Server application entry point
-├── src                      # Application source code
-│   ├── index.html           # Main HTML page container for app
-│   ├── main.js              # Application bootstrap and rendering
-│   ├── normalize.js         # Browser normalization and polyfills
-│   ├── components           # Global Reusable Components
-│   ├── containers           # Global Reusable Container Components
-│   ├── layouts              # Components that dictate major page structure
-│   │   └── PageLayout       # Global application layout in which to render routes
-│   ├── routes               # Main route definitions and async split points
-│   │   ├── index.js         # Bootstrap main application routes with store
-│   │   ├── Home             # Fractal route
-│   │   │   ├── index.js     # Route definitions and async split points
-│   │   │   ├── assets       # Assets required to render components
-│   │   │   ├── components   # Presentational React Components
-│   │   │   └── routes **    # Fractal sub-routes (** optional)
-│   │   └── Counter          # Fractal route
-│   │       ├── index.js     # Counter route definition
-│   │       ├── container    # Connect components to actions and store
-│   │       ├── modules      # Collections of reducers/constants/actions
-│   │       └── routes **    # Fractal sub-routes (** optional)
-│   ├── store                # Redux-specific pieces
-│   │   ├── createStore.js   # Create and instrument redux store
-│   │   └── reducers.js      # Reducer registry and injection
-│   └── styles               # Application-wide styles (generally settings)
-└── tests                    # Unit tests
+  -- src/
+    -- js/
+      -- common/
+        -- components/   --> all share components here
+        -- types/        --> all flow types are here
+      -- redux/
+        -- modules/      --> all redux code
+        -- saga/         --> all redux-saga code
+        -- selectors/    --> all reselect code
+      -- utility/        --> all non JSX utility
+      -- views/          --> all JSX code hook up with Route ( HoC ) or page specific components
+    -- style/            --> all global styles, layout, config
+    -- assets/           --> all static assets ( image, fonts ... etc )
+      -- template/       --> you probably won't touch this unless you want to create new template
+
 ```
 
-## Live Development
+* For `config/` and `bin/` folder, it is covered at [Configuration](#configuration) section
 
-### Hot Reloading
+* For `__tests__/` folder, it is covered at [Writing Unit Test](#writing-unit-test) section
 
-Hot reloading is enabled by default when the application is running in development mode (`yarn start`). This feature is implemented with webpack's [Hot Module Replacement](https://webpack.github.io/docs/hot-module-replacement.html) capabilities, where code updates can be injected to the application while it's running, no full reload required. Here's how it works:
+* For our Redux coding style, we are using [Ducks](https://github.com/erikras/ducks-modular-redux) standards
 
-* For **JavaScript** modules, a code change will trigger the application to re-render from the top of the tree. **Global state is preserved (i.e. redux), but any local component state is reset**. This differs from React Hot Loader, but we've found that performing a full re-render helps avoid subtle bugs caused by RHL patching.
+* For how to write code in ES6 /React / Redux / POSTCSS  ... etc, please feel free to look at our simple example code.  And if you have question or want to study future, please checkout the [Knowledge Base Reading](#knowledge-base-reading) section, which covers everything we used in this boilerplate.
 
-* For **Sass**, any change will update the styles in realtime, no additional configuration or reload needed.
+**NOTE: When you import resources, please make sure you have the right path**
 
-### Redux DevTools
 
-**We recommend using the [Redux DevTools Chrome Extension](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd).**
-Using the chrome extension allows your monitors to run on a separate thread and affords better performance and functionality. It comes with several of the most popular monitors, is easy to configure, filters actions, and doesn't require installing any packages in your project.
+## Production Readiness
 
-However, it's easy to bundle these developer tools locally should you choose to do so. First, grab the packages from npm:
+React Redux Boilerplate supports production preview, which means that you can run the production build job and see how it looks like in production.
 
-```bash
-yarn add --dev redux-devtools redux-devtools-log-monitor redux-devtools-dock-monitor
+1. Run `npm run build` and wait until it is done
+2. Go to the project `docroot`, you will see a `index.html`  (template is customizable, please read `Developing Template` section)
+3. Open that `index.html` in your browser, and that is the build version that just got generated
+
+That's very easy, isn't it?
+
+### Difference between `npm run dev` v.s. `npm run build`
+
+`npn run dev` is best to do JS / CSS only changes, and it comes with live reload functionality
+
+`npm run build` is for testing what happen if your frontend assets are optimized ( production level code )
+
+Please let me know if you have better work flow suggestion!!
+
+## Configuration
+React Redux Boilerplate has two configuration strategies, one is for normal configuration, the other one is for sensitive information that you don't want others to know.
+
+### Configuring application
+
+If you look at folder `config`, there are four files
+
+`default.json` - all default configuration
+`development.json` - when you run `npm run dev`, it will pull configuration from that file
+`release.json` - when you run `npm run build:release`, it will use this configuration
+`production.json` - when you run `npm run build`, it will use this configuration
+
+We are using [node-config](https://github.com/lorenwest/node-config), they have a pretty easy to understand documentation.
+
+
+And in your config file ( json config file ), whatever you put inside the `app`, it will be injected into the client application and you can access to your `app` config data by using `__CONFIG__` variables.
+
+Let's say you have a config like the following
+
+```
+{
+  "app": {
+    "apiURL": "http://foo.bar/"
+  }
+}
+
 ```
 
-Then follow the [manual integration walkthrough](https://github.com/gaearon/redux-devtools/blob/master/docs/Walkthrough.md).
+In your React application, you can access this variables
 
-## Routing
-We use `react-router` [route definitions](https://github.com/ReactTraining/react-router/blob/v3/docs/API.md#plainroute) (`<route>/index.js`) to define units of logic within our application. See the [project structure](#project-structure) section for more information.
+```
+__CONFIG__.apiURL
 
-## Testing
-To add a unit test, create a `.spec.js` file anywhere inside of `./tests`. Karma and webpack will automatically find these files, and Mocha and Chai will be available within your test without the need to import them. Here are a few important plugins and packages available to you during testing:
+```
 
-### dirty-chai
+__Note:__ If you want to add new npm target ( e.g. `npm run build:stage` ), you need to do the following :-
 
-Some of the assertions available from [chai](chaijs.com) use [magical getters](http://chaijs.com/api/bdd/#method_true). These are problematic for a few reasons:
+1. Add a `stage.json` file inside `config` folder
+2. Add `npm run build:stage`  ( or similar ) at `package.json` scripts section
+3. Add actual command mapping at `bin/commands.js`
 
-1) If you mistype a property name (e.g. `expect(false).to.be.tru`) then the expression evaluates to undefined, the magical getter on the `true` is never run, and so your test silently passes.
-2) By default, linters don't understand them and therefore mark them as unused expressions, which can be annoying.
+### Configuring secret key/value pair
 
-[Dirty Chai](https://github.com/prodatakey/dirty-chai) fixes this by converting these getters into callable functions. This way, if mistype an assertion, our attempt to invoke it will throw due to the property being undefined.
+There are times you may want to put in `secret information` you don't want to check into the source code.  In this boilerplate, you just need to create a file called `.env` in your `PROJECT_ROOT`, and you can put your secret over there ( we have put that into `.gitignore` just in case ). For example, in order to use the feature to deploy to S3, you need to provide the following information.
 
-```js
-// This silently passes because the getter on `true` is never invoked!
-it('should be true', () => {
-  expect(false).to.be.tru // evalutes to undefined :(
+```
+AWS_ACCESS_KEY=YOUR_AWS_ACCESS_KEY
+AWS_SECRET_KEY=YOUR_AWS_SECRET_KEY
+AWS_BUCKET=YOUR_AWS_BUCKET
+AWS_CDN_URL=YOUR_AWS_CDN_URL
+
+```
+
+And your in node application or webpack config, those key/value pair will inject into `process.env` ( e.g. `process.env.AWS_ACCESS_KEY` ).
+
+__Note__: Using `.env` file is optional, it meant to keep secret and inject information into environment variables, if you are using Jenkin or alike type of tools, you can inject environment variables there.
+
+However, with `.env`, you can create a ready to use list of environment variables for your different environment.  You can even have another service to generate the `.env` file before building the project, but in terms of how to achieve that, it is out of scope of this documentation.
+
+__Just remember__, `.env` file suppose to keep your secret, and prevent your from saving sensitive secret into source code repository \0/ !! `DO NOT` check in `.env` into your source repo !!
+
+We are using [dotenv](https://github.com/motdotla/dotenv) for the `.env` feature, they have pretty good documentation.
+
+## Port Configuration
+There will be a chance that you will need your port to be other than `8080`.  For example, your local backend service might already take `8080`; Or you want to run multiple project, one on `8080` and one on `80801`.
+
+If you are running one project that needs a different port, you can just modify one place
+1) `default.json` --> `port` section.
+
+But if you want to run multiple projects at the same time, you will need to configure ports in two places
+1) `default.json` --> `port`
+2) Dashboard port --> `package.json` --> `dev`  ( default dashboard port is `9901` )
+
+## Installing Dependencies
+
+We are using `npm` in this project, so if you would like to install a dependencies, for example, D3, you can do something like the following :-
+
+`npm i --save d3`
+
+# Advanced
+
+## Lazy Loading Component
+
+This boilerplate supports `Lazy Loading` and `Component Centric Splitting` out of the box by integrating `react-loadable`.
+
+In short, it will drastically reduce your initial load time by lazy loading components until the component is needed. And you can now do tricks like `above the fold` and `load component on demand` very easily with this capabilities.
+
+In order to take advantage of this capabilities
+
+You first need to import:
+
+```
+import Loadable from 'react-loadable';
+```
+
+And you now can lazy load anything like the following:
+
+```
+const LazyExample = Loadable({
+  loader: () => import('YOUR_PATH_TO/components/YourComponent'),
+  loading: LazyLoading,
 })
+```
+Can it be easier ??
 
-// Much better! Our assertion is invalid, so it throws rather than implicitly passing.
-it('should be true', () => {
-  expect(false).to.be.tru() // `tru` is not defined!
-})
+Please look at the example in this repo and `react-loadable` to get more idea.
+
+## Writing Unit Test
+
+We are using Jest and Enzyme for unit testing, please refer to the Knowledge Base section below for more information.
+
+In order to add unit test, the current setup requires you to put your test under `__tests__` directory, and suffix the filename with `spec` or `test`.
+
+For example, `MyFancyComponent.test.js` or `whatever_folder/AnotherComponent.spec.js`.
+
+We also have two folders `__fixtures` and `__mocks__` in the repo, those are just handy example folders for you to put different type of test related files separately, these two folders are safe to delete if you don't need them.
+
+## Configure git commit hook
+
+We are using `husky` for preventing developers check in bad commits. Please go to package.json and look for `husky` the default settings. `husky` supports any git hooks and you can configure it to fit your needs.
+
+## Multiple Device Concurrent Debugging
+
+React Redux Boilerpalate has built in support for multiple device concurrent access by entering the ip address provide.
+
+If you look at the dashboard, you should see some messages like below ( Note: your ip will be different )
+
+![Logo](http://res.cloudinary.com/search-engine/image/upload/v1501353275/share_screen_g3ofe1.png)
+
+For example, you can enter the address into multiple real devices and you can test those devices all at the same time, like the following :-
+
+![Logo](http://res.cloudinary.com/search-engine/image/upload/v1501353811/multiple_screen_d2b7fg.png)
+
+## Developing Template
+
+The `docroot/index.html` is a generated artifact. If look at our sample template at `src/assets/template/_default.html`, the `docroot/index.html` is generated from that file.
+
+We are using [HTML Webpack Plugin](https://github.com/ampedandwired/html-webpack-plugin) to generate the `docroot/index.html`.
+
+* If you are developing a single page application, you probably can reuse that file or customize it.
+* If you are building multiple pages application, please read the [HTML Webpack Plugin](https://github.com/ampedandwired/html-webpack-plugin) documentation for template development and how to configure it.
+
+**[Note]** - Most of the use case of the html template system so far is for testing purpose for your dev and build enviornment before you start integration.  If all you need is a static template, you are good; but if your application requires a server side processing, you will need to integrate the artifacts with the language of your choice. Please read `Diagrams` section for how to integrate with other server side language.
+
+## Production Optimization and Bundle Analysis
+
+For optimization, you can tweak the `config` under the following.  This optimization covers basic use case, feel free to make modification to fit your needs.
+
+```
+  "optimization": {
+    "commonMinCount": 3,   // how many times a module is used before we consider it a common module ?
+    "cssExclusion": true,  // do you want to exclude css from this optimization ?
+    ...
+  },
 ```
 
-## Building for Production
+This boilerplate shipped with `Production Bundle Analysis` tool which is `turn on` by default and will give you insight to optimize the production assets.
 
-## Deployment
+For example, when you run `npm run build` with `"analyzeMode": true`, you should see something like the following at the end of your build.
 
-Out of the box, this starter kit is deployable by serving the `./dist` folder generated by `yarn build`. This project does not concern itself with the details of server-side rendering or API structure, since that demands a more opinionated structure that makes it difficult to extend the starter kit. The simplest deployment strategy is a [static deployment](#static-deployments).
+The tool is to help you understand what your bundle looks like and what is included in your bundle.
 
-### Static Deployments
+![Production Bundle Analysis](https://www.dropbox.com/s/zun4n4tgp059neh/bundle-analysis.png?raw=1)
 
-Serve the application with a web server such as nginx by pointing it at your `./dist` folder. Make sure to direct incoming route requests to the root `./dist/index.html` file so that the client application will be loaded; react-router will take care of the rest. If you are unsure of how to do this, you might find [this documentation](https://github.com/reactjs/react-router/blob/master/docs/guides/Histories.md#configuring-your-server) helpful. The Express server that comes with the starter kit is able to be extended to serve as an API and more, but is not required for a static deployment.
+You can turn `on` and `off` the analysis feature
 
-## Thank You
+```
+  "optimization": {
+    ...
+    "analyzeMode": true,   // changing to false will turn it off
+    "analyze": {
+      "port": 8888  // it will open localhost:8888 and show your bundle analysis
+    }
+  },
+```
 
-This project wouldn't be possible without help from the community, so I'd like to highlight some of its biggest contributors. Thank you all for your hard work, you've made my life a lot easier and taught me a lot in the process.
+## Integration Note
 
-* [Justin Greenberg](https://github.com/justingreenberg) - For all of your PR's, getting us to Babel 6, and constant work improving our patterns.
-* [Roman Pearah](https://github.com/neverfox) - For your bug reports, help in triaging issues, and PR contributions.
-* [Spencer Dixon](https://github.com/SpencerCDixon) - For your creation of [redux-cli](https://github.com/SpencerCDixon/redux-cli).
-* [Jonas Matser](https://github.com/mtsr) - For your help in triaging issues and unending support in our Gitter channel.
 
-And to everyone else who has contributed, even if you are not listed here your work is appreciated.
+### How to integrate with other server side framework ?
+
+When you run `npm run build`, it will generate a meta data file `assets.json` with the list of generated frontend artifacts.  Think about that as a contract / interface for your server side framework.
+
+And your framework just need to consume that meta information as integration point.
+
+And this boilerplate has a process integrated to upload artifacts ( assets.json and generated client ifacts ) to S3 / cloudfront.  One of the integration path is the `consumer` can query against s3 for the assets.json, and use the information in assets.json to get the artifacts which is uploaded to S3 / cdn.
+
+
+## QA
+
+
+* __How to activate S3 support ?__
+	* S3 upload is optional here, but if you want to activate that, please go to your config and make `"s3Deploy": true` and fill up the `s3` config ( bucket, accessKey ... etc).  Remember that you can put the same config in different environment in case you want each one has different behavior. Below is an `example` in `config/default.json`
+
+
+        ```
+        ( STEP 1 )
+
+        // Example in config/default.json
+        // You can overwrite default using your other config file
+        // ========================================================
+        // default.json     - global
+        // development.json - development   ( npm run dev )
+        // release.json     - test/release  ( npm run build:release )
+        // production.json  - production    ( npm run build )
+        // ========================================================
+        {
+          "s3Deploy": true,
+        }
+        ```
+
+        And create a `.env` file and put in the following information.  Please read [Configuration](#configuration) section for more information.
+
+
+        ```
+        ( STEP 2 )
+
+        AWS_ACCESS_KEY=blah...
+        AWS_SECRET_KEY=blah...
+        AWS_BUCKET=blah...
+        AWS_CDN_URL=blah...
+        ```
+
+
+* __What is our standard to control our npm module dependencies ?__
+    * We are using `^version`, it means "Compatible with version". The reason we are using `^version` is simply we want the ability for us to roll back to previous working version together with the source code.
+
+* __How to add javascript unit test ?__
+    * All React JS test are under \__tests__ directory and this tool will find all the test, you don't need to do anything besides putting your test in, but please use a structure that mimic your source location that you are testing, or it will create confusion.
+
+
+* __What is B.E.M style  ?__
+    * B.E.M is short for `Block, Element, Modifier` and is a naming convention for classes in HTML and CSS. Its goal is to help developers better understand the relationship between the HTML and CSS and make our code base more maintainable. Please read the links below for getting deeper insight of it.
+
+# Other
+
+## Knowledge Base Reading
+
+### ES6
+
+* [ES6 for Humans](https://github.com/metagrover/ES6-for-humans)
+* [ES6 Compatible Table](http://kangax.github.io/compat-table/es6/)
+
+### React
+
+* [Thinking in React](https://facebook.github.io/react/docs/thinking-in-react.html)
+* [Synchronization of props with state is an anti-pattern](https://github.com/JedWatson/react-select/issues/70)
+* [How Virtual-DOM and diffing works in React](https://medium.com/@gethylgeorge/how-virtual-dom-and-diffing-works-in-react-6fc805f9f84e)
+
+### Redux
+
+* [Redux](http://redux.js.org/)
+* [You might not need Redux](https://medium.com/@dan_abramov/you-might-not-need-redux-be46360cf367)
+* [Redux without profanity](https://www.gitbook.com/book/tonyhb/redux-without-profanity/details)
+* [Learned from reading the Redux source code](https://medium.freecodecamp.com/what-i-learned-from-reading-the-redux-source-code-836793a48768?gi=4bdf3c9f3396#.rjwu6x9sc)
+* [Redux Saga](https://redux-saga.js.org/)
+* [Usage of Reselect in a React-Redux Application](https://dashbouquet.com/blog/frontend-development/usage-of-reselect-in-a-react-redux-application)
+
+### Webpack
+
+* [Webpack how-to](https://github.com/petehunt/webpack-howto)
+* [Webpack - The Confusing Part](https://medium.com/@rajaraodv/webpack-the-confusing-parts-58712f8fcad9)
+* [Lazy Loading and Code Split for React Route](https://github.com/webpack/react-proxy-loader)
+* [Lazy Loading and Code Split for Components](https://github.com/jamiebuilds/react-loadable)
+
+
+### Relevant Knowledge
+
+* [ImmutableJS for beginners](https://github.com/iroy2000/immutablejs-for-beginners)
+* [Learning PostCSS](https://github.com/postcss/postcss)
+* [Jest = Awesome JS Testing Framework](https://facebook.github.io/jest/docs/tutorial-react.html)
+* [B.E.M 101](https://css-tricks.com/bem-101/)
+* [React Responsive](https://github.com/contra/react-responsive)
+* [Storybook.JS](https://storybook.js.org/)
+
+### Best Practice
+
+* [Ducks: Redux Reducer Bundles](https://github.com/erikras/ducks-modular-redux)
+* [Lessons from migrating a large codebase to React 16](https://blog.discordapp.com/lessons-from-migrating-a-large-codebase-to-react-16-e60e49102aa6)
+* [B.E.M: 10 Common Problems And How To Avoid Them](https://www.smashingmagazine.com/2016/06/battling-bem-extended-edition-common-problems-and-how-to-avoid-them/)
+* [Isomorphic JavaScript, The Future of Web Apps](http://nerds.airbnb.com/isomorphic-javascript-future-web-apps/)
+* [The Cost Of JavaScript](https://medium.com/dev-channel/the-cost-of-javascript-84009f51e99e)
+
+## How to Contribute
+
+We welcome anyone to send us __pull request__ to improve this boilerplate, the goal is to make it better from time to time and we all can learn from it.
+
+This boilerplate will be maintained separately.  So please do not check in any business logic to it unless it is for example purpose.
+
+## Updates
+
+__9 / 26 / 2017__
+
+We are now on React 16, and up-to-date with all our dependencies.
+
+__9 / 14 / 2017__
+
+For those of you seeing the following error
+
+`mozjpeg pre-build test failed ...`
+
+There is a bug in `imagemin` with Node 6 or above, and [here is the discussion](https://github.com/imagemin/imagemin/issues/168)
+
+If you are using mac, you can fix that by doing this
+
+`brew install automake autoconf libtool dpkg pkgconfig nasm libpng`
+
+__7 / 15 / 2017__
+
+We added Enzyme to make React unit testing easier :)
+
+__6 / 20 / 2017__
+
+Webpack 3 just announced yesterday, we are so excited about it, thus we also upgraded this boilerplate to use `Webpack 3`.
+
+If you encounter issues related to `Webpack 3`, it is good to report that back so the community can benefit from it.
+
+
+## License ?!
+In theory, knowledge should be free, so please visit [wtfpl](http://www.wtfpl.net/) for this boilerplate license if you really care.
+
+[david_img]: https://img.shields.io/david/iroy2000/react-redux-boilerplate.svg
+[david_site]: https://david-dm.org/iroy2000/react-redux-boilerplate
