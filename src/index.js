@@ -6,6 +6,8 @@ import { Switch, Route } from 'react-router-dom'
 import Landing from './containers/Landing';
 import Companies from './containers/Companies';
 
+import './assets/css/index.css';
+
 render(
     <BrowserRouter>
         <Switch>
