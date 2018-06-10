@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300');
+@import url('https://fonts.googleapis.com/css?family=Song+Myung');
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    padding: 10px;
+    text-decoration: none;
+    outline: none;
+    background-color: white;
+}
+
+p {
+    font-size: 30px;
+}
+
+.white_text {
+    color: white !important;
+}
+.serif_text {
+    font-family: 'Song Myung', serif !important;
+}
+.thin_text {
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 100 !important;
+}
+.italic {
+    font-style: italic;
+}
+.text_shadow_thin {
+    text-shadow: 2px 2px 2px rgba(0,0,0,0.8) !important;
+}
+.text_shadow_thicc {
+    text-shadow: 4px 4px 4px rgba(0,0,0,0.8) !important;
+}
+.large_text {
+    font-size: 80px !important;
+}
+
+input[type='button'] {
+    border-radius: 3px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    font-size: 30px;
+    padding: 5px 15px;
+    text-align: center;
+    margin-right: 20px;
+    box-shadow: 0 0 4px rgba(0,0,0,0.4);
+    transition-duration: 0.1s;
+}
+input[type='button']:hover {
+    box-shadow: 0 0 10px rgba(0,0,0,0.6);
+}
+input[type='button']:active {
+    transition-duration: 0.02s;
+    box-shadow: 0 0 12px rgba(0,0,0,0.95);
+    transform: scale(0.95);
+}
+input.light_button[type='button'] {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
+    outline: none;
+    color: black;
+    background-color: transparent;
+}
+input.medium_button[type='button'] {
+    background: rgba(0,0,0,0.2);
+}
+input.heavy_button[type='button'] {
+    background: darkorange;
+    font-weight: bold;
+}
+
+input[type='text'] {
+    border: 1px solid rgba(0,0,0,0.1);
+    padding: 4px 5px;
+    line-height: 30px;
+    font-size: 30px;
+    background-color: rgba(0,0,0,0.05);
+    color: black;
+    font-size: 20px;
+    border-bottom: 2px solid black;
+}
+input.no_decoration[type='text'] {
+    border: none;
+    background-color: transparent;
+}
+input[type='text']:focus {
+    background-color: rgba(0,0,0,0.1);
+}
+
+div.main_grid_display {
+    margin: auto;
+    margin-top: 60px;
+    width: 1000px;
+    min-height: 200px;
+    padding: 10px;
+    background-color: grey;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-auto-rows: 300px;
+    grid-gap: 10px;
+}
+
+div.main_grid_display div.main_grid_element {
+    background-color: darkgrey;
+    overflow: hidden;
+}
