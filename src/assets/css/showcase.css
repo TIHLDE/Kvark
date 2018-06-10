@@ -1,6 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:100,300');
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:300');
-@import url('https://fonts.googleapis.com/css?family=Song+Myung');
+/* Deprecated */
 
 body {
     font-family: 'Open Sans', sans-serif;
@@ -14,28 +12,7 @@ p {
     font-size: 30px;
 }
 
-.white_text {
-    color: white !important;
-}
-.serif_text {
-    font-family: 'Song Myung', serif !important;
-}
-.thin_text {
-    font-family: 'Roboto', sans-serif !important;
-    font-weight: 100 !important;
-}
-.italic {
-    font-style: italic;
-}
-.text_shadow_thin {
-    text-shadow: 2px 2px 2px rgba(0,0,0,0.8) !important;
-}
-.text_shadow_thicc {
-    text-shadow: 4px 4px 4px rgba(0,0,0,0.8) !important;
-}
-.large_text {
-    font-size: 80px !important;
-}
+
 
 input[type='button'] {
     border-radius: 3px;

@@ -7,8 +7,6 @@ import Landing from './containers/Landing';
 import Companies from './containers/Companies';
 
 import './assets/css/index.css';
-import './assets/css/redir.css';
-import './assets/css/showcase.css';
 
 render(
     <BrowserRouter>
