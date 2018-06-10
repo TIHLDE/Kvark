@@ -9,5 +9,8 @@
     "extends": [
         "google",
         "plugin:react/recommended"
-    ] 
+    ],
+    "rules": {
+        "require-jsdoc": 0
+    }
 }
