@@ -9,10 +9,10 @@ export default class extends Component {
 
     render() {
         return (
-            <Fragment> 
+            <Fragment>
                 <Redir />
                 <h1>Hello Students!</h1>
-                <Time /> 
+                <Time />
                 <img src={ Image } style={{ width: '100vw' }} />
             </Fragment>
         );
