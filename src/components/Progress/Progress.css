@@ -1,0 +1,75 @@
+.Progress{
+   margin: 2px 0px;
+   display: block;
+}
+
+/*Progress Bar*/
+.Line{
+    width: 400px;
+    height: 25px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    box-sizing: border-box;
+    border-radius: 4px;
+    border: 1px solid rgba(128, 128, 128, 0.247);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+}
+
+.Line #progressBar{
+    height: 100%;
+    transition-duration: 0.4s;
+    transition-timing-function: ease-out;
+}
+
+.Line #progressText{
+    display: block;
+    position: relative;
+    top: -25px;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    font-size: 15px;
+    font-weight: bolder;
+    text-align: center;
+    line-height: 1.7em;
+    color: black;
+}
+
+/*Circular*/
+.Circular {
+    
+}
+
+.Cirular #progressBar{
+   
+}
+
+.Green{
+    background: repeating-linear-gradient(
+        45deg,
+        #78df7d,
+        #78df7d 10px,
+        #5ba75f 10px,
+        #5ba75f 20px
+    );
+}
+
+.Red{
+    background: repeating-linear-gradient(
+        45deg,
+        #c76d6d,
+        #c76d6d 10px,
+        #a75454 10px,
+        #a75454 20px
+    );
+}
+
+.Yellow{
+    background: repeating-linear-gradient(
+        45deg,
+        #fcf482,
+        #fcf482 10px,
+        #cac35d 10px,
+        #cac35d 20px
+    );
+}
