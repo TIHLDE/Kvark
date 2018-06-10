@@ -4,7 +4,6 @@ export default class extends Component {
 
     constructor(props) {
         super(props);
-        console.log(props.id);
         this.state = {
             id: props.id,
             width: props.width,
@@ -31,7 +30,7 @@ export default class extends Component {
             id: this.state.id,
             width: this.state.width,
             height: e.target.value,
-            margin: this.state.value,
+            margin: this.state.margin,
         });
         this.forceUpdate();
     }
@@ -47,10 +46,12 @@ export default class extends Component {
     }
 
     render() {
+        console.log(this.state.margin);
         let style = {
-            gridColumn: "span " + this.state.width,
-            gridRow: "span " + this.state.height,
-            margin: this.state.margin,
+            marginLeft: this.state.margin + 'px',
+            marginRight: this.state.margin + 'px',
+            gridColumn: 'span ' + this.state.width,
+            gridRow: 'span ' + this.state.height,
         };
 
         return (
@@ -60,7 +61,7 @@ export default class extends Component {
                 <br />
                 Height: <input type='range' defaultValue={this.state.height} min='1' max='3' step='1' onChange={this.handleHeightChange} />
                 <br />
-                Margin: <input type='range' defaultValue={this.state.margin} min='-5' max='5' step='1' onChange={this.handleMarginChange} />
+                Margin: <input type='range' defaultValue={this.state.margin} min='-10' max='10' step='1' onChange={this.handleMarginChange} />
                 <br />
                 Bredde = {this.state.width}
                 <br />
