@@ -20,7 +20,7 @@ export default class extends Component {
 
     render() {
         return (
-            <h1>Dette er tiden: {this.state.time}</h1>
+            <h1>Dette er tiden: {this.state.time} ms</h1>
         );
     }
 
