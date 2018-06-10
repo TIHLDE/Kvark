@@ -7,6 +7,7 @@ import Companies from './containers/Companies';
 import NotFound from './containers/NotFound';
 
 import './assets/css/index.css';
+import './assets/css/redir.css';
 
 render(
     <BrowserRouter>
