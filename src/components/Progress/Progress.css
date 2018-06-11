@@ -44,7 +44,17 @@
    
 }
 
-.Green{
+.Progress .Blue{
+    background: repeating-linear-gradient(
+        45deg,
+        rgb(103, 143, 218),
+        rgb(103, 143, 218) 10px,
+        var(--tihlde-blaa) 10px,
+        var(--tihlde-blaa) 20px
+    ); 
+}
+
+.Progress .Green{
     background: repeating-linear-gradient(
         45deg,
         #78df7d,
@@ -54,7 +64,7 @@
     );
 }
 
-.Red{
+.Progress .Red{
     background: repeating-linear-gradient(
         45deg,
         #c76d6d,
@@ -64,7 +74,7 @@
     );
 }
 
-.Yellow{
+.Progress .Yellow{
     background: repeating-linear-gradient(
         45deg,
         #fcf482,

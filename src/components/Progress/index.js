@@ -30,12 +30,15 @@ export default class Progress extends Component {
         }
 
         //Initializes the color of the bar
-        let progressColor = "Green";
+        let progressColor = "Blue";
         if (this.props.color === "Red") {
             progressColor = "Red";
         }
         else if(this.props.color === "Yellow"){
             progressColor = "Yellow";
+        }
+        else if(this.props.colr === "Green"){
+            progressColor = "Green";
         }
 
         //Making sure the progress value is between 0 and 100
