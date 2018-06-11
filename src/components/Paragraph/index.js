@@ -19,7 +19,7 @@ export default class Paragraph extends Component {
 
 
         return (
-            <p style={this.state.style}>
+            <p style={this.state.style} className='Paragraph'>
                 {props.text}
             </p>
         );
