@@ -5,7 +5,7 @@
 
 /*Progress Bar*/
 .Line{
-    width: 400px;
+    width: auto;
     height: 25px;
     overflow: hidden;
     background-color: #f5f5f5;
