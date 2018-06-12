@@ -1,18 +1,20 @@
-import Component from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 export default class Paragraph extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            style : {
+            style: {
                 width: props.width || 'auto',
                 height: props.height || 'auto',
                 overflow: props.overflow || 'hidden',
-                fontSize: props.fontSize || 'inherit'
+                fontSize: props.fontSize || 'inherit',
+                textAlign: props.textAlign || 'left',
             },
-            text: props.text || 'Tekst mangler'
-        }
+            text: props.text || 'Tekst mangler',
+        };
     }
 
     render() {
@@ -20,8 +22,17 @@ export default class Paragraph extends Component {
 
         return (
             <p style={this.state.style} className='Paragraph'>
-                {props.text}
+                {this.props.text}
             </p>
         );
     }
-}
+};
+
+Paragraph.propTypes = {
+    width: PropTypes.string,
+    height: PropTypes.string,
+    overflow: PropTypes.string,
+    fontSize: PropTypes.string,
+    textAlign: PropTypes.string,
+    text: PropTypes.string,
+};
