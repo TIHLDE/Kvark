@@ -7,6 +7,7 @@ import Loading from '../components/Loading';
 import Paragraph from '../components/Paragraph';
 import Picture from '../components/Picture';
 import Progress from '../components/Progress';
+import Event from '../components/Event';
 
 import ColdDawnDuskImage from '../assets/img/cold-dawn-dusk.jpg';
 import TihldeLogo from '../assets/img/tihlde_image.png';
@@ -15,8 +16,14 @@ class ExampleGroup extends Component {
     render() {
         const titleStyle = {
             textAlign: 'center',
-            margin: 'auto',
-            fontSize: '2em',
+            marginTop: '100px',
+            marginBottom: '0px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            maxWidth: '80%',
+            fontSize: '1.5em',
+            boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 0px 20px 0 rgba(0, 0, 0, 0.19)',
+            backgroundColor: '#EAEAEA',
         };
         return (
             <Fragment>
@@ -36,11 +43,14 @@ ExampleGroup.propTypes = {
 class Example extends Component {
     render() {
         const outerStyle = {
-            backgroundColor: '#CCCCCC',
-            borderStyle: 'ridge',
-            width: '80%',
+            backgroundColor: 'white',
+            maxWidth: '80%',
             textAlign: 'center',
             margin: 'auto',
+            boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+            marginBottom: '10px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
         };
 
         const innerStyle = {
@@ -100,6 +110,17 @@ export default class Components extends Component {
 
     render() {
         const tihldePicture = <Picture src={TihldeLogo} alt='Example header picture'/>;
+        const naturePicture = <Picture src={ColdDawnDuskImage} alt='Example event picture'/>;
+        const eventData = {
+            pinned: false,
+            pinnedPriority: 0,
+            title: 'Test event',
+            picture: naturePicture,
+            startDateTime: new Date(2018, 6, 22, 0, 0),
+            endDateTime: new Date(2018, 6, 23, 5, 0),
+            content: <Paragraph text='Example content'/>,
+        };
+
         return (
             <Fragment>
                 <ExampleGroup title='Header'>
@@ -140,6 +161,13 @@ export default class Components extends Component {
                     <Example title='Circular'>
                         <Picture src={ColdDawnDuskImage} height={500} width={500} type='circular'/>
                     </Example>
+                </ExampleGroup>
+
+
+                <ExampleGroup title='Event'>
+                  <Example>
+                    <Event data={eventData}/>
+                  </Example>
                 </ExampleGroup>
 
                 <ExampleGroup title='Footer'>

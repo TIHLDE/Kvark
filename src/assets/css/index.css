@@ -44,7 +44,8 @@ body {
 /* HEADER */
 .app-header {
     background-color: white;
-    font-size: 2em !important;
+
+    font-size: 50vv !important;
 }
 
 /* NAVBAR */
