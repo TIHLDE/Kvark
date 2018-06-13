@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import './Footer.css';
 
 import tihldeImage from '../../assets/img/tihlde_image.png';
@@ -9,17 +9,17 @@ import twitterIcon from '../../assets/img/twitter_icon.ico';
 export default class Footer extends Component {
     render() {
         const contactInformation = [
-            <li>Contact</li>,
-            <li id="li2">foo@bar.baz</li>,
-            <li>+47 982 31 112</li>,
-            <li id="li2">Gunnerius gate 1</li>,
-            <li>7012</li>
+            'Contact',
+            'foo@bar.baz',
+            '+47 982 31 112',
+            'Gunnerius gate 1',
+            '7012',
         ];
 
         const icons = [
-            <li className="Icons"><a href="https://www.facebook.com"> <img src={facebookIcon} alt = "Facebook Icon" width='40px'/></a></li>,
-            <li className="Icons"><a href="https://www.twitter.com"><img src={twitterIcon} alt = "Twitter Icon" width='40px'/></a></li>,
-            <li className="Icons"><a href="https://www.instagram.com"><img src={instagramIcon} alt = "Instagram Icon" width='40px'/></a></li>
+            <a href="https://www.facebook.com"><img src={facebookIcon} alt = "Facebook Icon" width='40px'/></a>,
+            <a href="https://www.twitter.com"><img src={twitterIcon} alt = "Twitter Icon" width='40px'/></a>,
+            <a href="https://www.instagram.com"><img src={instagramIcon} alt = "Instagram Icon" width='40px'/></a>,
         ];
 
         return (
@@ -29,7 +29,7 @@ export default class Footer extends Component {
                 </div>
                 <div id="contactDiv">
                     <ul>
-                        {contactInformation}
+                        {contactInformation.map((value, index) => <li key={index}>{value}</li>)}
                     </ul>
                 </div>
                 <div id="inputing">
@@ -39,7 +39,7 @@ export default class Footer extends Component {
                 <div id="copyRightDiv">
                     <div id="iconDivs">
                         <ul>
-                            {icons}
+                            {icons.map((value, index) => <li className='Icons' key={index}>{value}</li>)}
                         </ul>
                     </div>
                 </div>
