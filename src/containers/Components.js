@@ -170,15 +170,13 @@ export default class Components extends Component {
                   </Example>
                 </ExampleGroup>
 
-
-            </Fragment>
-                /*
                 <ExampleGroup title='Footer'>
                     <Example>
                         <Footer />
                     </Example>
                 </ExampleGroup>
-                */
+
+            </Fragment>
         );
     }
 }
