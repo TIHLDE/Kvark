@@ -1,0 +1,7 @@
+.Normal {
+    border-radius: 0%;
+}
+
+.Circular {
+    border-radius: 50%;
+}
