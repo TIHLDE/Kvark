@@ -36,7 +36,7 @@ Picture.defaultProps = {
 Picture.propTypes = {
     src: PropTypes.string.isRequired,
     alt: PropTypes.string,
-    type: PropTypes.oneOf(['circular', 'normal', 'square']),
+    type: PropTypes.oneOf(['circular', 'normal']),
     className: PropTypes.string,
     width: PropTypes.number,
     height: PropTypes.number,
