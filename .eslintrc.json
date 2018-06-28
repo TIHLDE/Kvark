@@ -14,6 +14,7 @@
         "require-jsdoc": 0,
         "linebreak-style": 0,
         "brace-style": 0,
-        "padded-blocks": 0
+        "padded-blocks": 0,
+        "max-len": 0
     }
 }
