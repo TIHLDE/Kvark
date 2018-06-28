@@ -10,6 +10,11 @@ export default class Landing extends Component {
             <Fragment>
                 <Navbar/>
                 <Carousel/>
+                <br/><br/>
+                <div style={{margin: 'auto', maxWidth: '1200px'}}>
+                    <h3>Nyheter</h3>
+                    <hr/>
+                </div>
             </Fragment>
         );
     }

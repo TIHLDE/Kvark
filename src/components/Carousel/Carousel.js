@@ -56,7 +56,7 @@ class Carousel extends Component {
                     })}
                 </div>
                 <div className='Options'>
-                    <Button className="Button" color='primary' onClick={this.next}>Meld deg på</Button>{' '}
+                    <Button className="Button" color='primary'>Meld deg på</Button>{' '}
                 </div>
                 <div className='Buttons'>
                     <Button className="Button" color='danger' id='nextButton' onClick={this.previous}>Previous</Button>{' '}
