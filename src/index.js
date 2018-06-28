@@ -8,6 +8,7 @@ import Companies from './containers/Companies';
 import Components from './containers/Components';
 
 import './assets/css/index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 render(
     <BrowserRouter>
