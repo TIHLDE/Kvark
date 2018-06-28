@@ -1,20 +1,20 @@
 import React, {Component, Fragment} from 'react';
 
+// Material UI Components
+
+
 // Project components
-import Carousel from '../components/Carousel/Carousel';
-import Navbar from '../components/Navbar';
+import Navigation from '../components/Navigation';
+import EventHeader from '../components/EventHeader';
 
 export default class Landing extends Component {
     render() {
         return (
             <Fragment>
-                <Navbar/>
-                <Carousel/>
-                <br/><br/>
-                <div style={{margin: 'auto', maxWidth: '1200px'}}>
-                    <h3>Nyheter</h3>
-                    <hr/>
-                </div>
+                <Navigation/>
+                <main>
+                    <EventHeader/>
+                </main>
             </Fragment>
         );
     }
