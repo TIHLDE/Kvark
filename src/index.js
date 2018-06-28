@@ -7,6 +7,8 @@ import Landing from './containers/Landing';
 import Companies from './containers/Companies';
 import Components from './containers/Components';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import './assets/css/index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
