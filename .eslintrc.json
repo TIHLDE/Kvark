@@ -17,5 +17,7 @@
         "padded-blocks": 0,
         "max-len": 0,
         "quote-props": 0
+        "object-curly-spacing": 0,
+        "no-multiple-empty-lines": 0
     }
 }

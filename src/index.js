@@ -7,13 +7,14 @@ import './assets/css/index.css';
 // Project containers
 import Landing from './containers/Landing';
 import Companies from './containers/Companies';
-import Jodel from './components/Jodel'; // Should be removed in the future
+import GridShowcase from './containers/GridShowcase';
 
 render(
     <BrowserRouter>
         <Switch>
             <Route exact path='/' component={Landing}/>
             <Route path='/bedrifter/' component={Companies}/>
+            <Route exact path='/gridshowcase/' component={GridShowcase} />
             <Route exact path='/william/' component={Jodel}/>
         </Switch>
     </BrowserRouter>,
