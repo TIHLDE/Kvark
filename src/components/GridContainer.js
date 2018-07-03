@@ -6,6 +6,7 @@ import {withStyles} from '@material-ui/core/styles';
 
 // Project Components
 import EventList from './EventList';
+import NewsItem from './NewsItem';
 
 const styles = {
     root: {
@@ -15,7 +16,11 @@ const styles = {
         justifyContent: 'center',
         marginBottom: 30,
 
-        '@media only screen and (max-width: 600px)': {
+        '@media only screen and (max-width: 1000px)': {
+            gridTemplateColumns: '47% 47%',
+        },
+
+        '@media only screen and (max-width: 700px)': {
             gridTemplateColumns: '100%',
         },
     },
@@ -29,9 +34,9 @@ class GridContainer extends Component {
         return (
             <div className={classes.root}>
                 <EventList/>
+                <NewsItem/>
                 <EventList/>
-                <EventList/>
-                <EventList/>
+                <NewsItem/>
             </div>
         );
     }
