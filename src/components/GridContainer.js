@@ -12,7 +12,6 @@ const styles = {
         marginBottom: 30,
         marginLeft: 'auto',
         marginRight: 'auto',
-        marginTop: 100,
         width: '1200px',
 
         '@media only screen and (max-width: 1200px)': {
