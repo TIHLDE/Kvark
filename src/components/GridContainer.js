@@ -1,49 +1,49 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
-
-// Material UI Components
-
-// Project Components
-import EventList from './EventList';
-import NewsItem from './NewsItem';
+import { withStyles } from '@material-ui/core';
 
 const styles = {
     root: {
         display: 'grid',
-        gridTemplateColumns: '65% 32%',
-        gridGap: '30px',
+        gridTemplateColumns: '1fr 1fr 1fr',
+        gridAutoRows: '300px',
+        gridGap: '10px',
         justifyContent: 'center',
         marginBottom: 30,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: 100,
+        width: '1200px',
 
-        '@media only screen and (max-width: 1000px)': {
-            gridTemplateColumns: '47% 47%',
+        '@media only screen and (max-width: 1200px)': {
+            gridTemplateColumns: '1fr 1fr',
+            width: '90%',
+            gridColumn: '-1 !important',
         },
 
-        '@media only screen and (max-width: 700px)': {
-            gridTemplateColumns: '100%',
+        '@media only screen and (max-width: 600px)': {
+            gridTemplateColumns: '1fr !important',
+            width: 'auto',
         },
     },
 };
 
-class GridContainer extends Component {
+
+class Grid extends Component {
 
     render() {
-        const {classes} = this.props;
-
         return (
-            <div className={classes.root}>
-                <EventList/>
-                <NewsItem/>
-                <EventList/>
-                <NewsItem/>
+            <div className={ this.props.classes.root }>
+                { this.props.children }
             </div>
         );
     }
+}
+
+Grid.propTypes = {
+    width2: PropTypes.bool,
+    width3: PropTypes.bool,
+    height2: PropTypes.bool,
 };
 
-GridContainer.propTypes = {
-    classes: PropTypes.object,
-};
-
-export default withStyles(styles)(GridContainer);
+export default withStyles(styles)(Grid);
