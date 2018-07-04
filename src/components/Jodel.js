@@ -1,23 +1,87 @@
 import React, {Component} from 'react';
-import {withStyles} from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
+//import {withStyles} from '@material-ui/core/styles';
 
 // Material UI Components
-import Card from '@material-ui/core/Card';
+import {Typography,Card,IconButton} from '@material-ui/core';
+import {KeyboardArrowUp,KeyboardArrowDown} from '@material-ui/icons'
 
-const styles = {
+{/*
+Denne komponenten er bare en jodel som man kan legge ut et random sted.
+Time er hvor lenge den har vært ute på nettsiden/ tilgjengelig for å bli lest.
+text er hva personen vil dele / jodle.
+votes er antall votes denne jodelen har fått, man kan både få negative votes og positive votes. Dette spørs på hva folk flest syntes om denne spesifikke jodelen.
+Voted er da at man kan bare vote EN gang per jodel. Så man kan ikke spamme M1 for å få super mange votes.
 
-};
+Er litt usikker på hvordan man skal implementere denne og hvordan i det heletatt bygge den opp. så jeg bare satt den opp på måten jeg tenkte den kunne være. Feel free til å skifte litt rundt.
 
-class Jodel extends Component {
+Voteup() & VoteDown kan bare bli brukt dersom voted == false
+*/}
+
+export default class Jodel extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            style: {
+                root: {
+                    width: '100%',
+                    height: 100,
+                    backgroundColor: 'orange'
+                },
+                upvote: {
+                    width: '10%',
+                    height: '100%',
+                    backgroundColor: 'red',
+                    float: 'right',
+                    textAlign: 'center',
+                },
+
+            },
+            time: props.time || "No time",
+            votes: props.votes || 0,
+            text: props.text || "No text",
+            voted: false
+        };
+
+        this.voteUp = this.voteUp.bind(this);
+        this.voteDown = this.voteDown.bind(this);
+    };
+
+    voteUp =() => {
+        this.setState({
+            voted: this.state.voted = true,
+            votes: this.state.votes+1
+        });
+    };
+
+    voteDown =() => {
+        this.setState({
+            voted: this.state.voted = true,
+            votes: this.state.votes -1
+        });
+    };
+
 
     render() {
-        return <Card></Card>;
+        return  <Card style={this.state.style.root}>
+            <div style ={this.state.style.upvote}>
+                <IconButton onClick={this.voteUp} disableRipple={true} disabled={this.state.voted}>
+                    <KeyboardArrowUp />
+                </IconButton >
+                <Typography align='center'>
+                    {this.state.votes}
+                </Typography>
+                <IconButton onClick={this.voteDown} disableRipple={true} disabled={this.state.voted}>
+                    <KeyboardArrowDown/>
+                </IconButton>
+
+            </div>
+            {this.state.time}
+            <br/>
+            <Typography>
+                {this.state.text}
+            </Typography>
+
+
+        </Card>;
     }
 }
-
-Jodel.propTypes = {
-    classes: PropTypes.object,
-};
-
-export default withStyles(styles)(Jodel);
