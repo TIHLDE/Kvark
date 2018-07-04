@@ -15,8 +15,9 @@ render(
             <Route exact path='/' component={Landing}/>
             <Route path='/bedrifter/' component={Companies}/>
             <Route exact path='/gridshowcase/' component={GridShowcase} />
-            <Route exact path='/william/' component={Jodel}/>
         </Switch>
     </BrowserRouter>,
     document.getElementById('root')
 );
+
+// <Route exact path='/william/' component={Jodel}/> jodel container finnes ikke enda

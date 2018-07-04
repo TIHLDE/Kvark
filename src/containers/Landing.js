@@ -9,6 +9,8 @@ import PropTypes from 'prop-types';
 import Navigation from '../components/Navigation';
 import EventHeader from '../components/EventHeader';
 import GridContainer from '../components/GridContainer';
+import EventList from '../components/EventList';
+import GridItem from '../components/GridItem';
 
 const styles = {
     grid: {
@@ -34,7 +36,15 @@ class Landing extends Component {
             <Navigation>
                 <EventHeader/>
                 <div className={classes.grid}>
-                    <GridContainer/>
+                    <GridContainer>
+                        <GridItem width2>
+                            <EventList />
+                        </GridItem>
+                        <EventList />
+                        <EventList />
+                        <EventList />
+                        <EventList />
+                    </GridContainer>
                 </div>
             </Navigation>
         );
