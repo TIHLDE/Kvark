@@ -15,6 +15,22 @@ Voted er da at man kan bare vote EN gang per jodel. Så man kan ikke spamme M1 f
 Er litt usikker på hvordan man skal implementere denne og hvordan i det heletatt bygge den opp. så jeg bare satt den opp på måten jeg tenkte den kunne være. Feel free til å skifte litt rundt.
 
 Voteup() & VoteDown kan bare bli brukt dersom voted == false
+
+MAP function:
+
+    const newState = this.state.users.map((user) =>{
+    const tempUser= user;
+    tempUser.age-=10;
+    return tempUser;
+    })
+    this.setstate({
+    newState;
+    })
+
+    {this.state.users.map((user) =>{
+        return <User/>
+    })}
+
 */}
 
 export default class Jodel extends Component {
@@ -41,36 +57,26 @@ export default class Jodel extends Component {
             text: props.text || "No text",
             voted: false
         };
-
-        this.voteUp = this.voteUp.bind(this);
-        this.voteDown = this.voteDown.bind(this);
+            this.vote = this.vote.bind(this);
     };
 
-    voteUp =() => {
+    vote = (vote) => {
         this.setState({
             voted: this.state.voted = true,
-            votes: this.state.votes+1
+            votes: this.state.votes+vote
         });
     };
-
-    voteDown =() => {
-        this.setState({
-            voted: this.state.voted = true,
-            votes: this.state.votes -1
-        });
-    };
-
 
     render() {
         return  <Card style={this.state.style.root}>
             <div style ={this.state.style.upvote}>
-                <IconButton onClick={this.voteUp} disableRipple={true} disabled={this.state.voted}>
+                <IconButton onClick={this.vote.bind(this, 1)} disableRipple={true} disabled={this.state.voted}>
                     <KeyboardArrowUp />
                 </IconButton >
                 <Typography align='center'>
                     {this.state.votes}
                 </Typography>
-                <IconButton onClick={this.voteDown} disableRipple={true} disabled={this.state.voted}>
+                <IconButton onClick={this.vote.bind(this, -1)} disableRipple={true} disabled={this.state.voted}>
                     <KeyboardArrowDown/>
                 </IconButton>
 

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-
 // Material UI Components
 
 
@@ -11,6 +10,7 @@ import EventHeader from '../components/EventHeader';
 import GridContainer from '../components/GridContainer';
 import EventList from '../components/EventList';
 import GridItem from '../components/GridItem';
+import Jodel from "../components/Jodel";
 
 const styles = {
     grid: {
@@ -44,6 +44,9 @@ class Landing extends Component {
                         <EventList />
                         <EventList />
                         <EventList />
+                        <div>
+                            <Jodel/>
+                        </div>
                     </GridContainer>
                 </div>
             </Navigation>
