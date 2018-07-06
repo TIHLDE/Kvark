@@ -6,14 +6,14 @@ export default class Parent_jodel extends Component{
         super(props);
         this.state = {
             jodels:[
-                {text:props.text || "no text", votes: props.votes || 0, time: props.time || "no time", voted: props.voted || false},
-                {text:props.text || "no text", votes: props.votes || 0, time: props.time || "no time", voted: props.voted || false},
-                {text:props.text || "no text", votes: props.votes || 0, time: props.time || "no time", voted: props.voted || false},
-                {text:props.text || "no text", votes: props.votes || 0, time: props.time || "no time", voted: props.voted || false},
-                {text:props.text || "no text", votes: props.votes || 0, time: props.time || "no time", voted: props.voted || false},
-                {text:props.text || "no text", votes: props.votes || 0, time: props.time || "no time", voted: props.voted || false},
-                {text:props.text || "no text", votes: props.votes || 0, time: props.time || "no time", voted: props.voted || false},
-                {text:props.text || "no text", votes: props.votes || 0, time: props.time || "no time", voted: props.voted || false},
+                {text: props.text, votes: props.votes, time: props.time, voted: props.voted},
+                {text: props.text, votes: props.votes, time: props.time, voted: props.voted},
+                {text: props.text, votes: props.votes, time: props.time, voted: props.voted},
+                {text: props.text, votes: props.votes, time: props.time, voted: props.voted},
+                {text: props.text, votes: props.votes, time: props.time, voted: props.voted},
+                {text: props.text, votes: props.votes, time: props.time, voted: props.voted},
+                {text: props.text, votes: props.votes, time: props.time, voted: props.voted},
+                {text: props.text, votes: props.votes, time: props.time, voted: props.voted},
             ]
         };
     };
