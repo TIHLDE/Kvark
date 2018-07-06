@@ -45,6 +45,10 @@ class Landing extends Component {
                         <EventList />
                         <EventList />
                     </GridContainer>
+
+                    <GridContainer>
+                      <JodelHandler/>
+                    </GridContainer>
                 </div>
             </Navigation>
         );

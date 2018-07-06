@@ -4,26 +4,20 @@ import Jodel from './Jodel'
 export default class JodelHandler extends Component{
     constructor(props){
         super(props);
-        this.state = {
-            jodels:[
-                {text: props.text, votes: props.votes, time: props.time, voted: props.voted},
-                {text: props.text, votes: props.votes, time: props.time, voted: props.voted},
-                {text: props.text, votes: props.votes, time: props.time, voted: props.voted},
-                {text: props.text, votes: props.votes, time: props.time, voted: props.voted},
-                {text: props.text, votes: props.votes, time: props.time, voted: props.voted},
-                {text: props.text, votes: props.votes, time: props.time, voted: props.voted},
-                {text: props.text, votes: props.votes, time: props.time, voted: props.voted},
-                {text: props.text, votes: props.votes, time: props.time, voted: props.voted},
-            ]
-        };
+        let jodelIds = [];
+        for (let i = 1; i <= 5; i++) {
+            jodelIds.push(i);
+        }
+        this.state = {jodelIds: jodelIds};
+
     };
 
     render(){
         return(
             <div>
                 {
-                    this.state.jodels.map((jodel) => {
-                        return <Jodel text={jodel.text} votes={jodel.votes} time={jodel.time} voted={jodel.voted}/>
+                    this.state.jodelIds.map((id) => {
+                        return <Jodel id={id}/>
                     })
                 }
             </div>
