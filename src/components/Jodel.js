@@ -69,12 +69,29 @@ export default class Jodel extends Component {
         // and wants to reset ther vote back to 'none'.
         this.setState((prev) => {return {votedState: prev === type ? 'none' : type}}, () => {
             console.log(type)
+
+            // Update number of votes using the REST API
+            // TODO
+
         });
     };
 
+    stateFromJSON(json) {
+        return {time: json.creation_time, text: json.text, votes: json.votes}
+    }
 
     componentDidMount() {
-        // Get data from
+        // Get data from REST API
+        fetch(`http://localhost:8000/jodels/${this.props.id}/`, {method: 'get'})
+            .then(response => {
+                return response.json();
+            }).then(json => {
+                console.log(json)
+                this.setState(this.stateFromJSON(json));
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     render() {
@@ -103,7 +120,7 @@ export default class Jodel extends Component {
 }
 
 Jodel.propTypes = {
-    id: PropTypes.number.isRequired, // the database key
+    id: PropTypes.number,            // the database key
     time: PropTypes.string,          // time to display while waiting for reply from rest api
     votes: PropTypes.number,         // votes to ...
     text: PropTypes.string,          // text to ...
@@ -114,4 +131,5 @@ Jodel.defaultProps = {
     time: 'unknown time',
     votes: 0,
     text: 'No content text',
+    id: 1,
 }
