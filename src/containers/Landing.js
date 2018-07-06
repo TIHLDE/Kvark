@@ -10,7 +10,7 @@ import EventHeader from '../components/EventHeader';
 import GridContainer from '../components/GridContainer';
 import EventList from '../components/EventList';
 import GridItem from '../components/GridItem';
-import Parent_jodel from '../components/Jodel/Parent_jodel'
+import JodelHandler from '../components/Jodel/JodelHandler'
 
 const styles = {
     grid: {
@@ -44,9 +44,6 @@ class Landing extends Component {
                         <EventList />
                         <EventList />
                         <EventList />
-                        <GridItem height2>
-                            <Parent_jodel/>
-                        </GridItem>
                     </GridContainer>
                 </div>
             </Navigation>

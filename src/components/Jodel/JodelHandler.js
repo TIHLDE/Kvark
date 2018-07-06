@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import Jodel from './Jodel'
 
-export default class Parent_jodel extends Component{
+export default class JodelHandler extends Component{
     constructor(props){
         super(props);
         this.state = {
