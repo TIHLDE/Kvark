@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types'
 //import {withStyles} from '@material-ui/core/styles';
 
 // Material UI Components
@@ -52,31 +53,40 @@ export default class Jodel extends Component {
                 },
 
             },
-            time: props.time || "No time",
-            votes: props.votes || 0,
-            text: props.text || "No text",
-            voted: false
+            time: props.time,
+            votes: props.votes,
+            text: props.text,
+
+            // Can the user change their vote?
+            votedState: 'none', // ['none', 'down', 'up']
         };
-            this.vote = this.vote.bind(this);
+        this.vote = this.vote.bind(this);
     };
 
-    vote = (vote) => {
-        this.setState({
-            voted: this.state.voted = true,
-            votes: this.state.votes+vote
+    vote(type) {
+        // If the vote type is equal to the old vote type,
+        // then we assume that the user has 'unselected' their up/down vote
+        // and wants to reset ther vote back to 'none'.
+        this.setState((prev) => {return {votedState: prev === type ? 'none' : type}}, () => {
+            console.log(type)
         });
     };
+
+
+    componentDidMount() {
+        // Get data from
+    }
 
     render() {
         return  <Card style={this.state.style.root}>
             <div style ={this.state.style.upvote}>
-                <IconButton onClick={this.vote.bind(this, 1)} disableRipple={true} disabled={this.state.voted}>
+            <IconButton onClick={() => this.vote('up')} disableRipple={true}>
                     <KeyboardArrowUp />
                 </IconButton >
                 <Typography align='center'>
                     {this.state.votes}
                 </Typography>
-                <IconButton onClick={this.vote.bind(this, -1)} disableRipple={true} disabled={this.state.voted}>
+            <IconButton onClick={() => this.vote('down')} disableRipple={true}>
                     <KeyboardArrowDown/>
                 </IconButton>
 
@@ -90,4 +100,18 @@ export default class Jodel extends Component {
 
         </Card>;
     }
+}
+
+Jodel.propTypes = {
+    id: PropTypes.number.isRequired, // the database key
+    time: PropTypes.string,          // time to display while waiting for reply from rest api
+    votes: PropTypes.number,         // votes to ...
+    text: PropTypes.string,          // text to ...
+}
+
+
+Jodel.defaultProps = {
+    time: 'unknown time',
+    votes: 0,
+    text: 'No content text',
 }
