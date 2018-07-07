@@ -106,7 +106,7 @@ const JodelCard = withStyles(styles)((props) => {
             <Grid className={classes.content} container direction='column' wrap='nowrap' justify='space-between'>
                 <Grid className={classes.subContent} item container direction='row' wrap='nowrap' alignItems='center'>
                     <Person/>
-                    <Typography variant='caption' color='inherit'>
+                    <Typography variant='caption' style={{color: 'rgba(255,255,255,0.5)'}}>
                         TIHLDE-medlem
                     </Typography>
                 </Grid>
@@ -114,7 +114,7 @@ const JodelCard = withStyles(styles)((props) => {
                     {text}
                 </Typography>
                 <Grid className={classes.subContent} item container direction='row' wrap='nowrap' alignItems='center'>
-                    <Typography variant='caption' color='inherit'>
+                    <Typography variant='caption' style={{color: 'rgba(255,255,255,0.5)'}}>
                         Tid: {time}
                     </Typography>
                     {(!props.onCommentClick)? null : 
