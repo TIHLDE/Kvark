@@ -161,7 +161,7 @@ class Jodel extends Component {
         this.state = {
             data: [
                 {
-                    time: '15:00', votes: 23, text: 'This is my life',
+                    id:'MYID', time: '15:00', votes: 23, text: 'This is my life'
                     comments: [
                         {time: '15:23', votes: 23, text: 'Hva er det han er snakker om?'},
                         {time: '15:25', votes: 200, text: 'Han ble født sånn'},
@@ -170,14 +170,14 @@ class Jodel extends Component {
                     voteState: 0,
                 },
                 {
-                    time: '16:00', votes: 12, text: 'Hva er forskjellen på en bil og en traktor?',
+                    id:'MYID', time: '16:00', votes: 12, text: 'Hva er forskjellen på en bil og en traktor?',
                     comments: [
                         {time: '16:23', votes: 4, text: 'Hjulene?'}
                     ],
                     voteState: 0,
                 },
                 {
-                    time: '15:00', votes: 21, text: 'Hvem er det som bor i Norge?',
+                    id:'MYID', time: '15:00', votes: 21, text: 'Hvem er det som bor i Norge?',
                     comments: [
                         {time: '15:23', votes: 3, text: 'Ikke jeg i hvert fall...'},
                     ],
