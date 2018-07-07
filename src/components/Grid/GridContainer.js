@@ -6,7 +6,7 @@ const styles = {
     root: {
         display: 'grid',
         gridTemplateColumns: '1fr 1fr 1fr',
-        gridAutoRows: '300px',
+        gridAutoRows: 'auto',
         gridGap: '10px',
         justifyContent: 'center',
         marginBottom: 30,
