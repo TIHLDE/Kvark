@@ -161,7 +161,7 @@ class Jodel extends Component {
         this.state = {
             data: [
                 {
-                    id:'MYID', time: '15:00', votes: 23, text: 'This is my life'
+                    id:'MYID', time: '15:00', votes: 23, text: 'This is my life',
                     comments: [
                         {time: '15:23', votes: 23, text: 'Hva er det han er snakker om?'},
                         {time: '15:25', votes: 200, text: 'Han ble født sånn'},
