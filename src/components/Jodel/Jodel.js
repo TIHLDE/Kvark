@@ -1,10 +1,16 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types'
-//import {withStyles} from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 
 // Material UI Components
-import {Typography,Card,IconButton} from '@material-ui/core';
-import {KeyboardArrowUp,KeyboardArrowDown} from '@material-ui/icons'
+import {Typography,Card, CardHeader, IconButton,Grid} from '@material-ui/core';
+import {Tabs, Tab, Divider, Input, Button, Collapse} from '@material-ui/core/';
+
+// Icons
+import {KeyboardArrowUp,KeyboardArrowDown, Comment, Person} from '@material-ui/icons';
+
+// Project Components
+import GridItem from '../Grid/GridItem';
 
 /*
 Denne komponenten er bare en jodel som man kan legge ut et random sted.
@@ -18,215 +24,236 @@ Er litt usikker på hvordan man skal implementere denne og hvordan i det heletat
 Voteup() & VoteDown kan bare bli brukt dersom voted == false
 */
 
-export default class Jodel extends Component {
+const styles = {
+    root: {
+        padding: 10,
+        overflowY: 'auto',
+        color: 'whitesmoke',
+    },
+    post: {
+        marginBottom: 7,
+        borderRadius: 5,
+        padding: 5,
+    },
+    card: {
+        height: 100,
+        position: 'relative',
+    },
+    upvote: {
+        width: 40,
+        height: '100%',
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        bottom: 0,
+        textAlign: 'center',
+    },
+    content: {
+        height: '100%',
+    },
+    subContent: {
+        height: 20,
+    },
+    commentContainer: {
+        marginTop: 10,
+    }
+};
+
+const JodelPost = withStyles(styles)(class JodelPost extends Component {
+    
+    constructor() {
+        super();
+        
+        this.state = {
+            showComments: false,
+        };
+    }
+
+    toggleComments = () => {
+        this.setState({showComments: !this.state.showComments});
+    }
+
+    render() {
+        const {classes, text, time, votes, comments, voteState, onVote} = this.props;
+
+        return (
+            <div className={classes.post} style={{backgroundColor: this.props.color}}>
+                <JodelCard text={text} time={time} votes={votes} onCommentClick={this.toggleComments} voteState={voteState} onVote={onVote}/>
+                <Collapse in={this.state.showComments}>
+                    <JodelComments comments={comments}/>
+                </Collapse>
+            </div>
+        );
+    }
+});
+
+const JodelCard = withStyles(styles)((props) => {
+    const {classes, text, time, votes, voteState, onVote} = props;
+    // TODO: Present the voteState visually.
+
+    return (
+        <div className={classes.card}>
+            <Grid container direction='column' wrap='nowrap' justify='center' className={classes.upvote}>
+                    <IconButton color='inherit' disableRipple={true} onClick={() => props.onVote('upvote')}>
+                        <KeyboardArrowUp />
+                    </IconButton >
+                    <Typography align='center' color='inherit'>
+                        {votes}
+                    </Typography>
+                    <IconButton color='inherit' disableRipple={true} onClick={() => props.onVote('downvote')}>
+                        <KeyboardArrowDown/>
+                    </IconButton>
+            </Grid>
+            <Grid className={classes.content} container direction='column' wrap='nowrap' justify='space-between'>
+                <Grid className={classes.subContent} item container direction='row' wrap='nowrap' alignItems='center'>
+                    <Person/>
+                    <Typography variant='caption' style={{color: 'rgba(255,255,255,0.5)'}}>
+                        TIHLDE-medlem
+                    </Typography>
+                </Grid>
+                <Typography color='inherit'>
+                    {text}
+                </Typography>
+                <Grid className={classes.subContent} item container direction='row' wrap='nowrap' alignItems='center'>
+                    <Typography variant='caption' style={{color: 'rgba(255,255,255,0.5)'}}>
+                        Tid: {time}
+                    </Typography>
+                    {(!props.onCommentClick)? null : 
+                        <IconButton color='inherit' onClick={props.onCommentClick}>
+                            <Comment/>
+                        </IconButton>
+                    }
+                </Grid>
+            </Grid>
+        </div>
+    );
+});
+
+const JodelComments = withStyles(styles)((props) => {
+    const {classes, comments} = props;
+
+    return (
+        <Grid className={classes.commentContainer} container direction='column' wrap='nowrap' spacing={16}>
+            <Grid item container direction='column' wrap='nowrap'>
+                <Typography variant='subheading' color='inherit'>Skriv en kommentar</Typography>
+                <Input fullWidth placeholder='Skriv en kommentar' style={{color: 'inherit'}} />
+                <Button size='small' color='inherit'>Kommenter</Button>
+            </Grid>
+            <Grid item comtainer direction='column' wrap='nowrap'>
+            {(!comments)? null : 
+                comments.map((value) => {
+                    return ( 
+                        <Fragment>
+                            <JodelCard text={value.text} time={value.time} votes={value.votes}/>
+                            <Divider/>
+                        </Fragment>
+                    )
+                })
+            }
+            </Grid>
+        </Grid>
+    );
+});
+
+const colors = ['#003366','#800000', '#008080'];
+class Jodel extends Component {
     constructor(props){
         super(props);
         this.state = {
-            style: {
-                root: {
-                    height:80,
+            // Default values which are displayed until data is loaded
+            // from the API (if ever).
+            data: [
+                {
+                    id:0, time: '15:00', votes: 23, text: 'This is my life',
+                    comments: [
+                        {time: '15:23', votes: 23, text: 'Hva er det han er snakker om?'},
+                        {time: '15:25', votes: 200, text: 'Han ble født sånn'},
+                        {time: '15:32', votes: 8, text: 'Wow xD'},
+                    ],
+                    voteState: 0,
                 },
-                upvote: {
-                    width: 40,
-                    height: '100%',
-                    float: 'right',
-                    textAlign: 'center',
-                }
-            },
-            time: props.time,
-            votes: props.votes,
-            text: props.text,
-
-            has_voted: false,
-            upvoted: false,
+                {
+                    id:1, time: '16:00', votes: 12, text: 'Hva er forskjellen på en bil og en traktor?',
+                    comments: [
+                        {time: '16:23', votes: 4, text: 'Hjulene?'}
+                    ],
+                    voteState: 0,
+                },
+                {
+                    id:2, time: '15:00', votes: 21, text: 'Hvem er det som bor i Norge?',
+                    comments: [
+                        {time: '15:23', votes: 3, text: 'Ikke jeg i hvert fall...'},
+                    ],
+                    voteState: 0,
+                },
+            ],
         };
-        this.vote = this.vote.bind(this);
-        this.sendVote = this.sendVote.bind(this);
-        this.setStateFromRest = this.setStateFromRest.bind(this);
     };
 
-    sendVote(upvote) {
-        let voteMethod = 'upvote';
-        if (!upvote) {
-            voteMethod = 'downvote';
-        }
-        // Get data from REST API
+    loadData() {
         return new Promise((resolve, reject) => {
-            fetch(`http://localhost:8000/jodels/${this.props.id}/${voteMethod}/`, {method: 'patch'})
+            fetch(`http://localhost:8000/jodels/all/`, {method: 'get'})
             .then(response => {
-                console.log('response: ' + response);
                 return response.json();
             }).then(data => {
-                console.log('sendVote: ' + data);
                 resolve(data);
             })
             .catch(err => {
-                console.log('Unable to send vote of type ' + voteMethod + ' ' + err);
                 reject(err);
             })
         });
     }
 
-    // Handle user selection. Can end up in one of tree states:
-    // downvoted, no votes at all, or upvoted.
-    // Using the current state it determines how many increments
-    // the vote number has to be incremented and does the appropriate
-    // number of upvotes/downvotes. The only reason for this is the
-    // lack of an identification mechanism, so this is only client-based.
-    vote(upvoted) {
-        let newState = {has_voted: true, upvoted: upvoted};
-        if (this.state.has_voted) {
-            if (upvoted === this.state.upvoted) {
-                // Unvoted
-                newState.has_voted = false;
-            }
-        };
-
-        let promise = new Promise((resolve, reject) => {
-            if (this.state.has_voted) {
-                // Vote twice to pass through the unvoted state.
-                if (upvoted && !this.state.upvoted) {
-                    this.sendVote(true).then(d1 => {
-                        this.sendVote(true).then(d2 => {
-                            resolve(d2);
-                        }).catch(err => {
-                            reject(err);
-                        });
-                    }).catch(err => {
-                        reject(err);
-                    });
-                } else if (!upvoted && this.state.upvoted) {
-                    this.sendVote(false).then(d1 => {
-                        this.sendVote(false).then(d2 => {
-                            resolve(d2);
-                        }).catch(err => {
-                            reject(err);
-                        });
-                    }).catch(err => {
-                        reject(err);
-                    });
-                } else if (upvoted === this.state.upvoted) {
-                    // Unvoted, vote the opposite.
-                    this.sendVote(!upvoted).then(d => {
-                        resolve(d);
-                    }).catch(err => {
-                        reject(err);
-                    });
+    // NOTE: The server handles the current vote state.
+    handleVote = (value, voteState) => {
+        console.log(`Handling vote: ${value.id}, ${voteState}`)
+        fetch(`http://localhost:8000/jodels/${value.id}/${voteState}/`, {method: 'patch'})
+        .then(response => {
+            return response.json();
+        }).then(data => {
+            this.setState((prev) => {
+                let updated = []
+                for (let e of prev.data) {
+                    if (e.id == value.id) {
+                        updated.push(data);
+                    } else {
+                        updated.push(e);
+                    }
                 }
-            } else {
-                this.sendVote(upvoted).then(d => {
-                    resolve(d);
-                }).catch(err => {
-                    reject(err);
-                });
-            }
-        })
-
-        promise.then(data => {
-            this.setState(newState, () => {
-                console.log('set state ' + this.state.has_voted + ', ' + this.state.upvoted);
-                this.setState(this.stateFromJSONData(data));
-
+                return {data: updated}
+            }, () => {
             });
         }).catch(err => {
-            console.log('Failed to vote:' + err);
-        })
-
-
-    }
-
-    // Set the state from the json data recieved from the rest api.
-    stateFromJSONData(data) {
-        // The 'time' is represented with 'creation_date' (DateTime) in the
-        // API, Convert this into a human readable string eg. '20 days' or '30 seconds'.
-        const ageMillis = Date.now() - new Date(data.creation_time).getTime();
-        const timeStr = secondsToHumanSingle(ageMillis/1000);
-        return {time: timeStr, text: data.text, votes: data.votes}
-    }
-
-    setStateFromRest() {
-        // Get data from REST API
-        fetch(`http://localhost:8000/jodels/${this.props.id}/`, {method: 'get'})
-            .then(response => {
-                return response.json();
-            }).then(data => {
-                if (typeof data !== 'undefined') {
-                    const newState = this.stateFromJSONData(data);
-                    this.setState(newState);
-}
-            })
-            .catch(err => {
-                console.log(err);
-            })
+        });
     }
 
     componentDidMount() {
-        this.setStateFromRest();
+        this.loadData().then(data => {
+            this.setState({data: data});
+        }).catch(err => {
+            console.log('Failed to load Jodel data: ' + err);
+        });
     }
 
     render() {
-        return  <Card style={this.state.style.root}>
-            <div style ={this.state.style.upvote}>
-            <IconButton onClick={() => this.vote(true)} disableRipple={true}>
-                    <KeyboardArrowUp />
-                </IconButton >
-                <Typography align='center'>
-                    {this.state.votes}
-                </Typography>
-            <IconButton onClick={() => this.vote(false)} disableRipple={true}>
-                    <KeyboardArrowDown/>
-                </IconButton>
-            </div>
-            {this.state.time}
-            <br/>
-            <Typography>
-                {this.state.text}
-            </Typography>
-        </Card>;
+        const {classes} = this.props;
+
+        return  (
+            <GridItem width3>
+                <Card className={classes.root}>
+                    <Grid container direction='row' wrap='nowrap'>
+                        <Typography variant='title' gutterBottom>Jodel</Typography>
+                    </Grid>
+                    {this.state.data.map((value, index) => {
+                        return <JodelPost key={value.id} text={value.text} time={value.time} votes={value.votes}
+                                          comments={value.comments} color={colors[index%colors.length]}
+                                          voteState={value.voteState}
+                                          onVote={(voteType) => {this.handleVote(value, voteType)}}/>
+                    })}
+                </Card>
+            </GridItem>
+        );
     }
 }
 
-Jodel.propTypes = {
-    id: PropTypes.number,            // the database key
-    time: PropTypes.string,          // time to display while waiting for reply from rest api
-    votes: PropTypes.number,         // votes to ...
-    text: PropTypes.string,          // text to ...
-};
-
-Jodel.defaultProps = {
-    time: 'unknown time',
-    votes: 0,
-    text: 'No content text',
-    id: 1,
-};
-
-// Convert a number of seconds to a human readable string containing only a
-// single field, such as '20 days'.
-function secondsToHumanSingle(s) {
-    const table = [
-        {singular: 'year',   plural: 'years',   seconds: 60*60*24*365},
-        {singular: 'month',  plural: 'months',  seconds:  60*60*24*30},
-        {singular: 'week',   plural: 'weeks',   seconds:   60*60*24*7},
-        {singular: 'day',    plural: 'days',    seconds:     60*60*24},
-        {singular: 'hour',   plural: 'hours',   seconds:        60*60},
-        {singular: 'minute', plural: 'minutes', seconds:           60},
-        {singular: 'second', plural: 'seconds', seconds:            1},
-    ];
-
-    let found = false;
-    let conv = null;
-    for (const e of table) {
-        if (s >= e.seconds) {
-            conv = e;
-            found = true;
-            break;
-        }
-    }
-    if (!found) {
-        conv = table[table.len-1];
-    }
-
-    let num = Math.floor(s/conv.seconds);
-    let str = num !== 1 ? conv.plural : conv.singular;
-    return `${num} ${str}`
-}
+export default withStyles(styles)(Jodel);

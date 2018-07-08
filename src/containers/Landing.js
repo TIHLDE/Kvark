@@ -7,10 +7,10 @@ import PropTypes from 'prop-types';
 // Project components
 import Navigation from '../components/Navigation';
 import EventHeader from '../components/EventHeader';
-import GridContainer from '../components/GridContainer';
+import GridContainer from '../components/Grid/GridContainer';
 import EventList from '../components/EventList';
-import GridItem from '../components/GridItem';
-import JodelHandler from '../components/Jodel/JodelHandler'
+import GridItem from '../components/Grid/GridItem';
+import Jodel from '../components/Jodel/Jodel';
 
 const styles = {
     grid: {
@@ -41,13 +41,9 @@ class Landing extends Component {
                             <EventList />
                         </GridItem>
                         <EventList />
+                        <Jodel text='This is my life' time='14:00' votes={23}/>
                         <EventList />
                         <EventList />
-                        <EventList />
-                    </GridContainer>
-
-                    <GridContainer>
-                      <JodelHandler/>
                     </GridContainer>
                 </div>
             </Navigation>

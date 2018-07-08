@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
 
 import Navigation from '../components/Navigation';
-import GridContainer from '../components/GridContainer';
+import GridContainer from '../components/Grid/GridContainer';
 import EventList from '../components/EventList';
-import GridItem from '../components/GridItem';
+import GridItem from '../components/Grid/GridItem';
 
 export default class GridShowcase extends Component {
 
