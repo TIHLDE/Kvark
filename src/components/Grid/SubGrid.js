@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
 // Grid Items/Widgets
 import EventList from '../EventList';
@@ -14,13 +15,17 @@ import GridItem from './GridItem';
 const styles = {
     subgrid: {
         display: 'grid',
-        '@media only screen and (max-width: 600px)': {
+
+        // Prop-styles overwrite these changes, so was not able to change gridTemplateRow and Column.
+        // Therefore the solution was to swap to flexBox on mobile-phones. Need to find a better solution for tablets.
+        '@media only screen and (max-width: 600px)': { 
             display: 'flex',
             flexDirection: 'column',
         }
     }
 }
 
+// Creates a item based on the type
 const getItem = (id, type, data) => {
     switch(type) {
         case "EVENTHEADER":
@@ -45,7 +50,7 @@ const SubGrid = (props) => {
         
         gridArea: props.id,
 
-        gridGap: 3,
+        gridGap: 4,
         gridTemplateRows: props.rows,
         gridTemplateColumns: props.cols,
         alignContent: 'start',
@@ -56,6 +61,7 @@ const SubGrid = (props) => {
         zIndex: 1000,        
     }
 
+    // If the grid has class 'fullWidth', make it fullWidth (reduce marginBottom and zIndex)
     const fullWidthStyles = {
         padding: 0,
         marginBottom: '-100px',
@@ -69,7 +75,7 @@ const SubGrid = (props) => {
             {(!props.children)? null : 
                 props.children.map((value, index) => {
                     return (
-                        <GridItem key={index} rowSpan={value.rowSpan} colSpan={value.colSpan}>
+                        <GridItem key={index} rowSpan={value.rowSpan} colSpan={value.colSpan}> {/* Wraps the entire item in a GridItem with specifed row- and colspan */}
                             {getItem(value.id, value.type, value.data)}
                         </GridItem>
                     )
@@ -78,5 +84,13 @@ const SubGrid = (props) => {
         </div>
     )
 }
+
+SubGrid.propTypes = {
+    id: PropTypes.string,       // ID of the substring, should represent a GridTemplateArea name
+    children: PropTypes.array,  // The array of items in the subgrid
+    class: PropTypes.string,    // The class of the SubGrid. Should either 'fullWidth' or 'normal'
+    rows: PropTypes.string,     // The GridTemplateRows value
+    cols: PropTypes.string,     // The GridTemplateColumn value
+};
 
 export default withStyles(styles)(SubGrid);

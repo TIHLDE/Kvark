@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {withStyles} from '@material-ui/core/styles';
 
 // Material UI Components
-import {Typography,Card, CardHeader, IconButton,Grid} from '@material-ui/core';
+import {Typography, Paper, IconButton,Grid} from '@material-ui/core';
 import {Tabs, Tab, Divider, Input, Button, Collapse} from '@material-ui/core/';
 
 // Icons
@@ -24,11 +24,22 @@ Er litt usikker på hvordan man skal implementere denne og hvordan i det heletat
 Voteup() & VoteDown kan bare bli brukt dersom voted == false
 */}
 
+{
+    /*
+        UPDATE: 08.07.2018
+        Did major changes to the Jodel-component. Added a JodelPost, JodelCard, and a JodelComments. The JodelWidget should not look like this at all, and needs to be refactored.
+        Feel free to refactor everything when you have a better idea. The JodelWidget SHOULD have a FIXED size and should not be able to grow. Maybe should only one 
+        JodelPost be visible at time.
+    */
+}
+
 const styles = {
     root: {
-        padding: 10,
-        
+        height: '100%',
         color: 'whitesmoke',
+    },
+    posts: {
+        padding: 10,
     },
     post: {
         marginBottom: 7,
@@ -59,6 +70,7 @@ const styles = {
     }
 };
 
+// A JodelPost. This component manages a post and its comments.
 const JodelPost = withStyles(styles)(class JodelPost extends Component {
     
     constructor() {
@@ -87,6 +99,7 @@ const JodelPost = withStyles(styles)(class JodelPost extends Component {
     }
 });
 
+// The JodelCard. This component can both me a post and a comment. This component is the one that takes in a text, time, and vote. It also needs an ID
 const JodelCard = withStyles(styles)((props) => {
     const {classes, text, time, votes} = props;
 
@@ -128,6 +141,7 @@ const JodelCard = withStyles(styles)((props) => {
     );
 });
 
+// Handles the Jodel-comments based on prop-comments.
 const JodelComments = withStyles(styles)((props) => {
     const {classes, comments} = props;
 
@@ -154,11 +168,13 @@ const JodelComments = withStyles(styles)((props) => {
     );
 });
 
+// The Jodel component. This component is the widget/container you see in the grid.
 const colors = ['#003366','#800000', '#008080'];
 class Jodel extends Component {
     constructor(props){
         super(props);
         this.state = {
+            // An example on how the Jodel-data could look (?) Feel free to do changes.
             data: [
                 {
                     id:'MYID', time: '15:00', votes: 23, text: 'This is my life',
@@ -206,14 +222,17 @@ class Jodel extends Component {
         const {classes} = this.props;
 
         return  (
-            <Card className={classes.root}>
-                <Grid container direction='row' wrap='nowrap'>
-                    <Typography variant='title' gutterBottom>Jodel</Typography>
+            <Paper className={classes.root}>
+                <Grid style={{padding: 10}} container direction='row' wrap='nowrap'>
+                    <Typography variant='title' gutterBottom>THILDE Community Channel</Typography>
                 </Grid>
-                {this.state.data.map((value, index) => {
-                    return <JodelPost key={index} text={value.text} time={value.time} votes={value.votes} comments={value.comments} color={colors[index%colors.length]}/>
-                })}
-            </Card>
+                <div className={classes.posts}>
+                    {this.state.data.map((value, index) => {
+                        return <JodelPost key={index} text={value.text} time={value.time} votes={value.votes} comments={value.comments} color={colors[index%colors.length]}/>
+                    })}
+                </div>
+                <Button fullWidth>Vis flere</Button>
+            </Paper>
         );
     }
 }

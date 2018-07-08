@@ -48,7 +48,7 @@ class GridItem extends Component {
         ].join(' ');
 
         return (
-            <div className={ classes }  elevation={0}>
+            <div className={ classes }>
                 { this.props.children }
             </div>
         );
