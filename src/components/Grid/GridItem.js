@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
 
 const styles = {
@@ -41,18 +42,22 @@ class GridItem extends Component {
 
     render() {
         const classes = [
-            this.props.width2 ? this.props.classes.width2 : '',
-            this.props.width3 ? this.props.classes.width3 : '',
-            this.props.height2 ? this.props.classes.height2: '',
+            this.props.colSpan === 2 ? this.props.classes.width2 : '',
+            this.props.colSpan === 3 ? this.props.classes.width3 : '',
+            this.props.rowSpan === 2 ? this.props.classes.height2: '',
         ].join(' ');
-            
 
         return (
-            <Paper className={ classes } elevation0>
+            <div className={ classes }  elevation={0}>
                 { this.props.children }
-            </Paper>
+            </div>
         );
     }
+}
+
+GridItem.defaultProps = {
+    rowSpan: 1,
+    colSpan: 1,
 }
 
 export default withStyles(styles)(GridItem);

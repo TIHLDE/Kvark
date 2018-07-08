@@ -27,7 +27,7 @@ Voteup() & VoteDown kan bare bli brukt dersom voted == false
 const styles = {
     root: {
         padding: 10,
-        overflowY: 'auto',
+        
         color: 'whitesmoke',
     },
     post: {
@@ -138,11 +138,11 @@ const JodelComments = withStyles(styles)((props) => {
                 <Input fullWidth placeholder='Skriv en kommentar' style={{color: 'inherit'}} />
                 <Button size='small' color='inherit'>Kommenter</Button>
             </Grid>
-            <Grid item comtainer direction='column' wrap='nowrap'>
+            <Grid item container direction='column' wrap='nowrap'>
             {(!comments)? null : 
-                comments.map((value) => {
+                comments.map((value, index) => {
                     return ( 
-                        <Fragment>
+                        <Fragment key={index}>
                             <JodelCard text={value.text} time={value.time} votes={value.votes}/>
                             <Divider/>
                         </Fragment>
@@ -183,6 +183,7 @@ class Jodel extends Component {
                     ],
                     voteState: 0,
                 },
+                
             ],
         };
         this.vote = this.vote.bind(this);
@@ -205,22 +206,20 @@ class Jodel extends Component {
         const {classes} = this.props;
 
         return  (
-            <GridItem width3>
-                <Card className={classes.root}>
-                    <Grid container direction='row' wrap='nowrap'>
-                        <Typography variant='title' gutterBottom>Jodel</Typography>
-                    </Grid>
-                    {this.state.data.map((value, index) => {
-                        return <JodelPost text={value.text} time={value.time} votes={value.votes} comments={value.comments} color={colors[index%colors.length]}/>
-                    })}
-                </Card>
-            </GridItem>
+            <Card className={classes.root}>
+                <Grid container direction='row' wrap='nowrap'>
+                    <Typography variant='title' gutterBottom>Jodel</Typography>
+                </Grid>
+                {this.state.data.map((value, index) => {
+                    return <JodelPost key={index} text={value.text} time={value.time} votes={value.votes} comments={value.comments} color={colors[index%colors.length]}/>
+                })}
+            </Card>
         );
     }
 }
 
 Jodel.propTypes = {
-    id: PropTypes.number.isRequired, // the database key
+    id: PropTypes.number,            // the database key
     time: PropTypes.string,          // time to display while waiting for reply from rest api
     votes: PropTypes.number,         // votes to ...
     text: PropTypes.string,          // text to ...
