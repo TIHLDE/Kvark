@@ -4,15 +4,15 @@ import {withStyles} from '@material-ui/core/styles';
 
 // Material UI Components
 import {Typography, Paper, IconButton,Grid} from '@material-ui/core';
-import {Tabs, Tab, Divider, Input, Button, Collapse} from '@material-ui/core/';
+import {Divider, Input, Button, Collapse} from '@material-ui/core/';
 
 // Icons
 import {KeyboardArrowUp,KeyboardArrowDown, Comment, Person} from '@material-ui/icons';
 
 // Project Components
-import GridItem from '../Grid/GridItem';
 
-{/*
+
+/*
 Denne komponenten er bare en jodel som man kan legge ut et random sted.
 Time er hvor lenge den har vært ute på nettsiden/ tilgjengelig for å bli lest.
 text er hva personen vil dele / jodle.
@@ -21,17 +21,17 @@ Voted er da at man kan bare vote EN gang per jodel. Så man kan ikke spamme M1 f
 
 Er litt usikker på hvordan man skal implementere denne og hvordan i det heletatt bygge den opp. så jeg bare satt den opp på måten jeg tenkte den kunne være. Feel free til å skifte litt rundt.
 
-Voteup() & VoteDown kan bare bli brukt dersom voted == false
-*/}
+Voteup() & VoteDown kan bare bli brukt dersom voted === false
+*/
 
-{
-    /*
-        UPDATE: 08.07.2018
-        Did major changes to the Jodel-component. Added a JodelPost, JodelCard, and a JodelComments. The JodelWidget should not look like this at all, and needs to be refactored.
-        Feel free to refactor everything when you have a better idea. The JodelWidget SHOULD have a FIXED size and should not be able to grow. Maybe should only one 
-        JodelPost be visible at time.
-    */
-}
+
+/*
+    UPDATE: 08.07.2018
+    Did major changes to the Jodel-component. Added a JodelPost, JodelCard, and a JodelComments. The JodelWidget should not look like this at all, and needs to be refactored.
+    Feel free to refactor everything when you have a better idea. The JodelWidget SHOULD have a FIXED size and should not be able to grow. Maybe should only one 
+    JodelPost be visible at time.
+*/
+
 
 const styles = {
     root: {
@@ -86,11 +86,11 @@ const JodelPost = withStyles(styles)(class JodelPost extends Component {
     }
 
     render() {
-        const {classes, text, time, votes, comments} = this.props;
+        const {classes, text, time, votes, comments, voteState, onVote} = this.props;
 
         return (
             <div className={classes.post} style={{backgroundColor: this.props.color}}>
-                <JodelCard text={text} time={time} votes={votes} onCommentClick={this.toggleComments}/>
+                <JodelCard text={text} time={time} votes={votes} onCommentClick={this.toggleComments} voteState={voteState} onVote={onVote}/>
                 <Collapse in={this.state.showComments}>
                     <JodelComments comments={comments}/>
                 </Collapse>
@@ -99,20 +99,31 @@ const JodelPost = withStyles(styles)(class JodelPost extends Component {
     }
 });
 
+JodelPost.propTypes = {
+    classes: PropTypes.object,
+    text: PropTypes.string,
+    time: PropTypes.string,
+    votes: PropTypes.number,
+    voteState: PropTypes.number,    // What datatype should this be?
+    onVote: PropTypes.func,
+    comments: PropTypes.array,
+}
+
 // The JodelCard. This component can both me a post and a comment. This component is the one that takes in a text, time, and vote. It also needs an ID
 const JodelCard = withStyles(styles)((props) => {
-    const {classes, text, time, votes} = props;
+    const {classes, text, time, votes, voteState, onVote} = props;
+    // TODO: Present the voteState visually.
 
     return (
         <div className={classes.card}>
             <Grid container direction='column' wrap='nowrap' justify='center' className={classes.upvote}>
-                    <IconButton color='inherit' disableRipple={true}>
+                    <IconButton color='inherit' disableRipple={true} onClick={() => props.onVote('upvote')}>
                         <KeyboardArrowUp />
                     </IconButton >
                     <Typography align='center' color='inherit'>
                         {votes}
                     </Typography>
-                    <IconButton color='inherit' disableRipple={true}>
+                    <IconButton color='inherit' disableRipple={true} onClick={() => props.onVote('downvote')}>
                         <KeyboardArrowDown/>
                     </IconButton>
             </Grid>
@@ -141,6 +152,15 @@ const JodelCard = withStyles(styles)((props) => {
     );
 });
 
+JodelCard.propTypes = {
+    classes: PropTypes.object,
+    text: PropTypes.string,
+    time: PropTypes.string,
+    votes: PropTypes.number,
+    voteState: PropTypes.number,    // What datatype should this be?
+    onVote: PropTypes.func,
+}
+
 // Handles the Jodel-comments based on prop-comments.
 const JodelComments = withStyles(styles)((props) => {
     const {classes, comments} = props;
@@ -168,6 +188,11 @@ const JodelComments = withStyles(styles)((props) => {
     );
 });
 
+JodelComments.propTypes = {
+    classes: PropTypes.object,
+    comments: PropTypes.array,
+};
+
 // The Jodel component. This component is the widget/container you see in the grid.
 const colors = ['#003366','#800000', '#008080'];
 class Jodel extends Component {
@@ -177,7 +202,7 @@ class Jodel extends Component {
             // An example on how the Jodel-data could look (?) Feel free to do changes.
             data: [
                 {
-                    id:'MYID', time: '15:00', votes: 23, text: 'This is my life',
+                    id:0, time: '15:00', votes: 23, text: 'This is my life',
                     comments: [
                         {time: '15:23', votes: 23, text: 'Hva er det han er snakker om?'},
                         {time: '15:25', votes: 200, text: 'Han ble født sånn'},
@@ -186,14 +211,14 @@ class Jodel extends Component {
                     voteState: 0,
                 },
                 {
-                    id:'MYID', time: '16:00', votes: 12, text: 'Hva er forskjellen på en bil og en traktor?',
+                    id:1, time: '16:00', votes: 12, text: 'Hva er forskjellen på en bil og en traktor?',
                     comments: [
                         {time: '16:23', votes: 4, text: 'Hjulene?'}
                     ],
                     voteState: 0,
                 },
                 {
-                    id:'MYID', time: '15:00', votes: 21, text: 'Hvem er det som bor i Norge?',
+                    id:2, time: '15:00', votes: 21, text: 'Hvem er det som bor i Norge?',
                     comments: [
                         {time: '15:23', votes: 3, text: 'Ikke jeg i hvert fall...'},
                     ],
@@ -202,20 +227,51 @@ class Jodel extends Component {
                 
             ],
         };
-        this.vote = this.vote.bind(this);
     };
 
-    vote(type) {
-        // If the vote type is equal to the old vote type,
-        // then we assume that the user has 'unselected' their up/down vote
-        // and wants to reset ther vote back to 'none'.
-        this.setState((prev) => {return {votedState: prev === type ? 'none' : type}}, () => {
-            console.log(type)
+    loadData() {
+        return new Promise((resolve, reject) => {
+            fetch(`http://localhost:8000/jodels/all/`, {method: 'get'})
+            .then(response => {
+                return response.json();
+            }).then(data => {
+                resolve(data);
+            })
+            .catch(err => {
+                reject(err);
+            })
         });
-    };
+    }
+
+    // NOTE: The server handles the current vote state.
+    handleVote = (value, voteState) => {
+        console.log(`Handling vote: ${value.id}, ${voteState}`)
+        fetch(`http://localhost:8000/jodels/${value.id}/${voteState}/`, {method: 'patch'})
+        .then(response => {
+            return response.json();
+        }).then(data => {
+            this.setState((prev) => {
+                let updated = []
+                for (let e of prev.data) {
+                    if (e.id === value.id) {
+                        updated.push(data);
+                    } else {
+                        updated.push(e);
+                    }
+                }
+                return {data: updated}
+            }, () => {
+            });
+        }).catch(err => {
+        });
+    }
 
     componentDidMount() {
-        // Get data from
+        this.loadData().then(data => {
+            this.setState({data: data});
+        }).catch(err => {
+            console.log('Failed to load Jodel data: ' + err);
+        });
     }
 
     render() {
@@ -228,7 +284,10 @@ class Jodel extends Component {
                 </Grid>
                 <div className={classes.posts}>
                     {this.state.data.map((value, index) => {
-                        return <JodelPost key={index} text={value.text} time={value.time} votes={value.votes} comments={value.comments} color={colors[index%colors.length]}/>
+                        return <JodelPost key={value.id} text={value.text} time={value.time} votes={value.votes}
+                                        comments={value.comments} color={colors[index%colors.length]}
+                                        voteState={value.voteState}
+                                        onVote={(voteType) => {this.handleVote(value, voteType)}}/>
                     })}
                 </div>
                 <Button fullWidth>Vis flere</Button>
@@ -236,19 +295,5 @@ class Jodel extends Component {
         );
     }
 }
-
-Jodel.propTypes = {
-    id: PropTypes.number,            // the database key
-    time: PropTypes.string,          // time to display while waiting for reply from rest api
-    votes: PropTypes.number,         // votes to ...
-    text: PropTypes.string,          // text to ...
-};
-
-
-Jodel.defaultProps = {
-    time: 'unknown time',
-    votes: 0,
-    text: 'No content text',
-};
 
 export default withStyles(styles)(Jodel);

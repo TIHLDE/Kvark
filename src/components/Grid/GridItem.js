@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
@@ -58,6 +57,11 @@ class GridItem extends Component {
 GridItem.defaultProps = {
     rowSpan: 1,
     colSpan: 1,
+}
+
+GridItem.propTypes = {
+    rowSpan: PropTypes.number,
+    colSpan: PropTypes.number,
 }
 
 export default withStyles(styles)(GridItem);

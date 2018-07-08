@@ -1,6 +1,5 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 // Grid Items/Widgets

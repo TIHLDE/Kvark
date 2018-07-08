@@ -4,7 +4,6 @@ import {withStyles} from '@material-ui/core/styles';
 import ExamplePoster from '../assets/img/ExamplePoster.png';
 
 // Material UI Components
-import Typography from '@material-ui/core/Typography';
 
 const styles = {
     root: {
