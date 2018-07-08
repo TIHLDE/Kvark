@@ -27,7 +27,7 @@ Voteup() & VoteDown kan bare bli brukt dersom voted == false
 const styles = {
     root: {
         padding: 10,
-        overflowY: 'auto',
+        
         color: 'whitesmoke',
     },
     post: {
@@ -139,11 +139,11 @@ const JodelComments = withStyles(styles)((props) => {
                 <Input fullWidth placeholder='Skriv en kommentar' style={{color: 'inherit'}} />
                 <Button size='small' color='inherit'>Kommenter</Button>
             </Grid>
-            <Grid item comtainer direction='column' wrap='nowrap'>
+            <Grid item container direction='column' wrap='nowrap'>
             {(!comments)? null : 
-                comments.map((value) => {
+                comments.map((value, index) => {
                     return ( 
-                        <Fragment>
+                        <Fragment key={index}>
                             <JodelCard text={value.text} time={value.time} votes={value.votes}/>
                             <Divider/>
                         </Fragment>
@@ -186,6 +186,7 @@ class Jodel extends Component {
                     ],
                     voteState: 0,
                 },
+                
             ],
         };
     };
@@ -239,19 +240,17 @@ class Jodel extends Component {
         const {classes} = this.props;
 
         return  (
-            <GridItem width3>
-                <Card className={classes.root}>
-                    <Grid container direction='row' wrap='nowrap'>
-                        <Typography variant='title' gutterBottom>Jodel</Typography>
-                    </Grid>
-                    {this.state.data.map((value, index) => {
-                        return <JodelPost key={value.id} text={value.text} time={value.time} votes={value.votes}
-                                          comments={value.comments} color={colors[index%colors.length]}
-                                          voteState={value.voteState}
-                                          onVote={(voteType) => {this.handleVote(value, voteType)}}/>
-                    })}
-                </Card>
-            </GridItem>
+            <Card className={classes.root}>
+                <Grid container direction='row' wrap='nowrap'>
+                    <Typography variant='title' gutterBottom>Jodel</Typography>
+                </Grid>
+                {this.state.data.map((value, index) => {
+                    return <JodelPost key={value.id} text={value.text} time={value.time} votes={value.votes}
+                                      comments={value.comments} color={colors[index%colors.length]}
+                                      voteState={value.voteState}
+                                      onVote={(voteType) => {this.handleVote(value, voteType)}}/>
+                })}
+            </Card>
         );
     }
 }

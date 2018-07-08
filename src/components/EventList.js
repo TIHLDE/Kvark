@@ -17,6 +17,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 const styles = {
     root: {
        padding: 10,
+       height: 230,
     },
 };
 
@@ -55,14 +56,6 @@ class EventList extends Component {
                     <Event title='Eksamensfest' location='TIHLDE kontoret' date='20.12.2018' time='18:00'/>
                     <Event title='Eksamensfest' location='TIHLDE kontoret' date='20.12.2018' time='18:00'/>
                 </List>
-                <Divider/>
-                <CardActions>
-                    <Grid container direction='row' justify='space-between' alignItems='center'>
-                        <Button variant='outlined'>Tilbake</Button>
-                        <Typography variant='caption'>Side 1 av 3</Typography>
-                        <Button variant='outlined'>Neste</Button>
-                    </Grid>
-                </CardActions>
             </Card>
         );
     }

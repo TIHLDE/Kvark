@@ -9,7 +9,6 @@ const styles = {
     root: {
         width: '100%',
         minHeight: '500px',
-        maxWidth: 1400,
         margin: 'auto',
         backgroundColor: 'whitesmoke',
 

@@ -1,0 +1,79 @@
+{
+    "gridAreas": "'event event event event event event event' '. grid1 grid1 grid2 grid2 grid2 .' '. grid1 grid1 grid2 grid2 grid2 .' 'grid3 grid3 grid3 grid3 grid3 grid3 grid3' '. . grid4 grid4 grid4 . .'",
+    
+    "subGrids": [
+        {
+            "id": "event",
+            "class": "fullWidth",
+            "rows": "1fr",
+            "cols": "1fr",
+            "children": [
+                {
+                    "type": "EVENTHEADER", "data": [], "colSpan": 1, "rowSpan": 1
+                }
+            ]
+        },
+        {
+            "id": "grid1",
+            "class": "normal",
+            "rows": "auto",
+            "cols": "1fr",
+            "children": [
+                {
+                    "type": "EVENTLIST", "data": [], "colSpan": 1, "rowSpan": 1
+                },
+                {
+                    "type": "NEWS", "data": [], "colSpan": 1, "rowSpan": 1
+                },
+                {
+                    "type": "NEWS", "data": [], "colSpan": 1, "rowSpan": 1
+                }
+            ]
+        },
+        {
+            "id": "grid2",
+            "class": "normal",
+            "rows": "1fr 1fr 1fr",
+            "cols": "1fr 1fr",
+            "children": [
+                {
+                    "type": "JODEL", "data": [], "colSpan": 2, "rowSpan": 2
+                },
+                {
+                    "type": "NEWS", "data": [], "colSpan": 1, "rowSpan": 1
+                },
+                {
+                    "type": "NEWS", "data": [], "colSpan": 1, "rowSpan": 1
+                }
+            ]
+        },
+        {
+            "id": "grid3",
+            "class": "fullWidth",
+            "rows": "1fr",
+            "cols": "1fr",
+            "children": [
+                {
+                    "type": "EVENTHEADER", "data": [], "colSpan": 1, "rowSpan": 1
+                }
+            ]
+        },
+        {
+            "id": "grid4",
+            "class": "normal",
+            "rows": "auto",
+            "cols": "auto",
+            "children": [
+                {
+                    "type": "JODEL", "data": [], "colSpan": 2, "rowSpan": 2
+                },
+                {
+                    "type": "NEWS", "data": [], "colSpan": 1, "rowSpan": 1
+                },
+                {
+                    "type": "NEWS", "data": [], "colSpan": 1, "rowSpan": 1
+                }
+            ]
+        }
+    ]
+}
