@@ -4,10 +4,10 @@ import {withStyles} from '@material-ui/core/styles';
 
 // Material UI Components
 import {Typography, Paper, IconButton,Grid} from '@material-ui/core';
-import {Divider, Input, Button, Collapse, ExpansionPanel} from '@material-ui/core/';
+import {Divider, Input, Button, Collapse} from '@material-ui/core/';
 
 // Icons
-import {KeyboardArrowUp,KeyboardArrowDown, Comment, Person, AddCircle} from '@material-ui/icons';
+import {KeyboardArrowUp,KeyboardArrowDown, Comment, Person, AddCircle, RemoveCircle} from '@material-ui/icons';
 
 // Project Components
 
@@ -30,6 +30,10 @@ Voteup() & VoteDown kan bare bli brukt dersom voted === false
     Did major changes to the Jodel-component. Added a JodelPost, JodelCard, and a JodelComments. The JodelWidget should not look like this at all, and needs to be refactored.
     Feel free to refactor everything when you have a better idea. The JodelWidget SHOULD have a FIXED size and should not be able to grow. Maybe should only one 
     JodelPost be visible at time.
+
+    UPDATE 09.07.2018
+    Created a posting element. This is just the first version of what i had in mind. there is many things missing such as the posting button to work, and making it better looking.
+    and making the extention much more smooth is a plus.
 */
 
 
@@ -71,7 +75,7 @@ const styles = {
     expand:{
         height:50,
         position:'relative',
-        backgroundColor:'red',
+        backgroundColor:'blue',
         width:'30%',
         borderRadius:50,
         textAlign:'center',
@@ -80,30 +84,45 @@ const styles = {
     expand2:{
         height:200,
         position:'relative',
-        backgroundColor:'red',
+        backgroundColor:'blue',
         width:'80%',
         borderRadius:50,
         textAlign:'center',
         marginLeft:8,
-
+    },
+    inputField:{
+        position:'relative',
+        textAlign:'center'
+    },
+    minus:{
+        width: 60,
+        height: '100%',
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        bottom: 0,
     }
 
 };
+// This shows when you click the pluss icon, here can you type what you want to jodel, and click post.
 const CommentText = withStyles(styles)((props) => {
     const {expanding} = props;
 
     return(
         <div style={styles.expand2}>
-            <Grid style={styles.upvote} container direction='column' wrap='nowrap' justify='space-between'>
+            <Input style={styles.inputField}/>
+            <Grid style={styles.minus} container direction='column' wrap='nowrap' justify='space-between'>
                 <IconButton color='inherit' disableRipple={true} onClick={expanding}>
-
+                    <RemoveCircle/>
                 </IconButton>
-                <input/>
             </Grid>
+            <Button variant="contained">
+                Post
+            </Button>
         </div>
     )
 });
-
+// This shows the small button you can click when the site starts.
 const CommentCard = withStyles(styles)((props) => {
     const {loggedIn, expanding} = props;
 
@@ -118,6 +137,10 @@ const CommentCard = withStyles(styles)((props) => {
             </div>
         )
     });
+// This uses CommentCard and CommentText to show the different divs.
+
+// loggedIn state tells if there is a user logged in the page. then and only then can a person type and post a jodel.
+// showTextField state tells to show and not show the input area
 
 const Commentfield = withStyles(styles)(class Commentfield extends Component {
     constructor() {
@@ -132,23 +155,24 @@ const Commentfield = withStyles(styles)(class Commentfield extends Component {
         this.textField = this.textField.bind(this);
     }
 
-
+    // This is used in the plus and minus buttons to enlarge and make smaller the Input area.
     textField = () => {
         console.log("Show textfield = " + this.state.showTextField);
         this.setState({showTextField: !this.state.showTextField});
     };
-
+    // If the person is not logged in the user will get a message "please log in to write a jodel" and cant press on the pluss icon.
     login = () =>{
         return (this.state.loggedIn ? <Typography color='inherit'><strong>Please write a Jodel</strong></Typography> : <Typography color='inherit'><strong>Please Log in to write a Jodel!</strong></Typography>);
+    };
+    // expands if the user is true
+    expanding = () =>{
+      return (this.state.loggedIn && this.state.showTextField) ? <CommentText expanding ={this.textField.bind(this)}/> :  <CommentCard loggedIn={this.login()} expanding={this.textField.bind(this)}/> ;
     };
 
     render() {
         return(
             <Fragment>
-                <CommentCard loggedIn={this.login()} expanding={this.textField.bind(this)}/>
-                <Collapse in={this.state.showTextField}>
-                    <CommentText />
-                </Collapse>
+                {this.expanding()}
             </Fragment>
         )
     }
@@ -160,7 +184,7 @@ const JodelPost = withStyles(styles)(class JodelPost extends Component {
     
     constructor() {
         super();
-        
+
         this.state = {
             showComments: false,
         };
