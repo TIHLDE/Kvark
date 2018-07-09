@@ -4,10 +4,10 @@ import {withStyles} from '@material-ui/core/styles';
 
 // Material UI Components
 import {Typography, Paper, IconButton,Grid} from '@material-ui/core';
-import {Divider, Input, Button, Collapse} from '@material-ui/core/';
+import {Divider, Input, Button, Collapse, ExpansionPanel} from '@material-ui/core/';
 
 // Icons
-import {KeyboardArrowUp,KeyboardArrowDown, Comment, Person} from '@material-ui/icons';
+import {KeyboardArrowUp,KeyboardArrowDown, Comment, Person, AddCircle} from '@material-ui/icons';
 
 // Project Components
 
@@ -67,8 +67,93 @@ const styles = {
     },
     commentContainer: {
         marginTop: 10,
+    },
+    expand:{
+        height:50,
+        position:'relative',
+        backgroundColor:'red',
+        width:'30%',
+        borderRadius:50,
+        textAlign:'center',
+        marginLeft:8,
+    },
+    expand2:{
+        height:200,
+        position:'relative',
+        backgroundColor:'red',
+        width:'80%',
+        borderRadius:50,
+        textAlign:'center',
+        marginLeft:8,
+
     }
+
 };
+const CommentText = withStyles(styles)((props) => {
+    const {expanding} = props;
+
+    return(
+        <div style={styles.expand2}>
+            <Grid style={styles.upvote} container direction='column' wrap='nowrap' justify='space-between'>
+                <IconButton color='inherit' disableRipple={true} onClick={expanding}>
+
+                </IconButton>
+                <input/>
+            </Grid>
+        </div>
+    )
+});
+
+const CommentCard = withStyles(styles)((props) => {
+    const {loggedIn, expanding} = props;
+
+        return(
+            <div style={styles.expand}>
+                {loggedIn}
+                <Grid style={styles.upvote} container direction='column' wrap='nowrap' justify='space-between'>
+                    <IconButton color='inherit' disableRipple={true} onClick={expanding}>
+                        <AddCircle />
+                    </IconButton>
+                </Grid>
+            </div>
+        )
+    });
+
+const Commentfield = withStyles(styles)(class Commentfield extends Component {
+    constructor() {
+        super();
+
+        this.state = {
+            loggedIn: true,
+            showTextField: false
+        };
+
+        this.login = this.login.bind(this);
+        this.textField = this.textField.bind(this);
+    }
+
+
+    textField = () => {
+        console.log("Show textfield = " + this.state.showTextField);
+        this.setState({showTextField: !this.state.showTextField});
+    };
+
+    login = () =>{
+        return (this.state.loggedIn ? <Typography color='inherit'><strong>Please write a Jodel</strong></Typography> : <Typography color='inherit'><strong>Please Log in to write a Jodel!</strong></Typography>);
+    };
+
+    render() {
+        return(
+            <Fragment>
+                <CommentCard loggedIn={this.login()} expanding={this.textField.bind(this)}/>
+                <Collapse in={this.state.showTextField}>
+                    <CommentText />
+                </Collapse>
+            </Fragment>
+        )
+    }
+
+});
 
 // A JodelPost. This component manages a post and its comments.
 const JodelPost = withStyles(styles)(class JodelPost extends Component {
@@ -83,7 +168,7 @@ const JodelPost = withStyles(styles)(class JodelPost extends Component {
 
     toggleComments = () => {
         this.setState({showComments: !this.state.showComments});
-    }
+    };
 
     render() {
         const {classes, text, time, votes, comments, voteState, onVote} = this.props;
@@ -107,7 +192,7 @@ JodelPost.propTypes = {
     voteState: PropTypes.number,    // What datatype should this be?
     onVote: PropTypes.func,
     comments: PropTypes.array,
-}
+};
 
 // The JodelCard. This component can both me a post and a comment. This component is the one that takes in a text, time, and vote. It also needs an ID
 const JodelCard = withStyles(styles)((props) => {
@@ -159,7 +244,7 @@ JodelCard.propTypes = {
     votes: PropTypes.number,
     voteState: PropTypes.number,    // What datatype should this be?
     onVote: PropTypes.func,
-}
+};
 
 // Handles the Jodel-comments based on prop-comments.
 const JodelComments = withStyles(styles)((props) => {
@@ -264,7 +349,7 @@ class Jodel extends Component {
             });
         }).catch(err => {
         });
-    }
+    };
 
     componentDidMount() {
         this.loadData().then(data => {
@@ -282,6 +367,7 @@ class Jodel extends Component {
                 <Grid style={{padding: 10}} container direction='row' wrap='nowrap'>
                     <Typography variant='title' gutterBottom>THILDE Community Channel</Typography>
                 </Grid>
+                <Commentfield/>
                 <div className={classes.posts}>
                     {this.state.data.map((value, index) => {
                         return <JodelPost key={value.id} text={value.text} time={value.time} votes={value.votes}
