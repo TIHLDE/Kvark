@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {withStyles} from '@material-ui/core/styles';
 
 // Material UI Components
-import {Typography, Paper, IconButton,Grid} from '@material-ui/core';
+import {Typography, Paper, IconButton,Grid, TextField} from '@material-ui/core';
 import {Divider, Input, Button, Collapse} from '@material-ui/core/';
 
 // Icons
@@ -90,10 +90,6 @@ const styles = {
         textAlign:'center',
         marginLeft:8,
     },
-    inputField:{
-        position:'relative',
-        textAlign:'center'
-    },
     minus:{
         width: 60,
         height: '100%',
@@ -101,8 +97,7 @@ const styles = {
         right: 0,
         top: 0,
         bottom: 0,
-    }
-
+    },
 };
 // This shows when you click the pluss icon, here can you type what you want to jodel, and click post.
 const CommentText = withStyles(styles)((props) => {
@@ -110,18 +105,27 @@ const CommentText = withStyles(styles)((props) => {
 
     return(
         <div style={styles.expand2}>
-            <Input style={styles.inputField}/>
+            <TextField
+                id="multiline-static"
+                label="Jodel Away!"
+                multiline
+                rows="4"
+                style={{width:'40%',paddingRight:'1%'}}
+                margin="normal"
+            />
+
             <Grid style={styles.minus} container direction='column' wrap='nowrap' justify='space-between'>
                 <IconButton color='inherit' disableRipple={true} onClick={expanding}>
                     <RemoveCircle/>
                 </IconButton>
             </Grid>
-            <Button variant="contained">
+            <Button variant="contained" style={{marginTop:'11%'}}>
                 Post
             </Button>
         </div>
     )
 });
+
 // This shows the small button you can click when the site starts.
 const CommentCard = withStyles(styles)((props) => {
     const {loggedIn, expanding} = props;
@@ -148,7 +152,7 @@ const Commentfield = withStyles(styles)(class Commentfield extends Component {
 
         this.state = {
             loggedIn: true,
-            showTextField: false
+            showTextField: true
         };
 
         this.login = this.login.bind(this);
@@ -157,7 +161,6 @@ const Commentfield = withStyles(styles)(class Commentfield extends Component {
 
     // This is used in the plus and minus buttons to enlarge and make smaller the Input area.
     textField = () => {
-        console.log("Show textfield = " + this.state.showTextField);
         this.setState({showTextField: !this.state.showTextField});
     };
     // If the person is not logged in the user will get a message "please log in to write a jodel" and cant press on the pluss icon.
@@ -178,6 +181,7 @@ const Commentfield = withStyles(styles)(class Commentfield extends Component {
     }
 
 });
+
 
 // A JodelPost. This component manages a post and its comments.
 const JodelPost = withStyles(styles)(class JodelPost extends Component {
@@ -360,7 +364,7 @@ class Jodel extends Component {
             return response.json();
         }).then(data => {
             this.setState((prev) => {
-                let updated = []
+                let updated = [];
                 for (let e of prev.data) {
                     if (e.id === value.id) {
                         updated.push(data);
