@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 // Grid Items/Widgets
 import EventList from '../EventList';
 import Jodel from '../Jodel/Jodel';
-import EventHeader from '../EventHeader';
 import Poster from '../Poster';
 
 import GridItem from './GridItem';
@@ -28,7 +27,7 @@ const styles = {
 const getItem = (id, type, data) => {
     switch(type) {
         case "EVENTHEADER":
-            return <EventHeader id={id} data={data}/>;
+            return <Poster id={id} data={data}/>;
         case "EVENTLIST":
             return <EventList id={id} data={data}/>;
         case "NEWS":

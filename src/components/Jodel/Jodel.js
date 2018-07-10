@@ -322,20 +322,20 @@ class Jodel extends Component {
                     ],
                     voteState: 0,
                 },
-                {
-                    id:1, time: '16:00', votes: 12, text: 'Hva er forskjellen på en bil og en traktor?',
-                    comments: [
-                        {time: '16:23', votes: 4, text: 'Hjulene?'}
-                    ],
-                    voteState: 0,
-                },
-                {
-                    id:2, time: '15:00', votes: 21, text: 'Hvem er det som bor i Norge?',
-                    comments: [
-                        {time: '15:23', votes: 3, text: 'Ikke jeg i hvert fall...'},
-                    ],
-                    voteState: 0,
-                },
+            /*     {
+                        id:1, time: '16:00', votes: 12, text: 'Hva er forskjellen på en bil og en traktor?',
+                        comments: [
+                            {time: '16:23', votes: 4, text: 'Hjulene?'}
+                        ],
+                        voteState: 0,
+                    },
+                    {
+                        id:2, time: '15:00', votes: 21, text: 'Hvem er det som bor i Norge?',
+                        comments: [
+                            {time: '15:23', votes: 3, text: 'Ikke jeg i hvert fall...'},
+                        ],
+                        voteState: 0,
+                    }, */
                 
             ],
         };

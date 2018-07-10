@@ -9,7 +9,14 @@
             "cols": "1fr",
             "children": [
                 {
-                    "type": "EVENTHEADER", "data": [], "colSpan": 1, "rowSpan": 1
+                    "type": "POSTER", 
+                    "data": {
+                        "header": "Linjeforreningen TIHLDE",
+                        "subheader": "Dataingenør, Drift av Datasystemer og IT-støttet Bedriftsutvikling",
+                        "image": "http://farm1.staticflickr.com/943/28274038748_5000d2b2ef_b.jpg"
+                    }, 
+                    "colSpan": 1, 
+                    "rowSpan": 1
                 }
             ]
         },
@@ -54,7 +61,7 @@
             "cols": "1fr",
             "children": [
                 {
-                    "type": "EVENTHEADER", "data": [], "colSpan": 1, "rowSpan": 1
+                    "type": "POSTER", "data": [], "colSpan": 1, "rowSpan": 1
                 }
             ]
         },

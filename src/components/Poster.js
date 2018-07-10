@@ -1,21 +1,41 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
-import ExamplePoster from '../assets/img/ExamplePoster.png';
+import classNames from 'classnames';
 
 // Material UI Components
+import Typography from '@material-ui/core/Typography';
 
 const styles = {
     root: {
         width: '100%',
-        maxHeight: '600px',
+        
+        margin: 'auto',
+
+        // Should be removed - just a demostration
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+
+        height: 500,
+        overflow: 'hidden',
+        margin: 0,
+        position: 'relative',
     },
-    image: {
+    
+    background: {
+        position:'absolute',
+        top: '50%',
+        transform: 'translateY(-50%)',
         width: '100%',
-        maxWidth: '100%',
-        height: 'auto',
-        objectFit: 'cover',
+        zIndex: '-1',
     },
+    text: {
+        color: 'white',
+    },
+    none: {
+        backgroundColor: 'whitesmoke',
+    }
 };
 
 class Poster extends Component {
@@ -23,11 +43,13 @@ class Poster extends Component {
     render() {
         const {classes, data} = this.props;
 
-        const image = (data && data.image)? data.image : ExamplePoster;
-
         return (
-            <div className={classes.root}>
-               <img className={classes.image} src={image} alt='poster'/>
+            <div className={classNames(classes.root,(!data.image)? classes.none : '')}>
+                {(!data.image)? null :
+                    <img className={classes.background} src={data.image} alt='image' />
+                }
+                <Typography className={classes.text} variant='display4' align='center'>{data.header}</Typography>
+                <Typography className={classes.text} variant='headline' align='center'>{data.subheader}</Typography>
             </div>
         );
     }

@@ -7,9 +7,13 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
+// Assets
+import TIHLDELOGO from '../assets/img/tihldeLogo.png';
+
 const styles = {
     root: {
         boxSizing: 'border-box',
+        backgroundColor: 'var(--tihlde-blaa)',
     },
     main: {
         marginTop: 64,
@@ -26,9 +30,7 @@ class Navigation extends Component {
             <Fragment>
                 <AppBar className={classes.root} position="fixed" color="default">
                     <Toolbar>
-                        <Typography variant="title" color="inherit">
-                            TIHLDE
-                        </Typography>
+                        <img src={TIHLDELOGO} alt height='30em'/>
                     </Toolbar>
                 </AppBar>
                 <main className={classes.main}>
