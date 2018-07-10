@@ -11,20 +11,6 @@ import {KeyboardArrowUp,KeyboardArrowDown, Comment, Person, AddCircle, RemoveCir
 
 // Project Components
 
-
-/*
-Denne komponenten er bare en jodel som man kan legge ut et random sted.
-Time er hvor lenge den har vært ute på nettsiden/ tilgjengelig for å bli lest.
-text er hva personen vil dele / jodle.
-votes er antall votes denne jodelen har fått, man kan både få negative votes og positive votes. Dette spørs på hva folk flest syntes om denne spesifikke jodelen.
-Voted er da at man kan bare vote EN gang per jodel. Så man kan ikke spamme M1 for å få super mange votes.
-
-Er litt usikker på hvordan man skal implementere denne og hvordan i det heletatt bygge den opp. så jeg bare satt den opp på måten jeg tenkte den kunne være. Feel free til å skifte litt rundt.
-
-Voteup() & VoteDown kan bare bli brukt dersom voted === false
-*/
-
-
 /*
     UPDATE: 08.07.2018
     Did major changes to the Jodel-component. Added a JodelPost, JodelCard, and a JodelComments. The JodelWidget should not look like this at all, and needs to be refactored.
@@ -99,6 +85,7 @@ const styles = {
         bottom: 0,
     },
 };
+
 // This shows when you click the pluss icon, here can you type what you want to jodel, and click post.
 const CommentText = withStyles(styles)((props) => {
     const {expanding} = props;
@@ -110,8 +97,9 @@ const CommentText = withStyles(styles)((props) => {
                 label="Jodel Away!"
                 multiline
                 rows="4"
-                style={{width:'40%',paddingRight:'1%'}}
+                style={{width:'80%',paddingRight:'1%'}}
                 margin="normal"
+                color='inheritance'
             />
 
             <Grid style={styles.minus} container direction='column' wrap='nowrap' justify='space-between'>
@@ -126,21 +114,32 @@ const CommentText = withStyles(styles)((props) => {
     )
 });
 
+CommentText.propTypes={
+    expanding: PropTypes.func
+};
+
 // This shows the small button you can click when the site starts.
 const CommentCard = withStyles(styles)((props) => {
     const {loggedIn, expanding} = props;
 
-        return(
-            <div style={styles.expand}>
-                {loggedIn}
-                <Grid style={styles.upvote} container direction='column' wrap='nowrap' justify='space-between'>
-                    <IconButton color='inherit' disableRipple={true} onClick={expanding}>
-                        <AddCircle />
-                    </IconButton>
-                </Grid>
-            </div>
-        )
-    });
+    return (
+        <div style={styles.expand}>
+            {loggedIn}
+            <Grid style={styles.upvote} container direction='column' wrap='nowrap' justify='space-between'>
+                <IconButton color='inherit' disableRipple={true} onClick={expanding}>
+                    <AddCircle/>
+                </IconButton>
+            </Grid>
+        </div>
+    )
+});
+
+
+CommentCard.propTypes={
+    expanding: PropTypes.func,
+    loggedIn: PropTypes.func
+};
+
 // This uses CommentCard and CommentText to show the different divs.
 
 // loggedIn state tells if there is a user logged in the page. then and only then can a person type and post a jodel.
