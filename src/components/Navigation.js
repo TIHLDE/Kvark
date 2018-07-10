@@ -18,6 +18,10 @@ const styles = {
     main: {
         marginTop: 64,
         backgroundColor: 'white',
+
+        '@media only screen and (max-width: 600px)': {
+            marginTop: 56,
+        }
     },
 };
 
@@ -30,7 +34,7 @@ class Navigation extends Component {
             <Fragment>
                 <AppBar className={classes.root} position="fixed" color="default">
                     <Toolbar>
-                        <img src={TIHLDELOGO} alt height='30em'/>
+                        <img src={TIHLDELOGO} alt='logo' height='30em'/>
                     </Toolbar>
                 </AppBar>
                 <main className={classes.main}>

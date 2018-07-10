@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import EventList from '../EventList';
 import Jodel from '../Jodel/Jodel';
 import Poster from '../Poster';
+import NewsItem from '../NewsItem';
 
 import GridItem from './GridItem';
 
@@ -13,7 +14,8 @@ import GridItem from './GridItem';
 const styles = {
     subgrid: {
         display: 'grid',
-
+        gridGap: 10,
+        
         // Prop-styles overwrite these changes, so was not able to change gridTemplateRow and Column.
         // Therefore the solution was to swap to flexBox on mobile-phones. Need to find a better solution for tablets.
         '@media only screen and (max-width: 600px)': { 
@@ -31,7 +33,7 @@ const getItem = (id, type, data) => {
         case "EVENTLIST":
             return <EventList id={id} data={data}/>;
         case "NEWS":
-            return <EventList id={id} data={data}/>;
+            return <NewsItem id={id} data={data}/>;
         case "JODEL":
             return <Jodel id={id} data={data}/>
         case "POSTER":

@@ -11,6 +11,8 @@ const styles = {
     root: {
         display: 'grid',
         gridTemplateAreas: GridData.gridAreas,
+        gridTemplateColumns: 'repeat(7,1fr)',
+        gridGap: 10,
 
         // Prop-styles overwrite these changes, so was not able to change gridTemplateRow and Column.
         // Therefore the solution was to swap to flexBox on mobile-phones. Need to find a better solution for tablets.

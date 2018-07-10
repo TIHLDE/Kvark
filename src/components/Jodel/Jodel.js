@@ -25,6 +25,7 @@ import {KeyboardArrowUp,KeyboardArrowDown, Comment, Person, AddCircle, RemoveCir
 
 const styles = {
     root: {
+        minWidth: 200,
         height: '100%',
         color: 'whitesmoke',
     },

@@ -6,7 +6,10 @@ import PropTypes from 'prop-types';
 const styles = {
     root: {
         backgroundColor: 'beige',
-        margin: '-20px',
+
+        '@media only screen and (max-width: 600px)': {
+            marginBottom: 10,
+        },
     },
     width2: {
         gridColumn: 'span 2',
@@ -29,7 +32,7 @@ const styles = {
 
         '@media only screen and (max-width: 600px)': {
             gridColumn: 'span 1 !important',
-            margin: '0 !important',
+            
         },
     },
     height2: {

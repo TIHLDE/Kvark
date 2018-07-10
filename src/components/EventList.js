@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 
@@ -7,6 +7,7 @@ import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -20,14 +21,23 @@ const styles = {
 };
 
 const Event = (props) => (
-    <ListItem button disableGutters style={{padding: 3}}>
-        <div style={{width: 5, height: 40, backgroundColor: 'var(--tihlde-blaa)'}}></div>
-        <ListItemText primary={props.title} secondary={props.location}/>
-        <div>
-            <Typography variant='caption'>{props.date}</Typography>
-            <Typography variant='caption'>{props.time}</Typography>
-        </div>
-    </ListItem>
+    <Fragment>
+        <Divider/>
+        <ListItem button disableGutters style={{padding: 3}}>
+            {/* <div style={{width: 5, height: 40, backgroundColor: 'var(--tihlde-blaa)'}}></div> */}
+            {/* <ListItemText primary={props.title} secondary={props.location} primaryTypographyProps={{variant: 'headline'}}/> */}
+            <ListItemText>
+                <Grid container direction='row' wrap='nowrap' alignItems='center'>
+                    <Typography component='span' variant='headline'>{props.title}</Typography>
+                    <Typography component='span' variant='subheading'>&nbsp; på {props.location}</Typography>
+                </Grid>
+            </ListItemText>
+            <div>
+                <Typography variant='subheading'>{props.date}</Typography>
+                <Typography variant='caption'>{props.time}</Typography>
+            </div>
+        </ListItem>
+    </Fragment>
 );
 
 Event.propTypes = {
@@ -44,15 +54,15 @@ class EventList extends Component {
 
         return (
             <Card className={classes.root}>
-                <Grid container direction='row' wrap='nowrap' justify='space-between'>
-                    <Typography variant='headline'>Arrangementer</Typography>
-                    <Button variant='outlined'>FLERE</Button>
+                <Grid container direction='row' wrap='nowrap'>
+                    <Typography variant='title'>Arrangementer</Typography>
+                   
                 </Grid>
                 <List dense>
-                    <Event title='Eksamensfest' location='TIHLDE kontoret' date='20.12.2018' time='18:00'/>
-                    <Event title='Eksamensfest' location='TIHLDE kontoret' date='20.12.2018' time='18:00'/>
-                    <Event title='Eksamensfest' location='TIHLDE kontoret' date='20.12.2018' time='18:00'/>
-                    <Event title='Eksamensfest' location='TIHLDE kontoret' date='20.12.2018' time='18:00'/>
+                    <Event title='Eksamensfest' location='kontoret' date='20/12' time='18:00'/>
+                    <Event title='Generalforsamiling' location='U302' date='20/12' time='18:00'/>
+                    <Event title='Immefest' location='Sukkerhuset' date='20/12' time='18:00'/>
+                    <Event title='Fadderuke' location='over alt' date='20/12' time='18:00'/>
                 </List>
             </Card>
         );

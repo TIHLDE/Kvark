@@ -9,7 +9,6 @@ import Typography from '@material-ui/core/Typography';
 const styles = {
     root: {
         width: '100%',
-        
         margin: 'auto',
 
         // Should be removed - just a demostration
@@ -21,6 +20,10 @@ const styles = {
         overflow: 'hidden',
         margin: 0,
         position: 'relative',
+
+        '@media only screen and (max-width: 600px)': {
+            height: '100%',
+        }
     },
     
     background: {

@@ -1,6 +1,6 @@
 {
-    "gridAreas": "'event event event event event event event' '. grid1 grid1 grid2 grid2 grid2 .' '. grid1 grid1 grid2 grid2 grid2 .' 'grid3 grid3 grid3 grid3 grid3 grid3 grid3' '. . grid4 grid4 grid4 . .'",
-    
+    "gridAreas": "'event event event event event event event' '. grid1 grid1 grid1 grid2 grid2 .' '. grid1 grid1 grid1 grid2 grid2 .' 'grid3 grid3 grid3 grid3 grid3 grid3 grid3' '. . grid4 grid4 grid4 . .'",
+
     "subGrids": [
         {
             "id": "event",
@@ -11,9 +11,9 @@
                 {
                     "type": "POSTER", 
                     "data": {
-                        "header": "Linjeforreningen TIHLDE",
-                        "subheader": "Dataingenør, Drift av Datasystemer og IT-støttet Bedriftsutvikling",
-                        "image": "http://farm1.staticflickr.com/943/28274038748_5000d2b2ef_b.jpg"
+                        "header": "Linjeforeningen TIHLDE",
+                        "subheader": "Dataingeniør, Drift av Datasystemer og IT-støttet Bedriftsutvikling",
+                        "image": "http://farm1.staticflickr.com/958/42146517371_d69a1e3d01_b.jpg"
                     }, 
                     "colSpan": 1, 
                     "rowSpan": 1
@@ -24,33 +24,39 @@
             "id": "grid1",
             "class": "normal",
             "rows": "auto",
-            "cols": "1fr",
+            "cols": "1fr 1fr",
             "children": [
                 {
-                    "type": "EVENTLIST", "data": [], "colSpan": 1, "rowSpan": 1
+                    "type": "EVENTLIST", "data": [], "colSpan": 2, "rowSpan": 1
                 },
                 {
-                    "type": "NEWS", "data": [], "colSpan": 1, "rowSpan": 1
+                    "type": "NEWS",
+                    "data": {
+                        "title": "Eksamensfest!",
+                        "image": "http://farm1.staticflickr.com/958/42146517371_d69a1e3d01_b.jpg"
+                    },
+                    "colSpan": 1,
+                    "rowSpan": 1
                 },
                 {
-                    "type": "NEWS", "data": [], "colSpan": 1, "rowSpan": 1
+                    "type": "NEWS",
+                    "data": {
+                        "title": "Mørket skremmer mange hver eneste dag",
+                        "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
+                    },
+                    "colSpan": 1,
+                    "rowSpan": 1
                 }
             ]
         },
         {
             "id": "grid2",
             "class": "normal",
-            "rows": "1fr 1fr 1fr",
+            "rows": "1fr 1fr",
             "cols": "1fr 1fr",
             "children": [
                 {
                     "type": "JODEL", "data": [], "colSpan": 2, "rowSpan": 2
-                },
-                {
-                    "type": "NEWS", "data": [], "colSpan": 1, "rowSpan": 1
-                },
-                {
-                    "type": "NEWS", "data": [], "colSpan": 1, "rowSpan": 1
                 }
             ]
         },
@@ -75,10 +81,22 @@
                     "type": "JODEL", "data": [], "colSpan": 2, "rowSpan": 2
                 },
                 {
-                    "type": "NEWS", "data": [], "colSpan": 1, "rowSpan": 1
+                    "type": "NEWS",
+                    "data": {
+                        "title": "Eksamensfest!",
+                        "image": "http://farm1.staticflickr.com/958/42146517371_d69a1e3d01_b.jpg"
+                    },
+                    "colSpan": 1,
+                    "rowSpan": 1
                 },
                 {
-                    "type": "NEWS", "data": [], "colSpan": 1, "rowSpan": 1
+                    "type": "NEWS",
+                    "data": {
+                        "title": "Mørket skremmer mange hver eneste dag",
+                        "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
+                    },
+                    "colSpan": 1,
+                    "rowSpan": 1
                 }
             ]
         }
