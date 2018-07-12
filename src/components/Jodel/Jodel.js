@@ -152,7 +152,7 @@ const Commentfield = withStyles(styles)(class Commentfield extends Component {
 
         this.state = {
             loggedIn: true,
-            showTextField: true
+            showTextField: false
         };
 
         this.login = this.login.bind(this);
