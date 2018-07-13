@@ -1,11 +1,27 @@
-import React, { Component, Fragment } from 'react';
+import React, {Component} from 'react';
+import {withStyles} from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 
-export default class Arrangement extends Component {
+// Project components
+import Navigation from '../components/Navigation';
+import LayoutGrid from '../components/Grid/LayoutGrid';
 
+const styles = {
+};
+
+class Landing extends Component {
     render() {
         return (
-            <div></div>
+            <Navigation>
+                <LayoutGrid />
+            </Navigation>
         );
     }
 }
 
+Landing.propTypes = {
+    classes: PropTypes.object,
+};
+
+
+export default withStyles(styles)(Landing);

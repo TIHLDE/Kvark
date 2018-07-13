@@ -159,6 +159,7 @@ const Commentfield = withStyles(styles)(class Commentfield extends Component {
         this.textField = this.textField.bind(this);
     }
 
+
     // This is used in the plus and minus buttons to enlarge and make smaller the Input area.
     textField = () => {
         this.setState({showTextField: !this.state.showTextField});
@@ -317,7 +318,7 @@ class Jodel extends Component {
                 {
                     id:0, time: '15:00', votes: 23, text: 'This is my life',
                     comments: [
-                        {time: '15:23', votes: 23, text: 'Hva er det han er snakker om?'},
+                        {time: '15:23   ', votes: 23, text: 'Hva er det han er snakker om?'},
                         {time: '15:25', votes: 200, text: 'Han ble født sånn'},
                         {time: '15:32', votes: 8, text: 'Wow xD'},
                     ],
