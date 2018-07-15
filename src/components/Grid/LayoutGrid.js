@@ -11,12 +11,18 @@ const styles = {
     root: {
         display: 'grid',
         gridTemplateAreas: GridData.gridAreas,
-        gridTemplateColumns: 'repeat(7,1fr)',
+        gridTemplateColumns: 'repeat(8,1fr)',
+        gridTemplateRows: 'auto',
         gridGap: 10,
+
+        '@media only screen and (max-width: 900px)': {
+            
+            
+        },
 
         // Prop-styles overwrite these changes, so was not able to change gridTemplateRow and Column.
         // Therefore the solution was to swap to flexBox on mobile-phones. Need to find a better solution for tablets.
-        '@media only screen and (max-width: 600px)': {
+        '@media only screen and (max-width: 800px)': {
             display: 'flex',
             flexDirection: 'column',
             flexWrap: 'nowrap',
@@ -33,6 +39,9 @@ class LayoutGrid extends Component {
 
     constructor() {
         super();
+
+        const areas = GridData.gridAreas;
+        const middleAreas = GridData.gridAreas.split('.').join('');
 
         this.state = {
             areas: GridData.gridAreas, // The grid template areas

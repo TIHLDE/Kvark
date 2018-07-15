@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
+import {Link} from 'react-router-dom';
 
 // Material UI Components
 import Paper from '@material-ui/core/Paper';
@@ -13,6 +14,7 @@ const styles = {
         maxHeight: 300,
         overflow: 'hidden',
         position: 'relative',
+        cursor: 'pointer',
     },
     none: {
         minHeight: 200,
@@ -36,6 +38,9 @@ const styles = {
         alignItems: 'center',
         padding: '4 10',
     },
+    text: {
+        fontSize: '20px',
+    }
 }
 
 class NewsItem extends Component {
@@ -45,16 +50,16 @@ class NewsItem extends Component {
 
         return (
             <Paper className={classes.card}>
+                <Link to='/nyheter'>
                 {(data.image)?
-              
                 <img className={classes.image} src={data.image} alt='news'/>
-               
                 :
                     <Typography className={classes.none} variant='title' align='center'>No news provided</Typography>
                 }
                 <div className={classes.textContainer}>
-                    <p variant='subheading' align='center' color='inherit'>{data.title}</p>
+                    <p className={classes.text} variant='subheading' align='center' color='inherit'>{data.title}</p>
                 </div>
+                </Link>
             </Paper>
         );
     }

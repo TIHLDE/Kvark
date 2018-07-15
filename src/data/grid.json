@@ -1,5 +1,5 @@
 {
-    "gridAreas": "'event event event event event event event' '. grid1 grid1 grid1 grid2 grid2 .' '. grid1 grid1 grid1 grid2 grid2 .' 'grid3 grid3 grid3 grid3 grid3 grid3 grid3' '. . grid4 grid4 grid4 . .'",
+    "gridAreas": "'event event event event event event event event' '. grid1 grid1 grid1 grid1 grid2 grid2 .' '. grid1 grid1 grid1 grid1 grid2 grid2 .' 'grid3 grid3 grid3 grid3 grid3 grid3 grid3 grid3' '. . grid4 grid4 grid4 grid4 . .'",
 
     "subGrids": [
         {
@@ -13,7 +13,8 @@
                     "data": {
                         "header": "Linjeforeningen TIHLDE",
                         "subheader": "Dataingeniør, Drift av Datasystemer og IT-støttet Bedriftsutvikling",
-                        "image": "http://farm1.staticflickr.com/958/42146517371_d69a1e3d01_b.jpg"
+                        "image": "https://hdbackgroundspot.com//storage/upload/abstract-white-background/abstract-white-background-1.jpg",
+                        "color": "#1D448C"
                     }, 
                     "colSpan": 1, 
                     "rowSpan": 1
@@ -23,7 +24,7 @@
         {
             "id": "grid1",
             "class": "normal",
-            "rows": "auto",
+            "rows": "300px 300px",
             "cols": "1fr 1fr",
             "children": [
                 {
@@ -52,11 +53,26 @@
         {
             "id": "grid2",
             "class": "normal",
-            "rows": "1fr 1fr",
-            "cols": "1fr 1fr",
+            "rows": "300px 300px",
+            "cols": "1fr",
             "children": [
                 {
-                    "type": "JODEL", "data": [], "colSpan": 2, "rowSpan": 2
+                    "type": "NEWS",
+                    "data": {
+                        "title": "Eksamensfest!",
+                        "image": "http://farm1.staticflickr.com/958/42146517371_d69a1e3d01_b.jpg"
+                    },
+                    "colSpan": 1,
+                    "rowSpan": 1
+                },
+                {
+                    "type": "NEWS",
+                    "data": {
+                        "title": "Mørket skremmer mange hver eneste dag",
+                        "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
+                    },
+                    "colSpan": 1,
+                    "rowSpan": 1
                 }
             ]
         },
@@ -78,7 +94,7 @@
             "cols": "auto",
             "children": [
                 {
-                    "type": "JODEL", "data": [], "colSpan": 2, "rowSpan": 2
+                    "type": "EVENTLIST", "data": [], "colSpan": 2, "rowSpan": 2
                 },
                 {
                     "type": "NEWS",
