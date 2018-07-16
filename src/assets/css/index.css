@@ -6,14 +6,13 @@
 * {
     margin: 0;
     padding: 0;
-    --tihlde-blaa: rgb(29,68,140);
+    --tihlde-blaa: #1D448C; 
 }
 body {
     font-family: 'Montserrat', sans-serif;
     text-decoration: none;
     outline: none;
     font-size: 32px;
-    background-color: #ebebeb;
 }
 /* use only em for font sizes */
 

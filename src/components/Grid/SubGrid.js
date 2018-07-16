@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {Fragment}from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import MediaQuery from 'react-responsive';
 
 // Grid Items/Widgets
 import EventList from '../EventList';
@@ -22,6 +24,11 @@ const styles = {
             display: 'flex',
             flexDirection: 'column',
         }
+    },
+    fullWidthStyles: {
+        padding: 0,
+        marginBottom: '-100px',
+        zIndex: 10,
     }
 }
 
@@ -60,28 +67,36 @@ const SubGrid = (props) => {
         padding: 4,
         zIndex: 1000,        
     }
-
-    // If the grid has class 'fullWidth', make it fullWidth (reduce marginBottom and zIndex)
-    const fullWidthStyles = {
-        padding: 0,
-        marginBottom: '-100px',
-        zIndex: 10,
-    }
-
-    const style = (props.class === 'fullWidth')? {...gridStyles, ...fullWidthStyles} : gridStyles;
    
     return (
-        <div className={classes.subgrid} style={style}>
-            {(!props.children)? null : 
-                props.children.map((value, index) => {
-                    return (
-                        <GridItem key={index} rowSpan={value.rowSpan} colSpan={value.colSpan}> {/* Wraps the entire item in a GridItem with specifed row- and colspan */}
-                            {getItem(value.id, value.type, value.data)}
-                        </GridItem>
-                    )
-                })
-            }
-        </div>
+        <Fragment>
+            <MediaQuery query="(min-width: 800px)">
+                <div className={classNames(classes.subgrid, (props.class === 'fullWidth')? classes.fullWidthStyles : '')} style={gridStyles}>
+                    {(!props.children)? null : 
+                        props.children.map((value, index) => {
+                            return (
+                                <GridItem key={index} rowSpan={value.rowSpan} colSpan={value.colSpan}> {/* Wraps the entire item in a GridItem with specifed row- and colspan */}
+                                    {getItem(value.id, value.type, value.data)}
+                                </GridItem>
+                            )
+                        })
+                    }
+                </div>
+            </MediaQuery>
+            <MediaQuery query="(max-width: 800px)">
+                <div className={classes.subgrid} style={gridStyles}>
+                    {(!props.children)? null : 
+                        props.children.map((value, index) => {
+                            return (
+                                <GridItem key={index} rowSpan={value.rowSpan} colSpan={value.colSpan}> {/* Wraps the entire item in a GridItem with specifed row- and colspan */}
+                                    {getItem(value.id, value.type, value.data)}
+                                </GridItem>
+                            );
+                        })
+                    }
+                </div>
+            </MediaQuery>
+        </Fragment>
     )
 }
 

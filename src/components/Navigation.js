@@ -14,6 +14,7 @@ const styles = {
     root: {
         boxSizing: 'border-box',
         backgroundColor: 'var(--tihlde-blaa)',
+        color: 'white', 
     },
     main: {
         marginTop: 64,

@@ -16,7 +16,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 const styles = {
     root: {
        padding: 10,
-       height: 230,
+       height: 'auto',
     },
 };
 
@@ -56,7 +56,6 @@ class EventList extends Component {
             <Card className={classes.root}>
                 <Grid container direction='row' wrap='nowrap'>
                     <Typography variant='title'>Arrangementer</Typography>
-                   
                 </Grid>
                 <List dense>
                     <Event title='Eksamensfest' location='kontoret' date='20/12' time='18:00'/>
