@@ -20,8 +20,9 @@ const styles ={
     },
 
     button:{
-        marginTop:'90%',
-        marginLeft:'70%'
+        bottom:10,
+        right:10,
+        position:'absolute'
     }
 };
 
@@ -45,7 +46,7 @@ class Paragraph extends Component {
 
     //Method that returns a red or green button depending on if the user has joined the arrangement or not.
     join = () =>{
-        return (!this.state.joined ? <Button color={colors[0]} onClick={this.joining.bind(this)}>Join!</Button>: <Button color={colors[1]} ><strong>Joined!</strong></Button>);
+        return (!this.state.joined ? <Button color={colors[0]} onClick={this.joining.bind(this)} size='large'>Join!</Button>: <Button color={colors[1]} size='large'><strong>Joined!</strong></Button>);
     };
 
     //Changes the state from join to joining. It is joining beacuse it might become (pending) which I will implement in later updates.

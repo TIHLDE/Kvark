@@ -9,30 +9,29 @@ import Poster from '../components/Poster';
 import GridContainer from '../components/Grid/GridContainer';
 import EventList from '../components/EventList';
 import GridItem from '../components/Grid/GridItem';
-import Eksamensfest from '../assets/img/Eksamensfest.jpg'
 
 import {Grid} from '@material-ui/core/';
 
-{/* I you can manage grids, can you please do this in this part of the website. and if you want to change an item or object, just do it.
+{/* I you can manage grids, can you please do this in this part of the website. and if you want to change an item or two, just do it.
+
+plus if you want to see what i have done so far, just place this <Arrangement/> in Landings.
+
+I am far from finished
 
 */}
 
 const styles = {
     root:{
-      backgroundColor:'red',
         height:1000,
-        width:'100%'
+        width:'100%',
+        flexGrow:1
     },
     paragraph:{
-        marginLeft:'40%',
-        marginTop:10,
-        backgroundColor:'blue'
+
     },
     eventlist:{
         width:450,
-        paddingBottom:10,
-        backgroundColor:'yellow',
-        marginLeft:250
+        top:100
     }
 
 };
@@ -45,12 +44,12 @@ class Arrangement extends Component {
             id: props.id,
 
             data_poster:{
-                image: Eksamensfest,
+                image: 'http://paperlief.com/images/abstract-art-black-and-white-faces-wallpaper-2.jpg',
                 header: 'Hello World',
                 subheader: 'This is the best arrangement in the world!!'
             },
             data_Paragraph:{
-                text:'klsdjafø jsdklfj aøsdlkjf ølaksjdf øljkaslødjf døflkj aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd',
+                text:'k aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksdd',
                 subheader:'This is a small header for a small person',
                 joined:false
             }
@@ -68,15 +67,15 @@ class Arrangement extends Component {
             <Fragment>
                 <Navigation/>
                     <Poster data={this.state.data_poster}/>
+                <Grid container className={classes.root} spacing={8} justify='center'>
 
-                <div className={classes.root}>
-                    <div className={classes.paragraph}>
+                    <Grid item className={classes.paragraph}>
                         <Paragraph data={this.state.data_Paragraph}/>
-                    </div>
-                    <div className={classes.eventlist}>
+                    </Grid>
+                    <Grid item  className={classes.eventlist}>
                         <EventList/>
-                    </div>
-                </div>
+                    </Grid>
+                </Grid>
 
             </Fragment>
         );
