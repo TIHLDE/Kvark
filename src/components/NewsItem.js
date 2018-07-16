@@ -36,7 +36,7 @@ const styles = {
         alignItems: 'center',
         padding: '4 10',
     },
-}
+};
 
 class NewsItem extends Component {
 

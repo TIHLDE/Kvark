@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 // Project components
 import Navigation from '../components/Navigation';
 import LayoutGrid from '../components/Grid/LayoutGrid';
+import Arrangements from './Arrangement'
 
 const styles = {
 };
