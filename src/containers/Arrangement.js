@@ -26,12 +26,8 @@ const styles = {
         width:'100%',
         flexGrow:1
     },
-    paragraph:{
-
-    },
     eventlist:{
         width:450,
-        top:100
     }
 
 };
@@ -66,13 +62,17 @@ class Arrangement extends Component {
         return (
             <Fragment>
                 <Navigation/>
-                    <Poster data={this.state.data_poster}/>
+                <Poster data={this.state.data_poster}/>
                 <Grid container className={classes.root} spacing={8} justify='center'>
 
-                    <Grid item className={classes.paragraph}>
+                    <Grid item>
                         <Paragraph data={this.state.data_Paragraph}/>
                     </Grid>
-                    <Grid item  className={classes.eventlist}>
+                    <Grid item xs={16} className={classes.eventlist}>
+                        <EventList/>
+                    </Grid>
+
+                    <Grid item className={classes.eventlist}>
                         <EventList/>
                     </Grid>
                 </Grid>

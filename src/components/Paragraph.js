@@ -39,7 +39,7 @@ class Paragraph extends Component {
         this.joining = this.joining.bind(this);
     }
 
-    //Method that returns a red or green button depending on if the user has joined the arrangement or not.
+    // The metod will return either 1. join! in green. this means that the user can join the event. Que number which shows the user what place in the que he or she is. and lastly joined which means that the user has joined the event and can attend.
     join = () =>{
         if(this.state.waiting === 0 && this.state.joined){
             return (<Button style={{backgroundColor:'lightblue'}} size='large'><strong>Joined!</strong></Button>);
@@ -50,7 +50,7 @@ class Paragraph extends Component {
         }
     };
 
-    //Changes the state from join to joining. It is joining beacuse it might become (pending) which I will implement in later updates.
+    //Changes the state from join to joining. this shows that the user wants to attend the event, but can end up in que.
     joining =() =>{
         console.log("joining!");
       this.setState({
