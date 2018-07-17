@@ -26,18 +26,13 @@ const styles ={
     }
 };
 
-// I want the button to be green when joined, yellow when pending and light blue when you can join. I need internett to see how i can make the Button component these colors and not only secondart primary and so on
-const colors =[
-    'secondary',
-    'primary'
-];
-
 class Paragraph extends Component {
     constructor(props){
         super(props);
         this.state={
             joined: props.joined,
-            pending: props.pending
+            waiting: props.waiting,
+
         };
 
         this.join= this.join.bind(this);
@@ -46,7 +41,13 @@ class Paragraph extends Component {
 
     //Method that returns a red or green button depending on if the user has joined the arrangement or not.
     join = () =>{
-        return (!this.state.joined ? <Button color={colors[0]} onClick={this.joining.bind(this)} size='large'>Join!</Button>: <Button color={colors[1]} size='large'><strong>Joined!</strong></Button>);
+        if(this.state.waiting === 0 && this.state.joined){
+            return (<Button style={{backgroundColor:'lightblue'}} size='large'><strong>Joined!</strong></Button>);
+        } else if (this.state.waiting !== 0 && this.state.joined){
+           return (<Button style={{backgroundColor:'lightyellow'}} size='large'><strong>Que number : {this.state.waiting}</strong></Button>);
+        }else{
+          return (<Button style={{backgroundColor:'lightgreen'}} onClick={this.joining.bind(this)} size='large'>Join!</Button>);
+        }
     };
 
     //Changes the state from join to joining. It is joining beacuse it might become (pending) which I will implement in later updates.
@@ -59,7 +60,6 @@ class Paragraph extends Component {
 
     render() {
         const {data, classes} = this.props;
-
 
         return(
         <Paper className={classes.root}>
@@ -91,7 +91,7 @@ Paragraph.defaultProps={
     text: 'No paragraph',
     joined: false,
     subheader: 'no subheader',
-    pending: -1,
+    waiting: 2,
 };
 
 
