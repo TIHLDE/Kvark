@@ -6,28 +6,29 @@ import PropTypes from 'prop-types';
 import Navigation from '../components/Navigation';
 import Paragraph from '../components/Paragraph';
 import Poster from '../components/Poster';
-import GridContainer from '../components/Grid/GridContainer';
 import EventList from '../components/EventList';
-import GridItem from '../components/Grid/GridItem';
+import Details from '../components/Details'
 
-import {Grid} from '@material-ui/core/';
+import {Grid,Button} from '@material-ui/core/';
 
-{/* I you can manage grids, can you please do this in this part of the website. and if you want to change an item or two, just do it.
-
-plus if you want to see what i have done so far, just place this <Arrangement/> in Landings.
-
-I am far from finished
-
-*/}
 
 const styles = {
     root:{
         height:1000,
         width:'100%',
-        flexGrow:1
+        flexGrow:1,
+        backgroundColor:'red'
     },
     eventlist:{
         width:450,
+    },
+    container:{
+        width: 600,
+        backgroundColor:'blue'
+    },
+    hello:{
+        marginLeft: 100,
+        marginBottom: 300
     }
 
 };
@@ -37,7 +38,7 @@ class Arrangement extends Component {
         super(props);
 
         this.state={
-            id: props.id,
+            id: 1,
 
             data_poster:{
                 image: 'http://paperlief.com/images/abstract-art-black-and-white-faces-wallpaper-2.jpg',
@@ -47,15 +48,46 @@ class Arrangement extends Component {
             data_Paragraph:{
                 text:'k aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksdd',
                 subheader:'This is a small header for a small person',
-                joined:false
+                joined:false,
+                waiting:1,
             }
-        }
+        };
+
+        this.join = this.join.bind(this);
+        this.joining =  this.joining.bind(this);
     }
+
+    //TODO: maybe put this in another class instead of having it here
+    join = () =>{
+        let waitingnr = this.state.data_Paragraph.waiting;
+        let joined = this.state.data_Paragraph.joined;
+
+        if(waitingnr  === 0 && joined){
+            return (<Button style={{backgroundColor:'lightblue'}} size='large'><strong>Joined!</strong></Button>);
+
+        } else if (waitingnr !== 0 && joined){
+            return (<Button style={{backgroundColor:'lightyellow'}} size='large'><strong>Que number : {waitingnr}</strong></Button>);
+
+        }else{
+            return (<Button style={{backgroundColor:'lightgreen'}} onClick={this.joining.bind(this)} size='large'>Join!</Button>);
+        }
+    };
+
+    //TODO: Fix so it will affect only joined
+    joining =() =>{
+        console.log(this.state.data_Paragraph.joined);
+
+        this.setState((prev) => {
+
+            }
+        )
+    };
 
     componentDidMount(){
         //get data here
     }
 
+    //TODO: Make so the Gridsystem work normal.
     render() {
         const {classes} = this.props;
 
@@ -63,17 +95,19 @@ class Arrangement extends Component {
             <Fragment>
                 <Navigation/>
                 <Poster data={this.state.data_poster}/>
-                <Grid container className={classes.root} spacing={8} justify='center'>
-
-                    <Grid item>
-                        <Paragraph data={this.state.data_Paragraph}/>
-                    </Grid>
-                    <Grid item xs={16} className={classes.eventlist}>
-                        <EventList/>
-                    </Grid>
-
-                    <Grid item className={classes.eventlist}>
-                        <EventList/>
+                <Grid container className={classes.root} alignContent='space-around' direction='row' justify='space-between'>
+                    <Grid item className={classes.container}>
+                        <Grid item>
+                            <Paragraph data={this.state.data_Paragraph} join={this.join()}/>
+                        </Grid>
+                        <Grid item className={classes.container} >
+                            <Grid className={classes.eventlist}>
+                                <EventList/>
+                            </Grid>
+                            <Grid item className={classes.hello}>
+                                <Details/>
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </Grid>
 
