@@ -39,7 +39,9 @@ class Navigation extends Component {
                 <AppBar className={classes.root} position="fixed" color="default">
                     <Toolbar>
                         <div style={{ flexGrow: 1 }}>
+                            <Link to='/'>
                             <img src={TIHLDELOGO} alt='logo' height='30em'/>
+                            </Link>
                         </div>
                         <Link to='/undergrupper/' style={{ textDecoration: 'none' }}>
                             <Button color="inherit" style={{
