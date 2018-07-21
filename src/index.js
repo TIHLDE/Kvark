@@ -26,3 +26,4 @@ render(
 console.log('Snoker rundt du? Det liker vi. Vi i Nettkom ser alltid etter nye medlemmer.');
 
 // <Route exact path='/william/' component={Jodel}/> jodel container finnes ikke enda
+ 
