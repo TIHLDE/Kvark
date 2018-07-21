@@ -29,7 +29,7 @@ const styles = theme => ({
         backgroundColor: '#FBFBFB'
     },
     paper: {
-        padding: theme.spacing.unit,
+        padding: theme.spacing.unit * 3,
         color: theme.palette.text.secondary,
         minWidth: '250px !important',
         marginBottom: theme.spacing.unit,
@@ -56,15 +56,20 @@ class Companies extends Component {
 
             <div className={classes.container}>
                 <div style={{ gridColumnEnd: 'span 12', gridRow: 1 }}>
-                    <Typography variant='title'>Vil du komme i kontakt med våre studenter?</Typography>
-                    <Typography variant='body2'>
+                    <Typography variant='title' style={{fontSize: '2em'}}><strong>Vil du komme i kontakt med våre studenter?</strong></Typography>
+                    <Typography variant='body2' style={{ fontSize: '1.2em' }}>
                         Hvert år finner TIHLDE-studenter jobber i attraktive bedrifter landet over. For å få studentene inn i nettopp din bedrift tilbyr vi bedriftspresentasjoner og posting av stillingsannonser på våre sider.
                     </Typography>
                 </div>
-                <div style={{ gridColumnEnd: 'span 12', padding: '100px 0' }}>
-                    <Typography variant='title'>Høres dette intressant ut? Send <a href='mailto:orakel@tihlde.org'>oss</a> en mail da :) </Typography>
-                </div>
             </div>
+            <div className={classes.wrapper}> <div className={classes.container}>
+        
+                <div style={{ gridColumnEnd: 'span 12', padding: '100px 0' }}>
+                    <Paper className={classes.paper}>
+                        <Typography variant='title'>Høres dette intressant ut? Send <a href='mailto:orakel@tihlde.org'>oss</a> en mail </Typography>
+                    </Paper>
+                </div>
+            </div></div>
 
                 <div className={classes.container}>
                     <div style={{ gridColumnEnd: 'span 6', gridRow: 1 }}>
@@ -133,10 +138,16 @@ class Companies extends Component {
                         TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.
                     </Typography>
                 </div>
-                <div style={{ gridColumnEnd: 'span 12', padding: '100px 0' }}>
-                        <Typography variant='title'>Høres dette intressant ut? Send <a href='mailto:orakel@tihlde.org'>oss</a> en mail da :) </Typography>
-                </div>
             </div>
+
+            <div className={classes.wrapper}> <div className={classes.container}>
+
+                <div style={{ gridColumnEnd: 'span 12', padding: '100px 0' }}>
+                    <Paper className={classes.paper}>
+                        <Typography variant='title'>Høres dette intressant ut? Send <a href='mailto:orakel@tihlde.org'>oss</a> en mail da </Typography>
+                    </Paper>
+                </div>
+            </div></div>
 
         </Navigation>
     }
