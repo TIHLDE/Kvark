@@ -6,6 +6,8 @@ import {withStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import Link from 'react-router-dom/Link';
 
 // Assets
 import TIHLDELOGO from '../assets/img/tihldeLogo.png';
@@ -15,6 +17,7 @@ const styles = {
         boxSizing: 'border-box',
         backgroundColor: 'var(--tihlde-blaa)',
         color: 'white', 
+        flexGrow: 1,
     },
     main: {
         marginTop: 64,
@@ -35,7 +38,21 @@ class Navigation extends Component {
             <Fragment>
                 <AppBar className={classes.root} position="fixed" color="default">
                     <Toolbar>
-                        <img src={TIHLDELOGO} alt='logo' height='30em'/>
+                        <div style={{ flexGrow: 1 }}>
+                            <img src={TIHLDELOGO} alt='logo' height='30em'/>
+                        </div>
+                        <Link to='/undergrupper/' style={{ textDecoration: 'none' }}>
+                            <Button color="inherit" style={{
+                                color: 'white',
+                            }}>Undergrupper</Button>
+                        </Link>
+                        <Link to='/bedrifter/' style={{ textDecoration: 'none' }}>
+                            <Button color="inherit" style={{
+                                color: 'var(--tihlde-blaa)',
+                                backgroundColor: 'white',
+                                textDecoration: 'none',
+                            }}>Bedrifter</Button>
+                        </Link>
                     </Toolbar>
                 </AppBar>
                 <main className={classes.main}>
