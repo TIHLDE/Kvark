@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import Navigation from '../components/Navigation';
 import Paragraph from '../components/Paragraph';
 import Poster from '../components/Poster';
-import GridContainer from '../components/Grid/GridContainer';
 import EventList from '../components/EventList';
 import GridItem from '../components/Grid/GridItem';
 

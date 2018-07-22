@@ -85,7 +85,7 @@ class NewsPage extends Component {
                             <div className={classes.description}>
                                 <Grid container direction='row' wrap='nowrap' spacing={16}>
                                     <Avatar className={classes.avatar}>W</Avatar>
-                                    <Grid item container direction='column' wrap='norwrap' justify='flex-end'>
+                                    <Grid item container direction='column' wrap='nowrap' justify='flex-end'>
                                         <Typography variant='caption'>Skrevet av: {this.state.author}</Typography>
                                         <Typography variant='caption'>Sist oppdatert: {this.state.timeLastUpdated}</Typography>
                                     </Grid>
