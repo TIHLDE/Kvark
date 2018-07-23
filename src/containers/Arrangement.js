@@ -82,11 +82,11 @@ class Arrangement extends Component {
                 <Navigation/>
                 <Poster data={this.state.data_poster}/>
                 <div className={classes.root}>
-                    <Grid container spacing={24}>
+                    <Grid container spacing={8}>
                         <Grid item xs={12} sm={6}>
                             <Paragraph data={this.state.data_Paragraph} join={this.join()}/>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={6} spacing={8}>
                             <Grid>
                                 <Details/>
                             </Grid>

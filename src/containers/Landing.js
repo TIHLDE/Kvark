@@ -13,9 +13,9 @@ const styles = {
 class Landing extends Component {
     render() {
         return (
-            <Navigation>
-                <LayoutGrid/>
-            </Navigation>
+          <Navigation>
+              <LayoutGrid/>
+          </Navigation>
         );
     }
 }
