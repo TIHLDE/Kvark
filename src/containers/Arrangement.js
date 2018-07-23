@@ -6,30 +6,16 @@ import PropTypes from 'prop-types';
 import Navigation from '../components/Navigation';
 import Paragraph from '../components/Paragraph';
 import Poster from '../components/Poster';
-import EventList from '../components/EventList';
 import Details from '../components/Details'
+import {Grid, Button, Paper} from '@material-ui/core/';
 
-import {Grid,Button} from '@material-ui/core/';
 
 
 const styles = {
     root:{
-        height:1000,
-        width:'100%',
-        flexGrow:1,
-        backgroundColor:'red'
+        backgroundColor:'lightgray',
+        flexGrow:-1,
     },
-    eventlist:{
-        width:450,
-    },
-    container:{
-        width: 600,
-        backgroundColor:'blue'
-    },
-    hello:{
-        marginLeft: 100,
-        marginBottom: 300
-    }
 
 };
 
@@ -46,7 +32,7 @@ class Arrangement extends Component {
                 subheader: 'This is the best arrangement in the world!!'
             },
             data_Paragraph:{
-                text:'k aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksdd',
+                text:'k aølskjdf kaølskjjfasdf asdf asdf asdf asdf asdf asdf asdf asdf asdf as dfa sioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksdd end',
                 subheader:'This is a small header for a small person',
                 joined:false,
                 waiting:1,
@@ -95,21 +81,23 @@ class Arrangement extends Component {
             <Fragment>
                 <Navigation/>
                 <Poster data={this.state.data_poster}/>
-                <Grid container className={classes.root} alignContent='space-around' direction='row' justify='space-between'>
-                    <Grid item className={classes.container}>
-                        <Grid item>
+                <div className={classes.root}>
+                    <Grid container spacing={24}>
+                        <Grid item xs={12} sm={6}>
                             <Paragraph data={this.state.data_Paragraph} join={this.join()}/>
                         </Grid>
-                        <Grid item className={classes.container} >
-                            <Grid className={classes.eventlist}>
-                                <EventList/>
+                        <Grid item xs={12} sm={6}>
+                            <Grid>
+                                <Details/>
                             </Grid>
-                            <Grid item className={classes.hello}>
+                            <Grid>
                                 <Details/>
                             </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
+
+                </div>
+
 
             </Fragment>
         );

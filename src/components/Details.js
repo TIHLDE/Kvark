@@ -4,17 +4,18 @@ import {withStyles} from '@material-ui/core/styles';
 
 import {Grid, Typography, Button, Paper} from '@material-ui/core/';
 
-
+{/* This class shows the details over when and where the arrangements are. it will also show Who is in change and how to contact them*/}
 const styles ={
     root:{
-        width:450,
-        height: 150,
+        width:550,
+        height: 200,
 
     },
     wrapper:{
         width:'90%',
         height:'90%',
         margin:'auto',
+        paddingTop:20
     },
     item:{
         width:'33%',

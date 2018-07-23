@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 
-import {Grid, Typography, Button, Paper} from '@material-ui/core/';
+import {Grid, Typography, Paper} from '@material-ui/core/';
 
 {/* If you want to implement grid then go ahead!
 La oss gøre denne om til en SLC,
@@ -12,22 +12,17 @@ Kan gjøre hvis man hoverer over så vil knappen bli rød og man kan forlate.
 
 const styles ={
     root:{
-      height:650,
-      width: 450,
-      position:'relative',
+        minHeight:400,
+        height:'auto',
+        width: 'auto',
+        position:'relative',
     },
-    wrapper:{
-        paddingLeft:10,
-        paddingBottom:10,
-        paddingTop:20,
-        paddingRight:10
-    },
-
     button:{
-        bottom:10,
-        right:10,
-        position:'absolute'
+        position:'absolute',
+        bottom:20,
+        right:20
     }
+
 };
 
 class Paragraph extends Component {
@@ -38,22 +33,22 @@ class Paragraph extends Component {
 
         return(
         <Paper className={classes.root}>
-            <div className={classes.wrapper}>
-            <Grid container direction='column' wrap='nowrap' justify='center'>
-                <Typography color='inherit' variant='title'>
-                    <strong>
+            <Grid container direction='column' justify='space-around' alignItems='stretch' >
+                <Grid item>
+                    <Typography>
                         {data.subheader}
-                    </strong>
-                </Typography>
-                <br/>
-                <Typography color='inherit'>
-                    {data.text}
-                </Typography>
+                    </Typography>
+                    <br/>
+                    <Typography>
+                        {data.text}
+                    </Typography>
+                </Grid>
+                <Grid item >
+                    <div className={classes.button}>
+                        {join}
+                    </div>
+                </Grid>
             </Grid>
-            <Grid className={classes.button}>
-                {join}
-            </Grid>
-            </div>
         </Paper>
     )}
 }
