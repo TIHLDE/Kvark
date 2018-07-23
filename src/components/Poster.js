@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 
 const styles = {
     root: {
+        backgroundColor: 'whitesmoke',
         width: '100%',
         margin: 'auto',
         minHeight: '200px',
@@ -21,10 +22,16 @@ const styles = {
         height: 500,
         overflow: 'hidden',
         margin: 0,
-        position: 'relative',
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        marginBottom: '-100px',
+        
+       
+        zIndex: 0,
 
         '@media only screen and (max-width: 600px)': {
-            height: 'auto',
+            height: 300,
         }
     },
     
@@ -33,7 +40,7 @@ const styles = {
         top: '50%',
         transform: 'translateY(-50%)',
         width: '100%',
-        zIndex: '-1',
+        zIndex: '0',
 
         '@media only screen and (max-width: 800px)': {
             position: 'relative',
@@ -43,6 +50,7 @@ const styles = {
         }
     },
     textContainer: {
+        zIndex: 2,
         '@media only screen and (max-width: 800px)': {
             position: 'absolute',
             top: '25%',

@@ -15,9 +15,13 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 const styles = {
     root: {
-       padding: 10,
-       height: 'auto',
+        zIndex: 10,
+        height: 300,
     },
+    wrapper: {
+        width: 'auto',
+        padding: 10,
+    }
 };
 
 const Event = (props) => (
@@ -54,15 +58,18 @@ class EventList extends Component {
 
         return (
             <Card className={classes.root}>
-                <Grid container direction='row' wrap='nowrap'>
-                    <Typography variant='title'>Arrangementer</Typography>
-                </Grid>
-                <List dense>
-                    <Event title='Eksamensfest' location='kontoret' date='20/12' time='18:00'/>
-                    <Event title='Generalforsamiling' location='U302' date='20/12' time='18:00'/>
-                    <Event title='Immefest' location='Sukkerhuset' date='20/12' time='18:00'/>
-                    <Event title='Fadderuke' location='over alt' date='20/12' time='18:00'/>
-                </List>
+                <div className={classes.wrapper}>
+                    <Grid container direction='row' wrap='nowrap'>
+                        <Typography variant='title'>Arrangementer</Typography>
+                    </Grid>
+                    <List dense>
+                        <Event title='Eksamensfest' location='kontoret' date='20/12' time='18:00'/>
+                        <Event title='Generalforsamiling' location='U302' date='20/12' time='18:00'/>
+                        <Event title='Immefest' location='Sukkerhuset' date='20/12' time='18:00'/>
+                        <Event title='Fadderuke' location='over alt' date='20/12' time='18:00'/>
+                        <Event title='Latex Kurs' location='over alt' date='20/12' time='18:00'/>
+                    </List>
+                </div>
             </Card>
         );
     }
