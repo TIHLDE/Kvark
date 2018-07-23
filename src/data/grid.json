@@ -4,20 +4,22 @@
     "gridColumns": 4,
     "children": [
         {
+            "id": "34534gfse4t43sdfg",
             "type": "POSTER",
             "data":{
-            "header":"Linjeforeningen TIHLDE",
-            "subheader":"Dataingeniør, Drift av Datasystemer og IT-støttet Bedriftsutvikling",
-            "image":"https://hdbackgroundspot.com//storage/upload/abstract-white-background/abstract-white-background-1.jpg",
-            "color":"#1D448C"
+                "header":"Linjeforeningen TIHLDE",
+                "subheader":"Dataingeniør, Drift av Datasystemer og IT-støttet Bedriftsutvikling",
+                "image":"https://hdbackgroundspot.com//storage/upload/abstract-white-background/abstract-white-background-1.jpg",
+                "color":"#1D448C"
             },
             "colSpan": 1,
             "rowSpan": 1
         },
         {
-            "type": "EVENTLIST", "data": [], "colSpan": 3, "rowSpan": 1
+            "id": "34534gfse4t43sdfg", "type": "EVENTLIST", "data": [], "colSpan": 3, "rowSpan": 1
         },
         {
+            "id": "34534gfse4t43sdfg",
             "type": "NEWS",
             "data": {
                 "title": "Eksamensfest!",
@@ -27,6 +29,7 @@
             "rowSpan": 1
         },
         {
+            "id": "34534gfse4t43sdfg",
             "type": "NEWS",
             "data": {
                 "title": "Mørket skremmer mange hver eneste dag",
@@ -36,6 +39,7 @@
             "rowSpan": 1
         },
         {
+            "id": "34534gfse4t43sdfg",
             "type": "NEWS",
             "data": {
                 "title": "Eksamensfest!",
@@ -45,6 +49,7 @@
             "rowSpan": 1
         },
         {
+            "id": "34534gfse4t43sdfg",
             "type": "NEWS",
             "data": {
                 "title": "Mørket skremmer mange hver eneste dag",
@@ -54,17 +59,21 @@
             "rowSpan": 1
         },
         {
+            "id": "34534gfse4t43sdfg",
             "type": "POSTER",
             "data":{
-            "header":"Linjeforeningen TIHLDE",
-            "subheader":"Dataingeniør, Drift av Datasystemer og IT-støttet Bedriftsutvikling",
-            "image":"https://hdbackgroundspot.com//storage/upload/abstract-white-background/abstract-white-background-1.jpg",
-            "color":"#1D448C"
+                "header":"Meld deg på TIHLDE verv!",
+                "image":"https://hdbackgroundspot.com//storage/upload/abstract-white-background/abstract-white-background-1.jpg",
+                "subheader": "TIHLDE tilbyr forskjellige verv som Drift, Sosialen, Promo...osv",
+                "color":"#1D448C",
+                "action": "/nyheter/34534gfse4t43sdfg",
+                "actionText": "Meld deg på"
             },
             "colSpan": 1,
             "rowSpan": 1
         },
         {
+            "id": "34534gfse4t43sdfg",
             "type": "NEWS",
             "data": {
                 "title": "Mørket skremmer mange hver eneste dag",
@@ -74,6 +83,7 @@
             "rowSpan": 1
         },
         {
+            "id": "34534gfse4t43sdfg",
             "type": "NEWS",
             "data": {
                 "title": "Mørket skremmer mange hver eneste dag",

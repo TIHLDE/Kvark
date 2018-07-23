@@ -7,6 +7,7 @@ import './assets/css/index.css';
 // Project containers
 import Landing from './containers/Landing';
 import NewsPage from './containers/NewsPage';
+import ArrangementPage from './containers/Arrangement';
 import Groups from './containers/Groups';
 import Companies from './containers/Companies';
 
@@ -15,7 +16,8 @@ render(
     <BrowserRouter>
         <Switch>
             <Route exact path='/' component={Landing}/>
-            <Route path='/nyheter/' component={NewsPage}/>
+            <Route path='/nyheter/:id' component={NewsPage}/>
+            <Route path='/arrangementer/' component={ArrangementPage}/>
             <Route path='/undergrupper/' component={Groups} />
             <Route path='/bedrifter/' component={Companies} />
         </Switch>

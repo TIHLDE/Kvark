@@ -64,10 +64,9 @@ class Arrangement extends Component {
 
         return (
             <Fragment>
-                <Navigation/>
+                <Navigation>
                     <Poster data={this.state.data_poster}/>
-                <Grid container className={classes.root} spacing={8} justify='center'>
-
+                    <Grid container className={classes.root} spacing={8} justify='center'>
                     <Grid item className={classes.paragraph}>
                         <Paragraph data={this.state.data_Paragraph}/>
                     </Grid>
@@ -75,6 +74,7 @@ class Arrangement extends Component {
                         <EventList/>
                     </Grid>
                 </Grid>
+            </Navigation>
 
             </Fragment>
         );

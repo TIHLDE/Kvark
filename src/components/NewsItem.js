@@ -49,8 +49,8 @@ class NewsItem extends Component {
         const {classes, data} = this.props;
 
         return (
-            <Paper className={classes.card}>
-                <Link to='/nyheter'>
+            <Paper className={classes.card} square={true}>
+                <Link to={'/nyheter/' + this.props.id}>
                 {(data.image)?
                 <img className={classes.image} src={data.image} alt='news'/>
                 :
