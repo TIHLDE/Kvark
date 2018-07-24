@@ -4,18 +4,15 @@ import {withStyles} from '@material-ui/core/styles';
 
 import {Grid, Typography, Paper} from '@material-ui/core/';
 
-{/* If you want to implement grid then go ahead!
-La oss gøre denne om til en SLC,
-Kan gjøre hvis man hoverer over så vil knappen bli rød og man kan forlate.
-
-*/}
-
 const styles ={
     root:{
-        minHeight:400,
+        minHeight:420,
         height:'auto',
         width: 'auto',
         position:'relative',
+        '@media only screen and (max-width: 600px)': {
+            width: '100%',
+        }
     },
     button:{
         position:'absolute',

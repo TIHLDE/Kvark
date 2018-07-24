@@ -7,8 +7,11 @@ import {Grid, Typography, Button, Paper} from '@material-ui/core/';
 {/* This class shows the details over when and where the arrangements are. it will also show Who is in change and how to contact them*/}
 const styles ={
     root:{
-        width:550,
+        width:'70%',
         height: 200,
+        '@media only screen and (max-width: 600px)': {
+            width: '100%',
+        }
 
     },
     wrapper:{
