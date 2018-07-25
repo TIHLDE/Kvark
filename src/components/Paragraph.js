@@ -2,83 +2,53 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 
-import {Grid, Typography, Button, Paper} from '@material-ui/core/';
+import {Grid, Typography, Paper} from '@material-ui/core/';
 
-{/* If you want to implement grid then go ahead! */}
+{/* If you want to implement grid then go ahead!
+La oss gøre denne om til en SLC,
+Kan gjøre hvis man hoverer over så vil knappen bli rød og man kan forlate.
+
+*/}
 
 const styles ={
     root:{
-      height:650,
-      width: 450,
-      position:'relative',
+        minHeight:400,
+        height:'auto',
+        width: 'auto',
+        position:'relative',
     },
-    wrapper:{
-        paddingLeft:10,
-        paddingBottom:10,
-        paddingTop:20,
-        paddingRight:10
-    },
-
     button:{
-        bottom:10,
-        right:10,
-        position:'absolute'
+        position:'absolute',
+        bottom:20,
+        right:20
     }
+
 };
 
-// I want the button to be green when joined, yellow when pending and light blue when you can join. I need internett to see how i can make the Button component these colors and not only secondart primary and so on
-const colors =[
-    'secondary',
-    'primary'
-];
-
 class Paragraph extends Component {
-    constructor(props){
-        super(props);
-        this.state={
-            joined: props.joined,
-            pending: props.pending
-        };
-
-        this.join= this.join.bind(this);
-        this.joining = this.joining.bind(this);
-    }
-
-    //Method that returns a red or green button depending on if the user has joined the arrangement or not.
-    join = () =>{
-        return (!this.state.joined ? <Button color={colors[0]} onClick={this.joining.bind(this)} size='large'>Join!</Button>: <Button color={colors[1]} size='large'><strong>Joined!</strong></Button>);
-    };
-
-    //Changes the state from join to joining. It is joining beacuse it might become (pending) which I will implement in later updates.
-    joining =() =>{
-        console.log("joining!");
-      this.setState({
-          joined: true
-      })
-    };
+    // The metod will return either 1. join! in green. this means that the user can join the event. Que number which shows the user what place in the que he or she is. and lastly joined which means that the user has joined the event and can attend.
 
     render() {
-        const {data, classes} = this.props;
-
+        const {join, data, classes} = this.props;
 
         return(
         <Paper className={classes.root}>
-            <div className={classes.wrapper}>
-            <Grid container direction='column' wrap='nowrap' justify='center'>
-                <Typography color='inherit' variant='title'>
-                    <strong>
+            <Grid container direction='column' justify='space-around' alignItems='stretch' >
+                <Grid item>
+                    <Typography>
                         {data.subheader}
-                    </strong>
-                </Typography>
-                <br/>
-                <Typography color='inherit'>
-                    {data.text}
-                </Typography>
+                    </Typography>
+                    <br/>
+                    <Typography>
+                        {data.text}
+                    </Typography>
+                </Grid>
+                <Grid item >
+                    <div className={classes.button}>
+                        {join}
+                    </div>
+                </Grid>
             </Grid>
-            <Grid className={classes.button}>
-                {this.join()}
-            </Grid>
-            </div>
         </Paper>
     )}
 }
@@ -89,9 +59,9 @@ Text.propTypes={
 
 Paragraph.defaultProps={
     text: 'No paragraph',
-    joined: false,
+    joined: true,
     subheader: 'no subheader',
-    pending: -1,
+    waiting: -1,
 };
 
 
