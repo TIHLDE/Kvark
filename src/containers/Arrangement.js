@@ -13,8 +13,26 @@ import {Grid, Button, Paper} from '@material-ui/core/';
 
 const styles = {
     root:{
-        backgroundColor:'lightgray',
-        flexGrow:-1,
+        backgroundColor:'whitesmoke',
+        margin:'auto'
+    },
+    image:{
+        backgroundColor: 'whitesmoke',
+        width: '100%',
+        height: 500,
+
+        '@media only screen and (max-width: 600px)': {
+            height: 300,
+        }
+    },
+    cell:{
+        paddingBottom:20,
+        width:'70%',
+
+        '@media only screen and (max-width: 600px)': {
+            width: '100%',
+        }
+
     },
 
 };
@@ -25,14 +43,12 @@ class Arrangement extends Component {
 
         this.state={
             id: 1,
+            img: 'https://static1.squarespace.com/static/5ae0420bec4eb743393f6d69/t/5ae07506562fa79909cc219b/1525247692097/?format=2500w',
 
-            data_poster:{
-                image: 'http://paperlief.com/images/abstract-art-black-and-white-faces-wallpaper-2.jpg',
-                header: 'Hello World',
-                subheader: 'This is the best arrangement in the world!!'
-            },
             data_Paragraph:{
-                text:'k aølskjdf kaølskjjfasdf asdf asdf asdf asdf asdf asdf asdf asdf asdf as dfa sioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksd aølskjdf kaølskj alsdkfj lajsdkløsdjfioajiognaoisndfij iajsdfkljaøksdjflkj øakfjaøiwjefølksdd end',
+                text:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed urna elit, finibus in eros vel, hendrerit faucibus ipsum. Nullam egestas libero eu mi ullamcorper gravida. Integer sed lorem a metus finibus varius consequat ac ligula. Duis et leo eu magna accumsan pulvinar. Donec id quam at sem tempor dictum. Nam feugiat congue odio, vel volutpat est consectetur in. Pellentesque sodales convallis sapien, vitae porttitor elit blandit non. Morbi quis aliquam lacus.\n' +
+                '\n' +
+                'Pellentesque volutpat lorem nec porttitor suscipit. Donec ac vulputate nisi. Etiam at ligula dolor. Morbi risus urna, dignissim eu pellentesque ac, feugiat egestas lorem. Donec mollis dolor sed ex mollis, quis iaculis risus varius. Aliquam faucibus dui et augue convallis consectetur id sit amet nibh. Aliquam malesuada gravida ex, id lobortis velit tempor sed. Sed malesuada leo nulla, in commodo dolor dignissim a. Curabitur sit amet ante mattis ipsum faucibus commodo. Fusce ac fringilla metus. Aliquam volutpat aliquet dui eget dapibus. Curabitur laoreet ultricies est. Quisque pulvinar, lacus sed mollis lacinia, ipsum lectus sagittis sapien, non volutpat diam dolor quis nunc. Aenean non sapien rutrum, pharetra nunc at, rhoncus magna. Etiam ligula nisi, consequat non egestas at, interdum ut mauris.',
                 subheader:'This is a small header for a small person',
                 joined:false,
                 waiting:1,
@@ -59,7 +75,6 @@ class Arrangement extends Component {
         }
     };
 
-    //TODO: Fix so it will affect only joined
     joining =() =>{
         console.log(this.state.data_Paragraph.joined);
 
@@ -73,33 +88,32 @@ class Arrangement extends Component {
         //get data here
     }
 
-    //TODO: Make so the Gridsystem work normal.
     render() {
         const {classes} = this.props;
 
         return (
-            <Fragment>
-                <Navigation>
-                <Poster data={this.state.data_poster}/>
+            <Navigation>
                 <div className={classes.root}>
-                    <Grid container spacing={8}>
-                        <Grid item xs={12} sm={6}>
-                            <Paragraph data={this.state.data_Paragraph} join={this.join()}/>
+                    <Grid container spacing={16}>
+                        <Grid item className={classes.image}>
+                            <img style={{width:'100%', height:'100%'}} src={this.state.img} alt='Missing image'/>
                         </Grid>
-                        <Grid item xs={12} sm={6} spacing={8}>
-                            <Grid>
+                        <Grid item xs={12} sm={6} >
+                            <Paragraph data={this.state.data_Paragraph} join={this.join()} style={{backgroundColor:'red'}}/>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Grid item className={classes.cell}>
                                 <Details/>
                             </Grid>
-                            <Grid>
+                            <Grid item className={classes.cell}>
                                 <Details/>
                             </Grid>
+                        </Grid>
+                        <Grid >
                         </Grid>
                     </Grid>
-
                 </div>
             </Navigation>
-
-            </Fragment>
         );
     }
 }
