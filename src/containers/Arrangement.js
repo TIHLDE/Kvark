@@ -26,7 +26,13 @@ const styles = {
         }
     },
     cell:{
-        paddingBottom:20
+        paddingBottom:20,
+        width:'70%',
+
+        '@media only screen and (max-width: 600px)': {
+            width: '100%',
+        }
+
     },
 
 };
@@ -88,14 +94,14 @@ class Arrangement extends Component {
         return (
             <Navigation>
                 <div className={classes.root}>
-                    <Grid container spacing={16} justify='center'>
+                    <Grid container spacing={16}>
                         <Grid item className={classes.image}>
                             <img style={{width:'100%', height:'100%'}} src={this.state.img} alt='Missing image'/>
                         </Grid>
                         <Grid item xs={12} sm={6} >
                             <Paragraph data={this.state.data_Paragraph} join={this.join()} style={{backgroundColor:'red'}}/>
                         </Grid>
-                        <Grid item xs={12} sm={6} justify='space-between'>
+                        <Grid item xs={12} sm={6}>
                             <Grid item className={classes.cell}>
                                 <Details/>
                             </Grid>

@@ -2,17 +2,17 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 
-import {Grid, Typography, Button, Paper} from '@material-ui/core/';
+import {Grid, Typography, Avatar, Paper} from '@material-ui/core/';
+
+import Facebook from '../assets/img/facebook_icon.ico'
 
 {/* This class shows the details over when and where the arrangements are. it will also show Who is in change and how to contact them*/}
 const styles ={
     root:{
-        width:'70%',
+        width:'auto',
         height: 200,
-        '@media only screen and (max-width: 600px)': {
-            width: '100%',
-        }
-
+        backgroundColor:'lightblue',
+        justifyContent:'center',
     },
     wrapper:{
         width:'90%',
@@ -20,10 +20,10 @@ const styles ={
         margin:'auto',
         paddingTop:20
     },
-    item:{
-        width:'33%',
-        textAlign:'center'
-
+    item: {
+        width: '33%',
+        textAlign: 'center',
+        backgroundColor:'red'
     }
 };
 
@@ -37,14 +37,20 @@ class Details extends Component {
                 <Grid container className={classes.wrapper} alignContent='stretch' justify='space-between'
                       direction='row'>
                     <Grid className={classes.item}>
-                        <Typography>Når</Typography>
+                        <Typography color='primary' variant='title'>Når :</Typography>
                         <br/>
-                        <Typography>nå</Typography>
+                        <br/>
+                        <Typography color='primary' variant='title'> Hvor: </Typography>
                     </Grid>
                     <Grid className={classes.item}>
-                        <Typography>
 
-                        </Typography>
+                        <Avatar alt='facebook_Image' src={Facebook}/>
+                    </Grid>
+                    <Grid className={classes.item}>
+                        <Typography color='primary' variant='title'> Forfatter: </Typography>
+                        <br/>
+                        <br/>
+                        <Typography color='primary' variant='title'> Plasser: </Typography>
                     </Grid>
                 </Grid>
             </Paper>
