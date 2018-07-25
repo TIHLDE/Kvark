@@ -38,19 +38,25 @@ class Details extends Component {
                       direction='row'>
                     <Grid className={classes.item}>
                         <Typography color='primary' variant='title'>Når :</Typography>
-                        <br/>
+                        <Typography color='primary' variant ='subheading'>21. juni</Typography>
+                        <Typography color='primary' variant ='subheading'> 18:00</Typography>
                         <br/>
                         <Typography color='primary' variant='title'> Hvor: </Typography>
+                        <Typography color='primary' variant ='subheading'>steinberg 21</Typography>
                     </Grid>
                     <Grid className={classes.item}>
-
-                        <Avatar alt='facebook_Image' src={Facebook}/>
+                        <Typography color='primary' variant='title'> Hva: </Typography>
+                        <Typography color='primary' variant ='subheading'>Bedriftpresentasjon</Typography>
+                        <br/>
+                        <a href='https://www.facebook.com'><Avatar alt='facebook_Image' src={Facebook} className={{ margin:101}} /></a>
                     </Grid>
                     <Grid className={classes.item}>
                         <Typography color='primary' variant='title'> Forfatter: </Typography>
-                        <br/>
+                        <Typography color='primary' variant ='subheading'>Chetan Bhagat</Typography>
+                        <Typography color='primary' variant ='subheading'>dataingeniør</Typography>
                         <br/>
                         <Typography color='primary' variant='title'> Plasser: </Typography>
+                        <Typography color='primary' variant ='subheading' l>0/200</Typography>
                     </Grid>
                 </Grid>
             </Paper>
