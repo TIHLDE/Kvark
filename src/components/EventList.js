@@ -57,7 +57,7 @@ class EventList extends Component {
         const {classes} = this.props;
 
         return (
-            <Card className={classes.root}>
+            <Card className={classes.root} square={true}>
                 <div className={classes.wrapper}>
                     <Grid container direction='row' wrap='nowrap'>
                         <Typography variant='title'>Arrangementer</Typography>

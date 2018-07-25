@@ -28,6 +28,12 @@ const styles = {
             marginTop: 56,
         }
     },
+    navContent: {
+        width: '100%',
+        maxWidth: 1400,
+        margin: 'auto',
+        alignItems: 'center',
+    },
 };
 
 class Navigation extends Component {
@@ -38,7 +44,7 @@ class Navigation extends Component {
         return (
             <Fragment>
                 <AppBar className={classes.root} position="fixed" color="default">
-                    <Toolbar>
+                    <Toolbar className={classes.navContent}>
                         <div style={{ flexGrow: 1 }}>
                             <Link to='/'>
                             <img src={TIHLDELOGO} alt='logo' height='30em'/>
