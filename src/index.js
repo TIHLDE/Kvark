@@ -11,6 +11,8 @@ import ArrangementPage from './containers/Arrangement';
 import Groups from './containers/Groups';
 import Companies from './containers/Companies';
 
+// TODO Make container
+import Login from './components/Login';
 
 render(
     <BrowserRouter>
@@ -20,6 +22,9 @@ render(
             <Route path='/arrangementer/' component={ArrangementPage}/>
             <Route path='/undergrupper/' component={Groups} />
             <Route path='/bedrifter/' component={Companies} />
+
+            { /* Testing only */ }
+            <Route path='/login/' component={Login} />
         </Switch>
     </BrowserRouter>,
     document.getElementById('root')
@@ -28,4 +33,3 @@ render(
 console.log('Snoker rundt du? Det liker vi. Vi i Nettkom ser alltid etter nye medlemmer.');
 
 // <Route exact path='/william/' component={Jodel}/> jodel container finnes ikke enda
- 
