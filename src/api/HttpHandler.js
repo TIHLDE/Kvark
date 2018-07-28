@@ -1,17 +1,12 @@
 import {TOKEN} from './webauth';
-import {TOKEN_HEADER_NAME} from './http';
-
-// const URL = 'https://api-tihlde.herokapp.com';
-const URL = 'https://tihlde-api.herokuapp.com';
-// const URL = 'http://localhost:8000';
-const BASE = URL + '/v1/';
+import {TOKEN_HEADER_NAME, TIHLDE_API} from '../settings';
 
 export class IRequest {
     constructor(method, url, data={}, withAuth=true, args={}) {
         this.method = method;
         this.data = data;
         this.headers = {'Content-Type': 'application/json'};
-        this.url = BASE + url;
+        this.url = TIHLDE_API.URL + url;
 
         if (withAuth) {
             this.headers[TOKEN_HEADER_NAME] = TOKEN.get();

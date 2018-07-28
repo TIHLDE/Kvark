@@ -2,8 +2,7 @@
 // It uses promises (as opposed to HttpHandler.js),
 // All functions regarding HTTP returns a promise.
 
-export const TIHLDE_API_URL = 'https://tihlde-api.herokuapp.com/v1/';
-export const TOKEN_HEADER_NAME = 'X-CSRF-Token';
+import {TIHLDE_API, TOKEN_HEADER_NAME} from '../settings';
 
 // NOTE: Experimenting with various ways to simplify requests
 export function fetchmethod(base, endpoint, method, data={}, body, bodyIsJson, token) {
@@ -31,12 +30,12 @@ export function fetchmethod(base, endpoint, method, data={}, body, bodyIsJson, t
         });
 }
 
-export function get(endpoint, arg, base=TIHLDE_API_URL) {
+export function get(endpoint, arg, base=TIHLDE_API.URL) {
     return fetchmethod(base, endpoint, 'GET', arg['data'], arg['body'],
                     arg['json'], arg['token']);
 }
 
-export function post(endpoint, arg, base=TIHLDE_API_URL) {
+export function post(endpoint, arg, base=TIHLDE_API.URL) {
     return fetchmethod(base, endpoint, 'POST', arg['data'], arg['body'],
                     arg['json'], arg['token']);
 }

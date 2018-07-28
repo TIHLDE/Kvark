@@ -9,8 +9,7 @@ import Cookies from 'universal-cookie';
 import {get, post} from './http';
 
 // The dummy WebAuth server
-const WEB_AUTH_URL = 'https://tihlde-webauth.herokuapp.com/';
-const WEB_AUTH_URL_BASE = WEB_AUTH_URL + 'api/v1/';
+import {WEB_AUTH} from '../settings';
 
 const TOKEN_COOKIE_ID = 'webauth_token';
 const cookies = new Cookies();
@@ -34,18 +33,18 @@ export const TOKEN = new Token();
 export default {
     // Returns a promise which resolves to the token
     auth(username, password) {
-        return post('auth', {body: {username, password}, json: true}, WEB_AUTH_URL_BASE)
+        return post('auth', {body: {username, password}, json: true}, WEB_AUTH.URL)
             .then((data) => data['token']);
     },
 
     // Returns a promise which resolves to the session data
     logout(token) {
-        return post('logout', {token}, WEB_AUTH_URL_BASE);
+        return post('logout', {token}, WEB_AUTH.URL);
     },
 
     // Returns a promise which resolves to the session data
     verify(token) {
-        return get('verify', {token, json: true}, WEB_AUTH_URL_BASE);
+        return get('verify', {token, json: true}, WEB_AUTH.URL);
     },
 
     // Returns a promise which resolves to {msg, token} on success and {msg} on
@@ -54,6 +53,6 @@ export default {
         const arg = {
             token, 'old-password': oldpw, 'new-password': newpw, json: true,
         };
-        return get('setpw', arg, WEB_AUTH_URL_BASE);
+        return get('setpw', arg, WEB_AUTH.URL);
     },
 };
