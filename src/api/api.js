@@ -1,8 +1,10 @@
-import {IRequest} from './HttpHandler';
+import {get} from './http';
+import {TOKEN} from './webauth';
+
 
 export default {
     // Returns a set of items/widgets to display in the LandingPage grid
     getGridItems: () => {
-        return new IRequest('GET', 'items/', undefined, false);
-    }
-}
+        return get('items/', {token: TOKEN.get()});
+    },
+};

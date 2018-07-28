@@ -25,36 +25,45 @@
                         "id": 1,
                         "created_at": "2018-07-28T10:55:37.187154Z",
                         "updated_at": "2018-07-28T10:55:37.187320Z",
-                        "title": "Eksamensfest 1",
+                        "title": "Eksamensfest",
                         "start": "0218-01-10T00:22:00Z",
-                        "location": null,
+                        "location": "kontoret",
                         "eventlist": 1
                     },
                     {
                         "id": 2,
                         "created_at": "2018-07-28T10:55:42.127403Z",
                         "updated_at": "2018-07-28T10:55:42.127539Z",
-                        "title": "Eksamensfest 2",
+                        "title": "Generalforsamling",
                         "start": "0218-01-10T00:22:00Z",
-                        "location": null,
+                        "location": "U302",
                         "eventlist": 1
                     },
                     {
                         "id": 3,
                         "created_at": "2018-07-28T10:55:46.013945Z",
                         "updated_at": "2018-07-28T10:55:46.014061Z",
-                        "title": "Eksamensfest 3",
+                        "title": "Immefest",
                         "start": "0218-01-10T00:22:00Z",
-                        "location": null,
+                        "location": "Sukkerhuset",
                         "eventlist": 1
                     },
                     {
                         "id": 4,
                         "created_at": "2018-07-28T10:55:50.007432Z",
                         "updated_at": "2018-07-28T10:55:50.007569Z",
-                        "title": "Eksamensfest 4",
+                        "title": "Fadderuke",
                         "start": "0218-01-10T00:22:00Z",
-                        "location": null,
+                        "location": "over alt",
+                        "eventlist": 1
+                    },
+                    {
+                        "id": 5,
+                        "created_at": "2018-07-28T10:55:50.007432Z",
+                        "updated_at": "2018-07-28T10:55:50.007569Z",
+                        "title": "Latex Kurs",
+                        "start": "0218-01-10T00:22:00Z",
+                        "location": "over alt",
                         "eventlist": 1
                     }
                 ],

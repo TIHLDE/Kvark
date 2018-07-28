@@ -18,6 +18,7 @@ import GridItem from './GridItem';
 import Api from '../../api/api';
 import WebAuth from '../../api/webauth';
 import {TOKEN} from '../../api/HttpHandler';
+import {get} from '../../api/http';
 import Utils from '../../utils.js';
 
 const styles = {
@@ -87,7 +88,9 @@ class LayoutGrid extends Component {
 
     componentDidMount() {
         // Load the griditems from the Tihlde API
-        Api.getGridItems().response().then((data) => {
+        const resp = Api.getGridItems().catch((err) => {
+            console.log('Unable to get grid items: ', err);
+        }).then((data) => {
             console.log('Items: ', data);
             // NOTE: The Tihlde API uses snake case, but since JavaScript uses
             // camel case, it converts all keys in the recieved data
@@ -95,6 +98,7 @@ class LayoutGrid extends Component {
             // If this is not wanted (performance, inconsistency, etc.) one
             // can remove this line, but one has to change all occourences of
             // camel case to snake case.
+            data = Array.from(data);
             const children = data.map((v, i) => {
                 return Utils.recursiveSnakeToCamelCase(v);
             });

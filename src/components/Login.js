@@ -17,8 +17,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 
-import WebAuth from '../api/webauth';
-import {Token, TOKEN} from '../api/HttpHandler';
+import WebAuth, {TOKEN} from '../api/webauth';
 
 export default class Login extends Component {
     state = {
@@ -45,7 +44,7 @@ export default class Login extends Component {
                    TOKEN.set(token);
                    console.log(`LOGIN: Got WebAuth token: ${token}`)
                    if (this.props.onLogin) { this.props.onLogin(token) }
-               })
+               }) // IGNORE catch
     }
 
     render() {

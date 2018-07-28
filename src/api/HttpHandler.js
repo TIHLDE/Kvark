@@ -1,28 +1,9 @@
-import Cookies from 'universal-cookie';
+import {TOKEN} from './webauth';
+import {TOKEN_HEADER_NAME} from './http';
 
-import {TOKEN_HEADER_NAME} from './webauth';
-
-const TOKEN_IDENTIFICATION = 'webauth_token';
-const cookies = new Cookies();
-
-class Token {
-    set(token) {
-        cookies.set(TOKEN_IDENTIFICATION, token, {path: '/'});
-    }
-
-    get() {
-        return cookies.get(TOKEN_IDENTIFICATION);
-    }
-
-    remove() {
-        cookies.remove(TOKEN_IDENTIFICATION, {path: '/'});
-    }
-}
-export const TOKEN = new Token();
-
-//const URL = 'https://api-tihlde.herokapp.com';
+// const URL = 'https://api-tihlde.herokapp.com';
 const URL = 'https://tihlde-api.herokuapp.com';
-//const URL = 'http://localhost:8000';
+// const URL = 'http://localhost:8000';
 const BASE = URL + '/v1/';
 
 export class IRequest {

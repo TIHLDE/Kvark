@@ -14,14 +14,6 @@ const styles = {
 };
 
 class Landing extends Component {
-    componentDidMount() {
-        // Get grid items
-        const response = API.getGridItems().response();
-        response.then((data) => {
-            console.log(data);
-        });
-    }
-
     render() {
         return (
           <Navigation>
