@@ -1,20 +1,19 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
 // Project components
 import Navigation from '../components/Navigation';
 import Paragraph from '../components/Paragraph';
-import Poster from '../components/Poster';
 import Details from '../components/Details'
-import {Grid, Button, Paper} from '@material-ui/core/';
+import {Grid, Button} from '@material-ui/core/';
 
 
 
 const styles = {
     root:{
         backgroundColor:'whitesmoke',
-        margin:'auto'
+        margin:'auto',
     },
     image:{
         backgroundColor: 'whitesmoke',
@@ -29,11 +28,18 @@ const styles = {
         paddingBottom:20,
         width:'70%',
 
-        '@media only screen and (max-width: 600px)': {
+        '@media only screen and (max-width: 1300px)': {
             width: '100%',
-        }
-
+        },
     },
+    paragraph:{
+        paddingBottom:20,
+        width:'80%',
+        float:'right',
+        '@media only screen and (max-width: 1300px)': {
+            width: '100%',
+        },
+    }
 
 };
 
@@ -52,6 +58,15 @@ class Arrangement extends Component {
                 subheader:'This is a small header for a small person',
                 joined:false,
                 waiting:1,
+            },
+            data_details:{
+                date:"29 oktober",
+                clock:"18:00",
+                where:"steingrimsveien 29",
+                name:"Jack Ma",
+                study:"Dataingeniør",
+                space:"200",
+                what:"BedKom"
             }
         };
 
@@ -76,17 +91,13 @@ class Arrangement extends Component {
     };
 
     joining =() =>{
-        console.log(this.state.data_Paragraph.joined);
 
-        this.setState((prev) => {
-
-            }
-        )
     };
 
     componentDidMount(){
         //get data here
     }
+
 
     render() {
         const {classes} = this.props;
@@ -99,17 +110,14 @@ class Arrangement extends Component {
                             <img style={{width:'100%', height:'100%'}} src={this.state.img} alt='Missing image'/>
                         </Grid>
                         <Grid item xs={12} sm={6} >
-                            <Paragraph data={this.state.data_Paragraph} join={this.join()} style={{backgroundColor:'red'}}/>
+                            <div className={classes.paragraph}>
+                                <Paragraph data={this.state.data_Paragraph} join={this.join()}  style={{backgroundColor:'red'}}/>
+                            </div>
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <Grid item className={classes.cell}>
-                                <Details/>
+                                <Details data={this.state.data_details}/>
                             </Grid>
-                            <Grid item className={classes.cell}>
-                                <Details/>
-                            </Grid>
-                        </Grid>
-                        <Grid >
                         </Grid>
                     </Grid>
                 </div>

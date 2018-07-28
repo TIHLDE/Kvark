@@ -2,17 +2,17 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 
-import {Grid, Typography, Avatar, Paper} from '@material-ui/core/';
+import {Grid, Typography, Paper} from '@material-ui/core/';
 
-import Facebook from '../assets/img/facebook_icon.ico'
 
-{/* This class shows the details over when and where the arrangements are. it will also show Who is in change and how to contact them*/}
+{/*  This class shows the details over when and where the arrangements are. it will also show Who is in change and how to contact them*/}
 const styles ={
     root:{
         width:'auto',
-        height: 200,
+        height: 'auto',
         backgroundColor:'lightblue',
         justifyContent:'center',
+
     },
     wrapper:{
         width:'90%',
@@ -23,11 +23,28 @@ const styles ={
     item: {
         width: '33%',
         textAlign: 'center',
-        backgroundColor:'red'
+        margin:'auto'
+    },
+    head:{
+        fontWeight:'bold',
+        paddingTop:10,
+    },
+    info:{
+        paddingBottom:10,
     }
 };
 
 class Details extends Component {
+    widthChecker = window.onload = window.onresize = () =>{
+        if(window.screen.availWidth >= 500 ){
+            console.log("row");
+            return "row"
+
+        }else{
+            console.log("column");
+            return "column"
+        }
+    };
 
     render() {
         const {data, classes} = this.props;
@@ -35,28 +52,27 @@ class Details extends Component {
         return (
             <Paper className={classes.root}>
                 <Grid container className={classes.wrapper} alignContent='stretch' justify='space-between'
-                      direction='row'>
+                      direction={this.widthChecker()}>
                     <Grid className={classes.item}>
-                        <Typography color='primary' variant='title'>Når :</Typography>
-                        <Typography color='primary' variant ='subheading'>21. juni</Typography>
-                        <Typography color='primary' variant ='subheading'> 18:00</Typography>
-                        <br/>
-                        <Typography color='primary' variant='title'> Hvor: </Typography>
-                        <Typography color='primary' variant ='subheading'>steinberg 21</Typography>
+                        <Typography className={classes.head} color='primary' variant='title'>Når:</Typography>
+                        <Typography color='primary' variant ='subheading'>{data.date}</Typography>
+                        <Typography color='primary' variant ='subheading' className={classes.info}> {data.clock}</Typography>
+                        <Typography className={classes.head} color='primary' variant='title'> Hvor: </Typography>
+                        <Typography color='primary' variant ='subheading' className={classes.info}>{data.where}</Typography>
                     </Grid>
                     <Grid className={classes.item}>
-                        <Typography color='primary' variant='title'> Hva: </Typography>
-                        <Typography color='primary' variant ='subheading'>Bedriftpresentasjon</Typography>
-                        <br/>
-                        <a href='https://www.facebook.com'><Avatar alt='facebook_Image' src={Facebook} className={{ margin:101}} /></a>
+                        <Typography className={classes.head} color='primary' variant='title'> Forfatter: </Typography>
+                        <Typography color='primary' variant ='subheading'>{data.name}</Typography>
+                        <Typography color='primary' variant ='subheading' className={classes.info}>{data.study}</Typography>
+                        <Typography className={classes.head} color='primary' variant='title'> Plasser: </Typography>
+                        <Typography color='primary' variant ='subheading' className={classes.info}>{data.space}</Typography>
                     </Grid>
                     <Grid className={classes.item}>
-                        <Typography color='primary' variant='title'> Forfatter: </Typography>
-                        <Typography color='primary' variant ='subheading'>Chetan Bhagat</Typography>
-                        <Typography color='primary' variant ='subheading'>dataingeniør</Typography>
+                        <Typography className={classes.head} color='primary' variant='title'> Hva: </Typography>
+                        <Typography color='primary' variant ='subheading' className={classes.info}>{data.what}</Typography>
                         <br/>
-                        <Typography color='primary' variant='title'> Plasser: </Typography>
-                        <Typography color='primary' variant ='subheading' l>0/200</Typography>
+                        <a href='https://www.facebook.com'> <Typography color='primary' variant='title' >facebook</Typography></a>
+                        <br/>
                     </Grid>
                 </Grid>
             </Paper>
