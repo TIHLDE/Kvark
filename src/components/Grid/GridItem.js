@@ -69,10 +69,10 @@ class GridItem extends Component {
     render() {
         const classes = [
             this.props.classes.root,
-            this.props.colSpan === 2 ? this.props.classes.width2 : '',
-            this.props.colSpan === 3 ? this.props.classes.width3 : '',
-            this.props.colSpan === 4 ? this.props.classes.width4 : '',
-            this.props.rowSpan === 2 ? this.props.classes.height2: '',
+            this.props.width === 2 ? this.props.classes.width2 : '',
+            this.props.width === 3 ? this.props.classes.width3 : '',
+            this.props.width === 4 ? this.props.classes.width4 : '',
+            this.props.height === 2 ? this.props.classes.height2: '',
             this.props.fullWidth ? this.props.classes.fullWidth : '',
         ].join(' ');
 
@@ -85,13 +85,13 @@ class GridItem extends Component {
 }
 
 GridItem.defaultProps = {
-    rowSpan: 1,
-    colSpan: 1,
+    height: 1,
+    width: 1,
 }
 
 GridItem.propTypes = {
-    rowSpan: PropTypes.number,
-    colSpan: PropTypes.number,
+    height: PropTypes.number,
+    width: PropTypes.number,
 }
 
 export default withStyles(styles)(GridItem);

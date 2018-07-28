@@ -48,14 +48,17 @@ class NewsItem extends Component {
     render() {
         const {classes, data} = this.props;
 
+        let imageOrFallback = null;
+        if (data.image) {
+            imageOrFallback = <img className={classes.image} src={data.image} alt={data.imageAlt}/>;
+        } else {
+           imageOrFallback = <Typography className={classes.none} variant='title' align='center'>Missing Image</Typography>;
+        }
+
         return (
             <Paper className={classes.card} square={true}>
                 <Link to={'/nyheter/' + this.props.id}>
-                {(data.image)?
-                <img className={classes.image} src={data.image} alt='news'/>
-                :
-                    <Typography className={classes.none} variant='title' align='center'>No news provided</Typography>
-                }
+                {imageOrFallback}
                 <div className={classes.textContainer}>
                     <p className={classes.text} variant='subheading' align='center' color='inherit'>{data.title}</p>
                 </div>

@@ -21,7 +21,7 @@ const styles = {
     wrapper: {
         width: 'auto',
         padding: 10,
-    }
+    },
 };
 
 const Event = (props) => (
@@ -33,7 +33,7 @@ const Event = (props) => (
             <ListItemText>
                 <Grid container direction='row' wrap='nowrap' alignItems='center'>
                     <Typography component='span' variant='headline'>{props.title}</Typography>
-                    <Typography component='span' variant='subheading'>&nbsp; på {props.location}</Typography>
+                    <Typography component='span' variant='subheading'>&nbsp; {props.location ? 'på' : ''} {props.location}</Typography>
                 </Grid>
             </ListItemText>
             <div>
@@ -48,26 +48,44 @@ Event.propTypes = {
     title: PropTypes.string,
     location: PropTypes.string,
     date: PropTypes.string,
-    time: PropTypes.string,
+    start: PropTypes.string,
 };
+
+// Is there a better way of doing this in JS?
+function zeropadNumber(num, digits=2) {
+    let s = num.toString();
+    while (s.length < digits) {
+        s = '' + '0' + s;
+    }
+    return s;
+}
 
 class EventList extends Component {
 
     render() {
-        const {classes} = this.props;
+        const {classes, data} = this.props;
+        const eventslist = data.events || [];
+        const events = eventslist.map((v, i) => {
+            const startTime = new Date(v.start);
+            const time = zeropadNumber(startTime.getHours()) + ':' + zeropadNumber(startTime.getMinutes());
+            const date = zeropadNumber(startTime.getDay()) + '/' + zeropadNumber(startTime.getMonth());
+
+            return <Event key={v.id}
+                          title={v.title || '<No title>'}
+                          location={v.location || ''}
+                          date={date}
+                          time={time}
+                   />;
+        });
 
         return (
             <Card className={classes.root} square={true}>
                 <div className={classes.wrapper}>
                     <Grid container direction='row' wrap='nowrap'>
-                        <Typography variant='title'>Arrangementer</Typography>
+                      <Typography variant='title'>{data.name}</Typography>
                     </Grid>
                     <List dense>
-                        <Event title='Eksamensfest' location='kontoret' date='20/12' time='18:00'/>
-                        <Event title='Generalforsamiling' location='U302' date='20/12' time='18:00'/>
-                        <Event title='Immefest' location='Sukkerhuset' date='20/12' time='18:00'/>
-                        <Event title='Fadderuke' location='over alt' date='20/12' time='18:00'/>
-                        <Event title='Latex Kurs' location='over alt' date='20/12' time='18:00'/>
+                      {events}
                     </List>
                 </div>
             </Card>

@@ -2,7 +2,10 @@ import React, {Component, Fragment} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 
 // Import GRID from JSON
-import GridData from '../../data/grid.json';
+// NOTE: grid_minmal.json contains fewer grid elements than grid.json,
+// and as grid.json is loaded from the Tihlde API, we can see it working,
+// while retaining a semi functional site when it does not work.
+import GridData from '../../data/grid_minimal.json';
 
 // Grid Items/Widgets
 import EventList from '../EventList';
@@ -11,6 +14,11 @@ import Poster from '../Poster';
 import NewsItem from '../NewsItem';
 
 import GridItem from './GridItem';
+
+import Api from '../../api/api';
+import WebAuth from '../../api/webauth';
+import {TOKEN} from '../../api/HttpHandler';
+import Utils from '../../utils.js';
 
 const styles = {
     root: {
@@ -47,15 +55,15 @@ const styles = {
 // Creates a item based on the type
 const getItem = (id, type, data) => {
     switch(type) {
-        case "EVENTHEADER":
+        case "event_header":
             return <Poster id={id} data={data}/>;
-        case "EVENTLIST":
+        case "eventlist":
             return <EventList id={id} data={data}/>;
-        case "NEWS":
+        case "news":
             return <NewsItem id={id} data={data}/>;
-        case "JODEL":
-            return <Jodel id={id} data={data}/>
-        case "POSTER":
+        case "jodel":
+            return <Jodel id={id} data={data}/>;
+        case "poster":
             return <Poster id={id} data={data}/>;
         default:
             return null;
@@ -78,7 +86,20 @@ class LayoutGrid extends Component {
     }
 
     componentDidMount() {
-        // Get data from database
+        // Load the griditems from the Tihlde API
+        Api.getGridItems().response().then((data) => {
+            console.log('Items: ', data);
+            // NOTE: The Tihlde API uses snake case, but since JavaScript uses
+            // camel case, it converts all keys in the recieved data
+            // from snake case to camel case.
+            // If this is not wanted (performance, inconsistency, etc.) one
+            // can remove this line, but one has to change all occourences of
+            // camel case to snake case.
+            const children = data.map((v, i) => {
+                return Utils.recursiveSnakeToCamelCase(v);
+            });
+            this.setState({children: children});
+        });
     }
 
     render() {
@@ -90,7 +111,7 @@ class LayoutGrid extends Component {
             <div className={classes.root}>
                 {gridChildren.map((value, index) => {
                     return (
-                        <GridItem key={index} rowSpan={value.rowSpan} colSpan={value.colSpan} fullWidth={value.type === 'POSTER'}> {/* Wraps the entire item in a GridItem with specifed row- and colspan */}
+                        <GridItem key={index} height={value.height} width={value.width} fullWidth={value.type === 'poster'}> {/* Wraps the entire item in a GridItem with specifed row- and colspan */}
                             {getItem(value.id, value.type, value.data)}
                         </GridItem>
                     )
