@@ -1,6 +1,8 @@
 import Cookies from 'universal-cookie';
 
-const TOKEN_IDENTIFICATION = 'access_token';
+import {TOKEN_HEADER_NAME} from './webauth';
+
+const TOKEN_IDENTIFICATION = 'webauth_token';
 const cookies = new Cookies();
 
 class Token {
@@ -18,7 +20,7 @@ class Token {
 }
 export const TOKEN = new Token();
 
-const URL = 'http://api-tihlde.herokuapp.com';
+const URL = 'https://api-tihlde.herokapp.com';
 const BASE = URL + '/v1/';
 
 export class IRequest {
@@ -29,7 +31,7 @@ export class IRequest {
         this.url = BASE + url;
 
         if (withAuth) {
-            this.headers['Authorization'] = 'Token ' + TOKEN.get();
+            this.headers[TOKEN_HEADER_NAME] = TOKEN.get();
         }
     }
 
