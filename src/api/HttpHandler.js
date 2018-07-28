@@ -20,7 +20,9 @@ class Token {
 }
 export const TOKEN = new Token();
 
-const URL = 'https://api-tihlde.herokapp.com';
+//const URL = 'https://api-tihlde.herokapp.com';
+const URL = 'https://tihlde-api.herokuapp.com';
+//const URL = 'http://localhost:8000';
 const BASE = URL + '/v1/';
 
 export class IRequest {
