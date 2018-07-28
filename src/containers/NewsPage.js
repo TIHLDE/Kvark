@@ -1,12 +1,16 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+
+// API and store imports
+import API from '../api/api';
+import {GeneralActions} from '../store/actions/MainActions';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
 
 // Project components
 import Navigation from '../components/Navigation';
@@ -21,7 +25,8 @@ const styles = {
     },
     image: {
         maxHeight: '700px',
-        width: 'auto',
+        height: 'auto',
+        width: '100%',
     },
     contentWrapper: {
         position: 'relative',
@@ -39,14 +44,23 @@ const styles = {
         backgroundColor: 'white',
         padding: 20,
     },
-    description: {
-        backgroundColor: 'whitesmoke',
-        padding: 10,
-        width: '100%',
-        margin: 'auto',
-
-        '@media only screen and (max-width: 700px)': {
-            margin: 0,
+    contentTop: {
+        marginBottom: 10,
+    },
+    title: {
+        '@media only screen and (max-width: 800px)': {
+            fontSize: '1em',
+        },
+        '@media only screen and (max-width: 600px)': {
+            fontSize: '0.7em',
+        }
+    },
+    subtitle: {
+        '@media only screen and (max-width: 800px)': {
+            fontSize: '0.7em',
+        },
+        '@media only screen and (max-width: 600px)': {
+            fontSize: '0.5em',
         }
     },
     contentText: {
@@ -56,7 +70,7 @@ const styles = {
         borderRadius: 0,
         width: '50px',
         height: '50px',
-    }
+    },
 };
 
 class NewsPage extends Component {
@@ -64,46 +78,64 @@ class NewsPage extends Component {
     constructor() {
         super();
         this.state = {
-            title: 'It does not even matter',
-            author: 'Anders Iversen',
-            timeLastUpdated: '12.03.18',
-            image: 'https://gfx.nrk.no/f_5R0FmVa8KNRkE3q32KpQ5uMIQ0Vc7J4JzIrrSynCZA',
-
-            contentText: '',
+            isLoading: false,
         }
+    }
+    
+    componentDidMount() {
+        this.loadNews();
+    }
+
+    // Loading news info
+    loadNews = () => {
+        // Get newsitem id
+        const id = this.props.match.params.id;
+
+        // Does the item exist in store
+        const itemExists = this.props.grid.findIndex((elem) => elem.id == id) !== -1;
+
+       // Item exists, get it from store
+       if (itemExists) {
+           this.props.selectStoredItem(id);
+       }
+       // Item does not exist, fetch from server
+       else {
+           this.setState({isLoading: true});
+           const response = API.getNewsItem(id).response();
+           response.then((data) => {
+               if (!response.isError) {
+                   console.log(data);
+                   this.props.setSelectedItem(data);
+               }
+               this.setState({isLoading: false});
+           });
+       }
     }
 
     render() {
-        const {classes} = this.props;
+        const {classes, selected} = this.props;
+        const data = (selected && selected.data)? selected.data : (selected)? selected : {};
 
         return (
-            <Navigation>
-                <Grid className={classes.root} container direction='column' wrap='nowrap'>
-                    <img className={classes.image} src={this.state.image} alt='news'/>
-                    <div className={classes.contentWrapper}>
-                        <Paper className={classes.content} elevation={0}>
-                            <div className={classes.description}>
-                                <Grid container direction='row' wrap='nowrap' spacing={16}>
-                                    <Avatar className={classes.avatar}>W</Avatar>
-                                    <Grid item container direction='column' wrap='nowrap' justify='flex-end'>
-                                        <Typography variant='caption'>Skrevet av: {this.state.author}</Typography>
-                                        <Typography variant='caption'>Sist oppdatert: {this.state.timeLastUpdated}</Typography>
-                                    </Grid>
-                                </Grid>    
-                            </div>
-                            <div className={classes.newsContent}>
-                                <h2>{this.state.title}</h2>
-                                <p className={classes.contentText}>
-                                    The standard Lorem Ipsum passage, used since the 1500s
-                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                                    <br/><br/>
-                                    Section 1.10.32 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
-                                    "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
-                                </p>
-                            </div>
-                        </Paper>
-                    </div>
-                </Grid>
+            <Navigation isLoading={this.state.isLoading}>
+                {(this.state.isLoading)? null : 
+                    <Grid className={classes.root} container direction='column' wrap='nowrap'>
+                        <img className={classes.image} src={data.image} alt={data.image_alt}/>
+                        <div className={classes.contentWrapper}>
+                            <Paper className={classes.content} elevation={0}>
+                                <div className={classes.newsContent}>
+                                    <div className={classes.contentTop}>
+                                        <Typography className={classes.title} variant='display2'>{data.title}</Typography>
+                                        <Typography className={classes.subtitle} variant='title'>{data.header}</Typography>
+                                    </div>
+                                    <Typography className={classes.contentText}>
+                                        {data.body}
+                                    </Typography>
+                                </div>
+                            </Paper>
+                        </div>
+                    </Grid>
+                }
             </Navigation>
         );
     }
@@ -111,7 +143,25 @@ class NewsPage extends Component {
 
 NewsPage.propTypes = {
     classes: PropTypes.object,
+    selected: PropTypes.object,
+    match: PropTypes.object,
+    grid: PropTypes.array,
+    selectStoredItem: PropTypes.func,
+    setSelectedItem: PropTypes.func,
 };
 
+const stateValues = (state) => {
+    return {
+        grid: state.general.grid,
+        selected: state.general.selectedItem,
+    };
+};
 
-export default withStyles(styles)(NewsPage);
+const dispatchers = (dispatch) => {
+    return {
+        selectStoredItem: (id) => dispatch({type: GeneralActions.SELECT_STORED_ITEM, payload: id}),
+        setSelectedItem: (item) => dispatch({type: GeneralActions.SET_SELECTED_ITEM, payload: item}),
+    };
+};
+
+export default connect(stateValues, dispatchers)(withStyles(styles)(NewsPage));

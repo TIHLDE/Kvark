@@ -60,14 +60,52 @@
         },
         {
             "id": "34534gfse4t43sdfg",
-            "type": "POSTER",
-            "data":{
-                "header":"Meld deg på TIHLDE verv!",
-                "image":"https://hdbackgroundspot.com//storage/upload/abstract-white-background/abstract-white-background-1.jpg",
-                "subheader": "TIHLDE tilbyr forskjellige verv som Drift, Sosialen, Promo...osv",
-                "color":"#1D448C",
-                "action": "/nyheter/34534gfse4t43sdfg",
-                "actionText": "Meld deg på"
+            "type": "NEWS",
+            "data": {
+                "title": "Mørket skremmer mange hver eneste dag",
+                "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
+            },
+            "colSpan": 2,
+            "rowSpan": 1
+        },
+        {
+            "id": "34534gfse4t43sdfg",
+            "type": "NEWS",
+            "data": {
+                "title": "Mørket skremmer mange hver eneste dag",
+                "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
+            },
+            "colSpan": 2,
+            "rowSpan": 1
+        }
+        ,
+        {
+            "id": "34534gfse4t43sdfg",
+            "type": "NEWS",
+            "data": {
+                "title": "Mørket skremmer mange hver eneste dag",
+                "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
+            },
+            "colSpan": 2,
+            "rowSpan": 1
+        },
+        {
+            "id": "34534gfse4t43sdfg",
+            "type": "NEWS",
+            "data": {
+                "title": "Mørket skremmer mange hver eneste dag",
+                "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
+            },
+            "colSpan": 2,
+            "rowSpan": 1
+        }
+        ,
+        {
+            "id": "34534gfse4t43sdfg",
+            "type": "NEWS",
+            "data": {
+                "title": "Mørket skremmer mange hver eneste dag",
+                "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
             },
             "colSpan": 1,
             "rowSpan": 1
@@ -81,6 +119,17 @@
             },
             "colSpan": 2,
             "rowSpan": 1
+        }
+        ,
+        {
+            "id": "34534gfse4t43sdfg",
+            "type": "NEWS",
+            "data": {
+                "title": "Mørket skremmer mange hver eneste dag",
+                "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
+            },
+            "colSpan": 1,
+            "rowSpan": 1
         },
         {
             "id": "34534gfse4t43sdfg",
@@ -89,7 +138,28 @@
                 "title": "Mørket skremmer mange hver eneste dag",
                 "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
             },
-            "colSpan": 2,
+            "colSpan": 1,
+            "rowSpan": 1
+        }
+        ,
+        {
+            "id": "34534gfse4t43sdfg",
+            "type": "NEWS",
+            "data": {
+                "title": "Mørket skremmer mange hver eneste dag",
+                "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
+            },
+            "colSpan": 1,
+            "rowSpan": 1
+        },
+        {
+            "id": "34534gfse4t43sdfg",
+            "type": "NEWS",
+            "data": {
+                "title": "Mørket skremmer mange hver eneste dag",
+                "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
+            },
+            "colSpan": 1,
             "rowSpan": 1
         }
     ]

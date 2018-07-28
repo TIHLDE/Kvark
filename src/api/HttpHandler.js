@@ -20,7 +20,7 @@ class Token {
 }
 export const TOKEN = new Token();
 
-const URL = 'https://api-tihlde.herokapp.com';
+const URL = 'http://api-tihlde.herokuapp.com'; // 'http://127.0.0.1:8080'
 const BASE = URL + '/v1/';
 
 export class IRequest {
@@ -36,7 +36,7 @@ export class IRequest {
     }
 
     response() {
-        if(this.method === 'GET') {
+        if (this.method === 'GET') {
             return new IResponse(getRequest(this.method, this.url, this.headers, this.data));
         } else {
             return new IResponse(request(this.method, this.url, this.headers, this.data));
@@ -47,8 +47,8 @@ export class IRequest {
 class IResponse {
     constructor(response) {
         this.response = response.then((data) => {
-            if(!data) {
-                data = {};;
+            if (!data) {
+                data = {};
             }
 
             this.isError = !data.ok;
@@ -78,5 +78,5 @@ const getRequest = (method, url, headers) => {
         headers: headers,
     })
     .catch((error) => console.log(error));
-}
+};
 

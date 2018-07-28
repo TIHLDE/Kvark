@@ -4,7 +4,6 @@ import {Link} from 'react-router-dom';
 
 // Material UI Components
 import Paper from '@material-ui/core/Paper';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 
 
@@ -31,8 +30,8 @@ const styles = {
         left: 0,
         right: 0,
         minHeight: 60,
-        backgroundColor: '#232F34',
-        color: 'white',
+        backgroundColor: 'white',
+        color: 'black',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
