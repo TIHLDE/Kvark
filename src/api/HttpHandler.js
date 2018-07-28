@@ -1,5 +1,7 @@
-import Cookies from 'universal-cookie';
+import {TOKEN} from './webauth';
+import {TOKEN_HEADER_NAME} from './http';
 
+<<<<<<< HEAD
 import {TOKEN_HEADER_NAME} from './webauth';
 
 const TOKEN_IDENTIFICATION = 'webauth_token';
@@ -21,6 +23,11 @@ class Token {
 export const TOKEN = new Token();
 
 const URL = 'http://api-tihlde.herokuapp.com'; // 'http://127.0.0.1:8080'
+=======
+// const URL = 'https://api-tihlde.herokapp.com';
+const URL = 'https://tihlde-api.herokuapp.com';
+// const URL = 'http://localhost:8000';
+>>>>>>> 4363185ec6aac44376e32dff560ab4b80d3d71f4
 const BASE = URL + '/v1/';
 
 export class IRequest {

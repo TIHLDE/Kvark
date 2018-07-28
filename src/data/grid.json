@@ -4,77 +4,142 @@
     "gridColumns": 4,
     "children": [
         {
-            "id": "34534gfse4t43sdfg",
-            "type": "POSTER",
+            "id": 1,
+            "type": "poster",
             "data":{
                 "header":"Linjeforeningen TIHLDE",
                 "subheader":"Dataingeniør, Drift av Datasystemer og IT-støttet Bedriftsutvikling",
                 "image":"https://hdbackgroundspot.com//storage/upload/abstract-white-background/abstract-white-background-1.jpg",
                 "color":"#1D448C"
             },
-            "colSpan": 1,
-            "rowSpan": 1
+            "width": 1,
+            "height": 1,
+            "order": 1
         },
         {
-            "id": "34534gfse4t43sdfg", "type": "EVENTLIST", "data": [], "colSpan": 3, "rowSpan": 1
+            "id": 1,
+            "type": "eventlist",
+            "data": {
+                "events": [
+                    {
+                        "id": 1,
+                        "created_at": "2018-07-28T10:55:37.187154Z",
+                        "updated_at": "2018-07-28T10:55:37.187320Z",
+                        "title": "Eksamensfest",
+                        "start": "0218-01-10T00:22:00Z",
+                        "location": "kontoret",
+                        "eventlist": 1
+                    },
+                    {
+                        "id": 2,
+                        "created_at": "2018-07-28T10:55:42.127403Z",
+                        "updated_at": "2018-07-28T10:55:42.127539Z",
+                        "title": "Generalforsamling",
+                        "start": "0218-01-10T00:22:00Z",
+                        "location": "U302",
+                        "eventlist": 1
+                    },
+                    {
+                        "id": 3,
+                        "created_at": "2018-07-28T10:55:46.013945Z",
+                        "updated_at": "2018-07-28T10:55:46.014061Z",
+                        "title": "Immefest",
+                        "start": "0218-01-10T00:22:00Z",
+                        "location": "Sukkerhuset",
+                        "eventlist": 1
+                    },
+                    {
+                        "id": 4,
+                        "created_at": "2018-07-28T10:55:50.007432Z",
+                        "updated_at": "2018-07-28T10:55:50.007569Z",
+                        "title": "Fadderuke",
+                        "start": "0218-01-10T00:22:00Z",
+                        "location": "over alt",
+                        "eventlist": 1
+                    },
+                    {
+                        "id": 5,
+                        "created_at": "2018-07-28T10:55:50.007432Z",
+                        "updated_at": "2018-07-28T10:55:50.007569Z",
+                        "title": "Latex Kurs",
+                        "start": "0218-01-10T00:22:00Z",
+                        "location": "over alt",
+                        "eventlist": 1
+                    }
+                ],
+                "name": "Arrangementer"
+            },
+            "width": 3,
+            "height": 1,
+            "order": 2
         },
         {
-            "id": "34534gfse4t43sdfg",
-            "type": "NEWS",
+            "id": 5,
+            "type": "news",
             "data": {
                 "title": "Eksamensfest!",
                 "image": "http://farm1.staticflickr.com/958/42146517371_d69a1e3d01_b.jpg"
             },
-            "colSpan": 1,
-            "rowSpan": 1
+            "width": 1,
+            "height": 1,
+            "order": 3
         },
         {
-            "id": "34534gfse4t43sdfg",
-            "type": "NEWS",
+            "id": 6,
+            "type": "news",
             "data": {
                 "title": "Mørket skremmer mange hver eneste dag",
                 "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
             },
-            "colSpan": 1,
-            "rowSpan": 1
+            "width": 1,
+            "height": 1,
+            "order": 4
         },
         {
-            "id": "34534gfse4t43sdfg",
-            "type": "NEWS",
+            "id": 6,
+            "type": "news",
             "data": {
                 "title": "Eksamensfest!",
                 "image": "http://farm1.staticflickr.com/958/42146517371_d69a1e3d01_b.jpg"
             },
-            "colSpan": 1,
-            "rowSpan": 1
+            "width": 1,
+            "height": 1,
+            "order": 5
         },
         {
-            "id": "34534gfse4t43sdfg",
-            "type": "NEWS",
+            "id": 7,
+            "type": "news",
             "data": {
                 "title": "Mørket skremmer mange hver eneste dag",
                 "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
             },
-            "colSpan": 2,
-            "rowSpan": 1
+            "width": 2,
+            "height": 1,
+            "order": 6
         },
         {
-            "id": "34534gfse4t43sdfg",
-            "type": "NEWS",
+            "id": 8,
+            "type": "poster",
+            "data":{
+                "header":"Meld deg på TIHLDE verv!",
+                "image":"https://hdbackgroundspot.com//storage/upload/abstract-white-background/abstract-white-background-1.jpg",
+                "subheader": "TIHLDE tilbyr forskjellige verv som Drift, Sosialen, Promo...osv",
+                "color":"#1D448C",
+                "action": "/nyheter/34534gfse4t43sdfg",
+                "action_text": "Meld deg på"
+            },
+            "width": 1,
+            "height": 1,
+            "order": 7
+        },
+        {
+            "id": 9,
+            "type": "news",
             "data": {
                 "title": "Mørket skremmer mange hver eneste dag",
                 "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
             },
-            "colSpan": 2,
-            "rowSpan": 1
-        },
-        {
-            "id": "34534gfse4t43sdfg",
-            "type": "NEWS",
-            "data": {
-                "title": "Mørket skremmer mange hver eneste dag",
-                "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
-            },
+<<<<<<< HEAD
             "colSpan": 2,
             "rowSpan": 1
         }
@@ -86,39 +151,24 @@
                 "title": "Mørket skremmer mange hver eneste dag",
                 "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
             },
-            "colSpan": 2,
-            "rowSpan": 1
-        },
-        {
-            "id": "34534gfse4t43sdfg",
-            "type": "NEWS",
-            "data": {
-                "title": "Mørket skremmer mange hver eneste dag",
-                "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
-            },
-            "colSpan": 2,
-            "rowSpan": 1
-        }
-        ,
-        {
-            "id": "34534gfse4t43sdfg",
-            "type": "NEWS",
-            "data": {
-                "title": "Mørket skremmer mange hver eneste dag",
-                "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
-            },
             "colSpan": 1,
             "rowSpan": 1
+=======
+            "width": 2,
+            "height": 1,
+            "order": 8
+>>>>>>> 4363185ec6aac44376e32dff560ab4b80d3d71f4
         },
         {
-            "id": "34534gfse4t43sdfg",
-            "type": "NEWS",
+            "id": 10,
+            "type": "news",
             "data": {
                 "title": "Mørket skremmer mange hver eneste dag",
                 "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
             },
-            "colSpan": 2,
-            "rowSpan": 1
+            "width": 2,
+            "height": 1,
+            "order": 9
         }
         ,
         {
