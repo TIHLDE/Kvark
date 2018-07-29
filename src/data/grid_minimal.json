@@ -1,6 +1,4 @@
 {
-    "gridAreas": "'event event event event event event event event' '. grid1 grid1 grid1 grid1 grid2 grid2 .' '. grid1 grid1 grid1 grid1 grid2 grid2 .' 'grid3 grid3 grid3 grid3 grid3 grid3 grid3 grid3' '. . grid4 grid4 grid4 grid4 . .'",
-
     "gridColumns": 4,
     "children": [
         {

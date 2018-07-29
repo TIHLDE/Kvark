@@ -18,6 +18,13 @@ const styles = {
 };
 
 class Landing extends Component {
+    constructor() {
+        super();
+        this.state = {
+            isLoading: true,
+        };
+    }
+
     componentDidMount() {
         // Get grid items
         const response = API.getGridItems().response();
@@ -25,6 +32,7 @@ class Landing extends Component {
             if (!response.isError) {
                 this.props.setGridItems(data);
             }
+            this.setState({isLoading: false});
         });
     }
 
@@ -32,10 +40,12 @@ class Landing extends Component {
         const {classes, grid} = this.props;
 
         return (
-          <Navigation footer>
-              <div className={classes.root}>
-              <LayoutGrid grid={grid}/>
-              </div>
+          <Navigation footer isLoading={this.state.isLoading}>
+                {(this.state.isLoading)? null : 
+                    <div className={classes.root}>
+                        <LayoutGrid grid={grid}/>
+                    </div>
+                }
           </Navigation>
         );
     }

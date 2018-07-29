@@ -39,8 +39,8 @@ const styles = {
     },
     text: {
         fontSize: '20px',
-    }
-}
+    },
+};
 
 class NewsItem extends Component {
 

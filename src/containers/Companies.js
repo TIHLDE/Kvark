@@ -76,17 +76,25 @@ const styles = (theme) => ({
         flexWrap: 'nowrap',
     },
     title: {
-        fontSize: '7vw', // '2em',
+        fontSize: '1.7em',
+
+        '@media only screen and (max-width: 900px)': {
+            fontSize: '7vw',
+        },
 
         '@media only screen and (max-width: 600px)': {
-            fontSize: '10vw',
+            fontSize: '0.8em',
         },
     },
     subTitle: {
-        fontSize: '3vw', // '1.7em',
+        fontSize: '1em',
+
+        '@media only screen and (max-width: 900px)': {
+            fontSize: '3vw',
+        },
 
         '@media only screen and (max-width: 600px)': {
-            fontSize: '6vw',
+            fontSize: '0.5em',
         },
     },
     paddingWrapper: {
@@ -118,7 +126,7 @@ class Companies extends Component {
             <a href='mailto:orakel@tihlde.org'><Button variant='fab' className={classes.send}><SendIcon /></Button></a>
 
             <div className={classNames(classes.extraPadding)}>
-                <div>
+                <div className={classes.columnContainer}>
                     <Typography className={classes.title} variant='title'><strong>Vil du komme i kontakt med våre studenter?</strong></Typography>
                     <Typography className={classes.subTitle} variant='body2'>
                         Hvert år finner TIHLDE-studenter jobber i attraktive bedrifter landet over. For å få studentene inn i nettopp din bedrift tilbyr vi bedriftspresentasjoner og posting av stillingsannonser på våre sider.

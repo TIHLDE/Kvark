@@ -128,7 +128,7 @@ class Navigation extends Component {
                         {this.props.children}
                     </div>
                 </main>
-                {(!this.props.footer)? null :
+                {(!this.props.footer || this.props.isLoading)? null :
                     <Footer />
                 }
             </Fragment>

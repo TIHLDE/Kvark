@@ -16,12 +16,6 @@ import NewsItem from '../NewsItem';
 
 import GridItem from './GridItem';
 
-import Api from '../../api/api';
-import WebAuth from '../../api/webauth';
-import {TOKEN} from '../../api/HttpHandler';
-import {get} from '../../api/http';
-import Utils from '../../utils.js';
-
 const styles = {
     root: {
         display: 'grid',
@@ -39,19 +33,12 @@ const styles = {
             gridTemplateColumns: '1fr 1fr',
         },
 
-        // Prop-styles overwrite these changes, so was not able to change gridTemplateRow and Column.
-        // Therefore the solution was to swap to flexBox on mobile-phones. Need to find a better solution for tablets.
         '@media only screen and (max-width: 800px)': {
            gridTemplateColumns: '100%',
            padding: '0 5px',
         },
     },
 };
-
-// This is the parent grid which contains all the subgrids. This component will recieve
-// the JSON-data, and create the wanted grid.
-// The current code is just a skeleton of the wanted grid and nothing is final. If you have
-// any contributions to improvement, DONT BE AFRAID TO BREAK EVERYTHING. JUST DO IT!
 
 // Creates a item based on the type
 const getItem = (id, type, data) => {
@@ -77,26 +64,6 @@ class LayoutGrid extends Component {
         this.state = {
             children: GridData.children,
         };
-    }
-
-    componentDidMount() {
-       /*  // Load the griditems from the Tihlde API
-        const resp = Api.getGridItems().catch((err) => {
-            console.log('Unable to get grid items: ', err);
-        }).then((data) => {
-            console.log('Items: ', data);
-            // NOTE: The Tihlde API uses snake case, but since JavaScript uses
-            // camel case, it converts all keys in the recieved data
-            // from snake case to camel case.
-            // If this is not wanted (performance, inconsistency, etc.) one
-            // can remove this line, but one has to change all occourences of
-            // camel case to snake case.
-            data = Array.from(data);
-            const children = data.map((v, i) => {
-                return Utils.recursiveSnakeToCamelCase(v);
-            });
-            this.setState({children: children});
-        }); */
     }
 
     render() {

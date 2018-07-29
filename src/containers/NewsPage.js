@@ -105,6 +105,8 @@ class NewsPage extends Component {
            response.then((data) => {
                if (!response.isError) {
                    this.props.setSelectedItem(data);
+               } else {
+                   // Redirect to 404
                }
                this.setState({isLoading: false});
            });
