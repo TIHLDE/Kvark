@@ -16,11 +16,24 @@ const styles = {
         maxHeight: '100%',
     },
     gallery: {
-        height: 300,
+       height: '100%',
     },
 };
 
 class ImageGallery extends Component {
+
+    constructor() {
+        super();
+        this.gallery = React.createRef();
+    }
+
+    nextImage = (event) => {
+        console.log(this.gallery);
+        console.log(event);
+        const index = this.gallery.current.state.currentIndex;
+        this.gallery.current.slideToIndex(index+1);
+        console.log(index);
+    }
 
     render() {
         const {data, classes} = this.props;
@@ -29,17 +42,19 @@ class ImageGallery extends Component {
             {original: value.image, thumbnail: value.image, height: '200px'}
         ));
 
-
         return (
             <Paper className={classes.root} square>
                 <ReactImageGallery
+                    ref={this.gallery}
                     className={classes.gallery}
                     additionalClass={classes.gallery}
                     items={images}
                     showFullscreenButton={false}
                     showThumbnails={false}
-                    showNav={(images.length > 1)}
-                    showPlayButton={images.length > 1}
+                    showNav={false}
+                    showPlayButton={false}
+                    autoPlay={true}
+                    onClick={this.nextImage}
                 />
             </Paper>
         );

@@ -50,7 +50,7 @@ class Groups extends Component {
         const { classes } = this.props;
 
         return (
-            <Navigation>
+            <Navigation footer>
                 <div className={classes.root}>
                     <div className={classes.header}>
                         <Typography variant='headline'>Undergrupper</Typography>

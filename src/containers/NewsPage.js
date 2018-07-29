@@ -3,6 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {refactorDateString} from '../utils';
+import classNames from 'classnames';
 
 // API and store imports
 import API from '../api/api';
@@ -26,51 +27,59 @@ const styles = {
     },
     image: {
         maxHeight: '700px',
-        height: 'auto',
         width: '100%',
-    },
-    contentWrapper: {
-        position: 'relative',
-    },
-    content: {
         height: 'auto',
-        width: '100%',
+       
+        maxWidth: 800,
 
-        display: 'grid',
-        gridTemplateRows: '1fr auto',
-
-        marginBottom: 30,
-    },
-    newsContent: {
-        backgroundColor: 'white',
-        padding: 20,
-    },
-    contentTop: {
-        marginBottom: 10,
+        '@media only screen and (max-width: 600px)': {
+            order: 0,
+        },
     },
     title: {
+        margin: '20px 0 10px 0',
         '@media only screen and (max-width: 800px)': {
             fontSize: '1em',
         },
         '@media only screen and (max-width: 600px)': {
             fontSize: '0.7em',
+            order: 1,
         }
     },
     subtitle: {
+        margin: '5px 0',
         '@media only screen and (max-width: 800px)': {
             fontSize: '0.7em',
         },
         '@media only screen and (max-width: 600px)': {
             fontSize: '0.5em',
-        }
+            order: 2,
+        },
+    },
+    caption: {
+        '@media only screen and (max-width: 600px)': {
+            fontSize: '0.4em',
+            order: 3,
+        },
     },
     contentText: {
         fontSize: '0.55em',
+        marginTop: 30,
+        marginBottom: 100,
+        '@media only screen and (max-width: 600px)': {
+            fontSize: '0.5em',
+            order: 4,
+        }
     },
     avatar: {
         borderRadius: 0,
         width: '50px',
         height: '50px',
+    },
+    text: {
+        '@media only screen and (max-width: 800px)': {
+            padding: '0 15px',
+        }
     },
 };
 
@@ -119,24 +128,16 @@ class NewsPage extends Component {
         const data = (selected && selected.data)? selected.data : (selected)? selected : {};
         console.log(data);
         return (
-            <Navigation isLoading={this.state.isLoading}>
+            <Navigation footer isLoading={this.state.isLoading}>
                 {(this.state.isLoading)? null : 
                     <Grid className={classes.root} container direction='column' wrap='nowrap'>
-                        <img className={classes.image} src={data.image} alt={data.image_alt}/>
-                        <div className={classes.contentWrapper}>
-                            <Paper className={classes.content} elevation={0}>
-                                <div className={classes.newsContent}>
-                                    <div className={classes.contentTop}>
-                                        <Typography className={classes.title} variant='display2'>{data.title}</Typography>
-                                        <Typography className={classes.subtitle} variant='title'>{data.header}</Typography>
-                                        <Typography className={classes.subtitle} variant='body2' color='textSecondary'>Sist oppdatert: {refactorDateString(data.updated_at)}</Typography>
-                                    </div>
-                                    <Typography className={classes.contentText}>
-                                        {data.body}
-                                    </Typography>
-                                </div>
-                            </Paper>
-                        </div>
+                        <Typography className={classNames(classes.text, classes.title)} variant='display2' color='inherit'>{data.title}</Typography>
+                        <Typography className={classNames(classes.text, classes.subtitle)} variant='title'>{data.header}</Typography>
+                        <Typography className={classNames(classes.text, classes.caption)} variant='body2' color='textSecondary'>Sist oppdatert: {refactorDateString(data.updated_at)}</Typography>
+                        <img className={classes.image} src={data.image} alt={data.image_alt}/> 
+                        <Typography className={classNames(classes.text, classes.contentText)}>
+                            {data.body}
+                        </Typography>
                     </Grid>
                 }
             </Navigation>

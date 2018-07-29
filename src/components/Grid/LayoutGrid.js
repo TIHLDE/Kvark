@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 // Import GRID from JSON
 // NOTE: grid_minmal.json contains fewer grid elements than grid.json,
@@ -22,8 +23,8 @@ const styles = {
         display: 'grid',
         // gridTemplateAreas: GridData.gridAreas,
         gridTemplateColumns: 'repeat(' + GridData.gridColumns + ', 1fr)',
-        gridTemplateRows: 'auto',
-        gridGap: '5px',
+        gridAutoRows: '300px',
+        gridGap: '20px',
 
         maxWidth: 1400,
         margin: 'auto',
@@ -37,8 +38,12 @@ const styles = {
         '@media only screen and (max-width: 800px)': {
            gridTemplateColumns: '100%',
            padding: '0 5px',
+           gridAutoRows: 'auto',
         },
     },
+    topPadding: {
+        paddingTop: 20,
+    }
 };
 
 // Creates a item based on the type
@@ -72,9 +77,10 @@ class LayoutGrid extends Component {
     render() {
         const {classes, grid} = this.props;
         const children = (grid)? grid : [];
+        const topPadding = !(grid.length > 0 && grid[0].fullWidth);
 
         return (
-            <div className={classes.root}>
+            <div className={classNames(classes.root, (topPadding)? classes.topPadding : '')}>
                 {children.map((value, index) => {
                     return (
                         <GridItem key={index} rowSpan={value.height} colSpan={value.width} fullWidth={value.fullWidth} order={value.order}> {/* Wraps the entire item in a GridItem with specifed row- and colspan */}

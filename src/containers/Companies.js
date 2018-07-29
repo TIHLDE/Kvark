@@ -122,7 +122,7 @@ class Companies extends Component {
     render() {
         const { classes } = this.props;
 
-        return <Navigation>
+        return <Navigation footer>
             <a href='mailto:orakel@tihlde.org'><Button variant='fab' className={classes.send}><SendIcon /></Button></a>
 
             <div className={classNames(classes.extraPadding)}>
@@ -160,7 +160,7 @@ class Companies extends Component {
                     </div>
                 </div>
             </div>
-            <div style={{ gridColumnEnd: 'span 2', gridRow: 1, height: 500, overflow: 'hidden'}}>
+            <div style={{ gridColumnEnd: 'span 2', gridRow: 1, overflow: 'hidden'}}>
                 <img src='https://www.ntnu.no/image/image_gallery?img_id=16401786&t=1346178827979' width='100%'/>
             </div>
             <div className={classNames(classes.columnContainer, classes.extraPadding)}>

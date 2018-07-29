@@ -7,7 +7,6 @@ const styles = {
     root: {
         gridColumn: 'span 1',
         gridRow: 'span 1',
-        maxHeight: 600,
     },
     width2: {
         gridColumn: 'span 2',
@@ -47,6 +46,19 @@ const styles = {
     },
     height2: {
         gridRow: 'span 2',
+
+        '@media only screen and (max-width: 800px)': {
+            gridRow: 'span 1 !important',
+            
+        },
+    },
+    height3: {
+        gridRow: 'span 3',
+
+        '@media only screen and (max-width: 800px)': {
+            gridRow: 'span 1 !important',
+            
+        },
     },
     fullWidth: {
         height: 500,
@@ -74,6 +86,7 @@ class GridItem extends Component {
             this.props.colSpan === 3 ? this.props.classes.width3 : '',
             this.props.colSpan === 4 ? this.props.classes.width4 : '',
             this.props.rowSpan === 2 ? this.props.classes.height2: '',
+            this.props.rowSpan === 3 ? this.props.classes.height3 : '',
             this.props.fullWidth ? this.props.classes.fullWidth : '',
         ].join(' ');
 

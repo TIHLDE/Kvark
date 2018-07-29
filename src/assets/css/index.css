@@ -1,7 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:100,300');
-@import url('https://fonts.googleapis.com/css?family=Montserrat');
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
-@import url('https://fonts.googleapis.com/css?family=Song+Myung');
+
 
 * {
     margin: 0;
@@ -9,7 +7,7 @@
     --tihlde-blaa: #1D448C; 
 }
 body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Roboto', sans-serif;
     text-decoration: none;
     outline: none;
     font-size: 32px;
@@ -21,7 +19,7 @@ body {
     color: white !important;
 }
 .serif_text {
-    font-family: 'Song Myung', serif !important;
+    font-family: 'Roboto', serif !important;
 }
 .thin_text {
     font-family: 'Roboto', sans-serif !important;
