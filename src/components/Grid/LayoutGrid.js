@@ -43,7 +43,18 @@ const styles = {
     },
     topPadding: {
         paddingTop: 20,
-    }
+    },
+    bottomPadding: {
+        paddingBottom: 200,
+    },
+    topRow: {
+        gridTemplateRows: '400px',
+        gridAutoRows: '300px',
+
+        '@media only screen and (max-width: 700px)': {
+            gridTemplateRows: '250px',
+        },
+    },
 };
 
 // Creates a item based on the type
@@ -78,9 +89,10 @@ class LayoutGrid extends Component {
         const {classes, grid} = this.props;
         const children = (grid)? grid : [];
         const topPadding = !(grid.length > 0 && grid[0].fullWidth);
+        const bottomPadding = (grid.length > 0 && grid[grid.length-1].fullWidth);
 
         return (
-            <div className={classNames(classes.root, (topPadding)? classes.topPadding : '')}>
+            <div className={classNames(classes.root, (topPadding)? classes.topPadding : classes.topRow, (bottomPadding)? classes.bottomPadding: '')}>
                 {children.map((value, index) => {
                     return (
                         <GridItem key={index} rowSpan={value.height} colSpan={value.width} fullWidth={value.fullWidth} order={value.order}> {/* Wraps the entire item in a GridItem with specifed row- and colspan */}

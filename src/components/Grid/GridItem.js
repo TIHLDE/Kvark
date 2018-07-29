@@ -62,17 +62,16 @@ const styles = {
     },
     fullWidth: {
         height: 500,
-        marginBottom: '-100px',
         gridColumn: '1/5',
 
         '@media only screen and (max-width: 1000px)': {
+            height: 400,
             gridColumn: 'span 2 !important',
         },
 
         '@media only screen and (max-width: 800px)': {
             gridColumn: 'span 1 !important',
-            height: 300,
-            marginBottom: '-10px',
+            height: 400,
         },
     },
 }

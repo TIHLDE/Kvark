@@ -21,7 +21,7 @@ const styles = {
     image: {
         height: 200,
         width: '100%',
-        objectFit: 'fit',
+        objectFit: 'cover',
     },
     textContainer: {
         position: 'absolute',

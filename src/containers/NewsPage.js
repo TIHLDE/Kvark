@@ -26,10 +26,11 @@ const styles = {
         overflow: 'hidden',
     },
     image: {
-        maxHeight: '700px',
+        maxHeight: '400px',
         width: '100%',
         height: 'auto',
-       
+        objectFit: 'fill',
+        
         maxWidth: 800,
 
         '@media only screen and (max-width: 600px)': {
@@ -93,6 +94,7 @@ class NewsPage extends Component {
     }
     
     componentDidMount() {
+        window.scrollTo(0,0);
         this.loadNews();
     }
 

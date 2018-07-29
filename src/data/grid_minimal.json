@@ -67,21 +67,6 @@
             "width": 1,
             "height": 1,
             "order": 5
-        },
-        {
-            "id": 8,
-            "type": "poster",
-            "data":{
-                "header":"Meld deg på TIHLDE verv!",
-                "image":"https://hdbackgroundspot.com//storage/upload/abstract-white-background/abstract-white-background-1.jpg",
-                "subheader": "TIHLDE tilbyr forskjellige verv som Drift, Sosialen, Promo...osv",
-                "color":"#1D448C",
-                "action": "/nyheter/34534gfse4t43sdfg",
-                "action_text": "Meld deg på"
-            },
-            "width": 1,
-            "height": 1,
-            "order": 7
         }
     ]
 }
