@@ -1,5 +1,6 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 
 // Import GRID from JSON
 // NOTE: grid_minmal.json contains fewer grid elements than grid.json,
@@ -32,62 +33,54 @@ const styles = {
         maxWidth: 1400,
         margin: 'auto',
         marginBottom: 50,
-        padding: 5,
+        padding: '0 5px 5px 5px',
 
         '@media only screen and (max-width: 1000px)': {
             gridTemplateColumns: '1fr 1fr',
-            
         },
 
         // Prop-styles overwrite these changes, so was not able to change gridTemplateRow and Column.
         // Therefore the solution was to swap to flexBox on mobile-phones. Need to find a better solution for tablets.
         '@media only screen and (max-width: 800px)': {
            gridTemplateColumns: '100%',
-           padding: 0,
-        }
-    }
-}
+           padding: '0 5px',
+        },
+    },
+};
 
 // This is the parent grid which contains all the subgrids. This component will recieve
-// the JSON-data, and create the wanted grid. 
+// the JSON-data, and create the wanted grid.
 // The current code is just a skeleton of the wanted grid and nothing is final. If you have
 // any contributions to improvement, DONT BE AFRAID TO BREAK EVERYTHING. JUST DO IT!
 
 // Creates a item based on the type
 const getItem = (id, type, data) => {
-    switch(type) {
-        case "event_header":
-            return <Poster id={id} data={data}/>;
-        case "eventlist":
+    switch (type) {
+        case 'eventlist':
             return <EventList id={id} data={data}/>;
-        case "news":
+        case 'news':
             return <NewsItem id={id} data={data}/>;
-        case "jodel":
+        case 'jodel':
             return <Jodel id={id} data={data}/>;
-        case "poster":
+        case 'poster':
             return <Poster id={id} data={data}/>;
         default:
             return null;
     }
-}
+};
 
 class LayoutGrid extends Component {
 
     constructor() {
         super();
 
-        const areas = GridData.gridAreas;
-        const middleAreas = GridData.gridAreas.split('.').join('');
-
         this.state = {
-            areas: GridData.gridAreas, // The grid template areas
-            // subGrids: GridData.subGrids, // Array of subgrids
             children: GridData.children,
         };
     }
 
     componentDidMount() {
-        // Load the griditems from the Tihlde API
+       /*  // Load the griditems from the Tihlde API
         const resp = Api.getGridItems().catch((err) => {
             console.log('Unable to get grid items: ', err);
         }).then((data) => {
@@ -103,26 +96,30 @@ class LayoutGrid extends Component {
                 return Utils.recursiveSnakeToCamelCase(v);
             });
             this.setState({children: children});
-        });
+        }); */
     }
 
     render() {
-        const {classes} = this.props;
-        const {children} = this.state;
-        const gridChildren = (children)? children : [];
+        const {classes, grid} = this.props;
+        const children = (grid)? grid : [];
 
         return (
             <div className={classes.root}>
-                {gridChildren.map((value, index) => {
+                {children.map((value, index) => {
                     return (
-                        <GridItem key={index} height={value.height} width={value.width} fullWidth={value.type === 'poster'}> {/* Wraps the entire item in a GridItem with specifed row- and colspan */}
+                        <GridItem key={index} rowSpan={value.height} colSpan={value.width} fullWidth={value.fullWidth} order={value.order}> {/* Wraps the entire item in a GridItem with specifed row- and colspan */}
                             {getItem(value.id, value.type, value.data)}
                         </GridItem>
-                    )
+                    );
                 })}
             </div>
-        )
+        );
     }
 }
+
+LayoutGrid.propTypes = {
+    classes: PropTypes.object,
+    grid: PropTypes.array,
+};
 
 export default withStyles(styles)(LayoutGrid);

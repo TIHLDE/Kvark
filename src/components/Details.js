@@ -6,8 +6,8 @@ import {Grid, Typography, Avatar, Paper} from '@material-ui/core/';
 
 import Facebook from '../assets/img/facebook_icon.ico'
 
-{/* This class shows the details over when and where the arrangements are. it will also show Who is in change and how to contact them*/}
-const styles ={
+/* This class shows the details over when and where the arrangements are. it will also show Who is in change and how to contact them*/
+const styles = {
     root:{
         width:'auto',
         height: 200,
@@ -30,7 +30,7 @@ const styles ={
 class Details extends Component {
 
     render() {
-        const {data, classes} = this.props;
+        const {classes} = this.props;
 
         return (
             <Paper className={classes.root}>
@@ -54,13 +54,12 @@ class Details extends Component {
                     </Grid>
                 </Grid>
             </Paper>
-        )
+        );
     }
 }
-Text.propTypes={
-    data: PropTypes.any
+Details.propTypes = {
+    classes: PropTypes.object,
+    data: PropTypes.any,
 };
-
-
 
 export default withStyles(styles)(Details);

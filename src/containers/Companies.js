@@ -1,22 +1,20 @@
 import React, { Component } from 'react';
-
-import Navigation from '../components/Navigation';
-
 import { withStyles } from '@material-ui/core/styles';
 
+// Material UI Components
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
-
 import Button from '@material-ui/core/Button';
 
+// Icons
 import SendIcon from '@material-ui/icons/Send';
-
 import Image from '../assets/img/glad.jpg';
 
+// Project Components
+import Navigation from '../components/Navigation';
 
-const styles = theme => ({
+
+const styles = (theme) => ({
     container: {
         display: 'grid',
         maxWidth: '1200px',
@@ -26,7 +24,7 @@ const styles = theme => ({
         padding: '100px 30px',
     },
     wrapper: {
-        backgroundColor: '#FBFBFB'
+        backgroundColor: '#FBFBFB',
     },
     paper: {
         padding: theme.spacing.unit * 3,
@@ -78,7 +76,7 @@ class Companies extends Component {
                                 TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.
                             </Typography>
                     </div>
-                  <div style={{ gridColumnEnd: 'span 6', gridRow: 1 }}><img src={ Image } width='100%' /></div>
+                  <div style={{ gridColumnEnd: 'span 6', gridRow: 1 }}><img src={ Image } width='100%' alt='company' /></div>
                 </div>
 
             <div className={classes.wrapper}>

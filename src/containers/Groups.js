@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
-
-import Navigation from '../components/Navigation';
-
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
+// Material UI Components
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
 
-import Image from '../assets/img/glad.jpg';
+// Project Components
+import Navigation from '../components/Navigation';
 
 
-const styles = theme => ({
+const styles = (theme) => ({
     container: {
         display: 'grid',
         maxWidth: '1200px',
@@ -160,9 +158,12 @@ class Groups extends Component {
             </div>
 
             </Navigation>
-        )
+        );
     }
+};
 
-}
+Groups.propTypes = {
+    classes: PropTypes.object,
+};
 
 export default withStyles(styles)(Groups);

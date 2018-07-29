@@ -14,7 +14,7 @@ export class IRequest {
     }
 
     response() {
-        if(this.method === 'GET') {
+        if (this.method === 'GET') {
             return new IResponse(getRequest(this.method, this.url, this.headers, this.data));
         } else {
             return new IResponse(request(this.method, this.url, this.headers, this.data));
@@ -25,8 +25,8 @@ export class IRequest {
 class IResponse {
     constructor(response) {
         this.response = response.then((data) => {
-            if(!data) {
-                data = {};;
+            if (!data) {
+                data = {};
             }
 
             this.isError = !data.ok;
@@ -48,7 +48,7 @@ const request = (method, url, headers, data) => {
         body: JSON.stringify(data),
     })
     .catch((error) => console.log(error));
-}
+};
 
 const getRequest = (method, url, headers) => {
     return fetch(url, {
@@ -56,5 +56,5 @@ const getRequest = (method, url, headers) => {
         headers: headers,
     })
     .catch((error) => console.log(error));
-}
+};
 
