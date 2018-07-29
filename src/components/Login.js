@@ -14,12 +14,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 
-<<<<<<< HEAD
-import WebAuth from '../api/webauth';
-import {TOKEN} from '../api/HttpHandler';
-=======
 import WebAuth, {TOKEN} from '../api/webauth';
->>>>>>> 4363185ec6aac44376e32dff560ab4b80d3d71f4
 
 export default class Login extends Component {
     state = {

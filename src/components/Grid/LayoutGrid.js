@@ -55,7 +55,6 @@ const styles = {
 
 // Creates a item based on the type
 const getItem = (id, type, data) => {
-<<<<<<< HEAD
     switch (type) {
         case 'eventlist':
             return <EventList id={id} data={data}/>;
@@ -64,18 +63,6 @@ const getItem = (id, type, data) => {
         case 'jodel':
             return <Jodel id={id} data={data}/>;
         case 'poster':
-=======
-    switch(type) {
-        case "event_header":
-            return <Poster id={id} data={data}/>;
-        case "eventlist":
-            return <EventList id={id} data={data}/>;
-        case "news":
-            return <NewsItem id={id} data={data}/>;
-        case "jodel":
-            return <Jodel id={id} data={data}/>;
-        case "poster":
->>>>>>> 4363185ec6aac44376e32dff560ab4b80d3d71f4
             return <Poster id={id} data={data}/>;
         default:
             return null;
@@ -93,7 +80,7 @@ class LayoutGrid extends Component {
     }
 
     componentDidMount() {
-        // Load the griditems from the Tihlde API
+       /*  // Load the griditems from the Tihlde API
         const resp = Api.getGridItems().catch((err) => {
             console.log('Unable to get grid items: ', err);
         }).then((data) => {
@@ -109,23 +96,18 @@ class LayoutGrid extends Component {
                 return Utils.recursiveSnakeToCamelCase(v);
             });
             this.setState({children: children});
-        });
+        }); */
     }
 
     render() {
         const {classes, grid} = this.props;
         const children = (grid)? grid : [];
-        console.log(children);
 
         return (
             <div className={classes.root}>
                 {children.map((value, index) => {
                     return (
-<<<<<<< HEAD
                         <GridItem key={index} rowSpan={value.height} colSpan={value.width} fullWidth={value.fullWidth} order={value.order}> {/* Wraps the entire item in a GridItem with specifed row- and colspan */}
-=======
-                        <GridItem key={index} height={value.height} width={value.width} fullWidth={value.type === 'poster'}> {/* Wraps the entire item in a GridItem with specifed row- and colspan */}
->>>>>>> 4363185ec6aac44376e32dff560ab4b80d3d71f4
                             {getItem(value.id, value.type, value.data)}
                         </GridItem>
                     );
@@ -135,12 +117,9 @@ class LayoutGrid extends Component {
     }
 }
 
-<<<<<<< HEAD
 LayoutGrid.propTypes = {
     classes: PropTypes.object,
     grid: PropTypes.array,
 };
 
-=======
->>>>>>> 4363185ec6aac44376e32dff560ab4b80d3d71f4
 export default withStyles(styles)(LayoutGrid);

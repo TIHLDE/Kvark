@@ -7,7 +7,7 @@ import {Grid, Typography, Avatar, Paper} from '@material-ui/core/';
 import Facebook from '../assets/img/facebook_icon.ico'
 
 /* This class shows the details over when and where the arrangements are. it will also show Who is in change and how to contact them*/
-const styles ={
+const styles = {
     root:{
         width:'auto',
         height: 200,
