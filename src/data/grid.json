@@ -139,25 +139,9 @@
                 "title": "Mørket skremmer mange hver eneste dag",
                 "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
             },
-<<<<<<< HEAD
-            "colSpan": 2,
-            "rowSpan": 1
-        }
-        ,
-        {
-            "id": "34534gfse4t43sdfg",
-            "type": "NEWS",
-            "data": {
-                "title": "Mørket skremmer mange hver eneste dag",
-                "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
-            },
-            "colSpan": 1,
-            "rowSpan": 1
-=======
             "width": 2,
             "height": 1,
             "order": 8
->>>>>>> 4363185ec6aac44376e32dff560ab4b80d3d71f4
         },
         {
             "id": 10,

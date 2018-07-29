@@ -104,7 +104,6 @@ class NewsPage extends Component {
            const response = API.getNewsItem(id).response();
            response.then((data) => {
                if (!response.isError) {
-                   console.log(data);
                    this.props.setSelectedItem(data);
                }
                this.setState({isLoading: false});

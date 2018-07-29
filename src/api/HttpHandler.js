@@ -11,6 +11,10 @@ export class IRequest {
         if (withAuth) {
             this.headers[TOKEN_HEADER_NAME] = TOKEN.get();
         }
+
+        for (const key in args) {
+            this.headers[key] = args[key];
+        }
     }
 
     response() {

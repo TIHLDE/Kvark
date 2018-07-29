@@ -28,17 +28,14 @@ const styles = {
         left: 0,
         right: 0,
         marginBottom: '-100px',
-        
-       
         zIndex: 0,
 
         '@media only screen and (max-width: 600px)': {
             height: 300,
-        }
+        },
     },
-    
     image: {
-        position:'absolute',
+        position: 'absolute',
         top: '50%',
         transform: 'translateY(-50%)',
         width: '100%',
@@ -49,14 +46,14 @@ const styles = {
             height: '100%',
             top: 0,
             transform: 'translateY(0)',
-        }
+        },
     },
     textContainer: {
         zIndex: 2,
         '@media only screen and (max-width: 800px)': {
             position: 'absolute',
             top: '15%',
-        }
+        },
     },
     text: {
         color: 'white',
@@ -67,7 +64,7 @@ const styles = {
         },
         '@media only screen and (max-width: 800px)': {
             fontSize: 45,
-        }
+        },
     },
     subText: {
         '@media only screen and (max-width: 1000px)': {
@@ -75,13 +72,12 @@ const styles = {
         },
         '@media only screen and (max-width: 800px)': {
             fontSize: 25,
-        }
+        },
     },
     none: {
         backgroundColor: 'whitesmoke',
     },
     actionButton: {
-       
         margin: '0 auto',
         maxWidth: 200,
         textDecoration: 'none',
@@ -102,9 +98,9 @@ class Poster extends Component {
                 <Grid className={classes.textContainer} container direction='column' wrap='nowrap'>
                     <Typography className={classNames(classes.text, classes.headerText)} variant='display4' align='center' style={{color: textColor}}>{data.header}</Typography>
                     <Typography className={classNames(classes.text, classes.subText)} variant='headline' align='center' style={{color: textColor}}>{data.subheader}</Typography>
-                    {(!data.action)? null : 
+                    {(!data.action)? null :
                         <Link to={data.action} className={classes.actionButton}>
-                            <Button  variant='raised' color='primary'>{data.actionText}</Button>
+                            <Button variant='raised' color='primary'>{data.actionText}</Button>
                         </Link>
                     }      
                 </Grid>
@@ -115,6 +111,7 @@ class Poster extends Component {
 
 Poster.propTypes = {
     classes: PropTypes.object,
+    data: PropTypes.object,
 };
 
 export default withStyles(styles)(Poster);
