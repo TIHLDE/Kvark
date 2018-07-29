@@ -4,10 +4,10 @@ import { withStyles } from '@material-ui/core/styles';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
 
 // Project Components
 import Navigation from '../components/Navigation';
+import GroupCard from '../components/InfoCard';
 
 
 const styles = (theme) => ({
@@ -37,35 +37,12 @@ const styles = (theme) => ({
         paddingLeft: 5,
         marginBottom: 10,
     },
-    paper: {
-        padding: theme.spacing.unit,
-        color: theme.palette.text.secondary,
-        marginBottom: theme.spacing.unit,
-    },
     divider: {
         margin: `${theme.spacing.unit * 2}px 0`,
     },
 });
 
-const GroupCard = withStyles(styles)((props) => {
-    const {classes} = props;
-    return (
-        <div>
-            <Paper className={classes.paper}>
-                <Typography variant='title'>{props.header}</Typography>
-                <Typography variant='body2'>
-                    {props.body}
-                </Typography>
-            </Paper>
-        </div>
-    );
-});
 
-GroupCard.propTypes = {
-    header: PropTypes.string,
-    body: PropTypes.string,
-    classes: PropTypes.object,
-};
 
 class Groups extends Component {
 
