@@ -15,7 +15,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 const styles = {
     root: {
         zIndex: 10,
-        height: 300,
+        height: '100%',
     },
     wrapper: {
         width: 'auto',
@@ -27,8 +27,6 @@ const Event = (props) => (
     <Fragment>
         <Divider/>
         <ListItem button disableGutters style={{padding: 3}}>
-            {/* <div style={{width: 5, height: 40, backgroundColor: 'var(--tihlde-blaa)'}}></div> */}
-            {/* <ListItemText primary={props.title} secondary={props.location} primaryTypographyProps={{variant: 'headline'}}/> */}
             <ListItemText>
                 <Grid container direction='row' wrap='nowrap' alignItems='center'>
                     <Typography component='span' variant='headline'>{props.title}</Typography>
@@ -48,6 +46,7 @@ Event.propTypes = {
     location: PropTypes.string,
     date: PropTypes.string,
     start: PropTypes.string,
+    time: PropTypes.string,
 };
 
 // Is there a better way of doing this in JS?

@@ -60,3 +60,10 @@ export default {
         return helperRecursiveSnakeToCamelCase(v);
     },
 };
+
+// Convert date-string to more readable text
+export const refactorDateString = (date) => {
+    console.log(date);
+    const newDate = new Date(date);
+    return newDate.toDateString();
+};

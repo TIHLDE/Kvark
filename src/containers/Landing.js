@@ -21,19 +21,23 @@ class Landing extends Component {
     constructor() {
         super();
         this.state = {
-            isLoading: true,
+            isLoading: false,
         };
     }
 
     componentDidMount() {
         // Get grid items
-        const response = API.getGridItems().response();
-        response.then((data) => {
-            if (!response.isError) {
-                this.props.setGridItems(data);
-            }
-            this.setState({isLoading: false});
-        });
+
+        if (this.props.grid.length === 0) {
+            this.setState({isLoading: true});
+            const response = API.getGridItems().response();
+            response.then((data) => {
+                if (!response.isError) {
+                    this.props.setGridItems(data);
+                }
+                this.setState({isLoading: false});
+            });
+        }
     }
 
     render() {

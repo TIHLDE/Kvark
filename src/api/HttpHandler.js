@@ -37,7 +37,7 @@ class IResponse {
             this.status = data.status;
             
             return (data.json)? data.json() : data;
-        });
+        }).catch((error) => console.log(error));
     }
 
     then(method) {

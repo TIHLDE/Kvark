@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {refactorDateString} from '../utils';
 
 // API and store imports
 import API from '../api/api';
@@ -116,7 +117,7 @@ class NewsPage extends Component {
     render() {
         const {classes, selected} = this.props;
         const data = (selected && selected.data)? selected.data : (selected)? selected : {};
-
+        console.log(data);
         return (
             <Navigation isLoading={this.state.isLoading}>
                 {(this.state.isLoading)? null : 
@@ -128,6 +129,7 @@ class NewsPage extends Component {
                                     <div className={classes.contentTop}>
                                         <Typography className={classes.title} variant='display2'>{data.title}</Typography>
                                         <Typography className={classes.subtitle} variant='title'>{data.header}</Typography>
+                                        <Typography className={classes.subtitle} variant='body2' color='textSecondary'>Sist oppdatert: {refactorDateString(data.updated_at)}</Typography>
                                     </div>
                                     <Typography className={classes.contentText}>
                                         {data.body}

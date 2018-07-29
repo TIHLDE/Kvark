@@ -7,6 +7,7 @@ const styles = {
     root: {
         gridColumn: 'span 1',
         gridRow: 'span 1',
+        maxHeight: 600,
     },
     width2: {
         gridColumn: 'span 2',

@@ -13,6 +13,7 @@ import EventList from '../EventList';
 import Jodel from '../Jodel/Jodel';
 import Poster from '../Poster';
 import NewsItem from '../NewsItem';
+import ImageGallery from '../ImageGallery/ImageGallery';
 
 import GridItem from './GridItem';
 
@@ -51,6 +52,8 @@ const getItem = (id, type, data) => {
             return <Jodel id={id} data={data}/>;
         case 'poster':
             return <Poster id={id} data={data}/>;
+        case 'imagegallery':
+            return <ImageGallery id={id} data={data}/>;
         default:
             return null;
     }
