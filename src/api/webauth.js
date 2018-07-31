@@ -4,62 +4,47 @@
 // since it does not currently support CORS Headers
 // (The dummy one used here does however)
 
+import Cookies from 'universal-cookie';
+
+import {get, post} from './http';
+
 // The dummy WebAuth server
-const WEB_AUTH_URL = 'https://tihlde-webauth.herokuapp.com';
-const WEB_AUTH_URL_BASE = WEB_AUTH_URL + '/api/v1/';
-export const TOKEN_HEADER_NAME = 'X-CSRF-Token';
+import {WEB_AUTH} from '../settings';
 
-// NOTE: Experimenting with various ways to simplify requests
-function fetchmethod(endpoint, method, data={}, body, bodyIsJson, token) {
-    data['method'] = method; // override
+const TOKEN_COOKIE_ID = 'webauth_token';
+const cookies = new Cookies();
 
-    let headers = data['headers'] || {};
-    if (bodyIsJson && body) {
-        headers['Content-Type'] = 'application/json';
-        data['body'] = JSON.stringify(body);
-    } else if (body) {
-        data['body'] = body;
+export class Token {
+    set(token) {
+        cookies.set(TOKEN_COOKIE_ID, token, {path: '/'});
     }
 
-    if (token) {
-        headers[TOKEN_HEADER_NAME] = token;
+    get() {
+        return cookies.get(TOKEN_COOKIE_ID);
     }
-    data['headers'] = headers;
 
-    return fetch(WEB_AUTH_URL_BASE + endpoint, data)
-        .then((response) => {
-            if (response.json) {
-                return response.json();
-            }
-            return response;
-        });
+    remove() {
+        cookies.remove(TOKEN_COOKIE_ID, {path: '/'});
+    }
 }
+export const TOKEN = new Token();
 
-function get(endpoint, arg) {
-    return fetchmethod(endpoint, 'GET', arg['data'], arg['body'],
-                    arg['json'], arg['token']);
-}
-
-function post(endpoint, arg) {
-    return fetchmethod(endpoint, 'POST', arg['data'], arg['body'],
-                    arg['json'], arg['token']);
-}
 
 export default {
     // Returns a promise which resolves to the token
     auth(username, password) {
-        return post('auth', {body: {username, password}, json: true})
+        return post('auth', {body: {username, password}, json: true}, WEB_AUTH.URL)
             .then((data) => data['token']);
     },
 
     // Returns a promise which resolves to the session data
     logout(token) {
-        return post('logout', {token});
+        return post('logout', {token}, WEB_AUTH.URL);
     },
 
     // Returns a promise which resolves to the session data
     verify(token) {
-        return get('verify', {token, json: true});
+        return get('verify', {token, json: true}, WEB_AUTH.URL);
     },
 
     // Returns a promise which resolves to {msg, token} on success and {msg} on
@@ -68,6 +53,6 @@ export default {
         const arg = {
             token, 'old-password': oldpw, 'new-password': newpw, json: true,
         };
-        return get('setpw', arg);
+        return get('setpw', arg, WEB_AUTH.URL);
     },
 };

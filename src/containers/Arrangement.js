@@ -107,7 +107,6 @@ class Arrangement extends Component {
 
     render() {
         const {classes} = this.props;
-
         return (
             <Navigation>
                 <div className={classes.root}>
@@ -139,11 +138,8 @@ Arrangement.propTypes = {
     id: PropTypes.string
 };
 
-Arrangement.defaultProps={
+Arrangement.defaultProps = {
     id: "-1"
 };
-
-
-
 
 export default withStyles(styles)(Arrangement);

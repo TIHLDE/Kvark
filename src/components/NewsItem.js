@@ -4,7 +4,6 @@ import {Link} from 'react-router-dom';
 
 // Material UI Components
 import Paper from '@material-ui/core/Paper';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 
 
@@ -20,10 +19,9 @@ const styles = {
         minHeight: 200,
     },
     image: {
-        minHeight: '80%',
+        height: 200,
         width: '100%',
-        marginBottom: 50,
-        objectFit: 'fill',
+        objectFit: 'cover',
     },
     textContainer: {
         position: 'absolute',
@@ -31,33 +29,34 @@ const styles = {
         left: 0,
         right: 0,
         minHeight: 60,
-        backgroundColor: '#232F34',
-        color: 'white',
-        display: 'flex',
-        justifyContent: 'center',
+        backgroundColor: 'white',
+        color: 'black',
         alignItems: 'center',
-        padding: '4 10',
+        padding: '20px 15px 10px 15px',
     },
-    text: {
-        fontSize: '20px',
-    }
-}
+};
 
 class NewsItem extends Component {
 
     render() {
-        const {classes, data} = this.props;
+        const {classes} = this.props;
+        let {data} = this.props;
+        data = (data)? data : {};
+
+        let imageOrFallback = null;
+        if (data && data.image) {
+            imageOrFallback = <img className={classes.image} src={data.image} alt={data.imageAlt}/>;
+        } else {
+           imageOrFallback = <Typography className={classes.none} variant='title'>Missing Image</Typography>;
+        }
 
         return (
             <Paper className={classes.card} square={true}>
                 <Link to={'/nyheter/' + this.props.id}>
-                {(data.image)?
-                <img className={classes.image} src={data.image} alt='news'/>
-                :
-                    <Typography className={classes.none} variant='title' align='center'>No news provided</Typography>
-                }
+                {imageOrFallback}
                 <div className={classes.textContainer}>
-                    <p className={classes.text} variant='subheading' align='center' color='inherit'>{data.title}</p>
+                    <Typography variant='headline' color='inherit'>{data.title}</Typography>
+                    <Typography variant='body2' color='inherit'>(Ikon) Næringsliv og Kurs (Ikon) 12/23-18</Typography>
                 </div>
                 </Link>
             </Paper>

@@ -46,20 +46,32 @@ const styles = {
     },
     height2: {
         gridRow: 'span 2',
+
+        '@media only screen and (max-width: 800px)': {
+            gridRow: 'span 1 !important',
+            
+        },
+    },
+    height3: {
+        gridRow: 'span 3',
+
+        '@media only screen and (max-width: 800px)': {
+            gridRow: 'span 1 !important',
+            
+        },
     },
     fullWidth: {
         height: 500,
-        marginBottom: '-100px',
-        gridColumn: '1/4',
+        gridColumn: '1/5',
 
         '@media only screen and (max-width: 1000px)': {
+            height: 400,
             gridColumn: 'span 2 !important',
         },
 
         '@media only screen and (max-width: 800px)': {
             gridColumn: 'span 1 !important',
-            height: 300,
-            marginBottom: '-10px',
+            height: 400,
         },
     },
 }
@@ -73,11 +85,12 @@ class GridItem extends Component {
             this.props.colSpan === 3 ? this.props.classes.width3 : '',
             this.props.colSpan === 4 ? this.props.classes.width4 : '',
             this.props.rowSpan === 2 ? this.props.classes.height2: '',
+            this.props.rowSpan === 3 ? this.props.classes.height3 : '',
             this.props.fullWidth ? this.props.classes.fullWidth : '',
         ].join(' ');
 
         return (
-            <div className={ classes } style={{zIndex: 10}}>
+            <div className={ classes } style={{zIndex: 10, order: this.props.order}}>
                 { this.props.children }
             </div>
         );
@@ -87,11 +100,17 @@ class GridItem extends Component {
 GridItem.defaultProps = {
     rowSpan: 1,
     colSpan: 1,
-}
+    order: 100,
+};
 
 GridItem.propTypes = {
     rowSpan: PropTypes.number,
     colSpan: PropTypes.number,
-}
+    order: PropTypes.number,
+
+    children: PropTypes.node,
+    classes: PropTypes.object,
+    fullWidth: PropTypes.bool,
+};
 
 export default withStyles(styles)(GridItem);

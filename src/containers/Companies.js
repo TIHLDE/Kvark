@@ -1,37 +1,45 @@
-import React, { Component } from 'react';
-
-import Navigation from '../components/Navigation';
-
+import React, {Component, Fragment} from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import classNames from 'classnames';
 
+// Material UI Components
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
-
 import Button from '@material-ui/core/Button';
 
+// Icons
 import SendIcon from '@material-ui/icons/Send';
-
 import Image from '../assets/img/glad.jpg';
 
+// Project Components
+import Navigation from '../components/Navigation';
+import InfoCard from '../components/InfoCard';
 
-const styles = theme => ({
+
+const styles = (theme) => ({
     container: {
         display: 'grid',
         maxWidth: '1200px',
-        gridTemplateColumns: 'repeat(12, 1fr)',
+        gridTemplateColumns: 'repeat(4, 1fr)',
         gridGap: `${theme.spacing.unit * 3}px`,
         margin: '0 auto',
-        padding: '100px 30px',
+
+        '@media only screen and (max-width: 600px)': {
+            gridTemplateColumns: '1fr',
+        },
     },
     wrapper: {
-        backgroundColor: '#FBFBFB'
+        backgroundColor: '#FBFBFB',
+        margin: '0 auto',
+    },
+    extraPadding: {
+        padding: '100px 30px',
     },
     paper: {
-        padding: theme.spacing.unit * 3,
         color: theme.palette.text.secondary,
-        minWidth: '250px !important',
+        margin: '0 auto',
+        width: '90%',
+        maxWidth: 1200,
         marginBottom: theme.spacing.unit,
     },
     divider: {
@@ -42,8 +50,71 @@ const styles = theme => ({
         bottom: '20px',
         right: '20px',
         color: 'white',
-        backgroundColor: 'var(--tihlde-blaa)'
-    }
+        backgroundColor: 'var(--tihlde-blaa)',
+    },
+    header: {
+        maxWidth: 1200,
+        margin: '0 auto',
+        marginBottom: 30,
+    },
+    miniContainer: {
+        display: 'grid',
+        maxWidth: '1200px',
+        gridTemplateColumns: 'repeat(2, 1fr)',
+        gridGap: `${theme.spacing.unit * 3}px`,
+        margin: '0 auto',
+
+        '@media only screen and (max-width: 600px)': {
+            gridTemplateColumns: '1fr',
+        },
+    },
+    columnContainer: {
+        margin: '0 auto',
+        maxWidth: 1200,
+        display: 'flex',
+        flexDirection: 'column',
+        flexWrap: 'nowrap',
+    },
+    title: {
+        fontSize: '1.7em',
+
+        '@media only screen and (max-width: 900px)': {
+            fontSize: '7vw',
+        },
+
+        '@media only screen and (max-width: 600px)': {
+            fontSize: '0.8em',
+        },
+    },
+    subTitle: {
+        fontSize: '1em',
+
+        '@media only screen and (max-width: 900px)': {
+            fontSize: '3vw',
+        },
+
+        '@media only screen and (max-width: 600px)': {
+            fontSize: '0.5em',
+        },
+    },
+    paddingWrapper: {
+        padding: theme.spacing.unit * 3,
+    },
+});
+
+const ImageAndText = withStyles(styles)((props) => {
+    const {classes} = props;
+    return (
+        <div className={classes.miniContainer}>
+            <div>
+                <Typography variant='title'>Om TIHLDE</Typography>
+                <Typography variant='body2'>
+                    TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.
+                </Typography>
+            </div>
+            <div><img src={ Image } width='100%' alt='company' /></div>
+        </div>
+    )
 });
 
 class Companies extends Component {
@@ -51,105 +122,80 @@ class Companies extends Component {
     render() {
         const { classes } = this.props;
 
-        return <Navigation>
-                <a href='mailto:orakel@tihlde.org'><Button variant='fab' className={classes.send}><SendIcon /></Button></a>
+        return <Navigation footer>
+            <a href='mailto:orakel@tihlde.org'><Button variant='fab' className={classes.send}><SendIcon /></Button></a>
 
-            <div className={classes.container}>
-                <div style={{ gridColumnEnd: 'span 12', gridRow: 1 }}>
-                    <Typography variant='title' style={{fontSize: '2em'}}><strong>Vil du komme i kontakt med våre studenter?</strong></Typography>
-                    <Typography variant='body2' style={{ fontSize: '1.2em' }}>
+            <div className={classNames(classes.extraPadding)}>
+                <div className={classes.columnContainer}>
+                    <Typography className={classes.title} variant='title'><strong>Vil du komme i kontakt med våre studenter?</strong></Typography>
+                    <Typography className={classes.subTitle} variant='body2'>
                         Hvert år finner TIHLDE-studenter jobber i attraktive bedrifter landet over. For å få studentene inn i nettopp din bedrift tilbyr vi bedriftspresentasjoner og posting av stillingsannonser på våre sider.
                     </Typography>
                 </div>
             </div>
-            <div className={classes.wrapper}> <div className={classes.container}>
-        
-                <div style={{ gridColumnEnd: 'span 12', padding: '100px 0' }}>
-                    <Paper className={classes.paper}>
-                        <Typography variant='title'>Høres dette intressant ut? Send <a href='mailto:orakel@tihlde.org'>oss</a> en mail </Typography>
-                    </Paper>
-                </div>
-            </div></div>
-
-                <div className={classes.container}>
-                    <div style={{ gridColumnEnd: 'span 6', gridRow: 1 }}>
-                            <Typography variant='title'>Om TIHLDE</Typography>
-                            <Typography variant='body2'>
-                                TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.
-                            </Typography>
-                    </div>
-                  <div style={{ gridColumnEnd: 'span 6', gridRow: 1 }}><img src={ Image } width='100%' /></div>
-                </div>
-
             <div className={classes.wrapper}>
-                <div className={classes.container}>
-                    <div style={{ gridColumnEnd: 'span 12', gridRow: 1 }}>
-                            <Typography variant='headline'>Studier</Typography>
-                        </div>
-                    <div style={{ gridColumnEnd: 'span 3', gridRow: 2 }}>
+                <div className={classNames(classes.columnContainer, classes.extraPadding)}>
+                    <div>
                         <Paper className={classes.paper}>
-                            <Typography variant='title'>Dataingeniør</Typography>
-                            <Typography variant='body2'>
-                                TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.
-                                </Typography>
+                            <div className={classes.paddingWrapper}>
+                                <Typography variant='title'>Høres dette intressant ut? Send <a href='mailto:orakel@tihlde.org'>oss</a> en mail </Typography>
+                            </div>
                         </Paper>
                     </div>
-                    <div style={{ gridColumnEnd: 'span 3', gridRow: 2 }}>
-                        <Paper className={classes.paper}>
-                            <Typography variant='title'>Drift av datasystemer</Typography>
-                            <Typography variant='body2'>
-                                TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.
-                                </Typography>
-                        </Paper>
-                    </div>
-                    <div style={{ gridColumnEnd: 'span 3', gridRow: 2 }}>
-                        <Paper className={classes.paper}>
-                            <Typography variant='title'>IT-støttet bedriftsutvikling</Typography>
-                            <Typography variant='body2'>
-                                TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.
-                                </Typography>
-                        </Paper>
-                    </div>
-                    <div style={{ gridColumnEnd: 'span 3', gridRow: 2 }}>
-                        <Paper className={classes.paper}>
-                            <Typography variant='title'>IKT-basert samhandling</Typography>
-                            <Typography variant='body2'>
-                                TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.
-                                </Typography>
-                        </Paper>
-                    </div>
-            </div></div>
-            <div style={{ gridColumnEnd: 'span 6', gridRow: 1, height: 500, overflow: 'hidden'}}>
-                <img src='https://www.ntnu.no/image/image_gallery?img_id=16401786&t=1346178827979' width='100%'  />
+                </div>
             </div>
-            <div className={classes.container}>
-                <div style={{ gridColumnEnd: 'span 12', gridRow: 1 }}>
-                    <Typography variant='headline'>Vi tilbyr</Typography>
+            <div className={classNames(classes.extraPadding)}>
+                <ImageAndText/>
+            </div>
+            <div className={classes.wrapper}>
+                <div className={classes.extraPadding}>
+                    <div className={classes.header}>
+                        <Typography variant='headline'>Studier</Typography>
+                    </div>
+                    <div className={classNames(classes.container)}>
+                        <InfoCard header='Dataingeniør' body=' TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.'/>
+                        <InfoCard header='Drift av datasystemer' body='TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.'/>
+                        <InfoCard header='IT-støttet bedriftsutvikling' body=' TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.'/>
+                        <InfoCard header='IKT-basert samhandling' body='TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.'/>
+                    </div>
                 </div>
-                <div style={{ gridColumnEnd: 'span 6', gridRow: 2 }}>
-                    <Typography variant='title'>Bedriftspresentasjoner</Typography>
-                    <Typography variant='body2'>
-                        TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.
-                    </Typography>
+            </div>
+            <div style={{ gridColumnEnd: 'span 2', gridRow: 1, overflow: 'hidden'}}>
+                <img src='https://www.ntnu.no/image/image_gallery?img_id=16401786&t=1346178827979' width='100%'/>
+            </div>
+            <div className={classNames(classes.columnContainer, classes.extraPadding)}>
+                <div>
+                    <Typography variant='headline' gutterBottom>Vi tilbyr</Typography>
                 </div>
-                <div style={{ gridColumnEnd: 'span 6', gridRow: 2 }}>
-                    <Typography variant='title'>Jobbannonser</Typography>
-                    <Typography variant='body2'>
-                        TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.
-                    </Typography>
+                <div className={classes.miniContainer}>
+                    <div>
+                        <Typography variant='title'>Bedriftspresentasjoner</Typography>
+                        <Typography variant='body2'>
+                            TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.
+                        </Typography>
+                    </div>
+                    <div>
+                        <Typography variant='title'>Jobbannonser</Typography>
+                        <Typography variant='body2'>
+                            TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.
+                        </Typography>
+                    </div>
                 </div>
             </div>
 
-            <div className={classes.wrapper}> <div className={classes.container}>
-
-                <div style={{ gridColumnEnd: 'span 12', padding: '100px 0' }}>
-                    <Paper className={classes.paper}>
-                        <Typography variant='title'>Høres dette intressant ut? Send <a href='mailto:orakel@tihlde.org'>oss</a> en mail da </Typography>
-                    </Paper>
+             <div className={classes.wrapper}>
+                <div className={classNames(classes.columnContainer, classes.extraPadding)}>
+                    <div>
+                        <Paper className={classes.paper}>
+                            <div className={classes.paddingWrapper}>
+                                <Typography variant='title'>Høres dette intressant ut? Send <a href='mailto:orakel@tihlde.org'>oss</a> en mail </Typography>
+                            </div>
+                        </Paper>
+                    </div>
                 </div>
-            </div></div>
+            </div>
 
-        </Navigation>
+        </Navigation>;
     }
 
 }
