@@ -14,7 +14,7 @@ const styles ={
         margin:'auto',
         paddingTop:10
     },
-    boxes1:{
+    boxes:{
         height:'auto',
         width: '100%',
     },
@@ -33,7 +33,7 @@ class Paragraph extends Component {
         return(
         <Paper className={classes.root}>
             <Grid container className={classes.wrapper} direction='row' justify='space-around' alignItems='stretch' >
-                <Grid item className={classes.boxes}>
+                <Grid item >
                     <Typography>
                         {data.subheader}
                     </Typography>
@@ -42,7 +42,7 @@ class Paragraph extends Component {
                         {data.text}
                     </Typography>
                 </Grid>
-                <Grid item  className={classes.boxes1} >
+                <Grid item className={classes.boxes} >
                     <div className={classes.button}>
                         {join}
                     </div>

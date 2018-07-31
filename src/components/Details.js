@@ -4,6 +4,8 @@ import {withStyles} from '@material-ui/core/styles';
 
 import {Grid, Typography, Paper} from '@material-ui/core/';
 
+import {Link} from 'react-router-dom';
+
 
 {/*  This class shows the details over when and where the arrangements are. it will also show Who is in change and how to contact them*/}
 const styles ={
@@ -37,11 +39,8 @@ const styles ={
 class Details extends Component {
     widthChecker = window.onload = window.onresize = () =>{
         if(window.screen.availWidth >= 500 ){
-            console.log("row");
             return "row"
-
         }else{
-            console.log("column");
             return "column"
         }
     };
@@ -71,7 +70,7 @@ class Details extends Component {
                         <Typography className={classes.head} color='primary' variant='title'> Hva: </Typography>
                         <Typography color='primary' variant ='subheading' className={classes.info}>{data.what}</Typography>
                         <br/>
-                        <a href='https://www.facebook.com'> <Typography color='primary' variant='title' >facebook</Typography></a>
+                        <a href={data.link} > <Typography color='primary' variant='title' >facebook</Typography></a>
                         <br/>
                     </Grid>
                 </Grid>

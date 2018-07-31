@@ -14,6 +14,9 @@ const styles = {
     root:{
         backgroundColor:'whitesmoke',
         margin:'auto',
+        '@media only screen and (min-width: 600px)': {
+            paddingBottom:20,
+        }
     },
     image:{
         backgroundColor: 'whitesmoke',
@@ -33,7 +36,6 @@ const styles = {
         },
     },
     paragraph:{
-        paddingBottom:20,
         width:'80%',
         float:'right',
         '@media only screen and (max-width: 1300px)': {
@@ -48,16 +50,17 @@ class Arrangement extends Component {
         super(props);
 
         this.state={
-            id: 1,
+            id: "kjaøsdff3onq9a",
             img: 'https://static1.squarespace.com/static/5ae0420bec4eb743393f6d69/t/5ae07506562fa79909cc219b/1525247692097/?format=2500w',
+            joined:false,
 
             data_Paragraph:{
                 text:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed urna elit, finibus in eros vel, hendrerit faucibus ipsum. Nullam egestas libero eu mi ullamcorper gravida. Integer sed lorem a metus finibus varius consequat ac ligula. Duis et leo eu magna accumsan pulvinar. Donec id quam at sem tempor dictum. Nam feugiat congue odio, vel volutpat est consectetur in. Pellentesque sodales convallis sapien, vitae porttitor elit blandit non. Morbi quis aliquam lacus.\n' +
                 '\n' +
                 'Pellentesque volutpat lorem nec porttitor suscipit. Donec ac vulputate nisi. Etiam at ligula dolor. Morbi risus urna, dignissim eu pellentesque ac, feugiat egestas lorem. Donec mollis dolor sed ex mollis, quis iaculis risus varius. Aliquam faucibus dui et augue convallis consectetur id sit amet nibh. Aliquam malesuada gravida ex, id lobortis velit tempor sed. Sed malesuada leo nulla, in commodo dolor dignissim a. Curabitur sit amet ante mattis ipsum faucibus commodo. Fusce ac fringilla metus. Aliquam volutpat aliquet dui eget dapibus. Curabitur laoreet ultricies est. Quisque pulvinar, lacus sed mollis lacinia, ipsum lectus sagittis sapien, non volutpat diam dolor quis nunc. Aenean non sapien rutrum, pharetra nunc at, rhoncus magna. Etiam ligula nisi, consequat non egestas at, interdum ut mauris.',
                 subheader:'This is a small header for a small person',
-                joined:false,
                 waiting:1,
+
             },
             data_details:{
                 date:"29 oktober",
@@ -66,7 +69,8 @@ class Arrangement extends Component {
                 name:"Jack Ma",
                 study:"Dataingeniør",
                 space:"200",
-                what:"BedKom"
+                what:"BedKom",
+                link:"https://www.facebook.com/photo.php?fbid=10207242816868231&set=a.1296574593963.38745.1818323030&type=3&theater"
             }
         };
 
@@ -74,15 +78,13 @@ class Arrangement extends Component {
         this.joining =  this.joining.bind(this);
     }
 
-    //TODO: maybe put this in another class instead of having it here
     join = () =>{
         let waitingnr = this.state.data_Paragraph.waiting;
-        let joined = this.state.data_Paragraph.joined;
 
-        if(waitingnr  === 0 && joined){
+        if(waitingnr  === 0 && this.state.joined){
             return (<Button style={{backgroundColor:'lightblue'}} size='large'><strong>Joined!</strong></Button>);
 
-        } else if (waitingnr !== 0 && joined){
+        } else if (waitingnr !== 0 && this.state.joined){
             return (<Button style={{backgroundColor:'lightyellow'}} size='large'><strong>Que number : {waitingnr}</strong></Button>);
 
         }else{
@@ -91,7 +93,11 @@ class Arrangement extends Component {
     };
 
     joining =() =>{
-
+        this.setState(
+            {
+                joining: !this.state.joining
+            }
+        );
     };
 
     componentDidMount(){
