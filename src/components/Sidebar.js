@@ -7,8 +7,14 @@ import Link from 'react-router-dom/Link';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
+// Icons
+import TIHLDELOGO from '../assets/img/tihldeLogo.png';
+
 const styles = {
     top: {
+        display: 'flex',
+        alignItems: 'center',
+        paddingLeft: 10,
         height: 56,
         backgroundColor: 'var(--tihlde-blaa)',
     },
@@ -20,7 +26,11 @@ const SidebarContent = (props) => {
     return (
         <Fragment>
             <div className={classes.top}>
-                
+                <div style={{flexGrow: 1}}>
+                    <Link to='/'>
+                    <img src={TIHLDELOGO} alt='logo' height='30em'/>
+                    </Link>
+                </div>
             </div>
             <div>
                 <Link to='/undergrupper/' style={{ textDecoration: 'none' }}>
