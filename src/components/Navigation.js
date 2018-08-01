@@ -47,6 +47,7 @@ const styles = {
         display: 'flex',
         maxWidth: 1400,
         margin: 'auto',
+  
         alignItems: 'center',
     },
     menuButton: {
@@ -82,7 +83,7 @@ class Navigation extends Component {
                 <AppBar className={classes.root} position="fixed" color="default">
                     <Toolbar className={classes.navContent} disableGutters>
                         <div className={classes.navWrapper}>
-                            <div style={{ flexGrow: 1 }}>
+                            <div style={{flexGrow: 1}}>
                                 <Link to='/'>
                                 <img src={TIHLDELOGO} alt='logo' height='30em'/>
                                 </Link>
