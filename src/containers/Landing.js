@@ -2,8 +2,12 @@ import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
+import {connect} from 'react-redux';
+
 // API Imports
 import API from '../api/api';
+
+import {GeneralActions} from '../store/actions/MainActions'
 
 // Project components
 import Navigation from '../components/Navigation';
@@ -18,14 +22,15 @@ class Landing extends Component {
         // Get grid items
         const response = API.getGridItems().response();
         response.then((data) => {
-            console.log(data);
+            this.props.setGridItems(data);
         });
     }
 
     render() {
+        console.log()
         return (
-            <Navigation>
-                <LayoutGrid/>
+            <Navigation footer>
+                <LayoutGrid grid={this.props.grid} />
             </Navigation>
         );
     }
@@ -35,5 +40,21 @@ Landing.propTypes = {
     classes: PropTypes.object,
 };
 
+const stateValues = (state) => {
+    return {
+        grid: state.general.grid
+    }
+}
 
-export default withStyles(styles)(Landing);
+const dispatchers = (dispatch) => {
+    return {
+        setGridItems: (data) => {
+            dispatch({
+                type: GeneralActions.SET_GRID_ITEMS,
+                payload: data,
+            })
+        }
+    }
+}
+
+export default connect(stateValues, dispatchers)(withStyles(styles)(Landing));
