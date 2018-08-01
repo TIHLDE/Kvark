@@ -96,7 +96,7 @@ class Navigation extends Component {
                                         }}>Undergrupper</Button>
                                     </Link>
                                     <Link to='/bedrifter/' style={{ textDecoration: 'none' }}>
-                                        <Button color="inherit" style={{
+                                        <Button color="primary" style={{
                                             color: 'var(--tihlde-blaa)',
                                             backgroundColor: 'white',
                                             textDecoration: 'none',
