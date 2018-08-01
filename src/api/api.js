@@ -13,3 +13,4 @@ export default {
         return new IRequest('GET', 'news/'.concat(id, '/'), undefined, false);
     },
 };
+
