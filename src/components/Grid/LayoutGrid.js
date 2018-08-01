@@ -88,8 +88,8 @@ class LayoutGrid extends Component {
     render() {
         const {classes, grid} = this.props;
         const children = (grid)? grid : [];
-        const topPadding = !(grid.length > 0 && grid[0].fullWidth);
-        const bottomPadding = (grid.length > 0 && grid[grid.length-1].fullWidth);
+        const topPadding = !(children.length > 0 && children[0].fullWidth);
+        const bottomPadding = (children.length > 0 && children[children.length-1].fullWidth);
 
         return (
             <div className={classNames(classes.root, (topPadding)? classes.topPadding : classes.topRow, (bottomPadding)? classes.bottomPadding: '')}>
