@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+
+// API and store imports
+import API from '../api/api';
+import {GeneralActions} from '../store/actions/MainActions';
 
 // Project components
 import Navigation from '../components/Navigation';
@@ -50,6 +55,8 @@ class Arrangement extends Component {
         super(props);
 
         this.state={
+            isLoading: false,
+
             id: "kjaøsdff3onq9a",
             img: 'https://static1.squarespace.com/static/5ae0420bec4eb743393f6d69/t/5ae07506562fa79909cc219b/1525247692097/?format=2500w',
             joined:false,
@@ -93,53 +100,97 @@ class Arrangement extends Component {
     };
 
     joining =() =>{
-        this.setState(
-            {
-                joining: !this.state.joining
-            }
-        );
+        this.setState({joining: !this.state.joining});
     };
+
+    // Gets the event
+    loadEvent = () => {
+        // Get eventItem id
+        const id = this.props.match.params.id;
+
+        // Does the item exist in store
+        const itemExists = this.props.grid.findIndex((elem) => elem.id == id) !== -1;
+
+       // Item exists, get it from store
+       if (itemExists) {
+           this.props.selectStoredItem(id);
+       }
+       // Item does not exist, fetch from server
+       else {
+           this.setState({isLoading: true});
+           const response = API.getEventItem(id).response();
+           response.then((data) => {
+               if (!response.isError) {
+                   this.props.setSelectedItem(data);
+               } else {
+                   // Redirect to 404
+               }
+               this.setState({isLoading: false});
+           });
+       }
+    }
 
     componentDidMount(){
         //get data here
+        this.loadEvent();
     }
 
-
     render() {
-        const {classes} = this.props;
+        const {classes, selected} = this.props;
         return (
-            <Navigation>
-                <div className={classes.root}>
-                    <Grid container spacing={16}>
-                        <Grid item className={classes.image}>
-                            <img style={{width:'100%', height:'100%'}} src={this.state.img} alt='Missing image'/>
-                        </Grid>
-                        <Grid item xs={12} sm={6} >
-                            <div className={classes.paragraph}>
-                                <Paragraph data={this.state.data_Paragraph} join={this.join()}  style={{backgroundColor:'red'}}/>
-                            </div>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <Grid item className={classes.cell}>
-                                <Details data={this.state.data_details}/>
+            <Navigation isLoading={this.state.isLoading}>
+                 {(this.state.isLoading)? null : 
+                    <div className={classes.root}>
+                        <Grid container spacing={16}>
+                            <Grid item className={classes.image}>
+                                <img style={{width:'100%', height:'100%'}} src={this.state.img} alt='Missing image'/>
+                            </Grid>
+                            <Grid item xs={12} sm={6} >
+                                <div className={classes.paragraph}>
+                                    <Paragraph data={this.state.data_Paragraph} join={this.join()}  style={{backgroundColor:'red'}}/>
+                                </div>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <Grid item className={classes.cell}>
+                                    <Details data={this.state.data_details}/>
+                                </Grid>
                             </Grid>
                         </Grid>
-                    </Grid>
-                </div>
+                    </div>
+                 }
             </Navigation>
         );
     }
 }
 
-
-
 Arrangement.propTypes = {
     classes: PropTypes.object,
-    id: PropTypes.string
+    id: PropTypes.string,
+
+    selected: PropTypes.object,
+    match: PropTypes.object,
+    grid: PropTypes.array,
+    selectStoredItem: PropTypes.func,
+    setSelectedItem: PropTypes.func,
 };
 
 Arrangement.defaultProps = {
     id: "-1"
 };
 
-export default withStyles(styles)(Arrangement);
+const stateValues = (state) => {
+    return {
+        grid: state.general.grid,
+        selected: state.general.selectedItem,
+    };
+};
+
+const dispatchers = (dispatch) => {
+    return {
+        selectStoredItem: (id) => dispatch({type: GeneralActions.SELECT_STORED_ITEM, payload: id}),
+        setSelectedItem: (item) => dispatch({type: GeneralActions.SET_SELECTED_ITEM, payload: item}),
+    };
+};
+
+
+export default connect(stateValues, dispatchers)(withStyles(styles)(Arrangement));

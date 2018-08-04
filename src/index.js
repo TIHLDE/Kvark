@@ -22,7 +22,7 @@ const Application = (
             <Switch>
                 <Route exact path='/' component={Landing}/>
                 <Route path='/nyheter/:id' component={NewsPage}/>
-                <Route path='/arrangementer/' component={ArrangementPage}/>
+                <Route path='/arrangementer/:id' component={ArrangementPage}/>
                 <Route path='/undergrupper/' component={Groups} />
                 <Route path='/bedrifter/' component={Companies} />
 

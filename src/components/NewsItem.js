@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import {Link} from 'react-router-dom';
+import URLS from '../URLS';
 
 // Material UI Components
 import Paper from '@material-ui/core/Paper';
@@ -52,7 +53,7 @@ class NewsItem extends Component {
 
         return (
             <Paper className={classes.card} square={true}>
-                <Link to={'/nyheter/' + this.props.id}>
+                <Link to={URLS.news + this.props.id}>
                 {imageOrFallback}
                 <div className={classes.textContainer}>
                     <Typography variant='headline' color='inherit'>{data.title}</Typography>

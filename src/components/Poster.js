@@ -50,10 +50,7 @@ const styles = {
     },
     textContainer: {
         zIndex: 2,
-        '@media only screen and (max-width: 800px)': {
-            position: 'absolute',
-            top: '15%',
-        },
+
     },
     text: {
         color: 'white',
@@ -102,7 +99,7 @@ class Poster extends Component {
                         <Link to={data.action} className={classes.actionButton}>
                             <Button variant='raised' color='primary'>{data.actionText}</Button>
                         </Link>
-                    }      
+                    }
                 </Grid>
             </div>
         );

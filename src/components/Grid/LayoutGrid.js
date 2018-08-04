@@ -35,10 +35,10 @@ const styles = {
             gridTemplateColumns: '1fr 1fr',
         },
 
-        '@media only screen and (max-width: 800px)': {
+        '@media only screen and (max-width: 600px)': {
            gridTemplateColumns: '100%',
            padding: '0 5px',
-           gridAutoRows: 'auto',
+           gridAutoRows: '300px',
         },
     },
     topPadding: {
@@ -58,10 +58,10 @@ const styles = {
 };
 
 // Creates a item based on the type
-const getItem = (id, type, data) => {
+const getItem = (id, type, data, height) => {
     switch (type) {
         case 'eventlist':
-            return <EventList id={id} data={data}/>;
+            return <EventList id={id} data={data} height={height}/>;
         case 'news':
             return <NewsItem id={id} data={data}/>;
         case 'jodel':
@@ -96,10 +96,13 @@ class LayoutGrid extends Component {
                 {children.map((value, index) => {
                     return (
                         <GridItem key={index} rowSpan={value.height} colSpan={value.width} fullWidth={value.fullWidth} order={value.order}> {/* Wraps the entire item in a GridItem with specifed row- and colspan */}
-                            {getItem(value.id, value.type, value.data)}
+                            {getItem(value.id, value.type, value.data, value.height)}
                         </GridItem>
                     );
                 })}
+                {(children.length === 0)?
+                    <Poster data={{header: 'Oi oi oi!', subheader: 'Her skjedde det noe galt', color: 'var(--tihlde-blaa)'}}/>
+                    : null}
             </div>
         );
     }
