@@ -70,7 +70,7 @@ const styles = {
         
     },
     actionContainer: {
-        minHeight: 30,
+        minHeight: 40,
     },
     description: {
       height: '100%',
@@ -80,12 +80,18 @@ const styles = {
 
 const EventDetails = withStyles(styles)((props) => {
     const {classes, event} = props;
-    console.log(event);
     return (
         <Grow in={true} timeout={300}>
             <Grid className={classes.details} container direction='column' wrap='nowrap' ref={props.ref} >
                 <Grid container direction='row' wrap='nowrap' justify='space-between' alignItems='center'>
-                    <Typography variant='headline'>{event.title}</Typography>
+                    <Typography
+                        variant='headline'
+                        color={(event.priority === 2)? 'primary' : 'default'}>
+                         {(event.priority === 2)? 
+                            <strong>{event.title}</strong>
+                            : event.title
+                        }
+                    </Typography>
                     <IconButton onClick={props.onClose}><CloseIcon/></IconButton>
                 </Grid>
                 <Grid container direction='row' wrap='nowrap' justify='space-between'>
@@ -120,7 +126,16 @@ const Event = withStyles(styles)((props) => {
             <ListItem button disableGutters style={{padding: 3}} onClick={props.onClick}>
                 <ListItemText>
                     <Grid container direction='row' alignItems='center'>
-                        <Typography className={classes.eventHeader} component='span' variant='headline'>{props.title}</Typography>
+                        <Typography
+                        className={classes.eventHeader}
+                        component='span'
+                        variant='headline'
+                        color={(props.priority === 2)? 'primary' : 'default'}>
+                        {(props.priority === 2)? 
+                            <strong>{props.title}</strong>
+                            : props.title
+                        }
+                        </Typography>
                         <Typography className={classes.eventSubheader} component='span' variant='subheading'>&nbsp; {props.location ? 'på' : ''} {props.location}</Typography>
                     </Grid>
                 </ListItemText>
@@ -182,6 +197,7 @@ class EventList extends Component {
         const {classes, data} = this.props;
         const {selectedEvent} = this.state;
         const eventslist = data.events || [];
+        eventslist.sort((a, b) => b.priority - a.priority);
 
         const events = [];
         const eventCount = (eventslist.length > maxElementsCount)? maxElementsCount : eventslist.length;
@@ -195,9 +211,12 @@ class EventList extends Component {
                           location={v.location || ''}
                           date={v.date}
                           time={v.time}
+                          priority={v.priority}
                           onClick={() => this.openEvent(v)}
                         />;
         }
+
+        
    
         return (
             <Card className={classes.root} square={true}>
