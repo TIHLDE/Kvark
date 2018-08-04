@@ -21,7 +21,7 @@ const styles = {
     root: {
         margin: 'auto',
         width: '100%',
-        maxWidth: '1200px',
+        maxWidth: 900,
         backgroundColor: '#ebebe',
         overflow: 'hidden',
     },

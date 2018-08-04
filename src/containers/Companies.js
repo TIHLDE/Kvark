@@ -34,6 +34,10 @@ const styles = (theme) => ({
     },
     extraPadding: {
         padding: '100px 30px',
+
+        '@media only screen and (max-width: 600px)': {
+            padding: '40px 30px',
+        },
     },
     paper: {
         color: theme.palette.text.secondary,
