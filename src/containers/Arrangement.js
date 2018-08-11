@@ -143,7 +143,7 @@ class Arrangement extends Component {
                     <div className={classes.root}>
                         <Grid container spacing={16}>
                             <Grid item className={classes.image}>
-                                <img style={{width:'100%', height:'100%'}} src={this.state.img} alt='Missing image'/>
+                                <img style={{width:'100%', height:'100%'}} src={this.state.img} alt='Missing'/>
                             </Grid>
                             <Grid item xs={12} sm={6} >
                                 <div className={classes.paragraph}>

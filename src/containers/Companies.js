@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 
@@ -165,7 +165,7 @@ class Companies extends Component {
                 </div>
             </div>
             <div style={{ gridColumnEnd: 'span 2', gridRow: 1, overflow: 'hidden'}}>
-                <img src='https://www.ntnu.no/image/image_gallery?img_id=16401786&t=1346178827979' width='100%'/>
+                <img src='https://www.ntnu.no/image/image_gallery?img_id=16401786&t=1346178827979' width='100%' alt='NTNU'/>
             </div>
             <div className={classNames(classes.columnContainer, classes.extraPadding)}>
                 <div>

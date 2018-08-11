@@ -4,7 +4,7 @@ function snakeToCamelCase(s) {
     let narr = [];
     let next = false;
     for (let i = 0; i < arr.length; i++) {
-        if (arr[i] == '_') {
+        if (arr[i] === '_') {
             next = true;
         } else {
             if (next) {
@@ -20,7 +20,7 @@ function snakeToCamelCase(s) {
 }
 
 // Convert all keys in the object v from snake to camel case
-function convertKeysToCamelCase(v) {
+export const convertKeysToCamelCase = (v) => {
     let objects = {};
     for (let key in v) {
         if (v.hasOwnProperty(key)) {
@@ -31,7 +31,7 @@ function convertKeysToCamelCase(v) {
 }
 
 // Helper function: recursively convert object keys to camel case
-function helperRecursiveSnakeToCamelCase(v, depth=0, maxDepth=10) {
+export function helperRecursiveSnakeToCamelCase(v, depth=0, maxDepth=10) {
     if (depth >= maxDepth) {
         console.log('recursiveSnakeToCamelCase: exceeded maxDepth of ', maxDepth);
         return v;
@@ -62,8 +62,18 @@ export default {
 };
 
 // Convert date-string to more readable text
-export const refactorDateString = (date) => {
-    console.log(date);
-    const newDate = new Date(date);
-    return newDate.toDateString();
+export const refactorDateString = (dateString) => {
+    if (!dateString || dateString.length < 10) {
+        return dateString;
+    } else if (!(typeof(dateString) === 'string')) {
+        return dateString;
+    }
+
+    // This solutions also works for Safari
+    const convertedStringDate = dateString.substring(0, 10);
+    let date = new Date(convertedStringDate);
+    if (!date) {
+        date = new Date(convertedStringDate.replace(/-/g, '/'));
+    }
+    return date.toDateString();
 };

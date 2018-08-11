@@ -1,4 +1,5 @@
-import React,  {Component} from 'react';
+import React,{Component} from 'react';
+import PropTypes from 'prop-types';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -17,7 +18,7 @@ const styles = {
 class Footer extends Component {
 
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
 
         return (
             <div className={classes.root}>
@@ -25,7 +26,10 @@ class Footer extends Component {
             </div>
         );
     }
-}
+};
 
+Footer.propTypes = {
+    classes: PropTypes.object,
+};
 
 export default withStyles(styles)(Footer);

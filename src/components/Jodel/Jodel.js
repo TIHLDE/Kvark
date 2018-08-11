@@ -225,7 +225,7 @@ JodelPost.propTypes = {
 
 // The JodelCard. This component can both me a post and a comment. This component is the one that takes in a text, time, and vote. It also needs an ID
 const JodelCard = withStyles(styles)((props) => {
-    const {classes, text, time, votes, voteState, onVote} = props;
+    const {classes, text, time, votes} = props;
     // TODO: Present the voteState visually.
 
     return (

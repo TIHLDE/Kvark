@@ -65,15 +65,22 @@ const styles = {
     },
     descriptionContainer: {
         height: 'auto',
+        flexGrow: 1,
         overflow: 'hidden',
         marginBottom: 4,
-        
+        position: 'relative',
     },
     actionContainer: {
         minHeight: 40,
     },
     description: {
       height: '100%',
+    },
+    bottomOpacity: {
+        position: 'absolute',
+        bottom: 0, left: 0, right: 0,
+        height: 40,
+        background: 'linear-gradient(transparent, white)',
     }
 
 };
@@ -100,9 +107,10 @@ const EventDetails = withStyles(styles)((props) => {
                 </Grid>
                 <Grid className={classes.eventContent} container direction='column' wrap='nowrap' justify='space-between'>
                     <div className={classes.descriptionContainer}>
-                        <Typography className={classes.descriptionb} variant='subheading'>
+                        <Typography className={classes.description} variant='subheading'>
                             {event.description}
                         </Typography>
+                        <div className={classes.bottomOpacity} />
                     </div>
                     <Grid className={classes.actionContainer} container direction='row' wrap='nowrap' justify='flex-end'>
                         <Link to={URLS.events + event.id}>
@@ -161,7 +169,7 @@ Event.propTypes = {
 function zeropadNumber(num, digits=2) {
     let s = num.toString();
     while (s.length < digits) {
-        s = '' + '0' + s;
+        s = '0' + s;
     }
     return s;
 }

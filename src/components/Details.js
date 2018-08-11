@@ -4,12 +4,9 @@ import {withStyles} from '@material-ui/core/styles';
 
 import {Grid, Typography, Paper} from '@material-ui/core/';
 
-import {Link} from 'react-router-dom';
-
-
-{/*  This class shows the details over when and where the arrangements are. it will also show Who is in change and how to contact them*/}
-const styles ={
-    root:{
+/*  This class shows the details over when and where the arrangements are. it will also show Who is in change and how to contact them*/
+const styles = {
+    root: {
         width:'auto',
         height: 'auto',
         backgroundColor:'lightblue',

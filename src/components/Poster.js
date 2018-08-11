@@ -13,7 +13,6 @@ const styles = {
     root: {
         backgroundColor: 'whitesmoke',
         width: '100%',
-        margin: 'auto',
         minHeight: '200px',
 
         // Should be removed - just a demostration
@@ -90,7 +89,7 @@ class Poster extends Component {
         return (
             <div className={classNames(classes.root,(!data.image)? classes.none : '')}>
                 {(!data.image)? null :
-                    <img className={classes.image} src={data.image} alt='image' />
+                    <img className={classes.image} src={data.image} alt='poster' />
                 }
                 <Grid className={classes.textContainer} container direction='column' wrap='nowrap'>
                     <Typography className={classNames(classes.text, classes.headerText)} variant='display4' align='center' style={{color: textColor}}>{data.header}</Typography>

@@ -21,8 +21,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Footer from './Footer';
 import Sidebar from './Sidebar';
 
-const sidebarWidth = 300;
-
 const styles = {
     root: {
         boxSizing: 'border-box',

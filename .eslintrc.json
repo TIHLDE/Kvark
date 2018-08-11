@@ -19,6 +19,8 @@
         "quote-props": 0,
         "object-curly-spacing": 0,
         "no-multiple-empty-lines": 0,
-        "guard-for-in": 0
+        "guard-for-in": 0,
+        "eqeqeq": 0,
+        "jsx-a11y/accessible-emoji": 0
     }
 }

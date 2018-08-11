@@ -28,11 +28,8 @@ class ImageGallery extends Component {
     }
 
     nextImage = (event) => {
-        console.log(this.gallery);
-        console.log(event);
         const index = this.gallery.current.state.currentIndex;
         this.gallery.current.slideToIndex(index+1);
-        console.log(index);
     }
 
     render() {
@@ -62,7 +59,7 @@ class ImageGallery extends Component {
 }
 
 ImageGallery.propTypes = {
-
+    data: PropTypes.object,
 };
 
 export default withStyles(styles)(ImageGallery);

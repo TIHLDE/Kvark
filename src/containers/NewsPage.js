@@ -11,7 +11,6 @@ import {GeneralActions} from '../store/actions/MainActions';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 // Project components
@@ -26,12 +25,12 @@ const styles = {
         overflow: 'hidden',
     },
     image: {
-        maxHeight: '400px',
+       
         width: '100%',
         height: 'auto',
-        objectFit: 'fill',
+        objectFit: 'cover',
+        maxHeight: 500,
         
-        maxWidth: 800,
 
         '@media only screen and (max-width: 600px)': {
             order: 0,
@@ -128,14 +127,15 @@ class NewsPage extends Component {
     render() {
         const {classes, selected} = this.props;
         const data = (selected && selected.data)? selected.data : (selected)? selected : {};
-        console.log(data);
+        const lastUpdated = (selected && selected.updated_at)? selected.updated_at : (data.updated_at)? data.updated_at : '';
+
         return (
             <Navigation footer isLoading={this.state.isLoading}>
                 {(this.state.isLoading)? null : 
                     <Grid className={classes.root} container direction='column' wrap='nowrap'>
                         <Typography className={classNames(classes.text, classes.title)} variant='display2' color='inherit'>{data.title}</Typography>
                         <Typography className={classNames(classes.text, classes.subtitle)} variant='title'>{data.header}</Typography>
-                        <Typography className={classNames(classes.text, classes.caption)} variant='body2' color='textSecondary'>Sist oppdatert: {refactorDateString(data.updated_at)}</Typography>
+                        <Typography className={classNames(classes.text, classes.caption)} variant='body2' color='textSecondary'>Sist oppdatert: {refactorDateString(lastUpdated)}</Typography>
                         <img className={classes.image} src={data.image} alt={data.image_alt}/> 
                         <Typography className={classNames(classes.text, classes.contentText)}>
                             {data.body}
