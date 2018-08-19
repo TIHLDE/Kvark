@@ -104,7 +104,7 @@ class Arrangement extends Component {
                     <div className={classes.root}>
                         <Grid container spacing={16}>
                             <Grid item className={classes.image}>
-                                <img style={{width:'100%', height:'100%'}} src={this.state.img} alt='Missing'/>
+                                <img style={{width:'100%', height:'100%'}} src={data.image} alt={data.image_alt}/>
                             </Grid>
                             <Grid item xs={12} sm={6} >
                                 <div className={classes.paragraph}>
@@ -118,9 +118,9 @@ class Arrangement extends Component {
                             <Grid item xs={12} sm={6}>
                                 <Grid item className={classes.cell}>
                                     <Details data={{
-                                        clock: data.time,
+                                        clock: data.start,
                                         date: data.date,
-                                        where: data.where,
+                                        where: data.location,
                                         name: data.name,
                                         study: data.study,
                                         space: data.space,
