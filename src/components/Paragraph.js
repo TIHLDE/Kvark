@@ -34,7 +34,7 @@ class Paragraph extends Component {
         <Paper className={classes.root}>
             <Grid container className={classes.wrapper} direction='row' justify='space-around' alignItems='stretch' >
                 <Grid item >
-                    <Typography>
+                    <Typography variant="headline">
                         {data.subheader}
                     </Typography>
                     <br/>

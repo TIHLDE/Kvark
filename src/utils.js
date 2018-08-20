@@ -77,3 +77,20 @@ export const refactorDateString = (dateString) => {
     }
     return date.toDateString();
 };
+
+// Convert date-string to more readable text
+export const stringToDate = (dateString) => {
+    if (!dateString || dateString.length < 10) {
+        return new Date();
+    } else if (!(typeof(dateString) === 'string')) {
+        return new Date();
+    }
+
+    // This solutions also works for Safari
+    const convertedStringDate = dateString.substring(0, 10);
+    let date = new Date(convertedStringDate);
+    if (!date) {
+        date = new Date(convertedStringDate.replace(/-/g, '/'));
+    }
+    return date;
+};
