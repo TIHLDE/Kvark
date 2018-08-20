@@ -18,7 +18,7 @@ const styles = {
         width:'auto',
         height: 'auto',
         justifyContent:'center',
-        paddingBottom:'10px'
+        paddingBottom:'10px',
 
     },
     wrapper:{
@@ -47,7 +47,9 @@ const Information = withStyles(styles)((props) => {
 
     return (
         <Grid container className={classNames(classes.root, props.className)}>
-            <Grid item >
+            <Grid item style={{
+                height:'auto'
+            }}>
                 <Avatar alt="Missing icon" >
                     {data.icon}
                 </Avatar>

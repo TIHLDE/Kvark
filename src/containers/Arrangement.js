@@ -19,7 +19,6 @@ import {Typography} from '@material-ui/core';
 
 const styles = {
     root:{
-        backgroundColor:'whitesmoke',
         margin:'auto',
         maxWidth: 1200,
     },
@@ -66,7 +65,7 @@ const Header = withStyles(styles)((props) => {
 
     return (
         <div className={classNames(classes.header, props.className)}>
-            <Typography className={{backgroundColor:'whitesmoke'}} variant="display1">
+            <Typography variant="display1">
                 {data.title}
             </Typography>
         </div>
