@@ -1,28 +1,29 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
+import classNames from 'classnames';
 
 import {Grid, Typography, Paper} from '@material-ui/core/';
 
 const styles ={
-    root:{
-        height:'auto',
+    root: {
+        height: 'auto',
         width: 'auto',
     },
-    wrapper:{
-        width:'90%',
-        margin:'auto',
-        paddingTop:10
+    wrapper: {
+        width: '90%',
+        margin: 'auto',
+        paddingTop: 10,
     },
-    boxes:{
-        height:'auto',
+    boxes: {
+        height: 'auto',
         width: '100%',
     },
-    button:{
-        paddingTop:15,
-        float:'right',
-        paddingBottom:15,
-    }
+    button: {
+        paddingTop: 15,
+        float: 'right',
+        paddingBottom: 15,
+    },
 
 };
 
@@ -30,11 +31,11 @@ class Paragraph extends Component {
     render() {
         const {join, data, classes} = this.props;
 
-        return(
-        <Paper className={classes.root}>
+        return (
+        <Paper className={classNames(classes.root, this.props.className)}>
             <Grid container className={classes.wrapper} direction='row' justify='space-around' alignItems='stretch' >
                 <Grid item >
-                    <Typography>
+                    <Typography variant="headline">
                         {data.subheader}
                     </Typography>
                     <br/>
@@ -49,11 +50,11 @@ class Paragraph extends Component {
                 </Grid>
             </Grid>
         </Paper>
-    )}
+    );}
 }
 
 Text.propTypes={
-    data: PropTypes.any
+    data: PropTypes.any,
 };
 
 Paragraph.defaultProps={

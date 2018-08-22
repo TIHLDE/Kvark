@@ -1,16 +1,23 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
+import classNames from 'classnames';
+import {stringToDate} from '../utils'
 
-import {Grid, Typography, Paper} from '@material-ui/core/';
+import {Grid, Typography, Paper, Avatar,Button} from '@material-ui/core/';
+
+//Importing icons
+import Place from '@material-ui/icons/Place'
+import EventNote from '@material-ui/icons/EventNote'
+
 
 /*  This class shows the details over when and where the arrangements are. it will also show Who is in change and how to contact them*/
 const styles = {
     root: {
         width:'auto',
         height: 'auto',
-        backgroundColor:'lightblue',
         justifyContent:'center',
+        paddingBottom:'10px',
 
     },
     wrapper:{
@@ -24,51 +31,68 @@ const styles = {
         textAlign: 'center',
         margin:'auto'
     },
-    head:{
-        fontWeight:'bold',
-        paddingTop:10,
-    },
     info:{
-        paddingBottom:10,
-    }
+        display: 'grid',
+        gridTemplateColumns: '1fr',
+        gridTemplateRows: 'auto',
+        paddingLeft:'10px',
+        paddingRight: '10px',
+    },
+
 };
 
+const Information = withStyles(styles)((props) => {
+    const {classes, data} = props;
+
+    return (
+        <Grid container className={classNames(classes.root, props.className)}>
+            <Grid item style={{
+                height:'auto'
+            }}>
+                <Avatar alt="Missing icon" >
+                    {data.icon}
+                </Avatar>
+            </Grid>
+            <Grid item className={classes.info}>
+                    <Typography>{data.main}</Typography>
+                    <Typography>{data.secondary}</Typography>
+            </Grid>
+        </Grid>
+    )
+});
+
 class Details extends Component {
-    widthChecker = window.onload = window.onresize = () =>{
-        if(window.screen.availWidth >= 500 ){
-            return "row"
-        }else{
-            return "column"
-        }
-    };
 
     render() {
         const {data, classes} = this.props;
+        const date = stringToDate(data.date);
+        const dateString = date.toDateString();
+        const timeString = date.getHours().toString().padStart(2, "0") + ":" + date.getMinutes().toString().padStart(2, "0");
 
         return (
-            <Paper className={classes.root}>
+            <Paper className={classNames(classes.root, this.props.className)}>
                 <Grid container className={classes.wrapper} alignContent='stretch' justify='space-between'
-                      direction={this.widthChecker()}>
+                      direction="row">
                     <Grid className={classes.item}>
-                        <Typography className={classes.head} color='primary' variant='title'>Når:</Typography>
-                        <Typography color='primary' variant ='subheading'>{data.date}</Typography>
-                        <Typography color='primary' variant ='subheading' className={classes.info}> {data.clock}</Typography>
-                        <Typography className={classes.head} color='primary' variant='title'> Hvor: </Typography>
-                        <Typography color='primary' variant ='subheading' className={classes.info}>{data.where}</Typography>
+                        <Information data={{
+                            icon:<EventNote/>,
+                            main: <strong>{dateString}</strong>,
+                            secondary:timeString
+                        }}
+                        />
                     </Grid>
                     <Grid className={classes.item}>
-                        <Typography className={classes.head} color='primary' variant='title'> Forfatter: </Typography>
-                        <Typography color='primary' variant ='subheading'>{data.name}</Typography>
-                        <Typography color='primary' variant ='subheading' className={classes.info}>{data.study}</Typography>
-                        <Typography className={classes.head} color='primary' variant='title'> Plasser: </Typography>
-                        <Typography color='primary' variant ='subheading' className={classes.info}>{data.space}</Typography>
+                        <Information data={{
+                            icon:<Place/>,
+                            main: <strong>{data.where}</strong>,
+                            secondary: data.what
+                        }}
+                        />
                     </Grid>
                     <Grid className={classes.item}>
-                        <Typography className={classes.head} color='primary' variant='title'> Hva: </Typography>
-                        <Typography color='primary' variant ='subheading' className={classes.info}>{data.what}</Typography>
-                        <br/>
-                        <a href={data.link} > <Typography color='primary' variant='title' >facebook</Typography></a>
-                        <br/>
+                        <Button color='primary' fullWidth={true}>
+                            Meld deg på!
+                        </Button>
                     </Grid>
                 </Grid>
             </Paper>
@@ -76,7 +100,8 @@ class Details extends Component {
     }
 }
 Text.propTypes={
-    data: PropTypes.any
+    data: PropTypes.object,
+
 };
 
 
