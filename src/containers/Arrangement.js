@@ -109,7 +109,7 @@ class Arrangement extends Component {
         const id = this.props.match.params.id;
 
         // Does the item exist in store
-        const itemExists = this.props.grid.findIndex((elem) => elem.id == id) !== -1;
+        const itemExists = this.props.grid.findIndex((elem) => elem.id == id && elem.type == 'event') !== -1;
 
        // Item exists, get it from store
        if (itemExists) {
