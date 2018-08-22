@@ -47,6 +47,18 @@ const styles = {
         margin: 'auto',
   
         alignItems: 'center',
+
+        '@media only screen and (max-width: 600px)': {
+            flexDirection: 'row-reverse',
+        }
+    },
+    logoWrapper: {
+        display: 'flex',
+        flexGrow: 1,
+
+        '@media only screen and (max-width: 600px)': {
+            flexDirection: 'row-reverse',
+        }
     },
     menuButton: {
         color: 'white',
@@ -81,9 +93,9 @@ class Navigation extends Component {
                 <AppBar className={classes.root} position="fixed" color="default">
                     <Toolbar className={classes.navContent} disableGutters>
                         <div className={classes.navWrapper}>
-                            <div style={{flexGrow: 1}}>
+                            <div className={classes.logoWrapper}>
                                 <Link to='/'>
-                                <img src={TIHLDELOGO} alt='logo' height='30em'/>
+                                    <img src={TIHLDELOGO} alt='logo' height='30em'/>
                                 </Link>
                             </div>
                             <Hidden xsDown implementation='css'>
@@ -114,7 +126,7 @@ class Navigation extends Component {
                                         paper: classes.sidebar,
                                     }}
                                 >
-                                    <Sidebar/>
+                                    <Sidebar onClose={this.toggleSidebar}/>
                                 </Drawer>
                             </Hidden>
                         </div>

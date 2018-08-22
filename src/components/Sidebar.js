@@ -2,17 +2,18 @@ import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
-
+import URLS from '../URLS';
 
 // Material UI Components
 import ListItem from '@material-ui/core/ListItem';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
 
 // Icons
 import TIHLDELOGO from '../assets/img/tihldeLogo.png';
-import URLS from '../URLS';
+import MenuIcon from '@material-ui/icons/Menu';
 
 // Project Components
 import Link from './Link';
@@ -35,6 +36,9 @@ const styles = {
         backgroundColor: 'var(--tihlde-blaa)',
         boxSizing: 'border-box',
         border: '5px solid white',
+    },
+    menuButton: {
+        color: 'white',
     },
 };
 
@@ -64,11 +68,7 @@ const SidebarContent = (props) => {
     return (
         <Fragment>
             <div className={classes.top}>
-                <div style={{flexGrow: 1}}>
-                    <Link to='/'>
-                    <img src={TIHLDELOGO} alt='logo' height='30em'/>
-                    </Link>
-                </div>
+                <IconButton className={classes.menuButton} onClick={props.onClose}><MenuIcon/></IconButton>
             </div>
             <div>
                 <ActionLink to={URLS.undergroups} label='Undergrupper'/>
