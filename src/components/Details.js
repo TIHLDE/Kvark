@@ -8,8 +8,7 @@ import {Grid, Typography, Paper, Avatar,Button} from '@material-ui/core/';
 
 //Importing icons
 import Place from '@material-ui/icons/Place'
-import Eventnote from '@material-ui/icons/EventNote'
-import EventList from './EventList';
+import EventNote from '@material-ui/icons/EventNote'
 
 
 /*  This class shows the details over when and where the arrangements are. it will also show Who is in change and how to contact them*/
@@ -64,14 +63,6 @@ const Information = withStyles(styles)((props) => {
 
 class Details extends Component {
 
-    widthChecker = window.onload = window.onresize = () =>{
-        if(window.screen.availWidth >= 500 ){
-            return "row"
-        }else{
-            return "column"
-        }
-    };
-
     render() {
         const {data, classes} = this.props;
         const date = stringToDate(data.date);
@@ -81,10 +72,10 @@ class Details extends Component {
         return (
             <Paper className={classNames(classes.root, this.props.className)}>
                 <Grid container className={classes.wrapper} alignContent='stretch' justify='space-between'
-                      direction={this.widthChecker()}>
+                      direction="row">
                     <Grid className={classes.item}>
                         <Information data={{
-                            icon:<Eventnote/>,
+                            icon:<EventNote/>,
                             main: <strong>{dateString}</strong>,
                             secondary:timeString
                         }}

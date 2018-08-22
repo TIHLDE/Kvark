@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
+import classNames from 'classnames';
 
 import {Grid, Typography, Paper} from '@material-ui/core/';
 
@@ -31,7 +32,7 @@ class Paragraph extends Component {
         const {join, data, classes} = this.props;
 
         return (
-        <Paper className={classes.root}>
+        <Paper className={classNames(classes.root, this.props.className)}>
             <Grid container className={classes.wrapper} direction='row' justify='space-around' alignItems='stretch' >
                 <Grid item >
                     <Typography variant="headline">

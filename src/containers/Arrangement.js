@@ -12,7 +12,7 @@ import {GeneralActions} from '../store/actions/MainActions';
 import Navigation from '../components/Navigation';
 import Paragraph from '../components/Paragraph';
 import Details from '../components/Details'
-import {Grid, Button} from '@material-ui/core/';
+import { Button} from '@material-ui/core/';
 import {Typography} from '@material-ui/core';
 
 
@@ -22,41 +22,48 @@ const styles = {
         margin:'auto',
         maxWidth: 1200,
     },
-    grid: {
+    wrapper: {
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
         gridTemplateRows: 'auto',
         gridGap: '10px',
         padding: '10px 10px 10px 10px',
+        gridTemplateAreas:"'header header'\n" +
+            "        'cell cell'\n" +
+            "        'paragraph img'",
+
         '@media only screen and (max-width: 600px)': {
             gridTemplateColumns: '100%',
-            padding:0
-        }
-    },
-    image:{
-        '@media only screen and (max-width: 600px)': {
-            order: 0,
+            gridTemplateAreas:"'img'\n" +
+                "        'header'\n" +
+                "        'cell' \n" +
+                "        'paragraph' \n",
+
+
         }
     },
     cell:{
-
-        '@media only screen and (max-width: 600px)': {
-            order: 1,
-        },
+        gridArea:"cell",
     },
+
     paragraph: {
-        width: '80%',
-        float: 'right',
-        '@media only screen and (max-width: 1300px)': {
-            width: '100%',
-        }
+        gridArea:"paragraph"
     },
+    image:{
+        gridArea:"img",
+        width:"100%",
 
+
+    },
     header:{
-        width:'100%',
         height:'200px',
         backgroundColor:'white',
-        paddingBottom:'10px'
+        paddingBottom:'10px',
+        gridArea:"header",
+
+        '@media only screen and (max-width: 600px)': {
+            height:'100px',
+        }
     },
 
 };
@@ -80,8 +87,6 @@ class Arrangement extends Component {
             isLoading: false,
         };
     }
-
-
 
     // Gets the event
     loadEvent = () => {
@@ -125,6 +130,7 @@ class Arrangement extends Component {
             <Navigation isLoading={this.state.isLoading} footer>
                  {(this.state.isLoading)? null :
                     <div className={classes.root}>
+                        <div className={classes.wrapper}>
                         <Header className={classes.header} data={{
                             title: data.title
                         }}
@@ -135,17 +141,13 @@ class Arrangement extends Component {
                             what: data.what,
                             link: data.link
                         }} join={button}/>
-                        <div className={classes.grid}>
                             <img className={classes.image} style={{width:'100%', height:'auto'}} src={data.image} alt={data.image_alt}/>
-                            <Paragraph data={{
+                            <Paragraph  className={classes.paragraph} data={{
                                 subheader: data.title,
                                 text: data.description,
                             }}/>
-
                         </div>
                     </div>
-
-
                  }
             </Navigation>
         );
