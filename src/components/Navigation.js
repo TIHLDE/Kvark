@@ -45,7 +45,7 @@ const styles = {
         display: 'flex',
         maxWidth: 1400,
         margin: 'auto',
-  
+
         alignItems: 'center',
 
         '@media only screen and (max-width: 600px)': {
@@ -100,6 +100,21 @@ class Navigation extends Component {
                             </div>
                             <Hidden xsDown implementation='css'>
                                 <div>
+                                    <Link to='/om/' style={{ textDecoration: 'none' }}>
+                                        <Button color="inherit" style={{
+                                            color: 'white',
+                                        }}>Om TIHLDE</Button>
+                                    </Link>
+                                    <Link to='/tjenester/' style={{ textDecoration: 'none' }}>
+                                        <Button color="inherit" style={{
+                                            color: 'white',
+                                        }}>Tjenester</Button>
+                                    </Link><
+                                    Link to='/arrangementer/' style={{ textDecoration: 'none' }}>
+                                        <Button color="inherit" style={{
+                                            color: 'white',
+                                        }}>Arrangementer</Button>
+                                    </Link>
                                     <Link to='/undergrupper/' style={{ textDecoration: 'none' }}>
                                         <Button color="inherit" style={{
                                             color: 'white',
@@ -112,6 +127,8 @@ class Navigation extends Component {
                                             textDecoration: 'none',
                                         }}>Bedrifter</Button>
                                     </Link>
+
+
                                 </div>
                             </Hidden>
                             <Hidden smUp implementation='css'>
@@ -132,7 +149,7 @@ class Navigation extends Component {
                         </div>
                     </Toolbar>
                 </AppBar>
-               
+
                 <main className={classes.main}>
                     {(this.props.isLoading)? <LinearProgress /> : null}
                     <div className={classes.wrapper}>
