@@ -24,10 +24,10 @@ const styles = {
         display: 'grid',
         // gridTemplateAreas: GridData.gridAreas,
         gridTemplateColumns: 'repeat(' + GridData.gridColumns + ', 1fr)',
+        girdTemplateRows: 'auto',
         gridAutoRows: '300px',
         gridGap: '20px',
 
-        maxWidth: 1400,
         margin: 'auto',
         marginBottom: 50,
         padding: '0 5px 5px 5px',
@@ -39,7 +39,7 @@ const styles = {
         '@media only screen and (max-width: 600px)': {
            gridTemplateColumns: '100%',
            padding: '0 5px',
-           gridAutoRows: 'auto',
+           gridAutoRows: '240px',
         },
     },
     topPadding: {
