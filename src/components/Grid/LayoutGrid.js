@@ -73,6 +73,21 @@ const getItem = (id, type, data, height) => {
 
 class LayoutGrid extends Component {
 
+    componentDidMount() {
+        window.addEventListener('resize',this.onResize);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.onResize);
+    }
+
+
+    onResize = () => {
+        this.setState({})
+    }
+
+
+
     render() {
         const {classes, grid} = this.props;
         const children = (grid)? isDesktop() ? grid : grid.filter((item) => !item.hideOnMobile) : [];
