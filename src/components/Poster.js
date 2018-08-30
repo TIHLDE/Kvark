@@ -26,7 +26,7 @@ const styles = {
         zIndex: 0,
 
         '@media only screen and (max-width: 600px)': {
-            position: 'static',
+            position: 'relative',
             height: 'auto',
             marginBottom: 0,
         },
@@ -38,19 +38,12 @@ const styles = {
     image: {
         position: 'absolute',
         top: 0,
-        width: '100%',
-      
-        
+        width: '100%',  
     },
     textContainer: {
         zIndex: 2,
-        position: 'absolute',
+        position: 'relative',
         top: 0, right: 0, bottom: 0, left: 0,
-
-        '@media only screen and(max-width: 600px)': {
-            position: 'relative',
-            top: 0, bottom: 200,
-        },
     },
     text: {
         color: 'white',
@@ -99,7 +92,7 @@ class Poster extends Component {
                     <Typography className={classNames(classes.text, classes.subText)} variant='headline' align='center' style={{color: textColor}}>{data.subheader}</Typography>
                     {(!data.action)? null :
                         <Link to={data.action} className={classes.actionButton}>
-                            <Button variant='raised' color='primary'>{data.actionText}</Button>
+                            <Button variant='raised' color='primary'>{data.action_text}</Button>
                         </Link>
                     }
                 </Grid>

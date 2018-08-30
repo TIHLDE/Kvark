@@ -76,7 +76,7 @@ const createGridItem = (data) => {
         type: data.type ? data.type : 'news',
         data: data.data,
         fullWidth: isFullWidth(data),
-        hideOnMobile: false,
+        hideOnMobile: data.hide_on_mobile,
     }
     return item;
 }
