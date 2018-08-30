@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { isDesktop } from '../../utils';
 
 // Import GRID from JSON
 // NOTE: grid_minmal.json contains fewer grid elements than grid.json,
@@ -77,17 +78,9 @@ const getItem = (id, type, data, height) => {
 
 class LayoutGrid extends Component {
 
-    constructor() {
-        super();
-
-        this.state = {
-            children: GridData.children,
-        };
-    }
-
     render() {
         const {classes, grid} = this.props;
-        const children = (grid)? grid : [];
+        const children = (grid)? isDesktop() ? grid : grid.filter((item) => !item.hideOnMobile) : [];
         const topPadding = !(children.length > 0 && children[0].fullWidth);
         const bottomPadding = (children.length > 0 && children[children.length-1].fullWidth);
 
