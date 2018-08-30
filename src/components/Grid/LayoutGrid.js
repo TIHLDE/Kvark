@@ -38,7 +38,7 @@ const styles = {
         '@media only screen and (max-width: 600px)': {
            gridTemplateColumns: '100%',
            padding: '0 5px',
-           gridAutoRows: '300px',
+           gridAutoRows: 'auto',
         },
     },
     topPadding: {
@@ -48,12 +48,7 @@ const styles = {
         paddingBottom: 200,
     },
     topRow: {
-        gridTemplateRows: '400px',
-        gridAutoRows: '300px',
-
-        '@media only screen and (max-width: 700px)': {
-            gridTemplateRows: '250px',
-        },
+        
     },
 };
 

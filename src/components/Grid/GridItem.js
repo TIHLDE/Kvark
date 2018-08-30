@@ -54,25 +54,14 @@ const styles = {
     },
     height3: {
         gridRow: 'span 3',
-
         '@media only screen and (max-width: 800px)': {
             gridRow: 'span 1 !important',
             
         },
     },
     fullWidth: {
-        height: 500,
-        gridColumn: '1/5',
-
-        '@media only screen and (max-width: 1000px)': {
-            height: 400,
-            gridColumn: 'span 2 !important',
-        },
-
-        '@media only screen and (max-width: 800px)': {
-            gridColumn: '1/-1 !important',
-            height: 400,
-        },
+        height: 'auto',
+        gridColumn: '1/-1',
     },
 }
 
