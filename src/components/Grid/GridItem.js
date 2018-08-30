@@ -16,7 +16,7 @@ const styles = {
         },
 
         '@media only screen and (max-width: 800px)': {
-            gridColumn: 'span 1 !important',
+            gridColumn: '1/-1 !important',
             margin: '0 !important',
         },
     },
@@ -28,7 +28,7 @@ const styles = {
         },
 
         '@media only screen and (max-width: 800px)': {
-            gridColumn: 'span 1 !important',
+            gridColumn: ' 1/-1 !important',
             
         },
     },
@@ -40,7 +40,7 @@ const styles = {
         },
 
         '@media only screen and (max-width: 800px)': {
-            gridColumn: 'span 1 !important',
+            gridColumn: '1/-1 !important',
             
         },
     },
@@ -70,7 +70,7 @@ const styles = {
         },
 
         '@media only screen and (max-width: 800px)': {
-            gridColumn: 'span 1 !important',
+            gridColumn: '1/-1 !important',
             height: 400,
         },
     },
