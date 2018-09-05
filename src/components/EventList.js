@@ -30,7 +30,7 @@ const styles = {
     },
     wrapper: {
         width: 'auto',
-        padding: 10,
+        padding: 15,
     },
 
     // Event styles
@@ -54,7 +54,7 @@ const styles = {
         bottom: 0,
         zIndex: 1000,
 
-        padding: 10,
+        padding: 15,
     },
     eventContent: {
         paddingTop: 4,
@@ -62,6 +62,7 @@ const styles = {
     },
     button: {
         margin: '0 5px',
+        height: 40,
     },
     descriptionContainer: {
         height: 'auto',
@@ -116,8 +117,10 @@ const EventDetails = withStyles(styles)((props) => {
                         <Link to={URLS.events + event.id}>
                             <Button className={classes.button} size='small' color='primary' variant='raised'>Åpne</Button>
                         </Link>
-                        {(!event.sign_up)? null : 
-                            <Button className={classes.button} size='small' color='primary' variant='raised'>Meld deg på</Button>
+                        {(!event.sign_up)? null :
+                            <Link to={URLS.events + event.id}>
+                                <Button className={classes.button} size='small' color='primary' variant='raised'>Meld deg på</Button>
+                            </Link>
                         }
                     </Grid>
                 </Grid>

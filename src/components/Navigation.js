@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import Link from 'react-router-dom/Link';
+import URLS from '../URLS';
 
 // Material UI Components
 import AppBar from '@material-ui/core/AppBar';
@@ -45,8 +46,20 @@ const styles = {
         display: 'flex',
         maxWidth: 1400,
         margin: 'auto',
-  
+
         alignItems: 'center',
+
+        '@media only screen and (max-width: 600px)': {
+            flexDirection: 'row-reverse',
+        }
+    },
+    logoWrapper: {
+        display: 'flex',
+        flexGrow: 1,
+
+        '@media only screen and (max-width: 600px)': {
+            flexDirection: 'row-reverse',
+        }
     },
     menuButton: {
         color: 'white',
@@ -54,8 +67,7 @@ const styles = {
     sidebar: {
         zIndex: 100,
         minWidth: 200,
-        width: '90vw',
-        maxWidth: 300,
+        width: '100vw',
         overflow: 'hidden',
     },
 };
@@ -81,25 +93,42 @@ class Navigation extends Component {
                 <AppBar className={classes.root} position="fixed" color="default">
                     <Toolbar className={classes.navContent} disableGutters>
                         <div className={classes.navWrapper}>
-                            <div style={{flexGrow: 1}}>
+                            <div className={classes.logoWrapper}>
                                 <Link to='/'>
-                                <img src={TIHLDELOGO} alt='logo' height='30em'/>
+                                    <img src={TIHLDELOGO} alt='logo' height='30em'/>
                                 </Link>
                             </div>
                             <Hidden xsDown implementation='css'>
                                 <div>
-                                    <Link to='/undergrupper/' style={{ textDecoration: 'none' }}>
+                                    <Link to={URLS.about} style={{ textDecoration: 'none' }}>
+                                        <Button color="inherit" style={{
+                                            color: 'white',
+                                        }}>Om TIHLDE</Button>
+                                    </Link>
+                                    <Link to={URLS.services} style={{ textDecoration: 'none' }}>
+                                        <Button color="inherit" style={{
+                                            color: 'white',
+                                        }}>Tjenester</Button>
+                                    </Link>
+                                    <Link to={URLS.events} style={{ textDecoration: 'none' }}>
+                                        <Button color="inherit" style={{
+                                            color: 'white',
+                                        }}>Arrangementer</Button>
+                                    </Link>
+                                    <Link to={URLS.undergroups} style={{ textDecoration: 'none' }}>
                                         <Button color="inherit" style={{
                                             color: 'white',
                                         }}>Undergrupper</Button>
                                     </Link>
-                                    <Link to='/bedrifter/' style={{ textDecoration: 'none' }}>
+                                    <Link to={URLS.company} style={{ textDecoration: 'none' }}>
                                         <Button color="primary" style={{
                                             color: 'var(--tihlde-blaa)',
                                             backgroundColor: 'white',
                                             textDecoration: 'none',
                                         }}>Bedrifter</Button>
                                     </Link>
+
+
                                 </div>
                             </Hidden>
                             <Hidden smUp implementation='css'>
@@ -108,19 +137,20 @@ class Navigation extends Component {
 
                             <Hidden xsDown implementation='css'>
                                 <Drawer
+                                    anchor='top'
                                     open={this.state.showSidebar}
                                     onClose={this.toggleSidebar}
                                     classes={{
                                         paper: classes.sidebar,
                                     }}
                                 >
-                                    <Sidebar/>
+                                    <Sidebar onClose={this.toggleSidebar}/>
                                 </Drawer>
                             </Hidden>
                         </div>
                     </Toolbar>
                 </AppBar>
-               
+
                 <main className={classes.main}>
                     {(this.props.isLoading)? <LinearProgress /> : null}
                     <div className={classes.wrapper}>

@@ -2,22 +2,23 @@ import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
-
+import URLS from '../URLS';
 
 // Material UI Components
 import ListItem from '@material-ui/core/ListItem';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
 
 // Icons
 import TIHLDELOGO from '../assets/img/tihldeLogo.png';
-import URLS from '../URLS';
+import MenuIcon from '@material-ui/icons/Menu';
 
 // Project Components
 import Link from './Link';
 
-const styles = {
+const styles = (theme) => ({
     top: {
         display: 'flex',
         alignItems: 'center',
@@ -32,11 +33,18 @@ const styles = {
     },
     companyButton: {
         color: 'white',
-        backgroundColor: 'var(--tihlde-blaa)',
+        backgroundColor: theme.palette.primary.main,
         boxSizing: 'border-box',
         border: '5px solid white',
+
+        '&hover': {
+            backgroundColor: theme.palette.primary.dark,
+        },
     },
-};
+    menuButton: {
+        color: 'white',
+    },
+});
 
 const ActionLink = withStyles(styles)((props) => {
     const {classes} = props;
@@ -64,13 +72,12 @@ const SidebarContent = (props) => {
     return (
         <Fragment>
             <div className={classes.top}>
-                <div style={{flexGrow: 1}}>
-                    <Link to='/'>
-                    <img src={TIHLDELOGO} alt='logo' height='30em'/>
-                    </Link>
-                </div>
+                <IconButton className={classes.menuButton} onClick={props.onClose}><MenuIcon/></IconButton>
             </div>
             <div>
+                <ActionLink to={URLS.about} label='Om TIHLDE'/>
+                <ActionLink to={URLS.services} label='Tjenester'/>
+                <ActionLink to={URLS.events} label='Arrangementer'/>
                 <ActionLink to={URLS.undergroups} label='Undergrupper'/>
                 <ActionLink className={classes.companyButton} to={URLS.company} label='Bedrifter'/>
             </div>

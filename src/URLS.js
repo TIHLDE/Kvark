@@ -3,4 +3,6 @@ export default {
     events: '/arrangementer/',
     undergroups: '/undergrupper/',
     company: '/bedrifter/',
+    about: '/om/',
+    services: '/tjenester/',
 };

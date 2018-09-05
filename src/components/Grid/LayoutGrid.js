@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { isDesktop } from '../../utils';
 
 // Import GRID from JSON
 // NOTE: grid_minmal.json contains fewer grid elements than grid.json,
@@ -12,7 +13,7 @@ import GridData from '../../data/grid_minimal.json';
 // Grid Items/Widgets
 import EventList from '../EventList';
 import Jodel from '../Jodel/Jodel';
-import Poster from '../Poster';
+import Poster from '../Poster2';
 import NewsItem from '../NewsItem';
 import ImageGallery from '../ImageGallery/ImageGallery';
 
@@ -23,10 +24,10 @@ const styles = {
         display: 'grid',
         // gridTemplateAreas: GridData.gridAreas,
         gridTemplateColumns: 'repeat(' + GridData.gridColumns + ', 1fr)',
+        girdTemplateRows: 'auto',
         gridAutoRows: '300px',
         gridGap: '20px',
 
-        maxWidth: 1400,
         margin: 'auto',
         marginBottom: 50,
         padding: '0 5px 5px 5px',
@@ -38,7 +39,7 @@ const styles = {
         '@media only screen and (max-width: 600px)': {
            gridTemplateColumns: '100%',
            padding: '0 5px',
-           gridAutoRows: '300px',
+           gridAutoRows: '240px',
         },
     },
     topPadding: {
@@ -48,12 +49,7 @@ const styles = {
         paddingBottom: 200,
     },
     topRow: {
-        gridTemplateRows: '400px',
-        gridAutoRows: '300px',
-
-        '@media only screen and (max-width: 700px)': {
-            gridTemplateRows: '250px',
-        },
+        
     },
 };
 
@@ -77,17 +73,24 @@ const getItem = (id, type, data, height) => {
 
 class LayoutGrid extends Component {
 
-    constructor() {
-        super();
-
-        this.state = {
-            children: GridData.children,
-        };
+    componentDidMount() {
+        window.addEventListener('resize',this.onResize);
     }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.onResize);
+    }
+
+
+    onResize = () => {
+        this.setState({})
+    }
+
+
 
     render() {
         const {classes, grid} = this.props;
-        const children = (grid)? grid : [];
+        const children = (grid)? isDesktop() ? grid : grid.filter((item) => !item.hideOnMobile) : [];
         const topPadding = !(children.length > 0 && children[0].fullWidth);
         const bottomPadding = (children.length > 0 && children[children.length-1].fullWidth);
 

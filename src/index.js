@@ -4,6 +4,9 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import store from './store/store';
 
+import {MuiThemeProvider} from '@material-ui/core/styles';
+import theme from './theme';
+
 import './assets/css/index.css';
 
 // Project containers
@@ -12,6 +15,9 @@ import NewsPage from './containers/NewsPage';
 import ArrangementPage from './containers/Arrangement';
 import Groups from './containers/Groups';
 import Companies from './containers/Companies';
+import About from './containers/About';
+import Events from './containers/Events';
+import Services from './containers/Services'
 
 // TODO Make container
 import Login from './components/Login';
@@ -19,16 +25,21 @@ import Login from './components/Login';
 const Application = (
     <Provider store={store}>
         <BrowserRouter>
-            <Switch>
-                <Route exact path='/' component={Landing}/>
-                <Route path='/nyheter/:id' component={NewsPage}/>
-                <Route path='/arrangementer/:id' component={ArrangementPage}/>
-                <Route path='/undergrupper/' component={Groups} />
-                <Route path='/bedrifter/' component={Companies} />
+            <MuiThemeProvider theme={theme}>
+                <Switch>
+                    <Route exact path='/' component={Landing}/>
+                    <Route path='/nyheter/:id' component={NewsPage}/>
+                    <Route path='/arrangementer/:id' component={ArrangementPage}/>
+                    <Route path='/om/' component={About} />
+                    <Route path='/arrangementer/' component={Events} />
+                    <Route path='/tjenester/' component={Services} />
+                    <Route path='/undergrupper/' component={Groups} />
+                    <Route path='/bedrifter/' component={Companies} />
 
-                { /* Testing only */ }
-                <Route path='/login/' component={Login} />
-            </Switch>
+                    { /* Testing only */ }
+                    <Route path='/login/' component={Login} />
+                </Switch>
+            </MuiThemeProvider>
         </BrowserRouter>
     </Provider>
 );
