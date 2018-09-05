@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import Link from 'react-router-dom/Link';
+import URLS from '../URLS';
 
 // Material UI Components
 import AppBar from '@material-ui/core/AppBar';
@@ -66,8 +67,7 @@ const styles = {
     sidebar: {
         zIndex: 100,
         minWidth: 200,
-        width: '90vw',
-        maxWidth: 300,
+        width: '100vw',
         overflow: 'hidden',
     },
 };
@@ -100,27 +100,27 @@ class Navigation extends Component {
                             </div>
                             <Hidden xsDown implementation='css'>
                                 <div>
-                                    <Link to='/om/' style={{ textDecoration: 'none' }}>
+                                    <Link to={URLS.about} style={{ textDecoration: 'none' }}>
                                         <Button color="inherit" style={{
                                             color: 'white',
                                         }}>Om TIHLDE</Button>
                                     </Link>
-                                    <Link to='/tjenester/' style={{ textDecoration: 'none' }}>
+                                    <Link to={URLS.services} style={{ textDecoration: 'none' }}>
                                         <Button color="inherit" style={{
                                             color: 'white',
                                         }}>Tjenester</Button>
-                                    </Link><
-                                    Link to='/arrangementer/' style={{ textDecoration: 'none' }}>
+                                    </Link>
+                                    <Link to={URLS.events} style={{ textDecoration: 'none' }}>
                                         <Button color="inherit" style={{
                                             color: 'white',
                                         }}>Arrangementer</Button>
                                     </Link>
-                                    <Link to='/undergrupper/' style={{ textDecoration: 'none' }}>
+                                    <Link to={URLS.undergroups} style={{ textDecoration: 'none' }}>
                                         <Button color="inherit" style={{
                                             color: 'white',
                                         }}>Undergrupper</Button>
                                     </Link>
-                                    <Link to='/bedrifter/' style={{ textDecoration: 'none' }}>
+                                    <Link to={URLS.company} style={{ textDecoration: 'none' }}>
                                         <Button color="primary" style={{
                                             color: 'var(--tihlde-blaa)',
                                             backgroundColor: 'white',
@@ -137,6 +137,7 @@ class Navigation extends Component {
 
                             <Hidden xsDown implementation='css'>
                                 <Drawer
+                                    anchor='top'
                                     open={this.state.showSidebar}
                                     onClose={this.toggleSidebar}
                                     classes={{

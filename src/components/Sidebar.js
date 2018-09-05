@@ -18,7 +18,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 // Project Components
 import Link from './Link';
 
-const styles = {
+const styles = (theme) => ({
     top: {
         display: 'flex',
         alignItems: 'center',
@@ -33,14 +33,18 @@ const styles = {
     },
     companyButton: {
         color: 'white',
-        backgroundColor: 'var(--tihlde-blaa)',
+        backgroundColor: theme.palette.primary.main,
         boxSizing: 'border-box',
         border: '5px solid white',
+
+        '&hover': {
+            backgroundColor: theme.palette.primary.dark,
+        },
     },
     menuButton: {
         color: 'white',
     },
-};
+});
 
 const ActionLink = withStyles(styles)((props) => {
     const {classes} = props;
@@ -71,6 +75,9 @@ const SidebarContent = (props) => {
                 <IconButton className={classes.menuButton} onClick={props.onClose}><MenuIcon/></IconButton>
             </div>
             <div>
+                <ActionLink to={URLS.about} label='Om TIHLDE'/>
+                <ActionLink to={URLS.services} label='Tjenester'/>
+                <ActionLink to={URLS.events} label='Arrangementer'/>
                 <ActionLink to={URLS.undergroups} label='Undergrupper'/>
                 <ActionLink className={classes.companyButton} to={URLS.company} label='Bedrifter'/>
             </div>
