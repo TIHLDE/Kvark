@@ -38,8 +38,6 @@ const styles = {
                 "        'header'\n" +
                 "        'cell' \n" +
                 "        'paragraph' \n",
-
-
         }
     },
     cell:{
@@ -52,8 +50,6 @@ const styles = {
     image:{
         gridArea:"img",
         width:"100%",
-
-
     },
     header:{
         height:'200px',
