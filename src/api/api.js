@@ -15,4 +15,8 @@ export default {
     getEventItem: (id) => {
         return new IRequest('GET', 'events/'.concat(id, '/'), undefined, false);
     },
+
+    createNewsItem: (item) => {
+        return new IRequest('POST', 'news/', item, true);
+    },
 };

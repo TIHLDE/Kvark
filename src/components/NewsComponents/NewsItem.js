@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import {Link} from 'react-router-dom';
-import URLS from '../URLS';
+import URLS from '../../URLS';
+import classNames from 'classnames';
 
 // Material UI Components
 import Paper from '@material-ui/core/Paper';
@@ -35,6 +36,9 @@ const styles = {
         alignItems: 'center',
         padding: '20px 15px 10px 15px',
     },
+    whitesmoke: {
+        backgroundColor: 'whitesmoke',
+    },
 };
 
 class NewsItem extends Component {
@@ -52,12 +56,12 @@ class NewsItem extends Component {
         }
 
         return (
-            <Paper className={classes.card} square={true}>
+            <Paper className={classNames(classes.card, (data && data.image)? '' : classes.whitesmoke, this.props.className)} square={true}>
                 <Link to={URLS.news + this.props.id}>
                 {imageOrFallback}
                 <div className={classes.textContainer}>
                     <Typography variant='headline' color='inherit'>{data.title}</Typography>
-                    <Typography variant='body2' color='inherit'>(Ikon) Næringsliv og Kurs (Ikon) 12/23-18</Typography>
+                   {/*  <Typography variant='body2' color='inherit'>(Ikon) Næringsliv og Kurs (Ikon) 12/23-18</Typography> */}
                 </div>
                 </Link>
             </Paper>

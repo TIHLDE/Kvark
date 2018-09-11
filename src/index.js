@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import store from './store/store';
+import URLS from './URLS';
 
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import theme from './theme';
@@ -17,7 +18,8 @@ import Groups from './containers/Groups';
 import Companies from './containers/Companies';
 import About from './containers/About';
 import Events from './containers/Events';
-import Services from './containers/Services'
+import Services from './containers/Services';
+import DataRegistrator from './containers/DataRegistrator';
 
 // TODO Make container
 import Login from './components/Login';
@@ -35,6 +37,8 @@ const Application = (
                     <Route path='/tjenester/' component={Services} />
                     <Route path='/undergrupper/' component={Groups} />
                     <Route path='/bedrifter/' component={Companies} />
+
+                    <Route path={URLS.dataRegistration} component={DataRegistrator} />
 
                     { /* Testing only */ }
                     <Route path='/login/' component={Login} />

@@ -14,7 +14,7 @@ import GridData from '../../data/grid_minimal.json';
 import EventList from '../EventList';
 import Jodel from '../Jodel/Jodel';
 import Poster from '../Poster2';
-import NewsItem from '../NewsItem';
+import NewsItem from '../NewsComponents/NewsItem';
 import ImageGallery from '../ImageGallery/ImageGallery';
 
 import GridItem from './GridItem';
