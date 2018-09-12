@@ -23,7 +23,6 @@ import NewsRenderer from './NewsRenderer';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
-import htmlToDraft from 'html-to-draftjs';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 
 
@@ -33,6 +32,10 @@ const styles = {
         gridTemplateColumns: '1fr 2fr',
         padding: '30px 10px',
         fontSize: 17,
+
+        '@media only screen and (max-width: 1100px)': {
+            gridTemplateColumns: '100%',
+        }
     },
     content: {
         maxWidth: 800,
@@ -40,19 +43,24 @@ const styles = {
         margin: '30px auto',
     },
     newsItemWrapper: {
-        display: 'block',
-        margin: 'auto',
-        maxWidth: 400,
-        height: 300,
+        
+        /* maxWidth: 400,
+        height: 300, */
     },
     newsItem: {
         width: 400,
         height: 300,
+        display: 'block',
+        margin: 'auto',
     },
     newsRendererWrapper: {
         gridColumn: 'span 2',
         paddingTop: 50,
         marginBottom: 300,
+
+        '@media only screen and (max-width: 1100px)': {
+            gridColumn: 'span 1',
+        }
     },
     padding: {
         padding: 20,

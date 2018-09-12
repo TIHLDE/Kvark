@@ -31,6 +31,7 @@ const styles = {
         margin: 'auto',
         marginBottom: 50,
         padding: '0 5px 5px 5px',
+        maxWidth: 1400,
 
         '@media only screen and (max-width: 1000px)': {
             gridTemplateColumns: '1fr 1fr',
