@@ -19,13 +19,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Link from './Link';
 
 const styles = (theme) => ({
-    top: {
-        display: 'flex',
-        alignItems: 'center',
-        paddingLeft: 10,
-        height: 56,
-        backgroundColor: 'var(--tihlde-blaa)',
-        boxShadow: '0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)',
+    root: {
+        marginTop: 56,
+        zIndex: 10000,
     },
     item: {
         height: 56,
@@ -71,15 +67,12 @@ const SidebarContent = (props) => {
 
     return (
         <Fragment>
-            <div className={classes.top}>
-                <IconButton className={classes.menuButton} onClick={props.onClose}><MenuIcon/></IconButton>
-            </div>
-            <div>
+            <div className={classes.root}>
                 <ActionLink to={URLS.about} label='Om TIHLDE'/>
                 <ActionLink to={URLS.services} label='Tjenester'/>
                 <ActionLink to={URLS.events} label='Arrangementer'/>
                 <ActionLink to={URLS.undergroups} label='Undergrupper'/>
-                <ActionLink className={classes.companyButton} to={URLS.company} label='Bedrifter'/>
+                <ActionLink to={URLS.company} label='Bedrifter'/>
             </div>
         </Fragment>
     );

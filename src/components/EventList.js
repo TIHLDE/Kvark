@@ -2,13 +2,14 @@ import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import URLS from '../URLS';
+import {withRouter} from 'react-router-dom';
+import classNames from 'classnames';
 
 // Material UI Components
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
-import Grow from '@material-ui/core/Grow';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 
@@ -22,15 +23,32 @@ import CloseIcon from '@material-ui/icons/Close';
 // Project Components
 import Link from './Link';
 
-const styles = {
+const styles = (theme) => ({
     root: {
         zIndex: 10,
         height: '100%',
         position: 'relative',
+
+        '@media only screen and (max-width: 800px)': {
+            minHeight: 300,
+        }
     },
     wrapper: {
         width: 'auto',
+        padding: '5px 16px'
+    },
+    padding: {
         padding: 15,
+    },
+    top: {
+        backgroundColor: theme.palette.primary.main,
+        color: 'white',
+    },
+    moreButton: {
+        position: 'absolute',
+        bottom: 0, left: 0, right: 0,
+        width: '100%',
+        borderRadius: 0,
     },
 
     // Event styles
@@ -44,99 +62,19 @@ const styles = {
             fontSize: '12px',
         }
     },
-
-    // Event Details styles
-    details: {
-        backgroundColor: 'white',
-        transform: 'none',
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        zIndex: 1000,
-
-        padding: 15,
-    },
-    eventContent: {
-        paddingTop: 4,
-        height: '100%',
-    },
     button: {
         margin: '0 5px',
         height: 40,
     },
-    descriptionContainer: {
-        height: 'auto',
-        flexGrow: 1,
-        overflow: 'hidden',
-        marginBottom: 4,
-        position: 'relative',
-    },
-    actionContainer: {
-        minHeight: 40,
-    },
-    description: {
-      height: '100%',
-    },
-    bottomOpacity: {
-        position: 'absolute',
-        bottom: 0, left: 0, right: 0,
-        height: 40,
-        background: 'linear-gradient(transparent, white)',
-    }
-
-};
-
-const EventDetails = withStyles(styles)((props) => {
-    const {classes, event} = props;
-    return (
-        <Grow in={true} timeout={300}>
-            <Grid className={classes.details} container direction='column' wrap='nowrap' ref={props.ref} >
-                <Grid container direction='row' wrap='nowrap' justify='space-between' alignItems='center'>
-                    <Typography
-                        variant='headline'
-                        color={(event.priority === 2)? 'primary' : 'default'}>
-                         {(event.priority === 2)? 
-                            <strong>{event.title}</strong>
-                            : event.title
-                        }
-                    </Typography>
-                    <IconButton onClick={props.onClose}><CloseIcon/></IconButton>
-                </Grid>
-                <Grid container direction='row' wrap='nowrap' justify='space-between'>
-                    <Typography variant='body2'>{event.location}</Typography>
-                    <Typography variant='body2'>{event.time} - {event.date}</Typography>
-                </Grid>
-                <Grid className={classes.eventContent} container direction='column' wrap='nowrap' justify='space-between'>
-                    <div className={classes.descriptionContainer}>
-                        <Typography className={classes.description} variant='subheading'>
-                            {event.description}
-                        </Typography>
-                        <div className={classes.bottomOpacity} />
-                    </div>
-                    <Grid className={classes.actionContainer} container direction='row' wrap='nowrap' justify='flex-end'>
-                        <Link to={URLS.events + event.id}>
-                            <Button className={classes.button} size='small' color='primary' variant='raised'>Åpne</Button>
-                        </Link>
-                        {(!event.sign_up)? null :
-                            <Link to={URLS.events + event.id}>
-                                <Button className={classes.button} size='small' color='primary' variant='raised'>Meld deg på</Button>
-                            </Link>
-                        }
-                    </Grid>
-                </Grid>
-            </Grid>
-        </Grow>
-    );
 });
 
 const Event = withStyles(styles)((props) => {
     const {classes} = props;
     return (
         <Fragment>
-            <Divider/>
             <ListItem button disableGutters style={{padding: 3}} onClick={props.onClick}>
                 <ListItemText>
-                    <Grid container direction='row' alignItems='center'>
+                    <Grid container direction='column' justify='center'>
                         <Typography
                         className={classes.eventHeader}
                         component='span'
@@ -147,7 +85,7 @@ const Event = withStyles(styles)((props) => {
                             : props.title
                         }
                         </Typography>
-                        <Typography className={classes.eventSubheader} component='span' variant='subheading'>&nbsp; {props.location ? 'på' : ''} {props.location}</Typography>
+                        <Typography className={classes.eventSubheader} component='span' variant='subheading'>{props.location}</Typography>
                     </Grid>
                 </ListItemText>
                 <div>
@@ -155,6 +93,7 @@ const Event = withStyles(styles)((props) => {
                     <Typography variant='caption'>{props.time}</Typography>
                 </div>
             </ListItem>
+            <Divider/>
         </Fragment>
     );
 });
@@ -179,34 +118,23 @@ function zeropadNumber(num, digits=2) {
 
 let maxElementsCount = 5;
 
-
 class EventList extends Component {
-
-    constructor() {
-        super();
-        this.state = {
-            showDetails: false,
-            selectedEvent: null,
-        };
-    }
 
     componentDidMount() {
         const {height} = this.props;
         maxElementsCount = height*5;
     }
 
-    toggleShowDetails = () => {
-        this.setState({showDetails: !this.state.showDetails});
+    openEvent = (event) => {
+        this.props.history.push(URLS.events.concat(event.id));
     }
 
-    openEvent = (event) => {
-        this.setState({selectedEvent: event});
-        this.toggleShowDetails();
+    openEventsPage = () => {
+        this.props.history.push(URLS.events);
     }
 
     render() {
         const {classes, data} = this.props;
-        const {selectedEvent} = this.state;
         const eventslist = data.events || [];
         eventslist.sort((a, b) => b.priority - a.priority);
 
@@ -225,21 +153,20 @@ class EventList extends Component {
                           priority={v.priority}
                           onClick={() => this.openEvent(v)}
                         />;
-        }
+        }   
 
-        
-   
         return (
             <Card className={classes.root} square={true}>
+                 <Grid className={classNames(classes.padding, classes.top)} container direction='row' wrap='nowrap'>
+                    <Typography variant='title' color='inherit'>{data.name}</Typography>
+                </Grid>
                 <div className={classes.wrapper}>
-                    <Grid container direction='row' wrap='nowrap'>
-                    <Typography variant='title'>{data.name}</Typography>
-                    </Grid>
+                   
                     <List dense>
                     {events}
                     </List>
                 </div>
-                {(this.state.showDetails)? <EventDetails event={selectedEvent} onClose={this.toggleShowDetails}/> : null}
+                <Button className={classes.moreButton} onClick={this.openEventsPage} variant='contained' color='secondary'>Vis flere</Button>
             </Card>
         );
     }
@@ -251,4 +178,4 @@ EventList.propTypes = {
     data: PropTypes.object,
 };
 
-export default withStyles(styles)(EventList);
+export default withRouter(withStyles(styles, {withTheme: true})(EventList));

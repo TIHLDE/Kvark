@@ -80,14 +80,14 @@ const styles = (theme) => ({
         flexWrap: 'nowrap',
     },
     title: {
-        fontSize: '1.7em',
+        fontSize: '4em',
 
         '@media only screen and (max-width: 900px)': {
             fontSize: '7vw',
         },
 
         '@media only screen and (max-width: 600px)': {
-            fontSize: '0.8em',
+            fontSize: '3em',
         },
     },
     subTitle: {
@@ -98,7 +98,7 @@ const styles = (theme) => ({
         },
 
         '@media only screen and (max-width: 600px)': {
-            fontSize: '0.5em',
+            fontSize: '1.3em',
         },
     },
     paddingWrapper: {

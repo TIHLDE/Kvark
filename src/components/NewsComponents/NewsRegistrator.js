@@ -23,7 +23,7 @@ import NewsRenderer from './NewsRenderer';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
-import { EditorState, convertToRaw, ContentState } from 'draft-js';
+import {convertToRaw } from 'draft-js';
 
 
 const styles = {

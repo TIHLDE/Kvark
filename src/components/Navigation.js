@@ -28,6 +28,7 @@ const styles = {
         backgroundColor: 'var(--tihlde-blaa)',
         color: 'white',
         flexGrow: 1,
+        zIndex: 10001,
     },
     main: {
         marginTop: 64,

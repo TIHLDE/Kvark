@@ -77,6 +77,7 @@ const NewsRenderer = (props) => {
     const {classes, newsData} = props;
     const data = (newsData && newsData.data)? newsData.data : (newsData)? newsData : {};
     const lastUpdated = (newsData && newsData.updated_at)? newsData.updated_at : (data.updated_at)? data.updated_at : '';
+    const body = (data.body)? data.body : '';
     
     return (
         <Grid className={classes.root} container direction='column' wrap='nowrap'>
@@ -87,7 +88,7 @@ const NewsRenderer = (props) => {
 {/*             <Typography className={classNames(classes.text, classes.contentText)}>
                 {data.body}
             </Typography> */}
-            {Parser(data.body)}
+            {Parser(body)}
         </Grid>
     );
 };

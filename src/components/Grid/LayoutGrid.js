@@ -39,8 +39,8 @@ const styles = {
 
         '@media only screen and (max-width: 600px)': {
            gridTemplateColumns: '100%',
-           padding: '0 5px',
-           gridAutoRows: '240px',
+           padding: '5px 5px',
+           gridAutoRows: 'auto',
         },
     },
     topPadding: {

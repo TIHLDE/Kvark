@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
-import {Link} from 'react-router-dom';
 import URLS from '../../URLS';
 import classNames from 'classnames';
 
@@ -8,6 +7,8 @@ import classNames from 'classnames';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
+// Project Components
+import Link from '../Link';
 
 const styles = {
     card: {
@@ -16,6 +17,11 @@ const styles = {
         overflow: 'hidden',
         position: 'relative',
         cursor: 'pointer',
+
+        '@media only screen and (max-width: 600px)': {
+            height: 'auto',
+            maxHeight: 'none',
+        },
     },
     none: {
         minHeight: 200,
@@ -24,6 +30,12 @@ const styles = {
         height: 200,
         width: '100%',
         objectFit: 'cover',
+
+        '@media only screen and (max-width: 600px)': {
+            height: 'auto',
+            minHeight: 200,
+            maxHeight: 250,
+        },
     },
     textContainer: {
         position: 'absolute',
@@ -35,6 +47,10 @@ const styles = {
         color: 'black',
         alignItems: 'center',
         padding: '20px 15px 10px 15px',
+
+        '@media only screen and (max-width: 600px)': {
+            position: 'static',
+        },
     },
     whitesmoke: {
         backgroundColor: 'whitesmoke',
