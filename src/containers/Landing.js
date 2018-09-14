@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 // API Imports
 import API from '../api/api';
 
-import {GeneralActions} from '../store/actions/MainActions';
+import { setGridItems } from '../store/actions/GridActions';
 
 // Project components
 import Navigation from '../components/Navigation';
@@ -28,13 +28,14 @@ class Landing extends Component {
     }
 
     componentDidMount() {
+        const { dispatch } = this.props;
         // Get grid items
         if (this.props.grid.length === 0) {
             this.setState({isLoading: true});
             const response = API.getGridItems().response();
             response.then((data) => {
                 if (!response.isError) {
-                    this.props.setGridItems(data);
+                    dispatch(setGridItems(data));
                 }
                 this.setState({isLoading: false});
             });
@@ -60,23 +61,11 @@ Landing.propTypes = {
     classes: PropTypes.object,
     setGridItems: PropTypes.func,
     grid: PropTypes.array,
+    dispatch: PropTypes.func,
 };
 
-const stateValues = (state) => {
-    return {
-        grid: state.general.grid,
-    };
-};
+const stateValues = (state) => ({
+    grid: state.grid.grid,
+});
 
-const dispatchers = (dispatch) => {
-    return {
-        setGridItems: (data) => {
-            dispatch({
-                type: GeneralActions.SET_GRID_ITEMS,
-                payload: data,
-            });
-        },
-    };
-};
-
-export default connect(stateValues, dispatchers)(withStyles(styles)(Landing));
+export default connect(stateValues)(withStyles(styles)(Landing));

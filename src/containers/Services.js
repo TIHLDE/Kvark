@@ -27,7 +27,7 @@ const styles = {
     },
     image: {
         width: '300px',
-    }
+    },
 };
 
 

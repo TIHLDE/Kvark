@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 
 // API and store imports
 import API from '../api/api';
-import {GeneralActions} from '../store/actions/MainActions';
+import { setSelectedItem } from '../store/actions/GridActions';
 
 // Project components
 import Navigation from '../components/Navigation';
@@ -13,7 +13,7 @@ import NewsRenderer from '../components/NewsComponents/NewsRenderer';
 
 
 const styles = {
-    
+
 };
 
 class NewsPage extends Component {
@@ -24,7 +24,7 @@ class NewsPage extends Component {
             isLoading: false,
         }
     }
-    
+
     componentDidMount() {
         window.scrollTo(0,0);
         this.loadNews();
@@ -32,6 +32,8 @@ class NewsPage extends Component {
 
     // Loading news info
     loadNews = () => {
+        const { dispatch } = this.props;
+
         // Get newsitem id
         const id = this.props.match.params.id;
 
@@ -39,7 +41,7 @@ class NewsPage extends Component {
         const response = API.getNewsItem(id).response();
         response.then((data) => {
             if (!response.isError) {
-                this.props.setSelectedItem(data);
+                dispatch(setSelectedItem(data));
             } else {
                 // Redirect to 404
             }
@@ -49,11 +51,11 @@ class NewsPage extends Component {
 
     render() {
         const {classes, selected} = this.props;
-        
+
 
         return (
             <Navigation footer isLoading={this.state.isLoading}>
-                {(this.state.isLoading)? null : 
+                {(this.state.isLoading)? null :
                     <NewsRenderer newsData={selected} />
                 }
             </Navigation>
@@ -65,23 +67,13 @@ NewsPage.propTypes = {
     classes: PropTypes.object,
     selected: PropTypes.object,
     match: PropTypes.object,
-    grid: PropTypes.array,
-    selectStoredItem: PropTypes.func,
-    setSelectedItem: PropTypes.func,
 };
 
 const stateValues = (state) => {
     return {
-        grid: state.general.grid,
-        selected: state.general.selectedItem,
+        selected: state.grid.selectedItem,
     };
 };
 
-const dispatchers = (dispatch) => {
-    return {
-        selectStoredItem: (id) => dispatch({type: GeneralActions.SELECT_STORED_ITEM, payload: id}),
-        setSelectedItem: (item) => dispatch({type: GeneralActions.SET_SELECTED_ITEM, payload: item}),
-    };
-};
 
-export default connect(stateValues, dispatchers)(withStyles(styles)(NewsPage));
+export default connect(stateValues)(withStyles(styles)(NewsPage));
