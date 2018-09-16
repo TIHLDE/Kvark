@@ -240,11 +240,12 @@ class EventAdministrator extends Component {
 
     render() {
         const {classes} = this.props;
-        const {selectedEvent, title, location, description, image, imageAlt, priority, eventlist} = this.state;
+        const {selectedEvent, title, location, description, image, priority, eventlist} = this.state;
         const selectedEventId = (selectedEvent)? selectedEvent.id : '';
         const eventLists = (this.state.eventLists)? this.state.eventLists : [];
         const isNewItem = (selectedEvent === null);
         const header = (isNewItem)? 'Lag et nytt arrangement' : 'Endre arrangement';
+        const defaultDate = new Date().toISOString().substring(0,16);
 
         return (
             <Fragment>
@@ -262,7 +263,7 @@ class EventAdministrator extends Component {
                                     <TextField className={classes.margin} fullWidth label='Bilde' value={image} onChange={this.handleChange('image')} required/>
 
                                     <Grid className={classes.margin} container direction='row' wrap='nowrap'>
-                                        <TextField className={classes.margin} select fullWidth value={priority} onChange={this.handleChange('priority')}>
+                                        <TextField className={classes.margin} select fullWidth label='Proritering' value={priority} onChange={this.handleChange('priority')}>
                                             {priorities.map((value, index) => (
                                                 <MenuItem key={index} value={index}>
                                                     {value}
@@ -270,7 +271,7 @@ class EventAdministrator extends Component {
                                             ))}
                                         </TextField>
 
-                                        <TextField className={classes.margin} select fullWidth value={eventlist} onChange={this.handleChange('eventlist')}>
+                                        <TextField className={classes.margin} select fullWidth label='Arrangement Liste' value={eventlist} onChange={this.handleChange('eventlist')}>
                                             {eventLists.map((value, index) => (
                                                 <MenuItem key={index} value={value.id}>
                                                     {value.name}
@@ -278,7 +279,7 @@ class EventAdministrator extends Component {
                                             ))}
                                         </TextField>
 
-                                        <TextField className={classes.margin} fullWidth type='datetime-local' value={this.state.startDate} onChange={this.handleChange('startDate')} />
+                                        <TextField className={classes.margin} fullWidth type='datetime-local' label='Start dato' defaultValue={defaultDate} value={this.state.startDate} onChange={this.handleChange('startDate')} />
                                     </Grid>
 
                                     <Grid container direction='row' wrap='nowrap' justify='space-between'>
