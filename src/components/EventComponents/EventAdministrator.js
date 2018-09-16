@@ -52,7 +52,7 @@ const styles = (theme) => ({
         padding: 30,
     },
     margin: {
-        margin: '5px 0px',
+        margin: '10px 0px',
     },
 });
 
