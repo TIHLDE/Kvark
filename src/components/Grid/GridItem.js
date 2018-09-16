@@ -56,14 +56,16 @@ const styles = {
         gridRow: 'span 3',
         '@media only screen and (max-width: 800px)': {
             gridRow: 'span 1 !important',
-            
         },
     },
     fullWidth: {
-        height: 'auto',
         gridColumn: '1/-1',
+        
+        '@media only screen and (max-width: 600px)': {
+            display: 'none',
+        },
     },
-}
+};
 
 class GridItem extends Component {
 

@@ -5,4 +5,6 @@ export default {
     company: '/bedrifter/',
     about: '/om/',
     services: '/tjenester/',
+
+    dataRegistration: '/admin/events',
 };

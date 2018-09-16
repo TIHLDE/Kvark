@@ -11,10 +11,10 @@ import { isDesktop } from '../../utils';
 import GridData from '../../data/grid_minimal.json';
 
 // Grid Items/Widgets
-import EventList from '../EventList';
+import EventList from '../EventComponents/EventList';
 import Jodel from '../Jodel/Jodel';
 import Poster from '../Poster2';
-import NewsItem from '../NewsItem';
+import NewsItem from '../NewsComponents/NewsItem';
 import ImageGallery from '../ImageGallery/ImageGallery';
 
 import GridItem from './GridItem';
@@ -31,6 +31,7 @@ const styles = {
         margin: 'auto',
         marginBottom: 50,
         padding: '0 5px 5px 5px',
+        maxWidth: 1400,
 
         '@media only screen and (max-width: 1000px)': {
             gridTemplateColumns: '1fr 1fr',
@@ -38,8 +39,8 @@ const styles = {
 
         '@media only screen and (max-width: 600px)': {
            gridTemplateColumns: '100%',
-           padding: '0 5px',
-           gridAutoRows: '240px',
+           padding: '5px 5px',
+           gridAutoRows: 'auto',
         },
     },
     topPadding: {
@@ -49,7 +50,7 @@ const styles = {
         paddingBottom: 200,
     },
     topRow: {
-        
+
     },
 };
 
@@ -84,12 +85,13 @@ class LayoutGrid extends Component {
 
     onResize = () => {
         this.setState({})
-    }
+    };
 
 
 
     render() {
         const {classes, grid} = this.props;
+        console.log(grid);
         const children = (grid)? isDesktop() ? grid : grid.filter((item) => !item.hideOnMobile) : [];
         const topPadding = !(children.length > 0 && children[0].fullWidth);
         const bottomPadding = (children.length > 0 && children[children.length-1].fullWidth);

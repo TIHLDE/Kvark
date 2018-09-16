@@ -17,7 +17,7 @@ const styles = {
     root: {
         height: DEFAULT_HEIGHT,
         position: 'absolute', left: 0, right: 0,
-        marginBottom: '-200px',
+        overflow: 'hidden',
     },
     image: {
         position: 'absolute',

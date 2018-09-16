@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
-import {Link} from 'react-router-dom';
-import URLS from '../URLS';
+import URLS from '../../URLS';
+import classNames from 'classnames';
 
 // Material UI Components
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
+// Project Components
+import Link from '../Link';
 
 const styles = {
     card: {
@@ -15,6 +17,11 @@ const styles = {
         overflow: 'hidden',
         position: 'relative',
         cursor: 'pointer',
+
+        '@media only screen and (max-width: 600px)': {
+            height: 'auto',
+            maxHeight: 'none',
+        },
     },
     none: {
         minHeight: 200,
@@ -23,6 +30,12 @@ const styles = {
         height: 200,
         width: '100%',
         objectFit: 'cover',
+
+        '@media only screen and (max-width: 600px)': {
+            height: 'auto',
+            minHeight: 200,
+            maxHeight: 250,
+        },
     },
     textContainer: {
         position: 'absolute',
@@ -34,6 +47,13 @@ const styles = {
         color: 'black',
         alignItems: 'center',
         padding: '20px 15px 10px 15px',
+
+        '@media only screen and (max-width: 600px)': {
+            position: 'static',
+        },
+    },
+    whitesmoke: {
+        backgroundColor: 'whitesmoke',
     },
 };
 
@@ -52,12 +72,12 @@ class NewsItem extends Component {
         }
 
         return (
-            <Paper className={classes.card} square={true}>
+            <Paper className={classNames(classes.card, (data && data.image)? '' : classes.whitesmoke, this.props.className)} square={true}>
                 <Link to={URLS.news + this.props.id}>
                 {imageOrFallback}
                 <div className={classes.textContainer}>
                     <Typography variant='headline' color='inherit'>{data.title}</Typography>
-                    <Typography variant='body2' color='inherit'>(Ikon) Næringsliv og Kurs (Ikon) 12/23-18</Typography>
+                   {/*  <Typography variant='body2' color='inherit'>(Ikon) Næringsliv og Kurs (Ikon) 12/23-18</Typography> */}
                 </div>
                 </Link>
             </Paper>

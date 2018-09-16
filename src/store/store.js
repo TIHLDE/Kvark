@@ -1,7 +1,13 @@
-import {createStore} from 'redux';
-import rootReducer from './reducers/RootReducer';
+import { applyMiddleware, createStore } from 'redux';
 
-const store = createStore(rootReducer);
+import reducer from './reducers';
+
+import thunk from 'redux-thunk';
+
+
+const middleware = applyMiddleware(thunk);
+
+const store = createStore(reducer, middleware);
 
 store.subscribe(() => {
   console.log('[Subscription]', store.getState());

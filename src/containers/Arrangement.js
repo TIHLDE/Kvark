@@ -6,7 +6,7 @@ import classNames from 'classnames';
 
 // API and store imports
 import API from '../api/api';
-import {GeneralActions} from '../store/actions/MainActions';
+import { setSelectedItem, selectItem } from '../store/actions/GridActions';
 
 // Project components
 import Navigation from '../components/Navigation';
@@ -86,23 +86,18 @@ class Arrangement extends Component {
 
     // Gets the event
     loadEvent = () => {
+        const { grid, dispatch } = this.props;
         // Get eventItem id
         const id = this.props.match.params.id;
-
-        // Does the item exist in store
-        const itemExists = this.props.grid.findIndex((elem) => elem.id == id && elem.type === 'event') !== -1;
-
-       // Item exists, get it from store
-       if (itemExists) {
-           this.props.selectStoredItem(id);
-       }
+        // If item exists in store, it will be loaded to state
+        dispatch(selectItem(id));
        // Item does not exist, fetch from server
-       else {
+       if (grid.selectedItem == null) {
            this.setState({isLoading: true});
            const response = API.getEventItem(id).response();
            response.then((data) => {
                if (!response.isError) {
-                   this.props.setSelectedItem(data);
+                   dispatch(setSelectedItem(data));
                } else {
                    // Redirect to 404
                    this.props.history.replace('/');
@@ -119,7 +114,8 @@ class Arrangement extends Component {
     }
 
     render() {
-        const {classes, selected} = this.props;
+        const {classes, grid} = this.props;
+        const selected = grid.selectedItem;
         const data = (selected && selected.data)? selected.data : (selected)? selected : {};
         let button = <Button color="primary">Meld deg på</Button>;
 
@@ -153,11 +149,8 @@ class Arrangement extends Component {
 
 Arrangement.propTypes = {
     classes: PropTypes.object,
-    selected: PropTypes.object,
     match: PropTypes.object,
-    grid: PropTypes.array,
-    selectStoredItem: PropTypes.func,
-    setSelectedItem: PropTypes.func,
+    grid: PropTypes.object,
 };
 
 Arrangement.defaultProps = {
@@ -166,17 +159,9 @@ Arrangement.defaultProps = {
 
 const stateValues = (state) => {
     return {
-        grid: state.general.grid,
-        selected: state.general.selectedItem,
-    };
-};
-
-const dispatchers = (dispatch) => {
-    return {
-        selectStoredItem: (id) => dispatch({type: GeneralActions.SELECT_STORED_ITEM, payload: id}),
-        setSelectedItem: (item) => dispatch({type: GeneralActions.SET_SELECTED_ITEM, payload: item}),
+        grid: state.grid
     };
 };
 
 
-export default connect(stateValues, dispatchers)(withStyles(styles)(Arrangement));
+export default connect(stateValues)(withStyles(styles)(Arrangement));
