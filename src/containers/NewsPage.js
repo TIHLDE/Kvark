@@ -50,8 +50,7 @@ class NewsPage extends Component {
     }
 
     render() {
-        const {classes, selected} = this.props;
-
+        const {selected} = this.props;
 
         return (
             <Navigation footer isLoading={this.state.isLoading}>

@@ -6,5 +6,5 @@ export default {
     about: '/om/',
     services: '/tjenester/',
 
-    dataRegistration: '/admin/data_registration',
+    dataRegistration: '/admin/events',
 };

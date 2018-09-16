@@ -9,11 +9,6 @@ import ListItem from '@material-ui/core/ListItem';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-
-// Icons
-import TIHLDELOGO from '../assets/img/tihldeLogo.png';
-import MenuIcon from '@material-ui/icons/Menu';
 
 // Project Components
 import Link from './Link';

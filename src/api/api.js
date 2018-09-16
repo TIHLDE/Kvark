@@ -9,14 +9,32 @@ export default {
     getGridItems: () => {
         return new IRequest('GET', 'items/', undefined, false);
     },
+    
+    // News
     getNewsItem: (id) => {
         return new IRequest('GET', 'news/'.concat(id, '/'), undefined, false);
     },
+    createNewsItem: (item) => {
+        return new IRequest('POST', 'news/', item, true);
+    },
+
+    // Events
     getEventItem: (id) => {
         return new IRequest('GET', 'events/'.concat(id, '/'), undefined, false);
     },
-
-    createNewsItem: (item) => {
-        return new IRequest('POST', 'news/', item, true);
+    getEventItems: () => {
+        return new IRequest('GET', 'events/', undefined, false);
+    },
+    getEventLists: () => {
+        return new IRequest('GET', 'eventlist/', undefined, false);
+    },
+    createEventItem: (item) => {
+        return new IRequest('POST', 'events/', item, false);
+    },
+    editEventItem: (id, item) => {
+        return new IRequest('PUT', 'events/'.concat(id, '/'), item, false);
+    },
+    deleteEventItem: (id) => {
+        return new IRequest('DELETE', 'events/'.concat(id, '/'), undefined, false);
     },
 };

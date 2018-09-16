@@ -11,7 +11,7 @@ import { isDesktop } from '../../utils';
 import GridData from '../../data/grid_minimal.json';
 
 // Grid Items/Widgets
-import EventList from '../EventList';
+import EventList from '../EventComponents/EventList';
 import Jodel from '../Jodel/Jodel';
 import Poster from '../Poster2';
 import NewsItem from '../NewsComponents/NewsItem';

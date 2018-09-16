@@ -29,8 +29,8 @@ import {convertToRaw } from 'draft-js';
 const styles = {
     root: {
         display: 'grid',
-        gridTemplateColumns: '1fr 2fr',
-        padding: '30px 10px',
+        gridTemplateColumns: '1fr 1fr',
+        padding: '10px 10px',
         fontSize: 17,
 
         '@media only screen and (max-width: 1100px)': {
@@ -41,11 +41,16 @@ const styles = {
         maxWidth: 800,
         display: 'block',
         margin: '30px auto',
+
+
     },
     newsItemWrapper: {
         
         /* maxWidth: 400,
         height: 300, */
+        '@media only screen and (max-width: 1100px)': {
+            order: 2,
+        }
     },
     newsItem: {
         width: 400,
@@ -54,12 +59,10 @@ const styles = {
         margin: 'auto',
     },
     newsRendererWrapper: {
-        gridColumn: 'span 2',
-        paddingTop: 50,
         marginBottom: 300,
 
         '@media only screen and (max-width: 1100px)': {
-            gridColumn: 'span 1',
+            order: 1,
         }
     },
     padding: {
@@ -133,13 +136,23 @@ class NewsRegistrator extends Component {
 
         return (
             <div className={classes.root}>
-                <div className={classes.newsItemWrapper}>
-                    <NewsItem className={classes.newsItem} data={data}/>
+                <div className={classes.newsRendererWrapper}>
+                    <Divider/>
+                    <Typography className={classes.padding} variant='title' align='center'>Preview</Typography>
+                    <Divider/>
+                    <NewsRenderer newsData={data} />
                 </div>
                 <form>
                     <Grid className={classes.content} container direction='column' wrap='nowrap' alignItems='center'>
                         <TextField className={classes.margin} fullWidth label='Tittel' value={title} onChange={this.handleChange('title')} required/>
                         <TextField className={classes.margin} fullWidth label='Header' value={header} onChange={this.handleChange('header')} required/>
+
+                        <Typography className={classes.padding} variant='title' align='center'>Images:</Typography>
+                        <TextField className={classes.margin} fullWidth label='Image' value={image} onChange={this.handleChange('image')} required/>
+                        <TextField className={classes.margin} fullWidth label='ImageAlt' value={imageAlt} onChange={this.handleChange('imageAlt')} required/>
+
+                        <Typography className={classes.padding} variant='title' align='center'>Content:</Typography>
+                        <Editor wrapperClassName={classes.editor} onChange={(e) => console.log(e)} onEditorStateChange={this.handleEditorChange}/>
 
                         <Grid container direction='row' wrap='nowrap' >
                             <TextField className={classes.margin} label='Width' type='number' value={width} onChange={this.handleChange('width')} required/>
@@ -151,24 +164,12 @@ class NewsRegistrator extends Component {
                             <div><Switch color='primary'/></div>
                             <Typography className={classes.padding} variant='body2' align='center'>Hide On Mobile</Typography>
                         </Grid>
-                        
-                        
-                        
-                        <TextField className={classes.margin} fullWidth label='Image' value={image} onChange={this.handleChange('image')} required/>
-                        <TextField className={classes.margin} fullWidth label='ImageAlt' value={imageAlt} onChange={this.handleChange('imageAlt')} required/>
-                        
-
-                        <Typography className={classes.padding} variant='title' align='center'>Content:</Typography>
-                        <Editor wrapperClassName={classes.editor} onChange={(e) => console.log(e)} onEditorStateChange={this.handleEditorChange}/>
+                
                         <Button className={classes.padding} color='primary' variant='raised' onClick={this.saveNews} type='submit'>Save</Button>
                     </Grid>
                 </form>
-                
-                <div className={classes.newsRendererWrapper}>
-                    <Divider/>
-                    <Typography className={classes.padding} variant='title' align='center'>Preview</Typography>
-                    <Divider/>
-                    <NewsRenderer newsData={data} />
+                <div className={classes.newsItemWrapper}>
+                    <NewsItem className={classes.newsItem} data={data}/>
                 </div>
             </div>
         );

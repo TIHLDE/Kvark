@@ -8,10 +8,11 @@ import PropTypes from 'prop-types';
 
 // Project Components
 import Navigation from '../components/Navigation';
-import NewsRegistrator from '../components/NewsComponents/NewsRegistrator';
+import NewsAdministrator from '../components/NewsComponents/NewsAdministrator';
+import EventAdministrator from '../components/EventComponents/EventAdministrator';
 
 const styles = {
-
+    
 };
 
 class DataRegistrator extends Component {
@@ -19,7 +20,7 @@ class DataRegistrator extends Component {
     render() {
         return (
             <Navigation>
-                <NewsRegistrator />
+                <EventAdministrator />
             </Navigation>
         );
     }

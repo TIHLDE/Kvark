@@ -41,24 +41,24 @@ class Services extends Component {
                 <div className={classes.grid}>
                     <Paper className={classes.element}>
                         <Typography variant='title'>Epost</Typography>
-                        <img className={classes.image} src='https://gfx.nrk.no/5DjcdZDEC-SrTXfRx4lH_AoCIFQcnVGnutXkI5w7cU6w' />
+                        <img className={classes.image} src='https://gfx.nrk.no/5DjcdZDEC-SrTXfRx4lH_AoCIFQcnVGnutXkI5w7cU6w' alt='ss'/>
                         <Typography variant='body1'>Lenge leve fantorangen!!!</Typography>
                         <a href='https://webmail.tihlde.org/'><Button>Klik vis d lik fantorangen</Button></a>
                     </Paper>
                     <Paper className={classes.element}>
                         <Typography variant='title'>Hosting</Typography>
-                        <img className={classes.image} src='https://gfx.nrk.no/5DjcdZDEC-SrTXfRx4lH_AoCIFQcnVGnutXkI5w7cU6w' />
+                        <img className={classes.image} src='https://gfx.nrk.no/5DjcdZDEC-SrTXfRx4lH_AoCIFQcnVGnutXkI5w7cU6w' alt='ss'/>
                         <Typography variant='body1'>Lenge leve fantorangen!!!</Typography>
                         <a href='https://wiki.tihlde.org/landing/fantorangen'><Button>1 lik = 1 fantorang</Button></a>
                     </Paper>
                     <Paper className={classes.element}>
                         <Typography variant='title'>Virtuelle maskiner</Typography>
-                        <img className={classes.image} src='https://gfx.nrk.no/5DjcdZDEC-SrTXfRx4lH_AoCIFQcnVGnutXkI5w7cU6w' />
+                        <img className={classes.image} src='https://gfx.nrk.no/5DjcdZDEC-SrTXfRx4lH_AoCIFQcnVGnutXkI5w7cU6w' alt='ss'/>
                         <Typography variant='body1'>Lenge leve fantorangen!!!</Typography>
                     </Paper>
                     <Paper className={classes.element}>
                         <Typography variant='title'>Database</Typography>
-                        <img className={classes.image} src='https://gfx.nrk.no/5DjcdZDEC-SrTXfRx4lH_AoCIFQcnVGnutXkI5w7cU6w' />
+                        <img className={classes.image} src='https://gfx.nrk.no/5DjcdZDEC-SrTXfRx4lH_AoCIFQcnVGnutXkI5w7cU6w' alt='ss'/>
                         <Typography variant='body1'>Lenge leve fantorangen!!!</Typography>
                     </Paper>
                 </div>
