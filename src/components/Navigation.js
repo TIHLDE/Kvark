@@ -17,10 +17,14 @@ import IconButton from '@material-ui/core/IconButton';
 // Assets/Icons
 import TIHLDELOGO from '../assets/img/tihldeLogo.png';
 import MenuIcon from '@material-ui/icons/Menu';
+import Facebook from '../assets/icons/facebook.svg';
+import Instagram from '../assets/icons/instagram.svg';
+import Twitter from '../assets/icons/twitter.svg';
 
 // Project Components
 import Footer from './Footer';
 import Sidebar from './Sidebar';
+import {Divider, Grid, Input, Typography} from '@material-ui/core';
 
 const styles = {
     root: {
@@ -56,7 +60,7 @@ const styles = {
     },
     logoWrapper: {
         display: 'flex',
-        flexGrow: 1,
+
 
         '@media only screen and (max-width: 600px)': {
             flexDirection: 'row-reverse',
@@ -71,7 +75,40 @@ const styles = {
         width: '100vw',
         overflow: 'hidden',
     },
+    grow: {
+        display: 'flex',
+        justifyContent: 'center',
+        flexGrow: 1,
+    },
+    horSpacing: {
+        margin: '0 5px'
+    },
+    sosialMedia:{
+
+    }
 };
+
+
+const URIbutton = withStyles(styles)((props) => {
+    const {classes, data} = props;
+    return (
+        <Link to={data.link} style={{ textDecoration: 'none' }}>
+            <Button color="inherit" style={{
+                color: 'white',
+            }}>{data.text}</Button>
+        </Link>
+    );
+});
+
+
+const LogoLink = withStyles(styles)((props) => {
+    const {classes, data} = props;
+    return (
+        <a className={classes.horSpacing} href={data.link} style={{flexGrid:1}}>
+            <img src={data.image} width='30px' alt="Missing icon" />
+        </a>
+    );
+});
 
 class Navigation extends Component {
 
@@ -84,7 +121,7 @@ class Navigation extends Component {
 
     toggleSidebar = () => {
         this.setState({showSidebar: !this.state.showSidebar});
-    }
+    };
 
     render() {
         const {classes} = this.props;
@@ -99,28 +136,13 @@ class Navigation extends Component {
                                     <img src={TIHLDELOGO} alt='logo' height='30em'/>
                                 </Link>
                             </div>
-                            <Hidden xsDown implementation='css'>
-                                <div>
-                                    <Link to={URLS.about} style={{ textDecoration: 'none' }}>
-                                        <Button color="inherit" style={{
-                                            color: 'white',
-                                        }}>Om TIHLDE</Button>
-                                    </Link>
-                                    <Link to={URLS.services} style={{ textDecoration: 'none' }}>
-                                        <Button color="inherit" style={{
-                                            color: 'white',
-                                        }}>Tjenester</Button>
-                                    </Link>
-                                    <Link to={URLS.events} style={{ textDecoration: 'none' }}>
-                                        <Button color="inherit" style={{
-                                            color: 'white',
-                                        }}>Arrangementer</Button>
-                                    </Link>
-                                    <Link to={URLS.undergroups} style={{ textDecoration: 'none' }}>
-                                        <Button color="inherit" style={{
-                                            color: 'white',
-                                        }}>Undergrupper</Button>
-                                    </Link>
+
+                                <div className={classes.grow}>
+                                    <Hidden smDown implementation='css'>
+                                    <URIbutton data={{link: URLS.about, text: "Om TIHLDE"}}/>
+                                    <URIbutton data={{link: URLS.services, text: "Tjenester"}}/>
+                                    <URIbutton data={{link: URLS.events, text: "Arrangementer"}}/>
+                                    <URIbutton data={{link: URLS.undergroups, text: "Undergrupper"}}/>
                                     <Link to={URLS.company} style={{ textDecoration: 'none' }}>
                                         <Button color="primary" style={{
                                             color: 'var(--tihlde-blaa)',
@@ -128,11 +150,10 @@ class Navigation extends Component {
                                             textDecoration: 'none',
                                         }}>Bedrifter</Button>
                                     </Link>
-
-
+                                    </Hidden>
                                 </div>
-                            </Hidden>
-                            <Hidden smUp implementation='css'>
+
+                            <Hidden mdUp implementation='css'>
                                 <IconButton className={classes.menuButton} onClick={this.toggleSidebar}><MenuIcon/></IconButton>
                             </Hidden>
 
@@ -148,6 +169,13 @@ class Navigation extends Component {
                                     <Sidebar onClose={this.toggleSidebar}/>
                                 </Drawer>
                             </Hidden>
+                            <div className={classes.sosialMedia}>
+                                <Hidden xsDown implementation={'css'}>
+                                <LogoLink data={{link: "https://www.facebook.com/tihlde/", image: Facebook}}/>
+                                <LogoLink data={{link: "https://www.instagram.com/p/6Uh3rCBII7/", image: Instagram}}/>
+                                <LogoLink data={{link: "https://twitter.com/tihlde", image: Twitter}}/>
+                                </Hidden>
+                            </div>
                         </div>
                     </Toolbar>
                 </AppBar>
