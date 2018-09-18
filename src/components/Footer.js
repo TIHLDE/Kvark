@@ -5,6 +5,15 @@ import { withStyles } from '@material-ui/core/styles';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+
+// Assets import
+import SIT from '../assets/img/sit.png';
+import NEXTTRON from '../assets/img/Nextron.png';
+
+import FACEBOOK from '../assets/img/facebook_icon.ico';
+import TWITTER from '../assets/img/twitter_icon.ico';
+import INSTAGRAM from '../assets/img/instagram_icon.png';
 
 
 const styles = {
@@ -34,9 +43,18 @@ const styles = {
     },
     sponsorer: {
         gridArea: 'Sponsorer',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'space-around',
     },
     sosialeMedier: {
         gridArea: 'SosialeMedier',
+    },
+    sosialeMedierFlex: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
     },
     tihldeSupport: {
         gridArea: 'TihldeSupport',
@@ -63,6 +81,8 @@ class Footer extends Component {
         return (
             <div className={classes.sponsorer}>
                 <Typography align='center' color='inherit' variant='headline'>Sponsorer</Typography>
+                <img src={SIT} alt="sit" width={80}/>
+                <img src={NEXTTRON} alt="nextron" width={80}/>
             </div>
         )
     };
@@ -72,6 +92,17 @@ class Footer extends Component {
         return (
             <div className={classes.sosialeMedier}>
                 <Typography align='center' color='inherit' variant='headline'>Sosiale medier</Typography>
+                <div className={classes.sosialeMedierFlex}>
+                    <a href="https/facebook.com/TIHLDE">
+                        <img src={FACEBOOK} alt="facebook" width={40}/>
+                    </a>
+                    <a href="https">
+                        <img src={TWITTER} alt="twitter" width={40}/>
+                    </a>
+                    <a>
+                        <img src={INSTAGRAM} alt="instagram" width={40}/>
+                    </a>
+                </div>
             </div>
         )
     };
