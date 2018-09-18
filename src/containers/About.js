@@ -21,12 +21,30 @@ const styles = {
         minHeight: '100vh',
         maxWidth: 1200,
         margin: 'auto',
+        marginBottom: 100,
     },
     grid: {
         width: '100%',
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        gridGap: '10px',
+        gridGap: '15px',
+
+        '@media only screen and (max-width: 700px)': {
+            gridTemplateColumns: '1fr',
+        },
+    },
+    padding: {
+        padding: 30,
+
+        '@media only screen and (max-width: 700px)': {
+            padding: 15,
+        },
+    },
+    bottomMargin: {
+        marginBottom: 30,
+    },
+    bottomSpacing: {
+        marginBottom: 10,
     },
 };
 
@@ -37,16 +55,16 @@ class About extends Component {
         return (
             <Navigation footer>
                 <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
-                    <Typography variant='display2'>{Text.header}</Typography>
-                    <Typography variant='title'>{Text.subheader}</Typography>
+                    <Typography className={classes.padding} variant='display2' color='inherit'><strong>{Text.header}</strong></Typography>
+                    <Typography className={classes.padding} variant='title'>{Text.subheader}</Typography>
 
-                    <div>
-                        <Typography variant='headline'>Historie</Typography>
+                    <div className={classes.padding}>
+                        <Typography className={classes.bottomSpacing} variant='display1' color='inherit' align='center'>Historie</Typography>
                         <Typography variant='subheading'>{Text.history}</Typography>
                         <Typography variant='subheading'>{Text.history2}</Typography>
                     </div>
 
-                    <Typography variant='headline'>Undergrupper</Typography>
+                    <Typography className={classes.bottomMargin} variant='display1' color='inherit'>Undergrupper</Typography>
                     <div className={classes.grid}>
                         <InfoCard header='Drift' text={Text.drift} src={DriftIcon}/>
                         <InfoCard header='Sosialen' text={Text.social} src={DriftIcon}/>

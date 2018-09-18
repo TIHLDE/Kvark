@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 
 // Project Components
 import Navigation from '../components/Navigation';
-import NewsAdministrator from '../components/NewsComponents/NewsAdministrator';
+// import NewsAdministrator from '../components/NewsComponents/NewsAdministrator';
 import EventAdministrator from '../components/EventComponents/EventAdministrator';
 
 const styles = {
