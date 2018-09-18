@@ -12,7 +12,6 @@ import GridData from '../../data/grid_minimal.json';
 
 // Grid Items/Widgets
 import EventList from '../EventComponents/EventList';
-import Jodel from '../Jodel/Jodel';
 import Poster from '../Poster2';
 import NewsItem from '../NewsComponents/NewsItem';
 import ImageGallery from '../ImageGallery/ImageGallery';
@@ -61,8 +60,6 @@ const getItem = (id, type, data, height) => {
             return <EventList id={id} data={data} height={height}/>;
         case 'news':
             return <NewsItem id={id} data={data}/>;
-        case 'jodel':
-            return <Jodel id={id} data={data}/>;
         case 'poster':
             return <Poster id={id} data={data}/>;
         case 'imagegallery':

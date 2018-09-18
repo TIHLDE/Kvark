@@ -141,7 +141,6 @@ class Navigation extends Component {
                                     <URIbutton data={{link: URLS.about, text: "Om TIHLDE"}}/>
                                     <URIbutton data={{link: URLS.services, text: "Tjenester"}}/>
                                     <URIbutton data={{link: URLS.events, text: "Arrangementer"}}/>
-                                    <URIbutton data={{link: URLS.undergroups, text: "Undergrupper"}}/>
                                     <Link to={URLS.company} style={{ textDecoration: 'none' }}>
                                         <Button color="primary" style={{
                                             color: 'var(--tihlde-blaa)',

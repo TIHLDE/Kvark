@@ -14,7 +14,6 @@ import './assets/css/index.css';
 import Landing from './containers/Landing';
 import NewsPage from './containers/NewsPage';
 import ArrangementPage from './containers/Arrangement';
-import Groups from './containers/Groups';
 import Companies from './containers/Companies';
 import About from './containers/About';
 import Events from './containers/Events';
@@ -35,7 +34,6 @@ const Application = (
                     <Route path='/om/' component={About} />
                     <Route path='/arrangementer/' component={Events} />
                     <Route path='/tjenester/' component={Services} />
-                    <Route path='/undergrupper/' component={Groups} />
                     <Route path='/bedrifter/' component={Companies} />
 
                     <Route path={URLS.dataRegistration} component={DataRegistrator} />
