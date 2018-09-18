@@ -16,6 +16,8 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
 
 // Icons
 
@@ -49,11 +51,34 @@ const styles = (theme) => ({
         marginTop: 150,
         display: 'block',
         margin: 'auto',
-        padding: 30,
+        padding: 36,
     },
     margin: {
         margin: '10px 0px',
     },
+
+    snackbar: {
+        marginTop: 44,
+        backgroundColor: theme.palette.error.main,
+    },
+    messageView: {
+        padding: 30,
+        minWidth: 300,
+        minHeight: 200,
+    },
+    deleteButton: {
+        color: theme.palette.error.main,
+    }
+});
+
+const MessageView = withStyles(styles, {withTheme: true})((props) => {
+    const {classes} = props;
+    return (
+        <Grid className={classNames(classes.messageView, props.className)} container direction='column' alignItems='center' justify='center'>
+            <Typography variant='headline' align='center'>{props.title}</Typography>
+            <Button variant='raised' color='primary' onClick={props.onClick}>{props.buttonText}</Button>
+        </Grid>
+    )
 });
 
 const EventItem = withStyles(styles, {withTheme: true})((props) => {
@@ -93,13 +118,17 @@ class EventAdministrator extends Component {
 
             title: '',
             location: '',
-            startDate: null,
+            startDate: new Date().toISOString().substring(0, 16),
             description: '',
             signUp: false,
             priority: 0,
             image: '',
             // imageAlt: '',
             eventlist: 0,
+
+            showMessage: false,
+            errorMessage: 'Det oppstod en feil',
+            showSuccessMessage: true,
         };
     }
 
@@ -136,7 +165,7 @@ class EventAdministrator extends Component {
                 image: '',
                 imageAlt: '',
                 eventlist: 0,
-                startDate: null,
+                startDate: new Date().toISOString().substring(0, 16),
                 signUp: false,
             });
         } else {
@@ -153,10 +182,19 @@ class EventAdministrator extends Component {
                 signUp: event.signUp,
             });
         }
+        this.setState({showSuccessMessage: false});
     }
 
     handleChange = (name) => (event) => {
         this.setState({[name]: event.target.value});
+    }
+
+    toggleSnackbar = () => {
+        this.setState({showMessage: !this.state.showMessage});
+    }
+
+    toggleSuccessView = () => {
+        this.setState({showSuccessMessage: !this.state.showSuccessMessage});
     }
 
     getStateEventItem = () => ({
@@ -185,7 +223,9 @@ class EventAdministrator extends Component {
             if(response.isError === false) {
                 const newEvents = Object.assign([], this.state.events);
                 newEvents.unshift(data);
-                this.setState({events: newEvents});
+                this.setState({events: newEvents, showSuccessMessage: true});
+            } else {
+                this.setState({showMessage: true, snackMessage: 'Det oppstod en feil'});
             }
             this.setState({isLoading: false});
         });
@@ -245,17 +285,30 @@ class EventAdministrator extends Component {
         const eventLists = (this.state.eventLists)? this.state.eventLists : [];
         const isNewItem = (selectedEvent === null);
         const header = (isNewItem)? 'Lag et nytt arrangement' : 'Endre arrangement';
-        const defaultDate = new Date().toISOString().substring(0,16);
 
         return (
             <Fragment>
                 <div className={classes.root}>
-                    
+                    <Snackbar
+                        open={this.state.showMessage}
+                        autoHideDuration={2000}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        onClose={this.toggleSnackbar}>
+                        
+                            <SnackbarContent
+                                className={classes.snackbar}
+                                message={this.state.snackMessage}/>
+                        </Snackbar>
+
                     <Paper className={classes.content}>
                         {(this.state.isLoading)? <CircularProgress /> :
+                        (this.state.showSuccessMessage)? <MessageView title='Arrangementet ble opprettet' buttonText='Nice' onClick={this.toggleSuccessView}/> :
                             <form>
                                 <Grid container direction='column' wrap='nowrap'>
-                                    <Typography variant='title'>{header}</Typography>
+                                    <Typography variant='headline'>{header}</Typography>
                                     <TextField className={classes.field} label='Tittel' value={title} onChange={this.handleChange('title')} required/>
                                     <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
                                     <TextField className={classes.margin} multiline label='Beskrivelse' value={description} onChange={this.handleChange('description')} required/>
@@ -279,7 +332,7 @@ class EventAdministrator extends Component {
                                             ))}
                                         </TextField>
 
-                                        <TextField className={classes.margin} fullWidth type='datetime-local' label='Start dato' defaultValue={defaultDate} value={this.state.startDate} onChange={this.handleChange('startDate')} />
+                                        <TextField className={classes.margin} fullWidth type='datetime-local' label='Start dato' value={this.state.startDate} onChange={this.handleChange('startDate')} />
                                     </Grid>
 
                                     <Grid container direction='row' wrap='nowrap' justify='space-between'>
@@ -287,7 +340,7 @@ class EventAdministrator extends Component {
                                             <Button onClick={this.createNewEvent} type='submit' variant='raised' color='primary'>Lag nytt event</Button> :
                                             <Fragment>
                                                 <Button onClick={this.editEventItem} variant='raised' color='primary'>Lagre</Button>
-                                                <Button onClick={this.deleteEventItem} variant='raised' color='secondary'>Slett</Button>
+                                                <Button className={classes.deleteButton} onClick={this.deleteEventItem} variant='outlined'>Slett</Button>
                                             </Fragment>
                                         }
                                     </Grid>

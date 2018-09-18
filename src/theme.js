@@ -11,5 +11,9 @@ export default createMuiTheme({
         main: '#009688',
         contrastText: 'white',
       },
+      error: {
+        main: '#B71C1C',
+        contrastText: 'white',
+      },
     },
 });
