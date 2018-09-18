@@ -136,8 +136,9 @@ class EventList extends Component {
         for (let i = 0; i < eventCount; i++) {
             const v = eventslist[i];
             const startTime = new Date(v.start);
+            console.log(startTime);
             v.time = zeropadNumber(startTime.getHours()) + ':' + zeropadNumber(startTime.getMinutes());
-            v.date = zeropadNumber(startTime.getDay()) + '/' + zeropadNumber(startTime.getMonth());
+            v.date = zeropadNumber(startTime.getDate()) + '/' + zeropadNumber(startTime.getMonth()+1);
             events[i] = <Event key={v.id}
                           title={v.title || '<No title>'}
                           location={v.location || ''}
