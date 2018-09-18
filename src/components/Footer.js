@@ -5,20 +5,20 @@ import { withStyles } from '@material-ui/core/styles';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 
 // Assets import
 import SIT from '../assets/img/sit.png';
 import NEXTTRON from '../assets/img/Nextron.png';
 
-import FACEBOOK from '../assets/img/facebook_icon.ico';
-import TWITTER from '../assets/img/twitter_icon.ico';
-import INSTAGRAM from '../assets/img/instagram_icon.png';
+import FACEBOOK from '../assets/icons/facebook.svg';
+import TWITTER from '../assets/icons/twitter.svg';
+import INSTAGRAM from '../assets/icons/instagram.svg';
 
 
 const styles = {
     root: {
-        backgroundColor: 'var(--tihlde-blaa)',
+        backgroundColor: '#3B3B3B',
         padding: 10,
         display: 'grid',
         gridTemplateColumns: '1fr 1fr 1fr 1fr',
@@ -58,6 +58,9 @@ const styles = {
     },
     tihldeSupport: {
         gridArea: 'TihldeSupport',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-around',
     },
 };
 
@@ -93,14 +96,14 @@ class Footer extends Component {
             <div className={classes.sosialeMedier}>
                 <Typography align='center' color='inherit' variant='headline'>Sosiale medier</Typography>
                 <div className={classes.sosialeMedierFlex}>
-                    <a href="https/facebook.com/TIHLDE">
+                    <a href="https://www.facebook.com/tihlde/">
                         <img src={FACEBOOK} alt="facebook" width={40}/>
                     </a>
-                    <a href="https">
-                        <img src={TWITTER} alt="twitter" width={40}/>
-                    </a>
-                    <a>
+                    <a href="https://twitter.com/tihlde">
                         <img src={INSTAGRAM} alt="instagram" width={40}/>
+                    </a>
+                    <a href="https://www.instagram.com/p/6Uh3rCBII7/">
+                        <img src={TWITTER} alt="twitter" width={40}/>
                     </a>
                 </div>
             </div>
@@ -112,6 +115,8 @@ class Footer extends Component {
         return (
             <div className={classes.tihldeSupport}>
                 <Typography align='center' color='inherit' variant='headline'>Support</Typography>
+                <Button variant='contained' color='primary'>Open new ticket</Button>
+                <Button variant='contained' color='secondary'>Check ticket status</Button>
             </div>
         )
     };
