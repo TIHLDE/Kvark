@@ -68,15 +68,18 @@ const styles = (theme) => ({
     },
     deleteButton: {
         color: theme.palette.error.main,
-    }
+    },
+    progress: {
+        minHeight: 300,
+    },
 });
 
 const MessageView = withStyles(styles, {withTheme: true})((props) => {
     const {classes} = props;
     return (
         <Grid className={classNames(classes.messageView, props.className)} container direction='column' alignItems='center' justify='center'>
-            <Typography variant='headline' align='center'>{props.title}</Typography>
-            <Button variant='raised' color='primary' onClick={props.onClick}>{props.buttonText}</Button>
+            <Typography className={classes.margin} variant='headline' align='center'>{props.title}</Typography>
+            <Button className={classes.margin} variant='raised' color='primary' onClick={props.onClick}>{props.buttonText}</Button>
         </Grid>
     )
 });
@@ -104,6 +107,10 @@ EventItem.propTypes = {
 };
 
 const priorities = ['Lav', 'Middels', 'Høy'];
+const eventCreated = 'Arrangementet ble opprettet';
+const eventChanged = 'Endringen ble publisert';
+const eventDeleted = 'Arrangementet ble slettet';
+const snackbarHideDuration = 4000;
 
 class EventAdministrator extends Component {
 
@@ -118,7 +125,7 @@ class EventAdministrator extends Component {
 
             title: '',
             location: '',
-            startDate: new Date().toISOString().substring(0, 16),
+            startDate: new Date().toISOString(),
             description: '',
             signUp: false,
             priority: 0,
@@ -128,7 +135,8 @@ class EventAdministrator extends Component {
 
             showMessage: false,
             errorMessage: 'Det oppstod en feil',
-            showSuccessMessage: true,
+            showSuccessMessage: false,
+            successMessage: eventCreated,
         };
     }
 
@@ -205,7 +213,7 @@ class EventAdministrator extends Component {
         image: this.state.image,
         imageAlt: 'event',
         eventlist: this.state.eventlist,
-        start: new Date(this.state.startDate).toISOString(),
+        start: this.state.startDate,
         signUp: this.state.signUp,
     });
 
@@ -223,7 +231,7 @@ class EventAdministrator extends Component {
             if(response.isError === false) {
                 const newEvents = Object.assign([], this.state.events);
                 newEvents.unshift(data);
-                this.setState({events: newEvents, showSuccessMessage: true});
+                this.setState({events: newEvents, showSuccessMessage: true, successMessage: eventCreated});
             } else {
                 this.setState({showMessage: true, snackMessage: 'Det oppstod en feil'});
             }
@@ -248,8 +256,10 @@ class EventAdministrator extends Component {
                 const index = newEvents.findIndex((elem) => elem.id === selectedEvent.id);
                 if(index !== -1) {
                     newEvents[index] = data;
-                    this.setState({events: newEvents});
+                    this.setState({events: newEvents, showSuccessMessage: true, successMessage: eventChanged});
                 }
+            } else {
+                this.setState({showMessage: true, snackMessage: 'Det oppstod en feil'});
             }
             this.setState({isLoading: false});
         });
@@ -271,7 +281,7 @@ class EventAdministrator extends Component {
                 const index = newEvents.findIndex((elem) => elem.id === selectedEvent.id);
                 if(index !== -1) {
                     newEvents.splice(index, 1);
-                    this.setState({events: newEvents, selectedEvent: null});
+                    this.setState({events: newEvents, selectedEvent: null, showSuccessMessage: true, successMessage: eventDeleted});
                 }
             }
             this.setState({isLoading: false});
@@ -291,7 +301,7 @@ class EventAdministrator extends Component {
                 <div className={classes.root}>
                     <Snackbar
                         open={this.state.showMessage}
-                        autoHideDuration={2000}
+                        autoHideDuration={snackbarHideDuration}
                         anchorOrigin={{
                             vertical: 'top',
                             horizontal: 'right',
@@ -304,8 +314,8 @@ class EventAdministrator extends Component {
                         </Snackbar>
 
                     <Paper className={classes.content}>
-                        {(this.state.isLoading)? <CircularProgress /> :
-                        (this.state.showSuccessMessage)? <MessageView title='Arrangementet ble opprettet' buttonText='Nice' onClick={this.toggleSuccessView}/> :
+                        {(this.state.isLoading)? <Grid className={classes.progress} container justify='center' alignItems='center'><CircularProgress /></Grid> :
+                        (this.state.showSuccessMessage)? <MessageView title={this.state.successMessage} buttonText='Nice' onClick={this.toggleSuccessView}/> :
                             <form>
                                 <Grid container direction='column' wrap='nowrap'>
                                     <Typography variant='headline'>{header}</Typography>
@@ -332,7 +342,7 @@ class EventAdministrator extends Component {
                                             ))}
                                         </TextField>
 
-                                        <TextField className={classes.margin} fullWidth type='datetime-local' label='Start dato' value={this.state.startDate} onChange={this.handleChange('startDate')} />
+                                        <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Start dato' value={this.state.startDate} onChange={this.handleChange('startDate')} />
                                     </Grid>
 
                                     <Grid container direction='row' wrap='nowrap' justify='space-between'>

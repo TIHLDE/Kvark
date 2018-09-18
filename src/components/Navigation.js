@@ -24,7 +24,6 @@ import Twitter from '../assets/icons/twitter.svg';
 // Project Components
 import Footer from './Footer';
 import Sidebar from './Sidebar';
-import {Divider, Grid, Input, Typography} from '@material-ui/core';
 
 const styles = {
     root: {
@@ -90,7 +89,7 @@ const styles = {
 
 
 const URIbutton = withStyles(styles)((props) => {
-    const {classes, data} = props;
+    const {data} = props;
     return (
         <Link to={data.link} style={{ textDecoration: 'none' }}>
             <Button color="inherit" style={{
