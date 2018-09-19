@@ -26,12 +26,26 @@ const SIDEBAR_WIDTH = 300;
 const styles = (theme) => ({
     root: {
         paddingLeft: SIDEBAR_WIDTH,
+
+        '@media only screen and (max-width: 800px)': {
+            padding: 0,
+        }
     },
     sidebar: {
         paddingTop: 64,
         position: 'fixed',
         left: 0, top: 0, bottom: 0,
         width: SIDEBAR_WIDTH,
+
+        '@media only screen and (max-width: 800px)': {
+            position: 'static',
+            width: '100%',
+            padding: 0,
+        }
+    },
+    sidebarTop: {
+        backgroundColor: 'whitesmoke',
+        
     },
     eventItem: {
         padding: '10px 10px',
@@ -46,12 +60,17 @@ const styles = (theme) => ({
         maxWidth: 300,
     },
     content: {
-        width: '90%',
+        width: '80%',
         maxWidth: 1000,
         marginTop: 150,
         display: 'block',
         margin: 'auto',
         padding: 36,
+
+        '@media only screen and (max-width: 800px)': {
+            width: 'auto',
+            marginTop: 0,
+        }
     },
     margin: {
         margin: '10px 0px',
@@ -72,6 +91,19 @@ const styles = (theme) => ({
     progress: {
         minHeight: 300,
     },
+    flexRow: {
+        margin: '10px 0',
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
+
+        '@media only screen and (max-width: 800px)': {
+            flexDirection: 'column',
+        }
+    },
+    padding: {
+        padding: '10px 5px',
+    }
 });
 
 const MessageView = withStyles(styles, {withTheme: true})((props) => {
@@ -117,6 +149,7 @@ class EventAdministrator extends Component {
     constructor() {
         super();
         this.state = {
+            pageLoading: false,
             isLoading: false,
 
             events: [],
@@ -313,7 +346,7 @@ class EventAdministrator extends Component {
                                 message={this.state.snackMessage}/>
                         </Snackbar>
 
-                    <Paper className={classes.content}>
+                    <Paper className={classes.content} square>
                         {(this.state.isLoading)? <Grid className={classes.progress} container justify='center' alignItems='center'><CircularProgress /></Grid> :
                         (this.state.showSuccessMessage)? <MessageView title={this.state.successMessage} buttonText='Nice' onClick={this.toggleSuccessView}/> :
                             <form>
@@ -325,7 +358,7 @@ class EventAdministrator extends Component {
 
                                     <TextField className={classes.margin} fullWidth label='Bilde' value={image} onChange={this.handleChange('image')} required/>
 
-                                    <Grid className={classes.margin} container direction='row' wrap='nowrap'>
+                                    <div className={classes.flexRow}>
                                         <TextField className={classes.margin} select fullWidth label='Proritering' value={priority} onChange={this.handleChange('priority')}>
                                             {priorities.map((value, index) => (
                                                 <MenuItem key={index} value={index}>
@@ -343,7 +376,7 @@ class EventAdministrator extends Component {
                                         </TextField>
 
                                         <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Start dato' value={this.state.startDate} onChange={this.handleChange('startDate')} />
-                                    </Grid>
+                                    </div>
 
                                     <Grid container direction='row' wrap='nowrap' justify='space-between'>
                                         {(isNewItem)? 
@@ -362,6 +395,9 @@ class EventAdministrator extends Component {
                 </div>
                 <Paper className={classes.sidebar}>
                     <Grid container direction='column' wrap='nowrap'>
+                        <div className={classNames(classes.sidebarTop, classes.padding)}>
+                            <Typography variant='title' color='inherit'>Arrangementer</Typography>
+                        </div>
                         {this.state.events.map((value, index) => (
                             <EventItem
                                 key={index}
