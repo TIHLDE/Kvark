@@ -18,8 +18,10 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+import IconButton from '@material-ui/core/IconButton';
 
 // Icons
+import AddIcon from '@material-ui/icons/Add';
 
 const SIDEBAR_WIDTH = 300;
 
@@ -197,18 +199,7 @@ class EventAdministrator extends Component {
         const {selectedEvent} = this.state;
 
         if(selectedEvent !== null && selectedEvent.id === event.id) {
-            this.setState({
-                selectedEvent: null,
-                title: '',
-                location: '',
-                description: '',
-                priority: 0,
-                image: '',
-                imageAlt: '',
-                eventlist: 0,
-                startDate: new Date().toISOString().substring(0, 16),
-                signUp: false,
-            });
+            this.resetEventState();
         } else {
             this.setState({
                 selectedEvent: event,
@@ -224,6 +215,21 @@ class EventAdministrator extends Component {
             });
         }
         this.setState({showSuccessMessage: false});
+    }
+
+    resetEventState = () => {
+        this.setState({
+            selectedEvent: null,
+            title: '',
+            location: '',
+            description: '',
+            priority: 0,
+            image: '',
+            imageAlt: '',
+            eventlist: 0,
+            startDate: new Date().toISOString().substring(0, 16),
+            signUp: false,
+        });
     }
 
     handleChange = (name) => (event) => {
@@ -356,7 +362,7 @@ class EventAdministrator extends Component {
                                     <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
                                     <TextField className={classes.margin} multiline label='Beskrivelse' value={description} onChange={this.handleChange('description')} required/>
 
-                                    <TextField className={classes.margin} fullWidth label='Bilde' value={image} onChange={this.handleChange('image')} required/>
+                                    <TextField className={classes.margin} fullWidth label='Bilde' value={image} onChange={this.handleChange('image')}/>
 
                                     <div className={classes.flexRow}>
                                         <TextField className={classes.margin} select fullWidth label='Proritering' value={priority} onChange={this.handleChange('priority')}>
@@ -382,7 +388,7 @@ class EventAdministrator extends Component {
                                         {(isNewItem)? 
                                             <Button onClick={this.createNewEvent} type='submit' variant='raised' color='primary'>Lag nytt event</Button> :
                                             <Fragment>
-                                                <Button onClick={this.editEventItem} variant='raised' color='primary'>Lagre</Button>
+                                                <Button onClick={this.editEventItem} variant='raised' type='submit' color='primary'>Lagre</Button>
                                                 <Button className={classes.deleteButton} onClick={this.deleteEventItem} variant='outlined'>Slett</Button>
                                             </Fragment>
                                         }
@@ -395,9 +401,10 @@ class EventAdministrator extends Component {
                 </div>
                 <Paper className={classes.sidebar}>
                     <Grid container direction='column' wrap='nowrap'>
-                        <div className={classNames(classes.sidebarTop, classes.padding)}>
+                        <Grid className={classNames(classes.sidebarTop, classes.padding)} container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
                             <Typography variant='title' color='inherit'>Arrangementer</Typography>
-                        </div>
+                            <IconButton onClick={this.resetEventState}><AddIcon/></IconButton>
+                        </Grid>
                         {this.state.events.map((value, index) => (
                             <EventItem
                                 key={index}
