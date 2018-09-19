@@ -19,8 +19,9 @@ import INSTAGRAM from '../assets/icons/instagram.svg';
 const styles = {
     root: {
         backgroundColor: '#3B3B3B',
-        padding: 10,
+        padding: '20px 0px',
         display: 'grid',
+        gridGap: '40px',
         gridTemplateColumns: '1fr 1fr 1fr 1fr',
         gridTemplateAreas: "'OmTihlde Sponsorer SosialeMedier TihldeSupport'",
         gridTemplateRows: 'auto',
