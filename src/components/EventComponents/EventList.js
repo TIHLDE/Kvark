@@ -24,6 +24,7 @@ const styles = (theme) => ({
 
         '@media only screen and (max-width: 800px)': {
             minHeight: 300,
+            maxHeight: 365,
         }
     },
     wrapper: {
