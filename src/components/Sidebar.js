@@ -17,6 +17,10 @@ const styles = (theme) => ({
     root: {
         marginTop: 56,
         zIndex: 10000,
+
+        '@media only screen and (min-width: 600px)': {
+            marginTop: 64,
+        },
     },
     item: {
         height: 56,
@@ -66,7 +70,6 @@ const SidebarContent = (props) => {
                 <ActionLink to={URLS.about} label='Om TIHLDE'/>
                 <ActionLink to={URLS.services} label='Tjenester'/>
                 <ActionLink to={URLS.events} label='Arrangementer'/>
-                <ActionLink to={URLS.undergroups} label='Undergrupper'/>
                 <ActionLink to={URLS.company} label='Bedrifter'/>
             </div>
         </Fragment>

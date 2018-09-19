@@ -129,6 +129,7 @@ class EventList extends Component {
     render() {
         const {classes, data} = this.props;
         const eventslist = data.events || [];
+        console.log(eventslist);
         eventslist.sort((a, b) => b.priority - a.priority);
 
         const events = [];
@@ -136,8 +137,7 @@ class EventList extends Component {
         for (let i = 0; i < eventCount; i++) {
             const v = eventslist[i];
             const startTime = new Date(v.start);
-            console.log(startTime);
-            v.time = zeropadNumber(startTime.getHours()) + ':' + zeropadNumber(startTime.getMinutes());
+            v.time = zeropadNumber(startTime.getUTCHours()) + ':' + zeropadNumber(startTime.getMinutes());
             v.date = zeropadNumber(startTime.getDate()) + '/' + zeropadNumber(startTime.getMonth()+1);
             events[i] = <Event key={v.id}
                           title={v.title || '<No title>'}

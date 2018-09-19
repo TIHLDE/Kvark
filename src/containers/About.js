@@ -1,39 +1,85 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {withStyles} from '@material-ui/core/styles';
 
-import Navigation from '../components/Navigation';
+// Text Imports
+import Text from '../text/AboutText';
 
+// Material UI Components
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
 
+// Icons
+import DriftIcon from '../assets/img/instagram_icon.png';
+
+// Project Components
+import Navigation from '../components/Navigation';
+import InfoCard from '../components/InfoCard';
+
+const styles = {
+    root: {
+        minHeight: '100vh',
+        maxWidth: 1200,
+        margin: 'auto',
+        marginBottom: 100,
+    },
+    grid: {
+        width: '100%',
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gridGap: '15px',
+
+        '@media only screen and (max-width: 700px)': {
+            gridTemplateColumns: '1fr',
+        },
+    },
+    padding: {
+        padding: 30,
+
+        '@media only screen and (max-width: 700px)': {
+            padding: 15,
+        },
+    },
+    bottomMargin: {
+        marginBottom: 30,
+    },
+    bottomSpacing: {
+        marginBottom: 10,
+    },
+};
 
 class About extends Component {
 
     render() {
+        const {classes} = this.props;
+        return (
+            <Navigation footer>
+                <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
+                    <Typography className={classes.padding} variant='display2' color='inherit'><strong>{Text.header}</strong></Typography>
+                    <Typography className={classes.padding} variant='title'>{Text.subheader}</Typography>
 
-        return <Navigation footer>
-            <br />
-            <div style={{'maxWidth': '1000px', 'margin': '0 auto'}}>
-                <Paper style={{'padding': '30px', 'margin': '60px 30px'}}>
-                    <Typography variant='headline'>Om Tihlde</Typography>
-                    <Typography variant='body1'>TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet Digital samhandling ved AIT, IDI, NTNU på Kalvskinnet.</Typography>
-                    <br />
-                    <Typography variant='title'>Historie</Typography>
-                    <Typography variant='body1'>TIHLDE ble stiftet 16.april 1993, med formål å fremme det sosiale og faglige tilbudet ved EDB-avdelingen ved TIH, som etterhvert ble AITeL ved HiST, deretter IIE ved HiST, nå AIT, IDI ved NTNU. Mye har skjedd siden da, men dette er fortsatt vårt mål. Alle studenter og ansatte tilknyttet AIT, IDI ved Kalvskinnet kan bli medlem, men opptaket skjer kun i begynnelsen av hvert skoleår.</Typography>
-                    <Typography variant='body1'>TIHLDE er en ikke-profitabel og politisk nøytral organisasjon som baserer seg på frivillig engasjement fra studenter. I tillegg til hovedstyret (HS), har vi pr idag 4 undergrupper: drift, orakel, sosialen og promo, og 8 komitéer: ÅreKom, FestKom, ArrKom, KosKom, TurKom, JubKom, NetKom, og FadderKom.</Typography>
-                    <br />
-                    <Typography variant='title'>Organisasjonskart</Typography>
-                    <br />
-                    <Typography variant='title'>Undergrupper</Typography>
-                    <Typography variant='body1'>Drift er en gruppe på 9 studenter som tar seg av drifting av TIHLDEs datasystemer. Her inngår bla. medlemstjeneren Colargol, studenttjeneren Balthazar, VM-parken Nerdvana samt andre støttetjenere. Oppgavene til Drift er brukeradministrasjon, backup, installasjon og oppgradering av programvare, DNS-administrering, brannslukking og annet. Medlemmene i drift opparbeider seg en betydelig kompetanse på UNIX, og Linux spesielt.</Typography>
-                    <Typography variant='body1'>Næringsliv og Kurs, tidligere Orakel, jobber for å fremme det faglige tilbudet til medlemmene. Her inngår bla. bedriftspresentasjoner, kurs, foredrag, nærlingslivsdag og lignende.</Typography>
-                    <Typography variant='body1'>Sosialen jobber for å fremme sosiale aktiviteter blant medlemmene. Det være seg sosiale tilstelninger som fester, kino, bowling, gokart mm. Fantasien er grensen, og forslag til aktiviteter mottas med smil! :)</Typography>
-                    <Typography variant='body1'>Promo har som oppgave å informere studenter og medlemmer om TIHLDEs saker og arrangementer, i tillegg til å dokumentere hendinger som har vært.</Typography>
-                </Paper>
-            </div>
-        </Navigation>
+                    <div className={classes.padding}>
+                        <Typography className={classes.bottomSpacing} variant='display1' color='inherit' align='center'>Historie</Typography>
+                        <Typography variant='subheading'>{Text.history}</Typography>
+                        <Typography variant='subheading'>{Text.history2}</Typography>
+                    </div>
 
+                    <Typography className={classes.bottomMargin} variant='display1' color='inherit'>Undergrupper</Typography>
+                    <div className={classes.grid}>
+                        <InfoCard header='Drift' text={Text.drift} src={DriftIcon}/>
+                        <InfoCard header='Sosialen' text={Text.social} src={DriftIcon}/>
+                        <InfoCard header='Næringsliv og Kurs' text={Text.business} src={DriftIcon}/>
+                        <InfoCard header='Promo' text={Text.promo} src={DriftIcon}/>
+                    </div>
+                </Grid>
+            </Navigation>
+        );
     }
 
-}
+};
 
-export default About;
+About.propTypes = {
+    classes: PropTypes.object,
+};
+
+export default withStyles(styles)(About);
