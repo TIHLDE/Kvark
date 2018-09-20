@@ -53,6 +53,10 @@ const styles = {
     },
     bottomItem: {
         gridColumn: 'span 2',
+
+        '@media only screen and (max-width: 700px)': {
+            gridColumn: 'span 1',
+        },
     },
 };
 
