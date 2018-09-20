@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 
 // Icons
 import DriftIcon from '../assets/img/instagram_icon.png';
+import OrgMap from '../assets/img/orgMap.png';
 
 // Project Components
 import Navigation from '../components/Navigation';
@@ -28,6 +29,7 @@ const styles = {
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
         gridGap: '15px',
+        marginBottom: 40,
 
         '@media only screen and (max-width: 700px)': {
             gridTemplateColumns: '1fr',
@@ -45,6 +47,12 @@ const styles = {
     },
     bottomSpacing: {
         marginBottom: 10,
+    },
+    miniPadding: {
+        padding: 10,
+    },
+    bottomItem: {
+        gridColumn: 'span 2',
     },
 };
 
@@ -71,6 +79,20 @@ class About extends Component {
                         <InfoCard header='Næringsliv og Kurs' text={Text.business} src={DriftIcon}/>
                         <InfoCard header='Promo' text={Text.promo} src={DriftIcon}/>
                     </div>
+
+                    <Typography className={classes.bottomMargin}variant='display1' color='inherit'>Komiteer</Typography>
+                    <div className={classes.grid}>
+                        <InfoCard header='Jubkom' text={Text.jubkom} subheader='Opptak' subText={Text.jubkom2} justifyText/>
+                        <InfoCard header='Netkom' text={Text.netkom} subheader='Opptak' subText={Text.netkom2} justifyText/>
+                        <InfoCard header='Turkom' text={Text.turkom} subheader='Opptak' subText={Text.turkom2} justifyText/>
+                        <InfoCard header='Kosekom' text={Text.kosekom} subheader='Opptak' subText={Text.kosekom2} justifyText/>
+                        <InfoCard header='ArrKom' text={Text.arrkom} subheader='Opptak' subText={Text.arrkom2} justifyText/>
+                        <InfoCard header='FestKom' text={Text.festkom} subheader='Opptak' subText={Text.festkom2} justifyText/>
+                        <InfoCard header='ÅreKom' text={Text.arekom} subheader='Opptak' subText={Text.arekom2} justifyText className={classes.bottomItem}/>
+                    </div>
+
+                    <Typography className={classes.bottomMargin}variant='display1' color='inherit'>Organisasjonskart</Typography>
+                    <img className={classes.miniPadding} src={OrgMap} alt='organisasjonskart' width='90%' />
                 </Grid>
             </Navigation>
         );
