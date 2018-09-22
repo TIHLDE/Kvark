@@ -16,6 +16,7 @@ import OrgMap from '../assets/img/orgMap.png';
 // Project Components
 import Navigation from '../components/Navigation';
 import InfoCard from '../components/InfoCard';
+import ClickableImage from '../components/ClickableImage';
 
 const styles = {
     root: {
@@ -67,7 +68,7 @@ class About extends Component {
         return (
             <Navigation footer>
                 <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
-                    <Typography className={classes.padding} variant='display2' color='inherit'><strong>{Text.header}</strong></Typography>
+                    <Typography className={classes.padding} variant='display3' color='inherit' align='center'><strong>{Text.header}</strong></Typography>
                     <Typography className={classes.padding} variant='title'>{Text.subheader}</Typography>
 
                     <div className={classes.padding}>
@@ -96,7 +97,7 @@ class About extends Component {
                     </div>
 
                     <Typography className={classes.bottomMargin}variant='display1' color='inherit'>Organisasjonskart</Typography>
-                    <img className={classes.miniPadding} src={OrgMap} alt='organisasjonskart' width='90%' />
+                    <ClickableImage className={classes.miniPadding} image={OrgMap} alt='organisasjonskart' width='90%'/>
                 </Grid>
             </Navigation>
         );

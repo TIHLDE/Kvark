@@ -50,13 +50,17 @@ const styles = {
     header: {
         marginBottom: 10,
     },
+    grow: {
+        flexGrow: 1,
+    },
+    children: {},
 };
 
 const InfoCard = (props) => {
-    const {classes} = props;
+    let {classes} = props;
 
     return (
-        <Paper className={classNames(classes.root, props.className)} square>
+        <Paper className={classNames(classes.root, props.className)} square elevation={1}>
             <div className={classes.wrapper}>
                 {(!props.src)? null :
                     <div className={classes.margin}>
@@ -73,6 +77,12 @@ const InfoCard = (props) => {
                             <Typography variant='body2' component='p'>{Parser(props.subText)}</Typography>
                         </Fragment>
                     }
+                    
+                    {props.children && (
+                        <div className={classNames(classes.grow, classes.padding, props.classes.children)}>
+                            {props.children}
+                        </div>
+                    )}
                 </Grid>
             </div>
         </Paper>
@@ -85,10 +95,12 @@ InfoCard.propTypes = {
     text: PropTypes.string,
     src: PropTypes.any,
     alt: PropTypes.string,
-    justifyText: PropTypes.string,
+    justifyText: PropTypes.bool,
     subheader: PropTypes.string,
     subText: PropTypes.string,
     className: PropTypes.string,
+
+    children: PropTypes.node,
 };
 
 export default withStyles(styles)(InfoCard);

@@ -130,8 +130,8 @@ class EventList extends Component {
     render() {
         const {classes, data} = this.props;
         const eventslist = data.events || [];
+        eventslist.sort((a, b) => b.start - a.start);
         console.log(eventslist);
-        eventslist.sort((a, b) => b.priority - a.priority);
 
         const events = [];
         const eventCount = (eventslist.length > maxElementsCount)? maxElementsCount : eventslist.length;
@@ -148,7 +148,7 @@ class EventList extends Component {
                           priority={v.priority}
                           onClick={() => this.openEvent(v)}
                         />;
-        }   
+        }
 
         return (
             <Card className={classes.root} square={true}>
