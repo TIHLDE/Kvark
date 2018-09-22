@@ -131,7 +131,6 @@ class EventList extends Component {
         const {classes, data} = this.props;
         const eventslist = data.events || [];
         eventslist.sort((a, b) => b.start - a.start);
-        console.log(eventslist);
 
         const events = [];
         const eventCount = (eventslist.length > maxElementsCount)? maxElementsCount : eventslist.length;
