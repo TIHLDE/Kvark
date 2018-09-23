@@ -37,4 +37,9 @@ export default {
     deleteEventItem: (id) => {
         return new IRequest('DELETE', 'events/'.concat(id, '/'), undefined, false);
     },
+
+    // Warning
+    getWarning: () => {
+        return new IRequest('GET', 'warning/');
+    },
 };

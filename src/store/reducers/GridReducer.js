@@ -1,6 +1,7 @@
 const initialState = {
     grid: [],
     selectedItem: null, // Item that will be used on detailpages
+    snackHasDisplayed: false, // A control bool for controlling of the snackbar has displayed or not
 };
 
 export default function reducer(state = initialState, action) {
@@ -21,6 +22,10 @@ export default function reducer(state = initialState, action) {
 
         case "SET_SELECTED_ITEM": {
             return {...state, selectedItem: data}
+        }
+
+        case "SET_SNACK_DISPLAYED": {
+            return {...state, snackHasDisplayed: data}
         }
 
         default:
