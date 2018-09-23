@@ -31,10 +31,10 @@ const Application = (
                     <Route exact path='/' component={Landing}/>
                     <Route path='/nyheter/:id' component={NewsPage}/>
                     <Route path='/arrangementer/:id' component={ArrangementPage}/>
-                    <Route path='/om/' component={About} />
-                    <Route path='/arrangementer/' component={Events} />
-                    <Route path='/tjenester/' component={Services} />
-                    <Route path='/bedrifter/' component={Companies} />
+                    <Route path={URLS.about} component={About} />
+                    <Route path={URLS.events} component={Events} />
+                    <Route path={URLS.services} component={Services} />
+                    <Route path={URLS.company} component={Companies} />
 
                     <Route path={URLS.dataRegistration} component={DataRegistrator} />
 
