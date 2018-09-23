@@ -24,12 +24,13 @@ const styles = {
         height:'auto',
         backgroundColor:'whitesmoke',
     },
+
     wrapper:{
         paddingTop:'30px',
         paddingBottom:'30px',
 
         display: 'grid',
-        gridTemplateColumns: '60%',
+        gridTemplateColumns: '90%',
         gridTemplateRows:'auto',
         margin:'auto',
         gridGap:'30px',
@@ -42,9 +43,18 @@ const styles = {
         textAlign: 'center'
     },
     text:{
-        width:'60%',
-        margin:'auto'
+        width:'auto',
+        maxWidth:'60%',
+        margin:'auto',
+        '@media only screen and (max-width: 600px)': {
+            maxWidth:'90%',
+        },
     },
+    minify: {
+        '@media only screen and (max-width: 600px)': {
+            fontSize: 40,
+        },
+    }
 
 };
 
@@ -59,16 +69,15 @@ class Arrangement extends Component {
 
     // Gets the event
     loadEvent = () => {
-        const { grid, dispatch } = this.props;
+        const { dispatch } = this.props;
         // Get eventItem id
         const id = this.props.match.params.id;
-        /* // If item exists in store, it will be loaded to state
-        dispatch(selectItem(id)); */
+
         // Item does not exist, fetch from server
         this.setState({isLoading: true});
         const response = API.getEventItem(id).response();
         response.then((data) => {
-            if (!response.isError) {
+            if (response.isError === false) {
                 dispatch(setSelectedItem(data));
             } else {
                 // Redirect to 404
@@ -97,12 +106,12 @@ class Arrangement extends Component {
                         <Head data={data} />
                         <div className={classes.wrapper}>
                             <div className={classes.headliner}>
-                                <Typography variant='display3'> {data.title} </Typography>
+                                <Typography variant='display3' className={classes.minify}> {data.title} </Typography>
                             </div>
                             <Information data={data}/>
-                            <Button variant="contained" color="primary" style={{margin:'auto'}}>
+                            {(data.signUp)?<Button variant="contained" color="primary" style={{margin:'auto'}}>
                                 Meld deg på
-                            </Button>
+                            </Button> : ""}
                             <div className={classes.text}>
                                 {data.description}
                             </div>
