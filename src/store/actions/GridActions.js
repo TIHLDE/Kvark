@@ -1,5 +1,4 @@
-// ALl redux actions will be put in this file
-
+// All redux actions will be put in this file
 
 export function setGridItems(data) {
     return dispatch => {
@@ -26,6 +25,16 @@ export function setSelectedItem(object) {
     }
 }
 
+export function setSnackDispalyed(boolean) {
+    return dispatch => {
+        dispatch({type: 'SET_SNACK_DISPLAYED', payload: boolean});
+    }
+}
+
+// --- SELECTORS ---
+const getGridActionState = (state) => state.grid;
+
+export const getHasSnackDisplayed = (state) => getGridActionState(state).snackHasDisplayed;
 
 
 // --- Helper Methods ---

@@ -3,6 +3,12 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import Link from 'react-router-dom/Link';
 import URLS from '../URLS';
+import classNames from 'classnames';
+import {connect} from 'react-redux';
+
+// API and store imports
+import API from '../api/api';
+import * as GridActions from '../store/actions/GridActions';
 
 // Material UI Components
 import AppBar from '@material-ui/core/AppBar';
@@ -24,6 +30,7 @@ import Twitter from '../assets/icons/twitter.svg';
 // Project Components
 import Footer from './Footer';
 import Sidebar from './Sidebar';
+import Snack from './Snack';
 
 const styles = {
     root: {
@@ -82,9 +89,24 @@ const styles = {
     horSpacing: {
         margin: '0 5px'
     },
-    sosialMedia:{
+    snack: {
+        marginTop: 62,
+        maxWidth: 'none',
+        height: 48,
+        width: '98vw',
 
-    }
+        
+        backgroundColor: 'rgba(211,47,47,1)',
+        '@media only screen and (max-width: 600px)': {
+            marginTop: 56,
+        },
+    },
+    flex: {
+        display: 'flex',
+        flexWrap: 'nowrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 };
 
 
@@ -115,7 +137,38 @@ class Navigation extends Component {
         super();
         this.state = {
             showSidebar: false,
+
+            showSnackbar: false,
+            snackMessage: null,
         };
+    }
+
+    componentDidMount() {
+        this.configureWarningMessage();
+    }
+
+    configureWarningMessage = () => {
+        if(this.props.snackHasDisplayed) {
+            return;
+        }
+
+        const response = API.getWarning().response();
+        response.then((data) => {
+            console.log(data);
+            if(response.isError === false) {
+                if(data && data.length > 0) {
+                    this.setState({
+                        snackMessage: data[data.length-1].text,
+                        showSnackbar: true,
+                    });
+                }
+            }
+        });
+    }
+
+    closeSnackbar = () => {
+        this.setState({showSnackbar: false});
+        this.props.setHasSnackDisplayed(true);
     }
 
     toggleSidebar = () => {
@@ -167,16 +220,22 @@ class Navigation extends Component {
                                     <Sidebar onClose={this.toggleSidebar}/>
                                 </Drawer>
                             </Hidden>
-                            <div className={classes.sosialMedia}>
+                            <div>
                                 <Hidden xsDown implementation={'css'}>
-                                <LogoLink data={{link: "https://www.facebook.com/tihlde/", image: Facebook}}/>
-                                <LogoLink data={{link: "https://www.instagram.com/p/6Uh3rCBII7/", image: Instagram}}/>
-                                <LogoLink data={{link: "https://twitter.com/tihlde", image: Twitter}}/>
+                                    <LogoLink data={{link: "https://www.facebook.com/tihlde/", image: Facebook}}/>
+                                    <LogoLink data={{link: "https://www.instagram.com/p/6Uh3rCBII7/", image: Instagram}}/>
+                                    <LogoLink data={{link: "https://twitter.com/tihlde", image: Twitter}}/>
                                 </Hidden>
                             </div>
                         </div>
                     </Toolbar>
                 </AppBar>
+
+                <Snack
+                    className={classNames(classes.snack, classes.flex)}
+                    open={this.state.showSnackbar} 
+                    message={this.state.snackMessage}
+                    onClose={this.closeSnackbar}/>
 
                 <main className={classes.main}>
                     {(this.props.isLoading)? <LinearProgress /> : null}
@@ -199,4 +258,12 @@ Navigation.propTypes = {
     footer: PropTypes.bool,
 };
 
-export default withStyles(styles)(Navigation);
+const mapStateToProps = (state) => ({
+    snackHasDisplayed: GridActions.getHasSnackDisplayed(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    setHasSnackDisplayed: (bool) => dispatch(GridActions.setSnackDispalyed(bool)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Navigation));
