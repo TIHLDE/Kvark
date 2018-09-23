@@ -17,6 +17,9 @@ const styles = {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
+        '@media only screen and (max-width: 600px)': {
+            height:'200px'
+        },
     },
 };
 

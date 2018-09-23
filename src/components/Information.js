@@ -45,8 +45,9 @@ class Information extends Component{
 
     render(){
         const { classes, data } = this.props;
+        let start = moment(data.start, ['YYYY-MM-DD HH:mm'], "nb");
+        console.log(start);
 
-        moment.locale();
         return (
             <div className={classNames(classes.root, this.props.className)}>
                 <div className={classes.wrapper}>
@@ -57,10 +58,10 @@ class Information extends Component{
                         <Typography variant='title'>Pris: </Typography>
                     </div>
                     <div className={classes.right}>
-                        <Typography variant='title'>{moment(data.start).format("MMMM D YYYY")} </Typography>
-                        <Typography  variant='title'>{moment(data.start).format("hh:mm")} </Typography>
+                        <Typography variant='title'>{start.format('DD/MM')}</Typography>
+                        <Typography  variant='title'>{start.format('HH:mm')}  </Typography>
                         <Typography variant='title'>{data.location} </Typography>
-                        <Typography variant='title'>{data.start} </Typography>
+                        <Typography variant='title'>100kr </Typography>
                     </div>
                 </div>
             </div>
