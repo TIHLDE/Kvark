@@ -92,9 +92,9 @@ const styles = {
     snack: {
         marginTop: 62,
         maxWidth: 'none',
-        height: 48,
-        width: '98vw',
-
+        minHeight: 48,
+        width: '100vw',
+        padding: '0px 15px',
         
         backgroundColor: 'rgba(211,47,47,1)',
         '@media only screen and (max-width: 600px)': {

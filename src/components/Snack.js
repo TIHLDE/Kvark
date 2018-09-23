@@ -17,7 +17,7 @@ import CloseIcon from '@material-ui/icons/Close';
 const styles = {
     root: {
         width: 'auto',
-        maxHeight: 40,
+        minHeight: 40,
     },
     flex: {
         display: 'flex',
