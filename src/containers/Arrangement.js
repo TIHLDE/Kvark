@@ -3,6 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+
 // Project components
 import Head from "../components/Head"
 import Navigation from "../components/Navigation";

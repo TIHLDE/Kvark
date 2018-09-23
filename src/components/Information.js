@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import classNames from "classnames";
 import PropTypes from 'prop-types';
+import moment from 'moment'
 
 
 import Divider from '@material-ui/core/Divider';
@@ -40,9 +41,12 @@ class Information extends Component{
     constructor(){
         super();
     }
+
+
     render(){
         const { classes, data } = this.props;
 
+        moment.locale();
         return (
             <div className={classNames(classes.root, this.props.className)}>
                 <div className={classes.wrapper}>
@@ -53,10 +57,10 @@ class Information extends Component{
                         <Typography variant='title'>Pris: </Typography>
                     </div>
                     <div className={classes.right}>
-                        <Typography variant='title'>{data.start} </Typography>
-                        <Typography  variant='title'>{data.time} </Typography>
+                        <Typography variant='title'>{moment(data.start).format("MMMM D YYYY")} </Typography>
+                        <Typography  variant='title'>{moment(data.start).format("hh:mm")} </Typography>
                         <Typography variant='title'>{data.location} </Typography>
-                        <Typography variant='title'>{data.price} </Typography>
+                        <Typography variant='title'>{data.start} </Typography>
                     </div>
                 </div>
             </div>
