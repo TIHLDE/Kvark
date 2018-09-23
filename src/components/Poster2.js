@@ -61,6 +61,16 @@ const styles = {
         maxWidth: 200,
         textDecoration: 'none',
     },
+    shadow: {
+        position: 'absolute',
+        bottom: 0, left: 0, right: 0,
+        width: '100%',
+        height: 10,
+        backgroundColor: 'white',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        boxShadow: '0px -2px 5px 0px rgba(0,0,0,0.1)',
+    },
 };
 
 class Poster extends Component {
@@ -84,6 +94,7 @@ class Poster extends Component {
                         </Link>
                     }
                 </Grid>
+                <div className={classes.shadow}/>
             </div>
         );
     }

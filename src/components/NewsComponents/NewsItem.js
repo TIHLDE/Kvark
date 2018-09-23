@@ -72,7 +72,7 @@ class NewsItem extends Component {
         }
 
         return (
-            <Paper className={classNames(classes.card, (data && data.image)? '' : classes.whitesmoke, this.props.className)} square={true}>
+            <Paper className={classNames(classes.card, (data && data.image)? '' : classes.whitesmoke, this.props.className)} square={true} elevation={1}>
                 <Link to={URLS.news + this.props.id}>
                 {imageOrFallback}
                 <div className={classes.textContainer}>

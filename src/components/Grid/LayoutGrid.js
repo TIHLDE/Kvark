@@ -88,7 +88,6 @@ class LayoutGrid extends Component {
 
     render() {
         const {classes, grid} = this.props;
-        console.log(grid);
         const children = (grid)? isDesktop() ? grid : grid.filter((item) => !item.hideOnMobile) : [];
         const topPadding = !(children.length > 0 && children[0].fullWidth);
         const bottomPadding = (children.length > 0 && children[children.length-1].fullWidth);

@@ -19,14 +19,21 @@ import INSTAGRAM from '../assets/icons/instagram.svg';
 const styles = {
     root: {
         backgroundColor: '#3B3B3B',
-        padding: 10,
+        padding: '40px 0px',
         display: 'grid',
+        gridGap: '40px',
         gridTemplateColumns: '1fr 1fr 1fr 1fr',
         gridTemplateAreas: "'OmTihlde Sponsorer SosialeMedier TihldeSupport'",
         gridTemplateRows: 'auto',
         justifyItems: 'center',
         color: 'white',
         textColor: 'white',
+
+        '@media only screen and (max-width: 900px)': {
+            gridTemplateRows: 'auto auto',
+            gridTemplateAreas: "'OmTihlde TihldeSupport' 'SosialeMedier Sponsorer'",
+            gridTemplateColumns: 'auto auto',
+        },
 
         '@media only screen and (max-width: 600px)': {
             gridTemplateRows: 'auto auto auto auto',
@@ -46,7 +53,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'space-around',
+       /*  justifyContent: 'space-around', */
     },
     sosialeMedier: {
         gridArea: 'SosialeMedier',
@@ -60,7 +67,10 @@ const styles = {
         gridArea: 'TihldeSupport',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-around',
+        /* justifyContent: 'space-around', */
+    },
+    horSpacing: {
+        marginBottom: 10,
     },
 };
 
@@ -70,11 +80,11 @@ class Footer extends Component {
         const { classes } = this.props;
         return (
             <div className={classes.omTihlde}>
-                <Typography align='center' color='inherit' variant='headline'>TIHLDE</Typography>
-                <Typography align='center' color='inherit' variant='body1'>c/o IDI NTNU</Typography>
-                <Typography align='center' color='inherit' variant='body1'>Sverres gate 14</Typography>
-                <Typography align='center' color='inherit' variant='body1'>7012 Trondheim</Typography>
-                <Typography align='center' color='inherit' variant='body1'>hs@tihlde.org</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' variant='headline'>TIHLDE</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' variant='body1'>c/o IDI NTNU</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' variant='body1'>Sverres gate 14</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' variant='body1'>7012 Trondheim</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' variant='body1'>hs@tihlde.org</Typography>
             </div>
         )
     };
@@ -83,9 +93,9 @@ class Footer extends Component {
         const { classes } = this.props;
         return (
             <div className={classes.sponsorer}>
-                <Typography align='center' color='inherit' variant='headline'>Sponsorer</Typography>
-                <img src={SIT} alt="sit" width={80}/>
-                <img src={NEXTTRON} alt="nextron" width={80}/>
+                <Typography className={classes.horSpacing} align='center' color='inherit' variant='headline'>Sponsorer</Typography>
+                <img className={classes.horSpacing} src={SIT} alt="sit" width={80}/>
+                <img className={classes.horSpacing} src={NEXTTRON} alt="nextron" width={80}/>
             </div>
         )
     };
@@ -94,7 +104,7 @@ class Footer extends Component {
         const { classes } = this.props;
         return (
             <div className={classes.sosialeMedier}>
-                <Typography align='center' color='inherit' variant='headline'>Sosiale medier</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' variant='headline'>Sosiale medier</Typography>
                 <div className={classes.sosialeMedierFlex}>
                     <a href="https://www.facebook.com/tihlde/">
                         <img src={FACEBOOK} alt="facebook" width={40}/>
@@ -114,9 +124,9 @@ class Footer extends Component {
         const { classes } = this.props;
         return (
             <div className={classes.tihldeSupport}>
-                <Typography align='center' color='inherit' variant='headline'>Support</Typography>
-                <Button variant='contained' color='primary'>Open new ticket</Button>
-                <Button variant='contained' color='secondary'>Check ticket status</Button>
+                <Typography className={classes.horSpacing} align='center' color='inherit' variant='headline'>Support</Typography>
+                <Button className={classes.horSpacing} variant='contained' color='primary'>Open new ticket</Button>
+                <Button className={classes.horSpacing} variant='contained' color='secondary'>Check ticket status</Button>
             </div>
         )
     };

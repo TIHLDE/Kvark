@@ -24,6 +24,7 @@ const styles = (theme) => ({
 
         '@media only screen and (max-width: 800px)': {
             minHeight: 300,
+            maxHeight: 365,
         }
     },
     wrapper: {
@@ -129,8 +130,7 @@ class EventList extends Component {
     render() {
         const {classes, data} = this.props;
         const eventslist = data.events || [];
-        console.log(eventslist);
-        eventslist.sort((a, b) => b.priority - a.priority);
+        eventslist.sort((a, b) => b.start - a.start);
 
         const events = [];
         const eventCount = (eventslist.length > maxElementsCount)? maxElementsCount : eventslist.length;
@@ -147,7 +147,7 @@ class EventList extends Component {
                           priority={v.priority}
                           onClick={() => this.openEvent(v)}
                         />;
-        }   
+        }
 
         return (
             <Card className={classes.root} square={true}>

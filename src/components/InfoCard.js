@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import Parser from 'html-react-parser';
+import classNames from 'classnames';
 
 // Material UI Components
 import Paper from '@material-ui/core/Paper';
@@ -39,20 +41,48 @@ const styles = {
             margin: '0 30px 30px 30px',
         },
     },
+    padding: {
+        padding: '10px 0px',
+    },
+    cover: {
+        height: '100%',
+    },
+    header: {
+        marginBottom: 10,
+    },
+    grow: {
+        flexGrow: 1,
+    },
+    children: {},
 };
 
 const InfoCard = (props) => {
-    const {classes} = props;
+    let {classes} = props;
 
     return (
-        <Paper className={classes.root} square>
+        <Paper className={classNames(classes.root, props.className)} square elevation={1}>
             <div className={classes.wrapper}>
-                <div className={classes.margin}>
-                    <img className={classes.image} src={props.src} alt={props.alt}/>
-                </div>
-                <Grid container direction='column' nowrap='nowrap'>
-                    <Typography variant='title'><strong>{props.header}</strong></Typography>
-                    <Typography variant='body2' component='p'>{props.text}</Typography>
+                {(!props.src)? null :
+                    <div className={classes.margin}>
+                        <img className={classes.image} src={props.src} alt={props.alt}/>
+                    </div>
+                }
+                <Grid className={(props.justifyText)? classes.cover : ''} container direction='column' nowrap='nowrap' justify='flex-start'>
+                    <Typography className={classes.header} variant='title'><strong>{props.header}</strong></Typography>
+                    <Typography variant='body2' component='p'>{Parser(props.text)}</Typography>
+
+                    {(!props.subText)? null :
+                        <Fragment>
+                            <Typography className={classes.padding} variant='subheading'><strong>{props.subheader}</strong></Typography>
+                            <Typography variant='body2' component='p'>{Parser(props.subText)}</Typography>
+                        </Fragment>
+                    }
+                    
+                    {props.children && (
+                        <div className={classNames(classes.grow, classes.padding, props.classes.children)}>
+                            {props.children}
+                        </div>
+                    )}
                 </Grid>
             </div>
         </Paper>
@@ -65,6 +95,12 @@ InfoCard.propTypes = {
     text: PropTypes.string,
     src: PropTypes.any,
     alt: PropTypes.string,
+    justifyText: PropTypes.bool,
+    subheader: PropTypes.string,
+    subText: PropTypes.string,
+    className: PropTypes.string,
+
+    children: PropTypes.node,
 };
 
 export default withStyles(styles)(InfoCard);

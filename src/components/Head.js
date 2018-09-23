@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
-import classNames from "classnames";
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import Paper from '@material-ui/core/Paper'
+// Material UI Components
+import Paper from '@material-ui/core/Paper';
 
 const styles = {
     root: {
@@ -19,8 +20,8 @@ const styles = {
     },
 };
 
-class Head extends Component{
-    render(){
+class Head extends Component {
+    render() {
         const { classes, data } = this.props;
         let image = data.image;
 

@@ -18,20 +18,36 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+import IconButton from '@material-ui/core/IconButton';
 
 // Icons
+import AddIcon from '@material-ui/icons/Add';
 
 const SIDEBAR_WIDTH = 300;
 
 const styles = (theme) => ({
     root: {
         paddingLeft: SIDEBAR_WIDTH,
+
+        '@media only screen and (max-width: 800px)': {
+            padding: 0,
+        }
     },
     sidebar: {
         paddingTop: 64,
         position: 'fixed',
         left: 0, top: 0, bottom: 0,
         width: SIDEBAR_WIDTH,
+
+        '@media only screen and (max-width: 800px)': {
+            position: 'static',
+            width: '100%',
+            padding: 0,
+        }
+    },
+    sidebarTop: {
+        backgroundColor: 'whitesmoke',
+        
     },
     eventItem: {
         padding: '10px 10px',
@@ -46,12 +62,17 @@ const styles = (theme) => ({
         maxWidth: 300,
     },
     content: {
-        width: '90%',
+        width: '80%',
         maxWidth: 1000,
         marginTop: 150,
         display: 'block',
         margin: 'auto',
         padding: 36,
+
+        '@media only screen and (max-width: 800px)': {
+            width: 'auto',
+            marginTop: 0,
+        }
     },
     margin: {
         margin: '10px 0px',
@@ -72,6 +93,19 @@ const styles = (theme) => ({
     progress: {
         minHeight: 300,
     },
+    flexRow: {
+        margin: '10px 0',
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
+
+        '@media only screen and (max-width: 800px)': {
+            flexDirection: 'column',
+        }
+    },
+    padding: {
+        padding: '10px 5px',
+    }
 });
 
 const MessageView = withStyles(styles, {withTheme: true})((props) => {
@@ -117,6 +151,7 @@ class EventAdministrator extends Component {
     constructor() {
         super();
         this.state = {
+            pageLoading: false,
             isLoading: false,
 
             events: [],
@@ -164,18 +199,7 @@ class EventAdministrator extends Component {
         const {selectedEvent} = this.state;
 
         if(selectedEvent !== null && selectedEvent.id === event.id) {
-            this.setState({
-                selectedEvent: null,
-                title: '',
-                location: '',
-                description: '',
-                priority: 0,
-                image: '',
-                imageAlt: '',
-                eventlist: 0,
-                startDate: new Date().toISOString().substring(0, 16),
-                signUp: false,
-            });
+            this.resetEventState();
         } else {
             this.setState({
                 selectedEvent: event,
@@ -191,6 +215,21 @@ class EventAdministrator extends Component {
             });
         }
         this.setState({showSuccessMessage: false});
+    }
+
+    resetEventState = () => {
+        this.setState({
+            selectedEvent: null,
+            title: '',
+            location: '',
+            description: '',
+            priority: 0,
+            image: '',
+            imageAlt: '',
+            eventlist: 0,
+            startDate: new Date().toISOString().substring(0, 16),
+            signUp: false,
+        });
     }
 
     handleChange = (name) => (event) => {
@@ -313,7 +352,7 @@ class EventAdministrator extends Component {
                                 message={this.state.snackMessage}/>
                         </Snackbar>
 
-                    <Paper className={classes.content}>
+                    <Paper className={classes.content} square>
                         {(this.state.isLoading)? <Grid className={classes.progress} container justify='center' alignItems='center'><CircularProgress /></Grid> :
                         (this.state.showSuccessMessage)? <MessageView title={this.state.successMessage} buttonText='Nice' onClick={this.toggleSuccessView}/> :
                             <form>
@@ -323,9 +362,9 @@ class EventAdministrator extends Component {
                                     <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
                                     <TextField className={classes.margin} multiline label='Beskrivelse' value={description} onChange={this.handleChange('description')} required/>
 
-                                    <TextField className={classes.margin} fullWidth label='Bilde' value={image} onChange={this.handleChange('image')} required/>
+                                    <TextField className={classes.margin} fullWidth label='Bilde' value={image} onChange={this.handleChange('image')}/>
 
-                                    <Grid className={classes.margin} container direction='row' wrap='nowrap'>
+                                    <div className={classes.flexRow}>
                                         <TextField className={classes.margin} select fullWidth label='Proritering' value={priority} onChange={this.handleChange('priority')}>
                                             {priorities.map((value, index) => (
                                                 <MenuItem key={index} value={index}>
@@ -343,13 +382,13 @@ class EventAdministrator extends Component {
                                         </TextField>
 
                                         <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Start dato' value={this.state.startDate} onChange={this.handleChange('startDate')} />
-                                    </Grid>
+                                    </div>
 
                                     <Grid container direction='row' wrap='nowrap' justify='space-between'>
                                         {(isNewItem)? 
                                             <Button onClick={this.createNewEvent} type='submit' variant='raised' color='primary'>Lag nytt event</Button> :
                                             <Fragment>
-                                                <Button onClick={this.editEventItem} variant='raised' color='primary'>Lagre</Button>
+                                                <Button onClick={this.editEventItem} variant='raised' type='submit' color='primary'>Lagre</Button>
                                                 <Button className={classes.deleteButton} onClick={this.deleteEventItem} variant='outlined'>Slett</Button>
                                             </Fragment>
                                         }
@@ -362,6 +401,10 @@ class EventAdministrator extends Component {
                 </div>
                 <Paper className={classes.sidebar}>
                     <Grid container direction='column' wrap='nowrap'>
+                        <Grid className={classNames(classes.sidebarTop, classes.padding)} container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
+                            <Typography variant='title' color='inherit'>Arrangementer</Typography>
+                            <IconButton onClick={this.resetEventState}><AddIcon/></IconButton>
+                        </Grid>
                         {this.state.events.map((value, index) => (
                             <EventItem
                                 key={index}

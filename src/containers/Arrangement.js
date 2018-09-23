@@ -61,22 +61,20 @@ class Arrangement extends Component {
         const { grid, dispatch } = this.props;
         // Get eventItem id
         const id = this.props.match.params.id;
-        // If item exists in store, it will be loaded to state
-        dispatch(selectItem(id));
+        /* // If item exists in store, it will be loaded to state
+        dispatch(selectItem(id)); */
         // Item does not exist, fetch from server
-        if (grid.selectedItem == null) {
-            this.setState({isLoading: true});
-            const response = API.getEventItem(id).response();
-            response.then((data) => {
-                if (!response.isError) {
-                    dispatch(setSelectedItem(data));
-                } else {
-                    // Redirect to 404
-                    this.props.history.replace('/');
-                }
-                this.setState({isLoading: false});
-            });
-        }
+        this.setState({isLoading: true});
+        const response = API.getEventItem(id).response();
+        response.then((data) => {
+            if (!response.isError) {
+                dispatch(setSelectedItem(data));
+            } else {
+                // Redirect to 404
+                this.props.history.replace('/');
+            }
+            this.setState({isLoading: false});
+        });
     };
 
     componentDidMount(){
@@ -95,19 +93,19 @@ class Arrangement extends Component {
             <Navigation isLoading={this.state.isLoading} footer>
                 {(this.state.isLoading)? null :
                     <div className={classes.root}>
-                    <Head data={data} />
-                    <div className={classes.wrapper}>
-                        <div className={classes.headliner}>
-                            <Typography variant='display3'> {data.title} </Typography>
+                        <Head data={data} />
+                        <div className={classes.wrapper}>
+                            <div className={classes.headliner}>
+                                <Typography variant='display3'> {data.title} </Typography>
+                            </div>
+                            <Information data={data}/>
+                            <Button variant="contained" color="primary" style={{margin:'auto'}}>
+                                Meld deg på
+                            </Button>
+                            <div className={classes.text}>
+                                {data.description}
+                            </div>
                         </div>
-                        <Information data={data}/>
-                        <Button variant="contained" color="primary" style={{margin:'auto'}}>
-                            Meld deg på
-                        </Button>
-                        <div className={classes.text}>
-                            {data.description}
-                        </div>
-                    </div>
                     </div>
                 }
             </Navigation>

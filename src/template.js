@@ -11,9 +11,12 @@ const styles = {
 };
 
 class Template extends Component {
-
+    
     render() {
-        return null;
+        const {classes} = this.props;
+        return (
+            null
+        );
     }
 }
 
@@ -22,3 +25,11 @@ Template.propTypes = {
 };
 
 export default withStyles(styles)(Template);
+
+
+const Template = (props) => {
+    const {classes} = props;
+    return (
+        null
+    );
+};
