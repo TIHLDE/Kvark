@@ -18,12 +18,14 @@ const styles = {
     root: {
         width: 'auto',
         minHeight: 40,
+        position: 'absolute',
     },
     flex: {
         display: 'flex',
         flexWrap: 'nowrap',
         justifyContent: 'center',
         alignItems: 'center',
+        padding: '0px 20px',
     },
     content: {
         width: '100%',

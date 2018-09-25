@@ -90,15 +90,17 @@ const styles = {
         margin: '0 5px'
     },
     snack: {
-        marginTop: 62,
+        position: 'absolute',
+        top: 62,
         maxWidth: 'none',
         minHeight: 48,
         width: '100vw',
-        padding: '0px 15px',
+        height: 'auto',
+        padding: 0,
         
         backgroundColor: 'rgba(211,47,47,1)',
         '@media only screen and (max-width: 600px)': {
-            marginTop: 56,
+            top: 56,
         },
     },
     flex: {
@@ -230,13 +232,12 @@ class Navigation extends Component {
                         </div>
                     </Toolbar>
                 </AppBar>
-
                 <Snack
                     className={classNames(classes.snack, classes.flex)}
                     open={this.state.showSnackbar} 
                     message={this.state.snackMessage}
                     onClose={this.closeSnackbar}/>
-
+               
                 <main className={classes.main}>
                     {(this.props.isLoading)? <LinearProgress /> : null}
                     <div className={classes.wrapper}>
