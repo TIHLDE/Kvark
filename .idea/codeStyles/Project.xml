@@ -7,30 +7,6 @@
       <option name="FORCE_QUOTE_STYlE" value="true" />
       <option name="ENFORCE_TRAILING_COMMA" value="WhenMultiline" />
     </JSCodeStyleSettings>
-    <DBN-PSQL>
-      <case-options enabled="false">
-        <option name="KEYWORD_CASE" value="lower" />
-        <option name="FUNCTION_CASE" value="lower" />
-        <option name="PARAMETER_CASE" value="lower" />
-        <option name="DATATYPE_CASE" value="lower" />
-        <option name="OBJECT_CASE" value="preserve" />
-      </case-options>
-      <formatting-settings enabled="false" />
-    </DBN-PSQL>
-    <DBN-SQL>
-      <case-options enabled="false">
-        <option name="KEYWORD_CASE" value="lower" />
-        <option name="FUNCTION_CASE" value="lower" />
-        <option name="PARAMETER_CASE" value="lower" />
-        <option name="DATATYPE_CASE" value="lower" />
-        <option name="OBJECT_CASE" value="preserve" />
-      </case-options>
-      <formatting-settings enabled="false">
-        <option name="STATEMENT_SPACING" value="one_line" />
-        <option name="CLAUSE_CHOP_DOWN" value="chop_down_if_statement_long" />
-        <option name="ITERATION_ELEMENTS_WRAPPING" value="chop_down_if_not_single" />
-      </formatting-settings>
-    </DBN-SQL>
     <codeStyleSettings language="JavaScript">
       <option name="IF_BRACE_FORCE" value="1" />
       <option name="DOWHILE_BRACE_FORCE" value="1" />
