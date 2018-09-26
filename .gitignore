@@ -23,6 +23,7 @@ yarn-error.log*
 .vscode
 package-lock.json
 
+/idea
 /.idea
 .idea
 .idea/codeStyles/Project.xml
