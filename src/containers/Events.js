@@ -8,9 +8,6 @@ import classNames from 'classnames';
 import EventListItem from "../components/EventListItem"
 import Head from "../components/Head"
 import Navigation from "../components/Navigation";
-import Information from "../components/Information";
-import Button from '@material-ui/core/Button';
-import Typography from "@material-ui/core/Typography";
 import connect from 'react-redux/es/connect/connect';
 
 
@@ -93,6 +90,7 @@ class Events extends Component {
     };
 
     render() {
+        console.log(this.state.events)
         const {classes, grid} = this.props;
 
         const data ={
@@ -111,12 +109,9 @@ class Events extends Component {
                         <div className={classes.wrapper}>
                             <Head data={data}/>
                             <List>
-
                             {this.state.events.map((value, index) => (
                               <EventListItem key={value.id} data={value} onClick={() => this.goToEvent(value.id)}/>
                             ))}
-
-
                             </List>
 
                         </div>

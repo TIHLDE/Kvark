@@ -10,9 +10,12 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Hidden from '@material-ui/core/Hidden';
 import Divider from '@material-ui/core/Divider';
+import Button from '@material-ui/core/Button';
 
-import TIHLDE from '../assets/img/tihlde_image.png'
-import Head from './Head';
+import TIHLDE from '../assets/img/tihlde_image.png';
+import Time from '../assets/icons/twotone-access_time-24px.svg';
+import Calendar from '../assets/icons/twotone-calendar_today-24px.svg';
+import Location from '../assets/icons/twotone-location_on-24px.svg';
 
 
 const styles = {
@@ -23,31 +26,19 @@ const styles = {
         cursor: 'pointer',
     },
     image:{
-        height: 200,
-        maxWidth:'300px',
-        objectFit: 'cover',
-
+        height: '100px',
+        width:'100px',
+        borderStyle:'inset',
+        borderWidth:'2px',
+    },
+    imageContainer:{
+        padding:'40px',
         '@media only screen and (max-width: 800px)': {
             maxWidth: 'none',
         }
     },
-    faded:{
-        height: 100,
-        background: 'linear-gradient( transparent 10%, white 90%);',
-        position:'absolute',
-        bottom:0, left: 0, right: 0,
-        '@media only screen and (max-width: 600px)': {
-            height:0
-        },
-
-    },
     padding: {
-        padding: 20,
-        overflow: 'hidden',
-
-        '@media only screen and (max-width: 800px)': {
-            overflow: 'visible',
-        }
+        padding: 20
     },
     direction:{
         flexDirection:'row',
@@ -67,16 +58,32 @@ class EventListItem extends Component {
 
         return (
             <Paper className={classes.root} onClick={this.props.onClick}>
-
                 <Grid container className={classes.direction} wrap='nowrap'>
+                    <div className={classes.imageContainer}>
+                        <img className={classes.image} alt="complex" src={image} />
+                    </div>
+                    <Grid  container direction="column"  >
+                        <Grid className={classes.padding} item >
+                            <Typography variant="display1"> {data.title} </Typography>
+                        </Grid>
 
-                    <img className={classes.image} alt="complex" src={image} />
-                    <Grid  container direction="column" style={{position:'relative'}} >
-                        <Grid className={classes.padding} item xs>
-                            <Typography variant="display1">
-                                {data.title}
-                            </Typography>
-                            <Typography >{start.format('DD MMM')} {start.format('HH:mm')}</Typography>
+                        <Grid container direction="row" alignItems='center'>
+                            <Grid item className={classes.padding} >
+                                <img src={Calendar}/>
+                                <Typography >{start.format('DD MM YYYY')} </Typography>
+                            </Grid>
+                            <Grid item className={classes.padding} >
+                                <img src={Time}/>
+                                <Typography> {start.format('HH:mm')}</Typography>
+                            </Grid>
+                            <Grid item className={classes.padding} >
+                                <img src={Location}/>
+                                <Typography >{data.location}</Typography>
+                            </Grid>
+
+                            <Button variant="outlined" color="secondary" className={classes.button}>
+                                Secondary
+                            </Button>
                         </Grid>
                     </Grid>
                 </Grid>
