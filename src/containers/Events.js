@@ -14,6 +14,9 @@ import Typography from "@material-ui/core/Typography";
 import connect from 'react-redux/es/connect/connect';
 
 
+import List from '@material-ui/core/List';
+
+
 // API and store imports
 import API from '../api/api';
 import { setSelectedItem, selectItem } from '../store/actions/GridActions';
@@ -32,17 +35,11 @@ const styles = {
         paddingBottom:'30px',
 
         display: 'grid',
-        gridTemplateColumns: '80%',
+        gridTemplateColumns: '65%',
         gridTemplateRows:'auto',
         margin:'auto',
-        gridGap:'30px',
+        gridGap:'20px',
         justifyContent:'center',
-    },
-    headliner:{
-        borderStyle:'none none solid none',
-        borderColor:'gray',
-        borderWidth: '1px',
-        textAlign: 'left'
     },
     minify: {
         '@media only screen and (max-width: 600px)': {
@@ -98,18 +95,29 @@ class Events extends Component {
     render() {
         const {classes, grid} = this.props;
 
+        const data ={
+            header: "ARRANGEMENTER",
+            paragraph: "The Norwegian University of Science and Technology (Norwegian: Norges teknisk-naturvitenskapelige universitet, NTNU) is a pu" +
+                "blic research university with campuses in the cities of Trondheim, Gjøvik, and Ålesund in Norway, and has become the largest university i" +
+                "n Norway, following the university merger in 2016. NTNU has the main national responsibility for education and research in engineering and techn" +
+                "ology, originated from Norwegian Institute of Technology (NTH). In addition to engineering and natural sciences, the university offers higher edu" +
+                "cation in other academic disciplines ranging from social sciences, the arts, medical and life sciences, teacher educ",
+            image: "https://giftflowers.com.sg/media/wysiwyg/giftflowers/blog/Flower-Arrangement-banner.jpg"
+        };
         return (
             <Navigation isLoading={this.state.isLoading} footer>
                 {(this.state.isLoading)? null :
                     <div className={classes.root}>
                         <div className={classes.wrapper}>
-                            <div className={classes.headliner}>
-                                <Typography variant='display3' className={classes.minify}> Arrangementer </Typography>
-                            </div>
+                            <Head data={data}/>
+                            <List>
 
                             {this.state.events.map((value, index) => (
                               <EventListItem key={value.id} data={value} onClick={() => this.goToEvent(value.id)}/>
                             ))}
+
+
+                            </List>
 
                         </div>
                     </div>

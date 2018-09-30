@@ -9,6 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Hidden from '@material-ui/core/Hidden';
+import Divider from '@material-ui/core/Divider';
 
 import TIHLDE from '../assets/img/tihlde_image.png'
 import Head from './Head';
@@ -76,20 +77,10 @@ class EventListItem extends Component {
                                 {data.title}
                             </Typography>
                             <Typography >{start.format('DD MMM')} {start.format('HH:mm')}</Typography>
-                            <br/>
-                            <Hidden smDown implementation='css'>
-                            <Typography variant='subheading'>
-                                {data.description}
-                            </Typography>
-                            </Hidden>
                         </Grid>
-
-                        <Hidden smDown implementation='css'>
-                        <Grid item xs className={classes.faded}/>
-                        </Hidden>
                     </Grid>
-
                 </Grid>
+                <Divider/>
             </Paper>
         );
     }

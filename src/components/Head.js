@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 // Material UI Components
 import Paper from '@material-ui/core/Paper';
+import Typography from "@material-ui/core/Typography";
 
 const styles = {
     root: {
@@ -13,7 +14,8 @@ const styles = {
         fontFamily:'arial',
     },
     wrapper:{
-        height: '400px',
+        position:'relative',
+        height: '200px',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -21,6 +23,15 @@ const styles = {
             height:'200px'
         },
     },
+    textInPic:{
+        position:'absolute',
+        bottom:30,
+        left:30
+    },
+    under:{
+        height:'auto',
+        margin:"30px 30px 30px 30px",
+    }
 };
 
 class Head extends Component {
@@ -30,7 +41,18 @@ class Head extends Component {
 
         return (
             <Paper className={classNames(classes.root, this.props.className)}>
-                <div className={classes.wrapper} style={{backgroundImage:`url(${image})`}}/>
+                <div className={classes.wrapper} style={{backgroundImage:`url(${image})`}}>
+                    <div className={classes.textInPic}>
+                        <Typography variant='display1'>
+                            {data.header}
+                        </Typography>
+                    </div>
+                </div>
+                <div className={classes.under}>
+                    <Typography variant='subheading'>
+                        {data.paragraph}
+                    </Typography>
+                </div>
             </Paper>
         );
     }
