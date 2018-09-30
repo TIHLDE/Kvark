@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import Hidden from '@material-ui/core/Hidden';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
+import CardActionArea from '@material-ui/core/CardActionArea';
 
 import TIHLDE from '../assets/img/tihlde_image.png';
 import Time from '../assets/icons/twotone-access_time-24px.svg';
@@ -45,6 +46,12 @@ const styles = {
         '@media only screen and (max-width: 800px)': {
             flexDirection:'column',
         },
+    },
+    button:{
+        marginLeft:'auto'
+    },
+    holder:{
+        paddingRight:50
     }
 };
 
@@ -57,6 +64,7 @@ class EventListItem extends Component {
         let start = moment(data.start, ['YYYY-MM-DD HH:mm'], "nb");
 
         return (
+            <CardActionArea>
             <Paper className={classes.root} onClick={this.props.onClick}>
                 <Grid container className={classes.direction} wrap='nowrap'>
                     <div className={classes.imageContainer}>
@@ -67,7 +75,7 @@ class EventListItem extends Component {
                             <Typography variant="display1"> {data.title} </Typography>
                         </Grid>
 
-                        <Grid container direction="row" alignItems='center'>
+                        <Grid container direction="row" alignItems='center' className={classes.holder}>
                             <Grid item className={classes.padding} >
                                 <img src={Calendar}/>
                                 <Typography >{start.format('DD MM YYYY')} </Typography>
@@ -80,15 +88,12 @@ class EventListItem extends Component {
                                 <img src={Location}/>
                                 <Typography >{data.location}</Typography>
                             </Grid>
-
-                            <Button variant="outlined" color="secondary" className={classes.button}>
-                                Secondary
-                            </Button>
                         </Grid>
                     </Grid>
                 </Grid>
                 <Divider/>
             </Paper>
+            </CardActionArea>
         );
     }
 }

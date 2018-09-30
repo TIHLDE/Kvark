@@ -11,8 +11,6 @@ import Navigation from "../components/Navigation";
 import connect from 'react-redux/es/connect/connect';
 
 
-import List from '@material-ui/core/List';
-
 
 // API and store imports
 import API from '../api/api';
@@ -35,15 +33,18 @@ const styles = {
         gridTemplateColumns: '65%',
         gridTemplateRows:'auto',
         margin:'auto',
-        gridGap:'20px',
+        gridGap:'5px',
         justifyContent:'center',
     },
     minify: {
         '@media only screen and (max-width: 600px)': {
             fontSize: 40,
         },
+    },
+    idonno:{
+        height:30,
+        width:'auto'
     }
-
 
 };
 
@@ -90,7 +91,6 @@ class Events extends Component {
     };
 
     render() {
-        console.log(this.state.events)
         const {classes, grid} = this.props;
 
         const data ={
@@ -108,11 +108,14 @@ class Events extends Component {
                     <div className={classes.root}>
                         <div className={classes.wrapper}>
                             <Head data={data}/>
-                            <List>
-                            {this.state.events.map((value, index) => (
-                              <EventListItem key={value.id} data={value} onClick={() => this.goToEvent(value.id)}/>
-                            ))}
-                            </List>
+                            <div className={classes.idonno}/>
+
+                        {this.state.events.map((value, index) => (
+                            <EventListItem key={value.id} data={value} onClick={() => this.goToEvent(value.id)}/>
+                        ))}
+
+
+
 
                         </div>
                     </div>
