@@ -11,7 +11,6 @@ import Navigation from "../components/Navigation";
 import connect from 'react-redux/es/connect/connect';
 
 
-
 // API and store imports
 import API from '../api/api';
 import { setSelectedItem, selectItem } from '../store/actions/GridActions';
@@ -29,12 +28,35 @@ const styles = {
         paddingTop:'30px',
         paddingBottom:'30px',
 
+        maxWidth: 1000,
+
         display: 'grid',
-        gridTemplateColumns: '65%',
+        gridTemplateColumns: '1fr',
         gridTemplateRows:'auto',
         margin:'auto',
         gridGap:'5px',
         justifyContent:'center',
+
+
+    },
+    grid: {
+        display: 'grid',
+        gridTemplateColumns: '2fr 1fr',
+        gridTemplateRows:'auto',
+
+        '@media only screen and (max-width: 800px)': {
+            gridTemplateColumns: '80%',
+            justifyContent: 'center',
+        },
+        '@media only screen and (max-width: 600px)': {
+            gridTemplateColumns: '1fr',
+            justifyContent: 'center',
+        },
+    },
+    list: {
+        display: 'grid',
+        gridTemplateColumns: '1fr',
+        gridGap: '5px',
     },
     minify: {
         '@media only screen and (max-width: 600px)': {
@@ -107,13 +129,25 @@ class Events extends Component {
             <Navigation isLoading={this.state.isLoading} footer>
                 {(this.state.isLoading)? null :
                     <div className={classes.root}>
+
                         <div className={classes.wrapper}>
                             <Head data={data}/>
                             <div className={classes.idonno}/>
 
-                            {this.state.events.map((value, index) => (
-                                <EventListItem key={value.id} data={value} onClick={() => this.goToEvent(value.id)}/>
-                            ))}
+                            <div className={classes.grid}>
+                                <div className={classes.list}>
+                                    {this.state.events.map((value, index) => (
+                                        <EventListItem key={value.id} data={value} onClick={() => this.goToEvent(value.id)}/>
+                                    ))}
+                                </div>
+                                <div>
+
+                                </div>
+                            </div>
+
+
+
+
 
                         </div>
                     </div>

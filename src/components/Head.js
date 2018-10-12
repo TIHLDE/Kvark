@@ -40,7 +40,7 @@ class Head extends Component {
         let image = data.image;
 
         return (
-            <Paper className={classNames(classes.root, this.props.className)}>
+            <Paper className={classNames(classes.root, this.props.className)} square>
                 <div className={classes.wrapper} style={{backgroundImage:`url(${image})`}}>
                     <div className={classes.textInPic}>
                         <Typography variant='display1'>
