@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
+import classNames from 'classnames';
 
 // Text Imports
 import Text from '../text/AboutText';
@@ -17,6 +18,7 @@ import OrgMap from '../assets/img/orgMap.png';
 import Navigation from '../components/Navigation';
 import InfoCard from '../components/InfoCard';
 import ClickableImage from '../components/ClickableImage';
+import Banner from '../components/Banner';
 
 const styles = {
     root: {
@@ -43,7 +45,8 @@ const styles = {
             padding: 15,
         },
     },
-    bottomMargin: {
+    verticalMargin: {
+        marginTop: 30,
         marginBottom: 30,
     },
     bottomSpacing: {
@@ -59,6 +62,12 @@ const styles = {
             gridColumn: 'span 1',
         },
     },
+    banner: {
+        marginTop: 20,
+    },
+    smoke: {
+        
+    },
 };
 
 class About extends Component {
@@ -68,24 +77,21 @@ class About extends Component {
         return (
             <Navigation footer>
                 <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
-                    <Typography className={classes.padding} variant='display3' color='inherit' align='center'><strong>{Text.header}</strong></Typography>
-                    <Typography className={classes.padding} variant='title'>{Text.subheader}</Typography>
+                    <Banner
+                        className={classes.banner}
+                        image='https://images.pexels.com/photos/220351/pexels-photo-220351.jpeg?auto=compress&cs=tinysrgb&h=350'
+                        text={Text.subheader}
+                        title={Text.header}/>
 
-                    <div className={classes.padding}>
-                        <Typography className={classes.bottomSpacing} variant='display1' color='inherit' align='center'>Historie</Typography>
-                        <Typography variant='subheading'>{Text.history}</Typography>
-                        <Typography variant='subheading'>{Text.history2}</Typography>
-                    </div>
-
-                    <Typography className={classes.bottomMargin} variant='display1' color='inherit'>Undergrupper</Typography>
-                    <div className={classes.grid}>
+                    <Typography className={classes.verticalMargin} variant='display1' color='inherit'>Undergrupper</Typography>
+                    <div className={classNames(classes.grid, classes.smoke)}>
                         <InfoCard header='Drift' text={Text.drift} src={DriftIcon}/>
                         <InfoCard header='Sosialen' text={Text.social} src={DriftIcon}/>
                         <InfoCard header='Næringsliv og Kurs' text={Text.business} src={DriftIcon}/>
                         <InfoCard header='Promo' text={Text.promo} src={DriftIcon}/>
                     </div>
 
-                    <Typography className={classes.bottomMargin}variant='display1' color='inherit'>Komiteer</Typography>
+                    <Typography className={classes.verticalMargin}variant='display1' color='inherit'>Komiteer</Typography>
                     <div className={classes.grid}>
                         <InfoCard header='Jubkom' text={Text.jubkom} subheader='Opptak' subText={Text.jubkom2} justifyText/>
                         <InfoCard header='Netkom' text={Text.netkom} subheader='Opptak' subText={Text.netkom2} justifyText/>
@@ -96,7 +102,9 @@ class About extends Component {
                         <InfoCard header='ÅreKom' text={Text.arekom} subheader='Opptak' subText={Text.arekom2} justifyText className={classes.bottomItem}/>
                     </div>
 
-                    <Typography className={classes.bottomMargin}variant='display1' color='inherit'>Organisasjonskart</Typography>
+                    <InfoCard header='Historie' text={Text.history} subheader='Opptak' subText={Text.history2} justifyText/>
+
+                    <Typography className={classes.verticalMargin}variant='display1' color='inherit'>Organisasjonskart</Typography>
                     <ClickableImage className={classes.miniPadding} image={OrgMap} alt='organisasjonskart' width='90%'/>
                 </Grid>
             </Navigation>

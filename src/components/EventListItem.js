@@ -2,16 +2,14 @@ import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import moment from 'moment'
+import moment from 'moment';
 
 // Material UI Components
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Hidden from '@material-ui/core/Hidden';
 import Divider from '@material-ui/core/Divider';
-import Button from '@material-ui/core/Button';
-import CardActionArea from '@material-ui/core/CardActionArea';
+/* import CardActionArea from '@material-ui/core/CardActionArea'; */
 
 import TIHLDE from '../assets/img/tihlde_image.png';
 import Time from '../assets/icons/twotone-access_time-24px.svg';
@@ -28,30 +26,30 @@ const styles = {
     },
     image:{
         height: '100px',
-        width:'100px',
-        borderStyle:'inset',
-        borderWidth:'2px',
+        width: '100px',
+        borderStyle: 'inset',
+        borderWidth: '2px',
     },
     imageContainer:{
-        padding:'40px',
+        padding: '40px',
         '@media only screen and (max-width: 800px)': {
             maxWidth: 'none',
         }
     },
     padding: {
-        padding: 20
+        padding: 20,
     },
     direction:{
-        flexDirection:'row',
+        flexDirection: 'row',
         '@media only screen and (max-width: 800px)': {
-            flexDirection:'column',
+            flexDirection: 'column',
         },
     },
     button:{
-        marginLeft:'auto'
+        marginLeft: 'auto'
     },
     holder:{
-        paddingRight:50
+        paddingRight: 50
     }
 };
 
@@ -64,13 +62,13 @@ class EventListItem extends Component {
         let start = moment(data.start, ['YYYY-MM-DD HH:mm'], "nb");
 
         return (
-            <CardActionArea>
+           /*  <CardActionArea> */
             <Paper className={classes.root} onClick={this.props.onClick}>
                 <Grid container className={classes.direction} wrap='nowrap'>
                     <div className={classes.imageContainer}>
                         <img className={classes.image} alt="complex" src={image} />
                     </div>
-                    <Grid  container direction="column"  >
+                    <Grid container direction="column"  >
                         <Grid className={classes.padding} item >
                             <Typography variant="display1"> {data.title} </Typography>
                         </Grid>
@@ -93,7 +91,7 @@ class EventListItem extends Component {
                 </Grid>
                 <Divider/>
             </Paper>
-            </CardActionArea>
+           /*  </CardActionArea> */
         );
     }
 }

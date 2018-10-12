@@ -50,8 +50,9 @@ const styles = {
 
 
 class Events extends Component {
-    constructor(props){
-        super(props);
+
+    constructor(){
+        super();
         this.state = {
             events: [],
             isLoading: false,
@@ -110,12 +111,9 @@ class Events extends Component {
                             <Head data={data}/>
                             <div className={classes.idonno}/>
 
-                        {this.state.events.map((value, index) => (
-                            <EventListItem key={value.id} data={value} onClick={() => this.goToEvent(value.id)}/>
-                        ))}
-
-
-
+                            {this.state.events.map((value, index) => (
+                                <EventListItem key={value.id} data={value} onClick={() => this.goToEvent(value.id)}/>
+                            ))}
 
                         </div>
                     </div>

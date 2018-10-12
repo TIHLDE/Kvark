@@ -17,6 +17,7 @@ import DriftIcon from '../assets/img/instagram_icon.png';
 // Project Components
 import Navigation from '../components/Navigation';
 import InfoCard from '../components/InfoCard';
+import Banner from '../components/Banner';
 
 const styles = {
     root: {
@@ -58,6 +59,9 @@ const styles = {
         flexDirection: 'column',
         justifyContent: 'flex-end',
     },
+    banner: {
+        marginTop: 20,
+    },
 };
 
 
@@ -68,12 +72,12 @@ class Services extends Component {
         return (
             <Navigation footer>
                 <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
-                    <Typography className={classNames(classes.padding, classes.minify)} variant='display3' color='inherit' align='center'><strong>{Text.header}</strong></Typography>
-
-                    <div className={classes.padding}>
-                        <Typography className={classes.bottomSpacing} variant='display1' color='inherit' align='center'>Colagrol bruker</Typography>
-                        <Typography variant='subheading'>{Text.colargol}</Typography>
-                    </div>
+                    <Banner
+                        className={classes.banner}
+                        image='http://www.mfactors.co.za/images/services.jpg'
+                        title={Text.header}
+                        header='Colagrol bruker'
+                        text={Text.colargol} />
 
                     <div className={classes.grid}>
                         <InfoCard header='Epost' text={Text.email} src={DriftIcon} classes={{children: classes.flex}} justifyText>
