@@ -33,15 +33,6 @@ const styles = {
         }
     },
     image:{
-<<<<<<< HEAD
-        height: '100px',
-        width: '100px',
-        borderStyle: 'inset',
-        borderWidth: '2px',
-    },
-    imageContainer:{
-        padding: '40px',
-=======
         height: DESKTOP_HEIGHT,
         width: DESKTOP_WIDTH,
         maxWidth: DESKTOP_WIDTH,
@@ -56,7 +47,6 @@ const styles = {
     imageContainer:{
         paddingRight: 10,
         minWidth: DESKTOP_WIDTH,
->>>>>>> 69b368dee887a8cc967d7fcedc114b5c06ee7754
         '@media only screen and (max-width: 800px)': {
             maxWidth: '100%',
             minWidth: '100%',
@@ -70,9 +60,6 @@ const styles = {
         },
     },
     padding: {
-<<<<<<< HEAD
-        padding: 20,
-=======
         padding: '20px 20px 10px 0',
 
         '@media only screen and (max-width: 800px)': {
@@ -92,7 +79,6 @@ const styles = {
     rightPadding: {
         paddingLeft: 10,
         color: 'rgba(0,0,0,0.4)',
->>>>>>> 69b368dee887a8cc967d7fcedc114b5c06ee7754
     },
     direction:{
         flexDirection: 'row',
@@ -104,16 +90,12 @@ const styles = {
         marginLeft: 'auto'
     },
     holder:{
-<<<<<<< HEAD
-        paddingRight: 50
-=======
         padding: '10px 10px 10px 0',
     },
     buttonBase: {
         padding: 0,
         margin: 0,
 
->>>>>>> 69b368dee887a8cc967d7fcedc114b5c06ee7754
     }
 };
 
@@ -126,22 +108,13 @@ class EventListItem extends Component {
         let start = moment(data.start, ['YYYY-MM-DD HH:mm'], "nb");
 
         return (
-<<<<<<< HEAD
-           /*  <CardActionArea> */
-            <Paper className={classes.root} onClick={this.props.onClick}>
-=======
-            <CardActionArea classes={{root: classes.buttonBase}}>
+            /* <CardActionArea classes={{root: classes.buttonBase}}> */
             <Paper className={classes.root} onClick={this.props.onClick} square>
->>>>>>> 69b368dee887a8cc967d7fcedc114b5c06ee7754
                 <Grid container className={classes.direction} wrap='nowrap'>
                     <div className={classes.imageContainer}>
                         <img className={classes.image} alt="complex" src={image} />
                     </div>
-<<<<<<< HEAD
-                    <Grid container direction="column"  >
-=======
                     <Grid className={classes.content} container direction="column"  >
->>>>>>> 69b368dee887a8cc967d7fcedc114b5c06ee7754
                         <Grid className={classes.padding} item >
                             <Typography variant="headline"> {data.title} </Typography>
                         </Grid>

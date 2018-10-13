@@ -11,26 +11,26 @@ const styles = {
     root: {
         width: 'auto',
         height: 'auto',
-        fontFamily:'arial',
+        fontFamily: 'arial',
     },
-    wrapper:{
-        position:'relative',
+    wrapper: {
+        position: 'relative',
         height: '200px',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         '@media only screen and (max-width: 600px)': {
-            height:'200px'
+            height: '200px'
         },
     },
-    textInPic:{
-        position:'absolute',
-        bottom:30,
-        left:30
+    textInPic: {
+        position: 'absolute',
+        bottom: 30,
+        left: 30,
     },
-    under:{
-        height:'auto',
-        margin:"30px 30px 30px 30px",
+    under: {
+        height: 'auto',
+        margin: "30px 30px 30px 30px",
     }
 };
 

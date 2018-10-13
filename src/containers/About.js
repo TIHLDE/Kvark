@@ -9,6 +9,7 @@ import Text from '../text/AboutText';
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
 
 // Icons
 import DriftIcon from '../assets/img/instagram_icon.png';
@@ -65,12 +66,13 @@ const styles = {
     banner: {
         marginTop: 20,
     },
-    smoke: {
-        
-    },
 };
 
 class About extends Component {
+
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
 
     render() {
         const {classes} = this.props;
@@ -90,6 +92,8 @@ class About extends Component {
                         <InfoCard header='Næringsliv og Kurs' text={Text.business} src={DriftIcon}/>
                         <InfoCard header='Promo' text={Text.promo} src={DriftIcon}/>
                     </div>
+                    
+                    
 
                     <Typography className={classes.verticalMargin}variant='display1' color='inherit'>Komiteer</Typography>
                     <div className={classes.grid}>
