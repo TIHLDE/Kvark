@@ -39,7 +39,6 @@ const styles = {
         color: 'white',
         flexGrow: 1,
         zIndex: 10001,
-        boxShadow: 'none',
     },
     main: {
         marginTop: 64,

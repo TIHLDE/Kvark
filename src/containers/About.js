@@ -66,6 +66,11 @@ const styles = {
     banner: {
         marginTop: 20,
     },
+    section: {
+        height: 360,
+        width: '100%',
+        backgroundColor: 'whitesmoke',
+    },
 };
 
 class About extends Component {

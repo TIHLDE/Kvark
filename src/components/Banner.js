@@ -20,11 +20,13 @@ const styles = {
     image: {
         width: '100%',
         height: 'auto',
+        minHeight: 250,
         maxHeight: 250,
         objectFit: 'cover',
         filter: 'opacity(0.4) sepia(1)',
 
         '@media only screen and (max-width: 600px)': {
+            minHeight: 100,
             maxHeight: 100,
         },
     },
@@ -40,7 +42,7 @@ const styles = {
         color: 'rgba(0,0,0,0.78)',
 
         '@media only screen and (max-width: 600px)': {
-            fontSize: '2.5em',
+            fontSize: '2.3em',
         },
     },
 };

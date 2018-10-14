@@ -47,7 +47,7 @@ const styles = (theme) => ({
     },
     sidebarTop: {
         backgroundColor: 'whitesmoke',
-        
+        padding: '10px 5px 10px 12px',
     },
     eventItem: {
         padding: '10px 10px',
@@ -401,7 +401,7 @@ class EventAdministrator extends Component {
                 </div>
                 <Paper className={classes.sidebar}>
                     <Grid container direction='column' wrap='nowrap'>
-                        <Grid className={classNames(classes.sidebarTop, classes.padding)} container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
+                        <Grid className={classNames(classes.sidebarTop)} container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
                             <Typography variant='title' color='inherit'>Arrangementer</Typography>
                             <IconButton onClick={this.resetEventState}><AddIcon/></IconButton>
                         </Grid>

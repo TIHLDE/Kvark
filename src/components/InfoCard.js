@@ -57,10 +57,10 @@ const styles = {
 };
 
 const InfoCard = (props) => {
-    let {classes} = props;
+    let {classes, elevation} = props;
 
     return (
-        <Paper className={classNames(classes.root, props.className)} square elevation={1}>
+        <Paper className={classNames(classes.root, props.className)} square elevation={elevation}>
             <div className={classes.wrapper}>
                 {(!props.src)? null :
                     <div className={classes.margin}>
@@ -68,7 +68,7 @@ const InfoCard = (props) => {
                     </div>
                 }
                 <Grid className={(props.justifyText)? classes.cover : ''} container direction='column' nowrap='nowrap' justify='flex-start'>
-                    <Typography className={classes.header} variant='title'><strong>{props.header}</strong></Typography>
+                    <Typography className={classes.header} variant='headline' align='left'><strong>{props.header}</strong></Typography>
                     <Typography variant='body2' component='p'>{Parser(props.text)}</Typography>
 
                     {(!props.subText)? null :
@@ -99,8 +99,13 @@ InfoCard.propTypes = {
     subheader: PropTypes.string,
     subText: PropTypes.string,
     className: PropTypes.string,
+    elevation: PropTypes.number,
 
     children: PropTypes.node,
+};
+
+InfoCard.defaultProps = {
+    elevation: 1,
 };
 
 export default withStyles(styles)(InfoCard);
