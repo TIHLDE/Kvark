@@ -13,7 +13,7 @@ import './assets/css/index.css';
 // Project containers
 import Landing from './containers/Landing';
 import NewsPage from './containers/NewsPage';
-import ArrangementPage from './containers/Arrangement';
+import EventDetails from './containers/EventDetails';
 import Companies from './containers/Companies';
 import About from './containers/About';
 import Events from './containers/Events';
@@ -30,7 +30,7 @@ const Application = (
                 <Switch>
                     <Route exact path='/' component={Landing}/>
                     <Route path='/nyheter/:id' component={NewsPage}/>
-                    <Route path='/arrangementer/:id' component={ArrangementPage}/>
+                    <Route path='/arrangementer/:id' component={EventDetails}/>
                     <Route path={URLS.about} component={About} />
                     <Route path={URLS.events} component={Events} />
                     <Route path={URLS.services} component={Services} />

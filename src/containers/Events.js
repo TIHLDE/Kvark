@@ -25,7 +25,7 @@ import EventListItem from "../components/EventComponents/EventListItem"
 import Head from "../components/Head"
 import Navigation from "../components/Navigation";
 import Banner from '../components/Banner';
-import Arrangement from './Arrangement';
+import Arrangement from './EventDetails';
 import MessageIndicator from '../components/MessageIndicator';
 
 const styles = {
@@ -55,11 +55,7 @@ const styles = {
         gridGap: '5px',
 
         position: 'relative',
-/* 
-        '@media only screen and (max-width: 800px)': {
-            gridTemplateColumns: '90%',
-            justifyContent: 'center',
-        }, */
+
         '@media only screen and (max-width: 800px)': {
             gridTemplateColumns: '1fr',
             justifyContent: 'center',
@@ -160,7 +156,6 @@ class Events extends Component {
             this.loadEvent();
             return;
         }
-        
         
         const response = API.getEventItems(search).response();
         response.then((data) => {

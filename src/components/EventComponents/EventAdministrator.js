@@ -25,6 +25,9 @@ import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
 
+// Project Components
+import TextEditor from '../TextEditor';
+
 const SIDEBAR_WIDTH = 300;
 
 const styles = (theme) => ({
@@ -82,7 +85,7 @@ const styles = (theme) => ({
     margin: {
         margin: '10px 0px',
     },
-
+    mr: {marginRight: 10},
     snackbar: {
         marginTop: 44,
         backgroundColor: theme.palette.error.main,
@@ -179,6 +182,7 @@ class EventAdministrator extends Component {
             errorMessage: 'Det oppstod en feil',
             showSuccessMessage: false,
             successMessage: eventCreated,
+            showPreview: false,
         };
     }
 
@@ -258,6 +262,10 @@ class EventAdministrator extends Component {
 
     handleChange = (name) => (event) => {
         this.setState({[name]: event.target.value});
+    }
+
+    onChange = (name) => (value) => {
+        this.setState({[name]: value});
     }
 
     toggleSnackbar = () => {
@@ -384,8 +392,8 @@ class EventAdministrator extends Component {
                                     <Typography variant='headline'>{header}</Typography>
                                     <TextField className={classes.field} label='Tittel' value={title} onChange={this.handleChange('title')} required/>
                                     <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
-                                    <TextField className={classes.margin} multiline label='Beskrivelse' value={description} onChange={this.handleChange('description')} required/>
-
+                                    
+                                    <TextEditor className={classes.margin} value={description} onChange={this.onChange('description')}/>
                                     <TextField className={classes.margin} fullWidth label='Bilde' value={image} onChange={this.handleChange('image')}/>
 
                                     <div className={classes.flexRow}>
@@ -409,10 +417,18 @@ class EventAdministrator extends Component {
                                     </div>
 
                                     <Grid container direction='row' wrap='nowrap' justify='space-between'>
-                                        {(isNewItem)? 
-                                            <Button onClick={this.createNewEvent} type='submit' variant='raised' color='primary'>Lag nytt event</Button> :
+                                        {(isNewItem)?
+                                            <div>
+                                                <Button className={classes.mr} onClick={this.createNewEvent} type='submit' variant='raised' color='primary'>Lag nytt event</Button>
+                                                <Button variant='outlined' color='primary'>Preview</Button>
+                                            </div>
+                                             
+                                            :
                                             <Fragment>
-                                                <Button onClick={this.editEventItem} variant='raised' type='submit' color='primary'>Lagre</Button>
+                                                <div>
+                                                    <Button className={classes.mr} onClick={this.editEventItem} variant='raised' type='submit' color='primary'>Lagre</Button>
+                                                    <Button variant='outlined' color='primary'>Preview</Button>
+                                                </div>
                                                 <Button className={classes.deleteButton} onClick={this.deleteEventItem} variant='outlined'>Slett</Button>
                                             </Fragment>
                                         }

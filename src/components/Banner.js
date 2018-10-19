@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -10,9 +10,7 @@ import { Grid, Typography } from '@material-ui/core';
 // Icons
 
 const styles = {
-    root: {
-        
-    },
+    root: {},
     imageContainer: {
         maxHeight: 250,
         position: 'relative',
@@ -23,12 +21,14 @@ const styles = {
         minHeight: 250,
         maxHeight: 250,
         objectFit: 'cover',
-        filter: 'opacity(0.4) sepia(1)',
-
+        
         '@media only screen and (max-width: 600px)': {
             minHeight: 100,
             maxHeight: 100,
         },
+    },
+    filter: {
+        filter: 'opacity(0.27) sepia(1)',
     },
     content: {
         backgroundColor: 'white',
@@ -57,14 +57,14 @@ const styles = {
 const Banner = (props) => {
     const {classes} = props;
     return (
-        <Paper className={classNames(classes.root, props.className)} elevation={1}>
+        <Paper className={classNames(classes.root, props.className)} elevation={1} square>
             <Grid container direction='column' wrap='nowrap'>
                 <div className={classes.imageContainer}>
-                    <img className={classes.image} src={props.image} alt={props.alt} />
-                    <div className={classes.info}>
+                    <img className={classNames(classes.image, !props.disableFilter ? classes.filter : '')} src={props.image} alt={props.alt} />
+                    {props.title && <div className={classes.info}>
                         <Typography className={classes.title} variant='display3'><strong>{props.title}</strong></Typography>
                         <div className={classes.line}/>
-                    </div>
+                    </div>}
                 </div>
                 {(props.header || props.text) &&
                     <div className={classes.content}>
@@ -85,6 +85,7 @@ Banner.propTypes = {
     image: PropTypes.string,
     alt: PropTypes.string,
     text: PropTypes.string,
+    disableFilter: PropTypes.bool,
 };
 
 export default withStyles(styles)(Banner);

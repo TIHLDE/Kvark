@@ -1,65 +1,36 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-
+import {connect} from 'react-redux';
 
 // Project components
-import Head from "../components/Head"
-import Navigation from "../components/Navigation";
-import Information from "../components/Information";
-import Button from '@material-ui/core/Button';
-import Typography from "@material-ui/core/Typography";
-import connect from 'react-redux/es/connect/connect';
-
+import Navigation from '../components/Navigation';
+import EventRenderer from '../components/EventComponents/EventRenderer';
 
 // API and store imports
 import API from '../api/api';
-import { setSelectedItem, selectItem } from '../store/actions/GridActions';
+import { setSelectedItem } from '../store/actions/GridActions';
 
 
 const styles = {
     root:{
-        width:'auto',
-        height:'auto',
         backgroundColor:'whitesmoke',
+        minHeight: '90vh',
     },
-
     wrapper:{
-        paddingTop:'30px',
-        paddingBottom:'30px',
+        maxWidth: 1100,
+        margin: 'auto',
+        paddingTop: 10,
+        paddingBottom: 100,
 
-        display: 'grid',
-        gridTemplateColumns: '90%',
-        gridTemplateRows:'auto',
-        margin:'auto',
-        gridGap:'30px',
-        justifyContent:'center',
-    },
-    headliner:{
-        borderStyle:'none none solid none',
-        borderColor:'gray',
-        borderWidth: '1px',
-        textAlign: 'center'
-    },
-    text:{
-        width:'auto',
-        maxWidth:'60%',
-        margin:'auto',
         '@media only screen and (max-width: 600px)': {
-            maxWidth:'90%',
-        },
+            paddingTop: 0,
+        }
     },
-    minify: {
-        '@media only screen and (max-width: 600px)': {
-            fontSize: 40,
-        },
-    }
-
 };
 
 
-class Arrangement extends Component {
+class EventDetails extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -98,23 +69,12 @@ class Arrangement extends Component {
         const selected = grid.selectedItem;
         const data = (selected && selected.data)? selected.data : (selected)? selected : {};
 
-
         return (
             <Navigation isLoading={this.state.isLoading} footer>
                 {(this.state.isLoading)? null :
                     <div className={classes.root}>
-                        <Head data={data} />
                         <div className={classes.wrapper}>
-                            <div className={classes.headliner}>
-                                <Typography variant='display3' className={classes.minify}> {data.title} </Typography>
-                            </div>
-                            <Information data={data}/>
-                            {(data.signUp)?<Button variant="contained" color="primary" style={{margin:'auto'}}>
-                                Meld deg på
-                            </Button> : ""}
-                            <div className={classes.text}>
-                                {data.description}
-                            </div>
+                            <EventRenderer data={data}/>
                         </div>
                     </div>
                 }
@@ -124,14 +84,14 @@ class Arrangement extends Component {
 }
 
 
-Arrangement.propTypes = {
+EventDetails.propTypes = {
     classes: PropTypes.object,
     match: PropTypes.object,
     grid: PropTypes.object,
 };
 
-Arrangement.defaultProps = {
-    id: "-1"
+EventDetails.defaultProps = {
+    id: '-1',
 };
 
 const stateValues = (state) => {
@@ -141,4 +101,4 @@ const stateValues = (state) => {
 };
 
 
-export default connect(stateValues)(withStyles(styles)(Arrangement));
+export default connect(stateValues)(withStyles(styles)(EventDetails));
