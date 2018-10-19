@@ -34,16 +34,23 @@ const styles = {
         backgroundColor: 'white',
         padding: 20,
     },
-    title: {
+    info: {
         position: 'absolute',
         bottom: 15,
         left: 15,
-        fontSize: 54,
-        color: 'rgba(0,0,0,0.78)',
+    },
+    title: {
+        color: 'rgba(0,0,0,1)',
 
+        fontSize: 54,
         '@media only screen and (max-width: 600px)': {
-            fontSize: '2.3em',
+            fontSize: '2.1em',
         },
+    },
+    line: {
+        height: 4,
+        backgroundColor: 'var(--tihlde-blaa)',
+        width: 50,
     },
 };
 
@@ -54,17 +61,21 @@ const Banner = (props) => {
             <Grid container direction='column' wrap='nowrap'>
                 <div className={classes.imageContainer}>
                     <img className={classes.image} src={props.image} alt={props.alt} />
-                    <Typography className={classes.title} variant='display3'><strong>{props.title}</strong></Typography>
+                    <div className={classes.info}>
+                        <Typography className={classes.title} variant='display3'><strong>{props.title}</strong></Typography>
+                        <div className={classes.line}/>
+                    </div>
                 </div>
-                <div className={classes.content}>
-                    <Typography variant='title' gutterBottom><strong>{props.header}</strong></Typography>
-                    <Typography variant='subheading'>{props.text}</Typography>
-                </div>
+                {(props.header || props.text) &&
+                    <div className={classes.content}>
+                        <Typography variant='title' gutterBottom><strong>{props.header}</strong></Typography>
+                        <Typography variant='subheading'>{props.text}</Typography>
+                    </div>
+                }
             </Grid>
         </Paper>
-        
     );
-}
+};
 
 Banner.propTypes = {
     className: PropTypes.string,

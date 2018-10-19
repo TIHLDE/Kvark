@@ -5,6 +5,7 @@
     margin: 0;
     padding: 0;
     --tihlde-blaa: #1D448C;
+    --gray: #F8F8FA;
 }
 body {
     font-family: 'Roboto', sans-serif;

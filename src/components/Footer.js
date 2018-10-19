@@ -28,6 +28,7 @@ const styles = {
         justifyItems: 'center',
         color: 'white',
         textColor: 'white',
+        boxShadow: '0px -2px 5px 0px rgba(0,0,0,0.1)',
 
         '@media only screen and (max-width: 900px)': {
             gridTemplateRows: 'auto auto',

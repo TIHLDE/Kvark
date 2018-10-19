@@ -22,8 +22,11 @@ export default {
     getEventItem: (id) => {
         return new IRequest('GET', 'events/'.concat(id, '/'), undefined, false);
     },
-    getEventItems: () => {
-        return new IRequest('GET', 'events/', undefined, false);
+    getEventItems: (search) => {
+        return new IRequest('GET', 'events/', (search)? {search: search} : {newest: true}, false);
+    },
+    getExpiredEvents: () => {
+        return new IRequest('GET', 'events/', {expired: true}, false);
     },
     getEventLists: () => {
         return new IRequest('GET', 'eventlist/', undefined, false);

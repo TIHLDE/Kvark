@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import moment from 'moment';
 
 // API imports
 import API from '../../api/api';
@@ -22,6 +23,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 // Icons
 import AddIcon from '@material-ui/icons/Add';
+import DownloadIcon from '@material-ui/icons/CloudDownload';
 
 const SIDEBAR_WIDTH = 300;
 
@@ -48,6 +50,9 @@ const styles = (theme) => ({
     sidebarTop: {
         backgroundColor: 'whitesmoke',
         padding: '10px 5px 10px 12px',
+    },
+    miniTop: {
+        padding: '5px 5px 5px 12px',
     },
     eventItem: {
         padding: '10px 10px',
@@ -153,8 +158,10 @@ class EventAdministrator extends Component {
         this.state = {
             pageLoading: false,
             isLoading: false,
+            isFetching: false,
 
             events: [],
+            expired: [],
             eventLists: [],
             selectedEvent: null,
 
@@ -193,6 +200,23 @@ class EventAdministrator extends Component {
                 this.setState({eventLists: data});
             }
         });
+    }
+
+    fetchExpired = () => {
+        console.log(this.state.isFetching);
+        if(this.state.isFetching) {
+            return;
+        }
+
+        this.setState({isFetching: false});
+        const response = API.getExpiredEvents().response();
+        response.then((data) => {
+            if (response.isError === false) {
+                this.setState({expired: data});
+            }
+            this.setState({isFetching: true});
+        });
+        
     }
 
     onEventClick = (event) => {
@@ -252,7 +276,7 @@ class EventAdministrator extends Component {
         image: this.state.image,
         imageAlt: 'event',
         eventlist: this.state.eventlist,
-        start: this.state.startDate,
+        start: moment(this.state.startDate).format('YYYY-MM-DDThh:mm'),
         signUp: this.state.signUp,
     });
 
@@ -406,6 +430,18 @@ class EventAdministrator extends Component {
                             <IconButton onClick={this.resetEventState}><AddIcon/></IconButton>
                         </Grid>
                         {this.state.events.map((value, index) => (
+                            <EventItem
+                                key={index}
+                                selected={value.id === selectedEventId}
+                                onClick={() => this.onEventClick(value)}
+                                title={value.title}
+                                location={value.location} />
+                        ))}
+                        <Grid className={classNames(classes.sidebarTop, classes.miniTop)} container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
+                            <Typography variant='title' color='inherit'>Utgåtte</Typography>
+                            <IconButton onClick={this.fetchExpired}><DownloadIcon/></IconButton>
+                        </Grid>
+                        {this.state.expired.map((value, index) => (
                             <EventItem
                                 key={index}
                                 selected={value.id === selectedEventId}
