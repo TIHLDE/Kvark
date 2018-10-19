@@ -82,6 +82,8 @@ const styles = {
 
         '@media only screen and (max-width: 800px)': {
             order: 0,
+            position: 'static',
+            top: 0,
         },
     },
     paddingBtn: {
