@@ -93,6 +93,10 @@ const styles = {
         display: 'block',
         margin: 'auto',
         marginTop: 10,
+
+        '@media only screen and (max-width: 800px)': {
+            order: 1,
+        },
     },
 };
 
