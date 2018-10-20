@@ -13,14 +13,15 @@ import Image from '../assets/img/glad.jpg';
 
 // Project Components
 import Navigation from '../components/Navigation';
-import GroupCard from '../components/GroupCard';
+import InfoCard from '../components/InfoCard';
 
 
 const styles = (theme) => ({
     container: {
         display: 'grid',
         maxWidth: '1200px',
-        gridTemplateColumns: 'repeat(4, 1fr)',
+        gridTemplateColumns: 'repeat(2, 1fr)',
+        gridAutoFlow: 'rows',
         gridGap: `${theme.spacing.unit * 3}px`,
         margin: '0 auto',
 
@@ -121,6 +122,29 @@ const ImageAndText = withStyles(styles)((props) => {
     )
 });
 
+
+const buttonStyle = {
+    root: {
+        display: 'table',
+        margin: '0 auto',
+        marginTop: -20,
+        marginBottom: 40
+    }
+};
+const ContactButton = withStyles(buttonStyle)((props) => {
+    const { classes } = props;
+    return (
+        <Button
+            className={classes.root}
+            variant='raised'
+            color='primary'
+            href='mailto:orakel@tihlde.org'
+        >
+            Kontakt oss
+        </Button>
+    )
+});
+
 class Companies extends Component {
 
     render() {
@@ -137,6 +161,7 @@ class Companies extends Component {
                     </Typography>
                 </div>
             </div>
+            <ContactButton />
             <div className={classes.wrapper}>
                 <div className={classNames(classes.columnContainer, classes.extraPadding)}>
                     <div>
@@ -157,10 +182,10 @@ class Companies extends Component {
                         <Typography variant='headline'>Studier</Typography>
                     </div>
                     <div className={classNames(classes.container)}>
-                        <GroupCard header='Dataingeniør' body=' TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.'/>
-                        <GroupCard header='Drift av datasystemer' body='TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.'/>
-                        <GroupCard header='IT-støttet bedriftsutvikling' body=' TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.'/>
-                        <GroupCard header='IKT-basert samhandling' body='TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.'/>
+                        <InfoCard header='Dataingeniør' text=' TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.'/>
+                        <InfoCard header='Drift av datasystemer' text='TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.'/>
+                        <InfoCard header='IT-støttet bedriftsutvikling' text=' TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.'/>
+                        <InfoCard header='IKT-basert samhandling' text='TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.'/>
                     </div>
                 </div>
             </div>

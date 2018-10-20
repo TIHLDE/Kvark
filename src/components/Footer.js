@@ -22,8 +22,8 @@ const styles = {
         padding: '40px 0px',
         display: 'grid',
         gridGap: '40px',
-        gridTemplateColumns: '1fr 1fr 1fr 1fr',
-        gridTemplateAreas: "'OmTihlde Sponsorer SosialeMedier TihldeSupport'",
+        gridTemplateColumns: '1fr 1fr 1fr', // 1fr 1fr 1fr 1fr
+        gridTemplateAreas: "'OmTihlde Sponsorer TihldeSupport'", //SosialeMedier
         gridTemplateRows: 'auto',
         justifyItems: 'center',
         color: 'white',
@@ -140,7 +140,7 @@ class Footer extends Component {
             <div className={classes.root}>
                 {this.omTihlde()}
                 {this.sponsorer()}
-                {this.sosialeMedier()}
+                {/*this.sosialeMedier()*/}
                 {this.tihldeSupport()}
             </div>
         );
