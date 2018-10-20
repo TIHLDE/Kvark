@@ -126,8 +126,8 @@ class Footer extends Component {
         return (
             <div className={classes.tihldeSupport}>
                 <Typography className={classes.horSpacing} align='center' color='inherit' variant='headline'>Support</Typography>
-                <Button className={classes.horSpacing} variant='contained' color='primary'>Open new ticket</Button>
-                <Button className={classes.horSpacing} variant='contained' color='secondary'>Check ticket status</Button>
+                <Button className={classes.horSpacing} variant='contained' color='primary' href='https://tihlde.org/secure/osticket/open.php'>Open new ticket</Button>
+                <Button className={classes.horSpacing} variant='contained' color='secondary' href='https://tihlde.org/secure/osticket/view.php'>Check ticket status</Button>
             </div>
         )
     };

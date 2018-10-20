@@ -99,7 +99,7 @@ class About extends Component {
 
 
 
-                    <Typography className={classes.verticalMargin}variant='display1' color='inherit'>Komiteer</Typography>
+                    <Typography className={classes.verticalMargin}variant='display1' color='inherit'>Komitéer</Typography>
                     <div className={classes.grid}>
                         <InfoCard header='Jubkom' text={Text.jubkom} subheader='Opptak' subText={Text.jubkom2} justifyText/>
                         <InfoCard header='Netkom' text={Text.netkom} subheader='Opptak' subText={Text.netkom2} justifyText/>
@@ -110,10 +110,12 @@ class About extends Component {
                         <InfoCard header='ÅreKom' text={Text.arekom} subheader='Opptak' subText={Text.arekom2} justifyText className={classes.bottomItem}/>
                     </div>
 
-                    <InfoCard header='Historie' text={Text.history} subheader='Opptak' subText={Text.history2} justifyText/>
+                    
 
                     <Typography className={classes.verticalMargin}variant='display1' color='inherit'>Organisasjonskart</Typography>
                     <ClickableImage className={classes.miniPadding} image={OrgMap} alt='organisasjonskart' width='90%'/>
+
+                    <InfoCard className={classes.verticalMargin} header='Historie' text={Text.history} subheader='Opptak' subText={Text.history2} justifyText/>
                 </Grid>
             </Navigation>
         );
