@@ -97,7 +97,7 @@ const styles = {
         width: '100vw',
         height: 'auto',
         padding: 0,
-        
+
         backgroundColor: 'rgba(211,47,47,1)',
         '@media only screen and (max-width: 600px)': {
             top: 56,
@@ -109,6 +109,10 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
     },
+
+    whitesmoke: {
+        backgroundColor: 'whitesmoke',
+    }
 };
 
 
@@ -196,6 +200,7 @@ class Navigation extends Component {
                                     <URIbutton data={{link: URLS.about, text: "Om TIHLDE"}}/>
                                     <URIbutton data={{link: URLS.services, text: "Tjenester"}}/>
                                     <URIbutton data={{link: URLS.events, text: "Arrangementer"}}/>
+                                    <URIbutton data={{link: URLS.newStudent, text: "Ny student"}}/>
                                     <Link to={URLS.company} style={{ textDecoration: 'none' }}>
                                         <Button color="primary" style={{
                                             color: 'var(--tihlde-blaa)',
@@ -234,11 +239,11 @@ class Navigation extends Component {
                 </AppBar>
                 <Snack
                     className={classNames(classes.snack, classes.flex)}
-                    open={this.state.showSnackbar} 
+                    open={this.state.showSnackbar}
                     message={this.state.snackMessage}
                     onClose={this.closeSnackbar}/>
-               
-                <main className={classes.main}>
+
+                <main className={classNames(classes.main, (this.props.whitesmoke ? classes.whitesmoke : null))}>
                     {(this.props.isLoading)? <LinearProgress /> : null}
                     <div className={classes.wrapper}>
                         {this.props.children}
@@ -257,6 +262,7 @@ Navigation.propTypes = {
     children: PropTypes.node,
     isLoading: PropTypes.bool,
     footer: PropTypes.bool,
+    whitesmoke: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({

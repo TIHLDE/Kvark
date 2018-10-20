@@ -4,6 +4,7 @@ export default {
     company: '/bedrifter/',
     about: '/om/',
     services: '/tjenester/',
+    newStudent: '/nyStudent/',
 
     dataRegistration: '/admin/events',
 };
