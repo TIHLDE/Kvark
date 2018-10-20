@@ -22,7 +22,7 @@ const styles = {
         minHeight: '100vh',
         maxWidth: 1200,
         margin: 'auto',
-        marginBottom: 100,
+        paddingBottom: 100,
     },
     grid: {
         width: '100%',
@@ -68,7 +68,7 @@ class Services extends Component {
     render() {
         const {classes} = this.props;
         return (
-            <Navigation footer>
+            <Navigation footer whitesmoke>
                 <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
                     <Banner
                         className={classes.banner}

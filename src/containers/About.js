@@ -25,7 +25,7 @@ const styles = {
         minHeight: '100vh',
         maxWidth: 1200,
         margin: 'auto',
-        marginBottom: 100,
+        paddingBottom: 100,
     },
     grid: {
         width: '100%',
@@ -81,7 +81,7 @@ class About extends Component {
     render() {
         const {classes} = this.props;
         return (
-            <Navigation footer>
+            <Navigation footer whitesmoke>
                 <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
                     <Banner
                         className={classes.banner}
@@ -96,8 +96,8 @@ class About extends Component {
                         <InfoCard header='Næringsliv og Kurs' text={Text.business} src={DriftIcon}/>
                         <InfoCard header='Promo' text={Text.promo} src={DriftIcon}/>
                     </div>
-                    
-                    
+
+
 
                     <Typography className={classes.verticalMargin}variant='display1' color='inherit'>Komiteer</Typography>
                     <div className={classes.grid}>

@@ -27,6 +27,7 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'stretch',
+        paddingBottom: 80,
     },
     banner: {
         marginTop: 20,
@@ -93,6 +94,10 @@ const Expansion = withStyles(styles)(props => {
 
 class NewStudent extends Component {
 
+
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
 
     render() {
         const { classes } = this.props;
