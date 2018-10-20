@@ -44,17 +44,25 @@ const styles = theme => ({
         },
     },
 
+});
+
+
+
+const expansionStyles = theme => ({
     heading: {
         flexShrink: 0,
+        fontWeight: 'bold',
     },
     secondaryHeading: {
         color: theme.palette.text.secondary,
-        marginTop: 20,
     },
     expansionDetails: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'stretch'
+    },
+    flat: {
+        boxShadow: 'none',
     }
 });
 
@@ -62,10 +70,10 @@ const styles = theme => ({
 
 
 
-const Expansion = withStyles(styles)(props => {
+const Expansion = withStyles(expansionStyles)(props => {
     const { classes } = props;
     return (
-        <ExpansionPanel>
+        <ExpansionPanel className={props.flat ? classes.flat : null}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography className={classes.heading}>{props.header}</Typography>
                 { props.subheader ?
@@ -83,6 +91,12 @@ const Expansion = withStyles(styles)(props => {
                 <ExpansionPanelDetails className={classes.expansionDetails}>
                     { props.children }
                 </ExpansionPanelDetails>
+            }
+            { props.subtext ?
+                <ExpansionPanelDetails>
+                    <Typography className={classes.secondaryHeading}>{htmlReactParser(props.subtext)}</Typography>
+                </ExpansionPanelDetails>
+                : null
             }
         </ExpansionPanel>
     )
@@ -111,13 +125,12 @@ class NewStudent extends Component {
                         image={Text.banner.imageUrl}
                     />
 
-                    <Expansion header={Text.faq.header}>
+                    <Expansion header={Text.faq.header} subtext={Text.faq.subheader}>
                         {
                             Object.values(Text.faq.content).map((value, index) => (
-                                <Expansion key={index} header={value["header"]} text={value["text"]} />
+                                <Expansion key={index} header={value["header"]} text={value["text"]} flat/>
                             ))
                         }
-                        <Typography className={classes.secondaryHeading}>{htmlReactParser(Text.faq.subheader)}</Typography>
                     </Expansion>
 
                     <div className={classes.content}>
