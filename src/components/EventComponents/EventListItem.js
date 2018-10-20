@@ -2,6 +2,7 @@ import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import classNames from 'classnames';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
@@ -19,6 +20,8 @@ const styles = {
         height: 112,
         maxHeight: 112,
         padding: 14,
+        position: 'relative',
+        overflow: 'hidden',
 
         '@media only screen and (max-width: 600px)': {
             maxHeight: 'none',
@@ -40,7 +43,6 @@ const styles = {
         marginLeft: 26,
         border: 6,
     },
-    
     title: {
         color: '#3f444a',
         fontWeight: 'bold',
@@ -70,6 +72,12 @@ const styles = {
     btn: {
         padding: 0,
     },
+    expired: {
+       color: 'rgba(0,0,0,0.4)',
+    },
+    filter: {
+        filter: 'opacity(0.4)',
+    },
 };
 
 const InfoContent = withStyles(styles)((props) => (
@@ -91,9 +99,9 @@ const EventListItem = (props) => {
     return (
         <ListItem className={classes.btn} button onClick={props.onClick}>
             <Grid className={classes.root} container direction='row' wrap='nowrap' alignItems='center'>
-                <img className={classes.src} src={src} alt={data.title} />
+                <img className={classNames(classes.src, (data.expired)? classes.filter : '')} src={src} alt={data.title} />
                 <Grid className={classes.content} container direction='column' wrap='nowrap'>
-                    <Typography className={classes.title} variant='title' gutterBottom>
+                    <Typography className={classNames(classes.title, (data.expired)? classes.expired : '')} variant='title' gutterBottom>
                         <strong>{data.title}</strong>
                     </Typography>
                     <div className={classes.details}>

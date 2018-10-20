@@ -1,13 +1,13 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import connect from 'react-redux/es/connect/connect';
 import URLS from '../URLS';
+import {MuiThemeProvider as Theme} from '@material-ui/core/styles';
+import {errorTheme} from '../theme';
 
 // API and store imports
 import API from '../api/api';
-import { setSelectedItem, selectItem } from '../store/actions/GridActions';
 
 // Text
 import Text from '../text/EventText';
@@ -19,16 +19,15 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import MenuItem from '@material-ui/core/MenuItem';
 
 // Project components
 import EventListItem from "../components/EventComponents/EventListItem"
-import Head from "../components/Head"
 import Navigation from "../components/Navigation";
 import Banner from '../components/Banner';
-import Arrangement from './EventDetails';
 import MessageIndicator from '../components/MessageIndicator';
 
-const styles = {
+const styles = (theme) => ({
     root:{
         width:'auto',
         height:'auto',
@@ -65,7 +64,8 @@ const styles = {
     list: {
         display: 'grid',
         gridTemplateColumns: '1fr',
-
+    },
+    listRoot: {
         '@media only screen and (max-width: 800px)': {
             order: 1,
         },
@@ -73,13 +73,14 @@ const styles = {
     settings: {
         position: 'sticky',
         top: 88,
-        maxHeight: 160,
+        maxHeight: 236,
         padding: 20,
 
         '@media only screen and (max-width: 800px)': {
             order: 0,
             position: 'static',
             top: 0,
+            margin: 6,
         },
     },
     paddingBtn: {
@@ -94,7 +95,13 @@ const styles = {
             order: 1,
         },
     },
-};
+    mt: {
+        marginTop: 10,
+    },
+    resetBtn: {
+        marginTop: 10,
+    },
+});
 
 
 class Events extends Component {
@@ -103,19 +110,17 @@ class Events extends Component {
         super();
         this.state = {
             events: [],
+            categories: [],
             isLoading: false,
             isFetching: false,
 
             search: '',
+            category: 0,
         }
     }
 
     // Gets the event
     loadEvent = () => {
-        const { dispatch } = this.props;
-        // Get eventItem id
-        const id = this.props.match.params.id;
-
         // Item does not exist, fetch from server
         
         const response = API.getEventItems().response();
@@ -130,47 +135,73 @@ class Events extends Component {
         });
     };
 
+    loadCategory = () => {
+        // Get all categories
+        const response = API.getCategories().response();
+        response.then((data) => {
+            console.log(data);
+            if(response.isError === false) {
+                this.setState({categories: data});
+            }
+        });
+    }
+
     componentDidMount(){
         window.scrollTo(0,0);
         //get data here
         this.setState({isLoading: true});
         this.loadEvent();
+        this.loadCategory();
     }
 
     handleChange = (name) => (event) => {
         this.setState({[name]: event.target.value});
     }
 
+    handleCategoryChange = (event) => {
+        this.setState({category: event.target.value, search: ''});
+        this.filterEvents(event, null, event.target.value);
+    }
+
     goToEvent = (id) => {
         this.props.history.push(URLS.events + ''.concat(id, '/'));
     };
 
-    filterEvents = (event) => {
+    resetFilters = () => {
+        this.setState({isFetching: true, category: 0, search: ''});
+        this.loadEvent();
+    }
+
+    searchForEvent = (event) => {
+        event.preventDefault();
+        this.setState({category: 0});
+        this.filterEvents(event, this.state.search, 0);
+    }
+
+    filterEvents = (event, search, category) => {
         event.preventDefault();
 
-        const search = this.state.search;
-
         this.setState({isFetching: true});
-        console.log(search);
-        if(!search) {
+        if(!search && !category) {
             this.loadEvent();
             return;
         }
+
+        const filters = (category && category !== 0)? {category: category} : {search: search};
         
-        const response = API.getEventItems(search).response();
+        const response = API.getEventItems(filters).response();
         response.then((data) => {
-
             if (response.isError === false) {
-                this.setState({events: data});
-            } else {
-
+                this.setState({events: data.sort((a, b) => (a.expired === b.expired)? 0 : a.expired ? 1 : -1)});
             }
             this.setState({isFetching: false});
         });
     }
 
     render() {
-        const {classes, grid} = this.props;
+        const {classes} = this.props;
+        const {categories, category} = this.state;
+
         return (
             <Navigation isLoading={this.state.isLoading} footer>
                 {(this.state.isLoading)? null :
@@ -181,6 +212,7 @@ class Events extends Component {
                             <div className={classes.grid}>
 
                                 {this.state.isFetching ? <CircularProgress className={classes.progress} /> :
+                                    <div className={classes.listRoot}>
                                     <Paper className={classes.list} elevation={1} square>
                                         {this.state.events.map((value, index) => (
                                             <div key={value.id}>
@@ -192,14 +224,36 @@ class Events extends Component {
                                             <MessageIndicator header={Text.noEvents} subheader={Text.subNoEvents}/>
                                         }
                                     </Paper>
+                                    </div>
                                 }
                                 <Paper className={classes.settings} elevation={1} square>
-                                    <Typography variant='title' gutterBottom>{Text.filter}</Typography>
-                                    <form>
-                                        <TextField className={classes.paddingBtn} fullWidth placeholder='Søk...' onChange={this.handleChange('search')}/>
-                                        <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.filterEvents}>{Text.search}</Button>
-                                    </form>
                                     
+                                    <form>
+                                        <TextField className={classes.paddingBtn} value={this.state.search} fullWidth placeholder='Søk...' onChange={this.handleChange('search')}/>
+                                        <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.searchForEvent}>{Text.search}</Button>
+                                    </form>
+                                    <Divider className={classes.mt}/>
+                                    <Typography className={classes.mt} variant='title' gutterBottom>{Text.category}</Typography>
+                                    <TextField className={classes.paddingBottom} select fullWidth label='Kategori' value={category} onChange={this.handleCategoryChange}>
+                                        {categories.map((value, index) => (
+                                            <MenuItem key={index} value={value.id}>
+                                                {value.text}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                    <Divider className={classes.mt}/>
+
+                                    <Theme theme={errorTheme}>
+                                        <Button
+                                            className={classes.resetBtn}
+                                            fullWidth
+                                            color='primary'
+                                            variant='outlined'
+                                            onClick={this.resetFilters}>
+                                            {Text.reset}
+                                        </Button>
+                                    </Theme>
+
                                 </Paper>
                             </div>
                         </div>
@@ -229,4 +283,4 @@ const stateValues = (state) => {
 };
 
 
-export default connect(stateValues)(withStyles(styles)(Events));
+export default connect(stateValues)(withStyles(styles, {withTheme: true})(Events));

@@ -166,6 +166,7 @@ class EventAdministrator extends Component {
             events: [],
             expired: [],
             eventLists: [],
+            categories: [],
             selectedEvent: null,
 
             title: '',
@@ -175,6 +176,7 @@ class EventAdministrator extends Component {
             signUp: false,
             priority: 0,
             image: '',
+            category: 0,
             // imageAlt: '',
             eventlist: 0,
 
@@ -187,21 +189,31 @@ class EventAdministrator extends Component {
     }
 
     componentDidMount() {
+    
+        // Get all eventlists
+        const listResponse = API.getEventLists().response();
+        listResponse.then((data) => {
+            console.log(data);
+            if (listResponse.isError === false) {
+                this.setState({eventLists: data});
+            }
+        });
+
+        // Get all categories
+        const categories = API.getCategories().response();
+        categories.then((data) => {
+            console.log(data);
+            if(categories.isError === false) {
+                this.setState({categories: data});
+            }
+        });
+
         // Get all events
         const response = API.getEventItems().response();
         response.then((data) => {
             console.log(data);
             if (response.isError === false) {
                 this.setState({events: data});
-            }
-        });
-
-        // Get all eventlists
-        const listResponse = API.getEventLists().response();
-        listResponse.then((data) => {
-            console.log(data);
-            if (response.isError === false) {
-                this.setState({eventLists: data});
             }
         });
     }
@@ -236,6 +248,7 @@ class EventAdministrator extends Component {
                 description: event.description,
                 priority: event.priority,
                 image: event.image,
+                category: event.category,
                 // imageAlt: event.imageAlt,
                 eventlist: event.eventlist,
                 startDate: event.start.substring(0,16),
@@ -255,6 +268,7 @@ class EventAdministrator extends Component {
             image: '',
             imageAlt: '',
             eventlist: 0,
+            category: 0,
             startDate: new Date().toISOString().substring(0, 16),
             signUp: false,
         });
@@ -283,6 +297,7 @@ class EventAdministrator extends Component {
         priority: this.state.priority,
         image: this.state.image,
         imageAlt: 'event',
+        category: this.state.category,
         eventlist: this.state.eventlist,
         start: moment(this.state.startDate).format('YYYY-MM-DDThh:mm'),
         signUp: this.state.signUp,
@@ -361,7 +376,7 @@ class EventAdministrator extends Component {
 
     render() {
         const {classes} = this.props;
-        const {selectedEvent, title, location, description, image, priority, eventlist} = this.state;
+        const {selectedEvent, title, location, description, image, priority, eventlist, categories, category} = this.state;
         const selectedEventId = (selectedEvent)? selectedEvent.id : '';
         const eventLists = (this.state.eventLists)? this.state.eventLists : [];
         const isNewItem = (selectedEvent === null);
@@ -401,6 +416,14 @@ class EventAdministrator extends Component {
                                             {priorities.map((value, index) => (
                                                 <MenuItem key={index} value={index}>
                                                     {value}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+
+                                        <TextField className={classes.margin} select fullWidth label='Kategori' value={category} onChange={this.handleChange('category')}>
+                                            {categories.map((value, index) => (
+                                                <MenuItem key={index} value={value.id}>
+                                                    {value.text}
                                                 </MenuItem>
                                             ))}
                                         </TextField>
