@@ -409,6 +409,9 @@ class EventAdministrator extends Component {
                                     <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
                                     
                                     <TextEditor className={classes.margin} value={description} onChange={this.onChange('description')}/>
+
+                                    <Divider className={classes.margin} />
+
                                     <TextField className={classes.margin} fullWidth label='Bilde' value={image} onChange={this.handleChange('image')}/>
 
                                     <div className={classes.flexRow}>

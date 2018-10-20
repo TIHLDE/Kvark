@@ -20,6 +20,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MenuItem from '@material-ui/core/MenuItem';
+import Grow from '@material-ui/core/Grow';
 
 // Project components
 import EventListItem from "../components/EventComponents/EventListItem"
@@ -80,7 +81,7 @@ const styles = (theme) => ({
             order: 0,
             position: 'static',
             top: 0,
-            margin: 6,
+            margin: 12,
         },
     },
     paddingBtn: {
@@ -213,17 +214,19 @@ class Events extends Component {
 
                                 {this.state.isFetching ? <CircularProgress className={classes.progress} /> :
                                     <div className={classes.listRoot}>
-                                    <Paper className={classes.list} elevation={1} square>
-                                        {this.state.events.map((value, index) => (
-                                            <div key={value.id}>
-                                                <EventListItem key={value.id} data={value} onClick={() => this.goToEvent(value.id)}/>
-                                                <Divider/>
-                                            </div>
-                                        ))}
-                                        {this.state.events.length === 0 && 
-                                            <MessageIndicator header={Text.noEvents} subheader={Text.subNoEvents}/>
-                                        }
-                                    </Paper>
+                                    <Grow in={!this.state.isFetching}>
+                                        <Paper className={classes.list} elevation={1} square>
+                                            {this.state.events.map((value, index) => (
+                                                <div key={value.id}>
+                                                    <EventListItem key={value.id} data={value} onClick={() => this.goToEvent(value.id)}/>
+                                                    <Divider/>
+                                                </div>
+                                            ))}
+                                            {this.state.events.length === 0 && 
+                                                <MessageIndicator header={Text.noEvents} subheader={Text.subNoEvents}/>
+                                            }
+                                        </Paper>
+                                    </Grow>
                                     </div>
                                 }
                                 <Paper className={classes.settings} elevation={1} square>

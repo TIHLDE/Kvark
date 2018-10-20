@@ -105,6 +105,10 @@ const styles = (theme) => ({
     paddingWrapper: {
         padding: theme.spacing.unit * 3,
     },
+    image: {
+        maxHeight: 400,
+        objectFit: 'cover',
+    }
 });
 
 const ImageAndText = withStyles(styles)((props) => {
@@ -190,7 +194,7 @@ class Companies extends Component {
                 </div>
             </div>
             <div style={{ gridColumnEnd: 'span 2', gridRow: 1, overflow: 'hidden'}}>
-                <img src='https://www.ntnu.no/image/image_gallery?img_id=16401786&t=1346178827979' width='100%' alt='NTNU'/>
+                <img className={classes.image} src='https://www.ntnu.no/image/image_gallery?img_id=16401786&t=1346178827979' width='100%' alt='NTNU'/>
             </div>
             <div className={classNames(classes.columnContainer, classes.extraPadding)}>
                 <div>
