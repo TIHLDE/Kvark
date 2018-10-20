@@ -5,6 +5,9 @@ import URLS from '../../URLS';
 import {withRouter} from 'react-router-dom';
 import classNames from 'classnames';
 
+// Text
+import Text from '../../text/EventText';
+
 // Material UI Components
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
@@ -15,6 +18,9 @@ import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+
+// Project Components
+import MessageIndicator from '../MessageIndicator';
 
 const styles = (theme) => ({
     root: {
@@ -130,7 +136,6 @@ class EventList extends Component {
     render() {
         const {classes, data} = this.props;
         const eventslist = data.events || [];
-        eventslist.sort((a, b) => b.start - a.start);
 
         const events = [];
         const eventCount = (eventslist.length > maxElementsCount)? maxElementsCount : eventslist.length;
@@ -156,9 +161,13 @@ class EventList extends Component {
                 </Grid>
                 <div className={classes.wrapper}>
                    
-                    <List dense>
-                    {events}
-                    </List>
+                    {events.length > 0 ?
+                        <List dense>
+                            {events}
+                        </List>
+                        :
+                        <MessageIndicator header={Text.noEvents} variant='subheading'/>
+                    }
                 </div>
                 <Button className={classes.moreButton} onClick={this.openEventsPage} variant='contained' color='secondary'>Vis flere</Button>
             </Card>

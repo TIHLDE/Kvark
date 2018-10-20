@@ -84,6 +84,7 @@ InfoContent.propTypes = {
 const EventRenderer = (props) => {
     const {classes, data} = props;
     const description = data.description || '';
+    const start = moment(data.start, ['YYYY-MM-DD HH:mm'], 'nb');
 
     return (
         <Paper className={classes.img} square>
@@ -95,8 +96,8 @@ const EventRenderer = (props) => {
                     <MarkdownRenderer value={description} />
                 </div>
                 <div className={classes.details}>
-                    <InfoContent icon={<Calendar />} label={moment(data.start).format('DD.MM.YYYY')} />
-                    <InfoContent icon={<Time />} label={moment(data.start).format('HH:mm')} />
+                    <InfoContent icon={<Calendar />} label={start.format('DD.MM.YYYY')} />
+                    <InfoContent icon={<Time />} label={start.format('HH:mm')} />
                     <InfoContent icon={<Location />} label={data.location} />
                     {data.price && <InfoContent icon={<Time />} label={data.price} />}
                     {data.sign_up && <Button fullWidth className={classes.mt} variant='outlined' color='primary'>{Text.signUp}</Button>}
