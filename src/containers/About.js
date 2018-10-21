@@ -23,6 +23,7 @@ import Banner from '../components/Banner';
 
 const styles = {
     root: {
+        backgroundColor:'whitesmoke',
         minHeight: '100vh',
         maxWidth: 1200,
         margin: 'auto',
@@ -41,7 +42,6 @@ const styles = {
     },
     padding: {
         padding: 30,
-
         '@media only screen and (max-width: 700px)': {
             padding: 15,
         },
@@ -97,8 +97,8 @@ class About extends Component {
                         <InfoCard header='Næringsliv og Kurs' text={Text.business} src={DriftIcon}/>
                         <InfoCard header='Promo' text={Text.promo} src={DriftIcon}/>
                     </div>
-                    
-                    
+
+
 
                     <Typography className={classes.verticalMargin}variant='display1' color='inherit'>Komiteer</Typography>
                     <div className={classes.grid}>
@@ -120,7 +120,7 @@ class About extends Component {
         );
     }
 
-};
+}
 
 About.propTypes = {
     classes: PropTypes.object,

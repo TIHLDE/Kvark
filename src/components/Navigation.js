@@ -36,7 +36,7 @@ const styles = {
     root: {
         boxSizing: 'border-box',
         backgroundColor: 'var(--tihlde-blaa)',
-        color: 'white',
+        color: 'whitesmoke',
         flexGrow: 1,
         zIndex: 10001,
     },
@@ -87,7 +87,7 @@ const styles = {
         flexGrow: 1,
     },
     horSpacing: {
-        margin: '0 5px'
+        margin: '0 12px'
     },
     snack: {
         position: 'absolute',
@@ -97,7 +97,7 @@ const styles = {
         width: '100vw',
         height: 'auto',
         padding: 0,
-        
+
         backgroundColor: 'rgba(211,47,47,1)',
         '@media only screen and (max-width: 600px)': {
             top: 56,
@@ -234,10 +234,10 @@ class Navigation extends Component {
                 </AppBar>
                 <Snack
                     className={classNames(classes.snack, classes.flex)}
-                    open={this.state.showSnackbar} 
+                    open={this.state.showSnackbar}
                     message={this.state.snackMessage}
                     onClose={this.closeSnackbar}/>
-               
+
                 <main className={classes.main}>
                     {(this.props.isLoading)? <LinearProgress /> : null}
                     <div className={classes.wrapper}>
