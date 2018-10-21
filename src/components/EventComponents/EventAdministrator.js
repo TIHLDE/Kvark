@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import moment from 'moment';
 
 // API imports
 import API from '../../api/api';
@@ -22,6 +23,10 @@ import IconButton from '@material-ui/core/IconButton';
 
 // Icons
 import AddIcon from '@material-ui/icons/Add';
+import DownloadIcon from '@material-ui/icons/CloudDownload';
+
+// Project Components
+import TextEditor from '../TextEditor';
 
 const SIDEBAR_WIDTH = 300;
 
@@ -48,6 +53,9 @@ const styles = (theme) => ({
     sidebarTop: {
         backgroundColor: 'whitesmoke',
         padding: '10px 5px 10px 12px',
+    },
+    miniTop: {
+        padding: '5px 5px 5px 12px',
     },
     eventItem: {
         padding: '10px 10px',
@@ -77,7 +85,7 @@ const styles = (theme) => ({
     margin: {
         margin: '10px 0px',
     },
-
+    mr: {marginRight: 10},
     snackbar: {
         marginTop: 44,
         backgroundColor: theme.palette.error.main,
@@ -153,9 +161,12 @@ class EventAdministrator extends Component {
         this.state = {
             pageLoading: false,
             isLoading: false,
+            isFetching: false,
 
             events: [],
+            expired: [],
             eventLists: [],
+            categories: [],
             selectedEvent: null,
 
             title: '',
@@ -165,6 +176,7 @@ class EventAdministrator extends Component {
             signUp: false,
             priority: 0,
             image: '',
+            category: 0,
             // imageAlt: '',
             eventlist: 0,
 
@@ -172,10 +184,30 @@ class EventAdministrator extends Component {
             errorMessage: 'Det oppstod en feil',
             showSuccessMessage: false,
             successMessage: eventCreated,
+            showPreview: false,
         };
     }
 
     componentDidMount() {
+    
+        // Get all eventlists
+        const listResponse = API.getEventLists().response();
+        listResponse.then((data) => {
+            console.log(data);
+            if (listResponse.isError === false) {
+                this.setState({eventLists: data});
+            }
+        });
+
+        // Get all categories
+        const categories = API.getCategories().response();
+        categories.then((data) => {
+            console.log(data);
+            if(categories.isError === false) {
+                this.setState({categories: data});
+            }
+        });
+
         // Get all events
         const response = API.getEventItems().response();
         response.then((data) => {
@@ -184,15 +216,23 @@ class EventAdministrator extends Component {
                 this.setState({events: data});
             }
         });
+    }
 
-        // Get all eventlists
-        const listResponse = API.getEventLists().response();
-        listResponse.then((data) => {
-            console.log(data);
+    fetchExpired = () => {
+        console.log(this.state.isFetching);
+        if(this.state.isFetching) {
+            return;
+        }
+
+        this.setState({isFetching: false});
+        const response = API.getExpiredEvents().response();
+        response.then((data) => {
             if (response.isError === false) {
-                this.setState({eventLists: data});
+                this.setState({expired: data});
             }
+            this.setState({isFetching: true});
         });
+        
     }
 
     onEventClick = (event) => {
@@ -208,6 +248,7 @@ class EventAdministrator extends Component {
                 description: event.description,
                 priority: event.priority,
                 image: event.image,
+                category: event.category,
                 // imageAlt: event.imageAlt,
                 eventlist: event.eventlist,
                 startDate: event.start.substring(0,16),
@@ -227,6 +268,7 @@ class EventAdministrator extends Component {
             image: '',
             imageAlt: '',
             eventlist: 0,
+            category: 0,
             startDate: new Date().toISOString().substring(0, 16),
             signUp: false,
         });
@@ -234,6 +276,10 @@ class EventAdministrator extends Component {
 
     handleChange = (name) => (event) => {
         this.setState({[name]: event.target.value});
+    }
+
+    onChange = (name) => (value) => {
+        this.setState({[name]: value});
     }
 
     toggleSnackbar = () => {
@@ -251,8 +297,9 @@ class EventAdministrator extends Component {
         priority: this.state.priority,
         image: this.state.image,
         imageAlt: 'event',
+        category: this.state.category,
         eventlist: this.state.eventlist,
-        start: this.state.startDate,
+        start: moment(this.state.startDate).format('YYYY-MM-DDThh:mm'),
         signUp: this.state.signUp,
     });
 
@@ -329,7 +376,7 @@ class EventAdministrator extends Component {
 
     render() {
         const {classes} = this.props;
-        const {selectedEvent, title, location, description, image, priority, eventlist} = this.state;
+        const {selectedEvent, title, location, description, image, priority, eventlist, categories, category} = this.state;
         const selectedEventId = (selectedEvent)? selectedEvent.id : '';
         const eventLists = (this.state.eventLists)? this.state.eventLists : [];
         const isNewItem = (selectedEvent === null);
@@ -360,7 +407,10 @@ class EventAdministrator extends Component {
                                     <Typography variant='headline'>{header}</Typography>
                                     <TextField className={classes.field} label='Tittel' value={title} onChange={this.handleChange('title')} required/>
                                     <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
-                                    <TextField className={classes.margin} multiline label='Beskrivelse' value={description} onChange={this.handleChange('description')} required/>
+                                    
+                                    <TextEditor className={classes.margin} value={description} onChange={this.onChange('description')}/>
+
+                                    <Divider className={classes.margin} />
 
                                     <TextField className={classes.margin} fullWidth label='Bilde' value={image} onChange={this.handleChange('image')}/>
 
@@ -369,6 +419,14 @@ class EventAdministrator extends Component {
                                             {priorities.map((value, index) => (
                                                 <MenuItem key={index} value={index}>
                                                     {value}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+
+                                        <TextField className={classes.margin} select fullWidth label='Kategori' value={category} onChange={this.handleChange('category')}>
+                                            {categories.map((value, index) => (
+                                                <MenuItem key={index} value={value.id}>
+                                                    {value.text}
                                                 </MenuItem>
                                             ))}
                                         </TextField>
@@ -385,10 +443,18 @@ class EventAdministrator extends Component {
                                     </div>
 
                                     <Grid container direction='row' wrap='nowrap' justify='space-between'>
-                                        {(isNewItem)? 
-                                            <Button onClick={this.createNewEvent} type='submit' variant='raised' color='primary'>Lag nytt event</Button> :
+                                        {(isNewItem)?
+                                            <div>
+                                                <Button className={classes.mr} onClick={this.createNewEvent} type='submit' variant='raised' color='primary'>Lag nytt event</Button>
+                                                <Button variant='outlined' color='primary'>Preview</Button>
+                                            </div>
+                                             
+                                            :
                                             <Fragment>
-                                                <Button onClick={this.editEventItem} variant='raised' type='submit' color='primary'>Lagre</Button>
+                                                <div>
+                                                    <Button className={classes.mr} onClick={this.editEventItem} variant='raised' type='submit' color='primary'>Lagre</Button>
+                                                    <Button variant='outlined' color='primary'>Preview</Button>
+                                                </div>
                                                 <Button className={classes.deleteButton} onClick={this.deleteEventItem} variant='outlined'>Slett</Button>
                                             </Fragment>
                                         }
@@ -406,6 +472,18 @@ class EventAdministrator extends Component {
                             <IconButton onClick={this.resetEventState}><AddIcon/></IconButton>
                         </Grid>
                         {this.state.events.map((value, index) => (
+                            <EventItem
+                                key={index}
+                                selected={value.id === selectedEventId}
+                                onClick={() => this.onEventClick(value)}
+                                title={value.title}
+                                location={value.location} />
+                        ))}
+                        <Grid className={classNames(classes.sidebarTop, classes.miniTop)} container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
+                            <Typography variant='title' color='inherit'>Utgåtte</Typography>
+                            <IconButton onClick={this.fetchExpired}><DownloadIcon/></IconButton>
+                        </Grid>
+                        {this.state.expired.map((value, index) => (
                             <EventItem
                                 key={index}
                                 selected={value.id === selectedEventId}

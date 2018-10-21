@@ -9,7 +9,6 @@ import Text from '../text/AboutText';
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
 
 // Icons
 import DriftIcon from '../assets/img/instagram_icon.png';
@@ -23,11 +22,10 @@ import Banner from '../components/Banner';
 
 const styles = {
     root: {
-        backgroundColor:'whitesmoke',
         minHeight: '100vh',
         maxWidth: 1200,
         margin: 'auto',
-        marginBottom: 100,
+        paddingBottom: 100,
     },
     grid: {
         width: '100%',
@@ -42,6 +40,7 @@ const styles = {
     },
     padding: {
         padding: 30,
+
         '@media only screen and (max-width: 700px)': {
             padding: 15,
         },
@@ -82,7 +81,7 @@ class About extends Component {
     render() {
         const {classes} = this.props;
         return (
-            <Navigation footer>
+            <Navigation footer whitesmoke>
                 <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
                     <Banner
                         className={classes.banner}
@@ -100,7 +99,7 @@ class About extends Component {
 
 
 
-                    <Typography className={classes.verticalMargin}variant='display1' color='inherit'>Komiteer</Typography>
+                    <Typography className={classes.verticalMargin}variant='display1' color='inherit'>Komitéer</Typography>
                     <div className={classes.grid}>
                         <InfoCard header='Jubkom' text={Text.jubkom} subheader='Opptak' subText={Text.jubkom2} justifyText/>
                         <InfoCard header='Netkom' text={Text.netkom} subheader='Opptak' subText={Text.netkom2} justifyText/>
@@ -111,16 +110,18 @@ class About extends Component {
                         <InfoCard header='ÅreKom' text={Text.arekom} subheader='Opptak' subText={Text.arekom2} justifyText className={classes.bottomItem}/>
                     </div>
 
-                    <InfoCard header='Historie' text={Text.history} subheader='Opptak' subText={Text.history2} justifyText/>
+                    
 
                     <Typography className={classes.verticalMargin}variant='display1' color='inherit'>Organisasjonskart</Typography>
                     <ClickableImage className={classes.miniPadding} image={OrgMap} alt='organisasjonskart' width='90%'/>
+
+                    <InfoCard className={classes.verticalMargin} header='Historie' text={Text.history} subheader='Opptak' subText={Text.history2} justifyText/>
                 </Grid>
             </Navigation>
         );
     }
 
-}
+};
 
 About.propTypes = {
     classes: PropTypes.object,

@@ -36,7 +36,7 @@ const styles = {
     root: {
         boxSizing: 'border-box',
         backgroundColor: 'var(--tihlde-blaa)',
-        color: 'whitesmoke',
+        color: 'white',
         flexGrow: 1,
         zIndex: 10001,
     },
@@ -87,7 +87,7 @@ const styles = {
         flexGrow: 1,
     },
     horSpacing: {
-        margin: '0 12px'
+        margin: '0 5px'
     },
     snack: {
         position: 'absolute',
@@ -109,6 +109,10 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
     },
+
+    whitesmoke: {
+        backgroundColor: 'whitesmoke',
+    }
 };
 
 
@@ -196,6 +200,7 @@ class Navigation extends Component {
                                     <URIbutton data={{link: URLS.about, text: "Om TIHLDE"}}/>
                                     <URIbutton data={{link: URLS.services, text: "Tjenester"}}/>
                                     <URIbutton data={{link: URLS.events, text: "Arrangementer"}}/>
+                                    <URIbutton data={{link: URLS.newStudent, text: "Ny student"}}/>
                                     <Link to={URLS.company} style={{ textDecoration: 'none' }}>
                                         <Button color="primary" style={{
                                             color: 'var(--tihlde-blaa)',
@@ -238,7 +243,7 @@ class Navigation extends Component {
                     message={this.state.snackMessage}
                     onClose={this.closeSnackbar}/>
 
-                <main className={classes.main}>
+                <main className={classNames(classes.main, (this.props.whitesmoke ? classes.whitesmoke : null))}>
                     {(this.props.isLoading)? <LinearProgress /> : null}
                     <div className={classes.wrapper}>
                         {this.props.children}
@@ -257,6 +262,7 @@ Navigation.propTypes = {
     children: PropTypes.node,
     isLoading: PropTypes.bool,
     footer: PropTypes.bool,
+    whitesmoke: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({

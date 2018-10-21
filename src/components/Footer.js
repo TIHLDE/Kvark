@@ -22,12 +22,13 @@ const styles = {
         padding: '40px 0px',
         display: 'grid',
         gridGap: '40px',
-        gridTemplateColumns: '1fr 1fr 1fr 1fr',
-        gridTemplateAreas: "'OmTihlde Sponsorer SosialeMedier TihldeSupport'",
+        gridTemplateColumns: '1fr 1fr 1fr', // 1fr 1fr 1fr 1fr
+        gridTemplateAreas: "'OmTihlde Sponsorer TihldeSupport'", //SosialeMedier
         gridTemplateRows: 'auto',
         justifyItems: 'center',
         color: 'white',
         textColor: 'white',
+        boxShadow: '0px -2px 5px 0px rgba(0,0,0,0.1)',
 
         '@media only screen and (max-width: 900px)': {
             gridTemplateRows: 'auto auto',
@@ -125,8 +126,8 @@ class Footer extends Component {
         return (
             <div className={classes.tihldeSupport}>
                 <Typography className={classes.horSpacing} align='center' color='inherit' variant='headline'>Support</Typography>
-                <Button className={classes.horSpacing} variant='contained' color='primary'>Open new ticket</Button>
-                <Button className={classes.horSpacing} variant='contained' color='secondary'>Check ticket status</Button>
+                <Button className={classes.horSpacing} variant='contained' color='primary' href='https://tihlde.org/secure/osticket/open.php'>Open new ticket</Button>
+                <Button className={classes.horSpacing} variant='contained' color='secondary' href='https://tihlde.org/secure/osticket/view.php'>Check ticket status</Button>
             </div>
         )
     };
@@ -139,7 +140,7 @@ class Footer extends Component {
             <div className={classes.root}>
                 {this.omTihlde()}
                 {this.sponsorer()}
-                {this.sosialeMedier()}
+                {/*this.sosialeMedier()*/}
                 {this.tihldeSupport()}
             </div>
         );

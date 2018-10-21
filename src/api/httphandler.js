@@ -7,6 +7,7 @@ export class IRequest {
         this.data = data;
         this.headers = {'Content-Type': 'application/json'};
         this.url = TIHLDE_API.URL + url;
+        this.args = args;
 
         if (withAuth) {
             this.headers[TOKEN_HEADER_NAME] = TOKEN.get();
@@ -54,11 +55,25 @@ const request = (method, url, headers, data) => {
     .catch((error) => console.log(error));
 };
 
-const getRequest = (method, url, headers) => {
-    return fetch(url, {
+const getRequest = (method, url, headers, args) => {
+    return fetch(url+argsToParams(args), {
         method: method,
         headers: headers,
     })
     .catch((error) => console.log(error));
+};
+
+const argsToParams = (data) => {
+    let args = '?';
+    for (let key in data) {
+        if (Array.isArray(data[key]) ) {
+            for (let value in data[key]) {
+            args += '&' + key + '=' + data[key][value];
+            }
+        } else {
+            args += '&' + key + '=' + data[key];
+        }
+    }
+    return args;
 };
 

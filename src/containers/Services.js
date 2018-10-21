@@ -1,14 +1,12 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
-import classNames from 'classnames';
 
 // Text imports
 import Text from '../text/ServicesText';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 // Icons
@@ -24,7 +22,7 @@ const styles = {
         minHeight: '100vh',
         maxWidth: 1200,
         margin: 'auto',
-        marginBottom: 100,
+        paddingBottom: 100,
     },
     grid: {
         width: '100%',
@@ -70,7 +68,7 @@ class Services extends Component {
     render() {
         const {classes} = this.props;
         return (
-            <Navigation footer>
+            <Navigation footer whitesmoke>
                 <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
                     <Banner
                         className={classes.banner}

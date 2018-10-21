@@ -18,12 +18,14 @@
     "react-draft-wysiwyg": "^1.12.13",
     "react-image-gallery": "^0.8.9",
     "react-image-lightbox": "^5.0.0",
+    "react-markdown": "^4.0.3",
     "react-redux": "^5.0.7",
     "react-responsive": "^5.0.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "^1.1.4",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
+    "remark-breaks": "^1.0.1",
     "universal-cookie": "^2.2.0"
   },
   "scripts": {

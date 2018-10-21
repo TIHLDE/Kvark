@@ -22,8 +22,11 @@ export default {
     getEventItem: (id) => {
         return new IRequest('GET', 'events/'.concat(id, '/'), undefined, false);
     },
-    getEventItems: () => {
-        return new IRequest('GET', 'events/', undefined, false);
+    getEventItems: (data) => {
+        return new IRequest('GET', 'events/', (data)? data : {newest: true}, false);
+    },
+    getExpiredEvents: () => {
+        return new IRequest('GET', 'events/', {expired: true}, false);
     },
     getEventLists: () => {
         return new IRequest('GET', 'eventlist/', undefined, false);
@@ -41,5 +44,8 @@ export default {
     // Warning
     getWarning: () => {
         return new IRequest('GET', 'warning/');
+    },
+    getCategories: () => {
+        return new IRequest('GET', 'category/');
     },
 };

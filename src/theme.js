@@ -17,3 +17,17 @@ export default createMuiTheme({
       },
     },
 });
+
+export const errorTheme = createMuiTheme({
+    palette: {
+      primary: {
+        main: '#B71C1C',
+        contrastText: 'white',
+      },
+      secondary: {
+        main: '#009688',
+        contrastText: 'white',
+      },
+    },
+});
+
