@@ -39,7 +39,7 @@ const styles = (theme) => ({
         paddingTop:'10px',
         paddingBottom:'30px',
 
-        maxWidth: 1000,
+        maxWidth: 1200,
 
         display: 'grid',
         gridTemplateColumns: '1fr',

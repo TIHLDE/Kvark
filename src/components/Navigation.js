@@ -55,7 +55,7 @@ const styles = {
         width: '100%',
         padding: '0 10px',
         display: 'flex',
-        maxWidth: 1400,
+        maxWidth: 1200,
         margin: 'auto',
 
         alignItems: 'center',

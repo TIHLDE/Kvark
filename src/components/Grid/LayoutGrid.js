@@ -13,7 +13,7 @@ import GridData from '../../data/grid_minimal.json';
 // Grid Items/Widgets
 import EventList from '../EventComponents/EventList';
 import Poster from '../Poster2';
-import NewsItem from '../NewsComponents/NewsItem';
+import NewsGroup from '../NewsComponents/NewsGroup';
 import ImageGallery from '../ImageGallery/ImageGallery';
 
 import GridItem from './GridItem';
@@ -21,22 +21,21 @@ import GridItem from './GridItem';
 const styles = {
     root: {
         display: 'grid',
-        // gridTemplateAreas: GridData.gridAreas,
         gridTemplateColumns: 'repeat(' + GridData.gridColumns + ', 1fr)',
         girdTemplateRows: 'auto',
-        gridAutoRows: '300px',
+        gridAutoRows: '275px',
         gridGap: '20px',
 
         margin: 'auto',
         marginBottom: 50,
         padding: '0 5px 5px 5px',
-        maxWidth: 1400,
+        maxWidth: 1200,
 
         '@media only screen and (max-width: 1000px)': {
             gridTemplateColumns: '1fr 1fr',
         },
 
-        '@media only screen and (max-width: 600px)': {
+        '@media only screen and (max-width: 800px)': {
            gridTemplateColumns: '100%',
            padding: '5px 5px',
            gridAutoRows: 'auto',
@@ -59,7 +58,7 @@ const getItem = (id, type, data, height) => {
         case 'eventlist':
             return <EventList id={id} data={data} height={height}/>;
         case 'news':
-            return <NewsItem id={id} data={data}/>;
+            return <NewsGroup id={id} data={data}/>;
         case 'poster':
             return <Poster id={id} data={data}/>;
         case 'imagegallery':

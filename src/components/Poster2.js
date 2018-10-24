@@ -19,6 +19,9 @@ const styles = {
         position: 'absolute', left: 0, right: 0,
         overflow: 'hidden',
     },
+    static: {
+        position: 'static',
+    },
     image: {
         position: 'absolute',
         top: 0,
@@ -65,10 +68,8 @@ const styles = {
         position: 'absolute',
         bottom: 0, left: 0, right: 0,
         width: '100%',
-        height: 10,
+        height: 15,
         backgroundColor: 'white',
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
         boxShadow: '0px -2px 5px 0px rgba(0,0,0,0.1)',
     },
 };
@@ -76,14 +77,15 @@ const styles = {
 class Poster extends Component {
 
     render() {
-        const {classes, data} = this.props;
+        const {classes} = this.props;
+        const data = this.props.data || {};
         const textColor = (data.color)? data.color : 'white';
         const image = (data.image)? data.image : null;
         const height = (data.desktopHeight)? data.desktopHeight : DEFAULT_HEIGHT;
 
         return (
-            <div className={classes.root}>
-                <img className={classes.image} src={image} alt='poster' height={height}/>
+            <div className={classNames(classes.root, this.props.className, (this.props.static)? classes.static : '')}>
+                <img className={classNames(classes.image, (this.props.static)? classes.static : '', this.props.imageClass)} src={image} alt='poster' height={height}/>
 
                 <Grid className={classes.content} container direction='column' wrap='nowrap' alignItems='center' justify='center'>
                     <Typography className={classNames(classes.text, classes.headerText)} variant='display4' align='center' style={{color: textColor}}>{data.header}</Typography>

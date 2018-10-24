@@ -18,7 +18,7 @@ const styles = {
         minHeight: '90vh',
     },
     wrapper:{
-        maxWidth: 1100,
+        maxWidth: 1200,
         margin: 'auto',
         paddingTop: 10,
         paddingBottom: 100,
