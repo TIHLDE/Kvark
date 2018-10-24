@@ -64,7 +64,7 @@ const InfoCard = (props) => {
             <div className={classes.wrapper}>
                 {(!props.src)? null :
                     <div className={classes.margin}>
-                        <img className={classes.image} src={props.src} alt={props.alt}/>
+                        <img className={classNames(classes.image, props.imageClass)} src={props.src} alt={props.alt}/>
                     </div>
                 }
                 <Grid className={(props.justifyText)? classes.cover : ''} container direction='column' nowrap='nowrap' justify='flex-start'>
@@ -77,7 +77,6 @@ const InfoCard = (props) => {
                             <Typography variant='body2' component='p'>{Parser(props.subText)}</Typography>
                         </Fragment>
                     }
-                    
                     {props.children && (
                         <div className={classNames(classes.grow, classes.padding, props.classes.children)}>
                             {props.children}
@@ -100,6 +99,7 @@ InfoCard.propTypes = {
     subText: PropTypes.string,
     className: PropTypes.string,
     elevation: PropTypes.number,
+    imageClass: PropTypes.string,
 
     children: PropTypes.node,
 };
