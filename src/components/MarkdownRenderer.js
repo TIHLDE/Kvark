@@ -6,7 +6,9 @@ import ReactMarkdown from 'react-markdown';
 import breaks from 'remark-breaks';
 
 const MarkdownRenderer = (props) => (
-    <ReactMarkdown source={props.value} plugins={[breaks]} escapeHtml={false}/>
+    <div className='renderer'>
+        <ReactMarkdown source={props.value} plugins={[breaks]} escapeHtml={false}/>
+    </div>
 );
 
 MarkdownRenderer.propTypes = {
