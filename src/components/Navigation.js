@@ -87,7 +87,7 @@ const styles = {
         flexGrow: 1,
     },
     horSpacing: {
-        margin: '0 5px'
+        margin: '0 10px'
     },
     snack: {
         position: 'absolute',
