@@ -56,7 +56,11 @@ a {
     box-shadow: 0 0 0 rgba(255,255,255,0.8);
     animation: pulse 2s infinite;
     margin-right: 20px;
-  }
+}
+
+.renderer ul {
+    padding-left: 20px;
+}
 
 @-webkit-keyframes pulse {
     0% {

@@ -46,7 +46,7 @@ const styles = {
         backgroundColor: 'white',
         color: 'black',
         alignItems: 'center',
-        padding: '20px 15px 10px 15px',
+        padding: '15px 15px 10px 15px',
 
         '@media only screen and (max-width: 600px)': {
             position: 'static',
@@ -74,11 +74,10 @@ class NewsItem extends Component {
         return (
             <Paper className={classNames(classes.card, (data && data.image)? '' : classes.whitesmoke, this.props.className)} square={true} elevation={1}>
                 <Link to={URLS.news + this.props.id}>
-                {imageOrFallback}
-                <div className={classes.textContainer}>
-                    <Typography variant='headline' color='inherit'>{data.title}</Typography>
-                   {/*  <Typography variant='body2' color='inherit'>(Ikon) Næringsliv og Kurs (Ikon) 12/23-18</Typography> */}
-                </div>
+                    {imageOrFallback}
+                    <div className={classes.textContainer}>
+                        <Typography variant='headline' color='inherit'>{data.title}</Typography>
+                    </div>
                 </Link>
             </Paper>
         );

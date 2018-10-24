@@ -13,7 +13,11 @@ export default function reducer(state = initialState, action) {
     switch (action.type) {
 
         case "SET_GRID_ITEMS": {
-            return {...state, grid: data}
+            const news = data.filter(e => e.type === 'news');
+            let gridData = data.filter(e => e.type !== 'news');
+            gridData.push(createNewsItem(news));
+            console.log(gridData);
+            return {...state, grid: gridData}
         }
 
         case "SELECT_STORED_ITEM": {
@@ -40,3 +44,7 @@ export default function reducer(state = initialState, action) {
 const isPayloadValid = (payload) => {
     return (typeof(payload) !== undefined);
 };
+
+const createNewsItem = (news) => ({
+    data: news, type: 'news', height: 2, width: 2, fullWidth: false, hideOnMobile: false, order: -10,
+});

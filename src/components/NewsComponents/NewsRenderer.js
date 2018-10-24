@@ -1,101 +1,127 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import {refactorDateString} from '../../utils';
-import classNames from 'classnames';
-import Parser from 'html-react-parser';
+import moment from 'moment';
 
 // Material UI Components
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+
+// Icons
+import Time from '@material-ui/icons/AccessTime';
+
+// Project Components
+import MarkdownRenderer from '../MarkdownRenderer';
 
 const styles = {
     root: {
+        maxWidth: 1200,
         margin: 'auto',
-        width: '100%',
-        maxWidth: 900,
-        backgroundColor: '#ebebe',
+        paddingTop: 20,
+        marginBottom: 100,
+
+        '@media only screen and (max-width: 600)': {
+            paddingTop: 0,
+        }
+    },
+    grid: {
+        display: 'grid',
+        gridTemplateColumns: '2fr 1fr',
+        gridTemplateRows: 'auto',
+        gridGap: '5px',
+
+        position: 'relative',
         overflow: 'hidden',
+
+        '@media only screen and (max-width: 800px)': {
+            gridTemplateColumns: '100%',
+            justifyContent: 'center',
+        },
+    },
+    paper: {
+        padding: 26,
     },
     image: {
         width: '100%',
         height: 'auto',
+        maxHeight: 400,
         objectFit: 'cover',
-        maxHeight: 500,
-        '@media only screen and (max-width: 600px)': {
-            order: 0,
-        },
+    },
+    titleWrapper: {
+        padding: 26,
     },
     title: {
-        margin: '20px 0 10px 0',
+        color: 'black',
+    },
+    content: {
+        padding: 26,
         '@media only screen and (max-width: 800px)': {
-            fontSize: '1em',
-        },
-        '@media only screen and (max-width: 600px)': {
-            fontSize: '0.7em',
             order: 1,
         },
     },
-    subtitle: {
-        margin: '5px 0',
+    details: {
+        padding: 26,
         '@media only screen and (max-width: 800px)': {
-            fontSize: '0.7em',
-        },
-        '@media only screen and (max-width: 600px)': {
-            fontSize: '0.5em',
-            order: 2,
+            order: 0,
         },
     },
-    caption: {
-        '@media only screen and (max-width: 600px)': {
-            fontSize: '0.4em',
-            order: 3,
-        },
+    info: {
+        width: 'auto',
+        marginBottom: 10,
     },
-    contentText: {
-        fontSize: '0.55em',
-        marginTop: 30,
-        marginBottom: 100,
-        '@media only screen and (max-width: 600px)': {
-            fontSize: '0.5em',
-            order: 4,
-        },
-    },
-    avatar: {
-        borderRadius: 0,
-        width: '50px',
-        height: '50px',
-    },
-    text: {
-        '@media only screen and (max-width: 800px)': {
-            padding: '0 15px',
-        },
-    },
+    ml: {marginLeft: 10},
+    mt: {marginTop: 10},
 };
 
-const NewsRenderer = (props) => {
+const InfoContent = withStyles(styles)((props) => (
+    <Grid className={props.classes.info} container direction='row' wrap='nowrap' alignItems='center' justify='flex-end'>
+        <Typography className={props.classes.mr} variant='body2'>Publisert:</Typography>
+        <Typography className={props.classes.ml} variant='body2'>{props.label}</Typography>
+    </Grid>
+));
+
+InfoContent.propTypes = {
+    icon: PropTypes.node,
+    label: PropTypes.string,
+};
+
+const EventRenderer = (props) => {
     const {classes, newsData} = props;
     const data = (newsData && newsData.data)? newsData.data : (newsData)? newsData : {};
     const lastUpdated = (newsData && newsData.updated_at)? newsData.updated_at : (data.updated_at)? data.updated_at : '';
-    const body = (data.body)? data.body : '';
-    
+    const start = moment(lastUpdated, ['YYYY-MM-DD HH:mm'], 'nb');
+
     return (
-        <Grid className={classes.root} container direction='column' wrap='nowrap'>
-            <Typography className={classNames(classes.text, classes.title)} variant='display2' color='inherit'>{data.title}</Typography>
-            <Typography className={classNames(classes.text, classes.subtitle)} variant='title'>{data.header}</Typography>
-            <Typography className={classNames(classes.text, classes.caption)} variant='body2' color='textSecondary'>Sist oppdatert: {refactorDateString(lastUpdated)}</Typography>
-            <img className={classes.image} src={data.image} alt={data.image_alt}/> 
-{/*             <Typography className={classNames(classes.text, classes.contentText)}>
-                {data.body}
-            </Typography> */}
-            {Parser(body)}
-        </Grid>
+        <div className={classes.root}>
+            <Paper square>
+                <img className={classes.image} src={data.image} alt={data.image_alt} />
+                <div className={classes.titleWrapper}>
+                    <Typography className={classes.title} variant='display1' gutterBottom><strong>{data.title}</strong></Typography>
+                    <Typography className={classes.title} variant='subheading'>{data.header}</Typography>
+                </div>
+                <Divider />
+                <div className={classes.grid} >
+                    <div className={classes.content}>
+                        <MarkdownRenderer value={data.body || ''} />
+                    </div>
+                    <div className={classes.details}>
+                        <InfoContent label={start.format('HH:mm DD.MM.YYYY')} />
+                        {data.price && <InfoContent icon={<Time />} label={data.price} />}
+                        {data.sign_up && <Button fullWidth className={classes.mt} variant='outlined' color='primary'>{Text.signUp}</Button>}
+                    </div>
+                </div>
+            </Paper>
+        </div>
     );
 };
 
-NewsRenderer.propTypes = {
+EventRenderer.propTypes = {
     classes: PropTypes.object,
+
     newsData: PropTypes.object,
 };
 
-export default withStyles(styles)(NewsRenderer);
+export default withStyles(styles)(EventRenderer);

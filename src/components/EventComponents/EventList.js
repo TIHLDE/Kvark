@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
+import Hidden from '@material-ui/core/Hidden';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -35,7 +36,7 @@ const styles = (theme) => ({
     },
     wrapper: {
         width: 'auto',
-        padding: '5px 16px'
+        padding: '5px 8px'
     },
     padding: {
         padding: 15,
@@ -66,24 +67,35 @@ const styles = (theme) => ({
         margin: '0 5px',
         height: 40,
     },
+    image: {
+        padding: '12px 0',
+        width: 60,
+        height: 60,
+        objectFit: 'cover',
+    }
 });
 
 const Event = withStyles(styles)((props) => {
     const {classes} = props;
     return (
         <Fragment>
-            <ListItem button disableGutters style={{padding: 3}} onClick={props.onClick}>
+            <ListItem button disableGutters style={{padding: '4px 8px'}} onClick={props.onClick}>
+                {props.image &&
+                    <Hidden smDown implementation='js'>
+                        <img className={classes.image} src={props.image} alt={props.title}/>
+                    </Hidden>
+                }
                 <ListItemText>
                     <Grid container direction='column' justify='center'>
                         <Typography
-                        className={classes.eventHeader}
-                        component='span'
-                        variant='headline'
-                        color={(props.priority === 2)? 'primary' : 'default'}>
-                        {(props.priority === 2)? 
-                            <strong>{props.title}</strong>
-                            : props.title
-                        }
+                            className={classes.eventHeader}
+                            component='span'
+                            variant='headline'
+                            color={(props.priority === 2)? 'primary' : 'default'}>
+                            {(props.priority === 2)? 
+                                <strong>{props.title}</strong>
+                                : props.title
+                            }
                         </Typography>
                         <Typography className={classes.eventSubheader} component='span' variant='subheading'>{props.location}</Typography>
                     </Grid>
@@ -145,12 +157,13 @@ class EventList extends Component {
             v.time = zeropadNumber(startTime.getUTCHours()) + ':' + zeropadNumber(startTime.getMinutes());
             v.date = zeropadNumber(startTime.getDate()) + '/' + zeropadNumber(startTime.getMonth()+1);
             events[i] = <Event key={v.id}
-                          title={v.title || '<No title>'}
-                          location={v.location || ''}
-                          date={v.date}
-                          time={v.time}
-                          priority={v.priority}
-                          onClick={() => this.openEvent(v)}
+                            image={i === 0 ? v.image : null}
+                            title={v.title || '<No title>'}
+                            location={v.location || ''}
+                            date={v.date}
+                            time={v.time}
+                            priority={v.priority}
+                            onClick={() => this.openEvent(v)}
                         />;
         }
 
