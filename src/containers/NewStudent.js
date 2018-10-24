@@ -11,6 +11,7 @@ import Banner from '../components/Banner';
 
 import Text from '../text/NewStudentText';
 import Expansion from '../components/Expand';
+import PropTypes from 'prop-types';
 
 
 const styles = (theme) => ({
@@ -34,7 +35,7 @@ const styles = (theme) => ({
         margin: '20px auto',
 
         '@media only screen and (max-width: 700px)': {
-            gridTemplateColumns: '1fr'
+            gridTemplateColumns: '1fr',
         },
     },
 
@@ -81,6 +82,11 @@ class NewStudent extends Component {
         )
     }
 }
+
+NewStudent.propTypes = {
+    classes: PropTypes.object,
+};
+
 
 
 export default withStyles(styles)(NewStudent);
