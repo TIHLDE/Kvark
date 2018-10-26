@@ -1,7 +1,7 @@
 export default {
     header: 'Expand this',
     bannnerTitle: 'Bedrifter',
-    bannerPicture: 'http://www.studyinhongkong.edu.hk/en/images/page-images/hkedu-internship-and-part-time-work.jpg',
+    bannerPicture: 'https://3qrt0f3cy3lx35vbo81iuq7b-wpengine.netdna-ssl.com/wp-content/uploads/2017/05/GlobalShares-Software-Solutions-bg.jpg',
     cardInfo: 'TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet IKT-basert samhandling ved AIT, IDI, NTNU på Kalvskinnet.',
     undergrupper: 'Undergrupper',
     studier: 'Studier',
