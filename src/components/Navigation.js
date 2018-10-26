@@ -115,7 +115,10 @@ const styles = {
         backgroundColor: 'whitesmoke',
     },
     selected: {
-        border: '1px solid red',
+        borderBottom: '2px solid white',
+    },
+    uri: {
+        display: 'inline',
     }
 };
 
@@ -123,13 +126,15 @@ const styles = {
 const URIbutton = withStyles(styles)((props) => {
     const {data, classes} = props;
     return (
-        <Link to={data.link} style={{ textDecoration: 'none' }} className={(props.selected ? classes.selected : '')}>
-            <Button color="inherit" style={{
-                color: 'white',
-            }}>
-                {data.text}
-            </Button>
-        </Link>
+        <div className={classNames(props.selected ? classes.selected : '', props.uri)}>
+            <Link to={data.link} style={{ textDecoration: 'none' }}>
+                <Button color="inherit" style={{
+                    color: 'white',
+                }}>
+                    {data.text}
+                </Button>
+            </Link>
+        </div>
     );
 });
 
@@ -203,11 +208,13 @@ class Navigation extends Component {
 
                                 <div className={classes.grow}>
                                     <Hidden smDown implementation='css'>
-                                        <URIbutton data={{link: URLS.about, text: "Om TIHLDE"}} selected={this.props.match.url === URLS.about}/>
-                                        <URIbutton data={{link: URLS.services, text: "Tjenester"}} selected={this.props.match.url === URLS.services}/>
-                                        <URIbutton data={{link: URLS.events, text: "Arrangementer"}} selected={this.props.match.url === URLS.events}/>
-                                        <URIbutton data={{link: URLS.newStudent, text: "Ny student"}} selected={this.props.match.url === URLS.newStudent}/>
-                                        <URIbutton data={{link: URLS.company, text: "Bedrifter"}} selected={this.props.match.url === URLS.company}/>
+                                        <div className={classes.flex}>
+                                            <URIbutton data={{link: URLS.about, text: "Om TIHLDE"}} selected={this.props.match.url === URLS.about}/>
+                                            <URIbutton data={{link: URLS.services, text: "Tjenester"}} selected={this.props.match.url === URLS.services}/>
+                                            <URIbutton data={{link: URLS.events, text: "Arrangementer"}} selected={this.props.match.url === URLS.events}/>
+                                            <URIbutton data={{link: URLS.newStudent, text: "Ny student"}} selected={this.props.match.url === URLS.newStudent}/>
+                                            <URIbutton data={{link: URLS.company, text: "Bedrifter"}} selected={this.props.match.url === URLS.company}/>
+                                        </div>
                                     </Hidden>
                                 </div>
 
