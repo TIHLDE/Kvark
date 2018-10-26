@@ -21,14 +21,13 @@ const styles = theme => ({
             height: 'auto',
             maxHeight: 'none',
             gridTemplateRows: 'auto auto',
-            boxShadow: 'none',
         },
     },
     row: {
         
     },
     rowWrapper: {
-        padding: 8,
+        paddingTop: 8,
         '@media only screen and (max-width: 600px)': {
             flexDirection: 'column',
             padding: 0,
@@ -40,6 +39,7 @@ const styles = theme => ({
         alignItems: 'center',
         overflow: 'hidden',
         position: 'relative',
+        padding: 4,
         '@media only screen and (max-width: 600px)': {
             padding: '15px 15px 10px 15px',
         }
@@ -56,7 +56,7 @@ const styles = theme => ({
         position: 'absolute',
         bottom: 0, left: 0, right: 0,
         height: 20,
-        backgroundColor: 'white',
+        background: 'linear-gradient(transparent, white)',
     },
     image: {
         height: 300,
@@ -92,13 +92,15 @@ const styles = theme => ({
     sm: {
         overflow: 'hidden',
         flex: '1 1 0',
-        padding: 4,
+        
         '@media only screen and (max-width: 600px)': {
             flex: '0 1 auto',
             padding: 0,
         }
     },
     item: {
+        marginRight: 4,
+        marginLeft: 4,
         '@media only screen and (max-width: 600px)': {
             boxShadow: theme.shadows[1],
         }
@@ -108,20 +110,23 @@ const styles = theme => ({
             marginBottom: 20,
         },
     },
+    grow: {
+        flexGrow: 1,
+    }
 });
 
 const NewsItem = withStyles(styles)((props) => {
     const {classes, data} = props;
     return (
-        <div className={classNames(classes.item, props.lg ? classes.lg : classes.sm, props.gutterBottom ? classes.gutterBottom : '')}>
+        <Paper className={classNames(classes.item, props.lg ? classes.lg : classes.sm, props.gutterBottom ? classes.gutterBottom : '', props.className)} square elevation={1}>
             <Link to={URLS.news + props.id}>
-            <img className={props.lg ? classes.image : classes.smImage} src={data.image} alt={data.imageAlt}/>
-            <div className={classNames(classes.textContainer, props.padding ? classes.textPadding : '')}>
-                <Typography className={classes.text} variant={props.lg ? 'headline' : 'body1'} color='inherit'>{data.title}</Typography>
-                <div className={classes.fade} />
-            </div>
+                <img className={props.lg ? classes.image : classes.smImage} src={data.image} alt={data.imageAlt}/>
+                <div className={classNames(classes.textContainer, props.padding ? classes.textPadding : '')}>
+                    <Typography className={classes.text} variant={props.lg ? 'headline' : 'body1'} color='inherit'>{data.title}</Typography>
+                    <div className={classes.fade} />
+                </div>
             </Link>
-        </div>
+        </Paper>
     );
 });
 
@@ -142,8 +147,8 @@ class NewsGroup extends Component {
         const news = data.length > 4 ? data.slice(1, 4) : (data.length > 1)? data.slice(1, data.length) : [];
         
         return (
-            <Paper className={classes.root} square elevation={1}>
-                <NewsItem lg data={lg.data} gutterBottom id={lg.id} padding/>
+            <Grid className={classes.root} container direction='column' wrap='nowrap'>
+                <NewsItem className={classes.grow} lg data={lg.data} gutterBottom id={lg.id} padding/>
                 
                 <div className={classes.row}>
                     <Grid className={classes.rowWrapper} container direction='row' wrap='nowrap'>
@@ -152,7 +157,7 @@ class NewsGroup extends Component {
                         ))}
                     </Grid>
                 </div>
-            </Paper>
+            </Grid>
         );
     }
 }

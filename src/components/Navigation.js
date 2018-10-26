@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import Link from 'react-router-dom/Link';
+import {withRouter} from 'react-router-dom';
 import URLS from '../URLS';
 import classNames from 'classnames';
 import {connect} from 'react-redux';
@@ -112,17 +113,22 @@ const styles = {
 
     whitesmoke: {
         backgroundColor: 'whitesmoke',
+    },
+    selected: {
+        border: '1px solid red',
     }
 };
 
 
 const URIbutton = withStyles(styles)((props) => {
-    const {data} = props;
+    const {data, classes} = props;
     return (
-        <Link to={data.link} style={{ textDecoration: 'none' }}>
+        <Link to={data.link} style={{ textDecoration: 'none' }} className={(props.selected ? classes.selected : '')}>
             <Button color="inherit" style={{
                 color: 'white',
-            }}>{data.text}</Button>
+            }}>
+                {data.text}
+            </Button>
         </Link>
     );
 });
@@ -183,7 +189,7 @@ class Navigation extends Component {
 
     render() {
         const {classes} = this.props;
-
+        console.log(this.props.match);
         return (
             <Fragment>
                 <AppBar className={classes.root} position="fixed" color="default">
@@ -197,17 +203,11 @@ class Navigation extends Component {
 
                                 <div className={classes.grow}>
                                     <Hidden smDown implementation='css'>
-                                    <URIbutton data={{link: URLS.about, text: "Om TIHLDE"}}/>
-                                    <URIbutton data={{link: URLS.services, text: "Tjenester"}}/>
-                                    <URIbutton data={{link: URLS.events, text: "Arrangementer"}}/>
-                                    <URIbutton data={{link: URLS.newStudent, text: "Ny student"}}/>
-                                    <Link to={URLS.company} style={{ textDecoration: 'none' }}>
-                                        <Button color="primary" style={{
-                                            color: 'var(--tihlde-blaa)',
-                                            backgroundColor: 'white',
-                                            textDecoration: 'none',
-                                        }}>Bedrifter</Button>
-                                    </Link>
+                                        <URIbutton data={{link: URLS.about, text: "Om TIHLDE"}} selected={this.props.match.url === URLS.about}/>
+                                        <URIbutton data={{link: URLS.services, text: "Tjenester"}} selected={this.props.match.url === URLS.services}/>
+                                        <URIbutton data={{link: URLS.events, text: "Arrangementer"}} selected={this.props.match.url === URLS.events}/>
+                                        <URIbutton data={{link: URLS.newStudent, text: "Ny student"}} selected={this.props.match.url === URLS.newStudent}/>
+                                        <URIbutton data={{link: URLS.company, text: "Bedrifter"}} selected={this.props.match.url === URLS.company}/>
                                     </Hidden>
                                 </div>
 
@@ -273,4 +273,4 @@ const mapDispatchToProps = (dispatch) => ({
     setHasSnackDisplayed: (bool) => dispatch(GridActions.setSnackDispalyed(bool)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Navigation));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(styles)(Navigation)));
