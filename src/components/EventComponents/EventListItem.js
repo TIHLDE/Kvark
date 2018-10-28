@@ -17,8 +17,8 @@ import TIHLDELOGO from '../../assets/img/tihlde_image.png';
 
 const styles = {
     root: {
-        height: 112,
-        maxHeight: 112,
+        height: 135,
+        maxHeight: 135,
         padding: 14,
         position: 'relative',
         overflow: 'hidden',
@@ -83,7 +83,7 @@ const styles = {
 const InfoContent = withStyles(styles)((props) => (
     <Grid className={props.classes.infoRoot} container direction='row' wrap='nowrap' alignItems='center'>
         {props.icon}
-        <Typography className={props.classes.info} variant='body2'>{props.label}</Typography>
+        <Typography className={props.classes.info} variant='subheading'>{props.label}</Typography>
     </Grid>
 ));
 

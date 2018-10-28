@@ -14,6 +14,10 @@ const styles = {
     imageContainer: {
         maxHeight: 250,
         position: 'relative',
+
+        '@media only screen and (max-width: 600px)': {
+            maxHeight: 100,
+        },
     },
     image: {
         width: '100%',
@@ -36,8 +40,8 @@ const styles = {
     },
     info: {
         position: 'absolute',
-        bottom: 15,
-        left: 15,
+        bottom: 20,
+        left: 20,
     },
     title: {
         color: 'rgba(0,0,0,1)',

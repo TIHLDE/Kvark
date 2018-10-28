@@ -24,7 +24,7 @@ const styles = {
     root: {
         
         maxWidth: 500,
-        minWidth: 400,
+        width: '80%',
         margin: 'auto',
 
         '&:focus': {
@@ -37,12 +37,9 @@ const styles = {
         justifyContent: 'center',
     },
     input: {
-        width: '100%',
+        width: '20%',
         minWidth: 300,
         color: '#FFFFFF',
-        '&$cssFocused': {
-            color: '#FFFFFF',
-        },
     }
 };
 
