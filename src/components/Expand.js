@@ -29,8 +29,8 @@ const styles = (theme) => ({
 const Expansion = withStyles(styles)((props) => {
     const { classes } = props;
     return (
-        <ExpansionPanel className={props.flat ? classes.flat : null} expanded={props.expand} onClick={props.onClick}>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+        <ExpansionPanel className={props.flat ? classes.flat : null} expanded={props.expand}>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} onClick={props.customCallback}>
                 <Typography className={classes.heading}>{props.header}</Typography>
                 { props.subheader ?
                     <Typography className={classes.secondaryHeading}>{htmlReactParser(props.subheader)}</Typography>

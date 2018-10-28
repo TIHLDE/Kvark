@@ -17,6 +17,7 @@ import Forum from '../components/Forum'
 
 import Text from '../text/CompaniesText';
 import Expansion from '../components/Expand';
+import * as ReactDOM from "react-dom";
 
 
 const styles = (theme) => ({
@@ -67,26 +68,35 @@ class Companies extends Component {
         this.state = {
             opening: true,
         };
-        this.open = this.open.bind(this);
+        this.formRef = React.createRef();
+        this.firstTextFieldRef = React.createRef();
     }
+
+    componentDidMount() {
+        this.focusFirstTextField();
+    }
+
     // Brukes til å åpne den hvis den ikke er åpen
-    open = () =>{
-        window.scroll({top: 0, left: 0 , behavior: 'smooth'});
-        if(!this.state.opening){
-            this.setState((state) => {
-                return {
-                    opening: !state.opening,
-                };
-            });
+    handleExpansionToggle = (bool) => (event) => {
+        if(bool || !this.state.opening) {
+            this.focusFirstTextField();
+        }
+        if(bool) {
+            this.setState({opening: bool})
+        } else {
+            this.setState({opening: !this.state.opening})
         }
     };
-    // åpne og lukke
-    clicked2 =() => {
-        this.setState((state) => {
-            return {
-                opening: !state.opening,
-            };
-        });
+
+    focusFirstTextField = () => {
+        const node = ReactDOM.findDOMNode(this.firstTextFieldRef.current);
+        node.focus({preventScroll: true});
+    };
+
+    scrollToForm = () => {
+        this.focusFirstTextField();
+        const node = ReactDOM.findDOMNode(this.formRef.current);
+        window.scroll({top: node.offsetTop, left: 0, behavior: 'smooth'});
     };
 
     render() {
@@ -98,9 +108,9 @@ class Companies extends Component {
                 <div className={classes.grid}>
                     <div>
                     <Banner title={Text.bannnerTitle} image={Text.bannerPicture} className={classes.banner}/>
-                    <Expansion header={Text.header} expand={this.state.opening} onClick={this.clicked2}>
+                    <Expansion ref={this.formRef} header={Text.header} expand={this.state.opening} customCallback={this.handleExpansionToggle()}>
 
-                        <Forum data ={{forumText1: Text.forumText2 , forumText2: Text.forumText2}}/>
+                        <Forum data ={{forumText1: Text.forumText2 , forumText2: Text.forumText2}} firstTextFieldRef={this.firstTextFieldRef}/>
 
                     </Expansion>
                     </div>
@@ -124,7 +134,7 @@ class Companies extends Component {
                         </div>
                     </div>
 
-                    <Button variant='contained' color='primary' onClick={this.open}>Send oss en melding</Button>
+                    <Button variant='contained' color='primary' onClick={(event) => { this.scrollToForm(); this.handleExpansionToggle(true)(event) }}>Send oss en melding</Button>
                 </div>
             </div>
         </Navigation>
