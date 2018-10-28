@@ -39,7 +39,7 @@ const styles = theme => ({
         alignItems: 'center',
         overflow: 'hidden',
         position: 'relative',
-        padding: 4,
+        padding: 12,
         '@media only screen and (max-width: 600px)': {
             padding: '15px 15px 10px 15px',
         }

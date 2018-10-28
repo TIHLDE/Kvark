@@ -27,6 +27,7 @@ import DownloadIcon from '@material-ui/icons/CloudDownload';
 
 // Project Components
 import TextEditor from '../TextEditor';
+import AuthenticationModal from '../Miscellaneous/AuthenticationModal';
 
 const SIDEBAR_WIDTH = 300;
 
@@ -159,7 +160,7 @@ class EventAdministrator extends Component {
     constructor() {
         super();
         this.state = {
-            pageLoading: false,
+            isLocked: true,
             isLoading: false,
             isFetching: false,
 
@@ -280,6 +281,10 @@ class EventAdministrator extends Component {
 
     onChange = (name) => (value) => {
         this.setState({[name]: value});
+    }
+
+    handleAuthenticated = () => {
+        this.setState({isLocked: false});
     }
 
     toggleSnackbar = () => {
@@ -493,6 +498,7 @@ class EventAdministrator extends Component {
                         ))}
                     </Grid>
                 </Paper>
+                {this.state.isLocked && <AuthenticationModal onClose={this.handleAuthenticated}/>}
             </Fragment>
         );
     }
