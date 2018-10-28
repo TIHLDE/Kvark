@@ -53,6 +53,7 @@ const Inputter = withStyles(styles)((props) => {
         <div >
             <Typography variant='subheading' color='textPrimary'> {data.header}</Typography>
             <TextField
+                autoFocus={props.autoFocus}
                 id={data.id}
                 label={data.header}
                 placeholder={data.placeholder}
@@ -97,7 +98,7 @@ class Forum extends Component {
             <div className={classes.root}>
                 <div className={classes.wrapper}>
                     <Typography variant='display1'>Meld interesse:</Typography>
-                    <Inputter data={{header: 'bedrift: ', placeholder: 'Bedrift Navnet', id: 'bedrift'}} />
+                    <Inputter data={{header: 'bedrift: ', placeholder: 'Bedrift Navnet', id: 'bedrift'}} autoFocus />
                     <Inputter data={{header: 'Kontaktperson: ', placeholder: 'Navn', id: 'kontaktperson'}} />
                     <Inputter data={{header: 'Epost: ', placeholder: 'Skriv Epost her', id: 'epost'}} />
                     <div className ={classes.grid}>
