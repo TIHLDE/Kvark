@@ -17,9 +17,9 @@ import TIHLDELOGO from '../../assets/img/tihlde_image.png';
 
 const styles = {
     root: {
-        height: 135,
-        maxHeight: 135,
-        padding: 14,
+        height: 130,
+        maxHeight: 130,
+        padding: 16,
         position: 'relative',
         overflow: 'hidden',
 

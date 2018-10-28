@@ -8,7 +8,7 @@ export default createMuiTheme({
         contrastText: 'white',
       },
       secondary: {
-        main: '#009688',
+        main: '#00897B',
         contrastText: 'white',
       },
       error: {

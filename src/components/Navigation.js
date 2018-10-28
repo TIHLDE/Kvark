@@ -139,7 +139,6 @@ const URIbutton = withStyles(styles)((props) => {
     );
 });
 
-
 class Navigation extends Component {
 
     constructor() {
