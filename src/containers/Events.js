@@ -145,7 +145,6 @@ class Events extends Component {
         // Get all categories
         const response = API.getCategories().response();
         response.then((data) => {
-            console.log(data);
             if(response.isError === false) {
                 this.setState({categories: data});
             }

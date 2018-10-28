@@ -171,7 +171,6 @@ class Navigation extends Component {
 
         const response = API.getWarning().response();
         response.then((data) => {
-            console.log(data);
             if(response.isError === false) {
                 if(data && data.length > 0) {
                     this.setState({
@@ -194,7 +193,6 @@ class Navigation extends Component {
 
     render() {
         const {classes} = this.props;
-        console.log(this.props.match);
         return (
             <Fragment>
                 <AppBar className={classes.root} position="fixed" color="default">
