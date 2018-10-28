@@ -22,8 +22,7 @@ import * as ReactDOM from "react-dom";
 
 const styles = (theme) => ({
     root: {
-        maxWidth: 1200,
-        margin: 'auto',
+        
     },
     container: {
         display: 'grid',
@@ -35,6 +34,11 @@ const styles = (theme) => ({
         '@media only screen and (max-width: 600px)': {
             gridTemplateColumns: '1fr',
         },
+    },
+    section: {
+        padding: 48,
+        maxWidth: 1200,
+        margin: 'auto',
     },
     grid: {
         display: 'grid',
@@ -59,6 +63,10 @@ const styles = (theme) => ({
     margining: {
         marginBottom: '20px',
     },
+    smoke: {
+        
+        backgroundColor: '#f9f9f8',
+    },
 });
 
 
@@ -66,13 +74,15 @@ class Companies extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            opening: true,
+            opening: false,
         };
         this.formRef = React.createRef();
         this.firstTextFieldRef = React.createRef();
     }
 
     componentDidMount() {
+        window.scrollTo(0,0);
+
         this.focusFirstTextField();
     }
 
@@ -96,7 +106,7 @@ class Companies extends Component {
     scrollToForm = () => {
         this.focusFirstTextField();
         const node = ReactDOM.findDOMNode(this.formRef.current);
-        window.scroll({top: node.offsetTop, left: 0, behavior: 'smooth'});
+        window.scroll({top: node.offsetTop-60, left: 0, behavior: 'smooth'});
     };
 
     render() {
@@ -106,35 +116,45 @@ class Companies extends Component {
         <Navigation footer whitesmoke>
             <div className={classes.root}>
                 <div className={classes.grid}>
-                    <div>
-                    <Banner title={Text.bannnerTitle} image={Text.bannerPicture} className={classes.banner}/>
-                    <Expansion ref={this.formRef} header={Text.header} expand={this.state.opening} customCallback={this.handleExpansionToggle()}>
+                    <div className={classes.section}>
+                        <Banner title={Text.bannnerTitle} image={Text.bannerPicture} className={classes.banner}/>
+                        <Expansion ref={this.formRef} header={Text.header} expand={this.state.opening} customCallback={this.handleExpansionToggle()}>
 
-                        <Forum setMessage={this.setMessage} data ={{forumText1: Text.forumText2 , forumText2: Text.forumText2}} firstTextFieldRef={this.firstTextFieldRef}/>
+                            <Forum setMessage={this.setMessage} data ={{forumText1: Text.forumText2 , forumText2: Text.forumText2}} firstTextFieldRef={this.firstTextFieldRef}/>
 
-                    </Expansion>
+                        </Expansion>
                     </div>
-                    <InfoCard imageClass={classes.imageClass} header={'Om TIHLDE'} text={Text.cardInfo} src={Image}/>
-
-                    <div>
-                    <Typography variant='display1' color='inherit' align='center' className={classes.margining}>{Text.studier}</Typography>
-                    <div className={classNames(classes.container)}>
-                        <InfoCard header='Dataingeniør' text={Text.data}/>
-                        <InfoCard header='Drift' text={Text.drift}/>
-                        <InfoCard header='IT-støttet bedriftsutvikling' text={Text.support}/>
-                        <InfoCard header='IKT-basert samhandling' text={Text.IKT}/>
-                    </div>
-                    </div>
-
-                    <div>
-                    <Typography variant='display1' color='inherit' align='center' className={classes.margining}>Vi tilbyr</Typography>
-                        <div className={classNames(classes.container)}>
-                            <InfoCard header='Jobbannonser' text={Text.jobbannonser} />
-                            <InfoCard header='Bedriftpressentasjon' text={Text.bedrifter}/>
+                    
+                    <div className={classes.smoke}>
+                        <div className={classNames(classes.section)}>
+                            <Typography variant='display1' color='inherit' align='center' className={classes.margining}>Vi tilbyr</Typography>
+                            <div className={classNames(classes.container)}>
+                                <InfoCard header='Jobbannonser' text={Text.jobbannonser} />
+                                <InfoCard header='Bedriftpressentasjon' text={Text.bedrifter}/>
+                            </div>
                         </div>
                     </div>
 
-                    <Button variant='contained' color='primary' onClick={(event) => { this.scrollToForm(); this.handleExpansionToggle(true)(event) }}>Send oss en melding</Button>
+                    <div className={classes.section}>
+                        <Typography variant='display1' color='inherit' align='center' className={classes.margining}>{Text.studier}</Typography>
+                        <div className={classNames(classes.container)}>
+                            <InfoCard header='Dataingeniør' text={Text.data}/>
+                            <InfoCard header='Drift' text={Text.drift}/>
+                            <InfoCard header='IT-støttet bedriftsutvikling' text={Text.support}/>
+                            <InfoCard header='IKT-basert samhandling' text={Text.IKT}/>
+                        </div>
+                    </div>
+
+                    <div className={classes.smoke}>
+                        <div className={classes.section}>
+                            <InfoCard imageClass={classes.imageClass} header={'Om TIHLDE'} text={Text.cardInfo} src={Image}/>
+                        </div>
+                    </div>
+                    
+                    <div className={classes.section}>
+                        <Button variant='contained' color='primary' onClick={(event) => { this.scrollToForm(); this.handleExpansionToggle(true)(event) }}>Send oss en melding</Button>
+                    </div>
+                   
                 </div>
             </div>
         </Navigation>

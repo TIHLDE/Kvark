@@ -36,14 +36,14 @@ const styles = {
 };
 
 const semester = [
-    {name: 'høst 2018'},
-    {name: 'vår 2019'},
+    {name: 'Høst 2018'},
+    {name: 'Vår 2019'},
 ];
 
 const arrangementer =[
     {name: 'Faglig Arrangement'},
     {name: 'Bedex'},
-    {name: 'annet'},
+    {name: 'Annet'},
 ];
 
 
@@ -134,11 +134,13 @@ class Forum extends Component {
     };
 
     render() {
-        const {classes, data, firstTextFieldRef} = this.props;
+        const {classes, firstTextFieldRef} = this.props;
+        // const {data} = this.props;
+        
         return (
             <form className={classes.root} onSubmit={this.handleSubmit}>
-                <Typography variant='display1'>Meld interesse:</Typography>
-                <Inputter required handleChange={this.handleChange} data={{header: 'bedrift: ', placeholder: 'Bedrift Navnet', id: 'bedrift'}} firstTextFieldRef={firstTextFieldRef} />
+                <Typography variant='display1' gutterBottom>Meld interesse:</Typography>
+                <Inputter required handleChange={this.handleChange} data={{header: 'Bedrift: ', placeholder: 'Bedrift Navnet', id: 'bedrift'}} firstTextFieldRef={firstTextFieldRef} />
                 <Inputter required handleChange={this.handleChange} data={{header: 'Kontaktperson: ', placeholder: 'Navn', id: 'kontaktperson'}} />
                 <Inputter required handleChange={this.handleChange} data={{header: 'Epost: ', placeholder: 'Skriv Epost her', id: 'epost'}} />
                 <div className ={classes.grid}>
@@ -146,20 +148,22 @@ class Forum extends Component {
                     <Listing handleChange={this.handleChange} header="ARRANGEMENTER" list={arrangementer}/>
                 </div>
                 <Divider/>
-                <Typography variant='subheading'>
+                {/* <Typography variant='subheading'>
                     {data.forumText1}
                 </Typography>
                 <br/>
                 <Typography variant='subheading'>
                     {data.forumText2}
                 </Typography>
-                <Divider/>
+                <Divider/> */}
                 <TextField
                     onChange={this.handleChange}
                     name="kommentar"
+                    label='Kommentar'
                     id="multiline"
                     multiline
-                    placeholder='kommentar'
+                    rows={3}
+                    rowsMax={6}
                     margin="normal"
                     variant="outlined"
                 />
