@@ -69,9 +69,18 @@ class Companies extends Component {
             opening: true,
         };
         this.formRef = React.createRef();
+        this.firstTextFieldRef = React.createRef();
     }
+
+    componentDidMount() {
+        this.focusFirstTextField();
+    }
+
     // Brukes til å åpne den hvis den ikke er åpen
     handleExpansionToggle = (bool) => (event) => {
+        if(bool || !this.state.opening) {
+            this.focusFirstTextField();
+        }
         if(bool) {
             this.setState({opening: bool})
         } else {
@@ -79,7 +88,13 @@ class Companies extends Component {
         }
     };
 
+    focusFirstTextField = () => {
+        const node = ReactDOM.findDOMNode(this.firstTextFieldRef.current);
+        node.focus({preventScroll: true});
+    };
+
     scrollToForm = () => {
+        this.focusFirstTextField();
         const node = ReactDOM.findDOMNode(this.formRef.current);
         window.scroll({top: node.offsetTop, left: 0, behavior: 'smooth'});
     };
@@ -95,7 +110,7 @@ class Companies extends Component {
                     <Banner title={Text.bannnerTitle} image={Text.bannerPicture} className={classes.banner}/>
                     <Expansion ref={this.formRef} header={Text.header} expand={this.state.opening} customCallback={this.handleExpansionToggle()}>
 
-                        <Forum data ={{forumText1: Text.forumText2 , forumText2: Text.forumText2}}/>
+                        <Forum data ={{forumText1: Text.forumText2 , forumText2: Text.forumText2}} firstTextFieldRef={this.firstTextFieldRef}/>
 
                     </Expansion>
                     </div>

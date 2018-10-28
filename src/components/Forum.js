@@ -48,12 +48,12 @@ const arrangementer =[
 
 
 const Inputter = withStyles(styles)((props) => {
-    const {data} = props;
+    const {data, firstTextFieldRef} = props;
     return (
         <div >
             <Typography variant='subheading' color='textPrimary'> {data.header}</Typography>
             <TextField
-                autoFocus={props.autoFocus}
+                inputRef={firstTextFieldRef}
                 id={data.id}
                 label={data.header}
                 placeholder={data.placeholder}
@@ -93,12 +93,12 @@ const Listing = withStyles(styles)((props) => {
 
 class Forum extends Component {
     render() {
-        const {classes, data} = this.props;
+        const {classes, data, firstTextFieldRef} = this.props;
         return (
             <div className={classes.root}>
                 <div className={classes.wrapper}>
                     <Typography variant='display1'>Meld interesse:</Typography>
-                    <Inputter data={{header: 'bedrift: ', placeholder: 'Bedrift Navnet', id: 'bedrift'}} autoFocus />
+                    <Inputter data={{header: 'bedrift: ', placeholder: 'Bedrift Navnet', id: 'bedrift'}} firstTextFieldRef={firstTextFieldRef} />
                     <Inputter data={{header: 'Kontaktperson: ', placeholder: 'Navn', id: 'kontaktperson'}} />
                     <Inputter data={{header: 'Epost: ', placeholder: 'Skriv Epost her', id: 'epost'}} />
                     <div className ={classes.grid}>
@@ -131,6 +131,7 @@ class Forum extends Component {
 Forum.propTypes = {
     classes: PropTypes.object,
     data: PropTypes.object,
+    firstTextFieldRef: PropTypes.object,
 };
 
 export default withStyles(styles)(Forum);
