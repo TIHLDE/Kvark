@@ -13,6 +13,7 @@ import Image from '../assets/img/glad.jpg';
 import Navigation from '../components/Navigation';
 import InfoCard from '../components/InfoCard';
 import Banner from '../components/Banner';
+import Forum from '../components/Forum'
 
 import Text from '../text/CompaniesText';
 import Expansion from '../components/Expand';
@@ -64,7 +65,7 @@ class Companies extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            opening: false,
+            opening: true,
         };
         this.open = this.open.bind(this);
     }
@@ -98,6 +99,9 @@ class Companies extends Component {
                     <div>
                     <Banner title={Text.bannnerTitle} image={Text.bannerPicture} className={classes.banner}/>
                     <Expansion header={Text.header} expand={this.state.opening} onClick={this.clicked2}>
+
+                        <Forum data ={{forumText1: Text.forumText2 , forumText2: Text.forumText2}}/>
+
                     </Expansion>
                     </div>
                     <InfoCard imageClass={classes.imageClass} header={'Om TIHLDE'} text={Text.cardInfo} src={Image}/>
