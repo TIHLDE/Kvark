@@ -110,7 +110,7 @@ class Companies extends Component {
                     <Banner title={Text.bannnerTitle} image={Text.bannerPicture} className={classes.banner}/>
                     <Expansion ref={this.formRef} header={Text.header} expand={this.state.opening} customCallback={this.handleExpansionToggle()}>
 
-                        <Forum data ={{forumText1: Text.forumText2 , forumText2: Text.forumText2}} firstTextFieldRef={this.firstTextFieldRef}/>
+                        <Forum setMessage={this.setMessage} data ={{forumText1: Text.forumText2 , forumText2: Text.forumText2}} firstTextFieldRef={this.firstTextFieldRef}/>
 
                     </Expansion>
                     </div>
