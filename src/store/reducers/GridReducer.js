@@ -16,7 +16,6 @@ export default function reducer(state = initialState, action) {
             const news = data.filter(e => e.type === 'news');
             let gridData = data.filter(e => e.type !== 'news');
             gridData.push(createNewsItem(news));
-            console.log(gridData);
             return {...state, grid: gridData}
         }
 

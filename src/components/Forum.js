@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
-import FORMHANDLER from '../api/formhandler';
+import API from '../api/api';
 
 // Material UI Components
 import {TextField, Typography} from '@material-ui/core';
@@ -13,8 +13,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-// Icons
+// Project Components
+import MessageIndicator from '../components/MessageIndicator';
 
 const styles = {
     root: {
@@ -33,6 +35,15 @@ const styles = {
         flexGrow: 1,
         margin: '10px 10px',
     },
+    progress: {
+        minHeight: 300,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 28,
+        flexDirection: 'column',
+        flexWrap: 'nowrap',
+    }
 };
 
 const semester = [
@@ -73,7 +84,6 @@ const Inputter = withStyles(styles)((props) => {
 
 const Listing = withStyles(styles)((props) => {
     const {list, header, classes} = props;
-    console.log(list);
     return (
         <div className={classes.item}>
             <Typography variant='subheading' >{header}</Typography>
@@ -97,7 +107,9 @@ const Listing = withStyles(styles)((props) => {
 
 class Forum extends Component {
     state = {
-        data: {}
+        isLoading: false,
+        isFormSent: false,
+        data: {},
     };
 
     handleChange = (event) => {
@@ -109,6 +121,10 @@ class Forum extends Component {
         })
     };
 
+    handleToggleChange = (name) => () => {
+        this.setState({[name]: !this.state[name]});
+    }
+
     setMessage = message => {
         this.setState({
             message: message
@@ -118,24 +134,39 @@ class Forum extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
-        this.setMessage("Sender...");
+        this.setState({isLoading: true});
 
-        const response = FORMHANDLER.formhandler(this.state.data).response();
-
+        const response = API.emailForm(this.state.data).response();
         response.then((data) => {
-                if (response.isError === false && data) {
-                    console.log(data);
-                    this.setMessage("Sendt! Takk for interressen")
-                } else {
-                    this.setMessage("Noe gikk galt, prøv senere")
-                }
-            });
-
+            if (response.isError === false && data) {
+                console.log(data);
+                this.setMessage("Sendt! Takk for interressen");
+            } else {
+                this.setMessage("Noe gikk galt, prøv senere")
+            }
+            this.setState({isLoading: false, isFormSent: true});
+        });
     };
 
     render() {
         const {classes, firstTextFieldRef} = this.props;
         // const {data} = this.props;
+
+        if(this.state.isLoading) {
+            return (
+                <div className={classes.progress}>
+                    <CircularProgress />
+                    <Typography variant='title'>{'Laster...'}</Typography>
+                </div>
+            )
+        } else if(this.state.isFormSent) {
+            return (
+                <div className={classes.progress}>
+                    <MessageIndicator header={this.state.message} variant='headline'/>
+                    <Button variant='raised' onClick={this.handleToggleChange('isFormSent')} color='primary'>Mottatt</Button>
+                </div>
+            )
+        }
         
         return (
             <form className={classes.root} onSubmit={this.handleSubmit}>
@@ -148,14 +179,6 @@ class Forum extends Component {
                     <Listing handleChange={this.handleChange} header="ARRANGEMENTER" list={arrangementer}/>
                 </div>
                 <Divider/>
-                {/* <Typography variant='subheading'>
-                    {data.forumText1}
-                </Typography>
-                <br/>
-                <Typography variant='subheading'>
-                    {data.forumText2}
-                </Typography>
-                <Divider/> */}
                 <TextField
                     onChange={this.handleChange}
                     name="kommentar"
@@ -168,7 +191,6 @@ class Forum extends Component {
                     variant="outlined"
                 />
                 <Button variant="contained" color="primary" type="submit" className={classes.item}>Send inn forum</Button>
-                <Typography>{this.state.message}</Typography>
             </form>
         );
     }

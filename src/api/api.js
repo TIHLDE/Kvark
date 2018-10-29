@@ -48,4 +48,11 @@ export default {
     getCategories: () => {
         return new IRequest('GET', 'category/');
     },
+
+    // Company form
+    emailForm: (data) => {
+        return new IRequest('POST', 'accept-form/', {
+            ...data
+        }, false);
+    },
 };
