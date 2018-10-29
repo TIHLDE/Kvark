@@ -66,7 +66,7 @@ class Companies extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            opening: false,
+            opening: true,
         };
         this.formRef = React.createRef();
         this.firstTextFieldRef = React.createRef();
