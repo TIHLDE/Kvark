@@ -99,9 +99,7 @@ class Companies extends Component {
                     <div>
                     <Banner title={Text.bannnerTitle} image={Text.bannerPicture} className={classes.banner}/>
                     <Expansion header={Text.header} expand={this.state.opening} onClick={this.clicked2}>
-
                         <Forum data ={{forumText1: Text.forumText2 , forumText2: Text.forumText2}}/>
-
                     </Expansion>
                     </div>
                     <InfoCard imageClass={classes.imageClass} header={'Om TIHLDE'} text={Text.cardInfo} src={Image}/>
