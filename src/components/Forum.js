@@ -18,10 +18,10 @@ import Button from '@material-ui/core/Button';
 
 const styles = {
     root: {
-        width: 'auto',
+        width: '100%',
         height: 'auto',
         margin: 0,
-        padding: '10px 10px',
+        /* padding: '10px 10px', */
         display: 'flex',
         flexDirection: 'column'
     },

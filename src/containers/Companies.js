@@ -39,6 +39,10 @@ const styles = (theme) => ({
         padding: 48,
         maxWidth: 1200,
         margin: 'auto',
+
+        '@media only screen and (max-width: 1200px)': {
+            padding: '48px 0',
+        }
     },
     grid: {
         display: 'grid',
