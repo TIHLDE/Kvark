@@ -27,13 +27,15 @@ import DownloadIcon from '@material-ui/icons/CloudDownload';
 
 // Project Components
 import TextEditor from '../TextEditor';
+import AuthenticationModal from '../Miscellaneous/AuthenticationModal';
+import EventPreview from './EventPreview';
 
 const SIDEBAR_WIDTH = 300;
 
 const styles = (theme) => ({
     root: {
         paddingLeft: SIDEBAR_WIDTH,
-
+        paddingBottom: 100,
         '@media only screen and (max-width: 800px)': {
             padding: 0,
         }
@@ -159,7 +161,7 @@ class EventAdministrator extends Component {
     constructor() {
         super();
         this.state = {
-            pageLoading: false,
+            isLocked: true,
             isLoading: false,
             isFetching: false,
 
@@ -278,8 +280,16 @@ class EventAdministrator extends Component {
         this.setState({[name]: event.target.value});
     }
 
+    handleToggleChange = (name) => () => {
+        this.setState({[name]: !this.state[name]});
+    }
+
     onChange = (name) => (value) => {
         this.setState({[name]: value});
+    }
+
+    handleAuthenticated = () => {
+        this.setState({isLocked: false});
     }
 
     toggleSnackbar = () => {
@@ -446,14 +456,14 @@ class EventAdministrator extends Component {
                                         {(isNewItem)?
                                             <div>
                                                 <Button className={classes.mr} onClick={this.createNewEvent} type='submit' variant='raised' color='primary'>Lag nytt event</Button>
-                                                <Button variant='outlined' color='primary'>Preview</Button>
+                                                <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
                                             </div>
                                              
                                             :
                                             <Fragment>
                                                 <div>
                                                     <Button className={classes.mr} onClick={this.editEventItem} variant='raised' type='submit' color='primary'>Lagre</Button>
-                                                    <Button variant='outlined' color='primary'>Preview</Button>
+                                                    <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
                                                 </div>
                                                 <Button className={classes.deleteButton} onClick={this.deleteEventItem} variant='outlined'>Slett</Button>
                                             </Fragment>
@@ -493,6 +503,8 @@ class EventAdministrator extends Component {
                         ))}
                     </Grid>
                 </Paper>
+                {this.state.isLocked && <AuthenticationModal onClose={this.handleAuthenticated}/>}
+                <EventPreview data={this.getStateEventItem()} open={this.state.showPreview} onClose={this.handleToggleChange('showPreview')}/>
             </Fragment>
         );
     }

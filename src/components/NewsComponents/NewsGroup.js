@@ -39,7 +39,7 @@ const styles = theme => ({
         alignItems: 'center',
         overflow: 'hidden',
         position: 'relative',
-        padding: 4,
+        padding: 12,
         '@media only screen and (max-width: 600px)': {
             padding: '15px 15px 10px 15px',
         }
@@ -56,7 +56,10 @@ const styles = theme => ({
         position: 'absolute',
         bottom: 0, left: 0, right: 0,
         height: 20,
-        background: 'linear-gradient(transparent, white)',
+        background: '-webkit-linear-gradient(transparent, white)',
+        background: '-moz-linear-gradient(transparent, white)',
+        background: '-0-linear-gradient(transparent, white)',
+        background: '-ms-linear-gradient(transparent, white)',
     },
     image: {
         height: 300,

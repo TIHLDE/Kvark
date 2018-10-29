@@ -45,14 +45,19 @@ const styles = (theme) => ({
         gridTemplateColumns: '1fr',
         gridTemplateRows:'auto',
         margin:'auto',
-        gridGap:'5px',
+        gridGap:'15px',
         justifyContent:'center',
+
+        '@media only screen and (max-width: 1200px)': {
+            paddingLeft: 6,
+            paddingRight: 6,
+        }
     },
     grid: {
         display: 'grid',
         gridTemplateColumns: '3fr 1fr',
         gridTemplateRows:'auto',
-        gridGap: '5px',
+        gridGap: '15px',
 
         position: 'relative',
 
@@ -140,7 +145,6 @@ class Events extends Component {
         // Get all categories
         const response = API.getCategories().response();
         response.then((data) => {
-            console.log(data);
             if(response.isError === false) {
                 this.setState({categories: data});
             }

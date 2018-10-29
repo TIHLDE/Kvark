@@ -24,9 +24,6 @@ import IconButton from '@material-ui/core/IconButton';
 // Assets/Icons
 import TIHLDELOGO from '../assets/img/tihldeLogo.png';
 import MenuIcon from '@material-ui/icons/Menu';
-import Facebook from '../assets/icons/facebook.svg';
-import Instagram from '../assets/icons/instagram.svg';
-import Twitter from '../assets/icons/twitter.svg';
 
 // Project Components
 import Footer from './Footer';
@@ -119,6 +116,10 @@ const styles = {
     },
     uri: {
         display: 'inline',
+    },
+    loginBtn: {
+        color: 'white',
+        border: '2px solid white',
     }
 };
 
@@ -135,16 +136,6 @@ const URIbutton = withStyles(styles)((props) => {
                 </Button>
             </Link>
         </div>
-    );
-});
-
-
-const LogoLink = withStyles(styles)((props) => {
-    const {classes, data} = props;
-    return (
-        <a className={classes.horSpacing} href={data.link} style={{flexGrid:1}}>
-            <img src={data.image} width='30px' alt="Missing icon" />
-        </a>
     );
 });
 
@@ -171,7 +162,6 @@ class Navigation extends Component {
 
         const response = API.getWarning().response();
         response.then((data) => {
-            console.log(data);
             if(response.isError === false) {
                 if(data && data.length > 0) {
                     this.setState({
@@ -194,7 +184,6 @@ class Navigation extends Component {
 
     render() {
         const {classes} = this.props;
-        console.log(this.props.match);
         return (
             <Fragment>
                 <AppBar className={classes.root} position="fixed" color="default">
@@ -236,9 +225,9 @@ class Navigation extends Component {
                             </Hidden>
                             <div>
                                 <Hidden xsDown implementation={'css'}>
-                                    <LogoLink data={{link: "https://www.facebook.com/tihlde/", image: Facebook}}/>
-                                    <LogoLink data={{link: "https://www.instagram.com/p/6Uh3rCBII7/", image: Instagram}}/>
-                                    <LogoLink data={{link: "https://twitter.com/tihlde", image: Twitter}}/>
+                                    <div>
+                                        <Button className={classes.loginBtn} variant='outlined'>Logg inn</Button>
+                                    </div>
                                 </Hidden>
                             </div>
                         </div>

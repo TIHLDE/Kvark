@@ -17,13 +17,9 @@ import Forum from '../components/Forum'
 
 import Text from '../text/CompaniesText';
 import Expansion from '../components/Expand';
+import * as ReactDOM from "react-dom";
 
-
-const styles = (theme) => ({
-    root: {
-        maxWidth: 1200,
-        margin: 'auto',
-    },
+const styles = {
     container: {
         display: 'grid',
         gridTemplateColumns: 'repeat(2, 1fr)',
@@ -35,16 +31,19 @@ const styles = (theme) => ({
             gridTemplateColumns: '1fr',
         },
     },
+    section: {
+        padding: 48,
+        maxWidth: 1200,
+        margin: 'auto',
+        '@media only screen and (max-width: 1200px)': {
+            padding: '48px 0',
+        }
+    },
     grid: {
         display: 'grid',
         gridTemplateColumns: '100%',
         gridTemplateRows: 'auto',
         justifyContent: 'center',
-        paddingBottom: '50px',
-        gridGap: '40px',
-    },
-    banner: {
-        marginTop: '20px',
     },
     imageClass: {
         width: 400,
@@ -58,35 +57,48 @@ const styles = (theme) => ({
     margining: {
         marginBottom: '20px',
     },
-});
-
+    smoke: {
+        backgroundColor: '#f9f9f8',
+    },
+};
 
 class Companies extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            opening: true,
+            opening: false,
         };
-        this.open = this.open.bind(this);
+        this.formRef = React.createRef();
+        this.firstTextFieldRef = React.createRef();
     }
+
+    componentDidMount() {
+        window.scrollTo(0,0);
+
+        this.focusFirstTextField();
+    }
+
     // Brukes til å åpne den hvis den ikke er åpen
-    open = () =>{
-        window.scroll({top: 0, left: 0 , behavior: 'smooth'});
-        if(!this.state.opening){
-            this.setState((state) => {
-                return {
-                    opening: !state.opening,
-                };
-            });
+    handleExpansionToggle = (bool) => (event) => {
+        if(bool || !this.state.opening) {
+            this.focusFirstTextField();
+        }
+        if(bool) {
+            this.setState({opening: bool})
+        } else {
+            this.setState({opening: !this.state.opening})
         }
     };
-    // åpne og lukke
-    clicked2 =() => {
-        this.setState((state) => {
-            return {
-                opening: !state.opening,
-            };
-        });
+
+    focusFirstTextField = () => {
+        const node = ReactDOM.findDOMNode(this.firstTextFieldRef.current);
+        node.focus({preventScroll: true});
+    };
+
+    scrollToForm = () => {
+        this.focusFirstTextField();
+        const node = ReactDOM.findDOMNode(this.formRef.current);
+        window.scroll({top: node.offsetTop-60, left: 0, behavior: 'smooth'});
     };
 
     render() {
@@ -94,17 +106,25 @@ class Companies extends Component {
 
         return (
         <Navigation footer whitesmoke>
-            <div className={classes.root}>
-                <div className={classes.grid}>
-                    <div>
-                    <Banner title={Text.bannnerTitle} image={Text.bannerPicture} className={classes.banner}/>
-                    <Expansion header={Text.header} expand={this.state.opening} onClick={this.clicked2}>
-                        <Forum data ={{forumText1: Text.forumText2 , forumText2: Text.forumText2}}/>
-                    </Expansion>
-                    </div>
-                    <InfoCard imageClass={classes.imageClass} header={'Om TIHLDE'} text={Text.cardInfo} src={Image}/>
+            <div className={classes.grid}>
+                <div className={classes.section}>
+                    <Banner title={Text.bannnerTitle} image={Text.bannerPicture}/>
+                    <Expansion ref={this.formRef} header={Text.header} expand={this.state.opening} customCallback={this.handleExpansionToggle()}>
+                        <Forum setMessage={this.setMessage} data ={{forumText1: Text.forumText2 , forumText2: Text.forumText2}} firstTextFieldRef={this.firstTextFieldRef}/>
 
-                    <div>
+                    </Expansion>
+                </div>
+                <div className={classes.smoke}>
+                    <div className={classNames(classes.section)}>
+                        <Typography variant='display1' color='inherit' align='center' className={classes.margining}>Vi tilbyr</Typography>
+                        <div className={classNames(classes.container)}>
+                            <InfoCard header='Jobbannonser' text={Text.jobbannonser} />
+                            <InfoCard header='Bedriftpressentasjon' text={Text.bedrifter}/>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={classes.section}>
                     <Typography variant='display1' color='inherit' align='center' className={classes.margining}>{Text.studier}</Typography>
                     <div className={classNames(classes.container)}>
                         <InfoCard header='Dataingeniør' text={Text.data}/>
@@ -112,17 +132,15 @@ class Companies extends Component {
                         <InfoCard header='IT-støttet bedriftsutvikling' text={Text.support}/>
                         <InfoCard header='IKT-basert samhandling' text={Text.IKT}/>
                     </div>
-                    </div>
+                </div>
 
-                    <div>
-                    <Typography variant='display1' color='inherit' align='center' className={classes.margining}>Vi tilbyr</Typography>
-                        <div className={classNames(classes.container)}>
-                            <InfoCard header='Jobbannonser' text={Text.jobbannonser} />
-                            <InfoCard header='Bedriftpressentasjon' text={Text.bedrifter}/>
-                        </div>
+                <div className={classes.smoke}>
+                    <div className={classes.section}>
+                        <InfoCard imageClass={classes.imageClass} header={'Om TIHLDE'} text={Text.cardInfo} src={Image}/>
                     </div>
-
-                    <Button variant='contained' color='primary' onClick={this.open}>Send oss en melding</Button>
+                </div>
+                <div className={classes.section}>
+                    <Button variant='contained' color='primary' onClick={(event) => { this.scrollToForm(); this.handleExpansionToggle(true)(event) }}>Send oss en melding</Button>
                 </div>
             </div>
         </Navigation>

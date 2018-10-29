@@ -24,7 +24,7 @@ import MarkdownRenderer from '../MarkdownRenderer';
 const styles = {
     grid: {
         display: 'grid',
-        gridTemplateColumns: '2fr 1fr',
+        gridTemplateColumns: '1fr 3fr',
         gridTemplateRows: 'auto',
         gridGap: '5px',
 
@@ -42,7 +42,7 @@ const styles = {
     image: {
         width: '100%',
         height: 'auto',
-        maxHeight: 400,
+        maxHeight: 456,
         objectFit: 'cover',
     },
     title: {
@@ -64,13 +64,17 @@ const styles = {
     info: {
         width: 'auto',
         marginBottom: 10,
+
+        '@media only screen and (max-width: 800px)': {
+            justifyContent: 'space-between',
+        },
     },
     ml: {marginLeft: 10},
     mt: {marginTop: 10},
 };
 
 const InfoContent = withStyles(styles)((props) => (
-    <Grid className={props.classes.info} container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
+    <Grid className={props.classes.info} container direction='row' wrap='nowrap' alignItems='center' justify='flex-start'>
         {props.icon}
         <Typography className={props.classes.ml} variant='subheading'>{props.label}</Typography>
     </Grid>
@@ -92,15 +96,16 @@ const EventRenderer = (props) => {
             <Typography className={classes.title} variant='display1'><strong>{data.title}</strong></Typography>
             <Divider />
             <div className={classes.grid} >
-                <div className={classes.content}>
-                    <MarkdownRenderer value={description} />
-                </div>
+                
                 <div className={classes.details}>
                     <InfoContent icon={<Calendar />} label={start.format('DD.MM.YYYY')} />
                     <InfoContent icon={<Time />} label={start.format('HH:mm')} />
                     <InfoContent icon={<Location />} label={data.location} />
                     {data.price && <InfoContent icon={<Time />} label={data.price} />}
                     {data.sign_up && <Button fullWidth className={classes.mt} variant='outlined' color='primary'>{Text.signUp}</Button>}
+                </div>
+                <div className={classes.content}>
+                    <MarkdownRenderer value={description} />
                 </div>
             </div>
         </Paper>
