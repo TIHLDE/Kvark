@@ -74,8 +74,6 @@ class Companies extends Component {
 
     componentDidMount() {
         window.scrollTo(0,0);
-
-        this.focusFirstTextField();
     }
 
     // Brukes til å åpne den hvis den ikke er åpen
