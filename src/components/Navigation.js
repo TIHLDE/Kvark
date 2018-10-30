@@ -22,13 +22,14 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import IconButton from '@material-ui/core/IconButton';
 
 // Assets/Icons
-import TIHLDELOGO from '../assets/img/tihldeLogo.png';
+import TIHLDELOGO from '../assets/img/Tihlde_no_cog_logo.svg';
 import MenuIcon from '@material-ui/icons/Menu';
 
 // Project Components
 import Footer from './Footer';
 import Sidebar from './Sidebar';
 import Snack from './Snack';
+
 
 const styles = {
     root: {
@@ -111,6 +112,11 @@ const styles = {
     whitesmoke: {
         backgroundColor: 'whitesmoke',
     },
+    logo: {
+        height: '32em',
+        maxHeight: '32em !important',
+        color: 'white',
+    },
     selected: {
         borderBottom: '2px solid white',
     },
@@ -191,7 +197,7 @@ class Navigation extends Component {
                         <div className={classes.navWrapper}>
                             <div className={classes.logoWrapper}>
                                 <Link to='/'>
-                                    <img src={TIHLDELOGO} alt='logo' height='30em'/>
+                                    <img className={classes.white} src={TIHLDELOGO} alt='logo' height='30em'/>
                                 </Link>
                             </div>
 
