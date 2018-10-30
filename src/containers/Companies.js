@@ -40,10 +40,10 @@ const styles = {
         }
     },
     grid: {
-        display: 'grid',
+       /*  display: 'grid',
         gridTemplateColumns: '100%',
         gridTemplateRows: 'auto',
-        justifyContent: 'center',
+        justifyContent: 'center', */
     },
     imageClass: {
         width: 400,

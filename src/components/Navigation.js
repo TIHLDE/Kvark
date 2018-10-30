@@ -30,6 +30,9 @@ import Footer from './Footer';
 import Sidebar from './Sidebar';
 import Snack from './Snack';
 
+// External Imports
+import SVG from 'react-inlinesvg';
+
 
 const styles = {
     root: {
@@ -197,7 +200,8 @@ class Navigation extends Component {
                         <div className={classes.navWrapper}>
                             <div className={classes.logoWrapper}>
                                 <Link to='/'>
-                                    <img className={classes.white} src={TIHLDELOGO} alt='logo' height='30em'/>
+                                    <SVG className={classes.logo} src={TIHLDELOGO} />
+                                    {/* <img className={classes.white} src={TIHLDELOGO} alt='logo' height='30em'/> */}
                                 </Link>
                             </div>
 
