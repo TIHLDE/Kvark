@@ -20,6 +20,9 @@ import Expansion from '../components/Expand';
 import * as ReactDOM from "react-dom";
 
 const styles = {
+    root: {
+        
+    },
     container: {
         display: 'grid',
         gridTemplateColumns: 'repeat(2, 1fr)',
@@ -39,11 +42,12 @@ const styles = {
             padding: '48px 0',
         }
     },
-    grid: {
-       /*  display: 'grid',
-        gridTemplateColumns: '100%',
-        gridTemplateRows: 'auto',
-        justifyContent: 'center', */
+    topSection: {
+        padding: '20px 48px 48px 48px',
+
+        '@media only screen and (max-width: 1200px)': {
+            padding: '12px 0px 48px 0px',
+        }
     },
     imageClass: {
         width: 400,
@@ -59,6 +63,10 @@ const styles = {
     },
     smoke: {
         backgroundColor: '#f9f9f8',
+    },
+    toFormBtn: {
+        display: 'block',
+        margin: 'auto',
     },
 };
 
@@ -106,8 +114,8 @@ class Companies extends Component {
 
         return (
         <Navigation footer whitesmoke>
-            <div className={classes.grid}>
-                <div className={classes.section}>
+            <div className={classes.root}>
+                <div className={classNames(classes.section, classes.topSection)}>
                     <Banner title={Text.bannnerTitle} image={Text.bannerPicture}/>
                     <Expansion ref={this.formRef} header={Text.header} expand={this.state.opening} customCallback={this.handleExpansionToggle()}>
                         <Forum setMessage={this.setMessage} data ={{forumText1: Text.forumText2 , forumText2: Text.forumText2}} firstTextFieldRef={this.firstTextFieldRef}/>
@@ -140,7 +148,13 @@ class Companies extends Component {
                     </div>
                 </div>
                 <div className={classes.section}>
-                    <Button variant='contained' color='primary' onClick={(event) => { this.scrollToForm(); this.handleExpansionToggle(true)(event) }}>Send oss en melding</Button>
+                    <Button
+                        className={classes.toFormBtn}
+                        variant='contained'
+                        color='primary'
+                        onClick={(event) => { this.scrollToForm(); this.handleExpansionToggle(true)(event) }}>
+                        Send oss en melding
+                    </Button>
                 </div>
             </div>
         </Navigation>
