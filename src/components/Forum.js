@@ -27,7 +27,6 @@ const styles = {
         margin: 0,
     },
     wrapper :{
-        margin:'15px 0',
         padding:'30px 30px 30px 30px',
         display: 'flex',
         flexDirection: 'column'
@@ -210,7 +209,7 @@ class Forum extends Component {
         })
     };
 
-    handleMottatt = (name) => () => {
+    handleSubmitted = (name) => () => {
         this.setState({
             [name]: !this.state[name],
             data: {
@@ -228,6 +227,11 @@ class Forum extends Component {
 
         event.preventDefault();
 
+        
+        
+        if(this.props.scrollToForm) {
+            this.props.scrollToForm();
+        }
         this.setState({isLoading: true});
 
         const response = API.emailForm(this.state.data).response();
@@ -257,37 +261,37 @@ class Forum extends Component {
             return (
                 <div className={classes.progress}>
                     <MessageIndicator header={this.state.message} variant='headline'/>
-                    <Button variant='raised' onClick={this.handleMottatt('isFormSent')} color='primary'>Mottatt</Button>
+                    <Button variant='raised' onClick={this.handleSubmitted('isFormSent')} color='primary'>Mottatt</Button>
                 </div>
             )
         }
 
         return (
-            <Paper className={classNames(classes.root,this.props.className)} >
-            <form className={classes.wrapper} onSubmit={this.handleSubmit}>
-                <Typography variant='display1' gutterBottom>Meld interesse:</Typography>
-                <Inputter required handleChange={this.handleChange("info")} data={{header: 'Bedrift: ', placeholder: 'Bedrift Navnet', id: 'bedrift'}} firstTextFieldRef={firstTextFieldRef} />
-                <Inputter required handleChange={this.handleChange("info")} data={{header: 'Kontaktperson: ', placeholder: 'Navn', id: 'kontaktperson'}} />
-                <Inputter required handleChange={this.handleChange("info")} data={{header: 'Epost: ', placeholder: 'Skriv Epost her', id: 'epost'}} />
-                <div className ={classes.grid}>
-                    <Listing handleChange={this.handleChange("time")} header="SEMESTER" list={semester}/>
-                    <Listing handleChange={this.handleChange("type")} header="ARRANGEMENTER" list={arrangementer}/>
-                </div>
-                <Divider/>
-                <TextField
-                    onChange={this.handleChange("comment")}
-                    name="kommentar"
-                    label='Kommentar'
-                    id="multiline"
-                    multiline
-                    rows={3}
-                    rowsMax={6}
-                    margin="normal"
-                    variant="outlined"
-                />
-                <Button variant="contained" color="primary" type="submit" className={classes.item}>Send inn forum</Button>
-            </form>
-            </Paper>
+            <div className={classNames(classes.root,this.props.className)} >
+                <form className={classes.wrapper} onSubmit={this.handleSubmit}>
+                    <Typography variant='display1' gutterBottom>Meld interesse:</Typography>
+                    <Inputter required handleChange={this.handleChange("info")} data={{header: 'Bedrift: ', placeholder: 'Bedrift Navnet', id: 'bedrift'}} firstTextFieldRef={firstTextFieldRef} />
+                    <Inputter required handleChange={this.handleChange("info")} data={{header: 'Kontaktperson: ', placeholder: 'Navn', id: 'kontaktperson'}} />
+                    <Inputter required handleChange={this.handleChange("info")} data={{header: 'Epost: ', placeholder: 'Skriv Epost her', id: 'epost'}} />
+                    <div className ={classes.grid}>
+                        <Listing handleChange={this.handleChange("time")} header="SEMESTER" list={semester}/>
+                        <Listing handleChange={this.handleChange("type")} header="ARRANGEMENTER" list={arrangementer}/>
+                    </div>
+                    <Divider/>
+                    <TextField
+                        onChange={this.handleChange("comment")}
+                        name="kommentar"
+                        label='Kommentar'
+                        id="multiline"
+                        multiline
+                        rows={3}
+                        rowsMax={6}
+                        margin="normal"
+                        variant="outlined"
+                    />
+                    <Button variant="contained" color="primary" type="submit" className={classes.item}>Send inn forum</Button>
+                </form>
+            </div>
         );
     }
 }
@@ -296,6 +300,7 @@ Forum.propTypes = {
     classes: PropTypes.object,
     data: PropTypes.object,
     firstTextFieldRef: PropTypes.object,
+    scrollToForm: PropTypes.func,
 };
 
 export default withStyles(styles)(Forum);

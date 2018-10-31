@@ -5,6 +5,7 @@ import classNames from 'classnames';
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
 
 // Icons
 import Image from '../assets/img/glad.jpg';
@@ -67,6 +68,9 @@ const styles = {
         display: 'block',
         margin: 'auto',
     },
+    formWrapper: {
+        margin:'15px 0',
+    }
 };
 
 class Companies extends Component {
@@ -105,7 +109,7 @@ class Companies extends Component {
     scrollToForm = () => {
         this.focusFirstTextField();
         const node = ReactDOM.findDOMNode(this.formRef.current);
-        window.scroll({top: node.offsetTop-60, left: 0, behavior: 'smooth'});
+        window.scroll({top: node.offsetTop-84, left: 0, behavior: 'smooth'});
     };
 
     render() {
@@ -116,7 +120,13 @@ class Companies extends Component {
             <div className={classes.root}>
                 <div className={classNames(classes.section, classes.topSection)}>
                     <Banner title={Text.bannnerTitle} image={Text.bannerPicture}/>
-                    <Forum setMessage={this.setMessage} data ={{forumText1: Text.forumText2 , forumText2: Text.forumText2}} firstTextFieldRef={this.firstTextFieldRef}/>
+                    <Paper className={classes.formWrapper} ref={this.formRef}>
+                        <Forum
+                            setMessage={this.setMessage}
+                            data ={{forumText1: Text.forumText2 , forumText2: Text.forumText2}}
+                            firstTextFieldRef={this.firstTextFieldRef}
+                            scrollToForm={this.scrollToForm}/>
+                    </Paper>
                 </div>
                 <div className={classes.smoke}>
                     <div className={classNames(classes.section)}>
