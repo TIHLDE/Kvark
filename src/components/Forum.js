@@ -109,16 +109,70 @@ class Forum extends Component {
     state = {
         isLoading: false,
         isFormSent: false,
-        data: {},
+        data: {
+            info: {},
+            time: [],
+            type: [],
+            comment: ""
+        },
     };
 
-    handleChange = (event) => {
-        this.setState({
-            data: {
-                ...this.state.data,
-                [event.target.name]: event.target.value || event.target.checked
+    handleChange = (part) => (event) => {
+        
+        
+        if (part === "info") { 
+            this.setState({
+                data: {
+                    ...this.state.data,
+                    ["info"]: {
+                        ...this.state.data["info"],
+                        [event.target.name]: event.target.value
+                    }
+                }
+            })
+        }
+        else if (part === "comment") {
+            this.setState({
+                data: {
+                    ...this.state.data,
+                    ["comment"]: event.target.value
+                }
+            })
+        }
+        else if (part === "type") {
+            if (event.target.checked) {
+                this.setState({
+                    data: {
+                        ...this.state.data,
+                        ["type"]: [...this.state.data["type"], event.target.name]
+                    }
+                })
+            } else {
+                this.setState({
+                    data: {
+                        ...this.state.data,
+                        ["type"]: this.state.data["type"].filter(it => it != event.target.name)
+                    }
+                })
             }
-        })
+        }
+        else if (part === "time") {
+            if (event.target.checked) {
+                this.setState({
+                    data: {
+                        ...this.state.data,
+                        ["time"]: [...this.state.data["time"], event.target.name]
+                    }
+                })
+            } else {
+                this.setState({
+                    data: {
+                        ...this.state.data,
+                        ["time"]: this.state.data["time"].filter(it => it != event.target.name)
+                    }
+                })
+            }
+        }
     };
 
     handleToggleChange = (name) => () => {
@@ -132,6 +186,9 @@ class Forum extends Component {
     };
 
     handleSubmit = (event) => {
+
+        console.log(this.state);
+
         event.preventDefault();
 
         this.setState({isLoading: true});
@@ -171,16 +228,16 @@ class Forum extends Component {
         return (
             <form className={classes.root} onSubmit={this.handleSubmit}>
                 <Typography variant='display1' gutterBottom>Meld interesse:</Typography>
-                <Inputter required handleChange={this.handleChange} data={{header: 'Bedrift: ', placeholder: 'Bedrift Navnet', id: 'bedrift'}} firstTextFieldRef={firstTextFieldRef} />
-                <Inputter required handleChange={this.handleChange} data={{header: 'Kontaktperson: ', placeholder: 'Navn', id: 'kontaktperson'}} />
-                <Inputter required handleChange={this.handleChange} data={{header: 'Epost: ', placeholder: 'Skriv Epost her', id: 'epost'}} />
+                <Inputter required handleChange={this.handleChange("info")} data={{header: 'Bedrift: ', placeholder: 'Bedrift Navnet', id: 'bedrift'}} firstTextFieldRef={firstTextFieldRef} />
+                <Inputter required handleChange={this.handleChange("info")} data={{header: 'Kontaktperson: ', placeholder: 'Navn', id: 'kontaktperson'}} />
+                <Inputter required handleChange={this.handleChange("info")} data={{header: 'Epost: ', placeholder: 'Skriv Epost her', id: 'epost'}} />
                 <div className ={classes.grid}>
-                    <Listing handleChange={this.handleChange} header="SEMESTER" list={semester}/>
-                    <Listing handleChange={this.handleChange} header="ARRANGEMENTER" list={arrangementer}/>
+                    <Listing handleChange={this.handleChange("time")} header="SEMESTER" list={semester}/>
+                    <Listing handleChange={this.handleChange("type")} header="ARRANGEMENTER" list={arrangementer}/>
                 </div>
                 <Divider/>
                 <TextField
-                    onChange={this.handleChange}
+                    onChange={this.handleChange("comment")}
                     name="kommentar"
                     label='Kommentar'
                     id="multiline"
