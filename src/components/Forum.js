@@ -115,6 +115,50 @@ class Forum extends Component {
     };
 
     handleChange = (part) => (event) => {
+
+        switch(part) {
+            case "info": 
+                this.setState({
+                    data: {
+                        ...this.state.data,
+                        ["info"]: {
+                            ...this.state.data["info"],
+                            [event.target.name]: event.target.value
+                        }
+                    }
+                })
+            break;
+            case "comment":
+                this.setState({
+                    data: {
+                        ...this.state.data,
+                        ["comment"]: event.target.value
+                    }
+                })
+            break;
+            case "type":
+                this.setState({
+                    data: {
+                        ...this.state.data,
+                        ["type"]: event.target.checked 
+                            ? [...this.state.data["type"]].push(event.target.name) 
+                            : [...this.state.data["type"]].remove(it => it != event.target.name)
+                    }
+                })
+            break;
+            case "time":
+                this.setState({
+                    data: {
+                        ...this.state.data,
+                        ["time"]: event.target.checked 
+                            ? [...this.state.data["time"]].push(event.target.name) 
+                            : [...this.state.data["time"]].remove(it => it != event.target.name)
+                    }
+                })
+            break;
+        }
+
+        /*
         this.setState({
             data: {
                 ...this.state.data,
@@ -124,6 +168,7 @@ class Forum extends Component {
                 }
             }
         })
+        */
     };
 
     handleToggleChange = (name) => () => {
