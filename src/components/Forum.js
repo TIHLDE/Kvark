@@ -109,14 +109,19 @@ class Forum extends Component {
     state = {
         isLoading: false,
         isFormSent: false,
-        data: {},
+        data: {
+
+        },
     };
 
-    handleChange = (event) => {
+    handleChange = (part) => (event) => {
         this.setState({
             data: {
                 ...this.state.data,
-                [event.target.name]: event.target.value || event.target.checked
+                [part]: {
+                    ...this.state.data[part],
+                    [event.target.name]: event.target.value || event.target.checked
+                }
             }
         })
     };
@@ -171,16 +176,16 @@ class Forum extends Component {
         return (
             <form className={classes.root} onSubmit={this.handleSubmit}>
                 <Typography variant='display1' gutterBottom>Meld interesse:</Typography>
-                <Inputter required handleChange={this.handleChange} data={{header: 'Bedrift: ', placeholder: 'Bedrift Navnet', id: 'bedrift'}} firstTextFieldRef={firstTextFieldRef} />
-                <Inputter required handleChange={this.handleChange} data={{header: 'Kontaktperson: ', placeholder: 'Navn', id: 'kontaktperson'}} />
-                <Inputter required handleChange={this.handleChange} data={{header: 'Epost: ', placeholder: 'Skriv Epost her', id: 'epost'}} />
+                <Inputter required handleChange={this.handleChange("info")} data={{header: 'Bedrift: ', placeholder: 'Bedrift Navnet', id: 'bedrift'}} firstTextFieldRef={firstTextFieldRef} />
+                <Inputter required handleChange={this.handleChange("info")} data={{header: 'Kontaktperson: ', placeholder: 'Navn', id: 'kontaktperson'}} />
+                <Inputter required handleChange={this.handleChange("info")} data={{header: 'Epost: ', placeholder: 'Skriv Epost her', id: 'epost'}} />
                 <div className ={classes.grid}>
-                    <Listing handleChange={this.handleChange} header="SEMESTER" list={semester}/>
-                    <Listing handleChange={this.handleChange} header="ARRANGEMENTER" list={arrangementer}/>
+                    <Listing handleChange={this.handleChange("time")} header="SEMESTER" list={semester}/>
+                    <Listing handleChange={this.handleChange("type")} header="ARRANGEMENTER" list={arrangementer}/>
                 </div>
                 <Divider/>
                 <TextField
-                    onChange={this.handleChange}
+                    onChange={this.handleChange("comment")}
                     name="kommentar"
                     label='Kommentar'
                     id="multiline"
