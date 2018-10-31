@@ -110,65 +110,69 @@ class Forum extends Component {
         isLoading: false,
         isFormSent: false,
         data: {
-
+            info: {},
+            time: [],
+            type: [],
+            comment: ""
         },
     };
 
     handleChange = (part) => (event) => {
-
-        switch(part) {
-            case "info": 
-                this.setState({
-                    data: {
-                        ...this.state.data,
-                        ["info"]: {
-                            ...this.state.data["info"],
-                            [event.target.name]: event.target.value
-                        }
+        
+        
+        if (part === "info") { 
+            this.setState({
+                data: {
+                    ...this.state.data,
+                    ["info"]: {
+                        ...this.state.data["info"],
+                        [event.target.name]: event.target.value
                     }
-                })
-            break;
-            case "comment":
-                this.setState({
-                    data: {
-                        ...this.state.data,
-                        ["comment"]: event.target.value
-                    }
-                })
-            break;
-            case "type":
-                this.setState({
-                    data: {
-                        ...this.state.data,
-                        ["type"]: event.target.checked 
-                            ? [...this.state.data["type"]].push(event.target.name) 
-                            : [...this.state.data["type"]].remove(it => it != event.target.name)
-                    }
-                })
-            break;
-            case "time":
-                this.setState({
-                    data: {
-                        ...this.state.data,
-                        ["time"]: event.target.checked 
-                            ? [...this.state.data["time"]].push(event.target.name) 
-                            : [...this.state.data["time"]].remove(it => it != event.target.name)
-                    }
-                })
-            break;
-        }
-
-        /*
-        this.setState({
-            data: {
-                ...this.state.data,
-                [part]: {
-                    ...this.state.data[part],
-                    [event.target.name]: event.target.value || event.target.checked
                 }
+            })
+        }
+        else if (part === "comment") {
+            this.setState({
+                data: {
+                    ...this.state.data,
+                    ["comment"]: event.target.value
+                }
+            })
+        }
+        else if (part === "type") {
+            if (event.target.checked) {
+                this.setState({
+                    data: {
+                        ...this.state.data,
+                        ["type"]: [...this.state.data["type"], event.target.name]
+                    }
+                })
+            } else {
+                this.setState({
+                    data: {
+                        ...this.state.data,
+                        ["type"]: this.state.data["type"].filter(it => it != event.target.name)
+                    }
+                })
             }
-        })
-        */
+        }
+        else if (part === "time") {
+            if (event.target.checked) {
+                this.setState({
+                    data: {
+                        ...this.state.data,
+                        ["time"]: [...this.state.data["time"], event.target.name]
+                    }
+                })
+            } else {
+                this.setState({
+                    data: {
+                        ...this.state.data,
+                        ["time"]: this.state.data["time"].filter(it => it != event.target.name)
+                    }
+                })
+            }
+        }
     };
 
     handleToggleChange = (name) => () => {
@@ -182,6 +186,9 @@ class Forum extends Component {
     };
 
     handleSubmit = (event) => {
+
+        console.log(this.state);
+
         event.preventDefault();
 
         this.setState({isLoading: true});
