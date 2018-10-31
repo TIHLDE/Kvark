@@ -16,6 +16,7 @@ import LayoutGrid from '../components/Grid/LayoutGrid';
 const styles = {
     root: {
         minHeight: '70vh',
+        backgroundColor: 'whitesmoke',
     },
 };
 
