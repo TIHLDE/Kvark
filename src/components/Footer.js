@@ -110,10 +110,10 @@ class Footer extends Component {
                     <a href="https://www.facebook.com/tihlde/">
                         <img src={FACEBOOK} alt="facebook" width={40}/>
                     </a>
-                    <a href="https://twitter.com/tihlde">
+                    <a href="https://www.instagram.com/p/6Uh3rCBII7/">
                         <img src={INSTAGRAM} alt="instagram" width={40}/>
                     </a>
-                    <a href="https://www.instagram.com/p/6Uh3rCBII7/">
+                    <a href="https://twitter.com/tihlde">
                         <img src={TWITTER} alt="twitter" width={40}/>
                     </a>
                 </div>

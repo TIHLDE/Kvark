@@ -50,6 +50,7 @@ const styles = (theme) => ({
         bottom: 0, left: 0, right: 0,
         width: '100%',
         borderRadius: 0,
+        border: '2px solid'
     },
 
     // Event styles
@@ -182,7 +183,7 @@ class EventList extends Component {
                         <MessageIndicator header={Text.noEvents} variant='subheading'/>
                     }
                 </div>
-                <Button className={classes.moreButton} onClick={this.openEventsPage} variant='contained' color='secondary'>Vis flere</Button>
+                <Button className={classes.moreButton} onClick={this.openEventsPage} variant='outlined' color='secondary'>Vis flere</Button>
             </Card>
         );
     }

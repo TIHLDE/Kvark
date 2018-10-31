@@ -46,7 +46,7 @@ class Landing extends Component {
         const {classes, grid} = this.props;
 
         return (
-            <Navigation footer isLoading={this.state.isLoading}>
+            <Navigation footer isLoading={this.state.isLoading} whitesmoke>
                 {(this.state.isLoading)? null :
                     <div className={classes.root}>
                         <LayoutGrid grid={grid}/>
