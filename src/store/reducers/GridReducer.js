@@ -15,7 +15,10 @@ export default function reducer(state = initialState, action) {
         case "SET_GRID_ITEMS": {
             const news = data.filter(e => e.type === 'news');
             let gridData = data.filter(e => e.type !== 'news');
-            gridData.push(createNewsItem(news));
+            if(news.length > 0) {
+                gridData.push(createNewsItem(news));
+            }
+            
             return {...state, grid: gridData}
         }
 

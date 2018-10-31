@@ -9,9 +9,9 @@ const middleware = applyMiddleware(thunk);
 
 const store = createStore(reducer, middleware);
 
-/* store.subscribe(() => {
+store.subscribe(() => {
   console.log('[Subscription]', store.getState());
-}); */
+});
 
 export default store;
 

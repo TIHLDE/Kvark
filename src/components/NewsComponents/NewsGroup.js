@@ -119,7 +119,8 @@ const styles = theme => ({
 });
 
 const NewsItem = withStyles(styles)((props) => {
-    const {classes, data} = props;
+    const {classes} = props;
+    let data = props.data || {};
     return (
         <Paper className={classNames(classes.item, props.lg ? classes.lg : classes.sm, props.gutterBottom ? classes.gutterBottom : '', props.className)} square elevation={1}>
             <Link to={URLS.news + props.id}>
