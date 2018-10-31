@@ -21,7 +21,6 @@ import * as ReactDOM from "react-dom";
 
 const styles = {
     root: {
-        
     },
     container: {
         display: 'grid',
@@ -117,9 +116,7 @@ class Companies extends Component {
             <div className={classes.root}>
                 <div className={classNames(classes.section, classes.topSection)}>
                     <Banner title={Text.bannnerTitle} image={Text.bannerPicture}/>
-                    <Expansion ref={this.formRef} header={Text.header} expand={this.state.opening} customCallback={this.handleExpansionToggle()}>
-                        <Forum setMessage={this.setMessage} data ={{forumText1: Text.forumText2 , forumText2: Text.forumText2}} firstTextFieldRef={this.firstTextFieldRef}/>
-                    </Expansion>
+                    <Forum setMessage={this.setMessage} data ={{forumText1: Text.forumText2 , forumText2: Text.forumText2}} firstTextFieldRef={this.firstTextFieldRef}/>
                 </div>
                 <div className={classes.smoke}>
                     <div className={classNames(classes.section)}>

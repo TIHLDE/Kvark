@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import API from '../api/api';
 
@@ -13,6 +14,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper'
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Project Components
@@ -23,13 +25,18 @@ const styles = {
         width: '100%',
         height: 'auto',
         margin: 0,
-        /* padding: '10px 10px', */
+    },
+    wrapper :{
+        margin:'15px 0',
+        padding:'30px 30px 30px 30px',
         display: 'flex',
         flexDirection: 'column'
     },
     grid: {
+        padding: '30px',
         display: 'flex',
         flexDirection: 'row',
+        flexWrap: 'wrap'
     },
     item: {
         flexGrow: 1,
@@ -82,6 +89,31 @@ const Inputter = withStyles(styles)((props) => {
     );
 });
 
+class CustomListItem extends Component {
+    state = {
+        checked: false
+    };
+
+    handleClick = (event) => {
+        this.setState({
+            checked: !this.state.checked
+        });
+        this.props.handleChange(event);
+    };
+
+    render(){
+        return(
+            <ListItem dense button onClick={this.handleClick}>
+                    <Checkbox
+                        name={this.props.value.name}
+                        checked={this.state.checked}
+                    />
+                <ListItemText primary={this.props.value.name}/>
+            </ListItem>
+        )
+    }
+}
+
 const Listing = withStyles(styles)((props) => {
     const {list, header, classes} = props;
     return (
@@ -89,17 +121,10 @@ const Listing = withStyles(styles)((props) => {
             <Typography variant='subheading' >{header}</Typography>
             <Divider/>
             <List>
-                {list.map((value) => (
-                    <ListItem key={value.name} dense >
-                        <ListItemText primary={value.name} />
-                        <ListItemSecondaryAction>
-                            <Checkbox
-                                name={value.name}
-                                onChange={props.handleChange}
-                            />
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                ))}
+                {list.map((value) => {
+
+                    return <CustomListItem key={value.name} handleChange={props.handleChange} value={value}/>
+                })}
             </List>
         </div>
     );
@@ -118,9 +143,9 @@ class Forum extends Component {
     };
 
     handleChange = (part) => (event) => {
-        
-        
-        if (part === "info") { 
+
+
+        if (part === "info") {
             this.setState({
                 data: {
                     ...this.state.data,
@@ -177,12 +202,24 @@ class Forum extends Component {
 
     handleToggleChange = (name) => () => {
         this.setState({[name]: !this.state[name]});
-    }
+    };
 
     setMessage = message => {
         this.setState({
             message: message
         })
+    };
+
+    handleMottatt = (name) => () => {
+        this.setState({
+            [name]: !this.state[name],
+            data: {
+                info: {},
+                time: [],
+                type: [],
+                comment: ""
+            }
+        });
     };
 
     handleSubmit = (event) => {
@@ -220,13 +257,14 @@ class Forum extends Component {
             return (
                 <div className={classes.progress}>
                     <MessageIndicator header={this.state.message} variant='headline'/>
-                    <Button variant='raised' onClick={this.handleToggleChange('isFormSent')} color='primary'>Mottatt</Button>
+                    <Button variant='raised' onClick={this.handleMottatt('isFormSent')} color='primary'>Mottatt</Button>
                 </div>
             )
         }
-        
+
         return (
-            <form className={classes.root} onSubmit={this.handleSubmit}>
+            <Paper className={classNames(classes.root,this.props.className)} >
+            <form className={classes.wrapper} onSubmit={this.handleSubmit}>
                 <Typography variant='display1' gutterBottom>Meld interesse:</Typography>
                 <Inputter required handleChange={this.handleChange("info")} data={{header: 'Bedrift: ', placeholder: 'Bedrift Navnet', id: 'bedrift'}} firstTextFieldRef={firstTextFieldRef} />
                 <Inputter required handleChange={this.handleChange("info")} data={{header: 'Kontaktperson: ', placeholder: 'Navn', id: 'kontaktperson'}} />
@@ -249,6 +287,7 @@ class Forum extends Component {
                 />
                 <Button variant="contained" color="primary" type="submit" className={classes.item}>Send inn forum</Button>
             </form>
+            </Paper>
         );
     }
 }
