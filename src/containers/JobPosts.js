@@ -177,6 +177,7 @@ class JobPosts extends Component {
         const posts = this.props.posts || [];
         return (
             <Navigation whitesmoke footer isLoading={this.state.isLoading}>
+                {this.state.isLoading ? null :
                 <div className={classes.root}>
                     <div className={classes.wrapper}>
                         <Banner title='Annonser' image='https://www.incimages.com/uploaded_files/image/970x450/getty_186693264_200011642000928062_327104.jpg'/>
@@ -220,8 +221,8 @@ class JobPosts extends Component {
                             </Paper>
                         </div>
                     </div>
-                    
                 </div>
+                }
             </Navigation>
         );
     }
