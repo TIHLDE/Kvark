@@ -5,6 +5,7 @@ export default {
     about: '/om/',
     services: '/tjenester/',
     newStudent: '/nyStudent/',
-    myProfile: '/minProfil/',
+    jobposts: '/annonser/',
+
     dataRegistration: '/admin/events',
 };

@@ -41,6 +41,14 @@ export default {
         return new IRequest('DELETE', 'events/'.concat(id, '/'), undefined, false);
     },
 
+    // Job posts
+    getJobPosts: () => {
+        return new IRequest('GET', 'jobpost/', undefined, false);
+    },
+    getJobPost: (id) => {
+        return new IRequest('GET', 'jobpost/'.concat(id, '/'), undefined, false);
+    },
+
     // Warning
     getWarning: () => {
         return new IRequest('GET', 'warning/');
