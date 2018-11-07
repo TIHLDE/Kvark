@@ -42,8 +42,8 @@ export default {
     },
 
     // Job posts
-    getJobPosts: () => {
-        return new IRequest('GET', 'jobpost/', undefined, false);
+    getJobPosts: (data) => {
+        return new IRequest('GET', 'jobpost/', (data)? data : {newest: true}, false);
     },
     getJobPost: (id) => {
         return new IRequest('GET', 'jobpost/'.concat(id, '/'), undefined, false);

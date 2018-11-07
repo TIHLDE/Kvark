@@ -71,6 +71,7 @@ const SidebarContent = (props) => {
                 <ActionLink to={URLS.services} label='Tjenester'/>
                 <ActionLink to={URLS.events} label='Arrangementer'/>
                 <ActionLink to={URLS.newStudent} label='Ny student'/>
+                <ActionLink to={URLS.jobposts} label='Annonser'/>
                 <ActionLink to={URLS.company} label='Bedrifter'/>
 
             </div>

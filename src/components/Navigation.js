@@ -44,9 +44,8 @@ const styles = {
     },
     main: {
         marginTop: 64,
-        backgroundColor: 'white',
-        minHeight: '101vw',
-
+        
+        minHeight: '101vh',
         '@media only screen and (max-width: 600px)': {
             marginTop: 56,
         },
@@ -69,7 +68,7 @@ const styles = {
     },
     logoWrapper: {
         display: 'flex',
-
+        minWidth: 150,
 
         '@media only screen and (max-width: 600px)': {
             flexDirection: 'row-reverse',

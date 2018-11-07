@@ -12,7 +12,7 @@ import ListItem from '@material-ui/core/ListItem';
 // Icons
 import Calendar from '@material-ui/icons/CalendarToday';
 import Location from '@material-ui/icons/LocationOn';
-import Time from '@material-ui/icons/AccessTime';
+import Business from '@material-ui/icons/Business';
 import TIHLDELOGO from '../../assets/img/tihlde_image.png';
 
 const styles = {
@@ -95,7 +95,7 @@ InfoContent.propTypes = {
 const JobPostItem = (props) => {
     const {classes, data} = props;
     const src = (data.image)? data.image : TIHLDELOGO;
-    const start = moment(data.start, ['YYYY-MM-DD HH:mm'], 'nb');
+    const start = moment(data.deadline, ['YYYY-MM-DD HH:mm'], 'nb');
     return (
         <ListItem className={classes.btn} button onClick={props.onClick}>
             <Grid className={classes.root} container direction='row' wrap='nowrap' alignItems='center'>
@@ -105,9 +105,9 @@ const JobPostItem = (props) => {
                         <strong>{data.title}</strong>
                     </Typography>
                     <div className={classes.details}>
-                        <InfoContent icon={<Calendar className={classes.icon}/>} label={start.format('DD.MM.YYYY')} />
-                        <InfoContent icon={<Time className={classes.icon}/>} label={start.format('HH:mm')} />
+                        <InfoContent icon={<Business className={classes.icon}/>} label={data.company} />
                         <InfoContent icon={<Location className={classes.icon}/>} label={data.location} />
+                        <InfoContent icon={<Calendar className={classes.icon}/>} label={start.format('DD.MM.YYYY')} />
                     </div>
                 </Grid>
             </Grid>

@@ -31,8 +31,3 @@ const createJobPost = (job) => ({
     logo: job.image,
     logoAlt: job.image_alt,
 });
-
-// Checks if an item needs full grid-width
-const isFullWidth = (data) => {
-    return (data.type === 'poster');
-};
