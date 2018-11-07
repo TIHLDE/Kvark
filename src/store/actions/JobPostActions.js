@@ -30,4 +30,5 @@ const createJobPost = (job) => ({
     link: job.link,
     logo: job.image,
     logoAlt: job.image_alt,
+    expired: job.expired,
 });
