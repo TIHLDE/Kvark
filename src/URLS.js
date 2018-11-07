@@ -5,6 +5,6 @@ export default {
     about: '/om/',
     services: '/tjenester/',
     newStudent: '/nyStudent/',
-
+    myProfile: '/minProfil/',
     dataRegistration: '/admin/events',
 };

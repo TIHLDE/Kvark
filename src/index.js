@@ -20,6 +20,7 @@ import Events from './containers/Events';
 import Services from './containers/Services';
 import DataRegistrator from './containers/DataRegistrator';
 import NewStudent from './containers/NewStudent';
+import MyProfile from './containers/MyProfile';
 
 // TODO Make container
 import Login from './components/Login';
@@ -37,7 +38,7 @@ const Application = (
                     <Route path={URLS.services} component={Services} />
                     <Route path={URLS.company} component={Companies} />
                     <Route path={URLS.newStudent} component={NewStudent} />
-
+                    <Route path={URLS.MyProfile} component={MyProfile} />
                     <Route path={URLS.dataRegistration} component={DataRegistrator} />
 
                     { /* Testing only */ }
