@@ -166,7 +166,7 @@ class JobPosts extends Component {
         const response = API.getJobPosts(filters).response();
         response.then((data) => {
             if (response.isError === false) {
-                this.props.setJobPosts(data);
+                this.props.setJobPosts(data.sort((a, b) => (a.expired === b.expired)? 0 : a.expired ? 1 : -1));
             }
             this.setState({isFetching: false});
         });
