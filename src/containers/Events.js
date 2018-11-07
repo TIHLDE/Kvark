@@ -131,7 +131,6 @@ class Events extends Component {
         
         const response = API.getEventItems().response();
         response.then((data) => {
-
             if (response.isError === false) {
                 this.setState({events: data});
             } else {
