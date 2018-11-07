@@ -20,6 +20,7 @@ import Events from './containers/Events';
 import Services from './containers/Services';
 import DataRegistrator from './containers/DataRegistrator';
 import NewStudent from './containers/NewStudent';
+import MyProfile from './containers/MyProfile';
 import JobPosts from './containers/JobPosts';
 
 // TODO Make container
@@ -38,6 +39,7 @@ const Application = (
                     <Route path={URLS.services} component={Services} />
                     <Route path={URLS.company} component={Companies} />
                     <Route path={URLS.newStudent} component={NewStudent} />
+                    <Route path={URLS.MyProfile} component={MyProfile} />
                     <Route path={URLS.jobposts} component={JobPosts} />
 
                     <Route path={URLS.dataRegistration} component={DataRegistrator} />
