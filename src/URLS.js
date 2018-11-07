@@ -6,6 +6,7 @@ export default {
     services: '/tjenester/',
     newStudent: '/nyStudent/',
     jobposts: '/annonser/',
+    profile: '/profile/',
 
     dataRegistration: '/admin/events',
 };
