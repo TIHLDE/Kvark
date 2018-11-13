@@ -112,7 +112,7 @@ const styles = {
         alignItems: 'center',
     },
 
-    whitesmoke: {
+    b: {
         backgroundColor: 'whitesmoke',
     },
     logo: {
