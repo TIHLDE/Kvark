@@ -29,6 +29,7 @@ class JobPostDetails extends Component {
 
     // Gets the event
     componentDidMount() {
+        window.scrollTo(0,0);
         // Get eventItem id
         const id = this.props.match.params.id;
         JobPostService.getPostById(id)
