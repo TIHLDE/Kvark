@@ -15,6 +15,7 @@ const styles = {
     root: {
         maxWidth: 1200,
         margin: 'auto',
+        padding: 12,
         paddingTop: 20,
     }
 };
@@ -40,9 +41,11 @@ class JobPostDetails extends Component {
         const {classes} = this.props;
         return (
             <Navigation isLoading={this.state.isLoading} whitesmoke>
-                <div className={classes.root}>
-                    <JobPostRenderer data={this.state.post}/>
-                </div>
+                {!this.state.isLoading &&
+                    <div className={classes.root}>
+                        <JobPostRenderer data={this.state.post}/>
+                    </div>
+                }
             </Navigation>
         );
     }

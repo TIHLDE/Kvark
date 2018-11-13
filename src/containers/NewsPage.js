@@ -53,7 +53,7 @@ class NewsPage extends Component {
         const {selected} = this.props;
 
         return (
-            <Navigation footer isLoading={this.state.isLoading}>
+            <Navigation footer isLoading={this.state.isLoading} whitesmoke>
                 {(this.state.isLoading)? null :
                     <NewsRenderer newsData={selected} />
                 }

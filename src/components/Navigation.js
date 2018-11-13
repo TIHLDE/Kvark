@@ -44,7 +44,6 @@ const styles = {
     },
     main: {
         marginTop: 64,
-        
         minHeight: '101vh',
         '@media only screen and (max-width: 600px)': {
             marginTop: 56,
@@ -112,8 +111,8 @@ const styles = {
         alignItems: 'center',
     },
 
-    b: {
-        backgroundColor: 'whitesmoke',
+    whitesmoke: {
+        backgroundColor: 'var(--gray)',
     },
     logo: {
         height: '32em',

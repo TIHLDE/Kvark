@@ -76,8 +76,7 @@ const styles = {
     settings: {
         position: 'sticky',
         top: 88,
-        maxHeight: 236,
-        padding: 20,
+        padding: 28,
 
         '@media only screen and (max-width: 800px)': {
             order: 0,
@@ -200,25 +199,27 @@ class JobPosts extends Component {
                                     </Grow>
                                 </div>
                             }
-                            <Paper className={classes.settings} elevation={1} square> 
-                                <form>
-                                    <TextField className={classes.paddingBtn} value={this.state.search} fullWidth placeholder='Søk...' onChange={this.handleChange('search')}/>
-                                    <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.searchForPosts}>{Text.search}</Button>
-                                </form>
-                                <Divider className={classes.mt}/>
-                                <Typography className={classes.mt} variant='title' gutterBottom>{Text.category}</Typography>
+                            <div>
+                                <Paper className={classes.settings} elevation={1} square> 
+                                    <form>
+                                        <TextField className={classes.paddingBtn} value={this.state.search} fullWidth placeholder='Søk...' onChange={this.handleChange('search')}/>
+                                        <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.searchForPosts}>{Text.search}</Button>
+                                    </form>
+                                    <Divider className={classes.mt}/>
+                                    <Typography className={classes.mt} variant='title' gutterBottom>{Text.category}</Typography>
 
-                                <Theme theme={errorTheme}>
-                                    <Button
-                                        className={classes.resetBtn}
-                                        fullWidth
-                                        color='primary'
-                                        variant='outlined'
-                                        onClick={this.resetFilters}>
-                                        {Text.reset}
-                                    </Button>
-                                </Theme>
-                            </Paper>
+                                    <Theme theme={errorTheme}>
+                                        <Button
+                                            className={classes.resetBtn}
+                                            fullWidth
+                                            color='primary'
+                                            variant='outlined'
+                                            onClick={this.resetFilters}>
+                                            {Text.reset}
+                                        </Button>
+                                    </Theme>
+                                </Paper>
+                            </div>
                         </div>
                     </div>
                 </div>

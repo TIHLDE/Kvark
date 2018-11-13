@@ -20,7 +20,7 @@ import Events from './containers/Events';
 import Services from './containers/Services';
 import DataRegistrator from './containers/DataRegistrator';
 import NewStudent from './containers/NewStudent';
-import MyProfile from './containers/MyProfile';
+import Profile from './containers/Profile';
 import JobPosts from './containers/JobPosts';
 import JobPostDetails from './containers/JobPostDetails';
 
@@ -40,7 +40,7 @@ const Application = (
                     <Route path={URLS.services} component={Services} />
                     <Route path={URLS.company} component={Companies} />
                     <Route path={URLS.newStudent} component={NewStudent} />
-                    <Route path={URLS.profile} component={MyProfile} />
+                    <Route path={URLS.profile} component={Profile} />
                     <Route path={URLS.jobposts.concat(':id/')} component={JobPostDetails} />
                     <Route exact path={URLS.jobposts} component={JobPosts} />
 

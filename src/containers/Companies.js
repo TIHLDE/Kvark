@@ -17,7 +17,6 @@ import Banner from '../components/Banner';
 import Forum from '../components/Forum'
 
 import Text from '../text/CompaniesText';
-import Expansion from '../components/Expand';
 import * as ReactDOM from "react-dom";
 
 const styles = {
@@ -62,7 +61,7 @@ const styles = {
         marginBottom: '20px',
     },
     smoke: {
-        backgroundColor: '#f9f9f8',
+        backgroundColor: '#fafafa',
     },
     toFormBtn: {
         display: 'block',
@@ -116,7 +115,7 @@ class Companies extends Component {
         const { classes } = this.props;
 
         return (
-        <Navigation footer whitesmoke>
+        <Navigation footer>
             <div className={classes.root}>
                 <div className={classNames(classes.section, classes.topSection)}>
                     <Banner title={Text.bannnerTitle} image={Text.bannerPicture}/>

@@ -32,7 +32,7 @@ const styles = {
         flexDirection: 'column'
     },
     grid: {
-        padding: '30px',
+        padding: '30px 0px',
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap'
@@ -102,7 +102,7 @@ class CustomListItem extends Component {
 
     render(){
         return(
-            <ListItem dense button onClick={this.handleClick}>
+            <ListItem dense button onClick={this.handleClick} disableGutters>
                     <Checkbox
                         name={this.props.value.name}
                         checked={this.state.checked}
