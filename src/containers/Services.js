@@ -80,19 +80,19 @@ class Services extends Component {
                     <div className={classes.grid}>
                         <InfoCard header='Epost' text={Text.email} src={DriftIcon} classes={{children: classes.flex}} justifyText>
                             <Button className={classes.bottomSpacing} variant='contained' color='primary' href='https://webmail.tihlde.org/'>Gå til webmail</Button>
-                            <Button className={classes.bottomSpacing} variant='contained' color='secondary'>Les mer</Button>
+                            <Button className={classes.bottomSpacing} variant='outlined' color='secondary'>Les mer</Button>
                         </InfoCard>
                         <InfoCard header='Hosting' text={Text.hosting} src={DriftIcon} classes={{children: classes.flex}} justifyText>
                             <Button className={classes.bottomSpacing} variant='contained' color='primary' href='https://wiki.tihlde.org/landing/fantorangen'>Bestill domene</Button>
-                            <Button className={classes.bottomSpacing} variant='contained' color='secondary'>Les mer</Button>
+                            <Button className={classes.bottomSpacing} variant='outlined' color='secondary'>Les mer</Button>
                         </InfoCard>
                         <InfoCard header='Virtuelle Maskiner' text={Text.virtual} src={DriftIcon} classes={{children: classes.flex}} justifyText>
                             <Button className={classes.bottomSpacing} variant='contained' color='primary' href='https://wiki.tihlde.org/landing/fantorangen'>Bestill tjenesten</Button>
-                            <Button className={classes.bottomSpacing} variant='contained' color='secondary'>Les mer</Button>
+                            <Button className={classes.bottomSpacing} variant='outlined' color='secondary'>Les mer</Button>
                         </InfoCard>
                         <InfoCard header='Database' text={Text.database} src={DriftIcon} classes={{children: classes.flex}} justifyText>
                             <Button className={classes.bottomSpacing} variant='contained' color='primary' href='https://wiki.tihlde.org/landing/fantorangen'>Bestill mer plass</Button>
-                            <Button className={classes.bottomSpacing} variant='contained' color='secondary'>Les mer</Button>
+                            <Button className={classes.bottomSpacing} variant='outlined' color='secondary'>Les mer</Button>
                         </InfoCard>
                     </div>
                 </Grid>
