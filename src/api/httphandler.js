@@ -1,12 +1,12 @@
-import {TOKEN} from './webauth';
-import {TOKEN_HEADER_NAME, TIHLDE_API} from '../settings';
+import TOKEN from './token';
+import {TOKEN_HEADER_NAME, TIHLDE_API, WEB_AUTH_API} from '../settings';
 
 export class IRequest {
-    constructor(method, url, data={}, withAuth=true, args={}) {
+    constructor(method, url, data={}, withAuth=true, args={}, authURL=false) {
         this.method = method;
         this.data = data;
-        this.headers = {'Content-Type': 'application/json'};
-        this.url = TIHLDE_API.URL + url;
+        this.headers = {'Content-Type': 'application/json'}
+        this.url = ((!authURL)? TIHLDE_API.URL : WEB_AUTH_API.URL) + url;
         this.args = args;
 
         if (withAuth) {

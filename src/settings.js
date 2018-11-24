@@ -1,8 +1,8 @@
 // This class is used to store important constants
 // which are reasonable to want to change.
 
-export const WEB_AUTH = {
-    URL: 'https://tihlde-webauth.herokuapp.com/api/v1/',
+export const WEB_AUTH_API = {
+    URL: 'https://web-auth.tihlde.org/api/v1/',
 };
 
 export const TIHLDE_API = {

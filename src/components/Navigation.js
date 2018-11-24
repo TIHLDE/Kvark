@@ -22,17 +22,13 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import IconButton from '@material-ui/core/IconButton';
 
 // Assets/Icons
-import TIHLDELOGO from '../assets/img/Tihlde_no_cog_logo.svg';
+import TIHLDELOGO from '../assets/img/TIHLDE_LOGO.png';
 import MenuIcon from '@material-ui/icons/Menu';
 
 // Project Components
 import Footer from './Footer';
 import Sidebar from './Sidebar';
 import Snack from './Snack';
-
-// External Imports
-import SVG from 'react-inlinesvg';
-
 
 const styles = {
     root: {
@@ -114,11 +110,6 @@ const styles = {
     whitesmoke: {
         backgroundColor: 'var(--gray)',
     },
-    logo: {
-        height: '32em',
-        maxHeight: '32em !important',
-        color: 'white',
-    },
     selected: {
         borderBottom: '2px solid white',
     },
@@ -190,6 +181,10 @@ class Navigation extends Component {
         this.setState({showSidebar: !this.state.showSidebar});
     };
 
+    goTo = (page) => {
+        this.props.history.push(page);
+    }
+
     render() {
         const {classes} = this.props;
         return (
@@ -199,8 +194,7 @@ class Navigation extends Component {
                         <div className={classes.navWrapper}>
                             <div className={classes.logoWrapper}>
                                 <Link to='/'>
-                                    <SVG className={classes.logo} src={TIHLDELOGO} />
-                                    {/* <img className={classes.white} src={TIHLDELOGO} alt='logo' height='30em'/> */}
+                                    <img src={TIHLDELOGO} height='32em' alt='TIHLDE_LOGO' width='auto' />
                                 </Link>
                             </div>
 
@@ -236,7 +230,7 @@ class Navigation extends Component {
                             <div>
                                 <Hidden xsDown implementation={'css'}>
                                     <div>
-                                        <Button className={classes.loginBtn} variant='outlined'>Logg inn</Button>
+                                        <Button className={classes.loginBtn} onClick={() => this.goTo(URLS.login)} variant='outlined'>Logg inn</Button>
                                     </div>
                                 </Hidden>
                             </div>

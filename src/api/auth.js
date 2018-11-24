@@ -1,7 +1,7 @@
 import {IRequest} from './httphandler';
 
 export default {
-    authenticate: (password) => {
-        return new IRequest('POST', 'authenticate/', {password: password}, false);
+    authenticate: (username, password) => {
+        return new IRequest('POST', 'auth/', {username: username, password: password}, false, {}, true);
     },
 }

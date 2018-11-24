@@ -1,7 +1,3 @@
-/* import {get} from './http';
-import {TOKEN} from './webauth';
- */
-
 import {IRequest} from './httphandler';
 
 export default {

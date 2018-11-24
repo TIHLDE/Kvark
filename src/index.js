@@ -23,9 +23,8 @@ import NewStudent from './containers/NewStudent';
 import Profile from './containers/Profile';
 import JobPosts from './containers/JobPosts';
 import JobPostDetails from './containers/JobPostDetails';
+import LogIn from './containers/LogIn';
 
-// TODO Make container
-import Login from './components/Login';
 
 const Application = (
     <Provider store={store}>
@@ -45,9 +44,8 @@ const Application = (
                     <Route exact path={URLS.jobposts} component={JobPosts} />
 
                     <Route path={URLS.dataRegistration} component={DataRegistrator} />
+                    <Route path={URLS.login} component={LogIn} />
 
-                    { /* Testing only */ }
-                    <Route path='/login/' component={Login} />
                 </Switch>
             </MuiThemeProvider>
         </BrowserRouter>

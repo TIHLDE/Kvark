@@ -1,4 +1,5 @@
 export default {
+    landing: '/',
     news: '/nyheter/',
     events: '/arrangementer/',
     company: '/bedrifter/',
@@ -7,6 +8,7 @@ export default {
     newStudent: '/nyStudent/',
     jobposts: '/annonser/',
     profile: '/profile/',
+    login: '/logg-inn/',
 
     dataRegistration: '/admin/events',
 };
