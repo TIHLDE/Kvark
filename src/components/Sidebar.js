@@ -73,7 +73,7 @@ const SidebarContent = (props) => {
                 <ActionLink to={URLS.newStudent} label='Ny student'/>
                 <ActionLink to={URLS.jobposts} label='Annonser'/>
                 <ActionLink to={URLS.company} label='Bedrifter'/>
-
+                <ActionLink to={URLS.login} label='Logg inn'/>
             </div>
         </Fragment>
     );
