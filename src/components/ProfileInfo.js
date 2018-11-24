@@ -29,22 +29,22 @@ class ProfileInfo extends Component {
       <div>
          <div className={classes.cardContent}>
             <div className={classes.infoHeader}>
-                <Typography gutterBottom variant="h5" component="h2">
+                <Typography gutterBottom variant='headline'>
                     My Profile
                 </Typography>
             </div>    
             <div className={classes.infoName}> 
                 
-                <Typography component="p">
+                <Typography component="p" variant='body2'>
                     Name: 
                 </Typography>
-                <Typography component="p">
+                <Typography component="p" variant='body2'>
                     Phone: 
                 </Typography>
-                <Typography component="p">
+                <Typography component="p" variant='body2'>
                     Email: 
                 </Typography>
-                <Typography component="p">
+                <Typography component="p" variant='body2'>
                     Tihlde Status: 
                 </Typography>
             </div>

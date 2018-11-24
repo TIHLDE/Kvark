@@ -9,6 +9,7 @@ import {connect} from 'react-redux';
 
 // API and store imports
 import API from '../api/api';
+import AuthService from '../api/services/AuthService';
 import * as GridActions from '../store/actions/GridActions';
 
 // Material UI Components
@@ -24,6 +25,7 @@ import IconButton from '@material-ui/core/IconButton';
 // Assets/Icons
 import TIHLDELOGO from '../assets/img/TIHLDE_LOGO.png';
 import MenuIcon from '@material-ui/icons/Menu';
+import PersonIcon from '@material-ui/icons/Person';
 
 // Project Components
 import Footer from './Footer';
@@ -119,6 +121,11 @@ const styles = {
     loginBtn: {
         color: 'white',
         border: '2px solid white',
+    },
+    profileBtn: {
+        color: 'white',
+        border: '2px solid white',
+        padding: 6,
     }
 };
 
@@ -185,6 +192,10 @@ class Navigation extends Component {
         this.props.history.push(page);
     }
 
+    logOut = () => {
+        AuthService.logOut();
+    }
+
     render() {
         const {classes} = this.props;
         return (
@@ -230,7 +241,11 @@ class Navigation extends Component {
                             <div>
                                 <Hidden xsDown implementation={'css'}>
                                     <div>
-                                        <Button className={classes.loginBtn} onClick={() => this.goTo(URLS.login)} variant='outlined'>Logg inn</Button>
+                                        {AuthService.isAuthenticated()?
+                                            <IconButton className={classes.profileBtn} onClick={() => this.goTo(URLS.profile)}><PersonIcon/></IconButton>
+                                            :
+                                            <Button className={classes.loginBtn} onClick={() => this.goTo(URLS.login)} variant='outlined'>Logg inn</Button>
+                                        }
                                     </div>
                                 </Hidden>
                             </div>

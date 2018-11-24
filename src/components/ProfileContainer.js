@@ -29,6 +29,7 @@ const styles = (theme) => ({
 });
 
 class ProfileContainer extends Component {
+
   render() {
     const {classes} = this.props;
     return (
@@ -46,6 +47,9 @@ class ProfileContainer extends Component {
             <CardActions>
                 <Button size="small" color="primary">
                     Endre profil instillinger
+                </Button>
+                <Button onClick={this.props.onLogOut} variant='contained' size="small" color="primary">
+                    Log ut
                 </Button>
             </CardActions>
         </Card>
