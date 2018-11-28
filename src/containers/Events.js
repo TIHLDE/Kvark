@@ -32,12 +32,11 @@ const styles = (theme) => ({
     root:{
         width:'auto',
         height:'auto',
-        backgroundColor: 'whitesmoke',
         minHeight: '95vh',
     },
     wrapper:{
-        paddingTop:'10px',
-        paddingBottom:'30px',
+        paddingTop: 20,
+        paddingBottom: 30,
 
         maxWidth: 1200,
 
@@ -79,8 +78,7 @@ const styles = (theme) => ({
     settings: {
         position: 'sticky',
         top: 88,
-        maxHeight: 236,
-        padding: 20,
+        padding: 28,
 
         '@media only screen and (max-width: 800px)': {
             order: 0,
@@ -207,7 +205,7 @@ class Events extends Component {
         const {categories, category} = this.state;
 
         return (
-            <Navigation isLoading={this.state.isLoading} footer>
+            <Navigation isLoading={this.state.isLoading} footer whitesmoke>
                 {(this.state.isLoading)? null :
                     <div className={classes.root}>
 
@@ -232,35 +230,37 @@ class Events extends Component {
                                     </Grow>
                                     </div>
                                 }
-                                <Paper className={classes.settings} elevation={1} square>
-                                    
-                                    <form>
-                                        <TextField className={classes.paddingBtn} value={this.state.search} fullWidth placeholder='Søk...' onChange={this.handleChange('search')}/>
-                                        <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.searchForEvent}>{Text.search}</Button>
-                                    </form>
-                                    <Divider className={classes.mt}/>
-                                    <Typography className={classes.mt} variant='title' gutterBottom>{Text.category}</Typography>
-                                    <TextField className={classes.paddingBottom} select fullWidth label='Kategori' value={category} onChange={this.handleCategoryChange}>
-                                        {categories.map((value, index) => (
-                                            <MenuItem key={index} value={value.id}>
-                                                {value.text}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                    <Divider className={classes.mt}/>
+                                <div>
+                                    <Paper className={classes.settings} elevation={1} square>
+                                        
+                                        <form>
+                                            <TextField className={classes.paddingBtn} value={this.state.search} fullWidth placeholder='Søk...' onChange={this.handleChange('search')}/>
+                                            <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.searchForEvent}>{Text.search}</Button>
+                                        </form>
+                                        <Divider className={classes.mt}/>
+                                        <Typography className={classes.mt} variant='title' gutterBottom>{Text.category}</Typography>
+                                        <TextField className={classes.paddingBottom} select fullWidth label='Kategori' value={category} onChange={this.handleCategoryChange}>
+                                            {categories.map((value, index) => (
+                                                <MenuItem key={index} value={value.id}>
+                                                    {value.text}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                        <Divider className={classes.mt}/>
 
-                                    <Theme theme={errorTheme}>
-                                        <Button
-                                            className={classes.resetBtn}
-                                            fullWidth
-                                            color='primary'
-                                            variant='outlined'
-                                            onClick={this.resetFilters}>
-                                            {Text.reset}
-                                        </Button>
-                                    </Theme>
+                                        <Theme theme={errorTheme}>
+                                            <Button
+                                                className={classes.resetBtn}
+                                                fullWidth
+                                                color='primary'
+                                                variant='outlined'
+                                                onClick={this.resetFilters}>
+                                                {Text.reset}
+                                            </Button>
+                                        </Theme>
 
-                                </Paper>
+                                    </Paper>
+                                </div>
                             </div>
                         </div>
                     </div>

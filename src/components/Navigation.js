@@ -9,6 +9,7 @@ import {connect} from 'react-redux';
 
 // API and store imports
 import API from '../api/api';
+import AuthService from '../api/services/AuthService';
 import * as GridActions from '../store/actions/GridActions';
 
 // Material UI Components
@@ -22,17 +23,14 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import IconButton from '@material-ui/core/IconButton';
 
 // Assets/Icons
-import TIHLDELOGO from '../assets/img/Tihlde_no_cog_logo.svg';
+import TIHLDELOGO from '../assets/img/TIHLDE_LOGO.png';
 import MenuIcon from '@material-ui/icons/Menu';
+import PersonIcon from '@material-ui/icons/Person';
 
 // Project Components
 import Footer from './Footer';
 import Sidebar from './Sidebar';
 import Snack from './Snack';
-
-// External Imports
-import SVG from 'react-inlinesvg';
-
 
 const styles = {
     root: {
@@ -44,7 +42,6 @@ const styles = {
     },
     main: {
         marginTop: 64,
-
         minHeight: '101vh',
         '@media only screen and (max-width: 600px)': {
             marginTop: 56,
@@ -113,12 +110,7 @@ const styles = {
     },
 
     whitesmoke: {
-        backgroundColor: 'whitesmoke',
-    },
-    logo: {
-        height: '32em',
-        maxHeight: '32em !important',
-        color: 'white',
+        backgroundColor: 'var(--gray)',
     },
     selected: {
         borderBottom: '2px solid white',
@@ -129,6 +121,11 @@ const styles = {
     loginBtn: {
         color: 'white',
         border: '2px solid white',
+    },
+    profileBtn: {
+        color: 'white',
+        border: '2px solid white',
+        padding: 6,
     }
 };
 
@@ -191,6 +188,14 @@ class Navigation extends Component {
         this.setState({showSidebar: !this.state.showSidebar});
     };
 
+    goTo = (page) => {
+        this.props.history.push(page);
+    }
+
+    logOut = () => {
+        AuthService.logOut();
+    }
+
     render() {
         const {classes} = this.props;
         return (
@@ -200,8 +205,7 @@ class Navigation extends Component {
                         <div className={classes.navWrapper}>
                             <div className={classes.logoWrapper}>
                                 <Link to='/'>
-                                    <SVG className={classes.logo} src={TIHLDELOGO} />
-                                    {/* <img className={classes.white} src={TIHLDELOGO} alt='logo' height='30em'/> */}
+                                    <img src={TIHLDELOGO} height='32em' alt='TIHLDE_LOGO' width='auto' />
                                 </Link>
                             </div>
 
@@ -237,7 +241,11 @@ class Navigation extends Component {
                             <div>
                                 <Hidden xsDown implementation={'css'}>
                                     <div>
-                                        <Button className={classes.loginBtn} variant='outlined'>Logg inn</Button>
+                                        {AuthService.isAuthenticated()?
+                                            <IconButton className={classes.profileBtn} onClick={() => this.goTo(URLS.profile)}><PersonIcon/></IconButton>
+                                            :
+                                            <Button className={classes.loginBtn} onClick={() => this.goTo(URLS.login)} variant='outlined'>Logg inn</Button>
+                                        }
                                     </div>
                                 </Hidden>
                             </div>

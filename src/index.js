@@ -20,11 +20,11 @@ import Events from './containers/Events';
 import Services from './containers/Services';
 import DataRegistrator from './containers/DataRegistrator';
 import NewStudent from './containers/NewStudent';
-import MyProfile from './containers/MyProfile';
+import Profile from './containers/Profile';
 import JobPosts from './containers/JobPosts';
+import JobPostDetails from './containers/JobPostDetails';
+import LogIn from './containers/LogIn';
 
-// TODO Make container
-import Login from './components/Login';
 
 const Application = (
     <Provider store={store}>
@@ -39,13 +39,13 @@ const Application = (
                     <Route path={URLS.services} component={Services} />
                     <Route path={URLS.company} component={Companies} />
                     <Route path={URLS.newStudent} component={NewStudent} />
-                    <Route path={URLS.profile} component={MyProfile} />
-                    <Route path={URLS.jobposts} component={JobPosts} />
+                    <Route path={URLS.profile} component={Profile} />
+                    <Route path={URLS.jobposts.concat(':id/')} component={JobPostDetails} />
+                    <Route exact path={URLS.jobposts} component={JobPosts} />
 
                     <Route path={URLS.dataRegistration} component={DataRegistrator} />
+                    <Route path={URLS.login} component={LogIn} />
 
-                    { /* Testing only */ }
-                    <Route path='/login/' component={Login} />
                 </Switch>
             </MuiThemeProvider>
         </BrowserRouter>

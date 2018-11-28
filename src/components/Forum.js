@@ -9,12 +9,10 @@ import API from '../api/api';
 import {TextField, Typography} from '@material-ui/core';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper'
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Project Components
@@ -32,7 +30,7 @@ const styles = {
         flexDirection: 'column'
     },
     grid: {
-        padding: '30px',
+        padding: '30px 0px',
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap'
@@ -75,6 +73,7 @@ const Inputter = withStyles(styles)((props) => {
                 name={data.id}
                 label={data.header}
                 placeholder={data.placeholder}
+                type={data.type || 'text'}
                 fullWidth
                 margin="normal"
                 variant="outlined"
@@ -102,7 +101,7 @@ class CustomListItem extends Component {
 
     render(){
         return(
-            <ListItem dense button onClick={this.handleClick}>
+            <ListItem dense button onClick={this.handleClick} disableGutters>
                     <Checkbox
                         name={this.props.value.name}
                         checked={this.state.checked}
@@ -144,38 +143,38 @@ class Forum extends Component {
     handleChange = (part) => (event) => {
 
 
-        if (part === "info") {
+        if (part === 'info') {
             this.setState({
                 data: {
                     ...this.state.data,
-                    ["info"]: {
+                    'info': {
                         ...this.state.data["info"],
                         [event.target.name]: event.target.value
                     }
                 }
             })
         }
-        else if (part === "comment") {
+        else if (part === 'comment') {
             this.setState({
                 data: {
                     ...this.state.data,
-                    ["comment"]: event.target.value
+                    'comment': event.target.value
                 }
             })
         }
-        else if (part === "type") {
+        else if (part === 'type') {
             if (event.target.checked) {
                 this.setState({
                     data: {
                         ...this.state.data,
-                        ["type"]: [...this.state.data["type"], event.target.name]
+                        'type': [...this.state.data["type"], event.target.name]
                     }
                 })
             } else {
                 this.setState({
                     data: {
                         ...this.state.data,
-                        ["type"]: this.state.data["type"].filter(it => it != event.target.name)
+                        'type': this.state.data["type"].filter(it => it != event.target.name)
                     }
                 })
             }
@@ -185,14 +184,14 @@ class Forum extends Component {
                 this.setState({
                     data: {
                         ...this.state.data,
-                        ["time"]: [...this.state.data["time"], event.target.name]
+                        'time': [...this.state.data["time"], event.target.name]
                     }
                 })
             } else {
                 this.setState({
                     data: {
                         ...this.state.data,
-                        ["time"]: this.state.data["time"].filter(it => it != event.target.name)
+                        'time': this.state.data["time"].filter(it => it != event.target.name)
                     }
                 })
             }
@@ -222,13 +221,8 @@ class Forum extends Component {
     };
 
     handleSubmit = (event) => {
-
-        console.log(this.state);
-
         event.preventDefault();
 
-        
-        
         if(this.props.scrollToForm) {
             this.props.scrollToForm();
         }
@@ -238,9 +232,9 @@ class Forum extends Component {
         response.then((data) => {
             if (response.isError === false && data) {
                 console.log(data);
-                this.setMessage("Sendt! Takk for interressen");
+                this.setMessage("Sendt! Takk for interressen.");
             } else {
-                this.setMessage("Noe gikk galt, prøv senere")
+                this.setMessage("Noe gikk galt, prøv senere.")
             }
             this.setState({isLoading: false, isFormSent: true});
         });
@@ -272,7 +266,7 @@ class Forum extends Component {
                     <Typography variant='display1' gutterBottom>Meld interesse:</Typography>
                     <Inputter required handleChange={this.handleChange("info")} data={{header: 'Bedrift: ', placeholder: 'Bedrift Navnet', id: 'bedrift'}} firstTextFieldRef={firstTextFieldRef} />
                     <Inputter required handleChange={this.handleChange("info")} data={{header: 'Kontaktperson: ', placeholder: 'Navn', id: 'kontaktperson'}} />
-                    <Inputter required handleChange={this.handleChange("info")} data={{header: 'Epost: ', placeholder: 'Skriv Epost her', id: 'epost'}} />
+                    <Inputter required handleChange={this.handleChange("info")} data={{header: 'Epost: ', placeholder: 'Skriv Epost her', id: 'epost', type: 'email'}} />
                     <div className ={classes.grid}>
                         <Listing handleChange={this.handleChange("time")} header="SEMESTER" list={semester}/>
                         <Listing handleChange={this.handleChange("type")} header="ARRANGEMENTER" list={arrangementer}/>

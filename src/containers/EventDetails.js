@@ -14,7 +14,6 @@ import { setSelectedItem } from '../store/actions/GridActions';
 
 const styles = {
     root:{
-        backgroundColor:'whitesmoke',
         minHeight: '90vh',
     },
     wrapper:{
@@ -70,7 +69,7 @@ class EventDetails extends Component {
         const data = (selected && selected.data)? selected.data : (selected)? selected : {};
 
         return (
-            <Navigation isLoading={this.state.isLoading} footer>
+            <Navigation isLoading={this.state.isLoading} footer whitesmoke>
                 {(this.state.isLoading)? null :
                     <div className={classes.root}>
                         <div className={classes.wrapper}>

@@ -1,6 +1,10 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
 export default createMuiTheme({
+    typography: {
+      useNextVariants: true,
+    },
+
     palette: {
       primary: {
         main: '#1D448C',
@@ -8,7 +12,7 @@ export default createMuiTheme({
         contrastText: 'white',
       },
       secondary: {
-        main: '#367017', // '#00897B',
+        main: '#748674', // '#00897B',
         contrastText: 'white',
       },
       error: {
