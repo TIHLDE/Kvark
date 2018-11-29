@@ -206,13 +206,11 @@ class Events extends Component {
 
         return (
             <Navigation isLoading={this.state.isLoading} footer whitesmoke>
-                {(this.state.isLoading)? null :
                     <div className={classes.root}>
 
                         <div className={classes.wrapper}>
                             <Banner image='http://sf.co.ua/13/06/wallpaper-2845536.jpg' title='Arrangementer'/>
                             <div className={classes.grid}>
-
                                 {this.state.isFetching ? <CircularProgress className={classes.progress} /> :
                                     <div className={classes.listRoot}>
                                     <Grow in={!this.state.isFetching}>
@@ -223,7 +221,7 @@ class Events extends Component {
                                                     <Divider/>
                                                 </div>
                                             ))}
-                                            {this.state.events.length === 0 && 
+                                            { (this.state.events.length === 0 && !this.state.isLoading) &&
                                                 <MessageIndicator header={Text.noEvents} subheader={Text.subNoEvents}/>
                                             }
                                         </Paper>
@@ -264,8 +262,6 @@ class Events extends Component {
                             </div>
                         </div>
                     </div>
-
-                }
             </Navigation>
         );
     }
