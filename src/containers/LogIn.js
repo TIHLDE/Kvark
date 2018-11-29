@@ -29,7 +29,7 @@ const styles = {
         width: '100%',
     },
     top: {
-        height: 200,
+        height: 160,
         backgroundColor: 'var(--tihlde-blaa)',
     },
     main: {
@@ -43,7 +43,7 @@ const styles = {
         margin: 'auto',
         position: 'absolute',
         left: 0, right: 0,
-        top: '-100px',
+        top: '-60px',
         padding: 28,
     },
     logo: {
@@ -51,7 +51,6 @@ const styles = {
         maxHeight: '32px !important',
         margin: 'auto',
         display: 'block',
-        filter: 'opacity(0.27) saturate(0.2)',
         marginBottom: 10,
     },
     mt: {marginTop: 16},
@@ -111,7 +110,7 @@ class LogIn extends Component {
                 
                     </div>
                     <div className={classes.main}>
-                        <Paper className={classes.paper} square elevation={1}>
+                        <Paper className={classes.paper} square elevation={3}>
                             {this.state.isLoading && <LinearProgress className={classes.progress} />}
                             <img  className={classes.logo} src={TIHLDE_LOGO} height='30em' alt='tihlde_logo'/>
                             <Typography variant='title'>{Text.header}</Typography>
@@ -138,7 +137,7 @@ class LogIn extends Component {
                                         required/>
                                     <Button className={classes.mt}
                                         variant='contained'
-                                        color='secondary'
+                                        color='primary'
                                         disabled={this.state.isLoading}
                                         type='submit'>
                                     Logg inn
