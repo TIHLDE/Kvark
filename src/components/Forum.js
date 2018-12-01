@@ -37,7 +37,7 @@ const styles = {
     },
     item: {
         flexGrow: 1,
-        margin: '10px 10px',
+        margin: '8px 8px',
     },
     progress: {
         minHeight: 300,
@@ -49,15 +49,25 @@ const styles = {
         flexWrap: 'nowrap',
     }
 };
+/* 
+console.log("YEAR: " + moment().year());
 
+const generateSemesters = () => {
+    const curYear = moment().year();
+
+} */
+
+// TODO: Make this part automatic!
 const semester = [
-    {name: 'Høst 2018'},
     {name: 'Vår 2019'},
+    {name: 'Høst 2019'},
+    {name: 'Vår 2020'},
 ];
 
 const arrangementer =[
     {name: 'Faglig Arrangement'},
     {name: 'Bedex'},
+    {name: 'Bedpress'},
     {name: 'Annet'},
 ];
 
@@ -66,7 +76,6 @@ const Inputter = withStyles(styles)((props) => {
     const {data, firstTextFieldRef, handleChange} = props;
     return (
         <div >
-            <Typography variant='subheading' color='textPrimary'> {data.header}</Typography>
             <TextField
                 inputRef={firstTextFieldRef}
                 id={data.id}
@@ -264,7 +273,7 @@ class Forum extends Component {
             <div className={classNames(classes.root,this.props.className)} >
                 <form className={classes.wrapper} onSubmit={this.handleSubmit}>
                     <Typography variant='display1' gutterBottom>Meld interesse:</Typography>
-                    <Inputter required handleChange={this.handleChange("info")} data={{header: 'Bedrift: ', placeholder: 'Bedrift Navnet', id: 'bedrift'}} firstTextFieldRef={firstTextFieldRef} />
+                    <Inputter required handleChange={this.handleChange("info")} data={{header: 'Bedrift: ', placeholder: 'Bedriftnavn', id: 'bedrift'}} firstTextFieldRef={firstTextFieldRef} />
                     <Inputter required handleChange={this.handleChange("info")} data={{header: 'Kontaktperson: ', placeholder: 'Navn', id: 'kontaktperson'}} />
                     <Inputter required handleChange={this.handleChange("info")} data={{header: 'Epost: ', placeholder: 'Skriv Epost her', id: 'epost', type: 'email'}} />
                     <div className ={classes.grid}>

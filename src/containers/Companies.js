@@ -131,8 +131,8 @@ class Companies extends Component {
                     <div className={classNames(classes.section)}>
                         <Typography variant='display1' color='inherit' align='center' className={classes.margining}>Vi tilbyr</Typography>
                         <div className={classNames(classes.container)}>
-                            <InfoCard header='Jobbannonser' text={Text.jobbannonser} />
-                            <InfoCard header='Bedriftpressentasjon' text={Text.bedrifter}/>
+                            <InfoCard header='Stillingsannonser' text={Text.jobbannonser} justifyText/>
+                            <InfoCard header='Bedriftpressentasjon' text={Text.bedrifter} justifyText/>
                         </div>
                     </div>
                 </div>

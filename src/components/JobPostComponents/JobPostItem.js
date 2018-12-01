@@ -73,10 +73,10 @@ const styles = {
         padding: 0,
     },
     expired: {
-       color: 'rgba(0,0,0,0.4)',
+       color: 'rgba(0,0,0,0.3)',
     },
     filter: {
-        filter: 'opacity(0.4)',
+        filter: 'opacity(0.3)',
     },
 };
 
@@ -104,7 +104,7 @@ const JobPostItem = (props) => {
                     <Typography className={classNames(classes.title, (data.expired)? classes.expired : '')} variant='title' gutterBottom>
                         <strong>{data.title}</strong>
                     </Typography>
-                    <div className={classes.details}>
+                    <div className={classNames(classes.details, data.expired ? classes.filter : '')}>
                         <InfoContent icon={<Business className={classes.icon}/>} label={data.company} />
                         <InfoContent icon={<Location className={classes.icon}/>} label={data.location} />
                         <InfoContent icon={<Calendar className={classes.icon}/>} label={start.format('DD.MM.YYYY')} />
