@@ -1,14 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import store from './store/store';
 import URLS from './URLS';
 
+// Theme
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import theme from './theme';
-
 import './assets/css/index.css';
+
+// Service imports
+import AuthService from './api/services/AuthService';
 
 // Project containers
 import Landing from './containers/Landing';
@@ -18,13 +21,26 @@ import Companies from './containers/Companies';
 import About from './containers/About';
 import Events from './containers/Events';
 import Services from './containers/Services';
-import DataRegistrator from './containers/DataRegistrator';
+import EventAdministration from './containers/EventAdministration';
 import NewStudent from './containers/NewStudent';
 import Profile from './containers/Profile';
 import JobPosts from './containers/JobPosts';
 import JobPostDetails from './containers/JobPostDetails';
 import LogIn from './containers/LogIn';
 
+// The user needs to be authorized (logged in) to access these routes
+const PrivateRoute = ({ component: Component, ...rest }) => {
+    return (
+      <Route
+        {...rest}
+        render={(props) => (
+            (AuthService.isAuthenticated())?
+                <Component {...props} /> :
+                <Redirect to={URLS.login} />
+        )}
+      />
+    );
+};
 
 const Application = (
     <Provider store={store}>
@@ -43,7 +59,7 @@ const Application = (
                     <Route path={URLS.jobposts.concat(':id/')} component={JobPostDetails} />
                     <Route exact path={URLS.jobposts} component={JobPosts} />
 
-                    <Route path={URLS.dataRegistration} component={DataRegistrator} />
+                    <PrivateRoute path={URLS.eventAdmin} component={EventAdministration} />
                     <Route path={URLS.login} component={LogIn} />
 
                 </Switch>

@@ -39,6 +39,11 @@ export default function reducer(state = initialState, action) {
     }
 };
 
+// SELECTORS
+
+const getGridState = (state) => state.grid;
+
+export const getEventById = (state) => (id) => getGridState(state).grid.find(e => e.type === 'event' && e.id === id);
 
 // Helper functions
 

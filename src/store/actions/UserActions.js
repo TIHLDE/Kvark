@@ -9,3 +9,4 @@ export const clearData = () =>
 // --- SELECTORS ---
 const getUserState = (state) => state.user;
 
+export const getUserData = (state) => ({...getUserState(state)});

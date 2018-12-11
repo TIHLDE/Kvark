@@ -10,5 +10,5 @@ export default {
     profile: '/profile/',
     login: '/logg-inn/',
 
-    dataRegistration: '/admin/events',
+    eventAdmin: '/admin/events',
 };

@@ -58,8 +58,26 @@ a {
     margin-right: 20px;
 }
 
+
+/* MARKDOWN CUSTOM CSS */
 .renderer ul {
     padding-left: 20px;
+}
+
+.renderer img {
+    max-width: 100%;
+    height: auto;
+}
+
+pre {
+    padding: 16px;
+    background-color: whitesmoke;
+    overflow-x: auto;
+}
+
+p > code {
+    padding: 10px;
+    background-color: whitesmoke;
 }
 
 @-webkit-keyframes pulse {
