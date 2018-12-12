@@ -56,7 +56,7 @@ class EventService {
     }
 
     static putEvent = async (id, eventData, callback=null) => {
-        const response = API.editEventItem(id, eventData).response();
+        const response = API.putEventItem(id, eventData).response();
         return response.then((data) => {
             !callback || callback(response.isError === true, data);
             return data;

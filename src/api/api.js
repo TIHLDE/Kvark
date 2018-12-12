@@ -30,7 +30,7 @@ export default {
     createEventItem: (item) => {
         return new IRequest('POST', 'events/', item, true);
     },
-    editEventItem: (id, item) => {
+    putEventItem: (id, item) => {
         return new IRequest('PUT', 'events/'.concat(id, '/'), item, true);
     },
     deleteEventItem: (id) => {
@@ -43,6 +43,15 @@ export default {
     },
     getJobPost: (id) => {
         return new IRequest('GET', 'jobpost/'.concat(id, '/'), undefined);
+    },
+    createJobPost: (item) => {
+        return new IRequest('POST', 'jobpost/', item, true);
+    },
+    putJobPost: (id, item) => {
+        return new IRequest('PUT', 'jobpost/'.concat(id, '/'), item , true);
+    },
+    deleteJobPost: (id) => {
+        return new IRequest('DELETE', 'jobpost/'.concat(id, '/'), undefined, true);
     },
 
     // Warning

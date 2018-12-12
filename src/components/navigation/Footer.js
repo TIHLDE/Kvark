@@ -17,7 +17,7 @@ import INSTAGRAM from '../../assets/icons/instagram.svg';
 
 const styles = {
     root: {
-        backgroundColor: '#3B3B3B',
+        backgroundColor: '#1b1b2d',
         padding: '40px 0px',
         display: 'grid',
         gridGap: '40px',

@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import {connect} from 'react-redux';
 
 // API and store imports
-import API from '../../api/api';
+import MiscService from '../../api/services/MiscService';
 import AuthService from '../../api/services/AuthService';
 import * as GridActions from '../../store/actions/GridActions';
 
@@ -166,15 +166,12 @@ class Navigation extends Component {
             return;
         }
 
-        const response = API.getWarning().response();
-        response.then((data) => {
-            if(response.isError === false) {
-                if(data && data.length > 0) {
-                    this.setState({
-                        snackMessage: data[data.length-1].text,
-                        showSnackbar: true,
-                    });
-                }
+        MiscService.getWarning((isError, data) => {
+            if(isError === false && data && data.length > 0) {
+                this.setState({
+                    snackMessage: data[data.length-1].text,
+                    showSnackbar: true,
+                });
             }
         });
     }

@@ -3,7 +3,8 @@ import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import API from '../../../api/api';
+// Service imports
+import MiscService from '../../../api/services/MiscService';
 
 // Material UI Components
 import {TextField, Typography} from '@material-ui/core';
@@ -230,10 +231,8 @@ class Forum extends Component {
         }
         this.setState({isLoading: true});
 
-        const response = API.emailForm(this.state.data).response();
-        response.then((data) => {
-            if (response.isError === false && data) {
-                console.log(data);
+        MiscService.postEmail(this.state.data, (isError, data) => {
+            if (isError === false && data) {
                 this.setMessage("Sendt! Takk for interressen.");
             } else {
                 this.setMessage("Noe gikk galt, prøv senere.")

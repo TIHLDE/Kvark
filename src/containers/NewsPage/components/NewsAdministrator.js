@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
-// API imports
-import API from '../../api/api';
+// Service imports
+import NewsService from '../../../api/services/NewsService';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
@@ -41,8 +41,6 @@ const styles = {
         maxWidth: 800,
         display: 'block',
         margin: '30px auto',
-
-
     },
     newsItemWrapper: {
         
@@ -120,12 +118,9 @@ class NewsRegistrator extends Component {
             imageAlt: this.state.imageAlt,
         };
 
-        const response = API.createNewsItem(item).response();
-        response.then((data) => {
-            console.log(data);
-            if(response.isError === false) {
-                
-            }
+        // Fetch news item
+        NewsService.createNewsItem(item, (isError, data) => {
+
         });
     }
 

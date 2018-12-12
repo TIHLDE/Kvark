@@ -4,10 +4,8 @@ import PropTypes from 'prop-types';
 
 import {connect} from 'react-redux';
 
-// API Imports
-import API from '../../api/api';
-
-import { setGridItems } from '../../store/actions/GridActions';
+// Service Imports
+import MiscService from '../../api/services/MiscService';
 
 // Project components
 import Navigation from '../../components/navigation/Navigation';
@@ -28,15 +26,10 @@ class Landing extends Component {
     }
 
     componentDidMount() {
-        const { dispatch } = this.props;
         // Get grid items
         if (this.props.grid.length === 0) {
             this.setState({isLoading: true});
-            const response = API.getGridItems().response();
-            response.then((data) => {
-                if (!response.isError) {
-                    dispatch(setGridItems(data));
-                }
+            MiscService.getGridData((isError, data) => {
                 this.setState({isLoading: false});
             });
         }

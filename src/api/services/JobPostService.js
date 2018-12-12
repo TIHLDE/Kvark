@@ -37,6 +37,33 @@ class JobPostService {
                 });
         }
     };
+
+    static createJobPost = async (postData, callback=null) => {
+        // Create new JobPost Item
+        const response = API.createJobPost(postData).response();
+        return response.then((data) => {
+            !callback || callback(response.isError === true, data);
+            return data;
+        });
+    }
+
+    // Edit job post
+    static putJobPost = async (id, postData, callback=null) => {
+        const response = API.putJobPost(id, postData).response();
+        return response.then((data) => {
+            !callback || callback(response.isError === true, data);
+            return data;
+        });
+    }
+
+    // Deleting a jobpost by given id
+    static deleteJobPost = async (id, callback=null) => {
+        const response = API.deleteJobPost(id).response();
+        return response.then((data) => {
+            !callback || callback(response.isError === true, data);
+            return data;
+        });
+    }
 }
 
 export default JobPostService;

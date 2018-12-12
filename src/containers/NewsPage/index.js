@@ -3,14 +3,12 @@ import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
-// API and store imports
-import API from '../../api/api';
-import { setSelectedItem } from '../../store/actions/GridActions';
+// Service and store imports
+import NewsService from '../../api/services/NewsService';
 
 // Project components
 import Navigation from '../../components/navigation/Navigation';
 import NewsRenderer from './components/NewsRenderer';
-
 
 const styles = {
 
@@ -32,19 +30,11 @@ class NewsPage extends Component {
 
     // Loading news info
     loadNews = () => {
-        const { dispatch } = this.props;
-
         // Get newsitem id
         const id = this.props.match.params.id;
 
         this.setState({isLoading: true});
-        const response = API.getNewsItem(id).response();
-        response.then((data) => {
-            if (!response.isError) {
-                dispatch(setSelectedItem(data));
-            } else {
-                // Redirect to 404
-            }
+        NewsService.getNewsById(id, (isError, data) => {
             this.setState({isLoading: false});
         });
     }

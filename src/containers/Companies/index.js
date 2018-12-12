@@ -119,7 +119,7 @@ class Companies extends Component {
             <div className={classes.root}>
                 <div className={classNames(classes.section, classes.topSection)}>
                     <Banner title={Text.bannnerTitle} image={Text.bannerPicture}/>
-                    <Paper className={classes.formWrapper} ref={this.formRef}>
+                    <Paper className={classes.formWrapper} ref={this.formRef} square>
                         <Forum
                             setMessage={this.setMessage}
                             data ={{forumText1: Text.forumText2 , forumText2: Text.forumText2}}
@@ -149,7 +149,7 @@ class Companies extends Component {
 
                 <div className={classes.smoke}>
                     <div className={classes.section}>
-                        <InfoCard imageClass={classes.imageClass} header={'Om TIHLDE'} text={Text.cardInfo} src={Image}/>
+                        <InfoCard imageClass={classes.imageClass} header={'Om TIHLDE'} text={Text.omTIHLDE} src={Image}/>
                     </div>
                 </div>
                 <div className={classes.section}>
