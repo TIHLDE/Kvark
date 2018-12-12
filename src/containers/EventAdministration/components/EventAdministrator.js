@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import moment from 'moment';
 
 // API imports
-import API from '../../../api/api';
+import EventService from '../../../api/services/EventService';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
@@ -193,31 +193,28 @@ class EventAdministrator extends Component {
     componentDidMount() {
     
         // Get all eventlists
-        const listResponse = API.getEventLists().response();
-        listResponse.then((data) => {
-            console.log(data);
-            if (listResponse.isError === false) {
+        EventService.getEventLists()
+        .then((data) => {
+            if(data) {
                 this.setState({eventLists: data});
             }
         });
 
         // Get all categories
-        const categories = API.getCategories().response();
-        categories.then((data) => {
-            console.log(data);
-            if(categories.isError === false) {
+        EventService.getCategories()
+        .then((data) => {
+            if(data) {
                 this.setState({categories: data});
             }
         });
 
         // Get all events
-        const response = API.getEventItems().response();
-        response.then((data) => {
-            console.log(data);
-            if (response.isError === false) {
+        EventService.getEvents()
+        .then((data) => {
+            if(data) {
                 this.setState({events: data});
             }
-        });
+        })
     }
 
     fetchExpired = () => {
@@ -227,14 +224,12 @@ class EventAdministrator extends Component {
         }
 
         this.setState({isFetching: false});
-        const response = API.getExpiredEvents().response();
-        response.then((data) => {
-            if (response.isError === false) {
+        EventService.getExpiredData((isError, data) => {
+            if (!isError) {
                 this.setState({expired: data});
             }
             this.setState({isFetching: true});
         });
-        
     }
 
     onEventClick = (event) => {
@@ -316,10 +311,8 @@ class EventAdministrator extends Component {
         this.setState({isLoading: true});
 
         // Create new Event Item
-        const response = API.createEventItem(item).response();
-        response.then((data) => {
-            console.log(data);
-            if(response.isError === false) {
+        EventService.createNewEvent(item, (isError, data) => {
+            if(!isError) {
                 const newEvents = Object.assign([], this.state.events);
                 newEvents.unshift(data);
                 this.setState({events: newEvents, showSuccessMessage: true, successMessage: eventCreated});
@@ -339,12 +332,11 @@ class EventAdministrator extends Component {
         this.setState({isLoading: true});
 
         // Create new Event Item
-        const response = API.editEventItem(selectedEvent.id, item).response();
-        response.then((data) => {
-            console.log(data);
-            if(response.isError === false) {
+        EventService.putEvent(selectedEvent.id, item, (isError, data) => {
+            if(!isError) {
+                // Update stored event with the new data
                 const newEvents = Object.assign([], this.state.events);
-                const index = newEvents.findIndex((elem) => elem.id === selectedEvent.id);
+                const index = newEvents.findIndex((elem) => elem.id === selectedEvent.id); // Finding event by id
                 if(index !== -1) {
                     newEvents[index] = data;
                     this.setState({events: newEvents, showSuccessMessage: true, successMessage: eventChanged});
@@ -364,10 +356,9 @@ class EventAdministrator extends Component {
         this.setState({isLoading: true});
 
         // Create new Event Item
-        const response = API.deleteEventItem(selectedEvent.id).response();
-        response.then((data) => {
-            console.log(data);
-            if(response.isError === false) {
+        EventService.deleteEvent(selectedEvent.id, (isError, data) => {
+            if(isError === false) {
+                // Remove the deleted event from the state
                 const newEvents = Object.assign([], this.state.events);
                 const index = newEvents.findIndex((elem) => elem.id === selectedEvent.id);
                 if(index !== -1) {
