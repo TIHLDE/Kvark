@@ -12,11 +12,12 @@ export default function reducer(state = initialState, action) {
 
     switch (action.type) {
 
-        case "SET_GRID_ITEMS": {
-            const news = data.filter(e => e.type === 'news');
-            let gridData = data.filter(e => e.type !== 'news');
+        case "SET_GRID_ITEMS": { // TODO: Make this happend at backend instead
+            const news = data.filter(e => e.type === 'news'); // All the news
+            let gridData = data.filter(e => e.type !== 'news'); // Everything, except the news
             if(news.length > 0) {
-                gridData.push(createNewsItem(news));
+                gridData.push(createNewsItem(news)); // Add news as one unit
+                gridData.sort((a, b) => a.order - b.order); // Sort on order - This should really be done on the backend
             }
             
             return {...state, grid: gridData}

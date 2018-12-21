@@ -16,6 +16,7 @@ import Poster from './Poster';
 // import NewsGroup from './NewsGroup';
 import ImageGallery from './ImageGallery';
 import EventSection from './EventSection';
+import NewsSection from './NewsSection';
 
 //import GridItem from './GridItem';
 
@@ -28,7 +29,7 @@ const styles = {
         gridGap: '20px', */
 
         //  margin: 'auto',
-        marginBottom: 50,
+        //marginBottom: 50,
         //padding: '0 5px 5px 5px',
         //maxWidth: 1200,
 
@@ -43,10 +44,10 @@ const styles = {
         }, */
     },
     topPadding: {
-        paddingTop: 20,
+        //paddingTop: 20,
     },
     bottomPadding: {
-        paddingBottom: 200,
+        //paddingBottom: 200,
     },
     topRow: {
 
@@ -59,7 +60,7 @@ const getItem = (id, type, data, height) => {
         case 'eventlist':
             return <EventSection id={id} data={data} height={height}/>;
         case 'news':
-            return null; //<NewsGroup id={id} data={data}/>;
+            return <NewsSection id={id} data={data}/>;
         case 'poster':
             return <Poster id={id} data={data}/>;
         case 'imagegallery':

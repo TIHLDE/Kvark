@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
-import {Link} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
@@ -53,28 +53,28 @@ const styles = {
             fontSize: 30,
         },
         '@media only screen and (max-width: 800px)': {
-            fontSize: 25,
+            fontSize: 20,
         },
     },
     none: {
         backgroundColor: 'whitesmoke',
     },
     actionButton: {
-        margin: '0 auto',
+        margin: '12px auto',
         maxWidth: 200,
         textDecoration: 'none',
     },
- /*    shadow: {
-        position: 'absolute',
-        bottom: 0, left: 0, right: 0,
-        width: '100%',
-        height: 15,
-        backgroundColor: 'white',
-        boxShadow: '0px -2px 5px 0px rgba(0,0,0,0.1)',
-    }, */
 };
 
 class Poster extends Component {
+
+    goTo = (action) => {
+        if(action && action.startsWith('http')) {
+            window.location = action;
+        } else {
+            this.props.history.push(action);
+        }
+    }
 
     render() {
         const {classes} = this.props;
@@ -85,18 +85,17 @@ class Poster extends Component {
 
         return (
             <div className={classNames(classes.root, this.props.className, (this.props.static)? classes.static : '')}>
-                <img className={classNames(classes.image, (this.props.static)? classes.static : '', this.props.imageClass)} src={image} alt='poster' height={height}/>
+                {image &&
+                    <img className={classNames(classes.image, (this.props.static)? classes.static : '', this.props.imageClass)} src={image} alt='poster' height={height}/>
+                }
 
                 <Grid className={classes.content} container direction='column' wrap='nowrap' alignItems='center' justify='center'>
                     <Typography className={classNames(classes.text, classes.headerText)} variant='display4' align='center' style={{color: textColor}}>{data.header}</Typography>
                     <Typography className={classNames(classes.text, classes.subText)} variant='headline' align='center' style={{color: textColor}}>{data.subheader}</Typography>
                     {(!data.action)? null :
-                        <Link to={data.action} className={classes.actionButton}>
-                            <Button variant='raised' color='primary'>{data.action_text}</Button>
-                        </Link>
+                        <Button className={classes.actionButton} onClick={() => this.goTo(data.action)} variant='raised' color='primary'>{data.action_text}</Button>
                     }
                 </Grid>
-                {/* <div className={classes.shadow}/> */}
             </div>
         );
     }
@@ -107,4 +106,4 @@ Poster.propTypes = {
     data: PropTypes.object,
 };
 
-export default withStyles(styles)(Poster);
+export default withStyles(styles)(withRouter(Poster));

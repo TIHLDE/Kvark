@@ -2,37 +2,41 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import moment from 'moment';
-import URLS from '../../../URLS';
+import URLS from '../../../../URLS';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
+import Paper from '@material-ui/core/Paper';
 
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 
 // Icons
 import Calendar from '@material-ui/icons/CalendarToday';
 import Location from '@material-ui/icons/LocationOn';
 import Time from '@material-ui/icons/AccessTime';
 
-import DEFAULT_IMAGE from '../../../assets/img/tihlde_image.png';
+import DEFAULT_IMAGE from '../../../../assets/img/tihlde_image.png';
 
 // Project Components
-import Link from '../../../components/navigation/Link';
+import Link from '../../../../components/navigation/Link';
+import Emoji from '../../../../components/miscellaneous/Emoji';
 
 const styles = {
     root: {
-        padding: 48,
+        padding: '84px 12px',
 
         '@media only screen and (max-width: 600px)': {
-            padding: 32,
+            padding: 12,
         }
     },
     wrapper: {
         maxWidth: 1000,
         margin: 'auto',
+        padding: 36,
 
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
@@ -56,6 +60,14 @@ const styles = {
         '@media only screen and (max-width: 800px)': {
             order: 1,
         }
+    },
+    title: {
+        color: 'black',
+
+        '@media only screen and (max-width: 600px)': {
+            fontSize: '1.7rem',
+        }
+        //color: 'var(--tihlde-blaa)',
     },
 
     // Details
@@ -117,12 +129,22 @@ InfoContent.propTypes = {
     label: PropTypes.string,
 };
 
+const getEmoji = (categoryId) => {
+    switch(categoryId) {
+        case 9:
+            return "🥂";
+        default:
+            return "📆";
+    }
+}
+
 const EventListItem = withStyles(styles)((props) => {
     const {classes} = props;
     const data = props.data || {};
     return (
         <Link to={URLS.events.concat(data.id)}>
-            <ListItem className={classes.eventItem} button>
+            <ListItem className={classes.eventItem} button disableGutters>
+                <ListItemIcon><Emoji symbol={getEmoji(data.category)}/></ListItemIcon>
                 <ListItemText primary={
                     <Grid container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
                         <Typography variant='body2'>{data.title}</Typography>
@@ -169,15 +191,17 @@ class EventSection extends Component {
 
     render() {
         const {classes} = this.props;
-
-        const {image, title, date, time, location, id} = this.state.currentEvent || {};
+        const {image, title, date, time, location, id, category} = this.state.currentEvent || {};
         
         return (
             <div className={classes.root}>
-                <div className={classes.wrapper}>
+                <Paper className={classes.wrapper} square elevation={1}>
                     <div className={classes.content}>
                         <Link to={URLS.events.concat(id)}>
-                            <Typography variant='display1'><strong>{title}</strong></Typography>
+                            <Typography className={classes.title} variant='display1'>
+                                <Emoji symbol={getEmoji(category)}/>
+                                <strong>{title}</strong>
+                            </Typography>
                             <div className={classes.details}>
                                 <InfoContent icon={<Calendar className={classes.icon}/>} label={date} />
                                 <InfoContent icon={<Time className={classes.icon}/>} label={time} />
@@ -194,9 +218,11 @@ class EventSection extends Component {
                         </div>
                     </div>
                     <div className={classes.imageWrapper}>
-                        <img className={classes.image} src={image || DEFAULT_IMAGE} alt={title} /> 
+                        <Link to={URLS.events.concat(id)}>
+                            <img className={classes.image} src={image || DEFAULT_IMAGE} alt={title} /> 
+                        </Link>
                     </div>
-                </div>
+                </Paper>
             </div>
         );
     }

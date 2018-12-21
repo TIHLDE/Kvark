@@ -6,33 +6,24 @@ import URLS from '../../URLS';
 import AuthService from '../../api/services/AuthService';
 
 // Material-UI
-import Card from '@material-ui/core/Card';
 import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
-import ProfileContainer from './components/ProfileContainer';
 
 const styles = (theme) => ({
     root: {
-        paddingTop: '15px',
-    },
-    mainContent: {
-        display: 'grid',
-        gridTemplateColumns: '1fr 3fr',
-        gridTemplateAreas: "'leftSidePanel rightSidePanel' 'leftSidePanel rightSidePanel'",
-        minHeight: '90vh',
+        paddingTop: '120px',
+
         maxWidth: 1200,
-        margin: '0 auto',
-        
-        
-    },
-    leftSidePanel: {
-        gridArea: 'leftSidePanel',
-    },
-    rightSidePanel: {
-        gridArea: 'rightSidePanel',
-        
+        width: '100%',
+        display: 'flex',
+        margin: 'auto',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 
 });
@@ -56,17 +47,10 @@ class Profile extends Component{
         const { classes } = this.props;
         return(
             <Navigation footer isLoading={this.state.isLoading}>
-                    <div className={classes.root}>
-                        <Card className={classes.mainContent}> 
-                            <div className={classes.leftSidePanel}>
-                                <ProfileContainer onLogOut={this.logOut}/>
-                            </div>
-                            <div className={classes.rightSidePanel}>
-                                Amigo 
-                            </div>
-                        </Card>
-                    </div>
-                      
+                <div className={classes.root}>
+                    <Typography variant='display1' gutterBottom>Work in progress!</Typography>
+                    <Button  variant='contained' color='primary' onClick={this.logOut}>Log out</Button>
+                </div>
             </Navigation>
         );
     }
