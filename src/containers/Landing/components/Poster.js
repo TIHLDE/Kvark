@@ -16,7 +16,7 @@ const OFFSET = 40;
 const styles = {
     root: {
         height: DEFAULT_HEIGHT,
-        position: 'absolute', left: 0, right: 0,
+        position: 'relative', left: 0, right: 0,
         overflow: 'hidden',
     },
     static: {
@@ -64,14 +64,14 @@ const styles = {
         maxWidth: 200,
         textDecoration: 'none',
     },
-    shadow: {
+ /*    shadow: {
         position: 'absolute',
         bottom: 0, left: 0, right: 0,
         width: '100%',
         height: 15,
         backgroundColor: 'white',
         boxShadow: '0px -2px 5px 0px rgba(0,0,0,0.1)',
-    },
+    }, */
 };
 
 class Poster extends Component {
@@ -96,7 +96,7 @@ class Poster extends Component {
                         </Link>
                     }
                 </Grid>
-                <div className={classes.shadow}/>
+                {/* <div className={classes.shadow}/> */}
             </div>
         );
     }

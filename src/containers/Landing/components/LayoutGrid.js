@@ -8,30 +8,31 @@ import { isDesktop } from '../../../utils';
 // NOTE: grid_minmal.json contains fewer grid elements than grid.json,
 // and as grid.json is loaded from the Tihlde API, we can see it working,
 // while retaining a semi functional site when it does not work.
-import GridData from '../../../data/grid_minimal.json';
+// import GridData from '../../../data/grid_minimal.json';
 
 // Grid Items/Widgets
-import EventList from './EventList';
+// import EventList from './EventList';
 import Poster from './Poster';
-import NewsGroup from './NewsGroup';
+// import NewsGroup from './NewsGroup';
 import ImageGallery from './ImageGallery';
+import EventSection from './EventSection';
 
-import GridItem from './GridItem';
+//import GridItem from './GridItem';
 
 const styles = {
     root: {
-        display: 'grid',
+       /*  display: 'grid',
         gridTemplateColumns: 'repeat(' + GridData.gridColumns + ', 1fr)',
         girdTemplateRows: 'auto',
         gridAutoRows: '275px',
-        gridGap: '20px',
+        gridGap: '20px', */
 
-        margin: 'auto',
+        //  margin: 'auto',
         marginBottom: 50,
-        padding: '0 5px 5px 5px',
-        maxWidth: 1200,
+        //padding: '0 5px 5px 5px',
+        //maxWidth: 1200,
 
-        '@media only screen and (max-width: 1000px)': {
+        /* '@media only screen and (max-width: 1000px)': {
             gridTemplateColumns: '1fr 1fr',
         },
 
@@ -39,7 +40,7 @@ const styles = {
            gridTemplateColumns: '100%',
            padding: '5px 5px',
            gridAutoRows: 'auto',
-        },
+        }, */
     },
     topPadding: {
         paddingTop: 20,
@@ -56,9 +57,9 @@ const styles = {
 const getItem = (id, type, data, height) => {
     switch (type) {
         case 'eventlist':
-            return <EventList id={id} data={data} height={height}/>;
+            return <EventSection id={id} data={data} height={height}/>;
         case 'news':
-            return <NewsGroup id={id} data={data}/>;
+            return null; //<NewsGroup id={id} data={data}/>;
         case 'poster':
             return <Poster id={id} data={data}/>;
         case 'imagegallery':
@@ -80,9 +81,11 @@ class LayoutGrid extends Component {
             <div className={classNames(classes.root, (topPadding)? classes.topPadding : classes.topRow, (bottomPadding)? classes.bottomPadding: '')}>
                 {children.map((value, index) => {
                     return (
-                        <GridItem key={index} rowSpan={value.height} colSpan={value.width} fullWidth={value.fullWidth} order={value.order}> {/* Wraps the entire item in a GridItem with specifed row- and colspan */}
+                        //<GridItem key={index} rowSpan={value.height} colSpan={value.width} fullWidth={value.fullWidth} order={value.order}> {/* Wraps the entire item in a GridItem with specifed row- and colspan */}
+                        <div key={index}>
                             {getItem(value.id, value.type, value.data, value.height)}
-                        </GridItem>
+                        </div>
+                       // </GridItem>
                     );
                 })}
                 {(children.length === 0)?

@@ -37,7 +37,6 @@ class Landing extends Component {
 
     render() {
         const {classes, grid} = this.props;
-
         return (
             <Navigation footer isLoading={this.state.isLoading} whitesmoke>
                 {(this.state.isLoading)? null :
