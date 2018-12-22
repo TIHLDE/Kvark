@@ -78,7 +78,7 @@ class NewsSection extends Component {
 
     render() {
         const {classes} = this.props;
-        console.log(this.props.data);
+        
         return (
             <div className={classes.root}>
                 <Typography className={classes.title} gutterBottom variant='display1'>Nyheter</Typography>

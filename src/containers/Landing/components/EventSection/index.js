@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import moment from 'moment';
 import URLS from '../../../../URLS';
+import classNames from 'classnames';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
@@ -30,30 +31,37 @@ const styles = {
         padding: '84px 12px',
 
         '@media only screen and (max-width: 600px)': {
-            padding: 12,
+            padding: 4,
         }
     },
     wrapper: {
         maxWidth: 1000,
         margin: 'auto',
-        padding: 36,
+        padding: 42,
 
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        gridGap: '48px',
+        gridTemplateRows: 'auto auto auto',
+        gridTemplateAreas: "'title image' 'details image' 'list image'",
+        gridColumnGap: '48px',
 
         '@media only screen and (max-width: 800px)': {
-            gridTemplateColumns: '100%',
-            gridGap: '20px',
+            gridTemplateColumns: '1fr 1fr',
+            gridTemplateAreas: "'title title' 'image image' 'details details' 'list list'",
+            gridGap: '8px',
+            padding: '32px 24px',
         }
     },
     content: {
+        gridArea: 'title',
         '@media only screen and (max-width: 800px)': {
             order: 2,
         },
         
     },
     imageWrapper: {
+        gridArea: 'image',
+
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -63,22 +71,22 @@ const styles = {
     },
     title: {
         color: 'black',
-
+        marginBottom: 8,
         '@media only screen and (max-width: 600px)': {
             fontSize: '1.7rem',
         }
-        //color: 'var(--tihlde-blaa)',
     },
 
     // Details
     details: {
-        marginTop: 10,
+        gridArea: 'details',
+
         display: 'grid',
         gridTemplateColumns: '1fr 1fr 1fr',
         color: 'black',
         
-        '@media only screen and (max-width: 600px)': {
-            gridTemplateColumns: 'auto',
+        '@media only screen and (max-width: 800px)': {
+            gridTemplateColumns: '1fr 1fr',
             padding: '10px 0',
         },
     },
@@ -87,9 +95,15 @@ const styles = {
     info: {
         width: 'auto',
         marginBottom: 10,
+        color: 'black',
     },
     infoText: {
         marginLeft: 10,
+    },
+    span: {
+        '@media only screen and (max-width: 800px)': {
+            gridColumn: '1/3',
+        }
     },
 
     // Image
@@ -108,7 +122,13 @@ const styles = {
 
     // List
     list: {
-        marginTop: 32,
+        gridArea: 'list',
+
+        marginTop: 24,
+
+        '@media only screen and (max-width: 800px)': {
+            marginTop: 24,
+        }
     },
 
     // Event Item
@@ -118,7 +138,7 @@ const styles = {
 }
 
 const InfoContent = withStyles(styles)((props) => (
-    <Grid className={props.classes.info} container direction='row' wrap='nowrap' alignItems='center'>
+    <Grid className={classNames(props.classes.info, props.className)} container direction='row' wrap='nowrap' alignItems='center'>
         {props.icon}
         <Typography className={props.classes.infoText} variant='subheading'>{props.label}</Typography>
     </Grid>
@@ -164,6 +184,7 @@ class EventSection extends Component {
             currentEvent: {},
             moreEvents: [],
         }
+        this.mainEventURL = URLS.events;
     }
 
     componentDidMount() {
@@ -180,6 +201,7 @@ class EventSection extends Component {
                 currentEvent: currentEvent,
                 moreEvents: events.slice(1, 5),
             });
+            this.mainEventURL = URLS.events.concat(currentEvent.id);
         }
     }
 
@@ -191,34 +213,35 @@ class EventSection extends Component {
 
     render() {
         const {classes} = this.props;
-        const {image, title, date, time, location, id, category} = this.state.currentEvent || {};
+        const {image, title, date, time, location, category} = this.state.currentEvent || {};
         
+
         return (
             <div className={classes.root}>
                 <Paper className={classes.wrapper} square elevation={1}>
                     <div className={classes.content}>
-                        <Link to={URLS.events.concat(id)}>
+                        <Link to={this.mainEventURL}>
                             <Typography className={classes.title} variant='display1'>
                                 <Emoji symbol={getEmoji(category)}/>
                                 <strong>{title}</strong>
                             </Typography>
-                            <div className={classes.details}>
-                                <InfoContent icon={<Calendar className={classes.icon}/>} label={date} />
-                                <InfoContent icon={<Time className={classes.icon}/>} label={time} />
-                                <InfoContent icon={<Location className={classes.icon}/>} label={location} />
-                            </div>
                         </Link>
-                        <div className={classes.list}>
-                            <Typography variant='headline' gutterBottom>Flere arrangementer</Typography>
-                            <Divider />
-                            {this.state.moreEvents.map((value, index) => (
-                                <EventListItem key={index} data={value}/>
-                            ))}
-                            {this.state.moreEvents.length === 0 && <Typography variant='caption'>Ingen flere arrangementer</Typography>}
-                        </div>
+                    </div>
+                    <Link className={classes.details} to={this.mainEventURL}>
+                        <InfoContent icon={<Calendar className={classes.icon}/>} label={date} />
+                        <InfoContent icon={<Time className={classes.icon}/>} label={time} />
+                        <InfoContent className={classes.span} icon={<Location className={classes.icon}/>} label={location} />
+                    </Link>
+                    <div className={classes.list}>
+                        <Typography variant='headline' gutterBottom>Flere arrangementer</Typography>
+                        <Divider />
+                        {this.state.moreEvents.map((value, index) => (
+                            <EventListItem key={index} data={value}/>
+                        ))}
+                        {this.state.moreEvents.length === 0 && <Typography variant='caption'>Ingen flere arrangementer</Typography>}
                     </div>
                     <div className={classes.imageWrapper}>
-                        <Link to={URLS.events.concat(id)}>
+                        <Link to={this.mainEventURL}>
                             <img className={classes.image} src={image || DEFAULT_IMAGE} alt={title} /> 
                         </Link>
                     </div>
