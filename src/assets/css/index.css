@@ -2,12 +2,12 @@
 
 
 * {
-    margin: 0;
     padding: 0;
     --tihlde-blaa: #1D448C;
     --gray: #F8F8FA;
 }
 body {
+    margin: 0;
     font-family: 'Roboto', sans-serif;
     
 }

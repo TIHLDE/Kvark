@@ -28,7 +28,7 @@ const styles = {
     wrapper :{
         padding:'30px 30px 30px 30px',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
     },
     grid: {
         padding: '30px 0px',
@@ -48,6 +48,9 @@ const styles = {
         padding: 28,
         flexDirection: 'column',
         flexWrap: 'nowrap',
+    },
+    checkBox: {
+        padding: 4,
     }
 };
 
@@ -103,9 +106,11 @@ class CustomListItem extends Component {
     };
 
     render(){
+        const {classes} = this.props;
         return(
             <ListItem dense button onClick={this.handleClick} disableGutters>
                     <Checkbox
+                        className={classes.checkBox}
                         name={this.props.value.name}
                         checked={this.state.checked}
                     />
@@ -114,6 +119,8 @@ class CustomListItem extends Component {
         )
     }
 }
+
+const CustomItem = withStyles(styles)(CustomListItem);
 
 const Listing = withStyles(styles)((props) => {
     const {list, header, classes} = props;
@@ -124,7 +131,7 @@ const Listing = withStyles(styles)((props) => {
             <List>
                 {list.map((value) => {
 
-                    return <CustomListItem key={value.name} handleChange={props.handleChange} value={value}/>
+                    return <CustomItem key={value.name} handleChange={props.handleChange} value={value}/>
                 })}
             </List>
         </div>

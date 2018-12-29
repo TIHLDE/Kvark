@@ -21,7 +21,7 @@ const styles = {
         maxWidth: 1200,
         margin: 'auto',
         paddingTop: 20,
-        marginBottom: 100,
+        paddingBottom: 100,
 
         '@media only screen and (max-width: 600)': {
             paddingTop: 0,

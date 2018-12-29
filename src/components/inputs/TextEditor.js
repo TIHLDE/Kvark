@@ -19,6 +19,7 @@ import Strike from '@material-ui/icons/StrikethroughS';
 import Bulleted from '@material-ui/icons/FormatListBulleted';
 import Numbered from '@material-ui/icons/FormatListNumbered';
 import Image from '@material-ui/icons/Image';
+import Breakline from '@material-ui/icons/SubdirectoryArrowLeft'
 // Project Components
 
 // External Components
@@ -162,6 +163,11 @@ class TextEditor extends Component<P, S> {
         this.setSelectionStart(this.input.selectionStart);
     }
 
+    appendBreakline = (): void => {
+        this.appendTextAtCursor(`\n&nbsp;`);
+        this.setSelectionStart(this.input.selectionStart);
+    }
+
     render() {
         const {classes, disableToolbox, disablePreview} = this.props;
         const {tabValue} = this.state;
@@ -185,7 +191,7 @@ class TextEditor extends Component<P, S> {
                         <ToolbarAction onClick={this.appendImage}><Image/></ToolbarAction>
                         <ToolbarAction onClick={this.appendBulletPoint('*')}><Bulleted/></ToolbarAction>
                         <ToolbarAction onClick={this.appendBulletPoint('1.')}><Numbered/></ToolbarAction>
-                        
+                        <ToolbarAction onClick={this.appendBreakline}><Breakline/></ToolbarAction>
                     </Grid>}
                     <Input
                         className={classNames(classes.input, this.props.editorClass)}

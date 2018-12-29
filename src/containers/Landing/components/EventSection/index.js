@@ -47,7 +47,7 @@ const styles = {
 
         '@media only screen and (max-width: 800px)': {
             gridTemplateColumns: '1fr 1fr',
-            gridTemplateAreas: "'title title' 'image image' 'details details' 'list list'",
+            gridTemplateAreas: "'title title' 'details details' 'image image'  'list list'",
             gridGap: '8px',
             padding: '32px 24px',
         }
@@ -73,7 +73,7 @@ const styles = {
         color: 'black',
         marginBottom: 8,
         '@media only screen and (max-width: 600px)': {
-            fontSize: '1.7rem',
+            fontSize: '1.5rem',
         }
     },
 

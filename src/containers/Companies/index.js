@@ -9,6 +9,7 @@ import Paper from '@material-ui/core/Paper';
 
 // Icons
 import Image from '../../assets/img/glad.jpg';
+import Send from '@material-ui/icons/Send';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
@@ -69,6 +70,11 @@ const styles = {
     },
     formWrapper: {
         margin:'15px 0',
+    },
+    flex: {
+        display: 'flex',
+        justifyContent: 'justify-content',
+        alignItems: 'center',
     }
 };
 
@@ -140,10 +146,10 @@ class Companies extends Component {
                 <div className={classes.section}>
                     <Typography variant='display1' color='inherit' align='center' className={classes.margining}>{Text.studier}</Typography>
                     <div className={classNames(classes.container)}>
-                        <InfoCard header='Dataingeniør' text={Text.data}/>
-                        <InfoCard header='Drift' text={Text.drift}/>
-                        <InfoCard header='IT-støttet bedriftsutvikling' text={Text.support}/>
-                        <InfoCard header='IKT-basert samhandling' text={Text.IKT}/>
+                        <InfoCard header='Dataingeniør' text={Text.data} justifyText/>
+                        <InfoCard header='Drift' text={Text.drift} justifyText/>
+                        <InfoCard header='IT-støttet bedriftsutvikling' text={Text.support} justifyText/>
+                        <InfoCard header='IKT-basert samhandling' text={Text.IKT} justifyText/>
                     </div>
                 </div>
 
@@ -158,7 +164,10 @@ class Companies extends Component {
                         variant='contained'
                         color='primary'
                         onClick={(event) => { this.scrollToForm(); this.handleExpansionToggle(true)(event) }}>
-                        Send oss en melding
+                        <div className={classes.flex}>
+                            <Send />
+                            Send oss en melding
+                        </div>
                     </Button>
                 </div>
             </div>
