@@ -75,6 +75,10 @@ const styles = {
     menuButton: {
         color: 'white',
     },
+    menuWrapper: {
+        display: 'flex',
+        alignItems: 'center',
+    }, 
     sidebar: {
         zIndex: 100,
         minWidth: 200,
@@ -128,8 +132,11 @@ const styles = {
         border: '2px solid white',
         padding: 6,
     },
-    white: {
-        color: 'white',
+    sponsorLogo: {
+        '@media only screen and (max-width: 600px)': {
+            width: '5rem',
+            height: 'auto',
+        }
     }
 };
 
@@ -146,6 +153,15 @@ const URIbutton = withStyles(styles)((props) => {
                 </Button>
             </Link>
         </div>
+    );
+});
+
+const SponsorLogo = withStyles(styles)((props) => {
+    const {classes} = props;
+    return (
+        <a href="https://www.soprasteria.no/">
+            <img className={classes.sponsorLogo} src={SopraSteria} alt='Sopra Steria Logo' height={'24rem'} />
+        </a>
     );
 });
 
@@ -210,21 +226,27 @@ class Navigation extends Component {
                                 </Link>
                             </div>
 
-                                <div className={classes.grow}>
-                                    <Hidden smDown implementation='css'>
-                                        <div className={classes.flex}>
-                                            <URIbutton data={{link: URLS.about, text: "Om TIHLDE"}} selected={this.props.match.url === URLS.about}/>
-                                            <URIbutton data={{link: URLS.services, text: "Tjenester"}} selected={this.props.match.url === URLS.services}/>
-                                            <URIbutton data={{link: URLS.events, text: "Arrangementer"}} selected={this.props.match.url === URLS.events}/>
-                                            <URIbutton data={{link: URLS.newStudent, text: "Ny student"}} selected={this.props.match.url === URLS.newStudent}/>
-                                            <URIbutton data={{link: URLS.jobposts, text: "Annonser"}} selected={this.props.match.url === URLS.jobposts}/>
-                                            <URIbutton data={{link: URLS.company, text: "Bedrifter"}} selected={this.props.match.url === URLS.company}/>
-                                        </div>
-                                    </Hidden>
-                                </div>
+                            <div className={classes.grow}>
+                                <Hidden smDown implementation='css'>
+                                    <div className={classes.flex}>
+                                        <URIbutton data={{link: URLS.about, text: "Om TIHLDE"}} selected={this.props.match.url === URLS.about}/>
+                                        <URIbutton data={{link: URLS.services, text: "Tjenester"}} selected={this.props.match.url === URLS.services}/>
+                                        <URIbutton data={{link: URLS.events, text: "Arrangementer"}} selected={this.props.match.url === URLS.events}/>
+                                        <URIbutton data={{link: URLS.newStudent, text: "Ny student"}} selected={this.props.match.url === URLS.newStudent}/>
+                                        <URIbutton data={{link: URLS.jobposts, text: "Annonser"}} selected={this.props.match.url === URLS.jobposts}/>
+                                        <URIbutton data={{link: URLS.company, text: "Bedrifter"}} selected={this.props.match.url === URLS.company}/>
+                                    </div>
+                                </Hidden>
+                            </div>
 
                             <Hidden mdUp implementation='css'>
-                                <IconButton className={classes.menuButton} onClick={this.toggleSidebar}><MenuIcon/></IconButton>
+                                <div className={classes.menuWrapper}>
+                                    <IconButton className={classes.menuButton} onClick={this.toggleSidebar}><MenuIcon/></IconButton>
+
+                                    <Hidden smUp implementation={'css'}>
+                                        <SponsorLogo />
+                                    </Hidden>
+                                </div> 
                             </Hidden>
 
                             <Hidden xsDown implementation='css'>
@@ -241,9 +263,11 @@ class Navigation extends Component {
                             </Hidden>
                             <div>
                                 <Hidden xsDown implementation={'css'}>
-                                    <img className={classes.white} src={SopraSteria} alt='Sopra Steria Logo' height={'24rem'} />
+                                    <SponsorLogo />
                                 </Hidden> 
-                               {/*  <Hidden xsDown implementation={'css'}>
+                               {/*  
+                                    --- LOG-IN BUTTON ---
+                                    <Hidden xsDown implementation={'css'}>
                                     <div>
                                         {AuthService.isAuthenticated()?
                                             <IconButton className={classes.profileBtn} onClick={() => this.goTo(URLS.profile)}><PersonIcon/></IconButton>
