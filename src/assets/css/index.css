@@ -68,6 +68,12 @@ a {
 .renderer img {
     max-width: 100%;
     height: auto;
+    margin-block-end: 1em;
+}
+
+.renderer h3, h2, h1, p {
+    margin-block-end: 1em;
+    margin-block-start: 0;
 }
 
 pre {
