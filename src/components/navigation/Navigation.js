@@ -25,7 +25,8 @@ import IconButton from '@material-ui/core/IconButton';
 // Assets/Icons
 import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO.png';
 import MenuIcon from '@material-ui/icons/Menu';
-import PersonIcon from '@material-ui/icons/Person';
+// import PersonIcon from '@material-ui/icons/Person';
+import SopraSteria from '../../assets/img/sopraSteriaLogoW.png';
 
 // Project Components
 import Footer from './Footer';
@@ -126,6 +127,9 @@ const styles = {
         color: 'white',
         border: '2px solid white',
         padding: 6,
+    },
+    white: {
+        color: 'white',
     }
 };
 
@@ -237,6 +241,9 @@ class Navigation extends Component {
                             </Hidden>
                             <div>
                                 <Hidden xsDown implementation={'css'}>
+                                    <img className={classes.white} src={SopraSteria} alt='Sopra Steria Logo' height={'24rem'} />
+                                </Hidden> 
+                               {/*  <Hidden xsDown implementation={'css'}>
                                     <div>
                                         {AuthService.isAuthenticated()?
                                             <IconButton className={classes.profileBtn} onClick={() => this.goTo(URLS.profile)}><PersonIcon/></IconButton>
@@ -244,7 +251,8 @@ class Navigation extends Component {
                                             <Button className={classes.loginBtn} onClick={() => this.goTo(URLS.login)} variant='outlined'>Logg inn</Button>
                                         }
                                     </div>
-                                </Hidden>
+                                    </Hidden> 
+                                */}
                             </div>
                         </div>
                     </Toolbar>
