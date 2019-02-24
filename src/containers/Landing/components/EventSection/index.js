@@ -34,11 +34,13 @@ const styles = {
             padding: 4,
         }
     },
-    wrapper: {
+    wrapperRoot: {
         maxWidth: 1000,
         margin: 'auto',
         padding: 42,
-
+    },
+    wrapper: {
+        
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
         gridTemplateRows: 'auto auto auto',
@@ -51,6 +53,11 @@ const styles = {
             gridGap: '8px',
             padding: '32px 24px',
         }
+    },
+    noContent: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     content: {
         gridArea: 'title',
@@ -153,6 +160,8 @@ const getEmoji = (categoryId) => {
     switch(categoryId) {
         case 9:
             return "🥂";
+        case -1: 
+            return "😥";
         default:
             return "📆";
     }
@@ -218,33 +227,47 @@ class EventSection extends Component {
 
         return (
             <div className={classes.root}>
-                <Paper className={classes.wrapper} square elevation={1}>
-                    <div className={classes.content}>
-                        <Link to={this.mainEventURL}>
-                            <Typography className={classes.title} variant='display1'>
-                                <Emoji symbol={getEmoji(category)}/>
-                                <strong>{title}</strong>
+                <Paper className={classes.wrapperRoot} square elevation={1}>
+                    {this.state.currentEvent ?
+                        <div className={classes.wrapper}>
+                            <div className={classes.content}>
+                                <Link to={this.mainEventURL}>
+                                    <Typography className={classes.title} variant='display1'>
+                                        <Emoji symbol={getEmoji(category)}/>
+                                        <strong>{title}</strong>
+                                    </Typography>
+                                </Link>
+                            </div>
+                            <Link className={classes.details} to={this.mainEventURL}>
+                                <InfoContent icon={<Calendar className={classes.icon}/>} label={date} />
+                                <InfoContent icon={<Time className={classes.icon}/>} label={time} />
+                                <InfoContent className={classes.span} icon={<Location className={classes.icon}/>} label={location} />
+                            </Link>
+                            <div className={classes.list}>
+                                <Typography variant='headline' gutterBottom>Flere arrangementer</Typography>
+                                <Divider />
+                                {this.state.moreEvents.map((value, index) => (
+                                    <EventListItem key={index} data={value}/>
+                                ))}
+                                {this.state.moreEvents.length === 0 && <Typography variant='caption'>Ingen flere arrangementer</Typography>}
+                            </div>
+
+                            <div className={classes.imageWrapper}>
+                                <Link to={this.mainEventURL}>
+                                    <img className={classes.image} src={image || DEFAULT_IMAGE} alt={title} /> 
+                                </Link>
+                            </div>
+                        </div>
+                        
+                    :
+                        <div className={classes.noContent}>
+                            <Typography className={classes.title} variant='title'>
+                                <Emoji symbol={getEmoji(-1)}/>
+                                Ingen arrangementer for øyeblikket
                             </Typography>
-                        </Link>
-                    </div>
-                    <Link className={classes.details} to={this.mainEventURL}>
-                        <InfoContent icon={<Calendar className={classes.icon}/>} label={date} />
-                        <InfoContent icon={<Time className={classes.icon}/>} label={time} />
-                        <InfoContent className={classes.span} icon={<Location className={classes.icon}/>} label={location} />
-                    </Link>
-                    <div className={classes.list}>
-                        <Typography variant='headline' gutterBottom>Flere arrangementer</Typography>
-                        <Divider />
-                        {this.state.moreEvents.map((value, index) => (
-                            <EventListItem key={index} data={value}/>
-                        ))}
-                        {this.state.moreEvents.length === 0 && <Typography variant='caption'>Ingen flere arrangementer</Typography>}
-                    </div>
-                    <div className={classes.imageWrapper}>
-                        <Link to={this.mainEventURL}>
-                            <img className={classes.image} src={image || DEFAULT_IMAGE} alt={title} /> 
-                        </Link>
-                    </div>
+                        </div>
+                    }
+                    
                 </Paper>
             </div>
         );
