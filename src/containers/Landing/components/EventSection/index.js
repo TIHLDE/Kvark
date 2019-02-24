@@ -190,7 +190,7 @@ class EventSection extends Component {
     constructor() {
         super();
         this.state = {
-            currentEvent: {},
+            currentEvent: null,
             moreEvents: [],
         }
         this.mainEventURL = URLS.events;
@@ -203,7 +203,7 @@ class EventSection extends Component {
     initializeEvents = () => {
         const events = this.props.data.events;
         if(events && events.length > 0) {
-            const currentEvent = events[0];
+            const currentEvent = events[0] || {};
             currentEvent.date = moment(currentEvent.start).format('DD.MM.YYYY');
             currentEvent.time = moment(currentEvent.start).format('HH:mm');
             this.setState({
