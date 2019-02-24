@@ -224,11 +224,10 @@ class EventSection extends Component {
         const {classes} = this.props;
         const {image, title, date, time, location, category} = this.state.currentEvent || {};
         
-
         return (
             <div className={classes.root}>
                 <Paper className={classes.wrapperRoot} square elevation={1}>
-                    {this.state.currentEvent ?
+                    {(this.state.currentEvent !== null && this.state.currentEvent.title) ?
                         <div className={classes.wrapper}>
                             <div className={classes.content}>
                                 <Link to={this.mainEventURL}>
