@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import classNames from 'classnames';
 
 // Material UI Components
@@ -75,7 +75,8 @@ const styles = {
         display: 'flex',
         justifyContent: 'justify-content',
         alignItems: 'center',
-    }
+    },
+    
 };
 
 class Companies extends Component {

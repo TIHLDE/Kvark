@@ -2,7 +2,8 @@ import {actions} from '../actions/JobPostActions';
 import {keyBy} from 'lodash';
 
 const initialState = {
-    posts: {},
+    posts: {
+    },
 };
 
 export default function reducer(state = initialState, action) {
