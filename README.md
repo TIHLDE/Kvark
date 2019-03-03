@@ -5,6 +5,7 @@
 2. [Getting started](#getting-started)
 3. [Todo](#todo)
 4. [Future plans](#future-plans)
+5. [Rules](#rules)
 
 
 ### Basic info
@@ -45,7 +46,19 @@ The following things needs to be completed:
 * CMS for job-posts
 * Fix CMS for events (not scalable)
 * Sign up
+* Write tests
+* CI-Setup
 
 ### Future plans
 * User profile page
 * TIHLDE Games
+
+### Rules
+These rules are to be updated
+
+* All strings should be created with single-quotes
+* The main _/components_ folder should only contain DUMMY-COMPONENTS. These components are shared between
+all the different pages, and should not implement page-specific logic. The components should be so dumb
+they can be moved to a different project and still work.
+* All pages should be placed in the _/containers_ and should be inside their own folder.
+* All page-specific components should be places in a separate _/components_ folder. For example _/containers/LogIn/components/_
