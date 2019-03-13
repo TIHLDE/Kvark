@@ -26,7 +26,7 @@ import Grow from '@material-ui/core/Grow';
 import EventListItem from "./components/EventListItem"
 import Navigation from "../../components/navigation/Navigation";
 import Banner from '../../components/layout/Banner';
-import MessageIndicator from '../../components/layout/MessageIndicator';
+import NoEventsIndicator from './components/NoEventsIndicator';
 
 const styles = (theme) => ({
     root:{
@@ -217,7 +217,7 @@ class Events extends Component {
                                                 </div>
                                             ))}
                                             { (this.state.events.length === 0 && !this.state.isLoading) &&
-                                                <MessageIndicator header={Text.noEvents} subheader={Text.subNoEvents}/>
+                                                <NoEventsIndicator />
                                             }
                                         </Paper>
                                     </Grow>

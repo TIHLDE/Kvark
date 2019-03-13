@@ -68,6 +68,10 @@ const styles = {
 
 class Services extends Component {
 
+    componentDidMount() {
+        window.scrollTo(0, 0); // Scrolls to the top
+    }
+
     render() {
         const {classes} = this.props;
         return (

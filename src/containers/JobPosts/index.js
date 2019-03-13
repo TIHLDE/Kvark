@@ -25,7 +25,7 @@ import Button from '@material-ui/core/Button';
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 import Banner from '../../components/layout/Banner';
-import MessageIndicator from '../../components/layout/MessageIndicator';
+import NoPostsIndicator from './components/NoPostsIndicator';
 import JobPostItem from './components/JobPostItem';
 
 const styles = {
@@ -191,7 +191,7 @@ class JobPosts extends Component {
                                                 </div>
                                             ))}
                                             {posts.length === 0 && 
-                                                <MessageIndicator header={Text.noEvents} subheader={Text.subNoEvents}/>
+                                                <NoPostsIndicator />
                                             }
                                         </Paper>
                                     </Grow>
