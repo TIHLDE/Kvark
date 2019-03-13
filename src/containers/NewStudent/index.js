@@ -38,6 +38,9 @@ const styles = (theme) => ({
             gridTemplateColumns: '1fr',
         },
     },
+    section: {
+        marginTop: 20,
+    },
 
 });
 
@@ -60,7 +63,7 @@ class NewStudent extends Component {
                         text={Text.banner.subHeader}
                         image={Text.banner.imageUrl}
                     />
-
+                    {/*
                     <Expansion header={Text.faq.header} subtext={Text.faq.subheader}>
                         {
                             Object.values(Text.faq.content).map((value, index) => (
@@ -68,8 +71,16 @@ class NewStudent extends Component {
                             ))
                         }
                     </Expansion>
-
+                    */}
+                    <div className={classes.section}>
+                        <InfoCard header={Text.faq.header} text={Text.faq.subheader} />
+                    </div>
                     <div className={classes.content}>
+                        {
+                            Object.values(Text.faq.content).map((value, index) => (
+                                <InfoCard key={index} header={value['header']} text={value['text']} justifyText />
+                            ))
+                        }
                         {
                             Object.values(Text.content).map((value, index) => (
                                 <InfoCard key={index} header={value["header"]} text={value["text"]} justifyText/>
