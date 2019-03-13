@@ -128,9 +128,9 @@ class Footer extends Component {
         return (
             <div className={classes.tihldeSupport}>
                 <Typography className={classes.horSpacing} align='center' color='inherit' variant='headline'>Support</Typography>
-                <Button className={classes.horSpacing} variant='contained' color='primary' href='https://tihlde.org/secure/osticket/open.php'>Open new ticket</Button>
-                <Button className={classes.horSpacing} variant='contained' color='secondary' href='https://tihlde.org/secure/osticket/view.php'>Check ticket status</Button>
-                <Button className={classes.horSpacing} variant='contained' color='primary' href='https://goo.gl/forms/ATrwKEVybuDj4gis1'>Give us feedback</Button>
+                <Button className={classes.horSpacing} variant='contained' color='primary' href='https://tihlde.org/secure/osticket/open.php'>Åpne en ny sak</Button>
+                <Button className={classes.horSpacing} variant='contained' color='secondary' href='https://tihlde.org/secure/osticket/view.php'>Sjekk status for sak</Button>
+                <Button className={classes.horSpacing} variant='contained' color='primary' href='https://goo.gl/forms/ATrwKEVybuDj4gis1'>Send tilbakemelding</Button>
             </div>
         )
     };
