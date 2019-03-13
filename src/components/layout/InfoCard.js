@@ -39,6 +39,7 @@ const styles = {
 
         '@media only screen and (max-width: 1100px)': {
             margin: '0 30px 30px 30px',
+            minHeight: 160,
         },
     },
     padding: {

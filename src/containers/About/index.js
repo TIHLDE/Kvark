@@ -12,7 +12,10 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
 // Icons
-import DriftIcon from '../../assets/img/instagram_icon.png';
+import SocialIcon from '../../assets/icons/social.svg';
+import BusinessIcon from '../../assets/icons/business.svg';
+import OperationIcon from '../../assets/icons/operations.svg';
+import PromoIcon from '../../assets/icons/promo.svg';
 import OrgMap from '../../assets/img/orgMap.png';
 
 // Project Components
@@ -106,10 +109,10 @@ class About extends Component {
                         <div className={classes.section}>
                             <Typography className={classes.verticalMargin} variant='display1' color='inherit' align='center'>Undergrupper</Typography>
                             <div className={classNames(classes.grid, classes.smoke)}>
-                                <InfoCard header='Drift' text={Text.drift} src={DriftIcon}/>
-                                <InfoCard header='Sosialen' text={Text.social} src={DriftIcon}/>
-                                <InfoCard header='Næringsliv og Kurs' text={Text.business} src={DriftIcon}/>
-                                <InfoCard header='Promo' text={Text.promo} src={DriftIcon}/>
+                                <InfoCard header='Drift' text={Text.drift} src={OperationIcon}/>
+                                <InfoCard header='Sosialen' text={Text.social} src={SocialIcon}/>
+                                <InfoCard header='Næringsliv og Kurs' text={Text.business} src={BusinessIcon}/>
+                                <InfoCard header='Promo' text={Text.promo} src={PromoIcon}/>
                             </div>
                         </div>
                     </div>

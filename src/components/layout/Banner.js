@@ -75,7 +75,8 @@ const Banner = (props) => {
                         <Typography variant='title' gutterBottom><strong>{props.header}</strong></Typography>
                         <Typography variant='subheading'>{props.text}</Typography>
                     </div>
-                }   
+                }
+                {props.children}
             </Grid>
         </Paper>
     );
