@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { withStyles, MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import {withStyles, MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import classNames from 'classnames';
 
 // Material UI Components
@@ -15,14 +15,13 @@ import Send from '@material-ui/icons/Send';
 import Navigation from '../../components/navigation/Navigation';
 import InfoCard from '../../components/layout/InfoCard';
 import Banner from '../../components/layout/Banner';
-import Forum from './components/Forum'
+import Forum from './components/Forum';
 
 import Text from '../../text/CompaniesText';
-import * as ReactDOM from "react-dom";
+import * as ReactDOM from 'react-dom';
 
 const styles = {
-    root: {
-    },
+    root: {},
     container: {
         display: 'grid',
         gridTemplateColumns: 'repeat(2, 1fr)',
@@ -40,14 +39,14 @@ const styles = {
         margin: 'auto',
         '@media only screen and (max-width: 1200px)': {
             padding: '48px 0',
-        }
+        },
     },
     topSection: {
         padding: '20px 48px 48px 48px',
 
         '@media only screen and (max-width: 1200px)': {
             padding: '12px 0px 48px 0px',
-        }
+        },
     },
     imageClass: {
         width: 400,
@@ -67,16 +66,18 @@ const styles = {
     toFormBtn: {
         display: 'block',
         margin: 'auto',
+        float: 'right',
+        marginTop: '10px',
     },
     formWrapper: {
-        margin:'15px 0',
+        margin: '15px 0',
     },
     flex: {
         display: 'flex',
         justifyContent: 'justify-content',
         alignItems: 'center',
     },
-    
+
 };
 
 class Companies extends Component {
@@ -90,20 +91,20 @@ class Companies extends Component {
     }
 
     componentDidMount() {
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
 
         this.focusFirstTextField();
     }
 
     // Brukes til å åpne den hvis den ikke er åpen
     handleExpansionToggle = (bool) => (event) => {
-        if(bool || !this.state.opening) {
+        if (bool || !this.state.opening) {
             this.focusFirstTextField();
         }
-        if(bool) {
-            this.setState({opening: bool})
+        if (bool) {
+            this.setState({opening: bool});
         } else {
-            this.setState({opening: !this.state.opening})
+            this.setState({opening: !this.state.opening});
         }
     };
 
@@ -115,67 +116,71 @@ class Companies extends Component {
     scrollToForm = () => {
         this.focusFirstTextField();
         const node = ReactDOM.findDOMNode(this.formRef.current);
-        window.scroll({top: node.offsetTop-84, left: 0, behavior: 'smooth'});
+        window.scroll({top: node.offsetTop - 84, left: 0, behavior: 'smooth'});
     };
 
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
 
         return (
-        <Navigation footer>
-            <div className={classes.root}>
-                <div className={classNames(classes.section, classes.topSection)}>
-                    <Banner title={Text.bannnerTitle} image={Text.bannerPicture}/>
-                    <Paper className={classes.formWrapper} ref={this.formRef} square>
-                        <Forum
-                            setMessage={this.setMessage}
-                            data ={{forumText1: Text.forumText2 , forumText2: Text.forumText2}}
-                            firstTextFieldRef={this.firstTextFieldRef}
-                            scrollToForm={this.scrollToForm}/>
-                    </Paper>
-                </div>
-                <div className={classes.smoke}>
-                    <div className={classNames(classes.section)}>
-                        <Typography variant='display1' color='inherit' align='center' className={classes.margining}>Vi tilbyr</Typography>
-                        <div className={classNames(classes.container)}>
-                            <InfoCard header='Stillingsannonser' text={Text.jobbannonser} justifyText/>
-                            <InfoCard header='Bedriftpressentasjon' text={Text.bedrifter} justifyText/>
+            <Navigation footer>
+                <div className={classes.root}>
+                    <div className={classes.smoke}>
+                        <div className={classNames(classes.section, classes.topSection)}>
+                            <Banner title={Text.bannnerTitle} image={Text.bannerPicture}/>
+                            <Button
+                                className={classes.toFormBtn}
+                                variant='contained'
+                                color='primary'
+                                onClick={(event) => {
+                                    this.scrollToForm();
+                                    this.handleExpansionToggle(true)(event);
+                                }}>
+                                <div className={classes.flex}>
+                                    <Send/>
+                                    Send oss en melding
+                                </div>
+                            </Button>
+                            <div className={classes.section}>
+                                <Typography variant='display1' color='inherit' align='center'
+                                            className={classes.margining}>Vi
+                                    tilbyr</Typography>
+                                <div className={classNames(classes.container)}>
+                                    <InfoCard header='Stillingsannonser' text={Text.jobbannonser} justifyText/>
+                                    <InfoCard header='Bedriftpressentasjon' text={Text.bedrifter} justifyText/>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div className={classes.section}>
-                    <Typography variant='display1' color='inherit' align='center' className={classes.margining}>{Text.studier}</Typography>
-                    <div className={classNames(classes.container)}>
-                        <InfoCard header='Dataingeniør' text={Text.data} justifyText/>
-                        <InfoCard header='Drift' text={Text.drift} justifyText/>
-                        <InfoCard header='IT-støttet bedriftsutvikling' text={Text.support} justifyText/>
-                        <InfoCard header='IKT-basert samhandling' text={Text.IKT} justifyText/>
-                    </div>
-                </div>
-
-                <div className={classes.smoke}>
                     <div className={classes.section}>
-                        <InfoCard imageClass={classes.imageClass} header={'Om TIHLDE'} text={Text.omTIHLDE} src={Image}/>
+                        <Typography variant='display1' color='inherit' align='center'
+                                    className={classes.margining}>{Text.studier}</Typography>
+                        <div className={classNames(classes.container)}>
+                            <InfoCard header='Dataingeniør' text={Text.data} justifyText/>
+                            <InfoCard header='Drift' text={Text.drift} justifyText/>
+                            <InfoCard header='IT-støttet bedriftsutvikling' text={Text.support} justifyText/>
+                            <InfoCard header='IKT-basert samhandling' text={Text.IKT} justifyText/>
+                        </div>
+                    </div>
+                    <div className={classNames(classes.section, classes.smoke)}>
+                        <Paper className={classes.formWrapper} ref={this.formRef} square>
+                            <Forum
+                                setMessage={this.setMessage}
+                                data={{forumText1: Text.forumText2, forumText2: Text.forumText2}}
+                                firstTextFieldRef={this.firstTextFieldRef}
+                                scrollToForm={this.scrollToForm}/>
+                        </Paper>
+                    </div>
+
+                    <div className={classes.section}>
+                        <InfoCard imageClass={classes.imageClass} header={'Om TIHLDE'} text={Text.omTIHLDE}
+                                  src={Image}/>
                     </div>
                 </div>
-                <div className={classes.section}>
-                    <Button
-                        className={classes.toFormBtn}
-                        variant='contained'
-                        color='primary'
-                        onClick={(event) => { this.scrollToForm(); this.handleExpansionToggle(true)(event) }}>
-                        <div className={classes.flex}>
-                            <Send />
-                            Send oss en melding
-                        </div>
-                    </Button>
-                </div>
-            </div>
-        </Navigation>
+            </Navigation>
         );
     }
-
 }
 
 export default withStyles(styles)(Companies);
