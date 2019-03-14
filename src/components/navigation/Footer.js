@@ -1,6 +1,5 @@
 import React,{Component} from 'react';
 import PropTypes from 'prop-types';
-
 import { withStyles } from '@material-ui/core/styles';
 
 // Material UI Components
@@ -13,6 +12,8 @@ import NEXTTRON from '../../assets/img/Nextron.png';
 import FACEBOOK from '../../assets/icons/facebook.svg';
 import TWITTER from '../../assets/icons/twitter.svg';
 import INSTAGRAM from '../../assets/icons/instagram.svg';
+import SNAPCHAT from '../../assets/icons/snapchat.svg';
+import SLACK from '../../assets/icons/slack.svg';
 
 
 const styles = {
@@ -25,7 +26,7 @@ const styles = {
         display: 'grid',
         gridGap: '40px',
         gridTemplateColumns: '1fr 1fr 1fr 1fr',
-        gridTemplateAreas: "'OmTihlde Sponsorer SosialeMedier TihldeSupport'", //SosialeMedier
+        gridTemplateAreas: "'Sponsorer OmTihlde SosialeMedier TihldeSupport'", //SosialeMedier
         gridTemplateRows: 'auto',
         justifyItems: 'center',
         color: 'white',
@@ -56,7 +57,6 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-       /*  justifyContent: 'space-around', */
     },
     sosialeMedier: {
         gridArea: 'SosialeMedier',
@@ -64,17 +64,20 @@ const styles = {
     sosialeMedierFlex: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
+
     },
     tihldeSupport: {
         gridArea: 'TihldeSupport',
         display: 'flex',
         flexDirection: 'column',
-        /* justifyContent: 'space-around', */
     },
     horSpacing: {
         marginBottom: 10,
     },
+    a: {
+        margin: '0 4px',
+    }
 };
 
 class Footer extends Component {
@@ -109,14 +112,27 @@ class Footer extends Component {
             <div className={classes.sosialeMedier}>
                 <Typography className={classes.horSpacing} align='center' color='inherit' variant='headline'>Sosiale medier</Typography>
                 <div className={classes.sosialeMedierFlex}>
-                    <a href="https://www.facebook.com/tihlde/">
-                        <img src={FACEBOOK} alt="facebook" width={40}/>
+                    <a className={classes.a} href="https://www.facebook.com/tihlde/">
+                        <img className={classes.horSpacing} src={FACEBOOK} alt="sit" width={40}/>
+                        {/*<i class="fab fa-facebook fa-3x"></i>*/}
                     </a>
-                    <a href="https://www.instagram.com/p/6Uh3rCBII7/">
-                        <img src={INSTAGRAM} alt="instagram" width={40}/>
+                    <a className={classes.a} href="https://www.instagram.com/p/6Uh3rCBII7/">
+                        <img className={classes.horSpacing} src={INSTAGRAM} alt="sit" width={40}/>
+                        {/*<i class="fab fa-instagram fa-3x"></i>*/}
                     </a>
-                    <a href="https://twitter.com/tihlde">
-                        <img src={TWITTER} alt="twitter" width={40}/>
+                    <a className={classes.a} href="https://twitter.com/tihlde">
+                        <img className={classes.horSpacing} src={TWITTER} alt="sit" width={40}/>
+                        {/*<i class="fab fa-twitter fa-3x"></i>*/}
+                    </a>
+                </div>
+                <div className={classes.sosialeMedierFlex}>
+                    <a className={classes.a} href="https://www.snapchat.com/add/tihldesnap">
+                        <img className={classes.horSpacing} src={SNAPCHAT} alt="sit" width={40}/>
+                        {/*<i class="fab fa-snapchat-ghost fa-3x"></i>*/}
+                    </a>
+                    <a className={classes.a} href="https://tihlde.slack.com">
+                        <img className={classes.horSpacing} src={SLACK} alt="sit" width={40}/>
+                        {/*<i class="fab fa-slack fa-3x"></i>*/}
                     </a>
                 </div>
             </div>
@@ -141,8 +157,8 @@ class Footer extends Component {
 
         return (
             <div className={classes.root}>
-                {this.omTihlde()}
                 {this.sponsorer()}
+                {this.omTihlde()}
                 {this.sosialeMedier()}
                 {this.tihldeSupport()}
             </div>

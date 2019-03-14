@@ -78,7 +78,7 @@ const styles = {
     menuWrapper: {
         display: 'flex',
         alignItems: 'center',
-    }, 
+    },
     sidebar: {
         zIndex: 100,
         minWidth: 200,
@@ -246,7 +246,7 @@ class Navigation extends Component {
                                     <Hidden smUp implementation={'css'}>
                                         <SponsorLogo />
                                     </Hidden>
-                                </div> 
+                                </div>
                             </Hidden>
 
                             <Hidden xsDown implementation='css'>
@@ -264,8 +264,8 @@ class Navigation extends Component {
                             <div>
                                 <Hidden xsDown implementation={'css'}>
                                     <SponsorLogo />
-                                </Hidden> 
-                               {/*  
+                                </Hidden>
+                               {/*
                                     --- LOG-IN BUTTON ---
                                     <Hidden xsDown implementation={'css'}>
                                     <div>
@@ -275,7 +275,7 @@ class Navigation extends Component {
                                             <Button className={classes.loginBtn} onClick={() => this.goTo(URLS.login)} variant='outlined'>Logg inn</Button>
                                         }
                                     </div>
-                                    </Hidden> 
+                                    </Hidden>
                                 */}
                             </div>
                         </div>

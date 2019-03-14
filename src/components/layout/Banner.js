@@ -5,6 +5,8 @@ import classNames from 'classnames';
 
 // Material UI Components
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import Send from '@material-ui/icons/Send';
 import { Grid, Typography } from '@material-ui/core';
 
 // Icons
@@ -56,6 +58,16 @@ const styles = {
         backgroundColor: 'var(--tihlde-blaa)',
         width: 50,
     },
+    button: {
+        position: 'absolute',
+        bottom: 20,
+        right: 20,
+    },
+    flex: {
+        display: 'flex',
+        justifyContent: 'justify-content',
+        alignItems: 'center',
+    },
 };
 
 const Banner = (props) => {
@@ -66,8 +78,21 @@ const Banner = (props) => {
                 <div className={classes.imageContainer}>
                     <img className={classNames(classes.image, !props.disableFilter ? classes.filter : '')} src={props.image} alt={props.alt} />
                     {props.title && <div className={classes.info}>
-                        <Typography className={classes.title} variant='display3'><strong>{props.title}</strong></Typography>
+                        <Typography className={classes.title} variant='display3'>
+                            <strong>{props.title}</strong>
+                        </Typography>
                         <div className={classes.line}/>
+                    </div>}
+                    {props.button && <div className={classes.button}>
+                        <Button
+                            variant='contained'
+                            color='primary'
+                            onClick={props.onClick}>
+                            <div className={classes.flex}>
+                                <Send/>
+                                {props.button}
+                            </div>
+                        </Button>
                     </div>}
                 </div>
                 {(props.header || props.text) &&
@@ -91,6 +116,9 @@ Banner.propTypes = {
     alt: PropTypes.string,
     text: PropTypes.string,
     disableFilter: PropTypes.bool,
+    children: PropTypes.string,
+    button: PropTypes.string,
+    onClick: () => {},
 };
 
 export default withStyles(styles)(Banner);

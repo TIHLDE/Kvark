@@ -18,4 +18,6 @@ export default {
         '\n' +
         'Etter selve presentasjonen kan vi tilrettelegge for bespisning på restaurant eller andre steder. Under bespisningen kan bedriftsrepresentantene mingle uformelt med studentene for å bli bedre kjent. \n' +
         'Ønskes det speed-intervjuer vil vi også være behjelpelig med det praktiske rundt dette.',
-};
+    interesse: 'SEND OSS EN MELDING',
+    viTilbyr: 'Vi tilbyr',
+    };
