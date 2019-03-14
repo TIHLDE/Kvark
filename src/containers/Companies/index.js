@@ -163,14 +163,16 @@ class Companies extends Component {
                             <InfoCard header='IKT-basert samhandling' text={Text.IKT} justifyText/>
                         </div>
                     </div>
-                    <div className={classNames(classes.section, classes.smoke)}>
-                        <Paper className={classes.formWrapper} ref={this.formRef} square>
-                            <Forum
-                                setMessage={this.setMessage}
-                                data={{forumText1: Text.forumText2, forumText2: Text.forumText2}}
-                                firstTextFieldRef={this.firstTextFieldRef}
-                                scrollToForm={this.scrollToForm}/>
-                        </Paper>
+                    <div className={classes.smoke}>
+                        <div className={classNames(classes.section, classes.smoke)}>
+                            <Paper className={classes.formWrapper} ref={this.formRef} square>
+                                <Forum
+                                    setMessage={this.setMessage}
+                                    data={{forumText1: Text.forumText2, forumText2: Text.forumText2}}
+                                    firstTextFieldRef={this.firstTextFieldRef}
+                                    scrollToForm={this.scrollToForm}/>
+                            </Paper>
+                        </div>
                     </div>
 
                     <div className={classes.section}>
