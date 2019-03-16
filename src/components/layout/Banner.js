@@ -1,6 +1,7 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import Parser from 'html-react-parser';
 import classNames from 'classnames';
 
 // Material UI Components
@@ -27,7 +28,7 @@ const styles = {
         minHeight: 250,
         maxHeight: 250,
         objectFit: 'cover',
-        
+
         '@media only screen and (max-width: 600px)': {
             minHeight: 100,
             maxHeight: 100,
@@ -98,7 +99,7 @@ const Banner = (props) => {
                 {(props.header || props.text) &&
                     <div className={classes.content}>
                         <Typography variant='title' gutterBottom><strong>{props.header}</strong></Typography>
-                        <Typography variant='subheading'>{props.text}</Typography>
+                        <Typography variant='subheading'>{props.text && Parser(props.text)}</Typography>
                     </div>
                 }
                 {props.children}
