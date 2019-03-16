@@ -27,7 +27,7 @@ const styles = (theme) => ({
         alignItems: 'stretch',
     },
     flat: {
-        boxShadow: 'none',
+        boxShadow: '0',
     },
 });
 
