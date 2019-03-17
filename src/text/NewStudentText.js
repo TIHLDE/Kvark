@@ -14,16 +14,6 @@ export default {
         subheader: "Fikk du ikke svar på det du lurte på her?\n" +
             "Send oss en melding på <a href='https://facebook.com/tihlde/'>Facebook</a>, så svarer vi deg så fort som vi klarer.",
         content: {
-            immatrikulering: {
-                header: "Hva er immatrikuleringen?",
-                text: "Immatrikuleringen er skolens velkomstseremoni for nye studenter.\n" +
-                    "Det kan du lese mer om immatrikuleringen <a href='https://tihlde.org/fadderuka/immatrikulering/'>her.</a>"
-            },
-            immeBall: {
-                header: "Hva er et immatrikuleringsball?",
-                text: "Immatrikuleringsballet er linjeforeningens velkomstseremoni for nye studenter. Kleskoden er studentergalla, altså dress eller kjole, med eventuelle utmerkelser fra linjeforeninger.\n" +
-                    "På immballet feirer linjeforeningene de nye studentene med taler, tøys, god middag og nach. Immball er noe av det morsomste linjeforeningene arrangerer, så det anbefales varmt å bli med!"
-            },
             linjeForening: {
                 header: "Hva er en linjeforening?",
                 text: "Linjeforening brukes om studentorganisasjoner knyttet til en bestemt studieretning. TIHLDE er linjeforeningen for linjene: Dataingeniør, Drift av datasystemer, IT-støttet bedriftsutvikling, og IKT-basert samhandling. Du kan lese med om TIHLDE <a href='https://tihlde.org/om-tihlde/'>her.</a>"
