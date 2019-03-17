@@ -25,7 +25,6 @@ import IconButton from '@material-ui/core/IconButton';
 // Assets/Icons
 import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO.png';
 import MenuIcon from '@material-ui/icons/Menu';
-// import PersonIcon from '@material-ui/icons/Person';
 import SopraSteria from '../../assets/img/sopraSteriaLogo.svg';
 
 // Project Components
@@ -146,6 +145,12 @@ const styles = {
     sponsorText:{
         color: 'white',
         fontSize: '12px',
+        textAlign: 'right',
+        opacity: 0.7,
+
+        '@media only screen and (max-width: 600px)': {
+            fontSize: '8px',
+        }
     }
 };
 

@@ -41,7 +41,7 @@ class NoEventsIndicator extends Component {
         const {classes} = this.props;
         return (
             <div className={classes.root}>
-                <div class={classes.imageWrapper}>
+                <div className={classes.imageWrapper}>
                     <img className={classes.image} src={EventIcon} alt='Ingen arrangementer' />
                 </div>
                 <MessageIndicator header={Text.noEvents} subheader={Text.subNoEvents}/>

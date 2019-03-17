@@ -41,7 +41,7 @@ class NoPostsIndicator extends Component {
         const {classes} = this.props;
         return (
             <div className={classes.root}>
-                <div class={classes.imageWrapper}>
+                <div className={classes.imageWrapper}>
                     <img className={classes.image} src={NoDataIcon} alt='Ingen arrangementer' />
                 </div>
                 <MessageIndicator header={Text.noJobPost} subheader={Text.subNoPosts}/>
