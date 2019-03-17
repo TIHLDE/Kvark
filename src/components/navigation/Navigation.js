@@ -26,7 +26,7 @@ import IconButton from '@material-ui/core/IconButton';
 import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO.png';
 import MenuIcon from '@material-ui/icons/Menu';
 // import PersonIcon from '@material-ui/icons/Person';
-import SopraSteria from '../../assets/img/sopraSteriaLogoW.png';
+import SopraSteria from '../../assets/img/sopraSteriaLogo.svg';
 
 // Project Components
 import Footer from './Footer';
@@ -132,11 +132,20 @@ const styles = {
         border: '2px solid white',
         padding: 6,
     },
+    sponsorWrapper: {
+        verticalAlign: 'top',
+        display: 'inline-block',
+        textAlign: 'center',
+    },
     sponsorLogo: {
         '@media only screen and (max-width: 600px)': {
             width: '5rem',
             height: 'auto',
         }
+    },
+    sponsorText:{
+        color: 'white',
+        fontSize: '12px',
     }
 };
 
@@ -159,8 +168,9 @@ const URIbutton = withStyles(styles)((props) => {
 const SponsorLogo = withStyles(styles)((props) => {
     const {classes} = props;
     return (
-        <a href="https://www.soprasteria.no/">
+        <a className={classes.sponsorWrapper} href="https://www.soprasteria.no/">
             <img className={classes.sponsorLogo} src={SopraSteria} alt='Sopra Steria Logo' height={'24rem'} />
+            <div className={classes.sponsorText}>Hovedsamarbeidspartner</div>
         </a>
     );
 });
