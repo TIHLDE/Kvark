@@ -125,10 +125,7 @@ class About extends Component {
                                 <InfoCard header='Netkom' text={Text.netkom} subheader='Opptak' subText={Text.netkom2} justifyText/>
                                 <InfoCard header='Turkom' text={Text.turkom} subheader='Opptak' subText={Text.turkom2} justifyText/>
                                 <InfoCard header='Koskom' text={Text.kosekom} subheader='Opptak' subText={Text.kosekom2} justifyText/>
-                                <InfoCard header='ArrKom' text={Text.arrkom} subheader='Opptak' subText={Text.arrkom2} justifyText/>
-                                <InfoCard header='FestKom' text={Text.festkom} subheader='Opptak' subText={Text.festkom2} justifyText/>
-                                <InfoCard header='ÅreKom' text={Text.arekom} subheader='Opptak' subText={Text.arekom2} justifyText className={classes.bottomItem}/>
-                            </div>
+                          </div>
                         </div>
                     </div>
 
