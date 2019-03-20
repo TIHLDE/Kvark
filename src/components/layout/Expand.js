@@ -20,7 +20,7 @@ const styles = (theme) => ({
         overflow: 'hidden',
     },
     heading: {
-        flexShrink: 0,
+        flexShrink: 1,
         fontWeight: 'bold',
     },
     secondaryHeading: {
@@ -29,6 +29,7 @@ const styles = (theme) => ({
     summary: {
         '@media only screen and (max-width: 600px)': {
             padding: 0,
+            paddingRight: 20,
         }
     },
     expansionDetails: {
