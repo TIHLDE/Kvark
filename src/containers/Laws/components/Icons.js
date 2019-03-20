@@ -24,12 +24,12 @@ const styles = {
         display:'flex',
         flexDirection:'column',
         justifyContent: 'space-evenly',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     image:{
         maxHeight: 160,
         objectFit: 'contain',
-
+        paddingBottom: 30
     }
 };
 
