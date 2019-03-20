@@ -13,10 +13,9 @@ import Typography from '@material-ui/core/Typography';
 const styles = {
     root: {
         height: 300,
-        maxHeight: 300,
         maxWidth: 250,
         padding: 16,
-        background:'red',
+
         '@media only screen and (max-width: 600px)': {
 
         },
