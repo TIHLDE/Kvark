@@ -248,8 +248,8 @@ class Navigation extends Component {
                                         <URIbutton data={{link: URLS.services, text: "Tjenester"}} selected={this.props.match.url === URLS.services}/>
                                         <URIbutton data={{link: URLS.events, text: "Arrangementer"}} selected={this.props.match.url === URLS.events}/>
                                         <URIbutton data={{link: URLS.newStudent, text: "Ny student"}} selected={this.props.match.url === URLS.newStudent}/>
-                                        <URIbutton data={{link: URLS.jobposts, text: "Annonser"}} selected={this.props.match.url === URLS.jobposts}/>
-                                        <URIbutton data={{link: URLS.company, text: "Bedrifter"}} selected={this.props.match.url === URLS.company}/>
+                                        <URIbutton data={{link: URLS.jobposts, text: "Karriere"}} selected={this.props.match.url === URLS.jobposts}/>
+                                        <URIbutton data={{link: URLS.company, text: "For Bedrifter"}} selected={this.props.match.url === URLS.company}/>
                                     </div>
                                 </Hidden>
                             </div>

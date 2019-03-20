@@ -102,7 +102,7 @@ class CustomListItem extends Component {
         await this.setState({
             checked: !this.state.checked
         });
-        
+
         // Sends fake event back, because this method was originally connect to
         // The Checkbox component, which actually returned a correct event,
         // but was for some reason moved to ListItem.
@@ -299,7 +299,7 @@ class Forum extends Component {
                         margin="normal"
                         variant="outlined"
                     />
-                    <Button variant="contained" color="primary" type="submit" className={classes.item}>Send inn forum</Button>
+                    <Button variant="contained" color="primary" type="submit" className={classes.item}>Send</Button>
                 </form>
             </div>
         );

@@ -85,7 +85,7 @@ class Services extends Component {
                         text={Text.colargol} />
 
                     <div className={classes.grid}>
-                        <InfoCard header='Epost' text={Text.email} src={EmailIcon} classes={{children: classes.flex}} justifyText>
+                        <InfoCard header='E-post' text={Text.email} src={EmailIcon} classes={{children: classes.flex}} justifyText>
                             <Button className={classes.bottomSpacing} variant='contained' color='primary' href='https://webmail.tihlde.org/'>Gå til webmail</Button>
                            {/*  <Button className={classes.bottomSpacing} variant='outlined' color='secondary'>Les mer</Button> */}
                         </InfoCard>
