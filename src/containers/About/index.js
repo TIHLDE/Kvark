@@ -10,6 +10,10 @@ import Text from '../../text/AboutText';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import Divider from '@material-ui/core/Divider';
+
+import MenuList from '@material-ui/core/MenuList';
+import MenuItem from '@material-ui/core/MenuItem';
 
 // Icons
 import SocialIcon from '../../assets/icons/social.svg';
@@ -23,6 +27,7 @@ import Navigation from '../../components/navigation/Navigation';
 import InfoCard from '../../components/layout/InfoCard';
 import ClickableImage from '../../components/miscellaneous/ClickableImage';
 import Banner from '../../components/layout/Banner';
+import LinkButton from '../../components/navigation/LinkButton';
 
 const styles = {
     root: {
@@ -85,6 +90,12 @@ const styles = {
         width: '100%',
         backgroundColor: '#Fefefe',
     },
+    linkContainer: {
+      marginBottom: 0,
+      width: '100%',
+      gridGap: 0,
+      gridAutoColumns: 'minmax(50%, 100%)'
+    }
 };
 
 class About extends Component {
@@ -102,7 +113,22 @@ class About extends Component {
                         <Banner
                             image='https://images.pexels.com/photos/220351/pexels-photo-220351.jpeg?auto=compress&cs=tinysrgb&h=350'
                             text={Text.subheader}
-                            title={Text.header}/>
+                            title={Text.header}>
+                            <Divider />
+                            <Grid item className={classNames(classes.linkContainer, classes.miniPadding, classes.grid)}>
+                                <LinkButton to='/lover/'>
+                                    <Typography>TIHLDE's Lover</Typography>
+                                </LinkButton>
+                            </Grid>
+
+                            {/*
+                            <Grid className={classes.miniPadding} item>
+                              <MenuList className={classNames(classes.linkContainer, classes.grid)}>
+                                <LinkButton to='/lover/'>TIHLDE's lover</LinkButton>
+                              </MenuList>
+                            </Grid>
+                            */}
+                        </Banner>
                     </div>
 
                     <div className={classes.smoke}>
@@ -133,7 +159,7 @@ class About extends Component {
                     <div className={classes.smoke}>
                         <div className={classes.section}>
                             <Typography className={classes.verticalMargin}variant='display1' color='inherit' align='center'>Organisasjonskart</Typography>
-                            
+
                             <Paper className={classes.miniMargin} square elevation={1}>
                                 <ClickableImage className={classes.miniPadding} image={OrgMap} alt='organisasjonskart' width='90%'/>
                             </Paper>
