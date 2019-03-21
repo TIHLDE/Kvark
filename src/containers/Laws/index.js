@@ -3,10 +3,14 @@ import {withStyles} from '@material-ui/core/styles';
 
 // Material UI Components
 import Paper from '@material-ui/core/Paper';
+import Divider from '@material-ui/core/Divider';
+
+// Icons
+import GavelIcon from '@material-ui/icons/Gavel';
+
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 import Banner from '../../components/layout/Banner';
-import cake from '@material-ui/icons/Cake';
 import Icons from './components/Icons';
 const bannerImage = 'http://www.f-covers.com/cover/law-and-order-special-victims-unit-2-facebook-cover-timeline-banner-for-fb.jpg';
 
@@ -33,16 +37,17 @@ const styles = {
         },
     },
     container:{
-        maxHeight: 800,
-        height: 800,
-        display: 'grid',
-        gridTemplateRows: '50% 50%',
-        gridGap: 100
+
     },
     icons:{
-        display: 'flex',
-        justifyContent: 'space-around',
-        alignItems: 'center'
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr 1fr',
+        backgroundColor: 'rgba(0, 0, 0, 0.12)',
+        gridGap: '1px',
+
+        '@media only screen and (max-width: 600px)': {
+            gridTemplateColumns: '1fr',
+        }
     },
 
 };
@@ -61,18 +66,22 @@ class Laws extends Component {
                                 <Icons data={{
                                     title: "Styreinstruks for hovedstyret",
                                     image: "http://hdwpro.com/wp-content/uploads/2017/01/3D-Cool-Image.jpg",
-                                    alt: "this is an alt text"
-                                }}/>
-                                <Icons data={{
-                                           title: "Lover for TIHLDE",
-                                           image: "http://hdwpro.com/wp-content/uploads/2017/01/3D-Cool-Image.jpg",
-                                           alt: "this is an alt text"
-                                       }}/>
+                                    alt: "this is an alt text",
+
+                                }} icon={GavelIcon}/>
+                                   <Icons data={{title: "Lover for TIHLDE",
+                                       image: "http://hdwpro.com/wp-content/uploads/2017/01/3D-Cool-Image.jpg",
+                                       alt: "this is an alt text"
+                                   }} icon={GavelIcon}/>
                                 <Icons data={{
                                            title: "Undergruppeinstrukser",
                                            image: "http://hdwpro.com/wp-content/uploads/2017/01/3D-Cool-Image.jpg",
                                            alt: "this is an alt text"
-                                       }}/>
+                                       }} icon={GavelIcon}/>
+                            </div>
+                            <Divider />
+                            <div>
+                                PUT THE REST HERE
                             </div>
                         </Paper>
                     </div>

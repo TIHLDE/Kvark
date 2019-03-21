@@ -6,16 +6,18 @@ import classNames from 'classnames';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
+import ButtonBase from '@material-ui/core/ButtonBase';
 
 // Icons
 
 
 const styles = {
+    btnBase: {
+        backgroundColor: 'white',
+    },
     root: {
-        height: 300,
-        maxWidth: 250,
+        backgroundColor: 'white',
         padding: 16,
-
         '@media only screen and (max-width: 600px)': {
 
         },
@@ -26,24 +28,28 @@ const styles = {
         justifyContent: 'space-evenly',
         alignItems: 'center',
     },
-    image:{
-        maxHeight: 160,
-        objectFit: 'contain',
-        paddingBottom: 30
+    icon:{
+        fontSize: 100,
+        marginBottom: 20,
+        color: 'rgba(0, 0, 0, 0.6)',
     }
 };
 
 
 const Icons = (props) => {
-    const {classes, data} = props;
+    const {classes, data, icon: Component} = props;
     const text = (data.title)? data.title : "mangler tittel";
+    console.log(props.icon)
     return (
-        <div className={classes.root}>
-            <div className={classes.wrapper}>
-                <img src={data.image} alt={data.alt} className={classes.image}/>
-                <Typography variant={'headline'}>{text}</Typography>
+        <ButtonBase className={classes.btnBase}>
+            <div className={classes.root}>
+
+                <div className={classes.wrapper}>
+                    <Component className={classes.icon} />
+                    <Typography variant={'headline'}>{text}</Typography>
+                </div>
             </div>
-        </div>
+        </ButtonBase>
     );
 };
 
