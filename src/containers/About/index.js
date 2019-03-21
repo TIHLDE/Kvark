@@ -94,7 +94,6 @@ const styles = {
       marginBottom: 0,
       width: '100%',
       gridGap: 0,
-      gridAutoColumns: 'minmax(50%, 100%)'
     }
 };
 
