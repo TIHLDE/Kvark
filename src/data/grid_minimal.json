@@ -23,7 +23,7 @@
                         "id": 1,
                         "created_at": "2018-07-28T10:55:37.187154Z",
                         "updated_at": "2018-07-28T10:55:37.187320Z",
-                        "title": "Eksamensfest",
+                        "h6": "Eksamensfest",
                         "start": "0218-01-10T00:22:00Z",
                         "location": "over alt",
                         "eventlist": 1
@@ -39,7 +39,7 @@
             "id": 5,
             "type": "news",
             "data": {
-                "title": "Eksamensfest!",
+                "h6": "Eksamensfest!",
                 "image": "http://farm1.staticflickr.com/958/42146517371_d69a1e3d01_b.jpg"
             },
             "width": 1,
@@ -50,7 +50,7 @@
             "id": 6,
             "type": "news",
             "data": {
-                "title": "Mørket skremmer mange hver eneste dag",
+                "h6": "Mørket skremmer mange hver eneste dag",
                 "image": "https://gfx.nrk.no/o6BBrio5ciboxej6dBiC1AqsCycBCueH7CKdoC980I9A"
             },
             "width": 1,
@@ -61,7 +61,7 @@
             "id": 7,
             "type": "news",
             "data": {
-                "title": "Eksamensfest!",
+                "h6": "Eksamensfest!",
                 "image": "http://farm1.staticflickr.com/958/42146517371_d69a1e3d01_b.jpg"
             },
             "width": 1,

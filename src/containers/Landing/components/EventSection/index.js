@@ -34,26 +34,33 @@ const styles = {
             padding: 4,
         }
     },
-    wrapper: {
+    wrapperRoot: {
         maxWidth: 1000,
         margin: 'auto',
         padding: 42,
-
+    },
+    wrapper: {
+        
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
         gridTemplateRows: 'auto auto auto',
-        gridTemplateAreas: "'title image' 'details image' 'list image'",
+        gridTemplateAreas: "'h6 image' 'details image' 'list image'",
         gridColumnGap: '48px',
 
         '@media only screen and (max-width: 800px)': {
             gridTemplateColumns: '1fr 1fr',
-            gridTemplateAreas: "'title title' 'details details' 'image image'  'list list'",
+            gridTemplateAreas: "'h6 h6' 'details details' 'image image'  'list list'",
             gridGap: '8px',
             padding: '32px 24px',
         }
     },
+    noContent: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     content: {
-        gridArea: 'title',
+        gridArea: 'h6',
         '@media only screen and (max-width: 800px)': {
             order: 2,
         },
@@ -69,7 +76,7 @@ const styles = {
             order: 1,
         }
     },
-    title: {
+    h6: {
         color: 'black',
         marginBottom: 8,
         '@media only screen and (max-width: 600px)': {
@@ -140,7 +147,7 @@ const styles = {
 const InfoContent = withStyles(styles)((props) => (
     <Grid className={classNames(props.classes.info, props.className)} container direction='row' wrap='nowrap' alignItems='center'>
         {props.icon}
-        <Typography className={props.classes.infoText} variant='subheading'>{props.label}</Typography>
+        <Typography className={props.classes.infoText} variant='subtitle1'>{props.label}</Typography>
     </Grid>
 ));
 
@@ -153,6 +160,8 @@ const getEmoji = (categoryId) => {
     switch(categoryId) {
         case 9:
             return "🥂";
+        case -1: 
+            return "😥";
         default:
             return "📆";
     }
@@ -167,7 +176,7 @@ const EventListItem = withStyles(styles)((props) => {
                 <ListItemIcon><Emoji symbol={getEmoji(data.category)}/></ListItemIcon>
                 <ListItemText primary={
                     <Grid container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
-                        <Typography variant='body2'>{data.title}</Typography>
+                        <Typography >{data.h6}</Typography>
                         <Typography variant='caption'>{moment(data.start).format('DD/MM')}</Typography>
                     </Grid>
                 }/>
@@ -181,7 +190,7 @@ class EventSection extends Component {
     constructor() {
         super();
         this.state = {
-            currentEvent: {},
+            currentEvent: null,
             moreEvents: [],
         }
         this.mainEventURL = URLS.events;
@@ -194,7 +203,7 @@ class EventSection extends Component {
     initializeEvents = () => {
         const events = this.props.data.events;
         if(events && events.length > 0) {
-            const currentEvent = events[0];
+            const currentEvent = events[0] || {};
             currentEvent.date = moment(currentEvent.start).format('DD.MM.YYYY');
             currentEvent.time = moment(currentEvent.start).format('HH:mm');
             this.setState({
@@ -213,38 +222,51 @@ class EventSection extends Component {
 
     render() {
         const {classes} = this.props;
-        const {image, title, date, time, location, category} = this.state.currentEvent || {};
+        const {image, h6, date, time, location, category} = this.state.currentEvent || {};
         
-
         return (
             <div className={classes.root}>
-                <Paper className={classes.wrapper} square elevation={1}>
-                    <div className={classes.content}>
-                        <Link to={this.mainEventURL}>
-                            <Typography className={classes.title} variant='display1'>
-                                <Emoji symbol={getEmoji(category)}/>
-                                <strong>{title}</strong>
+                <Paper className={classes.wrapperRoot} square elevation={1}>
+                    {(this.state.currentEvent !== null && this.state.currentEvent.h6) ?
+                        <div className={classes.wrapper}>
+                            <div className={classes.content}>
+                                <Link to={this.mainEventURL}>
+                                    <Typography className={classes.h6} variant='h4'>
+                                        <Emoji symbol={getEmoji(category)}/>
+                                        <strong>{h6}</strong>
+                                    </Typography>
+                                </Link>
+                            </div>
+                            <Link className={classes.details} to={this.mainEventURL}>
+                                <InfoContent icon={<Calendar className={classes.icon}/>} label={date} />
+                                <InfoContent icon={<Time className={classes.icon}/>} label={time} />
+                                <InfoContent className={classes.span} icon={<Location className={classes.icon}/>} label={location} />
+                            </Link>
+                            <div className={classes.list}>
+                                <Typography variant='h5' gutterBottom>Flere arrangementer</Typography>
+                                <Divider />
+                                {this.state.moreEvents.map((value, index) => (
+                                    <EventListItem key={index} data={value}/>
+                                ))}
+                                {this.state.moreEvents.length === 0 && <Typography variant='caption'>Ingen flere arrangementer</Typography>}
+                            </div>
+
+                            <div className={classes.imageWrapper}>
+                                <Link to={this.mainEventURL}>
+                                    <img className={classes.image} src={image || DEFAULT_IMAGE} alt={h6} /> 
+                                </Link>
+                            </div>
+                        </div>
+                        
+                    :
+                        <div className={classes.noContent}>
+                            <Typography className={classes.h6} variant='h6'>
+                                <Emoji symbol={getEmoji(-1)}/>
+                                Ingen arrangementer for øyeblikket
                             </Typography>
-                        </Link>
-                    </div>
-                    <Link className={classes.details} to={this.mainEventURL}>
-                        <InfoContent icon={<Calendar className={classes.icon}/>} label={date} />
-                        <InfoContent icon={<Time className={classes.icon}/>} label={time} />
-                        <InfoContent className={classes.span} icon={<Location className={classes.icon}/>} label={location} />
-                    </Link>
-                    <div className={classes.list}>
-                        <Typography variant='headline' gutterBottom>Flere arrangementer</Typography>
-                        <Divider />
-                        {this.state.moreEvents.map((value, index) => (
-                            <EventListItem key={index} data={value}/>
-                        ))}
-                        {this.state.moreEvents.length === 0 && <Typography variant='caption'>Ingen flere arrangementer</Typography>}
-                    </div>
-                    <div className={classes.imageWrapper}>
-                        <Link to={this.mainEventURL}>
-                            <img className={classes.image} src={image || DEFAULT_IMAGE} alt={title} /> 
-                        </Link>
-                    </div>
+                        </div>
+                    }
+                    
                 </Paper>
             </div>
         );

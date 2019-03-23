@@ -13,15 +13,15 @@ import EventRenderer from './components/EventRenderer';
 const styles = {
     root:{
         minHeight: '90vh',
+        
     },
     wrapper:{
         maxWidth: 1200,
         margin: 'auto',
-        paddingTop: 10,
-        paddingBottom: 100,
+        padding: '20px 48px 48px 48px',
 
-        '@media only screen and (max-width: 600px)': {
-            paddingTop: 0,
+        '@media only screen and (max-width: 1200px)': {
+            padding: '12px 0px 48px 0px',
         }
     },
 };

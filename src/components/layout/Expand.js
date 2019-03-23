@@ -1,5 +1,6 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
+import classNames from 'classnames';
 
 // Material UI Components
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -14,12 +15,22 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import htmlReactParser from 'html-react-parser';
 
 const styles = (theme) => ({
+    root: {
+        maxWidth: '100%',
+        overflow: 'hidden',
+    },
     heading: {
-        flexShrink: 0,
+        flexShrink: 1,
         fontWeight: 'bold',
     },
     secondaryHeading: {
         color: theme.palette.text.secondary,
+    },
+    summary: {
+        '@media only screen and (max-width: 600px)': {
+            padding: 0,
+            paddingRight: 20,
+        }
     },
     expansionDetails: {
         display: 'flex',
@@ -35,8 +46,8 @@ const styles = (theme) => ({
 const Expansion = withStyles(styles)((props) => {
     const { classes } = props;
     return (
-        <ExpansionPanel className={props.flat ? classes.flat : null} expanded={props.expand}>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} onClick={props.customCallback}>
+        <ExpansionPanel className={classNames(classes.root, props.flat ? classes.flat : null)} expanded={props.expand}>
+            <ExpansionPanelSummary className={classes.summary} expandIcon={<ExpandMoreIcon />} onClick={props.customCallback}>
                 <Typography className={classes.heading}>{props.header}</Typography>
                 { props.subheader ?
                     <Typography className={classes.secondaryHeading}>{htmlReactParser(props.subheader)}</Typography>

@@ -27,6 +27,7 @@ import Profile from './containers/Profile';
 import JobPosts from './containers/JobPosts';
 import JobPostDetails from './containers/JobPostDetails';
 import LogIn from './containers/LogIn';
+import Laws from './containers/Laws';
 
 // The user needs to be authorized (logged in) to access these routes
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -58,6 +59,7 @@ const Application = (
                     <Route path={URLS.profile} component={Profile} />
                     <Route path={URLS.jobposts.concat(':id/')} component={JobPostDetails} />
                     <Route exact path={URLS.jobposts} component={JobPosts} />
+                    <Route path={URLS.laws} component={Laws} />
 
                     <PrivateRoute path={URLS.eventAdmin} component={EventAdministration} />
                     <Route path={URLS.login} component={LogIn} />

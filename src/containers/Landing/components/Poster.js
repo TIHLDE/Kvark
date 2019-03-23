@@ -90,8 +90,8 @@ class Poster extends Component {
                 }
 
                 <Grid className={classes.content} container direction='column' wrap='nowrap' alignItems='center' justify='center'>
-                    <Typography className={classNames(classes.text, classes.headerText)} variant='display4' align='center' style={{color: textColor}}>{data.header}</Typography>
-                    <Typography className={classNames(classes.text, classes.subText)} variant='headline' align='center' style={{color: textColor}}>{data.subheader}</Typography>
+                    <Typography className={classNames(classes.text, classes.headerText)} variant='h5' align='center' style={{color: textColor}}>{data.header}</Typography>
+                    <Typography className={classNames(classes.text, classes.subText)} variant='h5' align='center' style={{color: textColor}}>{data.subheader}</Typography>
                     {(!data.action)? null :
                         <Button className={classes.actionButton} onClick={() => this.goTo(data.action)} variant='raised' color='primary'>{data.action_text}</Button>
                     }

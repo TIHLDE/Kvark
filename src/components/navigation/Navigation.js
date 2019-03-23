@@ -25,8 +25,7 @@ import IconButton from '@material-ui/core/IconButton';
 // Assets/Icons
 import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO.png';
 import MenuIcon from '@material-ui/icons/Menu';
-// import PersonIcon from '@material-ui/icons/Person';
-import SopraSteria from '../../assets/img/sopraSteriaLogoW.png';
+import SopraSteria from '../../assets/img/sopraSteriaLogo.svg';
 
 // Project Components
 import Footer from './Footer';
@@ -78,7 +77,7 @@ const styles = {
     menuWrapper: {
         display: 'flex',
         alignItems: 'center',
-    }, 
+    },
     sidebar: {
         zIndex: 100,
         minWidth: 200,
@@ -132,10 +131,25 @@ const styles = {
         border: '2px solid white',
         padding: 6,
     },
+    sponsorWrapper: {
+        verticalAlign: 'top',
+        display: 'inline-block',
+        textAlign: 'center',
+    },
     sponsorLogo: {
         '@media only screen and (max-width: 600px)': {
             width: '5rem',
             height: 'auto',
+        }
+    },
+    sponsorText:{
+        color: 'white',
+        fontSize: '12px',
+        textAlign: 'center',
+        opacity: 0.7,
+
+        '@media only screen and (max-width: 600px)': {
+            fontSize: '8px',
         }
     }
 };
@@ -159,8 +173,9 @@ const URIbutton = withStyles(styles)((props) => {
 const SponsorLogo = withStyles(styles)((props) => {
     const {classes} = props;
     return (
-        <a href="https://www.soprasteria.no/">
+        <a className={classes.sponsorWrapper} href="https://www.soprasteria.no/">
             <img className={classes.sponsorLogo} src={SopraSteria} alt='Sopra Steria Logo' height={'24rem'} />
+            <div className={classes.sponsorText}>Hovedsamarbeidspartner</div>
         </a>
     );
 });
@@ -217,7 +232,7 @@ class Navigation extends Component {
         const {classes} = this.props;
         return (
             <Fragment>
-                <AppBar className={classes.root} position="fixed" color="default">
+                <AppBar className={classes.root} position="fixed" color="primary">
                     <Toolbar className={classes.navContent} disableGutters>
                         <div className={classes.navWrapper}>
                             <div className={classes.logoWrapper}>
@@ -246,7 +261,7 @@ class Navigation extends Component {
                                     <Hidden smUp implementation={'css'}>
                                         <SponsorLogo />
                                     </Hidden>
-                                </div> 
+                                </div>
                             </Hidden>
 
                             <Hidden xsDown implementation='css'>
@@ -264,8 +279,8 @@ class Navigation extends Component {
                             <div>
                                 <Hidden xsDown implementation={'css'}>
                                     <SponsorLogo />
-                                </Hidden> 
-                               {/*  
+                                </Hidden>
+                               {/*
                                     --- LOG-IN BUTTON ---
                                     <Hidden xsDown implementation={'css'}>
                                     <div>
@@ -275,7 +290,7 @@ class Navigation extends Component {
                                             <Button className={classes.loginBtn} onClick={() => this.goTo(URLS.login)} variant='outlined'>Logg inn</Button>
                                         }
                                     </div>
-                                    </Hidden> 
+                                    </Hidden>
                                 */}
                             </div>
                         </div>

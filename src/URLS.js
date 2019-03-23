@@ -9,6 +9,7 @@ export default {
     jobposts: '/annonser/',
     profile: '/profile/',
     login: '/logg-inn/',
+    laws: '/lover/',
 
     eventAdmin: '/admin/events',
 };

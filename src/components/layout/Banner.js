@@ -1,10 +1,13 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import Parser from 'html-react-parser';
 import classNames from 'classnames';
 
 // Material UI Components
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import Send from '@material-ui/icons/Send';
 import { Grid, Typography } from '@material-ui/core';
 
 // Icons
@@ -25,7 +28,7 @@ const styles = {
         minHeight: 250,
         maxHeight: 250,
         objectFit: 'cover',
-        
+
         '@media only screen and (max-width: 600px)': {
             minHeight: 100,
             maxHeight: 100,
@@ -43,7 +46,7 @@ const styles = {
         bottom: 20,
         left: 20,
     },
-    title: {
+    h6: {
         color: 'rgba(0,0,0,1)',
 
         fontSize: 54,
@@ -56,6 +59,16 @@ const styles = {
         backgroundColor: 'var(--tihlde-blaa)',
         width: 50,
     },
+    button: {
+        position: 'absolute',
+        bottom: 20,
+        right: 20,
+    },
+    flex: {
+        display: 'flex',
+        justifyContent: 'justify-content',
+        alignItems: 'center',
+    },
 };
 
 const Banner = (props) => {
@@ -65,17 +78,31 @@ const Banner = (props) => {
             <Grid container direction='column' wrap='nowrap'>
                 <div className={classes.imageContainer}>
                     <img className={classNames(classes.image, !props.disableFilter ? classes.filter : '')} src={props.image} alt={props.alt} />
-                    {props.title && <div className={classes.info}>
-                        <Typography className={classes.title} variant='display3'><strong>{props.title}</strong></Typography>
+                    {props.h6 && <div className={classes.info}>
+                        <Typography className={classes.h6} variant='h2'>
+                            <strong>{props.h6}</strong>
+                        </Typography>
                         <div className={classes.line}/>
+                    </div>}
+                    {props.button && <div className={classes.button}>
+                        <Button
+                            variant='contained'
+                            color='primary'
+                            onClick={props.onClick}>
+                            <div className={classes.flex}>
+                                <Send/>
+                                {props.button}
+                            </div>
+                        </Button>
                     </div>}
                 </div>
                 {(props.header || props.text) &&
                     <div className={classes.content}>
-                        <Typography variant='title' gutterBottom><strong>{props.header}</strong></Typography>
-                        <Typography variant='subheading'>{props.text}</Typography>
+                        <Typography variant='h6' gutterBottom><strong>{props.header}</strong></Typography>
+                        <Typography variant='subtitle1'>{props.text && Parser(props.text)}</Typography>
                     </div>
-                }   
+                }
+                {props.children}
             </Grid>
         </Paper>
     );
@@ -83,13 +110,16 @@ const Banner = (props) => {
 
 Banner.propTypes = {
     className: PropTypes.string,
-    title: PropTypes.string,
+    h6: PropTypes.string,
     header: PropTypes.string,
     classes: PropTypes.object,
     image: PropTypes.string,
     alt: PropTypes.string,
     text: PropTypes.string,
     disableFilter: PropTypes.bool,
+    children: PropTypes.node,
+    button: PropTypes.string,
+    onClick: () => {},
 };
 
 export default withStyles(styles)(Banner);

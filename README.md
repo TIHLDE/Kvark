@@ -1,19 +1,64 @@
-# Nettside 
+# TIHLDEs nettside - Kvark 
+
+## Contents
+1. [Basic info](#basic-info)
+2. [Getting started](#getting-started)
+3. [Todo](#todo)
+4. [Future plans](#future-plans)
+5. [Rules](#rules)
 
 
+### Basic info
+This website uses the following technologies
 
-For å kjøre lokalt: 
+* Yarn (Package-manager)
+* ReactJs
+* Material-UI (CSS-framework)
+* Redux (store)
 
-```shell
-yarn install
-yarn start 
+### Getting started
+
+#### Installing
+This project uses yarn, so all you have to do is to clone, install and run.
 
 ```
+git clone git@github.com:tihlde/Kvark.git
+cd Kvark
+yarn install
+yarn start 
+```
 
-## MVP
+#### API URL Setup
+To run a local version of the site you have to first setup the URL
+for the API. To do so, create a _.env.development_ file in the root-directory
+and write the following
+```
+REACT_APP_API_URL=YOUR_API_URL_HERE
+```
+Normally there is a hosted API for development up and running on Heroku. This is
+so development on the page should go faster. Ask the developers of this site for
+the API-URL.
 
-- Arrangementer 
-   - Hva, når, hvor, linke til facebook
-- Nyheter lest
-- Bedriftside 
-- Kunne poste disse tingene
+### TODO
+The following things needs to be completed:
+
+* Create a decent landing page
+* CMS for job-posts
+* Fix CMS for events (not scalable)
+* Sign up
+* Write tests
+* CI-Setup
+
+### Future plans
+* User profile page
+* TIHLDE Games
+
+### Rules
+These rules are to be updated
+
+* All strings should be created with single-quotes
+* The main _/components_ folder should only contain DUMMY-COMPONENTS. These components are shared between
+all the different pages, and should not implement page-specific logic. The components should be so dumb
+they can be moved to a different project and still work.
+* All pages should be placed in the _/containers_ and should be inside their own folder.
+* All page-specific components should be places in a separate _/components_ folder. For example _/containers/LogIn/components/_

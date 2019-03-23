@@ -50,10 +50,10 @@ const styles = {
         maxHeight: 400,
         objectFit: 'cover',
     },
-    titleWrapper: {
+    h6Wrapper: {
         padding: 26,
     },
-    title: {
+    h6: {
         color: 'black',
     },
     content: {
@@ -78,8 +78,8 @@ const styles = {
 
 const InfoContent = withStyles(styles)((props) => (
     <Grid className={props.classes.info} container direction='row' wrap='nowrap' alignItems='center' justify='flex-end'>
-        <Typography className={props.classes.mr} variant='body2'>Publisert:</Typography>
-        <Typography className={props.classes.ml} variant='body2'>{props.label}</Typography>
+        <Typography className={props.classes.mr} >Publisert:</Typography>
+        <Typography className={props.classes.ml} >{props.label}</Typography>
     </Grid>
 ));
 
@@ -98,9 +98,9 @@ const EventRenderer = (props) => {
         <div className={classes.root}>
             <Paper square>
                 <img className={classes.image} src={data.image} alt={data.image_alt} />
-                <div className={classes.titleWrapper}>
-                    <Typography className={classes.title} variant='display1' gutterBottom><strong>{data.title}</strong></Typography>
-                    <Typography className={classes.title} variant='subheading'>{data.header}</Typography>
+                <div className={classes.h6Wrapper}>
+                    <Typography className={classes.h6} variant='h4' gutterBottom><strong>{data.h6}</strong></Typography>
+                    <Typography className={classes.h6} variant='subtitle1'>{data.header}</Typography>
                 </div>
                 <Divider />
                 <div className={classes.grid} >

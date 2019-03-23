@@ -25,7 +25,7 @@ import Button from '@material-ui/core/Button';
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 import Banner from '../../components/layout/Banner';
-import MessageIndicator from '../../components/layout/MessageIndicator';
+import NoPostsIndicator from './components/NoPostsIndicator';
 import JobPostItem from './components/JobPostItem';
 
 const styles = {
@@ -177,7 +177,7 @@ class JobPosts extends Component {
                 {this.state.isLoading ? null :
                 <div className={classes.root}>
                     <div className={classes.wrapper}>
-                        <Banner title='Annonser' image={bannerImage}/>
+                        <Banner h6='Annonser' image={bannerImage}/>
                         <div className={classes.grid}>
                         
                             {this.state.isFetching ? <CircularProgress className={classes.progress} /> :
@@ -191,7 +191,7 @@ class JobPosts extends Component {
                                                 </div>
                                             ))}
                                             {posts.length === 0 && 
-                                                <MessageIndicator header={Text.noEvents} subheader={Text.subNoEvents}/>
+                                                <NoPostsIndicator />
                                             }
                                         </Paper>
                                     </Grow>
@@ -204,7 +204,7 @@ class JobPosts extends Component {
                                         <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.searchForPosts}>{Text.search}</Button>
                                     </form>
                                     <Divider className={classes.mt}/>
-                                    <Typography className={classes.mt} variant='title' gutterBottom>{Text.category}</Typography>
+                                    <Typography className={classes.mt} variant='h6' gutterBottom>{Text.category}</Typography>
 
                                     <Theme theme={errorTheme}>
                                         <Button

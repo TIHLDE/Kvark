@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-
 import { withStyles } from '@material-ui/core/styles';
 
-
+// Material UI Components
+import Divider from '@material-ui/core/Divider';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
@@ -29,7 +29,7 @@ const styles = (theme) => ({
     },
     content: {
         display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
+        gridTemplateColumns: '1fr',
         gridAutoFlow: 'row',
         gridGap: '15px',
         margin: '20px auto',
@@ -38,7 +38,11 @@ const styles = (theme) => ({
             gridTemplateColumns: '1fr',
         },
     },
-
+    infocard: {
+        '@media only screen and (max-width: 600px)': {
+            padding: 28,
+        }
+    }
 });
 
 
@@ -56,27 +60,22 @@ class NewStudent extends Component {
                 <div className={classes.root}>
                     <Banner
                         className={classes.banner}
-                        title={Text.banner.header}
+                        h6={Text.banner.header}
                         text={Text.banner.subHeader}
                         image={Text.banner.imageUrl}
                     />
-
-                    <Expansion header={Text.faq.header} subtext={Text.faq.subheader}>
+                    <div className={classes.content}>
+                        <InfoCard className={classes.infocard} header={Text.faq.header} text={Text.faq.subheader}>
                         {
                             Object.values(Text.faq.content).map((value, index) => (
-                                <Expansion key={index} header={value["header"]} text={value["text"]} flat/>
+                                <div key={index} >
+                                    <Expansion header={value['header']} text={value['text']} flat />
+                                    <Divider />
+                                </div>
                             ))
                         }
-                    </Expansion>
-
-                    <div className={classes.content}>
-                        {
-                            Object.values(Text.content).map((value, index) => (
-                                <InfoCard key={index} header={value["header"]} text={value["text"]} justifyText/>
-                            ))
-                        }
+                        </InfoCard>
                     </div>
-
                 </div>
             </Navigation>
         )
