@@ -117,7 +117,7 @@ Banner.propTypes = {
     alt: PropTypes.string,
     text: PropTypes.string,
     disableFilter: PropTypes.bool,
-    children: PropTypes.string,
+    children: PropTypes.node,
     button: PropTypes.string,
     onClick: () => {},
 };

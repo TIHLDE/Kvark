@@ -39,7 +39,6 @@ const styles = {
 const Icons = (props) => {
     const {classes, data, icon: Component} = props;
     const text = (data.title)? data.title : "mangler tittel";
-    console.log(props.icon)
     return (
         <ButtonBase className={classes.btnBase}>
             <div className={classes.root}>

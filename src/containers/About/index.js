@@ -119,14 +119,6 @@ class About extends Component {
                                     <Typography>TIHLDE's Lover</Typography>
                                 </LinkButton>
                             </Grid>
-
-                            {/*
-                            <Grid className={classes.miniPadding} item>
-                              <MenuList className={classNames(classes.linkContainer, classes.grid)}>
-                                <LinkButton to='/lover/'>TIHLDE's lover</LinkButton>
-                              </MenuList>
-                            </Grid>
-                            */}
                         </Banner>
                     </div>
 
