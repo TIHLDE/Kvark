@@ -10,10 +10,10 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 // Icons
-import DatabaseIcon from '../../assets/icons/database.svg';
+import DatabaseIcon from '../../assets/icons/database.png';
 import EmailIcon from '../../assets/icons/email.svg';
-import HostingIcon from '../../assets/icons/hosting.svg';
-import VirtualIcon from '../../assets/icons/virtual.svg';
+import HostingIcon from '../../assets/icons/hosting.png';
+import VirtualIcon from '../../assets/icons/virtual.png';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
