@@ -38,14 +38,14 @@ const styles = {
 
 const Icons = (props) => {
     const {classes, data, icon: Component} = props;
-    const text = (data.title)? data.title : "mangler tittel";
+    const text = (data.h6)? data.h6 : "mangler tittel";
     return (
         <ButtonBase className={classes.btnBase}>
             <div className={classes.root}>
 
                 <div className={classes.wrapper}>
                     <Component className={classes.icon} />
-                    <Typography variant={'headline'}>{text}</Typography>
+                    <Typography variant={'h5'}>{text}</Typography>
                 </div>
             </div>
         </ButtonBase>

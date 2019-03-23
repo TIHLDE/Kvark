@@ -113,7 +113,7 @@ class LogIn extends Component {
                         <Paper className={classes.paper} square elevation={3}>
                             {this.state.isLoading && <LinearProgress className={classes.progress} />}
                             <img  className={classes.logo} src={TIHLDE_LOGO} height='30em' alt='tihlde_logo'/>
-                            <Typography variant='title'>{Text.header}</Typography>
+                            <Typography variant='h6'>{Text.header}</Typography>
                             
                             <form onSubmit={this.onLogIn}>
                                 <Grid container direction='column'>

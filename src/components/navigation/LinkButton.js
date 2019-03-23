@@ -62,7 +62,7 @@ const LinkButton = (props) => {
             {props.icon && <div className={classes.iconContainer}>
               <IconComponent className={classes.icon} />
             </div>}
-            <Typography variant="subheading" className={classes.text}>
+            <Typography variant="subtitle1" className={classes.text}>
               {children}
             </Typography>
         </ButtonBase>

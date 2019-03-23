@@ -128,7 +128,7 @@ class Companies extends Component {
           <div className={classes.smoke}>
             <div className={classNames(classes.section, classes.topSection)}>
               <Banner
-                title={Text.bannnerTitle}
+                h6={Text.bannnerh6}
                 image={Text.bannerPicture}
                 button={Text.interesse}
                 onClick={event => {
@@ -139,7 +139,7 @@ class Companies extends Component {
             </div>
             <div className={classes.section}>
               <Typography
-                variant="display1"
+                variant="h4"
                 color="inherit"
                 align="center"
                 className={classes.margining}
@@ -163,7 +163,7 @@ class Companies extends Component {
 
           <div className={classes.section}>
             <Typography
-              variant="display1"
+              variant="h4"
               color="inherit"
               align="center"
               className={classes.margining}

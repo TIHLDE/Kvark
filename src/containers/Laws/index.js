@@ -65,22 +65,22 @@ class Laws extends Component {
             <Navigation>
                 <div className={classes.root}>
                     <div className={classes.wrapper}>
-                        <Banner title='Lover og regler' image={bannerImage}/>
+                        <Banner h6='Lover og regler' image={bannerImage}/>
                         <Paper className={classes.container}>
                             <div className={classes.icons}>
                                 <Icons data={{
-                                    title: "Lover for TIHLDE",
+                                    h6: "Lover for TIHLDE",
                                     image: "http://hdwpro.com/wp-content/uploads/2017/01/3D-Cool-Image.jpg",
                                     alt: "this is an alt text"
                                 }} icon={GavelIcon}/>
                                 <Icons data={{
-                                    title: "Styreinstruks for hovedstyret",
+                                    h6: "Styreinstruks for hovedstyret",
                                     image: "http://hdwpro.com/wp-content/uploads/2017/01/3D-Cool-Image.jpg",
                                     alt: "this is an alt text",
 
                                 }} icon={AccountBalanceIcon}/>
                                 <Icons data={{
-                                     title: "Undergruppeinstrukser",
+                                     h6: "Undergruppeinstrukser",
                                      image: "http://hdwpro.com/wp-content/uploads/2017/01/3D-Cool-Image.jpg",
                                      alt: "this is an alt text"
                                 }} icon={AccountBalanceIcon}/>
