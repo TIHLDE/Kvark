@@ -79,18 +79,15 @@ class Laws extends Component {
                             <div className={classes.icons}>
                                 <Icons data={{
                                     h6: "Lover for TIHLDE",
-                                    image: "http://hdwpro.com/wp-content/uploads/2017/01/3D-Cool-Image.jpg",
                                     alt: "this is an alt text"
                                 }} icon={GavelIcon} to={'https://tihlde.org/assets/2019/03/TIHLDEs_Lover.pdf'}/>
                                 <Icons data={{
                                     h6: "Styreinstruks for hovedstyret",
-                                    image: "http://hdwpro.com/wp-content/uploads/2017/01/3D-Cool-Image.jpg",
                                     alt: "this is an alt text",
 
                                 }} icon={AccountBalanceIcon} to={'https://tihlde.org/assets/2019/02/Vedlegg-02.pdf'}/>
                                 <Icons data={{
                                      h6: "Undergruppeinstrukser",
-                                     image: "http://hdwpro.com/wp-content/uploads/2017/01/3D-Cool-Image.jpg",
                                      alt: "this is an alt text"
                                 }} icon={AccountBalanceIcon} to={'https://tihlde.org/assets/2019/02/Vedlegg-03.pdf'}/>
                             </div>
