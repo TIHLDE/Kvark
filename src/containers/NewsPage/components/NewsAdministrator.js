@@ -80,7 +80,7 @@ class NewsRegistrator extends Component {
     constructor() {
         super();
         this.state = {
-            title: '',
+            h6: '',
             header: '',
             body: '',
 
@@ -108,7 +108,7 @@ class NewsRegistrator extends Component {
         event.preventDefault();
 
         const item = {
-            title: this.state.title,
+            h6: this.state.h6,
             header: this.state.header,
             body: this.state.body,
             height: this.state.height,
@@ -125,28 +125,28 @@ class NewsRegistrator extends Component {
     }
 
     render() {
-        const {title, header, body, height, width, order, image, imageAlt} = this.state;
+        const {h6, header, body, height, width, order, image, imageAlt} = this.state;
         const {classes} = this.props;
-        const data = {title: title, header: header, body: body, image: image, imageAlt: imageAlt};
+        const data = {h6: h6, header: header, body: body, image: image, imageAlt: imageAlt};
 
         return (
             <div className={classes.root}>
                 <div className={classes.newsRendererWrapper}>
                     <Divider/>
-                    <Typography className={classes.padding} variant='title' align='center'>Preview</Typography>
+                    <Typography className={classes.padding} variant='h6' align='center'>Preview</Typography>
                     <Divider/>
                     <NewsRenderer newsData={data} />
                 </div>
                 <form>
                     <Grid className={classes.content} container direction='column' wrap='nowrap' alignItems='center'>
-                        <TextField className={classes.margin} fullWidth label='Tittel' value={title} onChange={this.handleChange('title')} required/>
+                        <TextField className={classes.margin} fullWidth label='Tittel' value={h6} onChange={this.handleChange('h6')} required/>
                         <TextField className={classes.margin} fullWidth label='Header' value={header} onChange={this.handleChange('header')} required/>
 
-                        <Typography className={classes.padding} variant='title' align='center'>Images:</Typography>
+                        <Typography className={classes.padding} variant='h6' align='center'>Images:</Typography>
                         <TextField className={classes.margin} fullWidth label='Image' value={image} onChange={this.handleChange('image')} required/>
                         <TextField className={classes.margin} fullWidth label='ImageAlt' value={imageAlt} onChange={this.handleChange('imageAlt')} required/>
 
-                        <Typography className={classes.padding} variant='title' align='center'>Content:</Typography>
+                        <Typography className={classes.padding} variant='h6' align='center'>Content:</Typography>
                         <Editor wrapperClassName={classes.editor} onChange={(e) => console.log(e)} onEditorStateChange={this.handleEditorChange}/>
 
                         <Grid container direction='row' wrap='nowrap' >
@@ -157,7 +157,7 @@ class NewsRegistrator extends Component {
 
                         <Grid container direction='row' alignItems='center'>
                             <div><Switch color='primary'/></div>
-                            <Typography className={classes.padding} variant='body2' align='center'>Hide On Mobile</Typography>
+                            <Typography className={classes.padding}  align='center'>Hide On Mobile</Typography>
                         </Grid>
                 
                         <Button className={classes.padding} color='primary' variant='raised' onClick={this.saveNews} type='submit'>Save</Button>

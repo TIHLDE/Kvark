@@ -4,7 +4,6 @@ export default createMuiTheme({
     typography: {
       useNextVariants: true,
     },
-
     palette: {
       primary: {
         main: '#1D448C',

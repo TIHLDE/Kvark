@@ -25,7 +25,7 @@ export const getJobPostById = (id) => (state) => getJobPostState(state).posts[id
 const createJobPost = (job) => ({
     ...job,
     id: job.id,
-    title: job.title,
+    h6: job.h6,
     ingress: job.ingress,
     body: job.body,
     location: job.location,

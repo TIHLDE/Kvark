@@ -60,7 +60,7 @@ class NewStudent extends Component {
                 <div className={classes.root}>
                     <Banner
                         className={classes.banner}
-                        title={Text.banner.header}
+                        h6={Text.banner.header}
                         text={Text.banner.subHeader}
                         image={Text.banner.imageUrl}
                     />
