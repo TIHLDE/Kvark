@@ -17,8 +17,13 @@ const linkButtonStyles = {
     height: '100%',
     //borderRight: '1px solid rgba(0,0,0,0.12)',
     //borderLeft: '1px solid rgba(0,0,0,0.12)',
-    textAlign: 'center',
     backgroundColor: 'white',
+  },
+  textCenter: {
+    textAlign: 'center'
+  },
+  textLeft: {
+    textAlign: 'left',
   },
   wrapper: {
     padding: 0,
@@ -41,19 +46,30 @@ const linkButtonStyles = {
 }
 
 const LinkButton = (props) => {
-  const {classes, children, noPadding, icon: IconComponent} = props
+  const {classes, children, noPadding, textLeft, noText, icon: IconComponent} = props
 
   // React router Link do not support external links
   let baseComponent;
   if (props.to.includes('http')){
     baseComponent = 'a';
   }else {
-    baseComponent = RouterLink
+    baseComponent = RouterLink;
+  }
+
+  let buttonContent
+  if (noText) {
+    buttonContent = children;
+  } else {
+    buttonContent= (
+      <Typography variant="subtitle1" className={classes.text}>
+        {children}
+      </Typography>
+    )
   }
 
   return (
     <div className={classNames(classes.wrapper, noPadding ? null: classes.padding)}>
-      <div className={classes.buttonFrame}>
+      <div className={classNames(classes.buttonFrame, textLeft ? classes.textLeft : classes.textCenter)}>
         <ButtonBase
           className={classes.button}
           component={baseComponent}
@@ -62,9 +78,7 @@ const LinkButton = (props) => {
             {props.icon && <div className={classes.iconContainer}>
               <IconComponent className={classes.icon} />
             </div>}
-            <Typography variant="subtitle1" className={classes.text}>
-              {children}
-            </Typography>
+            {buttonContent}
         </ButtonBase>
       </div>
     </div>
