@@ -18,7 +18,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 // Icons
 import SocialIcon from '../../assets/icons/social.svg';
 import BusinessIcon from '../../assets/icons/business.svg';
-import OperationIcon from '../../assets/icons/operations.svg';
+import OperationIcon from '../../assets/icons/operations.png';
 import PromoIcon from '../../assets/icons/promo.svg';
 import OrgMap from '../../assets/img/orgMap.png';
 
