@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
@@ -69,7 +69,7 @@ const styles = {
 class Poster extends Component {
 
     goTo = (action) => {
-        if(action && action.startsWith('http')) {
+        if (action && action.startsWith('http')) {
             window.location = action;
         } else {
             this.props.history.push(action);
@@ -77,22 +77,22 @@ class Poster extends Component {
     }
 
     render() {
-        const {classes} = this.props;
+        const { classes } = this.props;
         const data = this.props.data || {};
-        const textColor = (data.color)? data.color : 'white';
-        const image = (data.image)? data.image : null;
-        const height = (data.desktopHeight)? data.desktopHeight : DEFAULT_HEIGHT;
+        const textColor = (data.color) ? data.color : 'white';
+        const image = (data.image) ? data.image : null;
+        const height = (data.desktopHeight) ? data.desktopHeight : DEFAULT_HEIGHT;
 
         return (
-            <div className={classNames(classes.root, this.props.className, (this.props.static)? classes.static : '')}>
+            <div className={classNames(classes.root, this.props.className, (this.props.static) ? classes.static : '')}>
                 {image &&
-                    <img className={classNames(classes.image, (this.props.static)? classes.static : '', this.props.imageClass)} src={image} alt='poster' height={height}/>
+                    <img className={classNames(classes.image, (this.props.static) ? classes.static : '', this.props.imageClass)} src={image} alt='poster' height={height} />
                 }
 
                 <Grid className={classes.content} container direction='column' wrap='nowrap' alignItems='center' justify='center'>
-                    <Typography className={classNames(classes.text, classes.headerText)} variant='h5' align='center' style={{color: textColor}}>{data.header}</Typography>
-                    <Typography className={classNames(classes.text, classes.subText)} variant='h5' align='center' style={{color: textColor}}>{data.subheader}</Typography>
-                    {(!data.action)? null :
+                    <Typography className={classNames(classes.text, classes.headerText)} variant='h5' align='center' style={{ color: textColor }}>{data.header}</Typography>
+                    <Typography className={classNames(classes.text, classes.subText)} variant='h5' align='center' style={{ color: textColor }}>{data.subheader}</Typography>
+                    {(!data.action) ? null :
                         <Button className={classes.actionButton} onClick={() => this.goTo(data.action)} variant='raised' color='primary'>{data.action_text}</Button>
                     }
                 </Grid>

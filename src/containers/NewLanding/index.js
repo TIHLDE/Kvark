@@ -12,28 +12,15 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 
-import MenuList from '@material-ui/core/MenuList';
-import MenuItem from '@material-ui/core/MenuItem';
-
 // Icons
-import SocialIcon from '../../assets/icons/social.svg';
-import BusinessIcon from '../../assets/icons/business.svg';
-import OperationIcon from '../../assets/icons/operations.svg';
-import PromoIcon from '../../assets/icons/promo.svg';
-import OrgMap from '../../assets/img/orgMap.png';
 import LandingHeader from '../../assets/img/LinkedInTihldeHeader.png';
-import insta from '../../assets/img/instagram_icon.png';
 import FitnessIcon from '@material-ui/icons/FitnessCenter';
 import TerrainIcon from '@material-ui/icons/Terrain';
 import LocalSeeIcon from '@material-ui/icons/LocalSee'
-import ListAltIcon from '@material-ui/icons/ListAlt'
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
-import InfoCard from '../../components/layout/InfoCard';
-import ClickableImage from '../../components/miscellaneous/ClickableImage';
 import Banner from '../../components/layout/Banner';
-import LinkButton from '../../components/navigation/LinkButton';
 import Icons from './components/Icons';
 
 const styles = {
@@ -158,7 +145,6 @@ class NewLanding extends Component {
 
                         </div>
                     </div>
-
 
                     <div className={classes.smoke}>
                         <div className={classes.section}>
