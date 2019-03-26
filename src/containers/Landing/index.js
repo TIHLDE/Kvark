@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 // Service Imports
 import MiscService from '../../api/services/MiscService';
@@ -28,20 +28,20 @@ class Landing extends Component {
     componentDidMount() {
         // Get grid items
         if (this.props.grid.length === 0) {
-            this.setState({isLoading: true});
+            this.setState({ isLoading: true });
             MiscService.getGridData((isError, data) => {
-                this.setState({isLoading: false});
+                this.setState({ isLoading: false });
             });
         }
     }
 
     render() {
-        const {classes, grid} = this.props;
+        const { classes, grid } = this.props;
         return (
             <Navigation footer isLoading={this.state.isLoading} whitesmoke>
-                {(this.state.isLoading)? null :
+                {(this.state.isLoading) ? null :
                     <div className={classes.root}>
-                        <LayoutGrid grid={grid}/>
+                        <LayoutGrid grid={grid} />
                     </div>
                 }
             </Navigation>
