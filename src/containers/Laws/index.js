@@ -7,15 +7,14 @@ import Divider from '@material-ui/core/Divider';
 
 // Icons
 import GavelIcon from '@material-ui/icons/Gavel';
-import AccountBalanceIcon from '@material-ui/icons/AccountBalance'
-import ListAltIcon from '@material-ui/icons/ListAlt'
-import LawHeader from '../../assets/img/law.jpg';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import ListAltIcon from '@material-ui/icons/ListAlt';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 import Banner from '../../components/layout/Banner';
 import Icons from './components/Icons';
-import LinkButton from '../../components/navigation/LinkButton'
+import LinkButton from '../../components/navigation/LinkButton';
 
 // Images
 import LawHeader from '../../assets/img/law.jpg';
