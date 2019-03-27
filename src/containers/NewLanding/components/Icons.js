@@ -11,9 +11,6 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 // Icons
 
 
-// Project components
-import LinkButton from '../../../components/navigation/LinkButton';
-
 const styles = {
     btnBase: {
         backgroundColor: 'white',
@@ -43,7 +40,7 @@ const Icons = (props) => {
     const {classes, data, icon: Component} = props;
     const text = (data.h6)? data.h6 : "mangler tittel";
     return (
-        <LinkButton to={props.to} noPadding noText>
+        <ButtonBase className={classes.btnBase}>
             <div className={classes.root}>
 
                 <div className={classes.wrapper}>
@@ -51,7 +48,7 @@ const Icons = (props) => {
                     <Typography variant={'h5'}>{text}</Typography>
                 </div>
             </div>
-        </LinkButton>
+        </ButtonBase>
     );
 };
 

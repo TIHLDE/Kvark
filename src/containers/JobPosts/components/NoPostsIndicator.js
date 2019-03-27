@@ -7,7 +7,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Text from '../../../text/JobPostText';
 
 // Icons
-import NoDataIcon from '../../../assets/icons/nodata.svg';
+import NoDataIcon from '../../../assets/icons/nodata.png';
 
 // Project Components
 import MessageIndicator from '../../../components/layout/MessageIndicator';
