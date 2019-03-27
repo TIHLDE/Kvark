@@ -145,7 +145,7 @@ const styles = {
     sponsorText:{
         color: 'white',
         fontSize: '12px',
-        textAlign: 'right',
+        textAlign: 'center',
         opacity: 0.7,
 
         '@media only screen and (max-width: 600px)': {

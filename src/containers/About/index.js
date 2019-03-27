@@ -10,11 +10,15 @@ import Text from '../../text/AboutText';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import Divider from '@material-ui/core/Divider';
+
+import MenuList from '@material-ui/core/MenuList';
+import MenuItem from '@material-ui/core/MenuItem';
 
 // Icons
 import SocialIcon from '../../assets/icons/social.svg';
 import BusinessIcon from '../../assets/icons/business.svg';
-import OperationIcon from '../../assets/icons/operations.svg';
+import OperationIcon from '../../assets/icons/operations.png';
 import PromoIcon from '../../assets/icons/promo.svg';
 import OrgMap from '../../assets/img/orgMap.png';
 
@@ -23,6 +27,7 @@ import Navigation from '../../components/navigation/Navigation';
 import InfoCard from '../../components/layout/InfoCard';
 import ClickableImage from '../../components/miscellaneous/ClickableImage';
 import Banner from '../../components/layout/Banner';
+import LinkButton from '../../components/navigation/LinkButton';
 
 const styles = {
     root: {
@@ -85,6 +90,11 @@ const styles = {
         width: '100%',
         backgroundColor: '#Fefefe',
     },
+    linkContainer: {
+      marginBottom: 0,
+      width: '100%',
+      gridGap: 0,
+    }
 };
 
 class About extends Component {
@@ -102,12 +112,19 @@ class About extends Component {
                         <Banner
                             image='https://images.pexels.com/photos/220351/pexels-photo-220351.jpeg?auto=compress&cs=tinysrgb&h=350'
                             text={Text.subheader}
-                            title={Text.header}/>
+                            h6={Text.header}>
+                            <Divider />
+                            <Grid item className={classNames(classes.linkContainer, classes.miniPadding, classes.grid)}>
+                                <LinkButton to='/lover/'>
+                                    <Typography>TIHLDE's Lover</Typography>
+                                </LinkButton>
+                            </Grid>
+                        </Banner>
                     </div>
 
                     <div className={classes.smoke}>
                         <div className={classes.section}>
-                            <Typography className={classes.verticalMargin} variant='display1' color='inherit' align='center'>Undergrupper</Typography>
+                            <Typography className={classes.verticalMargin} variant='h4' color='inherit' align='center'>Undergrupper</Typography>
                             <div className={classNames(classes.grid, classes.smoke)}>
                                 <InfoCard header='Drift' text={Text.drift} src={OperationIcon}/>
                                 <InfoCard header='Sosialen' text={Text.social} src={SocialIcon}/>
@@ -119,7 +136,7 @@ class About extends Component {
 
                     <div>
                         <div className={classes.section}>
-                            <Typography className={classes.verticalMargin}variant='display1' color='inherit' align='center'>Komitéer</Typography>
+                            <Typography className={classes.verticalMargin}variant='h4' color='inherit' align='center'>Komitéer</Typography>
                             <div className={classes.grid}>
                                 <InfoCard header='Jubkom' text={Text.jubkom} subheader='Opptak' subText={Text.jubkom2} justifyText/>
                                 <InfoCard header='Netkom' text={Text.netkom} subheader='Opptak' subText={Text.netkom2} justifyText/>
@@ -132,8 +149,8 @@ class About extends Component {
 
                     <div className={classes.smoke}>
                         <div className={classes.section}>
-                            <Typography className={classes.verticalMargin}variant='display1' color='inherit' align='center'>Organisasjonskart</Typography>
-                            
+                            <Typography className={classes.verticalMargin}variant='h4' color='inherit' align='center'>Organisasjonskart</Typography>
+
                             <Paper className={classes.miniMargin} square elevation={1}>
                                 <ClickableImage className={classes.miniPadding} image={OrgMap} alt='organisasjonskart' width='90%'/>
                             </Paper>

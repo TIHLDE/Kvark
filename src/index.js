@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
-import {Provider} from 'react-redux';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import store from './store/store';
 import URLS from './URLS';
 
 // Theme
-import {MuiThemeProvider} from '@material-ui/core/styles';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import theme from './theme';
 import './assets/css/index.css';
 
@@ -28,18 +28,19 @@ import JobPosts from './containers/JobPosts';
 import JobPostDetails from './containers/JobPostDetails';
 import LogIn from './containers/LogIn';
 import Laws from './containers/Laws';
+import NewLanding from './containers/NewLanding';
 
 // The user needs to be authorized (logged in) to access these routes
 const PrivateRoute = ({ component: Component, ...rest }) => {
     return (
-      <Route
-        {...rest}
-        render={(props) => (
-            (AuthService.isAuthenticated())?
-                <Component {...props} /> :
-                <Redirect to={URLS.login} />
-        )}
-      />
+        <Route
+            {...rest}
+            render={(props) => (
+                (AuthService.isAuthenticated()) ?
+                    <Component {...props} /> :
+                    <Redirect to={URLS.login} />
+            )}
+        />
     );
 };
 
@@ -48,9 +49,9 @@ const Application = (
         <BrowserRouter>
             <MuiThemeProvider theme={theme}>
                 <Switch>
-                    <Route exact path='/' component={Landing}/>
-                    <Route path='/nyheter/:id' component={NewsPage}/>
-                    <Route path='/arrangementer/:id' component={EventDetails}/>
+                    <Route exact path='/' component={NewLanding} />
+                    <Route path='/nyheter/:id' component={NewsPage} />
+                    <Route path='/arrangementer/:id' component={EventDetails} />
                     <Route path={URLS.about} component={About} />
                     <Route path={URLS.events} component={Events} />
                     <Route path={URLS.services} component={Services} />

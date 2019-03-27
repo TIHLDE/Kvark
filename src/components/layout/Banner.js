@@ -46,7 +46,7 @@ const styles = {
         bottom: 20,
         left: 20,
     },
-    title: {
+    h6: {
         color: 'rgba(0,0,0,1)',
 
         fontSize: 54,
@@ -78,9 +78,9 @@ const Banner = (props) => {
             <Grid container direction='column' wrap='nowrap'>
                 <div className={classes.imageContainer}>
                     <img className={classNames(classes.image, !props.disableFilter ? classes.filter : '')} src={props.image} alt={props.alt} />
-                    {props.title && <div className={classes.info}>
-                        <Typography className={classes.title} variant='display3'>
-                            <strong>{props.title}</strong>
+                    {props.h6 && <div className={classes.info}>
+                        <Typography className={classes.h6} variant='h2'>
+                            <strong>{props.h6}</strong>
                         </Typography>
                         <div className={classes.line}/>
                     </div>}
@@ -98,8 +98,8 @@ const Banner = (props) => {
                 </div>
                 {(props.header || props.text) &&
                     <div className={classes.content}>
-                        <Typography variant='title' gutterBottom><strong>{props.header}</strong></Typography>
-                        <Typography variant='subheading'>{props.text && Parser(props.text)}</Typography>
+                        <Typography variant='h6' gutterBottom><strong>{props.header}</strong></Typography>
+                        <Typography variant='subtitle1'>{props.text && Parser(props.text)}</Typography>
                     </div>
                 }
                 {props.children}
@@ -110,14 +110,14 @@ const Banner = (props) => {
 
 Banner.propTypes = {
     className: PropTypes.string,
-    title: PropTypes.string,
+    h6: PropTypes.string,
     header: PropTypes.string,
     classes: PropTypes.object,
     image: PropTypes.string,
     alt: PropTypes.string,
     text: PropTypes.string,
     disableFilter: PropTypes.bool,
-    children: PropTypes.string,
+    children: PropTypes.node,
     button: PropTypes.string,
     onClick: () => {},
 };

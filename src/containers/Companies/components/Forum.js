@@ -132,7 +132,7 @@ const Listing = withStyles(styles)((props) => {
     const {list, header, classes} = props;
     return (
         <div className={classes.item}>
-            <Typography variant='subheading' >{header}</Typography>
+            <Typography variant='subtitle1' >{header}</Typography>
             <Divider/>
             <List>
                 {list.map((value) => {
@@ -264,13 +264,13 @@ class Forum extends Component {
             return (
                 <div className={classes.progress}>
                     <CircularProgress />
-                    <Typography variant='title'>{'Laster...'}</Typography>
+                    <Typography variant='h6'>{'Laster...'}</Typography>
                 </div>
             )
         } else if(this.state.isFormSent) {
             return (
                 <div className={classes.progress}>
-                    <MessageIndicator header={this.state.message} variant='headline'/>
+                    <MessageIndicator header={this.state.message} variant='h5'/>
                     <Button variant='raised' onClick={this.handleSubmitted('isFormSent')} color='primary'>Mottatt</Button>
                 </div>
             )
@@ -279,7 +279,7 @@ class Forum extends Component {
         return (
             <div className={classNames(classes.root,this.props.className)} >
                 <form className={classes.wrapper} onSubmit={this.handleSubmit}>
-                    <Typography variant='display1' gutterBottom>Meld interesse:</Typography>
+                    <Typography variant='h4' gutterBottom>Meld interesse:</Typography>
                     <Inputter required handleChange={this.handleChange("info")} data={{header: 'Bedrift: ', placeholder: 'Bedriftnavn', id: 'bedrift'}} firstTextFieldRef={firstTextFieldRef} />
                     <Inputter required handleChange={this.handleChange("info")} data={{header: 'Kontaktperson: ', placeholder: 'Navn', id: 'kontaktperson'}} />
                     <Inputter required handleChange={this.handleChange("info")} data={{header: 'Epost: ', placeholder: 'Skriv Epost her', id: 'epost', type: 'email'}} />

@@ -86,11 +86,11 @@ class Footer extends Component {
         const { classes } = this.props;
         return (
             <div className={classes.omTihlde}>
-                <Typography className={classes.horSpacing} align='center' color='inherit' variant='headline'>TIHLDE</Typography>
-                <Typography className={classes.horSpacing} align='center' color='inherit' variant='body1'>c/o IDI NTNU</Typography>
-                <Typography className={classes.horSpacing} align='center' color='inherit' variant='body1'>Sverres gate 14</Typography>
-                <Typography className={classes.horSpacing} align='center' color='inherit' variant='body1'>7012 Trondheim</Typography>
-                <Typography className={classes.horSpacing} align='center' color='inherit' variant='body1'>hs@tihlde.org</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>TIHLDE</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' >c/o IDI NTNU</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' >Sverres gate 14</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' >7012 Trondheim</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' >hs@tihlde.org</Typography>
             </div>
         )
     };
@@ -99,7 +99,7 @@ class Footer extends Component {
         const { classes } = this.props;
         return (
             <div className={classes.sponsorer}>
-                <Typography className={classes.horSpacing} align='center' color='inherit' variant='headline'>Sponsorer</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Sponsorer</Typography>
                 <img className={classes.horSpacing} src={SIT} alt="sit" width={80}/>
                 <img className={classes.horSpacing} src={NEXTTRON} alt="nextron" width={80}/>
             </div>
@@ -110,7 +110,7 @@ class Footer extends Component {
         const { classes } = this.props;
         return (
             <div className={classes.sosialeMedier}>
-                <Typography className={classes.horSpacing} align='center' color='inherit' variant='headline'>Sosiale medier</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Sosiale medier</Typography>
                 <div className={classes.sosialeMedierFlex}>
                     <a className={classes.a} href="https://www.facebook.com/tihlde/">
                         <img className={classes.horSpacing} src={FACEBOOK} alt="sit" width={40}/>
@@ -143,7 +143,7 @@ class Footer extends Component {
         const { classes } = this.props;
         return (
             <div className={classes.tihldeSupport}>
-                <Typography className={classes.horSpacing} align='center' color='inherit' variant='headline'>Support</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Support</Typography>
                 <Button className={classes.horSpacing} variant='contained' color='primary' href='https://tihlde.org/secure/osticket/open.php'>Åpne en ny sak</Button>
                 <Button className={classes.horSpacing} variant='contained' color='secondary' href='https://tihlde.org/secure/osticket/view.php'>Sjekk status for sak</Button>
                 <Button className={classes.horSpacing} variant='contained' color='primary' href='https://goo.gl/forms/ATrwKEVybuDj4gis1'>Send tilbakemelding</Button>
