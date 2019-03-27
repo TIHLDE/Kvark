@@ -63,7 +63,7 @@ const semester = [
 
 const arrangementer =[
     {name: 'Faglig Arrangement'},
-    {name: 'Bedex'},
+    {name: 'Bedrift Ekskursjon'},
     {name: 'Bedpress'},
     {name: 'Annet'},
 ];
