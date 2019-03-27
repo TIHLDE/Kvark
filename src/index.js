@@ -49,7 +49,7 @@ const Application = (
         <BrowserRouter>
             <MuiThemeProvider theme={theme}>
                 <Switch>
-                    <Route exact path='/' component={NewLanding} />
+                    <Route exact path='/' component={Landing} />
                     <Route path='/nyheter/:id' component={NewsPage} />
                     <Route path='/arrangementer/:id' component={EventDetails} />
                     <Route path={URLS.about} component={About} />
