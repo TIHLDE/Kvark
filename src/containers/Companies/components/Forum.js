@@ -63,8 +63,8 @@ const semester = [
 
 const arrangementer =[
     {name: 'Faglig Arrangement'},
-    {name: 'Bedex'},
-    {name: 'Bedpress'},
+    {name: 'Bedriftsekskursjon'},
+    {name: 'Bedriftspresentasjon'},
     {name: 'Annet'},
 ];
 
@@ -299,7 +299,7 @@ class Forum extends Component {
                         margin="normal"
                         variant="outlined"
                     />
-                    <Button variant="contained" color="primary" type="submit" className={classes.item}>Send inn forum</Button>
+                    <Button variant="contained" color="primary" type="submit" className={classes.item}>Send</Button>
                 </form>
             </div>
         );

@@ -122,7 +122,6 @@ class NewLanding extends Component {
 
                     <div className={classes.smoke}>
                         <div className={classes.section}>
-                            <Typography className={classes.verticalMargin} variant='h4' color='inherit' align='center'>Tilbud</Typography>
                             <Paper className={classes.container}>
                                 <div className={classes.icons}>
                                     <Icons data={{

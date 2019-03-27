@@ -177,7 +177,7 @@ class JobPosts extends Component {
                 {this.state.isLoading ? null :
                 <div className={classes.root}>
                     <div className={classes.wrapper}>
-                        <Banner h6='Annonser' image={bannerImage}/>
+                        <Banner h6='Karriere' image={bannerImage}/>
                         <div className={classes.grid}>
                         
                             {this.state.isFetching ? <CircularProgress className={classes.progress} /> :
