@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 // Material UI Components
 import Paper from '@material-ui/core/Paper';
@@ -9,6 +9,7 @@ import Divider from '@material-ui/core/Divider';
 import GavelIcon from '@material-ui/icons/Gavel';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance'
 import ListAltIcon from '@material-ui/icons/ListAlt'
+import LawHeader from '../../assets/img/law.jpg';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
@@ -17,7 +18,7 @@ import Icons from './components/Icons';
 import LinkButton from '../../components/navigation/LinkButton'
 
 // Images
-const bannerImage = 'http://www.f-covers.com/cover/law-and-order-special-victims-unit-2-facebook-cover-timeline-banner-for-fb.jpg';
+import LawHeader from '../../assets/img/law.jpg';
 
 
 const styles = {
@@ -27,24 +28,24 @@ const styles = {
         padding: 12,
         paddingTop: 20,
     },
-    wrapper:{
-        paddingTop:'10px',
-        paddingBottom:'30px',
+    wrapper: {
+        paddingTop: '10px',
+        paddingBottom: '30px',
         display: 'grid',
         gridTemplateColumns: '1fr',
-        gridTemplateRows:'auto',
-        margin:'auto',
-        gridGap:'15px',
-        justifyContent:'center',
+        gridTemplateRows: 'auto',
+        margin: 'auto',
+        gridGap: '15px',
+        justifyContent: 'center',
         '@media only screen and (max-width: 1200px)': {
             paddingLeft: 6,
             paddingRight: 6,
         },
     },
-    container:{
+    container: {
 
     },
-    content:{
+    content: {
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
         backgroundColor: 'rgba(0, 0, 0, 0.12)',
@@ -53,7 +54,7 @@ const styles = {
             gridTemplateColumns: '1fr',
         }
     },
-    icons:{
+    icons: {
         display: 'grid',
         gridTemplateColumns: '1fr 1fr 1fr',
         backgroundColor: 'rgba(0, 0, 0, 0.12)',
@@ -69,27 +70,27 @@ const styles = {
 class Laws extends Component {
 
     render() {
-        const {classes} = this.props;
+        const { classes } = this.props;
         return (
             <Navigation>
                 <div className={classes.root}>
                     <div className={classes.wrapper}>
-                        <Banner h6='Lover og regler' image={bannerImage}/>
+                        <Banner h6='Lover og regler' image={LawHeader} />
                         <Paper className={classes.container}>
                             <div className={classes.icons}>
                                 <Icons data={{
                                     h6: "Lover for TIHLDE",
                                     alt: "this is an alt text"
-                                }} icon={GavelIcon} to={'https://tihlde.org/assets/2019/03/TIHLDEs_Lover.pdf'}/>
+                                }} icon={GavelIcon} to={'https://tihlde.org/assets/2019/03/TIHLDEs_Lover.pdf'} />
                                 <Icons data={{
                                     h6: "Styreinstruks for hovedstyret",
                                     alt: "this is an alt text",
 
-                                }} icon={AccountBalanceIcon} to={'https://tihlde.org/assets/2019/02/Vedlegg-02.pdf'}/>
+                                }} icon={AccountBalanceIcon} to={'https://tihlde.org/assets/2019/02/Vedlegg-02.pdf'} />
                                 <Icons data={{
-                                     h6: "Undergruppeinstrukser",
-                                     alt: "this is an alt text"
-                                }} icon={AccountBalanceIcon} to={'https://tihlde.org/assets/2019/02/Vedlegg-03.pdf'}/>
+                                    h6: "Undergruppeinstrukser",
+                                    alt: "this is an alt text"
+                                }} icon={AccountBalanceIcon} to={'https://tihlde.org/assets/2019/02/Vedlegg-03.pdf'} />
                             </div>
                             <Divider />
                             <div className={classes.content}>

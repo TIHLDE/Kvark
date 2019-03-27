@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 // Assets import
-import SIT from '../../assets/img/sit.png';
+import SIT from '../../assets/img/sit.svg';
 import NEXTTRON from '../../assets/img/Nextron.png';
 import ACADEMICWORK from '../../assets/img/aw_logo_main_green.svg';
 import FACEBOOK from '../../assets/icons/facebook.svg';
@@ -100,10 +100,10 @@ class Footer extends Component {
         const { classes } = this.props;
         return (
             <div className={classes.sponsorer}>
-                <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Sponsorer</Typography>
-                <img className={classes.horSpacing} src={SIT} alt="sit" width={80}/>
-                <img className={classes.horSpacing} src={NEXTTRON} alt="nextron" width={80}/>
-                <img className={classes.horSpacing} src={ACADEMICWORK} alt="academicwork" width={80}/>
+                <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Samarbeid</Typography>
+                <img className={classes.horSpacing} src={ACADEMICWORK} alt="academicwork" width={80} />
+                <img className={classes.horSpacing} src={SIT} alt="sit" width={80} />
+                <img className={classes.horSpacing} src={NEXTTRON} alt="nextron" width={80} />
             </div>
         )
     };
@@ -115,25 +115,25 @@ class Footer extends Component {
                 <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Sosiale medier</Typography>
                 <div className={classes.sosialeMedierFlex}>
                     <a className={classes.a} href="https://www.facebook.com/tihlde/">
-                        <img className={classes.horSpacing} src={FACEBOOK} alt="sit" width={40}/>
+                        <img className={classes.horSpacing} src={FACEBOOK} alt="sit" width={40} />
                         {/*<i class="fab fa-facebook fa-3x"></i>*/}
                     </a>
                     <a className={classes.a} href="https://www.instagram.com/p/6Uh3rCBII7/">
-                        <img className={classes.horSpacing} src={INSTAGRAM} alt="sit" width={40}/>
+                        <img className={classes.horSpacing} src={INSTAGRAM} alt="sit" width={40} />
                         {/*<i class="fab fa-instagram fa-3x"></i>*/}
                     </a>
                     <a className={classes.a} href="https://twitter.com/tihlde">
-                        <img className={classes.horSpacing} src={TWITTER} alt="sit" width={40}/>
+                        <img className={classes.horSpacing} src={TWITTER} alt="sit" width={40} />
                         {/*<i class="fab fa-twitter fa-3x"></i>*/}
                     </a>
                 </div>
                 <div className={classes.sosialeMedierFlex}>
                     <a className={classes.a} href="https://www.snapchat.com/add/tihldesnap">
-                        <img className={classes.horSpacing} src={SNAPCHAT} alt="sit" width={40}/>
+                        <img className={classes.horSpacing} src={SNAPCHAT} alt="sit" width={40} />
                         {/*<i class="fab fa-snapchat-ghost fa-3x"></i>*/}
                     </a>
                     <a className={classes.a} href="https://tihlde.slack.com">
-                        <img className={classes.horSpacing} src={SLACK} alt="sit" width={40}/>
+                        <img className={classes.horSpacing} src={SLACK} alt="sit" width={40} />
                         {/*<i class="fab fa-slack fa-3x"></i>*/}
                     </a>
                 </div>
@@ -155,7 +155,7 @@ class Footer extends Component {
 
 
     render() {
-        const {classes} = this.props;
+        const { classes } = this.props;
 
         return (
             <div className={classes.root}>
