@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 // Assets import
 import SIT from '../../assets/img/sit.png';
 import NEXTTRON from '../../assets/img/Nextron.png';
+import ACADEMICWORK from '../../assets/img/aw_logo_main_green.svg';
 import FACEBOOK from '../../assets/icons/facebook.svg';
 import TWITTER from '../../assets/icons/twitter.svg';
 import INSTAGRAM from '../../assets/icons/instagram.svg';
@@ -102,6 +103,7 @@ class Footer extends Component {
                 <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Sponsorer</Typography>
                 <img className={classes.horSpacing} src={SIT} alt="sit" width={80}/>
                 <img className={classes.horSpacing} src={NEXTTRON} alt="nextron" width={80}/>
+                <img className={classes.horSpacing} src={ACADEMICWORK} alt="academicwork" width={80}/>
             </div>
         )
     };
