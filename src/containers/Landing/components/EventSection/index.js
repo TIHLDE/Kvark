@@ -44,12 +44,12 @@ const styles = {
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
         gridTemplateRows: 'auto auto auto',
-        gridTemplateAreas: "'h6 image' 'details image' 'list image'",
+        gridTemplateAreas: "'title image' 'details image' 'list image'",
         gridColumnGap: '48px',
 
         '@media only screen and (max-width: 800px)': {
             gridTemplateColumns: '1fr 1fr',
-            gridTemplateAreas: "'h6 h6' 'details details' 'image image'  'list list'",
+            gridTemplateAreas: "'title title' 'details details' 'image image'  'list list'",
             gridGap: '8px',
             padding: '32px 24px',
         }
@@ -60,7 +60,7 @@ const styles = {
         justifyContent: 'center',
     },
     content: {
-        gridArea: 'h6',
+        gridArea: 'title',
         '@media only screen and (max-width: 800px)': {
             order: 2,
         },
@@ -76,7 +76,7 @@ const styles = {
             order: 1,
         }
     },
-    h6: {
+    title: {
         color: 'black',
         marginBottom: 8,
         '@media only screen and (max-width: 600px)': {
@@ -147,7 +147,7 @@ const styles = {
 const InfoContent = withStyles(styles)((props) => (
     <Grid className={classNames(props.classes.info, props.className)} container direction='row' wrap='nowrap' alignItems='center'>
         {props.icon}
-        <Typography className={props.classes.infoText} variant='subtitle1'>{props.label}</Typography>
+        <Typography className={props.classes.infoText} variant='subheading'>{props.label}</Typography>
     </Grid>
 ));
 
@@ -176,7 +176,7 @@ const EventListItem = withStyles(styles)((props) => {
                 <ListItemIcon><Emoji symbol={getEmoji(data.category)}/></ListItemIcon>
                 <ListItemText primary={
                     <Grid container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
-                        <Typography >{data.h6}</Typography>
+                        <Typography >{data.title}</Typography>
                         <Typography variant='caption'>{moment(data.start).format('DD/MM')}</Typography>
                     </Grid>
                 }/>
@@ -222,18 +222,18 @@ class EventSection extends Component {
 
     render() {
         const {classes} = this.props;
-        const {image, h6, date, time, location, category} = this.state.currentEvent || {};
-        
+        const {image, title, date, time, location, category} = this.state.currentEvent || {};
+        console.log(this.state.currentEvent);
         return (
             <div className={classes.root}>
                 <Paper className={classes.wrapperRoot} square elevation={1}>
-                    {(this.state.currentEvent !== null && this.state.currentEvent.h6) ?
+                    {(this.state.currentEvent !== null) ?
                         <div className={classes.wrapper}>
                             <div className={classes.content}>
                                 <Link to={this.mainEventURL}>
-                                    <Typography className={classes.h6} variant='h4'>
+                                    <Typography className={classes.title} variant='title'>
                                         <Emoji symbol={getEmoji(category)}/>
-                                        <strong>{h6}</strong>
+                                        <strong>{title}</strong>
                                     </Typography>
                                 </Link>
                             </div>
@@ -243,7 +243,7 @@ class EventSection extends Component {
                                 <InfoContent className={classes.span} icon={<Location className={classes.icon}/>} label={location} />
                             </Link>
                             <div className={classes.list}>
-                                <Typography variant='h5' gutterBottom>Flere arrangementer</Typography>
+                                <Typography variant='headline' gutterBottom>Flere arrangementer</Typography>
                                 <Divider />
                                 {this.state.moreEvents.map((value, index) => (
                                     <EventListItem key={index} data={value}/>
@@ -253,14 +253,14 @@ class EventSection extends Component {
 
                             <div className={classes.imageWrapper}>
                                 <Link to={this.mainEventURL}>
-                                    <img className={classes.image} src={image || DEFAULT_IMAGE} alt={h6} /> 
+                                    <img className={classes.image} src={image || DEFAULT_IMAGE} alt={title} /> 
                                 </Link>
                             </div>
                         </div>
                         
                     :
                         <div className={classes.noContent}>
-                            <Typography className={classes.h6} variant='h6'>
+                            <Typography className={classes.title} variant='title'>
                                 <Emoji symbol={getEmoji(-1)}/>
                                 Ingen arrangementer for øyeblikket
                             </Typography>

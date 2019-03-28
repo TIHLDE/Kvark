@@ -43,7 +43,7 @@ const styles = {
         marginLeft: 26,
         border: 6,
     },
-    h6: {
+    title: {
         color: '#3f444a',
         fontWeight: 'bold',
     },
@@ -83,7 +83,7 @@ const styles = {
 const InfoContent = withStyles(styles)((props) => (
     <Grid className={props.classes.infoRoot} container direction='row' wrap='nowrap' alignItems='center'>
         {props.icon}
-        <Typography className={props.classes.info} variant='subtitle1'>{props.label}</Typography>
+        <Typography className={props.classes.info} variant='subheading'>{props.label}</Typography>
     </Grid>
 ));
 
@@ -99,10 +99,10 @@ const JobPostItem = (props) => {
     return (
         <ListItem className={classes.btn} button onClick={props.onClick}>
             <Grid className={classes.root} container direction='row' wrap='nowrap' alignItems='center'>
-                <img className={classNames(classes.src, (data.expired)? classes.filter : '')} src={src} alt={data.h6} />
+                <img className={classNames(classes.src, (data.expired)? classes.filter : '')} src={src} alt={data.title} />
                 <Grid className={classes.content} container direction='column' wrap='nowrap'>
-                    <Typography className={classNames(classes.h6, (data.expired)? classes.expired : '')} variant='h6' gutterBottom>
-                        <strong>{data.h6}</strong>
+                    <Typography className={classNames(classes.title, (data.expired)? classes.expired : '')} variant='title' gutterBottom>
+                        <strong>{data.title}</strong>
                     </Typography>
                     <div className={classNames(classes.details, data.expired ? classes.filter : '')}>
                         <InfoContent icon={<Business className={classes.icon}/>} label={data.company} />

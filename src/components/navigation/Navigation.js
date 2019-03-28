@@ -41,10 +41,10 @@ const styles = {
         zIndex: 10001,
     },
     main: {
-        marginTop: 64,
+       /*  marginTop: 64, */
         minHeight: '101vh',
         '@media only screen and (max-width: 600px)': {
-            marginTop: 56,
+           /*  marginTop: 56, */
         },
     },
     navContent: {
@@ -250,7 +250,6 @@ class Navigation extends Component {
                                         <URIbutton data={{ link: URLS.newStudent, text: "Ny student" }} selected={this.props.match.url === URLS.newStudent} />
                                         <URIbutton data={{ link: URLS.jobposts, text: "Karriere" }} selected={this.props.match.url === URLS.jobposts} />
                                         <URIbutton data={{ link: URLS.company, text: "For Bedrifter" }} selected={this.props.match.url === URLS.company} />
-                                        <URIbutton data={{ link: URLS.login, text: "Logg inn" }} selected={this.props.match.url === URLS.login} />
                                     </div>
                                 </Hidden>
                             </div>

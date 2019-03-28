@@ -1,6 +1,6 @@
 export default {
     header: 'Meld interesse',
-    bannnerh6: 'For Bedrifter',
+    bannnertitle: 'For Bedrifter',
     bannerPicture: 'https://3qrt0f3cy3lx35vbo81iuq7b-wpengine.netdna-ssl.com/wp-content/uploads/2017/05/GlobalShares-Software-Solutions-bg.jpg',
     omTIHLDE: 'TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet Digital samhandling ved AIT, IDI, NTNU på Kalvskinnet.',
     undergrupper: 'Undergrupper',

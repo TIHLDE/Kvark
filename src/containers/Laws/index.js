@@ -74,20 +74,20 @@ class Laws extends Component {
             <Navigation>
                 <div className={classes.root}>
                     <div className={classes.wrapper}>
-                        <Banner h6='Lover og regler' image={LawHeader} />
+                        <Banner title='Lover og regler' image={LawHeader} />
                         <Paper className={classes.container}>
                             <div className={classes.icons}>
                                 <Icons data={{
-                                    h6: "Lover for TIHLDE",
+                                    title: "Lover for TIHLDE",
                                     alt: "this is an alt text"
                                 }} icon={GavelIcon} to={'https://tihlde.org/assets/2019/03/TIHLDEs_Lover.pdf'} />
                                 <Icons data={{
-                                    h6: "Styreinstruks for hovedstyret",
+                                    title: "Styreinstruks for hovedstyret",
                                     alt: "this is an alt text",
 
                                 }} icon={AccountBalanceIcon} to={'https://tihlde.org/assets/2019/02/Vedlegg-02.pdf'} />
                                 <Icons data={{
-                                    h6: "Undergruppeinstrukser",
+                                    title: "Undergruppeinstrukser",
                                     alt: "this is an alt text"
                                 }} icon={AccountBalanceIcon} to={'https://tihlde.org/assets/2019/02/Vedlegg-03.pdf'} />
                             </div>

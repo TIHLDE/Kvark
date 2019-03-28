@@ -121,7 +121,7 @@ const MessageView = withStyles(styles, {withTheme: true})((props) => {
     const {classes} = props;
     return (
         <Grid className={classNames(classes.messageView, props.className)} container direction='column' alignItems='center' justify='center'>
-            <Typography className={classes.margin} variant='h5' align='center'>{props.h6}</Typography>
+            <Typography className={classes.margin} variant='headline' align='center'>{props.title}</Typography>
             <Button className={classes.margin} variant='raised' color='primary' onClick={props.onClick}>{props.buttonText}</Button>
         </Grid>
     )
@@ -134,7 +134,7 @@ const EventItem = withStyles(styles, {withTheme: true})((props) => {
             <ButtonBase onClick={props.onClick}>
                 <Grid className={classNames(classes.eventItem, (props.selected)? classes.selected : '' )} container direction='row' alignItems='center' justify='space-between'>
                     <Grid container direction='column' justify='center'>
-                        <Typography variant='subtitle1' color='inherit'>{props.h6}</Typography>
+                        <Typography variant='subheading' color='inherit'>{props.title}</Typography>
                         <Typography variant='caption'  color='inherit'>{props.location}</Typography>
                     </Grid>
                 </Grid>
@@ -145,7 +145,7 @@ const EventItem = withStyles(styles, {withTheme: true})((props) => {
 });
 
 EventItem.propTypes = {
-    h6: PropTypes.string,
+    title: PropTypes.string,
     location: PropTypes.string,
 };
 
@@ -171,7 +171,7 @@ class EventAdministrator extends Component {
             categories: [],
             selectedEvent: null,
 
-            h6: '',
+            title: '',
             location: '',
             startDate: new Date().toISOString(),
             description: '',
@@ -240,7 +240,7 @@ class EventAdministrator extends Component {
         } else {
             this.setState({
                 selectedEvent: event,
-                h6: event.h6,
+                title: event.title,
                 location: event.location,
                 description: event.description,
                 priority: event.priority,
@@ -257,7 +257,7 @@ class EventAdministrator extends Component {
     resetEventState = () => {
         this.setState({
             selectedEvent: null,
-            h6: '',
+            title: '',
             location: '',
             description: '',
             priority: 0,
@@ -291,7 +291,7 @@ class EventAdministrator extends Component {
     }
 
     getStateEventItem = () => ({
-        h6: this.state.h6,    
+        title: this.state.title,    
         location: this.state.location,
         description: this.state.description,
         priority: this.state.priority,
@@ -372,7 +372,7 @@ class EventAdministrator extends Component {
 
     render() {
         const {classes} = this.props;
-        const {selectedEvent, h6, location, description, image, priority, eventlist, categories, category} = this.state;
+        const {selectedEvent, title, location, description, image, priority, eventlist, categories, category} = this.state;
         const selectedEventId = (selectedEvent)? selectedEvent.id : '';
         const eventLists = (this.state.eventLists)? this.state.eventLists : [];
         const isNewItem = (selectedEvent === null);
@@ -397,11 +397,11 @@ class EventAdministrator extends Component {
 
                     <Paper className={classes.content} square>
                         {(this.state.isLoading)? <Grid className={classes.progress} container justify='center' alignItems='center'><CircularProgress /></Grid> :
-                        (this.state.showSuccessMessage)? <MessageView h6={this.state.successMessage} buttonText='Nice' onClick={this.toggleSuccessView}/> :
+                        (this.state.showSuccessMessage)? <MessageView title={this.state.successMessage} buttonText='Nice' onClick={this.toggleSuccessView}/> :
                             <form>
                                 <Grid container direction='column' wrap='nowrap'>
-                                    <Typography variant='h5'>{header}</Typography>
-                                    <TextField className={classes.field} label='Tittel' value={h6} onChange={this.handleChange('h6')} required/>
+                                    <Typography variant='headline'>{header}</Typography>
+                                    <TextField className={classes.field} label='Tittel' value={title} onChange={this.handleChange('title')} required/>
                                     <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
                                     
                                     <TextEditor className={classes.margin} value={description} onChange={this.onChange('description')}/>
@@ -464,7 +464,7 @@ class EventAdministrator extends Component {
                 <Paper className={classes.sidebar}>
                     <Grid container direction='column' wrap='nowrap'>
                         <Grid className={classNames(classes.sidebarTop)} container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
-                            <Typography variant='h6' color='inherit'>Arrangementer</Typography>
+                            <Typography variant='title' color='inherit'>Arrangementer</Typography>
                             <IconButton onClick={this.resetEventState}><AddIcon/></IconButton>
                         </Grid>
                         {this.state.events.map((value, index) => (
@@ -472,11 +472,11 @@ class EventAdministrator extends Component {
                                 key={index}
                                 selected={value.id === selectedEventId}
                                 onClick={() => this.onEventClick(value)}
-                                h6={value.h6}
+                                title={value.title}
                                 location={value.location} />
                         ))}
                         <Grid className={classNames(classes.sidebarTop, classes.miniTop)} container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
-                            <Typography variant='h6' color='inherit'>Utgåtte</Typography>
+                            <Typography variant='title' color='inherit'>Utgåtte</Typography>
                             <IconButton onClick={this.fetchExpired}><DownloadIcon/></IconButton>
                         </Grid>
                         {this.state.expired.map((value, index) => (
@@ -484,7 +484,7 @@ class EventAdministrator extends Component {
                                 key={index}
                                 selected={value.id === selectedEventId}
                                 onClick={() => this.onEventClick(value)}
-                                h6={value.h6}
+                                title={value.title}
                                 location={value.location} />
                         ))}
                     </Grid>

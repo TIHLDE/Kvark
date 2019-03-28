@@ -29,7 +29,7 @@ class ProfileInfo extends Component {
       <div>
          <div className={classes.cardContent}>
             <div className={classes.infoHeader}>
-                <Typography gutterBottom variant='h5'>
+                <Typography gutterBottom variant='headline'>
                     My Profile
                 </Typography>
             </div>    

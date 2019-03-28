@@ -19,7 +19,7 @@ export default {
                 text: "Linjeforening brukes om studentorganisasjoner knyttet til en bestemt studieretning. TIHLDE er linjeforeningen for linjene: Dataingeniør, Drift av datasystemer, IT-støttet bedriftsutvikling, og IKT-basert samhandling. Du kan lese med om TIHLDE <a href='https://tihlde.org/om-tihlde/'>her.</a>"
             },
             hvaGjorLinjeForening: {
-                header: "Hva gjør linjeforening?",
+                header: "Hva gjør en linjeforening?",
                 text: "Linjeforeninger er organisasjoner som primært jobber for å etablere sosiale nettverk på tvers av kull og årstrinn innad på studiet. Over tid har de fleste linjeforeninger utviklet til å ta ansvar for bedriftskontakt og inkluderer gjerne også en faglig avdeling.\n" +
                     "TIHLDE sin formål er nedfelt i <a href='https://tihlde.org/om-tihlde/tihldes-lover/'>TIHLDEs Lover</a>. Her står det: “Foreningens formål er å fremme det sosiale og faglige tilbudet ved AIT.”\n" +
                     "For å holde deg oppdatert på arrangementer i regi av TIHLDE, så anbefaler vi at du følger oss på <a href='https://facebook.com/tihlde'>Facebook</a>, samt at du laster ned <a href='https://calendar.google.com/calendar?cid=NmJkZDF2N24wOHNtOGE3NDRpYWlvaTQ4ZG9AZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ'>aktivitetes kalenderen vår.</a>"
@@ -43,10 +43,6 @@ export default {
                 header: "Hvordan er studentmiljøet i Trondheim?",
                 text: "Det gode studentmiljøet i Trondheim er først og fremst skapt av studentfrivilligheten. Linjeforeningene, Samfundet er drevet av frivillige studenter. For å få mest ut av studiemiljøet, og for å holde frivilligheten i live, så anbefaler vi å verve deg til et eller flere frivillige verv selv. Det finnes tonnevis av ting å engasjere seg i, så her er det mulig for enhver å finne noe man liker å holde på med. Ved å ta et frivillig verv, får du mange nye venner, et stort nettverk, og ikke minst er det veldig morsomt og sosialt.\n" +
                     "Om vi skal gi et råd om hvilke verv du burde ta, så kan jeg kun anbefale deg å søke verv hos de lokale studentorganisasjonene først. Her vil du ofte treffe andre studenter som studerer det samme som deg. Da vil du se at det sosiale miljøet strekker seg fra vervet og frivilligheten, og inn i studiehverdagen også."
-            },
-            linjeforeninger: {
-                header: "Hva er en linjeforening?",
-                text: "Linjeforeningene jobber for å skape gode tilbud og et godt sosialt miljø for studentene. TIHLDE er linjeforeningen for bachelorstudiene Dataingeniør, Drift av datasystemer og IT-støttet bedriftsutvikling, samt masterstudiet Digital samhandling. Vi arrangerer alt fra fester til kurs, og sørger for god kontakt med andre linjer og med arbeidslivet. Som frivillig i TIHLDE jobber du for å skape godt samhold på tvers av linjene, koble studenter til næringslivet, og gi studentene tilbud som de ellers ikke ville fått. Det er mange undergrupper du kan engasjere deg  i, og du vil få mer info om disse i løpet av den første tiden din på studiet."
             },
             studentersamfundet: {
                 header: "Hva er Studentersamfundet?",

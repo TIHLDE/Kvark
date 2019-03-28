@@ -34,7 +34,7 @@ const styles = {
     padding: {
         padding: 24,
     },
-    h6: {
+    title: {
         maxWidth: 1200,
         margin: 'auto',
         marginBottom: 12,
@@ -81,7 +81,7 @@ class NewsSection extends Component {
         
         return (
             <div className={classes.root}>
-                <Typography className={classes.h6} gutterBottom variant='h4'>Nyheter</Typography>
+                <Typography className={classes.title} gutterBottom variant='headline'>Nyheter</Typography>
                 <div className={classes.wrapper}>
                     <Paper className={classes.padding} square elevation={1}>
                         <NewsItem data={this.state.first}/>
