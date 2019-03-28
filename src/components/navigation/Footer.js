@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 // Assets import
-import SIT from '../../assets/img/sit.png';
+import SIT from '../../assets/img/sit.svg';
 import NEXTTRON from '../../assets/img/Nextron.png';
 import ACADEMICWORK from '../../assets/img/aw_logo_main_green.svg';
 import FACEBOOK from '../../assets/icons/facebook.svg';
