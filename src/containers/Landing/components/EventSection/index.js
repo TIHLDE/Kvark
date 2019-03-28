@@ -222,18 +222,18 @@ class EventSection extends Component {
 
     render() {
         const {classes} = this.props;
-        const {image, h6, date, time, location, category} = this.state.currentEvent || {};
-        
+        const {image, title, date, time, location, category} = this.state.currentEvent || {};
+        console.log(this.state.currentEvent);
         return (
             <div className={classes.root}>
                 <Paper className={classes.wrapperRoot} square elevation={1}>
-                    {(this.state.currentEvent !== null && this.state.currentEvent.h6) ?
+                    {(this.state.currentEvent !== null) ?
                         <div className={classes.wrapper}>
                             <div className={classes.content}>
                                 <Link to={this.mainEventURL}>
-                                    <Typography className={classes.h6} variant='h4'>
+                                    <Typography className={classes.h6} variant='title'>
                                         <Emoji symbol={getEmoji(category)}/>
-                                        <strong>{h6}</strong>
+                                        <strong>{title}</strong>
                                     </Typography>
                                 </Link>
                             </div>
@@ -253,7 +253,7 @@ class EventSection extends Component {
 
                             <div className={classes.imageWrapper}>
                                 <Link to={this.mainEventURL}>
-                                    <img className={classes.image} src={image || DEFAULT_IMAGE} alt={h6} /> 
+                                    <img className={classes.image} src={image || DEFAULT_IMAGE} alt={title} /> 
                                 </Link>
                             </div>
                         </div>
