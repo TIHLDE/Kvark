@@ -61,7 +61,6 @@ const Application = (
                     <Route path={URLS.jobposts.concat(':id/')} component={JobPostDetails} />
                     <Route exact path={URLS.jobposts} component={JobPosts} />
                     <Route path={URLS.laws} component={Laws} />
-                    <Route path={URLS.NewLanding} component={NewLanding} />
 
                     <PrivateRoute path={URLS.eventAdmin} component={EventAdministration} />
                     <Route path={URLS.login} component={LogIn} />
