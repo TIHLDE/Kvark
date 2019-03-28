@@ -21,8 +21,8 @@ const MessageIndicator = (props) => {
     const {classes} = props;
     return (
         <Grid className={classes.root} container direction='column' wrap='nowrap' justify='center'>
-            <Typography variant={props.variant || 'h6'} color={props.color || 'default'} align='center' gutterBottom>{props.header}</Typography>
-            <Typography variant='subtitle1' align='center'>{props.subheader}</Typography>
+            <Typography variant={props.variant || 'title'} color={props.color || 'default'} align='center' gutterBottom>{props.header}</Typography>
+            <Typography variant='subheading' align='center'>{props.subheader}</Typography>
         </Grid>
     );
 };

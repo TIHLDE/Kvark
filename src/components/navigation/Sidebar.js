@@ -48,7 +48,7 @@ const ActionLink = withStyles(styles)((props) => {
             <Link to={props.to}>
                 <ListItem className={classNames(classes.item, props.className)} button color="inherit">
                     <Grid container direction='column' wrap='nowrap' alignItems='center' justify='space-between'>
-                        <Typography variant='h5' align='center' color='inherit'>{props.label}</Typography>
+                        <Typography variant='headline' align='center' color='inherit'>{props.label}</Typography>
                     </Grid>
                 </ListItem>
             </Link>
