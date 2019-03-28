@@ -1,6 +1,6 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import URLS from '../../URLS';
 
@@ -42,7 +42,7 @@ const styles = (theme) => ({
 });
 
 const ActionLink = withStyles(styles)((props) => {
-    const {classes} = props;
+    const { classes } = props;
     return (
         <Fragment>
             <Link to={props.to}>
@@ -52,7 +52,7 @@ const ActionLink = withStyles(styles)((props) => {
                     </Grid>
                 </ListItem>
             </Link>
-            <Divider className={classes.divider}/>
+            <Divider className={classes.divider} />
         </Fragment>
     );
 });
@@ -62,18 +62,18 @@ ActionLink.propTypes = {
 };
 
 const SidebarContent = (props) => {
-    const {classes} = props;
+    const { classes } = props;
 
     return (
         <Fragment>
             <div className={classes.root}>
-                <ActionLink to={URLS.about} label='Om TIHLDE'/>
-                <ActionLink to={URLS.services} label='Tjenester'/>
-                <ActionLink to={URLS.events} label='Arrangementer'/>
-                <ActionLink to={URLS.newStudent} label='Ny student'/>
-                <ActionLink to={URLS.jobposts} label='Annonser'/>
-                <ActionLink to={URLS.company} label='Bedrifter'/>
-                <ActionLink to={URLS.login} label='Logg inn'/>
+                <ActionLink to={URLS.about} label='Om TIHLDE' />
+                <ActionLink to={URLS.services} label='Tjenester' />
+                <ActionLink to={URLS.events} label='Arrangementer' />
+                <ActionLink to={URLS.newStudent} label='Ny student' />
+                <ActionLink to={URLS.jobposts} label='Karriere' />
+                <ActionLink to={URLS.company} label='For Bedrifter' />
+                <ActionLink to={URLS.login} label='Logg inn' />
             </div>
         </Fragment>
     );

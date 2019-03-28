@@ -1,11 +1,11 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Link from 'react-router-dom/Link';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import URLS from '../../URLS';
 import classNames from 'classnames';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 // API and store imports
 import MiscService from '../../api/services/MiscService';
@@ -142,7 +142,7 @@ const styles = {
             height: 'auto',
         }
     },
-    sponsorText:{
+    sponsorText: {
         color: 'white',
         fontSize: '12px',
         textAlign: 'center',
@@ -156,7 +156,7 @@ const styles = {
 
 
 const URIbutton = withStyles(styles)((props) => {
-    const {data, classes} = props;
+    const { data, classes } = props;
     return (
         <div className={classNames(props.selected ? classes.selected : '', props.uri)}>
             <Link to={data.link} style={{ textDecoration: 'none' }}>
@@ -171,7 +171,7 @@ const URIbutton = withStyles(styles)((props) => {
 });
 
 const SponsorLogo = withStyles(styles)((props) => {
-    const {classes} = props;
+    const { classes } = props;
     return (
         <a className={classes.sponsorWrapper} href="https://www.soprasteria.no/">
             <img className={classes.sponsorLogo} src={SopraSteria} alt='Sopra Steria Logo' height={'24rem'} />
@@ -197,14 +197,14 @@ class Navigation extends Component {
     }
 
     configureWarningMessage = () => {
-        if(this.props.snackHasDisplayed) {
+        if (this.props.snackHasDisplayed) {
             return;
         }
 
         MiscService.getWarning((isError, data) => {
-            if(isError === false && data && data.length > 0) {
+            if (isError === false && data && data.length > 0) {
                 this.setState({
-                    snackMessage: data[data.length-1].text,
+                    snackMessage: data[data.length - 1].text,
                     showSnackbar: true,
                 });
             }
@@ -212,12 +212,12 @@ class Navigation extends Component {
     }
 
     closeSnackbar = () => {
-        this.setState({showSnackbar: false});
+        this.setState({ showSnackbar: false });
         this.props.setHasSnackDisplayed(true);
     }
 
     toggleSidebar = () => {
-        this.setState({showSidebar: !this.state.showSidebar});
+        this.setState({ showSidebar: !this.state.showSidebar });
     };
 
     goTo = (page) => {
@@ -229,7 +229,7 @@ class Navigation extends Component {
     }
 
     render() {
-        const {classes} = this.props;
+        const { classes } = this.props;
         return (
             <Fragment>
                 <AppBar className={classes.root} position="fixed" color="primary">
@@ -244,19 +244,20 @@ class Navigation extends Component {
                             <div className={classes.grow}>
                                 <Hidden smDown implementation='css'>
                                     <div className={classes.flex}>
-                                        <URIbutton data={{link: URLS.about, text: "Om TIHLDE"}} selected={this.props.match.url === URLS.about}/>
-                                        <URIbutton data={{link: URLS.services, text: "Tjenester"}} selected={this.props.match.url === URLS.services}/>
-                                        <URIbutton data={{link: URLS.events, text: "Arrangementer"}} selected={this.props.match.url === URLS.events}/>
-                                        <URIbutton data={{link: URLS.newStudent, text: "Ny student"}} selected={this.props.match.url === URLS.newStudent}/>
-                                        <URIbutton data={{link: URLS.jobposts, text: "Karriere"}} selected={this.props.match.url === URLS.jobposts}/>
-                                        <URIbutton data={{link: URLS.company, text: "For Bedrifter"}} selected={this.props.match.url === URLS.company}/>
+                                        <URIbutton data={{ link: URLS.about, text: "Om TIHLDE" }} selected={this.props.match.url === URLS.about} />
+                                        <URIbutton data={{ link: URLS.services, text: "Tjenester" }} selected={this.props.match.url === URLS.services} />
+                                        <URIbutton data={{ link: URLS.events, text: "Arrangementer" }} selected={this.props.match.url === URLS.events} />
+                                        <URIbutton data={{ link: URLS.newStudent, text: "Ny student" }} selected={this.props.match.url === URLS.newStudent} />
+                                        <URIbutton data={{ link: URLS.jobposts, text: "Karriere" }} selected={this.props.match.url === URLS.jobposts} />
+                                        <URIbutton data={{ link: URLS.company, text: "For Bedrifter" }} selected={this.props.match.url === URLS.company} />
+                                        <URIbutton data={{ link: URLS.login, text: "Logg inn" }} selected={this.props.match.url === URLS.login} />
                                     </div>
                                 </Hidden>
                             </div>
 
                             <Hidden mdUp implementation='css'>
                                 <div className={classes.menuWrapper}>
-                                    <IconButton className={classes.menuButton} onClick={this.toggleSidebar}><MenuIcon/></IconButton>
+                                    <IconButton className={classes.menuButton} onClick={this.toggleSidebar}><MenuIcon /></IconButton>
 
                                     <Hidden smUp implementation={'css'}>
                                         <SponsorLogo />
@@ -273,14 +274,14 @@ class Navigation extends Component {
                                         paper: classes.sidebar,
                                     }}
                                 >
-                                    <Sidebar onClose={this.toggleSidebar}/>
+                                    <Sidebar onClose={this.toggleSidebar} />
                                 </Drawer>
                             </Hidden>
                             <div>
                                 <Hidden xsDown implementation={'css'}>
                                     <SponsorLogo />
                                 </Hidden>
-                               {/*
+                                {/*
                                     --- LOG-IN BUTTON ---
                                     <Hidden xsDown implementation={'css'}>
                                     <div>
@@ -300,19 +301,19 @@ class Navigation extends Component {
                     className={classNames(classes.snack, classes.flex)}
                     open={this.state.showSnackbar}
                     message={this.state.snackMessage}
-                    onClose={this.closeSnackbar}/>
+                    onClose={this.closeSnackbar} />
 
                 <main className={classNames(classes.main, (this.props.whitesmoke ? classes.whitesmoke : null))}>
-                    {(this.props.isLoading)? <LinearProgress /> : null}
+                    {(this.props.isLoading) ? <LinearProgress /> : null}
                     <div className={classes.wrapper}>
                         {this.props.children}
                     </div>
                 </main>
-                {(!this.props.footer || this.props.isLoading)? null :
+                {(!this.props.footer || this.props.isLoading) ? null :
                     <Footer />
                 }
             </Fragment>
-          );
+        );
     }
 }
 
