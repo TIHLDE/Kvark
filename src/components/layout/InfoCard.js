@@ -70,7 +70,7 @@ const InfoCard = (props) => {
                 }
                 <Grid className={(props.justifyText)? classes.cover : ''} container direction='column' nowrap='nowrap' justify='flex-start'>
                     <Typography className={classes.header} variant='headline' align='left'><strong>{props.header}</strong></Typography>
-                    <Typography  component='p'>{Parser(props.text)}</Typography>
+                    {props.text && <Typography  component='p'>{Parser(props.text)}</Typography>}
 
                     {(!props.subText)? null :
                         <Fragment>

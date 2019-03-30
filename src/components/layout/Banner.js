@@ -63,6 +63,15 @@ const styles = {
         position: 'absolute',
         bottom: 20,
         right: 20,
+        "@media only screen and (max-width: 600px)": {
+          display: 'none'
+        }
+    },
+    buttonMobile: {
+      display: 'none',
+      "@media only screen and (max-width: 600px)": {
+        display: 'block'
+      }
     },
     flex: {
         display: 'flex',
@@ -72,7 +81,8 @@ const styles = {
 };
 
 const Banner = (props) => {
-    const {classes} = props;
+    const {classes, button: ButtonComponent} = props;
+
     return (
         <Paper className={classNames(classes.root, props.className)} elevation={1} square>
             <Grid container direction='column' wrap='nowrap'>
@@ -85,7 +95,7 @@ const Banner = (props) => {
                         <div className={classes.line}/>
                     </div>}
                     {props.button && <div className={classes.button}>
-                        <Button
+                        {/*<Button
                             variant='contained'
                             color='primary'
                             onClick={props.onClick}>
@@ -93,7 +103,8 @@ const Banner = (props) => {
                                 <Send/>
                                 {props.button}
                             </div>
-                        </Button>
+                        </Button>*/}
+                        <ButtonComponent />
                     </div>}
                 </div>
                 {(props.header || props.text) &&
@@ -101,6 +112,11 @@ const Banner = (props) => {
                         <Typography variant='title' gutterBottom><strong>{props.header}</strong></Typography>
                         <Typography variant='subheading'>{props.text && Parser(props.text)}</Typography>
                     </div>
+                }
+                { props.button &&
+                  <div className={classNames(classes.buttonMobile, classes.content)}>
+                    <ButtonComponent />
+                  </div>
                 }
                 {props.children}
             </Grid>
@@ -118,7 +134,7 @@ Banner.propTypes = {
     text: PropTypes.string,
     disableFilter: PropTypes.bool,
     children: PropTypes.node,
-    button: PropTypes.string,
+    button: PropTypes.node,
     onClick: () => {},
 };
 

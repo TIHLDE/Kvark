@@ -9,9 +9,11 @@ import classNames from "classnames";
 // Material UI Components
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
+import Button from '@material-ui/core/Button'
 
 // Icons
 import Image from "../../assets/img/glad.jpg";
+import Send from '@material-ui/icons/Send'
 
 // Project Components
 import Navigation from "../../components/navigation/Navigation";
@@ -75,8 +77,11 @@ const styles = {
     alignItems: "center"
   },
   toFormBtn: {
-    display: "block",
-    margin: "auto"
+    margin: "auto",
+    width: '100%'
+  },
+  sendIcon: {
+    marginRight: 15
   }
 };
 
@@ -119,6 +124,25 @@ class Companies extends Component {
     window.scroll({ top: node.offsetTop - 84, left: 0, behavior: "smooth" });
   };
 
+  ToFormButton = (props) => {
+      const {classes} = props
+      return (
+          <Button
+              className={classes.toFormBtn}
+              variant='contained'
+              color='primary'
+              onClick={event => {
+                this.scrollToForm();
+                this.handleExpansionToggle(true)(event);
+              }}>
+              <div className={classes.flex}>
+                <Send className={classes.sendIcon}/>
+                {Text.interesse}
+              </div>
+          </Button>
+      )
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -130,12 +154,8 @@ class Companies extends Component {
               <Banner
                 title={Text.bannnertitle}
                 image={Text.bannerPicture}
-                button={Text.interesse}
-                onClick={event => {
-                  this.scrollToForm();
-                  this.handleExpansionToggle(true)(event);
-                }}
-              />
+                button={withStyles(styles)(this.ToFormButton)}
+                />
             </div>
             <div className={classes.section}>
               <Typography
