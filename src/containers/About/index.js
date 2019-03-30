@@ -20,7 +20,7 @@ import SocialIcon from '../../assets/icons/social.svg';
 import BusinessIcon from '../../assets/icons/business.svg';
 import OperationIcon from '../../assets/icons/operations.png';
 import PromoIcon from '../../assets/icons/promo.svg';
-import OrgMap from '../../assets/img/orgMap.png';
+import OrgMap from '../../assets/img/orgMap.svg';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';

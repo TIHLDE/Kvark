@@ -64,6 +64,7 @@ const Application = (
 
                     <PrivateRoute path={URLS.eventAdmin} component={EventAdministration} />
                     <Route path={URLS.login} component={LogIn} />
+                    <Route path={URLS.newlanding} component={NewLanding} />
 
                 </Switch>
             </MuiThemeProvider>
