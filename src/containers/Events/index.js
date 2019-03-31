@@ -126,10 +126,12 @@ class Events extends Component {
     // Gets the event
     loadEvents = () => {
         // Fetch events from server
-        EventService.getEvents()
-        .then((events) => {
-            this.setState({events: events, isLoading: false, isFetching: false});
-        })
+        EventService.getEvents(null, null, (isError, events) => {
+            if(isError === false) {
+                this.setState({events: events});
+            }
+            this.setState({isLoading: false, isFetching: false});
+        });
     };
 
     loadCategory = () => {
@@ -186,12 +188,13 @@ class Events extends Component {
         const filters = (category && category !== 0)? {category: category} : {search: search};
         
         // Get filtered events ordered by expired
-        EventService.getEvents(filters, {expired: true})
-        .then((events) => {
-            this.setState({
-                events: events,
-                isFetching: false
-            });
+        EventService.getEvents(filters, {expired: true}, null, (isError, events) => {
+            if(isError === false) {
+                this.setState({
+                    events: events,
+                });
+            }
+            this.setState({isFetching: false})
         });
     }
 
@@ -210,7 +213,7 @@ class Events extends Component {
                                     <div className={classes.listRoot}>
                                     <Grow in={!this.state.isFetching}>
                                         <Paper className={classes.list} elevation={1} square>
-                                            {this.state.events.map((value, index) => (
+                                            {this.state.events && this.state.events.map((value, index) => (
                                                 <div key={value.id}>
                                                     <EventListItem key={value.id} data={value} onClick={() => this.goToEvent(value.id)}/>
                                                     <Divider/>
