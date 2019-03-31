@@ -22,6 +22,7 @@ import LocalSeeIcon from '@material-ui/icons/LocalSee'
 import Navigation from '../../components/navigation/Navigation';
 import Banner from '../../components/layout/Banner';
 import Icons from './components/Icons';
+import Calender from './components/Calender';
 
 const styles = {
     root: {
@@ -99,6 +100,9 @@ const styles = {
             gridTemplateColumns: '1fr',
         }
     },
+    calendar: {
+        justify: 'center',
+    }
 };
 
 class NewLanding extends Component {
@@ -141,7 +145,7 @@ class NewLanding extends Component {
                     <div>
                         <div className={classes.section}>
                             <Typography className={classes.verticalMargin} variant='headline' color='inherit' align='center'>Kalender</Typography>
-
+                            <Calender className={classes.calendar}></Calender>
                         </div>
                     </div>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import classNames from 'classnames';
@@ -12,51 +12,50 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 
 
 const styles = {
-    btnBase: {
-        backgroundColor: 'white',
-    },
-    root: {
-        backgroundColor: 'white',
-        padding: 16,
-        '@media only screen and (max-width: 600px)': {
+  btnBase: {
+    backgroundColor: 'white',
+  },
+  root: {
+    backgroundColor: 'white',
+    padding: 16,
+    '@media only screen and (max-width: 600px)': {
 
-        },
     },
-    wrapper:{
-        display:'flex',
-        flexDirection:'column',
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-    },
-    icon:{
-        fontSize: 100,
-        marginBottom: 20,
-        color: 'rgba(0, 0, 0, 0.6)',
-    }
+  },
+  wrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+  },
+  icon: {
+    fontSize: 100,
+    marginBottom: 20,
+    color: 'rgba(0, 0, 0, 0.6)',
+  }
 };
 
 
 const Icons = (props) => {
-    const {classes, data, icon: Component} = props;
-    const text = (data.title)? data.title : "mangler tittel";
-    return (
-        <ButtonBase className={classes.btnBase}>
-            <div className={classes.root}>
-
-                <div className={classes.wrapper}>
-                    <Component className={classes.icon} />
-                    <Typography variant={'h5'}>{text}</Typography>
-                </div>
-            </div>
-        </ButtonBase>
-    );
+  const { classes, data, icon: Component } = props;
+  const text = (data.title) ? data.title : "mangler tittel";
+  return (
+    <ButtonBase className={classes.btnBase}>
+      <div className={classes.root}>
+        <div className={classes.wrapper}>
+          <Component className={classes.icon} />
+          <Typography variant={'h5'}>{text}</Typography>
+        </div>
+      </div>
+    </ButtonBase>
+  );
 };
 
 Icons.propTypes = {
-    classes: PropTypes.object,
+  classes: PropTypes.object,
 
-    data: PropTypes.object,
-    onClick: PropTypes.func,
+  data: PropTypes.object,
+  onClick: PropTypes.func,
 };
 
 export default withStyles(styles)(Icons);
