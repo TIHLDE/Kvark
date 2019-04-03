@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import Parser from 'html-react-parser';
 
 // Material UI Components
 import Divider from '@material-ui/core/Divider';
@@ -38,6 +39,9 @@ const styles = (theme) => ({
             gridTemplateColumns: '1fr',
         },
     },
+    bottomContent: {
+        marginTop: 50
+    },
     infocard: {
         '@media only screen and (max-width: 600px)': {
             padding: 28,
@@ -60,12 +64,12 @@ class NewStudent extends Component {
                 <div className={classes.root}>
                     <Banner
                         className={classes.banner}
-                        h6={Text.banner.header}
+                        title={Text.banner.header}
                         text={Text.banner.subHeader}
                         image={Text.banner.imageUrl}
                     />
                     <div className={classes.content}>
-                        <InfoCard className={classes.infocard} header={Text.faq.header} text={Text.faq.subheader}>
+                        <InfoCard className={classes.infocard} header={Text.faq.header}>
                         {
                             Object.values(Text.faq.content).map((value, index) => (
                                 <div key={index} >
@@ -74,6 +78,7 @@ class NewStudent extends Component {
                                 </div>
                             ))
                         }
+                            <div className={classes.bottomContent}>{Parser(Text.faq.subheader)}</div>
                         </InfoCard>
                     </div>
                 </div>

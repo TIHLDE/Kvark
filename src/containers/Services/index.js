@@ -80,7 +80,7 @@ class Services extends Component {
                     <Banner
                         className={classes.banner}
                         image='http://www.mfactors.co.za/images/services.jpg'
-                        h6={Text.header}
+                        title={Text.header}
                         header='Colagrol bruker'
                         text={Text.colargol} />
 

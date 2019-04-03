@@ -46,7 +46,7 @@ const styles = {
         bottom: 20,
         left: 20,
     },
-    h6: {
+    title: {
         color: 'rgba(0,0,0,1)',
 
         fontSize: 54,
@@ -63,6 +63,15 @@ const styles = {
         position: 'absolute',
         bottom: 20,
         right: 20,
+        "@media only screen and (max-width: 600px)": {
+          display: 'none'
+        }
+    },
+    buttonMobile: {
+      display: 'none',
+      "@media only screen and (max-width: 600px)": {
+        display: 'block'
+      }
     },
     flex: {
         display: 'flex',
@@ -72,20 +81,21 @@ const styles = {
 };
 
 const Banner = (props) => {
-    const {classes} = props;
+    const {classes, button: ButtonComponent} = props;
+
     return (
         <Paper className={classNames(classes.root, props.className)} elevation={1} square>
             <Grid container direction='column' wrap='nowrap'>
                 <div className={classes.imageContainer}>
                     <img className={classNames(classes.image, !props.disableFilter ? classes.filter : '')} src={props.image} alt={props.alt} />
-                    {props.h6 && <div className={classes.info}>
-                        <Typography className={classes.h6} variant='h2'>
-                            <strong>{props.h6}</strong>
+                    {props.title && <div className={classes.info}>
+                        <Typography className={classes.title} variant='display2'>
+                            <strong>{props.title}</strong>
                         </Typography>
                         <div className={classes.line}/>
                     </div>}
                     {props.button && <div className={classes.button}>
-                        <Button
+                        {/*<Button
                             variant='contained'
                             color='primary'
                             onClick={props.onClick}>
@@ -93,14 +103,20 @@ const Banner = (props) => {
                                 <Send/>
                                 {props.button}
                             </div>
-                        </Button>
+                        </Button>*/}
+                        <ButtonComponent />
                     </div>}
                 </div>
                 {(props.header || props.text) &&
                     <div className={classes.content}>
-                        <Typography variant='h6' gutterBottom><strong>{props.header}</strong></Typography>
-                        <Typography variant='subtitle1'>{props.text && Parser(props.text)}</Typography>
+                        <Typography variant='title' gutterBottom><strong>{props.header}</strong></Typography>
+                        <Typography variant='subheading'>{props.text && Parser(props.text)}</Typography>
                     </div>
+                }
+                { props.button &&
+                  <div className={classNames(classes.buttonMobile, classes.content)}>
+                    <ButtonComponent />
+                  </div>
                 }
                 {props.children}
             </Grid>
@@ -110,7 +126,7 @@ const Banner = (props) => {
 
 Banner.propTypes = {
     className: PropTypes.string,
-    h6: PropTypes.string,
+    title: PropTypes.string,
     header: PropTypes.string,
     classes: PropTypes.object,
     image: PropTypes.string,
@@ -118,7 +134,7 @@ Banner.propTypes = {
     text: PropTypes.string,
     disableFilter: PropTypes.bool,
     children: PropTypes.node,
-    button: PropTypes.string,
+    button: PropTypes.node,
     onClick: () => {},
 };
 

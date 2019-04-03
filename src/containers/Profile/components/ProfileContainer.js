@@ -38,7 +38,7 @@ class ProfileContainer extends Component {
                 <CardMedia
                 className={classes.media}
                 image="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1-744x744.jpg"
-                h6="Contemplative Reptile"
+                title="Contemplative Reptile"
                 />
                 <CardContent >
                    <ProfileInfo/>

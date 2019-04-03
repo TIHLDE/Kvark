@@ -22,6 +22,7 @@ import LocalSeeIcon from '@material-ui/icons/LocalSee'
 import Navigation from '../../components/navigation/Navigation';
 import Banner from '../../components/layout/Banner';
 import Icons from './components/Icons';
+import Calender from './components/Calender';
 
 const styles = {
     root: {
@@ -99,6 +100,9 @@ const styles = {
             gridTemplateColumns: '1fr',
         }
     },
+    calendar: {
+        justify: 'center',
+    }
 };
 
 class NewLanding extends Component {
@@ -122,17 +126,16 @@ class NewLanding extends Component {
 
                     <div className={classes.smoke}>
                         <div className={classes.section}>
-                            <Typography className={classes.verticalMargin} variant='h4' color='inherit' align='center'>Tilbud</Typography>
                             <Paper className={classes.container}>
                                 <div className={classes.icons}>
                                     <Icons data={{
-                                        h6: "TurKom",
+                                        title: "TurKom",
                                     }} icon={TerrainIcon} />
                                     <Icons data={{
-                                        h6: "Tihlde Pythons",
+                                        title: "Tihlde Pythons",
                                     }} icon={FitnessIcon} />
                                     <Icons data={{
-                                        h6: "Redaksjonen",
+                                        title: "Redaksjonen",
                                     }} icon={LocalSeeIcon} />
                                 </div>
                             </Paper>
@@ -141,14 +144,14 @@ class NewLanding extends Component {
 
                     <div>
                         <div className={classes.section}>
-                            <Typography className={classes.verticalMargin} variant='h4' color='inherit' align='center'>Kalender</Typography>
-
+                            <Typography className={classes.verticalMargin} variant='headline' color='inherit' align='center'>Kalender</Typography>
+                            <Calender className={classes.calendar}></Calender>
                         </div>
                     </div>
 
                     <div className={classes.smoke}>
                         <div className={classes.section}>
-                            <Typography className={classes.verticalMargin} variant='h4' color='inherit' align='center'>Nyheter</Typography>
+                            <Typography className={classes.verticalMargin} variant='headline' color='inherit' align='center'>Nyheter</Typography>
 
                             <Paper className={classes.miniMargin} square elevation={1}>
                             </Paper>
@@ -156,7 +159,7 @@ class NewLanding extends Component {
                     </div>
 
                     <div className={classes.section}>
-                        <Typography className={classes.verticalMargin} variant='h4' color='inherit' align='center'>Kontakt Oss</Typography>
+                        <Typography className={classes.verticalMargin} variant='headline' color='inherit' align='center'>Kontakt Oss</Typography>
                     </div>
                 </Grid>
             </Navigation>

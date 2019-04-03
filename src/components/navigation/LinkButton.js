@@ -61,7 +61,7 @@ const LinkButton = (props) => {
     buttonContent = children;
   } else {
     buttonContent= (
-      <Typography variant="subtitle1" className={classes.text}>
+      <Typography variant="subheading" className={classes.text}>
         {children}
       </Typography>
     )

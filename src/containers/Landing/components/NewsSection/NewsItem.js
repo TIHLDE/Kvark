@@ -44,7 +44,7 @@ class NewsItem extends Component {
                         <img className={classes.image} src={content.image} alt={'asdf'} />
                     </div>
                     <div className={classes.content}>
-                        <Typography variant='h5'>{content.h6}</Typography>
+                        <Typography variant='headline'>{content.title}</Typography>
                         <Typography variant='caption'>{content.header}</Typography>
                     </div>
                 </Link>

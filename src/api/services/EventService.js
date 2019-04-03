@@ -20,7 +20,7 @@ class EventService {
                 }
             }
             !callback || callback(response.isError === true, data);
-            return Promise.resolve(data);
+            return response.isError === false ? Promise.resolve(data) : Promise.reject(data);
         });
     }
 
@@ -40,7 +40,7 @@ class EventService {
                     GridActions.setSelectedItem(data)(store.dispatch);
                     return Promise.resolve(data);
                 } else {
-                    return Promise.resolve(null);
+                    return Promise.reject(null);
                 }
             });
         }
@@ -90,7 +90,7 @@ class EventService {
             if(response.isError === false) {
                 return Promise.resolve(data);
             } else {
-                return Promise.resolve([]);
+                return Promise.reject([]);
             }
         });
     }
