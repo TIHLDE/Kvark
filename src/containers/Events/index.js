@@ -188,7 +188,7 @@ class Events extends Component {
         const filters = (category && category !== 0)? {category: category} : {search: search};
         
         // Get filtered events ordered by expired
-        EventService.getEvents(filters, {expired: true}, null, (isError, events) => {
+        EventService.getEvents(filters, {expired: true}, (isError, events) => {
             if(isError === false) {
                 this.setState({
                     events: events,
