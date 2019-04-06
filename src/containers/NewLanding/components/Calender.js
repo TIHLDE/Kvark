@@ -14,6 +14,7 @@ import CalendarListView from './CalendarListView';
 const styles = theme => ({
   root: {
     flexGrow: 1,
+    padding: 4 // MUI Grid requires a padding of half the given spacing.
   },
   paper: {
     padding: theme.spacing.unit,

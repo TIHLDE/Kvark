@@ -14,6 +14,9 @@ import CalendarToday from '@material-ui/icons/CalendarToday';
 import Schedule from '@material-ui/icons/Schedule';
 import LocationOn from '@material-ui/icons/LocationOn';
 
+// Project componets
+import LinkButton from '../../../components/navigation/LinkButton';
+
 import Image from "../../../assets/img/glad.jpg"; // Remove this after testing
 
 // Styles
@@ -73,6 +76,7 @@ const styles = theme => ({
   }
 });
 
+
 function CalendarListItem(props) {
   const {classes} = props
   //props.eventData.image
@@ -80,30 +84,32 @@ function CalendarListItem(props) {
   const start = moment(props.eventData.start, ['YYYY-MM-DD HH:mm'], 'nb');
 
   return (
-    <div className={classes.eventListRow}>
-      <div className={classes.eventImageContainer}>
-        <img className={classes.eventImage} src={Image} alt={props.eventData.image_alt} />
-      </div>
-      <div className={classes.eventContainer}>
-        <div className={classes.eventTitle}>
-          <Typography align='center' variant='title'>{props.eventData.title}</Typography>
+    <LinkButton noPadding to={'/arrangementer/' + props.eventData.id + '/'}>
+      <div className={classes.eventListRow}>
+        <div className={classes.eventImageContainer}>
+          <img className={classes.eventImage} src={Image} alt={props.eventData.image_alt} />
         </div>
-        <div className={classes.eventInfo}>
-          <div className={classes.eventInfoElement}>
-            <CalendarToday className={classes.eventIcon}/>
-            {start.format('DD.MM.YYYY')}
+        <div className={classes.eventContainer}>
+          <div className={classes.eventTitle}>
+            <Typography align='center' variant='title'>{props.eventData.title}</Typography>
           </div>
-          <div className={classNames(classes.hiddenOnMobile, classes.eventInfoElement)}>
-            <Schedule className={classes.eventIcon}/>
-            {start.format('HH:mm')}
-          </div>
-          <div className={classNames(classes.hiddenOnMobile, classes.eventInfoElement)}>
-            <LocationOn className={classes.eventIcon} />
-            {props.eventData.location}
+          <div className={classes.eventInfo}>
+            <div className={classes.eventInfoElement}>
+              <CalendarToday className={classes.eventIcon}/>
+              {start.format('DD.MM.YYYY')}
+            </div>
+            <div className={classNames(classes.hiddenOnMobile, classes.eventInfoElement)}>
+              <Schedule className={classes.eventIcon}/>
+              {start.format('HH:mm')}
+            </div>
+            <div className={classNames(classes.hiddenOnMobile, classes.eventInfoElement)}>
+              <LocationOn className={classes.eventIcon} />
+              {props.eventData.location}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </LinkButton>
   )
 }
 
@@ -117,15 +123,24 @@ function CalendarListView(props) {
           return (<CalendarListItem key={index} classes={classes} eventData={eventData} />);
         }
       })}
-      <div className={classes.eventListRow}>
-        {props.events && eventsToDisplay <  props.events.length ? <Typography align='center'>Se {props.events.length - eventsToDisplay} flere arrangementer.</Typography> : null}
-      </div>
+      <LinkButton noPadding to='/arrangementer/'>
+        {props.events && eventsToDisplay <  props.events.length ?
+          <Typography align='center'>Alle arrangementer ({props.events.length})</Typography>
+          :
+          null}
+      </LinkButton>
     </Paper>
   )
 }
 
+// Prop types
+CalendarListItem.propTypes = {
+  classes: PropTypes.object.isRequired,
+  eventData: PropTypes.object.isRequired
+}
+
 CalendarListView.propTypes = {
-  events: PropTypes.array
+  events: PropTypes.array,
 }
 
 export default withStyles(styles)(CalendarListView)
