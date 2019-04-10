@@ -14,7 +14,7 @@ class EventService {
             data = data || [];
 
             // If orderby is provided, sort the data
-            if(orderBy) {
+            if(orderBy && response.isError === false) {
                 for(const key in orderBy) {
                     data = data.sort((a, b) => (a[key] === b[key])? 0 : a[key] ? 1 : -1)
                 }

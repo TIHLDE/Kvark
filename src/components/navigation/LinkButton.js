@@ -88,7 +88,10 @@ const LinkButton = (props) => {
 LinkButton.propTypes = {
   children: PropTypes.node,
   icon: PropTypes.func,
-  to: PropTypes.string
+  to: PropTypes.string.isRequired,
+  noPadding: PropTypes.bool,
+  textLeft: PropTypes.bool,
+  noText: PropTypes.bool
 };
 
 export default withStyles(linkButtonStyles)(LinkButton);
