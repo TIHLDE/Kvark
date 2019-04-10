@@ -191,7 +191,7 @@ class EventAdministrator extends Component {
     }
 
     componentDidMount() {
-    
+
         // Get all eventlists
         EventService.getEventLists()
         .then((data) => {
@@ -226,7 +226,7 @@ class EventAdministrator extends Component {
         this.setState({isFetching: false});
         EventService.getExpiredData((isError, data) => {
             if (!isError) {
-                this.setState({expired: data});
+                this.setState({expired: data || []});
             }
             this.setState({isFetching: true});
         });
@@ -291,7 +291,7 @@ class EventAdministrator extends Component {
     }
 
     getStateEventItem = () => ({
-        title: this.state.title,    
+        title: this.state.title,
         location: this.state.location,
         description: this.state.description,
         priority: this.state.priority,
@@ -389,7 +389,7 @@ class EventAdministrator extends Component {
                             horizontal: 'right',
                         }}
                         onClose={this.toggleSnackbar}>
-                        
+
                             <SnackbarContent
                                 className={classes.snackbar}
                                 message={this.state.snackMessage}/>
@@ -403,7 +403,7 @@ class EventAdministrator extends Component {
                                     <Typography variant='headline'>{header}</Typography>
                                     <TextField className={classes.field} label='Tittel' value={title} onChange={this.handleChange('title')} required/>
                                     <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
-                                    
+
                                     <TextEditor className={classes.margin} value={description} onChange={this.onChange('description')}/>
 
                                     <Divider className={classes.margin} />
@@ -444,7 +444,7 @@ class EventAdministrator extends Component {
                                                 <Button className={classes.mr} onClick={this.createNewEvent} type='submit' variant='raised' color='primary'>Lag nytt event</Button>
                                                 <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
                                             </div>
-                                             
+
                                             :
                                             <Fragment>
                                                 <div>
