@@ -99,7 +99,11 @@ class EventService {
         const response = API.getExpiredEvents().response();
         return response.then((data) => {
             !callback || callback(response.isError === true, data);
-            return data;
+            if(response.isError === false) {
+                return Promise.resolve(data);
+            } else {
+                return Promise.reject([]);
+            }
         });
     }
 }

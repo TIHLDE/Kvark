@@ -199,7 +199,7 @@ class JobPostAdministrator extends Component {
     JobPostService.getJobPosts()
     .then((data) => {
         if(data) {
-            this.setState({jobPosts: data});
+            this.setState({jobposts: data});
         }
     });
   }
@@ -389,11 +389,27 @@ class JobPostAdministrator extends Component {
                           <Typography variant='title' color='inherit'>Annonser</Typography>
                           <IconButton onClick={this.resetJobPostState}><AddIcon/></IconButton>
                       </Grid>
+                      {this.state.jobposts.map((value, index) => (
+                          <JobPostItem
+                              key={index}
+                              selected={value.id === selectedJobPostId}
+                              onClick={() => this.onEventClick(value)}
+                              title={value.title}
+                              location={value.location} />
+                      ))}
 
                       <Grid className={classNames(classes.sidebarTop, classes.miniTop)} container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
                           <Typography variant='title' color='inherit'>Utgåtte</Typography>
                           <IconButton onClick={this.fetchExpired}><DownloadIcon/></IconButton>
                       </Grid>
+                      {this.state.expired.map((value, index) => (
+                          <JobPostItem
+                              key={index}
+                              selected={value.id === selectedJobPostId}
+                              onClick={() => this.onEventClick(value)}
+                              title={value.title}
+                              location={value.location} />
+                      ))}
 
                   </Grid>
               </Paper>
