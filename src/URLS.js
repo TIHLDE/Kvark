@@ -12,4 +12,5 @@ export default {
     laws: '/lover/',
 
     eventAdmin: '/admin/events',
+    jobpostsAdmin: '/admin/jobposts'
 };
