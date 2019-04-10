@@ -26,6 +26,7 @@ import NewStudent from './containers/NewStudent';
 import Profile from './containers/Profile';
 import JobPosts from './containers/JobPosts';
 import JobPostDetails from './containers/JobPostDetails';
+import JobPostAdministration from './containers/JobPostAdministration';
 import LogIn from './containers/LogIn';
 import Laws from './containers/Laws';
 import NewLanding from './containers/NewLanding';
@@ -62,6 +63,7 @@ const Application = (
                     <Route exact path={URLS.jobposts} component={JobPosts} />
                     <Route path={URLS.laws} component={Laws} />
 
+                    <PrivateRoute path={URLS.jobpostsAdmin} component={JobPostAdministration} />
                     <PrivateRoute path={URLS.eventAdmin} component={EventAdministration} />
                     <Route path={URLS.login} component={LogIn} />
                     <Route path={URLS.newlanding} component={NewLanding} />

@@ -44,6 +44,9 @@ export default {
     getJobPost: (id) => {
         return new IRequest('GET', 'jobpost/'.concat(id, '/'), undefined);
     },
+    getExpiredJobPosts: () => {
+      return new IRequest('GET', 'jobpost/', {expired: true});
+    },
     createJobPost: (item) => {
         return new IRequest('POST', 'jobpost/', item, true);
     },

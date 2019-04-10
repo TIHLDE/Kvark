@@ -13,4 +13,5 @@ export default {
     newlanding: '/newlanding/',
 
     eventAdmin: '/admin/events',
+    jobpostsAdmin: '/admin/jobposts'
 };
