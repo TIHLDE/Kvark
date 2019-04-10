@@ -29,6 +29,7 @@ import DownloadIcon from '@material-ui/icons/CloudDownload';
 // Project Components
 import TextEditor from '../../../components/inputs/TextEditor';
 import JobPostPreview from './JobPostPreview';
+import EventService from "../../../api/services/EventService";
 
 
 const SIDEBAR_WIDTH = 300;
@@ -314,7 +315,55 @@ class JobPostAdministrator extends Component {
           });
       }
 
-      render() {
+    editJobPostItem = (jobpost) => {
+        jobpost.preventDefault();
+
+        const item = this.getStateJobPostItem();
+        const {selectedJobPost} = this.state;
+
+        this.setState({isLoading: true});
+
+        // Create new Jobpost Item
+        JobPostService.putJobPost(selectedJobPost.id, item, (isError, data) => {
+            if(!isError) {
+                // Update stored jobpost with the new data
+                const newJobPost = Object.assign([], this.state.jobposts);
+                const index = newJobPost.findIndex((elem) => elem.id === selectedJobPost.id); // Finding jobpost by id
+                if(index !== -1) {
+                    newJobPost[index] = data;
+                    this.setState({jobposts: newJobPost, showSuccessMessage: true, successMessage: jobpostChanged});
+                }
+            } else {
+                this.setState({showMessage: true, snackMessage: errorMessage(data)});
+            }
+            this.setState({isLoading: false});
+        });
+    }
+
+    deleteJobPostItem = (jobpost) => {
+        jobpost.preventDefault();
+
+        const {selectedJobpost} = this.state;
+
+        this.setState({isLoading: true});
+
+        // Create new JobPost Item
+        JobPostService.deleteJobPost(selectedJobpost.id, (isError, data) => {
+            if(isError === false) {
+                // Remove the deleted JobPost from the state
+                const newJobPosts = Object.assign([], this.state.jobposts);
+                const index = newJobPosts.findIndex((elem) => elem.id === selectedJobpost.id);
+                if(index !== -1) {
+                    newJobPosts.splice(index, 1);
+                    this.setState({events: newJobPosts, selectedEvent: null, showSuccessMessage: true, successMessage: jobpostDeleted});
+                }
+            }
+            this.setState({isLoading: false});
+        });
+    }
+
+
+    render() {
         const {classes} = this.props;
         const {selectedJobPost, title, location, description, image, company, email, link} = this.state;
         const selectedJobPostId = (selectedJobPost)? selectedJobPost.id : '';
