@@ -225,6 +225,7 @@ class EventAdministrator extends Component {
 
         this.setState({isFetching: false});
         EventService.getExpiredData((isError, data) => {
+
             if (!isError) {
                 this.setState({expired: data});
             }
