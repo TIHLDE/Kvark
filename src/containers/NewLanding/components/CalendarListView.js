@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import classNames from 'classnames';
@@ -6,7 +6,6 @@ import classNames from 'classnames';
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 // Icons
@@ -17,16 +16,10 @@ import LocationOn from '@material-ui/icons/LocationOn';
 // Project componets
 import LinkButton from '../../../components/navigation/LinkButton';
 
-import Image from "../../../assets/img/glad.jpg"; // Remove this after testing
+import Image from '../../../assets/img/glad.jpg'; // Remove this after testing
 
 // Styles
-const styles = theme => ({
-  eventListRow: {
-    display: 'flex',
-    backgroundColor: 'white',
-    maxHeight: 80,
-    overflow: 'hidden'
-  },
+const styles = (theme) => ({
   eventListContainer: {
     padding: 1,
     display: 'grid',
@@ -34,24 +27,37 @@ const styles = theme => ({
     color: theme.palette.text.secondary,
     backgroundColor: 'rgba(0, 0, 0, 0.12)',
   },
-  eventImageContainer: {
-    height: 80,
-    width: 80,
+  eventListRow: {
+    display: 'flex',
+    backgroundColor: 'white',
+    minHeight: 80,
     overflow: 'hidden',
-    display: 'inline-flex'
+    alignItems: 'center',
+  },
+  eventImageContainer: {
+    minHeight: 80,
+    minWidth: 80,
+    width: 80,
+    height: 80,
+    overflow: 'hidden',
+    display: 'inline-flex',
   },
   eventImage: {
     objectFit: 'cover',
+    height: 80,
+    width: 80,
   },
   eventTitle: {
     flexGrow: 1,
     padding: 5,
   },
   eventInfo: {
-    padding: '5px',
-    textAlign: 'center',
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    textAlign: 'left',
     width: 150,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   eventContainer: {
     display: 'flex',
@@ -59,27 +65,26 @@ const styles = theme => ({
     '@media only screen and (max-width: 700px)': {
       flexDirection: 'column',
       alignItems: 'center',
-    }
+    },
   },
   eventInfoElement: {
-    display: 'flex',
+    display: 'inline-flex',
     alignItems: 'center',
-    width: '100%'
   },
   eventIcon: {
     paddingRight: 10,
   },
   hiddenOnMobile: {
     '@media only screen and (max-width: 700px)': {
-      display: 'none'
-    }
-  }
+      display: 'none',
+    },
+  },
 });
 
 
 function CalendarListItem(props) {
-  const {classes} = props
-  //props.eventData.image
+  const {classes} = props;
+  // props.eventData.image
 
   const start = moment(props.eventData.start, ['YYYY-MM-DD HH:mm'], 'nb');
 
@@ -92,6 +97,10 @@ function CalendarListItem(props) {
         <div className={classes.eventContainer}>
           <div className={classes.eventTitle}>
             <Typography align='center' variant='title'>{props.eventData.title}</Typography>
+            <div className={classNames(classes.hiddenOnMobile, classes.eventInfoElement)}>
+              <LocationOn className={classes.eventIcon} />
+              {props.eventData.location}
+            </div>
           </div>
           <div className={classes.eventInfo}>
             <div className={classes.eventInfoElement}>
@@ -102,45 +111,42 @@ function CalendarListItem(props) {
               <Schedule className={classes.eventIcon}/>
               {start.format('HH:mm')}
             </div>
-            <div className={classNames(classes.hiddenOnMobile, classes.eventInfoElement)}>
-              <LocationOn className={classes.eventIcon} />
-              {props.eventData.location}
-            </div>
           </div>
         </div>
       </div>
     </LinkButton>
-  )
+  );
 }
 
 function CalendarListView(props) {
-  const {classes} = props
-  const eventsToDisplay = 3
+  const {classes} = props;
+  const eventsToDisplay = 3;
   return (
     <Paper className={classes.eventListContainer}>
       {props.events && props.events.map((eventData, index) => {
-        if (index < eventsToDisplay){
+        if (index < eventsToDisplay) {
           return (<CalendarListItem key={index} classes={classes} eventData={eventData} />);
         }
       })}
       <LinkButton noPadding to='/arrangementer/'>
-        {props.events && eventsToDisplay <  props.events.length ?
+        {props.events && eventsToDisplay < props.events.length ?
           <Typography align='center'>Alle arrangementer ({props.events.length})</Typography>
           :
           null}
       </LinkButton>
     </Paper>
-  )
+  );
 }
 
 // Prop types
 CalendarListItem.propTypes = {
   classes: PropTypes.object.isRequired,
-  eventData: PropTypes.object.isRequired
-}
+  eventData: PropTypes.object.isRequired,
+};
 
 CalendarListView.propTypes = {
+  classes: PropTypes.object.isRequired,
   events: PropTypes.array,
-}
+};
 
-export default withStyles(styles)(CalendarListView)
+export default withStyles(styles)(CalendarListView);
