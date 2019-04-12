@@ -5,21 +5,36 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
 
 // Project componets/services
 import EventService from '../../../api/services/EventService';
 import CalendarListView from './CalendarListView';
 
+// Icons
+import Reorder from '@material-ui/icons/Reorder';
+import DateRange from '@material-ui/icons/DateRange';
+
 // Styles
 const styles = (theme) => ({
   root: {
     flexGrow: 1,
-    padding: 4, // MUI Grid requires a padding of half the given spacing.
+    padding: 0, // MUI Grid requires a padding of half the given spacing.
   },
   paper: {
     padding: theme.spacing.unit,
-    textAlign: 'center',
     color: theme.palette.text.secondary,
+    textAlign: 'center',
+  },
+  container: {
+    maxWidth: 700,
+    width: '100vw',
+    backgroundColor: 'rgba(0, 0, 0, 0.12)',
+  },
+  tabs: {
+    marginBottom: 1,
+    backgroundColor: 'white',
   },
 });
 
@@ -63,7 +78,9 @@ class Calender extends React.Component {
     super(props);
     this.state = {
       events: null,
+      calendarViewMode: 0,
     };
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -78,28 +95,40 @@ class Calender extends React.Component {
     });
   }
 
+  handleChange(event, newValue) {
+    this.setState({calendarViewMode: newValue});
+  }
+
   render() {
     const { classes } = this.props;
     let spacing = '8';
 
     return (
       <div className={classes.root}>
-        <CalendarListView events={this.state.events} />
-        <br/>
-        <Grid container spacing={Number(spacing)}>
-          <Grid container justify="center" alignItems="center" item xs={12} spacing={Number(spacing)}>
-            <FormRow classes={classes} />
-          </Grid>
-          <Grid container justify="center" alignItems="center" item xs={12} spacing={Number(spacing)}>
-            <FormRow classes={classes} />
-          </Grid>
-          <Grid container justify="center" alignItems="center" item xs={12} spacing={Number(spacing)}>
-            <FormRow classes={classes} />
-          </Grid>
-          <Grid container justify="center" alignItems="center" item xs={12} spacing={Number(spacing)}>
-            <FormRow classes={classes} />
-          </Grid>
-        </Grid>
+        <Paper className={classes.container}>
+          <Tabs centered className={classes.tabs} value={this.state.calendarViewMode} onChange={this.handleChange}>
+            <Tab icon={<Reorder/>} label='Listevisning' />
+            <Tab icon={<DateRange/>} label='Kalendervisning' />
+          </Tabs>
+            {this.state.calendarViewMode === 0 ?
+            <CalendarListView events={this.state.events} />
+            :
+            <Grid container spacing={Number(spacing)}>
+              <Grid container justify="center" alignItems="center" item xs={12} spacing={Number(spacing)}>
+                <FormRow classes={classes} />
+              </Grid>
+              <Grid container justify="center" alignItems="center" item xs={12} spacing={Number(spacing)}>
+                <FormRow classes={classes} />
+              </Grid>
+              <Grid container justify="center" alignItems="center" item xs={12} spacing={Number(spacing)}>
+                <FormRow classes={classes} />
+              </Grid>
+              <Grid container justify="center" alignItems="center" item xs={12} spacing={Number(spacing)}>
+                <FormRow classes={classes} />
+              </Grid>
+            </Grid>
+            }
+        </Paper>
       </div>
     );
   }

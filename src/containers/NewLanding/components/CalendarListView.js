@@ -5,7 +5,6 @@ import classNames from 'classnames';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 // Icons
@@ -21,12 +20,11 @@ import TIHLDELOGO from '../../../assets/img/tihlde_image.png';
 // Styles
 const styles = (theme) => ({
   eventListContainer: {
-    padding: 1,
+    // padding: 1,
     display: 'grid',
     gridGap: '1px',
     color: theme.palette.text.secondary,
-    backgroundColor: 'rgba(0, 0, 0, 0.12)',
-    maxWidth: 700,
+    // backgroundColor: 'rgba(0, 0, 0, 0.12)',
     margin: 'auto',
   },
   eventListRow: {
@@ -131,7 +129,7 @@ function CalendarListView(props) {
   const {classes} = props;
   const eventsToDisplay = 3;
   return (
-    <Paper className={classes.eventListContainer}>
+    <div className={classes.eventListContainer}>
       {props.events && props.events.map((eventData, index) => {
         if (index < eventsToDisplay) {
           return (<CalendarListItem key={index} classes={classes} eventData={eventData} />);
@@ -142,9 +140,9 @@ function CalendarListView(props) {
             <Typography align='center'>Alle arrangementer ({props.events.length})</Typography>
         </LinkButton>
         :
-        <Typography variant='h4' className={classes.noEventText} align='center'>Ingen arrangementer å vise</Typography>
+        <Typography variant='display4' className={classes.noEventText} align='center'>Ingen arrangementer å vise</Typography>
       }
-    </Paper>
+    </div>
   );
 }
 
