@@ -96,9 +96,9 @@ class Companies extends Component {
   }
 
   componentDidMount() {
-    window.scrollTo(0, 0);
+    window.scrollTo({top: 0, left: 0});
 
-    this.focusFirstTextField();
+    // this.focusFirstTextField();
   }
 
   // Brukes til å åpne den hvis den ikke er åpen
