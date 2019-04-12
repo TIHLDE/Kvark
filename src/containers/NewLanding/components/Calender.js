@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 // Material-UI
@@ -11,16 +11,16 @@ import EventService from '../../../api/services/EventService';
 import CalendarListView from './CalendarListView';
 
 // Styles
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     flexGrow: 1,
-    padding: 4 // MUI Grid requires a padding of half the given spacing.
+    padding: 4, // MUI Grid requires a padding of half the given spacing.
   },
   paper: {
     padding: theme.spacing.unit,
     textAlign: 'center',
     color: theme.palette.text.secondary,
-  }
+  },
 });
 
 function FormRow(props) {
@@ -60,19 +60,19 @@ FormRow.propTypes = {
 class Calender extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      events: null
-    }
+      events: null,
+    };
   }
 
   componentDidMount() {
     EventService.getEvents().then((eventObject) => {
 
-      // Temp code for creating enough test data.
-      for (let i = 0; i < 15; i++) {
-        eventObject.push(eventObject[0])
-      }
+      // // Temp code for creating enough test data.
+      // for (let i = 0; i < 15; i++) {
+      //   eventObject.push(eventObject[0]);
+      // }
 
      this.setState({events: eventObject});
     });
@@ -80,7 +80,7 @@ class Calender extends React.Component {
 
   render() {
     const { classes } = this.props;
-    var spacing = "8";
+    let spacing = '8';
 
     return (
       <div className={classes.root}>

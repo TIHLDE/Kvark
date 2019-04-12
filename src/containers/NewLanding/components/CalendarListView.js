@@ -16,7 +16,7 @@ import LocationOn from '@material-ui/icons/LocationOn';
 // Project componets
 import LinkButton from '../../../components/navigation/LinkButton';
 
-import Image from '../../../assets/img/glad.jpg'; // Remove this after testing
+import TIHLDELOGO from '../../../assets/img/tihlde_image.png';
 
 // Styles
 const styles = (theme) => ({
@@ -26,6 +26,8 @@ const styles = (theme) => ({
     gridGap: '1px',
     color: theme.palette.text.secondary,
     backgroundColor: 'rgba(0, 0, 0, 0.12)',
+    maxWidth: 700,
+    margin: 'auto',
   },
   eventListRow: {
     display: 'flex',
@@ -35,15 +37,16 @@ const styles = (theme) => ({
     alignItems: 'center',
   },
   eventImageContainer: {
-    minHeight: 80,
-    minWidth: 80,
-    width: 80,
-    height: 80,
+    minHeight: 81,
+    minWidth: 81,
+    width: 81,
+    height: 81,
     overflow: 'hidden',
     display: 'inline-flex',
   },
   eventImage: {
     objectFit: 'cover',
+    border: '1px solid whitesmoke',
     height: 80,
     width: 80,
   },
@@ -79,6 +82,10 @@ const styles = (theme) => ({
       display: 'none',
     },
   },
+  noEventText: {
+    backgroundColor: 'white',
+    padding: 5,
+  },
 });
 
 
@@ -87,12 +94,14 @@ function CalendarListItem(props) {
   // props.eventData.image
 
   const start = moment(props.eventData.start, ['YYYY-MM-DD HH:mm'], 'nb');
+  const src = props.eventData.image ? props.eventData.image : TIHLDELOGO;
+  const imageAlt = props.eventData.image_alt ? props.eventData.image_alt : props.eventData.title;
 
   return (
     <LinkButton noPadding to={'/arrangementer/' + props.eventData.id + '/'}>
       <div className={classes.eventListRow}>
         <div className={classes.eventImageContainer}>
-          <img className={classes.eventImage} src={Image} alt={props.eventData.image_alt} />
+          <img className={classes.eventImage} src={src} alt={imageAlt} />
         </div>
         <div className={classes.eventContainer}>
           <div className={classes.eventTitle}>
@@ -128,12 +137,13 @@ function CalendarListView(props) {
           return (<CalendarListItem key={index} classes={classes} eventData={eventData} />);
         }
       })}
-      <LinkButton noPadding to='/arrangementer/'>
-        {props.events && eventsToDisplay < props.events.length ?
-          <Typography align='center'>Alle arrangementer ({props.events.length})</Typography>
-          :
-          null}
-      </LinkButton>
+      {props.events ?
+        <LinkButton noPadding to='/arrangementer/'>
+            <Typography align='center'>Alle arrangementer ({props.events.length})</Typography>
+        </LinkButton>
+        :
+        <Typography variant='h4' className={classes.noEventText} align='center'>Ingen arrangementer å vise</Typography>
+      }
     </Paper>
   );
 }
