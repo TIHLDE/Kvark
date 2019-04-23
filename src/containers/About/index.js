@@ -20,7 +20,7 @@ import SocialIcon from '../../assets/icons/social.svg';
 import BusinessIcon from '../../assets/icons/business.svg';
 import OperationIcon from '../../assets/icons/operations.png';
 import PromoIcon from '../../assets/icons/promo.svg';
-import OrgMap from '../../assets/img/orgMap.png';
+import OrgMap from '../../assets/img/orgMap.svg';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
@@ -112,9 +112,9 @@ class About extends Component {
                         <Banner
                             image='https://images.pexels.com/photos/220351/pexels-photo-220351.jpeg?auto=compress&cs=tinysrgb&h=350'
                             text={Text.subheader}
-                            h6={Text.header}>
+                            title={Text.header}>
                             <Divider />
-                            <Grid item className={classNames(classes.linkContainer, classes.miniPadding, classes.grid)}>
+                            <Grid item className={classNames(classes.linkContainer, classes.grid)}>
                                 <LinkButton to='/lover/'>
                                     <Typography>TIHLDE's Lover</Typography>
                                 </LinkButton>
@@ -124,7 +124,7 @@ class About extends Component {
 
                     <div className={classes.smoke}>
                         <div className={classes.section}>
-                            <Typography className={classes.verticalMargin} variant='h4' color='inherit' align='center'>Undergrupper</Typography>
+                            <Typography className={classes.verticalMargin} variant='display1' color='inherit' align='center'>Undergrupper</Typography>
                             <div className={classNames(classes.grid, classes.smoke)}>
                                 <InfoCard header='Drift' text={Text.drift} src={OperationIcon}/>
                                 <InfoCard header='Sosialen' text={Text.social} src={SocialIcon}/>
@@ -136,12 +136,12 @@ class About extends Component {
 
                     <div>
                         <div className={classes.section}>
-                            <Typography className={classes.verticalMargin}variant='h4' color='inherit' align='center'>Komitéer</Typography>
+                            <Typography className={classes.verticalMargin}variant='display1' color='inherit' align='center'>Komitéer</Typography>
                             <div className={classes.grid}>
-                                <InfoCard header='Jubkom' text={Text.jubkom} subheader='Opptak' subText={Text.jubkom2} justifyText/>
+                                <InfoCard header='Koskom' text={Text.kosekom} subheader='Opptak' subText={Text.kosekom2} justifyText/>
                                 <InfoCard header='Netkom' text={Text.netkom} subheader='Opptak' subText={Text.netkom2} justifyText/>
                                 <InfoCard header='Turkom' text={Text.turkom} subheader='Opptak' subText={Text.turkom2} justifyText/>
-                                <InfoCard header='Koskom' text={Text.kosekom} subheader='Opptak' subText={Text.kosekom2} justifyText/>
+                                <InfoCard header='Jubkom' text={Text.jubkom} subheader='Opptak' subText={Text.jubkom2} justifyText/>
                           </div>
                         </div>
                     </div>
@@ -149,7 +149,7 @@ class About extends Component {
 
                     <div className={classes.smoke}>
                         <div className={classes.section}>
-                            <Typography className={classes.verticalMargin}variant='h4' color='inherit' align='center'>Organisasjonskart</Typography>
+                            <Typography className={classes.verticalMargin}variant='display1' color='inherit' align='center'>Organisasjonskart</Typography>
 
                             <Paper className={classes.miniMargin} square elevation={1}>
                                 <ClickableImage className={classes.miniPadding} image={OrgMap} alt='organisasjonskart' width='90%'/>

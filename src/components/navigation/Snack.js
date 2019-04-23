@@ -48,7 +48,7 @@ class Snack extends Component {
                         message={
                             <div className={classes.flex}>
                                 <div className='pulse'/>
-                                <Typography variant='subtitle1' color='inherit'>{this.props.message}</Typography>
+                                <Typography variant='subheading' color='inherit'>{this.props.message}</Typography>
                                 <IconButton color='inherit' onClick={this.props.onClose}><CloseIcon/></IconButton>
                             </div>
                         }

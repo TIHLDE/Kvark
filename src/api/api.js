@@ -5,7 +5,7 @@ export default {
     getGridItems: () => {
         return new IRequest('GET', 'items/', undefined);
     },
-    
+
     // News
     getNewsItem: (id) => {
         return new IRequest('GET', 'news/'.concat(id, '/'), undefined);
@@ -18,8 +18,8 @@ export default {
     getEventItem: (id) => {
         return new IRequest('GET', 'events/'.concat(id, '/'), undefined);
     },
-    getEventItems: (data) => {
-        return new IRequest('GET', 'events/', (data)? data : {newest: true});
+    getEventItems: (filters) => {
+        return new IRequest('GET', 'events/', (filters)? filters : {newest: true});
     },
     getExpiredEvents: () => {
         return new IRequest('GET', 'events/', {expired: true});
@@ -43,6 +43,9 @@ export default {
     },
     getJobPost: (id) => {
         return new IRequest('GET', 'jobpost/'.concat(id, '/'), undefined);
+    },
+    getExpiredJobPosts: () => {
+      return new IRequest('GET', 'jobpost/', {expired: true});
     },
     createJobPost: (item) => {
         return new IRequest('POST', 'jobpost/', item, true);

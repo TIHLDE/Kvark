@@ -10,6 +10,8 @@ export default {
     profile: '/profile/',
     login: '/logg-inn/',
     laws: '/lover/',
+    newlanding: '/newlanding/',
 
     eventAdmin: '/admin/events',
+    jobpostsAdmin: '/admin/jobposts',
 };

@@ -126,10 +126,12 @@ class Events extends Component {
     // Gets the event
     loadEvents = () => {
         // Fetch events from server
-        EventService.getEvents()
-        .then((events) => {
-            this.setState({events: events, isLoading: false, isFetching: false});
-        })
+        EventService.getEvents(null, null, (isError, events) => {
+            if(isError === false) {
+                this.setState({events: events});
+            }
+            this.setState({isLoading: false, isFetching: false});
+        });
     };
 
     loadCategory = () => {
@@ -186,12 +188,13 @@ class Events extends Component {
         const filters = (category && category !== 0)? {category: category} : {search: search};
         
         // Get filtered events ordered by expired
-        EventService.getEvents(filters, {expired: true})
-        .then((events) => {
-            this.setState({
-                events: events,
-                isFetching: false
-            });
+        EventService.getEvents(filters, {expired: true}, (isError, events) => {
+            if(isError === false) {
+                this.setState({
+                    events: events,
+                });
+            }
+            this.setState({isFetching: false})
         });
     }
 
@@ -204,13 +207,13 @@ class Events extends Component {
                     <div className={classes.root}>
 
                         <div className={classes.wrapper}>
-                            <Banner image='http://sf.co.ua/13/06/wallpaper-2845536.jpg' h6='Arrangementer'/>
+                            <Banner image='http://sf.co.ua/13/06/wallpaper-2845536.jpg' title='Arrangementer'/>
                             <div className={classes.grid}>
                                 {this.state.isFetching ? <CircularProgress className={classes.progress} /> :
                                     <div className={classes.listRoot}>
                                     <Grow in={!this.state.isFetching}>
                                         <Paper className={classes.list} elevation={1} square>
-                                            {this.state.events.map((value, index) => (
+                                            {this.state.events && this.state.events.map((value, index) => (
                                                 <div key={value.id}>
                                                     <EventListItem key={value.id} data={value} onClick={() => this.goToEvent(value.id)}/>
                                                     <Divider/>
@@ -231,7 +234,7 @@ class Events extends Component {
                                             <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.searchForEvent}>{Text.search}</Button>
                                         </form>
                                         <Divider className={classes.mt}/>
-                                        <Typography className={classes.mt} variant='h6' gutterBottom>{Text.category}</Typography>
+                                        <Typography className={classes.mt} variant='title' gutterBottom>{Text.category}</Typography>
                                         <TextField className={classes.paddingBottom} select fullWidth label='Kategori' value={category} onChange={this.handleCategoryChange}>
                                             {categories.map((value, index) => (
                                                 <MenuItem key={index} value={value.id}>

@@ -14,13 +14,13 @@ class EventService {
             data = data || [];
 
             // If orderby is provided, sort the data
-            if(orderBy) {
+            if(orderBy && response.isError === false) {
                 for(const key in orderBy) {
                     data = data.sort((a, b) => (a[key] === b[key])? 0 : a[key] ? 1 : -1)
                 }
             }
             !callback || callback(response.isError === true, data);
-            return Promise.resolve(data);
+            return response.isError === false ? Promise.resolve(data) : Promise.reject(data);
         });
     }
 
@@ -40,7 +40,7 @@ class EventService {
                     GridActions.setSelectedItem(data)(store.dispatch);
                     return Promise.resolve(data);
                 } else {
-                    return Promise.resolve(null);
+                    return Promise.reject(null);
                 }
             });
         }
@@ -90,7 +90,7 @@ class EventService {
             if(response.isError === false) {
                 return Promise.resolve(data);
             } else {
-                return Promise.resolve([]);
+                return Promise.reject([]);
             }
         });
     }
@@ -99,7 +99,11 @@ class EventService {
         const response = API.getExpiredEvents().response();
         return response.then((data) => {
             !callback || callback(response.isError === true, data);
-            return data;
+            if(response.isError === false) {
+                return Promise.resolve(data);
+            } else {
+                return Promise.reject([]);
+            }
         });
     }
 }

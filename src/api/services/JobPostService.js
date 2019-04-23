@@ -64,6 +64,14 @@ class JobPostService {
             return data;
         });
     }
+
+    static getExpiredData = async (callback=null) => {
+        const response = API.getExpiredJobPosts().response();
+        return response.then((data) => {
+            !callback || callback(response.isError === true, data);
+            return data;
+        });
+    }
 }
 
 export default JobPostService;

@@ -50,10 +50,10 @@ const styles = {
         maxHeight: 400,
         objectFit: 'cover',
     },
-    h6Wrapper: {
+    titleWrapper: {
         padding: 26,
     },
-    h6: {
+    title: {
         color: 'black',
     },
     content: {
@@ -98,9 +98,9 @@ const EventRenderer = (props) => {
         <div className={classes.root}>
             <Paper square>
                 <img className={classes.image} src={data.image} alt={data.image_alt} />
-                <div className={classes.h6Wrapper}>
-                    <Typography className={classes.h6} variant='h4' gutterBottom><strong>{data.h6}</strong></Typography>
-                    <Typography className={classes.h6} variant='subtitle1'>{data.header}</Typography>
+                <div className={classes.titleWrapper}>
+                    <Typography className={classes.title} variant='headline' gutterBottom><strong>{data.title}</strong></Typography>
+                    <Typography className={classes.title} variant='subheading'>{data.header}</Typography>
                 </div>
                 <Divider />
                 <div className={classes.grid} >

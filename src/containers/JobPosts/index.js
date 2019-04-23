@@ -177,7 +177,7 @@ class JobPosts extends Component {
                 {this.state.isLoading ? null :
                 <div className={classes.root}>
                     <div className={classes.wrapper}>
-                        <Banner h6='Annonser' image={bannerImage}/>
+                        <Banner title='Karriere' image={bannerImage}/>
                         <div className={classes.grid}>
                         
                             {this.state.isFetching ? <CircularProgress className={classes.progress} /> :
@@ -204,7 +204,7 @@ class JobPosts extends Component {
                                         <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.searchForPosts}>{Text.search}</Button>
                                     </form>
                                     <Divider className={classes.mt}/>
-                                    <Typography className={classes.mt} variant='h6' gutterBottom>{Text.category}</Typography>
+                                    <Typography className={classes.mt} variant='title' gutterBottom>{Text.category}</Typography>
 
                                     <Theme theme={errorTheme}>
                                         <Button

@@ -26,6 +26,7 @@ import NewStudent from './containers/NewStudent';
 import Profile from './containers/Profile';
 import JobPosts from './containers/JobPosts';
 import JobPostDetails from './containers/JobPostDetails';
+import JobPostAdministration from './containers/JobPostAdministration';
 import LogIn from './containers/LogIn';
 import Laws from './containers/Laws';
 import NewLanding from './containers/NewLanding';
@@ -49,7 +50,7 @@ const Application = (
         <BrowserRouter>
             <MuiThemeProvider theme={theme}>
                 <Switch>
-                    <Route exact path='/' component={NewLanding} />
+                    <Route exact path='/' component={Landing} />
                     <Route path='/nyheter/:id' component={NewsPage} />
                     <Route path='/arrangementer/:id' component={EventDetails} />
                     <Route path={URLS.about} component={About} />
@@ -62,8 +63,10 @@ const Application = (
                     <Route exact path={URLS.jobposts} component={JobPosts} />
                     <Route path={URLS.laws} component={Laws} />
 
+                    <PrivateRoute path={URLS.jobpostsAdmin} component={JobPostAdministration} />
                     <PrivateRoute path={URLS.eventAdmin} component={EventAdministration} />
                     <Route path={URLS.login} component={LogIn} />
+                    <Route path={URLS.newlanding} component={NewLanding} />
 
                 </Switch>
             </MuiThemeProvider>

@@ -36,8 +36,12 @@ class IResponse {
 
             this.isError = !data.ok;
             this.status = data.status;
-            
-            return (data.json)? data.json() : data;
+
+            if(data.json === undefined) {
+                return data
+            }
+
+            return data.json();
         }).catch((error) => console.log(error));
     }
 
@@ -76,4 +80,3 @@ const argsToParams = (data) => {
     }
     return args;
 };
-

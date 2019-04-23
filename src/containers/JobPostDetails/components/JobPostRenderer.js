@@ -50,7 +50,7 @@ const styles = {
         height: 'auto',
         objectFit: 'contain',
     },
-    h6: {
+    title: {
         color: 'black',
 
         '@media only screen and (max-width: 600px)': {
@@ -90,7 +90,7 @@ const styles = {
 const InfoContent = withStyles(styles)((props) => (
     <Grid className={classNames(props.className, props.classes.info)} container direction='row' wrap='nowrap' alignItems='center' justify='flex-start'>
         {props.icon !== undefined && props.icon}
-        <Typography className={props.icon ? props.classes.ml : ''} variant='subtitle1'>{props.label}</Typography>
+        <Typography className={props.icon ? props.classes.ml : ''} variant='subheading'>{props.label}</Typography>
     </Grid>
 ));
 
@@ -122,7 +122,7 @@ const JobPostRenderer = (props) => {
             <div>
                 <Paper className={classNames(classes.paper, classes.content)} square elevation={1}>
                     <Typography variant='caption' gutterBottom>Publisert: {publishedAt.format('DD.MM.YYYY')}</Typography>
-                    <Typography className={classNames(classes.h6, classes.mb)} variant='h4' gutterBottom><strong>{data.h6}</strong></Typography>
+                    <Typography className={classNames(classes.title, classes.mb)} variant='headline' gutterBottom><strong>{data.title}</strong></Typography>
                     <MarkdownRenderer className={classes.mb} value={data.ingress || ''} />
                     <MarkdownRenderer value={data.body || ''} />
                 </Paper>
@@ -141,7 +141,7 @@ const JobPostRenderer = (props) => {
                     {data.email &&
                         <Fragment>
                             <Divider className={classes.mb} />
-                            <Typography variant='subtitle1'><strong>{Text.contact}</strong></Typography>
+                            <Typography variant='subheading'><strong>{Text.contact}</strong></Typography>
                             
                             <Typography 
                                 className={classNames(classes.emailLink, classes.mb)}
