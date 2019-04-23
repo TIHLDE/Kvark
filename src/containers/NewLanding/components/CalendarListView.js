@@ -88,7 +88,7 @@ const styles = (theme) => ({
 
 
 function CalendarListItem(props) {
-  const {classes} = props;
+  const { classes } = props;
   // props.eventData.image
 
   const start = moment(props.eventData.start, ['YYYY-MM-DD HH:mm'], 'nb');
@@ -111,11 +111,11 @@ function CalendarListItem(props) {
           </div>
           <div className={classes.eventInfo}>
             <div className={classes.eventInfoElement}>
-              <CalendarToday className={classes.eventIcon}/>
+              <CalendarToday className={classes.eventIcon} />
               {start.format('DD.MM.YYYY')}
             </div>
             <div className={classNames(classes.hiddenOnMobile, classes.eventInfoElement)}>
-              <Schedule className={classes.eventIcon}/>
+              <Schedule className={classes.eventIcon} />
               {start.format('HH:mm')}
             </div>
           </div>
@@ -126,7 +126,7 @@ function CalendarListItem(props) {
 }
 
 function CalendarListView(props) {
-  const {classes} = props;
+  const { classes } = props;
   const eventsToDisplay = 3;
   return (
     <div className={classes.eventListContainer}>
@@ -137,7 +137,7 @@ function CalendarListView(props) {
       })}
       {props.events ?
         <LinkButton noPadding to='/arrangementer/'>
-            <Typography align='center'>Alle arrangementer ({props.events.length})</Typography>
+          <Typography align='center'>Alle arrangementer ({props.events.length})</Typography>
         </LinkButton>
         :
         <Typography variant='display4' className={classes.noEventText} align='center'>Ingen arrangementer å vise</Typography>

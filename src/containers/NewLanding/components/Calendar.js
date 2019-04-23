@@ -28,11 +28,7 @@ const styles = (theme) => ({
     textAlign: 'center',
   },
   container: {
-<<<<<<< HEAD
     maxWidth: 1100,
-=======
-    maxWidth: 700,
->>>>>>> 711b61ab3e10fa928f90d876e7706d153b895ca5
     width: '100vw',
     backgroundColor: 'rgba(0, 0, 0, 0.12)',
   },
@@ -61,20 +57,12 @@ class Calender extends React.Component {
       //   eventObject.push(eventObject[0]);
       // }
 
-<<<<<<< HEAD
       this.setState({ events: eventObject });
-=======
-     this.setState({events: eventObject});
->>>>>>> 711b61ab3e10fa928f90d876e7706d153b895ca5
     });
   }
 
   handleChange(event, newValue) {
-<<<<<<< HEAD
     this.setState({ calendarViewMode: newValue });
-=======
-    this.setState({calendarViewMode: newValue});
->>>>>>> 711b61ab3e10fa928f90d876e7706d153b895ca5
   }
 
   render() {
@@ -84,7 +72,6 @@ class Calender extends React.Component {
       <div className={classes.root}>
         <Paper className={classes.container}>
           <Tabs centered className={classes.tabs} value={this.state.calendarViewMode} onChange={this.handleChange}>
-<<<<<<< HEAD
             <Tab icon={<Reorder />} label='Listevisning' />
             <Tab icon={<DateRange />} label='Kalendervisning' />
           </Tabs>
@@ -93,16 +80,6 @@ class Calender extends React.Component {
             :
             <CalendarGridView events={this.state.events} />
           }
-=======
-            <Tab icon={<Reorder/>} label='Listevisning' />
-            <Tab icon={<DateRange/>} label='Kalendervisning' />
-          </Tabs>
-            {this.state.calendarViewMode === 0 ?
-            <CalendarListView events={this.state.events} />
-            :
-            <CalendarGridView events={this.state.events} />
-            }
->>>>>>> 711b61ab3e10fa928f90d876e7706d153b895ca5
         </Paper>
       </div>
     );
