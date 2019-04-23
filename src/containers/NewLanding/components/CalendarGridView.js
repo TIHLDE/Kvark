@@ -25,15 +25,27 @@ import DateRange from '@material-ui/icons/DateRange';
 const styles = (theme) => ({
   event: {
     width: '100%',
+<<<<<<< HEAD
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     listStyle: 'none',
+=======
+    color: '#1d448c',
+    backgroundColor: 'rgba(110,176,214, 0.15)',
+    padding: '5px',
+    marginBottom: '3px',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    fontSize: '12px',
+    textOverflow: 'ellipsis',
+>>>>>>> 711b61ab3e10fa928f90d876e7706d153b895ca5
   },
   list: {
     width: '100%',
     position: 'absolute',
     top: '10%',
+<<<<<<< HEAD
   },
   link: {
     color: '#777',
@@ -46,6 +58,8 @@ const styles = (theme) => ({
       cursor: 'pointer',
       color: 'white',
     },
+=======
+>>>>>>> 711b61ab3e10fa928f90d876e7706d153b895ca5
   }
 });
 
@@ -56,7 +70,11 @@ class CalendarGridView extends React.Component {
       <div className="header row flex-middle">
         <div className="col col-start">
           <div className="icon" onClick={this.prevMonth}>
+<<<<<<< HEAD
             <Before />
+=======
+            <Before/>
+>>>>>>> 711b61ab3e10fa928f90d876e7706d153b895ca5
           </div>
         </div>
         <div className="col col-center">
@@ -66,7 +84,11 @@ class CalendarGridView extends React.Component {
           </span>
         </div>
         <div className="col col-end" onClick={this.nextMonth}>
+<<<<<<< HEAD
           <div className="icon"><Next /></div>
+=======
+          <div className="icon"><Next/></div>
+>>>>>>> 711b61ab3e10fa928f90d876e7706d153b895ca5
         </div>
       </div>
     );
@@ -107,7 +129,11 @@ class CalendarGridView extends React.Component {
               !moment(day).isSame(moment(monthStart), 'month')
                 ? "disabled"
                 : moment(day).isSame(moment(selectedDate), 'days') ? "selected" : ""
+<<<<<<< HEAD
               }`}
+=======
+            }`}
+>>>>>>> 711b61ab3e10fa928f90d876e7706d153b895ca5
             key={day}
             onClick={() => this.onDateClick(moment(cloneDay))}
           >
@@ -150,6 +176,7 @@ class CalendarGridView extends React.Component {
     const { classes } = this.props;
     date = moment(date).format('DD-MM-YY');
     const eventText = [];
+<<<<<<< HEAD
     if (this.props.events !== null) {
       this.props.events.forEach(event => {
         let eventDate = moment(event.start).format('DD-MM-YY');
@@ -160,6 +187,18 @@ class CalendarGridView extends React.Component {
         }
       });
       if (eventText.length > 0) {
+=======
+    if(this.props.events !== null){
+      this.props.events.forEach(event => {
+          let eventDate = moment(event.start).format('DD-MM-YY');
+          if(eventDate === date){
+            eventText.push(
+              <li className={classes.event}>{event.title}</li>,
+            )
+          }
+      });
+      if(eventText.length > 0){
+>>>>>>> 711b61ab3e10fa928f90d876e7706d153b895ca5
         return <ul className={classes.list}>{eventText}</ul>;
       }
     }

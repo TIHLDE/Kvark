@@ -64,7 +64,10 @@ body {
   width: 100%;
   background: var(--neutral-color);
   border: 1px solid var(--border-color);
+<<<<<<< HEAD
   user-select: none;
+=======
+>>>>>>> 711b61ab3e10fa928f90d876e7706d153b895ca5
 }
 
 .calendar .header {
@@ -77,9 +80,18 @@ body {
 
 .calendar .header .icon {
   cursor: pointer;
+<<<<<<< HEAD
 }
 
 .calendar .header .icon:hover {
+=======
+  transition: .15s ease-out;
+}
+
+.calendar .header .icon:hover {
+  transform: scale(1.1);
+  transition: .25s ease-out;
+>>>>>>> 711b61ab3e10fa928f90d876e7706d153b895ca5
   color: var(--main-color);
 }
 
@@ -105,11 +117,21 @@ body {
   height: 8em;
   border-right: 1px solid var(--border-color);
   overflow: hidden;
+<<<<<<< HEAD
   background: var(--neutral-color);
+=======
+  cursor: pointer;
+  background: var(--neutral-color);
+  transition: 0.25s ease-out;
+>>>>>>> 711b61ab3e10fa928f90d876e7706d153b895ca5
 }
 
 .calendar .body .cell:hover {
   background: var(--bg-color);
+<<<<<<< HEAD
+=======
+  transition: 0.5s ease-out;
+>>>>>>> 711b61ab3e10fa928f90d876e7706d153b895ca5
 }
 
 .calendar .body .selected {
@@ -151,13 +173,24 @@ body {
   opacity: 0;
   font-size: 8em;
   position: absolute;
+<<<<<<< HEAD
   top: .3em;
   right: -.15em;
+=======
+  top: -.2em;
+  right: -.05em;
+  transition: .25s ease-out;
+>>>>>>> 711b61ab3e10fa928f90d876e7706d153b895ca5
   letter-spacing: -.07em;
 }
 
 .calendar .body .cell:hover .bg, .calendar .body .selected .bg  {
+<<<<<<< HEAD
   opacity: 0.1;
+=======
+  opacity: 0.05;
+  transition: .5s ease-in;
+>>>>>>> 711b61ab3e10fa928f90d876e7706d153b895ca5
 }
 
 .calendar .body .col {
