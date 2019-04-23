@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 
-
 // Text Imports
 import Text from '../../text/AboutText';
 
@@ -12,8 +11,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
-import EventService from '../../api/services/EventService';
-
 
 // Icons
 import LandingHeader from '../../assets/img/LinkedInTihldeHeader.png';
@@ -25,7 +22,7 @@ import LocalSeeIcon from '@material-ui/icons/LocalSee'
 import Navigation from '../../components/navigation/Navigation';
 import Banner from '../../components/layout/Banner';
 import Icons from './components/Icons';
-import Calender from './components/Calender__css';
+import Calender from './components/Calendar';
 
 const styles = {
     root: {
@@ -52,7 +49,6 @@ const styles = {
     section: {
         padding: 48,
         maxWidth: 1200,
-        width: '100%',
         margin: 'auto',
         '@media only screen and (max-width: 1200px)': {
             padding: '48px 0',
@@ -104,23 +100,16 @@ const styles = {
             gridTemplateColumns: '1fr',
         }
     },
-
+    calendar: {
+        justify: 'center',
+    }
 };
 
 class NewLanding extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          events: [],
-        };
-      }
 
     componentDidMount() {
         window.scrollTo(0, 0);
-        EventService.getEvents().then((eventObject) => {
-         this.setState({events: eventObject});
-        });
-      }
+    }
 
     render() {
         const { classes } = this.props;
@@ -134,19 +123,41 @@ class NewLanding extends Component {
                             <Divider />
                         </Banner>
                     </div>
-                    <div className={classes.section}>
-                        <Paper className={classes.miniMargin} square elevation={1}>
-                            <Calender events={this.state.events} ></Calender>    
-                        </Paper>
+
+                    <div className={classes.smoke}>
+                        <div className={classes.section}>
+                            <Paper className={classes.container}>
+                                <div className={classes.icons}>
+                                    <Icons data={{
+                                        title: "TurKom",
+                                    }} icon={TerrainIcon} />
+                                    <Icons data={{
+                                        title: "Tihlde Pythons",
+                                    }} icon={FitnessIcon} />
+                                    <Icons data={{
+                                        title: "Redaksjonen",
+                                    }} icon={LocalSeeIcon} />
+                                </div>
+                            </Paper>
+                        </div>
                     </div>
-                    
+
+                    <div>
+                        <div className={classes.section}>
+                            <Typography className={classes.verticalMargin} variant='headline' color='inherit' align='center'>Kalender</Typography>
+                            <Calender className={classes.calendar}></Calender>
+                        </div>
+                    </div>
+
                     <div className={classes.smoke}>
                         <div className={classes.section}>
                             <Typography className={classes.verticalMargin} variant='headline' color='inherit' align='center'>Nyheter</Typography>
+
                             <Paper className={classes.miniMargin} square elevation={1}>
                             </Paper>
                         </div>
                     </div>
+
                     <div className={classes.section}>
                         <Typography className={classes.verticalMargin} variant='headline' color='inherit' align='center'>Kontakt Oss</Typography>
                     </div>
@@ -154,6 +165,7 @@ class NewLanding extends Component {
             </Navigation>
         );
     }
+
 };
 
 NewLanding.propTypes = {

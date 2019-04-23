@@ -35,13 +35,13 @@ const styles = (theme) => ({
     textOverflow: 'ellipsis',
   },
   list: {
-    width: '100%',  
+    width: '100%',
     position: 'absolute',
     top: '10%',
   }
 });
 
-class Calender extends React.Component {
+class CalendarGridView extends React.Component {
 
   renderHeader() {
     return (
@@ -145,8 +145,8 @@ class Calender extends React.Component {
     if(this.props.events !== null){
       this.props.events.forEach(event => {
           let eventDate = moment(event.start).format('DD-MM-YY');
-          if(eventDate === date){ 
-            eventText.push( 
+          if(eventDate === date){
+            eventText.push(
               <li className={classes.event}>{event.title}</li>,
             )
           }
@@ -165,7 +165,7 @@ class Calender extends React.Component {
       dateFormat: "YYYY MMMM",
     };
   }
-  
+
   render() {
     return (
       <div className="calendar">
@@ -177,9 +177,9 @@ class Calender extends React.Component {
   }
 }
 
-Calender.propTypes = {
+CalendarGridView.propTypes = {
   classes: PropTypes.object.isRequired,
   events: PropTypes.array,
 };
 
-export default withStyles(styles)(Calender);
+export default withStyles(styles)(CalendarGridView);
