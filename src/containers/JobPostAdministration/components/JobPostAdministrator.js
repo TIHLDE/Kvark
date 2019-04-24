@@ -29,7 +29,6 @@ import DownloadIcon from '@material-ui/icons/CloudDownload';
 // Project Components
 import TextEditor from '../../../components/inputs/TextEditor';
 import JobPostPreview from './JobPostPreview';
-import EventService from "../../../api/services/EventService";
 
 
 const SIDEBAR_WIDTH = 300;
@@ -172,7 +171,6 @@ class JobPostAdministrator extends Component {
 
         jobposts: [],
         expired: [],
-        categories: [],
         selectedJobPost: null,
 
         title: '',
@@ -183,7 +181,6 @@ class JobPostAdministrator extends Component {
         link: '',
         description: '',
         signUp: false,
-        priority: 0,
         image: '',
         imageAlt: '',
 
@@ -215,7 +212,7 @@ class JobPostAdministrator extends Component {
           this.setState({isFetching: false});
           JobPostService.getExpiredData((isError, data) => {
               if (!isError) {
-                  this.setState({expired: data});
+                  this.setState({expired: data || []});
               }
               this.setState({isFetching: true});
           });
@@ -232,7 +229,6 @@ class JobPostAdministrator extends Component {
                   title: jobpost.title,
                   location: jobpost.location,
                   description: jobpost.description,
-                  priority: jobpost.priority,
                   image: jobpost.image,
                   startDate: jobpost.start.substring(0,16),
                   company: jobpost.company,
@@ -250,7 +246,6 @@ class JobPostAdministrator extends Component {
               title: '',
               location: '',
               description: '',
-              priority: 0,
               image: '',
               imageAlt: '',
               startDate: new Date().toISOString().substring(0, 16),
@@ -285,7 +280,6 @@ class JobPostAdministrator extends Component {
           title: this.state.title,
           location: this.state.location,
           description: this.state.description,
-          priority: this.state.priority,
           image: this.state.image,
           imageAlt: 'jobpost',
           start: moment(this.state.startDate).format('YYYY-MM-DDThh:mm'),
@@ -355,7 +349,7 @@ class JobPostAdministrator extends Component {
                 const index = newJobPosts.findIndex((elem) => elem.id === selectedJobpost.id);
                 if(index !== -1) {
                     newJobPosts.splice(index, 1);
-                    this.setState({events: newJobPosts, selectedEvent: null, showSuccessMessage: true, successMessage: jobpostDeleted});
+                    this.setState({jobposts: newJobPosts, selectedJobPost: null, showSuccessMessage: true, successMessage: jobpostDeleted});
                 }
             }
             this.setState({isLoading: false});
@@ -393,14 +387,13 @@ class JobPostAdministrator extends Component {
                           <form>
                               <Grid container direction='column' wrap='nowrap'>
                                   <Typography variant='headline'>{header}</Typography>
-                                  <TextField className={classes.margin} fullWidth label='Bilde' value={image} onChange={this.handleChange('image')}/>
                                   <TextField className={classes.field} label='Tittel' value={title} onChange={this.handleChange('title')} required/>
+                                  <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
 
                                   <TextEditor className={classes.margin} value={description} onChange={this.onChange('description')}/>
 
                                   <Divider className={classes.margin} />
-
-                                  <TextField className={classes.margin} label='Sted' value={location} onChange={this.handleChange('location')} required/>
+                                  <TextField className={classes.margin} fullWidth label='Bilde' value={image} onChange={this.handleChange('image')}/>
                                   <TextField className={classes.margin} label='Bedrift' value={company} onChange={this.handleChange('company')} required/>
                                   <TextField className={classes.margin} label="E-post" value={email} onChange={this.handleChange('email')}/>
                                   <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Frist' value={this.state.startDate} onChange={this.handleChange('startDate')}/>
