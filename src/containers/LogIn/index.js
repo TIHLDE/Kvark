@@ -61,7 +61,7 @@ const styles = {
 };
 
 class LogIn extends Component {
-    
+
     constructor() {
         super();
         this.state = {
@@ -146,7 +146,6 @@ class LogIn extends Component {
                             </form>
                         </Paper>
                     </div>
-                    
                 </div>
             </Navigation>
         );

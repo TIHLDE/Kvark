@@ -11,12 +11,13 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
+import Button from '@material-ui/core/Button';
 
 // Icons
 import LandingHeader from '../../assets/img/headerGif.gif';
 import FitnessIcon from '@material-ui/icons/FitnessCenter';
 import TerrainIcon from '@material-ui/icons/Terrain';
-import LocalSeeIcon from '@material-ui/icons/LocalSee'
+import LocalSeeIcon from '@material-ui/icons/LocalSee';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
@@ -52,14 +53,14 @@ const styles = {
         margin: 'auto',
         '@media only screen and (max-width: 1200px)': {
             padding: '48px 0',
-        }
+        },
     },
     topSection: {
         padding: '20px 48px 48px 48px',
 
         '@media only screen and (max-width: 1200px)': {
             padding: '12px 0px 48px 0px',
-        }
+        },
     },
     verticalMargin: {
         marginTop: 30,
@@ -98,11 +99,25 @@ const styles = {
         // 600px
         '@media only screen and (max-width: 860px)': {
             gridTemplateColumns: '1fr',
-        }
+        },
     },
     calendar: {
         justify: 'center',
-    }
+    },
+    button: {
+        textDecoration: 'none',
+        backgroundColor: '#1d448c',
+        color: 'white',
+        padding: '6px 6px 6px 6px',
+        borderRadius: '5px',
+        display: 'block',
+        margin: 'auto',
+        maxWidth: '100px',
+        textAlign: 'center',
+        marginTop: '15px',
+    },
+    buttonDiv: {
+    },
 };
 
 class NewLanding extends Component {
@@ -123,43 +138,16 @@ class NewLanding extends Component {
                             <Divider />
                         </Banner>
                     </div>
-
                     <div className={classes.smoke}>
                         <div className={classes.section}>
-                            <Paper className={classes.container}>
-                                <div className={classes.icons}>
-                                    <Icons data={{
-                                        title: "TurKom",
-                                    }} icon={TerrainIcon} />
-                                    <Icons data={{
-                                        title: "Tihlde Pythons",
-                                    }} icon={FitnessIcon} />
-                                    <Icons data={{
-                                        title: "Redaksjonen",
-                                    }} icon={LocalSeeIcon} />
-                                </div>
-                            </Paper>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div className={classes.section}>
-                            <Typography className={classes.verticalMargin} variant='headline' color='inherit' align='center'>Kalender</Typography>
                             <Calender className={classes.calendar}></Calender>
                         </div>
                     </div>
 
-                    <div className={classes.smoke}>
-                        <div className={classes.section}>
-                            <Typography className={classes.verticalMargin} variant='headline' color='inherit' align='center'>Nyheter</Typography>
-
-                            <Paper className={classes.miniMargin} square elevation={1}>
-                            </Paper>
-                        </div>
-                    </div>
-
                     <div className={classes.section}>
-                        <Typography className={classes.verticalMargin} variant='headline' color='inherit' align='center'>Kontakt Oss</Typography>
+                        <Typography className={classes.verticalMargin} variant='headline' color='inherit' align='center'>Got feedback?</Typography>
+                        <div>Fortell oss hva du syns om den nye siden vår (bugs, new features...etc)</div>
+                            <a className={classes.button} href="https://docs.google.com/forms/d/e/1FAIpQLSfp8ZUm-GfzMla0Hg4AeX0iO8HME8ez7TttY2MgUfpC8MzBIQ/viewform">Klikk her</a>
                     </div>
                 </Grid>
             </Navigation>

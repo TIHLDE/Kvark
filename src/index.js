@@ -50,7 +50,7 @@ const Application = (
         <BrowserRouter>
             <MuiThemeProvider theme={theme}>
                 <Switch>
-                    <Route exact path='/' component={Landing} />
+                    <Route exact path='/' component={NewLanding} />
                     <Route path='/nyheter/:id' component={NewsPage} />
                     <Route path='/arrangementer/:id' component={EventDetails} />
                     <Route path={URLS.about} component={About} />
@@ -66,7 +66,6 @@ const Application = (
                     <PrivateRoute path={URLS.jobpostsAdmin} component={JobPostAdministration} />
                     <PrivateRoute path={URLS.eventAdmin} component={EventAdministration} />
                     <Route path={URLS.login} component={LogIn} />
-                    <Route path={URLS.newlanding} component={NewLanding} />
 
                 </Switch>
             </MuiThemeProvider>
