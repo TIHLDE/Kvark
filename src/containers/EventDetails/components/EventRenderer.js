@@ -96,7 +96,7 @@ const EventRenderer = (props) => {
             <Typography className={classes.title} variant='headline'><strong>{data.title}</strong></Typography>
             <Divider />
             <div className={classes.grid} >
-                
+
                 <div className={classes.details}>
                     <InfoContent icon={<Calendar />} label={start.format('DD.MM.YYYY')} />
                     <InfoContent icon={<Time />} label={start.format('HH:mm')} />

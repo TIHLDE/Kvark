@@ -174,12 +174,13 @@ class JobPostAdministrator extends Component {
         selectedJobPost: null,
 
         title: '',
+        ingress: '',
         location: '',
-        startDate: new Date().toISOString(),
+        deadline: new Date().toISOString(),
         company: '',
         email: '',
         link: '',
-        description: '',
+        body: '',
         signUp: false,
         image: '',
         imageAlt: '',
@@ -227,10 +228,11 @@ class JobPostAdministrator extends Component {
               this.setState({
                   selectedJobPost: jobpost,
                   title: jobpost.title,
+                  ingress: jobpost.ingress,
                   location: jobpost.location,
-                  description: jobpost.description,
+                  body: jobpost.body,
                   image: jobpost.image,
-                  startDate: jobpost.start.substring(0,16),
+                  deadline: jobpost.deadline.substring(0,16),
                   company: jobpost.company,
                   email: jobpost.email,
                   link: jobpost.link,
@@ -244,11 +246,12 @@ class JobPostAdministrator extends Component {
           this.setState({
               selectedJobPost: null,
               title: '',
+              ingress: '',
               location: '',
-              description: '',
+              body: '',
               image: '',
               imageAlt: '',
-              startDate: new Date().toISOString().substring(0, 16),
+              deadline: new Date().toISOString().substring(0, 16),
               company: '',
               email: '',
               link: '',
@@ -278,11 +281,12 @@ class JobPostAdministrator extends Component {
 
       getStateJobPostItem = () => ({
           title: this.state.title,
+          ingress: this.state.ingress,
           location: this.state.location,
-          description: this.state.description,
+          body: this.state.body,
           image: this.state.image,
           imageAlt: 'jobpost',
-          start: moment(this.state.startDate).format('YYYY-MM-DDThh:mm'),
+          deadline: moment(this.state.deadline).format('YYYY-MM-DDThh:mm'),
           company: this.state.company,
           email: this.state.email,
           link: this.state.link,
@@ -337,16 +341,16 @@ class JobPostAdministrator extends Component {
     deleteJobPostItem = (jobpost) => {
         jobpost.preventDefault();
 
-        const {selectedJobpost} = this.state;
+        const {selectedJobPost} = this.state;
 
         this.setState({isLoading: true});
 
         // Create new JobPost Item
-        JobPostService.deleteJobPost(selectedJobpost.id, (isError, data) => {
+        JobPostService.deleteJobPost(selectedJobPost.id, (isError, data) => {
             if(isError === false) {
                 // Remove the deleted JobPost from the state
                 const newJobPosts = Object.assign([], this.state.jobposts);
-                const index = newJobPosts.findIndex((elem) => elem.id === selectedJobpost.id);
+                const index = newJobPosts.findIndex((elem) => elem.id === selectedJobPost.id);
                 if(index !== -1) {
                     newJobPosts.splice(index, 1);
                     this.setState({jobposts: newJobPosts, selectedJobPost: null, showSuccessMessage: true, successMessage: jobpostDeleted});
@@ -359,7 +363,7 @@ class JobPostAdministrator extends Component {
 
     render() {
         const {classes} = this.props;
-        const {selectedJobPost, title, location, description, image, company, email, link} = this.state;
+        const {selectedJobPost, title, ingress, location, body: body, image, company, email, link} = this.state;
         const selectedJobPostId = (selectedJobPost)? selectedJobPost.id : '';
         const isNewItem = (selectedJobPost === null);
         const header = (isNewItem)? 'Lag en ny annonse' : 'Endre annonse';
@@ -388,15 +392,16 @@ class JobPostAdministrator extends Component {
                               <Grid container direction='column' wrap='nowrap'>
                                   <Typography variant='headline'>{header}</Typography>
                                   <TextField className={classes.field} label='Tittel' value={title} onChange={this.handleChange('title')} required/>
+                                  <TextField className={classes.field} label='Ingress' value={ingress} onChange={this.handleChange('ingress')} required/>
                                   <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
 
-                                  <TextEditor className={classes.margin} value={description} onChange={this.onChange('description')}/>
+                                  <TextEditor className={classes.margin} value={body} onChange={this.onChange('body')}/>
 
                                   <Divider className={classes.margin} />
                                   <TextField className={classes.margin} fullWidth label='Bilde' value={image} onChange={this.handleChange('image')}/>
                                   <TextField className={classes.margin} label='Bedrift' value={company} onChange={this.handleChange('company')} required/>
                                   <TextField className={classes.margin} label="E-post" value={email} onChange={this.handleChange('email')}/>
-                                  <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Frist' value={this.state.startDate} onChange={this.handleChange('startDate')}/>
+                                  <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Frist' value={this.state.deadline} onChange={this.handleChange('deadline')}/>
                                   <TextField className={classes.margin} label="Link" value={link} onChange={this.handleChange('link')}/>
 
 
