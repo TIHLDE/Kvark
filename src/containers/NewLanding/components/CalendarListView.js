@@ -137,7 +137,7 @@ function CalendarListView(props) {
           <Typography align='center'>Alle arrangementer ({props.events.length})</Typography>
         </LinkButton>
         :
-        <Typography variant='display4' className={classes.noEventText} align='center'>Ingen arrangementer å vise</Typography>
+        <Typography variant='subtitle' className={classes.noEventText} align='center'>Ingen arrangementer å vise</Typography>
       }
     </div>
   );
