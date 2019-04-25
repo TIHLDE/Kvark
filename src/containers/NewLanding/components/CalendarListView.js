@@ -20,16 +20,13 @@ import TIHLDELOGO from '../../../assets/img/tihlde_image.png';
 // Styles
 const styles = (theme) => ({
   eventListContainer: {
-    // padding: 1,
     display: 'grid',
     gridGap: '1px',
     color: theme.palette.text.secondary,
-    // backgroundColor: 'rgba(0, 0, 0, 0.12)',
     margin: 'auto',
   },
   eventListRow: {
     display: 'flex',
-    backgroundColor: 'white',
     minHeight: 80,
     overflow: 'hidden',
     alignItems: 'center',
@@ -96,32 +93,32 @@ function CalendarListItem(props) {
   const imageAlt = props.eventData.image_alt ? props.eventData.image_alt : props.eventData.title;
 
   return (
-    <LinkButton noPadding to={'/arrangementer/' + props.eventData.id + '/'}>
-      <div className={classes.eventListRow}>
-        <div className={classes.eventImageContainer}>
-          <img className={classes.eventImage} src={src} alt={imageAlt} />
-        </div>
-        <div className={classes.eventContainer}>
-          <div className={classes.eventTitle}>
-            <Typography align='center' variant='title'>{props.eventData.title}</Typography>
-            <div className={classNames(classes.hiddenOnMobile, classes.eventInfoElement)}>
-              <LocationOn className={classes.eventIcon} />
-              {props.eventData.location}
+      <LinkButton noPadding to={'/arrangementer/' + props.eventData.id + '/'}>
+        <div className={classes.eventListRow}>
+          <div className={classes.eventImageContainer}>
+            <img className={classes.eventImage} src={src} alt={imageAlt} />
+          </div>
+          <div className={classes.eventContainer}>
+            <div className={classes.eventTitle}>
+              <Typography align='center' variant='title'>{props.eventData.title}</Typography>
+              <div className={classNames(classes.hiddenOnMobile, classes.eventInfoElement)}>
+                <LocationOn className={classes.eventIcon} />
+                {props.eventData.location}
+              </div>
+            </div>
+            <div className={classes.eventInfo}>
+              <div className={classes.eventInfoElement}>
+                <CalendarToday className={classes.eventIcon} />
+                {start.format('DD.MM.YYYY')}
+              </div>
+              <div className={classNames(classes.hiddenOnMobile, classes.eventInfoElement)}>
+                <Schedule className={classes.eventIcon} />
+                {start.format('HH:mm')}
+              </div>
             </div>
           </div>
-          <div className={classes.eventInfo}>
-            <div className={classes.eventInfoElement}>
-              <CalendarToday className={classes.eventIcon} />
-              {start.format('DD.MM.YYYY')}
-            </div>
-            <div className={classNames(classes.hiddenOnMobile, classes.eventInfoElement)}>
-              <Schedule className={classes.eventIcon} />
-              {start.format('HH:mm')}
-            </div>
-          </div>
         </div>
-      </div>
-    </LinkButton>
+      </LinkButton>
   );
 }
 

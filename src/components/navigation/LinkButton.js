@@ -4,30 +4,30 @@ import {Link as RouterLink} from 'react-router-dom';
 
 import ButtonBase from '@material-ui/core/ButtonBase';
 import {withStyles} from '@material-ui/core/styles';
-import classNames from 'classnames'
+import classNames from 'classnames';
 import Typography from '@material-ui/core/Typography';
 
 const linkButtonStyles = {
   button: {
     height: '100%',
-    width: '100%'
+    width: '100%',
   },
   buttonFrame: {
     width: '100%',
     height: '100%',
-    //borderRight: '1px solid rgba(0,0,0,0.12)',
-    //borderLeft: '1px solid rgba(0,0,0,0.12)',
+    // borderRight: '1px solid rgba(0,0,0,0.12)',
+    // borderLeft: '1px solid rgba(0,0,0,0.12)',
     backgroundColor: 'white',
   },
   textCenter: {
-    textAlign: 'center'
+    textAlign: 'center',
   },
   textLeft: {
     textAlign: 'left',
   },
   wrapper: {
     padding: 0,
-    backgroundColor: 'rgba(0,0,0,0.12)'
+    backgroundColor: 'rgba(0,0,0,0.12)',
   },
   padding: {
     paddingLeft: 1,
@@ -42,21 +42,21 @@ const linkButtonStyles = {
   text: {
     width: '100%',
     padding: 10,
-  }
-}
+  },
+};
 
 const LinkButton = (props) => {
-  const {classes, children, noPadding, textLeft, noText, icon: IconComponent} = props
+  const {classes, children, noPadding, textLeft, noText, icon: IconComponent} = props;
 
   // React router Link do not support external links
   let baseComponent;
-  if (props.to.includes('http')){
+  if (props.to.includes('http')) {
     baseComponent = 'a';
-  }else {
+  } else {
     baseComponent = RouterLink;
   }
 
-  let buttonContent
+  let buttonContent;
   if (noText) {
     buttonContent = children;
   } else {
@@ -64,14 +64,14 @@ const LinkButton = (props) => {
       <Typography variant="subheading" className={classes.text}>
         {children}
       </Typography>
-    )
+    );
   }
 
   return (
     <div className={classNames(classes.wrapper, noPadding ? null: classes.padding)}>
       <div className={classNames(classes.buttonFrame, textLeft ? classes.textLeft : classes.textCenter)}>
         <ButtonBase
-          className={classes.button}
+          className={classNames('clickable', classes.button)}
           component={baseComponent}
           to={props.to}
           href={props.to}>
@@ -91,7 +91,8 @@ LinkButton.propTypes = {
   to: PropTypes.string.isRequired,
   noPadding: PropTypes.bool,
   textLeft: PropTypes.bool,
-  noText: PropTypes.bool
+  noText: PropTypes.bool,
+  classes: PropTypes.array,
 };
 
 export default withStyles(linkButtonStyles)(LinkButton);

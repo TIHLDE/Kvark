@@ -9,7 +9,7 @@
 body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
-    
+
 }
 /* use only em for font sizes */
 
@@ -48,15 +48,8 @@ a {
     color: var(--tihlde-blaa);
 }
 
-.pulse {
-    display: block;
-    min-width: 14px;
-    min-height: 14px;
-    border-radius: 100%;
-    background: rgba(255,255,255,1);
-    box-shadow: 0 0 0 rgba(255,255,255,0.8);
-    animation: pulse 2s infinite;
-    margin-right: 20px;
+.clickable:hover {
+  background-color: #EBEBEB; 
 }
 
 
@@ -85,6 +78,19 @@ pre {
 p > code {
     padding: 10px;
     background-color: whitesmoke;
+}
+
+/* PULSE EFFECT */
+
+.pulse {
+    display: block;
+    min-width: 14px;
+    min-height: 14px;
+    border-radius: 100%;
+    background: rgba(255,255,255,1);
+    box-shadow: 0 0 0 rgba(255,255,255,0.8);
+    animation: pulse 2s infinite;
+    margin-right: 20px;
 }
 
 @-webkit-keyframes pulse {

@@ -51,7 +51,7 @@ const styles = {
         gridGap: '1px',
         '@media only screen and (max-width: 860px)': {
             gridTemplateColumns: '1fr',
-        }
+        },
     },
     icons: {
         display: 'grid',
@@ -61,7 +61,7 @@ const styles = {
         // 600px
         '@media only screen and (max-width: 860px)': {
             gridTemplateColumns: '1fr',
-        }
+        },
     },
 
 };

@@ -16,10 +16,10 @@ import LinkButton from '../../../components/navigation/LinkButton';
 
 const styles = {
     btnBase: {
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
     },
     root: {
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
         padding: 16,
         '@media only screen and (max-width: 600px)': {
 
