@@ -134,7 +134,7 @@ class NewLanding extends Component {
                     <div className={classNames(classes.section, classes.topSection)}>
                         <Banner
                             image={LandingHeader}
-                            disableFilter='true'>
+                            disableFilter={true}>
                             <Divider />
                         </Banner>
                     </div>

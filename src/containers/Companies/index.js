@@ -66,7 +66,7 @@ const styles = {
     marginBottom: "20px"
   },
   smoke: {
-    backgroundColor: "#fafafa"
+    backgroundColor: "#f5f5f5"
   },
   formWrapper: {
     margin: "15px 0"
