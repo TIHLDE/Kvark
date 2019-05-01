@@ -57,7 +57,7 @@ const styles = {
     },
     topSection: {
         padding: '20px 48px 48px 48px',
-
+        margin: 'unset',
         '@media only screen and (max-width: 1200px)': {
             padding: '12px 0px 48px 0px',
         },
