@@ -48,13 +48,15 @@ body {
 .col-center {
   justify-content: center;
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .col-end {
   justify-content: flex-end;
   text-align: right;
 }
-
 
 /* Calendar */
 
@@ -89,7 +91,7 @@ body {
 
 .calendar .header .icon:last-of-type {
   margin-right: 1em;
-}
+} 
 
 .calendar .days {
   text-transform: uppercase;

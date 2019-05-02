@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes, { array } from 'prop-types';
 import moment from 'moment';
+import 'moment/locale/nb'
 import './style.css';
 
 // Material-UI
