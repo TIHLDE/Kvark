@@ -5,7 +5,7 @@ const cookies = new Cookies();
 
 export class Token {
     set(token) {
-        cookies.set(TOKEN_COOKIE_ID, token, {path: '/', expires: new Date(Date.now() + expire * 2000)});
+        cookies.set(TOKEN_COOKIE_ID, token, {path: '/', expires: new Date(Date.now() + 3600 * 2000)});
     }
 
     get() {

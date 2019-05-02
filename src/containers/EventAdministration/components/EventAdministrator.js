@@ -167,7 +167,6 @@ class EventAdministrator extends Component {
 
             events: [],
             expired: [],
-            eventLists: [],
             categories: [],
             selectedEvent: null,
 
@@ -180,7 +179,6 @@ class EventAdministrator extends Component {
             image: '',
             category: 0,
             // imageAlt: '',
-            eventlist: 0,
 
             showMessage: false,
             errorMessage: 'Det oppstod en feil',
@@ -191,14 +189,6 @@ class EventAdministrator extends Component {
     }
 
     componentDidMount() {
-
-        // Get all eventlists
-        EventService.getEventLists()
-        .then((data) => {
-            if(data) {
-                this.setState({eventLists: data});
-            }
-        });
 
         // Get all categories
         EventService.getCategories()
@@ -247,7 +237,6 @@ class EventAdministrator extends Component {
                 priority: event.priority,
                 image: event.image,
                 category: event.category,
-                eventlist: event.eventlist,
                 startDate: event.start.substring(0,16),
                 signUp: event.signUp,
             });
@@ -264,7 +253,6 @@ class EventAdministrator extends Component {
             priority: 0,
             image: '',
             imageAlt: '',
-            eventlist: 0,
             category: 0,
             startDate: new Date().toISOString().substring(0, 16),
             signUp: false,
@@ -299,7 +287,6 @@ class EventAdministrator extends Component {
         image: this.state.image,
         imageAlt: 'event',
         category: this.state.category,
-        eventlist: this.state.eventlist,
         start: moment(this.state.startDate).format('YYYY-MM-DDThh:mm'),
         signUp: this.state.signUp,
     });
@@ -373,9 +360,8 @@ class EventAdministrator extends Component {
 
     render() {
         const {classes} = this.props;
-        const {selectedEvent, title, location, description, image, priority, eventlist, categories, category} = this.state;
+        const {selectedEvent, title, location, description, image, priority, categories, category} = this.state;
         const selectedEventId = (selectedEvent)? selectedEvent.id : '';
-        const eventLists = (this.state.eventLists)? this.state.eventLists : [];
         const isNewItem = (selectedEvent === null);
         const header = (isNewItem)? 'Lag et nytt arrangement' : 'Endre arrangement';
 
@@ -424,14 +410,6 @@ class EventAdministrator extends Component {
                                             {categories.map((value, index) => (
                                                 <MenuItem key={index} value={value.id}>
                                                     {value.text}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-
-                                        <TextField className={classes.margin} select fullWidth label='Arrangement Liste' value={eventlist} onChange={this.handleChange('eventlist')}>
-                                            {eventLists.map((value, index) => (
-                                                <MenuItem key={index} value={value.id}>
-                                                    {value.name}
                                                 </MenuItem>
                                             ))}
                                         </TextField>
