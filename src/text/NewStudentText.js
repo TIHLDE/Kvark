@@ -20,7 +20,7 @@ export default {
             hvaGjorLinjeForening: {
                 header: "Hva gjør en linjeforening?",
                 text: "Linjeforeninger jobber for å etablere sosiale nettverk på tvers av kull og linjer innad på studiet. Over tid har de fleste linjeforeninger utviklet seg til å bli bindeleddet mellom studentene og næringslivet.\n" +
-                    "TIHLDE sitt formål er nedfelt i <a href='https://tihlde.org/om-tihlde/tihldes-lover/'>TIHLDEs Lover</a>. Her står det: “Foreningens formål er å fremme det sosiale og faglige tilbudet ved AIT.”\n" +
+                    "TIHLDE sitt formål er nedfelt i <a href='https://tihlde.org/lover/'>TIHLDEs Lover</a>. Her står det: “Foreningens formål er å fremme det sosiale og faglige tilbudet ved AIT.”\n" +
                     "Linjeforeninger er også arrangør av sosiale arrangementer og aktivitetstilbud utenfor studiet."
             },
             skoleBoeker: {
