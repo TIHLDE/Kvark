@@ -80,25 +80,25 @@ class Laws extends Component {
                                 <Icons data={{
                                     title: "Lover for TIHLDE",
                                     alt: "this is an alt text"
-                                }} icon={GavelIcon} to={'https://tihlde.org/assets/2019/03/TIHLDEs_Lover.pdf'} />
+                                }} icon={GavelIcon} to={'https://old.tihlde.org/assets/2019/03/TIHLDEs_Lover.pdf'} />
                                 <Icons data={{
                                     title: "Styreinstruks for hovedstyret",
                                     alt: "this is an alt text",
 
-                                }} icon={AccountBalanceIcon} to={'https://tihlde.org/assets/2019/02/Vedlegg-02.pdf'} />
+                                }} icon={AccountBalanceIcon} to={'https://old.tihlde.org/assets/2019/02/Vedlegg-02.pdf'} />
                                 <Icons data={{
                                     title: "Undergruppeinstrukser",
                                     alt: "this is an alt text"
-                                }} icon={AccountBalanceIcon} to={'https://tihlde.org/assets/2019/02/Vedlegg-03.pdf'} />
+                                }} icon={AccountBalanceIcon} to={'https://old.tihlde.org/assets/2019/02/Vedlegg-03.pdf'} />
                             </div>
                             <Divider />
                             <div className={classes.content}>
-                                <LinkButton noPadding textLeft icon={ListAltIcon} to='https://tihlde.org/assets/2019/02/Vedlegg-04.pdf'>Regler og instrukser for Sosialen</LinkButton>
-                                <LinkButton noPadding textLeft icon={ListAltIcon} to='https://tihlde.org/assets/2019/02/Vedlegg-05.pdf'>Regler og instrukser for Næringsliv og kurs</LinkButton>
-                                <LinkButton noPadding textLeft icon={ListAltIcon} to='https://tihlde.org/assets/2019/02/Vedlegg-06.pdf'>Regler og instrukser for Drift</LinkButton>
-                                <LinkButton noPadding textLeft icon={ListAltIcon} to='https://tihlde.org/assets/2019/02/Vedlegg-07.pdf'>Regler og instrukser for Promo</LinkButton>
-                                <LinkButton noPadding textLeft icon={ListAltIcon} to='https://tihlde.org/assets/2019/02/Vedlegg-08.pdf'>Regler og instrukser for De Eldstes Raad</LinkButton>
-                                <LinkButton noPadding textLeft icon={ListAltIcon} to='https://tihlde.org/assets/2019/02/Vedlegg-09.pdf'>Regler og instrukser for TIHLDE-kontoret</LinkButton>
+                                <LinkButton noPadding textLeft icon={ListAltIcon} to='https://old.tihlde.org/assets/2019/02/Vedlegg-04.pdf'>Regler og instrukser for Sosialen</LinkButton>
+                                <LinkButton noPadding textLeft icon={ListAltIcon} to='https://old.tihlde.org/assets/2019/02/Vedlegg-05.pdf'>Regler og instrukser for Næringsliv og kurs</LinkButton>
+                                <LinkButton noPadding textLeft icon={ListAltIcon} to='https://old.tihlde.org/assets/2019/02/Vedlegg-06.pdf'>Regler og instrukser for Drift</LinkButton>
+                                <LinkButton noPadding textLeft icon={ListAltIcon} to='https://old.tihlde.org/assets/2019/02/Vedlegg-07.pdf'>Regler og instrukser for Promo</LinkButton>
+                                <LinkButton noPadding textLeft icon={ListAltIcon} to='https://old.tihlde.org/assets/2019/02/Vedlegg-08.pdf'>Regler og instrukser for De Eldstes Raad</LinkButton>
+                                <LinkButton noPadding textLeft icon={ListAltIcon} to='https://old.tihlde.org/assets/2019/02/Vedlegg-09.pdf'>Regler og instrukser for TIHLDE-kontoret</LinkButton>
                             </div>
                         </Paper>
                     </div>
