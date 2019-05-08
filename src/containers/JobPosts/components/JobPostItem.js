@@ -32,7 +32,7 @@ const styles = {
         },
     },
     src: {
-        objectFit: 'cover',
+        objectFit: 'scale-down',
         padding: 4,
         border: '1px solid whitesmoke',
         height: 70,

@@ -293,6 +293,11 @@ class JobPostAdministrator extends Component {
           signUp: this.state.signUp,
       });
 
+      getJobPostPreview = () => {
+          const posts = this.getStateJobPostItem();
+          return {...posts, logo: this.state.image};
+      }
+
       createNewJobpost = (jobpost) => {
           jobpost.preventDefault();
 
@@ -398,7 +403,7 @@ class JobPostAdministrator extends Component {
                                   <TextEditor className={classes.margin} value={body} onChange={this.onChange('body')}/>
 
                                   <Divider className={classes.margin} />
-                                  <TextField className={classes.margin} fullWidth label='Bilde' value={image} onChange={this.handleChange('image')}/>
+                                  <TextField className={classes.margin} fullWidth label='Logo' value={image} onChange={this.handleChange('image')}/>
                                   <TextField className={classes.margin} label='Bedrift' value={company} onChange={this.handleChange('company')} required/>
                                   <TextField className={classes.margin} label="E-post" value={email} onChange={this.handleChange('email')}/>
                                   <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Frist' value={this.state.deadline} onChange={this.handleChange('deadline')}/>
@@ -460,7 +465,7 @@ class JobPostAdministrator extends Component {
 
                   </Grid>
               </Paper>
-              <JobPostPreview data={this.getStateJobPostItem()} open={this.state.showPreview} onClose={this.handleToggleChange('showPreview')}/>
+              <JobPostPreview data={this.getJobPostPreview()} open={this.state.showPreview} onClose={this.handleToggleChange('showPreview')}/>
           </Fragment>
         );
     }
