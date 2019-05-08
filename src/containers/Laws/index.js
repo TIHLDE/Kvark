@@ -93,7 +93,7 @@ class Laws extends Component {
                             </div>
                             <Divider />
                             <div className={classes.content}>
-                                <LinkButton noPadding textLeft icon={ListAltIcon} to='https://tihlde.org/assets/2019/02/Vedlegg-04.pdf'>Regler for instrukser for Sosialen</LinkButton>
+                                <LinkButton noPadding textLeft icon={ListAltIcon} to='https://tihlde.org/assets/2019/02/Vedlegg-04.pdf'>Regler og instrukser for Sosialen</LinkButton>
                                 <LinkButton noPadding textLeft icon={ListAltIcon} to='https://tihlde.org/assets/2019/02/Vedlegg-05.pdf'>Regler og instrukser for Næringsliv og kurs</LinkButton>
                                 <LinkButton noPadding textLeft icon={ListAltIcon} to='https://tihlde.org/assets/2019/02/Vedlegg-06.pdf'>Regler og instrukser for Drift</LinkButton>
                                 <LinkButton noPadding textLeft icon={ListAltIcon} to='https://tihlde.org/assets/2019/02/Vedlegg-07.pdf'>Regler og instrukser for Promo</LinkButton>
