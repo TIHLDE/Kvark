@@ -181,13 +181,6 @@ class CalendarGridView extends React.Component {
           }
         }
       });
-
-      eventText.push(
-        <li className={classes.event}><a className={classes.linkFadder} href={'/arrangementer/'}>Fadder</a></li>,
-      )
-      eventText.push(
-        <li className={classes.event}><a className={classes.link} href={'/arrangementer/'}> Ikke Fadder Men Er Noe Veldig Viktig</a></li>,
-      )
       if (eventText.length > 0) {
         return <ul className={classes.list}>{eventText}</ul>;
       }
