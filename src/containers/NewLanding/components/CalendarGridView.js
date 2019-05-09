@@ -32,9 +32,12 @@ const styles = (theme) => ({
     listStyle: 'none',
   },
   list: {
-    width: '100%',
+    width: '50%',
     position: 'absolute',
     top: '10%',
+    '&:hover': {
+      width: '100%',
+    },
   },
   link: {
     color: '#777',
@@ -44,6 +47,18 @@ const styles = (theme) => ({
     backgroundColor: 'rgba(29,68,140, 0.15)',
     '&:hover': {
       backgroundColor: 'rgba(29,68,140, 0.7)',
+      cursor: 'pointer',
+      color: 'white',
+    },
+  },
+  linkFadder: {
+    color: '#777',
+    fontSize: '12px',
+    padding: '10px',
+    textDecoration: 'none',
+    backgroundColor: 'rgba(243,141,32, 0.5)',
+    '&:hover': {
+      backgroundColor: 'rgba(243,141,32, 1)',
       cursor: 'pointer',
       color: 'white',
     },
@@ -155,11 +170,24 @@ class CalendarGridView extends React.Component {
       this.props.events.forEach(event => {
         let eventDate = moment(event.start).format('DD-MM-YY');
         if (eventDate === date) {
-          eventText.push(
-            <li className={classes.event}><a className={classes.link} href={'/arrangementer/' + event.id + '/'}>{event.title}</a></li>,
-          )
+          if (event.category === 10) {
+            eventText.push(
+              <li className={classes.event}><a className={classes.linkFadder} href={'/arrangementer/' + event.id + '/'}>{event.title}</a></li>,
+            )
+          } else {
+            eventText.push(
+              <li className={classes.event}><a className={classes.link} href={'/arrangementer/' + event.id + '/'}>{event.title}</a></li>,
+            )
+          }
         }
       });
+
+      eventText.push(
+        <li className={classes.event}><a className={classes.linkFadder} href={'/arrangementer/'}>Fadder</a></li>,
+      )
+      eventText.push(
+        <li className={classes.event}><a className={classes.link} href={'/arrangementer/'}> Ikke Fadder Men Er Noe Veldig Viktig</a></li>,
+      )
       if (eventText.length > 0) {
         return <ul className={classes.list}>{eventText}</ul>;
       }
