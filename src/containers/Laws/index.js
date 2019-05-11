@@ -100,6 +100,9 @@ class Laws extends Component {
                                 <LinkButton noPadding textLeft icon={ListAltIcon} to='https://old.tihlde.org/assets/2019/02/Vedlegg-08.pdf'>Regler og instrukser for De Eldstes Raad</LinkButton>
                                 <LinkButton noPadding textLeft icon={ListAltIcon} to='https://old.tihlde.org/assets/2019/02/Vedlegg-09.pdf'>Regler og instrukser for TIHLDE-kontoret</LinkButton>
                             </div>
+                            <Divider />
+                            <iframe src="https://cdn.flipsnack.com/widget/v2/widget.html?hash=ft9aolljd" width="100%" height="1000" seamless="seamless" scrolling="no" frameBorder="0" allowFullScreen></iframe>
+
                         </Paper>
                     </div>
                 </div>
