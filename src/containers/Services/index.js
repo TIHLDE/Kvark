@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 // Icons
+import ServiceBanner from  '../../assets/img/ServiceBanner.jpg';
 import DatabaseIcon from '../../assets/icons/database.png';
 import EmailIcon from '../../assets/icons/email.svg';
 import HostingIcon from '../../assets/icons/hosting.png';
@@ -79,7 +80,7 @@ class Services extends Component {
                 <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
                     <Banner
                         className={classes.banner}
-                        image='http://www.mfactors.co.za/images/services.jpg'
+                        image={ServiceBanner}
                         title={Text.header}
                         header='Colagrol bruker'
                         text={Text.colargol} />
