@@ -118,3 +118,9 @@ p > code {
         box-shadow: 0 0 0 0 rgba(204,169,44, 0);
     }
 }
+
+
+/** Sidebar **/
+.noScrollbar::-webkit-scrollbar { 
+    display: none; 
+}

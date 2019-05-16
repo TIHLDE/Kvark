@@ -21,13 +21,10 @@ import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import IconButton from '@material-ui/core/IconButton';
 
-// Icons
-import AddIcon from '@material-ui/icons/Add';
-import DownloadIcon from '@material-ui/icons/CloudDownload';
-
 // Project Components
 import TextEditor from '../../../components/inputs/TextEditor';
 import EventPreview from './EventPreview';
+import EventSidebar from './EventSidebar';
 
 const SIDEBAR_WIDTH = 300;
 
@@ -38,33 +35,6 @@ const styles = (theme) => ({
         '@media only screen and (max-width: 800px)': {
             padding: 0,
         }
-    },
-    sidebar: {
-        paddingTop: 64,
-        position: 'fixed',
-        left: 0, top: 0, bottom: 0,
-        width: SIDEBAR_WIDTH,
-
-        '@media only screen and (max-width: 800px)': {
-            position: 'static',
-            width: '100%',
-            padding: 0,
-        }
-    },
-    sidebarTop: {
-        backgroundColor: 'whitesmoke',
-        padding: '10px 5px 10px 12px',
-    },
-    miniTop: {
-        padding: '5px 5px 5px 12px',
-    },
-    eventItem: {
-        padding: '10px 10px',
-        textAlign: 'left',
-    },
-    selected: {
-        backgroundColor: theme.palette.primary.main,
-        color: 'white',
     },
     field: {
         margin: '5px 0px',
@@ -127,28 +97,6 @@ const MessageView = withStyles(styles, {withTheme: true})((props) => {
     )
 });
 
-const EventItem = withStyles(styles, {withTheme: true})((props) => {
-    const {classes} = props;
-    return (
-        <Fragment>
-            <ButtonBase onClick={props.onClick}>
-                <Grid className={classNames(classes.eventItem, (props.selected)? classes.selected : '' )} container direction='row' alignItems='center' justify='space-between'>
-                    <Grid container direction='column' justify='center'>
-                        <Typography variant='subheading' color='inherit'>{props.title}</Typography>
-                        <Typography variant='caption'  color='inherit'>{props.location}</Typography>
-                    </Grid>
-                </Grid>
-            </ButtonBase>
-        <Divider/>
-        </Fragment>
-    );
-});
-
-EventItem.propTypes = {
-    title: PropTypes.string,
-    location: PropTypes.string,
-};
-
 const priorities = ['Lav', 'Middels', 'Høy'];
 const eventCreated = 'Arrangementet ble opprettet';
 const eventChanged = 'Endringen ble publisert';
@@ -208,7 +156,7 @@ class EventAdministrator extends Component {
     }
 
     fetchExpired = () => {
-        console.log(this.state.isFetching);
+
         if(this.state.isFetching) {
             return;
         }
@@ -440,34 +388,14 @@ class EventAdministrator extends Component {
                     </Paper>
 
                 </div>
-                <Paper className={classes.sidebar}>
-                    <Grid container direction='column' wrap='nowrap'>
-                        <Grid className={classNames(classes.sidebarTop)} container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
-                            <Typography variant='title' color='inherit'>Arrangementer</Typography>
-                            <IconButton onClick={this.resetEventState}><AddIcon/></IconButton>
-                        </Grid>
-                        {this.state.events.map((value, index) => (
-                            <EventItem
-                                key={index}
-                                selected={value.id === selectedEventId}
-                                onClick={() => this.onEventClick(value)}
-                                title={value.title}
-                                location={value.location} />
-                        ))}
-                        <Grid className={classNames(classes.sidebarTop, classes.miniTop)} container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
-                            <Typography variant='title' color='inherit'>Utgåtte</Typography>
-                            <IconButton onClick={this.fetchExpired}><DownloadIcon/></IconButton>
-                        </Grid>
-                        {this.state.expired.map((value, index) => (
-                            <EventItem
-                                key={index}
-                                selected={value.id === selectedEventId}
-                                onClick={() => this.onEventClick(value)}
-                                title={value.title}
-                                location={value.location} />
-                        ))}
-                    </Grid>
-                </Paper>
+                <EventSidebar
+                    events={this.state.events}
+                    expiredEvents={this.state.expired}
+                    selectedEventId={selectedEventId}
+                    onEventClick={this.onEventClick}
+                    resetEventState={this.resetEventState}
+                    fetchExpired={this.fetchExpired}
+                />
                 <EventPreview data={this.getStateEventItem()} open={this.state.showPreview} onClose={this.handleToggleChange('showPreview')}/>
             </Fragment>
         );

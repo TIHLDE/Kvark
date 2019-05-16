@@ -29,7 +29,7 @@ import DownloadIcon from '@material-ui/icons/CloudDownload';
 // Project Components
 import TextEditor from '../../../components/inputs/TextEditor';
 import JobPostPreview from './JobPostPreview';
-
+import JobPostSidebar from './JobPostSidebar';
 
 const SIDEBAR_WIDTH = 300;
 
@@ -60,7 +60,7 @@ const styles = (theme) => ({
     miniTop: {
         padding: '5px 5px 5px 12px',
     },
-    JobPostItem: {
+    jobPostItem: {
         padding: '10px 10px',
         textAlign: 'left',
     },
@@ -205,7 +205,6 @@ class JobPostAdministrator extends Component {
 
 
       fetchExpired = () => {
-          console.log(this.state.isFetching);
           if(this.state.isFetching) {
               return;
           }
@@ -433,38 +432,16 @@ class JobPostAdministrator extends Component {
                           </form>
                       }
                   </Paper>
-
+                <JobPostSidebar
+                    jobposts={this.state.jobposts}
+                    expiredJobPosts={this.state.expired}
+                    selectedJobPostId={selectedJobPostId}
+                    onEventClick={this.onEventClick}
+                    resetEventState={this.resetEventState}
+                    fetchExpired={this.fetchExpired}
+                />
               </div>
-              <Paper className={classes.sidebar}>
-                  <Grid container direction='column' wrap='nowrap'>
-                      <Grid className={classNames(classes.sidebarTop)} container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
-                          <Typography variant='title' color='inherit'>Annonser</Typography>
-                          <IconButton onClick={this.resetJobPostState}><AddIcon/></IconButton>
-                      </Grid>
-                      {this.state.jobposts.map((value, index) => (
-                          <JobPostItem
-                              key={index}
-                              selected={value.id === selectedJobPostId}
-                              onClick={() => this.onEventClick(value)}
-                              title={value.title}
-                              location={value.location} />
-                      ))}
-
-                      <Grid className={classNames(classes.sidebarTop, classes.miniTop)} container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
-                          <Typography variant='title' color='inherit'>Utgåtte</Typography>
-                          <IconButton onClick={this.fetchExpired}><DownloadIcon/></IconButton>
-                      </Grid>
-                      {this.state.expired.map((value, index) => (
-                          <JobPostItem
-                              key={index}
-                              selected={value.id === selectedJobPostId}
-                              onClick={() => this.onEventClick(value)}
-                              title={value.title}
-                              location={value.location} />
-                      ))}
-
-                  </Grid>
-              </Paper>
+              
               <JobPostPreview data={this.getJobPostPreview()} open={this.state.showPreview} onClose={this.handleToggleChange('showPreview')}/>
           </Fragment>
         );
