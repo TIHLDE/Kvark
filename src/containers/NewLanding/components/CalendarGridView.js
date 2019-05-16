@@ -152,13 +152,13 @@ class CalendarGridView extends React.Component {
 
   nextMonth = () => {
     this.setState({
-      currentMonth: moment(this.state.currentMonth).add(1, 'months').format(this.state.dateFormat),
+      currentMonth: moment(this.state.currentMonth).add(1, 'months'),
     });
   };
 
   prevMonth = () => {
     this.setState({
-      currentMonth: moment(this.state.currentMonth).subtract(1, 'months').format(this.state.dateFormat),
+      currentMonth: moment(this.state.currentMonth).subtract(1, 'months'),
     });
   };
 
