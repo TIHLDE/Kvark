@@ -235,7 +235,7 @@ class EventAdministrator extends Component {
         image: this.state.image,
         imageAlt: 'event',
         category: this.state.category,
-        start: moment(this.state.startDate).format('YYYY-MM-DDThh:mm'),
+        start: moment(this.state.startDate).format('YYYY-MM-DDTHH:mm'),
         signUp: this.state.signUp,
     });
 
@@ -267,7 +267,7 @@ class EventAdministrator extends Component {
 
         this.setState({isLoading: true});
 
-        // Create new Event Item
+        // Edit event
         EventService.putEvent(selectedEvent.id, item, (isError, data) => {
             if(!isError) {
                 // Update stored event with the new data

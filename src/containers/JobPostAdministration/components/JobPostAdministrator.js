@@ -285,7 +285,7 @@ class JobPostAdministrator extends Component {
           body: this.state.body,
           image: this.state.image,
           imageAlt: 'jobpost',
-          deadline: moment(this.state.deadline).format('YYYY-MM-DDThh:mm'),
+          deadline: moment(this.state.deadline).format('YYYY-MM-DDTHH:mm'),
           company: this.state.company,
           email: this.state.email,
           link: this.state.link,
