@@ -10,7 +10,7 @@ export default {
     fadder:{
         headline: "Velkommen til alle nye studenter!",
         text: "Hei og velkommen til TIHLDE. Vi i TIHLDE vil gjerne ønske deg velkommen til Trondheim og vil at du skal bli kjent med både byen og dine medstudenter" +
-            " derfor arrangerer vi fadderuken for dere. Men hva er fadderuken? Jo, fadderuken er et program som varer i to uker hvor du som en ny student blir godt kjent med " +
+            " derfor arrangerer vi fadderuka for dere. Men hva er fadderuka? Jo, fadderuka er et program som varer i to uker hvor du som en ny student blir godt kjent med " +
             "dine medstudenter og skaper et bånd som varer hele studietiden og muligens livet. For mer informasjon trykk på den blå knappen under."
     },
 
