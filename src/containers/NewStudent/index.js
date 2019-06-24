@@ -80,7 +80,7 @@ class NewStudent extends Component {
                     <div className={classes.content}>
 
                         <InfoCard header={Text.fadder.headline} text={Text.fadder.text} imageClass={classes.image} src={TihldeImg} classes={{children: classes.flex}} justifyText>
-                            <Button className={classes.bottomSpacing} variant='contained' color='primary' href='https://drive.google.com/file/d/1iHSVglQSDBH-qIxRv3w8OnC8vDR7NQTd/view?usp=sharing'> Trykk her for info om fadderuken </Button>
+                            <Button className={classes.bottomSpacing} variant='contained' color='primary' href='https://drive.google.com/file/d/1iHSVglQSDBH-qIxRv3w8OnC8vDR7NQTd/view?usp=sharing'> Trykk her for info om fadderuka </Button>
                         </InfoCard>
 
                         <InfoCard className={classes.infocard} header={Text.faq.header}>
