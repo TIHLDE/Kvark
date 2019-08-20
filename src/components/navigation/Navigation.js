@@ -173,7 +173,7 @@ const URIbutton = withStyles(styles)((props) => {
 const SponsorLogo = withStyles(styles)((props) => {
     const { classes } = props;
     return (
-        <a className={classes.sponsorWrapper} href="https://www.soprasteria.no/">
+        <a className={classes.sponsorWrapper} target="_blank" href="https://www.soprasteria.no/">
             <img className={classes.sponsorLogo} src={SopraSteria} alt='Sopra Steria Logo' height={'24rem'} />
             <div className={classes.sponsorText}>HOVEDSAMARBEIDSPARTNER</div>
         </a>
