@@ -192,14 +192,18 @@ class Companies extends Component {
             </Typography>
             <div className={classNames(classes.container)}>
               <InfoCard header="Dataingeniør" text={Text.data} justifyText />
-              <InfoCard header="Drift" text={Text.drift} justifyText />
               <InfoCard
-                header="IT-støttet bedriftsutvikling"
+                header="Digital infrastruktur og cybersikkerhet"
+                text={Text.drift}
+                justifyText
+              />
+              <InfoCard
+                header="Digital forretningsutvikling"
                 text={Text.support}
                 justifyText
               />
               <InfoCard
-                header="IKT-basert samhandling"
+                header="Digital samhandling"
                 text={Text.IKT}
                 justifyText
               />
