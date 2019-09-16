@@ -38,7 +38,7 @@ const styles = {
     }
   },
   section: {
-    padding: "48px 0px 48px",
+    padding: 48,
     maxWidth: 1200,
     margin: "auto",
     "@media only screen and (max-width: 1200px)": {
@@ -46,9 +46,7 @@ const styles = {
     }
   },
   topSection: {
-    //padding: "20px 48px 48px 48px",
-    paddingBottom: 0,
-    paddingTop: 24,
+    padding: "20px 48px 48px 48px",
 
     "@media only screen and (max-width: 1200px)": {
       padding: "12px 0px 48px 0px"
