@@ -38,7 +38,7 @@ const styles = {
     }
   },
   section: {
-    padding: 48,
+    padding: "48px 0px 48px",
     maxWidth: 1200,
     margin: "auto",
     "@media only screen and (max-width: 1200px)": {
@@ -46,7 +46,8 @@ const styles = {
     }
   },
   topSection: {
-    padding: "20px 48px 48px 48px",
+    paddingBottom: 0,
+	  paddingTop: 24,
 
     "@media only screen and (max-width: 1200px)": {
       padding: "12px 0px 48px 0px"
@@ -198,7 +199,7 @@ class Companies extends Component {
                 justifyText
               />
               <InfoCard
-                header="Digital foretningsutvikling"
+                header="Digital forretningsutvikling"
                 text={Text.support}
                 justifyText
               />
