@@ -5,7 +5,7 @@ export default {
     company: '/bedrifter/',
     about: '/om/',
     services: '/tjenester/',
-    newStudent: '/nyStudent/',
+    newStudent: '/nystudent/',
     jobposts: '/annonser/',
     profile: '/profile/',
     login: '/logg-inn/',
