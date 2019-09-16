@@ -9,7 +9,7 @@
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.8.4",
     "html-react-parser": "^0.4.6",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.12",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.23",
     "prop-types": "^15.6.2",
@@ -27,13 +27,16 @@
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "remark-breaks": "^1.0.1",
-    "universal-cookie": "^2.2.0"
+    "universal-cookie": "^2.2.0",
+    "snyk": "^1.217.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.7.2",
@@ -44,5 +47,6 @@
     ">0.2%",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "snyk": true
 }
