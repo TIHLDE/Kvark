@@ -10,11 +10,11 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import theme from './theme';
 import './assets/css/index.css';
 
-// Service imports
+// Service and action imports
 import AuthService from './api/services/AuthService';
+import MiscService from './api/services/MiscService';
 
 // Project containers
-import NewsPage from './containers/NewsPage';
 import EventDetails from './containers/EventDetails';
 import Companies from './containers/Companies';
 import About from './containers/About';
@@ -35,11 +35,13 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     return (
         <Route
             {...rest}
-            render={(props) => (
-                (AuthService.isAuthenticated()) ?
-                    <Component {...props} /> :
-                    <Redirect to={URLS.login.concat('/', JSON.stringify(props))} />
-            )}
+            render={(props) => {
+                if(AuthService.isAuthenticated()) {
+                    return <Component {...props} />
+                }
+                MiscService.setLogInRedirectURL(props.match.path);
+                return <Redirect to={URLS.login} />
+            }}
         />
     );
 };
@@ -50,8 +52,7 @@ const Application = (
             <MuiThemeProvider theme={theme}>
                 <Switch>
                     <Route exact path='/' component={NewLanding} />
-                    <Route path='/nyheter/:id' component={NewsPage} />
-                    <Route path='/arrangementer/:id' component={EventDetails} />
+                    <Route path={URLS.events.concat(':id/')} component={EventDetails} />
                     <Route path={URLS.about} component={About} />
                     <Route path={URLS.events} component={Events} />
                     <Route path={URLS.services} component={Services} />

@@ -1,6 +1,5 @@
 export default {
     landing: '/',
-    news: '/nyheter/',
     events: '/arrangementer/',
     company: '/bedrifter/',
     about: '/om/',

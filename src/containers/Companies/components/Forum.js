@@ -179,8 +179,6 @@ class Forum extends Component {
             })
         }
         else if (part === 'type') {
-            console.log("TYPE", event);
-            console.log(this.state.data);
             if (event.target.checked) {
                 this.setState({
                     data: {
@@ -271,7 +269,7 @@ class Forum extends Component {
             return (
                 <div className={classes.progress}>
                     <MessageIndicator header={this.state.message} variant='h5'/>
-                    <Button variant='raised' onClick={this.handleSubmitted('isFormSent')} color='primary'>Mottatt</Button>
+                    <Button variant='contained' onClick={this.handleSubmitted('isFormSent')} color='primary'>Mottatt</Button>
                 </div>
             )
         }

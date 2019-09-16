@@ -1,5 +1,6 @@
 import API from '../api';
 import store from '../../store/store';
+import * as MiscActions from '../../store/actions/MiscActions';
 
 class MiscService {
 
@@ -19,6 +20,14 @@ class MiscService {
             !callback || callback(response.isError === true, data);
             return data;
         });
+    }
+
+    static setLogInRedirectURL = (redirectURL) => {
+        MiscActions.setLogInRedirectURL(redirectURL)(store.dispatch);
+    }
+
+    static getLogInRedirectURL = () => {
+        return MiscActions.getLogInRedirectURL(store.getState());
     }
 }
 

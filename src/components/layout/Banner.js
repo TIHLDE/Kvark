@@ -6,8 +6,6 @@ import classNames from 'classnames';
 
 // Material UI Components
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import Send from '@material-ui/icons/Send';
 import { Grid, Typography } from '@material-ui/core';
 
 // Icons
@@ -95,15 +93,6 @@ const Banner = (props) => {
                         <div className={classes.line}/>
                     </div>}
                     {props.button && <div className={classes.button}>
-                        {/*<Button
-                            variant='contained'
-                            color='primary'
-                            onClick={props.onClick}>
-                            <div className={classes.flex}>
-                                <Send/>
-                                {props.button}
-                            </div>
-                        </Button>*/}
                         <ButtonComponent />
                     </div>}
                 </div>

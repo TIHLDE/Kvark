@@ -3,8 +3,9 @@ import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import URLS from '../../URLS';
 
-// Service imports
+// Service and action imports
 import AuthService from '../../api/services/AuthService';
+import MiscService from '../../api/services/MiscService';
 
 // Text imports
 import Text from '../../text/LogInText';
@@ -67,10 +68,12 @@ class LogIn extends Component {
         this.state = {
             errorMessage: null,
             isLoading: false,
+            redirectURL: MiscService.getLogInRedirectURL(), // Store redirectURL
         }
 
         this.username = React.createRef();
         this.password = React.createRef();
+        MiscService.setLogInRedirectURL(null); // Reset login URL
     }
 
     componentDidMount() {
@@ -94,7 +97,7 @@ class LogIn extends Component {
         this.setState({errorMessage: null, isLoading: true});
         AuthService.logIn(username, password).then((data) => {
             if(data) {
-                this.props.history.push(URLS.landing);
+                this.props.history.push(this.state.redirectURL || URLS.landing);
             } else {
                 this.setState({errorMessage: Text.wrongCred, isLoading: false})
             }

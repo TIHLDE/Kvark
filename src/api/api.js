@@ -6,14 +6,6 @@ export default {
         return new IRequest('GET', 'items/', undefined);
     },
 
-    // News
-    getNewsItem: (id) => {
-        return new IRequest('GET', 'news/'.concat(id, '/'), undefined);
-    },
-    createNewsItem: (item) => {
-        return new IRequest('POST', 'news/', item, true);
-    },
-
     // Events
     getEventItem: (id) => {
         return new IRequest('GET', 'events/'.concat(id, '/'), undefined);
