@@ -1,12 +1,12 @@
 export const actions = {
-    SET_JOB_POSTS: 'JB_SET_JOB_POSTS',
+    ADD_JOB_POSTS: 'JB_ADD_JOB_POSTS',
     SET_JOB_POST_BY_ID: 'JB_SET_JOB_POST_BY_ID',
 }
 
-export const setJobPosts = (data) =>
+export const addJobPosts = (data) =>
     dispatch => {
         if (data instanceof Array) {
-            dispatch({type: actions.SET_JOB_POSTS, payload: data.map(createJobPost)});
+            dispatch({type: actions.ADD_JOB_POSTS, payload: data.map(createJobPost)});
         }
     }
 

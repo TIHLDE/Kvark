@@ -1,6 +1,6 @@
 import API from '../api';
 import store from '../../store/store';
-import * as GridActions from '../../store/actions/GridActions';
+import * as MiscActions from '../../store/actions/MiscActions';
 
 class NewsService {
 
@@ -14,7 +14,7 @@ class NewsService {
         return response.then((data) => {
             // If successful, store news item in the store
             if (response.isError === false) {
-                GridActions.setSelectedItem(data)(store.dispatch);
+                MiscActions.setSelectedItem(data)(store.dispatch);
             }
             !callback || callback(response.isError === true, data);
             return data;

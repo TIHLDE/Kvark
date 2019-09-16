@@ -92,7 +92,7 @@ LinkButton.propTypes = {
   noPadding: PropTypes.bool,
   textLeft: PropTypes.bool,
   noText: PropTypes.bool,
-  classes: PropTypes.oneOf(PropTypes.array, PropTypes.object),
+  classes: PropTypes.object,
 };
 
 export default withStyles(linkButtonStyles)(LinkButton);

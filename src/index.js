@@ -14,7 +14,6 @@ import './assets/css/index.css';
 import AuthService from './api/services/AuthService';
 
 // Project containers
-import Landing from './containers/Landing';
 import NewsPage from './containers/NewsPage';
 import EventDetails from './containers/EventDetails';
 import Companies from './containers/Companies';
@@ -39,7 +38,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
             render={(props) => (
                 (AuthService.isAuthenticated()) ?
                     <Component {...props} /> :
-                    <Redirect to={URLS.login} />
+                    <Redirect to={URLS.login.concat('/', JSON.stringify(props))} />
             )}
         />
     );

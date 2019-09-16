@@ -2,8 +2,7 @@ import {actions} from '../actions/JobPostActions';
 import {keyBy} from 'lodash';
 
 const initialState = {
-    posts: {
-    },
+    posts: {},
 };
 
 export default function reducer(state = initialState, action) {
@@ -14,8 +13,11 @@ export default function reducer(state = initialState, action) {
 
     switch (action.type) {
 
-        case actions.SET_JOB_POSTS: {
-            return {...state, posts: keyBy(action.payload, 'id')};
+        case actions.ADD_JOB_POSTS: {
+            return {...state, posts: {
+                ...state.posts,
+                ...keyBy(action.payload, 'id'),
+            }};
         }
 
         case actions.SET_JOB_POST_BY_ID: {

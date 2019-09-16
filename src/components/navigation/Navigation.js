@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 // API and store imports
 import MiscService from '../../api/services/MiscService';
 import AuthService from '../../api/services/AuthService';
-import * as GridActions from '../../store/actions/GridActions';
+import * as MiscActions from '../../store/actions/MiscActions';
 
 // Material UI Components
 import AppBar from '@material-ui/core/AppBar';
@@ -325,11 +325,11 @@ Navigation.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    snackHasDisplayed: GridActions.getHasSnackDisplayed(state),
+    snackHasDisplayed: MiscActions.getHasSnackDisplayed(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    setHasSnackDisplayed: (bool) => dispatch(GridActions.setSnackDispalyed(bool)),
+    setHasSnackDisplayed: (bool) => dispatch(MiscActions.setSnackDispalyed(bool)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(styles)(Navigation)));

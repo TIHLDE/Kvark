@@ -236,7 +236,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    setJobPosts: (data) => dispatch(JobPostActions.setJobPosts(data)),
+    setJobPosts: (data) => dispatch(JobPostActions.addJobPosts(data)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(JobPosts));

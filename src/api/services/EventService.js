@@ -1,7 +1,7 @@
 import API from '../api';
 import store from '../../store/store';
-import * as GridActions from '../../store/actions/GridActions';
-import * as GridSelectors from '../../store/reducers/GridReducer';
+import * as MiscActions from '../../store/actions/MiscActions';
+import * as MiscSelectors from '../../store/reducers/MiscReducer';
 
 class EventService {
 
@@ -27,7 +27,7 @@ class EventService {
     // Get event by id
     static getEventById = async (id, callback=null) => {
         // Does event already exists?
-        const event = GridSelectors.getEventById(store.getState())(id);
+        const event = MiscSelectors.getEventById(store.getState())(id);
         if(event) {
             return Promise.resolve(event);
         }
@@ -37,7 +37,7 @@ class EventService {
             return response.then((data) => {
                 !callback || callback(response.isError === true, data);
                 if (response.isError === false) {
-                    GridActions.setSelectedItem(data)(store.dispatch);
+                    MiscActions.setSelectedItem(data)(store.dispatch);
                     return Promise.resolve(data);
                 } else {
                     return Promise.reject(null);
