@@ -91,18 +91,18 @@ const Event = withStyles(styles)((props) => {
                         <Typography
                             className={classes.eventHeader}
                             component='span'
-                            variant='headline'
+                            variant='h5'
                             color={(props.priority === 2)? 'primary' : 'default'}>
                             {(props.priority === 2)? 
                                 <strong>{props.title}</strong>
                                 : props.title
                             }
                         </Typography>
-                        <Typography className={classes.eventSubheader} component='span' variant='subheading'>{props.location}</Typography>
+                        <Typography className={classes.eventSubheader} component='span' variant='subtitle1'>{props.location}</Typography>
                     </Grid>
                 </ListItemText>
                 <div>
-                    <Typography variant='subheading'>{props.date}</Typography>
+                    <Typography variant='subtitle1'>{props.date}</Typography>
                     <Typography variant='caption'>{props.time}</Typography>
                 </div>
             </ListItem>
@@ -171,7 +171,7 @@ class EventList extends Component {
         return (
             <Card className={classes.root} square={true}>
                  <Grid className={classNames(classes.padding, classes.top)} container direction='row' wrap='nowrap'>
-                    <Typography variant='title' color='inherit'>{data.name}</Typography>
+                    <Typography variant='h6' color='inherit'>{data.name}</Typography>
                 </Grid>
                 <div className={classes.wrapper}>
                    
@@ -180,7 +180,7 @@ class EventList extends Component {
                             {events}
                         </List>
                         :
-                        <MessageIndicator header={Text.noEvents} variant='subheading'/>
+                        <MessageIndicator header={Text.noEvents} variant='subtitle1'/>
                     }
                 </div>
                 <Button className={classes.moreButton} onClick={this.openEventsPage} variant='outlined' color='secondary'>Vis flere</Button>

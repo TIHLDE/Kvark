@@ -76,7 +76,7 @@ const styles = {
 const InfoContent = withStyles(styles)((props) => (
     <Grid className={props.classes.info} container direction='row' wrap='nowrap' alignItems='center' justify='flex-start'>
         {props.icon}
-        <Typography className={props.classes.ml} variant='subheading'>{props.label}</Typography>
+        <Typography className={props.classes.ml} variant='subtitle1'>{props.label}</Typography>
     </Grid>
 ));
 
@@ -93,7 +93,7 @@ const EventRenderer = (props) => {
     return (
         <Paper className={classes.img} square>
             <img className={classes.image} src={data.image} alt={data.image_alt} />
-            <Typography className={classes.title} variant='headline'><strong>{data.title}</strong></Typography>
+            <Typography className={classes.title} variant='h5'><strong>{data.title}</strong></Typography>
             <Divider />
             <div className={classes.grid} >
 

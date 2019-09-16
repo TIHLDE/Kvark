@@ -99,8 +99,8 @@ const EventRenderer = (props) => {
             <Paper square>
                 <img className={classes.image} src={data.image} alt={data.image_alt} />
                 <div className={classes.titleWrapper}>
-                    <Typography className={classes.title} variant='headline' gutterBottom><strong>{data.title}</strong></Typography>
-                    <Typography className={classes.title} variant='subheading'>{data.header}</Typography>
+                    <Typography className={classes.title} variant='h5' gutterBottom><strong>{data.title}</strong></Typography>
+                    <Typography className={classes.title} variant='subtitle1'>{data.header}</Typography>
                 </div>
                 <Divider />
                 <div className={classes.grid} >

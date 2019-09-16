@@ -89,7 +89,7 @@ const Banner = (props) => {
                 <div className={classes.imageContainer}>
                     <img className={classNames(classes.image, !props.disableFilter ? classes.filter : '')} src={props.image} alt={props.alt} />
                     {props.title && <div className={classes.info}>
-                        <Typography className={classes.title} variant='display2'>
+                        <Typography className={classes.title} variant='h3'>
                             <strong>{props.title}</strong>
                         </Typography>
                         <div className={classes.line}/>
@@ -109,8 +109,8 @@ const Banner = (props) => {
                 </div>
                 {(props.header || props.text) &&
                     <div className={classes.content}>
-                        <Typography variant='title' gutterBottom><strong>{props.header}</strong></Typography>
-                        <Typography variant='subheading'>{props.text && Parser(props.text)}</Typography>
+                        <Typography variant='h6' gutterBottom><strong>{props.header}</strong></Typography>
+                        <Typography variant='subtitle1'>{props.text && Parser(props.text)}</Typography>
                     </div>
                 }
                 { props.button &&

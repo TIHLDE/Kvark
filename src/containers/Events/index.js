@@ -237,7 +237,7 @@ class Events extends Component {
                                             <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.searchForEvent}>{Text.search}</Button>
                                         </form>
                                         <Divider className={classes.mt}/>
-                                        <Typography className={classes.mt} variant='title' gutterBottom>{Text.category}</Typography>
+                                        <Typography className={classes.mt} variant='h6' gutterBottom>{Text.category}</Typography>
                                         <TextField className={classes.paddingBottom} select fullWidth label='Kategori' value={category} onChange={this.handleCategoryChange}>
                                             {categories.map((value, index) => (
                                                 <MenuItem key={index} value={value.id}>

@@ -123,7 +123,7 @@ const MessageView = withStyles(styles, {withTheme: true})((props) => {
     const {classes} = props;
     return (
         <Grid className={classNames(classes.messageView, props.className)} container direction='column' alignItems='center' justify='center'>
-            <Typography className={classes.margin} variant='headline' align='center'>{props.title}</Typography>
+            <Typography className={classes.margin} variant='h5' align='center'>{props.title}</Typography>
             <Button className={classes.margin} variant='raised' color='primary' onClick={props.onClick}>{props.buttonText}</Button>
         </Grid>
     )
@@ -136,7 +136,7 @@ const JobPostItem = withStyles(styles, {withTheme: true})((props) => {
             <ButtonBase onClick={props.onClick}>
                 <Grid className={classNames(classes.JobPostItem, (props.selected)? classes.selected : '' )} container direction='row' alignItems='center' justify='space-between'>
                     <Grid container direction='column' justify='center'>
-                        <Typography variant='subheading' color='inherit'>{props.title}</Typography>
+                        <Typography variant='subtitle1' color='inherit'>{props.title}</Typography>
                         <Typography variant='caption'  color='inherit'>{props.location}</Typography>
                     </Grid>
                 </Grid>
@@ -394,7 +394,7 @@ class JobPostAdministrator extends Component {
                       (this.state.showSuccessMessage)? <MessageView title={this.state.successMessage} buttonText='Nice' onClick={this.toggleSuccessView}/> :
                           <form>
                               <Grid container direction='column' wrap='nowrap'>
-                                  <Typography variant='headline'>{header}</Typography>
+                                  <Typography variant='h5'>{header}</Typography>
                                   <TextField className={classes.field} label='Tittel' value={title} onChange={this.handleChange('title')} required/>
                                   <TextField className={classes.field} label='Ingress' value={ingress} onChange={this.handleChange('ingress')} required/>
                                   <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>

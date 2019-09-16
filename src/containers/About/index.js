@@ -124,7 +124,7 @@ class About extends Component {
 
                     <div className={classes.smoke}>
                         <div className={classes.section}>
-                            <Typography className={classes.verticalMargin} variant='display1' color='inherit' align='center'>Undergrupper</Typography>
+                            <Typography className={classes.verticalMargin} variant='h4' color='inherit' align='center'>Undergrupper</Typography>
                             <div className={classNames(classes.grid, classes.smoke)}>
                                 <InfoCard header='Drift' text={Text.drift} src={OperationIcon}/>
                                 <InfoCard header='Sosialen' text={Text.social} src={SocialIcon}/>
@@ -136,7 +136,7 @@ class About extends Component {
 
                     <div>
                         <div className={classes.section}>
-                            <Typography className={classes.verticalMargin}variant='display1' color='inherit' align='center'>Komitéer</Typography>
+                            <Typography className={classes.verticalMargin}variant='h4' color='inherit' align='center'>Komitéer</Typography>
                             <div className={classes.grid}>
                                 <InfoCard header='Koskom' text={Text.kosekom} subheader='Opptak' subText={Text.kosekom2} justifyText/>
                                 <InfoCard header='Netkom' text={Text.netkom} subheader='Opptak' subText={Text.netkom2} justifyText/>
@@ -149,7 +149,7 @@ class About extends Component {
 
                     <div className={classes.smoke}>
                         <div className={classes.section}>
-                            <Typography className={classes.verticalMargin}variant='display1' color='inherit' align='center'>Organisasjonskart</Typography>
+                            <Typography className={classes.verticalMargin}variant='h4' color='inherit' align='center'>Organisasjonskart</Typography>
 
                             <Paper className={classes.miniMargin} square elevation={1}>
                                 <ClickableImage className={classes.miniPadding} image={OrgMap} alt='organisasjonskart' width='90%'/>

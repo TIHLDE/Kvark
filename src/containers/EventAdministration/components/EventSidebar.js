@@ -62,7 +62,7 @@ const EventItem = withStyles(styles, {withTheme: true})((props) => {
             <ButtonBase onClick={props.onClick}>
                 <Grid className={classNames(classes.eventItem, (props.selected)? classes.selected : '' )} container direction='row' alignItems='center' justify='space-between'>
                     <Grid container direction='column' justify='center'>
-                        <Typography variant='subheading' color='inherit'>{props.title}</Typography>
+                        <Typography variant='subtitle1' color='inherit'>{props.title}</Typography>
                         <Typography variant='caption'  color='inherit'>{props.location}</Typography>
                     </Grid>
                 </Grid>
@@ -84,7 +84,7 @@ const EventSidebar = (props) => {
         <Paper className={classes.sidebar}>
             <Grid className={classNames(classes.sidebarContent, 'noScrollbar')} container direction='column' wrap='nowrap'>
                 <Grid className={classNames(classes.sidebarTop)} container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
-                    <Typography variant='title' color='inherit'>Arrangementer</Typography>
+                    <Typography variant='h6' color='inherit'>Arrangementer</Typography>
                     <IconButton onClick={props.resetEventState}><AddIcon/></IconButton>
                 </Grid>
                 {props.events.map((value, index) => (
@@ -96,7 +96,7 @@ const EventSidebar = (props) => {
                         location={value.location} />
                 ))}
                 <Grid className={classNames(classes.sidebarTop, classes.miniTop)} container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
-                    <Typography variant='title' color='inherit'>Utgåtte</Typography>
+                    <Typography variant='h6' color='inherit'>Utgåtte</Typography>
                     <IconButton onClick={props.fetchExpired}><DownloadIcon/></IconButton>
                 </Grid>
                 {props.expiredEvents.map((value, index) => (

@@ -81,7 +81,7 @@ class NewsSection extends Component {
         
         return (
             <div className={classes.root}>
-                <Typography className={classes.title} gutterBottom variant='headline'>Nyheter</Typography>
+                <Typography className={classes.title} gutterBottom variant='h5'>Nyheter</Typography>
                 <div className={classes.wrapper}>
                     <Paper className={classes.padding} square elevation={1}>
                         <NewsItem data={this.state.first}/>

@@ -147,7 +147,7 @@ const styles = {
 const InfoContent = withStyles(styles)((props) => (
     <Grid className={classNames(props.classes.info, props.className)} container direction='row' wrap='nowrap' alignItems='center'>
         {props.icon}
-        <Typography className={props.classes.infoText} variant='subheading'>{props.label}</Typography>
+        <Typography className={props.classes.infoText} variant='subtitle1'>{props.label}</Typography>
     </Grid>
 ));
 
@@ -231,7 +231,7 @@ class EventSection extends Component {
                         <div className={classes.wrapper}>
                             <div className={classes.content}>
                                 <Link to={this.mainEventURL}>
-                                    <Typography className={classes.title} variant='title'>
+                                    <Typography className={classes.title} variant='h6'>
                                         <Emoji symbol={getEmoji(category)}/>
                                         <strong>{title}</strong>
                                     </Typography>
@@ -243,7 +243,7 @@ class EventSection extends Component {
                                 <InfoContent className={classes.span} icon={<Location className={classes.icon}/>} label={location} />
                             </Link>
                             <div className={classes.list}>
-                                <Typography variant='headline' gutterBottom>Flere arrangementer</Typography>
+                                <Typography variant='h5' gutterBottom>Flere arrangementer</Typography>
                                 <Divider />
                                 {this.state.moreEvents.map((value, index) => (
                                     <EventListItem key={index} data={value}/>
@@ -260,7 +260,7 @@ class EventSection extends Component {
                         
                     :
                         <div className={classes.noContent}>
-                            <Typography className={classes.title} variant='title'>
+                            <Typography className={classes.title} variant='h6'>
                                 <Emoji symbol={getEmoji(-1)}/>
                                 Ingen arrangementer for øyeblikket
                             </Typography>

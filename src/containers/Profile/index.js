@@ -48,7 +48,7 @@ class Profile extends Component{
         return(
             <Navigation footer isLoading={this.state.isLoading}>
                 <div className={classes.root}>
-                    <Typography variant='headline' gutterBottom>Work in progress!</Typography>
+                    <Typography variant='h5' gutterBottom>Work in progress!</Typography>
                     <Button  variant='contained' color='primary' onClick={this.logOut}>Log out</Button>
                 </div>
             </Navigation>

@@ -68,7 +68,7 @@ class NewsItem extends Component {
         if (data && data.image) {
             imageOrFallback = <img className={classes.image} src={data.image} alt={data.imageAlt}/>;
         } else {
-           imageOrFallback = <Typography className={classes.none} variant='title'>Missing Image</Typography>;
+           imageOrFallback = <Typography className={classes.none} variant='h6'>Missing Image</Typography>;
         }
 
         return (
@@ -76,7 +76,7 @@ class NewsItem extends Component {
                 <Link to={URLS.news + this.props.id}>
                     {imageOrFallback}
                     <div className={classes.textContainer}>
-                        <Typography variant='headline' color='inherit'>{data.title}</Typography>
+                        <Typography variant='h5' color='inherit'>{data.title}</Typography>
                     </div>
                 </Link>
             </Paper>

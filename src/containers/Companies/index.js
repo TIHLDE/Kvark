@@ -160,7 +160,7 @@ class Companies extends Component {
             </div>
             <div className={classes.section}>
               <Typography
-                variant='display1'
+                variant='h4'
                 color="inherit"
                 align="center"
                 className={classes.margining}
@@ -184,7 +184,7 @@ class Companies extends Component {
 
           <div className={classes.section}>
             <Typography
-              variant='display1'
+              variant='h4'
               color="inherit"
               align="center"
               className={classes.margining}
