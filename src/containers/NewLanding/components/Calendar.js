@@ -52,12 +52,10 @@ class Calender extends React.Component {
   componentDidMount() {
     EventService.getEvents().then((eventObject) => {
 
-      // // Temp code for creating enough test data.
-      // for (let i = 0; i < 15; i++) {
-      //   eventObject.push(eventObject[0]);
-      // }
+      // This lines ensures backward compabillity with the old api.
+      const events = eventObject.results === undefined ? eventObject : eventObject.results;
 
-      this.setState({ events: eventObject });
+      this.setState({ events: events });
     });
   }
 

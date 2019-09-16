@@ -29,6 +29,7 @@ import EventBanner from '../../assets/img/EventBanner.jpg';
 import EventListItem from "./components/EventListItem"
 import Navigation from "../../components/navigation/Navigation";
 import Banner from '../../components/layout/Banner';
+import Pageination from '../../components/layout/Pageination'
 import NoEventsIndicator from './components/NoEventsIndicator';
 
 const styles = (theme) => ({
@@ -131,7 +132,7 @@ class Events extends Component {
         // Fetch events from server
         EventService.getEvents(null, null, (isError, events) => {
             if(isError === false) {
-                this.setState({events: events});
+                this.setState({events: events.results, page: 1});
             }
             this.setState({isLoading: false, isFetching: false});
         });
@@ -189,16 +190,29 @@ class Events extends Component {
 
         // Requested filters
         const filters = (category && category !== 0)? {category: category} : {search: search};
-        
+
         // Get filtered events ordered by expired
         EventService.getEvents(filters, {expired: true}, (isError, events) => {
             if(isError === false) {
                 this.setState({
-                    events: events,
+                    events: events.results,
                 });
             }
             this.setState({isFetching: false})
         });
+    }
+
+    getNextPage = () => {
+      EventService.getEvents({page: this.state.page}, null, (isError, events) => {
+        if (isError === false) {
+          this.setState((oldState) => {
+            return {
+              events: oldState.events.concat(events.results),
+              page: oldState.page + 1,
+            }
+          });
+        }
+      })
     }
 
     render() {
@@ -216,12 +230,16 @@ class Events extends Component {
                                     <div className={classes.listRoot}>
                                     <Grow in={!this.state.isFetching}>
                                         <Paper className={classes.list} elevation={1} square>
-                                            {this.state.events && this.state.events.map((value, index) => (
-                                                <div key={value.id}>
-                                                    <EventListItem key={value.id} data={value} onClick={() => this.goToEvent(value.id)}/>
-                                                    <Divider/>
-                                                </div>
-                                            ))}
+                                            <Pageination nextPage={this.getNextPage}>
+                                              {this.state.events && this.state.events.map((value, index) => (
+                                                  <div key={value.id}>
+
+                                                        <EventListItem key={value.id} data={value} onClick={() => this.goToEvent(value.id)}/>
+                                                        <Divider/>
+
+                                                  </div>
+                                              ))}
+                                            </Pageination>
                                             { (this.state.events.length === 0 && !this.state.isLoading) &&
                                                 <NoEventsIndicator />
                                             }
@@ -231,7 +249,7 @@ class Events extends Component {
                                 }
                                 <div>
                                     <Paper className={classes.settings} elevation={1} square>
-                                        
+
                                         <form>
                                             <TextField className={classes.paddingBtn} value={this.state.search} fullWidth placeholder='Søk...' onChange={this.handleChange('search')}/>
                                             <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.searchForEvent}>{Text.search}</Button>
