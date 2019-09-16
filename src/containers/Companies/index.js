@@ -200,7 +200,7 @@ class Companies extends Component {
                 justifyText
               />
               <InfoCard
-                header="Digital forretningsutvikling"
+                header="Digital foretningsutvikling"
                 text={Text.support}
                 justifyText
               />

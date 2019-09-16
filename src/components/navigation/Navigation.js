@@ -232,7 +232,7 @@ class Navigation extends Component {
         const { classes } = this.props;
         return (
             <Fragment>
-                <AppBar className={classes.root} position="fixed" color="primary">
+                <AppBar className={classes.root} position="fixed" color="secondary">
                     <Toolbar className={classes.navContent} disableGutters>
                         <div className={classes.navWrapper}>
                             <div className={classes.logoWrapper}>
