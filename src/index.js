@@ -29,6 +29,7 @@ import JobPostAdministration from './containers/JobPostAdministration';
 import LogIn from './containers/LogIn';
 import Laws from './containers/Laws';
 import NewLanding from './containers/NewLanding';
+import Http404 from './containers/Http404';
 
 // The user needs to be authorized (logged in) to access these routes
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -66,6 +67,8 @@ const Application = (
                     <PrivateRoute path={URLS.jobpostsAdmin} component={JobPostAdministration} />
                     <PrivateRoute path={URLS.eventAdmin} component={EventAdministration} />
                     <Route path={URLS.login} component={LogIn} />
+
+                    <Route component={Http404} />
 
                 </Switch>
             </MuiThemeProvider>
