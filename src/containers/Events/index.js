@@ -129,20 +129,26 @@ class Events extends Component {
     }
 
     // Gets the event
-    loadEvents = () => {
-        let urlParameters = null;
+    loadEvents = (filters) => {
+        // Add in filters if needed.
+        let urlParameters = filters ? {...filters} : null;
+
+        // Decide if we should go to next page or not.
         if (this.state.nextPage){
           // WARNING: Thea api automatically adds newest: true as parameter if it is null. Do therefor need to specify this manually here!!!
-          urlParameters = {page: this.state.nextPage, newest: true};
-        } else if (this.state.events.length > 0) {
+          urlParameters = {page: this.state.nextPage};
+          !filters ? urlParameters['newest'] = true : null;
+        } else if (this.state.events.length > 0 ) {
           // Abort if we have noe more pages and allready have loaded evrything
+          this.setState({isFetching: false})
           return;
         }
 
-        //console.log(urlParameters)
 
         // Fetch events from server
         EventService.getEvents(urlParameters, null, (isError, events) => {
+
+
             if(isError === false) {
                 let displayedEvents = events.results;
                 let nextPageUrl = events.next;
@@ -158,16 +164,18 @@ class Events extends Component {
                   })
                 }
 
-                console.log(urlParameters)
-                console.log(events)
-
-
+                // Get the page number from the object if it exists
                 let nextPage = urlParameters['page'] ? urlParameters['page'] : null;
 
-                if (this.state.events.length > 0) {
-                  displayedEvents = this.state.events.concat(displayedEvents)
+                this.setState((oldState) => {
+                  // If we allready have events
+                  if (this.state.events.length > 0) {
+                    displayedEvents = oldState.events.concat(displayedEvents)
+                  }
+                  return {events: displayedEvents, nextPage: nextPage}
                 }
-                this.setState({events: displayedEvents, nextPage: nextPage});
+                );
+
             }
             this.setState({isLoading: false, isFetching: false});
         });
@@ -202,8 +210,9 @@ class Events extends Component {
         this.props.history.push(URLS.events + ''.concat(id, '/'));
     };
 
-    resetFilters = () => {
-        this.setState({isFetching: true, category: 0, search: ''});
+    // This one must be asyncron in order to make sure that we get the new state in loadEvents.
+    resetFilters = async () => {
+        await this.setState({isFetching: true, category: 0, search: '', events: [], nextPage: null});
         this.loadEvents();
     }
 
@@ -213,28 +222,19 @@ class Events extends Component {
         this.filterEvents(event, this.state.search, 0);
     }
 
-    filterEvents = (event, search, category) => {
+    // This one must be asyncron in order to make sure that we get the new state in loadEvents.
+    filterEvents = async (event, search, category) => {
         event.preventDefault();
 
-        this.setState({isFetching: true});
+        await this.setState({isFetching: true, nextPage: null, events: []});
         // If no filters requested, just load the events
         if(!search && !category) {
             this.loadEvents();
-            return;
+        } else {
+            // Requested filters
+            const filters = (category && category !== 0)? {category: category} : {search: search};
+            this.loadEvents(filters);
         }
-
-        // Requested filters
-        const filters = (category && category !== 0)? {category: category} : {search: search};
-
-        // Get filtered events ordered by expired
-        EventService.getEvents(filters, {expired: true}, (isError, events) => {
-            if(isError === false) {
-                this.setState({
-                    events: events.results,
-                });
-            }
-            this.setState({isFetching: false})
-        });
     }
 
     getNextPage = () => {
