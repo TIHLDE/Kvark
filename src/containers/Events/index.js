@@ -124,15 +124,50 @@ class Events extends Component {
 
             search: '',
             category: 0,
+            nextPage: null,
         }
     }
 
     // Gets the event
     loadEvents = () => {
+        let urlParameters = null;
+        if (this.state.nextPage){
+          // WARNING: Thea api automatically adds newest: true as parameter if it is null. Do therefor need to specify this manually here!!!
+          urlParameters = {page: this.state.nextPage, newest: true};
+        } else if (this.state.events.length > 0) {
+          // Abort if we have noe more pages and allready have loaded evrything
+          return;
+        }
+
+        //console.log(urlParameters)
+
         // Fetch events from server
-        EventService.getEvents(null, null, (isError, events) => {
+        EventService.getEvents(urlParameters, null, (isError, events) => {
             if(isError === false) {
-                this.setState({events: events.results, page: 1});
+                let displayedEvents = events.results;
+                let nextPageUrl = events.next;
+                urlParameters = {};
+
+                // If we have a url for the next page convert it into a object
+                if (nextPageUrl) {
+                  let nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
+                  let parameterArray = nextPageUrlQuery.split('&');
+                  parameterArray.forEach((parameter) => {
+                    const parameterString = parameter.split('=')
+                    urlParameters[parameterString[0]] = parameterString[1]
+                  })
+                }
+
+                console.log(urlParameters)
+                console.log(events)
+
+
+                let nextPage = urlParameters['page'] ? urlParameters['page'] : null;
+
+                if (this.state.events.length > 0) {
+                  displayedEvents = this.state.events.concat(displayedEvents)
+                }
+                this.setState({events: displayedEvents, nextPage: nextPage});
             }
             this.setState({isLoading: false, isFetching: false});
         });
@@ -203,16 +238,7 @@ class Events extends Component {
     }
 
     getNextPage = () => {
-      EventService.getEvents({page: this.state.page}, null, (isError, events) => {
-        if (isError === false) {
-          this.setState((oldState) => {
-            return {
-              events: oldState.events.concat(events.results),
-              page: oldState.page + 1,
-            }
-          });
-        }
-      })
+      this.loadEvents()
     }
 
     render() {
@@ -230,7 +256,7 @@ class Events extends Component {
                                     <div className={classes.listRoot}>
                                     <Grow in={!this.state.isFetching}>
                                         <Paper className={classes.list} elevation={1} square>
-                                            <Pageination nextPage={this.getNextPage}>
+                                            <Pageination nextPage={this.getNextPage} page={this.state.nextPage}>
                                               {this.state.events && this.state.events.map((value, index) => (
                                                   <div key={value.id}>
 

@@ -5,23 +5,28 @@ import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 
 const styles = {
-
+  button: {
+    padding: '10px',
+  },
 };
 
 function Pageination(props) {
+  const {classes} = props;
   return (
     <React.Fragment>
       <div>{props.children}</div>
-      <ButtonBase onClick={props.nextPage}>
+      {props.page && <ButtonBase className={classes.button} onClick={props.nextPage}>
         <Typography align="center">Vis flere elementer</Typography>
-      </ButtonBase>
+      </ButtonBase>}
     </React.Fragment>
   );
 }
 
 Pageination.propTypes = {
-  children: PropTypes.element,
-  nextPage: PropTypes.function,
+  classes: PropTypes.object,
+  children: PropTypes.node.isRequired,
+  nextPage: PropTypes.func,
+  page: PropTypes.string,
 };
 
 export default withStyles(styles)(Pageination);
