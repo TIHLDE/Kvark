@@ -161,7 +161,7 @@ class JobPosts extends Component {
 
         // Requested filters
         const filters = {search: search};
-        
+
         // Fetch filtered job posts
         JobPostService.getJobPosts(filters, {expired: true})
         .then((posts) => {
@@ -179,7 +179,7 @@ class JobPosts extends Component {
                     <div className={classes.wrapper}>
                         <Banner title='Karriere' image={bannerImage}/>
                         <div className={classes.grid}>
-                        
+
                             {this.state.isFetching ? <CircularProgress className={classes.progress} /> :
                                 <div className={classes.listRoot}>
                                     <Grow in={!this.state.isFetching}>
@@ -190,7 +190,7 @@ class JobPosts extends Component {
                                                     <Divider/>
                                                 </div>
                                             ))}
-                                            {posts.length === 0 && 
+                                            {posts.length === 0 &&
                                                 <NoPostsIndicator />
                                             }
                                         </Paper>
@@ -198,7 +198,7 @@ class JobPosts extends Component {
                                 </div>
                             }
                             <div>
-                                <Paper className={classes.settings} elevation={1} square> 
+                                <Paper className={classes.settings} elevation={1} square>
                                     <form>
                                         <TextField className={classes.paddingBtn} value={this.state.search} fullWidth placeholder='Søk...' onChange={this.handleChange('search')}/>
                                         <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.searchForPosts}>{Text.search}</Button>

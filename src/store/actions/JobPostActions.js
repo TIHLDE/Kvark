@@ -3,10 +3,11 @@ export const actions = {
     SET_JOB_POST_BY_ID: 'JB_SET_JOB_POST_BY_ID',
 }
 
+// This is where the data from backend get sent to!
 export const setJobPosts = (data) =>
     dispatch => {
-        if (data instanceof Array) {
-            dispatch({type: actions.SET_JOB_POSTS, payload: data.map(createJobPost)});
+        if (data.results instanceof Array) {
+            dispatch({type: actions.SET_JOB_POSTS, payload: data.results.map(createJobPost)});
         }
     }
 
