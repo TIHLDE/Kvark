@@ -123,12 +123,29 @@ class JobPosts extends Component {
         window.scrollTo(0,0);
         this.setState({isLoading: true});
         this.fetchPosts();
+        this.fetchPosts();
     }
 
     fetchPosts = () => {
         JobPostService.getJobPosts()
         .then((posts) => {
-            this.setState({isLoading: false, isFetching: false});
+            let nextPageUrl = posts.next;
+            let urlParameters = {};
+
+            // If we have a url for the next page convert it into a object
+            if (nextPageUrl) {
+              let nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
+              let parameterArray = nextPageUrlQuery.split('&');
+              parameterArray.forEach((parameter) => {
+                const parameterString = parameter.split('=')
+                urlParameters[parameterString[0]] = parameterString[1]
+              })
+            }
+
+            // Get the page number from the object if it exists
+            let nextPage = urlParameters['page'] ? urlParameters['page'] : null;
+
+            this.setState({isLoading: false, isFetching: false, nextPage: nextPage});
         });
     }
 

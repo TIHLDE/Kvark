@@ -8,6 +8,9 @@ export const setJobPosts = (data) =>
     dispatch => {
         if (data.results instanceof Array) {
             dispatch({type: actions.SET_JOB_POSTS, payload: data.results.map(createJobPost)});
+        } else if (data instanceof Array) {
+            // Used for backward compabillity
+            dispatch({type: actions.SET_JOB_POSTS, payload: data.map(createJobPost)});
         }
     }
 
