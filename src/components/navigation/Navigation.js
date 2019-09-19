@@ -159,7 +159,7 @@ const URIbutton = withStyles(styles)((props) => {
     const { data, classes } = props;
     return (
         <div className={classNames(props.selected ? classes.selected : '', props.uri)}>
-            <Link to={data.link} style={{ textDecoration: 'none' }}>
+            <Link to={data.link} onClick={data.link == window.location.pathname ? () => window.location.refresh() : ''} style={{ textDecoration: 'none' }}>
                 <Button color="inherit" style={{
                     color: 'white',
                 }}>
