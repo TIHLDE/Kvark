@@ -21,7 +21,7 @@ const styles = {
         width: '100%',
         maxHeight: '70vh',
         objectFit: 'contain',
-        paddingTop: '25px'
+        // paddingTop: '25px'
     },
     smoke: {
         width: '100%',
