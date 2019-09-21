@@ -25,6 +25,7 @@ import Button from '@material-ui/core/Button';
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 import Banner from '../../components/layout/Banner';
+import Pageination from '../../components/layout/Pageination'
 import NoPostsIndicator from './components/NoPostsIndicator';
 import JobPostItem from './components/JobPostItem';
 
@@ -123,11 +124,10 @@ class JobPosts extends Component {
         window.scrollTo(0,0);
         this.setState({isLoading: true});
         this.fetchPosts();
-        this.fetchPosts();
     }
 
-    fetchPosts = () => {
-        JobPostService.getJobPosts()
+    fetchPosts = (parameters = {page: 1}) => {
+        JobPostService.getJobPosts(parameters)
         .then((posts) => {
             let nextPageUrl = posts.next;
             let urlParameters = {};
@@ -186,6 +186,10 @@ class JobPosts extends Component {
         });
     }
 
+    getNextPage = () => {
+      this.fetchPosts({page: this.state.nextPage})
+    }
+
     render() {
         const {classes} = this.props;
         const posts = this.props.posts || [];
@@ -201,6 +205,7 @@ class JobPosts extends Component {
                                 <div className={classes.listRoot}>
                                     <Grow in={!this.state.isFetching}>
                                         <Paper className={classes.list} elevation={1} square>
+                                            <Pageination nextPage={this.getNextPage} page={this.state.nextPage}>
                                             {posts.map((value, index) => (
                                                 <div key={value.id}>
                                                     <JobPostItem key={value.id} data={value} onClick={() => this.goToJobPost(value.id)}/>
@@ -210,6 +215,7 @@ class JobPosts extends Component {
                                             {posts.length === 0 &&
                                                 <NoPostsIndicator />
                                             }
+                                            </Pageination>
                                         </Paper>
                                     </Grow>
                                 </div>

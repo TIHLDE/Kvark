@@ -15,10 +15,11 @@ class JobPostService {
             // If orderby is provided, sort the data
             if(orderBy) {
                 for(const key in orderBy) {
-                    data = data.sort((a, b) => (a[key] === b[key])? 0 : a[key] ? 1 : -1)
+                    data.results = data.results.sort((a, b) => (a[key] === b[key])? 0 : a[key] ? 1 : -1)
                 }
             }
-            JobPostActions.setJobPosts(data)(store.dispatch); // Send data to store
+
+            JobPostActions.setJobPosts(data, filters)(store.dispatch); // Send data to store
             return Promise.resolve(data);
         });
     }

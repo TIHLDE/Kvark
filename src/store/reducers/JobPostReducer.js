@@ -6,16 +6,26 @@ const initialState = {
     },
 };
 
-export default function reducer(state = initialState, action) {
+export default function reducer(state, action) {
     const data = action.payload;
     if(!isPayloadValid(data)) {
-        return state;
+        return initialState;
     }
 
     switch (action.type) {
 
         case actions.SET_JOB_POSTS: {
-            return {...state, posts: keyBy(action.payload, 'id')};
+            const jobPosts = keyBy(action.payload, 'id')
+
+            // Actions to do if we want to append stuff
+            if (action.filters && action.filters.page && action.filters.page !== 1) {
+              // Add each existing post to the new posts
+              for (let index in state.posts){
+                jobPosts[index] = state.posts[index]
+              }
+            }
+
+            return {...state, posts: jobPosts};
         }
 
         case actions.SET_JOB_POST_BY_ID: {
@@ -26,7 +36,7 @@ export default function reducer(state = initialState, action) {
         }
 
         default:
-            return state;
+            return initialState;
     }
 };
 
