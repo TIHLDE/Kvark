@@ -21,7 +21,7 @@ const styles = {
         width: '100%',
         maxHeight: '70vh',
         objectFit: 'contain',
-        // paddingTop: '25px'
+        paddingTop: '25px'
     },
     smoke: {
         width: '100%',
@@ -75,7 +75,7 @@ class Http404 extends Component {
 
                     <div className={classes.section}>
                         <Typography className={classes.verticalMargin} variant='h5' color='inherit' align='center'>Got feedback?</Typography>
-                        <div>Gi oss gjerne en tilbakemelding om du fulgte en gyldig lenke hit</div>
+                        <div>Send oss gjerne en tilbakemelding om du fulgte en gyldig lenke hit</div>
                         <a className={classes.button} href="https://docs.google.com/forms/d/e/1FAIpQLSfp8ZUm-GfzMla0Hg4AeX0iO8HME8ez7TttY2MgUfpC8MzBIQ/viewform">Klikk her</a>
                     </div>
                 </Grid>
