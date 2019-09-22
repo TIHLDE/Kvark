@@ -124,11 +124,11 @@ JobPostSidebar.propTypes = {
     jobposts: PropTypes.array,
     expiredJobPosts: PropTypes.array,
     onEventClick: PropTypes.func,
-    selectedJobPostId: PropTypes.string,
+    selectedJobPostId: PropTypes.number,
     resetEventState: PropTypes.func,
     fetchExpired: PropTypes.func,
     getNextPage: PropTypes.func,
-    nextPage: PropTypes.number,
+    nextPage: PropTypes.string,
     classes: PropTypes.object,
 };
 

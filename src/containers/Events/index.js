@@ -137,7 +137,7 @@ class Events extends Component {
         if (this.state.nextPage){
           // WARNING: Thea api automatically adds newest: true as parameter if it is null. Do therefor need to specify this manually here!!!
           urlParameters = {page: this.state.nextPage};
-          !filters ? urlParameters['newest'] = true : null;
+          if (!filters) urlParameters['newest'] = true;
         } else if (this.state.events.length > 0 ) {
           // Abort if we have noe more pages and allready have loaded evrything
           this.setState({isFetching: false})
