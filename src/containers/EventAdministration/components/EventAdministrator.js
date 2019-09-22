@@ -147,12 +147,46 @@ class EventAdministrator extends Component {
         });
 
         // Get all events
-        EventService.getEvents()
-        .then((data) => {
-            if(data) {
-                this.setState({events: data});
-            }
-        })
+        this.fetchEvents()
+
+    }
+
+    fetchEvents = (parameters = {page: 1}) => {
+      // We need to add this in order to noe show expired events.
+      parameters['newest'] = true
+
+      EventService.getEvents(parameters)
+      .then((data) => {
+
+        // For backward compabillity
+        let displayedEvents = data.results || data;
+
+        let nextPageUrl = data.next;
+        let urlParameters = {};
+
+        // If we have a url for the next page convert it into a object
+        if (nextPageUrl) {
+          let nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
+          let parameterArray = nextPageUrlQuery.split('&');
+          parameterArray.forEach((parameter) => {
+            const parameterString = parameter.split('=')
+            urlParameters[parameterString[0]] = parameterString[1]
+          })
+        }
+
+        // Get the page number from the object if it exists
+        let nextPage = urlParameters['page'] ? urlParameters['page'] : null;
+
+        this.setState((oldState) => {
+          // If we allready have events
+          if (this.state.events.length > 0) {
+            displayedEvents = oldState.events.concat(displayedEvents)
+          }
+          return {events: displayedEvents, nextPage: nextPage}
+        }
+        );
+
+      })
     }
 
     fetchExpired = () => {
@@ -165,7 +199,7 @@ class EventAdministrator extends Component {
         EventService.getExpiredData((isError, data) => {
 
             if (!isError) {
-                this.setState({expired: data || []});
+                this.setState({expired: data.results || data || []});
             }
             this.setState({isFetching: true});
         });
@@ -306,6 +340,10 @@ class EventAdministrator extends Component {
         });
     }
 
+    getNextPage = () => {
+      this.fetchEvents({page: this.state.nextPage})
+    }
+
     render() {
         const {classes} = this.props;
         const {selectedEvent, title, location, description, image, priority, categories, category} = this.state;
@@ -395,6 +433,8 @@ class EventAdministrator extends Component {
                     onEventClick={this.onEventClick}
                     resetEventState={this.resetEventState}
                     fetchExpired={this.fetchExpired}
+                    nextPage={this.state.nextPage}
+                    getNextPage={this.getNextPage}
                 />
                 <EventPreview data={this.getStateEventItem()} open={this.state.showPreview} onClose={this.handleToggleChange('showPreview')}/>
             </Fragment>
