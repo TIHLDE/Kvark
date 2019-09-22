@@ -150,7 +150,8 @@ class Events extends Component {
 
 
             if(isError === false) {
-                let displayedEvents = events.results;
+                // For backward compabillity
+                let displayedEvents = events.results ? events.results : events;
                 let nextPageUrl = events.next;
                 urlParameters = {};
 

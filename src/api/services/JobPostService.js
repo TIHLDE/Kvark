@@ -11,11 +11,12 @@ class JobPostService {
         const response = API.getJobPosts(filters).response();
         return response.then((data) => {
             data = data || [];
+            let results = data.results || data;
 
             // If orderby is provided, sort the data
             if(orderBy) {
                 for(const key in orderBy) {
-                    data.results = data.results.sort((a, b) => (a[key] === b[key])? 0 : a[key] ? 1 : -1)
+                    results = results.sort((a, b) => (a[key] === b[key])? 0 : a[key] ? 1 : -1)
                 }
             }
 
