@@ -131,13 +131,12 @@ class Events extends Component {
     // Gets the event
     loadEvents = (filters, orderBy = null) => {
         // Add in filters if needed.
-        let urlParameters = filters ? {...filters} : null;
+        let urlParameters = filters ? {...filters} : {};
 
         // Decide if we should go to next page or not.
         if (this.state.nextPage){
           // WARNING: Thea api automatically adds newest: true as parameter if it is null. Do therefor need to specify this manually here!!!
-          urlParameters = {page: this.state.nextPage};
-          if (!filters) urlParameters['newest'] = true;
+          urlParameters = {page: this.state.nextPage, ...urlParameters};
         } else if (this.state.events.length > 0 ) {
           // Abort if we have noe more pages and allready have loaded evrything
           this.setState({isFetching: false})
@@ -239,7 +238,13 @@ class Events extends Component {
     }
 
     getNextPage = () => {
-      this.loadEvents()
+      const search = this.state.search;
+      const category = this.state.category;
+      let filters = null;
+      if(search || category) {
+          filters = (category && category !== 0)? {category: category} : {search: search};
+      }
+      this.loadEvents(filters, filters ? {expired: true} : null);
     }
 
     render() {

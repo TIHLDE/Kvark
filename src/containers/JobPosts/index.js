@@ -144,7 +144,11 @@ class JobPosts extends Component {
             // Get the page number from the object if it exists
             let nextPage = urlParameters['page'] ? urlParameters['page'] : null;
 
-            this.setState({isLoading: false, isFetching: false, nextPage: nextPage, posts: posts.results});
+            this.setState((oldState) => {
+              return {isLoading: false, isFetching: false, nextPage: nextPage, posts: oldState.posts.concat(posts.results)}
+            })
+
+            
         });
     }
 
@@ -169,7 +173,7 @@ class JobPosts extends Component {
     filterPosts = (event, search) => {
         event.preventDefault();
 
-        this.setState({isFetching: true});
+        this.setState({isFetching: true, posts: []});
         if(!search) {
             this.fetchPosts();
             return;

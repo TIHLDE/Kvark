@@ -18,8 +18,8 @@ class EventService {
                 for(const key in orderBy) {
                     results = results.sort((a, b) => (a[key] === b[key])? 0 : a[key] ? 1 : -1)
                 }
-                if(data.result) {
-                  data.result = results;
+                if(data.results) {
+                  data.results = results;
                 }
             }
             if(response.isError === false) {
