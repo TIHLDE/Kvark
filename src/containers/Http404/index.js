@@ -15,7 +15,8 @@ import Navigation from '../../components/navigation/Navigation';
 
 const styles = {
     root: {
-        minHeight: '100vh',
+        minHeight: '101vh',
+        backgroundColor: '#fefefe',
     },
     img: {
         width: '100%',
@@ -47,10 +48,9 @@ const styles = {
         padding: '6px 6px 6px 6px',
         borderRadius: '5px',
         display: 'block',
-        margin: 'auto',
+        margin: '15px auto',
         maxWidth: '100px',
         textAlign: 'center',
-        marginTop: '15px',
     }
 };
 
@@ -70,13 +70,8 @@ class Http404 extends Component {
                     </div>
                     <div className={classes.smoke}>
                         <h3>Denne siden finnes ikke:(</h3>
-                        <a href="javascript:history.go(-1);"><h4>Tilbake</h4></a>
-                    </div>
-
-                    <div className={classes.section}>
-                        <Typography className={classes.verticalMargin} variant='h5' color='inherit' align='center'>Got feedback?</Typography>
-                        <div>Send oss gjerne en tilbakemelding om du fulgte en gyldig lenke hit</div>
-                        <a className={classes.button} href="https://docs.google.com/forms/d/e/1FAIpQLSfp8ZUm-GfzMla0Hg4AeX0iO8HME8ez7TttY2MgUfpC8MzBIQ/viewform">Klikk her</a>
+                        <a className={classes.button} href="javascript:history.go(-1);">Tilbake</a>
+                        <p>Send oss gjerne en <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfp8ZUm-GfzMla0Hg4AeX0iO8HME8ez7TttY2MgUfpC8MzBIQ/viewform">tilbakemelding</a> om du fulgte en gyldig lenke hit</p>
                     </div>
                 </Grid>
             </Navigation>
