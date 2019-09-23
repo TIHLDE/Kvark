@@ -5,6 +5,7 @@ import classNames from 'classnames';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 // Imgs
@@ -70,7 +71,7 @@ class Http404 extends Component {
                     </div>
                     <div className={classes.smoke}>
                         <h3>Denne siden finnes ikke :(</h3>
-                        <a className={classes.button} href="javascript:history.go(-1);">Tilbake</a>
+                        <Button className={classes.bottomSpacing} variant='contained' color='primary' href='javascript:history.go(-1);'>Tilbake</Button>
                         <p>Send oss gjerne en <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfp8ZUm-GfzMla0Hg4AeX0iO8HME8ez7TttY2MgUfpC8MzBIQ/viewform">tilbakemelding</a> om du fulgte en gyldig lenke hit</p>
                     </div>
                 </Grid>
