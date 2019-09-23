@@ -69,7 +69,7 @@ class Http404 extends Component {
                         <img src={http404img} alt="404" className={classes.img}/>
                     </div>
                     <div className={classes.smoke}>
-                        <h3>Denne siden finnes ikke:(</h3>
+                        <h3>Denne siden finnes ikke :(</h3>
                         <a className={classes.button} href="javascript:history.go(-1);">Tilbake</a>
                         <p>Send oss gjerne en <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfp8ZUm-GfzMla0Hg4AeX0iO8HME8ez7TttY2MgUfpC8MzBIQ/viewform">tilbakemelding</a> om du fulgte en gyldig lenke hit</p>
                     </div>
