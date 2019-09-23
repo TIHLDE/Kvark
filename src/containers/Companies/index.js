@@ -38,7 +38,7 @@ const styles = {
     }
   },
   section: {
-    padding: 48,
+    padding: "48px 0px 48px",
     maxWidth: 1200,
     margin: "auto",
     "@media only screen and (max-width: 1200px)": {
@@ -46,7 +46,8 @@ const styles = {
     }
   },
   topSection: {
-    padding: "20px 48px 48px 48px",
+    paddingBottom: 0,
+	  paddingTop: 24,
 
     "@media only screen and (max-width: 1200px)": {
       padding: "12px 0px 48px 0px"
@@ -159,7 +160,7 @@ class Companies extends Component {
             </div>
             <div className={classes.section}>
               <Typography
-                variant='display1'
+                variant='h4'
                 color="inherit"
                 align="center"
                 className={classes.margining}
@@ -183,7 +184,7 @@ class Companies extends Component {
 
           <div className={classes.section}>
             <Typography
-              variant='display1'
+              variant='h4'
               color="inherit"
               align="center"
               className={classes.margining}
@@ -192,14 +193,18 @@ class Companies extends Component {
             </Typography>
             <div className={classNames(classes.container)}>
               <InfoCard header="Dataingeniør" text={Text.data} justifyText />
-              <InfoCard header="Drift" text={Text.drift} justifyText />
               <InfoCard
-                header="IT-støttet bedriftsutvikling"
+                header="Digital infrastruktur og cybersikkerhet"
+                text={Text.drift}
+                justifyText
+              />
+              <InfoCard
+                header="Digital forretningsutvikling"
                 text={Text.support}
                 justifyText
               />
               <InfoCard
-                header="IKT-basert samhandling"
+                header="Digital samhandling"
                 text={Text.IKT}
                 justifyText
               />

@@ -61,7 +61,7 @@ const LinkButton = (props) => {
     buttonContent = children;
   } else {
     buttonContent= (
-      <Typography variant="subheading" className={classes.text}>
+      <Typography variant='subtitle1' className={classes.text}>
         {children}
       </Typography>
     );
@@ -92,7 +92,7 @@ LinkButton.propTypes = {
   noPadding: PropTypes.bool,
   textLeft: PropTypes.bool,
   noText: PropTypes.bool,
-  classes: PropTypes.array,
+  classes: PropTypes.object,
 };
 
 export default withStyles(linkButtonStyles)(LinkButton);

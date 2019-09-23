@@ -222,7 +222,7 @@ class JobPosts extends Component {
                                         <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.searchForPosts}>{Text.search}</Button>
                                     </form>
                                     <Divider className={classes.mt}/>
-                                    <Typography className={classes.mt} variant='title' gutterBottom>{Text.category}</Typography>
+                                    <Typography className={classes.mt} variant='h6' gutterBottom>{Text.category}</Typography>
 
                                     <Theme theme={errorTheme}>
                                         <Button

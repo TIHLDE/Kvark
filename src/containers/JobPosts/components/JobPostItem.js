@@ -83,7 +83,7 @@ const styles = {
 const InfoContent = withStyles(styles)((props) => (
     <Grid className={props.classes.infoRoot} container direction='row' wrap='nowrap' alignItems='center'>
         {props.icon}
-        <Typography className={props.classes.info} variant='subheading'>{props.label}</Typography>
+        <Typography className={props.classes.info} variant='subtitle1'>{props.label}</Typography>
     </Grid>
 ));
 
@@ -101,7 +101,7 @@ const JobPostItem = (props) => {
             <Grid className={classes.root} container direction='row' wrap='nowrap' alignItems='center'>
                 <img className={classNames(classes.src, (data.expired)? classes.filter : '')} src={src} alt={data.title} />
                 <Grid className={classes.content} container direction='column' wrap='nowrap'>
-                    <Typography className={classNames(classes.title, (data.expired)? classes.expired : '')} variant='title' gutterBottom>
+                    <Typography className={classNames(classes.title, (data.expired)? classes.expired : '')} variant='h6' gutterBottom>
                         <strong>{data.title}</strong>
                     </Typography>
                     <div className={classNames(classes.details, data.expired ? classes.filter : '')}>

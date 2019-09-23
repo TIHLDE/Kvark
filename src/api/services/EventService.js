@@ -1,7 +1,6 @@
 import API from '../api';
 import store from '../../store/store';
-import * as GridActions from '../../store/actions/GridActions';
-import * as GridSelectors from '../../store/reducers/GridReducer';
+import * as EventActions from '../../store/actions/EventActions';
 
 class EventService {
 
@@ -23,6 +22,9 @@ class EventService {
                   data.result = results;
                 }
             }
+            if(response.isError === false) {
+                EventActions.addEvents(data)(store.dispatch);
+            }
             !callback || callback(response.isError === true, data);
             return response.isError === false ? Promise.resolve(data) : Promise.reject(data);
         });
@@ -31,7 +33,7 @@ class EventService {
     // Get event by id
     static getEventById = async (id, callback=null) => {
         // Does event already exists?
-        const event = GridSelectors.getEventById(store.getState())(id);
+        const event = EventActions.getEventById(id)(store.getState());
         if(event) {
             return Promise.resolve(event);
         }
@@ -41,7 +43,7 @@ class EventService {
             return response.then((data) => {
                 !callback || callback(response.isError === true, data);
                 if (response.isError === false) {
-                    GridActions.setSelectedItem(data)(store.dispatch);
+                    EventActions.setEventById(id, data)(store.dispatch); // Save in store
                     return Promise.resolve(data);
                 } else {
                     return Promise.reject(null);

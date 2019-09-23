@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 // API and store imports
 import MiscService from '../../api/services/MiscService';
 import AuthService from '../../api/services/AuthService';
-import * as GridActions from '../../store/actions/GridActions';
+import * as MiscActions from '../../store/actions/MiscActions';
 
 // Material UI Components
 import AppBar from '@material-ui/core/AppBar';
@@ -173,7 +173,7 @@ const URIbutton = withStyles(styles)((props) => {
 const SponsorLogo = withStyles(styles)((props) => {
     const { classes } = props;
     return (
-        <a className={classes.sponsorWrapper} href="https://www.soprasteria.no/">
+        <a className={classes.sponsorWrapper} target="_blank" href="https://www.soprasteria.no/">
             <img className={classes.sponsorLogo} src={SopraSteria} alt='Sopra Steria Logo' height={'24rem'} />
             <div className={classes.sponsorText}>HOVEDSAMARBEIDSPARTNER</div>
         </a>
@@ -325,11 +325,11 @@ Navigation.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    snackHasDisplayed: GridActions.getHasSnackDisplayed(state),
+    snackHasDisplayed: MiscActions.getHasSnackDisplayed(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    setHasSnackDisplayed: (bool) => dispatch(GridActions.setSnackDispalyed(bool)),
+    setHasSnackDisplayed: (bool) => dispatch(MiscActions.setSnackDispalyed(bool)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(styles)(Navigation)));

@@ -100,7 +100,7 @@ function CalendarListItem(props) {
           </div>
           <div className={classes.eventContainer}>
             <div className={classes.eventTitle}>
-              <Typography align='center' variant='title'>{props.eventData.title}</Typography>
+              <Typography align='center' variant='h6'>{props.eventData.title}</Typography>
               <div className={classNames(classes.hiddenOnMobile, classes.eventInfoElement)}>
                 <LocationOn className={classes.eventIcon} />
                 {props.eventData.location}
@@ -137,7 +137,7 @@ function CalendarListView(props) {
           <Typography align='center'>Alle arrangementer ({props.events.length})</Typography>
         </LinkButton>
         :
-        <Typography variant='subheading' className={classes.noEventText} align='center'>Ingen arrangementer å vise</Typography>
+        <Typography variant='subtitle1' className={classes.noEventText} align='center'>Ingen arrangementer å vise</Typography>
       }
     </div>
   );

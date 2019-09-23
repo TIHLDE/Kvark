@@ -22,7 +22,6 @@ class JobPostService {
                   data.results = results;
                 }
             }
-
             JobPostActions.setJobPosts(results)(store.dispatch); // Send data to store
             return response.isError === false ? Promise.resolve(data) : Promise.reject(data);
         });
