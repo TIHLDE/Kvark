@@ -2,8 +2,7 @@ import {actions} from '../actions/JobPostActions';
 import {keyBy} from 'lodash';
 
 const initialState = {
-    posts: {
-    },
+    posts: {},
 };
 
 export default function reducer(state, action) {
@@ -17,15 +16,15 @@ export default function reducer(state, action) {
         case actions.SET_JOB_POSTS: {
             const jobPosts = keyBy(action.payload, 'id')
 
-            // Actions to do if we want to append stuff
-            if (action.filters && action.filters.page && action.filters.page !== 1) {
-              // Add each existing post to the new posts
-              for (let index in state.posts){
-                jobPosts[index] = state.posts[index]
-              }
-            }
+            // // Actions to do if we want to append stuff
+            // if (action.filters && action.filters.page && action.filters.page !== 1) {
+            //   // Add each existing post to the new posts
+            //   for (let index in state.posts){
+            //     jobPosts[index] = state.posts[index]
+            //   }
+            // }
 
-            return {...state, posts: jobPosts};
+            return {...state, posts: {...state.posts, ...jobPosts}};
         }
 
         case actions.SET_JOB_POST_BY_ID: {

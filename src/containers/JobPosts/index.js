@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 import URLS from '../../URLS';
 import {MuiThemeProvider as Theme} from '@material-ui/core/styles';
 import {errorTheme} from '../../theme';
@@ -115,7 +114,7 @@ class JobPosts extends Component {
         this.state = {
             isLoading: false,
             isFetching: false,
-
+            posts: [],
             search: '',
         }
     }
@@ -126,8 +125,8 @@ class JobPosts extends Component {
         this.fetchPosts();
     }
 
-    fetchPosts = (parameters = {page: 1}) => {
-        JobPostService.getJobPosts(parameters)
+    fetchPosts = (parameters = {page: 1}, orderBy = null) => {
+        JobPostService.getJobPosts(parameters, orderBy)
         .then((posts) => {
             let nextPageUrl = posts.next;
             let urlParameters = {};
@@ -145,7 +144,7 @@ class JobPosts extends Component {
             // Get the page number from the object if it exists
             let nextPage = urlParameters['page'] ? urlParameters['page'] : null;
 
-            this.setState({isLoading: false, isFetching: false, nextPage: nextPage});
+            this.setState({isLoading: false, isFetching: false, nextPage: nextPage, posts: posts.results});
         });
     }
 
@@ -177,13 +176,9 @@ class JobPosts extends Component {
         }
 
         // Requested filters
-        const filters = {search: search};
+        const filters = {search: search, page: 1};
 
-        // Fetch filtered job posts
-        JobPostService.getJobPosts(filters, {expired: true})
-        .then((posts) => {
-            this.setState({isFetching: false});
-        });
+        this.fetchPosts(filters, {expired: true});
     }
 
     getNextPage = () => {
@@ -192,7 +187,7 @@ class JobPosts extends Component {
 
     render() {
         const {classes} = this.props;
-        const posts = this.props.posts || [];
+        const posts = this.state.posts || [];
         return (
             <Navigation whitesmoke footer isLoading={this.state.isLoading}>
                 {this.state.isLoading ? null :
@@ -254,12 +249,4 @@ JobPosts.propTypes = {
     classes: PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
-    posts: JobPostActions.getJobPosts(state),
-});
-
-const mapDispatchToProps = (dispatch) => ({
-    setJobPosts: (data) => dispatch(JobPostActions.setJobPosts(data)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(JobPosts));
+export default (withStyles(styles)(JobPosts));
