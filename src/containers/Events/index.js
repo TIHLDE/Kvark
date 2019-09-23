@@ -29,6 +29,7 @@ import EventBanner from '../../assets/img/EventBanner.jpg';
 import EventListItem from "./components/EventListItem"
 import Navigation from "../../components/navigation/Navigation";
 import Banner from '../../components/layout/Banner';
+import Pageination from '../../components/layout/Pageination'
 import NoEventsIndicator from './components/NoEventsIndicator';
 
 const styles = (theme) => ({
@@ -123,15 +124,59 @@ class Events extends Component {
 
             search: '',
             category: 0,
+            nextPage: null,
         }
     }
 
     // Gets the event
-    loadEvents = () => {
+    loadEvents = (filters, orderBy = null) => {
+        // Add in filters if needed.
+        let urlParameters = filters ? {...filters} : null;
+
+        // Decide if we should go to next page or not.
+        if (this.state.nextPage){
+          // WARNING: Thea api automatically adds newest: true as parameter if it is null. Do therefor need to specify this manually here!!!
+          urlParameters = {page: this.state.nextPage};
+          if (!filters) urlParameters['newest'] = true;
+        } else if (this.state.events.length > 0 ) {
+          // Abort if we have noe more pages and allready have loaded evrything
+          this.setState({isFetching: false})
+          return;
+        }
+
+
         // Fetch events from server
-        EventService.getEvents(null, null, (isError, events) => {
+        EventService.getEvents(urlParameters, orderBy, (isError, events) => {
+
+
             if(isError === false) {
-                this.setState({events: events});
+                // For backward compabillity
+                let displayedEvents = events.results ? events.results : events;
+                let nextPageUrl = events.next;
+                urlParameters = {};
+
+                // If we have a url for the next page convert it into a object
+                if (nextPageUrl) {
+                  let nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
+                  let parameterArray = nextPageUrlQuery.split('&');
+                  parameterArray.forEach((parameter) => {
+                    const parameterString = parameter.split('=')
+                    urlParameters[parameterString[0]] = parameterString[1]
+                  })
+                }
+
+                // Get the page number from the object if it exists
+                let nextPage = urlParameters['page'] ? urlParameters['page'] : null;
+
+                this.setState((oldState) => {
+                  // If we allready have events
+                  if (this.state.events.length > 0) {
+                    displayedEvents = oldState.events.concat(displayedEvents)
+                  }
+                  return {events: displayedEvents, nextPage: nextPage}
+                }
+                );
+
             }
             this.setState({isLoading: false, isFetching: false});
         });
@@ -166,8 +211,9 @@ class Events extends Component {
         this.props.history.push(URLS.events + ''.concat(id, '/'));
     };
 
-    resetFilters = () => {
-        this.setState({isFetching: true, category: 0, search: ''});
+    // This one must be asyncron in order to make sure that we get the new state in loadEvents.
+    resetFilters = async () => {
+        await this.setState({isFetching: true, category: 0, search: '', events: [], nextPage: null});
         this.loadEvents();
     }
 
@@ -177,28 +223,23 @@ class Events extends Component {
         this.filterEvents(event, this.state.search, 0);
     }
 
-    filterEvents = (event, search, category) => {
+    // This one must be asyncron in order to make sure that we get the new state in loadEvents.
+    filterEvents = async (event, search, category) => {
         event.preventDefault();
 
-        this.setState({isFetching: true});
+        await this.setState({isFetching: true, nextPage: null, events: []});
         // If no filters requested, just load the events
         if(!search && !category) {
             this.loadEvents();
-            return;
+        } else {
+            // Requested filters
+            const filters = (category && category !== 0)? {category: category} : {search: search};
+            this.loadEvents(filters, {expired: true});
         }
+    }
 
-        // Requested filters
-        const filters = (category && category !== 0)? {category: category} : {search: search};
-        
-        // Get filtered events ordered by expired
-        EventService.getEvents(filters, {expired: true}, (isError, events) => {
-            if(isError === false) {
-                this.setState({
-                    events: events,
-                });
-            }
-            this.setState({isFetching: false})
-        });
+    getNextPage = () => {
+      this.loadEvents()
     }
 
     render() {
@@ -216,12 +257,16 @@ class Events extends Component {
                                     <div className={classes.listRoot}>
                                     <Grow in={!this.state.isFetching}>
                                         <Paper className={classes.list} elevation={1} square>
-                                            {this.state.events && this.state.events.map((value, index) => (
-                                                <div key={value.id}>
-                                                    <EventListItem key={value.id} data={value} onClick={() => this.goToEvent(value.id)}/>
-                                                    <Divider/>
-                                                </div>
-                                            ))}
+                                            <Pageination nextPage={this.getNextPage} page={this.state.nextPage}>
+                                              {this.state.events && this.state.events.map((value, index) => (
+                                                  <div key={value.id}>
+
+                                                        <EventListItem key={value.id} data={value} onClick={() => this.goToEvent(value.id)}/>
+                                                        <Divider/>
+
+                                                  </div>
+                                              ))}
+                                            </Pageination>
                                             { (this.state.events.length === 0 && !this.state.isLoading) &&
                                                 <NoEventsIndicator />
                                             }
@@ -231,7 +276,7 @@ class Events extends Component {
                                 }
                                 <div>
                                     <Paper className={classes.settings} elevation={1} square>
-                                        
+
                                         <form>
                                             <TextField className={classes.paddingBtn} value={this.state.search} fullWidth placeholder='Søk...' onChange={this.handleChange('search')}/>
                                             <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.searchForEvent}>{Text.search}</Button>

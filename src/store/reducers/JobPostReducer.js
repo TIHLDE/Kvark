@@ -5,10 +5,10 @@ const initialState = {
     posts: {},
 };
 
-export default function reducer(state = initialState, action) {
+export default function reducer(state, action) {
     const data = action.payload;
     if(!isPayloadValid(data)) {
-        return state;
+        return initialState;
     }
 
     switch (action.type) {
@@ -28,7 +28,7 @@ export default function reducer(state = initialState, action) {
         }
 
         default:
-            return state;
+            return initialState;
     }
 };
 

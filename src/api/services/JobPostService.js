@@ -10,16 +10,20 @@ class JobPostService {
         // Fetch job posts
         const response = API.getJobPosts(filters).response();
         return response.then((data) => {
-            data = data || [];
+            data = data || {};
+            let results = data.results || data;
 
             // If orderby is provided, sort the data
             if(orderBy) {
                 for(const key in orderBy) {
-                    data = data.sort((a, b) => (a[key] === b[key])? 0 : a[key] ? 1 : -1)
+                    results = results.sort((a, b) => (a[key] === b[key])? 0 : a[key] ? 1 : -1)
+                }
+                if(data.results) {
+                  data.results = results;
                 }
             }
-            JobPostActions.addJobPosts(data)(store.dispatch); // Send data to store
-            return Promise.resolve(data);
+            JobPostActions.setJobPosts(results)(store.dispatch); // Send data to store
+            return response.isError === false ? Promise.resolve(data) : Promise.reject(data);
         });
     }
 
