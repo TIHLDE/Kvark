@@ -129,7 +129,7 @@ class Events extends Component {
     }
 
     // Gets the event
-    loadEvents = (filters) => {
+    loadEvents = (filters, orderBy = null) => {
         // Add in filters if needed.
         let urlParameters = filters ? {...filters} : null;
 
@@ -146,7 +146,7 @@ class Events extends Component {
 
 
         // Fetch events from server
-        EventService.getEvents(urlParameters, null, (isError, events) => {
+        EventService.getEvents(urlParameters, orderBy, (isError, events) => {
 
 
             if(isError === false) {
@@ -234,7 +234,7 @@ class Events extends Component {
         } else {
             // Requested filters
             const filters = (category && category !== 0)? {category: category} : {search: search};
-            this.loadEvents(filters);
+            this.loadEvents(filters, {expired: true});
         }
     }
 

@@ -11,12 +11,16 @@ class EventService {
         // Fetch events
         const response = API.getEventItems(filters).response();
         return response.then((data) => {
-            data = data || [];
+            data = data || {};
+            let results = data.results || [];
 
             // If orderby is provided, sort the data
             if(orderBy && response.isError === false) {
                 for(const key in orderBy) {
-                    data = data.sort((a, b) => (a[key] === b[key])? 0 : a[key] ? 1 : -1)
+                    results = results.sort((a, b) => (a[key] === b[key])? 0 : a[key] ? 1 : -1)
+                }
+                if(data.result) {
+                  data.result = results;
                 }
             }
             !callback || callback(response.isError === true, data);
