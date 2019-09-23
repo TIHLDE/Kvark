@@ -52,6 +52,9 @@ const styles = {
         margin: '15px auto',
         maxWidth: '100px',
         textAlign: 'center',
+    },
+    textContainer: {
+        margin: '15px auto',
     }
 };
 
@@ -72,7 +75,7 @@ class Http404 extends Component {
                     <div className={classes.smoke}>
                         <h3>Denne siden finnes ikke :(</h3>
                         <Button className={classes.bottomSpacing} variant='contained' color='primary' href='javascript:history.go(-1);'>Tilbake</Button>
-                        <p>Send oss gjerne en <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfp8ZUm-GfzMla0Hg4AeX0iO8HME8ez7TttY2MgUfpC8MzBIQ/viewform">tilbakemelding</a> om du fulgte en gyldig lenke hit</p>
+                        <p className={classes.textContainer}>Send oss gjerne en <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfp8ZUm-GfzMla0Hg4AeX0iO8HME8ez7TttY2MgUfpC8MzBIQ/viewform">tilbakemelding</a> om du fulgte en gyldig lenke hit</p>
                     </div>
                 </Grid>
             </Navigation>
