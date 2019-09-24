@@ -46,7 +46,7 @@ const styles = {
         padding: '10px 0px',
     },
     cover: {
-        height: '100%',
+        flex: '1',
     },
     header: {
         marginBottom: 10,
