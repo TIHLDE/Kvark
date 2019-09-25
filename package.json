@@ -27,16 +27,13 @@
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "remark-breaks": "^1.0.1",
-    "universal-cookie": "^2.2.0",
-    "snyk": "^1.217.3"
+    "universal-cookie": "^2.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect"
+    "eject": "react-scripts eject"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.7.2",
