@@ -125,6 +125,7 @@ class Events extends Component {
             search: '',
             category: 0,
             nextPage: null,
+            expiredShown: false,
         }
     }
 
@@ -132,17 +133,20 @@ class Events extends Component {
     loadEvents = (filters, orderBy = null) => {
         // Add in filters if needed.
         let urlParameters = filters ? {...filters} : {};
+        this.state.expiredShown ? urlParameters['expired'] = true : null;
 
         // Decide if we should go to next page or not.
         if (this.state.nextPage){
-          // WARNING: Thea api automatically adds newest: true as parameter if it is null. Do therefor need to specify this manually here!!!
-          urlParameters = {page: this.state.nextPage, ...urlParameters};
+          urlParameters = {
+            page: this.state.nextPage,
+            ...urlParameters
+          };
+
         } else if (this.state.events.length > 0 ) {
           // Abort if we have noe more pages and allready have loaded evrything
           this.setState({isFetching: false})
           return;
         }
-
 
         // Fetch events from server
         EventService.getEvents(urlParameters, orderBy, (isError, events) => {
@@ -164,17 +168,29 @@ class Events extends Component {
                   })
                 }
 
-                // Get the page number from the object if it exists
+                // Get the page number from the object if it exist
                 let nextPage = urlParameters['page'] ? urlParameters['page'] : null;
+                let expiredShown = this.state.expiredShown
+
+                if (nextPage === null && !expiredShown && (this.state.search || this.state.category)){
+                  nextPage = 1;
+                  expiredShown = true
+                }
 
                 this.setState((oldState) => {
+
                   // If we allready have events
                   if (this.state.events.length > 0) {
                     displayedEvents = oldState.events.concat(displayedEvents)
                   }
-                  return {events: displayedEvents, nextPage: nextPage}
+                  return {events: displayedEvents, nextPage: nextPage, expiredShown: expiredShown}
+                });
+
+                // Used to load expired events when we have nothing else to show.
+                if (displayedEvents.length === 0 && nextPage) {
+                  this.loadEvents({expired: true, ...filters})
+                  return
                 }
-                );
 
             }
             this.setState({isLoading: false, isFetching: false});
@@ -212,7 +228,7 @@ class Events extends Component {
 
     // This one must be asyncron in order to make sure that we get the new state in loadEvents.
     resetFilters = async () => {
-        await this.setState({isFetching: true, category: 0, search: '', events: [], nextPage: null});
+        await this.setState({isFetching: true, category: 0, search: '', events: [], nextPage: null, expiredShown: false});
         this.loadEvents();
     }
 
@@ -226,14 +242,14 @@ class Events extends Component {
     filterEvents = async (event, search, category) => {
         event.preventDefault();
 
-        await this.setState({isFetching: true, nextPage: null, events: []});
+        await this.setState({isFetching: true, nextPage: null, events: [], expiredShown: false});
         // If no filters requested, just load the events
         if(!search && !category) {
             this.loadEvents();
         } else {
             // Requested filters
             const filters = (category && category !== 0)? {category: category} : {search: search};
-            this.loadEvents(filters, {expired: true});
+            this.loadEvents(filters);
         }
     }
 
