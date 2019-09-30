@@ -133,7 +133,9 @@ class Events extends Component {
     loadEvents = (filters, orderBy = null) => {
         // Add in filters if needed.
         let urlParameters = filters ? {...filters} : {};
-        this.state.expiredShown ? urlParameters['expired'] = true : null;
+        if (this.state.expiredShown) {
+            urlParameters['expired'] = true;
+        }
 
         // Decide if we should go to next page or not.
         if (this.state.nextPage){
