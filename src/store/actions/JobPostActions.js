@@ -1,12 +1,16 @@
 export const actions = {
-    SET_JOB_POSTS: 'JB_SET_JOB_POSTS',
+    ADD_JOB_POSTS: 'JB_ADD_JOB_POSTS',
     SET_JOB_POST_BY_ID: 'JB_SET_JOB_POST_BY_ID',
 }
 
-export const setJobPosts = (data) =>
+// This is where the data from backend get sent to!
+export const addJobPosts = (data, filters) =>
     dispatch => {
-        if (data instanceof Array) {
-            dispatch({type: actions.SET_JOB_POSTS, payload: data.map(createJobPost)});
+        if (data.results instanceof Array) {
+            dispatch({type: actions.ADD_JOB_POSTS, filters: filters, payload: data.results.map(createJobPost)});
+        } else if (data instanceof Array) {
+            // Used for backward compabillity
+            dispatch({type: actions.ADD_JOB_POSTS, filters: filters, payload: data.map(createJobPost)});
         }
     }
 

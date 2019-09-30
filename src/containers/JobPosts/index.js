@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 import URLS from '../../URLS';
 import {MuiThemeProvider as Theme} from '@material-ui/core/styles';
 import {errorTheme} from '../../theme';
@@ -25,6 +24,7 @@ import Button from '@material-ui/core/Button';
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 import Banner from '../../components/layout/Banner';
+import Pageination from '../../components/layout/Pageination'
 import NoPostsIndicator from './components/NoPostsIndicator';
 import JobPostItem from './components/JobPostItem';
 
@@ -114,7 +114,7 @@ class JobPosts extends Component {
         this.state = {
             isLoading: false,
             isFetching: false,
-
+            posts: [],
             search: '',
         }
     }
@@ -125,10 +125,30 @@ class JobPosts extends Component {
         this.fetchPosts();
     }
 
-    fetchPosts = () => {
-        JobPostService.getJobPosts()
+    fetchPosts = (parameters = {page: 1}, orderBy = null) => {
+        JobPostService.getJobPosts(parameters, orderBy)
         .then((posts) => {
-            this.setState({isLoading: false, isFetching: false});
+            let nextPageUrl = posts.next;
+            let urlParameters = {};
+
+            // If we have a url for the next page convert it into a object
+            if (nextPageUrl) {
+              let nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
+              let parameterArray = nextPageUrlQuery.split('&');
+              parameterArray.forEach((parameter) => {
+                const parameterString = parameter.split('=')
+                urlParameters[parameterString[0]] = parameterString[1]
+              })
+            }
+
+            // Get the page number from the object if it exists
+            let nextPage = urlParameters['page'] ? urlParameters['page'] : null;
+
+            this.setState((oldState) => {
+              return {isLoading: false, isFetching: false, nextPage: nextPage, posts: oldState.posts.concat(posts.results)}
+            })
+
+            
         });
     }
 
@@ -153,25 +173,25 @@ class JobPosts extends Component {
     filterPosts = (event, search) => {
         event.preventDefault();
 
-        this.setState({isFetching: true});
+        this.setState({isFetching: true, posts: []});
         if(!search) {
             this.fetchPosts();
             return;
         }
 
         // Requested filters
-        const filters = {search: search};
-        
-        // Fetch filtered job posts
-        JobPostService.getJobPosts(filters, {expired: true})
-        .then((posts) => {
-            this.setState({isFetching: false});
-        });
+        const filters = {search: search, page: 1};
+
+        this.fetchPosts(filters, {expired: true});
+    }
+
+    getNextPage = () => {
+      this.fetchPosts({page: this.state.nextPage})
     }
 
     render() {
         const {classes} = this.props;
-        const posts = this.props.posts || [];
+        const posts = this.state.posts || [];
         return (
             <Navigation whitesmoke footer isLoading={this.state.isLoading}>
                 {this.state.isLoading ? null :
@@ -179,32 +199,34 @@ class JobPosts extends Component {
                     <div className={classes.wrapper}>
                         <Banner title='Karriere' image={bannerImage}/>
                         <div className={classes.grid}>
-                        
+
                             {this.state.isFetching ? <CircularProgress className={classes.progress} /> :
                                 <div className={classes.listRoot}>
                                     <Grow in={!this.state.isFetching}>
                                         <Paper className={classes.list} elevation={1} square>
+                                            <Pageination nextPage={this.getNextPage} page={this.state.nextPage}>
                                             {posts.map((value, index) => (
                                                 <div key={value.id}>
                                                     <JobPostItem key={value.id} data={value} onClick={() => this.goToJobPost(value.id)}/>
                                                     <Divider/>
                                                 </div>
                                             ))}
-                                            {posts.length === 0 && 
+                                            {posts.length === 0 &&
                                                 <NoPostsIndicator />
                                             }
+                                            </Pageination>
                                         </Paper>
                                     </Grow>
                                 </div>
                             }
                             <div>
-                                <Paper className={classes.settings} elevation={1} square> 
+                                <Paper className={classes.settings} elevation={1} square>
                                     <form>
                                         <TextField className={classes.paddingBtn} value={this.state.search} fullWidth placeholder='Søk...' onChange={this.handleChange('search')}/>
                                         <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.searchForPosts}>{Text.search}</Button>
                                     </form>
                                     <Divider className={classes.mt}/>
-                                    <Typography className={classes.mt} variant='title' gutterBottom>{Text.category}</Typography>
+                                    <Typography className={classes.mt} variant='h6' gutterBottom>{Text.category}</Typography>
 
                                     <Theme theme={errorTheme}>
                                         <Button
@@ -231,12 +253,4 @@ JobPosts.propTypes = {
     classes: PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
-    posts: JobPostActions.getJobPosts(state),
-});
-
-const mapDispatchToProps = (dispatch) => ({
-    setJobPosts: (data) => dispatch(JobPostActions.setJobPosts(data)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(JobPosts));
+export default (withStyles(styles)(JobPosts));

@@ -1,6 +1,6 @@
 import API from '../api';
 import store from '../../store/store';
-import * as GridActions from '../../store/actions/GridActions';
+import * as MiscActions from '../../store/actions/MiscActions';
 
 class MiscService {
 
@@ -22,16 +22,12 @@ class MiscService {
         });
     }
 
-    static getGridData = async (callback = null) => {
-        const response = API.getGridItems().response();
-        return response.then((data) => {
-            if(response.isError === false) {
-                // Store grid data in store
-                GridActions.setGridItems(data)(store.dispatch);
-            }
-            !callback || callback(response.isError === true, data);
-            return data;
-        });
+    static setLogInRedirectURL = (redirectURL) => {
+        MiscActions.setLogInRedirectURL(redirectURL)(store.dispatch);
+    }
+
+    static getLogInRedirectURL = () => {
+        return MiscActions.getLogInRedirectURL(store.getState());
     }
 }
 

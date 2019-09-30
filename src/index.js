@@ -10,12 +10,11 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import theme from './theme';
 import './assets/css/index.css';
 
-// Service imports
+// Service and action imports
 import AuthService from './api/services/AuthService';
+import MiscService from './api/services/MiscService';
 
 // Project containers
-import Landing from './containers/Landing';
-import NewsPage from './containers/NewsPage';
 import EventDetails from './containers/EventDetails';
 import Companies from './containers/Companies';
 import About from './containers/About';
@@ -30,17 +29,20 @@ import JobPostAdministration from './containers/JobPostAdministration';
 import LogIn from './containers/LogIn';
 import Laws from './containers/Laws';
 import NewLanding from './containers/NewLanding';
+import Http404 from './containers/Http404';
 
 // The user needs to be authorized (logged in) to access these routes
 const PrivateRoute = ({ component: Component, ...rest }) => {
     return (
         <Route
             {...rest}
-            render={(props) => (
-                (AuthService.isAuthenticated()) ?
-                    <Component {...props} /> :
-                    <Redirect to={URLS.login} />
-            )}
+            render={(props) => {
+                if(AuthService.isAuthenticated()) {
+                    return <Component {...props} />
+                }
+                MiscService.setLogInRedirectURL(props.match.path);
+                return <Redirect to={URLS.login} />
+            }}
         />
     );
 };
@@ -51,8 +53,7 @@ const Application = (
             <MuiThemeProvider theme={theme}>
                 <Switch>
                     <Route exact path='/' component={NewLanding} />
-                    <Route path='/nyheter/:id' component={NewsPage} />
-                    <Route path='/arrangementer/:id' component={EventDetails} />
+                    <Route path={URLS.events.concat(':id/')} component={EventDetails} />
                     <Route path={URLS.about} component={About} />
                     <Route path={URLS.events} component={Events} />
                     <Route path={URLS.services} component={Services} />
@@ -66,6 +67,8 @@ const Application = (
                     <PrivateRoute path={URLS.jobpostsAdmin} component={JobPostAdministration} />
                     <PrivateRoute path={URLS.eventAdmin} component={EventAdministration} />
                     <Route path={URLS.login} component={LogIn} />
+
+                    <Route component={Http404} />
 
                 </Switch>
             </MuiThemeProvider>

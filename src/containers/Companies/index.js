@@ -46,9 +46,8 @@ const styles = {
     }
   },
   topSection: {
-    //padding: "20px 48px 48px 48px",
     paddingBottom: 0,
-    paddingTop: 24,
+	  paddingTop: 24,
 
     "@media only screen and (max-width: 1200px)": {
       padding: "12px 0px 48px 0px"
@@ -161,7 +160,7 @@ class Companies extends Component {
             </div>
             <div className={classes.section}>
               <Typography
-                variant='display1'
+                variant='h4'
                 color="inherit"
                 align="center"
                 className={classes.margining}
@@ -185,7 +184,7 @@ class Companies extends Component {
 
           <div className={classes.section}>
             <Typography
-              variant='display1'
+              variant='h4'
               color="inherit"
               align="center"
               className={classes.margining}

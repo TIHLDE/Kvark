@@ -14,16 +14,16 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
+//import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
-import IconButton from '@material-ui/core/IconButton';
+//import IconButton from '@material-ui/core/IconButton';
 
 // Icons
-import AddIcon from '@material-ui/icons/Add';
-import DownloadIcon from '@material-ui/icons/CloudDownload';
+//import AddIcon from '@material-ui/icons/Add';
+//import DownloadIcon from '@material-ui/icons/CloudDownload';
 
 
 // Project Components
@@ -123,8 +123,8 @@ const MessageView = withStyles(styles, {withTheme: true})((props) => {
     const {classes} = props;
     return (
         <Grid className={classNames(classes.messageView, props.className)} container direction='column' alignItems='center' justify='center'>
-            <Typography className={classes.margin} variant='headline' align='center'>{props.title}</Typography>
-            <Button className={classes.margin} variant='raised' color='primary' onClick={props.onClick}>{props.buttonText}</Button>
+            <Typography className={classes.margin} variant='h5' align='center'>{props.title}</Typography>
+            <Button className={classes.margin} variant='contained' color='primary' onClick={props.onClick}>{props.buttonText}</Button>
         </Grid>
     )
 });
@@ -136,7 +136,7 @@ const JobPostItem = withStyles(styles, {withTheme: true})((props) => {
             <ButtonBase onClick={props.onClick}>
                 <Grid className={classNames(classes.JobPostItem, (props.selected)? classes.selected : '' )} container direction='row' alignItems='center' justify='space-between'>
                     <Grid container direction='column' justify='center'>
-                        <Typography variant='subheading' color='inherit'>{props.title}</Typography>
+                        <Typography variant='subtitle1' color='inherit'>{props.title}</Typography>
                         <Typography variant='caption'  color='inherit'>{props.location}</Typography>
                     </Grid>
                 </Grid>
@@ -195,12 +195,45 @@ class JobPostAdministrator extends Component {
 
   componentDidMount() {
     // Fetch Job posts
-    JobPostService.getJobPosts()
+    this.fetchPosts();
+  }
+
+  fetchPosts = (parameters = {page: 1}) => {
+    // We need to add this in order to not show expired events.
+    parameters['newest'] = true
+
+    JobPostService.getJobPosts(parameters)
     .then((data) => {
-        if(data) {
-            this.setState({jobposts: data});
+
+      // For backward compabillity
+      let displayedPosts = data.results || data;
+
+      let nextPageUrl = data.next;
+      let urlParameters = {};
+
+      // If we have a url for the next page convert it into a object
+      if (nextPageUrl) {
+        let nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
+        let parameterArray = nextPageUrlQuery.split('&');
+        parameterArray.forEach((parameter) => {
+          const parameterString = parameter.split('=')
+          urlParameters[parameterString[0]] = parameterString[1]
+        })
+      }
+
+      // Get the page number from the object if it exists
+      let nextPage = urlParameters['page'] ? urlParameters['page'] : null;
+
+      this.setState((oldState) => {
+        // If we allready have events
+        if (this.state.jobposts.length > 0) {
+          displayedPosts = oldState.jobposts.concat(displayedPosts)
         }
-    });
+        return {jobposts: displayedPosts, nextPage: nextPage}
+      }
+      );
+
+    })
   }
 
 
@@ -212,7 +245,7 @@ class JobPostAdministrator extends Component {
           this.setState({isFetching: false});
           JobPostService.getExpiredData((isError, data) => {
               if (!isError) {
-                  this.setState({expired: data || []});
+                  this.setState({expired: data.results || data || []});
               }
               this.setState({isFetching: true});
           });
@@ -364,6 +397,9 @@ class JobPostAdministrator extends Component {
         });
     }
 
+    getNextPage = () => {
+      this.fetchPosts({page: this.state.nextPage})
+    }
 
     render() {
         const {classes} = this.props;
@@ -394,7 +430,7 @@ class JobPostAdministrator extends Component {
                       (this.state.showSuccessMessage)? <MessageView title={this.state.successMessage} buttonText='Nice' onClick={this.toggleSuccessView}/> :
                           <form>
                               <Grid container direction='column' wrap='nowrap'>
-                                  <Typography variant='headline'>{header}</Typography>
+                                  <Typography variant='h5'>{header}</Typography>
                                   <TextField className={classes.field} label='Tittel' value={title} onChange={this.handleChange('title')} required/>
                                   <TextField className={classes.field} label='Ingress' value={ingress} onChange={this.handleChange('ingress')} required/>
                                   <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
@@ -414,14 +450,14 @@ class JobPostAdministrator extends Component {
                                   <Grid container direction='row' wrap='nowrap' justify='space-between'>
                                       {(isNewItem)?
                                           <div>
-                                              <Button className={classes.mr} onClick={this.createNewJobpost} type='submit' variant='raised' color='primary'>Lag ny annonse</Button>
+                                              <Button className={classes.mr} onClick={this.createNewJobpost} type='submit' variant='contained' color='primary'>Lag ny annonse</Button>
                                               <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
                                           </div>
 
                                           :
                                           <Fragment>
                                               <div>
-                                                  <Button className={classes.mr} onClick={this.editJobPostItem} variant='raised' type='submit' color='primary'>Lagre</Button>
+                                                  <Button className={classes.mr} onClick={this.editJobPostItem} variant='contained' type='submit' color='primary'>Lagre</Button>
                                                   <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
                                               </div>
                                               <Button className={classes.deleteButton} onClick={this.deleteJobPostItem} variant='outlined'>Slett</Button>
@@ -435,13 +471,15 @@ class JobPostAdministrator extends Component {
                 <JobPostSidebar
                     jobposts={this.state.jobposts}
                     expiredJobPosts={this.state.expired}
-                    selectedJobPostId={selectedJobPostId}
+                    selectedJobPostId={Number(selectedJobPostId)}
                     onEventClick={this.onEventClick}
                     resetEventState={this.resetEventState}
                     fetchExpired={this.fetchExpired}
+                    nextPage={this.state.nextPage}
+                    getNextPage={this.getNextPage}
                 />
               </div>
-              
+
               <JobPostPreview data={this.getJobPostPreview()} open={this.state.showPreview} onClose={this.handleToggleChange('showPreview')}/>
           </Fragment>
         );

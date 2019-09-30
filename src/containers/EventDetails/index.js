@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 
 // Service imports
 import EventService from '../../api/services/EventService';
@@ -31,6 +30,7 @@ class EventDetails extends Component {
     constructor(props){
         super(props);
         this.state = {
+            event: null,
             isLoading: false,
         }
     }
@@ -48,7 +48,7 @@ class EventDetails extends Component {
             if(!event) {
                 this.props.history.replace('/'); // Redirect to landing page given id is invalid
             } else {
-                this.setState({isLoading: false});
+                this.setState({isLoading: false, event: event});
             }
         });
     };
@@ -60,15 +60,16 @@ class EventDetails extends Component {
     }
 
     render() {
-        const {classes, selected} = this.props;
-        const data = (selected && selected.data)? selected.data : (selected)? selected : {};
+        const {classes} = this.props;
+        const {event} = this.state;
+        const eventData = event || {};
 
         return (
             <Navigation isLoading={this.state.isLoading} footer whitesmoke>
                 {(this.state.isLoading)? null :
                     <div className={classes.root}>
                         <div className={classes.wrapper}>
-                            <EventRenderer data={data}/>
+                            <EventRenderer data={eventData}/>
                         </div>
                     </div>
                 }
@@ -88,10 +89,4 @@ EventDetails.defaultProps = {
     id: '-1',
 };
 
-const stateValues = (state) => {
-    return {
-        selected: state.grid.selectedItem
-    };
-};
-
-export default connect(stateValues)(withStyles(styles)(EventDetails));
+export default (withStyles(styles)(EventDetails));

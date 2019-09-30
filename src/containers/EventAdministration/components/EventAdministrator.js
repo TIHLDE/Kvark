@@ -12,14 +12,14 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import ButtonBase from '@material-ui/core/ButtonBase';
+//mport ButtonBase from '@material-ui/core/ButtonBase';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
-import IconButton from '@material-ui/core/IconButton';
+//import IconButton from '@material-ui/core/IconButton';
 
 // Project Components
 import TextEditor from '../../../components/inputs/TextEditor';
@@ -91,8 +91,8 @@ const MessageView = withStyles(styles, {withTheme: true})((props) => {
     const {classes} = props;
     return (
         <Grid className={classNames(classes.messageView, props.className)} container direction='column' alignItems='center' justify='center'>
-            <Typography className={classes.margin} variant='headline' align='center'>{props.title}</Typography>
-            <Button className={classes.margin} variant='raised' color='primary' onClick={props.onClick}>{props.buttonText}</Button>
+            <Typography className={classes.margin} variant='h5' align='center'>{props.title}</Typography>
+            <Button className={classes.margin} variant='contained' color='primary' onClick={props.onClick}>{props.buttonText}</Button>
         </Grid>
     )
 });
@@ -147,12 +147,46 @@ class EventAdministrator extends Component {
         });
 
         // Get all events
-        EventService.getEvents()
-        .then((data) => {
-            if(data) {
-                this.setState({events: data});
-            }
-        })
+        this.fetchEvents()
+
+    }
+
+    fetchEvents = (parameters = {page: 1}) => {
+      // We need to add this in order to noe show expired events.
+      parameters['newest'] = true
+
+      EventService.getEvents(parameters)
+      .then((data) => {
+
+        // For backward compabillity
+        let displayedEvents = data.results || data;
+
+        let nextPageUrl = data.next;
+        let urlParameters = {};
+
+        // If we have a url for the next page convert it into a object
+        if (nextPageUrl) {
+          let nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
+          let parameterArray = nextPageUrlQuery.split('&');
+          parameterArray.forEach((parameter) => {
+            const parameterString = parameter.split('=')
+            urlParameters[parameterString[0]] = parameterString[1]
+          })
+        }
+
+        // Get the page number from the object if it exists
+        let nextPage = urlParameters['page'] ? urlParameters['page'] : null;
+
+        this.setState((oldState) => {
+          // If we allready have events
+          if (this.state.events.length > 0) {
+            displayedEvents = oldState.events.concat(displayedEvents)
+          }
+          return {events: displayedEvents, nextPage: nextPage}
+        }
+        );
+
+      })
     }
 
     fetchExpired = () => {
@@ -165,7 +199,7 @@ class EventAdministrator extends Component {
         EventService.getExpiredData((isError, data) => {
 
             if (!isError) {
-                this.setState({expired: data || []});
+                this.setState({expired: data.results || data || []});
             }
             this.setState({isFetching: true});
         });
@@ -306,6 +340,10 @@ class EventAdministrator extends Component {
         });
     }
 
+    getNextPage = () => {
+      this.fetchEvents({page: this.state.nextPage})
+    }
+
     render() {
         const {classes} = this.props;
         const {selectedEvent, title, location, description, image, priority, categories, category} = this.state;
@@ -335,7 +373,7 @@ class EventAdministrator extends Component {
                         (this.state.showSuccessMessage)? <MessageView title={this.state.successMessage} buttonText='Nice' onClick={this.toggleSuccessView}/> :
                             <form>
                                 <Grid container direction='column' wrap='nowrap'>
-                                    <Typography variant='headline'>{header}</Typography>
+                                    <Typography variant='h5'>{header}</Typography>
                                     <TextField className={classes.field} label='Tittel' value={title} onChange={this.handleChange('title')} required/>
                                     <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
 
@@ -368,14 +406,14 @@ class EventAdministrator extends Component {
                                     <Grid container direction='row' wrap='nowrap' justify='space-between'>
                                         {(isNewItem)?
                                             <div>
-                                                <Button className={classes.mr} onClick={this.createNewEvent} type='submit' variant='raised' color='primary'>Lag nytt event</Button>
+                                                <Button className={classes.mr} onClick={this.createNewEvent} type='submit' variant='contained' color='primary'>Lag nytt event</Button>
                                                 <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
                                             </div>
 
                                             :
                                             <Fragment>
                                                 <div>
-                                                    <Button className={classes.mr} onClick={this.editEventItem} variant='raised' type='submit' color='primary'>Lagre</Button>
+                                                    <Button className={classes.mr} onClick={this.editEventItem} variant='contained' type='submit' color='primary'>Lagre</Button>
                                                     <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
                                                 </div>
                                                 <Button className={classes.deleteButton} onClick={this.deleteEventItem} variant='outlined'>Slett</Button>
@@ -395,6 +433,8 @@ class EventAdministrator extends Component {
                     onEventClick={this.onEventClick}
                     resetEventState={this.resetEventState}
                     fetchExpired={this.fetchExpired}
+                    nextPage={this.state.nextPage}
+                    getNextPage={this.getNextPage}
                 />
                 <EventPreview data={this.getStateEventItem()} open={this.state.showPreview} onClose={this.handleToggleChange('showPreview')}/>
             </Fragment>

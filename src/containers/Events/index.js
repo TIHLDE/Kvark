@@ -29,6 +29,7 @@ import EventBanner from '../../assets/img/EventBanner.jpg';
 import EventListItem from "./components/EventListItem"
 import Navigation from "../../components/navigation/Navigation";
 import Banner from '../../components/layout/Banner';
+import Pageination from '../../components/layout/Pageination'
 import NoEventsIndicator from './components/NoEventsIndicator';
 
 const styles = (theme) => ({
@@ -123,15 +124,76 @@ class Events extends Component {
 
             search: '',
             category: 0,
+            nextPage: null,
+            expiredShown: false,
         }
     }
 
     // Gets the event
-    loadEvents = () => {
+    loadEvents = (filters, orderBy = null) => {
+        // Add in filters if needed.
+        let urlParameters = filters ? {...filters} : {};
+        if (this.state.expiredShown) {
+            urlParameters['expired'] = true;
+        }
+
+        // Decide if we should go to next page or not.
+        if (this.state.nextPage){
+          urlParameters = {
+            page: this.state.nextPage,
+            ...urlParameters
+          };
+
+        } else if (this.state.events.length > 0 ) {
+          // Abort if we have noe more pages and allready have loaded evrything
+          this.setState({isFetching: false})
+          return;
+        }
+
         // Fetch events from server
-        EventService.getEvents(null, null, (isError, events) => {
+        EventService.getEvents(urlParameters, orderBy, (isError, events) => {
+
+
             if(isError === false) {
-                this.setState({events: events});
+                // For backward compabillity
+                let displayedEvents = events.results ? events.results : events;
+                let nextPageUrl = events.next;
+                urlParameters = {};
+
+                // If we have a url for the next page convert it into a object
+                if (nextPageUrl) {
+                  let nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
+                  let parameterArray = nextPageUrlQuery.split('&');
+                  parameterArray.forEach((parameter) => {
+                    const parameterString = parameter.split('=')
+                    urlParameters[parameterString[0]] = parameterString[1]
+                  })
+                }
+
+                // Get the page number from the object if it exist
+                let nextPage = urlParameters['page'] ? urlParameters['page'] : null;
+                let expiredShown = this.state.expiredShown
+
+                if (nextPage === null && !expiredShown && (this.state.search || this.state.category)){
+                  nextPage = 1;
+                  expiredShown = true
+                }
+
+                this.setState((oldState) => {
+
+                  // If we allready have events
+                  if (this.state.events.length > 0) {
+                    displayedEvents = oldState.events.concat(displayedEvents)
+                  }
+                  return {events: displayedEvents, nextPage: nextPage, expiredShown: expiredShown}
+                });
+
+                // Used to load expired events when we have nothing else to show.
+                if (displayedEvents.length === 0 && nextPage) {
+                  this.loadEvents({expired: true, ...filters})
+                  return
+                }
+
             }
             this.setState({isLoading: false, isFetching: false});
         });
@@ -166,8 +228,9 @@ class Events extends Component {
         this.props.history.push(URLS.events + ''.concat(id, '/'));
     };
 
-    resetFilters = () => {
-        this.setState({isFetching: true, category: 0, search: ''});
+    // This one must be asyncron in order to make sure that we get the new state in loadEvents.
+    resetFilters = async () => {
+        await this.setState({isFetching: true, category: 0, search: '', events: [], nextPage: null, expiredShown: false});
         this.loadEvents();
     }
 
@@ -177,28 +240,29 @@ class Events extends Component {
         this.filterEvents(event, this.state.search, 0);
     }
 
-    filterEvents = (event, search, category) => {
+    // This one must be asyncron in order to make sure that we get the new state in loadEvents.
+    filterEvents = async (event, search, category) => {
         event.preventDefault();
 
-        this.setState({isFetching: true});
+        await this.setState({isFetching: true, nextPage: null, events: [], expiredShown: false});
         // If no filters requested, just load the events
         if(!search && !category) {
             this.loadEvents();
-            return;
+        } else {
+            // Requested filters
+            const filters = (category && category !== 0)? {category: category} : {search: search};
+            this.loadEvents(filters);
         }
+    }
 
-        // Requested filters
-        const filters = (category && category !== 0)? {category: category} : {search: search};
-        
-        // Get filtered events ordered by expired
-        EventService.getEvents(filters, {expired: true}, (isError, events) => {
-            if(isError === false) {
-                this.setState({
-                    events: events,
-                });
-            }
-            this.setState({isFetching: false})
-        });
+    getNextPage = () => {
+      const search = this.state.search;
+      const category = this.state.category;
+      let filters = null;
+      if(search || category) {
+          filters = (category && category !== 0)? {category: category} : {search: search};
+      }
+      this.loadEvents(filters, filters ? {expired: true} : null);
     }
 
     render() {
@@ -216,12 +280,16 @@ class Events extends Component {
                                     <div className={classes.listRoot}>
                                     <Grow in={!this.state.isFetching}>
                                         <Paper className={classes.list} elevation={1} square>
-                                            {this.state.events && this.state.events.map((value, index) => (
-                                                <div key={value.id}>
-                                                    <EventListItem key={value.id} data={value} onClick={() => this.goToEvent(value.id)}/>
-                                                    <Divider/>
-                                                </div>
-                                            ))}
+                                            <Pageination nextPage={this.getNextPage} page={this.state.nextPage}>
+                                              {this.state.events && this.state.events.map((value, index) => (
+                                                  <div key={value.id}>
+
+                                                        <EventListItem key={value.id} data={value} onClick={() => this.goToEvent(value.id)}/>
+                                                        <Divider/>
+
+                                                  </div>
+                                              ))}
+                                            </Pageination>
                                             { (this.state.events.length === 0 && !this.state.isLoading) &&
                                                 <NoEventsIndicator />
                                             }
@@ -231,13 +299,13 @@ class Events extends Component {
                                 }
                                 <div>
                                     <Paper className={classes.settings} elevation={1} square>
-                                        
+
                                         <form>
                                             <TextField className={classes.paddingBtn} value={this.state.search} fullWidth placeholder='Søk...' onChange={this.handleChange('search')}/>
                                             <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.searchForEvent}>{Text.search}</Button>
                                         </form>
                                         <Divider className={classes.mt}/>
-                                        <Typography className={classes.mt} variant='title' gutterBottom>{Text.category}</Typography>
+                                        <Typography className={classes.mt} variant='h6' gutterBottom>{Text.category}</Typography>
                                         <TextField className={classes.paddingBottom} select fullWidth label='Kategori' value={category} onChange={this.handleCategoryChange}>
                                             {categories.map((value, index) => (
                                                 <MenuItem key={index} value={value.id}>

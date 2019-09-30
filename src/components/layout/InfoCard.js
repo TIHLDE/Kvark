@@ -46,7 +46,7 @@ const styles = {
         padding: '10px 0px',
     },
     cover: {
-        height: '100%',
+        flex: '1',
     },
     header: {
         marginBottom: 10,
@@ -69,12 +69,12 @@ const InfoCard = (props) => {
                     </div>
                 }
                 <Grid className={(props.justifyText)? classes.cover : ''} container direction='column' nowrap='nowrap' justify='flex-start'>
-                    <Typography className={classes.header} variant='headline' align='left'><strong>{props.header}</strong></Typography>
+                    <Typography className={classes.header} variant='h5' align='left'><strong>{props.header}</strong></Typography>
                     {props.text && <Typography  component='p'>{Parser(props.text)}</Typography>}
 
                     {(!props.subText)? null :
                         <Fragment>
-                            <Typography className={classes.padding} variant='subheading'><strong>{props.subheader}</strong></Typography>
+                            <Typography className={classes.padding} variant='subtitle1'><strong>{props.subheader}</strong></Typography>
                             <Typography  component='p'>{Parser(props.subText)}</Typography>
                         </Fragment>
                     }
