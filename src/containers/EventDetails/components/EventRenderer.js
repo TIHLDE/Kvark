@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -20,6 +20,7 @@ import Time from '@material-ui/icons/AccessTime';
 
 // Project Components
 import MarkdownRenderer from '../../../components/miscellaneous/MarkdownRenderer';
+import EventDialog from './EventDialog';
 
 const styles = {
     grid: {
@@ -87,11 +88,21 @@ InfoContent.propTypes = {
 
 const EventRenderer = (props) => {
     const {classes, data} = props;
+    const [modalShow, setModalShown] = useState(false);
     const description = data.description || '';
     const start = moment(data.start, ['YYYY-MM-DD HH:mm'], 'nb');
 
+    const openEventModal = () => {
+      setModalShown(true);
+    };
+
+    const closeEventModal = () => {
+      setModalShown(false);
+    };
+
     return (
         <Paper className={classes.img} square>
+            {modalShow === true && <EventDialog onClose={closeEventModal} data={props.data} status={modalShow} />}
             <img className={classes.image} src={data.image} alt={data.image_alt} />
             <Typography className={classes.title} variant='h5'><strong>{data.title}</strong></Typography>
             <Divider />
@@ -102,7 +113,16 @@ const EventRenderer = (props) => {
                     <InfoContent icon={<Time />} label={start.format('HH:mm')} />
                     <InfoContent icon={<Location />} label={data.location} />
                     {data.price && <InfoContent icon={<Time />} label={data.price} />}
-                    {data.sign_up && <Button fullWidth className={classes.mt} variant='outlined' color='primary'>{Text.signUp}</Button>}
+                    {data.sign_up &&
+                      <Button
+                        fullWidth
+                        className={classes.mt}
+                        variant='contained'
+                        onClick={openEventModal}
+                        color='primary'>
+                        {Text.signUp}
+                        </Button>
+                      }
                 </div>
                 <div className={classes.content}>
                     <MarkdownRenderer value={description} />
@@ -114,7 +134,6 @@ const EventRenderer = (props) => {
 
 EventRenderer.propTypes = {
     classes: PropTypes.object,
-
     data: PropTypes.object.isRequired,
 };
 
