@@ -102,7 +102,7 @@ class CustomListItem extends Component {
         await this.setState({
             checked: !this.state.checked
         });
-        
+
         // Sends fake event back, because this method was originally connect to
         // The Checkbox component, which actually returned a correct event,
         // but was for some reason moved to ListItem.
@@ -163,7 +163,7 @@ class Forum extends Component {
             this.setState({
                 data: {
                     ...this.state.data,
-                    ['info']: {
+                    info: {
                         ...this.state.data["info"],
                         [event.target.name]: event.target.value
                     }
@@ -174,7 +174,7 @@ class Forum extends Component {
             this.setState({
                 data: {
                     ...this.state.data,
-                    ['comment']: event.target.value
+                    comment: event.target.value
                 }
             })
         }
@@ -183,14 +183,14 @@ class Forum extends Component {
                 this.setState({
                     data: {
                         ...this.state.data,
-                        ['type']: [...this.state.data["type"], event.target.name]
+                        type: [...this.state.data["type"], event.target.name]
                     }
                 })
             } else {
                 this.setState({
                     data: {
                         ...this.state.data,
-                        ['type']: this.state.data["type"].filter(it => it != event.target.name)
+                        type: this.state.data["type"].filter(it => it !== event.target.name)
                     }
                 })
             }
@@ -200,14 +200,14 @@ class Forum extends Component {
                 this.setState({
                     data: {
                         ...this.state.data,
-                        ['time']: [...this.state.data["time"], event.target.name]
+                        time: [...this.state.data["time"], event.target.name]
                     }
                 })
             } else {
                 this.setState({
                     data: {
                         ...this.state.data,
-                        ['time']: this.state.data["time"].filter(it => it != event.target.name)
+                        time: this.state.data["time"].filter(it => it !== event.target.name)
                     }
                 })
             }
@@ -312,6 +312,3 @@ Forum.propTypes = {
 };
 
 export default withStyles(styles)(Forum);
-
-
-

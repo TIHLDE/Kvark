@@ -403,7 +403,7 @@ class JobPostAdministrator extends Component {
 
     render() {
         const {classes} = this.props;
-        const {selectedJobPost, title, ingress, location, body: body, image, company, email, link} = this.state;
+        const {selectedJobPost, title, ingress, location, body, image, company, email, link} = this.state;
         const selectedJobPostId = (selectedJobPost)? selectedJobPost.id : '';
         const isNewItem = (selectedJobPost === null);
         const header = (isNewItem)? 'Lag en ny annonse' : 'Endre annonse';

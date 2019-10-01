@@ -128,9 +128,7 @@ function CalendarListView(props) {
   return (
     <div className={classes.eventListContainer}>
       {props.events && props.events.map((eventData, index) => {
-        if (index < eventsToDisplay) {
-          return (<CalendarListItem key={index} classes={classes} eventData={eventData} />);
-        }
+        return index < eventsToDisplay ? (<CalendarListItem key={index} classes={classes} eventData={eventData} />): '';
       })}
       {props.events ?
         <LinkButton noPadding to='/arrangementer/'>

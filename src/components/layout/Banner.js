@@ -123,7 +123,10 @@ Banner.propTypes = {
     text: PropTypes.string,
     disableFilter: PropTypes.bool,
     children: PropTypes.node,
-    button: PropTypes.node,
+    button: PropTypes.oneOfType([
+      PropTypes.node,
+      PropTypes.func,
+    ]),
     onClick: () => {},
 };
 

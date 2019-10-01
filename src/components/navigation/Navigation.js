@@ -159,7 +159,7 @@ const URIbutton = withStyles(styles)((props) => {
     const { data, classes } = props;
     return (
         <div className={classNames(props.selected ? classes.selected : '', props.uri)}>
-            <Link to={data.link} onClick={data.link == window.location.pathname ? () => window.location.refresh() : null} style={{ textDecoration: 'none' }}>
+            <Link to={data.link} onClick={data.link === window.location.pathname ? () => window.location.refresh() : null} style={{ textDecoration: 'none' }}>
                 <Button color="inherit" style={{
                     color: 'white',
                 }}>
@@ -173,7 +173,7 @@ const URIbutton = withStyles(styles)((props) => {
 const SponsorLogo = withStyles(styles)((props) => {
     const { classes } = props;
     return (
-        <a className={classes.sponsorWrapper} target="_blank" href="https://www.soprasteria.no/">
+        <a className={classes.sponsorWrapper} target="_blank" rel="noopener noreferrer" href="https://www.soprasteria.no/">
             <img className={classes.sponsorLogo} src={SopraSteria} alt='Sopra Steria Logo' height={'24rem'} />
             <div className={classes.sponsorText}>HOVEDSAMARBEIDSPARTNER</div>
         </a>

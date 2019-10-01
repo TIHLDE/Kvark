@@ -12,9 +12,6 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 
-import MenuList from '@material-ui/core/MenuList';
-import MenuItem from '@material-ui/core/MenuItem';
-
 // Icons
 import SocialIcon from '../../assets/icons/social.svg';
 import BusinessIcon from '../../assets/icons/business.svg';
