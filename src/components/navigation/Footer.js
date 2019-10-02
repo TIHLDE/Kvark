@@ -15,6 +15,7 @@ import TWITTER from '../../assets/icons/twitter.svg';
 import INSTAGRAM from '../../assets/icons/instagram.svg';
 import SNAPCHAT from '../../assets/icons/snapchat.svg';
 import SLACK from '../../assets/icons/slack.svg';
+import DISCORD from '../../assets/icons/discord.svg';
 
 
 const styles = {
@@ -26,8 +27,8 @@ const styles = {
         padding: '40px 0px',
         display: 'grid',
         gridGap: '40px',
-        gridTemplateColumns: '1fr 1fr 1fr 1fr',
-        gridTemplateAreas: "'Sponsorer OmTihlde SosialeMedier TihldeSupport'", //SosialeMedier
+        gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
+        gridTemplateAreas: "'Sponsorer OmTihlde BesokTihlde SosialeMedier TihldeSupport'", //SosialeMedier
         gridTemplateRows: 'auto',
         justifyItems: 'center',
         color: 'white',
@@ -36,13 +37,13 @@ const styles = {
 
         '@media only screen and (max-width: 900px)': {
             gridTemplateRows: 'auto auto',
-            gridTemplateAreas: "'OmTihlde TihldeSupport' 'SosialeMedier Sponsorer'",
+            gridTemplateAreas: "'OmTihlde BesokTihlde' 'SosialeMedier Sponsorer' 'TihldeSupport'",
             gridTemplateColumns: 'auto auto',
         },
 
         '@media only screen and (max-width: 600px)': {
             gridTemplateRows: 'auto auto auto auto',
-            gridTemplateAreas: "'TihldeSupport' 'OmTihlde' 'SosialeMedier' 'Sponsorer'",
+            gridTemplateAreas: "'TihldeSupport' 'OmTihlde' 'BesokTihlde' 'SosialeMedier' 'Sponsorer'",
             gridTemplateColumns: '100%',
         }
     },
@@ -52,6 +53,9 @@ const styles = {
     },
     omTihlde: {
         gridArea: 'OmTihlde',
+    },
+    besokTihlde: {
+        gridArea: 'BesokTihlde',
     },
     sponsorer: {
         gridArea: 'Sponsorer',
@@ -88,10 +92,20 @@ class Footer extends Component {
         return (
             <div className={classes.omTihlde}>
                 <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>TIHLDE</Typography>
-                <Typography className={classes.horSpacing} align='center' color='inherit' >c/o IDI NTNU</Typography>
-                <Typography className={classes.horSpacing} align='center' color='inherit' >Sverres gate 14</Typography>
-                <Typography className={classes.horSpacing} align='center' color='inherit' >7012 Trondheim</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' >OrgNr: 989 684 183</Typography>
                 <Typography className={classes.horSpacing} align='center' color='inherit' >hs@tihlde.org</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' >Sverres gate 14, 7012 Trondheim</Typography>
+            </div>
+        )
+    };
+
+    besokTihlde = () => {
+        const { classes } = this.props;
+        return (
+            <div className={classes.besokTihlde}>
+                <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Faktura og post:</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' >c/o IDI NTNU</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' >Sverres Gate 12, 7012 Trondheim</Typography>
             </div>
         )
     };
@@ -136,6 +150,10 @@ class Footer extends Component {
                         <img className={classes.horSpacing} src={SLACK} alt="sit" width={40} />
                         {/*<i class="fab fa-slack fa-3x"></i>*/}
                     </a>
+                    <a className={classes.a} target="_blank" href="https://discord.gg/SZR9vTS">
+                        <img className={classes.horSpacing} src={DISCORD} alt="sit" width={40} />
+                        {/*<i class="fab fa-discord fa-3x"></i>*/}
+                    </a>
                 </div>
             </div>
         )
@@ -161,6 +179,7 @@ class Footer extends Component {
             <div className={classes.root}>
                 {this.sponsorer()}
                 {this.omTihlde()}
+                {this.besokTihlde()}
                 {this.sosialeMedier()}
                 {this.tihldeSupport()}
             </div>
