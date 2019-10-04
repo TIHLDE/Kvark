@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import MiscService from '../../api/services/MiscService';
 import AuthService from '../../api/services/AuthService';
 import * as MiscActions from '../../store/actions/MiscActions';
+import UserService from '../../api/services/UserService';
 
 // Material UI Components
 import AppBar from '@material-ui/core/AppBar';
@@ -26,6 +27,7 @@ import IconButton from '@material-ui/core/IconButton';
 import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO.png';
 import MenuIcon from '@material-ui/icons/Menu';
 import SopraSteria from '../../assets/img/sopraSteriaLogo.svg';
+import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 
 // Project Components
 import Footer from './Footer';
@@ -58,10 +60,6 @@ const styles = {
         margin: 'auto',
 
         alignItems: 'center',
-
-        '@media only screen and (max-width: 600px)': {
-            flexDirection: 'row-reverse',
-        }
     },
     logoWrapper: {
         display: 'flex',
@@ -135,6 +133,7 @@ const styles = {
         verticalAlign: 'top',
         display: 'inline-block',
         textAlign: 'center',
+        margin: 'auto 10px',
     },
     sponsorLogo: {
         '@media only screen and (max-width: 600px)': {
@@ -144,13 +143,58 @@ const styles = {
     },
     sponsorText: {
         color: 'white',
-        fontSize: '12px',
+        fontSize: '10px',
         textAlign: 'center',
         opacity: 0.7,
 
         '@media only screen and (max-width: 600px)': {
             fontSize: '8px',
         }
+    },
+    profileLink: {
+        '& button': {
+            padding: '0',
+        },
+        textDecoration: 'none',
+    },
+    profileContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        borderRadius: '4px',
+        cursor: 'pointer',
+    },
+    profileContainerHidden: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        opacity: '0',
+    },
+    profileName: {
+        margin: 'auto 10px',
+        fontSize: '16px',
+        color: 'white',
+        minWidth: '40px',
+        textAlign: 'right',
+    },
+    profileCircle: {
+        border: '1px solid #222222',
+        borderRadius: '50%',
+        backgroundColor: 'peru',
+        fontSize: '18px',
+        padding: '7px',
+        color: 'black',
+        height: '45px',
+        width: '45px',
+        textAlign: 'center',
+    },
+    profileCircleImage: {
+        backgroundImage: 'url(https://thenypost.files.wordpress.com/2019/09/takes-donald-trump.jpg?quality=90&strip=all&w=618&h=410&crop=1)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        color: '#00000000',
     }
 };
 
@@ -174,11 +218,25 @@ const SponsorLogo = withStyles(styles)((props) => {
     const { classes } = props;
     return (
         <a className={classes.sponsorWrapper} target="_blank" href="https://www.soprasteria.no/">
-            <img className={classes.sponsorLogo} src={SopraSteria} alt='Sopra Steria Logo' height={'24rem'} />
+            <img className={classes.sponsorLogo} src={SopraSteria} alt='Sopra Steria Logo' height={'18rem'} />
             <div className={classes.sponsorText}>HOVEDSAMARBEIDSPARTNER</div>
         </a>
     );
 });
+
+const PersonIcon = withStyles(styles)((props) => {
+    const { user, link, classes } = props;
+    return (
+        <Link to={link} className={classes.profileLink} onClick={link == window.location.pathname ? () => window.location.refresh() : null} >
+            <Button>
+                <div className={ user.first_name == undefined ? classes.profileContainerHidden : classes.profileContainer} >
+                    <div className={classes.profileName}>{ user.first_name != undefined && user.first_name }</div>
+                    <div className={classNames(classes.profileCircle)}>{ user.first_name != undefined && (user.first_name).substring(0,1) + '' + (user.last_name).substring(0,1) }</div>
+                </div>
+            </Button>
+        </Link>
+    );
+})
 
 class Navigation extends Component {
 
@@ -189,11 +247,24 @@ class Navigation extends Component {
 
             showSnackbar: false,
             snackMessage: null,
+
+            userData: {},
         };
+    }
+
+    loadUserData = () => {
+        UserService.getUserData().then((user) => {
+            if(user) {
+                this.setState({userData: user});
+            }
+        });
     }
 
     componentDidMount() {
         this.configureWarningMessage();
+        if (AuthService.isAuthenticated()) {
+            this.loadUserData();
+        }
     }
 
     configureWarningMessage = () => {
@@ -254,13 +325,24 @@ class Navigation extends Component {
                                 </Hidden>
                             </div>
 
+                            <div>
+                                {!AuthService.isAuthenticated() &&
+                                    <SponsorLogo />
+                                }
+                            </div>
+                            <div>
+                                {AuthService.isAuthenticated() ?
+                                    <PersonIcon user={this.state.userData} link={URLS.profile} />
+                                    :
+                                    <Hidden smDown implementation='css'>
+                                        <IconButton className={classes.menuButton} onClick={() => this.goTo(URLS.login)}><PersonOutlineIcon /></IconButton>
+                                    </Hidden>
+                                }
+                            </div>
+
                             <Hidden mdUp implementation='css'>
                                 <div className={classes.menuWrapper}>
                                     <IconButton className={classes.menuButton} onClick={this.toggleSidebar}><MenuIcon /></IconButton>
-
-                                    <Hidden smUp implementation={'css'}>
-                                        <SponsorLogo />
-                                    </Hidden>
                                 </div>
                             </Hidden>
 
@@ -276,23 +358,7 @@ class Navigation extends Component {
                                     <Sidebar onClose={this.toggleSidebar} />
                                 </Drawer>
                             </Hidden>
-                            <div>
-                                <Hidden xsDown implementation={'css'}>
-                                    <SponsorLogo />
-                                </Hidden>
-                                {/*
-                                    --- LOG-IN BUTTON ---
-                                    <Hidden xsDown implementation={'css'}>
-                                    <div>
-                                        {AuthService.isAuthenticated()?
-                                            <IconButton className={classes.profileBtn} onClick={() => this.goTo(URLS.profile)}><PersonIcon/></IconButton>
-                                            :
-                                            <Button className={classes.loginBtn} onClick={() => this.goTo(URLS.login)} variant='outlined'>Logg inn</Button>
-                                        }
-                                    </div>
-                                    </Hidden>
-                                */}
-                            </div>
+                            
                         </div>
                     </Toolbar>
                 </AppBar>

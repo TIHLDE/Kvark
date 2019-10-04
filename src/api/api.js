@@ -48,6 +48,11 @@ export default {
     deleteJobPost: (id) => {
         return new IRequest('DELETE', 'jobpost/'.concat(id, '/'), undefined, true);
     },
+    
+    // User
+    getUserData: () => {
+        return new IRequest('GET', 'user/', undefined, true);
+    },
 
     // Warning
     getWarning: () => {

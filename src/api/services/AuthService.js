@@ -2,6 +2,7 @@ import AUTH from '../auth';
 import TOKEN from '../token';
 import store from '../../store/store';
 import * as UserActions from '../../store/actions/UserActions';
+import UserService from './UserService';
 
 class AuthService {
 
@@ -10,6 +11,7 @@ class AuthService {
         return response.then((data) => {
             if(data && data.token) {
                 TOKEN.set(data.token);
+                UserService.getUserData();
                 return data;
             }
             return null;

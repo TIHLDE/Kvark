@@ -4,6 +4,9 @@ import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import URLS from '../../URLS';
 
+// API and store imports
+import AuthService from '../../api/services/AuthService';
+
 // Material UI Components
 import ListItem from '@material-ui/core/ListItem';
 import Grid from '@material-ui/core/Grid';
@@ -73,7 +76,11 @@ const SidebarContent = (props) => {
                 <ActionLink to={URLS.newStudent} label='Ny student' />
                 <ActionLink to={URLS.jobposts} label='Karriere' />
                 <ActionLink to={URLS.company} label='For Bedrifter' />
-                <ActionLink to={URLS.login} label='Logg inn' />
+                {AuthService.isAuthenticated() ?
+                    <ActionLink to={URLS.profile} label='Min side' />
+                    :
+                    <ActionLink to={URLS.login} label='Logg inn' />
+                }
             </div>
         </Fragment>
     );
