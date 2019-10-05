@@ -36,13 +36,13 @@ const styles = {
         boxShadow: '0px -2px 5px 0px rgba(0,0,0,0.1)',
 
         '@media only screen and (max-width: 900px)': {
-            gridTemplateRows: 'auto auto',
-            gridTemplateAreas: "'OmTihlde BesokTihlde' 'SosialeMedier Sponsorer' 'TihldeSupport'",
+            gridTemplateRows: 'auto auto auto',
+            gridTemplateAreas: "'OmTihlde BesokTihlde' 'SosialeMedier Sponsorer' 'TihldeSupport TihldeSupport'",
             gridTemplateColumns: 'auto auto',
         },
 
         '@media only screen and (max-width: 600px)': {
-            gridTemplateRows: 'auto auto auto auto',
+            gridTemplateRows: 'auto auto auto auto auto',
             gridTemplateAreas: "'TihldeSupport' 'OmTihlde' 'BesokTihlde' 'SosialeMedier' 'Sponsorer'",
             gridTemplateColumns: '100%',
         }
