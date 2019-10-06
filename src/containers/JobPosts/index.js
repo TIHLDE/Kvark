@@ -10,7 +10,6 @@ import Text from '../../text/JobPostText';
 
 // API, Actions and Selector imports
 import JobPostService from '../../api/services/JobPostService';
-import * as JobPostActions from '../../store/actions/JobPostActions';
 
 // Material UI Components
 import Paper from '@material-ui/core/Paper';

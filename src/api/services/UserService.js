@@ -7,7 +7,7 @@ class UserService {
     static getUserData = async () => {
         // Check store
         const user = store.getState().user.userData;
-        if(user.first_name != undefined) {
+        if(user.first_name !== undefined) {
             return Promise.resolve(user);
         } else {
             // Fetch

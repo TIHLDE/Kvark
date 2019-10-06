@@ -48,7 +48,7 @@ const ActionLink = withStyles(styles)((props) => {
     const { classes } = props;
     return (
         <Fragment>
-            <Link to={props.to} onClick={props.to == window.location.pathname ? () => window.location.refresh() : null}>
+            <Link to={props.to} onClick={props.to === window.location.pathname ? () => window.location.refresh() : null}>
                 <ListItem className={classNames(classes.item, props.className)} button color="inherit">
                     <Grid container direction='column' wrap='nowrap' alignItems='center' justify='space-between'>
                         <Typography variant='h5' align='center' color='inherit'>{props.label}</Typography>

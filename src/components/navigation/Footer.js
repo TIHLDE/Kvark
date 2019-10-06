@@ -118,29 +118,29 @@ class Footer extends Component {
             <div className={classes.sosialeMedier}>
                 <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Sosiale medier</Typography>
                 <div className={classes.sosialeMedierFlex}>
-                    <a className={classes.a} target="_blank" href="https://www.facebook.com/tihlde/">
+                    <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/tihlde/">
                         <img className={classes.horSpacing} src={FACEBOOK} alt="sit" width={40} />
                         {/*<i class="fab fa-facebook fa-3x"></i>*/}
                     </a>
-                    <a className={classes.a} target="_blank" href="https://www.instagram.com/tihlde/">
+                    <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/tihlde/">
                         <img className={classes.horSpacing} src={INSTAGRAM} alt="sit" width={40} />
                         {/*<i class="fab fa-instagram fa-3x"></i>*/}
                     </a>
-                    <a className={classes.a} target="_blank" href="https://twitter.com/tihlde">
+                    <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://twitter.com/tihlde">
                         <img className={classes.horSpacing} src={TWITTER} alt="sit" width={40} />
                         {/*<i class="fab fa-twitter fa-3x"></i>*/}
                     </a>
                 </div>
                 <div className={classes.sosialeMedierFlex}>
-                    <a className={classes.a} target="_blank" href="https://www.snapchat.com/add/tihldesnap">
+                    <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://www.snapchat.com/add/tihldesnap">
                         <img className={classes.horSpacing} src={SNAPCHAT} alt="sit" width={40} />
                         {/*<i class="fab fa-snapchat-ghost fa-3x"></i>*/}
                     </a>
-                    <a className={classes.a} target="_blank" href="https://tihlde.slack.com">
+                    <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://tihlde.slack.com">
                         <img className={classes.horSpacing} src={SLACK} alt="sit" width={40} />
                         {/*<i class="fab fa-slack fa-3x"></i>*/}
                     </a>
-                    <a className={classes.a} target="_blank" href="https://discord.gg/SZR9vTS">
+                    <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://discord.gg/SZR9vTS">
                         <img className={classes.horSpacing} src={DISCORD} alt="sit" width={40} />
                         {/*<i class="fab fa-discord fa-3x"></i>*/}
                     </a>
