@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import {
   withStyles,
-  MuiThemeProvider,
-  createMuiTheme
 } from "@material-ui/core/styles";
 import classNames from "classnames";
 

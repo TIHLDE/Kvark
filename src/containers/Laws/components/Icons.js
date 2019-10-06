@@ -1,12 +1,9 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import moment from 'moment';
-import classNames from 'classnames';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
 
 // Icons
 

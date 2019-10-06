@@ -203,7 +203,7 @@ const URIbutton = withStyles(styles)((props) => {
     const { data, classes } = props;
     return (
         <div className={classNames(props.selected ? classes.selected : '', props.uri)}>
-            <Link to={data.link} onClick={data.link == window.location.pathname ? () => window.location.refresh() : null} style={{ textDecoration: 'none' }}>
+            <Link to={data.link} onClick={data.link === window.location.pathname ? () => window.location.refresh() : null} style={{ textDecoration: 'none' }}>
                 <Button color="inherit" style={{
                     color: 'white',
                 }}>
@@ -217,7 +217,7 @@ const URIbutton = withStyles(styles)((props) => {
 const SponsorLogo = withStyles(styles)((props) => {
     const { classes } = props;
     return (
-        <a className={classes.sponsorWrapper} target="_blank" href="https://www.soprasteria.no/">
+        <a className={classes.sponsorWrapper} target="_blank" rel="noopener noreferrer" href="https://www.soprasteria.no/">
             <img className={classes.sponsorLogo} src={SopraSteria} alt='Sopra Steria Logo' height={'18rem'} />
             <div className={classes.sponsorText}>HOVEDSAMARBEIDSPARTNER</div>
         </a>
@@ -227,11 +227,11 @@ const SponsorLogo = withStyles(styles)((props) => {
 const PersonIcon = withStyles(styles)((props) => {
     const { user, link, classes } = props;
     return (
-        <Link to={link} className={classes.profileLink} onClick={link == window.location.pathname ? () => window.location.refresh() : null} >
+        <Link to={link} className={classes.profileLink} onClick={link === window.location.pathname ? () => window.location.refresh() : null} >
             <Button>
-                <div className={ user.first_name == undefined ? classes.profileContainerHidden : classes.profileContainer} >
-                    <div className={classes.profileName}>{ user.first_name != undefined && user.first_name }</div>
-                    <div className={classNames(classes.profileCircle)}>{ user.first_name != undefined && (user.first_name).substring(0,1) + '' + (user.last_name).substring(0,1) }</div>
+                <div className={ user.first_name === undefined ? classes.profileContainerHidden : classes.profileContainer} >
+                    <div className={classes.profileName}>{ user.first_name !== undefined && user.first_name }</div>
+                    <div className={classNames(classes.profileCircle)}>{ user.first_name !== undefined && (user.first_name).substring(0,1) + '' + (user.last_name).substring(0,1) }</div>
                 </div>
             </Button>
         </Link>

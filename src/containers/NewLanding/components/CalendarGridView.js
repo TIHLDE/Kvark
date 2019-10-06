@@ -1,26 +1,14 @@
 import React from 'react';
-import PropTypes, { array } from 'prop-types';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import 'moment/locale/nb'
 import './style.css';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
 import Next from '@material-ui/icons/NavigateNext';
 import Before from '@material-ui/icons/NavigateBefore';
 
-// Project componets/services
-import CalendarListView from './CalendarListView';
-import Schedule from '@material-ui/icons/Schedule';
-
-
-// Icons
-import Reorder from '@material-ui/icons/Reorder';
-import DateRange from '@material-ui/icons/DateRange';
 
 // Styles
 const styles = (theme) => ({
