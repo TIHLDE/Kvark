@@ -27,8 +27,8 @@ const styles = {
         padding: '40px 0px',
         display: 'grid',
         gridGap: '40px',
-        gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
-        gridTemplateAreas: "'Sponsorer OmTihlde BesokTihlde SosialeMedier TihldeSupport'", //SosialeMedier
+        gridTemplateColumns: '1fr 1fr 1fr 1fr',
+        gridTemplateAreas: "'Sponsorer OmTihlde SosialeMedier TihldeSupport'", //SosialeMedier
         gridTemplateRows: 'auto',
         justifyItems: 'center',
         color: 'white',
@@ -37,13 +37,13 @@ const styles = {
 
         '@media only screen and (max-width: 900px)': {
             gridTemplateRows: 'auto auto',
-            gridTemplateAreas: "'OmTihlde BesokTihlde' 'SosialeMedier Sponsorer' 'TihldeSupport'",
+            gridTemplateAreas: "'OmTihlde SosialeMedier' 'Sponsorer TihldeSupport'",
             gridTemplateColumns: 'auto auto',
         },
 
         '@media only screen and (max-width: 600px)': {
-            gridTemplateRows: 'auto auto auto auto',
-            gridTemplateAreas: "'TihldeSupport' 'OmTihlde' 'BesokTihlde' 'SosialeMedier' 'Sponsorer'",
+            gridTemplateRows: 'auto auto auto auto auto',
+            gridTemplateAreas: "'TihldeSupport' 'OmTihlde' 'SosialeMedier' 'Sponsorer'",
             gridTemplateColumns: '100%',
         }
     },
@@ -92,20 +92,10 @@ class Footer extends Component {
         return (
             <div className={classes.omTihlde}>
                 <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>TIHLDE</Typography>
-                <Typography className={classes.horSpacing} align='center' color='inherit' >OrgNr: 989 684 183</Typography>
                 <Typography className={classes.horSpacing} align='center' color='inherit' >hs@tihlde.org</Typography>
-                <Typography className={classes.horSpacing} align='center' color='inherit' >Sverres gate 14, 7012 Trondheim</Typography>
-            </div>
-        )
-    };
-
-    besokTihlde = () => {
-        const { classes } = this.props;
-        return (
-            <div className={classes.besokTihlde}>
-                <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Faktura og post:</Typography>
                 <Typography className={classes.horSpacing} align='center' color='inherit' >c/o IDI NTNU</Typography>
-                <Typography className={classes.horSpacing} align='center' color='inherit' >Sverres Gate 12, 7012 Trondheim</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' >Sverres gate 14, 7012 Trondheim</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' >OrgNr: 989 684 183</Typography>
             </div>
         )
     };
@@ -179,7 +169,6 @@ class Footer extends Component {
             <div className={classes.root}>
                 {this.sponsorer()}
                 {this.omTihlde()}
-                {this.besokTihlde()}
                 {this.sosialeMedier()}
                 {this.tihldeSupport()}
             </div>
