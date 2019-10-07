@@ -53,15 +53,15 @@ const style = {
 const EventDialog = (props) => {
   const {classes} = props;
 
-  // TODO: Load in data for the actual user
-  const [userData, setUserData] = useState(
+  // TODO: Load in data for the actual user. Should be passed in as prop
+  const userData =
     {
       first_name: 'Bob',
       last_name: 'Kåre',
       email: 'bob.kare@tihlde.localdomain',
       allergy: 'Masse alergier. Blant annet gluten, laktose, hund, katt, python',
     }
-  );
+  ;
   const [confirmed, setConfirmed] = useState(false);
 
   const confirmHandle = () => {
