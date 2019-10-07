@@ -19,6 +19,8 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 //import IconButton from '@material-ui/core/IconButton';
 
 // Project Components
@@ -122,7 +124,7 @@ class EventAdministrator extends Component {
             location: '',
             startDate: new Date().toISOString(),
             description: '',
-            signUp: false,
+            sign_up: false,
             priority: 0,
             image: '',
             category: 0,
@@ -220,7 +222,7 @@ class EventAdministrator extends Component {
                 image: event.image,
                 category: event.category,
                 startDate: event.start.substring(0,16),
-                signUp: event.signUp,
+                sign_up: event.sign_up,
             });
         }
         this.setState({showSuccessMessage: false});
@@ -237,12 +239,18 @@ class EventAdministrator extends Component {
             imageAlt: '',
             category: 0,
             startDate: new Date().toISOString().substring(0, 16),
-            signUp: false,
+            sign_up: false,
         });
     }
 
     handleChange = (name) => (event) => {
+      event.persist();
+      if (event.target.type === 'checkbox'){
+        this.setState({[name]: event.target.checked});
+      } else {
         this.setState({[name]: event.target.value});
+      }
+
     }
 
     handleToggleChange = (name) => () => {
@@ -270,7 +278,7 @@ class EventAdministrator extends Component {
         imageAlt: 'event',
         category: this.state.category,
         start: moment(this.state.startDate).format('YYYY-MM-DDTHH:mm'),
-        signUp: this.state.signUp,
+        sign_up: this.state.sign_up,
     });
 
     createNewEvent = (event) => {
@@ -346,7 +354,7 @@ class EventAdministrator extends Component {
 
     render() {
         const {classes} = this.props;
-        const {selectedEvent, title, location, description, image, priority, categories, category} = this.state;
+        const {selectedEvent, title, location, description, image, priority, categories, category, sign_up} = this.state;
         const selectedEventId = (selectedEvent)? selectedEvent.id : '';
         const isNewItem = (selectedEvent === null);
         const header = (isNewItem)? 'Lag et nytt arrangement' : 'Endre arrangement';
@@ -376,6 +384,11 @@ class EventAdministrator extends Component {
                                     <Typography variant='h5'>{header}</Typography>
                                     <TextField className={classes.field} label='Tittel' value={title} onChange={this.handleChange('title')} required/>
                                     <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
+                                    <FormControlLabel
+                                      control={
+                                        <Checkbox onChange={this.handleChange('sign_up')} checked={sign_up} />
+                                      }
+                                      label="Åpen for påmelding"/>
 
                                     <TextEditor className={classes.margin} value={description} onChange={this.onChange('description')}/>
 
