@@ -27,6 +27,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import TextEditor from '../../../components/inputs/TextEditor';
 import EventPreview from './EventPreview';
 import EventSidebar from './EventSidebar';
+import EventParticipants from './EventParticipants';
 
 const SIDEBAR_WIDTH = 300;
 
@@ -79,7 +80,6 @@ const styles = (theme) => ({
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'nowrap',
-
         '@media only screen and (max-width: 800px)': {
             flexDirection: 'column',
         }
@@ -135,6 +135,7 @@ class EventAdministrator extends Component {
             showSuccessMessage: false,
             successMessage: eventCreated,
             showPreview: false,
+            showParticipants: false,
         };
     }
 
@@ -240,6 +241,7 @@ class EventAdministrator extends Component {
             category: 0,
             startDate: new Date().toISOString().substring(0, 16),
             sign_up: false,
+            showParticipants: false,
         });
     }
 
@@ -354,7 +356,7 @@ class EventAdministrator extends Component {
 
     render() {
         const {classes} = this.props;
-        const {selectedEvent, title, location, description, image, priority, categories, category, sign_up} = this.state;
+        const {selectedEvent, title, location, description, image, priority, categories, category, sign_up, showParticipants} = this.state;
         const selectedEventId = (selectedEvent)? selectedEvent.id : '';
         const isNewItem = (selectedEvent === null);
         const header = (isNewItem)? 'Lag et nytt arrangement' : 'Endre arrangement';
@@ -377,65 +379,72 @@ class EventAdministrator extends Component {
                         </Snackbar>
 
                     <Paper className={classes.content} square>
-                        {(this.state.isLoading)? <Grid className={classes.progress} container justify='center' alignItems='center'><CircularProgress /></Grid> :
-                        (this.state.showSuccessMessage)? <MessageView title={this.state.successMessage} buttonText='Nice' onClick={this.toggleSuccessView}/> :
-                            <form>
-                                <Grid container direction='column' wrap='nowrap'>
-                                    <Typography variant='h5'>{header}</Typography>
-                                    <TextField className={classes.field} label='Tittel' value={title} onChange={this.handleChange('title')} required/>
-                                    <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
-                                    <FormControlLabel
-                                      control={
-                                        <Checkbox onChange={this.handleChange('sign_up')} checked={sign_up} />
-                                      }
-                                      label="Åpen for påmelding"/>
-
-                                    <TextEditor className={classes.margin} value={description} onChange={this.onChange('description')}/>
-
-                                    <Divider className={classes.margin} />
-
-                                    <TextField className={classes.margin} fullWidth label='Bilde' value={image} onChange={this.handleChange('image')}/>
-
-                                    <div className={classes.flexRow}>
-                                        <TextField className={classes.margin} select fullWidth label='Proritering' value={priority} onChange={this.handleChange('priority')}>
-                                            {priorities.map((value, index) => (
-                                                <MenuItem key={index} value={index}>
-                                                    {value}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-
-                                        <TextField className={classes.margin} select fullWidth label='Kategori' value={category} onChange={this.handleChange('category')}>
-                                            {categories.map((value, index) => (
-                                                <MenuItem key={index} value={value.id}>
-                                                    {value.text}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-
-                                        <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Start dato' value={this.state.startDate} onChange={this.handleChange('startDate')} />
-                                    </div>
-
-                                    <Grid container direction='row' wrap='nowrap' justify='space-between'>
-                                        {(isNewItem)?
-                                            <div>
-                                                <Button className={classes.mr} onClick={this.createNewEvent} type='submit' variant='contained' color='primary'>Lag nytt event</Button>
-                                                <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
-                                            </div>
-
-                                            :
-                                            <Fragment>
-                                                <div>
-                                                    <Button className={classes.mr} onClick={this.editEventItem} variant='contained' type='submit' color='primary'>Lagre</Button>
-                                                    <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
-                                                </div>
-                                                <Button className={classes.deleteButton} onClick={this.deleteEventItem} variant='outlined'>Slett</Button>
-                                            </Fragment>
+                      {showParticipants ?
+                        <EventParticipants event={selectedEvent} closeParticipants={this.handleToggleChange('showParticipants')} />
+                        :
+                      <React.Fragment>
+                          {(this.state.isLoading)? <Grid className={classes.progress} container justify='center' alignItems='center'><CircularProgress /></Grid> :
+                          (this.state.showSuccessMessage)? <MessageView title={this.state.successMessage} buttonText='Nice' onClick={this.toggleSuccessView}/> :
+                              <form>
+                                  <Grid container direction='column' wrap='nowrap'>
+                                      <Typography variant='h5'>{header}</Typography>
+                                      <TextField className={classes.field} label='Tittel' value={title} onChange={this.handleChange('title')} required/>
+                                      <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
+                                      <FormControlLabel
+                                        control={
+                                          <Checkbox onChange={this.handleChange('sign_up')} checked={sign_up} />
                                         }
-                                    </Grid>
-                                </Grid>
-                            </form>
-                        }
+                                        label="Åpen for påmelding"/>
+
+                                      <TextEditor className={classes.margin} value={description} onChange={this.onChange('description')}/>
+
+                                      <Divider className={classes.margin} />
+
+                                      <TextField className={classes.margin} fullWidth label='Bilde' value={image} onChange={this.handleChange('image')}/>
+
+                                      <div className={classes.flexRow}>
+                                          <TextField className={classes.margin} select fullWidth label='Proritering' value={priority} onChange={this.handleChange('priority')}>
+                                              {priorities.map((value, index) => (
+                                                  <MenuItem key={index} value={index}>
+                                                      {value}
+                                                  </MenuItem>
+                                              ))}
+                                          </TextField>
+
+                                          <TextField className={classes.margin} select fullWidth label='Kategori' value={category} onChange={this.handleChange('category')}>
+                                              {categories.map((value, index) => (
+                                                  <MenuItem key={index} value={value.id}>
+                                                      {value.text}
+                                                  </MenuItem>
+                                              ))}
+                                          </TextField>
+
+                                          <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Start dato' value={this.state.startDate} onChange={this.handleChange('startDate')} />
+                                      </div>
+
+                                      <Grid container direction='row' wrap='nowrap' justify='space-between'>
+                                          {(isNewItem)?
+                                              <div>
+                                                  <Button className={classes.mr} onClick={this.createNewEvent} type='submit' variant='contained' color='primary'>Lag nytt event</Button>
+                                                  <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
+                                              </div>
+
+                                              :
+                                              <Fragment>
+                                                  <div>
+                                                      <Button className={classes.mr} onClick={this.editEventItem} variant='contained' type='submit' color='primary'>Lagre</Button>
+                                                      <Button className={classes.mr} variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
+                                                      <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showParticipants')}>Se påmeldte</Button>
+                                                  </div>
+                                                  <Button className={classes.deleteButton} onClick={this.deleteEventItem} variant='outlined'>Slett</Button>
+                                              </Fragment>
+                                          }
+                                      </Grid>
+                                  </Grid>
+                              </form>
+                          }
+                      </React.Fragment>
+                    }
                     </Paper>
 
                 </div>
