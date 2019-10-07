@@ -51,17 +51,7 @@ const style = {
 };
 
 const EventDialog = (props) => {
-  const {classes} = props;
-
-  // TODO: Load in data for the actual user. Should be passed in as prop
-  const userData =
-    {
-      first_name: 'Bob',
-      last_name: 'Kåre',
-      email: 'bob.kare@tihlde.localdomain',
-      allergy: 'Masse alergier. Blant annet gluten, laktose, hund, katt, python',
-    }
-  ;
+  const {classes, userData} = props;
   const [confirmed, setConfirmed] = useState(false);
 
   const confirmHandle = () => {
@@ -105,7 +95,7 @@ const EventDialog = (props) => {
               <Fastfood />
             </div>
             <Typography>
-            Alergier: {userData.allergy}
+            Alergier: {userData.allergy ? userData.allergy : 'Ingen'}
             </Typography>
           </ListItem>
         </List>
@@ -131,6 +121,7 @@ EventDialog.propTypes = {
   status: PropTypes.bool,
   onClose: PropTypes.func,
   classes: PropTypes.object,
+  userData: PropTypes.object,
 };
 
 export default withStyles(style)(EventDialog);

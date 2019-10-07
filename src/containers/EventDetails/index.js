@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 
 // Service imports
 import EventService from '../../api/services/EventService';
+import UserService from  '../../api/services/UserService';
+import AuthService from '../../api/services/AuthService';
 
 // Project components
 import Navigation from '../../components/navigation/Navigation';
@@ -12,7 +14,7 @@ import EventRenderer from './components/EventRenderer';
 const styles = {
     root:{
         minHeight: '90vh',
-        
+
     },
     wrapper:{
         maxWidth: 1200,
@@ -32,12 +34,13 @@ class EventDetails extends Component {
         this.state = {
             event: null,
             isLoading: false,
+            userData: null,
         }
     }
 
     // Gets the event
     loadEvent = () => {
-       
+
         // Get eventItem id
         const id = this.props.match.params.id;
 
@@ -53,23 +56,37 @@ class EventDetails extends Component {
         });
     };
 
+    // Gets the user data
+    loadUserData = () => {
+      if (AuthService.isAuthenticated()) {
+        UserService.getUserData().then((userData) => {
+          if (userData) {
+            this.setState({user: userData});
+          }
+        });
+      }
+
+    }
+
     componentDidMount(){
         window.scrollTo(0,0);
         //get data here
         this.loadEvent();
+        this.loadUserData();
     }
 
     render() {
         const {classes} = this.props;
-        const {event} = this.state;
+        const {event, user} = this.state;
         const eventData = event || {};
+        const userData = user;
 
         return (
             <Navigation isLoading={this.state.isLoading} footer whitesmoke>
                 {(this.state.isLoading)? null :
                     <div className={classes.root}>
                         <div className={classes.wrapper}>
-                            <EventRenderer data={eventData}/>
+                            <EventRenderer data={eventData} userData={userData} history={this.props.history}/>
                         </div>
                     </div>
                 }

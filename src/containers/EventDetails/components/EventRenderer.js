@@ -22,6 +22,12 @@ import Time from '@material-ui/icons/AccessTime';
 import MarkdownRenderer from '../../../components/miscellaneous/MarkdownRenderer';
 import EventDialog from './EventDialog';
 
+// Urls
+import URLS from '../../../URLS';
+
+// Services
+import MiscService from '../../../api/services/MiscService';
+
 const styles = {
     grid: {
         display: 'grid',
@@ -87,13 +93,18 @@ InfoContent.propTypes = {
 };
 
 const EventRenderer = (props) => {
-    const {classes, data} = props;
+    const {classes, data, userData} = props;
     const [modalShow, setModalShown] = useState(false);
     const description = data.description || '';
     const start = moment(data.start, ['YYYY-MM-DD HH:mm'], 'nb');
 
     const openEventModal = () => {
-      setModalShown(true);
+      if (userData) {
+        setModalShown(true);
+      } else {
+        MiscService.setLogInRedirectURL(props.history.location.pathname);
+        props.history.replace(URLS.login);
+      }
     };
 
     const closeEventModal = () => {
@@ -102,7 +113,8 @@ const EventRenderer = (props) => {
 
     return (
         <Paper className={classes.img} square>
-            {modalShow === true && <EventDialog onClose={closeEventModal} data={props.data} status={modalShow} />}
+            {modalShow === true && userData &&
+              <EventDialog onClose={closeEventModal} data={data} userData={userData} status={modalShow} />}
             <img className={classes.image} src={data.image} alt={data.image_alt} />
             <Typography className={classes.title} variant='h5'><strong>{data.title}</strong></Typography>
             <Divider />
@@ -135,6 +147,8 @@ const EventRenderer = (props) => {
 EventRenderer.propTypes = {
     classes: PropTypes.object,
     data: PropTypes.object.isRequired,
+    userData: PropTypes.object,
+    history: PropTypes.object,
 };
 
 export default withStyles(styles)(EventRenderer);
