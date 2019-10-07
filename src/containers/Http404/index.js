@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
@@ -63,12 +63,12 @@ class Http404 extends Component {
     }
 
     render() {
-        const {classes} = this.props;
+        const { classes } = this.props;
         return (
             <Navigation footer whitesmoke className={classes.root}>
                 <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
-                    <div className={classes.smoke}>
-                        <img src={http404img} alt="404" className={classes.img}/>
+                    <div className={classes.smoke}>,
+                        <img src={http404img} alt="404" className={classes.img} />
                     </div>
                     <div className={classes.smoke}>
                         <h3>Denne siden finnes ikke :(</h3>

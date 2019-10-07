@@ -3,6 +3,7 @@ import {actions} from '../actions/UserActions';
 const initialState = {
     username: null,
     email: null,
+    userData: {},
 };
 
 export default function reducer(state = initialState, action) {
@@ -14,7 +15,11 @@ export default function reducer(state = initialState, action) {
     switch (action.type) {
 
         case actions.CLEAR_USER_DATA: {
-            return {...state, username: null, email: null};
+            return {...state, username: null, email: null, userData: {}};
+        }
+
+        case actions.SET_USER_DATA: {
+            return {...state, userData: data};
         }
 
         default:

@@ -15,6 +15,7 @@ import TWITTER from '../../assets/icons/twitter.svg';
 import INSTAGRAM from '../../assets/icons/instagram.svg';
 import SNAPCHAT from '../../assets/icons/snapchat.svg';
 import SLACK from '../../assets/icons/slack.svg';
+import DISCORD from '../../assets/icons/discord.svg';
 
 
 const styles = {
@@ -36,12 +37,12 @@ const styles = {
 
         '@media only screen and (max-width: 900px)': {
             gridTemplateRows: 'auto auto',
-            gridTemplateAreas: "'OmTihlde TihldeSupport' 'SosialeMedier Sponsorer'",
+            gridTemplateAreas: "'OmTihlde SosialeMedier' 'Sponsorer TihldeSupport'",
             gridTemplateColumns: 'auto auto',
         },
 
         '@media only screen and (max-width: 600px)': {
-            gridTemplateRows: 'auto auto auto auto',
+            gridTemplateRows: 'auto auto auto auto auto',
             gridTemplateAreas: "'TihldeSupport' 'OmTihlde' 'SosialeMedier' 'Sponsorer'",
             gridTemplateColumns: '100%',
         }
@@ -52,6 +53,9 @@ const styles = {
     },
     omTihlde: {
         gridArea: 'OmTihlde',
+    },
+    besokTihlde: {
+        gridArea: 'BesokTihlde',
     },
     sponsorer: {
         gridArea: 'Sponsorer',
@@ -88,10 +92,10 @@ class Footer extends Component {
         return (
             <div className={classes.omTihlde}>
                 <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>TIHLDE</Typography>
-                <Typography className={classes.horSpacing} align='center' color='inherit' >c/o IDI NTNU</Typography>
-                <Typography className={classes.horSpacing} align='center' color='inherit' >Sverres gate 14</Typography>
-                <Typography className={classes.horSpacing} align='center' color='inherit' >7012 Trondheim</Typography>
                 <Typography className={classes.horSpacing} align='center' color='inherit' >hs@tihlde.org</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' >c/o IDI NTNU</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' >Sverres gate 14, 7012 Trondheim</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' >OrgNr: 989 684 183</Typography>
             </div>
         )
     };
@@ -135,6 +139,10 @@ class Footer extends Component {
                     <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://tihlde.slack.com">
                         <img className={classes.horSpacing} src={SLACK} alt="sit" width={40} />
                         {/*<i class="fab fa-slack fa-3x"></i>*/}
+                    </a>
+                    <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://discord.gg/SZR9vTS">
+                        <img className={classes.horSpacing} src={DISCORD} alt="sit" width={40} />
+                        {/*<i class="fab fa-discord fa-3x"></i>*/}
                     </a>
                 </div>
             </div>

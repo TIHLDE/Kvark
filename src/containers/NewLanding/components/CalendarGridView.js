@@ -79,7 +79,7 @@ class CalendarGridView extends React.Component {
   renderDays() {
     const dateFormat = "dddd";
     const days = [];
-    let startDate = moment(this.state.currentMonth).startOf('month');
+    let startDate = moment(this.state.currentMonth).startOf('week');
     for (let i = 0; i < 7; i++) {
       days.push(
         <div className="col col-center" key={i}>
