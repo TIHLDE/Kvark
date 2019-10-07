@@ -58,6 +58,11 @@ const EventDialog = (props) => {
     setConfirmed(!confirmed);
   };
 
+  const closeDialog = () => {
+    props.onClose();
+    props.applyToEvent();
+  };
+
   return (
     <Dialog
       open={props.status}
@@ -111,7 +116,7 @@ const EventDialog = (props) => {
           }
           label={Text.confirmation}
         />
-        <Button disabled={!confirmed} align='center' variant='contained' color='primary'>{Text.signUp}</Button>
+        <Button onClick={closeDialog} disabled={!confirmed} align='center' variant='contained' color='primary'>{Text.signUp}</Button>
       </div>
     </Dialog>
   );
@@ -122,6 +127,7 @@ EventDialog.propTypes = {
   onClose: PropTypes.func,
   classes: PropTypes.object,
   userData: PropTypes.object,
+  applyToEvent: PropTypes.func,
 };
 
 export default withStyles(style)(EventDialog);

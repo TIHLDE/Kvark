@@ -68,6 +68,16 @@ class EventDetails extends Component {
 
     }
 
+    applyToEvent = () => {
+      const {event, user} = this.state;
+      EventService.putUserOnEventList(event.id,user).then((result) => {
+        console.log(result);
+      }).catch(() => {
+        console.log('Nope.avi')
+        alert('Kunne ikke melde opp til dette arrangementet!');
+      })
+    }
+
     componentDidMount(){
         window.scrollTo(0,0);
         //get data here
@@ -86,7 +96,11 @@ class EventDetails extends Component {
                 {(this.state.isLoading)? null :
                     <div className={classes.root}>
                         <div className={classes.wrapper}>
-                            <EventRenderer data={eventData} userData={userData} history={this.props.history}/>
+                            <EventRenderer
+                              data={eventData}
+                              userData={userData}
+                              history={this.props.history}
+                              applyToEvent={this.applyToEvent} />
                         </div>
                     </div>
                 }

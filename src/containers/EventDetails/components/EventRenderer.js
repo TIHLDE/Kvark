@@ -93,7 +93,7 @@ InfoContent.propTypes = {
 };
 
 const EventRenderer = (props) => {
-    const {classes, data, userData} = props;
+    const {classes, data, userData, applyToEvent} = props;
     const [modalShow, setModalShown] = useState(false);
     const description = data.description || '';
     const start = moment(data.start, ['YYYY-MM-DD HH:mm'], 'nb');
@@ -114,7 +114,12 @@ const EventRenderer = (props) => {
     return (
         <Paper className={classes.img} square>
             {modalShow === true && userData &&
-              <EventDialog onClose={closeEventModal} data={data} userData={userData} status={modalShow} />}
+              <EventDialog
+                onClose={closeEventModal}
+                data={data}
+                userData={userData}
+                status={modalShow}
+                applyToEvent={applyToEvent} />}
             <img className={classes.image} src={data.image} alt={data.image_alt} />
             <Typography className={classes.title} variant='h5'><strong>{data.title}</strong></Typography>
             <Divider />
@@ -149,6 +154,7 @@ EventRenderer.propTypes = {
     data: PropTypes.object.isRequired,
     userData: PropTypes.object,
     history: PropTypes.object,
+    applyToEvent: PropTypes.func,
 };
 
 export default withStyles(styles)(EventRenderer);

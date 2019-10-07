@@ -112,6 +112,19 @@ class EventService {
             }
         });
     }
+
+    static putUserOnEventList = (id, userData, callback=null) => {
+      userData = {user_id: userData.user_id, event: id};
+      const response = API.putUserOnEventList(id,userData).response();
+      return response.then((data) => {
+        !callback || callback(response.isError === true, data);
+        if(response.isError === false) {
+            return Promise.resolve(data);
+        } else {
+            return Promise.reject([]);
+        }
+      })
+    }
 }
 
 export default EventService;
