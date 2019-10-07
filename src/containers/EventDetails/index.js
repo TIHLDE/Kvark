@@ -71,7 +71,6 @@ class EventDetails extends Component {
     applyToEvent = () => {
       const {event, user} = this.state;
       EventService.putUserOnEventList(event.id,user).then((result) => {
-        console.log(result);
       }).catch(() => {
         console.log('Nope.avi')
         alert('Kunne ikke melde opp til dette arrangementet!');

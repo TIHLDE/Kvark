@@ -17,6 +17,7 @@ import Button from '@material-ui/core/Button';
 import Calendar from '@material-ui/icons/CalendarToday';
 import Location from '@material-ui/icons/LocationOn';
 import Time from '@material-ui/icons/AccessTime';
+import Face from '@material-ui/icons/Face';
 
 // Project Components
 import MarkdownRenderer from '../../../components/miscellaneous/MarkdownRenderer';
@@ -129,6 +130,7 @@ const EventRenderer = (props) => {
                     <InfoContent icon={<Calendar />} label={start.format('DD.MM.YYYY')} />
                     <InfoContent icon={<Time />} label={start.format('HH:mm')} />
                     <InfoContent icon={<Location />} label={data.location} />
+                    <InfoContent icon={<Face />} label={'Ingen'} />
                     {data.price && <InfoContent icon={<Time />} label={data.price} />}
                     {data.sign_up &&
                       <Button
