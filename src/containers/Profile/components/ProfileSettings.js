@@ -4,6 +4,8 @@ import classNames from 'classnames';
 
 // API and store import
 import UserService from '../../../api/services/UserService';
+import store from '../../../store/store';
+import * as UserActions from '../../../store/actions/UserActions';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
@@ -84,6 +86,10 @@ const styles = (theme) => ({
     inputWidth: {
         maxWidth: '100%',
         textAlign: 'left',
+        '& input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button': { 
+          appearance: 'none', 
+          margin: 0,
+        }
     },
     selectContainer: {
         display: 'flex',
@@ -166,6 +172,10 @@ class ProfileSettings extends Component {
         UserService.updateUserData(this.state.userName, item, (isError, data) => {
             if(!isError) {
                 this.setState({ errorMessage: null, isLoading: false });
+                const data = item;
+                data.user_id = this.state.userName; data.first_name = this.state.firstName; data.last_name = this.state.lastName; data.email = this.state.email;
+                console.log(data);
+                UserActions.setUserData([data])(store.dispatch);
             } else {
                 this.setState({ errorMessage: 'Noe gikk galt', isLoading: false });
             }
