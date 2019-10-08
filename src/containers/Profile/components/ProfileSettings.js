@@ -197,10 +197,10 @@ class ProfileSettings extends Component {
                         <TextField className={classes.inputWidth} label='EM-nummer (studentkortet)' variant='outlined' margin='normal' value={this.state.em} InputProps={{type: 'number',}} onInput={(e)=>{e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,10)}} onChange={(e) => this.setState({ em: e.target.value })} />
                         <div className={classes.selectContainer}>
                             <TextField className={classNames(classes.inputWidth, classes.selectBox)} label='Studie' variant='outlined' margin='normal' value={this.state.study} onChange={(e) => this.setState({ study: e.target.value })} select={true}>
-                                <MenuItem value={1}>Dataing</MenuItem>
-                                <MenuItem value={2}>DigFor</MenuItem>
-                                <MenuItem value={3}>DigInc</MenuItem>
-                                <MenuItem value={4}>DigSam</MenuItem>
+                                <MenuItem value={1}>Dataingeniør</MenuItem>
+                                <MenuItem value={2}>Digital forretningsutvikling</MenuItem>
+                                <MenuItem value={3}>Digital infrastruktur og cybersikkerhet</MenuItem>
+                                <MenuItem value={4}>Digital samhandling</MenuItem>
                             </TextField>
                             <TextField className={classNames(classes.inputWidth, classes.selectBox, classes.centerSelect)} label='Klasse' variant='outlined' margin='normal' value={this.state.class} onChange={(e) => this.setState({ class: e.target.value })} select={true}>
                                 <MenuItem value={1}>1. klasse</MenuItem>
