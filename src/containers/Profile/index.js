@@ -1,7 +1,6 @@
 // React
 import React, {Component} from 'react';
 import URLS from '../../URLS';
-import classNames from 'classnames';
 import Link from 'react-router-dom/Link';
 
 // Serivce imports
@@ -9,7 +8,6 @@ import AuthService from '../../api/services/AuthService';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
-import Hidden from '@material-ui/core/Hidden';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';

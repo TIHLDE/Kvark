@@ -6,7 +6,6 @@ import classNames from 'classnames';
 import UserService from '../../../api/services/UserService';
 
 // Material-UI
-import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -166,8 +165,6 @@ class ProfileSettings extends Component {
 
         UserService.updateUserData(this.state.userName, item, (isError, data) => {
             if(!isError) {
-                // Update stored event with the new data
-                const newEvents = Object.assign([], this.state.events);
                 this.setState({ errorMessage: null, isLoading: false });
             } else {
                 this.setState({ errorMessage: 'Noe gikk galt', isLoading: false });

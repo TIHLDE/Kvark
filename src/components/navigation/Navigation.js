@@ -231,11 +231,11 @@ const SponsorLogo = withStyles(styles)((props) => {
 const PersonIcon = withStyles(styles)((props) => {
     const { user, link, classes } = props;
     return (
-        <Link to={link} className={classes.profileLink} onClick={link == window.location.pathname ? () => window.location.refresh() : null} >
+        <Link to={link} className={classes.profileLink} onClick={link === window.location.pathname ? () => window.location.refresh() : null} >
             <Button>
                 <div className={classes.profileContainer} >
-                    <div className={classes.profileName}>{ user.first_name != undefined && user.first_name }</div>
-                    <div className={classNames(classes.profileCircle)}>{ user.first_name != undefined && (user.first_name).substring(0,1) + '' + (user.last_name).substring(0,1) }</div>
+                    <div className={classes.profileName}>{ user.first_name !== undefined && user.first_name }</div>
+                    <div className={classNames(classes.profileCircle)}>{ user.first_name !== undefined && (user.first_name).substring(0,1) + '' + (user.last_name).substring(0,1) }</div>
                 </div>
             </Button>
         </Link>
