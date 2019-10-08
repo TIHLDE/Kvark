@@ -53,6 +53,9 @@ export default {
     getUserData: () => {
         return new IRequest('GET', 'user/', undefined, true);
     },
+    updateUserData: (userName, item) => {
+        return new IRequest('PUT', 'user/'.concat(userName, '/'), item, true);
+    },
 
     // Warning
     getWarning: () => {

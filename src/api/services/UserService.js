@@ -17,7 +17,15 @@ class UserService {
                     return UserActions.getUserData(store.getState()).userData;
                 });
         }
-    };
+    }
+
+    static updateUserData = async (userName, userData, callback=null) => {
+        const response = API.updateUserData(userName, userData).response();
+        return response.then((data) => {
+            !callback || callback(response.isError === true, data);
+            return data;
+        });
+    }
 }
 
 export default UserService;
