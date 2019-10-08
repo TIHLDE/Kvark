@@ -174,7 +174,6 @@ class ProfileSettings extends Component {
                 this.setState({ errorMessage: null, isLoading: false });
                 const data = item;
                 data.user_id = this.state.userName; data.first_name = this.state.firstName; data.last_name = this.state.lastName; data.email = this.state.email;
-                console.log(data);
                 UserActions.setUserData([data])(store.dispatch);
             } else {
                 this.setState({ errorMessage: 'Noe gikk galt', isLoading: false });
