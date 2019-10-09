@@ -10,7 +10,7 @@ import Modal from '@material-ui/core/Modal';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import ButtonBase from '@material-ui/core/ButtonBase';
+// import ButtonBase from '@material-ui/core/ButtonBase';
 import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {withStyles} from '@material-ui/core/styles';
@@ -19,7 +19,9 @@ import {withStyles} from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Email from '@material-ui/icons/Email';
 import Fastfood from '@material-ui/icons/Fastfood';
-import Close from '@material-ui/icons/Close';
+import School from '@material-ui/icons/School';
+import Home from '@material-ui/icons/Home';
+// import Close from '@material-ui/icons/Close';
 
 // Project components
 import EventListItem from './EventListItem';
@@ -29,6 +31,9 @@ const style = {
     position: 'absolute',
     maxWidth: 460,
     minWidth: 320,
+    maxHeight: '75%',
+    display: 'flex',
+    flexDirection: 'column',
     left: '50%',
     top: '50%',
     transform: 'translate(-50%,-50%)',
@@ -84,6 +89,27 @@ const style = {
   },
 };
 
+const getUserStudy = (userStudy) => {
+  let userStudyText = '';
+
+  switch (userStudy) {
+    case 1:
+      userStudyText = 'Dataing';
+      break;
+    case 2:
+      userStudyText = 'DigFor';
+      break;
+    case 3:
+      userStudyText = 'DigInc';
+      break;
+    case 4:
+      userStudyText = 'DigSam';
+      break;
+  }
+
+  return userStudyText;
+};
+
 const EventDialog = (props) => {
   const {classes, userData, isApplying, message} = props;
 
@@ -95,6 +121,8 @@ const EventDialog = (props) => {
     shortDownString(userData.allergy, 20)
     :
     'Ingen';
+  const userStudy = getUserStudy(userData.user_study);
+  const userClass = userData.user_class + '. Klasse';
 
   return (
     <Modal
@@ -123,6 +151,14 @@ const EventDialog = (props) => {
               <EventListItem
                 icon={<Email />}
                 text={'Navn: ' + userData.email}
+              />
+              <EventListItem
+                icon={<School />}
+                text={'Studieprogram: ' + userStudy}
+              />
+              <EventListItem
+                icon={<Home />}
+                text={'Klasse: ' + userClass}
               />
               <EventListItem
                 icon={<Fastfood />}
