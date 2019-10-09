@@ -14,6 +14,10 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import Slide from '@material-ui/core/Slide';
+
 const styles = (theme) => ({
     paper: {
         width: '90%',
@@ -107,7 +111,14 @@ const styles = (theme) => ({
         '@media only screen and (min-width: 600px)': {
             margin: '16px 5px 8px 5px',
         },
-    }
+    },
+    snackbar: {
+        bottom: '20px',
+        position: 'fixed',
+        borderRadius: '4px',
+        backgroundColor: 'white',
+        color: 'black',
+    },
 });
 
 class ProfileSettings extends Component {
@@ -129,6 +140,10 @@ class ProfileSettings extends Component {
             gender: 1,
             tool: "",
             allergy: "",
+
+            open: false,
+            Transition: Slide,
+            snackbarMessage: "",
         }
     }
 
@@ -171,14 +186,19 @@ class ProfileSettings extends Component {
 
         UserService.updateUserData(this.state.userName, item, (isError, data) => {
             if(!isError) {
-                this.setState({ errorMessage: null, isLoading: false });
+                this.setState({ snackbarMessage: 'Oppdateringen var vellykket!', open: true, isLoading: false });
                 const data = item;
                 data.user_id = this.state.userName; data.first_name = this.state.firstName; data.last_name = this.state.lastName; data.email = this.state.email;
                 UserActions.setUserData([data])(store.dispatch);
             } else {
-                this.setState({ errorMessage: 'Noe gikk galt', isLoading: false });
+                this.setState({ snackbarMessage: 'Noe gikk galt', open: true, isLoading: false });
             }
-            this.setState({isLoading: false});
+        });
+    }
+
+    handleSnackbarClose = () => {
+        this.setState({
+            open: false,
         });
     }
 
@@ -222,6 +242,9 @@ class ProfileSettings extends Component {
                         </Button>
                     </Grid>
                 </form>
+                <Snackbar open={this.state.open} onClose={this.handleSnackbarClose} TransitionComponent={this.state.Transition} autoHideDuration={3000}>
+                    <SnackbarContent className={classes.snackbar} message={this.state.snackbarMessage} />
+                </Snackbar>
             </div>
         );
     }
