@@ -4,6 +4,8 @@ import classNames from 'classnames';
 
 // API and store import
 import UserService from '../../../api/services/UserService';
+import store from '../../../store/store';
+import * as UserActions from '../../../store/actions/UserActions';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
@@ -11,6 +13,10 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
+
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import Slide from '@material-ui/core/Slide';
 
 const styles = (theme) => ({
     paper: {
@@ -84,6 +90,10 @@ const styles = (theme) => ({
     inputWidth: {
         maxWidth: '100%',
         textAlign: 'left',
+        '& input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button': { 
+          appearance: 'none', 
+          margin: 0,
+        }
     },
     selectContainer: {
         display: 'flex',
@@ -101,7 +111,14 @@ const styles = (theme) => ({
         '@media only screen and (min-width: 600px)': {
             margin: '16px 5px 8px 5px',
         },
-    }
+    },
+    snackbar: {
+        bottom: '20px',
+        position: 'fixed',
+        borderRadius: '4px',
+        backgroundColor: 'white',
+        color: 'black',
+    },
 });
 
 class ProfileSettings extends Component {
@@ -123,6 +140,10 @@ class ProfileSettings extends Component {
             gender: 1,
             tool: "",
             allergy: "",
+
+            open: false,
+            Transition: Slide,
+            snackbarMessage: "",
         }
     }
 
@@ -165,11 +186,19 @@ class ProfileSettings extends Component {
 
         UserService.updateUserData(this.state.userName, item, (isError, data) => {
             if(!isError) {
-                this.setState({ errorMessage: null, isLoading: false });
+                this.setState({ snackbarMessage: 'Oppdateringen var vellykket!', open: true, isLoading: false });
+                const data = item;
+                data.user_id = this.state.userName; data.first_name = this.state.firstName; data.last_name = this.state.lastName; data.email = this.state.email;
+                UserActions.setUserData([data])(store.dispatch);
             } else {
-                this.setState({ errorMessage: 'Noe gikk galt', isLoading: false });
+                this.setState({ snackbarMessage: 'Noe gikk galt', open: true, isLoading: false });
             }
-            this.setState({isLoading: false});
+        });
+    }
+
+    handleSnackbarClose = () => {
+        this.setState({
+            open: false,
         });
     }
 
@@ -188,10 +217,10 @@ class ProfileSettings extends Component {
                         <TextField className={classes.inputWidth} label='EM-nummer (studentkortet)' variant='outlined' margin='normal' value={this.state.em} InputProps={{type: 'number',}} onInput={(e)=>{e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,10)}} onChange={(e) => this.setState({ em: e.target.value })} />
                         <div className={classes.selectContainer}>
                             <TextField className={classNames(classes.inputWidth, classes.selectBox)} label='Studie' variant='outlined' margin='normal' value={this.state.study} onChange={(e) => this.setState({ study: e.target.value })} select={true}>
-                                <MenuItem value={1}>Dataing</MenuItem>
-                                <MenuItem value={2}>DigFor</MenuItem>
-                                <MenuItem value={3}>DigInc</MenuItem>
-                                <MenuItem value={4}>DigSam</MenuItem>
+                                <MenuItem value={1}>Dataingeniør</MenuItem>
+                                <MenuItem value={2}>Digital forretningsutvikling</MenuItem>
+                                <MenuItem value={3}>Digital infrastruktur og cybersikkerhet</MenuItem>
+                                <MenuItem value={4}>Digital samhandling</MenuItem>
                             </TextField>
                             <TextField className={classNames(classes.inputWidth, classes.selectBox, classes.centerSelect)} label='Klasse' variant='outlined' margin='normal' value={this.state.class} onChange={(e) => this.setState({ class: e.target.value })} select={true}>
                                 <MenuItem value={1}>1. klasse</MenuItem>
@@ -213,6 +242,9 @@ class ProfileSettings extends Component {
                         </Button>
                     </Grid>
                 </form>
+                <Snackbar open={this.state.open} onClose={this.handleSnackbarClose} TransitionComponent={this.state.Transition} autoHideDuration={3000}>
+                    <SnackbarContent className={classes.snackbar} message={this.state.snackbarMessage} />
+                </Snackbar>
             </div>
         );
     }
