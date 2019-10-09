@@ -1,124 +1,165 @@
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import {shortDownString} from '../../../utils';
 
 // Text
 import Text from '../../../text/EventText';
 
 // Material-ui
-import Dialog from '@material-ui/core/Dialog';
+import Modal from '@material-ui/core/Modal';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import Button from '@material-ui/core/Button';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import Paper from '@material-ui/core/Paper';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import {withStyles} from '@material-ui/core/styles';
 
-// Iconst
+// Icons
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Email from '@material-ui/icons/Email';
 import Fastfood from '@material-ui/icons/Fastfood';
 import Close from '@material-ui/icons/Close';
 
+// Project components
+import EventListItem from './EventListItem';
+
 const style = {
+  paper: {
+    position: 'absolute',
+    maxWidth: 460,
+    minWidth: 320,
+    left: '50%',
+    top: '50%',
+    transform: 'translate(-50%,-50%)',
+    '@media only screen and (max-width: 400px)': {
+        width: '100%',
+    },
+  },
   heading: {
     display: 'flex',
+    padding: 26,
   },
   title: {
     width: '100%',
-    paddingLeft: 40,
+    // paddingLeft: 40,
   },
   content: {
-    padding: 8,
-    overflow: 'hidden',
+    padding: 20,
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
+    overflow: 'scroll',
   },
   nestedElement: {
     paddingLeft: 32,
-  },
-  imgContainer: {
-    paddingRight: 8,
-    display: 'flex',
   },
   closeButton: {
     paddingLeft: 8,
     paddingRight: 8,
   },
+  button: {
+    width: '100%',
+  },
+  list: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+  },
+  footer: {
+    padding: 26,
+    textAlign: 'center',
+  },
+  text: {
+    paddingBottom: 25,
+    alignObject: 'flex-start',
+  },
+  progress: {
+    margin: 26,
+    position: 'relative',
+    top: '50%',
+    left: '50%',
+    marginLeft: -20,
+    marginRight: -20,
+  },
 };
 
 const EventDialog = (props) => {
-  const {classes, userData} = props;
-  const [confirmed, setConfirmed] = useState(false);
-
-  const confirmHandle = () => {
-    setConfirmed(!confirmed);
-  };
+  const {classes, userData, isApplying, message} = props;
 
   const closeDialog = () => {
-    props.onClose();
     props.applyToEvent();
   };
 
+  const allergy = userData.allergy ?
+    shortDownString(userData.allergy, 20)
+    :
+    'Ingen';
+
   return (
-    <Dialog
+    <Modal
       open={props.status}
       onClose={props.onClose}>
-      <div className={classes.heading}>
-        <Typography className={classes.title} align='center' variant='h5'>
-          {Text.signUp}
-        </Typography>
-        <ButtonBase className={classes.closeButton} onClick={props.onClose}>
-          <Close />
-        </ButtonBase>
-      </div>
-      <Divider />
-      <div className={classes.content}>
-        <Typography>{Text.confirmData}</Typography>
-        <List>
-          <ListItem>
-            <div className={classes.imgContainer}>
-              <AccountCircle />
-            </div>
-            <Typography>
-            Navn: {userData.first_name + ' ' + userData.last_name}
+      <Paper className={classes.paper} square>
+          <div className={classes.heading}>
+            <Typography className={classes.title} align='center' variant='h5'>
+              {Text.signUp}
             </Typography>
-          </ListItem>
-          <ListItem>
-            <div className={classes.imgContainer}>
-              <Email />
+            {/* <ButtonBase className={classes.closeButton} onClick={props.onClose}>
+              <Close />
+            </ButtonBase> */}
+          </div>
+          <Divider />
+          {!isApplying && message === '' &&
+          <div className={classes.content}>
+            <div className={classes.text}>
+              <Typography>{Text.confirmData}</Typography>
             </div>
-            <Typography>
-            E-post: {userData.email}
-            </Typography>
-          </ListItem>
-          <ListItem>
-            <div className={classes.imgContainer}>
-              <Fastfood />
+            <div className={classes.list}>
+              <EventListItem
+                icon={<AccountCircle />}
+                text={'Navn: ' + userData.first_name + ' ' + userData.last_name}
+              />
+              <EventListItem
+                icon={<Email />}
+                text={'Navn: ' + userData.email}
+              />
+              <EventListItem
+                icon={<Fastfood />}
+                text={'Alergier: ' + allergy}
+              />
             </div>
-            <Typography>
-            Alergier: {userData.allergy ? userData.allergy : 'Ingen'}
-            </Typography>
-          </ListItem>
-        </List>
-      </div>
-      <Divider />
-      <div className={classes.content}>
-        <FormControlLabel
-          control={
-            <Checkbox
-              color='primary'
-              checked={confirmed}
-              onChange={confirmHandle} />
+          </div>
           }
-          label={Text.confirmation}
-        />
-        <Button onClick={closeDialog} disabled={!confirmed} align='center' variant='contained' color='primary'>{Text.signUp}</Button>
-      </div>
-    </Dialog>
+          {isApplying &&
+          <CircularProgress className={classes.progress} />
+          }
+          {message &&
+          <div className={classes.content}>
+            <Typography>{message}</Typography>
+          </div>
+          }
+          <Divider />
+          <div className={classes.footer}>
+            {message ?
+              <Button
+                className={classes.button}
+                onClick={props.onClose}
+                align='center'
+                variant='contained'
+                color='primary'>Ok</Button>
+              :
+              <Button
+                className={classes.button}
+                onClick={closeDialog}
+                disabled={isApplying}
+                align='center'
+                variant='contained'
+                color='primary'>{Text.signUp}</Button>
+            }
+          </div>
+      </Paper>
+    </Modal>
   );
 };
 
@@ -128,6 +169,8 @@ EventDialog.propTypes = {
   classes: PropTypes.object,
   userData: PropTypes.object,
   applyToEvent: PropTypes.func,
+  isApplying: PropTypes.bool,
+  message: PropTypes.string,
 };
 
 export default withStyles(style)(EventDialog);

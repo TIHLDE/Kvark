@@ -35,6 +35,9 @@ class EventDetails extends Component {
             event: null,
             isLoading: false,
             userData: null,
+            isLoadingUserData: false,
+            isApplying: false,
+            message: '',
         }
     }
 
@@ -59,10 +62,12 @@ class EventDetails extends Component {
     // Gets the user data
     loadUserData = () => {
       if (AuthService.isAuthenticated()) {
+        this.setState({isLoadingUserData: true});
         UserService.getUserData().then((userData) => {
           if (userData) {
             this.setState({user: userData});
           }
+          this.setState({isLoadingUserData: false});
         });
       }
 
@@ -70,10 +75,13 @@ class EventDetails extends Component {
 
     applyToEvent = () => {
       const {event, user} = this.state;
-      EventService.putUserOnEventList(event.id,user).then((result) => {
+      this.setState({isApplying: true});
+      return EventService.putUserOnEventList(event.id,user).then((result) => {
+        this.setState({message: 'Påmelding registrert!'});
       }).catch(() => {
-        console.log('Nope.avi')
-        alert('Kunne ikke melde opp til dette arrangementet!');
+        this.setState({message: 'Kunne ikke registrere påmelding.'});
+      }).then(() => {
+        this.setState({isApplying: false});
       })
     }
 
@@ -86,7 +94,7 @@ class EventDetails extends Component {
 
     render() {
         const {classes} = this.props;
-        const {event, user} = this.state;
+        const {event, user, isLoadingUserData, isApplying, message} = this.state;
         const eventData = event || {};
         const userData = user;
 
@@ -99,7 +107,10 @@ class EventDetails extends Component {
                               data={eventData}
                               userData={userData}
                               history={this.props.history}
-                              applyToEvent={this.applyToEvent} />
+                              applyToEvent={this.applyToEvent}
+                              isLoadingUserData={isLoadingUserData}
+                              isApplying={isApplying}
+                              message={message} />
                         </div>
                     </div>
                 }

@@ -94,7 +94,7 @@ InfoContent.propTypes = {
 };
 
 const EventRenderer = (props) => {
-    const {classes, data, userData, applyToEvent} = props;
+    const {classes, data, userData, applyToEvent, isLoadingUserData, isApplying, message} = props;
     const [modalShow, setModalShown] = useState(false);
     const description = data.description || '';
     const start = moment(data.start, ['YYYY-MM-DD HH:mm'], 'nb');
@@ -120,7 +120,9 @@ const EventRenderer = (props) => {
                 data={data}
                 userData={userData}
                 status={modalShow}
-                applyToEvent={applyToEvent} />}
+                applyToEvent={applyToEvent}
+                isApplying={isApplying}
+                message={message} />}
             <img className={classes.image} src={data.image} alt={data.image_alt} />
             <Typography className={classes.title} variant='h5'><strong>{data.title}</strong></Typography>
             <Divider />
@@ -135,6 +137,7 @@ const EventRenderer = (props) => {
                     {data.sign_up &&
                       <Button
                         fullWidth
+                        disabled={isLoadingUserData}
                         className={classes.mt}
                         variant='contained'
                         onClick={openEventModal}
@@ -157,6 +160,9 @@ EventRenderer.propTypes = {
     userData: PropTypes.object,
     history: PropTypes.object,
     applyToEvent: PropTypes.func,
+    isLoadingUserData: PropTypes.bool,
+    isApplying: PropTypes.bool,
+    message: PropTypes.string,
 };
 
 export default withStyles(styles)(EventRenderer);

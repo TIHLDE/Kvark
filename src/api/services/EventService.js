@@ -117,11 +117,11 @@ class EventService {
       userData = {user_id: userData.user_id, event: id};
       const response = API.putUserOnEventList(id,userData).response();
       return response.then((data) => {
-        !callback || callback(response.isError === true, data);
+        !callback || callback(response.isError === true, response.status);
         if(response.isError === false) {
-            return Promise.resolve(data);
+            return Promise.resolve(response.status);
         } else {
-            return Promise.reject([]);
+            return Promise.reject(response.status);
         }
       })
     }
