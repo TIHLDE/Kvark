@@ -11,7 +11,6 @@ import Navigation from '../../components/navigation/Navigation';
 import EventAdministrator from './components/EventAdministrator';
 
 const styles = {
-    
 };
 
 class DataRegistrator extends Component {

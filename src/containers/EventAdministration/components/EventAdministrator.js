@@ -45,7 +45,7 @@ const styles = (theme) => ({
     },
     content: {
         width: '80%',
-        maxWidth: 1000,
+        maxWidth: 1100,
         marginTop: 150,
         display: 'block',
         margin: 'auto',
@@ -128,6 +128,7 @@ class EventAdministrator extends Component {
             priority: 0,
             image: '',
             category: 0,
+            limit: 0,
             // imageAlt: '',
 
             showMessage: false,
@@ -224,6 +225,7 @@ class EventAdministrator extends Component {
                 category: event.category,
                 startDate: event.start.substring(0,16),
                 sign_up: event.sign_up,
+                limit: event.limit,
             });
         }
         this.setState({showSuccessMessage: false});
@@ -356,7 +358,7 @@ class EventAdministrator extends Component {
 
     render() {
         const {classes} = this.props;
-        const {selectedEvent, title, location, description, image, priority, categories, category, sign_up, showParticipants} = this.state;
+        const {selectedEvent, title, location, description, image, priority, categories, category, sign_up, showParticipants, limit} = this.state;
         const selectedEventId = (selectedEvent)? selectedEvent.id : '';
         const isNewItem = (selectedEvent === null);
         const header = (isNewItem)? 'Lag et nytt arrangement' : 'Endre arrangement';
@@ -390,6 +392,7 @@ class EventAdministrator extends Component {
                                       <Typography variant='h5'>{header}</Typography>
                                       <TextField className={classes.field} label='Tittel' value={title} onChange={this.handleChange('title')} required/>
                                       <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
+                                      <TextField className={classes.field} label='Antall plasser' value={limit} onChange={this.handleChange('limit')} required/>
                                       <FormControlLabel
                                         control={
                                           <Checkbox onChange={this.handleChange('sign_up')} checked={sign_up} />
