@@ -7,6 +7,9 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 
+// Project
+import EventParticipant from './EventParticipant';
+
 const styles = {
   header: {
     display: 'flex',
@@ -29,17 +32,18 @@ const styles = {
     },
   },
   content: {
+    paddingTop: 36,
     paddingBottom: 4,
   },
   listView: {
-    minHeight: 50,
     width: '100%',
-    border: 'solid 1px grey',
+    paddingBottom: 36,
+    paddingTop: 8,
   },
 };
 
 const EventParticipants = (props) => {
-  const {classes, event, closeParticipants} = props;
+  const {classes, event, closeParticipants, participants, removeUserFromEvent} = props;
   return (
     <React.Fragment>
       <div className={classes.header}>
@@ -54,7 +58,14 @@ const EventParticipants = (props) => {
       <Divider />
       <div className={classes.content}>
         <Typography variant='h5'>Påmeldte</Typography>
-        <div className={classes.listView}>Ingen her</div>
+        <div className={classes.listView}>
+          {participants.length > 0 ? participants.map((user, key) => {
+            return <EventParticipant key={key} event={event} removeUserFromEvent={removeUserFromEvent} user_id={user.user_id} />;
+          })
+          :
+          <Typography>Ingen påmeldte.</Typography>
+          }
+        </div>
         <Typography variant='h5'>Venteliste</Typography>
         <div className={classes.listView}>Ingen her</div>
       </div>
@@ -70,6 +81,8 @@ EventParticipants.propTypes = {
     classes: PropTypes.object,
     event: PropTypes.object,
     closeParticipants: PropTypes.func,
+    participants: PropTypes.array,
+    removeUserFromEvent: PropTypes.func,
 };
 
 export default withStyles(styles)(EventParticipants);

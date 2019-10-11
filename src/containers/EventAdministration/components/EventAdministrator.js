@@ -129,6 +129,7 @@ class EventAdministrator extends Component {
             image: '',
             category: 0,
             limit: 0,
+            participants: [],
             // imageAlt: '',
 
             showMessage: false,
@@ -226,9 +227,15 @@ class EventAdministrator extends Component {
                 startDate: event.start.substring(0,16),
                 sign_up: event.sign_up,
                 limit: event.limit,
+                participants: [],
             });
         }
         this.setState({showSuccessMessage: false});
+
+        // Fetch participants
+        EventService.getEventParticipants(event.id).then((result) => {
+          this.setState({participants: result})
+        });
     }
 
     resetEventState = () => {
@@ -243,6 +250,7 @@ class EventAdministrator extends Component {
             category: 0,
             startDate: new Date().toISOString().substring(0, 16),
             sign_up: false,
+            participants: [],
             showParticipants: false,
         });
     }
@@ -283,6 +291,7 @@ class EventAdministrator extends Component {
         category: this.state.category,
         start: moment(this.state.startDate).format('YYYY-MM-DDTHH:mm'),
         sign_up: this.state.sign_up,
+        limit: this.state.limit,
     });
 
     createNewEvent = (event) => {
@@ -352,13 +361,26 @@ class EventAdministrator extends Component {
         });
     }
 
+    removeUserFromEvent = (user_id, event) => {
+      EventService.deleteUserFromEventList(event.id, {user_id: user_id}).then((result) => {
+        this.setState((oldState) => {
+          const newParticipants = oldState.participants.filter((user) => {
+            if (user.user_id !== user_id) return user
+          });
+          return {participants: newParticipants};
+        });
+      }).catch((error) => {
+        this.setState({showMessage: true, snackMessage: errorMessage(error)});
+      })
+    }
+
     getNextPage = () => {
       this.fetchEvents({page: this.state.nextPage})
     }
 
     render() {
         const {classes} = this.props;
-        const {selectedEvent, title, location, description, image, priority, categories, category, sign_up, showParticipants, limit} = this.state;
+        const {selectedEvent, title, location, description, image, priority, categories, category, sign_up, showParticipants, limit, participants} = this.state;
         const selectedEventId = (selectedEvent)? selectedEvent.id : '';
         const isNewItem = (selectedEvent === null);
         const header = (isNewItem)? 'Lag et nytt arrangement' : 'Endre arrangement';
@@ -382,7 +404,7 @@ class EventAdministrator extends Component {
 
                     <Paper className={classes.content} square>
                       {showParticipants ?
-                        <EventParticipants event={selectedEvent} closeParticipants={this.handleToggleChange('showParticipants')} />
+                        <EventParticipants removeUserFromEvent={this.removeUserFromEvent} participants={participants} event={selectedEvent} closeParticipants={this.handleToggleChange('showParticipants')} />
                         :
                       <React.Fragment>
                           {(this.state.isLoading)? <Grid className={classes.progress} container justify='center' alignItems='center'><CircularProgress /></Grid> :

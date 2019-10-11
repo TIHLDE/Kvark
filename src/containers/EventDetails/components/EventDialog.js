@@ -105,6 +105,9 @@ const getUserStudy = (userStudy) => {
     case 4:
       userStudyText = 'DigSam';
       break;
+    default:
+      userStudyText = 'Ikke oppgitt';
+      break;
   }
 
   return userStudyText;

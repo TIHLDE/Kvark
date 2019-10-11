@@ -28,8 +28,14 @@ export default {
     deleteEventItem: (id) => {
         return new IRequest('DELETE', 'events/'.concat(id, '/'), undefined, true);
     },
+    getEventParticipants: (id) => {
+        return new IRequest('GET', 'events/'.concat(id,'/users/'), undefined, true);
+    },
     putUserOnEventList: (id, item) => {
         return new IRequest('POST', 'events/'.concat(id,'/users/'), item, true);
+    },
+    deleteUserFromEventList: (id, item) => {
+        return new IRequest('DELETE', 'events/'.concat(id,'/users/', item.user_id, '/'), undefined, true);
     },
 
     // Job posts

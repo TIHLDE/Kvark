@@ -98,6 +98,7 @@ const EventRenderer = (props) => {
     const [modalShow, setModalShown] = useState(false);
     const description = data.description || '';
     const start = moment(data.start, ['YYYY-MM-DD HH:mm'], 'nb');
+    const today = moment(new Date(), ['YYYY-MM-DD HH:mm'], 'nb');
 
     const openEventModal = () => {
       if (userData) {
@@ -111,6 +112,8 @@ const EventRenderer = (props) => {
     const closeEventModal = () => {
       setModalShown(false);
     };
+
+    console.log(data);
 
     return (
         <Paper className={classes.img} square>
@@ -134,7 +137,7 @@ const EventRenderer = (props) => {
                     <InfoContent icon={<Location />} label={data.location} />
                     <InfoContent icon={<Group />} label={'Ingen'} />
                     {data.price && <InfoContent icon={<Time />} label={data.price} />}
-                    {data.sign_up &&
+                    {data.sign_up && today <= start &&
                       <Button
                         fullWidth
                         disabled={isLoadingUserData}
