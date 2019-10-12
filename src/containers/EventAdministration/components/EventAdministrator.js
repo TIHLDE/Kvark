@@ -25,6 +25,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 // Project Components
 import TextEditor from '../../../components/inputs/TextEditor';
+import Dialog from '../../../components/navigation/Dialog';
 import EventPreview from './EventPreview';
 import EventSidebar from './EventSidebar';
 import EventParticipants from './EventParticipants';
@@ -103,6 +104,7 @@ const priorities = ['Lav', 'Middels', 'Høy'];
 const eventCreated = 'Arrangementet ble opprettet';
 const eventChanged = 'Endringen ble publisert';
 const eventDeleted = 'Arrangementet ble slettet';
+const userRemoved = 'Bruker ble fjernet fra arrangementet';
 const errorMessage = (data) => 'Det oppstod en feil! '.concat(JSON.stringify(data || {}));
 const snackbarHideDuration = 4000;
 
@@ -130,9 +132,11 @@ class EventAdministrator extends Component {
             category: 0,
             limit: 0,
             participants: [],
+            userEvent: false,
             // imageAlt: '',
 
             showMessage: false,
+            showDialog: false,
             errorMessage: 'Det oppstod en feil',
             showSuccessMessage: false,
             successMessage: eventCreated,
@@ -361,17 +365,28 @@ class EventAdministrator extends Component {
         });
     }
 
-    removeUserFromEvent = (user_id, event) => {
+    removeUserFromEvent = () => {
+      const {user_id, event} = this.state.userEvent;
       EventService.deleteUserFromEventList(event.id, {user_id: user_id}).then((result) => {
         this.setState((oldState) => {
           const newParticipants = oldState.participants.filter((user) => {
             if (user.user_id !== user_id) return user
           });
-          return {participants: newParticipants};
+          return {
+            participants: newParticipants,
+            showSuccessMessage: true,
+            successMessage: userRemoved
+
+          };
         });
       }).catch((error) => {
         this.setState({showMessage: true, snackMessage: errorMessage(error)});
       })
+      this.setState({showDialog: false});
+    }
+
+    confirmRemoveUserFromEvent = (user_id, event) => {
+      this.setState({showDialog: true, userEvent: {user_id: user_id, event: event}});
     }
 
     getNextPage = () => {
@@ -402,9 +417,17 @@ class EventAdministrator extends Component {
                                 message={this.state.snackMessage}/>
                         </Snackbar>
 
+                    <Dialog
+                      onClose={() => this.setState({showDialog: false, userEvent: false})}
+                      status={this.state.showDialog}
+                      title='Bekreft sletting'
+                      message={'Er du sikker på at du vil fjerne denne brukeren fra dette arrangementet?'}
+                      submitText={'Slett'}
+                      onSubmit={this.removeUserFromEvent} />
+
                     <Paper className={classes.content} square>
                       {showParticipants ?
-                        <EventParticipants removeUserFromEvent={this.removeUserFromEvent} participants={participants} event={selectedEvent} closeParticipants={this.handleToggleChange('showParticipants')} />
+                        <EventParticipants removeUserFromEvent={this.confirmRemoveUserFromEvent} participants={participants} event={selectedEvent} closeParticipants={this.handleToggleChange('showParticipants')} />
                         :
                       <React.Fragment>
                           {(this.state.isLoading)? <Grid className={classes.progress} container justify='center' alignItems='center'><CircularProgress /></Grid> :

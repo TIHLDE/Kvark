@@ -5,18 +5,49 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 
-const style = {
+// Icons
+import Delete from '@material-ui/icons/Delete';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+
+const style = (theme) => ({
   content: {
     padding: 36,
+    display: 'flex',
   },
-};
+  userName: {
+    flexGrow: 1,
+  },
+  deleteButton: {
+    '&:hover': {
+      cursor: 'pointer',
+      color: theme.palette.error.main,
+    },
+  },
+  arrowButton: {
+    marginRight: 8,
+    '&:hover': {
+      cursor: 'pointer',
+      color: theme.palette.error.main,
+    },
+  },
+});
 
 const EventParticipant = (props) => {
   const {classes, removeUserFromEvent, event} = props;
+
+  const deleteHandler = () => {
+    removeUserFromEvent(props.user_id, event);
+  };
+
   return (
     <Card square className={classes.content}>
-      {props.user_id}
-      <button onClick={() => removeUserFromEvent(props.user_id, event)}>Slett</button>
+      <div className={classes.userName}>
+        {props.user_id}
+      </div>
+      <div>
+        <ArrowDownwardIcon className={classes.arrowButton} />
+        <Delete className={classes.deleteButton} onClick={deleteHandler} />
+      </div>
     </Card>
   );
 };

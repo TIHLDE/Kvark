@@ -44,6 +44,37 @@ const styles = {
 
 const EventParticipants = (props) => {
   const {classes, event, closeParticipants, participants, removeUserFromEvent} = props;
+
+
+  const printParticipants = (waitList) => {
+    let elements;
+    let participantsToPrint;
+
+    if (participants.length > 0) {
+      participantsToPrint = participants.filter((user) => {
+          let include = false;
+          if (waitList && user.is_on_wait) {
+            include = true;
+          } else if (!user.is_on_wait) {
+            include = true;
+          }
+          return include;
+      });
+
+      elements = participants.map((user, key) => {
+        return <EventParticipant
+                  key={key}
+                  event={event}
+                  removeUserFromEvent={removeUserFromEvent}
+                  user_id={user.user_id} />;
+      });
+    } else {
+      elements = <Typography>Ingen påmeldte.</Typography>;
+    }
+
+    return elements;
+  };
+
   return (
     <React.Fragment>
       <div className={classes.header}>
@@ -59,12 +90,7 @@ const EventParticipants = (props) => {
       <div className={classes.content}>
         <Typography variant='h5'>Påmeldte</Typography>
         <div className={classes.listView}>
-          {participants.length > 0 ? participants.map((user, key) => {
-            return <EventParticipant key={key} event={event} removeUserFromEvent={removeUserFromEvent} user_id={user.user_id} />;
-          })
-          :
-          <Typography>Ingen påmeldte.</Typography>
-          }
+          {printParticipants(false)}
         </div>
         <Typography variant='h5'>Venteliste</Typography>
         <div className={classes.listView}>Ingen her</div>
