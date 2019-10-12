@@ -61,7 +61,7 @@ const EventParticipants = (props) => {
           return include;
       });
 
-      elements = participants.map((user, key) => {
+      elements = participantsToPrint.map((user, key) => {
         return <EventParticipant
                   key={key}
                   event={event}
