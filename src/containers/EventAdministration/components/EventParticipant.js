@@ -8,6 +8,7 @@ import Card from '@material-ui/core/Card';
 // Icons
 import Delete from '@material-ui/icons/Delete';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 
 const style = (theme) => ({
   content: {
@@ -33,7 +34,7 @@ const style = (theme) => ({
 });
 
 const EventParticipant = (props) => {
-  const {classes, removeUserFromEvent, event} = props;
+  const {classes, removeUserFromEvent, toggleWaitList, event, waitList} = props;
 
   const deleteHandler = () => {
     removeUserFromEvent(props.user_id, event);
@@ -45,7 +46,15 @@ const EventParticipant = (props) => {
         {props.user_id}
       </div>
       <div>
-        <ArrowDownwardIcon className={classes.arrowButton} />
+        {!waitList ?
+          <ArrowDownwardIcon
+            className={classes.arrowButton}
+            onClick={() => {toggleWaitList(props.user_id, event);}} />
+          :
+          <ArrowUpwardIcon
+          className={classes.arrowButton}
+          onClick={() => {toggleWaitList(props.user_id, event);}}/>
+        }
         <Delete className={classes.deleteButton} onClick={deleteHandler} />
       </div>
     </Card>
@@ -56,7 +65,9 @@ EventParticipant.propTypes = {
   user_id: PropTypes.string,
   classes: PropTypes.object,
   removeUserFromEvent: PropTypes.func,
+  toggleWaitList: PropTypes.func,
   event: PropTypes.object,
+  waitList: PropTypes.bool,
 };
 
 export default withStyles(style)(EventParticipant);

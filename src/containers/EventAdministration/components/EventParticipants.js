@@ -43,11 +43,11 @@ const styles = {
 };
 
 const EventParticipants = (props) => {
-  const {classes, event, closeParticipants, participants, removeUserFromEvent} = props;
+  const {classes, event, closeParticipants, participants, removeUserFromEvent, toggleWaitList} = props;
 
 
   const printParticipants = (waitList) => {
-    let elements;
+    let elements = <Typography>Ingen påmeldte.</Typography>;
     let participantsToPrint;
 
     if (participants.length > 0) {
@@ -55,22 +55,24 @@ const EventParticipants = (props) => {
           let include = false;
           if (waitList && user.is_on_wait) {
             include = true;
-          } else if (!user.is_on_wait) {
+          } else if (!waitList && !user.is_on_wait) {
             include = true;
           }
           return include;
       });
 
-      elements = participantsToPrint.map((user, key) => {
-        return <EventParticipant
-                  key={key}
-                  event={event}
-                  removeUserFromEvent={removeUserFromEvent}
-                  user_id={user.user_id} />;
-      });
-    } else {
-      elements = <Typography>Ingen påmeldte.</Typography>;
-    }
+      if (participantsToPrint.length > 0) {
+        elements = participantsToPrint.map((user, key) => {
+          return <EventParticipant
+                    key={key}
+                    waitList={waitList}
+                    event={event}
+                    removeUserFromEvent={removeUserFromEvent}
+                    toggleWaitList={toggleWaitList}
+                    user_id={user.user_id} />;
+        });
+      }
+    };
 
     return elements;
   };
@@ -93,7 +95,9 @@ const EventParticipants = (props) => {
           {printParticipants(false)}
         </div>
         <Typography variant='h5'>Venteliste</Typography>
-        <div className={classes.listView}>Ingen her</div>
+        <div className={classes.listView}>
+          {printParticipants(true)}
+        </div>
       </div>
       <Button
         onClick={closeParticipants}
@@ -107,6 +111,7 @@ EventParticipants.propTypes = {
     classes: PropTypes.object,
     event: PropTypes.object,
     closeParticipants: PropTypes.func,
+    toggleWaitList: PropTypes.func,
     participants: PropTypes.array,
     removeUserFromEvent: PropTypes.func,
 };

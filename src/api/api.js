@@ -37,6 +37,9 @@ export default {
     deleteUserFromEventList: (id, item) => {
         return new IRequest('DELETE', 'events/'.concat(id,'/users/', item.user_id, '/'), undefined, true);
     },
+    setUserWaitListStatus: (id, item) => {
+      return new IRequest('PUT', 'events/'.concat(id,'/users/'), item, true);
+    },
 
     // Job posts
     getJobPosts: (data) => {

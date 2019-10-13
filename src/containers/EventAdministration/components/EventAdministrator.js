@@ -367,10 +367,12 @@ class EventAdministrator extends Component {
 
     removeUserFromEvent = () => {
       const {user_id, event} = this.state.userEvent;
+
       EventService.deleteUserFromEventList(event.id, {user_id: user_id}).then((result) => {
         this.setState((oldState) => {
           const newParticipants = oldState.participants.filter((user) => {
             if (user.user_id !== user_id) return user
+            return false
           });
           return {
             participants: newParticipants,
@@ -382,7 +384,16 @@ class EventAdministrator extends Component {
       }).catch((error) => {
         this.setState({showMessage: true, snackMessage: errorMessage(error)});
       })
+
       this.setState({showDialog: false});
+    }
+
+    toggleWaitList = (user_id, event) => {
+      EventService.setUserWaitListStatus(event.id, {user_id: user_id, is_on_wait: true}).then((data) => {
+
+      }).catch((error) => {
+        this.setState({showMessage: true, snackMessage: errorMessage(error)});
+      })
     }
 
     confirmRemoveUserFromEvent = (user_id, event) => {
@@ -427,7 +438,12 @@ class EventAdministrator extends Component {
 
                     <Paper className={classes.content} square>
                       {showParticipants ?
-                        <EventParticipants removeUserFromEvent={this.confirmRemoveUserFromEvent} participants={participants} event={selectedEvent} closeParticipants={this.handleToggleChange('showParticipants')} />
+                        <EventParticipants
+                          removeUserFromEvent={this.confirmRemoveUserFromEvent}
+                          participants={participants}
+                          event={selectedEvent}
+                          closeParticipants={this.handleToggleChange('showParticipants')}
+                          toggleWaitList={this.toggleWaitList} />
                         :
                       <React.Fragment>
                           {(this.state.isLoading)? <Grid className={classes.progress} container justify='center' alignItems='center'><CircularProgress /></Grid> :
