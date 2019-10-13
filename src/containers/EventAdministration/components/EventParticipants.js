@@ -45,11 +45,30 @@ const styles = {
 const EventParticipants = (props) => {
   const {classes, event, closeParticipants, participants, removeUserFromEvent, toggleWaitList} = props;
 
+  const sortParticipants = (waitList) => {
+    return participants.filter((user) => {
+        let include = false;
+        if (waitList && user.is_on_wait) {
+          include = true;
+        } else if (!waitList && !user.is_on_wait) {
+          include = true;
+        }
+        return include;
+    });
+  };
+
+  let participantsIn = [];
+  let participantsOnWait = [];
+  if (participants.length > 0) {
+    participantsIn = sortParticipants(false);
+    participantsOnWait = sortParticipants(true);
+  }
 
   const printParticipants = (waitList) => {
     let elements = <Typography>Ingen påmeldte.</Typography>;
     let participantsToPrint;
 
+    /*
     if (participants.length > 0) {
       participantsToPrint = participants.filter((user) => {
           let include = false;
@@ -60,6 +79,8 @@ const EventParticipants = (props) => {
           }
           return include;
       });
+      */
+      participantsToPrint = waitList ? participantsOnWait : participantsIn;
 
       if (participantsToPrint.length > 0) {
         elements = participantsToPrint.map((user, key) => {
@@ -72,7 +93,6 @@ const EventParticipants = (props) => {
                     user_id={user.user_id} />;
         });
       }
-    };
 
     return elements;
   };
@@ -84,8 +104,8 @@ const EventParticipants = (props) => {
           <Typography variant='h4'>{event.title}</Typography>
         </div>
         <div className={classes.numbers}>
-          <Typography>Antall påmeldte: 50</Typography>
-          <Typography>Antall på venteliste: 20</Typography>
+          <Typography>Antall påmeldte: {participantsIn.length}</Typography>
+          <Typography>Antall på venteliste: {participantsOnWait.length}</Typography>
         </div>
       </div>
       <Divider />
