@@ -91,7 +91,11 @@ class EventDetails extends Component {
       const {event, user} = this.state;
       this.setState({isApplying: true});
       return EventService.putUserOnEventList(event.id,user).then((result) => {
-        this.setState({message: 'Påmelding registrert!'});
+        this.setState((oldState) => {
+          let newEvent = oldState.event;
+          newEvent.participantsCount++;
+          return {message: 'Påmelding registrert!', event: newEvent}
+        });
       }).catch(() => {
         this.setState({message: 'Kunne ikke registrere påmelding.'});
       }).then(() => {
