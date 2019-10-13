@@ -49,11 +49,11 @@ const EventParticipant = (props) => {
         {!waitList ?
           <ArrowDownwardIcon
             className={classes.arrowButton}
-            onClick={() => {toggleWaitList(props.user_id, event);}} />
+            onClick={() => {toggleWaitList(props.user_id, event, true);}} />
           :
           <ArrowUpwardIcon
           className={classes.arrowButton}
-          onClick={() => {toggleWaitList(props.user_id, event);}}/>
+          onClick={() => {toggleWaitList(props.user_id, event, false);}}/>
         }
         <Delete className={classes.deleteButton} onClick={deleteHandler} />
       </div>

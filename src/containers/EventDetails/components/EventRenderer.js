@@ -113,8 +113,6 @@ const EventRenderer = (props) => {
       setModalShown(false);
     };
 
-    console.log(data);
-
     return (
         <Paper className={classes.img} square>
             {modalShow === true && userData &&
@@ -135,7 +133,7 @@ const EventRenderer = (props) => {
                     <InfoContent icon={<Calendar />} label={start.format('DD.MM.YYYY')} />
                     <InfoContent icon={<Time />} label={start.format('HH:mm')} />
                     <InfoContent icon={<Location />} label={data.location} />
-                    <InfoContent icon={<Group />} label={'Ingen'} />
+                    <InfoContent icon={<Group />} label={String(data.participantsCount)} />
                     {data.price && <InfoContent icon={<Time />} label={data.price} />}
                     {data.sign_up && today <= start &&
                       <Button

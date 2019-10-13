@@ -388,8 +388,8 @@ class EventAdministrator extends Component {
       this.setState({showDialog: false});
     }
 
-    toggleWaitList = (user_id, event) => {
-      EventService.setUserWaitListStatus(event.id, {user_id: user_id, is_on_wait: true}).then((data) => {
+    toggleWaitList = (user_id, event, is_on_wait) => {
+      EventService.setUserWaitListStatus(event.id, {user_id: user_id, is_on_wait: is_on_wait}).then((data) => {
 
       }).catch((error) => {
         this.setState({showMessage: true, snackMessage: errorMessage(error)});

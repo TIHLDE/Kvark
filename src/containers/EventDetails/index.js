@@ -50,11 +50,25 @@ class EventDetails extends Component {
         // Load event item
         this.setState({isLoading: true});
         EventService.getEventById(id)
-        .then((event) => {
+        .then(async (event) => {
             if(!event) {
                 this.props.history.replace('/'); // Redirect to landing page given id is invalid
             } else {
-                this.setState({isLoading: false, event: event});
+                // Get the number of participants
+                let participantsCount = await EventService.getEventParticipants(id)
+                .catch((error) => {
+                  return error;
+                });
+
+                // Set to 0 if we have noe valid data.
+                if (participantsCount.length === undefined) {
+                  participantsCount = 0
+                } else {
+                  participantsCount = participantsCount.length
+                }
+
+                // Update state
+                this.setState({isLoading: false, event: {...event, participantsCount: participantsCount}});
             }
         });
     };
