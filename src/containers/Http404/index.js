@@ -21,12 +21,12 @@ const styles = {
         width: '100%',
         maxHeight: '70vh',
         objectFit: 'contain',
-        paddingTop: '25px'
+        paddingTop: '25px',
     },
     smoke: {
         width: '100%',
         backgroundColor: '#Fefefe',
-        textAlign: 'center'
+        textAlign: 'center',
     },
     section: {
         padding: 48,
@@ -53,7 +53,7 @@ const styles = {
     },
     textContainer: {
         margin: '15px auto',
-    }
+    },
 };
 
 class Http404 extends Component {
@@ -72,7 +72,7 @@ class Http404 extends Component {
                     </div>
                     <div className={classes.smoke}>
                         <h3>Denne siden finnes ikke :(</h3>
-                        <Button className={classes.bottomSpacing} variant='contained' color='primary' href='#' onClick={() => {window.history.go(-1)}}>Tilbake</Button>
+                        <Button className={classes.bottomSpacing} variant='contained' color='primary' onClick={() => window.history.back()}>Tilbake</Button>
                         <p className={classes.textContainer}>Send oss gjerne en <a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/forms/d/e/1FAIpQLSfp8ZUm-GfzMla0Hg4AeX0iO8HME8ez7TttY2MgUfpC8MzBIQ/viewform">tilbakemelding</a> om du fulgte en gyldig lenke hit</p>
                     </div>
                 </Grid>

@@ -26,7 +26,10 @@ Pageination.propTypes = {
   classes: PropTypes.object,
   children: PropTypes.node.isRequired,
   nextPage: PropTypes.func,
-  page: PropTypes.string,
+  page: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
 };
 
 export default withStyles(styles)(Pageination);

@@ -147,7 +147,7 @@ class JobPosts extends Component {
               return {isLoading: false, isFetching: false, nextPage: nextPage, posts: oldState.posts.concat(posts.results)}
             })
 
-            
+
         });
     }
 

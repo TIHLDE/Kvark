@@ -362,7 +362,7 @@ class Navigation extends Component {
                                     <Sidebar onClose={this.toggleSidebar} />
                                 </Drawer>
                             </Hidden>
-                            
+
                         </div>
                     </Toolbar>
                 </AppBar>

@@ -5,7 +5,7 @@ export class IRequest {
     constructor(method, url, data={}, withAuth=true, args={}) {
         this.method = method;
         this.data = data;
-        this.headers = {'Content-Type': 'application/json'}
+        this.headers = {'Content-Type': 'application/json'};
         this.url = TIHLDE_API.URL + url;
         this.args = args;
 
@@ -37,8 +37,8 @@ class IResponse {
             this.isError = !data.ok;
             this.status = data.status;
 
-            if(data.json === undefined) {
-                return data
+            if (data.json === undefined) {
+                return data;
             }
 
             return data.json();

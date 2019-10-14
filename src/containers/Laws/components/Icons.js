@@ -22,23 +22,23 @@ const styles = {
 
         },
     },
-    wrapper:{
-        display:'flex',
-        flexDirection:'column',
+    wrapper: {
+        display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'space-evenly',
         alignItems: 'center',
     },
-    icon:{
+    icon: {
         fontSize: 100,
         marginBottom: 20,
         color: 'rgba(0, 0, 0, 0.6)',
-    }
+    },
 };
 
 
 const Icons = (props) => {
     const {classes, data, icon: Component} = props;
-    const text = (data.title)? data.title : "mangler tittel";
+    const text = (data.title)? data.title : 'mangler tittel';
     return (
         <LinkButton to={props.to} noPadding noText>
             <div className={classes.root}>
@@ -54,7 +54,11 @@ const Icons = (props) => {
 
 Icons.propTypes = {
     classes: PropTypes.object,
-
+    to: PropTypes.string,
+    icon: PropTypes.oneOfType([
+      PropTypes.element,
+      PropTypes.func,
+    ]),
     data: PropTypes.object,
     onClick: PropTypes.func,
 };
