@@ -68,18 +68,6 @@ const EventParticipants = (props) => {
     let elements = <Typography>Ingen påmeldte.</Typography>;
     let participantsToPrint;
 
-    /*
-    if (participants.length > 0) {
-      participantsToPrint = participants.filter((user) => {
-          let include = false;
-          if (waitList && user.is_on_wait) {
-            include = true;
-          } else if (!waitList && !user.is_on_wait) {
-            include = true;
-          }
-          return include;
-      });
-      */
       participantsToPrint = waitList ? participantsOnWait : participantsIn;
 
       if (participantsToPrint.length > 0) {
