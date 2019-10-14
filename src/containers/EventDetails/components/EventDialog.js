@@ -10,7 +10,6 @@ import Modal from '@material-ui/core/Modal';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-// import ButtonBase from '@material-ui/core/ButtonBase';
 import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {withStyles} from '@material-ui/core/styles';
@@ -23,7 +22,6 @@ import School from '@material-ui/icons/School';
 import Home from '@material-ui/icons/Home';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-// import Close from '@material-ui/icons/Close';
 
 // Project components
 import EventListItem from './EventListItem';
@@ -152,9 +150,6 @@ const EventDialog = (props) => {
             <Typography className={classes.title} align='center' variant='h5'>
               {Text.signUp}
             </Typography>
-            {/* <ButtonBase className={classes.closeButton} onClick={props.onClose}>
-              <Close />
-            </ButtonBase> */}
           </div>
           <Divider />
           {!isApplying && message === '' &&
