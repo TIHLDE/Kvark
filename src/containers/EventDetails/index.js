@@ -38,6 +38,7 @@ class EventDetails extends Component {
             isLoadingUserData: false,
             isApplying: false,
             message: '',
+            applySuccess: false,
         }
     }
 
@@ -88,16 +89,16 @@ class EventDetails extends Component {
     }
 
     applyToEvent = () => {
-      const {event, user} = this.state;
+      const {event, user, applySuccess} = this.state;
       this.setState({isApplying: true});
       return EventService.putUserOnEventList(event.id,user).then((result) => {
         this.setState((oldState) => {
           let newEvent = oldState.event;
           newEvent.participantsCount++;
-          return {message: 'Påmelding registrert!', event: newEvent}
+          return {message: 'Påmelding registrert!', event: newEvent, applySuccess: true}
         });
       }).catch(() => {
-        this.setState({message: 'Kunne ikke registrere påmelding.'});
+        this.setState({message: 'Kunne ikke registrere påmelding.', applySuccess: false});
       }).then(() => {
         this.setState({isApplying: false});
       })
@@ -112,7 +113,7 @@ class EventDetails extends Component {
 
     render() {
         const {classes} = this.props;
-        const {event, user, isLoadingUserData, isApplying, message} = this.state;
+        const {event, user, isLoadingUserData, isApplying, message, applySuccess} = this.state;
         const eventData = event || {};
         const userData = user;
 
@@ -128,7 +129,8 @@ class EventDetails extends Component {
                               applyToEvent={this.applyToEvent}
                               isLoadingUserData={isLoadingUserData}
                               isApplying={isApplying}
-                              message={message} />
+                              message={message}
+                              applySuccess={applySuccess} />
                         </div>
                     </div>
                 }

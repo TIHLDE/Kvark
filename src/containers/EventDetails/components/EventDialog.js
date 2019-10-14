@@ -21,6 +21,8 @@ import Email from '@material-ui/icons/Email';
 import Fastfood from '@material-ui/icons/Fastfood';
 import School from '@material-ui/icons/School';
 import Home from '@material-ui/icons/Home';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 // import Close from '@material-ui/icons/Close';
 
 // Project components
@@ -45,6 +47,19 @@ const style = {
     display: 'flex',
     padding: 26,
   },
+  message: {
+    padding: 20,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  messageText: {
+    width: '100%',
+    paddingRight: 24,
+    textAlign: 'center',
+  },
+  icon: {
+    marginRight: 24,
+  },
   title: {
     width: '100%',
     // paddingLeft: 40,
@@ -65,6 +80,7 @@ const style = {
   },
   button: {
     width: '100%',
+    marginBottom: 10,
   },
   list: {
     display: 'flex',
@@ -114,7 +130,7 @@ const getUserStudy = (userStudy) => {
 };
 
 const EventDialog = (props) => {
-  const {classes, userData, isApplying, message} = props;
+  const {classes, userData, isApplying, message, applySuccess} = props;
 
   const closeDialog = () => {
     props.applyToEvent();
@@ -174,8 +190,13 @@ const EventDialog = (props) => {
           <CircularProgress className={classes.progress} />
           }
           {message &&
-          <div className={classes.content}>
-            <Typography>{message}</Typography>
+          <div className={classes.message}>
+            {applySuccess ?
+              <CheckCircleOutlineIcon className={classes.icon} />
+              :
+              <ErrorOutlineIcon className={classes.icon} />
+            }
+            <Typography className={classes.messageText}>{message}</Typography>
           </div>
           }
           <Divider />
@@ -188,13 +209,21 @@ const EventDialog = (props) => {
                 variant='contained'
                 color='primary'>Ok</Button>
               :
-              <Button
-                className={classes.button}
-                onClick={closeDialog}
-                disabled={isApplying}
-                align='center'
-                variant='contained'
-                color='primary'>{Text.signUp}</Button>
+              <React.Fragment>
+                <Button
+                  className={classes.button}
+                  onClick={closeDialog}
+                  disabled={isApplying}
+                  align='center'
+                  variant='contained'
+                  color='primary'>{Text.signUp}</Button>
+                <Button
+                    className={classes.button}
+                    onClick={props.onClose}
+                    align='center'
+                    variant='contained'
+                    color='secondary'>Lukk</Button>
+              </React.Fragment>
             }
           </div>
       </Paper>
