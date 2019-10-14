@@ -89,7 +89,7 @@ class EventDetails extends Component {
     }
 
     applyToEvent = () => {
-      const {event, user, applySuccess} = this.state;
+      const {event, user} = this.state;
       this.setState({isApplying: true});
       return EventService.putUserOnEventList(event.id,user).then((result) => {
         this.setState((oldState) => {
