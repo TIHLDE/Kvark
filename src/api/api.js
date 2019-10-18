@@ -40,6 +40,9 @@ export default {
     setUserWaitListStatus: (id, item) => {
       return new IRequest('PUT', 'events/'.concat(id,'/users/'), item, true);
     },
+    getUserEventObject: (id, item) => {
+      return new IRequest('GET', 'events/'.concat(id, '/users/', item.user_id, '/'), undefined, true);
+    },
 
     // Job posts
     getJobPosts: (data) => {

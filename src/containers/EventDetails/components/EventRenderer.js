@@ -94,7 +94,18 @@ InfoContent.propTypes = {
 };
 
 const EventRenderer = (props) => {
-    const {classes, data, userData, applyToEvent, isLoadingUserData, isApplying, message, applySuccess} = props;
+    const {
+      classes,
+      data,
+      userData,
+      userEvent,
+      applyToEvent,
+      isLoadingUserData,
+      isApplying,
+      message,
+      applySuccess,
+      clearMessage,
+    } = props;
     const [modalShow, setModalShown] = useState(false);
     const description = data.description || '';
     const start = moment(data.start, ['YYYY-MM-DD HH:mm'], 'nb');
@@ -111,6 +122,7 @@ const EventRenderer = (props) => {
 
     const closeEventModal = () => {
       setModalShown(false);
+      clearMessage();
     };
 
     return (
@@ -120,6 +132,7 @@ const EventRenderer = (props) => {
                 onClose={closeEventModal}
                 data={data}
                 userData={userData}
+                userEvent={userEvent}
                 status={modalShow}
                 applyToEvent={applyToEvent}
                 isApplying={isApplying}
@@ -137,16 +150,31 @@ const EventRenderer = (props) => {
                     <InfoContent icon={<Group />} label={String(data.participantsCount)} />
                     {data.price && <InfoContent icon={<Time />} label={data.price} />}
                     {data.sign_up && today <= start &&
-                      <Button
-                        fullWidth
-                        disabled={isLoadingUserData}
-                        className={classes.mt}
-                        variant='contained'
-                        onClick={openEventModal}
-                        color='primary'>
-                        {Text.signUp}
-                        </Button>
-                      }
+                      <React.Fragment>
+                        {!userEvent &&
+                          <Button
+                            fullWidth
+                            disabled={isLoadingUserData}
+                            className={classes.mt}
+                            variant='contained'
+                            onClick={openEventModal}
+                            color='primary'>
+                            {Text.signUp}
+                          </Button>
+                        }
+                        {userEvent &&
+                          <Button
+                            fullWidth
+                            disabled={isLoadingUserData}
+                            className={classes.mt}
+                            variant='contained'
+                            onClick={openEventModal}
+                            color='secondary'>
+                            {Text.signOff}
+                          </Button>
+                        }
+                      </React.Fragment>
+                    }
                 </div>
                 <div className={classes.content}>
                     <MarkdownRenderer value={description} />
@@ -160,12 +188,14 @@ EventRenderer.propTypes = {
     classes: PropTypes.object,
     data: PropTypes.object.isRequired,
     userData: PropTypes.object,
+    userEvent: PropTypes.object,
     history: PropTypes.object,
     applyToEvent: PropTypes.func,
     isLoadingUserData: PropTypes.bool,
     isApplying: PropTypes.bool,
     message: PropTypes.string,
     applySuccess: PropTypes.bool,
+    clearMessage: PropTypes.func,
 };
 
 export default withStyles(styles)(EventRenderer);
