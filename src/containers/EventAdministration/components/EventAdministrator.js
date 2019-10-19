@@ -407,6 +407,17 @@ class EventAdministrator extends Component {
       })
     }
 
+    closeEvent = () => {
+      const {selectedEvent} = this.state;
+      EventService.putEvent(selectedEvent.id, {closed: true}).then(() => {
+        this.setState((oldState) => {
+          let newEvent = oldState.selectedEvent;
+          newEvent.closed = true;
+          return {selectedEvent: newEvent};
+        });
+      });
+    }
+
     confirmRemoveUserFromEvent = (user_id, event) => {
       this.setState({showDialog: true, userEvent: {user_id: user_id, event: event}});
     }
@@ -511,7 +522,10 @@ class EventAdministrator extends Component {
                                                       <Button className={classes.mr} variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
                                                       <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showParticipants')}>Se påmeldte</Button>
                                                   </div>
-                                                  <Button className={classes.deleteButton} onClick={this.deleteEventItem} variant='outlined'>Slett</Button>
+                                                  <div>
+                                                      <Button disabled={selectedEvent.closed && true} className={classNames(classes.mr, classes.deleteButton)} onClick={this.closeEvent} variant='outlined'>Steng</Button>
+                                                      <Button className={classes.deleteButton} onClick={this.deleteEventItem} variant='outlined'>Slett</Button>
+                                                  </div>
                                               </Fragment>
                                           }
                                       </Grid>

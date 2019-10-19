@@ -139,7 +139,7 @@ const EventRenderer = (props) => {
                     {data.sign_up && today <= start &&
                       <Button
                         fullWidth
-                        disabled={isLoadingUserData}
+                        disabled={isLoadingUserData || data.closed}
                         className={classes.mt}
                         variant='contained'
                         onClick={openEventModal}
