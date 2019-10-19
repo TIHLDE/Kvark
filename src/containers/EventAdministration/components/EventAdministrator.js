@@ -390,7 +390,18 @@ class EventAdministrator extends Component {
 
     toggleWaitList = (user_id, event, is_on_wait) => {
       EventService.setUserWaitListStatus(event.id, {user_id: user_id, is_on_wait: is_on_wait}).then((data) => {
+        this.setState((oldState) => {
+          // Change the state to reflect the database data.
+          const newParticipants = oldState.participants.map((user) => {
+            let newUser = user;
+            if (user.user_id === user_id) {
+              newUser.is_on_wait = !newUser.is_on_wait;
+            }
+            return newUser
+          })
 
+          return {participants: newParticipants};
+        })
       }).catch((error) => {
         this.setState({showMessage: true, snackMessage: errorMessage(error)});
       })
