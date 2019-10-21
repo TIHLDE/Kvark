@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 // Material-ui
 import {withStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 // Icons
 import Delete from '@material-ui/icons/Delete';
@@ -14,9 +16,14 @@ const style = (theme) => ({
   content: {
     padding: 36,
     display: 'flex',
+    '@media only screen and (max-width: 600px)': {
+        flexDirection: 'column',
+    },
   },
   userName: {
     flexGrow: 1,
+    display: 'flex',
+    alignItems: 'center',
   },
   deleteButton: {
     '&:hover': {
@@ -30,6 +37,13 @@ const style = (theme) => ({
       cursor: 'pointer',
       color: theme.palette.error.main,
     },
+  },
+  buttonContainer: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  actionArea: {
+    display: 'flex',
   },
 });
 
@@ -45,17 +59,25 @@ const EventParticipant = (props) => {
       <div className={classes.userName}>
         {props.user_id}
       </div>
-      <div>
-        {!waitList ?
-          <ArrowDownwardIcon
+      <div className={classes.actionArea}>
+        <div>
+            <FormControlLabel
+              label="Ankommet"
+              control={<Checkbox />}
+              />
+        </div>
+        <div className={classes.buttonContainer}>
+          {!waitList ?
+            <ArrowDownwardIcon
+              className={classes.arrowButton}
+              onClick={() => {toggleWaitList(props.user_id, event, true);}} />
+            :
+            <ArrowUpwardIcon
             className={classes.arrowButton}
-            onClick={() => {toggleWaitList(props.user_id, event, true);}} />
-          :
-          <ArrowUpwardIcon
-          className={classes.arrowButton}
-          onClick={() => {toggleWaitList(props.user_id, event, false);}}/>
-        }
-        <Delete className={classes.deleteButton} onClick={deleteHandler} />
+            onClick={() => {toggleWaitList(props.user_id, event, false);}}/>
+          }
+          <Delete className={classes.deleteButton} onClick={deleteHandler} />
+        </div>
       </div>
     </Card>
   );
