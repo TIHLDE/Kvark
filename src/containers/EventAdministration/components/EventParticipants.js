@@ -43,7 +43,7 @@ const styles = {
 };
 
 const EventParticipants = (props) => {
-  const {classes, event, closeParticipants, participants, removeUserFromEvent, toggleWaitList} = props;
+  const {classes, event, closeParticipants, participants, removeUserFromEvent, toggleUserEvent} = props;
 
   const sortParticipants = (waitList) => {
     return participants.filter((user) => {
@@ -75,9 +75,10 @@ const EventParticipants = (props) => {
           return <EventParticipant
                     key={key}
                     waitList={waitList}
+                    attended={user.has_attended}
                     event={event}
                     removeUserFromEvent={removeUserFromEvent}
-                    toggleWaitList={toggleWaitList}
+                    toggleUserEvent={toggleUserEvent}
                     user_id={user.user_id} />;
         });
       }
@@ -119,7 +120,7 @@ EventParticipants.propTypes = {
     classes: PropTypes.object,
     event: PropTypes.object,
     closeParticipants: PropTypes.func,
-    toggleWaitList: PropTypes.func,
+    toggleUserEvent: PropTypes.func,
     participants: PropTypes.array,
     removeUserFromEvent: PropTypes.func,
 };

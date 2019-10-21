@@ -388,12 +388,34 @@ class EventAdministrator extends Component {
       this.setState({showDialog: false});
     }
 
-    toggleWaitList = (user_id, event, is_on_wait) => {
-      EventService.setUserWaitListStatus(event.id, {user_id: user_id, is_on_wait: is_on_wait}).then((data) => {
+    toggleUserEvent = (user_id, event, parameters) => {
+      EventService.updateUserEvent(event.id, {user_id: user_id, ...parameters}).then((data) => {
+        this.setState((oldState) => {
+          // Change the state to reflect the database data.
+          const newParticipants = oldState.participants.map((user) => {
+            let newUser = user;
+            if (user.user_id === user_id) {
+              newUser = {...newUser, ...parameters};
+            }
+            return newUser
+          })
 
+          return {participants: newParticipants};
+        })
       }).catch((error) => {
         this.setState({showMessage: true, snackMessage: errorMessage(error)});
       })
+    }
+
+    closeEvent = () => {
+      const {selectedEvent} = this.state;
+      EventService.putEvent(selectedEvent.id, {closed: true}).then(() => {
+        this.setState((oldState) => {
+          let newEvent = oldState.selectedEvent;
+          newEvent.closed = true;
+          return {selectedEvent: newEvent};
+        });
+      });
     }
 
     confirmRemoveUserFromEvent = (user_id, event) => {
@@ -443,7 +465,7 @@ class EventAdministrator extends Component {
                           participants={participants}
                           event={selectedEvent}
                           closeParticipants={this.handleToggleChange('showParticipants')}
-                          toggleWaitList={this.toggleWaitList} />
+                          toggleUserEvent={this.toggleUserEvent} />
                         :
                       <React.Fragment>
                           {(this.state.isLoading)? <Grid className={classes.progress} container justify='center' alignItems='center'><CircularProgress /></Grid> :
@@ -500,7 +522,10 @@ class EventAdministrator extends Component {
                                                       <Button className={classes.mr} variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
                                                       <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showParticipants')}>Se påmeldte</Button>
                                                   </div>
-                                                  <Button className={classes.deleteButton} onClick={this.deleteEventItem} variant='outlined'>Slett</Button>
+                                                  <div>
+                                                      <Button disabled={selectedEvent.closed && true} className={classNames(classes.mr, classes.deleteButton)} onClick={this.closeEvent} variant='outlined'>Steng</Button>
+                                                      <Button className={classes.deleteButton} onClick={this.deleteEventItem} variant='outlined'>Slett</Button>
+                                                  </div>
                                               </Fragment>
                                           }
                                       </Grid>
