@@ -388,14 +388,14 @@ class EventAdministrator extends Component {
       this.setState({showDialog: false});
     }
 
-    toggleWaitList = (user_id, event, is_on_wait) => {
-      EventService.setUserWaitListStatus(event.id, {user_id: user_id, is_on_wait: is_on_wait}).then((data) => {
+    toggleUserEvent = (user_id, event, parameters) => {
+      EventService.updateUserEvent(event.id, {user_id: user_id, ...parameters}).then((data) => {
         this.setState((oldState) => {
           // Change the state to reflect the database data.
           const newParticipants = oldState.participants.map((user) => {
             let newUser = user;
             if (user.user_id === user_id) {
-              newUser.is_on_wait = !newUser.is_on_wait;
+              newUser = {...newUser, ...parameters};
             }
             return newUser
           })
@@ -465,7 +465,7 @@ class EventAdministrator extends Component {
                           participants={participants}
                           event={selectedEvent}
                           closeParticipants={this.handleToggleChange('showParticipants')}
-                          toggleWaitList={this.toggleWaitList} />
+                          toggleUserEvent={this.toggleUserEvent} />
                         :
                       <React.Fragment>
                           {(this.state.isLoading)? <Grid className={classes.progress} container justify='center' alignItems='center'><CircularProgress /></Grid> :

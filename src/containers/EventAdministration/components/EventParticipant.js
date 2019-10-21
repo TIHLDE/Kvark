@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
 // Material-ui
@@ -48,11 +48,27 @@ const style = (theme) => ({
 });
 
 const EventParticipant = (props) => {
-  const {classes, removeUserFromEvent, toggleWaitList, event, waitList} = props;
+  const {
+    classes,
+    removeUserFromEvent,
+    toggleUserEvent,
+    event,
+    waitList,
+    attended,
+  } = props;
 
-  const deleteHandler = () => {
+  const [checkedState, setCheckedState] = useState(attended);
+
+  const deleteHandler = (event) => {
     removeUserFromEvent(props.user_id, event);
   };
+
+  const handleCheck = (actionEvent) => {
+    setCheckedState(actionEvent.target.checked);
+    toggleUserEvent(props.user_id, event, {has_attended: actionEvent.target.checked});
+  };
+
+  // toggleUserEvent(props.user_id, event, {has_attended: !attended})
 
   return (
     <Card square className={classes.content}>
@@ -63,18 +79,23 @@ const EventParticipant = (props) => {
         <div>
             <FormControlLabel
               label="Ankommet"
-              control={<Checkbox />}
+              control={
+                <Checkbox
+                  onChange={
+                    handleCheck
+                  }
+                  checked={checkedState} />}
               />
         </div>
         <div className={classes.buttonContainer}>
           {!waitList ?
             <ArrowDownwardIcon
               className={classes.arrowButton}
-              onClick={() => {toggleWaitList(props.user_id, event, true);}} />
+              onClick={() => {toggleUserEvent(props.user_id, event, {is_on_wait: true});}} />
             :
             <ArrowUpwardIcon
             className={classes.arrowButton}
-            onClick={() => {toggleWaitList(props.user_id, event, false);}}/>
+            onClick={() => {toggleUserEvent(props.user_id, event, {is_on_wait: false});}}/>
           }
           <Delete className={classes.deleteButton} onClick={deleteHandler} />
         </div>
@@ -86,8 +107,9 @@ const EventParticipant = (props) => {
 EventParticipant.propTypes = {
   user_id: PropTypes.string,
   classes: PropTypes.object,
+  attended: PropTypes.bool,
   removeUserFromEvent: PropTypes.func,
-  toggleWaitList: PropTypes.func,
+  toggleUserEvent: PropTypes.func,
   event: PropTypes.object,
   waitList: PropTypes.bool,
 };
