@@ -333,7 +333,7 @@ class EventAdministrator extends Component {
                 const newEvents = Object.assign([], this.state.events);
                 const index = newEvents.findIndex((elem) => elem.id === selectedEvent.id); // Finding event by id
                 if(index !== -1) {
-                    newEvents[index] = data;
+                    newEvents[index] = {id: selectedEvent.id, ...item};
                     this.setState({events: newEvents, showSuccessMessage: true, successMessage: eventChanged});
                 }
             } else {
