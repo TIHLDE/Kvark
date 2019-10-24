@@ -178,9 +178,11 @@ const styles = {
         color: 'white',
         minWidth: '40px',
         textAlign: 'right',
+        '@media only screen and (max-width: 450px)': {
+            display: 'none',
+        }
     },
     profileCircle: {
-        border: '1px solid #222222',
         borderRadius: '50%',
         backgroundColor: 'peru',
         fontSize: '18px',
@@ -189,12 +191,14 @@ const styles = {
         height: '45px',
         width: '45px',
         textAlign: 'center',
+        fontWeight: 'bold',
     },
     profileCircleImage: {
         backgroundImage: 'url(https://thenypost.files.wordpress.com/2019/09/takes-donald-trump.jpg?quality=90&strip=all&w=618&h=410&crop=1)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         color: '#00000000',
+        userSelect: 'none',
     }
 };
 
@@ -229,7 +233,7 @@ const PersonIcon = withStyles(styles)((props) => {
     return (
         <Link to={link} className={classes.profileLink} onClick={link === window.location.pathname ? () => window.location.refresh() : null} >
             <Button>
-                <div className={ user.first_name === undefined ? classes.profileContainerHidden : classes.profileContainer} >
+                <div className={classes.profileContainer} >
                     <div className={classes.profileName}>{ user.first_name !== undefined && user.first_name }</div>
                     <div className={classNames(classes.profileCircle)}>{ user.first_name !== undefined && (user.first_name).substring(0,1) + '' + (user.last_name).substring(0,1) }</div>
                 </div>

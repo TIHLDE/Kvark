@@ -6,7 +6,7 @@ export default {
     services: '/tjenester/',
     newStudent: '/nystudent/',
     jobposts: '/annonser/',
-    profile: '/profile/',
+    profile: '/profil/',
     login: '/logg-inn/',
     laws: '/lover/',
     newlanding: '/newlanding/',

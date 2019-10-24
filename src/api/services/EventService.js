@@ -151,6 +151,7 @@ class EventService {
       })
     }
 
+
     static setUserWaitListStatus = (id, userData, callback=null) => {
       userData = {...userData, event: id};
       const response = API.setUserWaitListStatus(id, userData).response();

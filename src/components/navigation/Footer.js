@@ -94,7 +94,7 @@ class Footer extends Component {
                 <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>TIHLDE</Typography>
                 <Typography className={classes.horSpacing} align='center' color='inherit' >hs@tihlde.org</Typography>
                 <Typography className={classes.horSpacing} align='center' color='inherit' >c/o IDI NTNU</Typography>
-                <Typography className={classes.horSpacing} align='center' color='inherit' >Sverres gate 14, 7012 Trondheim</Typography>
+                <Typography className={classes.horSpacing} align='center' color='inherit' >Sverres gate 12, 7012 Trondheim</Typography>
                 <Typography className={classes.horSpacing} align='center' color='inherit' >OrgNr: 989 684 183</Typography>
             </div>
         )

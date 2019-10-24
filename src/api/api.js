@@ -37,8 +37,8 @@ export default {
     deleteUserFromEventList: (id, item) => {
         return new IRequest('DELETE', 'events/'.concat(id,'/users/', item.user_id, '/'), undefined, true);
     },
-    setUserWaitListStatus: (id, item) => {
-      return new IRequest('PUT', 'events/'.concat(id,'/users/'), item, true);
+    updateUserEvent: (id, item) => {
+      return new IRequest('PUT', 'events/'.concat(id,'/users/', item.user_id), item, true);
     },
     getUserEventObject: (id, item) => {
       return new IRequest('GET', 'events/'.concat(id, '/users/', item.user_id, '/'), undefined, true);
@@ -67,6 +67,9 @@ export default {
     // User
     getUserData: () => {
         return new IRequest('GET', 'user/', undefined, true);
+    },
+    updateUserData: (userName, item) => {
+        return new IRequest('PUT', 'user/'.concat(userName, '/'), item, true);
     },
 
     // Warning
