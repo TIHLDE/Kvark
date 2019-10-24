@@ -127,6 +127,20 @@ const getUserStudy = (userStudy) => {
   return userStudyText;
 };
 
+const DialogHeader = (props) => {
+  const {classes, heading} = props
+  return (
+    <React.Fragment>
+      <div className={classes.heading}>
+        <Typography className={classes.title} align='center' variant='h5'>
+          {heading}
+        </Typography>
+      </div>
+      <Divider />
+    </React.Fragment>
+  );
+};
+
 const EventDialog = (props) => {
   const {classes, userData, isApplying, message, applySuccess} = props;
 
@@ -146,53 +160,55 @@ const EventDialog = (props) => {
       open={props.status}
       onClose={props.onClose}>
       <Paper className={classes.paper} square>
-          <div className={classes.heading}>
-            <Typography className={classes.title} align='center' variant='h5'>
-              {Text.signUp}
-            </Typography>
-          </div>
-          <Divider />
           {!isApplying && message === '' &&
-          <div className={classes.content}>
-            <div className={classes.text}>
-              <Typography>{Text.confirmData}</Typography>
+          <React.Fragment>
+            <DialogHeader classes={classes} heading={Text.signUp} />
+            <div className={classes.content}>
+              <div className={classes.text}>
+                <Typography>{Text.confirmData}</Typography>
+              </div>
+              <div className={classes.list}>
+                <EventListItem
+                  icon={<AccountCircle />}
+                  text={'Navn: ' + userData.first_name + ' ' + userData.last_name}
+                />
+                <EventListItem
+                  icon={<Email />}
+                  text={'Navn: ' + userData.email}
+                />
+                <EventListItem
+                  icon={<School />}
+                  text={'Studieprogram: ' + userStudy}
+                />
+                <EventListItem
+                  icon={<Home />}
+                  text={'Klasse: ' + userClass}
+                />
+                <EventListItem
+                  icon={<Fastfood />}
+                  text={'Alergier: ' + allergy}
+                />
+              </div>
             </div>
-            <div className={classes.list}>
-              <EventListItem
-                icon={<AccountCircle />}
-                text={'Navn: ' + userData.first_name + ' ' + userData.last_name}
-              />
-              <EventListItem
-                icon={<Email />}
-                text={'Navn: ' + userData.email}
-              />
-              <EventListItem
-                icon={<School />}
-                text={'Studieprogram: ' + userStudy}
-              />
-              <EventListItem
-                icon={<Home />}
-                text={'Klasse: ' + userClass}
-              />
-              <EventListItem
-                icon={<Fastfood />}
-                text={'Alergier: ' + allergy}
-              />
-            </div>
-          </div>
+          </React.Fragment>
           }
           {isApplying &&
-          <CircularProgress className={classes.progress} />
+          <React.Fragment>
+            <DialogHeader classes={classes} heading={Text.signUp} />
+            <CircularProgress className={classes.progress} />
+          </React.Fragment>
           }
           {message &&
-          <div className={classes.message}>
-            {applySuccess ?
-              <CheckCircleOutlineIcon className={classes.icon} />
-              :
-              <ErrorOutlineIcon className={classes.icon} />
-            }
-            <Typography className={classes.messageText}>{message}</Typography>
-          </div>
+          <React.Fragment>
+            <DialogHeader classes={classes} heading={message} />
+            <div className={classes.message}>
+              {applySuccess ?
+                <CheckCircleOutlineIcon className={classes.icon} />
+                :
+                <ErrorOutlineIcon className={classes.icon} />
+              }
+            </div>
+          </React.Fragment>
           }
           <Divider />
           <div className={classes.footer}>
@@ -226,6 +242,11 @@ const EventDialog = (props) => {
   );
 };
 
+DialogHeader.propTypes = {
+  heading: PropTypes.string,
+  classes: PropTypes.object,
+};
+
 EventDialog.propTypes = {
   status: PropTypes.bool,
   onClose: PropTypes.func,
@@ -233,6 +254,7 @@ EventDialog.propTypes = {
   userData: PropTypes.object,
   applyToEvent: PropTypes.func,
   isApplying: PropTypes.bool,
+  applySuccess: PropTypes.bool,
   message: PropTypes.string,
 };
 
