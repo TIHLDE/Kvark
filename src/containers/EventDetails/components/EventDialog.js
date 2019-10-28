@@ -207,9 +207,9 @@ const EventDialog = (props) => {
             <DialogHeader classes={classes} heading={message} />
             <div className={classes.message}>
               {applySuccess ?
-                <img className={classes.image} src={eventSuccess}/>
+                <img alt="success" className={classes.image} src={eventSuccess}/>
               :
-                <img className={classes.image} src={eventCancel}/>
+                <img alt="failure" className={classes.image} src={eventCancel}/>
               }
             </div>
           </React.Fragment>
