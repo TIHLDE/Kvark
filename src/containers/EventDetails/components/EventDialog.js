@@ -20,8 +20,10 @@ import Email from '@material-ui/icons/Email';
 import Fastfood from '@material-ui/icons/Fastfood';
 import School from '@material-ui/icons/School';
 import Home from '@material-ui/icons/Home';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+
+// Images
+import eventSuccess from '../../../assets/img/eventSuccess.svg';
+import eventCancel from '../../../assets/img/eventCancel.svg';
 
 // Project components
 import EventListItem from './EventListItem';
@@ -36,6 +38,7 @@ const style = {
     flexDirection: 'column',
     left: '50%',
     top: '50%',
+    'overflow-y': 'auto',
     transform: 'translate(-50%,-50%)',
     '@media only screen and (max-width: 400px)': {
         width: '100%',
@@ -55,8 +58,9 @@ const style = {
     paddingRight: 24,
     textAlign: 'center',
   },
-  icon: {
-    marginRight: 24,
+  image: {
+    width: '50%',
+    margin: 'auto',
   },
   title: {
     width: '100%',
@@ -67,7 +71,7 @@ const style = {
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
-    overflow: 'scroll',
+    'overflow-y': 'auto',
   },
   nestedElement: {
     paddingLeft: 32,
@@ -203,9 +207,9 @@ const EventDialog = (props) => {
             <DialogHeader classes={classes} heading={message} />
             <div className={classes.message}>
               {applySuccess ?
-                <CheckCircleOutlineIcon className={classes.icon} />
-                :
-                <ErrorOutlineIcon className={classes.icon} />
+                <img className={classes.image} src={eventSuccess}/>
+              :
+                <img className={classes.image} src={eventCancel}/>
               }
             </div>
           </React.Fragment>
@@ -232,7 +236,6 @@ const EventDialog = (props) => {
                     className={classes.button}
                     onClick={props.onClose}
                     align='center'
-                    variant='contained'
                     color='secondary'>Lukk</Button>
               </React.Fragment>
             }
