@@ -6,8 +6,12 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
+// Serivce imports
+import AuthService from '../../api/services/AuthService';
+
 // Imgs
 import http404img from '../../assets/img/http404.gif';
+import http404ropeImg from '../../assets/img/http404rope.gif';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
@@ -21,6 +25,8 @@ const styles = {
         width: '100%',
         maxHeight: '70vh',
         objectFit: 'contain',
+    },
+    imgPadding: {
         paddingTop: '25px',
     },
     smoke: {
@@ -67,8 +73,12 @@ class Http404 extends Component {
         return (
             <Navigation footer whitesmoke className={classes.root}>
                 <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
-                    <div className={classes.smoke}>,
-                        <img src={http404img} alt="404" className={classes.img} />
+                    <div className={classes.smoke}>
+                        { AuthService.isAuthenticated() ?
+                            <img src={http404ropeImg} alt="404" className={classes.img} />
+                            :
+                            <img src={http404img} alt="404" className={classes(classes.img, classes.imgPadding)} />
+                        }
                     </div>
                     <div className={classes.smoke}>
                         <h3>Denne siden finnes ikke :(</h3>
