@@ -17,6 +17,8 @@ import Settings from '@material-ui/icons/Settings';
 import DateRange from '@material-ui/icons/DateRange';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
+import Skeleton from '@material-ui/lab/Skeleton';
+
 // Components
 import ProfileSettings from './ProfileSettings';
 
@@ -35,10 +37,11 @@ const styles = (theme) => ({
     },
     profileCircle: {
         borderRadius: '50%',
-        backgroundColor: 'peru',
+        // backgroundColor: '#7CA5B8',
+        backgroundImage: 'linear-gradient(90deg, #DA4453, #89216B)',
         fontSize: '65px',
         paddingTop: '50px',
-        color: 'black',
+        color: 'white',
         height: '200px',
         width: '200px',
         textAlign: 'center',
@@ -64,7 +67,22 @@ const styles = (theme) => ({
         marginTop: '15px',
         backgroundColor: '#b20101',
         color: 'white',
-    }
+    },
+    skeleton: {
+        animation: 'animate 1.5s ease-in-out infinite',
+    },
+    skeletonText: {
+        margin: '4px auto',
+    },
+    textMargin: {
+        margin: '2px auto',
+    },
+    skeletonCircle: {
+        width: '110px',
+        margin: '45px',
+        marginTop: '2px',
+        height: '90px',
+    },
 });
 
 class ProfilePaper extends Component {
@@ -104,9 +122,9 @@ class ProfilePaper extends Component {
         
         return (
             <Paper className={classes.paper} square elevation={3}>
-                <div className={classNames(classes.profileCircle)}>{ this.state.userData.first_name !== undefined && (this.state.userData.first_name).substring(0,1) + '' + (this.state.userData.last_name).substring(0,1) }</div>
-                <Typography variant='h4'>{ this.state.userData.first_name !== undefined && this.state.userData.first_name + ' ' + this.state.userData.last_name }</Typography>
-                <Typography variant='subtitle1'>{ this.state.userData.email !== undefined && this.state.userData.email }</Typography>
+                <div className={classNames(classes.profileCircle)}>{ this.state.userData.first_name !== undefined ? (this.state.userData.first_name).substring(0,1) + '' + (this.state.userData.last_name).substring(0,1) : <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant="text" /> }</div>
+                <Typography className={classes.textMargin} variant='h4'>{ this.state.userData.first_name !== undefined ? this.state.userData.first_name + ' ' + this.state.userData.last_name : <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="75%" /> }</Typography>
+                <Typography className={classes.textMargin} variant='subtitle1'>{ this.state.userData.email !== undefined ? this.state.userData.email : <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="45%" /> }</Typography>
                 <Button className={classes.button} variant='contained' color='inherit' onClick={this.handleLogOut}>Logg ut</Button>
                 <Tabs variant="fullWidth" scrollButtons="on" centered className={classes.tabs} value={this.state.tabViewMode} onChange={this.handleChange}>
                     <Tab id='0' icon={<DateRange />} label={<Hidden xsDown>Arrangementer</Hidden>} />
