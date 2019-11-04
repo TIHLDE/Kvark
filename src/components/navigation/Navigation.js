@@ -187,7 +187,6 @@ const styles = {
     },
     profileCircle: {
         borderRadius: '50%',
-        // backgroundColor: '#7CA5B8',
         backgroundImage: 'linear-gradient(90deg, #DA4453, #89216B)',
         fontSize: '18px',
         padding: '7px',
@@ -211,6 +210,7 @@ const styles = {
         margin: '5px',
         height: 'calc(100% - 10px)',
         width: 'calc(100% - 10px)',
+        backgroundColor: 'rgba(0, 0, 0, 0.25)',
     },
 };
 

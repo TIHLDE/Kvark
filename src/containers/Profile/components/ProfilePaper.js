@@ -37,7 +37,6 @@ const styles = (theme) => ({
     },
     profileCircle: {
         borderRadius: '50%',
-        // backgroundColor: '#7CA5B8',
         backgroundImage: 'linear-gradient(90deg, #DA4453, #89216B)',
         fontSize: '65px',
         paddingTop: '50px',
