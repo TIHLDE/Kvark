@@ -35,6 +35,7 @@ class EventDetails extends Component {
             event: null,
             isLoading: false,
             userData: null,
+            userEvent: null,
             isLoadingUserData: false,
             isApplying: false,
             message: '',
@@ -79,6 +80,7 @@ class EventDetails extends Component {
       if (AuthService.isAuthenticated()) {
         this.setState({isLoadingUserData: true});
         UserService.getUserData().then((userData) => {
+
           if (userData) {
             this.setState({user: userData});
           }
@@ -88,20 +90,47 @@ class EventDetails extends Component {
 
     }
 
+
     applyToEvent = () => {
-      const {event, user} = this.state;
+      const {event, user, userEvent} = this.state;
       this.setState({isApplying: true});
-      return EventService.putUserOnEventList(event.id,user).then((result) => {
-        this.setState((oldState) => {
-          let newEvent = oldState.event;
-          newEvent.participantsCount++;
-          return {message: 'Påmelding registrert!', event: newEvent, applySuccess: true}
+
+      if (!userEvent) {
+        // Apply to event
+        return EventService.putUserOnEventList(event.id, user).then((result) => {
+          this.setState((oldState) => {
+            let newEvent = oldState.event;
+            newEvent.participantsCount++;
+            return {message: 'Påmelding registrert!', event: newEvent, applySuccess: true}
+          });
+        }).catch(() => {
+          this.setState({message: 'Kunne ikke registrere påmelding.', applySuccess: false});
+        }).then(() => {
+          this.setState({isApplying: false});
+        })
+
+      } else {
+        // The reverse
+        return EventService.deleteUserFromEventList(event.id, user).then((result) => {
+          this.setState((oldState) => {
+            let newEvent = oldState.event;
+            newEvent.participantsCount--;
+            return {message: 'Avmelding registrert 😢', event: newEvent, applySuccess: true, userEvent: null}
+          })
+        }).catch(() => {
+          this.setState({message: 'Kunne ikke registrere påmelding.', applySuccess: false});
+        }).then(() => {
+          this.setState({isApplying: false});
         });
-      }).catch(() => {
-        this.setState({message: 'Kunne ikke registrere påmelding.', applySuccess: false});
-      }).then(() => {
-        this.setState({isApplying: false});
-      })
+
+
+      }
+
+    }
+
+    // Clear the message
+    clearMessage = () => {
+      this.setState({message: ''});
     }
 
     componentDidMount(){
@@ -111,9 +140,26 @@ class EventDetails extends Component {
         this.loadUserData();
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        const {event, user, userEvent} = this.state
+        if (user && userEvent === null && event) {
+          EventService.getUserEventObject(event.id, user).then((result) => {
+            this.setState({userEvent: result});
+          })
+        }
+    }
+
     render() {
         const {classes} = this.props;
-        const {event, user, isLoadingUserData, isApplying, message, applySuccess} = this.state;
+        const {
+          event,
+          user,
+          isLoadingUserData,
+          isApplying,
+          message,
+          applySuccess,
+          userEvent,
+        } = this.state;
         const eventData = event || {};
         const userData = user;
 
@@ -125,12 +171,14 @@ class EventDetails extends Component {
                             <EventRenderer
                               data={eventData}
                               userData={userData}
+                              userEvent={userEvent}
                               history={this.props.history}
                               applyToEvent={this.applyToEvent}
                               isLoadingUserData={isLoadingUserData}
                               isApplying={isApplying}
                               message={message}
-                              applySuccess={applySuccess} />
+                              applySuccess={applySuccess}
+                              clearMessage={this.clearMessage} />
                         </div>
                     </div>
                 }

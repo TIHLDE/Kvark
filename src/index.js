@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store/store';
 import URLS from './URLS';
+import GA from './analytics';
 
 // Theme
 import { MuiThemeProvider } from '@material-ui/core/styles';
@@ -51,6 +52,7 @@ const Application = (
     <Provider store={store}>
         <BrowserRouter>
             <MuiThemeProvider theme={theme}>
+                { GA.init() && <GA.RouteTracker /> }
                 <Switch>
                     <Route exact path='/' component={NewLanding} />
                     <Route path={URLS.events.concat(':id/')} component={EventDetails} />

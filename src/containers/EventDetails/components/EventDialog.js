@@ -146,7 +146,7 @@ const DialogHeader = (props) => {
 };
 
 const EventDialog = (props) => {
-  const {classes, userData, isApplying, message, applySuccess} = props;
+  const {classes, userData, userEvent, isApplying, message, applySuccess} = props;
 
   const closeDialog = () => {
     props.applyToEvent();
@@ -158,6 +158,19 @@ const EventDialog = (props) => {
     'Ingen';
   const userStudy = getUserStudy(userData.user_study);
   const userClass = userData.user_class + '. Klasse';
+  let headerText = '';
+  const buttonColor = userEvent ? 'secondary' : 'primary';
+
+  // Set correct headertext
+  if (userEvent && !message) {
+    headerText = Text.signOff;
+  } else if (!userEvent && !message) {
+    headerText = Text.signUp;
+  } else if (applySuccess) {
+    headerText = 'Vellykket';
+  } else {
+    headerText = 'En feil oppstod';
+  }
 
   return (
     <Modal
@@ -196,6 +209,13 @@ const EventDialog = (props) => {
             </div>
           </React.Fragment>
           }
+          {!isApplying && userEvent && message === '' &&
+            <div className={classes.content}>
+              <div className={classes.text}>
+                <Typography>Er du sikker på at du vil melde deg av? Handlingen kan ikke angres.</Typography>
+              </div>
+            </div>
+          }
           {isApplying &&
           <React.Fragment>
             <DialogHeader classes={classes} heading={Text.signUp} />
@@ -231,7 +251,7 @@ const EventDialog = (props) => {
                   disabled={isApplying}
                   align='center'
                   variant='contained'
-                  color='primary'>{Text.signUp}</Button>
+                  color={buttonColor}>{headerText}</Button>
                 <Button
                     className={classes.button}
                     onClick={props.onClose}
@@ -255,6 +275,7 @@ EventDialog.propTypes = {
   onClose: PropTypes.func,
   classes: PropTypes.object,
   userData: PropTypes.object,
+  userEvent: PropTypes.object,
   applyToEvent: PropTypes.func,
   isApplying: PropTypes.bool,
   applySuccess: PropTypes.bool,

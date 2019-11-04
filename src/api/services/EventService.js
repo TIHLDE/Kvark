@@ -151,12 +151,26 @@ class EventService {
       })
     }
 
-    static updateUserEvent = (id, userData, callback=null) => {
-      userData = {...userData, event: id, };
-      const response = API.updateUserEvent(id, userData).response();
+
+    static setUserWaitListStatus = (id, userData, callback=null) => {
+      userData = {...userData, event: id};
+      const response = API.setUserWaitListStatus(id, userData).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, response.status);
         if(response.isError === false) {
+            return Promise.resolve(data);
+        } else {
+            return Promise.reject(data.detail);
+        }
+      })
+    }
+
+    static getUserEventObject = (id, userData, callback=null) => {
+      userData = {...userData, event: id};
+      const response = API.getUserEventObject(id, userData).response();
+      return response.then((data) => {
+        !callback || callback(response.isError === true, response.status);
+        if (response.isError === false) {
             return Promise.resolve(data);
         } else {
             return Promise.reject(data.detail);
