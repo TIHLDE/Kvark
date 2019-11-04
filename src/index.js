@@ -31,6 +31,7 @@ import LogIn from './containers/LogIn';
 import Laws from './containers/Laws';
 import NewLanding from './containers/NewLanding';
 import Http404 from './containers/Http404';
+import Registration from './containers/Registration';
 
 // The user needs to be authorized (logged in) to access these routes
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -55,6 +56,7 @@ const Application = (
                 { GA.init() && <GA.RouteTracker /> }
                 <Switch>
                     <Route exact path='/' component={NewLanding} />
+                    <Route path={URLS.registration.concat(':id/registrering')} component={Registration} />
                     <Route path={URLS.events.concat(':id/')} component={EventDetails} />
                     <Route path={URLS.about} component={About} />
                     <Route path={URLS.events} component={Events} />
@@ -65,6 +67,8 @@ const Application = (
                     <Route path={URLS.jobposts.concat(':id/')} component={JobPostDetails} />
                     <Route exact path={URLS.jobposts} component={JobPosts} />
                     <Route path={URLS.laws} component={Laws} />
+                    
+                
 
                     <PrivateRoute path={URLS.jobpostsAdmin} component={JobPostAdministration} />
                     <PrivateRoute path={URLS.eventAdmin} component={EventAdministration} />

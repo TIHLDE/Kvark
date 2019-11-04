@@ -28,6 +28,9 @@ export default {
     deleteEventItem: (id) => {
         return new IRequest('DELETE', 'events/'.concat(id, '/'), undefined, true);
     },
+    putAttended: (event_id, item, username) => {
+        return new IRequest('PUT', 'events/'.concat(event_id, '/users/'.concat(username, '/')), item, true);
+    },
     getEventParticipants: (id) => {
         return new IRequest('GET', 'events/'.concat(id,'/users/'), undefined, true);
     },

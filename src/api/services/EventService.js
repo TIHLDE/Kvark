@@ -112,7 +112,15 @@ class EventService {
             }
         });
     }
-
+    
+    static putAttended = async (event_id, item, username, callback=null) => {
+        const response = API.putAttended(event_id, item, username).response();
+        return response.then((data) => {
+            !callback || callback(response.isError === true, data);
+            return data;
+        });
+    }
+    
     static getEventParticipants = (id, callback=null) => {
       const response = API.getEventParticipants(id).response();
       return response.then((data) => {
@@ -177,7 +185,6 @@ class EventService {
         }
       })
     }
-
 }
 
 export default EventService;
