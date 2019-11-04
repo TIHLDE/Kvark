@@ -23,6 +23,8 @@ import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import IconButton from '@material-ui/core/IconButton';
 
+import Skeleton from '@material-ui/lab/Skeleton';
+
 // Assets/Icons
 import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO.png';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -33,6 +35,7 @@ import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import Footer from './Footer';
 import Sidebar from './Sidebar';
 import Snack from './Snack';
+import { setAutoFreeze } from 'immer';
 
 const styles = {
     root: {
@@ -184,10 +187,10 @@ const styles = {
     },
     profileCircle: {
         borderRadius: '50%',
-        backgroundColor: 'peru',
+        backgroundImage: 'linear-gradient(90deg, #DA4453, #89216B)',
         fontSize: '18px',
         padding: '7px',
-        color: 'black',
+        color: 'white',
         height: '45px',
         width: '45px',
         textAlign: 'center',
@@ -199,7 +202,16 @@ const styles = {
         backgroundPosition: 'center',
         color: '#00000000',
         userSelect: 'none',
-    }
+    },
+    skeleton: {
+        animation: 'animate 1.5s ease-in-out infinite',
+    },
+    skeletonCircle: {
+        margin: '5px',
+        height: 'calc(100% - 10px)',
+        width: 'calc(100% - 10px)',
+        backgroundColor: 'rgba(0, 0, 0, 0.25)',
+    },
 };
 
 
@@ -234,8 +246,8 @@ const PersonIcon = withStyles(styles)((props) => {
         <Link to={link} className={classes.profileLink} onClick={link === window.location.pathname ? () => window.location.refresh() : null} >
             <Button>
                 <div className={classes.profileContainer} >
-                    <div className={classes.profileName}>{ user.first_name !== undefined && user.first_name }</div>
-                    <div className={classNames(classes.profileCircle)}>{ user.first_name !== undefined && (user.first_name).substring(0,1) + '' + (user.last_name).substring(0,1) }</div>
+                    <div className={classes.profileName}>{ user.first_name !== undefined ? user.first_name : <Skeleton className={classes.skeleton} variant="text" width={75} /> }</div>
+                    <div className={classNames(classes.profileCircle)}>{ user.first_name !== undefined ? (user.first_name).substring(0,1) + '' + (user.last_name).substring(0,1) : <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant="text" /> }</div>
                 </div>
             </Button>
         </Link>

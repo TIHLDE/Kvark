@@ -23,7 +23,7 @@ const styles = (theme) => ({
     },
     top: {
         height: '200px',
-        backgroundColor: 'var(--tihlde-blaa)',
+        backgroundImage: 'linear-gradient(90deg, #F0C27B, #4B1248)',
     },
     main: {
         maxWidth: 1000,
