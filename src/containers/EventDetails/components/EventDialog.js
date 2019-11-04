@@ -20,8 +20,10 @@ import Email from '@material-ui/icons/Email';
 import Fastfood from '@material-ui/icons/Fastfood';
 import School from '@material-ui/icons/School';
 import Home from '@material-ui/icons/Home';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+
+// Images
+import eventSuccess from '../../../assets/img/eventSuccess.svg';
+import eventCancel from '../../../assets/img/eventCancel.svg';
 
 // Project components
 import EventListItem from './EventListItem';
@@ -36,6 +38,7 @@ const style = {
     flexDirection: 'column',
     left: '50%',
     top: '50%',
+    'overflow-y': 'auto',
     transform: 'translate(-50%,-50%)',
     '@media only screen and (max-width: 400px)': {
         width: '100%',
@@ -55,8 +58,9 @@ const style = {
     paddingRight: 24,
     textAlign: 'center',
   },
-  icon: {
-    marginRight: 24,
+  image: {
+    width: '50%',
+    margin: 'auto',
   },
   title: {
     width: '100%',
@@ -127,6 +131,20 @@ const getUserStudy = (userStudy) => {
   return userStudyText;
 };
 
+const DialogHeader = (props) => {
+  const {classes, heading} = props
+  return (
+    <React.Fragment>
+      <div className={classes.heading}>
+        <Typography className={classes.title} align='center' variant='h5'>
+          {heading}
+        </Typography>
+      </div>
+      <Divider />
+    </React.Fragment>
+  );
+};
+
 const EventDialog = (props) => {
   const {classes, userData, userEvent, isApplying, message, applySuccess} = props;
 
@@ -159,40 +177,37 @@ const EventDialog = (props) => {
       open={props.status}
       onClose={props.onClose}>
       <Paper className={classes.paper} square>
-          <div className={classes.heading}>
-            <Typography className={classes.title} align='center' variant='h5'>
-              {headerText}
-            </Typography>
-          </div>
-          <Divider />
-          {!isApplying && message === '' && !userEvent &&
-          <div className={classes.content}>
-            <div className={classes.text}>
-              <Typography>{Text.confirmData}</Typography>
+          {!isApplying && message === '' &&
+          <React.Fragment>
+            <DialogHeader classes={classes} heading={Text.signUp} />
+            <div className={classes.content}>
+              <div className={classes.text}>
+                <Typography>{Text.confirmData}</Typography>
+              </div>
+              <div className={classes.list}>
+                <EventListItem
+                  icon={<AccountCircle />}
+                  text={'Navn: ' + userData.first_name + ' ' + userData.last_name}
+                />
+                <EventListItem
+                  icon={<Email />}
+                  text={'Navn: ' + userData.email}
+                />
+                <EventListItem
+                  icon={<School />}
+                  text={'Studieprogram: ' + userStudy}
+                />
+                <EventListItem
+                  icon={<Home />}
+                  text={'Klasse: ' + userClass}
+                />
+                <EventListItem
+                  icon={<Fastfood />}
+                  text={'Alergier: ' + allergy}
+                />
+              </div>
             </div>
-            <div className={classes.list}>
-              <EventListItem
-                icon={<AccountCircle />}
-                text={'Navn: ' + userData.first_name + ' ' + userData.last_name}
-              />
-              <EventListItem
-                icon={<Email />}
-                text={'Navn: ' + userData.email}
-              />
-              <EventListItem
-                icon={<School />}
-                text={'Studieprogram: ' + userStudy}
-              />
-              <EventListItem
-                icon={<Home />}
-                text={'Klasse: ' + userClass}
-              />
-              <EventListItem
-                icon={<Fastfood />}
-                text={'Alergier: ' + allergy}
-              />
-            </div>
-          </div>
+          </React.Fragment>
           }
           {!isApplying && userEvent && message === '' &&
             <div className={classes.content}>
@@ -202,17 +217,22 @@ const EventDialog = (props) => {
             </div>
           }
           {isApplying &&
-          <CircularProgress className={classes.progress} />
+          <React.Fragment>
+            <DialogHeader classes={classes} heading={Text.signUp} />
+            <CircularProgress className={classes.progress} />
+          </React.Fragment>
           }
           {message &&
-          <div className={classes.message}>
-            {applySuccess ?
-              <CheckCircleOutlineIcon className={classes.icon} />
+          <React.Fragment>
+            <DialogHeader classes={classes} heading={message} />
+            <div className={classes.message}>
+              {applySuccess ?
+                <img alt="success" className={classes.image} src={eventSuccess}/>
               :
-              <ErrorOutlineIcon className={classes.icon} />
-            }
-            <Typography className={classes.messageText}>{message}</Typography>
-          </div>
+                <img alt="failure" className={classes.image} src={eventCancel}/>
+              }
+            </div>
+          </React.Fragment>
           }
           <Divider />
           <div className={classes.footer}>
@@ -236,7 +256,6 @@ const EventDialog = (props) => {
                     className={classes.button}
                     onClick={props.onClose}
                     align='center'
-                    variant='contained'
                     color='secondary'>Lukk</Button>
               </React.Fragment>
             }
@@ -244,6 +263,11 @@ const EventDialog = (props) => {
       </Paper>
     </Modal>
   );
+};
+
+DialogHeader.propTypes = {
+  heading: PropTypes.string,
+  classes: PropTypes.object,
 };
 
 EventDialog.propTypes = {
