@@ -26,6 +26,7 @@ const createUser = (user) => ({
     gender: user.gender,
     user_class: user.user_class,
     user_study: user.user_study,
+    groups: user.groups,
     allergy: user.allergy,
     tool: user.tool,
 });
