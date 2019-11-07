@@ -32,22 +32,52 @@ import Laws from './containers/Laws';
 import NewLanding from './containers/NewLanding';
 import Http404 from './containers/Http404';
 import Registration from './containers/Registration';
+import UserService from './api/services/UserService';
 
-// The user needs to be authorized (logged in) to access these routes
-const PrivateRoute = ({ component: Component, ...rest }) => {
-    return (
-        <Route
-            {...rest}
-            render={(props) => {
-                if(AuthService.isAuthenticated()) {
-                    return <Component {...props} />
-                }
-                MiscService.setLogInRedirectURL(props.match.path);
+// The user needs to be authorized (logged in and member of an authorized group) to access these routes
+const RequireAuth = (Component, accessGroups) => { 
+
+    return class App extends Component { 
+        state = {
+            isAuthenticated: AuthService.isAuthenticated(),
+            isLoading: true,
+            allowAccess: false,
+        }
+
+        componentDidMount() {
+            UserService.isGroupMember().then((groups) => {
+                accessGroups.forEach(group => {
+                    switch (group.toLowerCase()) {
+                        case "hs": if(groups.isHS){ this.setState({allowAccess: true}); }; break;
+                        case "promo": if(groups.isPromo){ this.setState({allowAccess: true}); }; break;
+                        case "nok": if(groups.isNok){ this.setState({allowAccess: true}); }; break;
+                        case "devkom": if(groups.isDevkom){ this.setState({allowAccess: true}); }; break;
+                        default: break;
+                    }
+                });
+                this.setState({isLoading: false});
+            }).catch(() => {
+                this.setState({isLoading: false});
+            })
+        } 
+        render() { 
+            const { isAuthenticated, isLoading, allowAccess } = this.state;
+            if(isLoading) {
+                return <div>Autentiserer...</div>
+            }
+            if(!isAuthenticated) {
+                MiscService.setLogInRedirectURL(this.props.match.path);
                 return <Redirect to={URLS.login} />
-            }}
-        />
-    );
-};
+            }
+            if (allowAccess) {
+                return <Component {...this.props} />
+            } else {
+                return <Redirect to={URLS.landing} />
+            }
+        }
+    } 
+
+} 
 
 const Application = (
     <Provider store={store}>
@@ -68,10 +98,9 @@ const Application = (
                     <Route exact path={URLS.jobposts} component={JobPosts} />
                     <Route path={URLS.laws} component={Laws} />
                     
-                
+                    <Route path={URLS.jobpostsAdmin} component={RequireAuth(JobPostAdministration, ["HS", "Devkom"])} />
+                    <Route path={URLS.eventAdmin} component={RequireAuth(EventAdministration, ["HS", "Promo", "Nok", "Devkom"])} />
 
-                    <PrivateRoute path={URLS.jobpostsAdmin} component={JobPostAdministration} />
-                    <PrivateRoute path={URLS.eventAdmin} component={EventAdministration} />
                     <Route path={URLS.login} component={LogIn} />
 
                     <Route component={Http404} />
