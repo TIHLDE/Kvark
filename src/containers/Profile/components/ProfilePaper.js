@@ -7,6 +7,7 @@ import URLS from '../../../URLS';
 // API and store import
 import UserService from '../../../api/services/UserService';
 
+
 // Material-UI
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
@@ -23,6 +24,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 
 // Components
 import ProfileSettings from './ProfileSettings';
+import ProfileEvents from './ProfileEvents';
 
 const styles = (theme) => ({
     paper: {
@@ -57,7 +59,7 @@ const styles = (theme) => ({
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         color: '#00000000',
-        userSelect: 'none',        
+        userSelect: 'none',
     },
     tabs: {
         marginTop: '10px',
@@ -94,11 +96,10 @@ const styles = (theme) => ({
 });
 
 class ProfilePaper extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
-            tabViewMode: 2,
+            tabViewMode: 0,
             userData: {},
             groupMember: false,
         }
@@ -108,8 +109,8 @@ class ProfilePaper extends Component {
 
     loadUserData = () => {
         UserService.getUserData().then((user) => {
-            if(user) {
-                this.setState({userData: user});
+            if (user) {
+                this.setState({ userData: user });
             }
         });
     }
@@ -135,9 +136,10 @@ class ProfilePaper extends Component {
         this.setState({ tabViewMode: newValue });
     }
 
+
     render() {
         const { classes } = this.props;
-        
+
         return (
             <Paper className={classes.paper} square elevation={3}>
                 <div className={classNames(classes.profileCircle)}>{ this.state.userData.first_name !== undefined ? (this.state.userData.first_name).substring(0,1) + '' + (this.state.userData.last_name).substring(0,1) : <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant="text" /> }</div>
@@ -152,9 +154,9 @@ class ProfilePaper extends Component {
                     <Tab id='1' icon={<FavoriteIcon />} label={<Hidden xsDown>Favoritter</Hidden>} />
                     <Tab id='2' icon={<Settings />} label={<Hidden xsDown>Innstillinger</Hidden>} />
                 </Tabs>
-                {this.state.tabViewMode === 0 && <Typography variant='subtitle1'>Under utvikling!</Typography> }
-                {this.state.tabViewMode === 1 && <Typography variant='subtitle1'>Kommer senere!</Typography> }
-                {this.state.tabViewMode === 2 && <ProfileSettings /> }
+                {this.state.tabViewMode === 0 && <ProfileEvents/>}
+                {this.state.tabViewMode === 1 && <Typography variant='subtitle1'>Kommer senere!</Typography>}
+                {this.state.tabViewMode === 2 && <ProfileSettings />}
             </Paper>
         );
     }

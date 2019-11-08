@@ -1,3 +1,5 @@
+import store from '../store';
+
 export const actions = {
     CLEAR_USER_DATA: 'UR_CLEAR_USER_DATA',
     SET_USER_DATA: 'SET_USER_DATA',
@@ -8,6 +10,13 @@ export const clearData = () =>
 
 export const setUserData = (data) =>
     dispatch => dispatch({type: actions.SET_USER_DATA, payload: createUser(data[0])});
+
+export const updateUserEvents = (data) =>
+    dispatch => {
+        store.getState().user.userData.events = data[0].events;
+        dispatch({type: actions.SET_USER_DATA, payload: createUser((store.getState().user.userData))});
+    }
+
 
 
 // --- SELECTORS ---
@@ -29,4 +38,5 @@ const createUser = (user) => ({
     groups: user.groups,
     allergy: user.allergy,
     tool: user.tool,
+    events: user.events,
 });

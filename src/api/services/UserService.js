@@ -4,7 +4,7 @@ import * as UserActions from '../../store/actions/UserActions';
 import AuthService from '../../api/services/AuthService';
 
 class UserService {
-    
+
     static getUserData = async () => {
         // Check if the user is logged in
         if (AuthService.isAuthenticated()) {
@@ -20,6 +20,19 @@ class UserService {
                         return UserActions.getUserData(store.getState()).userData;
                     });
             }
+        } else {
+            return null;
+        }
+    }
+    static getUserDataForce = async () => {
+        // Check if the user is logged in
+        if (AuthService.isAuthenticated()) {
+            // Fetch
+            return API.getUserData().response()
+            .then((data) => {
+                UserActions.setUserData(data)(store.dispatch);
+                return UserActions.getUserData(store.getState()).userData;
+            });
         } else {
             return null;
         }
