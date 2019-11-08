@@ -16,9 +16,8 @@ import Button from '@material-ui/core/Button';
 
 // Icons
 import ServiceBanner from '../../assets/img/ServiceBanner.jpg';
-import EmailIcon from '../../assets/icons/email.svg';
-import HostingIcon from '../../assets/icons/hosting.png';
-import VirtualIcon from '../../assets/icons/virtual.png';
+import EventAdminIcon from '../../assets/icons/eventadmin.svg';
+import JobPostAdminIcon from '../../assets/icons/jobpostadmin.svg';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
@@ -68,6 +67,7 @@ const styles = {
     },
     banner: {
         marginTop: 20,
+        width: '100%',
     },
 };
 
@@ -108,17 +108,17 @@ class Admin extends Component {
                         className={classes.banner}
                         image={ServiceBanner}
                         title={Text.header}
-                        text={Text.desc} />
+                         />
 
                     <div className={classes.grid}>
                         { (this.state.isHS || this.state.isPromo || this.state.isNok || this.state.isDevkom) &&
-                        <InfoCard header='Arrangementer' text={Text.events} src={EmailIcon} classes={{children: classes.flex}} justifyText>
-                            <Link to={URLS.eventAdmin}><Button className={classes.button} variant='contained' color='primary'>Gå til arrangementer</Button></Link>
+                        <InfoCard header='Arrangementer' text={Text.events} src={EventAdminIcon} classes={{children: classes.flex}} justifyText>
+                            <Link to={URLS.eventAdmin}><Button className={classes.button} variant='contained' color='primary'>Administrer arrangementer</Button></Link>
                         </InfoCard>
                         }
-                        { (this.state.isHS || this.state.isDevkom) &&
-                        <InfoCard header='Jobbannonser' text={Text.jobposts} src={HostingIcon} classes={{children: classes.flex}} justifyText>
-                            <Link to={URLS.jobpostsAdmin}><Button className={classes.button} variant='contained' color='primary'>Gå til jobbannonser</Button></Link>
+                        { (this.state.isHS || this.state.isNok || this.state.isDevkom) &&
+                        <InfoCard header='Jobbannonser' text={Text.jobposts} src={JobPostAdminIcon} classes={{children: classes.flex}} justifyText>
+                            <Link to={URLS.jobpostsAdmin}><Button className={classes.button} variant='contained' color='primary'>Administrer jobbannonser</Button></Link>
                         </InfoCard>
                         }
                         {/* <InfoCard header='Grupper' text={Text.groups} src={VirtualIcon} classes={{children: classes.flex}} justifyText>
