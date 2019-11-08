@@ -1,6 +1,8 @@
 // React
 import React, { Component } from 'react';
 import classNames from 'classnames';
+import Link from 'react-router-dom/Link';
+import URLS from '../../../URLS';
 
 // API and store import
 import UserService from '../../../api/services/UserService';
@@ -63,9 +65,16 @@ const styles = (theme) => ({
         backgroundColor: 'white',
     },
     button: {
-        marginTop: '15px',
-        backgroundColor: '#b20101',
+        margin: '15px auto 0px',
         color: 'white',
+    },
+    logOutButton: {
+        backgroundColor: '#b20101',
+    },
+    buttonsContainer: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        flexDirection: 'column',
     },
     skeleton: {
         animation: 'animate 1.5s ease-in-out infinite',
@@ -91,6 +100,7 @@ class ProfilePaper extends Component {
         this.state = {
             tabViewMode: 2,
             userData: {},
+            groupMember: false,
         }
         this.handleLogOut = this.handleLogOut.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -104,8 +114,17 @@ class ProfilePaper extends Component {
         });
     }
 
+    loadIsGroupMember = () => {
+        UserService.isGroupMember().then((groups) => {
+            if (groups.isHS || groups.isPromo || groups.isNok || groups.isDevkom) {
+                this.setState({groupMember: true});
+            }
+        });
+    }
+
     componentDidMount() {
         this.loadUserData();
+        this.loadIsGroupMember();
     }
 
     handleLogOut = () => {
@@ -124,7 +143,10 @@ class ProfilePaper extends Component {
                 <div className={classNames(classes.profileCircle)}>{ this.state.userData.first_name !== undefined ? (this.state.userData.first_name).substring(0,1) + '' + (this.state.userData.last_name).substring(0,1) : <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant="text" /> }</div>
                 <Typography className={classes.textMargin} variant='h4'>{ this.state.userData.first_name !== undefined ? this.state.userData.first_name + ' ' + this.state.userData.last_name : <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="75%" /> }</Typography>
                 <Typography className={classes.textMargin} variant='subtitle1'>{ this.state.userData.email !== undefined ? this.state.userData.email : <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="45%" /> }</Typography>
-                <Button className={classes.button} variant='contained' color='inherit' onClick={this.handleLogOut}>Logg ut</Button>
+                <div className={classes.buttonsContainer}>
+                    { this.state.groupMember && <Link to={URLS.admin}><Button className={classes.button} variant='contained' color='primary'>Admin</Button></Link> }
+                    <Button className={classNames(classes.logOutButton, classes.button)} variant='contained' color='inherit' onClick={this.handleLogOut}>Logg ut</Button>
+                </div>
                 <Tabs variant="fullWidth" scrollButtons="on" centered className={classes.tabs} value={this.state.tabViewMode} onChange={this.handleChange}>
                     <Tab id='0' icon={<DateRange />} label={<Hidden xsDown>Arrangementer</Hidden>} />
                     <Tab id='1' icon={<FavoriteIcon />} label={<Hidden xsDown>Favoritter</Hidden>} />

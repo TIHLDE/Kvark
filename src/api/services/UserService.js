@@ -25,6 +25,27 @@ class UserService {
         }
     }
 
+    static isGroupMember = async () => {
+        let isHS = false; let isPromo = false; let isNok = false; let isDevkom = false;
+        if (AuthService.isAuthenticated()) {
+            return await UserService.getUserData().then((userData) => {
+                const groups = userData.groups;
+                groups.forEach(element => {
+                    switch (element) {
+                        case "HS": isHS = true; break;
+                        case "Promo": isPromo = true; break;
+                        case "NoK": isNok = true; break;
+                        case "DevKom": isDevkom = true; break;
+                        default: break;
+                    }
+                });
+                return {"isHS":isHS,"isPromo":isPromo,"isNok":isNok,"isDevkom":isDevkom};
+            });
+        } else {
+            return{"isHS":isHS,"isPromo":isPromo,"isNok":isNok,"isDevkom":isDevkom};
+        }
+    }
+
     static updateUserData = async (userName, userData, callback=null) => {
         const response = API.updateUserData(userName, userData).response();
         return response.then((data) => {

@@ -12,6 +12,7 @@ export default {
     newlanding: '/newlanding/',
     registration: '/arrangementer/',
 
+    admin: '/admin/',
     eventAdmin: '/admin/events',
     jobpostsAdmin: '/admin/jobposts',
 };
