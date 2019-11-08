@@ -132,7 +132,7 @@ const getUserStudy = (userStudy) => {
 };
 
 const DialogHeader = (props) => {
-  const {classes, heading} = props
+  const {classes, heading} = props;
   return (
     <React.Fragment>
       <div className={classes.heading}>
@@ -191,7 +191,7 @@ const EventDialog = (props) => {
                 />
                 <EventListItem
                   icon={<Email />}
-                  text={'Navn: ' + userData.email}
+                  text={'Epost: ' + userData.email}
                 />
                 <EventListItem
                   icon={<School />}
@@ -203,7 +203,7 @@ const EventDialog = (props) => {
                 />
                 <EventListItem
                   icon={<Fastfood />}
-                  text={'Alergier: ' + allergy}
+                  text={'Allergier: ' + allergy}
                 />
               </div>
             </div>
