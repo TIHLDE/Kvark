@@ -105,6 +105,7 @@ const EventRenderer = (props) => {
       message,
       applySuccess,
       clearMessage,
+      preview,
     } = props;
     const [modalShow, setModalShown] = useState(false);
     const description = data.description || '';
@@ -112,11 +113,13 @@ const EventRenderer = (props) => {
     const today = moment(new Date(), ['YYYY-MM-DD HH:mm'], 'nb');
 
     const openEventModal = () => {
-      if (userData) {
-        setModalShown(true);
-      } else {
-        MiscService.setLogInRedirectURL(props.history.location.pathname);
-        props.history.replace(URLS.login);
+      if (!preview) {
+        if (userData) {
+          setModalShown(true);
+        } else {
+          MiscService.setLogInRedirectURL(props.history.location.pathname);
+          props.history.replace(URLS.login);
+        }
       }
     };
 
@@ -196,6 +199,7 @@ EventRenderer.propTypes = {
     message: PropTypes.string,
     applySuccess: PropTypes.bool,
     clearMessage: PropTypes.func,
+    preview: PropTypes.bool,
 };
 
 export default withStyles(styles)(EventRenderer);
