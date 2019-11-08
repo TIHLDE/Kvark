@@ -19,6 +19,7 @@ import MiscService from './api/services/MiscService';
 import EventDetails from './containers/EventDetails';
 import Companies from './containers/Companies';
 import About from './containers/About';
+import Admin from './containers/Admin';
 import Events from './containers/Events';
 import Services from './containers/Services';
 import EventAdministration from './containers/EventAdministration';
@@ -98,6 +99,7 @@ const Application = (
                     <Route exact path={URLS.jobposts} component={JobPosts} />
                     <Route path={URLS.laws} component={Laws} />
                     
+                    <Route exact path={URLS.admin} component={RequireAuth(Admin, ["HS", "Promo", "Nok", "Devkom"])} />
                     <Route path={URLS.jobpostsAdmin} component={RequireAuth(JobPostAdministration, ["HS", "Devkom"])} />
                     <Route path={URLS.eventAdmin} component={RequireAuth(EventAdministration, ["HS", "Promo", "Nok", "Devkom"])} />
 
