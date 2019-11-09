@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -77,7 +78,7 @@ class Http404 extends Component {
                         { AuthService.isAuthenticated() ?
                             <img src={http404ropeImg} alt="404" className={classes.img} />
                             :
-                            <img src={http404img} alt="404" className={classes(classes.img, classes.imgPadding)} />
+                            <img src={http404img} alt="404" className={classNames(classes.img, classes.imgPadding)} />
                         }
                     </div>
                     <div className={classes.smoke}>
