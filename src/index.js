@@ -56,8 +56,7 @@ const RequireAuth = (Component, accessGroups) => {
                         default: break;
                     }
                 });
-                this.setState({isLoading: false});
-            }).catch(() => {
+            }).finally(() => {
                 this.setState({isLoading: false});
             })
         } 
@@ -100,7 +99,7 @@ const Application = (
                     <Route path={URLS.laws} component={Laws} />
                     
                     <Route exact path={URLS.admin} component={RequireAuth(Admin, ["HS", "Promo", "Nok", "Devkom"])} />
-                    <Route path={URLS.jobpostsAdmin} component={RequireAuth(JobPostAdministration, ["HS", "Devkom"])} />
+                    <Route path={URLS.jobpostsAdmin} component={RequireAuth(JobPostAdministration, ["HS", "Nok", "Devkom"])} />
                     <Route path={URLS.eventAdmin} component={RequireAuth(EventAdministration, ["HS", "Promo", "Nok", "Devkom"])} />
 
                     <Route path={URLS.login} component={LogIn} />
