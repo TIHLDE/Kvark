@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
+import {getUserStudy} from '../../../utils';
 
 // Material-ui
 import {withStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Typography from '@material-ui/core/Typography';
 
 // Icons
 import Delete from '@material-ui/icons/Delete';
@@ -14,7 +16,7 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 
 const style = (theme) => ({
   content: {
-    padding: 36,
+    padding: 20,
     display: 'flex',
     '@media only screen and (max-width: 600px)': {
         flexDirection: 'column',
@@ -23,7 +25,8 @@ const style = (theme) => ({
   userName: {
     flexGrow: 1,
     display: 'flex',
-    alignItems: 'center',
+    flexDirection: 'column',
+    // alignItems: 'center',
   },
   deleteButton: {
     '&:hover': {
@@ -58,14 +61,15 @@ const EventParticipant = (props) => {
   } = props;
 
   const [checkedState, setCheckedState] = useState(attended);
+  const userInfo = props.user.user_info;
 
   const deleteHandler = (event) => {
-    removeUserFromEvent(props.user_id, event);
+    removeUserFromEvent(props.user.user_id, event);
   };
 
   const handleCheck = (actionEvent) => {
     setCheckedState(actionEvent.target.checked);
-    toggleUserEvent(props.user_id, event, {has_attended: actionEvent.target.checked});
+    toggleUserEvent(props.user.user_id, event, {has_attended: actionEvent.target.checked});
   };
 
   // toggleUserEvent(props.user_id, event, {has_attended: !attended})
@@ -73,10 +77,12 @@ const EventParticipant = (props) => {
   return (
     <Card square className={classes.content}>
       <div className={classes.userName}>
-        {props.user_id}
+        <Typography>{userInfo.first_name + ' ' + userInfo.last_name}</Typography>
+        <Typography>Studie: {getUserStudy(userInfo.user_study)}</Typography>
+        <Typography>Årstrinn: {userInfo.user_class} Klasse</Typography>
       </div>
       <div className={classes.actionArea}>
-        <div>
+        <div className={classes.buttonContainer}>
             <FormControlLabel
               label="Ankommet"
               control={
@@ -91,11 +97,11 @@ const EventParticipant = (props) => {
           {!waitList ?
             <ArrowDownwardIcon
               className={classes.arrowButton}
-              onClick={() => {toggleUserEvent(props.user_id, event, {is_on_wait: true});}} />
+              onClick={() => {toggleUserEvent(props.user.user_id, event, {is_on_wait: true});}} />
             :
             <ArrowUpwardIcon
             className={classes.arrowButton}
-            onClick={() => {toggleUserEvent(props.user_id, event, {is_on_wait: false});}}/>
+            onClick={() => {toggleUserEvent(props.user.user_id, event, {is_on_wait: false});}}/>
           }
           <Delete className={classes.deleteButton} onClick={deleteHandler} />
         </div>
@@ -105,7 +111,7 @@ const EventParticipant = (props) => {
 };
 
 EventParticipant.propTypes = {
-  user_id: PropTypes.string,
+  user: PropTypes.object,
   classes: PropTypes.object,
   attended: PropTypes.bool,
   removeUserFromEvent: PropTypes.func,

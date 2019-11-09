@@ -79,7 +79,7 @@ const EventParticipants = (props) => {
                     event={event}
                     removeUserFromEvent={removeUserFromEvent}
                     toggleUserEvent={toggleUserEvent}
-                    user_id={user.user_id} />;
+                    user={user} />;
         });
       }
 

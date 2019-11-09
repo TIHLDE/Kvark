@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {shortDownString} from '../../../utils';
+import {shortDownString, getUserStudy} from '../../../utils';
 
 // Text
 import Text from '../../../text/EventText';
@@ -105,30 +105,6 @@ const style = {
     marginLeft: -20,
     marginRight: -20,
   },
-};
-
-const getUserStudy = (userStudy) => {
-  let userStudyText = '';
-
-  switch (userStudy) {
-    case 1:
-      userStudyText = 'Dataing';
-      break;
-    case 2:
-      userStudyText = 'DigFor';
-      break;
-    case 3:
-      userStudyText = 'DigInc';
-      break;
-    case 4:
-      userStudyText = 'DigSam';
-      break;
-    default:
-      userStudyText = 'Ikke oppgitt';
-      break;
-  }
-
-  return userStudyText;
 };
 
 const DialogHeader = (props) => {

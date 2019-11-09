@@ -47,3 +47,28 @@ export const shortDownString = (string, charsToShortDown) => {
   }
   return string;
 };
+
+// Get user study
+export const getUserStudy = (userStudy) => {
+  let userStudyText = '';
+
+  switch (userStudy) {
+    case 1:
+      userStudyText = 'Dataing';
+      break;
+    case 2:
+      userStudyText = 'DigFor';
+      break;
+    case 3:
+      userStudyText = 'DigInc';
+      break;
+    case 4:
+      userStudyText = 'DigSam';
+      break;
+    default:
+      userStudyText = 'Ikke oppgitt';
+      break;
+  }
+
+  return userStudyText;
+};
