@@ -41,6 +41,9 @@ const styles = {
             gridTemplateColumns: '1fr',
         },
     },
+    topGrid: {
+        gridTemplateColumns: '1fr',
+    },
     padding: {
         padding: 30,
 
@@ -111,7 +114,7 @@ class About extends Component {
                             text={Text.subheader}
                             title={Text.header}>
                             <Divider />
-                            <Grid item className={classNames(classes.linkContainer, classes.grid)}>
+                            <Grid item className={classNames(classes.linkContainer, classes.topGrid)}>
                                 <LinkButton to='/lover/'>
                                     <Typography>TIHLDE's Lover</Typography>
                                 </LinkButton>
