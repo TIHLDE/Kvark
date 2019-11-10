@@ -77,6 +77,7 @@ const styles = (theme) => ({
     backgroundColor: 'white',
     padding: 5,
   },
+
 });
 
 class ProfileEvents extends Component {
@@ -89,10 +90,9 @@ class ProfileEvents extends Component {
   }
 
   loadUserData = () => {
-    UserService.getUserDataForce().then((user) => {
+    UserService.getUserData().then((user) => {
         if (user) {
             this.setState({events: user.events});
-            this.setState({ state: this.state });
         }
     });
   }
@@ -152,6 +152,7 @@ class ProfileEvents extends Component {
           return ('')
         })
         }
+        {(!this.state.events || this.state.events.length < 1) && <Typography align='center' variant='subtitle1'>Du er ikke påmeldt noen kommende arrangementer</Typography>}
       </div>
     );
   }

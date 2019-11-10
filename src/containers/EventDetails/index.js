@@ -101,6 +101,8 @@ class EventDetails extends Component {
           this.setState((oldState) => {
             let newEvent = oldState.event;
             newEvent.participantsCount++;
+            user.events.push(newEvent);
+            UserService.updateUserEvents(user.events);
             return {message: 'Påmelding registrert!', event: newEvent, applySuccess: true}
           });
         }).catch(() => {
@@ -115,6 +117,12 @@ class EventDetails extends Component {
           this.setState((oldState) => {
             let newEvent = oldState.event;
             newEvent.participantsCount--;
+            for (var i = 0; i < user.events.length; i++){ 
+              if (user.events[i].id === newEvent.id) {
+                user.events.splice(i, 1); 
+              }
+            }
+            UserService.updateUserEvents(user.events);
             return {message: 'Avmelding registrert 😢', event: newEvent, applySuccess: true, userEvent: null}
           })
         }).catch(() => {

@@ -41,22 +41,15 @@ class UserService {
     static isGroupMember = async () => {
         let isHS = false; let isPromo = false; let isNok = false; let isDevkom = false;
         if (AuthService.isAuthenticated()) {
-            return await UserService.getUserData().then((userData) => {
+            await UserService.getUserData().then((userData) => {
                 const groups = userData.groups;
-                groups.forEach(element => {
-                    switch (element) {
-                        case "HS": isHS = true; break;
-                        case "Promo": isPromo = true; break;
-                        case "NoK": isNok = true; break;
-                        case "DevKom": isDevkom = true; break;
-                        default: break;
-                    }
-                });
-                return {"isHS":isHS,"isPromo":isPromo,"isNok":isNok,"isDevkom":isDevkom};
+                isHS = groups.includes("HS");
+                isPromo = groups.includes("Promo");
+                isNok = groups.includes("NoK");
+                isDevkom = groups.includes("DevKom");
             });
-        } else {
-            return{"isHS":isHS,"isPromo":isPromo,"isNok":isNok,"isDevkom":isDevkom};
         }
+        return {"isHS":isHS,"isPromo":isPromo,"isNok":isNok,"isDevkom":isDevkom};
     }
 
     static updateUserData = async (userName, userData, callback=null) => {
@@ -65,6 +58,10 @@ class UserService {
             !callback || callback(response.isError === true, data);
             return data;
         });
+    }
+
+    static updateUserEvents = async (events, callback=null) => {
+        return UserActions.updateUserEvents(events);
     }
 }
 

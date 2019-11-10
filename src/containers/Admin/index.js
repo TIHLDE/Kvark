@@ -77,20 +77,13 @@ class Admin extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isHS: false,
-            isPromo: false,
-            isNok: false,
-            isDevkom: false,
+            groups: null,
         }
     }
 
     loadIsGroupMember = () => {
         UserService.isGroupMember().then((groups) => {
-            groups.isHS && this.setState({isHS: true});
-            groups.isPromo && this.setState({isPromo: true});
-            groups.isNok && this.setState({isNok: true});
-            groups.isDevkom && this.setState({isDevkom: true});
-            console.log(this.state);
+            this.setState({groups: groups});
         });
     }
 
@@ -111,12 +104,12 @@ class Admin extends Component {
                          />
 
                     <div className={classes.grid}>
-                        { (this.state.isHS || this.state.isPromo || this.state.isNok || this.state.isDevkom) &&
+                        { (this.state.groups && (this.state.groups.isHS || this.state.groups.isPromo || this.state.groups.isNok || this.state.groups.isDevkom)) &&
                         <InfoCard header='Arrangementer' text={Text.events} src={EventAdminIcon} classes={{children: classes.flex}} justifyText>
                             <Link to={URLS.eventAdmin}><Button className={classes.button} variant='contained' color='primary'>Administrer arrangementer</Button></Link>
                         </InfoCard>
                         }
-                        { (this.state.isHS || this.state.isNok || this.state.isDevkom) &&
+                        { (this.state.groups && (this.state.groups.isHS || this.state.groups.isNok || this.state.groups.isDevkom)) &&
                         <InfoCard header='Jobbannonser' text={Text.jobposts} src={JobPostAdminIcon} classes={{children: classes.flex}} justifyText>
                             <Link to={URLS.jobpostsAdmin}><Button className={classes.button} variant='contained' color='primary'>Administrer jobbannonser</Button></Link>
                         </InfoCard>

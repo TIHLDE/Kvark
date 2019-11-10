@@ -323,7 +323,7 @@ class Navigation extends Component {
                     <Toolbar className={classes.navContent} disableGutters>
                         <div className={classes.navWrapper}>
                             <div className={classes.logoWrapper}>
-                                <Link to='/'>
+                                <Link className={classes.flex} to='/'>
                                     <img src={TIHLDELOGO} height='32em' alt='TIHLDE_LOGO' width='auto' />
                                 </Link>
                             </div>

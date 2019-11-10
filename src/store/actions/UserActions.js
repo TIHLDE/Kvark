@@ -3,6 +3,7 @@ import store from '../store';
 export const actions = {
     CLEAR_USER_DATA: 'UR_CLEAR_USER_DATA',
     SET_USER_DATA: 'SET_USER_DATA',
+    UPDATE_USER_EVENTS: 'UPDATE_USER_EVENTS',
 }
 
 export const clearData = () =>
@@ -13,8 +14,8 @@ export const setUserData = (data) =>
 
 export const updateUserEvents = (data) =>
     dispatch => {
-        store.getState().user.userData.events = data[0].events;
-        dispatch({type: actions.SET_USER_DATA, payload: createUser((store.getState().user.userData))});
+        var user = store.getState().user.userData.events = data;
+        dispatch({type: actions.SET_USER_DATA, payload: createUser(user)});
     }
 
 
