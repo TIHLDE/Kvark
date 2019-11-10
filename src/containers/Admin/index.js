@@ -84,7 +84,6 @@ class Admin extends Component {
     loadIsGroupMember = () => {
         UserService.isGroupMember().then((groups) => {
             this.setState({groups: groups});
-            console.log(this.state.groups);
         });
     }
 
