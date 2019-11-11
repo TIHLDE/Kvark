@@ -54,30 +54,25 @@ const styles = {
     }
 };
 
-function sDate(dV) {
+function sDate(semester) {
     var d = new Date();
-    var dateMonth = d.getMonth() + dV * 6;
+    var dateMonth = d.getMonth() + (semester * 6);
     var dateYear = d.getFullYear();
-    if (dateMonth > 11) {
-        dateYear++;
-    }
     while (dateMonth > 11) {
         dateMonth -= 12;
+        dateYear++;
     }
-    var returnMonth = "";
+    var returnMonth = "Vår";
     if (dateMonth > 5) {
         returnMonth = "Høst";
-    } else {
-        returnMonth = "Vår";
     }
-    returnMonth = returnMonth + " " + dateYear;
-    return returnMonth;
+    return (returnMonth + " " + dateYear);
 }
-// TODO: Make this part automatic!
 const semester = [
     {name: sDate(0)},
     {name: sDate(1)},
     {name: sDate(2)},
+    {name: sDate(3)}
 ];
 
 const arrangementer =[
