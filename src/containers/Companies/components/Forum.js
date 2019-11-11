@@ -54,12 +54,25 @@ const styles = {
     }
 };
 
-// TODO: Make this part automatic!
+function sDate(semester) {
+    var d = new Date();
+    var dateMonth = d.getMonth() + (semester * 6);
+    var dateYear = d.getFullYear();
+    while (dateMonth > 11) {
+        dateMonth -= 12;
+        dateYear++;
+    }
+    var returnMonth = "Vår";
+    if (dateMonth > 5) {
+        returnMonth = "Høst";
+    }
+    return (returnMonth + " " + dateYear);
+}
 const semester = [
-    {name: 'Høst 2019'},
-    {name: 'Vår 2020'},
-    {name: 'Høst 2020'},
-    {name: 'Vår 2021'},
+    {name: sDate(0)},
+    {name: sDate(1)},
+    {name: sDate(2)},
+    {name: sDate(3)}
 ];
 
 const arrangementer =[
