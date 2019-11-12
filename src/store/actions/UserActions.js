@@ -10,7 +10,7 @@ export const clearData = () =>
     dispatch => dispatch({type: actions.CLEAR_USER_DATA});
 
 export const setUserData = (data) =>
-    dispatch => dispatch({type: actions.SET_USER_DATA, payload: createUser(data[0])});
+    dispatch => dispatch({type: actions.SET_USER_DATA, payload: createUser(data)});
 
 export const updateUserEvents = (data) =>
     dispatch => {
