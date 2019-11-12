@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
+import URLS from '../../URLS';
 
 // Text Imports
 import Text from '../../text/AboutText';
@@ -114,9 +115,12 @@ class About extends Component {
                             text={Text.subheader}
                             title={Text.header}>
                             <Divider />
-                            <Grid item className={classNames(classes.linkContainer, classes.topGrid)}>
+                            <Grid item className={classNames(classes.linkContainer, classes.grid)}>
                                 <LinkButton to='/lover/'>
                                     <Typography>TIHLDE's Lover</Typography>
+                                </LinkButton>
+                                <LinkButton to={URLS.services}>
+                                    <Typography>Tjenester</Typography>
                                 </LinkButton>
                             </Grid>
                         </Banner>

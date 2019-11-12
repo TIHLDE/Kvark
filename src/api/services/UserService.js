@@ -42,11 +42,13 @@ class UserService {
         let isHS = false; let isPromo = false; let isNok = false; let isDevkom = false;
         if (AuthService.isAuthenticated()) {
             await UserService.getUserData().then((userData) => {
-                const groups = userData.groups;
-                isHS = groups.includes("HS");
-                isPromo = groups.includes("Promo");
-                isNok = groups.includes("NoK");
-                isDevkom = groups.includes("DevKom");
+                if (userData.groups) {
+                    const groups = userData.groups;
+                    isHS = groups.includes("HS");
+                    isPromo = groups.includes("Promo");
+                    isNok = groups.includes("NoK");
+                    isDevkom = groups.includes("DevKom");
+                }
             });
         }
         return {"isHS":isHS,"isPromo":isPromo,"isNok":isNok,"isDevkom":isDevkom};

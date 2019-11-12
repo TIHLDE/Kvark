@@ -109,6 +109,10 @@ const styles = {
     },
     buttonDiv: {
     },
+    margining: {
+        marginTop: '2px',
+        marginBottom: '20px',
+    },
 };
 
 class NewLanding extends Component {
@@ -131,6 +135,7 @@ class NewLanding extends Component {
                     </div>
                     <div className={classes.smoke}>
                         <div className={classes.section}>
+                            <Typography variant='h4' color="inherit" align="center" className={classes.margining} >Arrangementer</Typography>
                             <Calender className={classes.calendar}></Calender>
                         </div>
                     </div>

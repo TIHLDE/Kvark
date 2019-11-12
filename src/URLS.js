@@ -5,7 +5,7 @@ export default {
     about: '/om/',
     services: '/tjenester/',
     newStudent: '/nystudent/',
-    jobposts: '/annonser/',
+    jobposts: '/karriere/',
     profile: '/profil/',
     login: '/logg-inn/',
     laws: '/lover/',
@@ -13,6 +13,6 @@ export default {
     registration: '/arrangementer/',
 
     admin: '/admin/',
-    eventAdmin: '/admin/events',
-    jobpostsAdmin: '/admin/jobposts',
+    eventAdmin: '/admin/arrangementer/',
+    jobpostsAdmin: '/admin/karriere/',
 };

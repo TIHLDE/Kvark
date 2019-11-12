@@ -35,7 +35,6 @@ import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import Footer from './Footer';
 import Sidebar from './Sidebar';
 import Snack from './Snack';
-import { setAutoFreeze } from 'immer';
 
 const styles = {
     root: {
@@ -137,6 +136,10 @@ const styles = {
         display: 'inline-block',
         textAlign: 'center',
         margin: 'auto 10px',
+
+        '@media only screen and (max-width: 600px)': {
+            margin: 'auto 0px auto 10px',
+        },
     },
     sponsorLogo: {
         '@media only screen and (max-width: 600px)': {
@@ -152,7 +155,10 @@ const styles = {
 
         '@media only screen and (max-width: 600px)': {
             fontSize: '8px',
-        }
+        },
+        '@media only screen and (max-width: 350px)': {
+            fontSize: '7px',
+        },
     },
     profileLink: {
         '& button': {
@@ -334,7 +340,6 @@ class Navigation extends Component {
                                         <URIbutton data={{ link: URLS.about, text: "Om TIHLDE" }} selected={this.props.match.url === URLS.about} />
                                         <URIbutton data={{ link: URLS.services, text: "Tjenester" }} selected={this.props.match.url === URLS.services} />
                                         <URIbutton data={{ link: URLS.events, text: "Arrangementer" }} selected={this.props.match.url === URLS.events} />
-                                        <URIbutton data={{ link: URLS.newStudent, text: "Ny student" }} selected={this.props.match.url === URLS.newStudent} />
                                         <URIbutton data={{ link: URLS.jobposts, text: "Karriere" }} selected={this.props.match.url === URLS.jobposts} />
                                         <URIbutton data={{ link: URLS.company, text: "For Bedrifter" }} selected={this.props.match.url === URLS.company} />
                                     </div>

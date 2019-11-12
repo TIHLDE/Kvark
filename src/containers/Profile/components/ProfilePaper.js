@@ -70,6 +70,10 @@ const styles = (theme) => ({
         margin: '15px auto 0px',
         color: 'white',
     },
+    buttonLink: {
+        width: 'fit-content',
+        textDecoration: 'none',
+    },
     logOutButton: {
         backgroundColor: '#b20101',
     },
@@ -146,7 +150,7 @@ class ProfilePaper extends Component {
                 <Typography className={classes.textMargin} variant='h4'>{ this.state.userData.first_name !== undefined ? this.state.userData.first_name + ' ' + this.state.userData.last_name : <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="75%" /> }</Typography>
                 <Typography className={classes.textMargin} variant='subtitle1'>{ this.state.userData.email !== undefined ? this.state.userData.email : <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="45%" /> }</Typography>
                 <div className={classes.buttonsContainer}>
-                    { this.state.groupMember && <Link to={URLS.admin}><Button className={classes.button} variant='contained' color='primary'>Admin</Button></Link> }
+                    { this.state.groupMember && <Link to={URLS.admin} className={classNames(classes.button, classes.buttonLink)}><Button variant='contained' color='primary'>Admin</Button></Link> }
                     <Button className={classNames(classes.logOutButton, classes.button)} variant='contained' color='inherit' onClick={this.handleLogOut}>Logg ut</Button>
                 </div>
                 <Tabs variant="fullWidth" scrollButtons="on" centered className={classes.tabs} value={this.state.tabViewMode} onChange={this.handleChange}>

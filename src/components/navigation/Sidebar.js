@@ -73,7 +73,6 @@ const SidebarContent = (props) => {
                 <ActionLink to={URLS.about} label='Om TIHLDE' />
                 <ActionLink to={URLS.services} label='Tjenester' />
                 <ActionLink to={URLS.events} label='Arrangementer' />
-                <ActionLink to={URLS.newStudent} label='Ny student' />
                 <ActionLink to={URLS.jobposts} label='Karriere' />
                 <ActionLink to={URLS.company} label='For Bedrifter' />
                 {AuthService.isAuthenticated() ?
