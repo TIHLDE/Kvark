@@ -69,7 +69,7 @@ export default {
 
     // User
     getUserData: () => {
-        return new IRequest('GET', 'user/', undefined, true);
+        return new IRequest('GET', 'user/userdata/', undefined, true);
     },
     updateUserData: (userName, item) => {
         return new IRequest('PUT', 'user/'.concat(userName, '/'), item, true);

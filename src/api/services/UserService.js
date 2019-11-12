@@ -24,19 +24,6 @@ class UserService {
             return null;
         }
     }
-    static getUserDataForce = async () => {
-        // Check if the user is logged in
-        if (AuthService.isAuthenticated()) {
-            // Fetch
-            return API.getUserData().response()
-            .then((data) => {
-                UserActions.setUserData(data)(store.dispatch);
-                return UserActions.getUserData(store.getState()).userData;
-            });
-        } else {
-            return null;
-        }
-    }
 
     static isGroupMember = async () => {
         let isHS = false; let isPromo = false; let isNok = false; let isDevkom = false;
