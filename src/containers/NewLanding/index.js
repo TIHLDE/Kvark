@@ -2,19 +2,23 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
+import Link from 'react-router-dom/Link';
+
+// Services
+import AuthService from '../../api/services/AuthService';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
+import Button from '@material-ui/core/Button';
 
 // Icons
-import LandingHeader from '../../assets/img/TihldeBackgroundNew.png';
+import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO.png';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
-import Banner from '../../components/layout/Banner';
 import Calender from './components/Calendar';
+import URLS from '../../URLS';
 
 const styles = {
     root: {
@@ -47,11 +51,56 @@ const styles = {
         },
     },
     topSection: {
-        padding: '20px 48px 48px 48px',
+        padding: 0,
         margin: 'unset',
-        '@media only screen and (max-width: 1200px)': {
-            padding: '12px 0px 48px 0px',
+        width: '100%',
+        maxWidth: 'none',
+        minHeight: '451px',
+    },
+    topInner: {
+        margin: 'auto',
+        maxWidth: '1000px',
+        padding: '100px 15px',
+        position: 'relative',
+        zIndex: '20',
+    },
+    topSmallText: {
+        color: 'white',
+        margin: '10px auto',
+        '@media only screen and (max-width: 800px)': {
+            fontSize: '1.05rem',
         },
+    },
+    topTitleText: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontFamily: 'sans-serif',
+    },
+    topLogoContainer: {
+        display: 'flex',
+    },
+    topLogo: {
+        margin: '0 auto',
+        width: '50vw',
+        maxWidth: '350px',
+        minWidth: '250px',
+    },
+    topButtonContainer: {
+        margin: '20px auto 0',
+        width: 'fit-content',
+    },
+    topButton: {
+        color: '#2d4a7f',
+        backgroundColor: 'white',
+        margin: 'auto 10px',
+    },
+    topLink: {
+        textDecoration: 'none',
+    },
+    topButtonSecondary: {
+        color: 'white',
+        textDecoration: 'none',
+        margin: 'auto 10px',
     },
     verticalMargin: {
         marginTop: 30,
@@ -76,6 +125,8 @@ const styles = {
     smoke: {
         width: '100%',
         backgroundColor: '#Fefefe',
+        marginTop: '-2px',
+        zIndex: '25',
     },
     linkContainer: {
         marginBottom: 0,
@@ -87,7 +138,6 @@ const styles = {
         gridTemplateColumns: '1fr 1fr 1fr',
         backgroundColor: 'rgba(0, 0, 0, 0.12)',
         gridGap: '1px',
-        // 600px
         '@media only screen and (max-width: 860px)': {
             gridTemplateColumns: '1fr',
         },
@@ -127,11 +177,29 @@ class NewLanding extends Component {
             <Navigation footer whitesmoke>
                 <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
                     <div className={classNames(classes.section, classes.topSection)}>
-                        <Banner
-                            image={LandingHeader}
-                            disableFilter={true}>
-                            <Divider />
-                        </Banner>
+                        <div className="waveWrapper waveAnimation">
+                            <div className={classes.topInner}>
+                                <div className={classes.topLogoContainer} style={{display: 'flex'}}>
+                                    <img className={classes.topLogo} src={TIHLDELOGO} alt='TIHLDE_LOGO' />
+                                </div>
+                                <Typography variant='h6' color='white' align='center' className={classes.topSmallText}>Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling og Digital samhandling ved NTNU</Typography>
+                                {AuthService.isAuthenticated() &&
+                                <div className={classes.topButtonContainer}>
+                                    <Link to={URLS.login} className={classes.topLink}><Button className={classes.topButton} variant='contained' color='inherit'>Logg inn</Button></Link>
+                                    <Link to={URLS.login} className={classes.topButtonSecondary} variant='contained' color='inherit'>Opprett bruker ></Link>
+                                </div>
+                                }
+                            </div>
+                            <div className="waveWrapperInner bgTop">
+                                <div className="wave waveTop" style={{backgroundImage: 'url("http://front-end-noobs.com/jecko/img/wave-top.png")'}}></div>
+                            </div>
+                            <div className="waveWrapperInner bgMiddle">
+                                <div className="wave waveMiddle" style={{backgroundImage: 'url("http://front-end-noobs.com/jecko/img/wave-mid.png")'}}></div>
+                            </div>
+                            <div className="waveWrapperInner bgBottom">
+                                <div className="wave waveBottom" style={{backgroundImage: 'url("http://front-end-noobs.com/jecko/img/wave-bot.png")'}}></div>
+                            </div>
+                        </div>
                     </div>
                     <div className={classes.smoke}>
                         <div className={classes.section}>
