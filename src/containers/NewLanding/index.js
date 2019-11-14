@@ -125,7 +125,7 @@ const styles = {
     smoke: {
         width: '100%',
         backgroundColor: '#Fefefe',
-        marginTop: '-2px',
+        marginTop: '-3px',
         zIndex: '25',
     },
     linkContainer: {
@@ -177,13 +177,18 @@ class NewLanding extends Component {
             <Navigation footer whitesmoke>
                 <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
                     <div className={classNames(classes.section, classes.topSection)}>
-                        <div className="waveWrapper waveAnimation">
+                        <div className="waveWrapper">
                             <div className={classes.topInner}>
                                 <div className={classes.topLogoContainer} style={{display: 'flex'}}>
                                     <img className={classes.topLogo} src={TIHLDELOGO} alt='TIHLDE_LOGO' />
                                 </div>
-                                <Typography variant='h6' color='white' align='center' className={classes.topSmallText}>Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling og Digital samhandling ved NTNU</Typography>
-                                {AuthService.isAuthenticated() &&
+                                <Typography variant='h6' align='center' className={classes.topSmallText}>Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling og Digital samhandling ved NTNU</Typography>
+                                {AuthService.isAuthenticated() ? 
+                                <div className={classes.topButtonContainer}>
+                                    <Link to={URLS.profile} className={classes.topLink}><Button className={classes.topButton} variant='contained' color='inherit'>Min side</Button></Link>
+                                    {/* <Link to={URLS.login} className={classes.topButtonSecondary} variant='contained' color='inherit'>Opprett bruker ></Link> */}
+                                </div>
+                                :
                                 <div className={classes.topButtonContainer}>
                                     <Link to={URLS.login} className={classes.topLink}><Button className={classes.topButton} variant='contained' color='inherit'>Logg inn</Button></Link>
                                     <Link to={URLS.login} className={classes.topButtonSecondary} variant='contained' color='inherit'>Opprett bruker ></Link>
@@ -191,13 +196,13 @@ class NewLanding extends Component {
                                 }
                             </div>
                             <div className="waveWrapperInner bgTop">
-                                <div className="wave waveTop" style={{backgroundImage: 'url("http://front-end-noobs.com/jecko/img/wave-top.png")'}}></div>
+                                <div className="wave waveTop"></div>
                             </div>
                             <div className="waveWrapperInner bgMiddle">
-                                <div className="wave waveMiddle" style={{backgroundImage: 'url("http://front-end-noobs.com/jecko/img/wave-mid.png")'}}></div>
+                                <div className="wave waveMiddle"></div>
                             </div>
                             <div className="waveWrapperInner bgBottom">
-                                <div className="wave waveBottom" style={{backgroundImage: 'url("http://front-end-noobs.com/jecko/img/wave-bot.png")'}}></div>
+                                <div className="wave waveBottom"></div>
                             </div>
                         </div>
                     </div>

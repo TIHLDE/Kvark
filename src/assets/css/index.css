@@ -174,6 +174,7 @@ p > code {
 }
 .waveTop {
     background-size: 80% 100px;
+    background-image: url("../img/wave-top.png");
 }
 .waveAnimation .waveTop {
     animation: move-wave 3s;
@@ -183,13 +184,26 @@ p > code {
 }
 .waveMiddle {
     background-size: 60% 120px;
+    background-image: url("../img/wave-mid.png");
 }
 .waveAnimation .waveMiddle {
-    animation: move_wave 10s linear alternate infinite;
+    animation: move_wave 20s linear alternate infinite;
 }
 .waveBottom {
     background-size: 60% 100px;
+    background-image: url("../img/wave-bot.png");
 }
 .waveAnimation .waveBottom {
-    animation: move_wave 15s linear alternate infinite;
+    animation: move_wave 25s linear alternate infinite;
+}
+@media only screen and (max-width: 500px) {
+    .waveTop {
+        background-size: 80% 40px;
+    }
+    .waveMiddle {
+        background-size: 60% 60px;
+    }
+    .waveBottom {
+        background-size: 60% 50px;
+    }
 }
