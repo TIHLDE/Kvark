@@ -87,7 +87,8 @@ const styles = {
     },
     topButtonContainer: {
         margin: '20px auto 0',
-        width: 'fit-content',
+        display: 'flex',
+        justifyContent: 'center',
     },
     topButton: {
         color: '#2d4a7f',
@@ -177,7 +178,7 @@ class NewLanding extends Component {
             <Navigation footer whitesmoke>
                 <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
                     <div className={classNames(classes.section, classes.topSection)}>
-                        <div className="waveWrapper">
+                        <div className="waveWrapper waveAnimation">
                             <div className={classes.topInner}>
                                 <div className={classes.topLogoContainer} style={{display: 'flex'}}>
                                     <img className={classes.topLogo} src={TIHLDELOGO} alt='TIHLDE_LOGO' />
