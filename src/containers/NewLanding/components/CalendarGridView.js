@@ -20,12 +20,9 @@ const styles = (theme) => ({
     listStyle: 'none',
   },
   list: {
-    width: '50%',
+    width: '100%',
     position: 'absolute',
     top: '10%',
-    '&:hover': {
-      width: '100%',
-    },
   },
   link: {
     color: '#777',
