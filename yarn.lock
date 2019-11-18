@@ -6469,6 +6469,10 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
 
+lodash@^4.17.12:
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
+
 loglevel@^1.4.1:
   version "1.6.4"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.4.tgz#f408f4f006db8354d0577dcf6d33485b3cb90d56"
