@@ -141,6 +141,9 @@ p > code {
 .waveWrapper {
     overflow: hidden;
     margin: auto;
+    position: absolute;
+    width: 100%;
+    height: 100%;
 }
 .waveWrapperInner {
     position: absolute;
@@ -206,4 +209,53 @@ p > code {
     .waveBottom {
         background-size: 60% 50px;
     }
+}
+
+
+/** Christmas snow animation **/
+.snow {
+    z-index: 15;
+    pointer-events: none;
+    position: absolute;
+    top: 0; right: 0; left: 0; height: 450px; width: 100%;
+    animation: falling linear infinite both;
+    transform: translate3D(0,-100%,0);
+    overflow: hidden;
+}
+    
+  .snow--near {
+    animation-duration: 20s;
+    background-image: url('https://dl6rt3mwcjzxg.cloudfront.net/assets/snow/snow-large-075d267ecbc42e3564c8ed43516dd557.png');
+    background-size: contain;
+  }
+  .snow--near .snow--alt {
+    animation-delay: 5s;
+  }
+    
+  .snow--mid {
+    animation-duration: 30s;
+    background-image: url('https://dl6rt3mwcjzxg.cloudfront.net/assets/snow/snow-medium-0b8a5e0732315b68e1f54185be7a1ad9.png');
+    background-size: contain;
+  }
+  .snow--mid .snow--alt {
+    animation-delay: 10s;
+  }
+    
+  .snow--far {
+    animation-duration: 40s;
+    background-image: url('https://dl6rt3mwcjzxg.cloudfront.net/assets/snow/snow-small-1ecd03b1fce08c24e064ff8c0a72c519.png');
+    background-size: contain;
+  }
+  .snow--far .snow--alt {
+    animation-delay: 20s;
+  }
+      
+@keyframes falling {
+    0% {
+        transform: translate3D(-7.5%,-100%, 0);
+    }
+        
+    100% {
+        transform: translate3D(7.5%,100%, 0);
+    }  
 }
