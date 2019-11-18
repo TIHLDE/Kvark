@@ -192,10 +192,20 @@ class NewLanding extends Component {
                                 :
                                 <div className={classes.topButtonContainer}>
                                     <Link to={URLS.login} className={classes.topLink}><Button className={classes.topButton} variant='contained' color='inherit'>Logg inn</Button></Link>
-                                    <Link to={URLS.login} className={classes.topButtonSecondary} variant='contained' color='inherit'>Opprett bruker ></Link>
+                                    {/* <Link to={URLS.login} className={classes.topButtonSecondary} variant='contained' color='inherit'>Opprett bruker ></Link> */}
                                 </div>
                                 }
                             </div>
+
+                            <div className="snow snow--near"></div>
+                            <div className="snow snow--near snow--alt"></div>
+
+                            <div className="snow snow--mid"></div>
+                            <div className="snow snow--mid snow--alt"></div>
+
+                            <div className="snow snow--far"></div>
+                            <div className="snow snow--far snow--alt"></div>
+
                             <div className="waveWrapperInner bgTop">
                                 <div className="wave waveTop"></div>
                             </div>
