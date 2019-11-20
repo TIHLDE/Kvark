@@ -131,6 +131,7 @@ function CalendarListView(props) {
         if (index < eventsToDisplay) {
           return (<CalendarListItem key={index} classes={classes} eventData={eventData} />);
         }
+        return('');
       })}
       {props.events ?
         <LinkButton noPadding to='/arrangementer/'>

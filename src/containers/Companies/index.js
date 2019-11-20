@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import {
   withStyles,
-  MuiThemeProvider,
-  createMuiTheme
 } from "@material-ui/core/styles";
 import classNames from "classnames";
 
@@ -14,6 +12,8 @@ import Button from '@material-ui/core/Button'
 // Icons
 import Image from "../../assets/img/glad.jpg";
 import Send from '@material-ui/icons/Send'
+
+import CompaniesImg from "../../assets/img/companies.jpeg";
 
 // Project Components
 import Navigation from "../../components/navigation/Navigation";
@@ -154,7 +154,7 @@ class Companies extends Component {
             <div className={classNames(classes.section, classes.topSection)}>
               <Banner
                 title={Text.bannnertitle}
-                image={Text.bannerPicture}
+                image={CompaniesImg}
                 button={withStyles(styles)(this.ToFormButton)}
                 />
             </div>
@@ -174,7 +174,7 @@ class Companies extends Component {
                   justifyText
                 />
                 <InfoCard
-                  header="Bedriftpressentasjon"
+                  header="Bedriftspresentasjon"
                   text={Text.bedrifter}
                   justifyText
                 />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -17,9 +17,17 @@ import Button from '@material-ui/core/Button';
 import Calendar from '@material-ui/icons/CalendarToday';
 import Location from '@material-ui/icons/LocationOn';
 import Time from '@material-ui/icons/AccessTime';
+import Group from '@material-ui/icons/Group';
 
 // Project Components
 import MarkdownRenderer from '../../../components/miscellaneous/MarkdownRenderer';
+import EventDialog from './EventDialog';
+
+// Urls
+import URLS from '../../../URLS';
+
+// Services
+import MiscService from '../../../api/services/MiscService';
 
 const styles = {
     grid: {
@@ -86,12 +94,53 @@ InfoContent.propTypes = {
 };
 
 const EventRenderer = (props) => {
-    const {classes, data} = props;
+    const {
+      classes,
+      data,
+      userData,
+      userEvent,
+      applyToEvent,
+      isLoadingUserData,
+      isApplying,
+      message,
+      applySuccess,
+      clearMessage,
+      preview,
+    } = props;
+    const [modalShow, setModalShown] = useState(false);
     const description = data.description || '';
     const start = moment(data.start, ['YYYY-MM-DD HH:mm'], 'nb');
+    const today = moment(new Date(), ['YYYY-MM-DD HH:mm'], 'nb');
+
+    const openEventModal = () => {
+      if (!preview) {
+        if (userData) {
+          setModalShown(true);
+        } else {
+          MiscService.setLogInRedirectURL(props.history.location.pathname);
+          props.history.replace(URLS.login);
+        }
+      }
+    };
+
+    const closeEventModal = () => {
+      setModalShown(false);
+      clearMessage();
+    };
 
     return (
         <Paper className={classes.img} square>
+            {modalShow === true && userData &&
+              <EventDialog
+                onClose={closeEventModal}
+                data={data}
+                userData={userData}
+                userEvent={userEvent}
+                status={modalShow}
+                applyToEvent={applyToEvent}
+                isApplying={isApplying}
+                message={message}
+                applySuccess={applySuccess} />}
             <img className={classes.image} src={data.image} alt={data.image_alt} />
             <Typography className={classes.title} variant='h5'><strong>{data.title}</strong></Typography>
             <Divider />
@@ -101,8 +150,34 @@ const EventRenderer = (props) => {
                     <InfoContent icon={<Calendar />} label={start.format('DD.MM.YYYY')} />
                     <InfoContent icon={<Time />} label={start.format('HH:mm')} />
                     <InfoContent icon={<Location />} label={data.location} />
+                    <InfoContent icon={<Group />} label={String(data.participantsCount)} />
                     {data.price && <InfoContent icon={<Time />} label={data.price} />}
-                    {data.sign_up && <Button fullWidth className={classes.mt} variant='outlined' color='primary'>{Text.signUp}</Button>}
+                    {data.sign_up && today <= start &&
+                      <React.Fragment>
+                        {!userEvent &&
+                          <Button
+                            fullWidth
+                            disabled={isLoadingUserData}
+                            className={classes.mt}
+                            variant='contained'
+                            onClick={openEventModal}
+                            color='primary'>
+                            {Text.signUp}
+                          </Button>
+                        }
+                        {userEvent &&
+                          <Button
+                            fullWidth
+                            disabled={isLoadingUserData}
+                            className={classes.mt}
+                            variant='contained'
+                            onClick={openEventModal}
+                            color='secondary'>
+                            {Text.signOff}
+                          </Button>
+                        }
+                      </React.Fragment>
+                    }
                 </div>
                 <div className={classes.content}>
                     <MarkdownRenderer value={description} />
@@ -114,8 +189,17 @@ const EventRenderer = (props) => {
 
 EventRenderer.propTypes = {
     classes: PropTypes.object,
-
     data: PropTypes.object.isRequired,
+    userData: PropTypes.object,
+    userEvent: PropTypes.object,
+    history: PropTypes.object,
+    applyToEvent: PropTypes.func,
+    isLoadingUserData: PropTypes.bool,
+    isApplying: PropTypes.bool,
+    message: PropTypes.string,
+    applySuccess: PropTypes.bool,
+    clearMessage: PropTypes.func,
+    preview: PropTypes.bool,
 };
 
 export default withStyles(styles)(EventRenderer);

@@ -39,3 +39,36 @@ export const isDesktop = () => {
             || navigator.userAgent.match(/iPad/i)
             || navigator.userAgent.match(/iPod/i)) === null;
 };
+
+// Short down string if needed
+export const shortDownString = (string, charsToShortDown) => {
+  if (string.length > charsToShortDown) {
+    string = string.slice(0, charsToShortDown) + '...';
+  }
+  return string;
+};
+
+// Get user study
+export const getUserStudy = (userStudy) => {
+  let userStudyText = '';
+
+  switch (userStudy) {
+    case 1:
+      userStudyText = 'Dataing';
+      break;
+    case 2:
+      userStudyText = 'DigFor';
+      break;
+    case 3:
+      userStudyText = 'DigInc';
+      break;
+    case 4:
+      userStudyText = 'DigSam';
+      break;
+    default:
+      userStudyText = 'Ikke oppgitt';
+      break;
+  }
+
+  return userStudyText;
+};

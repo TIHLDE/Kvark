@@ -19,12 +19,16 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 //import IconButton from '@material-ui/core/IconButton';
 
 // Project Components
 import TextEditor from '../../../components/inputs/TextEditor';
+import Dialog from '../../../components/navigation/Dialog';
 import EventPreview from './EventPreview';
 import EventSidebar from './EventSidebar';
+import EventParticipants from './EventParticipants';
 
 const SIDEBAR_WIDTH = 300;
 
@@ -42,7 +46,7 @@ const styles = (theme) => ({
     },
     content: {
         width: '80%',
-        maxWidth: 1000,
+        maxWidth: 1100,
         marginTop: 150,
         display: 'block',
         margin: 'auto',
@@ -77,7 +81,6 @@ const styles = (theme) => ({
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'nowrap',
-
         '@media only screen and (max-width: 800px)': {
             flexDirection: 'column',
         }
@@ -101,6 +104,7 @@ const priorities = ['Lav', 'Middels', 'Høy'];
 const eventCreated = 'Arrangementet ble opprettet';
 const eventChanged = 'Endringen ble publisert';
 const eventDeleted = 'Arrangementet ble slettet';
+const userRemoved = 'Bruker ble fjernet fra arrangementet';
 const errorMessage = (data) => 'Det oppstod en feil! '.concat(JSON.stringify(data || {}));
 const snackbarHideDuration = 4000;
 
@@ -122,17 +126,22 @@ class EventAdministrator extends Component {
             location: '',
             startDate: new Date().toISOString(),
             description: '',
-            signUp: false,
+            sign_up: false,
             priority: 0,
             image: '',
             category: 0,
+            limit: 0,
+            participants: [],
+            userEvent: false,
             // imageAlt: '',
 
             showMessage: false,
+            showDialog: false,
             errorMessage: 'Det oppstod en feil',
             showSuccessMessage: false,
             successMessage: eventCreated,
             showPreview: false,
+            showParticipants: false,
         };
     }
 
@@ -220,10 +229,17 @@ class EventAdministrator extends Component {
                 image: event.image,
                 category: event.category,
                 startDate: event.start.substring(0,16),
-                signUp: event.signUp,
+                sign_up: event.sign_up,
+                limit: event.limit,
+                participants: [],
             });
         }
         this.setState({showSuccessMessage: false});
+
+        // Fetch participants
+        EventService.getEventParticipants(event.id).then((result) => {
+          this.setState({participants: result})
+        });
     }
 
     resetEventState = () => {
@@ -237,12 +253,20 @@ class EventAdministrator extends Component {
             imageAlt: '',
             category: 0,
             startDate: new Date().toISOString().substring(0, 16),
-            signUp: false,
+            sign_up: false,
+            participants: [],
+            showParticipants: false,
         });
     }
 
     handleChange = (name) => (event) => {
+      event.persist();
+      if (event.target.type === 'checkbox'){
+        this.setState({[name]: event.target.checked});
+      } else {
         this.setState({[name]: event.target.value});
+      }
+
     }
 
     handleToggleChange = (name) => () => {
@@ -270,7 +294,8 @@ class EventAdministrator extends Component {
         imageAlt: 'event',
         category: this.state.category,
         start: moment(this.state.startDate).format('YYYY-MM-DDTHH:mm'),
-        signUp: this.state.signUp,
+        sign_up: this.state.sign_up,
+        limit: this.state.limit,
     });
 
     createNewEvent = (event) => {
@@ -308,7 +333,7 @@ class EventAdministrator extends Component {
                 const newEvents = Object.assign([], this.state.events);
                 const index = newEvents.findIndex((elem) => elem.id === selectedEvent.id); // Finding event by id
                 if(index !== -1) {
-                    newEvents[index] = data;
+                    newEvents[index] = {id: selectedEvent.id, ...item};
                     this.setState({events: newEvents, showSuccessMessage: true, successMessage: eventChanged});
                 }
             } else {
@@ -340,13 +365,70 @@ class EventAdministrator extends Component {
         });
     }
 
+    removeUserFromEvent = () => {
+      const {user_id, event} = this.state.userEvent;
+
+      EventService.deleteUserFromEventList(event.id, {user_id: user_id}).then((result) => {
+        this.setState((oldState) => {
+          const newParticipants = oldState.participants.filter((user) => {
+            if (user.user_id !== user_id) return user
+            return false
+          });
+          return {
+            participants: newParticipants,
+            showSuccessMessage: true,
+            successMessage: userRemoved
+
+          };
+        });
+      }).catch((error) => {
+        this.setState({showMessage: true, snackMessage: errorMessage(error)});
+      })
+
+      this.setState({showDialog: false});
+    }
+
+    toggleUserEvent = (user_id, event, parameters) => {
+      EventService.updateUserEvent(event.id, {user_id: user_id, ...parameters}).then((data) => {
+        this.setState((oldState) => {
+          // Change the state to reflect the database data.
+          const newParticipants = oldState.participants.map((user) => {
+            let newUser = user;
+            if (user.user_id === user_id) {
+              newUser = {...newUser, ...parameters};
+            }
+            return newUser
+          })
+
+          return {participants: newParticipants};
+        })
+      }).catch((error) => {
+        this.setState({showMessage: true, snackMessage: errorMessage(error)});
+      })
+    }
+
+    closeEvent = () => {
+      const {selectedEvent} = this.state;
+      EventService.putEvent(selectedEvent.id, {closed: true}).then(() => {
+        this.setState((oldState) => {
+          let newEvent = oldState.selectedEvent;
+          newEvent.closed = true;
+          return {selectedEvent: newEvent};
+        });
+      });
+    }
+
+    confirmRemoveUserFromEvent = (user_id, event) => {
+      this.setState({showDialog: true, userEvent: {user_id: user_id, event: event}});
+    }
+
     getNextPage = () => {
       this.fetchEvents({page: this.state.nextPage})
     }
 
     render() {
         const {classes} = this.props;
-        const {selectedEvent, title, location, description, image, priority, categories, category} = this.state;
+        const {selectedEvent, title, location, description, image, priority, categories, category, sign_up, showParticipants, limit, participants} = this.state;
         const selectedEventId = (selectedEvent)? selectedEvent.id : '';
         const isNewItem = (selectedEvent === null);
         const header = (isNewItem)? 'Lag et nytt arrangement' : 'Endre arrangement';
@@ -368,61 +450,90 @@ class EventAdministrator extends Component {
                                 message={this.state.snackMessage}/>
                         </Snackbar>
 
+                    <Dialog
+                      onClose={() => this.setState({showDialog: false, userEvent: false})}
+                      status={this.state.showDialog}
+                      title='Bekreft sletting'
+                      message={'Er du sikker på at du vil fjerne denne brukeren fra dette arrangementet?'}
+                      submitText={'Slett'}
+                      onSubmit={this.removeUserFromEvent} />
+
                     <Paper className={classes.content} square>
-                        {(this.state.isLoading)? <Grid className={classes.progress} container justify='center' alignItems='center'><CircularProgress /></Grid> :
-                        (this.state.showSuccessMessage)? <MessageView title={this.state.successMessage} buttonText='Nice' onClick={this.toggleSuccessView}/> :
-                            <form>
-                                <Grid container direction='column' wrap='nowrap'>
-                                    <Typography variant='h5'>{header}</Typography>
-                                    <TextField className={classes.field} label='Tittel' value={title} onChange={this.handleChange('title')} required/>
-                                    <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
-
-                                    <TextEditor className={classes.margin} value={description} onChange={this.onChange('description')}/>
-
-                                    <Divider className={classes.margin} />
-
-                                    <TextField className={classes.margin} fullWidth label='Bilde' value={image} onChange={this.handleChange('image')}/>
-
-                                    <div className={classes.flexRow}>
-                                        <TextField className={classes.margin} select fullWidth label='Proritering' value={priority} onChange={this.handleChange('priority')}>
-                                            {priorities.map((value, index) => (
-                                                <MenuItem key={index} value={index}>
-                                                    {value}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-
-                                        <TextField className={classes.margin} select fullWidth label='Kategori' value={category} onChange={this.handleChange('category')}>
-                                            {categories.map((value, index) => (
-                                                <MenuItem key={index} value={value.id}>
-                                                    {value.text}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-
-                                        <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Start dato' value={this.state.startDate} onChange={this.handleChange('startDate')} />
-                                    </div>
-
-                                    <Grid container direction='row' wrap='nowrap' justify='space-between'>
-                                        {(isNewItem)?
-                                            <div>
-                                                <Button className={classes.mr} onClick={this.createNewEvent} type='submit' variant='contained' color='primary'>Lag nytt event</Button>
-                                                <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
-                                            </div>
-
-                                            :
-                                            <Fragment>
-                                                <div>
-                                                    <Button className={classes.mr} onClick={this.editEventItem} variant='contained' type='submit' color='primary'>Lagre</Button>
-                                                    <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
-                                                </div>
-                                                <Button className={classes.deleteButton} onClick={this.deleteEventItem} variant='outlined'>Slett</Button>
-                                            </Fragment>
+                      {showParticipants ?
+                        <EventParticipants
+                          removeUserFromEvent={this.confirmRemoveUserFromEvent}
+                          participants={participants}
+                          event={selectedEvent}
+                          closeParticipants={this.handleToggleChange('showParticipants')}
+                          toggleUserEvent={this.toggleUserEvent} />
+                        :
+                      <React.Fragment>
+                          {(this.state.isLoading)? <Grid className={classes.progress} container justify='center' alignItems='center'><CircularProgress /></Grid> :
+                          (this.state.showSuccessMessage)? <MessageView title={this.state.successMessage} buttonText='Nice' onClick={this.toggleSuccessView}/> :
+                              <form>
+                                  <Grid container direction='column' wrap='nowrap'>
+                                      <Typography variant='h5'>{header}</Typography>
+                                      <TextField className={classes.field} label='Tittel' value={title} onChange={this.handleChange('title')} required/>
+                                      <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
+                                      <TextField className={classes.field} label='Antall plasser' value={limit} onChange={this.handleChange('limit')} required/>
+                                      <FormControlLabel
+                                        control={
+                                          <Checkbox onChange={this.handleChange('sign_up')} checked={sign_up} />
                                         }
-                                    </Grid>
-                                </Grid>
-                            </form>
-                        }
+                                        label="Åpen for påmelding"/>
+
+                                      <TextEditor className={classes.margin} value={description} onChange={this.onChange('description')}/>
+
+                                      <Divider className={classes.margin} />
+
+                                      <TextField className={classes.margin} fullWidth label='Bilde' value={image} onChange={this.handleChange('image')}/>
+
+                                      <div className={classes.flexRow}>
+                                          <TextField className={classes.margin} select fullWidth label='Proritering' value={priority} onChange={this.handleChange('priority')}>
+                                              {priorities.map((value, index) => (
+                                                  <MenuItem key={index} value={index}>
+                                                      {value}
+                                                  </MenuItem>
+                                              ))}
+                                          </TextField>
+
+                                          <TextField className={classes.margin} select fullWidth label='Kategori' value={category} onChange={this.handleChange('category')}>
+                                              {categories.map((value, index) => (
+                                                  <MenuItem key={index} value={value.id}>
+                                                      {value.text}
+                                                  </MenuItem>
+                                              ))}
+                                          </TextField>
+
+                                          <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Start dato' value={this.state.startDate} onChange={this.handleChange('startDate')} />
+                                      </div>
+
+                                      <Grid container direction='row' wrap='nowrap' justify='space-between'>
+                                          {(isNewItem)?
+                                              <div>
+                                                  <Button className={classes.mr} onClick={this.createNewEvent} type='submit' variant='contained' color='primary'>Lag nytt event</Button>
+                                                  <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
+                                              </div>
+
+                                              :
+                                              <Fragment>
+                                                  <div>
+                                                      <Button className={classes.mr} onClick={this.editEventItem} variant='contained' type='submit' color='primary'>Lagre</Button>
+                                                      <Button className={classes.mr} variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
+                                                      <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showParticipants')}>Se påmeldte</Button>
+                                                  </div>
+                                                  <div>
+                                                      <Button disabled={selectedEvent.closed && true} className={classNames(classes.mr, classes.deleteButton)} onClick={this.closeEvent} variant='outlined'>Steng</Button>
+                                                      <Button className={classes.deleteButton} onClick={this.deleteEventItem} variant='outlined'>Slett</Button>
+                                                  </div>
+                                              </Fragment>
+                                          }
+                                      </Grid>
+                                  </Grid>
+                              </form>
+                          }
+                      </React.Fragment>
+                    }
                     </Paper>
 
                 </div>

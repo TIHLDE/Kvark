@@ -10,7 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 // Icons
-import ServiceBanner from  '../../assets/img/ServiceBanner.jpg';
+import ServiceBanner from '../../assets/img/ServiceBanner.jpg';
 import DatabaseIcon from '../../assets/icons/database.png';
 import EmailIcon from '../../assets/icons/email.svg';
 import HostingIcon from '../../assets/icons/hosting.png';

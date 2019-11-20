@@ -112,6 +112,79 @@ class EventService {
             }
         });
     }
+    
+    static putAttended = async (event_id, item, username, callback=null) => {
+        const response = API.putAttended(event_id, item, username).response();
+        return response.then((data) => {
+            !callback || callback(response.isError === true, data);
+            return data;
+        });
+    }
+    
+    static getEventParticipants = (id, callback=null) => {
+      const response = API.getEventParticipants(id).response();
+      return response.then((data) => {
+        !callback || callback(response.isError === true, response.status);
+        if(response.isError === false) {
+            return Promise.resolve(data);
+        } else {
+            return Promise.reject(data);
+        }
+      })
+    }
+
+    static putUserOnEventList = (id, userData, callback=null) => {
+      userData = {user_id: userData.user_id, event: id};
+      const response = API.putUserOnEventList(id,userData).response();
+      return response.then((data) => {
+        !callback || callback(response.isError === true, response.status);
+        if(response.isError === false) {
+            return Promise.resolve(response.status);
+        } else {
+            return Promise.reject(response.status);
+        }
+      })
+    }
+
+    static deleteUserFromEventList = (id, userData, callback=null) => {
+      userData = {user_id: userData.user_id, event: id};
+      const response = API.deleteUserFromEventList(id, userData).response();
+      return response.then((data) => {
+        !callback || callback(response.isError === true, response.status);
+        if(response.isError === false) {
+            return Promise.resolve(data);
+        } else {
+            return Promise.reject(data);
+        }
+      })
+    }
+
+
+    static updateUserEvent = (id, userData, callback=null) => {
+      userData = {...userData, event: id};
+      const response = API.updateUserEvent(id, userData).response();
+      return response.then((data) => {
+        !callback || callback(response.isError === true, response.status);
+        if(response.isError === false) {
+            return Promise.resolve(data);
+        } else {
+            return Promise.reject(data.detail);
+        }
+      })
+    }
+
+    static getUserEventObject = (id, userData, callback=null) => {
+      userData = {...userData, event: id};
+      const response = API.getUserEventObject(id, userData).response();
+      return response.then((data) => {
+        !callback || callback(response.isError === true, response.status);
+        if (response.isError === false) {
+            return Promise.resolve(data);
+        } else {
+            return Promise.reject(data.detail);
+        }
+      })
+    }
 }
 
 export default EventService;

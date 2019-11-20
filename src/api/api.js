@@ -28,6 +28,24 @@ export default {
     deleteEventItem: (id) => {
         return new IRequest('DELETE', 'events/'.concat(id, '/'), undefined, true);
     },
+    putAttended: (event_id, item, username) => {
+        return new IRequest('PUT', 'events/'.concat(event_id, '/users/'.concat(username, '/')), item, true);
+    },
+    getEventParticipants: (id) => {
+        return new IRequest('GET', 'events/'.concat(id,'/users/'), undefined, true);
+    },
+    putUserOnEventList: (id, item) => {
+        return new IRequest('POST', 'events/'.concat(id,'/users/'), item, true);
+    },
+    deleteUserFromEventList: (id, item) => {
+        return new IRequest('DELETE', 'events/'.concat(id,'/users/', item.user_id, '/'), undefined, true);
+    },
+    updateUserEvent: (id, item) => {
+      return new IRequest('PUT', 'events/'.concat(id,'/users/', item.user_id), item, true);
+    },
+    getUserEventObject: (id, item) => {
+      return new IRequest('GET', 'events/'.concat(id, '/users/', item.user_id, '/'), undefined, true);
+    },
 
     // Job posts
     getJobPosts: (data) => {
@@ -47,6 +65,14 @@ export default {
     },
     deleteJobPost: (id) => {
         return new IRequest('DELETE', 'jobpost/'.concat(id, '/'), undefined, true);
+    },
+
+    // User
+    getUserData: () => {
+        return new IRequest('GET', 'user/userdata/', undefined, true);
+    },
+    updateUserData: (userName, item) => {
+        return new IRequest('PUT', 'user/'.concat(userName, '/'), item, true);
     },
 
     // Warning

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
+import URLS from '../../URLS';
 
 // Text Imports
 import Text from '../../text/AboutText';
@@ -11,9 +12,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
-
-import MenuList from '@material-ui/core/MenuList';
-import MenuItem from '@material-ui/core/MenuItem';
 
 // Icons
 import SocialIcon from '../../assets/icons/social.svg';
@@ -43,6 +41,9 @@ const styles = {
         '@media only screen and (max-width: 700px)': {
             gridTemplateColumns: '1fr',
         },
+    },
+    topGrid: {
+        gridTemplateColumns: '1fr',
     },
     padding: {
         padding: 30,
@@ -117,6 +118,9 @@ class About extends Component {
                             <Grid item className={classNames(classes.linkContainer, classes.grid)}>
                                 <LinkButton to='/lover/'>
                                     <Typography>TIHLDE's Lover</Typography>
+                                </LinkButton>
+                                <LinkButton to={URLS.services}>
+                                    <Typography>Tjenester</Typography>
                                 </LinkButton>
                             </Grid>
                         </Banner>

@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import MiscService from '../../api/services/MiscService';
 import AuthService from '../../api/services/AuthService';
 import * as MiscActions from '../../store/actions/MiscActions';
+import UserService from '../../api/services/UserService';
 
 // Material UI Components
 import AppBar from '@material-ui/core/AppBar';
@@ -22,10 +23,13 @@ import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import IconButton from '@material-ui/core/IconButton';
 
+import Skeleton from '@material-ui/lab/Skeleton';
+
 // Assets/Icons
 import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO.png';
 import MenuIcon from '@material-ui/icons/Menu';
 import SopraSteria from '../../assets/img/sopraSteriaLogo.svg';
+import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 
 // Project Components
 import Footer from './Footer';
@@ -58,10 +62,6 @@ const styles = {
         margin: 'auto',
 
         alignItems: 'center',
-
-        '@media only screen and (max-width: 600px)': {
-            flexDirection: 'row-reverse',
-        }
     },
     logoWrapper: {
         display: 'flex',
@@ -135,6 +135,11 @@ const styles = {
         verticalAlign: 'top',
         display: 'inline-block',
         textAlign: 'center',
+        margin: 'auto 10px',
+
+        '@media only screen and (max-width: 600px)': {
+            margin: 'auto 0px auto 10px',
+        },
     },
     sponsorLogo: {
         '@media only screen and (max-width: 600px)': {
@@ -144,14 +149,75 @@ const styles = {
     },
     sponsorText: {
         color: 'white',
-        fontSize: '12px',
+        fontSize: '10px',
         textAlign: 'center',
         opacity: 0.7,
 
         '@media only screen and (max-width: 600px)': {
             fontSize: '8px',
+        },
+        '@media only screen and (max-width: 350px)': {
+            fontSize: '7px',
+        },
+    },
+    profileLink: {
+        '& button': {
+            padding: '0',
+        },
+        textDecoration: 'none',
+    },
+    profileContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        borderRadius: '4px',
+        cursor: 'pointer',
+    },
+    profileContainerHidden: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        opacity: '0',
+    },
+    profileName: {
+        margin: 'auto 10px',
+        fontSize: '16px',
+        color: 'white',
+        minWidth: '40px',
+        textAlign: 'right',
+        '@media only screen and (max-width: 450px)': {
+            display: 'none',
         }
-    }
+    },
+    profileCircle: {
+        borderRadius: '50%',
+        backgroundImage: 'linear-gradient(90deg, #DA4453, #89216B)',
+        fontSize: '18px',
+        padding: '7px',
+        color: 'white',
+        height: '45px',
+        width: '45px',
+        textAlign: 'center',
+        fontWeight: 'bold',
+    },
+    profileCircleImage: {
+        backgroundImage: 'url(https://thenypost.files.wordpress.com/2019/09/takes-donald-trump.jpg?quality=90&strip=all&w=618&h=410&crop=1)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        color: '#00000000',
+        userSelect: 'none',
+    },
+    skeleton: {
+        animation: 'animate 1.5s ease-in-out infinite',
+    },
+    skeletonCircle: {
+        margin: '5px',
+        height: 'calc(100% - 10px)',
+        width: 'calc(100% - 10px)',
+        backgroundColor: 'rgba(0, 0, 0, 0.25)',
+    },
 };
 
 
@@ -159,7 +225,7 @@ const URIbutton = withStyles(styles)((props) => {
     const { data, classes } = props;
     return (
         <div className={classNames(props.selected ? classes.selected : '', props.uri)}>
-            <Link to={data.link} onClick={data.link == window.location.pathname ? () => window.location.refresh() : null} style={{ textDecoration: 'none' }}>
+            <Link to={data.link} onClick={data.link === window.location.pathname ? () => window.location.refresh() : null} style={{ textDecoration: 'none' }}>
                 <Button color="inherit" style={{
                     color: 'white',
                 }}>
@@ -173,12 +239,26 @@ const URIbutton = withStyles(styles)((props) => {
 const SponsorLogo = withStyles(styles)((props) => {
     const { classes } = props;
     return (
-        <a className={classes.sponsorWrapper} target="_blank" href="https://www.soprasteria.no/">
-            <img className={classes.sponsorLogo} src={SopraSteria} alt='Sopra Steria Logo' height={'24rem'} />
+        <a className={classes.sponsorWrapper} target="_blank" rel="noopener noreferrer" href="https://www.soprasteria.no/">
+            <img className={classes.sponsorLogo} src={SopraSteria} alt='Sopra Steria Logo' height={'18rem'} />
             <div className={classes.sponsorText}>HOVEDSAMARBEIDSPARTNER</div>
         </a>
     );
 });
+
+const PersonIcon = withStyles(styles)((props) => {
+    const { user, link, classes } = props;
+    return (
+        <Link to={link} className={classes.profileLink} onClick={link === window.location.pathname ? () => window.location.refresh() : null} >
+            <Button>
+                <div className={classes.profileContainer} >
+                    <div className={classes.profileName}>{ user.first_name !== undefined ? user.first_name : <Skeleton className={classes.skeleton} variant="text" width={75} /> }</div>
+                    <div className={classNames(classes.profileCircle)}>{ user.first_name !== undefined ? (user.first_name).substring(0,1) + '' + (user.last_name).substring(0,1) : <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant="text" /> }</div>
+                </div>
+            </Button>
+        </Link>
+    );
+})
 
 class Navigation extends Component {
 
@@ -189,11 +269,24 @@ class Navigation extends Component {
 
             showSnackbar: false,
             snackMessage: null,
+
+            userData: {},
         };
+    }
+
+    loadUserData = () => {
+        UserService.getUserData().then((user) => {
+            if(user) {
+                this.setState({userData: user});
+            }
+        });
     }
 
     componentDidMount() {
         this.configureWarningMessage();
+        if (AuthService.isAuthenticated()) {
+            this.loadUserData();
+        }
     }
 
     configureWarningMessage = () => {
@@ -236,7 +329,7 @@ class Navigation extends Component {
                     <Toolbar className={classes.navContent} disableGutters>
                         <div className={classes.navWrapper}>
                             <div className={classes.logoWrapper}>
-                                <Link to='/'>
+                                <Link className={classes.flex} to='/'>
                                     <img src={TIHLDELOGO} height='32em' alt='TIHLDE_LOGO' width='auto' />
                                 </Link>
                             </div>
@@ -247,20 +340,30 @@ class Navigation extends Component {
                                         <URIbutton data={{ link: URLS.about, text: "Om TIHLDE" }} selected={this.props.match.url === URLS.about} />
                                         <URIbutton data={{ link: URLS.services, text: "Tjenester" }} selected={this.props.match.url === URLS.services} />
                                         <URIbutton data={{ link: URLS.events, text: "Arrangementer" }} selected={this.props.match.url === URLS.events} />
-                                        <URIbutton data={{ link: URLS.newStudent, text: "Ny student" }} selected={this.props.match.url === URLS.newStudent} />
                                         <URIbutton data={{ link: URLS.jobposts, text: "Karriere" }} selected={this.props.match.url === URLS.jobposts} />
                                         <URIbutton data={{ link: URLS.company, text: "For Bedrifter" }} selected={this.props.match.url === URLS.company} />
                                     </div>
                                 </Hidden>
                             </div>
 
+                            <div>
+                                {!AuthService.isAuthenticated() &&
+                                    <SponsorLogo />
+                                }
+                            </div>
+                            <div>
+                                {AuthService.isAuthenticated() ?
+                                    <PersonIcon user={this.state.userData} link={URLS.profile} />
+                                    :
+                                    <Hidden smDown implementation='css'>
+                                        <IconButton className={classes.menuButton} onClick={() => this.goTo(URLS.login)}><PersonOutlineIcon /></IconButton>
+                                    </Hidden>
+                                }
+                            </div>
+
                             <Hidden mdUp implementation='css'>
                                 <div className={classes.menuWrapper}>
                                     <IconButton className={classes.menuButton} onClick={this.toggleSidebar}><MenuIcon /></IconButton>
-
-                                    <Hidden smUp implementation={'css'}>
-                                        <SponsorLogo />
-                                    </Hidden>
                                 </div>
                             </Hidden>
 
@@ -276,23 +379,7 @@ class Navigation extends Component {
                                     <Sidebar onClose={this.toggleSidebar} />
                                 </Drawer>
                             </Hidden>
-                            <div>
-                                <Hidden xsDown implementation={'css'}>
-                                    <SponsorLogo />
-                                </Hidden>
-                                {/*
-                                    --- LOG-IN BUTTON ---
-                                    <Hidden xsDown implementation={'css'}>
-                                    <div>
-                                        {AuthService.isAuthenticated()?
-                                            <IconButton className={classes.profileBtn} onClick={() => this.goTo(URLS.profile)}><PersonIcon/></IconButton>
-                                            :
-                                            <Button className={classes.loginBtn} onClick={() => this.goTo(URLS.login)} variant='outlined'>Logg inn</Button>
-                                        }
-                                    </div>
-                                    </Hidden>
-                                */}
-                            </div>
+
                         </div>
                     </Toolbar>
                 </AppBar>

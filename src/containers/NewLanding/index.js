@@ -2,19 +2,23 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
+import Link from 'react-router-dom/Link';
+
+// Services
+import AuthService from '../../api/services/AuthService';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
+import Button from '@material-ui/core/Button';
 
 // Icons
-import LandingHeader from '../../assets/img/TihldeBackgroundNew.png';
+import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO.png';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
-import Banner from '../../components/layout/Banner';
 import Calender from './components/Calendar';
+import URLS from '../../URLS';
 
 const styles = {
     root: {
@@ -47,11 +51,57 @@ const styles = {
         },
     },
     topSection: {
-        padding: '20px 48px 48px 48px',
+        padding: 0,
         margin: 'unset',
-        '@media only screen and (max-width: 1200px)': {
-            padding: '12px 0px 48px 0px',
+        width: '100%',
+        maxWidth: 'none',
+        minHeight: '451px',
+    },
+    topInner: {
+        margin: 'auto',
+        maxWidth: '1000px',
+        padding: '100px 15px',
+        position: 'relative',
+        zIndex: '20',
+    },
+    topSmallText: {
+        color: 'white',
+        margin: '10px auto',
+        '@media only screen and (max-width: 800px)': {
+            fontSize: '1.05rem',
         },
+    },
+    topTitleText: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontFamily: 'sans-serif',
+    },
+    topLogoContainer: {
+        display: 'flex',
+    },
+    topLogo: {
+        margin: '0 auto',
+        width: '50vw',
+        maxWidth: '350px',
+        minWidth: '250px',
+    },
+    topButtonContainer: {
+        margin: '20px auto 0',
+        display: 'flex',
+        justifyContent: 'center',
+    },
+    topButton: {
+        color: '#2d4a7f',
+        backgroundColor: 'white',
+        margin: 'auto 10px',
+    },
+    topLink: {
+        textDecoration: 'none',
+    },
+    topButtonSecondary: {
+        color: 'white',
+        textDecoration: 'none',
+        margin: 'auto 10px',
     },
     verticalMargin: {
         marginTop: 30,
@@ -76,6 +126,8 @@ const styles = {
     smoke: {
         width: '100%',
         backgroundColor: '#Fefefe',
+        marginTop: '-3px',
+        zIndex: '25',
     },
     linkContainer: {
         marginBottom: 0,
@@ -87,7 +139,6 @@ const styles = {
         gridTemplateColumns: '1fr 1fr 1fr',
         backgroundColor: 'rgba(0, 0, 0, 0.12)',
         gridGap: '1px',
-        // 600px
         '@media only screen and (max-width: 860px)': {
             gridTemplateColumns: '1fr',
         },
@@ -109,6 +160,10 @@ const styles = {
     },
     buttonDiv: {
     },
+    margining: {
+        marginTop: '2px',
+        marginBottom: '20px',
+    },
 };
 
 class NewLanding extends Component {
@@ -123,22 +178,50 @@ class NewLanding extends Component {
             <Navigation footer whitesmoke>
                 <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
                     <div className={classNames(classes.section, classes.topSection)}>
-                        <Banner
-                            image={LandingHeader}
-                            disableFilter={true}>
-                            <Divider />
-                        </Banner>
+                        <div className="waveWrapper waveAnimation">
+                            <div className={classes.topInner}>
+                                <div className={classes.topLogoContainer} style={{display: 'flex'}}>
+                                    <img className={classes.topLogo} src={TIHLDELOGO} alt='TIHLDE_LOGO' />
+                                </div>
+                                <Typography variant='h6' align='center' className={classes.topSmallText}>Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling og Digital samhandling ved NTNU</Typography>
+                                {AuthService.isAuthenticated() ? 
+                                <div className={classes.topButtonContainer}>
+                                    <Link to={URLS.profile} className={classes.topLink}><Button className={classes.topButton} variant='contained' color='inherit'>Min side</Button></Link>
+                                    {/* <Link to={URLS.login} className={classes.topButtonSecondary} variant='contained' color='inherit'>Opprett bruker ></Link> */}
+                                </div>
+                                :
+                                <div className={classes.topButtonContainer}>
+                                    <Link to={URLS.login} className={classes.topLink}><Button className={classes.topButton} variant='contained' color='inherit'>Logg inn</Button></Link>
+                                    <Link to={URLS.signup} className={classes.topButtonSecondary} variant='contained' color='inherit'>Opprett bruker ></Link>
+                                </div>
+                                }
+                            </div>
+
+                            <div className="snow snow--near"></div>
+                            <div className="snow snow--near snow--alt"></div>
+
+                            <div className="snow snow--mid"></div>
+                            <div className="snow snow--mid snow--alt"></div>
+
+                            <div className="snow snow--far"></div>
+                            <div className="snow snow--far snow--alt"></div>
+
+                            <div className="waveWrapperInner bgTop">
+                                <div className="wave waveTop"></div>
+                            </div>
+                            <div className="waveWrapperInner bgMiddle">
+                                <div className="wave waveMiddle"></div>
+                            </div>
+                            <div className="waveWrapperInner bgBottom">
+                                <div className="wave waveBottom"></div>
+                            </div>
+                        </div>
                     </div>
                     <div className={classes.smoke}>
                         <div className={classes.section}>
+                            <Typography variant='h4' color="inherit" align="center" className={classes.margining} >Arrangementer</Typography>
                             <Calender className={classes.calendar}></Calender>
                         </div>
-                    </div>
-
-                    <div className={classes.section}>
-                        <Typography className={classes.verticalMargin} variant='h5' color='inherit' align='center'>Got feedback?</Typography>
-                        <div>Fortell oss hva du syns om den nye siden vår (bugs, new features...etc)</div>
-                        <a className={classes.button} href="https://docs.google.com/forms/d/e/1FAIpQLSfp8ZUm-GfzMla0Hg4AeX0iO8HME8ez7TttY2MgUfpC8MzBIQ/viewform">Klikk her</a>
                     </div>
                 </Grid>
             </Navigation>

@@ -1,15 +1,18 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import React, { Component } from 'react';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+
+// Serivce imports
+import AuthService from '../../api/services/AuthService';
 
 // Imgs
 import http404img from '../../assets/img/http404.gif';
+import http404ropeImg from '../../assets/img/http404rope.gif';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
@@ -23,12 +26,14 @@ const styles = {
         width: '100%',
         maxHeight: '70vh',
         objectFit: 'contain',
-        paddingTop: '25px'
+    },
+    imgPadding: {
+        paddingTop: '25px',
     },
     smoke: {
         width: '100%',
         backgroundColor: '#Fefefe',
-        textAlign: 'center'
+        textAlign: 'center',
     },
     section: {
         padding: 48,
@@ -55,7 +60,7 @@ const styles = {
     },
     textContainer: {
         margin: '15px auto',
-    }
+    },
 };
 
 class Http404 extends Component {
@@ -65,17 +70,21 @@ class Http404 extends Component {
     }
 
     render() {
-        const {classes} = this.props;
+        const { classes } = this.props;
         return (
             <Navigation footer whitesmoke className={classes.root}>
                 <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
                     <div className={classes.smoke}>
-                        <img src={http404img} alt="404" className={classes.img}/>
+                        { AuthService.isAuthenticated() ?
+                            <img src={http404ropeImg} alt="404" className={classes.img} />
+                            :
+                            <img src={http404img} alt="404" className={classNames(classes.img, classes.imgPadding)} />
+                        }
                     </div>
                     <div className={classes.smoke}>
                         <h3>Denne siden finnes ikke :(</h3>
-                        <Button className={classes.bottomSpacing} variant='contained' color='primary' href='javascript:history.go(-1);'>Tilbake</Button>
-                        <p className={classes.textContainer}>Send oss gjerne en <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfp8ZUm-GfzMla0Hg4AeX0iO8HME8ez7TttY2MgUfpC8MzBIQ/viewform">tilbakemelding</a> om du fulgte en gyldig lenke hit</p>
+                        <Button className={classes.bottomSpacing} variant='contained' color='primary' onClick={() => window.history.back()}>Tilbake</Button>
+                        <p className={classes.textContainer}>Send oss gjerne en <a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/forms/d/e/1FAIpQLSfp8ZUm-GfzMla0Hg4AeX0iO8HME8ez7TttY2MgUfpC8MzBIQ/viewform">tilbakemelding</a> om du fulgte en gyldig lenke hit</p>
                     </div>
                 </Grid>
             </Navigation>

@@ -1,26 +1,14 @@
 import React from 'react';
-import PropTypes, { array } from 'prop-types';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import 'moment/locale/nb'
 import './style.css';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
 import Next from '@material-ui/icons/NavigateNext';
 import Before from '@material-ui/icons/NavigateBefore';
 
-// Project componets/services
-import CalendarListView from './CalendarListView';
-import Schedule from '@material-ui/icons/Schedule';
-
-
-// Icons
-import Reorder from '@material-ui/icons/Reorder';
-import DateRange from '@material-ui/icons/DateRange';
 
 // Styles
 const styles = (theme) => ({
@@ -32,12 +20,9 @@ const styles = (theme) => ({
     listStyle: 'none',
   },
   list: {
-    width: '50%',
+    width: '100%',
     position: 'absolute',
     top: '10%',
-    '&:hover': {
-      width: '100%',
-    },
   },
   link: {
     color: '#777',
@@ -91,7 +76,7 @@ class CalendarGridView extends React.Component {
   renderDays() {
     const dateFormat = "dddd";
     const days = [];
-    let startDate = moment(this.state.currentMonth).startOf('month');
+    let startDate = moment(this.state.currentMonth).startOf('week');
     for (let i = 0; i < 7; i++) {
       days.push(
         <div className="col col-center" key={i}>
@@ -167,16 +152,16 @@ class CalendarGridView extends React.Component {
     date = moment(date).format('DD-MM-YY');
     const eventText = [];
     if (this.props.events !== null) {
-      this.props.events.forEach(event => {
+      this.props.events.forEach((event, key) => {
         let eventDate = moment(event.start).format('DD-MM-YY');
         if (eventDate === date) {
           if (event.category === 10) {
             eventText.push(
-              <li className={classes.event}><a className={classes.linkFadder} href={'/arrangementer/' + event.id + '/'}>{event.title}</a></li>,
+              <li key={key} className={classes.event}><a className={classes.linkFadder} href={'/arrangementer/' + event.id + '/'}>{event.title}</a></li>,
             )
           } else {
             eventText.push(
-              <li className={classes.event}><a className={classes.link} href={'/arrangementer/' + event.id + '/'}>{event.title}</a></li>,
+              <li key={key} className={classes.event}><a className={classes.link} href={'/arrangementer/' + event.id + '/'}>{event.title}</a></li>,
             )
           }
         }
