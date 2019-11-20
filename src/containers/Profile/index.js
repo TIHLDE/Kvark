@@ -58,9 +58,8 @@ class Profile extends Component{
 
     logOut = () => {
         this.setState({isLoading: true});
-        AuthService.logOut().then((data) => {
-            this.props.history.push(URLS.landing);
-        });
+        AuthService.logOut();
+        this.props.history.push(URLS.landing);
     }
 
     render(){

@@ -10,9 +10,10 @@ export default {
     login: '/logg-inn/',
     laws: '/lover/',
     newlanding: '/newlanding/',
-    registration: '/arrangementer/',
+    signup: '/ny-bruker/',
 
     admin: '/admin/',
+    userAdmin: '/admin/brukere/',
     eventAdmin: '/admin/arrangementer/',
     jobpostsAdmin: '/admin/karriere/',
 };

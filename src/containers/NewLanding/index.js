@@ -192,7 +192,7 @@ class NewLanding extends Component {
                                 :
                                 <div className={classes.topButtonContainer}>
                                     <Link to={URLS.login} className={classes.topLink}><Button className={classes.topButton} variant='contained' color='inherit'>Logg inn</Button></Link>
-                                    {/* <Link to={URLS.login} className={classes.topButtonSecondary} variant='contained' color='inherit'>Opprett bruker ></Link> */}
+                                    <Link to={URLS.signup} className={classes.topButtonSecondary} variant='contained' color='inherit'>Opprett bruker ></Link>
                                 </div>
                                 }
                             </div>
@@ -222,12 +222,6 @@ class NewLanding extends Component {
                             <Typography variant='h4' color="inherit" align="center" className={classes.margining} >Arrangementer</Typography>
                             <Calender className={classes.calendar}></Calender>
                         </div>
-                    </div>
-
-                    <div className={classes.section}>
-                        <Typography className={classes.verticalMargin} variant='h5' color='inherit' align='center'>Got feedback?</Typography>
-                        <div>Fortell oss hva du syns om den nye siden vår (bugs, new features...etc)</div>
-                        <a className={classes.button} href="https://docs.google.com/forms/d/e/1FAIpQLSfp8ZUm-GfzMla0Hg4AeX0iO8HME8ez7TttY2MgUfpC8MzBIQ/viewform">Klikk her</a>
                     </div>
                 </Grid>
             </Navigation>

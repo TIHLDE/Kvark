@@ -18,6 +18,7 @@ import Button from '@material-ui/core/Button';
 import ServiceBanner from '../../assets/img/ServiceBanner.jpg';
 import EventAdminIcon from '../../assets/icons/eventadmin.svg';
 import JobPostAdminIcon from '../../assets/icons/jobpostadmin.svg';
+import UserAdminIcon from '../../assets/icons/useradmin.svg';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
@@ -81,7 +82,7 @@ class Admin extends Component {
         }
     }
 
-    loadIsGroupMember = () => {
+    loadIsGroupMember() {
         UserService.isGroupMember().then((groups) => {
             this.setState({groups: groups});
         });
@@ -114,9 +115,11 @@ class Admin extends Component {
                             <Link to={URLS.jobpostsAdmin}><Button className={classes.button} variant='contained' color='primary'>Administrer jobbannonser</Button></Link>
                         </InfoCard>
                         }
-                        {/* <InfoCard header='Grupper' text={Text.groups} src={VirtualIcon} classes={{children: classes.flex}} justifyText>
-                            <Link to={URLS.}><Button className={classes.button} variant='contained' color='primary'>Gå til grupper</Button></Link>
-                        </InfoCard> */}
+                        {/* { (this.state.groups && (this.state.groups.isHS || this.state.groups.isDevkom)) &&
+                        <InfoCard header='Medlemmer' text={Text.users} src={UserAdminIcon} classes={{children: classes.flex}} justifyText>
+                            <Link to={URLS.userAdmin}><Button className={classes.button} variant='contained' color='primary'>Administrer medlemmer</Button></Link>
+                        </InfoCard>
+                        } */}
                     </div>
                 </Grid>
             </Navigation>

@@ -20,6 +20,7 @@ import EventDetails from './containers/EventDetails';
 import Companies from './containers/Companies';
 import About from './containers/About';
 import Admin from './containers/Admin';
+import UserAdmin from './containers/UserAdmin';
 import Events from './containers/Events';
 import Services from './containers/Services';
 import EventAdministration from './containers/EventAdministration';
@@ -32,8 +33,9 @@ import LogIn from './containers/LogIn';
 import Laws from './containers/Laws';
 import NewLanding from './containers/NewLanding';
 import Http404 from './containers/Http404';
-import Registration from './containers/Registration';
+import EventRegistration from './containers/EventRegistration';
 import UserService from './api/services/UserService';
+import SignUp from './containers/SignUp';
 
 // The user needs to be authorized (logged in and member of an authorized group) to access these routes
 const RequireAuth = (Component, accessGroups) => { 
@@ -86,7 +88,7 @@ const Application = (
                 { GA.init() && <GA.RouteTracker /> }
                 <Switch>
                     <Route exact path='/' component={NewLanding} />
-                    <Route path={URLS.registration.concat(':id/registrering')} component={Registration} />
+                    <Route path={URLS.events.concat(':id/registrering')} component={EventRegistration} />
                     <Route path={URLS.events.concat(':id/')} component={EventDetails} />
                     <Route path={URLS.about} component={About} />
                     <Route path={URLS.events} component={Events} />
@@ -99,10 +101,12 @@ const Application = (
                     <Route path={URLS.laws} component={Laws} />
                     
                     <Route exact path={URLS.admin} component={RequireAuth(Admin, ["HS", "Promo", "Nok", "Devkom"])} />
+                    <Route path={URLS.userAdmin} component={RequireAuth(UserAdmin, ["HS", "Devkom"])} />
                     <Route path={URLS.jobpostsAdmin} component={RequireAuth(JobPostAdministration, ["HS", "Nok", "Devkom"])} />
                     <Route path={URLS.eventAdmin} component={RequireAuth(EventAdministration, ["HS", "Promo", "Nok", "Devkom"])} />
 
                     <Route path={URLS.login} component={LogIn} />
+                    <Route path={URLS.signup} component={SignUp} />
 
                     <Route component={Http404} />
 

@@ -5,5 +5,6 @@ export default {
 
     events: 'Opprett, endre og slett arrangementer.',
     jobposts: 'Opprett, endre og slett jobbannonser.',
+    users: 'Aktiver, fjern og søk etter medlemmer',
     groups: 'Administrer medlemsskap av grupper',
 };

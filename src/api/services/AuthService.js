@@ -6,6 +6,16 @@ import UserService from './UserService';
 
 class AuthService {
 
+    static createUser = (data) => {
+        const response = AUTH.createUser(data).response();
+        return response.then((data) => {
+            if (data) {
+                return data;
+            }
+            return null;
+        });
+    };
+
     static logIn = (username, password) => {
         const response = AUTH.authenticate(username, password).response();
         return response.then((data) => {
@@ -29,12 +39,9 @@ class AuthService {
         }
 
         // Log out
-        const response = AUTH.logout().response();
-        return response.then((data) => {
-            TOKEN.remove();
-            UserActions.clearData()(store.dispatch);
-            return data;
-        })
+        TOKEN.remove();
+        UserActions.clearData()(store.dispatch);
+        return;
     }
 }
 

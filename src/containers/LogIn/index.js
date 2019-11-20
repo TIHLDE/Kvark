@@ -31,7 +31,7 @@ const styles = {
     },
     top: {
         height: 160,
-        backgroundImage: 'linear-gradient(90deg, #C02425, #a161a4)',
+        backgroundImage: 'linear-gradient(90deg, #FF8235, #30E8BF)',
     },
     main: {
         maxWidth: 1000,

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import EventService from '../../api/services/EventService';
 
 // Text imports
-import Text from '../../text/RegistrationText';
+import Text from '../../text/EventRegistrationText';
 
 // Material UI Components
 import Paper from '@material-ui/core/Paper';
@@ -50,7 +50,7 @@ const styles = {
     }
 };
 
-class Registration extends Component {
+class EventRegistration extends Component {
 
     constructor() {
         super();
@@ -154,9 +154,9 @@ class Registration extends Component {
     }
 }
 
-Registration.propTypes = {
+EventRegistration.propTypes = {
     classes: PropTypes.object,
 };
 
-export default withStyles(styles)(Registration);
+export default withStyles(styles)(EventRegistration);
 
