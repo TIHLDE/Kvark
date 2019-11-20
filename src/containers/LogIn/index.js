@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import Link from 'react-router-dom/Link';
 import URLS from '../../URLS';
 
 // Service and action imports
@@ -39,10 +40,10 @@ const styles = {
         position: 'relative',
     },
     paper: {
-        width: '75%',
+        width: '90%',
         maxWidth: 460,
         margin: 'auto',
-        position: 'absolute',
+        position: 'relative',
         left: 0, right: 0,
         top: '-60px',
         padding: 28,
@@ -54,11 +55,19 @@ const styles = {
         display: 'block',
         marginBottom: 10,
     },
-    mt: {marginTop: 16},
+    mt: {
+        marginTop: 16,
+        width: '100%',
+    },
     progress: {
         position: 'absolute',
         top: 0, left: 0, right: 0,
-    }
+    },
+    buttonLink: {
+        width: 'fit-content',
+        textDecoration: 'none',
+        width: '100%',
+    },
 };
 
 class LogIn extends Component {
@@ -145,6 +154,14 @@ class LogIn extends Component {
                                         type='submit'>
                                     Logg inn
                                     </Button>
+                                    <Link to={URLS.signup} className={classes.buttonLink}>
+                                        <Button className={classes.mt}
+                                            color='primary'
+                                            disabled={this.state.isLoading}
+                                            type='submit'>
+                                            Opprett bruker
+                                        </Button>
+                                    </Link>
                                 </Grid>
                             </form>
                         </Paper>
