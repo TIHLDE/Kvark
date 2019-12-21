@@ -3,6 +3,8 @@ import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import moment from 'moment';
+import Link from 'react-router-dom/Link';
+import URLS from '../../../URLS';
 
 // API imports
 import EventService from '../../../api/services/EventService';
@@ -60,7 +62,13 @@ const styles = (theme) => ({
     margin: {
         margin: '10px 0px',
     },
-    mr: {marginRight: 10},
+    mr: {
+        marginRight: 10,
+        marginBottom: 5,
+    },
+    link: {
+        textDecoration: 'none',
+    },
     snackbar: {
         marginTop: 44,
         backgroundColor: theme.palette.error.main,
@@ -520,11 +528,12 @@ class EventAdministrator extends Component {
                                                   <div>
                                                       <Button className={classes.mr} onClick={this.editEventItem} variant='contained' type='submit' color='primary'>Lagre</Button>
                                                       <Button className={classes.mr} variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
-                                                      <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showParticipants')}>Se påmeldte</Button>
+                                                      <Button className={classes.mr} variant='outlined' color='primary' onClick={this.handleToggleChange('showParticipants')}>Se påmeldte</Button>
+                                                      <Link to={URLS.events.concat(selectedEventId).concat('/registrering/')} className={classes.link}><Button className={classes.mr} variant='outlined' color='primary'>Registrer ankomne</Button></Link>
                                                   </div>
                                                   <div>
                                                       <Button disabled={selectedEvent.closed && true} className={classNames(classes.mr, classes.deleteButton)} onClick={this.closeEvent} variant='outlined'>Steng</Button>
-                                                      <Button className={classes.deleteButton} onClick={this.deleteEventItem} variant='outlined'>Slett</Button>
+                                                      <Button className={classNames(classes.mr, classes.deleteButton)} onClick={this.deleteEventItem} variant='outlined'>Slett</Button>
                                                   </div>
                                               </Fragment>
                                           }
