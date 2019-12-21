@@ -41,7 +41,7 @@ export default {
         return new IRequest('DELETE', 'events/'.concat(id,'/users/', item.user_id, '/'), undefined, true);
     },
     updateUserEvent: (id, item) => {
-      return new IRequest('PUT', 'events/'.concat(id,'/users/', item.user_id), item, true);
+      return new IRequest('PUT', 'events/'.concat(id,'/users/', item.user_id, '/'), item, true);
     },
     getUserEventObject: (id, item) => {
       return new IRequest('GET', 'events/'.concat(id, '/users/', item.user_id, '/'), undefined, true);
