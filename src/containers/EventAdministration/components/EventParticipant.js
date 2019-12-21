@@ -63,13 +63,13 @@ const EventParticipant = (props) => {
   const [checkedState, setCheckedState] = useState(attended);
   const userInfo = props.user.user_info;
 
-  const deleteHandler = (event) => {
-    removeUserFromEvent(props.user.user_id, event);
+  const deleteHandler = () => {
+    removeUserFromEvent(props.user.user_info.user_id, event);
   };
 
   const handleCheck = (actionEvent) => {
     setCheckedState(actionEvent.target.checked);
-    toggleUserEvent(props.user.user_id, event, {has_attended: actionEvent.target.checked});
+    toggleUserEvent(props.user.user_info.user_id, event, {has_attended: actionEvent.target.checked});
   };
 
   // toggleUserEvent(props.user_id, event, {has_attended: !attended})
@@ -97,11 +97,11 @@ const EventParticipant = (props) => {
           {!waitList ?
             <ArrowDownwardIcon
               className={classes.arrowButton}
-              onClick={() => {toggleUserEvent(props.user.user_id, event, {is_on_wait: true});}} />
+              onClick={() => {toggleUserEvent(props.user.user_info.user_id, event, {is_on_wait: true});}} />
             :
             <ArrowUpwardIcon
             className={classes.arrowButton}
-            onClick={() => {toggleUserEvent(props.user.user_id, event, {is_on_wait: false});}}/>
+            onClick={() => {toggleUserEvent(props.user.user_info.user_id, event, {is_on_wait: false});}}/>
           }
           <Delete className={classes.deleteButton} onClick={deleteHandler} />
         </div>

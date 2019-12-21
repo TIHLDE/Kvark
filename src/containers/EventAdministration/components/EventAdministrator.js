@@ -371,7 +371,7 @@ class EventAdministrator extends Component {
       EventService.deleteUserFromEventList(event.id, {user_id: user_id}).then((result) => {
         this.setState((oldState) => {
           const newParticipants = oldState.participants.filter((user) => {
-            if (user.user_id !== user_id) return user
+            if (user.user_info.user_id !== user_id) return user
             return false
           });
           return {
@@ -394,12 +394,11 @@ class EventAdministrator extends Component {
           // Change the state to reflect the database data.
           const newParticipants = oldState.participants.map((user) => {
             let newUser = user;
-            if (user.user_id === user_id) {
+            if (user.user_info.user_id === user_id) {
               newUser = {...newUser, ...parameters};
             }
-            return newUser
+            return newUser;
           })
-
           return {participants: newParticipants};
         })
       }).catch((error) => {
