@@ -95,7 +95,6 @@ const style = {
   },
   text: {
     paddingBottom: 25,
-    alignObject: 'flex-start',
   },
   progress: {
     margin: 26,
@@ -153,7 +152,7 @@ const EventDialog = (props) => {
       open={props.status}
       onClose={props.onClose}>
       <Paper className={classes.paper} square>
-          {!isApplying && message === '' &&
+          {!isApplying && !userEvent && message === '' &&
           <React.Fragment>
             <DialogHeader classes={classes} heading={Text.signUp} />
             <div className={classes.content}>
@@ -186,11 +185,14 @@ const EventDialog = (props) => {
           </React.Fragment>
           }
           {!isApplying && userEvent && message === '' &&
-            <div className={classes.content}>
-              <div className={classes.text}>
-                <Typography>Er du sikker på at du vil melde deg av? Handlingen kan ikke angres.</Typography>
+            <React.Fragment>
+              <DialogHeader classes={classes} heading={Text.signOff} />
+              <div className={classes.content}>
+                <div>
+                  <Typography>Er du sikker på at du vil melde deg av? Om du melder deg på igjen vil du havne på bunnen av en eventuell venteliste.</Typography>
+                </div>
               </div>
-            </div>
+            </React.Fragment>
           }
           {isApplying &&
           <React.Fragment>
