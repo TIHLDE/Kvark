@@ -56,21 +56,7 @@ class EventDetails extends Component {
             if(!event) {
                 this.props.history.replace('/'); // Redirect to landing page given id is invalid
             } else {
-                // Get the number of participants
-                let participantsCount = await EventService.getEventParticipants(id)
-                .catch((error) => {
-                  return error;
-                });
-
-                // Set to 0 if we have noe valid data.
-                if (participantsCount.length === undefined) {
-                  participantsCount = 0
-                } else {
-                  participantsCount = participantsCount.length
-                }
-
-                // Update state
-                this.setState({isLoading: false, event: {...event, participantsCount: participantsCount}});
+                this.setState({isLoading: false, event: {...event}});
             }
         });
     };
@@ -94,13 +80,16 @@ class EventDetails extends Component {
     applyToEvent = () => {
       const {event, user, userEvent} = this.state;
       this.setState({isApplying: true});
-
       if (!userEvent) {
         // Apply to event
         return EventService.putUserOnEventList(event.id, user).then((result) => {
           this.setState((oldState) => {
             let newEvent = oldState.event;
-            newEvent.participantsCount++;
+            if (newEvent.limit <= newEvent.list_count) {
+              newEvent.waiting_list_count++;
+            } else {
+              newEvent.list_count++;
+            }
             user.events.push(newEvent);
             UserService.updateUserEvents(user.events);
             return {message: 'Påmelding registrert!', event: newEvent, applySuccess: true}
@@ -116,7 +105,11 @@ class EventDetails extends Component {
         return EventService.deleteUserFromEventList(event.id, user).then((result) => {
           this.setState((oldState) => {
             let newEvent = oldState.event;
-            newEvent.participantsCount--;
+            if (userEvent.is_on_wait) {
+              newEvent.waiting_list_count--;
+            } else {
+              newEvent.list_count--;
+            }
             for (var i = 0; i < user.events.length; i++){ 
               if (user.events[i].id === newEvent.id) {
                 user.events.splice(i, 1); 
@@ -130,10 +123,7 @@ class EventDetails extends Component {
         }).then(() => {
           this.setState({isApplying: false});
         });
-
-
       }
-
     }
 
     // Clear the message

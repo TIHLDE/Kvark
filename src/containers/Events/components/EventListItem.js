@@ -33,11 +33,9 @@ const styles = {
     },
     src: {
         objectFit: 'cover',
-        padding: 4,
-        border: '1px solid whitesmoke',
-        height: 70,
-        minWidth: 70,
-        width: 70,
+        height: 80,
+        minWidth: 80,
+        width: 80,
     },
     content: {
         marginLeft: 26,

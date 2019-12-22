@@ -37,7 +37,6 @@ const styles = (theme) => ({
   },
   eventImage: {
     objectFit: 'cover',
-    border: '1px solid whitesmoke',
     height: 80,
     width: 80,
   },
@@ -50,8 +49,11 @@ const styles = (theme) => ({
     flexWrap: 'wrap',
     alignItems: 'center',
     textAlign: 'left',
-    width: 150,
     overflow: 'hidden',
+    width: 150,
+    '@media only screen and (max-width: 700px)': {
+      width: 'unset',
+    },
   },
   eventContainer: {
     display: 'flex',
@@ -108,7 +110,7 @@ class ProfileEvents extends Component {
     const imageAlt = event.image_alt ? event.image_alt : event.title;
 
     return (
-      <LinkButton key={key} noPadding to={'/arrangementer/' + event.id + '/'}>
+      <LinkButton noPadding to={'/arrangementer/' + event.id + '/'}>
         <div className={classes.eventListRow}>
           <div className={classes.eventImageContainer}>
             <img className={classes.eventImage} src={src} alt={imageAlt} />
@@ -144,8 +146,8 @@ class ProfileEvents extends Component {
         {this.state.events && this.state.events.map((eventData, key) => {
           if (eventData.closed === false && eventData.expired === false) {
             return (
-              <div className={classes.wrapper}>
-                {this.item(eventData, key)}
+              <div key={key} className={classes.wrapper}>
+                {this.item(eventData)}
               </div>
             )
           }

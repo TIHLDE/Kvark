@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import classNames from 'classnames';
 
 // Text
 import Text from '../../../text/EventText';
@@ -17,7 +18,8 @@ import Button from '@material-ui/core/Button';
 import Calendar from '@material-ui/icons/CalendarToday';
 import Location from '@material-ui/icons/LocationOn';
 import Time from '@material-ui/icons/AccessTime';
-import Group from '@material-ui/icons/Group';
+import Persons from '@material-ui/icons/PeopleOutline';
+import Timer from '@material-ui/icons/Timer';
 
 // Project Components
 import MarkdownRenderer from '../../../components/miscellaneous/MarkdownRenderer';
@@ -65,6 +67,7 @@ const styles = {
     },
     details: {
         padding: 26,
+        paddingBottom: '8px',
         '@media only screen and (max-width: 800px)': {
             order: 0,
         },
@@ -79,6 +82,14 @@ const styles = {
     },
     ml: {marginLeft: 10},
     mt: {marginTop: 10},
+    waitlistContainer: {
+      margin: '10px auto',
+      textAlign: 'center',
+      padding: '5px',
+    },
+    redText: {
+      color: '#cd0202',
+    },
 };
 
 const InfoContent = withStyles(styles)((props) => (
@@ -87,10 +98,9 @@ const InfoContent = withStyles(styles)((props) => (
         <Typography className={props.classes.ml} variant='subtitle1'>{props.label}</Typography>
     </Grid>
 ));
-
 InfoContent.propTypes = {
-    icon: PropTypes.node,
-    label: PropTypes.string,
+  icon: PropTypes.node,
+  label: PropTypes.string,
 };
 
 const EventRenderer = (props) => {
@@ -128,6 +138,10 @@ const EventRenderer = (props) => {
       clearMessage();
     };
 
+    const limit = data.limit;
+    const attending = data.list_count;
+    const onWait = data.waiting_list_count;
+
     return (
         <Paper className={classes.img} square>
             {modalShow === true && userData &&
@@ -150,7 +164,8 @@ const EventRenderer = (props) => {
                     <InfoContent icon={<Calendar />} label={start.format('DD.MM.YYYY')} />
                     <InfoContent icon={<Time />} label={start.format('HH:mm')} />
                     <InfoContent icon={<Location />} label={data.location} />
-                    <InfoContent icon={<Group />} label={String(data.participantsCount)} />
+                    <InfoContent icon={<Persons />} label={attending + '/' + limit} />
+                    <InfoContent icon={<Timer />} label={onWait + ''} />
                     {data.price && <InfoContent icon={<Time />} label={data.price} />}
                     {data.sign_up && today <= start &&
                       <React.Fragment>
@@ -178,6 +193,10 @@ const EventRenderer = (props) => {
                         }
                       </React.Fragment>
                     }
+                    {(userEvent && userEvent.is_on_wait) &&
+                      <div className={classes.waitlistContainer}>
+                        <Typography className={classes.redText} variant='subtitle1'>Du er på ventelisten</Typography>
+                      </div>}
                 </div>
                 <div className={classes.content}>
                     <MarkdownRenderer value={description} />

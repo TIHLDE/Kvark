@@ -41,7 +41,6 @@ const styles = (theme) => ({
   },
   eventImage: {
     objectFit: 'cover',
-    border: '1px solid whitesmoke',
     height: 80,
     width: 80,
   },
@@ -56,6 +55,9 @@ const styles = (theme) => ({
     textAlign: 'left',
     width: 150,
     overflow: 'hidden',
+    '@media only screen and (max-width: 700px)': {
+      width: 'unset',
+    },
   },
   eventContainer: {
     display: 'flex',
