@@ -16,6 +16,10 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import Slide from '@material-ui/core/Slide';
+
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 
@@ -27,6 +31,7 @@ const styles = {
     top: {
         height: 160,
         backgroundImage: 'linear-gradient(90deg, #f80759, #500e60)',
+        transition: '2s',
     },
     main: {
         maxWidth: 1000,
@@ -47,7 +52,22 @@ const styles = {
     progress: {
         position: 'absolute',
         top: 0, left: 0, right: 0,
-    }
+    },
+    snackbar: {
+        bottom: '20px',
+        position: 'fixed',
+        borderRadius: '4px',
+        backgroundColor: 'white',
+        color: 'black',
+        textAlign: 'center',
+        maxWidth: '75%',
+        display: 'flex',
+        justifyContent: 'center',
+
+        '@media only screen and (min-width: 600px)': {
+            whiteSpace: 'nowrap',
+        },
+    },
 };
 
 class EventRegistration extends Component {
@@ -58,6 +78,10 @@ class EventRegistration extends Component {
             errorMessage: null,
             isLoading: false,
             eventName: '',
+
+            open: false,
+            Transition: Slide,
+            snackbarMessage: "",
         };
 
         this.username = React.createRef();
@@ -103,11 +127,18 @@ class EventRegistration extends Component {
         this.setState({errorMessage: null, isLoading: true});
         EventService.putAttended(event_id, body, username).then((data) => {
             if(data.detail === "User event successfully updated.") {
-                this.setState({isLoading: false});
                 this.username.value = '';
+
+                this.setState({ snackbarMessage: 'Velkommen! Du er registrert ankommet!', open: true, isLoading: false });
             } else {
                 this.setState({errorMessage: Text.wrongCred, isLoading: false})
             }
+        });
+    }
+
+    handleSnackbarClose = () => {
+        this.setState({
+            open: false,
         });
     }
 
@@ -149,6 +180,9 @@ class EventRegistration extends Component {
                         </Paper>
                     </div>
                 </div>
+                <Snackbar open={this.state.open} onClose={this.handleSnackbarClose} TransitionComponent={this.state.Transition} autoHideDuration={3000}>
+                    <SnackbarContent className={classes.snackbar} message={this.state.snackbarMessage} />
+                </Snackbar>
             </Navigation>
         );
     }

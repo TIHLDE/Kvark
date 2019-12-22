@@ -118,6 +118,14 @@ const styles = (theme) => ({
         borderRadius: '4px',
         backgroundColor: 'white',
         color: 'black',
+        textAlign: 'center',
+        maxWidth: '90%',
+        display: 'flex',
+        justifyContent: 'center',
+
+        '@media only screen and (min-width: 600px)': {
+            whiteSpace: 'nowrap',
+        },
     },
 });
 
