@@ -164,8 +164,8 @@ const EventRenderer = (props) => {
                     <InfoContent icon={<Calendar />} label={start.format('DD.MM.YYYY')} />
                     <InfoContent icon={<Time />} label={start.format('HH:mm')} />
                     <InfoContent icon={<Location />} label={data.location} />
-                    <InfoContent icon={<Persons />} label={attending + '/' + limit} />
-                    <InfoContent icon={<Timer />} label={onWait + ''} />
+                    {data.sign_up && <InfoContent icon={<Persons />} label={attending + '/' + limit} /> }
+                    {data.sign_up && <InfoContent icon={<Timer />} label={onWait + ''} /> }
                     {data.price && <InfoContent icon={<Time />} label={data.price} />}
                     {data.sign_up && today <= start &&
                       <React.Fragment>
