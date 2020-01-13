@@ -13,6 +13,7 @@ import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 
 // Icons
 import Calendar from '@material-ui/icons/CalendarToday';
@@ -90,17 +91,24 @@ const styles = {
     redText: {
       color: '#cd0202',
     },
+    tooltip: {
+      top: '-75px !important',
+      zIndex: 10002,
+    },
 };
 
 const InfoContent = withStyles(styles)((props) => (
     <Grid className={props.classes.info} container direction='row' wrap='nowrap' alignItems='center' justify='flex-start'>
-        {props.icon}
+        <Tooltip classes={{ popper: props.classes.tooltip }} title={props.title}>
+          {props.icon}
+        </Tooltip>
         <Typography className={props.classes.ml} variant='subtitle1'>{props.label}</Typography>
     </Grid>
 ));
 InfoContent.propTypes = {
   icon: PropTypes.node,
   label: PropTypes.string,
+  title: PropTypes.string,
 };
 
 const EventRenderer = (props) => {
@@ -161,11 +169,11 @@ const EventRenderer = (props) => {
             <div className={classes.grid} >
 
                 <div className={classes.details}>
-                    <InfoContent icon={<Calendar />} label={start.format('DD.MM.YYYY')} />
-                    <InfoContent icon={<Time />} label={start.format('HH:mm')} />
-                    <InfoContent icon={<Location />} label={data.location} />
-                    <InfoContent icon={<Persons />} label={attending + '/' + limit} />
-                    <InfoContent icon={<Timer />} label={onWait + ''} />
+                    <InfoContent title="Dag" icon={<Calendar />} label={start.format('DD.MM.YYYY')} />
+                    <InfoContent title="Klokkeslett" icon={<Time />} label={start.format('HH:mm')} />
+                    <InfoContent title="Sted" icon={<Location />} label={data.location} />
+                    <InfoContent title="Deltagere" icon={<Persons />} label={attending + '/' + limit} />
+                    <InfoContent title="Venteliste" icon={<Timer />} label={onWait + ''} />
                     {data.price && <InfoContent icon={<Time />} label={data.price} />}
                     {data.sign_up && today <= start &&
                       <React.Fragment>
