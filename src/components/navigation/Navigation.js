@@ -25,6 +25,8 @@ import IconButton from '@material-ui/core/IconButton';
 
 import Skeleton from '@material-ui/lab/Skeleton';
 
+import Tooltip from '@material-ui/core/Tooltip';
+
 // Assets/Icons
 import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO.png';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -218,6 +220,10 @@ const styles = {
         width: 'calc(100% - 10px)',
         backgroundColor: 'rgba(0, 0, 0, 0.25)',
     },
+    tooltip: {
+        top: '-75px !important',
+        zIndex: 10002,
+    },
 };
 
 
@@ -363,7 +369,9 @@ class Navigation extends Component {
 
                             <Hidden mdUp implementation='css'>
                                 <div className={classes.menuWrapper}>
-                                    <IconButton className={classes.menuButton} onClick={this.toggleSidebar}><MenuIcon /></IconButton>
+                                    <Tooltip classes={{ popper: classes.tooltip }} title="Meny">
+                                        <IconButton className={classes.menuButton} onClick={this.toggleSidebar}><MenuIcon /></IconButton>
+                                    </Tooltip>
                                 </div>
                             </Hidden>
 

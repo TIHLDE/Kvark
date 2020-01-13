@@ -13,6 +13,7 @@ import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 
 // Icons
 import Business from '@material-ui/icons/Business';
@@ -41,7 +42,6 @@ const styles = {
         backgroundColor: 'white',
     },
     imageWrapper: {
-        padding: 12,
         maxHeight: 454,
         overflow: 'hidden',
     },
@@ -84,12 +84,18 @@ const styles = {
     emailLink: {
         color: 'var(--tihlde-blaa)',
         cursor: 'pointer',
-    }
+    },
+    tooltip: {
+      top: '-75px !important',
+      zIndex: 10002,
+    },
 };
 
 const InfoContent = withStyles(styles)((props) => (
     <Grid className={classNames(props.className, props.classes.info)} container direction='row' wrap='nowrap' alignItems='center' justify='flex-start'>
-        {props.icon !== undefined && props.icon}
+        <Tooltip classes={{ popper: props.classes.tooltip }} title={props.title}>
+          {props.icon}
+        </Tooltip>
         <Typography className={props.icon ? props.classes.ml : ''} variant='subtitle1'>{props.label}</Typography>
     </Grid>
 ));
@@ -134,9 +140,9 @@ const JobPostRenderer = (props) => {
                     </div>
 
                     <Divider className={classes.mb} />
-                    <InfoContent icon={<Business />} label={<strong>{data.company}</strong>} />
-                    <InfoContent icon={<Time />} label={deadline} />
-                    <InfoContent className={classes.mb} icon={<Location />} label={data.location} />
+                    <InfoContent title="Bedrift" icon={<Business />} label={<strong>{data.company}</strong>} />
+                    <InfoContent title="Søknadsfrist" icon={<Time />} label={deadline} />
+                    <InfoContent title="Sted" className={classes.mb} icon={<Location />} label={data.location} />
 
                     {data.email &&
                         <Fragment>
