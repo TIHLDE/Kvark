@@ -116,8 +116,10 @@ const EventRenderer = (props) => {
       data,
       userData,
       userEvent,
+      userEventLoaded,
       applyToEvent,
       isLoadingUserData,
+      isLoadingEvent,
       isApplying,
       message,
       applySuccess,
@@ -151,7 +153,7 @@ const EventRenderer = (props) => {
 
     // Buttons for applying and unapplying to events.
     let applyButton = null;
-    if (!isLoadingUserData) {
+    if (!isLoadingUserData && !isLoadingEvent && userEventLoaded) {
         applyButton = (
           <Button
             fullWidth
@@ -211,9 +213,11 @@ EventRenderer.propTypes = {
     data: PropTypes.object.isRequired,
     userData: PropTypes.object,
     userEvent: PropTypes.object,
+    userEventLoaded: PropTypes.bool,
     history: PropTypes.object,
     applyToEvent: PropTypes.func,
     isLoadingUserData: PropTypes.bool,
+    isLoadingEvent: PropTypes.bool,
     isApplying: PropTypes.bool,
     message: PropTypes.string,
     applySuccess: PropTypes.bool,
