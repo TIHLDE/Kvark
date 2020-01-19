@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import classNames from 'classnames';
 
 // Text
 import Text from '../../../text/EventText';
@@ -150,6 +149,22 @@ const EventRenderer = (props) => {
     const attending = data.list_count;
     const onWait = data.waiting_list_count;
 
+    // Buttons for applying and unapplying to events.
+    let applyButton = null;
+    if (!isLoadingUserData) {
+        applyButton = (
+          <Button
+            fullWidth
+            disabled={isLoadingUserData}
+            className={classes.mt}
+            variant='contained'
+            onClick={openEventModal}
+            color={userEvent ? 'secondary' : 'primary'}>
+            {userEvent ? Text.signOff : Text.signUp}
+          </Button>
+        );
+    }
+
     return (
         <Paper className={classes.img} square>
             {modalShow === true && userData &&
@@ -176,30 +191,7 @@ const EventRenderer = (props) => {
                     {data.sign_up && <InfoContent title="Venteliste" icon={<Timer />} label={onWait + ''} /> }
                     {data.price && <InfoContent icon={<Time />} label={data.price} />}
                     {data.sign_up && today <= start &&
-                      <React.Fragment>
-                        {!userEvent &&
-                          <Button
-                            fullWidth
-                            disabled={isLoadingUserData}
-                            className={classes.mt}
-                            variant='contained'
-                            onClick={openEventModal}
-                            color='primary'>
-                            {Text.signUp}
-                          </Button>
-                        }
-                        {userEvent &&
-                          <Button
-                            fullWidth
-                            disabled={isLoadingUserData}
-                            className={classes.mt}
-                            variant='contained'
-                            onClick={openEventModal}
-                            color='secondary'>
-                            {Text.signOff}
-                          </Button>
-                        }
-                      </React.Fragment>
+                      applyButton
                     }
                     {(userEvent && userEvent.is_on_wait) &&
                       <div className={classes.waitlistContainer}>
