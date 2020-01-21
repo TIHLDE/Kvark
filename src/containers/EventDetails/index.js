@@ -160,13 +160,13 @@ class EventDetails extends Component {
         this.loadUserData();
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        const {event, userEventLoaded, user} = prevState;
+    componentDidUpdate() {
+        const {event, userEventLoaded, user} = this.state;
         if (!userEventLoaded && event && user){
-          console.log(prevState)
-          this.loadUserEvent(prevState);
+          this.loadUserEvent(this.state);
+        } else if (!userEventLoaded && event && !AuthService.isAuthenticated()) {
+          this.setState({userEventLoaded: true});
         }
-
     }
 
     render() {

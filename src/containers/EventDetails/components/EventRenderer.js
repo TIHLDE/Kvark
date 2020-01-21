@@ -153,16 +153,35 @@ const EventRenderer = (props) => {
 
     // Buttons for applying and unapplying to events.
     let applyButton = null;
-    if (!isLoadingUserData && !isLoadingEvent && userEventLoaded) {
+    if (data.closed) {
+        applyButton = (
+        <Typography align='center' color='error'>{Text.closed}</Typography>
+        );
+    } else if (!data.sign_up) {
+      applyButton = (
+      <Typography align='center'>{Text.inactive}</Typography>
+      );
+    } else if (!isLoadingUserData && !isLoadingEvent && userEventLoaded) {
         applyButton = (
           <Button
             fullWidth
-            disabled={isLoadingUserData}
             className={classes.mt}
             variant='contained'
             onClick={openEventModal}
             color={userEvent ? 'secondary' : 'primary'}>
             {userEvent ? Text.signOff : Text.signUp}
+          </Button>
+        );
+    } else {
+        applyButton = (
+          <Button
+            fullWidth
+            disabled={true}
+            className={classes.mt}
+            variant='contained'
+            onClick={openEventModal}
+            color={'secondary'}>
+            {Text.loading}
           </Button>
         );
     }
@@ -192,7 +211,7 @@ const EventRenderer = (props) => {
                     {data.sign_up && <InfoContent title="Deltagere" icon={<Persons />} label={attending + '/' + limit} /> }
                     {data.sign_up && <InfoContent title="Venteliste" icon={<Timer />} label={onWait + ''} /> }
                     {data.price && <InfoContent icon={<Time />} label={data.price} />}
-                    {data.sign_up && today <= start &&
+                    {today <= start &&
                       applyButton
                     }
                     {(userEvent && userEvent.is_on_wait) &&
