@@ -36,11 +36,23 @@ class EventDetails extends Component {
             isLoading: false,
             userData: null,
             userEvent: null,
+            userEventLoaded: false,
             isLoadingUserData: false,
             isApplying: false,
             message: '',
             applySuccess: false,
         }
+    }
+
+    loadUserEvent = (prevState) => {
+      const {event, user} = prevState
+      EventService.getUserEventObject(event.id, user).then((result) => {
+          this.setState({userEvent: result});
+      }).catch(() => {
+          // Actions performed if the user is not attending the event
+      }).then(() => {
+          this.setState({userEventLoaded: true});
+      })
     }
 
     // Gets the event
@@ -76,7 +88,6 @@ class EventDetails extends Component {
 
     }
 
-
     applyToEvent = () => {
       const {event, user, userEvent} = this.state;
       this.setState({isApplying: true});
@@ -92,7 +103,12 @@ class EventDetails extends Component {
             }
             user.events.push(newEvent);
             UserService.updateUserEvents(user.events);
-            return {message: 'Påmelding registrert!', event: newEvent, applySuccess: true}
+            return {
+                message: 'Påmelding registrert!',
+                event: newEvent,
+                applySuccess: true,
+                userEventLoaded: false
+            }
           });
         }).catch(() => {
           this.setState({message: 'Kunne ikke registrere påmelding.', applySuccess: false});
@@ -116,7 +132,13 @@ class EventDetails extends Component {
               }
             }
             UserService.updateUserEvents(user.events);
-            return {message: 'Avmelding registrert 😢', event: newEvent, applySuccess: true, userEvent: null}
+            return {
+                message: 'Avmelding registrert 😢',
+                event: newEvent,
+                applySuccess: true,
+                userEvent: null,
+                userEventLoaded: false
+            }
           })
         }).catch(() => {
           this.setState({message: 'Kunne ikke registrere påmelding.', applySuccess: false});
@@ -139,12 +161,12 @@ class EventDetails extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        const {event, user, userEvent} = this.state
-        if (user && userEvent === null && event) {
-          EventService.getUserEventObject(event.id, user).then((result) => {
-            this.setState({userEvent: result});
-          })
+        const {event, userEventLoaded, user} = prevState;
+        if (!userEventLoaded && event && user){
+          console.log(prevState)
+          this.loadUserEvent(prevState);
         }
+
     }
 
     render() {
@@ -153,10 +175,12 @@ class EventDetails extends Component {
           event,
           user,
           isLoadingUserData,
+          isLoading,
           isApplying,
           message,
           applySuccess,
           userEvent,
+          userEventLoaded,
         } = this.state;
         const eventData = event || {};
         const userData = user;
@@ -170,9 +194,11 @@ class EventDetails extends Component {
                               data={eventData}
                               userData={userData}
                               userEvent={userEvent}
+                              userEventLoaded={userEventLoaded}
                               history={this.props.history}
                               applyToEvent={this.applyToEvent}
                               isLoadingUserData={isLoadingUserData}
+                              isLoadingEvent={isLoading}
                               isApplying={isApplying}
                               message={message}
                               applySuccess={applySuccess}
