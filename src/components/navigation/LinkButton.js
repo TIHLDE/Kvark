@@ -50,7 +50,7 @@ const LinkButton = (props) => {
 
   // React router Link do not support external links
   let baseComponent;
-  if (props.to.includes('http')) {
+  if (props.to.includes('http') || props.to.includes('mailto:')) {
     baseComponent = 'a';
   } else {
     baseComponent = RouterLink;
@@ -67,6 +67,11 @@ const LinkButton = (props) => {
     );
   }
 
+  let target;
+  if (props.target) {
+    target = props.target;
+  }
+
   return (
     <div className={classNames(classes.wrapper, noPadding ? null: classes.padding)}>
       <div className={classNames(classes.buttonFrame, textLeft ? classes.textLeft : classes.textCenter)}>
@@ -74,6 +79,7 @@ const LinkButton = (props) => {
           className={classNames('clickable', classes.button)}
           component={baseComponent}
           to={props.to}
+          target={target}
           href={props.to}>
             {props.icon && <div className={classes.iconContainer}>
               <IconComponent className={classes.icon} />
@@ -93,6 +99,7 @@ LinkButton.propTypes = {
   textLeft: PropTypes.bool,
   noText: PropTypes.bool,
   classes: PropTypes.object,
+  target: PropTypes.string,
 };
 
 export default withStyles(linkButtonStyles)(LinkButton);

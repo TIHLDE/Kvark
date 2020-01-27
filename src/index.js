@@ -19,6 +19,7 @@ import MiscService from './api/services/MiscService';
 import EventDetails from './containers/EventDetails';
 import Companies from './containers/Companies';
 import About from './containers/About';
+import ContactInfo from './containers/ContactInfo';
 import Admin from './containers/Admin';
 import UserAdmin from './containers/UserAdmin';
 import Events from './containers/Events';
@@ -91,6 +92,7 @@ const Application = (
                     <Route path={URLS.events.concat(':id/registrering')} component={EventRegistration} />
                     <Route path={URLS.events.concat(':id/')} component={EventDetails} />
                     <Route path={URLS.about} component={About} />
+                    <Route path={URLS.contactInfo} component={ContactInfo} />
                     <Route path={URLS.events} component={Events} />
                     <Route path={URLS.services} component={Services} />
                     <Route path={URLS.company} component={Companies} />

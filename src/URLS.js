@@ -3,6 +3,7 @@ export default {
     events: '/arrangementer/',
     company: '/bedrifter/',
     about: '/om/',
+    contactInfo: '/kontakt/',
     services: '/tjenester/',
     newStudent: '/nystudent/',
     jobposts: '/karriere/',
