@@ -37,6 +37,7 @@ import Http404 from './containers/Http404';
 import EventRegistration from './containers/EventRegistration';
 import UserService from './api/services/UserService';
 import SignUp from './containers/SignUp';
+import MessageGDPR from './components/miscellaneous/MessageGDPR';
 
 // The user needs to be authorized (logged in and member of an authorized group) to access these routes
 const RequireAuth = (Component, accessGroups) => { 
@@ -113,6 +114,7 @@ const Application = (
                     <Route component={Http404} />
 
                 </Switch>
+                <MessageGDPR />
             </MuiThemeProvider>
         </BrowserRouter>
     </Provider>
