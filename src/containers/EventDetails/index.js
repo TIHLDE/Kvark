@@ -36,11 +36,23 @@ class EventDetails extends Component {
             isLoading: false,
             userData: null,
             userEvent: null,
+            userEventLoaded: false,
             isLoadingUserData: false,
             isApplying: false,
             message: '',
             applySuccess: false,
         }
+    }
+
+    loadUserEvent = (prevState) => {
+      const {event, user} = prevState
+      EventService.getUserEventObject(event.id, user).then((result) => {
+          this.setState({userEvent: result});
+      }).catch(() => {
+          // Actions performed if the user is not attending the event
+      }).then(() => {
+          this.setState({userEventLoaded: true});
+      })
     }
 
     // Gets the event
@@ -56,21 +68,7 @@ class EventDetails extends Component {
             if(!event) {
                 this.props.history.replace('/'); // Redirect to landing page given id is invalid
             } else {
-                // Get the number of participants
-                let participantsCount = await EventService.getEventParticipants(id)
-                .catch((error) => {
-                  return error;
-                });
-
-                // Set to 0 if we have noe valid data.
-                if (participantsCount.length === undefined) {
-                  participantsCount = 0
-                } else {
-                  participantsCount = participantsCount.length
-                }
-
-                // Update state
-                this.setState({isLoading: false, event: {...event, participantsCount: participantsCount}});
+                this.setState({isLoading: false, event: {...event}});
             }
         });
     };
@@ -90,20 +88,27 @@ class EventDetails extends Component {
 
     }
 
-
     applyToEvent = () => {
       const {event, user, userEvent} = this.state;
       this.setState({isApplying: true});
-
       if (!userEvent) {
         // Apply to event
         return EventService.putUserOnEventList(event.id, user).then((result) => {
           this.setState((oldState) => {
             let newEvent = oldState.event;
-            newEvent.participantsCount++;
+            if (newEvent.limit <= newEvent.list_count) {
+              newEvent.waiting_list_count++;
+            } else {
+              newEvent.list_count++;
+            }
             user.events.push(newEvent);
             UserService.updateUserEvents(user.events);
-            return {message: 'Påmelding registrert!', event: newEvent, applySuccess: true}
+            return {
+                message: 'Påmelding registrert!',
+                event: newEvent,
+                applySuccess: true,
+                userEventLoaded: false
+            }
           });
         }).catch(() => {
           this.setState({message: 'Kunne ikke registrere påmelding.', applySuccess: false});
@@ -116,24 +121,31 @@ class EventDetails extends Component {
         return EventService.deleteUserFromEventList(event.id, user).then((result) => {
           this.setState((oldState) => {
             let newEvent = oldState.event;
-            newEvent.participantsCount--;
+            if (userEvent.is_on_wait) {
+              newEvent.waiting_list_count--;
+            } else {
+              newEvent.list_count--;
+            }
             for (var i = 0; i < user.events.length; i++){ 
               if (user.events[i].id === newEvent.id) {
                 user.events.splice(i, 1); 
               }
             }
             UserService.updateUserEvents(user.events);
-            return {message: 'Avmelding registrert 😢', event: newEvent, applySuccess: true, userEvent: null}
+            return {
+                message: 'Avmelding registrert 😢',
+                event: newEvent,
+                applySuccess: true,
+                userEvent: null,
+                userEventLoaded: false
+            }
           })
         }).catch(() => {
           this.setState({message: 'Kunne ikke registrere påmelding.', applySuccess: false});
         }).then(() => {
           this.setState({isApplying: false});
         });
-
-
       }
-
     }
 
     // Clear the message
@@ -148,12 +160,12 @@ class EventDetails extends Component {
         this.loadUserData();
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        const {event, user, userEvent} = this.state
-        if (user && userEvent === null && event) {
-          EventService.getUserEventObject(event.id, user).then((result) => {
-            this.setState({userEvent: result});
-          })
+    componentDidUpdate() {
+        const {event, userEventLoaded, user} = this.state;
+        if (!userEventLoaded && event && user){
+          this.loadUserEvent(this.state);
+        } else if (!userEventLoaded && event && !AuthService.isAuthenticated()) {
+          this.setState({userEventLoaded: true});
         }
     }
 
@@ -163,10 +175,12 @@ class EventDetails extends Component {
           event,
           user,
           isLoadingUserData,
+          isLoading,
           isApplying,
           message,
           applySuccess,
           userEvent,
+          userEventLoaded,
         } = this.state;
         const eventData = event || {};
         const userData = user;
@@ -180,9 +194,11 @@ class EventDetails extends Component {
                               data={eventData}
                               userData={userData}
                               userEvent={userEvent}
+                              userEventLoaded={userEventLoaded}
                               history={this.props.history}
                               applyToEvent={this.applyToEvent}
                               isLoadingUserData={isLoadingUserData}
+                              isLoadingEvent={isLoading}
                               isApplying={isApplying}
                               message={message}
                               applySuccess={applySuccess}

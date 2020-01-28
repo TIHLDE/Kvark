@@ -65,6 +65,9 @@ export const getUserStudy = (userStudy) => {
     case 4:
       userStudyText = 'DigSam';
       break;
+    case 5:
+      userStudyText = 'Drift';
+      break;
     default:
       userStudyText = 'Ikke oppgitt';
       break;

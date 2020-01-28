@@ -19,6 +19,7 @@ import MiscService from './api/services/MiscService';
 import EventDetails from './containers/EventDetails';
 import Companies from './containers/Companies';
 import About from './containers/About';
+import ContactInfo from './containers/ContactInfo';
 import Admin from './containers/Admin';
 import UserAdmin from './containers/UserAdmin';
 import Events from './containers/Events';
@@ -36,6 +37,7 @@ import Http404 from './containers/Http404';
 import EventRegistration from './containers/EventRegistration';
 import UserService from './api/services/UserService';
 import SignUp from './containers/SignUp';
+import MessageGDPR from './components/miscellaneous/MessageGDPR';
 
 // The user needs to be authorized (logged in and member of an authorized group) to access these routes
 const RequireAuth = (Component, accessGroups) => { 
@@ -91,6 +93,7 @@ const Application = (
                     <Route path={URLS.events.concat(':id/registrering')} component={EventRegistration} />
                     <Route path={URLS.events.concat(':id/')} component={EventDetails} />
                     <Route path={URLS.about} component={About} />
+                    <Route path={URLS.contactInfo} component={ContactInfo} />
                     <Route path={URLS.events} component={Events} />
                     <Route path={URLS.services} component={Services} />
                     <Route path={URLS.company} component={Companies} />
@@ -111,6 +114,7 @@ const Application = (
                     <Route component={Http404} />
 
                 </Switch>
+                <MessageGDPR />
             </MuiThemeProvider>
         </BrowserRouter>
     </Provider>

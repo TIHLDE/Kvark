@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Link from '@material-ui/core/Link';
 
 // Assets import
 import SIT from '../../assets/img/sit.svg';
@@ -92,10 +93,14 @@ class Footer extends Component {
         return (
             <div className={classes.omTihlde}>
                 <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>TIHLDE</Typography>
-                <Typography className={classes.horSpacing} align='center' color='inherit' >hs@tihlde.org</Typography>
+                <Link color='inherit' href='mailto:hs@tihlde.org'>
+                    <Typography className={classes.horSpacing} align='center' color='inherit' >hs@tihlde.org</Typography>
+                </Link>
                 <Typography className={classes.horSpacing} align='center' color='inherit' >c/o IDI NTNU</Typography>
-                <Typography className={classes.horSpacing} align='center' color='inherit' >Sverres gate 12, 7012 Trondheim</Typography>
                 <Typography className={classes.horSpacing} align='center' color='inherit' >OrgNr: 989 684 183</Typography>
+                <Link color='inherit' href='/kontakt/'>
+                    <Typography className={classes.horSpacing} align='center' color='inherit' >Kontaktinfo</Typography>
+                </Link>
             </div>
         )
     };

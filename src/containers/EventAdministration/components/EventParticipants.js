@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 
 // Project
 import EventParticipant from './EventParticipant';
+import EventStatistics from './EventStatistics';
 
 const styles = {
   header: {
@@ -99,6 +100,14 @@ const EventParticipants = (props) => {
       </div>
       <Divider />
       <div className={classes.content}>
+        { participantsIn.length > 0 &&
+        <div>
+          <Typography variant='h5'>Statistikk</Typography>
+          <div className={classes.listView}>
+            <EventStatistics participants={participantsIn} />
+          </div>
+        </div>
+        }
         <Typography variant='h5'>Påmeldte</Typography>
         <div className={classes.listView}>
           {printParticipants(false)}

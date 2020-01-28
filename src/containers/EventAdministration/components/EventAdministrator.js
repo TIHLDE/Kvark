@@ -3,6 +3,8 @@ import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import moment from 'moment';
+import Link from 'react-router-dom/Link';
+import URLS from '../../../URLS';
 
 // API imports
 import EventService from '../../../api/services/EventService';
@@ -60,7 +62,13 @@ const styles = (theme) => ({
     margin: {
         margin: '10px 0px',
     },
-    mr: {marginRight: 10},
+    mr: {
+        marginRight: 10,
+        marginBottom: 5,
+    },
+    link: {
+        textDecoration: 'none',
+    },
     snackbar: {
         marginTop: 44,
         backgroundColor: theme.palette.error.main,
@@ -125,6 +133,10 @@ class EventAdministrator extends Component {
             title: '',
             location: '',
             startDate: new Date().toISOString(),
+            endDate: new Date().toISOString(),
+            startSignUp: new Date().toISOString(),
+            endSignUp: new Date().toISOString(),
+            signOffDeadline: new Date().toISOString(),
             description: '',
             sign_up: false,
             priority: 0,
@@ -228,7 +240,11 @@ class EventAdministrator extends Component {
                 priority: event.priority,
                 image: event.image,
                 category: event.category,
-                startDate: event.start.substring(0,16),
+                startDate: event.start_date.substring(0,16),
+                endDate: event.end_date.substring(0,16),
+                startSignUp: event.start_registration_at.substring(0,16),
+                endSignUp: event.end_registration_at.substring(0,16),
+                signOffDeadline: event.sign_off_deadline.substring(0,16),
                 sign_up: event.sign_up,
                 limit: event.limit,
                 participants: [],
@@ -253,6 +269,10 @@ class EventAdministrator extends Component {
             imageAlt: '',
             category: 0,
             startDate: new Date().toISOString().substring(0, 16),
+            endDate: new Date().toISOString().substring(0, 16),
+            startSignUp: new Date().toISOString().substring(0, 16),
+            endSignUp: new Date().toISOString().substring(0, 16),
+            signOffDeadline: new Date().toISOString().substring(0, 16),
             sign_up: false,
             participants: [],
             showParticipants: false,
@@ -293,7 +313,11 @@ class EventAdministrator extends Component {
         image: this.state.image,
         imageAlt: 'event',
         category: this.state.category,
-        start: moment(this.state.startDate).format('YYYY-MM-DDTHH:mm'),
+        start_date: moment(this.state.startDate).format('YYYY-MM-DDTHH:mm'),
+        end_date: moment(this.state.endDate).format('YYYY-MM-DDTHH:mm'),
+        start_registration_at: moment(this.state.startSignUp).format('YYYY-MM-DDTHH:mm'),
+        end_registration_at: moment(this.state.endSignUp).format('YYYY-MM-DDTHH:mm'),
+        sign_off_deadline: moment(this.state.signOffDeadline).format('YYYY-MM-DDTHH:mm'),
         sign_up: this.state.sign_up,
         limit: this.state.limit,
     });
@@ -371,7 +395,8 @@ class EventAdministrator extends Component {
       EventService.deleteUserFromEventList(event.id, {user_id: user_id}).then((result) => {
         this.setState((oldState) => {
           const newParticipants = oldState.participants.filter((user) => {
-            if (user.user_id !== user_id) return user
+            if (user.user_info.user_id !== user_id) return user
+
             return false
           });
           return {
@@ -394,12 +419,11 @@ class EventAdministrator extends Component {
           // Change the state to reflect the database data.
           const newParticipants = oldState.participants.map((user) => {
             let newUser = user;
-            if (user.user_id === user_id) {
+            if (user.user_info.user_id === user_id) {
               newUser = {...newUser, ...parameters};
             }
-            return newUser
+            return newUser;
           })
-
           return {participants: newParticipants};
         })
       }).catch((error) => {
@@ -481,6 +505,11 @@ class EventAdministrator extends Component {
                                           <Checkbox onChange={this.handleChange('sign_up')} checked={sign_up} />
                                         }
                                         label="Åpen for påmelding"/>
+                                      {sign_up && <div className={classes.flexRow}>
+                                          <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Start påmelding' value={this.state.startSignUp} onChange={this.handleChange('startSignUp')} />
+                                          <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Slutt påmelding' value={this.state.endSignUp} onChange={this.handleChange('endSignUp')} />
+                                          <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Avmeldingsfrist' value={this.state.signOffDeadline} onChange={this.handleChange('signOffDeadline')} />
+                                      </div>}
 
                                       <TextEditor className={classes.margin} value={description} onChange={this.onChange('description')}/>
 
@@ -504,8 +533,10 @@ class EventAdministrator extends Component {
                                                   </MenuItem>
                                               ))}
                                           </TextField>
-
+                                      </div>
+                                      <div className={classes.flexRow}>
                                           <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Start dato' value={this.state.startDate} onChange={this.handleChange('startDate')} />
+                                          <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Slutt dato' value={this.state.endDate} onChange={this.handleChange('endDate')} />
                                       </div>
 
                                       <Grid container direction='row' wrap='nowrap' justify='space-between'>
@@ -520,11 +551,12 @@ class EventAdministrator extends Component {
                                                   <div>
                                                       <Button className={classes.mr} onClick={this.editEventItem} variant='contained' type='submit' color='primary'>Lagre</Button>
                                                       <Button className={classes.mr} variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
-                                                      <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showParticipants')}>Se påmeldte</Button>
+                                                      <Button className={classes.mr} variant='outlined' color='primary' onClick={this.handleToggleChange('showParticipants')}>Se påmeldte</Button>
+                                                      <Link to={URLS.events.concat(selectedEventId).concat('/registrering/')} className={classes.link}><Button className={classes.mr} variant='outlined' color='primary'>Registrer ankomne</Button></Link>
                                                   </div>
                                                   <div>
                                                       <Button disabled={selectedEvent.closed && true} className={classNames(classes.mr, classes.deleteButton)} onClick={this.closeEvent} variant='outlined'>Steng</Button>
-                                                      <Button className={classes.deleteButton} onClick={this.deleteEventItem} variant='outlined'>Slett</Button>
+                                                      <Button className={classNames(classes.mr, classes.deleteButton)} onClick={this.deleteEventItem} variant='outlined'>Slett</Button>
                                                   </div>
                                               </Fragment>
                                           }

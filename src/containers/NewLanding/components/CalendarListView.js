@@ -8,9 +8,9 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 // Icons
-import CalendarToday from '@material-ui/icons/CalendarToday';
-import Schedule from '@material-ui/icons/Schedule';
 import LocationOn from '@material-ui/icons/LocationOn';
+import Start from '@material-ui/icons/PlayArrow';
+import Stop from '@material-ui/icons/Stop';
 
 // Project componets
 import LinkButton from '../../../components/navigation/LinkButton';
@@ -41,7 +41,6 @@ const styles = (theme) => ({
   },
   eventImage: {
     objectFit: 'cover',
-    border: '1px solid whitesmoke',
     height: 80,
     width: 80,
   },
@@ -54,8 +53,12 @@ const styles = (theme) => ({
     flexWrap: 'wrap',
     alignItems: 'center',
     textAlign: 'left',
-    width: 150,
+    width: 165,
+    padding: 5,
     overflow: 'hidden',
+    '@media only screen and (max-width: 700px)': {
+      width: 'unset',
+    },
   },
   eventContainer: {
     display: 'flex',
@@ -88,7 +91,8 @@ function CalendarListItem(props) {
   const { classes } = props;
   // props.eventData.image
 
-  const start = moment(props.eventData.start, ['YYYY-MM-DD HH:mm'], 'nb');
+  const start = moment(props.eventData.start_date, ['YYYY-MM-DD HH:mm'], 'nb');
+  const end = moment(props.eventData.end_date, ['YYYY-MM-DD HH:mm'], 'nb');
   const src = props.eventData.image ? props.eventData.image : TIHLDELOGO;
   const imageAlt = props.eventData.image_alt ? props.eventData.image_alt : props.eventData.title;
 
@@ -108,12 +112,12 @@ function CalendarListItem(props) {
             </div>
             <div className={classes.eventInfo}>
               <div className={classes.eventInfoElement}>
-                <CalendarToday className={classes.eventIcon} />
-                {start.format('DD.MM.YYYY')}
+                <Start className={classes.eventIcon} />
+                {start.format('DD.MM.YYYY, HH:mm')}
               </div>
               <div className={classNames(classes.hiddenOnMobile, classes.eventInfoElement)}>
-                <Schedule className={classes.eventIcon} />
-                {start.format('HH:mm')}
+                <Stop className={classes.eventIcon} />
+                {end.format('DD.MM.YYYY, HH:mm')}
               </div>
             </div>
           </div>

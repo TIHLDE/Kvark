@@ -10,9 +10,10 @@ import LinkButton from '../../../components/navigation/LinkButton';
 import { Typography } from '@material-ui/core';
 
 // Icons
-import CalendarToday from '@material-ui/icons/CalendarToday';
-import Schedule from '@material-ui/icons/Schedule';
 import LocationOn from '@material-ui/icons/LocationOn';
+import Start from '@material-ui/icons/PlayArrow';
+import Stop from '@material-ui/icons/Stop';
+
 
 // Project componets
 import TIHLDELOGO from '../../../assets/img/tihlde_image.png';
@@ -37,7 +38,6 @@ const styles = (theme) => ({
   },
   eventImage: {
     objectFit: 'cover',
-    border: '1px solid whitesmoke',
     height: 80,
     width: 80,
   },
@@ -50,8 +50,11 @@ const styles = (theme) => ({
     flexWrap: 'wrap',
     alignItems: 'center',
     textAlign: 'left',
-    width: 150,
     overflow: 'hidden',
+    width: 165,
+    '@media only screen and (max-width: 700px)': {
+      width: 'unset',
+    },
   },
   eventContainer: {
     display: 'flex',
@@ -103,12 +106,13 @@ class ProfileEvents extends Component {
 
   item(event, key) {
     const { classes } = this.props;
-    const start = moment(event.start, ['YYYY-MM-DD HH:mm'], 'nb');
+    const start = moment(event.start_date, ['YYYY-MM-DD HH:mm'], 'nb');
+    const end = moment(event.end_date, ['YYYY-MM-DD HH:mm'], 'nb');
     const src = event.image ? event.image : TIHLDELOGO;
     const imageAlt = event.image_alt ? event.image_alt : event.title;
 
     return (
-      <LinkButton key={key} noPadding to={'/arrangementer/' + event.id + '/'}>
+      <LinkButton noPadding to={'/arrangementer/' + event.id + '/'}>
         <div className={classes.eventListRow}>
           <div className={classes.eventImageContainer}>
             <img className={classes.eventImage} src={src} alt={imageAlt} />
@@ -123,12 +127,12 @@ class ProfileEvents extends Component {
             </div>
             <div className={classes.eventInfo}>
               <div className={classes.eventInfoElement}>
-                <CalendarToday className={classes.eventIcon} />
-                {start.format('DD.MM.YYYY')}
+                <Start className={classes.eventIcon} />
+                {start.format('DD.MM.YYYY, HH:mm')}
               </div>
               <div className={classNames(classes.hiddenOnMobile, classes.eventInfoElement)}>
-                <Schedule className={classes.eventIcon} />
-                {start.format('HH:mm')}
+                <Stop className={classes.eventIcon} />
+                {end.format('DD.MM.YYYY, HH:mm')}
               </div>
             </div>
           </div>
@@ -144,8 +148,8 @@ class ProfileEvents extends Component {
         {this.state.events && this.state.events.map((eventData, key) => {
           if (eventData.closed === false && eventData.expired === false) {
             return (
-              <div className={classes.wrapper}>
-                {this.item(eventData, key)}
+              <div key={key} className={classes.wrapper}>
+                {this.item(eventData)}
               </div>
             )
           }

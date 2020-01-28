@@ -118,6 +118,14 @@ const styles = (theme) => ({
         borderRadius: '4px',
         backgroundColor: 'white',
         color: 'black',
+        textAlign: 'center',
+        maxWidth: '90%',
+        display: 'flex',
+        justifyContent: 'center',
+
+        '@media only screen and (min-width: 600px)': {
+            whiteSpace: 'nowrap',
+        },
     },
 });
 
@@ -214,7 +222,7 @@ class ProfileSettings extends Component {
                         <TextField disabled className={classes.inputWidth} label='Etternavn' variant='outlined' margin='normal' value={this.state.lastName} InputProps={{readOnly: true}} />
                         <TextField disabled className={classes.inputWidth} label='Epost' variant='outlined' margin='normal' value={this.state.email} InputProps={{readOnly: true}} />
                         <TextField className={classes.inputWidth} label='Telefon' variant='outlined' margin='normal' value={this.state.cell} InputProps={{type: 'number',}} onInput={(e)=>{e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,8)}} onChange={(e) => this.setState({ cell: e.target.value })} />
-                        <TextField className={classes.inputWidth} label='EM-nummer (studentkortet)' variant='outlined' margin='normal' value={this.state.em} InputProps={{type: 'number',}} onInput={(e)=>{e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,10)}} onChange={(e) => this.setState({ em: e.target.value })} />
+                        <TextField className={classes.inputWidth} label='EM-nummer (studentkortet)' variant='outlined' margin='normal' value={this.state.em} onChange={(e) => this.setState({ em: e.target.value })} />
                         <div className={classes.selectContainer}>
                             <TextField disabled className={classNames(classes.inputWidth, classes.selectBox)} label='Studie' variant='outlined' margin='normal' value={this.state.study} onChange={(e) => this.setState({ study: e.target.value })} select={true}>
                                 <MenuItem value={1}>Dataingeniør</MenuItem>

@@ -153,8 +153,9 @@ class CalendarGridView extends React.Component {
     const eventText = [];
     if (this.props.events !== null) {
       this.props.events.forEach((event, key) => {
-        let eventDate = moment(event.start).format('DD-MM-YY');
-        if (eventDate === date) {
+        let eventStartDate = moment(event.start_date).format('DD-MM-YY');
+        let eventEndDate = moment(event.end_date).format('DD-MM-YY');
+        if (eventStartDate <= date && eventEndDate >= date) {
           if (event.category === 10) {
             eventText.push(
               <li key={key} className={classes.event}><a className={classes.linkFadder} href={'/arrangementer/' + event.id + '/'}>{event.title}</a></li>,

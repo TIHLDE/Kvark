@@ -81,9 +81,10 @@ const styles = {
     },
     topLogo: {
         margin: '0 auto',
-        width: '50vw',
-        maxWidth: '350px',
+        width: '70vw',
+        maxWidth: '450px',
         minWidth: '250px',
+        objectFit: 'contain',
     },
     topButtonContainer: {
         margin: '20px auto 0',
