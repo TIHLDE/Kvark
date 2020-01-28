@@ -172,6 +172,20 @@ const EventRenderer = (props) => {
       applyButton = (
       <Typography align='center'>Påmelding har ikke startet</Typography>
       );
+    } else if (data.sign_up && userEvent && today > signOffDeadline) {
+      applyButton = (
+        <React.Fragment>
+          <Button
+            fullWidth
+            disabled
+            className={classes.mt}
+            variant='contained'
+            color='secondary'>
+            {Text.signOff}
+          </Button>
+          <Typography align='center' color='error'>Avmeldingsfristen er passert</Typography>
+        </React.Fragment>
+      );
     } else if (!isLoadingUserData && !isLoadingEvent && userEventLoaded) {
         applyButton = (
           <Button
