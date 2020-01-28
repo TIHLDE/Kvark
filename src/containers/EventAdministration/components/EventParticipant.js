@@ -81,6 +81,7 @@ const EventParticipant = (props) => {
         <Typography>Studie: {getUserStudy(userInfo.user_study)}</Typography>
         <Typography>Årstrinn: {userInfo.user_class} Klasse</Typography>
         {userInfo.allergy !== '' && <Typography>Allergier: {userInfo.allergy}</Typography>}
+
       </div>
       <div className={classes.actionArea}>
         <div className={classes.buttonContainer}>

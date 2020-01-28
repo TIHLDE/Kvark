@@ -396,6 +396,7 @@ class EventAdministrator extends Component {
         this.setState((oldState) => {
           const newParticipants = oldState.participants.filter((user) => {
             if (user.user_info.user_id !== user_id) return user
+
             return false
           });
           return {
@@ -504,7 +505,6 @@ class EventAdministrator extends Component {
                                           <Checkbox onChange={this.handleChange('sign_up')} checked={sign_up} />
                                         }
                                         label="Åpen for påmelding"/>
-
                                       {sign_up && <div className={classes.flexRow}>
                                           <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Start påmelding' value={this.state.startSignUp} onChange={this.handleChange('startSignUp')} />
                                           <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Slutt påmelding' value={this.state.endSignUp} onChange={this.handleChange('endSignUp')} />

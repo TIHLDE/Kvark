@@ -32,6 +32,7 @@ const styles = {
         height: 160,
         backgroundImage: 'linear-gradient(90deg, #f80759, #500e60)',
         transition: '2s',
+
     },
     main: {
         maxWidth: 1000,
@@ -78,10 +79,10 @@ class EventRegistration extends Component {
             errorMessage: null,
             isLoading: false,
             eventName: '',
-
             open: false,
             Transition: Slide,
             snackbarMessage: "",
+
         };
 
         this.username = React.createRef();
@@ -128,20 +129,17 @@ class EventRegistration extends Component {
         EventService.putAttended(event_id, body, username).then((data) => {
             if(data.detail === "User event successfully updated.") {
                 this.username.value = '';
-
                 this.setState({ snackbarMessage: 'Velkommen! Du er registrert ankommet!', open: true, isLoading: false });
             } else {
                 this.setState({errorMessage: Text.wrongCred, isLoading: false})
             }
         });
     }
-
     handleSnackbarClose = () => {
         this.setState({
             open: false,
         });
     }
-
     render() {
         const {classes} = this.props;
         return (
