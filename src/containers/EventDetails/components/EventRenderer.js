@@ -15,11 +15,14 @@ import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 
 // Icons
-import Calendar from '@material-ui/icons/CalendarToday';
 import Location from '@material-ui/icons/LocationOn';
 import Time from '@material-ui/icons/AccessTime';
 import Persons from '@material-ui/icons/PeopleOutline';
 import Timer from '@material-ui/icons/Timer';
+import TimerOff from '@material-ui/icons/TimerOff';
+import Stop from '@material-ui/icons/Stop';
+import Start from '@material-ui/icons/PlayArrow';
+import Exit from '@material-ui/icons/ExitToApp';
 
 // Project Components
 import MarkdownRenderer from '../../../components/miscellaneous/MarkdownRenderer';
@@ -128,7 +131,11 @@ const EventRenderer = (props) => {
     } = props;
     const [modalShow, setModalShown] = useState(false);
     const description = data.description || '';
-    const start = moment(data.start, ['YYYY-MM-DD HH:mm'], 'nb');
+    const startDate = moment(data.start_date, ['YYYY-MM-DD HH:mm'], 'nb');
+    const endDate = moment(data.end_date, ['YYYY-MM-DD HH:mm'], 'nb');
+    const signUpStart = moment(data.start_registration_at, ['YYYY-MM-DD HH:mm'], 'nb');
+    const signUpEnd = moment(data.end_registration_at, ['YYYY-MM-DD HH:mm'], 'nb');
+    const signOffDeadline = moment(data.sign_off_deadline, ['YYYY-MM-DD HH:mm'], 'nb');
     const today = moment(new Date(), ['YYYY-MM-DD HH:mm'], 'nb');
 
     const openEventModal = () => {
@@ -160,6 +167,10 @@ const EventRenderer = (props) => {
     } else if (!data.sign_up) {
       applyButton = (
       <Typography align='center'>{Text.inactive}</Typography>
+      );
+    } else if (data.sign_up && today < signUpStart) {
+      applyButton = (
+      <Typography align='center'>Påmelding har ikke startet</Typography>
       );
     } else if (!isLoadingUserData && !isLoadingEvent && userEventLoaded) {
         applyButton = (
@@ -205,15 +216,16 @@ const EventRenderer = (props) => {
             <div className={classes.grid} >
 
                 <div className={classes.details}>
-                    <InfoContent title="Dag" icon={<Calendar />} label={start.format('DD.MM.YYYY')} />
-                    <InfoContent title="Klokkeslett" icon={<Time />} label={start.format('HH:mm')} />
+                    <InfoContent title="Start" icon={<Start />} label={startDate.format('DD.MM.YYYY, HH:mm')} />
+                    <InfoContent title="Slutt" icon={<Stop />} label={endDate.format('DD.MM.YYYY, HH:mm')} />
+                    {data.sign_up && today <= signUpStart && !userEvent && <InfoContent title="Påmelding start" icon={<Time />} label={signUpStart.format('DD.MM.YYYY, HH:mm')} /> }
+                    {data.sign_up && today > signUpStart && today < signUpEnd && !userEvent && <InfoContent title="Påmelding slutt" icon={<TimerOff />} label={signUpEnd.format('DD.MM.YYYY, HH:mm')} /> }
+                    {data.sign_up && userEvent && <InfoContent title="Avmeldingsfrist" icon={<Exit />} label={signOffDeadline.format('DD.MM.YYYY, HH:mm')} /> }
                     <InfoContent title="Sted" icon={<Location />} label={data.location} />
                     {data.sign_up && <InfoContent title="Deltagere" icon={<Persons />} label={attending + '/' + limit} /> }
                     {data.sign_up && <InfoContent title="Venteliste" icon={<Timer />} label={onWait + ''} /> }
                     {data.price && <InfoContent icon={<Time />} label={data.price} />}
-                    {today <= start &&
-                      applyButton
-                    }
+                    {today <= startDate && applyButton }
                     {(userEvent && userEvent.is_on_wait) &&
                       <div className={classes.waitlistContainer}>
                         <Typography className={classes.redText} variant='subtitle1'>Du er på ventelisten</Typography>

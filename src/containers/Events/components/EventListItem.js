@@ -10,7 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 
 // Icons
-import Calendar from '@material-ui/icons/CalendarToday';
+import Start from '@material-ui/icons/PlayArrow';
+import Stop from '@material-ui/icons/Stop';
 import Location from '@material-ui/icons/LocationOn';
 import Time from '@material-ui/icons/AccessTime';
 import TIHLDELOGO from '../../../assets/img/tihlde_image.png';
@@ -93,7 +94,8 @@ InfoContent.propTypes = {
 const EventListItem = (props) => {
     const {classes, data} = props;
     const src = (data.image)? data.image : TIHLDELOGO;
-    const start = moment(data.start, ['YYYY-MM-DD HH:mm'], 'nb');
+    const start = moment(data.start_date, ['YYYY-MM-DD HH:mm'], 'nb');
+    const end = moment(data.end_date, ['YYYY-MM-DD HH:mm'], 'nb');
     return (
         <ListItem className={classes.btn} button onClick={props.onClick}>
             <Grid className={classes.root} container direction='row' wrap='nowrap' alignItems='center'>
@@ -103,8 +105,8 @@ const EventListItem = (props) => {
                         <strong>{data.title}</strong>
                     </Typography>
                     <div className={classes.details}>
-                        <InfoContent icon={<Calendar className={classes.icon}/>} label={start.format('DD.MM.YYYY')} />
-                        <InfoContent icon={<Time className={classes.icon}/>} label={start.format('HH:mm')} />
+                        <InfoContent icon={<Start className={classes.icon}/>} label={start.format('DD.MM.YYYY, HH:mm')} />
+                        <InfoContent icon={<Stop className={classes.icon}/>} label={end.format('DD.MM.YYYY, HH:mm')} />
                         <InfoContent icon={<Location className={classes.icon}/>} label={data.location} />
                     </div>
                 </Grid>

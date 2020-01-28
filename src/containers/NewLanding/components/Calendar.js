@@ -29,7 +29,7 @@ const styles = (theme) => ({
   },
   container: {
     maxWidth: 1100,
-    width: '100vw',
+    width: '100%',
     backgroundColor: 'rgba(0, 0, 0, 0.12)',
   },
   tabs: {

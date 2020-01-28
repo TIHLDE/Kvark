@@ -10,9 +10,9 @@ import LinkButton from '../../../components/navigation/LinkButton';
 import { Typography } from '@material-ui/core';
 
 // Icons
-import CalendarToday from '@material-ui/icons/CalendarToday';
-import Schedule from '@material-ui/icons/Schedule';
 import LocationOn from '@material-ui/icons/LocationOn';
+import Start from '@material-ui/icons/PlayArrow';
+import Stop from '@material-ui/icons/Stop';
 
 // Project componets
 import TIHLDELOGO from '../../../assets/img/tihlde_image.png';
@@ -50,7 +50,7 @@ const styles = (theme) => ({
     alignItems: 'center',
     textAlign: 'left',
     overflow: 'hidden',
-    width: 150,
+    width: 165,
     '@media only screen and (max-width: 700px)': {
       width: 'unset',
     },
@@ -105,7 +105,8 @@ class ProfileEvents extends Component {
 
   item(event, key) {
     const { classes } = this.props;
-    const start = moment(event.start, ['YYYY-MM-DD HH:mm'], 'nb');
+    const start = moment(event.start_date, ['YYYY-MM-DD HH:mm'], 'nb');
+    const end = moment(event.end_date, ['YYYY-MM-DD HH:mm'], 'nb');
     const src = event.image ? event.image : TIHLDELOGO;
     const imageAlt = event.image_alt ? event.image_alt : event.title;
 
@@ -125,12 +126,12 @@ class ProfileEvents extends Component {
             </div>
             <div className={classes.eventInfo}>
               <div className={classes.eventInfoElement}>
-                <CalendarToday className={classes.eventIcon} />
-                {start.format('DD.MM.YYYY')}
+                <Start className={classes.eventIcon} />
+                {start.format('DD.MM.YYYY, HH:mm')}
               </div>
               <div className={classNames(classes.hiddenOnMobile, classes.eventInfoElement)}>
-                <Schedule className={classes.eventIcon} />
-                {start.format('HH:mm')}
+                <Stop className={classes.eventIcon} />
+                {end.format('DD.MM.YYYY, HH:mm')}
               </div>
             </div>
           </div>
