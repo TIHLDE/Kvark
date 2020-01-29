@@ -166,11 +166,11 @@ const EventRenderer = (props) => {
         );
     } else if (!data.sign_up) {
       applyButton = (
-      <Typography align='center'>{Text.inactive}</Typography>
+      <Typography align='center'></Typography>
       );
     } else if (data.sign_up && today < signUpStart) {
       applyButton = (
-      <Typography align='center'>Påmelding har ikke startet</Typography>
+      <Typography align='center'>{Text.inactive}</Typography>
       );
     } else if (data.sign_up && userEvent && today > signOffDeadline) {
       applyButton = (
