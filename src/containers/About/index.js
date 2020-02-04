@@ -156,7 +156,7 @@ class About extends Component {
                             <Typography className={classes.verticalMargin}variant='h4' color='inherit' align='center'>Organisasjonskart</Typography>
 
                             <Paper className={classes.miniMargin} square elevation={1}>
-                                <ClickableImage className={classes.miniPadding} image={OrgMap} alt='organisasjonskart' width='90%'/>
+                                <ClickableImage className={classes.miniPadding} image={OrgMap} alt='organisasjonskart' width='100%'/>
                             </Paper>
                         </div>
                     </div>
