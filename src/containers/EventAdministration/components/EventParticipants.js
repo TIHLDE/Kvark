@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
 // Material-UI
@@ -6,6 +6,8 @@ import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 // Project
 import EventParticipant from './EventParticipant';
@@ -41,10 +43,21 @@ const styles = {
     paddingBottom: 36,
     paddingTop: 8,
   },
+  flexRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  checkbox: {
+    marginTop: '-6px',
+    marginBottom: '-6px',
+  },
 };
 
 const EventParticipants = (props) => {
   const {classes, event, closeParticipants, participants, removeUserFromEvent, toggleUserEvent} = props;
+
+  let [showOnlyNotAttended, setCheckedState] = useState(false);
 
   const sortParticipants = (waitList) => {
     return participants.filter((user) => {
@@ -65,11 +78,21 @@ const EventParticipants = (props) => {
     participantsOnWait = sortParticipants(true);
   }
 
-  const printParticipants = (waitList) => {
+  const handleCheck = (actionEvent) => {
+    setCheckedState(actionEvent.target.checked);
+  };
+
+  const printParticipants = (waitList, notAttended) => {
     let elements = <Typography>Ingen påmeldte.</Typography>;
     let participantsToPrint;
 
       participantsToPrint = waitList ? participantsOnWait : participantsIn;
+
+      if (notAttended) {
+        participantsToPrint = participantsToPrint.filter((u) => {
+          return !u.has_attended;
+        });
+      }
 
       if (participantsToPrint.length > 0) {
         elements = participantsToPrint.map((user, key) => {
@@ -108,9 +131,22 @@ const EventParticipants = (props) => {
           </div>
         </div>
         }
-        <Typography variant='h5'>Påmeldte</Typography>
+        <div className={classes.flexRow}>
+          <Typography variant='h5'>Påmeldte</Typography>
+          <FormControlLabel
+            label="Ikke ankommet"
+            labelPlacement="start"
+            control={
+              <Checkbox
+                className={classes.checkbox}
+                onChange={
+                  handleCheck
+                }
+                checked={showOnlyNotAttended} />}
+            />
+        </div>
         <div className={classes.listView}>
-          {printParticipants(false)}
+          {printParticipants(false, showOnlyNotAttended)}
         </div>
         <Typography variant='h5'>Venteliste</Typography>
         <div className={classes.listView}>
