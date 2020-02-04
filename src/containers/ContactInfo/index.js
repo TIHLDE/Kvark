@@ -149,7 +149,7 @@ class ContactInfo extends Component {
                         <div className={classes.section}>
                             <div className={classes.grid}>
                                 <InfoCard header='Besøksadresse' text={Text.visit} />
-                                <InfoCard header='Faktureringsadresse' text={Text.invoice} />
+                                <InfoCard header='Post- og faktureringsadresse' text={Text.invoice} />
                             </div>
                         </div>
                     </div>
