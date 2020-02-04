@@ -64,7 +64,6 @@ const styles = {
         top: 0, left: 0, right: 0,
     },
     buttonLink: {
-        width: 'fit-content',
         textDecoration: 'none',
         width: '100%',
     },

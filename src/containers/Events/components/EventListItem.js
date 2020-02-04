@@ -13,7 +13,6 @@ import ListItem from '@material-ui/core/ListItem';
 import Start from '@material-ui/icons/PlayArrow';
 import Stop from '@material-ui/icons/Stop';
 import Location from '@material-ui/icons/LocationOn';
-import Time from '@material-ui/icons/AccessTime';
 import TIHLDELOGO from '../../../assets/img/tihlde_image.png';
 
 const styles = {
