@@ -4,7 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 
 // Assets import
@@ -17,6 +16,7 @@ import INSTAGRAM from '../../assets/icons/instagram.svg';
 import SNAPCHAT from '../../assets/icons/snapchat.svg';
 import SLACK from '../../assets/icons/slack.svg';
 import DISCORD from '../../assets/icons/discord.svg';
+import SopraSteria from '../../assets/img/sopraSteriaLogo.svg';
 
 
 const styles = {
@@ -29,7 +29,7 @@ const styles = {
         display: 'grid',
         gridGap: '40px',
         gridTemplateColumns: '1fr 1fr 1fr 1fr',
-        gridTemplateAreas: "'Sponsorer OmTihlde SosialeMedier TihldeSupport'", //SosialeMedier
+        gridTemplateAreas: "'Sponsorer OmTihlde SosialeMedier SponsorLogo'", //SosialeMedier
         gridTemplateRows: 'auto',
         justifyItems: 'center',
         color: 'white',
@@ -38,13 +38,13 @@ const styles = {
 
         '@media only screen and (max-width: 900px)': {
             gridTemplateRows: 'auto auto',
-            gridTemplateAreas: "'OmTihlde SosialeMedier' 'Sponsorer TihldeSupport'",
+            gridTemplateAreas: "'OmTihlde SosialeMedier' 'Sponsorer SponsorLogo'",
             gridTemplateColumns: 'auto auto',
         },
 
         '@media only screen and (max-width: 600px)': {
             gridTemplateRows: 'auto auto auto auto auto',
-            gridTemplateAreas: "'TihldeSupport' 'OmTihlde' 'SosialeMedier' 'Sponsorer'",
+            gridTemplateAreas: "'SponsorLogo' 'OmTihlde' 'SosialeMedier' 'Sponsorer'",
             gridTemplateColumns: '100%',
         }
     },
@@ -73,17 +73,29 @@ const styles = {
         justifyContent: 'center',
 
     },
-    tihldeSupport: {
-        gridArea: 'TihldeSupport',
-        display: 'flex',
-        flexDirection: 'column',
-    },
     horSpacing: {
         marginBottom: 10,
     },
     a: {
         margin: '0 4px',
-    }
+    },
+    sponsorWrapper: {
+        gridArea: 'SponsorLogo',
+        verticalAlign: 'top',
+        display: 'inline-block',
+        textAlign: 'center',
+        margin: 'auto -40px',
+    },
+    sponsorLogo: {
+        width: '14rem',
+        height: 'auto',
+    },
+    sponsorText: {
+        color: 'white',
+        fontSize: '10px',
+        textAlign: 'center',
+        opacity: 0.7,
+    },
 };
 
 class Footer extends Component {
@@ -154,16 +166,16 @@ class Footer extends Component {
         )
     };
 
-    tihldeSupport = () => {
+    sponsorLogo = () => {
         const { classes } = this.props;
         return (
-            <div className={classes.tihldeSupport}>
-                <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Support</Typography>
-                <Button className={classes.horSpacing} variant='contained' color='primary' href='https://old.tihlde.org/secure/osticket/open.php'>Åpne en ny sak</Button>
-                <Button className={classes.horSpacing} variant='contained' color='secondary' href='https://old.tihlde.org/secure/osticket/view.php'>Sjekk status for sak</Button>
-                <Button className={classes.horSpacing} variant='contained' color='primary' href='https://goo.gl/forms/ATrwKEVybuDj4gis1'>Send tilbakemelding</Button>
-            </div>
-        )
+            // <div className={classes.sponsorWrapper}>
+                <a className={classes.sponsorWrapper} target="_blank" rel="noopener noreferrer" href="https://www.soprasteria.no/">
+                    <img className={classes.sponsorLogo} src={SopraSteria} alt='Sopra Steria Logo' />
+                    <div className={classes.sponsorText}>HOVEDSAMARBEIDSPARTNER</div>
+                </a>
+            // </div>
+        );
     };
 
 
@@ -175,7 +187,7 @@ class Footer extends Component {
                 {this.sponsorer()}
                 {this.omTihlde()}
                 {this.sosialeMedier()}
-                {this.tihldeSupport()}
+                {this.sponsorLogo()}
             </div>
         );
     }
