@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {getUserStudy} from '../../../utils';
 
@@ -61,6 +61,10 @@ const EventParticipant = (props) => {
   } = props;
 
   const [checkedState, setCheckedState] = useState(attended);
+  useEffect(() => {
+    setCheckedState(props.attended);
+  });
+
   const userInfo = props.user.user_info;
 
   const deleteHandler = () => {
@@ -71,8 +75,6 @@ const EventParticipant = (props) => {
     setCheckedState(actionEvent.target.checked);
     toggleUserEvent(props.user.user_info.user_id, event, {has_attended: actionEvent.target.checked});
   };
-
-  // toggleUserEvent(props.user_id, event, {has_attended: !attended})
 
   return (
     <Card square className={classes.content}>

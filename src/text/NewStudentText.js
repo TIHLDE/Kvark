@@ -31,7 +31,7 @@ export default {
             },
             skoleBoeker: {
                 header: "Hvor kjøper jeg skolebøker?",
-                text: "Det er mange måter å kjøpe skolebøker. På Campus Kalvskinnet så finner du bokhandelen Akademika.\n" +
+                text: "Det er mange måter å kjøpe skolebøker. På Campus Gløshaugen så finner du bokhandelen Akademika.\n" +
                     "Det er også mulig å kjøpe brukte skolebøker for en mye rimeligere penge på nett. <a target='_blank' rel='noopener noreferrer' href='https://ibok.no/'>iBok.no</a>, og < target='_blank' rel='noopener noreferrer' href='https://pugg.no/'>pugg.no</a>, er to kjente nettsteder hvor du kan kjøpe lærerbøker. Du kan også ta søke lykken på <a href='https://finn.no/'>finn.no</a>.\n" +
                     "Det er også gode muligheter for at studenter på trinnet over deg har pensumsbøker til salgs, så det er verdt å spørre f.eks. fadderene dine om de har boken du ønsker."
             },

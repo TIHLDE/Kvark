@@ -10,7 +10,6 @@ import classNames from 'classnames';
 
 // Material Components
 import Divider from '@material-ui/core/Divider';
-import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grow from '@material-ui/core/Grow';
 import Grid from '@material-ui/core/Grid';
@@ -92,14 +91,14 @@ class Members extends Component {
     // Gets the event
     loadMembers = () => {
         // Add in filters if needed.
-        let urlParameters = {};
+        // let urlParameters = {};
 
         // Decide if we should go to next page or not.
         if (this.state.nextPage){
-            urlParameters = {
-                page: this.state.nextPage,
-                ...urlParameters
-            };
+            // urlParameters = {
+                // page: this.state.nextPage,
+                // ...urlParameters
+            // };
 
         } else if (this.state.members.length > 0 ) {
             // Abort if we have no more pages and allready have loaded everything

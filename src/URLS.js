@@ -12,6 +12,7 @@ export default {
     laws: '/lover/',
     newlanding: '/newlanding/',
     signup: '/ny-bruker/',
+    privacyPolicy: '/personvern/',
 
     admin: '/admin/',
     userAdmin: '/admin/brukere/',

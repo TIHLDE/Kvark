@@ -8,12 +8,14 @@ import Text from '../../text/ContactText';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 import InfoCard from '../../components/layout/InfoCard';
 import Banner from '../../components/layout/Banner';
-import LinkButton from '../../components/navigation/LinkButton';
 
 const styles = {
     root: {
@@ -40,6 +42,11 @@ const styles = {
         paddingTop: 2,
         paddingBottom: 2,
         gridGap: '15px',
+        '& a': {
+            backgroundColor: 'var(--tihlde-white)',
+            color: 'black',
+        },
+
         '@media only screen and (max-width: 700px)': {
             gridTemplateColumns: '1fr',
         },
@@ -94,12 +101,8 @@ const styles = {
         width: '100%',
     },
     smoke: {
-        backgroundColor: '#Fefefe',
-    },
-    socialGridItem: {
-        backgroundColor: 'rgba(0,0,0,0.12)',
-        paddingTop: 1,
-        paddingBottom: 1,
+        background: 'var(--tihlde-white)',
+
     },
     linkContainer: {
       marginBottom: 0,
@@ -131,15 +134,10 @@ class ContactInfo extends Component {
                         <div className={classNames(classes.section, classes.contactSection)}>
                             <div>
                                 <div className={classes.socialgrid}>
-                                    <div className={classes.socialGridItem}>
-                                        <LinkButton to="mailto:hs@tihlde.org">E-post</LinkButton>
-                                    </div>
-                                    <div className={classes.socialGridItem}>
-                                        <LinkButton target="_blank" to="https://www.facebook.com/messages/t/tihlde">Messenger</LinkButton>
-                                    </div>
-                                    <div className={classes.socialGridItem}>
-                                        <LinkButton target="_blank" to="https://tihlde.slack.com/">Slack</LinkButton>
-                                    </div>
+                                    <Button color='inherit' variant='contained' noPadding href='mailto:hs@tihlde.org'>E-post</Button>
+                                    <Button color='inherit' variant='contained' noPadding target='_blank' href='https://www.facebook.com/messages/t/tihlde'>Messenger</Button>
+                                    <Button color='inherit' variant='contained' noPadding target='_blank' href='https://tihlde.slack.com/'>Slack</Button>
+
                                 </div>
                             </div>
                         </div>
@@ -149,7 +147,8 @@ class ContactInfo extends Component {
                         <div className={classes.section}>
                             <div className={classes.grid}>
                                 <InfoCard header='Besøksadresse' text={Text.visit} />
-                                <InfoCard header='Faktureringsadresse' text={Text.invoice} />
+                                <InfoCard header='Post- og faktureringsadresse' text={Text.invoice} />
+
                             </div>
                         </div>
                     </div>
