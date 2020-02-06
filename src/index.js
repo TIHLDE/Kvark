@@ -37,6 +37,7 @@ import Http404 from './containers/Http404';
 import EventRegistration from './containers/EventRegistration';
 import UserService from './api/services/UserService';
 import SignUp from './containers/SignUp';
+import PrivacyPolicy from './containers/PrivacyPolicy';
 import MessageGDPR from './components/miscellaneous/MessageGDPR';
 
 // The user needs to be authorized (logged in and member of an authorized group) to access these routes
@@ -102,6 +103,7 @@ const Application = (
                     <Route path={URLS.jobposts.concat(':id/')} component={JobPostDetails} />
                     <Route exact path={URLS.jobposts} component={JobPosts} />
                     <Route path={URLS.laws} component={Laws} />
+                    <Route path={URLS.privacyPolicy} component={PrivacyPolicy} />
                     
                     <Route exact path={URLS.admin} component={RequireAuth(Admin, ["HS", "Promo", "Nok", "Devkom"])} />
                     <Route path={URLS.userAdmin} component={RequireAuth(UserAdmin, ["HS", "Devkom"])} />
