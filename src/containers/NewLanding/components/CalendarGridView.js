@@ -159,6 +159,7 @@ class CalendarGridView extends React.Component {
         if ((eventEndDate.isSameOrAfter(date,'days') && eventStartDate.isSameOrBefore(date,'days')))
         {
 
+
           if (event.category === 10) {
             eventText.push(
               <li key={key} className={classes.event}><a className={classes.linkFadder} href={'/arrangementer/' + event.id + '/'}>{event.title}</a></li>,

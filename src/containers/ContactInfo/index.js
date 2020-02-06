@@ -11,6 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 
+
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 import InfoCard from '../../components/layout/InfoCard';
@@ -45,6 +46,7 @@ const styles = {
             backgroundColor: 'var(--tihlde-white)',
             color: 'black',
         },
+
         '@media only screen and (max-width: 700px)': {
             gridTemplateColumns: '1fr',
         },
@@ -100,6 +102,7 @@ const styles = {
     },
     smoke: {
         background: 'var(--tihlde-white)',
+
     },
     linkContainer: {
       marginBottom: 0,
@@ -134,6 +137,7 @@ class ContactInfo extends Component {
                                     <Button color='inherit' variant='contained' noPadding href='mailto:hs@tihlde.org'>E-post</Button>
                                     <Button color='inherit' variant='contained' noPadding target='_blank' href='https://www.facebook.com/messages/t/tihlde'>Messenger</Button>
                                     <Button color='inherit' variant='contained' noPadding target='_blank' href='https://tihlde.slack.com/'>Slack</Button>
+
                                 </div>
                             </div>
                         </div>
@@ -144,6 +148,7 @@ class ContactInfo extends Component {
                             <div className={classes.grid}>
                                 <InfoCard header='Besøksadresse' text={Text.visit} />
                                 <InfoCard header='Post- og faktureringsadresse' text={Text.invoice} />
+
                             </div>
                         </div>
                     </div>

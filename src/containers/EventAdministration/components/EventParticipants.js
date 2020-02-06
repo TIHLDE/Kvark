@@ -145,6 +145,7 @@ const EventParticipants = (props) => {
                 checked={showOnlyNotAttended} />}
             />
         </div>
+
         <div className={classes.listView}>
           {printParticipants(false, showOnlyNotAttended)}
         </div>

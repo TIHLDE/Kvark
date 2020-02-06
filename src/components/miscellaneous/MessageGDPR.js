@@ -55,6 +55,7 @@ const MessageGDPR = (props) => {
         <React.Fragment>
             {displayState && <div className={classes.root}>
                 <Typography className={classes.text}>Denne nettsiden bruker Google Analytics for å forbedre
+
                 hvordan siden brukes. Ved å fortsette å bruke denne siden godtar
                 du Googles bruk av denne informasjonen som angitt <a rel='noopener noreferrer' target='_blank' href='https://policies.google.com/technologies/partner-sites?hl=no'>her</a>.
                 Du godtar også bruk av informasjonskapsler.</Typography>

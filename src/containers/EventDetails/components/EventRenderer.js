@@ -171,6 +171,7 @@ const EventRenderer = (props) => {
     } else if (data.sign_up && today < signUpStart) {
       applyButton = (
       <Typography align='center'>{Text.inactive}</Typography>
+
       );
     } else if (data.sign_up && userEvent && today > signOffDeadline) {
       applyButton = (

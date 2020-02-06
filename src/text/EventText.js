@@ -9,6 +9,7 @@ export default {
     signOff: 'Meld deg av',
     closed: 'Dette arrangementet er stengt. Det er derfor ikke mulig å melde seg av eller på.',
     inactive: 'Påmelding har ikke startet',
+
     loading: 'Laster brukerdata...',
 
 

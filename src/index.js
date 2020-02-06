@@ -38,6 +38,7 @@ import EventRegistration from './containers/EventRegistration';
 import UserService from './api/services/UserService';
 import SignUp from './containers/SignUp';
 import PrivacyPolicy from './containers/PrivacyPolicy';
+
 import MessageGDPR from './components/miscellaneous/MessageGDPR';
 
 // The user needs to be authorized (logged in and member of an authorized group) to access these routes
