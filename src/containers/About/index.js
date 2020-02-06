@@ -143,7 +143,7 @@ class About extends Component {
                             <Typography className={classes.verticalMargin}variant='h4' color='inherit' align='center'>Komitéer</Typography>
                             <div className={classes.grid}>
                                 <InfoCard header='Koskom' text={Text.kosekom} subheader='Opptak' subText={Text.kosekom2} justifyText/>
-                                <InfoCard header='Netkom' text={Text.netkom} subheader='Opptak' subText={Text.netkom2} justifyText/>
+                                <InfoCard header='Devkom' text={Text.devkom} subheader='Opptak' subText={Text.devkom2} justifyText/>
                                 <InfoCard header='Turkom' text={Text.turkom} subheader='Opptak' subText={Text.turkom2} justifyText/>
                                 <InfoCard header='Jubkom' text={Text.jubkom} subheader='Opptak' subText={Text.jubkom2} justifyText/>
                           </div>

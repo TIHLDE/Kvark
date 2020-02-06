@@ -1,9 +1,9 @@
 export default {
     header: 'OM TIHLDE',
-    subheader: 'TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, samt masterstudiet Digital samhandling ved AIT, IDI, NTNU på Gløshaugen.',
+    subheader: 'TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, samt masterstudiet Digital samhandling ved AIT, IDI, NTNU på Kalvskinnet.',
+    history: 'TIHLDE ble stiftet 16.april 1993, med formål å fremme det sosiale og faglige tilbudet ved EDB-avdelingen ved TIH, som etterhvert ble AITeL ved HiST, deretter IIE ved HiST, nå AIT, IDI ved NTNU. Mye har skjedd siden da, men dette er fortsatt vårt mål. Alle studenter og ansatte tilknyttet AIT, IDI ved Kalvskinnet kan bli medlem, men opptaket skjer kun i begynnelsen av hvert skoleår.',
+    history2: 'TIHLDE er en ikke-profitabel og politisk nøytral organisasjon som baserer seg på frivillig engasjement fra studenter. I tillegg til hovedstyret (HS), har TIHLDE pr idag 4 undergrupper: drift, næringsliv og kurs, sosialen og promo, og 6 komitéer: KosKom, TurKom, Brettspill, Redaksjonen, DevKom, og FadderKom. I tillegg har TIHLDE 2 interessegrupper: SEMIKOLON og TIHLDE PYTHONS',
 
-    history: 'TIHLDE ble stiftet 16.april 1993, med formål å fremme det sosiale og faglige tilbudet ved EDB-avdelingen ved TIH, som etterhvert ble AITeL ved HiST, deretter IIE ved HiST, nå AIT, IDI ved NTNU. Mye har skjedd siden da, men dette er fortsatt vårt mål. Alle studenter og ansatte tilknyttet AIT, IDI ved Gløshaugen kan bli medlem, men opptaket skjer kun i begynnelsen av hvert skoleår.',
-    history2: 'TIHLDE er en ikke-profitabel og politisk nøytral organisasjon som baserer seg på frivillig engasjement fra studenter. I tillegg til hovedstyret (HS), har TIHLDE pr idag 4 undergrupper: drift, næringsliv og kurs, sosialen og promo, og 6 komitéer: KosKom, TurKom, Brettspill, Redaksjonen, NetKom, og FadderKom. I tillegg har TIHLDE 2 interessegrupper: SEMIKOLON og TIHLDE PYTHONS',
 
     drift: 'Drift er en gruppe på 9 studenter som tar seg av drifting av TIHLDEs datasystemer. Her inngår bla. medlemstjeneren Colargol, studenttjeneren Balthazar, VM-parken Nerdvana samt andre støttetjenere. Oppgavene til Drift er brukeradministrasjon, backup, installasjon og oppgradering av programvare, DNS-administrering, brannslukking og annet. ',
     social: 'Sosialen jobber for å fremme sosiale aktiviteter blant medlemmene. Det være seg sosiale tilstelninger som fester, kino, bowling, gokart mm. Fantasien er grensen, og forslag til aktiviteter mottas med smil! :)',
@@ -15,11 +15,11 @@ export default {
     Det er JubKom sin jobb å nå ut til gamle ildsjeler, og invitere dem tilbake for at de kan se hvordan linjeforeningen ser ut i dag.!`,
     jubkom2: 'Neste jubileums år er i 2023, da blir THLDE 30 år',
 
-    netkom: `Nettsidekomitéen ble utviklet med formål om å utforme en ny nettside til TIHLDE.
-    I dag jobber 5 engasjerte og flinke studenter med nettopp dette.
-    NetKom er nylig oppstartet, men de kommer allerede til å ha første versjon av den nye nettsiden klar allerede 1. september 2018.`,
-    netkom2: `I NetKom er det ikke bare dine ferdigheter som web-utvikler som er viktige, men også hvordan du jobber med andre. Dersom du er flink til å jobbe i lag, og liker å jobbe med nettsider, så er NetKom noe for deg, og vi oppfordrer deg til å søke for å bli med.
-    Opptaket starter 31. august i år. Følg med på tihlde.org, vår <a target="_blank" rel="noopener noreferrer" href="http://facebook.com/tihlde">Facebookside</a> for informasjon rundt opptaket.`,
+    devkom: `DevKom ble utviklet med formål om å utforme en ny nettside til TIHLDE.
+    I dag jobber det engasjerte og flinke studenter med nettopp dette.
+    DevKom er nylig oppstartet, men de kommer allerede til å ha første versjon av den nye nettsiden klar allerede 1. september 2018.`,
+    devkom2: `I DevKom er det ikke bare dine ferdigheter som web-utvikler som er viktige, men også hvordan du jobber med andre. Dersom du er flink til å jobbe i lag, og liker å jobbe med nettsider, så er DevKom noe for deg, og vi oppfordrer deg til å søke for å bli med.
+    <a target="_blank" rel="noopener noreferrer" href="https://forms.gle/DkA8RVAdcmfFyDPu7">Søk her</a>`,
 
     turkom: `TurKomitéen er en helt ny komité som ble startet av engasjerte og turglade studenter, etter ønske fra Generalforsamlingen.
     TurKom skal gi turglede hos TIHLDEs medlemmer, og skal gjøre dette ved å arrangere telt- og overnattingsturer 2 – 3 ganger i semesteret.
