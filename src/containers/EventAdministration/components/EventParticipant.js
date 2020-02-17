@@ -21,6 +21,9 @@ const style = (theme) => ({
     '@media only screen and (max-width: 600px)': {
         flexDirection: 'column',
     },
+    boxShadow: '0px 2px 4px #ddd',
+    borderRadius: 5,
+    marginBottom: 3,
   },
   userName: {
     flexGrow: 1,
@@ -77,7 +80,7 @@ const EventParticipant = (props) => {
   };
 
   return (
-    <Card square className={classes.content}>
+    <Card className={classes.content}>
       <div className={classes.userName}>
         <Typography>{userInfo.first_name + ' ' + userInfo.last_name}</Typography>
         <Typography>Studie: {getUserStudy(userInfo.user_study)}</Typography>

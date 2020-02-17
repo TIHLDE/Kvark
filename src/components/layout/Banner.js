@@ -5,16 +5,22 @@ import Parser from 'html-react-parser';
 import classNames from 'classnames';
 
 // Material UI Components
-import Paper from '@material-ui/core/Paper';
 import { Grid, Typography } from '@material-ui/core';
 
 // Icons
 
 const styles = {
-    root: {},
+    root: {
+        border: '1px solid #ddd',
+        backgroundColor: '#ddd',
+        borderRadius: '5px',
+        overflow: 'hidden',
+    },
     imageContainer: {
         maxHeight: 250,
         position: 'relative',
+        display: 'block',
+        boxSizing: 'border-box',
 
         '@media only screen and (max-width: 600px)': {
             maxHeight: 100,
@@ -61,15 +67,15 @@ const styles = {
         position: 'absolute',
         bottom: 20,
         right: 20,
-        "@media only screen and (max-width: 600px)": {
-          display: 'none'
-        }
+        '@media only screen and (max-width: 600px)': {
+          display: 'none',
+        },
     },
     buttonMobile: {
       display: 'none',
-      "@media only screen and (max-width: 600px)": {
-        display: 'block'
-      }
+      '@media only screen and (max-width: 600px)': {
+        display: 'block',
+      },
     },
     flex: {
         display: 'flex',
@@ -82,7 +88,7 @@ const Banner = (props) => {
     const {classes, button: ButtonComponent} = props;
 
     return (
-        <Paper className={classNames(classes.root, props.className)} elevation={1} square>
+        <div className={classNames(classes.root, props.className)}>
             <Grid container direction='column' wrap='nowrap'>
                 <div className={classes.imageContainer}>
                     <img className={classNames(classes.image, !props.disableFilter ? classes.filter : '')} src={props.image} alt={props.alt} />
@@ -109,7 +115,7 @@ const Banner = (props) => {
                 }
                 {props.children}
             </Grid>
-        </Paper>
+        </div>
     );
 };
 

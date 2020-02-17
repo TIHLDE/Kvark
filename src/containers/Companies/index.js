@@ -6,7 +6,6 @@ import classNames from "classnames";
 
 // Material UI Components
 import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
 import Button from '@material-ui/core/Button'
 
 // Icons
@@ -70,7 +69,10 @@ const styles = {
     backgroundColor: "#f5f5f5"
   },
   formWrapper: {
-    margin: "15px 0"
+    margin: "15px 0",
+    border: '1px solid #ddd',
+    borderRadius: '5px',
+    backgroundColor: '#fff',
   },
   flex: {
     display: "flex",
@@ -212,7 +214,7 @@ class Companies extends Component {
           </div>
           <div className={classes.smoke}>
             <div className={classes.section}>
-              <Paper className={classes.formWrapper} ref={this.formRef} square>
+              <div className={classes.formWrapper} ref={this.formRef}>
                 <Forum
                   setMessage={this.setMessage}
                   data={{
@@ -222,7 +224,7 @@ class Companies extends Component {
                   firstTextFieldRef={this.firstTextFieldRef}
                   scrollToForm={this.scrollToForm}
                 />
-              </Paper>
+              </div>
             </div>
           </div>
 

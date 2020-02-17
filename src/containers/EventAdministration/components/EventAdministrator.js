@@ -11,7 +11,6 @@ import EventService from '../../../api/services/EventService';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 //mport ButtonBase from '@material-ui/core/ButtonBase';
@@ -57,7 +56,10 @@ const styles = (theme) => ({
         '@media only screen and (max-width: 800px)': {
             width: 'auto',
             marginTop: 0,
-        }
+        },
+        border: '1px solid #ddd',
+        borderRadius: '5px',
+        backgroundColor: '#fff',
     },
     margin: {
         margin: '10px 0px',
@@ -482,7 +484,7 @@ class EventAdministrator extends Component {
                       submitText={'Slett'}
                       onSubmit={this.removeUserFromEvent} />
 
-                    <Paper className={classes.content} square>
+                    <div className={classes.content}>
                       {showParticipants ?
                         <EventParticipants
                           removeUserFromEvent={this.confirmRemoveUserFromEvent}
@@ -566,7 +568,7 @@ class EventAdministrator extends Component {
                           }
                       </React.Fragment>
                     }
-                    </Paper>
+                    </div>
 
                 </div>
                 <EventSidebar

@@ -14,6 +14,7 @@ const styles = {
         margin: 'auto',
         paddingTop: 80,
         paddingBottom: 100,
+        backgroundColor: '#f8f8fa',
     },
     overflow: {
         overflowY: 'auto',

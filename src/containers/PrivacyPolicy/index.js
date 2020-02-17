@@ -4,7 +4,6 @@ import {withStyles} from '@material-ui/core/styles';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
@@ -39,6 +38,9 @@ const styles = {
     paper: {
         padding: 20,
         color: 'black',
+        border: '1px solid #ddd',
+        borderRadius: '5px',
+        backgroundColor: '#fff',
     },
 };
 
@@ -56,7 +58,7 @@ class PrivacyPolicy extends Component {
                     <div className={classes.w100}>
                         <div className={classes.section}>
                             <div className={classes.grid}>
-                                <Paper className={classes.paper}>
+                                <div className={classes.paper}>
                                     <h1>TIHLDEs personvernregler</h1>
                                     <p>Denne siden brukes til å informere besøkende på nettstedet om retningslinjene våre for innsamling og bruk av personlig informasjon hvis noen bestemte seg for å bruke tjenesten vår, nettstedet TIHLDE.org.</p>
                                     <p>Hvis du velger å bruke tjenesten vår, samtykker du til innsamling og bruk av informasjon i henhold til denne policyen. Den personlige informasjonen vi samler inn brukes til å levere og forbedre tjenesten. Vi vil ikke bruke eller dele informasjonen din med noen, bortsett fra som beskrevet i denne personvernpolitikken.</p>
@@ -87,7 +89,7 @@ class PrivacyPolicy extends Component {
                                     <p>Vi kan oppdatere personvernreglene våre fra tid til annen. Dermed anbefaler vi deg å gjennomgå denne siden med jevne mellomrom for eventuelle endringer. Vi vil varsle deg om endringer ved å legge ut den nye personvernregelen på denne siden. Disse endringene trer i kraft umiddelbart etter at de er lagt ut på denne siden.</p>
                                     <h2>Kontakt oss</h2>
                                     <p>Hvis du har spørsmål eller forslag til personvernreglene våre, ikke nøl med å kontakte oss.</p>
-                                </Paper>
+                                </div>
                             </div>
                         </div>
                     </div>

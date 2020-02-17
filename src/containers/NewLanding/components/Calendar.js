@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 
@@ -30,7 +29,6 @@ const styles = (theme) => ({
   container: {
     maxWidth: 1100,
     width: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.12)',
   },
   tabs: {
     marginBottom: 1,
@@ -44,6 +42,7 @@ class Calender extends React.Component {
     super(props);
     this.state = {
       events: null,
+      isLoading: true,
       calendarViewMode: 0,
     };
     this.handleChange = this.handleChange.bind(this);
@@ -56,6 +55,10 @@ class Calender extends React.Component {
       const events = eventObject.results === undefined ? eventObject : eventObject.results;
 
       this.setState({ events: events });
+    }).catch(() => {
+
+    }).then(() => {
+      this.setState({ isLoading: false });
     });
   }
 
@@ -68,17 +71,17 @@ class Calender extends React.Component {
 
     return (
       <div className={classes.root}>
-        <Paper className={classes.container}>
+        <div className={classes.container}>
           <Tabs centered className={classes.tabs} value={this.state.calendarViewMode} onChange={this.handleChange}>
             <Tab icon={<Reorder />} label='Listevisning' />
             <Tab icon={<DateRange />} label='Kalendervisning' />
           </Tabs>
           {this.state.calendarViewMode === 0 ?
-            <CalendarListView events={this.state.events} />
+            <CalendarListView events={this.state.events} isLoading={this.state.isLoading} />
             :
             <CalendarGridView events={this.state.events} />
           }
-        </Paper>
+        </div>
       </div>
     );
   }

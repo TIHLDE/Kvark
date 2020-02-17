@@ -14,7 +14,6 @@ import Text from '../../text/EventText';
 
 // Material Components
 import Divider from '@material-ui/core/Divider';
-import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -88,8 +87,10 @@ const styles = (theme) => ({
             order: 0,
             position: 'static',
             top: 0,
-            margin: 12,
         },
+        border: '1px solid #ddd',
+        borderRadius: '5px',
+        backgroundColor: '#fff',
     },
     paddingBtn: {
         paddingBottom: 10,
@@ -279,26 +280,21 @@ class Events extends Component {
                                 {this.state.isFetching ? <CircularProgress className={classes.progress} /> :
                                     <div className={classes.listRoot}>
                                     <Grow in={!this.state.isFetching}>
-                                        <Paper className={classes.list} elevation={1} square>
+                                        <div className={classes.list}>
                                             <Pageination nextPage={this.getNextPage} page={this.state.nextPage}>
-                                              {this.state.events && this.state.events.map((value, index) => (
-                                                  <div key={value.id}>
-
-                                                        <EventListItem key={value.id} data={value} onClick={() => this.goToEvent(value.id)}/>
-                                                        <Divider/>
-
-                                                  </div>
-                                              ))}
+                                                {this.state.events && this.state.events.map((value, index) => (
+                                                    <EventListItem key={value.id} data={value} />
+                                                ))}
                                             </Pageination>
                                             { (this.state.events.length === 0 && !this.state.isLoading) &&
                                                 <NoEventsIndicator />
                                             }
-                                        </Paper>
+                                        </div>
                                     </Grow>
                                     </div>
                                 }
                                 <div>
-                                    <Paper className={classes.settings} elevation={1} square>
+                                    <div className={classes.settings}>
 
                                         <form>
                                             <TextField className={classes.paddingBtn} value={this.state.search} fullWidth placeholder='Søk...' onChange={this.handleChange('search')}/>
@@ -326,7 +322,7 @@ class Events extends Component {
                                             </Button>
                                         </Theme>
 
-                                    </Paper>
+                                    </div>
                                 </div>
                             </div>
                         </div>

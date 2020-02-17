@@ -12,7 +12,6 @@ import UserService from '../../../api/services/UserService';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Hidden from '@material-ui/core/Hidden';
-import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
@@ -38,6 +37,9 @@ const styles = (theme) => ({
         padding: '28px',
         paddingTop: '110px',
         textAlign: 'center',
+        border: '1px solid #ddd',
+        borderRadius: '5px',
+        backgroundColor: '#fff',
     },
     profileCircle: {
         borderRadius: '50%',
@@ -145,7 +147,7 @@ class ProfilePaper extends Component {
         const { classes } = this.props;
 
         return (
-            <Paper className={classes.paper} square elevation={3}>
+            <div className={classes.paper}>
                 <div className={classNames(classes.profileCircle)}>{ this.state.userData.first_name !== undefined ? (this.state.userData.first_name).substring(0,1) + '' + (this.state.userData.last_name).substring(0,1) : <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant="text" /> }</div>
                 <Typography className={classes.textMargin} variant='h4'>{ this.state.userData.first_name !== undefined ? this.state.userData.first_name + ' ' + this.state.userData.last_name : <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="75%" /> }</Typography>
                 <Typography className={classes.textMargin} variant='subtitle1'>{ this.state.userData.email !== undefined ? this.state.userData.email : <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="45%" /> }</Typography>
@@ -161,7 +163,7 @@ class ProfilePaper extends Component {
                 {this.state.tabViewMode === 0 && <ProfileEvents/>}
                 {this.state.tabViewMode === 1 && <Typography variant='subtitle1'>Kommer senere!</Typography>}
                 {this.state.tabViewMode === 2 && <ProfileSettings />}
-            </Paper>
+            </div>
         );
     }
 }

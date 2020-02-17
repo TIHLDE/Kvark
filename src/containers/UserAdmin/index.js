@@ -41,7 +41,8 @@ const styles = {
         padding: '28px 10px',
         textAlign: 'center',
         backgroundColor: 'white',
-        boxShadow: '0px 3px 6px #ddd',
+        border: '1px solid #ddd',
+        borderRadius: 5,
     },
     grid: {
         width: '100%',

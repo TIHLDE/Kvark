@@ -9,7 +9,6 @@ import EventService from '../../api/services/EventService';
 import Text from '../../text/EventRegistrationText';
 
 // Material UI Components
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -47,6 +46,9 @@ const styles = {
         left: 0, right: 0,
         top: '-60px',
         padding: 28,
+        border: '1px solid #ddd',
+        borderRadius: '5px',
+        backgroundColor: '#fff',
     },
     
     mt: {marginTop: 16},
@@ -149,7 +151,7 @@ class EventRegistration extends Component {
                 
                     </div>
                     <div className={classes.main}>
-                        <Paper className={classes.paper} square elevation={3}>
+                        <div className={classes.paper}>
                             {this.state.isLoading && <LinearProgress className={classes.progress} />}
                             
                             <Typography variant='h5' align='center'>{this.state.eventName}</Typography>
@@ -175,7 +177,7 @@ class EventRegistration extends Component {
                                     </Button>
                                 </Grid>
                             </form>
-                        </Paper>
+                        </div>
                     </div>
                 </div>
                 <Snackbar open={this.state.open} onClose={this.handleSnackbarClose} TransitionComponent={this.state.Transition} autoHideDuration={3000}>

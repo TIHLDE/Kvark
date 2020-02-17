@@ -8,7 +8,6 @@ import AuthService from '../../api/services/AuthService';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
@@ -41,6 +40,9 @@ const styles = (theme) => ({
         padding: '28px',
         paddingTop: '110px',
         textAlign: 'center',
+        backgroundColor: '#fff',
+        border: '1px solid #ddd',
+        borderRadius: 5,
     },
     topSpacing: {
         marginTop: 10,
@@ -74,10 +76,10 @@ class Profile extends Component{
                         { AuthService.isAuthenticated() ?
                             <ProfilePaper logOutMethod={this.logOut} />
                             :
-                            <Paper className={classes.paper} square elevation={3}>
+                            <div className={classes.paper}>
                                 <Typography variant='h6'>Du må være logget inn for å se profilen din</Typography>
                                 <Link to={URLS.login}><Button className={classes.topSpacing} variant='contained' color='primary'>Logg inn</Button></Link>
-                            </Paper>
+                            </div>
                         }
                     </div>
                 </div>

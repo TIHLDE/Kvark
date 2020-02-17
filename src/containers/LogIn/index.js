@@ -12,7 +12,6 @@ import MiscService from '../../api/services/MiscService';
 import Text from '../../text/LogInText';
 
 // Material UI Components
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -47,6 +46,9 @@ const styles = {
         left: 0, right: 0,
         top: '-60px',
         padding: 28,
+        border: '1px solid #ddd',
+        borderRadius: '5px',
+        backgroundColor: '#fff',
     },
     logo: {
         height: '32px',
@@ -121,7 +123,7 @@ class LogIn extends Component {
                 
                     </div>
                     <div className={classes.main}>
-                        <Paper className={classes.paper} square elevation={3}>
+                        <div className={classes.paper}>
                             {this.state.isLoading && <LinearProgress className={classes.progress} />}
                             <img  className={classes.logo} src={TIHLDE_LOGO} height='30em' alt='tihlde_logo'/>
                             <Typography variant='h6'>{Text.header}</Typography>
@@ -163,7 +165,7 @@ class LogIn extends Component {
                                     </Link>
                                 </Grid>
                             </form>
-                        </Paper>
+                        </div>
                     </div>
                 </div>
             </Navigation>

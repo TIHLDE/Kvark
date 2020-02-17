@@ -10,8 +10,6 @@ import Text from '../../text/AboutText';
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Divider from '@material-ui/core/Divider';
 
 // Icons
 import SocialIcon from '../../assets/icons/social.svg';
@@ -58,14 +56,14 @@ const styles = {
         margin: 'auto',
         '@media only screen and (max-width: 1200px)': {
             padding: '48px 0',
-        }
+        },
     },
     topSection: {
         padding: '20px 0 48px 0',
 
         '@media only screen and (max-width: 1200px)': {
             padding: '12px 0px 48px 0px',
-        }
+        },
     },
     verticalMargin: {
         marginTop: 30,
@@ -77,8 +75,11 @@ const styles = {
     miniPadding: {
         padding: 10,
     },
-    miniMargin: {
+    orgMap: {
         margin: 4,
+        border: '1px solid #ddd',
+        borderRadius: 5,
+        backgroundColor: '#fff',
     },
     bottomItem: {
         gridColumn: 'span 2',
@@ -94,8 +95,10 @@ const styles = {
     linkContainer: {
       marginBottom: 0,
       width: '100%',
-      gridGap: 0,
-    }
+      gridGap: '1px',
+      backgroundColor: '#ddd',
+      paddingTop: '1px',
+    },
 };
 
 class About extends Component {
@@ -114,7 +117,6 @@ class About extends Component {
                             image='https://images.pexels.com/photos/220351/pexels-photo-220351.jpeg?auto=compress&cs=tinysrgb&h=350'
                             text={Text.subheader}
                             title={Text.header}>
-                            <Divider />
                             <Grid item className={classNames(classes.linkContainer, classes.grid)}>
                                 <LinkButton to='/lover/'>
                                     <Typography>TIHLDE's Lover</Typography>
@@ -155,9 +157,9 @@ class About extends Component {
                         <div className={classes.section}>
                             <Typography className={classes.verticalMargin}variant='h4' color='inherit' align='center'>Organisasjonskart</Typography>
 
-                            <Paper className={classes.miniMargin} square elevation={1}>
+                            <div className={classes.orgMap}>
                                 <ClickableImage className={classes.miniPadding} image={OrgMap} alt='organisasjonskart' width='100%'/>
-                            </Paper>
+                            </div>
                         </div>
                     </div>
 

@@ -7,6 +7,8 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 const styles = {
   button: {
     padding: '10px',
+    boxShadow: '0px 2px 4px #ddd',
+    borderRadius: 5,
   },
 };
 

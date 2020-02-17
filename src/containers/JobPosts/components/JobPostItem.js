@@ -17,60 +17,69 @@ import TIHLDELOGO from '../../../assets/img/tihlde_image.png';
 
 const styles = {
     root: {
-        height: 130,
-        maxHeight: 130,
-        padding: 16,
+        boxShadow: '0px 2px 4px #ddd, 0px 0px 4px #ddd',
+        borderRadius: 5,
+        marginBottom: 10,
+        height: 140,
+        padding: 10,
         position: 'relative',
         overflow: 'hidden',
-
+        flexDirection: 'row',
+        display: 'flex',
+        '@media only screen and (min-width: 900px)': {
+            height: 160,
+        },
         '@media only screen and (max-width: 600px)': {
-            maxHeight: 'none',
-            maxWidth: '100vw',
             overflow: 'hidden',
             minHeight: 150,
             height: 'auto',
+            flexDirection: 'column',
         },
     },
     src: {
-        objectFit: 'scale-down',
-        padding: 4,
-        border: '1px solid whitesmoke',
-        height: 70,
-        minWidth: 70,
-        width: 70,
+        objectFit: 'cover',
+        height: '100%',
+        width: '40%',
+        maxWidth: 250,
+        borderRadius: 5,
+        '@media only screen and (min-width: 900px)': {
+            minWidth: '45%',
+            maxWidth: 'none',
+        },
+        '@media only screen and (max-width: 600px)': {
+            width: '100%',
+            maxWidth: 'none',
+            height: 150,
+        },
     },
     content: {
-        marginLeft: 26,
+        marginLeft: 20,
+        padding: '10px 0px',
         border: 6,
+        height: '100%',
+        justifyContent: 'space-evenly',
+        '@media only screen and (max-width: 600px)': {
+            padding: '10px 0px 0px',
+        },
     },
     title: {
-        color: '#3f444a',
+        color: '#000000',
         fontWeight: 'bold',
-    },
-
-    details: {
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr 1fr',
-
-        '@media only screen and (max-width: 600px)': {
-            gridTemplateColumns: 'auto',
-            padding: '10px 0',
-        },
+        fontSize: '24px',
     },
     infoRoot: {
         width: 'auto',
     },
     info: {
         marginLeft: 10,
+        color: '#555555',
+        fontSize: '18px',
     },
     icon: {
-        color: 'rbga(0,0,0,0.8)',
-        height: 16,
-        width: 16,
+        color: '#555555',
+        height: 24,
+        width: 24,
         margin: 0,
-    },
-    btn: {
-        padding: 0,
     },
     expired: {
        color: 'rgba(0,0,0,0.3)',
@@ -97,19 +106,15 @@ const JobPostItem = (props) => {
     const src = (data.image)? data.image : TIHLDELOGO;
     const start = moment(data.deadline, ['YYYY-MM-DD HH:mm'], 'nb');
     return (
-        <ListItem className={classes.btn} button onClick={props.onClick}>
-            <Grid className={classes.root} container direction='row' wrap='nowrap' alignItems='center'>
-                <img className={classNames(classes.src, (data.expired)? classes.filter : '')} src={src} alt={data.title} />
-                <Grid className={classes.content} container direction='column' wrap='nowrap'>
-                    <Typography className={classNames(classes.title, (data.expired)? classes.expired : '')} variant='h6' gutterBottom>
-                        <strong>{data.title}</strong>
-                    </Typography>
-                    <div className={classNames(classes.details, data.expired ? classes.filter : '')}>
-                        <InfoContent icon={<Business className={classes.icon}/>} label={data.company} />
-                        <InfoContent icon={<Location className={classes.icon}/>} label={data.location} />
-                        <InfoContent icon={<Calendar className={classes.icon}/>} label={start.format('DD.MM.YYYY')} />
-                    </div>
-                </Grid>
+        <ListItem className={classes.root} button onClick={props.onClick}>
+            <img className={classNames(classes.src, (data.expired)? classes.filter : '')} src={src} alt={data.title} />
+            <Grid className={classes.content} container direction='column' wrap='nowrap'>
+                <Typography className={classNames(classes.title, (data.expired)? classes.expired : '')} variant='h6' gutterBottom>
+                    <strong>{data.title}</strong>
+                </Typography>
+                <InfoContent icon={<Business className={classes.icon}/>} label={data.company} />
+                <InfoContent icon={<Location className={classes.icon}/>} label={data.location} />
+                <InfoContent icon={<Calendar className={classes.icon}/>} label={start.format('DD.MM.YYYY')} />
             </Grid>
         </ListItem>
     );

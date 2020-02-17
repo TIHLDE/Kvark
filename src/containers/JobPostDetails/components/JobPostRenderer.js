@@ -9,7 +9,6 @@ import Text from '../../../text/JobPostText';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
@@ -38,8 +37,10 @@ const styles = {
         },
     },
     paper: {
-        padding: 26,
+        padding: 20,
         backgroundColor: 'white',
+        border: '1px solid #ddd',
+        borderRadius: 5,
     },
     imageWrapper: {
         maxHeight: 454,
@@ -49,13 +50,14 @@ const styles = {
         width: '100%',
         height: 'auto',
         objectFit: 'contain',
+        borderRadius: 5,
     },
     title: {
         color: 'black',
 
         '@media only screen and (max-width: 600px)': {
             fontSize: '2rem',
-        }
+        },
     },
     content: {
         padding: 38,
@@ -110,12 +112,12 @@ InfoContent.propTypes = {
 };
 
 const goToLink = (link, toMail=false) => {
-    if(toMail) {
+    if (toMail) {
         window.location.href = 'mailto:'.concat(link);
     } else {
         window.open(link, '_blank');
     }
-}
+};
 
 const JobPostRenderer = (props) => {
     const {classes} = props;
@@ -126,15 +128,15 @@ const JobPostRenderer = (props) => {
     return (
         <div className={classes.grid} >
             <div>
-                <Paper className={classNames(classes.paper, classes.content)} square elevation={1}>
+                <div className={classNames(classes.paper, classes.content)}>
                     <Typography variant='caption' gutterBottom>Publisert: {publishedAt.format('DD.MM.YYYY')}</Typography>
                     <Typography className={classNames(classes.title, classes.mb)} variant='h5' gutterBottom><strong>{data.title}</strong></Typography>
                     <MarkdownRenderer className={classes.mb} value={data.ingress || ''} />
                     <MarkdownRenderer value={data.body || ''} />
-                </Paper>
+                </div>
             </div>
             <div>
-                <Paper className={classNames(classes.paper, classes.details)} square elevation={1}>
+                <div className={classNames(classes.paper, classes.details)}>
                     <div className={classes.imageWrapper}>
                         <img className={classes.image} src={data.logo} alt={data.logo_alt} />
                     </div>
@@ -148,8 +150,7 @@ const JobPostRenderer = (props) => {
                         <Fragment>
                             <Divider className={classes.mb} />
                             <Typography variant='subtitle1'><strong>{Text.contact}</strong></Typography>
-                            
-                            <Typography 
+                            <Typography
                                 className={classNames(classes.emailLink, classes.mb)}
                                 onClick={() => goToLink(data.email, true)}
                                 variant='caption'>
@@ -157,11 +158,9 @@ const JobPostRenderer = (props) => {
                             </Typography>
                         </Fragment>
                     }
-                    
-                    
                     <Divider className={classes.mb} />
-                    {data.link && 
-                        <Button 
+                    {data.link &&
+                        <Button
                             onClick={() => goToLink(data.link)}
                             fullWidth
                             className={classes.mt}
@@ -170,7 +169,7 @@ const JobPostRenderer = (props) => {
                             {Text.apply}
                         </Button>
                     }
-                </Paper>
+                </div>
             </div>
         </div>
     );

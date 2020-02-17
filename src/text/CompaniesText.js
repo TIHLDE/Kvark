@@ -2,7 +2,7 @@ export default {
     header: 'Meld interesse',
     bannnertitle: 'For Bedrifter',
     bannerPicture: 'https://3qrt0f3cy3lx35vbo81iuq7b-wpengine.netdna-ssl.com/wp-content/uploads/2017/05/GlobalShares-Software-Solutions-bg.jpg',
-    omTIHLDE: 'TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Digital infrastruktur og cybersikkerhet og Digital forretningsutvikling, samt masterstudiet Digital samhandling ved AIT, IDI, NTNU på Gløshaugen.',
+    omTIHLDE: 'TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Drift av datasystemer, samt masterstudiet Digital samhandling ved AIT, IDI, NTNU på Gløshaugen.',
     undergrupper: 'Undergrupper',
     studier: 'Studier',
     data: 'Dataingeniør-studiet kombinerer det beste fra de spesialiserte informatikkutdanningene og de tradisjonelle ingeniørutdanningene.\n' +

@@ -15,8 +15,6 @@ const linkButtonStyles = {
   buttonFrame: {
     width: '100%',
     height: '100%',
-    // borderRight: '1px solid rgba(0,0,0,0.12)',
-    // borderLeft: '1px solid rgba(0,0,0,0.12)',
     backgroundColor: 'white',
   },
   textCenter: {
@@ -27,11 +25,6 @@ const linkButtonStyles = {
   },
   wrapper: {
     padding: 0,
-    backgroundColor: 'rgba(0,0,0,0.12)',
-  },
-  padding: {
-    paddingLeft: 1,
-    paddingRight: 1,
   },
   iconContainer: {
     marginLeft: 5,
