@@ -24,6 +24,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 // Components
 import ProfileSettings from './ProfileSettings';
 import ProfileEvents from './ProfileEvents';
+import MemberProof from './MemberProof';
 
 const styles = (theme) => ({
     paper: {
@@ -108,6 +109,7 @@ class ProfilePaper extends Component {
             tabViewMode: 0,
             userData: {},
             groupMember: false,
+            modalShow: false,
         }
         this.handleLogOut = this.handleLogOut.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -141,6 +143,12 @@ class ProfilePaper extends Component {
     handleChange(event, newValue) {
         this.setState({ tabViewMode: newValue });
     }
+    closeEventModal = () => {
+        this.setState({modalShow: false});
+    }
+    showEventModal = () => {
+        this.setState({modalShow: true});
+    }
 
 
     render() {
@@ -148,11 +156,18 @@ class ProfilePaper extends Component {
 
         return (
             <div className={classes.paper}>
+                {this.state.modalShow && this.state.userData &&
+                    <MemberProof
+                        onClose={this.closeEventModal}
+                        userId={this.state.userData.user_id}
+                        status={this.state.modalShow} />
+                }
                 <div className={classNames(classes.profileCircle)}>{ this.state.userData.first_name !== undefined ? (this.state.userData.first_name).substring(0,1) + '' + (this.state.userData.last_name).substring(0,1) : <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant="text" /> }</div>
                 <Typography className={classes.textMargin} variant='h4'>{ this.state.userData.first_name !== undefined ? this.state.userData.first_name + ' ' + this.state.userData.last_name : <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="75%" /> }</Typography>
                 <Typography className={classes.textMargin} variant='subtitle1'>{ this.state.userData.email !== undefined ? this.state.userData.email : <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="45%" /> }</Typography>
                 <div className={classes.buttonsContainer}>
                     { this.state.groupMember && <Link to={URLS.admin} className={classNames(classes.button, classes.buttonLink)}><Button variant='contained' color='primary'>Admin</Button></Link> }
+                    <Button className={classes.button} variant='contained' color='primary' onClick={this.showEventModal}>Medlemsbevis</Button>
                     <Button className={classNames(classes.logOutButton, classes.button)} variant='contained' color='inherit' onClick={this.handleLogOut}>Logg ut</Button>
                 </div>
                 <Tabs variant="fullWidth" scrollButtons="on" centered className={classes.tabs} value={this.state.tabViewMode} onChange={this.handleChange}>
