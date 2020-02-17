@@ -4,10 +4,10 @@ import {withStyles} from '@material-ui/core/styles';
 // Material UI Components
 
 // Text
-import Text from '../../../../text/EventText';
+import Text from '../../../../text/AdminText';
 
 // Icons
-import EventIcon from '../../../../assets/icons/events.png';
+import EventIcon from '../../../../assets/icons/nodata.png';
 
 // Project Components
 import MessageIndicator from '../../../../components/layout/MessageIndicator';
@@ -42,9 +42,9 @@ class NoEventsIndicator extends Component {
         return (
             <div className={classes.root}>
                 <div className={classes.imageWrapper}>
-                    <img className={classes.image} src={EventIcon} alt='Ingen arrangementer' />
+                    <img className={classes.image} src={EventIcon} alt='Ingen Brukere' />
                 </div>
-                <MessageIndicator header={Text.noEvents} subheader={Text.subNoEvents}/>
+                <MessageIndicator header='Fant ingen brukere'/>
             </div>
         );
     }

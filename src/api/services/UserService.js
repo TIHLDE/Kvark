@@ -24,6 +24,14 @@ class UserService {
             return null;
         }
     }
+    static getUsers = async(filters = null) =>{
+        if(AuthService.isAuthenticated()){
+            return API.getUsers(filters).response()
+            .then((data)=>{
+                return data
+            });
+        }
+    }
 
     static isGroupMember = async () => {
         let isHS = false; let isPromo = false; let isNok = false; let isDevkom = false;

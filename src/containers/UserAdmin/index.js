@@ -24,7 +24,6 @@ const styles = {
     top: {
         height: 160,
         backgroundImage: 'linear-gradient(90deg, #3F5EFB, #FC466B)',
-
     },
     root: {
         minHeight: '100vh',
@@ -95,11 +94,9 @@ class UserAdmin extends Component {
                         <Tabs variant="fullWidth" scrollButtons="on" centered className={classes.tabs} value={this.state.tabViewMode} onChange={this.handleChange}>
                             <Tab id='0' icon={<MembersIcon />} label={<Hidden xsDown>Medlemmer</Hidden>} />
                             <Tab id='1' icon={<WaitingIcon />} label={<Hidden xsDown>Ventende</Hidden>} />
-                            <Tab id='2' icon={<SearchIcon />} label={<Hidden xsDown>Søk</Hidden>} />
                         </Tabs>
-                        {this.state.tabViewMode === 0 && <Members />}
-                        {this.state.tabViewMode === 1 && <Typography variant='subtitle1'>Ventende brukere</Typography>}
-                        {this.state.tabViewMode === 2 && <Typography variant='subtitle1'>Søk etter brukere</Typography>}
+                        {this.state.tabViewMode === 0 && <Members isMember={true} />}
+                        {this.state.tabViewMode === 1 && <Members isMember={false}/>}
                     </Grid>
                 </div>
             </Navigation>
