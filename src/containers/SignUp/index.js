@@ -206,7 +206,7 @@ class SignUp extends Component {
                                         onChange={this.handleChange}
                                         inputRef={(e) => this.vippsNr = e}
                                         error={this.state.errorMessage !== null}
-                                        label='Vipps-Transcation number'
+                                        label='Vipps transaksjons-id'
                                         variant='outlined'
                                         margin='normal'
                                         required/>
