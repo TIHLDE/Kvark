@@ -48,7 +48,7 @@ const styles = {
     image: {
         width: '100%',
         height: 'auto',
-        maxHeight: 456,
+        maxHeight: 350,
         objectFit: 'cover',
         border: '1px solid #ddd',
         backgroundColor: '#ddd',

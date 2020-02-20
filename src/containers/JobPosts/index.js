@@ -80,7 +80,6 @@ const styles = {
             order: 0,
             position: 'static',
             top: 0,
-            margin: 12,
         },
         border: '1px solid #ddd',
         borderRadius: '5px',

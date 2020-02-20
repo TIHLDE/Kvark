@@ -12,7 +12,7 @@ body {
   --main-color: #1d448c;
   --text-color: #777;
   --text-color-light: #ccc;
-  --border-color: #eee;
+  --border-color: #ddd;
   --bg-color: #f9f9f9;
   --neutral-color: #fff;
 }
@@ -67,6 +67,8 @@ body {
   background: var(--neutral-color);
   border: 1px solid var(--border-color);
   user-select: none;
+  border-radius: 5px;
+  overflow: hidden;
 }
 
 .calendar .header {

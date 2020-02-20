@@ -9,6 +9,7 @@ const styles = {
     padding: '10px',
     boxShadow: '0px 2px 4px #ddd',
     borderRadius: 5,
+    backgroundColor: 'white',
   },
 };
 

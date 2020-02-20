@@ -26,6 +26,7 @@ const styles = {
         overflow: 'hidden',
         flexDirection: 'row',
         display: 'flex',
+        backgroundColor: 'white',
         '@media only screen and (min-width: 900px)': {
             height: 160,
         },
@@ -66,14 +67,16 @@ const styles = {
         color: '#000000',
         fontWeight: 'bold',
         fontSize: '24px',
+        textAlign: 'center',
     },
     infoRoot: {
         width: 'auto',
+        justifyContent: 'center',
     },
     info: {
         marginLeft: 10,
         color: '#555555',
-        fontSize: '18px',
+        fontSize: '1rem',
     },
     icon: {
         color: '#555555',
@@ -92,7 +95,7 @@ const styles = {
 const InfoContent = withStyles(styles)((props) => (
     <Grid className={props.classes.infoRoot} container direction='row' wrap='nowrap' alignItems='center'>
         {props.icon}
-        <Typography className={props.classes.info} variant='subtitle1'>{props.label}</Typography>
+        <Typography className={props.classes.info} variant='h6'>{props.label}</Typography>
     </Grid>
 ));
 

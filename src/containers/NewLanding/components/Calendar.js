@@ -19,7 +19,7 @@ import DateRange from '@material-ui/icons/DateRange';
 const styles = (theme) => ({
   root: {
     flexGrow: 1,
-    padding: 0, // MUI Grid requires a padding of half the given spacing.
+    padding: '0 6px', // MUI Grid requires a padding of half the given spacing.
   },
   paper: {
     padding: theme.spacing.unit,
