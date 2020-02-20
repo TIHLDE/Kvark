@@ -9,6 +9,7 @@ export default {
     jobposts: '/karriere/',
     profile: '/profil/',
     login: '/logg-inn/',
+    forgotPassword: '/glemt-passord/',
     laws: '/lover/',
     newlanding: '/newlanding/',
     signup: '/ny-bruker/',

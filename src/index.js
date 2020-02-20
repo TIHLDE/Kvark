@@ -31,6 +31,7 @@ import JobPosts from './containers/JobPosts';
 import JobPostDetails from './containers/JobPostDetails';
 import JobPostAdministration from './containers/JobPostAdministration';
 import LogIn from './containers/LogIn';
+import ForgotPassword from './containers/ForgotPassword';
 import Laws from './containers/Laws';
 import NewLanding from './containers/NewLanding';
 import Http404 from './containers/Http404';
@@ -112,6 +113,7 @@ const Application = (
                     <Route path={URLS.eventAdmin} component={RequireAuth(EventAdministration, ["HS", "Promo", "Nok", "Devkom"])} />
 
                     <Route path={URLS.login} component={LogIn} />
+                    <Route path={URLS.forgotPassword} component={ForgotPassword} />
                     <Route path={URLS.signup} component={SignUp} />
 
                     <Route component={Http404} />

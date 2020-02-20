@@ -7,4 +7,7 @@ export default {
     authenticate: (username, password) => {
         return new IRequest('POST', 'auth/login/', {user_id: username, password: password}, false);
     },
-}
+    forgotPassword: (email) => {
+        return new IRequest('POST', 'rest-auth/password/reset/', {email: email}, false);
+    },
+};
