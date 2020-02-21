@@ -125,6 +125,6 @@ const Application = (
     </Provider>
 );
 
-console.log('Snoker rundt du? Det liker vi. Vi i Nettkom ser alltid etter nye medlemmer.');
+console.log('Snoker rundt du? Det liker vi. Vi i DevKom ser alltid etter nye medlemmer.');
 
 ReactDOM.render(Application, document.getElementById('root'));

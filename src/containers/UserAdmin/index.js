@@ -12,7 +12,6 @@ import Hidden from '@material-ui/core/Hidden';
 // Icons
 import MembersIcon from '@material-ui/icons/PlaylistAddCheck';
 import WaitingIcon from '@material-ui/icons/PlaylistAdd';
-import SearchIcon from '@material-ui/icons/Search';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';

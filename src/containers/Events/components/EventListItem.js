@@ -68,11 +68,15 @@ const styles = {
         color: '#000000',
         fontWeight: 'bold',
         fontSize: '24px',
-        textAlign: 'center',
+        '@media only screen and (max-width: 600px)': {
+            textAlign: 'center',
+        },
     },
     infoRoot: {
         width: 'auto',
-        justifyContent: 'center',
+        '@media only screen and (max-width: 600px)': {
+            justifyContent: 'center',
+        },
     },
     info: {
         marginLeft: 10,

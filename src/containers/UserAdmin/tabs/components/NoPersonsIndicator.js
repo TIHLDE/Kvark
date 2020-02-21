@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
-
-// Material UI Components
-
-// Text
-import Text from '../../../../text/AdminText';
 
 // Icons
 import EventIcon from '../../../../assets/icons/nodata.png';
@@ -32,8 +28,8 @@ const styles = {
         objectFit: 'cover',
         width: '100%',
         height: '100%',
-    }
-}
+    },
+};
 
 class NoEventsIndicator extends Component {
 
@@ -49,5 +45,9 @@ class NoEventsIndicator extends Component {
         );
     }
 }
+
+NoEventsIndicator.propTypes = {
+    classes: PropTypes.object,
+};
 
 export default withStyles(styles)(NoEventsIndicator);

@@ -66,7 +66,8 @@ const EventParticipant = (props) => {
   const [checkedState, setCheckedState] = useState(attended);
   useEffect(() => {
     setCheckedState(props.attended);
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const userInfo = props.user.user_info;
 

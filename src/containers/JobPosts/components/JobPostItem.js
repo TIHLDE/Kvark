@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 
 // Icons
-import Calendar from '@material-ui/icons/CalendarToday';
+import Date from '@material-ui/icons/DateRange';
 import Location from '@material-ui/icons/LocationOn';
 import Business from '@material-ui/icons/Business';
 import TIHLDELOGO from '../../../assets/img/tihlde_image.png';
@@ -67,11 +67,15 @@ const styles = {
         color: '#000000',
         fontWeight: 'bold',
         fontSize: '24px',
-        textAlign: 'center',
+        '@media only screen and (max-width: 600px)': {
+            textAlign: 'center',
+        },
     },
     infoRoot: {
         width: 'auto',
-        justifyContent: 'center',
+        '@media only screen and (max-width: 600px)': {
+            justifyContent: 'center',
+        },
     },
     info: {
         marginLeft: 10,
@@ -117,7 +121,7 @@ const JobPostItem = (props) => {
                 </Typography>
                 <InfoContent icon={<Business className={classes.icon}/>} label={data.company} />
                 <InfoContent icon={<Location className={classes.icon}/>} label={data.location} />
-                <InfoContent icon={<Calendar className={classes.icon}/>} label={start.format('DD.MM.YYYY')} />
+                <InfoContent icon={<Date className={classes.icon}/>} label={start.format('DD.MM.YYYY')} />
             </Grid>
         </ListItem>
     );
