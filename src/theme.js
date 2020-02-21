@@ -8,28 +8,31 @@ export default createMuiTheme({
       primary: {
         main: '#1D448C',
         dark: '#183770',
-        contrastText: 'white',
+        contrastText: '#ffffff',
       },
       secondary: {
         main: '#748674', // '#00897B',
-        contrastText: 'white',
+        contrastText: '#ffffff',
       },
       error: {
         main: '#B71C1C',
-        contrastText: 'white',
+        contrastText: '#ffffff',
       },
     },
 });
 
 export const errorTheme = createMuiTheme({
+    typography: {
+      useNextVariants: true,
+    },
     palette: {
       primary: {
         main: '#B71C1C',
-        contrastText: 'white',
+        contrastText: '#ffffff',
       },
       secondary: {
         main: '#009688',
-        contrastText: 'white',
+        contrastText: '#ffffff',
       },
     },
 });

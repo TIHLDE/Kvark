@@ -48,30 +48,36 @@ export const shortDownString = (string, charsToShortDown) => {
   return string;
 };
 
-// Get user study
-export const getUserStudy = (userStudy) => {
-  let userStudyText = '';
-
+// Get user study short
+export const getUserStudyShort = (userStudy) => {
   switch (userStudy) {
-    case 1:
-      userStudyText = 'Dataing';
-      break;
-    case 2:
-      userStudyText = 'DigFor';
-      break;
-    case 3:
-      userStudyText = 'DigInc';
-      break;
-    case 4:
-      userStudyText = 'DigSam';
-      break;
-    case 5:
-      userStudyText = 'Drift';
-      break;
-    default:
-      userStudyText = 'Ikke oppgitt';
-      break;
+    case 1: return 'Dataing';
+    case 2: return 'DigFor';
+    case 3: return 'DigInc';
+    case 4: return 'DigSam';
+    case 5: return 'Drift';
+    default: return 'Ikke oppgitt';
   }
-
-  return userStudyText;
+};
+// Get user study long
+export const getUserStudyLong = (userStudy) => {
+  switch (userStudy) {
+    case 1: return 'Dataingeniør';
+    case 2: return 'Digital forretningsutvikling';
+    case 3: return 'Digital infrastruktur og cybersikkerhet';
+    case 4: return 'Digital samhandling';
+    case 5: return 'Drift av datasystemer';
+    default: return 'Ikke oppgitt';
+  }
+};
+// Get user class
+export const getUserClass = (userStudy) => {
+  switch (userStudy) {
+    case 1: return '1. klasse';
+    case 2: return '2. klasse';
+    case 3: return '3. klasse';
+    case 4: return '4. klasse';
+    case 5: return '5. klasse';
+    default: return 'Ikke oppgitt';
+  }
 };

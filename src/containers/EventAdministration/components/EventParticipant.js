@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {getUserStudy} from '../../../utils';
+import {getUserStudyShort} from '../../../utils';
 
 // Material-ui
 import {withStyles} from '@material-ui/core/styles';
@@ -83,7 +83,7 @@ const EventParticipant = (props) => {
     <Card className={classes.content}>
       <div className={classes.userName}>
         <Typography>{userInfo.first_name + ' ' + userInfo.last_name}</Typography>
-        <Typography>Studie: {getUserStudy(userInfo.user_study)}</Typography>
+        <Typography>Studie: {getUserStudyShort(userInfo.user_study)}</Typography>
         <Typography>Årstrinn: {userInfo.user_class} Klasse</Typography>
         {userInfo.allergy !== '' && <Typography>Allergier: {userInfo.allergy}</Typography>}
 

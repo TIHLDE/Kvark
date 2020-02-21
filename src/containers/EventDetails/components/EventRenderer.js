@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import {getUserStudyShort} from '../../../utils';
 
 // Text
 import Text from '../../../text/EventText';
@@ -73,11 +74,10 @@ const styles = {
         },
     },
     details: {
-        padding: 20,
+        padding: '10px 20px',
         border: '1px solid #ddd',
         borderRadius: 5,
         backgroundColor: '#ffffff',
-        paddingBottom: 8,
         marginBottom: 20,
         maxWidth: 280,
         '@media only screen and (max-width: 800px)': {
@@ -88,7 +88,6 @@ const styles = {
     },
     info: {
         width: 'auto',
-        marginBottom: 3,
         flexDirection: 'column',
 
         '@media only screen and (max-width: 800px)': {
@@ -108,6 +107,22 @@ const styles = {
     },
     description: {
       color: '#333',
+    },
+    prioritiesContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+      width: '100%',
+      '@media only screen and (max-width: 800px)': {
+        justifyContent: 'flex-start',
+    },
+    },
+    priority: {
+      padding: '0 3px',
+      border: '1px solid #ddd',
+      borderRadius: 5,
+      margin: 3,
     },
 };
 
@@ -153,6 +168,40 @@ const DetailContent = withStyles(styles)((props) => (
 DetailContent.propTypes = {
   title: PropTypes.string,
   info: PropTypes.string,
+};
+
+const removeStudyFromArray = (array, userStudy) => {
+    while (array.some((item) => item.user_study === userStudy)) {
+      let index = array.findIndex((item) => item.user_study === userStudy);
+      array.splice(index, 1);
+    }
+    return array;
+};
+
+const PrioritiesContent = withStyles(styles)((props) => {
+  let priorities = props.priorities;
+  let Dataing = null; let DigFor = null; let DigInc = null; let DigSam = null; let Drift = null;
+  if (priorities.some((item) => item.user_class === 1 && item.user_study === 1) && priorities.some((item) => item.user_class === 2 && item.user_study === 1) && priorities.some((item) => item.user_class === 3 && item.user_study === 1)) {Dataing = (<Typography className={props.classes.priority} variant='subtitle1'>{getUserStudyShort(1)}</Typography>); priorities = removeStudyFromArray(priorities, 1);}
+  if (priorities.some((item) => item.user_class === 1 && item.user_study === 2) && priorities.some((item) => item.user_class === 2 && item.user_study === 2) && priorities.some((item) => item.user_class === 3 && item.user_study === 2)) {DigFor = (<Typography className={props.classes.priority} variant='subtitle1'>{getUserStudyShort(2)}</Typography>); priorities = removeStudyFromArray(priorities, 2);}
+  if (priorities.some((item) => item.user_class === 1 && item.user_study === 3) && priorities.some((item) => item.user_class === 2 && item.user_study === 3) && priorities.some((item) => item.user_class === 3 && item.user_study === 3)) {DigInc = (<Typography className={props.classes.priority} variant='subtitle1'>{getUserStudyShort(3)}</Typography>); priorities = removeStudyFromArray(priorities, 3);}
+  if (priorities.some((item) => item.user_class === 4 && item.user_study === 4) && priorities.some((item) => item.user_class === 5 && item.user_study === 4)) {DigSam = (<Typography className={props.classes.priority} variant='subtitle1'>{getUserStudyShort(4)}</Typography>); priorities = removeStudyFromArray(priorities, 4);}
+  if (priorities.some((item) => item.user_class === 1 && item.user_study === 5) && priorities.some((item) => item.user_class === 2 && item.user_study === 5) && priorities.some((item) => item.user_class === 3 && item.user_study === 5)) {Drift = (<Typography className={props.classes.priority} variant='subtitle1'>{getUserStudyShort(5)}</Typography>); priorities = removeStudyFromArray(priorities, 5);}
+
+  return (
+    <Grid className={props.classes.info} container wrap='nowrap' alignItems='center' justify='flex-start'>
+        <Typography className={props.classes.ml} variant='subtitle1'>{props.title}</Typography>
+        <div className={props.classes.prioritiesContainer}>
+          {Dataing}{DigFor}{DigInc}{DigSam}{Drift}
+          {props.priorities.map(function(priority, index) {
+            return (<Typography className={props.classes.priority} variant='subtitle1' key={index}>{priority.user_class + '. ' + getUserStudyShort(priority.user_study)}</Typography>);
+          })}
+        </div>
+    </Grid>
+  );
+});
+PrioritiesContent.propTypes = {
+  title: PropTypes.string,
+  priorities: PropTypes.array,
 };
 
 const EventRenderer = (props) => {
@@ -289,11 +338,23 @@ const EventRenderer = (props) => {
                         {userEvent && <DetailContent title="Avmeldingsfrist:" info={getDate(moment(signOffDeadline, ['YYYY-MM-DD HH:mm'], 'nb'))} /> }
                     </div>
                   }
+                  {data.sign_up && data.registration_priorities && data.registration_priorities.length < 14 ?
+                    <div className={classes.details}>
+                        <PrioritiesContent title="Prioritert:" priorities={data.registration_priorities} />
+                    </div>
+                    :
+                    <div className={classes.details}>
+                        <Grid className={props.classes.info} container wrap='nowrap' alignItems='center' justify='flex-start'>
+                          <Typography className={props.classes.ml} variant='subtitle1'>Prioritert:</Typography>
+                          <Typography variant='subtitle1'>Alle</Typography>
+                        </Grid>
+                    </div>
+                  }
                   {today <= startDate && applyButton }
-                      {(userEvent && userEvent.is_on_wait) &&
-                        <div className={classes.waitlistContainer}>
-                          <Typography className={classes.redText} variant='subtitle1'>Du er på ventelisten</Typography>
-                        </div>}
+                  {(userEvent && userEvent.is_on_wait) &&
+                    <div className={classes.waitlistContainer}>
+                      <Typography className={classes.redText} variant='subtitle1'>Du er på ventelisten</Typography>
+                    </div>}
                 </div>
                 <div className={classes.content}>
                     <Typography className={classes.title} variant='h5'><strong>{data.title}</strong></Typography>

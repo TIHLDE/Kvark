@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {shortDownString, getUserStudy} from '../../../utils';
+import {shortDownString, getUserStudyShort} from '../../../utils';
 
 // Text
 import Text from '../../../text/EventText';
@@ -133,7 +133,7 @@ const EventDialog = (props) => {
     shortDownString(userData.allergy, 20)
     :
     'Ingen';
-  const userStudy = getUserStudy(userData.user_study);
+  const userStudy = getUserStudyShort(userData.user_study);
   const userClass = userData.user_class + '. Klasse';
   let headerText = '';
   const buttonColor = userEvent ? 'secondary' : 'primary';
