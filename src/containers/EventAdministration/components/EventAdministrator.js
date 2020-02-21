@@ -20,14 +20,14 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
-import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Chip from '@material-ui/core/Chip';
-import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
-import ThumbDownOutlinedIcon from '@material-ui/icons/ThumbDownOutlined';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 // Project Components
 import TextEditor from '../../../components/inputs/TextEditor';
@@ -105,23 +105,44 @@ const styles = (theme) => ({
     padding: {
         padding: '10px 5px',
     },
+    expansionPanel: {
+        width: '100%',
+        boxShadow: '0px 2px 4px #ddd',
+    },
+    formWrapper: {
+        width: '100%',
+    },
     formGroup: {
         padding: '10px 0',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr 1fr',
+        flexWrap: 'nowrap',
+        '@media only screen and (max-width: 800px)': {
+            gridTemplateColumns: '1fr',
+        },
     },
-    chip: {
-        margin: '2px 1px',
-        paddingLeft: 3,
-        borderRadius: 5,
+    formGroupSmall: {
+        padding: '10px 0',
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
     },
     chipYes: {
-        color: '#0b7c0b',
+        color: '#ffffff',
+        backgroundColor: '#0b7c0b',
         borderColor: '#0b7c0b',
+        '&:hover': {
+            color: '#ffffff',
+            backgroundColor: '#0b7c0b',
+            borderColor: '#0b7c0b',
+        },
     },
     chipNo: {
         color: '#b20101',
         borderColor: '#b20101',
+        '&:hover': {
+            color: '#b20101',
+            borderColor: '#b20101',
+        },
     },
 });
 
@@ -562,59 +583,66 @@ class EventAdministrator extends Component {
                                       </div>}
                                       {sign_up && registration_priorities && 
                                       <div className={classes.flexRow}>
-                                      <FormControl component="fieldset" className={classes.formControl}>
-                                        <FormLabel component="legend">Prioriterte klasser</FormLabel>
-                                        <FormGroup className={classes.formGroup}>
-                                            {[1,2,3,5].map((user_study) => {
-                                                return (
-                                                    <React.Fragment key={user_study}>
-                                                        {[1,2,3].map((user_class) => {
-                                                        return (
-                                                            <Chip
-                                                                key={user_class}
-                                                                className={classes.chip}
-                                                                variant='outlined'
-                                                                classes={registration_priorities.some((item) => item.user_class === user_class && item.user_study === user_study) ? {outlinedPrimary:classes.chipYes} : {outlinedPrimary:classes.chipNo}}
-                                                                size="small"
-                                                                label={user_class + '. ' + getUserStudyShort(user_study)}
-                                                                color="primary"
-                                                                clickable
-                                                                onClick={this.handlePriorityChange(user_class, user_study)}
-                                                                icon={registration_priorities.some((item) => item.user_class === user_class && item.user_study === user_study) ? <ThumbUpOutlinedIcon/> : <ThumbDownOutlinedIcon/>}
-                                                            />
-                                                        );
+                                        <ExpansionPanel className={classes.expansionPanel}>
+                                            <ExpansionPanelSummary
+                                                expandIcon={<ExpandMoreIcon />}
+                                                aria-controls="priorities"
+                                                id="priorities-header"
+                                            >
+                                                <Typography className={classes.heading}>Prioriterte</Typography>
+                                            </ExpansionPanelSummary>
+                                            <ExpansionPanelDetails>
+                                                <div className={classes.formWrapper}>
+                                                    <FormGroup className={classes.formGrou}>
+                                                        {[1,2,3,5].map((user_study) => {
+                                                            return (
+                                                                <React.Fragment key={user_study}>
+                                                                    <FormLabel component="legend">{getUserStudyShort(user_study)}</FormLabel>
+                                                                    <FormGroup className={classes.formGroup} key={user_study}>
+                                                                        {[1,2,3].map((user_class) => {
+                                                                        return (
+                                                                            <Button
+                                                                                key={user_class}
+                                                                                className={classes.mr}
+                                                                                classes={registration_priorities.some((item) => item.user_class === user_class && item.user_study === user_study) ? {outlinedPrimary:classes.chipYes} : {outlinedPrimary:classes.chipNo}}
+                                                                                variant='outlined'
+                                                                                color='primary'
+                                                                                onClick={this.handlePriorityChange(user_class, user_study)}>
+                                                                                {user_class + '. ' + getUserStudyShort(user_study)}
+                                                                            </Button>
+                                                                        );
+                                                                        })}
+                                                                    </FormGroup>
+                                                                </React.Fragment>
+                                                            )
                                                         })}
-                                                    </React.Fragment>
-                                                )
-                                            })}
-                                            <Chip
-                                                className={classes.chip}
-                                                variant='outlined'
-                                                classes={registration_priorities.some((item) => item.user_class === 4 && item.user_study === 4) ? {outlinedPrimary:classes.chipYes} : {outlinedPrimary:classes.chipNo}}
-                                                size="small"
-                                                label={4 + '. ' + getUserStudyShort(4)}
-                                                color="primary"
-                                                clickable
-                                                onClick={this.handlePriorityChange(4, 4)}
-                                                icon={registration_priorities.some((item) => item.user_class === 4 && item.user_study === 4) ? <ThumbUpOutlinedIcon/> : <ThumbDownOutlinedIcon/>}
-                                            />
-                                            <Chip
-                                                className={classes.chip}
-                                                variant='outlined'
-                                                classes={registration_priorities.some((item) => item.user_class === 5 && item.user_study === 4) ? {outlinedPrimary:classes.chipYes} : {outlinedPrimary:classes.chipNo}}
-                                                size="small"
-                                                label={5 + '. ' + getUserStudyShort(4)}
-                                                color="primary"
-                                                clickable
-                                                onClick={this.handlePriorityChange(5, 4)}
-                                                icon={registration_priorities.some((item) => item.user_class === 5 && item.user_study === 4) ? <ThumbUpOutlinedIcon/> : <ThumbDownOutlinedIcon/>}
-                                            />
-                                        </FormGroup>
-                                        <FormGroup className={classes.formGroup}>
-                                            <Button className={classes.mr} variant='outlined' color='primary' onClick={this.toggleAllPriorities(true)}>Alle</Button>
-                                            <Button className={classes.mr} variant='outlined' color='primary' onClick={this.toggleAllPriorities(false)}>Ingen</Button>
-                                        </FormGroup>
-                                    </FormControl>
+                                                        <FormLabel component="legend">{getUserStudyShort(4)}</FormLabel>
+                                                            <FormGroup className={classes.formGroup}>
+                                                            <Button
+                                                                className={classes.mr}
+                                                                classes={registration_priorities.some((item) => item.user_class === 4 && item.user_study === 4) ? {outlinedPrimary:classes.chipYes} : {outlinedPrimary:classes.chipNo}}
+                                                                variant='outlined'
+                                                                color='primary'
+                                                                onClick={this.handlePriorityChange(4, 4)}>
+                                                                {4 + '. ' + getUserStudyShort(4)}
+                                                            </Button>
+                                                            <Button
+                                                                className={classes.mr}
+                                                                classes={registration_priorities.some((item) => item.user_class === 5 && item.user_study === 4) ? {outlinedPrimary:classes.chipYes} : {outlinedPrimary:classes.chipNo}}
+                                                                variant='outlined'
+                                                                color='primary'
+                                                                onClick={this.handlePriorityChange(5, 4)}>
+                                                                {5 + '. ' + getUserStudyShort(4)}
+                                                            </Button>
+                                                        </FormGroup>
+                                                    </FormGroup>
+                                                    <FormGroup className={classes.formGroupSmall}>
+                                                        <Button className={classes.mr} variant='outlined' color='primary' onClick={this.toggleAllPriorities(true)}>Alle</Button>
+                                                        <Button className={classes.mr} variant='outlined' color='primary' onClick={this.toggleAllPriorities(false)}>Ingen</Button>
+                                                    </FormGroup>
+                                                </div>
+                                            </ExpansionPanelDetails>
+                                        </ExpansionPanel>
                                       </div>}
 
                                       <TextEditor className={classes.margin} value={description} onChange={this.onChange('description')}/>
