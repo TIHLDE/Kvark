@@ -121,7 +121,7 @@ class SignUp extends Component {
 
         this.setState({errorMessage: null, isLoading: true});
 
-        const userData = {user_id: username, first_name: firstName, last_name: lastName, email: email, user_class: userClass, vipps_transaction_id: vippsNr, user_study: study, em_nr: em, password: password};
+        const userData = {user_id: username.toLowerCase(), first_name: firstName, last_name: lastName, email: email, user_class: userClass, vipps_transaction_id: vippsNr, user_study: study, em_nr: em, password: password};
         AuthService.createUser(userData).then((data) => {
             if(data) {
                 this.props.history.push(this.state.redirectURL || URLS.landing);
