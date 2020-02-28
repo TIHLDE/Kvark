@@ -198,16 +198,6 @@ class NewLanding extends Component {
                                 </div>
                                 }
                             </div>
-
-                            <div className="snow snow--near"></div>
-                            <div className="snow snow--near snow--alt"></div>
-
-                            <div className="snow snow--mid"></div>
-                            <div className="snow snow--mid snow--alt"></div>
-
-                            <div className="snow snow--far"></div>
-                            <div className="snow snow--far snow--alt"></div>
-
                             <div className="waveWrapperInner bgTop">
                                 <div className="wave waveTop"></div>
                             </div>
