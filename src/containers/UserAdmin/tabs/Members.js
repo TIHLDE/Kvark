@@ -116,7 +116,6 @@ class Members extends Component {
              page: this.state.nextPage,
                  ...urlParameters
              };
-
         }
         // Fetch members from server
         UserService.getUsers(urlParameters).then((data) => {

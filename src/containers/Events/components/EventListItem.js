@@ -16,6 +16,7 @@ import Date from '@material-ui/icons/DateRange';
 import Location from '@material-ui/icons/LocationOn';
 import TIHLDELOGO from '../../../assets/img/TihldeBackgroundNew.png';
 
+
 const styles = {
     root: {
         boxShadow: '0px 2px 4px #ddd, 0px 0px 4px #ddd',

@@ -156,7 +156,6 @@ class About extends Component {
                     <div className={classes.smoke}>
                         <div className={classes.section}>
                             <Typography className={classes.verticalMargin}variant='h4' color='inherit' align='center'>Organisasjonskart</Typography>
-
                             <div className={classes.orgMap}>
                                 <ClickableImage className={classes.miniPadding} image={OrgMap} alt='organisasjonskart' width='100%'/>
                             </div>

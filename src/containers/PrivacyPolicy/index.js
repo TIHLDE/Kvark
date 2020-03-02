@@ -41,6 +41,7 @@ const styles = {
         border: '1px solid #ddd',
         borderRadius: '5px',
         backgroundColor: '#fff',
+
     },
 };
 
@@ -59,6 +60,7 @@ class PrivacyPolicy extends Component {
                         <div className={classes.section}>
                             <div className={classes.grid}>
                                 <div className={classes.paper}>
+
                                     <h1>TIHLDEs personvernregler</h1>
                                     <p>Denne siden brukes til å informere besøkende på nettstedet om retningslinjene våre for innsamling og bruk av personlig informasjon hvis noen bestemte seg for å bruke tjenesten vår, nettstedet TIHLDE.org.</p>
                                     <p>Hvis du velger å bruke tjenesten vår, samtykker du til innsamling og bruk av informasjon i henhold til denne policyen. Den personlige informasjonen vi samler inn brukes til å levere og forbedre tjenesten. Vi vil ikke bruke eller dele informasjonen din med noen, bortsett fra som beskrevet i denne personvernpolitikken.</p>
