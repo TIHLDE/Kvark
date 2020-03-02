@@ -78,6 +78,11 @@ export default {
         return new IRequest('PUT', 'user/'.concat(userName, '/'), item, true);
     },
 
+    // Notifications
+    updateNotification: (id, item) => {
+        return new IRequest('PUT', 'notification/'.concat(id, '/'), item, true);
+    },
+
     // Warning
     getWarning: () => {
         return new IRequest('GET', 'warning/');

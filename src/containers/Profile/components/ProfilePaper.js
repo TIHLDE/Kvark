@@ -6,6 +6,7 @@ import URLS from '../../../URLS';
 
 // API and store import
 import UserService from '../../../api/services/UserService';
+import NotificationService from '../../../api/services/NotificationService';
 
 
 // Material-UI
@@ -15,15 +16,18 @@ import Hidden from '@material-ui/core/Hidden';
 import Button from '@material-ui/core/Button';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
+import Badge from '@material-ui/core/Badge';
+
 import Settings from '@material-ui/icons/Settings';
 import DateRange from '@material-ui/icons/DateRange';
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import CommentIcon from '@material-ui/icons/Comment';
 
 import Skeleton from '@material-ui/lab/Skeleton';
 
 // Components
 import ProfileSettings from './ProfileSettings';
 import ProfileEvents from './ProfileEvents';
+import ProfileNotifications from './ProfileNotifications';
 import MemberProof from './MemberProof';
 
 const styles = (theme) => ({
@@ -65,7 +69,7 @@ const styles = (theme) => ({
         userSelect: 'none',
     },
     tabs: {
-        marginTop: '10px',
+        marginTop: '50px',
         marginBottom: 1,
         backgroundColor: 'white',
     },
@@ -109,6 +113,7 @@ class ProfilePaper extends Component {
             tabViewMode: 0,
             userData: {},
             groupMember: false,
+            isLoading: true,
             modalShow: false,
         }
         this.handleLogOut = this.handleLogOut.bind(this);
@@ -118,8 +123,13 @@ class ProfilePaper extends Component {
     loadUserData = () => {
         UserService.getUserData().then((user) => {
             if (user) {
+                user.notifications.reverse();
                 this.setState({ userData: user });
             }
+        }).catch(() => {
+            
+        }).then(() => {
+            this.setState({isLoading: false});
         });
     }
 
@@ -128,6 +138,11 @@ class ProfilePaper extends Component {
             if (groups.isHS || groups.isPromo || groups.isNok || groups.isDevkom) {
                 this.setState({groupMember: true});
             }
+        });
+    }
+
+    updateNotificationReadState = (id, newState) => {
+        NotificationService.updateNotificationReadState(id, newState).then((data) => {
         });
     }
 
@@ -153,6 +168,7 @@ class ProfilePaper extends Component {
 
     render() {
         const { classes } = this.props;
+        const notifications = this.state.userData.notifications ? this.state.userData.notifications :  [];
 
         return (
             <div className={classes.paper}>
@@ -172,11 +188,15 @@ class ProfilePaper extends Component {
                 </div>
                 <Tabs variant="fullWidth" scrollButtons="on" centered className={classes.tabs} value={this.state.tabViewMode} onChange={this.handleChange}>
                     <Tab id='0' icon={<DateRange />} label={<Hidden xsDown>Arrangementer</Hidden>} />
-                    <Tab id='1' icon={<FavoriteIcon />} label={<Hidden xsDown>Favoritter</Hidden>} />
+                    <Tab id='1' icon={
+                        <Badge badgeContent={0} color="error">
+                            <CommentIcon />
+                        </Badge>
+                    } label={<Hidden xsDown>Notifikasjoner</Hidden>} />
                     <Tab id='2' icon={<Settings />} label={<Hidden xsDown>Innstillinger</Hidden>} />
                 </Tabs>
                 {this.state.tabViewMode === 0 && <ProfileEvents/>}
-                {this.state.tabViewMode === 1 && <Typography variant='subtitle1'>Kommer senere!</Typography>}
+                {this.state.tabViewMode === 1 && <ProfileNotifications updateNotificationReadState={this.updateNotificationReadState} isLoading={this.state.isLoading} messages={notifications} />}
                 {this.state.tabViewMode === 2 && <ProfileSettings />}
             </div>
         );
