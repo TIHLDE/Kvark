@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {getUserStudy} from '../../../utils';
+import {getUserStudyShort} from '../../../utils';
 
 // Material-ui
 import {withStyles} from '@material-ui/core/styles';
@@ -21,6 +21,9 @@ const style = (theme) => ({
     '@media only screen and (max-width: 600px)': {
         flexDirection: 'column',
     },
+    boxShadow: '0px 2px 4px #ddd',
+    borderRadius: 5,
+    marginBottom: 3,
   },
   userName: {
     flexGrow: 1,
@@ -63,7 +66,8 @@ const EventParticipant = (props) => {
   const [checkedState, setCheckedState] = useState(attended);
   useEffect(() => {
     setCheckedState(props.attended);
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const userInfo = props.user.user_info;
 
@@ -77,10 +81,10 @@ const EventParticipant = (props) => {
   };
 
   return (
-    <Card square className={classes.content}>
+    <Card className={classes.content}>
       <div className={classes.userName}>
         <Typography>{userInfo.first_name + ' ' + userInfo.last_name}</Typography>
-        <Typography>Studie: {getUserStudy(userInfo.user_study)}</Typography>
+        <Typography>Studie: {getUserStudyShort(userInfo.user_study)}</Typography>
         <Typography>Årstrinn: {userInfo.user_class} Klasse</Typography>
         {userInfo.allergy !== '' && <Typography>Allergier: {userInfo.allergy}</Typography>}
 

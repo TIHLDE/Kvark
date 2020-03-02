@@ -99,10 +99,10 @@ const getClass = (i) => {
 };
 
 const PersonListItem = (props) => {
-    const {classes, data} = props;
+    const {classes, data, isMember} = props;
     return (
         <ListItem className={classes.btn} onClick={props.onClick}>
-            {data.activated ?
+            {isMember ?
             <Grid className={classNames(classes.root, classes.activated)} container direction='row' wrap='nowrap' alignItems='center'>
                 <Typography className={classNames(classes.title, classes.id)} variant='subtitle1'>{data.user_id}</Typography>
                 <Typography className={classes.title} variant='subtitle1'><strong>{data.first_name + ' ' + data.last_name}</strong></Typography>

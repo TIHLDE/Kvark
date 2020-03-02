@@ -9,21 +9,14 @@ import JobPostService from '../../../api/services/JobPostService';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import TextField from '@material-ui/core/TextField';
-//import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
-//import IconButton from '@material-ui/core/IconButton';
-
-// Icons
-//import AddIcon from '@material-ui/icons/Add';
-//import DownloadIcon from '@material-ui/icons/CloudDownload';
 
 
 // Project Components
@@ -79,6 +72,9 @@ const styles = (theme) => ({
         display: 'block',
         margin: 'auto',
         padding: 36,
+        border: '1px solid #ddd',
+        borderRadius: 5,
+        backgroundColor: '#fff',
 
         '@media only screen and (max-width: 800px)': {
             width: 'auto',
@@ -425,7 +421,7 @@ class JobPostAdministrator extends Component {
                               message={this.state.snackMessage}/>
                       </Snackbar>
 
-                  <Paper className={classes.content} square>
+                  <div className={classes.content}>
                       {(this.state.isLoading)? <Grid className={classes.progress} container justify='center' alignItems='center'><CircularProgress /></Grid> :
                       (this.state.showSuccessMessage)? <MessageView title={this.state.successMessage} buttonText='Nice' onClick={this.toggleSuccessView}/> :
                           <form>
@@ -467,7 +463,7 @@ class JobPostAdministrator extends Component {
                               </Grid>
                           </form>
                       }
-                  </Paper>
+                  </div>
                 <JobPostSidebar
                     jobposts={this.state.jobposts}
                     expiredJobPosts={this.state.expired}

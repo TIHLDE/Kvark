@@ -5,7 +5,6 @@ import Parser from 'html-react-parser';
 import classNames from 'classnames';
 
 // Material UI Components
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
@@ -17,6 +16,9 @@ const styles = {
         '@media only screen and (max-width: 950px)': {
             margin: '0 5px',
         },
+        border: '1px solid #ddd',
+        borderRadius: '5px',
+        backgroundColor: '#fff',
     },
     wrapper: {
         display: 'flex',
@@ -58,10 +60,10 @@ const styles = {
 };
 
 const InfoCard = (props) => {
-    let {classes, elevation} = props;
+    let {classes} = props;
 
     return (
-        <Paper className={classNames(classes.root, props.className)} square elevation={elevation}>
+        <div className={classNames(classes.root, props.className)}>
             <div className={classes.wrapper}>
                 {(!props.src)? null :
                     <div className={classes.margin}>
@@ -70,12 +72,12 @@ const InfoCard = (props) => {
                 }
                 <Grid className={(props.justifyText)? classes.cover : ''} container direction='column' nowrap='nowrap' justify='flex-start'>
                     <Typography className={classes.header} variant='h5' align='left'><strong>{props.header}</strong></Typography>
-                    {props.text && <Typography  component='p'>{Parser(props.text)}</Typography>}
+                    {props.text && <Typography component='p'>{Parser(props.text)}</Typography>}
 
                     {(!props.subText)? null :
                         <Fragment>
                             <Typography className={classes.padding} variant='subtitle1'><strong>{props.subheader}</strong></Typography>
-                            <Typography  component='p'>{Parser(props.subText)}</Typography>
+                            <Typography component='p'>{Parser(props.subText)}</Typography>
                         </Fragment>
                     }
                     {props.children && (
@@ -85,7 +87,7 @@ const InfoCard = (props) => {
                     )}
                 </Grid>
             </div>
-        </Paper>
+        </div>
     );
 };
 

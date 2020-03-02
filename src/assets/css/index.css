@@ -6,6 +6,7 @@
     --tihlde-blaa: #1D448C;
     --gray: #F8F8FA;
     --tihlde-white: #Fefefe;
+    --notification-blue: #E4E9F2;
 }
 body {
     margin: 0;
@@ -213,50 +214,4 @@ p > code {
 }
 
 
-/** Christmas snow animation **/
-.snow {
-    z-index: 15;
-    pointer-events: none;
-    position: absolute;
-    top: 0; right: 0; left: 0; height: 450px; width: 100%;
-    animation: falling linear infinite both;
-    transform: translate3D(0,-100%,0);
-    overflow: hidden;
-}
-    
-  .snow--near {
-    animation-duration: 20s;
-    background-image: url('../img/christmas/snow-near.png');
-    background-size: contain;
-  }
-  .snow--near .snow--alt {
-    animation-delay: 5s;
-  }
-    
-  .snow--mid {
-    animation-duration: 30s;
-    background-image: url('../img/christmas/snow-mid.png');
-    background-size: contain;
-  }
-  .snow--mid .snow--alt {
-    animation-delay: 10s;
-  }
-    
-  .snow--far {
-    animation-duration: 40s;
-    background-image: url('../img/christmas/snow-far.png');
-    background-size: contain;
-  }
-  .snow--far .snow--alt {
-    animation-delay: 20s;
-  }
-      
-@keyframes falling {
-    0% {
-        transform: translate3D(-7.5%,-100%, 0);
-    }
-        
-    100% {
-        transform: translate3D(7.5%,100%, 0);
-    }  
-}
+

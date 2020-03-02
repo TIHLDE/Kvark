@@ -2,27 +2,15 @@ import React, {useState} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import {getUserStudyShort} from '../../../utils';
 
 // Text
 import Text from '../../../text/EventText';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
-
-// Icons
-import Location from '@material-ui/icons/LocationOn';
-import Time from '@material-ui/icons/AccessTime';
-import Persons from '@material-ui/icons/PeopleOutline';
-import Timer from '@material-ui/icons/Timer';
-import TimerOff from '@material-ui/icons/TimerOff';
-import Stop from '@material-ui/icons/Stop';
-import Start from '@material-ui/icons/PlayArrow';
-import Exit from '@material-ui/icons/ExitToApp';
 
 // Project Components
 import MarkdownRenderer from '../../../components/miscellaneous/MarkdownRenderer';
@@ -37,9 +25,10 @@ import MiscService from '../../../api/services/MiscService';
 const styles = {
     grid: {
         display: 'grid',
-        gridTemplateColumns: '1fr 3fr',
+        gridTemplateColumns: 'auto 1fr',
         gridTemplateRows: 'auto',
-        gridGap: '5px',
+        gridGap: '20px',
+        marginTop: 20,
 
         position: 'relative',
         overflow: 'hidden',
@@ -47,44 +36,67 @@ const styles = {
         '@media only screen and (max-width: 800px)': {
             gridTemplateColumns: '100%',
             justifyContent: 'center',
+            gridGap: '10px',
+            marginTop: 10,
         },
     },
-    paper: {
-        padding: 26,
+    wrapper: {
+        padding: 20,
+        '@media only screen and (max-width: 600px)': {
+          padding: 10,
+      },
     },
     image: {
         width: '100%',
         height: 'auto',
-        maxHeight: 456,
+        maxHeight: 350,
         objectFit: 'cover',
+        border: '1px solid #ddd',
+        backgroundColor: '#ddd',
+        borderRadius: 5,
+        display: 'block',
+        boxSizing: 'border-box',
     },
     title: {
         color: 'black',
         padding: 26,
+        paddingLeft: 0,
+        paddingTop: 0,
     },
     content: {
-        padding: 26,
+        padding: 20,
+        border: '1px solid #ddd',
+        borderRadius: 5,
+        backgroundColor: '#ffffff',
+        height: 'fit-content',
         '@media only screen and (max-width: 800px)': {
             order: 1,
         },
     },
     details: {
-        padding: 26,
-        paddingBottom: '8px',
+        padding: '10px 20px',
+        border: '1px solid #ddd',
+        borderRadius: 5,
+        backgroundColor: '#ffffff',
+        marginBottom: 20,
+        maxWidth: 280,
         '@media only screen and (max-width: 800px)': {
             order: 0,
+            marginBottom: 10,
+            maxWidth: 'none',
         },
     },
     info: {
         width: 'auto',
-        marginBottom: 10,
+        flexDirection: 'column',
 
         '@media only screen and (max-width: 800px)': {
-            justifyContent: 'space-between',
+            flexDirection: 'row',
         },
     },
-    ml: {marginLeft: 10},
-    mt: {marginTop: 10},
+    ml: {marginRight: 5, fontWeight: 'bold'},
+    ml2: {textAlign: 'center'},
+    mt: {height: 50, fontWeight: 'bold'},
     waitlistContainer: {
       margin: '10px auto',
       textAlign: 'center',
@@ -93,24 +105,103 @@ const styles = {
     redText: {
       color: '#cd0202',
     },
-    tooltip: {
-      top: '-75px !important',
-      zIndex: 10002,
+    description: {
+      color: '#333',
+    },
+    prioritiesContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+      width: '100%',
+      '@media only screen and (max-width: 800px)': {
+        justifyContent: 'flex-start',
+    },
+    },
+    priority: {
+      padding: '0 3px',
+      border: '1px solid #ddd',
+      borderRadius: 5,
+      margin: 3,
     },
 };
 
-const InfoContent = withStyles(styles)((props) => (
-    <Grid className={props.classes.info} container direction='row' wrap='nowrap' alignItems='center' justify='flex-start'>
-        <Tooltip classes={{ popper: props.classes.tooltip }} title={props.title}>
-          {props.icon}
-        </Tooltip>
-        <Typography className={props.classes.ml} variant='subtitle1'>{props.label}</Typography>
+const getDay = (day) => {
+  switch (day) {
+      case 0: return 'Søndag';
+      case 1: return 'Mandag';
+      case 2: return 'Tirsdag';
+      case 3: return 'Onsdag';
+      case 4: return 'Torsdag';
+      case 5: return 'Fredag';
+      case 6: return 'Lørdag';
+      default: return day;
+  };
+};
+const getMonth = (month) => {
+  switch (month) {
+      case 0: return 'jan';
+      case 1: return 'feb';
+      case 2: return 'mars';
+      case 3: return 'april';
+      case 4: return 'mai';
+      case 5: return 'juni';
+      case 6: return 'juli';
+      case 7: return 'aug';
+      case 8: return 'sep';
+      case 9: return 'okt';
+      case 10: return 'nov';
+      case 11: return 'des';
+      default: return month;
+  }
+};
+const getDate = (date) => {
+  return getDay(date.day()) + ' ' + date.date() + ' ' + getMonth(date.month()) + ' - kl. ' + date.format('HH:mm');
+};
+
+const DetailContent = withStyles(styles)((props) => (
+    <Grid className={props.classes.info} container wrap='nowrap' alignItems='center' justify='flex-start'>
+        <Typography className={props.classes.ml} variant='subtitle1'>{props.title}</Typography>
+        <Typography className={props.classes.ml2} variant='subtitle1'>{props.info}</Typography>
     </Grid>
 ));
-InfoContent.propTypes = {
-  icon: PropTypes.node,
-  label: PropTypes.string,
+DetailContent.propTypes = {
   title: PropTypes.string,
+  info: PropTypes.string,
+};
+
+const removeStudyFromArray = (array, userStudy) => {
+    while (array.some((item) => item.user_study === userStudy)) {
+      let index = array.findIndex((item) => item.user_study === userStudy);
+      array.splice(index, 1);
+    }
+    return array;
+};
+
+const PrioritiesContent = withStyles(styles)((props) => {
+  let priorities = props.priorities;
+  let Dataing = null; let DigFor = null; let DigInc = null; let DigSam = null; let Drift = null;
+  if (priorities.some((item) => item.user_class === 1 && item.user_study === 1) && priorities.some((item) => item.user_class === 2 && item.user_study === 1) && priorities.some((item) => item.user_class === 3 && item.user_study === 1)) {Dataing = (<Typography className={props.classes.priority} variant='subtitle1'>{getUserStudyShort(1)}</Typography>); priorities = removeStudyFromArray(priorities, 1);}
+  if (priorities.some((item) => item.user_class === 1 && item.user_study === 2) && priorities.some((item) => item.user_class === 2 && item.user_study === 2) && priorities.some((item) => item.user_class === 3 && item.user_study === 2)) {DigFor = (<Typography className={props.classes.priority} variant='subtitle1'>{getUserStudyShort(2)}</Typography>); priorities = removeStudyFromArray(priorities, 2);}
+  if (priorities.some((item) => item.user_class === 1 && item.user_study === 3) && priorities.some((item) => item.user_class === 2 && item.user_study === 3) && priorities.some((item) => item.user_class === 3 && item.user_study === 3)) {DigInc = (<Typography className={props.classes.priority} variant='subtitle1'>{getUserStudyShort(3)}</Typography>); priorities = removeStudyFromArray(priorities, 3);}
+  if (priorities.some((item) => item.user_class === 4 && item.user_study === 4) && priorities.some((item) => item.user_class === 5 && item.user_study === 4)) {DigSam = (<Typography className={props.classes.priority} variant='subtitle1'>{getUserStudyShort(4)}</Typography>); priorities = removeStudyFromArray(priorities, 4);}
+  if (priorities.some((item) => item.user_class === 1 && item.user_study === 5) && priorities.some((item) => item.user_class === 2 && item.user_study === 5) && priorities.some((item) => item.user_class === 3 && item.user_study === 5)) {Drift = (<Typography className={props.classes.priority} variant='subtitle1'>{getUserStudyShort(5)}</Typography>); priorities = removeStudyFromArray(priorities, 5);}
+
+  return (
+    <Grid className={props.classes.info} container wrap='nowrap' alignItems='center' justify='flex-start'>
+        <Typography className={props.classes.ml} variant='subtitle1'>{props.title}</Typography>
+        <div className={props.classes.prioritiesContainer}>
+          {Dataing}{DigFor}{DigInc}{DigSam}{Drift}
+          {props.priorities.map(function(priority, index) {
+            return (<Typography className={props.classes.priority} variant='subtitle1' key={index}>{priority.user_class + '. ' + getUserStudyShort(priority.user_study)}</Typography>);
+          })}
+        </div>
+    </Grid>
+  );
+});
+PrioritiesContent.propTypes = {
+  title: PropTypes.string,
+  priorities: PropTypes.array,
 };
 
 const EventRenderer = (props) => {
@@ -168,6 +259,10 @@ const EventRenderer = (props) => {
       applyButton = (
       <Typography align='center'></Typography>
       );
+    } else if (data.sign_up && today > signUpEnd) {
+      applyButton = (
+      <Typography align='center'>{Text.signUpEnded}</Typography>
+      );
     } else if (data.sign_up && today < signUpStart) {
       applyButton = (
       <Typography align='center'>{Text.inactive}</Typography>
@@ -213,7 +308,7 @@ const EventRenderer = (props) => {
     }
 
     return (
-        <Paper className={classes.img} square>
+        <div className={classes.wrapper}>
             {modalShow === true && userData &&
               <EventDialog
                 onClose={closeEventModal}
@@ -225,32 +320,47 @@ const EventRenderer = (props) => {
                 isApplying={isApplying}
                 message={message}
                 applySuccess={applySuccess} />}
-            <img className={classes.image} src={data.image} alt={data.image_alt} />
-            <Typography className={classes.title} variant='h5'><strong>{data.title}</strong></Typography>
-            <Divider />
+            {data.image && <img className={classes.image} src={data.image} alt={data.image_alt} /> }
             <div className={classes.grid} >
-
-                <div className={classes.details}>
-                    <InfoContent title="Start" icon={<Start />} label={startDate.format('DD.MM.YYYY, HH:mm')} />
-                    <InfoContent title="Slutt" icon={<Stop />} label={endDate.format('DD.MM.YYYY, HH:mm')} />
-                    {data.sign_up && today <= signUpStart && !userEvent && <InfoContent title="Påmelding start" icon={<Time />} label={signUpStart.format('DD.MM.YYYY, HH:mm')} /> }
-                    {data.sign_up && today > signUpStart && today < signUpEnd && !userEvent && <InfoContent title="Påmelding slutt" icon={<TimerOff />} label={signUpEnd.format('DD.MM.YYYY, HH:mm')} /> }
-                    {data.sign_up && userEvent && <InfoContent title="Avmeldingsfrist" icon={<Exit />} label={signOffDeadline.format('DD.MM.YYYY, HH:mm')} /> }
-                    <InfoContent title="Sted" icon={<Location />} label={data.location} />
-                    {data.sign_up && <InfoContent title="Deltagere" icon={<Persons />} label={attending + '/' + limit} /> }
-                    {data.sign_up && <InfoContent title="Venteliste" icon={<Timer />} label={onWait + ''} /> }
-                    {data.price && <InfoContent icon={<Time />} label={data.price} />}
-                    {today <= startDate && applyButton }
-                    {(userEvent && userEvent.is_on_wait) &&
-                      <div className={classes.waitlistContainer}>
-                        <Typography className={classes.redText} variant='subtitle1'>Du er på ventelisten</Typography>
-                      </div>}
+                <div>
+                  <div className={classes.details}>
+                      <DetailContent title="Fra: " info={getDate(moment(startDate, ['YYYY-MM-DD HH:mm'], 'nb'))} />
+                      <DetailContent title="Til: " info={getDate(moment(endDate, ['YYYY-MM-DD HH:mm'], 'nb'))} />
+                      <DetailContent title="Sted: " info={data.location} />
+                    </div>
+                  {data.sign_up &&
+                    <div className={classes.details}>
+                        <DetailContent title="Påmeldte:" info={attending + '/' + limit} />
+                        <DetailContent title="Venteliste:" info={onWait + ''} />
+                        {today <= signUpStart && !userEvent && <DetailContent title="Påmeldingsstart:" info={getDate(moment(signUpStart, ['YYYY-MM-DD HH:mm'], 'nb'))} /> }
+                        {today > signUpStart && today < signUpEnd && !userEvent && <DetailContent title="Påmeldingsslutt:" info={getDate(moment(signUpEnd, ['YYYY-MM-DD HH:mm'], 'nb'))} /> }
+                        {userEvent && <DetailContent title="Avmeldingsfrist:" info={getDate(moment(signOffDeadline, ['YYYY-MM-DD HH:mm'], 'nb'))} /> }
+                    </div>
+                  }
+                  {data.sign_up && data.registration_priorities && data.registration_priorities.length < 14 ?
+                    <div className={classes.details}>
+                        <PrioritiesContent title="Prioritert:" priorities={data.registration_priorities} />
+                    </div>
+                    :
+                    <div className={classes.details}>
+                        <Grid className={props.classes.info} container wrap='nowrap' alignItems='center' justify='flex-start'>
+                          <Typography className={props.classes.ml} variant='subtitle1'>Prioritert:</Typography>
+                          <Typography variant='subtitle1'>Alle</Typography>
+                        </Grid>
+                    </div>
+                  }
+                  {today <= startDate && applyButton }
+                  {(userEvent && userEvent.is_on_wait) &&
+                    <div className={classes.waitlistContainer}>
+                      <Typography className={classes.redText} variant='subtitle1'>Du er på ventelisten</Typography>
+                    </div>}
                 </div>
                 <div className={classes.content}>
-                    <MarkdownRenderer value={description} />
+                    <Typography className={classes.title} variant='h5'><strong>{data.title}</strong></Typography>
+                    <MarkdownRenderer className={classes.description} value={description} />
                 </div>
             </div>
-        </Paper>
+        </div>
     );
 };
 

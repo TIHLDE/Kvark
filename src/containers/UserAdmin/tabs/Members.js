@@ -5,8 +5,7 @@ import connect from 'react-redux/es/connect/connect';
 import classNames from 'classnames';
 
 // API and store imports
-// import AdminService from '../../../api/services/AdminService';
-
+import UserService from '../../../api/services/UserService';
 
 // Material Components
 import Divider from '@material-ui/core/Divider';
@@ -16,6 +15,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 import Hidden from '@material-ui/core/Hidden';
+import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
 
 // Project components
 import PersonListItem from "./components/PersonListItem"
@@ -52,7 +53,7 @@ const styles = (theme) => ({
         gridGap: '10px',
         width: '100%',
         textAlign: 'left',
-        gridTemplateColumns: 'auto 1fr auto auto auto 96px',
+        gridTemplateColumns: 'auto 1fr auto auto auto 35px',
         gridTemplateRows: '1fr',
 
         '@media only screen and (max-width: 600px)': {
@@ -71,6 +72,13 @@ const styles = (theme) => ({
     vipps: {
         minWidth: '70px'
     },
+    filterContainer:{
+        display: 'flex',
+        flexDirection: 'row',
+    },
+    box:{
+        margin : 5,
+    },
 });
 
 
@@ -79,49 +87,41 @@ class Members extends Component {
     constructor(){
         super();
         this.state = {
+            user_class: ['Alle','1. klasse','2. klasse','3. klasse','4. klasse','5. klasse'],
+            user_study: ['Alle', 'Dataing','DigFor','DigInc','DigSam','Drift'],
             members: [],
             isLoading: false,
             isFetching: false,
 
+            user_study_choice: 0,
+            user_class_choice: 0,
             nextPage: null,
-            expiredShown: false,
+            search: '',
         }
     }
 
     // Gets the event
-    loadMembers = () => {
-        // Add in filters if needed.
-        // let urlParameters = {};
-
+    loadMembers = (filters, replace) => {
+        // Add in filters if needed, and adds the is tihlde member filter
+        let urlParameters = filters ? {...filters} : {};
+        if (this.props.isMember){
+            urlParameters.is_TIHLDE_member = true;
+        } else {
+            urlParameters.is_TIHLDE_member = false;
+        }
+           
         // Decide if we should go to next page or not.
         if (this.state.nextPage){
-            // urlParameters = {
-                // page: this.state.nextPage,
-                // ...urlParameters
-            // };
-
-        } else if (this.state.members.length > 0 ) {
-            // Abort if we have no more pages and allready have loaded everything
-            this.setState({isFetching: false})
-            return;
+            urlParameters = {
+             page: this.state.nextPage,
+                 ...urlParameters
+             };
         }
-
-        this.setState((oldState) => {
-            let displayedMembers = [{"id":0,"activated":false,"vipps":585702,"user_class":2,"user_study":5,"first_name":"Sellers","last_name":"Gallegos","user_id":"comtours"},{"id":1,"activated":false,"vipps":418733,"user_class":5,"user_study":3,"first_name":"Francisca","last_name":"Whitley","user_id":"danja"},{"id":2,"activated":false,"vipps":207369,"user_class":5,"user_study":4,"first_name":"Esperanza","last_name":"Maynard","user_id":"digigen"},{"id":3,"activated":false,"vipps":672872,"user_class":5,"user_study":4,"first_name":"Bush","last_name":"Cleveland","user_id":"austex"},{"id":4,"activated":false,"vipps":511135,"user_class":5,"user_study":1,"first_name":"Adriana","last_name":"Mckinney","user_id":"poshome"},{"id":5,"activated":false,"vipps":237015,"user_class":5,"user_study":3,"first_name":"Earlene","last_name":"Velez","user_id":"ultrasure"},{"id":6,"activated":false,"vipps":786322,"user_class":3,"user_study":1,"first_name":"Daniel","last_name":"Black","user_id":"zilphur"},{"id":7,"activated":false,"vipps":795412,"user_class":2,"user_study":5,"first_name":"Cain","last_name":"Higgins","user_id":"zyple"},{"id":8,"activated":false,"vipps":585702,"user_class":2,"user_study":5,"first_name":"Sellers","last_name":"Gallegos","user_id":"comtours"},{"id":9,"activated":false,"vipps":418733,"user_class":5,"user_study":3,"first_name":"Francisca","last_name":"Whitley","user_id":"danja"},{"id":10,"activated":false,"vipps":207369,"user_class":5,"user_study":4,"first_name":"Esperanza","last_name":"Maynard","user_id":"digigen"},{"id":11,"activated":false,"vipps":672872,"user_class":5,"user_study":4,"first_name":"Bush","last_name":"Cleveland","user_id":"austex"},{"id":12,"activated":false,"vipps":511135,"user_class":5,"user_study":1,"first_name":"Adriana","last_name":"Mckinney","user_id":"poshome"},{"id":13,"activated":false,"vipps":237015,"user_class":5,"user_study":3,"first_name":"Earlene","last_name":"Velez","user_id":"ultrasure"},{"id":14,"activated":false,"vipps":786322,"user_class":3,"user_study":1,"first_name":"Daniel","last_name":"Black","user_id":"zilphur"},{"id":15,"activated":false,"vipps":795412,"user_class":2,"user_study":5,"first_name":"Cain","last_name":"Higgins","user_id":"zyple"}];
-            return {members: displayedMembers};
-          });
-
-
-        // TODO: Create AdminService with option to get all members
-
         // Fetch members from server
-        /*AdminService.getMembers(urlParameters, (isError, data) => {
-
-
-            if(isError === false) {
-                // For backward compabillity
+        UserService.getUsers(urlParameters).then((data) => {
+    
                 let nextPageUrl = data.next;
-                let displayedMembers = data.members;
+                let displayedMembers = data.results;
                 urlParameters = {};
 
                 // If we have a url for the next page convert it into a object
@@ -136,25 +136,18 @@ class Members extends Component {
 
                 // Get the page number from the object if it exist
                 let nextPage = urlParameters['page'] ? urlParameters['page'] : null;
-                let expiredShown = this.state.expiredShown;
 
-                if (nextPage === null && !expiredShown && (this.state.search || this.state.category)){
-                  nextPage = 1;
-                  expiredShown = true;
-                }
-
-                this.setState((oldState) => {
-
-                  // If we allready have members
-                  if (this.state.members.length > 0) {
-                    displayedMembers = oldState.members.concat(displayedmembers);
+                this.setState((oldState)=>{
+                    // If we allready have Members
+                  if (replace) {
+                    displayedMembers = oldState.members.concat(displayedMembers);
                   }
-                  return {members: displayedMembers, nextPage: nextPage, expiredShown: expiredShown};
+                    
+                   return {members: displayedMembers, nextPage: nextPage,isLoading: false, isFetching: false}
                 });
-
-            }
-            this.setState({isLoading: false, isFetching: false});
-        });*/
+                    this.setState({isLoading: false, isFetching: false});
+        });
+        
     };
 
     componentDidMount(){
@@ -163,53 +156,118 @@ class Members extends Component {
         this.loadMembers();
     }
 
+    filterMembers = async (event, search, user_class_choice, user_study_choice) => {
+        event.preventDefault();
+
+        await this.setState({isFetching: true, nextPage: null, events: [], expiredShown: false});
+        // If no filters requested, just load the members
+        if ( search === '' && user_study_choice === 0 && user_class_choice === 0) {
+            this.loadMembers();
+        } else {
+            let filters = {};
+            filters.search = search;
+            if (user_study_choice && user_study_choice !== 0) filters.user_study = user_study_choice;
+            if (user_class_choice && user_class_choice !== 0) filters.user_class = user_class_choice;
+            this.loadMembers(filters, false);
+        }
+    }
+
+    searchForData = (event) => {
+        event.preventDefault();
+        this.filterMembers(event, this.state.search, this.state.user_class_choice, this.state.user_study_choice);
+    }
+
+    handleStudieChange = (event) => {
+        this.setState({user_study_choice: event.target.value });
+        this.filterMembers(event, this.state.search,this.state.user_class_choice, event.target.value);
+    }
+
+    handleClassChange = (event) => {
+        this.setState({user_class_choice: event.target.value});
+        this.filterMembers(event, this.state.search, event.target.value, this.state.user_study_choice);
+    }
+
     getNextPage = () => {
-      this.loadMembers();
+        const search = this.state.search;
+        const user_class_choice = this.state.user_class_choice;
+        const user_study_choice = this.state.user_study_choice;
+        let filters = {};
+        if (search || user_class_choice || user_study_choice) {
+            filters.search = search ;
+            if (user_study_choice && user_study_choice !== 0) filters.user_study = user_study_choice;
+            if (user_class_choice && user_class_choice !== 0) filters.user_class = user_class_choice;
+        }
+        this.loadMembers(filters, true );
     }
 
-    handleDelete = (id) => {
-        console.log("Delete", id);
+    handleDelete =  async (id) => {
+        UserService.updateUserData(id, {is_TIHLDE_member:false});
+        let index = this.state.members.findIndex(x => x.user_id === id);        
+        let newMembers = this.state.members;
+        newMembers.splice(index,1);
+        this.setState({members: newMembers});
     }
 
-    handleActivate = (id) => {
-        console.log("Activate", id);
+    handleActivate = async (id) => {
+        UserService.updateUserData(id, {is_TIHLDE_member:true});
+        let index = this.state.members.findIndex(x => x.user_id === id);        
+        let newMembers = this.state.members;
+        newMembers.splice(index,1);
+        this.setState({members: newMembers});
     }
-
+    
     render() {
         const {classes} = this.props;
-
         return (
-                <div className={classes.grid}>
-                    {this.state.isFetching ? <CircularProgress className={classes.progress} /> :
-                        <Grow in={!this.state.isFetching}>
-                            <div>
-                                <Pageination nextPage={this.getNextPage} page={this.state.nextPage}>
-                                    <Hidden xsDown>
-                                        <ListItem className={classes.btn}>
-                                            <Grid className={classNames(classes.notActivated)} container direction='row' wrap='nowrap' alignItems='center'>
-                                                <Typography className={classNames(classes.title, classes.id)} variant='subtitle1'>Id:</Typography>
-                                                <Typography className={classes.title} variant='subtitle1'>Navn:</Typography>
-                                                <Typography className={classes.title} variant='subtitle1'>Studie:</Typography>
-                                                <Typography className={classNames(classes.title, classes.class)} variant='subtitle1'>Klasse:</Typography>
-                                                <Typography className={classNames(classes.title, classes.vipps)} variant='subtitle1'>Vipps:</Typography>
-                                            </Grid>
-                                        </ListItem>
-                                    </Hidden>
-                                    {this.state.members && this.state.members.map((value, index) => (
-                                        <div key={value.id}>
-                                            <PersonListItem key={value.id} data={value} handleDelete={this.handleDelete} handleActivate={this.handleActivate} />
-                                            <Divider/>
-
-                                        </div>
-                                    ))}
-                                </Pageination>
-                                { (this.state.members.length === 0 && !this.state.isLoading) &&
-                                    <NoPersonsIndicator />
-                                }
-                            </div>
-                        </Grow>
-                    }
+            <div className={classes.grid}>
+                <div className={classes.filterContainer}>
+                    <TextField className={classes.box} select fullWidth label='Klasser' value={this.state.user_class_choice} onChange={this.handleClassChange}>
+                        {this.state.user_class.map((value, index) => (
+                            <MenuItem key={index} value={index}>
+                                {value}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField className={classes.box} select fullWidth label='Studie' value={this.state.user_study_choice} onChange={this.handleStudieChange}>
+                        {this.state.user_study.map((value, index) => (
+                            <MenuItem key={index} value={index}>
+                                {value}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField className={classes.box} value={this.state.search} label='Søk' fullWidth placeholder='Søk...' onChange={(e)=>{this.setState({search : e.target.value}); this.searchForData(e)}}/>
                 </div>
+                {this.state.isFetching ? <CircularProgress className={classes.progress} /> :
+                    <Grow in={!this.state.isFetching}>
+                        <div>
+                            <Hidden xsDown>
+                                <ListItem className={classes.btn}>
+                                    <Grid className={classNames(classes.notActivated)} container direction='row' wrap='nowrap' alignItems='center'>
+                                        <Typography className={classNames(classes.title, classes.id)} variant='subtitle1'>Id:</Typography>
+                                        <Typography className={classes.title} variant='subtitle1'>Navn:</Typography>
+                                        <Typography className={classes.title} variant='subtitle1'>Studie:</Typography>
+                                        <Typography className={classNames(classes.title, classes.class)} variant='subtitle1'>Klasse:</Typography>
+                                        {!this.props.isMember &&
+                                            <Typography className={classNames(classes.title, classes.vipps)} variant='subtitle1'>Vipps:</Typography>
+                                        }
+                                    </Grid>
+                                </ListItem>
+                            </Hidden>
+                            <Pageination nextPage={this.getNextPage} page={this.state.nextPage}>
+                                {this.state.members && this.state.members.map((value, index) => (
+                                    <div key={index}>
+                                        <PersonListItem isMember={this.props.isMember} data={value} handleDelete={this.handleDelete} handleActivate={this.handleActivate} />
+                                        <Divider/>
+                                    </div>
+                                ))}
+                            </Pageination>
+                            {this.state.members.length === 0 && !this.state.isLoading &&
+                                <NoPersonsIndicator />
+                            }
+                        </div>
+                    </Grow>
+                }
+            </div>
         );
     }
 }

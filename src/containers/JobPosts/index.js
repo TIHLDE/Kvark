@@ -12,7 +12,6 @@ import Text from '../../text/JobPostText';
 import JobPostService from '../../api/services/JobPostService';
 
 // Material UI Components
-import Paper from '@material-ui/core/Paper';
 import Grow from '@material-ui/core/Grow';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Divider from '@material-ui/core/Divider';
@@ -81,8 +80,10 @@ const styles = {
             order: 0,
             position: 'static',
             top: 0,
-            margin: 12,
         },
+        border: '1px solid #ddd',
+        borderRadius: '5px',
+        backgroundColor: '#fff',
     },
     paddingBtn: {
         paddingBottom: 10,
@@ -202,24 +203,23 @@ class JobPosts extends Component {
                             {this.state.isFetching ? <CircularProgress className={classes.progress} /> :
                                 <div className={classes.listRoot}>
                                     <Grow in={!this.state.isFetching}>
-                                        <Paper className={classes.list} elevation={1} square>
+                                        <div className={classes.list}>
                                             <Pageination nextPage={this.getNextPage} page={this.state.nextPage}>
                                             {posts.map((value, index) => (
                                                 <div key={value.id}>
                                                     <JobPostItem key={value.id} data={value} onClick={() => this.goToJobPost(value.id)}/>
-                                                    <Divider/>
                                                 </div>
                                             ))}
                                             {posts.length === 0 &&
                                                 <NoPostsIndicator />
                                             }
                                             </Pageination>
-                                        </Paper>
+                                        </div>
                                     </Grow>
                                 </div>
                             }
                             <div>
-                                <Paper className={classes.settings} elevation={1} square>
+                                <div className={classes.settings}>
                                     <form>
                                         <TextField className={classes.paddingBtn} value={this.state.search} fullWidth placeholder='Søk...' onChange={this.handleChange('search')}/>
                                         <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.searchForPosts}>{Text.search}</Button>
@@ -237,7 +237,7 @@ class JobPosts extends Component {
                                             {Text.reset}
                                         </Button>
                                     </Theme>
-                                </Paper>
+                                </div>
                             </div>
                         </div>
                     </div>

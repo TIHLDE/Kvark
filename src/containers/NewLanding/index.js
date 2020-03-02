@@ -44,7 +44,7 @@ const styles = {
     },
     section: {
         padding: 48,
-        maxWidth: 1200,
+        maxWidth: 1000,
         margin: 'auto',
         '@media only screen and (max-width: 1200px)': {
             padding: '48px 0',
@@ -146,6 +146,7 @@ const styles = {
     },
     calendar: {
         justify: 'center',
+        maxWidth: 500,
     },
     button: {
         textDecoration: 'none',
@@ -184,8 +185,8 @@ class NewLanding extends Component {
                                 <div className={classes.topLogoContainer} style={{display: 'flex'}}>
                                     <img className={classes.topLogo} src={TIHLDELOGO} alt='TIHLDE_LOGO' />
                                 </div>
-                                <Typography variant='h6' align='center' className={classes.topSmallText}>Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling og Digital samhandling ved NTNU</Typography>
-                                {AuthService.isAuthenticated() ? 
+                                <Typography variant='h6' align='center' className={classes.topSmallText}>Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Drift av datasystemer og Digital samhandling ved NTNU</Typography>
+                                {AuthService.isAuthenticated() ?
                                 <div className={classes.topButtonContainer}>
                                     <Link to={URLS.profile} className={classes.topLink}><Button className={classes.topButton} variant='contained' color='inherit'>Min side</Button></Link>
                                     {/* <Link to={URLS.login} className={classes.topButtonSecondary} variant='contained' color='inherit'>Opprett bruker ></Link> */}
@@ -193,20 +194,10 @@ class NewLanding extends Component {
                                 :
                                 <div className={classes.topButtonContainer}>
                                     <Link to={URLS.login} className={classes.topLink}><Button className={classes.topButton} variant='contained' color='inherit'>Logg inn</Button></Link>
-                                    <Link to={URLS.signup} className={classes.topButtonSecondary} variant='contained' color='inherit'>Opprett bruker ></Link>
+                                    <Link to={URLS.signup} className={classes.topButtonSecondary} variant='contained' color='inherit'>Opprett bruker &gt;</Link>
                                 </div>
                                 }
                             </div>
-
-                            <div className="snow snow--near"></div>
-                            <div className="snow snow--near snow--alt"></div>
-
-                            <div className="snow snow--mid"></div>
-                            <div className="snow snow--mid snow--alt"></div>
-
-                            <div className="snow snow--far"></div>
-                            <div className="snow snow--far snow--alt"></div>
-
                             <div className="waveWrapperInner bgTop">
                                 <div className="wave waveTop"></div>
                             </div>

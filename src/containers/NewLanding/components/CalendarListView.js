@@ -1,21 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
-import classNames from 'classnames';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-
-// Icons
-import LocationOn from '@material-ui/icons/LocationOn';
-import Start from '@material-ui/icons/PlayArrow';
-import Stop from '@material-ui/icons/Stop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Project componets
 import LinkButton from '../../../components/navigation/LinkButton';
-
-import TIHLDELOGO from '../../../assets/img/tihlde_image.png';
+import EventListItem from '../../Events/components/EventListItem';
 
 // Styles
 const styles = (theme) => ({
@@ -25,138 +18,63 @@ const styles = (theme) => ({
     color: theme.palette.text.secondary,
     margin: 'auto',
   },
-  eventListRow: {
-    display: 'flex',
-    minHeight: 80,
-    overflow: 'hidden',
-    alignItems: 'center',
-  },
-  eventImageContainer: {
-    minHeight: 81,
-    minWidth: 81,
-    width: 81,
-    height: 81,
-    overflow: 'hidden',
-    display: 'inline-flex',
-  },
-  eventImage: {
-    objectFit: 'cover',
-    height: 80,
-    width: 80,
-  },
-  eventTitle: {
-    flexGrow: 1,
-    padding: 5,
-  },
-  eventInfo: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    textAlign: 'left',
-    width: 165,
-    padding: 5,
-    overflow: 'hidden',
-    '@media only screen and (max-width: 700px)': {
-      width: 'unset',
-    },
-  },
-  eventContainer: {
-    display: 'flex',
-    flexGrow: 1,
-    '@media only screen and (max-width: 700px)': {
-      flexDirection: 'column',
-      alignItems: 'center',
-    },
-  },
-  eventInfoElement: {
-    display: 'inline-flex',
-    alignItems: 'center',
-  },
-  eventIcon: {
-    paddingRight: 10,
-  },
-  hiddenOnMobile: {
-    '@media only screen and (max-width: 700px)': {
-      display: 'none',
-    },
-  },
   noEventText: {
     backgroundColor: 'white',
     padding: 5,
+    textAlign: 'center',
+  },
+  text: {
+    padding: 0,
+  },
+  progress: {
+    margin: 'auto',
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  moreBtn: {
+    boxShadow: '0px 2px 4px #ddd, 0px 0px 4px #ddd',
+    borderRadius: 5,
+    overflow: 'hidden',
   },
 });
 
-
-function CalendarListItem(props) {
-  const { classes } = props;
-  // props.eventData.image
-
-  const start = moment(props.eventData.start_date, ['YYYY-MM-DD HH:mm'], 'nb');
-  const end = moment(props.eventData.end_date, ['YYYY-MM-DD HH:mm'], 'nb');
-  const src = props.eventData.image ? props.eventData.image : TIHLDELOGO;
-  const imageAlt = props.eventData.image_alt ? props.eventData.image_alt : props.eventData.title;
-
-  return (
-      <LinkButton noPadding to={'/arrangementer/' + props.eventData.id + '/'}>
-        <div className={classes.eventListRow}>
-          <div className={classes.eventImageContainer}>
-            <img className={classes.eventImage} src={src} alt={imageAlt} />
-          </div>
-          <div className={classes.eventContainer}>
-            <div className={classes.eventTitle}>
-              <Typography align='center' variant='h6'>{props.eventData.title}</Typography>
-              <div className={classNames(classes.hiddenOnMobile, classes.eventInfoElement)}>
-                <LocationOn className={classes.eventIcon} />
-                {props.eventData.location}
-              </div>
-            </div>
-            <div className={classes.eventInfo}>
-              <div className={classes.eventInfoElement}>
-                <Start className={classes.eventIcon} />
-                {start.format('DD.MM.YYYY, HH:mm')}
-              </div>
-              <div className={classNames(classes.hiddenOnMobile, classes.eventInfoElement)}>
-                <Stop className={classes.eventIcon} />
-                {end.format('DD.MM.YYYY, HH:mm')}
-              </div>
-            </div>
-          </div>
-        </div>
-      </LinkButton>
-  );
-}
-
 function CalendarListView(props) {
-  const { classes } = props;
+  const { classes, isLoading } = props;
   const eventsToDisplay = 3;
+
+  let eventList = <div className={classes.noEventText}><CircularProgress className={classes.progress}/></div>;
+  if (!isLoading) {
+    eventList = props.events ?
+        <div className={classes.moreBtn}>
+          <LinkButton noPadding to='/arrangementer/'>
+            <Typography align='center'>Alle arrangementer ({props.events.length})</Typography>
+          </LinkButton>
+        </div>
+        :
+        <Typography
+          variant='subtitle1'
+          className={classes.noEventText}
+          align='center'>Ingen arrangementer å vise</Typography>;
+
+  }
+
   return (
     <div className={classes.eventListContainer}>
       {props.events && props.events.map((eventData, index) => {
         if (index < eventsToDisplay) {
-          return (<CalendarListItem key={index} classes={classes} eventData={eventData} />);
+          return (<EventListItem key={index} data={eventData} />);
         }
-        return('');
+        return ('');
       })}
-      {props.events ?
-        <LinkButton noPadding to='/arrangementer/'>
-          <Typography align='center'>Alle arrangementer ({props.events.length})</Typography>
-        </LinkButton>
-        :
-        <Typography variant='subtitle1' className={classes.noEventText} align='center'>Ingen arrangementer å vise</Typography>
-      }
+      {eventList}
     </div>
   );
 }
 
-// Prop types
-CalendarListItem.propTypes = {
-  classes: PropTypes.object.isRequired,
-  eventData: PropTypes.object.isRequired,
-};
-
 CalendarListView.propTypes = {
   classes: PropTypes.object.isRequired,
   events: PropTypes.array,
+  isLoading: PropTypes.bool,
 };
 
 export default withStyles(styles)(CalendarListView);

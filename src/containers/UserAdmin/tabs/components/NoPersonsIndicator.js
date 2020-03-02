@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 
-// Material UI Components
-
-// Text
-import Text from '../../../../text/EventText';
-
 // Icons
-import EventIcon from '../../../../assets/icons/events.png';
+import EventIcon from '../../../../assets/icons/nodata.png';
 
 // Project Components
 import MessageIndicator from '../../../../components/layout/MessageIndicator';
@@ -32,8 +28,8 @@ const styles = {
         objectFit: 'cover',
         width: '100%',
         height: '100%',
-    }
-}
+    },
+};
 
 class NoEventsIndicator extends Component {
 
@@ -42,12 +38,16 @@ class NoEventsIndicator extends Component {
         return (
             <div className={classes.root}>
                 <div className={classes.imageWrapper}>
-                    <img className={classes.image} src={EventIcon} alt='Ingen arrangementer' />
+                    <img className={classes.image} src={EventIcon} alt='Ingen Brukere' />
                 </div>
-                <MessageIndicator header={Text.noEvents} subheader={Text.subNoEvents}/>
+                <MessageIndicator header='Fant ingen brukere'/>
             </div>
         );
     }
 }
+
+NoEventsIndicator.propTypes = {
+    classes: PropTypes.object,
+};
 
 export default withStyles(styles)(NoEventsIndicator);

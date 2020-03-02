@@ -7,10 +7,6 @@ import classNames from 'classnames';
 
 // Service and action imports
 import AuthService from '../../api/services/AuthService';
-import MiscService from '../../api/services/MiscService';
-
-// Text imports
-import Text from '../../text/LogInText';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
@@ -18,6 +14,8 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
 
 // Icons
 import TIHLDE_LOGO from '../../assets/img/TIHLDE_LOGO_B.png';
@@ -66,9 +64,6 @@ const styles = {
         position: 'absolute',
         top: 0, left: 0, right: 0,
     },
-    buttonsContainer: {
-        display: 'flex',
-    },
     buttonLink: {
         textDecoration: 'none',
         width: '100%',
@@ -76,21 +71,24 @@ const styles = {
     button: {
         width: '100%',
     },
+    snackbar: {
+        // marginBottom: 20,
+        backgroundColor: 'white',
+        color: 'black',
+    },
 };
 
-class LogIn extends Component {
+class ForgotPassword extends Component {
 
     constructor() {
         super();
         this.state = {
             errorMessage: null,
+            snackMessage: null,
             isLoading: false,
-            redirectURL: MiscService.getLogInRedirectURL(), // Store redirectURL
         }
 
-        this.username = React.createRef();
-        this.password = React.createRef();
-        MiscService.setLogInRedirectURL(null); // Reset login URL
+        this.email = React.createRef();
     }
 
     componentDidMount() {
@@ -101,30 +99,45 @@ class LogIn extends Component {
         this.setState({errorMessage: null})
     }
 
-    onLogIn = (event) => {
+    onSubmit = (event) => {
         event.preventDefault();
 
         if(this.state.isLoading) {
             return;
         }
 
-        const username = this.username.value;
-        const password = this.password.value;
+        const email = this.email.value;
 
         this.setState({errorMessage: null, isLoading: true});
-        AuthService.logIn(username, password).then((data) => {
+        AuthService.forgotPassword(email).then((data) => {
             if(data) {
-                this.props.history.push(this.state.redirectURL || URLS.landing);
+                this.setState({showSnackbar: true, snackMessage: 'Vi har sendt en link til eposten din der du kan opprette et nytt passord', isLoading: false})
             } else {
-                this.setState({errorMessage: Text.wrongCred, isLoading: false})
+                this.setState({showSnackbar: true, snackMessage: null, errorMessage: 'Vi fant ingen brukere med denne eposten', isLoading: false})
             }
         });
+    }
+
+    toggleSnackbar = () => {
+        this.setState({showSnackbar: !this.state.showSnackbar});
     }
 
     render() {
         const {classes} = this.props;
         return (
             <Navigation footer>
+                <Snackbar
+                    open={this.state.showSnackbar}
+                    autoHideDuration={3000}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    onClose={this.toggleSnackbar}>
+                        <SnackbarContent
+                            className={classes.snackbar}
+                            message={this.state.snackMessage}/>
+                </Snackbar>
                 <div className={classes.root}>
                     <div className={classes.top}>
                 
@@ -133,55 +146,36 @@ class LogIn extends Component {
                         <div className={classes.paper}>
                             {this.state.isLoading && <LinearProgress className={classes.progress} />}
                             <img  className={classes.logo} src={TIHLDE_LOGO} height='30em' alt='tihlde_logo'/>
-                            <Typography variant='h6'>{Text.header}</Typography>
+                            <Typography variant='h6'>Glemt passord</Typography>
                             
-                            <form onSubmit={this.onLogIn}>
+                            <form onSubmit={this.onSubmit}>
                                 <Grid container direction='column'>
                                     <TextField
                                         onChange={this.handleChange}
-                                        inputRef={(e) => this.username = e}
+                                        inputRef={(e) => this.email = e}
                                         error={this.state.errorMessage !== null}
-                                        label='Brukernavn'
+                                        label='Epost'
                                         variant='outlined'
                                         margin='normal'
-                                        required/>
-                                    <TextField
-                                        onChange={this.handleChange}
-                                        inputRef={(e) => this.password = e}
                                         helperText={this.state.errorMessage}
-                                        error={this.state.errorMessage !== null}
-                                        label='Password'
-                                        variant='outlined'
-                                        margin='normal'
-                                        type='password'
+                                        type='email'
                                         required/>
                                     <Button className={classes.mt}
                                         variant='contained'
                                         color='primary'
                                         disabled={this.state.isLoading}
                                         type='submit'>
-                                    Logg inn
+                                    Få nytt passord
                                     </Button>
-                                    <div className={classes.buttonsContainer}>
-                                        <Link to={URLS.forgotPassword} className={classNames(classes.buttonLink, classes.mt)}>
-                                            <Button
-                                                className={classes.button}
-                                                color='primary'
-                                                disabled={this.state.isLoading}
-                                                type='submit'>
-                                                Glemt passord?
-                                            </Button>
-                                        </Link>
-                                        <Link to={URLS.signup} className={classNames(classes.buttonLink, classes.mt)}>
-                                            <Button
-                                                className={classes.button}
-                                                color='primary'
-                                                disabled={this.state.isLoading}
-                                                type='submit'>
-                                                Opprett bruker
-                                            </Button>
-                                        </Link>
-                                    </div>
+                                    <Link to={URLS.login} className={classNames(classes.buttonLink, classes.mt)}>
+                                        <Button
+                                            className={classes.button}
+                                            color='primary'
+                                            disabled={this.state.isLoading}
+                                            type='submit'>
+                                            Logg inn
+                                        </Button>
+                                    </Link>
                                 </Grid>
                             </form>
                         </div>
@@ -192,9 +186,9 @@ class LogIn extends Component {
     }
 }
 
-LogIn.propTypes = {
+ForgotPassword.propTypes = {
     classes: PropTypes.object,
 };
 
-export default withStyles(styles)(LogIn);
+export default withStyles(styles)(ForgotPassword);
 

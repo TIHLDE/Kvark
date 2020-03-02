@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {shortDownString, getUserStudy} from '../../../utils';
+import {shortDownString, getUserStudyShort} from '../../../utils';
 
 // Text
 import Text from '../../../text/EventText';
@@ -10,7 +10,6 @@ import Modal from '@material-ui/core/Modal';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {withStyles} from '@material-ui/core/styles';
 
@@ -43,6 +42,9 @@ const style = {
     '@media only screen and (max-width: 400px)': {
         width: '100%',
     },
+    border: '1px solid #ddd',
+    borderRadius: 5,
+    backgroundColor: '#fff',
   },
   heading: {
     display: 'flex',
@@ -131,7 +133,7 @@ const EventDialog = (props) => {
     shortDownString(userData.allergy, 20)
     :
     'Ingen';
-  const userStudy = getUserStudy(userData.user_study);
+  const userStudy = getUserStudyShort(userData.user_study);
   const userClass = userData.user_class + '. Klasse';
   let headerText = '';
   const buttonColor = userEvent ? 'secondary' : 'primary';
@@ -151,7 +153,7 @@ const EventDialog = (props) => {
     <Modal
       open={props.status}
       onClose={props.onClose}>
-      <Paper className={classes.paper} square>
+      <div className={classes.paper}>
           {!isApplying && !userEvent && message === '' &&
           <React.Fragment>
             <DialogHeader classes={classes} heading={Text.signUp} />
@@ -238,7 +240,7 @@ const EventDialog = (props) => {
               </React.Fragment>
             }
           </div>
-      </Paper>
+      </div>
     </Modal>
   );
 };

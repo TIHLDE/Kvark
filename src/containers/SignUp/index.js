@@ -8,7 +8,6 @@ import AuthService from '../../api/services/AuthService';
 import MiscService from '../../api/services/MiscService';
 
 // Material UI Components
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -44,6 +43,9 @@ const styles = {
         left: 0, right: 0,
         top: '-60px',
         padding: 28,
+        border: '1px solid #ddd',
+        borderRadius: '5px',
+        backgroundColor: '#fff',
     },
     logo: {
         height: '32px',
@@ -76,6 +78,7 @@ class SignUp extends Component {
         this.username = React.createRef();
         this.email = React.createRef();
         this.em = React.createRef();
+        this.vippsNr = React.createRef();
         this.password = React.createRef();
         this.passwordVerify = React.createRef();
         MiscService.setLogInRedirectURL(null); // Reset login URL
@@ -102,7 +105,8 @@ class SignUp extends Component {
         const email = this.email.value;
         const userClass = this.state.class;
         const study = this.state.study;
-        const em = this.state.em;
+        const em = this.em.value;
+        const vippsNr = this.vippsNr.value;
         const password = this.password.value;
         const passwordVerify = this.passwordVerify.value;
 
@@ -117,7 +121,7 @@ class SignUp extends Component {
 
         this.setState({errorMessage: null, isLoading: true});
 
-        const userData = {user_id: username, first_name: firstName, last_name: lastName, email: email, user_class: userClass, user_study: study, em_nr: em, password: password};
+        const userData = {user_id: username.toLowerCase(), first_name: firstName, last_name: lastName, email: email, user_class: userClass, vipps_transaction_id: vippsNr, user_study: study, em_nr: em, password: password};
         AuthService.createUser(userData).then((data) => {
             if(data) {
                 this.props.history.push(this.state.redirectURL || URLS.landing);
@@ -136,7 +140,7 @@ class SignUp extends Component {
                 
                     </div>
                     <div className={classes.main}>
-                        <Paper className={classes.paper} square elevation={3}>
+                        <div className={classes.paper}>
                             {this.state.isLoading && <LinearProgress className={classes.progress} />}
                             <img  className={classes.logo} src={TIHLDE_LOGO} height='30em' alt='tihlde_logo'/>
                             <Typography variant='h6'>Opprett bruker</Typography>
@@ -200,6 +204,14 @@ class SignUp extends Component {
                                         required/>
                                     <TextField
                                         onChange={this.handleChange}
+                                        inputRef={(e) => this.vippsNr = e}
+                                        error={this.state.errorMessage !== null}
+                                        label='Vipps transaksjons-id'
+                                        variant='outlined'
+                                        margin='normal'
+                                        required/>
+                                    <TextField
+                                        onChange={this.handleChange}
                                         inputRef={(e) => this.password = e}
                                         helperText={this.state.errorMessage}
                                         error={this.state.errorMessage !== null}
@@ -227,7 +239,7 @@ class SignUp extends Component {
                                     </Button>
                                 </Grid>
                             </form>
-                        </Paper>
+                        </div>
                     </div>
                 </div>
             </Navigation>

@@ -5,25 +5,29 @@ import classNames from 'classnames';
 import moment from 'moment';
 import Link from 'react-router-dom/Link';
 import URLS from '../../../URLS';
+import { getUserStudyShort } from '../../../utils';
 
 // API imports
 import EventService from '../../../api/services/EventService';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-//mport ButtonBase from '@material-ui/core/ButtonBase';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormLabel from '@material-ui/core/FormLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-//import IconButton from '@material-ui/core/IconButton';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 // Project Components
 import TextEditor from '../../../components/inputs/TextEditor';
@@ -56,8 +60,12 @@ const styles = (theme) => ({
 
         '@media only screen and (max-width: 800px)': {
             width: 'auto',
-            marginTop: 0,
-        }
+            margin: 10,
+            marginTop: 70,
+        },
+        border: '1px solid #ddd',
+        borderRadius: '5px',
+        backgroundColor: '#fff',
     },
     margin: {
         margin: '10px 0px',
@@ -65,6 +73,7 @@ const styles = (theme) => ({
     mr: {
         marginRight: 10,
         marginBottom: 5,
+        flexGrow: 1,
     },
     link: {
         textDecoration: 'none',
@@ -95,7 +104,46 @@ const styles = (theme) => ({
     },
     padding: {
         padding: '10px 5px',
-    }
+    },
+    expansionPanel: {
+        width: '100%',
+        boxShadow: '0px 2px 4px #ddd',
+    },
+    formWrapper: {
+        width: '100%',
+    },
+    formGroup: {
+        padding: '10px 0',
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr 1fr',
+        flexWrap: 'nowrap',
+        '@media only screen and (max-width: 800px)': {
+            gridTemplateColumns: '1fr',
+        },
+    },
+    formGroupSmall: {
+        padding: '10px 0',
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+    },
+    chipYes: {
+        color: '#ffffff',
+        backgroundColor: '#0b7c0b',
+        borderColor: '#0b7c0b',
+        '&:hover': {
+            color: '#ffffff',
+            backgroundColor: '#0b7c0b',
+            borderColor: '#0b7c0b',
+        },
+    },
+    chipNo: {
+        color: '#b20101',
+        borderColor: '#b20101',
+        '&:hover': {
+            color: '#b20101',
+            borderColor: '#b20101',
+        },
+    },
 });
 
 const MessageView = withStyles(styles, {withTheme: true})((props) => {
@@ -132,14 +180,15 @@ class EventAdministrator extends Component {
 
             title: '',
             location: '',
-            startDate: new Date().toISOString(),
-            endDate: new Date().toISOString(),
-            startSignUp: new Date().toISOString(),
-            endSignUp: new Date().toISOString(),
-            signOffDeadline: new Date().toISOString(),
+            startDate: new Date().toISOString().substring(0, 16),
+            endDate: new Date().toISOString().substring(0, 16),
+            startSignUp: new Date().toISOString().substring(0, 16),
+            endSignUp: new Date().toISOString().substring(0, 16),
+            signOffDeadline: new Date().toISOString().substring(0, 16),
             description: '',
             sign_up: false,
             priority: 0,
+            registration_priorities: [{"user_class":1,"user_study":1},{"user_class":1,"user_study":2},{"user_class":1,"user_study":3},{"user_class":1,"user_study":5},{"user_class":2,"user_study":1},{"user_class":2,"user_study":2},{"user_class":2,"user_study":3},{"user_class":2,"user_study":5},{"user_class":3,"user_study":1},{"user_class":3,"user_study":2},{"user_class":3,"user_study":3},{"user_class":3,"user_study":5},{"user_class":4,"user_study":4},{"user_class":5,"user_study":4}],
             image: '',
             category: 0,
             limit: 0,
@@ -238,6 +287,7 @@ class EventAdministrator extends Component {
                 location: event.location,
                 description: event.description,
                 priority: event.priority,
+                registration_priorities: event.registration_priorities,
                 image: event.image,
                 category: event.category,
                 startDate: event.start_date.substring(0,16),
@@ -265,6 +315,7 @@ class EventAdministrator extends Component {
             location: '',
             description: '',
             priority: 0,
+            registration_priorities: [{"user_class":1,"user_study":1},{"user_class":1,"user_study":2},{"user_class":1,"user_study":3},{"user_class":1,"user_study":5},{"user_class":2,"user_study":1},{"user_class":2,"user_study":2},{"user_class":2,"user_study":3},{"user_class":2,"user_study":5},{"user_class":3,"user_study":1},{"user_class":3,"user_study":2},{"user_class":3,"user_study":3},{"user_class":3,"user_study":5},{"user_class":4,"user_study":4},{"user_class":5,"user_study":4}],
             image: '',
             imageAlt: '',
             category: 0,
@@ -286,7 +337,26 @@ class EventAdministrator extends Component {
       } else {
         this.setState({[name]: event.target.value});
       }
+    }
 
+    handlePriorityChange = (user_class, user_study) => () => {
+        if (this.state.registration_priorities.some((item) => item.user_class === user_class && item.user_study === user_study)) {
+            let index = this.state.registration_priorities.findIndex((item) => item.user_class === user_class && item.user_study === user_study);
+            let newArray = this.state.registration_priorities;
+            newArray.splice(index, 1);
+            this.setState({registration_priorities: newArray});
+        } else {
+            let newArray = this.state.registration_priorities;
+            newArray.push({"user_class": user_class, "user_study": user_study});
+            this.setState({registration_priorities: newArray});
+        }
+    }
+    toggleAllPriorities = (addAll) => () => {
+        if (addAll) {
+            this.setState({registration_priorities: [{"user_class":1,"user_study":1},{"user_class":1,"user_study":2},{"user_class":1,"user_study":3},{"user_class":1,"user_study":5},{"user_class":2,"user_study":1},{"user_class":2,"user_study":2},{"user_class":2,"user_study":3},{"user_class":2,"user_study":5},{"user_class":3,"user_study":1},{"user_class":3,"user_study":2},{"user_class":3,"user_study":3},{"user_class":3,"user_study":5},{"user_class":4,"user_study":4},{"user_class":5,"user_study":4}]});
+        } else {
+            this.setState({registration_priorities: []});
+        }
     }
 
     handleToggleChange = (name) => () => {
@@ -310,6 +380,7 @@ class EventAdministrator extends Component {
         location: this.state.location,
         description: this.state.description,
         priority: this.state.priority,
+        registration_priorities: this.state.registration_priorities,
         image: this.state.image,
         imageAlt: 'event',
         category: this.state.category,
@@ -452,7 +523,7 @@ class EventAdministrator extends Component {
 
     render() {
         const {classes} = this.props;
-        const {selectedEvent, title, location, description, image, priority, categories, category, sign_up, showParticipants, limit, participants} = this.state;
+        const {selectedEvent, title, location, description, image, priority, registration_priorities, categories, category, sign_up, showParticipants, limit, participants} = this.state;
         const selectedEventId = (selectedEvent)? selectedEvent.id : '';
         const isNewItem = (selectedEvent === null);
         const header = (isNewItem)? 'Lag et nytt arrangement' : 'Endre arrangement';
@@ -482,7 +553,7 @@ class EventAdministrator extends Component {
                       submitText={'Slett'}
                       onSubmit={this.removeUserFromEvent} />
 
-                    <Paper className={classes.content} square>
+                    <div className={classes.content}>
                       {showParticipants ?
                         <EventParticipants
                           removeUserFromEvent={this.confirmRemoveUserFromEvent}
@@ -509,6 +580,69 @@ class EventAdministrator extends Component {
                                           <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Start påmelding' value={this.state.startSignUp} onChange={this.handleChange('startSignUp')} />
                                           <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Slutt påmelding' value={this.state.endSignUp} onChange={this.handleChange('endSignUp')} />
                                           <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Avmeldingsfrist' value={this.state.signOffDeadline} onChange={this.handleChange('signOffDeadline')} />
+                                      </div>}
+                                      {sign_up && registration_priorities && 
+                                      <div className={classes.flexRow}>
+                                        <ExpansionPanel className={classes.expansionPanel}>
+                                            <ExpansionPanelSummary
+                                                expandIcon={<ExpandMoreIcon />}
+                                                aria-controls="priorities"
+                                                id="priorities-header"
+                                            >
+                                                <Typography className={classes.heading}>Prioriterte</Typography>
+                                            </ExpansionPanelSummary>
+                                            <ExpansionPanelDetails>
+                                                <div className={classes.formWrapper}>
+                                                    <FormGroup className={classes.formGrou}>
+                                                        {[1,2,3,5].map((user_study) => {
+                                                            return (
+                                                                <React.Fragment key={user_study}>
+                                                                    <FormLabel component="legend">{getUserStudyShort(user_study)}</FormLabel>
+                                                                    <FormGroup className={classes.formGroup} key={user_study}>
+                                                                        {[1,2,3].map((user_class) => {
+                                                                        return (
+                                                                            <Button
+                                                                                key={user_class}
+                                                                                className={classes.mr}
+                                                                                classes={registration_priorities.some((item) => item.user_class === user_class && item.user_study === user_study) ? {outlinedPrimary:classes.chipYes} : {outlinedPrimary:classes.chipNo}}
+                                                                                variant='outlined'
+                                                                                color='primary'
+                                                                                onClick={this.handlePriorityChange(user_class, user_study)}>
+                                                                                {user_class + '. ' + getUserStudyShort(user_study)}
+                                                                            </Button>
+                                                                        );
+                                                                        })}
+                                                                    </FormGroup>
+                                                                </React.Fragment>
+                                                            )
+                                                        })}
+                                                        <FormLabel component="legend">{getUserStudyShort(4)}</FormLabel>
+                                                            <FormGroup className={classes.formGroup}>
+                                                            <Button
+                                                                className={classes.mr}
+                                                                classes={registration_priorities.some((item) => item.user_class === 4 && item.user_study === 4) ? {outlinedPrimary:classes.chipYes} : {outlinedPrimary:classes.chipNo}}
+                                                                variant='outlined'
+                                                                color='primary'
+                                                                onClick={this.handlePriorityChange(4, 4)}>
+                                                                {4 + '. ' + getUserStudyShort(4)}
+                                                            </Button>
+                                                            <Button
+                                                                className={classes.mr}
+                                                                classes={registration_priorities.some((item) => item.user_class === 5 && item.user_study === 4) ? {outlinedPrimary:classes.chipYes} : {outlinedPrimary:classes.chipNo}}
+                                                                variant='outlined'
+                                                                color='primary'
+                                                                onClick={this.handlePriorityChange(5, 4)}>
+                                                                {5 + '. ' + getUserStudyShort(4)}
+                                                            </Button>
+                                                        </FormGroup>
+                                                    </FormGroup>
+                                                    <FormGroup className={classes.formGroupSmall}>
+                                                        <Button className={classes.mr} variant='outlined' color='primary' onClick={this.toggleAllPriorities(true)}>Alle</Button>
+                                                        <Button className={classes.mr} variant='outlined' color='primary' onClick={this.toggleAllPriorities(false)}>Ingen</Button>
+                                                    </FormGroup>
+                                                </div>
+                                            </ExpansionPanelDetails>
+                                        </ExpansionPanel>
                                       </div>}
 
                                       <TextEditor className={classes.margin} value={description} onChange={this.onChange('description')}/>
@@ -566,7 +700,7 @@ class EventAdministrator extends Component {
                           }
                       </React.Fragment>
                     }
-                    </Paper>
+                    </div>
 
                 </div>
                 <EventSidebar

@@ -8,7 +8,6 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 
 // Project components
@@ -26,13 +25,14 @@ const styles = (theme) => ({
         position: 'fixed',
         left: 0, top: 0, bottom: 0,
         width: SIDEBAR_WIDTH,
-
+        backgroundColor: '#fff',
+        border: '1px solid #ddd',
 
         '@media only screen and (max-width: 800px)': {
             position: 'static',
             width: '100%',
             padding: 0,
-        }
+        },
     },
     sidebarContent: {
         maxHeight: '100%',
@@ -87,7 +87,7 @@ const EventSidebar = (props) => {
     const {classes} = props;
 
     return (
-        <Paper className={classes.sidebar}>
+        <div className={classes.sidebar}>
             <Grid className={classNames(classes.sidebarContent, 'noScrollbar')} container direction='column' wrap='nowrap'>
                 <Grid className={classNames(classes.sidebarTop)} container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
                     <Typography variant='h6' color='inherit'>Arrangementer</Typography>
@@ -116,7 +116,7 @@ const EventSidebar = (props) => {
                         location={value.location} />
                 ))}
             </Grid>
-        </Paper>
+        </div>
     )
 }
 

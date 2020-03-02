@@ -84,7 +84,7 @@ const styles = {
         verticalAlign: 'top',
         display: 'inline-block',
         textAlign: 'center',
-        margin: 'auto -40px',
+        margin: 'auto 0px',
     },
     sponsorLogo: {
         width: '14rem',

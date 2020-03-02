@@ -1,6 +1,6 @@
 export default {
     header: 'OM TIHLDE',
-    subheader: 'TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, samt masterstudiet Digital samhandling ved AIT, IDI, NTNU på Gløshaugen.',
+    subheader: 'TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Drift av datasystemer, samt masterstudiet Digital samhandling ved AIT, IDI, NTNU på Gløshaugen.',
     history: 'TIHLDE ble stiftet 16.april 1993, med formål å fremme det sosiale og faglige tilbudet ved EDB-avdelingen ved TIH, som etterhvert ble AITeL ved HiST, deretter IIE ved HiST, nå AIT, IDI ved NTNU. Mye har skjedd siden da, men dette er fortsatt vårt mål. Alle studenter og ansatte tilknyttet AIT, IDI ved Gløshaugen kan bli medlem, men opptaket skjer kun i begynnelsen av hvert skoleår.',
     history2: 'TIHLDE er en ikke-profitabel og politisk nøytral organisasjon som baserer seg på frivillig engasjement fra studenter. I tillegg til hovedstyret (HS), har TIHLDE pr idag 4 undergrupper: drift, næringsliv og kurs, sosialen og promo, og 6 komitéer: KosKom, TurKom, Brettspill, Redaksjonen, NetKom, og FadderKom. I tillegg har TIHLDE 2 interessegrupper: SEMIKOLON og TIHLDE PYTHONS',
 

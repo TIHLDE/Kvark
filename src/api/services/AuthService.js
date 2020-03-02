@@ -27,6 +27,16 @@ class AuthService {
             return null;
         });
     };
+    
+    static forgotPassword = (email) => {
+        const response = AUTH.forgotPassword(email).response();
+        return response.then((data) => {
+            if(data && data.detail) {
+                return data;
+            }
+            return null;
+        });
+    };
 
     static isAuthenticated () {
         return typeof TOKEN.get() !== 'undefined'

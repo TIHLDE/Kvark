@@ -6,12 +6,7 @@ import Modal from '@material-ui/core/Modal';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-// import ButtonBase from '@material-ui/core/ButtonBase';
-import Paper from '@material-ui/core/Paper';
-// import CircularProgress from '@material-ui/core/CircularProgress';
 import {withStyles} from '@material-ui/core/styles';
-
-// Icons
 
 const style = {
   paper: {
@@ -24,6 +19,9 @@ const style = {
     left: '50%',
     top: '50%',
     transform: 'translate(-50%,-50%)',
+    backgroundColor: '#fff',
+    border: '1px solid #fff',
+    borderRadius: 5,
     '@media only screen and (max-width: 400px)': {
         width: '100%',
     },
@@ -40,7 +38,6 @@ const style = {
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
-    overflow: 'scroll',
   },
   nestedElement: {
     paddingLeft: 32,
@@ -92,7 +89,7 @@ const Dialog = (props) => {
     <Modal
       open={status}
       onClose={onClose}>
-      <Paper className={classes.paper} square>
+      <div className={classes.paper}>
           <div className={classes.heading}>
             <Typography className={classes.title} align='center' variant='h5'>
               {title}
@@ -117,7 +114,7 @@ const Dialog = (props) => {
                 variant='outlined'
                 color='primary'>Avbryt</Button>
           </div>
-      </Paper>
+      </div>
     </Modal>
   );
 };

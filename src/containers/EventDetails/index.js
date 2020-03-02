@@ -17,12 +17,12 @@ const styles = {
 
     },
     wrapper:{
-        maxWidth: 1200,
+        maxWidth: 1100,
         margin: 'auto',
-        padding: '20px 48px 48px 48px',
+        padding: '0px 48px 48px 48px',
 
-        '@media only screen and (max-width: 1200px)': {
-            padding: '12px 0px 48px 0px',
+        '@media only screen and (max-width: 1000px)': {
+            padding: '0px 0px 48px 0px',
         }
     },
 };

@@ -14,14 +14,14 @@ const styles = {
         margin: 'auto',
         paddingTop: 80,
         paddingBottom: 100,
+        backgroundColor: '#f8f8fa',
     },
     overflow: {
         overflowY: 'auto',
-    }
+    },
 };
 
 class EventPreview extends Component {
-    
     render() {
         const {classes} = this.props;
         return (
@@ -36,6 +36,9 @@ class EventPreview extends Component {
 
 EventPreview.propTypes = {
     classes: PropTypes.object,
+    open: PropTypes.bool,
+    onClose: PropTypes.func,
+    data: PropTypes.object,
 };
 
 export default withStyles(styles)(EventPreview);
