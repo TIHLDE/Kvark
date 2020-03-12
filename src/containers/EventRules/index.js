@@ -64,7 +64,7 @@ class EventRules extends Component {
                             <div className={classes.grid}>
                                 <div className={classes.paper}>
                                     <h1>Arrangementsregler</h1>
-                                    <p>Skulle det være spørsmål etter at dette er lest, ta gjerne kontakt med TIHLDE HS på hs@tihlde.org Dersom man mener man har fått en urettferdig prikk eller at det har skjedd en feil, ta kontakt med komiteen som var ansvarlig for det gjeldende arrangementet.</p>
+                                    <p>Skulle det være spørsmål etter at dette er lest, ta gjerne kontakt med TIHLDE HS på orakel@tihlde.org Dersom man mener man har fått en urettferdig prikk eller at det har skjedd en feil, ta kontakt med komiteen som var ansvarlig for det gjeldende arrangementet.</p>
                                     <p><i>Det kan gis tilleggsregler til spesifikke arrangement, og da vil dette opplyses om i arrangementsteksten.</i></p>
                                     <h3>Spørreundersøkelse</h3>
                                     <p>Påfølgende dag etter arrangementene våre sendes det ut en spørreundersøkelse. Det er ikke mulig å melde seg på TIHLDE sine arrangementer før du har svart på spørreundersøkelsen.</p>
