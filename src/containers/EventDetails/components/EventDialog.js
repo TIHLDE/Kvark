@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {shortDownString, getUserStudyShort} from '../../../utils';
+import URLS from '../../../URLS';
 
 // Text
 import Text from '../../../text/EventText';
@@ -11,6 +12,9 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Link from '@material-ui/core/Link';
 import {withStyles} from '@material-ui/core/styles';
 
 // Icons
@@ -125,6 +129,8 @@ const DialogHeader = (props) => {
 const EventDialog = (props) => {
   const {classes, userData, userEvent, isApplying, message, applySuccess} = props;
 
+  const [agreeRules, setAgreeRules] = useState(false);
+
   const closeDialog = () => {
     props.applyToEvent();
   };
@@ -182,6 +188,12 @@ const EventDialog = (props) => {
                   icon={<Fastfood />}
                   text={'Allergier: ' + allergy}
                 />
+                <FormControlLabel
+                control={
+                  <Checkbox onChange={(e) => setAgreeRules(e.target.checked)} checked={agreeRules} />
+                }
+                label="Jeg godtar arrangementsreglene"/>
+                <Link href={URLS.eventRules} target="_blank" rel="noopener"><Typography variant="caption">Les arrangementsreglene her (åpnes i ny fane)</Typography></Link>
               </div>
             </div>
           </React.Fragment>
@@ -228,7 +240,7 @@ const EventDialog = (props) => {
                 <Button
                   className={classes.button}
                   onClick={closeDialog}
-                  disabled={isApplying}
+                  disabled={isApplying || (!userEvent && !agreeRules)}
                   align='center'
                   variant='contained'
                   color={buttonColor}>{headerText}</Button>

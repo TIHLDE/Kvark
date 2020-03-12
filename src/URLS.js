@@ -14,6 +14,7 @@ export default {
     newlanding: '/newlanding/',
     signup: '/ny-bruker/',
     privacyPolicy: '/personvern/',
+    eventRules: '/arrangementsregler/',
 
     admin: '/admin/',
     userAdmin: '/admin/brukere/',
