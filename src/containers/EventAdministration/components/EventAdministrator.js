@@ -186,6 +186,7 @@ class EventAdministrator extends Component {
             endSignUp: new Date().toISOString().substring(0, 16),
             signOffDeadline: new Date().toISOString().substring(0, 16),
             description: '',
+            evaluate_link: '',
             sign_up: false,
             priority: 0,
             registration_priorities: [{"user_class":1,"user_study":1},{"user_class":1,"user_study":2},{"user_class":1,"user_study":3},{"user_class":1,"user_study":5},{"user_class":2,"user_study":1},{"user_class":2,"user_study":2},{"user_class":2,"user_study":3},{"user_class":2,"user_study":5},{"user_class":3,"user_study":1},{"user_class":3,"user_study":2},{"user_class":3,"user_study":3},{"user_class":3,"user_study":5},{"user_class":4,"user_study":4},{"user_class":5,"user_study":4}],
@@ -286,6 +287,7 @@ class EventAdministrator extends Component {
                 title: event.title,
                 location: event.location,
                 description: event.description,
+                evaluate_link: event.evaluate_link,
                 priority: event.priority,
                 registration_priorities: event.registration_priorities,
                 image: event.image,
@@ -314,6 +316,7 @@ class EventAdministrator extends Component {
             title: '',
             location: '',
             description: '',
+            evaluate_link: '',
             priority: 0,
             registration_priorities: [{"user_class":1,"user_study":1},{"user_class":1,"user_study":2},{"user_class":1,"user_study":3},{"user_class":1,"user_study":5},{"user_class":2,"user_study":1},{"user_class":2,"user_study":2},{"user_class":2,"user_study":3},{"user_class":2,"user_study":5},{"user_class":3,"user_study":1},{"user_class":3,"user_study":2},{"user_class":3,"user_study":3},{"user_class":3,"user_study":5},{"user_class":4,"user_study":4},{"user_class":5,"user_study":4}],
             image: '',
@@ -379,6 +382,7 @@ class EventAdministrator extends Component {
         title: this.state.title,
         location: this.state.location,
         description: this.state.description,
+        evaluate_link: this.state.evaluate_link,
         priority: this.state.priority,
         registration_priorities: this.state.registration_priorities,
         image: this.state.image,
@@ -523,7 +527,7 @@ class EventAdministrator extends Component {
 
     render() {
         const {classes} = this.props;
-        const {selectedEvent, title, location, description, image, priority, registration_priorities, categories, category, sign_up, showParticipants, limit, participants} = this.state;
+        const {selectedEvent, title, location, description, evaluate_link, image, priority, registration_priorities, categories, category, sign_up, showParticipants, limit, participants} = this.state;
         const selectedEventId = (selectedEvent)? selectedEvent.id : '';
         const isNewItem = (selectedEvent === null);
         const header = (isNewItem)? 'Lag et nytt arrangement' : 'Endre arrangement';
@@ -581,7 +585,10 @@ class EventAdministrator extends Component {
                                           <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Slutt påmelding' value={this.state.endSignUp} onChange={this.handleChange('endSignUp')} />
                                           <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Avmeldingsfrist' value={this.state.signOffDeadline} onChange={this.handleChange('signOffDeadline')} />
                                       </div>}
-                                      {sign_up && registration_priorities && 
+                                      {sign_up && <div className={classes.flexRow}>
+                                          <TextField className={classes.margin} fullWidth label='Link til evalueringsundersøkelse' value={evaluate_link} onChange={this.handleChange('evaluate_link')}/>
+                                      </div>}
+                                      {sign_up && registration_priorities &&
                                       <div className={classes.flexRow}>
                                         <ExpansionPanel className={classes.expansionPanel}>
                                             <ExpansionPanelSummary
