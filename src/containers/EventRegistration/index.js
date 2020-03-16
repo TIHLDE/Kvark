@@ -1,7 +1,8 @@
 import React, {Component, useState} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import QrReader from 'react-qr-reader';
+import classNames from 'classnames';
+import jsQR from "jsqr";
 
 // Service and action imports
 import EventService from '../../api/services/EventService';
@@ -20,6 +21,8 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Slide from '@material-ui/core/Slide';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
+import Hidden from '@material-ui/core/Hidden';
 
 // Icons
 import TextFields from '@material-ui/icons/TextFields';
@@ -66,7 +69,6 @@ const styles = {
         bottom: '20px',
         position: 'fixed',
         borderRadius: '4px',
-        backgroundColor: 'green',
         color: 'white',
         textAlign: 'center',
         maxWidth: '75%',
@@ -76,6 +78,12 @@ const styles = {
         '@media only screen and (min-width: 600px)': {
             whiteSpace: 'nowrap',
         },
+    },
+    snackbar_success: {
+        backgroundColor: 'green',
+    },
+    snackbar_error: {
+        backgroundColor: '#B71C1C',
     },
     qr: {
         width: '100%',
@@ -89,10 +97,6 @@ const styles = {
         boxShadow: '0px 2px 4px #ddd',
         borderRadius: 5,
         marginBottom: 3,
-        '@media only screen and (max-width: 600px)': {
-            paddingTop: 15,
-            flexDirection: 'column',
-        },
     },
     cardUserName: {
         flexGrow: 1,
@@ -103,6 +107,9 @@ const styles = {
     cardText: {
         fontWeight: 'bold',
         fontSize: '17px',
+    },
+    cardButtonLabel: {
+        marginRight: -10,
     },
     cardButtonContainer: {
         display: 'flex',
@@ -127,7 +134,8 @@ const ParticipantCard = withStyles(styles)((props) => {
         <div className={props.classes.cardActionArea}>
             <div className={props.classes.cardButtonContainer}>
                 <FormControlLabel
-                    label="Ankommet"
+                    label={<Hidden xsDown>Ankommet</Hidden>}
+                    className={props.classes.cardButtonLabel}
                     control={
                     <Checkbox
                         onChange={
@@ -156,18 +164,62 @@ class EventRegistration extends Component {
             Transition: Slide,
             snackbarMessage: '',
             tabViewMode: 0,
-            qrResult: '',
             allParticipants: null,
             participantsToShow: null,
+            error: false,
         };
 
         this.handleTabChange = this.handleTabChange.bind(this);
-        this.handleScan = this.handleScan.bind(this);
+        this.canvasLoad = this.canvasLoad.bind(this);
     }
 
-    handleScan(data) {
-        if (data) {
-            this.markAttended(data);
+    canvasLoad() {
+        var video, canvasElement, canvas;
+        var timer = setInterval(function() {
+            if (document.getElementById('canvas') != null) clearInterval(timer);
+            video = document.createElement("video");
+            canvasElement = document.getElementById('canvas');
+            canvas =  canvasElement.getContext("2d");
+            startQrScan();
+        }, 200);
+
+        const drawLine = (begin, end, color) => {
+            canvas.beginPath();
+            canvas.moveTo(begin.x, begin.y);
+            canvas.lineTo(end.x, end.y);
+            canvas.lineWidth = 4;
+            canvas.strokeStyle = color;
+            canvas.stroke();
+          }
+
+        const startQrScan = () => {
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
+                video.srcObject = stream;
+                video.setAttribute("playsinline", true);
+                video.setAttribute("muted", true);
+                video.play();
+                requestAnimationFrame(tick);
+            });
+        }
+
+        const tick = () => {
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                canvasElement.hidden = false;
+                canvasElement.height = video.videoHeight;
+                canvasElement.width = video.videoWidth;
+
+                canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+                var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+                var code = jsQR(imageData.data, imageData.width, imageData.height, {inversionAttempts: "dontInvert",});
+                if (code && !this.state.isLoading) {
+                    drawLine(code.location.topLeftCorner, code.location.topRightCorner, "#FF3B58");
+                    drawLine(code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58");
+                    drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58");
+                    drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58");
+                    this.markAttended(code.data);
+                }
+            }
+            requestAnimationFrame(tick);
         }
     }
 
@@ -179,6 +231,9 @@ class EventRegistration extends Component {
 
     handleTabChange(event, newValue) {
         this.setState({ tabViewMode: newValue });
+        if (newValue === 1) {
+            this.canvasLoad();
+        }
     }
 
     loadEventName() {     
@@ -209,17 +264,15 @@ class EventRegistration extends Component {
 
         this.setState({isLoading: true});
         EventService.putAttended(eventId, body, username).then((data) => {
-            if (data.detail === 'User event successfully updated.') {
-                this.setState({ username: '', qrResult: '', snackbarMessage: 'Velkommen! Du er registrert ankommet!', snackbarOpen: true, isLoading: false });
+            if (data && data.detail === 'User event successfully updated.') {
+                this.setState({snackbarMessage: 'Deltageren er registrert ankommet!', snackbarOpen: true, error: false });
             } else {
-                this.setState({qrResult: Text.wrongCred, isLoading: false});
+                this.setState({snackbarMessage: Text.wrongCred, snackbarOpen: true, error: true});
             }
         });
     }
     handleSnackbarClose = () => {
-        this.setState({
-            snackbarOpen: false,
-        });
+        this.setState({snackbarOpen: false, isLoading: false});
     }
 
     search = (name) => {
@@ -278,21 +331,22 @@ class EventRegistration extends Component {
                                 </div>
                             :
                             <div>
-                                <QrReader
-                                delay={300}
-                                resolution={600}
-                                onScan={this.handleScan}
-                                className={classes.qr}
-                                showViewFinder={false}
-                                />
-                                <p>{this.state.qrResult}</p>
+                                <canvas id="canvas" hidden className={classes.qr}></canvas>
                             </div>
                             }
                         </div>
                     </div>
                 </div>
-                <Snackbar open={this.state.snackbarOpen} onClose={this.handleSnackbarClose} TransitionComponent={this.state.Transition} autoHideDuration={3000}>
-                    <SnackbarContent className={classes.snackbar} message={this.state.snackbarMessage} />
+                <Snackbar open={this.state.snackbarOpen} onClose={this.handleSnackbarClose} TransitionComponent={this.state.Transition}>
+                    <SnackbarContent
+                        className={this.state.error ? classNames(classes.snackbar, classes.snackbar_error) : classNames(classes.snackbar, classes.snackbar_success)}
+                        message={this.state.snackbarMessage}
+                        action={
+                            <Button color="inherit" size="small" onClick={this.handleSnackbarClose}>
+                                Neste
+                            </Button>
+                        }
+                    />
                 </Snackbar>
             </Navigation>
         );
