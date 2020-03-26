@@ -143,6 +143,17 @@ class ProfilePaper extends Component {
 
     updateNotificationReadState = (id, newState) => {
         NotificationService.updateNotificationReadState(id, newState).then((data) => {
+            this.setState((oldState) => {
+                oldState.userData.unread_notifications--;
+
+                // Find the updated notification and mark as read.
+                oldState.userData.notifications.map((notification) => {
+                    if (notification.id === id) {
+                        notification.read = true;
+                    }
+                    return notification
+                });
+            })
         });
     }
 
@@ -189,7 +200,7 @@ class ProfilePaper extends Component {
                 <Tabs variant="fullWidth" scrollButtons="on" centered className={classes.tabs} value={this.state.tabViewMode} onChange={this.handleChange}>
                     <Tab id='0' icon={<DateRange />} label={<Hidden xsDown>Arrangementer</Hidden>} />
                     <Tab id='1' icon={
-                        <Badge badgeContent={0} color="error">
+                        <Badge badgeContent={this.state.userData.unread_notifications} color="error">
                             <CommentIcon />
                         </Badge>
                     } label={<Hidden xsDown>Notifikasjoner</Hidden>} />
