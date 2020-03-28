@@ -3,7 +3,8 @@
 
 * {
     padding: 0;
-    --tihlde-blaa: #1D448C;
+    /* --tihlde-blaa: #1D448C; */
+    --tihlde-blaa: #ffb200;
     --gray: #F8F8FA;
     --tihlde-white: #Fefefe;
     --notification-blue: #E4E9F2;
@@ -155,7 +156,8 @@ p > code {
     overflow: hidden;
     min-height: 450px;
     top: 0;
-    background-image: linear-gradient(to top, #814a93 20%, #16356e 80%);
+    /* background-image: linear-gradient(to top, #814a93 20%, #16356e 80%); */
+    background-image: linear-gradient(to top, #ffa07a  20%, #ffb200 80%);
 }
 .bgTop {
     z-index: 15;
@@ -213,5 +215,50 @@ p > code {
     }
 }
 
+/** Eastereggs animation **/
+.easter {
+    z-index: 15;
+    pointer-events: none;
+    position: absolute;
+    top: 0; right: 0; left: 0; height: 450px; width: 100%;
+    animation: falling linear infinite both;
+    transform: translate3D(0,-100%,0);
+    overflow: hidden;
+}
 
+  .easter--near {
+    animation-duration: 20s;
+    background-image: url('../img/easter/easter-near.png');
+    background-size: contain;
+  }
+  .easter--near .easter--alt {
+    animation-delay: 5s;
+  }
 
+  .easter--mid {
+    animation-duration: 30s;
+    background-image: url('../img/easter/easter-mid.png');
+    background-size: contain;
+  }
+  .easter--mid .easter--alt {
+    animation-delay: 10s;
+  }
+
+  .easter--far {
+    animation-duration: 40s;
+    background-image: url('../img/easter/easter-far.png');
+    background-size: contain;
+  }
+  .easter--far .easter--alt {
+    animation-delay: 20s;
+  }
+
+@keyframes falling {
+    0% {
+        transform: translate3D(-7.5%,-100%, 0);
+    }
+
+    100% {
+        transform: translate3D(7.5%,100%, 0);
+    }  
+}

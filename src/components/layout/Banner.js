@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Parser from 'html-react-parser';
@@ -7,7 +7,12 @@ import classNames from 'classnames';
 // Material UI Components
 import { Grid, Typography } from '@material-ui/core';
 
-// Icons
+// Easter Components
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
+import EasterEggImage from '../../assets/img/easter/anders.png';
+import ChallengeService from '../../api/services/ChallengeService';
+import AuthService from '../../api/services/AuthService';
 
 const styles = {
     root: {
@@ -87,10 +92,24 @@ const styles = {
 const Banner = (props) => {
     const {classes, button: ButtonComponent} = props;
 
+    const [easterClicks, setEasterClicks] = useState(0);
+    const [easterOpen, setEasterOpen] = useState(false);
+
+    function easter() {
+        setEasterClicks(easterClicks + 1);
+        if (easterClicks > 3) {
+            setEasterOpen(true);
+            setEasterClicks(0);
+            if (AuthService.isAuthenticated()) {
+                ChallengeService.createUserChallenge('9efe12b9-b820-4e7d-9449-00150d058515');
+            }
+        }
+    }
+
     return (
         <div className={classNames(classes.root, props.className)}>
             <Grid container direction='column' wrap='nowrap'>
-                <div className={classes.imageContainer}>
+                <div className={classes.imageContainer} onClick={() => easter()}>
                     <img className={classNames(classes.image, !props.disableFilter ? classes.filter : '')} src={props.image} alt={props.alt} />
                     {props.title && <div className={classes.info}>
                         <Typography className={classes.title} variant='h3'>
@@ -115,6 +134,12 @@ const Banner = (props) => {
                 }
                 {props.children}
             </Grid>
+            {easterOpen && (
+                    <Lightbox
+                        enableZoom={false}
+                        mainSrc={EasterEggImage}
+                        onCloseRequest={() => setEasterOpen(false)}/>
+                )}
         </div>
     );
 };
