@@ -1,15 +1,12 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Cookies from 'universal-cookie';
+import COOKIE from '../../api/cookie';
+import { ACCEPTED_ANALYTICS } from '../../settings';
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-
-// Cookie
-const cookies = new Cookies();
-const COOKIE_ID = 'accepted_analytics';
 
 // Style
 const style = {
@@ -43,12 +40,12 @@ const style = {
 
 const MessageGDPR = (props) => {
     const {classes} = props;
-    const cookieValue = cookies.get(COOKIE_ID) ? false : true;
+    const cookieValue = COOKIE.get(ACCEPTED_ANALYTICS) ? false : true;
     const [displayState, setDisplayState] = useState(cookieValue);
 
     const closeDialog = () => {
         setDisplayState(false);
-        cookies.set(COOKIE_ID, true, {path: '/', expires: new Date(Date.now() + 3600 * 24000 * 365)});
+        COOKIE.set(ACCEPTED_ANALYTICS, true, 3600 * 24000 * 365);
     };
 
     return (

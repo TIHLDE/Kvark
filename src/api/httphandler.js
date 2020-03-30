@@ -1,5 +1,5 @@
-import TOKEN from './token';
-import {TOKEN_HEADER_NAME, TIHLDE_API} from '../settings';
+import COOKIE from './cookie';
+import {TOKEN_HEADER_NAME, TIHLDE_API, ACCESS_TOKEN} from '../settings';
 
 export class IRequest {
     constructor(method, url, data={}, withAuth=true, args={}) {
@@ -10,7 +10,7 @@ export class IRequest {
         this.args = args;
 
         if (withAuth) {
-            this.headers[TOKEN_HEADER_NAME] = TOKEN.get();
+            this.headers[TOKEN_HEADER_NAME] = COOKIE.get(ACCESS_TOKEN);
         }
 
         for (const key in args) {
