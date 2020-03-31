@@ -78,7 +78,6 @@ class SignUp extends Component {
         this.username = React.createRef();
         this.email = React.createRef();
         this.em = React.createRef();
-        this.vippsNr = React.createRef();
         this.password = React.createRef();
         this.passwordVerify = React.createRef();
         MiscService.setLogInRedirectURL(null); // Reset login URL
@@ -106,7 +105,6 @@ class SignUp extends Component {
         const userClass = this.state.class;
         const study = this.state.study;
         const em = this.em.value;
-        const vippsNr = this.vippsNr.value;
         const password = this.password.value;
         const passwordVerify = this.passwordVerify.value;
 
@@ -121,7 +119,7 @@ class SignUp extends Component {
 
         this.setState({errorMessage: null, isLoading: true});
 
-        const userData = {user_id: username.toLowerCase(), first_name: firstName, last_name: lastName, email: email, user_class: userClass, vipps_transaction_id: vippsNr, user_study: study, em_nr: em, password: password};
+        const userData = {user_id: username.toLowerCase(), first_name: firstName, last_name: lastName, email: email, user_class: userClass, user_study: study, vipps_transaction_id: 0, em_nr: em, password: password};
         AuthService.createUser(userData).then((data) => {
             if(data) {
                 this.props.history.push(this.state.redirectURL || URLS.landing);
@@ -199,14 +197,6 @@ class SignUp extends Component {
                                         inputRef={(e) => this.em = e}
                                         error={this.state.errorMessage !== null}
                                         label='EM-nummer (studentkortet)'
-                                        variant='outlined'
-                                        margin='normal'
-                                        required/>
-                                    <TextField
-                                        onChange={this.handleChange}
-                                        inputRef={(e) => this.vippsNr = e}
-                                        error={this.state.errorMessage !== null}
-                                        label='Vipps transaksjons-id'
                                         variant='outlined'
                                         margin='normal'
                                         required/>
