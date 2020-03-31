@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 // Icons
-import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO.png';
+import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO_CORONA.png';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';

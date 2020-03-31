@@ -30,7 +30,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import Tooltip from '@material-ui/core/Tooltip';
 
 // Assets/Icons
-import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO.png';
+import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO_CORONA.png';
 import MenuIcon from '@material-ui/icons/Menu';
 import SopraSteria from '../../assets/img/sopraSteriaLogo.svg';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
