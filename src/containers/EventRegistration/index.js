@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import jsQR from "jsqr";
 
+
 // Service and action imports
 import EventService from '../../api/services/EventService';
 
@@ -23,6 +24,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import Hidden from '@material-ui/core/Hidden';
+
 
 // Icons
 import TextFields from '@material-ui/icons/TextFields';

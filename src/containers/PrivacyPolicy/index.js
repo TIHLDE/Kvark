@@ -41,7 +41,6 @@ const styles = {
         border: '1px solid #ddd',
         borderRadius: '5px',
         backgroundColor: '#fff',
-
     },
     list: {
         paddingLeft: 30,

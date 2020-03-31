@@ -24,6 +24,7 @@
     "react-image-gallery": "^0.8.9",
     "react-image-lightbox": "^5.0.0",
     "react-markdown": "^4.0.3",
+    "react-qr-reader": "^2.2.1",
     "react-redux": "^5.0.7",
     "react-responsive": "^5.0.0",
     "react-router-dom": "^4.2.2",

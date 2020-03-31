@@ -528,6 +528,7 @@ class EventAdministrator extends Component {
     render() {
         const {classes} = this.props;
         const {selectedEvent, title, location, description, evaluate_link, image, priority, registration_priorities, categories, category, sign_up, showParticipants, limit, participants} = this.state;
+
         const selectedEventId = (selectedEvent)? selectedEvent.id : '';
         const isNewItem = (selectedEvent === null);
         const header = (isNewItem)? 'Lag et nytt arrangement' : 'Endre arrangement';

@@ -208,7 +208,6 @@ class NewLanding extends Component {
                                 </div>
                                 }
                             </div>
-
                             <div className="easter easter--near"></div>
                             <div className="easter easter--mid"></div>
                             <div className="easter easter--far"></div>

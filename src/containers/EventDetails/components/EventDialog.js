@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {shortDownString, getUserStudyShort} from '../../../utils';
 import URLS from '../../../URLS';
 
+
 // Text
 import Text from '../../../text/EventText';
 

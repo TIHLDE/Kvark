@@ -6883,6 +6883,7 @@ lodash.uniq@^4.5.0:
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
 "lodash@>=3.5 <5", lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.5, lodash@~4.17.4:
+
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
@@ -9146,6 +9147,15 @@ react-modal@^3.8.1:
     react-lifecycles-compat "^3.0.0"
     warning "^4.0.3"
 
+react-qr-reader@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/react-qr-reader/-/react-qr-reader-2.2.1.tgz#dc89046d1c1a1da837a683dd970de5926817d55b"
+  integrity sha512-EL5JEj53u2yAOgtpAKAVBzD/SiKWn0Bl7AZy6ZrSf1lub7xHwtaXe6XSx36Wbhl1VMGmvmrwYMRwO1aSCT2fwA==
+  dependencies:
+    jsqr "^1.2.0"
+    prop-types "^15.7.2"
+    webrtc-adapter "^7.2.1"
+
 react-redux@^5.0.7:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.1.2.tgz#b19cf9e21d694422727bf798e934a916c4080f57"
@@ -9806,10 +9816,12 @@ rsvp@^4.8.4:
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-4.8.5.tgz#c8f155311d167f68f21e168df71ec5b083113734"
   integrity sha512-nfMOlASu9OnRJo1mbEk2cz0D56a1MBNrJ7orjRZQG10XDyuvwksKbuXNp6qa+kbn839HwjwhBzhFmdsaEAfauA==
 
+
 run-async@^2.2.0, run-async@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/run-async/-/run-async-2.4.0.tgz#e59054a5b86876cfae07f431d18cbaddc594f1e8"
   integrity sha512-xJTbh/d7Lm7SBhc1tNvTpeCHaEzoyxPrqNlvSdMfBTYwaY++UJFyXUOxAtsRUXjlqOfj8luNaR9vjCh4KeV+pg==
+
   dependencies:
     is-promise "^2.1.0"
 
@@ -9916,6 +9928,11 @@ schema-utils@^2.5.0, schema-utils@^2.6.0, schema-utils@^2.6.1, schema-utils@^2.6
   dependencies:
     ajv "^6.12.0"
     ajv-keywords "^3.4.1"
+
+sdp@^2.12.0, sdp@^2.6.0:
+  version "2.12.0"
+  resolved "https://registry.yarnpkg.com/sdp/-/sdp-2.12.0.tgz#338a106af7560c86e4523f858349680350d53b22"
+  integrity sha512-jhXqQAQVM+8Xj5EjJGVweuEzgtGWb3tmEEpl3CLP3cStInSbVHSg0QWOGQzNq8pSID4JkpeV2mPqlMDLrm0/Vw==
 
 select-hose@^2.0.0:
   version "2.0.0"
@@ -11384,6 +11401,14 @@ webpack@4.41.5:
     terser-webpack-plugin "^1.4.3"
     watchpack "^1.6.0"
     webpack-sources "^1.4.1"
+
+webrtc-adapter@^7.2.1:
+  version "7.5.0"
+  resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-7.5.0.tgz#b870f6ff5e87191276e66f9521ac457c81801954"
+  integrity sha512-cUqlw310uLLSYvO8FTNCVmGWSMlMt6vuSDkcYL1nW+RUvAILJ3jEIvAUgFQU5EFGnU+mf9/No14BFv3U+hoxBQ==
+  dependencies:
+    rtcpeerconnection-shim "^1.2.15"
+    sdp "^2.12.0"
 
 websocket-driver@>=0.5.1:
   version "0.7.3"
