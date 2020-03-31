@@ -12,6 +12,8 @@ import MiscService from '../../api/services/MiscService';
 import AuthService from '../../api/services/AuthService';
 import * as MiscActions from '../../store/actions/MiscActions';
 import UserService from '../../api/services/UserService';
+import COOKIE from '../../api/cookie';
+import { WARNINGS_READ } from '../../settings';
 
 // Material UI Components
 import AppBar from '@material-ui/core/AppBar';
@@ -28,7 +30,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import Tooltip from '@material-ui/core/Tooltip';
 
 // Assets/Icons
-import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO.png';
+import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO_CORONA.png';
 import MenuIcon from '@material-ui/icons/Menu';
 import SopraSteria from '../../assets/img/sopraSteriaLogo.svg';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
@@ -102,11 +104,15 @@ const styles = {
         width: '100vw',
         height: 'auto',
         padding: 0,
-
-        backgroundColor: 'rgba(211,47,47,1)',
         '@media only screen and (max-width: 600px)': {
             top: 56,
         },
+    },
+    snackWarning: {
+        backgroundColor: 'rgba(211,47,47,1)',
+    },
+    snackMessage: {
+        backgroundColor: 'var(--tihlde-blaa)',
     },
     flex: {
         display: 'flex',
@@ -275,6 +281,8 @@ class Navigation extends Component {
 
             showSnackbar: false,
             snackMessage: null,
+            snackWarningId: null,
+            snackType: 0,
 
             userData: {},
         };
@@ -301,10 +309,14 @@ class Navigation extends Component {
         }
 
         MiscService.getWarning((isError, data) => {
-            if (isError === false && data && data.length > 0) {
+            let warnings_read = COOKIE.get(WARNINGS_READ);
+            if (warnings_read === undefined) warnings_read = [];
+            if (isError === false && data && data.length > 0 && !warnings_read.includes(data[data.length - 1].id)) {
                 this.setState({
                     snackMessage: data[data.length - 1].text,
                     showSnackbar: true,
+                    snackWarningId: data[data.length - 1].id,
+                    snackType: data[data.length - 1].type,
                 });
             }
         });
@@ -313,6 +325,10 @@ class Navigation extends Component {
     closeSnackbar = () => {
         this.setState({ showSnackbar: false });
         this.props.setHasSnackDisplayed(true);
+        let warnings_read = COOKIE.get(WARNINGS_READ);
+        if (warnings_read === undefined) warnings_read = [];
+        warnings_read.push(this.state.snackWarningId);
+        COOKIE.set(WARNINGS_READ, warnings_read);
     }
 
     toggleSidebar = () => {
@@ -392,7 +408,7 @@ class Navigation extends Component {
                     </Toolbar>
                 </AppBar>
                 <Snack
-                    className={classNames(classes.snack, classes.flex)}
+                    className={classNames(classes.snack, classes.flex, this.state.snackType === 2 ? classes.snackMessage : classes.snackWarning)}
                     open={this.state.showSnackbar}
                     message={this.state.snackMessage}
                     onClose={this.closeSnackbar} />

@@ -39,6 +39,7 @@ import EventRegistration from './containers/EventRegistration';
 import UserService from './api/services/UserService';
 import SignUp from './containers/SignUp';
 import PrivacyPolicy from './containers/PrivacyPolicy';
+import EventRules from './containers/EventRules';
 
 import MessageGDPR from './components/miscellaneous/MessageGDPR';
 
@@ -106,6 +107,7 @@ const Application = (
                     <Route exact path={URLS.jobposts} component={JobPosts} />
                     <Route path={URLS.laws} component={Laws} />
                     <Route path={URLS.privacyPolicy} component={PrivacyPolicy} />
+                    <Route path={URLS.eventRules} component={EventRules} />
                     
                     <Route exact path={URLS.admin} component={RequireAuth(Admin, ["HS", "Promo", "Nok", "Devkom"])} />
                     <Route path={URLS.userAdmin} component={RequireAuth(UserAdmin, ["HS", "Devkom"])} />

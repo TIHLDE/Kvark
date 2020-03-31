@@ -40,5 +40,6 @@ const createUser = (user) => ({
     allergy: user.allergy,
     tool: user.tool,
     events: user.events,
-    notifications: user.notifications
+    notifications: user.notifications,
+    unread_notifications: user.unread_notifications
 });

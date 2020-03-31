@@ -1,8 +1,9 @@
 import AUTH from '../auth';
-import TOKEN from '../token';
+import COOKIE from '../cookie';
 import store from '../../store/store';
 import * as UserActions from '../../store/actions/UserActions';
 import UserService from './UserService';
+import {ACCESS_TOKEN} from '../../settings';
 
 class AuthService {
 
@@ -20,7 +21,7 @@ class AuthService {
         const response = AUTH.authenticate(username, password).response();
         return response.then((data) => {
             if(data && data.token) {
-                TOKEN.set(data.token);
+                COOKIE.set(ACCESS_TOKEN, data.token);
                 UserService.getUserData();
                 return data;
             }
@@ -39,7 +40,7 @@ class AuthService {
     };
 
     static isAuthenticated () {
-        return typeof TOKEN.get() !== 'undefined'
+        return typeof COOKIE.get(ACCESS_TOKEN) !== 'undefined'
     }
 
     static logOut() {
@@ -49,7 +50,7 @@ class AuthService {
         }
 
         // Log out
-        TOKEN.remove();
+        COOKIE.remove(ACCESS_TOKEN);
         UserActions.clearData()(store.dispatch);
         return;
     }

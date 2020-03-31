@@ -97,4 +97,9 @@ export default {
             ...data
         }, false);
     },
+
+    // Challenges
+    createUserChallenge: (data) => {
+        return new IRequest('POST', 'challenge', data, true);
+    },
 };

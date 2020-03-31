@@ -144,14 +144,13 @@ class About extends Component {
                         <div className={classes.section}>
                             <Typography className={classes.verticalMargin}variant='h4' color='inherit' align='center'>Komitéer</Typography>
                             <div className={classes.grid}>
-                                <InfoCard header='Koskom' text={Text.kosekom} subheader='Opptak' subText={Text.kosekom2} justifyText/>
-                                <InfoCard header='Devkom' text={Text.devkom} subheader='Opptak' subText={Text.devkom2} justifyText/>
-                                <InfoCard header='Turkom' text={Text.turkom} subheader='Opptak' subText={Text.turkom2} justifyText/>
-                                <InfoCard header='Jubkom' text={Text.jubkom} subheader='Opptak' subText={Text.jubkom2} justifyText/>
+                                <InfoCard header='KontKom' text={Text.kontkom} justifyText/>
+                                <InfoCard header='Devkom' text={Text.devkom} justifyText/>
+                                <InfoCard header='Turkom' text={Text.turkom} justifyText/>
+                                <InfoCard header='Jubkom' text={Text.jubkom} justifyText/>
                           </div>
                         </div>
                     </div>
-
 
                     <div className={classes.smoke}>
                         <div className={classes.section}>
