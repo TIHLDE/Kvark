@@ -3,8 +3,7 @@
 
 * {
     padding: 0;
-    /* --tihlde-blaa: #1D448C; */
-    --tihlde-blaa: #ffb200;
+    --tihlde-blaa: #1D448C;
     --gray: #F8F8FA;
     --tihlde-white: #Fefefe;
     --notification-blue: #E4E9F2;
@@ -156,8 +155,7 @@ p > code {
     overflow: hidden;
     min-height: 450px;
     top: 0;
-    /* background-image: linear-gradient(to top, #814a93 20%, #16356e 80%); */
-    background-image: linear-gradient(to top, #ffa07a  20%, #ffb200 80%);
+    background-image: linear-gradient(to top, #814a93 20%, #16356e 80%);
 }
 .bgTop {
     z-index: 15;
@@ -215,8 +213,8 @@ p > code {
     }
 }
 
-/** Eastereggs animation **/
-.easter {
+/** Landing page rain animation **/
+.rain {
     z-index: 15;
     pointer-events: none;
     position: absolute;
@@ -226,30 +224,30 @@ p > code {
     overflow: hidden;
 }
 
-  .easter--near {
+  .rain--near {
     animation-duration: 20s;
-    background-image: url('../img/easter/easter-near.png');
+    /* background-image: url('../img/rain/rain-near.png'); */
     background-size: contain;
   }
-  .easter--near .easter--alt {
+  .rain--near .rain--alt {
     animation-delay: 5s;
   }
 
-  .easter--mid {
+  .rain--mid {
     animation-duration: 30s;
-    background-image: url('../img/easter/easter-mid.png');
+    /* background-image: url('../img/rain/rain-mid.png'); */
     background-size: contain;
   }
-  .easter--mid .easter--alt {
+  .rain--mid .rain--alt {
     animation-delay: 10s;
   }
 
-  .easter--far {
+  .rain--far {
     animation-duration: 40s;
-    background-image: url('../img/easter/easter-far.png');
+    /* background-image: url('../img/rain/rain-far.png'); */
     background-size: contain;
   }
-  .easter--far .easter--alt {
+  .rain--far .rain--alt {
     animation-delay: 20s;
   }
 
