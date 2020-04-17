@@ -166,16 +166,6 @@ const styles = {
         marginTop: '2px',
         marginBottom: '20px',
     },
-    easterhunt: {
-        background: '#ffffff',
-        border: '5px solid transparent',
-        borderImage: 'conic-gradient(lime, aqua, #ffb200, lime) 1 1',
-        padding: 20,
-        fontWeight: 'bold',
-    },
-    easterContainer: {
-        background: 'linear-gradient(white 1%, #f0f0f0 99%)',
-    },
 };
 
 class NewLanding extends Component {
@@ -208,9 +198,9 @@ class NewLanding extends Component {
                                 </div>
                                 }
                             </div>
-                            <div className="easter easter--near"></div>
-                            <div className="easter easter--mid"></div>
-                            <div className="easter easter--far"></div>
+                            {/* <div className="rain rain--near"></div>
+                            <div className="rain rain--mid"></div>
+                            <div className="rain rain--far"></div> */}
 
                             <div className="waveWrapperInner bgTop">
                                 <div className="wave waveTop"></div>
@@ -220,19 +210,6 @@ class NewLanding extends Component {
                             </div>
                             <div className="waveWrapperInner bgBottom">
                                 <div className="wave waveBottom"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={classNames(classes.smoke, classes.easterContainer)}>
-                        <div className={classes.section}>
-                            <Typography variant='h4' color="inherit" align="center" className={classes.margining}>Påskejakten 2020</Typography>
-                            <div className={classes.easterhunt}>
-                                <Typography variant='h6' color="inherit" align="center" className={classes.margining}>
-                                    TIHLDE's store påskejakt 2020 er nå igang. Vi har gjemt et flott bilde av vår nye leder Anders et eller annet sted på nettsiden.
-                                    <br/>Sett i gang og let!
-                                    <br/><br/>Hint: Klikk, klikk, klikk
-                                    <br/><br/>OBS: For å være med i konkurransen om premie må du være innlogget.
-                                </Typography>
                             </div>
                         </div>
                     </div>
