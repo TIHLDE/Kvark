@@ -88,12 +88,12 @@ class EventDetails extends Component {
 
     }
 
-    applyToEvent = () => {
+    applyToEvent = (optionalFieldsAnswers) => {
       const {event, user, userEvent} = this.state;
       this.setState({isApplying: true});
       if (!userEvent) {
         // Apply to event
-        return EventService.putUserOnEventList(event.id, user).then((result) => {
+        return EventService.putUserOnEventList(event.id, user, optionalFieldsAnswers).then((result) => {
           this.setState((oldState) => {
             let newEvent = oldState.event;
             if (newEvent.limit <= newEvent.list_count) {

@@ -179,7 +179,7 @@ const removeStudyFromArray = (array, userStudy) => {
 };
 
 const PrioritiesContent = withStyles(styles)((props) => {
-  let priorities = props.priorities;
+  let priorities = [...props.priorities];
   let Dataing = null; let DigFor = null; let DigInc = null; let DigSam = null; let Drift = null;
   if (priorities.some((item) => item.user_class === 1 && item.user_study === 1) && priorities.some((item) => item.user_class === 2 && item.user_study === 1) && priorities.some((item) => item.user_class === 3 && item.user_study === 1)) {Dataing = (<Typography className={props.classes.priority} variant='subtitle1'>{getUserStudyShort(1)}</Typography>); priorities = removeStudyFromArray(priorities, 1);}
   if (priorities.some((item) => item.user_class === 1 && item.user_study === 2) && priorities.some((item) => item.user_class === 2 && item.user_study === 2) && priorities.some((item) => item.user_class === 3 && item.user_study === 2)) {DigFor = (<Typography className={props.classes.priority} variant='subtitle1'>{getUserStudyShort(2)}</Typography>); priorities = removeStudyFromArray(priorities, 2);}
@@ -192,7 +192,7 @@ const PrioritiesContent = withStyles(styles)((props) => {
         <Typography className={props.classes.ml} variant='subtitle1'>{props.title}</Typography>
         <div className={props.classes.prioritiesContainer}>
           {Dataing}{DigFor}{DigInc}{DigSam}{Drift}
-          {props.priorities.map(function(priority, index) {
+          {priorities.map(function(priority, index) {
             return (<Typography className={props.classes.priority} variant='subtitle1' key={index}>{priority.user_class + '. ' + getUserStudyShort(priority.user_study)}</Typography>);
           })}
         </div>
@@ -341,7 +341,7 @@ const EventRenderer = (props) => {
                     <div className={classes.details}>
                         <PrioritiesContent title="Prioritert:" priorities={data.registration_priorities} />
                     </div>
-                    :
+                    : data.sign_up && data.registration_priorities &&
                     <div className={classes.details}>
                         <Grid className={props.classes.info} container wrap='nowrap' alignItems='center' justify='flex-start'>
                           <Typography className={props.classes.ml} variant='subtitle1'>Prioritert:</Typography>
