@@ -10,6 +10,7 @@ export default createMuiTheme({
         main: '#ef2b2d',
         // dark: '#183770',
         dark: '#cc2526',
+
         contrastText: '#ffffff',
       },
       secondary: {

@@ -202,6 +202,7 @@ class NewLanding extends Component {
                             <div className="rain rain--mid"></div>
                             <div className="rain rain--near"></div>
 
+
                             <div className="waveWrapperInner bgTop">
                                 <div className="wave waveTop"></div>
                             </div>
