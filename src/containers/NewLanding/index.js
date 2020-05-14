@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 // Icons
-import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO_CORONA.png';
+import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO.png';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
@@ -198,9 +198,10 @@ class NewLanding extends Component {
                                 </div>
                                 }
                             </div>
-                            {/* <div className="rain rain--near"></div>
+                            <div className="rain rain--far"></div>
                             <div className="rain rain--mid"></div>
-                            <div className="rain rain--far"></div> */}
+                            <div className="rain rain--near"></div>
+
 
                             <div className="waveWrapperInner bgTop">
                                 <div className="wave waveTop"></div>

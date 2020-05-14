@@ -17,7 +17,7 @@ export default {
     faq: {
         header: "Spørsmål og svar (FAQ)",
         subheader: "Fikk du ikke svar på det du lurte på her?\n" +
-            "Send oss en melding på <a target='_blank' rel='noopener noreferrer' href='https://facebook.com/tihlde/'>Facebook</a>, så svarer vi deg så fort som vi klarer.",
+            "Send oss en melding på <a target='_blank' rel='noopener noreferrer' href='https://www.facebook.com/messages/t/tihlde'>Facebook</a>, så svarer vi deg så fort som vi klarer.",
         content: {
             linjeForening: {
                 header: "Hva er en linjeforening?",

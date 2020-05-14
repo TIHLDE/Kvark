@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -44,14 +44,16 @@ import EventRules from './containers/EventRules';
 import MessageGDPR from './components/miscellaneous/MessageGDPR';
 
 // The user needs to be authorized (logged in and member of an authorized group) to access these routes
-const RequireAuth = (Component, accessGroups) => { 
+const RequireAuth = (OriginalComponent, accessGroups) => { 
 
-    return class App extends Component { 
+    return class App extends Component {
+
         state = {
             isAuthenticated: AuthService.isAuthenticated(),
             isLoading: true,
             allowAccess: false,
         }
+
 
         componentDidMount() {
             UserService.isGroupMember().then((groups) => {
@@ -78,14 +80,14 @@ const RequireAuth = (Component, accessGroups) => {
                 return <Redirect to={URLS.login} />
             }
             if (allowAccess) {
-                return <Component {...this.props} />
+                return <OriginalComponent {...this.props} />
             } else {
                 return <Redirect to={URLS.landing} />
             }
         }
     } 
 
-} 
+}; 
 
 const Application = (
     <Provider store={store}>

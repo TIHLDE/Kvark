@@ -23,7 +23,7 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import Switch from '@material-ui/core/Switch';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -35,6 +35,7 @@ import Dialog from '../../../components/navigation/Dialog';
 import EventPreview from './EventPreview';
 import EventSidebar from './EventSidebar';
 import EventParticipants from './EventParticipants';
+import EventOptionalFieldsCreator from './EventOptionalFieldsCreator';
 
 const SIDEBAR_WIDTH = 300;
 
@@ -144,6 +145,11 @@ const styles = (theme) => ({
             borderColor: '#b20101',
         },
     },
+    questionCount: {
+        fontWeight: 'bold',
+        color: '#555',
+        marginLeft: 5,
+    },
 });
 
 const MessageView = withStyles(styles, {withTheme: true})((props) => {
@@ -188,6 +194,7 @@ class EventAdministrator extends Component {
             description: '',
             evaluate_link: '',
             sign_up: false,
+            optionalFields: [],
             priority: 0,
             registration_priorities: [{"user_class":1,"user_study":1},{"user_class":1,"user_study":2},{"user_class":1,"user_study":3},{"user_class":1,"user_study":5},{"user_class":2,"user_study":1},{"user_class":2,"user_study":2},{"user_class":2,"user_study":3},{"user_class":2,"user_study":5},{"user_class":3,"user_study":1},{"user_class":3,"user_study":2},{"user_class":3,"user_study":3},{"user_class":3,"user_study":5},{"user_class":4,"user_study":4},{"user_class":5,"user_study":4}],
             image: '',
@@ -298,6 +305,7 @@ class EventAdministrator extends Component {
                 endSignUp: event.end_registration_at.substring(0,16),
                 signOffDeadline: event.sign_off_deadline.substring(0,16),
                 sign_up: event.sign_up,
+                optionalFields: event.optionalFields,
                 limit: event.limit,
                 participants: [],
             });
@@ -328,6 +336,7 @@ class EventAdministrator extends Component {
             endSignUp: new Date().toISOString().substring(0, 16),
             signOffDeadline: new Date().toISOString().substring(0, 16),
             sign_up: false,
+            optionalFields: [],
             participants: [],
             showParticipants: false,
         });
@@ -340,6 +349,10 @@ class EventAdministrator extends Component {
       } else {
         this.setState({[name]: event.target.value});
       }
+    }
+
+    handleOptionalFields = (newOptionalFields) => {
+        this.setState({optionalFields: newOptionalFields});
     }
 
     handlePriorityChange = (user_class, user_study) => () => {
@@ -394,6 +407,7 @@ class EventAdministrator extends Component {
         end_registration_at: moment(this.state.endSignUp).format('YYYY-MM-DDTHH:mm'),
         sign_off_deadline: moment(this.state.signOffDeadline).format('YYYY-MM-DDTHH:mm'),
         sign_up: this.state.sign_up,
+        optionalFields: this.state.optionalFields,
         limit: this.state.limit,
     });
 
@@ -527,8 +541,7 @@ class EventAdministrator extends Component {
 
     render() {
         const {classes} = this.props;
-        const {selectedEvent, title, location, description, evaluate_link, image, priority, registration_priorities, categories, category, sign_up, showParticipants, limit, participants} = this.state;
-
+        const {selectedEvent, title, location, description, evaluate_link, image, priority, registration_priorities, categories, category, sign_up, optionalFields, showParticipants, limit, participants} = this.state;
         const selectedEventId = (selectedEvent)? selectedEvent.id : '';
         const isNewItem = (selectedEvent === null);
         const header = (isNewItem)? 'Lag et nytt arrangement' : 'Endre arrangement';
@@ -578,7 +591,8 @@ class EventAdministrator extends Component {
                                       <TextField className={classes.field} label='Antall plasser' value={limit} onChange={this.handleChange('limit')} required/>
                                       <FormControlLabel
                                         control={
-                                          <Checkbox onChange={this.handleChange('sign_up')} checked={sign_up} />
+                                        //   <Checkbox onChange={this.handleChange('sign_up')} checked={sign_up} />
+                                        <Switch checked={sign_up} onChange={this.handleChange('sign_up')} color="primary" />
                                         }
                                         label="Åpen for påmelding"/>
                                       {sign_up && <div className={classes.flexRow}>
@@ -652,6 +666,22 @@ class EventAdministrator extends Component {
                                             </ExpansionPanelDetails>
                                         </ExpansionPanel>
                                       </div>}
+                                      {sign_up && optionalFields &&
+                                        <div className={classes.flexRow}>
+                                        <ExpansionPanel className={classes.expansionPanel}>
+                                            <ExpansionPanelSummary
+                                                expandIcon={<ExpandMoreIcon />}
+                                                aria-controls="priorities"
+                                                id="priorities-header"
+                                            >
+                                                <Typography className={classes.heading}>Spørsmål ved påmelding <span className={classes.questionCount}>({optionalFields && optionalFields.length})</span></Typography>
+                                            </ExpansionPanelSummary>
+                                            <ExpansionPanelDetails>
+                                                <EventOptionalFieldsCreator optionalFields={optionalFields} handleOptionalFields={this.handleOptionalFields} />
+                                            </ExpansionPanelDetails>
+                                        </ExpansionPanel>
+                                        </div>
+                                      }
 
                                       <TextEditor className={classes.margin} value={description} onChange={this.onChange('description')}/>
 

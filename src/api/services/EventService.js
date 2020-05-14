@@ -133,8 +133,8 @@ class EventService {
       })
     }
 
-    static putUserOnEventList = (id, userData, callback=null) => {
-      userData = {user_id: userData.user_id, event: id};
+    static putUserOnEventList = (id, userData, optionalFieldsAnswers, callback=null) => {
+      userData = {user_id: userData.user_id, event: id, optional_fields_answers: optionalFieldsAnswers};
       const response = API.putUserOnEventList(id,userData).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, response.status);

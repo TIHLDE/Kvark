@@ -71,7 +71,7 @@ const SidebarContent = (props) => {
         <Fragment>
             <div className={classes.root}>
                 <ActionLink to={URLS.about} label='Om TIHLDE' />
-                <ActionLink to={URLS.services} label='Tjenester' />
+                <ActionLink to={URLS.newStudent} label='Ny student' />
                 <ActionLink to={URLS.events} label='Arrangementer' />
                 <ActionLink to={URLS.jobposts} label='Karriere' />
                 <ActionLink to={URLS.company} label='For Bedrifter' />

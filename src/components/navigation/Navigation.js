@@ -30,7 +30,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import Tooltip from '@material-ui/core/Tooltip';
 
 // Assets/Icons
-import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO_CORONA.png';
+import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO.png';
 import MenuIcon from '@material-ui/icons/Menu';
 import SopraSteria from '../../assets/img/sopraSteriaLogo.svg';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
@@ -360,7 +360,7 @@ class Navigation extends Component {
                                 <Hidden smDown implementation='css'>
                                     <div className={classes.flex}>
                                         <URIbutton data={{ link: URLS.about, text: "Om TIHLDE" }} selected={this.props.match.url === URLS.about} />
-                                        <URIbutton data={{ link: URLS.services, text: "Tjenester" }} selected={this.props.match.url === URLS.services} />
+                                        <URIbutton data={{ link: URLS.newStudent, text: "Ny student" }} selected={this.props.match.url === URLS.newStudent} />
                                         <URIbutton data={{ link: URLS.events, text: "Arrangementer" }} selected={this.props.match.url === URLS.events} />
                                         <URIbutton data={{ link: URLS.jobposts, text: "Karriere" }} selected={this.props.match.url === URLS.jobposts} />
                                         <URIbutton data={{ link: URLS.company, text: "For Bedrifter" }} selected={this.props.match.url === URLS.company} />
