@@ -3,7 +3,8 @@
 
 * {
     padding: 0;
-    --tihlde-blaa: #1D448C;
+    /* --tihlde-blaa: #1D448C; */
+    --tihlde-blaa: #ef2b2d;
     --gray: #F8F8FA;
     --tihlde-white: #Fefefe;
     --notification-blue: #E4E9F2;
@@ -155,7 +156,8 @@ p > code {
     overflow: hidden;
     min-height: 450px;
     top: 0;
-    background-image: linear-gradient(to top, #814a93 20%, #16356e 80%);
+    /* background-image: linear-gradient(to top, #814a93 20%, #16356e 80%); */
+    background-image: linear-gradient(to top, #0d2c6c 20%, #ef2b2d 100%);
 }
 .bgTop {
     z-index: 15;
@@ -226,7 +228,7 @@ p > code {
 
   .rain--near {
     animation-duration: 20s;
-    /* background-image: url('../img/rain/rain-near.png'); */
+    background-image: url('../img/rain/rain-near.png');
     background-size: contain;
   }
   .rain--near .rain--alt {
@@ -235,7 +237,7 @@ p > code {
 
   .rain--mid {
     animation-duration: 30s;
-    /* background-image: url('../img/rain/rain-mid.png'); */
+    background-image: url('../img/rain/rain-mid.png');
     background-size: contain;
   }
   .rain--mid .rain--alt {
@@ -244,7 +246,7 @@ p > code {
 
   .rain--far {
     animation-duration: 40s;
-    /* background-image: url('../img/rain/rain-far.png'); */
+    background-image: url('../img/rain/rain-far.png');
     background-size: contain;
   }
   .rain--far .rain--alt {
