@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
-import Link from 'react-router-dom/Link';
+import { Link } from 'react-router-dom';
 import URLS from '../../URLS';
 
 // API and store import

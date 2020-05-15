@@ -3,7 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import moment from 'moment';
-import Link from 'react-router-dom/Link';
+import { Link } from 'react-router-dom';
 import URLS from '../../../URLS';
 import { getUserStudyShort } from '../../../utils';
 

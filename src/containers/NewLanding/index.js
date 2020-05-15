@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import Link from 'react-router-dom/Link';
+import { Link } from 'react-router-dom';
 
 // Services
 import AuthService from '../../api/services/AuthService';

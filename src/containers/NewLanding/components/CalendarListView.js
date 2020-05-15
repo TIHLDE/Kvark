@@ -44,28 +44,29 @@ function CalendarListView(props) {
 
   let eventList = <div className={classes.noEventText}><CircularProgress className={classes.progress}/></div>;
   if (!isLoading) {
-    eventList = props.events ?
-        <div className={classes.moreBtn}>
-          <LinkButton noPadding to='/arrangementer/'>
-            <Typography align='center'>Alle arrangementer ({props.events.length})</Typography>
-          </LinkButton>
-        </div>
+    eventList = props.events && props.events.length > 0 ?
+        <React.Fragment>
+          {props.events.map((eventData, index) => {
+            if (index < eventsToDisplay) {
+              return (<EventListItem key={index} data={eventData} />);
+            }
+            return ('');
+          })}
+          <div className={classes.moreBtn}>
+            <LinkButton noPadding to='/arrangementer/'>
+              <Typography align='center'>Alle arrangementer ({props.events.length})</Typography>
+            </LinkButton>
+          </div>
+        </React.Fragment>
         :
         <Typography
           variant='subtitle1'
           className={classes.noEventText}
           align='center'>Ingen arrangementer å vise</Typography>;
-
   }
 
   return (
     <div className={classes.eventListContainer}>
-      {props.events && props.events.map((eventData, index) => {
-        if (index < eventsToDisplay) {
-          return (<EventListItem key={index} data={eventData} />);
-        }
-        return ('');
-      })}
       {eventList}
     </div>
   );

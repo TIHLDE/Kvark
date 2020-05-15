@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import URLS from '../../../URLS';
 import moment from 'moment';
 import classNames from 'classnames';
-import Link from 'react-router-dom/Link';
+import { Link } from 'react-router-dom';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';

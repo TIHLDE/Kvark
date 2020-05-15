@@ -22,7 +22,7 @@ const styles = (theme) => ({
     padding: '0 6px', // MUI Grid requires a padding of half the given spacing.
   },
   paper: {
-    padding: theme.spacing.unit,
+    padding: theme.spacing(),
     color: theme.palette.text.secondary,
     textAlign: 'center',
   },

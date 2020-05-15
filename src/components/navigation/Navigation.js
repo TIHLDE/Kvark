@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Link from 'react-router-dom/Link';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import URLS from '../../URLS';
 import classNames from 'classnames';
 import { connect } from 'react-redux';

@@ -1,7 +1,7 @@
 // React
 import React, {Component} from 'react';
 import URLS from '../../URLS';
-import Link from 'react-router-dom/Link';
+import { Link } from 'react-router-dom';
 
 // Serivce imports
 import AuthService from '../../api/services/AuthService';

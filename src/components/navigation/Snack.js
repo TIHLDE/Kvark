@@ -31,6 +31,12 @@ const styles = {
         width: '100%',
         height: '100%',
     },
+    snackbar: {
+        top: 0,
+        left: '50%',
+        right: 'auto',
+        transform: 'translateX(-50%)',
+    }
 };
 
 class Snack extends Component {
@@ -42,6 +48,7 @@ class Snack extends Component {
                     anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                     open={this.props.open}
                     onClose={this.handleClose}
+                    className={classes.snackbar}
                 >
                     <SnackbarContent
                         className={this.props.className}

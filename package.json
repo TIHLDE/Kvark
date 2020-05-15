@@ -27,7 +27,7 @@
     "react-qr-reader": "^2.2.1",
     "react-redux": "^5.0.7",
     "react-responsive": "^5.0.0",
-    "react-router-dom": "^4.2.2",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
     "recharts": "^2.0.0-beta.1",
     "redux": "^4.0.0",
@@ -45,6 +45,7 @@
     "@babel/compat-data": "^7.9.0",
     "@babel/helper-call-delegate": "^7.8.7",
     "@babel/plugin-proposal-numeric-separator": "^7.8.3",
+    "@babel/preset-env": "^7.9.6",
     "@fortawesome/fontawesome-free": "^5.13.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-react": "^7.19.0"
