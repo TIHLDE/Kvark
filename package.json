@@ -53,5 +53,8 @@
     ">0.2%",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "resolutions": {
+    "@babel/preset-env": "7.5.5"
+  }
 }
