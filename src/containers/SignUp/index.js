@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import URLS from '../../URLS';
+import classNames from 'classnames';
 
 // Service and action imports
 import AuthService from '../../api/services/AuthService';
@@ -27,8 +29,8 @@ const styles = {
         width: '100%',
     },
     top: {
-        height: 160,
-        backgroundImage: 'linear-gradient(90deg, #C6426E, #642B73)',
+        height: 220,
+        backgroundImage: 'radial-gradient(circle at bottom, #C6426E, #642B73)',
     },
     main: {
         maxWidth: 1000,
@@ -54,7 +56,17 @@ const styles = {
         display: 'block',
         marginBottom: 10,
     },
-    mt: {marginTop: 16},
+    mt: {
+        marginTop: 16,
+        width: '100%',
+    },
+    buttonLink: {
+        textDecoration: 'none',
+        width: '100%',
+    },
+    button: {
+        width: '100%',
+    },
     progress: {
         position: 'absolute',
         top: 0, left: 0, right: 0,
@@ -132,7 +144,7 @@ class SignUp extends Component {
     render() {
         const {classes} = this.props;
         return (
-            <Navigation footer>
+            <Navigation footer fancyNavbar>
                 <div className={classes.root}>
                     <div className={classes.top}>
                 
@@ -227,6 +239,15 @@ class SignUp extends Component {
                                         type='submit'>
                                         Opprett bruker
                                     </Button>
+                                    <Link to={URLS.login} className={classNames(classes.buttonLink, classes.mt)}>
+                                        <Button
+                                            className={classes.button}
+                                            color='primary'
+                                            disabled={this.state.isLoading}
+                                            type='submit'>
+                                            Logg inn
+                                        </Button>
+                                    </Link>
                                 </Grid>
                             </form>
                         </div>

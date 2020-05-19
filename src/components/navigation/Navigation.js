@@ -19,14 +19,10 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
-
 import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import IconButton from '@material-ui/core/IconButton';
-
 import Skeleton from '@material-ui/lab/Skeleton';
-
-import Tooltip from '@material-ui/core/Tooltip';
 
 // Assets/Icons
 import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO.png';
@@ -42,17 +38,25 @@ import Snack from './Snack';
 const styles = {
     root: {
         boxSizing: 'border-box',
-        backgroundColor: 'var(--tihlde-blaa)',
+        // backgroundColor: 'var(--tihlde-blaa)',
+        backgroundColor: 'var(--gradient-top)',
         color: 'white',
         flexGrow: 1,
         zIndex: 10001,
+        transition: '0.4s',
+    },
+    rootLanding: {
+        backgroundColor: 'transparent',
     },
     main: {
-        marginTop: 64,
+        paddingTop: 64,
         minHeight: '101vh',
         '@media only screen and (max-width: 600px)': {
-            marginTop: 56,
+            paddingTop: 56,
         },
+    },
+    mainLanding: {
+        minHeight: '101vh',
     },
     navContent: {
         width: '100%',
@@ -86,6 +90,11 @@ const styles = {
         minWidth: 200,
         width: '100vw',
         overflow: 'hidden',
+        marginTop: 64,
+
+        '@media only screen and (max-width: 600px)': {
+            marginTop: 56,
+        },
     },
     grow: {
         display: 'flex',
@@ -225,10 +234,6 @@ const styles = {
         width: 'calc(100% - 10px)',
         backgroundColor: 'rgba(0, 0, 0, 0.25)',
     },
-    tooltip: {
-        top: '-75px !important',
-        zIndex: 10002,
-    },
 };
 
 
@@ -236,7 +241,7 @@ const URIbutton = withStyles(styles)((props) => {
     const { data, classes } = props;
     return (
         <div className={classNames(props.selected ? classes.selected : '', props.uri)}>
-            <Link to={data.link} onClick={data.link === window.location.pathname ? () => window.location.refresh() : null} style={{ textDecoration: 'none' }}>
+            <Link to={data.link} onClick={data.link === window.location.pathname ? () => window.location.reload() : null} style={{ textDecoration: 'none' }}>
                 <Button color="inherit" style={{
                     color: 'white',
                 }}>
@@ -260,7 +265,7 @@ const SponsorLogo = withStyles(styles)((props) => {
 const PersonIcon = withStyles(styles)((props) => {
     const { user, link, classes } = props;
     return (
-        <Link to={link} className={classes.profileLink} onClick={link === window.location.pathname ? () => window.location.refresh() : null} >
+        <Link to={link} className={classes.profileLink} onClick={link === window.location.pathname ? () => window.location.reload() : null} >
             <Button>
                 <div className={classes.profileContainer} >
                     <div className={classes.profileName}>{ user.first_name !== undefined ? user.first_name : <Skeleton className={classes.skeleton} variant="text" width={75} /> }</div>
@@ -284,6 +289,8 @@ class Navigation extends Component {
             snackType: 0,
 
             userData: {},
+
+            scrollLength: 0,
         };
     }
 
@@ -296,10 +303,21 @@ class Navigation extends Component {
     }
 
     componentDidMount() {
+        window.addEventListener('scroll', this.handleScroll, { passive: true });
+        this.handleScroll();
         this.configureWarningMessage();
         if (AuthService.isAuthenticated()) {
             this.loadUserData();
         }
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
+    }
+
+    handleScroll = () => {
+        const position = window.pageYOffset;
+        this.setState({scrollLength: position});
     }
 
     configureWarningMessage = () => {
@@ -346,7 +364,7 @@ class Navigation extends Component {
         const { classes } = this.props;
         return (
             <Fragment>
-                <AppBar className={classes.root} position="fixed" color="primary">
+                <AppBar elevation={(this.props.fancyNavbar && this.state.scrollLength < 20 ? 0 : 1)} className={classNames(classes.root, (this.props.fancyNavbar && this.state.scrollLength < 20 && classes.rootLanding))} position="fixed" color="primary">
                     <Toolbar className={classes.navContent} disableGutters>
                         <div className={classes.navWrapper}>
                             <div className={classes.logoWrapper}>
@@ -384,9 +402,7 @@ class Navigation extends Component {
 
                             <Hidden mdUp implementation='css'>
                                 <div className={classes.menuWrapper}>
-                                    <Tooltip classes={{ popper: classes.tooltip }} title="Meny">
-                                        <IconButton className={classes.menuButton} onClick={this.toggleSidebar}><MenuIcon /></IconButton>
-                                    </Tooltip>
+                                    <IconButton className={classes.menuButton} onClick={this.toggleSidebar}><MenuIcon /></IconButton>
                                 </div>
                             </Hidden>
 
@@ -412,13 +428,13 @@ class Navigation extends Component {
                     message={this.state.snackMessage}
                     onClose={this.closeSnackbar} />
 
-                <main className={classNames(classes.main, (this.props.whitesmoke ? classes.whitesmoke : null))}>
+                <main className={classNames((this.props.fancyNavbar ? classes.mainLanding : classes.main), (this.props.whitesmoke ? classes.whitesmoke : null))}>
                     {(this.props.isLoading) ? <LinearProgress /> : null}
                     <div className={classes.wrapper}>
                         {this.props.children}
                     </div>
                 </main>
-                {(!this.props.footer || this.props.isLoading) ? null :
+                {this.props.footer && !this.props.isLoading &&
                     <Footer />
                 }
             </Fragment>
@@ -432,6 +448,7 @@ Navigation.propTypes = {
     isLoading: PropTypes.bool,
     footer: PropTypes.bool,
     whitesmoke: PropTypes.bool,
+    fancyNavbar: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({

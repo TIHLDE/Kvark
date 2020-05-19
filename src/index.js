@@ -121,7 +121,6 @@ const Application = (
                     <Route path={URLS.signup} component={SignUp} />
 
                     <Route component={Http404} />
-
                 </Switch>
                 <MessageGDPR />
             </MuiThemeProvider>

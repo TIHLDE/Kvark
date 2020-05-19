@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 // Service imports
-import MiscService from '../../../api/services/MiscService';
+// import MiscService from '../../../api/services/MiscService';
 
 // Material UI Components
 import {TextField, Typography} from '@material-ui/core';
@@ -250,22 +250,45 @@ class Forum extends Component {
         });
     };
 
+    arrayToList = (array) => {
+        let list = "";
+        array.forEach(element => {
+            list += "- " + element + "%0D%0A";
+        });
+        return list;
+    }
+
     handleSubmit = (event) => {
         event.preventDefault();
 
         if(this.props.scrollToForm) {
             this.props.scrollToForm();
         }
-        this.setState({isLoading: true});
+        const subject = this.state.data.info.bedrift + " er interessert";
+        const body = "Bedrift: " +  this.state.data.info.bedrift + "%0D%0A%0D%0A" +
+            "Kontaktperson:%0D%0A" + 
+            "Navn: " + this.state.data.info.kontaktperson + "%0D%0A" +
+            "Epost: " + this.state.data.info.epost + "%0D%0A%0D%0A" +
+            "Valgt semester:%0D%0A" +
+            this.arrayToList(this.state.data.time) + "%0D%0A" +
+            "Valg arrangement:%0D%0A" +
+            this.arrayToList(this.state.data.type) + "%0D%0A" +
+            "Kommentar:%0D%0A" +
+            this.state.data.comment;
+        window.location.href = "mailto:orakel@tihlde.org?subject=" + subject + "&body=" + body;
+        this.setState({isFormSent: true});
+        this.setMessage("Takk for interessen!");
 
-        MiscService.postEmail(this.state.data, (isError, data) => {
-            if (isError === false && data) {
-                this.setMessage("Sendt! Takk for interressen.");
-            } else {
-                this.setMessage("Noe gikk galt, prøv senere.")
-            }
-            this.setState({isLoading: false, isFormSent: true});
-        });
+        // this.setState({isLoading: true});
+
+        // MiscService.postEmail(this.state.data, (isError, data) => {
+        //     if (isError === false && data) {
+        //         this.setMessage("Sendt! Takk for interessen.");
+        //     } else {
+        //         this.setMessage("Noe gikk galt, prøv senere.")
+        //     }
+        //     this.setState({isLoading: false, isFormSent: true});
+        // });
     };
 
     render() {

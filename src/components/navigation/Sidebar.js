@@ -17,76 +17,70 @@ import Divider from '@material-ui/core/Divider';
 import Link from './Link';
 
 const styles = (theme) => ({
-    root: {
-        marginTop: 56,
-        zIndex: 10000,
+  root: {
+    zIndex: 10000,
+  },
+  item: {
+    height: 56,
+    color: 'var(--tihlde-blaa)',
+  },
+  companyButton: {
+    color: 'white',
+    backgroundColor: theme.palette.primary.main,
+    boxSizing: 'border-box',
+    border: '5px solid white',
 
-        '@media only screen and (min-width: 600px)': {
-            marginTop: 64,
-        },
+    '&hover': {
+      backgroundColor: theme.palette.primary.dark,
     },
-    item: {
-        height: 56,
-        color: 'var(--tihlde-blaa)',
-    },
-    companyButton: {
-        color: 'white',
-        backgroundColor: theme.palette.primary.main,
-        boxSizing: 'border-box',
-        border: '5px solid white',
-
-        '&hover': {
-            backgroundColor: theme.palette.primary.dark,
-        },
-    },
-    menuButton: {
-        color: 'white',
-    },
+  },
+  menuButton: {
+    color: 'white',
+  },
 });
 
 const ActionLink = withStyles(styles)((props) => {
-    const { classes } = props;
-    return (
-        <Fragment>
-            <Link to={props.to} onClick={props.to === window.location.pathname ? () => window.location.refresh() : null}>
-                <ListItem className={classNames(classes.item, props.className)} button color="inherit">
-                    <Grid container direction='column' wrap='nowrap' alignItems='center' justify='space-between'>
-                        <Typography variant='h5' align='center' color='inherit'>{props.label}</Typography>
-                    </Grid>
-                </ListItem>
-            </Link>
-            <Divider className={classes.divider} />
-        </Fragment>
-    );
+  const { classes } = props;
+  return (
+    <Fragment>
+      <Link to={props.to} onClick={props.to === window.location.pathname ? () => window.location.reload() : null}>
+        <ListItem className={classNames(classes.item, props.className)} button color="inherit">
+          <Grid container direction='column' wrap='nowrap' alignItems='center' justify='space-between'>
+            <Typography variant='h5' align='center' color='inherit'>{props.label}</Typography>
+          </Grid>
+        </ListItem>
+      </Link>
+      <Divider className={classes.divider} />
+    </Fragment>
+  );
 });
 
 ActionLink.propTypes = {
-    to: PropTypes.string.isRequired,
+  to: PropTypes.string.isRequired,
 };
 
 const SidebarContent = (props) => {
-    const { classes } = props;
+  const { classes } = props;
 
-    return (
-        <Fragment>
-            <div className={classes.root}>
-                <ActionLink to={URLS.about} label='Om TIHLDE' />
-                <ActionLink to={URLS.newStudent} label='Ny student' />
-                <ActionLink to={URLS.events} label='Arrangementer' />
-                <ActionLink to={URLS.jobposts} label='Karriere' />
-                <ActionLink to={URLS.company} label='For Bedrifter' />
-                {AuthService.isAuthenticated() ?
-                    <ActionLink to={URLS.profile} label='Min side' />
-                    :
+  return (
+    <Fragment>
+      <div className={classes.root}>
+        <ActionLink to={URLS.about} label='Om TIHLDE' />
+        <ActionLink to={URLS.newStudent} label='Ny student' />
+        <ActionLink to={URLS.events} label='Arrangementer' />
+        <ActionLink to={URLS.jobposts} label='Karriere' />
+        <ActionLink to={URLS.company} label='For Bedrifter' />
+        {AuthService.isAuthenticated() ?
+                    <ActionLink to={URLS.profile} label='Min side' /> :
                     <ActionLink to={URLS.login} label='Logg inn' />
-                }
-            </div>
-        </Fragment>
-    );
+        }
+      </div>
+    </Fragment>
+  );
 };
 
 SidebarContent.propTypes = {
-    classes: PropTypes.object,
+  classes: PropTypes.object,
 };
 
 export default withStyles(styles)(SidebarContent);

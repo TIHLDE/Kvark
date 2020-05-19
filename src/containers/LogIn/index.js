@@ -31,8 +31,8 @@ const styles = {
         width: '100%',
     },
     top: {
-        height: 160,
-        backgroundImage: 'linear-gradient(90deg, #FF8235, #30E8BF)',
+        height: 220,
+        backgroundImage: 'radial-gradient(circle at bottom, #C6426E, #642B73)',
     },
     main: {
         maxWidth: 1000,
@@ -124,7 +124,7 @@ class LogIn extends Component {
     render() {
         const {classes} = this.props;
         return (
-            <Navigation footer>
+            <Navigation footer fancyNavbar>
                 <div className={classes.root}>
                     <div className={classes.top}>
                 

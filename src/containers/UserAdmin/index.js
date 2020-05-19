@@ -21,8 +21,8 @@ import Members from './tabs/Members';
 
 const styles = {
     top: {
-        height: 160,
-        backgroundImage: 'linear-gradient(90deg, #3F5EFB, #FC466B)',
+        height: 220,
+        backgroundImage: 'radial-gradient(circle at bottom, #3F5EFB, #FC466B)',
     },
     root: {
         minHeight: '100vh',
@@ -86,7 +86,7 @@ class UserAdmin extends Component {
     render() {
         const {classes} = this.props;
         return (
-            <Navigation footer whitesmoke>
+            <Navigation footer whitesmoke fancyNavbar>
                 <div className={classes.top}></div>
                 <div className={classes.content}>
                     <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>

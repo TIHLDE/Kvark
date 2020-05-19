@@ -39,7 +39,7 @@ const styles = {
         width: '100%',
     },
     top: {
-        height: 160,
+        height: 220,
         backgroundImage: 'linear-gradient(90deg, #f80759, #500e60)',
         transition: '2s',
     },
@@ -308,7 +308,7 @@ class EventRegistration extends Component {
         const {classes} = this.props;
 
         return (
-            <Navigation footer>
+            <Navigation footer fancyNavbar>
                 <div className={classes.root}>
                     <div className={classes.top}></div>
                     <div className={classes.main}>

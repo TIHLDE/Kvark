@@ -21,8 +21,8 @@ const styles = (theme) => ({
         width: '100%',
     },
     top: {
-        height: '200px',
-        backgroundImage: 'linear-gradient(90deg, #F0C27B, #4B1248)',
+        height: 260,
+        backgroundImage: 'radial-gradient(circle at bottom, #F0C27B, #4B1248)',
     },
     main: {
         maxWidth: 1000,
@@ -67,7 +67,7 @@ class Profile extends Component{
     render(){
         const { classes } = this.props;
         return(
-            <Navigation footer isLoading={this.state.isLoading}>
+            <Navigation footer isLoading={this.state.isLoading} fancyNavbar>
                 <div className={classes.root}>
                     <div className={classes.top}>
                     

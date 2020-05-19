@@ -3,16 +3,16 @@
 
 * {
     padding: 0;
-    /* --tihlde-blaa: #1D448C; */
-    --tihlde-blaa: #ef2b2d;
+    --tihlde-blaa: #1D448C;
     --gray: #F8F8FA;
     --tihlde-white: #Fefefe;
     --notification-blue: #E4E9F2;
+    --gradient-top: #16356e;
+    --gradient-bottom: #814a93;
 }
 body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
-
 }
 /* use only em for font sizes */
 
@@ -154,11 +154,9 @@ p > code {
     right: 0;
     width: 100%;
     overflow: hidden;
-    min-height: 450px;
+    min-height: 500px;
     top: 0;
-    /* background-image: linear-gradient(to top, #814a93 20%, #16356e 80%); */
-    background-image: linear-gradient(to top, #0d2c6c 20%, #ef2b2d 100%);
-
+    background-image: linear-gradient(20deg, var(--gradient-bottom) 20%, var(--gradient-top) 80%);
 }
 .bgTop {
     z-index: 15;
