@@ -16,6 +16,7 @@
     "qrcode.react": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.3.3",
+
     "react-ga": "^2.7.0",
     "react-image-lightbox": "^5.0.0",
     "react-markdown": "^4.0.3",
@@ -38,8 +39,8 @@
   "devDependencies": {
     "@babel/compat-data": "^7.9.0",
     "@babel/helper-call-delegate": "^7.8.7",
-    "@babel/plugin-proposal-numeric-separator": "^7.8.3",
-    "@babel/preset-env": "^7.9.6",
+    "@babel/plugin-proposal-numeric-separator": "^7.8.3",\
+    "@babel/preset-env": "^7.9.6",\
     "@fortawesome/fontawesome-free": "^5.13.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-react": "^7.19.0"

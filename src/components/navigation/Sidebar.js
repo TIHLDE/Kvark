@@ -61,7 +61,7 @@ ActionLink.propTypes = {
 
 const SidebarContent = (props) => {
   const { classes } = props;
-
+  
   return (
     <Fragment>
       <div className={classes.root}>
