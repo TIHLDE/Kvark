@@ -291,6 +291,15 @@ class Navigation extends Component {
       this.setState({scrollLength: position});
     }
 
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
+    }
+
+    handleScroll = () => {
+        const position = window.pageYOffset;
+        this.setState({scrollLength: position});
+    }
+
     configureWarningMessage = () => {
       if (this.props.snackHasDisplayed) {
         return;
