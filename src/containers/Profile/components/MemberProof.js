@@ -26,7 +26,7 @@ const style = {
     backgroundColor: '#fff',
     outline: 'none',
     '@media only screen and (max-width: 400px)': {
-        width: '100%',
+      width: '100%',
     },
   },
   content: {
@@ -43,7 +43,7 @@ const style = {
 };
 
 const MemberProof = (props) => {
-  const { classes, userId } = props;
+  const {classes, userId} = props;
 
   return (
     <Modal

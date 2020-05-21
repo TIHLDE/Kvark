@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 // Services
 import AuthService from '../../api/services/AuthService';
@@ -175,7 +175,7 @@ class NewLanding extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const {classes} = this.props;
     return (
       <Navigation footer whitesmoke fancyNavbar>
         <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
@@ -223,7 +223,7 @@ class NewLanding extends Component {
     );
   }
 
-};
+}
 
 NewLanding.propTypes = {
   classes: PropTypes.object,

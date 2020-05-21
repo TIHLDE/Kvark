@@ -19,7 +19,7 @@ const style = (theme) => ({
     padding: 20,
     display: 'flex',
     '@media only screen and (max-width: 600px)': {
-        flexDirection: 'column',
+      flexDirection: 'column',
     },
     boxShadow: '0px 2px 4px #ddd',
     borderRadius: 5,
@@ -66,8 +66,7 @@ const EventParticipant = (props) => {
   const [checkedState, setCheckedState] = useState(attended);
   useEffect(() => {
     setCheckedState(props.attended);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [props.attended]);
 
   const userInfo = props.user.user_info;
 
@@ -91,25 +90,28 @@ const EventParticipant = (props) => {
       </div>
       <div className={classes.actionArea}>
         <div className={classes.buttonContainer}>
-            <FormControlLabel
-              label="Ankommet"
-              control={
-                <Checkbox
-                  onChange={
-                    handleCheck
-                  }
-                  checked={checkedState} />}
-              />
+          <FormControlLabel
+            label="Ankommet"
+            control={
+              <Checkbox
+                onChange={
+                  handleCheck
+                }
+                checked={checkedState} />}
+          />
         </div>
         <div className={classes.buttonContainer}>
           {!waitList ?
             <ArrowDownwardIcon
               className={classes.arrowButton}
-              onClick={() => {toggleUserEvent(props.user.user_info.user_id, event, {is_on_wait: true});}} />
-            :
+              onClick={() => {
+                toggleUserEvent(props.user.user_info.user_id, event, {is_on_wait: true});
+              }} /> :
             <ArrowUpwardIcon
-            className={classes.arrowButton}
-            onClick={() => {toggleUserEvent(props.user.user_info.user_id, event, {is_on_wait: false});}}/>
+              className={classes.arrowButton}
+              onClick={() => {
+                toggleUserEvent(props.user.user_info.user_id, event, {is_on_wait: false});
+              }}/>
           }
           <Delete className={classes.deleteButton} onClick={deleteHandler} />
         </div>

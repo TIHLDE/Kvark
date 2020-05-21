@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Material-UI
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 
@@ -50,24 +50,23 @@ class Calender extends React.Component {
 
   componentDidMount() {
     EventService.getEvents().then((eventObject) => {
-
       // This lines ensures backward compabillity with the old api.
       const events = eventObject.results === undefined ? eventObject : eventObject.results;
 
-      this.setState({ events: events });
+      this.setState({events: events});
     }).catch(() => {
 
     }).then(() => {
-      this.setState({ isLoading: false });
+      this.setState({isLoading: false});
     });
   }
 
   handleChange(event, newValue) {
-    this.setState({ calendarViewMode: newValue });
+    this.setState({calendarViewMode: newValue});
   }
 
   render() {
-    const { classes } = this.props;
+    const {classes} = this.props;
 
     return (
       <div className={classes.root}>
@@ -77,8 +76,7 @@ class Calender extends React.Component {
             <Tab icon={<DateRange />} label='Kalendervisning' />
           </Tabs>
           {this.state.calendarViewMode === 0 ?
-            <CalendarListView events={this.state.events} isLoading={this.state.isLoading} />
-            :
+            <CalendarListView events={this.state.events} isLoading={this.state.isLoading} /> :
             <CalendarGridView events={this.state.events} />
           }
         </div>

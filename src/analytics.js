@@ -1,64 +1,64 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
-import { Route } from 'react-router-dom';
+import {Route} from 'react-router-dom';
 
 class GoogleAnalytics extends Component {
-    componentDidMount () {
-        this.logPageChange(
-            this.props.location.pathname
-        );
-    }
+  componentDidMount() {
+    this.logPageChange(
+        this.props.location.pathname,
+    );
+  }
 
-    componentDidUpdate ({ location: prevLocation }) {
-        const { location: { pathname } } = this.props;
-        const isDifferentPathname = pathname !== prevLocation.pathname;
+  componentDidUpdate({location: prevLocation}) {
+    const {location: {pathname}} = this.props;
+    const isDifferentPathname = pathname !== prevLocation.pathname;
 
-        if (isDifferentPathname) {
-            this.logPageChange(pathname);
-        }
+    if (isDifferentPathname) {
+      this.logPageChange(pathname);
     }
+  }
 
-    logPageChange (pathname) {
-        const page = pathname;
-        const { location } = window;
-        ReactGA.set({
-            page,
-            location: `${location.origin}${page}`,
-            ...this.props.options
-        });
-        ReactGA.pageview(page);
-    }
+  logPageChange(pathname) {
+    const page = pathname;
+    const {location} = window;
+    ReactGA.set({
+      page,
+      location: `${location.origin}${page}`,
+      ...this.props.options,
+    });
+    ReactGA.pageview(page);
+  }
 
-    render () {
-        return null;
-    }
+  render() {
+    return null;
+  }
 }
 
 GoogleAnalytics.propTypes = {
-    location: PropTypes.shape({
-        pathname: PropTypes.string
-    }).isRequired,
-    options: PropTypes.object
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }).isRequired,
+  options: PropTypes.object,
 };
 
 const RouteTracker = () => <Route component={GoogleAnalytics} />;
 
 const init = (options = {}) => {
-    // Forskjellig analytics i prod og dev
-    const isInProduction = process.env.NODE_ENV === 'production';
+  // Different analytics id in prod and dev
+  const isInProduction = process.env.NODE_ENV === 'production';
 
-    if (isInProduction) {
-        ReactGA.initialize("UA-151173158-2");
-    } else {
-        ReactGA.initialize("UA-151173158-1");
-    }
+  if (isInProduction) {
+    ReactGA.initialize('UA-151173158-2');
+  } else {
+    ReactGA.initialize('UA-151173158-1');
+  }
 
-    return true;
+  return true;
 };
 
 export default {
-    GoogleAnalytics,
-    RouteTracker,
-    init
+  GoogleAnalytics,
+  RouteTracker,
+  init,
 };

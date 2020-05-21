@@ -1,10 +1,11 @@
 // React
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import UserService from '../../../api/services/UserService';
 
 // Material-UI
-import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import {withStyles} from '@material-ui/core/styles';
+import {Typography} from '@material-ui/core';
 
 // Project componets
 import EventListItem from '../../Events/components/EventListItem';
@@ -26,25 +27,25 @@ class ProfileEvents extends Component {
 
   loadUserData = () => {
     UserService.getUserData().then((user) => {
-        if (user) {
-            this.setState({events: user.events});
-        }
+      if (user) {
+        this.setState({events: user.events});
+      }
     });
   }
 
   componentDidMount() {
-      this.loadUserData();
+    this.loadUserData();
   }
 
   render() {
-    const { classes } = this.props;
+    const {classes} = this.props;
     return (
       <div className={classes.wrapper}>
         {this.state.events && this.state.events.map((eventData, key) => {
           if (eventData.closed === false && eventData.expired === false) {
             return <EventListItem key={key} data={eventData} />;
           }
-          return ('')
+          return ('');
         })
         }
         {(!this.state.events || this.state.events.length < 1) && <Typography align='center' variant='subtitle1'>Du er ikke påmeldt noen kommende arrangementer</Typography>}
@@ -52,5 +53,9 @@ class ProfileEvents extends Component {
     );
   }
 }
+
+ProfileEvents.propTypes = {
+  classes: PropTypes.object,
+};
 
 export default withStyles(styles)(ProfileEvents);

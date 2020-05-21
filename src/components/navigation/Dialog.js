@@ -23,7 +23,7 @@ const style = {
     border: '1px solid #fff',
     borderRadius: 5,
     '@media only screen and (max-width: 400px)': {
-        width: '100%',
+      width: '100%',
     },
   },
   heading: {
@@ -80,7 +80,7 @@ const DangerButton = withStyles((theme) => (
     root: {
       color: theme.palette.error.main,
     },
-  })
+  }),
 )(Button);
 
 const Dialog = (props) => {
@@ -90,30 +90,30 @@ const Dialog = (props) => {
       open={status}
       onClose={onClose}>
       <div className={classes.paper}>
-          <div className={classes.heading}>
-            <Typography className={classes.title} align='center' variant='h5'>
-              {title}
-            </Typography>
-          </div>
-          <Divider />
-          <div className={classes.content}>
-            <Typography>{message}</Typography>
-          </div>
-          <Divider />
-          <div className={classes.footer}>
-              <DangerButton
-                className={classes.button}
-                onClick={onSubmit}
-                align='center'
-                variant='outlined'
-                color='secondary'>{submitText}</DangerButton>
-              <Button
-                className={classes.button}
-                onClick={onClose}
-                align='center'
-                variant='outlined'
-                color='primary'>Avbryt</Button>
-          </div>
+        <div className={classes.heading}>
+          <Typography className={classes.title} align='center' variant='h5'>
+            {title}
+          </Typography>
+        </div>
+        <Divider />
+        <div className={classes.content}>
+          <Typography>{message}</Typography>
+        </div>
+        <Divider />
+        <div className={classes.footer}>
+          <DangerButton
+            className={classes.button}
+            onClick={onSubmit}
+            align='center'
+            variant='outlined'
+            color='secondary'>{submitText}</DangerButton>
+          <Button
+            className={classes.button}
+            onClick={onClose}
+            align='center'
+            variant='outlined'
+            color='primary'>Avbryt</Button>
+        </div>
       </div>
     </Modal>
   );

@@ -12,48 +12,49 @@ import Navigation from '../../components/navigation/Navigation';
 import JobPostRenderer from './components/JobPostRenderer';
 
 const styles = {
-    root: {
-        maxWidth: 1200,
-        margin: 'auto',
-        padding: 12,
-        paddingTop: 20,
-    }
+  root: {
+    maxWidth: 1200,
+    margin: 'auto',
+    padding: 12,
+    paddingTop: 20,
+  },
 };
 
 class JobPostDetails extends Component {
-    
+
     state = {
-        isLoading: true,
-        post: {},
+      isLoading: true,
+      post: {},
     }
 
     // Gets the event
     componentDidMount() {
-        window.scrollTo(0,0);
-        // Get eventItem id
-        const id = this.props.match.params.id;
-        JobPostService.getPostById(id)
-        .then((post) => {
+      window.scrollTo(0, 0);
+      // Get eventItem id
+      const id = this.props.match.params.id;
+      JobPostService.getPostById(id)
+          .then((post) => {
             this.setState({isLoading: false, post: post});
-        })
-    };
+          });
+    }
 
     render() {
-        const {classes} = this.props;
-        return (
-            <Navigation isLoading={this.state.isLoading} whitesmoke>
-                {!this.state.isLoading &&
+      const {classes} = this.props;
+      return (
+        <Navigation isLoading={this.state.isLoading} whitesmoke>
+          {!this.state.isLoading &&
                     <div className={classes.root}>
-                        <JobPostRenderer data={this.state.post}/>
+                      <JobPostRenderer data={this.state.post}/>
                     </div>
-                }
-            </Navigation>
-        );
+          }
+        </Navigation>
+      );
     }
 }
 
 JobPostDetails.propTypes = {
-    classes: PropTypes.object,
+  classes: PropTypes.object,
+  match: PropTypes.object,
 };
 
 export default withStyles(styles)(JobPostDetails);

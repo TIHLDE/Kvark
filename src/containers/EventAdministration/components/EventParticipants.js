@@ -18,7 +18,7 @@ const styles = {
     display: 'flex',
     padding: 2,
     '@media only screen and (max-width: 800px)': {
-        flexDirection: 'column',
+      flexDirection: 'column',
     },
   },
   heading: {
@@ -31,7 +31,7 @@ const styles = {
     justifyContent: 'end',
     flexDirection: 'column',
     '@media only screen and (max-width: 800px)': {
-        textAlign: 'start',
+      textAlign: 'start',
     },
   },
   content: {
@@ -57,17 +57,17 @@ const styles = {
 const EventParticipants = (props) => {
   const {classes, event, closeParticipants, participants, removeUserFromEvent, toggleUserEvent} = props;
 
-  let [showOnlyNotAttended, setCheckedState] = useState(false);
+  const [showOnlyNotAttended, setCheckedState] = useState(false);
 
   const sortParticipants = (waitList) => {
     return participants.filter((user) => {
-        let include = false;
-        if (waitList && user.is_on_wait) {
-          include = true;
-        } else if (!waitList && !user.is_on_wait) {
-          include = true;
-        }
-        return include;
+      let include = false;
+      if (waitList && user.is_on_wait) {
+        include = true;
+      } else if (!waitList && !user.is_on_wait) {
+        include = true;
+      }
+      return include;
     });
   };
 
@@ -86,26 +86,26 @@ const EventParticipants = (props) => {
     let elements = <Typography>Ingen påmeldte.</Typography>;
     let participantsToPrint;
 
-      participantsToPrint = waitList ? participantsOnWait : participantsIn;
+    participantsToPrint = waitList ? participantsOnWait : participantsIn;
 
-      if (notAttended) {
-        participantsToPrint = participantsToPrint.filter((u) => {
-          return !u.has_attended;
-        });
-      }
+    if (notAttended) {
+      participantsToPrint = participantsToPrint.filter((u) => {
+        return !u.has_attended;
+      });
+    }
 
-      if (participantsToPrint.length > 0) {
-        elements = participantsToPrint.map((user, key) => {
-          return <EventParticipant
-                    key={key}
-                    waitList={waitList}
-                    attended={user.has_attended}
-                    event={event}
-                    removeUserFromEvent={removeUserFromEvent}
-                    toggleUserEvent={toggleUserEvent}
-                    user={user} />;
-        });
-      }
+    if (participantsToPrint.length > 0) {
+      elements = participantsToPrint.map((user, key) => {
+        return <EventParticipant
+          key={key}
+          waitList={waitList}
+          attended={user.has_attended}
+          event={event}
+          removeUserFromEvent={removeUserFromEvent}
+          toggleUserEvent={toggleUserEvent}
+          user={user} />;
+      });
+    }
 
     return elements;
   };
@@ -143,7 +143,7 @@ const EventParticipants = (props) => {
                   handleCheck
                 }
                 checked={showOnlyNotAttended} />}
-            />
+          />
         </div>
 
         <div className={classes.listView}>
@@ -163,12 +163,12 @@ const EventParticipants = (props) => {
 };
 
 EventParticipants.propTypes = {
-    classes: PropTypes.object,
-    event: PropTypes.object,
-    closeParticipants: PropTypes.func,
-    toggleUserEvent: PropTypes.func,
-    participants: PropTypes.array,
-    removeUserFromEvent: PropTypes.func,
+  classes: PropTypes.object,
+  event: PropTypes.object,
+  closeParticipants: PropTypes.func,
+  toggleUserEvent: PropTypes.func,
+  participants: PropTypes.array,
+  removeUserFromEvent: PropTypes.func,
 };
 
 export default withStyles(styles)(EventParticipants);

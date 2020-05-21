@@ -1,4 +1,4 @@
 export default {
-    wrongCred: 'Ugyldig brukernavn.',
-    header: 'Arrangementsnavn'
-}
+  wrongCred: 'Ugyldig brukernavn.',
+  header: 'Arrangementsnavn',
+};

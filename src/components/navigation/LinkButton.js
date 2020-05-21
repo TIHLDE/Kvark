@@ -74,10 +74,10 @@ const LinkButton = (props) => {
           to={props.to}
           target={target}
           href={props.to}>
-            {props.icon && <div className={classes.iconContainer}>
-              <IconComponent className={classes.icon} />
-            </div>}
-            {buttonContent}
+          {props.icon && <div className={classes.iconContainer}>
+            <IconComponent className={classes.icon} />
+          </div>}
+          {buttonContent}
         </ButtonBase>
       </div>
     </div>

@@ -20,332 +20,330 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import MessageIndicator from '../../../components/layout/MessageIndicator';
 
 const styles = {
-    root: {
-        width: '100%',
-        height: 'auto',
-        margin: 0,
-    },
-    wrapper :{
-        padding:'30px 30px 30px 30px',
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    grid: {
-        padding: '30px 0px',
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap'
-    },
-    item: {
-        flexGrow: 1,
-        margin: '8px 8px',
-    },
-    progress: {
-        minHeight: 300,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 28,
-        flexDirection: 'column',
-        flexWrap: 'nowrap',
-    },
-    checkBox: {
-        padding: 4,
-    }
+  root: {
+    width: '100%',
+    height: 'auto',
+    margin: 0,
+  },
+  wrapper: {
+    padding: '30px 30px 30px 30px',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  grid: {
+    padding: '30px 0px',
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  item: {
+    flexGrow: 1,
+    margin: '8px 8px',
+  },
+  progress: {
+    minHeight: 300,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 28,
+    flexDirection: 'column',
+    flexWrap: 'nowrap',
+  },
+  checkBox: {
+    padding: 4,
+  },
 };
 
 function sDate(semester) {
-    var d = new Date();
-    var dateMonth = d.getMonth() + (semester * 6);
-    var dateYear = d.getFullYear();
-    while (dateMonth > 11) {
-        dateMonth -= 12;
-        dateYear++;
-    }
-    var returnMonth = "Vår";
-    if (dateMonth > 5) {
-        returnMonth = "Høst";
-    }
-    return (returnMonth + " " + dateYear);
+  const d = new Date();
+  let dateMonth = d.getMonth() + (semester * 6);
+  let dateYear = d.getFullYear();
+  while (dateMonth > 11) {
+    dateMonth -= 12;
+    dateYear++;
+  }
+  let returnMonth = 'Vår';
+  if (dateMonth > 5) {
+    returnMonth = 'Høst';
+  }
+  return (returnMonth + ' ' + dateYear);
 }
 const semester = [
-    {name: sDate(0)},
-    {name: sDate(1)},
-    {name: sDate(2)},
-    {name: sDate(3)}
+  {name: sDate(0)},
+  {name: sDate(1)},
+  {name: sDate(2)},
+  {name: sDate(3)},
 ];
 
 const arrangementer =[
-    {name: 'Faglig Arrangement'},
-    {name: 'Bedriftsekskursjon'},
-    {name: 'Bedriftspresentasjon'},
-    {name: 'Annet'},
+  {name: 'Faglig Arrangement'},
+  {name: 'Bedriftsekskursjon'},
+  {name: 'Bedriftspresentasjon'},
+  {name: 'Annet'},
 ];
 
-
 const Inputter = withStyles(styles)((props) => {
-    const {data, firstTextFieldRef, handleChange} = props;
-    return (
-        <div >
-            <TextField
-                inputRef={firstTextFieldRef}
-                id={data.id}
-                name={data.id}
-                label={data.header}
-                placeholder={data.placeholder}
-                type={data.type || 'text'}
-                fullWidth
-                margin="normal"
-                variant="outlined"
-                onChange={handleChange}
-                required={props.required}
-                InputLabelProps={{
-                    shrink: true,
-                }}
-            />
-        </div>
-    );
+  const {data, firstTextFieldRef, handleChange} = props;
+  return (
+    <div >
+      <TextField
+        inputRef={firstTextFieldRef}
+        id={data.id}
+        name={data.id}
+        label={data.header}
+        placeholder={data.placeholder}
+        type={data.type || 'text'}
+        fullWidth
+        margin="normal"
+        variant="outlined"
+        onChange={handleChange}
+        required={props.required}
+        InputLabelProps={{
+          shrink: true,
+        }}
+      />
+    </div>
+  );
 });
 
 class CustomListItem extends Component {
     state = {
-        checked: false
+      checked: false,
     };
 
     handleClick = async (event) => {
-        await this.setState({
-            checked: !this.state.checked
-        });
+      await this.setState({
+        checked: !this.state.checked,
+      });
 
-        // Sends fake event back, because this method was originally connect to
-        // The Checkbox component, which actually returned a correct event,
-        // but was for some reason moved to ListItem.
-        const fakeEvent = {target: {checked: this.state.checked, name: this.props.value.name}}
+      // Sends fake event back, because this method was originally connect to
+      // The Checkbox component, which actually returned a correct event,
+      // but was for some reason moved to ListItem.
+      const fakeEvent = {target: {checked: this.state.checked, name: this.props.value.name}};
 
-        this.props.handleChange(fakeEvent);
+      this.props.handleChange(fakeEvent);
     };
 
-    render(){
-        const {classes} = this.props;
-        return(
-            <ListItem dense button onClick={this.handleClick} disableGutters>
-                    <Checkbox
-                        className={classes.checkBox}
-                        name={this.props.value.name}
-                        checked={this.state.checked}
-                    />
-                <ListItemText primary={this.props.value.name}/>
-            </ListItem>
-        )
+    render() {
+      const {classes} = this.props;
+      return (
+        <ListItem dense button onClick={this.handleClick} disableGutters>
+          <Checkbox
+            className={classes.checkBox}
+            name={this.props.value.name}
+            checked={this.state.checked}
+          />
+          <ListItemText primary={this.props.value.name}/>
+        </ListItem>
+      );
     }
 }
+CustomListItem.propTypes = {
+  classes: PropTypes.object,
+  value: PropTypes.object,
+  handleChange: PropTypes.func,
+};
 
 const CustomItem = withStyles(styles)(CustomListItem);
 
 const Listing = withStyles(styles)((props) => {
-    const {list, header, classes} = props;
-    return (
-        <div className={classes.item}>
-            <Typography variant='subtitle1' >{header}</Typography>
-            <Divider/>
-            <List>
-                {list.map((value) => {
-
-                    return <CustomItem key={value.name} handleChange={props.handleChange} value={value}/>
-                })}
-            </List>
-        </div>
-    );
+  const {list, header, classes} = props;
+  return (
+    <div className={classes.item}>
+      <Typography variant='subtitle1' >{header}</Typography>
+      <Divider/>
+      <List>
+        {list.map((value) => {
+          return <CustomItem key={value.name} handleChange={props.handleChange} value={value}/>;
+        })}
+      </List>
+    </div>
+  );
 });
 
 class Forum extends Component {
     state = {
-        isLoading: false,
-        isFormSent: false,
-        data: {
-            info: {},
-            time: [],
-            type: [],
-            comment: ""
-        },
+      isLoading: false,
+      isFormSent: false,
+      data: {
+        info: {},
+        time: [],
+        type: [],
+        comment: '',
+      },
     };
 
     handleChange = (part) => (event) => {
-
-
-        if (part === 'info') {
-            this.setState({
-                data: {
-                    ...this.state.data,
-                    'info': {
-                        ...this.state.data["info"],
-                        [event.target.name]: event.target.value
-                    }
-                }
-            })
+      if (part === 'info') {
+        this.setState({
+          data: {
+            ...this.state.data,
+            'info': {
+              ...this.state.data['info'],
+              [event.target.name]: event.target.value,
+            },
+          },
+        });
+      } else if (part === 'comment') {
+        this.setState({
+          data: {
+            ...this.state.data,
+            'comment': event.target.value,
+          },
+        });
+      } else if (part === 'type') {
+        if (event.target.checked) {
+          this.setState({
+            data: {
+              ...this.state.data,
+              'type': [...this.state.data['type'], event.target.name],
+            },
+          });
+        } else {
+          this.setState({
+            data: {
+              ...this.state.data,
+              'type': this.state.data['type'].filter((it) => it !== event.target.name),
+            },
+          });
         }
-        else if (part === 'comment') {
-            this.setState({
-                data: {
-                    ...this.state.data,
-                    'comment': event.target.value
-                }
-            })
+      } else if (part === 'time') {
+        if (event.target.checked) {
+          this.setState({
+            data: {
+              ...this.state.data,
+              'time': [...this.state.data['time'], event.target.name],
+            },
+          });
+        } else {
+          this.setState({
+            data: {
+              ...this.state.data,
+              'time': this.state.data['time'].filter((it) => it !== event.target.name),
+            },
+          });
         }
-        else if (part === 'type') {
-            if (event.target.checked) {
-                this.setState({
-                    data: {
-                        ...this.state.data,
-                        'type': [...this.state.data["type"], event.target.name]
-                    }
-                })
-            } else {
-                this.setState({
-                    data: {
-                        ...this.state.data,
-                        'type': this.state.data["type"].filter(it => it !== event.target.name)
-                    }
-                })
-            }
-        }
-        else if (part === "time") {
-            if (event.target.checked) {
-                this.setState({
-                    data: {
-                        ...this.state.data,
-                        'time': [...this.state.data["time"], event.target.name]
-                    }
-                })
-            } else {
-                this.setState({
-                    data: {
-                        ...this.state.data,
-                        'time': this.state.data["time"].filter(it => it !== event.target.name)
-                    }
-                })
-            }
-        }
+      }
     };
 
     handleToggleChange = (name) => () => {
-        this.setState({[name]: !this.state[name]});
+      this.setState({[name]: !this.state[name]});
     };
 
-    setMessage = message => {
-        this.setState({
-            message: message
-        })
+    setMessage = (message) => {
+      this.setState({
+        message: message,
+      });
     };
 
     handleSubmitted = (name) => () => {
-        this.setState({
-            [name]: !this.state[name],
-            data: {
-                info: {},
-                time: [],
-                type: [],
-                comment: ""
-            }
-        });
+      this.setState({
+        [name]: !this.state[name],
+        data: {
+          info: {},
+          time: [],
+          type: [],
+          comment: '',
+        },
+      });
     };
 
     arrayToList = (array) => {
-        let list = "";
-        array.forEach(element => {
-            list += "- " + element + "%0D%0A";
-        });
-        return list;
+      let list = '';
+      array.forEach((element) => {
+        list += '- ' + element + '%0D%0A';
+      });
+      return list;
     }
 
     handleSubmit = (event) => {
-        event.preventDefault();
+      event.preventDefault();
 
-        if(this.props.scrollToForm) {
-            this.props.scrollToForm();
-        }
-        const subject = this.state.data.info.bedrift + " er interessert";
-        const body = "Bedrift: " +  this.state.data.info.bedrift + "%0D%0A%0D%0A" +
-            "Kontaktperson:%0D%0A" + 
-            "Navn: " + this.state.data.info.kontaktperson + "%0D%0A" +
-            "Epost: " + this.state.data.info.epost + "%0D%0A%0D%0A" +
-            "Valgt semester:%0D%0A" +
-            this.arrayToList(this.state.data.time) + "%0D%0A" +
-            "Valg arrangement:%0D%0A" +
-            this.arrayToList(this.state.data.type) + "%0D%0A" +
-            "Kommentar:%0D%0A" +
+      if (this.props.scrollToForm) {
+        this.props.scrollToForm();
+      }
+      const subject = this.state.data.info.bedrift + ' er interessert';
+      const body = 'Bedrift: ' + this.state.data.info.bedrift + '%0D%0A%0D%0A' +
+            'Kontaktperson:%0D%0A' +
+            'Navn: ' + this.state.data.info.kontaktperson + '%0D%0A' +
+            'Epost: ' + this.state.data.info.epost + '%0D%0A%0D%0A' +
+            'Valgt semester:%0D%0A' +
+            this.arrayToList(this.state.data.time) + '%0D%0A' +
+            'Valg arrangement:%0D%0A' +
+            this.arrayToList(this.state.data.type) + '%0D%0A' +
+            'Kommentar:%0D%0A' +
             this.state.data.comment;
-        window.location.href = "mailto:orakel@tihlde.org?subject=" + subject + "&body=" + body;
-        this.setState({isFormSent: true});
-        this.setMessage("Takk for interessen!");
+      window.location.href = 'mailto:orakel@tihlde.org?subject=' + subject + '&body=' + body;
+      this.setState({isFormSent: true});
+      this.setMessage('Takk for interessen!');
 
-        // this.setState({isLoading: true});
+      // this.setState({isLoading: true});
 
-        // MiscService.postEmail(this.state.data, (isError, data) => {
-        //     if (isError === false && data) {
-        //         this.setMessage("Sendt! Takk for interessen.");
-        //     } else {
-        //         this.setMessage("Noe gikk galt, prøv senere.")
-        //     }
-        //     this.setState({isLoading: false, isFormSent: true});
-        // });
+      // MiscService.postEmail(this.state.data, (isError, data) => {
+      //     if (isError === false && data) {
+      //         this.setMessage("Sendt! Takk for interessen.");
+      //     } else {
+      //         this.setMessage("Noe gikk galt, prøv senere.")
+      //     }
+      //     this.setState({isLoading: false, isFormSent: true});
+      // });
     };
 
     render() {
-        const {classes, firstTextFieldRef} = this.props;
-        // const {data} = this.props;
+      const {classes, firstTextFieldRef} = this.props;
+      // const {data} = this.props;
 
-        if(this.state.isLoading) {
-            return (
-                <div className={classes.progress}>
-                    <CircularProgress />
-                    <Typography variant='h6'>{'Laster...'}</Typography>
-                </div>
-            )
-        } else if(this.state.isFormSent) {
-            return (
-                <div className={classes.progress}>
-                    <MessageIndicator header={this.state.message} variant='h5'/>
-                    <Button variant='contained' onClick={this.handleSubmitted('isFormSent')} color='primary'>Mottatt</Button>
-                </div>
-            )
-        }
-
+      if (this.state.isLoading) {
         return (
-            <div className={classNames(classes.root,this.props.className)} >
-                <form className={classes.wrapper} onSubmit={this.handleSubmit}>
-                    <Typography variant='h5' gutterBottom>Meld interesse:</Typography>
-                    <Inputter required handleChange={this.handleChange("info")} data={{header: 'Bedrift: ', placeholder: 'Bedriftnavn', id: 'bedrift'}} firstTextFieldRef={firstTextFieldRef} />
-                    <Inputter required handleChange={this.handleChange("info")} data={{header: 'Kontaktperson: ', placeholder: 'Navn', id: 'kontaktperson'}} />
-                    <Inputter required handleChange={this.handleChange("info")} data={{header: 'Epost: ', placeholder: 'Skriv Epost her', id: 'epost', type: 'email'}} />
-                    <div className ={classes.grid}>
-                        <Listing handleChange={this.handleChange("time")} header="SEMESTER" list={semester}/>
-                        <Listing handleChange={this.handleChange("type")} header="ARRANGEMENTER" list={arrangementer}/>
-                    </div>
-                    <Divider/>
-                    <TextField
-                        onChange={this.handleChange("comment")}
-                        name="kommentar"
-                        label='Kommentar'
-                        id="multiline"
-                        multiline
-                        rows={3}
-                        rowsMax={6}
-                        margin="normal"
-                        variant="outlined"
-                    />
-                    <Button variant="contained" color="primary" type="submit" className={classes.item}>Send</Button>
-                </form>
-            </div>
+          <div className={classes.progress}>
+            <CircularProgress />
+            <Typography variant='h6'>{'Laster...'}</Typography>
+          </div>
         );
+      } else if (this.state.isFormSent) {
+        return (
+          <div className={classes.progress}>
+            <MessageIndicator header={this.state.message} variant='h5'/>
+            <Button variant='contained' onClick={this.handleSubmitted('isFormSent')} color='primary'>Mottatt</Button>
+          </div>
+        );
+      }
+
+      return (
+        <div className={classNames(classes.root)} >
+          <form className={classes.wrapper} onSubmit={this.handleSubmit}>
+            <Typography variant='h5' gutterBottom>Meld interesse:</Typography>
+            <Inputter required handleChange={this.handleChange('info')} data={{header: 'Bedrift: ', placeholder: 'Bedriftnavn', id: 'bedrift'}} firstTextFieldRef={firstTextFieldRef} />
+            <Inputter required handleChange={this.handleChange('info')} data={{header: 'Kontaktperson: ', placeholder: 'Navn', id: 'kontaktperson'}} />
+            <Inputter required handleChange={this.handleChange('info')} data={{header: 'Epost: ', placeholder: 'Skriv Epost her', id: 'epost', type: 'email'}} />
+            <div className ={classes.grid}>
+              <Listing handleChange={this.handleChange('time')} header="SEMESTER" list={semester}/>
+              <Listing handleChange={this.handleChange('type')} header="ARRANGEMENTER" list={arrangementer}/>
+            </div>
+            <Divider/>
+            <TextField
+              onChange={this.handleChange('comment')}
+              name="kommentar"
+              label='Kommentar'
+              id="multiline"
+              multiline
+              rows={3}
+              rowsMax={6}
+              margin="normal"
+              variant="outlined"
+            />
+            <Button variant="contained" color="primary" type="submit" className={classes.item}>Send</Button>
+          </form>
+        </div>
+      );
     }
 }
 
 Forum.propTypes = {
-    classes: PropTypes.object,
-    data: PropTypes.object,
-    firstTextFieldRef: PropTypes.object,
-    scrollToForm: PropTypes.func,
+  classes: PropTypes.object,
+  data: PropTypes.object,
+  firstTextFieldRef: PropTypes.object,
+  scrollToForm: PropTypes.func,
 };
 
 export default withStyles(styles)(Forum);

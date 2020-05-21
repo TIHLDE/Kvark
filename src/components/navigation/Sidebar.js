@@ -1,6 +1,6 @@
-import React, { Fragment } from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
 import URLS from '../../URLS';
 
@@ -40,7 +40,7 @@ const styles = (theme) => ({
 });
 
 const ActionLink = withStyles(styles)((props) => {
-  const { classes } = props;
+  const {classes} = props;
   return (
     <Fragment>
       <Link to={props.to} onClick={props.to === window.location.pathname ? () => window.location.reload() : null}>
@@ -60,8 +60,8 @@ ActionLink.propTypes = {
 };
 
 const SidebarContent = (props) => {
-  const { classes } = props;
-  
+  const {classes} = props;
+
   return (
     <Fragment>
       <div className={classes.root}>

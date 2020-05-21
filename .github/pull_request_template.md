@@ -2,7 +2,7 @@
 ## Description
 Link to Trello task: ...
 
-Comments/issues:
+Comments/issues/screenshots:
 
 
 ## Pull request checklist
@@ -13,8 +13,9 @@ Please check if your PR fulfills the following requirements:
 - [ ] Tests for the changes have been added (for bug fixes / features)
 - [ ] Docs have been reviewed and added / updated if needed (for bug fixes / features)
 
-- [ ] `yarn build` was run locally witout errors
+- [ ] `yarn build` was run locally without errors
 - [ ] `yarn test` has passed locally and any fixes were made for failures
+- [ ] `yarn format` was run locally and fixes were made for new errors
 
 
 ## Pull request type

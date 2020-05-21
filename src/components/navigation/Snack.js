@@ -13,67 +13,66 @@ import CloseIcon from '@material-ui/icons/Close';
 
 // Project Components
 
-
 const styles = {
-    root: {
-        width: 'auto',
-        minHeight: 40,
-        position: 'absolute',
-    },
-    flex: {
-        display: 'flex',
-        flexWrap: 'nowrap',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '0px 20px',
-    },
-    content: {
-        width: '100%',
-        height: '100%',
-    },
-    snackbar: {
-        top: 0,
-        left: '50%',
-        right: 'auto',
-        transform: 'translateX(-50%)',
-    }
+  root: {
+    width: 'auto',
+    minHeight: 40,
+    position: 'absolute',
+  },
+  flex: {
+    display: 'flex',
+    flexWrap: 'nowrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '0px 20px',
+  },
+  content: {
+    width: '100%',
+    height: '100%',
+  },
+  snackbar: {
+    top: 0,
+    left: '50%',
+    right: 'auto',
+    transform: 'translateX(-50%)',
+  },
 };
 
 class Snack extends Component {
-    render() {
-        const {classes} = this.props;
-        return (
-            <div className={classes.root}>
-                <Snackbar
-                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                    open={this.props.open}
-                    onClose={this.handleClose}
-                    className={classes.snackbar}
-                >
-                    <SnackbarContent
-                        className={this.props.className}
-                        message={
-                            <div className={classes.flex}>
-                                <div className='pulse'/>
-                                <Typography variant='subtitle1' color='inherit'>{this.props.message}</Typography>
-                                <IconButton color='inherit' onClick={this.props.onClose}><CloseIcon/></IconButton>
-                            </div>
-                        }
-                    />
-                </Snackbar>
-            </div>
-        );
-    }
+  render() {
+    const {classes} = this.props;
+    return (
+      <div className={classes.root}>
+        <Snackbar
+          anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+          open={this.props.open}
+          onClose={this.handleClose}
+          className={classes.snackbar}
+        >
+          <SnackbarContent
+            className={this.props.className}
+            message={
+              <div className={classes.flex}>
+                <div className='pulse'/>
+                <Typography variant='subtitle1' color='inherit'>{this.props.message}</Typography>
+                <IconButton color='inherit' onClick={this.props.onClose}><CloseIcon/></IconButton>
+              </div>
+            }
+          />
+        </Snackbar>
+      </div>
+    );
+  }
 }
 
 Snack.propTypes = {
-    classes: PropTypes.object,
-    data: PropTypes.object,
-    open: PropTypes.bool,
+  classes: PropTypes.object,
+  data: PropTypes.object,
+  open: PropTypes.bool,
 
-    className: PropTypes.string,
-    message: PropTypes.string,
-    onClose: PropTypes.func.isRequired,
+  className: PropTypes.string,
+  message: PropTypes.string,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(Snack);

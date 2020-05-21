@@ -4,7 +4,6 @@ import {shortDownString, getUserStudyLong} from '../../../utils';
 import URLS from '../../../URLS';
 import classNames from 'classnames';
 
-
 // Text
 import Text from '../../../text/EventText';
 
@@ -52,7 +51,7 @@ const style = {
     'overflow-y': 'auto',
     transform: 'translate(-50%,-50%)',
     '@media only screen and (max-width: 400px)': {
-        width: '100%',
+      width: '100%',
     },
     border: '1px solid #ddd',
     borderRadius: 5,
@@ -148,18 +147,18 @@ const DialogHeader = (props) => {
 const TextQuestion = (props) => {
   const {classes, optField, handleOptFieldInput, index} = props;
   const handleOptTextFieldChange = (e) => {
-    let updatedField = {...optField};
+    const updatedField = {...optField};
     updatedField.answer = e.target.value;
     handleOptFieldInput(index, updatedField);
   };
   return (
     <TextField className={classNames(classes.question, classes.textField)} label={optField.title} required={optField.required} color='primary' value={optField.answer} onChange={handleOptTextFieldChange} />
   );
-}
+};
 const RadioQuestion = (props) => {
   const {optField, handleOptFieldInput, index} = props;
   const handleOptRadioFieldChange = (e) => {
-    let updatedField = {...optField};
+    const updatedField = {...optField};
     updatedField.answer = e.target.value;
     handleOptFieldInput(index, updatedField);
   };
@@ -167,17 +166,17 @@ const RadioQuestion = (props) => {
     <FormControl component="fieldset" required={optField.required}>
       <FormLabel component="legend">{optField.title}</FormLabel>
       <RadioGroup aria-label={optField.title} name={optField.title} value={optField.answer} onChange={handleOptRadioFieldChange}>
-      {optField.options.map((option, id) => {
-        return (<FormControlLabel key={id} value={option.id} control={<Radio />} label={option.alternativ} />);
-      })}
+        {optField.options.map((option, id) => {
+          return (<FormControlLabel key={id} value={option.id} control={<Radio />} label={option.alternativ} />);
+        })}
       </RadioGroup>
     </FormControl>
   );
-}
+};
 const CheckQuestion = (props) => {
   const {optField, handleOptFieldInput, index} = props;
   const handleOptCheckFieldChange = (e) => {
-    let updatedField = {...optField};
+    const updatedField = {...optField};
     if (updatedField.answer.includes(e.target.name)) {
       updatedField.answer.splice(updatedField.answer.indexOf(e.target.name), 1);
     } else {
@@ -189,17 +188,17 @@ const CheckQuestion = (props) => {
     <FormControl component="fieldset" required={optField.required}>
       <FormLabel component="legend">{optField.title}</FormLabel>
       <FormGroup>
-      {optField.options.map((option, id) => {
-        return (<FormControlLabel
-          key={id}
-          control={<Checkbox checked={optField.answer.includes(option.id)} onChange={handleOptCheckFieldChange} name={option.id} />}
-          label={option.alternativ}
-        />);
-      })}
+        {optField.options.map((option, id) => {
+          return (<FormControlLabel
+            key={id}
+            control={<Checkbox checked={optField.answer.includes(option.id)} onChange={handleOptCheckFieldChange} name={option.id} />}
+            label={option.alternativ}
+          />);
+        })}
       </FormGroup>
     </FormControl>
   );
-}
+};
 
 const Questions = (props) => {
   const {classes, optionalFieldsAnswers, handleOptionalFieldInput} = props;
@@ -223,7 +222,7 @@ const Questions = (props) => {
       })}
     </div>
   );
-}
+};
 
 const EventDialog = (props) => {
   const {classes, userData, userEvent, isApplying, message, applySuccess, data} = props;
@@ -233,13 +232,13 @@ const EventDialog = (props) => {
   useEffect(() => {
     if (data.optionalFields) {
       for (let i = 0; i < data.optionalFields.length; i++) {
-        let optionalField = { ...data.optionalFields[i] };
+        const optionalField = {...data.optionalFields[i]};
         if (optionalField.option_type === 2) {
           optionalField.answer = [];
         } else {
-          optionalField.answer = "";
+          optionalField.answer = '';
         }
-        setOptionalFieldsAnswers(optionalFieldsAnswers => [ ...optionalFieldsAnswers, optionalField ]);
+        setOptionalFieldsAnswers((optionalFieldsAnswers) => [...optionalFieldsAnswers, optionalField]);
       }
     }
   }, [data]);
@@ -258,21 +257,20 @@ const EventDialog = (props) => {
 
   const questionsNotAnswered = (optFieldsAnswers) => {
     let isNotAnswered = false;
-    optFieldsAnswers.forEach(optField => {
+    optFieldsAnswers.forEach((optField) => {
       if (optField.required) {
         if (optField.option_type === 2) {
           if (!optField.answer || !optField.answer.length) isNotAnswered = true;
         } else {
-          if (optField.answer.trim() === "") isNotAnswered = true;
+          if (optField.answer.trim() === '') isNotAnswered = true;
         }
       }
     });
     return isNotAnswered;
-  }
+  };
 
   const allergy = userData.allergy ?
-    shortDownString(userData.allergy, 20)
-    :
+    shortDownString(userData.allergy, 20) :
     'Ingen';
   const userStudy = getUserStudyLong(userData.user_study);
   const userClass = userData.user_class + '. Klasse';
@@ -295,7 +293,7 @@ const EventDialog = (props) => {
       open={props.status}
       onClose={props.onClose}>
       <div className={classes.paper}>
-          {!isApplying && !userEvent && message === '' &&
+        {!isApplying && !userEvent && message === '' &&
           <React.Fragment>
             <DialogHeader classes={classes} heading={Text.signUp} />
             <div className={classes.content}>
@@ -333,8 +331,8 @@ const EventDialog = (props) => {
               </div>
             </div>
           </React.Fragment>
-          }
-          {!isApplying && userEvent && message === '' &&
+        }
+        {!isApplying && userEvent && message === '' &&
             <React.Fragment>
               <DialogHeader classes={classes} heading={Text.signOff} />
               <div className={classes.content}>
@@ -343,35 +341,33 @@ const EventDialog = (props) => {
                 </div>
               </div>
             </React.Fragment>
-          }
-          {isApplying &&
+        }
+        {isApplying &&
           <React.Fragment>
             <DialogHeader classes={classes} heading={Text.signUp} />
             <CircularProgress className={classes.progress} />
           </React.Fragment>
-          }
-          {message &&
+        }
+        {message &&
           <React.Fragment>
             <DialogHeader classes={classes} heading={message} />
             <div className={classes.message}>
               {applySuccess ?
-                <img alt="success" className={classes.image} src={eventSuccess}/>
-              :
+                <img alt="success" className={classes.image} src={eventSuccess}/> :
                 <img alt="failure" className={classes.image} src={eventCancel}/>
               }
             </div>
           </React.Fragment>
-          }
-          <Divider />
-          <div className={classes.footer}>
-            {message ?
+        }
+        <Divider />
+        <div className={classes.footer}>
+          {message ?
               <Button
                 className={classes.button}
                 onClick={props.onClose}
                 align='center'
                 variant='contained'
-                color='primary'>Ok</Button>
-              :
+                color='primary'>Ok</Button> :
               <React.Fragment>
                 <Button
                   className={classes.button}
@@ -381,13 +377,13 @@ const EventDialog = (props) => {
                   variant='contained'
                   color={buttonColor}>{headerText}</Button>
                 <Button
-                    className={classes.button}
-                    onClick={props.onClose}
-                    align='center'
-                    color='secondary'>Lukk</Button>
+                  className={classes.button}
+                  onClick={props.onClose}
+                  align='center'
+                  color='secondary'>Lukk</Button>
               </React.Fragment>
-            }
-          </div>
+          }
+        </div>
       </div>
     </Modal>
   );

@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import 'moment/locale/nb'
+import 'moment/locale/nb';
 import './style.css';
 
 // Material-UI
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Next from '@material-ui/icons/NavigateNext';
 import Before from '@material-ui/icons/NavigateBefore';
-
 
 // Styles
 const styles = (theme) => ({
@@ -47,7 +46,7 @@ const styles = (theme) => ({
       cursor: 'pointer',
       color: 'white',
     },
-  }
+  },
 });
 
 class CalendarGridView extends React.Component {
@@ -74,62 +73,62 @@ class CalendarGridView extends React.Component {
   }
 
   renderDays() {
-    const dateFormat = "dddd";
+    const dateFormat = 'dddd';
     const days = [];
-    let startDate = moment(this.state.currentMonth).startOf('week');
+    const startDate = moment(this.state.currentMonth).startOf('week');
     for (let i = 0; i < 7; i++) {
       days.push(
-        <div className="col col-center" key={i}>
-          {moment(startDate).add(i, 'days').format(dateFormat)}
-        </div>
+          <div className="col col-center" key={i}>
+            {moment(startDate).add(i, 'days').format(dateFormat)}
+          </div>,
       );
     }
     return <div className="days row">{days}</div>;
   }
 
   renderCells() {
-    const { currentMonth, selectedDate } = this.state;
+    const {currentMonth, selectedDate} = this.state;
     const monthStart = moment(currentMonth).startOf('month');
     const monthEnd = moment(currentMonth).endOf('month');
     const startDate = moment(monthStart).startOf('week');
     const endDate = moment(monthEnd).startOf('week');
-    const dateFormat = "D";
+    const dateFormat = 'D';
     const rows = [];
     let days = [];
     let day = startDate;
-    let formattedDate = "";
+    let formattedDate = '';
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = moment(day).format(dateFormat);
         const cloneDay = day;
         days.push(
-          <div
-            className={`col cell ${
-              !moment(day).isSame(moment(monthStart), 'month')
-                ? "disabled"
-                : moment(day).isSame(moment(selectedDate), 'days') ? "selected" : ""
+            <div
+              className={`col cell ${
+              !moment(day).isSame(moment(monthStart), 'month') ?
+                'disabled' :
+                moment(day).isSame(moment(selectedDate), 'days') ? 'selected' : ''
               }`}
-            key={day}
-            onClick={() => this.onDateClick(moment(cloneDay))}
-          >
-            <span className="number">{formattedDate}</span>
-            <span className="bg">{formattedDate}</span>
-            {this.displayEvent(day)}
-          </div>
+              key={day}
+              onClick={() => this.onDateClick(moment(cloneDay))}
+            >
+              <span className="number">{formattedDate}</span>
+              <span className="bg">{formattedDate}</span>
+              {this.displayEvent(day)}
+            </div>,
         );
         day = moment(day).add(1, 'days');
       }
       rows.push(
-        <div className="row" key={day}>
-          {days}
-        </div>
+          <div className="row" key={day}>
+            {days}
+          </div>,
       );
       days = [];
     }
     return <div className="body">{rows}</div>;
   }
 
-  onDateClick = day => {
+  onDateClick = (day) => {
     this.setState({
       // selectedDate: day
     });
@@ -148,28 +147,24 @@ class CalendarGridView extends React.Component {
   };
 
   displayEvent(date) {
-    const { classes } = this.props;
+    const {classes} = this.props;
     date = moment(date);
     const eventText = [];
     if (this.props.events !== null) {
       this.props.events.forEach((event, key) => {
-        let eventStartDate = moment(event.start_date);
-        let eventEndDate = moment(event.end_date);
-       
-        if ((eventEndDate.isSameOrAfter(date,'days') && eventStartDate.isSameOrBefore(date,'days')))
-        {
+        const eventStartDate = moment(event.start_date);
+        const eventEndDate = moment(event.end_date);
 
-
+        if ((eventEndDate.isSameOrAfter(date, 'days') && eventStartDate.isSameOrBefore(date, 'days'))) {
           if (event.category === 10) {
             eventText.push(
-              <li key={key} className={classes.event}><a className={classes.linkFadder} href={'/arrangementer/' + event.id + '/'}>{event.title}</a></li>,
-            )
+                <li key={key} className={classes.event}><a className={classes.linkFadder} href={'/arrangementer/' + event.id + '/'}>{event.title}</a></li>,
+            );
           } else {
             eventText.push(
-              <li key={key} className={classes.event}><a className={classes.link} href={'/arrangementer/' + event.id + '/'}>{event.title}</a></li>,
-            )
-          
-        }
+                <li key={key} className={classes.event}><a className={classes.link} href={'/arrangementer/' + event.id + '/'}>{event.title}</a></li>,
+            );
+          }
         }
       });
       if (eventText.length > 0) {
@@ -183,7 +178,7 @@ class CalendarGridView extends React.Component {
     this.state = {
       currentMonth: new Date(),
       selectedDate: new Date(),
-      dateFormat: "YYYY MMMM",
+      dateFormat: 'YYYY MMMM',
     };
   }
 

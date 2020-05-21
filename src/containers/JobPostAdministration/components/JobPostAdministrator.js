@@ -18,7 +18,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 
-
 // Project Components
 import TextEditor from '../../../components/inputs/TextEditor';
 import JobPostPreview from './JobPostPreview';
@@ -27,165 +26,162 @@ import JobPostSidebar from './JobPostSidebar';
 const SIDEBAR_WIDTH = 300;
 
 const styles = (theme) => ({
-    root: {
-        paddingLeft: SIDEBAR_WIDTH,
-        paddingBottom: 100,
-        '@media only screen and (max-width: 800px)': {
-            padding: 0,
-        }
+  root: {
+    paddingLeft: SIDEBAR_WIDTH,
+    paddingBottom: 100,
+    '@media only screen and (max-width: 800px)': {
+      padding: 0,
     },
-    sidebar: {
-        paddingTop: 64,
-        position: 'fixed',
-        left: 0, top: 0, bottom: 0,
-        width: SIDEBAR_WIDTH,
+  },
+  sidebar: {
+    paddingTop: 64,
+    position: 'fixed',
+    left: 0, top: 0, bottom: 0,
+    width: SIDEBAR_WIDTH,
 
-        '@media only screen and (max-width: 800px)': {
-            position: 'static',
-            width: '100%',
-            padding: 0,
-        }
+    '@media only screen and (max-width: 800px)': {
+      position: 'static',
+      width: '100%',
+      padding: 0,
     },
-    sidebarTop: {
-        backgroundColor: 'whitesmoke',
-        padding: '10px 5px 10px 12px',
-    },
-    miniTop: {
-        padding: '5px 5px 5px 12px',
-    },
-    jobPostItem: {
-        padding: '10px 10px',
-        textAlign: 'left',
-    },
-    selected: {
-        backgroundColor: theme.palette.primary.main,
-        color: 'white',
-    },
-    field: {
-        margin: '5px 0px',
-        maxWidth: 300,
-    },
-    content: {
-        width: '80%',
-        maxWidth: 1000,
-        marginTop: 150,
-        display: 'block',
-        margin: 'auto',
-        padding: 36,
-        border: '1px solid #ddd',
-        borderRadius: 5,
-        backgroundColor: '#fff',
+  },
+  sidebarTop: {
+    backgroundColor: 'whitesmoke',
+    padding: '10px 5px 10px 12px',
+  },
+  miniTop: {
+    padding: '5px 5px 5px 12px',
+  },
+  jobPostItem: {
+    padding: '10px 10px',
+    textAlign: 'left',
+  },
+  selected: {
+    backgroundColor: theme.palette.primary.main,
+    color: 'white',
+  },
+  field: {
+    margin: '5px 0px',
+    maxWidth: 300,
+  },
+  content: {
+    width: '80%',
+    maxWidth: 1000,
+    marginTop: 150,
+    display: 'block',
+    margin: 'auto',
+    padding: 36,
+    border: '1px solid #ddd',
+    borderRadius: 5,
+    backgroundColor: '#fff',
 
-        '@media only screen and (max-width: 800px)': {
-            width: 'auto',
-            marginTop: 0,
-        }
+    '@media only screen and (max-width: 800px)': {
+      width: 'auto',
+      marginTop: 0,
     },
-    margin: {
-        margin: '10px 0px',
-    },
-    mr: {marginRight: 10},
-    snackbar: {
-        marginTop: 44,
-        backgroundColor: theme.palette.error.main,
-    },
-    messageView: {
-        padding: 30,
-        minWidth: 300,
-        minHeight: 200,
-    },
-    deleteButton: {
-        color: theme.palette.error.main,
-    },
-    progress: {
-        minHeight: 300,
-    },
-    flexRow: {
-        margin: '10px 0',
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'nowrap',
+  },
+  margin: {
+    margin: '10px 0px',
+  },
+  mr: {marginRight: 10},
+  snackbar: {
+    marginTop: 44,
+    backgroundColor: theme.palette.error.main,
+  },
+  messageView: {
+    padding: 30,
+    minWidth: 300,
+    minHeight: 200,
+  },
+  deleteButton: {
+    color: theme.palette.error.main,
+  },
+  progress: {
+    minHeight: 300,
+  },
+  flexRow: {
+    margin: '10px 0',
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
 
-        '@media only screen and (max-width: 800px)': {
-            flexDirection: 'column',
-        }
+    '@media only screen and (max-width: 800px)': {
+      flexDirection: 'column',
     },
-    padding: {
-        padding: '10px 5px',
-    }
+  },
+  padding: {
+    padding: '10px 5px',
+  },
 });
 
 const MessageView = withStyles(styles, {withTheme: true})((props) => {
-    const {classes} = props;
-    return (
-        <Grid className={classNames(classes.messageView, props.className)} container direction='column' alignItems='center' justify='center'>
-            <Typography className={classes.margin} variant='h5' align='center'>{props.title}</Typography>
-            <Button className={classes.margin} variant='contained' color='primary' onClick={props.onClick}>{props.buttonText}</Button>
-        </Grid>
-    )
+  const {classes} = props;
+  return (
+    <Grid className={classNames(classes.messageView, props.className)} container direction='column' alignItems='center' justify='center'>
+      <Typography className={classes.margin} variant='h5' align='center'>{props.title}</Typography>
+      <Button className={classes.margin} variant='contained' color='primary' onClick={props.onClick}>{props.buttonText}</Button>
+    </Grid>
+  );
 });
 
 const JobPostItem = withStyles(styles, {withTheme: true})((props) => {
-    const {classes} = props;
-    return (
-        <Fragment>
-            <ButtonBase onClick={props.onClick}>
-                <Grid className={classNames(classes.JobPostItem, (props.selected)? classes.selected : '' )} container direction='row' alignItems='center' justify='space-between'>
-                    <Grid container direction='column' justify='center'>
-                        <Typography variant='subtitle1' color='inherit'>{props.title}</Typography>
-                        <Typography variant='caption'  color='inherit'>{props.location}</Typography>
-                    </Grid>
-                </Grid>
-            </ButtonBase>
-        <Divider/>
-        </Fragment>
-    );
+  const {classes} = props;
+  return (
+    <Fragment>
+      <ButtonBase onClick={props.onClick}>
+        <Grid className={classNames(classes.JobPostItem, (props.selected)? classes.selected : '' )} container direction='row' alignItems='center' justify='space-between'>
+          <Grid container direction='column' justify='center'>
+            <Typography variant='subtitle1' color='inherit'>{props.title}</Typography>
+            <Typography variant='caption' color='inherit'>{props.location}</Typography>
+          </Grid>
+        </Grid>
+      </ButtonBase>
+      <Divider/>
+    </Fragment>
+  );
 });
 
 JobPostItem.propTypes = {
-    title: PropTypes.string,
-    location: PropTypes.string,
+  title: PropTypes.string,
+  location: PropTypes.string,
 };
 
-//const priorities = ['Lav', 'Middels', 'Høy'];
+// const priorities = ['Lav', 'Middels', 'Høy'];
 const jobpostCreated = 'Annonsen ble opprettet';
 const jobpostChanged = 'Endringen ble publisert';
 const jobpostDeleted = 'Annonsen ble slettet';
 const errorMessage = (data) => 'Det oppstod en feil! '.concat(JSON.stringify(data || {}));
 const snackbarHideDuration = 4000;
 
-
-
-
 class JobPostAdministrator extends Component {
   constructor() {
     super();
     this.state = {
-        isLocked: true,
-        isLoading: false,
-        isFetching: false,
+      isLocked: true,
+      isLoading: false,
+      isFetching: false,
 
-        jobposts: [],
-        expired: [],
-        selectedJobPost: null,
+      jobposts: [],
+      expired: [],
+      selectedJobPost: null,
 
-        title: '',
-        ingress: '',
-        location: '',
-        deadline: new Date().toISOString(),
-        company: '',
-        email: '',
-        link: '',
-        body: '',
-        signUp: false,
-        image: '',
-        imageAlt: '',
+      title: '',
+      ingress: '',
+      location: '',
+      deadline: new Date().toISOString(),
+      company: '',
+      email: '',
+      link: '',
+      body: '',
+      signUp: false,
+      image: '',
+      imageAlt: '',
 
-        showMessage: false,
-        errorMessage: 'Det oppstod en feil',
-        showSuccessMessage: false,
-        successMessage: jobpostCreated,
-        showPreview: false,
+      showMessage: false,
+      errorMessage: 'Det oppstod en feil',
+      showSuccessMessage: false,
+      successMessage: jobpostCreated,
+      showPreview: false,
     };
   }
 
@@ -196,294 +192,286 @@ class JobPostAdministrator extends Component {
 
   fetchPosts = (parameters = {page: 1}) => {
     // We need to add this in order to not show expired events.
-    parameters['newest'] = true
+    parameters['newest'] = true;
 
     JobPostService.getJobPosts(parameters)
-    .then((data) => {
+        .then((data) => {
+          // For backward compabillity
+          let displayedPosts = data.results || data;
 
-      // For backward compabillity
-      let displayedPosts = data.results || data;
+          const nextPageUrl = data.next;
+          const urlParameters = {};
 
-      let nextPageUrl = data.next;
-      let urlParameters = {};
-
-      // If we have a url for the next page convert it into a object
-      if (nextPageUrl) {
-        let nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
-        let parameterArray = nextPageUrlQuery.split('&');
-        parameterArray.forEach((parameter) => {
-          const parameterString = parameter.split('=')
-          urlParameters[parameterString[0]] = parameterString[1]
-        })
-      }
-
-      // Get the page number from the object if it exists
-      let nextPage = urlParameters['page'] ? urlParameters['page'] : null;
-
-      this.setState((oldState) => {
-        // If we allready have events
-        if (this.state.jobposts.length > 0) {
-          displayedPosts = oldState.jobposts.concat(displayedPosts)
-        }
-        return {jobposts: displayedPosts, nextPage: nextPage}
-      }
-      );
-
-    })
-  }
-
-
-      fetchExpired = () => {
-          if(this.state.isFetching) {
-              return;
+          // If we have a url for the next page convert it into a object
+          if (nextPageUrl) {
+            const nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
+            const parameterArray = nextPageUrlQuery.split('&');
+            parameterArray.forEach((parameter) => {
+              const parameterString = parameter.split('=');
+              urlParameters[parameterString[0]] = parameterString[1];
+            });
           }
 
-          this.setState({isFetching: false});
-          JobPostService.getExpiredData((isError, data) => {
-              if (!isError) {
-                  this.setState({expired: data.results || data || []});
-              }
-              this.setState({isFetching: true});
-          });
+          // Get the page number from the object if it exists
+          const nextPage = urlParameters['page'] ? urlParameters['page'] : null;
+
+          this.setState((oldState) => {
+            // If we allready have events
+            if (this.state.jobposts.length > 0) {
+              displayedPosts = oldState.jobposts.concat(displayedPosts);
+            }
+            return {jobposts: displayedPosts, nextPage: nextPage};
+          },
+          );
+        });
+  }
+
+      fetchExpired = () => {
+        if (this.state.isFetching) {
+          return;
+        }
+
+        this.setState({isFetching: false});
+        JobPostService.getExpiredData((isError, data) => {
+          if (!isError) {
+            this.setState({expired: data.results || data || []});
+          }
+          this.setState({isFetching: true});
+        });
       }
 
       onEventClick = (jobpost) => {
-          const {selectedJobPost} = this.state;
+        const {selectedJobPost} = this.state;
 
-          if(selectedJobPost !== null && selectedJobPost.id === jobpost.id) {
-              this.resetJobPostState();
-          } else {
-              this.setState({
-                  selectedJobPost: jobpost,
-                  title: jobpost.title,
-                  ingress: jobpost.ingress,
-                  location: jobpost.location,
-                  body: jobpost.body,
-                  image: jobpost.image,
-                  deadline: jobpost.deadline.substring(0,16),
-                  company: jobpost.company,
-                  email: jobpost.email,
-                  link: jobpost.link,
-                  signUp: jobpost.signUp,
-              });
-          }
-          this.setState({showSuccessMessage: false});
+        if (selectedJobPost !== null && selectedJobPost.id === jobpost.id) {
+          this.resetJobPostState();
+        } else {
+          this.setState({
+            selectedJobPost: jobpost,
+            title: jobpost.title,
+            ingress: jobpost.ingress,
+            location: jobpost.location,
+            body: jobpost.body,
+            image: jobpost.image,
+            deadline: jobpost.deadline.substring(0, 16),
+            company: jobpost.company,
+            email: jobpost.email,
+            link: jobpost.link,
+            signUp: jobpost.signUp,
+          });
+        }
+        this.setState({showSuccessMessage: false});
       }
 
       resetJobPostState = () => {
-          this.setState({
-              selectedJobPost: null,
-              title: '',
-              ingress: '',
-              location: '',
-              body: '',
-              image: '',
-              imageAlt: '',
-              deadline: new Date().toISOString().substring(0, 16),
-              company: '',
-              email: '',
-              link: '',
-              signUp: false,
-          });
+        this.setState({
+          selectedJobPost: null,
+          title: '',
+          ingress: '',
+          location: '',
+          body: '',
+          image: '',
+          imageAlt: '',
+          deadline: new Date().toISOString().substring(0, 16),
+          company: '',
+          email: '',
+          link: '',
+          signUp: false,
+        });
       }
 
       handleChange = (name) => (jobpost) => {
-          this.setState({[name]: jobpost.target.value});
+        this.setState({[name]: jobpost.target.value});
       }
 
       handleToggleChange = (name) => () => {
-          this.setState({[name]: !this.state[name]});
+        this.setState({[name]: !this.state[name]});
       }
 
       onChange = (name) => (value) => {
-          this.setState({[name]: value});
+        this.setState({[name]: value});
       }
 
       toggleSnackbar = () => {
-          this.setState({showMessage: !this.state.showMessage});
+        this.setState({showMessage: !this.state.showMessage});
       }
 
       toggleSuccessView = () => {
-          this.setState({showSuccessMessage: !this.state.showSuccessMessage});
+        this.setState({showSuccessMessage: !this.state.showSuccessMessage});
       }
 
       getStateJobPostItem = () => ({
-          title: this.state.title,
-          ingress: this.state.ingress,
-          location: this.state.location,
-          body: this.state.body,
-          image: this.state.image,
-          imageAlt: 'jobpost',
-          deadline: moment(this.state.deadline).format('YYYY-MM-DDTHH:mm'),
-          company: this.state.company,
-          email: this.state.email,
-          link: this.state.link,
-          signUp: this.state.signUp,
+        title: this.state.title,
+        ingress: this.state.ingress,
+        location: this.state.location,
+        body: this.state.body,
+        image: this.state.image,
+        imageAlt: 'jobpost',
+        deadline: moment(this.state.deadline).format('YYYY-MM-DDTHH:mm'),
+        company: this.state.company,
+        email: this.state.email,
+        link: this.state.link,
+        signUp: this.state.signUp,
       });
 
       getJobPostPreview = () => {
-          const posts = this.getStateJobPostItem();
-          return {...posts, logo: this.state.image};
+        const posts = this.getStateJobPostItem();
+        return {...posts, logo: this.state.image};
       }
 
       createNewJobpost = (jobpost) => {
-          jobpost.preventDefault();
-
-          const item = this.getStateJobPostItem();
-
-          this.setState({isLoading: true});
-
-          // Create new Jobpost
-          JobPostService.createJobPost(item, (isError, data) => {
-              if(!isError) {
-                  const newJobposts = Object.assign([], this.state.jobposts);
-                  newJobposts.unshift(data);
-                  this.setState({jobposts: newJobposts, showSuccessMessage: true, successMessage: jobpostCreated});
-              } else {
-                  this.setState({showMessage: true, snackMessage: errorMessage(data)});
-              }
-              this.setState({isLoading: false});
-          });
-      }
-
-    editJobPostItem = (jobpost) => {
         jobpost.preventDefault();
 
         const item = this.getStateJobPostItem();
-        const {selectedJobPost} = this.state;
 
         this.setState({isLoading: true});
 
-        // Create new Jobpost Item
-        JobPostService.putJobPost(selectedJobPost.id, item, (isError, data) => {
-            if(!isError) {
-                // Update stored jobpost with the new data
-                const newJobPost = Object.assign([], this.state.jobposts);
-                const index = newJobPost.findIndex((elem) => elem.id === selectedJobPost.id); // Finding jobpost by id
-                if(index !== -1) {
-                    newJobPost[index] = data;
-                    this.setState({jobposts: newJobPost, showSuccessMessage: true, successMessage: jobpostChanged});
-                }
-            } else {
-                this.setState({showMessage: true, snackMessage: errorMessage(data)});
-            }
-            this.setState({isLoading: false});
+        // Create new Jobpost
+        JobPostService.createJobPost(item, (isError, data) => {
+          if (!isError) {
+            const newJobposts = Object.assign([], this.state.jobposts);
+            newJobposts.unshift(data);
+            this.setState({jobposts: newJobposts, showSuccessMessage: true, successMessage: jobpostCreated});
+          } else {
+            this.setState({showMessage: true, snackMessage: errorMessage(data)});
+          }
+          this.setState({isLoading: false});
         });
+      }
+
+    editJobPostItem = (jobpost) => {
+      jobpost.preventDefault();
+
+      const item = this.getStateJobPostItem();
+      const {selectedJobPost} = this.state;
+
+      this.setState({isLoading: true});
+
+      // Create new Jobpost Item
+      JobPostService.putJobPost(selectedJobPost.id, item, (isError, data) => {
+        if (!isError) {
+          // Update stored jobpost with the new data
+          const newJobPost = Object.assign([], this.state.jobposts);
+          const index = newJobPost.findIndex((elem) => elem.id === selectedJobPost.id); // Finding jobpost by id
+          if (index !== -1) {
+            newJobPost[index] = data;
+            this.setState({jobposts: newJobPost, showSuccessMessage: true, successMessage: jobpostChanged});
+          }
+        } else {
+          this.setState({showMessage: true, snackMessage: errorMessage(data)});
+        }
+        this.setState({isLoading: false});
+      });
     }
 
     deleteJobPostItem = (jobpost) => {
-        jobpost.preventDefault();
+      jobpost.preventDefault();
 
-        const {selectedJobPost} = this.state;
+      const {selectedJobPost} = this.state;
 
-        this.setState({isLoading: true});
+      this.setState({isLoading: true});
 
-        // Create new JobPost Item
-        JobPostService.deleteJobPost(selectedJobPost.id, (isError, data) => {
-            if(isError === false) {
-                // Remove the deleted JobPost from the state
-                const newJobPosts = Object.assign([], this.state.jobposts);
-                const index = newJobPosts.findIndex((elem) => elem.id === selectedJobPost.id);
-                if(index !== -1) {
-                    newJobPosts.splice(index, 1);
-                    this.setState({jobposts: newJobPosts, selectedJobPost: null, showSuccessMessage: true, successMessage: jobpostDeleted});
-                }
-            }
-            this.setState({isLoading: false});
-        });
+      // Create new JobPost Item
+      JobPostService.deleteJobPost(selectedJobPost.id, (isError, data) => {
+        if (isError === false) {
+          // Remove the deleted JobPost from the state
+          const newJobPosts = Object.assign([], this.state.jobposts);
+          const index = newJobPosts.findIndex((elem) => elem.id === selectedJobPost.id);
+          if (index !== -1) {
+            newJobPosts.splice(index, 1);
+            this.setState({jobposts: newJobPosts, selectedJobPost: null, showSuccessMessage: true, successMessage: jobpostDeleted});
+          }
+        }
+        this.setState({isLoading: false});
+      });
     }
 
     getNextPage = () => {
-      this.fetchPosts({page: this.state.nextPage})
+      this.fetchPosts({page: this.state.nextPage});
     }
 
     render() {
-        const {classes} = this.props;
-        const {selectedJobPost, title, ingress, location, body, image, company, email, link} = this.state;
-        const selectedJobPostId = (selectedJobPost)? selectedJobPost.id : '';
-        const isNewItem = (selectedJobPost === null);
-        const header = (isNewItem)? 'Lag en ny annonse' : 'Endre annonse';
+      const {classes} = this.props;
+      const {selectedJobPost, title, ingress, location, body, image, company, email, link} = this.state;
+      const selectedJobPostId = (selectedJobPost)? selectedJobPost.id : '';
+      const isNewItem = (selectedJobPost === null);
+      const header = (isNewItem)? 'Lag en ny annonse' : 'Endre annonse';
 
-        return (
-          <Fragment>
-              <div className={classes.root}>
-                  <Snackbar
-                      open={this.state.showMessage}
-                      autoHideDuration={snackbarHideDuration}
-                      anchorOrigin={{
-                          vertical: 'top',
-                          horizontal: 'right',
-                      }}
-                      onClose={this.toggleSnackbar}>
+      return (
+        <Fragment>
+          <div className={classes.root}>
+            <Snackbar
+              open={this.state.showMessage}
+              autoHideDuration={snackbarHideDuration}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              onClose={this.toggleSnackbar}>
 
-                          <SnackbarContent
-                              className={classes.snackbar}
-                              message={this.state.snackMessage}/>
-                      </Snackbar>
+              <SnackbarContent
+                className={classes.snackbar}
+                message={this.state.snackMessage}/>
+            </Snackbar>
 
-                  <div className={classes.content}>
-                      {(this.state.isLoading)? <Grid className={classes.progress} container justify='center' alignItems='center'><CircularProgress /></Grid> :
+            <div className={classes.content}>
+              {(this.state.isLoading)? <Grid className={classes.progress} container justify='center' alignItems='center'><CircularProgress /></Grid> :
                       (this.state.showSuccessMessage)? <MessageView title={this.state.successMessage} buttonText='Nice' onClick={this.toggleSuccessView}/> :
                           <form>
-                              <Grid container direction='column' wrap='nowrap'>
-                                  <Typography variant='h5'>{header}</Typography>
-                                  <TextField className={classes.field} label='Tittel' value={title} onChange={this.handleChange('title')} required/>
-                                  <TextField className={classes.field} label='Ingress' value={ingress} onChange={this.handleChange('ingress')} required/>
-                                  <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
+                            <Grid container direction='column' wrap='nowrap'>
+                              <Typography variant='h5'>{header}</Typography>
+                              <TextField className={classes.field} label='Tittel' value={title} onChange={this.handleChange('title')} required/>
+                              <TextField className={classes.field} label='Ingress' value={ingress} onChange={this.handleChange('ingress')} required/>
+                              <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
 
-                                  <TextEditor className={classes.margin} value={body} onChange={this.onChange('body')}/>
+                              <TextEditor className={classes.margin} value={body} onChange={this.onChange('body')}/>
 
-                                  <Divider className={classes.margin} />
-                                  <TextField className={classes.margin} fullWidth label='Logo' value={image} onChange={this.handleChange('image')}/>
-                                  <TextField className={classes.margin} label='Bedrift' value={company} onChange={this.handleChange('company')} required/>
-                                  <TextField className={classes.margin} label="E-post" value={email} onChange={this.handleChange('email')}/>
-                                  <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Frist' value={this.state.deadline} onChange={this.handleChange('deadline')}/>
-                                  <TextField className={classes.margin} label="Link" value={link} onChange={this.handleChange('link')}/>
+                              <Divider className={classes.margin} />
+                              <TextField className={classes.margin} fullWidth label='Logo' value={image} onChange={this.handleChange('image')}/>
+                              <TextField className={classes.margin} label='Bedrift' value={company} onChange={this.handleChange('company')} required/>
+                              <TextField className={classes.margin} label="E-post" value={email} onChange={this.handleChange('email')}/>
+                              <TextField className={classes.margin} fullWidth type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Frist' value={this.state.deadline} onChange={this.handleChange('deadline')}/>
+                              <TextField className={classes.margin} label="Link" value={link} onChange={this.handleChange('link')}/>
 
-
-
-
-                                  <Grid container direction='row' wrap='nowrap' justify='space-between'>
-                                      {(isNewItem)?
+                              <Grid container direction='row' wrap='nowrap' justify='space-between'>
+                                {(isNewItem)?
                                           <div>
-                                              <Button className={classes.mr} onClick={this.createNewJobpost} type='submit' variant='contained' color='primary'>Lag ny annonse</Button>
-                                              <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
-                                          </div>
-
-                                          :
+                                            <Button className={classes.mr} onClick={this.createNewJobpost} type='submit' variant='contained' color='primary'>Lag ny annonse</Button>
+                                            <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
+                                          </div> :
                                           <Fragment>
-                                              <div>
-                                                  <Button className={classes.mr} onClick={this.editJobPostItem} variant='contained' type='submit' color='primary'>Lagre</Button>
-                                                  <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
-                                              </div>
-                                              <Button className={classes.deleteButton} onClick={this.deleteJobPostItem} variant='outlined'>Slett</Button>
+                                            <div>
+                                              <Button className={classes.mr} onClick={this.editJobPostItem} variant='contained' type='submit' color='primary'>Lagre</Button>
+                                              <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>
+                                            </div>
+                                            <Button className={classes.deleteButton} onClick={this.deleteJobPostItem} variant='outlined'>Slett</Button>
                                           </Fragment>
-                                      }
-                                  </Grid>
+                                }
                               </Grid>
+                            </Grid>
                           </form>
-                      }
-                  </div>
-                <JobPostSidebar
-                    jobposts={this.state.jobposts}
-                    expiredJobPosts={this.state.expired}
-                    selectedJobPostId={Number(selectedJobPostId)}
-                    onEventClick={this.onEventClick}
-                    resetEventState={this.resetEventState}
-                    fetchExpired={this.fetchExpired}
-                    nextPage={this.state.nextPage}
-                    getNextPage={this.getNextPage}
-                />
-              </div>
+              }
+            </div>
+            <JobPostSidebar
+              jobposts={this.state.jobposts}
+              expiredJobPosts={this.state.expired}
+              selectedJobPostId={Number(selectedJobPostId)}
+              onEventClick={this.onEventClick}
+              resetEventState={this.resetEventState}
+              fetchExpired={this.fetchExpired}
+              nextPage={this.state.nextPage}
+              getNextPage={this.getNextPage}
+            />
+          </div>
 
-              <JobPostPreview data={this.getJobPostPreview()} open={this.state.showPreview} onClose={this.handleToggleChange('showPreview')}/>
-          </Fragment>
-        );
+          <JobPostPreview data={this.getJobPostPreview()} open={this.state.showPreview} onClose={this.handleToggleChange('showPreview')}/>
+        </Fragment>
+      );
     }
 }
 
 JobPostAdministrator.propTypes = {
-    classes: PropTypes.object,
+  classes: PropTypes.object,
 };
 
 export default withStyles(styles, {withTheme: true})(JobPostAdministrator);

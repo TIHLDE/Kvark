@@ -1,13 +1,14 @@
 // React
 import React, {Component} from 'react';
 import URLS from '../../URLS';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 
 // Serivce imports
 import AuthService from '../../api/services/AuthService';
 
 // Material-UI
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
@@ -16,76 +17,80 @@ import Navigation from '../../components/navigation/Navigation';
 import ProfilePaper from './components/ProfilePaper';
 
 const styles = (theme) => ({
-    root: {
-        minHeight: '100vh',
-        width: '100%',
-    },
-    top: {
-        height: 260,
-        backgroundImage: 'radial-gradient(circle at bottom, #F0C27B, #4B1248)',
-    },
-    main: {
-        maxWidth: 1000,
-        margin: 'auto',
-        position: 'relative',
-    },
-    paper: {
-        width: '90%',
-        maxWidth: 750,
-        margin: 'auto',
-        position: 'relative',
-        left: 0,
-        right: 0,
-        top: '-60px',
-        padding: '28px',
-        paddingTop: '110px',
-        textAlign: 'center',
-        backgroundColor: '#fff',
-        border: '1px solid #ddd',
-        borderRadius: 5,
-    },
-    topSpacing: {
-        marginTop: 10,
-    },
+  root: {
+    minHeight: '100vh',
+    width: '100%',
+  },
+  top: {
+    height: 260,
+    backgroundImage: 'radial-gradient(circle at bottom, #F0C27B, #4B1248)',
+  },
+  main: {
+    maxWidth: 1000,
+    margin: 'auto',
+    position: 'relative',
+  },
+  paper: {
+    width: '90%',
+    maxWidth: 750,
+    margin: 'auto',
+    position: 'relative',
+    left: 0,
+    right: 0,
+    top: '-60px',
+    padding: '28px',
+    paddingTop: '110px',
+    textAlign: 'center',
+    backgroundColor: '#fff',
+    border: '1px solid #ddd',
+    borderRadius: 5,
+  },
+  topSpacing: {
+    marginTop: 10,
+  },
 });
 
-class Profile extends Component{
+class Profile extends Component {
 
-    constructor(){
-        super();
-        this.state = {
-            isLoading: false,
-        }
-    }
+  constructor() {
+    super();
+    this.state = {
+      isLoading: false,
+    };
+  }
 
     logOut = () => {
-        this.setState({isLoading: true});
-        AuthService.logOut();
-        this.props.history.push(URLS.landing);
+      this.setState({isLoading: true});
+      AuthService.logOut();
+      this.props.history.push(URLS.landing);
     }
 
-    render(){
-        const { classes } = this.props;
-        return(
-            <Navigation footer isLoading={this.state.isLoading} fancyNavbar>
-                <div className={classes.root}>
-                    <div className={classes.top}>
-                    
-                    </div>
-                    <div className={classes.main}>
-                        { AuthService.isAuthenticated() ?
-                            <ProfilePaper logOutMethod={this.logOut} />
-                            :
+    render() {
+      const {classes} = this.props;
+      return (
+        <Navigation footer isLoading={this.state.isLoading} fancyNavbar>
+          <div className={classes.root}>
+            <div className={classes.top}>
+
+            </div>
+            <div className={classes.main}>
+              { AuthService.isAuthenticated() ?
+                            <ProfilePaper logOutMethod={this.logOut} /> :
                             <div className={classes.paper}>
-                                <Typography variant='h6'>Du må være logget inn for å se profilen din</Typography>
-                                <Link to={URLS.login}><Button className={classes.topSpacing} variant='contained' color='primary'>Logg inn</Button></Link>
+                              <Typography variant='h6'>Du må være logget inn for å se profilen din</Typography>
+                              <Link to={URLS.login}><Button className={classes.topSpacing} variant='contained' color='primary'>Logg inn</Button></Link>
                             </div>
-                        }
-                    </div>
-                </div>
-            </Navigation>
-        );
+              }
+            </div>
+          </div>
+        </Navigation>
+      );
     }
 }
+
+Profile.propTypes = {
+  classes: PropTypes.object,
+  history: PropTypes.object,
+};
 
 export default withStyles(styles)(Profile);

@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 // Material-UI
 import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { ResponsiveContainer, BarChart, Bar, Tooltip, XAxis, YAxis } from 'recharts';
-
+import {ResponsiveContainer, BarChart, Bar, Tooltip, XAxis, YAxis} from 'recharts';
 
 const styles = {
   statistics: {
@@ -14,11 +13,11 @@ const styles = {
     justifyContent: 'space-between',
     '@media only screen and (max-width: 800px)': {
       flexDirection: 'column',
-  },
+    },
   },
   statisticsInner: {
     width: '100%',
-  }
+  },
 };
 
 const EventParticipants = (props) => {
@@ -28,11 +27,11 @@ const EventParticipants = (props) => {
     return (participants.filter((x) => x.has_attended === attended).length);
   };
   const classNo = (userClass) => {
-    let no = (participants.filter((x) => x.user_info.user_class === userClass).length);
+    const no = (participants.filter((x) => x.user_info.user_class === userClass).length);
     return no > 0 ? no: '';
   };
   const studyNo = (userStudy) => {
-    let no = (participants.filter((x) => x.user_info.user_study === userStudy).length);
+    const no = (participants.filter((x) => x.user_info.user_study === userStudy).length);
     return no > 0 ? no: '';
   };
   const classData = [{name: '1. klasse', 'c': classNo(1)}, {name: '2. klasse', 'c': classNo(2)}, {name: '3. klasse', 'c': classNo(3)}, {name: '4. klasse', 'c': classNo(4)}, {name: '5. klasse', 'c': classNo(5)}];
@@ -70,7 +69,8 @@ const EventParticipants = (props) => {
 };
 
 EventParticipants.propTypes = {
-    participants: PropTypes.array,
+  classes: PropTypes.object,
+  participants: PropTypes.array,
 };
 
 export default withStyles(styles)(EventParticipants);

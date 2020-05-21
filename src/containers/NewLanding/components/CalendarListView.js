@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Material-UI
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -39,7 +39,7 @@ const styles = (theme) => ({
 });
 
 function CalendarListView(props) {
-  const { classes, isLoading } = props;
+  const {classes, isLoading} = props;
   const eventsToDisplay = 3;
 
   let eventList = <div className={classes.noEventText}><CircularProgress className={classes.progress}/></div>;
@@ -57,8 +57,7 @@ function CalendarListView(props) {
               <Typography align='center'>Alle arrangementer ({props.events.length})</Typography>
             </LinkButton>
           </div>
-        </React.Fragment>
-        :
+        </React.Fragment> :
         <Typography
           variant='subtitle1'
           className={classes.noEventText}

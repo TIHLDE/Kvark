@@ -11,17 +11,17 @@ const styles = {
 
 class DataRegistrator extends Component {
 
-    render() {
-        return (
-            <Navigation>
-                <JobPostAdministrator />
-            </Navigation>
-        );
-    }
+  render() {
+    return (
+      <Navigation>
+        <JobPostAdministrator />
+      </Navigation>
+    );
+  }
 }
 
 DataRegistrator.propTypes = {
-    classes: PropTypes.object,
+  classes: PropTypes.object,
 };
 
 export default withStyles(styles)(DataRegistrator);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -21,9 +21,9 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 
 const styles = (theme) => ({
   root: {
-      display: 'flex',
-      flexDirection: 'column',
-      width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
   },
   button: {
     marginTop: 10,
@@ -65,15 +65,15 @@ const styles = (theme) => ({
 });
 
 function OptTextField(props) {
-  const { classes, id, optField, handleOptFieldChange, handleRemoveOptField } = props;
+  const {classes, id, optField, handleOptFieldChange, handleRemoveOptField} = props;
 
   const handleOptTextFieldChange = (e) => {
-    let updatedField = {...optField};
+    const updatedField = {...optField};
     updatedField.title = e.target.value;
     handleOptFieldChange(id, updatedField);
   };
   const handleSwitchChange = (e) => {
-    let updatedField = {...optField};
+    const updatedField = {...optField};
     updatedField.required = e.target.checked;
     handleOptFieldChange(id, updatedField);
   };
@@ -83,16 +83,16 @@ function OptTextField(props) {
       <div className={classes.optFieldHeader}>
         <Typography variant='subtitle1'>Tekstspørsmål</Typography>
         <FormControlLabel
-            className={classes.switch}
-            value="start"
-            control={<Checkbox checked={optField.required} onChange={handleSwitchChange} color="primary" />}
-            label="Obligatorisk"
-            labelPlacement="start"
-          />
+          className={classes.switch}
+          value="start"
+          control={<Checkbox checked={optField.required} onChange={handleSwitchChange} color="primary" />}
+          label="Obligatorisk"
+          labelPlacement="start"
+        />
       </div>
       <div className={classes.optFieldQuestion}>
-      <TextField className={classes.textField} label='Spørsmål' color='primary' value={optField.title} onChange={handleOptTextFieldChange} />
-      <IconButton className={classes.deleteIcon} onClick={handleRemoveOptField(id)} aria-label="Slett spørsmål" component="span">
+        <TextField className={classes.textField} label='Spørsmål' color='primary' value={optField.title} onChange={handleOptTextFieldChange} />
+        <IconButton className={classes.deleteIcon} onClick={handleRemoveOptField(id)} aria-label="Slett spørsmål" component="span">
           <DeleteOutlineOutlinedIcon />
         </IconButton>
       </div>
@@ -109,20 +109,20 @@ OptTextField.propTypes = {
 const OptionalTextField = withStyles(styles)(OptTextField);
 
 function OptPickField(props) {
-  const { classes, id, optField, handleOptFieldChange, handleRemoveOptField, isCheckbox } = props;
+  const {classes, id, optField, handleOptFieldChange, handleRemoveOptField, isCheckbox} = props;
 
   const handleOptTextFieldChange = (e) => {
-    let updatedField = {...optField};
+    const updatedField = {...optField};
     updatedField.title = e.target.value;
     handleOptFieldChange(id, updatedField);
   };
   const handleSwitchChange = (e) => {
-    let updatedField = {...optField};
+    const updatedField = {...optField};
     updatedField.required = e.target.checked;
     handleOptFieldChange(id, updatedField);
   };
   const handleOptionsChange = (newOptions) => {
-    let updatedField = {...optField};
+    const updatedField = {...optField};
     updatedField.alternatives = newOptions;
     handleOptFieldChange(id, updatedField);
   };
@@ -132,12 +132,12 @@ function OptPickField(props) {
       <div className={classes.optFieldHeader}>
         <Typography variant='subtitle1'>{isCheckbox ? 'Avkrysningsspørsmål' : 'Flervalgsspørsmål'}</Typography>
         <FormControlLabel
-            className={classes.switch}
-            value="start"
-            control={<Checkbox checked={optField.required} onChange={handleSwitchChange} color="primary" />}
-            label="Obligatorisk"
-            labelPlacement="start"
-          />
+          className={classes.switch}
+          value="start"
+          control={<Checkbox checked={optField.required} onChange={handleSwitchChange} color="primary" />}
+          label="Obligatorisk"
+          labelPlacement="start"
+        />
       </div>
       <div className={classes.optFieldQuestion}>
         <TextField className={classes.textField} label='Spørsmål' color='primary' value={optField.title} onChange={handleOptTextFieldChange} />
@@ -160,20 +160,20 @@ OptPickField.propTypes = {
 const OptionalPickField = withStyles(styles)(OptPickField);
 
 function OptFieldOption(props) {
-  const { classes, options, handleOptionsChange, isCheckbox } = props;
+  const {classes, options, handleOptionsChange, isCheckbox} = props;
 
   const handleOptionFieldChange = (id) => (e) => {
-    let updatedOptions = [...options];
+    const updatedOptions = [...options];
     updatedOptions[id] = e.target.value;
     handleOptionsChange(updatedOptions);
   };
   const handleAddOptionField = () => {
-    let updatedOptions = [...options];
+    const updatedOptions = [...options];
     updatedOptions.push('');
     handleOptionsChange(updatedOptions);
   };
   const handleRemoveOptionField = (id) => () => {
-    let updatedOptions = [...options];
+    const updatedOptions = [...options];
     updatedOptions.splice(id, 1);
     handleOptionsChange(updatedOptions);
   };
@@ -181,7 +181,7 @@ function OptFieldOption(props) {
   const TypeIcon = () => {
     if (isCheckbox) return (<CheckBoxOutlineBlankIcon className={classes.optionIcon} />);
     else return (<RadioButtonUncheckedIcon className={classes.optionIcon} />);
-  }
+  };
 
   return (
     <div className={classes.optField}>
@@ -207,7 +207,7 @@ OptFieldOption.propTypes = {
 const OptionalFieldOption = withStyles(styles)(OptFieldOption);
 
 function EventOptionalFieldsCreator(props) {
-  const { classes, handleOptionalFields, optionalFields } = props;
+  const {classes, handleOptionalFields, optionalFields} = props;
   const [newQuestionMenu, setNewQuestionMenu] = useState(null);
 
   const handleFieldMenuClick = (event) => setNewQuestionMenu(event.currentTarget);
@@ -223,15 +223,15 @@ function EventOptionalFieldsCreator(props) {
 
   const handleAddOptionalTextField = () => {
     handleFieldMenuClose();
-    handleOptionalFields(optionalFields.concat([{ option_type: 0, title: '', required: true }]));
+    handleOptionalFields(optionalFields.concat([{option_type: 0, title: '', required: true}]));
   };
   const handleAddOptionalRadioField = () => {
     handleFieldMenuClose();
-    handleOptionalFields(optionalFields.concat([{ option_type: 1, title: '', required: true, alternatives: [''] }]));
+    handleOptionalFields(optionalFields.concat([{option_type: 1, title: '', required: true, alternatives: ['']}]));
   };
   const handleAddOptionalCheckboxField = () => {
     handleFieldMenuClose();
-    handleOptionalFields(optionalFields.concat([{ option_type: 2, title: '', required: true, alternatives: [''] }]));
+    handleOptionalFields(optionalFields.concat([{option_type: 2, title: '', required: true, alternatives: ['']}]));
   };
 
   const handleRemoveOptionalField = (id) => () => {
@@ -266,9 +266,9 @@ function EventOptionalFieldsCreator(props) {
 }
 
 EventOptionalFieldsCreator.propTypes = {
-    classes: PropTypes.object,
-    optionalFields: PropTypes.array,
-    handleOptionalFields: PropTypes.func,
+  classes: PropTypes.object,
+  optionalFields: PropTypes.array,
+  handleOptionalFields: PropTypes.func,
 };
 
 export default withStyles(styles, {withTheme: true})(EventOptionalFieldsCreator);

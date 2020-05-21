@@ -9,31 +9,30 @@ import Typography from '@material-ui/core/Typography';
 // Icons
 
 const styles = {
-    root: {
-        padding: '15px 5px',
-        height: '100%',
+  root: {
+    padding: '15px 5px',
+    height: '100%',
 
-    },
+  },
 };
 
-
 const MessageIndicator = (props) => {
-    const {classes} = props;
-    return (
-        <Grid className={classes.root} container direction='column' wrap='nowrap' justify='center'>
-            <Typography variant={props.variant || 'h6'} color={props.color || 'default'} align='center' gutterBottom>{props.header}</Typography>
-            <Typography variant='subtitle1' align='center'>{props.subheader}</Typography>
-        </Grid>
-    );
+  const {classes} = props;
+  return (
+    <Grid className={classes.root} container direction='column' wrap='nowrap' justify='center'>
+      <Typography variant={props.variant || 'h6'} color={props.color || 'default'} align='center' gutterBottom>{props.header}</Typography>
+      <Typography variant='subtitle1' align='center'>{props.subheader}</Typography>
+    </Grid>
+  );
 };
 
 MessageIndicator.propTypes = {
-    classes: PropTypes.object,
+  classes: PropTypes.object,
 
-    header: PropTypes.string,
-    subheader: PropTypes.string,
-    color: PropTypes.string,
-    variant: PropTypes.string,
+  header: PropTypes.string,
+  subheader: PropTypes.string,
+  color: PropTypes.string,
+  variant: PropTypes.string,
 };
 
 export default withStyles(styles)(MessageIndicator);

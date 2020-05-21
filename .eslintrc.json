@@ -1,27 +1,74 @@
 {
+    "parser": "babel-eslint",
+    "plugins": [
+        "babel"
+    ],
     "parserOptions": {
-        "ecmaVersion": 7,
+        "ecmaVersion": 11,
         "sourceType": "module",
         "ecmaFeatures": {
             "jsx": true
         }
     },
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
     "extends": [
         "google",
+        "eslint:recommended",
         "plugin:react/recommended"
     ],
     "rules": {
         "require-jsdoc": 0,
         "linebreak-style": 0,
-        "brace-style": 0,
-        "padded-blocks": 0,
+        "brace-style": [
+            "error",
+            "1tbs"
+        ],
+        "padded-blocks": [
+            "error",
+            {
+                "switches": "never",
+                "blocks": "never"
+            }
+        ],
         "max-len": 0,
         "quote-props": 0,
-        "object-curly-spacing": 0,
-        "no-multiple-empty-lines": 0,
+        "object-curly-spacing": [
+            "error",
+            "never"
+        ],
+        "no-multiple-empty-lines": [
+            "error",
+            {
+                "max": 1
+            }
+        ],
         "guard-for-in": 0,
-        "eqeqeq": 0,
+        "eqeqeq": [
+            "error",
+            "always"
+        ],
         "jsx-a11y/accessible-emoji": 0,
-        "no-useless-computed-key": 0
+        "no-useless-computed-key": 0,
+        "no-invalid-this": 0,
+        "babel/no-invalid-this": 1,
+        "no-console": 2
+    },
+    "settings": {
+        "react": {
+            "pragma": "React",
+            "version": "detect",
+            "flowVersion": "0.53"
+        },
+        "linkComponents": [
+            "Hyperlink",
+            {
+                "name": "Link",
+                "linkAttribute": "to"
+            }
+        ]
     }
 }
