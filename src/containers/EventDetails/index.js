@@ -1,6 +1,8 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import URLS from '../../URLS';
+import {usePalette} from 'react-palette';
 
 // Service imports
 import EventService from '../../api/services/EventService';
@@ -14,202 +16,192 @@ import EventRenderer from './components/EventRenderer';
 const styles = {
   root: {
     minHeight: '90vh',
-
   },
   wrapper: {
     maxWidth: 1100,
     margin: 'auto',
-    padding: '0px 48px 48px 48px',
+    padding: '60px 48px 48px 48px',
+    position: 'relative',
 
     '@media only screen and (max-width: 1000px)': {
-      padding: '0px 0px 48px 0px',
+      padding: '60px 0px 48px 0px',
     },
+  },
+  top: {
+    position: 'absolute',
+    width: '100%',
+    overflow: 'hidden',
+
+    '&::after': {
+      position: 'absolute',
+      bottom: 0,
+      borderBottom: 'solid 150px #f8f8fa',
+      borderLeft: '100vw solid rgba(0,0,0,0)',
+      content: '""',
+    },
+  },
+  topInner: {
+    height: 350,
+    padding: 60,
+    transition: '3s',
   },
 };
 
-class EventDetails extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      event: null,
-      isLoading: false,
-      userData: null,
-      userEvent: null,
-      userEventLoaded: false,
-      isLoadingUserData: false,
-      isApplying: false,
-      message: '',
-      applySuccess: false,
-    };
-  }
+function EventDetails(props) {
+  const {classes, match, history} = props;
 
-    loadUserEvent = (prevState) => {
-      const {event, user} = prevState;
-      EventService.getUserEventObject(event.id, user).then((result) => {
-        this.setState({userEvent: result});
-      }).catch(() => {
-        // Actions performed if the user is not attending the event
-      }).then(() => {
-        this.setState({userEventLoaded: true});
+  const [event, setEvent] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [userEvent, setUserEvent] = useState(null);
+  const [userEventLoaded, setUserEventLoaded] = useState(false);
+  const [isLoadingUserData, setIsLoadingUserData] = useState(false);
+  const [isApplying, setIsApplying] = useState(false);
+  const [message, setMessage] = useState('');
+  const [applySuccess, setApplySuccess] = useState(false);
+
+  // Gets the event
+  const loadEvent = () => {
+    // Get eventItem id
+    const id = match.params.id;
+
+    // Load event item
+    setIsLoading(true);
+    EventService.getEventById(id)
+        .then(async (event) => {
+          if (!event) {
+            history.replace(URLS.events); // Redirect to events page given if id is invalid
+          } else {
+            setIsLoading(false);
+            setEvent({...event});
+          }
+        });
+  };
+
+  // Gets the user data
+  const loadUserData = () => {
+    if (AuthService.isAuthenticated()) {
+      setIsLoadingUserData(true);
+      UserService.getUserData().then((userData) => {
+        if (userData) {
+          setUserData(userData);
+        }
+        setIsLoadingUserData(false);
       });
     }
+  };
 
-    // Gets the event
-    loadEvent = () => {
-      // Get eventItem id
-      const id = this.props.match.params.id;
-
-      // Load event item
-      this.setState({isLoading: true});
-      EventService.getEventById(id)
-          .then(async (event) => {
-            if (!event) {
-              this.props.history.replace('/'); // Redirect to landing page given id is invalid
-            } else {
-              this.setState({isLoading: false, event: {...event}});
-            }
-          });
-    };
-
-    // Gets the user data
-    loadUserData = () => {
-      if (AuthService.isAuthenticated()) {
-        this.setState({isLoadingUserData: true});
-        UserService.getUserData().then((userData) => {
-          if (userData) {
-            this.setState({user: userData});
+  const applyToEvent = (optionalFieldsAnswers) => {
+    setIsApplying(true);
+    if (!userEvent) {
+      // Apply to event
+      return EventService.putUserOnEventList(event.id, userData, optionalFieldsAnswers).then((result) => {
+        const newEvent = {...event};
+        if (newEvent.limit <= newEvent.list_count) {
+          newEvent.waiting_list_count++;
+        } else {
+          newEvent.list_count++;
+        }
+        const newUserData = {...userData};
+        newUserData.events.push(newEvent);
+        UserService.updateUserEvents(newUserData.events);
+        setMessage('Påmelding registrert!');
+        setEvent(newEvent);
+        setApplySuccess(true);
+        setUserEventLoaded(false);
+      }).catch(() => {
+        setMessage('Kunne ikke registrere påmelding.');
+        setApplySuccess(false);
+      }).then(() => {
+        setIsApplying(false);
+      });
+    } else {
+      // The reverse
+      return EventService.deleteUserFromEventList(event.id, userData).then((result) => {
+        const newEvent = {...event};
+        if (userEvent.is_on_wait) {
+          newEvent.waiting_list_count--;
+        } else {
+          newEvent.list_count--;
+        }
+        const newUserEvents = [...userData.events];
+        for (let i = 0; i < newUserEvents.length; i++) {
+          if (newUserEvents[i].id === newEvent.id) {
+            newUserEvents.splice(i, 1);
           }
-          this.setState({isLoadingUserData: false});
-        });
+        }
+        UserService.updateUserEvents(newUserEvents);
+        setMessage('Avmelding registrert 😢');
+        setEvent(newEvent);
+        setApplySuccess(true);
+        setUserEvent(null);
+        setUserEventLoaded(false);
+      }).catch(() => {
+        setMessage('Kunne ikke registrere påmelding.');
+        setApplySuccess(false);
+      }).then(() => {
+        setIsApplying(false);
+      });
+    }
+  };
+
+  // Clear the message
+  const clearMessage = () => setMessage('');
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    loadEvent();
+    loadUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!userEventLoaded && event && userData) {
+      EventService.getUserEventObject(event.id, userData).then((result) => {
+        setUserEvent(result);
+      }).finally(() => {
+        setUserEventLoaded(true);
+      });
+    } else if (!userEventLoaded && event && !AuthService.isAuthenticated()) {
+      setUserEventLoaded(true);
+    }
+  }, [event, userData, userEventLoaded]);
+
+  // Find a dominant color in the image, uses a proxy to be able to retrieve images with CORS-policy until all images are stored in our own server
+  const {data} = usePalette(event ? 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=' + encodeURIComponent(event?.image) : '');
+
+  return (
+    <Navigation isLoading={isLoading} footer whitesmoke fancyNavbar>
+      {!isLoading && event &&
+            <div className={classes.root}>
+              <div className={classes.top}>
+                <div className={classes.topInner} style={{background: data.muted ? data.muted : 'var(--gradient-top)'}}></div>
+              </div>
+              <div className={classes.wrapper}>
+                <EventRenderer
+                  eventData={event}
+                  userData={userData}
+                  userEvent={userEvent}
+                  userEventLoaded={userEventLoaded}
+                  history={history}
+                  applyToEvent={applyToEvent}
+                  isLoadingUserData={isLoadingUserData}
+                  isLoadingEvent={isLoading}
+                  isApplying={isApplying}
+                  message={message}
+                  applySuccess={applySuccess}
+                  clearMessage={clearMessage} />
+              </div>
+            </div>
       }
-    }
 
-    applyToEvent = (optionalFieldsAnswers) => {
-      const {event, user, userEvent} = this.state;
-      this.setState({isApplying: true});
-      if (!userEvent) {
-        // Apply to event
-        return EventService.putUserOnEventList(event.id, user, optionalFieldsAnswers).then((result) => {
-          this.setState((oldState) => {
-            const newEvent = oldState.event;
-            if (newEvent.limit <= newEvent.list_count) {
-              newEvent.waiting_list_count++;
-            } else {
-              newEvent.list_count++;
-            }
-            user.events.push(newEvent);
-            UserService.updateUserEvents(user.events);
-            return {
-              message: 'Påmelding registrert!',
-              event: newEvent,
-              applySuccess: true,
-              userEventLoaded: false,
-            };
-          });
-        }).catch(() => {
-          this.setState({message: 'Kunne ikke registrere påmelding.', applySuccess: false});
-        }).then(() => {
-          this.setState({isApplying: false});
-        });
-      } else {
-        // The reverse
-        return EventService.deleteUserFromEventList(event.id, user).then((result) => {
-          this.setState((oldState) => {
-            const newEvent = oldState.event;
-            if (userEvent.is_on_wait) {
-              newEvent.waiting_list_count--;
-            } else {
-              newEvent.list_count--;
-            }
-            for (let i = 0; i < user.events.length; i++) {
-              if (user.events[i].id === newEvent.id) {
-                user.events.splice(i, 1);
-              }
-            }
-            UserService.updateUserEvents(user.events);
-            return {
-              message: 'Avmelding registrert 😢',
-              event: newEvent,
-              applySuccess: true,
-              userEvent: null,
-              userEventLoaded: false,
-            };
-          });
-        }).catch(() => {
-          this.setState({message: 'Kunne ikke registrere påmelding.', applySuccess: false});
-        }).then(() => {
-          this.setState({isApplying: false});
-        });
-      }
-    }
-
-    // Clear the message
-    clearMessage = () => {
-      this.setState({message: ''});
-    }
-
-    componentDidMount() {
-      window.scrollTo(0, 0);
-      // get data here
-      this.loadEvent();
-      this.loadUserData();
-    }
-
-    componentDidUpdate() {
-      const {event, userEventLoaded, user} = this.state;
-      if (!userEventLoaded && event && user) {
-        this.loadUserEvent(this.state);
-      } else if (!userEventLoaded && event && !AuthService.isAuthenticated()) {
-        this.setState({userEventLoaded: true});
-      }
-    }
-
-    render() {
-      const {classes} = this.props;
-      const {
-        event,
-        user,
-        isLoadingUserData,
-        isLoading,
-        isApplying,
-        message,
-        applySuccess,
-        userEvent,
-        userEventLoaded,
-      } = this.state;
-      const eventData = event || {};
-      const userData = user;
-
-      return (
-        <Navigation isLoading={this.state.isLoading} footer whitesmoke>
-          {(this.state.isLoading)? null :
-                    <div className={classes.root}>
-                      <div className={classes.wrapper}>
-                        <EventRenderer
-                          data={eventData}
-                          userData={userData}
-                          userEvent={userEvent}
-                          userEventLoaded={userEventLoaded}
-                          history={this.props.history}
-                          applyToEvent={this.applyToEvent}
-                          isLoadingUserData={isLoadingUserData}
-                          isLoadingEvent={isLoading}
-                          isApplying={isApplying}
-                          message={message}
-                          applySuccess={applySuccess}
-                          clearMessage={this.clearMessage} />
-                      </div>
-                    </div>
-          }
-        </Navigation>
-      );
-    }
+    </Navigation>
+  );
 }
 
 EventDetails.propTypes = {
   classes: PropTypes.object,
   match: PropTypes.object,
-  grid: PropTypes.object,
   history: PropTypes.object,
 };
 

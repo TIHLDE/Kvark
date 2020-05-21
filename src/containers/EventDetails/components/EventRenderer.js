@@ -51,7 +51,6 @@ const styles = {
     height: 'auto',
     maxHeight: 350,
     objectFit: 'cover',
-    border: '1px solid #ddd',
     backgroundColor: '#ddd',
     borderRadius: 5,
     display: 'block',
@@ -217,7 +216,7 @@ PrioritiesContent.propTypes = {
 const EventRenderer = (props) => {
   const {
     classes,
-    data,
+    eventData,
     userData,
     userEvent,
     userEventLoaded,
@@ -230,13 +229,14 @@ const EventRenderer = (props) => {
     clearMessage,
     preview,
   } = props;
+
   const [modalShow, setModalShown] = useState(false);
-  const description = data.description || '';
-  const startDate = moment(data.start_date, ['YYYY-MM-DD HH:mm'], 'nb');
-  const endDate = moment(data.end_date, ['YYYY-MM-DD HH:mm'], 'nb');
-  const signUpStart = moment(data.start_registration_at, ['YYYY-MM-DD HH:mm'], 'nb');
-  const signUpEnd = moment(data.end_registration_at, ['YYYY-MM-DD HH:mm'], 'nb');
-  const signOffDeadline = moment(data.sign_off_deadline, ['YYYY-MM-DD HH:mm'], 'nb');
+  const description = eventData.description || '';
+  const startDate = moment(eventData.start_date, ['YYYY-MM-DD HH:mm'], 'nb');
+  const endDate = moment(eventData.end_date, ['YYYY-MM-DD HH:mm'], 'nb');
+  const signUpStart = moment(eventData.start_registration_at, ['YYYY-MM-DD HH:mm'], 'nb');
+  const signUpEnd = moment(eventData.end_registration_at, ['YYYY-MM-DD HH:mm'], 'nb');
+  const signOffDeadline = moment(eventData.sign_off_deadline, ['YYYY-MM-DD HH:mm'], 'nb');
   const today = moment(new Date(), ['YYYY-MM-DD HH:mm'], 'nb');
 
   const openEventModal = () => {
@@ -255,30 +255,30 @@ const EventRenderer = (props) => {
     clearMessage();
   };
 
-  const limit = data.limit;
-  const attending = data.list_count;
-  const onWait = data.waiting_list_count;
+  const limit = eventData.limit;
+  const attending = eventData.list_count;
+  const onWait = eventData.waiting_list_count;
 
   // Buttons for applying and unapplying to events.
   let applyButton = null;
-  if (data.closed) {
+  if (eventData.closed) {
     applyButton = (
       <Typography align='center' color='error'>{Text.closed}</Typography>
     );
-  } else if (!data.sign_up) {
+  } else if (!eventData.sign_up) {
     applyButton = (
       <Typography align='center'></Typography>
     );
-  } else if (data.sign_up && today > signUpEnd) {
+  } else if (eventData.sign_up && today > signUpEnd) {
     applyButton = (
       <Typography align='center'>{Text.signUpEnded}</Typography>
     );
-  } else if (data.sign_up && today < signUpStart) {
+  } else if (eventData.sign_up && today < signUpStart) {
     applyButton = (
       <Typography align='center'>{Text.inactive}</Typography>
 
     );
-  } else if (data.sign_up && userEvent && today > signOffDeadline) {
+  } else if (eventData.sign_up && userEvent && today > signOffDeadline) {
     applyButton = (
       <React.Fragment>
         <Button
@@ -322,7 +322,7 @@ const EventRenderer = (props) => {
       {modalShow === true && userData &&
               <EventDialog
                 onClose={closeEventModal}
-                data={data}
+                data={eventData}
                 userData={userData}
                 userEvent={userEvent}
                 status={modalShow}
@@ -330,15 +330,15 @@ const EventRenderer = (props) => {
                 isApplying={isApplying}
                 message={message}
                 applySuccess={applySuccess} />}
-      {data.image && <img className={classes.image} src={data.image} alt={data.image_alt} /> }
+      {eventData.image && <img className={classes.image} src={eventData.image} alt={eventData.image_alt} /> }
       <div className={classes.grid} >
         <div>
           <div className={classes.details}>
             <DetailContent title="Fra: " info={getDate(moment(startDate, ['YYYY-MM-DD HH:mm'], 'nb'))} />
             <DetailContent title="Til: " info={getDate(moment(endDate, ['YYYY-MM-DD HH:mm'], 'nb'))} />
-            <DetailContent title="Sted: " info={data.location} />
+            <DetailContent title="Sted: " info={eventData.location} />
           </div>
-          {data.sign_up &&
+          {eventData.sign_up &&
                     <div className={classes.details}>
                       <DetailContent title="Påmeldte:" info={attending + '/' + limit} />
                       <DetailContent title="Venteliste:" info={onWait + ''} />
@@ -347,11 +347,11 @@ const EventRenderer = (props) => {
                       {userEvent && <DetailContent title="Avmeldingsfrist:" info={getDate(moment(signOffDeadline, ['YYYY-MM-DD HH:mm'], 'nb'))} /> }
                     </div>
           }
-          {data.sign_up && data.registration_priorities && data.registration_priorities.length < 14 ?
+          {eventData.sign_up && eventData.registration_priorities && eventData.registration_priorities.length < 14 ?
                     <div className={classes.details}>
-                      <PrioritiesContent title="Prioritert:" priorities={data.registration_priorities} />
+                      <PrioritiesContent title="Prioritert:" priorities={eventData.registration_priorities} />
                     </div> :
-                    data.sign_up && data.registration_priorities &&
+                    eventData.sign_up && eventData.registration_priorities &&
                     <div className={classes.details}>
                       <Grid className={props.classes.info} container wrap='nowrap' alignItems='center' justify='flex-start'>
                         <Typography className={props.classes.ml} variant='subtitle1'>Prioritert:</Typography>
@@ -366,7 +366,7 @@ const EventRenderer = (props) => {
                     </div>}
         </div>
         <div className={classes.content}>
-          <Typography className={classes.title} variant='h5'><strong>{data.title}</strong></Typography>
+          <Typography className={classes.title} variant='h5'><strong>{eventData.title}</strong></Typography>
           <MarkdownRenderer className={classes.description} value={description} />
         </div>
       </div>
@@ -376,7 +376,7 @@ const EventRenderer = (props) => {
 
 EventRenderer.propTypes = {
   classes: PropTypes.object,
-  data: PropTypes.object.isRequired,
+  eventData: PropTypes.object.isRequired,
   userData: PropTypes.object,
   userEvent: PropTypes.object,
   userEventLoaded: PropTypes.bool,

@@ -1,6 +1,8 @@
 {
     "parser": "babel-eslint",
     "plugins": [
+        "react",
+        "react-hooks",
         "babel"
     ],
     "parserOptions": {

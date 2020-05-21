@@ -27,7 +27,7 @@ class EventPreview extends Component {
     return (
       <Modal open={this.props.open} onClose={this.props.onClose} disableAutoFocus classes={{root: classes.overflow}}>
         <div className={classes.root}>
-          <EventRenderer data={this.props.data} preview={true}/>
+          <EventRenderer eventData={this.props.data} preview={true}/>
         </div>
       </Modal>
     );
