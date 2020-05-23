@@ -201,7 +201,7 @@ const PrioritiesContent = withStyles(styles)((props) => {
       <Typography className={props.classes.ml} variant='subtitle1'>{props.title}</Typography>
       <div className={props.classes.prioritiesContainer}>
         {Dataing}{DigFor}{DigInc}{DigSam}{Drift}
-        {priorities.map(function(priority, index) {
+        {priorities.map(function (priority, index) {
           return (<Typography className={props.classes.priority} variant='subtitle1' key={index}>{priority.user_class + '. ' + getUserStudyShort(priority.user_study)}</Typography>);
         })}
       </div>
@@ -341,7 +341,7 @@ const EventRenderer = (props) => {
           {eventData.sign_up &&
                     <div className={classes.details}>
                       <DetailContent title="Påmeldte:" info={attending + '/' + limit} />
-                      <DetailContent title="Venteliste:" info={onWait + ''} />
+                      <DetailContent title="Venteliste:" info={String(onWait)} />
                       {today <= signUpStart && !userEvent && <DetailContent title="Påmeldingsstart:" info={getDate(moment(signUpStart, ['YYYY-MM-DD HH:mm'], 'nb'))} /> }
                       {today > signUpStart && today < signUpEnd && !userEvent && <DetailContent title="Påmeldingsslutt:" info={getDate(moment(signUpEnd, ['YYYY-MM-DD HH:mm'], 'nb'))} /> }
                       {userEvent && <DetailContent title="Avmeldingsfrist:" info={getDate(moment(signOffDeadline, ['YYYY-MM-DD HH:mm'], 'nb'))} /> }

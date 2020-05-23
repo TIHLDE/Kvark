@@ -536,9 +536,9 @@ class EventAdministrator extends Component {
     render() {
       const {classes} = this.props;
       const {selectedEvent, title, location, description, evaluateLink, image, priority, registrationPriorities, categories, category, signUp, optionalFields, showParticipants, limit, participants} = this.state;
-      const selectedEventId = (selectedEvent)? selectedEvent.id : '';
+      const selectedEventId = (selectedEvent) ? selectedEvent.id : '';
       const isNewItem = (selectedEvent === null);
-      const header = (isNewItem)? 'Lag et nytt arrangement' : 'Endre arrangement';
+      const header = (isNewItem) ? 'Lag et nytt arrangement' : 'Endre arrangement';
 
       return (
         <Fragment>
@@ -574,8 +574,8 @@ class EventAdministrator extends Component {
                           closeParticipants={this.handleToggleChange('showParticipants')}
                           toggleUserEvent={this.toggleUserEvent} /> :
                       <React.Fragment>
-                        {(this.state.isLoading)? <Grid className={classes.progress} container justify='center' alignItems='center'><CircularProgress /></Grid> :
-                          (this.state.showSuccessMessage)? <MessageView title={this.state.successMessage} buttonText='Nice' onClick={this.toggleSuccessView}/> :
+                        {(this.state.isLoading) ? <Grid className={classes.progress} container justify='center' alignItems='center'><CircularProgress /></Grid> :
+                          (this.state.showSuccessMessage) ? <MessageView title={this.state.successMessage} buttonText='Nice' onClick={this.toggleSuccessView}/> :
                               <form>
                                 <Grid container direction='column' wrap='nowrap'>
                                   <Typography variant='h5'>{header}</Typography>
@@ -705,7 +705,7 @@ class EventAdministrator extends Component {
                                   </div>
 
                                   <Grid container direction='row' wrap='nowrap' justify='space-between'>
-                                    {(isNewItem)?
+                                    {(isNewItem) ?
                                               <div>
                                                 <Button className={classes.mr} onClick={this.createNewEvent} type='submit' variant='contained' color='primary'>Lag nytt event</Button>
                                                 <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>

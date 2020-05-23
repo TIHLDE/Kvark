@@ -148,14 +148,14 @@ const getDate = (date) => {
 
 const EventListItem = (props) => {
   const {classes, data} = props;
-  const src = (data.image)? data.image : TIHLDELOGO;
+  const src = (data.image) ? data.image : TIHLDELOGO;
   const start = moment(data.start_date, ['YYYY-MM-DD HH:mm'], 'nb');
   return (
     <Link to={URLS.events + ''.concat(data.id, '/')} className={classes.link}>
       <ListItem className={classes.root} button >
-        <img className={classNames(classes.src, (data.expired)? classes.filter : '')} src={src} alt={data.title} />
+        <img className={classNames(classes.src, (data.expired) ? classes.filter : '')} src={src} alt={data.title} />
         <Grid className={classes.content} container direction='column' wrap='nowrap'>
-          <Typography className={classNames(classes.title, (data.expired)? classes.expired : '')} variant='h5'>
+          <Typography className={classNames(classes.title, (data.expired) ? classes.expired : '')} variant='h5'>
             <strong>{data.title}</strong>
           </Typography>
           <InfoContent icon={<Date className={classes.icon}/>} label={getDate(start)} />

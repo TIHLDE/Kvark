@@ -66,7 +66,7 @@ const EventItem = withStyles(styles, {withTheme: true})((props) => {
   return (
     <Fragment>
       <ButtonBase className={classes.eventButton} onClick={props.onClick}>
-        <Grid className={classNames(classes.eventItem, (props.selected)? classes.selected : '' )} container direction='row' alignItems='center' justify='space-between'>
+        <Grid className={classNames(classes.eventItem, (props.selected) ? classes.selected : '')} container direction='row' alignItems='center' justify='space-between'>
           <Grid container direction='column' justify='center'>
             <Typography variant='subtitle1' color='inherit'>{props.title}</Typography>
             <Typography variant='caption' color='inherit'>{props.location}</Typography>

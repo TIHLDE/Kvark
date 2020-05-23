@@ -49,7 +49,7 @@ export default {
 
   // Job posts
   getJobPosts: (data) => {
-    return new IRequest('GET', 'jobpost/', (data)? data : {newest: true});
+    return new IRequest('GET', 'jobpost/', (data) ? data : {newest: true});
   },
   getJobPost: (id) => {
     return new IRequest('GET', 'jobpost/'.concat(id, '/'), undefined);

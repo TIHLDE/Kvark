@@ -261,9 +261,7 @@ const EventDialog = (props) => {
       if (optField.required) {
         if (optField.option_type === 2) {
           if (!optField.answer || !optField.answer.length) isNotAnswered = true;
-        } else {
-          if (optField.answer.trim() === '') isNotAnswered = true;
-        }
+        } else if (optField.answer.trim() === '') isNotAnswered = true;
       }
     });
     return isNotAnswered;

@@ -23,41 +23,101 @@
         "plugin:react/recommended"
     ],
     "rules": {
-        "require-jsdoc": 0,
-        "linebreak-style": 0,
+        "array-bracket-spacing": [
+            "error",
+            "never"
+        ],
+        "arrow-spacing": "error",
+        "babel/no-invalid-this": "warn",
+        "block-spacing": [
+            "error",
+            "never"
+        ],
         "brace-style": [
             "error",
             "1tbs"
         ],
-        "padded-blocks": [
+        "comma-spacing": "error",
+        "comma-style": [
+            "error",
+            "last"
+        ],
+        "eol-last": "error",
+        "eqeqeq": [
+            "error",
+            "always"
+        ],
+        "func-call-spacing": "error",
+        "function-call-argument-newline": ["error", "never"],
+        "guard-for-in": "off",
+        "jsx-a11y/accessible-emoji": "off",
+        "key-spacing": [
+            "error"
+        ],
+        "keyword-spacing": "error",
+        "linebreak-style": "off",
+        "max-len": "off",
+        "newline-per-chained-call": [
             "error",
             {
-                "switches": "never",
-                "blocks": "never"
+                "ignoreChainWithDepth": 3
             }
         ],
-        "max-len": 0,
-        "quote-props": 0,
-        "object-curly-spacing": [
+        "no-console": "error",
+        "no-empty-function": [
             "error",
-            "never"
+            {
+                "allow": ["arrowFunctions"]
+            }
         ],
+        "no-implicit-coercion": "error",
+        "no-invalid-this": "off",
+        "no-lonely-if": "error",
+        "no-multi-spaces": "error",
         "no-multiple-empty-lines": [
             "error",
             {
                 "max": 1
             }
         ],
-        "guard-for-in": 0,
-        "eqeqeq": [
+        "no-unneeded-ternary": "error",
+        "no-useless-computed-key": "off",
+        "no-useless-return": "error",
+        "no-whitespace-before-property": "error",
+        "object-curly-spacing": [
             "error",
-            "always"
+            "never"
         ],
-        "jsx-a11y/accessible-emoji": 0,
-        "no-useless-computed-key": 0,
-        "no-invalid-this": 0,
-        "babel/no-invalid-this": 1,
-        "no-console": 2
+        "padded-blocks": [
+            "error",
+            {
+                "blocks": "never",
+                "switches": "never"
+            }
+        ],
+        "quote-props": "off",
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "require-jsdoc": "off",
+        "space-before-blocks": "error",
+        "space-before-function-paren": [
+            "error",
+            {
+                "anonymous": "always",
+                "asyncArrow": "always",
+                "named": "never"
+            }
+        ],
+        "space-in-parens": "error",
+        "space-infix-ops": [
+            "error",
+            {
+                "int32Hint": true
+            }
+        ],
+        "switch-colon-spacing": "error"
     },
     "settings": {
         "react": {

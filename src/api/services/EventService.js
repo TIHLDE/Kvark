@@ -6,7 +6,7 @@ import * as EventActions from '../../store/actions/EventActions';
 class EventService {
 
     // Fetches events
-    static getEvents = async (filters=null, orderBy=null, callback=null) => {
+    static getEvents = async (filters = null, orderBy = null, callback = null) => {
       // Fetch events
       const response = API.getEventItems(filters).response();
       return response.then((data) => {
@@ -16,7 +16,7 @@ class EventService {
         // If orderby is provided, sort the data
         if (orderBy && response.isError === false) {
           for (const key in orderBy) {
-            results = results.sort((a, b) => (a[key] === b[key])? 0 : a[key] ? 1 : -1);
+            results = results.sort((a, b) => (a[key] === b[key]) ? 0 : a[key] ? 1 : -1);
           }
           if (data.results) {
             data.results = results;
@@ -31,7 +31,7 @@ class EventService {
     }
 
     // Get event by id
-    static getEventById = async (id, callback=null) => {
+    static getEventById = async (id, callback = null) => {
       // Does event already exists?
       const event = EventActions.getEventById(id)(store.getState());
       if (event) {
@@ -51,7 +51,7 @@ class EventService {
       }
     }
 
-    static createNewEvent = async (eventData, callback=null) => {
+    static createNewEvent = async (eventData, callback = null) => {
       // Create new Event Item
       const response = API.createEventItem(eventData).response();
       return response.then((data) => {
@@ -60,7 +60,7 @@ class EventService {
       });
     }
 
-    static putEvent = async (id, eventData, callback=null) => {
+    static putEvent = async (id, eventData, callback = null) => {
       const response = API.putEventItem(id, eventData).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
@@ -69,7 +69,7 @@ class EventService {
     }
 
     // Deleting an event by given id
-    static deleteEvent = async (id, callback=null) => {
+    static deleteEvent = async (id, callback = null) => {
       const response = API.deleteEventItem(id).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
@@ -77,7 +77,7 @@ class EventService {
       });
     }
 
-    static getEventLists = async (callback=null) => {
+    static getEventLists = async (callback = null) => {
       // Get all eventlists
       const response = API.getEventLists().response();
       return response.then((data) => {
@@ -86,7 +86,7 @@ class EventService {
       });
     }
 
-    static getCategories = async (callback=null) => {
+    static getCategories = async (callback = null) => {
       // Fetching categories
       const response = API.getCategories().response();
       return response.then((data) => {
@@ -99,7 +99,7 @@ class EventService {
       });
     }
 
-    static getExpiredData = async (callback=null) => {
+    static getExpiredData = async (callback = null) => {
       const response = API.getExpiredEvents().response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
@@ -111,7 +111,7 @@ class EventService {
       });
     }
 
-    static putAttended = async (eventId, item, username, callback=null) => {
+    static putAttended = async (eventId, item, username, callback = null) => {
       const response = API.putAttended(eventId, item, username).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
@@ -119,7 +119,7 @@ class EventService {
       });
     }
 
-    static getEventParticipants = (id, callback=null) => {
+    static getEventParticipants = (id, callback = null) => {
       const response = API.getEventParticipants(id).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, response.status);
@@ -131,7 +131,7 @@ class EventService {
       });
     }
 
-    static putUserOnEventList = (id, userData, optionalFieldsAnswers, callback=null) => {
+    static putUserOnEventList = (id, userData, optionalFieldsAnswers, callback = null) => {
       userData = {user_id: userData.user_id, event: id, optional_fields_answers: optionalFieldsAnswers};
       const response = API.putUserOnEventList(id, userData).response();
       return response.then((data) => {
@@ -144,7 +144,7 @@ class EventService {
       });
     }
 
-    static deleteUserFromEventList = (id, userData, callback=null) => {
+    static deleteUserFromEventList = (id, userData, callback = null) => {
       userData = {user_id: userData.user_id, event: id};
       const response = API.deleteUserFromEventList(id, userData).response();
       return response.then((data) => {
@@ -157,7 +157,7 @@ class EventService {
       });
     }
 
-    static updateUserEvent = (id, userData, callback=null) => {
+    static updateUserEvent = (id, userData, callback = null) => {
       userData = {...userData, event: id};
       const response = API.updateUserEvent(id, userData).response();
       return response.then((data) => {
@@ -170,7 +170,7 @@ class EventService {
       });
     }
 
-    static getUserEventObject = (id, userData, callback=null) => {
+    static getUserEventObject = (id, userData, callback = null) => {
       userData = {...userData, event: id};
       const response = API.getUserEventObject(id, userData).response();
       return response.then((data) => {

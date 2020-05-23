@@ -67,7 +67,7 @@ const ProfileNotifications = (props) => {
 
   return (
     <React.Fragment>
-      {!isLoading ? messageList:
+      {!isLoading ? messageList :
                 <Typography align='center' variant='subtitle1'>Laster notifikasjoner.</Typography>
       }
     </React.Fragment>

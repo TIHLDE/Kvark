@@ -53,7 +53,7 @@ const LinkButton = (props) => {
   if (noText) {
     buttonContent = children;
   } else {
-    buttonContent= (
+    buttonContent = (
       <Typography variant='subtitle1' className={classes.text}>
         {children}
       </Typography>
@@ -66,7 +66,7 @@ const LinkButton = (props) => {
   }
 
   return (
-    <div className={classNames(classes.wrapper, noPadding ? null: classes.padding)}>
+    <div className={classNames(classes.wrapper, noPadding ? null : classes.padding)}>
       <div className={classNames(classes.buttonFrame, textLeft ? classes.textLeft : classes.textCenter)}>
         <ButtonBase
           className={classNames('clickable', classes.button)}

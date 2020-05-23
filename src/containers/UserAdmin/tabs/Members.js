@@ -135,7 +135,7 @@ class Members extends Component {
         // Get the page number from the object if it exist
         const nextPage = urlParameters['page'] ? urlParameters['page'] : null;
 
-        this.setState((oldState)=>{
+        this.setState((oldState) => {
           // If we allready have Members
           if (replace) {
             displayedMembers = oldState.members.concat(displayedMembers);
@@ -158,7 +158,7 @@ class Members extends Component {
 
       await this.setState({isFetching: true, nextPage: null, events: [], expiredShown: false});
       // If no filters requested, just load the members
-      if ( search === '' && userStudyChoice === 0 && userClassChoice === 0) {
+      if (search === '' && userStudyChoice === 0 && userClassChoice === 0) {
         this.loadMembers();
       } else {
         const filters = {};
@@ -194,7 +194,7 @@ class Members extends Component {
         if (userStudyChoice && userStudyChoice !== 0) filters.user_study = userStudyChoice;
         if (userClassChoice && userClassChoice !== 0) filters.user_class = userClassChoice;
       }
-      this.loadMembers(filters, true );
+      this.loadMembers(filters, true);
     }
 
     handleDelete = async (id) => {
@@ -232,7 +232,7 @@ class Members extends Component {
                 </MenuItem>
               ))}
             </TextField>
-            <TextField className={classes.box} value={this.state.search} label='Søk' fullWidth placeholder='Søk...' onChange={(e)=>{
+            <TextField className={classes.box} value={this.state.search} label='Søk' fullWidth placeholder='Søk...' onChange={(e) => {
               this.setState({search: e.target.value}); this.searchForData(e);
             }}/>
           </div>

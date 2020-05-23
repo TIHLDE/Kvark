@@ -121,16 +121,17 @@ class ProfilePaper extends Component {
   }
 
     loadUserData = () => {
-      UserService.getUserData().then((user) => {
-        if (user) {
-          user.notifications.reverse();
-          this.setState({userData: user});
-        }
-      }).catch(() => {
-
-      }).then(() => {
-        this.setState({isLoading: false});
-      });
+      UserService.getUserData()
+          .then((user) => {
+            if (user) {
+              user.notifications.reverse();
+              this.setState({userData: user});
+            }
+          })
+          .catch(() => {})
+          .then(() => {
+            this.setState({isLoading: false});
+          });
     }
 
     loadIsGroupMember = () => {
@@ -188,7 +189,7 @@ class ProfilePaper extends Component {
                       userId={this.state.userData.user_id}
                       status={this.state.modalShow} />
           }
-          <div className={classNames(classes.profileCircle)}>{ this.state.userData.first_name !== undefined ? (this.state.userData.first_name).substring(0, 1) + '' + (this.state.userData.last_name).substring(0, 1) : <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant="text" /> }</div>
+          <div className={classNames(classes.profileCircle)}>{ this.state.userData.first_name !== undefined ? String((this.state.userData.first_name).substring(0, 1)) + (this.state.userData.last_name).substring(0, 1) : <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant="text" /> }</div>
           <Typography className={classes.textMargin} variant='h4'>{ this.state.userData.first_name !== undefined ? this.state.userData.first_name + ' ' + this.state.userData.last_name : <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="75%" /> }</Typography>
           <Typography className={classes.textMargin} variant='subtitle1'>{ this.state.userData.email !== undefined ? this.state.userData.email : <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="45%" /> }</Typography>
           <div className={classes.buttonsContainer}>

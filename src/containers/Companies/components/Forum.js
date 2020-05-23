@@ -75,7 +75,7 @@ const semester = [
   {name: sDate(3)},
 ];
 
-const arrangementer =[
+const arrangementer = [
   {name: 'Faglig Arrangement'},
   {name: 'Bedriftsekskursjon'},
   {name: 'Bedriftspresentasjon'},

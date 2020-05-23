@@ -28,11 +28,11 @@ const EventParticipants = (props) => {
   };
   const classNo = (userClass) => {
     const no = (participants.filter((x) => x.user_info.user_class === userClass).length);
-    return no > 0 ? no: '';
+    return no > 0 ? no : '';
   };
   const studyNo = (userStudy) => {
     const no = (participants.filter((x) => x.user_info.user_study === userStudy).length);
-    return no > 0 ? no: '';
+    return no > 0 ? no : '';
   };
   const classData = [{name: '1. klasse', 'c': classNo(1)}, {name: '2. klasse', 'c': classNo(2)}, {name: '3. klasse', 'c': classNo(3)}, {name: '4. klasse', 'c': classNo(4)}, {name: '5. klasse', 'c': classNo(5)}];
   const studyData = [{name: 'Data', 'c': studyNo(1)}, {name: 'DigFor', 'c': studyNo(2)}, {name: 'DigInc', 'c': studyNo(3)}, {name: 'DigSam', 'c': studyNo(4)}, {name: 'Drift', 'c': studyNo(5)}];

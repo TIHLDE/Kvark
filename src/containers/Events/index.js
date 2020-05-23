@@ -140,7 +140,7 @@ class Events extends Component {
           page: this.state.nextPage,
           ...urlParameters,
         };
-      } else if (this.state.events.length > 0 ) {
+      } else if (this.state.events.length > 0) {
         // Abort if we have noe more pages and allready have loaded evrything
         this.setState({isFetching: false});
         return;
@@ -242,7 +242,7 @@ class Events extends Component {
         this.loadEvents();
       } else {
         // Requested filters
-        const filters = (category && category !== 0)? {category: category} : {search: search};
+        const filters = (category && category !== 0) ? {category: category} : {search: search};
         this.loadEvents(filters);
       }
     }
@@ -252,7 +252,7 @@ class Events extends Component {
       const category = this.state.category;
       let filters = null;
       if (search || category) {
-        filters = (category && category !== 0)? {category: category} : {search: search};
+        filters = (category && category !== 0) ? {category: category} : {search: search};
       }
       this.loadEvents(filters, filters ? {expired: true} : null);
     }

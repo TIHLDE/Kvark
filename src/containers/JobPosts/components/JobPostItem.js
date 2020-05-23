@@ -110,13 +110,13 @@ InfoContent.propTypes = {
 
 const JobPostItem = (props) => {
   const {classes, data} = props;
-  const src = (data.image)? data.image : TIHLDELOGO;
+  const src = (data.image) ? data.image : TIHLDELOGO;
   const start = moment(data.deadline, ['YYYY-MM-DD HH:mm'], 'nb');
   return (
     <ListItem className={classes.root} button onClick={props.onClick}>
-      <img className={classNames(classes.src, (data.expired)? classes.filter : '')} src={src} alt={data.title} />
+      <img className={classNames(classes.src, (data.expired) ? classes.filter : '')} src={src} alt={data.title} />
       <Grid className={classes.content} container direction='column' wrap='nowrap'>
-        <Typography className={classNames(classes.title, (data.expired)? classes.expired : '')} variant='h6' gutterBottom>
+        <Typography className={classNames(classes.title, (data.expired) ? classes.expired : '')} variant='h6' gutterBottom>
           <strong>{data.title}</strong>
         </Typography>
         <InfoContent icon={<Business className={classes.icon}/>} label={data.company} />

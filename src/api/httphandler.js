@@ -3,7 +3,7 @@ import COOKIE from './cookie';
 import {TOKEN_HEADER_NAME, TIHLDE_API, ACCESS_TOKEN} from '../settings';
 
 export class IRequest {
-  constructor(method, url, data={}, withAuth=true, args={}) {
+  constructor(method, url, data = {}, withAuth = true, args = {}) {
     this.method = method;
     this.data = data;
     this.headers = {'Content-Type': 'application/json'};
@@ -61,7 +61,7 @@ const request = (method, url, headers, data) => {
 };
 
 const getRequest = (method, url, headers, args) => {
-  return fetch(url+argsToParams(args), {
+  return fetch(url + argsToParams(args), {
     method: method,
     headers: headers,
   })
@@ -71,7 +71,7 @@ const getRequest = (method, url, headers, args) => {
 const argsToParams = (data) => {
   let args = '?';
   for (const key in data) {
-    if (Array.isArray(data[key]) ) {
+    if (Array.isArray(data[key])) {
       for (const value in data[key]) {
         args += '&' + key + '=' + data[key][value];
       }

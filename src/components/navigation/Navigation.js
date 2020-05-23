@@ -268,7 +268,7 @@ const PersonIcon = withStyles(styles)((props) => {
       <Button>
         <div className={classes.profileContainer} >
           <div className={classes.profileName}>{ user.first_name !== undefined ? user.first_name : <Skeleton className={classes.skeleton} variant="text" width={75} /> }</div>
-          <div className={classNames(classes.profileCircle)}>{ user.first_name !== undefined ? (user.first_name).substring(0, 1) + '' + (user.last_name).substring(0, 1) : <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant="text" /> }</div>
+          <div className={classNames(classes.profileCircle)}>{ user.first_name !== undefined ? String((user.first_name).substring(0, 1)) + (user.last_name).substring(0, 1) : <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant="text" /> }</div>
         </div>
       </Button>
     </Link>

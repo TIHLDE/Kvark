@@ -26,7 +26,7 @@ export default {
   kontkom: `KontorKomitén har ansvaret for kontoret og TIHLDEs kioskvirksomhet.
     I tillegg til å være kontoransvarlige, jobber også komitéen med å arrangere flere koselige arrangementer, som er med på å spre glede gjennom semesteret for TIHLDEs medlemmer!`,
 
-  arrkom: `Arrangementskomitéen til TIHLDE har ansvar for alle store sosiale arrangementer utenom rene fester. Dette er naturlig nok stor variasjon i typen arrangementer, og jobben er derfor svært variert. Arrangementer som galla, LAN, og Julebord er typiske arrangementer som ArrKom planlegger og gjennomfører.`,
+  arrkom: 'Arrangementskomitéen til TIHLDE har ansvar for alle store sosiale arrangementer utenom rene fester. Dette er naturlig nok stor variasjon i typen arrangementer, og jobben er derfor svært variert. Arrangementer som galla, LAN, og Julebord er typiske arrangementer som ArrKom planlegger og gjennomfører.',
   arrkom2: `ArrKom er direkte underlagt undergruppen Sosialen, og opptak til ArrKom skjer gjennom Sosialen.
     Om du ønsker å være med, så åpner Sosialen for opptak 31. august i år. Følg med på tihlde.org, og vår <a target="_blank" rel="noopener noreferrer" href="http://facebook.com/tihlde">Facebookside</a>, for informasjon rundt opptaket.`,
 

@@ -49,16 +49,19 @@ class Calender extends React.Component {
   }
 
   componentDidMount() {
-    EventService.getEvents().then((eventObject) => {
-      // This lines ensures backward compabillity with the old api.
-      const events = eventObject.results === undefined ? eventObject : eventObject.results;
+    EventService.getEvents()
+        .then((eventObject) => {
+          // This lines ensures backward compabillity with the old api.
+          const events = eventObject.results === undefined ? eventObject : eventObject.results;
 
-      this.setState({events: events});
-    }).catch(() => {
+          this.setState({events: events});
+        })
+        .catch(() => {
 
-    }).then(() => {
-      this.setState({isLoading: false});
-    });
+        })
+        .then(() => {
+          this.setState({isLoading: false});
+        });
   }
 
   handleChange(event, newValue) {

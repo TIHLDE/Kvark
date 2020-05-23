@@ -24,10 +24,10 @@ class UserService {
         return null;
       }
     }
-    static getUsers = async (filters = null) =>{
+    static getUsers = async (filters = null) => {
       if (AuthService.isAuthenticated()) {
         return API.getUsers(filters).response()
-            .then((data)=>{
+            .then((data) => {
               return data;
             });
       }
@@ -49,7 +49,7 @@ class UserService {
       return {'isHS': isHS, 'isPromo': isPromo, 'isNok': isNok, 'isDevkom': isDevkom};
     }
 
-    static updateUserData = async (userName, userData, callback=null) => {
+    static updateUserData = async (userName, userData, callback = null) => {
       const response = API.updateUserData(userName, userData).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
@@ -57,7 +57,7 @@ class UserService {
       });
     }
 
-    static updateUserEvents = async (events, callback=null) => {
+    static updateUserEvents = async (events, callback = null) => {
       return UserActions.updateUserEvents(events);
     }
 }

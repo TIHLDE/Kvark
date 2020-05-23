@@ -176,7 +176,7 @@ class EventRegistration extends Component {
 
   canvasLoad() {
     let video; let canvasElement; let canvas;
-    const timer = setInterval(function() {
+    const timer = setInterval(function () {
       if (document.getElementById('canvas') !== null) clearInterval(timer);
       video = document.createElement('video');
       canvasElement = document.getElementById('canvas');
@@ -194,7 +194,7 @@ class EventRegistration extends Component {
     };
 
     const startQrScan = () => {
-      navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}}).then(function(stream) {
+      navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}}).then(function (stream) {
         video.srcObject = stream;
         video.setAttribute('playsinline', true);
         video.setAttribute('muted', true);

@@ -40,7 +40,7 @@ const style = {
 
 const MessageGDPR = (props) => {
   const {classes} = props;
-  const cookieValue = COOKIE.get(ACCEPTED_ANALYTICS) ? false : true;
+  const cookieValue = !COOKIE.get(ACCEPTED_ANALYTICS);
   const [displayState, setDisplayState] = useState(cookieValue);
 
   const closeDialog = () => {

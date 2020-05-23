@@ -5,7 +5,7 @@ import * as JobPostActions from '../../store/actions/JobPostActions';
 class JobPostService {
 
     // Fetches job posts
-    static getJobPosts = async (filters=null, orderBy=null) => {
+    static getJobPosts = async (filters = null, orderBy = null) => {
       // Fetch job posts
       const response = API.getJobPosts(filters).response();
       return response.then((data) => {
@@ -15,7 +15,7 @@ class JobPostService {
         // If orderby is provided, sort the data
         if (orderBy) {
           for (const key in orderBy) {
-            results = results.sort((a, b) => (a[key] === b[key])? 0 : a[key] ? 1 : -1);
+            results = results.sort((a, b) => (a[key] === b[key]) ? 0 : a[key] ? 1 : -1);
           }
           if (data.results) {
             data.results = results;
@@ -41,7 +41,7 @@ class JobPostService {
       }
     };
 
-    static createJobPost = async (postData, callback=null) => {
+    static createJobPost = async (postData, callback = null) => {
       // Create new JobPost Item
       const response = API.createJobPost(postData).response();
       return response.then((data) => {
@@ -51,7 +51,7 @@ class JobPostService {
     }
 
     // Edit job post
-    static putJobPost = async (id, postData, callback=null) => {
+    static putJobPost = async (id, postData, callback = null) => {
       const response = API.putJobPost(id, postData).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
@@ -60,7 +60,7 @@ class JobPostService {
     }
 
     // Deleting a jobpost by given id
-    static deleteJobPost = async (id, callback=null) => {
+    static deleteJobPost = async (id, callback = null) => {
       const response = API.deleteJobPost(id).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
@@ -68,7 +68,7 @@ class JobPostService {
       });
     }
 
-    static getExpiredData = async (callback=null) => {
+    static getExpiredData = async (callback = null) => {
       const response = API.getExpiredJobPosts().response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);

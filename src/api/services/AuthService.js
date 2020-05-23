@@ -52,7 +52,6 @@ class AuthService {
       // Log out
       COOKIE.remove(ACCESS_TOKEN);
       UserActions.clearData()(store.dispatch);
-      return;
     }
 }
 

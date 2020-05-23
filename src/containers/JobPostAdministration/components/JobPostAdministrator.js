@@ -129,7 +129,7 @@ const JobPostItem = withStyles(styles, {withTheme: true})((props) => {
   return (
     <Fragment>
       <ButtonBase onClick={props.onClick}>
-        <Grid className={classNames(classes.JobPostItem, (props.selected)? classes.selected : '' )} container direction='row' alignItems='center' justify='space-between'>
+        <Grid className={classNames(classes.JobPostItem, (props.selected) ? classes.selected : '')} container direction='row' alignItems='center' justify='space-between'>
           <Grid container direction='column' justify='center'>
             <Typography variant='subtitle1' color='inherit'>{props.title}</Typography>
             <Typography variant='caption' color='inherit'>{props.location}</Typography>
@@ -393,9 +393,9 @@ class JobPostAdministrator extends Component {
     render() {
       const {classes} = this.props;
       const {selectedJobPost, title, ingress, location, body, image, company, email, link} = this.state;
-      const selectedJobPostId = (selectedJobPost)? selectedJobPost.id : '';
+      const selectedJobPostId = (selectedJobPost) ? selectedJobPost.id : '';
       const isNewItem = (selectedJobPost === null);
-      const header = (isNewItem)? 'Lag en ny annonse' : 'Endre annonse';
+      const header = (isNewItem) ? 'Lag en ny annonse' : 'Endre annonse';
 
       return (
         <Fragment>
@@ -415,8 +415,8 @@ class JobPostAdministrator extends Component {
             </Snackbar>
 
             <div className={classes.content}>
-              {(this.state.isLoading)? <Grid className={classes.progress} container justify='center' alignItems='center'><CircularProgress /></Grid> :
-                      (this.state.showSuccessMessage)? <MessageView title={this.state.successMessage} buttonText='Nice' onClick={this.toggleSuccessView}/> :
+              {(this.state.isLoading) ? <Grid className={classes.progress} container justify='center' alignItems='center'><CircularProgress /></Grid> :
+                      (this.state.showSuccessMessage) ? <MessageView title={this.state.successMessage} buttonText='Nice' onClick={this.toggleSuccessView}/> :
                           <form>
                             <Grid container direction='column' wrap='nowrap'>
                               <Typography variant='h5'>{header}</Typography>
@@ -434,7 +434,7 @@ class JobPostAdministrator extends Component {
                               <TextField className={classes.margin} label="Link" value={link} onChange={this.handleChange('link')}/>
 
                               <Grid container direction='row' wrap='nowrap' justify='space-between'>
-                                {(isNewItem)?
+                                {(isNewItem) ?
                                           <div>
                                             <Button className={classes.mr} onClick={this.createNewJobpost} type='submit' variant='contained' color='primary'>Lag ny annonse</Button>
                                             <Button variant='outlined' color='primary' onClick={this.handleToggleChange('showPreview')}>Preview</Button>

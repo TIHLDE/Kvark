@@ -66,7 +66,7 @@ const JobPostItem = withStyles(styles, {withTheme: true})((props) => {
   return (
     <Fragment>
       <ButtonBase className={classes.jobpostButton} onClick={props.onClick}>
-        <Grid className={classNames(classes.jobpostItem, (props.selected)? classes.selected : '' )} container direction='row' alignItems='center' justify='space-between'>
+        <Grid className={classNames(classes.jobpostItem, (props.selected) ? classes.selected : '')} container direction='row' alignItems='center' justify='space-between'>
           <Grid container direction='column' justify='center'>
             <Typography variant='subtitle1' color='inherit'>{props.title}</Typography>
             <Typography variant='caption' color='inherit'>{props.location}</Typography>

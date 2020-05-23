@@ -95,53 +95,59 @@ function EventDetails(props) {
     setIsApplying(true);
     if (!userEvent) {
       // Apply to event
-      return EventService.putUserOnEventList(event.id, userData, optionalFieldsAnswers).then((result) => {
-        const newEvent = {...event};
-        if (newEvent.limit <= newEvent.list_count) {
-          newEvent.waiting_list_count++;
-        } else {
-          newEvent.list_count++;
-        }
-        const newUserData = {...userData};
-        newUserData.events.push(newEvent);
-        UserService.updateUserEvents(newUserData.events);
-        setMessage('Påmelding registrert!');
-        setEvent(newEvent);
-        setApplySuccess(true);
-        setUserEventLoaded(false);
-      }).catch(() => {
-        setMessage('Kunne ikke registrere påmelding.');
-        setApplySuccess(false);
-      }).then(() => {
-        setIsApplying(false);
-      });
+      return EventService.putUserOnEventList(event.id, userData, optionalFieldsAnswers)
+          .then((result) => {
+            const newEvent = {...event};
+            if (newEvent.limit <= newEvent.list_count) {
+              newEvent.waiting_list_count++;
+            } else {
+              newEvent.list_count++;
+            }
+            const newUserData = {...userData};
+            newUserData.events.push(newEvent);
+            UserService.updateUserEvents(newUserData.events);
+            setMessage('Påmelding registrert!');
+            setEvent(newEvent);
+            setApplySuccess(true);
+            setUserEventLoaded(false);
+          })
+          .catch(() => {
+            setMessage('Kunne ikke registrere påmelding.');
+            setApplySuccess(false);
+          })
+          .then(() => {
+            setIsApplying(false);
+          });
     } else {
       // The reverse
-      return EventService.deleteUserFromEventList(event.id, userData).then((result) => {
-        const newEvent = {...event};
-        if (userEvent.is_on_wait) {
-          newEvent.waiting_list_count--;
-        } else {
-          newEvent.list_count--;
-        }
-        const newUserEvents = [...userData.events];
-        for (let i = 0; i < newUserEvents.length; i++) {
-          if (newUserEvents[i].id === newEvent.id) {
-            newUserEvents.splice(i, 1);
-          }
-        }
-        UserService.updateUserEvents(newUserEvents);
-        setMessage('Avmelding registrert 😢');
-        setEvent(newEvent);
-        setApplySuccess(true);
-        setUserEvent(null);
-        setUserEventLoaded(false);
-      }).catch(() => {
-        setMessage('Kunne ikke registrere påmelding.');
-        setApplySuccess(false);
-      }).then(() => {
-        setIsApplying(false);
-      });
+      return EventService.deleteUserFromEventList(event.id, userData)
+          .then((result) => {
+            const newEvent = {...event};
+            if (userEvent.is_on_wait) {
+              newEvent.waiting_list_count--;
+            } else {
+              newEvent.list_count--;
+            }
+            const newUserEvents = [...userData.events];
+            for (let i = 0; i < newUserEvents.length; i++) {
+              if (newUserEvents[i].id === newEvent.id) {
+                newUserEvents.splice(i, 1);
+              }
+            }
+            UserService.updateUserEvents(newUserEvents);
+            setMessage('Avmelding registrert 😢');
+            setEvent(newEvent);
+            setApplySuccess(true);
+            setUserEvent(null);
+            setUserEventLoaded(false);
+          })
+          .catch(() => {
+            setMessage('Kunne ikke registrere påmelding.');
+            setApplySuccess(false);
+          })
+          .then(() => {
+            setIsApplying(false);
+          });
     }
   };
 

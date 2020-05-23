@@ -65,16 +65,16 @@ const InfoCard = (props) => {
   return (
     <div className={classNames(classes.root, props.className)}>
       <div className={classes.wrapper}>
-        {(!props.src)? null :
+        {(!props.src) ? null :
                     <div className={classes.margin}>
                       <img className={classNames(classes.image, props.imageClass)} src={props.src} alt={props.alt}/>
                     </div>
         }
-        <Grid className={(props.justifyText)? classes.cover : ''} container direction='column' nowrap='nowrap' justify='flex-start'>
+        <Grid className={(props.justifyText) ? classes.cover : ''} container direction='column' nowrap='nowrap' justify='flex-start'>
           <Typography className={classes.header} variant='h5' align='left'><strong>{props.header}</strong></Typography>
           {props.text && <Typography component='p'>{parser(props.text)}</Typography>}
 
-          {(!props.subText)? null :
+          {(!props.subText) ? null :
                         <Fragment>
                           <Typography className={classes.padding} variant='subtitle1'><strong>{props.subheader}</strong></Typography>
                           <Typography component='p'>{parser(props.subText)}</Typography>

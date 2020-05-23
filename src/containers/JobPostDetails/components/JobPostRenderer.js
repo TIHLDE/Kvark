@@ -111,7 +111,7 @@ InfoContent.propTypes = {
   ]),
 };
 
-const goToLink = (link, toMail=false) => {
+const goToLink = (link, toMail = false) => {
   if (toMail) {
     window.location.href = 'mailto:'.concat(link);
   } else {
@@ -122,7 +122,7 @@ const goToLink = (link, toMail=false) => {
 const JobPostRenderer = (props) => {
   const {classes} = props;
   const data = props.data || {};
-  const deadline = (data.deadline)? moment(data.deadline, ['YYYY-MM-DD HH:mm'], 'nb').format('DD.MM.YYYY') : Text.noDeadline;
+  const deadline = (data.deadline) ? moment(data.deadline, ['YYYY-MM-DD HH:mm'], 'nb').format('DD.MM.YYYY') : Text.noDeadline;
   const publishedAt = moment(data.created_at, ['YYYY-MM-DD HH:mm'], 'nb');
 
   return (

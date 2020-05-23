@@ -36,7 +36,7 @@ const styles = {
 
 const Icons = (props) => {
   const {classes, data, icon: Component} = props;
-  const text = (data.title)? data.title : 'mangler tittel';
+  const text = (data.title) ? data.title : 'mangler tittel';
   return (
     <LinkButton to={props.to} noPadding noText>
       <div className={classes.root}>

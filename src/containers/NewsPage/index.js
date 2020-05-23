@@ -44,7 +44,7 @@ class NewsPage extends Component {
 
       return (
         <Navigation footer isLoading={this.state.isLoading} whitesmoke>
-          {(this.state.isLoading)? null :
+          {(this.state.isLoading) ? null :
                     <NewsRenderer newsData={selected} />
           }
         </Navigation>

@@ -222,8 +222,8 @@ class ProfileSettings extends Component {
               <TextField disabled className={classes.inputWidth} label='Fornavn' variant='outlined' margin='normal' value={this.state.firstName} InputProps={{readOnly: true}} />
               <TextField disabled className={classes.inputWidth} label='Etternavn' variant='outlined' margin='normal' value={this.state.lastName} InputProps={{readOnly: true}} />
               <TextField disabled className={classes.inputWidth} label='Epost' variant='outlined' margin='normal' value={this.state.email} InputProps={{readOnly: true}} />
-              <TextField className={classes.inputWidth} label='Telefon' variant='outlined' margin='normal' value={this.state.cell} InputProps={{type: 'number'}} onInput={(e)=>{
-                e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0, 8);
+              <TextField className={classes.inputWidth} label='Telefon' variant='outlined' margin='normal' value={this.state.cell} InputProps={{type: 'number'}} onInput={(e) => {
+                e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 8);
               }} onChange={(e) => this.setState({cell: e.target.value})} />
               <TextField className={classes.inputWidth} label='EM-nummer (studentkortet)' variant='outlined' margin='normal' value={this.state.em} onChange={(e) => this.setState({em: e.target.value})} />
               <div className={classes.selectContainer}>
@@ -248,7 +248,7 @@ class ProfileSettings extends Component {
                 </TextField>
               </div>
               <TextField className={classes.inputWidth} label='Kjøkkenredskap' variant='outlined' margin='normal' value={this.state.tool} onChange={(e) => this.setState({tool: e.target.value})} />
-              <TextField className={classes.inputWidth} label='Evt allergier og annen info' variant='outlined' margin='normal' multiline={true} rows={3} value={this.state.allergy} onChange={(e) => this.setState({allergy: e.target.value})} onInput={(e)=>{
+              <TextField className={classes.inputWidth} label='Evt allergier og annen info' variant='outlined' margin='normal' multiline={true} rows={3} value={this.state.allergy} onChange={(e) => this.setState({allergy: e.target.value})} onInput={(e) => {
                 e.target.value = (e.target.value).slice(0, 250);
               }} />
               <Button className={classes.mt} variant='contained' color='primary' disabled={this.state.isLoading} type='submit'>

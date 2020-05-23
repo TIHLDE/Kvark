@@ -127,7 +127,7 @@ class TextEditor extends Component<P, S> {
       if (this.props.onChange) {
         this.props.onChange(newText);
       }
-      this.setState({cursorPos: cursorPos+textToAppend.length});
+      this.setState({cursorPos: cursorPos + textToAppend.length});
 
       this.setSelectionStart(cursorPos + textToAppend.length);
     }
@@ -166,7 +166,7 @@ class TextEditor extends Component<P, S> {
     }
 
     appendBreakline = (): void => {
-      this.appendTextAtCursor(`\n&nbsp;`);
+      this.appendTextAtCursor('\n&nbsp;');
       this.setSelectionStart(this.input.selectionStart);
     }
 
@@ -181,7 +181,7 @@ class TextEditor extends Component<P, S> {
             <Tab label='Preview' />
           </Tabs>}
           {tabValue === 0 && <Fragment>
-            {!disableToolbox &&<Grid className={classNames(classes.toolbox, this.props.toolboxClass)} container direction='row'>
+            {!disableToolbox && <Grid className={classNames(classes.toolbox, this.props.toolboxClass)} container direction='row'>
               <ToolbarAction onClick={() => this.appendTextAtCursor('### ')}>H</ToolbarAction>
               <ToolbarAction onClick={() => this.appendTextAtCursor('#### ')}>H2</ToolbarAction>
               <ToolbarAction onClick={() => this.appendTextAtCursor('##### ')}>H3</ToolbarAction>
