@@ -21,9 +21,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import MenuItem from '@material-ui/core/MenuItem';
 import Grow from '@material-ui/core/Grow';
 
-// Icons
-import EventBanner from '../../assets/img/EventBanner.jpg';
-
 // Project components
 import EventListItem from './components/EventListItem';
 import Navigation from '../../components/navigation/Navigation';
@@ -265,11 +262,10 @@ class Events extends Component {
       const {categories, category} = this.state;
 
       return (
-        <Navigation isLoading={this.state.isLoading} footer whitesmoke>
+        <Navigation isLoading={this.state.isLoading} footer whitesmoke fancyNavbar>
           <div className={classes.root}>
-
+            <Banner title='Arrangementer'/>
             <div className={classes.wrapper}>
-              <Banner image={EventBanner} title='Arrangementer'/>
               <div className={classes.grid}>
                 {this.state.isFetching ? <CircularProgress className={classes.progress} /> :
                                     <div className={classes.listRoot}>

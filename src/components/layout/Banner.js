@@ -5,133 +5,123 @@ import parser from 'html-react-parser';
 import classNames from 'classnames';
 
 // Material UI Components
-import {Grid, Typography} from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import Hidden from '@material-ui/core/Hidden';
 
 const styles = {
   root: {
-    border: '1px solid #ddd',
-    backgroundColor: '#ddd',
-    borderRadius: '5px',
+    overflow: 'hidden',
+    width: '100%',
+  },
+  top: {
+    position: 'relative',
+    width: '100%',
     overflow: 'hidden',
   },
-  imageContainer: {
-    maxHeight: 250,
-    position: 'relative',
-    display: 'block',
-    boxSizing: 'border-box',
-
-    '@media only screen and (max-width: 600px)': {
-      maxHeight: 100,
-    },
-  },
-  image: {
-    width: '100%',
+  topInner: {
     height: 'auto',
-    minHeight: 250,
-    maxHeight: 250,
-    objectFit: 'cover',
-
-    '@media only screen and (max-width: 600px)': {
-      minHeight: 100,
-      maxHeight: 100,
-    },
+    padding: '60px 0 0',
   },
-  filter: {
-    filter: 'opacity(0.27) sepia(1)',
-  },
-  content: {
-    backgroundColor: 'white',
+  topContent: {
+    maxWidth: 1200,
+    margin: 'auto',
     padding: 20,
-  },
-  info: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
+    paddingBottom: 0,
+    paddingTop: 70,
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    '@media only screen and (max-width: 900px)': {
+      fontSize: '2.1em',
+      padding: 20,
+      // paddingBottom: 0,
+      flexDirection: 'column',
+    },
   },
   title: {
-    color: 'rgba(0,0,0,1)',
-
-    fontSize: 54,
-    '@media only screen and (max-width: 600px)': {
-      fontSize: '2.1em',
+    color: '#ffffff',
+    fontWeight: 'bold',
+    fontSize: 72,
+    '@media only screen and (max-width: 900px)': {
+      fontSize: 50,
+      padding: '0 20px',
+    },
+  },
+  text: {
+    color: '#ffffff',
+    paddingTop: 20,
+    maxWidth: 600,
+    width: '50vw',
+    fontSize: 18,
+    '@media only screen and (max-width: 900px)': {
+      fontSize: '16px',
+      padding: 20,
+      width: '100%',
     },
   },
   line: {
     height: 4,
-    backgroundColor: 'var(--tihlde-blaa)',
+    backgroundColor: 'var(--tihlde-white)',
     width: 50,
   },
-  button: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
-    '@media only screen and (max-width: 600px)': {
-      display: 'none',
+  children: {
+    padding: '20px 0 0',
+    minWidth: 300,
+    '@media only screen and (max-width: 900px)': {
+      minWidth: 200,
+      padding: '20px 20px 0 20px',
     },
   },
-  buttonMobile: {
-    display: 'none',
-    '@media only screen and (max-width: 600px)': {
-      display: 'block',
-    },
-  },
-  flex: {
-    display: 'flex',
-    justifyContent: 'justify-content',
-    alignItems: 'center',
+  svg: {
+    marginTop: -1,
+    marginRight: -5,
+    marginLeft: -5,
   },
 };
 
 const Banner = (props) => {
-  const {classes, button: ButtonComponent} = props;
-
+  const {classes, className, background, title, text, children} = props;
   return (
-    <div className={classNames(classes.root, props.className)}>
-      <Grid container direction='column' wrap='nowrap'>
-        <div className={classes.imageContainer}>
-          <img className={classNames(classes.image, !props.disableFilter ? classes.filter : '')} src={props.image} alt={props.alt} />
-          {props.title && <div className={classes.info}>
-            <Typography className={classes.title} variant='h3'>
-              <strong>{props.title}</strong>
-            </Typography>
-            <div className={classes.line}/>
-          </div>}
-          {props.button && <div className={classes.button}>
-            <ButtonComponent />
-          </div>}
+    <div className={classNames(classes.root, className)}>
+      <div className={classes.top}>
+        <div className={classes.topInner} style={{background: background ? background : 'var(--gradient-top)'}}>
+          <div className={classes.topContent}>
+            <div>
+              {title &&
+                <Typography className={classes.title} variant='h3'>
+                  <strong>{title}</strong>
+                  <div className={classes.line}/>
+                </Typography>
+              }
+              {text &&
+                <Typography className={classes.text} variant='subtitle2'>{parser(text)}</Typography>
+              }
+            </div>
+            {children &&
+              <div className={classes.children}>
+                {children}
+              </div>
+            }
+          </div>
         </div>
-        {(props.header || props.text) &&
-                    <div className={classes.content}>
-                      <Typography variant='h6' gutterBottom><strong>{props.header}</strong></Typography>
-                      <Typography variant='subtitle1'>{props.text && parser(props.text)}</Typography>
-                    </div>
-        }
-        { props.button &&
-                  <div className={classNames(classes.buttonMobile, classes.content)}>
-                    <ButtonComponent />
-                  </div>
-        }
-        {props.children}
-      </Grid>
+        <Hidden smUp>
+          <svg className={classes.svg} xmlns="http://www.w3.org/2000/svg" viewBox="0 30 500 45"><path fill={background ? background : 'var(--gradient-top)'} fillOpacity="1" d="M0.00,49.99 C225.95,117.73 260.38,-10.55 500.00,49.99 L500.00,-0.00 L0.00,-0.00 Z"></path></svg>
+        </Hidden>
+        <Hidden xsDown>
+          <svg className={classes.svg} xmlns="http://www.w3.org/2000/svg" viewBox="0 30 500 45"><path fill={background ? background : 'var(--gradient-top)'} fillOpacity="1" d="M0.00,49.99 C233.29,86.15 256.43,22.00 500.00,49.99 L500.00,-0.00 L0.00,-0.00 Z"></path></svg>
+        </Hidden>
+      </div>
     </div>
   );
 };
 
 Banner.propTypes = {
+  classes: PropTypes.object,
   className: PropTypes.string,
   title: PropTypes.string,
-  header: PropTypes.string,
-  classes: PropTypes.object,
-  image: PropTypes.string,
-  alt: PropTypes.string,
   text: PropTypes.string,
-  disableFilter: PropTypes.bool,
   children: PropTypes.node,
-  button: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.func,
-  ]),
-  onClick: () => {},
+  background: PropTypes.string,
 };
 
 export default withStyles(styles)(Banner);

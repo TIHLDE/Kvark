@@ -15,7 +15,6 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 // Icons
-import ServiceBanner from '../../assets/img/ServiceBanner.jpg';
 import EventAdminIcon from '../../assets/icons/eventadmin.svg';
 import JobPostAdminIcon from '../../assets/icons/jobpostadmin.svg';
 import UserAdminIcon from '../../assets/icons/UserAdminIcon.svg';
@@ -45,30 +44,14 @@ const styles = {
       gridTemplateColumns: '1fr',
     },
   },
-  padding: {
-    padding: 30,
-
-    '@media only screen and (max-width: 700px)': {
-      padding: 15,
-    },
-  },
   button: {
     marginBottom: 10,
     width: '100%',
-  },
-  minify: {
-    '@media only screen and (max-width: 600px)': {
-      fontSize: 40,
-    },
   },
   flex: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-end',
-  },
-  banner: {
-    marginTop: 20,
-    width: '100%',
   },
 };
 
@@ -95,29 +78,24 @@ class Admin extends Component {
   render() {
     const {classes} = this.props;
     return (
-      <Navigation footer whitesmoke>
+      <Navigation footer whitesmoke fancyNavbar>
+        <Banner title={Text.header} />
         <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
-          <Banner
-            className={classes.banner}
-            image={ServiceBanner}
-            title={Text.header}
-          />
-
           <div className={classes.grid}>
             { (this.state.groups && (this.state.groups.isHS || this.state.groups.isPromo || this.state.groups.isNok || this.state.groups.isDevkom)) &&
-                        <InfoCard header='Arrangementer' text={Text.events} src={EventAdminIcon} classes={{children: classes.flex}} justifyText>
-                          <Link to={URLS.eventAdmin}><Button className={classes.button} variant='contained' color='primary'>Administrer arrangementer</Button></Link>
-                        </InfoCard>
+              <InfoCard header='Arrangementer' text={Text.events} src={EventAdminIcon} classes={{children: classes.flex}} justifyText>
+                <Link to={URLS.eventAdmin}><Button className={classes.button} variant='contained' color='primary'>Administrer arrangementer</Button></Link>
+              </InfoCard>
             }
             { (this.state.groups && (this.state.groups.isHS || this.state.groups.isNok || this.state.groups.isDevkom)) &&
-                        <InfoCard header='Jobbannonser' text={Text.jobposts} src={JobPostAdminIcon} classes={{children: classes.flex}} justifyText>
-                          <Link to={URLS.jobpostsAdmin}><Button className={classes.button} variant='contained' color='primary'>Administrer jobbannonser</Button></Link>
-                        </InfoCard>
+              <InfoCard header='Jobbannonser' text={Text.jobposts} src={JobPostAdminIcon} classes={{children: classes.flex}} justifyText>
+                <Link to={URLS.jobpostsAdmin}><Button className={classes.button} variant='contained' color='primary'>Administrer jobbannonser</Button></Link>
+              </InfoCard>
             }
             {(this.state.groups && (this.state.groups.isHS || this.state.groups.isDevkom)) &&
-                        <InfoCard header='Medlemmer' text={Text.users} src={UserAdminIcon} classes={{children: classes.flex}} justifyText>
-                          <Link to={URLS.userAdmin}><Button className={classes.button} variant='contained' color='primary'>Administrer medlemmer</Button></Link>
-                        </InfoCard>
+              <InfoCard header='Medlemmer' text={Text.users} src={UserAdminIcon} classes={{children: classes.flex}} justifyText>
+                <Link to={URLS.userAdmin}><Button className={classes.button} variant='contained' color='primary'>Administrer medlemmer</Button></Link>
+              </InfoCard>
             }
           </div>
         </Grid>

@@ -22,7 +22,7 @@ import Members from './tabs/Members';
 const styles = {
   top: {
     height: 220,
-    backgroundImage: 'radial-gradient(circle at bottom, #3F5EFB, #FC466B)',
+    background: 'var(--gradient-top)',
   },
   root: {
     minHeight: '100vh',

@@ -16,9 +16,6 @@ import Banner from '../../components/layout/Banner';
 import Icons from './components/Icons';
 import LinkButton from '../../components/navigation/LinkButton';
 
-// Images
-import LawHeader from '../../assets/img/law.jpg';
-
 const styles = {
   root: {
     maxWidth: 1200,
@@ -73,10 +70,10 @@ class Laws extends Component {
   render() {
     const {classes} = this.props;
     return (
-      <Navigation>
+      <Navigation footer fancyNavbar>
+        <Banner title='Lover og regler' />
         <div className={classes.root}>
           <div className={classes.wrapper}>
-            <Banner title='Lover og regler' image={LawHeader} />
             <div className={classes.container}>
               <div className={classes.icons}>
                 <Icons data={{

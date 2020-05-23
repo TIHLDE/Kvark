@@ -11,8 +11,6 @@ import Button from '@material-ui/core/Button';
 import Image from '../../assets/img/glad.jpg';
 import Send from '@material-ui/icons/Send';
 
-import CompaniesImg from '../../assets/img/companies.jpeg';
-
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 import InfoCard from '../../components/layout/InfoCard';
@@ -80,6 +78,15 @@ const styles = {
     margin: 'auto',
     width: '100%',
   },
+  button: {
+    width: '100%',
+    color: '#f8f8fa',
+    borderColor: '#f8f8fabb',
+    minWidth: 200,
+    '&:hover': {
+      borderColor: '#f8f8fa',
+    },
+  },
   sendIcon: {
     marginRight: 15,
   },
@@ -128,8 +135,8 @@ class Companies extends Component {
     const {classes} = props;
     return (
       <Button
-        className={classes.toFormBtn}
-        variant='contained'
+        className={classes.button}
+        variant='outlined'
         color='primary'
         onClick={(event) => {
           this.scrollToForm();
@@ -147,40 +154,11 @@ class Companies extends Component {
     const {classes} = this.props;
 
     return (
-      <Navigation footer>
+      <Navigation footer fancyNavbar>
         <div className={classes.root}>
-          <div className={classes.smoke}>
-            <div className={classNames(classes.section, classes.topSection)}>
-              <Banner
-                title={Text.bannnertitle}
-                image={CompaniesImg}
-                button={withStyles(styles)(this.ToFormButton)}
-              />
-            </div>
-            <div className={classes.section}>
-              <Typography
-                variant='h4'
-                color="inherit"
-                align="center"
-                className={classes.margining}
-              >
-                {Text.viTilbyr}
-              </Typography>
-              <div className={classNames(classes.container)}>
-                <InfoCard
-                  header="Stillingsannonser"
-                  text={Text.jobbannonser}
-                  justifyText
-                />
-                <InfoCard
-                  header="Bedriftspresentasjon"
-                  text={Text.bedrifter}
-                  justifyText
-                />
-              </div>
-            </div>
-          </div>
-
+          <Banner title={Text.bannnertitle}>
+            <this.ToFormButton classes={classes} />
+          </Banner>
           <div className={classes.section}>
             <Typography
               variant='h4'
@@ -188,50 +166,75 @@ class Companies extends Component {
               align="center"
               className={classes.margining}
             >
-              {Text.studier}
+              {Text.viTilbyr}
             </Typography>
             <div className={classNames(classes.container)}>
-              <InfoCard header="Dataingeniør" text={Text.data} justifyText />
               <InfoCard
-                header="Digital infrastruktur og cybersikkerhet"
-                text={Text.drift}
+                header="Stillingsannonser"
+                text={Text.jobbannonser}
                 justifyText
               />
               <InfoCard
-                header="Digital forretningsutvikling"
-                text={Text.support}
-                justifyText
-              />
-              <InfoCard
-                header="Digital samhandling"
-                text={Text.IKT}
+                header="Bedriftspresentasjon"
+                text={Text.bedrifter}
                 justifyText
               />
             </div>
           </div>
+
           <div className={classes.smoke}>
             <div className={classes.section}>
-              <div className={classes.formWrapper} ref={this.formRef}>
-                <Forum
-                  setMessage={this.setMessage}
-                  data={{
-                    forumText1: Text.forumText2,
-                    forumText2: Text.forumText2,
-                  }}
-                  firstTextFieldRef={this.firstTextFieldRef}
-                  scrollToForm={this.scrollToForm}
+              <Typography
+                variant='h4'
+                color="inherit"
+                align="center"
+                className={classes.margining}
+              >
+                {Text.studier}
+              </Typography>
+              <div className={classNames(classes.container)}>
+                <InfoCard header="Dataingeniør" text={Text.data} justifyText />
+                <InfoCard
+                  header="Digital infrastruktur og cybersikkerhet"
+                  text={Text.drift}
+                  justifyText
+                />
+                <InfoCard
+                  header="Digital forretningsutvikling"
+                  text={Text.support}
+                  justifyText
+                />
+                <InfoCard
+                  header="Digital samhandling"
+                  text={Text.IKT}
+                  justifyText
                 />
               </div>
             </div>
           </div>
-
           <div className={classes.section}>
-            <InfoCard
-              imageClass={classes.imageClass}
-              header={'Om TIHLDE'}
-              text={Text.omTIHLDE}
-              src={Image}
-            />
+            <div className={classes.formWrapper} ref={this.formRef}>
+              <Forum
+                setMessage={this.setMessage}
+                data={{
+                  forumText1: Text.forumText2,
+                  forumText2: Text.forumText2,
+                }}
+                firstTextFieldRef={this.firstTextFieldRef}
+                scrollToForm={this.scrollToForm}
+              />
+            </div>
+          </div>
+
+          <div className={classes.smoke}>
+            <div className={classes.section}>
+              <InfoCard
+                imageClass={classes.imageClass}
+                header={'Om TIHLDE'}
+                text={Text.omTIHLDE}
+                src={Image}
+              />
+            </div>
           </div>
         </div>
       </Navigation>

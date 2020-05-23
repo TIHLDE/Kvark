@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
 import URLS from '../../URLS';
+import {Link} from 'react-router-dom';
 
 // Text Imports
 import Text from '../../text/AboutText';
@@ -10,6 +11,7 @@ import Text from '../../text/AboutText';
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 
 // Icons
 import SocialIcon from '../../assets/icons/social.svg';
@@ -23,7 +25,6 @@ import Navigation from '../../components/navigation/Navigation';
 import InfoCard from '../../components/layout/InfoCard';
 import ClickableImage from '../../components/miscellaneous/ClickableImage';
 import Banner from '../../components/layout/Banner';
-import LinkButton from '../../components/navigation/LinkButton';
 
 const styles = {
   root: {
@@ -40,9 +41,6 @@ const styles = {
       gridTemplateColumns: '1fr',
     },
   },
-  topGrid: {
-    gridTemplateColumns: '1fr',
-  },
   padding: {
     padding: 30,
 
@@ -58,19 +56,9 @@ const styles = {
       padding: '48px 0',
     },
   },
-  topSection: {
-    padding: '20px 0 48px 0',
-
-    '@media only screen and (max-width: 1200px)': {
-      padding: '12px 0px 48px 0px',
-    },
-  },
   verticalMargin: {
     marginTop: 30,
     marginBottom: 30,
-  },
-  bottomSpacing: {
-    marginBottom: 10,
   },
   miniPadding: {
     padding: 10,
@@ -81,23 +69,27 @@ const styles = {
     borderRadius: 5,
     backgroundColor: '#fff',
   },
-  bottomItem: {
-    gridColumn: 'span 2',
-
-    '@media only screen and (max-width: 700px)': {
-      gridColumn: 'span 1',
-    },
-  },
   smoke: {
     width: '100%',
     backgroundColor: '#Fefefe',
   },
-  linkContainer: {
-    marginBottom: 0,
+  mt: {
+    marginTop: 16,
     width: '100%',
-    gridGap: '1px',
-    backgroundColor: '#ddd',
-    paddingTop: '1px',
+  },
+  buttonLink: {
+    textDecoration: 'none',
+    width: '100%',
+  },
+  button: {
+    width: '100%',
+    color: '#f8f8fa',
+    borderColor: '#f8f8fabb',
+    minWidth: 200,
+    marginBottom: 15,
+    '&:hover': {
+      borderColor: '#f8f8fa',
+    },
   },
 };
 
@@ -110,25 +102,32 @@ class About extends Component {
   render() {
     const {classes} = this.props;
     return (
-      <Navigation footer whitesmoke>
+      <Navigation footer whitesmoke fancyNavbar>
         <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
-          <div className={classNames(classes.section, classes.topSection)}>
-            <Banner
-              image='https://images.pexels.com/photos/220351/pexels-photo-220351.jpeg?auto=compress&cs=tinysrgb&h=350'
-              text={Text.subheader}
-              title={Text.header}>
-              <Grid item className={classNames(classes.linkContainer, classes.grid)}>
-                <LinkButton to='/lover/'>
-                  <Typography>TIHLDE&apos;s Lover</Typography>
-                </LinkButton>
-                <LinkButton to={URLS.services}>
-                  <Typography>Tjenester</Typography>
-                </LinkButton>
-              </Grid>
-            </Banner>
-          </div>
+          <Banner
+            text={Text.subheader}
+            title={Text.header}>
+            <>
+              <Link to={URLS.laws} className={classNames(classes.buttonLink, classes.mt)}>
+                <Button
+                  variant="outlined"
+                  className={classes.button}
+                  color='primary'>
+                    TIHLDE&apos;s Lover
+                </Button>
+              </Link>
+              <Link to={URLS.services} className={classNames(classes.buttonLink, classes.mt)}>
+                <Button
+                  variant="outlined"
+                  className={classes.button}
+                  color='primary'>
+                    Tjenester
+                </Button>
+              </Link>
+            </>
+          </Banner>
 
-          <div className={classes.smoke}>
+          <div>
             <div className={classes.section}>
               <Typography className={classes.verticalMargin} variant='h4' color='inherit' align='center'>Undergrupper</Typography>
               <div className={classNames(classes.grid, classes.smoke)}>
@@ -140,7 +139,7 @@ class About extends Component {
             </div>
           </div>
 
-          <div>
+          <div className={classes.smoke}>
             <div className={classes.section}>
               <Typography className={classes.verticalMargin}variant='h4' color='inherit' align='center'>Komitéer</Typography>
               <div className={classes.grid}>
@@ -152,7 +151,7 @@ class About extends Component {
             </div>
           </div>
 
-          <div className={classes.smoke}>
+          <div>
             <div className={classes.section}>
               <Typography className={classes.verticalMargin}variant='h4' color='inherit' align='center'>Organisasjonskart</Typography>
               <div className={classes.orgMap}>
@@ -161,7 +160,7 @@ class About extends Component {
             </div>
           </div>
 
-          <div>
+          <div className={classes.smoke}>
             <div className={classes.section}>
               <InfoCard className={classes.verticalMargin} header='Historie' text={Text.history} subheader='Opptak' subText={Text.history2} justifyText/>
             </div>

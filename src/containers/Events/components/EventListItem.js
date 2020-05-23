@@ -39,7 +39,7 @@ const styles = {
     },
   },
   src: {
-    objectFit: 'cover',
+    objectFit: 'contain',
     height: '100%',
     width: '40%',
     maxWidth: 250,

@@ -105,8 +105,6 @@ const styles = {
   },
 };
 
-const bannerImage = 'https://www.incimages.com/uploaded_files/image/970x450/getty_186693264_200011642000928062_327104.jpg';
-
 class JobPosts extends Component {
 
   constructor() {
@@ -191,55 +189,56 @@ class JobPosts extends Component {
       const {classes} = this.props;
       const posts = this.state.posts || [];
       return (
-        <Navigation whitesmoke footer isLoading={this.state.isLoading}>
-          {this.state.isLoading ? null :
-                <div className={classes.root}>
-                  <div className={classes.wrapper}>
-                    <Banner title='Karriere' image={bannerImage}/>
-                    <div className={classes.grid}>
-
-                      {this.state.isFetching ? <CircularProgress className={classes.progress} /> :
-                                <div className={classes.listRoot}>
-                                  <Grow in={!this.state.isFetching}>
-                                    <div className={classes.list}>
-                                      <Pageination nextPage={this.getNextPage} page={this.state.nextPage}>
-                                        {posts.map((value, index) => (
-                                          <div key={value.id}>
-                                            <JobPostItem key={value.id} data={value} onClick={() => this.goToJobPost(value.id)}/>
-                                          </div>
-                                        ))}
-                                        {posts.length === 0 &&
-                                                <NoPostsIndicator />
-                                        }
-                                      </Pageination>
-                                    </div>
-                                  </Grow>
+        <Navigation whitesmoke footer isLoading={this.state.isLoading} fancyNavbar>
+          {!this.state.isLoading &&
+            <>
+              <Banner title='Karriere' />
+              <div className={classes.root}>
+                <div className={classes.wrapper}>
+                  <div className={classes.grid}>
+                    {this.state.isFetching ? <CircularProgress className={classes.progress} /> :
+                      <div className={classes.listRoot}>
+                        <Grow in={!this.state.isFetching}>
+                          <div className={classes.list}>
+                            <Pageination nextPage={this.getNextPage} page={this.state.nextPage}>
+                              {posts.map((value, index) => (
+                                <div key={value.id}>
+                                  <JobPostItem key={value.id} data={value} onClick={() => this.goToJobPost(value.id)}/>
                                 </div>
-                      }
-                      <div>
-                        <div className={classes.settings}>
-                          <form>
-                            <TextField className={classes.paddingBtn} value={this.state.search} fullWidth placeholder='Søk...' onChange={this.handleChange('search')}/>
-                            <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.searchForPosts}>{Text.search}</Button>
-                          </form>
-                          <Divider className={classes.mt}/>
-                          <Typography className={classes.mt} variant='h6' gutterBottom>{Text.category}</Typography>
+                              ))}
+                              {posts.length === 0 &&
+                                      <NoPostsIndicator />
+                              }
+                            </Pageination>
+                          </div>
+                        </Grow>
+                      </div>
+                    }
+                    <div>
+                      <div className={classes.settings}>
+                        <form>
+                          <TextField className={classes.paddingBtn} value={this.state.search} fullWidth placeholder='Søk...' onChange={this.handleChange('search')}/>
+                          <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.searchForPosts}>{Text.search}</Button>
+                        </form>
+                        <Divider className={classes.mt}/>
+                        <Typography className={classes.mt} variant='h6' gutterBottom>{Text.category}</Typography>
 
-                          <Theme theme={errorTheme}>
-                            <Button
-                              className={classes.resetBtn}
-                              fullWidth
-                              color='primary'
-                              variant='outlined'
-                              onClick={this.resetFilters}>
-                              {Text.reset}
-                            </Button>
-                          </Theme>
-                        </div>
+                        <Theme theme={errorTheme}>
+                          <Button
+                            className={classes.resetBtn}
+                            fullWidth
+                            color='primary'
+                            variant='outlined'
+                            onClick={this.resetFilters}>
+                            {Text.reset}
+                          </Button>
+                        </Theme>
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
+            </>
           }
         </Navigation>
       );

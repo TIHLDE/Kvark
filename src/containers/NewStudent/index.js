@@ -64,14 +64,13 @@ class NewStudent extends Component {
   render() {
     const {classes} = this.props;
     return (
-      <Navigation footer whitesmoke>
+      <Navigation footer whitesmoke fancyNavbar>
+        <Banner
+          title={Text.banner.header}
+          text={Text.banner.subHeader}
+        />
+
         <div className={classes.root}>
-          <Banner
-            className={classes.banner}
-            title={Text.banner.header}
-            text={Text.banner.subHeader}
-            image={Text.banner.imageUrl}
-          />
 
           <div className={classes.content}>
 
