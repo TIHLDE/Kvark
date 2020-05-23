@@ -63,6 +63,7 @@ const SidebarContent = (props) => {
   const {classes} = props;
 
   return (
+
     <Fragment>
       <div className={classes.root}>
         <ActionLink to={URLS.about} label='Om TIHLDE' />
@@ -70,6 +71,7 @@ const SidebarContent = (props) => {
         <ActionLink to={URLS.events} label='Arrangementer' />
         <ActionLink to={URLS.jobposts} label='Karriere' />
         <ActionLink to={URLS.company} label='For Bedrifter' />
+        {/* AuthService.isAuthenticated() && <ActionLink to={URLS.cheatsheet} label='Kokebok' />*/ }
         {AuthService.isAuthenticated() ?
                     <ActionLink to={URLS.profile} label='Min side' /> :
                     <ActionLink to={URLS.login} label='Logg inn' />

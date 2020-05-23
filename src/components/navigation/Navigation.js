@@ -377,6 +377,8 @@ class Navigation extends Component {
                     <div className={classes.flex}>
                       <URIbutton data={{link: URLS.about, text: 'Om TIHLDE'}} selected={this.props.match.url === URLS.about} />
                       <URIbutton data={{link: URLS.newStudent, text: 'Ny student'}} selected={this.props.match.url === URLS.newStudent} />
+                      {/* AuthService.isAuthenticated() &&
+                        <URIbutton data={{ link: URLS.cheatsheet, text: "Kokebok" }} selected={this.props.match.url === URLS.cheatsheet} />*/}
                       <URIbutton data={{link: URLS.events, text: 'Arrangementer'}} selected={this.props.match.url === URLS.events} />
                       <URIbutton data={{link: URLS.jobposts, text: 'Karriere'}} selected={this.props.match.url === URLS.jobposts} />
                       <URIbutton data={{link: URLS.company, text: 'For Bedrifter'}} selected={this.props.match.url === URLS.company} />

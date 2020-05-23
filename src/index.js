@@ -40,6 +40,10 @@ import EventRegistration from './containers/EventRegistration';
 import UserService from './api/services/UserService';
 import SignUp from './containers/SignUp';
 import PrivacyPolicy from './containers/PrivacyPolicy';
+import Cheatsheet from './containers/Cheatsheet';
+import ClassesCheatsheet from './containers/Cheatsheet/subContainers/Classes';
+import FilesCheatsheet from './containers/Cheatsheet/subContainers/Files';
+
 import EventRules from './containers/EventRules';
 
 import MessageGDPR from './components/miscellaneous/MessageGDPR';
@@ -122,6 +126,10 @@ const Application = (
           <Route path={URLS.laws} component={Laws} />
           <Route path={URLS.privacyPolicy} component={PrivacyPolicy} />
           <Route path={URLS.eventRules} component={EventRules} />
+
+          <Route exact path={URLS.cheatsheet} component={Cheatsheet}/>
+          <Route path={URLS.cheatsheet.concat(':studyId/:classId/')} component={FilesCheatsheet}/>
+          <Route path={URLS.cheatsheet.concat(':studyId/')} component={ClassesCheatsheet}/>
 
           <Route exact path={URLS.admin} component={requireAuth(Admin, ['HS', 'Promo', 'Nok', 'Devkom'])} />
           <Route path={URLS.userAdmin} component={requireAuth(UserAdmin, ['HS', 'Devkom'])} />

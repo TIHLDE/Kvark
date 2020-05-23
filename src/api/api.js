@@ -83,6 +83,10 @@ export default {
     return new IRequest('PUT', 'notification/'.concat(id, '/'), item, true);
   },
 
+  // cheatsheet
+  getCheatsheets: (filters, study, grade) => {
+    return new IRequest('GET', 'cheatsheet/'.concat('study/', study, '/grade/', grade, '/file/'), filters || {}, true);
+  },
   // Warning
   getWarning: () => {
     return new IRequest('GET', 'warning/');

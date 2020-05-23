@@ -15,6 +15,7 @@ export default {
   signup: '/ny-bruker/',
   privacyPolicy: '/personvern/',
   eventRules: '/arrangementsregler/',
+  cheatsheet: '/kokebok/',
 
   admin: '/admin/',
   userAdmin: '/admin/brukere/',
