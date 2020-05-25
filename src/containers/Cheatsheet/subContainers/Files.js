@@ -217,7 +217,7 @@ const Files = (props) => {
                           </ListItem>
                         </Hidden>
                         <Divider></Divider>
-                        <Pageination nextPage={getNextPage} page={state.nextPage}>
+                        <Pageination nextPage={getNextPage} page={state.nextPage} fullWidth>
                           {state.files && state.files.map((value, index) => (
                             <div key={index}>
                               <LinkButton to={value.url}>

@@ -252,7 +252,7 @@ class Members extends Component {
                             </Grid>
                           </ListItem>
                         </Hidden>
-                        <Pageination nextPage={this.getNextPage} page={this.state.nextPage}>
+                        <Pageination nextPage={this.getNextPage} page={this.state.nextPage} fullWidth>
                           {this.state.members && this.state.members.map((value, index) => (
                             <div key={index}>
                               <PersonListItem isMember={this.props.isMember} data={value} handleDelete={this.handleDelete} handleActivate={this.handleActivate} />
