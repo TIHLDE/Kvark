@@ -16,10 +16,10 @@ import Date from '@material-ui/icons/DateRange';
 import Location from '@material-ui/icons/LocationOn';
 import TIHLDELOGO from '../../../assets/img/TihldeBackgroundNew.png';
 
-const styles = {
+const styles = (theme) => ({
   root: {
-    boxShadow: '0px 2px 4px #ddd, 0px 0px 4px #ddd',
-    borderRadius: 5,
+    boxShadow: '0px 2px 4px ' + theme.colors.border.main + '88, 0px 0px 4px ' + theme.colors.border.main + '88',
+    borderRadius: theme.sizes.border.radius,
     marginBottom: 10,
     height: 140,
     padding: 10,
@@ -27,7 +27,7 @@ const styles = {
     overflow: 'hidden',
     flexDirection: 'row',
     display: 'flex',
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.background.light,
     '@media only screen and (min-width: 900px)': {
       height: 160,
     },
@@ -43,7 +43,7 @@ const styles = {
     height: '100%',
     width: '40%',
     maxWidth: 250,
-    borderRadius: 5,
+    borderRadius: theme.sizes.border.radius,
     '@media only screen and (min-width: 900px)': {
       minWidth: '45%',
       maxWidth: 'none',
@@ -65,7 +65,7 @@ const styles = {
     },
   },
   title: {
-    color: '#000000',
+    color: theme.colors.text.main,
     fontWeight: 'bold',
     fontSize: '24px',
     '@media only screen and (max-width: 600px)': {
@@ -80,18 +80,18 @@ const styles = {
   },
   info: {
     marginLeft: 10,
-    color: '#555555',
+    color: theme.colors.text.lighter,
     fontSize: '1rem',
     textAlign: 'center',
   },
   icon: {
-    color: '#555555',
+    color: theme.colors.text.lighter,
     height: 24,
     width: 24,
     margin: 0,
   },
   expired: {
-    color: 'rgba(0,0,0,0.4)',
+    color: theme.colors.text.main + 'cc',
   },
   filter: {
     filter: 'opacity(0.4)',
@@ -99,7 +99,7 @@ const styles = {
   link: {
     textDecoration: 'none',
   },
-};
+});
 
 const InfoContent = withStyles(styles)((props) => (
   <Grid className={props.classes.infoRoot} container direction='row' wrap='nowrap' alignItems='center'>

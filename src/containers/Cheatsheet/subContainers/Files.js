@@ -23,35 +23,23 @@ import LinkButton from '../../../components/navigation/LinkButton';
 import Banner from '../../../components/layout/Banner';
 import Navigation from '../../../components/navigation/Navigation';
 
-// Images
-import CheatSheetBanner from '../../../assets/img/cheatsheetbanner.jpg';
-
-const styles = () => ({
-
+const styles = (theme) => ({
   wrapper: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gridGap: '15px',
-    paddingTop: '10px',
-    paddingBottom: '30px',
-    width: '90%',
+    paddingTop: 10,
+    maxWidth: 1200,
     position: 'relative',
     margin: 'auto',
     '@media only screen and (max-width: 800px)': {
-      gridTemplateColumns: '1fr',
-      justifyContent: 'center',
-      gridAutoFlow: 'row dense',
       padding: '60px 0px 48px 0px',
     },
   },
-  containter: {
-    border: '1px solid #ddd',
-    borderRadius: 5,
-    backgroundColor: 'white',
+  container: {
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.colors.background.light,
     overflow: 'hidden',
     textAlign: 'center',
   },
-
   progress: {
     display: 'block',
     margin: 'auto',
@@ -88,8 +76,6 @@ const styles = () => ({
     paddingLeft: 15,
     paddingRight: 15,
     paddingBottom: 10,
-    width: '25%',
-
   },
   box: {
     margin: 5,
@@ -108,31 +94,26 @@ const getClass = (i) => {
 };
 
 const Files = (props) => {
-  const {classes} = props;
-  const {studyId, classId} = props.match.params;
+  const {classes, match} = props;
+  const {studyId, classId} = match.params;
 
-  const [state, setState] = useState({
-    files: [],
-    isLoading: false,
-    isFetching: false,
-    search: '',
-    nextPage: null,
-
-  });
+  const [files, setFiles] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
+  const [input, setInput] = useState('');
+  const [nextPage, setNextPage] = useState(null);
 
   const loadFiles = (filters, replace) => {
     let urlParameters = filters ? {...filters} : {};
 
     // Decide if we should go to next page or not.
-    if (state.nextPage) {
+    if (nextPage) {
       urlParameters = {
-        page: state.nextPage,
+        page: nextPage,
         ...urlParameters,
       };
     }
 
-    CheatsheetService.getCheatsheets(
-        urlParameters, studyId.toString().toUpperCase(), getClass(classId))
+    CheatsheetService.getCheatsheets(urlParameters, studyId.toString().toUpperCase(), getClass(classId))
         .then((data) => {
           const nextPageUrl = data.next;
           let displayedFiles = data.results;
@@ -149,36 +130,39 @@ const Files = (props) => {
 
           const nextPage = urlParameters['page'] ? urlParameters['page'] : null;
 
-          setState((oldState) => {
-            if (replace) {
-              displayedFiles = oldState.files.concat(displayedFiles);
-            }
-
-            return {files: displayedFiles, nextPage: nextPage, isLoading: false, isFetching: false};
-          });
+          if (replace) {
+            displayedFiles = files.concat(displayedFiles);
+          }
+          setFiles(displayedFiles);
+          setNextPage(nextPage);
+          setIsFetching(false);
         });
   };
 
-  const filterFiles = async (event, search) => {
-    event.preventDefault();
+  const filterFiles = async (e, searchInput) => {
+    e.preventDefault();
 
-    await setState({isFetching: true, nextPage: null, files: [], expiredShown: false});
-    if (search === '') {
+    setIsFetching(true);
+    setNextPage(null);
+    setFiles([]);
+
+    if (searchInput === '') {
       loadFiles();
     } else {
       const filters = {};
-      filters.search = search;
+      filters.search = searchInput;
       loadFiles(filters, false);
     }
   };
 
-  const searchForFiles = (event) => {
-    event.preventDefault();
-    filterFiles(event, state.search);
+  const search = (e) => {
+    e.preventDefault();
+    setInput(e.target.value);
+    filterFiles(e, e.target.value);
   };
 
   const getNextPage = () => {
-    const search = state.search;
+    const search = input;
     const filters = {};
     if (search) {
       filters.search = search;
@@ -188,51 +172,46 @@ const Files = (props) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    setState({isLoading: true});
     loadFiles();
     // eslint-disable-next-line
   }, []);
 
   return (
-    <Navigation footer>
+    <Navigation whitesmoke footer fancyNavbar>
+      <Banner title='Kokebok' text={studyId + ' - ' + String(classId).concat('. klasse')} />
       <div className={classes.wrapper}>
-        <Banner title='Kokebok' image={CheatSheetBanner} />
-        <div className={classes.containter}>
+        <div className={classes.container}>
           <div className={classes.filterContainer}>
-            <TextField className={classes.box} value={state.search} label='Søk' fullWidth placeholder='Søk...' onChange={(e) => {
-              setState({search: e.target.value}); searchForFiles(e);
-            }}/>
+            <TextField variant='outlined' className={classes.box} value={input} label='Søk' fullWidth placeholder='Søk...' onChange={(e) => search(e)}/>
           </div>
-          {state.isFetching ? <CircularProgress className={classes.progress} /> :
-                    <Grow in={!state.isFetching}>
-                      <div>
-                        <Hidden xsDown>
-                          <ListItem className={classes.btn}>
-                            <Grid className={classNames(classes.grid)} container direction='row' wrap='nowrap' alignItems='center'>
-                              <Typography className={classNames(classes.title, classes.id)} variant='subtitle1'>Title:</Typography>
-                              <Typography className={classes.title} variant='subtitle1'>Beskrivelse:</Typography>
-                              <Typography className={classes.title} variant='subtitle1'>av:</Typography>
-                              <Typography className={classNames(classes.title, classes.class)} variant='subtitle1'>fag:</Typography>
-                            </Grid>
-                          </ListItem>
-                        </Hidden>
-                        <Divider></Divider>
-                        <Pageination nextPage={getNextPage} page={state.nextPage} fullWidth>
-                          {state.files && state.files.map((value, index) => (
-                            <div key={index}>
-                              <LinkButton to={value.url}>
-                                <ListFiles classId={classId} studyId={studyId} data={value}/>
-                              </LinkButton>
-                              <Divider/>
-                            </div>
-                          ))}
-                        </Pageination>
-                      </div>
-
-                    </Grow>
+          {isFetching ? <CircularProgress className={classes.progress} /> :
+            <Grow in={!isFetching}>
+              <div>
+                <Hidden xsDown>
+                  <ListItem className={classes.btn}>
+                    <Grid className={classNames(classes.grid)} container direction='row' wrap='nowrap' alignItems='center'>
+                      <Typography className={classNames(classes.title, classes.id)} variant='subtitle1'>Tittel:</Typography>
+                      <Typography className={classes.title} variant='subtitle1'>Beskrivelse:</Typography>
+                      <Typography className={classes.title} variant='subtitle1'>Av:</Typography>
+                      <Typography className={classNames(classes.title, classes.class)} variant='subtitle1'>Fag:</Typography>
+                    </Grid>
+                  </ListItem>
+                </Hidden>
+                <Divider/>
+                <Pageination nextPage={getNextPage} page={nextPage} fullWidth>
+                  {files && files.map((value, index) => (
+                    <React.Fragment key={index}>
+                      <LinkButton to={value.url}>
+                        <ListFiles classId={classId} studyId={studyId} data={value}/>
+                      </LinkButton>
+                      <Divider/>
+                    </React.Fragment>
+                  ))}
+                </Pageination>
+              </div>
+            </Grow>
           }
         </div>
-
       </div>
     </Navigation>
   );

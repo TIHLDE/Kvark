@@ -42,6 +42,7 @@ const styles = (theme) => ({
   },
   bottomContent: {
     marginTop: 50,
+    color: theme.colors.text.light,
   },
   infocard: {
     '@media only screen and (max-width: 600px)': {

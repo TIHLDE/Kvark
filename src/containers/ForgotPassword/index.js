@@ -23,14 +23,14 @@ import TIHLDE_LOGO from '../../assets/img/TIHLDE_LOGO_B.png';
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 
-const styles = {
+const styles = (theme) => ({
   root: {
     minHeight: '100vh',
     width: '100%',
   },
   top: {
     height: 220,
-    backgroundImage: 'radial-gradient(circle at bottom, #C6426E, #642B73)',
+    background: 'radial-gradient(circle at bottom, ' + theme.colors.gradient.secondary.top + ', ' + theme.colors.gradient.secondary.bottom + ')',
   },
   main: {
     maxWidth: 1000,
@@ -45,9 +45,9 @@ const styles = {
     left: 0, right: 0,
     top: '-60px',
     padding: 28,
-    border: '1px solid #ddd',
-    borderRadius: '5px',
-    backgroundColor: '#fff',
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.colors.background.light,
   },
   logo: {
     height: '32px',
@@ -55,6 +55,9 @@ const styles = {
     margin: 'auto',
     display: 'block',
     marginBottom: 10,
+  },
+  header: {
+    color: theme.colors.text.main,
   },
   mt: {
     marginTop: 16,
@@ -72,11 +75,10 @@ const styles = {
     width: '100%',
   },
   snackbar: {
-    // marginBottom: 20,
-    backgroundColor: 'white',
-    color: 'black',
+    backgroundColor: theme.colors.background.main,
+    color: theme.colors.text.main,
   },
-};
+});
 
 class ForgotPassword extends Component {
 
@@ -126,7 +128,7 @@ class ForgotPassword extends Component {
       const {classes} = this.props;
 
       return (
-        <Navigation footer fancyNavbar>
+        <Navigation footer fancyNavbar whitesmoke>
           <Snackbar
             open={this.state.showSnackbar}
             autoHideDuration={3000}
@@ -140,14 +142,12 @@ class ForgotPassword extends Component {
               message={this.state.snackMessage}/>
           </Snackbar>
           <div className={classes.root}>
-            <div className={classes.top}>
-
-            </div>
+            <div className={classes.top}></div>
             <div className={classes.main}>
               <div className={classes.paper}>
                 {this.state.isLoading && <LinearProgress className={classes.progress} />}
                 <img className={classes.logo} src={TIHLDE_LOGO} height='30em' alt='tihlde_logo'/>
-                <Typography variant='h6'>Glemt passord</Typography>
+                <Typography className={classes.header} variant='h6'>Glemt passord</Typography>
 
                 <form onSubmit={this.onSubmit}>
                   <Grid container direction='column'>

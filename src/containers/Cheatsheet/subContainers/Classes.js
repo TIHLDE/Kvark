@@ -12,73 +12,63 @@ import LinkButton from '../../../components/navigation/LinkButton';
 import Banner from '../../../components/layout/Banner';
 import Navigation from '../../../components/navigation/Navigation';
 
-// Images
-import CheatSheetBanner from '../../../assets/img/cheatsheetbanner.jpg';
-
-const styles = () => ({
-
+const styles = (theme) => ({
   wrapper: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gridTemplateRows: 'auto',
-    gridGap: '15px',
-    paddingTop: '10px',
-    paddingBottom: '30px',
-    width: '90%',
+    paddingTop: 10,
+    maxWidth: 1200,
     position: 'relative',
     margin: 'auto',
     '@media only screen and (max-width: 800px)': {
-      gridTemplateColumns: '1fr',
-      justifyContent: 'center',
-      gridAutoFlow: 'row dense',
       padding: '60px 0px 48px 0px',
     },
   },
   grid: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    gridGap: '5px',
+    gridGap: 15,
     '@media only screen and (max-width: 860px)': {
       gridTemplateColumns: '1fr',
     },
   },
   folders: {
     textAlign: 'center',
-    border: '1px solid #ddd',
-    borderRadius: 5,
-    boxShadow: '0px 2px 4px #ddd, 0px 0px 4px #ddd',
-    margin: '5px 0px 5px 0px',
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    boxShadow: '0px 2px 4px ' + theme.colors.border.main + '88, 0px 0px 4px ' + theme.colors.border.main + '88',
+    margin: 0,
     height: 50,
     overflow: 'hidden',
+    backgroundColor: theme.colors.background.light,
+    '&:hover': {
+      borderColor: theme.colors.background.light + 'bb',
+    },
   },
   text: {
     fontSize: 20,
-    color: 'black',
+    color: theme.colors.text.main,
   },
 });
 
 const Classes = (props) => {
-  const {classes} = props;
-  const {studyId} = props.match.params;
-  return (
-    <Navigation footer>
-      <div className={classes.wrapper}>
-        <Banner title='Kokebok' image={CheatSheetBanner} />
-        <Grid className={classes.grid}>
-          {studyId === 4 ? [4, 5].map((i) => {
-            return (<div key = {i} className={classes.folders}>
-              <LinkButton to ={URLS.cheatsheet + ''.concat(studyId, '/', (i), '/')}>
-                <Typography className={classes.text}>{i + ''.concat(' klasse')}</Typography>
-              </LinkButton></div>);
-          }) :
-            [1, 2, 3].map((i) => {
-              return (<div key ={i} className={classes.folders}>
+  const {classes, match} = props;
+  const {studyId} = match.params;
 
-                <LinkButton className={classes.folders}to ={URLS.cheatsheet + ''.concat(studyId, '/', (i), '/')}>
-                  <Typography className={classes.text}>{i + ''.concat(' klasse')}</Typography>
+  return (
+    <Navigation whitesmoke footer fancyNavbar>
+      <Banner title='Kokebok' text={studyId} />
+      <div className={classes.wrapper}>
+        <Grid className={classes.grid}>
+          {studyId === 'DigSam' ? [4, 5].map((i) =>
+            (<div key={i} className={classes.folders}>
+              <LinkButton to={URLS.cheatsheet.concat(studyId, '/', String(i), '/')}>
+                <Typography className={classes.text}>{String(i).concat('. klasse')}</Typography>
+              </LinkButton></div>)) :
+            [1, 2, 3].map((i) =>
+              (<div key ={i} className={classes.folders}>
+                <LinkButton className={classes.folders} to={URLS.cheatsheet.concat(studyId, '/', String(i), '/')}>
+                  <Typography className={classes.text}>{String(i).concat('. klasse')}</Typography>
                 </LinkButton>
-              </div>);
-            })
+              </div>))
           }
         </Grid>
       </div>
@@ -93,4 +83,3 @@ Classes.propTypes = {
 };
 
 export default withStyles(styles)(Classes);
-

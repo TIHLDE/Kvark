@@ -19,7 +19,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 // Project Components
 import MessageIndicator from '../../../components/layout/MessageIndicator';
 
-const styles = {
+const styles = (theme) => ({
   root: {
     width: '100%',
     height: 'auto',
@@ -51,8 +51,15 @@ const styles = {
   },
   checkBox: {
     padding: 4,
+    color: theme.colors.text.light,
   },
-};
+  mainText: {
+    color: theme.colors.text.main,
+  },
+  lightText: {
+    color: theme.colors.text.light,
+  },
+});
 
 function sDate(semester) {
   const d = new Date();
@@ -133,7 +140,7 @@ class CustomListItem extends Component {
             name={this.props.value.name}
             checked={this.state.checked}
           />
-          <ListItemText primary={this.props.value.name}/>
+          <ListItemText className={classes.lightText} primary={this.props.value.name}/>
         </ListItem>
       );
     }
@@ -150,7 +157,7 @@ const Listing = withStyles(styles)((props) => {
   const {list, header, classes} = props;
   return (
     <div className={classes.item}>
-      <Typography variant='subtitle1' >{header}</Typography>
+      <Typography className={classes.lightText} variant='subtitle1'>{header}</Typography>
       <Divider/>
       <List>
         {list.map((value) => {
@@ -312,7 +319,7 @@ class Forum extends Component {
       return (
         <div className={classNames(classes.root)} >
           <form className={classes.wrapper} onSubmit={this.handleSubmit}>
-            <Typography variant='h5' gutterBottom>Meld interesse:</Typography>
+            <Typography className={classes.mainText} variant='h5' gutterBottom>Meld interesse:</Typography>
             <Inputter required handleChange={this.handleChange('info')} data={{header: 'Bedrift: ', placeholder: 'Bedriftnavn', id: 'bedrift'}} firstTextFieldRef={firstTextFieldRef} />
             <Inputter required handleChange={this.handleChange('info')} data={{header: 'Kontaktperson: ', placeholder: 'Navn', id: 'kontaktperson'}} />
             <Inputter required handleChange={this.handleChange('info')} data={{header: 'Epost: ', placeholder: 'Skriv Epost her', id: 'epost', type: 'email'}} />

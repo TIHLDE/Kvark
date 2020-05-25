@@ -8,7 +8,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import InfoIcon from '@material-ui/icons/Info';
 
-const style = {
+const style = (theme) => ({
   message: {
     display: 'flex',
     alignItems: 'center',
@@ -24,9 +24,12 @@ const style = {
     paddingRight: '50px !important',
   },
   unread: {
-    backgroundColor: 'var(--notification-blue)',
+    backgroundColor: theme.colors.tihlde.light,
   },
-};
+  text: {
+    color: theme.colors.text.main,
+  },
+});
 
 const Message = (props) => {
   const {classes, message, updateNotificationReadState} = props;
@@ -38,23 +41,21 @@ const Message = (props) => {
   }
 
   return (
-    <div>
+    <>
       <div className={elementClass}>
         <div className={classes.icon}>
           <InfoIcon />
         </div>
-        <div>
-          <Typography color={'inherit'} align={'left'}>{message.message}</Typography>
-        </div>
+        <Typography className={classes.text} color={'inherit'} align={'left'}>{message.message}</Typography>
       </div>
-    </div>
+    </>
   );
 };
 
 const ProfileNotifications = (props) => {
   const {classes, messages, isLoading, updateNotificationReadState} = props;
 
-  let messageList = <Typography align='center' variant='subtitle1'>Ingen notifikasjoner.</Typography>;
+  let messageList = <Typography className={classes.text} align='center' variant='subtitle1'>Ingen notifikasjoner.</Typography>;
   if (messages.length > 0) {
     messageList = messages.map((message, index) => {
       return <Message
@@ -68,7 +69,7 @@ const ProfileNotifications = (props) => {
   return (
     <React.Fragment>
       {!isLoading ? messageList :
-                <Typography align='center' variant='subtitle1'>Laster notifikasjoner.</Typography>
+        <Typography className={classes.text} align='center' variant='subtitle1'>Laster notifikasjoner.</Typography>
       }
     </React.Fragment>
   );

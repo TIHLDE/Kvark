@@ -13,7 +13,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 // Project Components
 
-const styles = {
+const styles = (theme) => ({
   root: {
     width: 'auto',
     minHeight: 40,
@@ -36,7 +36,10 @@ const styles = {
     right: 'auto',
     transform: 'translateX(-50%)',
   },
-};
+  color: {
+    color: theme.colors.constant.white,
+  },
+});
 
 class Snack extends Component {
   render() {
@@ -54,8 +57,8 @@ class Snack extends Component {
             message={
               <div className={classes.flex}>
                 <div className='pulse'/>
-                <Typography variant='subtitle1' color='inherit'>{this.props.message}</Typography>
-                <IconButton color='inherit' onClick={this.props.onClose}><CloseIcon/></IconButton>
+                <Typography className={classes.color} variant='subtitle1' color='inherit'>{this.props.message}</Typography>
+                <IconButton className={classes.color} color='inherit' onClick={this.props.onClose}><CloseIcon/></IconButton>
               </div>
             }
           />

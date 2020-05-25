@@ -8,7 +8,7 @@ import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import {withStyles} from '@material-ui/core/styles';
 
-const style = {
+const style = (theme) => ({
   paper: {
     position: 'absolute',
     maxWidth: 460,
@@ -19,9 +19,9 @@ const style = {
     left: '50%',
     top: '50%',
     transform: 'translate(-50%,-50%)',
-    backgroundColor: '#fff',
-    border: '1px solid #fff',
-    borderRadius: 5,
+    backgroundColor: theme.colors.background.light,
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
     '@media only screen and (max-width: 400px)': {
       width: '100%',
     },
@@ -72,7 +72,7 @@ const style = {
     marginLeft: -20,
     marginRight: -20,
   },
-};
+});
 
 // Custom themed button
 const DangerButton = withStyles((theme) => (

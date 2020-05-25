@@ -44,7 +44,7 @@ const styles = (theme) => ({
     gridTemplateColumns: '1fr',
     gridTemplateRows: 'auto',
     margin: 'auto',
-    gridGap: '15px',
+    gridGap: 15,
     justifyContent: 'center',
 
     '@media only screen and (max-width: 1200px)': {
@@ -56,7 +56,7 @@ const styles = (theme) => ({
     display: 'grid',
     gridTemplateColumns: '3fr 1fr',
     gridTemplateRows: 'auto',
-    gridGap: '15px',
+    gridGap: 15,
 
     position: 'relative',
 
@@ -85,9 +85,9 @@ const styles = (theme) => ({
       position: 'static',
       top: 0,
     },
-    border: '1px solid #ddd',
-    borderRadius: '5px',
-    backgroundColor: '#fff',
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.colors.background.light,
   },
   paddingBtn: {
     paddingBottom: 10,
@@ -268,20 +268,20 @@ class Events extends Component {
             <div className={classes.wrapper}>
               <div className={classes.grid}>
                 {this.state.isFetching ? <CircularProgress className={classes.progress} /> :
-                                    <div className={classes.listRoot}>
-                                      <Grow in={!this.state.isFetching}>
-                                        <div className={classes.list}>
-                                          <Pageination nextPage={this.getNextPage} page={this.state.nextPage}>
-                                            {this.state.events && this.state.events.map((value, index) => (
-                                              <EventListItem key={value.id} data={value} />
-                                            ))}
-                                          </Pageination>
-                                          { (this.state.events.length === 0 && !this.state.isLoading) &&
-                                                <NoEventsIndicator />
-                                          }
-                                        </div>
-                                      </Grow>
-                                    </div>
+                  <div className={classes.listRoot}>
+                    <Grow in={!this.state.isFetching}>
+                      <div className={classes.list}>
+                        <Pageination nextPage={this.getNextPage} page={this.state.nextPage}>
+                          {this.state.events && this.state.events.map((value, index) => (
+                            <EventListItem key={value.id} data={value} />
+                          ))}
+                        </Pageination>
+                        { (this.state.events.length === 0 && !this.state.isLoading) &&
+                              <NoEventsIndicator />
+                        }
+                      </div>
+                    </Grow>
+                  </div>
                 }
                 <div>
                   <div className={classes.settings}>

@@ -6,7 +6,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import {ResponsiveContainer, BarChart, Bar, Tooltip, XAxis, YAxis} from 'recharts';
 
-const styles = {
+const styles = (theme) => ({
   statistics: {
     display: 'flex',
     flexDirection: 'row',
@@ -17,8 +17,12 @@ const styles = {
   },
   statisticsInner: {
     width: '100%',
+    color: theme.colors.text.light,
   },
-};
+  lightText: {
+    color: theme.colors.text.light,
+  },
+});
 
 const EventParticipants = (props) => {
   const {classes, participants} = props;
@@ -39,7 +43,7 @@ const EventParticipants = (props) => {
 
   return (
     <React.Fragment>
-      <Typography>Ankommet: {attendedNo(true) + '/' + attendedNo(false)}</Typography>
+      <Typography className={classes.lightText}>Ankommet: {attendedNo(true) + '/' + attendedNo(false)}</Typography>
       <div className={classes.statistics}>
         <div className={classes.statisticsInner}>
           <Typography variant='h6'>Klasse:</Typography>

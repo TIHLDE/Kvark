@@ -1,9 +1,7 @@
-// @flow
-
-import * as React from 'react';
-import {Component, Fragment} from 'react';
+import React, {Component, Fragment} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
 // Material UI Components
 import Input from '@material-ui/core/Input';
@@ -20,23 +18,25 @@ import Bulleted from '@material-ui/icons/FormatListBulleted';
 import Numbered from '@material-ui/icons/FormatListNumbered';
 import Image from '@material-ui/icons/Image';
 import Breakline from '@material-ui/icons/SubdirectoryArrowLeft';
-// Project Components
 
 // External Components
 import ReactMarkdown from 'react-markdown';
 import breaks from 'remark-breaks';
 
-const styles: Object = {
+const styles = (theme) => ({
   root: {
     width: '100%',
     height: '100%',
+  },
+  tabs: {
+    color: theme.colors.text.main,
   },
   input: {
     width: '100%',
     height: '100%',
   },
   toolbox: {
-    backgroundColor: 'whitesmoke',
+    backgroundColor: theme.colors.background.main,
     minHeight: 30,
     padding: 4,
   },
@@ -58,15 +58,9 @@ const styles: Object = {
     flexGrow: 1,
     maxWidth: 50,
   },
-};
+});
 
-type ToolbarProps = {
-    onClick: Function,
-    classes?: Object,
-    children: any,
-};
-
-export const ToolbarAction: React.StatelessFunctionalComponent<ToolbarProps> = withStyles(styles)((props) => {
+const ToolbarAction = withStyles(styles)((props) => {
   const {classes, children} = props;
   return (
     <IconButton className={classes.iconBtn} onClick={props.onClick}>
@@ -75,52 +69,38 @@ export const ToolbarAction: React.StatelessFunctionalComponent<ToolbarProps> = w
   );
 });
 
-type P = {
-    classes: Object,
-    editorClass: string,
-    toolboxClass?: string,
-    className: string,
-    value: string,
-    onChange: Function,
+ToolbarAction.propTypes = {
+  classes: PropTypes.object,
+  children: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+  ]),
+};
 
-    disableToolbox: ?bool,
-    disablePreview: ?bool,
-}
+class TextEditor extends Component {
+  constructor() {
+    super();
+    this.state = {
+      tabValue: 0,
+      cursorPos: 0,
+      text: '',
+    };
 
-type S = {
-    tabValue: number,
-    cursorPos: number,
+    this.input = React.createRef();
+  }
 
-    text: string,
-}
-
-class TextEditor extends Component<P, S> {
-
-    input: Input;
-
-    constructor() {
-      super();
-      this.state = {
-        tabValue: 0,
-        cursorPos: 0,
-        text: '',
-      };
-
-      this.input = React.createRef();
-    }
-
-    handleChange = (event: Object): void => {
+    handleChange = (event) => {
       this.setState({text: event.target.value, cursorPos: this.input.selectionStart});
       if (this.props.onChange) {
         this.props.onChange(event.target.value);
       }
     }
 
-    handleTabChange = (event: Object, value: number) => {
+    handleTabChange = (event, value) => {
       this.setState({tabValue: value});
     }
 
-    appendTextAtCursor = (textToAppend: string): void => {
+    appendTextAtCursor = (textToAppend) => {
       const text = this.input.value;
       const cursorPos = this.input.selectionStart === 0 ? this.state.cursorPos : this.input.selectionStart;
       const newText = text.substring(0, cursorPos) + textToAppend + text.substring(cursorPos, text.length);
@@ -132,7 +112,7 @@ class TextEditor extends Component<P, S> {
       this.setSelectionStart(cursorPos + textToAppend.length);
     }
 
-    setSelectionStart = (position: number): void => {
+    setSelectionStart = (position) => {
       if (position < 0) {
         position = 0;
       }
@@ -141,31 +121,31 @@ class TextEditor extends Component<P, S> {
       this.input.focus();
     }
 
-    appendBold = (): void => {
+    appendBold = () => {
       this.appendTextAtCursor('****');
       this.setSelectionStart(this.input.selectionStart + 2);
     }
 
-    appendItalic = (): void => {
+    appendItalic = () => {
       this.appendTextAtCursor('__');
       this.setSelectionStart(this.input.selectionStart + 1);
     }
 
-    appendStrike = (): void => {
+    appendStrike = () => {
       this.appendTextAtCursor('~~~~');
       this.setSelectionStart(this.input.selectionStart + 2);
     }
 
-    appendBulletPoint = (type: string): Function => (): void => {
+    appendBulletPoint = (type) => () => {
       this.appendTextAtCursor('\n'.concat(type, ' '));
     }
 
-    appendImage = (): void => {
+    appendImage = () => {
       this.appendTextAtCursor('![ALT_TEXT](IMAGE_URL)');
       this.setSelectionStart(this.input.selectionStart);
     }
 
-    appendBreakline = (): void => {
+    appendBreakline = () => {
       this.appendTextAtCursor('\n&nbsp;');
       this.setSelectionStart(this.input.selectionStart);
     }
@@ -173,10 +153,10 @@ class TextEditor extends Component<P, S> {
     render() {
       const {classes, disableToolbox, disablePreview} = this.props;
       const {tabValue} = this.state;
-      const value: string = this.props.value || '';
+      const value = this.props.value || '';
       return (
         <div className={classNames(classes.root, this.props.className)}>
-          {!disablePreview && <Tabs value={this.state.tabValue} onChange={this.handleTabChange}>
+          {!disablePreview && <Tabs className={classes.tabs} value={this.state.tabValue} onChange={this.handleTabChange}>
             <Tab label='Write' />
             <Tab label='Preview' />
           </Tabs>}
@@ -211,5 +191,16 @@ class TextEditor extends Component<P, S> {
       );
     }
 }
+
+TextEditor.propTypes = {
+  classes: PropTypes.object,
+  disableToolbox: PropTypes.bool,
+  disablePreview: PropTypes.bool,
+  onChange: PropTypes.func,
+  value: PropTypes.string,
+  className: PropTypes.string,
+  toolboxClass: PropTypes.string,
+  editorClass: PropTypes.string,
+};
 
 export default withStyles(styles)(TextEditor);

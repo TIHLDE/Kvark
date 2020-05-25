@@ -10,15 +10,15 @@ import Typography from '@material-ui/core/Typography';
 
 // Icons
 
-const styles = {
+const styles = (theme) => ({
   root: {
     padding: 40,
     '@media only screen and (max-width: 950px)': {
       margin: '0 5px',
     },
-    border: '1px solid #ddd',
-    borderRadius: '5px',
-    backgroundColor: '#fff',
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.colors.background.light,
   },
   wrapper: {
     display: 'flex',
@@ -52,12 +52,19 @@ const styles = {
   },
   header: {
     marginBottom: 10,
+    color: theme.colors.text.main,
+  },
+  subheader: {
+    color: theme.colors.text.main,
+  },
+  text: {
+    color: theme.colors.text.light,
   },
   grow: {
     flexGrow: 1,
   },
   children: {},
-};
+});
 
 const InfoCard = (props) => {
   const {classes} = props;
@@ -65,20 +72,20 @@ const InfoCard = (props) => {
   return (
     <div className={classNames(classes.root, props.className)}>
       <div className={classes.wrapper}>
-        {(!props.src) ? null :
-                    <div className={classes.margin}>
-                      <img className={classNames(classes.image, props.imageClass)} src={props.src} alt={props.alt}/>
-                    </div>
+        {props.src &&
+          <div className={classes.margin}>
+            <img className={classNames(classes.image, props.imageClass)} src={props.src} alt={props.alt}/>
+          </div>
         }
         <Grid className={(props.justifyText) ? classes.cover : ''} container direction='column' nowrap='nowrap' justify='flex-start'>
           <Typography className={classes.header} variant='h5' align='left'><strong>{props.header}</strong></Typography>
-          {props.text && <Typography component='p'>{parser(props.text)}</Typography>}
+          {props.text && <Typography className={classes.text} component='p'>{parser(props.text)}</Typography>}
 
-          {(!props.subText) ? null :
-                        <Fragment>
-                          <Typography className={classes.padding} variant='subtitle1'><strong>{props.subheader}</strong></Typography>
-                          <Typography component='p'>{parser(props.subText)}</Typography>
-                        </Fragment>
+          {props.subText &&
+            <Fragment>
+              <Typography className={classNames(classes.padding, classes.subheader)} variant='subtitle1'><strong>{props.subheader}</strong></Typography>
+              <Typography className={classes.text} component='p'>{parser(props.subText)}</Typography>
+            </Fragment>
           }
           {props.children && (
             <div className={classNames(classes.grow, classes.padding, props.classes.children)}>

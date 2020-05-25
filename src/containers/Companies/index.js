@@ -19,7 +19,7 @@ import Forum from './components/Forum';
 
 import Text from '../../text/CompaniesText';
 
-const styles = {
+const styles = (theme) => ({
   root: {},
   container: {
     display: 'grid',
@@ -56,18 +56,19 @@ const styles = {
       width: '100%',
     },
   },
-  margining: {
+  header: {
     marginTop: '2px',
     marginBottom: '20px',
+    color: theme.colors.text.main,
   },
   smoke: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: theme.colors.background.smoke,
   },
   formWrapper: {
     margin: '15px 0',
-    border: '1px solid #ddd',
-    borderRadius: '5px',
-    backgroundColor: '#fff',
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.colors.background.light,
   },
   flex: {
     display: 'flex',
@@ -80,45 +81,29 @@ const styles = {
   },
   button: {
     width: '100%',
-    color: '#f8f8fa',
-    borderColor: '#f8f8fabb',
+    color: theme.colors.constant.smoke,
+    borderColor: theme.colors.constant.smoke + 'bb',
     minWidth: 200,
     '&:hover': {
-      borderColor: '#f8f8fa',
+      borderColor: theme.colors.constant.smoke,
     },
   },
   sendIcon: {
     marginRight: 15,
   },
-};
+});
 
 class Companies extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      opening: true,
-    };
+    this.state = {};
     this.formRef = React.createRef();
     this.firstTextFieldRef = React.createRef();
   }
 
   componentDidMount() {
     window.scrollTo({top: 0, left: 0});
-
-    // this.focusFirstTextField();
   }
-
-  // Brukes til å åpne den hvis den ikke er åpen
-  handleExpansionToggle = (bool) => (event) => {
-    if (bool || !this.state.opening) {
-      this.focusFirstTextField();
-    }
-    if (bool) {
-      this.setState({opening: bool});
-    } else {
-      this.setState({opening: !this.state.opening});
-    }
-  };
 
   focusFirstTextField = () => {
     const node = this.firstTextFieldRef.current;
@@ -138,10 +123,7 @@ class Companies extends Component {
         className={classes.button}
         variant='outlined'
         color='primary'
-        onClick={(event) => {
-          this.scrollToForm();
-          this.handleExpansionToggle(true)(event);
-        }}>
+        onClick={() => this.scrollToForm()}>
         <div className={classes.flex}>
           <Send className={classes.sendIcon}/>
           {Text.interesse}
@@ -154,7 +136,7 @@ class Companies extends Component {
     const {classes} = this.props;
 
     return (
-      <Navigation footer fancyNavbar>
+      <Navigation whitesmoke footer fancyNavbar>
         <div className={classes.root}>
           <Banner title={Text.bannnertitle}>
             <this.ToFormButton classes={classes} />
@@ -164,7 +146,7 @@ class Companies extends Component {
               variant='h4'
               color="inherit"
               align="center"
-              className={classes.margining}
+              className={classes.header}
             >
               {Text.viTilbyr}
             </Typography>
@@ -188,7 +170,7 @@ class Companies extends Component {
                 variant='h4'
                 color="inherit"
                 align="center"
-                className={classes.margining}
+                className={classes.header}
               >
                 {Text.studier}
               </Typography>

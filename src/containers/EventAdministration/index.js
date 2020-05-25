@@ -13,7 +13,7 @@ class DataRegistrator extends Component {
 
   render() {
     return (
-      <Navigation>
+      <Navigation whitesmoke>
         <EventAdministrator />
       </Navigation>
     );

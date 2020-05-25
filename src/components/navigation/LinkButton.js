@@ -7,15 +7,16 @@ import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
 import Typography from '@material-ui/core/Typography';
 
-const linkButtonStyles = {
+const linkButtonStyles = (theme) => ({
   button: {
     height: '100%',
     width: '100%',
+    color: theme.colors.text.light,
   },
   buttonFrame: {
     width: '100%',
     height: '100%',
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.background.light,
   },
   textCenter: {
     textAlign: 'center',
@@ -36,7 +37,7 @@ const linkButtonStyles = {
     width: '100%',
     padding: 10,
   },
-};
+});
 
 const LinkButton = (props) => {
   const {classes, children, noPadding, textLeft, noText, icon: IconComponent} = props;
@@ -86,7 +87,7 @@ const LinkButton = (props) => {
 
 LinkButton.propTypes = {
   children: PropTypes.node,
-  icon: PropTypes.func,
+  icon: PropTypes.object,
   to: PropTypes.string.isRequired,
   noPadding: PropTypes.bool,
   textLeft: PropTypes.bool,

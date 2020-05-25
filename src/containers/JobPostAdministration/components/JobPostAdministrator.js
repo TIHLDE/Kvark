@@ -11,7 +11,6 @@ import JobPostService from '../../../api/services/JobPostService';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import ButtonBase from '@material-ui/core/ButtonBase';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -28,37 +27,10 @@ const SIDEBAR_WIDTH = 300;
 const styles = (theme) => ({
   root: {
     paddingLeft: SIDEBAR_WIDTH,
-    paddingBottom: 100,
+    paddingBottom: 50,
     '@media only screen and (max-width: 800px)': {
       padding: 0,
     },
-  },
-  sidebar: {
-    paddingTop: 64,
-    position: 'fixed',
-    left: 0, top: 0, bottom: 0,
-    width: SIDEBAR_WIDTH,
-
-    '@media only screen and (max-width: 800px)': {
-      position: 'static',
-      width: '100%',
-      padding: 0,
-    },
-  },
-  sidebarTop: {
-    backgroundColor: 'whitesmoke',
-    padding: '10px 5px 10px 12px',
-  },
-  miniTop: {
-    padding: '5px 5px 5px 12px',
-  },
-  jobPostItem: {
-    padding: '10px 10px',
-    textAlign: 'left',
-  },
-  selected: {
-    backgroundColor: theme.palette.primary.main,
-    color: 'white',
   },
   field: {
     margin: '5px 0px',
@@ -67,17 +39,18 @@ const styles = (theme) => ({
   content: {
     width: '80%',
     maxWidth: 1000,
-    marginTop: 150,
+    marginTop: 50,
     display: 'block',
     margin: 'auto',
     padding: 36,
-    border: '1px solid #ddd',
-    borderRadius: 5,
-    backgroundColor: '#fff',
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.colors.background.light,
 
     '@media only screen and (max-width: 800px)': {
       width: 'auto',
-      marginTop: 0,
+      margin: 10,
+      padding: '36px 20px',
     },
   },
   margin: {
@@ -99,18 +72,8 @@ const styles = (theme) => ({
   progress: {
     minHeight: 300,
   },
-  flexRow: {
-    margin: '10px 0',
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'nowrap',
-
-    '@media only screen and (max-width: 800px)': {
-      flexDirection: 'column',
-    },
-  },
-  padding: {
-    padding: '10px 5px',
+  header: {
+    color: theme.colors.text.main,
   },
 });
 
@@ -123,28 +86,6 @@ const MessageView = withStyles(styles, {withTheme: true})((props) => {
     </Grid>
   );
 });
-
-const JobPostItem = withStyles(styles, {withTheme: true})((props) => {
-  const {classes} = props;
-  return (
-    <Fragment>
-      <ButtonBase onClick={props.onClick}>
-        <Grid className={classNames(classes.JobPostItem, (props.selected) ? classes.selected : '')} container direction='row' alignItems='center' justify='space-between'>
-          <Grid container direction='column' justify='center'>
-            <Typography variant='subtitle1' color='inherit'>{props.title}</Typography>
-            <Typography variant='caption' color='inherit'>{props.location}</Typography>
-          </Grid>
-        </Grid>
-      </ButtonBase>
-      <Divider/>
-    </Fragment>
-  );
-});
-
-JobPostItem.propTypes = {
-  title: PropTypes.string,
-  location: PropTypes.string,
-};
 
 // const priorities = ['Lav', 'Middels', 'Høy'];
 const jobpostCreated = 'Annonsen ble opprettet';
@@ -419,7 +360,7 @@ class JobPostAdministrator extends Component {
                       (this.state.showSuccessMessage) ? <MessageView title={this.state.successMessage} buttonText='Nice' onClick={this.toggleSuccessView}/> :
                           <form>
                             <Grid container direction='column' wrap='nowrap'>
-                              <Typography variant='h5'>{header}</Typography>
+                              <Typography className={classes.header} variant='h5'>{header}</Typography>
                               <TextField className={classes.field} label='Tittel' value={title} onChange={this.handleChange('title')} required/>
                               <TextField className={classes.field} label='Ingress' value={ingress} onChange={this.handleChange('ingress')} required/>
                               <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>

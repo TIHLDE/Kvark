@@ -14,7 +14,7 @@ import Navigation from '../../components/navigation/Navigation';
 import InfoCard from '../../components/layout/InfoCard';
 import Banner from '../../components/layout/Banner';
 
-const styles = {
+const styles = (theme) => ({
   root: {
     minHeight: '100vh',
   },
@@ -37,8 +37,8 @@ const styles = {
     paddingBottom: 2,
     gridGap: '15px',
     '& a': {
-      backgroundColor: 'var(--tihlde-white)',
-      color: 'black',
+      backgroundColor: theme.colors.background.light,
+      color: theme.colors.text.main,
     },
     '@media only screen and (max-width: 700px)': {
       gridTemplateColumns: '1fr',
@@ -52,7 +52,20 @@ const styles = {
       padding: '5px 0',
     },
   },
-};
+  button: {
+    textAlign: 'center',
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    boxShadow: '0px 2px 4px ' + theme.colors.border.main + '88, 0px 0px 4px ' + theme.colors.border.main + '88',
+    margin: 0,
+    height: 50,
+    overflow: 'hidden',
+    backgroundColor: theme.colors.background.light,
+    '&:hover': {
+      backgroundColor: theme.colors.background.light + 'bb',
+    },
+  },
+});
 
 class ContactInfo extends Component {
 
@@ -69,9 +82,9 @@ class ContactInfo extends Component {
 
           <div className={classes.section}>
             <div className={classes.socialgrid}>
-              <Button color='inherit' variant='contained' noPadding href='mailto:hs@tihlde.org'>E-post</Button>
-              <Button color='inherit' variant='contained' noPadding target='_blank' href='https://www.facebook.com/messages/t/tihlde'>Messenger</Button>
-              <Button color='inherit' variant='contained' noPadding target='_blank' href='https://tihlde.slack.com/'>Slack</Button>
+              <Button className={classes.button} color='inherit' variant='contained' href='mailto:hs@tihlde.org'>E-post</Button>
+              <Button className={classes.button} color='inherit' variant='contained' target='_blank' href='https://www.facebook.com/messages/t/tihlde'>Messenger</Button>
+              <Button className={classes.button} color='inherit' variant='contained' target='_blank' href='https://tihlde.slack.com/'>Slack</Button>
             </div>
           </div>
 

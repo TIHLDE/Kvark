@@ -13,7 +13,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import EventParticipant from './EventParticipant';
 import EventStatistics from './EventStatistics';
 
-const styles = {
+const styles = (theme) => ({
   header: {
     display: 'flex',
     padding: 2,
@@ -25,7 +25,7 @@ const styles = {
     width: '100%',
   },
   numbers: {
-    minWidth: 150,
+    minWidth: 160,
     textAlign: 'end',
     display: 'flex',
     justifyContent: 'end',
@@ -52,7 +52,13 @@ const styles = {
     marginTop: '-6px',
     marginBottom: '-6px',
   },
-};
+  mainText: {
+    color: theme.colors.text.main,
+  },
+  lightText: {
+    color: theme.colors.text.light,
+  },
+});
 
 const EventParticipants = (props) => {
   const {classes, event, closeParticipants, participants, removeUserFromEvent, toggleUserEvent} = props;
@@ -83,7 +89,7 @@ const EventParticipants = (props) => {
   };
 
   const printParticipants = (waitList, notAttended) => {
-    let elements = <Typography>Ingen påmeldte.</Typography>;
+    let elements = <Typography className={classes.lightText}>Ingen påmeldte.</Typography>;
     let participantsToPrint;
 
     participantsToPrint = waitList ? participantsOnWait : participantsIn;
@@ -114,26 +120,27 @@ const EventParticipants = (props) => {
     <React.Fragment>
       <div className={classes.header}>
         <div className={classes.heading}>
-          <Typography variant='h4'>{event.title}</Typography>
+          <Typography className={classes.mainText} variant='h4'>{event.title}</Typography>
         </div>
         <div className={classes.numbers}>
-          <Typography>Antall påmeldte: {participantsIn.length}</Typography>
-          <Typography>Antall på venteliste: {participantsOnWait.length}</Typography>
+          <Typography className={classes.lightText}>Antall påmeldte: {participantsIn.length}</Typography>
+          <Typography className={classes.lightText}>Antall på venteliste: {participantsOnWait.length}</Typography>
         </div>
       </div>
       <Divider />
       <div className={classes.content}>
         { participantsIn.length > 0 &&
         <div>
-          <Typography variant='h5'>Statistikk</Typography>
+          <Typography className={classes.mainText} variant='h5'>Statistikk</Typography>
           <div className={classes.listView}>
             <EventStatistics participants={participantsIn} />
           </div>
         </div>
         }
         <div className={classes.flexRow}>
-          <Typography variant='h5'>Påmeldte</Typography>
+          <Typography className={classes.mainText} variant='h5'>Påmeldte</Typography>
           <FormControlLabel
+            className={classes.lightText}
             label="Ikke ankommet"
             labelPlacement="start"
             control={
@@ -149,7 +156,7 @@ const EventParticipants = (props) => {
         <div className={classes.listView}>
           {printParticipants(false, showOnlyNotAttended)}
         </div>
-        <Typography variant='h5'>Venteliste</Typography>
+        <Typography className={classes.mainText} variant='h5'>Venteliste</Typography>
         <div className={classes.listView}>
           {printParticipants(true)}
         </div>

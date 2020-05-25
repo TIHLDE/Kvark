@@ -10,16 +10,9 @@ import Typography from '@material-ui/core/Typography';
 // Project components
 import LinkButton from '../../../components/navigation/LinkButton';
 
-const styles = {
-  btnBase: {
-    // backgroundColor: 'white',
-  },
+const styles = (theme) => ({
   root: {
-    // backgroundColor: 'white',
     padding: 16,
-    '@media only screen and (max-width: 600px)': {
-
-    },
   },
   wrapper: {
     display: 'flex',
@@ -27,12 +20,15 @@ const styles = {
     justifyContent: 'space-evenly',
     alignItems: 'center',
   },
+  title: {
+    color: theme.colors.text.light,
+  },
   icon: {
     fontSize: 100,
     marginBottom: 20,
-    color: 'rgba(0, 0, 0, 0.6)',
+    color: theme.colors.text.lighter,
   },
-};
+});
 
 const Icons = (props) => {
   const {classes, data, icon: Component} = props;
@@ -43,7 +39,7 @@ const Icons = (props) => {
 
         <div className={classes.wrapper}>
           <Component className={classes.icon} />
-          <Typography variant={'h5'}>{text}</Typography>
+          <Typography className={classes.title} variant={'h5'}>{text}</Typography>
         </div>
       </div>
     </LinkButton>
@@ -56,6 +52,7 @@ Icons.propTypes = {
   icon: PropTypes.oneOfType([
     PropTypes.element,
     PropTypes.func,
+    PropTypes.object,
   ]),
   data: PropTypes.object,
   onClick: PropTypes.func,

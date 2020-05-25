@@ -8,20 +8,22 @@ import Typography from '@material-ui/core/Typography';
 
 // Icons
 
-const styles = {
+const styles = (theme) => ({
   root: {
     padding: '15px 5px',
     height: '100%',
-
   },
-};
+  header: {
+    color: theme.colors.text.light,
+  },
+});
 
 const MessageIndicator = (props) => {
   const {classes} = props;
   return (
     <Grid className={classes.root} container direction='column' wrap='nowrap' justify='center'>
-      <Typography variant={props.variant || 'h6'} color={props.color || 'default'} align='center' gutterBottom>{props.header}</Typography>
-      <Typography variant='subtitle1' align='center'>{props.subheader}</Typography>
+      <Typography className={classes.header} variant={props.variant || 'h6'} color={props.color || 'inherit'} align='center' gutterBottom>{props.header}</Typography>
+      <Typography className={classes.header} variant='subtitle1' align='center'>{props.subheader}</Typography>
     </Grid>
   );
 };

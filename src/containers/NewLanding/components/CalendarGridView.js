@@ -24,7 +24,7 @@ const styles = (theme) => ({
     top: '10%',
   },
   link: {
-    color: '#777',
+    color: theme.colors.text.lighter,
     fontSize: '12px',
     padding: '10px',
     textDecoration: 'none',
@@ -36,7 +36,7 @@ const styles = (theme) => ({
     },
   },
   linkFadder: {
-    color: '#777',
+    color: theme.colors.text.lighter,
     fontSize: '12px',
     padding: '10px',
     textDecoration: 'none',

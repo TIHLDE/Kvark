@@ -42,7 +42,7 @@ const SIDEBAR_WIDTH = 300;
 const styles = (theme) => ({
   root: {
     paddingLeft: SIDEBAR_WIDTH,
-    paddingBottom: 100,
+    paddingBottom: 50,
     '@media only screen and (max-width: 800px)': {
       padding: 0,
     },
@@ -54,19 +54,19 @@ const styles = (theme) => ({
   content: {
     width: '80%',
     maxWidth: 1100,
-    marginTop: 150,
+    marginTop: 50,
     display: 'block',
     margin: 'auto',
     padding: 36,
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.colors.background.light,
 
     '@media only screen and (max-width: 800px)': {
       width: 'auto',
       margin: 10,
-      marginTop: 70,
+      padding: '36px 20px',
     },
-    border: '1px solid #ddd',
-    borderRadius: '5px',
-    backgroundColor: '#fff',
   },
   margin: {
     margin: '10px 0px',
@@ -79,9 +79,16 @@ const styles = (theme) => ({
   link: {
     textDecoration: 'none',
   },
+  header: {
+    color: theme.colors.text.main,
+  },
+  switch: {
+    color: theme.colors.text.light,
+  },
   snackbar: {
     marginTop: 44,
-    backgroundColor: theme.palette.error.main,
+    backgroundColor: theme.colors.status.red,
+    color: theme.colors.constant.white,
   },
   messageView: {
     padding: 30,
@@ -108,7 +115,8 @@ const styles = (theme) => ({
   },
   expansionPanel: {
     width: '100%',
-    boxShadow: '0px 2px 4px #ddd',
+    boxShadow: '0px 2px 4px ' + theme.colors.border.main + '88',
+    background: theme.colors.background.smoke,
   },
   formWrapper: {
     width: '100%',
@@ -128,26 +136,27 @@ const styles = (theme) => ({
     gridTemplateColumns: '1fr 1fr',
   },
   chipYes: {
-    color: '#ffffff',
-    backgroundColor: '#0b7c0b',
-    borderColor: '#0b7c0b',
+    color: theme.colors.constant.white,
+    backgroundColor: theme.colors.status.green,
+    borderColor: theme.colors.status.green,
     '&:hover': {
-      color: '#ffffff',
-      backgroundColor: '#0b7c0b',
-      borderColor: '#0b7c0b',
+      color: theme.colors.constant.white,
+      backgroundColor: theme.colors.status.green + 'bb',
+      borderColor: theme.colors.status.green + 'bb',
     },
   },
   chipNo: {
-    color: '#b20101',
-    borderColor: '#b20101',
+    color: theme.colors.status.red,
+    backgroundColor: theme.colors.constant.white,
+    borderColor: theme.colors.status.red,
     '&:hover': {
-      color: '#b20101',
-      borderColor: '#b20101',
+      color: theme.colors.status.red,
+      borderColor: theme.colors.status.red,
     },
   },
   questionCount: {
     fontWeight: 'bold',
-    color: '#555',
+    color: theme.colors.text.lighter,
     marginLeft: 5,
   },
 });
@@ -198,7 +207,7 @@ class EventAdministrator extends Component {
       priority: 0,
       registrationPriorities: [{'user_class': 1, 'user_study': 1}, {'user_class': 1, 'user_study': 2}, {'user_class': 1, 'user_study': 3}, {'user_class': 1, 'user_study': 5}, {'user_class': 2, 'user_study': 1}, {'user_class': 2, 'user_study': 2}, {'user_class': 2, 'user_study': 3}, {'user_class': 2, 'user_study': 5}, {'user_class': 3, 'user_study': 1}, {'user_class': 3, 'user_study': 2}, {'user_class': 3, 'user_study': 3}, {'user_class': 3, 'user_study': 5}, {'user_class': 4, 'user_study': 4}, {'user_class': 5, 'user_study': 4}],
       image: '',
-      category: 0,
+      category: '',
       limit: 0,
       participants: [],
       userEvent: false,
@@ -323,7 +332,7 @@ class EventAdministrator extends Component {
         registrationPriorities: [{'user_class': 1, 'user_study': 1}, {'user_class': 1, 'user_study': 2}, {'user_class': 1, 'user_study': 3}, {'user_class': 1, 'user_study': 5}, {'user_class': 2, 'user_study': 1}, {'user_class': 2, 'user_study': 2}, {'user_class': 2, 'user_study': 3}, {'user_class': 2, 'user_study': 5}, {'user_class': 3, 'user_study': 1}, {'user_class': 3, 'user_study': 2}, {'user_class': 3, 'user_study': 3}, {'user_class': 3, 'user_study': 5}, {'user_class': 4, 'user_study': 4}, {'user_class': 5, 'user_study': 4}],
         image: '',
         imageAlt: '',
-        category: 0,
+        category: '',
         startDate: new Date().toISOString().substring(0, 16),
         endDate: new Date().toISOString().substring(0, 16),
         startSignUp: new Date().toISOString().substring(0, 16),
@@ -536,7 +545,7 @@ class EventAdministrator extends Component {
     render() {
       const {classes} = this.props;
       const {selectedEvent, title, location, description, evaluateLink, image, priority, registrationPriorities, categories, category, signUp, optionalFields, showParticipants, limit, participants} = this.state;
-      const selectedEventId = (selectedEvent) ? selectedEvent.id : '';
+      const selectedEventId = (selectedEvent) ? selectedEvent.id : null;
       const isNewItem = (selectedEvent === null);
       const header = (isNewItem) ? 'Lag et nytt arrangement' : 'Endre arrangement';
 
@@ -578,11 +587,12 @@ class EventAdministrator extends Component {
                           (this.state.showSuccessMessage) ? <MessageView title={this.state.successMessage} buttonText='Nice' onClick={this.toggleSuccessView}/> :
                               <form>
                                 <Grid container direction='column' wrap='nowrap'>
-                                  <Typography variant='h5'>{header}</Typography>
+                                  <Typography className={classes.header} variant='h5'>{header}</Typography>
                                   <TextField className={classes.field} label='Tittel' value={title} onChange={this.handleChange('title')} required/>
                                   <TextField className={classes.field} label='Sted' value={location} onChange={this.handleChange('location')} required/>
                                   <TextField className={classes.field} label='Antall plasser' value={limit} onChange={this.handleChange('limit')} required/>
                                   <FormControlLabel
+                                    className={classes.switch}
                                     control={
                                       //   <Checkbox onChange={this.handleChange('signUp')} checked={signUp} />
                                       <Switch checked={signUp} onChange={this.handleChange('signUp')} color="primary" />

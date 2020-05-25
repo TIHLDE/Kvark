@@ -8,18 +8,18 @@ import Modal from '@material-ui/core/Modal';
 // Project Components
 import EventRenderer from '../../EventDetails/components/EventRenderer';
 
-const styles = {
+const styles = (theme) => ({
   root: {
     maxWidth: 1200,
     margin: 'auto',
     paddingTop: 80,
     paddingBottom: 100,
-    backgroundColor: '#f8f8fa',
+    backgroundColor: theme.colors.background.main,
   },
   overflow: {
     overflowY: 'auto',
   },
-};
+});
 
 class EventPreview extends Component {
   render() {

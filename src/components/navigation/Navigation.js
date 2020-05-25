@@ -23,6 +23,7 @@ import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import IconButton from '@material-ui/core/IconButton';
 import Skeleton from '@material-ui/lab/Skeleton';
+import Avatar from '@material-ui/core/Avatar';
 
 // Assets/Icons
 import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO.png';
@@ -35,12 +36,11 @@ import Footer from './Footer';
 import Sidebar from './Sidebar';
 import Snack from './Snack';
 
-const styles = {
+const styles = (theme) => ({
   root: {
     boxSizing: 'border-box',
-    // backgroundColor: 'var(--tihlde-blaa)',
-    backgroundColor: 'var(--gradient-top)',
-    color: 'white',
+    backgroundColor: theme.colors.gradient.main.top,
+    color: theme.colors.text.m,
     flexGrow: 1,
     zIndex: 10001,
     transition: '0.4s',
@@ -79,7 +79,7 @@ const styles = {
     },
   },
   menuButton: {
-    color: 'white',
+    color: theme.colors.header.text,
   },
   menuWrapper: {
     display: 'flex',
@@ -101,9 +101,6 @@ const styles = {
     justifyContent: 'center',
     flexGrow: 1,
   },
-  horSpacing: {
-    margin: '0 10px',
-  },
   snack: {
     position: 'absolute',
     top: 62,
@@ -117,10 +114,10 @@ const styles = {
     },
   },
   snackWarning: {
-    backgroundColor: 'rgba(211,47,47,1)',
+    backgroundColor: theme.palette.error.main,
   },
   snackMessage: {
-    backgroundColor: 'var(--tihlde-blaa)',
+    backgroundColor: theme.colors.tihlde.main,
   },
   flex: {
     display: 'flex',
@@ -128,24 +125,17 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   whitesmoke: {
-    backgroundColor: 'var(--gray)',
+    backgroundColor: theme.colors.background.main,
+  },
+  light: {
+    backgroundColor: theme.colors.background.light,
   },
   selected: {
-    borderBottom: '2px solid white',
+    borderBottom: '2px solid ' + theme.colors.header.text,
   },
   uri: {
     display: 'inline',
-  },
-  loginBtn: {
-    color: 'white',
-    border: '2px solid white',
-  },
-  profileBtn: {
-    color: 'white',
-    border: '2px solid white',
-    padding: 6,
   },
   sponsorWrapper: {
     verticalAlign: 'top',
@@ -164,7 +154,7 @@ const styles = {
     },
   },
   sponsorText: {
-    color: 'white',
+    color: theme.colors.header.text,
     fontSize: '10px',
     textAlign: 'center',
     opacity: 0.7,
@@ -186,55 +176,37 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    borderRadius: '4px',
+    borderRadius: theme.sizes.border.radius,
     cursor: 'pointer',
-  },
-  profileContainerHidden: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    opacity: '0',
   },
   profileName: {
     margin: 'auto 10px',
     fontSize: '16px',
-    color: 'white',
+    color: theme.colors.constant.white,
     minWidth: '40px',
     textAlign: 'right',
     '@media only screen and (max-width: 450px)': {
       display: 'none',
     },
   },
-  profileCircle: {
-    borderRadius: '50%',
-    backgroundImage: 'linear-gradient(90deg, #DA4453, #89216B)',
-    fontSize: '18px',
-    padding: '7px',
-    color: 'white',
-    height: '45px',
-    width: '45px',
-    textAlign: 'center',
+  avatar: {
+    width: 45,
+    height: 45,
+    fontSize: 18,
     fontWeight: 'bold',
-  },
-  profileCircleImage: {
-    backgroundImage: 'url(https://thenypost.files.wordpress.com/2019/09/takes-donald-trump.jpg?quality=90&strip=all&w=618&h=410&crop=1)',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    color: '#00000000',
-    userSelect: 'none',
+    background: 'linear-gradient(90deg, ' + theme.colors.gradient.avatar.top + ', ' + theme.colors.gradient.avatar.bottom + ')',
+    color: theme.colors.gradient.avatar.text,
   },
   skeleton: {
     animation: 'animate 1.5s ease-in-out infinite',
   },
   skeletonCircle: {
-    margin: '5px',
-    height: 'calc(100% - 10px)',
-    width: 'calc(100% - 10px)',
+    margin: 'auto',
+    height: '75%',
+    width: '50%',
     backgroundColor: 'rgba(0, 0, 0, 0.25)',
   },
-};
+});
 
 const URIbutton = withStyles(styles)((props) => {
   const {data, classes} = props;
@@ -264,11 +236,11 @@ const SponsorLogo = withStyles(styles)((props) => {
 const PersonIcon = withStyles(styles)((props) => {
   const {user, link, classes} = props;
   return (
-    <Link to={link} className={classes.profileLink} onClick={link === window.location.pathname ? () => window.location.reload() : null} >
+    <Link to={link} className={classes.profileLink} onClick={link === window.location.pathname ? () => window.location.reload() : null}>
       <Button>
-        <div className={classes.profileContainer} >
+        <div className={classes.profileContainer}>
           <div className={classes.profileName}>{ user.first_name !== undefined ? user.first_name : <Skeleton className={classes.skeleton} variant="text" width={75} /> }</div>
-          <div className={classNames(classes.profileCircle)}>{ user.first_name !== undefined ? String((user.first_name).substring(0, 1)) + (user.last_name).substring(0, 1) : <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant="text" /> }</div>
+          <Avatar className={classes.avatar}>{ user.first_name !== undefined ? String((user.first_name).substring(0, 1)) + (user.last_name).substring(0, 1) : <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant="text" /> }</Avatar>
         </div>
       </Button>
     </Link>
@@ -388,15 +360,15 @@ class Navigation extends Component {
 
                 <div>
                   {!AuthService.isAuthenticated() &&
-                                    <SponsorLogo />
+                    <SponsorLogo />
                   }
                 </div>
                 <div>
                   {AuthService.isAuthenticated() ?
-                                    <PersonIcon user={this.state.userData} link={URLS.profile} /> :
-                                    <Hidden smDown implementation='css'>
-                                      <IconButton className={classes.menuButton} onClick={() => this.goTo(URLS.login)}><PersonOutlineIcon /></IconButton>
-                                    </Hidden>
+                    <PersonIcon user={this.state.userData} link={URLS.profile} /> :
+                    <Hidden smDown implementation='css'>
+                      <IconButton className={classes.menuButton} onClick={() => this.goTo(URLS.login)}><PersonOutlineIcon /></IconButton>
+                    </Hidden>
                   }
                 </div>
 
@@ -428,7 +400,7 @@ class Navigation extends Component {
             message={this.state.snackMessage}
             onClose={this.closeSnackbar} />
 
-          <main className={classNames((this.props.fancyNavbar ? classes.mainLanding : classes.main), (this.props.whitesmoke ? classes.whitesmoke : null))}>
+          <main className={classNames((this.props.fancyNavbar ? classes.mainLanding : classes.main), (this.props.whitesmoke ? classes.whitesmoke : classes.light))}>
             {(this.props.isLoading) ? <LinearProgress /> : null}
             <div className={classes.wrapper}>
               {this.props.children}

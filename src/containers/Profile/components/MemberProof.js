@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 // Components
 import QRCode from 'qrcode.react';
 
-const style = {
+const style = (theme) => ({
   paper: {
     position: 'absolute',
     maxWidth: 460,
@@ -21,9 +21,9 @@ const style = {
     top: '50%',
     'overflow-y': 'auto',
     transform: 'translate(-50%,-50%)',
-    border: '1px solid #ddd',
-    borderRadius: 5,
-    backgroundColor: '#fff',
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.colors.constant.white,
     outline: 'none',
     '@media only screen and (max-width: 400px)': {
       width: '100%',
@@ -39,8 +39,9 @@ const style = {
   button: {
     width: '100%',
     marginTop: 20,
+    color: theme.colors.constant.black,
   },
-};
+});
 
 const MemberProof = (props) => {
   const {classes, userId} = props;

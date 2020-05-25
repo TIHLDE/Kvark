@@ -9,12 +9,12 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 // Style
-const style = {
+const style = (theme) => ({
   root: {
     position: 'sticky',
     bottom: 0,
     zIndex: 999,
-    backgroundColor: 'whitesmoke',
+    backgroundColor: theme.colors.background.main,
     width: '100%',
     height: 'auto',
     padding: 15,
@@ -36,7 +36,7 @@ const style = {
   text: {
     flexGrow: 1,
   },
-};
+});
 
 const MessageGDPR = (props) => {
   const {classes} = props;

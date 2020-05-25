@@ -26,7 +26,7 @@ import Pageination from '../../components/layout/Pageination';
 import NoPostsIndicator from './components/NoPostsIndicator';
 import JobPostItem from './components/JobPostItem';
 
-const styles = {
+const styles = (theme) => ({
   root: {
     paddingTop: 10,
   },
@@ -81,9 +81,9 @@ const styles = {
       position: 'static',
       top: 0,
     },
-    border: '1px solid #ddd',
-    borderRadius: '5px',
-    backgroundColor: '#fff',
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.colors.background.light,
   },
   paddingBtn: {
     paddingBottom: 10,
@@ -103,7 +103,7 @@ const styles = {
   resetBtn: {
     marginTop: 10,
   },
-};
+});
 
 class JobPosts extends Component {
 

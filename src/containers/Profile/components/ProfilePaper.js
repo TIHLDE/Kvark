@@ -17,10 +17,11 @@ import Button from '@material-ui/core/Button';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Badge from '@material-ui/core/Badge';
+import Avatar from '@material-ui/core/Avatar';
 
 import Settings from '@material-ui/icons/Settings';
 import DateRange from '@material-ui/icons/DateRange';
-import CommentIcon from '@material-ui/icons/Comment';
+import NotificationsIcon from '@material-ui/icons/Notifications';
 
 import Skeleton from '@material-ui/lab/Skeleton';
 
@@ -42,52 +43,47 @@ const styles = (theme) => ({
     padding: '28px',
     paddingTop: '110px',
     textAlign: 'center',
-    border: '1px solid #ddd',
-    borderRadius: '5px',
-    backgroundColor: '#fff',
-  },
-  profileCircle: {
-    borderRadius: '50%',
-    backgroundImage: 'linear-gradient(90deg, #DA4453, #89216B)',
-    fontSize: '65px',
-    paddingTop: '50px',
-    color: 'white',
-    height: '200px',
-    width: '200px',
-    textAlign: 'center',
-    margin: 'auto',
-    position: 'absolute',
-    left: '0',
-    right: '0',
-    top: '-100px',
-  },
-  profileCircleImage: {
-    backgroundImage: 'url(https://thenypost.files.wordpress.com/2019/09/takes-donald-trump.jpg?quality=90&strip=all&w=618&h=410&crop=1)',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    color: '#00000000',
-    userSelect: 'none',
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.colors.background.light,
   },
   tabs: {
-    marginTop: '50px',
+    marginTop: 30,
     marginBottom: 1,
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.background.light,
+    color: theme.colors.text.light,
   },
   button: {
     margin: '15px auto 0px',
-    color: 'white',
   },
   buttonLink: {
     width: 'fit-content',
     textDecoration: 'none',
   },
   logOutButton: {
-    backgroundColor: '#b20101',
+    backgroundColor: theme.colors.status.red,
+    color: theme.colors.constant.white,
+    '&:hover': {
+      backgroundColor: theme.colors.status.red + 'bb',
+    },
   },
   buttonsContainer: {
     display: 'flex',
     justifyContent: 'flex-start',
     flexDirection: 'column',
+  },
+  avatar: {
+    position: 'absolute',
+    margin: 'auto',
+    left: 0,
+    right: 0,
+    top: -100,
+    width: 200,
+    height: 200,
+    fontSize: 65,
+    fontWeight: 'bold',
+    background: 'linear-gradient(90deg, ' + theme.colors.gradient.avatar.top + ', ' + theme.colors.gradient.avatar.bottom + ')',
+    color: theme.colors.gradient.avatar.text,
   },
   skeleton: {
     animation: 'animate 1.5s ease-in-out infinite',
@@ -95,14 +91,15 @@ const styles = (theme) => ({
   skeletonText: {
     margin: '4px auto',
   },
-  textMargin: {
+  text: {
     margin: '2px auto',
+    color: theme.colors.text.main,
   },
   skeletonCircle: {
-    width: '110px',
-    margin: '45px',
-    marginTop: '2px',
-    height: '90px',
+    width: 110,
+    margin: 45,
+    marginTop: 30,
+    height: 150,
   },
 });
 
@@ -184,14 +181,14 @@ class ProfilePaper extends Component {
       return (
         <div className={classes.paper}>
           {this.state.modalShow && this.state.userData &&
-                    <MemberProof
-                      onClose={this.closeEventModal}
-                      userId={this.state.userData.user_id}
-                      status={this.state.modalShow} />
+            <MemberProof
+              onClose={this.closeEventModal}
+              userId={this.state.userData.user_id}
+              status={this.state.modalShow} />
           }
-          <div className={classNames(classes.profileCircle)}>{ this.state.userData.first_name !== undefined ? String((this.state.userData.first_name).substring(0, 1)) + (this.state.userData.last_name).substring(0, 1) : <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant="text" /> }</div>
-          <Typography className={classes.textMargin} variant='h4'>{ this.state.userData.first_name !== undefined ? this.state.userData.first_name + ' ' + this.state.userData.last_name : <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="75%" /> }</Typography>
-          <Typography className={classes.textMargin} variant='subtitle1'>{ this.state.userData.email !== undefined ? this.state.userData.email : <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="45%" /> }</Typography>
+          <Avatar className={classes.avatar}>{this.state.userData.first_name !== undefined ? String((this.state.userData.first_name).substring(0, 1)) + (this.state.userData.last_name).substring(0, 1) : <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant="text" /> }</Avatar>
+          <Typography className={classes.text} variant='h4'>{ this.state.userData.first_name !== undefined ? this.state.userData.first_name + ' ' + this.state.userData.last_name : <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="75%" /> }</Typography>
+          <Typography className={classes.text} variant='subtitle1'>{ this.state.userData.email !== undefined ? this.state.userData.email : <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="45%" /> }</Typography>
           <div className={classes.buttonsContainer}>
             { this.state.groupMember && <Link to={URLS.admin} className={classNames(classes.button, classes.buttonLink)}><Button variant='contained' color='primary'>Admin</Button></Link> }
             <Button className={classes.button} variant='contained' color='primary' onClick={this.showEventModal}>Medlemsbevis</Button>
@@ -201,7 +198,7 @@ class ProfilePaper extends Component {
             <Tab id='0' icon={<DateRange />} label={<Hidden xsDown>Arrangementer</Hidden>} />
             <Tab id='1' icon={
               <Badge badgeContent={this.state.userData.unread_notifications} color="error">
-                <CommentIcon />
+                <NotificationsIcon />
               </Badge>
             } label={<Hidden xsDown>Notifikasjoner</Hidden>} />
             <Tab id='2' icon={<Settings />} label={<Hidden xsDown>Innstillinger</Hidden>} />

@@ -18,12 +18,12 @@ import SLACK from '../../assets/icons/slack.svg';
 import DISCORD from '../../assets/icons/discord.svg';
 import SopraSteria from '../../assets/img/sopraSteriaLogo.svg';
 
-const styles = {
+const styles = (theme) => ({
   root: {
     position: 'relative',
     bottom: 0, left: 0, right: 0,
 
-    backgroundColor: '#1b1b2d',
+    backgroundColor: theme.colors.footer.main,
     padding: '40px 0px',
     display: 'grid',
     gridGap: '40px',
@@ -31,8 +31,7 @@ const styles = {
     gridTemplateAreas: '\'Sponsorer OmTihlde SosialeMedier SponsorLogo\'', // SosialeMedier
     gridTemplateRows: 'auto',
     justifyItems: 'center',
-    color: 'white',
-    textColor: 'white',
+    color: theme.colors.footer.text,
     boxShadow: '0px -2px 5px 0px rgba(0,0,0,0.1)',
 
     '@media only screen and (max-width: 900px)': {
@@ -90,12 +89,12 @@ const styles = {
     height: 'auto',
   },
   sponsorText: {
-    color: 'white',
+    color: theme.colors.footer.text,
     fontSize: '10px',
     textAlign: 'center',
     opacity: 0.7,
   },
-};
+});
 
 class Footer extends Component {
 

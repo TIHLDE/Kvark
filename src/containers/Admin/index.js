@@ -48,6 +48,9 @@ const styles = {
     marginBottom: 10,
     width: '100%',
   },
+  buttonLink: {
+    textDecoration: 'none',
+  },
   flex: {
     display: 'flex',
     flexDirection: 'column',
@@ -84,17 +87,17 @@ class Admin extends Component {
           <div className={classes.grid}>
             { (this.state.groups && (this.state.groups.isHS || this.state.groups.isPromo || this.state.groups.isNok || this.state.groups.isDevkom)) &&
               <InfoCard header='Arrangementer' text={Text.events} src={EventAdminIcon} classes={{children: classes.flex}} justifyText>
-                <Link to={URLS.eventAdmin}><Button className={classes.button} variant='contained' color='primary'>Administrer arrangementer</Button></Link>
+                <Link to={URLS.eventAdmin} className={classes.buttonLink}><Button className={classes.button} variant='contained' color='primary'>Administrer arrangementer</Button></Link>
               </InfoCard>
             }
             { (this.state.groups && (this.state.groups.isHS || this.state.groups.isNok || this.state.groups.isDevkom)) &&
               <InfoCard header='Jobbannonser' text={Text.jobposts} src={JobPostAdminIcon} classes={{children: classes.flex}} justifyText>
-                <Link to={URLS.jobpostsAdmin}><Button className={classes.button} variant='contained' color='primary'>Administrer jobbannonser</Button></Link>
+                <Link to={URLS.jobpostsAdmin} className={classes.buttonLink}><Button className={classes.button} variant='contained' color='primary'>Administrer jobbannonser</Button></Link>
               </InfoCard>
             }
             {(this.state.groups && (this.state.groups.isHS || this.state.groups.isDevkom)) &&
               <InfoCard header='Medlemmer' text={Text.users} src={UserAdminIcon} classes={{children: classes.flex}} justifyText>
-                <Link to={URLS.userAdmin}><Button className={classes.button} variant='contained' color='primary'>Administrer medlemmer</Button></Link>
+                <Link to={URLS.userAdmin} className={classes.buttonLink}><Button className={classes.button} variant='contained' color='primary'>Administrer medlemmer</Button></Link>
               </InfoCard>
             }
           </div>

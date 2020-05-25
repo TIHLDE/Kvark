@@ -21,9 +21,10 @@ const style = (theme) => ({
     '@media only screen and (max-width: 600px)': {
       flexDirection: 'column',
     },
-    boxShadow: '0px 2px 4px #ddd',
-    borderRadius: 5,
+    boxShadow: '0px 2px 4px ' + theme.colors.border.main + '88',
+    borderRadius: theme.sizes.border.radius,
     marginBottom: 3,
+    background: theme.colors.background.smoke,
   },
   userName: {
     flexGrow: 1,
@@ -41,7 +42,7 @@ const style = (theme) => ({
     marginRight: 8,
     '&:hover': {
       cursor: 'pointer',
-      color: theme.palette.error.main,
+      color: theme.palette.secondary.main,
     },
   },
   buttonContainer: {

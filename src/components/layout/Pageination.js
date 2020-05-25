@@ -5,17 +5,17 @@ import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import classNames from 'classnames';
 
-const styles = {
+const styles = (theme) => ({
   button: {
     padding: '10px',
-    boxShadow: '0px 2px 4px #ddd',
-    borderRadius: 5,
-    backgroundColor: 'white',
+    boxShadow: '0px 2px 4px ' + theme.colors.border.main + '88',
+    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.colors.background.light,
   },
   fullWidth: {
     width: '100%',
   },
-};
+});
 
 function Pageination(props) {
   const {classes, fullWidth} = props;

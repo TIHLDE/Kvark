@@ -22,7 +22,7 @@ import Time from '@material-ui/icons/AccessTime';
 // Project Components
 import MarkdownRenderer from '../../../components/miscellaneous/MarkdownRenderer';
 
-const styles = {
+const styles = (theme) => ({
   grid: {
     display: 'grid',
     gridTemplateColumns: '3fr 1fr',
@@ -38,9 +38,9 @@ const styles = {
   },
   paper: {
     padding: 20,
-    backgroundColor: 'white',
-    border: '1px solid #ddd',
-    borderRadius: 5,
+    backgroundColor: theme.colors.background.light,
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
   },
   imageWrapper: {
     maxHeight: 454,
@@ -50,10 +50,10 @@ const styles = {
     width: '100%',
     height: 'auto',
     objectFit: 'contain',
-    borderRadius: 5,
+    borderRadius: theme.sizes.border.radius,
   },
   title: {
-    color: 'black',
+    color: theme.colors.text.main,
 
     '@media only screen and (max-width: 600px)': {
       fontSize: '2rem',
@@ -62,6 +62,7 @@ const styles = {
   content: {
     padding: 38,
     paddingBottom: 60,
+    color: theme.colors.text.light,
     '@media only screen and (max-width: 800px)': {
       order: 0,
     },
@@ -75,7 +76,7 @@ const styles = {
   info: {
     width: 'auto',
     marginBottom: 10,
-
+    color: theme.colors.text.light,
     '@media only screen and (max-width: 800px)': {
       justifyContent: 'space-between',
     },
@@ -84,14 +85,14 @@ const styles = {
   mt: {marginTop: 10},
   mb: {marginBottom: 32},
   emailLink: {
-    color: 'var(--tihlde-blaa)',
+    color: theme.colors.tihlde.main,
     cursor: 'pointer',
   },
   tooltip: {
     top: '-75px !important',
     zIndex: 10002,
   },
-};
+});
 
 const InfoContent = withStyles(styles)((props) => (
   <Grid className={classNames(props.className, props.classes.info)} container direction='row' wrap='nowrap' alignItems='center' justify='flex-start'>

@@ -25,8 +25,8 @@ const styles = (theme) => ({
     position: 'fixed',
     left: 0, top: 0, bottom: 0,
     width: SIDEBAR_WIDTH,
-    backgroundColor: '#fff',
-    border: '1px solid #ddd',
+    backgroundColor: theme.colors.background.light,
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
 
     '@media only screen and (max-width: 800px)': {
       position: 'static',
@@ -39,7 +39,8 @@ const styles = (theme) => ({
     overflowY: 'auto',
   },
   sidebarTop: {
-    backgroundColor: 'whitesmoke',
+    backgroundColor: theme.colors.background.main,
+    color: theme.colors.text.main,
     padding: '10px 5px 10px 12px',
     position: 'sticky',
     top: 0,
@@ -51,13 +52,14 @@ const styles = (theme) => ({
   jobpostItem: {
     padding: '10px 10px',
     textAlign: 'left',
+    color: theme.colors.text.main,
   },
   jobpostButton: {
     width: '100%',
   },
   selected: {
-    backgroundColor: theme.palette.primary.main,
-    color: 'white',
+    backgroundColor: theme.colors.tihlde.main,
+    color: '#fff',
   },
 });
 

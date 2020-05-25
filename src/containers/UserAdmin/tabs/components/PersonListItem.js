@@ -14,7 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 
-const styles = {
+const styles = (theme) => ({
   root: {
     padding: 16,
     position: 'relative',
@@ -22,7 +22,7 @@ const styles = {
 
     gridAutoFlow: 'column',
     display: 'grid',
-    gridGap: '10px',
+    gridGap: 10,
     width: '100%',
     textAlign: 'left',
 
@@ -57,25 +57,25 @@ const styles = {
     },
   },
   title: {
-    color: '#000000',
+    color: theme.colors.text.main,
   },
   id: {
-    minWidth: '65px',
+    minWidth: 65,
   },
   btn: {
     padding: 0,
   },
   activateButton: {
-    color: 'green',
+    color: theme.colors.status.green,
     width: '48px',
     margin: 'auto',
   },
   deactivateButton: {
-    color: '#b20101',
+    color: theme.colors.status.red,
     width: '48px',
     margin: 'auto',
   },
-};
+});
 
 const getStudy = (i) => {
   switch (i) {

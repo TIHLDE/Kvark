@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import Typography from '@material-ui/core/Typography';
 import Hidden from '@material-ui/core/Hidden';
 
-const styles = {
+const styles = (theme) => ({
   root: {
     overflow: 'hidden',
     width: '100%',
@@ -21,6 +21,7 @@ const styles = {
   topInner: {
     height: 'auto',
     padding: '60px 0 0',
+    background: (props) => props.background ? props.background : theme.colors.gradient.main.top,
   },
   topContent: {
     maxWidth: 1200,
@@ -34,12 +35,11 @@ const styles = {
     '@media only screen and (max-width: 900px)': {
       fontSize: '2.1em',
       padding: 20,
-      // paddingBottom: 0,
       flexDirection: 'column',
     },
   },
   title: {
-    color: '#ffffff',
+    color: theme.colors.gradient.main.text,
     fontWeight: 'bold',
     fontSize: 72,
     '@media only screen and (max-width: 900px)': {
@@ -48,7 +48,7 @@ const styles = {
     },
   },
   text: {
-    color: '#ffffff',
+    color: theme.colors.gradient.main.text,
     paddingTop: 20,
     maxWidth: 600,
     width: '50vw',
@@ -61,7 +61,7 @@ const styles = {
   },
   line: {
     height: 4,
-    backgroundColor: 'var(--tihlde-white)',
+    backgroundColor: theme.colors.gradient.main.text,
     width: 50,
   },
   children: {
@@ -77,14 +77,18 @@ const styles = {
     marginRight: -5,
     marginLeft: -5,
   },
-};
+  background: {
+    fill: (props) => props.background ? props.background : theme.colors.gradient.main.top,
+    fillOpacity: 1,
+  },
+});
 
 const Banner = (props) => {
-  const {classes, className, background, title, text, children} = props;
+  const {classes, className, title, text, children} = props;
   return (
     <div className={classNames(classes.root, className)}>
       <div className={classes.top}>
-        <div className={classes.topInner} style={{background: background ? background : 'var(--gradient-top)'}}>
+        <div className={classNames(classes.topInner, classes.background)}>
           <div className={classes.topContent}>
             <div>
               {title &&
@@ -105,10 +109,10 @@ const Banner = (props) => {
           </div>
         </div>
         <Hidden smUp>
-          <svg className={classes.svg} xmlns="http://www.w3.org/2000/svg" viewBox="0 30 500 45"><path fill={background ? background : 'var(--gradient-top)'} fillOpacity="1" d="M0.00,49.99 C225.95,117.73 260.38,-10.55 500.00,49.99 L500.00,-0.00 L0.00,-0.00 Z"></path></svg>
+          <svg className={classes.svg} xmlns="http://www.w3.org/2000/svg" viewBox="0 30 500 45"><path className={classes.background} d="M0.00,49.99 C225.95,117.73 260.38,-10.55 500.00,49.99 L500.00,-0.00 L0.00,-0.00 Z"></path></svg>
         </Hidden>
         <Hidden xsDown>
-          <svg className={classes.svg} xmlns="http://www.w3.org/2000/svg" viewBox="0 30 500 45"><path fill={background ? background : 'var(--gradient-top)'} fillOpacity="1" d="M0.00,49.99 C233.29,86.15 256.43,22.00 500.00,49.99 L500.00,-0.00 L0.00,-0.00 Z"></path></svg>
+          <svg className={classes.svg} xmlns="http://www.w3.org/2000/svg" viewBox="0 30 500 45"><path className={classes.background} d="M0.00,49.99 C233.29,86.15 256.43,22.00 500.00,49.99 L500.00,-0.00 L0.00,-0.00 Z"></path></svg>
         </Hidden>
       </div>
     </div>

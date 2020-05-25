@@ -33,10 +33,10 @@ const styles = (theme) => ({
     flexDirection: 'column',
   },
   borderTop: {
-    border: '1px solid #ddd',
-    borderRadius: 5,
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
     padding: '5px 5px 15px 15px',
-    backgroundColor: '#fafaf8',
+    backgroundColor: theme.colors.background.main,
     marginBottom: 10,
   },
   optFieldQuestion: {
@@ -52,7 +52,7 @@ const styles = (theme) => ({
     width: '100%',
   },
   deleteIcon: {
-    color: '#b20101',
+    color: theme.colors.status.red,
   },
   optionIcon: {
     marginRight: 10,

@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 
-const styles = {
+const styles = (theme) => ({
   root: {
     padding: 0,
     position: 'relative',
@@ -37,12 +37,12 @@ const styles = {
     },
   },
   title: {
-    color: '#000000',
+    color: theme.colors.text.main,
   },
   id: {
     minWidth: '60px',
   },
-};
+});
 
 const ListFiles = (props) => {
   const {classes, data, onClick} = props;

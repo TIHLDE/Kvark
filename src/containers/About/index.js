@@ -26,7 +26,7 @@ import InfoCard from '../../components/layout/InfoCard';
 import ClickableImage from '../../components/miscellaneous/ClickableImage';
 import Banner from '../../components/layout/Banner';
 
-const styles = {
+const styles = (theme) => ({
   root: {
     minHeight: '100vh',
   },
@@ -56,22 +56,23 @@ const styles = {
       padding: '48px 0',
     },
   },
-  verticalMargin: {
+  header: {
     marginTop: 30,
     marginBottom: 30,
+    color: theme.colors.text.main,
   },
   miniPadding: {
     padding: 10,
   },
   orgMap: {
     margin: 4,
-    border: '1px solid #ddd',
-    borderRadius: 5,
-    backgroundColor: '#fff',
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.colors.background.light,
   },
   smoke: {
     width: '100%',
-    backgroundColor: '#Fefefe',
+    backgroundColor: theme.colors.background.smoke,
   },
   mt: {
     marginTop: 16,
@@ -83,15 +84,15 @@ const styles = {
   },
   button: {
     width: '100%',
-    color: '#f8f8fa',
-    borderColor: '#f8f8fabb',
+    color: theme.colors.constant.smoke,
+    borderColor: theme.colors.constant.smoke + 'bb',
     minWidth: 200,
     marginBottom: 15,
     '&:hover': {
-      borderColor: '#f8f8fa',
+      borderColor: theme.colors.constant.smoke,
     },
   },
-};
+});
 
 class About extends Component {
 
@@ -129,8 +130,8 @@ class About extends Component {
 
           <div>
             <div className={classes.section}>
-              <Typography className={classes.verticalMargin} variant='h4' color='inherit' align='center'>Undergrupper</Typography>
-              <div className={classNames(classes.grid, classes.smoke)}>
+              <Typography className={classes.header} variant='h4' color='inherit' align='center'>Undergrupper</Typography>
+              <div className={classes.grid}>
                 <InfoCard header='Drift' text={Text.drift} src={OperationIcon}/>
                 <InfoCard header='Sosialen' text={Text.social} src={SocialIcon}/>
                 <InfoCard header='Næringsliv og Kurs' text={Text.business} src={BusinessIcon}/>
@@ -141,7 +142,7 @@ class About extends Component {
 
           <div className={classes.smoke}>
             <div className={classes.section}>
-              <Typography className={classes.verticalMargin}variant='h4' color='inherit' align='center'>Komitéer</Typography>
+              <Typography className={classes.header} variant='h4' color='inherit' align='center'>Komitéer</Typography>
               <div className={classes.grid}>
                 <InfoCard header='KontKom' text={Text.kontkom} justifyText/>
                 <InfoCard header='Devkom' text={Text.devkom} justifyText/>
@@ -153,7 +154,7 @@ class About extends Component {
 
           <div>
             <div className={classes.section}>
-              <Typography className={classes.verticalMargin}variant='h4' color='inherit' align='center'>Organisasjonskart</Typography>
+              <Typography className={classes.header} variant='h4' color='inherit' align='center'>Organisasjonskart</Typography>
               <div className={classes.orgMap}>
                 <ClickableImage className={classes.miniPadding} image={OrgMap} alt='organisasjonskart' width='100%'/>
               </div>
@@ -162,7 +163,7 @@ class About extends Component {
 
           <div className={classes.smoke}>
             <div className={classes.section}>
-              <InfoCard className={classes.verticalMargin} header='Historie' text={Text.history} subheader='Opptak' subText={Text.history2} justifyText/>
+              <InfoCard className={classes.header} header='Historie' text={Text.history} subheader='Opptak' subText={Text.history2} justifyText/>
             </div>
           </div>
         </Grid>

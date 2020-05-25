@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 
-const styles = {
+const styles = (theme) => ({
   root: {
     minHeight: '100vh',
   },
@@ -16,7 +16,7 @@ const styles = {
     width: '100%',
     display: 'grid',
     gridTemplateColumns: '1fr',
-    gridGap: '15px',
+    gridGap: 15,
     marginBottom: 40,
 
     '@media only screen and (max-width: 700px)': {
@@ -37,16 +37,15 @@ const styles = {
   },
   paper: {
     padding: 20,
-    color: 'black',
-    border: '1px solid #ddd',
-    borderRadius: '5px',
-    backgroundColor: '#fff',
-
+    color: theme.colors.text.main,
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.colors.background.light,
   },
   list: {
     paddingLeft: 30,
   },
-};
+});
 
 class EventRules extends Component {
 

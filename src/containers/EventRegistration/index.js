@@ -31,14 +31,14 @@ import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 
-const styles = {
+const styles = (theme) => ({
   root: {
     minHeight: '100vh',
     width: '100%',
   },
   top: {
     height: 220,
-    backgroundImage: 'linear-gradient(90deg, #f80759, #500e60)',
+    background: theme.colors.gradient.main.top,
     transition: '2s',
   },
   main: {
@@ -54,9 +54,9 @@ const styles = {
     left: 0, right: 0,
     top: '-60px',
     padding: 28,
-    border: '1px solid #ddd',
-    borderRadius: '5px',
-    backgroundColor: '#fff',
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.colors.background.light,
   },
   progress: {
     position: 'absolute',
@@ -68,8 +68,8 @@ const styles = {
   snackbar: {
     bottom: '20px',
     position: 'fixed',
-    borderRadius: '4px',
-    color: 'white',
+    borderRadius: theme.sizes.border.radius,
+    color: theme.colors.constant.white,
     textAlign: 'center',
     maxWidth: '75%',
     display: 'flex',
@@ -80,22 +80,22 @@ const styles = {
     },
   },
   snackbar_success: {
-    backgroundColor: 'green',
+    backgroundColor: theme.colors.status.green,
   },
   snackbar_error: {
-    backgroundColor: '#B71C1C',
+    backgroundColor: theme.colors.status.red,
   },
   qr: {
     width: '100%',
-    borderRadius: 5,
+    borderRadius: theme.sizes.border.radius,
     overflow: 'hidden',
     marginTop: 5,
   },
   cardContent: {
     padding: '5px 20px',
     display: 'flex',
-    boxShadow: '0px 2px 4px #ddd',
-    borderRadius: 5,
+    boxShadow: '0px 2px 4px ' + theme.colors.border.main + '88',
+    borderRadius: theme.sizes.border.radius,
     marginBottom: 3,
   },
   cardUserName: {
@@ -118,7 +118,7 @@ const styles = {
   cardActionArea: {
     display: 'flex',
   },
-};
+});
 
 const ParticipantCard = withStyles(styles)((props) => {
   const [checkedState, setCheckedState] = useState(props.user.has_attended);

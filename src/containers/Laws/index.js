@@ -16,7 +16,7 @@ import Banner from '../../components/layout/Banner';
 import Icons from './components/Icons';
 import LinkButton from '../../components/navigation/LinkButton';
 
-const styles = {
+const styles = (theme) => ({
   root: {
     maxWidth: 1200,
     margin: 'auto',
@@ -24,13 +24,13 @@ const styles = {
     paddingTop: 20,
   },
   wrapper: {
-    paddingTop: '10px',
-    paddingBottom: '30px',
+    paddingTop: 10,
+    paddingBottom: 30,
     display: 'grid',
     gridTemplateColumns: '1fr',
     gridTemplateRows: 'auto',
     margin: 'auto',
-    gridGap: '15px',
+    gridGap: 15,
     justifyContent: 'center',
     '@media only screen and (max-width: 1200px)': {
       paddingLeft: 6,
@@ -38,16 +38,16 @@ const styles = {
     },
   },
   container: {
-    border: '1px solid #ddd',
-    borderRadius: '5px',
-    backgroundColor: '#fff',
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.colors.background.light,
     overflow: 'hidden',
   },
   content: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    backgroundColor: 'rgba(0, 0, 0, 0.12)',
-    gridGap: '1px',
+    backgroundColor: theme.colors.border.main,
+    gridGap: 1,
     '@media only screen and (max-width: 860px)': {
       gridTemplateColumns: '1fr',
     },
@@ -55,22 +55,21 @@ const styles = {
   icons: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
-    backgroundColor: 'rgba(0, 0, 0, 0.12)',
-    gridGap: '1px',
+    backgroundColor: theme.colors.border.main,
+    gridGap: 1,
     // 600px
     '@media only screen and (max-width: 860px)': {
       gridTemplateColumns: '1fr',
     },
   },
-
-};
+});
 
 class Laws extends Component {
 
   render() {
     const {classes} = this.props;
     return (
-      <Navigation footer fancyNavbar>
+      <Navigation whitesmoke footer fancyNavbar>
         <Banner title='Lover og regler' />
         <div className={classes.root}>
           <div className={classes.wrapper}>

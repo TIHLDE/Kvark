@@ -23,7 +23,7 @@ const styles = (theme) => ({
   },
   top: {
     height: 260,
-    backgroundImage: 'radial-gradient(circle at bottom, #F0C27B, #4B1248)',
+    background: 'radial-gradient(circle at bottom, ' + theme.colors.gradient.profile.top + ', ' + theme.colors.gradient.profile.bottom + ')',
   },
   main: {
     maxWidth: 1000,
@@ -41,9 +41,9 @@ const styles = (theme) => ({
     padding: '28px',
     paddingTop: '110px',
     textAlign: 'center',
-    backgroundColor: '#fff',
-    border: '1px solid #ddd',
-    borderRadius: 5,
+    backgroundColor: theme.colors.background.light,
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
   },
   topSpacing: {
     marginTop: 10,
@@ -68,7 +68,7 @@ class Profile extends Component {
     render() {
       const {classes} = this.props;
       return (
-        <Navigation footer isLoading={this.state.isLoading} fancyNavbar>
+        <Navigation whitesmoke footer isLoading={this.state.isLoading} fancyNavbar>
           <div className={classes.root}>
             <div className={classes.top}>
 

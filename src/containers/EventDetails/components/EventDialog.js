@@ -38,7 +38,7 @@ import eventCancel from '../../../assets/img/eventCancel.svg';
 // Project components
 import EventListItem from './EventListItem';
 
-const style = {
+const style = (theme) => ({
   paper: {
     position: 'absolute',
     maxWidth: 460,
@@ -53,9 +53,9 @@ const style = {
     '@media only screen and (max-width: 400px)': {
       width: '100%',
     },
-    border: '1px solid #ddd',
-    borderRadius: 5,
-    backgroundColor: '#fff',
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.colors.background.light,
   },
   heading: {
     display: 'flex',
@@ -121,14 +121,14 @@ const style = {
     flexDirection: 'column',
     margin: '20px 0px',
     padding: '20px 10px',
-    border: '1px solid #ddd',
-    borderRadius: 5,
-    backgroundColor: '#f8f8fa',
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.colors.background.main,
   },
   question: {
     marginBottom: 20,
   },
-};
+});
 
 const DialogHeader = (props) => {
   const {classes, heading} = props;

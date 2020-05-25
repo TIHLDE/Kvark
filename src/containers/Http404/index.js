@@ -17,10 +17,10 @@ import http404ropeImg from '../../assets/img/http404rope.gif';
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 
-const styles = {
+const styles = (theme) => ({
   root: {
     minHeight: '101vh',
-    backgroundColor: '#fefefe',
+    backgroundColor: theme.colors.background.main,
   },
   img: {
     width: '100%',
@@ -30,38 +30,13 @@ const styles = {
   imgPadding: {
     paddingTop: '25px',
   },
-  smoke: {
-    width: '100%',
-    backgroundColor: '#Fefefe',
-    textAlign: 'center',
-  },
-  section: {
-    padding: 48,
-    maxWidth: 1200,
-    margin: 'auto',
-    '@media only screen and (max-width: 1200px)': {
-      padding: '48px 0',
-    },
-  },
-  verticalMargin: {
-    marginTop: 30,
-    marginBottom: 30,
-  },
-  button: {
-    textDecoration: 'none',
-    backgroundColor: '#1d448c',
-    color: 'white',
-    padding: '6px 6px 6px 6px',
-    borderRadius: '5px',
-    display: 'block',
-    margin: '15px auto',
-    maxWidth: '100px',
+  center: {
     textAlign: 'center',
   },
   textContainer: {
     margin: '15px auto',
   },
-};
+});
 
 class Http404 extends Component {
 
@@ -74,22 +49,21 @@ class Http404 extends Component {
     return (
       <Navigation footer whitesmoke className={classes.root}>
         <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
-          <div className={classes.smoke}>
-            { AuthService.isAuthenticated() ?
-                            <img src={http404ropeImg} alt="404" className={classes.img} /> :
-                            <img src={http404img} alt="404" className={classNames(classes.img, classes.imgPadding)} />
+          <div className={classes.center}>
+            {AuthService.isAuthenticated() ?
+              <img src={http404ropeImg} alt="404" className={classes.img} /> :
+              <img src={http404img} alt="404" className={classNames(classes.img, classes.imgPadding)} />
             }
           </div>
-          <div className={classes.smoke}>
+          <div className={classes.center}>
             <h3>Denne siden finnes ikke :(</h3>
-            <Button className={classes.bottomSpacing} variant='contained' color='primary' onClick={() => window.history.back()}>Tilbake</Button>
+            <Button variant='contained' color='primary' onClick={() => window.history.back()}>Tilbake</Button>
             <p className={classes.textContainer}>Send oss gjerne en <a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/forms/d/e/1FAIpQLSfp8ZUm-GfzMla0Hg4AeX0iO8HME8ez7TttY2MgUfpC8MzBIQ/viewform">tilbakemelding</a> om du fulgte en gyldig lenke hit</p>
           </div>
         </Grid>
       </Navigation>
     );
   }
-
 }
 
 Http404.propTypes = {

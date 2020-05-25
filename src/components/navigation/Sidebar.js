@@ -19,23 +19,11 @@ import Link from './Link';
 const styles = (theme) => ({
   root: {
     zIndex: 10000,
+    backgroundColor: theme.colors.background.light,
   },
   item: {
     height: 56,
-    color: 'var(--tihlde-blaa)',
-  },
-  companyButton: {
-    color: 'white',
-    backgroundColor: theme.palette.primary.main,
-    boxSizing: 'border-box',
-    border: '5px solid white',
-
-    '&hover': {
-      backgroundColor: theme.palette.primary.dark,
-    },
-  },
-  menuButton: {
-    color: 'white',
+    color: theme.colors.text.main,
   },
 });
 

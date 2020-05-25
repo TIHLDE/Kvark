@@ -22,7 +22,7 @@ import URLS from '../../../URLS';
 // Services
 import MiscService from '../../../api/services/MiscService';
 
-const styles = {
+const styles = (theme) => ({
   grid: {
     display: 'grid',
     gridTemplateColumns: 'auto 1fr',
@@ -51,22 +51,22 @@ const styles = {
     height: 'auto',
     maxHeight: 350,
     objectFit: 'cover',
-    backgroundColor: '#ddd',
-    borderRadius: 5,
+    backgroundColor: theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
     display: 'block',
     boxSizing: 'border-box',
   },
   title: {
-    color: 'black',
+    color: theme.colors.text.main,
     padding: 26,
     paddingLeft: 0,
     paddingTop: 0,
   },
   content: {
     padding: 20,
-    border: '1px solid #ddd',
-    borderRadius: 5,
-    backgroundColor: '#ffffff',
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.colors.background.light,
     height: 'fit-content',
     '@media only screen and (max-width: 800px)': {
       order: 1,
@@ -74,9 +74,9 @@ const styles = {
   },
   details: {
     padding: '10px 20px',
-    border: '1px solid #ddd',
-    borderRadius: 5,
-    backgroundColor: '#ffffff',
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.colors.background.light,
     marginBottom: 20,
     maxWidth: 280,
     '@media only screen and (max-width: 800px)': {
@@ -93,8 +93,15 @@ const styles = {
       flexDirection: 'row',
     },
   },
-  ml: {marginRight: 5, fontWeight: 'bold'},
-  ml2: {textAlign: 'center'},
+  ml: {
+    marginRight: 5,
+    fontWeight: 'bold',
+    color: theme.colors.text.light,
+  },
+  ml2: {
+    textAlign: 'center',
+    color: theme.colors.text.light,
+  },
   mt: {height: 50, fontWeight: 'bold'},
   waitlistContainer: {
     margin: '10px auto',
@@ -102,10 +109,10 @@ const styles = {
     padding: '5px',
   },
   redText: {
-    color: '#cd0202',
+    color: theme.colors.status.red,
   },
   description: {
-    color: '#333',
+    color: theme.colors.text.light,
   },
   prioritiesContainer: {
     display: 'flex',
@@ -119,11 +126,12 @@ const styles = {
   },
   priority: {
     padding: '0 3px',
-    border: '1px solid #ddd',
-    borderRadius: 5,
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
     margin: 3,
+    color: theme.colors.text.lighter,
   },
-};
+});
 
 const getDay = (day) => {
   switch (day) {
@@ -320,16 +328,16 @@ const EventRenderer = (props) => {
   return (
     <div className={classes.wrapper}>
       {modalShow === true && userData &&
-              <EventDialog
-                onClose={closeEventModal}
-                data={eventData}
-                userData={userData}
-                userEvent={userEvent}
-                status={modalShow}
-                applyToEvent={applyToEvent}
-                isApplying={isApplying}
-                message={message}
-                applySuccess={applySuccess} />}
+        <EventDialog
+          onClose={closeEventModal}
+          data={eventData}
+          userData={userData}
+          userEvent={userEvent}
+          status={modalShow}
+          applyToEvent={applyToEvent}
+          isApplying={isApplying}
+          message={message}
+          applySuccess={applySuccess} />}
       {eventData.image && <img className={classes.image} src={eventData.image} alt={eventData.image_alt} /> }
       <div className={classes.grid} >
         <div>

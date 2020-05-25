@@ -14,12 +14,13 @@ import EventListItem from '../../Events/components/EventListItem';
 const styles = (theme) => ({
   eventListContainer: {
     display: 'grid',
-    gridGap: '1px',
+    gridGap: 1,
     color: theme.palette.text.secondary,
+    backgroundColor: theme.colors.background.smoke,
     margin: 'auto',
   },
   noEventText: {
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.background.smoke,
     padding: 5,
     textAlign: 'center',
   },
@@ -32,8 +33,8 @@ const styles = (theme) => ({
     marginBottom: 10,
   },
   moreBtn: {
-    boxShadow: '0px 2px 4px #ddd, 0px 0px 4px #ddd',
-    borderRadius: 5,
+    boxShadow: '0px 2px 4px ' + theme.colors.border.main + '88, 0px 0px 4px ' + theme.colors.border.main + '88',
+    borderRadius: theme.sizes.border.radius,
     overflow: 'hidden',
   },
 });

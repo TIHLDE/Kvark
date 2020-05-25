@@ -14,47 +14,11 @@ body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
 }
-/* use only em for font sizes */
-
-/* GLOBAL */
-.white_text {
-    color: white !important;
-}
-.serif_text {
-    font-family: 'Roboto', serif !important;
-}
-.thin_text {
-    font-family: 'Roboto', sans-serif !important;
-    font-weight: 100 !important;
-}
-.italic {
-    font-style: italic;
-}
-.text_shadow_thin {
-    text-shadow: 2px 2px 2px rgba(0,0,0,0.8) !important;
-}
-.text_shadow_thicc {
-    text-shadow: 4px 4px 4px rgba(0,0,0,0.8) !important;
-}
-.large_text {
-    font-size: 2em !important;
-}
 
 /* HEADER */
-.app-header {
-    background-color: white;
-
-    font-size: 50vv !important;
-}
-
 a {
-    color: var(--tihlde-blaa);
+    color: #009a3e;
 }
-
-.clickable:hover {
-  background-color: #EBEBEB; 
-}
-
 
 /* MARKDOWN CUSTOM CSS */
 .renderer ul {
@@ -84,7 +48,6 @@ p > code {
 }
 
 /* PULSE EFFECT */
-
 .pulse {
     display: block;
     min-width: 14px;
@@ -122,96 +85,9 @@ p > code {
     }
 }
 
-
 /** Sidebar **/
 .noScrollbar::-webkit-scrollbar { 
     display: none; 
-}
-
-
-/** Landing page **/
-@keyframes move_wave {
-    0% {
-        transform: translateX(0) translateZ(0) scaleY(1)
-    }
-    50% {
-        transform: translateX(-25%) translateZ(0) scaleY(0.55)
-    }
-    100% {
-        transform: translateX(-50%) translateZ(0) scaleY(1)
-    }
-}
-.waveWrapper {
-    overflow: hidden;
-    margin: auto;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-}
-.waveWrapperInner {
-    position: absolute;
-    left: 0;
-    right: 0;
-    width: 100%;
-    overflow: hidden;
-    min-height: 500px;
-    top: 0;
-    background-image: linear-gradient(20deg, var(--gradient-bottom) 20%, var(--gradient-top) 80%);
-}
-.bgTop {
-    z-index: 15;
-    opacity: 0.5;
-}
-.bgMiddle {
-    z-index: 10;
-    opacity: 0.75;
-}
-.bgBottom {
-    z-index: 5;
-}
-.wave {
-    position: absolute;
-    left: 0;
-    width: 200%;
-    height: 100%;
-    background-repeat: repeat no-repeat;
-    background-position: 0 bottom;
-    transform-origin: center bottom;
-}
-.waveTop {
-    background-size: 80% 100px;
-    background-image: url("../img/wave-top.png");
-}
-.waveAnimation .waveTop {
-    animation: move-wave 3s;
-    -webkit-animation: move-wave 3s;
-    -webkit-animation-delay: 1s;
-    animation-delay: 1s;
-}
-.waveMiddle {
-    background-size: 60% 120px;
-    background-image: url("../img/wave-mid.png");
-}
-.waveAnimation .waveMiddle {
-    animation: move_wave 20s linear alternate infinite;
-}
-.waveBottom {
-    background-size: 60% 100px;
-    background-image: url("../img/wave-bot.png");
-}
-.waveAnimation .waveBottom {
-    animation: move_wave 25s linear alternate infinite;
-}
-@media only screen and (max-width: 500px) {
-    .waveTop {
-        background-size: 80% 40px;
-    }
-    .waveMiddle {
-        background-size: 60% 60px;
-    }
-    .waveBottom {
-        background-size: 60% 50px;
-    }
 }
 
 /** Landing page rain animation **/

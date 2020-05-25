@@ -13,7 +13,7 @@ import AuthService from '../../api/services/AuthService';
 import Navigation from '../../components/navigation/Navigation';
 import EventRenderer from './components/EventRenderer';
 
-const styles = {
+const styles = (theme) => ({
   root: {
     minHeight: '90vh',
   },
@@ -35,7 +35,7 @@ const styles = {
     '&::after': {
       position: 'absolute',
       bottom: 0,
-      borderBottom: 'solid 150px #f8f8fa',
+      borderBottom: 'solid 150px ' + theme.colors.background.main,
       borderLeft: '100vw solid rgba(0,0,0,0)',
       content: '""',
     },
@@ -44,8 +44,9 @@ const styles = {
     height: 350,
     padding: 60,
     transition: '3s',
+    background: theme.colors.gradient.main.top,
   },
-};
+});
 
 function EventDetails(props) {
   const {classes, match, history} = props;
@@ -181,7 +182,7 @@ function EventDetails(props) {
       {!isLoading && event &&
             <div className={classes.root}>
               <div className={classes.top}>
-                <div className={classes.topInner} style={{background: data.muted ? data.muted : 'var(--gradient-top)'}}></div>
+                <div className={classes.topInner} style={{background: data.muted ? data.muted : ''}}></div>
               </div>
               <div className={classes.wrapper}>
                 <EventRenderer

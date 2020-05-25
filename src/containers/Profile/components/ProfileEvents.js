@@ -14,6 +14,9 @@ const styles = (theme) => ({
   wrapper: {
     paddingTop: 10,
   },
+  text: {
+    color: theme.colors.text.light,
+  },
 });
 
 class ProfileEvents extends Component {
@@ -48,7 +51,7 @@ class ProfileEvents extends Component {
           return ('');
         })
         }
-        {(!this.state.events || this.state.events.length < 1) && <Typography align='center' variant='subtitle1'>Du er ikke påmeldt noen kommende arrangementer</Typography>}
+        {(!this.state.events || this.state.events.length < 1) && <Typography className={classes.text} align='center' variant='subtitle1'>Du er ikke påmeldt noen kommende arrangementer</Typography>}
       </div>
     );
   }

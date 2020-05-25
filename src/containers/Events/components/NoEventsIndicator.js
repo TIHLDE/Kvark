@@ -45,7 +45,7 @@ class NoEventsIndicator extends Component {
         <div className={classes.imageWrapper}>
           <img className={classes.image} src={EventIcon} alt='Ingen arrangementer' />
         </div>
-        <MessageIndicator header={Text.noEvents} subheader={Text.subNoEvents}/>
+        <MessageIndicator header={Text.noEvents} />
       </div>
     );
   }
