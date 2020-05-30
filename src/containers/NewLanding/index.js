@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 import Calender from './components/Calendar';
+import NewsListView from './components/NewsListView';
 import Wave from './components/Wave';
 
 const styles = (theme) => ({
@@ -68,11 +69,14 @@ class NewLanding extends Component {
               <Calender className={classes.calendar}></Calender>
             </div>
           </div>
+          <div className={classes.section}>
+            <Typography variant='h4' color="inherit" align="center" className={classes.header}>Nyheter</Typography>
+            <NewsListView className={classes.calendar}></NewsListView>
+          </div>
         </Grid>
       </Navigation>
     );
   }
-
 }
 
 NewLanding.propTypes = {

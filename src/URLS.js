@@ -16,6 +16,7 @@ export default {
   privacyPolicy: '/personvern/',
   eventRules: '/arrangementsregler/',
   cheatsheet: '/kokebok/',
+  news: '/nyheter/',
 
   admin: '/admin/',
   userAdmin: '/admin/brukere/',

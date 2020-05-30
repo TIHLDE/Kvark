@@ -67,6 +67,23 @@ export default {
     return new IRequest('DELETE', 'jobpost/'.concat(id, '/'), undefined, true);
   },
 
+  // News
+  getNewsItem: (id) => {
+    return new IRequest('GET', 'news/'.concat(id, '/'), undefined);
+  },
+  getNewsItems: (filters) => {
+    return new IRequest('GET', 'news/', filters || {});
+  },
+  createNewsItem: (item) => {
+    return new IRequest('POST', 'news/', item, true);
+  },
+  putNewsItem: (id, item) => {
+    return new IRequest('PUT', 'news/'.concat(id, '/'), item, true);
+  },
+  deleteNewsItem: (id) => {
+    return new IRequest('DELETE', 'news/'.concat(id, '/'), undefined, true);
+  },
+
   // User
   getUserData: () => {
     return new IRequest('GET', 'user/userdata/', undefined, true);
@@ -83,10 +100,11 @@ export default {
     return new IRequest('PUT', 'notification/'.concat(id, '/'), item, true);
   },
 
-  // cheatsheet
+  // Cheatsheet
   getCheatsheets: (filters, study, grade) => {
     return new IRequest('GET', 'cheatsheet/'.concat('study/', study, '/grade/', grade, '/file/'), filters || {}, true);
   },
+
   // Warning
   getWarning: () => {
     return new IRequest('GET', 'warning/');

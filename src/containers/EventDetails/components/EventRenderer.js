@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import {getUserStudyShort} from '../../../utils';
+import {getUserStudyShort, getDay, getMonth} from '../../../utils';
 
 // Text
 import Text from '../../../text/EventText';
@@ -133,35 +133,6 @@ const styles = (theme) => ({
   },
 });
 
-const getDay = (day) => {
-  switch (day) {
-    case 0: return 'Søndag';
-    case 1: return 'Mandag';
-    case 2: return 'Tirsdag';
-    case 3: return 'Onsdag';
-    case 4: return 'Torsdag';
-    case 5: return 'Fredag';
-    case 6: return 'Lørdag';
-    default: return day;
-  }
-};
-const getMonth = (month) => {
-  switch (month) {
-    case 0: return 'jan';
-    case 1: return 'feb';
-    case 2: return 'mars';
-    case 3: return 'april';
-    case 4: return 'mai';
-    case 5: return 'juni';
-    case 6: return 'juli';
-    case 7: return 'aug';
-    case 8: return 'sep';
-    case 9: return 'okt';
-    case 10: return 'nov';
-    case 11: return 'des';
-    default: return month;
-  }
-};
 const getDate = (date) => {
   return getDay(date.day()) + ' ' + date.date() + ' ' + getMonth(date.month()) + ' - kl. ' + date.format('HH:mm');
 };

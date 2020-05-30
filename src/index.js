@@ -47,6 +47,8 @@ import PrivacyPolicy from './containers/PrivacyPolicy';
 import Cheatsheet from './containers/Cheatsheet';
 import ClassesCheatsheet from './containers/Cheatsheet/subContainers/Classes';
 import FilesCheatsheet from './containers/Cheatsheet/subContainers/Files';
+import NewsDetails from './containers/NewsDetails';
+import News from './containers/News';
 import EventRules from './containers/EventRules';
 import MessageGDPR from './components/miscellaneous/MessageGDPR';
 
@@ -154,6 +156,8 @@ const Application = () => {
               <Route exact path={URLS.cheatsheet} component={Cheatsheet}/>
               <Route path={URLS.cheatsheet.concat(':studyId/:classId/')} component={FilesCheatsheet}/>
               <Route path={URLS.cheatsheet.concat(':studyId/')} component={ClassesCheatsheet}/>
+              <Route path={URLS.news.concat(':id/')} component={NewsDetails}/>
+              <Route path={URLS.news} component={News}/>
 
               <Route exact path={URLS.admin} component={requireAuth(Admin, ['HS', 'Promo', 'Nok', 'Devkom'])} />
               <Route path={URLS.userAdmin} component={requireAuth(UserAdmin, ['HS', 'Devkom'])} />

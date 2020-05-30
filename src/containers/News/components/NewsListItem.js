@@ -2,9 +2,8 @@ import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import URLS from '../../../URLS';
-import {getDay, getMonth} from '../../../utils';
 import moment from 'moment';
-import classNames from 'classnames';
+import {getMonth} from '../../../utils';
 import {Link} from 'react-router-dom';
 
 // Material UI Components
@@ -14,7 +13,6 @@ import ListItem from '@material-ui/core/ListItem';
 
 // Icons
 import Date from '@material-ui/icons/DateRange';
-import Location from '@material-ui/icons/LocationOn';
 import TIHLDELOGO from '../../../assets/img/TihldeBackgroundNew.png';
 
 const styles = (theme) => ({
@@ -91,12 +89,6 @@ const styles = (theme) => ({
     width: 24,
     margin: 0,
   },
-  expired: {
-    color: theme.colors.text.main + 'cc',
-  },
-  filter: {
-    filter: 'opacity(0.4)',
-  },
   link: {
     textDecoration: 'none',
   },
@@ -115,34 +107,33 @@ InfoContent.propTypes = {
 };
 
 const getDate = (date) => {
-  return getDay(date.day()) + ' ' + date.date() + ' ' + getMonth(date.month()) + ' - kl. ' + date.format('HH:mm');
+  return date.date() + ' ' + getMonth(date.month()) + ' ' + date.year() + ' - kl. ' + date.format('HH:mm');
 };
 
-const EventListItem = (props) => {
+const NewsListItem = (props) => {
   const {classes, data} = props;
-  const src = (data.image) ? data.image : TIHLDELOGO;
-  const start = moment(data.start_date, ['YYYY-MM-DD HH:mm'], 'nb');
+  const src = data.image ? data.image : TIHLDELOGO;
+  const start = moment(data.created_at, ['YYYY-MM-DD HH:mm'], 'nb');
   return (
-    <Link to={URLS.events + ''.concat(data.id, '/')} className={classes.link}>
+    <Link to={URLS.news + ''.concat(data.id, '/')} className={classes.link}>
       <ListItem className={classes.root} button >
-        <img className={classNames(classes.src, (data.expired) ? classes.filter : '')} src={src} alt={data.title} />
+        <img className={classes.src} src={src} alt={data.title} />
         <Grid className={classes.content} container direction='column' wrap='nowrap'>
-          <Typography className={classNames(classes.title, (data.expired) ? classes.expired : '')} variant='h5'>
+          <Typography className={classes.title} variant='h5'>
             <strong>{data.title}</strong>
           </Typography>
           <InfoContent icon={<Date className={classes.icon}/>} label={getDate(start)} />
-          <InfoContent icon={<Location className={classes.icon}/>} label={data.location} />
         </Grid>
       </ListItem>
     </Link>
   );
 };
 
-EventListItem.propTypes = {
+NewsListItem.propTypes = {
   classes: PropTypes.object,
 
   data: PropTypes.object,
   onClick: PropTypes.func,
 };
 
-export default withStyles(styles)(EventListItem);
+export default withStyles(styles)(NewsListItem);
