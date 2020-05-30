@@ -57,8 +57,17 @@ const init = (options = {}) => {
   return true;
 };
 
+const event = (category, action, label = null) => {
+  ReactGA.event({
+    category: category,
+    action: action,
+    label: label,
+  });
+};
+
 export default {
   GoogleAnalytics,
   RouteTracker,
   init,
+  event,
 };

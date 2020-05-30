@@ -1,10 +1,17 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
+import IconButton from '@material-ui/core/IconButton';
+
+// Components
+import ThemeSettings from '../miscellaneous/ThemeSettings';
+
+// Icons
+import LightIcon from '@material-ui/icons/WbSunnyOutlined';
 
 // Assets import
 import SIT from '../../assets/img/sit.svg';
@@ -46,15 +53,8 @@ const styles = (theme) => ({
       gridTemplateColumns: '100%',
     },
   },
-  widthCheck: {
-    height: '100%',
-    width: '100%',
-  },
   omTihlde: {
     gridArea: 'OmTihlde',
-  },
-  besokTihlde: {
-    gridArea: 'BesokTihlde',
   },
   sponsorer: {
     gridArea: 'Sponsorer',
@@ -80,9 +80,11 @@ const styles = (theme) => ({
   sponsorWrapper: {
     gridArea: 'SponsorLogo',
     verticalAlign: 'top',
-    display: 'inline-block',
+    display: 'flex',
+    flexDirection: 'column',
     textAlign: 'center',
     margin: 'auto 0px',
+    textDecoration: 'none',
   },
   sponsorLogo: {
     width: '14rem',
@@ -94,101 +96,129 @@ const styles = (theme) => ({
     textAlign: 'center',
     opacity: 0.7,
   },
+  themeSettingsContainer: {
+    height: 54,
+    width: 54,
+    margin: 'auto',
+    marginTop: 20,
+    color: theme.colors.footer.text,
+  },
+  themeSettingsIcon: {
+    fontSize: 30,
+  },
 });
 
-class Footer extends Component {
+const OmTihlde = (props) => {
+  const {classes} = props;
+  return (
+    <div className={classes.omTihlde}>
+      <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>TIHLDE</Typography>
+      <Link color='inherit' href='mailto:hs@tihlde.org'>
+        <Typography className={classes.horSpacing} align='center' color='inherit'>hs@tihlde.org</Typography>
+      </Link>
+      <Typography className={classes.horSpacing} align='center' color='inherit'>c/o IDI NTNU</Typography>
+      <Typography className={classes.horSpacing} align='center' color='inherit'>OrgNr: 989 684 183</Typography>
+      <Link color='inherit' href='/kontakt/'>
+        <Typography className={classes.horSpacing} align='center' color='inherit'>Kontaktinfo</Typography>
+      </Link>
+    </div>
+  );
+};
 
-    omTihlde = () => {
-      const {classes} = this.props;
-      return (
-        <div className={classes.omTihlde}>
-          <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>TIHLDE</Typography>
-          <Link color='inherit' href='mailto:hs@tihlde.org'>
-            <Typography className={classes.horSpacing} align='center' color='inherit' >hs@tihlde.org</Typography>
-          </Link>
-          <Typography className={classes.horSpacing} align='center' color='inherit' >c/o IDI NTNU</Typography>
-          <Typography className={classes.horSpacing} align='center' color='inherit' >OrgNr: 989 684 183</Typography>
-          <Link color='inherit' href='/kontakt/'>
-            <Typography className={classes.horSpacing} align='center' color='inherit' >Kontaktinfo</Typography>
-          </Link>
-        </div>
-      );
-    };
+OmTihlde.propTypes = {
+  classes: PropTypes.object,
+};
 
-    sponsorer = () => {
-      const {classes} = this.props;
-      return (
-        <div className={classes.sponsorer}>
-          <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Samarbeid</Typography>
-          <img className={classes.horSpacing} src={ACADEMICWORK} alt="academicwork" width={80} />
-          <img className={classes.horSpacing} src={SIT} alt="sit" width={80} />
-          <img className={classes.horSpacing} src={NEXTTRON} alt="nextron" width={80} />
-        </div>
-      );
-    };
+const Sponsorer = (props) => {
+  const {classes} = props;
+  return (
+    <div className={classes.sponsorer}>
+      <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Samarbeid</Typography>
+      <img className={classes.horSpacing} src={ACADEMICWORK} alt="academicwork" width={80} />
+      <img className={classes.horSpacing} src={SIT} alt="sit" width={80} />
+      <img className={classes.horSpacing} src={NEXTTRON} alt="nextron" width={80} />
+    </div>
+  );
+};
 
-    sosialeMedier = () => {
-      const {classes} = this.props;
-      return (
-        <div className={classes.sosialeMedier}>
-          <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Sosiale medier</Typography>
-          <div className={classes.sosialeMedierFlex}>
-            <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/tihlde/">
-              <img className={classes.horSpacing} src={FACEBOOK} alt="sit" width={40} />
-              {/* <i class="fab fa-facebook fa-3x"></i>*/}
-            </a>
-            <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/tihlde/">
-              <img className={classes.horSpacing} src={INSTAGRAM} alt="sit" width={40} />
-              {/* <i class="fab fa-instagram fa-3x"></i>*/}
-            </a>
-            <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://twitter.com/tihlde">
-              <img className={classes.horSpacing} src={TWITTER} alt="sit" width={40} />
-              {/* <i class="fab fa-twitter fa-3x"></i>*/}
-            </a>
-          </div>
-          <div className={classes.sosialeMedierFlex}>
-            <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://www.snapchat.com/add/tihldesnap">
-              <img className={classes.horSpacing} src={SNAPCHAT} alt="sit" width={40} />
-              {/* <i class="fab fa-snapchat-ghost fa-3x"></i>*/}
-            </a>
-            <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://tihlde.slack.com">
-              <img className={classes.horSpacing} src={SLACK} alt="sit" width={40} />
-              {/* <i class="fab fa-slack fa-3x"></i>*/}
-            </a>
-            <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://discord.gg/SZR9vTS">
-              <img className={classes.horSpacing} src={DISCORD} alt="sit" width={40} />
-              {/* <i class="fab fa-discord fa-3x"></i>*/}
-            </a>
-          </div>
-        </div>
-      );
-    };
+Sponsorer.propTypes = {
+  classes: PropTypes.object,
+};
 
-    sponsorLogo = () => {
-      const {classes} = this.props;
-      return (
-      // <div className={classes.sponsorWrapper}>
-        <a className={classes.sponsorWrapper} target="_blank" rel="noopener noreferrer" href="https://www.soprasteria.no/">
-          <img className={classes.sponsorLogo} src={SopraSteria} alt='Sopra Steria Logo' />
-          <div className={classes.sponsorText}>HOVEDSAMARBEIDSPARTNER</div>
+const SosialeMedier = (props) => {
+  const {classes} = props;
+  return (
+    <div className={classes.sosialeMedier}>
+      <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Sosiale medier</Typography>
+      <div className={classes.sosialeMedierFlex}>
+        <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/tihlde/">
+          <img className={classes.horSpacing} src={FACEBOOK} alt="sit" width={40} />
         </a>
-      // </div>
-      );
-    };
+        <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/tihlde/">
+          <img className={classes.horSpacing} src={INSTAGRAM} alt="sit" width={40} />
+        </a>
+        <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://twitter.com/tihlde">
+          <img className={classes.horSpacing} src={TWITTER} alt="sit" width={40} />
+        </a>
+      </div>
+      <div className={classes.sosialeMedierFlex}>
+        <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://www.snapchat.com/add/tihldesnap">
+          <img className={classes.horSpacing} src={SNAPCHAT} alt="sit" width={40} />
+        </a>
+        <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://tihlde.slack.com">
+          <img className={classes.horSpacing} src={SLACK} alt="sit" width={40} />
+        </a>
+        <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://discord.gg/SZR9vTS">
+          <img className={classes.horSpacing} src={DISCORD} alt="sit" width={40} />
+        </a>
+      </div>
+    </div>
+  );
+};
 
-    render() {
-      const {classes} = this.props;
+SosialeMedier.propTypes = {
+  classes: PropTypes.object,
+};
 
-      return (
-        <div className={classes.root}>
-          {this.sponsorer()}
-          {this.omTihlde()}
-          {this.sosialeMedier()}
-          {this.sponsorLogo()}
-        </div>
-      );
-    }
-}
+const SponsorLogo = (props) => {
+  const {classes, openModal} = props;
+  return (
+    <div className={classes.sponsorWrapper}>
+      <a className={classes.sponsorWrapper} target="_blank" rel="noopener noreferrer" href="https://www.soprasteria.no/">
+        <img className={classes.sponsorLogo} src={SopraSteria} alt='Sopra Steria Logo' />
+        <div className={classes.sponsorText}>HOVEDSAMARBEIDSPARTNER</div>
+      </a>
+      <IconButton onClick={openModal} aria-label="delete" className={classes.themeSettingsContainer}>
+        <LightIcon className={classes.themeSettingsIcon} />
+      </IconButton>
+    </div>
+  );
+};
+
+SponsorLogo.propTypes = {
+  classes: PropTypes.object,
+  openModal: PropTypes.func,
+};
+
+const Footer = (props) => {
+  const {classes} = props;
+
+  const [showModal, setShowModal] = useState(false);
+
+  return (
+    <div className={classes.root}>
+      {showModal &&
+        <ThemeSettings
+          onClose={() => setShowModal(false)}
+          open={showModal} />
+      }
+      <Sponsorer classes={classes} />
+      <OmTihlde classes={classes} />
+      <SosialeMedier classes={classes} />
+      <SponsorLogo classes={classes} openModal={() => setShowModal(true)} />
+    </div>
+  );
+};
 
 Footer.propTypes = {
   classes: PropTypes.object,

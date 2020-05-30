@@ -142,7 +142,7 @@ const styles = (theme) => ({
     display: 'inline-block',
     textAlign: 'center',
     margin: 'auto 10px',
-
+    textDecoration: 'none',
     '@media only screen and (max-width: 600px)': {
       margin: 'auto 0px auto 10px',
     },
