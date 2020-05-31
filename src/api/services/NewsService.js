@@ -31,7 +31,7 @@ class NewsService {
       const response = API.createNewsItem(newsData).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
-        return data;
+        return response.isError === false ? Promise.resolve(data) : Promise.reject(data);
       });
     };
 
@@ -40,7 +40,7 @@ class NewsService {
       const response = API.putNewsItem(id, newsData).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
-        return data;
+        return response.isError === false ? Promise.resolve(data) : Promise.reject(data);
       });
     };
 
@@ -49,7 +49,7 @@ class NewsService {
       const response = API.deleteNewsItem(id).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
-        return data;
+        return response.isError === false ? Promise.resolve(data) : Promise.reject(data);
       });
     };
 }

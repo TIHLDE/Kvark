@@ -22,4 +22,5 @@ export default {
   userAdmin: '/admin/brukere/',
   eventAdmin: '/admin/arrangementer/',
   jobpostsAdmin: '/admin/karriere/',
+  newsAdmin: '/admin/nyheter/',
 };

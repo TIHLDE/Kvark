@@ -49,6 +49,7 @@ import ClassesCheatsheet from './containers/Cheatsheet/subContainers/Classes';
 import FilesCheatsheet from './containers/Cheatsheet/subContainers/Files';
 import NewsDetails from './containers/NewsDetails';
 import News from './containers/News';
+import NewsAdministration from './containers/NewsAdministration';
 import EventRules from './containers/EventRules';
 import MessageGDPR from './components/miscellaneous/MessageGDPR';
 
@@ -163,6 +164,7 @@ const Application = () => {
               <Route path={URLS.userAdmin} component={requireAuth(UserAdmin, ['HS', 'Devkom'])} />
               <Route path={URLS.jobpostsAdmin} component={requireAuth(JobPostAdministration, ['HS', 'Nok', 'Devkom'])} />
               <Route path={URLS.eventAdmin} component={requireAuth(EventAdministration, ['HS', 'Promo', 'Nok', 'Devkom'])} />
+              <Route path={URLS.newsAdmin} component={requireAuth(NewsAdministration, ['HS', 'Promo', 'Nok', 'Devkom'])} />
 
               <Route path={URLS.login} component={LogIn} />
               <Route path={URLS.forgotPassword} component={ForgotPassword} />

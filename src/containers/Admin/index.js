@@ -18,6 +18,7 @@ import Button from '@material-ui/core/Button';
 import EventAdminIcon from '../../assets/icons/eventadmin.svg';
 import JobPostAdminIcon from '../../assets/icons/jobpostadmin.svg';
 import UserAdminIcon from '../../assets/icons/UserAdminIcon.svg';
+import NewsAdminIcon from '../../assets/img/news.svg';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
@@ -93,6 +94,11 @@ class Admin extends Component {
             { (this.state.groups && (this.state.groups.isHS || this.state.groups.isNok || this.state.groups.isDevkom)) &&
               <InfoCard header='Jobbannonser' text={Text.jobposts} src={JobPostAdminIcon} classes={{children: classes.flex}} justifyText>
                 <Link to={URLS.jobpostsAdmin} className={classes.buttonLink}><Button className={classes.button} variant='contained' color='primary'>Administrer jobbannonser</Button></Link>
+              </InfoCard>
+            }
+            {(this.state.groups && (this.state.groups.isHS || this.state.groups.isDevkom)) &&
+              <InfoCard header='Nyheter' text={Text.news} src={NewsAdminIcon} classes={{children: classes.flex}} justifyText>
+                <Link to={URLS.newsAdmin} className={classes.buttonLink}><Button className={classes.button} variant='contained' color='primary'>Administrer nyheter</Button></Link>
               </InfoCard>
             }
             {(this.state.groups && (this.state.groups.isHS || this.state.groups.isDevkom)) &&
