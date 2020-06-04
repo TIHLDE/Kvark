@@ -107,6 +107,7 @@ const styles = (theme) => ({
   cardText: {
     fontWeight: 'bold',
     fontSize: '17px',
+    color: theme.colors.text.light,
   },
   cardButtonLabel: {
     marginRight: -10,
@@ -114,9 +115,16 @@ const styles = (theme) => ({
   cardButtonContainer: {
     display: 'flex',
     alignItems: 'center',
+    color: theme.colors.text.light,
   },
   cardActionArea: {
     display: 'flex',
+  },
+  lightText: {
+    color: theme.colors.text.light,
+  },
+  title: {
+    color: theme.colors.text.main,
   },
 });
 
@@ -287,7 +295,7 @@ class EventRegistration extends Component {
     }
 
     Participants = () => {
-      let elements = <Typography>Ingen påmeldte.</Typography>;
+      let elements = <Typography className={this.props.classes.lightText}>Ingen påmeldte.</Typography>;
       const participantsToPrint = this.state.participantsToShow;
 
       if (participantsToPrint && participantsToPrint.length > 0) {
@@ -312,8 +320,8 @@ class EventRegistration extends Component {
             <div className={classes.main}>
               <div className={classes.paper}>
                 {this.state.isLoading && <LinearProgress className={classes.progress} />}
-                <Typography variant='h5' align='center'>{this.state.eventName}</Typography>
-                <Tabs variant="fullWidth" scrollButtons="on" centered className={classes.tabs} value={this.state.tabViewMode} onChange={this.handleTabChange}>
+                <Typography variant='h5' align='center' className={classes.title}>{this.state.eventName}</Typography>
+                <Tabs variant="fullWidth" scrollButtons="on" centered className={classes.lightText} value={this.state.tabViewMode} onChange={this.handleTabChange}>
                   <Tab id='0' icon={<TextFields />} label='Navn' />
                   <Tab id='1' icon={<PhotoCameraOutlinedIcon />} label='QR-kode' />
                 </Tabs>
@@ -341,7 +349,7 @@ class EventRegistration extends Component {
               className={this.state.error ? classNames(classes.snackbar, classes.snackbar_error) : classNames(classes.snackbar, classes.snackbar_success)}
               message={this.state.snackbarMessage}
               action={
-                <Button color="inherit" size="small" onClick={this.handleSnackbarClose}>
+                <Button color="inherit" size="small" onClick={this.handleSnackbarClose} className={classes.lightText}>
                                 Neste
                 </Button>
               }
