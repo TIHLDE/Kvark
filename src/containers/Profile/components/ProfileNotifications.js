@@ -22,6 +22,7 @@ const style = (theme) => ({
     display: 'flex',
     width: '30px !important',
     paddingRight: '50px !important',
+    color: theme.colors.text.lighter,
   },
   unread: {
     backgroundColor: theme.colors.tihlde.light,

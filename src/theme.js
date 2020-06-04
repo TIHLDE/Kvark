@@ -126,7 +126,7 @@ export const darkTheme = createMuiTheme({
     },
     tihlde: {
       main: '#1D448C',
-      light: '#E4E9F2',
+      light: '#385b7e',
     },
     gradient: {
       main: {
