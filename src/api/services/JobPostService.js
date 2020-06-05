@@ -46,7 +46,7 @@ class JobPostService {
       const response = API.createJobPost(postData).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
-        return data;
+        return response.isError === false ? Promise.resolve(data) : Promise.reject(data);
       });
     }
 
@@ -55,7 +55,7 @@ class JobPostService {
       const response = API.putJobPost(id, postData).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
-        return data;
+        return response.isError === false ? Promise.resolve(data) : Promise.reject(data);
       });
     }
 
@@ -64,7 +64,7 @@ class JobPostService {
       const response = API.deleteJobPost(id).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
-        return data;
+        return response.isError === false ? Promise.resolve(data) : Promise.reject(data);
       });
     }
 
@@ -72,7 +72,7 @@ class JobPostService {
       const response = API.getExpiredJobPosts().response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
-        return data;
+        return response.isError === false ? Promise.resolve(data) : Promise.reject(data);
       });
     }
 }
