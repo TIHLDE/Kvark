@@ -131,6 +131,11 @@ const styles = (theme) => ({
     margin: 3,
     color: theme.colors.text.lighter,
   },
+  applyText: {
+    overflow: 'visible',
+    textOverflow: 'ellipsis',
+    width: '16rem',
+  },
 });
 
 const getDate = (date) => {
@@ -242,19 +247,19 @@ const EventRenderer = (props) => {
   let applyButton = null;
   if (eventData.closed) {
     applyButton = (
-      <Typography align='center' color='error'>{Text.closed}</Typography>
+      <Typography className={classes.applyText} align='center' color='error'>{Text.closed}</Typography>
     );
   } else if (!eventData.sign_up) {
     applyButton = (
-      <Typography align='center'></Typography>
+      <Typography className={classes.applyText} align='center'></Typography>
     );
   } else if (eventData.sign_up && today > signUpEnd) {
     applyButton = (
-      <Typography align='center'>{Text.signUpEnded}</Typography>
+      <Typography className={classes.applyText} align='center'>{Text.signUpEnded}</Typography>
     );
   } else if (eventData.sign_up && today < signUpStart) {
     applyButton = (
-      <Typography align='center'>{Text.inactive}</Typography>
+      <Typography className={classes.applyText} align='center'>{Text.inactive}</Typography>
 
     );
   } else if (eventData.sign_up && userEvent && today > signOffDeadline) {
