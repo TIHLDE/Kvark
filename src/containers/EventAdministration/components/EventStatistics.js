@@ -4,68 +4,72 @@ import PropTypes from 'prop-types';
 // Material-UI
 import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import {ResponsiveContainer, BarChart, Bar, Tooltip, XAxis, YAxis} from 'recharts';
+
+// Project components
+import {getUserClass, getUserStudyShort} from '../../../utils';
 
 const styles = (theme) => ({
-  statistics: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  root: {
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gridGap: 10,
+    paddingTop: 10,
     '@media only screen and (max-width: 800px)': {
-      flexDirection: 'column',
+      gridTemplateColumns: '1fr 1fr',
     },
   },
-  statisticsInner: {
-    width: '100%',
+  innerGrid: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
     color: theme.colors.text.light,
+    gridGap: 10,
+    '@media only screen and (max-width: 800px)': {
+      gridTemplateColumns: '1fr',
+    },
   },
   lightText: {
     color: theme.colors.text.light,
+  },
+  statistics: {
+    display: 'flex',
+    flexDirection: 'column',
+    textAlign: 'center',
+    backgroundColor: theme.colors.background.smoke,
+    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    borderRadius: theme.sizes.border.radius,
+    borderCollapse: 'collapse',
   },
 });
 
 const EventParticipants = (props) => {
   const {classes, participants} = props;
 
-  const attendedNo = (attended) => {
-    return (participants.filter((x) => x.has_attended === attended).length);
-  };
+  const attendedNo = (attended) => (participants.filter((x) => x.has_attended === attended).length);
+
   const classNo = (userClass) => {
     const no = (participants.filter((x) => x.user_info.user_class === userClass).length);
-    return no > 0 ? no : '';
+    return no > 0 ? no : '0';
   };
   const studyNo = (userStudy) => {
     const no = (participants.filter((x) => x.user_info.user_study === userStudy).length);
-    return no > 0 ? no : '';
+    return no > 0 ? no : '0';
   };
-  const classData = [{name: '1. klasse', 'c': classNo(1)}, {name: '2. klasse', 'c': classNo(2)}, {name: '3. klasse', 'c': classNo(3)}, {name: '4. klasse', 'c': classNo(4)}, {name: '5. klasse', 'c': classNo(5)}];
-  const studyData = [{name: 'Data', 'c': studyNo(1)}, {name: 'DigFor', 'c': studyNo(2)}, {name: 'DigInc', 'c': studyNo(3)}, {name: 'DigSam', 'c': studyNo(4)}, {name: 'Drift', 'c': studyNo(5)}];
 
   return (
     <React.Fragment>
-      <Typography className={classes.lightText}>Ankommet: {attendedNo(true) + '/' + attendedNo(false)}</Typography>
-      <div className={classes.statistics}>
-        <div className={classes.statisticsInner}>
-          <Typography variant='h6'>Klasse:</Typography>
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={classData} layout="vertical">
-              <XAxis type="number" hide />
-              <YAxis dataKey="name" type="category" width={80} />
-              <Tooltip formatter={(value) => (value + ' stk')} allowEscapeViewBox={{x: false, y: true}} />
-              <Bar label dataKey="c" fill="#f5af19"/>
-            </BarChart>
-          </ResponsiveContainer>
+      <Typography className={classes.lightText}>Ankommet: {attendedNo(true) + ' av ' + attendedNo(false)} påmeldte</Typography>
+      <div className={classes.root}>
+        <div>
+          <Typography className={classes.lightText}>Klasse:</Typography>
+          <div className={classes.innerGrid}>
+            {[1, 2, 3, 4, 5].map((i) => <div key={i} className={classes.statistics}><Typography variant='subtitle2'>{getUserClass(i)}</Typography><Typography variant='h4'>{classNo(i)}</Typography></div>)}
+          </div>
         </div>
-        <div className={classes.statisticsInner}>
-          <Typography variant='h6'>Studie:</Typography>
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={studyData} layout="vertical">
-              <XAxis type="number" hide />
-              <YAxis dataKey="name" type="category" width={80} />
-              <Tooltip formatter={(value) => (value + ' stk')} allowEscapeViewBox={{x: false, y: true}} />
-              <Bar label dataKey="c" fill="#2ebf91"/>
-            </BarChart>
-          </ResponsiveContainer>
+        <div>
+          <Typography className={classes.lightText}>Studie:</Typography>
+          <div className={classes.innerGrid}>
+            {[1, 2, 3, 4, 5].map((i) => <div key={i} className={classes.statistics}><Typography variant='subtitle2'>{getUserStudyShort(i)}</Typography><Typography variant='h4'>{studyNo(i)}</Typography></div>)}
+          </div>
         </div>
       </div>
     </React.Fragment>

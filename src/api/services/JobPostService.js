@@ -22,7 +22,7 @@ class JobPostService {
           }
         }
         JobPostActions.addJobPosts(results)(store.dispatch); // Send data to store
-        return response.isError === false ? Promise.resolve(data) : Promise.reject(data);
+        return !response.isError ? Promise.resolve(data) : Promise.reject(data);
       });
     }
 
@@ -46,7 +46,7 @@ class JobPostService {
       const response = API.createJobPost(postData).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
-        return response.isError === false ? Promise.resolve(data) : Promise.reject(data);
+        return !response.isError ? Promise.resolve(data) : Promise.reject(data);
       });
     }
 
@@ -55,7 +55,7 @@ class JobPostService {
       const response = API.putJobPost(id, postData).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
-        return response.isError === false ? Promise.resolve(data) : Promise.reject(data);
+        return !response.isError ? Promise.resolve(data) : Promise.reject(data);
       });
     }
 
@@ -64,7 +64,7 @@ class JobPostService {
       const response = API.deleteJobPost(id).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
-        return response.isError === false ? Promise.resolve(data) : Promise.reject(data);
+        return !response.isError ? Promise.resolve(data) : Promise.reject(data);
       });
     }
 
@@ -72,7 +72,7 @@ class JobPostService {
       const response = API.getExpiredJobPosts().response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
-        return response.isError === false ? Promise.resolve(data) : Promise.reject(data);
+        return !response.isError ? Promise.resolve(data) : Promise.reject(data);
       });
     }
 }

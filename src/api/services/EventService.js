@@ -14,7 +14,7 @@ class EventService {
         let results = data.results || [];
 
         // If orderby is provided, sort the data
-        if (orderBy && response.isError === false) {
+        if (orderBy && !response.isError) {
           for (const key in orderBy) {
             results = results.sort((a, b) => (a[key] === b[key]) ? 0 : a[key] ? 1 : -1);
           }
@@ -22,11 +22,11 @@ class EventService {
             data.results = results;
           }
         }
-        if (response.isError === false) {
+        if (!response.isError) {
           EventActions.addEvents(data)(store.dispatch);
         }
         !callback || callback(response.isError === true, data);
-        return response.isError === false ? Promise.resolve(data) : Promise.reject(data);
+        return !response.isError ? Promise.resolve(data) : Promise.reject(data);
       });
     }
 
@@ -41,7 +41,7 @@ class EventService {
         const response = API.getEventItem(id).response();
         return response.then((data) => {
           !callback || callback(response.isError === true, data);
-          if (response.isError === false) {
+          if (!response.isError) {
             EventActions.setEventById(id, data)(store.dispatch); // Save in store
             return Promise.resolve(data);
           } else {
@@ -56,7 +56,7 @@ class EventService {
       const response = API.createEventItem(eventData).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
-        return data;
+        return !response.isError ? Promise.resolve(data) : Promise.reject(data);
       });
     }
 
@@ -64,7 +64,7 @@ class EventService {
       const response = API.putEventItem(id, eventData).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
-        return data;
+        return !response.isError ? Promise.resolve(data) : Promise.reject(data);
       });
     }
 
@@ -73,7 +73,7 @@ class EventService {
       const response = API.deleteEventItem(id).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
-        return data;
+        return !response.isError ? Promise.resolve(data) : Promise.reject(data);
       });
     }
 
@@ -91,7 +91,7 @@ class EventService {
       const response = API.getCategories().response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
-        if (response.isError === false) {
+        if (!response.isError) {
           return Promise.resolve(data);
         } else {
           return Promise.reject([]);
@@ -103,7 +103,7 @@ class EventService {
       const response = API.getExpiredEvents().response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
-        if (response.isError === false) {
+        if (!response.isError) {
           return Promise.resolve(data);
         } else {
           return Promise.reject();
@@ -115,7 +115,7 @@ class EventService {
       const response = API.putAttended(eventId, item, username).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, data);
-        return data;
+        return !response.isError ? Promise.resolve(data) : Promise.reject(data);
       });
     }
 
@@ -123,7 +123,7 @@ class EventService {
       const response = API.getEventParticipants(id).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, response.status);
-        if (response.isError === false) {
+        if (!response.isError) {
           return Promise.resolve(data);
         } else {
           return Promise.reject(data);
@@ -136,7 +136,7 @@ class EventService {
       const response = API.putUserOnEventList(id, userData).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, response.status);
-        if (response.isError === false) {
+        if (!response.isError) {
           return Promise.resolve(response.status);
         } else {
           return Promise.reject(response.status);
@@ -149,7 +149,7 @@ class EventService {
       const response = API.deleteUserFromEventList(id, userData).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, response.status);
-        if (response.isError === false) {
+        if (!response.isError) {
           return Promise.resolve(data);
         } else {
           return Promise.reject(data);
@@ -162,7 +162,7 @@ class EventService {
       const response = API.updateUserEvent(id, userData).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, response.status);
-        if (response.isError === false) {
+        if (!response.isError) {
           return Promise.resolve(data);
         } else {
           return Promise.reject(data.detail);
@@ -175,7 +175,7 @@ class EventService {
       const response = API.getUserEventObject(id, userData).response();
       return response.then((data) => {
         !callback || callback(response.isError === true, response.status);
-        if (response.isError === false) {
+        if (!response.isError) {
           return Promise.resolve(data);
         } else {
           return Promise.reject(data.detail);

@@ -97,7 +97,7 @@ function JobPostAdministration(props) {
     // Fetch job posts from server
     JobPostService.getJobPosts(parameters)
         .then((data) => {
-          setJobPosts(data.results);
+          setJobPosts([...jobPosts, ...data.results]);
           const nextPageUrl = data.next;
           const urlParameters = {};
 
@@ -110,7 +110,7 @@ function JobPostAdministration(props) {
               urlParameters[parameterString[0]] = parameterString[1];
             });
           }
-          setNextPage(urlParameters['page']);
+          setNextPage(urlParameters['page'] ? Number(urlParameters['page']) : null);
           setIsLoading(false);
         });
   };
@@ -214,7 +214,7 @@ function JobPostAdministration(props) {
             aria-label="tabs"
           >
             <Tab id='0' label={selectedJobPost.id ? 'Endre' : 'Skriv'} />
-            <Tab id='1' label="Se" />
+            <Tab id='1' label="Forhåndsvis" />
           </Tabs>
           <div className={classes.paper}>
             {tab === 0 && <JobPostEditor jobPost={selectedJobPost} setJobPost={(item) => setSelectedJobPost(item)}/>}

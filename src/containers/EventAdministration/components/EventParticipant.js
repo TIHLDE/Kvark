@@ -8,11 +8,15 @@ import Card from '@material-ui/core/Card';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 
 // Icons
 import Delete from '@material-ui/icons/Delete';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+
+// Project components
+import Modal from '../../../components/layout/Modal';
 
 const style = (theme) => ({
   content: {
@@ -30,7 +34,6 @@ const style = (theme) => ({
     flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
-    // alignItems: 'center',
   },
   deleteButton: {
     '&:hover': {
@@ -52,69 +55,72 @@ const style = (theme) => ({
   actionArea: {
     display: 'flex',
   },
+  button: {
+    width: '100%',
+    marginTop: 20,
+  },
+  lightText: {
+    color: theme.colors.text.light,
+  },
 });
 
 const EventParticipant = (props) => {
-  const {
-    classes,
-    removeUserFromEvent,
-    toggleUserEvent,
-    event,
-    waitList,
-    attended,
-  } = props;
+  const {classes, user, removeUserFromEvent, toggleUserEvent, waitList} = props;
+  const userInfo = user.user_info;
+  const [checkedState, setCheckedState] = useState(user.has_attended);
+  const [showModal, setShowModal] = useState(false);
 
-  const [checkedState, setCheckedState] = useState(attended);
   useEffect(() => {
-    setCheckedState(props.attended);
-  }, [props.attended]);
-
-  const userInfo = props.user.user_info;
+    setCheckedState(user.has_attended);
+  }, [user]);
 
   const deleteHandler = () => {
-    removeUserFromEvent(props.user.user_info.user_id, event);
+    removeUserFromEvent(user.user_info.user_id);
+    setShowModal(false);
   };
 
-  const handleCheck = (actionEvent) => {
-    setCheckedState(actionEvent.target.checked);
-    toggleUserEvent(props.user.user_info.user_id, event, {has_attended: actionEvent.target.checked});
+  const handleCheck = (event) => {
+    setCheckedState(event.target.checked);
+    toggleUserEvent(user.user_info.user_id, {has_attended: event.target.checked});
   };
 
   return (
     <Card className={classes.content}>
+      {showModal &&
+        <Modal
+          open={showModal}
+          onClose={() => setShowModal(false)}
+          header='Er du sikker?'
+          closeText='Avbryt'>
+          <Typography className={classes.lightText} variant='h6'>Er du sikker på at du vil fjerne {userInfo.first_name + ' ' + userInfo.last_name} fra arrangementet?</Typography>
+          <Button
+            className={classes.button}
+            color='primary'
+            variant='contained'
+            onClick={deleteHandler}
+            align='center'>Ja</Button>
+        </Modal>
+      }
       <div className={classes.userName}>
         <Typography>{userInfo.first_name + ' ' + userInfo.last_name}</Typography>
         <Typography>Studie: {getUserStudyShort(userInfo.user_study)}</Typography>
-        <Typography>Årstrinn: {userInfo.user_class} Klasse</Typography>
+        <Typography>Årstrinn: {userInfo.user_class}. klasse</Typography>
         {userInfo.allergy !== '' && <Typography>Allergier: {userInfo.allergy}</Typography>}
-
       </div>
       <div className={classes.actionArea}>
         <div className={classes.buttonContainer}>
-          <FormControlLabel
-            label="Ankommet"
-            control={
-              <Checkbox
-                onChange={
-                  handleCheck
-                }
-                checked={checkedState} />}
-          />
+          <FormControlLabel label="Ankommet" control={<Checkbox onChange={handleCheck} checked={checkedState} />} />
         </div>
         <div className={classes.buttonContainer}>
-          {!waitList ?
-            <ArrowDownwardIcon
-              className={classes.arrowButton}
-              onClick={() => {
-                toggleUserEvent(props.user.user_info.user_id, event, {is_on_wait: true});
-              }} /> :
+          {waitList ?
             <ArrowUpwardIcon
               className={classes.arrowButton}
-              onClick={() => {
-                toggleUserEvent(props.user.user_info.user_id, event, {is_on_wait: false});
-              }}/>
+              onClick={() => toggleUserEvent(user.user_info.user_id, {is_on_wait: false})} /> :
+            <ArrowDownwardIcon
+              className={classes.arrowButton}
+              onClick={() => toggleUserEvent(user.user_info.user_id, {is_on_wait: true})}/>
           }
-          <Delete className={classes.deleteButton} onClick={deleteHandler} />
+          <Delete className={classes.deleteButton} onClick={() => setShowModal(true)} />
         </div>
       </div>
     </Card>
@@ -124,10 +130,8 @@ const EventParticipant = (props) => {
 EventParticipant.propTypes = {
   user: PropTypes.object,
   classes: PropTypes.object,
-  attended: PropTypes.bool,
   removeUserFromEvent: PropTypes.func,
   toggleUserEvent: PropTypes.func,
-  event: PropTypes.object,
   waitList: PropTypes.bool,
 };
 

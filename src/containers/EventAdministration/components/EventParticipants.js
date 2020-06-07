@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
+
+// API and store imports
+import EventService from '../../../api/services/EventService';
 
 // Material-UI
 import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
@@ -14,6 +16,9 @@ import EventParticipant from './EventParticipant';
 import EventStatistics from './EventStatistics';
 
 const styles = (theme) => ({
+  root: {
+    padding: 20,
+  },
   header: {
     display: 'flex',
     padding: 2,
@@ -61,9 +66,40 @@ const styles = (theme) => ({
 });
 
 const EventParticipants = (props) => {
-  const {classes, event, closeParticipants, participants, removeUserFromEvent, toggleUserEvent} = props;
+  const {classes, event, openSnackbar} = props;
 
   const [showOnlyNotAttended, setCheckedState] = useState(false);
+  const [participants, setParticipants] = useState([]);
+
+  useEffect(() => {
+    if (event.id) {
+      EventService.getEventParticipants(event.id).then((result) => {
+        setParticipants(result);
+      });
+    }
+  }, [event]);
+
+  const removeUserFromEvent = (userId) => {
+    EventService.deleteUserFromEventList(event.id, {user_id: userId})
+        .then(() => {
+          const newParticipants = participants.filter((user) => user.user_info.user_id !== userId);
+          setParticipants(newParticipants);
+        })
+        .catch((error) => openSnackbar(JSON.stringify(error)))
+        .finally(() => openSnackbar('Deltageren ble fjernet'));
+  };
+
+  const toggleUserEvent = (userId, parameters) => {
+    EventService.updateUserEvent(event.id, {user_id: userId, ...parameters})
+        .then(() => {
+          const newParticipants = participants.map((user) => {
+            return user.user_info.user_id === userId ? {...user, ...parameters} : user;
+          });
+          setParticipants(newParticipants);
+        })
+        .catch((error) => openSnackbar(JSON.stringify(error)))
+        .finally(() => openSnackbar('Endringen var vellykket'));
+  };
 
   const sortParticipants = (waitList) => {
     return participants.filter((user) => {
@@ -77,27 +113,12 @@ const EventParticipants = (props) => {
     });
   };
 
-  let participantsIn = [];
-  let participantsOnWait = [];
-  if (participants.length > 0) {
-    participantsIn = sortParticipants(false);
-    participantsOnWait = sortParticipants(true);
-  }
-
-  const handleCheck = (actionEvent) => {
-    setCheckedState(actionEvent.target.checked);
-  };
-
-  const printParticipants = (waitList, notAttended) => {
+  const printParticipants = (waitList, notAttended = false) => {
     let elements = <Typography className={classes.lightText}>Ingen påmeldte.</Typography>;
-    let participantsToPrint;
-
-    participantsToPrint = waitList ? participantsOnWait : participantsIn;
+    let participantsToPrint = waitList ? sortParticipants(true) : sortParticipants(false);
 
     if (notAttended) {
-      participantsToPrint = participantsToPrint.filter((u) => {
-        return !u.has_attended;
-      });
+      participantsToPrint = participantsToPrint.filter((user) => !user.has_attended);
     }
 
     if (participantsToPrint.length > 0) {
@@ -105,8 +126,6 @@ const EventParticipants = (props) => {
         return <EventParticipant
           key={key}
           waitList={waitList}
-          attended={user.has_attended}
-          event={event}
           removeUserFromEvent={removeUserFromEvent}
           toggleUserEvent={toggleUserEvent}
           user={user} />;
@@ -117,28 +136,28 @@ const EventParticipants = (props) => {
   };
 
   return (
-    <React.Fragment>
+    <div className={classes.root}>
       <div className={classes.header}>
         <div className={classes.heading}>
           <Typography className={classes.mainText} variant='h4'>{event.title}</Typography>
         </div>
         <div className={classes.numbers}>
-          <Typography className={classes.lightText}>Antall påmeldte: {participantsIn.length}</Typography>
-          <Typography className={classes.lightText}>Antall på venteliste: {participantsOnWait.length}</Typography>
+          <Typography className={classes.lightText}>Antall påmeldte: {sortParticipants(false).length}</Typography>
+          <Typography className={classes.lightText}>Antall på venteliste: {sortParticipants(true).length}</Typography>
         </div>
       </div>
       <Divider />
       <div className={classes.content}>
-        { participantsIn.length > 0 &&
+        {sortParticipants(false).length > 0 &&
         <div>
           <Typography className={classes.mainText} variant='h5'>Statistikk</Typography>
           <div className={classes.listView}>
-            <EventStatistics participants={participantsIn} />
+            <EventStatistics participants={sortParticipants(false)} />
           </div>
         </div>
         }
         <div className={classes.flexRow}>
-          <Typography className={classes.mainText} variant='h5'>Påmeldte</Typography>
+          <Typography className={classes.mainText} variant='h5'>Påmeldte ({sortParticipants(false).length})</Typography>
           <FormControlLabel
             className={classes.lightText}
             label="Ikke ankommet"
@@ -146,36 +165,26 @@ const EventParticipants = (props) => {
             control={
               <Checkbox
                 className={classes.checkbox}
-                onChange={
-                  handleCheck
-                }
+                onChange={(e) => setCheckedState(e.target.checked)}
                 checked={showOnlyNotAttended} />}
           />
         </div>
-
         <div className={classes.listView}>
           {printParticipants(false, showOnlyNotAttended)}
         </div>
-        <Typography className={classes.mainText} variant='h5'>Venteliste</Typography>
+        <Typography className={classes.mainText} variant='h5'>Venteliste ({sortParticipants(true).length})</Typography>
         <div className={classes.listView}>
           {printParticipants(true)}
         </div>
       </div>
-      <Button
-        onClick={closeParticipants}
-        variant='outlined'
-        color='primary'>Tilbake</Button>
-    </React.Fragment>
+    </div>
   );
 };
 
 EventParticipants.propTypes = {
   classes: PropTypes.object,
-  event: PropTypes.object,
-  closeParticipants: PropTypes.func,
-  toggleUserEvent: PropTypes.func,
-  participants: PropTypes.array,
-  removeUserFromEvent: PropTypes.func,
+  event: PropTypes.object.isRequired,
+  openSnackbar: PropTypes.func,
 };
 
 export default withStyles(styles)(EventParticipants);

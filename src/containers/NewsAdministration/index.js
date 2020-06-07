@@ -173,7 +173,7 @@ function NewsAdministration(props) {
             aria-label="tabs"
           >
             <Tab id='0' label={selectedNewsItem.id ? 'Endre' : 'Skriv'} />
-            <Tab id='1' label="Se" />
+            <Tab id='1' label="Forhåndsvis" />
           </Tabs>
           <div className={classes.paper}>
             {tab === 0 && <NewsEditor newsItem={selectedNewsItem} setNewsItem={(item) => setSelectedNewsItem(item)}></NewsEditor>}
