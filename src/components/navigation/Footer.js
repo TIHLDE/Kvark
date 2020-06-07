@@ -23,7 +23,6 @@ import INSTAGRAM from '../../assets/icons/instagram.svg';
 import SNAPCHAT from '../../assets/icons/snapchat.svg';
 import SLACK from '../../assets/icons/slack.svg';
 import DISCORD from '../../assets/icons/discord.svg';
-import SopraSteria from '../../assets/img/sopraSteriaLogo.svg';
 
 const styles = (theme) => ({
   root: {
@@ -83,7 +82,6 @@ const styles = (theme) => ({
     display: 'flex',
     flexDirection: 'column',
     textAlign: 'center',
-    margin: 'auto 0px',
     textDecoration: 'none',
   },
   sponsorLogo: {
@@ -180,14 +178,11 @@ SosialeMedier.propTypes = {
   classes: PropTypes.object,
 };
 
-const SponsorLogo = (props) => {
+const ModeSelector = (props) => {
   const {classes, openModal} = props;
   return (
     <div className={classes.sponsorWrapper}>
-      <a className={classes.sponsorWrapper} target="_blank" rel="noopener noreferrer" href="https://www.soprasteria.no/">
-        <img className={classes.sponsorLogo} src={SopraSteria} alt='Sopra Steria Logo' />
-        <div className={classes.sponsorText}>HOVEDSAMARBEIDSPARTNER</div>
-      </a>
+      <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Modus velger</Typography>
       <IconButton onClick={openModal} aria-label="delete" className={classes.themeSettingsContainer}>
         <LightIcon className={classes.themeSettingsIcon} />
       </IconButton>
@@ -195,7 +190,7 @@ const SponsorLogo = (props) => {
   );
 };
 
-SponsorLogo.propTypes = {
+ModeSelector.propTypes = {
   classes: PropTypes.object,
   openModal: PropTypes.func,
 };
@@ -215,7 +210,7 @@ const Footer = (props) => {
       <Sponsorer classes={classes} />
       <OmTihlde classes={classes} />
       <SosialeMedier classes={classes} />
-      <SponsorLogo classes={classes} openModal={() => setShowModal(true)} />
+      <ModeSelector classes={classes} openModal={() => setShowModal(true)} />
     </div>
   );
 };

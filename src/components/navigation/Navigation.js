@@ -28,7 +28,6 @@ import Avatar from '@material-ui/core/Avatar';
 // Assets/Icons
 import TIHLDELOGO from '../../assets/img/TIHLDE_LOGO.png';
 import MenuIcon from '@material-ui/icons/Menu';
-import SopraSteria from '../../assets/img/sopraSteriaLogo.svg';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 
 // Project Components
@@ -223,16 +222,6 @@ const URIbutton = withStyles(styles)((props) => {
   );
 });
 
-const SponsorLogo = withStyles(styles)((props) => {
-  const {classes} = props;
-  return (
-    <a className={classes.sponsorWrapper} target="_blank" rel="noopener noreferrer" href="https://www.soprasteria.no/">
-      <img className={classes.sponsorLogo} src={SopraSteria} alt='Sopra Steria Logo' height={'18rem'} />
-      <div className={classes.sponsorText}>HOVEDSAMARBEIDSPARTNER</div>
-    </a>
-  );
-});
-
 const PersonIcon = withStyles(styles)((props) => {
   const {user, link, classes} = props;
   return (
@@ -356,12 +345,6 @@ class Navigation extends Component {
                       <URIbutton data={{link: URLS.company, text: 'For Bedrifter'}} selected={this.props.match.url === URLS.company} />
                     </div>
                   </Hidden>
-                </div>
-
-                <div>
-                  {!AuthService.isAuthenticated() &&
-                    <SponsorLogo />
-                  }
                 </div>
                 <div>
                   {AuthService.isAuthenticated() ?
