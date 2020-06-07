@@ -8,7 +8,8 @@ import classNames from 'classnames';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-// Icons
+// Project Components
+import Paper from './Paper';
 
 const styles = (theme) => ({
   root: {
@@ -16,9 +17,6 @@ const styles = (theme) => ({
     '@media only screen and (max-width: 950px)': {
       margin: '0 5px',
     },
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
   },
   wrapper: {
     display: 'flex',
@@ -70,7 +68,7 @@ const InfoCard = (props) => {
   const {classes} = props;
 
   return (
-    <div className={classNames(classes.root, props.className)}>
+    <Paper className={classNames(classes.root, props.className)} noPadding>
       <div className={classes.wrapper}>
         {props.src &&
           <div className={classes.margin}>
@@ -94,7 +92,7 @@ const InfoCard = (props) => {
           )}
         </Grid>
       </div>
-    </div>
+    </Paper>
   );
 };
 

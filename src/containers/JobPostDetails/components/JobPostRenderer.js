@@ -21,6 +21,7 @@ import Time from '@material-ui/icons/AccessTime';
 
 // Project Components
 import MarkdownRenderer from '../../../components/miscellaneous/MarkdownRenderer';
+import Paper from '../../../components/layout/Paper';
 
 const styles = (theme) => ({
   grid: {
@@ -35,12 +36,6 @@ const styles = (theme) => ({
       gridTemplateColumns: '100%',
       justifyContent: 'center',
     },
-  },
-  paper: {
-    padding: 20,
-    backgroundColor: theme.colors.background.light,
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
   },
   imageWrapper: {
     maxHeight: 454,
@@ -129,15 +124,15 @@ const JobPostRenderer = (props) => {
   return (
     <div className={classes.grid} >
       <div>
-        <div className={classNames(classes.paper, classes.content)}>
+        <Paper className={classes.content}>
           <Typography variant='caption' gutterBottom>Publisert: {publishedAt.format('DD.MM.YYYY')}</Typography>
           <Typography className={classNames(classes.title, classes.mb)} variant='h5' gutterBottom><strong>{data.title}</strong></Typography>
           <MarkdownRenderer className={classes.mb} value={data.ingress || ''} />
           <MarkdownRenderer value={data.body || ''} />
-        </div>
+        </Paper>
       </div>
       <div>
-        <div className={classNames(classes.paper, classes.details)}>
+        <Paper className={classes.details}>
           <div className={classes.imageWrapper}>
             <img className={classes.image} src={data.logo} alt={data.logo_alt} />
           </div>
@@ -170,7 +165,7 @@ const JobPostRenderer = (props) => {
                           {Text.apply}
                         </Button>
           }
-        </div>
+        </Paper>
       </div>
     </div>
   );

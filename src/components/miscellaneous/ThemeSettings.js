@@ -18,6 +18,9 @@ import DarkIcon from '@material-ui/icons/Brightness2Outlined';
 import DeviceIcon from '@material-ui/icons/DevicesOutlined';
 import LightIcon from '@material-ui/icons/WbSunnyOutlined';
 
+// Project components
+import Paper from '../layout/Paper';
+
 const style = (theme) => ({
   paper: {
     position: 'absolute',
@@ -30,9 +33,6 @@ const style = (theme) => ({
     top: '50%',
     'overflow-y': 'auto',
     transform: 'translate(-50%,-50%)',
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.main,
     outline: 'none',
     '@media only screen and (max-width: 400px)': {
       width: '100%',
@@ -86,37 +86,39 @@ const ThemeSettings = (props) => {
     <Modal
       open={open}
       onClose={onClose}>
-      <div className={classes.paper}>
-        <div className={classes.content}>
-          <Typography className={classes.header} variant='h4'>Tema</Typography>
-          <ToggleButtonGroup
-            orientation='vertical'
-            className={classes.group}
-            value={themeName}
-            exclusive
-            onChange={changeTheme}
-            aria-label="Tema"
-          >
-            <ToggleButton value={THEME_OPTIONS.light} aria-label="Lyst tema">
-              <LightIcon />
-              <Typography className={classes.groupButton} variant='subtitle2'>Lyst</Typography>
-            </ToggleButton>
-            <ToggleButton value={THEME_OPTIONS.automatic} aria-label="Enhetsinnstilling">
-              <DeviceIcon />
-              <Typography className={classes.groupButton} variant='subtitle2'>Automatisk</Typography>
-            </ToggleButton>
-            <ToggleButton value={THEME_OPTIONS.dark} aria-label="Mørkt tema">
-              <DarkIcon />
-              <Typography className={classes.groupButton} variant='subtitle2'>Mørkt</Typography>
-            </ToggleButton>
-          </ToggleButtonGroup>
-          <Button
-            className={classes.button}
-            color='primary'
-            onClick={onClose}
-            align='center'>Lukk</Button>
-        </div>
-      </div>
+      <>
+        <Paper className={classes.paper} noPadding>
+          <div className={classes.content}>
+            <Typography className={classes.header} variant='h4'>Tema</Typography>
+            <ToggleButtonGroup
+              orientation='vertical'
+              className={classes.group}
+              value={themeName}
+              exclusive
+              onChange={changeTheme}
+              aria-label="Tema"
+            >
+              <ToggleButton value={THEME_OPTIONS.light} aria-label="Lyst tema">
+                <LightIcon />
+                <Typography className={classes.groupButton} variant='subtitle2'>Lyst</Typography>
+              </ToggleButton>
+              <ToggleButton value={THEME_OPTIONS.automatic} aria-label="Enhetsinnstilling">
+                <DeviceIcon />
+                <Typography className={classes.groupButton} variant='subtitle2'>Automatisk</Typography>
+              </ToggleButton>
+              <ToggleButton value={THEME_OPTIONS.dark} aria-label="Mørkt tema">
+                <DarkIcon />
+                <Typography className={classes.groupButton} variant='subtitle2'>Mørkt</Typography>
+              </ToggleButton>
+            </ToggleButtonGroup>
+            <Button
+              className={classes.button}
+              color='primary'
+              onClick={onClose}
+              align='center'>Lukk</Button>
+          </div>
+        </Paper>
+      </>
     </Modal>
   );
 };

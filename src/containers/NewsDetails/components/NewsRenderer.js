@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 
 // Project Components
 import MarkdownRenderer from '../../../components/miscellaneous/MarkdownRenderer';
+import Paper from '../../../components/layout/Paper';
 
 const styles = (theme) => ({
   grid: {
@@ -61,10 +62,6 @@ const styles = (theme) => ({
     color: theme.colors.text.light,
   },
   content: {
-    padding: 20,
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
     height: 'fit-content',
     '@media only screen and (max-width: 800px)': {
       order: 1,
@@ -72,9 +69,6 @@ const styles = (theme) => ({
   },
   details: {
     padding: '10px 20px',
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
     marginBottom: 20,
     maxWidth: 280,
     '@media only screen and (max-width: 800px)': {
@@ -132,16 +126,16 @@ const NewsRenderer = (props) => {
       {newsData.image && <img className={classes.image} src={newsData.image} alt={newsData.image_alt} /> }
       <div className={classes.grid} >
         <div>
-          <div className={classes.details}>
+          <Paper className={classes.details} noPadding>
             <DetailContent title="Publisert: " info={getDate(moment(createdDate, ['YYYY-MM-DD HH:mm'], 'nb'))} />
             <DetailContent title="Oppdatert: " info={getDate(moment(updatedDate, ['YYYY-MM-DD HH:mm'], 'nb'))} />
-          </div>
+          </Paper>
         </div>
-        <div className={classes.content}>
+        <Paper className={classes.content}>
           <Typography className={classes.title} variant='h5'><strong>{title}</strong></Typography>
           <Typography className={classes.header} variant='h6'><strong>{header}</strong></Typography>
           <MarkdownRenderer className={classes.description} value={body} />
-        </div>
+        </Paper>
       </div>
     </div>
   );

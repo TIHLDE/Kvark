@@ -25,6 +25,7 @@ import Navigation from '../../components/navigation/Navigation';
 import InfoCard from '../../components/layout/InfoCard';
 import ClickableImage from '../../components/miscellaneous/ClickableImage';
 import Banner from '../../components/layout/Banner';
+import Paper from '../../components/layout/Paper';
 
 const styles = (theme) => ({
   root: {
@@ -66,9 +67,6 @@ const styles = (theme) => ({
   },
   orgMap: {
     margin: 4,
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
   },
   smoke: {
     width: '100%',
@@ -155,9 +153,9 @@ class About extends Component {
           <div>
             <div className={classes.section}>
               <Typography className={classes.header} variant='h4' color='inherit' align='center'>Organisasjonskart</Typography>
-              <div className={classes.orgMap}>
+              <Paper className={classes.orgMap} noPadding>
                 <ClickableImage className={classes.miniPadding} image={OrgMap} alt='organisasjonskart' width='100%'/>
-              </div>
+              </Paper>
             </div>
           </div>
 

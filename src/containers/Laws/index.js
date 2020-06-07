@@ -15,6 +15,7 @@ import Navigation from '../../components/navigation/Navigation';
 import Banner from '../../components/layout/Banner';
 import Icons from './components/Icons';
 import LinkButton from '../../components/navigation/LinkButton';
+import Paper from '../../components/layout/Paper';
 
 const styles = (theme) => ({
   root: {
@@ -38,9 +39,6 @@ const styles = (theme) => ({
     },
   },
   container: {
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
     overflow: 'hidden',
   },
   content: {
@@ -73,7 +71,7 @@ class Laws extends Component {
         <Banner title='Lover og regler' />
         <div className={classes.root}>
           <div className={classes.wrapper}>
-            <div className={classes.container}>
+            <Paper className={classes.container} noPadding>
               <div className={classes.icons}>
                 <Icons data={{
                   title: 'Lover for TIHLDE',
@@ -98,7 +96,7 @@ class Laws extends Component {
                 <LinkButton noPadding textLeft icon={ListAltIcon} to='https://old.tihlde.org/assets/2019/02/Vedlegg-08.pdf'>Regler og instrukser for De Eldstes Raad</LinkButton>
                 <LinkButton noPadding textLeft icon={ListAltIcon} to='https://old.tihlde.org/assets/2019/02/Vedlegg-09.pdf'>Regler og instrukser for TIHLDE-kontoret</LinkButton>
               </div>
-            </div>
+            </Paper>
           </div>
         </div>
       </Navigation>

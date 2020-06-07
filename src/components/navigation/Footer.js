@@ -182,7 +182,7 @@ const ModeSelector = (props) => {
   const {classes, openModal} = props;
   return (
     <div className={classes.sponsorWrapper}>
-      <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Modus velger</Typography>
+      <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Temavelger</Typography>
       <IconButton onClick={openModal} aria-label="delete" className={classes.themeSettingsContainer}>
         <LightIcon className={classes.themeSettingsIcon} />
       </IconButton>

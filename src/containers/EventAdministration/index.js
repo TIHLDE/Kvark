@@ -14,6 +14,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 
 // Project components
+import Paper from '../../components/layout/Paper';
 import Navigation from '../../components/navigation/Navigation';
 import SidebarList from '../../components/layout/SidebarList';
 import DropdownButton from '../../components/miscellaneous/DropdownButton';
@@ -43,11 +44,6 @@ const styles = (theme) => ({
       margin: 10,
       padding: '36px 20px',
     },
-  },
-  paper: {
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
   },
   top: {
     display: 'flex',
@@ -250,11 +246,11 @@ function EventAdministration(props) {
             <Tab id='1' label='Deltagere' />
             <Tab id='2' label='Forhåndsvis' />
           </Tabs>
-          <div className={classes.paper}>
+          <Paper noPadding >
             {tab === 0 && <EventEditor event={selectedEvent} setEvent={(item) => setSelectedEvent(item)} categories={categories} />}
             {tab === 1 && <EventParticipants event={selectedEvent} openSnackbar={openSnackbar} />}
             {tab === 2 && <EventRenderer eventData={selectedEvent} preview />}
-          </div>
+          </Paper>
         </div>
       </div>
       <SidebarList

@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {getUserClass, getUserStudyShort} from '../../../utils';
 
 // Material-UI
 import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 // Project components
-import {getUserClass, getUserStudyShort} from '../../../utils';
+import Paper from '../../../components/layout/Paper';
 
 const styles = (theme) => ({
   root: {
@@ -35,8 +36,6 @@ const styles = (theme) => ({
     flexDirection: 'column',
     textAlign: 'center',
     backgroundColor: theme.colors.background.smoke,
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
     borderCollapse: 'collapse',
   },
 });
@@ -62,13 +61,13 @@ const EventParticipants = (props) => {
         <div>
           <Typography className={classes.lightText}>Klasse:</Typography>
           <div className={classes.innerGrid}>
-            {[1, 2, 3, 4, 5].map((i) => <div key={i} className={classes.statistics}><Typography variant='subtitle2'>{getUserClass(i)}</Typography><Typography variant='h4'>{classNo(i)}</Typography></div>)}
+            {[1, 2, 3, 4, 5].map((i) => <Paper key={i} className={classes.statistics} noPadding><Typography variant='subtitle2'>{getUserClass(i)}</Typography><Typography variant='h4'>{classNo(i)}</Typography></Paper>)}
           </div>
         </div>
         <div>
           <Typography className={classes.lightText}>Studie:</Typography>
           <div className={classes.innerGrid}>
-            {[1, 2, 3, 4, 5].map((i) => <div key={i} className={classes.statistics}><Typography variant='subtitle2'>{getUserStudyShort(i)}</Typography><Typography variant='h4'>{studyNo(i)}</Typography></div>)}
+            {[1, 2, 3, 4, 5].map((i) => <Paper key={i} className={classes.statistics} noPadding><Typography variant='subtitle2'>{getUserStudyShort(i)}</Typography><Typography variant='h4'>{studyNo(i)}</Typography></Paper>)}
           </div>
         </div>
       </div>

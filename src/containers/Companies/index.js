@@ -16,6 +16,7 @@ import Navigation from '../../components/navigation/Navigation';
 import InfoCard from '../../components/layout/InfoCard';
 import Banner from '../../components/layout/Banner';
 import Forum from './components/Forum';
+import Paper from '../../components/layout/Paper';
 
 import Text from '../../text/CompaniesText';
 
@@ -66,9 +67,6 @@ const styles = (theme) => ({
   },
   formWrapper: {
     margin: '15px 0',
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
   },
   flex: {
     display: 'flex',
@@ -195,7 +193,7 @@ class Companies extends Component {
             </div>
           </div>
           <div className={classes.section}>
-            <div className={classes.formWrapper} ref={this.formRef}>
+            <Paper className={classes.formWrapper} ref={this.formRef} noPadding>
               <Forum
                 setMessage={this.setMessage}
                 data={{
@@ -205,7 +203,7 @@ class Companies extends Component {
                 firstTextFieldRef={this.firstTextFieldRef}
                 scrollToForm={this.scrollToForm}
               />
-            </div>
+            </Paper>
           </div>
 
           <div className={classes.smoke}>

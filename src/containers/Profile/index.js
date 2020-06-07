@@ -15,6 +15,7 @@ import Button from '@material-ui/core/Button';
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 import ProfilePaper from './components/ProfilePaper';
+import Paper from '../../components/layout/Paper';
 
 const styles = (theme) => ({
   root: {
@@ -41,9 +42,6 @@ const styles = (theme) => ({
     padding: '28px',
     paddingTop: '110px',
     textAlign: 'center',
-    backgroundColor: theme.colors.background.light,
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
   },
   topSpacing: {
     marginTop: 10,
@@ -76,10 +74,10 @@ class Profile extends Component {
             <div className={classes.main}>
               { AuthService.isAuthenticated() ?
                             <ProfilePaper logOutMethod={this.logOut} /> :
-                            <div className={classes.paper}>
+                            <Paper className={classes.paper} noPadding>
                               <Typography variant='h6'>Du må være logget inn for å se profilen din</Typography>
                               <Link to={URLS.login}><Button className={classes.topSpacing} variant='contained' color='primary'>Logg inn</Button></Link>
-                            </div>
+                            </Paper>
               }
             </div>
           </div>

@@ -15,6 +15,7 @@ import Button from '@material-ui/core/Button';
 // Project Components
 import MarkdownRenderer from '../../../components/miscellaneous/MarkdownRenderer';
 import EventDialog from './EventDialog';
+import Paper from '../../../components/layout/Paper';
 
 // Urls
 import URLS from '../../../URLS';
@@ -63,10 +64,6 @@ const styles = (theme) => ({
     paddingTop: 0,
   },
   content: {
-    padding: 20,
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
     height: 'fit-content',
     '@media only screen and (max-width: 800px)': {
       order: 1,
@@ -74,9 +71,6 @@ const styles = (theme) => ({
   },
   details: {
     padding: '10px 20px',
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
     marginBottom: 20,
     maxWidth: 280,
     '@media only screen and (max-width: 800px)': {
@@ -317,31 +311,31 @@ const EventRenderer = (props) => {
       {eventData.image && <img className={classes.image} src={eventData.image} alt={eventData.image_alt} /> }
       <div className={classes.grid} >
         <div>
-          <div className={classes.details}>
+          <Paper className={classes.details} noPadding>
             <DetailContent title="Fra: " info={getDate(moment(startDate, ['YYYY-MM-DD HH:mm'], 'nb'))} />
             <DetailContent title="Til: " info={getDate(moment(endDate, ['YYYY-MM-DD HH:mm'], 'nb'))} />
             <DetailContent title="Sted: " info={eventData.location} />
-          </div>
+          </Paper>
           {eventData.sign_up &&
-                    <div className={classes.details}>
+                    <Paper className={classes.details} noPadding>
                       <DetailContent title="Påmeldte:" info={attending + '/' + limit} />
                       <DetailContent title="Venteliste:" info={String(onWait)} />
                       {today <= signUpStart && !userEvent && <DetailContent title="Påmeldingsstart:" info={getDate(moment(signUpStart, ['YYYY-MM-DD HH:mm'], 'nb'))} /> }
                       {today > signUpStart && today < signUpEnd && !userEvent && <DetailContent title="Påmeldingsslutt:" info={getDate(moment(signUpEnd, ['YYYY-MM-DD HH:mm'], 'nb'))} /> }
                       {userEvent && <DetailContent title="Avmeldingsfrist:" info={getDate(moment(signOffDeadline, ['YYYY-MM-DD HH:mm'], 'nb'))} /> }
-                    </div>
+                    </Paper>
           }
           {eventData.sign_up && eventData.registration_priorities && eventData.registration_priorities.length < 14 ?
-                    <div className={classes.details}>
+                    <Paper className={classes.details} noPadding>
                       <PrioritiesContent title="Prioritert:" priorities={eventData.registration_priorities} />
-                    </div> :
+                    </Paper> :
                     eventData.sign_up && eventData.registration_priorities &&
-                    <div className={classes.details}>
+                    <Paper className={classes.details} noPadding>
                       <Grid className={props.classes.info} container wrap='nowrap' alignItems='center' justify='flex-start'>
                         <Typography className={props.classes.ml} variant='subtitle1'>Prioritert:</Typography>
                         <Typography variant='subtitle1'>Alle</Typography>
                       </Grid>
-                    </div>
+                    </Paper>
           }
           {today <= startDate && applyButton }
           {(userEvent && userEvent.is_on_wait) &&
@@ -349,10 +343,10 @@ const EventRenderer = (props) => {
                       <Typography className={classes.redText} variant='subtitle1'>Du er på ventelisten</Typography>
                     </div>}
         </div>
-        <div className={classes.content}>
+        <Paper className={classes.content}>
           <Typography className={classes.title} variant='h5'><strong>{eventData.title}</strong></Typography>
           <MarkdownRenderer className={classes.description} value={description} />
-        </div>
+        </Paper>
       </div>
     </div>
   );

@@ -25,6 +25,7 @@ import Banner from '../../components/layout/Banner';
 import Pageination from '../../components/layout/Pageination';
 import NoPostsIndicator from './components/NoPostsIndicator';
 import JobPostItem from './components/JobPostItem';
+import Paper from '../../components/layout/Paper';
 
 const styles = (theme) => ({
   root: {
@@ -74,16 +75,12 @@ const styles = (theme) => ({
   settings: {
     position: 'sticky',
     top: 88,
-    padding: 28,
 
     '@media only screen and (max-width: 800px)': {
       order: 0,
       position: 'static',
       top: 0,
     },
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
   },
   paddingBtn: {
     paddingBottom: 10,
@@ -215,7 +212,7 @@ class JobPosts extends Component {
                       </div>
                     }
                     <div>
-                      <div className={classes.settings}>
+                      <Paper className={classes.settings}>
                         <form>
                           <TextField className={classes.paddingBtn} value={this.state.search} fullWidth placeholder='Søk...' onChange={this.handleChange('search')}/>
                           <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.searchForPosts}>{Text.search}</Button>
@@ -233,7 +230,7 @@ class JobPosts extends Component {
                             {Text.reset}
                           </Button>
                         </Theme>
-                      </div>
+                      </Paper>
                     </div>
                   </div>
                 </div>

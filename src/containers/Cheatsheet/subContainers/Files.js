@@ -22,6 +22,7 @@ import ListFiles from './ListFiles';
 import LinkButton from '../../../components/navigation/LinkButton';
 import Banner from '../../../components/layout/Banner';
 import Navigation from '../../../components/navigation/Navigation';
+import Paper from '../../../components/layout/Paper';
 
 const styles = (theme) => ({
   wrapper: {
@@ -34,9 +35,6 @@ const styles = (theme) => ({
     },
   },
   container: {
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
     overflow: 'hidden',
     textAlign: 'center',
   },
@@ -180,7 +178,7 @@ const Files = (props) => {
     <Navigation whitesmoke footer fancyNavbar>
       <Banner title='Kokebok' text={studyId + ' - ' + String(classId).concat('. klasse')} />
       <div className={classes.wrapper}>
-        <div className={classes.container}>
+        <Paper className={classes.container} noPadding>
           <div className={classes.filterContainer}>
             <TextField variant='outlined' className={classes.box} value={input} label='Søk' fullWidth placeholder='Søk...' onChange={(e) => search(e)}/>
           </div>
@@ -211,7 +209,7 @@ const Files = (props) => {
               </div>
             </Grow>
           }
-        </div>
+        </Paper>
       </div>
     </Navigation>
   );

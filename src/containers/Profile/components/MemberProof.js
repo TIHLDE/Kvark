@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// Project components
+import Paper from '../../../components/layout/Paper';
+
 // Material-ui
 import Modal from '@material-ui/core/Modal';
 import {withStyles} from '@material-ui/core/styles';
@@ -21,9 +24,6 @@ const style = (theme) => ({
     top: '50%',
     'overflow-y': 'auto',
     transform: 'translate(-50%,-50%)',
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.constant.white,
     outline: 'none',
     '@media only screen and (max-width: 400px)': {
       width: '100%',
@@ -50,16 +50,18 @@ const MemberProof = (props) => {
     <Modal
       open={props.status}
       onClose={props.onClose}>
-      <div className={classes.paper}>
-        <div className={classes.content}>
-          <QRCode value={userId} size={280} />
-          <Button
-            className={classes.button}
-            color='primary'
-            onClick={props.onClose}
-            align='center'>Lukk</Button>
-        </div>
-      </div>
+      <>
+        <Paper className={classes.paper} noPadding>
+          <div className={classes.content}>
+            <QRCode value={userId} size={280} />
+            <Button
+              className={classes.button}
+              color='primary'
+              onClick={props.onClose}
+              align='center'>Lukk</Button>
+          </div>
+        </Paper>
+      </>
     </Modal>
   );
 };
