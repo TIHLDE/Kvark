@@ -8,13 +8,15 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 
 // Icons
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+
+// Project components
+import Paper from '../layout/Paper';
 
 const styles = (theme) => ({
   root: {
@@ -71,7 +73,7 @@ function DropdownButton(props) {
         <Popper className={classes.popper} open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
           {({TransitionProps, placement}) => (
             <Grow {...TransitionProps} style={{transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}>
-              <Paper className={classes.list}>
+              <Paper className={classes.list} noPadding>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList id="split-button-menu">
                     {options.map((option, index) => (

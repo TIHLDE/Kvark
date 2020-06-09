@@ -30,6 +30,7 @@ import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
+import Paper from '../../components/layout/Paper';
 
 const styles = (theme) => ({
   root: {
@@ -53,10 +54,6 @@ const styles = (theme) => ({
     position: 'relative',
     left: 0, right: 0,
     top: '-60px',
-    padding: 28,
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
   },
   progress: {
     position: 'absolute',
@@ -318,7 +315,7 @@ class EventRegistration extends Component {
           <div className={classes.root}>
             <div className={classes.top}></div>
             <div className={classes.main}>
-              <div className={classes.paper}>
+              <Paper className={classes.paper}>
                 {this.state.isLoading && <LinearProgress className={classes.progress} />}
                 <Typography variant='h5' align='center' className={classes.title}>{this.state.eventName}</Typography>
                 <Tabs variant="fullWidth" scrollButtons="on" centered className={classes.lightText} value={this.state.tabViewMode} onChange={this.handleTabChange}>
@@ -341,7 +338,7 @@ class EventRegistration extends Component {
                     <canvas id="canvas" hidden className={classes.qr}></canvas>
                   </div>
                 }
-              </div>
+              </Paper>
             </div>
           </div>
           <Snackbar open={this.state.snackbarOpen} onClose={this.handleSnackbarClose} TransitionComponent={this.state.Transition}>

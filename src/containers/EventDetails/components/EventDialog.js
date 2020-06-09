@@ -37,6 +37,7 @@ import eventCancel from '../../../assets/img/eventCancel.svg';
 
 // Project components
 import EventListItem from './EventListItem';
+import Paper from '../../../components/layout/Paper';
 
 const style = (theme) => ({
   paper: {
@@ -53,9 +54,6 @@ const style = (theme) => ({
     '@media only screen and (max-width: 400px)': {
       width: '100%',
     },
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
   },
   heading: {
     display: 'flex',
@@ -121,8 +119,6 @@ const style = (theme) => ({
     flexDirection: 'column',
     margin: '20px 0px',
     padding: '20px 10px',
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
     backgroundColor: theme.colors.background.main,
   },
   question: {
@@ -203,7 +199,7 @@ const CheckQuestion = (props) => {
 const Questions = (props) => {
   const {classes, optionalFieldsAnswers, handleOptionalFieldInput} = props;
   return (
-    <div className={classes.questionsContainer}>
+    <Paper className={classes.questionsContainer} noPadding>
       <Typography variant="subtitle1">Spørsmål fra arrangøren:</Typography>
       {optionalFieldsAnswers.map((optField, index) => {
         if (optField.option_type === 0) {
@@ -220,7 +216,7 @@ const Questions = (props) => {
           );
         }
       })}
-    </div>
+    </Paper>
   );
 };
 
@@ -290,7 +286,7 @@ const EventDialog = (props) => {
     <Modal
       open={props.status}
       onClose={props.onClose}>
-      <div className={classes.paper}>
+      <Paper className={classes.paper} noPadding>
         {!isApplying && !userEvent && message === '' &&
           <React.Fragment>
             <DialogHeader classes={classes} heading={Text.signUp} />
@@ -382,7 +378,7 @@ const EventDialog = (props) => {
               </React.Fragment>
           }
         </div>
-      </div>
+      </Paper>
     </Modal>
   );
 };

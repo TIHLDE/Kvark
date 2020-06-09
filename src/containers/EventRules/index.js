@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
+import Paper from '../../components/layout/Paper';
 
 const styles = (theme) => ({
   root: {
@@ -36,11 +37,7 @@ const styles = (theme) => ({
     width: '100%',
   },
   paper: {
-    padding: 20,
     color: theme.colors.text.main,
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
   },
   list: {
     paddingLeft: 30,
@@ -61,7 +58,7 @@ class EventRules extends Component {
           <div className={classes.w100}>
             <div className={classes.section}>
               <div className={classes.grid}>
-                <div className={classes.paper}>
+                <Paper className={classes.paper}>
                   <h1>Arrangementsregler</h1>
                   <p>Skulle det være spørsmål etter at dette er lest, ta gjerne kontakt med TIHLDE HS på orakel@tihlde.org Dersom man mener man har fått en urettferdig prikk eller at det har skjedd en feil, ta kontakt med komiteen som var ansvarlig for det gjeldende arrangementet.</p>
                   <p><i>Det kan gis tilleggsregler til spesifikke arrangement, og da vil dette opplyses om i arrangementsteksten.</i></p>
@@ -98,7 +95,7 @@ class EventRules extends Component {
                     <li>Hvis noen oppfører seg upassende på et arrangement vil vi, i den grad det er mulig, henvende oss til vedkommende og konfrontere dem med det vi mener er dårlig oppførsel, enten under eller i etterkant av arrangementet.</li>
                   </ul>
                   <p>Oppførsel som oppleves av arrangør som uakseptabel vil kunne få konsekvenser. Arrangør har rett til å vurdere og utøve sanksjoner dersom det vurderes som nødvendig eller hensiktsmessig. Om ikke man retter seg etter saklige pålegg fra representant på gjeldende arrangement vil også konsekvenser bli vurdert.</p>
-                </div>
+                </Paper>
               </div>
             </div>
           </div>

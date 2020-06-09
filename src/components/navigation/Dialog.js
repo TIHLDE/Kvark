@@ -8,6 +8,9 @@ import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import {withStyles} from '@material-ui/core/styles';
 
+// Project components
+import Paper from '../layout/Paper';
+
 const style = (theme) => ({
   paper: {
     position: 'absolute',
@@ -19,9 +22,6 @@ const style = (theme) => ({
     left: '50%',
     top: '50%',
     transform: 'translate(-50%,-50%)',
-    backgroundColor: theme.colors.background.light,
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
     '@media only screen and (max-width: 400px)': {
       width: '100%',
     },
@@ -89,7 +89,7 @@ const Dialog = (props) => {
     <Modal
       open={status}
       onClose={onClose}>
-      <div className={classes.paper}>
+      <Paper className={classes.paper} noPadding >
         <div className={classes.heading}>
           <Typography className={classes.title} align='center' variant='h5'>
             {title}
@@ -114,7 +114,7 @@ const Dialog = (props) => {
             variant='outlined'
             color='primary'>Avbryt</Button>
         </div>
-      </div>
+      </Paper>
     </Modal>
   );
 };

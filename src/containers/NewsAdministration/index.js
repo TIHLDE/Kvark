@@ -18,6 +18,7 @@ import SidebarList from '../../components/layout/SidebarList';
 import DropdownButton from '../../components/miscellaneous/DropdownButton';
 import NewsRenderer from '../NewsDetails/components/NewsRenderer';
 import NewsEditor from './components/NewsEditor';
+import Paper from '../../components/layout/Paper';
 
 const SIDEBAR_WIDTH = 300;
 
@@ -41,11 +42,6 @@ const styles = (theme) => ({
       margin: 10,
       padding: '36px 20px',
     },
-  },
-  paper: {
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
   },
   top: {
     display: 'flex',
@@ -175,10 +171,10 @@ function NewsAdministration(props) {
             <Tab id='0' label={selectedNewsItem.id ? 'Endre' : 'Skriv'} />
             <Tab id='1' label="Forhåndsvis" />
           </Tabs>
-          <div className={classes.paper}>
+          <Paper noPadding>
             {tab === 0 && <NewsEditor newsItem={selectedNewsItem} setNewsItem={(item) => setSelectedNewsItem(item)}></NewsEditor>}
             {tab === 1 && <NewsRenderer newsData={selectedNewsItem} />}
-          </div>
+          </Paper>
         </div>
       </div>
       <SidebarList

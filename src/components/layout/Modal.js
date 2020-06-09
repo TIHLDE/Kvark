@@ -7,6 +7,9 @@ import {withStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
+// Project components
+import Paper from './Paper';
+
 const style = (theme) => ({
   paper: {
     position: 'absolute',
@@ -19,9 +22,6 @@ const style = (theme) => ({
     top: '50%',
     'overflow-y': 'auto',
     transform: 'translate(-50%,-50%)',
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.main,
     outline: 'none',
     '@media only screen and (max-width: 400px)': {
       width: '100%',
@@ -51,7 +51,7 @@ const Modal = (props) => {
     <MaterialModal
       open={open}
       onClose={onClose}>
-      <div className={classes.paper}>
+      <Paper className={classes.paper} noPadding>
         <div className={classes.content}>
           <Typography className={classes.header} variant='h4'>{header}</Typography>
           {children}
@@ -61,7 +61,7 @@ const Modal = (props) => {
             onClick={onClose}
             align='center'>{closeText}</Button>
         </div>
-      </div>
+      </Paper>
     </MaterialModal>
   );
 };

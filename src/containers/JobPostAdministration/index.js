@@ -18,6 +18,7 @@ import SidebarList from '../../components/layout/SidebarList';
 import DropdownButton from '../../components/miscellaneous/DropdownButton';
 import JobPostRenderer from '../JobPostDetails/components/JobPostRenderer';
 import JobPostEditor from './components/JobPostEditor';
+import Paper from '../../components/layout/Paper';
 
 const SIDEBAR_WIDTH = 300;
 
@@ -41,11 +42,6 @@ const styles = (theme) => ({
       margin: 10,
       padding: '36px 20px',
     },
-  },
-  paper: {
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
   },
   top: {
     display: 'flex',
@@ -216,10 +212,10 @@ function JobPostAdministration(props) {
             <Tab id='0' label={selectedJobPost.id ? 'Endre' : 'Skriv'} />
             <Tab id='1' label="Forhåndsvis" />
           </Tabs>
-          <div className={classes.paper}>
+          <Paper className={classes.paper} noPadding>
             {tab === 0 && <JobPostEditor jobPost={selectedJobPost} setJobPost={(item) => setSelectedJobPost(item)}/>}
             {tab === 1 && <div className={classes.renderer}><JobPostRenderer data={{...selectedJobPost, logo: selectedJobPost.image, logoAlt: selectedJobPost.image_alt}} /></div>}
-          </div>
+          </Paper>
         </div>
       </div>
       <SidebarList

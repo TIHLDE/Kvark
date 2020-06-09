@@ -14,6 +14,7 @@ import WaitingIcon from '@material-ui/icons/PlaylistAdd';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
+import Paper from '../../components/layout/Paper';
 
 // Components
 import Members from './tabs/Members';
@@ -38,9 +39,6 @@ const styles = (theme) => ({
     right: 0,
     padding: '28px 10px',
     textAlign: 'center',
-    backgroundColor: theme.colors.background.light,
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
   },
   grid: {
     width: '100%',
@@ -91,7 +89,7 @@ class UserAdmin extends Component {
     return (
       <Navigation footer whitesmoke fancyNavbar>
         <div className={classes.top}></div>
-        <div className={classes.content}>
+        <Paper className={classes.content}>
           <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
             <Typography className={classes.header} variant='h4'>Brukeradmin</Typography>
             <Tabs variant="fullWidth" scrollButtons="on" centered className={classes.tabs} value={this.state.tabViewMode} onChange={this.handleChange}>
@@ -101,7 +99,7 @@ class UserAdmin extends Component {
             {this.state.tabViewMode === 0 && <Members isMember={true} />}
             {this.state.tabViewMode === 1 && <Members isMember={false}/>}
           </Grid>
-        </div>
+        </Paper>
       </Navigation>
     );
   }

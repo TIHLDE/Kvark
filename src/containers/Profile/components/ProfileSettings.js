@@ -20,18 +20,6 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Slide from '@material-ui/core/Slide';
 
 const styles = (theme) => ({
-  paper: {
-    width: '90%',
-    maxWidth: 750,
-    margin: 'auto',
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: '-60px',
-    padding: '28px',
-    paddingTop: '110px',
-    textAlign: 'center',
-  },
   mt: {
     marginTop: '16px',
   },

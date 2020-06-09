@@ -19,6 +19,9 @@ import ClearOutlinedIcon from '@material-ui/icons/ClearOutlined';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 
+// Project components
+import Paper from '../../../components/layout/Paper';
+
 const styles = (theme) => ({
   root: {
     display: 'flex',
@@ -33,8 +36,6 @@ const styles = (theme) => ({
     flexDirection: 'column',
   },
   borderTop: {
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
     padding: '5px 5px 15px 15px',
     backgroundColor: theme.colors.background.main,
     marginBottom: 10,
@@ -79,7 +80,7 @@ function OptTextField(props) {
   };
 
   return (
-    <div className={classNames(classes.optField, classes.borderTop)}>
+    <Paper className={classNames(classes.optField, classes.borderTop)} noPadding>
       <div className={classes.optFieldHeader}>
         <Typography variant='subtitle1'>Tekstspørsmål</Typography>
         <FormControlLabel
@@ -96,7 +97,7 @@ function OptTextField(props) {
           <DeleteOutlineOutlinedIcon />
         </IconButton>
       </div>
-    </div>
+    </Paper>
   );
 }
 OptTextField.propTypes = {
@@ -128,7 +129,7 @@ function OptPickField(props) {
   };
 
   return (
-    <div className={classNames(classes.optField, classes.borderTop)}>
+    <Paper className={classNames(classes.optField, classes.borderTop)} noPadding>
       <div className={classes.optFieldHeader}>
         <Typography variant='subtitle1'>{isCheckbox ? 'Avkrysningsspørsmål' : 'Flervalgsspørsmål'}</Typography>
         <FormControlLabel
@@ -146,7 +147,7 @@ function OptPickField(props) {
         </IconButton>
       </div>
       <OptionalFieldOption options={optField.alternatives} handleOptionsChange={handleOptionsChange} isCheckbox={isCheckbox} />
-    </div>
+    </Paper>
   );
 }
 OptPickField.propTypes = {

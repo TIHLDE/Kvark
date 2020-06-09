@@ -1,6 +1,7 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
@@ -8,8 +9,8 @@ import Grid from '@material-ui/core/Grid';
 
 // Project Components
 import URLS from '../../../URLS';
-import LinkButton from '../../../components/navigation/LinkButton';
 import Banner from '../../../components/layout/Banner';
+import Paper from '../../../components/layout/Paper';
 import Navigation from '../../../components/navigation/Navigation';
 
 const styles = (theme) => ({
@@ -30,17 +31,16 @@ const styles = (theme) => ({
       gridTemplateColumns: '1fr',
     },
   },
+  link: {
+    textDecoration: 'none',
+  },
   folders: {
     textAlign: 'center',
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    boxShadow: '0px 2px 4px ' + theme.colors.border.main + '88, 0px 0px 4px ' + theme.colors.border.main + '88',
-    margin: 0,
     height: 50,
+    padding: 10,
     overflow: 'hidden',
-    backgroundColor: theme.colors.background.light,
     '&:hover': {
-      borderColor: theme.colors.background.light + 'bb',
+      backgroundColor: theme.colors.background.main,
     },
   },
   text: {
@@ -58,17 +58,18 @@ const Classes = (props) => {
       <Banner title='Kokebok' text={studyId} />
       <div className={classes.wrapper}>
         <Grid className={classes.grid}>
-          {studyId === 'DigSam' ? [4, 5].map((i) =>
-            (<div key={i} className={classes.folders}>
-              <LinkButton to={URLS.cheatsheet.concat(studyId, '/', String(i), '/')}>
+          {studyId === 'DigSam' ? [4, 5].map((i) => (
+            <Link key={i} className={classes.link} to={URLS.cheatsheet.concat(studyId, '/', String(i), '/')}>
+              <Paper className={classes.folders} noPadding shadow>
                 <Typography className={classes.text}>{String(i).concat('. klasse')}</Typography>
-              </LinkButton></div>)) :
-            [1, 2, 3].map((i) =>
-              (<div key ={i} className={classes.folders}>
-                <LinkButton className={classes.folders} to={URLS.cheatsheet.concat(studyId, '/', String(i), '/')}>
-                  <Typography className={classes.text}>{String(i).concat('. klasse')}</Typography>
-                </LinkButton>
-              </div>))
+              </Paper>
+            </Link>)) :
+          [1, 2, 3].map((i) => (
+            <Link key={i} className={classes.link} to={URLS.cheatsheet.concat(studyId, '/', String(i), '/')}>
+              <Paper className={classes.folders} noPadding shadow>
+                <Typography className={classes.text}>{String(i).concat('. klasse')}</Typography>
+              </Paper>
+            </Link>))
           }
         </Grid>
       </div>

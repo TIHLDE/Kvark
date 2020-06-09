@@ -22,6 +22,7 @@ import TIHLDE_LOGO from '../../assets/img/TIHLDE_LOGO_B.png';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
+import Paper from '../../components/layout/Paper';
 
 const styles = (theme) => ({
   root: {
@@ -44,10 +45,6 @@ const styles = (theme) => ({
     position: 'relative',
     left: 0, right: 0,
     top: '-60px',
-    padding: 28,
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
   },
   logo: {
     height: '32px',
@@ -144,7 +141,7 @@ class ForgotPassword extends Component {
           <div className={classes.root}>
             <div className={classes.top}></div>
             <div className={classes.main}>
-              <div className={classes.paper}>
+              <Paper className={classes.paper}>
                 {this.state.isLoading && <LinearProgress className={classes.progress} />}
                 <img className={classes.logo} src={TIHLDE_LOGO} height='30em' alt='tihlde_logo'/>
                 <Typography className={classes.header} variant='h6'>Glemt passord</Typography>
@@ -179,7 +176,7 @@ class ForgotPassword extends Component {
                     </Link>
                   </Grid>
                 </form>
-              </div>
+              </Paper>
             </div>
           </div>
         </Navigation>

@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
+import Paper from '../../components/layout/Paper';
 
 const styles = (theme) => ({
   root: {
@@ -36,11 +37,7 @@ const styles = (theme) => ({
     width: '100%',
   },
   paper: {
-    padding: 20,
     color: theme.colors.text.main,
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
   },
   list: {
     paddingLeft: 30,
@@ -61,7 +58,7 @@ class PrivacyPolicy extends Component {
           <div className={classes.w100}>
             <div className={classes.section}>
               <div className={classes.grid}>
-                <div className={classes.paper}>
+                <Paper className={classes.paper}>
                   <h1>TIHLDEs personvernregler</h1>
                   <p>Denne siden brukes til å informere besøkende på nettstedet om retningslinjene våre for innsamling og bruk av personlig informasjon hvis noen bestemte seg for å bruke tjenesten vår, nettstedet TIHLDE.org.</p>
                   <p>Hvis du velger å bruke tjenesten vår, samtykker du til innsamling og bruk av informasjon i henhold til denne policyen. Den personlige informasjonen vi samler inn brukes til å levere og forbedre tjenesten. Vi vil ikke bruke eller dele informasjonen din med noen, bortsett fra som beskrevet i denne personvernpolitikken.</p>
@@ -92,7 +89,7 @@ class PrivacyPolicy extends Component {
                   <p>Vi kan oppdatere personvernreglene våre fra tid til annen. Dermed anbefaler vi deg å gjennomgå denne siden med jevne mellomrom for eventuelle endringer. Vi vil varsle deg om endringer ved å legge ut den nye personvernregelen på denne siden. Disse endringene trer i kraft umiddelbart etter at de er lagt ut på denne siden.</p>
                   <h3>Kontakt oss</h3>
                   <p>Hvis du har spørsmål eller forslag til personvernreglene våre, ikke nøl med å kontakte oss.</p>
-                </div>
+                </Paper>
               </div>
             </div>
           </div>

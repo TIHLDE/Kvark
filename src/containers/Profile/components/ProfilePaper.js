@@ -30,6 +30,7 @@ import ProfileSettings from './ProfileSettings';
 import ProfileEvents from './ProfileEvents';
 import ProfileNotifications from './ProfileNotifications';
 import MemberProof from './MemberProof';
+import Paper from '../../../components/layout/Paper';
 
 const styles = (theme) => ({
   paper: {
@@ -43,9 +44,6 @@ const styles = (theme) => ({
     padding: '28px',
     paddingTop: '110px',
     textAlign: 'center',
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
   },
   tabs: {
     marginTop: 30,
@@ -179,7 +177,7 @@ class ProfilePaper extends Component {
       const notifications = this.state.userData.notifications ? this.state.userData.notifications : [];
 
       return (
-        <div className={classes.paper}>
+        <Paper className={classes.paper} noPadding>
           {this.state.modalShow && this.state.userData &&
             <MemberProof
               onClose={this.closeEventModal}
@@ -206,7 +204,7 @@ class ProfilePaper extends Component {
           {this.state.tabViewMode === 0 && <ProfileEvents/>}
           {this.state.tabViewMode === 1 && <ProfileNotifications updateNotificationReadState={this.updateNotificationReadState} isLoading={this.state.isLoading} messages={notifications} />}
           {this.state.tabViewMode === 2 && <ProfileSettings />}
-        </div>
+        </Paper>
       );
     }
 }
