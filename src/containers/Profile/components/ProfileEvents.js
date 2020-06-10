@@ -1,5 +1,5 @@
 // React
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import UserService from '../../../api/services/UserService';
 
@@ -19,42 +19,32 @@ const styles = (theme) => ({
   },
 });
 
-class ProfileEvents extends Component {
+function ProfileEvents(props) {
+  const {classes} = props;
+  const [events, setEvents] = useState([]);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      events: null,
-    };
-  }
-
-  loadUserData = () => {
+  const loadUserData = () => {
     UserService.getUserData().then((user) => {
       if (user) {
-        this.setState({events: user.events});
+        setEvents(user.events);
       }
     });
-  }
+  };
 
-  componentDidMount() {
-    this.loadUserData();
-  }
+  useEffect(() => loadUserData(), []);
 
-  render() {
-    const {classes} = this.props;
-    return (
-      <div className={classes.wrapper}>
-        {this.state.events && this.state.events.map((eventData, key) => {
-          if (eventData.closed === false && eventData.expired === false) {
-            return <EventListItem key={key} data={eventData} />;
-          }
-          return ('');
-        })
+  return (
+    <div className={classes.wrapper}>
+      {events && events.map((eventData, key) => {
+        if (eventData.expired === false) {
+          return <EventListItem key={key} data={eventData} />;
         }
-        {(!this.state.events || this.state.events.length < 1) && <Typography className={classes.text} align='center' variant='subtitle1'>Du er ikke påmeldt noen kommende arrangementer</Typography>}
-      </div>
-    );
-  }
+        return ('');
+      })
+      }
+      {events.length < 1 && <Typography className={classes.text} align='center' variant='subtitle1'>Du er ikke påmeldt noen kommende arrangementer</Typography>}
+    </div>
+  );
 }
 
 ProfileEvents.propTypes = {

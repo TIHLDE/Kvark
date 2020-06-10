@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 // Material-ui
 import MaterialModal from '@material-ui/core/Modal';
@@ -45,23 +46,25 @@ const style = (theme) => ({
 });
 
 const Modal = (props) => {
-  const {classes, open, onClose, children, header, closeText} = props;
+  const {classes, className, open, onClose, children, header, closeText} = props;
 
   return (
     <MaterialModal
       open={open}
       onClose={onClose}>
-      <Paper className={classes.paper} noPadding>
-        <div className={classes.content}>
-          <Typography className={classes.header} variant='h4'>{header}</Typography>
-          {children}
-          <Button
-            className={classes.button}
-            color='primary'
-            onClick={onClose}
-            align='center'>{closeText}</Button>
-        </div>
-      </Paper>
+      <>
+        <Paper className={classNames(classes.paper, className)} noPadding>
+          <div className={classes.content}>
+            {header && <Typography className={classes.header} variant='h4'>{header}</Typography>}
+            {children}
+            <Button
+              className={classes.button}
+              color='primary'
+              onClick={onClose}
+              align='center'>{closeText}</Button>
+          </div>
+        </Paper>
+      </>
     </MaterialModal>
   );
 };
@@ -70,14 +73,15 @@ Modal.propTypes = {
   classes: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
   onClose: PropTypes.func.isRequired,
+  className: PropTypes.string,
   open: PropTypes.bool,
-  header: PropTypes.string.isRequired,
+  header: PropTypes.string,
   closeText: PropTypes.string,
 };
 
 Modal.defaultProps = {
   open: false,
-  closeText: 'lukk',
+  closeText: 'Lukk',
 };
 
 export default withStyles(style)(Modal);
