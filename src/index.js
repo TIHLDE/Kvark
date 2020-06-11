@@ -9,6 +9,7 @@ import GA from './analytics';
 import COOKIE from './api/cookie';
 import {THEME, THEME_OPTIONS} from './settings';
 import ThemeStore from './themeStore';
+import {NewsContextProvider} from './context/NewsContext';
 
 // Theme
 import {MuiThemeProvider} from '@material-ui/core/styles';
@@ -133,51 +134,53 @@ const Application = () => {
   };
 
   return (
-    <ThemeStore.Provider value={themeStore}>
-      <Provider store={store}>
-        <BrowserRouter>
-          <MuiThemeProvider theme={theme}>
-            { GA.init() && <GA.RouteTracker /> }
-            <Switch>
-              <Route exact path='/' component={NewLanding} />
-              <Route path={URLS.events.concat(':id/registrering')} component={EventRegistration} />
-              <Route path={URLS.events.concat(':id/')} component={EventDetails} />
-              <Route path={URLS.about} component={About} />
-              <Route path={URLS.contactInfo} component={ContactInfo} />
-              <Route path={URLS.events} component={Events} />
-              <Route path={URLS.services} component={Services} />
-              <Route path={URLS.company} component={Companies} />
-              <Route path={URLS.newStudent} component={NewStudent} />
-              <Route path={URLS.profile} component={Profile} />
-              <Route path={URLS.jobposts.concat(':id/')} component={JobPostDetails} />
-              <Route exact path={URLS.jobposts} component={JobPosts} />
-              <Route path={URLS.laws} component={Laws} />
-              <Route path={URLS.privacyPolicy} component={PrivacyPolicy} />
-              <Route path={URLS.eventRules} component={EventRules} />
-              <Route exact path={URLS.cheatsheet} component={Cheatsheet}/>
-              <Route path={URLS.cheatsheet.concat(':studyId/:classId/')} component={FilesCheatsheet}/>
-              <Route path={URLS.cheatsheet.concat(':studyId/')} component={ClassesCheatsheet}/>
-              <Route path={URLS.news.concat(':id/')} component={NewsDetails}/>
-              <Route path={URLS.news} component={News}/>
+    <NewsContextProvider>
+      <ThemeStore.Provider value={themeStore}>
+        <Provider store={store}>
+          <BrowserRouter>
+            <MuiThemeProvider theme={theme}>
+              { GA.init() && <GA.RouteTracker /> }
+              <Switch>
+                <Route exact path='/' component={NewLanding} />
+                <Route path={URLS.events.concat(':id/registrering')} component={EventRegistration} />
+                <Route path={URLS.events.concat(':id/')} component={EventDetails} />
+                <Route path={URLS.about} component={About} />
+                <Route path={URLS.contactInfo} component={ContactInfo} />
+                <Route path={URLS.events} component={Events} />
+                <Route path={URLS.services} component={Services} />
+                <Route path={URLS.company} component={Companies} />
+                <Route path={URLS.newStudent} component={NewStudent} />
+                <Route path={URLS.profile} component={Profile} />
+                <Route path={URLS.jobposts.concat(':id/')} component={JobPostDetails} />
+                <Route exact path={URLS.jobposts} component={JobPosts} />
+                <Route path={URLS.laws} component={Laws} />
+                <Route path={URLS.privacyPolicy} component={PrivacyPolicy} />
+                <Route path={URLS.eventRules} component={EventRules} />
+                <Route exact path={URLS.cheatsheet} component={Cheatsheet}/>
+                <Route path={URLS.cheatsheet.concat(':studyId/:classId/')} component={FilesCheatsheet}/>
+                <Route path={URLS.cheatsheet.concat(':studyId/')} component={ClassesCheatsheet}/>
+                <Route path={URLS.news.concat(':id/')} component={NewsDetails}/>
+                <Route path={URLS.news} component={News}/>
 
-              <Route exact path={URLS.admin} component={requireAuth(Admin, ['HS', 'Promo', 'Nok', 'Devkom'])} />
-              <Route path={URLS.userAdmin} component={requireAuth(UserAdmin, ['HS', 'Devkom'])} />
-              <Route path={URLS.jobpostsAdmin} component={requireAuth(JobPostAdministration, ['HS', 'Nok', 'Devkom'])} />
-              <Route path={URLS.eventAdmin} component={requireAuth(EventAdministration, ['HS', 'Promo', 'Nok', 'Devkom'])} />
-              <Route path={URLS.newsAdmin} component={requireAuth(NewsAdministration, ['HS', 'Promo', 'Nok', 'Devkom'])} />
+                <Route exact path={URLS.admin} component={requireAuth(Admin, ['HS', 'Promo', 'Nok', 'Devkom'])} />
+                <Route path={URLS.userAdmin} component={requireAuth(UserAdmin, ['HS', 'Devkom'])} />
+                <Route path={URLS.jobpostsAdmin} component={requireAuth(JobPostAdministration, ['HS', 'Nok', 'Devkom'])} />
+                <Route path={URLS.eventAdmin} component={requireAuth(EventAdministration, ['HS', 'Promo', 'Nok', 'Devkom'])} />
+                <Route path={URLS.newsAdmin} component={requireAuth(NewsAdministration, ['HS', 'Promo', 'Nok', 'Devkom'])} />
 
-              <Route path={URLS.login} component={LogIn} />
-              <Route path={URLS.forgotPassword} component={ForgotPassword} />
-              <Route path={URLS.signup} component={SignUp} />
+                <Route path={URLS.login} component={LogIn} />
+                <Route path={URLS.forgotPassword} component={ForgotPassword} />
+                <Route path={URLS.signup} component={SignUp} />
 
-              <Route component={Http404} />
+                <Route component={Http404} />
 
-            </Switch>
-            <MessageGDPR />
-          </MuiThemeProvider>
-        </BrowserRouter>
-      </Provider>
-    </ThemeStore.Provider>
+              </Switch>
+              <MessageGDPR />
+            </MuiThemeProvider>
+          </BrowserRouter>
+        </Provider>
+      </ThemeStore.Provider>
+    </NewsContextProvider>
   );
 };
 

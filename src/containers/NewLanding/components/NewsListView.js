@@ -4,7 +4,7 @@ import URLS from '../../../URLS';
 import moment from 'moment';
 
 // API and store imports
-import NewsService from '../../../api/services/NewsService';
+import {useNews} from '../../../api/hooks/News';
 
 // Material-UI
 import {withStyles} from '@material-ui/core/styles';
@@ -44,33 +44,20 @@ const styles = (theme) => ({
 
 function NewsListView(props) {
   const {classes} = props;
-  const [isLoading, setIsLoading] = useState(false);
-  const [news, setNews] = useState([]);
+  const [news, isLoading] = useNews();
   const [newsToDisplay, setNewsToDisplay] = useState(1);
   const today = new Date();
   today.setDate(today.getDate() - 7);
   const lastWeek = moment(today, ['YYYY-MM-DD HH:mm:ss'], 'nb');
 
-  // Gets the news
-  const loadNews = () => {
-    setIsLoading(true);
-
-    // Fetch news from server
-    NewsService.getNews({}, (isError, loadedNews) => {
-      if (isError === false) {
-        // Calculate how many news to show based on created news last 7 days. Minimum 1 and max 3
-        const freshNews = loadedNews.filter((n) => moment(n.created_at, ['YYYY-MM-DD HH:mm:ss'], 'nb') > lastWeek);
-        setNewsToDisplay(Math.min(Math.max(parseInt(freshNews.length), 1), 3));
-        setNews(loadedNews);
-      }
-      setIsLoading(false);
-    });
-  };
+  useEffect(() => {
+    // Calculate how many news to show based on created news last 7 days. Minimum 1 and max 3
+    const freshNews = news.filter((n) => moment(n.created_at, ['YYYY-MM-DD HH:mm:ss'], 'nb') > lastWeek);
+    setNewsToDisplay(Math.min(Math.max(parseInt(freshNews.length), 1), 3));
+  }, [news, lastWeek]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    loadNews();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   let newsList = <div className={classes.noEventText}><CircularProgress className={classes.progress}/></div>;

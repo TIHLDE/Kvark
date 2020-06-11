@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 
 // API and store imports
-import NewsService from '../../api/services/NewsService';
+import {useNews, useCreateNews, usePutNews, useDeleteNews} from '../../api/hooks/News';
 
 // Material-UI
 import {withStyles} from '@material-ui/core/styles';
@@ -67,76 +67,34 @@ const defaultNewsItem = {
 
 function NewsAdministration(props) {
   const {classes} = props;
-
-  const [isLoading, setIsLoading] = useState(false);
   const [tab, setTab] = useState(0);
-  const [news, setNews] = useState([]);
   const [selectedNewsItem, setSelectedNewsItem] = useState(defaultNewsItem);
+  const [news, isLoading] = useNews();
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [createNews] = useCreateNews(selectedNewsItem, (data) => {
+    setSelectedNewsItem(data);
+    openSnackbar('Nyheten ble opprettet');
+  });
+  const [putNews] = usePutNews(selectedNewsItem.id, selectedNewsItem, (data) => {
+    setSelectedNewsItem(data);
+    openSnackbar('Nyheten ble oppdatert');
+  });
+  const [deleteNews] = useDeleteNews(selectedNewsItem.id, () => {
+    setSelectedNewsItem(defaultNewsItem);
+    openSnackbar('Nyheten ble slettet');
+  });
 
-  // Gets the news
-  const loadNews = () => {
-    setIsLoading(true);
+  const saveNewsItem = () => selectedNewsItem.id ? putNews() : createNews();
 
-    // Fetch news from server
-    NewsService.getNews({}, (isError, loadedNews) => {
-      if (isError === false) {
-        setNews(loadedNews);
-      }
-      setIsLoading(false);
-    });
-  };
-
-  const saveNewsItem = () => {
-    if (selectedNewsItem.id) {
-      NewsService.putNews(selectedNewsItem.id, selectedNewsItem)
-          .then((data) => {
-            setNews((news) => news.map((newsItem) => {
-              let returnValue = {...newsItem};
-              if (newsItem.id === data.id) {
-                returnValue = data;
-              }
-              return returnValue;
-            }));
-            openSnackbar('Nyheten ble oppdatert');
-          })
-          .catch((e) => openSnackbar(JSON.stringify(e)));
-    } else {
-      NewsService.createNewNews(selectedNewsItem)
-          .then((data) => {
-            setNews((news) => [...news, data]);
-            setSelectedNewsItem(data);
-            openSnackbar('Nyheten ble opprettet');
-          })
-          .catch((e) => openSnackbar(JSON.stringify(e)));
-    }
-  };
-
-  const deleteNewsItem = () => {
-    if (selectedNewsItem.id) {
-      NewsService.deleteNews(selectedNewsItem.id)
-          .then((data) => {
-            setNews((news) => news.filter((newsItem) => newsItem.id !== selectedNewsItem.id));
-            setSelectedNewsItem(defaultNewsItem);
-            openSnackbar('Nyheten ble slettet');
-          })
-          .catch((e) => openSnackbar(JSON.stringify(e)));
-    } else {
-      openSnackbar('Du kan ikke slette en nyhet som ikke er opprettet');
-    }
-  };
+  const deleteNewsItem = () => selectedNewsItem.id ? deleteNews() : openSnackbar('Du kan ikke slette en nyhet som ikke er opprettet');
 
   const openSnackbar = (message) => {
     setSnackbarMessage(message);
     setShowSnackbar(true);
   };
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    loadNews();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useEffect(() => window.scrollTo(0, 0), []);
 
   const options = [{text: 'Lagre', func: () => saveNewsItem()}, {text: 'Slett', func: () => deleteNewsItem()}];
 
