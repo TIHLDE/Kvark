@@ -158,12 +158,11 @@ const Wave = (props) => {
         <Typography variant='h6' align='center' className={classes.topSmallText}>Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Drift av datasystemer og Digital samhandling ved NTNU</Typography>
         {AuthService.isAuthenticated() ?
           <div className={classes.topButtonContainer}>
-            <Link to={URLS.profile} className={classes.topLink}><Button className={classes.topButton} variant='contained' color='inherit'>Min side</Button></Link>
-            {/* <Link to={URLS.login} className={classes.topButtonSecondary} variant='contained' color='inherit'>Opprett bruker ></Link> */}
+            <Button component={Link} to={URLS.profile} className={classes.topButton} variant='contained' color='inherit'>Min side</Button>
           </div> :
           <div className={classes.topButtonContainer}>
-            <Link to={URLS.login} className={classes.topLink}><Button className={classes.topButton} variant='contained' color='inherit'>Logg inn</Button></Link>
-            <Link to={URLS.signup} className={classes.topButtonSecondary} variant='contained' color='inherit'>Opprett bruker &gt;</Link>
+            <Button component={Link} to={URLS.login} className={classes.topButton} variant='contained' color='inherit'>Logg inn</Button>
+            <Button component={Link} to={URLS.signup} className={classes.topButtonSecondary} color='inherit'>Opprett bruker</Button>
           </div>
         }
       </div>

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import parser from 'html-react-parser';
 
@@ -26,16 +26,12 @@ const styles = (theme) => ({
     alignItems: 'stretch',
     paddingBottom: 80,
   },
-  banner: {
-    marginTop: 20,
-  },
   content: {
     display: 'grid',
     gridTemplateColumns: '1fr',
     gridAutoFlow: 'row',
     gridGap: '15px',
     margin: '20px auto',
-
     '@media only screen and (max-width: 700px)': {
       gridTemplateColumns: '1fr',
     },
@@ -52,49 +48,38 @@ const styles = (theme) => ({
   image: {
     width: 900,
     height: 500,
-
   },
 });
 
-class NewStudent extends Component {
+function NewStudent(props) {
+  const {classes} = props;
 
-  componentDidMount() {
-    window.scrollTo(0, 0);
-  }
+  useEffect(() => window.scrollTo(0, 0), []);
 
-  render() {
-    const {classes} = this.props;
-    return (
-      <Navigation footer whitesmoke fancyNavbar>
-        <Banner
-          title={Text.banner.header}
-          text={Text.banner.subHeader}
-        />
-
-        <div className={classes.root}>
-
-          <div className={classes.content}>
-
-            <InfoCard header={Text.fadder.headline} text={Text.fadder.text} imageClass={classes.image} src={TihldeImg} classes={{children: classes.flex}} justifyText>
-              <Button className={classes.bottomSpacing} variant='contained' color='primary' href='https://drive.google.com/file/d/1iHSVglQSDBH-qIxRv3w8OnC8vDR7NQTd/view?usp=sharing'> Trykk her for info om fadderuka </Button>
-            </InfoCard>
-
-            <InfoCard className={classes.infocard} header={Text.faq.header}>
-              {
-                Object.values(Text.faq.content).map((value, index) => (
-                  <div key={index} >
-                    <Expansion header={value['header']} text={value['text']} flat />
-                    <Divider />
-                  </div>
-                ))
-              }
-              <div className={classes.bottomContent}>{parser(Text.faq.subheader)}</div>
-            </InfoCard>
-          </div>
+  return (
+    <Navigation footer whitesmoke fancyNavbar>
+      <Banner
+        title={Text.banner.header}
+        text={Text.banner.subHeader}
+      />
+      <div className={classes.root}>
+        <div className={classes.content}>
+          <InfoCard header={Text.fadder.headline} text={Text.fadder.text} imageClass={classes.image} src={TihldeImg} classes={{children: classes.flex}} justifyText>
+            <Button className={classes.bottomSpacing} variant='contained' color='primary' href='https://drive.google.com/file/d/1iHSVglQSDBH-qIxRv3w8OnC8vDR7NQTd/view?usp=sharing'> Trykk her for info om fadderuka </Button>
+          </InfoCard>
+          <InfoCard className={classes.infocard} header={Text.faq.header}>
+            {Object.values(Text.faq.content).map((value, index) => (
+              <div key={index} >
+                <Expansion header={value['header']} text={value['text']} flat />
+                <Divider />
+              </div>
+            ))}
+            <div className={classes.bottomContent}>{parser(Text.faq.subheader)}</div>
+          </InfoCard>
         </div>
-      </Navigation>
-    );
-  }
+      </div>
+    </Navigation>
+  );
 }
 
 NewStudent.propTypes = {

@@ -1,22 +1,23 @@
 /* eslint-disable no-unused-vars */
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 
 // Material UI Components
 
+// Icons/Images
+
 // Project Components
 
 const styles = {};
 
-class Template extends Component {
+function Template(props) {
+  const {classes} = props;
+  const [variable, setVariable] = useState(null);
 
-  render() {
-    const {classes} = this.props;
-    return (
-      null
-    );
-  }
+  return (
+    null
+  );
 }
 
 Template.propTypes = {

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 
@@ -15,8 +15,6 @@ import WaitingIcon from '@material-ui/icons/PlaylistAdd';
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 import Paper from '../../components/layout/Paper';
-
-// Components
 import Members from './tabs/Members';
 
 const styles = (theme) => ({
@@ -62,44 +60,28 @@ const styles = (theme) => ({
   },
 });
 
-class UserAdmin extends Component {
+function UserAdmin(props) {
+  const {classes} = props;
+  const [tab, setTab] = useState(0);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      tabViewMode: 0,
-    };
-    this.handleChange = this.handleChange.bind(this);
-  }
+  useEffect(() => window.scrollTo(0, 0), []);
 
-  componentDidMount() {
-    window.scrollTo(0, 0);
-  }
-
-  handleChange(event, newValue) {
-    this.setState({tabViewMode: newValue});
-  }
-
-  render() {
-    const {classes} = this.props;
-
-    return (
-      <Navigation whitesmoke fancyNavbar>
-        <div className={classes.top}></div>
-        <Paper className={classes.content}>
-          <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
-            <Typography className={classes.header} variant='h4'>Brukeradmin</Typography>
-            <Tabs variant="fullWidth" scrollButtons="on" centered className={classes.tabs} value={this.state.tabViewMode} onChange={this.handleChange}>
-              <Tab id='0' icon={<MembersIcon />} label='Medlemmer' />
-              <Tab id='1' icon={<WaitingIcon />} label='Ventende' />
-            </Tabs>
-            {this.state.tabViewMode === 0 && <Members isMember/>}
-            {this.state.tabViewMode === 1 && <Members/>}
-          </Grid>
-        </Paper>
-      </Navigation>
-    );
-  }
+  return (
+    <Navigation whitesmoke fancyNavbar>
+      <div className={classes.top}></div>
+      <Paper className={classes.content}>
+        <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
+          <Typography className={classes.header} variant='h4'>Brukeradmin</Typography>
+          <Tabs variant="fullWidth" scrollButtons="on" centered className={classes.tabs} value={tab} onChange={(e, newTab) => setTab(newTab)}>
+            <Tab id='0' icon={<MembersIcon />} label='Medlemmer' />
+            <Tab id='1' icon={<WaitingIcon />} label='Ventende' />
+          </Tabs>
+          {tab === 0 && <Members isMember />}
+          {tab === 1 && <Members />}
+        </Grid>
+      </Paper>
+    </Navigation>
+  );
 }
 
 UserAdmin.propTypes = {

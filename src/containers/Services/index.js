@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 
@@ -50,40 +50,32 @@ const styles = {
   },
 };
 
-class Services extends Component {
+function Services(props) {
+  const {classes} = props;
 
-  componentDidMount() {
-    window.scrollTo(0, 0); // Scrolls to the top
-  }
+  useEffect(() => window.scrollTo(0, 0), []);
 
-  render() {
-    const {classes} = this.props;
-    return (
-      <Navigation footer whitesmoke fancyNavbar>
-        <Banner title={Text.header} text={Text.colargol} />
-        <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
-          <div className={classes.grid}>
-            <InfoCard header='E-post' text={Text.email} src={EmailIcon} classes={{children: classes.flex}} justifyText>
-              <Button className={classes.bottomSpacing} variant='contained' color='primary' href='https://webmail.tihlde.org/'>Gå til webmail</Button>
-              {/*  <Button className={classes.bottomSpacing} variant='outlined' color='secondary'>Les mer</Button> */}
-            </InfoCard>
-            <InfoCard header='Hosting' text={Text.hosting} src={HostingIcon} classes={{children: classes.flex}} justifyText>
-              <Button className={classes.bottomSpacing} variant='contained' color='primary' href='https://wiki.tihlde.org/landing/fantorangen'>Bestill domene</Button>
-              {/*  <Button className={classes.bottomSpacing} variant='outlined' color='secondary'>Les mer</Button> */}
-            </InfoCard>
-            <InfoCard header='Virtuelle Maskiner' text={Text.virtual} src={VirtualIcon} classes={{children: classes.flex}} justifyText>
-              <Button className={classes.bottomSpacing} variant='contained' color='primary' href='https://wiki.tihlde.org/landing/fantorangen'>Bestill tjenesten</Button>
-              {/* <Button className={classes.bottomSpacing} variant='outlined' color='secondary'>Les mer</Button> */}
-            </InfoCard>
-            <InfoCard header='Database' text={Text.database} src={DatabaseIcon} classes={{children: classes.flex}} justifyText>
-              <Button className={classes.bottomSpacing} variant='contained' color='primary' href='https://wiki.tihlde.org/landing/fantorangen'>Bestill mer plass</Button>
-              {/* <Button className={classes.bottomSpacing} variant='outlined' color='secondary'>Les mer</Button> */}
-            </InfoCard>
-          </div>
-        </Grid>
-      </Navigation>
-    );
-  }
+  return (
+    <Navigation footer whitesmoke fancyNavbar>
+      <Banner title={Text.header} text={Text.colargol} />
+      <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
+        <div className={classes.grid}>
+          <InfoCard header='E-post' text={Text.email} src={EmailIcon} classes={{children: classes.flex}} justifyText>
+            <Button className={classes.bottomSpacing} variant='contained' color='primary' href='https://webmail.tihlde.org/'>Gå til webmail</Button>
+          </InfoCard>
+          <InfoCard header='Hosting' text={Text.hosting} src={HostingIcon} classes={{children: classes.flex}} justifyText>
+            <Button className={classes.bottomSpacing} variant='contained' color='primary' href='https://wiki.tihlde.org/landing/fantorangen'>Bestill domene</Button>
+          </InfoCard>
+          <InfoCard header='Virtuelle Maskiner' text={Text.virtual} src={VirtualIcon} classes={{children: classes.flex}} justifyText>
+            <Button className={classes.bottomSpacing} variant='contained' color='primary' href='https://wiki.tihlde.org/landing/fantorangen'>Bestill tjenesten</Button>
+          </InfoCard>
+          <InfoCard header='Database' text={Text.database} src={DatabaseIcon} classes={{children: classes.flex}} justifyText>
+            <Button className={classes.bottomSpacing} variant='contained' color='primary' href='https://wiki.tihlde.org/landing/fantorangen'>Bestill mer plass</Button>
+          </InfoCard>
+        </div>
+      </Grid>
+    </Navigation>
+  );
 }
 
 Services.propTypes = {

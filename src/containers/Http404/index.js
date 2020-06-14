@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
@@ -38,32 +38,28 @@ const styles = (theme) => ({
   },
 });
 
-class Http404 extends Component {
+function Http404(props) {
+  const {classes} = props;
 
-  componentDidMount() {
-    window.scrollTo(0, 0);
-  }
+  useEffect(() => window.scrollTo(0, 0), []);
 
-  render() {
-    const {classes} = this.props;
-    return (
-      <Navigation footer whitesmoke className={classes.root}>
-        <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
-          <div className={classes.center}>
-            {AuthService.isAuthenticated() ?
-              <img src={http404ropeImg} alt="404" className={classes.img} /> :
-              <img src={http404img} alt="404" className={classNames(classes.img, classes.imgPadding)} />
-            }
-          </div>
-          <div className={classes.center}>
-            <h3>Denne siden finnes ikke :(</h3>
-            <Button variant='contained' color='primary' onClick={() => window.history.back()}>Tilbake</Button>
-            <p className={classes.textContainer}>Send oss gjerne en <a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/forms/d/e/1FAIpQLSfp8ZUm-GfzMla0Hg4AeX0iO8HME8ez7TttY2MgUfpC8MzBIQ/viewform">tilbakemelding</a> om du fulgte en gyldig lenke hit</p>
-          </div>
-        </Grid>
-      </Navigation>
-    );
-  }
+  return (
+    <Navigation footer whitesmoke className={classes.root}>
+      <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
+        <div className={classes.center}>
+          {AuthService.isAuthenticated() ?
+            <img src={http404ropeImg} alt="404" className={classes.img} /> :
+            <img src={http404img} alt="404" className={classNames(classes.img, classes.imgPadding)} />
+          }
+        </div>
+        <div className={classes.center}>
+          <h3>Denne siden finnes ikke :(</h3>
+          <Button variant='contained' color='primary' onClick={() => window.history.back()}>Tilbake</Button>
+          <p className={classes.textContainer}>Send oss gjerne en <a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/forms/d/e/1FAIpQLSfp8ZUm-GfzMla0Hg4AeX0iO8HME8ez7TttY2MgUfpC8MzBIQ/viewform">tilbakemelding</a> om du fulgte en gyldig lenke hit</p>
+        </div>
+      </Grid>
+    </Navigation>
+  );
 }
 
 Http404.propTypes = {

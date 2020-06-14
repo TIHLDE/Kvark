@@ -1,38 +1,26 @@
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
 import {Route} from 'react-router-dom';
 
-class GoogleAnalytics extends Component {
-  componentDidMount() {
-    this.logPageChange(
-        this.props.location.pathname,
-    );
-  }
+function GoogleAnalytics(props) {
+  const {location} = props;
 
-  componentDidUpdate({location: prevLocation}) {
-    const {location: {pathname}} = this.props;
-    const isDifferentPathname = pathname !== prevLocation.pathname;
+  useEffect(() => {
+    logPageChange(location.pathname);
+  }, [location]);
 
-    if (isDifferentPathname) {
-      this.logPageChange(pathname);
-    }
-  }
-
-  logPageChange(pathname) {
+  const logPageChange = (pathname) => {
     const page = pathname;
     const {location} = window;
     ReactGA.set({
       page,
       location: `${location.origin}${page}`,
-      ...this.props.options,
     });
     ReactGA.pageview(page);
-  }
+  };
 
-  render() {
-    return null;
-  }
+  return null;
 }
 
 GoogleAnalytics.propTypes = {

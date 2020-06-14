@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
@@ -56,51 +56,50 @@ import MessageGDPR from './components/miscellaneous/MessageGDPR';
 
 // The user needs to be authorized (logged in and member of an authorized group) to access these routes
 const requireAuth = (OriginalComponent, accessGroups) => {
-  class App extends Component {
+  function App(props) {
+    const {match} = props;
+    const isAuthenticated = AuthService.isAuthenticated();
+    const [isLoading, setIsLoading] = useState(true);
+    const [allowAccess, setAllowAccess] = useState(false);
 
-    state = {
-      isAuthenticated: AuthService.isAuthenticated(),
-      isLoading: true,
-      allowAccess: false,
-    }
-
-    componentDidMount() {
-      UserService.isGroupMember().then((groups) => {
-        accessGroups.forEach((group) => {
-          switch (group.toLowerCase()) {
-            case 'hs': if (groups.isHS) {
-              this.setState({allowAccess: true});
-            } break;
-            case 'promo': if (groups.isPromo) {
-              this.setState({allowAccess: true});
-            } break;
-            case 'nok': if (groups.isNok) {
-              this.setState({allowAccess: true});
-            } break;
-            case 'devkom': if (groups.isDevkom) {
-              this.setState({allowAccess: true});
-            } break;
-            default: break;
-          }
-        });
-      }).finally(() => {
-        this.setState({isLoading: false});
+    useEffect(() => {
+      let isSubscribed = true;
+      UserService.getUserData().then((user) => {
+        if (isSubscribed) {
+          accessGroups.forEach((group) => {
+            switch (group.toLowerCase()) {
+              case 'hs': if (user?.groups.includes('HS')) {
+                setAllowAccess(true);
+              } break;
+              case 'promo': if (user?.groups.includes('Promo')) {
+                setAllowAccess(true);
+              } break;
+              case 'nok': if (user?.groups.includes('NoK')) {
+                setAllowAccess(true);
+              } break;
+              case 'devkom': if (user?.groups.includes('DevKom')) {
+                setAllowAccess(true);
+              } break;
+              default: break;
+            }
+          });
+          setIsLoading(false);
+        }
       });
+      return () => isSubscribed = false;
+    }, []);
+
+    if (isLoading) {
+      return <div>Autentiserer...</div>;
     }
-    render() {
-      const {isAuthenticated, isLoading, allowAccess} = this.state;
-      if (isLoading) {
-        return <div>Autentiserer...</div>;
-      }
-      if (!isAuthenticated) {
-        MiscService.setLogInRedirectURL(this.props.match.path);
-        return <Redirect to={URLS.login} />;
-      }
-      if (allowAccess) {
-        return <OriginalComponent {...this.props} />;
-      } else {
-        return <Redirect to={URLS.landing} />;
-      }
+    if (!isAuthenticated) {
+      MiscService.setLogInRedirectURL(match.path);
+      return <Redirect to={URLS.login} />;
+    }
+    if (allowAccess) {
+      return <OriginalComponent {...props} />;
+    } else {
+      return <Redirect to={URLS.landing} />;
     }
   }
 
@@ -173,7 +172,6 @@ const Application = () => {
                 <Route path={URLS.signup} component={SignUp} />
 
                 <Route component={Http404} />
-
               </Switch>
               <MessageGDPR />
             </MuiThemeProvider>

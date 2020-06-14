@@ -3,6 +3,8 @@ import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import classNames from 'classnames';
+import URLS from '../../../URLS';
+import {Link} from 'react-router-dom';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
@@ -113,7 +115,7 @@ const JobPostItem = (props) => {
   const src = (data.image) ? data.image : TIHLDELOGO;
   const start = moment(data.deadline, ['YYYY-MM-DD HH:mm'], 'nb');
   return (
-    <ListItem className={classes.root} button onClick={props.onClick}>
+    <ListItem button className={classes.root} component={Link} to={URLS.jobposts + ''.concat(data.id, '/')}>
       <img className={classNames(classes.src, (data.expired) ? classes.filter : '')} src={src} alt={data.title} />
       <Grid className={classes.content} container direction='column' wrap='nowrap'>
         <Typography className={classNames(classes.title, (data.expired) ? classes.expired : '')} variant='h6' gutterBottom>
@@ -129,9 +131,7 @@ const JobPostItem = (props) => {
 
 JobPostItem.propTypes = {
   classes: PropTypes.object,
-
   data: PropTypes.object,
-  onClick: PropTypes.func,
 };
 
 export default withStyles(styles)(JobPostItem);

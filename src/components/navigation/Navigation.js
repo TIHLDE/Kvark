@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import {Link, withRouter} from 'react-router-dom';
@@ -134,9 +134,6 @@ const styles = (theme) => ({
   selected: {
     borderBottom: '2px solid ' + theme.colors.header.text,
   },
-  uri: {
-    display: 'inline',
-  },
   sponsorWrapper: {
     verticalAlign: 'top',
     display: 'inline-block',
@@ -165,12 +162,6 @@ const styles = (theme) => ({
     '@media only screen and (max-width: 350px)': {
       fontSize: '7px',
     },
-  },
-  profileLink: {
-    '& button': {
-      padding: '0',
-    },
-    textDecoration: 'none',
   },
   profileContainer: {
     display: 'flex',
@@ -212,13 +203,9 @@ const URIbutton = withStyles(styles)((props) => {
   const {data, classes} = props;
   return (
     <div className={classNames(props.selected ? classes.selected : '', props.uri)}>
-      <Link to={data.link} onClick={data.link === window.location.pathname ? () => window.location.reload() : null} style={{textDecoration: 'none'}}>
-        <Button color="inherit" style={{
-          color: 'white',
-        }}>
-          {data.text}
-        </Button>
-      </Link>
+      <Button component={Link} to={data.link} color="inherit" style={{color: 'white'}} onClick={data.link === window.location.pathname ? () => window.location.reload() : null}>
+        {data.text}
+      </Button>
     </div>
   );
 });
@@ -236,181 +223,134 @@ const SponsorLogo = withStyles(styles)((props) => {
 const PersonIcon = withStyles(styles)((props) => {
   const {user, link, classes} = props;
   return (
-    <Link to={link} className={classes.profileLink} onClick={link === window.location.pathname ? () => window.location.reload() : null}>
-      <Button>
-        <div className={classes.profileContainer}>
-          <div className={classes.profileName}>{ user.first_name !== undefined ? user.first_name : <Skeleton className={classes.skeleton} variant="text" width={75} /> }</div>
-          <Avatar className={classes.avatar}>{ user.first_name !== undefined ? String((user.first_name).substring(0, 1)) + (user.last_name).substring(0, 1) : <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant="text" /> }</Avatar>
-        </div>
-      </Button>
-    </Link>
+    <Button component={Link} to={link} onClick={link === window.location.pathname ? () => window.location.reload() : null}>
+      <div className={classes.profileContainer}>
+        <div className={classes.profileName}>{user.first_name !== undefined ? user.first_name : <Skeleton className={classes.skeleton} variant="text" width={75} />}</div>
+        <Avatar className={classes.avatar}>{user.first_name !== undefined ? String((user.first_name).substring(0, 1)) + (user.last_name).substring(0, 1) : <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant="text" />}</Avatar>
+      </div>
+    </Button>
   );
 });
 
-class Navigation extends Component {
+function Navigation(props) {
+  const {classes, fancyNavbar, whitesmoke, isLoading, footer, children, snackHasDisplayed, setHasSnackDisplayed, match} = props;
+  const [showSidebar, setShowSidebar] = useState(false);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackMessage, setSnackMessage] = useState(null);
+  const [snackWarningId, setSnackWarningId] = useState(null);
+  const [userData, setUserData] = useState(0);
+  const [snackType, setSnackType] = useState({});
+  const [scrollLength, setScrollLength] = useState(0);
 
-  constructor() {
-    super();
-    this.state = {
-      showSidebar: false,
-
-      showSnackbar: false,
-      snackMessage: null,
-      snackWarningId: null,
-      snackType: 0,
-
-      userData: {},
-
-      scrollLength: 0,
-    };
-  }
-
-    loadUserData = () => {
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, {passive: true});
+    if (AuthService.isAuthenticated()) {
       UserService.getUserData().then((user) => {
         if (user) {
-          this.setState({userData: user});
+          setUserData(user);
         }
       });
     }
-
-    componentDidMount() {
-      window.addEventListener('scroll', this.handleScroll, {passive: true});
-      this.handleScroll();
-      this.configureWarningMessage();
-      if (AuthService.isAuthenticated()) {
-        this.loadUserData();
-      }
-    }
-
-    componentWillUnmount() {
-      window.removeEventListener('scroll', this.handleScroll);
-    }
-
-    handleScroll = () => {
-      const position = window.pageYOffset;
-      this.setState({scrollLength: position});
-    }
-
-    configureWarningMessage = () => {
-      if (this.props.snackHasDisplayed) {
-        return;
-      }
-
-      MiscService.getWarning((isError, data) => {
-        let warningsRead = COOKIE.get(WARNINGS_READ);
-        if (warningsRead === undefined) warningsRead = [];
-        if (isError === false && data && data.length > 0 && !warningsRead.includes(data[data.length - 1].id)) {
-          this.setState({
-            snackMessage: data[data.length - 1].text,
-            showSnackbar: true,
-            snackWarningId: data[data.length - 1].id,
-            snackType: data[data.length - 1].type,
-          });
-        }
-      });
-    }
-
-    closeSnackbar = () => {
-      this.setState({showSnackbar: false});
-      this.props.setHasSnackDisplayed(true);
+    if (snackHasDisplayed) return;
+    MiscService.getWarning((isError, data) => {
       let warningsRead = COOKIE.get(WARNINGS_READ);
       if (warningsRead === undefined) warningsRead = [];
-      warningsRead.push(this.state.snackWarningId);
-      COOKIE.set(WARNINGS_READ, warningsRead);
-    }
+      if (isError === false && data && data.length > 0 && !warningsRead.includes(data[data.length - 1].id)) {
+        setSnackMessage(data[data.length - 1].text);
+        setShowSnackbar(true);
+        setSnackWarningId(data[data.length - 1].id);
+        setSnackType(data[data.length - 1].type);
+      }
+    });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [snackHasDisplayed]);
 
-    toggleSidebar = () => {
-      this.setState({showSidebar: !this.state.showSidebar});
-    };
+  const handleScroll = () => {
+    setScrollLength(window.pageYOffset);
+  };
 
-    goTo = (page) => {
-      this.props.history.push(page);
-    }
+  const closeSnackbar = () => {
+    setShowSidebar(false);
+    setHasSnackDisplayed(true);
+    let warningsRead = COOKIE.get(WARNINGS_READ);
+    if (warningsRead === undefined) warningsRead = [];
+    warningsRead.push(snackWarningId);
+    COOKIE.set(WARNINGS_READ, warningsRead);
+  };
 
-    logOut = () => {
-      AuthService.logOut();
-    }
+  const toggleSidebar = () => {
+    setShowSidebar(!showSidebar);
+  };
 
-    render() {
-      const {classes} = this.props;
-      return (
-        <Fragment>
-          <AppBar elevation={(this.props.fancyNavbar && this.state.scrollLength < 20 ? 0 : 1)} className={classNames(classes.root, (this.props.fancyNavbar && this.state.scrollLength < 20 && classes.rootLanding))} position="fixed" color="primary">
-            <Toolbar className={classes.navContent} disableGutters>
-              <div className={classes.navWrapper}>
-                <div className={classes.logoWrapper}>
-                  <Link className={classes.flex} to='/'>
-                    <img src={TIHLDELOGO} height='32em' alt='TIHLDE_LOGO' width='auto' />
-                  </Link>
-                </div>
-
-                <div className={classes.grow}>
-                  <Hidden smDown implementation='css'>
-                    <div className={classes.flex}>
-                      <URIbutton data={{link: URLS.about, text: 'Om TIHLDE'}} selected={this.props.match.url === URLS.about} />
-                      <URIbutton data={{link: URLS.newStudent, text: 'Ny student'}} selected={this.props.match.url === URLS.newStudent} />
-                      {/* AuthService.isAuthenticated() &&
-                        <URIbutton data={{ link: URLS.cheatsheet, text: "Kokebok" }} selected={this.props.match.url === URLS.cheatsheet} />*/}
-                      <URIbutton data={{link: URLS.events, text: 'Arrangementer'}} selected={this.props.match.url === URLS.events} />
-                      <URIbutton data={{link: URLS.jobposts, text: 'Karriere'}} selected={this.props.match.url === URLS.jobposts} />
-                      <URIbutton data={{link: URLS.company, text: 'For Bedrifter'}} selected={this.props.match.url === URLS.company} />
-                    </div>
-                  </Hidden>
-                </div>
-                <div>
-                  {!AuthService.isAuthenticated() &&
-                    <SponsorLogo />
-                  }
-                </div>
-                <div>
-                  {AuthService.isAuthenticated() ?
-                    <PersonIcon user={this.state.userData} link={URLS.profile} /> :
-                    <Hidden smDown implementation='css'>
-                      <IconButton className={classes.menuButton} onClick={() => this.goTo(URLS.login)}><PersonOutlineIcon /></IconButton>
-                    </Hidden>
-                  }
-                </div>
-
-                <Hidden mdUp implementation='css'>
-                  <div className={classes.menuWrapper}>
-                    <IconButton className={classes.menuButton} onClick={this.toggleSidebar}><MenuIcon /></IconButton>
-                  </div>
-                </Hidden>
-
-                <Hidden xsDown implementation='css'>
-                  <Drawer
-                    anchor='top'
-                    open={this.state.showSidebar}
-                    onClose={this.toggleSidebar}
-                    classes={{
-                      paper: classes.sidebar,
-                    }}
-                  >
-                    <Sidebar onClose={this.toggleSidebar} />
-                  </Drawer>
-                </Hidden>
-
-              </div>
-            </Toolbar>
-          </AppBar>
-          <Snack
-            className={classNames(classes.snack, classes.flex, this.state.snackType === 2 ? classes.snackMessage : classes.snackWarning)}
-            open={this.state.showSnackbar}
-            message={this.state.snackMessage}
-            onClose={this.closeSnackbar} />
-
-          <main className={classNames((this.props.fancyNavbar ? classes.mainLanding : classes.main), (this.props.whitesmoke ? classes.whitesmoke : classes.light))}>
-            {(this.props.isLoading) ? <LinearProgress /> : null}
-            <div className={classes.wrapper}>
-              {this.props.children}
+  return (
+    <>
+      <AppBar elevation={(fancyNavbar && scrollLength < 20 ? 0 : 1)} className={classNames(classes.root, (fancyNavbar && scrollLength < 20 && classes.rootLanding))} position="fixed" color="primary">
+        <Toolbar className={classes.navContent} disableGutters>
+          <div className={classes.navWrapper}>
+            <div className={classes.logoWrapper}>
+              <Link className={classes.flex} to='/'>
+                <img src={TIHLDELOGO} height='32em' alt='TIHLDE_LOGO' width='auto' />
+              </Link>
             </div>
-          </main>
-          {this.props.footer && !this.props.isLoading &&
-                    <Footer />
-          }
-        </Fragment>
-      );
-    }
+
+            <div className={classes.grow}>
+              <Hidden smDown implementation='css'>
+                <div className={classes.flex}>
+                  <URIbutton data={{link: URLS.about, text: 'Om TIHLDE'}} selected={match.url === URLS.about} />
+                  <URIbutton data={{link: URLS.newStudent, text: 'Ny student'}} selected={match.url === URLS.newStudent} />
+                  {/* AuthService.isAuthenticated() && <URIbutton data={{ link: URLS.cheatsheet, text: "Kokebok" }} selected={match.url === URLS.cheatsheet} />*/}
+                  <URIbutton data={{link: URLS.events, text: 'Arrangementer'}} selected={match.url === URLS.events} />
+                  <URIbutton data={{link: URLS.jobposts, text: 'Karriere'}} selected={match.url === URLS.jobposts} />
+                  <URIbutton data={{link: URLS.company, text: 'For Bedrifter'}} selected={match.url === URLS.company} />
+                </div>
+              </Hidden>
+            </div>
+            <div>
+              {!AuthService.isAuthenticated() &&
+                <SponsorLogo />
+              }
+            </div>
+            <div>
+              {AuthService.isAuthenticated() ?
+                <PersonIcon user={userData} link={URLS.profile} /> :
+                <Hidden smDown implementation='css'>
+                  <IconButton className={classes.menuButton} component={Link} to={URLS.login}><PersonOutlineIcon /></IconButton>
+                </Hidden>
+              }
+            </div>
+            <Hidden mdUp implementation='css'>
+              <div className={classes.menuWrapper}>
+                <IconButton className={classes.menuButton} onClick={toggleSidebar}><MenuIcon /></IconButton>
+              </div>
+            </Hidden>
+            <Hidden xsDown implementation='css'>
+              <Drawer
+                anchor='top'
+                open={showSidebar}
+                onClose={toggleSidebar}
+                classes={{paper: classes.sidebar}}>
+                <Sidebar onClose={toggleSidebar} />
+              </Drawer>
+            </Hidden>
+          </div>
+        </Toolbar>
+      </AppBar>
+      <Snack
+        className={classNames(classes.snack, classes.flex, snackType === 2 ? classes.snackMessage : classes.snackWarning)}
+        open={showSnackbar}
+        message={snackMessage}
+        onClose={closeSnackbar} />
+      <main className={classNames((fancyNavbar ? classes.mainLanding : classes.main), (whitesmoke ? classes.whitesmoke : classes.light))}>
+        {(isLoading) ? <LinearProgress /> : null}
+        <div className={classes.wrapper}>
+          {children}
+        </div>
+      </main>
+      {footer && !isLoading &&
+        <Footer />
+      }
+    </>
+  );
 }
 
 Navigation.propTypes = {
@@ -420,7 +360,6 @@ Navigation.propTypes = {
   footer: PropTypes.bool,
   whitesmoke: PropTypes.bool,
   fancyNavbar: PropTypes.bool,
-  history: PropTypes.object,
   match: PropTypes.object,
   snackHasDisplayed: PropTypes.bool,
   setHasSnackDisplayed: PropTypes.func,

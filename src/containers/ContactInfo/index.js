@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 
@@ -67,38 +67,33 @@ const styles = (theme) => ({
   },
 });
 
-class ContactInfo extends Component {
+function ContactInfo(props) {
+  const {classes} = props;
 
-  componentDidMount() {
-    window.scrollTo(0, 0);
-  }
+  useEffect(() => window.scrollTo(0, 0), []);
 
-  render() {
-    const {classes} = this.props;
-    return (
-      <Navigation footer whitesmoke fancyNavbar>
-        <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
-          <Banner title={Text.header} />
+  return (
+    <Navigation footer whitesmoke fancyNavbar>
+      <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
+        <Banner title={Text.header} />
 
-          <div className={classes.section}>
-            <div className={classes.socialgrid}>
-              <Button className={classes.button} color='inherit' variant='contained' href='mailto:hs@tihlde.org'>E-post</Button>
-              <Button className={classes.button} color='inherit' variant='contained' target='_blank' href='https://www.facebook.com/messages/t/tihlde'>Messenger</Button>
-              <Button className={classes.button} color='inherit' variant='contained' target='_blank' href='https://tihlde.slack.com/'>Slack</Button>
-            </div>
+        <div className={classes.section}>
+          <div className={classes.socialgrid}>
+            <Button className={classes.button} color='inherit' variant='contained' href='mailto:hs@tihlde.org'>E-post</Button>
+            <Button className={classes.button} color='inherit' variant='contained' target='_blank' href='https://www.facebook.com/messages/t/tihlde'>Messenger</Button>
+            <Button className={classes.button} color='inherit' variant='contained' target='_blank' href='https://tihlde.slack.com/'>Slack</Button>
           </div>
+        </div>
 
-          <div className={classes.section}>
-            <div className={classes.grid}>
-              <InfoCard header='Besøksadresse' text={Text.visit} />
-              <InfoCard header='Post- og faktureringsadresse' text={Text.invoice} />
-            </div>
+        <div className={classes.section}>
+          <div className={classes.grid}>
+            <InfoCard header='Besøksadresse' text={Text.visit} />
+            <InfoCard header='Post- og faktureringsadresse' text={Text.invoice} />
           </div>
-        </Grid>
-      </Navigation>
-    );
-  }
-
+        </div>
+      </Grid>
+    </Navigation>
+  );
 }
 
 ContactInfo.propTypes = {

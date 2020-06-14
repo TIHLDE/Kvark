@@ -1,7 +1,6 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import URLS from '../../URLS';
 import {MuiThemeProvider as Theme} from '@material-ui/core/styles';
 import {errorTheme} from '../../theme';
 
@@ -16,7 +15,6 @@ import Grow from '@material-ui/core/Grow';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 // Project Components
@@ -102,149 +100,140 @@ const styles = (theme) => ({
   },
 });
 
-class JobPosts extends Component {
+function JobPosts(props) {
+  const {classes} = props;
+  const [jobPosts, setJobPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isFetching, setIsFetching] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
+  const [nextPage, setNextPage] = useState(null);
+  const [filters, setFilters] = useState({});
 
-  constructor() {
-    super();
-    this.state = {
-      isLoading: false,
-      isFetching: false,
-      posts: [],
-      search: '',
-    };
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     window.scrollTo(0, 0);
-    this.setState({isLoading: true});
-    this.fetchPosts();
-  }
+    fetchPosts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    fetchPosts = (parameters = {page: 1}, orderBy = null) => {
-      JobPostService.getJobPosts(parameters, orderBy)
-          .then((posts) => {
-            const nextPageUrl = posts.next;
-            const urlParameters = {};
+  const fetchPosts = (urlParameters = {}) => {
+    setIsFetching(true);
+    if (jobPosts.length > 0 && urlParameters === {}) {
+      setIsFetching(false);
+      return;
+    }
+    JobPostService.getJobPosts(urlParameters, null)
+        .then((posts) => {
+          let displayedJobPosts = posts.results;
+          const nextPageUrl = posts.next;
+          const newUrlParameters = {};
 
-            // If we have a url for the next page convert it into a object
-            if (nextPageUrl) {
-              const nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
-              const parameterArray = nextPageUrlQuery.split('&');
-              parameterArray.forEach((parameter) => {
-                const parameterString = parameter.split('=');
-                urlParameters[parameterString[0]] = parameterString[1];
-              });
-            }
-
-            // Get the page number from the object if it exists
-            const nextPage = urlParameters['page'] ? urlParameters['page'] : null;
-
-            this.setState((oldState) => {
-              return {isLoading: false, isFetching: false, nextPage: nextPage, posts: oldState.posts.concat(posts.results)};
+          // If we have a url for the next page convert it into a object
+          if (nextPageUrl) {
+            const nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
+            const parameterArray = nextPageUrlQuery.split('&');
+            parameterArray.forEach((parameter) => {
+              const parameterString = parameter.split('=');
+              newUrlParameters[parameterString[0]] = parameterString[1];
             });
-          });
-    }
+          }
+          setNextPage(newUrlParameters['page'] || null);
 
-    handleChange = (name) => (event) => {
-      this.setState({[name]: event.target.value});
-    }
+          // If we allready have jobposts
+          if (urlParameters.page) {
+            displayedJobPosts = [...jobPosts, ...displayedJobPosts];
+          }
+          setJobPosts(displayedJobPosts);
 
-    goToJobPost = (id) => {
-      this.props.history.push(URLS.jobposts + ''.concat(id, '/'));
-    };
+          // Used to load expired jobposts when we have nothing else to show.
+          if (displayedJobPosts.length === 0 && !urlParameters.expired) {
+            setFilters({...filters, expired: true});
+            return;
+          }
+          setIsLoading(false);
+          setIsFetching(false);
+        });
+  };
 
-    resetFilters = () => {
-      this.setState({isFetching: true, category: 0, search: ''});
-      this.fetchPosts();
-    }
+  useEffect(() => {
+    const urlParameters = {...filters};
+    if (urlParameters.search === '') delete urlParameters.search;
+    fetchPosts(urlParameters);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters]);
 
-    searchForPosts = (event) => {
-      event.preventDefault();
-      this.filterPosts(event, this.state.search);
-    }
+  const resetFilters = () => {
+    setSearchInput('');
+    setFilters({});
+    setNextPage(null);
+  };
 
-    filterPosts = (event, search) => {
-      event.preventDefault();
+  const searchForPosts = (e) => {
+    e.preventDefault();
+    const newFilters = {};
+    newFilters.search = searchInput;
+    setFilters(newFilters);
+  };
 
-      this.setState({isFetching: true, posts: []});
-      if (!search) {
-        this.fetchPosts();
-        return;
-      }
+  const getNextPage = () => {
+    const newFilters = {...filters};
+    newFilters.page = nextPage;
+    setFilters(newFilters);
+  };
 
-      // Requested filters
-      const filters = {search: search, page: 1};
-
-      this.fetchPosts(filters, {expired: true});
-    }
-
-    getNextPage = () => {
-      this.fetchPosts({page: this.state.nextPage});
-    }
-
-    render() {
-      const {classes} = this.props;
-      const posts = this.state.posts || [];
-      return (
-        <Navigation whitesmoke footer isLoading={this.state.isLoading} fancyNavbar>
-          {!this.state.isLoading &&
-            <>
-              <Banner title='Karriere' />
-              <div className={classes.root}>
-                <div className={classes.wrapper}>
-                  <div className={classes.grid}>
-                    {this.state.isFetching ? <CircularProgress className={classes.progress} /> :
-                      <div className={classes.listRoot}>
-                        <Grow in={!this.state.isFetching}>
-                          <div className={classes.list}>
-                            <Pageination nextPage={this.getNextPage} page={this.state.nextPage}>
-                              {posts.map((value, index) => (
-                                <div key={value.id}>
-                                  <JobPostItem key={value.id} data={value} onClick={() => this.goToJobPost(value.id)}/>
-                                </div>
-                              ))}
-                              {posts.length === 0 &&
-                                      <NoPostsIndicator />
-                              }
-                            </Pageination>
-                          </div>
-                        </Grow>
+  return (
+    <Navigation whitesmoke footer isLoading={isLoading} fancyNavbar>
+      {!isLoading &&
+        <>
+          <Banner title='Karriere' />
+          <div className={classes.root}>
+            <div className={classes.wrapper}>
+              <div className={classes.grid}>
+                {isFetching ? <CircularProgress className={classes.progress} /> :
+                  <div className={classes.listRoot}>
+                    <Grow in={!isFetching}>
+                      <div className={classes.list}>
+                        <Pageination nextPage={getNextPage} page={nextPage}>
+                          {jobPosts.map((value, index) => (
+                            <JobPostItem key={index} data={value}/>
+                          ))}
+                          {jobPosts.length === 0 &&
+                            <NoPostsIndicator />
+                          }
+                        </Pageination>
                       </div>
-                    }
-                    <div>
-                      <Paper className={classes.settings}>
-                        <form>
-                          <TextField className={classes.paddingBtn} value={this.state.search} fullWidth placeholder='Søk...' onChange={this.handleChange('search')}/>
-                          <Button fullWidth variant='outlined' color='primary' type='submit' onClick={this.searchForPosts}>{Text.search}</Button>
-                        </form>
-                        <Divider className={classes.mt}/>
-                        <Typography className={classes.mt} variant='h6' gutterBottom>{Text.category}</Typography>
-
-                        <Theme theme={errorTheme}>
-                          <Button
-                            className={classes.resetBtn}
-                            fullWidth
-                            color='primary'
-                            variant='outlined'
-                            onClick={this.resetFilters}>
-                            {Text.reset}
-                          </Button>
-                        </Theme>
-                      </Paper>
-                    </div>
+                    </Grow>
                   </div>
+                }
+                <div>
+                  <Paper className={classes.settings}>
+                    <form>
+                      <TextField className={classes.paddingBtn} value={searchInput} fullWidth placeholder='Søk...' onChange={(e) => setSearchInput(e.target.value)}/>
+                      <Button fullWidth variant='outlined' color='primary' type='submit' onClick={searchForPosts}>{Text.search}</Button>
+                    </form>
+                    <Divider className={classes.mt}/>
+                    <Theme theme={errorTheme}>
+                      <Button
+                        className={classes.resetBtn}
+                        fullWidth
+                        color='primary'
+                        variant='outlined'
+                        onClick={resetFilters}>
+                        {Text.reset}
+                      </Button>
+                    </Theme>
+                  </Paper>
                 </div>
               </div>
-            </>
-          }
-        </Navigation>
-      );
-    }
+            </div>
+          </div>
+        </>
+      }
+    </Navigation>
+  );
 }
 
 JobPosts.propTypes = {
   classes: PropTypes.object,
-  history: PropTypes.object,
 };
 
 export default (withStyles(styles)(JobPosts));
