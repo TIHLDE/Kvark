@@ -46,8 +46,8 @@ function NewsEditor(props) {
             <TextField variant='filled' multiline rowsMax={3} className={classes.field} label='Header' value={newsItem.header || ''} onChange={(e) => setNewsItem({...newsItem, header: e.target.value})} required/>
             <TextEditor className={classes.textEditor} value={newsItem.body || ''} onChange={(e) => setNewsItem({...newsItem, body: e})}/>
             <Divider className={classes.margin} />
-            <TextField variant='filled' multiline rowsMax={3} className={classes.field} label='Bilde url' value={newsItem.image || ''} onChange={(e) => setNewsItem({...newsItem, image: e.target.value})} required/>
-            <TextField variant='filled' multiline rowsMax={3} className={classes.field} label='Alternativ bildetekst' value={newsItem.image_alt || ''} onChange={(e) => setNewsItem({...newsItem, image_alt: e.target.value})} required/>
+            <TextField variant='filled' multiline rowsMax={3} className={classes.field} label='Bilde url' value={newsItem.image || ''} onChange={(e) => setNewsItem({...newsItem, image: e.target.value})}/>
+            <TextField variant='filled' multiline rowsMax={3} className={classes.field} label='Alternativ bildetekst' value={newsItem.image_alt || ''} onChange={(e) => setNewsItem({...newsItem, image_alt: e.target.value})}/>
           </Grid>
         </form>
       }

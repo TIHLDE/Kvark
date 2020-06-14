@@ -72,17 +72,29 @@ function NewsAdministration(props) {
   const [news, isLoading] = useNews();
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [createNews] = useCreateNews(selectedNewsItem, (data) => {
-    setSelectedNewsItem(data);
-    openSnackbar('Nyheten ble opprettet');
+  const createNews = useCreateNews(selectedNewsItem, (data, isError) => {
+    if (!isError) {
+      setSelectedNewsItem(data);
+      openSnackbar('Nyheten ble opprettet');
+    } else {
+      openSnackbar(JSON.stringify(data));
+    }
   });
-  const [putNews] = usePutNews(selectedNewsItem.id, selectedNewsItem, (data) => {
-    setSelectedNewsItem(data);
-    openSnackbar('Nyheten ble oppdatert');
+  const putNews = usePutNews(selectedNewsItem.id, selectedNewsItem, (data, isError) => {
+    if (!isError) {
+      setSelectedNewsItem(data);
+      openSnackbar('Nyheten ble oppdatert');
+    } else {
+      openSnackbar(JSON.stringify(data));
+    }
   });
-  const [deleteNews] = useDeleteNews(selectedNewsItem.id, () => {
-    setSelectedNewsItem(defaultNewsItem);
-    openSnackbar('Nyheten ble slettet');
+  const deleteNews = useDeleteNews(selectedNewsItem.id, (data, isError) => {
+    if (!isError) {
+      setSelectedNewsItem(defaultNewsItem);
+      openSnackbar('Nyheten ble slettet');
+    } else {
+      openSnackbar(JSON.stringify(data));
+    }
   });
 
   const saveNewsItem = () => selectedNewsItem.id ? putNews() : createNews();

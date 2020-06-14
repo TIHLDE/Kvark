@@ -64,12 +64,12 @@ const News = (props) => {
   const {classes} = props;
 
   const [urlParameters, setUrlParameters] = useState({});
-  const [news, isLoading] = useNews(urlParameters);
+  const [news, isLoading, isError] = useNews(urlParameters);
   const [displayedNews, setDisplayedNews] = useState([]);
   const [nextPage, setNextPage] = useState(null);
 
   useEffect(() => {
-    if (news && !isLoading) {
+    if (news && !isLoading && !isError) {
       const nextPageUrl = news?.next;
       if (nextPageUrl) {
         const nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
@@ -92,8 +92,10 @@ const News = (props) => {
         setDisplayedNews(news);
       }
       setNextPage(nextPage);
+    } else {
+      setDisplayedNews([]);
     }
-  }, [news, isLoading, urlParameters]);
+  }, [news, isLoading, isError, urlParameters]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

@@ -9,7 +9,7 @@ import GA from './analytics';
 import COOKIE from './api/cookie';
 import {THEME, THEME_OPTIONS} from './settings';
 import ThemeStore from './themeStore';
-import {NewsContextProvider} from './context/NewsContext';
+import {NewsProvider} from './context/NewsContext';
 
 // Theme
 import {MuiThemeProvider} from '@material-ui/core/styles';
@@ -133,7 +133,7 @@ const Application = () => {
   };
 
   return (
-    <NewsContextProvider>
+    <NewsProvider>
       <ThemeStore.Provider value={themeStore}>
         <Provider store={store}>
           <BrowserRouter>
@@ -178,7 +178,7 @@ const Application = () => {
           </BrowserRouter>
         </Provider>
       </ThemeStore.Provider>
-    </NewsContextProvider>
+    </NewsProvider>
   );
 };
 

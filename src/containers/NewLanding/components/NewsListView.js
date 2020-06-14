@@ -44,7 +44,7 @@ const styles = (theme) => ({
 
 function NewsListView(props) {
   const {classes} = props;
-  const [news, isLoading] = useNews();
+  const [news, isLoading, isError] = useNews();
   const [newsToDisplay, setNewsToDisplay] = useState(1);
   const today = new Date();
   today.setDate(today.getDate() - 7);
@@ -52,9 +52,13 @@ function NewsListView(props) {
 
   useEffect(() => {
     // Calculate how many news to show based on created news last 7 days. Minimum 1 and max 3
-    const freshNews = news.filter((n) => moment(n.created_at, ['YYYY-MM-DD HH:mm:ss'], 'nb') > lastWeek);
-    setNewsToDisplay(Math.min(Math.max(parseInt(freshNews.length), 1), 3));
-  }, [news, lastWeek]);
+    if (!isError) {
+      const freshNews = news.filter((n) => moment(n.created_at, ['YYYY-MM-DD HH:mm:ss'], 'nb') > lastWeek);
+      setNewsToDisplay(Math.min(Math.max(parseInt(freshNews.length), 1), 3));
+    } else {
+      setNewsToDisplay(0);
+    }
+  }, [news, lastWeek, isError]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
