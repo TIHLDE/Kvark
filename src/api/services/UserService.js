@@ -26,10 +26,10 @@ class UserService {
     }
     static getUsers = async (filters = null) => {
       if (AuthService.isAuthenticated()) {
-        return API.getUsers(filters).response()
-            .then((data) => {
-              return data;
-            });
+        const response = API.getUsers(filters).response();
+        return response.then((data) => {
+          return !response.isError ? Promise.resolve(data) : Promise.reject(data);
+        });
       }
     }
 

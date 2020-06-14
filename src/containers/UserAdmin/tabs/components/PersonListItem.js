@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -9,24 +9,30 @@ import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
+import ExpandIcon from '@material-ui/icons/ExpandMoreRounded';
 
 // Icons
 import DeleteIcon from '@material-ui/icons/Delete';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 
+// Project components
+import Paper from '../../../../components/layout/Paper';
+import {getUserClass, getUserStudyShort} from '../../../../utils';
+
 const styles = (theme) => ({
   root: {
-    padding: 16,
+    padding: 20,
     position: 'relative',
     overflow: 'hidden',
-
     gridAutoFlow: 'column',
     display: 'grid',
+    textAlign: 'left',
     gridGap: 10,
     width: '100%',
-    textAlign: 'left',
-
-    '@media only screen and (max-width: 600px)': {
+    gridTemplateColumns: '2fr 1fr 1fr 80px',
+    gridTemplateRows: '1fr',
+    '@media only screen and (max-width: 800px)': {
+      gridTemplateColumns: '2fr 80px',
       maxHeight: 'none',
       maxWidth: '100vw',
       overflow: 'hidden',
@@ -34,33 +40,22 @@ const styles = (theme) => ({
       gridAutoFlow: 'row',
     },
   },
-  activated: {
-    gridTemplateColumns: 'auto 1fr auto auto 48px',
-    gridTemplateRows: '1fr',
-
-    '@media only screen and (max-width: 600px)': {
+  more: {
+    '@media only screen and (max-width: 800px)': {
       gridTemplateColumns: '1fr',
       gridTemplateRows: 'auto 1fr auto auto auto',
       gridGap: '0',
-      textAlign: 'center',
-    },
-  },
-  notActivated: {
-    gridTemplateColumns: 'auto 1fr auto auto auto 96px',
-    gridTemplateRows: '1fr',
-
-    '@media only screen and (max-width: 600px)': {
-      gridTemplateColumns: '1fr',
-      gridTemplateRows: 'auto 1fr auto auto auto auto auto',
-      gridGap: '0',
-      textAlign: 'center',
+      textAlign: 'left',
     },
   },
   title: {
     color: theme.colors.text.main,
-  },
-  id: {
     minWidth: 65,
+  },
+  displayNone: {
+    '@media only screen and (max-width: 800px)': {
+      display: 'none',
+    },
   },
   btn: {
     padding: 0,
@@ -69,71 +64,72 @@ const styles = (theme) => ({
     color: theme.colors.status.green,
     width: '48px',
     margin: 'auto',
+    '@media only screen and (max-width: 800px)': {
+      position: 'absolute',
+      right: 5,
+    },
+  },
+  paper: {
+    marginBottom: 10,
   },
   deactivateButton: {
     color: theme.colors.status.red,
     width: '48px',
     margin: 'auto',
+    '@media only screen and (max-width: 800px)': {
+      position: 'absolute',
+      right: 10,
+    },
+  },
+  moreBtn: {
+    display: 'none',
+    color: theme.colors.text.main,
+    minWidth: 48,
+    position: 'absolute',
+    right: 10,
+    top: 10,
+    '@media only screen and (max-width: 800px)': {
+      display: 'inline',
+    },
+  },
+  animate: {
+    transform: 'rotate(180deg)',
   },
 });
 
-const getStudy = (i) => {
-  switch (i) {
-    case 1: return 'Dataing';
-    case 2: return 'DigFor';
-    case 3: return 'DigInc';
-    case 4: return 'DigSam';
-    case 5: return 'Drift';
-    default: return '?';
-  }
-};
-const getClass = (i) => {
-  switch (i) {
-    case 1: return '1. klasse';
-    case 2: return '2. klasse';
-    case 3: return '3. klasse';
-    case 4: return '4. klasse';
-    case 5: return '5. klasse';
-    default: return '?';
-  }
-};
-
 const PersonListItem = (props) => {
-  const {classes, data, isMember} = props;
+  const [showMore, setShowMore] = useState(false);
+  const {classes, data, isMember, handleMembers} = props;
   return (
-    <ListItem className={classes.btn} onClick={props.onClick}>
-      {isMember ?
-            <Grid className={classNames(classes.root, classes.activated)} container direction='row' wrap='nowrap' alignItems='center'>
-              <Typography className={classNames(classes.title, classes.id)} variant='subtitle1'>{data.user_id}</Typography>
-              <Typography className={classes.title} variant='subtitle1'><strong>{data.first_name + ' ' + data.last_name}</strong></Typography>
-              <Typography className={classes.title} variant='subtitle1'><Hidden smUp>Studie: </Hidden>{getStudy(data.user_study)}</Typography>
-              <Typography className={classes.title} variant='subtitle1'><Hidden smUp>Klasse: </Hidden>{getClass(data.user_class)}</Typography>
-              <IconButton className={classes.deactivateButton} onClick={() => props.handleDelete(data.user_id)}><DeleteIcon /></IconButton>
-            </Grid> :
-            <Grid className={classNames(classes.root, classes.notActivated)} container direction='row' wrap='nowrap' alignItems='center'>
-              <Typography className={classNames(classes.title, classes.id)} variant='subtitle1'>{data.user_id}</Typography>
-              <Typography className={classes.title} variant='subtitle1'><strong>{data.first_name + ' ' + data.last_name}</strong></Typography>
-              <Typography className={classes.title} variant='subtitle1'><Hidden smUp>Studie: </Hidden>{getStudy(data.user_study)}</Typography>
-              <Typography className={classes.title} variant='subtitle1'><Hidden smUp>Klasse: </Hidden>{getClass(data.user_class)}</Typography>
-              <Typography className={classes.title} variant='subtitle1'><Hidden smUp>Vipps: </Hidden>{data.vipps * 120}</Typography>
-              <div>
-                <IconButton className={classes.activateButton} onClick={() => props.handleActivate(data.user_id)}><ThumbUpIcon /></IconButton>
-                <IconButton className={classes.deactivateButton} onClick={() => props.handleDelete(data.user_id)}><DeleteIcon /></IconButton>
-              </div>
-            </Grid>
-      }
-    </ListItem>
+    <Paper noPadding className={classes.paper}>
+      <ListItem className={classes.btn} onClick={() => setShowMore(!showMore)}>
+        <Grid className={!showMore ? classes.root : classNames(classes.root, classes.more)} container direction='row' wrap='nowrap' alignItems='center'>
+          <Typography className={classes.title} variant='subtitle1'>{data.first_name + ' ' + data.last_name}</Typography>
+          <Typography className={!showMore ? classNames(classes.title, classes.displayNone) : classes.title} variant='subtitle1'>{data.user_id}</Typography>
+          <Typography className={!showMore ? classNames(classes.title, classes.displayNone) : classes.title} variant='subtitle1'><Hidden smUp>Studie: </Hidden>{getUserStudyShort(data.user_study)}</Typography>
+          <Typography className={!showMore ? classNames(classes.title, classes.displayNone) : classes.title} variant='subtitle1'><Hidden smUp>Klasse: </Hidden>{getUserClass(data.user_class)}</Typography>
+        </Grid>
+        {isMember ?
+        <IconButton className={!showMore ? classNames(classes.deactivateButton, classes.displayNone) : classes.deactivateButton} onClick={() => {
+          handleMembers(data.user_id, false); setShowMore(false);
+        }}><DeleteIcon /></IconButton> :
+          <IconButton className={!showMore ? classNames(classes.activateButton, classes.displayNone) : classes.activateButton} onClick={() => {
+            handleMembers(data.user_id, true); setShowMore(false);
+          }}><ThumbUpIcon /></IconButton>
+        }
+        <IconButton className={!showMore ? classes.moreBtn : classNames(classes.moreBtn, classes.animate)} onClick={() => setShowMore(!showMore)}><ExpandIcon/></IconButton>
+
+      </ListItem>
+    </Paper>
   );
 };
 
 PersonListItem.propTypes = {
   classes: PropTypes.object,
-
   isMember: PropTypes.bool,
   data: PropTypes.object,
   onClick: PropTypes.func,
-  handleActivate: PropTypes.func,
-  handleDelete: PropTypes.func,
+  handleMembers: PropTypes.func,
 };
 
 export default withStyles(styles)(PersonListItem);

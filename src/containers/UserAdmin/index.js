@@ -23,6 +23,7 @@ const styles = (theme) => ({
   top: {
     height: 220,
     background: theme.colors.gradient.main.top,
+    paddingBottom: 5,
   },
   root: {
     minHeight: '100vh',
@@ -33,10 +34,11 @@ const styles = (theme) => ({
   content: {
     width: '90%',
     maxWidth: 1200,
-    margin: '-60px auto 60px',
+    margin: '-60px auto',
     position: 'relative',
     left: 0,
     right: 0,
+    bottom: 30,
     padding: '28px 10px',
     textAlign: 'center',
   },
@@ -45,13 +47,8 @@ const styles = (theme) => ({
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
     gridGap: 15,
-
     marginTop: 10,
     marginBottom: 30,
-
-    '@media only screen and (max-width: 700px)': {
-      gridTemplateColumns: '1fr',
-    },
   },
   tabs: {
     marginTop: '10px',
@@ -87,7 +84,7 @@ class UserAdmin extends Component {
     const {classes} = this.props;
 
     return (
-      <Navigation footer whitesmoke fancyNavbar>
+      <Navigation whitesmoke fancyNavbar>
         <div className={classes.top}></div>
         <Paper className={classes.content}>
           <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
@@ -96,8 +93,8 @@ class UserAdmin extends Component {
               <Tab id='0' icon={<MembersIcon />} label='Medlemmer' />
               <Tab id='1' icon={<WaitingIcon />} label='Ventende' />
             </Tabs>
-            {this.state.tabViewMode === 0 && <Members isMember={true} />}
-            {this.state.tabViewMode === 1 && <Members isMember={false}/>}
+            {this.state.tabViewMode === 0 && <Members isMember/>}
+            {this.state.tabViewMode === 1 && <Members/>}
           </Grid>
         </Paper>
       </Navigation>
