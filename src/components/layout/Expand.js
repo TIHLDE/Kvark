@@ -1,6 +1,7 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
 // Material UI Components
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -31,6 +32,7 @@ const styles = (theme) => ({
     '@media only screen and (max-width: 600px)': {
       padding: 0,
       paddingRight: 20,
+      paddingLeft: 20,
     },
   },
   expansionDetails: {
@@ -43,35 +45,44 @@ const styles = (theme) => ({
   },
 });
 
-const Expansion = withStyles(styles)((props) => {
-  const {classes} = props;
+const Expansion = (props) => {
+  const {classes, flat, expand, customCallback, header, subheader, text, children, subtext} = props;
   return (
-    <ExpansionPanel className={classNames(classes.root, props.flat ? classes.flat : null)} expanded={props.expand}>
-      <ExpansionPanelSummary className={classes.summary} expandIcon={<ExpandMoreIcon />} onClick={props.customCallback}>
-        <Typography className={classes.heading}>{props.header}</Typography>
-        { props.subheader ?
-                    <Typography className={classes.secondaryHeading}>{htmlReactParser(props.subheader)}</Typography> :
-                    null
+    <ExpansionPanel className={classNames(classes.root, flat ? classes.flat : null)} expanded={expand}>
+      <ExpansionPanelSummary className={classes.summary} expandIcon={<ExpandMoreIcon />} onClick={customCallback}>
+        <Typography className={classes.heading}>{header}</Typography>
+        {subheader && <Typography className={classes.secondaryHeading}>{htmlReactParser(subheader)}</Typography>
         }
       </ExpansionPanelSummary>
-      { props.text ?
-                <ExpansionPanelDetails>
-                  <Typography>
-                    { htmlReactParser(props.text) }
-                  </Typography>
-                </ExpansionPanelDetails> :
-                <ExpansionPanelDetails className={classes.expansionDetails}>
-                  { props.children }
-                </ExpansionPanelDetails>
+      {text ?
+        <ExpansionPanelDetails>
+          <Typography>
+            {htmlReactParser(text)}
+          </Typography>
+        </ExpansionPanelDetails> :
+        <ExpansionPanelDetails className={classes.expansionDetails}>
+          {children }
+        </ExpansionPanelDetails>
       }
-      { props.subtext ?
-                <ExpansionPanelDetails>
-                  <Typography className={classes.secondaryHeading}>{htmlReactParser(props.subtext)}</Typography>
-                </ExpansionPanelDetails> :
-                null
+      {subtext &&
+        <ExpansionPanelDetails>
+          <Typography className={classes.secondaryHeading}>{htmlReactParser(subtext)}</Typography>
+        </ExpansionPanelDetails>
       }
     </ExpansionPanel>
   );
-});
+};
+
+Expansion.propTypes = {
+  classes: PropTypes.object,
+  flat: PropTypes.bool,
+  expand: PropTypes.bool,
+  customCallback: PropTypes.func,
+  header: PropTypes.string,
+  subheader: PropTypes.string,
+  text: PropTypes.string,
+  children: PropTypes.node,
+  subtext: PropTypes.string,
+};
 
 export default withStyles(styles)(Expansion);
