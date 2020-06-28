@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import URLS from '../../URLS';
 import {usePalette} from 'react-palette';
 
 // Service imports
-import NewsService from '../../api/services/NewsService';
+import {useNewsById} from '../../api/hooks/News';
 
 // Project components
 import Navigation from '../../components/navigation/Navigation';
@@ -48,28 +48,17 @@ const styles = (theme) => ({
 
 function NewsDetails(props) {
   const {classes, match, history} = props;
-
-  const [newsData, setNewsData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [newsData, isLoading] = useNewsById(match.params.id);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
 
-    // Get news item id
-    const id = match.params.id;
-
-    // Load news item
-    setIsLoading(true);
-    NewsService.getNewsById(id)
-        .then(async (newsData) => {
-          if (!newsData) {
-            history.replace(URLS.news); // Redirect to news page given if id is invalid
-          } else {
-            setIsLoading(false);
-            setNewsData({...newsData});
-          }
-        });
-  }, [history, match]);
+  useEffect(() => {
+    if (!isLoading && !newsData) {
+      history.replace(URLS.news); // Redirect to news page given if id is invalid
+    }
+  }, [history, isLoading, newsData]);
 
   // Find a dominant color in the image, uses a proxy to be able to retrieve images with CORS-policy until all images are stored in our own server
   const {data} = usePalette(newsData ? 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=' + encodeURIComponent(newsData?.image) : '');

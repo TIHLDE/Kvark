@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
@@ -9,6 +9,7 @@ import GA from './analytics';
 import COOKIE from './api/cookie';
 import {THEME, THEME_OPTIONS} from './settings';
 import ThemeStore from './themeStore';
+import {NewsProvider} from './context/NewsContext';
 
 // Theme
 import {MuiThemeProvider} from '@material-ui/core/styles';
@@ -55,51 +56,50 @@ import MessageGDPR from './components/miscellaneous/MessageGDPR';
 
 // The user needs to be authorized (logged in and member of an authorized group) to access these routes
 const requireAuth = (OriginalComponent, accessGroups) => {
-  class App extends Component {
+  function App(props) {
+    const {match} = props;
+    const isAuthenticated = AuthService.isAuthenticated();
+    const [isLoading, setIsLoading] = useState(true);
+    const [allowAccess, setAllowAccess] = useState(false);
 
-    state = {
-      isAuthenticated: AuthService.isAuthenticated(),
-      isLoading: true,
-      allowAccess: false,
-    }
-
-    componentDidMount() {
-      UserService.isGroupMember().then((groups) => {
-        accessGroups.forEach((group) => {
-          switch (group.toLowerCase()) {
-            case 'hs': if (groups.isHS) {
-              this.setState({allowAccess: true});
-            } break;
-            case 'promo': if (groups.isPromo) {
-              this.setState({allowAccess: true});
-            } break;
-            case 'nok': if (groups.isNok) {
-              this.setState({allowAccess: true});
-            } break;
-            case 'devkom': if (groups.isDevkom) {
-              this.setState({allowAccess: true});
-            } break;
-            default: break;
-          }
-        });
-      }).finally(() => {
-        this.setState({isLoading: false});
+    useEffect(() => {
+      let isSubscribed = true;
+      UserService.getUserData().then((user) => {
+        if (isSubscribed) {
+          accessGroups.forEach((group) => {
+            switch (group.toLowerCase()) {
+              case 'hs': if (user?.groups.includes('HS')) {
+                setAllowAccess(true);
+              } break;
+              case 'promo': if (user?.groups.includes('Promo')) {
+                setAllowAccess(true);
+              } break;
+              case 'nok': if (user?.groups.includes('NoK')) {
+                setAllowAccess(true);
+              } break;
+              case 'devkom': if (user?.groups.includes('DevKom')) {
+                setAllowAccess(true);
+              } break;
+              default: break;
+            }
+          });
+          setIsLoading(false);
+        }
       });
+      return () => isSubscribed = false;
+    }, []);
+
+    if (isLoading) {
+      return <div>Autentiserer...</div>;
     }
-    render() {
-      const {isAuthenticated, isLoading, allowAccess} = this.state;
-      if (isLoading) {
-        return <div>Autentiserer...</div>;
-      }
-      if (!isAuthenticated) {
-        MiscService.setLogInRedirectURL(this.props.match.path);
-        return <Redirect to={URLS.login} />;
-      }
-      if (allowAccess) {
-        return <OriginalComponent {...this.props} />;
-      } else {
-        return <Redirect to={URLS.landing} />;
-      }
+    if (!isAuthenticated) {
+      MiscService.setLogInRedirectURL(match.path);
+      return <Redirect to={URLS.login} />;
+    }
+    if (allowAccess) {
+      return <OriginalComponent {...props} />;
+    } else {
+      return <Redirect to={URLS.landing} />;
     }
   }
 
@@ -133,51 +133,52 @@ const Application = () => {
   };
 
   return (
-    <ThemeStore.Provider value={themeStore}>
-      <Provider store={store}>
-        <BrowserRouter>
-          <MuiThemeProvider theme={theme}>
-            { GA.init() && <GA.RouteTracker /> }
-            <Switch>
-              <Route exact path='/' component={NewLanding} />
-              <Route path={URLS.events.concat(':id/registrering')} component={EventRegistration} />
-              <Route path={URLS.events.concat(':id/')} component={EventDetails} />
-              <Route path={URLS.about} component={About} />
-              <Route path={URLS.contactInfo} component={ContactInfo} />
-              <Route path={URLS.events} component={Events} />
-              <Route path={URLS.services} component={Services} />
-              <Route path={URLS.company} component={Companies} />
-              <Route path={URLS.newStudent} component={NewStudent} />
-              <Route path={URLS.profile} component={Profile} />
-              <Route path={URLS.jobposts.concat(':id/')} component={JobPostDetails} />
-              <Route exact path={URLS.jobposts} component={JobPosts} />
-              <Route path={URLS.laws} component={Laws} />
-              <Route path={URLS.privacyPolicy} component={PrivacyPolicy} />
-              <Route path={URLS.eventRules} component={EventRules} />
-              <Route exact path={URLS.cheatsheet} component={Cheatsheet}/>
-              <Route path={URLS.cheatsheet.concat(':studyId/:classId/')} component={FilesCheatsheet}/>
-              <Route path={URLS.cheatsheet.concat(':studyId/')} component={ClassesCheatsheet}/>
-              <Route path={URLS.news.concat(':id/')} component={NewsDetails}/>
-              <Route path={URLS.news} component={News}/>
+    <NewsProvider>
+      <ThemeStore.Provider value={themeStore}>
+        <Provider store={store}>
+          <BrowserRouter>
+            <MuiThemeProvider theme={theme}>
+              { GA.init() && <GA.RouteTracker /> }
+              <Switch>
+                <Route exact path='/' component={NewLanding} />
+                <Route path={URLS.events.concat(':id/registrering')} component={EventRegistration} />
+                <Route path={URLS.events.concat(':id/')} component={EventDetails} />
+                <Route path={URLS.about} component={About} />
+                <Route path={URLS.contactInfo} component={ContactInfo} />
+                <Route path={URLS.events} component={Events} />
+                <Route path={URLS.services} component={Services} />
+                <Route path={URLS.company} component={Companies} />
+                <Route path={URLS.newStudent} component={NewStudent} />
+                <Route path={URLS.profile} component={Profile} />
+                <Route path={URLS.jobposts.concat(':id/')} component={JobPostDetails} />
+                <Route exact path={URLS.jobposts} component={JobPosts} />
+                <Route path={URLS.laws} component={Laws} />
+                <Route path={URLS.privacyPolicy} component={PrivacyPolicy} />
+                <Route path={URLS.eventRules} component={EventRules} />
+                <Route exact path={URLS.cheatsheet} component={Cheatsheet}/>
+                <Route path={URLS.cheatsheet.concat(':studyId/:classId/')} component={FilesCheatsheet}/>
+                <Route path={URLS.cheatsheet.concat(':studyId/')} component={ClassesCheatsheet}/>
+                <Route path={URLS.news.concat(':id/')} component={NewsDetails}/>
+                <Route path={URLS.news} component={News}/>
 
-              <Route exact path={URLS.admin} component={requireAuth(Admin, ['HS', 'Promo', 'Nok', 'Devkom'])} />
-              <Route path={URLS.userAdmin} component={requireAuth(UserAdmin, ['HS', 'Devkom'])} />
-              <Route path={URLS.jobpostsAdmin} component={requireAuth(JobPostAdministration, ['HS', 'Nok', 'Devkom'])} />
-              <Route path={URLS.eventAdmin} component={requireAuth(EventAdministration, ['HS', 'Promo', 'Nok', 'Devkom'])} />
-              <Route path={URLS.newsAdmin} component={requireAuth(NewsAdministration, ['HS', 'Promo', 'Nok', 'Devkom'])} />
+                <Route exact path={URLS.admin} component={requireAuth(Admin, ['HS', 'Promo', 'Nok', 'Devkom'])} />
+                <Route path={URLS.userAdmin} component={requireAuth(UserAdmin, ['HS', 'Devkom'])} />
+                <Route path={URLS.jobpostsAdmin} component={requireAuth(JobPostAdministration, ['HS', 'Nok', 'Devkom'])} />
+                <Route path={URLS.eventAdmin} component={requireAuth(EventAdministration, ['HS', 'Promo', 'Nok', 'Devkom'])} />
+                <Route path={URLS.newsAdmin} component={requireAuth(NewsAdministration, ['HS', 'Promo', 'Nok', 'Devkom'])} />
 
-              <Route path={URLS.login} component={LogIn} />
-              <Route path={URLS.forgotPassword} component={ForgotPassword} />
-              <Route path={URLS.signup} component={SignUp} />
+                <Route path={URLS.login} component={LogIn} />
+                <Route path={URLS.forgotPassword} component={ForgotPassword} />
+                <Route path={URLS.signup} component={SignUp} />
 
-              <Route component={Http404} />
-
-            </Switch>
-            <MessageGDPR />
-          </MuiThemeProvider>
-        </BrowserRouter>
-      </Provider>
-    </ThemeStore.Provider>
+                <Route component={Http404} />
+              </Switch>
+              <MessageGDPR />
+            </MuiThemeProvider>
+          </BrowserRouter>
+        </Provider>
+      </ThemeStore.Provider>
+    </NewsProvider>
   );
 };
 

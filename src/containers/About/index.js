@@ -1,7 +1,6 @@
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
-import classNames from 'classnames';
 import URLS from '../../URLS';
 import {Link} from 'react-router-dom';
 
@@ -72,103 +71,91 @@ const styles = (theme) => ({
     width: '100%',
     backgroundColor: theme.colors.background.smoke,
   },
-  mt: {
-    marginTop: 16,
-    width: '100%',
-  },
-  buttonLink: {
-    textDecoration: 'none',
-    width: '100%',
-  },
   button: {
+    marginTop: 8,
     width: '100%',
     color: theme.colors.constant.smoke,
     borderColor: theme.colors.constant.smoke + 'bb',
     minWidth: 200,
-    marginBottom: 15,
+    marginBottom: 8,
     '&:hover': {
       borderColor: theme.colors.constant.smoke,
     },
   },
 });
 
-class About extends Component {
+function About(props) {
+  const {classes} = props;
 
-  componentDidMount() {
-    window.scrollTo(0, 0);
-  }
+  useEffect(() => window.scrollTo(0, 0), []);
 
-  render() {
-    const {classes} = this.props;
-    return (
-      <Navigation footer whitesmoke fancyNavbar>
-        <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
-          <Banner
-            text={Text.subheader}
-            title={Text.header}>
-            <>
-              <Link to={URLS.laws} className={classNames(classes.buttonLink, classes.mt)}>
-                <Button
-                  variant="outlined"
-                  className={classes.button}
-                  color='primary'>
-                    TIHLDE&apos;s Lover
-                </Button>
-              </Link>
-              <Link to={URLS.services} className={classNames(classes.buttonLink, classes.mt)}>
-                <Button
-                  variant="outlined"
-                  className={classes.button}
-                  color='primary'>
-                    Tjenester
-                </Button>
-              </Link>
-            </>
-          </Banner>
+  return (
+    <Navigation footer whitesmoke fancyNavbar>
+      <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
+        <Banner
+          text={Text.subheader}
+          title={Text.header}>
+          <>
+            <Button
+              component={Link}
+              to={URLS.laws}
+              variant="outlined"
+              className={classes.button}
+              color='primary'>
+              TIHLDE&apos;s Lover
+            </Button>
+            <Button
+              component={Link}
+              to={URLS.services}
+              variant="outlined"
+              className={classes.button}
+              color='primary'>
+              Tjenester
+            </Button>
+          </>
+        </Banner>
 
-          <div>
-            <div className={classes.section}>
-              <Typography className={classes.header} variant='h4' color='inherit' align='center'>Undergrupper</Typography>
-              <div className={classes.grid}>
-                <InfoCard header='Drift' text={Text.drift} src={OperationIcon}/>
-                <InfoCard header='Sosialen' text={Text.social} src={SocialIcon}/>
-                <InfoCard header='Næringsliv og Kurs' text={Text.business} src={BusinessIcon}/>
-                <InfoCard header='Promo' text={Text.promo} src={PromoIcon}/>
-              </div>
+        <div>
+          <div className={classes.section}>
+            <Typography className={classes.header} variant='h4' color='inherit' align='center'>Undergrupper</Typography>
+            <div className={classes.grid}>
+              <InfoCard header='Drift' text={Text.drift} src={OperationIcon}/>
+              <InfoCard header='Sosialen' text={Text.social} src={SocialIcon}/>
+              <InfoCard header='Næringsliv og Kurs' text={Text.business} src={BusinessIcon}/>
+              <InfoCard header='Promo' text={Text.promo} src={PromoIcon}/>
             </div>
           </div>
+        </div>
 
-          <div className={classes.smoke}>
-            <div className={classes.section}>
-              <Typography className={classes.header} variant='h4' color='inherit' align='center'>Komitéer</Typography>
-              <div className={classes.grid}>
-                <InfoCard header='KontKom' text={Text.kontkom} justifyText/>
-                <InfoCard header='Devkom' text={Text.devkom} justifyText/>
-                <InfoCard header='Turkom' text={Text.turkom} justifyText/>
-                <InfoCard header='Jubkom' text={Text.jubkom} justifyText/>
-              </div>
+        <div className={classes.smoke}>
+          <div className={classes.section}>
+            <Typography className={classes.header} variant='h4' color='inherit' align='center'>Komitéer</Typography>
+            <div className={classes.grid}>
+              <InfoCard header='KontKom' text={Text.kontkom} justifyText/>
+              <InfoCard header='Devkom' text={Text.devkom} justifyText/>
+              <InfoCard header='Turkom' text={Text.turkom} justifyText/>
+              <InfoCard header='Jubkom' text={Text.jubkom} justifyText/>
             </div>
           </div>
+        </div>
 
-          <div>
-            <div className={classes.section}>
-              <Typography className={classes.header} variant='h4' color='inherit' align='center'>Organisasjonskart</Typography>
-              <Paper className={classes.orgMap} noPadding>
-                <ClickableImage className={classes.miniPadding} image={OrgMap} alt='organisasjonskart' width='100%'/>
-              </Paper>
-            </div>
+        <div>
+          <div className={classes.section}>
+            <Typography className={classes.header} variant='h4' color='inherit' align='center'>Organisasjonskart</Typography>
+            <Paper className={classes.orgMap} noPadding>
+              <ClickableImage className={classes.miniPadding} image={OrgMap} alt='organisasjonskart' width='100%'/>
+            </Paper>
           </div>
+        </div>
 
-          <div className={classes.smoke}>
-            <div className={classes.section}>
-              <InfoCard className={classes.header} header='Historie' text={Text.history} subheader='Opptak' subText={Text.history2} justifyText/>
-            </div>
+        <div className={classes.smoke}>
+          <div className={classes.section}>
+            <InfoCard className={classes.header} header='Historie' text={Text.history} subheader='Opptak' subText={Text.history2} justifyText/>
           </div>
-        </Grid>
-      </Navigation>
-    );
-  }
-
+        </div>
+      </Grid>
+    </Navigation>
+  );
 }
 
 About.propTypes = {

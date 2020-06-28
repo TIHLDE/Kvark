@@ -1,13 +1,12 @@
-// React
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import classNames from 'classnames';
 import {Link} from 'react-router-dom';
 import URLS from '../../../URLS';
 import PropTypes from 'prop-types';
+import QRCode from 'qrcode.react';
 
 // API and store import
 import UserService from '../../../api/services/UserService';
-import NotificationService from '../../../api/services/NotificationService';
 
 // Material-UI
 import Typography from '@material-ui/core/Typography';
@@ -18,19 +17,19 @@ import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Badge from '@material-ui/core/Badge';
 import Avatar from '@material-ui/core/Avatar';
-
-import Settings from '@material-ui/icons/Settings';
-import DateRange from '@material-ui/icons/DateRange';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-
 import Skeleton from '@material-ui/lab/Skeleton';
+
+// Icons
+import EventIcon from '@material-ui/icons/DateRangeRounded';
+import NotificationsIcon from '@material-ui/icons/NotificationsNoneRounded';
+import ProfileIcon from '@material-ui/icons/InsertEmoticonRounded';
 
 // Components
 import ProfileSettings from './ProfileSettings';
 import ProfileEvents from './ProfileEvents';
 import ProfileNotifications from './ProfileNotifications';
-import MemberProof from './MemberProof';
 import Paper from '../../../components/layout/Paper';
+import Modal from '../../../components/layout/Modal';
 
 const styles = (theme) => ({
   paper: {
@@ -44,15 +43,17 @@ const styles = (theme) => ({
     padding: '28px',
     paddingTop: '110px',
     textAlign: 'center',
+    backgroundColor: theme.colors.background.smoke,
   },
   tabs: {
-    marginTop: 30,
+    marginTop: 20,
     marginBottom: 1,
     backgroundColor: theme.colors.background.light,
     color: theme.colors.text.light,
   },
   button: {
-    margin: '15px auto 0px',
+    margin: '7px auto 0px',
+    minWidth: 150,
   },
   buttonLink: {
     width: 'fit-content',
@@ -87,7 +88,8 @@ const styles = (theme) => ({
     animation: 'animate 1.5s ease-in-out infinite',
   },
   skeletonText: {
-    margin: '4px auto',
+    margin: 'auto',
+    minHeight: 35,
   },
   text: {
     margin: '2px auto',
@@ -99,119 +101,99 @@ const styles = (theme) => ({
     marginTop: 30,
     height: 150,
   },
+  memberProof: {
+    background: theme.colors.constant.white,
+  },
 });
 
-class ProfilePaper extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      tabViewMode: 0,
-      userData: {},
-      groupMember: false,
-      isLoading: true,
-      modalShow: false,
-    };
-    this.handleLogOut = this.handleLogOut.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  }
+function ProfilePaper(props) {
+  const {classes, logoutMethod} = props;
+  const [tab, setTab] = useState(0);
+  const [userData, setUserData] = useState({});
+  const [isGroupMember, setIsGroupMember] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
-    loadUserData = () => {
-      UserService.getUserData()
-          .then((user) => {
-            if (user) {
-              user.notifications.reverse();
-              this.setState({userData: user});
+  const loadUserData = () => {
+    UserService.getUserData()
+        .then((user) => {
+          if (user) {
+            user.notifications.reverse();
+            setUserData(user);
+            const groups = user.groups;
+            if (groups.includes('HS') || groups.includes('Promo') || groups.includes('NoK') || groups.includes('DevKom')) {
+              setIsGroupMember(true);
             }
-          })
-          .catch(() => {})
-          .then(() => {
-            this.setState({isLoading: false});
-          });
-    }
-
-    loadIsGroupMember = () => {
-      UserService.isGroupMember().then((groups) => {
-        if (groups.isHS || groups.isPromo || groups.isNok || groups.isDevkom) {
-          this.setState({groupMember: true});
-        }
-      });
-    }
-
-    updateNotificationReadState = (id, newState) => {
-      NotificationService.updateNotificationReadState(id, newState).then((data) => {
-        this.setState((oldState) => {
-          oldState.userData.unread_notifications--;
-
-          // Find the updated notification and mark as read.
-          oldState.userData.notifications.map((notification) => {
-            if (notification.id === id) {
-              notification.read = true;
-            }
-            return notification;
-          });
-        });
-      });
-    }
-
-    componentDidMount() {
-      this.loadUserData();
-      this.loadIsGroupMember();
-    }
-
-    handleLogOut = () => {
-      this.props.logOutMethod();
-    }
-
-    handleChange(event, newValue) {
-      this.setState({tabViewMode: newValue});
-    }
-    closeEventModal = () => {
-      this.setState({modalShow: false});
-    }
-    showEventModal = () => {
-      this.setState({modalShow: true});
-    }
-
-    render() {
-      const {classes} = this.props;
-      const notifications = this.state.userData.notifications ? this.state.userData.notifications : [];
-
-      return (
-        <Paper className={classes.paper} noPadding>
-          {this.state.modalShow && this.state.userData &&
-            <MemberProof
-              onClose={this.closeEventModal}
-              userId={this.state.userData.user_id}
-              status={this.state.modalShow} />
           }
-          <Avatar className={classes.avatar}>{this.state.userData.first_name !== undefined ? String((this.state.userData.first_name).substring(0, 1)) + (this.state.userData.last_name).substring(0, 1) : <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant="text" /> }</Avatar>
-          <Typography className={classes.text} variant='h4'>{ this.state.userData.first_name !== undefined ? this.state.userData.first_name + ' ' + this.state.userData.last_name : <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="75%" /> }</Typography>
-          <Typography className={classes.text} variant='subtitle1'>{ this.state.userData.email !== undefined ? this.state.userData.email : <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="45%" /> }</Typography>
-          <div className={classes.buttonsContainer}>
-            { this.state.groupMember && <Link to={URLS.admin} className={classNames(classes.button, classes.buttonLink)}><Button variant='contained' color='primary'>Admin</Button></Link> }
-            <Button className={classes.button} variant='contained' color='primary' onClick={this.showEventModal}>Medlemsbevis</Button>
-            <Button className={classNames(classes.logOutButton, classes.button)} variant='contained' color='inherit' onClick={this.handleLogOut}>Logg ut</Button>
-          </div>
-          <Tabs variant="fullWidth" scrollButtons="on" centered className={classes.tabs} value={this.state.tabViewMode} onChange={this.handleChange}>
-            <Tab id='0' icon={<DateRange />} label={<Hidden xsDown>Arrangementer</Hidden>} />
-            <Tab id='1' icon={
-              <Badge badgeContent={this.state.userData.unread_notifications} color="error">
-                <NotificationsIcon />
-              </Badge>
-            } label={<Hidden xsDown>Notifikasjoner</Hidden>} />
-            <Tab id='2' icon={<Settings />} label={<Hidden xsDown>Innstillinger</Hidden>} />
-          </Tabs>
-          {this.state.tabViewMode === 0 && <ProfileEvents/>}
-          {this.state.tabViewMode === 1 && <ProfileNotifications updateNotificationReadState={this.updateNotificationReadState} isLoading={this.state.isLoading} messages={notifications} />}
-          {this.state.tabViewMode === 2 && <ProfileSettings />}
-        </Paper>
-      );
+        })
+        .catch(() => {})
+        .finally(() => setIsLoading(false));
+  };
+
+  useEffect(() => loadUserData(), []);
+
+  useEffect(() => {
+    if (tab === 1 && userData.unread_notifications !== 0) {
+      setUserData({...userData, unread_notifications: 0});
+    } else if (tab !== 1 && userData.unread_notifications === 0 && userData.notifications.some((n) => !n.read)) {
+      const newNotifications = userData.notifications.map((notification) => {
+        return {...notification, read: true};
+      });
+      setUserData({...userData, notifications: newNotifications});
     }
+  // eslint-disable-next-line
+  }, [tab]);
+
+  return (
+    <Paper className={classes.paper} noPadding>
+      {showModal && userData &&
+        <Modal
+          open={showModal}
+          onClose={() => setShowModal(false)}
+          className={classes.memberProof}>
+          <QRCode value={userData.user_id} size={280} />
+        </Modal>
+      }
+      <Avatar className={classes.avatar}>{userData.first_name ?
+        String((userData.first_name).substring(0, 1)) + (userData.last_name).substring(0, 1) :
+        <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant="text" />}
+      </Avatar>
+      {userData.first_name ?
+        <>
+          <Typography className={classes.text} variant='h4'>{userData.first_name + ' ' + userData.last_name}</Typography>
+          <Typography className={classes.text} variant='subtitle1'>{userData.email}</Typography>
+          <Typography className={classes.text} variant='subtitle1'>{userData.user_id}</Typography>
+        </> :
+        <>
+          <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="75%" />
+          <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="45%" />
+          <Skeleton className={classNames(classes.skeleton, classes.skeletonText)} variant="text" width="35%" />
+        </>
+      }
+      <div className={classes.buttonsContainer}>
+        {isGroupMember && <Button component={Link} to={URLS.admin} className={classes.button} variant='contained' color='primary'>Admin</Button> }
+        <Button className={classes.button} variant='contained' color='primary' onClick={() => setShowModal(true)}>Medlemsbevis</Button>
+        <Button className={classNames(classes.logOutButton, classes.button)} variant='contained' color='inherit' onClick={logoutMethod}>Logg ut</Button>
+      </div>
+      <Tabs variant="fullWidth" scrollButtons="on" centered className={classes.tabs} value={tab} onChange={(e, newTab) => setTab(newTab)}>
+        <Tab id='0' icon={<EventIcon />} label={<Hidden xsDown>Arrangementer</Hidden>} />
+        <Tab id='1' icon={
+          <Badge badgeContent={userData.unread_notifications} color="error">
+            <NotificationsIcon />
+          </Badge>
+        } label={<Hidden xsDown>Varsler</Hidden>} />
+        <Tab id='2' icon={<ProfileIcon />} label={<Hidden xsDown>Profil</Hidden>} />
+      </Tabs>
+      {tab === 0 && <ProfileEvents/>}
+      {tab === 1 && <ProfileNotifications setUserData={setUserData} isLoading={isLoading} notifications={userData.notifications || []} />}
+      {tab === 2 && <ProfileSettings />}
+    </Paper>
+  );
 }
 
 ProfilePaper.propTypes = {
   classes: PropTypes.object,
-  logOutMethod: PropTypes.func,
+  logoutMethod: PropTypes.func,
 };
 
 export default withStyles(styles)(ProfilePaper);

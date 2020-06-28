@@ -42,19 +42,26 @@
     "@babel/compat-data": "^7.9.0",
     "@babel/helper-call-delegate": "^7.8.7",
     "@babel/plugin-proposal-numeric-separator": "^7.8.3",
-    "@babel/preset-env": "^7.9.6",
-    "@fortawesome/fontawesome-free": "^5.13.0",
+    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-react": "^7.10.1",
+    "@testing-library/jest-dom": "^5.10.0",
+    "@testing-library/react": "^10.2.1",
+    "@testing-library/react-hooks": "^3.3.0",
     "babel-eslint": "^10.1.0",
     "eslint": "6.6.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-babel": "^5.3.0",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^4.0.2",
+    "react-test-renderer": "^16.13.1",
     "typescript": "^3.9.2"
   },
   "browserslist": [
     ">0.2%",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "jest": {
+    "clearMocks": true
+  }
 }

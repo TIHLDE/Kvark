@@ -115,17 +115,15 @@ const NewsListItem = (props) => {
   const src = data.image ? data.image : TIHLDELOGO;
   const start = moment(data.created_at, ['YYYY-MM-DD HH:mm'], 'nb');
   return (
-    <Link to={URLS.news + ''.concat(data.id, '/')} className={classes.link}>
-      <ListItem className={classes.root} button >
-        <img className={classes.src} src={src} alt={data.title} />
-        <Grid className={classes.content} container direction='column' wrap='nowrap'>
-          <Typography className={classes.title} variant='h5'>
-            <strong>{data.title}</strong>
-          </Typography>
-          <InfoContent icon={<Date className={classes.icon}/>} label={getDate(start)} />
-        </Grid>
-      </ListItem>
-    </Link>
+    <ListItem button className={classes.root} component={Link} to={URLS.news + ''.concat(data.id, '/')} >
+      <img className={classes.src} src={src} alt={data.title} />
+      <Grid className={classes.content} container direction='column' wrap='nowrap'>
+        <Typography className={classes.title} variant='h5'>
+          <strong>{data.title}</strong>
+        </Typography>
+        <InfoContent icon={<Date className={classes.icon}/>} label={getDate(start)} />
+      </Grid>
+    </ListItem>
   );
 };
 

@@ -26,27 +26,11 @@ class UserService {
     }
     static getUsers = async (filters = null) => {
       if (AuthService.isAuthenticated()) {
-        return API.getUsers(filters).response()
-            .then((data) => {
-              return data;
-            });
-      }
-    }
-
-    static isGroupMember = async () => {
-      let isHS = false; let isPromo = false; let isNok = false; let isDevkom = false;
-      if (AuthService.isAuthenticated()) {
-        await UserService.getUserData().then((userData) => {
-          if (userData.groups) {
-            const groups = userData.groups;
-            isHS = groups.includes('HS');
-            isPromo = groups.includes('Promo');
-            isNok = groups.includes('NoK');
-            isDevkom = groups.includes('DevKom');
-          }
+        const response = API.getUsers(filters).response();
+        return response.then((data) => {
+          return !response.isError ? Promise.resolve(data) : Promise.reject(data);
         });
       }
-      return {'isHS': isHS, 'isPromo': isPromo, 'isNok': isNok, 'isDevkom': isDevkom};
     }
 
     static updateUserData = async (userName, userData, callback = null) => {

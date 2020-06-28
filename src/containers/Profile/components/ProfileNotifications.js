@@ -1,6 +1,8 @@
 import React from 'react';
-
 import PropTypes from 'prop-types';
+
+// API
+import NotificationService from '../../../api/services/NotificationService';
 
 // Material-UI
 import classNames from 'classnames';
@@ -8,20 +10,24 @@ import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import InfoIcon from '@material-ui/icons/Info';
 
+// Project components
+import Paper from '../../../components/layout/Paper';
+
 const style = (theme) => ({
   message: {
     display: 'flex',
     alignItems: 'center',
     padding: 5,
+    margin: '5px 0',
     '& div': {
       width: '100%',
       padding: 5,
     },
   },
   icon: {
-    display: 'flex',
-    width: '30px !important',
-    paddingRight: '50px !important',
+    fontSize: 25,
+    margin: 5,
+    marginRight: 25,
     color: theme.colors.text.lighter,
   },
   unread: {
@@ -32,61 +38,51 @@ const style = (theme) => ({
   },
 });
 
-const Message = (props) => {
-  const {classes, message, updateNotificationReadState} = props;
+const Notification = (props) => {
+  const {classes, notification} = props;
 
   let elementClass = classes.message;
-  if (!message.read) {
+  if (!notification.read) {
     elementClass = classNames(classes.message, classes.unread);
-    updateNotificationReadState(message.id, !message.read);
+    NotificationService.updateNotificationReadState(notification.id, true);
   }
 
   return (
+    <Paper className={elementClass}>
+      <InfoIcon className={classes.icon} />
+      <Typography className={classes.text} color={'inherit'} align={'left'}>{notification.message}</Typography>
+    </Paper>
+  );
+};
+
+Notification.propTypes = {
+  classes: PropTypes.object,
+  notification: PropTypes.object.isRequired,
+};
+
+const ProfileNotifications = (props) => {
+  const {classes, notifications, isLoading} = props;
+
+  return (
     <>
-      <div className={elementClass}>
-        <div className={classes.icon}>
-          <InfoIcon />
-        </div>
-        <Typography className={classes.text} color={'inherit'} align={'left'}>{message.message}</Typography>
-      </div>
+      {isLoading ?
+        <Typography className={classes.text} align='center' variant='subtitle1'>Laster notifikasjoner...</Typography> :
+        notifications.length > 0 ?
+          notifications.map((notification, i) =>
+            <Notification
+              key={i}
+              notification={notification}
+              classes={classes} />) :
+          <Typography className={classes.text} align='center' variant='subtitle1'>Ingen notifikasjoner</Typography>
+      }
     </>
   );
 };
 
-const ProfileNotifications = (props) => {
-  const {classes, messages, isLoading, updateNotificationReadState} = props;
-
-  let messageList = <Typography className={classes.text} align='center' variant='subtitle1'>Ingen notifikasjoner.</Typography>;
-  if (messages.length > 0) {
-    messageList = messages.map((message, index) => {
-      return <Message
-        key={index}
-        message={message}
-        classes={classes}
-        updateNotificationReadState={updateNotificationReadState} />;
-    });
-  }
-
-  return (
-    <React.Fragment>
-      {!isLoading ? messageList :
-        <Typography className={classes.text} align='center' variant='subtitle1'>Laster notifikasjoner.</Typography>
-      }
-    </React.Fragment>
-  );
-};
-
-Message.propTypes = {
-  classes: PropTypes.object,
-  message: PropTypes.object,
-  updateNotificationReadState: PropTypes.func,
-};
-
 ProfileNotifications.propTypes = {
   classes: PropTypes.object,
-  messages: PropTypes.array,
+  notifications: PropTypes.array.isRequired,
   isLoading: PropTypes.bool,
-  updateNotificationReadState: PropTypes.func,
 };
 
 export default withStyles(style)(ProfileNotifications);

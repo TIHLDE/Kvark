@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
@@ -8,7 +8,6 @@ import classNames from 'classnames';
 import UserService from '../../../api/services/UserService';
 
 // Material Components
-import Divider from '@material-ui/core/Divider';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grow from '@material-ui/core/Grow';
 import Grid from '@material-ui/core/Grid';
@@ -29,34 +28,23 @@ const styles = (theme) => ({
     gridTemplateColumns: '1fr',
     gridTemplateRows: 'auto',
     width: '100%',
-
     position: 'relative',
-
-    '@media only screen and (max-width: 800px)': {
-      gridTemplateColumns: '1fr',
-      justifyContent: 'center',
-      gridAutoFlow: 'row dense',
-    },
   },
   progress: {
     display: 'block',
     margin: 'auto',
     marginTop: 10,
-
-    '@media only screen and (max-width: 800px)': {
-      order: 1,
-    },
   },
   notActivated: {
     gridAutoFlow: 'column',
     display: 'grid',
-    gridGap: '10px',
+    gridGap: '10',
     width: '100%',
     textAlign: 'left',
-    gridTemplateColumns: 'auto 1fr auto auto auto 35px',
+    gridTemplateColumns: '2fr 1fr 1fr 1fr',
     gridTemplateRows: '1fr',
 
-    '@media only screen and (max-width: 600px)': {
+    '@media only screen and (max-width: 800px)': {
       display: 'none',
     },
   },
@@ -69,207 +57,192 @@ const styles = (theme) => ({
   class: {
     minWidth: '60px',
   },
-  vipps: {
-    minWidth: '70px',
-  },
   filterContainer: {
     display: 'flex',
     flexDirection: 'row',
+    marginTop: 10,
   },
   box: {
     margin: 5,
   },
 });
 
-class Members extends Component {
+const Members = (props) => {
+  const userClass = ['Alle', '1. klasse', '2. klasse', '3. klasse', '4. klasse', '5. klasse'];
+  const userStudy = ['Alle', 'Dataing', 'DigFor', 'DigInc', 'DigSam', 'Drift'];
+  const [memberList, setMemberList] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [userClassChoice, setUserClassChoice] = useState(0);
+  const [userStudyChoice, setUserStudyChoice] = useState(0);
+  const [nextPage, setNextPage] = useState(null);
+  const [search, setSearch] = useState('');
 
-  constructor() {
-    super();
-    this.state = {
-      user_class: ['Alle', '1. klasse', '2. klasse', '3. klasse', '4. klasse', '5. klasse'],
-      user_study: ['Alle', 'Dataing', 'DigFor', 'DigInc', 'DigSam', 'Drift'],
-      members: [],
-      isLoading: false,
-      isFetching: false,
+  const loadMembers = (filters, replace) => {
+    // Add in filters if needed, and adds the is tihlde member filter
+    let urlParameters = filters ? {...filters} : {};
+    if (props.isMember) {
+      urlParameters.is_TIHLDE_member = true;
+    } else {
+      urlParameters.is_TIHLDE_member = false;
+    }
 
-      user_study_choice: 0,
-      user_class_choice: 0,
-      nextPage: null,
-      search: '',
-    };
-  }
+    // Decide if we should go to next page or not.
+    if (nextPage) {
+      urlParameters = {
+        page: nextPage,
+        ...urlParameters,
+      };
+    }
 
-    // Gets the event
-    loadMembers = (filters, replace) => {
-      // Add in filters if needed, and adds the is tihlde member filter
-      let urlParameters = filters ? {...filters} : {};
-      if (this.props.isMember) {
-        urlParameters.is_TIHLDE_member = true;
-      } else {
-        urlParameters.is_TIHLDE_member = false;
-      }
+    // Fetch members from server
+    UserService.getUsers(urlParameters)
+        .then((data) => {
+          let displayedMembers = [];
+          const nextPageUrl = data.next;
+          displayedMembers = displayedMembers.concat(data.results);
+          urlParameters = {};
 
-      // Decide if we should go to next page or not.
-      if (this.state.nextPage) {
-        urlParameters = {
-          page: this.state.nextPage,
-          ...urlParameters,
-        };
-      }
-      // Fetch members from server
-      UserService.getUsers(urlParameters).then((data) => {
-        const nextPageUrl = data.next;
-        let displayedMembers = data.results;
-        urlParameters = {};
+          // If we have a url for the next page convert it into a object
+          if (nextPageUrl) {
+            const nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
+            const parameterArray = nextPageUrlQuery.split('&');
+            parameterArray.forEach((parameter) => {
+              const parameterString = parameter.split('=');
+              urlParameters[parameterString[0]] = parameterString[1];
+            });
+          }
 
-        // If we have a url for the next page convert it into a object
-        if (nextPageUrl) {
-          const nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
-          const parameterArray = nextPageUrlQuery.split('&');
-          parameterArray.forEach((parameter) => {
-            const parameterString = parameter.split('=');
-            urlParameters[parameterString[0]] = parameterString[1];
-          });
-        }
+          // Get the page number from the object if it exist
+          const nextPage = urlParameters['page'] ? urlParameters['page'] : null;
 
-        // Get the page number from the object if it exist
-        const nextPage = urlParameters['page'] ? urlParameters['page'] : null;
-
-        this.setState((oldState) => {
           // If we allready have Members
           if (replace) {
-            displayedMembers = oldState.members.concat(displayedMembers);
+            displayedMembers = memberList.concat(displayedMembers);
           }
-
-          return {members: displayedMembers, nextPage: nextPage, isLoading: false, isFetching: false};
+          setMemberList(displayedMembers);
+          setNextPage(nextPage);
+        })
+        .catch(() => {
+          setMemberList([]);
+          setNextPage(null);
+        })
+        .finally(() => {
+          setIsFetching(false);
+          setIsLoading(false);
         });
-        this.setState({isLoading: false, isFetching: false});
-      });
-    };
+  };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    loadMembers();
+    // eslint-disable-next-line
+  },[]);
 
-    componentDidMount() {
-      window.scrollTo(0, 0);
-      this.setState({isLoading: true});
-      this.loadMembers();
-    }
-
-    filterMembers = async (event, search, userClassChoice, userStudyChoice) => {
-      event.preventDefault();
-
-      await this.setState({isFetching: true, nextPage: null, events: [], expiredShown: false});
-      // If no filters requested, just load the members
-      if (search === '' && userStudyChoice === 0 && userClassChoice === 0) {
-        this.loadMembers();
-      } else {
-        const filters = {};
-        filters.search = search;
-        if (userStudyChoice && userStudyChoice !== 0) filters.user_study = userStudyChoice;
-        if (userClassChoice && userClassChoice !== 0) filters.user_class = userClassChoice;
-        this.loadMembers(filters, false);
-      }
-    }
-
-    searchForData = (event) => {
-      event.preventDefault();
-      this.filterMembers(event, this.state.search, this.state.user_class_choice, this.state.user_study_choice);
-    }
-
-    handleStudieChange = (event) => {
-      this.setState({user_study_choice: event.target.value});
-      this.filterMembers(event, this.state.search, this.state.user_class_choice, event.target.value);
-    }
-
-    handleClassChange = (event) => {
-      this.setState({user_class_choice: event.target.value});
-      this.filterMembers(event, this.state.search, event.target.value, this.state.user_study_choice);
-    }
-
-    getNextPage = () => {
-      const search = this.state.search;
-      const userClassChoice = this.state.user_class_choice;
-      const userStudyChoice = this.state.user_study_choice;
+  const filterMembers = async (searchInput, userClassChoiceInput, userStudyChoiceInput) => {
+    setIsFetching(true);
+    setNextPage(null);
+    setMemberList([]);
+    // If no filters requested, just load the members
+    if (searchInput === '' && userStudyChoiceInput === 0 && userClassChoiceInput === 0) {
+      loadMembers();
+    } else {
       const filters = {};
-      if (search || userClassChoice || userStudyChoice) {
-        filters.search = search;
-        if (userStudyChoice && userStudyChoice !== 0) filters.user_study = userStudyChoice;
-        if (userClassChoice && userClassChoice !== 0) filters.user_class = userClassChoice;
-      }
-      this.loadMembers(filters, true);
+      if (searchInput && searchInput !== '') filters.search = searchInput;
+      if (userStudyChoiceInput && userStudyChoiceInput !== 0) filters.user_study = userStudyChoiceInput;
+      if (userClassChoiceInput && userClassChoiceInput !== 0) filters.user_class = userClassChoiceInput;
+      loadMembers(filters, false);
     }
+  };
 
-    handleDelete = async (id) => {
-      UserService.updateUserData(id, {is_TIHLDE_member: false});
-      const index = this.state.members.findIndex((x) => x.user_id === id);
-      const newMembers = this.state.members;
-      newMembers.splice(index, 1);
-      this.setState({members: newMembers});
+  useEffect(() => {
+    const searchInput = search;
+    const timer = setTimeout(() => filterMembers(searchInput, userClassChoice, userStudyChoice), 500);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line
+  }, [search]);
+
+  const handleStudieChange = (event) => {
+    event.preventDefault();
+    setUserStudyChoice(event.target.value);
+    filterMembers(search, userClassChoice, event.target.value);
+  };
+
+  const handleClassChange = (event) => {
+    event.preventDefault();
+    setUserClassChoice(event.target.value);
+    filterMembers(search, event.target.value, userStudyChoice);
+  };
+
+  const getNextPage = () => {
+    const searchInput = search;
+    const userClassChoiceInput = userClassChoice;
+    const userStudyChoiceInput = userStudyChoice;
+    const filters = {};
+    if (searchInput || userClassChoiceInput || userStudyChoiceInput) {
+      filters.search = searchInput;
+      if (userStudyChoiceInput && userStudyChoiceInput !== 0) filters.user_study = userStudyChoiceInput;
+      if (userClassChoiceInput && userClassChoiceInput !== 0) filters.user_class = userClassChoiceInput;
     }
+    loadMembers(filters, true);
+  };
 
-    handleActivate = async (id) => {
-      UserService.updateUserData(id, {is_TIHLDE_member: true});
-      const index = this.state.members.findIndex((x) => x.user_id === id);
-      const newMembers = this.state.members;
-      newMembers.splice(index, 1);
-      this.setState({members: newMembers});
-    }
+  const handleMembers = (id, isMember) => {
+    UserService.updateUserData(id, {is_TIHLDE_member: isMember});
+    const newMembers = memberList.filter((x) => x.user_id !== id);
+    setMemberList(newMembers);
+  };
 
-    render() {
-      const {classes} = this.props;
-      return (
-        <div className={classes.grid}>
-          <div className={classes.filterContainer}>
-            <TextField className={classes.box} select fullWidth label='Klasser' value={this.state.user_class_choice} onChange={this.handleClassChange}>
-              {this.state.user_class.map((value, index) => (
-                <MenuItem key={index} value={index}>
-                  {value}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField className={classes.box} select fullWidth label='Studie' value={this.state.user_study_choice} onChange={this.handleStudieChange}>
-              {this.state.user_study.map((value, index) => (
-                <MenuItem key={index} value={index}>
-                  {value}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField className={classes.box} value={this.state.search} label='Søk' fullWidth placeholder='Søk...' onChange={(e) => {
-              this.setState({search: e.target.value}); this.searchForData(e);
-            }}/>
-          </div>
-          {this.state.isFetching ? <CircularProgress className={classes.progress} /> :
-                    <Grow in={!this.state.isFetching}>
-                      <div>
-                        <Hidden xsDown>
-                          <ListItem className={classes.btn}>
-                            <Grid className={classNames(classes.notActivated)} container direction='row' wrap='nowrap' alignItems='center'>
-                              <Typography className={classNames(classes.title, classes.id)} variant='subtitle1'>Id:</Typography>
-                              <Typography className={classes.title} variant='subtitle1'>Navn:</Typography>
-                              <Typography className={classes.title} variant='subtitle1'>Studie:</Typography>
-                              <Typography className={classNames(classes.title, classes.class)} variant='subtitle1'>Klasse:</Typography>
-                              {!this.props.isMember &&
-                                            <Typography className={classNames(classes.title, classes.vipps)} variant='subtitle1'>Vipps:</Typography>
-                              }
-                            </Grid>
-                          </ListItem>
-                        </Hidden>
-                        <Pageination nextPage={this.getNextPage} page={this.state.nextPage} fullWidth>
-                          {this.state.members && this.state.members.map((value, index) => (
-                            <div key={index}>
-                              <PersonListItem isMember={this.props.isMember} data={value} handleDelete={this.handleDelete} handleActivate={this.handleActivate} />
-                              <Divider/>
-                            </div>
-                          ))}
-                        </Pageination>
-                        {this.state.members.length === 0 && !this.state.isLoading &&
-                                <NoPersonsIndicator />
-                        }
+  const {classes} = props;
+  return (
+    <div className={classes.grid}>
+      <div className={classes.filterContainer}>
+        <TextField variant='filled' className={classes.box} select fullWidth label='Klasser' value={userClassChoice} onChange={handleClassChange}>
+          {userClass.map((value, index) => (
+            <MenuItem key={index} value={index}>
+              {value}
+            </MenuItem>
+          ))}
+        </TextField>
+        <TextField variant='filled' className={classes.box} select fullWidth label='Studie' value={userStudyChoice} onChange={handleStudieChange}>
+          {userStudy.map((value, index) => (
+            <MenuItem key={index} value={index}>
+              {value}
+            </MenuItem>
+          ))}
+        </TextField>
+        <TextField variant='filled' className={classes.box} value={search} label='Søk' fullWidth placeholder='Søk...' onChange={(e) => {
+          setSearch(e.target.value);
+        }}/>
+      </div>
+      {isFetching ? <CircularProgress className={classes.progress} /> :
+              <Grow in={!isFetching}>
+                <div>
+                  <Hidden xsDown>
+                    <ListItem className={classes.btn}>
+                      <Grid className={classNames(classes.notActivated)} container direction='row' wrap='nowrap' alignItems='center'>
+                        <Typography className={classNames(classes.title, classes.id)} variant='subtitle1'>Navn:</Typography>
+                        <Typography className={classes.title} variant='subtitle1'>Id:</Typography>
+                        <Typography className={classes.title} variant='subtitle1'>Studie:</Typography>
+                        <Typography className={classNames(classes.title, classes.class)} variant='subtitle1'>Klasse:</Typography>
+                      </Grid>
+                    </ListItem>
+                  </Hidden>
+                  <Pageination nextPage={getNextPage} page={nextPage} fullWidth>
+                    {memberList && memberList.map((value, index) => (
+                      <div key={index}>
+                        <PersonListItem isMember={props.isMember} data={value} handleMembers={handleMembers} />
                       </div>
-                    </Grow>
-          }
-        </div>
-      );
-    }
-}
+                    ))}
+                  </Pageination>
+                  {memberList && memberList.length === 0 && !isLoading &&
+                          <NoPersonsIndicator />
+                  }
+                </div>
+              </Grow>
+      }
+    </div>
+  );
+};
 
 Members.propTypes = {
   classes: PropTypes.object,

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useEffect, createRef} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -91,135 +91,108 @@ const styles = (theme) => ({
   },
 });
 
-class Companies extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.formRef = React.createRef();
-    this.firstTextFieldRef = React.createRef();
-  }
+function Companies(props) {
+  const {classes} = props;
+  const formRef = createRef();
+  const firstTextFieldRef = createRef();
 
-  componentDidMount() {
-    window.scrollTo({top: 0, left: 0});
-  }
+  useEffect(() => window.scrollTo(0, 0), []);
 
-  focusFirstTextField = () => {
-    const node = this.firstTextFieldRef.current;
+  const focusFirstTextField = () => {
+    const node = firstTextFieldRef.current;
     node.focus({preventScroll: true});
   };
 
-  scrollToForm = () => {
-    this.focusFirstTextField();
-    const node = this.formRef.current;
+  const scrollToForm = () => {
+    focusFirstTextField();
+    const node = formRef.current;
     window.scroll({top: node.offsetTop - 84, left: 0, behavior: 'smooth'});
   };
 
-  ToFormButton = (props) => {
-    const {classes} = props;
-    return (
-      <Button
-        className={classes.button}
-        variant='outlined'
-        color='primary'
-        onClick={() => this.scrollToForm()}>
-        <div className={classes.flex}>
-          <Send className={classes.sendIcon}/>
-          {Text.interesse}
+  return (
+    <Navigation whitesmoke footer fancyNavbar>
+      <div className={classes.root}>
+        <Banner title={Text.bannnertitle}>
+          <Button
+            className={classes.button}
+            variant='outlined'
+            color='primary'
+            onClick={() => scrollToForm()}>
+            <div className={classes.flex}>
+              <Send className={classes.sendIcon}/>
+              {Text.interesse}
+            </div>
+          </Button>
+        </Banner>
+        <div className={classes.section}>
+          <Typography variant='h4' color="inherit" align="center" className={classes.header}>
+            {Text.viTilbyr}
+          </Typography>
+          <div className={classNames(classes.container)}>
+            <InfoCard
+              header="Stillingsannonser"
+              text={Text.jobbannonser}
+              justifyText
+            />
+            <InfoCard
+              header="Bedriftspresentasjon"
+              text={Text.bedrifter}
+              justifyText
+            />
+          </div>
         </div>
-      </Button>
-    );
-  }
 
-  render() {
-    const {classes} = this.props;
-
-    return (
-      <Navigation whitesmoke footer fancyNavbar>
-        <div className={classes.root}>
-          <Banner title={Text.bannnertitle}>
-            <this.ToFormButton classes={classes} />
-          </Banner>
+        <div className={classes.smoke}>
           <div className={classes.section}>
-            <Typography
-              variant='h4'
-              color="inherit"
-              align="center"
-              className={classes.header}
-            >
-              {Text.viTilbyr}
+            <Typography variant='h4' color="inherit" align="center" className={classes.header}>
+              {Text.studier}
             </Typography>
             <div className={classNames(classes.container)}>
+              <InfoCard header="Dataingeniør" text={Text.data} justifyText />
               <InfoCard
-                header="Stillingsannonser"
-                text={Text.jobbannonser}
+                header="Digital infrastruktur og cybersikkerhet"
+                text={Text.drift}
                 justifyText
               />
               <InfoCard
-                header="Bedriftspresentasjon"
-                text={Text.bedrifter}
+                header="Digital forretningsutvikling"
+                text={Text.support}
                 justifyText
               />
-            </div>
-          </div>
-
-          <div className={classes.smoke}>
-            <div className={classes.section}>
-              <Typography
-                variant='h4'
-                color="inherit"
-                align="center"
-                className={classes.header}
-              >
-                {Text.studier}
-              </Typography>
-              <div className={classNames(classes.container)}>
-                <InfoCard header="Dataingeniør" text={Text.data} justifyText />
-                <InfoCard
-                  header="Digital infrastruktur og cybersikkerhet"
-                  text={Text.drift}
-                  justifyText
-                />
-                <InfoCard
-                  header="Digital forretningsutvikling"
-                  text={Text.support}
-                  justifyText
-                />
-                <InfoCard
-                  header="Digital samhandling"
-                  text={Text.IKT}
-                  justifyText
-                />
-              </div>
-            </div>
-          </div>
-          <div className={classes.section}>
-            <Paper className={classes.formWrapper} ref={this.formRef} noPadding>
-              <Forum
-                setMessage={this.setMessage}
-                data={{
-                  forumText1: Text.forumText2,
-                  forumText2: Text.forumText2,
-                }}
-                firstTextFieldRef={this.firstTextFieldRef}
-                scrollToForm={this.scrollToForm}
-              />
-            </Paper>
-          </div>
-
-          <div className={classes.smoke}>
-            <div className={classes.section}>
               <InfoCard
-                imageClass={classes.imageClass}
-                header={'Om TIHLDE'}
-                text={Text.omTIHLDE}
-                src={Image}
+                header="Digital samhandling"
+                text={Text.IKT}
+                justifyText
               />
             </div>
           </div>
         </div>
-      </Navigation>
-    );
-  }
+        <div className={classes.section} ref={formRef}>
+          <Paper className={classes.formWrapper} noPadding>
+            <Forum
+              data={{
+                forumText1: Text.forumText2,
+                forumText2: Text.forumText2,
+              }}
+              firstTextFieldRef={firstTextFieldRef}
+              scrollToForm={scrollToForm}
+            />
+          </Paper>
+        </div>
+
+        <div className={classes.smoke}>
+          <div className={classes.section}>
+            <InfoCard
+              imageClass={classes.imageClass}
+              header={'Om TIHLDE'}
+              text={Text.omTIHLDE}
+              src={Image}
+            />
+          </div>
+        </div>
+      </div>
+    </Navigation>
+  );
 }
 
 Companies.propTypes = {

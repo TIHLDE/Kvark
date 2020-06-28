@@ -1,9 +1,8 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import URLS from '../../URLS';
-import classNames from 'classnames';
 
 // Service and action imports
 import AuthService from '../../api/services/AuthService';
@@ -58,141 +57,122 @@ const styles = (theme) => ({
   header: {
     color: theme.colors.text.main,
   },
-  mt: {
-    marginTop: 16,
-    width: '100%',
-  },
   progress: {
     position: 'absolute',
     top: 0, left: 0, right: 0,
   },
   buttonsContainer: {
     display: 'flex',
-  },
-  buttonLink: {
-    textDecoration: 'none',
-    width: '100%',
+    height: 52,
   },
   button: {
+    marginTop: 16,
     width: '100%',
   },
 });
 
-class LogIn extends Component {
+function LogIn(props) {
+  const {classes} = props;
+  const history = useHistory();
 
-  constructor() {
-    super();
-    this.state = {
-      errorMessage: null,
-      isLoading: false,
-      redirectURL: MiscService.getLogInRedirectURL(), // Store redirectURL
-    };
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [redirectURL, setRedirectUrl] = useState(null);
 
-    this.username = React.createRef();
-    this.password = React.createRef();
-    MiscService.setLogInRedirectURL(null); // Reset login URL
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     window.scrollTo(0, 0);
-  }
+    setRedirectUrl(MiscService.getLogInRedirectURL());
+    MiscService.setLogInRedirectURL(null);
+  }, []);
 
-    handleChange = (event) => {
-      this.setState({errorMessage: null});
+  useEffect(() => setErrorMessage(null), [username, password]);
+
+  const onLogin = (event) => {
+    event.preventDefault();
+
+    if (isLoading) {
+      return;
     }
 
-    onLogIn = (event) => {
-      event.preventDefault();
-
-      if (this.state.isLoading) {
-        return;
+    setErrorMessage(null);
+    setIsLoading(true);
+    AuthService.logIn(username, password).then((data) => {
+      if (data) {
+        history.push(redirectURL || URLS.landing);
+      } else {
+        setErrorMessage(Text.wrongCred);
+        setIsLoading(false);
       }
+    });
+  };
 
-      const username = this.username.value;
-      const password = this.password.value;
-
-      this.setState({errorMessage: null, isLoading: true});
-      AuthService.logIn(username, password).then((data) => {
-        if (data) {
-          this.props.history.push(this.state.redirectURL || URLS.landing);
-        } else {
-          this.setState({errorMessage: Text.wrongCred, isLoading: false});
-        }
-      });
-    }
-
-    render() {
-      const {classes} = this.props;
-      return (
-        <Navigation footer fancyNavbar whitesmoke>
-          <div className={classes.root}>
-            <div className={classes.top}></div>
-            <div className={classes.main}>
-              <Paper className={classes.paper}>
-                {this.state.isLoading && <LinearProgress className={classes.progress} />}
-                <img className={classes.logo} src={TIHLDE_LOGO} height='30em' alt='tihlde_logo'/>
-                <Typography className={classes.header} variant='h6'>{Text.header}</Typography>
-
-                <form onSubmit={this.onLogIn}>
-                  <Grid container direction='column'>
-                    <TextField
-                      onChange={this.handleChange}
-                      inputRef={(e) => this.username = e}
-                      error={this.state.errorMessage !== null}
-                      label='Brukernavn'
-                      variant='outlined'
-                      margin='normal'
-                      required/>
-                    <TextField
-                      onChange={this.handleChange}
-                      inputRef={(e) => this.password = e}
-                      helperText={this.state.errorMessage}
-                      error={this.state.errorMessage !== null}
-                      label='Password'
-                      variant='outlined'
-                      margin='normal'
-                      type='password'
-                      required/>
-                    <Button className={classes.mt}
-                      variant='contained'
-                      color='primary'
-                      disabled={this.state.isLoading}
-                      type='submit'>
-                                    Logg inn
-                    </Button>
-                    <div className={classes.buttonsContainer}>
-                      <Link to={URLS.forgotPassword} className={classNames(classes.buttonLink, classes.mt)}>
-                        <Button
-                          className={classes.button}
-                          color='primary'
-                          disabled={this.state.isLoading}
-                          type='submit'>
-                                                Glemt passord?
-                        </Button>
-                      </Link>
-                      <Link to={URLS.signup} className={classNames(classes.buttonLink, classes.mt)}>
-                        <Button
-                          className={classes.button}
-                          color='primary'
-                          disabled={this.state.isLoading}
-                          type='submit'>
-                                                Opprett bruker
-                        </Button>
-                      </Link>
-                    </div>
-                  </Grid>
-                </form>
-              </Paper>
-            </div>
-          </div>
-        </Navigation>
-      );
-    }
+  return (
+    <Navigation footer fancyNavbar whitesmoke>
+      <div className={classes.root}>
+        <div className={classes.top}></div>
+        <div className={classes.main}>
+          <Paper className={classes.paper}>
+            {isLoading && <LinearProgress className={classes.progress} />}
+            <img className={classes.logo} src={TIHLDE_LOGO} height='30em' alt='tihlde_logo'/>
+            <Typography className={classes.header} variant='h6'>{Text.header}</Typography>
+            <form onSubmit={onLogin}>
+              <Grid container direction='column'>
+                <TextField
+                  onChange={(e) => setUsername(e.target.value)}
+                  value={username}
+                  error={errorMessage !== null}
+                  label='Brukernavn'
+                  variant='outlined'
+                  margin='normal'
+                  required/>
+                <TextField
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
+                  helperText={errorMessage}
+                  error={errorMessage !== null}
+                  label='Password'
+                  variant='outlined'
+                  margin='normal'
+                  type='password'
+                  required/>
+                <Button className={classes.button}
+                  variant='contained'
+                  color='primary'
+                  disabled={isLoading}
+                  type='submit'>
+                    Logg inn
+                </Button>
+                <div className={classes.buttonsContainer}>
+                  <Button
+                    component={Link}
+                    to={URLS.forgotPassword}
+                    className={classes.button}
+                    color='primary'
+                    disabled={isLoading}>
+                      Glemt passord?
+                  </Button>
+                  <Button
+                    component={Link}
+                    to={URLS.signup}
+                    className={classes.button}
+                    color='primary'
+                    disabled={isLoading}>
+                      Opprett bruker
+                  </Button>
+                </div>
+              </Grid>
+            </form>
+          </Paper>
+        </div>
+      </div>
+    </Navigation>
+  );
 }
 
 LogIn.propTypes = {
   classes: PropTypes.object,
-  history: PropTypes.object,
 };
 
 export default withStyles(styles)(LogIn);

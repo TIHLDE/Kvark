@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import URLS from '../../URLS';
-import classNames from 'classnames';
+import {getUserStudyLong, getUserClass} from '../../utils';
 
 // Service and action imports
 import AuthService from '../../api/services/AuthService';
@@ -56,15 +56,8 @@ const styles = (theme) => ({
   header: {
     color: theme.colors.text.main,
   },
-  mt: {
-    marginTop: 16,
-    width: '100%',
-  },
-  buttonLink: {
-    textDecoration: 'none',
-    width: '100%',
-  },
   button: {
+    marginTop: 16,
     width: '100%',
   },
   progress: {
@@ -73,192 +66,162 @@ const styles = (theme) => ({
   },
 });
 
-class SignUp extends Component {
+function SignUp(props) {
+  const {classes} = props;
+  const history = useHistory();
 
-  constructor() {
-    super();
-    this.state = {
-      errorMessage: null,
-      isLoading: false,
-      redirectURL: MiscService.getLogInRedirectURL(), // Store redirectURL
-      study: 1,
-      class: 1,
-    };
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [userClass, setUserClass] = useState(1);
+  const [study, setStudy] = useState(1);
+  const [em, setEm] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordVerify, setPasswordVerify] = useState('');
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [redirectURL, setRedirectUrl] = useState(null);
 
-    this.firstName = React.createRef();
-    this.lastName = React.createRef();
-    this.username = React.createRef();
-    this.email = React.createRef();
-    this.em = React.createRef();
-    this.password = React.createRef();
-    this.passwordVerify = React.createRef();
-    MiscService.setLogInRedirectURL(null); // Reset login URL
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     window.scrollTo(0, 0);
-  }
+    setRedirectUrl(MiscService.getLogInRedirectURL());
+    MiscService.setLogInRedirectURL(null);
+  }, []);
 
-    handleChange = (event) => {
-      this.setState({errorMessage: null});
+  useEffect(() => setErrorMessage(null), [firstName, lastName, username, email, userClass, study, em, password, passwordVerify]);
+
+  const onSignUp = (event) => {
+    event.preventDefault();
+
+    if (isLoading) return;
+
+    if (password !== passwordVerify) {
+      setErrorMessage('Passordene må være like!');
+      return;
+    }
+    if (username.includes('@')) {
+      setErrorMessage('Brukernavn må være uten @stud.ntnu.no');
+      return;
     }
 
-    onSignUp = (event) => {
-      event.preventDefault();
-
-      if (this.state.isLoading) {
-        return;
+    setErrorMessage(null);
+    setIsLoading(true);
+    const userData = {user_id: username.toLowerCase(), first_name: firstName, last_name: lastName, email: email, user_class: userClass, user_study: study, vipps_transaction_id: 0, em_nr: em, password: password};
+    AuthService.createUser(userData).then((data) => {
+      if (data) {
+        history.push(redirectURL || URLS.login);
+      } else {
+        setErrorMessage('Noe gikk galt');
+        setIsLoading(false);
       }
+    });
+  };
 
-      const firstName = this.firstName.value;
-      const lastName = this.lastName.value;
-      const username = this.username.value;
-      const email = this.email.value;
-      const userClass = this.state.class;
-      const study = this.state.study;
-      const em = this.em.value;
-      const password = this.password.value;
-      const passwordVerify = this.passwordVerify.value;
-
-      if (password !== passwordVerify) {
-        this.setState({errorMessage: 'Passordene må være like!'});
-        return;
-      }
-      if (username.includes('@')) {
-        this.setState({errorMessage: 'Brukernavn må være uten @stud.ntnu.no'});
-        return;
-      }
-
-      this.setState({errorMessage: null, isLoading: true});
-
-      const userData = {user_id: username.toLowerCase(), first_name: firstName, last_name: lastName, email: email, user_class: userClass, user_study: study, vipps_transaction_id: 0, em_nr: em, password: password};
-      AuthService.createUser(userData).then((data) => {
-        if (data) {
-          this.props.history.push(this.state.redirectURL || URLS.landing);
-        } else {
-          this.setState({errorMessage: 'Noe gikk galt', isLoading: false});
-        }
-      });
-    }
-
-    render() {
-      const {classes} = this.props;
-      return (
-        <Navigation footer fancyNavbar whitesmoke>
-          <div className={classes.root}>
-            <div className={classes.top}></div>
-            <div className={classes.main}>
-              <Paper className={classes.paper}>
-                {this.state.isLoading && <LinearProgress className={classes.progress} />}
-                <img className={classes.logo} src={TIHLDE_LOGO} height='30em' alt='tihlde_logo'/>
-                <Typography className={classes.header} variant='h6'>Opprett bruker</Typography>
-
-                <form onSubmit={this.onSignUp}>
-                  <Grid container direction='column'>
-                    <TextField
-                      onChange={this.handleChange}
-                      inputRef={(e) => this.firstName = e}
-                      error={this.state.errorMessage !== null}
-                      label='Fornavn'
-                      variant='outlined'
-                      margin='normal'
-                      required/>
-                    <TextField
-                      onChange={this.handleChange}
-                      inputRef={(e) => this.lastName = e}
-                      error={this.state.errorMessage !== null}
-                      label='Etternavn'
-                      variant='outlined'
-                      margin='normal'
-                      required/>
-                    <TextField
-                      onChange={this.handleChange}
-                      inputRef={(e) => this.username = e}
-                      error={this.state.errorMessage !== null}
-                      label='NTNU brukernavn'
-                      variant='outlined'
-                      margin='normal'
-                      required/>
-                    <TextField
-                      onChange={this.handleChange}
-                      inputRef={(e) => this.email = e}
-                      error={this.state.errorMessage !== null}
-                      label='Epost'
-                      variant='outlined'
-                      margin='normal'
-                      type='email'
-                      required/>
-                    <TextField required label='Studie' variant='outlined' margin='normal' value={this.state.study} onChange={(e) => this.setState({study: e.target.value})} select={true}>
-                      <MenuItem value={1}>Dataingeniør</MenuItem>
-                      <MenuItem value={2}>Digital forretningsutvikling</MenuItem>
-                      <MenuItem value={3}>Digital infrastruktur og cybersikkerhet</MenuItem>
-                      <MenuItem value={4}>Digital samhandling</MenuItem>
-                      <MenuItem value={5}>Drift av datasystemer</MenuItem>
-                    </TextField>
-                    <TextField required label='Klasse' variant='outlined' margin='normal' value={this.state.class} onChange={(e) => this.setState({class: e.target.value})} select={true}>
-                      <MenuItem value={1}>1. klasse</MenuItem>
-                      <MenuItem value={2}>2. klasse</MenuItem>
-                      <MenuItem value={3}>3. klasse</MenuItem>
-                      <MenuItem value={4}>4. klasse</MenuItem>
-                      <MenuItem value={5}>5. klasse</MenuItem>
-                    </TextField>
-                    <TextField
-                      onChange={this.handleChange}
-                      inputRef={(e) => this.em = e}
-                      error={this.state.errorMessage !== null}
-                      label='EM-nummer (studentkortet)'
-                      variant='outlined'
-                      margin='normal'
-                      required/>
-                    <TextField
-                      onChange={this.handleChange}
-                      inputRef={(e) => this.password = e}
-                      helperText={this.state.errorMessage}
-                      error={this.state.errorMessage !== null}
-                      label='Passord'
-                      variant='outlined'
-                      margin='normal'
-                      type='password'
-                      required/>
-                    <TextField
-                      onChange={this.handleChange}
-                      inputRef={(e) => this.passwordVerify = e}
-                      helperText={this.state.errorMessage}
-                      error={this.state.errorMessage !== null}
-                      label='Gjenta passord'
-                      variant='outlined'
-                      margin='normal'
-                      type='password'
-                      required/>
-                    <Button className={classes.mt}
-                      variant='contained'
-                      color='primary'
-                      disabled={this.state.isLoading}
-                      type='submit'>
-                                        Opprett bruker
-                    </Button>
-                    <Link to={URLS.login} className={classNames(classes.buttonLink, classes.mt)}>
-                      <Button
-                        className={classes.button}
-                        color='primary'
-                        disabled={this.state.isLoading}
-                        type='submit'>
-                                            Logg inn
-                      </Button>
-                    </Link>
-                  </Grid>
-                </form>
-              </Paper>
-            </div>
-          </div>
-        </Navigation>
-      );
-    }
+  return (
+    <Navigation footer fancyNavbar whitesmoke>
+      <div className={classes.root}>
+        <div className={classes.top}></div>
+        <div className={classes.main}>
+          <Paper className={classes.paper}>
+            {isLoading && <LinearProgress className={classes.progress} />}
+            <img className={classes.logo} src={TIHLDE_LOGO} height='30em' alt='tihlde_logo'/>
+            <Typography className={classes.header} variant='h6'>Opprett bruker</Typography>
+            <form onSubmit={onSignUp}>
+              <Grid container direction='column'>
+                <TextField
+                  onChange={(e) => setFirstName(e.target.value)}
+                  value={firstName}
+                  error={errorMessage !== null}
+                  label='Fornavn'
+                  variant='outlined'
+                  margin='normal'
+                  required/>
+                <TextField
+                  onChange={(e) => setLastName(e.target.value)}
+                  value={lastName}
+                  error={errorMessage !== null}
+                  label='Etternavn'
+                  variant='outlined'
+                  margin='normal'
+                  required/>
+                <TextField
+                  onChange={(e) => setUsername(e.target.value)}
+                  value={username}
+                  error={errorMessage !== null}
+                  label='NTNU brukernavn'
+                  variant='outlined'
+                  margin='normal'
+                  required/>
+                <TextField
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
+                  error={errorMessage !== null}
+                  label='Epost'
+                  variant='outlined'
+                  margin='normal'
+                  type='email'
+                  required/>
+                <TextField required label='Studie' variant='outlined' margin='normal' onChange={(e) => setStudy(e.target.value)} value={study} select>
+                  {[1, 2, 3, 4, 5].map((i) => <MenuItem key={i} value={i}>{getUserStudyLong(i)}</MenuItem>)}
+                </TextField>
+                <TextField required label='Klasse' variant='outlined' margin='normal' onChange={(e) => setUserClass(e.target.value)} value={userClass} select>
+                  {[1, 2, 3, 4, 5].map((i) => <MenuItem key={i} value={i}>{getUserClass(i)}</MenuItem>)}
+                </TextField>
+                <TextField
+                  onChange={(e) => setEm(e.target.value)}
+                  value={em}
+                  error={errorMessage !== null}
+                  label='EM-nummer (studentkortet)'
+                  variant='outlined'
+                  margin='normal'
+                  required/>
+                <TextField
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
+                  helperText={errorMessage}
+                  error={errorMessage !== null}
+                  label='Passord'
+                  variant='outlined'
+                  margin='normal'
+                  type='password'
+                  required/>
+                <TextField
+                  onChange={(e) => setPasswordVerify(e.target.value)}
+                  value={passwordVerify}
+                  helperText={errorMessage}
+                  error={errorMessage !== null}
+                  label='Gjenta passord'
+                  variant='outlined'
+                  margin='normal'
+                  type='password'
+                  required/>
+                <Button className={classes.button}
+                  variant='contained'
+                  color='primary'
+                  disabled={isLoading}
+                  type='submit'>
+                  Opprett bruker
+                </Button>
+                <Button
+                  component={Link}
+                  to={URLS.login}
+                  className={classes.button}
+                  color='primary'
+                  disabled={isLoading}>
+                  Logg inn
+                </Button>
+              </Grid>
+            </form>
+          </Paper>
+        </div>
+      </div>
+    </Navigation>
+  );
 }
 
 SignUp.propTypes = {
   classes: PropTypes.object,
-  history: PropTypes.object,
 };
 
 export default withStyles(styles)(SignUp);

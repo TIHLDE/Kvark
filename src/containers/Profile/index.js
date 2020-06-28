@@ -1,5 +1,5 @@
 // React
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import URLS from '../../URLS';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
@@ -48,42 +48,32 @@ const styles = (theme) => ({
   },
 });
 
-class Profile extends Component {
+function Profile(props) {
+  const {classes, history} = props;
+  const [isLoading, setIsLoading] = useState(false);
 
-  constructor() {
-    super();
-    this.state = {
-      isLoading: false,
-    };
-  }
+  const logout = () => {
+    setIsLoading(true);
+    AuthService.logOut();
+    history.push(URLS.landing);
+  };
 
-    logOut = () => {
-      this.setState({isLoading: true});
-      AuthService.logOut();
-      this.props.history.push(URLS.landing);
-    }
-
-    render() {
-      const {classes} = this.props;
-      return (
-        <Navigation whitesmoke footer isLoading={this.state.isLoading} fancyNavbar>
-          <div className={classes.root}>
-            <div className={classes.top}>
-
-            </div>
-            <div className={classes.main}>
-              { AuthService.isAuthenticated() ?
-                            <ProfilePaper logOutMethod={this.logOut} /> :
-                            <Paper className={classes.paper} noPadding>
-                              <Typography variant='h6'>Du må være logget inn for å se profilen din</Typography>
-                              <Link to={URLS.login}><Button className={classes.topSpacing} variant='contained' color='primary'>Logg inn</Button></Link>
-                            </Paper>
-              }
-            </div>
-          </div>
-        </Navigation>
-      );
-    }
+  return (
+    <Navigation whitesmoke footer isLoading={isLoading} fancyNavbar>
+      <div className={classes.root}>
+        <div className={classes.top}></div>
+        <div className={classes.main}>
+          {AuthService.isAuthenticated() ?
+            <ProfilePaper logoutMethod={logout} /> :
+            <Paper className={classes.paper} noPadding>
+              <Typography variant='h6'>Du må være logget inn for å se profilen din</Typography>
+              <Link to={URLS.login}><Button className={classes.topSpacing} variant='contained' color='primary'>Logg inn</Button></Link>
+            </Paper>
+          }
+        </div>
+      </div>
+    </Navigation>
+  );
 }
 
 Profile.propTypes = {

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import {Link} from 'react-router-dom';
@@ -59,58 +59,51 @@ const styles = {
   },
 };
 
-class Admin extends Component {
+function Admin(props) {
+  const {classes} = props;
+  const [groups, setGroups] = useState(null);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      groups: null,
-    };
-  }
+  const loadIsGroupMember = () => {
+    UserService.getUserData()
+        .then((user) => {
+          if (user) setGroups(user.groups);
+        });
+  };
 
-  loadIsGroupMember() {
-    UserService.isGroupMember().then((groups) => {
-      this.setState({groups: groups});
-    });
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     window.scrollTo(0, 0); // Scrolls to the top
-    this.loadIsGroupMember();
-  }
+    loadIsGroupMember();
+  }, []);
 
-  render() {
-    const {classes} = this.props;
-    return (
-      <Navigation footer whitesmoke fancyNavbar>
-        <Banner title={Text.header} />
-        <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
-          <div className={classes.grid}>
-            { (this.state.groups && (this.state.groups.isHS || this.state.groups.isPromo || this.state.groups.isNok || this.state.groups.isDevkom)) &&
-              <InfoCard header='Arrangementer' text={Text.events} src={EventAdminIcon} classes={{children: classes.flex}} justifyText>
-                <Link to={URLS.eventAdmin} className={classes.buttonLink}><Button className={classes.button} variant='contained' color='primary'>Administrer arrangementer</Button></Link>
-              </InfoCard>
-            }
-            { (this.state.groups && (this.state.groups.isHS || this.state.groups.isNok || this.state.groups.isDevkom)) &&
-              <InfoCard header='Jobbannonser' text={Text.jobposts} src={JobPostAdminIcon} classes={{children: classes.flex}} justifyText>
-                <Link to={URLS.jobpostsAdmin} className={classes.buttonLink}><Button className={classes.button} variant='contained' color='primary'>Administrer jobbannonser</Button></Link>
-              </InfoCard>
-            }
-            {(this.state.groups && (this.state.groups.isHS || this.state.groups.isDevkom)) &&
-              <InfoCard header='Nyheter' text={Text.news} src={NewsAdminIcon} classes={{children: classes.flex}} justifyText>
-                <Link to={URLS.newsAdmin} className={classes.buttonLink}><Button className={classes.button} variant='contained' color='primary'>Administrer nyheter</Button></Link>
-              </InfoCard>
-            }
-            {(this.state.groups && (this.state.groups.isHS || this.state.groups.isDevkom)) &&
-              <InfoCard header='Medlemmer' text={Text.users} src={UserAdminIcon} classes={{children: classes.flex}} justifyText>
-                <Link to={URLS.userAdmin} className={classes.buttonLink}><Button className={classes.button} variant='contained' color='primary'>Administrer medlemmer</Button></Link>
-              </InfoCard>
-            }
-          </div>
-        </Grid>
-      </Navigation>
-    );
-  }
+  return (
+    <Navigation footer whitesmoke fancyNavbar>
+      <Banner title={Text.header} />
+      <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
+        <div className={classes.grid}>
+          {(groups && (groups.includes('HS') || groups.includes('Promo') || groups.includes('NoK') || groups.includes('DevKom'))) &&
+            <InfoCard header='Arrangementer' text={Text.events} src={EventAdminIcon} classes={{children: classes.flex}} justifyText>
+              <Link to={URLS.eventAdmin} className={classes.buttonLink}><Button className={classes.button} variant='contained' color='primary'>Administrer arrangementer</Button></Link>
+            </InfoCard>
+          }
+          {(groups && (groups.includes('HS') || groups.includes('NoK') || groups.includes('DevKom'))) &&
+            <InfoCard header='Jobbannonser' text={Text.jobposts} src={JobPostAdminIcon} classes={{children: classes.flex}} justifyText>
+              <Link to={URLS.jobpostsAdmin} className={classes.buttonLink}><Button className={classes.button} variant='contained' color='primary'>Administrer jobbannonser</Button></Link>
+            </InfoCard>
+          }
+          {(groups && (groups.includes('HS') || groups.includes('DevKom'))) &&
+            <InfoCard header='Nyheter' text={Text.news} src={NewsAdminIcon} classes={{children: classes.flex}} justifyText>
+              <Link to={URLS.newsAdmin} className={classes.buttonLink}><Button className={classes.button} variant='contained' color='primary'>Administrer nyheter</Button></Link>
+            </InfoCard>
+          }
+          {(groups && (groups.includes('HS') || groups.includes('DevKom'))) &&
+            <InfoCard header='Medlemmer' text={Text.users} src={UserAdminIcon} classes={{children: classes.flex}} justifyText>
+              <Link to={URLS.userAdmin} className={classes.buttonLink}><Button className={classes.button} variant='contained' color='primary'>Administrer medlemmer</Button></Link>
+            </InfoCard>
+          }
+        </div>
+      </Grid>
+    </Navigation>
+  );
 }
 
 Admin.propTypes = {

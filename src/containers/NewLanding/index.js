@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
@@ -49,34 +49,30 @@ const styles = (theme) => ({
   },
 });
 
-class NewLanding extends Component {
+function NewLanding(props) {
+  const {classes} = props;
 
-  componentDidMount() {
-    window.scrollTo(0, 0);
-  }
+  useEffect(() => window.scrollTo(0, 0), []);
 
-  render() {
-    const {classes} = this.props;
-    return (
-      <Navigation footer whitesmoke fancyNavbar>
-        <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
-          <div className={classNames(classes.section, classes.topSection)}>
-            <Wave />
-          </div>
-          <div className={classes.smoke}>
-            <div className={classes.section}>
-              <Typography variant='h4' color="inherit" align="center" className={classes.header}>Arrangementer</Typography>
-              <Calender className={classes.calendar}></Calender>
-            </div>
-          </div>
+  return (
+    <Navigation footer whitesmoke fancyNavbar>
+      <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
+        <div className={classNames(classes.section, classes.topSection)}>
+          <Wave />
+        </div>
+        <div className={classes.smoke}>
           <div className={classes.section}>
-            <Typography variant='h4' color="inherit" align="center" className={classes.header}>Nyheter</Typography>
-            <NewsListView className={classes.calendar}></NewsListView>
+            <Typography variant='h4' color="inherit" align="center" className={classes.header}>Arrangementer</Typography>
+            <Calender className={classes.calendar}></Calender>
           </div>
-        </Grid>
-      </Navigation>
-    );
-  }
+        </div>
+        <div className={classes.section}>
+          <Typography variant='h4' color="inherit" align="center" className={classes.header}>Nyheter</Typography>
+          <NewsListView className={classes.calendar}></NewsListView>
+        </div>
+      </Grid>
+    </Navigation>
+  );
 }
 
 NewLanding.propTypes = {

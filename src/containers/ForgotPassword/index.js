@@ -1,9 +1,8 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import URLS from '../../URLS';
-import classNames from 'classnames';
 
 // Service and action imports
 import AuthService from '../../api/services/AuthService';
@@ -56,132 +55,109 @@ const styles = (theme) => ({
   header: {
     color: theme.colors.text.main,
   },
-  mt: {
-    marginTop: 16,
-    width: '100%',
-  },
   progress: {
     position: 'absolute',
     top: 0, left: 0, right: 0,
   },
-  buttonLink: {
-    textDecoration: 'none',
-    width: '100%',
-  },
   button: {
+    marginTop: 16,
     width: '100%',
   },
   snackbar: {
-    backgroundColor: theme.colors.background.main,
+    marginTop: 55,
+    backgroundColor: theme.colors.background.smoke,
     color: theme.colors.text.main,
   },
 });
 
-class ForgotPassword extends Component {
+function ForgotPassword(props) {
+  const {classes} = props;
+  const [email, setEmail] = useState('');
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [snackMessage, setSnackMessage] = useState(null);
+  const [showSnackbar, setShowSnackbar] = useState(null);
 
-  constructor() {
-    super();
-    this.state = {
-      errorMessage: null,
-      snackMessage: null,
-      isLoading: false,
-    };
+  useEffect(() => window.scrollTo(0, 0), []);
 
-    this.email = React.createRef();
-  }
+  useEffect(() => setErrorMessage(null), [email]);
 
-  componentDidMount() {
-    window.scrollTo(0, 0);
-  }
+  const onSubmit = (event) => {
+    event.preventDefault();
 
-    handleChange = (event) => {
-      this.setState({errorMessage: null});
+    if (isLoading) {
+      return;
     }
 
-    onSubmit = (event) => {
-      event.preventDefault();
-
-      if (this.state.isLoading) {
-        return;
+    setErrorMessage(null);
+    setIsLoading(true);
+    AuthService.forgotPassword(email).then((data) => {
+      if (data) {
+        setSnackMessage('Vi har sendt en link til eposten din der du kan opprette et nytt passord');
+      } else {
+        setSnackMessage(null);
+        setErrorMessage('Vi fant ingen brukere med denne eposten');
       }
+      setShowSnackbar(true);
+      setIsLoading(false);
+    });
+  };
 
-      const email = this.email.value;
-
-      this.setState({errorMessage: null, isLoading: true});
-      AuthService.forgotPassword(email).then((data) => {
-        if (data) {
-          this.setState({showSnackbar: true, snackMessage: 'Vi har sendt en link til eposten din der du kan opprette et nytt passord', isLoading: false});
-        } else {
-          this.setState({showSnackbar: true, snackMessage: null, errorMessage: 'Vi fant ingen brukere med denne eposten', isLoading: false});
-        }
-      });
-    }
-
-    toggleSnackbar = () => {
-      this.setState({showSnackbar: !this.state.showSnackbar});
-    }
-
-    render() {
-      const {classes} = this.props;
-
-      return (
-        <Navigation footer fancyNavbar whitesmoke>
-          <Snackbar
-            open={this.state.showSnackbar}
-            autoHideDuration={3000}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-            onClose={this.toggleSnackbar}>
-            <SnackbarContent
-              className={classes.snackbar}
-              message={this.state.snackMessage}/>
-          </Snackbar>
-          <div className={classes.root}>
-            <div className={classes.top}></div>
-            <div className={classes.main}>
-              <Paper className={classes.paper}>
-                {this.state.isLoading && <LinearProgress className={classes.progress} />}
-                <img className={classes.logo} src={TIHLDE_LOGO} height='30em' alt='tihlde_logo'/>
-                <Typography className={classes.header} variant='h6'>Glemt passord</Typography>
-
-                <form onSubmit={this.onSubmit}>
-                  <Grid container direction='column'>
-                    <TextField
-                      onChange={this.handleChange}
-                      inputRef={(e) => this.email = e}
-                      error={this.state.errorMessage !== null}
-                      label='Epost'
-                      variant='outlined'
-                      margin='normal'
-                      helperText={this.state.errorMessage}
-                      type='email'
-                      required/>
-                    <Button className={classes.mt}
-                      variant='contained'
-                      color='primary'
-                      disabled={this.state.isLoading}
-                      type='submit'>
-                                    Få nytt passord
-                    </Button>
-                    <Link to={URLS.login} className={classNames(classes.buttonLink, classes.mt)}>
-                      <Button
-                        className={classes.button}
-                        color='primary'
-                        disabled={this.state.isLoading}
-                        type='submit'>
-                                            Logg inn
-                      </Button>
-                    </Link>
-                  </Grid>
-                </form>
-              </Paper>
-            </div>
-          </div>
-        </Navigation>
-      );
-    }
+  return (
+    <Navigation footer fancyNavbar whitesmoke>
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={4000}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        onClose={() => setShowSnackbar(false)}>
+        <SnackbarContent
+          className={classes.snackbar}
+          message={snackMessage}/>
+      </Snackbar>
+      <div className={classes.root}>
+        <div className={classes.top}></div>
+        <div className={classes.main}>
+          <Paper className={classes.paper}>
+            {isLoading && <LinearProgress className={classes.progress} />}
+            <img className={classes.logo} src={TIHLDE_LOGO} height='30em' alt='tihlde_logo'/>
+            <Typography className={classes.header} variant='h6'>Glemt passord</Typography>
+            <form onSubmit={onSubmit}>
+              <Grid container direction='column'>
+                <TextField
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
+                  error={errorMessage !== null}
+                  label='Epost'
+                  variant='outlined'
+                  margin='normal'
+                  helperText={errorMessage}
+                  type='email'
+                  required/>
+                <Button className={classes.button}
+                  variant='contained'
+                  color='primary'
+                  disabled={isLoading}
+                  type='submit'>
+                  Få nytt passord
+                </Button>
+                <Button
+                  component={Link}
+                  to={URLS.login}
+                  className={classes.button}
+                  color='primary'
+                  disabled={isLoading}>
+                  Logg inn
+                </Button>
+              </Grid>
+            </form>
+          </Paper>
+        </div>
+      </div>
+    </Navigation>
+  );
 }
 
 ForgotPassword.propTypes = {

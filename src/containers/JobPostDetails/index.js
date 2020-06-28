@@ -1,11 +1,9 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
 // Service imports
 import JobPostService from '../../api/services/JobPostService';
-
-// Material UI Components
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
@@ -20,36 +18,30 @@ const styles = {
   },
 };
 
-class JobPostDetails extends Component {
+function JobPostDetails(props) {
+  const {classes, match} = props;
+  const [isLoading, setIsLoading] = useState(true);
+  const [jobPost, setJobPost] = useState({});
 
-    state = {
-      isLoading: true,
-      post: {},
-    }
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const id = match.params.id;
+    JobPostService.getPostById(id)
+        .then((post) => {
+          setIsLoading(false);
+          setJobPost(post);
+        });
+  }, [match]);
 
-    // Gets the event
-    componentDidMount() {
-      window.scrollTo(0, 0);
-      // Get eventItem id
-      const id = this.props.match.params.id;
-      JobPostService.getPostById(id)
-          .then((post) => {
-            this.setState({isLoading: false, post: post});
-          });
-    }
-
-    render() {
-      const {classes} = this.props;
-      return (
-        <Navigation isLoading={this.state.isLoading} whitesmoke>
-          {!this.state.isLoading &&
-                    <div className={classes.root}>
-                      <JobPostRenderer data={this.state.post}/>
-                    </div>
-          }
-        </Navigation>
-      );
-    }
+  return (
+    <Navigation isLoading={isLoading} whitesmoke>
+      {!isLoading &&
+        <div className={classes.root}>
+          <JobPostRenderer data={jobPost}/>
+        </div>
+      }
+    </Navigation>
+  );
 }
 
 JobPostDetails.propTypes = {
