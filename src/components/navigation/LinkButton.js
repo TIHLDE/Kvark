@@ -40,7 +40,7 @@ const linkButtonStyles = (theme) => ({
 });
 
 const LinkButton = (props) => {
-  const {classes, children, noPadding, textLeft, noText, icon: IconComponent} = props;
+  const {classes, children, noPadding, textLeft, noText, icon: IconComponent, className} = props;
 
   // React router Link do not support external links
   let baseComponent;
@@ -67,7 +67,7 @@ const LinkButton = (props) => {
   }
 
   return (
-    <div className={classNames(classes.wrapper, noPadding ? null : classes.padding)}>
+    <div className={classNames(classes.wrapper, noPadding ? null : classes.padding, className)}>
       <div className={classNames(classes.buttonFrame, textLeft ? classes.textLeft : classes.textCenter)}>
         <ButtonBase
           className={classNames('clickable', classes.button)}
@@ -94,6 +94,7 @@ LinkButton.propTypes = {
   noText: PropTypes.bool,
   classes: PropTypes.object,
   target: PropTypes.string,
+  className: PropTypes.string,
 };
 
 export default withStyles(linkButtonStyles)(LinkButton);

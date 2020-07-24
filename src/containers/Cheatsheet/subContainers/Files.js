@@ -4,7 +4,6 @@ import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
 
 // Material UI Components
-import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -27,7 +26,9 @@ import Paper from '../../../components/layout/Paper';
 const styles = (theme) => ({
   wrapper: {
     paddingTop: 10,
+    paddingBottom: 30,
     maxWidth: 1200,
+    width: '90%',
     position: 'relative',
     margin: 'auto',
     '@media only screen and (max-width: 800px)': {
@@ -42,7 +43,6 @@ const styles = (theme) => ({
     display: 'block',
     margin: 'auto',
     marginTop: 10,
-
     '@media only screen and (max-width: 800px)': {
       order: 1,
     },
@@ -53,8 +53,8 @@ const styles = (theme) => ({
     width: '100%',
     textAlign: 'left',
     gridTemplateRows: '1fr',
-
-    '@media only screen and (max-width: 600px)': {
+    gridTemplateColumns: '2fr 1fr 1fr',
+    '@media only screen and (max-width: 800px)': {
       display: 'none',
     },
   },
@@ -71,12 +71,14 @@ const styles = (theme) => ({
     display: 'flex',
     flexDirection: 'row',
     paddingTop: 15,
-    paddingLeft: 15,
-    paddingRight: 15,
+    paddingLeft: 10,
+    paddingRight: 10,
     paddingBottom: 10,
   },
   box: {
-    margin: 5,
+    marginBottom: 10,
+    marginLeft: 10,
+    marginRight: 10,
   },
 });
 
@@ -137,9 +139,7 @@ const Files = (props) => {
         });
   };
 
-  const filterFiles = async (e, searchInput) => {
-    e.preventDefault();
-
+  const filterFiles = async (searchInput) => {
     setIsFetching(true);
     setNextPage(null);
     setFiles([]);
@@ -152,12 +152,12 @@ const Files = (props) => {
       loadFiles(filters, false);
     }
   };
-
-  const search = (e) => {
-    e.preventDefault();
-    setInput(e.target.value);
-    filterFiles(e, e.target.value);
-  };
+  useEffect(() => {
+    const searchInput = input;
+    const timer = setTimeout(() => filterFiles(searchInput), 500);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line
+  }, [input]);
 
   const getNextPage = () => {
     const search = input;
@@ -180,29 +180,26 @@ const Files = (props) => {
       <div className={classes.wrapper}>
         <Paper className={classes.container} noPadding>
           <div className={classes.filterContainer}>
-            <TextField variant='outlined' className={classes.box} value={input} label='Søk' fullWidth placeholder='Søk...' onChange={(e) => search(e)}/>
+            <TextField variant='outlined' value={input} label='Søk' fullWidth placeholder='Søk...' onChange={(e) => setInput(e.target.value)}/>
           </div>
           {isFetching ? <CircularProgress className={classes.progress} /> :
             <Grow in={!isFetching}>
               <div>
                 <Hidden xsDown>
                   <ListItem className={classes.btn}>
-                    <Grid className={classNames(classes.grid)} container direction='row' wrap='nowrap' alignItems='center'>
+                    <Grid className={classes.grid} container direction='row' wrap='nowrap' alignItems='center'>
                       <Typography className={classNames(classes.title, classes.id)} variant='subtitle1'>Tittel:</Typography>
-                      <Typography className={classes.title} variant='subtitle1'>Beskrivelse:</Typography>
                       <Typography className={classes.title} variant='subtitle1'>Av:</Typography>
                       <Typography className={classNames(classes.title, classes.class)} variant='subtitle1'>Fag:</Typography>
                     </Grid>
                   </ListItem>
                 </Hidden>
-                <Divider/>
                 <Pageination nextPage={getNextPage} page={nextPage} fullWidth>
                   {files && files.map((value, index) => (
                     <React.Fragment key={index}>
-                      <LinkButton to={value.url}>
-                        <ListFiles classId={classId} studyId={studyId} data={value}/>
+                      <LinkButton to={value.url} noText className={classes.box}>
+                        <ListFiles data={value}/>
                       </LinkButton>
-                      <Divider/>
                     </React.Fragment>
                   ))}
                 </Pageination>

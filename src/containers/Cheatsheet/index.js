@@ -17,7 +17,9 @@ import Paper from '../../components/layout/Paper';
 const styles = (theme) => ({
   wrapper: {
     paddingTop: 10,
+    paddingBottom: 30,
     maxWidth: 1200,
+    width: '90%',
     position: 'relative',
     margin: 'auto',
     '@media only screen and (max-width: 800px)': {
