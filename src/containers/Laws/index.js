@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import Helmet from 'react-helmet';
 
 // Material UI Components
+import {withStyles} from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 
 // Icons
@@ -66,6 +67,9 @@ function Laws(props) {
 
   return (
     <Navigation whitesmoke footer fancyNavbar>
+      <Helmet>
+        <title>Lover og regler - TIHLDE</title>
+      </Helmet>
       <Banner title='Lover og regler' />
       <div className={classes.root}>
         <div className={classes.wrapper}>

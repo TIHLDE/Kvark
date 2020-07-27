@@ -1,9 +1,10 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+import Helmet from 'react-helmet';
 
 // Material UI Components
+import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
@@ -16,7 +17,9 @@ import Navigation from '../../../components/navigation/Navigation';
 const styles = (theme) => ({
   wrapper: {
     paddingTop: 10,
+    paddingBottom: 30,
     maxWidth: 1200,
+    width: '90%',
     position: 'relative',
     margin: 'auto',
     '@media only screen and (max-width: 800px)': {
@@ -55,6 +58,9 @@ const Classes = (props) => {
 
   return (
     <Navigation whitesmoke footer fancyNavbar>
+      <Helmet>
+        <title>Kokeboka - TIHLDE</title>
+      </Helmet>
       <Banner title='Kokebok' text={studyId} />
       <div className={classes.wrapper}>
         <Grid className={classes.grid}>

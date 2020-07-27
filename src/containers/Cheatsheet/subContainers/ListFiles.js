@@ -8,9 +8,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 
+// Project components
+import Paper from '../../../components/layout/Paper';
+
 const styles = (theme) => ({
   root: {
-    padding: 0,
     position: 'relative',
     overflow: 'hidden',
     gridAutoFlow: 'column',
@@ -18,20 +20,16 @@ const styles = (theme) => ({
     gridGap: '15px',
     width: '100%',
     textAlign: 'left',
+    gridTemplateRows: '1fr',
+    gridTemplateColumns: '2fr 1fr 1fr',
 
-    '@media only screen and (max-width: 600px)': {
+    '@media only screen and (max-width: 800px)': {
       maxHeight: 'none',
+      gridTemplateColumns: '1fr 1fr',
       maxWidth: '100vw',
       overflow: 'hidden',
       height: 'auto',
       gridAutoFlow: 'row',
-    },
-  },
-  activated: {
-    gridTemplateRows: '1fr',
-
-    '@media only screen and (max-width: 600px)': {
-      gridTemplateColumns: '1fr',
       gridGap: '0',
       textAlign: 'center',
     },
@@ -39,24 +37,31 @@ const styles = (theme) => ({
   title: {
     color: theme.colors.text.main,
   },
-  id: {
-    minWidth: '60px',
+  btn: {
+    width: '100%',
+    '&:hover': {
+      backgroundColor: theme.colors.background.main,
+    },
+  },
+  hide: {
+    '@media only screen and (max-width: 800px)': {
+      display: 'none',
+    },
   },
 });
 
 const ListFiles = (props) => {
   const {classes, data, onClick} = props;
   return (
-    <div>
-      <ListItem className={classes.btn} onClick={onClick}>
-        <Grid className={classNames(classes.root, classes.activated)} container direction='row' wrap='nowrap' alignItems='center'>
-          <Typography className={classNames(classes.title, classes.id)} variant='subtitle1'><strong>{data.title}</strong></Typography>
-          <Typography className={classes.title} variant='subtitle1'>{data.desc}</Typography>
-          <Typography className={classNames(classes.title, classes.id)} variant='subtitle1'>{data.creator}</Typography>
+    <Paper className={classes.btn} noPadding>
+      <ListItem onClick={onClick}>
+        <Grid className={classes.root} container direction='row' wrap='nowrap' alignItems='center'>
+          <Typography className={classes.title} variant='subtitle1'><strong>{data.title}</strong></Typography>
+          <Typography className={classNames(classes.title, classes.hide)} variant='subtitle1'>{data.creator}</Typography>
           <Typography className={classes.title} variant='subtitle1'>{data.course}</Typography>
         </Grid>
       </ListItem>
-    </div>
+    </Paper>
   );
 };
 

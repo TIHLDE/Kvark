@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
 
 // API and store imports
 import {useNews, useCreateNews, usePutNews, useDeleteNews} from '../../api/hooks/News';
@@ -112,6 +113,9 @@ function NewsAdministration(props) {
 
   return (
     <Navigation whitesmoke>
+      <Helmet>
+        <title>Nyhetsadmin - TIHLDE</title>
+      </Helmet>
       <Snackbar
         open={showSnackbar}
         autoHideDuration={4000}

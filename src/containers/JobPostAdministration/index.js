@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
 
 // API and store imports
 import JobPostService from '../../api/services/JobPostService';
@@ -183,6 +184,9 @@ function JobPostAdministration(props) {
 
   return (
     <Navigation whitesmoke>
+      <Helmet>
+        <title>Annonseadmin - TIHLDE</title>
+      </Helmet>
       <Snackbar
         open={showSnackbar}
         autoHideDuration={4000}

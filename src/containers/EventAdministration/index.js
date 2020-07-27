@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import URLS from '../../URLS';
+import Helmet from 'react-helmet';
 
 // API and store imports
 import EventService from '../../api/services/EventService';
@@ -216,6 +217,9 @@ function EventAdministration(props) {
 
   return (
     <Navigation whitesmoke>
+      <Helmet>
+        <title>Arrangementadmin - TIHLDE</title>
+      </Helmet>
       <Snackbar
         open={showSnackbar}
         autoHideDuration={4000}

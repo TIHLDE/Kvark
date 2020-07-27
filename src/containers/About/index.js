@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import URLS from '../../URLS';
 import {Link} from 'react-router-dom';
+import Helmet from 'react-helmet';
 
 // Text Imports
 import Text from '../../text/AboutText';
@@ -91,6 +92,9 @@ function About(props) {
 
   return (
     <Navigation footer whitesmoke fancyNavbar>
+      <Helmet>
+        <title>Om TIHLDE - TIHLDE</title>
+      </Helmet>
       <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
         <Banner
           text={Text.subheader}

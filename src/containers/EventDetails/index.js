@@ -3,6 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import URLS from '../../URLS';
 import {usePalette} from 'react-palette';
+import Helmet from 'react-helmet';
 
 // Service imports
 import EventService from '../../api/services/EventService';
@@ -12,6 +13,7 @@ import AuthService from '../../api/services/AuthService';
 // Project components
 import Navigation from '../../components/navigation/Navigation';
 import EventRenderer from './components/EventRenderer';
+import TIHLDELOGO from '../../assets/img/TihldeBackgroundNew.png';
 
 const styles = (theme) => ({
   root: {
@@ -181,6 +183,13 @@ function EventDetails(props) {
     <Navigation isLoading={isLoading} footer whitesmoke fancyNavbar>
       {!isLoading && event &&
             <div className={classes.root}>
+              <Helmet>
+                <title>{event.title} - TIHLDE</title>
+                <meta property="og:title" content={event.title} />
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content={window.location.href} />
+                <meta property="og:image" content={event.image || 'https://tihlde.org' + TIHLDELOGO} />
+              </Helmet>
               <div className={classes.top}>
                 <div className={classes.topInner} style={{background: data.muted ? data.muted : ''}}></div>
               </div>

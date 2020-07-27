@@ -1,15 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {Link, useHistory} from 'react-router-dom';
 import URLS from '../../URLS';
 import {getUserStudyLong, getUserClass} from '../../utils';
+import Helmet from 'react-helmet';
 
 // Service and action imports
 import AuthService from '../../api/services/AuthService';
 import MiscService from '../../api/services/MiscService';
 
 // Material UI Components
+import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -120,6 +121,9 @@ function SignUp(props) {
 
   return (
     <Navigation footer fancyNavbar whitesmoke>
+      <Helmet>
+        <title>Ny bruker - TIHLDE</title>
+      </Helmet>
       <div className={classes.root}>
         <div className={classes.top}></div>
         <div className={classes.main}>

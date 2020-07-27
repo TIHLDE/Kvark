@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 
 // Material-UI
@@ -37,61 +37,45 @@ const styles = (theme) => ({
   },
 });
 
-class Calender extends React.Component {
+function Calendar({classes}) {
+  const [events, setEvents] = useState([]);
+  const [oldEvents, setOldEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [tab, setTab] = useState(0);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      events: null,
-      isLoading: true,
-      calendarViewMode: 0,
-    };
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     EventService.getEvents()
-        .then((eventObject) => {
-          // This lines ensures backward compabillity with the old api.
-          const events = eventObject.results === undefined ? eventObject : eventObject.results;
+        .then((eventObject) => setEvents(eventObject.results))
+        .catch(() => {})
+        .then(() => setIsLoading(false));
+  }, []);
 
-          this.setState({events: events});
-        })
-        .catch(() => {
+  useEffect(() => {
+    // Load expired events when switching to calendar tab and they havn't been loaded already
+    if (!oldEvents.length && tab === 1) {
+      EventService.getEvents({expired: true})
+          .then((eventObject) => setOldEvents(eventObject.results));
+    }
+  }, [tab, oldEvents]);
 
-        })
-        .then(() => {
-          this.setState({isLoading: false});
-        });
-  }
-
-  handleChange(event, newValue) {
-    this.setState({calendarViewMode: newValue});
-  }
-
-  render() {
-    const {classes} = this.props;
-
-    return (
-      <div className={classes.root}>
-        <div className={classes.container}>
-          <Tabs centered className={classes.tabs} value={this.state.calendarViewMode} onChange={this.handleChange}>
-            <Tab icon={<Reorder />} label='Listevisning' />
-            <Tab icon={<DateRange />} label='Kalendervisning' />
-          </Tabs>
-          {this.state.calendarViewMode === 0 ?
-            <CalendarListView events={this.state.events} isLoading={this.state.isLoading} /> :
-            <CalendarGridView events={this.state.events} />
-          }
-        </div>
+  return (
+    <div className={classes.root}>
+      <div className={classes.container}>
+        <Tabs centered className={classes.tabs} value={tab} onChange={(e, newTab) => setTab(newTab)}>
+          <Tab icon={<Reorder />} label='Listevisning' />
+          <Tab icon={<DateRange />} label='Kalendervisning' />
+        </Tabs>
+        {tab === 0 ?
+          <CalendarListView events={events} isLoading={isLoading} /> :
+          <CalendarGridView events={events} oldEvents={oldEvents} />
+        }
       </div>
-    );
-  }
+    </div>
+  );
 }
 
-Calender.propTypes = {
+Calendar.propTypes = {
   classes: PropTypes.object.isRequired,
-  events: PropTypes.array,
 };
 
-export default withStyles(styles)(Calender);
+export default withStyles(styles)(Calendar);

@@ -3,6 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {MuiThemeProvider as Theme} from '@material-ui/core/styles';
 import {errorTheme} from '../../theme';
+import Helmet from 'react-helmet';
 
 // Text
 import Text from '../../text/JobPostText';
@@ -145,7 +146,7 @@ function JobPosts(props) {
           setJobPosts(displayedJobPosts);
 
           // Used to load expired jobposts when we have nothing else to show.
-          if (displayedJobPosts.length === 0 && !urlParameters.expired) {
+          if (displayedJobPosts.length === 0 && !urlParameters.expired && urlParameters.search) {
             setFilters({...filters, expired: true});
             return;
           }
@@ -182,6 +183,9 @@ function JobPosts(props) {
 
   return (
     <Navigation whitesmoke footer isLoading={isLoading} fancyNavbar>
+      <Helmet>
+        <title>Karriere - TIHLDE</title>
+      </Helmet>
       {!isLoading &&
         <>
           <Banner title='Karriere' />

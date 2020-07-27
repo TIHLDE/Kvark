@@ -48,7 +48,6 @@ const styles = (theme) => ({
   tabs: {
     marginTop: 20,
     marginBottom: 1,
-    backgroundColor: theme.colors.background.light,
     color: theme.colors.text.light,
   },
   button: {

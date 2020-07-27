@@ -1,11 +1,12 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import Helmet from 'react-helmet';
 
 // Text imports
 import Text from '../../text/ServicesText';
 
 // Material UI Components
+import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
@@ -57,6 +58,9 @@ function Services(props) {
 
   return (
     <Navigation footer whitesmoke fancyNavbar>
+      <Helmet>
+        <title>Tjenester - TIHLDE</title>
+      </Helmet>
       <Banner title={Text.header} text={Text.colargol} />
       <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
         <div className={classes.grid}>

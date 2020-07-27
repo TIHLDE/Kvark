@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import URLS from '../../URLS';
+import Helmet from 'react-helmet';
 
 // Service and action imports
 import AuthService from '../../api/services/AuthService';
 
 // Material UI Components
+import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -105,6 +106,9 @@ function ForgotPassword(props) {
 
   return (
     <Navigation footer fancyNavbar whitesmoke>
+      <Helmet>
+        <title>Glemt passord - TIHLDE</title>
+      </Helmet>
       <Snackbar
         open={showSnackbar}
         autoHideDuration={4000}

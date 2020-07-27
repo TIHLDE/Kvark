@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
 import {Link} from 'react-router-dom';
 import URLS from '../../URLS';
+import Helmet from 'react-helmet';
 
 // API and store import
 import UserService from '../../api/services/UserService';
@@ -11,6 +11,7 @@ import UserService from '../../api/services/UserService';
 import Text from '../../text/AdminText';
 
 // Material UI Components
+import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
@@ -77,6 +78,9 @@ function Admin(props) {
 
   return (
     <Navigation footer whitesmoke fancyNavbar>
+      <Helmet>
+        <title>Admin - TIHLDE</title>
+      </Helmet>
       <Banner title={Text.header} />
       <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
         <div className={classes.grid}>

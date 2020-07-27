@@ -22,6 +22,7 @@ const styles = (theme) => ({
     gridGap: 1,
     color: theme.palette.text.secondary,
     margin: 'auto',
+    padding: '0 6px',
   },
   noEventText: {
     padding: 5,
@@ -42,8 +43,7 @@ const styles = (theme) => ({
   },
 });
 
-function NewsListView(props) {
-  const {classes} = props;
+function NewsListView({classes}) {
   const [news, isLoading, isError] = useNews();
   const [newsToDisplay, setNewsToDisplay] = useState(1);
   const today = new Date();

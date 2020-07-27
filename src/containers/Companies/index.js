@@ -2,6 +2,7 @@ import React, {useEffect, createRef} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
@@ -111,6 +112,9 @@ function Companies(props) {
 
   return (
     <Navigation whitesmoke footer fancyNavbar>
+      <Helmet>
+        <title>For bedrifter - TIHLDE</title>
+      </Helmet>
       <div className={classes.root}>
         <Banner title={Text.bannnertitle}>
           <Button

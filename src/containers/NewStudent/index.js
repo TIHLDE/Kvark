@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import parser from 'html-react-parser';
 import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
 
 // Material UI Components
 import Divider from '@material-ui/core/Divider';
@@ -63,6 +64,9 @@ function NewStudent(props) {
 
   return (
     <Navigation footer whitesmoke fancyNavbar>
+      <Helmet>
+        <title>Ny student - TIHLDE</title>
+      </Helmet>
       <Banner
         title={Text.banner.header}
         text={Text.banner.subHeader}
@@ -70,7 +74,7 @@ function NewStudent(props) {
       <div className={classes.root}>
         <div className={classes.content}>
           <InfoCard header={Text.fadder.headline} text={Text.fadder.text} imageClass={classes.image} src={TihldeImg} classes={{children: classes.flex}} justifyText>
-            <Button className={classes.bottomSpacing} variant='contained' color='primary' href='https://drive.google.com/file/d/1iHSVglQSDBH-qIxRv3w8OnC8vDR7NQTd/view?usp=sharing'> Trykk her for info om fadderuka </Button>
+            <Button className={classes.bottomSpacing} variant='contained' color='primary' target='_noopener' href='https://drive.google.com/file/d/1Q8kx9p_khg6LbK1HACPAKIfjVwLPeJ2J/view'> Trykk her for info om fadderuka </Button>
           </InfoCard>
           <InfoCard className={classes.infocard} header={Text.faq.header}>
             {Text.faq.categories.map((category, i) => (
