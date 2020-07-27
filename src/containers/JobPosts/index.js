@@ -145,7 +145,7 @@ function JobPosts(props) {
           setJobPosts(displayedJobPosts);
 
           // Used to load expired jobposts when we have nothing else to show.
-          if (displayedJobPosts.length === 0 && !urlParameters.expired) {
+          if (displayedJobPosts.length === 0 && !urlParameters.expired && urlParameters.search) {
             setFilters({...filters, expired: true});
             return;
           }

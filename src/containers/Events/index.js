@@ -150,7 +150,7 @@ function Events(props) {
         setEvents(displayedEvents);
 
         // Used to load expired events when we have nothing else to show.
-        if (displayedEvents.length === 0 && !urlParameters.expired) {
+        if (displayedEvents.length === 0 && !urlParameters.expired && (urlParameters.search || urlParameters.category)) {
           setFilters({...filters, expired: true});
           return;
         }
