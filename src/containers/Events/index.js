@@ -3,6 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {MuiThemeProvider as Theme} from '@material-ui/core/styles';
 import {errorTheme} from '../../theme';
+import Helmet from 'react-helmet';
 
 // API and store imports
 import EventService from '../../api/services/EventService';
@@ -205,6 +206,9 @@ function Events(props) {
 
   return (
     <Navigation isLoading={isLoading} footer whitesmoke fancyNavbar>
+      <Helmet>
+        <title>Arrangementer - TIHLDE</title>
+      </Helmet>
       <div className={classes.root}>
         <Banner title='Arrangementer'/>
         <div className={classes.wrapper}>

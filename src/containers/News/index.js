@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
 
 // API and store imports
 import {useNews} from '../../api/hooks/News';
 
 // Material Components
+import {withStyles} from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grow from '@material-ui/core/Grow';
 
@@ -112,6 +113,9 @@ const News = (props) => {
 
   return (
     <Navigation isLoading={isLoading} footer whitesmoke fancyNavbar>
+      <Helmet>
+        <title>Nyheter - TIHLDE</title>
+      </Helmet>
       <div className={classes.root}>
         <Banner title='Nyheter'/>
         <div className={classes.wrapper}>

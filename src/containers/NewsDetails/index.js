@@ -3,6 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import URLS from '../../URLS';
 import {usePalette} from 'react-palette';
+import Helmet from 'react-helmet';
 
 // Service imports
 import {useNewsById} from '../../api/hooks/News';
@@ -10,6 +11,7 @@ import {useNewsById} from '../../api/hooks/News';
 // Project components
 import Navigation from '../../components/navigation/Navigation';
 import NewsRenderer from './components/NewsRenderer';
+import TIHLDELOGO from '../../assets/img/TihldeBackgroundNew.png';
 
 const styles = (theme) => ({
   root: {
@@ -65,16 +67,23 @@ function NewsDetails(props) {
 
   return (
     <Navigation isLoading={isLoading} footer whitesmoke fancyNavbar>
-      {!isLoading && newsData &&
-            <div className={classes.root}>
-              <div className={classes.top}>
-                <div className={classes.topInner} style={{background: data.muted ? data.muted : ''}}></div>
-              </div>
-              <div className={classes.wrapper}>
-                <NewsRenderer
-                  newsData={newsData} />
-              </div>
-            </div>
+      {!isLoading && newsData.title &&
+        <div className={classes.root}>
+          <Helmet>
+            <title>{newsData.title} - TIHLDE</title>
+            <meta property="og:title" content={newsData.title} />
+            <meta property="og:type" content="website" />
+            <meta property="og:url" content={window.location.href} />
+            <meta property="og:image" content={newsData.image || 'https://tihlde.org' + TIHLDELOGO} />
+          </Helmet>
+          <div className={classes.top}>
+            <div className={classes.topInner} style={{background: data.muted ? data.muted : ''}}></div>
+          </div>
+          <div className={classes.wrapper}>
+            <NewsRenderer
+              newsData={newsData} />
+          </div>
+        </div>
       }
 
     </Navigation>

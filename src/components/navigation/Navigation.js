@@ -5,6 +5,7 @@ import {Link, withRouter} from 'react-router-dom';
 import URLS from '../../URLS';
 import classNames from 'classnames';
 import {connect} from 'react-redux';
+import Helmet from 'react-helmet';
 
 // API and store imports
 import MiscService from '../../api/services/MiscService';
@@ -245,6 +246,9 @@ function Navigation(props) {
 
   return (
     <>
+      <Helmet>
+        <title>TIHLDE</title>
+      </Helmet>
       <AppBar elevation={(fancyNavbar && scrollLength < 20 ? 0 : 1)} className={classNames(classes.root, (fancyNavbar && scrollLength < 20 && classes.rootLanding))} position="fixed" color="primary">
         <Toolbar className={classes.navContent} disableGutters>
           <div className={classes.navWrapper}>

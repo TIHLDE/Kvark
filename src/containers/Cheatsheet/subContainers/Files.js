@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
+import Helmet from 'react-helmet';
 
 // Material UI Components
+import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -176,6 +177,9 @@ const Files = (props) => {
 
   return (
     <Navigation whitesmoke footer fancyNavbar>
+      <Helmet>
+        <title>Kokeboka - TIHLDE</title>
+      </Helmet>
       <Banner title='Kokebok' text={studyId + ' - ' + String(classId).concat('. klasse')} />
       <div className={classes.wrapper}>
         <Paper className={classes.container} noPadding>

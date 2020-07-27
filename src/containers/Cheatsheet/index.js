@@ -1,9 +1,10 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+import Helmet from 'react-helmet';
 
 // Material UI Components
+import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
@@ -56,6 +57,9 @@ const styles = (theme) => ({
 const Cheatsheet = ({classes}) => {
   return (
     <Navigation whitesmoke footer fancyNavbar>
+      <Helmet>
+        <title>Kokeboka - TIHLDE</title>
+      </Helmet>
       <Banner title='Kokebok' />
       <div className={classes.wrapper}>
         <Grid className={classes.grid}>

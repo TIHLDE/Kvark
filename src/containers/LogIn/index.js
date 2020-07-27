@@ -3,6 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {Link, useHistory} from 'react-router-dom';
 import URLS from '../../URLS';
+import Helmet from 'react-helmet';
 
 // Service and action imports
 import AuthService from '../../api/services/AuthService';
@@ -110,6 +111,9 @@ function LogIn(props) {
 
   return (
     <Navigation footer fancyNavbar whitesmoke>
+      <Helmet>
+        <title>Logg inn - TIHLDE</title>
+      </Helmet>
       <div className={classes.root}>
         <div className={classes.top}></div>
         <div className={classes.main}>

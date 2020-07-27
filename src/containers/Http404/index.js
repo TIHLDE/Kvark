@@ -1,9 +1,10 @@
 import React, {useEffect} from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import Helmet from 'react-helmet';
 
 // Material UI Components
+import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
@@ -45,6 +46,9 @@ function Http404(props) {
 
   return (
     <Navigation footer whitesmoke className={classes.root}>
+      <Helmet>
+        <title>404 - TIHLDE</title>
+      </Helmet>
       <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
         <div className={classes.center}>
           {AuthService.isAuthenticated() ?

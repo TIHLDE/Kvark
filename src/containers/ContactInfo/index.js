@@ -1,11 +1,12 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import Helmet from 'react-helmet';
 
 // Text Imports
 import Text from '../../text/ContactText';
 
 // Material UI Components
+import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
@@ -74,6 +75,9 @@ function ContactInfo(props) {
 
   return (
     <Navigation footer whitesmoke fancyNavbar>
+      <Helmet>
+        <title>Kontakt oss - TIHLDE</title>
+      </Helmet>
       <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
         <Banner title={Text.header} />
 

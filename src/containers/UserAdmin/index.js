@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import Helmet from 'react-helmet';
 
 // Material UI Components
+import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
@@ -68,6 +69,9 @@ function UserAdmin(props) {
 
   return (
     <Navigation whitesmoke fancyNavbar>
+      <Helmet>
+        <title>Brukeradmin - TIHLDE</title>
+      </Helmet>
       <div className={classes.top}></div>
       <Paper className={classes.content}>
         <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>

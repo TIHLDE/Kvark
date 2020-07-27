@@ -1,8 +1,8 @@
 import React, {Component, useState} from 'react';
-import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import jsQR from 'jsqr';
+import Helmet from 'react-helmet';
 
 // Service and action imports
 import EventService from '../../api/services/EventService';
@@ -11,6 +11,7 @@ import EventService from '../../api/services/EventService';
 import Text from '../../text/EventRegistrationText';
 
 // Material UI Components
+import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -312,6 +313,9 @@ class EventRegistration extends Component {
 
       return (
         <Navigation footer fancyNavbar>
+          <Helmet>
+            <title>{this.state.eventName} - registering - TIHLDE</title>
+          </Helmet>
           <div className={classes.root}>
             <div className={classes.top}></div>
             <div className={classes.main}>

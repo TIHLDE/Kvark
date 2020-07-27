@@ -1,9 +1,10 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
 import classNames from 'classnames';
+import Helmet from 'react-helmet';
 
 // Material UI Components
+import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
@@ -56,6 +57,9 @@ function NewLanding(props) {
 
   return (
     <Navigation footer whitesmoke fancyNavbar>
+      <Helmet>
+        <title>Forsiden - TIHLDE</title>
+      </Helmet>
       <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
         <div className={classNames(classes.section, classes.topSection)}>
           <Wave />

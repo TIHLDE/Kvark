@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import URLS from '../../URLS';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+import Helmet from 'react-helmet';
 
 // Serivce imports
 import AuthService from '../../api/services/AuthService';
@@ -60,6 +61,9 @@ function Profile(props) {
 
   return (
     <Navigation whitesmoke footer isLoading={isLoading} fancyNavbar>
+      <Helmet>
+        <title>Profil - TIHLDE</title>
+      </Helmet>
       <div className={classes.root}>
         <div className={classes.top}></div>
         <div className={classes.main}>
