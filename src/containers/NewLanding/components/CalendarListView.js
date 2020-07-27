@@ -39,15 +39,14 @@ const styles = (theme) => ({
   },
 });
 
-function CalendarListView(props) {
-  const {classes, isLoading} = props;
+function CalendarListView({classes, events, isLoading}) {
   const eventsToDisplay = 3;
 
   let eventList = <div className={classes.noEventText}><CircularProgress className={classes.progress}/></div>;
   if (!isLoading) {
-    eventList = props.events && props.events.length > 0 ?
+    eventList = events && events.length > 0 ?
         <React.Fragment>
-          {props.events.map((eventData, index) => {
+          {events.map((eventData, index) => {
             if (index < eventsToDisplay) {
               return (<EventListItem key={index} data={eventData} />);
             }
@@ -55,7 +54,7 @@ function CalendarListView(props) {
           })}
           <div className={classes.moreBtn}>
             <LinkButton noPadding to='/arrangementer/'>
-              <Typography align='center'>Alle arrangementer ({props.events.length})</Typography>
+              <Typography align='center'>Alle arrangementer ({events.length})</Typography>
             </LinkButton>
           </div>
         </React.Fragment> :

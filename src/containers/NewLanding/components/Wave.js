@@ -146,9 +146,7 @@ const style = (theme) => ({
   },
 });
 
-const Wave = (props) => {
-  const {classes} = props;
-
+const Wave = ({classes}) => {
   return (
     <div className="waveWrapper waveAnimation">
       <div className={classes.topInner}>

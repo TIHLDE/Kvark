@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
-import Calender from './components/Calendar';
+import Calendar from './components/Calendar';
 import NewsListView from './components/NewsListView';
 import Wave from './components/Wave';
 
@@ -21,6 +21,7 @@ const styles = (theme) => ({
   section: {
     padding: 48,
     maxWidth: 1000,
+    width: '100%',
     margin: 'auto',
     '@media only screen and (max-width: 1200px)': {
       padding: '48px 0',
@@ -39,10 +40,6 @@ const styles = (theme) => ({
     marginTop: '-3px',
     zIndex: '25',
   },
-  calendar: {
-    justify: 'center',
-    maxWidth: 500,
-  },
   header: {
     marginTop: '2px',
     marginBottom: '20px',
@@ -50,9 +47,7 @@ const styles = (theme) => ({
   },
 });
 
-function NewLanding(props) {
-  const {classes} = props;
-
+function NewLanding({classes}) {
   useEffect(() => window.scrollTo(0, 0), []);
 
   return (
@@ -67,12 +62,12 @@ function NewLanding(props) {
         <div className={classes.smoke}>
           <div className={classes.section}>
             <Typography variant='h4' color="inherit" align="center" className={classes.header}>Arrangementer</Typography>
-            <Calender className={classes.calendar}></Calender>
+            <Calendar />
           </div>
         </div>
         <div className={classes.section}>
           <Typography variant='h4' color="inherit" align="center" className={classes.header}>Nyheter</Typography>
-          <NewsListView className={classes.calendar}></NewsListView>
+          <NewsListView />
         </div>
       </Grid>
     </Navigation>
