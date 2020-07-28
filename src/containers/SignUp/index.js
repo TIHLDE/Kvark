@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {useForm, Controller} from 'react-hook-form';
 import PropTypes from 'prop-types';
 import {Link, useHistory} from 'react-router-dom';
 import URLS from '../../URLS';
@@ -71,16 +72,9 @@ function SignUp(props) {
   const {classes} = props;
   const history = useHistory();
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [userClass, setUserClass] = useState(1);
-  const [study, setStudy] = useState(1);
-  const [em, setEm] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordVerify, setPasswordVerify] = useState('');
-  const [errorMessage, setErrorMessage] = useState(null);
+  const {handleSubmit, errors, control, setError} = useForm();
+
+  const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [redirectURL, setRedirectUrl] = useState(null);
 
@@ -90,30 +84,45 @@ function SignUp(props) {
     MiscService.setLogInRedirectURL(null);
   }, []);
 
-  useEffect(() => setErrorMessage(null), [firstName, lastName, username, email, userClass, study, em, password, passwordVerify]);
-
-  const onSignUp = (event) => {
-    event.preventDefault();
-
+  const onSignUp = (data) => {
     if (isLoading) return;
 
-    if (password !== passwordVerify) {
-      setErrorMessage('Passordene må være like!');
-      return;
-    }
-    if (username.includes('@')) {
-      setErrorMessage('Brukernavn må være uten @stud.ntnu.no');
+    if (getUserStudyLong(data.study) === 'Digital samhandling' && ![4, 5].includes(data.userClass)) {
+      setError('userClass', {
+        type: 'manual',
+        message: 'Digital samhandling har kun 4 og 5 klasse',
+      });
       return;
     }
 
-    setErrorMessage(null);
+    if (!(getUserStudyLong(data.study) === 'Digital samhandling') && [4, 5].includes(data.userClass)) {
+      setError('userClass', {
+        type: 'manual',
+        message: `${getUserStudyLong(data.study)} har ikke 4 og 5 klasse`,
+      });
+      return;
+    }
+
+    if (data.password !== data.passwordVerify) {
+      setError('password', {
+        type: 'manual',
+        message: 'Passordene må være like',
+      });
+      setError('passwordVerify', {
+        type: 'manual',
+        message: 'Passordene må være like',
+      });
+      return;
+    }
+
+    setErrorMessage('');
     setIsLoading(true);
-    const userData = {user_id: username.toLowerCase(), first_name: firstName, last_name: lastName, email: email, user_class: userClass, user_study: study, vipps_transaction_id: 0, em_nr: em, password: password};
+    const userData = {user_id: data.username.toLowerCase(), first_name: data.firstName, last_name: data.lastName, email: data.email, user_class: data.userClass, user_study: data.study, password: data.password};
     AuthService.createUser(userData).then((data) => {
       if (data) {
         history.push(redirectURL || URLS.login);
       } else {
-        setErrorMessage('Noe gikk galt');
+        setErrorMessage('Feil: Noe gikk galt');
         setIsLoading(false);
       }
     });
@@ -129,77 +138,110 @@ function SignUp(props) {
         <div className={classes.main}>
           <Paper className={classes.paper}>
             {isLoading && <LinearProgress className={classes.progress} />}
-            <img className={classes.logo} src={TIHLDE_LOGO} height='30em' alt='tihlde_logo'/>
+            <img className={classes.logo} src={TIHLDE_LOGO} height='30em' alt='tihlde_logo' />
             <Typography className={classes.header} variant='h6'>Opprett bruker</Typography>
-            <form onSubmit={onSignUp}>
+            <form onSubmit={handleSubmit(onSignUp)}>
               <Grid container direction='column'>
-                <TextField
-                  onChange={(e) => setFirstName(e.target.value)}
-                  value={firstName}
-                  error={errorMessage !== null}
+                <Controller
+                  as={TextField}
+                  control={control}
+                  name="firstName"
+                  defaultValue=""
+                  error={errors.firstName}
+                  helperText={errors.firstName?.message}
                   label='Fornavn'
                   variant='outlined'
                   margin='normal'
-                  required/>
-                <TextField
-                  onChange={(e) => setLastName(e.target.value)}
-                  value={lastName}
-                  error={errorMessage !== null}
+                  rules={{required: 'Feltet er påkrevd'}}
+                />
+                <Controller
+                  as={TextField}
+                  control={control}
+                  defaultValue=""
+                  name="lastName"
+                  error={errors.lastName}
+                  helperText={errors.lastName?.message}
                   label='Etternavn'
                   variant='outlined'
                   margin='normal'
-                  required/>
-                <TextField
-                  onChange={(e) => setUsername(e.target.value)}
-                  value={username}
-                  error={errorMessage !== null}
+                  rules={{required: 'Feltet er påkrevd'}}
+                />
+                <Controller
+                  as={TextField}
+                  control={control}
+                  defaultValue=""
+                  name="username"
+                  error={errors.username}
+                  helperText={errors.username?.message}
                   label='NTNU brukernavn'
                   variant='outlined'
                   margin='normal'
-                  required/>
-                <TextField
-                  onChange={(e) => setEmail(e.target.value)}
-                  value={email}
-                  error={errorMessage !== null}
+                  rules={{required: 'Feltet er påkrevd', validate: (value) => (value.includes('@') && 'Brukernavn må være uten @stud.ntnu.no')}}
+
+                />
+                <Controller
+                  as={TextField}
+                  control={control}
+                  defaultValue=""
+                  name="email"
+                  error={errors.email}
+                  helperText={errors.email?.message}
                   label='Epost'
                   variant='outlined'
                   margin='normal'
                   type='email'
-                  required/>
-                <TextField required label='Studie' variant='outlined' margin='normal' onChange={(e) => setStudy(e.target.value)} value={study} select>
+                  rules={{
+                    required: 'Feltet er påkrevd', pattern: {
+                      // eslint-disable-next-line no-useless-escape
+                      value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                      message: 'Feil email format',
+                    },
+                  }}
+                />
+                <Controller as={TextField} name="study" control={control} defaultValue="" error={errors.study} helperText={errors.study?.message} required label='Studie' variant='outlined' margin='normal' rules={{required: 'Feltet er påkrevd'}} select>
                   {[1, 2, 3, 4, 5].map((i) => <MenuItem key={i} value={i}>{getUserStudyLong(i)}</MenuItem>)}
-                </TextField>
-                <TextField required label='Klasse' variant='outlined' margin='normal' onChange={(e) => setUserClass(e.target.value)} value={userClass} select>
+                </Controller>
+                <Controller as={TextField} name="userClass" control={control} defaultValue="" error={errors.userClass} helperText={errors.userClass?.message} required label='Klasse' variant='outlined' margin='normal' rules={{required: 'Feltet er påkrevd'}} select>
                   {[1, 2, 3, 4, 5].map((i) => <MenuItem key={i} value={i}>{getUserClass(i)}</MenuItem>)}
-                </TextField>
-                <TextField
-                  onChange={(e) => setEm(e.target.value)}
-                  value={em}
-                  error={errorMessage !== null}
-                  label='EM-nummer (studentkortet)'
-                  variant='outlined'
-                  margin='normal'
-                  required/>
-                <TextField
-                  onChange={(e) => setPassword(e.target.value)}
-                  value={password}
-                  helperText={errorMessage}
-                  error={errorMessage !== null}
+                </Controller>
+                <Controller
+                  as={TextField}
+                  control={control}
+                  defaultValue=""
+                  helperText={errors.password?.message}
+                  error={errors.password}
+                  name="password"
                   label='Passord'
                   variant='outlined'
                   margin='normal'
                   type='password'
-                  required/>
-                <TextField
-                  onChange={(e) => setPasswordVerify(e.target.value)}
-                  value={passwordVerify}
-                  helperText={errorMessage}
-                  error={errorMessage !== null}
+                  rules={{
+                    required: 'Feltet er påkrevd', minLength: {
+                      value: 8,
+                      message: 'Minimum 8 karakterer',
+                    },
+                  }}
+                />
+                <Controller
+                  as={TextField}
+                  control={control}
+                  defaultValue=""
+                  helperText={errors.passwordVerify?.message}
+                  error={errors.passwordVerify}
+                  name="passwordVerify"
                   label='Gjenta passord'
                   variant='outlined'
                   margin='normal'
                   type='password'
-                  required/>
+                  rules={{
+                    required: 'Feltet er påkrevd', minLength: {
+                      value: 8,
+                      message: 'Minimum 8 karakterer',
+                    },
+                  }}
+                />
+                <Typography color="error">{errorMessage}</Typography>
+
                 <Button className={classes.button}
                   variant='contained'
                   color='primary'

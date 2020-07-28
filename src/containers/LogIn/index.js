@@ -102,10 +102,10 @@ function LogIn(props) {
     AuthService.logIn(username, password).then((data) => {
       if (data) {
         history.push(redirectURL || URLS.landing);
-      } else {
-        setErrorMessage(Text.wrongCred);
-        setIsLoading(false);
       }
+    }).catch((err) => {
+      setErrorMessage(err.detail);
+      setIsLoading(false);
     });
   };
 
@@ -119,7 +119,7 @@ function LogIn(props) {
         <div className={classes.main}>
           <Paper className={classes.paper}>
             {isLoading && <LinearProgress className={classes.progress} />}
-            <img className={classes.logo} src={TIHLDE_LOGO} height='30em' alt='tihlde_logo'/>
+            <img className={classes.logo} src={TIHLDE_LOGO} height='30em' alt='tihlde_logo' />
             <Typography className={classes.header} variant='h6'>{Text.header}</Typography>
             <form onSubmit={onLogin}>
               <Grid container direction='column'>
@@ -130,7 +130,7 @@ function LogIn(props) {
                   label='Brukernavn'
                   variant='outlined'
                   margin='normal'
-                  required/>
+                  required />
                 <TextField
                   onChange={(e) => setPassword(e.target.value)}
                   value={password}
@@ -140,13 +140,13 @@ function LogIn(props) {
                   variant='outlined'
                   margin='normal'
                   type='password'
-                  required/>
+                  required />
                 <Button className={classes.button}
                   variant='contained'
                   color='primary'
                   disabled={isLoading}
                   type='submit'>
-                    Logg inn
+                  Logg inn
                 </Button>
                 <div className={classes.buttonsContainer}>
                   <Button
@@ -155,7 +155,7 @@ function LogIn(props) {
                     className={classes.button}
                     color='primary'
                     disabled={isLoading}>
-                      Glemt passord?
+                    Glemt passord?
                   </Button>
                   <Button
                     component={Link}
@@ -163,7 +163,7 @@ function LogIn(props) {
                     className={classes.button}
                     color='primary'
                     disabled={isLoading}>
-                      Opprett bruker
+                    Opprett bruker
                   </Button>
                 </div>
               </Grid>

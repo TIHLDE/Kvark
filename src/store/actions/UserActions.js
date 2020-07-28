@@ -30,7 +30,6 @@ const createUser = (user) => ({
   last_name: user.last_name,
   email: user.email,
   cell: user.cell,
-  em_nr: user.em_nr,
   gender: user.gender,
   user_class: user.user_class,
   user_study: user.user_study,
@@ -40,4 +39,5 @@ const createUser = (user) => ({
   events: user.events,
   notifications: user.notifications,
   unread_notifications: user.unread_notifications,
+  is_TIHLDE_member: user.isTIHLDEMember,
 });

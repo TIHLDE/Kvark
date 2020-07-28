@@ -265,7 +265,7 @@ function Navigation(props) {
                   <URIbutton data={{link: URLS.newStudent, text: 'Ny student'}} selected={match.url === URLS.newStudent} />
                   {/* AuthService.isAuthenticated() && <URIbutton data={{ link: URLS.cheatsheet, text: "Kokebok" }} selected={match.url === URLS.cheatsheet} />*/}
                   <URIbutton data={{link: URLS.events, text: 'Arrangementer'}} selected={match.url === URLS.events} />
-                  <URIbutton data={{link: URLS.jobposts, text: 'Karriere'}} selected={match.url === URLS.jobposts} />
+                  <URIbutton data={{link: URLS.news, text: 'Nyheter'}} selected={match.url === URLS.news} />
                   <URIbutton data={{link: URLS.company, text: 'For Bedrifter'}} selected={match.url === URLS.company} />
                 </div>
               </Hidden>
