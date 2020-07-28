@@ -55,7 +55,7 @@ import EventRules from './containers/EventRules';
 import MessageGDPR from './components/miscellaneous/MessageGDPR';
 
 // The user needs to be authorized (logged in and member of an authorized group) to access these routes
-const requireAuth = (OriginalComponent, accessGroups) => {
+const requireAuth = (OriginalComponent, accessGroups = []) => {
   function App(props) {
     const {match} = props;
     const isAuthenticated = AuthService.isAuthenticated();
@@ -83,11 +83,14 @@ const requireAuth = (OriginalComponent, accessGroups) => {
               default: break;
             }
           });
+          if (isAuthenticated && accessGroups.length === 0) {
+            setAllowAccess(true);
+          }
           setIsLoading(false);
         }
       });
       return () => isSubscribed = false;
-    }, []);
+    }, [isAuthenticated]);
 
     if (isLoading) {
       return <div>Autentiserer...</div>;
@@ -138,7 +141,7 @@ const Application = () => {
         <Provider store={store}>
           <BrowserRouter>
             <MuiThemeProvider theme={theme}>
-              { GA.init() && <GA.RouteTracker /> }
+              {GA.init() && <GA.RouteTracker />}
               <Switch>
                 <Route exact path='/' component={NewLanding} />
                 <Route path={URLS.events.concat(':id/registrering')} component={EventRegistration} />
@@ -155,11 +158,12 @@ const Application = () => {
                 <Route path={URLS.laws} component={Laws} />
                 <Route path={URLS.privacyPolicy} component={PrivacyPolicy} />
                 <Route path={URLS.eventRules} component={EventRules} />
-                <Route exact path={URLS.cheatsheet} component={Cheatsheet}/>
-                <Route path={URLS.cheatsheet.concat(':studyId/:classId/')} component={FilesCheatsheet}/>
-                <Route path={URLS.cheatsheet.concat(':studyId/')} component={ClassesCheatsheet}/>
-                <Route path={URLS.news.concat(':id/')} component={NewsDetails}/>
-                <Route path={URLS.news} component={News}/>
+                <Route path={URLS.news.concat(':id/')} component={NewsDetails} />
+                <Route path={URLS.news} component={News} />
+
+                <Route exact path={URLS.cheatsheet} component={requireAuth(Cheatsheet)} />
+                <Route path={URLS.cheatsheet.concat(':studyId/:classId/')} component={requireAuth(FilesCheatsheet)} />
+                <Route path={URLS.cheatsheet.concat(':studyId/')} component={requireAuth(ClassesCheatsheet)} />
 
                 <Route exact path={URLS.admin} component={requireAuth(Admin, ['HS', 'Promo', 'Nok', 'Devkom'])} />
                 <Route path={URLS.userAdmin} component={requireAuth(UserAdmin, ['HS', 'Devkom'])} />
@@ -185,4 +189,4 @@ const Application = () => {
 // eslint-disable-next-line no-console
 console.log('Snoker rundt du? Det liker vi. Vi i DevKom ser alltid etter nye medlemmer.');
 
-ReactDOM.render(<Application/>, document.getElementById('root'));
+ReactDOM.render(<Application />, document.getElementById('root'));

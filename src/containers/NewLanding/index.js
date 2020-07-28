@@ -61,13 +61,13 @@ function NewLanding({classes}) {
         </div>
         <div className={classes.smoke}>
           <div className={classes.section}>
-            <Typography variant='h4' color="inherit" align="center" className={classes.header}>Arrangementer</Typography>
-            <Calendar />
+            <Typography variant='h4' color="inherit" align="center" className={classes.header}>Nyheter</Typography>
+            <NewsListView />
           </div>
         </div>
         <div className={classes.section}>
-          <Typography variant='h4' color="inherit" align="center" className={classes.header}>Nyheter</Typography>
-          <NewsListView />
+          <Typography variant='h4' color="inherit" align="center" className={classes.header}>Arrangementer</Typography>
+          <Calendar />
         </div>
       </Grid>
     </Navigation>
