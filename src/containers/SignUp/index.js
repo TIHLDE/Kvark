@@ -177,7 +177,6 @@ function SignUp(props) {
                   variant='outlined'
                   margin='normal'
                   rules={{required: 'Feltet er påkrevd', validate: (value) => (!value.includes('@') || 'Brukernavn må være uten @stud.ntnu.no')}}
-
                 />
                 <Controller
                   as={TextField}
