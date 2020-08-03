@@ -147,9 +147,9 @@ function SignUp(props) {
                   control={control}
                   name="firstName"
                   defaultValue=""
-                  error={errors.firstName}
+                  error={Boolean(errors.firstName)}
                   helperText={errors.firstName?.message}
-                  label='Fornavn'
+                  label='Fornavn *'
                   variant='outlined'
                   margin='normal'
                   rules={{required: 'Feltet er påkrevd'}}
@@ -159,9 +159,9 @@ function SignUp(props) {
                   control={control}
                   defaultValue=""
                   name="lastName"
-                  error={errors.lastName}
+                  error={Boolean(errors.lastName)}
                   helperText={errors.lastName?.message}
-                  label='Etternavn'
+                  label='Etternavn *'
                   variant='outlined'
                   margin='normal'
                   rules={{required: 'Feltet er påkrevd'}}
@@ -171,22 +171,21 @@ function SignUp(props) {
                   control={control}
                   defaultValue=""
                   name="username"
-                  error={errors.username}
+                  error={Boolean(errors.username)}
                   helperText={errors.username?.message}
-                  label='NTNU brukernavn'
+                  label='NTNU brukernavn *'
                   variant='outlined'
                   margin='normal'
-                  rules={{required: 'Feltet er påkrevd', validate: (value) => (value.includes('@') && 'Brukernavn må være uten @stud.ntnu.no')}}
-
+                  rules={{required: 'Feltet er påkrevd', validate: (value) => (!value.includes('@') || 'Brukernavn må være uten @stud.ntnu.no')}}
                 />
                 <Controller
                   as={TextField}
                   control={control}
                   defaultValue=""
                   name="email"
-                  error={errors.email}
+                  error={Boolean(errors.email)}
                   helperText={errors.email?.message}
-                  label='Epost'
+                  label='E-post *'
                   variant='outlined'
                   margin='normal'
                   type='email'
@@ -194,14 +193,14 @@ function SignUp(props) {
                     required: 'Feltet er påkrevd', pattern: {
                       // eslint-disable-next-line no-useless-escape
                       value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                      message: 'Feil email format',
+                      message: 'Ugyldig e-post',
                     },
                   }}
                 />
-                <Controller as={TextField} name="study" control={control} defaultValue="" error={errors.study} helperText={errors.study?.message} required label='Studie' variant='outlined' margin='normal' rules={{required: 'Feltet er påkrevd'}} select>
+                <Controller as={TextField} name="study" control={control} defaultValue="" error={Boolean(errors.study)} helperText={errors.study?.message} required label='Studie' variant='outlined' margin='normal' rules={{required: 'Feltet er påkrevd'}} select>
                   {[1, 2, 3, 4, 5].map((i) => <MenuItem key={i} value={i}>{getUserStudyLong(i)}</MenuItem>)}
                 </Controller>
-                <Controller as={TextField} name="userClass" control={control} defaultValue="" error={errors.userClass} helperText={errors.userClass?.message} required label='Klasse' variant='outlined' margin='normal' rules={{required: 'Feltet er påkrevd'}} select>
+                <Controller as={TextField} name="userClass" control={control} defaultValue="" error={Boolean(errors.userClass)} helperText={errors.userClass?.message} required label='Klasse' variant='outlined' margin='normal' rules={{required: 'Feltet er påkrevd'}} select>
                   {[1, 2, 3, 4, 5].map((i) => <MenuItem key={i} value={i}>{getUserClass(i)}</MenuItem>)}
                 </Controller>
                 <Controller
@@ -209,9 +208,9 @@ function SignUp(props) {
                   control={control}
                   defaultValue=""
                   helperText={errors.password?.message}
-                  error={errors.password}
+                  error={Boolean(errors.password)}
                   name="password"
-                  label='Passord'
+                  label='Passord *'
                   variant='outlined'
                   margin='normal'
                   type='password'
@@ -227,9 +226,9 @@ function SignUp(props) {
                   control={control}
                   defaultValue=""
                   helperText={errors.passwordVerify?.message}
-                  error={errors.passwordVerify}
+                  error={Boolean(errors.passwordVerify)}
                   name="passwordVerify"
-                  label='Gjenta passord'
+                  label='Gjenta passord *'
                   variant='outlined'
                   margin='normal'
                   type='password'
