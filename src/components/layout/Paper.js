@@ -9,6 +9,7 @@ const styles = (theme) => ({
     border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
     borderRadius: theme.sizes.border.radius,
     backgroundColor: theme.colors.background.light,
+    overflow: 'hidden',
   },
   padding: {
     padding: 28,

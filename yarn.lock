@@ -7905,6 +7905,11 @@ left-pad@^1.3.0:
   resolved "https://registry.yarnpkg.com/left-pad/-/left-pad-1.3.0.tgz#5b8a3a7765dfe001261dde915589e782f8c94d1e"
   integrity sha512-XI5MPzVNApjAyhQzphX8BkmKsKUxD4LdyK24iZeQGinBN9yTQT3bFlCBy/aVx2HrNcqQGsdot8ghrjyrvMCoEA==
 
+lemons@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/lemons/-/lemons-1.6.0.tgz#49c187e08f9675a1ef3e0f077b4192805531d1bf"
+  integrity sha512-nMnKQjqWp2G3odsHtwZD//WStAYnqCA6bM3JXLTLsQ1Mwkj2iLuaNQTJ6axt7wGqrZHMSt6tKDlHdjjJt9Cgxg==
+
 leven@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/leven/-/leven-3.1.0.tgz#77891de834064cccba82ae7842bb6b14a13ed7f2"
