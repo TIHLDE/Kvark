@@ -46,8 +46,6 @@ import EventRegistration from './containers/EventRegistration';
 import SignUp from './containers/SignUp';
 import PrivacyPolicy from './containers/PrivacyPolicy';
 import Cheatsheet from './containers/Cheatsheet';
-import ClassesCheatsheet from './containers/Cheatsheet/subContainers/Classes';
-import FilesCheatsheet from './containers/Cheatsheet/subContainers/Files';
 import NewsDetails from './containers/NewsDetails';
 import News from './containers/News';
 import NewsAdministration from './containers/NewsAdministration';
@@ -161,9 +159,8 @@ const Application = () => {
                 <Route path={URLS.news.concat(':id/')} component={NewsDetails} />
                 <Route path={URLS.news} component={News} />
 
-                <Route exact path={URLS.cheatsheet} component={requireAuth(Cheatsheet)} />
-                <Route path={URLS.cheatsheet.concat(':studyId/:classId/')} component={requireAuth(FilesCheatsheet)} />
-                <Route path={URLS.cheatsheet.concat(':studyId/')} component={requireAuth(ClassesCheatsheet)} />
+                <Route path={URLS.cheatsheet.concat(':studyId/:classId/')} component={requireAuth(Cheatsheet)} />
+                <Route path={URLS.cheatsheet} component={requireAuth(Cheatsheet)} />
 
                 <Route exact path={URLS.admin} component={requireAuth(Admin, ['HS', 'Promo', 'Nok', 'Devkom'])} />
                 <Route path={URLS.userAdmin} component={requireAuth(UserAdmin, ['HS', 'Devkom'])} />
