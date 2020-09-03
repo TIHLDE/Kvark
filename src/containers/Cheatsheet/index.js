@@ -84,6 +84,7 @@ const styles = (theme) => ({
   },
   listItem: {
     marginBottom: 10,
+    overflow: 'hidden',
   },
   hide: {
     '@media only screen and (max-width: 800px)': {
