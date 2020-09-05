@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import URLS from '../../URLS';
 import Helmet from 'react-helmet';
 
@@ -11,7 +11,7 @@ import UserService from '../../api/services/UserService';
 import Text from '../../text/AdminText';
 
 // Material UI Components
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
@@ -61,14 +61,15 @@ const styles = {
 };
 
 function Admin(props) {
-  const {classes} = props;
+  const { classes } = props;
   const [groups, setGroups] = useState(null);
 
   const loadIsGroupMember = () => {
-    UserService.getUserData()
-        .then((user) => {
-          if (user) setGroups(user.groups);
-        });
+    UserService.getUserData().then((user) => {
+      if (user) {
+        setGroups(user.groups);
+      }
+    });
   };
 
   useEffect(() => {
@@ -77,33 +78,49 @@ function Admin(props) {
   }, []);
 
   return (
-    <Navigation footer whitesmoke fancyNavbar>
+    <Navigation fancyNavbar footer whitesmoke>
       <Helmet>
         <title>Admin - TIHLDE</title>
       </Helmet>
       <Banner title={Text.header} />
-      <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
+      <Grid alignItems='center' className={classes.root} container direction='column' wrap='nowrap'>
         <div className={classes.grid}>
-          {(groups && (groups.includes('HS') || groups.includes('Promo') || groups.includes('NoK') || groups.includes('DevKom'))) &&
-            <InfoCard header='Arrangementer' text={Text.events} src={EventAdminIcon} classes={{children: classes.flex}} justifyText>
-              <Link to={URLS.eventAdmin} className={classes.buttonLink}><Button className={classes.button} variant='contained' color='primary'>Administrer arrangementer</Button></Link>
+          {groups && (groups.includes('HS') || groups.includes('Promo') || groups.includes('NoK') || groups.includes('DevKom')) && (
+            <InfoCard classes={{ children: classes.flex }} header='Arrangementer' justifyText src={EventAdminIcon} text={Text.events}>
+              <Link className={classes.buttonLink} to={URLS.eventAdmin}>
+                <Button className={classes.button} color='primary' variant='contained'>
+                  Administrer arrangementer
+                </Button>
+              </Link>
             </InfoCard>
-          }
-          {(groups && (groups.includes('HS') || groups.includes('NoK') || groups.includes('DevKom'))) &&
-            <InfoCard header='Jobbannonser' text={Text.jobposts} src={JobPostAdminIcon} classes={{children: classes.flex}} justifyText>
-              <Link to={URLS.jobpostsAdmin} className={classes.buttonLink}><Button className={classes.button} variant='contained' color='primary'>Administrer jobbannonser</Button></Link>
+          )}
+          {groups && (groups.includes('HS') || groups.includes('NoK') || groups.includes('DevKom')) && (
+            <InfoCard classes={{ children: classes.flex }} header='Jobbannonser' justifyText src={JobPostAdminIcon} text={Text.jobposts}>
+              <Link className={classes.buttonLink} to={URLS.jobpostsAdmin}>
+                <Button className={classes.button} color='primary' variant='contained'>
+                  Administrer jobbannonser
+                </Button>
+              </Link>
             </InfoCard>
-          }
-          {(groups && (groups.includes('HS') || groups.includes('DevKom'))) &&
-            <InfoCard header='Nyheter' text={Text.news} src={NewsAdminIcon} classes={{children: classes.flex}} justifyText>
-              <Link to={URLS.newsAdmin} className={classes.buttonLink}><Button className={classes.button} variant='contained' color='primary'>Administrer nyheter</Button></Link>
+          )}
+          {groups && (groups.includes('HS') || groups.includes('DevKom')) && (
+            <InfoCard classes={{ children: classes.flex }} header='Nyheter' justifyText src={NewsAdminIcon} text={Text.news}>
+              <Link className={classes.buttonLink} to={URLS.newsAdmin}>
+                <Button className={classes.button} color='primary' variant='contained'>
+                  Administrer nyheter
+                </Button>
+              </Link>
             </InfoCard>
-          }
-          {(groups && (groups.includes('HS') || groups.includes('DevKom'))) &&
-            <InfoCard header='Medlemmer' text={Text.users} src={UserAdminIcon} classes={{children: classes.flex}} justifyText>
-              <Link to={URLS.userAdmin} className={classes.buttonLink}><Button className={classes.button} variant='contained' color='primary'>Administrer medlemmer</Button></Link>
+          )}
+          {groups && (groups.includes('HS') || groups.includes('DevKom')) && (
+            <InfoCard classes={{ children: classes.flex }} header='Medlemmer' justifyText src={UserAdminIcon} text={Text.users}>
+              <Link className={classes.buttonLink} to={URLS.userAdmin}>
+                <Button className={classes.button} color='primary' variant='contained'>
+                  Administrer medlemmer
+                </Button>
+              </Link>
             </InfoCard>
-          }
+          )}
         </div>
       </Grid>
     </Navigation>

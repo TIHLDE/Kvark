@@ -1,13 +1,13 @@
-import React, {useState, useContext} from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import COOKIE from '../../api/cookie';
-import {THEME, THEME_OPTIONS} from '../../settings';
+import { THEME, THEME_OPTIONS } from '../../settings';
 import ThemeStore from '../../themeStore';
 import GA from '../../analytics';
 
 // Material-ui
 import Modal from '@material-ui/core/Modal';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import ToggleButton from '@material-ui/lab/ToggleButton';
@@ -63,7 +63,7 @@ const style = (theme) => ({
 });
 
 const ThemeSettings = (props) => {
-  const {classes, open, onClose} = props;
+  const { classes, open, onClose } = props;
   const themeStore = useContext(ThemeStore);
 
   let cookieValue = COOKIE.get(THEME);
@@ -83,39 +83,36 @@ const ThemeSettings = (props) => {
   };
 
   return (
-    <Modal
-      open={open}
-      onClose={onClose}>
+    <Modal onClose={onClose} open={open}>
       <>
         <Paper className={classes.paper} noPadding>
           <div className={classes.content}>
-            <Typography className={classes.header} variant='h4'>Tema</Typography>
-            <ToggleButtonGroup
-              orientation='vertical'
-              className={classes.group}
-              value={themeName}
-              exclusive
-              onChange={changeTheme}
-              aria-label="Tema"
-            >
-              <ToggleButton value={THEME_OPTIONS.light} aria-label="Lyst tema">
+            <Typography className={classes.header} variant='h4'>
+              Tema
+            </Typography>
+            <ToggleButtonGroup aria-label='Tema' className={classes.group} exclusive onChange={changeTheme} orientation='vertical' value={themeName}>
+              <ToggleButton aria-label='Lyst tema' value={THEME_OPTIONS.light}>
                 <LightIcon />
-                <Typography className={classes.groupButton} variant='subtitle2'>Lyst</Typography>
+                <Typography className={classes.groupButton} variant='subtitle2'>
+                  Lyst
+                </Typography>
               </ToggleButton>
-              <ToggleButton value={THEME_OPTIONS.automatic} aria-label="Enhetsinnstilling">
+              <ToggleButton aria-label='Enhetsinnstilling' value={THEME_OPTIONS.automatic}>
                 <DeviceIcon />
-                <Typography className={classes.groupButton} variant='subtitle2'>Automatisk</Typography>
+                <Typography className={classes.groupButton} variant='subtitle2'>
+                  Automatisk
+                </Typography>
               </ToggleButton>
-              <ToggleButton value={THEME_OPTIONS.dark} aria-label="Mørkt tema">
+              <ToggleButton aria-label='Mørkt tema' value={THEME_OPTIONS.dark}>
                 <DarkIcon />
-                <Typography className={classes.groupButton} variant='subtitle2'>Mørkt</Typography>
+                <Typography className={classes.groupButton} variant='subtitle2'>
+                  Mørkt
+                </Typography>
               </ToggleButton>
             </ToggleButtonGroup>
-            <Button
-              className={classes.button}
-              color='primary'
-              onClick={onClose}
-              align='center'>Lukk</Button>
+            <Button align='center' className={classes.button} color='primary' onClick={onClose}>
+              Lukk
+            </Button>
           </div>
         </Paper>
       </>

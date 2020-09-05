@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import URLS from '../../URLS';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 
 // Text Imports
@@ -86,34 +86,22 @@ const styles = (theme) => ({
 });
 
 function About(props) {
-  const {classes} = props;
+  const { classes } = props;
 
   useEffect(() => window.scrollTo(0, 0), []);
 
   return (
-    <Navigation footer whitesmoke fancyNavbar>
+    <Navigation fancyNavbar footer whitesmoke>
       <Helmet>
         <title>Om TIHLDE - TIHLDE</title>
       </Helmet>
-      <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
-        <Banner
-          text={Text.subheader}
-          title={Text.header}>
+      <Grid alignItems='center' className={classes.root} container direction='column' wrap='nowrap'>
+        <Banner text={Text.subheader} title={Text.header}>
           <>
-            <Button
-              component={Link}
-              to={URLS.laws}
-              variant="outlined"
-              className={classes.button}
-              color='primary'>
+            <Button className={classes.button} color='primary' component={Link} to={URLS.laws} variant='outlined'>
               TIHLDE&apos;s Lover
             </Button>
-            <Button
-              component={Link}
-              to={URLS.services}
-              variant="outlined"
-              className={classes.button}
-              color='primary'>
+            <Button className={classes.button} color='primary' component={Link} to={URLS.services} variant='outlined'>
               Tjenester
             </Button>
           </>
@@ -121,40 +109,46 @@ function About(props) {
 
         <div>
           <div className={classes.section}>
-            <Typography className={classes.header} variant='h4' color='inherit' align='center'>Undergrupper</Typography>
+            <Typography align='center' className={classes.header} color='inherit' variant='h4'>
+              Undergrupper
+            </Typography>
             <div className={classes.grid}>
-              <InfoCard header='Drift' text={Text.drift} src={OperationIcon}/>
-              <InfoCard header='Sosialen' text={Text.social} src={SocialIcon}/>
-              <InfoCard header='Næringsliv og Kurs' text={Text.business} src={BusinessIcon}/>
-              <InfoCard header='Promo' text={Text.promo} src={PromoIcon}/>
+              <InfoCard header='Drift' src={OperationIcon} text={Text.drift} />
+              <InfoCard header='Sosialen' src={SocialIcon} text={Text.social} />
+              <InfoCard header='Næringsliv og Kurs' src={BusinessIcon} text={Text.business} />
+              <InfoCard header='Promo' src={PromoIcon} text={Text.promo} />
             </div>
           </div>
         </div>
 
         <div className={classes.smoke}>
           <div className={classes.section}>
-            <Typography className={classes.header} variant='h4' color='inherit' align='center'>Komitéer</Typography>
+            <Typography align='center' className={classes.header} color='inherit' variant='h4'>
+              Komitéer
+            </Typography>
             <div className={classes.grid}>
-              <InfoCard header='KontKom' text={Text.kontkom} justifyText/>
-              <InfoCard header='Devkom' text={Text.devkom} justifyText/>
-              <InfoCard header='Turkom' text={Text.turkom} justifyText/>
-              <InfoCard header='Jubkom' text={Text.jubkom} justifyText/>
+              <InfoCard header='KontKom' justifyText text={Text.kontkom} />
+              <InfoCard header='Devkom' justifyText text={Text.devkom} />
+              <InfoCard header='Turkom' justifyText text={Text.turkom} />
+              <InfoCard header='Jubkom' justifyText text={Text.jubkom} />
             </div>
           </div>
         </div>
 
         <div>
           <div className={classes.section}>
-            <Typography className={classes.header} variant='h4' color='inherit' align='center'>Organisasjonskart</Typography>
+            <Typography align='center' className={classes.header} color='inherit' variant='h4'>
+              Organisasjonskart
+            </Typography>
             <Paper className={classes.orgMap} noPadding>
-              <ClickableImage className={classes.miniPadding} image={OrgMap} alt='organisasjonskart' width='100%'/>
+              <ClickableImage alt='organisasjonskart' className={classes.miniPadding} image={OrgMap} width='100%' />
             </Paper>
           </div>
         </div>
 
         <div className={classes.smoke}>
           <div className={classes.section}>
-            <InfoCard className={classes.header} header='Historie' text={Text.history} subheader='Opptak' subText={Text.history2} justifyText/>
+            <InfoCard className={classes.header} header='Historie' justifyText subheader='Opptak' subText={Text.history2} text={Text.history} />
           </div>
         </div>
       </Grid>

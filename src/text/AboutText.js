@@ -1,12 +1,18 @@
 export default {
   header: 'Om TIHLDE',
-  subheader: 'TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Drift av datasystemer, samt masterstudiet Digital samhandling ved AIT, IDI, NTNU på Gløshaugen.',
-  history: 'TIHLDE ble stiftet 16.april 1993, med formål å fremme det sosiale og faglige tilbudet ved EDB-avdelingen ved TIH, som etterhvert ble AITeL ved HiST, deretter IIE ved HiST, nå AIT, IDI ved NTNU. Mye har skjedd siden da, men dette er fortsatt vårt mål. Alle studenter og ansatte tilknyttet AIT, IDI ved Gløshaugen kan bli medlem, men opptaket skjer kun i begynnelsen av hvert skoleår.',
-  history2: 'TIHLDE er en ikke-profitabel og politisk nøytral organisasjon som baserer seg på frivillig engasjement fra studenter. I tillegg til hovedstyret (HS), har TIHLDE pr idag 4 undergrupper: drift, næringsliv og kurs, sosialen og promo, og 6 komitéer: KosKom, TurKom, Brettspill, Redaksjonen, DevKom, og FadderKom. I tillegg har TIHLDE 2 interessegrupper: SEMIKOLON og TIHLDE PYTHONS',
+  subheader:
+    'TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Drift av datasystemer, samt masterstudiet Digital samhandling ved AIT, IDI, NTNU på Gløshaugen.',
+  history:
+    'TIHLDE ble stiftet 16.april 1993, med formål å fremme det sosiale og faglige tilbudet ved EDB-avdelingen ved TIH, som etterhvert ble AITeL ved HiST, deretter IIE ved HiST, nå AIT, IDI ved NTNU. Mye har skjedd siden da, men dette er fortsatt vårt mål. Alle studenter og ansatte tilknyttet AIT, IDI ved Gløshaugen kan bli medlem, men opptaket skjer kun i begynnelsen av hvert skoleår.',
+  history2:
+    'TIHLDE er en ikke-profitabel og politisk nøytral organisasjon som baserer seg på frivillig engasjement fra studenter. I tillegg til hovedstyret (HS), har TIHLDE pr idag 4 undergrupper: drift, næringsliv og kurs, sosialen og promo, og 6 komitéer: KosKom, TurKom, Brettspill, Redaksjonen, DevKom, og FadderKom. I tillegg har TIHLDE 2 interessegrupper: SEMIKOLON og TIHLDE PYTHONS',
 
-  drift: 'Drift er en gruppe på 9 studenter som tar seg av drifting av TIHLDEs datasystemer. Her inngår bla. medlemstjeneren Colargol, studenttjeneren Balthazar, VM-parken Nerdvana samt andre støttetjenere. Oppgavene til Drift er brukeradministrasjon, backup, installasjon og oppgradering av programvare, DNS-administrering, brannslukking og annet. ',
-  social: 'Sosialen sørger for samhold på tvers av alle linjene i TIHLDE! De arrangerer alt fra LAN til fester og hytteturer. Sosialen er med å bidra til at alle medlemmene i TIHLDE skal bli kjent, trives og ha det gøy på tvers av studiene. Sosialen er alltid åpen for engasjerte medlemmer med gode ideer.',
-  business: 'Næringsliv og Kurs, tidligere Orakel, jobber for å fremme det faglige tilbudet til medlemmene. Her inngår bla. bedriftspresentasjoner, kurs, foredrag, nærlingslivsdag og lignende.',
+  drift:
+    'Drift er en gruppe på 9 studenter som tar seg av drifting av TIHLDEs datasystemer. Her inngår bla. medlemstjeneren Colargol, studenttjeneren Balthazar, VM-parken Nerdvana samt andre støttetjenere. Oppgavene til Drift er brukeradministrasjon, backup, installasjon og oppgradering av programvare, DNS-administrering, brannslukking og annet. ',
+  social:
+    'Sosialen sørger for samhold på tvers av alle linjene i TIHLDE! De arrangerer alt fra LAN til fester og hytteturer. Sosialen er med å bidra til at alle medlemmene i TIHLDE skal bli kjent, trives og ha det gøy på tvers av studiene. Sosialen er alltid åpen for engasjerte medlemmer med gode ideer.',
+  business:
+    'Næringsliv og Kurs, tidligere Orakel, jobber for å fremme det faglige tilbudet til medlemmene. Her inngår bla. bedriftspresentasjoner, kurs, foredrag, nærlingslivsdag og lignende.',
   promo: 'Promo har som oppgave å informere studenter og medlemmer om TIHLDEs saker og arrangementer, i tillegg til å dokumentere hendinger som har vært.',
 
   jubkom: `Jubileumskomitéen til TIHLDE aktiveres hvert jubileums år, vanligvis hvert 5 år.
@@ -26,7 +32,8 @@ export default {
   kontkom: `KontorKomitén har ansvaret for kontoret og TIHLDEs kioskvirksomhet.
     I tillegg til å være kontoransvarlige, jobber også komitéen med å arrangere flere koselige arrangementer, som er med på å spre glede gjennom semesteret for TIHLDEs medlemmer!`,
 
-  arrkom: 'Arrangementskomitéen til TIHLDE har ansvar for alle store sosiale arrangementer utenom rene fester. Dette er naturlig nok stor variasjon i typen arrangementer, og jobben er derfor svært variert. Arrangementer som galla, LAN, og Julebord er typiske arrangementer som ArrKom planlegger og gjennomfører.',
+  arrkom:
+    'Arrangementskomitéen til TIHLDE har ansvar for alle store sosiale arrangementer utenom rene fester. Dette er naturlig nok stor variasjon i typen arrangementer, og jobben er derfor svært variert. Arrangementer som galla, LAN, og Julebord er typiske arrangementer som ArrKom planlegger og gjennomfører.',
   arrkom2: `ArrKom er direkte underlagt undergruppen Sosialen, og opptak til ArrKom skjer gjennom Sosialen.
     Om du ønsker å være med, så åpner Sosialen for opptak 31. august i år. Følg med på tihlde.org, og vår <a target="_blank" rel="noopener noreferrer" href="http://facebook.com/tihlde">Facebookside</a>, for informasjon rundt opptaket.`,
 

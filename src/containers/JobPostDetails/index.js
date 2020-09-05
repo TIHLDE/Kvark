@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import React, { useState, useEffect } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
@@ -20,34 +20,33 @@ const styles = {
 };
 
 function JobPostDetails(props) {
-  const {classes, match} = props;
+  const { classes, match } = props;
   const [isLoading, setIsLoading] = useState(true);
   const [jobPost, setJobPost] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     const id = match.params.id;
-    JobPostService.getPostById(id)
-        .then((post) => {
-          setJobPost(post);
-          setIsLoading(false);
-        });
+    JobPostService.getPostById(id).then((post) => {
+      setJobPost(post);
+      setIsLoading(false);
+    });
   }, [match]);
 
   return (
     <Navigation isLoading={isLoading} whitesmoke>
-      {!isLoading && jobPost &&
+      {!isLoading && jobPost && (
         <div className={classes.root}>
           <Helmet>
             <title>{jobPost.title} - TIHLDE</title>
-            <meta property="og:title" content={jobPost.title} />
-            <meta property="og:type" content="website" />
-            <meta property="og:url" content={window.location.href} />
-            <meta property="og:image" content={jobPost.logo} />
+            <meta content={jobPost.title} property='og:title' />
+            <meta content='website' property='og:type' />
+            <meta content={window.location.href} property='og:url' />
+            <meta content={jobPost.logo} property='og:image' />
           </Helmet>
-          <JobPostRenderer data={jobPost}/>
+          <JobPostRenderer data={jobPost} />
         </div>
-      }
+      )}
     </Navigation>
   );
 }

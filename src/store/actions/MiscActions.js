@@ -6,13 +6,13 @@ export const actions = {
 
 export function setSnackDispalyed(boolean) {
   return (dispatch) => {
-    dispatch({type: actions.SET_SNACK_DISPLAYED, payload: boolean});
+    dispatch({ type: actions.SET_SNACK_DISPLAYED, payload: boolean });
   };
 }
 
 export const setLogInRedirectURL = (redirectURL) => {
   return (dispatch) => {
-    dispatch({type: actions.SET_LOGIN_REDIRECT_URL, payload: redirectURL});
+    dispatch({ type: actions.SET_LOGIN_REDIRECT_URL, payload: redirectURL });
   };
 };
 

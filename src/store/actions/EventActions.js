@@ -3,15 +3,13 @@ export const actions = {
   SET_EVENT_BY_ID: 'EV_SET_EVENT_BY_ID',
 };
 
-export const addEvents = (data) =>
-  (dispatch) => {
-    if (data instanceof Array) {
-      dispatch({type: actions.ADD_EVENTS, payload: data.map(createEvent)});
-    }
-  };
+export const addEvents = (data) => (dispatch) => {
+  if (data instanceof Array) {
+    dispatch({ type: actions.ADD_EVENTS, payload: data.map(createEvent) });
+  }
+};
 
-export const setEventById = (id, data) =>
-  (dispatch) => dispatch({type: actions.SET_EVENT_BY_ID, payload: createEvent(data), id: id});
+export const setEventById = (id, data) => (dispatch) => dispatch({ type: actions.SET_EVENT_BY_ID, payload: createEvent(data), id: id });
 
 // --- SELECTORS ---
 const getEventState = (state) => state.events;

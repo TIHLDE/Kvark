@@ -3,10 +3,9 @@ import COOKIE from '../cookie';
 import store from '../../store/store';
 import * as UserActions from '../../store/actions/UserActions';
 import UserService from './UserService';
-import {ACCESS_TOKEN} from '../../settings';
+import { ACCESS_TOKEN } from '../../settings';
 
 class AuthService {
-
   static createUser = (data) => {
     const response = AUTH.createUser(data).response();
     return response.then((data) => {

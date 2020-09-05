@@ -1,4 +1,4 @@
-import {actions} from '../actions/MiscActions';
+import { actions } from '../actions/MiscActions';
 
 const initialState = {
   snackHasDisplayed: false, // A control bool for controlling of the snackbar has displayed or not
@@ -13,11 +13,11 @@ export default function reducer(state = initialState, action) {
 
   switch (action.type) {
     case actions.SET_LOGIN_REDIRECT_URL: {
-      return {...state, logInRedirectURL: data};
+      return { ...state, logInRedirectURL: data };
     }
 
     case actions.SET_SNACK_DISPLAYED: {
-      return {...state, snackHasDisplayed: data};
+      return { ...state, snackHasDisplayed: data };
     }
 
     default:
@@ -35,5 +35,5 @@ export const getEventById = (state) => (id) => getGridState(state).grid.find((e)
 
 // Checks if action.payload data is not null or undefined
 const isPayloadValid = (payload) => {
-  return (typeof(payload) !== undefined);
+  return typeof payload !== undefined;
 };

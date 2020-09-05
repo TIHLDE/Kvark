@@ -1,12 +1,12 @@
-import React, {useEffect} from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import React, { useEffect } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import URLS from '../../URLS';
-import {usePalette} from 'react-palette';
+import { usePalette } from 'react-palette';
 import Helmet from 'react-helmet';
 
 // Service imports
-import {useNewsById} from '../../api/hooks/News';
+import { useNewsById } from '../../api/hooks/News';
 
 // Project components
 import Navigation from '../../components/navigation/Navigation';
@@ -49,7 +49,7 @@ const styles = (theme) => ({
 });
 
 function NewsDetails(props) {
-  const {classes, match, history} = props;
+  const { classes, match, history } = props;
   const [newsData, isLoading] = useNewsById(match.params.id);
 
   useEffect(() => {
@@ -63,29 +63,31 @@ function NewsDetails(props) {
   }, [history, isLoading, newsData]);
 
   // Find a dominant color in the image, uses a proxy to be able to retrieve images with CORS-policy until all images are stored in our own server
-  const {data} = usePalette(newsData ? 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=' + encodeURIComponent(newsData?.image) : '');
+  const { data } = usePalette(
+    newsData
+      ? 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=' + encodeURIComponent(newsData?.image)
+      : '',
+  );
 
   return (
-    <Navigation isLoading={isLoading} footer whitesmoke fancyNavbar>
-      {!isLoading && newsData.title &&
+    <Navigation fancyNavbar footer isLoading={isLoading} whitesmoke>
+      {!isLoading && newsData.title && (
         <div className={classes.root}>
           <Helmet>
             <title>{newsData.title} - TIHLDE</title>
-            <meta property="og:title" content={newsData.title} />
-            <meta property="og:type" content="website" />
-            <meta property="og:url" content={window.location.href} />
-            <meta property="og:image" content={newsData.image || 'https://tihlde.org' + TIHLDELOGO} />
+            <meta content={newsData.title} property='og:title' />
+            <meta content='website' property='og:type' />
+            <meta content={window.location.href} property='og:url' />
+            <meta content={newsData.image || 'https://tihlde.org' + TIHLDELOGO} property='og:image' />
           </Helmet>
           <div className={classes.top}>
-            <div className={classes.topInner} style={{background: data.muted ? data.muted : ''}}></div>
+            <div className={classes.topInner} style={{ background: data.muted ? data.muted : '' }}></div>
           </div>
           <div className={classes.wrapper}>
-            <NewsRenderer
-              newsData={newsData} />
+            <NewsRenderer newsData={newsData} />
           </div>
         </div>
-      }
-
+      )}
     </Navigation>
   );
 }
@@ -100,4 +102,4 @@ NewsDetails.defaultProps = {
   id: '-1',
 };
 
-export default (withStyles(styles)(NewsDetails));
+export default withStyles(styles)(NewsDetails);

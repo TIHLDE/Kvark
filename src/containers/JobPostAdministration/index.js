@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
@@ -6,7 +6,7 @@ import Helmet from 'react-helmet';
 import JobPostService from '../../api/services/JobPostService';
 
 // Material-UI
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -75,7 +75,7 @@ const defaultJobPost = {
 };
 
 function JobPostAdministration(props) {
-  const {classes} = props;
+  const { classes } = props;
 
   const [isLoading, setIsLoading] = useState(false);
   const [tab, setTab] = useState(0);
@@ -87,65 +87,66 @@ function JobPostAdministration(props) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   // Gets the job posts
-  const loadJobPosts = (parameters = {page: 1}) => {
+  const loadJobPosts = (parameters = { page: 1 }) => {
     parameters['newest'] = true;
     setIsLoading(true);
 
     // Fetch job posts from server
-    JobPostService.getJobPosts(parameters)
-        .then((data) => {
-          setJobPosts([...jobPosts, ...data.results]);
-          const nextPageUrl = data.next;
-          const urlParameters = {};
+    JobPostService.getJobPosts(parameters).then((data) => {
+      setJobPosts([...jobPosts, ...data.results]);
+      const nextPageUrl = data.next;
+      const urlParameters = {};
 
-          // If we have a url for the next page convert it into a object
-          if (nextPageUrl) {
-            const nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
-            const parameterArray = nextPageUrlQuery.split('&');
-            parameterArray.forEach((parameter) => {
-              const parameterString = parameter.split('=');
-              urlParameters[parameterString[0]] = parameterString[1];
-            });
-          }
-          setNextPage(urlParameters['page'] ? Number(urlParameters['page']) : null);
-          setIsLoading(false);
+      // If we have a url for the next page convert it into a object
+      if (nextPageUrl) {
+        const nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
+        const parameterArray = nextPageUrlQuery.split('&');
+        parameterArray.forEach((parameter) => {
+          const parameterString = parameter.split('=');
+          urlParameters[parameterString[0]] = parameterString[1];
         });
+      }
+      setNextPage(urlParameters['page'] ? Number(urlParameters['page']) : null);
+      setIsLoading(false);
+    });
   };
 
   const saveJobPost = () => {
     if (selectedJobPost.id) {
       JobPostService.putJobPost(selectedJobPost.id, selectedJobPost)
-          .then((data) => {
-            setJobPosts((jobPosts) => jobPosts.map((jobPostItem) => {
-              let returnValue = {...jobPostItem};
+        .then((data) => {
+          setJobPosts((jobPosts) =>
+            jobPosts.map((jobPostItem) => {
+              let returnValue = { ...jobPostItem };
               if (jobPostItem.id === data.id) {
                 returnValue = data;
               }
               return returnValue;
-            }));
-            openSnackbar('Annonsen ble oppdatert');
-          })
-          .catch((e) => openSnackbar(JSON.stringify(e)));
+            }),
+          );
+          openSnackbar('Annonsen ble oppdatert');
+        })
+        .catch((e) => openSnackbar(JSON.stringify(e)));
     } else {
       JobPostService.createJobPost(selectedJobPost)
-          .then((data) => {
-            setJobPosts((jobPosts) => [...jobPosts, data]);
-            setSelectedJobPost(data);
-            openSnackbar('Annonsen ble opprettet');
-          })
-          .catch((e) => openSnackbar(JSON.stringify(e)));
+        .then((data) => {
+          setJobPosts((jobPosts) => [...jobPosts, data]);
+          setSelectedJobPost(data);
+          openSnackbar('Annonsen ble opprettet');
+        })
+        .catch((e) => openSnackbar(JSON.stringify(e)));
     }
   };
 
   const deleteJobPost = () => {
     if (selectedJobPost.id) {
       JobPostService.deleteJobPost(selectedJobPost.id)
-          .then((data) => {
-            setJobPosts((jobPosts) => jobPosts.filter((jobPostItem) => jobPostItem.id !== selectedJobPost.id));
-            setSelectedJobPost(defaultJobPost);
-            openSnackbar('Annonsen ble slettet');
-          })
-          .catch((e) => openSnackbar(JSON.stringify(e)));
+        .then((data) => {
+          setJobPosts((jobPosts) => jobPosts.filter((jobPostItem) => jobPostItem.id !== selectedJobPost.id));
+          setSelectedJobPost(defaultJobPost);
+          openSnackbar('Annonsen ble slettet');
+        })
+        .catch((e) => openSnackbar(JSON.stringify(e)));
     } else {
       openSnackbar('Du kan ikke slette en annonse som ikke er opprettet');
     }
@@ -166,7 +167,7 @@ function JobPostAdministration(props) {
   };
 
   const getNextPage = () => {
-    loadJobPosts({page: nextPage});
+    loadJobPosts({ page: nextPage });
   };
 
   const openSnackbar = (message) => {
@@ -180,7 +181,10 @@ function JobPostAdministration(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const options = [{text: 'Lagre', func: () => saveJobPost()}, {text: 'Slett', func: () => deleteJobPost()}];
+  const options = [
+    { text: 'Lagre', func: () => saveJobPost() },
+    { text: 'Slett', func: () => deleteJobPost() },
+  ];
 
   return (
     <Navigation whitesmoke>
@@ -188,50 +192,53 @@ function JobPostAdministration(props) {
         <title>Annonseadmin - TIHLDE</title>
       </Helmet>
       <Snackbar
-        open={showSnackbar}
-        autoHideDuration={4000}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'right',
         }}
-        onClose={() => setShowSnackbar(false)}>
-
-        <SnackbarContent
-          className={classes.snackbar}
-          message={snackbarMessage}/>
+        autoHideDuration={4000}
+        onClose={() => setShowSnackbar(false)}
+        open={showSnackbar}>
+        <SnackbarContent className={classes.snackbar} message={snackbarMessage} />
       </Snackbar>
       <div className={classes.root}>
         <div className={classes.content}>
           <div className={classes.top}>
-            <Typography className={classes.header} variant='h4'>{selectedJobPost.id ? 'Endre annonse' : 'Ny annonse'}</Typography>
+            <Typography className={classes.header} variant='h4'>
+              {selectedJobPost.id ? 'Endre annonse' : 'Ny annonse'}
+            </Typography>
             <DropdownButton options={options} />
           </div>
-          <Tabs
-            value={tab}
-            indicatorColor="primary"
-            textColor="primary"
-            onChange={(e, newTab) => setTab(newTab)}
-            aria-label="tabs"
-          >
+          <Tabs aria-label='tabs' indicatorColor='primary' onChange={(e, newTab) => setTab(newTab)} textColor='primary' value={tab}>
             <Tab id='0' label={selectedJobPost.id ? 'Endre' : 'Skriv'} />
-            <Tab id='1' label="Forhåndsvis" />
+            <Tab id='1' label='Forhåndsvis' />
           </Tabs>
           <Paper className={classes.paper} noPadding>
-            {tab === 0 && <JobPostEditor jobPost={selectedJobPost} setJobPost={(item) => setSelectedJobPost(item)}/>}
-            {tab === 1 && <div className={classes.renderer}><JobPostRenderer data={{...selectedJobPost, logo: selectedJobPost.image, logoAlt: selectedJobPost.image_alt}} /></div>}
+            {tab === 0 && <JobPostEditor jobPost={selectedJobPost} setJobPost={(item) => setSelectedJobPost(item)} />}
+            {tab === 1 && (
+              <div className={classes.renderer}>
+                <JobPostRenderer
+                  data={{
+                    ...selectedJobPost,
+                    logo: selectedJobPost.image,
+                    logoAlt: selectedJobPost.image_alt,
+                  }}
+                />
+              </div>
+            )}
           </Paper>
         </div>
       </div>
       <SidebarList
-        items={jobPosts}
-        selectedItemId={selectedJobPost?.id || null}
-        onItemClick={(item) => setSelectedJobPost(item || defaultJobPost)}
         expiredItems={expiredItems}
         fetchExpired={fetchExpired}
         getNextPage={getNextPage}
-        nextPage={nextPage}
-        title='Annonser'
         isLoading={isLoading}
+        items={jobPosts}
+        nextPage={nextPage}
+        onItemClick={(item) => setSelectedJobPost(item || defaultJobPost)}
+        selectedItemId={selectedJobPost?.id || null}
+        title='Annonser'
         width={SIDEBAR_WIDTH}
       />
     </Navigation>

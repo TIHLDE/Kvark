@@ -6,7 +6,7 @@ import NotificationService from '../../../api/services/NotificationService';
 
 // Material-UI
 import classNames from 'classnames';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import InfoIcon from '@material-ui/icons/Info';
 
@@ -39,7 +39,7 @@ const style = (theme) => ({
 });
 
 const Notification = (props) => {
-  const {classes, notification} = props;
+  const { classes, notification } = props;
 
   let elementClass = classes.message;
   if (!notification.read) {
@@ -50,7 +50,9 @@ const Notification = (props) => {
   return (
     <Paper className={elementClass}>
       <InfoIcon className={classes.icon} />
-      <Typography className={classes.text} color={'inherit'} align={'left'}>{notification.message}</Typography>
+      <Typography align={'left'} className={classes.text} color={'inherit'}>
+        {notification.message}
+      </Typography>
     </Paper>
   );
 };
@@ -61,20 +63,21 @@ Notification.propTypes = {
 };
 
 const ProfileNotifications = (props) => {
-  const {classes, notifications, isLoading} = props;
+  const { classes, notifications, isLoading } = props;
 
   return (
     <>
-      {isLoading ?
-        <Typography className={classes.text} align='center' variant='subtitle1'>Laster notifikasjoner...</Typography> :
-        notifications.length > 0 ?
-          notifications.map((notification, i) =>
-            <Notification
-              key={i}
-              notification={notification}
-              classes={classes} />) :
-          <Typography className={classes.text} align='center' variant='subtitle1'>Ingen notifikasjoner</Typography>
-      }
+      {isLoading ? (
+        <Typography align='center' className={classes.text} variant='subtitle1'>
+          Laster notifikasjoner...
+        </Typography>
+      ) : notifications.length > 0 ? (
+        notifications.map((notification, i) => <Notification classes={classes} key={i} notification={notification} />)
+      ) : (
+        <Typography align='center' className={classes.text} variant='subtitle1'>
+          Ingen notifikasjoner
+        </Typography>
+      )}
     </>
   );
 };

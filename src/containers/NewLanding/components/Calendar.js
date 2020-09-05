@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 // Material-UI
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 
@@ -37,7 +37,7 @@ const styles = (theme) => ({
   },
 });
 
-function Calendar({classes}) {
+function Calendar({ classes }) {
   const [events, setEvents] = useState([]);
   const [oldEvents, setOldEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -45,30 +45,26 @@ function Calendar({classes}) {
 
   useEffect(() => {
     EventService.getEvents()
-        .then((eventObject) => setEvents(eventObject.results))
-        .catch(() => {})
-        .then(() => setIsLoading(false));
+      .then((eventObject) => setEvents(eventObject.results))
+      .catch(() => {})
+      .then(() => setIsLoading(false));
   }, []);
 
   useEffect(() => {
     // Load expired events when switching to calendar tab and they havn't been loaded already
     if (!oldEvents.length && tab === 1) {
-      EventService.getEvents({expired: true})
-          .then((eventObject) => setOldEvents(eventObject.results));
+      EventService.getEvents({ expired: true }).then((eventObject) => setOldEvents(eventObject.results));
     }
   }, [tab, oldEvents]);
 
   return (
     <div className={classes.root}>
       <div className={classes.container}>
-        <Tabs centered className={classes.tabs} value={tab} onChange={(e, newTab) => setTab(newTab)}>
+        <Tabs centered className={classes.tabs} onChange={(e, newTab) => setTab(newTab)} value={tab}>
           <Tab icon={<Reorder />} label='Listevisning' />
           <Tab icon={<DateRange />} label='Kalendervisning' />
         </Tabs>
-        {tab === 0 ?
-          <CalendarListView events={events} isLoading={isLoading} /> :
-          <CalendarGridView events={events} oldEvents={oldEvents} />
-        }
+        {tab === 0 ? <CalendarListView events={events} isLoading={isLoading} /> : <CalendarGridView events={events} oldEvents={oldEvents} />}
       </div>
     </div>
   );

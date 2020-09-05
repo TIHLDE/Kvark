@@ -2,7 +2,7 @@ import React from 'react';
 import MaterialPaper from '@material-ui/core/Paper';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 const styles = (theme) => ({
   main: {
@@ -19,9 +19,9 @@ const styles = (theme) => ({
 });
 
 const Paper = (props) => {
-  const {classes, shadow, noPadding, children, className} = props;
+  const { classes, shadow, noPadding, children, className } = props;
   return (
-    <MaterialPaper elevation={shadow ? 2 : 0} className={classnames(classes.main, !noPadding && classes.padding, shadow && classes.noBorder, className)}>
+    <MaterialPaper className={classnames(classes.main, !noPadding && classes.padding, shadow && classes.noBorder, className)} elevation={shadow ? 2 : 0}>
       {children}
     </MaterialPaper>
   );
@@ -35,4 +35,3 @@ Paper.propTypes = {
 };
 
 export default withStyles(styles)(Paper);
-

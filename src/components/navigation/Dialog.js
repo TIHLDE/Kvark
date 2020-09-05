@@ -6,7 +6,7 @@ import Modal from '@material-ui/core/Modal';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 // Project components
 import Paper from '../layout/Paper';
@@ -75,23 +75,19 @@ const style = (theme) => ({
 });
 
 // Custom themed button
-const DangerButton = withStyles((theme) => (
-  {
-    root: {
-      color: theme.palette.error.main,
-    },
-  }),
-)(Button);
+const DangerButton = withStyles((theme) => ({
+  root: {
+    color: theme.palette.error.main,
+  },
+}))(Button);
 
 const Dialog = (props) => {
-  const {classes, message, title, onClose, status, onSubmit, submitText} = props;
+  const { classes, message, title, onClose, status, onSubmit, submitText } = props;
   return (
-    <Modal
-      open={status}
-      onClose={onClose}>
-      <Paper className={classes.paper} noPadding >
+    <Modal onClose={onClose} open={status}>
+      <Paper className={classes.paper} noPadding>
         <div className={classes.heading}>
-          <Typography className={classes.title} align='center' variant='h5'>
+          <Typography align='center' className={classes.title} variant='h5'>
             {title}
           </Typography>
         </div>
@@ -101,18 +97,12 @@ const Dialog = (props) => {
         </div>
         <Divider />
         <div className={classes.footer}>
-          <DangerButton
-            className={classes.button}
-            onClick={onSubmit}
-            align='center'
-            variant='outlined'
-            color='secondary'>{submitText}</DangerButton>
-          <Button
-            className={classes.button}
-            onClick={onClose}
-            align='center'
-            variant='outlined'
-            color='primary'>Avbryt</Button>
+          <DangerButton align='center' className={classes.button} color='secondary' onClick={onSubmit} variant='outlined'>
+            {submitText}
+          </DangerButton>
+          <Button align='center' className={classes.button} color='primary' onClick={onClose} variant='outlined'>
+            Avbryt
+          </Button>
         </div>
       </Paper>
     </Modal>

@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import React, { useState } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import {getUserStudyShort, getDay, getMonth} from '../../../utils';
+import { getUserStudyShort, getDay, getMonth } from '../../../utils';
 
 // Text
 import Text from '../../../text/EventText';
@@ -96,7 +96,7 @@ const styles = (theme) => ({
     textAlign: 'center',
     color: theme.colors.text.light,
   },
-  mt: {height: 50, fontWeight: 'bold'},
+  mt: { height: 50, fontWeight: 'bold' },
   waitlistContainer: {
     margin: '10px auto',
     textAlign: 'center',
@@ -137,9 +137,13 @@ const getDate = (date) => {
 };
 
 const DetailContent = withStyles(styles)((props) => (
-  <Grid className={props.classes.info} container wrap='nowrap' alignItems='center' justify='flex-start'>
-    <Typography className={props.classes.ml} variant='subtitle1'>{props.title}</Typography>
-    <Typography className={props.classes.ml2} variant='subtitle1'>{props.info}</Typography>
+  <Grid alignItems='center' className={props.classes.info} container justify='flex-start' wrap='nowrap'>
+    <Typography className={props.classes.ml} variant='subtitle1'>
+      {props.title}
+    </Typography>
+    <Typography className={props.classes.ml2} variant='subtitle1'>
+      {props.info}
+    </Typography>
   </Grid>
 ));
 DetailContent.propTypes = {
@@ -157,30 +161,85 @@ const removeStudyFromArray = (array, userStudy) => {
 
 const PrioritiesContent = withStyles(styles)((props) => {
   let priorities = [...props.priorities];
-  let Dataing = null; let DigFor = null; let DigInc = null; let DigSam = null; let Drift = null;
-  if (priorities.some((item) => item.user_class === 1 && item.user_study === 1) && priorities.some((item) => item.user_class === 2 && item.user_study === 1) && priorities.some((item) => item.user_class === 3 && item.user_study === 1)) {
-    Dataing = (<Typography className={props.classes.priority} variant='subtitle1'>{getUserStudyShort(1)}</Typography>); priorities = removeStudyFromArray(priorities, 1);
+  let Dataing = null;
+  let DigFor = null;
+  let DigInc = null;
+  let DigSam = null;
+  let Drift = null;
+  if (
+    priorities.some((item) => item.user_class === 1 && item.user_study === 1) &&
+    priorities.some((item) => item.user_class === 2 && item.user_study === 1) &&
+    priorities.some((item) => item.user_class === 3 && item.user_study === 1)
+  ) {
+    Dataing = (
+      <Typography className={props.classes.priority} variant='subtitle1'>
+        {getUserStudyShort(1)}
+      </Typography>
+    );
+    priorities = removeStudyFromArray(priorities, 1);
   }
-  if (priorities.some((item) => item.user_class === 1 && item.user_study === 2) && priorities.some((item) => item.user_class === 2 && item.user_study === 2) && priorities.some((item) => item.user_class === 3 && item.user_study === 2)) {
-    DigFor = (<Typography className={props.classes.priority} variant='subtitle1'>{getUserStudyShort(2)}</Typography>); priorities = removeStudyFromArray(priorities, 2);
+  if (
+    priorities.some((item) => item.user_class === 1 && item.user_study === 2) &&
+    priorities.some((item) => item.user_class === 2 && item.user_study === 2) &&
+    priorities.some((item) => item.user_class === 3 && item.user_study === 2)
+  ) {
+    DigFor = (
+      <Typography className={props.classes.priority} variant='subtitle1'>
+        {getUserStudyShort(2)}
+      </Typography>
+    );
+    priorities = removeStudyFromArray(priorities, 2);
   }
-  if (priorities.some((item) => item.user_class === 1 && item.user_study === 3) && priorities.some((item) => item.user_class === 2 && item.user_study === 3) && priorities.some((item) => item.user_class === 3 && item.user_study === 3)) {
-    DigInc = (<Typography className={props.classes.priority} variant='subtitle1'>{getUserStudyShort(3)}</Typography>); priorities = removeStudyFromArray(priorities, 3);
+  if (
+    priorities.some((item) => item.user_class === 1 && item.user_study === 3) &&
+    priorities.some((item) => item.user_class === 2 && item.user_study === 3) &&
+    priorities.some((item) => item.user_class === 3 && item.user_study === 3)
+  ) {
+    DigInc = (
+      <Typography className={props.classes.priority} variant='subtitle1'>
+        {getUserStudyShort(3)}
+      </Typography>
+    );
+    priorities = removeStudyFromArray(priorities, 3);
   }
   if (priorities.some((item) => item.user_class === 4 && item.user_study === 4) && priorities.some((item) => item.user_class === 5 && item.user_study === 4)) {
-    DigSam = (<Typography className={props.classes.priority} variant='subtitle1'>{getUserStudyShort(4)}</Typography>); priorities = removeStudyFromArray(priorities, 4);
+    DigSam = (
+      <Typography className={props.classes.priority} variant='subtitle1'>
+        {getUserStudyShort(4)}
+      </Typography>
+    );
+    priorities = removeStudyFromArray(priorities, 4);
   }
-  if (priorities.some((item) => item.user_class === 1 && item.user_study === 5) && priorities.some((item) => item.user_class === 2 && item.user_study === 5) && priorities.some((item) => item.user_class === 3 && item.user_study === 5)) {
-    Drift = (<Typography className={props.classes.priority} variant='subtitle1'>{getUserStudyShort(5)}</Typography>); priorities = removeStudyFromArray(priorities, 5);
+  if (
+    priorities.some((item) => item.user_class === 1 && item.user_study === 5) &&
+    priorities.some((item) => item.user_class === 2 && item.user_study === 5) &&
+    priorities.some((item) => item.user_class === 3 && item.user_study === 5)
+  ) {
+    Drift = (
+      <Typography className={props.classes.priority} variant='subtitle1'>
+        {getUserStudyShort(5)}
+      </Typography>
+    );
+    priorities = removeStudyFromArray(priorities, 5);
   }
 
   return (
-    <Grid className={props.classes.info} container wrap='nowrap' alignItems='center' justify='flex-start'>
-      <Typography className={props.classes.ml} variant='subtitle1'>{props.title}</Typography>
+    <Grid alignItems='center' className={props.classes.info} container justify='flex-start' wrap='nowrap'>
+      <Typography className={props.classes.ml} variant='subtitle1'>
+        {props.title}
+      </Typography>
       <div className={props.classes.prioritiesContainer}>
-        {Dataing}{DigFor}{DigInc}{DigSam}{Drift}
+        {Dataing}
+        {DigFor}
+        {DigInc}
+        {DigSam}
+        {Drift}
         {priorities.map(function (priority, index) {
-          return (<Typography className={props.classes.priority} variant='subtitle1' key={index}>{priority.user_class + '. ' + getUserStudyShort(priority.user_study)}</Typography>);
+          return (
+            <Typography className={props.classes.priority} key={index} variant='subtitle1'>
+              {priority.user_class + '. ' + getUserStudyShort(priority.user_study)}
+            </Typography>
+          );
         })}
       </div>
     </Grid>
@@ -241,55 +300,44 @@ const EventRenderer = (props) => {
   let applyButton = null;
   if (eventData.closed) {
     applyButton = (
-      <Typography className={classes.applyText} align='center' color='error'>{Text.closed}</Typography>
+      <Typography align='center' className={classes.applyText} color='error'>
+        {Text.closed}
+      </Typography>
     );
   } else if (!eventData.sign_up) {
-    applyButton = (
-      <Typography className={classes.applyText} align='center'></Typography>
-    );
+    applyButton = <Typography align='center' className={classes.applyText}></Typography>;
   } else if (eventData.sign_up && today > signUpEnd) {
     applyButton = (
-      <Typography className={classes.applyText} align='center'>{Text.signUpEnded}</Typography>
+      <Typography align='center' className={classes.applyText}>
+        {Text.signUpEnded}
+      </Typography>
     );
   } else if (eventData.sign_up && today < signUpStart) {
     applyButton = (
-      <Typography className={classes.applyText} align='center'>{Text.inactive}</Typography>
-
+      <Typography align='center' className={classes.applyText}>
+        {Text.inactive}
+      </Typography>
     );
   } else if (eventData.sign_up && userEvent && today > signOffDeadline) {
     applyButton = (
       <React.Fragment>
-        <Button
-          fullWidth
-          disabled
-          className={classes.mt}
-          variant='contained'
-          color='secondary'>
+        <Button className={classes.mt} color='secondary' disabled fullWidth variant='contained'>
           {Text.signOff}
         </Button>
-        <Typography align='center' color='error'>Avmeldingsfristen er passert</Typography>
+        <Typography align='center' color='error'>
+          Avmeldingsfristen er passert
+        </Typography>
       </React.Fragment>
     );
   } else if (!isLoadingUserData && !isLoadingEvent && userEventLoaded) {
     applyButton = (
-      <Button
-        fullWidth
-        className={classes.mt}
-        variant='contained'
-        onClick={openEventModal}
-        color={userEvent ? 'secondary' : 'primary'}>
+      <Button className={classes.mt} color={userEvent ? 'secondary' : 'primary'} fullWidth onClick={openEventModal} variant='contained'>
         {userEvent ? Text.signOff : Text.signUp}
       </Button>
     );
   } else {
     applyButton = (
-      <Button
-        fullWidth
-        disabled={true}
-        className={classes.mt}
-        variant='contained'
-        onClick={openEventModal}
-        color={'secondary'}>
+      <Button className={classes.mt} color={'secondary'} disabled={true} fullWidth onClick={openEventModal} variant='contained'>
         {Text.loading}
       </Button>
     );
@@ -297,54 +345,68 @@ const EventRenderer = (props) => {
 
   return (
     <div className={classes.wrapper}>
-      {modalShow === true && userData &&
+      {modalShow === true && userData && (
         <EventDialog
-          onClose={closeEventModal}
-          data={eventData}
-          userData={userData}
-          userEvent={userEvent}
-          status={modalShow}
+          applySuccess={applySuccess}
           applyToEvent={applyToEvent}
+          data={eventData}
           isApplying={isApplying}
           message={message}
-          applySuccess={applySuccess} />}
-      {eventData.image && <img className={classes.image} src={eventData.image} alt={eventData.image_alt} /> }
-      <div className={classes.grid} >
+          onClose={closeEventModal}
+          status={modalShow}
+          userData={userData}
+          userEvent={userEvent}
+        />
+      )}
+      {eventData.image && <img alt={eventData.image_alt} className={classes.image} src={eventData.image} />}
+      <div className={classes.grid}>
         <div>
           <Paper className={classes.details} noPadding>
-            <DetailContent title="Fra: " info={getDate(moment(startDate, ['YYYY-MM-DD HH:mm'], 'nb'))} />
-            <DetailContent title="Til: " info={getDate(moment(endDate, ['YYYY-MM-DD HH:mm'], 'nb'))} />
-            <DetailContent title="Sted: " info={eventData.location} />
+            <DetailContent info={getDate(moment(startDate, ['YYYY-MM-DD HH:mm'], 'nb'))} title='Fra: ' />
+            <DetailContent info={getDate(moment(endDate, ['YYYY-MM-DD HH:mm'], 'nb'))} title='Til: ' />
+            <DetailContent info={eventData.location} title='Sted: ' />
           </Paper>
-          {eventData.sign_up &&
-                    <Paper className={classes.details} noPadding>
-                      <DetailContent title="Påmeldte:" info={attending + '/' + limit} />
-                      <DetailContent title="Venteliste:" info={String(onWait)} />
-                      {today <= signUpStart && !userEvent && <DetailContent title="Påmeldingsstart:" info={getDate(moment(signUpStart, ['YYYY-MM-DD HH:mm'], 'nb'))} /> }
-                      {today > signUpStart && today < signUpEnd && !userEvent && <DetailContent title="Påmeldingsslutt:" info={getDate(moment(signUpEnd, ['YYYY-MM-DD HH:mm'], 'nb'))} /> }
-                      {userEvent && <DetailContent title="Avmeldingsfrist:" info={getDate(moment(signOffDeadline, ['YYYY-MM-DD HH:mm'], 'nb'))} /> }
-                    </Paper>
-          }
-          {eventData.sign_up && eventData.registration_priorities && eventData.registration_priorities.length < 14 ?
-                    <Paper className={classes.details} noPadding>
-                      <PrioritiesContent title="Prioritert:" priorities={eventData.registration_priorities} />
-                    </Paper> :
-                    eventData.sign_up && eventData.registration_priorities &&
-                    <Paper className={classes.details} noPadding>
-                      <Grid className={props.classes.info} container wrap='nowrap' alignItems='center' justify='flex-start'>
-                        <Typography className={props.classes.ml} variant='subtitle1'>Prioritert:</Typography>
-                        <Typography variant='subtitle1'>Alle</Typography>
-                      </Grid>
-                    </Paper>
-          }
-          {today <= startDate && applyButton }
-          {(userEvent && userEvent.is_on_wait) &&
-                    <div className={classes.waitlistContainer}>
-                      <Typography className={classes.redText} variant='subtitle1'>Du er på ventelisten</Typography>
-                    </div>}
+          {eventData.sign_up && (
+            <Paper className={classes.details} noPadding>
+              <DetailContent info={attending + '/' + limit} title='Påmeldte:' />
+              <DetailContent info={String(onWait)} title='Venteliste:' />
+              {today <= signUpStart && !userEvent && <DetailContent info={getDate(moment(signUpStart, ['YYYY-MM-DD HH:mm'], 'nb'))} title='Påmeldingsstart:' />}
+              {today > signUpStart && today < signUpEnd && !userEvent && (
+                <DetailContent info={getDate(moment(signUpEnd, ['YYYY-MM-DD HH:mm'], 'nb'))} title='Påmeldingsslutt:' />
+              )}
+              {userEvent && <DetailContent info={getDate(moment(signOffDeadline, ['YYYY-MM-DD HH:mm'], 'nb'))} title='Avmeldingsfrist:' />}
+            </Paper>
+          )}
+          {eventData.sign_up && eventData.registration_priorities && eventData.registration_priorities.length < 14 ? (
+            <Paper className={classes.details} noPadding>
+              <PrioritiesContent priorities={eventData.registration_priorities} title='Prioritert:' />
+            </Paper>
+          ) : (
+            eventData.sign_up &&
+            eventData.registration_priorities && (
+              <Paper className={classes.details} noPadding>
+                <Grid alignItems='center' className={props.classes.info} container justify='flex-start' wrap='nowrap'>
+                  <Typography className={props.classes.ml} variant='subtitle1'>
+                    Prioritert:
+                  </Typography>
+                  <Typography variant='subtitle1'>Alle</Typography>
+                </Grid>
+              </Paper>
+            )
+          )}
+          {today <= startDate && applyButton}
+          {userEvent && userEvent.is_on_wait && (
+            <div className={classes.waitlistContainer}>
+              <Typography className={classes.redText} variant='subtitle1'>
+                Du er på ventelisten
+              </Typography>
+            </div>
+          )}
         </div>
         <Paper className={classes.content}>
-          <Typography className={classes.title} variant='h5'><strong>{eventData.title}</strong></Typography>
+          <Typography className={classes.title} variant='h5'>
+            <strong>{eventData.title}</strong>
+          </Typography>
           <MarkdownRenderer className={classes.description} value={description} />
         </Paper>
       </div>

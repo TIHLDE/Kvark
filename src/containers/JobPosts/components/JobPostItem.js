@@ -1,10 +1,10 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import classNames from 'classnames';
 import URLS from '../../../URLS';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
@@ -99,9 +99,11 @@ const styles = (theme) => ({
 });
 
 const InfoContent = withStyles(styles)((props) => (
-  <Grid className={props.classes.infoRoot} container direction='row' wrap='nowrap' alignItems='center'>
+  <Grid alignItems='center' className={props.classes.infoRoot} container direction='row' wrap='nowrap'>
     {props.icon}
-    <Typography className={props.classes.info} variant='h6'>{props.label}</Typography>
+    <Typography className={props.classes.info} variant='h6'>
+      {props.label}
+    </Typography>
   </Grid>
 ));
 
@@ -111,19 +113,19 @@ InfoContent.propTypes = {
 };
 
 const JobPostItem = (props) => {
-  const {classes, data} = props;
-  const src = (data.image) ? data.image : TIHLDELOGO;
+  const { classes, data } = props;
+  const src = data.image ? data.image : TIHLDELOGO;
   const start = moment(data.deadline, ['YYYY-MM-DD HH:mm'], 'nb');
   return (
     <ListItem button className={classes.root} component={Link} to={URLS.jobposts + ''.concat(data.id, '/')}>
-      <img className={classNames(classes.src, (data.expired) ? classes.filter : '')} src={src} alt={data.title} />
+      <img alt={data.title} className={classNames(classes.src, data.expired ? classes.filter : '')} src={src} />
       <Grid className={classes.content} container direction='column' wrap='nowrap'>
-        <Typography className={classNames(classes.title, (data.expired) ? classes.expired : '')} variant='h6' gutterBottom>
+        <Typography className={classNames(classes.title, data.expired ? classes.expired : '')} gutterBottom variant='h6'>
           <strong>{data.title}</strong>
         </Typography>
-        <InfoContent icon={<Business className={classes.icon}/>} label={data.company} />
-        <InfoContent icon={<Location className={classes.icon}/>} label={data.location} />
-        <InfoContent icon={<Date className={classes.icon}/>} label={start.format('DD.MM.YYYY')} />
+        <InfoContent icon={<Business className={classes.icon} />} label={data.company} />
+        <InfoContent icon={<Location className={classes.icon} />} label={data.location} />
+        <InfoContent icon={<Date className={classes.icon} />} label={start.format('DD.MM.YYYY')} />
       </Grid>
     </ListItem>
   );

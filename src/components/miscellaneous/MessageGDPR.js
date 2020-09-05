@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import COOKIE from '../../api/cookie';
-import {ACCEPTED_ANALYTICS} from '../../settings';
+import { ACCEPTED_ANALYTICS } from '../../settings';
 
 // Material UI
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
@@ -39,7 +39,7 @@ const style = (theme) => ({
 });
 
 const MessageGDPR = (props) => {
-  const {classes} = props;
+  const { classes } = props;
   const cookieValue = !COOKIE.get(ACCEPTED_ANALYTICS);
   const [displayState, setDisplayState] = useState(cookieValue);
 
@@ -50,20 +50,27 @@ const MessageGDPR = (props) => {
 
   return (
     <React.Fragment>
-      {displayState && <div className={classes.root}>
-        <Typography className={classes.text}>Denne nettsiden bruker Google Analytics for å forbedre
-
-                hvordan siden brukes. Ved å fortsette å bruke denne siden godtar
-                du Googles bruk av denne informasjonen som angitt <a rel='noopener noreferrer' target='_blank' href='https://policies.google.com/technologies/partner-sites?hl=no'>her</a>.
-                Du godtar også bruk av informasjonskapsler.</Typography>
-        <Button
-          onClick={() => {
-            closeDialog();
-          }}
-          className={classes.button}
-          color='primary'
-          variant='contained'>Ok</Button>
-      </div>}
+      {displayState && (
+        <div className={classes.root}>
+          <Typography className={classes.text}>
+            Denne nettsiden bruker Google Analytics for å forbedre hvordan siden brukes. Ved å fortsette å bruke denne siden godtar du Googles bruk av denne
+            informasjonen som angitt{' '}
+            <a href='https://policies.google.com/technologies/partner-sites?hl=no' rel='noopener noreferrer' target='_blank'>
+              her
+            </a>
+            . Du godtar også bruk av informasjonskapsler.
+          </Typography>
+          <Button
+            className={classes.button}
+            color='primary'
+            onClick={() => {
+              closeDialog();
+            }}
+            variant='contained'>
+            Ok
+          </Button>
+        </div>
+      )}
     </React.Fragment>
   );
 };

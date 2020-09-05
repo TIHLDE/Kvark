@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
-import {useForm, Controller} from 'react-hook-form';
+import React, { useState, useEffect } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import PropTypes from 'prop-types';
-import {Link, useHistory} from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import URLS from '../../URLS';
-import {getUserStudyLong, getUserClass} from '../../utils';
+import { getUserStudyLong, getUserClass } from '../../utils';
 import Helmet from 'react-helmet';
 
 // Service and action imports
@@ -11,7 +11,7 @@ import AuthService from '../../api/services/AuthService';
 import MiscService from '../../api/services/MiscService';
 
 // Material UI Components
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -45,7 +45,8 @@ const styles = (theme) => ({
     maxWidth: 460,
     margin: 'auto',
     position: 'relative',
-    left: 0, right: 0,
+    left: 0,
+    right: 0,
     top: '-60px',
   },
   logo: {
@@ -64,15 +65,17 @@ const styles = (theme) => ({
   },
   progress: {
     position: 'absolute',
-    top: 0, left: 0, right: 0,
+    top: 0,
+    left: 0,
+    right: 0,
   },
 });
 
 function SignUp(props) {
-  const {classes} = props;
+  const { classes } = props;
   const history = useHistory();
 
-  const {handleSubmit, errors, control, setError} = useForm();
+  const { handleSubmit, errors, control, setError } = useForm();
 
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -85,7 +88,9 @@ function SignUp(props) {
   }, []);
 
   const onSignUp = (data) => {
-    if (isLoading) return;
+    if (isLoading) {
+      return;
+    }
 
     if (getUserStudyLong(data.study) === 'Digital samhandling' && ![4, 5].includes(data.userClass)) {
       setError('userClass', {
@@ -117,7 +122,15 @@ function SignUp(props) {
 
     setErrorMessage('');
     setIsLoading(true);
-    const userData = {user_id: data.username.toLowerCase(), first_name: data.firstName, last_name: data.lastName, email: data.email, user_class: data.userClass, user_study: data.study, password: data.password};
+    const userData = {
+      user_id: data.username.toLowerCase(),
+      first_name: data.firstName,
+      last_name: data.lastName,
+      email: data.email,
+      user_class: data.userClass,
+      user_study: data.study,
+      password: data.password,
+    };
     AuthService.createUser(userData).then((data) => {
       if (data) {
         history.push(redirectURL || URLS.login);
@@ -129,7 +142,7 @@ function SignUp(props) {
   };
 
   return (
-    <Navigation footer fancyNavbar whitesmoke>
+    <Navigation fancyNavbar footer whitesmoke>
       <Helmet>
         <title>Ny bruker - TIHLDE</title>
       </Helmet>
@@ -138,122 +151,153 @@ function SignUp(props) {
         <div className={classes.main}>
           <Paper className={classes.paper}>
             {isLoading && <LinearProgress className={classes.progress} />}
-            <img className={classes.logo} src={TIHLDE_LOGO} height='30em' alt='tihlde_logo' />
-            <Typography className={classes.header} variant='h6'>Opprett bruker</Typography>
+            <img alt='tihlde_logo' className={classes.logo} height='30em' src={TIHLDE_LOGO} />
+            <Typography className={classes.header} variant='h6'>
+              Opprett bruker
+            </Typography>
             <form onSubmit={handleSubmit(onSignUp)}>
               <Grid container direction='column'>
                 <Controller
                   as={TextField}
                   control={control}
-                  name="firstName"
-                  defaultValue=""
+                  defaultValue=''
                   error={Boolean(errors.firstName)}
                   helperText={errors.firstName?.message}
                   label='Fornavn *'
-                  variant='outlined'
                   margin='normal'
-                  rules={{required: 'Feltet er påkrevd'}}
+                  name='firstName'
+                  rules={{ required: 'Feltet er påkrevd' }}
+                  variant='outlined'
                 />
                 <Controller
                   as={TextField}
                   control={control}
-                  defaultValue=""
-                  name="lastName"
+                  defaultValue=''
                   error={Boolean(errors.lastName)}
                   helperText={errors.lastName?.message}
                   label='Etternavn *'
-                  variant='outlined'
                   margin='normal'
-                  rules={{required: 'Feltet er påkrevd'}}
+                  name='lastName'
+                  rules={{ required: 'Feltet er påkrevd' }}
+                  variant='outlined'
                 />
                 <Controller
                   as={TextField}
                   control={control}
-                  defaultValue=""
-                  name="username"
+                  defaultValue=''
                   error={Boolean(errors.username)}
                   helperText={errors.username?.message}
                   label='NTNU brukernavn *'
-                  variant='outlined'
                   margin='normal'
-                  rules={{required: 'Feltet er påkrevd', validate: (value) => (!value.includes('@') || 'Brukernavn må være uten @stud.ntnu.no')}}
+                  name='username'
+                  rules={{
+                    required: 'Feltet er påkrevd',
+                    validate: (value) => !value.includes('@') || 'Brukernavn må være uten @stud.ntnu.no',
+                  }}
+                  variant='outlined'
                 />
                 <Controller
                   as={TextField}
                   control={control}
-                  defaultValue=""
-                  name="email"
+                  defaultValue=''
                   error={Boolean(errors.email)}
                   helperText={errors.email?.message}
                   label='E-post *'
-                  variant='outlined'
                   margin='normal'
-                  type='email'
+                  name='email'
                   rules={{
-                    required: 'Feltet er påkrevd', pattern: {
+                    required: 'Feltet er påkrevd',
+                    pattern: {
                       // eslint-disable-next-line no-useless-escape
                       value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                       message: 'Ugyldig e-post',
                     },
                   }}
+                  type='email'
+                  variant='outlined'
                 />
-                <Controller as={TextField} name="study" control={control} defaultValue="" error={Boolean(errors.study)} helperText={errors.study?.message} required label='Studie' variant='outlined' margin='normal' rules={{required: 'Feltet er påkrevd'}} select>
-                  {[1, 2, 3, 4, 5].map((i) => <MenuItem key={i} value={i}>{getUserStudyLong(i)}</MenuItem>)}
-                </Controller>
-                <Controller as={TextField} name="userClass" control={control} defaultValue="" error={Boolean(errors.userClass)} helperText={errors.userClass?.message} required label='Klasse' variant='outlined' margin='normal' rules={{required: 'Feltet er påkrevd'}} select>
-                  {[1, 2, 3, 4, 5].map((i) => <MenuItem key={i} value={i}>{getUserClass(i)}</MenuItem>)}
+                <Controller
+                  as={TextField}
+                  control={control}
+                  defaultValue=''
+                  error={Boolean(errors.study)}
+                  helperText={errors.study?.message}
+                  label='Studie'
+                  margin='normal'
+                  name='study'
+                  required
+                  rules={{ required: 'Feltet er påkrevd' }}
+                  select
+                  variant='outlined'>
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <MenuItem key={i} value={i}>
+                      {getUserStudyLong(i)}
+                    </MenuItem>
+                  ))}
                 </Controller>
                 <Controller
                   as={TextField}
                   control={control}
-                  defaultValue=""
-                  helperText={errors.password?.message}
+                  defaultValue=''
+                  error={Boolean(errors.userClass)}
+                  helperText={errors.userClass?.message}
+                  label='Klasse'
+                  margin='normal'
+                  name='userClass'
+                  required
+                  rules={{ required: 'Feltet er påkrevd' }}
+                  select
+                  variant='outlined'>
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <MenuItem key={i} value={i}>
+                      {getUserClass(i)}
+                    </MenuItem>
+                  ))}
+                </Controller>
+                <Controller
+                  as={TextField}
+                  control={control}
+                  defaultValue=''
                   error={Boolean(errors.password)}
-                  name="password"
+                  helperText={errors.password?.message}
                   label='Passord *'
-                  variant='outlined'
                   margin='normal'
-                  type='password'
+                  name='password'
                   rules={{
-                    required: 'Feltet er påkrevd', minLength: {
+                    required: 'Feltet er påkrevd',
+                    minLength: {
                       value: 8,
                       message: 'Minimum 8 karakterer',
                     },
                   }}
+                  type='password'
+                  variant='outlined'
                 />
                 <Controller
                   as={TextField}
                   control={control}
-                  defaultValue=""
-                  helperText={errors.passwordVerify?.message}
+                  defaultValue=''
                   error={Boolean(errors.passwordVerify)}
-                  name="passwordVerify"
+                  helperText={errors.passwordVerify?.message}
                   label='Gjenta passord *'
-                  variant='outlined'
                   margin='normal'
-                  type='password'
+                  name='passwordVerify'
                   rules={{
-                    required: 'Feltet er påkrevd', minLength: {
+                    required: 'Feltet er påkrevd',
+                    minLength: {
                       value: 8,
                       message: 'Minimum 8 karakterer',
                     },
                   }}
+                  type='password'
+                  variant='outlined'
                 />
-                <Typography color="error">{errorMessage}</Typography>
+                <Typography color='error'>{errorMessage}</Typography>
 
-                <Button className={classes.button}
-                  variant='contained'
-                  color='primary'
-                  disabled={isLoading}
-                  type='submit'>
+                <Button className={classes.button} color='primary' disabled={isLoading} type='submit' variant='contained'>
                   Opprett bruker
                 </Button>
-                <Button
-                  component={Link}
-                  to={URLS.login}
-                  className={classes.button}
-                  color='primary'
-                  disabled={isLoading}>
+                <Button className={classes.button} color='primary' component={Link} disabled={isLoading} to={URLS.login}>
                   Logg inn
                 </Button>
               </Grid>

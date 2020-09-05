@@ -1,8 +1,8 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import {getMonth} from '../../../utils';
+import { getMonth } from '../../../utils';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
@@ -101,9 +101,13 @@ const getDate = (date) => {
 };
 
 const DetailContent = withStyles(styles)((props) => (
-  <Grid className={props.classes.info} container wrap='nowrap' alignItems='center' justify='flex-start'>
-    <Typography className={props.classes.ml} variant='subtitle1'>{props.title}</Typography>
-    <Typography className={props.classes.ml2} variant='subtitle1'>{props.info}</Typography>
+  <Grid alignItems='center' className={props.classes.info} container justify='flex-start' wrap='nowrap'>
+    <Typography className={props.classes.ml} variant='subtitle1'>
+      {props.title}
+    </Typography>
+    <Typography className={props.classes.ml2} variant='subtitle1'>
+      {props.info}
+    </Typography>
   </Grid>
 ));
 DetailContent.propTypes = {
@@ -113,7 +117,7 @@ DetailContent.propTypes = {
 };
 
 const NewsRenderer = (props) => {
-  const {classes, newsData} = props;
+  const { classes, newsData } = props;
 
   const title = newsData.title || '';
   const header = newsData.header || '';
@@ -123,17 +127,21 @@ const NewsRenderer = (props) => {
 
   return (
     <div className={classes.wrapper}>
-      {newsData.image && <img className={classes.image} src={newsData.image} alt={newsData.image_alt} /> }
-      <div className={classes.grid} >
+      {newsData.image && <img alt={newsData.image_alt} className={classes.image} src={newsData.image} />}
+      <div className={classes.grid}>
         <div>
           <Paper className={classes.details} noPadding>
-            <DetailContent title="Publisert: " info={getDate(moment(createdDate, ['YYYY-MM-DD HH:mm'], 'nb'))} />
-            <DetailContent title="Oppdatert: " info={getDate(moment(updatedDate, ['YYYY-MM-DD HH:mm'], 'nb'))} />
+            <DetailContent info={getDate(moment(createdDate, ['YYYY-MM-DD HH:mm'], 'nb'))} title='Publisert: ' />
+            <DetailContent info={getDate(moment(updatedDate, ['YYYY-MM-DD HH:mm'], 'nb'))} title='Oppdatert: ' />
           </Paper>
         </div>
         <Paper className={classes.content}>
-          <Typography className={classes.title} variant='h5'><strong>{title}</strong></Typography>
-          <Typography className={classes.header} variant='h6'><strong>{header}</strong></Typography>
+          <Typography className={classes.title} variant='h5'>
+            <strong>{title}</strong>
+          </Typography>
+          <Typography className={classes.header} variant='h6'>
+            <strong>{header}</strong>
+          </Typography>
           <MarkdownRenderer className={classes.description} value={body} />
         </Paper>
       </div>

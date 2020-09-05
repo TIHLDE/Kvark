@@ -1,6 +1,6 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import URLS from '../../URLS';
 
@@ -28,13 +28,15 @@ const styles = (theme) => ({
 });
 
 const ActionLink = withStyles(styles)((props) => {
-  const {classes} = props;
+  const { classes } = props;
   return (
     <Fragment>
-      <Link to={props.to} onClick={props.to === window.location.pathname ? () => window.location.reload() : null}>
-        <ListItem className={classNames(classes.item, props.className)} button color="inherit">
-          <Grid container direction='column' wrap='nowrap' alignItems='center' justify='space-between'>
-            <Typography variant='h5' align='center' color='inherit'>{props.label}</Typography>
+      <Link onClick={props.to === window.location.pathname ? () => window.location.reload() : null} to={props.to}>
+        <ListItem button className={classNames(classes.item, props.className)} color='inherit'>
+          <Grid alignItems='center' container direction='column' justify='space-between' wrap='nowrap'>
+            <Typography align='center' color='inherit' variant='h5'>
+              {props.label}
+            </Typography>
           </Grid>
         </ListItem>
       </Link>
@@ -48,23 +50,19 @@ ActionLink.propTypes = {
 };
 
 const SidebarContent = (props) => {
-  const {classes} = props;
+  const { classes } = props;
 
   return (
-
     <Fragment>
       <div className={classes.root}>
-        <ActionLink to={URLS.about} label='Om TIHLDE' />
-        <ActionLink to={URLS.newStudent} label='Ny student' />
-        <ActionLink to={URLS.events} label='Arrangementer' />
-        <ActionLink to={URLS.news} label='Nyheter' />
-        <ActionLink to={URLS.jobposts} label='Karriere' />
-        <ActionLink to={URLS.company} label='For Bedrifter' />
-        {/* AuthService.isAuthenticated() && <ActionLink to={URLS.cheatsheet} label='Kokebok' />*/ }
-        {AuthService.isAuthenticated() ?
-                    <ActionLink to={URLS.profile} label='Min side' /> :
-                    <ActionLink to={URLS.login} label='Logg inn' />
-        }
+        <ActionLink label='Om TIHLDE' to={URLS.about} />
+        <ActionLink label='Ny student' to={URLS.newStudent} />
+        <ActionLink label='Arrangementer' to={URLS.events} />
+        <ActionLink label='Nyheter' to={URLS.news} />
+        <ActionLink label='Karriere' to={URLS.jobposts} />
+        <ActionLink label='For Bedrifter' to={URLS.company} />
+        {/* AuthService.isAuthenticated() && <ActionLink to={URLS.cheatsheet} label='Kokebok' />*/}
+        {AuthService.isAuthenticated() ? <ActionLink label='Min side' to={URLS.profile} /> : <ActionLink label='Logg inn' to={URLS.login} />}
       </div>
     </Fragment>
   );

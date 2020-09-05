@@ -1,4 +1,4 @@
-import {applyMiddleware, createStore} from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 
 import reducer from './reducers';
 
@@ -16,4 +16,3 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export default store;
-

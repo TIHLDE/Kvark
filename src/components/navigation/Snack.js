@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 // Material UI Components
 import Snackbar from '@material-ui/core/Snackbar';
@@ -43,22 +43,21 @@ const styles = (theme) => ({
 
 class Snack extends Component {
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <Snackbar
-          anchorOrigin={{vertical: 'top', horizontal: 'center'}}
-          open={this.props.open}
-          onClose={this.handleClose}
-          className={classes.snackbar}
-        >
+        <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} className={classes.snackbar} onClose={this.handleClose} open={this.props.open}>
           <SnackbarContent
             className={this.props.className}
             message={
               <div className={classes.flex}>
-                <div className='pulse'/>
-                <Typography className={classes.color} variant='subtitle1' color='inherit'>{this.props.message}</Typography>
-                <IconButton className={classes.color} color='inherit' onClick={this.props.onClose}><CloseIcon/></IconButton>
+                <div className='pulse' />
+                <Typography className={classes.color} color='inherit' variant='subtitle1'>
+                  {this.props.message}
+                </Typography>
+                <IconButton className={classes.color} color='inherit' onClick={this.props.onClose}>
+                  <CloseIcon />
+                </IconButton>
               </div>
             }
           />

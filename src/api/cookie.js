@@ -4,7 +4,7 @@ const cookies = new Cookies();
 
 export class Cookie {
   set(key, value, duration = 3600 * 24000 * 30) {
-    cookies.set(key, value, {path: '/', expires: new Date(Date.now() + duration)});
+    cookies.set(key, value, { path: '/', expires: new Date(Date.now() + duration) });
   }
 
   get(key) {
@@ -12,7 +12,7 @@ export class Cookie {
   }
 
   remove(key) {
-    cookies.remove(key, {path: '/'});
+    cookies.remove(key, { path: '/' });
   }
 }
 const COOKIE = new Cookie();

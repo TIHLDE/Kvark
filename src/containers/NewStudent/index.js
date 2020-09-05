@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import React, { useEffect } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import parser from 'html-react-parser';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
@@ -58,32 +58,45 @@ const styles = (theme) => ({
 });
 
 function NewStudent(props) {
-  const {classes} = props;
+  const { classes } = props;
 
   useEffect(() => window.scrollTo(0, 0), []);
 
   return (
-    <Navigation footer whitesmoke fancyNavbar>
+    <Navigation fancyNavbar footer whitesmoke>
       <Helmet>
         <title>Ny student - TIHLDE</title>
       </Helmet>
-      <Banner
-        title={Text.banner.header}
-        text={Text.banner.subHeader}
-      />
+      <Banner text={Text.banner.subHeader} title={Text.banner.header} />
       <div className={classes.root}>
         <div className={classes.content}>
-          <InfoCard header={Text.fadder.headline} text={Text.fadder.text} imageClass={classes.image} src={TihldeImg} classes={{children: classes.flex}} justifyText>
-            <Button className={classes.bottomSpacing} variant='contained' color='primary' target='_noopener' href='https://drive.google.com/file/d/1Q8kx9p_khg6LbK1HACPAKIfjVwLPeJ2J/view'> Trykk her for info om fadderuka </Button>
+          <InfoCard
+            classes={{ children: classes.flex }}
+            header={Text.fadder.headline}
+            imageClass={classes.image}
+            justifyText
+            src={TihldeImg}
+            text={Text.fadder.text}>
+            <Button
+              className={classes.bottomSpacing}
+              color='primary'
+              href='https://drive.google.com/file/d/1Q8kx9p_khg6LbK1HACPAKIfjVwLPeJ2J/view'
+              target='_noopener'
+              variant='contained'>
+              {' '}
+              Trykk her for info om fadderuka{' '}
+            </Button>
           </InfoCard>
           <InfoCard className={classes.infocard} header={Text.faq.header}>
             {Text.faq.categories.map((category, i) => (
               <React.Fragment key={i}>
-                <Typography className={classes.subheader} variant='subtitle1'>{category.title}</Typography>
+                <Typography className={classes.subheader} variant='subtitle1'>
+                  {category.title}
+                </Typography>
                 <Paper noPadding>
                   {category.items.map((item, index) => (
                     <React.Fragment key={index}>
-                      <Expansion header={item.header} text={item.text} flat />
+                      <Expansion flat header={item.header} text={item.text} />
                       {index !== category.items.length - 1 && <Divider />}
                     </React.Fragment>
                   ))}

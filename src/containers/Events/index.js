@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import React, { useState, useEffect } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import {MuiThemeProvider as Theme} from '@material-ui/core/styles';
-import {errorTheme} from '../../theme';
+import { MuiThemeProvider as Theme } from '@material-ui/core/styles';
+import { errorTheme } from '../../theme';
 import Helmet from 'react-helmet';
 
 // API and store imports
@@ -109,7 +109,7 @@ const styles = (theme) => ({
 });
 
 function Events(props) {
-  const {classes} = props;
+  const { classes } = props;
   const [events, setEvents] = useState([]);
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -152,7 +152,7 @@ function Events(props) {
 
         // Used to load expired events when we have nothing else to show.
         if (displayedEvents.length === 0 && !urlParameters.expired && (urlParameters.search || urlParameters.category)) {
-          setFilters({...filters, expired: true});
+          setFilters({ ...filters, expired: true });
           return;
         }
       }
@@ -169,9 +169,13 @@ function Events(props) {
   }, []);
 
   useEffect(() => {
-    const urlParameters = {...filters};
-    if (urlParameters.search === '') delete urlParameters.search;
-    if (urlParameters.category === 0) delete urlParameters.category;
+    const urlParameters = { ...filters };
+    if (urlParameters.search === '') {
+      delete urlParameters.search;
+    }
+    if (urlParameters.category === 0) {
+      delete urlParameters.category;
+    }
     loadEvents(urlParameters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
@@ -199,45 +203,61 @@ function Events(props) {
   };
 
   const getNextPage = () => {
-    const newFilters = {...filters};
+    const newFilters = { ...filters };
     newFilters.page = nextPage;
     setFilters(newFilters);
   };
 
   return (
-    <Navigation isLoading={isLoading} footer whitesmoke fancyNavbar>
+    <Navigation fancyNavbar footer isLoading={isLoading} whitesmoke>
       <Helmet>
         <title>Arrangementer - TIHLDE</title>
       </Helmet>
       <div className={classes.root}>
-        <Banner title='Arrangementer'/>
+        <Banner title='Arrangementer' />
         <div className={classes.wrapper}>
           <div className={classes.grid}>
-            {isFetching ? <CircularProgress className={classes.progress} /> :
+            {isFetching ? (
+              <CircularProgress className={classes.progress} />
+            ) : (
               <div className={classes.listRoot}>
                 <Grow in={!isFetching}>
                   <div className={classes.list}>
                     <Pageination nextPage={getNextPage} page={nextPage}>
-                      {events && events.map((value, index) => (
-                        <EventListItem key={value.id} data={value} />
-                      ))}
+                      {events && events.map((value, index) => <EventListItem data={value} key={value.id} />)}
                     </Pageination>
-                    {events.length === 0 && !isLoading &&
-                      <NoEventsIndicator />
-                    }
+                    {events.length === 0 && !isLoading && <NoEventsIndicator />}
                   </div>
                 </Grow>
               </div>
-            }
+            )}
             <div>
               <div className={classes.settings}>
                 <form>
-                  <TextField variant='outlined' className={classes.paddingBtn} value={searchInput} fullWidth label='Søk...' onChange={(e) => setSearchInput(e.target.value)}/>
-                  <Button fullWidth variant='outlined' color='primary' type='submit' onClick={searchForEvent}>{Text.search}</Button>
+                  <TextField
+                    className={classes.paddingBtn}
+                    fullWidth
+                    label='Søk...'
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    value={searchInput}
+                    variant='outlined'
+                  />
+                  <Button color='primary' fullWidth onClick={searchForEvent} type='submit' variant='outlined'>
+                    {Text.search}
+                  </Button>
                 </form>
-                <Divider className={classes.mt}/>
-                <Typography className={classes.mt} variant='h6' gutterBottom>{Text.category}</Typography>
-                <TextField variant='outlined' className={classes.paddingBottom} select fullWidth label='Kategori' value={category} onChange={handleCategoryChange}>
+                <Divider className={classes.mt} />
+                <Typography className={classes.mt} gutterBottom variant='h6'>
+                  {Text.category}
+                </Typography>
+                <TextField
+                  className={classes.paddingBottom}
+                  fullWidth
+                  label='Kategori'
+                  onChange={handleCategoryChange}
+                  select
+                  value={category}
+                  variant='outlined'>
                   <MenuItem value={0}>Alle</MenuItem>
                   {categories.map((value, index) => (
                     <MenuItem key={index} value={value.id}>
@@ -245,15 +265,10 @@ function Events(props) {
                     </MenuItem>
                   ))}
                 </TextField>
-                <Divider className={classes.mt}/>
+                <Divider className={classes.mt} />
 
                 <Theme theme={errorTheme}>
-                  <Button
-                    className={classes.resetBtn}
-                    fullWidth
-                    color='primary'
-                    variant='outlined'
-                    onClick={resetFilters}>
+                  <Button className={classes.resetBtn} color='primary' fullWidth onClick={resetFilters} variant='outlined'>
                     {Text.reset}
                   </Button>
                 </Theme>

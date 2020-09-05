@@ -8,7 +8,7 @@ import breaks from 'remark-breaks';
 
 const MarkdownRenderer = (props) => (
   <div className={classNames(props.className, 'renderer')}>
-    <ReactMarkdown source={props.value || ''} plugins={[breaks]}/>
+    <ReactMarkdown plugins={[breaks]} source={props.value || ''} />
   </div>
 );
 

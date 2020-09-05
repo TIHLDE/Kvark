@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import React, { useState, useEffect } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import {Link, useHistory} from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import URLS from '../../URLS';
 import Helmet from 'react-helmet';
 
@@ -45,7 +45,8 @@ const styles = (theme) => ({
     maxWidth: 460,
     margin: 'auto',
     position: 'relative',
-    left: 0, right: 0,
+    left: 0,
+    right: 0,
     top: '-60px',
   },
   logo: {
@@ -60,7 +61,9 @@ const styles = (theme) => ({
   },
   progress: {
     position: 'absolute',
-    top: 0, left: 0, right: 0,
+    top: 0,
+    left: 0,
+    right: 0,
   },
   buttonsContainer: {
     display: 'flex',
@@ -73,7 +76,7 @@ const styles = (theme) => ({
 });
 
 function LogIn(props) {
-  const {classes} = props;
+  const { classes } = props;
   const history = useHistory();
 
   const [username, setUsername] = useState('');
@@ -99,18 +102,20 @@ function LogIn(props) {
 
     setErrorMessage(null);
     setIsLoading(true);
-    AuthService.logIn(username, password).then((data) => {
-      if (data) {
-        history.push(redirectURL || URLS.landing);
-      }
-    }).catch((err) => {
-      setErrorMessage(err.detail);
-      setIsLoading(false);
-    });
+    AuthService.logIn(username, password)
+      .then((data) => {
+        if (data) {
+          history.push(redirectURL || URLS.landing);
+        }
+      })
+      .catch((err) => {
+        setErrorMessage(err.detail);
+        setIsLoading(false);
+      });
   };
 
   return (
-    <Navigation footer fancyNavbar whitesmoke>
+    <Navigation fancyNavbar footer whitesmoke>
       <Helmet>
         <title>Logg inn - TIHLDE</title>
       </Helmet>
@@ -119,50 +124,40 @@ function LogIn(props) {
         <div className={classes.main}>
           <Paper className={classes.paper}>
             {isLoading && <LinearProgress className={classes.progress} />}
-            <img className={classes.logo} src={TIHLDE_LOGO} height='30em' alt='tihlde_logo' />
-            <Typography className={classes.header} variant='h6'>{Text.header}</Typography>
+            <img alt='tihlde_logo' className={classes.logo} height='30em' src={TIHLDE_LOGO} />
+            <Typography className={classes.header} variant='h6'>
+              {Text.header}
+            </Typography>
             <form onSubmit={onLogin}>
               <Grid container direction='column'>
                 <TextField
-                  onChange={(e) => setUsername(e.target.value)}
-                  value={username}
                   error={errorMessage !== null}
                   label='Brukernavn'
-                  variant='outlined'
                   margin='normal'
-                  required />
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                  value={username}
+                  variant='outlined'
+                />
                 <TextField
-                  onChange={(e) => setPassword(e.target.value)}
-                  value={password}
-                  helperText={errorMessage}
                   error={errorMessage !== null}
+                  helperText={errorMessage}
                   label='Password'
-                  variant='outlined'
                   margin='normal'
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
                   type='password'
-                  required />
-                <Button className={classes.button}
-                  variant='contained'
-                  color='primary'
-                  disabled={isLoading}
-                  type='submit'>
+                  value={password}
+                  variant='outlined'
+                />
+                <Button className={classes.button} color='primary' disabled={isLoading} type='submit' variant='contained'>
                   Logg inn
                 </Button>
                 <div className={classes.buttonsContainer}>
-                  <Button
-                    component={Link}
-                    to={URLS.forgotPassword}
-                    className={classes.button}
-                    color='primary'
-                    disabled={isLoading}>
+                  <Button className={classes.button} color='primary' component={Link} disabled={isLoading} to={URLS.forgotPassword}>
                     Glemt passord?
                   </Button>
-                  <Button
-                    component={Link}
-                    to={URLS.signup}
-                    className={classes.button}
-                    color='primary'
-                    disabled={isLoading}>
+                  <Button className={classes.button} color='primary' component={Link} disabled={isLoading} to={URLS.signup}>
                     Opprett bruker
                   </Button>
                 </div>
@@ -180,4 +175,3 @@ LogIn.propTypes = {
 };
 
 export default withStyles(styles)(LogIn);
-

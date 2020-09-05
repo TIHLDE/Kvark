@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import URLS from '../../URLS';
 import Helmet from 'react-helmet';
 
@@ -8,7 +8,7 @@ import Helmet from 'react-helmet';
 import AuthService from '../../api/services/AuthService';
 
 // Material UI Components
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -43,7 +43,8 @@ const styles = (theme) => ({
     maxWidth: 460,
     margin: 'auto',
     position: 'relative',
-    left: 0, right: 0,
+    left: 0,
+    right: 0,
     top: '-60px',
   },
   logo: {
@@ -58,7 +59,9 @@ const styles = (theme) => ({
   },
   progress: {
     position: 'absolute',
-    top: 0, left: 0, right: 0,
+    top: 0,
+    left: 0,
+    right: 0,
   },
   button: {
     marginTop: 16,
@@ -72,7 +75,7 @@ const styles = (theme) => ({
 });
 
 function ForgotPassword(props) {
-  const {classes} = props;
+  const { classes } = props;
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -105,54 +108,46 @@ function ForgotPassword(props) {
   };
 
   return (
-    <Navigation footer fancyNavbar whitesmoke>
+    <Navigation fancyNavbar footer whitesmoke>
       <Helmet>
         <title>Glemt passord - TIHLDE</title>
       </Helmet>
       <Snackbar
-        open={showSnackbar}
-        autoHideDuration={4000}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'right',
         }}
-        onClose={() => setShowSnackbar(false)}>
-        <SnackbarContent
-          className={classes.snackbar}
-          message={snackMessage}/>
+        autoHideDuration={4000}
+        onClose={() => setShowSnackbar(false)}
+        open={showSnackbar}>
+        <SnackbarContent className={classes.snackbar} message={snackMessage} />
       </Snackbar>
       <div className={classes.root}>
         <div className={classes.top}></div>
         <div className={classes.main}>
           <Paper className={classes.paper}>
             {isLoading && <LinearProgress className={classes.progress} />}
-            <img className={classes.logo} src={TIHLDE_LOGO} height='30em' alt='tihlde_logo'/>
-            <Typography className={classes.header} variant='h6'>Glemt passord</Typography>
+            <img alt='tihlde_logo' className={classes.logo} height='30em' src={TIHLDE_LOGO} />
+            <Typography className={classes.header} variant='h6'>
+              Glemt passord
+            </Typography>
             <form onSubmit={onSubmit}>
               <Grid container direction='column'>
                 <TextField
-                  onChange={(e) => setEmail(e.target.value)}
-                  value={email}
                   error={errorMessage !== null}
-                  label='Epost'
-                  variant='outlined'
-                  margin='normal'
                   helperText={errorMessage}
+                  label='Epost'
+                  margin='normal'
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
                   type='email'
-                  required/>
-                <Button className={classes.button}
-                  variant='contained'
-                  color='primary'
-                  disabled={isLoading}
-                  type='submit'>
+                  value={email}
+                  variant='outlined'
+                />
+                <Button className={classes.button} color='primary' disabled={isLoading} type='submit' variant='contained'>
                   Få nytt passord
                 </Button>
-                <Button
-                  component={Link}
-                  to={URLS.login}
-                  className={classes.button}
-                  color='primary'
-                  disabled={isLoading}>
+                <Button className={classes.button} color='primary' component={Link} disabled={isLoading} to={URLS.login}>
                   Logg inn
                 </Button>
               </Grid>
@@ -169,4 +164,3 @@ ForgotPassword.propTypes = {
 };
 
 export default withStyles(styles)(ForgotPassword);
-

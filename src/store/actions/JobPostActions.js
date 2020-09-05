@@ -4,18 +4,20 @@ export const actions = {
 };
 
 // This is where the data from backend get sent to!
-export const addJobPosts = (data, filters) =>
-  (dispatch) => {
-    if (data.results instanceof Array) {
-      dispatch({type: actions.ADD_JOB_POSTS, filters: filters, payload: data.results.map(createJobPost)});
-    } else if (data instanceof Array) {
-      // Used for backward compabillity
-      dispatch({type: actions.ADD_JOB_POSTS, filters: filters, payload: data.map(createJobPost)});
-    }
-  };
+export const addJobPosts = (data, filters) => (dispatch) => {
+  if (data.results instanceof Array) {
+    dispatch({
+      type: actions.ADD_JOB_POSTS,
+      filters: filters,
+      payload: data.results.map(createJobPost),
+    });
+  } else if (data instanceof Array) {
+    // Used for backward compabillity
+    dispatch({ type: actions.ADD_JOB_POSTS, filters: filters, payload: data.map(createJobPost) });
+  }
+};
 
-export const setJobPostById = (id, data) =>
-  (dispatch) => dispatch({type: actions.SET_JOB_POST_BY_ID, payload: createJobPost(data), id: id});
+export const setJobPostById = (id, data) => (dispatch) => dispatch({ type: actions.SET_JOB_POST_BY_ID, payload: createJobPost(data), id: id });
 
 // --- SELECTORS ---
 const getJobPostState = (state) => state.posts;

@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 // Material UI Components
 import Typography from '@material-ui/core/Typography';
@@ -27,14 +27,16 @@ import DISCORD from '../../assets/icons/discord.svg';
 const styles = (theme) => ({
   root: {
     position: 'relative',
-    bottom: 0, left: 0, right: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
 
     backgroundColor: theme.colors.footer.main,
     padding: '40px 0px',
     display: 'grid',
     gridGap: '40px',
     gridTemplateColumns: '1fr 1fr 1fr 1fr',
-    gridTemplateAreas: '\'Sponsorer OmTihlde SosialeMedier SponsorLogo\'', // SosialeMedier
+    gridTemplateAreas: "'Sponsorer OmTihlde SosialeMedier SponsorLogo'", // SosialeMedier
     gridTemplateRows: 'auto',
     justifyItems: 'center',
     color: theme.colors.footer.text,
@@ -42,13 +44,13 @@ const styles = (theme) => ({
 
     '@media only screen and (max-width: 900px)': {
       gridTemplateRows: 'auto auto',
-      gridTemplateAreas: '\'OmTihlde SosialeMedier\' \'Sponsorer SponsorLogo\'',
+      gridTemplateAreas: "'OmTihlde SosialeMedier' 'Sponsorer SponsorLogo'",
       gridTemplateColumns: 'auto auto',
     },
 
     '@media only screen and (max-width: 600px)': {
       gridTemplateRows: 'auto auto auto auto auto',
-      gridTemplateAreas: '\'SponsorLogo\' \'OmTihlde\' \'SosialeMedier\' \'Sponsorer\'',
+      gridTemplateAreas: "'SponsorLogo' 'OmTihlde' 'SosialeMedier' 'Sponsorer'",
       gridTemplateColumns: '100%',
     },
   },
@@ -68,7 +70,6 @@ const styles = (theme) => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-
   },
   horSpacing: {
     marginBottom: 10,
@@ -107,17 +108,27 @@ const styles = (theme) => ({
 });
 
 const OmTihlde = (props) => {
-  const {classes} = props;
+  const { classes } = props;
   return (
     <div className={classes.omTihlde}>
-      <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>TIHLDE</Typography>
+      <Typography align='center' className={classes.horSpacing} color='inherit' variant='h5'>
+        TIHLDE
+      </Typography>
       <Link color='inherit' href='mailto:hs@tihlde.org'>
-        <Typography className={classes.horSpacing} align='center' color='inherit'>hs@tihlde.org</Typography>
+        <Typography align='center' className={classes.horSpacing} color='inherit'>
+          hs@tihlde.org
+        </Typography>
       </Link>
-      <Typography className={classes.horSpacing} align='center' color='inherit'>c/o IDI NTNU</Typography>
-      <Typography className={classes.horSpacing} align='center' color='inherit'>OrgNr: 989 684 183</Typography>
+      <Typography align='center' className={classes.horSpacing} color='inherit'>
+        c/o IDI NTNU
+      </Typography>
+      <Typography align='center' className={classes.horSpacing} color='inherit'>
+        OrgNr: 989 684 183
+      </Typography>
       <Link color='inherit' href='/kontakt/'>
-        <Typography className={classes.horSpacing} align='center' color='inherit'>Kontaktinfo</Typography>
+        <Typography align='center' className={classes.horSpacing} color='inherit'>
+          Kontaktinfo
+        </Typography>
       </Link>
     </div>
   );
@@ -128,13 +139,15 @@ OmTihlde.propTypes = {
 };
 
 const Sponsorer = (props) => {
-  const {classes} = props;
+  const { classes } = props;
   return (
     <div className={classes.sponsorer}>
-      <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Samarbeid</Typography>
-      <img className={classes.horSpacing} src={ACADEMICWORK} alt="academicwork" width={80} />
-      <img className={classes.horSpacing} src={SIT} alt="sit" width={80} />
-      <img className={classes.horSpacing} src={NEXTTRON} alt="nextron" width={80} />
+      <Typography align='center' className={classes.horSpacing} color='inherit' variant='h5'>
+        Samarbeid
+      </Typography>
+      <img alt='academicwork' className={classes.horSpacing} src={ACADEMICWORK} width={80} />
+      <img alt='sit' className={classes.horSpacing} src={SIT} width={80} />
+      <img alt='nextron' className={classes.horSpacing} src={NEXTTRON} width={80} />
     </div>
   );
 };
@@ -144,30 +157,32 @@ Sponsorer.propTypes = {
 };
 
 const SosialeMedier = (props) => {
-  const {classes} = props;
+  const { classes } = props;
   return (
     <div className={classes.sosialeMedier}>
-      <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Sosiale medier</Typography>
+      <Typography align='center' className={classes.horSpacing} color='inherit' variant='h5'>
+        Sosiale medier
+      </Typography>
       <div className={classes.sosialeMedierFlex}>
-        <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/tihlde/">
-          <img className={classes.horSpacing} src={FACEBOOK} alt="sit" width={40} />
+        <a className={classes.a} href='https://www.facebook.com/tihlde/' rel='noopener noreferrer' target='_blank'>
+          <img alt='sit' className={classes.horSpacing} src={FACEBOOK} width={40} />
         </a>
-        <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/tihlde/">
-          <img className={classes.horSpacing} src={INSTAGRAM} alt="sit" width={40} />
+        <a className={classes.a} href='https://www.instagram.com/tihlde/' rel='noopener noreferrer' target='_blank'>
+          <img alt='sit' className={classes.horSpacing} src={INSTAGRAM} width={40} />
         </a>
-        <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://twitter.com/tihlde">
-          <img className={classes.horSpacing} src={TWITTER} alt="sit" width={40} />
+        <a className={classes.a} href='https://twitter.com/tihlde' rel='noopener noreferrer' target='_blank'>
+          <img alt='sit' className={classes.horSpacing} src={TWITTER} width={40} />
         </a>
       </div>
       <div className={classes.sosialeMedierFlex}>
-        <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://www.snapchat.com/add/tihldesnap">
-          <img className={classes.horSpacing} src={SNAPCHAT} alt="sit" width={40} />
+        <a className={classes.a} href='https://www.snapchat.com/add/tihldesnap' rel='noopener noreferrer' target='_blank'>
+          <img alt='sit' className={classes.horSpacing} src={SNAPCHAT} width={40} />
         </a>
-        <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://tihlde.slack.com">
-          <img className={classes.horSpacing} src={SLACK} alt="sit" width={40} />
+        <a className={classes.a} href='https://tihlde.slack.com' rel='noopener noreferrer' target='_blank'>
+          <img alt='sit' className={classes.horSpacing} src={SLACK} width={40} />
         </a>
-        <a className={classes.a} target="_blank" rel="noopener noreferrer" href="https://discord.gg/SZR9vTS">
-          <img className={classes.horSpacing} src={DISCORD} alt="sit" width={40} />
+        <a className={classes.a} href='https://discord.gg/SZR9vTS' rel='noopener noreferrer' target='_blank'>
+          <img alt='sit' className={classes.horSpacing} src={DISCORD} width={40} />
         </a>
       </div>
     </div>
@@ -179,11 +194,13 @@ SosialeMedier.propTypes = {
 };
 
 const ModeSelector = (props) => {
-  const {classes, openModal} = props;
+  const { classes, openModal } = props;
   return (
     <div className={classes.sponsorWrapper}>
-      <Typography className={classes.horSpacing} align='center' color='inherit' variant='h5'>Temavelger</Typography>
-      <IconButton onClick={openModal} aria-label="delete" className={classes.themeSettingsContainer}>
+      <Typography align='center' className={classes.horSpacing} color='inherit' variant='h5'>
+        Temavelger
+      </Typography>
+      <IconButton aria-label='delete' className={classes.themeSettingsContainer} onClick={openModal}>
         <LightIcon className={classes.themeSettingsIcon} />
       </IconButton>
     </div>
@@ -196,17 +213,13 @@ ModeSelector.propTypes = {
 };
 
 const Footer = (props) => {
-  const {classes} = props;
+  const { classes } = props;
 
   const [showModal, setShowModal] = useState(false);
 
   return (
     <div className={classes.root}>
-      {showModal &&
-        <ThemeSettings
-          onClose={() => setShowModal(false)}
-          open={showModal} />
-      }
+      {showModal && <ThemeSettings onClose={() => setShowModal(false)} open={showModal} />}
       <Sponsorer classes={classes} />
       <OmTihlde classes={classes} />
       <SosialeMedier classes={classes} />

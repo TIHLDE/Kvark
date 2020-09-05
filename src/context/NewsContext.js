@@ -1,4 +1,4 @@
-import React, {useReducer, useContext, createContext} from 'react';
+import React, { useReducer, useContext, createContext } from 'react';
 import PropTypes from 'prop-types';
 
 const NewsStateContext = createContext();
@@ -12,7 +12,7 @@ const newsReducer = (state, action) => {
       return [...state, action.payload].sort((a, b) => b.id - a.id);
     case 'PUT_NEWS':
       return state.map((newsItem) => {
-        let returnValue = {...newsItem};
+        let returnValue = { ...newsItem };
         if (newsItem.id === action.payload.id) {
           returnValue = action.payload;
         }
@@ -26,13 +26,11 @@ const newsReducer = (state, action) => {
 };
 
 const NewsProvider = (props) => {
-  const {children} = props;
+  const { children } = props;
   const [state, dispatch] = useReducer(newsReducer, null);
   return (
     <NewsStateContext.Provider value={state}>
-      <NewsDispatchContext.Provider value={dispatch}>
-        {children}
-      </NewsDispatchContext.Provider>
+      <NewsDispatchContext.Provider value={dispatch}>{children}</NewsDispatchContext.Provider>
     </NewsStateContext.Provider>
   );
 };
@@ -61,4 +59,4 @@ const useNewsContext = () => {
   return [useNewsState(), useNewsDispatch()];
 };
 
-export {NewsProvider, useNewsState, useNewsDispatch, useNewsContext};
+export { NewsProvider, useNewsState, useNewsDispatch, useNewsContext };

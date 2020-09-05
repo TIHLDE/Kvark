@@ -1,13 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import URLS from '../../../URLS';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
-import {ViewState} from '@devexpress/dx-react-scheduler';
-import {Scheduler, MonthView, Toolbar, DateNavigator, Appointments} from '@devexpress/dx-react-scheduler-material-ui';
+import { ViewState } from '@devexpress/dx-react-scheduler';
+import { Scheduler, MonthView, Toolbar, DateNavigator, Appointments } from '@devexpress/dx-react-scheduler-material-ui';
 
 // Material-UI
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 // Project components
 import Paper from '../../../components/layout/Paper';
@@ -21,28 +21,26 @@ const styles = (theme) => ({
   },
 });
 
-function CalendarGridView({classes, events, oldEvents}) {
+function CalendarGridView({ classes, events, oldEvents }) {
   const [displayedEvents, setDisplayedEvents] = useState([]);
 
   useEffect(() => {
     if (events) {
       const newEvents = [...events, ...oldEvents].map((event) => {
-        return ({
+        return {
           ...event,
           startDate: moment(event.start_date, ['YYYY-MM-DD HH:mm'], 'nb').toDate(),
           endDate: moment(event.end_date, ['YYYY-MM-DD HH:mm'], 'nb').toDate(),
-        });
+        };
       });
       setDisplayedEvents(newEvents);
     }
   }, [oldEvents, events]);
 
-  const Appointment = ({children, data}) => {
+  const Appointment = ({ children, data }) => {
     return (
       <Link to={URLS.events.concat(data.id).concat('/')}>
-        <Appointments.Appointment>
-          {children}
-        </Appointments.Appointment>
+        <Appointments.Appointment>{children}</Appointments.Appointment>
       </Link>
     );
   };
@@ -53,12 +51,8 @@ function CalendarGridView({classes, events, oldEvents}) {
   };
 
   return (
-    <Paper noPadding className={classes.root}>
-      <Scheduler
-        data={displayedEvents}
-        firstDayOfWeek={1}
-        locale='no-NB'
-      >
+    <Paper className={classes.root} noPadding>
+      <Scheduler data={displayedEvents} firstDayOfWeek={1} locale='no-NB'>
         <ViewState />
         <MonthView />
         <Toolbar />

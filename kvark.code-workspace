@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+  ],
+  "settings": {
+    "editor.formatOnSave": false,
+    "[javascript]": { "editor.formatOnSave": false },
+    "[javascriptreact]": { "editor.formatOnSave": false },
+    "eslint.validate": [ "html", "javascript", "javascriptreact", "typescript" ],
+    "prettier.disableLanguages": [ "javascript", "javascriptreact" ],
+    "editor.codeActionsOnSave": { "source.fixAll.eslint": true }
+  }
+}

@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 // Material UI Components
 
@@ -37,13 +37,12 @@ const styles = {
 };
 
 class NoEventsIndicator extends Component {
-
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
     return (
       <div className={classes.root}>
         <div className={classes.imageWrapper}>
-          <img className={classes.image} src={EventIcon} alt='Ingen arrangementer' />
+          <img alt='Ingen arrangementer' className={classes.image} src={EventIcon} />
         </div>
         <MessageIndicator header={Text.noEvents} />
       </div>

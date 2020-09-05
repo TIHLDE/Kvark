@@ -1,10 +1,10 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import URLS from '../../../URLS';
 import moment from 'moment';
-import {getMonth} from '../../../utils';
-import {Link} from 'react-router-dom';
+import { getMonth } from '../../../utils';
+import { Link } from 'react-router-dom';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
@@ -95,9 +95,11 @@ const styles = (theme) => ({
 });
 
 const InfoContent = withStyles(styles)((props) => (
-  <Grid className={props.classes.infoRoot} container direction='row' wrap='nowrap' alignItems='center'>
+  <Grid alignItems='center' className={props.classes.infoRoot} container direction='row' wrap='nowrap'>
     {props.icon}
-    <Typography className={props.classes.info} variant='h6'>{props.label}</Typography>
+    <Typography className={props.classes.info} variant='h6'>
+      {props.label}
+    </Typography>
   </Grid>
 ));
 
@@ -111,17 +113,17 @@ const getDate = (date) => {
 };
 
 const NewsListItem = (props) => {
-  const {classes, data} = props;
+  const { classes, data } = props;
   const src = data.image ? data.image : TIHLDELOGO;
   const start = moment(data.created_at, ['YYYY-MM-DD HH:mm'], 'nb');
   return (
-    <ListItem button className={classes.root} component={Link} to={URLS.news + ''.concat(data.id, '/')} >
-      <img className={classes.src} src={src} alt={data.title} />
+    <ListItem button className={classes.root} component={Link} to={URLS.news + ''.concat(data.id, '/')}>
+      <img alt={data.title} className={classes.src} src={src} />
       <Grid className={classes.content} container direction='column' wrap='nowrap'>
         <Typography className={classes.title} variant='h5'>
           <strong>{data.title}</strong>
         </Typography>
-        <InfoContent icon={<Date className={classes.icon}/>} label={getDate(start)} />
+        <InfoContent icon={<Date className={classes.icon} />} label={getDate(start)} />
       </Grid>
     </ListItem>
   );

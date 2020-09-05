@@ -1,8 +1,8 @@
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 // Material UI
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
@@ -32,7 +32,7 @@ const styles = (theme) => ({
 });
 
 function DropdownButton(props) {
-  const {classes, options} = props;
+  const { classes, options } = props;
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -54,34 +54,31 @@ function DropdownButton(props) {
   };
 
   return (
-    <Grid className={classes.root} container direction="column" alignItems="center">
+    <Grid alignItems='center' className={classes.root} container direction='column'>
       <Grid item xs={12}>
-        <ButtonGroup variant="contained" color="primary" ref={anchorRef} aria-label="Knapp">
-          <Button type='submit' onClick={options[selectedIndex].func}>{options[selectedIndex].text}</Button>
+        <ButtonGroup aria-label='Knapp' color='primary' ref={anchorRef} variant='contained'>
+          <Button onClick={options[selectedIndex].func} type='submit'>
+            {options[selectedIndex].text}
+          </Button>
           <Button
-            color="primary"
-            size="small"
             aria-controls={open ? 'split-button-menu' : undefined}
             aria-expanded={open ? 'true' : undefined}
-            aria-label="Velg et alternativ"
-            aria-haspopup="menu"
+            aria-haspopup='menu'
+            aria-label='Velg et alternativ'
+            color='primary'
             onClick={handleToggle}
-          >
+            size='small'>
             <ArrowDropDownIcon />
           </Button>
         </ButtonGroup>
-        <Popper className={classes.popper} open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
-          {({TransitionProps, placement}) => (
-            <Grow {...TransitionProps} style={{transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}>
+        <Popper anchorEl={anchorRef.current} className={classes.popper} disablePortal open={open} role={undefined} transition>
+          {({ TransitionProps, placement }) => (
+            <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
               <Paper className={classes.list} noPadding>
                 <ClickAwayListener onClickAway={handleClose}>
-                  <MenuList id="split-button-menu">
+                  <MenuList id='split-button-menu'>
                     {options.map((option, index) => (
-                      <MenuItem
-                        key={option.text}
-                        selected={index === selectedIndex}
-                        onClick={(event) => handleMenuItemClick(event, index)}
-                      >
+                      <MenuItem key={option.text} onClick={(event) => handleMenuItemClick(event, index)} selected={index === selectedIndex}>
                         {option.text}
                       </MenuItem>
                     ))}
@@ -99,10 +96,10 @@ function DropdownButton(props) {
 DropdownButton.propTypes = {
   classes: PropTypes.object,
   options: PropTypes.arrayOf(
-      PropTypes.shape({
-        text: PropTypes.string,
-        func: PropTypes.func,
-      }).isRequired,
+    PropTypes.shape({
+      text: PropTypes.string,
+      func: PropTypes.func,
+    }).isRequired,
   ),
 };
 

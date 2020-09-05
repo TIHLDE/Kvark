@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
 // API and store imports
-import {useNews, useCreateNews, usePutNews, useDeleteNews} from '../../api/hooks/News';
+import { useNews, useCreateNews, usePutNews, useDeleteNews } from '../../api/hooks/News';
 
 // Material-UI
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -67,7 +67,7 @@ const defaultNewsItem = {
 };
 
 function NewsAdministration(props) {
-  const {classes} = props;
+  const { classes } = props;
   const [tab, setTab] = useState(0);
   const [selectedNewsItem, setSelectedNewsItem] = useState(defaultNewsItem);
   const [news, isLoading] = useNews();
@@ -98,9 +98,9 @@ function NewsAdministration(props) {
     }
   });
 
-  const saveNewsItem = () => selectedNewsItem.id ? putNews() : createNews();
+  const saveNewsItem = () => (selectedNewsItem.id ? putNews() : createNews());
 
-  const deleteNewsItem = () => selectedNewsItem.id ? deleteNews() : openSnackbar('Du kan ikke slette en nyhet som ikke er opprettet');
+  const deleteNewsItem = () => (selectedNewsItem.id ? deleteNews() : openSnackbar('Du kan ikke slette en nyhet som ikke er opprettet'));
 
   const openSnackbar = (message) => {
     setSnackbarMessage(message);
@@ -109,7 +109,10 @@ function NewsAdministration(props) {
 
   useEffect(() => window.scrollTo(0, 0), []);
 
-  const options = [{text: 'Lagre', func: () => saveNewsItem()}, {text: 'Slett', func: () => deleteNewsItem()}];
+  const options = [
+    { text: 'Lagre', func: () => saveNewsItem() },
+    { text: 'Slett', func: () => deleteNewsItem() },
+  ];
 
   return (
     <Navigation whitesmoke>
@@ -117,33 +120,26 @@ function NewsAdministration(props) {
         <title>Nyhetsadmin - TIHLDE</title>
       </Helmet>
       <Snackbar
-        open={showSnackbar}
-        autoHideDuration={4000}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'right',
         }}
-        onClose={() => setShowSnackbar(false)}>
-
-        <SnackbarContent
-          className={classes.snackbar}
-          message={snackbarMessage}/>
+        autoHideDuration={4000}
+        onClose={() => setShowSnackbar(false)}
+        open={showSnackbar}>
+        <SnackbarContent className={classes.snackbar} message={snackbarMessage} />
       </Snackbar>
       <div className={classes.root}>
         <div className={classes.content}>
           <div className={classes.top}>
-            <Typography className={classes.header} variant='h4'>{selectedNewsItem.id ? 'Endre nyhet' : 'Ny nyhet'}</Typography>
+            <Typography className={classes.header} variant='h4'>
+              {selectedNewsItem.id ? 'Endre nyhet' : 'Ny nyhet'}
+            </Typography>
             <DropdownButton options={options} />
           </div>
-          <Tabs
-            value={tab}
-            indicatorColor="primary"
-            textColor="primary"
-            onChange={(e, newTab) => setTab(newTab)}
-            aria-label="tabs"
-          >
+          <Tabs aria-label='tabs' indicatorColor='primary' onChange={(e, newTab) => setTab(newTab)} textColor='primary' value={tab}>
             <Tab id='0' label={selectedNewsItem.id ? 'Endre' : 'Skriv'} />
-            <Tab id='1' label="Forhåndsvis" />
+            <Tab id='1' label='Forhåndsvis' />
           </Tabs>
           <Paper noPadding>
             {tab === 0 && <NewsEditor newsItem={selectedNewsItem} setNewsItem={(item) => setSelectedNewsItem(item)}></NewsEditor>}
@@ -152,12 +148,12 @@ function NewsAdministration(props) {
         </div>
       </div>
       <SidebarList
-        items={news}
-        selectedItemId={selectedNewsItem?.id || null}
-        onItemClick={(item) => setSelectedNewsItem(item || defaultNewsItem)}
         hideExpired
-        title='Nyheter'
         isLoading={isLoading}
+        items={news}
+        onItemClick={(item) => setSelectedNewsItem(item || defaultNewsItem)}
+        selectedItemId={selectedNewsItem?.id || null}
+        title='Nyheter'
         width={SIDEBAR_WIDTH}
       />
     </Navigation>

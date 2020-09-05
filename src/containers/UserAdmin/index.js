@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
 // Material UI Components
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
@@ -62,23 +62,25 @@ const styles = (theme) => ({
 });
 
 function UserAdmin(props) {
-  const {classes} = props;
+  const { classes } = props;
   const [tab, setTab] = useState(0);
 
   useEffect(() => window.scrollTo(0, 0), []);
 
   return (
-    <Navigation whitesmoke fancyNavbar>
+    <Navigation fancyNavbar whitesmoke>
       <Helmet>
         <title>Brukeradmin - TIHLDE</title>
       </Helmet>
       <div className={classes.top}></div>
       <Paper className={classes.content}>
-        <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
-          <Typography className={classes.header} variant='h4'>Brukeradmin</Typography>
-          <Tabs variant="fullWidth" scrollButtons="on" centered className={classes.tabs} value={tab} onChange={(e, newTab) => setTab(newTab)}>
-            <Tab id='0' icon={<MembersIcon />} label='Medlemmer' />
-            <Tab id='1' icon={<WaitingIcon />} label='Ventende' />
+        <Grid alignItems='center' className={classes.root} container direction='column' wrap='nowrap'>
+          <Typography className={classes.header} variant='h4'>
+            Brukeradmin
+          </Typography>
+          <Tabs centered className={classes.tabs} onChange={(e, newTab) => setTab(newTab)} scrollButtons='on' value={tab} variant='fullWidth'>
+            <Tab icon={<MembersIcon />} id='0' label='Medlemmer' />
+            <Tab icon={<WaitingIcon />} id='1' label='Ventende' />
           </Tabs>
           {tab === 0 && <Members isMember />}
           {tab === 1 && <Members />}
