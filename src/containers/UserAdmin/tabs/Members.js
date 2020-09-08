@@ -12,7 +12,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Grow from '@material-ui/core/Grow';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import ListItem from '@material-ui/core/ListItem';
 import Hidden from '@material-ui/core/Hidden';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
@@ -41,7 +40,8 @@ const styles = (theme) => ({
     gridGap: '10',
     width: '100%',
     textAlign: 'left',
-    gridTemplateColumns: '2fr 1fr 1fr 1fr',
+    padding: 5,
+    gridTemplateColumns: '3fr 2fr 2fr 2fr 48px',
     gridTemplateRows: '1fr',
 
     '@media only screen and (max-width: 800px)': {
@@ -51,8 +51,9 @@ const styles = (theme) => ({
   title: {
     fontWeight: 'bold',
   },
-  id: {
+  name: {
     minWidth: '65px',
+    marginLeft: 15,
   },
   class: {
     minWidth: '60px',
@@ -238,30 +239,24 @@ const Members = (props) => {
         <Grow in={!isFetching}>
           <div>
             <Hidden xsDown>
-              <ListItem className={classes.btn}>
-                <Grid alignItems='center' className={classNames(classes.notActivated)} container direction='row' wrap='nowrap'>
-                  <Typography className={classNames(classes.title, classes.id)} variant='subtitle1'>
-                    Navn:
-                  </Typography>
-                  <Typography className={classes.title} variant='subtitle1'>
-                    Id:
-                  </Typography>
-                  <Typography className={classes.title} variant='subtitle1'>
-                    Studie:
-                  </Typography>
-                  <Typography className={classNames(classes.title, classes.class)} variant='subtitle1'>
-                    Klasse:
-                  </Typography>
-                </Grid>
-              </ListItem>
+              <Grid alignItems='center' className={classes.notActivated} container direction='row' wrap='nowrap'>
+                <Typography className={classNames(classes.title, classes.name)} variant='subtitle1'>
+                  Navn:
+                </Typography>
+                <Typography className={classes.title} variant='subtitle1'>
+                  Id:
+                </Typography>
+                <Typography className={classes.title} variant='subtitle1'>
+                  Studie:
+                </Typography>
+                <Typography className={classes.title} variant='subtitle1'>
+                  Klasse:
+                </Typography>
+              </Grid>
             </Hidden>
             <Pageination fullWidth nextPage={getNextPage} page={nextPage}>
               {memberList &&
-                memberList.map((value, index) => (
-                  <div key={index}>
-                    <PersonListItem data={value} handleMembers={handleMembers} isMember={props.isMember} />
-                  </div>
-                ))}
+                memberList.map((value, index) => <PersonListItem data={value} handleMembers={handleMembers} isMember={props.isMember} key={index} />)}
             </Pageination>
             {memberList && memberList.length === 0 && !isLoading && <NoPersonsIndicator />}
           </div>

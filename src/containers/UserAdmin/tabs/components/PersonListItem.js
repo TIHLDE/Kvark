@@ -29,7 +29,7 @@ const styles = (theme) => ({
     textAlign: 'left',
     gridGap: 10,
     width: '100%',
-    gridTemplateColumns: '2fr 1fr 1fr 80px',
+    gridTemplateColumns: '3fr 2fr 2fr 2fr',
     gridTemplateRows: '1fr',
     '@media only screen and (max-width: 800px)': {
       gridTemplateColumns: '2fr 80px',
