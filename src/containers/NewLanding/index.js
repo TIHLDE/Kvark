@@ -62,16 +62,16 @@ function NewLanding({ classes }) {
         <div className={classes.smoke}>
           <div className={classes.section}>
             <Typography align='center' className={classes.header} color='inherit' variant='h4'>
-              Nyheter
+              Arrangementer
             </Typography>
-            <NewsListView />
+            <Calendar />
           </div>
         </div>
         <div className={classes.section}>
           <Typography align='center' className={classes.header} color='inherit' variant='h4'>
-            Arrangementer
+            Nyheter
           </Typography>
-          <Calendar />
+          <NewsListView />
         </div>
       </Grid>
     </Navigation>
