@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
@@ -6,7 +6,7 @@ import Helmet from 'react-helmet';
 import Text from '../../text/ContactText';
 
 // Material UI Components
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
@@ -69,23 +69,29 @@ const styles = (theme) => ({
 });
 
 function ContactInfo(props) {
-  const {classes} = props;
+  const { classes } = props;
 
   useEffect(() => window.scrollTo(0, 0), []);
 
   return (
-    <Navigation footer whitesmoke fancyNavbar>
+    <Navigation fancyNavbar footer whitesmoke>
       <Helmet>
         <title>Kontakt oss - TIHLDE</title>
       </Helmet>
-      <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
+      <Grid alignItems='center' className={classes.root} container direction='column' wrap='nowrap'>
         <Banner title={Text.header} />
 
         <div className={classes.section}>
           <div className={classes.socialgrid}>
-            <Button className={classes.button} color='inherit' variant='contained' href='mailto:hs@tihlde.org'>E-post</Button>
-            <Button className={classes.button} color='inherit' variant='contained' target='_blank' href='https://www.facebook.com/messages/t/tihlde'>Messenger</Button>
-            <Button className={classes.button} color='inherit' variant='contained' target='_blank' href='https://tihlde.slack.com/'>Slack</Button>
+            <Button className={classes.button} color='inherit' href='mailto:hs@tihlde.org' variant='contained'>
+              E-post
+            </Button>
+            <Button className={classes.button} color='inherit' href='https://www.facebook.com/messages/t/tihlde' target='_blank' variant='contained'>
+              Messenger
+            </Button>
+            <Button className={classes.button} color='inherit' href='https://tihlde.slack.com/' target='_blank' variant='contained'>
+              Slack
+            </Button>
           </div>
         </div>
 

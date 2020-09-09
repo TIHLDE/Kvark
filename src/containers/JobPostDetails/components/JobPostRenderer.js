@@ -1,5 +1,5 @@
-import React, {Fragment} from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import React, { Fragment } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import classNames from 'classnames';
@@ -76,9 +76,9 @@ const styles = (theme) => ({
       justifyContent: 'space-between',
     },
   },
-  ml: {marginLeft: 10},
-  mt: {marginTop: 10},
-  mb: {marginBottom: 32},
+  ml: { marginLeft: 10 },
+  mt: { marginTop: 10 },
+  mb: { marginBottom: 32 },
   emailLink: {
     color: theme.colors.tihlde.main,
     cursor: 'pointer',
@@ -90,21 +90,20 @@ const styles = (theme) => ({
 });
 
 const InfoContent = withStyles(styles)((props) => (
-  <Grid className={classNames(props.className, props.classes.info)} container direction='row' wrap='nowrap' alignItems='center' justify='flex-start'>
-    <Tooltip classes={{popper: props.classes.tooltip}} title={props.title}>
+  <Grid alignItems='center' className={classNames(props.className, props.classes.info)} container direction='row' justify='flex-start' wrap='nowrap'>
+    <Tooltip classes={{ popper: props.classes.tooltip }} title={props.title}>
       {props.icon}
     </Tooltip>
-    <Typography className={props.icon ? props.classes.ml : ''} variant='subtitle1'>{props.label}</Typography>
+    <Typography className={props.icon ? props.classes.ml : ''} variant='subtitle1'>
+      {props.label}
+    </Typography>
   </Grid>
 ));
 
 InfoContent.propTypes = {
   className: PropTypes.string,
   icon: PropTypes.node,
-  label: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.node,
-  ]),
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
 };
 
 const goToLink = (link, toMail = false) => {
@@ -116,17 +115,21 @@ const goToLink = (link, toMail = false) => {
 };
 
 const JobPostRenderer = (props) => {
-  const {classes} = props;
+  const { classes } = props;
   const data = props.data || {};
-  const deadline = (data.deadline) ? moment(data.deadline, ['YYYY-MM-DD HH:mm'], 'nb').format('DD.MM.YYYY') : Text.noDeadline;
+  const deadline = data.deadline ? moment(data.deadline, ['YYYY-MM-DD HH:mm'], 'nb').format('DD.MM.YYYY') : Text.noDeadline;
   const publishedAt = moment(data.created_at, ['YYYY-MM-DD HH:mm'], 'nb');
 
   return (
-    <div className={classes.grid} >
+    <div className={classes.grid}>
       <div>
         <Paper className={classes.content}>
-          <Typography variant='caption' gutterBottom>Publisert: {publishedAt.format('DD.MM.YYYY')}</Typography>
-          <Typography className={classNames(classes.title, classes.mb)} variant='h5' gutterBottom><strong>{data.title}</strong></Typography>
+          <Typography gutterBottom variant='caption'>
+            Publisert: {publishedAt.format('DD.MM.YYYY')}
+          </Typography>
+          <Typography className={classNames(classes.title, classes.mb)} gutterBottom variant='h5'>
+            <strong>{data.title}</strong>
+          </Typography>
           <MarkdownRenderer className={classes.mb} value={data.ingress || ''} />
           <MarkdownRenderer value={data.body || ''} />
         </Paper>
@@ -134,37 +137,31 @@ const JobPostRenderer = (props) => {
       <div>
         <Paper className={classes.details}>
           <div className={classes.imageWrapper}>
-            <img className={classes.image} src={data.logo} alt={data.logo_alt} />
+            <img alt={data.logo_alt} className={classes.image} src={data.logo} />
           </div>
 
           <Divider className={classes.mb} />
-          <InfoContent title="Bedrift" icon={<Business />} label={<strong>{data.company}</strong>} />
-          <InfoContent title="Søknadsfrist" icon={<Time />} label={deadline} />
-          <InfoContent title="Sted" className={classes.mb} icon={<Location />} label={data.location} />
+          <InfoContent icon={<Business />} label={<strong>{data.company}</strong>} title='Bedrift' />
+          <InfoContent icon={<Time />} label={deadline} title='Søknadsfrist' />
+          <InfoContent className={classes.mb} icon={<Location />} label={data.location} title='Sted' />
 
-          {data.email &&
-                        <Fragment>
-                          <Divider className={classes.mb} />
-                          <Typography variant='subtitle1'><strong>{Text.contact}</strong></Typography>
-                          <Typography
-                            className={classNames(classes.emailLink, classes.mb)}
-                            onClick={() => goToLink(data.email, true)}
-                            variant='caption'>
-                            {data.email}
-                          </Typography>
-                        </Fragment>
-          }
+          {data.email && (
+            <Fragment>
+              <Divider className={classes.mb} />
+              <Typography variant='subtitle1'>
+                <strong>{Text.contact}</strong>
+              </Typography>
+              <Typography className={classNames(classes.emailLink, classes.mb)} onClick={() => goToLink(data.email, true)} variant='caption'>
+                {data.email}
+              </Typography>
+            </Fragment>
+          )}
           <Divider className={classes.mb} />
-          {data.link &&
-                        <Button
-                          onClick={() => goToLink(data.link)}
-                          fullWidth
-                          className={classes.mt}
-                          variant='outlined'
-                          color='primary'>
-                          {Text.apply}
-                        </Button>
-          }
+          {data.link && (
+            <Button className={classes.mt} color='primary' fullWidth onClick={() => goToLink(data.link)} variant='outlined'>
+              {Text.apply}
+            </Button>
+          )}
         </Paper>
       </div>
     </div>

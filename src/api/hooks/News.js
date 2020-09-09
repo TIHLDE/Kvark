@@ -1,6 +1,6 @@
 import API from '../api';
-import {useState, useEffect, useCallback} from 'react';
-import {useNewsContext, useNewsState, useNewsDispatch} from '../../context/NewsContext';
+import { useState, useEffect, useCallback } from 'react';
+import { useNewsContext, useNewsState, useNewsDispatch } from '../../context/NewsContext';
 
 export const useNews = (filters = null) => {
   const [state, dispatch] = useNewsContext();
@@ -17,18 +17,18 @@ export const useNews = (filters = null) => {
         setIsLoading(true);
         const response = API.getNewsItems(filters).response();
         response
-            .then((data) => {
-              data = data || [];
-              setIsError(response.isError);
-              setNews(data);
-              if (!filters || Object.keys(filters).length === 0) {
-                dispatch({
-                  type: 'SET_NEWS',
-                  payload: data,
-                });
-              }
-            })
-            .finally(() => setIsLoading(false));
+          .then((data) => {
+            data = data || [];
+            setIsError(response.isError);
+            setNews(data);
+            if (!filters || Object.keys(filters).length === 0) {
+              dispatch({
+                type: 'SET_NEWS',
+                payload: data,
+              });
+            }
+          })
+          .finally(() => setIsLoading(false));
       })();
     }
   }, [filters, dispatch, state]);
@@ -51,12 +51,12 @@ export const useNewsById = (id) => {
         setIsLoading(true);
         const response = API.getNewsItem(id).response();
         response
-            .then((data) => {
-              data = data || [];
-              setIsError(response.isError);
-              setNewsData(data);
-            })
-            .finally(() => setIsLoading(false));
+          .then((data) => {
+            data = data || [];
+            setIsError(response.isError);
+            setNewsData(data);
+          })
+          .finally(() => setIsLoading(false));
       })();
     }
   }, [id, state]);
@@ -70,16 +70,15 @@ export const useCreateNews = (newsData, callback) => {
   const execute = useCallback(() => {
     (async () => {
       const response = API.createNewsItem(newsData).response();
-      response
-          .then((data) => {
-            callback(data, response.isError);
-            if (!response.isError) {
-              dispatch({
-                type: 'ADD_NEWS',
-                payload: data,
-              });
-            }
+      response.then((data) => {
+        callback(data, response.isError);
+        if (!response.isError) {
+          dispatch({
+            type: 'ADD_NEWS',
+            payload: data,
           });
+        }
+      });
     })();
   }, [newsData, callback, dispatch]);
 
@@ -92,16 +91,15 @@ export const usePutNews = (id, newsData, callback) => {
   const execute = useCallback(() => {
     (async () => {
       const response = API.putNewsItem(id, newsData).response();
-      response
-          .then((data) => {
-            callback(data, response.isError);
-            if (!response.isError) {
-              dispatch({
-                type: 'PUT_NEWS',
-                payload: newsData,
-              });
-            }
+      response.then((data) => {
+        callback(data, response.isError);
+        if (!response.isError) {
+          dispatch({
+            type: 'PUT_NEWS',
+            payload: newsData,
           });
+        }
+      });
     })();
   }, [newsData, id, callback, dispatch]);
 
@@ -114,20 +112,19 @@ export const useDeleteNews = (id, callback) => {
   const execute = useCallback(() => {
     (async () => {
       const response = API.deleteNewsItem(id).response();
-      response
-          .then((data) => {
-            callback(data, response.isError);
-            if (!response.isError) {
-              dispatch({
-                type: 'DELETE_NEWS',
-                payload: id,
-              });
-            }
+      response.then((data) => {
+        callback(data, response.isError);
+        if (!response.isError) {
+          dispatch({
+            type: 'DELETE_NEWS',
+            payload: id,
           });
+        }
+      });
     })();
   }, [id, callback, dispatch]);
 
   return execute;
 };
 
-export default {useNews, useNewsById, useCreateNews, usePutNews, useDeleteNews};
+export default { useNews, useNewsById, useCreateNews, usePutNews, useDeleteNews };

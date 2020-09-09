@@ -44,6 +44,14 @@
     "lint": "eslint --no-fix src --ext .js",
     "format": "eslint --fix src --ext .js"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js, tsx}": "eslint --cache --fix"
+  },
   "devDependencies": {
     "@babel/compat-data": "^7.9.0",
     "@babel/helper-call-delegate": "^7.8.7",
@@ -56,9 +64,15 @@
     "babel-eslint": "^10.1.0",
     "eslint": "6.6.0",
     "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-loader": "^4.0.2",
     "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^4.0.2",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.3.0",
+    "prettier": "^2.1.1",
     "react-test-renderer": "^16.13.1",
     "typescript": "^3.9.2"
   },

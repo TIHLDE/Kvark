@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Material-UI
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
@@ -34,28 +34,100 @@ const styles = (theme) => ({
 });
 
 function JobPostEditor(props) {
-  const {classes, jobPost, setJobPost} = props;
+  const { classes, jobPost, setJobPost } = props;
 
   return (
     <div className={classes.root}>
-      {!jobPost ?
-        <CircularProgress className={classes.progress} /> :
+      {!jobPost ? (
+        <CircularProgress className={classes.progress} />
+      ) : (
         <form>
           <Grid container direction='column' wrap='nowrap'>
-            <TextField variant='filled' className={classes.field} label='Tittel' value={jobPost.title || ''} onChange={(e) => setJobPost({...jobPost, title: e.target.value})} required/>
-            <TextField variant='filled' multiline rowsMax={3} className={classes.field} label='Ingress' value={jobPost.ingress || ''} onChange={(e) => setJobPost({...jobPost, ingress: e.target.value})} required/>
-            <TextField variant='filled' multiline rowsMax={3} className={classes.field} label='Sted' value={jobPost.location || ''} onChange={(e) => setJobPost({...jobPost, location: e.target.value})} required/>
-            <TextEditor className={classes.textEditor} value={jobPost.body || ''} onChange={(e) => setJobPost({...jobPost, body: e})}/>
+            <TextField
+              className={classes.field}
+              label='Tittel'
+              onChange={(e) => setJobPost({ ...jobPost, title: e.target.value })}
+              required
+              value={jobPost.title || ''}
+              variant='filled'
+            />
+            <TextField
+              className={classes.field}
+              label='Ingress'
+              multiline
+              onChange={(e) => setJobPost({ ...jobPost, ingress: e.target.value })}
+              required
+              rowsMax={3}
+              value={jobPost.ingress || ''}
+              variant='filled'
+            />
+            <TextField
+              className={classes.field}
+              label='Sted'
+              multiline
+              onChange={(e) => setJobPost({ ...jobPost, location: e.target.value })}
+              required
+              rowsMax={3}
+              value={jobPost.location || ''}
+              variant='filled'
+            />
+            <TextEditor className={classes.textEditor} onChange={(e) => setJobPost({ ...jobPost, body: e })} value={jobPost.body || ''} />
             <Divider className={classes.margin} />
-            <TextField variant='filled' multiline rowsMax={3} className={classes.field} label='Logo bilde-url' value={jobPost.image || ''} onChange={(e) => setJobPost({...jobPost, image: e.target.value})} required/>
-            <TextField variant='filled' multiline rowsMax={3} className={classes.field} label='Alternativ bildetekst' value={jobPost.image_alt || ''} onChange={(e) => setJobPost({...jobPost, image_alt: e.target.value})} required/>
-            <TextField variant='filled' className={classes.field} label='Bedrift' value={jobPost.company || ''} onChange={(e) => setJobPost({...jobPost, company: e.target.value})} required/>
-            <TextField variant='filled' className={classes.field} label="E-post" value={jobPost.email || ''} onChange={(e) => setJobPost({...jobPost, email: e.target.value})}/>
-            <TextField variant='filled' className={classes.field} InputLabelProps={{shrink: true}} type='datetime-local' pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" label='Frist' value={jobPost.deadline.substring(0, 16) || new Date().toISOString().substring(0, 16)} onChange={(e) => setJobPost({...jobPost, deadline: e.target.value})}/>
-            <TextField variant='filled' className={classes.field} label="Link" value={jobPost.link || ''} onChange={(e) => setJobPost({...jobPost, link: e.target.value})}/>
+            <TextField
+              className={classes.field}
+              label='Logo bilde-url'
+              multiline
+              onChange={(e) => setJobPost({ ...jobPost, image: e.target.value })}
+              required
+              rowsMax={3}
+              value={jobPost.image || ''}
+              variant='filled'
+            />
+            <TextField
+              className={classes.field}
+              label='Alternativ bildetekst'
+              multiline
+              onChange={(e) => setJobPost({ ...jobPost, image_alt: e.target.value })}
+              required
+              rowsMax={3}
+              value={jobPost.image_alt || ''}
+              variant='filled'
+            />
+            <TextField
+              className={classes.field}
+              label='Bedrift'
+              onChange={(e) => setJobPost({ ...jobPost, company: e.target.value })}
+              required
+              value={jobPost.company || ''}
+              variant='filled'
+            />
+            <TextField
+              className={classes.field}
+              label='E-post'
+              onChange={(e) => setJobPost({ ...jobPost, email: e.target.value })}
+              value={jobPost.email || ''}
+              variant='filled'
+            />
+            <TextField
+              className={classes.field}
+              InputLabelProps={{ shrink: true }}
+              label='Frist'
+              onChange={(e) => setJobPost({ ...jobPost, deadline: e.target.value })}
+              pattern='[0-9]{4}-[0-9]{2}-[0-9]{2}'
+              type='datetime-local'
+              value={jobPost.deadline.substring(0, 16) || new Date().toISOString().substring(0, 16)}
+              variant='filled'
+            />
+            <TextField
+              className={classes.field}
+              label='Link'
+              onChange={(e) => setJobPost({ ...jobPost, link: e.target.value })}
+              value={jobPost.link || ''}
+              variant='filled'
+            />
           </Grid>
         </form>
-      }
+      )}
     </div>
   );
 }

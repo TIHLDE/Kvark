@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Material-UI
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
@@ -34,23 +34,56 @@ const styles = (theme) => ({
 });
 
 function NewsEditor(props) {
-  const {classes, newsItem, setNewsItem} = props;
+  const { classes, newsItem, setNewsItem } = props;
 
   return (
     <div className={classes.root}>
-      {!newsItem ?
-        <CircularProgress className={classes.progress} /> :
+      {!newsItem ? (
+        <CircularProgress className={classes.progress} />
+      ) : (
         <form>
           <Grid container direction='column' wrap='nowrap'>
-            <TextField variant='filled' className={classes.field} label='Tittel' value={newsItem.title || ''} onChange={(e) => setNewsItem({...newsItem, title: e.target.value})} required/>
-            <TextField variant='filled' multiline rowsMax={3} className={classes.field} label='Header' value={newsItem.header || ''} onChange={(e) => setNewsItem({...newsItem, header: e.target.value})} required/>
-            <TextEditor className={classes.textEditor} value={newsItem.body || ''} onChange={(e) => setNewsItem({...newsItem, body: e})}/>
+            <TextField
+              className={classes.field}
+              label='Tittel'
+              onChange={(e) => setNewsItem({ ...newsItem, title: e.target.value })}
+              required
+              value={newsItem.title || ''}
+              variant='filled'
+            />
+            <TextField
+              className={classes.field}
+              label='Header'
+              multiline
+              onChange={(e) => setNewsItem({ ...newsItem, header: e.target.value })}
+              required
+              rowsMax={3}
+              value={newsItem.header || ''}
+              variant='filled'
+            />
+            <TextEditor className={classes.textEditor} onChange={(e) => setNewsItem({ ...newsItem, body: e })} value={newsItem.body || ''} />
             <Divider className={classes.margin} />
-            <TextField variant='filled' multiline rowsMax={3} className={classes.field} label='Bilde url' value={newsItem.image || ''} onChange={(e) => setNewsItem({...newsItem, image: e.target.value})}/>
-            <TextField variant='filled' multiline rowsMax={3} className={classes.field} label='Alternativ bildetekst' value={newsItem.image_alt || ''} onChange={(e) => setNewsItem({...newsItem, image_alt: e.target.value})}/>
+            <TextField
+              className={classes.field}
+              label='Bilde url'
+              multiline
+              onChange={(e) => setNewsItem({ ...newsItem, image: e.target.value })}
+              rowsMax={3}
+              value={newsItem.image || ''}
+              variant='filled'
+            />
+            <TextField
+              className={classes.field}
+              label='Alternativ bildetekst'
+              multiline
+              onChange={(e) => setNewsItem({ ...newsItem, image_alt: e.target.value })}
+              rowsMax={3}
+              value={newsItem.image_alt || ''}
+              variant='filled'
+            />
           </Grid>
         </form>
-      }
+      )}
     </div>
   );
 }

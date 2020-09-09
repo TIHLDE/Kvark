@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
 // Material UI Components
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
@@ -40,26 +40,38 @@ const styles = (theme) => ({
 });
 
 function Http404(props) {
-  const {classes} = props;
+  const { classes } = props;
 
   useEffect(() => window.scrollTo(0, 0), []);
 
   return (
-    <Navigation footer whitesmoke className={classes.root}>
+    <Navigation className={classes.root} footer whitesmoke>
       <Helmet>
         <title>404 - TIHLDE</title>
       </Helmet>
-      <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
+      <Grid alignItems='center' className={classes.root} container direction='column' wrap='nowrap'>
         <div className={classes.center}>
-          {AuthService.isAuthenticated() ?
-            <img src={http404ropeImg} alt="404" className={classes.img} /> :
-            <img src={http404img} alt="404" className={classNames(classes.img, classes.imgPadding)} />
-          }
+          {AuthService.isAuthenticated() ? (
+            <img alt='404' className={classes.img} src={http404ropeImg} />
+          ) : (
+            <img alt='404' className={classNames(classes.img, classes.imgPadding)} src={http404img} />
+          )}
         </div>
         <div className={classes.center}>
           <h3>Denne siden finnes ikke :(</h3>
-          <Button variant='contained' color='primary' onClick={() => window.history.back()}>Tilbake</Button>
-          <p className={classes.textContainer}>Send oss gjerne en <a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/forms/d/e/1FAIpQLSfp8ZUm-GfzMla0Hg4AeX0iO8HME8ez7TttY2MgUfpC8MzBIQ/viewform">tilbakemelding</a> om du fulgte en gyldig lenke hit</p>
+          <Button color='primary' onClick={() => window.history.back()} variant='contained'>
+            Tilbake
+          </Button>
+          <p className={classes.textContainer}>
+            Send oss gjerne en{' '}
+            <a
+              href='https://docs.google.com/forms/d/e/1FAIpQLSfp8ZUm-GfzMla0Hg4AeX0iO8HME8ez7TttY2MgUfpC8MzBIQ/viewform'
+              rel='noopener noreferrer'
+              target='_blank'>
+              tilbakemelding
+            </a>{' '}
+            om du fulgte en gyldig lenke hit
+          </p>
         </div>
       </Grid>
     </Navigation>

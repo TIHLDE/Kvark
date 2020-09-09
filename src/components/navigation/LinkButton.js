@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link as RouterLink} from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 import ButtonBase from '@material-ui/core/ButtonBase';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import Typography from '@material-ui/core/Typography';
 
@@ -40,7 +40,7 @@ const linkButtonStyles = (theme) => ({
 });
 
 const LinkButton = (props) => {
-  const {classes, children, noPadding, textLeft, noText, icon: IconComponent, className} = props;
+  const { classes, children, noPadding, textLeft, noText, icon: IconComponent, className } = props;
 
   // React router Link do not support external links
   let baseComponent;
@@ -55,7 +55,7 @@ const LinkButton = (props) => {
     buttonContent = children;
   } else {
     buttonContent = (
-      <Typography variant='subtitle1' className={classes.text}>
+      <Typography className={classes.text} variant='subtitle1'>
         {children}
       </Typography>
     );
@@ -69,15 +69,12 @@ const LinkButton = (props) => {
   return (
     <div className={classNames(classes.wrapper, noPadding ? null : classes.padding, className)}>
       <div className={classNames(classes.buttonFrame, textLeft ? classes.textLeft : classes.textCenter)}>
-        <ButtonBase
-          className={classNames('clickable', classes.button)}
-          component={baseComponent}
-          to={props.to}
-          target={target}
-          href={props.to}>
-          {props.icon && <div className={classes.iconContainer}>
-            <IconComponent className={classes.icon} />
-          </div>}
+        <ButtonBase className={classNames('clickable', classes.button)} component={baseComponent} href={props.to} target={target} to={props.to}>
+          {props.icon && (
+            <div className={classes.iconContainer}>
+              <IconComponent className={classes.icon} />
+            </div>
+          )}
           {buttonContent}
         </ButtonBase>
       </div>

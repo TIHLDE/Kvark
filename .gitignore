@@ -31,3 +31,5 @@ package-lock.json
 .idea/codeStyles/Project.xml
 .idea/workspace.xml
 .idea/codeStyles/Project.xml
+
+.eslintcache

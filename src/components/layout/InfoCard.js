@@ -1,5 +1,5 @@
-import React, {Fragment} from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import React, { Fragment } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import parser from 'html-react-parser';
 import classNames from 'classnames';
@@ -65,31 +65,37 @@ const styles = (theme) => ({
 });
 
 const InfoCard = (props) => {
-  const {classes} = props;
+  const { classes } = props;
 
   return (
     <Paper className={classNames(classes.root, props.className)} noPadding>
       <div className={classes.wrapper}>
-        {props.src &&
+        {props.src && (
           <div className={classes.margin}>
-            <img className={classNames(classes.image, props.imageClass)} src={props.src} alt={props.alt}/>
+            <img alt={props.alt} className={classNames(classes.image, props.imageClass)} src={props.src} />
           </div>
-        }
-        <Grid className={(props.justifyText) ? classes.cover : ''} container direction='column' nowrap='nowrap' justify='flex-start'>
-          <Typography className={classes.header} variant='h5' align='left'><strong>{props.header}</strong></Typography>
-          {props.text && <Typography className={classes.text} component='p'>{parser(props.text)}</Typography>}
-
-          {props.subText &&
-            <Fragment>
-              <Typography className={classNames(classes.padding, classes.subheader)} variant='subtitle1'><strong>{props.subheader}</strong></Typography>
-              <Typography className={classes.text} component='p'>{parser(props.subText)}</Typography>
-            </Fragment>
-          }
-          {props.children && (
-            <div className={classNames(classes.grow, classes.padding, props.classes.children)}>
-              {props.children}
-            </div>
+        )}
+        <Grid className={props.justifyText ? classes.cover : ''} container direction='column' justify='flex-start' nowrap='nowrap'>
+          <Typography align='left' className={classes.header} variant='h5'>
+            <strong>{props.header}</strong>
+          </Typography>
+          {props.text && (
+            <Typography className={classes.text} component='p'>
+              {parser(props.text)}
+            </Typography>
           )}
+
+          {props.subText && (
+            <Fragment>
+              <Typography className={classNames(classes.padding, classes.subheader)} variant='subtitle1'>
+                <strong>{props.subheader}</strong>
+              </Typography>
+              <Typography className={classes.text} component='p'>
+                {parser(props.subText)}
+              </Typography>
+            </Fragment>
+          )}
+          {props.children && <div className={classNames(classes.grow, classes.padding, props.classes.children)}>{props.children}</div>}
         </Grid>
       </div>
     </Paper>

@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
-import {Link, withRouter} from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
+import { Link, withRouter } from 'react-router-dom';
 import URLS from '../../URLS';
 import classNames from 'classnames';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 
 // API and store imports
@@ -13,7 +13,7 @@ import AuthService from '../../api/services/AuthService';
 import * as MiscActions from '../../store/actions/MiscActions';
 import UserService from '../../api/services/UserService';
 import COOKIE from '../../api/cookie';
-import {WARNINGS_READ} from '../../settings';
+import { WARNINGS_READ } from '../../settings';
 
 // Material UI Components
 import AppBar from '@material-ui/core/AppBar';
@@ -172,10 +172,15 @@ const styles = (theme) => ({
 });
 
 const URIbutton = withStyles(styles)((props) => {
-  const {data, classes} = props;
+  const { data, classes } = props;
   return (
     <div className={classNames(props.selected ? classes.selected : '', props.uri)}>
-      <Button component={Link} to={data.link} color="inherit" style={{color: 'white'}} onClick={data.link === window.location.pathname ? () => window.location.reload() : null}>
+      <Button
+        color='inherit'
+        component={Link}
+        onClick={data.link === window.location.pathname ? () => window.location.reload() : null}
+        style={{ color: 'white' }}
+        to={data.link}>
         {data.text}
       </Button>
     </div>
@@ -183,19 +188,27 @@ const URIbutton = withStyles(styles)((props) => {
 });
 
 const PersonIcon = withStyles(styles)((props) => {
-  const {user, link, classes} = props;
+  const { user, link, classes } = props;
   return (
-    <Button component={Link} to={link} onClick={link === window.location.pathname ? () => window.location.reload() : null}>
+    <Button component={Link} onClick={link === window.location.pathname ? () => window.location.reload() : null} to={link}>
       <div className={classes.profileContainer}>
-        <div className={classes.profileName}>{user.first_name !== undefined ? user.first_name : <Skeleton className={classes.skeleton} variant="text" width={75} />}</div>
-        <Avatar className={classes.avatar}>{user.first_name !== undefined ? String((user.first_name).substring(0, 1)) + (user.last_name).substring(0, 1) : <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant="text" />}</Avatar>
+        <div className={classes.profileName}>
+          {user.first_name !== undefined ? user.first_name : <Skeleton className={classes.skeleton} variant='text' width={75} />}
+        </div>
+        <Avatar className={classes.avatar}>
+          {user.first_name !== undefined ? (
+            String(user.first_name.substring(0, 1)) + user.last_name.substring(0, 1)
+          ) : (
+            <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant='text' />
+          )}
+        </Avatar>
       </div>
     </Button>
   );
 });
 
 function Navigation(props) {
-  const {classes, fancyNavbar, whitesmoke, isLoading, footer, children, snackHasDisplayed, setHasSnackDisplayed, match} = props;
+  const { classes, fancyNavbar, whitesmoke, isLoading, footer, children, snackHasDisplayed, setHasSnackDisplayed, match } = props;
   const [showSidebar, setShowSidebar] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackMessage, setSnackMessage] = useState(null);
@@ -205,7 +218,7 @@ function Navigation(props) {
   const [scrollLength, setScrollLength] = useState(0);
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll, {passive: true});
+    window.addEventListener('scroll', handleScroll, { passive: true });
     if (AuthService.isAuthenticated()) {
       UserService.getUserData().then((user) => {
         if (user) {
@@ -213,10 +226,14 @@ function Navigation(props) {
         }
       });
     }
-    if (snackHasDisplayed) return;
+    if (snackHasDisplayed) {
+      return;
+    }
     MiscService.getWarning((isError, data) => {
       let warningsRead = COOKIE.get(WARNINGS_READ);
-      if (warningsRead === undefined) warningsRead = [];
+      if (warningsRead === undefined) {
+        warningsRead = [];
+      }
       if (isError === false && data && data.length > 0 && !warningsRead.includes(data[data.length - 1].id)) {
         setSnackMessage(data[data.length - 1].text);
         setShowSnackbar(true);
@@ -235,7 +252,9 @@ function Navigation(props) {
     setShowSidebar(false);
     setHasSnackDisplayed(true);
     let warningsRead = COOKIE.get(WARNINGS_READ);
-    if (warningsRead === undefined) warningsRead = [];
+    if (warningsRead === undefined) {
+      warningsRead = [];
+    }
     warningsRead.push(snackWarningId);
     COOKIE.set(WARNINGS_READ, warningsRead);
   };
@@ -249,46 +268,51 @@ function Navigation(props) {
       <Helmet>
         <title>TIHLDE</title>
       </Helmet>
-      <AppBar elevation={(fancyNavbar && scrollLength < 20 ? 0 : 1)} className={classNames(classes.root, (fancyNavbar && scrollLength < 20 && classes.rootLanding))} position="fixed" color="primary">
+      <AppBar
+        className={classNames(classes.root, fancyNavbar && scrollLength < 20 && classes.rootLanding)}
+        color='primary'
+        elevation={fancyNavbar && scrollLength < 20 ? 0 : 1}
+        position='fixed'>
         <Toolbar className={classes.navContent} disableGutters>
           <div className={classes.navWrapper}>
             <div className={classes.logoWrapper}>
               <Link className={classes.flex} to='/'>
-                <img src={TIHLDELOGO} height='32em' alt='TIHLDE_LOGO' width='auto' />
+                <img alt='TIHLDE_LOGO' height='32em' src={TIHLDELOGO} width='auto' />
               </Link>
             </div>
 
             <div className={classes.grow}>
-              <Hidden smDown implementation='css'>
+              <Hidden implementation='css' smDown>
                 <div className={classes.flex}>
-                  <URIbutton data={{link: URLS.about, text: 'Om TIHLDE'}} selected={match.url === URLS.about} />
-                  <URIbutton data={{link: URLS.newStudent, text: 'Ny student'}} selected={match.url === URLS.newStudent} />
+                  <URIbutton data={{ link: URLS.about, text: 'Om TIHLDE' }} selected={match.url === URLS.about} />
                   {/* AuthService.isAuthenticated() && <URIbutton data={{ link: URLS.cheatsheet, text: "Kokebok" }} selected={match.url === URLS.cheatsheet} />*/}
-                  <URIbutton data={{link: URLS.events, text: 'Arrangementer'}} selected={match.url === URLS.events} />
-                  <URIbutton data={{link: URLS.news, text: 'Nyheter'}} selected={match.url === URLS.news} />
-                  <URIbutton data={{link: URLS.company, text: 'For Bedrifter'}} selected={match.url === URLS.company} />
+                  <URIbutton data={{ link: URLS.events, text: 'Arrangementer' }} selected={match.url === URLS.events} />
+                  <URIbutton data={{ link: URLS.news, text: 'Nyheter' }} selected={match.url === URLS.news} />
+                  <URIbutton data={{ link: URLS.jobposts, text: 'Karriere' }} selected={match.url === URLS.jobposts} />
+                  <URIbutton data={{ link: URLS.company, text: 'For Bedrifter' }} selected={match.url === URLS.company} />
                 </div>
               </Hidden>
             </div>
             <div>
-              {AuthService.isAuthenticated() ?
-                <PersonIcon user={userData} link={URLS.profile} /> :
-                <Hidden smDown implementation='css'>
-                  <IconButton className={classes.menuButton} component={Link} to={URLS.login}><PersonOutlineIcon /></IconButton>
+              {AuthService.isAuthenticated() ? (
+                <PersonIcon link={URLS.profile} user={userData} />
+              ) : (
+                <Hidden implementation='css' smDown>
+                  <IconButton className={classes.menuButton} component={Link} to={URLS.login}>
+                    <PersonOutlineIcon />
+                  </IconButton>
                 </Hidden>
-              }
+              )}
             </div>
-            <Hidden mdUp implementation='css'>
+            <Hidden implementation='css' mdUp>
               <div className={classes.menuWrapper}>
-                <IconButton className={classes.menuButton} onClick={toggleSidebar}><MenuIcon /></IconButton>
+                <IconButton className={classes.menuButton} onClick={toggleSidebar}>
+                  <MenuIcon />
+                </IconButton>
               </div>
             </Hidden>
-            <Hidden xsDown implementation='css'>
-              <Drawer
-                anchor='top'
-                open={showSidebar}
-                onClose={toggleSidebar}
-                classes={{paper: classes.sidebar}}>
+            <Hidden implementation='css' xsDown>
+              <Drawer anchor='top' classes={{ paper: classes.sidebar }} onClose={toggleSidebar} open={showSidebar}>
                 <Sidebar onClose={toggleSidebar} />
               </Drawer>
             </Hidden>
@@ -297,18 +321,15 @@ function Navigation(props) {
       </AppBar>
       <Snack
         className={classNames(classes.snack, classes.flex, snackType === 2 ? classes.snackMessage : classes.snackWarning)}
-        open={showSnackbar}
         message={snackMessage}
-        onClose={closeSnackbar} />
-      <main className={classNames((fancyNavbar ? classes.mainLanding : classes.main), (whitesmoke ? classes.whitesmoke : classes.light))}>
-        {(isLoading) ? <LinearProgress /> : null}
-        <div className={classes.wrapper}>
-          {children}
-        </div>
+        onClose={closeSnackbar}
+        open={showSnackbar}
+      />
+      <main className={classNames(fancyNavbar ? classes.mainLanding : classes.main, whitesmoke ? classes.whitesmoke : classes.light)}>
+        {isLoading ? <LinearProgress /> : null}
+        <div className={classes.wrapper}>{children}</div>
       </main>
-      {footer && !isLoading &&
-        <Footer />
-      }
+      {footer && !isLoading && <Footer />}
     </>
   );
 }

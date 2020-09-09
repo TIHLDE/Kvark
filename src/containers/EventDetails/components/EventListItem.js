@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Material-ui
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 const styles = {
@@ -16,15 +16,11 @@ const styles = {
 };
 
 const EventListItem = (props) => {
-  const {classes, icon, text} = props;
+  const { classes, icon, text } = props;
   return (
     <div className={classes.listItem}>
-      <div className={classes.imgContainer}>
-        {icon}
-      </div>
-      <Typography>
-        {text}
-      </Typography>
+      <div className={classes.imgContainer}>{icon}</div>
+      <Typography>{text}</Typography>
     </div>
   );
 };

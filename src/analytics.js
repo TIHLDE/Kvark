@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
-import {Route} from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 function GoogleAnalytics(props) {
-  const {location} = props;
+  const { location } = props;
 
   useEffect(() => {
     logPageChange(location.pathname);
@@ -12,7 +12,7 @@ function GoogleAnalytics(props) {
 
   const logPageChange = (pathname) => {
     const page = pathname;
-    const {location} = window;
+    const { location } = window;
     ReactGA.set({
       page,
       location: `${location.origin}${page}`,

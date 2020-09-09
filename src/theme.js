@@ -1,4 +1,4 @@
-import {createMuiTheme} from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 export const lightTheme = createMuiTheme({
   typography: {
@@ -183,4 +183,3 @@ export const errorTheme = createMuiTheme({
     },
   },
 });
-

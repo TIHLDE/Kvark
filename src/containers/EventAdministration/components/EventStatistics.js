@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {getUserClass, getUserStudyShort} from '../../../utils';
+import { getUserClass, getUserStudyShort } from '../../../utils';
 
 // Material-UI
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 // Project components
@@ -41,16 +41,16 @@ const styles = (theme) => ({
 });
 
 const EventParticipants = (props) => {
-  const {classes, participants} = props;
+  const { classes, participants } = props;
 
-  const attendedNo = (attended) => (participants.filter((x) => x.has_attended === attended).length);
+  const attendedNo = (attended) => participants.filter((x) => x.has_attended === attended).length;
 
   const classNo = (userClass) => {
-    const no = (participants.filter((x) => x.user_info.user_class === userClass).length);
+    const no = participants.filter((x) => x.user_info.user_class === userClass).length;
     return no > 0 ? no : '0';
   };
   const studyNo = (userStudy) => {
-    const no = (participants.filter((x) => x.user_info.user_study === userStudy).length);
+    const no = participants.filter((x) => x.user_info.user_study === userStudy).length;
     return no > 0 ? no : '0';
   };
 
@@ -61,13 +61,23 @@ const EventParticipants = (props) => {
         <div>
           <Typography className={classes.lightText}>Klasse:</Typography>
           <div className={classes.innerGrid}>
-            {[1, 2, 3, 4, 5].map((i) => <Paper key={i} className={classes.statistics} noPadding><Typography variant='subtitle2'>{getUserClass(i)}</Typography><Typography variant='h4'>{classNo(i)}</Typography></Paper>)}
+            {[1, 2, 3, 4, 5].map((i) => (
+              <Paper className={classes.statistics} key={i} noPadding>
+                <Typography variant='subtitle2'>{getUserClass(i)}</Typography>
+                <Typography variant='h4'>{classNo(i)}</Typography>
+              </Paper>
+            ))}
           </div>
         </div>
         <div>
           <Typography className={classes.lightText}>Studie:</Typography>
           <div className={classes.innerGrid}>
-            {[1, 2, 3, 4, 5].map((i) => <Paper key={i} className={classes.statistics} noPadding><Typography variant='subtitle2'>{getUserStudyShort(i)}</Typography><Typography variant='h4'>{studyNo(i)}</Typography></Paper>)}
+            {[1, 2, 3, 4, 5].map((i) => (
+              <Paper className={classes.statistics} key={i} noPadding>
+                <Typography variant='subtitle2'>{getUserStudyShort(i)}</Typography>
+                <Typography variant='h4'>{studyNo(i)}</Typography>
+              </Paper>
+            ))}
           </div>
         </div>
       </div>

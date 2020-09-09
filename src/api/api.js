@@ -1,4 +1,4 @@
-import {IRequest} from './httphandler';
+import { IRequest } from './httphandler';
 
 export default {
   // Returns a set of items/widgets to display in the LandingPage grid
@@ -14,7 +14,7 @@ export default {
     return new IRequest('GET', 'events/', filters || {});
   },
   getExpiredEvents: () => {
-    return new IRequest('GET', 'events/', {expired: true});
+    return new IRequest('GET', 'events/', { expired: true });
   },
   getEventLists: () => {
     return new IRequest('GET', 'eventlist/', undefined);
@@ -49,13 +49,13 @@ export default {
 
   // Job posts
   getJobPosts: (data) => {
-    return new IRequest('GET', 'jobpost/', (data) ? data : {newest: true});
+    return new IRequest('GET', 'jobpost/', data ? data : { newest: true });
   },
   getJobPost: (id) => {
     return new IRequest('GET', 'jobpost/'.concat(id, '/'), undefined);
   },
   getExpiredJobPosts: () => {
-    return new IRequest('GET', 'jobpost/', {expired: true});
+    return new IRequest('GET', 'jobpost/', { expired: true });
   },
   createJobPost: (item) => {
     return new IRequest('POST', 'jobpost/', item, true);
@@ -115,9 +115,14 @@ export default {
 
   // Company form
   emailForm: (data) => {
-    return new IRequest('POST', 'accept-form/', {
-      ...data,
-    }, false);
+    return new IRequest(
+      'POST',
+      'accept-form/',
+      {
+        ...data,
+      },
+      false,
+    );
   },
 
   // Challenges

@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
 // API and store imports
-import {useNews} from '../../api/hooks/News';
+import { useNews } from '../../api/hooks/News';
 
 // Material Components
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grow from '@material-ui/core/Grow';
 
@@ -62,7 +62,7 @@ const styles = (theme) => ({
 });
 
 const News = (props) => {
-  const {classes} = props;
+  const { classes } = props;
 
   const [urlParameters, setUrlParameters] = useState({});
   const [news, isLoading, isError] = useNews(urlParameters);
@@ -78,7 +78,7 @@ const News = (props) => {
         parameterArray.forEach((parameter) => {
           const parameterString = parameter.split('=');
           setUrlParameters((params) => {
-            return {...params, [parameterString[0]]: parameterString[1]};
+            return { ...params, [parameterString[0]]: parameterString[1] };
           });
         });
       }
@@ -112,29 +112,27 @@ const News = (props) => {
   };
 
   return (
-    <Navigation isLoading={isLoading} footer whitesmoke fancyNavbar>
+    <Navigation fancyNavbar footer isLoading={isLoading} whitesmoke>
       <Helmet>
         <title>Nyheter - TIHLDE</title>
       </Helmet>
       <div className={classes.root}>
-        <Banner title='Nyheter'/>
+        <Banner title='Nyheter' />
         <div className={classes.wrapper}>
-          {isLoading ? <CircularProgress className={classes.progress} /> :
+          {isLoading ? (
+            <CircularProgress className={classes.progress} />
+          ) : (
             <div className={classes.listRoot}>
               <Grow in={!isLoading}>
                 <div className={classes.list}>
                   <Pageination nextPage={getNextPage} page={nextPage}>
-                    {displayedNews && displayedNews.map((value) => (
-                      <NewsListItem key={value.id} data={value} />
-                    ))}
+                    {displayedNews && displayedNews.map((value) => <NewsListItem data={value} key={value.id} />)}
                   </Pageination>
-                  {displayedNews.length === 0 && !isLoading &&
-                    <NoNewsIndicator />
-                  }
+                  {displayedNews.length === 0 && !isLoading && <NoNewsIndicator />}
                 </div>
               </Grow>
             </div>
-          }
+          )}
         </div>
       </div>
     </Navigation>
@@ -149,4 +147,4 @@ News.defaultProps = {
   id: '-1',
 };
 
-export default (withStyles(styles)(News));
+export default withStyles(styles)(News);

@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 
 // Project Reducers
 import misc from './MiscReducer';
@@ -12,4 +12,3 @@ export default combineReducers({
   events,
   user,
 });
-

@@ -1,11 +1,11 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import URLS from '../../../URLS';
-import {getDay, getMonth} from '../../../utils';
+import { getDay, getMonth } from '../../../utils';
 import moment from 'moment';
 import classNames from 'classnames';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
@@ -100,9 +100,11 @@ const styles = (theme) => ({
 });
 
 const InfoContent = withStyles(styles)((props) => (
-  <Grid className={props.classes.infoRoot} container direction='row' wrap='nowrap' alignItems='center'>
+  <Grid alignItems='center' className={props.classes.infoRoot} container direction='row' wrap='nowrap'>
     {props.icon}
-    <Typography className={props.classes.info} variant='h6'>{props.label}</Typography>
+    <Typography className={props.classes.info} variant='h6'>
+      {props.label}
+    </Typography>
   </Grid>
 ));
 
@@ -116,18 +118,18 @@ const getDate = (date) => {
 };
 
 const EventListItem = (props) => {
-  const {classes, data} = props;
-  const src = (data.image) ? data.image : TIHLDELOGO;
+  const { classes, data } = props;
+  const src = data.image ? data.image : TIHLDELOGO;
   const start = moment(data.start_date, ['YYYY-MM-DD HH:mm'], 'nb');
   return (
     <ListItem button className={classes.root} component={Link} to={URLS.events + ''.concat(data.id, '/')}>
-      <img className={classNames(classes.src, (data.expired) ? classes.filter : '')} src={src} alt={data.title} />
+      <img alt={data.title} className={classNames(classes.src, data.expired ? classes.filter : '')} src={src} />
       <Grid className={classes.content} container direction='column' wrap='nowrap'>
-        <Typography className={classNames(classes.title, (data.expired) ? classes.expired : '')} variant='h5'>
+        <Typography className={classNames(classes.title, data.expired ? classes.expired : '')} variant='h5'>
           <strong>{data.title}</strong>
         </Typography>
-        <InfoContent icon={<Date className={classes.icon}/>} label={getDate(start)} />
-        <InfoContent icon={<Location className={classes.icon}/>} label={data.location} />
+        <InfoContent icon={<Date className={classes.icon} />} label={getDate(start)} />
+        <InfoContent icon={<Location className={classes.icon} />} label={data.location} />
       </Grid>
     </ListItem>
   );

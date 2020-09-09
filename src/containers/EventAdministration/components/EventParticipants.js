@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 // API and store imports
 import EventService from '../../../api/services/EventService';
 
 // Material-UI
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -66,7 +66,7 @@ const styles = (theme) => ({
 });
 
 const EventParticipants = (props) => {
-  const {classes, event, openSnackbar} = props;
+  const { classes, event, openSnackbar } = props;
 
   const [showOnlyNotAttended, setCheckedState] = useState(false);
   const [participants, setParticipants] = useState([]);
@@ -80,25 +80,25 @@ const EventParticipants = (props) => {
   }, [event]);
 
   const removeUserFromEvent = (userId) => {
-    EventService.deleteUserFromEventList(event.id, {user_id: userId})
-        .then(() => {
-          const newParticipants = participants.filter((user) => user.user_info.user_id !== userId);
-          setParticipants(newParticipants);
-        })
-        .catch((error) => openSnackbar(JSON.stringify(error)))
-        .finally(() => openSnackbar('Deltageren ble fjernet'));
+    EventService.deleteUserFromEventList(event.id, { user_id: userId })
+      .then(() => {
+        const newParticipants = participants.filter((user) => user.user_info.user_id !== userId);
+        setParticipants(newParticipants);
+      })
+      .catch((error) => openSnackbar(JSON.stringify(error)))
+      .finally(() => openSnackbar('Deltageren ble fjernet'));
   };
 
   const toggleUserEvent = (userId, parameters) => {
-    EventService.updateUserEvent(event.id, {user_id: userId, ...parameters})
-        .then(() => {
-          const newParticipants = participants.map((user) => {
-            return user.user_info.user_id === userId ? {...user, ...parameters} : user;
-          });
-          setParticipants(newParticipants);
-        })
-        .catch((error) => openSnackbar(JSON.stringify(error)))
-        .finally(() => openSnackbar('Endringen var vellykket'));
+    EventService.updateUserEvent(event.id, { user_id: userId, ...parameters })
+      .then(() => {
+        const newParticipants = participants.map((user) => {
+          return user.user_info.user_id === userId ? { ...user, ...parameters } : user;
+        });
+        setParticipants(newParticipants);
+      })
+      .catch((error) => openSnackbar(JSON.stringify(error)))
+      .finally(() => openSnackbar('Endringen var vellykket'));
   };
 
   const sortParticipants = (waitList) => {
@@ -123,12 +123,7 @@ const EventParticipants = (props) => {
 
     if (participantsToPrint.length > 0) {
       elements = participantsToPrint.map((user, key) => {
-        return <EventParticipant
-          key={key}
-          waitList={waitList}
-          removeUserFromEvent={removeUserFromEvent}
-          toggleUserEvent={toggleUserEvent}
-          user={user} />;
+        return <EventParticipant key={key} removeUserFromEvent={removeUserFromEvent} toggleUserEvent={toggleUserEvent} user={user} waitList={waitList} />;
       });
     }
 
@@ -139,7 +134,9 @@ const EventParticipants = (props) => {
     <div className={classes.root}>
       <div className={classes.header}>
         <div className={classes.heading}>
-          <Typography className={classes.mainText} variant='h4'>{event.title}</Typography>
+          <Typography className={classes.mainText} variant='h4'>
+            {event.title}
+          </Typography>
         </div>
         <div className={classes.numbers}>
           <Typography className={classes.lightText}>Antall påmeldte: {sortParticipants(false).length}</Typography>
@@ -148,34 +145,32 @@ const EventParticipants = (props) => {
       </div>
       <Divider />
       <div className={classes.content}>
-        {sortParticipants(false).length > 0 &&
-        <div>
-          <Typography className={classes.mainText} variant='h5'>Statistikk</Typography>
-          <div className={classes.listView}>
-            <EventStatistics participants={sortParticipants(false)} />
+        {sortParticipants(false).length > 0 && (
+          <div>
+            <Typography className={classes.mainText} variant='h5'>
+              Statistikk
+            </Typography>
+            <div className={classes.listView}>
+              <EventStatistics participants={sortParticipants(false)} />
+            </div>
           </div>
-        </div>
-        }
+        )}
         <div className={classes.flexRow}>
-          <Typography className={classes.mainText} variant='h5'>Påmeldte ({sortParticipants(false).length})</Typography>
+          <Typography className={classes.mainText} variant='h5'>
+            Påmeldte ({sortParticipants(false).length})
+          </Typography>
           <FormControlLabel
             className={classes.lightText}
-            label="Ikke ankommet"
-            labelPlacement="start"
-            control={
-              <Checkbox
-                className={classes.checkbox}
-                onChange={(e) => setCheckedState(e.target.checked)}
-                checked={showOnlyNotAttended} />}
+            control={<Checkbox checked={showOnlyNotAttended} className={classes.checkbox} onChange={(e) => setCheckedState(e.target.checked)} />}
+            label='Ikke ankommet'
+            labelPlacement='start'
           />
         </div>
-        <div className={classes.listView}>
-          {printParticipants(false, showOnlyNotAttended)}
-        </div>
-        <Typography className={classes.mainText} variant='h5'>Venteliste ({sortParticipants(true).length})</Typography>
-        <div className={classes.listView}>
-          {printParticipants(true)}
-        </div>
+        <div className={classes.listView}>{printParticipants(false, showOnlyNotAttended)}</div>
+        <Typography className={classes.mainText} variant='h5'>
+          Venteliste ({sortParticipants(true).length})
+        </Typography>
+        <div className={classes.listView}>{printParticipants(true)}</div>
       </div>
     </div>
   );

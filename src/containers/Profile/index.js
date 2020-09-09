@@ -1,15 +1,15 @@
 // React
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import URLS from '../../URLS';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 
 // Serivce imports
 import AuthService from '../../api/services/AuthService';
 
 // Material-UI
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
@@ -50,7 +50,7 @@ const styles = (theme) => ({
 });
 
 function Profile(props) {
-  const {classes, history} = props;
+  const { classes, history } = props;
   const [isLoading, setIsLoading] = useState(false);
 
   const logout = () => {
@@ -60,20 +60,25 @@ function Profile(props) {
   };
 
   return (
-    <Navigation whitesmoke footer isLoading={isLoading} fancyNavbar>
+    <Navigation fancyNavbar footer isLoading={isLoading} whitesmoke>
       <Helmet>
         <title>Profil - TIHLDE</title>
       </Helmet>
       <div className={classes.root}>
         <div className={classes.top}></div>
         <div className={classes.main}>
-          {AuthService.isAuthenticated() ?
-            <ProfilePaper logoutMethod={logout} /> :
+          {AuthService.isAuthenticated() ? (
+            <ProfilePaper logoutMethod={logout} />
+          ) : (
             <Paper className={classes.paper} noPadding>
               <Typography variant='h6'>Du må være logget inn for å se profilen din</Typography>
-              <Link to={URLS.login}><Button className={classes.topSpacing} variant='contained' color='primary'>Logg inn</Button></Link>
+              <Link to={URLS.login}>
+                <Button className={classes.topSpacing} color='primary' variant='contained'>
+                  Logg inn
+                </Button>
+              </Link>
             </Paper>
-          }
+          )}
         </div>
       </div>
     </Navigation>

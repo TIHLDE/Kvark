@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Helmet from 'react-helmet';
 
 // Material UI Components
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
@@ -47,27 +47,31 @@ const styles = (theme) => ({
   },
 });
 
-function NewLanding({classes}) {
+function NewLanding({ classes }) {
   useEffect(() => window.scrollTo(0, 0), []);
 
   return (
-    <Navigation footer whitesmoke fancyNavbar>
+    <Navigation fancyNavbar footer whitesmoke>
       <Helmet>
         <title>Forsiden - TIHLDE</title>
       </Helmet>
-      <Grid className={classes.root} container direction='column' wrap='nowrap' alignItems='center'>
+      <Grid alignItems='center' className={classes.root} container direction='column' wrap='nowrap'>
         <div className={classNames(classes.section, classes.topSection)}>
           <Wave />
         </div>
         <div className={classes.smoke}>
           <div className={classes.section}>
-            <Typography variant='h4' color="inherit" align="center" className={classes.header}>Nyheter</Typography>
-            <NewsListView />
+            <Typography align='center' className={classes.header} color='inherit' variant='h4'>
+              Arrangementer
+            </Typography>
+            <Calendar />
           </div>
         </div>
         <div className={classes.section}>
-          <Typography variant='h4' color="inherit" align="center" className={classes.header}>Arrangementer</Typography>
-          <Calendar />
+          <Typography align='center' className={classes.header} color='inherit' variant='h4'>
+            Nyheter
+          </Typography>
+          <NewsListView />
         </div>
       </Grid>
     </Navigation>

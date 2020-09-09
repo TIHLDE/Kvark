@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {shortDownString, getUserStudyLong} from '../../../utils';
+import { shortDownString, getUserStudyLong } from '../../../utils';
 import URLS from '../../../URLS';
 import classNames from 'classnames';
 
@@ -21,7 +21,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
 // Icons
@@ -127,11 +127,11 @@ const style = (theme) => ({
 });
 
 const DialogHeader = (props) => {
-  const {classes, heading} = props;
+  const { classes, heading } = props;
   return (
     <React.Fragment>
       <div className={classes.heading}>
-        <Typography className={classes.title} align='center' variant='h5'>
+        <Typography align='center' className={classes.title} variant='h5'>
           {heading}
         </Typography>
       </div>
@@ -141,38 +141,45 @@ const DialogHeader = (props) => {
 };
 
 const TextQuestion = (props) => {
-  const {classes, optField, handleOptFieldInput, index} = props;
+  const { classes, optField, handleOptFieldInput, index } = props;
   const handleOptTextFieldChange = (e) => {
-    const updatedField = {...optField};
+    const updatedField = { ...optField };
     updatedField.answer = e.target.value;
     handleOptFieldInput(index, updatedField);
   };
   return (
-    <TextField className={classNames(classes.question, classes.textField)} label={optField.title} required={optField.required} color='primary' value={optField.answer} onChange={handleOptTextFieldChange} />
+    <TextField
+      className={classNames(classes.question, classes.textField)}
+      color='primary'
+      label={optField.title}
+      onChange={handleOptTextFieldChange}
+      required={optField.required}
+      value={optField.answer}
+    />
   );
 };
 const RadioQuestion = (props) => {
-  const {optField, handleOptFieldInput, index} = props;
+  const { optField, handleOptFieldInput, index } = props;
   const handleOptRadioFieldChange = (e) => {
-    const updatedField = {...optField};
+    const updatedField = { ...optField };
     updatedField.answer = e.target.value;
     handleOptFieldInput(index, updatedField);
   };
   return (
-    <FormControl component="fieldset" required={optField.required}>
-      <FormLabel component="legend">{optField.title}</FormLabel>
-      <RadioGroup aria-label={optField.title} name={optField.title} value={optField.answer} onChange={handleOptRadioFieldChange}>
+    <FormControl component='fieldset' required={optField.required}>
+      <FormLabel component='legend'>{optField.title}</FormLabel>
+      <RadioGroup aria-label={optField.title} name={optField.title} onChange={handleOptRadioFieldChange} value={optField.answer}>
         {optField.options.map((option, id) => {
-          return (<FormControlLabel key={id} value={option.id} control={<Radio />} label={option.alternativ} />);
+          return <FormControlLabel control={<Radio />} key={id} label={option.alternativ} value={option.id} />;
         })}
       </RadioGroup>
     </FormControl>
   );
 };
 const CheckQuestion = (props) => {
-  const {optField, handleOptFieldInput, index} = props;
+  const { optField, handleOptFieldInput, index } = props;
   const handleOptCheckFieldChange = (e) => {
-    const updatedField = {...optField};
+    const updatedField = { ...optField };
     if (updatedField.answer.includes(e.target.name)) {
       updatedField.answer.splice(updatedField.answer.indexOf(e.target.name), 1);
     } else {
@@ -181,15 +188,17 @@ const CheckQuestion = (props) => {
     handleOptFieldInput(index, updatedField);
   };
   return (
-    <FormControl component="fieldset" required={optField.required}>
-      <FormLabel component="legend">{optField.title}</FormLabel>
+    <FormControl component='fieldset' required={optField.required}>
+      <FormLabel component='legend'>{optField.title}</FormLabel>
       <FormGroup>
         {optField.options.map((option, id) => {
-          return (<FormControlLabel
-            key={id}
-            control={<Checkbox checked={optField.answer.includes(option.id)} onChange={handleOptCheckFieldChange} name={option.id} />}
-            label={option.alternativ}
-          />);
+          return (
+            <FormControlLabel
+              control={<Checkbox checked={optField.answer.includes(option.id)} name={option.id} onChange={handleOptCheckFieldChange} />}
+              key={id}
+              label={option.alternativ}
+            />
+          );
         })}
       </FormGroup>
     </FormControl>
@@ -197,23 +206,17 @@ const CheckQuestion = (props) => {
 };
 
 const Questions = (props) => {
-  const {classes, optionalFieldsAnswers, handleOptionalFieldInput} = props;
+  const { classes, optionalFieldsAnswers, handleOptionalFieldInput } = props;
   return (
     <Paper className={classes.questionsContainer} noPadding>
-      <Typography variant="subtitle1">Spørsmål fra arrangøren:</Typography>
+      <Typography variant='subtitle1'>Spørsmål fra arrangøren:</Typography>
       {optionalFieldsAnswers.map((optField, index) => {
         if (optField.option_type === 0) {
-          return (
-            <TextQuestion key={index} index={index} classes={classes} optField={optField} handleOptFieldInput={handleOptionalFieldInput} />
-          );
+          return <TextQuestion classes={classes} handleOptFieldInput={handleOptionalFieldInput} index={index} key={index} optField={optField} />;
         } else if (optField.option_type === 1) {
-          return (
-            <RadioQuestion key={index} index={index} classes={classes} optField={optField} handleOptFieldInput={handleOptionalFieldInput} />
-          );
+          return <RadioQuestion classes={classes} handleOptFieldInput={handleOptionalFieldInput} index={index} key={index} optField={optField} />;
         } else {
-          return (
-            <CheckQuestion key={index} index={index} classes={classes} optField={optField} handleOptFieldInput={handleOptionalFieldInput} />
-          );
+          return <CheckQuestion classes={classes} handleOptFieldInput={handleOptionalFieldInput} index={index} key={index} optField={optField} />;
         }
       })}
     </Paper>
@@ -221,14 +224,14 @@ const Questions = (props) => {
 };
 
 const EventDialog = (props) => {
-  const {classes, userData, userEvent, isApplying, message, applySuccess, data} = props;
+  const { classes, userData, userEvent, isApplying, message, applySuccess, data } = props;
 
   const [agreeRules, setAgreeRules] = useState(false);
   const [optionalFieldsAnswers, setOptionalFieldsAnswers] = useState([]);
   useEffect(() => {
     if (data.optionalFields) {
       for (let i = 0; i < data.optionalFields.length; i++) {
-        const optionalField = {...data.optionalFields[i]};
+        const optionalField = { ...data.optionalFields[i] };
         if (optionalField.option_type === 2) {
           optionalField.answer = [];
         } else {
@@ -241,7 +244,9 @@ const EventDialog = (props) => {
 
   const handleOptionalFieldInput = (index, optField) => {
     const newOptionalFieldsAnswers = optionalFieldsAnswers.map((optionalField, id) => {
-      if (index !== id) return optionalField;
+      if (index !== id) {
+        return optionalField;
+      }
       return optField;
     });
     setOptionalFieldsAnswers(newOptionalFieldsAnswers);
@@ -256,16 +261,18 @@ const EventDialog = (props) => {
     optFieldsAnswers.forEach((optField) => {
       if (optField.required) {
         if (optField.option_type === 2) {
-          if (!optField.answer || !optField.answer.length) isNotAnswered = true;
-        } else if (optField.answer.trim() === '') isNotAnswered = true;
+          if (!optField.answer || !optField.answer.length) {
+            isNotAnswered = true;
+          }
+        } else if (optField.answer.trim() === '') {
+          isNotAnswered = true;
+        }
       }
     });
     return isNotAnswered;
   };
 
-  const allergy = userData.allergy ?
-    shortDownString(userData.allergy, 20) :
-    'Ingen';
+  const allergy = userData.allergy ? shortDownString(userData.allergy, 20) : 'Ingen';
   const userStudy = getUserStudyLong(userData.user_study);
   const userClass = userData.user_class + '. Klasse';
   let headerText = '';
@@ -283,11 +290,9 @@ const EventDialog = (props) => {
   }
 
   return (
-    <Modal
-      open={props.status}
-      onClose={props.onClose}>
+    <Modal onClose={props.onClose} open={props.status}>
       <Paper className={classes.paper} noPadding>
-        {!isApplying && !userEvent && message === '' &&
+        {!isApplying && !userEvent && message === '' && (
           <React.Fragment>
             <DialogHeader classes={classes} heading={Text.signUp} />
             <div className={classes.content}>
@@ -295,88 +300,75 @@ const EventDialog = (props) => {
                 <Typography>{Text.confirmData}</Typography>
               </div>
               <div className={classes.list}>
-                <EventListItem
-                  icon={<AccountCircle />}
-                  text={'Navn: ' + userData.first_name + ' ' + userData.last_name}
-                />
-                <EventListItem
-                  icon={<Email />}
-                  text={'Epost: ' + userData.email}
-                />
-                <EventListItem
-                  icon={<School />}
-                  text={'Studieprogram: ' + userStudy}
-                />
-                <EventListItem
-                  icon={<Home />}
-                  text={'Klasse: ' + userClass}
-                />
-                <EventListItem
-                  icon={<Fastfood />}
-                  text={'Allergier: ' + allergy}
-                />
-                {optionalFieldsAnswers.length > 0 && <Questions classes={classes} optionalFieldsAnswers={optionalFieldsAnswers} handleOptionalFieldInput={handleOptionalFieldInput} />}
+                <EventListItem icon={<AccountCircle />} text={'Navn: ' + userData.first_name + ' ' + userData.last_name} />
+                <EventListItem icon={<Email />} text={'Epost: ' + userData.email} />
+                <EventListItem icon={<School />} text={'Studieprogram: ' + userStudy} />
+                <EventListItem icon={<Home />} text={'Klasse: ' + userClass} />
+                <EventListItem icon={<Fastfood />} text={'Allergier: ' + allergy} />
+                {optionalFieldsAnswers.length > 0 && (
+                  <Questions classes={classes} handleOptionalFieldInput={handleOptionalFieldInput} optionalFieldsAnswers={optionalFieldsAnswers} />
+                )}
                 <FormControlLabel
-                  control={
-                    <Checkbox onChange={(e) => setAgreeRules(e.target.checked)} checked={agreeRules} />
-                  }
-                  label="Jeg godtar arrangementsreglene"/>
-                <Link href={URLS.eventRules} target="_blank" rel="noopener"><Typography variant="caption">Les arrangementsreglene her (åpnes i ny fane)</Typography></Link>
+                  control={<Checkbox checked={agreeRules} onChange={(e) => setAgreeRules(e.target.checked)} />}
+                  label='Jeg godtar arrangementsreglene'
+                />
+                <Link href={URLS.eventRules} rel='noopener' target='_blank'>
+                  <Typography variant='caption'>Les arrangementsreglene her (åpnes i ny fane)</Typography>
+                </Link>
               </div>
             </div>
           </React.Fragment>
-        }
-        {!isApplying && userEvent && message === '' &&
-            <React.Fragment>
-              <DialogHeader classes={classes} heading={Text.signOff} />
-              <div className={classes.content}>
-                <div>
-                  <Typography>Er du sikker på at du vil melde deg av? Om du melder deg på igjen vil du havne på bunnen av en eventuell venteliste.</Typography>
-                </div>
+        )}
+        {!isApplying && userEvent && message === '' && (
+          <React.Fragment>
+            <DialogHeader classes={classes} heading={Text.signOff} />
+            <div className={classes.content}>
+              <div>
+                <Typography>Er du sikker på at du vil melde deg av? Om du melder deg på igjen vil du havne på bunnen av en eventuell venteliste.</Typography>
               </div>
-            </React.Fragment>
-        }
-        {isApplying &&
+            </div>
+          </React.Fragment>
+        )}
+        {isApplying && (
           <React.Fragment>
             <DialogHeader classes={classes} heading={Text.signUp} />
             <CircularProgress className={classes.progress} />
           </React.Fragment>
-        }
-        {message &&
+        )}
+        {message && (
           <React.Fragment>
             <DialogHeader classes={classes} heading={message} />
             <div className={classes.message}>
-              {applySuccess ?
-                <img alt="success" className={classes.image} src={eventSuccess}/> :
-                <img alt="failure" className={classes.image} src={eventCancel}/>
-              }
+              {applySuccess ? (
+                <img alt='success' className={classes.image} src={eventSuccess} />
+              ) : (
+                <img alt='failure' className={classes.image} src={eventCancel} />
+              )}
             </div>
           </React.Fragment>
-        }
+        )}
         <Divider />
         <div className={classes.footer}>
-          {message ?
+          {message ? (
+            <Button align='center' className={classes.button} color='primary' onClick={props.onClose} variant='contained'>
+              Ok
+            </Button>
+          ) : (
+            <React.Fragment>
               <Button
-                className={classes.button}
-                onClick={props.onClose}
                 align='center'
-                variant='contained'
-                color='primary'>Ok</Button> :
-              <React.Fragment>
-                <Button
-                  className={classes.button}
-                  onClick={closeDialog}
-                  disabled={(isApplying || ((!userEvent && !agreeRules) || (!userEvent && questionsNotAnswered(optionalFieldsAnswers))))}
-                  align='center'
-                  variant='contained'
-                  color={buttonColor}>{headerText}</Button>
-                <Button
-                  className={classes.button}
-                  onClick={props.onClose}
-                  align='center'
-                  color='secondary'>Lukk</Button>
-              </React.Fragment>
-          }
+                className={classes.button}
+                color={buttonColor}
+                disabled={isApplying || (!userEvent && !agreeRules) || (!userEvent && questionsNotAnswered(optionalFieldsAnswers))}
+                onClick={closeDialog}
+                variant='contained'>
+                {headerText}
+              </Button>
+              <Button align='center' className={classes.button} color='secondary' onClick={props.onClose}>
+                Lukk
+              </Button>
+            </React.Fragment>
+          )}
         </div>
       </Paper>
     </Modal>

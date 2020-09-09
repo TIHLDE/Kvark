@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 // Icons
 import NewsIcon from '../../../assets/img/news.svg';
@@ -32,13 +32,12 @@ const styles = {
 };
 
 class NoEventsIndicator extends Component {
-
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
     return (
       <div className={classes.root}>
         <div className={classes.imageWrapper}>
-          <img className={classes.image} src={NewsIcon} alt='Ingen nyheter' />
+          <img alt='Ingen nyheter' className={classes.image} src={NewsIcon} />
         </div>
         <MessageIndicator header='Ingen nyheter' />
       </div>

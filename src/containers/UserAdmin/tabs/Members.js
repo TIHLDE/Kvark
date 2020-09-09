@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import React, { useState, useEffect } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 import classNames from 'classnames';
@@ -12,7 +12,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Grow from '@material-ui/core/Grow';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import ListItem from '@material-ui/core/ListItem';
 import Hidden from '@material-ui/core/Hidden';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
@@ -41,7 +40,8 @@ const styles = (theme) => ({
     gridGap: '10',
     width: '100%',
     textAlign: 'left',
-    gridTemplateColumns: '2fr 1fr 1fr 1fr',
+    padding: 5,
+    gridTemplateColumns: '3fr 2fr 2fr 2fr 48px',
     gridTemplateRows: '1fr',
 
     '@media only screen and (max-width: 800px)': {
@@ -51,8 +51,9 @@ const styles = (theme) => ({
   title: {
     fontWeight: 'bold',
   },
-  id: {
+  name: {
     minWidth: '65px',
+    marginLeft: 15,
   },
   class: {
     minWidth: '60px',
@@ -80,7 +81,7 @@ const Members = (props) => {
 
   const loadMembers = (filters, replace) => {
     // Add in filters if needed, and adds the is tihlde member filter
-    let urlParameters = filters ? {...filters} : {};
+    let urlParameters = filters ? { ...filters } : {};
     if (props.isMember) {
       urlParameters.is_TIHLDE_member = true;
     } else {
@@ -97,40 +98,40 @@ const Members = (props) => {
 
     // Fetch members from server
     UserService.getUsers(urlParameters)
-        .then((data) => {
-          let displayedMembers = [];
-          const nextPageUrl = data.next;
-          displayedMembers = displayedMembers.concat(data.results);
-          urlParameters = {};
+      .then((data) => {
+        let displayedMembers = [];
+        const nextPageUrl = data.next;
+        displayedMembers = displayedMembers.concat(data.results);
+        urlParameters = {};
 
-          // If we have a url for the next page convert it into a object
-          if (nextPageUrl) {
-            const nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
-            const parameterArray = nextPageUrlQuery.split('&');
-            parameterArray.forEach((parameter) => {
-              const parameterString = parameter.split('=');
-              urlParameters[parameterString[0]] = parameterString[1];
-            });
-          }
+        // If we have a url for the next page convert it into a object
+        if (nextPageUrl) {
+          const nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
+          const parameterArray = nextPageUrlQuery.split('&');
+          parameterArray.forEach((parameter) => {
+            const parameterString = parameter.split('=');
+            urlParameters[parameterString[0]] = parameterString[1];
+          });
+        }
 
-          // Get the page number from the object if it exist
-          const nextPage = urlParameters['page'] ? urlParameters['page'] : null;
+        // Get the page number from the object if it exist
+        const nextPage = urlParameters['page'] ? urlParameters['page'] : null;
 
-          // If we allready have Members
-          if (replace) {
-            displayedMembers = memberList.concat(displayedMembers);
-          }
-          setMemberList(displayedMembers);
-          setNextPage(nextPage);
-        })
-        .catch(() => {
-          setMemberList([]);
-          setNextPage(null);
-        })
-        .finally(() => {
-          setIsFetching(false);
-          setIsLoading(false);
-        });
+        // If we allready have Members
+        if (replace) {
+          displayedMembers = memberList.concat(displayedMembers);
+        }
+        setMemberList(displayedMembers);
+        setNextPage(nextPage);
+      })
+      .catch(() => {
+        setMemberList([]);
+        setNextPage(null);
+      })
+      .finally(() => {
+        setIsFetching(false);
+        setIsLoading(false);
+      });
   };
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -147,9 +148,15 @@ const Members = (props) => {
       loadMembers();
     } else {
       const filters = {};
-      if (searchInput && searchInput !== '') filters.search = searchInput;
-      if (userStudyChoiceInput && userStudyChoiceInput !== 0) filters.user_study = userStudyChoiceInput;
-      if (userClassChoiceInput && userClassChoiceInput !== 0) filters.user_class = userClassChoiceInput;
+      if (searchInput && searchInput !== '') {
+        filters.search = searchInput;
+      }
+      if (userStudyChoiceInput && userStudyChoiceInput !== 0) {
+        filters.user_study = userStudyChoiceInput;
+      }
+      if (userClassChoiceInput && userClassChoiceInput !== 0) {
+        filters.user_class = userClassChoiceInput;
+      }
       loadMembers(filters, false);
     }
   };
@@ -180,66 +187,81 @@ const Members = (props) => {
     const filters = {};
     if (searchInput || userClassChoiceInput || userStudyChoiceInput) {
       filters.search = searchInput;
-      if (userStudyChoiceInput && userStudyChoiceInput !== 0) filters.user_study = userStudyChoiceInput;
-      if (userClassChoiceInput && userClassChoiceInput !== 0) filters.user_class = userClassChoiceInput;
+      if (userStudyChoiceInput && userStudyChoiceInput !== 0) {
+        filters.user_study = userStudyChoiceInput;
+      }
+      if (userClassChoiceInput && userClassChoiceInput !== 0) {
+        filters.user_class = userClassChoiceInput;
+      }
     }
     loadMembers(filters, true);
   };
 
   const handleMembers = (id, isMember) => {
-    UserService.updateUserData(id, {is_TIHLDE_member: isMember});
+    UserService.updateUserData(id, { is_TIHLDE_member: isMember });
     const newMembers = memberList.filter((x) => x.user_id !== id);
     setMemberList(newMembers);
   };
 
-  const {classes} = props;
+  const { classes } = props;
   return (
     <div className={classes.grid}>
       <div className={classes.filterContainer}>
-        <TextField variant='filled' className={classes.box} select fullWidth label='Klasser' value={userClassChoice} onChange={handleClassChange}>
+        <TextField className={classes.box} fullWidth label='Klasser' onChange={handleClassChange} select value={userClassChoice} variant='filled'>
           {userClass.map((value, index) => (
             <MenuItem key={index} value={index}>
               {value}
             </MenuItem>
           ))}
         </TextField>
-        <TextField variant='filled' className={classes.box} select fullWidth label='Studie' value={userStudyChoice} onChange={handleStudieChange}>
+        <TextField className={classes.box} fullWidth label='Studie' onChange={handleStudieChange} select value={userStudyChoice} variant='filled'>
           {userStudy.map((value, index) => (
             <MenuItem key={index} value={index}>
               {value}
             </MenuItem>
           ))}
         </TextField>
-        <TextField variant='filled' className={classes.box} value={search} label='Søk' fullWidth placeholder='Søk...' onChange={(e) => {
-          setSearch(e.target.value);
-        }}/>
+        <TextField
+          className={classes.box}
+          fullWidth
+          label='Søk'
+          onChange={(e) => {
+            setSearch(e.target.value);
+          }}
+          placeholder='Søk...'
+          value={search}
+          variant='filled'
+        />
       </div>
-      {isFetching ? <CircularProgress className={classes.progress} /> :
-              <Grow in={!isFetching}>
-                <div>
-                  <Hidden xsDown>
-                    <ListItem className={classes.btn}>
-                      <Grid className={classNames(classes.notActivated)} container direction='row' wrap='nowrap' alignItems='center'>
-                        <Typography className={classNames(classes.title, classes.id)} variant='subtitle1'>Navn:</Typography>
-                        <Typography className={classes.title} variant='subtitle1'>Id:</Typography>
-                        <Typography className={classes.title} variant='subtitle1'>Studie:</Typography>
-                        <Typography className={classNames(classes.title, classes.class)} variant='subtitle1'>Klasse:</Typography>
-                      </Grid>
-                    </ListItem>
-                  </Hidden>
-                  <Pageination nextPage={getNextPage} page={nextPage} fullWidth>
-                    {memberList && memberList.map((value, index) => (
-                      <div key={index}>
-                        <PersonListItem isMember={props.isMember} data={value} handleMembers={handleMembers} />
-                      </div>
-                    ))}
-                  </Pageination>
-                  {memberList && memberList.length === 0 && !isLoading &&
-                          <NoPersonsIndicator />
-                  }
-                </div>
-              </Grow>
-      }
+      {isFetching ? (
+        <CircularProgress className={classes.progress} />
+      ) : (
+        <Grow in={!isFetching}>
+          <div>
+            <Hidden xsDown>
+              <Grid alignItems='center' className={classes.notActivated} container direction='row' wrap='nowrap'>
+                <Typography className={classNames(classes.title, classes.name)} variant='subtitle1'>
+                  Navn:
+                </Typography>
+                <Typography className={classes.title} variant='subtitle1'>
+                  Id:
+                </Typography>
+                <Typography className={classes.title} variant='subtitle1'>
+                  Studie:
+                </Typography>
+                <Typography className={classes.title} variant='subtitle1'>
+                  Klasse:
+                </Typography>
+              </Grid>
+            </Hidden>
+            <Pageination fullWidth nextPage={getNextPage} page={nextPage}>
+              {memberList &&
+                memberList.map((value, index) => <PersonListItem data={value} handleMembers={handleMembers} isMember={props.isMember} key={index} />)}
+            </Pageination>
+            {memberList && memberList.length === 0 && !isLoading && <NoPersonsIndicator />}
+          </div>
+        </Grow>
+      )}
     </div>
   );
 };
@@ -261,4 +283,4 @@ const stateValues = (state) => {
   };
 };
 
-export default connect(stateValues)(withStyles(styles, {withTheme: true})(Members));
+export default connect(stateValues)(withStyles(styles, { withTheme: true })(Members));

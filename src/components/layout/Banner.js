@@ -1,5 +1,5 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import parser from 'html-react-parser';
 import classNames from 'classnames';
@@ -21,7 +21,7 @@ const styles = (theme) => ({
   topInner: {
     height: 'auto',
     padding: '60px 0 0',
-    background: (props) => props.background ? props.background : theme.colors.gradient.main.top,
+    background: (props) => (props.background ? props.background : theme.colors.gradient.main.top),
   },
   topContent: {
     maxWidth: 1200,
@@ -78,41 +78,43 @@ const styles = (theme) => ({
     marginLeft: -5,
   },
   background: {
-    fill: (props) => props.background ? props.background : theme.colors.gradient.main.top,
+    fill: (props) => (props.background ? props.background : theme.colors.gradient.main.top),
     fillOpacity: 1,
   },
 });
 
 const Banner = (props) => {
-  const {classes, className, title, text, children} = props;
+  const { classes, className, title, text, children } = props;
   return (
     <div className={classNames(classes.root, className)}>
       <div className={classes.top}>
         <div className={classNames(classes.topInner, classes.background)}>
           <div className={classes.topContent}>
             <div>
-              {title &&
+              {title && (
                 <Typography className={classes.title} variant='h3'>
                   <strong>{title}</strong>
-                  <div className={classes.line}/>
+                  <div className={classes.line} />
                 </Typography>
-              }
-              {text &&
-                <Typography className={classes.text} variant='subtitle2'>{parser(text)}</Typography>
-              }
+              )}
+              {text && (
+                <Typography className={classes.text} variant='subtitle2'>
+                  {parser(text)}
+                </Typography>
+              )}
             </div>
-            {children &&
-              <div className={classes.children}>
-                {children}
-              </div>
-            }
+            {children && <div className={classes.children}>{children}</div>}
           </div>
         </div>
         <Hidden smUp>
-          <svg className={classes.svg} xmlns="http://www.w3.org/2000/svg" viewBox="0 30 500 45"><path className={classes.background} d="M0.00,49.99 C225.95,117.73 260.38,-10.55 500.00,49.99 L500.00,-0.00 L0.00,-0.00 Z"></path></svg>
+          <svg className={classes.svg} viewBox='0 30 500 45' xmlns='http://www.w3.org/2000/svg'>
+            <path className={classes.background} d='M0.00,49.99 C225.95,117.73 260.38,-10.55 500.00,49.99 L500.00,-0.00 L0.00,-0.00 Z'></path>
+          </svg>
         </Hidden>
         <Hidden xsDown>
-          <svg className={classes.svg} xmlns="http://www.w3.org/2000/svg" viewBox="0 30 500 45"><path className={classes.background} d="M0.00,49.99 C233.29,86.15 256.43,22.00 500.00,49.99 L500.00,-0.00 L0.00,-0.00 Z"></path></svg>
+          <svg className={classes.svg} viewBox='0 30 500 45' xmlns='http://www.w3.org/2000/svg'>
+            <path className={classes.background} d='M0.00,49.99 C233.29,86.15 256.43,22.00 500.00,49.99 L500.00,-0.00 L0.00,-0.00 Z'></path>
+          </svg>
         </Hidden>
       </div>
     </div>

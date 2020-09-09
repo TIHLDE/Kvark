@@ -1,5 +1,5 @@
-import React, {useEffect, createRef} from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import React, { useEffect, createRef } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
@@ -93,7 +93,7 @@ const styles = (theme) => ({
 });
 
 function Companies(props) {
-  const {classes} = props;
+  const { classes } = props;
   const formRef = createRef();
   const firstTextFieldRef = createRef();
 
@@ -101,73 +101,49 @@ function Companies(props) {
 
   const focusFirstTextField = () => {
     const node = firstTextFieldRef.current;
-    node.focus({preventScroll: true});
+    node.focus({ preventScroll: true });
   };
 
   const scrollToForm = () => {
     focusFirstTextField();
     const node = formRef.current;
-    window.scroll({top: node.offsetTop - 84, left: 0, behavior: 'smooth'});
+    window.scroll({ top: node.offsetTop - 84, left: 0, behavior: 'smooth' });
   };
 
   return (
-    <Navigation whitesmoke footer fancyNavbar>
+    <Navigation fancyNavbar footer whitesmoke>
       <Helmet>
         <title>For bedrifter - TIHLDE</title>
       </Helmet>
       <div className={classes.root}>
         <Banner title={Text.bannnertitle}>
-          <Button
-            className={classes.button}
-            variant='outlined'
-            color='primary'
-            onClick={() => scrollToForm()}>
+          <Button className={classes.button} color='primary' onClick={() => scrollToForm()} variant='outlined'>
             <div className={classes.flex}>
-              <Send className={classes.sendIcon}/>
+              <Send className={classes.sendIcon} />
               {Text.interesse}
             </div>
           </Button>
         </Banner>
         <div className={classes.section}>
-          <Typography variant='h4' color="inherit" align="center" className={classes.header}>
+          <Typography align='center' className={classes.header} color='inherit' variant='h4'>
             {Text.viTilbyr}
           </Typography>
           <div className={classNames(classes.container)}>
-            <InfoCard
-              header="Stillingsannonser"
-              text={Text.jobbannonser}
-              justifyText
-            />
-            <InfoCard
-              header="Bedriftspresentasjon"
-              text={Text.bedrifter}
-              justifyText
-            />
+            <InfoCard header='Stillingsannonser' justifyText text={Text.jobbannonser} />
+            <InfoCard header='Bedriftspresentasjon' justifyText text={Text.bedrifter} />
           </div>
         </div>
 
         <div className={classes.smoke}>
           <div className={classes.section}>
-            <Typography variant='h4' color="inherit" align="center" className={classes.header}>
+            <Typography align='center' className={classes.header} color='inherit' variant='h4'>
               {Text.studier}
             </Typography>
             <div className={classNames(classes.container)}>
-              <InfoCard header="Dataingeniør" text={Text.data} justifyText />
-              <InfoCard
-                header="Digital infrastruktur og cybersikkerhet"
-                text={Text.drift}
-                justifyText
-              />
-              <InfoCard
-                header="Digital forretningsutvikling"
-                text={Text.support}
-                justifyText
-              />
-              <InfoCard
-                header="Digital samhandling"
-                text={Text.IKT}
-                justifyText
-              />
+              <InfoCard header='Dataingeniør' justifyText text={Text.data} />
+              <InfoCard header='Digital infrastruktur og cybersikkerhet' justifyText text={Text.drift} />
+              <InfoCard header='Digital forretningsutvikling' justifyText text={Text.support} />
+              <InfoCard header='Digital samhandling' justifyText text={Text.IKT} />
             </div>
           </div>
         </div>
@@ -186,12 +162,7 @@ function Companies(props) {
 
         <div className={classes.smoke}>
           <div className={classes.section}>
-            <InfoCard
-              imageClass={classes.imageClass}
-              header={'Om TIHLDE'}
-              text={Text.omTIHLDE}
-              src={Image}
-            />
+            <InfoCard header={'Om TIHLDE'} imageClass={classes.imageClass} src={Image} text={Text.omTIHLDE} />
           </div>
         </div>
       </div>

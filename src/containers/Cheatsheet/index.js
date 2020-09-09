@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import URLS from '../../URLS';
-import {useHistory, useParams} from 'react-router-dom';
-import {getUserStudyShort, getUserClass} from '../../utils';
+import { useHistory, useParams } from 'react-router-dom';
+import { getUserStudyShort, getUserClass } from '../../utils';
 
 // Material UI Components
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -27,7 +27,7 @@ import Banner from '../../components/layout/Banner';
 import Navigation from '../../components/navigation/Navigation';
 import Paper from '../../components/layout/Paper';
 
-import {Initial, Loading, Success} from 'lemons';
+import { Initial, Loading, Success } from 'lemons';
 
 const styles = (theme) => ({
   wrapper: {
@@ -47,8 +47,7 @@ const styles = (theme) => ({
     paddingBottom: 20,
     '@media only screen and (max-width: 800px)': {
       gridTemplateColumns: '1fr 1fr',
-      gridTemplateAreas:
-        '"filterStudy filterClass" "filterSearch filterSearch"',
+      gridTemplateAreas: '"filterStudy filterClass" "filterSearch filterSearch"',
     },
   },
   progress: {
@@ -128,9 +127,9 @@ const getStudy = (i) => {
 };
 
 const Cheetsheet = (props) => {
-  const {classes} = props;
+  const { classes } = props;
   const history = useHistory();
-  const {studyId, classId} = useParams();
+  const { studyId, classId } = useParams();
   // eslint-disable-next-line new-cap
   const [submitFormLazy, setSubmitFormLazy] = useState(Initial());
   const [input, setInput] = useState('');
@@ -139,7 +138,9 @@ const Cheetsheet = (props) => {
   const [studyChoice, setStudyChoice] = useState(getStudy(studyId));
 
   const loadFiles = (filters = {}, concat = false) => {
-    if (!isURLValid()) return;
+    if (!isURLValid()) {
+      return;
+    }
     let urlParameters = filters;
 
     // Decide if we should go to next page or not.
@@ -152,9 +153,7 @@ const Cheetsheet = (props) => {
     const study = String(getUserStudyShort(studyChoice));
     const grade = String(getClass(Number(classChoice)));
 
-    CheatsheetService.getCheatsheets(
-        urlParameters, study.toUpperCase(), grade,
-    ).then((data) => {
+    CheatsheetService.getCheatsheets(urlParameters, study.toUpperCase(), grade).then((data) => {
       let displayedFiles = [];
       if (data) {
         const nextPageUrl = data.next;
@@ -162,9 +161,7 @@ const Cheetsheet = (props) => {
         urlParameters = {};
         // If we have a url for the next page convert it into a object
         if (nextPageUrl) {
-          const nextPageUrlQuery = nextPageUrl.substring(
-              nextPageUrl.indexOf('?') + 1,
-          );
+          const nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
           const parameterArray = nextPageUrlQuery.split('&');
           parameterArray.forEach((parameter) => {
             const parameterString = parameter.split('=');
@@ -185,18 +182,14 @@ const Cheetsheet = (props) => {
 
   const loadUserData = () => {
     UserService.getUserData()
-        .then((user) => {
-          setClassChoice(user.user_class);
-          setStudyChoice(user.user_study);
-          history.replace(
-              URLS.cheatsheet.concat(
-                  getUserStudyShort(user.user_study), '/', user.user_class, '/',
-              ),
-          );
-        })
-        .catch(() => { })
-        // eslint-disable-next-line new-cap
-        .finally(() => setSubmitFormLazy(Success()));
+      .then((user) => {
+        setClassChoice(user.user_class);
+        setStudyChoice(user.user_study);
+        history.replace(URLS.cheatsheet.concat(getUserStudyShort(user.user_study), '/', user.user_class, '/'));
+      })
+      .catch(() => {})
+      // eslint-disable-next-line new-cap
+      .finally(() => setSubmitFormLazy(Success()));
   };
 
   const filterFiles = (searchInput = '') => {
@@ -207,25 +200,32 @@ const Cheetsheet = (props) => {
     if (searchInput === '') {
       loadFiles();
     } else {
-      const filters = {search: searchInput};
+      const filters = { search: searchInput };
       loadFiles(filters, false);
     }
   };
 
   const getNextPage = () => {
     const filters = {};
-    if (input) filters.search = input;
+    if (input) {
+      filters.search = input;
+    }
     loadFiles(filters, true);
   };
 
   const isURLValid = () => {
-    if (!classChoice || !studyId || getStudy(studyId) < 1 ||
+    if (
+      !classChoice ||
+      !studyId ||
+      getStudy(studyId) < 1 ||
       (getStudy(studyId) === 4 && ![4, 5].includes(Number(classChoice))) ||
       ([1, 2, 3, 5].includes(getStudy(studyId)) && ![1, 2, 3].includes(Number(classChoice)))
     ) {
       loadUserData();
       return false;
-    } else return true;
+    } else {
+      return true;
+    }
   };
 
   useEffect(() => {
@@ -258,33 +258,25 @@ const Cheetsheet = (props) => {
   }, [input]);
 
   return (
-    <Navigation whitesmoke footer fancyNavbar>
+    <Navigation fancyNavbar footer whitesmoke>
       <Helmet>
         <title>Kokeboka - TIHLDE</title>
       </Helmet>
-      <Banner
-        title="Kokeboka"
-        text={
-          getUserStudyShort(studyChoice) +
-          ' - ' +
-          String(classChoice).concat('. klasse')
-        }
-      />
+      <Banner text={getUserStudyShort(studyChoice) + ' - ' + String(classChoice).concat('. klasse')} title='Kokeboka' />
 
       {isURLValid() && (
         <div className={classes.wrapper}>
           <Paper>
             <div className={classes.filterContainer}>
               <TextField
-                variant="outlined"
-                style={{gridArea: 'filterStudy'}}
                 className={classes.box}
-                select
                 fullWidth
-                label="Studie"
-                value={studyChoice}
+                label='Studie'
                 onChange={(e) => setStudyChoice(e.target.value)}
-              >
+                select
+                style={{ gridArea: 'filterStudy' }}
+                value={studyChoice}
+                variant='outlined'>
                 {[1, 2, 3, 4, 5].map((i) => (
                   <MenuItem key={i} value={i}>
                     {getUserStudyShort(i)}
@@ -292,15 +284,14 @@ const Cheetsheet = (props) => {
                 ))}
               </TextField>
               <TextField
-                variant="outlined"
-                style={{gridArea: 'filterClass'}}
                 className={classes.box}
-                select
                 fullWidth
-                label="Klasse"
-                value={classChoice}
+                label='Klasse'
                 onChange={(e) => setClassChoice(e.target.value)}
-              >
+                select
+                style={{ gridArea: 'filterClass' }}
+                value={classChoice}
+                variant='outlined'>
                 {(studyChoice === 4 ? [4, 5] : [1, 2, 3]).map((i) => (
                   <MenuItem key={i} value={i}>
                     {getUserClass(i)}
@@ -308,102 +299,65 @@ const Cheetsheet = (props) => {
                 ))}
               </TextField>
               <TextField
-                variant="outlined"
-                style={{gridArea: 'filterSearch'}}
-                value={input}
-                label="Søk"
                 fullWidth
-                placeholder="Søk..."
+                label='Søk'
                 onChange={(e) => setInput(e.target.value)}
+                placeholder='Søk...'
+                style={{ gridArea: 'filterSearch' }}
+                value={input}
+                variant='outlined'
               />
             </div>
             {submitFormLazy.dispatch(
-                () => null, () => (
-                  <CircularProgress className={classes.progress} />
-                ), () => (
-                  <>
-                    <div>Error</div>
-                  </>
-                ), (files) => (
-                  <Grow in={submitFormLazy.isSuccess()}>
-                    <div>
-                      <Hidden xsDown>
-                        <Grid
-                          className={classes.filesHeaderContainer}
-                          container
-                          direction="row"
-                          wrap="nowrap"
-                          alignItems="center"
-                        >
-                          <Typography
-                            className={classes.filesHeader}
-                            variant="subtitle1"
-                          >
+              () => null,
+              () => (
+                <CircularProgress className={classes.progress} />
+              ),
+              () => (
+                <>
+                  <div>Error</div>
+                </>
+              ),
+              (files) => (
+                <Grow in={submitFormLazy.isSuccess()}>
+                  <div>
+                    <Hidden xsDown>
+                      <Grid alignItems='center' className={classes.filesHeaderContainer} container direction='row' wrap='nowrap'>
+                        <Typography className={classes.filesHeader} variant='subtitle1'>
                           Tittel:
-                          </Typography>
-                          <Typography
-                            className={classes.filesHeader}
-                            variant="subtitle1"
-                          >
+                        </Typography>
+                        <Typography className={classes.filesHeader} variant='subtitle1'>
                           Av:
-                          </Typography>
-                          <Typography
-                            className={classes.filesHeader}
-                            variant="subtitle1"
-                          >
+                        </Typography>
+                        <Typography className={classes.filesHeader} variant='subtitle1'>
                           Fag:
-                          </Typography>
-                        </Grid>
-                      </Hidden>
-                      {studyChoice !== 0 && classChoice !== 0 && (
-                        <Pageination
-                          nextPage={getNextPage}
-                          page={nextPage}
-                          fullWidth
-                        >
-                          <List aria-label="Filer">
-                            {files?.map((file, index) => (
-                              <Paper
-                                key={index}
-                                className={classes.listItem}
-                                noPadding
-                              >
-                                <ListItem
-                                  button
-                                  href={file.url}
-                                  component="a"
-                                  target="_blank"
-                                  rel="_noopener"
-                                >
-                                  <Grid
-                                    className={classes.file}
-                                    container
-                                    direction="row"
-                                    wrap="nowrap"
-                                    alignItems="center"
-                                  >
-                                    <Typography variant="subtitle1">
-                                      <strong>{file.title}</strong>
-                                    </Typography>
-                                    <Typography
-                                      className={classes.hide}
-                                      variant="subtitle1"
-                                    >
-                                      {file.creator}
-                                    </Typography>
-                                    <Typography variant="subtitle1">
-                                      {file.course}
-                                    </Typography>
-                                  </Grid>
-                                </ListItem>
-                              </Paper>
-                            ))}
-                          </List>
-                        </Pageination>
-                      )}
-                    </div>
-                  </Grow>
-                ),
+                        </Typography>
+                      </Grid>
+                    </Hidden>
+                    {studyChoice !== 0 && classChoice !== 0 && (
+                      <Pageination fullWidth nextPage={getNextPage} page={nextPage}>
+                        <List aria-label='Filer'>
+                          {files?.map((file, index) => (
+                            <Paper className={classes.listItem} key={index} noPadding>
+                              <ListItem button component='a' href={file.url} rel='_noopener' target='_blank'>
+                                <Grid alignItems='center' className={classes.file} container direction='row' wrap='nowrap'>
+                                  <Typography variant='subtitle1'>
+                                    <strong>{file.title}</strong>
+                                  </Typography>
+                                  <Typography className={classes.hide} variant='subtitle1'>
+                                    {file.creator}
+                                  </Typography>
+                                  <Typography variant='subtitle1'>{file.course}</Typography>
+                                </Grid>
+                              </ListItem>
+                            </Paper>
+                          ))}
+                        </List>
+                      </Pageination>
+                    )}
+                  </div>
+                </Grow>
+              ),
             )}
           </Paper>
         </div>

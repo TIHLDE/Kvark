@@ -6,22 +6,19 @@ export const actions = {
   UPDATE_USER_EVENTS: 'UPDATE_USER_EVENTS',
 };
 
-export const clearData = () =>
-  (dispatch) => dispatch({type: actions.CLEAR_USER_DATA});
+export const clearData = () => (dispatch) => dispatch({ type: actions.CLEAR_USER_DATA });
 
-export const setUserData = (data) =>
-  (dispatch) => dispatch({type: actions.SET_USER_DATA, payload: createUser(data)});
+export const setUserData = (data) => (dispatch) => dispatch({ type: actions.SET_USER_DATA, payload: createUser(data) });
 
-export const updateUserEvents = (data) =>
-  (dispatch) => {
-    const user = store.getState().user.userData.events = data;
-    dispatch({type: actions.SET_USER_DATA, payload: createUser(user)});
-  };
+export const updateUserEvents = (data) => (dispatch) => {
+  const user = (store.getState().user.userData.events = data);
+  dispatch({ type: actions.SET_USER_DATA, payload: createUser(user) });
+};
 
 // --- SELECTORS ---
 const getUserState = (state) => state.user;
 
-export const getUserData = (state) => ({...getUserState(state)});
+export const getUserData = (state) => ({ ...getUserState(state) });
 
 // --- Helper Methods ---
 const createUser = (user) => ({

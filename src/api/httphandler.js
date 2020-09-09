@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
 import COOKIE from './cookie';
-import {TOKEN_HEADER_NAME, TIHLDE_API, ACCESS_TOKEN} from '../settings';
+import { TOKEN_HEADER_NAME, TIHLDE_API, ACCESS_TOKEN } from '../settings';
 
 export class IRequest {
   constructor(method, url, data = {}, withAuth = true, args = {}) {
     this.method = method;
     this.data = data;
-    this.headers = {'Content-Type': 'application/json'};
+    this.headers = { 'Content-Type': 'application/json' };
     this.url = TIHLDE_API.URL + url;
     this.args = args;
 
@@ -30,20 +30,22 @@ export class IRequest {
 
 class IResponse {
   constructor(response) {
-    this.response = response.then((data) => {
-      if (!data) {
-        data = {};
-      }
+    this.response = response
+      .then((data) => {
+        if (!data) {
+          data = {};
+        }
 
-      this.isError = !data.ok;
-      this.status = data.status;
+        this.isError = !data.ok;
+        this.status = data.status;
 
-      if (data.json === undefined) {
-        return data;
-      }
+        if (data.json === undefined) {
+          return data;
+        }
 
-      return data.json();
-    }).catch((error) => console.log(error));
+        return data.json();
+      })
+      .catch((error) => console.log(error));
   }
 
   then(method) {
@@ -56,16 +58,14 @@ const request = (method, url, headers, data) => {
     method: method,
     headers: headers,
     body: JSON.stringify(data),
-  })
-      .catch((error) => console.log(error));
+  }).catch((error) => console.log(error));
 };
 
 const getRequest = (method, url, headers, args) => {
   return fetch(url + argsToParams(args), {
     method: method,
     headers: headers,
-  })
-      .catch((error) => console.log(error));
+  }).catch((error) => console.log(error));
 };
 
 const argsToParams = (data) => {

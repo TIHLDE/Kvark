@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import React, { useState, useEffect } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import URLS from '../../URLS';
-import {usePalette} from 'react-palette';
+import { usePalette } from 'react-palette';
 import Helmet from 'react-helmet';
 
 // Service imports
@@ -51,7 +51,7 @@ const styles = (theme) => ({
 });
 
 function EventDetails(props) {
-  const {classes, match, history} = props;
+  const { classes, match, history } = props;
 
   const [event, setEvent] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -70,15 +70,14 @@ function EventDetails(props) {
 
     // Load event item
     setIsLoading(true);
-    EventService.getEventById(id)
-        .then(async (event) => {
-          if (!event) {
-            history.replace(URLS.events); // Redirect to events page given if id is invalid
-          } else {
-            setIsLoading(false);
-            setEvent({...event});
-          }
-        });
+    EventService.getEventById(id).then(async (event) => {
+      if (!event) {
+        history.replace(URLS.events); // Redirect to events page given if id is invalid
+      } else {
+        setIsLoading(false);
+        setEvent({ ...event });
+      }
+    });
   };
 
   // Gets the user data
@@ -99,58 +98,58 @@ function EventDetails(props) {
     if (!userEvent) {
       // Apply to event
       return EventService.putUserOnEventList(event.id, userData, optionalFieldsAnswers)
-          .then((result) => {
-            const newEvent = {...event};
-            if (newEvent.limit <= newEvent.list_count) {
-              newEvent.waiting_list_count++;
-            } else {
-              newEvent.list_count++;
-            }
-            const newUserData = {...userData};
-            newUserData.events.push(newEvent);
-            UserService.updateUserEvents(newUserData.events);
-            setMessage('Påmelding registrert!');
-            setEvent(newEvent);
-            setApplySuccess(true);
-            setUserEventLoaded(false);
-          })
-          .catch(() => {
-            setMessage('Kunne ikke registrere påmelding.');
-            setApplySuccess(false);
-          })
-          .then(() => {
-            setIsApplying(false);
-          });
+        .then((result) => {
+          const newEvent = { ...event };
+          if (newEvent.limit <= newEvent.list_count) {
+            newEvent.waiting_list_count++;
+          } else {
+            newEvent.list_count++;
+          }
+          const newUserData = { ...userData };
+          newUserData.events.push(newEvent);
+          UserService.updateUserEvents(newUserData.events);
+          setMessage('Påmelding registrert!');
+          setEvent(newEvent);
+          setApplySuccess(true);
+          setUserEventLoaded(false);
+        })
+        .catch(() => {
+          setMessage('Kunne ikke registrere påmelding.');
+          setApplySuccess(false);
+        })
+        .then(() => {
+          setIsApplying(false);
+        });
     } else {
       // The reverse
       return EventService.deleteUserFromEventList(event.id, userData)
-          .then((result) => {
-            const newEvent = {...event};
-            if (userEvent.is_on_wait) {
-              newEvent.waiting_list_count--;
-            } else {
-              newEvent.list_count--;
+        .then((result) => {
+          const newEvent = { ...event };
+          if (userEvent.is_on_wait) {
+            newEvent.waiting_list_count--;
+          } else {
+            newEvent.list_count--;
+          }
+          const newUserEvents = [...userData.events];
+          for (let i = 0; i < newUserEvents.length; i++) {
+            if (newUserEvents[i].id === newEvent.id) {
+              newUserEvents.splice(i, 1);
             }
-            const newUserEvents = [...userData.events];
-            for (let i = 0; i < newUserEvents.length; i++) {
-              if (newUserEvents[i].id === newEvent.id) {
-                newUserEvents.splice(i, 1);
-              }
-            }
-            UserService.updateUserEvents(newUserEvents);
-            setMessage('Avmelding registrert 😢');
-            setEvent(newEvent);
-            setApplySuccess(true);
-            setUserEvent(null);
-            setUserEventLoaded(false);
-          })
-          .catch(() => {
-            setMessage('Kunne ikke registrere påmelding.');
-            setApplySuccess(false);
-          })
-          .then(() => {
-            setIsApplying(false);
-          });
+          }
+          UserService.updateUserEvents(newUserEvents);
+          setMessage('Avmelding registrert 😢');
+          setEvent(newEvent);
+          setApplySuccess(true);
+          setUserEvent(null);
+          setUserEventLoaded(false);
+        })
+        .catch(() => {
+          setMessage('Kunne ikke registrere påmelding.');
+          setApplySuccess(false);
+        })
+        .then(() => {
+          setIsApplying(false);
+        });
     }
   };
 
@@ -166,51 +165,55 @@ function EventDetails(props) {
 
   useEffect(() => {
     if (!userEventLoaded && event && userData) {
-      EventService.getUserEventObject(event.id, userData).then((result) => {
-        setUserEvent(result);
-      }).finally(() => {
-        setUserEventLoaded(true);
-      });
+      EventService.getUserEventObject(event.id, userData)
+        .then((result) => {
+          setUserEvent(result);
+        })
+        .finally(() => {
+          setUserEventLoaded(true);
+        });
     } else if (!userEventLoaded && event && !AuthService.isAuthenticated()) {
       setUserEventLoaded(true);
     }
   }, [event, userData, userEventLoaded]);
 
   // Find a dominant color in the image, uses a proxy to be able to retrieve images with CORS-policy until all images are stored in our own server
-  const {data} = usePalette(event ? 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=' + encodeURIComponent(event?.image) : '');
+  const { data } = usePalette(
+    event ? 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=' + encodeURIComponent(event?.image) : '',
+  );
 
   return (
-    <Navigation isLoading={isLoading} footer whitesmoke fancyNavbar>
-      {!isLoading && event &&
-            <div className={classes.root}>
-              <Helmet>
-                <title>{event.title} - TIHLDE</title>
-                <meta property="og:title" content={event.title} />
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content={window.location.href} />
-                <meta property="og:image" content={event.image || 'https://tihlde.org' + TIHLDELOGO} />
-              </Helmet>
-              <div className={classes.top}>
-                <div className={classes.topInner} style={{background: data.muted ? data.muted : ''}}></div>
-              </div>
-              <div className={classes.wrapper}>
-                <EventRenderer
-                  eventData={event}
-                  userData={userData}
-                  userEvent={userEvent}
-                  userEventLoaded={userEventLoaded}
-                  history={history}
-                  applyToEvent={applyToEvent}
-                  isLoadingUserData={isLoadingUserData}
-                  isLoadingEvent={isLoading}
-                  isApplying={isApplying}
-                  message={message}
-                  applySuccess={applySuccess}
-                  clearMessage={clearMessage} />
-              </div>
-            </div>
-      }
-
+    <Navigation fancyNavbar footer isLoading={isLoading} whitesmoke>
+      {!isLoading && event && (
+        <div className={classes.root}>
+          <Helmet>
+            <title>{event.title} - TIHLDE</title>
+            <meta content={event.title} property='og:title' />
+            <meta content='website' property='og:type' />
+            <meta content={window.location.href} property='og:url' />
+            <meta content={event.image || 'https://tihlde.org' + TIHLDELOGO} property='og:image' />
+          </Helmet>
+          <div className={classes.top}>
+            <div className={classes.topInner} style={{ background: data.muted ? data.muted : '' }}></div>
+          </div>
+          <div className={classes.wrapper}>
+            <EventRenderer
+              applySuccess={applySuccess}
+              applyToEvent={applyToEvent}
+              clearMessage={clearMessage}
+              eventData={event}
+              history={history}
+              isApplying={isApplying}
+              isLoadingEvent={isLoading}
+              isLoadingUserData={isLoadingUserData}
+              message={message}
+              userData={userData}
+              userEvent={userEvent}
+              userEventLoaded={userEventLoaded}
+            />
+          </div>
+        </div>
+      )}
     </Navigation>
   );
 }
@@ -225,4 +228,4 @@ EventDetails.defaultProps = {
   id: '-1',
 };
 
-export default (withStyles(styles)(EventDetails));
+export default withStyles(styles)(EventDetails);

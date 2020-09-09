@@ -1,13 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import URLS from '../../../URLS';
 import moment from 'moment';
 
 // API and store imports
-import {useNews} from '../../../api/hooks/News';
+import { useNews } from '../../../api/hooks/News';
 
 // Material-UI
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -43,7 +43,7 @@ const styles = (theme) => ({
   },
 });
 
-function NewsListView({classes}) {
+function NewsListView({ classes }) {
   const [news, isLoading, isError] = useNews();
   const [newsToDisplay, setNewsToDisplay] = useState(1);
   const today = new Date();
@@ -64,33 +64,35 @@ function NewsListView({classes}) {
     window.scrollTo(0, 0);
   }, []);
 
-  let newsList = <div className={classes.noEventText}><CircularProgress className={classes.progress}/></div>;
+  let newsList = (
+    <div className={classes.noEventText}>
+      <CircularProgress className={classes.progress} />
+    </div>
+  );
   if (!isLoading) {
-    newsList = news && news.length > 0 ?
+    newsList =
+      news && news.length > 0 ? (
         <React.Fragment>
           {news.map((newsData, index) => {
             if (index < newsToDisplay) {
-              return (<NewsListItem key={index} data={newsData} />);
+              return <NewsListItem data={newsData} key={index} />;
             }
-            return ('');
+            return '';
           })}
           <div className={classes.moreBtn}>
             <LinkButton noPadding to={URLS.news}>
               <Typography align='center'>Alle nyheter</Typography>
             </LinkButton>
           </div>
-        </React.Fragment> :
-        <Typography
-          variant='subtitle1'
-          className={classes.noEventText}
-          align='center'>Ingen nyheter å vise</Typography>;
+        </React.Fragment>
+      ) : (
+        <Typography align='center' className={classes.noEventText} variant='subtitle1'>
+          Ingen nyheter å vise
+        </Typography>
+      );
   }
 
-  return (
-    <div className={classes.newsListContainer}>
-      {newsList}
-    </div>
-  );
+  return <div className={classes.newsListContainer}>{newsList}</div>;
 }
 
 NewsListView.propTypes = {

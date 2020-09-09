@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import classNames from 'classnames';
@@ -18,13 +18,15 @@ const styles = (theme) => ({
 });
 
 function Pageination(props) {
-  const {classes, fullWidth} = props;
+  const { classes, fullWidth } = props;
   return (
     <React.Fragment>
       <div>{props.children}</div>
-      {props.page && <ButtonBase className={fullWidth ? classNames(classes.button, classes.fullWidth) : classes.button} onClick={props.nextPage}>
-        <Typography align="center">Vis flere elementer</Typography>
-      </ButtonBase>}
+      {props.page && (
+        <ButtonBase className={fullWidth ? classNames(classes.button, classes.fullWidth) : classes.button} onClick={props.nextPage}>
+          <Typography align='center'>Vis flere elementer</Typography>
+        </ButtonBase>
+      )}
     </React.Fragment>
   );
 }
@@ -34,10 +36,7 @@ Pageination.propTypes = {
   fullWidth: PropTypes.bool,
   children: PropTypes.node.isRequired,
   nextPage: PropTypes.func,
-  page: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
+  page: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default withStyles(styles)(Pageination);

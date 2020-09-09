@@ -1,5 +1,5 @@
-import React, {Component, Fragment} from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import React, { Component, Fragment } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
@@ -61,7 +61,7 @@ const styles = (theme) => ({
 });
 
 const ToolbarAction = withStyles(styles)((props) => {
-  const {classes, children} = props;
+  const { classes, children } = props;
   return (
     <IconButton className={classes.iconBtn} onClick={props.onClick}>
       {React.isValidElement(children) ? children : <span className={classes.textBtn}>{children}</span>}
@@ -71,10 +71,7 @@ const ToolbarAction = withStyles(styles)((props) => {
 
 ToolbarAction.propTypes = {
   classes: PropTypes.object,
-  children: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.object,
-  ]),
+  children: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
 class TextEditor extends Component {
@@ -89,107 +86,131 @@ class TextEditor extends Component {
     this.input = React.createRef();
   }
 
-    handleChange = (event) => {
-      this.setState({text: event.target.value, cursorPos: this.input.selectionStart});
-      if (this.props.onChange) {
-        this.props.onChange(event.target.value);
-      }
+  handleChange = (event) => {
+    this.setState({ text: event.target.value, cursorPos: this.input.selectionStart });
+    if (this.props.onChange) {
+      this.props.onChange(event.target.value);
     }
+  };
 
-    handleTabChange = (event, value) => {
-      this.setState({tabValue: value});
+  handleTabChange = (event, value) => {
+    this.setState({ tabValue: value });
+  };
+
+  appendTextAtCursor = (textToAppend) => {
+    const text = this.input.value;
+    const cursorPos = this.input.selectionStart === 0 ? this.state.cursorPos : this.input.selectionStart;
+    const newText = text.substring(0, cursorPos) + textToAppend + text.substring(cursorPos, text.length);
+    if (this.props.onChange) {
+      this.props.onChange(newText);
     }
+    this.setState({ cursorPos: cursorPos + textToAppend.length });
 
-    appendTextAtCursor = (textToAppend) => {
-      const text = this.input.value;
-      const cursorPos = this.input.selectionStart === 0 ? this.state.cursorPos : this.input.selectionStart;
-      const newText = text.substring(0, cursorPos) + textToAppend + text.substring(cursorPos, text.length);
-      if (this.props.onChange) {
-        this.props.onChange(newText);
-      }
-      this.setState({cursorPos: cursorPos + textToAppend.length});
+    this.setSelectionStart(cursorPos + textToAppend.length);
+  };
 
-      this.setSelectionStart(cursorPos + textToAppend.length);
+  setSelectionStart = (position) => {
+    if (position < 0) {
+      position = 0;
     }
+    setTimeout(() => this.input.setSelectionRange(position, position), 0);
+    this.setState({ cursorPos: position });
+    this.input.focus();
+  };
 
-    setSelectionStart = (position) => {
-      if (position < 0) {
-        position = 0;
-      }
-      setTimeout(() => this.input.setSelectionRange(position, position), 0);
-      this.setState({cursorPos: position});
-      this.input.focus();
-    }
+  appendBold = () => {
+    this.appendTextAtCursor('****');
+    this.setSelectionStart(this.input.selectionStart + 2);
+  };
 
-    appendBold = () => {
-      this.appendTextAtCursor('****');
-      this.setSelectionStart(this.input.selectionStart + 2);
-    }
+  appendItalic = () => {
+    this.appendTextAtCursor('__');
+    this.setSelectionStart(this.input.selectionStart + 1);
+  };
 
-    appendItalic = () => {
-      this.appendTextAtCursor('__');
-      this.setSelectionStart(this.input.selectionStart + 1);
-    }
+  appendStrike = () => {
+    this.appendTextAtCursor('~~~~');
+    this.setSelectionStart(this.input.selectionStart + 2);
+  };
 
-    appendStrike = () => {
-      this.appendTextAtCursor('~~~~');
-      this.setSelectionStart(this.input.selectionStart + 2);
-    }
+  appendBulletPoint = (type) => () => {
+    this.appendTextAtCursor('\n'.concat(type, ' '));
+  };
 
-    appendBulletPoint = (type) => () => {
-      this.appendTextAtCursor('\n'.concat(type, ' '));
-    }
+  appendImage = () => {
+    this.appendTextAtCursor('![ALT_TEXT](IMAGE_URL)');
+    this.setSelectionStart(this.input.selectionStart);
+  };
 
-    appendImage = () => {
-      this.appendTextAtCursor('![ALT_TEXT](IMAGE_URL)');
-      this.setSelectionStart(this.input.selectionStart);
-    }
+  appendBreakline = () => {
+    this.appendTextAtCursor('\n&nbsp;');
+    this.setSelectionStart(this.input.selectionStart);
+  };
 
-    appendBreakline = () => {
-      this.appendTextAtCursor('\n&nbsp;');
-      this.setSelectionStart(this.input.selectionStart);
-    }
-
-    render() {
-      const {classes, disableToolbox, disablePreview} = this.props;
-      const {tabValue} = this.state;
-      const value = this.props.value || '';
-      return (
-        <div className={classNames(classes.root, this.props.className)}>
-          {!disablePreview && <Tabs className={classes.tabs} value={this.state.tabValue} onChange={this.handleTabChange}>
+  render() {
+    const { classes, disableToolbox, disablePreview } = this.props;
+    const { tabValue } = this.state;
+    const value = this.props.value || '';
+    return (
+      <div className={classNames(classes.root, this.props.className)}>
+        {!disablePreview && (
+          <Tabs className={classes.tabs} onChange={this.handleTabChange} value={this.state.tabValue}>
             <Tab label='Write' />
             <Tab label='Preview' />
-          </Tabs>}
-          {tabValue === 0 && <Fragment>
-            {!disableToolbox && <Grid className={classNames(classes.toolbox, this.props.toolboxClass)} container direction='row'>
-              <ToolbarAction onClick={() => this.appendTextAtCursor('### ')}>H</ToolbarAction>
-              <ToolbarAction onClick={() => this.appendTextAtCursor('#### ')}>H2</ToolbarAction>
-              <ToolbarAction onClick={() => this.appendTextAtCursor('##### ')}>H3</ToolbarAction>
-              <ToolbarAction onClick={this.appendBold}><Bold/></ToolbarAction>
-              <ToolbarAction onClick={this.appendItalic}><Italic/></ToolbarAction>
-              <ToolbarAction onClick={this.appendStrike}><Strike/></ToolbarAction>
+          </Tabs>
+        )}
+        {tabValue === 0 && (
+          <Fragment>
+            {!disableToolbox && (
+              <Grid className={classNames(classes.toolbox, this.props.toolboxClass)} container direction='row'>
+                <ToolbarAction onClick={() => this.appendTextAtCursor('### ')}>H</ToolbarAction>
+                <ToolbarAction onClick={() => this.appendTextAtCursor('#### ')}>H2</ToolbarAction>
+                <ToolbarAction onClick={() => this.appendTextAtCursor('##### ')}>H3</ToolbarAction>
+                <ToolbarAction onClick={this.appendBold}>
+                  <Bold />
+                </ToolbarAction>
+                <ToolbarAction onClick={this.appendItalic}>
+                  <Italic />
+                </ToolbarAction>
+                <ToolbarAction onClick={this.appendStrike}>
+                  <Strike />
+                </ToolbarAction>
 
-              <div className={classes.emptySpace} />
-              <ToolbarAction onClick={this.appendImage}><Image/></ToolbarAction>
-              <ToolbarAction onClick={this.appendBulletPoint('*')}><Bulleted/></ToolbarAction>
-              <ToolbarAction onClick={this.appendBulletPoint('1.')}><Numbered/></ToolbarAction>
-              <ToolbarAction onClick={this.appendBreakline}><Breakline/></ToolbarAction>
-            </Grid>}
+                <div className={classes.emptySpace} />
+                <ToolbarAction onClick={this.appendImage}>
+                  <Image />
+                </ToolbarAction>
+                <ToolbarAction onClick={this.appendBulletPoint('*')}>
+                  <Bulleted />
+                </ToolbarAction>
+                <ToolbarAction onClick={this.appendBulletPoint('1.')}>
+                  <Numbered />
+                </ToolbarAction>
+                <ToolbarAction onClick={this.appendBreakline}>
+                  <Breakline />
+                </ToolbarAction>
+              </Grid>
+            )}
             <Input
               className={classNames(classes.input, this.props.editorClass)}
+              disableUnderline
+              inputRef={(el) => (this.input = el)}
               multiline
+              onChange={this.handleChange}
               rows={10}
               rowsMax={20}
-              disableUnderline
               value={value}
-              inputRef={(el) => this.input = el}
-              onChange={this.handleChange}/>
+            />
           </Fragment>
-          }
-          {tabValue === 1 && <div className='renderer'><ReactMarkdown className={classes.preview} source={value} plugins={[breaks]} /></div>}
-        </div>
-      );
-    }
+        )}
+        {tabValue === 1 && (
+          <div className='renderer'>
+            <ReactMarkdown className={classes.preview} plugins={[breaks]} source={value} />
+          </div>
+        )}
+      </div>
+    );
+  }
 }
 
 TextEditor.propTypes = {

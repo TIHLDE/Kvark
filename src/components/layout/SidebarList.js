@@ -1,5 +1,5 @@
-import React, {Fragment} from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import React, { Fragment } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -22,7 +22,9 @@ const styles = (theme) => ({
   sidebar: {
     paddingTop: 64,
     position: 'fixed',
-    left: 0, top: 0, bottom: 0,
+    left: 0,
+    top: 0,
+    bottom: 0,
     width: (props) => props.width,
     backgroundColor: theme.colors.background.light,
     border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
@@ -71,19 +73,23 @@ const styles = (theme) => ({
   },
 });
 
-const ListItem = withStyles(styles, {withTheme: true})((props) => {
-  const {classes, onClick, selected, title, location} = props;
+const ListItem = withStyles(styles, { withTheme: true })((props) => {
+  const { classes, onClick, selected, title, location } = props;
   return (
     <Fragment>
       <ButtonBase className={classes.listButton} onClick={onClick}>
-        <Grid className={classNames(classes.listItem, (selected) ? classes.selected : '')} container direction='row' alignItems='center' justify='space-between'>
+        <Grid alignItems='center' className={classNames(classes.listItem, selected ? classes.selected : '')} container direction='row' justify='space-between'>
           <Grid container direction='column' justify='center'>
-            <Typography variant='subtitle1' color='inherit'>{title}</Typography>
-            <Typography variant='caption' color='inherit'>{location}</Typography>
+            <Typography color='inherit' variant='subtitle1'>
+              {title}
+            </Typography>
+            <Typography color='inherit' variant='caption'>
+              {location}
+            </Typography>
           </Grid>
         </Grid>
       </ButtonBase>
-      <Divider/>
+      <Divider />
     </Fragment>
   );
 });
@@ -94,44 +100,49 @@ ListItem.propTypes = {
 };
 
 const SidebarList = (props) => {
-  const {classes, items, expiredItems, onItemClick, selectedItemId, getNextPage, nextPage, title, fetchExpired, hideExpired, isLoading} = props;
+  const { classes, items, expiredItems, onItemClick, selectedItemId, getNextPage, nextPage, title, fetchExpired, hideExpired, isLoading } = props;
 
   return (
     <div className={classes.sidebar}>
       <Grid className={classNames(classes.sidebarContent, 'noScrollbar')} container direction='column' wrap='nowrap'>
-        <Grid className={classNames(classes.sidebarTop)} container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
-          <Typography variant='h6' color='inherit'>{title}</Typography>
-          <IconButton onClick={() => onItemClick(null)}><AddIcon/></IconButton>
+        <Grid alignItems='center' className={classNames(classes.sidebarTop)} container direction='row' justify='space-between' wrap='nowrap'>
+          <Typography color='inherit' variant='h6'>
+            {title}
+          </Typography>
+          <IconButton onClick={() => onItemClick(null)}>
+            <AddIcon />
+          </IconButton>
         </Grid>
         <Pageination nextPage={getNextPage} page={nextPage}>
-          {isLoading ?
-            <CircularProgress className={classes.progress} /> :
+          {isLoading ? (
+            <CircularProgress className={classes.progress} />
+          ) : (
             items.map((value, index) => (
-              <ListItem
-                key={index}
-                selected={value.id === selectedItemId}
-                onClick={() => onItemClick(value)}
-                title={value.title}
-                location={value.location} />
+              <ListItem key={index} location={value.location} onClick={() => onItemClick(value)} selected={value.id === selectedItemId} title={value.title} />
             ))
-          }
+          )}
         </Pageination>
-        {!hideExpired &&
+        {!hideExpired && (
           <>
-            <Grid className={classNames(classes.sidebarTop, classes.miniTop)} container direction='row' wrap='nowrap' alignItems='center' justify='space-between'>
-              <Typography variant='h6' color='inherit'>Utgåtte</Typography>
-              <IconButton onClick={fetchExpired}><DownloadIcon/></IconButton>
+            <Grid
+              alignItems='center'
+              className={classNames(classes.sidebarTop, classes.miniTop)}
+              container
+              direction='row'
+              justify='space-between'
+              wrap='nowrap'>
+              <Typography color='inherit' variant='h6'>
+                Utgåtte
+              </Typography>
+              <IconButton onClick={fetchExpired}>
+                <DownloadIcon />
+              </IconButton>
             </Grid>
             {expiredItems.map((value, index) => (
-              <ListItem
-                key={index}
-                selected={value.id === selectedItemId}
-                onClick={() => onItemClick(value)}
-                title={value.title}
-                location={value.location} />
+              <ListItem key={index} location={value.location} onClick={() => onItemClick(value)} selected={value.id === selectedItemId} title={value.title} />
             ))}
           </>
-        }
+        )}
       </Grid>
     </div>
   );

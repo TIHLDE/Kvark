@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 // Material-ui
 import MaterialModal from '@material-ui/core/Modal';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
@@ -46,22 +46,22 @@ const style = (theme) => ({
 });
 
 const Modal = (props) => {
-  const {classes, className, open, onClose, children, header, closeText} = props;
+  const { classes, className, open, onClose, children, header, closeText } = props;
 
   return (
-    <MaterialModal
-      open={open}
-      onClose={onClose}>
+    <MaterialModal onClose={onClose} open={open}>
       <>
         <Paper className={classNames(classes.paper, className)} noPadding>
           <div className={classes.content}>
-            {header && <Typography className={classes.header} variant='h4'>{header}</Typography>}
+            {header && (
+              <Typography className={classes.header} variant='h4'>
+                {header}
+              </Typography>
+            )}
             {children}
-            <Button
-              className={classes.button}
-              color='primary'
-              onClick={onClose}
-              align='center'>{closeText}</Button>
+            <Button align='center' className={classes.button} color='primary' onClick={onClose}>
+              {closeText}
+            </Button>
           </div>
         </Paper>
       </>

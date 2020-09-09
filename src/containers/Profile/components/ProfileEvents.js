@@ -1,11 +1,11 @@
 // React
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import UserService from '../../../api/services/UserService';
 
 // Material-UI
-import {withStyles} from '@material-ui/core/styles';
-import {Typography} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 
 // Project componets
 import EventListItem from '../../Events/components/EventListItem';
@@ -20,7 +20,7 @@ const styles = (theme) => ({
 });
 
 function ProfileEvents(props) {
-  const {classes} = props;
+  const { classes } = props;
   const [events, setEvents] = useState([]);
 
   const loadUserData = () => {
@@ -35,14 +35,18 @@ function ProfileEvents(props) {
 
   return (
     <div className={classes.wrapper}>
-      {events && events.map((eventData, key) => {
-        if (eventData.expired === false) {
-          return <EventListItem key={key} data={eventData} />;
-        }
-        return ('');
-      })
-      }
-      {events.length < 1 && <Typography className={classes.text} align='center' variant='subtitle1'>Du er ikke påmeldt noen kommende arrangementer</Typography>}
+      {events &&
+        events.map((eventData, key) => {
+          if (eventData.expired === false) {
+            return <EventListItem data={eventData} key={key} />;
+          }
+          return '';
+        })}
+      {events.length < 1 && (
+        <Typography align='center' className={classes.text} variant='subtitle1'>
+          Du er ikke påmeldt noen kommende arrangementer
+        </Typography>
+      )}
     </div>
   );
 }

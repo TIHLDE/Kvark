@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // Services
 import AuthService from '../../../api/services/AuthService';
 
 // Material UI Components
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
@@ -146,23 +146,33 @@ const style = (theme) => ({
   },
 });
 
-const Wave = ({classes}) => {
+const Wave = ({ classes }) => {
   return (
-    <div className="waveWrapper waveAnimation">
+    <div className='waveWrapper waveAnimation'>
       <div className={classes.topInner}>
-        <div className={classes.topLogoContainer} style={{display: 'flex'}}>
-          <img className={classes.topLogo} src={TIHLDELOGO} alt='TIHLDE_LOGO' />
+        <div className={classes.topLogoContainer} style={{ display: 'flex' }}>
+          <img alt='TIHLDE_LOGO' className={classes.topLogo} src={TIHLDELOGO} />
         </div>
-        <Typography variant='h6' align='center' className={classes.topSmallText}>Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Drift av datasystemer og Digital samhandling ved NTNU</Typography>
-        {AuthService.isAuthenticated() ?
+        <Typography align='center' className={classes.topSmallText} variant='h6'>
+          Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Drift av datasystemer og Digital samhandling
+          ved NTNU
+        </Typography>
+        {AuthService.isAuthenticated() ? (
           <div className={classes.topButtonContainer}>
-            <Button component={Link} to={URLS.profile} className={classes.topButton} variant='contained' color='inherit'>Min side</Button>
-          </div> :
-          <div className={classes.topButtonContainer}>
-            <Button component={Link} to={URLS.login} className={classes.topButton} variant='contained' color='inherit'>Logg inn</Button>
-            <Button component={Link} to={URLS.signup} className={classes.topButtonSecondary} color='inherit'>Opprett bruker</Button>
+            <Button className={classes.topButton} color='inherit' component={Link} to={URLS.profile} variant='contained'>
+              Min side
+            </Button>
           </div>
-        }
+        ) : (
+          <div className={classes.topButtonContainer}>
+            <Button className={classes.topButton} color='inherit' component={Link} to={URLS.login} variant='contained'>
+              Logg inn
+            </Button>
+            <Button className={classes.topButtonSecondary} color='inherit' component={Link} to={URLS.signup}>
+              Opprett bruker
+            </Button>
+          </div>
+        )}
       </div>
       {/* <div className="rain rain--far"></div> */}
       {/* <div className="rain rain--mid"></div> */}

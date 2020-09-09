@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import URLS from '../../URLS';
 import Helmet from 'react-helmet';
@@ -7,7 +7,7 @@ import Helmet from 'react-helmet';
 import EventService from '../../api/services/EventService';
 
 // Material-UI
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -70,7 +70,22 @@ const defaultEvent = {
   start_registration_at: new Date().toISOString().substring(0, 16),
   end_registration_at: new Date().toISOString().substring(0, 16),
   sign_off_deadline: new Date().toISOString().substring(0, 16),
-  registration_priorities: [{'user_class': 1, 'user_study': 1}, {'user_class': 1, 'user_study': 2}, {'user_class': 1, 'user_study': 3}, {'user_class': 1, 'user_study': 5}, {'user_class': 2, 'user_study': 1}, {'user_class': 2, 'user_study': 2}, {'user_class': 2, 'user_study': 3}, {'user_class': 2, 'user_study': 5}, {'user_class': 3, 'user_study': 1}, {'user_class': 3, 'user_study': 2}, {'user_class': 3, 'user_study': 3}, {'user_class': 3, 'user_study': 5}, {'user_class': 4, 'user_study': 4}, {'user_class': 5, 'user_study': 4}],
+  registration_priorities: [
+    { user_class: 1, user_study: 1 },
+    { user_class: 1, user_study: 2 },
+    { user_class: 1, user_study: 3 },
+    { user_class: 1, user_study: 5 },
+    { user_class: 2, user_study: 1 },
+    { user_class: 2, user_study: 2 },
+    { user_class: 2, user_study: 3 },
+    { user_class: 2, user_study: 5 },
+    { user_class: 3, user_study: 1 },
+    { user_class: 3, user_study: 2 },
+    { user_class: 3, user_study: 3 },
+    { user_class: 3, user_study: 5 },
+    { user_class: 4, user_study: 4 },
+    { user_class: 5, user_study: 4 },
+  ],
   optional_fields: [],
   description: null,
   image: null,
@@ -81,7 +96,7 @@ const defaultEvent = {
 };
 
 function EventAdministration(props) {
-  const {classes, history} = props;
+  const { classes, history } = props;
 
   const [isLoading, setIsLoading] = useState(false);
   const [tab, setTab] = useState(0);
@@ -94,66 +109,67 @@ function EventAdministration(props) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   // Gets the job posts
-  const loadEvents = (parameters = {page: 1}) => {
+  const loadEvents = (parameters = { page: 1 }) => {
     parameters['newest'] = true;
     setIsLoading(true);
 
     // Fetch job posts from server
-    EventService.getEvents(parameters)
-        .then((data) => {
-          setEvents([...events, ...data.results]);
-          const nextPageUrl = data.next;
-          const urlParameters = {};
+    EventService.getEvents(parameters).then((data) => {
+      setEvents([...events, ...data.results]);
+      const nextPageUrl = data.next;
+      const urlParameters = {};
 
-          // If we have a url for the next page convert it into a object
-          if (nextPageUrl) {
-            const nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
-            const parameterArray = nextPageUrlQuery.split('&');
-            parameterArray.forEach((parameter) => {
-              const parameterString = parameter.split('=');
-              urlParameters[parameterString[0]] = parameterString[1];
-            });
-          }
-          setNextPage(urlParameters['page'] ? Number(urlParameters['page']) : null);
-          setIsLoading(false);
+      // If we have a url for the next page convert it into a object
+      if (nextPageUrl) {
+        const nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
+        const parameterArray = nextPageUrlQuery.split('&');
+        parameterArray.forEach((parameter) => {
+          const parameterString = parameter.split('=');
+          urlParameters[parameterString[0]] = parameterString[1];
         });
+      }
+      setNextPage(urlParameters['page'] ? Number(urlParameters['page']) : null);
+      setIsLoading(false);
+    });
   };
 
   const saveEvent = () => {
     if (selectedEvent.id) {
       EventService.putEvent(selectedEvent.id, selectedEvent)
-          .then((data) => {
-            setEvents((events) => events.map((eventItem) => {
-              let returnValue = {...eventItem};
+        .then((data) => {
+          setEvents((events) =>
+            events.map((eventItem) => {
+              let returnValue = { ...eventItem };
               if (eventItem.id === selectedEvent.id) {
                 returnValue = selectedEvent;
               }
               return returnValue;
-            }));
-            openSnackbar('Arrangementet ble oppdatert');
-          })
-          .catch((e) => openSnackbar(JSON.stringify(e)));
+            }),
+          );
+          openSnackbar('Arrangementet ble oppdatert');
+        })
+        .catch((e) => openSnackbar(JSON.stringify(e)));
     } else {
       EventService.createNewEvent(selectedEvent)
-          .then((data) => {
-            const newEvent = {...selectedEvent, id: data.id};
-            setEvents((events) => [...events, newEvent]);
-            setSelectedEvent(newEvent);
-            openSnackbar('Arrangementet ble opprettet');
-          })
-          .catch((e) => openSnackbar(JSON.stringify(e)));
+        .then((data) => {
+          const newEvent = { ...selectedEvent, id: data.id };
+          setEvents((events) => [...events, newEvent]);
+          setSelectedEvent(newEvent);
+          openSnackbar('Arrangementet ble opprettet');
+        })
+        .catch((e) => openSnackbar(JSON.stringify(e)));
     }
   };
 
   const deleteEvent = () => {
     if (selectedEvent.id) {
       EventService.deleteEvent(selectedEvent.id)
-          .then((data) => {
-            setEvents((events) => events.filter((eventItem) => eventItem.id !== selectedEvent.id));
-            setSelectedEvent(defaultEvent);
-            openSnackbar('Arrangementet ble slettet');
-          })
-          .catch((e) => openSnackbar(JSON.stringify(e)));
+        .then((data) => {
+          setEvents((events) => events.filter((eventItem) => eventItem.id !== selectedEvent.id));
+          setSelectedEvent(defaultEvent);
+          openSnackbar('Arrangementet ble slettet');
+        })
+        .catch((e) => openSnackbar(JSON.stringify(e)));
     } else {
       openSnackbar('Du kan ikke slette et arrangement som ikke er opprettet');
     }
@@ -161,8 +177,8 @@ function EventAdministration(props) {
 
   const closeEvent = () => {
     if (selectedEvent.id) {
-      EventService.putEvent(selectedEvent.id, {closed: true}).then(() => {
-        setSelectedEvent({...selectedEvent, closed: true});
+      EventService.putEvent(selectedEvent.id, { closed: true }).then(() => {
+        setSelectedEvent({ ...selectedEvent, closed: true });
         openSnackbar('Arrangementet ble stengt');
       });
     } else {
@@ -185,7 +201,7 @@ function EventAdministration(props) {
   };
 
   const getNextPage = () => {
-    loadEvents({page: nextPage});
+    loadEvents({ page: nextPage });
   };
 
   const openSnackbar = (message) => {
@@ -204,16 +220,20 @@ function EventAdministration(props) {
   useEffect(() => {
     window.scrollTo(0, 0);
     loadEvents();
-    EventService.getCategories()
-        .then((data) => {
-          if (data) {
-            setCategories(data);
-          }
-        });
+    EventService.getCategories().then((data) => {
+      if (data) {
+        setCategories(data);
+      }
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const options = [{text: 'Lagre', func: () => saveEvent()}, {text: 'Registrer ankomne', func: () => goToRegistration()}, {text: 'Steng', func: () => closeEvent()}, {text: 'Slett', func: () => deleteEvent()}];
+  const options = [
+    { text: 'Lagre', func: () => saveEvent() },
+    { text: 'Registrer ankomne', func: () => goToRegistration() },
+    { text: 'Steng', func: () => closeEvent() },
+    { text: 'Slett', func: () => deleteEvent() },
+  ];
 
   return (
     <Navigation whitesmoke>
@@ -221,52 +241,45 @@ function EventAdministration(props) {
         <title>Arrangementadmin - TIHLDE</title>
       </Helmet>
       <Snackbar
-        open={showSnackbar}
-        autoHideDuration={4000}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'right',
         }}
-        onClose={() => setShowSnackbar(false)}>
-
-        <SnackbarContent
-          className={classes.snackbar}
-          message={snackbarMessage}/>
+        autoHideDuration={4000}
+        onClose={() => setShowSnackbar(false)}
+        open={showSnackbar}>
+        <SnackbarContent className={classes.snackbar} message={snackbarMessage} />
       </Snackbar>
       <div className={classes.root}>
         <div className={classes.content}>
           <div className={classes.top}>
-            <Typography className={classes.header} variant='h4'>{selectedEvent.id ? 'Endre arrangement' : 'Nytt arrangement'}</Typography>
+            <Typography className={classes.header} variant='h4'>
+              {selectedEvent.id ? 'Endre arrangement' : 'Nytt arrangement'}
+            </Typography>
             <DropdownButton options={options} />
           </div>
-          <Tabs
-            value={tab}
-            indicatorColor='primary'
-            textColor='primary'
-            onChange={(e, newTab) => setTab(newTab)}
-            aria-label='tabs'
-          >
+          <Tabs aria-label='tabs' indicatorColor='primary' onChange={(e, newTab) => setTab(newTab)} textColor='primary' value={tab}>
             <Tab id='0' label={selectedEvent.id ? 'Endre' : 'Skriv'} />
             <Tab id='1' label='Deltagere' />
             <Tab id='2' label='Forhåndsvis' />
           </Tabs>
-          <Paper noPadding >
-            {tab === 0 && <EventEditor event={selectedEvent} setEvent={(item) => setSelectedEvent(item)} categories={categories} />}
+          <Paper noPadding>
+            {tab === 0 && <EventEditor categories={categories} event={selectedEvent} setEvent={(item) => setSelectedEvent(item)} />}
             {tab === 1 && <EventParticipants event={selectedEvent} openSnackbar={openSnackbar} />}
             {tab === 2 && <EventRenderer eventData={selectedEvent} preview />}
           </Paper>
         </div>
       </div>
       <SidebarList
-        items={events}
-        selectedItemId={selectedEvent?.id || null}
-        onItemClick={(item) => setSelectedEvent(item || defaultEvent)}
         expiredItems={expiredItems}
         fetchExpired={fetchExpired}
         getNextPage={getNextPage}
-        nextPage={nextPage}
-        title='Arrangementer'
         isLoading={isLoading}
+        items={events}
+        nextPage={nextPage}
+        onItemClick={(item) => setSelectedEvent(item || defaultEvent)}
+        selectedItemId={selectedEvent?.id || null}
+        title='Arrangementer'
         width={SIDEBAR_WIDTH}
       />
     </Navigation>

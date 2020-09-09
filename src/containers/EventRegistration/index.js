@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, { Component, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import jsQR from 'jsqr';
@@ -11,7 +11,7 @@ import EventService from '../../api/services/EventService';
 import Text from '../../text/EventRegistrationText';
 
 // Material UI Components
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -53,12 +53,15 @@ const styles = (theme) => ({
     maxWidth: 460,
     margin: 'auto',
     position: 'relative',
-    left: 0, right: 0,
+    left: 0,
+    right: 0,
     top: '-60px',
   },
   progress: {
     position: 'absolute',
-    top: 0, left: 0, right: 0,
+    top: 0,
+    left: 0,
+    right: 0,
   },
   searchField: {
     width: '100%',
@@ -130,7 +133,10 @@ const ParticipantCard = withStyles(styles)((props) => {
   const [checkedState, setCheckedState] = useState(props.user.has_attended);
   const handleCheck = (actionEvent) => {
     setCheckedState(actionEvent.target.checked);
-    EventService.updateUserEvent(props.eventId, {user_id: props.user.user_info.user_id, has_attended: actionEvent.target.checked});
+    EventService.updateUserEvent(props.eventId, {
+      user_id: props.user.user_info.user_id,
+      has_attended: actionEvent.target.checked,
+    });
   };
   return (
     <div className={props.classes.cardContent}>
@@ -140,15 +146,9 @@ const ParticipantCard = withStyles(styles)((props) => {
       <div className={props.classes.cardActionArea}>
         <div className={props.classes.cardButtonContainer}>
           <FormControlLabel
-            label={<Hidden xsDown>Ankommet</Hidden>}
             className={props.classes.cardButtonLabel}
-            control={
-              <Checkbox
-                onChange={
-                  handleCheck
-                }
-                checked={checkedState}
-              />}
+            control={<Checkbox checked={checkedState} onChange={handleCheck} />}
+            label={<Hidden xsDown>Ankommet</Hidden>}
           />
         </div>
       </div>
@@ -161,7 +161,6 @@ ParticipantCard.propTypes = {
 };
 
 class EventRegistration extends Component {
-
   constructor() {
     super();
     this.state = {
@@ -181,9 +180,13 @@ class EventRegistration extends Component {
   }
 
   canvasLoad() {
-    let video; let canvasElement; let canvas;
+    let video;
+    let canvasElement;
+    let canvas;
     const timer = setInterval(function () {
-      if (document.getElementById('canvas') !== null) clearInterval(timer);
+      if (document.getElementById('canvas') !== null) {
+        clearInterval(timer);
+      }
       video = document.createElement('video');
       canvasElement = document.getElementById('canvas');
       canvas = canvasElement.getContext('2d');
@@ -200,7 +203,7 @@ class EventRegistration extends Component {
     };
 
     const startQrScan = () => {
-      navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}}).then(function (stream) {
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }).then(function (stream) {
         video.srcObject = stream;
         video.setAttribute('playsinline', true);
         video.setAttribute('muted', true);
@@ -217,7 +220,9 @@ class EventRegistration extends Component {
 
         canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
         const imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
-        const code = jsQR(imageData.data, imageData.width, imageData.height, {inversionAttempts: 'dontInvert'});
+        const code = jsQR(imageData.data, imageData.width, imageData.height, {
+          inversionAttempts: 'dontInvert',
+        });
         if (code && !this.state.isLoading) {
           drawLine(code.location.topLeftCorner, code.location.topRightCorner, '#FF3B58');
           drawLine(code.location.topRightCorner, code.location.bottomRightCorner, '#FF3B58');
@@ -237,7 +242,7 @@ class EventRegistration extends Component {
   }
 
   handleTabChange(event, newValue) {
-    this.setState({tabViewMode: newValue});
+    this.setState({ tabViewMode: newValue });
     if (newValue === 1) {
       this.canvasLoad();
     }
@@ -247,118 +252,137 @@ class EventRegistration extends Component {
     const id = this.props.match.params.id;
 
     // Load event item
-    this.setState({isLoading: true});
+    this.setState({ isLoading: true });
     EventService.getEventById(id).then((event) => {
       if (!event) {
         this.props.history.replace('/'); // Redirect to landing page given id is invalid
       } else {
-        this.setState({isLoading: false, eventName: event.title});
+        this.setState({ isLoading: false, eventName: event.title });
       }
     });
   }
   loadEventUsers() {
     const id = this.props.match.params.id;
-    this.setState({isLoading: true});
+    this.setState({ isLoading: true });
     EventService.getEventParticipants(id).then((participants) => {
       const participantsIn = participants.filter((user) => !user.is_on_wait);
-      this.setState({isLoading: false, allParticipants: participantsIn, participantsToShow: participantsIn});
+      this.setState({
+        isLoading: false,
+        allParticipants: participantsIn,
+        participantsToShow: participantsIn,
+      });
     });
   }
 
   markAttended(username) {
-    const body = {'has_attended': true};
+    const body = { has_attended: true };
     const eventId = this.props.match.params.id;
 
-    this.setState({isLoading: true});
+    this.setState({ isLoading: true });
     EventService.putAttended(eventId, body, username).then((data) => {
       if (data && data.detail === 'User event successfully updated.') {
-        this.setState({snackbarMessage: 'Deltageren er registrert ankommet!', snackbarOpen: true, error: false});
+        this.setState({
+          snackbarMessage: 'Deltageren er registrert ankommet!',
+          snackbarOpen: true,
+          error: false,
+        });
       } else {
-        this.setState({snackbarMessage: Text.wrongCred, snackbarOpen: true, error: true});
+        this.setState({ snackbarMessage: Text.wrongCred, snackbarOpen: true, error: true });
       }
     });
   }
-    handleSnackbarClose = () => {
-      this.setState({snackbarOpen: false, isLoading: false});
-    }
+  handleSnackbarClose = () => {
+    this.setState({ snackbarOpen: false, isLoading: false });
+  };
 
-    search = (name) => {
-      let participantsToPrint = this.state.participantsToShow;
-      if (participantsToPrint && (typeof name === 'string' || name instanceof String) && name !== '') {
-        participantsToPrint = participantsToPrint.filter((user) => (user.user_info.first_name + ' ' + user.user_info.last_name).toLowerCase().includes(name.toLowerCase()));
-        this.setState({participantsToShow: participantsToPrint});
-      } else {
-        this.setState({participantsToShow: this.state.allParticipants, participantsToPrint: this.state.allParticipants});
-      }
-    }
-
-    Participants = () => {
-      let elements = <Typography className={this.props.classes.lightText}>Ingen påmeldte.</Typography>;
-      const participantsToPrint = this.state.participantsToShow;
-
-      if (participantsToPrint && participantsToPrint.length > 0) {
-        elements = participantsToPrint.map((user, key) => {
-          return <ParticipantCard
-            key={key}
-            eventId={this.props.match.params.id}
-            user={user} />;
-        });
-      }
-
-      return elements;
-    };
-
-    render() {
-      const {classes} = this.props;
-
-      return (
-        <Navigation footer fancyNavbar>
-          <Helmet>
-            <title>{this.state.eventName} - registering - TIHLDE</title>
-          </Helmet>
-          <div className={classes.root}>
-            <div className={classes.top}></div>
-            <div className={classes.main}>
-              <Paper className={classes.paper}>
-                {this.state.isLoading && <LinearProgress className={classes.progress} />}
-                <Typography variant='h5' align='center' className={classes.title}>{this.state.eventName}</Typography>
-                <Tabs variant="fullWidth" scrollButtons="on" centered className={classes.lightText} value={this.state.tabViewMode} onChange={this.handleTabChange}>
-                  <Tab id='0' icon={<TextFields />} label='Navn' />
-                  <Tab id='1' icon={<PhotoCameraOutlinedIcon />} label='QR-kode' />
-                </Tabs>
-                {this.state.tabViewMode === 0 ?
-                  <div>
-                    <TextField
-                      className={classes.searchField}
-                      onChange={(e) => this.search(e.target.value)}
-                      label='Søk'
-                      variant='outlined'
-                      margin='normal'
-                      type='Søk'
-                    />
-                    <this.Participants/>
-                  </div> :
-                  <div>
-                    <canvas id="canvas" hidden className={classes.qr}></canvas>
-                  </div>
-                }
-              </Paper>
-            </div>
-          </div>
-          <Snackbar open={this.state.snackbarOpen} onClose={this.handleSnackbarClose} TransitionComponent={this.state.Transition}>
-            <SnackbarContent
-              className={this.state.error ? classNames(classes.snackbar, classes.snackbar_error) : classNames(classes.snackbar, classes.snackbar_success)}
-              message={this.state.snackbarMessage}
-              action={
-                <Button color="inherit" size="small" onClick={this.handleSnackbarClose} className={classes.lightText}>
-                                Neste
-                </Button>
-              }
-            />
-          </Snackbar>
-        </Navigation>
+  search = (name) => {
+    let participantsToPrint = this.state.participantsToShow;
+    if (participantsToPrint && (typeof name === 'string' || name instanceof String) && name !== '') {
+      participantsToPrint = participantsToPrint.filter((user) =>
+        (user.user_info.first_name + ' ' + user.user_info.last_name).toLowerCase().includes(name.toLowerCase()),
       );
+      this.setState({ participantsToShow: participantsToPrint });
+    } else {
+      this.setState({
+        participantsToShow: this.state.allParticipants,
+        participantsToPrint: this.state.allParticipants,
+      });
     }
+  };
+
+  Participants = () => {
+    let elements = <Typography className={this.props.classes.lightText}>Ingen påmeldte.</Typography>;
+    const participantsToPrint = this.state.participantsToShow;
+
+    if (participantsToPrint && participantsToPrint.length > 0) {
+      elements = participantsToPrint.map((user, key) => {
+        return <ParticipantCard eventId={this.props.match.params.id} key={key} user={user} />;
+      });
+    }
+
+    return elements;
+  };
+
+  render() {
+    const { classes } = this.props;
+
+    return (
+      <Navigation fancyNavbar footer>
+        <Helmet>
+          <title>{this.state.eventName} - registering - TIHLDE</title>
+        </Helmet>
+        <div className={classes.root}>
+          <div className={classes.top}></div>
+          <div className={classes.main}>
+            <Paper className={classes.paper}>
+              {this.state.isLoading && <LinearProgress className={classes.progress} />}
+              <Typography align='center' className={classes.title} variant='h5'>
+                {this.state.eventName}
+              </Typography>
+              <Tabs
+                centered
+                className={classes.lightText}
+                onChange={this.handleTabChange}
+                scrollButtons='on'
+                value={this.state.tabViewMode}
+                variant='fullWidth'>
+                <Tab icon={<TextFields />} id='0' label='Navn' />
+                <Tab icon={<PhotoCameraOutlinedIcon />} id='1' label='QR-kode' />
+              </Tabs>
+              {this.state.tabViewMode === 0 ? (
+                <div>
+                  <TextField
+                    className={classes.searchField}
+                    label='Søk'
+                    margin='normal'
+                    onChange={(e) => this.search(e.target.value)}
+                    type='Søk'
+                    variant='outlined'
+                  />
+                  <this.Participants />
+                </div>
+              ) : (
+                <div>
+                  <canvas className={classes.qr} hidden id='canvas'></canvas>
+                </div>
+              )}
+            </Paper>
+          </div>
+        </div>
+        <Snackbar onClose={this.handleSnackbarClose} open={this.state.snackbarOpen} TransitionComponent={this.state.Transition}>
+          <SnackbarContent
+            action={
+              <Button className={classes.lightText} color='inherit' onClick={this.handleSnackbarClose} size='small'>
+                Neste
+              </Button>
+            }
+            className={this.state.error ? classNames(classes.snackbar, classes.snackbar_error) : classNames(classes.snackbar, classes.snackbar_success)}
+            message={this.state.snackbarMessage}
+          />
+        </Snackbar>
+      </Navigation>
+    );
+  }
 }
 
 EventRegistration.propTypes = {

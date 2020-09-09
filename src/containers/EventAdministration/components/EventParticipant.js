@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {getUserStudyShort} from '../../../utils';
+import { getUserStudyShort } from '../../../utils';
 
 // Material-ui
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -65,7 +65,7 @@ const style = (theme) => ({
 });
 
 const EventParticipant = (props) => {
-  const {classes, user, removeUserFromEvent, toggleUserEvent, waitList} = props;
+  const { classes, user, removeUserFromEvent, toggleUserEvent, waitList } = props;
   const userInfo = user.user_info;
   const [checkedState, setCheckedState] = useState(user.has_attended);
   const [showModal, setShowModal] = useState(false);
@@ -81,26 +81,21 @@ const EventParticipant = (props) => {
 
   const handleCheck = (event) => {
     setCheckedState(event.target.checked);
-    toggleUserEvent(user.user_info.user_id, {has_attended: event.target.checked});
+    toggleUserEvent(user.user_info.user_id, { has_attended: event.target.checked });
   };
 
   return (
     <Card className={classes.content}>
-      {showModal &&
-        <Modal
-          open={showModal}
-          onClose={() => setShowModal(false)}
-          header='Er du sikker?'
-          closeText='Avbryt'>
-          <Typography className={classes.lightText} variant='h6'>Er du sikker på at du vil fjerne {userInfo.first_name + ' ' + userInfo.last_name} fra arrangementet?</Typography>
-          <Button
-            className={classes.button}
-            color='primary'
-            variant='contained'
-            onClick={deleteHandler}
-            align='center'>Ja</Button>
+      {showModal && (
+        <Modal closeText='Avbryt' header='Er du sikker?' onClose={() => setShowModal(false)} open={showModal}>
+          <Typography className={classes.lightText} variant='h6'>
+            Er du sikker på at du vil fjerne {userInfo.first_name + ' ' + userInfo.last_name} fra arrangementet?
+          </Typography>
+          <Button align='center' className={classes.button} color='primary' onClick={deleteHandler} variant='contained'>
+            Ja
+          </Button>
         </Modal>
-      }
+      )}
       <div className={classes.userName}>
         <Typography>{userInfo.first_name + ' ' + userInfo.last_name}</Typography>
         <Typography>Studie: {getUserStudyShort(userInfo.user_study)}</Typography>
@@ -109,17 +104,14 @@ const EventParticipant = (props) => {
       </div>
       <div className={classes.actionArea}>
         <div className={classes.buttonContainer}>
-          <FormControlLabel label="Ankommet" control={<Checkbox onChange={handleCheck} checked={checkedState} />} />
+          <FormControlLabel control={<Checkbox checked={checkedState} onChange={handleCheck} />} label='Ankommet' />
         </div>
         <div className={classes.buttonContainer}>
-          {waitList ?
-            <ArrowUpwardIcon
-              className={classes.arrowButton}
-              onClick={() => toggleUserEvent(user.user_info.user_id, {is_on_wait: false})} /> :
-            <ArrowDownwardIcon
-              className={classes.arrowButton}
-              onClick={() => toggleUserEvent(user.user_info.user_id, {is_on_wait: true})}/>
-          }
+          {waitList ? (
+            <ArrowUpwardIcon className={classes.arrowButton} onClick={() => toggleUserEvent(user.user_info.user_id, { is_on_wait: false })} />
+          ) : (
+            <ArrowDownwardIcon className={classes.arrowButton} onClick={() => toggleUserEvent(user.user_info.user_id, { is_on_wait: true })} />
+          )}
           <Delete className={classes.deleteButton} onClick={() => setShowModal(true)} />
         </div>
       </div>

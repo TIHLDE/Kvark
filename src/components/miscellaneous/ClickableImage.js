@@ -1,7 +1,7 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 // External Components
 import Lightbox from 'react-image-lightbox';
@@ -14,7 +14,6 @@ const styles = {
 };
 
 class ClickableImage extends Component {
-
   constructor() {
     super();
     this.state = {
@@ -22,27 +21,23 @@ class ClickableImage extends Component {
     };
   }
 
-    toggleOpen = () => {
-      this.setState({open: !this.state.open});
+  toggleOpen = () => {
+    this.setState({ open: !this.state.open });
+  };
+
+  render() {
+    const { classes, className, image, alt, ...rest } = this.props;
+    if (!image) {
+      return null;
     }
 
-    render() {
-      const {classes, className, image, alt, ...rest} = this.props;
-      if (!image) {
-        return null;
-      }
-
-      return (
-        <Fragment>
-          <img onClick={this.toggleOpen} className={classNames(classes.root, className)} src={image} alt={alt} {...rest} />
-          {this.state.open && (
-            <Lightbox
-              mainSrc={image}
-              onCloseRequest={() => this.setState({open: false})}/>
-          )}
-        </Fragment>
-      );
-    }
+    return (
+      <Fragment>
+        <img alt={alt} className={classNames(classes.root, className)} onClick={this.toggleOpen} src={image} {...rest} />
+        {this.state.open && <Lightbox mainSrc={image} onCloseRequest={() => this.setState({ open: false })} />}
+      </Fragment>
+    );
+  }
 }
 
 ClickableImage.propTypes = {

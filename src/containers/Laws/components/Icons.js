@@ -1,5 +1,5 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
 // Material UI Components
@@ -31,15 +31,16 @@ const styles = (theme) => ({
 });
 
 const Icons = (props) => {
-  const {classes, data, icon: Component} = props;
-  const text = (data.title) ? data.title : 'mangler tittel';
+  const { classes, data, icon: Component } = props;
+  const text = data.title ? data.title : 'mangler tittel';
   return (
-    <LinkButton to={props.to} noPadding noText>
+    <LinkButton noPadding noText to={props.to}>
       <div className={classes.root}>
-
         <div className={classes.wrapper}>
           <Component className={classes.icon} />
-          <Typography className={classes.title} variant={'h5'}>{text}</Typography>
+          <Typography className={classes.title} variant={'h5'}>
+            {text}
+          </Typography>
         </div>
       </div>
     </LinkButton>
@@ -49,11 +50,7 @@ const Icons = (props) => {
 Icons.propTypes = {
   classes: PropTypes.object,
   to: PropTypes.string,
-  icon: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.func,
-    PropTypes.object,
-  ]),
+  icon: PropTypes.oneOfType([PropTypes.element, PropTypes.func, PropTypes.object]),
   data: PropTypes.object,
   onClick: PropTypes.func,
 };

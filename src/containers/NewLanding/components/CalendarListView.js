@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Material-UI
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -39,36 +39,38 @@ const styles = (theme) => ({
   },
 });
 
-function CalendarListView({classes, events, isLoading}) {
+function CalendarListView({ classes, events, isLoading }) {
   const eventsToDisplay = 3;
 
-  let eventList = <div className={classes.noEventText}><CircularProgress className={classes.progress}/></div>;
+  let eventList = (
+    <div className={classes.noEventText}>
+      <CircularProgress className={classes.progress} />
+    </div>
+  );
   if (!isLoading) {
-    eventList = events && events.length > 0 ?
+    eventList =
+      events && events.length > 0 ? (
         <React.Fragment>
           {events.map((eventData, index) => {
             if (index < eventsToDisplay) {
-              return (<EventListItem key={index} data={eventData} />);
+              return <EventListItem data={eventData} key={index} />;
             }
-            return ('');
+            return '';
           })}
           <div className={classes.moreBtn}>
             <LinkButton noPadding to='/arrangementer/'>
               <Typography align='center'>Alle arrangementer ({events.length})</Typography>
             </LinkButton>
           </div>
-        </React.Fragment> :
-        <Typography
-          variant='subtitle1'
-          className={classes.noEventText}
-          align='center'>Ingen arrangementer å vise</Typography>;
+        </React.Fragment>
+      ) : (
+        <Typography align='center' className={classes.noEventText} variant='subtitle1'>
+          Ingen arrangementer å vise
+        </Typography>
+      );
   }
 
-  return (
-    <div className={classes.eventListContainer}>
-      {eventList}
-    </div>
-  );
+  return <div className={classes.eventListContainer}>{eventList}</div>;
 }
 
 CalendarListView.propTypes = {
