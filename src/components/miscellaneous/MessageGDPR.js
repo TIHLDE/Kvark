@@ -35,6 +35,7 @@ const style = (theme) => ({
   },
   text: {
     flexGrow: 1,
+    color: theme.colors.text.main,
   },
 });
 

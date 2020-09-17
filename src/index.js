@@ -138,7 +138,7 @@ const Application = () => {
         setTheme(darkTheme);
         break;
       default:
-        setTheme(lightTheme);
+        setTheme(automaticTheme);
         break;
     }
   };
