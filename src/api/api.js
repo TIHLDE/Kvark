@@ -125,8 +125,8 @@ export default {
     );
   },
 
-  // Challenges
-  createUserChallenge: (data) => {
-    return new IRequest('POST', 'challenge/', data, true);
+  // Badges
+  createUserBadge: (data) => {
+    return new IRequest('POST', 'badge/', data, true);
   },
 };
