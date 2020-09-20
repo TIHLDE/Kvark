@@ -93,11 +93,11 @@ function EventDetails(props) {
     }
   };
 
-  const applyToEvent = (optionalFieldsAnswers) => {
+  const applyToEvent = (optionalFieldsAnswers, allowPhoto) => {
     setIsApplying(true);
     if (!userEvent) {
       // Apply to event
-      return EventService.putUserOnEventList(event.id, userData, optionalFieldsAnswers)
+      return EventService.putUserOnEventList(event.id, userData, optionalFieldsAnswers, allowPhoto)
         .then((result) => {
           const newEvent = { ...event };
           if (newEvent.limit <= newEvent.list_count) {
