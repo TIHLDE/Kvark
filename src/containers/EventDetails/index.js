@@ -24,7 +24,7 @@ const styles = (theme) => ({
     margin: 'auto',
     padding: '60px 48px 48px 48px',
     position: 'relative',
-
+    color: theme.colors.text.main,
     '@media only screen and (max-width: 1000px)': {
       padding: '60px 0px 48px 0px',
     },
@@ -93,11 +93,11 @@ function EventDetails(props) {
     }
   };
 
-  const applyToEvent = (optionalFieldsAnswers) => {
+  const applyToEvent = (optionalFieldsAnswers, allowPhoto) => {
     setIsApplying(true);
     if (!userEvent) {
       // Apply to event
-      return EventService.putUserOnEventList(event.id, userData, optionalFieldsAnswers)
+      return EventService.putUserOnEventList(event.id, userData, optionalFieldsAnswers, allowPhoto)
         .then((result) => {
           const newEvent = { ...event };
           if (newEvent.limit <= newEvent.list_count) {

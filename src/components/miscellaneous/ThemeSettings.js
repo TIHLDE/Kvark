@@ -68,7 +68,7 @@ const ThemeSettings = (props) => {
 
   let cookieValue = COOKIE.get(THEME);
   if (cookieValue === undefined) {
-    cookieValue = THEME_OPTIONS.light;
+    cookieValue = THEME_OPTIONS.automatic;
     COOKIE.set(THEME, cookieValue);
   }
   const [themeName, setThemeName] = useState(cookieValue);

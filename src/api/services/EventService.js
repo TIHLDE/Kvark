@@ -130,11 +130,12 @@ class EventService {
     });
   };
 
-  static putUserOnEventList = (id, userData, optionalFieldsAnswers, callback = null) => {
+  static putUserOnEventList = (id, userData, optionalFieldsAnswers, allowPhoto, callback = null) => {
     userData = {
       user_id: userData.user_id,
       event: id,
       optional_fields_answers: optionalFieldsAnswers,
+      allow_photo: allowPhoto,
     };
     const response = API.putUserOnEventList(id, userData).response();
     return response.then((data) => {

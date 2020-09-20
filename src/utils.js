@@ -102,6 +102,10 @@ export const getUserClass = (userStudy) => {
   }
 };
 
+export const getFormattedDate = (date) => {
+  return getDay(date.day()) + ' ' + date.date() + ' ' + getMonth(date.month()) + ' - kl. ' + date.format('HH:mm');
+};
+
 export const getDay = (day) => {
   switch (day) {
     case 0:

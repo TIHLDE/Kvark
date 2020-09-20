@@ -227,6 +227,7 @@ const EventDialog = (props) => {
   const { classes, userData, userEvent, isApplying, message, applySuccess, data } = props;
 
   const [agreeRules, setAgreeRules] = useState(false);
+  const [allowPhoto, setAllowPhoto] = useState(true);
   const [optionalFieldsAnswers, setOptionalFieldsAnswers] = useState([]);
   useEffect(() => {
     if (data.optionalFields) {
@@ -253,7 +254,7 @@ const EventDialog = (props) => {
   };
 
   const closeDialog = () => {
-    props.applyToEvent(optionalFieldsAnswers);
+    props.applyToEvent(optionalFieldsAnswers, allowPhoto);
   };
 
   const questionsNotAnswered = (optFieldsAnswers) => {
@@ -308,6 +309,10 @@ const EventDialog = (props) => {
                 {optionalFieldsAnswers.length > 0 && (
                   <Questions classes={classes} handleOptionalFieldInput={handleOptionalFieldInput} optionalFieldsAnswers={optionalFieldsAnswers} />
                 )}
+                <FormControlLabel
+                  control={<Checkbox checked={allowPhoto} onChange={(e) => setAllowPhoto(e.target.checked)} />}
+                  label='Jeg godtar at bilder av meg kan deles på TIHLDE sine plattformer'
+                />
                 <FormControlLabel
                   control={<Checkbox checked={agreeRules} onChange={(e) => setAgreeRules(e.target.checked)} />}
                   label='Jeg godtar arrangementsreglene'
