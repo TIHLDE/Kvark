@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import URLS from '../../../URLS';
+import { getFormattedDate } from '../../../utils';
 import moment from 'moment';
 
 // API and store imports
@@ -11,9 +12,12 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+// Icons
+import DateIcon from '@material-ui/icons/DateRange';
+
 // Project componets
 import LinkButton from '../../../components/navigation/LinkButton';
-import NewsListItem from '../../News/components/NewsListItem';
+import ListItem from '../../../components/miscellaneous/ListItem';
 
 // Styles
 const styles = (theme) => ({
@@ -73,9 +77,18 @@ function NewsListView({ classes }) {
     newsList =
       news && news.length > 0 ? (
         <React.Fragment>
-          {news.map((newsData, index) => {
+          {news.map((newsItem, index) => {
             if (index < newsToDisplay) {
-              return <NewsListItem data={newsData} key={index} />;
+              return (
+                <ListItem
+                  img={newsItem.image}
+                  imgAlt={newsItem.image_alt}
+                  info={[{ label: getFormattedDate(moment(newsItem.created_at, ['YYYY-MM-DD HH:mm'], 'nb')), icon: DateIcon }]}
+                  key={newsItem.id}
+                  link={URLS.news + ''.concat(newsItem.id, '/')}
+                  title={newsItem.title}
+                />
+              );
             }
             return '';
           })}

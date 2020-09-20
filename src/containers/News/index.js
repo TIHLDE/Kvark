@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import URLS from '../../URLS';
+import { getFormattedDate } from '../../utils';
+import moment from 'moment';
 
 // API and store imports
 import { useNews } from '../../api/hooks/News';
@@ -10,8 +13,11 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grow from '@material-ui/core/Grow';
 
+// Icons
+import DateIcon from '@material-ui/icons/DateRange';
+
 // Project components
-import NewsListItem from './components/NewsListItem';
+import ListItem from '../../components/miscellaneous/ListItem';
 import Navigation from '../../components/navigation/Navigation';
 import Banner from '../../components/layout/Banner';
 import Pageination from '../../components/layout/Pageination';
@@ -126,7 +132,16 @@ const News = (props) => {
               <Grow in={!isLoading}>
                 <div className={classes.list}>
                   <Pageination nextPage={getNextPage} page={nextPage}>
-                    {displayedNews && displayedNews.map((value) => <NewsListItem data={value} key={value.id} />)}
+                    {displayedNews?.map((newsItem) => (
+                      <ListItem
+                        img={newsItem.image}
+                        imgAlt={newsItem.image_alt}
+                        info={[{ label: getFormattedDate(moment(newsItem.created_at, ['YYYY-MM-DD HH:mm'], 'nb')), icon: DateIcon }]}
+                        key={newsItem.id}
+                        link={URLS.news + ''.concat(newsItem.id, '/')}
+                        title={newsItem.title}
+                      />
+                    ))}
                   </Pageination>
                   {displayedNews.length === 0 && !isLoading && <NoNewsIndicator />}
                 </div>

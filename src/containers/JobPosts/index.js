@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import { MuiThemeProvider as Theme } from '@material-ui/core/styles';
 import { errorTheme } from '../../theme';
 import Helmet from 'react-helmet';
+import URLS from '../../URLS';
+import { getFormattedDate } from '../../utils';
+import moment from 'moment';
 
 // Text
 import Text from '../../text/JobPostText';
@@ -18,12 +21,17 @@ import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
+// Icons
+import DateIcon from '@material-ui/icons/DateRange';
+import LocationIcon from '@material-ui/icons/LocationOn';
+import BusinessIcon from '@material-ui/icons/Business';
+
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 import Banner from '../../components/layout/Banner';
 import Pageination from '../../components/layout/Pageination';
 import NoPostsIndicator from './components/NoPostsIndicator';
-import JobPostItem from './components/JobPostItem';
+import ListItem from '../../components/miscellaneous/ListItem';
 import Paper from '../../components/layout/Paper';
 
 const styles = (theme) => ({
@@ -200,8 +208,21 @@ function JobPosts(props) {
                     <Grow in={!isFetching}>
                       <div className={classes.list}>
                         <Pageination nextPage={getNextPage} page={nextPage}>
-                          {jobPosts.map((value, index) => (
-                            <JobPostItem data={value} key={index} />
+                          {jobPosts.map((jobPost) => (
+                            <ListItem
+                              expired={jobPost.expired}
+                              img={jobPost.image}
+                              imgAlt={jobPost.image_alt}
+                              imgContain
+                              info={[
+                                { label: jobPost.company, icon: BusinessIcon },
+                                { label: jobPost.location, icon: LocationIcon },
+                                { label: getFormattedDate(moment(jobPost.deadline, ['YYYY-MM-DD HH:mm'], 'nb')), icon: DateIcon },
+                              ]}
+                              key={jobPost.id}
+                              link={URLS.jobposts + ''.concat(jobPost.id, '/')}
+                              title={jobPost.title}
+                            />
                           ))}
                           {jobPosts.length === 0 && <NoPostsIndicator />}
                         </Pageination>

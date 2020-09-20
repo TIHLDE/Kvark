@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import { MuiThemeProvider as Theme } from '@material-ui/core/styles';
 import { errorTheme } from '../../theme';
 import Helmet from 'react-helmet';
+import URLS from '../../URLS';
+import { getFormattedDate } from '../../utils';
+import moment from 'moment';
 
 // API and store imports
 import EventService from '../../api/services/EventService';
@@ -20,8 +23,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import MenuItem from '@material-ui/core/MenuItem';
 import Grow from '@material-ui/core/Grow';
 
+// Icons
+import DateIcon from '@material-ui/icons/DateRange';
+import LocationIcon from '@material-ui/icons/LocationOn';
+
 // Project components
-import EventListItem from './components/EventListItem';
+import ListItem from '../../components/miscellaneous/ListItem';
 import Navigation from '../../components/navigation/Navigation';
 import Banner from '../../components/layout/Banner';
 import Pageination from '../../components/layout/Pageination';
@@ -101,6 +108,7 @@ const styles = (theme) => ({
     },
   },
   mt: {
+    color: theme.colors.text.main,
     marginTop: 10,
   },
   resetBtn: {
@@ -224,7 +232,20 @@ function Events(props) {
                 <Grow in={!isFetching}>
                   <div className={classes.list}>
                     <Pageination nextPage={getNextPage} page={nextPage}>
-                      {events && events.map((value, index) => <EventListItem data={value} key={value.id} />)}
+                      {events?.map((event) => (
+                        <ListItem
+                          expired={event.expired}
+                          img={event.image}
+                          imgAlt={event.image_alt}
+                          info={[
+                            { label: getFormattedDate(moment(event.start_date, ['YYYY-MM-DD HH:mm'], 'nb')), icon: DateIcon },
+                            { label: event.location, icon: LocationIcon },
+                          ]}
+                          key={event.id}
+                          link={URLS.events + ''.concat(event.id, '/')}
+                          title={event.title}
+                        />
+                      ))}
                     </Pageination>
                     {events.length === 0 && !isLoading && <NoEventsIndicator />}
                   </div>

@@ -32,7 +32,6 @@ const styles = (theme) => ({
   },
   tabs: {
     marginBottom: 1,
-    backgroundColor: theme.colors.background.smoke,
     color: theme.colors.text.lighter,
   },
 });

@@ -24,7 +24,7 @@ const styles = (theme) => ({
     margin: 'auto',
     padding: '60px 48px 48px 48px',
     position: 'relative',
-
+    color: theme.colors.text.main,
     '@media only screen and (max-width: 1000px)': {
       padding: '60px 0px 48px 0px',
     },
