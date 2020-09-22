@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import URLS from '../../../URLS';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import { urlEncode } from '../../../utils';
 import { ViewState } from '@devexpress/dx-react-scheduler';
 import { Scheduler, MonthView, Toolbar, DateNavigator, Appointments } from '@devexpress/dx-react-scheduler-material-ui';
 
@@ -39,7 +40,7 @@ function CalendarGridView({ classes, events, oldEvents }) {
 
   const Appointment = ({ children, data }) => {
     return (
-      <Link to={URLS.events.concat(data.id).concat('/')}>
+      <Link to={URLS.events + data.id + '/' + urlEncode(data.title) + '/'}>
         <Appointments.Appointment>{children}</Appointments.Appointment>
       </Link>
     );

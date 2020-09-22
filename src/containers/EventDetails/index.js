@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import URLS from '../../URLS';
 import { usePalette } from 'react-palette';
 import Helmet from 'react-helmet';
+import { useParams, useHistory } from 'react-router-dom';
+import { urlEncode } from '../../utils';
 
 // Service imports
 import EventService from '../../api/services/EventService';
@@ -51,8 +53,9 @@ const styles = (theme) => ({
 });
 
 function EventDetails(props) {
-  const { classes, match, history } = props;
-
+  const { classes } = props;
+  const { id } = useParams();
+  const history = useHistory();
   const [event, setEvent] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState(null);
@@ -65,15 +68,13 @@ function EventDetails(props) {
 
   // Gets the event
   const loadEvent = () => {
-    // Get eventItem id
-    const id = match.params.id;
-
     // Load event item
     setIsLoading(true);
     EventService.getEventById(id).then(async (event) => {
       if (!event) {
         history.replace(URLS.events); // Redirect to events page given if id is invalid
       } else {
+        history.replace(URLS.events + id + '/' + urlEncode(event.title) + '/');
         setIsLoading(false);
         setEvent({ ...event });
       }
@@ -220,12 +221,6 @@ function EventDetails(props) {
 
 EventDetails.propTypes = {
   classes: PropTypes.object,
-  match: PropTypes.object,
-  history: PropTypes.object,
-};
-
-EventDetails.defaultProps = {
-  id: '-1',
 };
 
 export default withStyles(styles)(EventDetails);

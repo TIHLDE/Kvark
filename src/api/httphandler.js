@@ -45,7 +45,13 @@ class IResponse {
 
         return data.json();
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        const data = {};
+        data.isError = true;
+        data.status = error.message;
+        data.detail = 'Ukjent tjenerfeil';
+        return data;
+      });
   }
 
   then(method) {

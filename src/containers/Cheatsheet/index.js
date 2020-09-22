@@ -115,7 +115,7 @@ const getStudy = (i) => {
       return 1;
     case 'DigFor':
       return 2;
-    case 'DigInc':
+    case 'DigSec':
       return 3;
     case 'DigSam':
       return 4;

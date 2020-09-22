@@ -1,3 +1,5 @@
+import slugify from 'slugify';
+
 // Convert date-string to more readable text
 export const refactorDateString = (dateString) => {
   if (!dateString || dateString.length < 10) {
@@ -42,6 +44,8 @@ export const isDesktop = () => {
   );
 };
 
+export const urlEncode = (text = '') => slugify(text, { lower: true, strict: true, locale: 'nb' });
+
 // Short down string if needed
 export const shortDownString = (string, charsToShortDown) => {
   if (string.length > charsToShortDown) {
@@ -58,7 +62,7 @@ export const getUserStudyShort = (userStudy) => {
     case 2:
       return 'DigFor';
     case 3:
-      return 'DigInc';
+      return 'DigSec';
     case 4:
       return 'DigSam';
     case 5:
