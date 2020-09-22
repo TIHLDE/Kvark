@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
+import { urlEncode } from '../../utils';
 
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
@@ -117,7 +118,7 @@ const ListItem = ({ title, link, expired, img, imgAlt, imgContain, info }) => {
   const classes = useStyles();
   const src = img || TIHLDELOGO;
   return (
-    <MaterialListItem button className={classes.root} component={Link} to={link}>
+    <MaterialListItem button className={classes.root} component={Link} to={link + urlEncode(title) + '/'}>
       <img alt={imgAlt || title} className={classNames(classes.src, expired && classes.filter, imgContain && classes.imgContain)} src={src} />
       <Grid className={classes.content} container direction='column' wrap='nowrap'>
         <Typography className={classNames(classes.title, expired && classes.expired)} variant='h5'>

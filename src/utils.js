@@ -1,3 +1,5 @@
+import slugify from 'slugify';
+
 // Convert date-string to more readable text
 export const refactorDateString = (dateString) => {
   if (!dateString || dateString.length < 10) {
@@ -41,6 +43,8 @@ export const isDesktop = () => {
       navigator.userAgent.match(/iPod/i)) === null
   );
 };
+
+export const urlEncode = (text = '') => slugify(text, { lower: true, strict: true, locale: 'nb' });
 
 // Short down string if needed
 export const shortDownString = (string, charsToShortDown) => {

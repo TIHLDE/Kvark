@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import URLS from '../../URLS';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import { useParams, useHistory } from 'react-router-dom';
+import { urlEncode } from '../../utils';
 
 // Service imports
 import JobPostService from '../../api/services/JobPostService';
@@ -20,18 +23,25 @@ const styles = {
 };
 
 function JobPostDetails(props) {
-  const { classes, match } = props;
+  const { classes } = props;
+  const { id } = useParams();
+  const history = useHistory();
   const [isLoading, setIsLoading] = useState(true);
   const [jobPost, setJobPost] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const id = match.params.id;
     JobPostService.getPostById(id).then((post) => {
-      setJobPost(post);
       setIsLoading(false);
+      if (!post) {
+        history.replace(URLS.jobposts);
+      } else {
+        history.replace(URLS.jobposts + id + '/' + urlEncode(post.title) + '/');
+        setIsLoading(false);
+        setJobPost(post);
+      }
     });
-  }, [match]);
+  }, [history, id]);
 
   return (
     <Navigation isLoading={isLoading} whitesmoke>
@@ -53,7 +63,6 @@ function JobPostDetails(props) {
 
 JobPostDetails.propTypes = {
   classes: PropTypes.object,
-  match: PropTypes.object,
 };
 
 export default withStyles(styles)(JobPostDetails);

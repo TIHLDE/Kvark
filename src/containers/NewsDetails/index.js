@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import URLS from '../../URLS';
 import { usePalette } from 'react-palette';
 import Helmet from 'react-helmet';
+import { useParams, useHistory } from 'react-router-dom';
+import { urlEncode } from '../../utils';
 
 // Service imports
 import { useNewsById } from '../../api/hooks/News';
@@ -49,18 +51,20 @@ const styles = (theme) => ({
 });
 
 function NewsDetails(props) {
-  const { classes, match, history } = props;
-  const [newsData, isLoading] = useNewsById(match.params.id);
+  const { classes } = props;
+  const { id } = useParams();
+  const history = useHistory();
+  const [newsData, isLoading] = useNewsById(id);
+
+  useEffect(() => window.scrollTo(0, 0), []);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
-    if (!isLoading && !newsData) {
+    if (!isLoading && newsData) {
+      history.replace(URLS.news + id + '/' + urlEncode(newsData.title) + '/');
+    } else if (!isLoading && !newsData) {
       history.replace(URLS.news); // Redirect to news page given if id is invalid
     }
-  }, [history, isLoading, newsData]);
+  }, [history, isLoading, newsData, id]);
 
   // Find a dominant color in the image, uses a proxy to be able to retrieve images with CORS-policy until all images are stored in our own server
   const { data } = usePalette(
@@ -94,12 +98,6 @@ function NewsDetails(props) {
 
 NewsDetails.propTypes = {
   classes: PropTypes.object,
-  match: PropTypes.object,
-  history: PropTypes.object,
-};
-
-NewsDetails.defaultProps = {
-  id: '-1',
 };
 
 export default withStyles(styles)(NewsDetails);
