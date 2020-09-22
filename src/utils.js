@@ -58,7 +58,7 @@ export const getUserStudyShort = (userStudy) => {
     case 2:
       return 'DigFor';
     case 3:
-      return 'DigInc';
+      return 'DigSec';
     case 4:
       return 'DigSam';
     case 5:

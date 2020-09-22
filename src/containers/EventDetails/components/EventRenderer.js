@@ -163,7 +163,7 @@ const PrioritiesContent = withStyles(styles)((props) => {
   let priorities = [...props.priorities];
   let Dataing = null;
   let DigFor = null;
-  let DigInc = null;
+  let DigSec = null;
   let DigSam = null;
   let Drift = null;
   if (
@@ -195,7 +195,7 @@ const PrioritiesContent = withStyles(styles)((props) => {
     priorities.some((item) => item.user_class === 2 && item.user_study === 3) &&
     priorities.some((item) => item.user_class === 3 && item.user_study === 3)
   ) {
-    DigInc = (
+    DigSec = (
       <Typography className={props.classes.priority} variant='subtitle1'>
         {getUserStudyShort(3)}
       </Typography>
@@ -231,7 +231,7 @@ const PrioritiesContent = withStyles(styles)((props) => {
       <div className={props.classes.prioritiesContainer}>
         {Dataing}
         {DigFor}
-        {DigInc}
+        {DigSec}
         {DigSam}
         {Drift}
         {priorities.map(function (priority, index) {

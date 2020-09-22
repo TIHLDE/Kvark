@@ -70,7 +70,7 @@ const styles = (theme) => ({
 
 const Members = (props) => {
   const userClass = ['Alle', '1. klasse', '2. klasse', '3. klasse', '4. klasse', '5. klasse'];
-  const userStudy = ['Alle', 'Dataing', 'DigFor', 'DigInc', 'DigSam', 'Drift'];
+  const userStudy = ['Alle', 'Dataing', 'DigFor', 'DigSec', 'DigSam', 'Drift'];
   const [memberList, setMemberList] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
