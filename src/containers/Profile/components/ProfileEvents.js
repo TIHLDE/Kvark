@@ -17,9 +17,6 @@ import LocationIcon from '@material-ui/icons/LocationOn';
 import ListItem from '../../../components/miscellaneous/ListItem';
 
 const styles = (theme) => ({
-  wrapper: {
-    paddingTop: 10,
-  },
   text: {
     color: theme.palette.colors.text.light,
   },
@@ -40,7 +37,7 @@ function ProfileEvents(props) {
   useEffect(() => loadUserData(), []);
 
   return (
-    <div className={classes.wrapper}>
+    <div>
       {events &&
         events.map((event) => {
           if (!event.expired) {

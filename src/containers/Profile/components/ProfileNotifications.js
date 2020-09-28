@@ -18,7 +18,7 @@ const style = (theme) => ({
     display: 'flex',
     alignItems: 'center',
     padding: 5,
-    margin: '5px 0',
+    marginBottom: 5,
     '& div': {
       width: '100%',
       padding: 5,

@@ -269,7 +269,7 @@ function Navigation(props) {
         <title>TIHLDE</title>
       </Helmet>
       <AppBar
-        className={classNames(classes.root, fancyNavbar && scrollLength < 20 && classes.rootLanding)}
+        className={classNames(classes.root, fancyNavbar && scrollLength < 20 && !showSidebar && classes.rootLanding)}
         color='primary'
         elevation={fancyNavbar && scrollLength < 20 ? 0 : 1}
         position='fixed'>

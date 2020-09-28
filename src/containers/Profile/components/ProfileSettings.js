@@ -107,14 +107,6 @@ function ProfileSettings(props) {
               value={userData.cell}
               variant='outlined'
             />
-            <TextField
-              className={classes.inputWidth}
-              label='EM-nummer (studentkortet)'
-              margin='normal'
-              onChange={(e) => setUserData({ ...userData, em_nr: e.target.value })}
-              value={userData.em_nr}
-              variant='outlined'
-            />
             <div className={classes.selectContainer}>
               <TextField
                 className={classNames(classes.inputWidth, classes.selectBox)}
