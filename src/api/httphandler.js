@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import COOKIE from './cookie';
+import { getCookie } from './cookie';
 import { TOKEN_HEADER_NAME, TIHLDE_API, ACCESS_TOKEN } from '../settings';
 
 export class IRequest {
@@ -11,7 +11,7 @@ export class IRequest {
     this.args = args;
 
     if (withAuth) {
-      this.headers[TOKEN_HEADER_NAME] = COOKIE.get(ACCESS_TOKEN);
+      this.headers[TOKEN_HEADER_NAME] = getCookie(ACCESS_TOKEN);
     }
 
     for (const key in args) {

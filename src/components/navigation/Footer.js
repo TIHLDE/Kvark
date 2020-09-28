@@ -31,7 +31,7 @@ const styles = (theme) => ({
     left: 0,
     right: 0,
 
-    backgroundColor: theme.colors.footer.main,
+    backgroundColor: theme.palette.colors.footer.main,
     padding: '40px 0px',
     display: 'grid',
     gridGap: '40px',
@@ -39,7 +39,7 @@ const styles = (theme) => ({
     gridTemplateAreas: "'Sponsorer OmTihlde SosialeMedier SponsorLogo'", // SosialeMedier
     gridTemplateRows: 'auto',
     justifyItems: 'center',
-    color: theme.colors.footer.text,
+    color: theme.palette.colors.footer.text,
     boxShadow: '0px -2px 5px 0px rgba(0,0,0,0.1)',
 
     '@media only screen and (max-width: 900px)': {
@@ -90,7 +90,7 @@ const styles = (theme) => ({
     height: 'auto',
   },
   sponsorText: {
-    color: theme.colors.footer.text,
+    color: theme.palette.colors.footer.text,
     fontSize: '10px',
     textAlign: 'center',
     opacity: 0.7,
@@ -100,7 +100,7 @@ const styles = (theme) => ({
     width: 54,
     margin: 'auto',
     marginTop: 20,
-    color: theme.colors.footer.text,
+    color: theme.palette.colors.footer.text,
   },
   themeSettingsIcon: {
     fontSize: 30,

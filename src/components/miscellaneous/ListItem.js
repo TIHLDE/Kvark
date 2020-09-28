@@ -15,8 +15,8 @@ import TIHLDELOGO from '../../assets/img/TihldeBackgroundNew.png';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    boxShadow: '0px 2px 4px ' + theme.colors.border.main + '88, 0px 0px 4px ' + theme.colors.border.main + '88',
-    borderRadius: theme.sizes.border.radius,
+    boxShadow: '0px 2px 4px ' + theme.palette.colors.border.main + '88, 0px 0px 4px ' + theme.palette.colors.border.main + '88',
+    borderRadius: theme.palette.sizes.border.radius,
     marginBottom: 10,
     height: 'auto',
     padding: 10,
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     flexDirection: 'row',
     display: 'flex',
-    backgroundColor: theme.colors.background.light,
+    backgroundColor: theme.palette.colors.background.light,
     '@media only screen and (max-width: 600px)': {
       overflow: 'hidden',
       minHeight: 150,
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     height: 160,
     width: '40%',
     maxWidth: 250,
-    borderRadius: theme.sizes.border.radius,
+    borderRadius: theme.palette.sizes.border.radius,
     '&:not([src*=".jpg"])': {
       background: '#fff',
     },
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   title: {
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
     fontWeight: 'bold',
     fontSize: '24px',
     '@media only screen and (max-width: 600px)': {
@@ -79,18 +79,18 @@ const useStyles = makeStyles((theme) => ({
   },
   info: {
     marginLeft: 10,
-    color: theme.colors.text.lighter,
+    color: theme.palette.colors.text.lighter,
     fontSize: '1rem',
     textAlign: 'center',
   },
   icon: {
-    color: theme.colors.text.lighter,
+    color: theme.palette.colors.text.lighter,
     height: 24,
     width: 24,
     margin: 0,
   },
   expired: {
-    color: theme.colors.text.main + 'cc',
+    color: theme.palette.colors.text.main + 'cc',
   },
   filter: {
     filter: 'opacity(0.4)',

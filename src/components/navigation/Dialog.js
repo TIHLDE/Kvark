@@ -11,7 +11,7 @@ import { withStyles } from '@material-ui/core/styles';
 // Project components
 import Paper from '../layout/Paper';
 
-const style = (theme) => ({
+const style = () => ({
   paper: {
     position: 'absolute',
     maxWidth: 460,

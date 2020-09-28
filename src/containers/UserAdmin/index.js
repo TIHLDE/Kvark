@@ -21,7 +21,7 @@ import Members from './tabs/Members';
 const styles = (theme) => ({
   top: {
     height: 220,
-    background: theme.colors.gradient.main.top,
+    background: theme.palette.colors.gradient.main.top,
     paddingBottom: 5,
   },
   root: {
@@ -52,12 +52,12 @@ const styles = (theme) => ({
   tabs: {
     marginTop: '10px',
     marginBottom: 1,
-    backgroundColor: theme.colors.background.light,
-    color: theme.colors.text.light,
+    backgroundColor: theme.palette.colors.background.light,
+    color: theme.palette.colors.text.light,
     width: '100%',
   },
   header: {
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
 });
 

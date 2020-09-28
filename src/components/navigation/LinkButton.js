@@ -11,12 +11,12 @@ const linkButtonStyles = (theme) => ({
   button: {
     height: '100%',
     width: '100%',
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
   buttonFrame: {
     width: '100%',
     height: '100%',
-    backgroundColor: theme.colors.background.light,
+    backgroundColor: theme.palette.colors.background.light,
   },
   textCenter: {
     textAlign: 'center',

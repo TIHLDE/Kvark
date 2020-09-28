@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { Component, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -40,7 +41,7 @@ const styles = (theme) => ({
   },
   top: {
     height: 220,
-    background: theme.colors.gradient.main.top,
+    background: theme.palette.colors.gradient.main.top,
     transition: '2s',
   },
   main: {
@@ -69,8 +70,8 @@ const styles = (theme) => ({
   snackbar: {
     bottom: '20px',
     position: 'fixed',
-    borderRadius: theme.sizes.border.radius,
-    color: theme.colors.constant.white,
+    borderRadius: theme.palette.sizes.border.radius,
+    color: theme.palette.colors.constant.white,
     textAlign: 'center',
     maxWidth: '75%',
     display: 'flex',
@@ -81,22 +82,22 @@ const styles = (theme) => ({
     },
   },
   snackbar_success: {
-    backgroundColor: theme.colors.status.green,
+    backgroundColor: theme.palette.colors.status.green,
   },
   snackbar_error: {
-    backgroundColor: theme.colors.status.red,
+    backgroundColor: theme.palette.colors.status.red,
   },
   qr: {
     width: '100%',
-    borderRadius: theme.sizes.border.radius,
+    borderRadius: theme.palette.sizes.border.radius,
     overflow: 'hidden',
     marginTop: 5,
   },
   cardContent: {
     padding: '5px 20px',
     display: 'flex',
-    boxShadow: '0px 2px 4px ' + theme.colors.border.main + '88',
-    borderRadius: theme.sizes.border.radius,
+    boxShadow: '0px 2px 4px ' + theme.palette.colors.border.main + '88',
+    borderRadius: theme.palette.sizes.border.radius,
     marginBottom: 3,
   },
   cardUserName: {
@@ -108,7 +109,7 @@ const styles = (theme) => ({
   cardText: {
     fontWeight: 'bold',
     fontSize: '17px',
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
   cardButtonLabel: {
     marginRight: -10,
@@ -116,16 +117,16 @@ const styles = (theme) => ({
   cardButtonContainer: {
     display: 'flex',
     alignItems: 'center',
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
   cardActionArea: {
     display: 'flex',
   },
   lightText: {
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
   title: {
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
 });
 

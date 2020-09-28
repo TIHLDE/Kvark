@@ -12,7 +12,7 @@ import MiscService from '../../api/services/MiscService';
 import AuthService from '../../api/services/AuthService';
 import * as MiscActions from '../../store/actions/MiscActions';
 import UserService from '../../api/services/UserService';
-import COOKIE from '../../api/cookie';
+import { getCookie, setCookie } from '../../api/cookie';
 import { WARNINGS_READ } from '../../settings';
 
 // Material UI Components
@@ -39,8 +39,8 @@ import Snack from './Snack';
 const styles = (theme) => ({
   root: {
     boxSizing: 'border-box',
-    backgroundColor: theme.colors.gradient.main.top,
-    color: theme.colors.text.m,
+    backgroundColor: theme.palette.colors.gradient.main.top,
+    color: theme.palette.colors.text.m,
     flexGrow: 1,
     zIndex: 10001,
     transition: '0.4s',
@@ -79,7 +79,7 @@ const styles = (theme) => ({
     },
   },
   menuButton: {
-    color: theme.colors.header.text,
+    color: theme.palette.colors.header.text,
   },
   menuWrapper: {
     display: 'flex',
@@ -117,7 +117,7 @@ const styles = (theme) => ({
     backgroundColor: theme.palette.error.main,
   },
   snackMessage: {
-    backgroundColor: theme.colors.tihlde.main,
+    backgroundColor: theme.palette.colors.tihlde.main,
   },
   flex: {
     display: 'flex',
@@ -126,26 +126,26 @@ const styles = (theme) => ({
     alignItems: 'center',
   },
   whitesmoke: {
-    backgroundColor: theme.colors.background.main,
+    backgroundColor: theme.palette.colors.background.main,
   },
   light: {
-    backgroundColor: theme.colors.background.light,
+    backgroundColor: theme.palette.colors.background.light,
   },
   selected: {
-    borderBottom: '2px solid ' + theme.colors.header.text,
+    borderBottom: '2px solid ' + theme.palette.colors.header.text,
   },
 
   profileContainer: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    borderRadius: theme.sizes.border.radius,
+    borderRadius: theme.palette.sizes.border.radius,
     cursor: 'pointer',
   },
   profileName: {
     margin: 'auto 10px',
     fontSize: '16px',
-    color: theme.colors.constant.white,
+    color: theme.palette.colors.constant.white,
     minWidth: '40px',
     textAlign: 'right',
     '@media only screen and (max-width: 450px)': {
@@ -157,8 +157,8 @@ const styles = (theme) => ({
     height: 45,
     fontSize: 18,
     fontWeight: 'bold',
-    background: 'linear-gradient(90deg, ' + theme.colors.gradient.avatar.top + ', ' + theme.colors.gradient.avatar.bottom + ')',
-    color: theme.colors.gradient.avatar.text,
+    background: 'linear-gradient(90deg, ' + theme.palette.colors.gradient.avatar.top + ', ' + theme.palette.colors.gradient.avatar.bottom + ')',
+    color: theme.palette.colors.gradient.avatar.text,
   },
   skeleton: {
     animation: 'animate 1.5s ease-in-out infinite',
@@ -230,7 +230,7 @@ function Navigation(props) {
       return;
     }
     MiscService.getWarning((isError, data) => {
-      let warningsRead = COOKIE.get(WARNINGS_READ);
+      let warningsRead = getCookie(WARNINGS_READ);
       if (warningsRead === undefined) {
         warningsRead = [];
       }
@@ -251,12 +251,12 @@ function Navigation(props) {
   const closeSnackbar = () => {
     setShowSidebar(false);
     setHasSnackDisplayed(true);
-    let warningsRead = COOKIE.get(WARNINGS_READ);
+    let warningsRead = getCookie(WARNINGS_READ);
     if (warningsRead === undefined) {
       warningsRead = [];
     }
     warningsRead.push(snackWarningId);
-    COOKIE.set(WARNINGS_READ, warningsRead);
+    setCookie(WARNINGS_READ, warningsRead);
   };
 
   const toggleSidebar = () => {

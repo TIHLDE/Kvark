@@ -14,7 +14,7 @@ const styles = (theme) => ({
     height: '100%',
   },
   header: {
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
 });
 

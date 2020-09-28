@@ -54,11 +54,11 @@ const styles = (theme) => ({
   },
   expansionPanel: {
     width: '100%',
-    boxShadow: '0px 2px 4px ' + theme.colors.border.main + '88',
-    background: theme.colors.background.smoke,
+    boxShadow: '0px 2px 4px ' + theme.palette.colors.border.main + '88',
+    background: theme.palette.colors.background.smoke,
   },
   switch: {
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
 });
 

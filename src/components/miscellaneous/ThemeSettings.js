@@ -1,8 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import COOKIE from '../../api/cookie';
-import { THEME, THEME_OPTIONS } from '../../settings';
-import ThemeStore from '../../themeStore';
+import { THEME } from '../../types/Enums';
+import { useTheme } from '../../context/ThemeContext';
 import GA from '../../analytics';
 
 // Material-ui
@@ -46,7 +45,7 @@ const style = (theme) => ({
     'overflow-y': 'auto',
   },
   header: {
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
     marginBottom: 15,
   },
   button: {
@@ -54,30 +53,23 @@ const style = (theme) => ({
     marginTop: 20,
   },
   group: {
-    background: theme.colors.background.smoke,
+    background: theme.palette.colors.background.smoke,
   },
   groupButton: {
     margin: '0 12px',
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
 });
 
 const ThemeSettings = (props) => {
   const { classes, open, onClose } = props;
-  const themeStore = useContext(ThemeStore);
-
-  let cookieValue = COOKIE.get(THEME);
-  if (cookieValue === undefined) {
-    cookieValue = THEME_OPTIONS.automatic;
-    COOKIE.set(THEME, cookieValue);
-  }
-  const [themeName, setThemeName] = useState(cookieValue);
+  const theme = useTheme();
+  const [themeName, setThemeName] = useState(theme.getEnum());
 
   const changeTheme = (e, newThemeName) => {
     if (newThemeName) {
       setThemeName(newThemeName);
-      themeStore.theme.set(newThemeName);
-      COOKIE.set(THEME, newThemeName);
+      theme.set(newThemeName);
       GA.event('Theme', 'Change theme to ' + newThemeName);
     }
   };
@@ -91,19 +83,19 @@ const ThemeSettings = (props) => {
               Tema
             </Typography>
             <ToggleButtonGroup aria-label='Tema' className={classes.group} exclusive onChange={changeTheme} orientation='vertical' value={themeName}>
-              <ToggleButton aria-label='Lyst tema' value={THEME_OPTIONS.light}>
+              <ToggleButton aria-label='Lyst tema' value={THEME.LIGHT}>
                 <LightIcon />
                 <Typography className={classes.groupButton} variant='subtitle2'>
                   Lyst
                 </Typography>
               </ToggleButton>
-              <ToggleButton aria-label='Enhetsinnstilling' value={THEME_OPTIONS.automatic}>
+              <ToggleButton aria-label='Enhetsinnstilling' value={THEME.AUTOMATIC}>
                 <DeviceIcon />
                 <Typography className={classes.groupButton} variant='subtitle2'>
                   Automatisk
                 </Typography>
               </ToggleButton>
-              <ToggleButton aria-label='Mørkt tema' value={THEME_OPTIONS.dark}>
+              <ToggleButton aria-label='Mørkt tema' value={THEME.DARK}>
                 <DarkIcon />
                 <Typography className={classes.groupButton} variant='subtitle2'>
                   Mørkt

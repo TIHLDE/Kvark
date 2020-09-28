@@ -19,7 +19,7 @@ const styles = (theme) => ({
   root: {
     maxWidth: '100%',
     overflow: 'hidden',
-    background: theme.colors.background.light,
+    background: theme.palette.colors.background.light,
   },
   heading: {
     flexShrink: 1,

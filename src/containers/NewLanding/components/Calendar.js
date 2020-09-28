@@ -32,7 +32,7 @@ const styles = (theme) => ({
   },
   tabs: {
     marginBottom: 1,
-    color: theme.colors.text.lighter,
+    color: theme.palette.colors.text.lighter,
   },
 });
 

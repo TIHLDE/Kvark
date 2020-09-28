@@ -41,8 +41,8 @@ const styles = (theme) => ({
     marginBottom: 10,
   },
   moreBtn: {
-    boxShadow: '0px 2px 4px ' + theme.colors.border.main + '88, 0px 0px 4px ' + theme.colors.border.main + '88',
-    borderRadius: theme.sizes.border.radius,
+    boxShadow: '0px 2px 4px ' + theme.palette.colors.border.main + '88, 0px 0px 4px ' + theme.palette.colors.border.main + '88',
+    borderRadius: theme.palette.sizes.border.radius,
     overflow: 'hidden',
   },
 });

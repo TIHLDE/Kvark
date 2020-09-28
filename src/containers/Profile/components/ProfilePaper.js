@@ -43,12 +43,12 @@ const styles = (theme) => ({
     padding: '28px',
     paddingTop: '110px',
     textAlign: 'center',
-    backgroundColor: theme.colors.background.smoke,
+    backgroundColor: theme.palette.colors.background.smoke,
   },
   tabs: {
     marginTop: 20,
     marginBottom: 1,
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
   button: {
     margin: '7px auto 0px',
@@ -59,10 +59,10 @@ const styles = (theme) => ({
     textDecoration: 'none',
   },
   logOutButton: {
-    backgroundColor: theme.colors.status.red,
-    color: theme.colors.constant.white,
+    backgroundColor: theme.palette.colors.status.red,
+    color: theme.palette.colors.constant.white,
     '&:hover': {
-      backgroundColor: theme.colors.status.red + 'bb',
+      backgroundColor: theme.palette.colors.status.red + 'bb',
     },
   },
   buttonsContainer: {
@@ -80,8 +80,8 @@ const styles = (theme) => ({
     height: 200,
     fontSize: 65,
     fontWeight: 'bold',
-    background: 'linear-gradient(90deg, ' + theme.colors.gradient.avatar.top + ', ' + theme.colors.gradient.avatar.bottom + ')',
-    color: theme.colors.gradient.avatar.text,
+    background: 'linear-gradient(90deg, ' + theme.palette.colors.gradient.avatar.top + ', ' + theme.palette.colors.gradient.avatar.bottom + ')',
+    color: theme.palette.colors.gradient.avatar.text,
   },
   skeleton: {
     animation: 'animate 1.5s ease-in-out infinite',
@@ -92,7 +92,7 @@ const styles = (theme) => ({
   },
   text: {
     margin: '2px auto',
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
   skeletonCircle: {
     width: 110,
@@ -101,7 +101,7 @@ const styles = (theme) => ({
     height: 150,
   },
   memberProof: {
-    background: theme.colors.constant.white,
+    background: theme.palette.colors.constant.white,
   },
 });
 

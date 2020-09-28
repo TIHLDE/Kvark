@@ -8,9 +8,9 @@ import classNames from 'classnames';
 const styles = (theme) => ({
   button: {
     padding: '10px',
-    boxShadow: '0px 2px 4px ' + theme.colors.border.main + '88',
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
+    boxShadow: '0px 2px 4px ' + theme.palette.colors.border.main + '88',
+    borderRadius: theme.palette.sizes.border.radius,
+    backgroundColor: theme.palette.colors.background.light,
   },
   fullWidth: {
     width: '100%',

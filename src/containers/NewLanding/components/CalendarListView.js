@@ -23,11 +23,11 @@ const styles = (theme) => ({
     display: 'grid',
     gridGap: 1,
     color: theme.palette.text.secondary,
-    backgroundColor: theme.colors.background.smoke,
+    backgroundColor: theme.palette.colors.background.smoke,
     margin: 'auto',
   },
   noEventText: {
-    backgroundColor: theme.colors.background.smoke,
+    backgroundColor: theme.palette.colors.background.smoke,
     padding: 5,
     textAlign: 'center',
   },
@@ -40,8 +40,8 @@ const styles = (theme) => ({
     marginBottom: 10,
   },
   moreBtn: {
-    boxShadow: '0px 2px 4px ' + theme.colors.border.main + '88, 0px 0px 4px ' + theme.colors.border.main + '88',
-    borderRadius: theme.sizes.border.radius,
+    boxShadow: '0px 2px 4px ' + theme.palette.colors.border.main + '88, 0px 0px 4px ' + theme.palette.colors.border.main + '88',
+    borderRadius: theme.palette.sizes.border.radius,
     overflow: 'hidden',
   },
 });

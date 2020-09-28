@@ -37,7 +37,7 @@ const styles = (theme) => ({
     transform: 'translateX(-50%)',
   },
   color: {
-    color: theme.colors.constant.white,
+    color: theme.palette.colors.constant.white,
   },
 });
 

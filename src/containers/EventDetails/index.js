@@ -26,7 +26,7 @@ const styles = (theme) => ({
     margin: 'auto',
     padding: '60px 48px 48px 48px',
     position: 'relative',
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
     '@media only screen and (max-width: 1000px)': {
       padding: '60px 0px 48px 0px',
     },
@@ -39,7 +39,7 @@ const styles = (theme) => ({
     '&::after': {
       position: 'absolute',
       bottom: 0,
-      borderBottom: 'solid 150px ' + theme.colors.background.main,
+      borderBottom: 'solid 150px ' + theme.palette.colors.background.main,
       borderLeft: '100vw solid rgba(0,0,0,0)',
       content: '""',
     },
@@ -48,7 +48,7 @@ const styles = (theme) => ({
     height: 350,
     padding: 60,
     transition: '3s',
-    background: theme.colors.gradient.main.top,
+    background: theme.palette.colors.gradient.main.top,
   },
 });
 
@@ -99,7 +99,7 @@ function EventDetails(props) {
     if (!userEvent) {
       // Apply to event
       return EventService.putUserOnEventList(event.id, userData, optionalFieldsAnswers, allowPhoto)
-        .then((result) => {
+        .then(() => {
           const newEvent = { ...event };
           if (newEvent.limit <= newEvent.list_count) {
             newEvent.waiting_list_count++;
@@ -124,7 +124,7 @@ function EventDetails(props) {
     } else {
       // The reverse
       return EventService.deleteUserFromEventList(event.id, userData)
-        .then((result) => {
+        .then(() => {
           const newEvent = { ...event };
           if (userEvent.is_on_wait) {
             newEvent.waiting_list_count--;

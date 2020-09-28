@@ -25,10 +25,10 @@ const style = (theme) => ({
     '@media only screen and (max-width: 600px)': {
       flexDirection: 'column',
     },
-    boxShadow: '0px 2px 4px ' + theme.colors.border.main + '88',
-    borderRadius: theme.sizes.border.radius,
+    boxShadow: '0px 2px 4px ' + theme.palette.colors.border.main + '88',
+    borderRadius: theme.palette.sizes.border.radius,
     marginBottom: 3,
-    background: theme.colors.background.smoke,
+    background: theme.palette.colors.background.smoke,
   },
   userName: {
     flexGrow: 1,
@@ -60,7 +60,7 @@ const style = (theme) => ({
     marginTop: 20,
   },
   lightText: {
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
 });
 

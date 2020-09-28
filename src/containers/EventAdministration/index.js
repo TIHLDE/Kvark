@@ -52,11 +52,11 @@ const styles = (theme) => ({
   },
   snackbar: {
     marginTop: 55,
-    backgroundColor: theme.colors.background.smoke,
-    color: theme.colors.text.main,
+    backgroundColor: theme.palette.colors.background.smoke,
+    color: theme.palette.colors.text.main,
   },
   header: {
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
 });
 
@@ -136,7 +136,7 @@ function EventAdministration(props) {
   const saveEvent = () => {
     if (selectedEvent.id) {
       EventService.putEvent(selectedEvent.id, selectedEvent)
-        .then((data) => {
+        .then(() => {
           setEvents((events) =>
             events.map((eventItem) => {
               let returnValue = { ...eventItem };
@@ -164,7 +164,7 @@ function EventAdministration(props) {
   const deleteEvent = () => {
     if (selectedEvent.id) {
       EventService.deleteEvent(selectedEvent.id)
-        .then((data) => {
+        .then(() => {
           setEvents((events) => events.filter((eventItem) => eventItem.id !== selectedEvent.id));
           setSelectedEvent(defaultEvent);
           openSnackbar('Arrangementet ble slettet');

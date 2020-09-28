@@ -37,7 +37,7 @@ const styles = (theme) => ({
   },
   borderTop: {
     padding: '5px 5px 15px 15px',
-    backgroundColor: theme.colors.background.main,
+    backgroundColor: theme.palette.colors.background.main,
     marginBottom: 10,
   },
   optFieldQuestion: {
@@ -53,7 +53,7 @@ const styles = (theme) => ({
     width: '100%',
   },
   deleteIcon: {
-    color: theme.colors.status.red,
+    color: theme.palette.colors.status.red,
   },
   optionIcon: {
     marginRight: 10,

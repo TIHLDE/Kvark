@@ -26,8 +26,8 @@ const styles = (theme) => ({
     top: 0,
     bottom: 0,
     width: (props) => props.width,
-    backgroundColor: theme.colors.background.light,
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
+    backgroundColor: theme.palette.colors.background.light,
+    border: theme.palette.sizes.border.width + ' solid ' + theme.palette.colors.border.main,
 
     '@media only screen and (max-width: 800px)': {
       position: 'static',
@@ -40,8 +40,8 @@ const styles = (theme) => ({
     overflowY: 'auto',
   },
   sidebarTop: {
-    backgroundColor: theme.colors.background.main,
-    color: theme.colors.text.main,
+    backgroundColor: theme.palette.colors.background.main,
+    color: theme.palette.colors.text.main,
     padding: '10px 5px 10px 12px',
     position: 'sticky',
     top: 0,
@@ -53,14 +53,14 @@ const styles = (theme) => ({
   listItem: {
     padding: '10px 10px',
     textAlign: 'left',
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
   listButton: {
     width: '100%',
   },
   selected: {
-    backgroundColor: theme.colors.tihlde.main,
-    color: theme.colors.constant.white,
+    backgroundColor: theme.palette.colors.tihlde.main,
+    color: theme.palette.colors.constant.white,
   },
   progress: {
     display: 'block',

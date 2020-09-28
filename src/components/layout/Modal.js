@@ -36,7 +36,7 @@ const style = (theme) => ({
     'overflow-y': 'auto',
   },
   header: {
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
     marginBottom: 15,
   },
   button: {

@@ -45,7 +45,7 @@ const styles = (theme) => ({
   content: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    backgroundColor: theme.colors.border.main,
+    backgroundColor: theme.palette.colors.border.main,
     gridGap: 1,
     '@media only screen and (max-width: 860px)': {
       gridTemplateColumns: '1fr',
@@ -54,7 +54,7 @@ const styles = (theme) => ({
   icons: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
-    backgroundColor: theme.colors.border.main,
+    backgroundColor: theme.palette.colors.border.main,
     gridGap: 1,
     '@media only screen and (max-width: 860px)': {
       gridTemplateColumns: '1fr',

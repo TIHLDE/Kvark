@@ -50,11 +50,11 @@ const styles = (theme) => ({
   },
   snackbar: {
     marginTop: 55,
-    backgroundColor: theme.colors.background.smoke,
-    color: theme.colors.text.main,
+    backgroundColor: theme.palette.colors.background.smoke,
+    color: theme.palette.colors.text.main,
   },
   header: {
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
 });
 

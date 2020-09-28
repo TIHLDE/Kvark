@@ -52,13 +52,13 @@ const styles = (theme) => ({
     height: 'auto',
     maxHeight: 350,
     objectFit: 'cover',
-    backgroundColor: theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.palette.colors.border.main,
+    borderRadius: theme.palette.sizes.border.radius,
     display: 'block',
     boxSizing: 'border-box',
   },
   title: {
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
     padding: 26,
     paddingLeft: 0,
     paddingTop: 0,
@@ -90,11 +90,11 @@ const styles = (theme) => ({
   ml: {
     marginRight: 5,
     fontWeight: 'bold',
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
   ml2: {
     textAlign: 'center',
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
   mt: { height: 50, fontWeight: 'bold' },
   waitlistContainer: {
@@ -103,10 +103,10 @@ const styles = (theme) => ({
     padding: '5px',
   },
   redText: {
-    color: theme.colors.status.red,
+    color: theme.palette.colors.status.red,
   },
   description: {
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
   prioritiesContainer: {
     display: 'flex',
@@ -120,10 +120,10 @@ const styles = (theme) => ({
   },
   priority: {
     padding: '0 3px',
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
+    border: theme.palette.sizes.border.width + ' solid ' + theme.palette.colors.border.main,
+    borderRadius: theme.palette.sizes.border.radius,
     margin: 3,
-    color: theme.colors.text.lighter,
+    color: theme.palette.colors.text.lighter,
   },
   applyText: {
     overflow: 'visible',

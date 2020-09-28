@@ -1,5 +1,5 @@
 import AUTH from '../auth';
-import COOKIE from '../cookie';
+import { getCookie, setCookie, removeCookie } from '../cookie';
 import store from '../../store/store';
 import * as UserActions from '../../store/actions/UserActions';
 import UserService from './UserService';
@@ -23,7 +23,7 @@ class AuthService {
         throw data;
       }
       if (data && data.token) {
-        COOKIE.set(ACCESS_TOKEN, data.token);
+        setCookie(ACCESS_TOKEN, data.token);
         UserService.getUserData();
         return data;
       }
@@ -42,7 +42,7 @@ class AuthService {
   };
 
   static isAuthenticated() {
-    return typeof COOKIE.get(ACCESS_TOKEN) !== 'undefined';
+    return typeof getCookie(ACCESS_TOKEN) !== 'undefined';
   }
 
   static logOut() {
@@ -52,7 +52,7 @@ class AuthService {
     }
 
     // Log out
-    COOKIE.remove(ACCESS_TOKEN);
+    removeCookie(ACCESS_TOKEN);
     UserActions.clearData()(store.dispatch);
   }
 }

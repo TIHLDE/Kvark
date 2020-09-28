@@ -38,8 +38,8 @@ const styles = (theme) => ({
     paddingBottom: 2,
     gridGap: '15px',
     '& a': {
-      backgroundColor: theme.colors.background.light,
-      color: theme.colors.text.main,
+      backgroundColor: theme.palette.colors.background.light,
+      color: theme.palette.colors.text.main,
     },
     '@media only screen and (max-width: 700px)': {
       gridTemplateColumns: '1fr',
@@ -55,15 +55,15 @@ const styles = (theme) => ({
   },
   button: {
     textAlign: 'center',
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    boxShadow: '0px 2px 4px ' + theme.colors.border.main + '88, 0px 0px 4px ' + theme.colors.border.main + '88',
+    border: theme.palette.sizes.border.width + ' solid ' + theme.palette.colors.border.main,
+    borderRadius: theme.palette.sizes.border.radius,
+    boxShadow: '0px 2px 4px ' + theme.palette.colors.border.main + '88, 0px 0px 4px ' + theme.palette.colors.border.main + '88',
     margin: 0,
     height: 50,
     overflow: 'hidden',
-    backgroundColor: theme.colors.background.light,
+    backgroundColor: theme.palette.colors.background.light,
     '&:hover': {
-      backgroundColor: theme.colors.background.light + 'bb',
+      backgroundColor: theme.palette.colors.background.light + 'bb',
     },
   },
 });

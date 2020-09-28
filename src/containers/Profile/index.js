@@ -25,7 +25,7 @@ const styles = (theme) => ({
   },
   top: {
     height: 260,
-    background: 'radial-gradient(circle at bottom, ' + theme.colors.gradient.profile.top + ', ' + theme.colors.gradient.profile.bottom + ')',
+    background: 'radial-gradient(circle at bottom, ' + theme.palette.colors.gradient.profile.top + ', ' + theme.palette.colors.gradient.profile.bottom + ')',
   },
   main: {
     maxWidth: 1000,

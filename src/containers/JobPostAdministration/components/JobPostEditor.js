@@ -11,7 +11,7 @@ import Grid from '@material-ui/core/Grid';
 // Project components
 import TextEditor from '../../../components/inputs/TextEditor';
 
-const styles = (theme) => ({
+const styles = () => ({
   root: {
     padding: 20,
   },

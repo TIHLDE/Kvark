@@ -18,7 +18,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 // Project components
 import Paper from '../layout/Paper';
 
-const styles = (theme) => ({
+const styles = () => ({
   root: {
     width: 'auto',
     marginLeft: 10,

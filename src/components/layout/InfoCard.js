@@ -50,13 +50,13 @@ const styles = (theme) => ({
   },
   header: {
     marginBottom: 10,
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
   subheader: {
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
   text: {
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
   grow: {
     flexGrow: 1,

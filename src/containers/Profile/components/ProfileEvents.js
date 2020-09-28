@@ -21,7 +21,7 @@ const styles = (theme) => ({
     paddingTop: 10,
   },
   text: {
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
 });
 

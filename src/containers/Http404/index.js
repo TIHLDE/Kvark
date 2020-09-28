@@ -21,7 +21,7 @@ import Navigation from '../../components/navigation/Navigation';
 const styles = (theme) => ({
   root: {
     minHeight: '101vh',
-    backgroundColor: theme.colors.background.main,
+    backgroundColor: theme.palette.colors.background.main,
   },
   img: {
     width: '100%',

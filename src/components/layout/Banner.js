@@ -21,7 +21,7 @@ const styles = (theme) => ({
   topInner: {
     height: 'auto',
     padding: '60px 0 0',
-    background: (props) => (props.background ? props.background : theme.colors.gradient.main.top),
+    background: (props) => (props.background ? props.background : theme.palette.colors.gradient.main.top),
   },
   topContent: {
     maxWidth: 1200,
@@ -39,7 +39,7 @@ const styles = (theme) => ({
     },
   },
   title: {
-    color: theme.colors.gradient.main.text,
+    color: theme.palette.colors.gradient.main.text,
     fontWeight: 'bold',
     fontSize: 72,
     '@media only screen and (max-width: 900px)': {
@@ -48,7 +48,7 @@ const styles = (theme) => ({
     },
   },
   text: {
-    color: theme.colors.gradient.main.text,
+    color: theme.palette.colors.gradient.main.text,
     paddingTop: 20,
     maxWidth: 600,
     width: '50vw',
@@ -61,7 +61,7 @@ const styles = (theme) => ({
   },
   line: {
     height: 4,
-    backgroundColor: theme.colors.gradient.main.text,
+    backgroundColor: theme.palette.colors.gradient.main.text,
     width: 50,
   },
   children: {
@@ -78,7 +78,7 @@ const styles = (theme) => ({
     marginLeft: -5,
   },
   background: {
-    fill: (props) => (props.background ? props.background : theme.colors.gradient.main.top),
+    fill: (props) => (props.background ? props.background : theme.palette.colors.gradient.main.top),
     fillOpacity: 1,
   },
 });

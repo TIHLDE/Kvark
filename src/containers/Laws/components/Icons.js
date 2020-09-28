@@ -21,12 +21,12 @@ const styles = (theme) => ({
     alignItems: 'center',
   },
   title: {
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
   icon: {
     fontSize: 100,
     marginBottom: 20,
-    color: theme.colors.text.lighter,
+    color: theme.palette.colors.text.lighter,
   },
 });
 

@@ -37,7 +37,7 @@ const styles = (theme) => ({
     '&::after': {
       position: 'absolute',
       bottom: 0,
-      borderBottom: 'solid 150px ' + theme.colors.background.main,
+      borderBottom: 'solid 150px ' + theme.palette.colors.background.main,
       borderLeft: '100vw solid rgba(0,0,0,0)',
       content: '""',
     },
@@ -46,7 +46,7 @@ const styles = (theme) => ({
     height: 350,
     padding: 60,
     transition: '3s',
-    background: theme.colors.gradient.main.top,
+    background: theme.palette.colors.gradient.main.top,
   },
 });
 

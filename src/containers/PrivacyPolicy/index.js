@@ -38,7 +38,7 @@ const styles = (theme) => ({
     width: '100%',
   },
   paper: {
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
   list: {
     paddingLeft: 30,

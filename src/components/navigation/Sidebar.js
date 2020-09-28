@@ -19,11 +19,11 @@ import Link from './Link';
 const styles = (theme) => ({
   root: {
     zIndex: 10000,
-    backgroundColor: theme.colors.background.light,
+    backgroundColor: theme.palette.colors.background.light,
   },
   item: {
     height: 56,
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
 });
 

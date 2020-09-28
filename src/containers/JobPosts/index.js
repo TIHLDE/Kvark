@@ -34,7 +34,7 @@ import NoPostsIndicator from './components/NoPostsIndicator';
 import ListItem from '../../components/miscellaneous/ListItem';
 import Paper from '../../components/layout/Paper';
 
-const styles = (theme) => ({
+const styles = () => ({
   root: {
     paddingTop: 10,
   },

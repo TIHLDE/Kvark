@@ -60,7 +60,7 @@ const styles = (theme) => ({
   header: {
     marginTop: 30,
     marginBottom: 30,
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
   miniPadding: {
     padding: 10,
@@ -70,17 +70,17 @@ const styles = (theme) => ({
   },
   smoke: {
     width: '100%',
-    backgroundColor: theme.colors.background.smoke,
+    backgroundColor: theme.palette.colors.background.smoke,
   },
   button: {
     marginTop: 8,
     width: '100%',
-    color: theme.colors.constant.smoke,
-    borderColor: theme.colors.constant.smoke + 'bb',
+    color: theme.palette.colors.constant.smoke,
+    borderColor: theme.palette.colors.constant.smoke + 'bb',
     minWidth: 200,
     marginBottom: 8,
     '&:hover': {
-      borderColor: theme.colors.constant.smoke,
+      borderColor: theme.palette.colors.constant.smoke,
     },
   },
 });

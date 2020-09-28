@@ -28,13 +28,13 @@ const style = (theme) => ({
     fontSize: 25,
     margin: 5,
     marginRight: 25,
-    color: theme.colors.text.lighter,
+    color: theme.palette.colors.text.lighter,
   },
   unread: {
-    backgroundColor: theme.colors.tihlde.light,
+    backgroundColor: theme.palette.colors.tihlde.light,
   },
   text: {
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
 });
 

@@ -23,7 +23,7 @@ import Banner from '../../components/layout/Banner';
 import Pageination from '../../components/layout/Pageination';
 import NoNewsIndicator from './components/NoNewsIndicator';
 
-const styles = (theme) => ({
+const styles = () => ({
   root: {
     width: 'auto',
     height: 'auto',
