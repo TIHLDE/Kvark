@@ -33,7 +33,8 @@ const styles = (theme) => ({
   },
   top: {
     height: 220,
-    background: 'radial-gradient(circle at bottom, ' + theme.colors.gradient.secondary.top + ', ' + theme.colors.gradient.secondary.bottom + ')',
+    background:
+      'radial-gradient(circle at bottom, ' + theme.palette.colors.gradient.secondary.top + ', ' + theme.palette.colors.gradient.secondary.bottom + ')',
   },
   main: {
     maxWidth: 1000,
@@ -57,7 +58,7 @@ const styles = (theme) => ({
     marginBottom: 10,
   },
   header: {
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
   progress: {
     position: 'absolute',
@@ -115,7 +116,7 @@ function LogIn(props) {
   };
 
   return (
-    <Navigation fancyNavbar footer whitesmoke>
+    <Navigation fancyNavbar whitesmoke>
       <Helmet>
         <title>Logg inn - TIHLDE</title>
       </Helmet>

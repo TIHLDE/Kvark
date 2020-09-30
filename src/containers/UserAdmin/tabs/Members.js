@@ -21,7 +21,7 @@ import PersonListItem from './components/PersonListItem';
 import Pageination from '../../../components/layout/Pageination';
 import NoPersonsIndicator from './components/NoPersonsIndicator';
 
-const styles = (theme) => ({
+const styles = () => ({
   grid: {
     display: 'grid',
     gridTemplateColumns: '1fr',

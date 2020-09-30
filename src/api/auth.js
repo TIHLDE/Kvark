@@ -8,6 +8,6 @@ export default {
     return new IRequest('POST', 'auth/login/', { user_id: username, password: password }, false);
   },
   forgotPassword: (email) => {
-    return new IRequest('POST', 'rest-auth/password/reset/', { email: email }, false);
+    return new IRequest('POST', 'auth/rest-auth/password/reset/', { email: email }, false);
   },
 };

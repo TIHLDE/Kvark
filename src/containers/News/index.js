@@ -23,7 +23,7 @@ import Banner from '../../components/layout/Banner';
 import Pageination from '../../components/layout/Pageination';
 import NoNewsIndicator from './components/NoNewsIndicator';
 
-const styles = (theme) => ({
+const styles = () => ({
   root: {
     width: 'auto',
     height: 'auto',
@@ -118,7 +118,7 @@ const News = (props) => {
   };
 
   return (
-    <Navigation fancyNavbar footer isLoading={isLoading} whitesmoke>
+    <Navigation fancyNavbar isLoading={isLoading} whitesmoke>
       <Helmet>
         <title>Nyheter - TIHLDE</title>
       </Helmet>

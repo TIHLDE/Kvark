@@ -106,6 +106,7 @@ const styles = (theme) => ({
   },
   resetBtn: {
     marginTop: 10,
+    borderRadius: theme.shape.borderRadius,
   },
 });
 
@@ -191,7 +192,7 @@ function JobPosts(props) {
   };
 
   return (
-    <Navigation fancyNavbar footer isLoading={isLoading} whitesmoke>
+    <Navigation fancyNavbar isLoading={isLoading} whitesmoke>
       <Helmet>
         <title>Karriere - TIHLDE</title>
       </Helmet>

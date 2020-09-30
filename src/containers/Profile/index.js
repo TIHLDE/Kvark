@@ -20,14 +20,16 @@ import Paper from '../../components/layout/Paper';
 
 const styles = (theme) => ({
   root: {
-    minHeight: '100vh',
+    minHeight: '101vh',
     width: '100%',
+    paddingBottom: 20,
   },
   top: {
     height: 260,
-    background: 'radial-gradient(circle at bottom, ' + theme.colors.gradient.profile.top + ', ' + theme.colors.gradient.profile.bottom + ')',
+    background: 'radial-gradient(circle at bottom, ' + theme.palette.colors.gradient.profile.top + ', ' + theme.palette.colors.gradient.profile.bottom + ')',
   },
   main: {
+    width: 'calc(100% - 20px)',
     maxWidth: 1000,
     margin: 'auto',
     position: 'relative',
@@ -60,7 +62,7 @@ function Profile(props) {
   };
 
   return (
-    <Navigation fancyNavbar footer isLoading={isLoading} whitesmoke>
+    <Navigation fancyNavbar isLoading={isLoading} whitesmoke>
       <Helmet>
         <title>Profil - TIHLDE</title>
       </Helmet>

@@ -41,25 +41,25 @@ const styles = (theme) => ({
     height: 'auto',
     maxHeight: 350,
     objectFit: 'cover',
-    backgroundColor: theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
+    backgroundColor: theme.palette.colors.border.main,
+    borderRadius: theme.shape.borderRadius,
     display: 'block',
     boxSizing: 'border-box',
   },
   title: {
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
     padding: 26,
     paddingLeft: 0,
     paddingTop: 0,
   },
   header: {
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
     padding: 15,
     paddingLeft: 0,
     paddingTop: 0,
   },
   description: {
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
   content: {
     height: 'fit-content',
@@ -88,11 +88,11 @@ const styles = (theme) => ({
   ml: {
     marginRight: 5,
     fontWeight: 'bold',
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
   ml2: {
     textAlign: 'center',
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
 });
 

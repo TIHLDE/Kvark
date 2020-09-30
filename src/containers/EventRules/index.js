@@ -38,7 +38,7 @@ const styles = (theme) => ({
     width: '100%',
   },
   paper: {
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
   list: {
     paddingLeft: 30,
@@ -51,7 +51,7 @@ function EventRules(props) {
   useEffect(() => window.scrollTo(0, 0), []);
 
   return (
-    <Navigation footer whitesmoke>
+    <Navigation whitesmoke>
       <Helmet>
         <title>Arrangementsregler - TIHLDE</title>
       </Helmet>

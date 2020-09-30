@@ -21,7 +21,7 @@ import Navigation from '../../components/navigation/Navigation';
 const styles = (theme) => ({
   root: {
     minHeight: '101vh',
-    backgroundColor: theme.colors.background.main,
+    backgroundColor: theme.palette.colors.background.main,
   },
   img: {
     width: '100%',
@@ -45,7 +45,7 @@ function Http404(props) {
   useEffect(() => window.scrollTo(0, 0), []);
 
   return (
-    <Navigation className={classes.root} footer whitesmoke>
+    <Navigation className={classes.root} whitesmoke>
       <Helmet>
         <title>404 - TIHLDE</title>
       </Helmet>

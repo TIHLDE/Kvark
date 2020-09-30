@@ -29,7 +29,7 @@ import Paper from '../../components/layout/Paper';
 
 import { Initial, Loading, Success } from 'lemons';
 
-const styles = (theme) => ({
+const styles = () => ({
   wrapper: {
     maxWidth: 1200,
     position: 'relative',
@@ -258,7 +258,7 @@ const Cheetsheet = (props) => {
   }, [input]);
 
   return (
-    <Navigation fancyNavbar footer whitesmoke>
+    <Navigation fancyNavbar whitesmoke>
       <Helmet>
         <title>Kokeboka - TIHLDE</title>
       </Helmet>

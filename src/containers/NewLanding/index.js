@@ -36,14 +36,14 @@ const styles = (theme) => ({
   },
   smoke: {
     width: '100%',
-    backgroundColor: theme.colors.background.smoke,
+    backgroundColor: theme.palette.colors.background.smoke,
     marginTop: '-3px',
     zIndex: '25',
   },
   header: {
     marginTop: '2px',
     marginBottom: '20px',
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
 });
 
@@ -51,7 +51,7 @@ function NewLanding({ classes }) {
   useEffect(() => window.scrollTo(0, 0), []);
 
   return (
-    <Navigation fancyNavbar footer whitesmoke>
+    <Navigation fancyNavbar whitesmoke>
       <Helmet>
         <title>Forsiden - TIHLDE</title>
       </Helmet>

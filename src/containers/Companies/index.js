@@ -61,10 +61,10 @@ const styles = (theme) => ({
   header: {
     marginTop: '2px',
     marginBottom: '20px',
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
   smoke: {
-    backgroundColor: theme.colors.background.smoke,
+    backgroundColor: theme.palette.colors.background.smoke,
   },
   formWrapper: {
     margin: '15px 0',
@@ -80,11 +80,11 @@ const styles = (theme) => ({
   },
   button: {
     width: '100%',
-    color: theme.colors.constant.smoke,
-    borderColor: theme.colors.constant.smoke + 'bb',
+    color: theme.palette.colors.constant.smoke,
+    borderColor: theme.palette.colors.constant.smoke + 'bb',
     minWidth: 200,
     '&:hover': {
-      borderColor: theme.colors.constant.smoke,
+      borderColor: theme.palette.colors.constant.smoke,
     },
   },
   sendIcon: {
@@ -111,7 +111,7 @@ function Companies(props) {
   };
 
   return (
-    <Navigation fancyNavbar footer whitesmoke>
+    <Navigation fancyNavbar whitesmoke>
       <Helmet>
         <title>For bedrifter - TIHLDE</title>
       </Helmet>

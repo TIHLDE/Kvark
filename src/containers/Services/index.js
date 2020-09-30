@@ -57,7 +57,7 @@ function Services(props) {
   useEffect(() => window.scrollTo(0, 0), []);
 
   return (
-    <Navigation fancyNavbar footer whitesmoke>
+    <Navigation fancyNavbar whitesmoke>
       <Helmet>
         <title>Tjenester - TIHLDE</title>
       </Helmet>

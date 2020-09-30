@@ -22,20 +22,20 @@ const styles = (theme) => ({
   innerGrid: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
     gridGap: 10,
     '@media only screen and (max-width: 800px)': {
       gridTemplateColumns: '1fr',
     },
   },
   lightText: {
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
   statistics: {
     display: 'flex',
     flexDirection: 'column',
     textAlign: 'center',
-    backgroundColor: theme.colors.background.smoke,
+    backgroundColor: theme.palette.colors.background.smoke,
     borderCollapse: 'collapse',
   },
 });

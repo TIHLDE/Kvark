@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
@@ -6,15 +6,10 @@ import { Provider } from 'react-redux';
 import store from './store/store';
 import URLS from './URLS';
 import GA from './analytics';
-import COOKIE from './api/cookie';
-import { THEME, THEME_OPTIONS } from './settings';
-import ThemeStore from './themeStore';
 import { NewsProvider } from './context/NewsContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 // Theme
-import { MuiThemeProvider } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { darkTheme, lightTheme } from './theme';
 import './assets/css/index.css';
 
 // Service and action imports
@@ -121,81 +116,50 @@ const requireAuth = (OriginalComponent, accessGroups = []) => {
 };
 
 const Application = () => {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-
-  const automaticTheme = useMemo(() => (prefersDarkMode ? darkTheme : lightTheme), [prefersDarkMode]);
-
-  const [theme, setTheme] = useState(lightTheme);
-  const updateTheme = (newThemeName) => {
-    switch (newThemeName) {
-      case THEME_OPTIONS.light:
-        setTheme(lightTheme);
-        break;
-      case THEME_OPTIONS.automatic:
-        setTheme(automaticTheme);
-        break;
-      case THEME_OPTIONS.dark:
-        setTheme(darkTheme);
-        break;
-      default:
-        setTheme(automaticTheme);
-        break;
-    }
-  };
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => updateTheme(COOKIE.get(THEME)), [automaticTheme]);
-
-  const themeStore = {
-    theme: { get: theme, set: updateTheme },
-  };
-
   return (
     <NewsProvider>
-      <ThemeStore.Provider value={themeStore}>
+      <ThemeProvider>
         <Provider store={store}>
           <BrowserRouter>
-            <MuiThemeProvider theme={theme}>
-              {GA.init() && <GA.RouteTracker />}
-              <Switch>
-                <Route component={NewLanding} exact path='/' />
-                <Route component={EventRegistration} path={URLS.events.concat(':id/registrering')} />
-                <Route component={EventDetails} path={URLS.events.concat(':id/')} />
-                <Route component={About} path={URLS.about} />
-                <Route component={ContactInfo} path={URLS.contactInfo} />
-                <Route component={Events} path={URLS.events} />
-                <Route component={Services} path={URLS.services} />
-                <Route component={Companies} path={URLS.company} />
-                <Route component={NewStudent} path={URLS.newStudent} />
-                <Route component={Profile} path={URLS.profile} />
-                <Route component={JobPostDetails} path={URLS.jobposts.concat(':id/')} />
-                <Route component={JobPosts} exact path={URLS.jobposts} />
-                <Route component={Laws} path={URLS.laws} />
-                <Route component={PrivacyPolicy} path={URLS.privacyPolicy} />
-                <Route component={EventRules} path={URLS.eventRules} />
-                <Route component={NewsDetails} path={URLS.news.concat(':id/')} />
-                <Route component={News} path={URLS.news} />
+            {GA.init() && <GA.RouteTracker />}
+            <Switch>
+              <Route component={NewLanding} exact path='/' />
+              <Route component={EventRegistration} path={URLS.events.concat(':id/registrering')} />
+              <Route component={EventDetails} path={URLS.events.concat(':id/')} />
+              <Route component={About} path={URLS.about} />
+              <Route component={ContactInfo} path={URLS.contactInfo} />
+              <Route component={Events} path={URLS.events} />
+              <Route component={Services} path={URLS.services} />
+              <Route component={Companies} path={URLS.company} />
+              <Route component={NewStudent} path={URLS.newStudent} />
+              <Route component={Profile} path={URLS.profile} />
+              <Route component={JobPostDetails} path={URLS.jobposts.concat(':id/')} />
+              <Route component={JobPosts} exact path={URLS.jobposts} />
+              <Route component={Laws} path={URLS.laws} />
+              <Route component={PrivacyPolicy} path={URLS.privacyPolicy} />
+              <Route component={EventRules} path={URLS.eventRules} />
+              <Route component={NewsDetails} path={URLS.news.concat(':id/')} />
+              <Route component={News} path={URLS.news} />
 
-                <Route component={requireAuth(Cheatsheet)} path={URLS.cheatsheet.concat(':studyId/:classId/')} />
-                <Route component={requireAuth(Cheatsheet)} path={URLS.cheatsheet} />
+              <Route component={requireAuth(Cheatsheet)} path={URLS.cheatsheet.concat(':studyId/:classId/')} />
+              <Route component={requireAuth(Cheatsheet)} path={URLS.cheatsheet} />
 
-                <Route component={requireAuth(Admin, ['HS', 'Promo', 'Nok', 'Devkom'])} exact path={URLS.admin} />
-                <Route component={requireAuth(UserAdmin, ['HS', 'Devkom'])} path={URLS.userAdmin} />
-                <Route component={requireAuth(JobPostAdministration, ['HS', 'Nok', 'Devkom'])} path={URLS.jobpostsAdmin} />
-                <Route component={requireAuth(EventAdministration, ['HS', 'Promo', 'Nok', 'Devkom'])} path={URLS.eventAdmin} />
-                <Route component={requireAuth(NewsAdministration, ['HS', 'Promo', 'Nok', 'Devkom'])} path={URLS.newsAdmin} />
+              <Route component={requireAuth(Admin, ['HS', 'Promo', 'Nok', 'Devkom'])} exact path={URLS.admin} />
+              <Route component={requireAuth(UserAdmin, ['HS', 'Devkom'])} path={URLS.userAdmin} />
+              <Route component={requireAuth(JobPostAdministration, ['HS', 'Nok', 'Devkom'])} path={URLS.jobpostsAdmin} />
+              <Route component={requireAuth(EventAdministration, ['HS', 'Promo', 'Nok', 'Devkom'])} path={URLS.eventAdmin} />
+              <Route component={requireAuth(NewsAdministration, ['HS', 'Promo', 'Nok', 'Devkom'])} path={URLS.newsAdmin} />
 
-                <Route component={LogIn} path={URLS.login} />
-                <Route component={ForgotPassword} path={URLS.forgotPassword} />
-                <Route component={SignUp} path={URLS.signup} />
+              <Route component={LogIn} path={URLS.login} />
+              <Route component={ForgotPassword} path={URLS.forgotPassword} />
+              <Route component={SignUp} path={URLS.signup} />
 
-                <Route component={Http404} />
-              </Switch>
-              <MessageGDPR />
-            </MuiThemeProvider>
+              <Route component={Http404} />
+            </Switch>
+            <MessageGDPR />
           </BrowserRouter>
         </Provider>
-      </ThemeStore.Provider>
+      </ThemeProvider>
     </NewsProvider>
   );
 };

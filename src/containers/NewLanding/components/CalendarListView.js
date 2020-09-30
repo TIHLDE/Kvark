@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 import URLS from '../../../URLS';
 import { getFormattedDate } from '../../../utils';
 import moment from 'moment';
-
+import { Link } from 'react-router-dom';
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Button from '@material-ui/core/Button';
 
 // Icons
 import DateIcon from '@material-ui/icons/DateRange';
 import LocationIcon from '@material-ui/icons/LocationOn';
 
 // Project componets
-import LinkButton from '../../../components/navigation/LinkButton';
 import ListItem from '../../../components/miscellaneous/ListItem';
 
 // Styles
@@ -23,11 +23,11 @@ const styles = (theme) => ({
     display: 'grid',
     gridGap: 1,
     color: theme.palette.text.secondary,
-    backgroundColor: theme.colors.background.smoke,
+    backgroundColor: theme.palette.colors.background.smoke,
     margin: 'auto',
   },
   noEventText: {
-    backgroundColor: theme.colors.background.smoke,
+    backgroundColor: theme.palette.colors.background.smoke,
     padding: 5,
     textAlign: 'center',
   },
@@ -39,10 +39,8 @@ const styles = (theme) => ({
     marginTop: 10,
     marginBottom: 10,
   },
-  moreBtn: {
-    boxShadow: '0px 2px 4px ' + theme.colors.border.main + '88, 0px 0px 4px ' + theme.colors.border.main + '88',
-    borderRadius: theme.sizes.border.radius,
-    overflow: 'hidden',
+  btn: {
+    padding: theme.spacing(1),
   },
 });
 
@@ -77,11 +75,9 @@ function CalendarListView({ classes, events, isLoading }) {
             }
             return '';
           })}
-          <div className={classes.moreBtn}>
-            <LinkButton noPadding to='/arrangementer/'>
-              <Typography align='center'>Alle arrangementer ({events.length})</Typography>
-            </LinkButton>
-          </div>
+          <Button className={classes.btn} color='primary' component={Link} to={URLS.events} variant='outlined'>
+            <Typography align='center'>Alle arrangementer ({events.length})</Typography>
+          </Button>
         </React.Fragment>
       ) : (
         <Typography align='center' className={classes.noEventText} variant='subtitle1'>

@@ -52,13 +52,13 @@ const styles = (theme) => ({
   },
   checkBox: {
     padding: 4,
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
   mainText: {
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
   lightText: {
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
 });
 
@@ -109,7 +109,7 @@ class CustomListItem extends Component {
     checked: false,
   };
 
-  handleClick = async (event) => {
+  handleClick = async () => {
     await this.setState({
       checked: !this.state.checked,
     });

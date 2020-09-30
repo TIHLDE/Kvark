@@ -40,7 +40,7 @@ const styles = (theme) => ({
   },
   bottomContent: {
     marginTop: 50,
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
   infocard: {
     '@media only screen and (max-width: 600px)': {
@@ -63,7 +63,7 @@ function NewStudent(props) {
   useEffect(() => window.scrollTo(0, 0), []);
 
   return (
-    <Navigation fancyNavbar footer whitesmoke>
+    <Navigation fancyNavbar whitesmoke>
       <Helmet>
         <title>Ny student - TIHLDE</title>
       </Helmet>
@@ -96,7 +96,7 @@ function NewStudent(props) {
                 <Paper noPadding>
                   {category.items.map((item, index) => (
                     <React.Fragment key={index}>
-                      <Expansion flat header={item.header} text={item.text} />
+                      <Expansion expand flat header={item.header} text={item.text} />
                       {index !== category.items.length - 1 && <Divider />}
                     </React.Fragment>
                   ))}

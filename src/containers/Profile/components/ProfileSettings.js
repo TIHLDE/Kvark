@@ -48,8 +48,8 @@ const styles = (theme) => ({
   },
   snackbar: {
     marginTop: 55,
-    backgroundColor: theme.colors.background.smoke,
-    color: theme.colors.text.main,
+    backgroundColor: theme.palette.colors.background.smoke,
+    color: theme.palette.colors.text.main,
   },
 });
 
@@ -105,14 +105,6 @@ function ProfileSettings(props) {
                 e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 8);
               }}
               value={userData.cell}
-              variant='outlined'
-            />
-            <TextField
-              className={classes.inputWidth}
-              label='EM-nummer (studentkortet)'
-              margin='normal'
-              onChange={(e) => setUserData({ ...userData, em_nr: e.target.value })}
-              value={userData.em_nr}
               variant='outlined'
             />
             <div className={classes.selectContainer}>

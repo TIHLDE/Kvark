@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import COOKIE from '../../api/cookie';
+import { getCookie, setCookie } from '../../api/cookie';
 import { ACCEPTED_ANALYTICS } from '../../settings';
 
 // Material UI
@@ -14,7 +14,7 @@ const style = (theme) => ({
     position: 'sticky',
     bottom: 0,
     zIndex: 999,
-    backgroundColor: theme.colors.background.main,
+    backgroundColor: theme.palette.colors.background.main,
     width: '100%',
     height: 'auto',
     padding: 15,
@@ -35,18 +35,18 @@ const style = (theme) => ({
   },
   text: {
     flexGrow: 1,
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
 });
 
 const MessageGDPR = (props) => {
   const { classes } = props;
-  const cookieValue = !COOKIE.get(ACCEPTED_ANALYTICS);
+  const cookieValue = !getCookie(ACCEPTED_ANALYTICS);
   const [displayState, setDisplayState] = useState(cookieValue);
 
   const closeDialog = () => {
     setDisplayState(false);
-    COOKIE.set(ACCEPTED_ANALYTICS, true, 3600 * 24000 * 365);
+    setCookie(ACCEPTED_ANALYTICS, true, 3600 * 24000 * 365);
   };
 
   return (

@@ -27,22 +27,22 @@ const styles = (theme) => ({
     gridTemplateColumns: '1fr 1fr',
   },
   chipYes: {
-    color: theme.colors.constant.white,
-    backgroundColor: theme.colors.status.green,
-    borderColor: theme.colors.status.green,
+    color: theme.palette.colors.constant.white,
+    backgroundColor: theme.palette.colors.status.green,
+    borderColor: theme.palette.colors.status.green,
     '&:hover': {
-      color: theme.colors.constant.white,
-      backgroundColor: theme.colors.status.green + 'bb',
-      borderColor: theme.colors.status.green + 'bb',
+      color: theme.palette.colors.constant.white,
+      backgroundColor: theme.palette.colors.status.green + 'bb',
+      borderColor: theme.palette.colors.status.green + 'bb',
     },
   },
   chipNo: {
-    color: theme.colors.status.red,
-    backgroundColor: theme.colors.constant.white,
-    borderColor: theme.colors.status.red,
+    color: theme.palette.colors.status.red,
+    backgroundColor: theme.palette.colors.constant.white,
+    borderColor: theme.palette.colors.status.red,
     '&:hover': {
-      color: theme.colors.status.red,
-      borderColor: theme.colors.status.red,
+      color: theme.palette.colors.status.red,
+      borderColor: theme.palette.colors.status.red,
     },
   },
   mr: {

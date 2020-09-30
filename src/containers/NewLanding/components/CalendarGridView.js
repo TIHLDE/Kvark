@@ -14,7 +14,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '../../../components/layout/Paper';
 
 // Styles
-const styles = (theme) => ({
+const styles = () => ({
   root: {
     '& div:first-child': {
       overflowY: 'hidden',

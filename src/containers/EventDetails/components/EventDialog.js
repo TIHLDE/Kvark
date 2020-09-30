@@ -119,7 +119,7 @@ const style = (theme) => ({
     flexDirection: 'column',
     margin: '20px 0px',
     padding: '20px 10px',
-    backgroundColor: theme.colors.background.main,
+    backgroundColor: theme.palette.colors.background.main,
   },
   question: {
     marginBottom: 20,

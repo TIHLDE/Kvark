@@ -29,14 +29,14 @@ const styles = (theme) => ({
     height: '100%',
   },
   tabs: {
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
   input: {
     width: '100%',
     height: '100%',
   },
   toolbox: {
-    backgroundColor: theme.colors.background.main,
+    backgroundColor: theme.palette.colors.background.main,
     minHeight: 30,
     padding: 4,
   },

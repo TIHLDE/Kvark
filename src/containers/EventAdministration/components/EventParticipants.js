@@ -58,10 +58,10 @@ const styles = (theme) => ({
     marginBottom: '-6px',
   },
   mainText: {
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
   lightText: {
-    color: theme.colors.text.light,
+    color: theme.palette.colors.text.light,
   },
 });
 

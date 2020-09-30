@@ -1,57 +1,58 @@
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import URLS from '../../URLS';
+import URLS from 'URLS';
+import { Link } from 'react-router-dom';
 
 // API and store imports
-import AuthService from '../../api/services/AuthService';
+import AuthService from 'api/services/AuthService';
 
 // Material UI Components
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 
-// Project Components
-import Link from './Link';
-
-const styles = (theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     zIndex: 10000,
-    backgroundColor: theme.colors.background.light,
+    backgroundColor: theme.palette.colors.background.light,
+  },
+  link: {
+    textDecoration: 'none',
   },
   item: {
     height: 56,
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
   },
-});
+}));
 
-const ActionLink = withStyles(styles)((props) => {
-  const { classes } = props;
+type ActionLinkProps = {
+  className?: string;
+  label: string;
+  to: string;
+};
+
+const ActionLink = ({ className, label, to }: ActionLinkProps) => {
+  const classes = useStyles();
   return (
     <Fragment>
-      <Link onClick={props.to === window.location.pathname ? () => window.location.reload() : null} to={props.to}>
-        <ListItem button className={classNames(classes.item, props.className)} color='inherit'>
+      <Link className={classes.link} onClick={to === window.location.pathname ? () => window.location.reload() : undefined} to={to}>
+        <ListItem button className={classNames(classes.item, className)} color='inherit'>
           <Grid alignItems='center' container direction='column' justify='space-between' wrap='nowrap'>
-            <Typography align='center' color='inherit' variant='h5'>
-              {props.label}
+            <Typography align='center' color='inherit' variant='h3'>
+              {label}
             </Typography>
           </Grid>
         </ListItem>
       </Link>
-      <Divider className={classes.divider} />
+      <Divider />
     </Fragment>
   );
-});
-
-ActionLink.propTypes = {
-  to: PropTypes.string.isRequired,
 };
 
-const SidebarContent = (props) => {
-  const { classes } = props;
-
+const Sidebar = () => {
+  const classes = useStyles();
   return (
     <Fragment>
       <div className={classes.root}>
@@ -68,8 +69,4 @@ const SidebarContent = (props) => {
   );
 };
 
-SidebarContent.propTypes = {
-  classes: PropTypes.object,
-};
-
-export default withStyles(styles)(SidebarContent);
+export default Sidebar;

@@ -32,7 +32,7 @@ GoogleAnalytics.propTypes = {
 
 const RouteTracker = () => <Route component={GoogleAnalytics} />;
 
-const init = (options = {}) => {
+const init = () => {
   // Different analytics id in prod and dev
   const isInProduction = process.env.NODE_ENV === 'production';
 

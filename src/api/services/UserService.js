@@ -41,7 +41,7 @@ class UserService {
     });
   };
 
-  static updateUserEvents = async (events, callback = null) => {
+  static updateUserEvents = async (events) => {
     return UserActions.updateUserEvents(events);
   };
 }

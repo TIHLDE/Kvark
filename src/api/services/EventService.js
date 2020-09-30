@@ -138,7 +138,7 @@ class EventService {
       allow_photo: allowPhoto,
     };
     const response = API.putUserOnEventList(id, userData).response();
-    return response.then((data) => {
+    return response.then(() => {
       !callback || callback(response.isError === true, response.status);
       if (!response.isError) {
         return Promise.resolve(response.status);

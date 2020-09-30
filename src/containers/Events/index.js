@@ -91,9 +91,9 @@ const styles = (theme) => ({
       position: 'static',
       top: 0,
     },
-    border: theme.sizes.border.width + ' solid ' + theme.colors.border.main,
-    borderRadius: theme.sizes.border.radius,
-    backgroundColor: theme.colors.background.light,
+    border: theme.palette.sizes.border.width + ' solid ' + theme.palette.colors.border.main,
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: theme.palette.colors.background.light,
   },
   paddingBtn: {
     paddingBottom: 10,
@@ -108,11 +108,12 @@ const styles = (theme) => ({
     },
   },
   mt: {
-    color: theme.colors.text.main,
+    color: theme.palette.colors.text.main,
     marginTop: 10,
   },
   resetBtn: {
     marginTop: 10,
+    borderRadius: theme.shape.borderRadius,
   },
 });
 
@@ -217,7 +218,7 @@ function Events(props) {
   };
 
   return (
-    <Navigation fancyNavbar footer isLoading={isLoading} whitesmoke>
+    <Navigation fancyNavbar isLoading={isLoading} whitesmoke>
       <Helmet>
         <title>Arrangementer - TIHLDE</title>
       </Helmet>

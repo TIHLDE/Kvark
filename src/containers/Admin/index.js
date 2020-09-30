@@ -78,7 +78,7 @@ function Admin(props) {
   }, []);
 
   return (
-    <Navigation fancyNavbar footer whitesmoke>
+    <Navigation fancyNavbar whitesmoke>
       <Helmet>
         <title>Admin - TIHLDE</title>
       </Helmet>

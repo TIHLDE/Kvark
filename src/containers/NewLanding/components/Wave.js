@@ -32,7 +32,7 @@ const style = (theme) => ({
     zIndex: '20',
   },
   topSmallText: {
-    color: theme.colors.gradient.main.text,
+    color: theme.palette.colors.gradient.main.text,
     margin: '10px auto',
     '@media only screen and (max-width: 800px)': {
       fontSize: '1.05rem',
@@ -54,10 +54,10 @@ const style = (theme) => ({
     justifyContent: 'center',
   },
   topButton: {
-    color: theme.colors.text.main,
-    backgroundColor: theme.colors.background.light,
+    color: theme.palette.colors.text.main,
+    backgroundColor: theme.palette.colors.background.light,
     '&:hover': {
-      backgroundColor: theme.colors.background.light + 'bb',
+      backgroundColor: theme.palette.colors.background.light + 'bb',
     },
     margin: 'auto 10px',
   },
@@ -65,9 +65,9 @@ const style = (theme) => ({
     textDecoration: 'none',
   },
   topButtonSecondary: {
-    color: theme.colors.gradient.main.text,
+    color: theme.palette.colors.gradient.main.text,
     '&:hover': {
-      color: theme.colors.gradient.main.text + 'bb',
+      color: theme.palette.colors.gradient.main.text + 'bb',
     },
     textDecoration: 'none',
     margin: 'auto 10px',
@@ -98,7 +98,7 @@ const style = (theme) => ({
     overflow: 'hidden',
     minHeight: 500,
     top: 0,
-    background: 'linear-gradient(20deg, ' + theme.colors.gradient.main.bottom + ' 20%, ' + theme.colors.gradient.main.top + ' 80%)',
+    background: 'linear-gradient(20deg, ' + theme.palette.colors.gradient.main.bottom + ' 20%, ' + theme.palette.colors.gradient.main.top + ' 80%)',
   },
   bgTop: {
     zIndex: 15,
