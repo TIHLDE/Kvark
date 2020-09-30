@@ -16,7 +16,7 @@ import TIHLDELOGO from '../../assets/img/TihldeBackgroundNew.png';
 const useStyles = makeStyles((theme) => ({
   root: {
     boxShadow: '0px 2px 4px ' + theme.palette.colors.border.main + '88, 0px 0px 4px ' + theme.palette.colors.border.main + '88',
-    borderRadius: theme.palette.sizes.border.radius,
+    borderRadius: theme.shape.borderRadius,
     marginBottom: 10,
     height: 'auto',
     padding: 10,
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     height: 160,
     width: '40%',
     maxWidth: 250,
-    borderRadius: theme.palette.sizes.border.radius,
+    borderRadius: theme.shape.borderRadius,
     '&:not([src*=".jpg"])': {
       background: '#fff',
     },

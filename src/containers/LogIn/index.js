@@ -116,7 +116,7 @@ function LogIn(props) {
   };
 
   return (
-    <Navigation fancyNavbar footer whitesmoke>
+    <Navigation fancyNavbar whitesmoke>
       <Helmet>
         <title>Logg inn - TIHLDE</title>
       </Helmet>

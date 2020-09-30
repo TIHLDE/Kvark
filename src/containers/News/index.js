@@ -118,7 +118,7 @@ const News = (props) => {
   };
 
   return (
-    <Navigation fancyNavbar footer isLoading={isLoading} whitesmoke>
+    <Navigation fancyNavbar isLoading={isLoading} whitesmoke>
       <Helmet>
         <title>Nyheter - TIHLDE</title>
       </Helmet>

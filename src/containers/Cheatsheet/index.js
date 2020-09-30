@@ -258,7 +258,7 @@ const Cheetsheet = (props) => {
   }, [input]);
 
   return (
-    <Navigation fancyNavbar footer whitesmoke>
+    <Navigation fancyNavbar whitesmoke>
       <Helmet>
         <title>Kokeboka - TIHLDE</title>
       </Helmet>

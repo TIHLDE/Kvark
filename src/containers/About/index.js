@@ -91,7 +91,7 @@ function About(props) {
   useEffect(() => window.scrollTo(0, 0), []);
 
   return (
-    <Navigation fancyNavbar footer whitesmoke>
+    <Navigation fancyNavbar whitesmoke>
       <Helmet>
         <title>Om TIHLDE - TIHLDE</title>
       </Helmet>

@@ -184,7 +184,7 @@ function EventDetails(props) {
   );
 
   return (
-    <Navigation fancyNavbar footer isLoading={isLoading} whitesmoke>
+    <Navigation fancyNavbar isLoading={isLoading} whitesmoke>
       {!isLoading && event && (
         <div className={classes.root}>
           <Helmet>

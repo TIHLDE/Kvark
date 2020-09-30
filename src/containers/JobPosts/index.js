@@ -34,7 +34,7 @@ import NoPostsIndicator from './components/NoPostsIndicator';
 import ListItem from '../../components/miscellaneous/ListItem';
 import Paper from '../../components/layout/Paper';
 
-const styles = () => ({
+const styles = (theme) => ({
   root: {
     paddingTop: 10,
   },
@@ -106,6 +106,7 @@ const styles = () => ({
   },
   resetBtn: {
     marginTop: 10,
+    borderRadius: theme.shape.borderRadius,
   },
 });
 
@@ -191,7 +192,7 @@ function JobPosts(props) {
   };
 
   return (
-    <Navigation fancyNavbar footer isLoading={isLoading} whitesmoke>
+    <Navigation fancyNavbar isLoading={isLoading} whitesmoke>
       <Helmet>
         <title>Karriere - TIHLDE</title>
       </Helmet>

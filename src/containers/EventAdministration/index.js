@@ -236,7 +236,7 @@ function EventAdministration(props) {
   ];
 
   return (
-    <Navigation whitesmoke>
+    <Navigation noFooter whitesmoke>
       <Helmet>
         <title>Arrangementadmin - TIHLDE</title>
       </Helmet>

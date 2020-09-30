@@ -74,7 +74,7 @@ function NewsDetails(props) {
   );
 
   return (
-    <Navigation fancyNavbar footer isLoading={isLoading} whitesmoke>
+    <Navigation fancyNavbar isLoading={isLoading} whitesmoke>
       {!isLoading && newsData.title && (
         <div className={classes.root}>
           <Helmet>

@@ -45,7 +45,7 @@ function Http404(props) {
   useEffect(() => window.scrollTo(0, 0), []);
 
   return (
-    <Navigation className={classes.root} footer whitesmoke>
+    <Navigation className={classes.root} whitesmoke>
       <Helmet>
         <title>404 - TIHLDE</title>
       </Helmet>

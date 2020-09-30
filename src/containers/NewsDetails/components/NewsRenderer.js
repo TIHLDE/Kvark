@@ -42,7 +42,7 @@ const styles = (theme) => ({
     maxHeight: 350,
     objectFit: 'cover',
     backgroundColor: theme.palette.colors.border.main,
-    borderRadius: theme.palette.sizes.border.radius,
+    borderRadius: theme.shape.borderRadius,
     display: 'block',
     boxSizing: 'border-box',
   },

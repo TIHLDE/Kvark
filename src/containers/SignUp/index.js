@@ -143,7 +143,7 @@ function SignUp(props) {
   };
 
   return (
-    <Navigation fancyNavbar footer whitesmoke>
+    <Navigation fancyNavbar whitesmoke>
       <Helmet>
         <title>Ny bruker - TIHLDE</title>
       </Helmet>

@@ -187,7 +187,7 @@ function JobPostAdministration(props) {
   ];
 
   return (
-    <Navigation whitesmoke>
+    <Navigation noFooter whitesmoke>
       <Helmet>
         <title>Annonseadmin - TIHLDE</title>
       </Helmet>

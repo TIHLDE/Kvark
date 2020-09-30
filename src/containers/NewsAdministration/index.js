@@ -115,7 +115,7 @@ function NewsAdministration(props) {
   ];
 
   return (
-    <Navigation whitesmoke>
+    <Navigation noFooter whitesmoke>
       <Helmet>
         <title>Nyhetsadmin - TIHLDE</title>
       </Helmet>

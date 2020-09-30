@@ -25,8 +25,6 @@ const style = (theme) => ({
     '@media only screen and (max-width: 600px)': {
       flexDirection: 'column',
     },
-    boxShadow: '0px 2px 4px ' + theme.palette.colors.border.main + '88',
-    borderRadius: theme.palette.sizes.border.radius,
     marginBottom: 3,
     background: theme.palette.colors.background.smoke,
   },
@@ -85,7 +83,7 @@ const EventParticipant = (props) => {
   };
 
   return (
-    <Card className={classes.content}>
+    <Card className={classes.content} elevation={2}>
       {showModal && (
         <Modal closeText='Avbryt' header='Er du sikker?' onClose={() => setShowModal(false)} open={showModal}>
           <Typography className={classes.lightText} variant='h6'>

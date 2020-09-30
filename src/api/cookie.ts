@@ -5,7 +5,7 @@ export const setCookie = (key: string, value: string, duration = 3600 * 24000 * 
   cookies.set(key, value, { path: '/', expires: new Date(Date.now() + duration) });
 };
 
-export const getCookie = (key: string): string => {
+export const getCookie = (key: string): string | undefined => {
   return cookies.get(key);
 };
 

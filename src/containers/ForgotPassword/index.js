@@ -109,7 +109,7 @@ function ForgotPassword(props) {
   };
 
   return (
-    <Navigation fancyNavbar footer whitesmoke>
+    <Navigation fancyNavbar whitesmoke>
       <Helmet>
         <title>Glemt passord - TIHLDE</title>
       </Helmet>

@@ -6,7 +6,6 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme: Theme) => ({
   main: {
     border: theme.palette.sizes.border.width + ' solid ' + theme.palette.colors.border.main,
-    borderRadius: theme.palette.sizes.border.radius,
     backgroundColor: theme.palette.colors.background.light,
   },
   padding: {
@@ -17,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-type PaperProps = {
+export type PaperProps = {
   children: React.ReactNode;
   shadow?: boolean;
   noPadding?: boolean;

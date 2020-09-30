@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { THEME } from '../../types/Enums';
+import { ThemeType } from '../../types/Enums';
 import { useTheme } from '../../context/ThemeContext';
 import GA from '../../analytics';
 
@@ -83,19 +83,19 @@ const ThemeSettings = (props) => {
               Tema
             </Typography>
             <ToggleButtonGroup aria-label='Tema' className={classes.group} exclusive onChange={changeTheme} orientation='vertical' value={themeName}>
-              <ToggleButton aria-label='Lyst tema' value={THEME.LIGHT}>
+              <ToggleButton aria-label='Lyst tema' value={ThemeType.LIGHT}>
                 <LightIcon />
                 <Typography className={classes.groupButton} variant='subtitle2'>
                   Lyst
                 </Typography>
               </ToggleButton>
-              <ToggleButton aria-label='Enhetsinnstilling' value={THEME.AUTOMATIC}>
+              <ToggleButton aria-label='Enhetsinnstilling' value={ThemeType.AUTOMATIC}>
                 <DeviceIcon />
                 <Typography className={classes.groupButton} variant='subtitle2'>
                   Automatisk
                 </Typography>
               </ToggleButton>
-              <ToggleButton aria-label='Mørkt tema' value={THEME.DARK}>
+              <ToggleButton aria-label='Mørkt tema' value={ThemeType.DARK}>
                 <DarkIcon />
                 <Typography className={classes.groupButton} variant='subtitle2'>
                   Mørkt

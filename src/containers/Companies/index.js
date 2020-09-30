@@ -111,7 +111,7 @@ function Companies(props) {
   };
 
   return (
-    <Navigation fancyNavbar footer whitesmoke>
+    <Navigation fancyNavbar whitesmoke>
       <Helmet>
         <title>For bedrifter - TIHLDE</title>
       </Helmet>

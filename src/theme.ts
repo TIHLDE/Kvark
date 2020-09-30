@@ -62,7 +62,6 @@ declare module '@material-ui/core/styles/createPalette' {
     sizes: {
       border: {
         width: string;
-        radius: number;
       };
     };
   }
@@ -128,7 +127,6 @@ declare module '@material-ui/core/styles/createPalette' {
     sizes?: {
       border: {
         width: string;
-        radius: number;
       };
     };
   }
@@ -136,6 +134,29 @@ declare module '@material-ui/core/styles/createPalette' {
 
 export const getTheme = (light: boolean) =>
   createMuiTheme({
+    breakpoints: {
+      values: {
+        xs: 400,
+        sm: 600,
+        md: 900,
+        lg: 1200,
+        xl: 1920,
+      },
+    },
+    shape: {
+      borderRadius: 8,
+    },
+    typography: {
+      h1: {
+        fontSize: '3.1rem',
+      },
+      h2: {
+        fontSize: '2.2rem',
+      },
+      h3: {
+        fontSize: '1.5rem',
+      },
+    },
     palette: {
       type: light ? 'light' : 'dark',
       primary: {
@@ -210,7 +231,6 @@ export const getTheme = (light: boolean) =>
       sizes: {
         border: {
           width: '1px',
-          radius: 5,
         },
       },
     },

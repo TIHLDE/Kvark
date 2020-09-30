@@ -70,7 +70,7 @@ const styles = (theme) => ({
   snackbar: {
     bottom: '20px',
     position: 'fixed',
-    borderRadius: theme.palette.sizes.border.radius,
+    borderRadius: theme.shape.borderRadius,
     color: theme.palette.colors.constant.white,
     textAlign: 'center',
     maxWidth: '75%',
@@ -89,7 +89,7 @@ const styles = (theme) => ({
   },
   qr: {
     width: '100%',
-    borderRadius: theme.palette.sizes.border.radius,
+    borderRadius: theme.shape.borderRadius,
     overflow: 'hidden',
     marginTop: 5,
   },
@@ -97,7 +97,7 @@ const styles = (theme) => ({
     padding: '5px 20px',
     display: 'flex',
     boxShadow: '0px 2px 4px ' + theme.palette.colors.border.main + '88',
-    borderRadius: theme.palette.sizes.border.radius,
+    borderRadius: theme.shape.borderRadius,
     marginBottom: 3,
   },
   cardUserName: {
@@ -328,7 +328,7 @@ class EventRegistration extends Component {
     const { classes } = this.props;
 
     return (
-      <Navigation fancyNavbar footer>
+      <Navigation fancyNavbar>
         <Helmet>
           <title>{this.state.eventName} - registering - TIHLDE</title>
         </Helmet>

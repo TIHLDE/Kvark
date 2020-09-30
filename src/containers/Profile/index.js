@@ -62,7 +62,7 @@ function Profile(props) {
   };
 
   return (
-    <Navigation fancyNavbar footer isLoading={isLoading} whitesmoke>
+    <Navigation fancyNavbar isLoading={isLoading} whitesmoke>
       <Helmet>
         <title>Profil - TIHLDE</title>
       </Helmet>

@@ -115,14 +115,14 @@ function ProfilePaper(props) {
   const [userData, setUserData] = useState({});
   const [isGroupMember, setIsGroupMember] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const eventTab = { label: 'Arrangementer', icon: EventIcon };
   const notificationsTab = { label: 'Varsler', icon: NotificationsIcon, badge: userData.unread_notifications };
   const settingsTab = { label: 'Profil', icon: ProfileIcon };
   const adminTab = { label: 'Admin', icon: AdminIcon, iconEnd: NewTabIcon, component: Link, to: URLS.admin };
   const logoutTab = { label: 'Logg ut', icon: LogOutIcon, onClick: logoutMethod };
-  const [tab, setTab] = useState(eventTab.label);
-  const [showModal, setShowModal] = useState(false);
   const tabs = [eventTab, notificationsTab, settingsTab, ...(isGroupMember ? [adminTab] : []), logoutTab];
+  const [tab, setTab] = useState(eventTab.label);
 
   const loadUserData = () => {
     UserService.getUserData()
@@ -182,10 +182,9 @@ function ProfilePaper(props) {
       <Paper className={classes.paper} noPadding>
         {showModal && userData && (
           <Modal className={classes.memberProof} onClose={() => setShowModal(false)} open={showModal}>
-            <QRCode size={280} value={userData.user_id ? userData.user_id : 'hhhhh'} />
+            <QRCode size={280} value={userData.user_id} />
           </Modal>
         )}
-
         <Avatar className={classes.avatar}>
           {userData.first_name ? (
             String(userData.first_name.substring(0, 1)) + userData.last_name.substring(0, 1)
@@ -193,7 +192,6 @@ function ProfilePaper(props) {
             <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant='text' />
           )}
         </Avatar>
-
         {userData.first_name ? (
           <>
             <Typography className={classes.text} variant='h4'>

@@ -53,7 +53,7 @@ const styles = (theme) => ({
     maxHeight: 350,
     objectFit: 'cover',
     backgroundColor: theme.palette.colors.border.main,
-    borderRadius: theme.palette.sizes.border.radius,
+    borderRadius: theme.shape.borderRadius,
     display: 'block',
     boxSizing: 'border-box',
   },
@@ -121,7 +121,7 @@ const styles = (theme) => ({
   priority: {
     padding: '0 3px',
     border: theme.palette.sizes.border.width + ' solid ' + theme.palette.colors.border.main,
-    borderRadius: theme.palette.sizes.border.radius,
+    borderRadius: theme.shape.borderRadius,
     margin: 3,
     color: theme.palette.colors.text.lighter,
   },

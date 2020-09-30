@@ -56,7 +56,6 @@ const styles = (theme) => ({
   button: {
     textAlign: 'center',
     border: theme.palette.sizes.border.width + ' solid ' + theme.palette.colors.border.main,
-    borderRadius: theme.palette.sizes.border.radius,
     boxShadow: '0px 2px 4px ' + theme.palette.colors.border.main + '88, 0px 0px 4px ' + theme.palette.colors.border.main + '88',
     margin: 0,
     height: 50,
@@ -74,7 +73,7 @@ function ContactInfo(props) {
   useEffect(() => window.scrollTo(0, 0), []);
 
   return (
-    <Navigation fancyNavbar footer whitesmoke>
+    <Navigation fancyNavbar whitesmoke>
       <Helmet>
         <title>Kontakt oss - TIHLDE</title>
       </Helmet>

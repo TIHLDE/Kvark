@@ -45,7 +45,7 @@ const styles = (theme) => ({
     width: '100%',
     height: 'auto',
     objectFit: 'contain',
-    borderRadius: theme.palette.sizes.border.radius,
+    borderRadius: theme.shape.borderRadius,
   },
   title: {
     color: theme.palette.colors.text.main,

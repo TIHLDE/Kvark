@@ -92,7 +92,7 @@ const styles = (theme) => ({
       top: 0,
     },
     border: theme.palette.sizes.border.width + ' solid ' + theme.palette.colors.border.main,
-    borderRadius: theme.palette.sizes.border.radius,
+    borderRadius: theme.shape.borderRadius,
     backgroundColor: theme.palette.colors.background.light,
   },
   paddingBtn: {
@@ -113,6 +113,7 @@ const styles = (theme) => ({
   },
   resetBtn: {
     marginTop: 10,
+    borderRadius: theme.shape.borderRadius,
   },
 });
 
@@ -217,7 +218,7 @@ function Events(props) {
   };
 
   return (
-    <Navigation fancyNavbar footer isLoading={isLoading} whitesmoke>
+    <Navigation fancyNavbar isLoading={isLoading} whitesmoke>
       <Helmet>
         <title>Arrangementer - TIHLDE</title>
       </Helmet>
