@@ -1,7 +1,7 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
+import htmlReactParser from 'html-react-parser';
 
 // Material UI Components
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -12,10 +12,7 @@ import Typography from '@material-ui/core/Typography';
 // Icons
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-// External Components
-import htmlReactParser from 'html-react-parser';
-
-const styles = (theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     maxWidth: '100%',
     overflow: 'hidden',
@@ -29,10 +26,10 @@ const styles = (theme) => ({
     color: theme.palette.text.secondary,
   },
   summary: {
-    '@media only screen and (max-width: 600px)': {
-      padding: 0,
-      paddingRight: 20,
-      paddingLeft: 20,
+    [theme.breakpoints.down('sm')]: {
+      padding: theme.spacing(0),
+      paddingRight: theme.spacing(2),
+      paddingLeft: theme.spacing(2),
     },
   },
   expansionDetails: {
@@ -43,13 +40,22 @@ const styles = (theme) => ({
   flat: {
     boxShadow: 'none',
   },
-});
+}));
 
-const Expansion = (props) => {
-  const { classes, flat, expand, customCallback, header, subheader, text, children, subtext } = props;
+export type ExpansionProps = {
+  flat?: boolean;
+  header: string;
+  subheader?: string;
+  text?: string;
+  children?: React.ReactNode;
+  subtext?: string;
+};
+
+const Expansion = ({ flat, header, subheader, text, children, subtext }: ExpansionProps) => {
+  const classes = useStyles();
   return (
-    <ExpansionPanel className={classNames(classes.root, flat ? classes.flat : null)} expanded={expand}>
-      <ExpansionPanelSummary className={classes.summary} expandIcon={<ExpandMoreIcon />} onClick={customCallback}>
+    <ExpansionPanel className={classNames(classes.root, flat ? classes.flat : null)}>
+      <ExpansionPanelSummary className={classes.summary} expandIcon={<ExpandMoreIcon />}>
         <Typography className={classes.heading}>{header}</Typography>
         {subheader && <Typography className={classes.secondaryHeading}>{htmlReactParser(subheader)}</Typography>}
       </ExpansionPanelSummary>
@@ -69,16 +75,4 @@ const Expansion = (props) => {
   );
 };
 
-Expansion.propTypes = {
-  classes: PropTypes.object,
-  flat: PropTypes.bool,
-  expand: PropTypes.bool,
-  customCallback: PropTypes.func,
-  header: PropTypes.string,
-  subheader: PropTypes.string,
-  text: PropTypes.string,
-  children: PropTypes.node,
-  subtext: PropTypes.string,
-};
-
-export default withStyles(styles)(Expansion);
+export default Expansion;

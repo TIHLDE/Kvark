@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   normalMain: {
     paddingTop: 64,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       paddingTop: 56,
     },
   },
@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   logoWrapper: {
     display: 'flex',
     minWidth: 150,
-    '@media only screen and (max-width: 600px)': {
+    [theme.breakpoints.down('xs')]: {
       flexDirection: 'row-reverse',
     },
   },
@@ -87,7 +87,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100vw',
     overflow: 'hidden',
     marginTop: 64,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       marginTop: 56,
     },
   },
@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100vw',
     height: 'auto',
     padding: 0,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       top: 56,
     },
   },

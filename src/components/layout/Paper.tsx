@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: theme.palette.colors.background.light,
   },
   padding: {
-    padding: 28,
+    padding: theme.spacing(3),
   },
   noBorder: {
     border: 'none',

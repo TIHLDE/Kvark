@@ -96,7 +96,7 @@ function NewStudent(props) {
                 <Paper noPadding>
                   {category.items.map((item, index) => (
                     <React.Fragment key={index}>
-                      <Expansion flat header={item.header} text={item.text} />
+                      <Expansion expand flat header={item.header} text={item.text} />
                       {index !== category.items.length - 1 && <Divider />}
                     </React.Fragment>
                   ))}

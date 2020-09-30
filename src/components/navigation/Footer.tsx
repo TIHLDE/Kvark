@@ -35,12 +35,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyItems: 'center',
     color: theme.palette.colors.footer.text,
     boxShadow: '0px -2px 5px 0px rgba(0,0,0,0.1)',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       gridTemplateRows: '1fr 1fr',
       gridTemplateAreas: "'about sosialMedia' 'sponsors theme'",
       gridTemplateColumns: '1fr 1fr',
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       gridTemplateRows: 'auto auto auto auto',
       gridTemplateAreas: "'theme' 'about' 'sosialMedia' 'sponsors'",
       gridTemplateColumns: '100%',

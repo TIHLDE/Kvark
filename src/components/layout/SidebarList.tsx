@@ -1,9 +1,8 @@
 import React, { Fragment } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 // Material UI Components
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -11,28 +10,28 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-// Project components
-import Pageination from './Pageination';
-
 // Icons
 import AddIcon from '@material-ui/icons/Add';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
 
-const styles = (theme) => ({
+// Project components
+import Pageination from 'components/layout/Pageination';
+
+const useStyles = makeStyles((theme: Theme) => ({
   sidebar: {
-    paddingTop: 64,
+    paddingTop: theme.spacing(8),
     position: 'fixed',
     left: 0,
     top: 0,
     bottom: 0,
-    width: (props) => props.width,
+    width: (props: SidebarListProps | ListItemProps) => ('width' in props ? props.width : 0),
     backgroundColor: theme.palette.colors.background.light,
     border: theme.palette.sizes.border.width + ' solid ' + theme.palette.colors.border.main,
 
-    '@media only screen and (max-width: 800px)': {
+    [theme.breakpoints.down('sm')]: {
       position: 'static',
       width: '100% !important',
-      padding: 0,
+      padding: theme.spacing(0),
     },
   },
   sidebarContent: {
@@ -42,16 +41,16 @@ const styles = (theme) => ({
   sidebarTop: {
     backgroundColor: theme.palette.colors.background.main,
     color: theme.palette.colors.text.main,
-    padding: '10px 5px 10px 12px',
+    padding: theme.spacing(1, 1, 1, 2),
     position: 'sticky',
     top: 0,
     zIndex: 200,
   },
   miniTop: {
-    padding: '5px 5px 5px 12px',
+    padding: theme.spacing(1, 1, 1, 2),
   },
   listItem: {
-    padding: '10px 10px',
+    padding: theme.spacing(1, 1),
     textAlign: 'left',
     color: theme.palette.colors.text.main,
   },
@@ -65,16 +64,24 @@ const styles = (theme) => ({
   progress: {
     display: 'block',
     margin: 'auto',
-    marginTop: 10,
+    marginTop: theme.spacing(1),
 
-    '@media only screen and (max-width: 800px)': {
+    [theme.breakpoints.down('sm')]: {
       order: 1,
     },
   },
-});
+}));
 
-const ListItem = withStyles(styles, { withTheme: true })((props) => {
-  const { classes, onClick, selected, title, location } = props;
+export type ListItemProps = {
+  title: string;
+  location: string;
+  onClick: () => void;
+  selected: boolean;
+};
+
+const ListItem = (props: ListItemProps) => {
+  const classes = useStyles(props);
+  const { onClick, selected, title, location } = props;
   return (
     <Fragment>
       <ButtonBase className={classes.listButton} onClick={onClick}>
@@ -92,16 +99,31 @@ const ListItem = withStyles(styles, { withTheme: true })((props) => {
       <Divider />
     </Fragment>
   );
-});
-
-ListItem.propTypes = {
-  title: PropTypes.string,
-  location: PropTypes.string,
 };
 
-const SidebarList = (props) => {
-  const { classes, items, expiredItems, onItemClick, selectedItemId, getNextPage, nextPage, title, fetchExpired, hideExpired, isLoading } = props;
+export type item = {
+  id: number;
+  title: string;
+  location: string;
+};
 
+export type SidebarListProps = {
+  items: item[];
+  expiredItems: item[];
+  onItemClick: (i: null | item) => void;
+  selectedItemId: number;
+  fetchExpired?: () => void;
+  getNextPage: () => void;
+  nextPage?: number;
+  width: number;
+  hideExpired?: boolean;
+  title: string;
+  isLoading: boolean;
+};
+
+const SidebarList = (props: SidebarListProps) => {
+  const classes = useStyles(props);
+  const { items, expiredItems, onItemClick, selectedItemId, getNextPage, nextPage, title, fetchExpired, hideExpired, isLoading } = props;
   return (
     <div className={classes.sidebar}>
       <Grid className={classNames(classes.sidebarContent, 'noScrollbar')} container direction='column' wrap='nowrap'>
@@ -148,27 +170,4 @@ const SidebarList = (props) => {
   );
 };
 
-SidebarList.propTypes = {
-  classes: PropTypes.object,
-  items: PropTypes.array.isRequired,
-  expiredItems: PropTypes.array,
-  onItemClick: PropTypes.func.isRequired,
-  selectedItemId: PropTypes.number,
-  fetchExpired: PropTypes.func,
-  getNextPage: PropTypes.func,
-  nextPage: PropTypes.number,
-  width: PropTypes.number,
-  hideExpired: PropTypes.bool,
-  title: PropTypes.string.isRequired,
-  isLoading: PropTypes.bool,
-};
-
-SidebarList.defaultProps = {
-  expiredItems: [],
-  fetchExpired: () => {},
-  width: 300,
-  hideExpired: false,
-  isLoading: false,
-};
-
-export default withStyles(styles)(SidebarList);
+export default SidebarList;

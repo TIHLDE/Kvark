@@ -1,14 +1,13 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 import parser from 'html-react-parser';
 import classNames from 'classnames';
 
 // Material UI Components
+import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Hidden from '@material-ui/core/Hidden';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     overflow: 'hidden',
     width: '100%',
@@ -20,21 +19,21 @@ const styles = (theme) => ({
   },
   topInner: {
     height: 'auto',
-    padding: '60px 0 0',
-    background: (props) => (props.background ? props.background : theme.palette.colors.gradient.main.top),
+    padding: theme.spacing(8, 0, 0),
+    background: (props: BannerProps) => (props.background ? props.background : theme.palette.colors.gradient.main.top),
   },
   topContent: {
-    maxWidth: 1200,
+    maxWidth: theme.breakpoints.values.lg,
     margin: 'auto',
-    padding: 20,
-    paddingBottom: 0,
-    paddingTop: 70,
+    padding: theme.spacing(2),
+    paddingBottom: theme.spacing(0),
+    paddingTop: theme.spacing(9),
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    '@media only screen and (max-width: 900px)': {
+    [theme.breakpoints.down('sm')]: {
       fontSize: '2.1em',
-      padding: 20,
+      padding: theme.spacing(2),
       flexDirection: 'column',
     },
   },
@@ -42,20 +41,20 @@ const styles = (theme) => ({
     color: theme.palette.colors.gradient.main.text,
     fontWeight: 'bold',
     fontSize: 72,
-    '@media only screen and (max-width: 900px)': {
+    [theme.breakpoints.down('sm')]: {
       fontSize: 50,
-      padding: '0 20px',
+      padding: theme.spacing(0, 2),
     },
   },
   text: {
     color: theme.palette.colors.gradient.main.text,
-    paddingTop: 20,
+    paddingTop: theme.spacing(2),
     maxWidth: 600,
     width: '50vw',
     fontSize: 18,
-    '@media only screen and (max-width: 900px)': {
+    [theme.breakpoints.down('sm')]: {
       fontSize: '16px',
-      padding: 20,
+      padding: theme.spacing(2),
       width: '100%',
     },
   },
@@ -65,11 +64,11 @@ const styles = (theme) => ({
     width: 50,
   },
   children: {
-    padding: '20px 0 0',
+    padding: theme.spacing(2, 0, 0),
     minWidth: 300,
-    '@media only screen and (max-width: 900px)': {
+    [theme.breakpoints.down('sm')]: {
       minWidth: 200,
-      padding: '20px 20px 0 20px',
+      padding: theme.spacing(2, 2, 0, 2),
     },
   },
   svg: {
@@ -78,13 +77,24 @@ const styles = (theme) => ({
     marginLeft: -5,
   },
   background: {
-    fill: (props) => (props.background ? props.background : theme.palette.colors.gradient.main.top),
+    fill: (props: BannerProps) => (props.background ? props.background : theme.palette.colors.gradient.main.top),
     fillOpacity: 1,
   },
-});
+}));
 
-const Banner = (props) => {
-  const { classes, className, title, text, children } = props;
+export type BannerProps = {
+  className?: string;
+  title?: string;
+  text?: string;
+  children?: React.ReactNode;
+  background?: string;
+};
+
+const Banner = (props: BannerProps) => {
+  const classes = useStyles(props);
+  const { className, title, text, children } = props;
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <div className={classNames(classes.root, className)}>
       <div className={classes.top}>
@@ -92,13 +102,13 @@ const Banner = (props) => {
           <div className={classes.topContent}>
             <div>
               {title && (
-                <Typography className={classes.title} variant='h3'>
+                <Typography className={classes.title} variant='h1'>
                   <strong>{title}</strong>
                   <div className={classes.line} />
                 </Typography>
               )}
               {text && (
-                <Typography className={classes.text} variant='subtitle2'>
+                <Typography className={classes.text} component='p' variant='subtitle2'>
                   {parser(text)}
                 </Typography>
               )}
@@ -106,28 +116,18 @@ const Banner = (props) => {
             {children && <div className={classes.children}>{children}</div>}
           </div>
         </div>
-        <Hidden smUp>
+        {isSmallScreen ? (
           <svg className={classes.svg} viewBox='0 30 500 45' xmlns='http://www.w3.org/2000/svg'>
             <path className={classes.background} d='M0.00,49.99 C225.95,117.73 260.38,-10.55 500.00,49.99 L500.00,-0.00 L0.00,-0.00 Z'></path>
           </svg>
-        </Hidden>
-        <Hidden xsDown>
+        ) : (
           <svg className={classes.svg} viewBox='0 30 500 45' xmlns='http://www.w3.org/2000/svg'>
             <path className={classes.background} d='M0.00,49.99 C233.29,86.15 256.43,22.00 500.00,49.99 L500.00,-0.00 L0.00,-0.00 Z'></path>
           </svg>
-        </Hidden>
+        )}
       </div>
     </div>
   );
 };
 
-Banner.propTypes = {
-  classes: PropTypes.object,
-  className: PropTypes.string,
-  title: PropTypes.string,
-  text: PropTypes.string,
-  children: PropTypes.node,
-  background: PropTypes.string,
-};
-
-export default withStyles(styles)(Banner);
+export default Banner;
