@@ -24,6 +24,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import IconButton from '@material-ui/core/IconButton';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Avatar from '@material-ui/core/Avatar';
+import Container from '@material-ui/core/Container';
 
 // Assets/Icons
 import TIHLDELOGO from 'assets/img/TIHLDE_LOGO.png';
@@ -49,10 +50,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   main: {
     minHeight: '101vh',
+    paddingBottom: theme.spacing(2),
   },
   normalMain: {
     paddingTop: 64,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       paddingTop: 56,
     },
   },
@@ -70,7 +72,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   logoWrapper: {
     display: 'flex',
     minWidth: 150,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       flexDirection: 'row-reverse',
     },
   },
@@ -87,7 +89,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100vw',
     overflow: 'hidden',
     marginTop: 64,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       marginTop: 56,
     },
   },
@@ -106,7 +108,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100vw',
     height: 'auto',
     padding: 0,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       top: 56,
     },
   },
@@ -137,7 +139,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.colors.constant.white,
     minWidth: '40px',
     textAlign: 'right',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
   },
@@ -214,13 +216,15 @@ const PersonIcon = ({ user, link }: PersonIconProps) => {
 
 export type NavigationProps = {
   children?: React.ReactNode;
+  banner?: React.ReactElement;
+  noMaxWidth?: boolean;
   isLoading?: boolean;
   noFooter?: boolean;
   whitesmoke?: boolean;
   fancyNavbar?: boolean;
 };
 
-function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, children }: NavigationProps) {
+function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, banner, children }: NavigationProps) {
   const classes = useStyles();
   const location = useLocation();
   const { getUserData } = useUser();
@@ -291,7 +295,7 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, children }: 
           </div>
 
           <div className={classes.grow}>
-            <Hidden smDown>
+            <Hidden mdDown>
               <URIbutton data={{ link: URLS.about, text: 'Om TIHLDE' }} selected={location.pathname === URLS.about} />
               {/* AuthService.isAuthenticated() && <URIbutton data={{ link: URLS.cheatsheet, text: "Kokebok" }} selected={location.pathname === URLS.cheatsheet} />*/}
               <URIbutton data={{ link: URLS.events, text: 'Arrangementer' }} selected={location.pathname === URLS.events} />
@@ -304,14 +308,14 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, children }: 
             {AuthService.isAuthenticated() && userData ? (
               <PersonIcon link={URLS.profile} user={userData} />
             ) : (
-              <Hidden smDown>
+              <Hidden mdDown>
                 <IconButton className={classes.menuButton} component={Link} to={URLS.login}>
                   <PersonOutlineIcon />
                 </IconButton>
               </Hidden>
             )}
           </div>
-          <Hidden mdUp>
+          <Hidden lgUp>
             <div className={classes.menuWrapper}>
               <IconButton className={classes.menuButton} onClick={toggleSidebar}>
                 <MenuIcon />
@@ -332,7 +336,16 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, children }: 
         />
       )}
       <main className={classNames(classes.main, !fancyNavbar && classes.normalMain, whitesmoke ? classes.whitesmoke : classes.light)}>
-        {isLoading ? <LinearProgress /> : children}
+        {isLoading ? (
+          <LinearProgress />
+        ) : banner ? (
+          <>
+            {banner}
+            <Container maxWidth={noMaxWidth ? false : 'xl'}>{children}</Container>
+          </>
+        ) : (
+          children
+        )}
       </main>
       {!noFooter && !isLoading && <Footer />}
     </>

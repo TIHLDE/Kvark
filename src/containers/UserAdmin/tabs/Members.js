@@ -242,7 +242,7 @@ const Members = (props) => {
       ) : (
         <Grow in={!isFetching}>
           <div>
-            <Hidden xsDown>
+            <Hidden smDown>
               <Grid alignItems='center' className={classes.notActivated} container direction='row' wrap='nowrap'>
                 <Typography className={classNames(classes.title, classes.name)} variant='subtitle1'>
                   Navn:

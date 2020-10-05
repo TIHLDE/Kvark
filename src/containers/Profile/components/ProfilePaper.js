@@ -108,6 +108,9 @@ const styles = (theme) => ({
   redirect: {
     justifyContent: 'flex-end',
   },
+  logOutButton: {
+    color: theme.palette.colors.status.red,
+  },
 });
 
 function ProfilePaper(props) {
@@ -121,7 +124,7 @@ function ProfilePaper(props) {
   const notificationsTab = { label: 'Varsler', icon: NotificationsIcon, badge: userData.unread_notifications };
   const settingsTab = { label: 'Profil', icon: ProfileIcon };
   const adminTab = { label: 'Admin', icon: AdminIcon, iconEnd: NewTabIcon, component: Link, to: URLS.admin };
-  const logoutTab = { label: 'Logg ut', icon: LogOutIcon, onClick: logoutMethod };
+  const logoutTab = { label: 'Logg ut', icon: LogOutIcon, onClick: logoutMethod, className: classes.logOutButton };
   const tabs = [eventTab, notificationsTab, settingsTab, ...(isGroupMember ? [adminTab] : []), logoutTab];
   const [tab, setTab] = useState(eventTab.label);
 
@@ -157,7 +160,7 @@ function ProfilePaper(props) {
     <ListItem button onClick={onClick ? onClick : () => setTab(label)} selected={tab === label} {...props}>
       <ListItemIcon>
         <Badge badgeContent={badge} color='error'>
-          <Icon color={tab === label ? 'primary' : 'inherit'} />
+          <Icon className={props.className} color={tab === label ? 'primary' : 'inherit'} />
         </Badge>
       </ListItemIcon>
       <ListItemText primary={label} />
@@ -174,6 +177,7 @@ function ProfilePaper(props) {
     iconEnd: PropTypes.object,
     badge: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     onClick: PropTypes.func,
+    className: PropTypes.string,
   };
 
   return (

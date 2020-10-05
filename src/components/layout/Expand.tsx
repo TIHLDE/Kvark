@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.text.secondary,
   },
   summary: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: theme.spacing(0),
       paddingRight: theme.spacing(2),
       paddingLeft: theme.spacing(2),

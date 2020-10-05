@@ -322,7 +322,7 @@ const Cheetsheet = (props) => {
               (files) => (
                 <Grow in={submitFormLazy.isSuccess()}>
                   <div>
-                    <Hidden xsDown>
+                    <Hidden smDown>
                       <Grid alignItems='center' className={classes.filesHeaderContainer} container direction='row' wrap='nowrap'>
                         <Typography className={classes.filesHeader} variant='subtitle1'>
                           Tittel:

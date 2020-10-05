@@ -13,7 +13,7 @@ import Paper from 'components/layout/Paper';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: theme.spacing(4),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       margin: theme.spacing(0, 1),
     },
   },
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     height: '100%',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       flexDirection: 'column',
     },
   },
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'center',
     marginRight: theme.spacing(4),
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       margin: theme.spacing(0, 4, 4, 4),
       minHeight: 160,
     },
