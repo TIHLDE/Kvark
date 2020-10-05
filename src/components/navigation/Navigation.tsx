@@ -3,13 +3,13 @@ import { Link, useLocation } from 'react-router-dom';
 import URLS from 'URLS';
 import classNames from 'classnames';
 import Helmet from 'react-helmet';
-import { Warning } from 'types/Types';
+import { Warning, User } from 'types/Types';
 import { WarningType } from 'types/Enums';
 
 // API and store imports
-import MiscService from 'api/services/MiscService';
+import { useMisc } from 'api/hooks/Misc';
 import AuthService from 'api/services/AuthService';
-import UserService from 'api/services/UserService';
+import { useUser } from 'api/hooks/User';
 import { getCookie, setCookie } from 'api/cookie';
 import { WARNINGS_READ } from 'settings';
 
@@ -186,10 +186,7 @@ const URIbutton = ({ data, selected }: URIbuttonProps) => {
 
 // TODO: replace with User-object from DB
 export type PersonIconProps = {
-  user: {
-    first_name: string;
-    last_name: string;
-  };
+  user: User;
   link: string;
 };
 
@@ -226,29 +223,39 @@ export type NavigationProps = {
 function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, children }: NavigationProps) {
   const classes = useStyles();
   const location = useLocation();
+  const { getUserData } = useUser();
+  const { getWarnings } = useMisc();
   const [showSidebar, setShowSidebar] = useState(false);
   const [warning, setWarning] = useState<Warning | null>(null);
-  const [userData, setUserData] = useState<PersonIconProps['user'] | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
   const [scrollLength, setScrollLength] = useState(0);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true });
-    if (AuthService.isAuthenticated()) {
-      UserService.getUserData().then((user) => {
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    getUserData()
+      .then((user) => {
         if (user) {
           setUserData(user);
         }
-      });
-    }
-    MiscService.getWarning().then((data: Warning[]) => {
-      const warningsRead = getCookie(WARNINGS_READ);
-      const readArray = (warningsRead === undefined ? [] : warningsRead) as number[];
-      if (data?.length && !readArray.includes(data[data.length - 1].id)) {
-        setWarning(data[data.length - 1]);
-      }
-    });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+      })
+      .catch(() => {});
+  }, [getUserData]);
+
+  useEffect(() => {
+    getWarnings()
+      .then((data: Array<Warning>) => {
+        const warningsRead = getCookie(WARNINGS_READ);
+        const readArray = (warningsRead === undefined ? [] : warningsRead) as number[];
+        if (data?.length && !readArray.includes(data[data.length - 1].id)) {
+          setWarning(data[data.length - 1]);
+        }
+      })
+      .catch(() => {});
+  }, [getWarnings]);
 
   const handleScroll = () => {
     setScrollLength(window.pageYOffset);

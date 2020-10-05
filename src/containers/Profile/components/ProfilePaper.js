@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import QRCode from 'qrcode.react';
 
 // API and store import
-import UserService from '../../../api/services/UserService';
+import { useUser } from '../../../api/hooks/User';
 
 // Material-UI
 import Typography from '@material-ui/core/Typography';
@@ -112,6 +112,7 @@ const styles = (theme) => ({
 
 function ProfilePaper(props) {
   const { classes, logoutMethod } = props;
+  const { getUserData } = useUser();
   const [userData, setUserData] = useState({});
   const [isGroupMember, setIsGroupMember] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -124,8 +125,8 @@ function ProfilePaper(props) {
   const tabs = [eventTab, notificationsTab, settingsTab, ...(isGroupMember ? [adminTab] : []), logoutTab];
   const [tab, setTab] = useState(eventTab.label);
 
-  const loadUserData = () => {
-    UserService.getUserData()
+  useEffect(() => {
+    getUserData()
       .then((user) => {
         if (user) {
           user.notifications.reverse();
@@ -138,9 +139,7 @@ function ProfilePaper(props) {
       })
       .catch(() => {})
       .finally(() => setIsLoading(false));
-  };
-
-  useEffect(() => loadUserData(), []);
+  }, [getUserData]);
 
   useEffect(() => {
     if (tab === notificationsTab.label && userData.unread_notifications !== 0) {

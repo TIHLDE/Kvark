@@ -7,7 +7,7 @@ import Helmet from 'react-helmet';
 
 // Service and action imports
 import AuthService from '../../api/services/AuthService';
-import MiscService from '../../api/services/MiscService';
+import { useMisc } from '../../api/hooks/Misc';
 
 // Text imports
 import Text from '../../text/LogInText';
@@ -79,7 +79,7 @@ const styles = (theme) => ({
 function LogIn(props) {
   const { classes } = props;
   const history = useHistory();
-
+  const { setLogInRedirectURL, getLogInRedirectURL } = useMisc();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
@@ -88,9 +88,9 @@ function LogIn(props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    setRedirectUrl(MiscService.getLogInRedirectURL());
-    MiscService.setLogInRedirectURL(null);
-  }, []);
+    setRedirectUrl(getLogInRedirectURL());
+    setLogInRedirectURL(null);
+  }, [getLogInRedirectURL, setLogInRedirectURL]);
 
   useEffect(() => setErrorMessage(null), [username, password]);
 

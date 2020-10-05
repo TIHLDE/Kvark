@@ -5,7 +5,7 @@ import connect from 'react-redux/es/connect/connect';
 import classNames from 'classnames';
 
 // API and store imports
-import UserService from '../../../api/services/UserService';
+import { useUser } from '../../../api/hooks/User';
 
 // Material Components
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -69,6 +69,7 @@ const styles = () => ({
 });
 
 const Members = (props) => {
+  const { getUsers, updateUserData } = useUser();
   const userClass = ['Alle', '1. klasse', '2. klasse', '3. klasse', '4. klasse', '5. klasse'];
   const userStudy = ['Alle', 'Dataing', 'DigFor', 'DigSec', 'DigSam', 'Drift'];
   const [memberList, setMemberList] = useState([]);
@@ -97,7 +98,7 @@ const Members = (props) => {
     }
 
     // Fetch members from server
-    UserService.getUsers(urlParameters)
+    getUsers(urlParameters)
       .then((data) => {
         let displayedMembers = [];
         const nextPageUrl = data.next;
@@ -137,7 +138,7 @@ const Members = (props) => {
     window.scrollTo(0, 0);
     loadMembers();
     // eslint-disable-next-line
-  },[]);
+  }, []);
 
   const filterMembers = async (searchInput, userClassChoiceInput, userStudyChoiceInput) => {
     setIsFetching(true);
@@ -163,8 +164,10 @@ const Members = (props) => {
 
   useEffect(() => {
     const searchInput = search;
-    const timer = setTimeout(() => filterMembers(searchInput, userClassChoice, userStudyChoice), 500);
-    return () => clearTimeout(timer);
+    if (searchInput.trim() !== '') {
+      const timer = setTimeout(() => filterMembers(searchInput, userClassChoice, userStudyChoice), 500);
+      return () => clearTimeout(timer);
+    }
     // eslint-disable-next-line
   }, [search]);
 
@@ -198,9 +201,10 @@ const Members = (props) => {
   };
 
   const handleMembers = (id, isMember) => {
-    UserService.updateUserData(id, { is_TIHLDE_member: isMember });
-    const newMembers = memberList.filter((x) => x.user_id !== id);
-    setMemberList(newMembers);
+    updateUserData(id, { is_TIHLDE_member: isMember }).then(() => {
+      const newMembers = memberList.filter((x) => x.user_id !== id);
+      setMemberList(newMembers);
+    });
   };
 
   const { classes } = props;

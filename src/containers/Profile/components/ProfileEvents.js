@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import UserService from '../../../api/services/UserService';
+import { useUser } from '../../../api/hooks/User';
 import URLS from '../../../URLS';
 import { getFormattedDate } from '../../../utils';
 import moment from 'moment';
@@ -25,16 +25,17 @@ const styles = (theme) => ({
 function ProfileEvents(props) {
   const { classes } = props;
   const [events, setEvents] = useState([]);
+  const { getUserData } = useUser();
 
-  const loadUserData = () => {
-    UserService.getUserData().then((user) => {
-      if (user) {
-        setEvents(user.events);
-      }
-    });
-  };
-
-  useEffect(() => loadUserData(), []);
+  useEffect(() => {
+    getUserData()
+      .then((user) => {
+        if (user) {
+          setEvents(user.events);
+        }
+      })
+      .catch(() => {});
+  }, [getUserData]);
 
   return (
     <div>

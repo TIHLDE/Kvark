@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import GA from '../../../analytics';
 
 // Service imports
-import MiscService from '../../../api/services/MiscService';
+import API from '../../../api/api';
 
 // Material UI Components
 import { TextField, Typography } from '@material-ui/core';
@@ -259,8 +259,8 @@ class Forum extends Component {
     }
     this.setState({ isLoading: true });
     GA.event('Companies form', 'Register interest');
-    MiscService.postEmail(this.state.data, (isError, data) => {
-      if (isError === false && data) {
+    API.emailForm(this.state.data).then((response) => {
+      if (!response.isError) {
         this.setMessage('Sendt! Takk for interessen.');
       } else {
         this.setMessage('Noe gikk galt, prøv senere.');

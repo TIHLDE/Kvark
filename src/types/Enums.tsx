@@ -10,3 +10,10 @@ export enum WarningType {
   WARNING = 1,
   MESSAGE = 2,
 }
+
+export enum RequestMethodType {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
+}

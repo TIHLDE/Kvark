@@ -19,7 +19,7 @@ import ListItem from '@material-ui/core/ListItem';
 
 // API and store imports
 import CheatsheetService from '../../api/services/CheatsheetService';
-import UserService from '../../api/services/UserService';
+import { useUser } from '../../api/hooks/User';
 
 // Project Components
 import Pageination from '../../components/layout/Pageination';
@@ -130,6 +130,7 @@ const Cheetsheet = (props) => {
   const { classes } = props;
   const history = useHistory();
   const { studyId, classId } = useParams();
+  const { getUserData } = useUser();
   // eslint-disable-next-line new-cap
   const [submitFormLazy, setSubmitFormLazy] = useState(Initial());
   const [input, setInput] = useState('');
@@ -181,7 +182,7 @@ const Cheetsheet = (props) => {
   };
 
   const loadUserData = () => {
-    UserService.getUserData()
+    getUserData()
       .then((user) => {
         setClassChoice(user.user_class);
         setStudyChoice(user.user_study);

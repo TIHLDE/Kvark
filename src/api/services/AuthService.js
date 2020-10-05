@@ -1,8 +1,5 @@
 import AUTH from '../auth';
 import { getCookie, setCookie, removeCookie } from '../cookie';
-import store from '../../store/store';
-import * as UserActions from '../../store/actions/UserActions';
-import UserService from './UserService';
 import { ACCESS_TOKEN } from '../../settings';
 
 class AuthService {
@@ -24,7 +21,6 @@ class AuthService {
       }
       if (data && data.token) {
         setCookie(ACCESS_TOKEN, data.token);
-        UserService.getUserData();
         return data;
       }
       return null;
@@ -53,7 +49,6 @@ class AuthService {
 
     // Log out
     removeCookie(ACCESS_TOKEN);
-    UserActions.clearData()(store.dispatch);
   }
 }
 
