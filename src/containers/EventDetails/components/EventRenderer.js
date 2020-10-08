@@ -21,7 +21,7 @@ import Paper from '../../../components/layout/Paper';
 import URLS from '../../../URLS';
 
 // Services
-import MiscService from '../../../api/services/MiscService';
+import { useMisc } from '../../../api/hooks/Misc';
 
 const styles = (theme) => ({
   grid: {
@@ -266,7 +266,7 @@ const EventRenderer = (props) => {
     clearMessage,
     preview,
   } = props;
-
+  const { setLogInRedirectURL } = useMisc();
   const [modalShow, setModalShown] = useState(false);
   const description = eventData.description || '';
   const startDate = moment(eventData.start_date, ['YYYY-MM-DD HH:mm'], 'nb');
@@ -281,7 +281,7 @@ const EventRenderer = (props) => {
       if (userData) {
         setModalShown(true);
       } else {
-        MiscService.setLogInRedirectURL(props.history.location.pathname);
+        setLogInRedirectURL(props.history.location.pathname);
         props.history.replace(URLS.login);
       }
     }

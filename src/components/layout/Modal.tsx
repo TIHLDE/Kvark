@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     'overflow-y': 'auto',
     transform: 'translate(-50%,-50%)',
     outline: 'none',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       width: '100%',
     },
   },

@@ -15,11 +15,14 @@ const ThemeContext = createContext<ContextProps | undefined>(undefined);
 
 const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const [useLightTheme, setUseLightTheme] = useState(true);
+  const [useLightTheme, setUseLightTheme] = useState(!prefersDarkMode);
   const updateTheme = (newThemeName: ThemeType | undefined) => {
     if (newThemeName !== undefined) {
       setUseLightTheme(newThemeName === ThemeType.AUTOMATIC ? !prefersDarkMode : newThemeName === ThemeType.LIGHT);
       setCookie(ThemeType.KEY, newThemeName);
+    } else {
+      setUseLightTheme(!prefersDarkMode);
+      setCookie(ThemeType.KEY, ThemeType.AUTOMATIC);
     }
   };
 

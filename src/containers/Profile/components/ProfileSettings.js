@@ -4,9 +4,7 @@ import PropTypes from 'prop-types';
 import { getUserStudyLong, getUserClass } from '../../../utils';
 
 // API and store import
-import UserService from '../../../api/services/UserService';
-import store from '../../../store/store';
-import * as UserActions from '../../../store/actions/UserActions';
+import { useUser } from '../../../api/hooks/User';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
@@ -55,20 +53,21 @@ const styles = (theme) => ({
 
 function ProfileSettings(props) {
   const { classes } = props;
+  const { getUserData, updateUserData } = useUser();
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
-  const loadUserData = () => {
-    UserService.getUserData().then((user) => {
-      if (user) {
-        setUserData(user);
-      }
-    });
-  };
-
-  useEffect(() => loadUserData(), []);
+  useEffect(() => {
+    getUserData()
+      .then((user) => {
+        if (user) {
+          setUserData(user);
+        }
+      })
+      .catch(() => {});
+  }, [getUserData]);
 
   const updateData = (e) => {
     e.preventDefault();
@@ -78,16 +77,13 @@ function ProfileSettings(props) {
     }
 
     setIsLoading(true);
-    UserService.updateUserData(userData.user_id, userData, (isError, data) => {
-      if (!isError) {
-        setSnackbarMessage('Oppdateringen var vellykket!');
-        UserActions.setUserData([data])(store.dispatch);
-      } else {
-        setSnackbarMessage('Noe gikk galt');
-      }
-      setSnackbarOpen(true);
-      setIsLoading(false);
-    });
+    updateUserData(userData.user_id, userData, true)
+      .then((data) => setSnackbarMessage(data.detail))
+      .catch((error) => setSnackbarMessage(error.detail))
+      .finally(() => {
+        setSnackbarOpen(true);
+        setIsLoading(false);
+      });
   };
 
   return (

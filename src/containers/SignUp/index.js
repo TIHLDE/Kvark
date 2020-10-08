@@ -8,7 +8,7 @@ import Helmet from 'react-helmet';
 
 // Service and action imports
 import AuthService from '../../api/services/AuthService';
-import MiscService from '../../api/services/MiscService';
+import { useMisc } from '../../api/hooks/Misc';
 
 // Material UI Components
 import { withStyles } from '@material-ui/core/styles';
@@ -77,16 +77,16 @@ function SignUp(props) {
   const history = useHistory();
 
   const { handleSubmit, errors, control, setError } = useForm();
-
+  const { setLogInRedirectURL, getLogInRedirectURL } = useMisc();
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [redirectURL, setRedirectUrl] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    setRedirectUrl(MiscService.getLogInRedirectURL());
-    MiscService.setLogInRedirectURL(null);
-  }, []);
+    setRedirectUrl(getLogInRedirectURL());
+    setLogInRedirectURL(null);
+  }, [getLogInRedirectURL, setLogInRedirectURL]);
 
   const onSignUp = (data) => {
     if (isLoading) {

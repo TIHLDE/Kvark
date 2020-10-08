@@ -136,11 +136,11 @@ export const getTheme = (light: boolean) =>
   createMuiTheme({
     breakpoints: {
       values: {
-        xs: 400,
-        sm: 600,
-        md: 900,
-        lg: 1200,
-        xl: 1920,
+        xs: 0,
+        sm: 400,
+        md: 600,
+        lg: 900,
+        xl: 1200,
       },
     },
     shape: {
@@ -220,7 +220,7 @@ export const getTheme = (light: boolean) =>
         },
         status: {
           green: '#0b7c0b',
-          red: '#b20101',
+          red: light ? '#b20101' : '#ff6060',
         },
         constant: {
           smoke: '#fefefe',

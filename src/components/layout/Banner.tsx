@@ -3,9 +3,9 @@ import parser from 'html-react-parser';
 import classNames from 'classnames';
 
 // Material UI Components
-import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Hidden from '@material-ui/core/Hidden';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: (props: BannerProps) => (props.background ? props.background : theme.palette.colors.gradient.main.top),
   },
   topContent: {
-    maxWidth: theme.breakpoints.values.lg,
+    maxWidth: theme.breakpoints.values.xl,
     margin: 'auto',
     padding: theme.spacing(2),
     paddingBottom: theme.spacing(0),
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: '2.1em',
       padding: theme.spacing(2),
       flexDirection: 'column',
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.colors.gradient.main.text,
     fontWeight: 'bold',
     fontSize: 72,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: 50,
       padding: theme.spacing(0, 2),
     },
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxWidth: 600,
     width: '50vw',
     fontSize: 18,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: '16px',
       padding: theme.spacing(2),
       width: '100%',
@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   children: {
     padding: theme.spacing(2, 0, 0),
     minWidth: 300,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       minWidth: 200,
       padding: theme.spacing(2, 2, 0, 2),
     },
@@ -93,8 +93,6 @@ export type BannerProps = {
 const Banner = (props: BannerProps) => {
   const classes = useStyles(props);
   const { className, title, text, children } = props;
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <div className={classNames(classes.root, className)}>
       <div className={classes.top}>
@@ -116,15 +114,16 @@ const Banner = (props: BannerProps) => {
             {children && <div className={classes.children}>{children}</div>}
           </div>
         </div>
-        {isSmallScreen ? (
+        <Hidden mdUp>
           <svg className={classes.svg} viewBox='0 30 500 45' xmlns='http://www.w3.org/2000/svg'>
             <path className={classes.background} d='M0.00,49.99 C225.95,117.73 260.38,-10.55 500.00,49.99 L500.00,-0.00 L0.00,-0.00 Z'></path>
           </svg>
-        ) : (
+        </Hidden>
+        <Hidden smDown>
           <svg className={classes.svg} viewBox='0 30 500 45' xmlns='http://www.w3.org/2000/svg'>
             <path className={classes.background} d='M0.00,49.99 C233.29,86.15 256.43,22.00 500.00,49.99 L500.00,-0.00 L0.00,-0.00 Z'></path>
           </svg>
-        )}
+        </Hidden>
       </div>
     </div>
   );

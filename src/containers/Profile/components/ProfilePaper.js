@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import QRCode from 'qrcode.react';
 
 // API and store import
-import UserService from '../../../api/services/UserService';
+import { useUser } from '../../../api/hooks/User';
 
 // Material-UI
 import Typography from '@material-ui/core/Typography';
@@ -108,10 +108,14 @@ const styles = (theme) => ({
   redirect: {
     justifyContent: 'flex-end',
   },
+  logOutButton: {
+    color: theme.palette.colors.status.red,
+  },
 });
 
 function ProfilePaper(props) {
   const { classes, logoutMethod } = props;
+  const { getUserData } = useUser();
   const [userData, setUserData] = useState({});
   const [isGroupMember, setIsGroupMember] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -120,12 +124,12 @@ function ProfilePaper(props) {
   const notificationsTab = { label: 'Varsler', icon: NotificationsIcon, badge: userData.unread_notifications };
   const settingsTab = { label: 'Profil', icon: ProfileIcon };
   const adminTab = { label: 'Admin', icon: AdminIcon, iconEnd: NewTabIcon, component: Link, to: URLS.admin };
-  const logoutTab = { label: 'Logg ut', icon: LogOutIcon, onClick: logoutMethod };
+  const logoutTab = { label: 'Logg ut', icon: LogOutIcon, onClick: logoutMethod, className: classes.logOutButton };
   const tabs = [eventTab, notificationsTab, settingsTab, ...(isGroupMember ? [adminTab] : []), logoutTab];
   const [tab, setTab] = useState(eventTab.label);
 
-  const loadUserData = () => {
-    UserService.getUserData()
+  useEffect(() => {
+    getUserData()
       .then((user) => {
         if (user) {
           user.notifications.reverse();
@@ -138,9 +142,7 @@ function ProfilePaper(props) {
       })
       .catch(() => {})
       .finally(() => setIsLoading(false));
-  };
-
-  useEffect(() => loadUserData(), []);
+  }, [getUserData]);
 
   useEffect(() => {
     if (tab === notificationsTab.label && userData.unread_notifications !== 0) {
@@ -158,7 +160,7 @@ function ProfilePaper(props) {
     <ListItem button onClick={onClick ? onClick : () => setTab(label)} selected={tab === label} {...props}>
       <ListItemIcon>
         <Badge badgeContent={badge} color='error'>
-          <Icon color={tab === label ? 'primary' : 'inherit'} />
+          <Icon className={props.className} color={tab === label ? 'primary' : 'inherit'} />
         </Badge>
       </ListItemIcon>
       <ListItemText primary={label} />
@@ -175,6 +177,7 @@ function ProfilePaper(props) {
     iconEnd: PropTypes.object,
     badge: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     onClick: PropTypes.func,
+    className: PropTypes.string,
   };
 
   return (

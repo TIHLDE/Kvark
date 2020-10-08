@@ -111,11 +111,11 @@ const PersonListItem = (props) => {
             {data.user_id}
           </Typography>
           <Typography className={!showMore ? classNames(classes.title, classes.displayNone) : classes.title} variant='subtitle1'>
-            <Hidden smUp>Studie: </Hidden>
+            <Hidden mdUp>Studie: </Hidden>
             {getUserStudyShort(data.user_study)}
           </Typography>
           <Typography className={!showMore ? classNames(classes.title, classes.displayNone) : classes.title} variant='subtitle1'>
-            <Hidden smUp>Klasse: </Hidden>
+            <Hidden mdUp>Klasse: </Hidden>
             {getUserClass(data.user_class)}
           </Typography>
         </Grid>

@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: theme.palette.colors.background.light,
     border: theme.palette.sizes.border.width + ' solid ' + theme.palette.colors.border.main,
 
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       position: 'static',
       width: '100% !important',
       padding: theme.spacing(0),
@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: 'auto',
     marginTop: theme.spacing(1),
 
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       order: 1,
     },
   },

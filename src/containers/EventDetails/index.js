@@ -9,7 +9,7 @@ import { urlEncode } from '../../utils';
 
 // Service imports
 import EventService from '../../api/services/EventService';
-import UserService from '../../api/services/UserService';
+import { useUser } from '../../api/hooks/User';
 import AuthService from '../../api/services/AuthService';
 
 // Project components
@@ -56,6 +56,7 @@ function EventDetails(props) {
   const { classes } = props;
   const { id } = useParams();
   const history = useHistory();
+  const { getUserData, updateUserEvents } = useUser();
   const [event, setEvent] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState(null);
@@ -85,12 +86,14 @@ function EventDetails(props) {
   const loadUserData = () => {
     if (AuthService.isAuthenticated()) {
       setIsLoadingUserData(true);
-      UserService.getUserData().then((userData) => {
-        if (userData) {
-          setUserData(userData);
-        }
-        setIsLoadingUserData(false);
-      });
+      getUserData()
+        .then((userData) => {
+          if (userData) {
+            setUserData(userData);
+          }
+          setIsLoadingUserData(false);
+        })
+        .catch(() => {});
     }
   };
 
@@ -108,7 +111,7 @@ function EventDetails(props) {
           }
           const newUserData = { ...userData };
           newUserData.events.push(newEvent);
-          UserService.updateUserEvents(newUserData.events);
+          updateUserEvents(newUserData.events);
           setMessage('Påmelding registrert!');
           setEvent(newEvent);
           setApplySuccess(true);
@@ -137,7 +140,7 @@ function EventDetails(props) {
               newUserEvents.splice(i, 1);
             }
           }
-          UserService.updateUserEvents(newUserEvents);
+          updateUserEvents(newUserEvents);
           setMessage('Avmelding registrert 😢');
           setEvent(newEvent);
           setApplySuccess(true);

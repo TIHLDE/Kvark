@@ -5,7 +5,7 @@ import URLS from '../../URLS';
 import Helmet from 'react-helmet';
 
 // API and store import
-import UserService from '../../api/services/UserService';
+import { useUser } from '../../api/hooks/User';
 
 // Text imports
 import Text from '../../text/AdminText';
@@ -63,19 +63,18 @@ const styles = {
 function Admin(props) {
   const { classes } = props;
   const [groups, setGroups] = useState(null);
-
-  const loadIsGroupMember = () => {
-    UserService.getUserData().then((user) => {
-      if (user) {
-        setGroups(user.groups);
-      }
-    });
-  };
+  const { getUserData } = useUser();
 
   useEffect(() => {
     window.scrollTo(0, 0); // Scrolls to the top
-    loadIsGroupMember();
-  }, []);
+    getUserData()
+      .then((user) => {
+        if (user) {
+          setGroups(user.groups);
+        }
+      })
+      .catch(() => {});
+  }, [getUserData]);
 
   return (
     <Navigation fancyNavbar whitesmoke>

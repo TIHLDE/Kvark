@@ -149,7 +149,7 @@ const ParticipantCard = withStyles(styles)((props) => {
           <FormControlLabel
             className={props.classes.cardButtonLabel}
             control={<Checkbox checked={checkedState} onChange={handleCheck} />}
-            label={<Hidden xsDown>Ankommet</Hidden>}
+            label={<Hidden smDown>Ankommet</Hidden>}
           />
         </div>
       </div>
