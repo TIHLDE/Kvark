@@ -258,7 +258,14 @@ function EventAdministration(props) {
             </Typography>
             <DropdownButton options={options} />
           </div>
-          <Tabs aria-label='tabs' indicatorColor='primary' onChange={(e, newTab) => setTab(newTab)} textColor='primary' value={tab}>
+          <Tabs
+            aria-label='tabs'
+            indicatorColor='primary'
+            onChange={(e, newTab) => setTab(newTab)}
+            scrollButtons='desktop'
+            textColor='primary'
+            value={tab}
+            variant='scrollable'>
             <Tab id='0' label={selectedEvent.id ? 'Endre' : 'Skriv'} />
             <Tab id='1' label='Deltagere' />
             <Tab id='2' label='Forhåndsvis' />

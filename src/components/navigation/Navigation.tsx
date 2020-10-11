@@ -89,7 +89,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100vw',
     overflow: 'hidden',
     marginTop: 64,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       marginTop: 56,
     },
   },

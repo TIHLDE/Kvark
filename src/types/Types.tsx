@@ -39,6 +39,21 @@ export interface User {
   notifications: Array<unknown>;
 }
 
+export interface UserRegistration {
+  allow_photo: boolean;
+  has_attended: boolean;
+  is_on_wait: boolean;
+  user_event_id: number;
+  user_info: {
+    allergy: string;
+    first_name: string;
+    last_name: string;
+    user_class: number;
+    user_id: string;
+    user_study: number;
+  };
+}
+
 export interface Event {
   id: string;
   title: string;
