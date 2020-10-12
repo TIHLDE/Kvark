@@ -63,10 +63,6 @@ function NewsListView({ classes }) {
     }
   }, [news, lastWeek, isError]);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   let newsList = (
     <div className={classes.noEventText}>
       <CircularProgress className={classes.progress} />

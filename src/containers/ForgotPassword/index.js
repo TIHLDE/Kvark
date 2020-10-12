@@ -83,8 +83,6 @@ function ForgotPassword(props) {
   const [snackMessage, setSnackMessage] = useState(null);
   const [showSnackbar, setShowSnackbar] = useState(null);
 
-  useEffect(() => window.scrollTo(0, 0), []);
-
   useEffect(() => setErrorMessage(null), [email]);
 
   const onSubmit = (event) => {

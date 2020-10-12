@@ -1,4 +1,4 @@
-import React, { useEffect, createRef } from 'react';
+import React, { createRef } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -96,8 +96,6 @@ function Companies(props) {
   const { classes } = props;
   const formRef = createRef();
   const firstTextFieldRef = createRef();
-
-  useEffect(() => window.scrollTo(0, 0), []);
 
   const focusFirstTextField = () => {
     const node = firstTextFieldRef.current;

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
@@ -41,8 +41,6 @@ const styles = (theme) => ({
 
 function Http404(props) {
   const { classes } = props;
-
-  useEffect(() => window.scrollTo(0, 0), []);
 
   return (
     <Navigation className={classes.root} whitesmoke>

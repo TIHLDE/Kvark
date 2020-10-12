@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import URLS from '../../URLS';
@@ -62,8 +62,9 @@ const styles = (theme) => ({
     marginBottom: 30,
     color: theme.palette.colors.text.main,
   },
-  miniPadding: {
+  clickableImage: {
     padding: 10,
+    width: '100%',
   },
   orgMap: {
     margin: 4,
@@ -87,8 +88,6 @@ const styles = (theme) => ({
 
 function About(props) {
   const { classes } = props;
-
-  useEffect(() => window.scrollTo(0, 0), []);
 
   return (
     <Navigation fancyNavbar whitesmoke>
@@ -141,7 +140,7 @@ function About(props) {
               Organisasjonskart
             </Typography>
             <Paper className={classes.orgMap} noPadding>
-              <ClickableImage alt='organisasjonskart' className={classes.miniPadding} image={OrgMap} width='100%' />
+              <ClickableImage alt='organisasjonskart' className={classes.clickableImage} image={OrgMap} />
             </Paper>
           </div>
         </div>

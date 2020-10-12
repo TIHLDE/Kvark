@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
@@ -64,8 +64,6 @@ const styles = (theme) => ({
 function UserAdmin(props) {
   const { classes } = props;
   const [tab, setTab] = useState(0);
-
-  useEffect(() => window.scrollTo(0, 0), []);
 
   return (
     <Navigation fancyNavbar whitesmoke>

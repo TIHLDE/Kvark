@@ -43,7 +43,6 @@ const styles = (theme) => ({
   wrapper: {
     paddingTop: 20,
     paddingBottom: 30,
-
     maxWidth: 1200,
 
     display: 'grid',
@@ -171,7 +170,6 @@ function Events(props) {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     loadEvents();
     EventService.getCategories().then((categories) => setCategories(categories || []));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -218,7 +216,7 @@ function Events(props) {
   };
 
   return (
-    <Navigation fancyNavbar isLoading={isLoading} whitesmoke>
+    <Navigation fancyNavbar whitesmoke>
       <Helmet>
         <title>Arrangementer - TIHLDE</title>
       </Helmet>

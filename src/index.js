@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import './assets/css/index.css';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import ScrollMemory from 'react-router-scroll-memory';
 import { Provider } from 'react-redux';
 import store from './store/store';
 import URLS from './URLS';
@@ -126,6 +127,7 @@ const Application = () => {
             <Provider store={store}>
               <BrowserRouter>
                 {GA.init() && <GA.RouteTracker />}
+                <ScrollMemory />
                 <Switch>
                   <Route component={NewLanding} exact path='/' />
                   <Route component={EventRegistration} path={URLS.events.concat(':id/registrering')} />

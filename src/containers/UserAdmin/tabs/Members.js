@@ -135,7 +135,6 @@ const Members = (props) => {
       });
   };
   useEffect(() => {
-    window.scrollTo(0, 0);
     loadMembers();
     // eslint-disable-next-line
   }, []);

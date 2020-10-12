@@ -83,7 +83,6 @@ function SignUp(props) {
   const [redirectURL, setRedirectUrl] = useState(null);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     setRedirectUrl(getLogInRedirectURL());
     setLogInRedirectURL(null);
   }, [getLogInRedirectURL, setLogInRedirectURL]);

@@ -104,10 +104,6 @@ const News = (props) => {
     }
   }, [news, isLoading, isError, urlParameters]);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   const getNextPage = () => {
     if (nextPage) {
       setUrlParameters({
@@ -118,7 +114,7 @@ const News = (props) => {
   };
 
   return (
-    <Navigation fancyNavbar isLoading={isLoading} whitesmoke>
+    <Navigation fancyNavbar whitesmoke>
       <Helmet>
         <title>Nyheter - TIHLDE</title>
       </Helmet>

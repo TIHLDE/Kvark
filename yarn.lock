@@ -1852,6 +1852,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-qr-reader@^2.1.3":
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@types/react-qr-reader/-/react-qr-reader-2.1.3.tgz#cf3a27e7bde37a585a7baff8dbf242d1ebe70ddd"
+  integrity sha512-quTZl76whDvR+Xp87jh2roDbL6SC8Pzi8Ef59EP5RheobKZWQBbcDM33r7/Ndi63NBOz89MEDtkiHDkAvXxPhg==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-redux@^7.1.9":
   version "7.1.9"
   resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-7.1.9.tgz#280c13565c9f13ceb727ec21e767abe0e9b4aec3"
@@ -10064,6 +10071,11 @@ react-router-dom@^5.2.0:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
+react-router-scroll-memory@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/react-router-scroll-memory/-/react-router-scroll-memory-2.0.7.tgz#afd5627d5378df7c8490935c9a1585362a7c850a"
+  integrity sha512-1M7LxVBBVrE4oIS/+enQwCRdg2EapF/RnZaL2pXpPb7HVjJsI83MhMuGAzKtd1YOdB4ekwdtMX7t5T9FvQBC6Q==
+
 react-router@5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/react-router/-/react-router-5.2.0.tgz#424e75641ca8747fbf76e5ecca69781aa37ea293"
@@ -10381,10 +10393,10 @@ relateurl@^0.2.7:
   resolved "https://registry.yarnpkg.com/relateurl/-/relateurl-0.2.7.tgz#54dbf377e51440aca90a4cd274600d3ff2d888a9"
   integrity sha1-VNvzd+UUQKypCkzSdGANP/LYiKk=
 
-remark-breaks@^1.0.1:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/remark-breaks/-/remark-breaks-1.0.5.tgz#e9785f8b174f45c05af542fbeb18354b766e1139"
-  integrity sha512-lr8+TlJI273NjEqL27eUthPYPTCgXEj4NaLbnazS3bQaQL2FySlsbtgo52gE36fE1gWeQgkn1VdmWsoT+uA7FA==
+remark-breaks@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/remark-breaks/-/remark-breaks-2.0.0.tgz#96aa5078f5d582c328e7a9aff50b3167813aca58"
+  integrity sha512-sDiB8dwX2/u42cf3PgjaGROG+q9ijh8SLbGZOU+7WNqL9M5ZQQ2hsVEfwqrJpsQTBcMkJvLACbwRpBftIiCVZQ==
 
 remark-parse@^5.0.0:
   version "5.0.0"

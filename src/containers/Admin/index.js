@@ -66,7 +66,6 @@ function Admin(props) {
   const { getUserData } = useUser();
 
   useEffect(() => {
-    window.scrollTo(0, 0); // Scrolls to the top
     getUserData()
       .then((user) => {
         if (user) {
