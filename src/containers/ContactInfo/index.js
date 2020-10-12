@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
@@ -69,8 +69,6 @@ const styles = (theme) => ({
 
 function ContactInfo(props) {
   const { classes } = props;
-
-  useEffect(() => window.scrollTo(0, 0), []);
 
   return (
     <Navigation fancyNavbar whitesmoke>

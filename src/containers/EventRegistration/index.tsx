@@ -169,7 +169,6 @@ function EventRegistration() {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     EventService.getEventById(id).then((event) => {
       if (!event) {
         history.replace('/');

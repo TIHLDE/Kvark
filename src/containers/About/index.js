@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import URLS from '../../URLS';
@@ -88,8 +88,6 @@ const styles = (theme) => ({
 
 function About(props) {
   const { classes } = props;
-
-  useEffect(() => window.scrollTo(0, 0), []);
 
   return (
     <Navigation fancyNavbar whitesmoke>

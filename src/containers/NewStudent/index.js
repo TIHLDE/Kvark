@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import parser from 'html-react-parser';
 import PropTypes from 'prop-types';
@@ -59,8 +59,6 @@ const styles = (theme) => ({
 
 function NewStudent(props) {
   const { classes } = props;
-
-  useEffect(() => window.scrollTo(0, 0), []);
 
   return (
     <Navigation fancyNavbar whitesmoke>

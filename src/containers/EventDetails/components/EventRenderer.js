@@ -16,6 +16,7 @@ import Button from '@material-ui/core/Button';
 import MarkdownRenderer from '../../../components/miscellaneous/MarkdownRenderer';
 import EventDialog from './EventDialog';
 import Paper from '../../../components/layout/Paper';
+import TIHLDELOGO from '../../../assets/img/TihldeBackground.jpg';
 
 // Urls
 import URLS from '../../../URLS';
@@ -52,7 +53,7 @@ const styles = (theme) => ({
     height: 'auto',
     maxHeight: 350,
     objectFit: 'cover',
-    backgroundColor: theme.palette.colors.border.main,
+    backgroundColor: theme.palette.colors.constant.white,
     borderRadius: theme.shape.borderRadius,
     display: 'block',
     boxSizing: 'border-box',
@@ -358,7 +359,7 @@ const EventRenderer = (props) => {
           userEvent={userEvent}
         />
       )}
-      {eventData.image && <img alt={eventData.image_alt} className={classes.image} src={eventData.image} />}
+      <img alt={eventData.image_alt} className={classes.image} src={eventData.image || TIHLDELOGO} />
       <div className={classes.grid}>
         <div>
           <Paper className={classes.details} noPadding>

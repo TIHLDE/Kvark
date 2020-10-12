@@ -11,6 +11,7 @@ import Grid from '@material-ui/core/Grid';
 // Project Components
 import MarkdownRenderer from '../../../components/miscellaneous/MarkdownRenderer';
 import Paper from '../../../components/layout/Paper';
+import TIHLDELOGO from '../../../assets/img/TihldeBackground.jpg';
 
 const styles = (theme) => ({
   grid: {
@@ -41,7 +42,7 @@ const styles = (theme) => ({
     height: 'auto',
     maxHeight: 350,
     objectFit: 'cover',
-    backgroundColor: theme.palette.colors.border.main,
+    backgroundColor: theme.palette.colors.constant.white,
     borderRadius: theme.shape.borderRadius,
     display: 'block',
     boxSizing: 'border-box',
@@ -127,7 +128,7 @@ const NewsRenderer = (props) => {
 
   return (
     <div className={classes.wrapper}>
-      {newsData.image && <img alt={newsData.image_alt} className={classes.image} src={newsData.image} />}
+      <img alt={newsData.image_alt} className={classes.image} src={newsData.image || TIHLDELOGO} />
       <div className={classes.grid}>
         <div>
           <Paper className={classes.details} noPadding>

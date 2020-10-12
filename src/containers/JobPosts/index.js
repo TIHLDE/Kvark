@@ -120,7 +120,6 @@ function JobPosts(props) {
   const [filters, setFilters] = useState({});
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     fetchPosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -192,7 +191,7 @@ function JobPosts(props) {
   };
 
   return (
-    <Navigation fancyNavbar isLoading={isLoading} whitesmoke>
+    <Navigation fancyNavbar whitesmoke>
       <Helmet>
         <title>Karriere - TIHLDE</title>
       </Helmet>

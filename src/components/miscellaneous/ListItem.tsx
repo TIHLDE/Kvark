@@ -1,18 +1,20 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { urlEncode } from 'utils';
+
 // Material UI Components
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import MaterialListItem from '@material-ui/core/ListItem';
-
-// Icons
-import TIHLDELOGO from 'assets/img/TihldeBackgroundNew.png';
 import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 import { SvgIconTypeMap } from '@material-ui/core';
-const useStyles = makeStyles((theme) => ({
+
+// Icons
+import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
+
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     boxShadow: '0px 2px 4px ' + theme.palette.colors.border.main + '88, 0px 0px 4px ' + theme.palette.colors.border.main + '88',
     borderRadius: theme.shape.borderRadius,

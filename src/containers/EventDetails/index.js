@@ -15,7 +15,7 @@ import AuthService from '../../api/services/AuthService';
 // Project components
 import Navigation from '../../components/navigation/Navigation';
 import EventRenderer from './components/EventRenderer';
-import TIHLDELOGO from '../../assets/img/TihldeBackgroundNew.png';
+import TIHLDELOGO from '../../assets/img/TihldeBackground.jpg';
 
 const styles = (theme) => ({
   root: {
@@ -39,9 +39,12 @@ const styles = (theme) => ({
     '&::after': {
       position: 'absolute',
       bottom: 0,
-      borderBottom: 'solid 150px ' + theme.palette.colors.background.main,
+      borderBottom: 'solid 100px ' + theme.palette.colors.background.main,
       borderLeft: '100vw solid rgba(0,0,0,0)',
       content: '""',
+      [theme.breakpoints.down('sm')]: {
+        borderBottom: 'solid 50px ' + theme.palette.colors.background.main,
+      },
     },
   },
   topInner: {
@@ -49,6 +52,12 @@ const styles = (theme) => ({
     padding: 60,
     transition: '3s',
     background: theme.palette.colors.gradient.main.top,
+    [theme.breakpoints.down('sm')]: {
+      height: 250,
+    },
+    [theme.breakpoints.down('xs')]: {
+      height: 200,
+    },
   },
 });
 
@@ -161,7 +170,6 @@ function EventDetails(props) {
   const clearMessage = () => setMessage('');
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     loadEvent();
     loadUserData();
     // eslint-disable-next-line react-hooks/exhaustive-deps

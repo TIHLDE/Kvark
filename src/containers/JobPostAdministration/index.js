@@ -176,7 +176,6 @@ function JobPostAdministration(props) {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     loadJobPosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

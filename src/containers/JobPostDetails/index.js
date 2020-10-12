@@ -30,7 +30,6 @@ function JobPostDetails(props) {
   const [jobPost, setJobPost] = useState(null);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     JobPostService.getPostById(id).then((post) => {
       setIsLoading(false);
       if (!post) {

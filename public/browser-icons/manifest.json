@@ -1,7 +1,7 @@
 {
  "name": "TIHLDE",
  "short_name": "TIHLDE",
- "start_url": "../",
+ "start_url": ".",
  "background_color": "#16356e",
  "theme_color": "#16356e",
  "description": "Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Drift av datasystemer og Digital samhandling ved NTNU",

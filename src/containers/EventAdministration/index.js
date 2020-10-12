@@ -218,7 +218,6 @@ function EventAdministration(props) {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     loadEvents();
     EventService.getCategories().then((data) => {
       if (data) {

@@ -230,10 +230,6 @@ const Cheetsheet = (props) => {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  });
-
-  useEffect(() => {
     if (studyChoice === 4) {
       if (![4, 5].includes(classChoice)) {
         setClassChoice(4);

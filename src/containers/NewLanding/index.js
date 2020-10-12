@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Helmet from 'react-helmet';
@@ -48,8 +48,6 @@ const styles = (theme) => ({
 });
 
 function NewLanding({ classes }) {
-  useEffect(() => window.scrollTo(0, 0), []);
-
   return (
     <Navigation fancyNavbar whitesmoke>
       <Helmet>

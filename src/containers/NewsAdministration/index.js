@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
@@ -106,8 +106,6 @@ function NewsAdministration(props) {
     setSnackbarMessage(message);
     setShowSnackbar(true);
   };
-
-  useEffect(() => window.scrollTo(0, 0), []);
 
   const options = [
     { text: 'Lagre', func: () => saveNewsItem() },
