@@ -40,7 +40,7 @@ const styles = (theme) => ({
   },
 });
 
-const EventParticipants = (props) => {
+const EventStatistics = (props) => {
   const { classes, participants } = props;
 
   const attendedNo = (attended) => participants.filter((x) => x.has_attended === attended).length;
@@ -56,7 +56,7 @@ const EventParticipants = (props) => {
 
   return (
     <React.Fragment>
-      <Typography className={classes.lightText}>Ankommet: {attendedNo(true) + ' av ' + attendedNo(false)} påmeldte</Typography>
+      <Typography className={classes.lightText}>Ankommet: {attendedNo(true) + ' av ' + participants.length} påmeldte</Typography>
       <div className={classes.root}>
         <div>
           <Typography className={classes.lightText}>Klasse:</Typography>
@@ -85,9 +85,9 @@ const EventParticipants = (props) => {
   );
 };
 
-EventParticipants.propTypes = {
+EventStatistics.propTypes = {
   classes: PropTypes.object,
   participants: PropTypes.array,
 };
 
-export default withStyles(styles)(EventParticipants);
+export default withStyles(styles)(EventStatistics);
