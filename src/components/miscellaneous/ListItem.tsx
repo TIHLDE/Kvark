@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(1, 0),
     border: 6,
     height: '100%',
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(1, 0, 0),
     },
@@ -74,6 +74,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   infoRoot: {
     width: 'auto',
+    margin: theme.spacing(0.25, 0),
     [theme.breakpoints.down('sm')]: {
       justifyContent: 'center',
     },

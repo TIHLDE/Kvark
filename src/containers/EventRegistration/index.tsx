@@ -196,7 +196,7 @@ function EventRegistration() {
     });
     setParticipants(newParticipantsList);
     EventService.putAttended(id, { has_attended: attendedStatus }, username).then((data) => {
-      if (data && data.detail === 'User event successfully updated.') {
+      if (data && data.detail === 'Registration successfully updated.') {
         setSnackbarMessage(attendedStatus ? 'Deltageren er registrert ankommet!' : 'Vi har fjernet ankommet-statusen');
         setError(!attendedStatus);
       } else {
