@@ -62,8 +62,9 @@ const styles = (theme) => ({
     marginBottom: 30,
     color: theme.palette.colors.text.main,
   },
-  miniPadding: {
+  clickableImage: {
     padding: 10,
+    width: '100%',
   },
   orgMap: {
     margin: 4,
@@ -141,7 +142,7 @@ function About(props) {
               Organisasjonskart
             </Typography>
             <Paper className={classes.orgMap} noPadding>
-              <ClickableImage alt='organisasjonskart' className={classes.miniPadding} image={OrgMap} width='100%' />
+              <ClickableImage alt='organisasjonskart' className={classes.clickableImage} image={OrgMap} />
             </Paper>
           </div>
         </div>

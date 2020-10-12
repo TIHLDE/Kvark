@@ -1,8 +1,7 @@
 import React, { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
 
 // Material UI
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
@@ -16,12 +15,12 @@ import MenuList from '@material-ui/core/MenuList';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 // Project components
-import Paper from '../layout/Paper';
+import Paper from 'components/layout/Paper';
 
-const styles = () => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     width: 'auto',
-    marginLeft: 10,
+    marginLeft: theme.spacing(1),
   },
   list: {
     minWidth: 125,
@@ -29,15 +28,23 @@ const styles = () => ({
   popper: {
     zIndex: 10,
   },
-});
+}));
+type optionsObject = {
+  func: () => void;
+  text: string;
+};
 
-function DropdownButton(props) {
-  const { classes, options } = props;
+export type DropdownButtonProps = {
+  options: optionsObject[];
+};
+
+function DropdownButton({ options }: DropdownButtonProps) {
   const [open, setOpen] = useState(false);
-  const anchorRef = useRef(null);
+  const anchorRef = useRef<HTMLDivElement>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const classes = useStyles();
 
-  const handleMenuItemClick = (e, index) => {
+  const handleMenuItemClick = (e: React.MouseEvent<HTMLLIElement>, index: number) => {
     setSelectedIndex(index);
     setOpen(false);
   };
@@ -46,10 +53,14 @@ function DropdownButton(props) {
     setOpen((prevOpen) => !prevOpen);
   };
 
-  const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleClose = (event: React.MouseEvent<Document, MouseEvent>) => {
+    if (anchorRef !== null && anchorRef !== undefined && anchorRef.current !== null && event) {
+      if (anchorRef.current.contains(event.target as HTMLElement)) {
+        return;
+      }
     }
+
     setOpen(false);
   };
 
@@ -93,14 +104,4 @@ function DropdownButton(props) {
   );
 }
 
-DropdownButton.propTypes = {
-  classes: PropTypes.object,
-  options: PropTypes.arrayOf(
-    PropTypes.shape({
-      text: PropTypes.string,
-      func: PropTypes.func,
-    }).isRequired,
-  ),
-};
-
-export default withStyles(styles)(DropdownButton);
+export default DropdownButton;

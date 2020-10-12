@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { ThemeType } from '../../types/Enums';
-import { useTheme } from '../../context/ThemeContext';
-import GA from '../../analytics';
+import { useTheme } from 'context/ThemeContext';
+import { ThemeType } from 'types/Enums';
+import GA from 'analytics';
 
 // Material-ui
 import Modal from '@material-ui/core/Modal';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import ToggleButton from '@material-ui/lab/ToggleButton';
@@ -18,9 +17,9 @@ import DeviceIcon from '@material-ui/icons/DevicesOutlined';
 import LightIcon from '@material-ui/icons/WbSunnyOutlined';
 
 // Project components
-import Paper from '../layout/Paper';
+import Paper from 'components/layout/Paper';
 
-const style = (theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   paper: {
     position: 'absolute',
     maxWidth: 460,
@@ -33,12 +32,12 @@ const style = (theme) => ({
     'overflow-y': 'auto',
     transform: 'translate(-50%,-50%)',
     outline: 'none',
-    '@media only screen and (max-width: 400px)': {
+    [theme.breakpoints.down('xs')]: {
       width: '100%',
     },
   },
   content: {
-    padding: 20,
+    padding: theme.spacing(3),
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
@@ -46,27 +45,32 @@ const style = (theme) => ({
   },
   header: {
     color: theme.palette.colors.text.main,
-    marginBottom: 15,
+    marginBottom: theme.spacing(2),
   },
   button: {
     width: '100%',
-    marginTop: 20,
+    marginTop: theme.spacing(3),
   },
   group: {
     background: theme.palette.colors.background.smoke,
   },
   groupButton: {
-    margin: '0 12px',
+    margin: theme.spacing(0, 1),
     color: theme.palette.colors.text.light,
   },
-});
+}));
 
-const ThemeSettings = (props) => {
-  const { classes, open, onClose } = props;
+type ThemeSettingsProps = {
+  open: boolean;
+  onClose: () => void;
+};
+
+function ThemeSettings({ open, onClose }: ThemeSettingsProps) {
   const theme = useTheme();
   const [themeName, setThemeName] = useState(theme.getEnum());
+  const classes = useStyles();
 
-  const changeTheme = (e, newThemeName) => {
+  const changeTheme = (e: React.MouseEvent<HTMLElement, MouseEvent>, newThemeName: ThemeType) => {
     if (newThemeName) {
       setThemeName(newThemeName);
       theme.set(newThemeName);
@@ -79,7 +83,7 @@ const ThemeSettings = (props) => {
       <>
         <Paper className={classes.paper} noPadding>
           <div className={classes.content}>
-            <Typography className={classes.header} variant='h4'>
+            <Typography className={classes.header} variant='h2'>
               Tema
             </Typography>
             <ToggleButtonGroup aria-label='Tema' className={classes.group} exclusive onChange={changeTheme} orientation='vertical' value={themeName}>
@@ -102,7 +106,7 @@ const ThemeSettings = (props) => {
                 </Typography>
               </ToggleButton>
             </ToggleButtonGroup>
-            <Button align='center' className={classes.button} color='primary' onClick={onClose}>
+            <Button className={classes.button} color='primary' onClick={onClose}>
               Lukk
             </Button>
           </div>
@@ -110,12 +114,6 @@ const ThemeSettings = (props) => {
       </>
     </Modal>
   );
-};
+}
 
-ThemeSettings.propTypes = {
-  classes: PropTypes.object,
-  onClose: PropTypes.func,
-  open: PropTypes.bool,
-};
-
-export default withStyles(style)(ThemeSettings);
+export default ThemeSettings;

@@ -1,31 +1,30 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import { urlEncode } from '../../utils';
-
+import { urlEncode } from 'utils';
 // Material UI Components
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import MaterialListItem from '@material-ui/core/ListItem';
 
 // Icons
-import TIHLDELOGO from '../../assets/img/TihldeBackgroundNew.png';
-
+import TIHLDELOGO from 'assets/img/TihldeBackgroundNew.png';
+import { OverridableComponent } from '@material-ui/core/OverridableComponent';
+import { SvgIconTypeMap } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   root: {
     boxShadow: '0px 2px 4px ' + theme.palette.colors.border.main + '88, 0px 0px 4px ' + theme.palette.colors.border.main + '88',
     borderRadius: theme.shape.borderRadius,
-    marginBottom: 10,
+    marginBottom: theme.spacing(1),
     height: 'auto',
-    padding: 10,
+    padding: theme.spacing(1),
     position: 'relative',
     overflow: 'hidden',
     flexDirection: 'row',
     display: 'flex',
     backgroundColor: theme.palette.colors.background.light,
-    '@media only screen and (max-width: 600px)': {
+    [theme.breakpoints.down('sm')]: {
       overflow: 'hidden',
       minHeight: 150,
       flexDirection: 'column',
@@ -40,11 +39,11 @@ const useStyles = makeStyles((theme) => ({
     '&:not([src*=".jpg"])': {
       background: '#fff',
     },
-    '@media only screen and (min-width: 900px)': {
+    [theme.breakpoints.up('md')]: {
       minWidth: '45%',
       maxWidth: 'none',
     },
-    '@media only screen and (max-width: 600px)': {
+    [theme.breakpoints.down('sm')]: {
       width: '100%',
       maxWidth: 'none',
       height: 140,
@@ -54,31 +53,31 @@ const useStyles = makeStyles((theme) => ({
     objectFit: 'contain',
   },
   content: {
-    marginLeft: 20,
-    padding: '10px 0px',
+    marginLeft: theme.spacing(2),
+    padding: theme.spacing(1, 0),
     border: 6,
     height: '100%',
     justifyContent: 'space-evenly',
-    '@media only screen and (max-width: 600px)': {
-      padding: '10px 0px 0px',
+    [theme.breakpoints.down('sm')]: {
+      padding: theme.spacing(1, 0, 0),
     },
   },
   title: {
     color: theme.palette.colors.text.main,
     fontWeight: 'bold',
     fontSize: '24px',
-    '@media only screen and (max-width: 600px)': {
+    [theme.breakpoints.down('sm')]: {
       textAlign: 'center',
     },
   },
   infoRoot: {
     width: 'auto',
-    '@media only screen and (max-width: 600px)': {
+    [theme.breakpoints.down('sm')]: {
       justifyContent: 'center',
     },
   },
   info: {
-    marginLeft: 10,
+    marginLeft: theme.spacing(1),
     color: theme.palette.colors.text.lighter,
     fontSize: '1rem',
     textAlign: 'center',
@@ -87,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.colors.text.lighter,
     height: 24,
     width: 24,
-    margin: 0,
+    margin: theme.spacing(0),
   },
   expired: {
     color: theme.palette.colors.text.main + 'cc',
@@ -97,54 +96,47 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const InfoContent = (props) => {
+type IconProps = {
+  icon: OverridableComponent<SvgIconTypeMap<unknown, 'svg'>>;
+  label: string;
+};
+
+const InfoContent = ({ icon: Icon, label }: IconProps) => {
   const classes = useStyles();
   return (
     <Grid alignItems='center' className={classes.infoRoot} container direction='row' wrap='nowrap'>
-      <props.icon className={classes.icon} />
-      <Typography className={classes.info} variant='h6'>
-        {props.label}
+      <Icon className={classes.icon} />
+      <Typography className={classes.info} variant='h3'>
+        {label}
       </Typography>
     </Grid>
   );
 };
-
-InfoContent.propTypes = {
-  icon: PropTypes.object,
-  label: PropTypes.string,
+type ListItemProps = {
+  title: string;
+  link: string;
+  expired?: boolean;
+  img?: string;
+  imgAlt?: string;
+  imgContain?: string;
+  info?: IconProps[];
 };
 
-const ListItem = ({ title, link, expired, img, imgAlt, imgContain, info }) => {
+function ListItem({ title, link, expired, img, imgAlt, imgContain, info }: ListItemProps) {
   const classes = useStyles();
   const src = img || TIHLDELOGO;
   return (
     <MaterialListItem button className={classes.root} component={Link} to={link + urlEncode(title) + '/'}>
       <img alt={imgAlt || title} className={classNames(classes.src, expired && classes.filter, imgContain && classes.imgContain)} src={src} />
       <Grid className={classes.content} container direction='column' wrap='nowrap'>
-        <Typography className={classNames(classes.title, expired && classes.expired)} variant='h5'>
+        <Typography className={classNames(classes.title, expired && classes.expired)} variant='h2'>
           <strong>{title}</strong>
         </Typography>
-        {info?.map((item, index) => (
+        {info?.map((item: IconProps, index: number) => (
           <InfoContent icon={item.icon} key={index} label={item.label} />
         ))}
       </Grid>
     </MaterialListItem>
   );
-};
-
-ListItem.propTypes = {
-  title: PropTypes.string.isRequired,
-  link: PropTypes.string.isRequired,
-  expired: PropTypes.bool,
-  img: PropTypes.string,
-  imgAlt: PropTypes.string,
-  imgContain: PropTypes.bool,
-  info: PropTypes.arrayOf(
-    PropTypes.shape({
-      icon: PropTypes.object.isRequired,
-      label: PropTypes.string.isRequired,
-    }),
-  ),
-};
-
+}
 export default ListItem;

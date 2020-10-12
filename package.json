@@ -40,7 +40,7 @@
     "react-scripts": "^3.4.1",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
-    "remark-breaks": "^1.0.1",
+    "remark-breaks": "^2.0.0",
     "slugify": "^1.4.5",
     "typescript": "^4.0.3",
     "universal-cookie": "^2.2.0"
