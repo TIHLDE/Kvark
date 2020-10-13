@@ -155,17 +155,27 @@ function EventRegistration() {
   const handleScan = (username: string | null) => {
     if (!isLoading && username) {
       const participant = participants?.find((participant) => participant.user_info.user_id === username);
-      if (participant && !participant.has_attended) {
-        markAttended(username, true);
+      if (!participant) {
+        showSnackbar('Personen er ikke påmeldt dette arrangementet', true);
+        return;
       }
+      if (participant.has_attended) {
+        showSnackbar('Personen har allerede ankommet dette arrangementet', false);
+        return;
+      }
+      markAttended(username, true);
     }
   };
 
   const handleError = () => {
     setIsLoading(false);
-    setSnackbarMessage('En ukjent feil har oppstått, sjekk at vi har tilgang til å bruke kameraet');
+    showSnackbar('En ukjent feil har oppstått, sjekk at vi har tilgang til å bruke kameraet', true);
+  };
+
+  const showSnackbar = (text: string, error: boolean) => {
+    setError(error);
+    setSnackbarMessage(text);
     setSnackbarOpen(true);
-    setError(true);
   };
 
   useEffect(() => {
@@ -195,19 +205,18 @@ function EventRegistration() {
       }
     });
     setParticipants(newParticipantsList);
-    EventService.putAttended(id, { has_attended: attendedStatus }, username).then((data) => {
-      if (data && data.detail === 'Registration successfully updated.') {
-        setSnackbarMessage(attendedStatus ? 'Deltageren er registrert ankommet!' : 'Vi har fjernet ankommet-statusen');
-        setError(!attendedStatus);
-      } else {
-        setSnackbarMessage('Ugyldig brukernavn.');
-        setError(true);
-        // Rollback
-        setParticipants(oldParitcipantsList);
-      }
-      setSnackbarOpen(true);
-      setIsLoading(false);
-    });
+    EventService.putAttended(id, { has_attended: attendedStatus }, username)
+      .then((data) => {
+        if (data && data.detail === 'Registration successfully updated.') {
+          showSnackbar(attendedStatus ? 'Deltageren er registrert ankommet!' : 'Vi har fjernet ankommet-statusen', false);
+        } else {
+          showSnackbar('Ugyldig brukernavn.', true);
+          // Rollback
+          setParticipants(oldParitcipantsList);
+        }
+        setIsLoading(false);
+      })
+      .catch(() => showSnackbar('Noe gikk galt', true));
   };
 
   const handleSnackbarClose = () => {
