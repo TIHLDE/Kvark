@@ -20,7 +20,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 // Project components
 import TextEditor from '../../../components/inputs/TextEditor';
-import EventOptionalFieldsCreator from './EventOptionalFieldsCreator';
+// import EventOptionalFieldsCreator from './EventOptionalFieldsCreator';
 import EventRegistrationPriorities from './EventRegistrationPriorities';
 
 const styles = (theme) => ({
@@ -178,7 +178,7 @@ function EventEditor(props) {
                     </ExpansionPanel>
                   </div>
                 )}
-                {event.optional_fields && (
+                {/* {event.optional_fields && (
                   <div className={classes.margin}>
                     <ExpansionPanel className={classes.expansionPanel}>
                       <ExpansionPanelSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='priorities-header'>
@@ -192,7 +192,7 @@ function EventEditor(props) {
                       </ExpansionPanelDetails>
                     </ExpansionPanel>
                   </div>
-                )}
+                )} */}
               </>
             )}
             <TextEditor className={classes.textEditor} onChange={(e) => setEvent({ ...event, description: e })} value={event.description || ''} />
