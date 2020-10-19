@@ -42,8 +42,8 @@ const styles = (theme) => ({
 
     '@media only screen and (max-width: 800px)': {
       width: 'auto',
-      margin: 10,
-      padding: '36px 20px',
+      margin: 0,
+      padding: theme.spacing(4, 2),
     },
   },
   top: {
