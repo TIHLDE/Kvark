@@ -7,7 +7,7 @@ import moment from 'moment';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 
 // Icons
 import DateIcon from '@material-ui/icons/DateRange';
