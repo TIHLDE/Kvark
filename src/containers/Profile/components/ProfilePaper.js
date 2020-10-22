@@ -138,7 +138,7 @@ function ProfilePaper(props) {
           user.notifications.reverse();
           setUserData(user);
           const groups = user.groups;
-          if (groups.includes('HS') || groups.includes('Promo') || groups.includes('NoK') || groups.includes('DevKom')) {
+          if (groups.includes('HS') || groups.includes('Promo') || groups.includes('NoK') || groups.includes('Index')) {
             setIsGroupMember(true);
           }
         }

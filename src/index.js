@@ -78,8 +78,8 @@ const requireAuth = (OriginalComponent, accessGroups = []) => {
                     setAllowAccess(true);
                   }
                   break;
-                case 'devkom':
-                  if (user?.groups.includes('DevKom')) {
+                case 'index':
+                  if (user?.groups.includes('Index')) {
                     setAllowAccess(true);
                   }
                   break;
@@ -150,11 +150,11 @@ const Application = () => {
                   <Route component={requireAuth(Cheatsheet)} path={URLS.cheatsheet.concat(':studyId/:classId/')} />
                   <Route component={requireAuth(Cheatsheet)} path={URLS.cheatsheet} />
 
-                  <Route component={requireAuth(Admin, ['HS', 'Promo', 'Nok', 'Devkom'])} exact path={URLS.admin} />
-                  <Route component={requireAuth(UserAdmin, ['HS', 'Devkom'])} path={URLS.userAdmin} />
-                  <Route component={requireAuth(JobPostAdministration, ['HS', 'Nok', 'Devkom'])} path={URLS.jobpostsAdmin} />
-                  <Route component={requireAuth(EventAdministration, ['HS', 'Promo', 'Nok', 'Devkom'])} path={URLS.eventAdmin} />
-                  <Route component={requireAuth(NewsAdministration, ['HS', 'Promo', 'Nok', 'Devkom'])} path={URLS.newsAdmin} />
+                  <Route component={requireAuth(Admin, ['HS', 'Promo', 'Nok', 'Index'])} exact path={URLS.admin} />
+                  <Route component={requireAuth(UserAdmin, ['HS', 'Index'])} path={URLS.userAdmin} />
+                  <Route component={requireAuth(JobPostAdministration, ['HS', 'Nok', 'Index'])} path={URLS.jobpostsAdmin} />
+                  <Route component={requireAuth(EventAdministration, ['HS', 'Promo', 'Nok', 'Index'])} path={URLS.eventAdmin} />
+                  <Route component={requireAuth(NewsAdministration, ['HS', 'Promo', 'Nok', 'Index'])} path={URLS.newsAdmin} />
 
                   <Route component={LogIn} path={URLS.login} />
                   <Route component={ForgotPassword} path={URLS.forgotPassword} />
@@ -173,6 +173,12 @@ const Application = () => {
 };
 
 // eslint-disable-next-line no-console
-console.log('Snoker rundt du? Det liker vi. Vi i DevKom ser alltid etter nye medlemmer.');
+console.log(
+  '%cLaget av %cIndex',
+  'font-weight: bold; font-size: 1rem;color: yellow;',
+  'font-weight: bold; padding-bottom: 10px; padding-right: 10px; font-size: 3rem;color: yellow; text-shadow: 3px 3px 0 rgb(217,31,38), 6px 6px 0 rgb(226,91,14), 9px 9px 0 green, 12px 12px 0 rgb(5,148,68), 15px 15px 0 rgb(2,135,206), 18px 18px 0 rgb(4,77,145), 21px 21px 0 rgb(42,21,113)',
+);
+// eslint-disable-next-line no-console
+console.log('%cSnoker rundt du? Det liker vi. Vi i Index ser alltid etter nye medlemmer.', 'font-weight: bold; font-size: 1rem;color: yellow;', '');
 
 ReactDOM.render(<Application />, document.getElementById('root'));

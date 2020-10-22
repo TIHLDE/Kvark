@@ -83,7 +83,7 @@ function Admin(props) {
       <Banner title={Text.header} />
       <Grid alignItems='center' className={classes.root} container direction='column' wrap='nowrap'>
         <div className={classes.grid}>
-          {groups && (groups.includes('HS') || groups.includes('Promo') || groups.includes('NoK') || groups.includes('DevKom')) && (
+          {groups && (groups.includes('HS') || groups.includes('Promo') || groups.includes('NoK') || groups.includes('Index')) && (
             <InfoCard classes={{ children: classes.flex }} header='Arrangementer' justifyText src={EventAdminIcon} text={Text.events}>
               <Link className={classes.buttonLink} to={URLS.eventAdmin}>
                 <Button className={classes.button} color='primary' variant='contained'>
@@ -92,7 +92,7 @@ function Admin(props) {
               </Link>
             </InfoCard>
           )}
-          {groups && (groups.includes('HS') || groups.includes('NoK') || groups.includes('DevKom')) && (
+          {groups && (groups.includes('HS') || groups.includes('NoK') || groups.includes('Index')) && (
             <InfoCard classes={{ children: classes.flex }} header='Jobbannonser' justifyText src={JobPostAdminIcon} text={Text.jobposts}>
               <Link className={classes.buttonLink} to={URLS.jobpostsAdmin}>
                 <Button className={classes.button} color='primary' variant='contained'>
@@ -101,7 +101,7 @@ function Admin(props) {
               </Link>
             </InfoCard>
           )}
-          {groups && (groups.includes('HS') || groups.includes('DevKom')) && (
+          {groups && (groups.includes('HS') || groups.includes('Index')) && (
             <InfoCard classes={{ children: classes.flex }} header='Nyheter' justifyText src={NewsAdminIcon} text={Text.news}>
               <Link className={classes.buttonLink} to={URLS.newsAdmin}>
                 <Button className={classes.button} color='primary' variant='contained'>
@@ -110,7 +110,7 @@ function Admin(props) {
               </Link>
             </InfoCard>
           )}
-          {groups && (groups.includes('HS') || groups.includes('DevKom')) && (
+          {groups && (groups.includes('HS') || groups.includes('Index')) && (
             <InfoCard classes={{ children: classes.flex }} header='Medlemmer' justifyText src={UserAdminIcon} text={Text.users}>
               <Link className={classes.buttonLink} to={URLS.userAdmin}>
                 <Button className={classes.button} color='primary' variant='contained'>

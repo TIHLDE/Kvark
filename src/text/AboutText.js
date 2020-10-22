@@ -5,7 +5,7 @@ export default {
   history:
     'TIHLDE ble stiftet 16.april 1993, med formål å fremme det sosiale og faglige tilbudet ved EDB-avdelingen ved TIH, som etterhvert ble AITeL ved HiST, deretter IIE ved HiST, nå AIT, IDI ved NTNU. Mye har skjedd siden da, men dette er fortsatt vårt mål. Alle studenter og ansatte tilknyttet AIT, IDI ved Gløshaugen kan bli medlem, men opptaket skjer kun i begynnelsen av hvert skoleår.',
   history2:
-    'TIHLDE er en ikke-profitabel og politisk nøytral organisasjon som baserer seg på frivillig engasjement fra studenter. I tillegg til hovedstyret (HS), har TIHLDE pr idag 4 undergrupper: drift, næringsliv og kurs, sosialen og promo, og 6 komitéer: KosKom, TurKom, Brettspill, Redaksjonen, DevKom, og FadderKom. I tillegg har TIHLDE 2 interessegrupper: SEMIKOLON og TIHLDE PYTHONS',
+    'TIHLDE er en ikke-profitabel og politisk nøytral organisasjon som baserer seg på frivillig engasjement fra studenter. I tillegg til hovedstyret (HS), har TIHLDE pr idag 5 undergrupper: Index, Drift, Næringsliv og Kurs, Sosialen og Promo, og 5 komitéer: KosKom, TurKom, Brettspill, Redaksjonen, og FadderKom. I tillegg har TIHLDE 2 interessegrupper: SEMIKOLON og TIHLDE PYTHONS',
 
   drift:
     'Drift er en gruppe på 9 studenter som tar seg av drifting av TIHLDEs datasystemer. Her inngår bla. medlemstjeneren Colargol, studenttjeneren Balthazar, VM-parken Nerdvana samt andre støttetjenere. Oppgavene til Drift er brukeradministrasjon, backup, installasjon og oppgradering av programvare, DNS-administrering, brannslukking og annet. ',
@@ -19,8 +19,8 @@ export default {
     JubKom sitt virke går ut på å markere linjeforeningen, og dens historie for TIHLDE medlemmer. Et jubileum er ikke bare en begivenhet for TIHLDE og dets medlemmer, men også ansatte ved AIT, De Eldstes Raad, og ikke minst alle tidligere medlemmer av TIHLDE.
     Det er JubKom sin jobb å nå ut til gamle ildsjeler, og invitere dem tilbake for at de kan se hvordan linjeforeningen ser ut i dag.!`,
 
-  devkom: `DevKom ble utviklet med formål om å utforme en ny nettside til TIHLDE.
-    Siden den ble lansert har DevKom jobbet kontinuerlig med videre utvikling av ny funksjonalitet på nettsiden.
+  index: `Index ble utviklet med formål om å utforme en ny nettside til TIHLDE.
+    Siden den ble lansert har Index jobbet kontinuerlig med videre utvikling av ny funksjonalitet på nettsiden.
     I dag jobber det engasjerte og dyktige studenter med nettopp dette. Medlemmene har stor frihet til å jobbe med det de selv synes er mest interessant.`,
 
   turkom: `TurKomitéen er en komité som ble startet av engasjerte og turglade studenter, etter ønske fra Generalforsamlingen.
