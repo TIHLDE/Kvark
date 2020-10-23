@@ -44,9 +44,9 @@ const BadgeItem = (props) => {
   );
 };
 
-const ProfileBadges = (props) => {
+const ProfileBadges = () => {
   const classes = useStyles();
-  const [badges, setBadges] = useState();
+  const [badges, setBadges] = useState([]);
   const { getUserData } = useUser();
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const ProfileBadges = (props) => {
 
   return (
     <div className={classes.wrapper}>
-      {badges ? (
+      {badges.length ? (
         <Grid container spacing={1}>
           {badges.map((badgeData, key) => {
             return (
