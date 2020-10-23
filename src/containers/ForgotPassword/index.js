@@ -5,7 +5,7 @@ import URLS from '../../URLS';
 import Helmet from 'react-helmet';
 
 // Service and action imports
-import AuthService from '../../api/services/AuthService';
+import { useAuth } from '../../api/hooks/Auth';
 
 // Material UI Components
 import { withStyles } from '@material-ui/core/styles';
@@ -77,6 +77,7 @@ const styles = (theme) => ({
 
 function ForgotPassword(props) {
   const { classes } = props;
+  const { forgotPassword } = useAuth();
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -94,16 +95,18 @@ function ForgotPassword(props) {
 
     setErrorMessage(null);
     setIsLoading(true);
-    AuthService.forgotPassword(email).then((data) => {
-      if (data) {
-        setSnackMessage('Vi har sendt en link til eposten din der du kan opprette et nytt passord');
-      } else {
+    forgotPassword(email)
+      .then((data) => {
+        setSnackMessage(data.detail);
+      })
+      .catch((error) => {
         setSnackMessage(null);
-        setErrorMessage('Vi fant ingen brukere med denne eposten');
-      }
-      setShowSnackbar(true);
-      setIsLoading(false);
-    });
+        setErrorMessage(error.detail);
+      })
+      .finally(() => {
+        setShowSnackbar(true);
+        setIsLoading(false);
+      });
   };
 
   return (

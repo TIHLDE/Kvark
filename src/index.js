@@ -12,7 +12,7 @@ import { NewsProvider } from './context/NewsContext';
 import { ThemeProvider } from './context/ThemeContext';
 
 // Service and action imports
-import AuthService from './api/services/AuthService';
+import { useAuth } from './api/hooks/Auth';
 import { useMisc, MiscProvider } from './api/hooks/Misc';
 import { useUser, UserProvider } from './api/hooks/User';
 
@@ -52,7 +52,7 @@ const requireAuth = (OriginalComponent, accessGroups = []) => {
     const { match } = props;
     const { getUserData } = useUser();
     const { setLogInRedirectURL } = useMisc();
-    const isAuthenticated = AuthService.isAuthenticated();
+    const { isAuthenticated } = useAuth();
     const [isLoading, setIsLoading] = useState(true);
     const [allowAccess, setAllowAccess] = useState(false);
 
@@ -87,7 +87,7 @@ const requireAuth = (OriginalComponent, accessGroups = []) => {
                   break;
               }
             });
-            if (isAuthenticated && accessGroups.length === 0) {
+            if (isAuthenticated() && accessGroups.length === 0) {
               setAllowAccess(true);
             }
             setIsLoading(false);
@@ -100,7 +100,7 @@ const requireAuth = (OriginalComponent, accessGroups = []) => {
     if (isLoading) {
       return <div>Autentiserer...</div>;
     }
-    if (!isAuthenticated) {
+    if (!isAuthenticated()) {
       setLogInRedirectURL(match.path);
       return <Redirect to={URLS.login} />;
     }

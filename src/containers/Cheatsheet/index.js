@@ -18,7 +18,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 
 // API and store imports
-import CheatsheetService from '../../api/services/CheatsheetService';
+import { useCheatsheet } from '../../api/hooks/Cheatsheet';
 import { useUser } from '../../api/hooks/User';
 
 // Project Components
@@ -131,6 +131,7 @@ const Cheetsheet = (props) => {
   const history = useHistory();
   const { studyId, classId } = useParams();
   const { getUserData } = useUser();
+  const { getCheatsheets } = useCheatsheet();
   // eslint-disable-next-line new-cap
   const [submitFormLazy, setSubmitFormLazy] = useState(Initial());
   const [input, setInput] = useState('');
@@ -154,31 +155,33 @@ const Cheetsheet = (props) => {
     const study = String(getUserStudyShort(studyChoice));
     const grade = String(getClass(Number(classChoice)));
 
-    CheatsheetService.getCheatsheets(urlParameters, study.toUpperCase(), grade).then((data) => {
-      let displayedFiles = [];
-      if (data) {
-        const nextPageUrl = data.next;
-        displayedFiles = data.results;
-        urlParameters = {};
-        // If we have a url for the next page convert it into a object
-        if (nextPageUrl) {
-          const nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
-          const parameterArray = nextPageUrlQuery.split('&');
-          parameterArray.forEach((parameter) => {
-            const parameterString = parameter.split('=');
-            urlParameters[parameterString[0]] = parameterString[1];
-          });
+    getCheatsheets(study.toUpperCase(), grade, urlParameters)
+      .then((data) => {
+        let displayedFiles = [];
+        if (data) {
+          const nextPageUrl = data.next;
+          displayedFiles = data.results;
+          urlParameters = {};
+          // If we have a url for the next page convert it into a object
+          if (nextPageUrl) {
+            const nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
+            const parameterArray = nextPageUrlQuery.split('&');
+            parameterArray.forEach((parameter) => {
+              const parameterString = parameter.split('=');
+              urlParameters[parameterString[0]] = parameterString[1];
+            });
+          }
         }
-      }
-      const nextPage = urlParameters['page'] ? urlParameters['page'] : null;
+        const nextPage = urlParameters['page'] ? urlParameters['page'] : null;
 
-      if (concat) {
-        displayedFiles = submitFormLazy._r.result?.concat(displayedFiles);
-      }
-      setNextPage(nextPage);
-      // eslint-disable-next-line new-cap
-      setSubmitFormLazy(Success(displayedFiles));
-    });
+        if (concat) {
+          displayedFiles = submitFormLazy._r.result?.concat(displayedFiles);
+        }
+        setNextPage(nextPage);
+        // eslint-disable-next-line new-cap
+        setSubmitFormLazy(Success(displayedFiles));
+      })
+      .catch(() => {});
   };
 
   const loadUserData = () => {

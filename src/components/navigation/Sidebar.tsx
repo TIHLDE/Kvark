@@ -4,7 +4,7 @@ import URLS from 'URLS';
 import { Link } from 'react-router-dom';
 
 // API and store imports
-import AuthService from 'api/services/AuthService';
+import { useAuth } from 'api/hooks/Auth';
 
 // Material UI Components
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -53,6 +53,7 @@ const ActionLink = ({ className, label, to }: ActionLinkProps) => {
 
 const Sidebar = () => {
   const classes = useStyles();
+  const { isAuthenticated } = useAuth();
   return (
     <Fragment>
       <div className={classes.root}>
@@ -62,8 +63,8 @@ const Sidebar = () => {
         <ActionLink label='Nyheter' to={URLS.news} />
         <ActionLink label='Karriere' to={URLS.jobposts} />
         <ActionLink label='For Bedrifter' to={URLS.company} />
-        {/* AuthService.isAuthenticated() && <ActionLink to={URLS.cheatsheet} label='Kokebok' />*/}
-        {AuthService.isAuthenticated() ? <ActionLink label='Min side' to={URLS.profile} /> : <ActionLink label='Logg inn' to={URLS.login} />}
+        {/* isAuthenticated() && <ActionLink to={URLS.cheatsheet} label='Kokebok' />*/}
+        {isAuthenticated() ? <ActionLink label='Min side' to={URLS.profile} /> : <ActionLink label='Logg inn' to={URLS.login} />}
       </div>
     </Fragment>
   );

@@ -6,7 +6,7 @@ import URLS from '../../URLS';
 import Helmet from 'react-helmet';
 
 // Service and action imports
-import AuthService from '../../api/services/AuthService';
+import { useAuth } from '../../api/hooks/Auth';
 import { useMisc } from '../../api/hooks/Misc';
 
 // Text imports
@@ -79,6 +79,7 @@ const styles = (theme) => ({
 function LogIn(props) {
   const { classes } = props;
   const history = useHistory();
+  const { logIn } = useAuth();
   const { setLogInRedirectURL, getLogInRedirectURL } = useMisc();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -102,11 +103,9 @@ function LogIn(props) {
 
     setErrorMessage(null);
     setIsLoading(true);
-    AuthService.logIn(username, password)
-      .then((data) => {
-        if (data) {
-          history.push(redirectURL || URLS.landing);
-        }
+    logIn(username, password)
+      .then(() => {
+        history.push(redirectURL || URLS.landing);
       })
       .catch((err) => {
         setErrorMessage(err.detail);

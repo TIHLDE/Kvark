@@ -7,7 +7,7 @@ import { getUserStudyLong, getUserClass } from '../../utils';
 import Helmet from 'react-helmet';
 
 // Service and action imports
-import AuthService from '../../api/services/AuthService';
+import { useAuth } from '../../api/hooks/Auth';
 import { useMisc } from '../../api/hooks/Misc';
 
 // Material UI Components
@@ -75,6 +75,7 @@ const styles = (theme) => ({
 function SignUp(props) {
   const { classes } = props;
   const history = useHistory();
+  const { createUser } = useAuth();
 
   const { handleSubmit, errors, control, setError } = useForm();
   const { setLogInRedirectURL, getLogInRedirectURL } = useMisc();
@@ -131,14 +132,14 @@ function SignUp(props) {
       user_study: data.study,
       password: data.password,
     };
-    AuthService.createUser(userData).then((data) => {
-      if (data) {
+    createUser(userData)
+      .then(() => {
         history.push(redirectURL || URLS.login);
-      } else {
-        setErrorMessage('Feil: Noe gikk galt');
+      })
+      .catch((error) => {
+        setErrorMessage(error.detail);
         setIsLoading(false);
-      }
-    });
+      });
   };
 
   return (

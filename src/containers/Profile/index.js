@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 
 // Serivce imports
-import AuthService from '../../api/services/AuthService';
+import { useAuth } from '../../api/hooks/Auth';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
@@ -53,11 +53,12 @@ const styles = (theme) => ({
 
 function Profile(props) {
   const { classes, history } = props;
+  const { logOut, isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const logout = () => {
     setIsLoading(true);
-    AuthService.logOut();
+    logOut();
     history.push(URLS.landing);
   };
 
@@ -69,7 +70,7 @@ function Profile(props) {
       <div className={classes.root}>
         <div className={classes.top}></div>
         <div className={classes.main}>
-          {AuthService.isAuthenticated() ? (
+          {isAuthenticated() ? (
             <ProfilePaper logoutMethod={logout} />
           ) : (
             <Paper className={classes.paper} noPadding>

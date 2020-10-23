@@ -8,7 +8,7 @@ import { WarningType } from 'types/Enums';
 
 // API and store imports
 import { useMisc } from 'api/hooks/Misc';
-import AuthService from 'api/services/AuthService';
+import { useAuth } from 'api/hooks/Auth';
 import { useUser } from 'api/hooks/User';
 import { getCookie, setCookie } from 'api/cookie';
 import { WARNINGS_READ } from 'settings';
@@ -227,6 +227,7 @@ export type NavigationProps = {
 function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, banner, children }: NavigationProps) {
   const classes = useStyles();
   const location = useLocation();
+  const { isAuthenticated } = useAuth();
   const { getUserData } = useUser();
   const { getWarnings } = useMisc();
   const [showSidebar, setShowSidebar] = useState(false);
@@ -297,7 +298,7 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, 
           <div className={classes.grow}>
             <Hidden mdDown>
               <URIbutton data={{ link: URLS.about, text: 'Om TIHLDE' }} selected={location.pathname === URLS.about} />
-              {/* AuthService.isAuthenticated() && <URIbutton data={{ link: URLS.cheatsheet, text: "Kokebok" }} selected={location.pathname === URLS.cheatsheet} />*/}
+              {/* isAuthenticated() && <URIbutton data={{ link: URLS.cheatsheet, text: "Kokebok" }} selected={location.pathname === URLS.cheatsheet} />*/}
               <URIbutton data={{ link: URLS.events, text: 'Arrangementer' }} selected={location.pathname === URLS.events} />
               <URIbutton data={{ link: URLS.news, text: 'Nyheter' }} selected={location.pathname === URLS.news} />
               <URIbutton data={{ link: URLS.jobposts, text: 'Karriere' }} selected={location.pathname === URLS.jobposts} />
@@ -305,7 +306,7 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, 
             </Hidden>
           </div>
           <div>
-            {AuthService.isAuthenticated() && userData ? (
+            {isAuthenticated() && userData ? (
               <PersonIcon link={URLS.profile} user={userData} />
             ) : (
               <Hidden mdDown>

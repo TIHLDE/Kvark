@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IRequest } from 'api/httphandler';
 import { IFetch } from 'api/fetch';
-import { RequestMethodType } from 'types/Enums';
-import { User, Warning, RequestResponse, CompaniesEmail } from 'types/Types';
+import { RequestMethodType, CheatsheetGrade, CheatsheetStudy } from 'types/Enums';
+import { User, Warning, RequestResponse, CompaniesEmail, PaginationResponse, Cheatsheet } from 'types/Types';
 
 export default {
   // Events
@@ -44,6 +44,9 @@ export default {
   },
   getUserEventObject: (id: string, item: any) => {
     return new IRequest(RequestMethodType.GET, 'events/'.concat(id, '/users/', item.user_id, '/'), undefined, true);
+  },
+  getCategories: () => {
+    return new IRequest(RequestMethodType.GET, 'category/');
   },
 
   // Job posts
@@ -95,21 +98,23 @@ export default {
   },
 
   // Notifications
-  updateNotification: (id: string, item: any) => {
-    return new IRequest(RequestMethodType.PUT, 'notification/'.concat(id, '/'), item, true);
+  updateNotification: (id: number, item: { read: boolean }) => {
+    return IFetch<RequestResponse>(RequestMethodType.PUT, 'notification/'.concat(String(id), '/'), item, true);
   },
 
   // Cheatsheet
-  getCheatsheets: (filters: any, study: any, grade: any) => {
-    return new IRequest(RequestMethodType.GET, 'cheatsheet/'.concat('study/', study, '/grade/', grade, '/file/'), filters || {}, true);
+  getCheatsheets: (study: CheatsheetStudy, grade: CheatsheetGrade, filters?: any) => {
+    return IFetch<PaginationResponse<Cheatsheet>>(
+      RequestMethodType.GET,
+      'cheatsheet/'.concat('study/', study, '/grade/', grade, '/file/'),
+      filters || {},
+      true,
+    );
   },
 
   // Warning
   getWarning: () => {
     return IFetch<Array<Warning>>(RequestMethodType.GET, 'warning/');
-  },
-  getCategories: () => {
-    return new IRequest(RequestMethodType.GET, 'category/');
   },
 
   // Company form
@@ -118,7 +123,7 @@ export default {
   },
 
   // Badges
-  createUserBadge: (data: any) => {
-    return new IRequest(RequestMethodType.POST, 'badge/', data, true);
+  createUserBadge: (data: { badge_id: string }) => {
+    return IFetch<RequestResponse>(RequestMethodType.POST, 'badge/', data, true);
   },
 };
