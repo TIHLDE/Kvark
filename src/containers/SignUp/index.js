@@ -16,11 +16,14 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Collapse from '@material-ui/core/Collapse';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import MenuItem from '@material-ui/core/MenuItem';
 
 // Icons
 import TIHLDE_LOGO from '../../assets/img/TIHLDE_LOGO_B.png';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
+import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
@@ -82,6 +85,7 @@ function SignUp(props) {
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [redirectURL, setRedirectUrl] = useState(null);
+  const [faqOpen, setFaqOpen] = useState(false);
 
   useEffect(() => {
     setRedirectUrl(getLogInRedirectURL());
@@ -295,12 +299,35 @@ function SignUp(props) {
                 />
                 <Typography color='error'>{errorMessage}</Typography>
 
+                <Typography variant='body2'>
+                  OBS: Når du har klikket &quot;Opprett bruker&quot; må vi godkjenne deg før du får logge inn. Les mer om hvorfor lengre ned.
+                </Typography>
+
                 <Button className={classes.button} color='primary' disabled={isLoading} type='submit' variant='contained'>
                   Opprett bruker
                 </Button>
                 <Button className={classes.button} color='primary' component={Link} disabled={isLoading} to={URLS.login}>
                   Logg inn
                 </Button>
+                <Button
+                  className={classes.button}
+                  color='primary'
+                  endIcon={!faqOpen ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+                  onClick={() => setFaqOpen((oldState) => !oldState)}
+                  variant='outlined'>
+                  Hvorfor må vi godkjenne deg?
+                </Button>
+                <Collapse in={faqOpen}>
+                  <Typography className={classes.button} variant='body2'>
+                    For å unngå at vi får mange brukere som ikke er reelle TIHLDE-medlemmer, må vi aktivere nye brukere før de får logge inn. Det kan ta noen
+                    timer før noen av oss i Index eller HS får verifisert brukeren din. Hvis det haster eller tar mer enn 24 timer kan du sende en melding til
+                    TIHLDE på{' '}
+                    <a href='https://m.me/tihlde' rel='noopener noreferrer' target='_blank'>
+                      Messenger
+                    </a>
+                    .
+                  </Typography>
+                </Collapse>
               </Grid>
             </form>
           </Paper>
