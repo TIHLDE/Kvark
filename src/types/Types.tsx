@@ -1,4 +1,4 @@
-import { WarningType } from 'types/Enums';
+import { WarningType, CheatsheetGrade, CheatsheetStudy } from 'types/Enums';
 
 export interface Warning {
   created_at: string;
@@ -10,6 +10,10 @@ export interface Warning {
 
 export interface RequestResponse {
   detail: string;
+}
+
+export interface LoginRequestResponse {
+  token: string;
 }
 
 export interface PaginationResponse<T> {
@@ -95,4 +99,14 @@ export interface CompaniesEmail {
   time: Array<string>;
   type: Array<string>;
   comment: string;
+}
+
+export interface Cheatsheet {
+  course: string;
+  creator: string;
+  grade: CheatsheetGrade;
+  id: string;
+  study: CheatsheetStudy;
+  title: string;
+  url: string;
 }

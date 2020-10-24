@@ -10,7 +10,7 @@ import { urlEncode } from '../../utils';
 // Service imports
 import EventService from '../../api/services/EventService';
 import { useUser } from '../../api/hooks/User';
-import AuthService from '../../api/services/AuthService';
+import { useAuth } from '../../api/hooks/Auth';
 
 // Project components
 import Navigation from '../../components/navigation/Navigation';
@@ -66,6 +66,7 @@ function EventDetails(props) {
   const { id } = useParams();
   const history = useHistory();
   const { getUserData, updateUserEvents } = useUser();
+  const { isAuthenticated } = useAuth();
   const [event, setEvent] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState(null);
@@ -93,7 +94,7 @@ function EventDetails(props) {
 
   // Gets the user data
   const loadUserData = () => {
-    if (AuthService.isAuthenticated()) {
+    if (isAuthenticated()) {
       setIsLoadingUserData(true);
       getUserData()
         .then((userData) => {
@@ -184,10 +185,10 @@ function EventDetails(props) {
         .finally(() => {
           setUserEventLoaded(true);
         });
-    } else if (!userEventLoaded && event && !AuthService.isAuthenticated()) {
+    } else if (!userEventLoaded && event && !isAuthenticated()) {
       setUserEventLoaded(true);
     }
-  }, [event, userData, userEventLoaded]);
+  }, [event, userData, userEventLoaded, isAuthenticated]);
 
   // Find a dominant color in the image, uses a proxy to be able to retrieve images with CORS-policy until all images are stored in our own server
   const { data } = usePalette(

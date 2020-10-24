@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer, useCallback } from 'react';
 import API from 'api/api';
-import AuthService from 'api/services/AuthService';
+import { useAuth } from 'api/hooks/Auth';
 import { User, Event } from 'types/Types';
 
 export type Action =
@@ -60,9 +60,10 @@ const useUserDispatch = () => {
 export const useUser = () => {
   const user = useUserState();
   const dispatch = useUserDispatch();
+  const { isAuthenticated } = useAuth();
 
   const getUserData = useCallback(async () => {
-    if (AuthService.isAuthenticated()) {
+    if (isAuthenticated()) {
       if (user) {
         return Promise.resolve(user);
       } else {
@@ -78,15 +79,18 @@ export const useUser = () => {
     } else {
       return null;
     }
-  }, [user, dispatch]);
+  }, [user, dispatch, isAuthenticated]);
 
-  const getUsers = useCallback(async (filters = null) => {
-    if (AuthService.isAuthenticated()) {
-      return API.getUsers(filters).then((response) => {
-        return !response.isError ? Promise.resolve(response.data) : Promise.reject(response.data);
-      });
-    }
-  }, []);
+  const getUsers = useCallback(
+    async (filters = null) => {
+      if (isAuthenticated()) {
+        return API.getUsers(filters).then((response) => {
+          return !response.isError ? Promise.resolve(response.data) : Promise.reject(response.data);
+        });
+      }
+    },
+    [isAuthenticated],
+  );
 
   const updateUserData = useCallback(
     async (userName: string, userData: Partial<User>, updateLocally?: boolean) => {

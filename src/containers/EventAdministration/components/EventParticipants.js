@@ -10,6 +10,12 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
+
+// Icons
+import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
+import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
+import CopyIcon from '@material-ui/icons/FileCopyOutlined';
 
 // Project
 import EventParticipant from './EventParticipant';
@@ -45,8 +51,7 @@ const styles = (theme) => ({
   },
   listView: {
     width: '100%',
-    paddingBottom: 36,
-    paddingTop: 8,
+    padding: theme.spacing(1, 0, 3),
   },
   flexRow: {
     display: 'flex',
@@ -63,12 +68,19 @@ const styles = (theme) => ({
   lightText: {
     color: theme.palette.colors.text.light,
   },
+  emailButtons: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gridGap: theme.spacing(1),
+    margin: theme.spacing(0, 0, 1),
+  },
 });
 
 const EventParticipants = (props) => {
   const { classes, event, openSnackbar } = props;
 
   const [showOnlyNotAttended, setCheckedState] = useState(false);
+  const [showEmails, setShowEmails] = useState(false);
   const [participants, setParticipants] = useState([]);
 
   useEffect(() => {
@@ -123,11 +135,41 @@ const EventParticipants = (props) => {
 
     if (participantsToPrint.length > 0) {
       elements = participantsToPrint.map((user, key) => {
-        return <EventParticipant key={key} removeUserFromEvent={removeUserFromEvent} toggleUserEvent={toggleUserEvent} user={user} waitList={waitList} />;
+        return (
+          <EventParticipant
+            key={key}
+            removeUserFromEvent={removeUserFromEvent}
+            showEmail={showEmails}
+            toggleUserEvent={toggleUserEvent}
+            user={user}
+            waitList={waitList}
+          />
+        );
       });
     }
 
     return elements;
+  };
+
+  const getEmails = () => {
+    let emails = '';
+    const participants = sortParticipants(false);
+    participants.forEach((participant, i) => {
+      emails += participant.user_info.email;
+      if (i < participants.length - 1) {
+        emails += ' \n';
+      }
+    });
+    return emails;
+  };
+
+  const copyEmails = () => {
+    const tempInput = document.createElement('textarea');
+    tempInput.value = getEmails();
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
   };
 
   return (
@@ -146,15 +188,23 @@ const EventParticipants = (props) => {
       <Divider />
       <div className={classes.content}>
         {sortParticipants(false).length > 0 && (
-          <div>
+          <>
             <Typography className={classes.mainText} variant='h5'>
               Statistikk
             </Typography>
             <div className={classes.listView}>
               <EventStatistics participants={sortParticipants(false)} />
             </div>
-          </div>
+          </>
         )}
+        <div className={classes.emailButtons}>
+          <Button endIcon={showEmails ? <ExpandLessIcon /> : <ExpandMoreIcon />} fullWidth onClick={() => setShowEmails((now) => !now)} variant='outlined'>
+            Vis eposter
+          </Button>
+          <Button endIcon={<CopyIcon />} fullWidth onClick={copyEmails} variant='outlined'>
+            Kopier eposter
+          </Button>
+        </div>
         <div className={classes.flexRow}>
           <Typography className={classes.mainText} variant='h5'>
             Påmeldte ({sortParticipants(false).length})

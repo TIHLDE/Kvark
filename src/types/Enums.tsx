@@ -17,3 +17,19 @@ export enum RequestMethodType {
   PUT = 'PUT',
   DELETE = 'DELETE',
 }
+
+export enum CheatsheetGrade {
+  FIRST = 'FIRST',
+  SECOND = 'SECOND',
+  THIRD = 'THIRD',
+  FOURTH = 'FOURTH',
+  FIFTH = 'FIFTH',
+}
+
+export enum CheatsheetStudy {
+  DATAING = 'DATAING',
+  DIGFOR = 'DIGFOR',
+  DIGINC = 'DIGINC',
+  DIGSAM = 'DIGSAM',
+  DRIFT = 'DRIFT',
+}

@@ -1,15 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { IRequest } from 'api/httphandler';
+import { IFetch } from 'api/fetch';
 import { RequestMethodType } from 'types/Enums';
+import { User, RequestResponse, LoginRequestResponse } from 'types/Types';
 
 export default {
-  createUser: (item: any) => {
-    return new IRequest(RequestMethodType.POST, 'user/', item, false);
+  createUser: (item: User) => {
+    return IFetch<RequestResponse>(RequestMethodType.POST, 'user/', item, false);
   },
   authenticate: (username: string, password: string) => {
-    return new IRequest(RequestMethodType.POST, 'auth/login/', { user_id: username, password: password }, false);
+    return IFetch<LoginRequestResponse>(RequestMethodType.POST, 'auth/login/', { user_id: username, password: password }, false);
   },
   forgotPassword: (email: string) => {
-    return new IRequest(RequestMethodType.POST, 'auth/rest-auth/password/reset/', { email: email }, false);
+    return IFetch<RequestResponse>(RequestMethodType.POST, 'auth/rest-auth/password/reset/', { email: email }, false);
   },
 };

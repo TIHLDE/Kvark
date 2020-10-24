@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 
 // Services
-import AuthService from '../../../api/services/AuthService';
+import { useAuth } from '../../../api/hooks/Auth';
 
 // Material UI Components
 import { withStyles } from '@material-ui/core/styles';
@@ -147,6 +147,7 @@ const style = (theme) => ({
 });
 
 const Wave = ({ classes }) => {
+  const { isAuthenticated } = useAuth();
   return (
     <div className='waveWrapper waveAnimation'>
       <div className={classes.topInner}>
@@ -157,7 +158,7 @@ const Wave = ({ classes }) => {
           Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Drift av datasystemer og Digital samhandling
           ved NTNU
         </Typography>
-        {AuthService.isAuthenticated() ? (
+        {isAuthenticated() ? (
           <div className={classes.topButtonContainer}>
             <Button className={classes.topButton} color='inherit' component={Link} to={URLS.profile} variant='contained'>
               Min side

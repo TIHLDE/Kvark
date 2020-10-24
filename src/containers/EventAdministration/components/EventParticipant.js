@@ -9,6 +9,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Collapse from '@material-ui/core/Collapse';
 
 // Icons
 import Delete from '@material-ui/icons/Delete';
@@ -63,7 +64,7 @@ const style = (theme) => ({
 });
 
 const EventParticipant = (props) => {
-  const { classes, user, removeUserFromEvent, toggleUserEvent, waitList } = props;
+  const { classes, user, removeUserFromEvent, toggleUserEvent, waitList, showEmail } = props;
   const userInfo = user.user_info;
   const [checkedState, setCheckedState] = useState(user.has_attended);
   const [showModal, setShowModal] = useState(false);
@@ -96,8 +97,12 @@ const EventParticipant = (props) => {
       )}
       <div className={classes.userName}>
         <Typography>{userInfo.first_name + ' ' + userInfo.last_name}</Typography>
-        <Typography>Studie: {getUserStudyShort(userInfo.user_study)}</Typography>
-        <Typography>Årstrinn: {userInfo.user_class}. klasse</Typography>
+        <Typography>
+          {userInfo.user_class}. klasse - {getUserStudyShort(userInfo.user_study)}
+        </Typography>
+        <Collapse in={showEmail}>
+          <Typography>{userInfo.email}</Typography>
+        </Collapse>
         {userInfo.allergy !== '' && <Typography>Allergier: {userInfo.allergy}</Typography>}
         {user.allow_photo && !user.allow_photo && <Typography>Vil ikke bli tatt bilde av</Typography>}
       </div>
@@ -124,6 +129,7 @@ EventParticipant.propTypes = {
   removeUserFromEvent: PropTypes.func,
   toggleUserEvent: PropTypes.func,
   waitList: PropTypes.bool,
+  showEmail: PropTypes.bool,
 };
 
 export default withStyles(style)(EventParticipant);

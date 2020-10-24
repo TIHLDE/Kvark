@@ -18,6 +18,7 @@ import SocialIcon from '../../assets/icons/social.svg';
 import BusinessIcon from '../../assets/icons/business.svg';
 import OperationIcon from '../../assets/icons/operations.png';
 import PromoIcon from '../../assets/icons/promo.svg';
+import IndexIcon from '../../assets/icons/index.svg';
 import OrgMap from '../../assets/img/orgMap.svg';
 
 // Project Components
@@ -116,6 +117,7 @@ function About(props) {
               <InfoCard header='Sosialen' src={SocialIcon} text={Text.social} />
               <InfoCard header='Næringsliv og Kurs' src={BusinessIcon} text={Text.business} />
               <InfoCard header='Promo' src={PromoIcon} text={Text.promo} />
+              <InfoCard header='Index' src={IndexIcon} text={Text.index} />
             </div>
           </div>
         </div>
@@ -126,10 +128,8 @@ function About(props) {
               Komitéer
             </Typography>
             <div className={classes.grid}>
-              <InfoCard header='KontKom' justifyText text={Text.kontkom} />
-              <InfoCard header='Devkom' justifyText text={Text.devkom} />
               <InfoCard header='Turkom' justifyText text={Text.turkom} />
-              <InfoCard header='Jubkom' justifyText text={Text.jubkom} />
+              <InfoCard header='KontKom' justifyText text={Text.kontkom} />
             </div>
           </div>
         </div>

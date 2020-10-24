@@ -28,11 +28,13 @@ import ProfileIcon from '@material-ui/icons/InsertEmoticonRounded';
 import AdminIcon from '@material-ui/icons/TuneRounded';
 import NewTabIcon from '@material-ui/icons/LaunchRounded';
 import LogOutIcon from '@material-ui/icons/ExitToAppRounded';
+import BadgesIcon from '@material-ui/icons/EmojiEventsOutlined';
 
 // Components
 import ProfileSettings from './ProfileSettings';
 import ProfileEvents from './ProfileEvents';
 import ProfileNotifications from './ProfileNotifications';
+import ProfileBadges from './ProfileBadges';
 import Paper from '../../../components/layout/Paper';
 import Modal from '../../../components/layout/Modal';
 
@@ -122,10 +124,11 @@ function ProfilePaper(props) {
   const [showModal, setShowModal] = useState(false);
   const eventTab = { label: 'Arrangementer', icon: EventIcon };
   const notificationsTab = { label: 'Varsler', icon: NotificationsIcon, badge: userData.unread_notifications };
+  const badgesTab = { label: 'Badges', icon: BadgesIcon };
   const settingsTab = { label: 'Profil', icon: ProfileIcon };
   const adminTab = { label: 'Admin', icon: AdminIcon, iconEnd: NewTabIcon, component: Link, to: URLS.admin };
   const logoutTab = { label: 'Logg ut', icon: LogOutIcon, onClick: logoutMethod, className: classes.logOutButton };
-  const tabs = [eventTab, notificationsTab, settingsTab, ...(isGroupMember ? [adminTab] : []), logoutTab];
+  const tabs = [eventTab, notificationsTab, badgesTab, settingsTab, ...(isGroupMember ? [adminTab] : []), logoutTab];
   const [tab, setTab] = useState(eventTab.label);
 
   useEffect(() => {
@@ -135,7 +138,7 @@ function ProfilePaper(props) {
           user.notifications.reverse();
           setUserData(user);
           const groups = user.groups;
-          if (groups.includes('HS') || groups.includes('Promo') || groups.includes('NoK') || groups.includes('DevKom')) {
+          if (groups.includes('HS') || groups.includes('Promo') || groups.includes('NoK') || groups.includes('Index')) {
             setIsGroupMember(true);
           }
         }
@@ -239,6 +242,9 @@ function ProfilePaper(props) {
             <Paper>
               <ProfileSettings />
             </Paper>
+          </Collapse>
+          <Collapse in={tab === badgesTab.label}>
+            <ProfileBadges />
           </Collapse>
         </div>
       </div>

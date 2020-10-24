@@ -9,7 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 // Serivce imports
-import AuthService from '../../api/services/AuthService';
+import { useAuth } from '../../api/hooks/Auth';
 
 // Imgs
 import http404img from '../../assets/img/http404.gif';
@@ -41,6 +41,7 @@ const styles = (theme) => ({
 
 function Http404(props) {
   const { classes } = props;
+  const { isAuthenticated } = useAuth();
 
   return (
     <Navigation className={classes.root} whitesmoke>
@@ -49,7 +50,7 @@ function Http404(props) {
       </Helmet>
       <Grid alignItems='center' className={classes.root} container direction='column' wrap='nowrap'>
         <div className={classes.center}>
-          {AuthService.isAuthenticated() ? (
+          {isAuthenticated() ? (
             <img alt='404' className={classes.img} src={http404ropeImg} />
           ) : (
             <img alt='404' className={classNames(classes.img, classes.imgPadding)} src={http404img} />

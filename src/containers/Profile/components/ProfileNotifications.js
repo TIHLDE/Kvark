@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // API
-import NotificationService from '../../../api/services/NotificationService';
+import { useNotification } from '../../../api/hooks/Notification';
 
 // Material-UI
 import classNames from 'classnames';
@@ -40,11 +40,12 @@ const style = (theme) => ({
 
 const Notification = (props) => {
   const { classes, notification } = props;
+  const { updateNotificationReadState } = useNotification();
 
   let elementClass = classes.message;
   if (!notification.read) {
     elementClass = classNames(classes.message, classes.unread);
-    NotificationService.updateNotificationReadState(notification.id, true);
+    updateNotificationReadState(notification.id, true).catch(() => {});
   }
 
   return (
