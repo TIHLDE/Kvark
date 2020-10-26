@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer, useCallback } from 'react';
 import API from 'api/api';
-import { Warning } from 'types/Types';
+import { Warning, CompaniesEmail } from 'types/Types';
 
 export type Action = { type: 'set redirect-url'; payload: string | null } | { type: 'set warnings'; payload: Array<Warning> };
 export type Dispatch = (action: Action) => void;
@@ -65,7 +65,7 @@ export const useMisc = () => {
     }
   }, [dispatch, misc.warnings]);
 
-  const postEmail = useCallback(async (data) => {
+  const postEmail = useCallback(async (data: CompaniesEmail) => {
     return API.emailForm(data).then((response) => {
       return !response.isError ? Promise.resolve(response.data) : Promise.reject(response.data);
     });

@@ -63,15 +63,16 @@ function NewsDetails(props) {
   const { classes } = props;
   const { id } = useParams();
   const history = useHistory();
-  const [newsData, isLoading] = useNewsById(id);
+  const [newsData, error] = useNewsById(Number(id));
 
   useEffect(() => {
-    if (!isLoading && newsData) {
-      history.replace(URLS.news + id + '/' + urlEncode(newsData.title) + '/');
-    } else if (!isLoading && !newsData) {
-      history.replace(URLS.news); // Redirect to news page given if id is invalid
+    if (error) {
+      history.replace(URLS.news);
     }
-  }, [history, isLoading, newsData, id]);
+    if (newsData) {
+      history.replace(`${URLS.news}${id}/${urlEncode(newsData.title)}/`);
+    }
+  }, [id, history, newsData, error]);
 
   // Find a dominant color in the image, uses a proxy to be able to retrieve images with CORS-policy until all images are stored in our own server
   const { data } = usePalette(
@@ -81,8 +82,8 @@ function NewsDetails(props) {
   );
 
   return (
-    <Navigation fancyNavbar isLoading={isLoading} whitesmoke>
-      {!isLoading && newsData.title && (
+    <Navigation fancyNavbar isLoading={!newsData} whitesmoke>
+      {newsData && (
         <div className={classes.root}>
           <Helmet>
             <title>{newsData.title} - TIHLDE</title>

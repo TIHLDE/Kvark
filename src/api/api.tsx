@@ -2,7 +2,7 @@
 import { IRequest } from 'api/httphandler';
 import { IFetch } from 'api/fetch';
 import { RequestMethodType, CheatsheetGrade, CheatsheetStudy } from 'types/Enums';
-import { User, Warning, RequestResponse, CompaniesEmail, PaginationResponse, Cheatsheet } from 'types/Types';
+import { User, News, NewsRequired, Warning, RequestResponse, CompaniesEmail, PaginationResponse, Cheatsheet } from 'types/Types';
 
 export default {
   // Events
@@ -70,27 +70,27 @@ export default {
   },
 
   // News
-  getNewsItem: (id: string) => {
-    return new IRequest(RequestMethodType.GET, 'news/'.concat(id, '/'), undefined);
+  getNewsItem: (id: number) => {
+    return IFetch<News>(RequestMethodType.GET, 'news/'.concat(String(id), '/'), undefined);
   },
-  getNewsItems: (filters: any) => {
-    return new IRequest(RequestMethodType.GET, 'news/', filters || {});
+  getNewsItems: (filters?: any) => {
+    return IFetch<Array<News>>(RequestMethodType.GET, 'news/', filters || {});
   },
-  createNewsItem: (item: any) => {
-    return new IRequest(RequestMethodType.POST, 'news/', item, true);
+  createNewsItem: (item: NewsRequired) => {
+    return IFetch<News>(RequestMethodType.POST, 'news/', item, true);
   },
-  putNewsItem: (id: string, item: any) => {
-    return new IRequest(RequestMethodType.PUT, 'news/'.concat(id, '/'), item, true);
+  putNewsItem: (id: number, item: NewsRequired) => {
+    return IFetch<News>(RequestMethodType.PUT, 'news/'.concat(String(id), '/'), item, true);
   },
-  deleteNewsItem: (id: string) => {
-    return new IRequest(RequestMethodType.DELETE, 'news/'.concat(id, '/'), undefined, true);
+  deleteNewsItem: (id: number) => {
+    return IFetch<RequestResponse>(RequestMethodType.DELETE, 'news/'.concat(String(id), '/'), undefined, true);
   },
 
   // User
   getUserData: () => {
     return IFetch<User>(RequestMethodType.GET, 'user/userdata/', undefined, true);
   },
-  getUsers: (filters: any) => {
+  getUsers: (filters?: any) => {
     return IFetch<Array<User>>(RequestMethodType.GET, 'user/', filters || {}, true);
   },
   updateUserData: (userName: string, item: Partial<User>) => {

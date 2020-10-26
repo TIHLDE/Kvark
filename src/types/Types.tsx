@@ -42,6 +42,18 @@ export interface User {
   unread_notifications: number;
   notifications: Array<unknown>;
 }
+export type NewsRequired = Partial<News> & Pick<News, 'title' | 'header' | 'body'>;
+
+export interface News {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  title: string;
+  header: string;
+  body: string;
+  image?: string;
+  image_alt?: string;
+}
 
 export interface UserRegistration {
   allow_photo: boolean;
@@ -59,7 +71,7 @@ export interface UserRegistration {
 }
 
 export interface Event {
-  id: string;
+  id: number;
   title: string;
   start_date: string;
   end_date: string;

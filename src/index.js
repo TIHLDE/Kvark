@@ -8,13 +8,13 @@ import { Provider } from 'react-redux';
 import store from './store/store';
 import URLS from './URLS';
 import GA from './analytics';
-import { NewsProvider } from './context/NewsContext';
 import { ThemeProvider } from './context/ThemeContext';
 
 // Service and action imports
 import { useAuth } from './api/hooks/Auth';
 import { useMisc, MiscProvider } from './api/hooks/Misc';
 import { useUser, UserProvider } from './api/hooks/User';
+import { NewsProvider } from './api/hooks/News';
 
 // Project containers
 import EventDetails from './containers/EventDetails';
