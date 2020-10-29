@@ -1,5 +1,8 @@
 # TIHLDEs nettside - Kvark 
+[![Vercel](./src/assets/img/vercel_background.svg)](https://vercel.com/?utm_source=kvark&utm_campaign=oss)
+
 ![Lint, test and build](https://github.com/tihlde/Kvark/workflows/Lint,%20test%20and%20build/badge.svg)
+
 ## Contents
 1. [Basic info](#basic-info)
 2. [Getting started](#getting-started)
