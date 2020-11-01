@@ -4,7 +4,8 @@ import URLS from '../../URLS';
 import Helmet from 'react-helmet';
 
 // API and store imports
-import EventService from '../../api/services/EventService';
+import { useEvent } from '../../api/hooks/Event';
+import { useMisc } from '../../api/hooks/Misc';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
@@ -97,7 +98,8 @@ const defaultEvent = {
 
 function EventAdministration(props) {
   const { classes, history } = props;
-
+  const { getEvents, updateEvent, createEvent, deleteEvent, getExpiredEvents } = useEvent();
+  const { getCategories } = useMisc();
   const [isLoading, setIsLoading] = useState(false);
   const [tab, setTab] = useState(0);
   const [events, setEvents] = useState([]);
@@ -114,7 +116,7 @@ function EventAdministration(props) {
     setIsLoading(true);
 
     // Fetch job posts from server
-    EventService.getEvents(parameters).then((data) => {
+    getEvents(parameters).then((data) => {
       setEvents([...events, ...data.results]);
       const nextPageUrl = data.next;
       const urlParameters = {};
@@ -135,41 +137,40 @@ function EventAdministration(props) {
 
   const saveEvent = () => {
     if (selectedEvent.id) {
-      EventService.putEvent(selectedEvent.id, selectedEvent)
-        .then(() => {
+      updateEvent(selectedEvent.id, selectedEvent)
+        .then((data) => {
           setEvents((events) =>
             events.map((eventItem) => {
               let returnValue = { ...eventItem };
-              if (eventItem.id === selectedEvent.id) {
-                returnValue = selectedEvent;
+              if (eventItem.id === data.id) {
+                returnValue = data;
               }
               return returnValue;
             }),
           );
           openSnackbar('Arrangementet ble oppdatert');
         })
-        .catch((e) => openSnackbar(JSON.stringify(e)));
+        .catch((e) => openSnackbar(e.detail));
     } else {
-      EventService.createNewEvent(selectedEvent)
+      createEvent(selectedEvent)
         .then((data) => {
-          const newEvent = { ...selectedEvent, id: data.id };
-          setEvents((events) => [...events, newEvent]);
-          setSelectedEvent(newEvent);
+          setEvents((events) => [...events, data]);
+          setSelectedEvent(data);
           openSnackbar('Arrangementet ble opprettet');
         })
-        .catch((e) => openSnackbar(JSON.stringify(e)));
+        .catch((e) => openSnackbar(e.detail));
     }
   };
 
-  const deleteEvent = () => {
+  const delEvent = () => {
     if (selectedEvent.id) {
-      EventService.deleteEvent(selectedEvent.id)
-        .then(() => {
+      deleteEvent(selectedEvent.id)
+        .then((data) => {
           setEvents((events) => events.filter((eventItem) => eventItem.id !== selectedEvent.id));
           setSelectedEvent(defaultEvent);
-          openSnackbar('Arrangementet ble slettet');
+          openSnackbar(data.detail);
         })
-        .catch((e) => openSnackbar(JSON.stringify(e)));
+        .catch((e) => openSnackbar(e.detail));
     } else {
       openSnackbar('Du kan ikke slette et arrangement som ikke er opprettet');
     }
@@ -177,10 +178,21 @@ function EventAdministration(props) {
 
   const closeEvent = () => {
     if (selectedEvent.id) {
-      EventService.putEvent(selectedEvent.id, { closed: true }).then(() => {
-        setSelectedEvent({ ...selectedEvent, closed: true });
-        openSnackbar('Arrangementet ble stengt');
-      });
+      updateEvent(selectedEvent.id, { closed: true })
+        .then((data) => {
+          setSelectedEvent(data);
+          setEvents((events) =>
+            events.map((eventItem) => {
+              let returnValue = { ...eventItem };
+              if (eventItem.id === data.id) {
+                returnValue = data;
+              }
+              return returnValue;
+            }),
+          );
+          openSnackbar('Arrangementet ble stengt');
+        })
+        .catch((e) => openSnackbar(e.detail));
     } else {
       openSnackbar('Du kan ikke stenge et arrangement som ikke er opprettet');
     }
@@ -192,12 +204,10 @@ function EventAdministration(props) {
     }
 
     setIsLoading(true);
-    EventService.getExpiredData((isError, data) => {
-      if (!isError) {
-        setExpiredItems(data.results || data || []);
-      }
-      setIsLoading(false);
-    });
+    getExpiredEvents
+      .then((data) => setExpiredItems(data.results || data || []))
+      .catch(() => {})
+      .finally(() => setIsLoading(false));
   };
 
   const getNextPage = () => {
@@ -219,11 +229,9 @@ function EventAdministration(props) {
 
   useEffect(() => {
     loadEvents();
-    EventService.getCategories().then((data) => {
-      if (data) {
-        setCategories(data);
-      }
-    });
+    getCategories()
+      .then((data) => setCategories(data))
+      .catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -231,7 +239,7 @@ function EventAdministration(props) {
     { text: 'Lagre', func: () => saveEvent() },
     { text: 'Registrer ankomne', func: () => goToRegistration() },
     { text: 'Steng', func: () => closeEvent() },
-    { text: 'Slett', func: () => deleteEvent() },
+    { text: 'Slett', func: () => delEvent() },
   ];
 
   return (

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 // API and store imports
-import EventService from '../../../api/services/EventService';
+import { useEvent } from '../../../api/hooks/Event';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
@@ -78,39 +78,41 @@ const styles = (theme) => ({
 
 const EventParticipants = (props) => {
   const { classes, event, openSnackbar } = props;
-
+  const { getEventRegistrations, deleteRegistration, updateRegistration } = useEvent();
   const [showOnlyNotAttended, setCheckedState] = useState(false);
   const [showEmails, setShowEmails] = useState(false);
   const [participants, setParticipants] = useState([]);
 
   useEffect(() => {
     if (event.id) {
-      EventService.getEventParticipants(event.id).then((result) => {
-        setParticipants(result);
-      });
+      getEventRegistrations(event.id)
+        .then((result) => {
+          setParticipants(result);
+        })
+        .catch(() => {});
     }
-  }, [event]);
+  }, [event, getEventRegistrations]);
 
-  const removeUserFromEvent = (userId) => {
-    EventService.deleteUserFromEventList(event.id, { user_id: userId })
-      .then(() => {
-        const newParticipants = participants.filter((user) => user.user_info.user_id !== userId);
+  const removeUserFromEvent = (registration) => {
+    deleteRegistration(event.id, registration.user_info.user_id, registration)
+      .then((data) => {
+        const newParticipants = participants.filter((user) => user.user_info.user_id !== registration.user_info.user_id);
         setParticipants(newParticipants);
+        openSnackbar(data.detail);
       })
-      .catch((error) => openSnackbar(JSON.stringify(error)))
-      .finally(() => openSnackbar('Deltageren ble fjernet'));
+      .catch((error) => openSnackbar(error.detail));
   };
 
   const toggleUserEvent = (userId, parameters) => {
-    EventService.updateUserEvent(event.id, { user_id: userId, ...parameters })
-      .then(() => {
+    updateRegistration(event.id, { user_id: userId, ...parameters })
+      .then((data) => {
         const newParticipants = participants.map((user) => {
-          return user.user_info.user_id === userId ? { ...user, ...parameters } : user;
+          return user.user_info.user_id === userId ? data : user;
         });
         setParticipants(newParticipants);
+        openSnackbar('Endringen var vellykket');
       })
-      .catch((error) => openSnackbar(JSON.stringify(error)))
-      .finally(() => openSnackbar('Endringen var vellykket'));
+      .catch((error) => openSnackbar(error.detail));
   };
 
   const sortParticipants = (waitList) => {

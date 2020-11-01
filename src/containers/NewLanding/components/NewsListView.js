@@ -55,8 +55,6 @@ function NewsListView({ classes }) {
   const [news, setNews] = useState(null);
   const [newsToDisplay, setNewsToDisplay] = useState(1);
 
-  useEffect(() => window.scrollTo(0, 0), []);
-
   useEffect(() => {
     getNews()
       .then((news) => {

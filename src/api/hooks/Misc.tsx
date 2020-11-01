@@ -1,10 +1,13 @@
 import React, { createContext, useContext, useReducer, useCallback } from 'react';
 import API from 'api/api';
-import { Warning, CompaniesEmail } from 'types/Types';
+import { Category, Warning, CompaniesEmail } from 'types/Types';
 
-export type Action = { type: 'set redirect-url'; payload: string | null } | { type: 'set warnings'; payload: Array<Warning> };
+export type Action =
+  | { type: 'set redirect-url'; payload: string | null }
+  | { type: 'set warnings'; payload: Array<Warning> }
+  | { type: 'set categories'; payload: Array<Category> };
 export type Dispatch = (action: Action) => void;
-export type State = { warnings: Array<Warning> | null; redirectUrl: string | null };
+export type State = { categories: Array<Category> | null; warnings: Array<Warning> | null; redirectUrl: string | null };
 export type MiscProviderProps = { children: React.ReactNode };
 
 const MiscStateContext = createContext<State | undefined>(undefined);
@@ -18,11 +21,14 @@ const miscReducer = (state: State, action: Action): State => {
     case 'set warnings': {
       return { ...state, warnings: action.payload };
     }
+    case 'set categories': {
+      return { ...state, categories: action.payload };
+    }
   }
 };
 
 export const MiscProvider = ({ children }: MiscProviderProps) => {
-  const [state, dispatch] = useReducer(miscReducer, { warnings: null, redirectUrl: null });
+  const [state, dispatch] = useReducer(miscReducer, { warnings: null, redirectUrl: null, categories: null });
   return (
     <MiscStateContext.Provider value={state}>
       <MiscDispatchContext.Provider value={dispatch}>{children}</MiscDispatchContext.Provider>
@@ -82,5 +88,20 @@ export const useMisc = () => {
     return misc.redirectUrl;
   }, [misc.redirectUrl]);
 
-  return { getWarnings, postEmail, setLogInRedirectURL, getLogInRedirectURL };
+  const getCategories = useCallback(async () => {
+    if (misc.categories) {
+      return Promise.resolve(misc.categories);
+    } else {
+      return API.getCategories().then((response) => {
+        if (response.isError) {
+          return Promise.reject(response.data);
+        } else {
+          dispatch({ type: 'set categories', payload: response.data });
+          return Promise.resolve(response.data);
+        }
+      });
+    }
+  }, [dispatch, misc.categories]);
+
+  return { getWarnings, postEmail, setLogInRedirectURL, getLogInRedirectURL, getCategories };
 };

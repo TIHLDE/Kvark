@@ -137,7 +137,7 @@ const JobPostRenderer = (props) => {
       <div>
         <Paper className={classes.details}>
           <div className={classes.imageWrapper}>
-            <img alt={data.logo_alt} className={classes.image} src={data.logo} />
+            <img alt={data.image_alt} className={classes.image} src={data.image} />
           </div>
 
           <Divider className={classes.mb} />

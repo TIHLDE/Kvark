@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
 // API and store imports
-import JobPostService from '../../api/services/JobPostService';
+import { useJobPost } from '../../api/hooks/JobPost';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
@@ -76,7 +76,7 @@ const defaultJobPost = {
 
 function JobPostAdministration(props) {
   const { classes } = props;
-
+  const { getJobPosts, updateJobPost, createJobPost, deleteJobPost, getExpiredJobPosts } = useJobPost();
   const [isLoading, setIsLoading] = useState(false);
   const [tab, setTab] = useState(0);
   const [jobPosts, setJobPosts] = useState([]);
@@ -92,7 +92,7 @@ function JobPostAdministration(props) {
     setIsLoading(true);
 
     // Fetch job posts from server
-    JobPostService.getJobPosts(parameters).then((data) => {
+    getJobPosts(parameters).then((data) => {
       setJobPosts([...jobPosts, ...data.results]);
       const nextPageUrl = data.next;
       const urlParameters = {};
@@ -113,7 +113,7 @@ function JobPostAdministration(props) {
 
   const saveJobPost = () => {
     if (selectedJobPost.id) {
-      JobPostService.putJobPost(selectedJobPost.id, selectedJobPost)
+      updateJobPost(selectedJobPost.id, selectedJobPost)
         .then((data) => {
           setJobPosts((jobPosts) =>
             jobPosts.map((jobPostItem) => {
@@ -128,7 +128,7 @@ function JobPostAdministration(props) {
         })
         .catch((e) => openSnackbar(JSON.stringify(e)));
     } else {
-      JobPostService.createJobPost(selectedJobPost)
+      createJobPost(selectedJobPost)
         .then((data) => {
           setJobPosts((jobPosts) => [...jobPosts, data]);
           setSelectedJobPost(data);
@@ -138,13 +138,13 @@ function JobPostAdministration(props) {
     }
   };
 
-  const deleteJobPost = () => {
+  const delJobPost = () => {
     if (selectedJobPost.id) {
-      JobPostService.deleteJobPost(selectedJobPost.id)
-        .then(() => {
+      deleteJobPost(selectedJobPost.id)
+        .then((data) => {
           setJobPosts((jobPosts) => jobPosts.filter((jobPostItem) => jobPostItem.id !== selectedJobPost.id));
           setSelectedJobPost(defaultJobPost);
-          openSnackbar('Annonsen ble slettet');
+          openSnackbar(data.detail);
         })
         .catch((e) => openSnackbar(JSON.stringify(e)));
     } else {
@@ -158,7 +158,7 @@ function JobPostAdministration(props) {
     }
 
     setIsLoading(true);
-    JobPostService.getExpiredData((isError, data) => {
+    getExpiredJobPosts((isError, data) => {
       if (!isError) {
         setExpiredItems(data.results || data || []);
       }
@@ -182,7 +182,7 @@ function JobPostAdministration(props) {
 
   const options = [
     { text: 'Lagre', func: () => saveJobPost() },
-    { text: 'Slett', func: () => deleteJobPost() },
+    { text: 'Slett', func: () => delJobPost() },
   ];
 
   return (

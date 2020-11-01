@@ -16,7 +16,6 @@ This website uses the following technologies
 * ReactJs
 * Typescript
 * Material-UI (CSS-framework)
-* Redux (store)
 
 ### Getting started
 

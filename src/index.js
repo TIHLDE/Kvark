@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import './assets/css/index.css';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import ScrollMemory from 'react-router-scroll-memory';
-import { Provider } from 'react-redux';
-import store from './store/store';
 import URLS from './URLS';
 import GA from './analytics';
 import { ThemeProvider } from './context/ThemeContext';
@@ -15,6 +13,8 @@ import { useAuth } from './api/hooks/Auth';
 import { useMisc, MiscProvider } from './api/hooks/Misc';
 import { useUser, UserProvider } from './api/hooks/User';
 import { NewsProvider } from './api/hooks/News';
+import { JobPostProvider } from './api/hooks/JobPost';
+import { EventProvider } from './api/hooks/Event';
 
 // Project containers
 import EventDetails from './containers/EventDetails';
@@ -118,57 +118,69 @@ const requireAuth = (OriginalComponent, accessGroups = []) => {
   return App;
 };
 
-const Application = () => {
+const Providers = ({ children }) => {
   return (
     <MiscProvider>
       <UserProvider>
         <NewsProvider>
-          <ThemeProvider>
-            <Provider store={store}>
-              <BrowserRouter>
-                {GA.init() && <GA.RouteTracker />}
-                <ScrollMemory />
-                <Switch>
-                  <Route component={NewLanding} exact path='/' />
-                  <Route component={EventRegistration} path={URLS.events.concat(':id/registrering')} />
-                  <Route component={EventDetails} path={URLS.events.concat(':id/')} />
-                  <Route component={About} path={URLS.about} />
-                  <Route component={ContactInfo} path={URLS.contactInfo} />
-                  <Route component={Events} path={URLS.events} />
-                  <Route component={Services} path={URLS.services} />
-                  <Route component={Companies} path={URLS.company} />
-                  <Route component={NewStudent} path={URLS.newStudent} />
-                  <Route component={Profile} path={URLS.profile} />
-                  <Route component={JobPostDetails} path={URLS.jobposts.concat(':id/')} />
-                  <Route component={JobPosts} exact path={URLS.jobposts} />
-                  <Route component={Laws} path={URLS.laws} />
-                  <Route component={PrivacyPolicy} path={URLS.privacyPolicy} />
-                  <Route component={EventRules} path={URLS.eventRules} />
-                  <Route component={NewsDetails} path={URLS.news.concat(':id/')} />
-                  <Route component={News} path={URLS.news} />
-
-                  <Route component={requireAuth(Cheatsheet)} path={URLS.cheatsheet.concat(':studyId/:classId/')} />
-                  <Route component={requireAuth(Cheatsheet)} path={URLS.cheatsheet} />
-
-                  <Route component={requireAuth(Admin, ['HS', 'Promo', 'Nok', 'Index'])} exact path={URLS.admin} />
-                  <Route component={requireAuth(UserAdmin, ['HS', 'Index'])} path={URLS.userAdmin} />
-                  <Route component={requireAuth(JobPostAdministration, ['HS', 'Nok', 'Index'])} path={URLS.jobpostsAdmin} />
-                  <Route component={requireAuth(EventAdministration, ['HS', 'Promo', 'Nok', 'Index'])} path={URLS.eventAdmin} />
-                  <Route component={requireAuth(NewsAdministration, ['HS', 'Promo', 'Nok', 'Index'])} path={URLS.newsAdmin} />
-
-                  <Route component={LogIn} path={URLS.login} />
-                  <Route component={ForgotPassword} path={URLS.forgotPassword} />
-                  <Route component={SignUp} path={URLS.signup} />
-
-                  <Route component={Http404} />
-                </Switch>
-                <MessageGDPR />
-              </BrowserRouter>
-            </Provider>
-          </ThemeProvider>
+          <JobPostProvider>
+            <EventProvider>
+              <ThemeProvider>{children}</ThemeProvider>
+            </EventProvider>
+          </JobPostProvider>
         </NewsProvider>
       </UserProvider>
     </MiscProvider>
+  );
+};
+
+Providers.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+const Application = () => {
+  return (
+    <Providers>
+      <BrowserRouter>
+        {GA.init() && <GA.RouteTracker />}
+        <ScrollMemory />
+        <Switch>
+          <Route component={NewLanding} exact path='/' />
+          <Route component={EventRegistration} path={URLS.events.concat(':id/registrering')} />
+          <Route component={EventDetails} path={URLS.events.concat(':id/')} />
+          <Route component={About} path={URLS.about} />
+          <Route component={ContactInfo} path={URLS.contactInfo} />
+          <Route component={Events} path={URLS.events} />
+          <Route component={Services} path={URLS.services} />
+          <Route component={Companies} path={URLS.company} />
+          <Route component={NewStudent} path={URLS.newStudent} />
+          <Route component={Profile} path={URLS.profile} />
+          <Route component={JobPostDetails} path={URLS.jobposts.concat(':id/')} />
+          <Route component={JobPosts} exact path={URLS.jobposts} />
+          <Route component={Laws} path={URLS.laws} />
+          <Route component={PrivacyPolicy} path={URLS.privacyPolicy} />
+          <Route component={EventRules} path={URLS.eventRules} />
+          <Route component={NewsDetails} path={URLS.news.concat(':id/')} />
+          <Route component={News} path={URLS.news} />
+
+          <Route component={requireAuth(Cheatsheet)} path={URLS.cheatsheet.concat(':studyId/:classId/')} />
+          <Route component={requireAuth(Cheatsheet)} path={URLS.cheatsheet} />
+
+          <Route component={requireAuth(Admin, ['HS', 'Promo', 'Nok', 'Index'])} exact path={URLS.admin} />
+          <Route component={requireAuth(UserAdmin, ['HS', 'Index'])} path={URLS.userAdmin} />
+          <Route component={requireAuth(JobPostAdministration, ['HS', 'Nok', 'Index'])} path={URLS.jobpostsAdmin} />
+          <Route component={requireAuth(EventAdministration, ['HS', 'Promo', 'Nok', 'Index'])} path={URLS.eventAdmin} />
+          <Route component={requireAuth(NewsAdministration, ['HS', 'Promo', 'Nok', 'Index'])} path={URLS.newsAdmin} />
+
+          <Route component={LogIn} path={URLS.login} />
+          <Route component={ForgotPassword} path={URLS.forgotPassword} />
+          <Route component={SignUp} path={URLS.signup} />
+
+          <Route component={Http404} />
+        </Switch>
+        <MessageGDPR />
+      </BrowserRouter>
+    </Providers>
   );
 };
 
