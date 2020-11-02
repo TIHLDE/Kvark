@@ -62,8 +62,7 @@ const Sidebar = () => {
         <ActionLink label='Arrangementer' to={URLS.events} />
         <ActionLink label='Nyheter' to={URLS.news} />
         <ActionLink label='Karriere' to={URLS.jobposts} />
-        <ActionLink label='For Bedrifter' to={URLS.company} />
-        {/* isAuthenticated() && <ActionLink to={URLS.cheatsheet} label='Kokebok' />*/}
+        {isAuthenticated() ? <ActionLink label='Kokebok' to={URLS.cheatsheet} /> : <ActionLink label='For Bedrifter' to={URLS.company} />}
         {isAuthenticated() ? <ActionLink label='Min side' to={URLS.profile} /> : <ActionLink label='Logg inn' to={URLS.login} />}
       </div>
     </Fragment>

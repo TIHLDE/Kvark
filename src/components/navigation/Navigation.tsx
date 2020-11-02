@@ -25,11 +25,18 @@ import IconButton from '@material-ui/core/IconButton';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Avatar from '@material-ui/core/Avatar';
 import Container from '@material-ui/core/Container';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
 
 // Assets/Icons
 import TIHLDELOGO from 'assets/img/TIHLDE_LOGO.png';
 import MenuIcon from '@material-ui/icons/Menu';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
+import ExpandIcon from '@material-ui/icons/ExpandMoreRounded';
 
 // Project Components
 import Footer from 'components/navigation/Footer';
@@ -160,9 +167,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '50%',
     backgroundColor: 'rgba(0, 0, 0, 0.25)',
   },
+  menulist: {
+    padding: theme.spacing(0.5, 0),
+    background: theme.palette.colors.background.smoke,
+    borderRadius: theme.spacing(1),
+    textTransform: 'uppercase',
+    minWidth: 150,
+  },
+  menulistItem: {
+    display: 'block',
+    textAlign: 'center',
+  },
 }));
 
-export type URIbuttonProps = {
+export type MenuItemProps = {
   data: {
     link: string;
     text: string;
@@ -170,7 +188,7 @@ export type URIbuttonProps = {
   selected: boolean;
 };
 
-const URIbutton = ({ data, selected }: URIbuttonProps) => {
+const MenuItems = ({ data, selected }: MenuItemProps) => {
   const classes = useStyles();
   return (
     <div className={classNames(selected ? classes.selected : '')}>
@@ -183,6 +201,25 @@ const URIbutton = ({ data, selected }: URIbuttonProps) => {
         {data.text}
       </Button>
     </div>
+  );
+};
+
+export type DropdownMenuProps = {
+  children: React.ReactNode;
+  dropdown: Dropdown;
+  setDropdown: (dropDown: Dropdown) => void;
+  setAnchor: (newAnchor: HTMLButtonElement) => void;
+};
+
+const DropdownMenu = ({ children, dropdown, setDropdown, setAnchor }: DropdownMenuProps) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    setDropdown(dropdown);
+    setAnchor(event.currentTarget);
+  };
+  return (
+    <Button color='inherit' endIcon={<ExpandIcon />} onClick={handleClick} style={{ color: 'white' }}>
+      {children}
+    </Button>
   );
 };
 
@@ -224,6 +261,11 @@ export type NavigationProps = {
   fancyNavbar?: boolean;
 };
 
+enum Dropdown {
+  ABOUT,
+  MEMBERS,
+}
+
 function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, banner, children }: NavigationProps) {
   const classes = useStyles();
   const location = useLocation();
@@ -234,6 +276,8 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, 
   const [warning, setWarning] = useState<Warning | null>(null);
   const [userData, setUserData] = useState<User | null>(null);
   const [scrollLength, setScrollLength] = useState(0);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [dropdown, setDropdown] = useState(Dropdown.ABOUT);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -278,6 +322,39 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, 
     setShowSidebar(!showSidebar);
   };
 
+  const handleDropdownClose = (event: React.MouseEvent<EventTarget>) => {
+    if (anchorEl?.contains(event.target as HTMLElement)) {
+      return;
+    }
+    setAnchorEl(null);
+  };
+
+  const DropdownContent = () => {
+    switch (dropdown) {
+      case Dropdown.ABOUT:
+        return (
+          <>
+            <MenuItem className={classes.menulistItem} component={Link} to={URLS.about}>
+              Om TIHLDE
+            </MenuItem>
+            <MenuItem className={classes.menulistItem} component={Link} to={URLS.newStudent}>
+              Ny Student
+            </MenuItem>
+          </>
+        );
+      case Dropdown.MEMBERS:
+        return (
+          <>
+            <MenuItem className={classes.menulistItem} component={Link} to={URLS.cheatsheet}>
+              Kokebok
+            </MenuItem>
+          </>
+        );
+      default:
+        return <></>;
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -297,12 +374,19 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, 
 
           <div className={classes.grow}>
             <Hidden mdDown>
-              <URIbutton data={{ link: URLS.about, text: 'Om TIHLDE' }} selected={location.pathname === URLS.about} />
-              {/* isAuthenticated() && <URIbutton data={{ link: URLS.cheatsheet, text: "Kokebok" }} selected={location.pathname === URLS.cheatsheet} />*/}
-              <URIbutton data={{ link: URLS.events, text: 'Arrangementer' }} selected={location.pathname === URLS.events} />
-              <URIbutton data={{ link: URLS.news, text: 'Nyheter' }} selected={location.pathname === URLS.news} />
-              <URIbutton data={{ link: URLS.jobposts, text: 'Karriere' }} selected={location.pathname === URLS.jobposts} />
-              <URIbutton data={{ link: URLS.company, text: 'For Bedrifter' }} selected={location.pathname === URLS.company} />
+              <DropdownMenu dropdown={Dropdown.ABOUT} setAnchor={setAnchorEl} setDropdown={setDropdown}>
+                Om TIHLDE
+              </DropdownMenu>
+              <MenuItems data={{ link: URLS.events, text: 'Arrangementer' }} selected={location.pathname === URLS.events} />
+              <MenuItems data={{ link: URLS.news, text: 'Nyheter' }} selected={location.pathname === URLS.news} />
+              <MenuItems data={{ link: URLS.jobposts, text: 'Karriere' }} selected={location.pathname === URLS.jobposts} />
+              {isAuthenticated() ? (
+                <DropdownMenu dropdown={Dropdown.MEMBERS} setAnchor={setAnchorEl} setDropdown={setDropdown}>
+                  For Medlemmer
+                </DropdownMenu>
+              ) : (
+                <MenuItems data={{ link: URLS.company, text: 'For Bedrifter' }} selected={location.pathname === URLS.company} />
+              )}
             </Hidden>
           </div>
           <div>
@@ -327,6 +411,19 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, 
             <Sidebar />
           </Drawer>
         </Toolbar>
+        <Popper anchorEl={anchorEl} disablePortal open={Boolean(anchorEl)} role={undefined} transition>
+          {({ TransitionProps, placement }) => (
+            <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
+              <Paper>
+                <ClickAwayListener onClickAway={handleDropdownClose}>
+                  <MenuList className={classes.menulist}>
+                    <DropdownContent />
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
       </AppBar>
       {warning && (
         <Snack
