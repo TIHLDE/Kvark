@@ -18,18 +18,16 @@ export enum RequestMethodType {
   DELETE = 'DELETE',
 }
 
-export enum CheatsheetGrade {
-  FIRST = 'FIRST',
-  SECOND = 'SECOND',
-  THIRD = 'THIRD',
-  FOURTH = 'FOURTH',
-  FIFTH = 'FIFTH',
+export enum Study {
+  DATAING = 'Dataing',
+  DIGFOR = 'DigFor',
+  DIGSEC = 'DigSec',
+  DIGSAM = 'DigSam',
 }
 
-export enum CheatsheetStudy {
-  DATAING = 'DATAING',
-  DIGFOR = 'DIGFOR',
-  DIGINC = 'DIGINC',
-  DIGSAM = 'DIGSAM',
-  DRIFT = 'DRIFT',
+export enum CheatsheetType {
+  FILE = 'FILE',
+  GITHUB = 'GITHUB',
+  LINK = 'LINK',
+  OTHER = 'OTHER',
 }

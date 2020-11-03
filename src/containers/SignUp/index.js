@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import PropTypes from 'prop-types';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import URLS from '../../URLS';
 import { getUserStudyLong, getUserClass } from '../../utils';
 import Helmet from 'react-helmet';
@@ -74,7 +74,7 @@ const styles = (theme) => ({
 
 function SignUp(props) {
   const { classes } = props;
-  const history = useHistory();
+  const navigate = useNavigate();
   const { createUser } = useAuth();
 
   const { handleSubmit, errors, control, setError } = useForm();
@@ -134,7 +134,7 @@ function SignUp(props) {
     };
     createUser(userData)
       .then(() => {
-        history.push(redirectURL || URLS.login);
+        navigate(redirectURL || URLS.login);
       })
       .catch((error) => {
         setErrorMessage(error.detail);

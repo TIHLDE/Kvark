@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import URLS from '../../URLS';
 import Helmet from 'react-helmet';
+import { useNavigate } from 'react-router-dom';
 
 // API and store imports
 import { useEvent } from '../../api/hooks/Event';
@@ -97,7 +98,8 @@ const defaultEvent = {
 };
 
 function EventAdministration(props) {
-  const { classes, history } = props;
+  const { classes } = props;
+  const navigate = useNavigate();
   const { getEvents, updateEvent, createEvent, deleteEvent, getExpiredEvents } = useEvent();
   const { getCategories } = useMisc();
   const [isLoading, setIsLoading] = useState(false);
@@ -221,7 +223,7 @@ function EventAdministration(props) {
 
   const goToRegistration = () => {
     if (selectedEvent.id) {
-      history.push(URLS.events.concat(selectedEvent.id).concat('/registrering/'));
+      navigate(URLS.events.concat(selectedEvent.id).concat('/registrering/'));
     } else {
       openSnackbar('Du kan ikke registrere ankomne før arrangementet er opprettet');
     }
@@ -302,7 +304,6 @@ function EventAdministration(props) {
 
 EventAdministration.propTypes = {
   classes: PropTypes.object.isRequired,
-  history: PropTypes.object,
 };
 
 export default withStyles(styles)(EventAdministration);

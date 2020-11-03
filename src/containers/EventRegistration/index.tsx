@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import QrReader from 'react-qr-reader';
 import Helmet from 'react-helmet';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Registration } from 'types/Types';
 
 // Service and action imports
@@ -135,14 +135,10 @@ const ParticipantCard = ({ user, markAttended }: ParticipantCardProps) => {
   );
 };
 
-type ParamTypes = {
-  id: string;
-};
-
 function EventRegistration() {
   const classes = useStyles();
-  const { id } = useParams<ParamTypes>();
-  const history = useHistory();
+  const { id } = useParams();
+  const navigate = useNavigate();
   const { getEventById, getEventRegistrations, updateAttendedStatus } = useEvent();
   const [isLoading, setIsLoading] = useState(false);
   const [eventName, setEventName] = useState('');
@@ -182,7 +178,7 @@ function EventRegistration() {
   useEffect(() => {
     getEventById(Number(id)).then((event) => {
       if (!event) {
-        history.replace('/');
+        navigate('/');
       } else {
         setIsLoading(false);
         setEventName(event.title);
@@ -193,7 +189,7 @@ function EventRegistration() {
       setIsLoading(false);
       setParticipants(participantsIn);
     });
-  }, [id, history, getEventById, getEventRegistrations]);
+  }, [id, navigate, getEventById, getEventRegistrations]);
 
   const markAttended = (username: string, attendedStatus: boolean) => {
     setIsLoading(true);

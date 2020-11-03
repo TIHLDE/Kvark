@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import URLS from '../../URLS';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Helmet from 'react-helmet';
 
 // Serivce imports
@@ -52,14 +52,15 @@ const styles = (theme) => ({
 });
 
 function Profile(props) {
-  const { classes, history } = props;
+  const { classes } = props;
+  const navigate = useNavigate();
   const { logOut, isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const logout = () => {
     setIsLoading(true);
     logOut();
-    history.push(URLS.landing);
+    navigate(URLS.landing);
   };
 
   return (
@@ -90,7 +91,6 @@ function Profile(props) {
 
 Profile.propTypes = {
   classes: PropTypes.object,
-  history: PropTypes.object,
 };
 
 export default withStyles(styles)(Profile);

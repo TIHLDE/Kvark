@@ -1,4 +1,4 @@
-import { WarningType, CheatsheetGrade, CheatsheetStudy } from 'types/Enums';
+import { WarningType, Study, CheatsheetType } from 'types/Enums';
 
 export interface Warning {
   created_at: string;
@@ -124,13 +124,16 @@ export interface CompaniesEmail {
   comment: string;
 }
 
+// type CheatsheetType = 'FILE' | 'GITHUB' | 'LINK' | 'OTHER';
 export interface Cheatsheet {
   course: string;
   creator: string;
-  grade: CheatsheetGrade;
+  grade: number;
   id: string;
-  study: CheatsheetStudy;
+  official: boolean;
+  study: Study;
   title: string;
+  type: CheatsheetType;
   url: string;
 }
 

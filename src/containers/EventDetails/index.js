@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import URLS from '../../URLS';
 import { usePalette } from 'react-palette';
 import Helmet from 'react-helmet';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { urlEncode } from '../../utils';
 
 // Service imports
@@ -64,9 +64,9 @@ const styles = (theme) => ({
 function EventDetails(props) {
   const { classes } = props;
   const { id } = useParams();
+  const navigate = useNavigate();
   const [event, error] = useEventById(Number(id));
   const { createRegistration, deleteRegistration, getRegistration } = useEvent();
-  const history = useHistory();
   const { getUserData, updateUserEvents } = useUser();
   const { isAuthenticated } = useAuth();
   const [userData, setUserData] = useState(null);
@@ -80,14 +80,14 @@ function EventDetails(props) {
 
   useEffect(() => {
     if (error) {
-      history.replace(URLS.events);
+      navigate(URLS.events);
     }
     // To avoid scroll to top on every event-change. It only happens if the title has changed
     if (event && event.title !== eventTitle) {
       setEventTitle(event.title);
-      history.replace(`${URLS.events}${id}/${urlEncode(event.title)}/`);
+      navigate(`${URLS.events}${id}/${urlEncode(event.title)}/`, { replace: true });
     }
-  }, [id, eventTitle, event, history, error]);
+  }, [id, eventTitle, event, navigate, error]);
 
   // Gets the user data
   const loadUserData = () => {
@@ -192,7 +192,6 @@ function EventDetails(props) {
               applyToEvent={applyToEvent}
               clearMessage={clearMessage}
               eventData={event}
-              history={history}
               isApplying={isApplying}
               isLoadingEvent={!event}
               isLoadingUserData={isLoadingUserData}

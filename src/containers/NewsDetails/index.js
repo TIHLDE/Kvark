@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import URLS from '../../URLS';
 import { usePalette } from 'react-palette';
 import Helmet from 'react-helmet';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { urlEncode } from '../../utils';
 
 // Service imports
@@ -62,17 +62,17 @@ const styles = (theme) => ({
 function NewsDetails(props) {
   const { classes } = props;
   const { id } = useParams();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [newsData, error] = useNewsById(Number(id));
 
   useEffect(() => {
     if (error) {
-      history.replace(URLS.news);
+      navigate(URLS.news);
     }
     if (newsData) {
-      history.replace(`${URLS.news}${id}/${urlEncode(newsData.title)}/`);
+      navigate(`${URLS.news}${id}/${urlEncode(newsData.title)}/`, { replace: true });
     }
-  }, [id, history, newsData, error]);
+  }, [id, navigate, newsData, error]);
 
   // Find a dominant color in the image, uses a proxy to be able to retrieve images with CORS-policy until all images are stored in our own server
   const { data } = usePalette(

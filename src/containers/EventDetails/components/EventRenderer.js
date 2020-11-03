@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { getUserStudyShort, getDay, getMonth } from '../../../utils';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 // Text
 import Text from '../../../text/EventText';
@@ -267,6 +268,8 @@ const EventRenderer = (props) => {
     clearMessage,
     preview,
   } = props;
+  const location = useLocation();
+  const navigate = useNavigate();
   const { setLogInRedirectURL } = useMisc();
   const [modalShow, setModalShown] = useState(false);
   const description = eventData.description || '';
@@ -282,8 +285,8 @@ const EventRenderer = (props) => {
       if (userData) {
         setModalShown(true);
       } else {
-        setLogInRedirectURL(props.history.location.pathname);
-        props.history.replace(URLS.login);
+        setLogInRedirectURL(location.pathname);
+        navigate(URLS.login, { replace: true });
       }
     }
   };
@@ -421,7 +424,6 @@ EventRenderer.propTypes = {
   userData: PropTypes.object,
   userEvent: PropTypes.object,
   userEventLoaded: PropTypes.bool,
-  history: PropTypes.object,
   applyToEvent: PropTypes.func,
   isLoadingUserData: PropTypes.bool,
   isLoadingEvent: PropTypes.bool,

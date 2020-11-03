@@ -90,6 +90,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     alignItems: 'center',
   },
+  container: {
+    [theme.breakpoints.down('sm')]: {
+      paddingRight: theme.spacing(2),
+      paddingLeft: theme.spacing(2),
+    },
+  },
   sidebar: {
     zIndex: 100,
     minWidth: 200,
@@ -280,6 +286,7 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, 
   const [dropdown, setDropdown] = useState(Dropdown.ABOUT);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -439,7 +446,9 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, 
         ) : banner ? (
           <>
             {banner}
-            <Container maxWidth={noMaxWidth ? false : 'xl'}>{children}</Container>
+            <Container className={classes.container} maxWidth={noMaxWidth ? false : 'xl'}>
+              {children}
+            </Container>
           </>
         ) : (
           children

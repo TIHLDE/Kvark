@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IFetch } from 'api/fetch';
-import { RequestMethodType, CheatsheetGrade, CheatsheetStudy } from 'types/Enums';
+import { RequestMethodType, Study } from 'types/Enums';
 import {
   User,
   Event,
@@ -111,8 +111,9 @@ export default {
   },
 
   // Cheatsheet
-  getCheatsheets: (study: CheatsheetStudy, grade: CheatsheetGrade, filters?: any) => {
-    return IFetch<PaginationResponse<Cheatsheet>>(RequestMethodType.GET, `cheatsheet/study/${study}/grade/${grade}/file/`, filters || {}, true);
+  getCheatsheets: (study: Study, grade: number, filters?: any) => {
+    const tempStudy = study === Study.DIGSEC ? 'DIGINC' : study;
+    return IFetch<PaginationResponse<Cheatsheet>>(RequestMethodType.GET, `cheatsheet/${tempStudy.toUpperCase()}/${String(grade)}/files/`, filters || {}, true);
   },
 
   // Warning

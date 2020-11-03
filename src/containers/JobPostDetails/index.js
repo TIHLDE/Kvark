@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import URLS from '../../URLS';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { urlEncode } from '../../utils';
 
 // Service imports
@@ -26,16 +26,16 @@ function JobPostDetails(props) {
   const { classes } = props;
   const { id } = useParams();
   const [jobPost, error] = useJobPostById(Number(id));
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (error) {
-      history.replace(URLS.jobposts);
+      navigate(URLS.jobposts);
     }
     if (jobPost) {
-      history.replace(`${URLS.jobposts}${id}/${urlEncode(jobPost.title)}/`);
+      navigate(`${URLS.jobposts}${id}/${urlEncode(jobPost.title)}/`, { replace: true });
     }
-  }, [id, history, jobPost, error]);
+  }, [id, navigate, jobPost, error]);
 
   return (
     <Navigation isLoading={!jobPost} whitesmoke>

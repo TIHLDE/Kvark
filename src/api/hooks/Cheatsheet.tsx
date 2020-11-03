@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
-import { CheatsheetGrade, CheatsheetStudy } from 'types/Enums';
+import { Study } from 'types/Enums';
 import API from 'api/api';
 
 export const useCheatsheet = () => {
-  const getCheatsheets = useCallback(async (study: CheatsheetStudy, grade: CheatsheetGrade, filters = null) => {
+  const getCheatsheets = useCallback(async (study: Study, grade: number, filters = null) => {
     return API.getCheatsheets(study, grade, filters).then((response) => {
       return !response.isError ? Promise.resolve(response.data) : Promise.reject(response.data);
     });
