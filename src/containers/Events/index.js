@@ -9,7 +9,8 @@ import { getFormattedDate } from '../../utils';
 import moment from 'moment';
 
 // API and store imports
-import EventService from '../../api/services/EventService';
+import { useEvent } from '../../api/hooks/Event';
+import { useMisc } from '../../api/hooks/Misc';
 
 // Text
 import Text from '../../text/EventText';
@@ -118,6 +119,8 @@ const styles = (theme) => ({
 
 function Events(props) {
   const { classes } = props;
+  const { getEvents } = useEvent();
+  const { getCategories } = useMisc();
   const [events, setEvents] = useState([]);
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -135,10 +138,10 @@ function Events(props) {
     }
 
     // Fetch events from server
-    EventService.getEvents(urlParameters, null, (isError, loadedEvents) => {
-      if (isError === false) {
-        let displayedEvents = loadedEvents.results;
-        const nextPageUrl = loadedEvents.next;
+    getEvents(urlParameters)
+      .then((data) => {
+        let displayedEvents = data.results;
+        const nextPageUrl = data.next;
         const newUrlParameters = {};
 
         // If we have a url for the next page convert it into a object
@@ -163,15 +166,17 @@ function Events(props) {
           setFilters({ ...filters, expired: true });
           return;
         }
-      }
-      setIsFetching(false);
-      setIsLoading(false);
-    });
+        setIsFetching(false);
+        setIsLoading(false);
+      })
+      .catch(() => {});
   };
 
   useEffect(() => {
     loadEvents();
-    EventService.getCategories().then((categories) => setCategories(categories || []));
+    getCategories()
+      .then((categories) => setCategories(categories || []))
+      .catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

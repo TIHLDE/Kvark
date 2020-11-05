@@ -7,7 +7,7 @@ import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 
 // Project componets/services
-import EventService from '../../../api/services/EventService';
+import { useEvent } from '../../../api/hooks/Event';
 import CalendarListView from './CalendarListView';
 import CalendarGridView from './CalendarGridView';
 
@@ -37,24 +37,25 @@ const styles = (theme) => ({
 });
 
 function Calendar({ classes }) {
+  const { getEvents, getExpiredEvents } = useEvent();
   const [events, setEvents] = useState([]);
   const [oldEvents, setOldEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [tab, setTab] = useState(0);
 
   useEffect(() => {
-    EventService.getEvents()
+    getEvents()
       .then((eventObject) => setEvents(eventObject.results))
       .catch(() => {})
       .then(() => setIsLoading(false));
-  }, []);
+  }, [getEvents]);
 
   useEffect(() => {
     // Load expired events when switching to calendar tab and they havn't been loaded already
     if (!oldEvents.length && tab === 1) {
-      EventService.getEvents({ expired: true }).then((eventObject) => setOldEvents(eventObject.results));
+      getExpiredEvents().then((eventObject) => setOldEvents(eventObject.results));
     }
-  }, [tab, oldEvents]);
+  }, [tab, oldEvents, getExpiredEvents]);
 
   return (
     <div className={classes.root}>

@@ -20,7 +20,6 @@ import DateIcon from '@material-ui/icons/DateRange';
 import ListItem from '../../components/miscellaneous/ListItem';
 import Navigation from '../../components/navigation/Navigation';
 import Banner from '../../components/layout/Banner';
-import Pageination from '../../components/layout/Pageination';
 import NoNewsIndicator from './components/NoNewsIndicator';
 
 const styles = () => ({
@@ -70,48 +69,16 @@ const styles = () => ({
 const News = (props) => {
   const { classes } = props;
 
-  const [urlParameters, setUrlParameters] = useState({});
-  const [news, isLoading, isError] = useNews(urlParameters);
-  const [displayedNews, setDisplayedNews] = useState([]);
-  const [nextPage, setNextPage] = useState(null);
+  const { getNews } = useNews();
+  const [displayedNews, setDisplayedNews] = useState(null);
 
   useEffect(() => {
-    if (news && !isLoading && !isError) {
-      const nextPageUrl = news?.next;
-      if (nextPageUrl) {
-        const nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
-        const parameterArray = nextPageUrlQuery.split('&');
-        parameterArray.forEach((parameter) => {
-          const parameterString = parameter.split('=');
-          setUrlParameters((params) => {
-            return { ...params, [parameterString[0]]: parameterString[1] };
-          });
-        });
-      }
-
-      // Get the page number from the object if it exist
-      const nextPage = urlParameters['page'] ? urlParameters['page'] : null;
-
-      // If we allready have news
-      if (news.length > 0) {
-        setDisplayedNews((d) => [...news, ...d]);
-      } else {
+    getNews()
+      .then((news) => {
         setDisplayedNews(news);
-      }
-      setNextPage(nextPage);
-    } else {
-      setDisplayedNews([]);
-    }
-  }, [news, isLoading, isError, urlParameters]);
-
-  const getNextPage = () => {
-    if (nextPage) {
-      setUrlParameters({
-        page: nextPage,
-        ...urlParameters,
-      });
-    }
-  };
+      })
+      .catch(() => setDisplayedNews([]));
+  }, [getNews]);
 
   return (
     <Navigation fancyNavbar whitesmoke>
@@ -121,25 +88,23 @@ const News = (props) => {
       <div className={classes.root}>
         <Banner title='Nyheter' />
         <div className={classes.wrapper}>
-          {isLoading ? (
+          {!displayedNews ? (
             <CircularProgress className={classes.progress} />
           ) : (
             <div className={classes.listRoot}>
-              <Grow in={!isLoading}>
+              <Grow in={Boolean(displayedNews)}>
                 <div className={classes.list}>
-                  <Pageination nextPage={getNextPage} page={nextPage}>
-                    {displayedNews?.map((newsItem) => (
-                      <ListItem
-                        img={newsItem.image}
-                        imgAlt={newsItem.image_alt}
-                        info={[{ label: getFormattedDate(moment(newsItem.created_at, ['YYYY-MM-DD HH:mm'], 'nb')), icon: DateIcon }]}
-                        key={newsItem.id}
-                        link={URLS.news + ''.concat(newsItem.id, '/')}
-                        title={newsItem.title}
-                      />
-                    ))}
-                  </Pageination>
-                  {displayedNews.length === 0 && !isLoading && <NoNewsIndicator />}
+                  {displayedNews?.map((newsItem) => (
+                    <ListItem
+                      img={newsItem.image}
+                      imgAlt={newsItem.image_alt}
+                      info={[{ label: getFormattedDate(moment(newsItem.created_at, ['YYYY-MM-DD HH:mm'], 'nb')), icon: DateIcon }]}
+                      key={newsItem.id}
+                      link={`${URLS.news}${newsItem.id}/`}
+                      title={newsItem.title}
+                    />
+                  ))}
+                  {!displayedNews.length && <NoNewsIndicator />}
                 </div>
               </Grow>
             </div>

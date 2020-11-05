@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
 // API and store imports
-import { useNews, useCreateNews, usePutNews, useDeleteNews } from '../../api/hooks/News';
+import { useNews } from '../../api/hooks/News';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
@@ -70,42 +70,44 @@ function NewsAdministration(props) {
   const { classes } = props;
   const [tab, setTab] = useState(0);
   const [selectedNewsItem, setSelectedNewsItem] = useState(defaultNewsItem);
-  const [news, isLoading] = useNews();
+  const { getNews, createNews, updateNews, deleteNews } = useNews();
+  const [news, setNews] = useState(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const createNews = useCreateNews(selectedNewsItem, (data, isError) => {
-    if (!isError) {
-      setSelectedNewsItem(data);
-      openSnackbar('Nyheten ble opprettet');
-    } else {
-      openSnackbar(JSON.stringify(data));
-    }
-  });
-  const putNews = usePutNews(selectedNewsItem.id, selectedNewsItem, (data, isError) => {
-    if (!isError) {
-      setSelectedNewsItem(data);
-      openSnackbar('Nyheten ble oppdatert');
-    } else {
-      openSnackbar(JSON.stringify(data));
-    }
-  });
-  const deleteNews = useDeleteNews(selectedNewsItem.id, (data, isError) => {
-    if (!isError) {
-      setSelectedNewsItem(defaultNewsItem);
-      openSnackbar('Nyheten ble slettet');
-    } else {
-      openSnackbar(JSON.stringify(data));
-    }
-  });
 
-  const saveNewsItem = () => (selectedNewsItem.id ? putNews() : createNews());
+  const saveNewsItem = () =>
+    selectedNewsItem.id
+      ? updateNews(selectedNewsItem.id, selectedNewsItem)
+          .then((data) => {
+            setSelectedNewsItem(data);
+            openSnackbar('Nyheten ble oppdatert');
+          })
+          .catch((error) => openSnackbar(error?.detail))
+      : createNews(selectedNewsItem)
+          .then((data) => {
+            setSelectedNewsItem(data);
+            openSnackbar('Nyheten ble opprettet');
+          })
+          .catch((error) => openSnackbar(error?.detail));
 
-  const deleteNewsItem = () => (selectedNewsItem.id ? deleteNews() : openSnackbar('Du kan ikke slette en nyhet som ikke er opprettet'));
+  const deleteNewsItem = () =>
+    selectedNewsItem.id
+      ? deleteNews(selectedNewsItem.id)
+          .then(() => {
+            setSelectedNewsItem(defaultNewsItem);
+            openSnackbar('Nyheten ble slettet');
+          })
+          .catch((error) => openSnackbar(error?.detail))
+      : openSnackbar('Du kan ikke slette en nyhet som ikke er opprettet');
 
   const openSnackbar = (message) => {
     setSnackbarMessage(message);
     setShowSnackbar(true);
   };
+
+  useEffect(() => {
+    getNews().then((news) => setNews(news));
+  }, [getNews]);
 
   const options = [
     { text: 'Lagre', func: () => saveNewsItem() },
@@ -147,7 +149,7 @@ function NewsAdministration(props) {
       </div>
       <SidebarList
         hideExpired
-        isLoading={isLoading}
+        isLoading={!news}
         items={news}
         onItemClick={(item) => setSelectedNewsItem(item || defaultNewsItem)}
         selectedItemId={selectedNewsItem?.id || null}

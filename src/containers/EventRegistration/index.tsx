@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import QrReader from 'react-qr-reader';
 import Helmet from 'react-helmet';
-import { useParams, useHistory } from 'react-router-dom';
-import { UserRegistration } from 'types/Types';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Registration } from 'types/Types';
 
 // Service and action imports
-import EventService from 'api/services/EventService';
+import { useEvent } from 'api/hooks/Event';
 
 // Material UI Components
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export type ParticipantCardProps = {
-  user: UserRegistration;
+  user: Registration;
   markAttended: (username: string, attendedStatus: boolean) => void;
 };
 
@@ -135,21 +135,18 @@ const ParticipantCard = ({ user, markAttended }: ParticipantCardProps) => {
   );
 };
 
-type ParamTypes = {
-  id: string;
-};
-
 function EventRegistration() {
   const classes = useStyles();
-  const { id } = useParams<ParamTypes>();
-  const history = useHistory();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { getEventById, getEventRegistrations, updateAttendedStatus } = useEvent();
   const [isLoading, setIsLoading] = useState(false);
   const [eventName, setEventName] = useState('');
   const [search, setSearch] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [tab, setTab] = useState(0);
-  const [participants, setParticipants] = useState<Array<UserRegistration> | undefined>(undefined);
+  const [participants, setParticipants] = useState<Array<Registration> | undefined>(undefined);
   const [error, setError] = useState(false);
 
   const handleScan = (username: string | null) => {
@@ -179,20 +176,20 @@ function EventRegistration() {
   };
 
   useEffect(() => {
-    EventService.getEventById(id).then((event) => {
+    getEventById(Number(id)).then((event) => {
       if (!event) {
-        history.replace('/');
+        navigate('/');
       } else {
         setIsLoading(false);
         setEventName(event.title);
       }
     });
-    EventService.getEventParticipants(id).then((participants: Array<UserRegistration>) => {
+    getEventRegistrations(Number(id)).then((participants) => {
       const participantsIn = participants.filter((user) => !user.is_on_wait);
       setIsLoading(false);
       setParticipants(participantsIn);
     });
-  }, [id, history]);
+  }, [id, navigate, getEventById, getEventRegistrations]);
 
   const markAttended = (username: string, attendedStatus: boolean) => {
     setIsLoading(true);
@@ -205,18 +202,15 @@ function EventRegistration() {
       }
     });
     setParticipants(newParticipantsList);
-    EventService.putAttended(id, { has_attended: attendedStatus }, username)
-      .then((data) => {
-        if (data && data.detail === 'Registration successfully updated.') {
-          showSnackbar(attendedStatus ? 'Deltageren er registrert ankommet!' : 'Vi har fjernet ankommet-statusen', false);
-        } else {
-          showSnackbar('Ugyldig brukernavn.', true);
-          // Rollback
-          setParticipants(oldParitcipantsList);
-        }
-        setIsLoading(false);
+    updateAttendedStatus(Number(id), attendedStatus, username)
+      .then(() => {
+        showSnackbar(attendedStatus ? 'Deltageren er registrert ankommet!' : 'Vi har fjernet ankommet-statusen', false);
       })
-      .catch(() => showSnackbar('Noe gikk galt', true));
+      .catch((error) => {
+        setParticipants(oldParitcipantsList);
+        showSnackbar(error.detail, true);
+      })
+      .finally(() => setIsLoading(false));
   };
 
   const handleSnackbarClose = () => {

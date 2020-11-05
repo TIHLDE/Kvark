@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import URLS from '../../URLS';
 import Helmet from 'react-helmet';
 
@@ -78,7 +78,7 @@ const styles = (theme) => ({
 
 function LogIn(props) {
   const { classes } = props;
-  const history = useHistory();
+  const navigate = useNavigate();
   const { logIn } = useAuth();
   const { setLogInRedirectURL, getLogInRedirectURL } = useMisc();
   const [username, setUsername] = useState('');
@@ -105,7 +105,7 @@ function LogIn(props) {
     setIsLoading(true);
     logIn(username, password)
       .then(() => {
-        history.push(redirectURL || URLS.landing);
+        navigate(redirectURL || URLS.landing);
       })
       .catch((err) => {
         setErrorMessage(err.detail);

@@ -74,7 +74,7 @@ const EventParticipant = (props) => {
   }, [user]);
 
   const deleteHandler = () => {
-    removeUserFromEvent(user.user_info.user_id);
+    removeUserFromEvent(user);
     setShowModal(false);
   };
 

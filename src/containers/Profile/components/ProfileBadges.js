@@ -19,6 +19,16 @@ const useStyles = makeStyles((theme) => ({
   text: {
     color: theme.palette.colors.text.main,
   },
+  completion_percentage: {
+    color: theme.palette.colors.text.light,
+    fontSize: '0.7rem',
+    fontStyle: 'italic',
+    fontWeight: 700,
+    marginTop: theme.spacing(1),
+  },
+  percent: {
+    color: theme.palette.colors.status.red,
+  },
 }));
 
 const BadgeItem = (props) => {
@@ -38,6 +48,9 @@ const BadgeItem = (props) => {
           <Grid alignItems='center' container direction='row' wrap='nowrap'>
             <Typography variant='body2'>{data.description}</Typography>
           </Grid>
+          <Typography className={classes.completion_percentage} variant='subtitle2'>
+            <span className={classes.percent}>{data.total_completion_percentage.toFixed(1)}%</span> av medlemmer har denne badgen
+          </Typography>
         </Grid>
       </Grid>
     </Paper>

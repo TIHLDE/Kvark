@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   topContent: {
     maxWidth: theme.breakpoints.values.xl,
     margin: 'auto',
-    padding: theme.spacing(2),
+    padding: theme.spacing(3),
     paddingBottom: theme.spacing(0),
     paddingTop: theme.spacing(9),
     display: 'flex',
@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: '2.1em',
       padding: theme.spacing(2),
       flexDirection: 'column',
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: theme.spacing(1),
     },
   },
   title: {

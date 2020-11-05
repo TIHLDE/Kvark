@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import URLS from '../../URLS';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { urlEncode } from '../../utils';
 
 // Service imports
-import JobPostService from '../../api/services/JobPostService';
+import { useJobPostById } from '../../api/hooks/JobPost';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
@@ -25,26 +25,21 @@ const styles = {
 function JobPostDetails(props) {
   const { classes } = props;
   const { id } = useParams();
-  const history = useHistory();
-  const [isLoading, setIsLoading] = useState(true);
-  const [jobPost, setJobPost] = useState(null);
+  const [jobPost, error] = useJobPostById(Number(id));
+  const navigate = useNavigate();
 
   useEffect(() => {
-    JobPostService.getPostById(id).then((post) => {
-      setIsLoading(false);
-      if (!post) {
-        history.replace(URLS.jobposts);
-      } else {
-        history.replace(URLS.jobposts + id + '/' + urlEncode(post.title) + '/');
-        setIsLoading(false);
-        setJobPost(post);
-      }
-    });
-  }, [history, id]);
+    if (error) {
+      navigate(URLS.jobposts);
+    }
+    if (jobPost) {
+      navigate(`${URLS.jobposts}${id}/${urlEncode(jobPost.title)}/`, { replace: true });
+    }
+  }, [id, navigate, jobPost, error]);
 
   return (
-    <Navigation isLoading={isLoading} whitesmoke>
-      {!isLoading && jobPost && (
+    <Navigation isLoading={!jobPost} whitesmoke>
+      {jobPost && (
         <div className={classes.root}>
           <Helmet>
             <title>{jobPost.title} - TIHLDE</title>

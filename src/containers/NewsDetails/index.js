@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import URLS from '../../URLS';
 import { usePalette } from 'react-palette';
 import Helmet from 'react-helmet';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { urlEncode } from '../../utils';
 
 // Service imports
@@ -62,27 +62,28 @@ const styles = (theme) => ({
 function NewsDetails(props) {
   const { classes } = props;
   const { id } = useParams();
-  const history = useHistory();
-  const [newsData, isLoading] = useNewsById(id);
+  const navigate = useNavigate();
+  const [newsData, error] = useNewsById(Number(id));
 
   useEffect(() => {
-    if (!isLoading && newsData) {
-      history.replace(URLS.news + id + '/' + urlEncode(newsData.title) + '/');
-    } else if (!isLoading && !newsData) {
-      history.replace(URLS.news); // Redirect to news page given if id is invalid
+    if (error) {
+      navigate(URLS.news);
     }
-  }, [history, isLoading, newsData, id]);
+    if (newsData) {
+      navigate(`${URLS.news}${id}/${urlEncode(newsData.title)}/`, { replace: true });
+    }
+  }, [id, navigate, newsData, error]);
 
   // Find a dominant color in the image, uses a proxy to be able to retrieve images with CORS-policy until all images are stored in our own server
   const { data } = usePalette(
     newsData
-      ? 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=' + encodeURIComponent(newsData?.image)
+      ? `https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=${encodeURIComponent(newsData?.image)}`
       : '',
   );
 
   return (
-    <Navigation fancyNavbar isLoading={isLoading} whitesmoke>
-      {!isLoading && newsData.title && (
+    <Navigation fancyNavbar isLoading={!newsData} whitesmoke>
+      {newsData && (
         <div className={classes.root}>
           <Helmet>
             <title>{newsData.title} - TIHLDE</title>

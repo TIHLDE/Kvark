@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import URLS from '../../URLS';
 import { usePalette } from 'react-palette';
 import Helmet from 'react-helmet';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { urlEncode } from '../../utils';
 
 // Service imports
-import EventService from '../../api/services/EventService';
+import { useEvent, useEventById } from '../../api/hooks/Event';
 import { useUser } from '../../api/hooks/User';
 import { useAuth } from '../../api/hooks/Auth';
 
@@ -64,33 +64,30 @@ const styles = (theme) => ({
 function EventDetails(props) {
   const { classes } = props;
   const { id } = useParams();
-  const history = useHistory();
+  const navigate = useNavigate();
+  const [event, error] = useEventById(Number(id));
+  const { createRegistration, deleteRegistration, getRegistration } = useEvent();
   const { getUserData, updateUserEvents } = useUser();
   const { isAuthenticated } = useAuth();
-  const [event, setEvent] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState(null);
   const [userEvent, setUserEvent] = useState(null);
   const [userEventLoaded, setUserEventLoaded] = useState(false);
   const [isLoadingUserData, setIsLoadingUserData] = useState(false);
   const [isApplying, setIsApplying] = useState(false);
   const [message, setMessage] = useState('');
+  const [eventTitle, setEventTitle] = useState('');
   const [applySuccess, setApplySuccess] = useState(false);
 
-  // Gets the event
-  const loadEvent = () => {
-    // Load event item
-    setIsLoading(true);
-    EventService.getEventById(id).then(async (event) => {
-      if (!event) {
-        history.replace(URLS.events); // Redirect to events page given if id is invalid
-      } else {
-        history.replace(URLS.events + id + '/' + urlEncode(event.title) + '/');
-        setIsLoading(false);
-        setEvent({ ...event });
-      }
-    });
-  };
+  useEffect(() => {
+    if (error) {
+      navigate(URLS.events);
+    }
+    // To avoid scroll to top on every event-change. It only happens if the title has changed
+    if (event && event.title !== eventTitle) {
+      setEventTitle(event.title);
+      navigate(`${URLS.events}${id}/${urlEncode(event.title)}/`, { replace: true });
+    }
+  }, [id, eventTitle, event, navigate, error]);
 
   // Gets the user data
   const loadUserData = () => {
@@ -111,19 +108,10 @@ function EventDetails(props) {
     setIsApplying(true);
     if (!userEvent) {
       // Apply to event
-      return EventService.putUserOnEventList(event.id, userData, optionalFieldsAnswers, allowPhoto)
+      return createRegistration(event.id, { allow_photo: allowPhoto })
         .then(() => {
-          const newEvent = { ...event };
-          if (newEvent.limit <= newEvent.list_count) {
-            newEvent.waiting_list_count++;
-          } else {
-            newEvent.list_count++;
-          }
-          const newUserData = { ...userData };
-          newUserData.events.push(newEvent);
-          updateUserEvents(newUserData.events);
+          updateUserEvents([...userData.events, event]);
           setMessage('Påmelding registrert!');
-          setEvent(newEvent);
           setApplySuccess(true);
           setUserEventLoaded(false);
         })
@@ -136,23 +124,16 @@ function EventDetails(props) {
         });
     } else {
       // The reverse
-      return EventService.deleteUserFromEventList(event.id, userData)
+      return deleteRegistration(event.id, userData.user_id, userEvent)
         .then(() => {
-          const newEvent = { ...event };
-          if (userEvent.is_on_wait) {
-            newEvent.waiting_list_count--;
-          } else {
-            newEvent.list_count--;
-          }
           const newUserEvents = [...userData.events];
           for (let i = 0; i < newUserEvents.length; i++) {
-            if (newUserEvents[i].id === newEvent.id) {
+            if (newUserEvents[i].id === event.id) {
               newUserEvents.splice(i, 1);
             }
           }
           updateUserEvents(newUserEvents);
           setMessage('Avmelding registrert 😢');
-          setEvent(newEvent);
           setApplySuccess(true);
           setUserEvent(null);
           setUserEventLoaded(false);
@@ -171,33 +152,29 @@ function EventDetails(props) {
   const clearMessage = () => setMessage('');
 
   useEffect(() => {
-    loadEvent();
     loadUserData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (!userEventLoaded && event && userData) {
-      EventService.getUserEventObject(event.id, userData)
-        .then((result) => {
-          setUserEvent(result);
-        })
-        .finally(() => {
-          setUserEventLoaded(true);
-        });
+      getRegistration(event.id, userData.user_id)
+        .then((result) => setUserEvent(result))
+        .catch(() => setUserEvent(null))
+        .finally(() => setUserEventLoaded(true));
     } else if (!userEventLoaded && event && !isAuthenticated()) {
       setUserEventLoaded(true);
     }
-  }, [event, userData, userEventLoaded, isAuthenticated]);
+  }, [event, userData, userEventLoaded, isAuthenticated, getRegistration]);
 
   // Find a dominant color in the image, uses a proxy to be able to retrieve images with CORS-policy until all images are stored in our own server
   const { data } = usePalette(
-    event ? 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=' + encodeURIComponent(event?.image) : '',
+    event ? `https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=${encodeURIComponent(event?.image)}` : '',
   );
 
   return (
-    <Navigation fancyNavbar isLoading={isLoading} whitesmoke>
-      {!isLoading && event && (
+    <Navigation fancyNavbar isLoading={!event} whitesmoke>
+      {event && (
         <div className={classes.root}>
           <Helmet>
             <title>{event.title} - TIHLDE</title>
@@ -215,9 +192,8 @@ function EventDetails(props) {
               applyToEvent={applyToEvent}
               clearMessage={clearMessage}
               eventData={event}
-              history={history}
               isApplying={isApplying}
-              isLoadingEvent={isLoading}
+              isLoadingEvent={!event}
               isLoadingUserData={isLoadingUserData}
               message={message}
               userData={userData}

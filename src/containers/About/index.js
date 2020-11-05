@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import URLS from '../../URLS';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
+import { useTheme } from '@material-ui/core/styles';
 
 // Text Imports
 import Text from '../../text/AboutText';
@@ -19,7 +20,8 @@ import BusinessIcon from '../../assets/icons/business.svg';
 import OperationIcon from '../../assets/icons/operations.png';
 import PromoIcon from '../../assets/icons/promo.svg';
 import IndexIcon from '../../assets/icons/index.svg';
-import OrgMap from '../../assets/img/orgMap.svg';
+import OrgMapLight from '../../assets/img/orgMapLight.jpg';
+import OrgMapDark from '../../assets/img/orgMapDark.jpg';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
@@ -89,6 +91,8 @@ const styles = (theme) => ({
 
 function About(props) {
   const { classes } = props;
+  const theme = useTheme();
+  const isDark = theme.palette.type === 'dark';
 
   return (
     <Navigation fancyNavbar whitesmoke>
@@ -140,11 +144,10 @@ function About(props) {
               Organisasjonskart
             </Typography>
             <Paper className={classes.orgMap} noPadding>
-              <ClickableImage alt='organisasjonskart' className={classes.clickableImage} image={OrgMap} />
+              <ClickableImage alt='organisasjonskart' className={classes.clickableImage} image={isDark ? OrgMapDark : OrgMapLight} />
             </Paper>
           </div>
         </div>
-
         <div className={classes.smoke}>
           <div className={classes.section}>
             <InfoCard className={classes.header} header='Historie' justifyText subheader='Opptak' subText={Text.history2} text={Text.history} />

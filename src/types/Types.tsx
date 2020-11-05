@@ -1,4 +1,4 @@
-import { WarningType, CheatsheetGrade, CheatsheetStudy } from 'types/Enums';
+import { WarningType, Study, CheatsheetType } from 'types/Enums';
 
 export interface Warning {
   created_at: string;
@@ -42,24 +42,42 @@ export interface User {
   unread_notifications: number;
   notifications: Array<unknown>;
 }
+export type NewsRequired = Partial<News> & Pick<News, 'title' | 'header' | 'body'>;
 
-export interface UserRegistration {
-  allow_photo: boolean;
-  has_attended: boolean;
-  is_on_wait: boolean;
-  user_event_id: number;
-  user_info: {
-    allergy: string;
-    first_name: string;
-    last_name: string;
-    user_class: number;
-    user_id: string;
-    user_study: number;
-  };
+export interface News {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  title: string;
+  header: string;
+  body: string;
+  image?: string;
+  image_alt?: string;
 }
 
+export type JobPostRequired = Partial<JobPost> & Pick<JobPost, 'title' | 'ingress' | 'location' | 'company'>;
+
+export interface JobPost {
+  id: number;
+  expired: boolean;
+  created_at: string;
+  updated_at: string;
+  image: string;
+  image_alt: string;
+  title: string;
+  ingress: string;
+  body: string;
+  location: string;
+  deadline: string;
+  company: string;
+  email: string;
+  link: string;
+}
+
+export type EventRequired = Partial<Event> & Pick<Event, 'title' | 'start_date' | 'end_date'>;
+
 export interface Event {
-  id: string;
+  id: number;
   title: string;
   start_date: string;
   end_date: string;
@@ -71,11 +89,8 @@ export interface Event {
   expired: boolean;
   image?: string;
   image_alt?: string;
-}
-export interface EventWithRegistration extends Event {
   closed: boolean;
   limit: number;
-  registered_users_list: Array<unknown>;
   list_count: number;
   waiting_list_count: number;
   is_user_registered?: undefined;
@@ -90,6 +105,14 @@ export interface RegistrationPriority {
   user_study: number;
 }
 
+export interface Registration {
+  allow_photo: boolean;
+  has_attended: boolean;
+  is_on_wait: boolean;
+  registration_id: number;
+  user_info: Pick<User, 'allergy' | 'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study'>;
+}
+
 export interface CompaniesEmail {
   info: {
     bedrift: string;
@@ -101,12 +124,22 @@ export interface CompaniesEmail {
   comment: string;
 }
 
+// type CheatsheetType = 'FILE' | 'GITHUB' | 'LINK' | 'OTHER';
 export interface Cheatsheet {
   course: string;
   creator: string;
-  grade: CheatsheetGrade;
+  grade: number;
   id: string;
-  study: CheatsheetStudy;
+  official: boolean;
+  study: Study;
   title: string;
+  type: CheatsheetType;
   url: string;
+}
+
+export interface Category {
+  created_at: string;
+  id: number;
+  text: string;
+  updated_at: string;
 }

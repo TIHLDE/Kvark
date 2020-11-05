@@ -14,6 +14,7 @@ import LightIcon from '@material-ui/icons/WbSunnyOutlined';
 
 // Assets import
 import SIT from 'assets/img/sit.svg';
+import VERCEL from 'assets/img/vercel.svg';
 import NEXTTRON from 'assets/img/Nextron.png';
 import ACADEMICWORK from 'assets/img/aw_logo_main_green.svg';
 import FACEBOOK from 'assets/icons/facebook.svg';
@@ -108,6 +109,9 @@ const Footer = () => {
         <Typography align='center' className={classes.marginBottom} color='inherit' variant='h3'>
           Samarbeid
         </Typography>
+        <a href='https://vercel.com/?utm_source=kvark&utm_campaign=oss' rel='noopener noreferrer' target='_blank'>
+          <img alt='Vercel' className={classes.marginBottom} src={VERCEL} width={150} />
+        </a>
         <img alt='academicwork' className={classes.marginBottom} src={ACADEMICWORK} width={80} />
         <img alt='sit' className={classes.marginBottom} src={SIT} width={80} />
         <img alt='nextron' className={classes.marginBottom} src={NEXTTRON} width={80} />

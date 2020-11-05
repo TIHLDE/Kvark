@@ -1,129 +1,138 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IRequest } from 'api/httphandler';
 import { IFetch } from 'api/fetch';
-import { RequestMethodType, CheatsheetGrade, CheatsheetStudy } from 'types/Enums';
-import { User, Warning, RequestResponse, CompaniesEmail, PaginationResponse, Cheatsheet } from 'types/Types';
+import { RequestMethodType, Study } from 'types/Enums';
+import {
+  User,
+  Event,
+  EventRequired,
+  Registration,
+  JobPost,
+  JobPostRequired,
+  News,
+  NewsRequired,
+  Category,
+  Warning,
+  RequestResponse,
+  CompaniesEmail,
+  PaginationResponse,
+  Cheatsheet,
+} from 'types/Types';
 
 export default {
   // Events
-  getEventItem: (id: string) => {
-    return new IRequest(RequestMethodType.GET, 'events/'.concat(String(id), '/'), undefined);
+  getEvent: (eventId: number) => {
+    return IFetch<Event>(RequestMethodType.GET, `events/${String(eventId)}/`, undefined);
   },
-  getEventItems: (filters: any) => {
-    return new IRequest(RequestMethodType.GET, 'events/', filters || {});
+  getEvents: (filters?: any) => {
+    return IFetch<PaginationResponse<Event>>(RequestMethodType.GET, `events/`, filters || {});
   },
   getExpiredEvents: () => {
-    return new IRequest(RequestMethodType.GET, 'events/', { expired: true });
+    return IFetch<PaginationResponse<Event>>(RequestMethodType.GET, `events/`, { expired: true });
   },
-  getEventLists: () => {
-    return new IRequest(RequestMethodType.GET, 'eventlist/', undefined);
+  createEvent: (item: EventRequired) => {
+    return IFetch<Event>(RequestMethodType.POST, `events/`, item, true);
   },
-  createEventItem: (item: any) => {
-    return new IRequest(RequestMethodType.POST, 'events/', item, true);
+  updateEvent: (eventId: number, item: Partial<Event>) => {
+    return IFetch<Event>(RequestMethodType.PUT, `events/${String(eventId)}/`, item, true);
   },
-  putEventItem: (id: string, item: any) => {
-    return new IRequest(RequestMethodType.PUT, 'events/'.concat(id, '/'), item, true);
+  deleteEvent: (eventId: number) => {
+    return IFetch<RequestResponse>(RequestMethodType.DELETE, `events/${String(eventId)}/`, undefined, true);
   },
-  deleteEventItem: (id: string) => {
-    return new IRequest(RequestMethodType.DELETE, 'events/'.concat(id, '/'), undefined, true);
+  putAttended: (eventId: number, item: { has_attended: boolean }, userId: string) => {
+    return IFetch<RequestResponse>(RequestMethodType.PUT, `events/${String(eventId)}/users/${userId}/`, item, true);
   },
-  putAttended: (id: string, item: any, username: string) => {
-    return new IRequest(RequestMethodType.PUT, 'events/'.concat(id, '/users/'.concat(username, '/')), item, true);
+  getRegistration: (eventId: number, userId: string) => {
+    return IFetch<Registration>(RequestMethodType.GET, `events/${String(eventId)}/users/${userId}/`, undefined, true);
   },
-  getEventParticipants: (id: string) => {
-    return new IRequest(RequestMethodType.GET, 'events/'.concat(id, '/users/'), undefined, true);
+  getEventRegistrations: (eventId: number) => {
+    return IFetch<Array<Registration>>(RequestMethodType.GET, `events/${String(eventId)}/users/`, undefined, true);
   },
-  putUserOnEventList: (id: string, item: any) => {
-    return new IRequest(RequestMethodType.POST, 'events/'.concat(id, '/users/'), item, true);
+  createRegistration: (eventId: number, item: Partial<Registration>) => {
+    return IFetch<Registration>(RequestMethodType.POST, `events/${String(eventId)}/users/`, item, true);
   },
-  deleteUserFromEventList: (id: string, item: any) => {
-    return new IRequest(RequestMethodType.DELETE, 'events/'.concat(id, '/users/', item.user_id, '/'), undefined, true);
+  updateRegistration: (eventId: number, item: Partial<Registration>, userId: string) => {
+    return IFetch<Registration>(RequestMethodType.PUT, `events/${String(eventId)}/users/${userId}/`, item, true);
   },
-  updateUserEvent: (id: string, item: any) => {
-    return new IRequest(RequestMethodType.PUT, 'events/'.concat(id, '/users/', item.user_id, '/'), item, true);
-  },
-  getUserEventObject: (id: string, item: any) => {
-    return new IRequest(RequestMethodType.GET, 'events/'.concat(id, '/users/', item.user_id, '/'), undefined, true);
-  },
-  getCategories: () => {
-    return new IRequest(RequestMethodType.GET, 'category/');
+  deleteRegistration: (eventId: number, userId: string) => {
+    return IFetch<RequestResponse>(RequestMethodType.DELETE, `events/${String(eventId)}/users/${userId}/`, undefined, true);
   },
 
   // Job posts
-  getJobPosts: (filters: any) => {
-    return new IRequest(RequestMethodType.GET, 'jobpost/', filters || { newest: true });
+  getJobPosts: (filters?: any) => {
+    return IFetch<PaginationResponse<JobPost>>(RequestMethodType.GET, `jobpost/`, filters || { newest: true });
   },
-  getJobPost: (id: string) => {
-    return new IRequest(RequestMethodType.GET, 'jobpost/'.concat(id, '/'), undefined);
+  getJobPost: (id: number) => {
+    return IFetch<JobPost>(RequestMethodType.GET, `jobpost/${String(id)}/`, undefined);
   },
   getExpiredJobPosts: () => {
-    return new IRequest(RequestMethodType.GET, 'jobpost/', { expired: true });
+    return IFetch<PaginationResponse<JobPost>>(RequestMethodType.GET, `jobpost/`, { expired: true });
   },
-  createJobPost: (item: any) => {
-    return new IRequest(RequestMethodType.POST, 'jobpost/', item, true);
+  createJobPost: (item: JobPostRequired) => {
+    return IFetch<JobPost>(RequestMethodType.POST, `jobpost/`, item, true);
   },
-  putJobPost: (id: string, item: any) => {
-    return new IRequest(RequestMethodType.PUT, 'jobpost/'.concat(id, '/'), item, true);
+  putJobPost: (id: number, item: JobPostRequired) => {
+    return IFetch<JobPost>(RequestMethodType.PUT, `jobpost/${String(id)}/`, item, true);
   },
-  deleteJobPost: (id: string) => {
-    return new IRequest(RequestMethodType.DELETE, 'jobpost/'.concat(id, '/'), undefined, true);
+  deleteJobPost: (id: number) => {
+    return IFetch<RequestResponse>(RequestMethodType.DELETE, `jobpost/${String(id)}/`, undefined, true);
   },
 
   // News
-  getNewsItem: (id: string) => {
-    return new IRequest(RequestMethodType.GET, 'news/'.concat(id, '/'), undefined);
+  getNewsItem: (id: number) => {
+    return IFetch<News>(RequestMethodType.GET, `news/${String(id)}/`, undefined);
   },
-  getNewsItems: (filters: any) => {
-    return new IRequest(RequestMethodType.GET, 'news/', filters || {});
+  getNewsItems: (filters?: any) => {
+    return IFetch<Array<News>>(RequestMethodType.GET, `news/`, filters || {});
   },
-  createNewsItem: (item: any) => {
-    return new IRequest(RequestMethodType.POST, 'news/', item, true);
+  createNewsItem: (item: NewsRequired) => {
+    return IFetch<News>(RequestMethodType.POST, `news/`, item, true);
   },
-  putNewsItem: (id: string, item: any) => {
-    return new IRequest(RequestMethodType.PUT, 'news/'.concat(id, '/'), item, true);
+  putNewsItem: (id: number, item: NewsRequired) => {
+    return IFetch<News>(RequestMethodType.PUT, `news/${String(id)}/`, item, true);
   },
-  deleteNewsItem: (id: string) => {
-    return new IRequest(RequestMethodType.DELETE, 'news/'.concat(id, '/'), undefined, true);
+  deleteNewsItem: (id: number) => {
+    return IFetch<RequestResponse>(RequestMethodType.DELETE, `news/${String(id)}/`, undefined, true);
   },
 
   // User
   getUserData: () => {
-    return IFetch<User>(RequestMethodType.GET, 'user/userdata/', undefined, true);
+    return IFetch<User>(RequestMethodType.GET, `user/userdata/`, undefined, true);
   },
-  getUsers: (filters: any) => {
-    return IFetch<Array<User>>(RequestMethodType.GET, 'user/', filters || {}, true);
+  getUsers: (filters?: any) => {
+    return IFetch<Array<User>>(RequestMethodType.GET, `user/`, filters || {}, true);
   },
   updateUserData: (userName: string, item: Partial<User>) => {
-    return IFetch<RequestResponse>(RequestMethodType.PUT, 'user/'.concat(userName, '/'), item, true);
+    return IFetch<RequestResponse>(RequestMethodType.PUT, `user/${userName}/`, item, true);
   },
 
   // Notifications
   updateNotification: (id: number, item: { read: boolean }) => {
-    return IFetch<RequestResponse>(RequestMethodType.PUT, 'notification/'.concat(String(id), '/'), item, true);
+    return IFetch<RequestResponse>(RequestMethodType.PUT, `notification/${String(id)}/`, item, true);
   },
 
   // Cheatsheet
-  getCheatsheets: (study: CheatsheetStudy, grade: CheatsheetGrade, filters?: any) => {
-    return IFetch<PaginationResponse<Cheatsheet>>(
-      RequestMethodType.GET,
-      'cheatsheet/'.concat('study/', study, '/grade/', grade, '/file/'),
-      filters || {},
-      true,
-    );
+  getCheatsheets: (study: Study, grade: number, filters?: any) => {
+    const tempStudy = study === Study.DIGSEC ? 'DIGINC' : study;
+    return IFetch<PaginationResponse<Cheatsheet>>(RequestMethodType.GET, `cheatsheet/${tempStudy.toUpperCase()}/${String(grade)}/files/`, filters || {}, true);
   },
 
   // Warning
   getWarning: () => {
-    return IFetch<Array<Warning>>(RequestMethodType.GET, 'warning/');
+    return IFetch<Array<Warning>>(RequestMethodType.GET, `warning/`);
+  },
+
+  // Categories
+  getCategories: () => {
+    return IFetch<Array<Category>>(RequestMethodType.GET, `category/`);
   },
 
   // Company form
   emailForm: (data: CompaniesEmail) => {
-    return IFetch<RequestResponse>(RequestMethodType.POST, 'accept-form/', data, false);
+    return IFetch<RequestResponse>(RequestMethodType.POST, `accept-form/`, data, false);
   },
 
   // Badges
   createUserBadge: (data: { badge_id: string }) => {
-    return IFetch<RequestResponse>(RequestMethodType.POST, 'badge/', data, true);
+    return IFetch<RequestResponse>(RequestMethodType.POST, `badge/`, data, true);
   },
 };

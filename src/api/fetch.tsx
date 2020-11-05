@@ -51,10 +51,10 @@ const argsToParams = (data: Record<string, any>) => {
     if (Array.isArray(data[key])) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       for (const value in data[key] as any) {
-        args += '&' + key + '=' + data[key][value];
+        args += `&${key}=${data[key][value]}`;
       }
     } else {
-      args += '&' + key + '=' + data[key];
+      args += `&${key}=${data[key]}`;
     }
   }
   return args;

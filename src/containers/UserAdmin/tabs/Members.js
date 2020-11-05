@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import connect from 'react-redux/es/connect/connect';
 import classNames from 'classnames';
 
 // API and store imports
@@ -271,19 +270,7 @@ const Members = (props) => {
 
 Members.propTypes = {
   classes: PropTypes.object,
-  match: PropTypes.object,
-  grid: PropTypes.object,
   isMember: PropTypes.bool,
 };
 
-Members.defaultProps = {
-  id: '-1',
-};
-
-const stateValues = (state) => {
-  return {
-    grid: state.grid,
-  };
-};
-
-export default connect(stateValues)(withStyles(styles, { withTheme: true })(Members));
+export default withStyles(styles, { withTheme: true })(Members);
