@@ -78,6 +78,7 @@
     "quote-props": "off",
     "react/jsx-sort-props": ["error"],
     "react-hooks/rules-of-hooks": "error",
+    "react/prop-types": "off",
     "require-jsdoc": "off",
     "space-before-blocks": "error",
     "space-before-function-paren": [

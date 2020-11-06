@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
@@ -81,12 +81,6 @@ function SignUp(props) {
   const { setLogInRedirectURL, getLogInRedirectURL } = useMisc();
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [redirectURL, setRedirectUrl] = useState(null);
-
-  useEffect(() => {
-    setRedirectUrl(getLogInRedirectURL());
-    setLogInRedirectURL(null);
-  }, [getLogInRedirectURL, setLogInRedirectURL]);
 
   const onSignUp = (data) => {
     if (isLoading) {
@@ -134,6 +128,8 @@ function SignUp(props) {
     };
     createUser(userData)
       .then(() => {
+        const redirectURL = getLogInRedirectURL();
+        setLogInRedirectURL(null);
         navigate(redirectURL || URLS.login);
       })
       .catch((error) => {

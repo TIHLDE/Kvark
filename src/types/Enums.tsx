@@ -31,3 +31,20 @@ export enum CheatsheetType {
   LINK = 'LINK',
   OTHER = 'OTHER',
 }
+
+export enum UserStudy {
+  DATAING = 1,
+  DIGFOR = 2,
+  DIGSEC = 3,
+  DIGSAM = 4,
+  DRIFT = 5,
+}
+
+export enum UserClass {
+  ALUMNI = -1,
+  FIRST = 1,
+  SECOND = 2,
+  THIRD = 3,
+  FOURTH = 4,
+  FIFTH = 5,
+}

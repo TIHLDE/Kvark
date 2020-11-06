@@ -104,7 +104,7 @@ const EventParticipants = (props) => {
   };
 
   const toggleUserEvent = (userId, parameters) => {
-    updateRegistration(event.id, { user_id: userId, ...parameters })
+    updateRegistration(event.id, { user_id: userId, ...parameters }, userId)
       .then((data) => {
         const newParticipants = participants.map((user) => {
           return user.user_info.user_id === userId ? data : user;

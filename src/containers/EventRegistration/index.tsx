@@ -1,6 +1,4 @@
-/* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
-import classNames from 'classnames';
 import QrReader from 'react-qr-reader';
 import Helmet from 'react-helmet';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -8,6 +6,7 @@ import { Registration } from 'types/Types';
 
 // Service and action imports
 import { useEvent } from 'api/hooks/Event';
+import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -16,9 +15,6 @@ import TextField from '@material-ui/core/TextField';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
-import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
-import Slide from '@material-ui/core/Slide';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Hidden from '@material-ui/core/Hidden';
@@ -140,24 +136,22 @@ function EventRegistration() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { getEventById, getEventRegistrations, updateAttendedStatus } = useEvent();
+  const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const [eventName, setEventName] = useState('');
   const [search, setSearch] = useState('');
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
   const [tab, setTab] = useState(0);
   const [participants, setParticipants] = useState<Array<Registration> | undefined>(undefined);
-  const [error, setError] = useState(false);
 
   const handleScan = (username: string | null) => {
     if (!isLoading && username) {
       const participant = participants?.find((participant) => participant.user_info.user_id === username);
       if (!participant) {
-        showSnackbar('Personen er ikke påmeldt dette arrangementet', true);
+        showSnackbar('Personen er ikke påmeldt dette arrangementet', 'error');
         return;
       }
       if (participant.has_attended) {
-        showSnackbar('Personen har allerede ankommet dette arrangementet', false);
+        showSnackbar('Personen har allerede ankommet dette arrangementet', 'info');
         return;
       }
       markAttended(username, true);
@@ -166,13 +160,7 @@ function EventRegistration() {
 
   const handleError = () => {
     setIsLoading(false);
-    showSnackbar('En ukjent feil har oppstått, sjekk at vi har tilgang til å bruke kameraet', true);
-  };
-
-  const showSnackbar = (text: string, error: boolean) => {
-    setError(error);
-    setSnackbarMessage(text);
-    setSnackbarOpen(true);
+    showSnackbar('En ukjent feil har oppstått, sjekk at vi har tilgang til å bruke kameraet', 'warning');
   };
 
   useEffect(() => {
@@ -204,18 +192,13 @@ function EventRegistration() {
     setParticipants(newParticipantsList);
     updateAttendedStatus(Number(id), attendedStatus, username)
       .then(() => {
-        showSnackbar(attendedStatus ? 'Deltageren er registrert ankommet!' : 'Vi har fjernet ankommet-statusen', false);
+        showSnackbar(attendedStatus ? 'Deltageren er registrert ankommet!' : 'Vi har fjernet ankommet-statusen', 'success');
       })
       .catch((error) => {
         setParticipants(oldParitcipantsList);
-        showSnackbar(error.detail, true);
+        showSnackbar(error.detail, 'error');
       })
       .finally(() => setIsLoading(false));
-  };
-
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-    setIsLoading(false);
   };
 
   const Participants = () => (
@@ -262,9 +245,6 @@ function EventRegistration() {
           </>
         )}
       </Paper>
-      <Snackbar onClose={handleSnackbarClose} open={snackbarOpen} TransitionComponent={Slide}>
-        <SnackbarContent className={classNames(classes.snackbar, error ? classes.snackbar_error : classes.snackbar_success)} message={snackbarMessage} />
-      </Snackbar>
     </Navigation>
   );
 }

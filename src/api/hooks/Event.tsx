@@ -3,6 +3,7 @@ import { parseISO, differenceInSeconds } from 'date-fns';
 import API from 'api/api';
 import { Event, EventRequired, Registration, RequestResponse } from 'types/Types';
 import { useInterval } from 'api/hooks/Utils';
+import { useUser } from 'api/hooks/User';
 
 export type Action =
   | { type: 'set'; payload: Array<Event> }
@@ -119,6 +120,7 @@ export const useEventById = (id: number) => {
 export const useEvent = () => {
   const event = useEventState();
   const dispatch = useEventDispatch();
+  const { addUserEvent, removeUserEvent } = useUser();
 
   const getEvents = useCallback(async (filters = null) => {
     return API.getEvents(filters).then((response) => {
@@ -233,13 +235,14 @@ export const useEvent = () => {
             } else {
               newEvent.list_count++;
             }
+            addUserEvent(event);
             dispatch({ type: 'update', payload: newEvent });
             return Promise.resolve(response.data);
           });
         }
       });
     },
-    [getEventById, dispatch],
+    [getEventById, dispatch, addUserEvent],
   );
 
   const updateRegistration = useCallback(async (eventId: number, item: Partial<Registration>, userId: string) => {
@@ -249,7 +252,7 @@ export const useEvent = () => {
   }, []);
 
   const deleteRegistration = useCallback(
-    async (eventId: number, userId: string, oldRegistration?: Registration) => {
+    async (eventId: number, userId: string, oldRegistration?: Registration | null) => {
       return API.deleteRegistration(eventId, userId).then((response) => {
         if (response.isError) {
           return Promise.reject(response.data);
@@ -263,13 +266,14 @@ export const useEvent = () => {
                 newEvent.list_count--;
               }
             }
+            removeUserEvent(event);
             dispatch({ type: 'update', payload: newEvent });
             return Promise.resolve(response.data);
           });
         }
       });
     },
-    [getEventById, dispatch],
+    [getEventById, dispatch, removeUserEvent],
   );
 
   return {

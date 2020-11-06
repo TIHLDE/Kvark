@@ -14,6 +14,7 @@ import { useUser, UserProvider } from 'api/hooks/User';
 import { NewsProvider } from 'api/hooks/News';
 import { JobPostProvider } from 'api/hooks/JobPost';
 import { EventProvider } from 'api/hooks/Event';
+import { SnackbarProvider } from './api/hooks/Snackbar';
 
 // Project containers
 import EventDetails from 'containers/EventDetails';
@@ -125,7 +126,9 @@ export const Providers = ({ children }: ProvidersProps) => {
         <NewsProvider>
           <JobPostProvider>
             <EventProvider>
-              <ThemeProvider>{children}</ThemeProvider>
+              <ThemeProvider>
+                <SnackbarProvider>{children}</SnackbarProvider>
+              </ThemeProvider>
             </EventProvider>
           </JobPostProvider>
         </NewsProvider>
@@ -196,4 +199,5 @@ console.log(
 console.log('%cSnoker rundt du? Det liker vi. Vi i Index ser alltid etter nye medlemmer.', 'font-weight: bold; font-size: 1rem;color: yellow;', '');
 // eslint-disable-next-line no-console
 console.log('B64: ImZsYWd7NjgzNTRjMTAtODBiZS00ZjMzLTkwMjItM2RjMjE5YjNmYTQ0fSI=');
+
 ReactDOM.render(<Application />, document.getElementById('root'));
