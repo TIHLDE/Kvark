@@ -44,6 +44,7 @@ import News from 'containers/News';
 import NewsAdministration from 'containers/NewsAdministration';
 import EventRules from 'containers/EventRules';
 import MessageGDPR from 'components/miscellaneous/MessageGDPR';
+import API from 'api/api';
 
 // The user needs to be authorized (logged in and member of an authorized group) to access these routes
 const requireAuth = (OriginalComponent: React.ReactElement, accessGroups: Array<string> = []): React.ReactElement => {
@@ -134,6 +135,7 @@ export const Providers = ({ children }: ProvidersProps) => {
 };
 
 export const Application = () => {
+  API.getCTF();
   return (
     <Providers>
       <BrowserRouter>
@@ -192,5 +194,6 @@ console.log(
 );
 // eslint-disable-next-line no-console
 console.log('%cSnoker rundt du? Det liker vi. Vi i Index ser alltid etter nye medlemmer.', 'font-weight: bold; font-size: 1rem;color: yellow;', '');
-
+// eslint-disable-next-line no-console
+console.log('B64: ImZsYWd7NjgzNTRjMTAtODBiZS00ZjMzLTkwMjItM2RjMjE5YjNmYTQ0fSI=');
 ReactDOM.render(<Application />, document.getElementById('root'));
