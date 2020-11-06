@@ -1,17 +1,18 @@
 import { Button, Grid, TextField } from '@material-ui/core';
 import React from 'react';
 import { useBadge } from 'api/hooks/Badge';
+import { useSnackbar } from 'api/hooks/Snackbar';
 
 function BadgeInput() {
   const [flag, setFlag] = React.useState<string>('');
   const { createUserBadge } = useBadge();
-
+  const showSnackbar = useSnackbar();
   const submit = () => {
     const formatedId = flag.replaceAll('flag{', '').replaceAll('}', '');
     createUserBadge(formatedId)
-      // TODO: Add snackbar
-      .then(() => null)
-      .catch(() => null);
+      .then((response) => showSnackbar(response.detail, 'success'))
+      .catch((err) => showSnackbar(err.detail, 'error'))
+      .finally(() => setFlag(''));
   };
 
   return (
