@@ -85,12 +85,6 @@ function LogIn(props) {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [redirectURL, setRedirectUrl] = useState(null);
-
-  useEffect(() => {
-    setRedirectUrl(getLogInRedirectURL());
-    setLogInRedirectURL(null);
-  }, [getLogInRedirectURL, setLogInRedirectURL]);
 
   useEffect(() => setErrorMessage(null), [username, password]);
 
@@ -105,6 +99,8 @@ function LogIn(props) {
     setIsLoading(true);
     logIn(username, password)
       .then(() => {
+        const redirectURL = getLogInRedirectURL();
+        setLogInRedirectURL(null);
         navigate(redirectURL || URLS.landing);
       })
       .catch((err) => {

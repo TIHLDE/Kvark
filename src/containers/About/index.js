@@ -122,6 +122,7 @@ function About(props) {
               <InfoCard header='Næringsliv og Kurs' src={BusinessIcon} text={Text.business} />
               <InfoCard header='Promo' src={PromoIcon} text={Text.promo} />
               <InfoCard header='Index' src={IndexIcon} text={Text.index} />
+              <InfoCard header='Sommer' src={'https://i.ibb.co/9yV3P0Y/flag-a3262845-69a0-4e51-be70-0598d66b8fcf.gif'} text={Text.ctf} />
             </div>
           </div>
         </div>

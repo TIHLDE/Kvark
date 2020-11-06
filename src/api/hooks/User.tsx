@@ -4,7 +4,8 @@ import { useAuth } from 'api/hooks/Auth';
 import { User, Event } from 'types/Types';
 
 export type Action =
-  | { type: 'update events'; payload: Array<Event> }
+  | { type: 'add event'; payload: Event }
+  | { type: 'remove event'; payload: Event }
   | { type: 'set'; payload: User }
   | { type: 'remove' }
   | { type: 'update'; payload: Partial<User> };
@@ -23,8 +24,25 @@ const userReducer = (state: User | null, action: Action): User | null => {
     case 'update': {
       return { ...state, ...action.payload } as User;
     }
-    case 'update events': {
-      return { ...state, events: action.payload } as User;
+    case 'add event': {
+      if (state) {
+        return { ...state, events: [...state.events, action.payload] } as User;
+      } else {
+        return state;
+      }
+    }
+    case 'remove event': {
+      if (state) {
+        const newUserEvents = [...state.events];
+        for (let i = 0; i < newUserEvents.length; i++) {
+          if (newUserEvents[i].id === action.payload.id) {
+            newUserEvents.splice(i, 1);
+          }
+        }
+        return { ...state, events: newUserEvents } as User;
+      } else {
+        return state;
+      }
     }
     case 'remove': {
       return null;
@@ -106,12 +124,19 @@ export const useUser = () => {
     [dispatch],
   );
 
-  const updateUserEvents = useCallback(
-    async (events: Array<Event>) => {
-      return dispatch({ type: 'update events', payload: events });
+  const addUserEvent = useCallback(
+    async (event: Event) => {
+      return dispatch({ type: 'add event', payload: event });
     },
     [dispatch],
   );
 
-  return { getUserData, getUsers, updateUserData, updateUserEvents };
+  const removeUserEvent = useCallback(
+    async (event: Event) => {
+      return dispatch({ type: 'remove event', payload: event });
+    },
+    [dispatch],
+  );
+
+  return { getUserData, getUsers, updateUserData, addUserEvent, removeUserEvent };
 };

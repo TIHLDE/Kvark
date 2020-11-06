@@ -1,4 +1,4 @@
-import { WarningType, Study, CheatsheetType } from 'types/Enums';
+import { WarningType, Study, CheatsheetType, UserClass, UserStudy } from 'types/Enums';
 
 export interface Warning {
   created_at: string;
@@ -101,8 +101,16 @@ export interface Event {
 }
 
 export interface RegistrationPriority {
-  user_class: number;
-  user_study: number;
+  user_class: UserClass;
+  user_study: UserStudy;
+}
+
+export interface Registration {
+  allow_photo: boolean;
+  has_attended: boolean;
+  is_on_wait: boolean;
+  registration_id: number;
+  user_info: Pick<User, 'allergy' | 'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study'>;
 }
 
 export interface Registration {

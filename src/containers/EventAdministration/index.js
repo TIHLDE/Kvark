@@ -60,6 +60,9 @@ const styles = (theme) => ({
   header: {
     color: theme.palette.colors.text.main,
   },
+  preview: {
+    padding: theme.spacing(1),
+  },
 });
 
 const defaultEvent = {
@@ -282,7 +285,11 @@ function EventAdministration(props) {
           <Paper noPadding>
             {tab === 0 && <EventEditor categories={categories} event={selectedEvent} setEvent={(item) => setSelectedEvent(item)} />}
             {tab === 1 && <EventParticipants event={selectedEvent} openSnackbar={openSnackbar} />}
-            {tab === 2 && <EventRenderer eventData={selectedEvent} preview />}
+            {tab === 2 && (
+              <div className={classes.preview}>
+                <EventRenderer event={selectedEvent} preview />
+              </div>
+            )}
           </Paper>
         </div>
       </div>

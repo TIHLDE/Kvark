@@ -1,53 +1,10 @@
 import slugify from 'slugify';
-
-// Convert date-string to more readable text
-export const refactorDateString = (dateString) => {
-  if (!dateString || dateString.length < 10) {
-    return dateString;
-  } else if (!(typeof dateString === 'string')) {
-    return dateString;
-  }
-
-  // This solutions also works for Safari
-  const convertedStringDate = dateString.substring(0, 10);
-  let date = new Date(convertedStringDate);
-  if (!date) {
-    date = new Date(convertedStringDate.replace(/-/g, '/'));
-  }
-  return date.toDateString();
-};
-
-// Convert date-string to more readable text
-export const stringToDate = (dateString) => {
-  if (!dateString || dateString.length < 10) {
-    return new Date();
-  } else if (!(typeof dateString === 'string')) {
-    return new Date();
-  }
-
-  // This solutions also works for Safari
-  const convertedStringDate = dateString.substring(0, 10);
-  let date = new Date(convertedStringDate);
-  if (!date) {
-    date = new Date(convertedStringDate.replace(/-/g, '/'));
-  }
-  return date;
-};
-
-// Checks if browser is run on desktop
-export const isDesktop = () => {
-  return (
-    (navigator.userAgent.match(/Android/i) ||
-      navigator.userAgent.match(/iPhone/i) ||
-      navigator.userAgent.match(/iPad/i) ||
-      navigator.userAgent.match(/iPod/i)) === null
-  );
-};
+import { UserStudy, UserClass } from 'types/Enums';
 
 export const urlEncode = (text = '') => slugify(text, { lower: true, strict: true, locale: 'nb' });
 
 // Short down string if needed
-export const shortDownString = (string, charsToShortDown) => {
+export const shortDownString = (string: string, charsToShortDown: number) => {
   if (string.length > charsToShortDown) {
     string = string.slice(0, charsToShortDown) + '...';
   }
@@ -55,62 +12,82 @@ export const shortDownString = (string, charsToShortDown) => {
 };
 
 // Get user study short
-export const getUserStudyShort = (userStudy) => {
+export const getUserStudyShort = (userStudy: UserStudy) => {
   switch (userStudy) {
-    case 1:
+    case UserStudy.DATAING:
       return 'Dataing';
-    case 2:
+    case UserStudy.DIGFOR:
       return 'DigFor';
-    case 3:
+    case UserStudy.DIGSEC:
       return 'DigSec';
-    case 4:
+    case UserStudy.DIGSAM:
       return 'DigSam';
-    case 5:
+    case UserStudy.DRIFT:
       return 'Drift';
     default:
-      return 'Ikke oppgitt';
+      return 'Ukjent studie';
   }
 };
 // Get user study long
-export const getUserStudyLong = (userStudy) => {
+export const getUserStudyLong = (userStudy: UserStudy) => {
   switch (userStudy) {
-    case 1:
+    case UserStudy.DATAING:
       return 'Dataingeniør';
-    case 2:
+    case UserStudy.DIGFOR:
       return 'Digital forretningsutvikling';
-    case 3:
+    case UserStudy.DIGSEC:
       return 'Digital infrastruktur og cybersikkerhet';
-    case 4:
+    case UserStudy.DIGSAM:
       return 'Digital samhandling';
-    case 5:
+    case UserStudy.DRIFT:
       return 'Drift av datasystemer';
     default:
-      return 'Ikke oppgitt';
+      return 'Ukjent studie';
   }
 };
 // Get user class
-export const getUserClass = (userStudy) => {
-  switch (userStudy) {
-    case 1:
+export const getUserClass = (userClass: UserClass) => {
+  switch (userClass) {
+    case UserClass.ALUMNI:
+      return 'Alumni';
+    case UserClass.FIRST:
       return '1. klasse';
-    case 2:
+    case UserClass.SECOND:
       return '2. klasse';
-    case 3:
+    case UserClass.THIRD:
       return '3. klasse';
-    case 4:
+    case UserClass.FOURTH:
       return '4. klasse';
-    case 5:
+    case UserClass.FIFTH:
       return '5. klasse';
     default:
-      return 'Ikke oppgitt';
+      return 'Ukjent klasse';
   }
 };
 
-export const getFormattedDate = (date) => {
+// Add leading zero to numbers below 10. Ex: 2 -> 02, 12 -> 12
+const addLeadingZero = (number: number) => (number < 10 ? '0' + number : number);
+
+export const formatDate = (date: Date) => {
+  return (
+    getDay(date.getDay()) +
+    ' ' +
+    date.getDate() +
+    ' ' +
+    getMonth(date.getMonth()) +
+    ' - kl. ' +
+    addLeadingZero(date.getHours()) +
+    ':' +
+    addLeadingZero(date.getMinutes())
+  );
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const getFormattedDate = (date: any) => {
   return getDay(date.day()) + ' ' + date.date() + ' ' + getMonth(date.month()) + ' - kl. ' + date.format('HH:mm');
 };
 
-export const getDay = (day) => {
+export const getDay = (day: number) => {
   switch (day) {
     case 0:
       return 'Søndag';
@@ -130,7 +107,7 @@ export const getDay = (day) => {
       return day;
   }
 };
-export const getMonth = (month) => {
+export const getMonth = (month: number) => {
   switch (month) {
     case 0:
       return 'jan';
@@ -161,9 +138,9 @@ export const getMonth = (month) => {
   }
 };
 
-export const getParameterByName = (paramName, url) => {
+export const getParameterByName = (paramName: string, url: string | null) => {
   if (!url) {
-    url = window.location.href;
+    return null;
   }
   paramName = paramName.replace(/[\]]/g, '\\$&');
   const regex = new RegExp('[?&]' + paramName + '(=([^&#]*)|&|#|$)'),
