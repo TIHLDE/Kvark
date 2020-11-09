@@ -12,7 +12,6 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 // Images
-import TIHLDELOGO from '../../../assets/img/TIHLDE_LOGO.png';
 import WaveTopLight from '../../../assets/img/waves/wave-top-light.png';
 import WaveMidLight from '../../../assets/img/waves/wave-mid-light.png';
 import WaveBottomLight from '../../../assets/img/waves/wave-bottom-light.png';
@@ -22,6 +21,7 @@ import WaveBottomDark from '../../../assets/img/waves/wave-bottom-dark.png';
 
 // Project Components
 import URLS from '../../../URLS';
+import TihldeLogo from '../../../components/miscellaneous/TihldeLogo';
 
 const style = (theme) => ({
   topInner: {
@@ -42,11 +42,10 @@ const style = (theme) => ({
     display: 'flex',
   },
   topLogo: {
-    margin: '0 auto',
     width: '70vw',
-    maxWidth: '450px',
-    minWidth: '250px',
-    objectFit: 'contain',
+    height: 'auto',
+    maxWidth: 450,
+    minWidth: 250,
   },
   topButtonContainer: {
     margin: '20px auto 0',
@@ -152,7 +151,7 @@ const Wave = ({ classes }) => {
     <div className='waveWrapper waveAnimation'>
       <div className={classes.topInner}>
         <div className={classes.topLogoContainer} style={{ display: 'flex' }}>
-          <img alt='TIHLDE_LOGO' className={classes.topLogo} src={TIHLDELOGO} />
+          <TihldeLogo className={classes.topLogo} darkColor='white' lightColor='white' size='large' />
         </div>
         <Typography align='center' className={classes.topSmallText} variant='h6'>
           Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Drift av datasystemer og Digital samhandling

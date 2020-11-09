@@ -1,7 +1,5 @@
 # TIHLDEs nettside - Kvark 
-CTF flag: flag{4f895fd4-79c2-4a5f-8927-b0d674680acc}
-
-[![Vercel](./src/assets/img/vercel_background.svg)](https://vercel.com/?utm_source=kvark&utm_campaign=oss)
+[![Vercel](./src/assets/icons/vercel_background.svg)](https://vercel.com/?utm_source=kvark&utm_campaign=oss)
 
 ![Lint, test and build](https://github.com/tihlde/Kvark/workflows/Lint,%20test%20and%20build/badge.svg)
 

@@ -19,12 +19,10 @@ import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import MenuItem from '@material-ui/core/MenuItem';
 
-// Icons
-import TIHLDE_LOGO from '../../assets/img/TIHLDE_LOGO_B.png';
-
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 import Paper from '../../components/layout/Paper';
+import TihldeLogo from '../../components/miscellaneous/TihldeLogo';
 
 const styles = (theme) => ({
   root: {
@@ -51,10 +49,8 @@ const styles = (theme) => ({
     top: '-60px',
   },
   logo: {
-    height: 32,
-    maxHeight: '32px !important',
-    margin: 'auto',
-    display: 'block',
+    height: 30,
+    width: 'auto',
     marginBottom: 10,
   },
   header: {
@@ -148,7 +144,7 @@ function SignUp(props) {
         <div className={classes.main}>
           <Paper className={classes.paper}>
             {isLoading && <LinearProgress className={classes.progress} />}
-            <img alt='tihlde_logo' className={classes.logo} height='30em' src={TIHLDE_LOGO} />
+            <TihldeLogo className={classes.logo} darkColor='white' lightColor='blue' size='large' />
             <Typography className={classes.header} variant='h6'>
               Opprett bruker
             </Typography>

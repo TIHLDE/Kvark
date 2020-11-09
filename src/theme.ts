@@ -193,7 +193,7 @@ export const getTheme = (light: boolean) =>
           lighter: light ? '#555555' : '#aaaaaa',
         },
         tihlde: {
-          main: '#1D448C',
+          main: '#1c458a',
           light: '#E4E9F2',
         },
         gradient: {

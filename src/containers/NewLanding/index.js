@@ -13,7 +13,6 @@ import Navigation from '../../components/navigation/Navigation';
 import Calendar from './components/Calendar';
 import NewsListView from './components/NewsListView';
 import Wave from './components/Wave';
-import BadgeInput from 'components/miscellaneous/BadgeInput';
 
 const styles = (theme) => ({
   root: {
@@ -60,34 +59,17 @@ function NewLanding({ classes }) {
         </div>
         <div className={classes.smoke}>
           <div className={classes.section}>
-            <ctf style={{ visibility: 'hidden' }}>{'flag{a71cb6b0-4153-4cef-b20b-42fcc2b62aae}'}</ctf>
             <Typography align='center' className={classes.header} color='inherit' variant='h4'>
-              TIHLDE CTF
+              Arrangementer
             </Typography>
-            <Typography align='center' className={classes.header} color='inherit'>
-              Nå som vi har fått badges på TIHLDE siden er det på tide med en liten CTF.
-              <br />
-              Det er gjemt 6 flagg formatert som {'flag{xxx-xxx-xxx-xxx-xxx}'}. For hvert
-              <br />
-              flagg du finner åpner du en badge som kan ses på profil siden din.
-            </Typography>
-            <BadgeInput />
+            <Calendar />
           </div>
         </div>
         <div className={classes.section}>
           <Typography align='center' className={classes.header} color='inherit' variant='h4'>
-            Arrangementer
+            Nyheter
           </Typography>
-          <Calendar />
-        </div>
-
-        <div className={classes.smoke}>
-          <div className={classes.section}>
-            <Typography align='center' className={classes.header} color='inherit' variant='h4'>
-              Nyheter
-            </Typography>
-            <NewsListView />
-          </div>
+          <NewsListView />
         </div>
       </Grid>
     </Navigation>

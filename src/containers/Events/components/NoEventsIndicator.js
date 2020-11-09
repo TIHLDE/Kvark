@@ -8,7 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Text from '../../../text/EventText';
 
 // Icons
-import EventIcon from '../../../assets/icons/events.png';
+import EventIcon from '../../../assets/icons/empty.svg';
 
 // Project Components
 import MessageIndicator from '../../../components/layout/MessageIndicator';

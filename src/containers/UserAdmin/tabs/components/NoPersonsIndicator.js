@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
 // Icons
-import EventIcon from '../../../../assets/icons/nodata.png';
+import EventIcon from '../../../../assets/icons/empty.svg';
 
 // Project Components
 import MessageIndicator from '../../../../components/layout/MessageIndicator';

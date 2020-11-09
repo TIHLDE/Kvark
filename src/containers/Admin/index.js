@@ -18,8 +18,8 @@ import Button from '@material-ui/core/Button';
 // Icons
 import EventAdminIcon from '../../assets/icons/eventadmin.svg';
 import JobPostAdminIcon from '../../assets/icons/jobpostadmin.svg';
-import UserAdminIcon from '../../assets/icons/UserAdminIcon.svg';
-import NewsAdminIcon from '../../assets/img/news.svg';
+import UserAdminIcon from '../../assets/icons/useradmin.svg';
+import NewsAdminIcon from '../../assets/icons/news.svg';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';

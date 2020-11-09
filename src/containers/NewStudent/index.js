@@ -16,7 +16,7 @@ import InfoCard from '../../components/layout/InfoCard';
 import Banner from '../../components/layout/Banner';
 import Text from '../../text/NewStudentText';
 import Expansion from '../../components/layout/Expand';
-import TihldeImg from '../../assets/img/tihlde_image.png';
+import TihldeLogo from '../../components/miscellaneous/TihldeLogo';
 
 const styles = (theme) => ({
   root: {
@@ -55,11 +55,15 @@ const styles = (theme) => ({
     marginTop: 15,
     fontSize: '1.2rem',
   },
+  logo: {
+    maxWidth: 160,
+    maxHeight: 160,
+    margin: `auto ${theme.spacing(2)}px !important`,
+  },
 });
 
 function NewStudent(props) {
   const { classes } = props;
-
   return (
     <Navigation fancyNavbar whitesmoke>
       <Helmet>
@@ -73,7 +77,7 @@ function NewStudent(props) {
             header={Text.fadder.headline}
             imageClass={classes.image}
             justifyText
-            src={TihldeImg}
+            srcComponent={<TihldeLogo className={classes.logo} darkColor='white' lightColor='blue' size='small' />}
             text={Text.fadder.text}>
             <Button
               className={classes.bottomSpacing}
@@ -81,8 +85,7 @@ function NewStudent(props) {
               href='https://drive.google.com/file/d/1Q8kx9p_khg6LbK1HACPAKIfjVwLPeJ2J/view'
               target='_noopener'
               variant='contained'>
-              {' '}
-              Trykk her for info om fadderuka{' '}
+              Trykk her for info om fadderuka
             </Button>
           </InfoCard>
           <InfoCard className={classes.infocard} header={Text.faq.header}>

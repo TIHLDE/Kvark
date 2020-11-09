@@ -23,8 +23,6 @@ export default {
     Siden den ble lansert har Index jobbet kontinuerlig med videre utvikling av ny funksjonalitet på nettsiden.
     I dag jobber det engasjerte og dyktige studenter med nettopp dette. Medlemmene har stor frihet til å jobbe med det de selv synes er mest interessant.`,
 
-  ctf: `Sommer er den nye undergruppen som skal passe på at linjen går på skinner i sommer. Når HS og resten av undergruppene erpå ferie er det Sommer sitt ansvar å passe på linjeforeningen. Men noe er litt mystisk med det bilde. Er du ikke enig?`,
-
   turkom: `TurKomitéen er en komité som ble startet av engasjerte og turglade studenter, etter ønske fra Generalforsamlingen.
     TurKom skal gi turglede hos TIHLDEs medlemmer, og skal gjøre dette ved å arrangere telt- og overnattingsturer 2 – 3 ganger i semesteret.
     Takket være SiT, har TurKom kunne kjøpe utmerket turutstyr til dette formålet.

@@ -17,12 +17,10 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 
-// Icons
-import TIHLDE_LOGO from '../../assets/img/TIHLDE_LOGO_B.png';
-
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 import Paper from '../../components/layout/Paper';
+import TihldeLogo from '../../components/miscellaneous/TihldeLogo';
 
 const styles = (theme) => ({
   root: {
@@ -49,10 +47,8 @@ const styles = (theme) => ({
     top: '-60px',
   },
   logo: {
-    height: '32px',
-    maxHeight: '32px !important',
-    margin: 'auto',
-    display: 'block',
+    height: 30,
+    width: 'auto',
     marginBottom: 10,
   },
   header: {
@@ -129,7 +125,7 @@ function ForgotPassword(props) {
         <div className={classes.main}>
           <Paper className={classes.paper}>
             {isLoading && <LinearProgress className={classes.progress} />}
-            <img alt='tihlde_logo' className={classes.logo} height='30em' src={TIHLDE_LOGO} />
+            <TihldeLogo className={classes.logo} darkColor='white' lightColor='blue' size='large' />
             <Typography className={classes.header} variant='h6'>
               Glemt passord
             </Typography>
