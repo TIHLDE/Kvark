@@ -11,10 +11,10 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 // Icons
-import DatabaseIcon from '../../assets/icons/database.png';
+import DatabaseIcon from '../../assets/icons/database.svg';
 import EmailIcon from '../../assets/icons/email.svg';
-import HostingIcon from '../../assets/icons/hosting.png';
-import VirtualIcon from '../../assets/icons/virtual.png';
+import MaintenanceIcon from '../../assets/icons/maintenance.svg';
+import ServerIcon from '../../assets/icons/server.svg';
 
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
@@ -67,12 +67,12 @@ function Services(props) {
               Gå til webmail
             </Button>
           </InfoCard>
-          <InfoCard classes={{ children: classes.flex }} header='Hosting' justifyText src={HostingIcon} text={Text.hosting}>
+          <InfoCard classes={{ children: classes.flex }} header='Hosting' justifyText src={MaintenanceIcon} text={Text.hosting}>
             <Button className={classes.bottomSpacing} color='primary' href='https://wiki.tihlde.org/landing/fantorangen' variant='contained'>
               Bestill domene
             </Button>
           </InfoCard>
-          <InfoCard classes={{ children: classes.flex }} header='Virtuelle Maskiner' justifyText src={VirtualIcon} text={Text.virtual}>
+          <InfoCard classes={{ children: classes.flex }} header='Virtuelle Maskiner' justifyText src={ServerIcon} text={Text.virtual}>
             <Button className={classes.bottomSpacing} color='primary' href='https://wiki.tihlde.org/landing/fantorangen' variant='contained'>
               Bestill tjenesten
             </Button>

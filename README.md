@@ -1,5 +1,5 @@
 # TIHLDEs nettside - Kvark 
-[![Vercel](./src/assets/img/vercel_background.svg)](https://vercel.com/?utm_source=kvark&utm_campaign=oss)
+[![Vercel](./src/assets/icons/vercel_background.svg)](https://vercel.com/?utm_source=kvark&utm_campaign=oss)
 
 ![Lint, test and build](https://github.com/tihlde/Kvark/workflows/Lint,%20test%20and%20build/badge.svg)
 

@@ -33,7 +33,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 
 // Assets/Icons
-import TIHLDELOGO from 'assets/img/TIHLDE_LOGO.png';
 import MenuIcon from '@material-ui/icons/Menu';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import ExpandIcon from '@material-ui/icons/ExpandMoreRounded';
@@ -42,6 +41,7 @@ import ExpandIcon from '@material-ui/icons/ExpandMoreRounded';
 import Footer from 'components/navigation/Footer';
 import Sidebar from 'components/navigation/Sidebar';
 import Snack from 'components/navigation/Snack';
+import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -82,6 +82,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'row-reverse',
     },
+  },
+  logo: {
+    height: 32,
+    width: 'auto',
   },
   menuButton: {
     color: theme.palette.colors.header.text,
@@ -292,25 +296,33 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, 
   }, []);
 
   useEffect(() => {
+    let subscribed = true;
     getUserData()
       .then((user) => {
-        if (user) {
+        if (user && subscribed) {
           setUserData(user);
         }
       })
       .catch(() => {});
+    return () => {
+      subscribed = false;
+    };
   }, [getUserData]);
 
   useEffect(() => {
+    let subscribed = true;
     getWarnings()
       .then((data: Array<Warning>) => {
         const warningsRead = getCookie(WARNINGS_READ);
         const readArray = (warningsRead === undefined ? [] : warningsRead) as number[];
-        if (data?.length && !readArray.includes(data[data.length - 1].id)) {
+        if (data?.length && !readArray.includes(data[data.length - 1].id) && subscribed) {
           setWarning(data[data.length - 1]);
         }
       })
       .catch(() => {});
+    return () => {
+      subscribed = false;
+    };
   }, [getWarnings]);
 
   const handleScroll = () => {
@@ -375,7 +387,8 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, 
         <Toolbar className={classes.navWrapper} disableGutters>
           <div className={classes.logoWrapper}>
             <Link className={classes.grow} to='/'>
-              <img alt='TIHLDE_LOGO' height='32em' src={TIHLDELOGO} width='auto' />
+              {/* <img alt='TIHLDE_LOGO' height='32em' src={TIHLDELOGO} width='auto' /> */}
+              <TihldeLogo className={classes.logo} darkColor='white' lightColor='white' size='large' />
             </Link>
           </div>
 

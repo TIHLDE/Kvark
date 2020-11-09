@@ -13,10 +13,10 @@ import IconButton from '@material-ui/core/IconButton';
 import LightIcon from '@material-ui/icons/WbSunnyOutlined';
 
 // Assets import
-import SIT from 'assets/img/sit.svg';
-import VERCEL from 'assets/img/vercel.svg';
+import SIT from 'assets/icons/sit.svg';
+import VERCEL from 'assets/icons/vercel.svg';
 import NEXTTRON from 'assets/img/Nextron.png';
-import ACADEMICWORK from 'assets/img/aw_logo_main_green.svg';
+import ACADEMICWORK from 'assets/icons/academic_work.svg';
 import FACEBOOK from 'assets/icons/facebook.svg';
 import TWITTER from 'assets/icons/twitter.svg';
 import INSTAGRAM from 'assets/icons/instagram.svg';
@@ -144,7 +144,7 @@ const Footer = () => {
         <div className={classes.sosialMediaGrid}>
           {mediaList.map((media, index) => (
             <a className={classes.link} href={media.link} key={index} rel='noopener noreferrer' target='_blank'>
-              <img alt='sit' className={classes.marginBottom} src={media.img} width={40} />
+              <img alt='SoMe' className={classes.marginBottom} src={media.img} width={40} />
             </a>
           ))}
         </div>

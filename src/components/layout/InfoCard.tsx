@@ -67,6 +67,7 @@ export type InfoCardProps = {
   header: string;
   text?: string;
   src?: string;
+  srcComponent?: React.ReactNode;
   alt?: string;
   justifyText?: boolean;
   subheader?: string;
@@ -75,15 +76,17 @@ export type InfoCardProps = {
   imageClass?: string;
   children?: React.ReactNode;
 };
-const InfoCard = ({ className, header, text, src, alt, justifyText, subheader, subText, imageClass, children }: InfoCardProps) => {
+const InfoCard = ({ className, header, text, src, srcComponent, alt, justifyText, subheader, subText, imageClass, children }: InfoCardProps) => {
   const classes = useStyles();
   return (
     <Paper className={classNames(classes.root, className)} noPadding>
       <div className={classes.wrapper}>
-        {src && (
+        {src ? (
           <div className={classes.margin}>
             <img alt={alt || header} className={classNames(classes.image, imageClass)} src={src} />
           </div>
+        ) : (
+          srcComponent && <>{srcComponent}</>
         )}
         <Grid className={justifyText ? classes.cover : ''} container direction='column' justify='flex-start'>
           <Typography align='left' className={classes.header} variant='h3'>

@@ -17,9 +17,9 @@ import Button from '@material-ui/core/Button';
 // Icons
 import SocialIcon from '../../assets/icons/social.svg';
 import BusinessIcon from '../../assets/icons/business.svg';
-import OperationIcon from '../../assets/icons/operations.png';
+import ProgrammingIcon from '../../assets/icons/programming.svg';
 import PromoIcon from '../../assets/icons/promo.svg';
-import IndexIcon from '../../assets/icons/index.svg';
+import MaintenanceIcon from '../../assets/icons/maintenance.svg';
 import OrgMapLight from '../../assets/img/orgMapLight.jpg';
 import OrgMapDark from '../../assets/img/orgMapDark.jpg';
 
@@ -117,11 +117,11 @@ function About(props) {
               Undergrupper
             </Typography>
             <div className={classes.grid}>
-              <InfoCard header='Drift' src={OperationIcon} text={Text.drift} />
+              <InfoCard header='Drift' src={MaintenanceIcon} text={Text.drift} />
               <InfoCard header='Sosialen' src={SocialIcon} text={Text.social} />
               <InfoCard header='Næringsliv og Kurs' src={BusinessIcon} text={Text.business} />
               <InfoCard header='Promo' src={PromoIcon} text={Text.promo} />
-              <InfoCard header='Index' src={IndexIcon} text={Text.index} />
+              <InfoCard header='Index' src={ProgrammingIcon} text={Text.index} />
             </div>
           </div>
         </div>
