@@ -135,9 +135,4 @@ export default {
   createUserBadge: (data: { badge_id: string }) => {
     return IFetch<RequestResponse>(RequestMethodType.POST, `badge/`, data, true);
   },
-
-  // CTF
-  getCTF: () => {
-    return IFetch<RequestResponse>(RequestMethodType.POST, `ctf/`, { flag: 'ImZsYWd7YTJhZmRlM2QtZTE3YS00NzAzLTkwZjItNDI1MDIyZTU2MzY1fSI=' }, true);
-  },
 };
