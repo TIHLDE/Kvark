@@ -95,7 +95,7 @@ const Footer = () => {
 
   const mediaList = [
     { img: FACEBOOK, link: 'https://www.facebook.com/tihlde/' },
-    { img: INSTAGRAM, link: 'ttps://www.instagram.com/tihlde/' },
+    { img: INSTAGRAM, link: 'https://www.instagram.com/tihlde/' },
     { img: TWITTER, link: 'https://twitter.com/tihlde' },
     { img: SNAPCHAT, link: 'https://www.snapchat.com/add/tihldesnap' },
     { img: SLACK, link: 'https://tihlde.slack.com' },
