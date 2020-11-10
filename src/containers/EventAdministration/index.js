@@ -209,7 +209,7 @@ function EventAdministration(props) {
     }
 
     setIsLoading(true);
-    getExpiredEvents
+    getExpiredEvents()
       .then((data) => setExpiredItems(data.results || data || []))
       .catch(() => {})
       .finally(() => setIsLoading(false));
