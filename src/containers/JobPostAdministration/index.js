@@ -158,12 +158,10 @@ function JobPostAdministration(props) {
     }
 
     setIsLoading(true);
-    getExpiredJobPosts((isError, data) => {
-      if (!isError) {
-        setExpiredItems(data.results || data || []);
-      }
-      setIsLoading(false);
-    });
+    getExpiredJobPosts()
+      .then((data) => setExpiredItems(data.results || data || []))
+      .catch((error) => openSnackbar(error.detail))
+      .finally(() => setIsLoading(false));
   };
 
   const getNextPage = () => {

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import GA from '../../../analytics';
 
 // Service imports
 import API from '../../../api/api';
@@ -258,7 +257,11 @@ class Forum extends Component {
       this.props.scrollToForm();
     }
     this.setState({ isLoading: true });
-    GA.event('Companies form', 'Register interest');
+    window.gtag('event', 'form', {
+      event_category: 'Companies',
+      event_label: 'Companies form',
+      value: this.state.data.info.bedrift,
+    });
     API.emailForm(this.state.data).then((response) => {
       if (!response.isError) {
         this.setMessage('Sendt! Takk for interessen.');

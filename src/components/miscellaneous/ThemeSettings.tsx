@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useTheme } from 'context/ThemeContext';
 import { ThemeType } from 'types/Enums';
-import GA from 'analytics';
 
 // Material-ui
 import Modal from '@material-ui/core/Modal';
@@ -74,7 +73,10 @@ function ThemeSettings({ open, onClose }: ThemeSettingsProps) {
     if (newThemeName) {
       setThemeName(newThemeName);
       theme.set(newThemeName);
-      GA.event('Theme', 'Change theme to ' + newThemeName);
+      window.gtag('event', 'theme-switch', {
+        event_category: 'theme',
+        event_label: newThemeName,
+      });
     }
   };
 
