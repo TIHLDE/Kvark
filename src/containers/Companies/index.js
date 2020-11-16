@@ -150,14 +150,7 @@ function Companies(props) {
         </div>
         <div className={classes.section} ref={formRef}>
           <Paper className={classes.formWrapper} noPadding>
-            <Forum
-              data={{
-                forumText1: Text.forumText2,
-                forumText2: Text.forumText2,
-              }}
-              firstTextFieldRef={firstTextFieldRef}
-              scrollToForm={scrollToForm}
-            />
+            <Forum firstTextFieldRef={firstTextFieldRef} scrollToForm={scrollToForm} />
           </Paper>
         </div>
 
