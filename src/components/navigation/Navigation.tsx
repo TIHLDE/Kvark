@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import classNames from 'classnames';
 import Helmet from 'react-helmet';
@@ -25,7 +25,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Avatar from '@material-ui/core/Avatar';
 import Container from '@material-ui/core/Container';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
@@ -64,9 +63,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       paddingTop: 56,
     },
-  },
-  navContent: {
-    width: '100%',
   },
   navWrapper: {
     width: '100%',
@@ -188,27 +184,26 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'block',
     textAlign: 'center',
   },
+  dropdownIcon: {
+    transition: 'transform 0.5s',
+  },
+  expanded: {
+    transform: 'rotate(180deg)',
+  },
 }));
 
-export type MenuItemProps = {
-  data: {
-    link: string;
-    text: string;
-  };
-  selected: boolean;
+export type TopBarItemProps = {
+  to: string;
+  name: string;
 };
 
-const MenuItems = ({ data, selected }: MenuItemProps) => {
+const TopBarItem = ({ to, name }: TopBarItemProps) => {
   const classes = useStyles();
+  const selected = window.location.pathname === to;
   return (
-    <div className={classNames(selected ? classes.selected : '')}>
-      <Button
-        color='inherit'
-        component={Link}
-        onClick={data.link === window.location.pathname ? () => window.location.reload() : undefined}
-        style={{ color: 'white' }}
-        to={data.link}>
-        {data.text}
+    <div className={selected ? classes.selected : ''}>
+      <Button color='inherit' component={Link} onClick={selected ? () => window.location.reload() : undefined} style={{ color: 'white' }} to={to}>
+        {name}
       </Button>
     </div>
   );
@@ -216,24 +211,47 @@ const MenuItems = ({ data, selected }: MenuItemProps) => {
 
 export type DropdownMenuProps = {
   children: React.ReactNode;
-  dropdown: Dropdown;
-  setDropdown: (dropDown: Dropdown) => void;
-  setAnchor: (newAnchor: HTMLButtonElement) => void;
+  items: Array<{
+    name: string;
+    to: string;
+  }>;
 };
 
-const DropdownMenu = ({ children, dropdown, setDropdown, setAnchor }: DropdownMenuProps) => {
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    setDropdown(dropdown);
-    setAnchor(event.currentTarget);
-  };
+const DropdownMenu = ({ children, items }: DropdownMenuProps) => {
+  const classes = useStyles();
+  const [isOpen, setIsOpen] = useState(false);
+  const anchorRef = React.useRef<HTMLButtonElement>(null);
+  const icon = <ExpandIcon className={classNames(classes.dropdownIcon, isOpen && classes.expanded)} />;
   return (
-    <Button color='inherit' endIcon={<ExpandIcon />} onClick={handleClick} style={{ color: 'white' }}>
-      {children}
-    </Button>
+    <div onMouseLeave={() => setIsOpen(false)}>
+      <Button
+        color='inherit'
+        endIcon={icon}
+        onClick={() => setIsOpen((prev) => !prev)}
+        onMouseEnter={() => setIsOpen(true)}
+        ref={anchorRef}
+        style={{ color: 'white' }}>
+        {children}
+      </Button>
+      <Popper anchorEl={anchorRef.current} disablePortal open={isOpen} role={undefined} transition>
+        {({ TransitionProps, placement }) => (
+          <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
+            <Paper>
+              <MenuList className={classes.menulist}>
+                {items.map((item, i) => (
+                  <MenuItem className={classes.menulistItem} component={Link} key={i} to={item.to}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </MenuList>
+            </Paper>
+          </Grow>
+        )}
+      </Popper>
+    </div>
   );
 };
 
-// TODO: replace with User-object from DB
 export type PersonIconProps = {
   user: User;
   link: string;
@@ -264,21 +282,15 @@ const PersonIcon = ({ user, link }: PersonIconProps) => {
 export type NavigationProps = {
   children?: React.ReactNode;
   banner?: React.ReactElement;
-  noMaxWidth?: boolean;
+  maxWidth?: false | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   isLoading?: boolean;
   noFooter?: boolean;
   whitesmoke?: boolean;
   fancyNavbar?: boolean;
 };
 
-enum Dropdown {
-  ABOUT,
-  MEMBERS,
-}
-
-function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, banner, children }: NavigationProps) {
+function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, maxWidth, banner, children }: NavigationProps) {
   const classes = useStyles();
-  const location = useLocation();
   const { isAuthenticated } = useAuth();
   const { getUserData } = useUser();
   const { getWarnings } = useMisc();
@@ -286,8 +298,6 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, 
   const [warning, setWarning] = useState<Warning | null>(null);
   const [userData, setUserData] = useState<User | null>(null);
   const [scrollLength, setScrollLength] = useState(0);
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const [dropdown, setDropdown] = useState(Dropdown.ABOUT);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -297,13 +307,11 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, 
 
   useEffect(() => {
     let subscribed = true;
-    getUserData()
-      .then((user) => {
-        if (user && subscribed) {
-          setUserData(user);
-        }
-      })
-      .catch(() => {});
+    getUserData().then((user) => {
+      if (user && subscribed) {
+        setUserData(user);
+      }
+    });
     return () => {
       subscribed = false;
     };
@@ -311,23 +319,19 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, 
 
   useEffect(() => {
     let subscribed = true;
-    getWarnings()
-      .then((data: Array<Warning>) => {
-        const warningsRead = getCookie(WARNINGS_READ);
-        const readArray = (warningsRead === undefined ? [] : warningsRead) as number[];
-        if (data?.length && !readArray.includes(data[data.length - 1].id) && subscribed) {
-          setWarning(data[data.length - 1]);
-        }
-      })
-      .catch(() => {});
+    getWarnings().then((data: Array<Warning>) => {
+      const warningsRead = getCookie(WARNINGS_READ);
+      const readArray = (warningsRead === undefined ? [] : warningsRead) as number[];
+      if (data?.length && !readArray.includes(data[data.length - 1].id) && subscribed) {
+        setWarning(data[data.length - 1]);
+      }
+    });
     return () => {
       subscribed = false;
     };
   }, [getWarnings]);
 
-  const handleScroll = () => {
-    setScrollLength(window.pageYOffset);
-  };
+  const handleScroll = () => setScrollLength(window.pageYOffset);
 
   const closeSnackbar = (warning: Warning) => {
     const warningsRead = getCookie(WARNINGS_READ);
@@ -337,42 +341,7 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, 
     setWarning(null);
   };
 
-  const toggleSidebar = () => {
-    setShowSidebar(!showSidebar);
-  };
-
-  const handleDropdownClose = (event: React.MouseEvent<EventTarget>) => {
-    if (anchorEl?.contains(event.target as HTMLElement)) {
-      return;
-    }
-    setAnchorEl(null);
-  };
-
-  const DropdownContent = () => {
-    switch (dropdown) {
-      case Dropdown.ABOUT:
-        return (
-          <>
-            <MenuItem className={classes.menulistItem} component={Link} to={URLS.about}>
-              Om TIHLDE
-            </MenuItem>
-            <MenuItem className={classes.menulistItem} component={Link} to={URLS.newStudent}>
-              Ny Student
-            </MenuItem>
-          </>
-        );
-      case Dropdown.MEMBERS:
-        return (
-          <>
-            <MenuItem className={classes.menulistItem} component={Link} to={URLS.cheatsheet}>
-              Kokebok
-            </MenuItem>
-          </>
-        );
-      default:
-        return <></>;
-    }
-  };
+  const toggleSidebar = () => setShowSidebar((prev) => !prev);
 
   return (
     <>
@@ -387,25 +356,25 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, 
         <Toolbar className={classes.navWrapper} disableGutters>
           <div className={classes.logoWrapper}>
             <Link className={classes.grow} to='/'>
-              {/* <img alt='TIHLDE_LOGO' height='32em' src={TIHLDELOGO} width='auto' /> */}
               <TihldeLogo className={classes.logo} darkColor='white' lightColor='white' size='large' />
             </Link>
           </div>
-
           <div className={classes.grow}>
             <Hidden mdDown>
-              <DropdownMenu dropdown={Dropdown.ABOUT} setAnchor={setAnchorEl} setDropdown={setDropdown}>
+              <DropdownMenu
+                items={[
+                  { name: 'Om TIHLDE', to: URLS.about },
+                  { name: 'Ny student', to: URLS.newStudent },
+                ]}>
                 Om TIHLDE
               </DropdownMenu>
-              <MenuItems data={{ link: URLS.events, text: 'Arrangementer' }} selected={location.pathname === URLS.events} />
-              <MenuItems data={{ link: URLS.news, text: 'Nyheter' }} selected={location.pathname === URLS.news} />
-              <MenuItems data={{ link: URLS.jobposts, text: 'Karriere' }} selected={location.pathname === URLS.jobposts} />
+              <TopBarItem name='Arrangementer' to={URLS.events} />
+              <TopBarItem name='Nyheter' to={URLS.news} />
+              <TopBarItem name='Karriere' to={URLS.jobposts} />
               {isAuthenticated() ? (
-                <DropdownMenu dropdown={Dropdown.MEMBERS} setAnchor={setAnchorEl} setDropdown={setDropdown}>
-                  For Medlemmer
-                </DropdownMenu>
+                <DropdownMenu items={[{ name: 'Kokebok', to: URLS.cheatsheet }]}>For Medlemmer</DropdownMenu>
               ) : (
-                <MenuItems data={{ link: URLS.company, text: 'For Bedrifter' }} selected={location.pathname === URLS.company} />
+                <TopBarItem name='For Bedrifter' to={URLS.company} />
               )}
             </Hidden>
           </div>
@@ -431,19 +400,6 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, 
             <Sidebar />
           </Drawer>
         </Toolbar>
-        <Popper anchorEl={anchorEl} disablePortal open={Boolean(anchorEl)} role={undefined} transition>
-          {({ TransitionProps, placement }) => (
-            <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
-              <Paper>
-                <ClickAwayListener onClickAway={handleDropdownClose}>
-                  <MenuList className={classes.menulist}>
-                    <DropdownContent />
-                  </MenuList>
-                </ClickAwayListener>
-              </Paper>
-            </Grow>
-          )}
-        </Popper>
       </AppBar>
       {warning && (
         <Snack
@@ -456,12 +412,16 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, noMaxWidth, 
       <main className={classNames(classes.main, !fancyNavbar && classes.normalMain, whitesmoke ? classes.whitesmoke : classes.light)}>
         {isLoading ? (
           <LinearProgress />
-        ) : banner ? (
+        ) : banner || maxWidth ? (
           <>
             {banner}
-            <Container className={classes.container} maxWidth={noMaxWidth ? false : 'xl'}>
-              {children}
-            </Container>
+            {maxWidth === false ? (
+              <>{children}</>
+            ) : (
+              <Container className={classes.container} maxWidth={maxWidth || 'xl'}>
+                {children}
+              </Container>
+            )}
           </>
         ) : (
           children

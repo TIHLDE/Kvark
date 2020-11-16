@@ -150,8 +150,8 @@ function NewsAdministration(props) {
       <SidebarList
         hideExpired
         isLoading={!news}
-        items={news}
-        onItemClick={(item) => setSelectedNewsItem(item || defaultNewsItem)}
+        items={news || []}
+        onItemClick={(item) => setSelectedNewsItem(news.find((newsItem) => newsItem.id === item) || defaultNewsItem)}
         selectedItemId={selectedNewsItem?.id || null}
         title='Nyheter'
         width={SIDEBAR_WIDTH}

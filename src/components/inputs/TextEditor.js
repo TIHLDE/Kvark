@@ -21,7 +21,6 @@ import Breakline from '@material-ui/icons/SubdirectoryArrowLeft';
 
 // External Components
 import ReactMarkdown from 'react-markdown';
-import breaks from 'remark-breaks';
 
 const styles = (theme) => ({
   root: {
@@ -205,7 +204,7 @@ class TextEditor extends Component {
         )}
         {tabValue === 1 && (
           <div className='renderer'>
-            <ReactMarkdown className={classes.preview} plugins={[breaks]} source={value} />
+            <ReactMarkdown className={classes.preview} source={value} />
           </div>
         )}
       </div>

@@ -114,7 +114,7 @@ function Companies(props) {
         <title>For bedrifter - TIHLDE</title>
       </Helmet>
       <div className={classes.root}>
-        <Banner title={Text.bannnertitle}>
+        <Banner text='<b>Alle arrangementer kan gjennomføres digitalt våren 2021<b/>' title={Text.bannnertitle}>
           <Button className={classes.button} color='primary' onClick={() => scrollToForm()} variant='outlined'>
             <div className={classes.flex}>
               <Send className={classes.sendIcon} />
@@ -127,8 +127,11 @@ function Companies(props) {
             {Text.viTilbyr}
           </Typography>
           <div className={classNames(classes.container)}>
-            <InfoCard header='Stillingsannonser' justifyText text={Text.jobbannonser} />
             <InfoCard header='Bedriftspresentasjon' justifyText text={Text.bedrifter} />
+            <InfoCard header='Kurs / Workshop' justifyText text={Text.kurs} />
+            <InfoCard header='Bedriftsbesøk' justifyText text={Text.bedriftstur} />
+            <InfoCard header='Annonse' justifyText text={Text.jobbannonser} />
+            <InfoCard header='Insta-takeover' justifyText text={Text.instatakeover} />
           </div>
         </div>
 

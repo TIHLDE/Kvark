@@ -84,15 +84,13 @@ const Cheetsheet = () => {
   }, [getClass, getStudy]);
 
   const goToUserCheatsheet = useCallback(() => {
-    getUserData()
-      .then((user) => {
-        if (user && 1 <= user.user_study && user.user_study <= 4 && user.user_class > 0) {
-          navigate(`${URLS.cheatsheet}${getUserStudyShort(user.user_study)}/${user.user_class}/`);
-        } else {
-          navigate(`${URLS.cheatsheet}${getUserStudyShort(1)}/1/`);
-        }
-      })
-      .catch(() => {});
+    getUserData().then((user) => {
+      if (user && 1 <= user.user_study && user.user_study <= 4 && user.user_class > 0) {
+        navigate(`${URLS.cheatsheet}${getUserStudyShort(user.user_study)}/${user.user_class}/`);
+      } else {
+        navigate(`${URLS.cheatsheet}${getUserStudyShort(1)}/1/`);
+      }
+    });
   }, [getUserData, navigate]);
 
   useEffect(() => {

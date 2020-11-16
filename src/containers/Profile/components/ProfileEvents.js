@@ -28,13 +28,11 @@ function ProfileEvents(props) {
   const { getUserData } = useUser();
 
   useEffect(() => {
-    getUserData()
-      .then((user) => {
-        if (user) {
-          setEvents(user.events);
-        }
-      })
-      .catch(() => {});
+    getUserData().then((user) => {
+      if (user) {
+        setEvents(user.events);
+      }
+    });
   }, [getUserData]);
 
   return (

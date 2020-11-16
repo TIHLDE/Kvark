@@ -63,13 +63,11 @@ const ProfileBadges = () => {
   const { getUserData } = useUser();
 
   useEffect(() => {
-    getUserData()
-      .then((user) => {
-        if (user) {
-          setBadges(user.badges);
-        }
-      })
-      .catch(() => {});
+    getUserData().then((user) => {
+      if (user) {
+        setBadges(user.badges);
+      }
+    });
   }, [getUserData]);
 
   return (

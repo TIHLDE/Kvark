@@ -46,8 +46,7 @@ function Calendar({ classes }) {
   useEffect(() => {
     getEvents()
       .then((eventObject) => setEvents(eventObject.results))
-      .catch(() => {})
-      .then(() => setIsLoading(false));
+      .finally(() => setIsLoading(false));
   }, [getEvents]);
 
   useEffect(() => {

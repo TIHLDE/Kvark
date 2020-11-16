@@ -60,42 +60,40 @@ const requireAuth = (OriginalComponent: React.ReactElement, accessGroups: Array<
 
     useEffect(() => {
       let isSubscribed = true;
-      getUserData()
-        .then((user) => {
-          if (isSubscribed) {
-            accessGroups.forEach((group) => {
-              switch (group.toLowerCase()) {
-                case 'hs':
-                  if (user?.groups.includes('HS')) {
-                    setAllowAccess(true);
-                  }
-                  break;
-                case 'promo':
-                  if (user?.groups.includes('Promo')) {
-                    setAllowAccess(true);
-                  }
-                  break;
-                case 'nok':
-                  if (user?.groups.includes('NoK')) {
-                    setAllowAccess(true);
-                  }
-                  break;
-                case 'index':
-                  if (user?.groups.includes('Index')) {
-                    setAllowAccess(true);
-                  }
-                  break;
-                default:
-                  break;
-              }
-            });
-            if (isAuthenticated() && accessGroups.length === 0) {
-              setAllowAccess(true);
+      getUserData().then((user) => {
+        if (isSubscribed) {
+          accessGroups.forEach((group) => {
+            switch (group.toLowerCase()) {
+              case 'hs':
+                if (user?.groups.includes('HS')) {
+                  setAllowAccess(true);
+                }
+                break;
+              case 'promo':
+                if (user?.groups.includes('Promo')) {
+                  setAllowAccess(true);
+                }
+                break;
+              case 'nok':
+                if (user?.groups.includes('NoK')) {
+                  setAllowAccess(true);
+                }
+                break;
+              case 'index':
+                if (user?.groups.includes('Index')) {
+                  setAllowAccess(true);
+                }
+                break;
+              default:
+                break;
             }
-            setIsLoading(false);
+          });
+          if (isAuthenticated() && accessGroups.length === 0) {
+            setAllowAccess(true);
           }
-        })
-        .catch(() => {});
+          setIsLoading(false);
+        }
+      });
       return () => {
         isSubscribed = false;
       };
@@ -114,6 +112,60 @@ const requireAuth = (OriginalComponent: React.ReactElement, accessGroups: Array<
   };
 
   return <App />;
+};
+
+type AuthRouteProps = {
+  groups: Array<string>;
+  path: string;
+  element?: React.ReactElement | null;
+  children?: React.ReactNode;
+};
+
+const AuthRoute = ({ groups, children, path, element }: AuthRouteProps) => {
+  const { getUserData } = useUser();
+  const { setLogInRedirectURL } = useMisc();
+  const { isAuthenticated } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
+  const [allowAccess, setAllowAccess] = useState(false);
+
+  useEffect(() => {
+    let isSubscribed = true;
+    getUserData().then((user) => {
+      if (isSubscribed) {
+        groups.forEach((group) => {
+          const userGroups = user?.groups || [];
+          const regex = new RegExp(userGroups.join('|'), 'i');
+          if (regex.test(group)) {
+            setAllowAccess(true);
+          }
+        });
+        if (isAuthenticated() && !groups.length) {
+          setAllowAccess(true);
+        }
+        setIsLoading(false);
+      }
+    });
+    return () => {
+      isSubscribed = false;
+    };
+  }, [isAuthenticated, getUserData, groups]);
+
+  if (isLoading) {
+    return <Navigation isLoading noFooter />;
+  } else if (!isAuthenticated()) {
+    setLogInRedirectURL(window.location.pathname);
+    return <Navigate to={URLS.login} />;
+  } else if (allowAccess) {
+    return children ? (
+      <Route element={element} path={path}>
+        {children}
+      </Route>
+    ) : (
+      <Route element={element} path={path} />
+    );
+  } else {
+    return <Navigate to={URLS.landing} />;
+  }
 };
 
 type ProvidersProps = {
@@ -178,7 +230,10 @@ const AppRoutes = () => {
       <Route element={requireAuth(<Admin />, ['HS', 'Promo', 'Nok', 'Index'])} path={URLS.admin} />
       <Route element={requireAuth(<UserAdmin />, ['HS', 'Index'])} path={URLS.userAdmin} />
       <Route element={requireAuth(<JobPostAdministration />, ['HS', 'Nok', 'Index'])} path={URLS.jobpostsAdmin} />
-      <Route element={requireAuth(<EventAdministration />, ['HS', 'Promo', 'Nok', 'Index'])} path={URLS.eventAdmin} />
+      <AuthRoute groups={['HS', 'Promo', 'Nok', 'Index']} path={`${URLS.eventAdmin}`}>
+        <Route element={<EventAdministration />} path=':eventId/' />
+        <Route element={<EventAdministration />} path='' />
+      </AuthRoute>
       <Route element={requireAuth(<NewsAdministration />, ['HS', 'Promo', 'Nok', 'Index'])} path={URLS.newsAdmin} />
 
       <Route element={<LogIn />} path={URLS.login} />

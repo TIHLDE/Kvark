@@ -138,45 +138,41 @@ function Events(props) {
     }
 
     // Fetch events from server
-    getEvents(urlParameters)
-      .then((data) => {
-        let displayedEvents = data.results;
-        const nextPageUrl = data.next;
-        const newUrlParameters = {};
+    getEvents(urlParameters).then((data) => {
+      let displayedEvents = data.results;
+      const nextPageUrl = data.next;
+      const newUrlParameters = {};
 
-        // If we have a url for the next page convert it into a object
-        if (nextPageUrl) {
-          const nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
-          const parameterArray = nextPageUrlQuery.split('&');
-          parameterArray.forEach((parameter) => {
-            const parameterString = parameter.split('=');
-            newUrlParameters[parameterString[0]] = parameterString[1];
-          });
-        }
-        setNextPage(newUrlParameters['page'] || null);
+      // If we have a url for the next page convert it into a object
+      if (nextPageUrl) {
+        const nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
+        const parameterArray = nextPageUrlQuery.split('&');
+        parameterArray.forEach((parameter) => {
+          const parameterString = parameter.split('=');
+          newUrlParameters[parameterString[0]] = parameterString[1];
+        });
+      }
+      setNextPage(newUrlParameters['page'] || null);
 
-        // If we allready have events
-        if (urlParameters.page) {
-          displayedEvents = [...events, ...displayedEvents];
-        }
-        setEvents(displayedEvents);
+      // If we allready have events
+      if (urlParameters.page) {
+        displayedEvents = [...events, ...displayedEvents];
+      }
+      setEvents(displayedEvents);
 
-        // Used to load expired events when we have nothing else to show.
-        if (displayedEvents.length === 0 && !urlParameters.expired && (urlParameters.search || urlParameters.category)) {
-          setFilters({ ...filters, expired: true });
-          return;
-        }
-        setIsFetching(false);
-        setIsLoading(false);
-      })
-      .catch(() => {});
+      // Used to load expired events when we have nothing else to show.
+      if (displayedEvents.length === 0 && !urlParameters.expired && (urlParameters.search || urlParameters.category)) {
+        setFilters({ ...filters, expired: true });
+        return;
+      }
+      setIsFetching(false);
+      setIsLoading(false);
+    });
   };
 
   useEffect(() => {
     loadEvents();
-    getCategories()
-      .then((categories) => setCategories(categories || []))
-      .catch(() => {});
+    getCategories().then((categories) => setCategories(categories || []));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

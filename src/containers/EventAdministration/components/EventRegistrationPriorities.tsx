@@ -1,14 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { getUserStudyShort } from '../../../utils';
+import { getUserStudyShort } from 'utils';
+import { RegistrationPriority } from 'types/Types';
+import { UserClass, UserStudy } from 'types/Enums';
 
 // Material-UI
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   formWrapper: {
     width: '100%',
   },
@@ -17,7 +18,7 @@ const styles = (theme) => ({
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
     flexWrap: 'nowrap',
-    '@media only screen and (max-width: 800px)': {
+    [theme.breakpoints.down('md')]: {
       gridTemplateColumns: '1fr',
     },
   },
@@ -50,44 +51,46 @@ const styles = (theme) => ({
     marginBottom: 5,
     flexGrow: 1,
   },
-});
+}));
 
-function EventEditor(props) {
-  const { classes, event, setEvent } = props;
+export type EventRegistrationPrioritiesProps = {
+  priorities: Array<RegistrationPriority>;
+  setPriorities: (newPriorities: Array<RegistrationPriority>) => void;
+};
 
-  const handlePriorityChange = (userClass, userStudy) => () => {
-    if (event.registration_priorities.some((item) => item.user_class === userClass && item.user_study === userStudy)) {
-      const newArray = event.registration_priorities.filter((item) => !(item.user_class === userClass && item.user_study === userStudy));
-      setEvent({ ...event, registration_priorities: newArray });
+const EventRegistrationPriorities = ({ priorities, setPriorities }: EventRegistrationPrioritiesProps) => {
+  const classes = useStyles();
+
+  const handlePriorityChange = (userClass: UserClass, userStudy: UserStudy) => () => {
+    if (priorities.some((item) => item.user_class === userClass && item.user_study === userStudy)) {
+      const newPrioritiesArray = priorities.filter((item) => !(item.user_class === userClass && item.user_study === userStudy));
+      setPriorities(newPrioritiesArray);
     } else {
-      const newArray = [...event.registration_priorities, { user_class: userClass, user_study: userStudy }];
-      setEvent({ ...event, registration_priorities: newArray });
+      const newPrioritiesArray = [...priorities, { user_class: userClass, user_study: userStudy }];
+      setPriorities(newPrioritiesArray);
     }
   };
 
-  const toggleAllPriorities = (addAll) => () => {
+  const toggleAllPriorities = (addAll: boolean) => () => {
     if (addAll) {
-      setEvent({
-        ...event,
-        registration_priorities: [
-          { user_class: 1, user_study: 1 },
-          { user_class: 1, user_study: 2 },
-          { user_class: 1, user_study: 3 },
-          { user_class: 1, user_study: 5 },
-          { user_class: 2, user_study: 1 },
-          { user_class: 2, user_study: 2 },
-          { user_class: 2, user_study: 3 },
-          { user_class: 2, user_study: 5 },
-          { user_class: 3, user_study: 1 },
-          { user_class: 3, user_study: 2 },
-          { user_class: 3, user_study: 3 },
-          { user_class: 3, user_study: 5 },
-          { user_class: 4, user_study: 4 },
-          { user_class: 5, user_study: 4 },
-        ],
-      });
+      setPriorities([
+        { user_class: 1, user_study: 1 },
+        { user_class: 1, user_study: 2 },
+        { user_class: 1, user_study: 3 },
+        { user_class: 1, user_study: 5 },
+        { user_class: 2, user_study: 1 },
+        { user_class: 2, user_study: 2 },
+        { user_class: 2, user_study: 3 },
+        { user_class: 2, user_study: 5 },
+        { user_class: 3, user_study: 1 },
+        { user_class: 3, user_study: 2 },
+        { user_class: 3, user_study: 3 },
+        { user_class: 3, user_study: 5 },
+        { user_class: 4, user_study: 4 },
+        { user_class: 5, user_study: 4 },
+      ]);
     } else {
-      setEvent({ ...event, registration_priorities: [] });
+      setPriorities([]);
     }
   };
 
@@ -103,7 +106,7 @@ function EventEditor(props) {
                   return (
                     <Button
                       classes={
-                        event.registration_priorities.some((item) => item.user_class === userClass && item.user_study === userStudy)
+                        priorities.some((item) => item.user_class === userClass && item.user_study === userStudy)
                           ? { outlinedPrimary: classes.chipYes }
                           : { outlinedPrimary: classes.chipNo }
                       }
@@ -124,7 +127,7 @@ function EventEditor(props) {
         <FormGroup className={classes.formGroup}>
           <Button
             classes={
-              event.registration_priorities.some((item) => item.user_class === 4 && item.user_study === 4)
+              priorities.some((item) => item.user_class === 4 && item.user_study === 4)
                 ? { outlinedPrimary: classes.chipYes }
                 : { outlinedPrimary: classes.chipNo }
             }
@@ -136,7 +139,7 @@ function EventEditor(props) {
           </Button>
           <Button
             classes={
-              event.registration_priorities.some((item) => item.user_class === 5 && item.user_study === 4)
+              priorities.some((item) => item.user_class === 5 && item.user_study === 4)
                 ? { outlinedPrimary: classes.chipYes }
                 : { outlinedPrimary: classes.chipNo }
             }
@@ -158,12 +161,6 @@ function EventEditor(props) {
       </FormGroup>
     </div>
   );
-}
-
-EventEditor.propTypes = {
-  classes: PropTypes.object.isRequired,
-  event: PropTypes.object.isRequired,
-  setEvent: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(EventEditor);
+export default EventRegistrationPriorities;
