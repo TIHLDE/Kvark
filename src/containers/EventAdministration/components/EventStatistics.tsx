@@ -1,21 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { getUserClass, getUserStudyShort } from '../../../utils';
+import React, { useMemo } from 'react';
+import { Registration } from 'types/Types';
+import { getUserClass, getUserStudyShort } from 'utils';
 
 // Material-UI
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 // Project components
-import Paper from '../../../components/layout/Paper';
+import Paper from 'components/layout/Paper';
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     display: 'grid',
     gridTemplateColumns: '1fr',
-    gridGap: 10,
-    paddingTop: 10,
-    '@media only screen and (max-width: 800px)': {
+    gridGap: theme.spacing(1),
+    paddingTop: theme.spacing(1),
+    [theme.breakpoints.down('md')]: {
       gridTemplateColumns: '1fr 1fr',
     },
   },
@@ -23,8 +23,8 @@ const styles = (theme) => ({
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
     color: theme.palette.colors.text.light,
-    gridGap: 10,
-    '@media only screen and (max-width: 800px)': {
+    gridGap: theme.spacing(1),
+    [theme.breakpoints.down('md')]: {
       gridTemplateColumns: '1fr',
     },
   },
@@ -38,25 +38,29 @@ const styles = (theme) => ({
     backgroundColor: theme.palette.colors.background.smoke,
     borderCollapse: 'collapse',
   },
-});
+}));
 
-const EventStatistics = (props) => {
-  const { classes, participants } = props;
+export type EventStatisticsProps = {
+  registrations: Array<Registration>;
+};
 
-  const attendedNo = (attended) => participants.filter((x) => x.has_attended === attended).length;
+const EventStatistics = ({ registrations }: EventStatisticsProps) => {
+  const classes = useStyles();
 
-  const classNo = (userClass) => {
-    const no = participants.filter((x) => x.user_info.user_class === userClass).length;
+  const attendedNumber = useMemo(() => registrations.filter((x) => x.has_attended).length, [registrations]);
+
+  const classNo = (userClass: number) => {
+    const no = registrations.filter((registration) => registration.user_info.user_class === userClass).length;
     return no > 0 ? no : '0';
   };
-  const studyNo = (userStudy) => {
-    const no = participants.filter((x) => x.user_info.user_study === userStudy).length;
+  const studyNo = (userStudy: number) => {
+    const no = registrations.filter((registration) => registration.user_info.user_study === userStudy).length;
     return no > 0 ? no : '0';
   };
 
   return (
-    <React.Fragment>
-      <Typography className={classes.lightText}>Ankommet: {attendedNo(true) + ' av ' + participants.length} påmeldte</Typography>
+    <>
+      <Typography className={classes.lightText}>{`Ankommet: ${attendedNumber} av ${registrations.length} påmeldte`}</Typography>
       <div className={classes.root}>
         <div>
           <Typography className={classes.lightText}>Klasse:</Typography>
@@ -81,13 +85,8 @@ const EventStatistics = (props) => {
           </div>
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 
-EventStatistics.propTypes = {
-  classes: PropTypes.object,
-  participants: PropTypes.array,
-};
-
-export default withStyles(styles)(EventStatistics);
+export default EventStatistics;

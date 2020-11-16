@@ -307,13 +307,11 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, maxWidth, ba
 
   useEffect(() => {
     let subscribed = true;
-    getUserData()
-      .then((user) => {
-        if (user && subscribed) {
-          setUserData(user);
-        }
-      })
-      .catch(() => {});
+    getUserData().then((user) => {
+      if (user && subscribed) {
+        setUserData(user);
+      }
+    });
     return () => {
       subscribed = false;
     };
@@ -321,15 +319,13 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, maxWidth, ba
 
   useEffect(() => {
     let subscribed = true;
-    getWarnings()
-      .then((data: Array<Warning>) => {
-        const warningsRead = getCookie(WARNINGS_READ);
-        const readArray = (warningsRead === undefined ? [] : warningsRead) as number[];
-        if (data?.length && !readArray.includes(data[data.length - 1].id) && subscribed) {
-          setWarning(data[data.length - 1]);
-        }
-      })
-      .catch(() => {});
+    getWarnings().then((data: Array<Warning>) => {
+      const warningsRead = getCookie(WARNINGS_READ);
+      const readArray = (warningsRead === undefined ? [] : warningsRead) as number[];
+      if (data?.length && !readArray.includes(data[data.length - 1].id) && subscribed) {
+        setWarning(data[data.length - 1]);
+      }
+    });
     return () => {
       subscribed = false;
     };
@@ -416,12 +412,16 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, maxWidth, ba
       <main className={classNames(classes.main, !fancyNavbar && classes.normalMain, whitesmoke ? classes.whitesmoke : classes.light)}>
         {isLoading ? (
           <LinearProgress />
-        ) : banner ? (
+        ) : banner || maxWidth ? (
           <>
             {banner}
-            <Container className={classes.container} maxWidth={maxWidth || 'xl'}>
-              {children}
-            </Container>
+            {maxWidth === false ? (
+              <>{children}</>
+            ) : (
+              <Container className={classes.container} maxWidth={maxWidth || 'xl'}>
+                {children}
+              </Container>
+            )}
           </>
         ) : (
           children

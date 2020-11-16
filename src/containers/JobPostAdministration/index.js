@@ -233,7 +233,7 @@ function JobPostAdministration(props) {
         isLoading={isLoading}
         items={jobPosts}
         nextPage={nextPage}
-        onItemClick={(item) => setSelectedJobPost(item || defaultJobPost)}
+        onItemClick={(item) => setSelectedJobPost(jobPosts.find((post) => post.id === item) || defaultJobPost)}
         selectedItemId={selectedJobPost?.id || null}
         title='Annonser'
         width={SIDEBAR_WIDTH}

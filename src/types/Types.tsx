@@ -93,6 +93,7 @@ export interface Event {
   limit: number;
   list_count: number;
   waiting_list_count: number;
+  evaluate_link: string;
   is_user_registered?: undefined;
   start_registration_at: string;
   end_registration_at: string;
@@ -132,7 +133,6 @@ export interface CompaniesEmail {
   comment: string;
 }
 
-// type CheatsheetType = 'FILE' | 'GITHUB' | 'LINK' | 'OTHER';
 export interface Cheatsheet {
   course: string;
   creator: string;

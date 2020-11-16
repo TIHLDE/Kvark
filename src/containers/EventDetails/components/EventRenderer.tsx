@@ -169,17 +169,19 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
   const now = new Date();
 
   useEffect(() => {
-    getUserData()
-      .then((user) => {
-        setUser(user);
-        if (user) {
-          getRegistration(event.id, user.user_id)
-            .then((registration) => setRegistration(registration))
-            .catch(() => setRegistration(null));
-        }
-      })
-      .catch(() => setUser(null));
-  }, [event.id, getUserData, getRegistration]);
+    if (!preview) {
+      getUserData()
+        .then((user) => {
+          setUser(user);
+          if (user) {
+            getRegistration(event.id, user.user_id)
+              .then((registration) => setRegistration(registration))
+              .catch(() => setRegistration(null));
+          }
+        })
+        .catch(() => setUser(null));
+    }
+  }, [event.id, getUserData, getRegistration, preview]);
 
   const signOff = () => {
     setSignOffDialogOpen(false);
@@ -275,6 +277,16 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
     }
   };
 
+  const AdminButton = () => {
+    return event.sign_up && user?.groups.some((group) => ['HS', 'Promo', 'NoK', 'Index'].includes(group)) ? (
+      <Button className={classes.applyButton} color='primary' component={Link} fullWidth to={`${URLS.eventAdmin}${event.id}/`} variant='outlined'>
+        Endre arrangement
+      </Button>
+    ) : (
+      <></>
+    );
+  };
+
   return (
     <>
       <Dialog
@@ -292,6 +304,7 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
           <div className={classes.infoGrid}>
             <Hidden mdDown>
               <ApplyButton />
+              <AdminButton />
             </Hidden>
             <Paper className={classes.details} noPadding>
               <DetailContent info={formatDate(startDate)} title='Fra: ' />
@@ -320,6 +333,7 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
                   </Paper>
                 )}
                 <Hidden lgUp>
+                  <AdminButton />
                   <ApplyButton />
                 </Hidden>
               </>

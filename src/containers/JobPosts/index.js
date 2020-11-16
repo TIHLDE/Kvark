@@ -126,38 +126,36 @@ function JobPosts(props) {
       setIsFetching(false);
       return;
     }
-    getJobPosts(urlParameters)
-      .then((posts) => {
-        let displayedJobPosts = posts.results;
-        const nextPageUrl = posts.next;
-        const newUrlParameters = {};
+    getJobPosts(urlParameters).then((posts) => {
+      let displayedJobPosts = posts.results;
+      const nextPageUrl = posts.next;
+      const newUrlParameters = {};
 
-        // If we have a url for the next page convert it into a object
-        if (nextPageUrl) {
-          const nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
-          const parameterArray = nextPageUrlQuery.split('&');
-          parameterArray.forEach((parameter) => {
-            const parameterString = parameter.split('=');
-            newUrlParameters[parameterString[0]] = parameterString[1];
-          });
-        }
-        setNextPage(newUrlParameters['page'] || null);
+      // If we have a url for the next page convert it into a object
+      if (nextPageUrl) {
+        const nextPageUrlQuery = nextPageUrl.substring(nextPageUrl.indexOf('?') + 1);
+        const parameterArray = nextPageUrlQuery.split('&');
+        parameterArray.forEach((parameter) => {
+          const parameterString = parameter.split('=');
+          newUrlParameters[parameterString[0]] = parameterString[1];
+        });
+      }
+      setNextPage(newUrlParameters['page'] || null);
 
-        // If we allready have jobposts
-        if (urlParameters.page) {
-          displayedJobPosts = [...jobPosts, ...displayedJobPosts];
-        }
-        setJobPosts(displayedJobPosts);
+      // If we allready have jobposts
+      if (urlParameters.page) {
+        displayedJobPosts = [...jobPosts, ...displayedJobPosts];
+      }
+      setJobPosts(displayedJobPosts);
 
-        // Used to load expired jobposts when we have nothing else to show.
-        if (displayedJobPosts.length === 0 && !urlParameters.expired && urlParameters.search) {
-          setFilters({ ...filters, expired: true });
-          return;
-        }
-        setIsLoading(false);
-        setIsFetching(false);
-      })
-      .catch(() => {});
+      // Used to load expired jobposts when we have nothing else to show.
+      if (displayedJobPosts.length === 0 && !urlParameters.expired && urlParameters.search) {
+        setFilters({ ...filters, expired: true });
+        return;
+      }
+      setIsLoading(false);
+      setIsFetching(false);
+    });
   };
 
   useEffect(() => {

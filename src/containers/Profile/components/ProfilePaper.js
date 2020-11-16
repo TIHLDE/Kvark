@@ -143,7 +143,6 @@ function ProfilePaper(props) {
           }
         }
       })
-      .catch(() => {})
       .finally(() => setIsLoading(false));
   }, [getUserData]);
 

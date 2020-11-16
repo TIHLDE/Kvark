@@ -66,13 +66,11 @@ function Admin(props) {
   const { getUserData } = useUser();
 
   useEffect(() => {
-    getUserData()
-      .then((user) => {
-        if (user) {
-          setGroups(user.groups);
-        }
-      })
-      .catch(() => {});
+    getUserData().then((user) => {
+      if (user) {
+        setGroups(user.groups);
+      }
+    });
   }, [getUserData]);
 
   return (

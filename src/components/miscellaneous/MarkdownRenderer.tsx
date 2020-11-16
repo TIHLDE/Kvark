@@ -3,7 +3,6 @@ import classNames from 'classnames';
 
 // External Imports
 import ReactMarkdown from 'react-markdown';
-import breaks from 'remark-breaks';
 
 type MarkdownRendererProps = {
   className?: string;
@@ -13,7 +12,7 @@ type MarkdownRendererProps = {
 function MarkdownRenderer({ className, value }: MarkdownRendererProps) {
   return (
     <div className={classNames(className, 'renderer')}>
-      <ReactMarkdown plugins={[breaks]} source={value || ''} />
+      <ReactMarkdown>{value || ''}</ReactMarkdown>
     </div>
   );
 }

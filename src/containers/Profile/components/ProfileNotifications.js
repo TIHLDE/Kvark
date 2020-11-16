@@ -45,7 +45,7 @@ const Notification = (props) => {
   let elementClass = classes.message;
   if (!notification.read) {
     elementClass = classNames(classes.message, classes.unread);
-    updateNotificationReadState(notification.id, true).catch(() => {});
+    updateNotificationReadState(notification.id, true);
   }
 
   return (

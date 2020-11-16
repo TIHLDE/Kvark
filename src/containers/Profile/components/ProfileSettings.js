@@ -60,13 +60,11 @@ function ProfileSettings(props) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   useEffect(() => {
-    getUserData()
-      .then((user) => {
-        if (user) {
-          setUserData(user);
-        }
-      })
-      .catch(() => {});
+    getUserData().then((user) => {
+      if (user) {
+        setUserData(user);
+      }
+    });
   }, [getUserData]);
 
   const updateData = (e) => {
