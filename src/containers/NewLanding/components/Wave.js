@@ -148,7 +148,7 @@ const style = (theme) => ({
 const Wave = ({ classes }) => {
   const { isAuthenticated } = useAuth();
   return (
-    <div className='waveWrapper waveAnimation'>
+    <div className={classes.waveWrapper}>
       <div className={classes.topInner}>
         <div className={classes.topLogoContainer} style={{ display: 'flex' }}>
           <TihldeLogo className={classes.topLogo} darkColor='white' lightColor='white' size='large' />
@@ -174,9 +174,9 @@ const Wave = ({ classes }) => {
           </div>
         )}
       </div>
-      {/* <div className="rain rain--far"></div> */}
-      {/* <div className="rain rain--mid"></div> */}
-      {/* <div className="rain rain--near"></div> */}
+      <div className='rain rain--far'></div>
+      <div className='rain rain--mid'></div>
+      <div className='rain rain--near'></div>
 
       <div className={classNames(classes.waveWrapperInner, classes.bgTop)}>
         <div className={classNames(classes.wave, classes.waveTop)}></div>
