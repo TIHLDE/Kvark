@@ -77,7 +77,14 @@ function sDate(semester) {
 }
 const semester = [{ name: sDate(0) }, { name: sDate(1) }, { name: sDate(2) }, { name: sDate(3) }];
 
-const arrangementer = [{ name: 'Faglig Arrangement' }, { name: 'Bedriftsekskursjon' }, { name: 'Bedriftspresentasjon' }, { name: 'Annet' }];
+const arrangementer = [
+  { name: 'Bedriftspresentasjon' },
+  { name: 'Kurs/Workshop' },
+  { name: 'Bedriftsbesøk' },
+  { name: 'Annonse' },
+  { name: 'Insta-takeover' },
+  { name: 'Annet' },
+];
 
 const Inputter = withStyles(styles)((props) => {
   const { data, firstTextFieldRef, handleChange } = props;

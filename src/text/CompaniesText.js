@@ -16,17 +16,22 @@ export default {
   support:
     'Digital forretningsutvikling kombinerer IT, økonomi og ledelse for å skape forretningsutviklere med tverrfaglig kompetanse. For at samfunnet skal digitaliseres er det nødvendig med ledere som har både teknisk og økonomisk kompetanse. Digital forretningsutvikling er lagt opp med høyt fokus på praktisk erfaring innenfor teamarbeid og kommunikasjon. Studiet søker å utdanne dyktige endringsagenter som kan effektivisere arbeidsprosesser og implementere digitale løsninger i bedrifter.\n',
   jobbannonser:
-    'Vi tilbyr promotering av stillingsannonser ut til våre 600 dyktige studenter. I tillegg til annonsepublisering på vår nettside, har dere mulighet til å angi målgruppe og ønsket kommunikasjonskanal. Enten analogt eller digitalt.',
+    'Vi tilbyr promotering av stillingsannonser ut til våre 600 dyktige studenter på vår karriereside tihlde.org/karriere. I tillegg til annonsepublisering på vår nettside, har dere mulighet til å angi målgruppe og ønsket kommunikasjonskanal. Enten analogt eller digitalt.',
   forumText2:
     'Dersom dere ønsker noe utenfor de vanlige rammene, huk gjerne av på “Alternativt arrangement” og skriv en kommentar om hva dere kunne tenkt dere å gjøre i kommentarfeltet. Vi i Abakus ønsker å kunne tilby et bredt spekter av arrangementer som er gunstig for våre studenter.',
   forumText1:
     'Kommentarfeltet kan også brukes til å spesifisere annen informasjon, som for eksempel hvilken teknologi dere ønsker å lære bort hvis dere får faglig arrangement',
-
+  kurs:
+    'Et kurs er et faglig arrangement hvor fokuset skal være på å introdusere studentene for faglige erfaringer som de kan få bruk for i arbeidslivet. Kurset kan inneholde en rask presentasjon av bedriften før kurset starter. Vi legger tilrette for matservering på skolen etter kurset, eller bespisning på restaurant i etterkant.',
+  bedriftstur:
+    'Under et bedriftsbesøk reiser studentene til bedriftens lokale for et valgfritt arrangement. Et bedriftsbesøk gir dere som bedrift muligheten til å vise studentene frem hvor de kan jobbe, og bli godt kjent med dem. ',
   bedrifter:
     'En bedriftspresentasjon gir dere som organisasjon mulighet til å presentere dere for TIHLDE sine studenter. Dette er en gylden mulighet til å gjøre studentene bevisst på hvem dere er, hva dere tilbyr og hvordan dere jobber.\n' +
     '\n' +
-    'Etter selve presentasjonen kan vi tilrettelegge for bespisning på restaurant eller andre steder. Under bespisningen kan bedriftsrepresentantene mingle uformelt med studentene for å bli bedre kjent. \n' +
-    'Ønskes det speed-intervjuer vil vi også være behjelpelig med det praktiske rundt dette.',
+    'Etter selve presentasjonen reiser vi sammen ned til en resturant for bespisning og mingling med bedriftsrepresentantene. \n' +
+    'Vi kan også tilrettelegge for speed intervjuer dersom dette er ønskelig.',
+  instatakeover:
+    'Ved insta-takeover får bedriften ta over instagrammen vår en hel dag. Dere vil få muligheten til å fremme bedriften på valgfri måte, og nå ut direkte til studentene.',
   interesse: 'SEND OSS EN MELDING',
   viTilbyr: 'Vi tilbyr',
 };
