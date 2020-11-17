@@ -1,15 +1,16 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import 'assets/css/index.css';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import URLS from 'URLS';
 import 'delayed-scroll-restoration-polyfill';
+import { Groups } from 'types/Enums';
 
 // Services
 import { ThemeProvider } from 'context/ThemeContext';
 import { useAuth } from 'api/hooks/Auth';
 import { useMisc, MiscProvider } from 'api/hooks/Misc';
-import { useUser, UserProvider } from 'api/hooks/User';
+import { useHavePermission, UserProvider } from 'api/hooks/User';
 import { NewsProvider } from 'api/hooks/News';
 import { JobPostProvider } from 'api/hooks/JobPost';
 import { EventProvider } from 'api/hooks/Event';
@@ -48,120 +49,28 @@ const Services = lazy(() => import('containers/Services'));
 const SignUp = lazy(() => import('containers/SignUp'));
 const UserAdmin = lazy(() => import('containers/UserAdmin'));
 
-// The user needs to be authorized (logged in and member of an authorized group) to access these routes
-const requireAuth = (OriginalComponent: React.ReactElement, accessGroups: Array<string> = []): React.ReactElement => {
-  const App = (): React.ReactElement => {
-    const location = useLocation();
-    const { getUserData } = useUser();
-    const { setLogInRedirectURL } = useMisc();
-    const { isAuthenticated } = useAuth();
-    const [isLoading, setIsLoading] = useState(true);
-    const [allowAccess, setAllowAccess] = useState(false);
-
-    useEffect(() => {
-      let isSubscribed = true;
-      getUserData().then((user) => {
-        if (isSubscribed) {
-          accessGroups.forEach((group) => {
-            switch (group.toLowerCase()) {
-              case 'hs':
-                if (user?.groups.includes('HS')) {
-                  setAllowAccess(true);
-                }
-                break;
-              case 'promo':
-                if (user?.groups.includes('Promo')) {
-                  setAllowAccess(true);
-                }
-                break;
-              case 'nok':
-                if (user?.groups.includes('NoK')) {
-                  setAllowAccess(true);
-                }
-                break;
-              case 'index':
-                if (user?.groups.includes('Index')) {
-                  setAllowAccess(true);
-                }
-                break;
-              default:
-                break;
-            }
-          });
-          if (isAuthenticated() && accessGroups.length === 0) {
-            setAllowAccess(true);
-          }
-          setIsLoading(false);
-        }
-      });
-      return () => {
-        isSubscribed = false;
-      };
-    }, [isAuthenticated, getUserData]);
-
-    if (isLoading) {
-      return <Navigation isLoading />;
-    } else if (!isAuthenticated()) {
-      setLogInRedirectURL(location.pathname);
-      return <Navigate to={URLS.login} />;
-    } else if (allowAccess) {
-      return OriginalComponent;
-    } else {
-      return <Navigate to={URLS.landing} />;
-    }
-  };
-
-  return <App />;
-};
-
 type AuthRouteProps = {
-  groups: Array<string>;
+  groups?: Array<Groups>;
   path: string;
   element?: React.ReactElement | null;
   children?: React.ReactNode;
 };
 
-const AuthRoute = ({ groups, children, path, element }: AuthRouteProps) => {
-  const { getUserData } = useUser();
+const AuthRoute = ({ groups = [], children, path, element }: AuthRouteProps) => {
   const { setLogInRedirectURL } = useMisc();
   const { isAuthenticated } = useAuth();
-  const [isLoading, setIsLoading] = useState(true);
-  const [allowAccess, setAllowAccess] = useState(false);
-
-  useEffect(() => {
-    let isSubscribed = true;
-    getUserData().then((user) => {
-      if (isSubscribed) {
-        groups.forEach((group) => {
-          const userGroups = user?.groups || [];
-          const regex = new RegExp(userGroups.join('|'), 'i');
-          if (regex.test(group)) {
-            setAllowAccess(true);
-          }
-        });
-        if (isAuthenticated() && !groups.length) {
-          setAllowAccess(true);
-        }
-        setIsLoading(false);
-      }
-    });
-    return () => {
-      isSubscribed = false;
-    };
-  }, [isAuthenticated, getUserData, groups]);
+  const [allowAccess, isLoading] = useHavePermission(groups);
 
   if (isLoading) {
     return <Navigation isLoading noFooter />;
   } else if (!isAuthenticated()) {
     setLogInRedirectURL(window.location.pathname);
     return <Navigate to={URLS.login} />;
-  } else if (allowAccess) {
-    return children ? (
+  } else if (allowAccess || !groups.length) {
+    return (
       <Route element={element} path={path}>
         {children}
       </Route>
-    ) : (
-      <Route element={element} path={path} />
     );
   } else {
     return <Navigate to={URLS.landing} />;
@@ -224,17 +133,17 @@ const AppRoutes = () => {
         <Route element={<News />} path='' />
       </Route>
 
-      <Route element={requireAuth(<Cheatsheet />)} path={`${URLS.cheatsheet}:studyId/:classId/`} />
-      <Route element={requireAuth(<Cheatsheet />)} path={`${URLS.cheatsheet}*`} />
+      <AuthRoute element={<Cheatsheet />} path={`${URLS.cheatsheet}:studyId/:classId/`} />
+      <AuthRoute element={<Cheatsheet />} path={`${URLS.cheatsheet}*`} />
 
-      <Route element={requireAuth(<Admin />, ['HS', 'Promo', 'Nok', 'Index'])} path={URLS.admin} />
-      <Route element={requireAuth(<UserAdmin />, ['HS', 'Index'])} path={URLS.userAdmin} />
-      <Route element={requireAuth(<JobPostAdministration />, ['HS', 'Nok', 'Index'])} path={URLS.jobpostsAdmin} />
-      <AuthRoute groups={['HS', 'Promo', 'Nok', 'Index']} path={`${URLS.eventAdmin}`}>
+      <AuthRoute element={<Admin />} groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]} path={URLS.admin} />
+      <AuthRoute element={<UserAdmin />} groups={[Groups.HS, Groups.INDEX]} path={URLS.userAdmin} />
+      <AuthRoute element={<JobPostAdministration />} groups={[Groups.HS, Groups.INDEX, Groups.NOK]} path={URLS.jobpostsAdmin} />
+      <AuthRoute groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]} path={URLS.eventAdmin}>
         <Route element={<EventAdministration />} path=':eventId/' />
         <Route element={<EventAdministration />} path='' />
       </AuthRoute>
-      <Route element={requireAuth(<NewsAdministration />, ['HS', 'Promo', 'Nok', 'Index'])} path={URLS.newsAdmin} />
+      <AuthRoute element={<NewsAdministration />} groups={[Groups.HS, Groups.INDEX]} path={URLS.newsAdmin} />
 
       <Route element={<LogIn />} path={URLS.login} />
       <Route element={<ForgotPassword />} path={URLS.forgotPassword} />

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import QRCode from 'qrcode.react';
 
 // API and store import
-import { useUser } from '../../../api/hooks/User';
+import { useUser, useHavePermission } from '../../../api/hooks/User';
 
 // Material-UI
 import Typography from '@material-ui/core/Typography';
@@ -119,7 +119,7 @@ function ProfilePaper(props) {
   const { classes, logoutMethod } = props;
   const { getUserData } = useUser();
   const [userData, setUserData] = useState({});
-  const [isGroupMember, setIsGroupMember] = useState(false);
+  const [isAdmin] = useHavePermission(['HS', 'Promo', 'NoK', 'Index']);
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const eventTab = { label: 'Arrangementer', icon: EventIcon };
@@ -128,7 +128,7 @@ function ProfilePaper(props) {
   const settingsTab = { label: 'Profil', icon: ProfileIcon };
   const adminTab = { label: 'Admin', icon: AdminIcon, iconEnd: NewTabIcon, component: Link, to: URLS.admin };
   const logoutTab = { label: 'Logg ut', icon: LogOutIcon, onClick: logoutMethod, className: classes.logOutButton };
-  const tabs = [eventTab, notificationsTab, badgesTab, settingsTab, ...(isGroupMember ? [adminTab] : []), logoutTab];
+  const tabs = [eventTab, notificationsTab, badgesTab, settingsTab, ...(isAdmin ? [adminTab] : []), logoutTab];
   const [tab, setTab] = useState(eventTab.label);
 
   useEffect(() => {
@@ -137,10 +137,6 @@ function ProfilePaper(props) {
         if (user) {
           user.notifications.reverse();
           setUserData(user);
-          const groups = user.groups;
-          if (groups.includes('HS') || groups.includes('Promo') || groups.includes('NoK') || groups.includes('Index')) {
-            setIsGroupMember(true);
-          }
         }
       })
       .finally(() => setIsLoading(false));

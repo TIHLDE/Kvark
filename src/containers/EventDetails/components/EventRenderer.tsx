@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Event, User, Registration } from 'types/Types';
+import { Groups } from 'types/Enums';
 import URLS from 'URLS';
 import { parseISO } from 'date-fns';
 import { formatDate } from 'utils';
@@ -9,7 +10,7 @@ import { Link } from 'react-router-dom';
 // Services
 import { useMisc } from 'api/hooks/Misc';
 import { useEvent } from 'api/hooks/Event';
-import { useUser } from 'api/hooks/User';
+import { useUser, HavePermission } from 'api/hooks/User';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
@@ -278,12 +279,12 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
   };
 
   const AdminButton = () => {
-    return event.sign_up && user?.groups.some((group) => ['HS', 'Promo', 'NoK', 'Index'].includes(group)) ? (
-      <Button className={classes.applyButton} color='primary' component={Link} fullWidth to={`${URLS.eventAdmin}${event.id}/`} variant='outlined'>
-        Endre arrangement
-      </Button>
-    ) : (
-      <></>
+    return (
+      <HavePermission groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]}>
+        <Button className={classes.applyButton} color='primary' component={Link} fullWidth to={`${URLS.eventAdmin}${event.id}/`} variant='outlined'>
+          Endre arrangement
+        </Button>
+      </HavePermission>
     );
   };
 

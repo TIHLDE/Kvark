@@ -1,4 +1,4 @@
-import { WarningType, Study, CheatsheetType, UserClass, UserStudy } from 'types/Enums';
+import { Groups, WarningType, Study, CheatsheetType, UserClass, UserStudy } from 'types/Enums';
 
 export interface Warning {
   created_at: string;
@@ -38,7 +38,7 @@ export interface User {
   app_token: string;
   is_TIHLDE_member: boolean;
   events: Array<Event>;
-  groups: Array<string>;
+  groups: Array<Groups>;
   unread_notifications: number;
   notifications: Array<unknown>;
 }

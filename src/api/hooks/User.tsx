@@ -1,7 +1,8 @@
-import React, { createContext, useContext, useReducer, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useReducer, useCallback } from 'react';
 import API from 'api/api';
 import { useAuth } from 'api/hooks/Auth';
 import { User, Event } from 'types/Types';
+import { Groups } from 'types/Enums';
 
 export type Action =
   | { type: 'add event'; payload: Event }
@@ -73,6 +74,32 @@ const useUserDispatch = () => {
     throw new Error('useUserDispatch must be used within a UserProvider');
   }
   return context;
+};
+
+export type HavePermissionProps = {
+  children: React.ReactNode;
+  groups: Array<Groups>;
+};
+
+export const HavePermission = ({ children, groups }: HavePermissionProps) => {
+  const [allowAccess, isLoading] = useHavePermission(groups);
+  return allowAccess && !isLoading ? <>{children}</> : null;
+};
+
+export const useHavePermission = (groups: Array<Groups>) => {
+  const user = useUserState();
+  const { getUserData } = useUser();
+  const [havePermission, setHavePermission] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    getUserData()
+      .then((user) => setHavePermission(Boolean(user?.groups.some((group) => groups.includes(group)))))
+      .catch(() => setHavePermission(false))
+      .finally(() => setIsLoading(false));
+  }, [user, getUserData, groups]);
+
+  return [havePermission, isLoading] as const;
 };
 
 export const useUser = () => {

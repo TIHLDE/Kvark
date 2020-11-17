@@ -48,3 +48,10 @@ export enum UserClass {
   FOURTH = 4,
   FIFTH = 5,
 }
+
+export enum Groups {
+  HS = 'HS',
+  INDEX = 'Index',
+  PROMO = 'Promo',
+  NOK = 'NoK',
+}
