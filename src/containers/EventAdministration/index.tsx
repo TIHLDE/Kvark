@@ -41,6 +41,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   preview: {
     padding: theme.spacing(1),
   },
+  paper: {
+    [theme.breakpoints.down('md')]: {
+      padding: theme.spacing(1),
+    },
+  },
 }));
 
 const EventAdministration = () => {
@@ -122,7 +127,7 @@ const EventAdministration = () => {
             {eventId && <Tab id='1' label='Deltagere' />}
             {eventId && <Tab component={Link} id='2' label='Registrering' to={`${URLS.events}${eventId}/registrering/`} />}
           </Tabs>
-          <Paper>
+          <Paper className={classes.paper}>
             <Collapse in={tab === 0} mountOnEnter>
               <EventEditor eventId={Number(eventId)} goToEvent={goToEvent} setEvents={setEvents} />
             </Collapse>

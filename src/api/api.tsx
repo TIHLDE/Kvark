@@ -2,20 +2,21 @@
 import { IFetch } from 'api/fetch';
 import { RequestMethodType, Study } from 'types/Enums';
 import {
-  User,
+  Category,
+  Cheatsheet,
+  CompaniesEmail,
   Event,
   EventRequired,
-  Registration,
+  Form,
   JobPost,
   JobPostRequired,
   News,
   NewsRequired,
-  Category,
-  Warning,
-  RequestResponse,
-  CompaniesEmail,
   PaginationResponse,
-  Cheatsheet,
+  Registration,
+  RequestResponse,
+  User,
+  Warning,
 } from 'types/Types';
 
 export default {
@@ -55,6 +56,14 @@ export default {
   },
   deleteRegistration: (eventId: number, userId: string) => {
     return IFetch<RequestResponse>(RequestMethodType.DELETE, `events/${String(eventId)}/users/${userId}/`, undefined, true);
+  },
+
+  // Forms
+  createForm: (item: Form) => {
+    return IFetch<Form>(RequestMethodType.POST, `forms/`, item, true);
+  },
+  updateForm: (formId: string, item: Form) => {
+    return IFetch<Form>(RequestMethodType.PUT, `forms/${formId}/`, item, true);
   },
 
   // Job posts

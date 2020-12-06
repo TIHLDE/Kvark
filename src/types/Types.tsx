@@ -117,7 +117,7 @@ export interface Registration {
 
 export interface Form {
   id?: string;
-  title: string;
+  title?: string;
   hidden?: boolean;
   type: FormType;
   fields: Array<TextFormField | SelectFormField>;

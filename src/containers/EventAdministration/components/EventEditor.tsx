@@ -362,18 +362,20 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
                 </ExpansionPanelDetails>
               </ExpansionPanel>
             </div>
-            {eventId && (
-              <div className={classes.margin}>
-                <ExpansionPanel className={classes.expansionPanel}>
-                  <ExpansionPanelSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='priorities-header'>
-                    <Typography>Spørsmål ved påmelding</Typography>
-                  </ExpansionPanelSummary>
-                  <ExpansionPanelDetails>
+            <div className={classes.margin}>
+              <ExpansionPanel className={classes.expansionPanel}>
+                <ExpansionPanelSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='priorities-header'>
+                  <Typography>Spørsmål ved påmelding</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  {eventId ? (
                     <EventFormEditor eventId={eventId} />
-                  </ExpansionPanelDetails>
-                </ExpansionPanel>
-              </div>
-            )}
+                  ) : (
+                    <Typography variant='subtitle2'>Du må opprette arrangementet før du kan legge til spørsmål</Typography>
+                  )}
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+            </div>
           </Collapse>
           <div className={classes.margin}>
             <MdEditor
@@ -409,7 +411,7 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
           <Button className={classes.margin} color='primary' type='submit' variant='contained'>
             {eventId ? 'Oppdater arrangement' : 'Opprett arrangement'}
           </Button>
-          {Boolean(eventId) && (
+          {eventId !== null && (
             <div className={classes.grid}>
               <ErrorTheme theme={errorTheme}>
                 <Button className={classes.margin} color='primary' onClick={() => setCloseEventDialogOpen(true)} variant='outlined'>

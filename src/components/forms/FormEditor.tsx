@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Form, TextFormField, SelectFormField } from 'types/Types';
-import { FormFieldType } from 'types/Enums';
-// import { useForm } from 'api/hooks/Form';
+import { FormFieldType, FormType } from 'types/Enums';
+import { useForms } from 'api/hooks/Form';
+import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -28,12 +29,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export type FormEditorProps = {
   form: Form | null;
-  eventId?: number;
+  onCreate?: (form: Array<TextFormField | SelectFormField>) => Promise<Form>;
+  onUpdate?: (form: Array<TextFormField | SelectFormField>) => Promise<Form>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const FormEditor = ({ form, eventId }: FormEditorProps) => {
+const FormEditor = ({ form, onCreate, onUpdate }: FormEditorProps) => {
   const classes = useStyles();
+  const { createForm, updateForm } = useForms();
+  const showSnackbar = useSnackbar();
   const [fields, setFields] = useState<Array<TextFormField | SelectFormField>>(form?.fields || []);
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -68,8 +71,17 @@ const FormEditor = ({ form, eventId }: FormEditorProps) => {
     setFields((prev) => prev.filter((field, i) => i !== index));
   };
 
-  // eslint-disable-next-line no-console
-  const save = () => console.log(fields);
+  const save = () => {
+    if (form?.id) {
+      (onUpdate ? onUpdate(fields) : updateForm(form.id, { ...form, fields: fields }))
+        .then(() => showSnackbar('Spørsmålene ble oppdatert', 'success'))
+        .catch((e) => showSnackbar(e.detail, 'error'));
+    } else {
+      (onCreate ? onCreate(fields) : createForm({ fields: fields, type: FormType.SURVEY }))
+        .then(() => showSnackbar('Spørsmålene ble oppdatert', 'success'))
+        .catch((e) => showSnackbar(e.detail, 'error'));
+    }
+  };
 
   return (
     <>
