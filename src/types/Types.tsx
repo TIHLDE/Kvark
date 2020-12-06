@@ -1,4 +1,4 @@
-import { Groups, WarningType, Study, CheatsheetType, UserClass, UserStudy } from 'types/Enums';
+import { FormFieldType, FormType, Groups, WarningType, Study, CheatsheetType, UserClass, UserStudy } from 'types/Enums';
 
 export interface Warning {
   created_at: string;
@@ -99,6 +99,7 @@ export interface Event {
   end_registration_at: string;
   sign_off_deadline: string;
   registration_priorities: Array<RegistrationPriority>;
+  forms?: EventForm;
 }
 
 export interface RegistrationPriority {
@@ -114,12 +115,37 @@ export interface Registration {
   user_info: Pick<User, 'allergy' | 'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study'>;
 }
 
-export interface Registration {
-  allow_photo: boolean;
-  has_attended: boolean;
-  is_on_wait: boolean;
-  registration_id: number;
-  user_info: Pick<User, 'allergy' | 'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study'>;
+export interface Form {
+  id?: string;
+  title: string;
+  hidden?: boolean;
+  type: FormType;
+  fields: Array<TextFormField | SelectFormField>;
+}
+
+export interface EventForm extends Form {
+  type: FormType.SURVEY;
+  event: number;
+}
+
+export interface FormField {
+  id?: string;
+  title: string;
+  required: boolean;
+}
+
+export interface TextFormField extends FormField {
+  type: FormFieldType.TEXT_ANSWER;
+}
+
+export interface SelectFormField extends FormField {
+  options: Array<SelectFormFieldOption>;
+  type: FormFieldType.MULTIPLE_SELECT | FormFieldType.SINGLE_SELECT;
+}
+
+export interface SelectFormFieldOption {
+  id?: string;
+  text: string;
 }
 
 export interface CompaniesEmail {

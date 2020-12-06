@@ -28,8 +28,9 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 // Project components
-import EventRegistrationPriorities from 'containers/EventAdministration/components/EventRegistrationPriorities';
+import EventFormEditor from 'containers/EventAdministration/components/EventFormEditor';
 import EventPreview from 'containers/EventAdministration/components/EventPreview';
+import EventRegistrationPriorities from 'containers/EventAdministration/components/EventRegistrationPriorities';
 import Dialog from 'components/layout/Dialog';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -361,6 +362,18 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
                 </ExpansionPanelDetails>
               </ExpansionPanel>
             </div>
+            {eventId && (
+              <div className={classes.margin}>
+                <ExpansionPanel className={classes.expansionPanel}>
+                  <ExpansionPanelSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='priorities-header'>
+                    <Typography>Spørsmål ved påmelding</Typography>
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails>
+                    <EventFormEditor eventId={eventId} />
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+              </div>
+            )}
           </Collapse>
           <div className={classes.margin}>
             <MdEditor
