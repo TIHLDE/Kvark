@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import URLS from '../../URLS';
-import { getFormattedDate } from '../../utils';
-import moment from 'moment';
 
 // API and store imports
 import { useNews } from '../../api/hooks/News';
@@ -13,16 +10,13 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grow from '@material-ui/core/Grow';
 
-// Icons
-import DateIcon from '@material-ui/icons/DateRange';
-
 // Project components
 import ListItem from '../../components/miscellaneous/ListItem';
 import Navigation from '../../components/navigation/Navigation';
 import Banner from '../../components/layout/Banner';
 import NoNewsIndicator from './components/NoNewsIndicator';
 
-const styles = () => ({
+const styles = (theme) => ({
   root: {
     width: 'auto',
     height: 'auto',
@@ -46,13 +40,24 @@ const styles = () => ({
       paddingRight: 6,
     },
   },
-  list: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-  },
   listRoot: {
+    display: 'grid',
     '@media only screen and (max-width: 800px)': {
       order: 1,
+    },
+  },
+  list: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr 1fr',
+    gridGap: theme.spacing(0, 1),
+    [theme.breakpoints.down('md')]: {
+      gridTemplateColumns: '1fr',
+    },
+  },
+  first: {
+    gridColumn: 'span 3',
+    [theme.breakpoints.down('md')]: {
+      gridColumn: 'span 1',
     },
   },
   progress: {
@@ -94,15 +99,8 @@ const News = (props) => {
             <div className={classes.listRoot}>
               <Grow in={Boolean(displayedNews)}>
                 <div className={classes.list}>
-                  {displayedNews?.map((newsItem) => (
-                    <ListItem
-                      img={newsItem.image}
-                      imgAlt={newsItem.image_alt}
-                      info={[{ label: getFormattedDate(moment(newsItem.created_at, ['YYYY-MM-DD HH:mm'], 'nb')), icon: DateIcon }]}
-                      key={newsItem.id}
-                      link={`${URLS.news}${newsItem.id}/`}
-                      title={newsItem.title}
-                    />
+                  {displayedNews?.map((newsItem, i) => (
+                    <ListItem className={i === 0 ? classes.first : ''} key={newsItem.id} largeImg={i === 0} news={newsItem} />
                   ))}
                   {!displayedNews.length && <NoNewsIndicator />}
                 </div>

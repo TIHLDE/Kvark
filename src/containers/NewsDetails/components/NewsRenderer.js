@@ -10,8 +10,8 @@ import Grid from '@material-ui/core/Grid';
 
 // Project Components
 import MarkdownRenderer from '../../../components/miscellaneous/MarkdownRenderer';
+import AspectRatioImg from '../../../components/miscellaneous/AspectRatioImg';
 import Paper from '../../../components/layout/Paper';
-import TIHLDELOGO from '../../../assets/img/TihldeBackground.jpg';
 
 const styles = (theme) => ({
   grid: {
@@ -38,14 +38,7 @@ const styles = (theme) => ({
     },
   },
   image: {
-    width: '100%',
-    height: 'auto',
-    maxHeight: 350,
-    objectFit: 'cover',
-    backgroundColor: theme.palette.colors.constant.white,
     borderRadius: theme.shape.borderRadius,
-    display: 'block',
-    boxSizing: 'border-box',
   },
   title: {
     color: theme.palette.colors.text.main,
@@ -125,7 +118,7 @@ const NewsRenderer = (props) => {
 
   return (
     <div className={classes.wrapper}>
-      <img alt={newsData.image_alt} className={classes.image} src={newsData.image || TIHLDELOGO} />
+      <AspectRatioImg alt={newsData.image_alt || newsData.title} imgClassName={classes.image} src={newsData.image} />
       <div className={classes.grid}>
         <div>
           <Paper className={classes.details} noPadding>

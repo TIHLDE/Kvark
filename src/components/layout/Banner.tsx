@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   title: {
     color: theme.palette.colors.gradient.main.text,
-    fontWeight: 'bold',
     fontSize: 72,
     [theme.breakpoints.down('md')]: {
       fontSize: 50,
@@ -104,7 +103,7 @@ const Banner = (props: BannerProps) => {
             <div>
               {title && (
                 <Typography className={classes.title} variant='h1'>
-                  <strong>{title}</strong>
+                  {title}
                   <div className={classes.line} />
                 </Typography>
               )}

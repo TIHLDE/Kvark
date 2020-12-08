@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: theme.palette.colors.background.smoke,
     borderCollapse: 'collapse',
   },
+  number: {
+    fontSize: '2.1rem',
+  },
 }));
 
 export type EventStatisticsProps = {
@@ -68,7 +71,9 @@ const EventStatistics = ({ registrations }: EventStatisticsProps) => {
             {[1, 2, 3, 4, 5].map((i) => (
               <Paper className={classes.statistics} key={i} noPadding>
                 <Typography variant='subtitle2'>{getUserClass(i)}</Typography>
-                <Typography variant='h4'>{classNo(i)}</Typography>
+                <Typography className={classes.number} variant='h3'>
+                  {classNo(i)}
+                </Typography>
               </Paper>
             ))}
           </div>
@@ -79,7 +84,9 @@ const EventStatistics = ({ registrations }: EventStatisticsProps) => {
             {[1, 2, 3, 4, 5].map((i) => (
               <Paper className={classes.statistics} key={i} noPadding>
                 <Typography variant='subtitle2'>{getUserStudyShort(i)}</Typography>
-                <Typography variant='h4'>{studyNo(i)}</Typography>
+                <Typography className={classes.number} variant='h3'>
+                  {studyNo(i)}
+                </Typography>
               </Paper>
             ))}
           </div>

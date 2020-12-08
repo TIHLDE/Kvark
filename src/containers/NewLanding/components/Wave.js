@@ -46,6 +46,7 @@ const style = (theme) => ({
     height: 'auto',
     maxWidth: 450,
     minWidth: 250,
+    maxHeight: 90,
   },
   topButtonContainer: {
     margin: '20px auto 0',
