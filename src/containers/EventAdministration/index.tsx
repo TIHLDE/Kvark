@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   paper: {
     [theme.breakpoints.down('md')]: {
-      padding: theme.spacing(1),
+      padding: theme.spacing(1, 2),
     },
   },
 }));
