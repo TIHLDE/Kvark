@@ -103,6 +103,7 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
   const { getCategories } = useMisc();
   const showSnackbar = useSnackbar();
   const description = useRef<MdEditor | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [closeEventDialogOpen, setCloseEventDialogOpen] = useState(false);
   const [deleteEventDialogOpen, setDeleteEventDialogOpen] = useState(false);
   const [signUp, setSignUp] = useState(false);
@@ -160,16 +161,19 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
   }, [getCategories]);
 
   const create = (event: EventRequired) => {
+    setIsLoading(true);
     createEvent(event)
       .then((data) => {
         setEvents((events) => [data, ...events]);
         goToEvent(data.id);
         showSnackbar('Arrangementet ble opprettet', 'success');
       })
-      .catch((e) => showSnackbar(e.detail, 'error'));
+      .catch((e) => showSnackbar(e.detail, 'error'))
+      .finally(() => setIsLoading(false));
   };
 
   const update = (event: Partial<Event>) => {
+    setIsLoading(true);
     updateEvent(Number(eventId), event)
       .then((data) => {
         goToEvent(data.id);
@@ -184,7 +188,8 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
         );
         showSnackbar('Arrangementet ble oppdatert', 'success');
       })
-      .catch((e) => showSnackbar(e.detail, 'error'));
+      .catch((e) => showSnackbar(e.detail, 'error'))
+      .finally(() => setIsLoading(false));
   };
 
   const remove = () => {
@@ -393,16 +398,16 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
             )}
           </div>
           <EventPreview className={classes.margin} getEvent={getEventPreview} />
-          <Button className={classes.margin} color='primary' type='submit' variant='contained'>
+          <Button className={classes.margin} color='primary' disabled={isLoading} type='submit' variant='contained'>
             {eventId ? 'Oppdater arrangement' : 'Opprett arrangement'}
           </Button>
           {Boolean(eventId) && (
             <div className={classes.grid}>
               <ErrorTheme theme={errorTheme}>
-                <Button className={classes.margin} color='primary' onClick={() => setCloseEventDialogOpen(true)} variant='outlined'>
+                <Button className={classes.margin} color='primary' disabled={isLoading} onClick={() => setCloseEventDialogOpen(true)} variant='outlined'>
                   Steng
                 </Button>
-                <Button className={classes.margin} color='primary' onClick={() => setDeleteEventDialogOpen(true)} variant='outlined'>
+                <Button className={classes.margin} color='primary' disabled={isLoading} onClick={() => setDeleteEventDialogOpen(true)} variant='outlined'>
                   Slett
                 </Button>
               </ErrorTheme>

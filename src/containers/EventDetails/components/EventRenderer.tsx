@@ -279,6 +279,9 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
   };
 
   const AdminButton = () => {
+    if (preview) {
+      return <></>;
+    }
     return (
       <HavePermission groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]}>
         <Button className={classes.applyButton} color='primary' component={Link} fullWidth to={`${URLS.eventAdmin}${event.id}/`} variant='outlined'>

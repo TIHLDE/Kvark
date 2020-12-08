@@ -41,6 +41,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   drawerPaper: {
     width: theme.spacing(35),
     background: theme.palette.colors.background.light,
+    display: 'grid',
+    gridTemplateRows: 'auto 1fr',
+    overflow: 'hidden',
+  },
+  scroll: {
+    overflow: 'auto',
   },
   fab: {
     position: 'fixed',
@@ -92,44 +98,46 @@ const SidebarList = ({ items, expiredItems, onItemClick, selectedItemId, getNext
         ModalProps={{ keepMounted: true }}
         onClose={() => setMobileOpen(false)}
         open={!isSmallScreen || mobileOpen}
+        style={{ zIndex: theme.zIndex.drawer }}
         variant={isSmallScreen ? 'temporary' : 'permanent'}>
         <div className={classes.drawerTop}></div>
-        <Divider />
-        <div className={classes.header}>
-          <Typography variant='h3'>{title}</Typography>
-          <IconButton onClick={() => handleItemClick(null)}>
-            <AddIcon />
-          </IconButton>
-        </div>
-        <Pageination nextPage={getNextPage} page={nextPage}>
-          {isLoading && <LinearProgress />}
-          <List className={classes.list} dense disablePadding>
-            {items.map((item) => (
-              <ListItem button className={classes.listItem} key={item.id} onClick={() => handleItemClick(item.id)} selected={item.id === selectedItemId}>
-                <ListItemText primary={item.title} secondary={item.location} />
-              </ListItem>
-            ))}
-          </List>
-        </Pageination>
-        {fetchExpired && (
-          <>
-            <Divider />
-            <div className={classes.header}>
-              <Typography variant='h3'>Tidligere</Typography>
-              <IconButton onClick={fetchExpired}>
-                <DownloadIcon />
-              </IconButton>
-            </div>
+        <div className={classes.scroll}>
+          <div className={classes.header}>
+            <Typography variant='h3'>{title}</Typography>
+            <IconButton onClick={() => handleItemClick(null)}>
+              <AddIcon />
+            </IconButton>
+          </div>
+          <Pageination nextPage={getNextPage} page={nextPage}>
             {isLoading && <LinearProgress />}
             <List className={classes.list} dense disablePadding>
-              {expiredItems.map((item) => (
+              {items.map((item) => (
                 <ListItem button className={classes.listItem} key={item.id} onClick={() => handleItemClick(item.id)} selected={item.id === selectedItemId}>
                   <ListItemText primary={item.title} secondary={item.location} />
                 </ListItem>
               ))}
             </List>
-          </>
-        )}
+          </Pageination>
+          {fetchExpired && (
+            <>
+              <Divider />
+              <div className={classes.header}>
+                <Typography variant='h3'>Tidligere</Typography>
+                <IconButton onClick={fetchExpired}>
+                  <DownloadIcon />
+                </IconButton>
+              </div>
+              {isLoading && <LinearProgress />}
+              <List className={classes.list} dense disablePadding>
+                {expiredItems.map((item) => (
+                  <ListItem button className={classes.listItem} key={item.id} onClick={() => handleItemClick(item.id)} selected={item.id === selectedItemId}>
+                    <ListItemText primary={item.title} secondary={item.location} />
+                  </ListItem>
+                ))}
+              </List>
+            </>
+          )}
+        </div>
       </Drawer>
       <Hidden lgUp>
         <Zoom in={!mobileOpen} style={{ transitionDelay: `${mobileOpen ? 0 : transitionDuration.exit}ms` }} timeout={transitionDuration} unmountOnExit>

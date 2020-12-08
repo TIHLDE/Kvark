@@ -15,7 +15,6 @@ import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    zIndex: 10000,
     backgroundColor: theme.palette.colors.background.light,
   },
   link: {
