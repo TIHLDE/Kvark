@@ -1,12 +1,9 @@
-import React, { useRef, useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { Category, Event, EventRequired, RegistrationPriority } from 'types/Types';
 import { useEvent } from 'api/hooks/Event';
 import { useMisc } from 'api/hooks/Misc';
 import { useSnackbar } from 'api/hooks/Snackbar';
-import MdEditor from 'react-markdown-editor-lite';
-import ReactMarkdown from 'react-markdown';
-import 'react-markdown-editor-lite/lib/index.css';
 import { parseISO } from 'date-fns';
 
 // Material-UI
@@ -31,6 +28,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EventRegistrationPriorities from 'containers/EventAdministration/components/EventRegistrationPriorities';
 import EventPreview from 'containers/EventAdministration/components/EventPreview';
 import Dialog from 'components/layout/Dialog';
+import MarkdownEditor from 'components/inputs/MarkdownEditor';
 
 const useStyles = makeStyles((theme: Theme) => ({
   grid: {
@@ -67,6 +65,7 @@ type FormValues = {
   location: string;
   start_date: string;
   end_date: string;
+  description: string;
   image: string;
   image_alt: string;
   priority: number;
@@ -102,7 +101,7 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
   const { getEventById, updateEvent, createEvent, deleteEvent } = useEvent();
   const { getCategories } = useMisc();
   const showSnackbar = useSnackbar();
-  const description = useRef<MdEditor | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [closeEventDialogOpen, setCloseEventDialogOpen] = useState(false);
   const [deleteEventDialogOpen, setDeleteEventDialogOpen] = useState(false);
   const [signUp, setSignUp] = useState(false);
@@ -112,11 +111,11 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
 
   const setValues = useCallback(
     (newValues: Event | null) => {
-      description.current?.setText(newValues?.description || '');
       setSignUp(newValues?.sign_up || false);
       setRegPriorities(newValues?.registration_priorities || allPriorities);
       reset({
         category: newValues?.category || 1,
+        description: newValues?.description || '',
         end_date: newValues?.end_date.substring(0, 16) || new Date().toISOString().substring(0, 16),
         end_registration_at: newValues?.end_registration_at.substring(0, 16) || new Date().toISOString().substring(0, 16),
         evaluate_link: newValues?.evaluate_link || '',
@@ -138,7 +137,6 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
     return {
       ...getValues(),
       sign_up: signUp,
-      description: description.current?.getMdValue() || '',
       list_count: 0,
       registration_priorities: regPriorities,
       waiting_list_count: 0,
@@ -160,16 +158,19 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
   }, [getCategories]);
 
   const create = (event: EventRequired) => {
+    setIsLoading(true);
     createEvent(event)
       .then((data) => {
         setEvents((events) => [data, ...events]);
         goToEvent(data.id);
         showSnackbar('Arrangementet ble opprettet', 'success');
       })
-      .catch((e) => showSnackbar(e.detail, 'error'));
+      .catch((e) => showSnackbar(e.detail, 'error'))
+      .finally(() => setIsLoading(false));
   };
 
   const update = (event: Partial<Event>) => {
+    setIsLoading(true);
     updateEvent(Number(eventId), event)
       .then((data) => {
         goToEvent(data.id);
@@ -184,7 +185,8 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
         );
         showSnackbar('Arrangementet ble oppdatert', 'success');
       })
-      .catch((e) => showSnackbar(e.detail, 'error'));
+      .catch((e) => showSnackbar(e.detail, 'error'))
+      .finally(() => setIsLoading(false));
   };
 
   const remove = () => {
@@ -207,7 +209,6 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
     const event = {
       ...data,
       sign_up: signUp,
-      description: description.current?.getMdValue() || '',
       registration_priorities: regPriorities,
     } as Event;
     if (event.sign_up) {
@@ -362,14 +363,12 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
               </ExpansionPanel>
             </div>
           </Collapse>
-          <div className={classes.margin}>
-            <MdEditor
-              plugins={['header', 'font-bold', 'font-italic', 'list-unordered', 'list-ordered', 'block-wrap', 'link', 'mode-toggle']}
-              ref={description}
-              renderHTML={(text: string) => <ReactMarkdown source={text} />}
-              style={{ height: 300 }}
-            />
-          </div>
+          <MarkdownEditor
+            error={Boolean(errors.description)}
+            helperText={Boolean(errors.description) && 'Gi arrengementet en beskrivelse'}
+            inputRef={register({ required: true })}
+            name='description'
+          />
           <div className={classes.grid}>
             <Controller as={TextField} control={control} defaultValue='' label='Bilde-url' margin='normal' name='image' variant='outlined' />
             <Controller as={TextField} control={control} defaultValue='' label='Bildetekst' margin='normal' name='image_alt' variant='outlined' />
@@ -393,16 +392,16 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
             )}
           </div>
           <EventPreview className={classes.margin} getEvent={getEventPreview} />
-          <Button className={classes.margin} color='primary' type='submit' variant='contained'>
+          <Button className={classes.margin} color='primary' disabled={isLoading} type='submit' variant='contained'>
             {eventId ? 'Oppdater arrangement' : 'Opprett arrangement'}
           </Button>
           {Boolean(eventId) && (
             <div className={classes.grid}>
               <ErrorTheme theme={errorTheme}>
-                <Button className={classes.margin} color='primary' onClick={() => setCloseEventDialogOpen(true)} variant='outlined'>
+                <Button className={classes.margin} color='primary' disabled={isLoading} onClick={() => setCloseEventDialogOpen(true)} variant='outlined'>
                   Steng
                 </Button>
-                <Button className={classes.margin} color='primary' onClick={() => setDeleteEventDialogOpen(true)} variant='outlined'>
+                <Button className={classes.margin} color='primary' disabled={isLoading} onClick={() => setDeleteEventDialogOpen(true)} variant='outlined'>
                   Slett
                 </Button>
               </ErrorTheme>

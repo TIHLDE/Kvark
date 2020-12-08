@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Event, User, Registration } from 'types/Types';
+import { Groups } from 'types/Enums';
 import URLS from 'URLS';
 import { parseISO } from 'date-fns';
 import { formatDate } from 'utils';
@@ -9,7 +10,7 @@ import { Link } from 'react-router-dom';
 // Services
 import { useMisc } from 'api/hooks/Misc';
 import { useEvent } from 'api/hooks/Event';
-import { useUser } from 'api/hooks/User';
+import { useUser, HavePermission } from 'api/hooks/User';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
@@ -22,22 +23,15 @@ import Hidden from '@material-ui/core/Hidden';
 
 // Project Components
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
+import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
 import EventPriorities from 'containers/EventDetails/components/EventPriorities';
 import EventRegistration from 'containers/EventDetails/components/EventRegistration';
 import Paper from 'components/layout/Paper';
 import Dialog from 'components/layout/Dialog';
-import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
 
 const useStyles = makeStyles((theme: Theme) => ({
   image: {
-    width: '100%',
-    height: 'auto',
-    maxHeight: 350,
-    objectFit: 'cover',
-    backgroundColor: theme.palette.colors.constant.white,
     borderRadius: theme.shape.borderRadius,
-    display: 'block',
-    boxSizing: 'border-box',
   },
   rootGrid: {
     display: 'grid',
@@ -95,6 +89,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   content: {
     height: 'fit-content',
+    overflowX: 'auto',
     [theme.breakpoints.down('sm')]: {
       order: 1,
     },
@@ -102,9 +97,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   title: {
     color: theme.palette.colors.text.main,
     padding: theme.spacing(0, 3, 3, 0),
-  },
-  description: {
-    color: theme.palette.colors.text.light,
+    fontSize: '2.6rem',
   },
   applyButton: {
     height: 50,
@@ -278,12 +271,15 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
   };
 
   const AdminButton = () => {
-    return event.sign_up && user?.groups.some((group) => ['HS', 'Promo', 'NoK', 'Index'].includes(group)) ? (
-      <Button className={classes.applyButton} color='primary' component={Link} fullWidth to={`${URLS.eventAdmin}${event.id}/`} variant='outlined'>
-        Endre arrangement
-      </Button>
-    ) : (
-      <></>
+    if (preview) {
+      return <></>;
+    }
+    return (
+      <HavePermission groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]}>
+        <Button className={classes.applyButton} color='primary' component={Link} fullWidth to={`${URLS.eventAdmin}${event.id}/`} variant='outlined'>
+          Endre arrangement
+        </Button>
+      </HavePermission>
     );
   };
 
@@ -298,7 +294,7 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
         open={signOffDialogOpen}
         titleText='Er du sikker?'
       />
-      <img alt={event.image_alt || event.title} className={classes.image} src={event.image || TIHLDELOGO} />
+      <AspectRatioImg alt={event.image_alt || event.title} imgClassName={classes.image} src={event.image} />
       <div className={classes.rootGrid}>
         <div>
           <div className={classes.infoGrid}>
@@ -332,20 +328,20 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
                     <EventPriorities priorities={event.registration_priorities} title='Prioritert:' />
                   </Paper>
                 )}
-                <Hidden lgUp>
-                  <AdminButton />
-                  <ApplyButton />
-                </Hidden>
               </>
             )}
+            <Hidden lgUp>
+              <AdminButton />
+              <ApplyButton />
+            </Hidden>
           </div>
         </div>
         <Paper className={classes.content}>
-          <Typography className={classes.title} variant='h2'>
-            <strong>{event.title}</strong>
+          <Typography className={classes.title} variant='h1'>
+            {event.title}
           </Typography>
           <Collapse in={view === Views.Info || Boolean(registration)}>
-            <MarkdownRenderer className={classes.description} value={event.description} />
+            <MarkdownRenderer value={event.description} />
           </Collapse>
           <Collapse in={view === Views.Apply && !registration} mountOnEnter unmountOnExit>
             {user && <EventRegistration event={event} setRegistration={setRegistration} user={user} />}

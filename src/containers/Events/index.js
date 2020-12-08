@@ -4,9 +4,6 @@ import PropTypes from 'prop-types';
 import { MuiThemeProvider as Theme } from '@material-ui/core/styles';
 import { errorTheme } from '../../theme';
 import Helmet from 'react-helmet';
-import URLS from '../../URLS';
-import { getFormattedDate } from '../../utils';
-import moment from 'moment';
 
 // API and store imports
 import { useEvent } from '../../api/hooks/Event';
@@ -23,10 +20,6 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MenuItem from '@material-ui/core/MenuItem';
 import Grow from '@material-ui/core/Grow';
-
-// Icons
-import DateIcon from '@material-ui/icons/DateRange';
-import LocationIcon from '@material-ui/icons/LocationOn';
 
 // Project components
 import ListItem from '../../components/miscellaneous/ListItem';
@@ -53,7 +46,7 @@ const styles = (theme) => ({
     gridGap: 15,
     justifyContent: 'center',
 
-    '@media only screen and (max-width: 1200px)': {
+    [theme.breakpoints.down('lg')]: {
       paddingLeft: 6,
       paddingRight: 6,
     },
@@ -66,7 +59,7 @@ const styles = (theme) => ({
 
     position: 'relative',
 
-    '@media only screen and (max-width: 800px)': {
+    [theme.breakpoints.down('md')]: {
       gridTemplateColumns: '1fr',
       justifyContent: 'center',
       gridAutoFlow: 'row dense',
@@ -77,7 +70,7 @@ const styles = (theme) => ({
     gridTemplateColumns: '1fr',
   },
   listRoot: {
-    '@media only screen and (max-width: 800px)': {
+    [theme.breakpoints.down('md')]: {
       order: 1,
     },
   },
@@ -86,7 +79,7 @@ const styles = (theme) => ({
     top: 88,
     padding: 28,
 
-    '@media only screen and (max-width: 800px)': {
+    [theme.breakpoints.down('md')]: {
       order: 0,
       position: 'static',
       top: 0,
@@ -103,7 +96,7 @@ const styles = (theme) => ({
     margin: 'auto',
     marginTop: 10,
 
-    '@media only screen and (max-width: 800px)': {
+    [theme.breakpoints.down('md')]: {
       order: 1,
     },
   },
@@ -233,18 +226,7 @@ function Events(props) {
                   <div className={classes.list}>
                     <Pageination nextPage={getNextPage} page={nextPage}>
                       {events?.map((event) => (
-                        <ListItem
-                          expired={event.expired}
-                          img={event.image}
-                          imgAlt={event.image_alt}
-                          info={[
-                            { label: getFormattedDate(moment(event.start_date, ['YYYY-MM-DD HH:mm'], 'nb')), icon: DateIcon },
-                            { label: event.location, icon: LocationIcon },
-                          ]}
-                          key={event.id}
-                          link={URLS.events + ''.concat(event.id, '/')}
-                          title={event.title}
-                        />
+                        <ListItem event={event} key={event.id} />
                       ))}
                     </Pageination>
                     {events.length === 0 && !isLoading && <NoEventsIndicator />}

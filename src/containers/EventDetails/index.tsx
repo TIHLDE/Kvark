@@ -17,9 +17,12 @@ import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
 const useStyles = makeStyles((theme: Theme) => ({
   wrapper: {
     margin: 'auto',
-    padding: theme.spacing(10, 5, 5),
     position: 'relative',
     color: theme.palette.colors.text.main,
+    padding: theme.spacing(10),
+    [theme.breakpoints.down('lg')]: {
+      padding: theme.spacing(10, 5),
+    },
     [theme.breakpoints.down('md')]: {
       padding: theme.spacing(10, 0, 5, 0),
     },
@@ -46,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     transition: '3s',
     background: theme.palette.colors.gradient.main.top,
     [theme.breakpoints.down('sm')]: {
-      height: 250,
+      height: 230,
     },
     [theme.breakpoints.down('xs')]: {
       height: 200,

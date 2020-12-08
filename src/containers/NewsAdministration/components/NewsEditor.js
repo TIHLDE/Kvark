@@ -9,7 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 
 // Project components
-import TextEditor from '../../../components/inputs/TextEditor';
+import MarkdownEditor from '../../../components/inputs/MarkdownEditor';
 
 const styles = () => ({
   root: {
@@ -61,7 +61,7 @@ function NewsEditor(props) {
               value={newsItem.header || ''}
               variant='filled'
             />
-            <TextEditor className={classes.textEditor} onChange={(e) => setNewsItem({ ...newsItem, body: e })} value={newsItem.body || ''} />
+            <MarkdownEditor onChange={(e) => setNewsItem({ ...newsItem, body: e.target.value })} value={newsItem.body || ''} variant='filled' />
             <Divider className={classes.margin} />
             <TextField
               className={classes.field}

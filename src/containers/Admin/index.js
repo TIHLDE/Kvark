@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import URLS from '../../URLS';
 import Helmet from 'react-helmet';
 
 // API and store import
-import { useUser } from '../../api/hooks/User';
+import { HavePermission } from '../../api/hooks/User';
 
 // Text imports
 import Text from '../../text/AdminText';
@@ -62,16 +62,6 @@ const styles = {
 
 function Admin(props) {
   const { classes } = props;
-  const [groups, setGroups] = useState(null);
-  const { getUserData } = useUser();
-
-  useEffect(() => {
-    getUserData().then((user) => {
-      if (user) {
-        setGroups(user.groups);
-      }
-    });
-  }, [getUserData]);
 
   return (
     <Navigation fancyNavbar whitesmoke>
@@ -81,7 +71,7 @@ function Admin(props) {
       <Banner title={Text.header} />
       <Grid alignItems='center' className={classes.root} container direction='column' wrap='nowrap'>
         <div className={classes.grid}>
-          {groups && (groups.includes('HS') || groups.includes('Promo') || groups.includes('NoK') || groups.includes('Index')) && (
+          <HavePermission groups={['HS', 'Index', 'NoK', 'Promo']}>
             <InfoCard classes={{ children: classes.flex }} header='Arrangementer' justifyText src={EventAdminIcon} text={Text.events}>
               <Link className={classes.buttonLink} to={URLS.eventAdmin}>
                 <Button className={classes.button} color='primary' variant='contained'>
@@ -89,8 +79,8 @@ function Admin(props) {
                 </Button>
               </Link>
             </InfoCard>
-          )}
-          {groups && (groups.includes('HS') || groups.includes('NoK') || groups.includes('Index')) && (
+          </HavePermission>
+          <HavePermission groups={['HS', 'Index', 'NoK']}>
             <InfoCard classes={{ children: classes.flex }} header='Jobbannonser' justifyText src={JobPostAdminIcon} text={Text.jobposts}>
               <Link className={classes.buttonLink} to={URLS.jobpostsAdmin}>
                 <Button className={classes.button} color='primary' variant='contained'>
@@ -98,8 +88,8 @@ function Admin(props) {
                 </Button>
               </Link>
             </InfoCard>
-          )}
-          {groups && (groups.includes('HS') || groups.includes('Index')) && (
+          </HavePermission>
+          <HavePermission groups={['HS', 'Index']}>
             <InfoCard classes={{ children: classes.flex }} header='Nyheter' justifyText src={NewsAdminIcon} text={Text.news}>
               <Link className={classes.buttonLink} to={URLS.newsAdmin}>
                 <Button className={classes.button} color='primary' variant='contained'>
@@ -107,8 +97,8 @@ function Admin(props) {
                 </Button>
               </Link>
             </InfoCard>
-          )}
-          {groups && (groups.includes('HS') || groups.includes('Index')) && (
+          </HavePermission>
+          <HavePermission groups={['HS', 'Index']}>
             <InfoCard classes={{ children: classes.flex }} header='Medlemmer' justifyText src={UserAdminIcon} text={Text.users}>
               <Link className={classes.buttonLink} to={URLS.userAdmin}>
                 <Button className={classes.button} color='primary' variant='contained'>
@@ -116,7 +106,7 @@ function Admin(props) {
                 </Button>
               </Link>
             </InfoCard>
-          )}
+          </HavePermission>
         </div>
       </Grid>
     </Navigation>

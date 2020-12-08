@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import { urlEncode } from 'utils';
+import { urlEncode, formatDate } from 'utils';
+import { parseISO } from 'date-fns';
+import URLS from 'URLS';
+import { Event, News, JobPost } from 'types/Types';
 
 // Material UI Components
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -12,81 +15,70 @@ import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 import { SvgIconTypeMap } from '@material-ui/core';
 
 // Icons
-import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
+import DateIcon from '@material-ui/icons/DateRange';
+import LocationIcon from '@material-ui/icons/LocationOn';
+import BusinessIcon from '@material-ui/icons/Business';
+
+// Project components
+import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    boxShadow: '0px 2px 4px ' + theme.palette.colors.border.main + '88, 0px 0px 4px ' + theme.palette.colors.border.main + '88',
+    border: theme.palette.sizes.border.width + ' solid ' + theme.palette.colors.border.main,
     borderRadius: theme.shape.borderRadius,
     marginBottom: theme.spacing(1),
     height: 'auto',
-    padding: theme.spacing(1),
+    padding: 0,
     position: 'relative',
     overflow: 'hidden',
-    flexDirection: 'row',
     display: 'flex',
+    flexWrap: 'wrap',
+    '--multiplier': `calc( ${theme.breakpoints.values.md}px - 100%)`,
     backgroundColor: theme.palette.colors.background.light,
-    [theme.breakpoints.down('sm')]: {
-      overflow: 'hidden',
-      minHeight: 150,
-      flexDirection: 'column',
-    },
-  },
-  src: {
-    objectFit: 'cover',
-    height: 160,
-    width: '40%',
-    maxWidth: 250,
-    borderRadius: theme.shape.borderRadius,
-    '&:not([src*=".jpg"])': {
-      background: '#fff',
-    },
-    [theme.breakpoints.up('md')]: {
-      minWidth: '45%',
-      maxWidth: 'none',
-    },
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-      maxWidth: 'none',
-      height: 140,
-    },
-  },
-  imgContain: {
-    objectFit: 'contain',
+    gridGap: theme.spacing(1),
   },
   content: {
-    marginLeft: theme.spacing(2),
-    padding: theme.spacing(1, 0),
-    border: 6,
-    height: '100%',
-    justifyContent: 'center',
-    [theme.breakpoints.down('sm')]: {
-      padding: theme.spacing(1, 0, 0),
-    },
+    minWidth: '33%',
+    maxWidth: '100%',
+    flexGrow: 1.5,
+    flexBasis: 'calc( var(--multiplier) * 999 )',
+    padding: theme.spacing(1),
+    justifyContent: 'space-evenly',
+    width: 1,
+    minHeight: 110,
+  },
+  imgContainer: {
+    minWidth: '33%',
+    maxWidth: '100%',
+    flexGrow: 1,
+    flexBasis: 'calc( var(--multiplier) * 999 )',
+  },
+  largeImg: {
+    flexGrow: 1.5,
   },
   title: {
+    fontSize: '1.8rem',
     color: theme.palette.colors.text.main,
-    fontWeight: 'bold',
-    fontSize: '24px',
-    [theme.breakpoints.down('sm')]: {
-      textAlign: 'center',
-    },
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
   },
   infoRoot: {
     width: 'auto',
     margin: theme.spacing(0.25, 0),
-    [theme.breakpoints.down('sm')]: {
-      justifyContent: 'center',
-    },
   },
   info: {
-    marginLeft: theme.spacing(1),
-    color: theme.palette.colors.text.lighter,
+    color: theme.palette.colors.text.light,
     fontSize: '1rem',
-    textAlign: 'center',
+    textAlign: 'left',
+    overflow: 'hidden',
+    '-webkit-line-clamp': 2,
+    display: '-webkit-box',
+    '-webkit-box-orient': 'vertical',
   },
   icon: {
-    color: theme.palette.colors.text.lighter,
+    marginRight: theme.spacing(1),
+    color: theme.palette.colors.text.light,
     height: 24,
     width: 24,
     margin: theme.spacing(0),
@@ -100,7 +92,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 type IconProps = {
-  icon: OverridableComponent<SvgIconTypeMap<unknown, 'svg'>>;
+  icon?: OverridableComponent<SvgIconTypeMap<unknown, 'svg'>>;
   label: string;
 };
 
@@ -108,35 +100,85 @@ const InfoContent = ({ icon: Icon, label }: IconProps) => {
   const classes = useStyles();
   return (
     <Grid alignItems='center' className={classes.infoRoot} container direction='row' wrap='nowrap'>
-      <Icon className={classes.icon} />
-      <Typography className={classes.info} variant='h3'>
+      {Icon && <Icon className={classes.icon} />}
+      <Typography className={classes.info} variant='subtitle1'>
         {label}
       </Typography>
     </Grid>
   );
 };
+
 type ListItemProps = {
-  title: string;
-  link: string;
-  expired?: boolean;
-  img?: string;
-  imgAlt?: string;
-  imgContain?: string;
-  info?: IconProps[];
+  event?: Event;
+  news?: News;
+  jobpost?: JobPost;
+  imgContain?: boolean;
+  className?: string;
+  largeImg?: boolean;
 };
 
-function ListItem({ title, link, expired, img, imgAlt, imgContain, info }: ListItemProps) {
+function ListItem({ event, news, jobpost, imgContain = false, className, largeImg = false }: ListItemProps) {
   const classes = useStyles();
-  const src = img || TIHLDELOGO;
+  const item = useMemo(() => {
+    if (event) {
+      return {
+        title: event.title,
+        link: `${URLS.events}${event.id}/${urlEncode(event.title)}/`,
+        expired: event.expired,
+        img: event.image,
+        imgAlt: event.image_alt,
+      };
+    } else if (news) {
+      return {
+        title: news.title,
+        link: `${URLS.news}${news.id}/${urlEncode(news.title)}/`,
+        img: news.image,
+        imgAlt: news.image_alt,
+      };
+    } else if (jobpost) {
+      return {
+        title: jobpost.title,
+        link: `${URLS.jobposts}${jobpost.id}/${urlEncode(jobpost.title)}/`,
+        expired: jobpost.expired,
+        img: jobpost.image,
+        imgAlt: jobpost.image_alt,
+      };
+    }
+  }, [event, news, jobpost]);
+
+  const info = useMemo((): Array<IconProps> | undefined => {
+    if (event) {
+      return [{ label: formatDate(parseISO(event.start_date)), icon: DateIcon }];
+    } else if (news) {
+      return [{ label: news.header }];
+    } else if (jobpost) {
+      return [
+        { label: jobpost.company, icon: BusinessIcon },
+        { label: jobpost.location, icon: LocationIcon },
+        { label: formatDate(parseISO(jobpost.deadline)), icon: DateIcon },
+      ];
+    }
+  }, [event, news, jobpost]);
+
+  if (!item || !info) {
+    return null;
+  }
+
   return (
-    <MaterialListItem button className={classes.root} component={Link} to={link + urlEncode(title) + '/'}>
-      <img alt={imgAlt || title} className={classNames(classes.src, expired && classes.filter, imgContain && classes.imgContain)} src={src} />
+    <MaterialListItem button className={classNames(classes.root, className)} component={Link} to={item.link}>
+      <AspectRatioImg
+        alt={item.imgAlt || item.title}
+        className={classNames(classes.imgContainer, largeImg && classes.largeImg)}
+        imgClassName={item.expired ? classes.filter : ''}
+        imgContain={imgContain}
+        src={item.img}
+      />
       <Grid className={classes.content} container direction='column' wrap='nowrap'>
-        <Typography className={classNames(classes.title, expired && classes.expired)} variant='h2'>
-          <strong>{title}</strong>
+        <Typography className={classNames(classes.title, item.expired && classes.expired)} variant='h2'>
+          {item.title}
         </Typography>
-        {info?.map((item: IconProps, index: number) => (
-          <InfoContent icon={item.icon} key={index} label={item.label} />
+        {info?.map((infoItem, index: number) => (
+          <InfoContent icon={infoItem.icon} key={index} label={infoItem.label} />
         ))}
       </Grid>
     </MaterialListItem>

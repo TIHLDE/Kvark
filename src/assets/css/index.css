@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,700');
-
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto:wght@300;700;900&display=swap');
 
 * {
     padding: 0;
@@ -16,36 +15,9 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
-/* HEADER */
+/* LINKS */
 a {
     color: #009a3e;
-}
-
-/* MARKDOWN CUSTOM CSS */
-.renderer ul {
-    padding-left: 20px;
-}
-
-.renderer img {
-    max-width: 100%;
-    height: auto;
-    margin-block-end: 1em;
-}
-
-.renderer h3, h2, h1, p {
-    margin-block-end: 1em;
-    margin-block-start: 0;
-}
-
-pre {
-    padding: 16px;
-    background-color: whitesmoke;
-    overflow-x: auto;
-}
-
-p > code {
-    padding: 10px;
-    background-color: whitesmoke;
 }
 
 /* PULSE EFFECT */
@@ -84,11 +56,6 @@ p > code {
         -moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
         box-shadow: 0 0 0 0 rgba(204,169,44, 0);
     }
-}
-
-/** Sidebar **/
-.noScrollbar::-webkit-scrollbar { 
-    display: none; 
 }
 
 /** Landing page rain animation **/

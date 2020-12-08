@@ -83,17 +83,11 @@ const styles = (theme) => ({
     color: theme.palette.colors.tihlde.main,
     cursor: 'pointer',
   },
-  tooltip: {
-    top: '-75px !important',
-    zIndex: 10002,
-  },
 });
 
 const InfoContent = withStyles(styles)((props) => (
   <Grid alignItems='center' className={classNames(props.className, props.classes.info)} container direction='row' justify='flex-start' wrap='nowrap'>
-    <Tooltip classes={{ popper: props.classes.tooltip }} title={props.title}>
-      {props.icon}
-    </Tooltip>
+    <Tooltip title={props.title}>{props.icon}</Tooltip>
     <Typography className={props.icon ? props.classes.ml : ''} variant='subtitle1'>
       {props.label}
     </Typography>
@@ -130,7 +124,9 @@ const JobPostRenderer = (props) => {
           <Typography className={classNames(classes.title, classes.mb)} gutterBottom variant='h5'>
             <strong>{data.title}</strong>
           </Typography>
-          <MarkdownRenderer className={classes.mb} value={data.ingress || ''} />
+          <div className={classes.mb}>
+            <MarkdownRenderer value={data.ingress || ''} />
+          </div>
           <MarkdownRenderer value={data.body || ''} />
         </Paper>
       </div>

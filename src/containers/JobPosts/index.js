@@ -4,9 +4,6 @@ import PropTypes from 'prop-types';
 import { MuiThemeProvider as Theme } from '@material-ui/core/styles';
 import { errorTheme } from '../../theme';
 import Helmet from 'react-helmet';
-import URLS from '../../URLS';
-import { getFormattedDate } from '../../utils';
-import moment from 'moment';
 
 // Text
 import Text from '../../text/JobPostText';
@@ -22,10 +19,6 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 // Icons
-import DateIcon from '@material-ui/icons/DateRange';
-import LocationIcon from '@material-ui/icons/LocationOn';
-import BusinessIcon from '@material-ui/icons/Business';
-
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 import Banner from '../../components/layout/Banner';
@@ -191,9 +184,9 @@ function JobPosts(props) {
       <Helmet>
         <title>Karriere - TIHLDE</title>
       </Helmet>
+      <Banner title='Karriere' />
       {!isLoading && (
         <>
-          <Banner title='Karriere' />
           <div className={classes.root}>
             <div className={classes.wrapper}>
               <div className={classes.grid}>
@@ -205,20 +198,7 @@ function JobPosts(props) {
                       <div className={classes.list}>
                         <Pageination nextPage={getNextPage} page={nextPage}>
                           {jobPosts.map((jobPost) => (
-                            <ListItem
-                              expired={jobPost.expired}
-                              img={jobPost.image}
-                              imgAlt={jobPost.image_alt}
-                              imgContain
-                              info={[
-                                { label: jobPost.company, icon: BusinessIcon },
-                                { label: jobPost.location, icon: LocationIcon },
-                                { label: getFormattedDate(moment(jobPost.deadline, ['YYYY-MM-DD HH:mm'], 'nb')), icon: DateIcon },
-                              ]}
-                              key={jobPost.id}
-                              link={URLS.jobposts + ''.concat(jobPost.id, '/')}
-                              title={jobPost.title}
-                            />
+                            <ListItem imgContain jobpost={jobPost} key={jobPost.id} />
                           ))}
                           {jobPosts.length === 0 && <NoPostsIndicator />}
                         </Pageination>
