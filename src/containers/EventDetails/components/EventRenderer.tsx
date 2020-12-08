@@ -96,6 +96,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   content: {
     height: 'fit-content',
+    overflowX: 'auto',
     [theme.breakpoints.down('sm')]: {
       order: 1,
     },
@@ -103,9 +104,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   title: {
     color: theme.palette.colors.text.main,
     padding: theme.spacing(0, 3, 3, 0),
-  },
-  description: {
-    color: theme.palette.colors.text.light,
   },
   applyButton: {
     height: 50,
@@ -349,7 +347,7 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
             <strong>{event.title}</strong>
           </Typography>
           <Collapse in={view === Views.Info || Boolean(registration)}>
-            <MarkdownRenderer className={classes.description} value={event.description} />
+            <MarkdownRenderer value={event.description} />
           </Collapse>
           <Collapse in={view === Views.Apply && !registration} mountOnEnter unmountOnExit>
             {user && <EventRegistration event={event} setRegistration={setRegistration} user={user} />}

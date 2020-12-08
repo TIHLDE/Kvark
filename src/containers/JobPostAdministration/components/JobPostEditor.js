@@ -9,7 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 
 // Project components
-import TextEditor from '../../../components/inputs/TextEditor';
+import MarkdownEditor from '../../../components/inputs/MarkdownEditor';
 
 const styles = () => ({
   root: {
@@ -71,7 +71,7 @@ function JobPostEditor(props) {
               value={jobPost.location || ''}
               variant='filled'
             />
-            <TextEditor className={classes.textEditor} onChange={(e) => setJobPost({ ...jobPost, body: e })} value={jobPost.body || ''} />
+            <MarkdownEditor onChange={(e) => setJobPost({ ...jobPost, body: e.target.value })} value={jobPost.body || ''} variant='filled' />
             <Divider className={classes.margin} />
             <TextField
               className={classes.field}

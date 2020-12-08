@@ -59,9 +59,6 @@ const styles = (theme) => ({
     paddingLeft: 0,
     paddingTop: 0,
   },
-  description: {
-    color: theme.palette.colors.text.light,
-  },
   content: {
     height: 'fit-content',
     '@media only screen and (max-width: 800px)': {
@@ -143,7 +140,7 @@ const NewsRenderer = (props) => {
           <Typography className={classes.header} variant='h6'>
             <strong>{header}</strong>
           </Typography>
-          <MarkdownRenderer className={classes.description} value={body} />
+          <MarkdownRenderer value={body} />
         </Paper>
       </div>
     </div>

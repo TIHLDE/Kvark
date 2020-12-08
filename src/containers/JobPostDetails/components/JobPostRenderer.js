@@ -124,7 +124,9 @@ const JobPostRenderer = (props) => {
           <Typography className={classNames(classes.title, classes.mb)} gutterBottom variant='h5'>
             <strong>{data.title}</strong>
           </Typography>
-          <MarkdownRenderer className={classes.mb} value={data.ingress || ''} />
+          <div className={classes.mb}>
+            <MarkdownRenderer value={data.ingress || ''} />
+          </div>
           <MarkdownRenderer value={data.body || ''} />
         </Paper>
       </div>
