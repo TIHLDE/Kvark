@@ -1,4 +1,3 @@
-![Lint, test and build](https://github.com/tihlde/Kvark/workflows/Lint,%20test%20and%20build/badge.svg)
 ## Description
 
 Comments/issues/screenshots:

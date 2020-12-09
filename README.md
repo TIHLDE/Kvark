@@ -1,51 +1,90 @@
-# TIHLDEs nettside - Kvark 
-[![Vercel](./src/assets/icons/vercel_background.svg)](https://vercel.com/?utm_source=kvark&utm_campaign=oss)
-
-![Lint, test and build](https://github.com/tihlde/Kvark/workflows/Lint,%20test%20and%20build/badge.svg)
-
-## Contents
-1. [Basic info](#basic-info)
-2. [Getting started](#getting-started)
-3. [Rules](#rules)
+<br/>
+<p align="center">
+    <a href="https://tihlde.org" target="_blank">
+        <img width="50%" src="https://i.ibb.co/6YpLt8m/TIHLDE-LOGO-BL.png" alt="TIHLDE logo">
+    </a>
+</p>
 
 
-### Basic info
-This website uses the following technologies
+<h1 align="center">KVARK</h1>
 
-* Yarn (Package-manager)
-* ReactJs
-* Typescript
-* Material-UI (CSS-framework)
+<h4 align="center">
+    TIHLDEs open source frontend for <a href="https://tihlde.org">tihlde.org</a> - the organizations main web site. 
+</h4>
 
-### Getting started
+<br/>
 
-#### Installing
-This project uses yarn, so all you have to do is to clone, install and run.
+<p align="CENTER">
+<a href="https://github.com/tihlde/Kvark/actions"><img alt="Actions Status" src="https://github.com/tihlde/Kvark/workflows/Lint,%20test%20and%20build/badge.svg?label=github-actions"></a>
+<a href="https://github.com/psf/black/blob/master/LICENSE"><img alt="License: MIT" src="https://black.readthedocs.io/en/stable/_static/license.svg"></a>
+<a href="https://github.com/tihlde/Kvark/commits/master" target="_blank">
+    <img src="https://img.shields.io/github/commit-activity/y/tihlde/kvark.svg" alt="GitHub commit activity">
+</a>
+<a href="https://github.com/tihlde/Kvark/graphs/contributors" target="_blank">
+    <img src="https://img.shields.io/github/contributors-anon/tihlde/kvark.svg" alt="GitHub contributors">
+</a>
+</p>
+
+<br />
+
+<p align="CENTER">
+  <a href="https://vercel.com/?utm_source=kvark&utm_campaign=oss"><img alt="Vercel" src="./src/assets/icons/vercel_background.svg"></a>
+</p>
+
+<br/>
+<p align="center">
+    <img width="80%" src="https://i.ibb.co/CtHxCph/Skjermbilde-2020-10-31-224329.png" alt="TIHLDEs nettside">   
+</p>
+<br/>
+
+
+## 🚀 Getting started
+
+Kvark requires Node and Yarn.
+ 
 
 ```
-git clone git@github.com:tihlde/Kvark.git
+# Setup a local repository
+git clone https://github.com/tihlde/Kvark.git
 cd Kvark
-yarn install
-yarn start 
+
+# If this is your first time running the application
+yarn
+
+# Thats it! 
 ```
 
-#### API URL Setup
-To run a local version of the site you have to first setup the URL
-for the API. To do so, create a _.env.development_ file in the root-directory
-and write the following
+From now on it's enough to run `yarn start` to run the application.
+
+
+#### ⚙ Configuration
+The application requires configuration of some environment variables in order to run. 
+These should be put in a _.env_ file in the repository root.
+
 ```
 REACT_APP_API_URL=YOUR_API_URL_HERE
 ```
-Normally there is a hosted API for development up and running on Heroku. This is
-so development on the page should go faster. Ask the developers of this site for
-the API-URL.
 
-### Rules
-These rules are to be updated
+## ✅ Test the application
+The tests can be run by running `yarn test`.
 
-* All strings should be created with single-quotes
-* The main _/components_ folder should only contain DUMMY-COMPONENTS. These components are shared between
-all the different pages, and should not implement page-specific logic. The components should be so dumb
-they can be moved to a different project and still work.
-* All pages should be placed in the _/containers_ and should be inside their own folder.
-* All page-specific components should be places in a separate _/components_ folder. For example _/containers/LogIn/components/_
+## ❤ Contributing 
+The Kvark frontend is an open source project build on voluntary work. 
+We are committed to a fully transparent development process 
+and highly appreciate any contributions. 
+Whether you are helping us fixing bugs, proposing new feature, improving our documentation 
+or spreading the word - **we would love to have you as part of the community**.
+
+## 🤝  Found a bug? Missing a specific feature?
+Feel free to file a new issue with a respective title and description 
+on the the [tihlde/Kvark](https://github.com/tihlde/Kvark/issues) repository. 
+If you already found a solution to your problem, we would love to review your pull request!
+Please format your code with prettier, you can use `yarn format` to fix fixable problems.
+If you open the workspace-file in VSCode, the code will be formatted automatically on save.
+
+## 📫 Contact
+Feel free to send us a message on our official [slack channel](https://tihlde.slack.com/archives/C01CJ0EQCFM). 
+Of course you can always reach out to us directly at index@tihlde.org.
+
+## 📘 Licence 
+The code in this project is licensed under MIT license.

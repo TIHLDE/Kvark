@@ -51,7 +51,7 @@ const styles = (theme) => ({
     transition: '3s',
     background: theme.palette.colors.gradient.main.top,
     [theme.breakpoints.down('sm')]: {
-      height: 250,
+      height: 230,
     },
     [theme.breakpoints.down('xs')]: {
       height: 200,

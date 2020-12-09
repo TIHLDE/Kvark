@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useUser } from '../../../api/hooks/User';
-import URLS from '../../../URLS';
-import { getFormattedDate } from '../../../utils';
-import moment from 'moment';
 
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-
-// Icons
-import DateIcon from '@material-ui/icons/DateRange';
-import LocationIcon from '@material-ui/icons/LocationOn';
 
 // Project componets
 import ListItem from '../../../components/miscellaneous/ListItem';
@@ -40,20 +33,7 @@ function ProfileEvents(props) {
       {events &&
         events.map((event) => {
           if (!event.expired) {
-            return (
-              <ListItem
-                expired={event.expired}
-                img={event.image}
-                imgAlt={event.image_alt}
-                info={[
-                  { label: getFormattedDate(moment(event.start_date, ['YYYY-MM-DD HH:mm'], 'nb')), icon: DateIcon },
-                  { label: event.location, icon: LocationIcon },
-                ]}
-                key={event.id}
-                link={URLS.events + ''.concat(event.id, '/')}
-                title={event.title}
-              />
-            );
+            return <ListItem event={event} key={event.id} />;
           }
           return '';
         })}

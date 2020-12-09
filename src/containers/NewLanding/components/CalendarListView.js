@@ -1,18 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import URLS from '../../../URLS';
-import { getFormattedDate } from '../../../utils';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
 // Material-UI
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
-
-// Icons
-import DateIcon from '@material-ui/icons/DateRange';
-import LocationIcon from '@material-ui/icons/LocationOn';
 
 // Project componets
 import ListItem from '../../../components/miscellaneous/ListItem';
@@ -58,20 +52,7 @@ function CalendarListView({ classes, events, isLoading }) {
         <React.Fragment>
           {events.map((event, index) => {
             if (index < eventsToDisplay) {
-              return (
-                <ListItem
-                  expired={event.expired}
-                  img={event.image}
-                  imgAlt={event.image_alt}
-                  info={[
-                    { label: getFormattedDate(moment(event.start_date, ['YYYY-MM-DD HH:mm'], 'nb')), icon: DateIcon },
-                    { label: event.location, icon: LocationIcon },
-                  ]}
-                  key={event.id}
-                  link={URLS.events + ''.concat(event.id, '/')}
-                  title={event.title}
-                />
-              );
+              return <ListItem event={event} key={event.id} />;
             }
             return '';
           })}

@@ -67,9 +67,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   cardContent: {
     padding: theme.spacing(1, 2),
     display: 'flex',
-    boxShadow: '0px 2px 4px ' + theme.palette.colors.border.main + '88',
-    borderRadius: theme.shape.borderRadius,
-    marginBottom: 3,
+    marginBottom: 2,
   },
   cardUserName: {
     flexGrow: 1,
@@ -83,7 +81,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.colors.text.light,
   },
   cardButtonLabel: {
-    marginRight: -10,
+    marginRight: theme.spacing(-1),
   },
   cardButtonContainer: {
     display: 'flex',
@@ -114,7 +112,7 @@ const ParticipantCard = ({ user, markAttended }: ParticipantCardProps) => {
     markAttended(user.user_info.user_id, e.target.checked);
   };
   return (
-    <div className={classes.cardContent}>
+    <Paper className={classes.cardContent}>
       <div className={classes.cardUserName}>
         <Typography className={classes.cardText}>{user.user_info.first_name + ' ' + user.user_info.last_name}</Typography>
       </div>
@@ -127,7 +125,7 @@ const ParticipantCard = ({ user, markAttended }: ParticipantCardProps) => {
           />
         </div>
       </div>
-    </div>
+    </Paper>
   );
 };
 

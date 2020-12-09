@@ -5,8 +5,8 @@ import { Event } from 'types/Types';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
@@ -18,10 +18,14 @@ import EventRenderer from 'containers/EventDetails/components/EventRenderer';
 
 const useStyles = makeStyles((theme: Theme) => ({
   appBar: {
-    position: 'relative',
+    margin: 0,
+    padding: theme.spacing(2),
   },
-  title: {
-    marginLeft: theme.spacing(2),
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.colors.text.main,
   },
   container: {
     padding: theme.spacing(2),
@@ -54,20 +58,16 @@ const EventPreview = ({ className, getEvent }: EventPreviewProps) => {
         Forhåndsvis
       </Button>
       {isOpen && event && (
-        <Dialog fullWidth maxWidth='lg' onClose={() => setIsOpen(false)} open={isOpen} style={{ zIndex: 20000 }} TransitionComponent={Transition}>
-          <AppBar className={classes.appBar}>
-            <Toolbar>
-              <IconButton aria-label='close' color='inherit' edge='start' onClick={() => setIsOpen(false)}>
-                <CloseIcon />
-              </IconButton>
-              <Typography className={classes.title} variant='h3'>
-                Forhåndsvisning
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          <div className={classes.container}>
+        <Dialog fullWidth maxWidth='lg' onClose={() => setIsOpen(false)} open={isOpen} TransitionComponent={Transition}>
+          <DialogTitle className={classes.appBar} disableTypography>
+            <Typography variant='h3'>Forhåndsvisning</Typography>
+            <IconButton aria-label='close' className={classes.closeButton} color='inherit' edge='start' onClick={() => setIsOpen(false)}>
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+          <DialogContent className={classes.container}>
             <EventRenderer event={event} preview />
-          </div>
+          </DialogContent>
         </Dialog>
       )}
     </>

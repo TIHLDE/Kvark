@@ -4,7 +4,6 @@ import { getUserStudyShort } from 'utils';
 
 // Material-ui
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
@@ -17,10 +16,11 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 
 // Project components
 import Dialog from 'components/layout/Dialog';
+import Paper from 'components/layout/Paper';
 
 const useStyles = makeStyles((theme: Theme) => ({
   content: {
-    padding: 20,
+    padding: theme.spacing(2),
     display: 'flex',
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   arrowButton: {
-    marginRight: 8,
+    marginRight: theme.spacing(1),
     '&:hover': {
       cursor: 'pointer',
       color: theme.palette.secondary.main,
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   button: {
     width: '100%',
-    marginTop: 20,
+    marginTop: theme.spacing(2),
   },
   lightText: {
     color: theme.palette.colors.text.light,
@@ -90,7 +90,7 @@ const Participant = ({ registration, removeUserFromEvent, updateRegistration, sh
   };
 
   return (
-    <Card className={classes.content} elevation={2}>
+    <Paper className={classes.content}>
       <Dialog
         confirmText='Ja, jeg er sikker'
         contentText={`Er du sikker på at du vil fjerne ${userInfo.first_name} ${userInfo.last_name} fra arrangementet?`}
@@ -125,7 +125,7 @@ const Participant = ({ registration, removeUserFromEvent, updateRegistration, sh
           <Delete className={classes.deleteButton} onClick={() => setShowModal(true)} />
         </div>
       </div>
-    </Card>
+    </Paper>
   );
 };
 

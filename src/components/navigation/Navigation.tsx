@@ -14,7 +14,7 @@ import { getCookie, setCookie } from 'api/cookie';
 import { WARNINGS_READ } from 'settings';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Hidden from '@material-ui/core/Hidden';
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: theme.palette.colors.gradient.main.top,
     color: theme.palette.colors.text.main,
     flexGrow: 1,
-    zIndex: 10001,
+    zIndex: theme.zIndex.drawer + 1,
     transition: '0.4s',
   },
   fancyRoot: {
@@ -97,7 +97,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   sidebar: {
-    zIndex: 100,
     minWidth: 200,
     width: '100vw',
     overflow: 'hidden',
@@ -294,6 +293,7 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, maxWidth, ba
   const { isAuthenticated } = useAuth();
   const { getUserData } = useUser();
   const { getWarnings } = useMisc();
+  const theme = useTheme();
   const [showSidebar, setShowSidebar] = useState(false);
   const [warning, setWarning] = useState<Warning | null>(null);
   const [userData, setUserData] = useState<User | null>(null);
@@ -396,7 +396,7 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, maxWidth, ba
               </IconButton>
             </div>
           </Hidden>
-          <Drawer anchor='top' classes={{ paper: classes.sidebar }} onClose={toggleSidebar} open={showSidebar}>
+          <Drawer anchor='top' classes={{ paper: classes.sidebar }} onClose={toggleSidebar} open={showSidebar} style={{ zIndex: theme.zIndex.drawer - 1 }}>
             <Sidebar />
           </Drawer>
         </Toolbar>
