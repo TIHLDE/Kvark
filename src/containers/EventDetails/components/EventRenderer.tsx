@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Event, User, Registration } from 'types/Types';
 import { Groups } from 'types/Enums';
 import URLS from 'URLS';
-import { parseISO } from 'date-fns';
+import { parseISO, formatDistanceStrict } from 'date-fns';
+import nb from 'date-fns/locale/nb';
 import { formatDate } from 'utils';
 import QRCode from 'qrcode.react';
 import { Link } from 'react-router-dom';
@@ -12,6 +13,7 @@ import { useMisc } from 'api/hooks/Misc';
 import { useEvent } from 'api/hooks/Event';
 import { useUser, HavePermission } from 'api/hooks/User';
 import { useSnackbar } from 'api/hooks/Snackbar';
+import { useInterval } from 'api/hooks/Utils';
 
 // Material UI Components
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
@@ -56,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   details: {
     padding: theme.spacing(1, 2),
-    width: 300,
+    width: 325,
     [theme.breakpoints.down('md')]: {
       order: 0,
       maxWidth: 'none',
@@ -102,6 +104,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   applyButton: {
     height: 50,
     fontWeight: 'bold',
+    maxWidth: 325,
+    [theme.breakpoints.down('md')]: {
+      maxWidth: 'none',
+    },
   },
   qrcode: {
     padding: theme.spacing(4, 3),
@@ -154,12 +160,21 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
   const [registration, setRegistration] = useState<Registration | null>(null);
   const [view, setView] = useState<Views>(Views.Info);
   const [signOffDialogOpen, setSignOffDialogOpen] = useState(false);
-  const startDate = parseISO(event.start_date);
-  const endDate = parseISO(event.end_date);
-  const startRegistrationDate = parseISO(event.start_registration_at);
-  const endRegistrationDate = parseISO(event.end_registration_at);
-  const signOffDeadlineDate = parseISO(event.sign_off_deadline);
-  const now = new Date();
+  const startDate = useMemo(() => parseISO(event.start_date), [event.start_date]);
+  const endDate = useMemo(() => parseISO(event.end_date), [event.end_date]);
+  const startRegistrationDate = useMemo(() => parseISO(event.start_registration_at), [event.start_registration_at]);
+  const endRegistrationDate = useMemo(() => parseISO(event.end_registration_at), [event.end_registration_at]);
+  const signOffDeadlineDate = useMemo(() => parseISO(event.sign_off_deadline), [event.sign_off_deadline]);
+  const [timeNow, setTimeNow] = useState(new Date());
+
+  useEffect(() => {
+    if (startRegistrationDate > new Date()) {
+      const id = setTimeout(() => setTimeNow(new Date()), startRegistrationDate.getTime() - new Date().getTime());
+      return () => {
+        clearTimeout(id);
+      };
+    }
+  }, [startRegistrationDate]);
 
   useEffect(() => {
     if (!preview) {
@@ -191,6 +206,16 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
     }
   };
 
+  const CountdownButton = () => {
+    const [message, setMessage] = useState('Påmelding åpner om ' + formatDistanceStrict(startRegistrationDate, new Date(), { locale: nb }));
+    useInterval(() => setMessage('Påmelding åpner om ' + formatDistanceStrict(startRegistrationDate, new Date(), { locale: nb })), 1000);
+    return (
+      <Button className={classes.applyButton} color='primary' disabled fullWidth variant='contained'>
+        {message}
+      </Button>
+    );
+  };
+
   const ApplyButton = () => {
     if (preview || !event.sign_up) {
       return <></>;
@@ -202,12 +227,8 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
           </Typography>
         </Paper>
       );
-    } else if (startRegistrationDate > now) {
-      return (
-        <Button className={classes.applyButton} color='primary' disabled fullWidth variant='contained'>
-          Påmelding har ikke startet
-        </Button>
-      );
+    } else if (startRegistrationDate > timeNow) {
+      return <CountdownButton />;
     } else if (!user) {
       return (
         <Button
@@ -242,7 +263,7 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
               />
             </>
           )}
-          {signOffDeadlineDate > now ? (
+          {signOffDeadlineDate > timeNow ? (
             <Button className={classes.applyButton} fullWidth onClick={() => setSignOffDialogOpen(true)} variant='outlined'>
               Meld deg av
             </Button>
@@ -253,7 +274,7 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
           )}
         </Paper>
       );
-    } else if (endRegistrationDate < now) {
+    } else if (endRegistrationDate < timeNow) {
       return <></>;
     } else if (view === Views.Apply) {
       return (
@@ -312,12 +333,12 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
                 <Paper className={classes.details} noPadding>
                   <DetailContent info={`${event.list_count}/${event.limit}`} title='Påmeldte:' />
                   <DetailContent info={String(event.waiting_list_count)} title='Venteliste:' />
-                  {registration && now < signOffDeadlineDate ? (
+                  {registration && timeNow < signOffDeadlineDate ? (
                     <DetailContent info={formatDate(signOffDeadlineDate)} title='Avmeldingsfrist:' />
                   ) : (
                     <>
-                      {startRegistrationDate > now && <DetailContent info={formatDate(startRegistrationDate)} title='Påmeldingsstart:' />}
-                      {startRegistrationDate < now && now < endRegistrationDate && (
+                      {startRegistrationDate > timeNow && <DetailContent info={formatDate(startRegistrationDate)} title='Påmeldingsstart:' />}
+                      {startRegistrationDate < timeNow && timeNow < endRegistrationDate && (
                         <DetailContent info={formatDate(endRegistrationDate)} title='Påmeldingsslutt:' />
                       )}
                     </>
