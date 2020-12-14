@@ -109,6 +109,7 @@ export interface RegistrationPriority {
 
 export interface Registration {
   allow_photo: boolean;
+  answers: Array<TextFieldSubmission | SelectFieldSubmission>;
   has_attended: boolean;
   is_on_wait: boolean;
   registration_id: number;
@@ -146,6 +147,18 @@ export interface SelectFormField extends FormField {
 export interface SelectFormFieldOption {
   id?: string;
   text: string;
+}
+
+export interface FieldSubmission {
+  field: string;
+}
+
+export interface TextFieldSubmission extends FieldSubmission {
+  text_answer: string;
+}
+
+export interface SelectFieldSubmission extends FieldSubmission {
+  selected_options: Array<string>;
 }
 
 export interface CompaniesEmail {

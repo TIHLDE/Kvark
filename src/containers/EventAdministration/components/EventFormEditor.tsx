@@ -67,6 +67,22 @@ const EventFormEditor = ({ eventId }: EventFormEditorProps) => {
           },
         ],
       },
+      {
+        id: 'field 3 id',
+        title: 'Nr 3',
+        type: FormFieldType.MULTIPLE_SELECT,
+        required: true,
+        options: [
+          {
+            id: 'option id 3.1',
+            text: '3.1',
+          },
+          {
+            id: 'option id 3.2',
+            text: '3.2',
+          },
+        ],
+      },
     ],
   };
 
