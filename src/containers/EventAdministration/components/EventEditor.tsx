@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
+import classnames from 'classnames';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { Category, Event, EventRequired, RegistrationPriority } from 'types/Types';
 import { useEvent } from 'api/hooks/Event';
@@ -7,8 +8,7 @@ import { useSnackbar } from 'api/hooks/Snackbar';
 import { parseISO } from 'date-fns';
 
 // Material-UI
-import { makeStyles, Theme, MuiThemeProvider as ErrorTheme } from '@material-ui/core/styles';
-import { errorTheme } from 'theme';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -46,11 +46,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     overflow: 'hidden',
   },
   expansionPanel: {
-    border: '1px solid ' + theme.palette.colors.border.main,
-    background: theme.palette.colors.background.smoke,
+    border: '1px solid ' + theme.palette.divider,
+    background: theme.palette.background.smoke,
   },
   switch: {
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
+  },
+  red: {
+    color: theme.palette.error.main,
+    borderColor: theme.palette.error.main,
+    '&:hover': {
+      borderColor: theme.palette.error.light,
+    },
   },
 }));
 
@@ -397,14 +404,16 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
           </Button>
           {Boolean(eventId) && (
             <div className={classes.grid}>
-              <ErrorTheme theme={errorTheme}>
-                <Button className={classes.margin} color='primary' disabled={isLoading} onClick={() => setCloseEventDialogOpen(true)} variant='outlined'>
-                  Steng
-                </Button>
-                <Button className={classes.margin} color='primary' disabled={isLoading} onClick={() => setDeleteEventDialogOpen(true)} variant='outlined'>
-                  Slett
-                </Button>
-              </ErrorTheme>
+              <Button className={classnames(classes.margin, classes.red)} disabled={isLoading} onClick={() => setCloseEventDialogOpen(true)} variant='outlined'>
+                Steng
+              </Button>
+              <Button
+                className={classnames(classes.margin, classes.red)}
+                disabled={isLoading}
+                onClick={() => setDeleteEventDialogOpen(true)}
+                variant='outlined'>
+                Slett
+              </Button>
             </div>
           )}
         </Grid>

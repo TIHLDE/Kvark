@@ -28,22 +28,21 @@ const useStyles = makeStyles((theme: Theme) => ({
     gridTemplateColumns: '1fr 1fr',
   },
   chipYes: {
-    color: theme.palette.colors.constant.white,
-    backgroundColor: theme.palette.colors.status.green,
-    borderColor: theme.palette.colors.status.green,
+    color: theme.palette.common.white,
+    backgroundColor: theme.palette.success.dark,
+    borderColor: theme.palette.success.dark,
     '&:hover': {
-      color: theme.palette.colors.constant.white,
-      backgroundColor: theme.palette.colors.status.green + 'bb',
-      borderColor: theme.palette.colors.status.green + 'bb',
+      color: theme.palette.common.white,
+      backgroundColor: theme.palette.success.main,
+      borderColor: theme.palette.success.main,
     },
   },
   chipNo: {
-    color: theme.palette.colors.status.red,
-    backgroundColor: theme.palette.colors.constant.white,
-    borderColor: theme.palette.colors.status.red,
+    color: theme.palette.error.main,
+    borderColor: theme.palette.error.main,
     '&:hover': {
-      color: theme.palette.colors.status.red,
-      borderColor: theme.palette.colors.status.red,
+      color: theme.palette.error.light,
+      borderColor: theme.palette.error.light,
     },
   },
   mr: {

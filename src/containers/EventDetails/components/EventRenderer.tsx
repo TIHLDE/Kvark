@@ -73,11 +73,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   detailTitle: {
     marginRight: theme.spacing(0.5),
     fontWeight: 'bold',
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
   detailInfo: {
     textAlign: 'center',
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
   waitlistContainer: {
     margin: `${theme.spacing(1)}px auto`,
@@ -85,7 +85,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(1),
   },
   redText: {
-    color: theme.palette.colors.status.red,
+    color: theme.palette.error.main,
   },
   content: {
     height: 'fit-content',
@@ -95,7 +95,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   title: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
     padding: theme.spacing(0, 3, 3, 0),
     fontSize: '2.6rem',
   },
@@ -234,9 +234,9 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
                 Du har plass på arrangementet! Bruk QR-koden for å komme raskere inn.
               </Typography>
               <QRCode
-                bgColor={theme.palette.colors.background.light}
+                bgColor={theme.palette.background.paper}
                 className={classes.qrcode}
-                fgColor={theme.palette.colors.text.main}
+                fgColor={theme.palette.text.primary}
                 size={1000}
                 value={user.user_id}
               />

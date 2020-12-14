@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   header: {
     display: 'flex',
     justifyContent: 'space-between',
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
     padding: theme.spacing(1, 1, 1, 2),
     alignItems: 'center',
   },
@@ -40,7 +40,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   drawerTop: theme.mixins.toolbar,
   drawerPaper: {
     width: theme.spacing(35),
-    background: theme.palette.colors.background.light,
     display: 'grid',
     gridTemplateRows: 'auto 1fr',
     overflow: 'hidden',

@@ -54,7 +54,7 @@ const styles = (theme) => ({
     marginBottom: 10,
   },
   header: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
   progress: {
     position: 'absolute',
@@ -106,7 +106,7 @@ function LogIn(props) {
   };
 
   return (
-    <Navigation fancyNavbar whitesmoke>
+    <Navigation fancyNavbar>
       <Helmet>
         <title>Logg inn - TIHLDE</title>
       </Helmet>

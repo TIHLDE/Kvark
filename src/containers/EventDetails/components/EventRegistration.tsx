@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   icon: {
     marginRight: theme.spacing(1),
-    color: theme.palette.colors.text.lighter,
+    color: theme.palette.text.secondary,
   },
   listItem: {
     display: 'flex',

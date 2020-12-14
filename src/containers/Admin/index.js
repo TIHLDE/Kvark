@@ -64,7 +64,7 @@ function Admin(props) {
   const { classes } = props;
 
   return (
-    <Navigation fancyNavbar whitesmoke>
+    <Navigation fancyNavbar>
       <Helmet>
         <title>Admin - TIHLDE</title>
       </Helmet>

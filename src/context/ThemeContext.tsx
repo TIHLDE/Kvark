@@ -1,54 +1,66 @@
-import React, { useState, useEffect, useContext, createContext, ReactNode } from 'react';
-import { ThemeType } from 'types/Enums';
+import React, { useCallback, useState, useLayoutEffect, useContext, createContext, ReactNode } from 'react';
 import { getCookie, setCookie } from 'api/cookie';
-import { getTheme } from '../theme';
-import { Theme, MuiThemeProvider } from '@material-ui/core/styles';
+import { getTheme, themes, ThemeTypes } from '../theme';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
+const THEME_COOKIE = 'theme-cookie';
+
 interface ContextProps {
-  get: Theme;
-  getEnum: () => ThemeType;
-  set: (n: ThemeType | undefined) => void;
+  getThemeFromStorage: () => ThemeTypes;
+  set: (n: ThemeTypes | undefined) => void;
 }
 
 const ThemeContext = createContext<ContextProps | undefined>(undefined);
 
 const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const [useLightTheme, setUseLightTheme] = useState(!prefersDarkMode);
-  const updateTheme = (newThemeName: ThemeType | undefined) => {
-    if (newThemeName !== undefined) {
-      setUseLightTheme(newThemeName === ThemeType.AUTOMATIC ? !prefersDarkMode : newThemeName === ThemeType.LIGHT);
-      setCookie(ThemeType.KEY, newThemeName);
+  const [selectedTheme, setSelectedTheme] = useState<ThemeTypes>('automatic');
+
+  const getThemeType = useCallback((name: ThemeTypes | string | undefined) => {
+    if (themes.includes(name as ThemeTypes)) {
+      return name as ThemeTypes;
     } else {
-      setUseLightTheme(!prefersDarkMode);
-      setCookie(ThemeType.KEY, ThemeType.AUTOMATIC);
+      return undefined;
     }
-  };
+  }, []);
 
-  const getEnum = (): ThemeType => {
-    const cookieValue = getCookie(ThemeType.KEY);
-    if (cookieValue === ThemeType.AUTOMATIC || cookieValue === ThemeType.LIGHT || cookieValue === ThemeType.DARK) {
-      return cookieValue;
+  const updateTheme = useCallback(
+    (newTheme: ThemeTypes | string | undefined) => {
+      const value = getThemeType(newTheme);
+      if (value !== undefined) {
+        setSelectedTheme(value);
+        setCookie(THEME_COOKIE, value);
+      } else {
+        setSelectedTheme('automatic');
+        setCookie(THEME_COOKIE, 'automatic');
+      }
+    },
+    [getThemeType],
+  );
+
+  const getThemeFromStorage = useCallback((): ThemeTypes => {
+    const value = getThemeType(getCookie(THEME_COOKIE));
+    if (value !== undefined) {
+      return value;
     } else {
-      setCookie(ThemeType.KEY, ThemeType.AUTOMATIC);
-      return ThemeType.AUTOMATIC;
+      setCookie(THEME_COOKIE, 'automatic');
+      return 'automatic';
     }
-  };
+  }, [getThemeType]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => updateTheme(getCookie(ThemeType.KEY) as ThemeType), [prefersDarkMode]);
+  const themeStore = { getThemeFromStorage: getThemeFromStorage, set: updateTheme };
 
-  const themeStore = { get: getTheme(useLightTheme), getEnum: getEnum, set: updateTheme };
+  useLayoutEffect(() => updateTheme(getThemeFromStorage()), [getThemeFromStorage, updateTheme]);
 
   return (
     <ThemeContext.Provider value={themeStore}>
-      <MuiThemeProvider theme={getTheme(useLightTheme)}>{children}</MuiThemeProvider>
+      <MuiThemeProvider theme={getTheme(selectedTheme, prefersDarkMode)}>{children}</MuiThemeProvider>
     </ThemeContext.Provider>
   );
 };
 
-const useTheme = () => {
+const useThemeSettings = () => {
   const context = useContext(ThemeContext);
   if (context === undefined) {
     throw new Error('useTheme must be used within a ThemeProvider');
@@ -56,4 +68,4 @@ const useTheme = () => {
   return context;
 };
 
-export { ThemeProvider, useTheme };
+export { ThemeProvider, useThemeSettings };

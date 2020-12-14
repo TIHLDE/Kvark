@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { MuiThemeProvider as Theme } from '@material-ui/core/styles';
-import { errorTheme } from '../../theme';
 import Helmet from 'react-helmet';
 
 // Text
@@ -99,7 +97,11 @@ const styles = (theme) => ({
   },
   resetBtn: {
     marginTop: 10,
-    borderRadius: theme.shape.borderRadius,
+    color: theme.palette.error.main,
+    borderColor: theme.palette.error.main,
+    '&:hover': {
+      borderColor: theme.palette.error.light,
+    },
   },
 });
 
@@ -180,7 +182,7 @@ function JobPosts(props) {
   };
 
   return (
-    <Navigation fancyNavbar whitesmoke>
+    <Navigation fancyNavbar>
       <Helmet>
         <title>Karriere - TIHLDE</title>
       </Helmet>
@@ -221,11 +223,9 @@ function JobPosts(props) {
                       </Button>
                     </form>
                     <Divider className={classes.mt} />
-                    <Theme theme={errorTheme}>
-                      <Button className={classes.resetBtn} color='primary' fullWidth onClick={resetFilters} variant='outlined'>
-                        {Text.reset}
-                      </Button>
-                    </Theme>
+                    <Button className={classes.resetBtn} color='primary' fullWidth onClick={resetFilters} variant='outlined'>
+                      {Text.reset}
+                    </Button>
                   </Paper>
                 </div>
               </div>

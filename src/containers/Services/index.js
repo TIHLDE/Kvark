@@ -55,7 +55,7 @@ function Services(props) {
   const { classes } = props;
 
   return (
-    <Navigation fancyNavbar whitesmoke>
+    <Navigation fancyNavbar>
       <Helmet>
         <title>Tjenester - TIHLDE</title>
       </Helmet>

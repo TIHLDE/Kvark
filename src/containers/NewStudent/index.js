@@ -40,7 +40,7 @@ const styles = (theme) => ({
   },
   bottomContent: {
     marginTop: 50,
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
   infocard: {
     '@media only screen and (max-width: 600px)': {
@@ -65,7 +65,7 @@ const styles = (theme) => ({
 function NewStudent(props) {
   const { classes } = props;
   return (
-    <Navigation fancyNavbar whitesmoke>
+    <Navigation fancyNavbar>
       <Helmet>
         <title>Ny student - TIHLDE</title>
       </Helmet>

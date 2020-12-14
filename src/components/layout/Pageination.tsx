@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
     padding: theme.spacing(1),
-    backgroundColor: theme.palette.colors.background.light,
+    backgroundColor: theme.palette.background.paper,
   },
   fullWidth: {
     width: '100%',

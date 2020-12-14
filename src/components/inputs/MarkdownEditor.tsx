@@ -22,17 +22,15 @@ const useStyles = makeStyles((theme) => ({
   dialogHeader: {
     margin: 0,
     padding: theme.spacing(2),
-    background: theme.palette.colors.background.smoke,
   },
   dialogContent: {
     padding: theme.spacing(2),
-    background: theme.palette.colors.background.main,
   },
   closeButton: {
     position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
 }));
 

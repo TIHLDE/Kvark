@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: '0 auto',
   },
   header: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
     paddingLeft: theme.spacing(2),
   },
   preview: {
@@ -100,7 +100,7 @@ const EventAdministration = () => {
   };
 
   return (
-    <Navigation maxWidth={false} noFooter whitesmoke>
+    <Navigation maxWidth={false} noFooter>
       <SidebarList
         expiredItems={expiredItems}
         fetchExpired={fetchExpired}

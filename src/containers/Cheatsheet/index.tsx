@@ -158,7 +158,7 @@ const Cheetsheet = () => {
   };
 
   return (
-    <Navigation banner={<Banner text={`${getStudy()} - ${getClass()}. klasse`} title='Kokeboka' />} fancyNavbar whitesmoke>
+    <Navigation banner={<Banner text={`${getStudy()} - ${getClass()}. klasse`} title='Kokeboka' />} fancyNavbar>
       <Helmet>
         <title>Kokeboka - TIHLDE</title>
       </Helmet>

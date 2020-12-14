@@ -1,139 +1,81 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
+// Icons
+import DarkIcon from '@material-ui/icons/Brightness2Outlined';
+import AutomaticIcon from '@material-ui/icons/DevicesOutlined';
+import LightIcon from '@material-ui/icons/WbSunnyOutlined';
+
 declare module '@material-ui/core/styles/createPalette' {
+  interface TypeBackground {
+    smoke: React.CSSProperties['backgroundColor'];
+  }
+
   interface Palette {
+    borderWidth: string;
     colors: {
-      background: {
-        main: string;
-        light: string;
-        smoke: string;
-      };
-      border: {
-        main: string;
-      };
-      header: {
-        text: string;
-      };
-      footer: {
-        main: string;
-        text: string;
-      };
-      text: {
-        main: string;
-        light: string;
-        lighter: string;
-      };
-      tihlde: {
-        main: string;
-        light: string;
-      };
+      footer: string;
+      tihlde: string;
       gradient: {
         main: {
           top: string;
           bottom: string;
-          text: string;
         };
         secondary: {
           top: string;
           bottom: string;
-          text: string;
-        };
-        avatar: {
-          top: string;
-          bottom: string;
-          text: string;
         };
         profile: {
           top: string;
           bottom: string;
-          text: string;
         };
-      };
-      status: {
-        green: string;
-        red: string;
-      };
-      constant: {
-        smoke: string;
-        white: string;
-        black: string;
-      };
-    };
-    sizes: {
-      border: {
-        width: string;
       };
     };
   }
 
   interface PaletteOptions {
-    colors?: {
-      background: {
-        main: string;
-        light: string;
-        smoke: string;
-      };
-      border: {
-        main: string;
-      };
-      header: {
-        text: string;
-      };
-      footer: {
-        main: string;
-        text: string;
-      };
-      text: {
-        main: string;
-        light: string;
-        lighter: string;
-      };
-      tihlde: {
-        main: string;
-        light: string;
-      };
+    borderWidth: string;
+    colors: {
+      footer: string;
+      tihlde: string;
       gradient: {
         main: {
           top: string;
           bottom: string;
-          text: string;
         };
         secondary: {
           top: string;
           bottom: string;
-          text: string;
-        };
-        avatar: {
-          top: string;
-          bottom: string;
-          text: string;
         };
         profile: {
           top: string;
           bottom: string;
-          text: string;
         };
-      };
-      status: {
-        green: string;
-        red: string;
-      };
-      constant: {
-        smoke: string;
-        white: string;
-        black: string;
-      };
-    };
-    sizes?: {
-      border: {
-        width: string;
       };
     };
   }
 }
 
-export const getTheme = (light: boolean) =>
-  createMuiTheme({
+export const themesDetails = [
+  { key: 'light', name: 'Lyst', icon: LightIcon },
+  { key: 'automatic', name: 'Automatisk', icon: AutomaticIcon },
+  { key: 'dark', name: 'Mørkt', icon: DarkIcon },
+] as const;
+export const themes = themesDetails.map((theme) => theme.key);
+export type ThemeTypes = typeof themes[number];
+
+export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
+  const get = <T>({ light, dark }: { light: T; dark: T }): T => {
+    switch (theme) {
+      case 'automatic':
+        return prefersDarkMode ? dark : light;
+      case 'dark':
+        return dark;
+      default:
+        return light;
+    }
+  };
+
+  return createMuiTheme({
     breakpoints: {
       values: {
         xs: 0,
@@ -141,6 +83,59 @@ export const getTheme = (light: boolean) =>
         md: 600,
         lg: 900,
         xl: 1200,
+      },
+    },
+    overrides: {
+      MuiAvatar: {
+        colorDefault: {
+          backgroundColor: '#b4345e',
+          color: 'white',
+          fontWeight: 'bold',
+        },
+      },
+    },
+    palette: {
+      common: {
+        black: '#000000',
+        white: '#ffffff',
+      },
+      type: get<'light' | 'dark'>({ light: 'light', dark: 'dark' }),
+      primary: {
+        main: get<string>({ light: '#1D448C', dark: '#9ec0ff' }),
+      },
+      secondary: {
+        main: get<string>({ light: '#748674', dark: '#daffda' }),
+      },
+      error: {
+        main: get<string>({ light: '#b20101', dark: '#ff6060' }),
+      },
+      divider: get<string>({ light: '#dddddd', dark: '#333333' }),
+      text: {
+        secondary: get<string>({ light: '#333333', dark: '#cccccc' }),
+      },
+      borderWidth: '1px',
+      background: {
+        default: get<string>({ light: '#f8f8fa', dark: '#121519' }),
+        paper: get<string>({ light: '#ffffff', dark: '#131924' }),
+        smoke: get<string>({ light: '#fefefe', dark: '#13171E' }),
+      },
+      colors: {
+        footer: '#1b1b2d',
+        tihlde: '#1c458a',
+        gradient: {
+          main: {
+            top: get<string>({ light: '#16356e', dark: '#1c2230' }),
+            bottom: get<string>({ light: '#814a93', dark: '#581d6c' }),
+          },
+          secondary: {
+            top: get<string>({ light: '#C6426E', dark: '#640d2a' }),
+            bottom: get<string>({ light: '#642B73', dark: '#321a38' }),
+          },
+          profile: {
+            top: get<string>({ light: '#F0C27B', dark: '#9b702e' }),
+            bottom: get<string>({ light: '#4B1248', dark: '#280126' }),
+          },
+        },
       },
     },
     shape: {
@@ -166,94 +161,5 @@ export const getTheme = (light: boolean) =>
         fontWeight: 700,
       },
     },
-    palette: {
-      type: light ? 'light' : 'dark',
-      primary: {
-        main: light ? '#1D448C' : '#9ec0ff',
-        contrastText: light ? '#ffffff' : '#000000',
-      },
-      secondary: {
-        main: light ? '#748674' : '#daffda',
-        contrastText: light ? '#ffffff' : '#000000',
-      },
-      error: {
-        main: '#B71C1C',
-        contrastText: '#ffffff',
-      },
-      colors: {
-        background: {
-          main: light ? '#f8f8fa' : '#121519',
-          light: light ? '#ffffff' : '#131924',
-          smoke: light ? '#fefefe' : '#13171E',
-        },
-        border: {
-          main: light ? '#dddddd' : '#333333',
-        },
-        header: {
-          text: '#ffffff',
-        },
-        footer: {
-          main: '#1b1b2d',
-          text: '#ffffff',
-        },
-        text: {
-          main: light ? '#000000' : '#ffffff',
-          light: light ? '#333333' : '#cccccc',
-          lighter: light ? '#555555' : '#aaaaaa',
-        },
-        tihlde: {
-          main: '#1c458a',
-          light: '#E4E9F2',
-        },
-        gradient: {
-          main: {
-            top: light ? '#16356e' : '#1c2230',
-            bottom: light ? '#814a93' : '#581d6c',
-            text: light ? '#ffffff' : '#ffffff',
-          },
-          secondary: {
-            top: light ? '#C6426E' : '#640d2a',
-            bottom: light ? '#642B73' : '#321a38',
-            text: light ? '#ffffff' : '#ffffff',
-          },
-          avatar: {
-            top: '#DA4453',
-            bottom: '#89216B',
-            text: '#ffffff',
-          },
-          profile: {
-            top: light ? '#F0C27B' : '#9b702e',
-            bottom: light ? '#4B1248' : '#280126',
-            text: light ? '#ffffff' : '#ffffff',
-          },
-        },
-        status: {
-          green: '#0b7c0b',
-          red: light ? '#b20101' : '#ff6060',
-        },
-        constant: {
-          smoke: '#fefefe',
-          white: '#ffffff',
-          black: '#000000',
-        },
-      },
-      sizes: {
-        border: {
-          width: '1px',
-        },
-      },
-    },
   });
-
-export const errorTheme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#B71C1C',
-      contrastText: '#ffffff',
-    },
-    secondary: {
-      main: '#009688',
-      contrastText: '#ffffff',
-    },
-  },
-});
+};

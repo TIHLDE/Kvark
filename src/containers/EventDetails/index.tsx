@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   wrapper: {
     margin: 'auto',
     position: 'relative',
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
     padding: theme.spacing(10),
     [theme.breakpoints.down('lg')]: {
       padding: theme.spacing(10, 5),
@@ -35,11 +35,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&::after': {
       position: 'absolute',
       bottom: 0,
-      borderBottom: 'solid 100px ' + theme.palette.colors.background.main,
+      borderBottom: 'solid 100px ' + theme.palette.background.default,
       borderLeft: '100vw solid rgba(0,0,0,0)',
       content: '""',
       [theme.breakpoints.down('sm')]: {
-        borderBottom: 'solid 50px ' + theme.palette.colors.background.main,
+        borderBottom: 'solid 50px ' + theme.palette.background.default,
       },
     },
   },
@@ -90,8 +90,7 @@ function EventDetails() {
         </div>
       }
       fancyNavbar
-      isLoading={!event}
-      whitesmoke>
+      isLoading={!event}>
       {event && (
         <>
           <Helmet>

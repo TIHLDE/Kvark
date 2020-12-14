@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     transform: 'translateX(-50%)',
   },
   color: {
-    color: theme.palette.colors.constant.white,
+    color: theme.palette.common.white,
   },
 }));
 

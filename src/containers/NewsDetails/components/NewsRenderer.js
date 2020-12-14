@@ -41,13 +41,13 @@ const styles = (theme) => ({
     borderRadius: theme.shape.borderRadius,
   },
   title: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
     padding: 26,
     paddingLeft: 0,
     paddingTop: 0,
   },
   header: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
     padding: 15,
     paddingLeft: 0,
     paddingTop: 0,
@@ -79,11 +79,11 @@ const styles = (theme) => ({
   ml: {
     marginRight: 5,
     fontWeight: 'bold',
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
   ml2: {
     textAlign: 'center',
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
 });
 

@@ -49,7 +49,7 @@ const styles = (theme) => ({
     },
   },
   title: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
     minWidth: 65,
   },
   displayNone: {
@@ -61,7 +61,7 @@ const styles = (theme) => ({
     padding: 0,
   },
   activateButton: {
-    color: theme.palette.colors.status.green,
+    color: theme.palette.success.dark,
     width: '48px',
     margin: 'auto',
     '@media only screen and (max-width: 800px)': {
@@ -73,7 +73,7 @@ const styles = (theme) => ({
     marginBottom: 10,
   },
   deactivateButton: {
-    color: theme.palette.colors.status.red,
+    color: theme.palette.error.main,
     width: '48px',
     margin: 'auto',
     '@media only screen and (max-width: 800px)': {
@@ -83,7 +83,7 @@ const styles = (theme) => ({
   },
   moreBtn: {
     display: 'none',
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
     minWidth: 48,
     position: 'absolute',
     right: 10,

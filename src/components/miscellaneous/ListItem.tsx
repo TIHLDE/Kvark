@@ -24,7 +24,7 @@ import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    border: theme.palette.sizes.border.width + ' solid ' + theme.palette.colors.border.main,
+    border: theme.palette.borderWidth + ' solid ' + theme.palette.divider,
     borderRadius: theme.shape.borderRadius,
     marginBottom: theme.spacing(1),
     height: 'auto',
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
     '--multiplier': `calc( ${theme.breakpoints.values.md}px - 100%)`,
-    backgroundColor: theme.palette.colors.background.light,
+    backgroundColor: theme.palette.background.paper,
     gridGap: theme.spacing(1),
   },
   content: {
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   title: {
     fontSize: '1.8rem',
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: theme.spacing(0.25, 0),
   },
   info: {
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
     fontSize: '1rem',
     textAlign: 'left',
     overflow: 'hidden',
@@ -78,16 +78,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   icon: {
     marginRight: theme.spacing(1),
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
     height: 24,
     width: 24,
     margin: theme.spacing(0),
-  },
-  expired: {
-    color: theme.palette.colors.text.main + 'cc',
-  },
-  filter: {
-    filter: 'opacity(0.4)',
   },
 }));
 
@@ -124,7 +118,6 @@ function ListItem({ event, news, jobpost, imgContain = false, className, largeIm
       return {
         title: event.title,
         link: `${URLS.events}${event.id}/${urlEncode(event.title)}/`,
-        expired: event.expired,
         img: event.image,
         imgAlt: event.image_alt,
       };
@@ -139,7 +132,6 @@ function ListItem({ event, news, jobpost, imgContain = false, className, largeIm
       return {
         title: jobpost.title,
         link: `${URLS.jobposts}${jobpost.id}/${urlEncode(jobpost.title)}/`,
-        expired: jobpost.expired,
         img: jobpost.image,
         imgAlt: jobpost.image_alt,
       };
@@ -169,12 +161,11 @@ function ListItem({ event, news, jobpost, imgContain = false, className, largeIm
       <AspectRatioImg
         alt={item.imgAlt || item.title}
         className={classNames(classes.imgContainer, largeImg && classes.largeImg)}
-        imgClassName={item.expired ? classes.filter : ''}
         imgContain={imgContain}
         src={item.img}
       />
       <Grid className={classes.content} container direction='column' wrap='nowrap'>
-        <Typography className={classNames(classes.title, item.expired && classes.expired)} variant='h2'>
+        <Typography className={classes.title} variant='h2'>
           {item.title}
         </Typography>
         {info?.map((infoItem, index: number) => (

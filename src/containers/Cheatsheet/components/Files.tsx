@@ -48,12 +48,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     border: 'none',
   },
   icon: {
-    fill: theme.palette.colors.text.light,
+    fill: theme.palette.text.secondary,
     height: 26,
     width: 26,
   },
   verified: {
-    fill: theme.palette.colors.status.green,
+    fill: theme.palette.success.dark,
     height: 22,
     width: 22,
     margin: `auto 0 auto ${theme.spacing(0.5)}px`,

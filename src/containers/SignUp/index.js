@@ -57,7 +57,7 @@ const styles = (theme) => ({
     marginBottom: 10,
   },
   header: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
   button: {
     marginTop: 16,
@@ -139,7 +139,7 @@ function SignUp(props) {
   };
 
   return (
-    <Navigation fancyNavbar whitesmoke>
+    <Navigation fancyNavbar>
       <Helmet>
         <title>Ny bruker - TIHLDE</title>
       </Helmet>

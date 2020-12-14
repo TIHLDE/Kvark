@@ -86,7 +86,7 @@ const News = (props) => {
   }, [getNews]);
 
   return (
-    <Navigation fancyNavbar whitesmoke>
+    <Navigation fancyNavbar>
       <Helmet>
         <title>Nyheter - TIHLDE</title>
       </Helmet>

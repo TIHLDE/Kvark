@@ -38,8 +38,8 @@ const styles = (theme) => ({
     paddingBottom: 2,
     gridGap: '15px',
     '& a': {
-      backgroundColor: theme.palette.colors.background.light,
-      color: theme.palette.colors.text.main,
+      backgroundColor: theme.palette.background.paper,
+      color: theme.palette.text.primary,
     },
     '@media only screen and (max-width: 700px)': {
       gridTemplateColumns: '1fr',
@@ -55,14 +55,14 @@ const styles = (theme) => ({
   },
   button: {
     textAlign: 'center',
-    border: theme.palette.sizes.border.width + ' solid ' + theme.palette.colors.border.main,
-    boxShadow: '0px 2px 4px ' + theme.palette.colors.border.main + '88, 0px 0px 4px ' + theme.palette.colors.border.main + '88',
+    border: theme.palette.borderWidth + ' solid ' + theme.palette.divider,
+    boxShadow: '0px 2px 4px ' + theme.palette.divider + '88, 0px 0px 4px ' + theme.palette.divider + '88',
     margin: 0,
     height: 50,
     overflow: 'hidden',
-    backgroundColor: theme.palette.colors.background.light,
+    backgroundColor: theme.palette.background.paper,
     '&:hover': {
-      backgroundColor: theme.palette.colors.background.light + 'bb',
+      backgroundColor: theme.palette.background.paper + 'bb',
     },
   },
 });
@@ -71,7 +71,7 @@ function ContactInfo(props) {
   const { classes } = props;
 
   return (
-    <Navigation fancyNavbar whitesmoke>
+    <Navigation fancyNavbar>
       <Helmet>
         <title>Kontakt oss - TIHLDE</title>
       </Helmet>

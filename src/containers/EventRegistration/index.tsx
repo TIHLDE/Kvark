@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     bottom: theme.spacing(2),
     position: 'fixed',
     borderRadius: theme.shape.borderRadius,
-    color: theme.palette.colors.constant.white,
+    color: theme.palette.common.white,
     textAlign: 'center',
     display: 'flex',
     justifyContent: 'center',
@@ -59,10 +59,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   snackbar_success: {
-    backgroundColor: theme.palette.colors.status.green,
+    backgroundColor: theme.palette.success.dark,
   },
   snackbar_error: {
-    backgroundColor: theme.palette.colors.status.red,
+    backgroundColor: theme.palette.error.main,
   },
   cardContent: {
     padding: theme.spacing(1, 2),
@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   cardText: {
     fontWeight: 'bold',
     fontSize: '17px',
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
   cardButtonLabel: {
     marginRight: theme.spacing(-1),
@@ -86,16 +86,16 @@ const useStyles = makeStyles((theme: Theme) => ({
   cardButtonContainer: {
     display: 'flex',
     alignItems: 'center',
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
   cardActionArea: {
     display: 'flex',
   },
   lightText: {
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
   title: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
 }));
 

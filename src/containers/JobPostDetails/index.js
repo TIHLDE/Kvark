@@ -38,7 +38,7 @@ function JobPostDetails(props) {
   }, [id, navigate, jobPost, error]);
 
   return (
-    <Navigation isLoading={!jobPost} whitesmoke>
+    <Navigation isLoading={!jobPost}>
       {jobPost && (
         <div className={classes.root}>
           <Helmet>

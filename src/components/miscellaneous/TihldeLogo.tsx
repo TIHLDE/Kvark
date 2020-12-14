@@ -18,7 +18,7 @@ function TihldeLogo({ size, darkColor, lightColor, className }: TihldeLogoProps)
     if (prop === 'black') {
       return '#000000';
     } else if (prop === 'blue') {
-      return theme.palette.colors.tihlde.main;
+      return theme.palette.colors.tihlde;
     } else {
       return '#ffffff';
     }

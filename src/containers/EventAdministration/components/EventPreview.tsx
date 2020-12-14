@@ -25,11 +25,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
   container: {
     padding: theme.spacing(2),
-    background: theme.palette.colors.background.main,
+    background: theme.palette.background.default,
   },
 }));
 

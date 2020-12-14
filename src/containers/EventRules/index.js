@@ -38,7 +38,7 @@ const styles = (theme) => ({
     width: '100%',
   },
   paper: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
   list: {
     paddingLeft: 30,
@@ -49,7 +49,7 @@ function EventRules(props) {
   const { classes } = props;
 
   return (
-    <Navigation whitesmoke>
+    <Navigation>
       <Helmet>
         <title>Arrangementsregler - TIHLDE</title>
       </Helmet>

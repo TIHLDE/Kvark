@@ -46,8 +46,8 @@ const styles = (theme) => ({
   },
   snackbar: {
     marginTop: 55,
-    backgroundColor: theme.palette.colors.background.smoke,
-    color: theme.palette.colors.text.main,
+    backgroundColor: theme.palette.background.smoke,
+    color: theme.palette.text.primary,
   },
 });
 

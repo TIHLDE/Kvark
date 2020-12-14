@@ -48,7 +48,7 @@ const styles = (theme) => ({
     borderRadius: theme.shape.borderRadius,
   },
   title: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
 
     '@media only screen and (max-width: 600px)': {
       fontSize: '2rem',
@@ -57,7 +57,7 @@ const styles = (theme) => ({
   content: {
     padding: 38,
     paddingBottom: 60,
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
     '@media only screen and (max-width: 800px)': {
       order: 0,
     },
@@ -71,7 +71,7 @@ const styles = (theme) => ({
   info: {
     width: 'auto',
     marginBottom: 10,
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
     '@media only screen and (max-width: 800px)': {
       justifyContent: 'space-between',
     },
@@ -80,7 +80,7 @@ const styles = (theme) => ({
   mt: { marginTop: 10 },
   mb: { marginBottom: 32 },
   emailLink: {
-    color: theme.palette.colors.tihlde.main,
+    color: theme.palette.colors.tihlde,
     cursor: 'pointer',
   },
 });

@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     maxWidth: '100%',
     overflow: 'hidden',
-    background: theme.palette.colors.background.light,
+    background: theme.palette.background.smoke,
   },
   heading: {
     flexShrink: 1,

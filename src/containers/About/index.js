@@ -63,7 +63,7 @@ const styles = (theme) => ({
   header: {
     marginTop: 30,
     marginBottom: 30,
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
   clickableImage: {
     padding: 10,
@@ -74,17 +74,17 @@ const styles = (theme) => ({
   },
   smoke: {
     width: '100%',
-    backgroundColor: theme.palette.colors.background.smoke,
+    backgroundColor: theme.palette.background.smoke,
   },
   button: {
     marginTop: 8,
     width: '100%',
-    color: theme.palette.colors.constant.smoke,
-    borderColor: theme.palette.colors.constant.smoke + 'bb',
+    color: theme.palette.common.white,
+    borderColor: theme.palette.common.white + 'bb',
     minWidth: 200,
     marginBottom: 8,
     '&:hover': {
-      borderColor: theme.palette.colors.constant.smoke,
+      borderColor: theme.palette.common.white,
     },
   },
 });
@@ -95,7 +95,7 @@ function About(props) {
   const isDark = theme.palette.type === 'dark';
 
   return (
-    <Navigation fancyNavbar whitesmoke>
+    <Navigation fancyNavbar>
       <Helmet>
         <title>Om TIHLDE - TIHLDE</title>
       </Helmet>

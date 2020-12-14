@@ -17,11 +17,9 @@ const styles = (theme) => ({
     display: 'grid',
     gridGap: 1,
     color: theme.palette.text.secondary,
-    backgroundColor: theme.palette.colors.background.smoke,
     margin: 'auto',
   },
   noEventText: {
-    backgroundColor: theme.palette.colors.background.smoke,
     padding: 5,
     textAlign: 'center',
   },

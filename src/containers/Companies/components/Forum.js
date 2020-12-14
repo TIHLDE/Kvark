@@ -51,13 +51,13 @@ const styles = (theme) => ({
   },
   checkBox: {
     padding: 4,
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
   mainText: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
   lightText: {
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
 });
 

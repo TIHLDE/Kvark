@@ -5,8 +5,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme: Theme) => ({
   main: {
-    border: theme.palette.sizes.border.width + ' solid ' + theme.palette.colors.border.main,
-    backgroundColor: theme.palette.colors.background.light,
+    border: theme.palette.borderWidth + ' solid ' + theme.palette.divider,
   },
   padding: {
     padding: theme.spacing(3),

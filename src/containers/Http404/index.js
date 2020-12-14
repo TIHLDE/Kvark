@@ -18,11 +18,7 @@ import http404ropeImg from '../../assets/img/http404rope.gif';
 // Project Components
 import Navigation from '../../components/navigation/Navigation';
 
-const styles = (theme) => ({
-  root: {
-    minHeight: '101vh',
-    backgroundColor: theme.palette.colors.background.main,
-  },
+const styles = () => ({
   img: {
     width: '100%',
     maxHeight: '70vh',
@@ -44,7 +40,7 @@ function Http404(props) {
   const { isAuthenticated } = useAuth();
 
   return (
-    <Navigation className={classes.root} whitesmoke>
+    <Navigation>
       <Helmet>
         <title>404 - TIHLDE</title>
       </Helmet>

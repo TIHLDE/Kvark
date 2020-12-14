@@ -11,7 +11,7 @@ import ListItem from '../../../components/miscellaneous/ListItem';
 
 const styles = (theme) => ({
   text: {
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
 });
 

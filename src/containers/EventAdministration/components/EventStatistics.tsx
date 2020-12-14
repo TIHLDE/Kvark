@@ -22,20 +22,20 @@ const useStyles = makeStyles((theme: Theme) => ({
   innerGrid: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
     gridGap: theme.spacing(1),
     [theme.breakpoints.down('md')]: {
       gridTemplateColumns: '1fr',
     },
   },
   lightText: {
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
   statistics: {
     display: 'flex',
     flexDirection: 'column',
     textAlign: 'center',
-    backgroundColor: theme.palette.colors.background.smoke,
+    backgroundColor: theme.palette.background.smoke,
     borderCollapse: 'collapse',
   },
   number: {

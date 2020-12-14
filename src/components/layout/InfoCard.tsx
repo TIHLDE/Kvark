@@ -49,13 +49,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   header: {
     marginBottom: theme.spacing(1),
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
   subheader: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
   text: {
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
   grow: {
     flexGrow: 1,

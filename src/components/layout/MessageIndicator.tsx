@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: '100%',
   },
   header: {
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
 }));
 

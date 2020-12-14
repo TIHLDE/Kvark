@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   ml: {
     marginRight: 5,
     fontWeight: 'bold',
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
   prioritiesContainer: {
     display: 'flex',
@@ -33,10 +33,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   priority: {
     padding: '0 3px',
-    border: theme.palette.sizes.border.width + ' solid ' + theme.palette.colors.border.main,
+    border: theme.palette.borderWidth + ' solid ' + theme.palette.divider,
     borderRadius: theme.shape.borderRadius,
     margin: 3,
-    color: theme.palette.colors.text.lighter,
+    color: theme.palette.text.secondary,
   },
 }));
 

@@ -36,20 +36,20 @@ const styles = (theme) => ({
   },
   smoke: {
     width: '100%',
-    backgroundColor: theme.palette.colors.background.smoke,
+    backgroundColor: theme.palette.background.smoke,
     marginTop: '-3px',
     zIndex: '25',
   },
   header: {
     marginTop: '2px',
     marginBottom: '20px',
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
 });
 
 function NewLanding({ classes }) {
   return (
-    <Navigation fancyNavbar whitesmoke>
+    <Navigation fancyNavbar>
       <Helmet>
         <title>Forsiden - TIHLDE</title>
       </Helmet>

@@ -50,11 +50,11 @@ const styles = (theme) => ({
   },
   snackbar: {
     marginTop: 55,
-    backgroundColor: theme.palette.colors.background.smoke,
-    color: theme.palette.colors.text.main,
+    backgroundColor: theme.palette.background.smoke,
+    color: theme.palette.text.primary,
   },
   header: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
   renderer: {
     margin: 10,
@@ -184,7 +184,7 @@ function JobPostAdministration(props) {
   ];
 
   return (
-    <Navigation noFooter whitesmoke>
+    <Navigation noFooter>
       <Helmet>
         <title>Annonseadmin - TIHLDE</title>
       </Helmet>

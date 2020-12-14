@@ -32,7 +32,7 @@ const style = (theme) => ({
     zIndex: '20',
   },
   topSmallText: {
-    color: theme.palette.colors.gradient.main.text,
+    color: theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
     margin: '10px auto',
     '@media only screen and (max-width: 800px)': {
       fontSize: '1.05rem',
@@ -54,10 +54,10 @@ const style = (theme) => ({
     justifyContent: 'center',
   },
   topButton: {
-    color: theme.palette.colors.text.main,
-    backgroundColor: theme.palette.colors.background.light,
+    color: theme.palette.text.primary,
+    backgroundColor: theme.palette.background.paper,
     '&:hover': {
-      backgroundColor: theme.palette.colors.background.light + 'bb',
+      backgroundColor: theme.palette.background.paper + 'bb',
     },
     margin: 'auto 10px',
   },
@@ -65,9 +65,9 @@ const style = (theme) => ({
     textDecoration: 'none',
   },
   topButtonSecondary: {
-    color: theme.palette.colors.gradient.main.text,
+    color: theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
     '&:hover': {
-      color: theme.palette.colors.gradient.main.text + 'bb',
+      color: theme.palette.getContrastText(theme.palette.colors.gradient.main.top) + 'bb',
     },
     textDecoration: 'none',
     margin: 'auto 10px',
