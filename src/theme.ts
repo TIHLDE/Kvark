@@ -93,6 +93,16 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
           fontWeight: 'bold',
         },
       },
+      MuiCssBaseline: {
+        '@global': {
+          html: {
+            WebkitFontSmoothing: 'auto',
+          },
+          a: {
+            color: get<string>({ light: '#1D448C', dark: '#9ec0ff' }),
+          },
+        },
+      },
     },
     palette: {
       common: {
