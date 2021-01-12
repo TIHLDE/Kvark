@@ -1,13 +1,14 @@
 import React, { Fragment } from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import parseISO from 'date-fns/parseISO';
 import classNames from 'classnames';
+import { formatDate } from '../../../utils';
 
 // Text
 import Text from '../../../text/JobPostText';
 
 // Material UI Components
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
@@ -111,15 +112,15 @@ const goToLink = (link, toMail = false) => {
 const JobPostRenderer = (props) => {
   const { classes } = props;
   const data = props.data || {};
-  const deadline = data.deadline ? moment(data.deadline, ['YYYY-MM-DD HH:mm'], 'nb').format('DD.MM.YYYY') : Text.noDeadline;
-  const publishedAt = moment(data.created_at, ['YYYY-MM-DD HH:mm'], 'nb');
+  const deadline = data.deadline ? formatDate(parseISO(data.deadline)) : Text.noDeadline;
+  const publishedAt = formatDate(parseISO(data.created_at));
 
   return (
     <div className={classes.grid}>
       <div>
         <Paper className={classes.content}>
           <Typography gutterBottom variant='caption'>
-            Publisert: {publishedAt.format('DD.MM.YYYY')}
+            Publisert: {publishedAt}
           </Typography>
           <Typography className={classNames(classes.title, classes.mb)} gutterBottom variant='h5'>
             <strong>{data.title}</strong>
