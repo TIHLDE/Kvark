@@ -26,6 +26,7 @@ import Banner from '../../components/layout/Banner';
 import Paper from '../../components/layout/Paper';
 import Pageination from '../../components/layout/Pageination';
 import NoEventsIndicator from './components/NoEventsIndicator';
+import Story from '../../components/story/Story';
 
 const styles = (theme) => ({
   root: {
@@ -69,6 +70,7 @@ const styles = (theme) => ({
     gridTemplateColumns: '1fr',
   },
   listRoot: {
+    display: 'grid',
     [theme.breakpoints.down('md')]: {
       order: 1,
     },
@@ -221,6 +223,7 @@ function Events(props) {
               <CircularProgress className={classes.progress} />
             ) : (
               <div className={classes.listRoot}>
+                <Story items={events} />
                 <Grow in={!isFetching}>
                   <div className={classes.list}>
                     <Pageination nextPage={getNextPage} page={nextPage}>

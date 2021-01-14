@@ -81,7 +81,8 @@ const styles = (theme) => ({
   mt: { marginTop: 10 },
   mb: { marginBottom: 32 },
   emailLink: {
-    color: theme.palette.colors.tihlde,
+    color: theme.palette.primary.main,
+    textDecoration: 'underline',
     cursor: 'pointer',
   },
 });

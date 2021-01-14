@@ -162,18 +162,22 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
   const now = new Date();
 
   useEffect(() => {
+    let subscribed = true;
     if (!preview) {
       getUserData()
         .then((user) => {
-          setUser(user);
+          !subscribed || setUser(user);
           if (user) {
             getRegistration(event.id, user.user_id)
-              .then((registration) => setRegistration(registration))
-              .catch(() => setRegistration(null));
+              .then((registration) => !subscribed || setRegistration(registration))
+              .catch(() => !subscribed || setRegistration(null));
           }
         })
-        .catch(() => setUser(null));
+        .catch(() => !subscribed || setUser(null));
     }
+    return () => {
+      subscribed = false;
+    };
   }, [event.id, getUserData, getRegistration, preview]);
 
   const signOff = () => {

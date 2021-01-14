@@ -93,10 +93,14 @@ export const useHavePermission = (groups: Array<Groups>) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let subscribed = true;
     getUserData()
-      .then((user) => setHavePermission(Boolean(user?.groups.some((group) => groups.includes(group)))))
-      .catch(() => setHavePermission(false))
-      .finally(() => setIsLoading(false));
+      .then((user) => !subscribed || setHavePermission(Boolean(user?.groups.some((group) => groups.includes(group)))))
+      .catch(() => !subscribed || setHavePermission(false))
+      .finally(() => !subscribed || setIsLoading(false));
+    return () => {
+      subscribed = false;
+    };
   }, [user, getUserData, groups]);
 
   return [havePermission, isLoading] as const;

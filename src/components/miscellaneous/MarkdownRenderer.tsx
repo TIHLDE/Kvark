@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   blockquote: {
     margin: theme.spacing(0, 2, 1),
     padding: theme.spacing(2, 3, 1),
-    borderLeft: `${theme.spacing(1)}px solid ${theme.palette.colors.tihlde}`,
+    borderLeft: `${theme.spacing(1)}px solid ${theme.palette.primary.main}`,
   },
   code: {
     color: theme.palette.text.primary,
@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     marginBottom: theme.spacing(1),
+    color: theme.palette.text.primary,
   },
 }));
 

@@ -66,6 +66,7 @@ const styles = (theme) => ({
     gridTemplateColumns: '1fr',
   },
   listRoot: {
+    display: 'grid',
     '@media only screen and (max-width: 800px)': {
       order: 1,
     },
