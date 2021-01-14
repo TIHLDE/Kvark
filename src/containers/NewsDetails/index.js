@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import URLS from '../../URLS';
@@ -37,11 +37,11 @@ const styles = (theme) => ({
     '&::after': {
       position: 'absolute',
       bottom: 0,
-      borderBottom: 'solid 100px ' + theme.palette.colors.background.main,
+      borderBottom: 'solid 100px ' + theme.palette.background.default,
       borderLeft: '100vw solid rgba(0,0,0,0)',
       content: '""',
       [theme.breakpoints.down('sm')]: {
-        borderBottom: 'solid 50px ' + theme.palette.colors.background.main,
+        borderBottom: 'solid 50px ' + theme.palette.background.default,
       },
     },
   },
@@ -82,7 +82,7 @@ function NewsDetails(props) {
   );
 
   return (
-    <Navigation fancyNavbar isLoading={!newsData} whitesmoke>
+    <Navigation fancyNavbar isLoading={!newsData}>
       {newsData && (
         <div className={classes.root}>
           <Helmet>

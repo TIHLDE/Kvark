@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Helmet from 'react-helmet';
 import URLS from 'URLS';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -158,7 +158,7 @@ const Cheetsheet = () => {
   };
 
   return (
-    <Navigation banner={<Banner text={`${getStudy()} - ${getClass()}. klasse`} title='Kokeboka' />} fancyNavbar whitesmoke>
+    <Navigation banner={<Banner text={`${getStudy()} - ${getClass()}. klasse`} title='Kokeboka' />} fancyNavbar>
       <Helmet>
         <title>Kokeboka - TIHLDE</title>
       </Helmet>

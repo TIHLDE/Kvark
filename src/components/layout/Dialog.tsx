@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode } from 'react';
 
 // Material UI Components
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -10,11 +10,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 
 const useStyles = makeStyles((theme: Theme) => ({
-  paper: {
-    backgroundColor: theme.palette.colors.background.light,
-  },
   contentText: {
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
 }));
 
@@ -24,7 +21,7 @@ export type DialogProps = {
   onCancel?: () => void;
   onConfirm?: () => void;
   titleText?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
   contentText?: string;
   closeText?: string;
   confirmText?: string;
@@ -33,7 +30,7 @@ export type DialogProps = {
 function Dialog({ open, onClose, onCancel, onConfirm, titleText, children, contentText, closeText, confirmText }: DialogProps) {
   const classes = useStyles();
   return (
-    <MaterialDialog aria-labelledby='form-dialog-title' classes={{ paper: classes.paper }} onClose={onClose} open={open}>
+    <MaterialDialog aria-labelledby='form-dialog-title' onClose={onClose} open={open}>
       {titleText && <DialogTitle id='form-dialog-title'>{titleText}</DialogTitle>}
       {(contentText || children) && (
         <DialogContent>

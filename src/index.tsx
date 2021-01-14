@@ -1,6 +1,7 @@
-import React, { useEffect, lazy, Suspense } from 'react';
+import { ReactElement, ReactNode, useEffect, lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import 'assets/css/index.css';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import URLS from 'URLS';
 import 'delayed-scroll-restoration-polyfill';
@@ -28,7 +29,7 @@ import EventDetails from 'containers/EventDetails';
 import Events from 'containers/Events';
 import JobPosts from 'containers/JobPosts';
 import JobPostDetails from 'containers/JobPostDetails';
-import NewLanding from 'containers/NewLanding';
+import Landing from 'containers/Landing';
 import NewsDetails from 'containers/NewsDetails';
 import Profile from 'containers/Profile';
 const Admin = lazy(() => import('containers/Admin'));
@@ -52,8 +53,8 @@ const UserAdmin = lazy(() => import('containers/UserAdmin'));
 type AuthRouteProps = {
   groups?: Array<Groups>;
   path: string;
-  element?: React.ReactElement | null;
-  children?: React.ReactNode;
+  element?: ReactElement | null;
+  children?: ReactNode;
 };
 
 const AuthRoute = ({ groups = [], children, path, element }: AuthRouteProps) => {
@@ -78,7 +79,7 @@ const AuthRoute = ({ groups = [], children, path, element }: AuthRouteProps) => 
 };
 
 type ProvidersProps = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export const Providers = ({ children }: ProvidersProps) => {
@@ -89,6 +90,7 @@ export const Providers = ({ children }: ProvidersProps) => {
           <JobPostProvider>
             <EventProvider>
               <ThemeProvider>
+                <CssBaseline />
                 <SnackbarProvider>{children}</SnackbarProvider>
               </ThemeProvider>
             </EventProvider>
@@ -109,7 +111,7 @@ const AppRoutes = () => {
   }, [location]);
   return (
     <Routes>
-      <Route element={<NewLanding />} path='/' />
+      <Route element={<Landing />} path='/' />
       <Route path={URLS.events}>
         <Route element={<EventRegistration />} path=':id/registrering/' />
         <Route element={<EventDetails />} path=':id/*' />

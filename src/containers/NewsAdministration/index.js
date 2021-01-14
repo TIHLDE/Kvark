@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
@@ -50,11 +50,11 @@ const styles = (theme) => ({
   },
   snackbar: {
     marginTop: 55,
-    backgroundColor: theme.palette.colors.background.smoke,
-    color: theme.palette.colors.text.main,
+    backgroundColor: theme.palette.background.smoke,
+    color: theme.palette.text.primary,
   },
   header: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
 });
 
@@ -115,7 +115,7 @@ function NewsAdministration(props) {
   ];
 
   return (
-    <Navigation noFooter whitesmoke>
+    <Navigation noFooter>
       <Helmet>
         <title>Nyhetsadmin - TIHLDE</title>
       </Helmet>

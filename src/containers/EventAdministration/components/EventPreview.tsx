@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, forwardRef, Ref, ReactElement } from 'react';
 import { Event } from 'types/Types';
 
 // Material-UI
@@ -25,11 +25,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
   container: {
     padding: theme.spacing(2),
-    background: theme.palette.colors.background.main,
+    background: theme.palette.background.default,
   },
 }));
 
@@ -43,7 +43,7 @@ const EventPreview = ({ className, getEvent }: EventPreviewProps) => {
   const [event, setEvent] = useState<Event | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  const Transition = React.forwardRef(function Transition(props: TransitionProps & { children?: React.ReactElement }, ref: React.Ref<unknown>) {
+  const Transition = forwardRef(function Transition(props: TransitionProps & { children?: ReactElement }, ref: Ref<unknown>) {
     return <Slide direction='up' ref={ref} {...props} />;
   });
 

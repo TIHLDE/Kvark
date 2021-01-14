@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useReducer, useCallback } from 'react';
+import { createContext, ReactNode, useContext, useState, useEffect, useReducer, useCallback } from 'react';
 import API from 'api/api';
 import { JobPost, JobPostRequired, RequestResponse } from 'types/Types';
 
@@ -9,7 +9,7 @@ export type Action =
   | { type: 'remove'; payload: number };
 
 export type Dispatch = (action: Action) => void;
-export type JobPostProviderProps = { children: React.ReactNode };
+export type JobPostProviderProps = { children: ReactNode };
 
 const JobPostStateContext = createContext<Array<JobPost> | undefined>(undefined);
 const JobPostDispatchContext = createContext<Dispatch | undefined>(undefined);

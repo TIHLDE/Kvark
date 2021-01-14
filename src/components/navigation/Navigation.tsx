@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { ReactNode, ReactElement, useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import classNames from 'classnames';
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     boxSizing: 'border-box',
     backgroundColor: theme.palette.colors.gradient.main.top,
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
     flexGrow: 1,
     zIndex: theme.zIndex.drawer + 1,
     transition: '0.4s',
@@ -57,6 +57,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   main: {
     minHeight: '101vh',
     paddingBottom: theme.spacing(2),
+    backgroundColor: theme.palette.background.default,
   },
   normalMain: {
     paddingTop: 64,
@@ -84,7 +85,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 'auto',
   },
   menuButton: {
-    color: theme.palette.colors.header.text,
+    color: theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
   },
   menuWrapper: {
     display: 'flex',
@@ -128,16 +129,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: theme.palette.error.main,
   },
   snackMessage: {
-    backgroundColor: theme.palette.colors.tihlde.main,
-  },
-  whitesmoke: {
-    backgroundColor: theme.palette.colors.background.main,
-  },
-  light: {
-    backgroundColor: theme.palette.colors.background.light,
+    backgroundColor: theme.palette.colors.tihlde,
   },
   selected: {
-    borderBottom: '2px solid ' + theme.palette.colors.header.text,
+    borderBottom: '2px solid ' + theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
   },
   profileContainer: {
     display: 'flex',
@@ -148,7 +143,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   profileName: {
     margin: 'auto 10px',
     fontSize: '16px',
-    color: theme.palette.colors.constant.white,
+    color: theme.palette.common.white,
     minWidth: '40px',
     textAlign: 'right',
     [theme.breakpoints.down('sm')]: {
@@ -159,9 +154,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 45,
     height: 45,
     fontSize: 18,
-    fontWeight: 'bold',
-    background: 'linear-gradient(90deg, ' + theme.palette.colors.gradient.avatar.top + ', ' + theme.palette.colors.gradient.avatar.bottom + ')',
-    color: theme.palette.colors.gradient.avatar.text,
   },
   skeleton: {
     animation: 'animate 1.5s ease-in-out infinite',
@@ -174,7 +166,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   menulist: {
     padding: theme.spacing(0.5, 0),
-    background: theme.palette.colors.background.smoke,
+    background: theme.palette.background.smoke,
     borderRadius: theme.spacing(1),
     textTransform: 'uppercase',
     minWidth: 150,
@@ -209,7 +201,7 @@ const TopBarItem = ({ to, name }: TopBarItemProps) => {
 };
 
 export type DropdownMenuProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   items: Array<{
     name: string;
     to: string;
@@ -219,7 +211,7 @@ export type DropdownMenuProps = {
 const DropdownMenu = ({ children, items }: DropdownMenuProps) => {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
-  const anchorRef = React.useRef<HTMLButtonElement>(null);
+  const anchorRef = useRef<HTMLButtonElement>(null);
   const icon = <ExpandIcon className={classNames(classes.dropdownIcon, isOpen && classes.expanded)} />;
   return (
     <div onMouseLeave={() => setIsOpen(false)}>
@@ -279,16 +271,15 @@ const PersonIcon = ({ user, link }: PersonIconProps) => {
 };
 
 export type NavigationProps = {
-  children?: React.ReactNode;
-  banner?: React.ReactElement;
+  children?: ReactNode;
+  banner?: ReactElement;
   maxWidth?: false | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   isLoading?: boolean;
   noFooter?: boolean;
-  whitesmoke?: boolean;
   fancyNavbar?: boolean;
 };
 
-function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, maxWidth, banner, children }: NavigationProps) {
+function Navigation({ fancyNavbar, isLoading, noFooter, maxWidth, banner, children }: NavigationProps) {
   const classes = useStyles();
   const { isAuthenticated } = useAuth();
   const { getUserData } = useUser();
@@ -409,7 +400,7 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, maxWidth, ba
           open={Boolean(warning)}
         />
       )}
-      <main className={classNames(classes.main, !fancyNavbar && classes.normalMain, whitesmoke ? classes.whitesmoke : classes.light)}>
+      <main className={classNames(classes.main, !fancyNavbar && classes.normalMain)}>
         {isLoading ? (
           <LinearProgress />
         ) : banner || maxWidth ? (
@@ -419,7 +410,7 @@ function Navigation({ fancyNavbar, whitesmoke, isLoading, noFooter, maxWidth, ba
               <>{children}</>
             ) : (
               <Container className={classes.container} maxWidth={maxWidth || 'xl'}>
-                {children}
+                {children || <></>}
               </Container>
             )}
           </>

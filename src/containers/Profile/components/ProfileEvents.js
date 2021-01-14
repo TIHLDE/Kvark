@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useUser } from '../../../api/hooks/User';
 
@@ -11,7 +11,7 @@ import ListItem from '../../../components/miscellaneous/ListItem';
 
 const styles = (theme) => ({
   text: {
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
 });
 

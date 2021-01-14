@@ -1,5 +1,3 @@
-import React from 'react';
-
 // Material UI Components
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -11,7 +9,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: '100%',
   },
   header: {
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
 }));
 

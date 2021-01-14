@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
@@ -54,7 +54,7 @@ const styles = (theme) => ({
     marginBottom: 10,
   },
   header: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
   progress: {
     position: 'absolute',
@@ -106,7 +106,7 @@ function LogIn(props) {
   };
 
   return (
-    <Navigation fancyNavbar whitesmoke>
+    <Navigation fancyNavbar>
       <Helmet>
         <title>Logg inn - TIHLDE</title>
       </Helmet>

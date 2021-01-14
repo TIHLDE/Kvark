@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { getUserStudyLong, getUserClass } from '../../../utils';
@@ -46,8 +46,8 @@ const styles = (theme) => ({
   },
   snackbar: {
     marginTop: 55,
-    backgroundColor: theme.palette.colors.background.smoke,
-    color: theme.palette.colors.text.main,
+    backgroundColor: theme.palette.background.smoke,
+    color: theme.palette.text.primary,
   },
 });
 

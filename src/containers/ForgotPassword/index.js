@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import URLS from '../../URLS';
@@ -52,7 +52,7 @@ const styles = (theme) => ({
     marginBottom: 10,
   },
   header: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
   progress: {
     position: 'absolute',
@@ -66,8 +66,8 @@ const styles = (theme) => ({
   },
   snackbar: {
     marginTop: 55,
-    backgroundColor: theme.palette.colors.background.smoke,
-    color: theme.palette.colors.text.main,
+    backgroundColor: theme.palette.background.smoke,
+    color: theme.palette.text.primary,
   },
 });
 
@@ -106,7 +106,7 @@ function ForgotPassword(props) {
   };
 
   return (
-    <Navigation fancyNavbar whitesmoke>
+    <Navigation fancyNavbar>
       <Helmet>
         <title>Glemt passord - TIHLDE</title>
       </Helmet>

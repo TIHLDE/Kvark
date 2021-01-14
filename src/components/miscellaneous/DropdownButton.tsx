@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { MouseEvent as ReactMouseEvent, useState, useRef } from 'react';
 
 // Material UI
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -44,7 +44,7 @@ function DropdownButton({ options }: DropdownButtonProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const classes = useStyles();
 
-  const handleMenuItemClick = (e: React.MouseEvent<HTMLLIElement>, index: number) => {
+  const handleMenuItemClick = (e: ReactMouseEvent<HTMLLIElement>, index: number) => {
     setSelectedIndex(index);
     setOpen(false);
   };
@@ -54,7 +54,7 @@ function DropdownButton({ options }: DropdownButtonProps) {
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleClose = (event: React.MouseEvent<Document, MouseEvent>) => {
+  const handleClose = (event: ReactMouseEvent<Document, MouseEvent>) => {
     if (anchorRef !== null && anchorRef !== undefined && anchorRef.current !== null && event) {
       if (anchorRef.current.contains(event.target as HTMLElement)) {
         return;

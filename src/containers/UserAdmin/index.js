@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
@@ -52,12 +52,11 @@ const styles = (theme) => ({
   tabs: {
     marginTop: '10px',
     marginBottom: 1,
-    backgroundColor: theme.palette.colors.background.light,
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.primary,
     width: '100%',
   },
   header: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
 });
 
@@ -66,7 +65,7 @@ function UserAdmin(props) {
   const [tab, setTab] = useState(0);
 
   return (
-    <Navigation fancyNavbar whitesmoke>
+    <Navigation fancyNavbar>
       <Helmet>
         <title>Brukeradmin - TIHLDE</title>
       </Helmet>

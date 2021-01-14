@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import parser from 'html-react-parser';
 import classNames from 'classnames';
 
@@ -41,7 +41,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   title: {
-    color: theme.palette.colors.gradient.main.text,
+    color: (props: BannerProps) =>
+      props.background ? theme.palette.getContrastText(props.background) : theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
     fontSize: 72,
     [theme.breakpoints.down('md')]: {
       fontSize: 50,
@@ -49,7 +50,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   text: {
-    color: theme.palette.colors.gradient.main.text,
+    color: (props: BannerProps) =>
+      props.background ? theme.palette.getContrastText(props.background) : theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
     paddingTop: theme.spacing(2),
     maxWidth: 600,
     width: '50vw',
@@ -62,7 +64,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   line: {
     height: 4,
-    backgroundColor: theme.palette.colors.gradient.main.text,
+    backgroundColor: (props: BannerProps) =>
+      props.background ? theme.palette.getContrastText(props.background) : theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
     width: 50,
   },
   children: {
@@ -88,7 +91,7 @@ export type BannerProps = {
   className?: string;
   title?: string;
   text?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
   background?: string;
 };
 

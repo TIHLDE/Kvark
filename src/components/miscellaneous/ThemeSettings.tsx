@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useTheme } from 'context/ThemeContext';
-import { ThemeType } from 'types/Enums';
+import { MouseEvent as ReactMouseEvent, useState } from 'react';
+import { useThemeSettings } from 'context/ThemeContext';
+import { ThemeTypes, themesDetails } from 'theme';
 
 // Material-ui
 import Modal from '@material-ui/core/Modal';
@@ -9,11 +9,6 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-
-// Icons
-import DarkIcon from '@material-ui/icons/Brightness2Outlined';
-import DeviceIcon from '@material-ui/icons/DevicesOutlined';
-import LightIcon from '@material-ui/icons/WbSunnyOutlined';
 
 // Project components
 import Paper from 'components/layout/Paper';
@@ -43,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     'overflow-y': 'auto',
   },
   header: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
     marginBottom: theme.spacing(2),
   },
   button: {
@@ -51,11 +46,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: theme.spacing(3),
   },
   group: {
-    background: theme.palette.colors.background.smoke,
+    background: theme.palette.background.smoke,
   },
   groupButton: {
     margin: theme.spacing(0, 1),
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
 }));
 
@@ -65,14 +60,14 @@ type ThemeSettingsProps = {
 };
 
 function ThemeSettings({ open, onClose }: ThemeSettingsProps) {
-  const theme = useTheme();
-  const [themeName, setThemeName] = useState(theme.getEnum());
+  const themeSettings = useThemeSettings();
+  const [themeName, setThemeName] = useState(themeSettings.getThemeFromStorage());
   const classes = useStyles();
 
-  const changeTheme = (e: React.MouseEvent<HTMLElement, MouseEvent>, newThemeName: ThemeType) => {
+  const changeTheme = (e: ReactMouseEvent<HTMLElement, MouseEvent>, newThemeName: ThemeTypes) => {
     if (newThemeName) {
       setThemeName(newThemeName);
-      theme.set(newThemeName);
+      themeSettings.set(newThemeName);
       window.gtag('event', 'theme-switch', {
         event_category: 'theme',
         event_label: newThemeName,
@@ -89,24 +84,14 @@ function ThemeSettings({ open, onClose }: ThemeSettingsProps) {
               Tema
             </Typography>
             <ToggleButtonGroup aria-label='Tema' className={classes.group} exclusive onChange={changeTheme} orientation='vertical' value={themeName}>
-              <ToggleButton aria-label='Lyst tema' value={ThemeType.LIGHT}>
-                <LightIcon />
-                <Typography className={classes.groupButton} variant='subtitle2'>
-                  Lyst
-                </Typography>
-              </ToggleButton>
-              <ToggleButton aria-label='Enhetsinnstilling' value={ThemeType.AUTOMATIC}>
-                <DeviceIcon />
-                <Typography className={classes.groupButton} variant='subtitle2'>
-                  Automatisk
-                </Typography>
-              </ToggleButton>
-              <ToggleButton aria-label='Mørkt tema' value={ThemeType.DARK}>
-                <DarkIcon />
-                <Typography className={classes.groupButton} variant='subtitle2'>
-                  Mørkt
-                </Typography>
-              </ToggleButton>
+              {themesDetails.map((theme) => (
+                <ToggleButton aria-label={theme.name} key={theme.key} value={theme.key}>
+                  <theme.icon />
+                  <Typography className={classes.groupButton} variant='subtitle2'>
+                    {theme.name}
+                  </Typography>
+                </ToggleButton>
+              ))}
             </ToggleButtonGroup>
             <Button className={classes.button} color='primary' onClick={onClose}>
               Lukk

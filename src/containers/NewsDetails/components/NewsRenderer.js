@@ -1,10 +1,9 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import moment from 'moment';
-import { getMonth } from '../../../utils';
+import parseISO from 'date-fns/parseISO';
+import { formatDate } from '../../../utils';
 
 // Material UI Components
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
@@ -41,13 +40,13 @@ const styles = (theme) => ({
     borderRadius: theme.shape.borderRadius,
   },
   title: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
     padding: 26,
     paddingLeft: 0,
     paddingTop: 0,
   },
   header: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
     padding: 15,
     paddingLeft: 0,
     paddingTop: 0,
@@ -79,17 +78,13 @@ const styles = (theme) => ({
   ml: {
     marginRight: 5,
     fontWeight: 'bold',
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
   ml2: {
     textAlign: 'center',
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
 });
-
-const getDate = (date) => {
-  return date.date() + ' ' + getMonth(date.month()) + ' ' + date.year() + ' - kl. ' + date.format('HH:mm');
-};
 
 const DetailContent = withStyles(styles)((props) => (
   <Grid alignItems='center' className={props.classes.info} container justify='flex-start' wrap='nowrap'>
@@ -113,8 +108,8 @@ const NewsRenderer = (props) => {
   const title = newsData.title || '';
   const header = newsData.header || '';
   const body = newsData.body || '';
-  const createdDate = moment(newsData.created_at, ['YYYY-MM-DD HH:mm'], 'nb');
-  const updatedDate = moment(newsData.updated_at, ['YYYY-MM-DD HH:mm'], 'nb');
+  const createdDate = parseISO(newsData.created_at);
+  const updatedDate = parseISO(newsData.updated_at);
 
   return (
     <div className={classes.wrapper}>
@@ -122,8 +117,8 @@ const NewsRenderer = (props) => {
       <div className={classes.grid}>
         <div>
           <Paper className={classes.details} noPadding>
-            <DetailContent info={getDate(moment(createdDate, ['YYYY-MM-DD HH:mm'], 'nb'))} title='Publisert: ' />
-            <DetailContent info={getDate(moment(updatedDate, ['YYYY-MM-DD HH:mm'], 'nb'))} title='Oppdatert: ' />
+            <DetailContent info={formatDate(createdDate)} title='Publisert: ' />
+            <DetailContent info={formatDate(updatedDate)} title='Oppdatert: ' />
           </Paper>
         </div>
         <Paper className={classes.content}>

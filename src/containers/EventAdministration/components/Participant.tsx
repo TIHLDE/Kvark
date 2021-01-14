@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Registration } from 'types/Types';
 import { getUserStudyShort } from 'utils';
 
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       flexDirection: 'column',
     },
     marginBottom: 3,
-    background: theme.palette.colors.background.smoke,
+    background: theme.palette.background.smoke,
   },
   userName: {
     flexGrow: 1,
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: theme.spacing(2),
   },
   lightText: {
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
 }));
 

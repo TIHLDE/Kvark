@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import { RegistrationPriority } from 'types/Types';
 import { UserClass, UserStudy } from 'types/Enums';
 import { getUserStudyShort } from 'utils';
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   ml: {
     marginRight: 5,
     fontWeight: 'bold',
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
   prioritiesContainer: {
     display: 'flex',
@@ -33,10 +33,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   priority: {
     padding: '0 3px',
-    border: theme.palette.sizes.border.width + ' solid ' + theme.palette.colors.border.main,
+    border: theme.palette.borderWidth + ' solid ' + theme.palette.divider,
     borderRadius: theme.shape.borderRadius,
     margin: 3,
-    color: theme.palette.colors.text.lighter,
+    color: theme.palette.text.secondary,
   },
 }));
 
@@ -56,7 +56,7 @@ export type EventPrioritesProps = {
 const EventPriorities = ({ title, priorities }: EventPrioritesProps) => {
   const classes = useStyles();
   let prioritiesArr = [...priorities];
-  const content: React.ReactNode[] = [];
+  const content: ReactNode[] = [];
 
   [UserStudy.DATAING, UserStudy.DIGFOR, UserStudy.DIGSEC, UserStudy.DIGSAM, UserStudy.DRIFT].forEach((study: UserStudy) => {
     if (study === UserStudy.DIGSAM) {

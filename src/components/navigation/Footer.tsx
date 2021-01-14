@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import URLS from 'URLS';
 import classnames from 'classnames';
 import ThemeSettings from 'components/miscellaneous/ThemeSettings';
@@ -27,14 +27,14 @@ import DISCORD from 'assets/icons/discord.svg';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     position: 'relative',
-    backgroundColor: theme.palette.colors.footer.main,
+    backgroundColor: theme.palette.colors.footer,
     padding: theme.spacing(5, 0),
     display: 'grid',
     gridGap: theme.spacing(5),
     gridTemplateColumns: '1fr 1fr 1fr 1fr',
     gridTemplateAreas: "'sponsors about sosialMedia theme'",
     justifyItems: 'center',
-    color: theme.palette.colors.footer.text,
+    color: theme.palette.getContrastText(theme.palette.colors.footer),
     boxShadow: '0px -2px 5px 0px rgba(0,0,0,0.1)',
     [theme.breakpoints.down('md')]: {
       gridTemplateRows: '1fr 1fr',
@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 54,
     width: 54,
     marginTop: theme.spacing(2),
-    color: theme.palette.colors.footer.text,
+    color: theme.palette.getContrastText(theme.palette.colors.footer),
   },
   themeSettingsIcon: {
     fontSize: 30,

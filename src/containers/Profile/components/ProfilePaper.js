@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import URLS from '../../../URLS';
@@ -50,7 +50,6 @@ const styles = (theme) => ({
     padding: '28px',
     paddingTop: '110px',
     textAlign: 'center',
-    backgroundColor: theme.palette.colors.background.smoke,
   },
   button: {
     margin: '7px auto 0px',
@@ -65,9 +64,6 @@ const styles = (theme) => ({
     width: 200,
     height: 200,
     fontSize: 65,
-    fontWeight: 'bold',
-    background: 'linear-gradient(90deg, ' + theme.palette.colors.gradient.avatar.top + ', ' + theme.palette.colors.gradient.avatar.bottom + ')',
-    color: theme.palette.colors.gradient.avatar.text,
   },
   skeleton: {
     animation: 'animate 1.5s ease-in-out infinite',
@@ -78,7 +74,7 @@ const styles = (theme) => ({
   },
   text: {
     margin: '2px auto',
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
   skeletonCircle: {
     width: 110,
@@ -87,7 +83,7 @@ const styles = (theme) => ({
     height: 150,
   },
   memberProof: {
-    background: theme.palette.colors.constant.white,
+    background: theme.palette.common.white,
     display: 'flex',
     justifyContent: 'center',
   },
@@ -111,7 +107,7 @@ const styles = (theme) => ({
     justifyContent: 'flex-end',
   },
   logOutButton: {
-    color: theme.palette.colors.status.red,
+    color: theme.palette.error.main,
   },
 });
 

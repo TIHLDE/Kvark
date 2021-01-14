@@ -3,21 +3,10 @@
 * {
     padding: 0;
     box-sizing: border-box;
-    --tihlde-blaa: #1D448C;
-    --gray: #F8F8FA;
-    --tihlde-white: #Fefefe;
-    --notification-blue: #E4E9F2;
-    --gradient-top: #16356e;
-    --gradient-bottom: #814a93;
 }
 body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
-}
-
-/* LINKS */
-a {
-    color: #009a3e;
 }
 
 /* PULSE EFFECT */

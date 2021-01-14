@@ -1,4 +1,4 @@
-import React, { createRef } from 'react';
+import { createRef } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -61,10 +61,10 @@ const styles = (theme) => ({
   header: {
     marginTop: '2px',
     marginBottom: '20px',
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
   smoke: {
-    backgroundColor: theme.palette.colors.background.smoke,
+    backgroundColor: theme.palette.background.smoke,
   },
   formWrapper: {
     margin: '15px 0',
@@ -80,11 +80,11 @@ const styles = (theme) => ({
   },
   button: {
     width: '100%',
-    color: theme.palette.colors.constant.smoke,
-    borderColor: theme.palette.colors.constant.smoke + 'bb',
+    color: theme.palette.common.white,
+    borderColor: theme.palette.common.white + 'bb',
     minWidth: 200,
     '&:hover': {
-      borderColor: theme.palette.colors.constant.smoke,
+      borderColor: theme.palette.common.white,
     },
   },
   sendIcon: {
@@ -109,7 +109,7 @@ function Companies(props) {
   };
 
   return (
-    <Navigation fancyNavbar whitesmoke>
+    <Navigation fancyNavbar>
       <Helmet>
         <title>For bedrifter - TIHLDE</title>
       </Helmet>

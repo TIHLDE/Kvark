@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Event, Registration } from 'types/Types';
 
 // API and store imports
@@ -58,10 +58,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: theme.spacing(-0.75),
   },
   mainText: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
   lightText: {
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
   emailButtons: {
     display: 'grid',

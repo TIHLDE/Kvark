@@ -1,4 +1,3 @@
-import React, { Fragment } from 'react';
 import classNames from 'classnames';
 import URLS from 'URLS';
 import { Link } from 'react-router-dom';
@@ -15,14 +14,14 @@ import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    backgroundColor: theme.palette.colors.background.light,
+    backgroundColor: theme.palette.background.paper,
   },
   link: {
     textDecoration: 'none',
   },
   item: {
     height: 56,
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
 }));
 
@@ -35,7 +34,7 @@ type ActionLinkProps = {
 const ActionLink = ({ className, label, to }: ActionLinkProps) => {
   const classes = useStyles();
   return (
-    <Fragment>
+    <>
       <Link className={classes.link} onClick={to === window.location.pathname ? () => window.location.reload() : undefined} to={to}>
         <ListItem button className={classNames(classes.item, className)} color='inherit'>
           <Grid alignItems='center' container direction='column' justify='space-between' wrap='nowrap'>
@@ -46,7 +45,7 @@ const ActionLink = ({ className, label, to }: ActionLinkProps) => {
         </ListItem>
       </Link>
       <Divider />
-    </Fragment>
+    </>
   );
 };
 
@@ -54,17 +53,15 @@ const Sidebar = () => {
   const classes = useStyles();
   const { isAuthenticated } = useAuth();
   return (
-    <Fragment>
-      <div className={classes.root}>
-        <ActionLink label='Om TIHLDE' to={URLS.about} />
-        <ActionLink label='Ny student' to={URLS.newStudent} />
-        <ActionLink label='Arrangementer' to={URLS.events} />
-        <ActionLink label='Nyheter' to={URLS.news} />
-        <ActionLink label='Karriere' to={URLS.jobposts} />
-        {isAuthenticated() ? <ActionLink label='Kokebok' to={URLS.cheatsheet} /> : <ActionLink label='For Bedrifter' to={URLS.company} />}
-        {isAuthenticated() ? <ActionLink label='Min side' to={URLS.profile} /> : <ActionLink label='Logg inn' to={URLS.login} />}
-      </div>
-    </Fragment>
+    <div className={classes.root}>
+      <ActionLink label='Om TIHLDE' to={URLS.about} />
+      <ActionLink label='Ny student' to={URLS.newStudent} />
+      <ActionLink label='Arrangementer' to={URLS.events} />
+      <ActionLink label='Nyheter' to={URLS.news} />
+      <ActionLink label='Karriere' to={URLS.jobposts} />
+      {isAuthenticated() ? <ActionLink label='Kokebok' to={URLS.cheatsheet} /> : <ActionLink label='For Bedrifter' to={URLS.company} />}
+      {isAuthenticated() ? <ActionLink label='Min side' to={URLS.profile} /> : <ActionLink label='Logg inn' to={URLS.login} />}
+    </div>
   );
 };
 

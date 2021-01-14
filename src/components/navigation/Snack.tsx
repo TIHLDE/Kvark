@@ -1,4 +1,3 @@
-import React from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
 // Material UI Components
@@ -34,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     transform: 'translateX(-50%)',
   },
   color: {
-    color: theme.palette.colors.constant.white,
+    color: theme.palette.common.white,
   },
 }));
 
