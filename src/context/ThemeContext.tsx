@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useLayoutEffect, useContext, createContext, ReactNode } from 'react';
+import { useCallback, useState, useLayoutEffect, useContext, createContext, ReactNode } from 'react';
 import { getCookie, setCookie } from 'api/cookie';
 import { getTheme, themes, ThemeTypes } from '../theme';
 import { MuiThemeProvider } from '@material-ui/core/styles';

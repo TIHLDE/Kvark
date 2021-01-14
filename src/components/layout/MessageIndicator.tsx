@@ -1,5 +1,3 @@
-import React from 'react';
-
 // Material UI Components
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';

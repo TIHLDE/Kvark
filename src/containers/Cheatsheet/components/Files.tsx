@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 import classnames from 'classnames';
 import { CheatsheetType } from 'types/Enums';
 import { Cheatsheet } from 'types/Types';
@@ -119,7 +119,7 @@ const Files = ({ files, nextPage, goToNextPage }: FilesProps) => {
         {files.length ? (
           <List aria-label='Filer'>
             {files.map((file, index) => (
-              <React.Fragment key={index}>
+              <Fragment key={index}>
                 <Divider />
                 <Paper className={classes.listItem} noPadding>
                   <ListItem button component='a' href={file.url} rel='noopener noreferrer' target='_blank'>
@@ -152,7 +152,7 @@ const Files = ({ files, nextPage, goToNextPage }: FilesProps) => {
                   </ListItem>
                 </Paper>
                 {index === files.length - 1 && <Divider />}
-              </React.Fragment>
+              </Fragment>
             ))}
           </List>
         ) : (

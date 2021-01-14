@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { createElement } from 'react';
+import { createElement, ReactNode } from 'react';
 
 // Material UI
 import { makeStyles } from '@material-ui/core/styles';
@@ -54,13 +54,13 @@ function MarkdownRenderer({ value }: MarkdownRendererProps) {
     }
   };
   const renderers = {
-    blockquote: (props: { level: number; children: React.ReactNode[] }) => createElement('blockquote', { className: classes.blockquote }, props.children),
+    blockquote: (props: { level: number; children: ReactNode[] }) => createElement('blockquote', { className: classes.blockquote }, props.children),
     code: (props: { value: string }) => createElement('pre', { className: classes.code }, createElement('code', {}, props.value)),
-    heading: (props: { level: number; children: React.ReactNode[] }) =>
+    heading: (props: { level: number; children: ReactNode[] }) =>
       createElement(Typography, { variant: getHeadingLevel(props.level), className: classes.text }, props.children),
     inlineCode: (props: { value: string }) => createElement('code', { className: classes.inlineCode }, props.value),
-    list: (props: { children: React.ReactNode[]; ordered: boolean }) => createElement(props.ordered ? 'ol' : 'ul', { className: classes.list }, props.children),
-    paragraph: (props: { children: React.ReactNode[] }) => createElement(Typography, { variant: 'body1', className: classes.text }, props.children),
+    list: (props: { children: ReactNode[]; ordered: boolean }) => createElement(props.ordered ? 'ol' : 'ul', { className: classes.list }, props.children),
+    paragraph: (props: { children: ReactNode[] }) => createElement(Typography, { variant: 'body1', className: classes.text }, props.children),
     thematicBreak: () => <Divider className={classes.divider} />,
   };
 

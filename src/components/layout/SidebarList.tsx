@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 
 // Material UI Components
 import { makeStyles, useTheme, Theme } from '@material-ui/core/styles';
@@ -77,7 +77,7 @@ const SidebarList = ({ items, expiredItems, onItemClick, selectedItemId, getNext
   const classes = useStyles();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const transitionDuration = {
     enter: theme.transitions.duration.enteringScreen,

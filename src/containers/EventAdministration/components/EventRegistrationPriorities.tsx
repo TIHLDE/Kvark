@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 import { getUserStudyShort } from 'utils';
 import { RegistrationPriority } from 'types/Types';
 import { UserClass, UserStudy } from 'types/Enums';
@@ -98,7 +98,7 @@ const EventRegistrationPriorities = ({ priorities, setPriorities }: EventRegistr
       <FormGroup>
         {[1, 2, 3, 5].map((userStudy) => {
           return (
-            <React.Fragment key={userStudy}>
+            <Fragment key={userStudy}>
               <FormLabel component='legend'>{getUserStudyShort(userStudy)}</FormLabel>
               <FormGroup className={classes.formGroup} key={userStudy}>
                 {[1, 2, 3].map((userClass) => {
@@ -119,7 +119,7 @@ const EventRegistrationPriorities = ({ priorities, setPriorities }: EventRegistr
                   );
                 })}
               </FormGroup>
-            </React.Fragment>
+            </Fragment>
           );
         })}
         <FormLabel component='legend'>{getUserStudyShort(4)}</FormLabel>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { getCookie, setCookie } from 'api/cookie';
 import { ACCEPTED_ANALYTICS } from 'settings';
 

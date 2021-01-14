@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import { Event } from 'types/Types';
 import URLS from 'URLS';
 import { Link } from 'react-router-dom';
@@ -43,7 +43,7 @@ const EventsCalendarView = ({ events, oldEvents }: EventsCalendarViewProps) => {
   }, [oldEvents, events]);
 
   type AppointmentProps = {
-    children: React.ReactNode;
+    children: ReactNode;
     data: AppointmentModel;
   };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import URLS from 'URLS';
 import { getParameterByName } from 'utils';
 import { Link, useNavigate, useParams } from 'react-router-dom';

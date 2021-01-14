@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, forwardRef, Ref, ReactElement } from 'react';
 import { Event } from 'types/Types';
 
 // Material-UI
@@ -43,7 +43,7 @@ const EventPreview = ({ className, getEvent }: EventPreviewProps) => {
   const [event, setEvent] = useState<Event | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  const Transition = React.forwardRef(function Transition(props: TransitionProps & { children?: React.ReactElement }, ref: React.Ref<unknown>) {
+  const Transition = forwardRef(function Transition(props: TransitionProps & { children?: ReactElement }, ref: Ref<unknown>) {
     return <Slide direction='up' ref={ref} {...props} />;
   });
 

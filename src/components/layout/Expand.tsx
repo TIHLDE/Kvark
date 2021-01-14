@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import htmlReactParser from 'html-react-parser';
@@ -47,7 +47,7 @@ export type ExpansionProps = {
   header: string;
   subheader?: string;
   text?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
   subtext?: string;
 };
 

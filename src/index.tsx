@@ -1,4 +1,4 @@
-import React, { useEffect, lazy, Suspense } from 'react';
+import { ReactElement, ReactNode, useEffect, lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import 'assets/css/index.css';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -53,8 +53,8 @@ const UserAdmin = lazy(() => import('containers/UserAdmin'));
 type AuthRouteProps = {
   groups?: Array<Groups>;
   path: string;
-  element?: React.ReactElement | null;
-  children?: React.ReactNode;
+  element?: ReactElement | null;
+  children?: ReactNode;
 };
 
 const AuthRoute = ({ groups = [], children, path, element }: AuthRouteProps) => {
@@ -79,7 +79,7 @@ const AuthRoute = ({ groups = [], children, path, element }: AuthRouteProps) => 
 };
 
 type ProvidersProps = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export const Providers = ({ children }: ProvidersProps) => {

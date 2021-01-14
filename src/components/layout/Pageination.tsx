@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import classNames from 'classnames';
 
 // Material UI Components
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export type PageinationProps = {
   fullWidth?: boolean;
-  children?: React.ReactNode;
+  children?: ReactNode;
   nextPage: () => void;
   page?: string | number | null;
 };

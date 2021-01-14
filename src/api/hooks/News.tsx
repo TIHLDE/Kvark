@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useReducer, useCallback } from 'react';
+import { createContext, ReactNode, useContext, useState, useEffect, useReducer, useCallback } from 'react';
 import API from 'api/api';
 import { News, NewsRequired, RequestResponse } from 'types/Types';
 
@@ -9,7 +9,7 @@ export type Action =
   | { type: 'remove'; payload: number };
 
 export type Dispatch = (action: Action) => void;
-export type NewsProviderProps = { children: React.ReactNode };
+export type NewsProviderProps = { children: ReactNode };
 
 const NewsStateContext = createContext<Array<News> | undefined>(undefined);
 const NewsDispatchContext = createContext<Dispatch | undefined>(undefined);

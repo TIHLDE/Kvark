@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Event, User, Registration } from 'types/Types';
 import { Groups } from 'types/Enums';
 import URLS from 'URLS';

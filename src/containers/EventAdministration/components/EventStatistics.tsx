@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { Registration } from 'types/Types';
 import { getUserClass, getUserStudyShort } from 'utils';
 

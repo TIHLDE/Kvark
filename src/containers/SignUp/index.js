@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';

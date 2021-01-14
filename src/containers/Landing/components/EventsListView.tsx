@@ -1,4 +1,3 @@
-import React from 'react';
 import { Event } from 'types/Types';
 import URLS from 'URLS';
 import { Link } from 'react-router-dom';

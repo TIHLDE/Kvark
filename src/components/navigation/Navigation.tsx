@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { ReactNode, ReactElement, useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import classNames from 'classnames';
@@ -201,7 +201,7 @@ const TopBarItem = ({ to, name }: TopBarItemProps) => {
 };
 
 export type DropdownMenuProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   items: Array<{
     name: string;
     to: string;
@@ -211,7 +211,7 @@ export type DropdownMenuProps = {
 const DropdownMenu = ({ children, items }: DropdownMenuProps) => {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
-  const anchorRef = React.useRef<HTMLButtonElement>(null);
+  const anchorRef = useRef<HTMLButtonElement>(null);
   const icon = <ExpandIcon className={classNames(classes.dropdownIcon, isOpen && classes.expanded)} />;
   return (
     <div onMouseLeave={() => setIsOpen(false)}>
@@ -271,8 +271,8 @@ const PersonIcon = ({ user, link }: PersonIconProps) => {
 };
 
 export type NavigationProps = {
-  children?: React.ReactNode;
-  banner?: React.ReactElement;
+  children?: ReactNode;
+  banner?: ReactElement;
   maxWidth?: false | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   isLoading?: boolean;
   noFooter?: boolean;
@@ -410,7 +410,7 @@ function Navigation({ fancyNavbar, isLoading, noFooter, maxWidth, banner, childr
               <>{children}</>
             ) : (
               <Container className={classes.container} maxWidth={maxWidth || 'xl'}>
-                {children}
+                {children || <></>}
               </Container>
             )}
           </>

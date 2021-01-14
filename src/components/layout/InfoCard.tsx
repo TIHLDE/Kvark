@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import { Fragment, ReactNode } from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import parser from 'html-react-parser';
 import classNames from 'classnames';
@@ -67,14 +67,14 @@ export type InfoCardProps = {
   header: string;
   text?: string;
   src?: string;
-  srcComponent?: React.ReactNode;
+  srcComponent?: ReactNode;
   alt?: string;
   justifyText?: boolean;
   subheader?: string;
   subText?: string;
   className?: string;
   imageClass?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 const InfoCard = ({ className, header, text, src, srcComponent, alt, justifyText, subheader, subText, imageClass, children }: InfoCardProps) => {
   const classes = useStyles();

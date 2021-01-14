@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { News } from 'types/Types';
 import URLS from 'URLS';
 import { Link } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import URLS from 'URLS';
 import { usePalette } from 'react-palette';

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { MouseEvent as ReactMouseEvent, useState } from 'react';
 import { useThemeSettings } from 'context/ThemeContext';
 import { ThemeTypes, themesDetails } from 'theme';
 
@@ -64,7 +64,7 @@ function ThemeSettings({ open, onClose }: ThemeSettingsProps) {
   const [themeName, setThemeName] = useState(themeSettings.getThemeFromStorage());
   const classes = useStyles();
 
-  const changeTheme = (e: React.MouseEvent<HTMLElement, MouseEvent>, newThemeName: ThemeTypes) => {
+  const changeTheme = (e: ReactMouseEvent<HTMLElement, MouseEvent>, newThemeName: ThemeTypes) => {
     if (newThemeName) {
       setThemeName(newThemeName);
       themeSettings.set(newThemeName);

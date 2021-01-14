@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode } from 'react';
 
 // Material UI Components
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -21,7 +21,7 @@ export type DialogProps = {
   onCancel?: () => void;
   onConfirm?: () => void;
   titleText?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
   contentText?: string;
   closeText?: string;
   confirmText?: string;

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useReducer, useCallback } from 'react';
+import { createContext, ReactNode, useContext, useState, useEffect, useReducer, useCallback } from 'react';
 import API from 'api/api';
 import { useAuth } from 'api/hooks/Auth';
 import { User, Event } from 'types/Types';
@@ -12,7 +12,7 @@ export type Action =
   | { type: 'update'; payload: Partial<User> };
 
 export type Dispatch = (action: Action) => void;
-export type UserProviderProps = { children: React.ReactNode };
+export type UserProviderProps = { children: ReactNode };
 
 const UserStateContext = createContext<User | null>(null);
 const UserDispatchContext = createContext<Dispatch | undefined>(undefined);
@@ -77,7 +77,7 @@ const useUserDispatch = () => {
 };
 
 export type HavePermissionProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   groups: Array<Groups>;
 };
 

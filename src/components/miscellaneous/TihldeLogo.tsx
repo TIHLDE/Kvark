@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 // Material UI Components
 import { useTheme } from '@material-ui/core/styles';

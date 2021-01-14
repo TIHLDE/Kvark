@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import { RegistrationPriority } from 'types/Types';
 import { UserClass, UserStudy } from 'types/Enums';
 import { getUserStudyShort } from 'utils';
@@ -56,7 +56,7 @@ export type EventPrioritesProps = {
 const EventPriorities = ({ title, priorities }: EventPrioritesProps) => {
   const classes = useStyles();
   let prioritiesArr = [...priorities];
-  const content: React.ReactNode[] = [];
+  const content: ReactNode[] = [];
 
   [UserStudy.DATAING, UserStudy.DIGFOR, UserStudy.DIGSEC, UserStudy.DIGSAM, UserStudy.DRIFT].forEach((study: UserStudy) => {
     if (study === UserStudy.DIGSAM) {

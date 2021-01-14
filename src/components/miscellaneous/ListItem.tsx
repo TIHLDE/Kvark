@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { urlEncode, formatDate } from 'utils';

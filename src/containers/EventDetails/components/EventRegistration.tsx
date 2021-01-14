@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { ComponentType, useState } from 'react';
 import { Event, Registration, User } from 'types/Types';
 import URLS from 'URLS';
 import { getUserStudyShort, shortDownString } from 'utils';
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 type ListItemProps = {
-  icon: React.ComponentType<{ className: string }>;
+  icon: ComponentType<{ className: string }>;
   text: string;
 };
 

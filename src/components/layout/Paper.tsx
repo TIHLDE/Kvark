@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import MaterialPaper from '@material-ui/core/Paper';
 import classnames from 'classnames';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export type PaperProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   shadow?: boolean;
   noPadding?: boolean;
   className?: string;

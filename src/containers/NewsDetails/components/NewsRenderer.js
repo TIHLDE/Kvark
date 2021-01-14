@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import parseISO from 'date-fns/parseISO';
 import { formatDate } from '../../../utils';

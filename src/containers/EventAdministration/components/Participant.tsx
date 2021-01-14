@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Registration } from 'types/Types';
 import { getUserStudyShort } from 'utils';
 

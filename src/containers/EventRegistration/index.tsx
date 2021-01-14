@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import QrReader from 'react-qr-reader';
 import Helmet from 'react-helmet';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -107,7 +107,7 @@ export type ParticipantCardProps = {
 const ParticipantCard = ({ user, markAttended }: ParticipantCardProps) => {
   const classes = useStyles();
   const [checkedState, setCheckedState] = useState(user.has_attended);
-  const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCheck = (e: ChangeEvent<HTMLInputElement>) => {
     setCheckedState(e.target.checked);
     markAttended(user.user_info.user_id, e.target.checked);
   };

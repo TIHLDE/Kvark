@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useCallback } from 'react';
+import { createContext, ReactNode, useContext, useReducer, useCallback } from 'react';
 import API from 'api/api';
 import { Category, Warning, CompaniesEmail } from 'types/Types';
 
@@ -8,7 +8,7 @@ export type Action =
   | { type: 'set categories'; payload: Array<Category> };
 export type Dispatch = (action: Action) => void;
 export type State = { categories: Array<Category> | null; warnings: Array<Warning> | null; redirectUrl: string | null };
-export type MiscProviderProps = { children: React.ReactNode };
+export type MiscProviderProps = { children: ReactNode };
 
 const MiscStateContext = createContext<State | undefined>(undefined);
 const MiscDispatchContext = createContext<Dispatch | undefined>(undefined);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import URLS from 'URLS';
 import classnames from 'classnames';
 import ThemeSettings from 'components/miscellaneous/ThemeSettings';

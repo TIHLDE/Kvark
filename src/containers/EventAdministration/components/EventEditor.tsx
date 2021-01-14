@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import classnames from 'classnames';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { Category, Event, EventRequired, RegistrationPriority } from 'types/Types';

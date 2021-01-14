@@ -1,9 +1,9 @@
-import React from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { render } from '@testing-library/react';
 import { ThemeProvider } from 'context/ThemeContext';
 
 interface IProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const AllProviders = ({ children }: IProps) => {
@@ -11,7 +11,7 @@ const AllProviders = ({ children }: IProps) => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const customRender = (ui: React.ReactElement, options?: any) => render(ui, { wrapper: AllProviders, ...options });
+const customRender = (ui: ReactElement, options?: any) => render(ui, { wrapper: AllProviders, ...options });
 
 export * from '@testing-library/react';
 export { customRender as render };

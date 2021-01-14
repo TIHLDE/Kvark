@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import parser from 'html-react-parser';
 import classNames from 'classnames';
 
@@ -91,7 +91,7 @@ export type BannerProps = {
   className?: string;
   title?: string;
   text?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
   background?: string;
 };
 
