@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { getCookie, setCookie } from 'api/cookie';
-import { ACCEPTED_ANALYTICS } from 'settings';
+import { ACCEPTED_ANALYTICS } from 'constant';
 
 // Material UI
 import { makeStyles, Theme } from '@material-ui/core/styles';

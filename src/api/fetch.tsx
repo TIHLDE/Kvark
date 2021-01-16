@@ -1,5 +1,5 @@
 import { getCookie } from 'api/cookie';
-import { TOKEN_HEADER_NAME, TIHLDE_API, ACCESS_TOKEN } from 'settings';
+import { TOKEN_HEADER_NAME, TIHLDE_API, ACCESS_TOKEN } from 'constant';
 import { RequestMethodType } from 'types/Enums';
 
 export type RequestData<T> = { isError: false; data: T; status: number } | { isError: true; data: { detail: string }; status: number };

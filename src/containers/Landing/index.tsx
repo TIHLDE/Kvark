@@ -2,11 +2,11 @@ import Helmet from 'react-helmet';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 
 // Project Components
 import Navigation from 'components/navigation/Navigation';
+import Container from 'components/layout/Container';
 import Calendar from 'containers/Landing/components/EventsView';
 import NewsListView from 'containers/Landing/components/NewsListView';
 import Wave from 'containers/Landing/components/Wave';
