@@ -40,9 +40,25 @@ export interface User {
   events: Array<Event>;
   groups: Array<Groups>;
   unread_notifications: number;
-  notifications: Array<unknown>;
+  notifications: Array<Notification>;
+  badges: Array<Badge>;
 }
 export type NewsRequired = Partial<News> & Pick<News, 'title' | 'header' | 'body'>;
+
+export interface Badge {
+  title: string;
+  description: string;
+  total_completion_percentage: number;
+  image?: string;
+  image_alt?: string;
+  id: string;
+}
+
+export interface Notification {
+  id: number;
+  read: boolean;
+  message: string;
+}
 
 export interface News {
   id: number;

@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useUser } from '../../../api/hooks/User';
-import PropTypes from 'prop-types';
-
-import { makeStyles } from '@material-ui/core/styles';
+import { useUser } from 'api/hooks/User';
+import { Badge } from 'types/Types';
+import Paper from 'components/layout/Paper';
 
 // Material UI Components
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Paper from '../../../components/layout/Paper';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -16,11 +15,7 @@ const useStyles = makeStyles((theme) => ({
     minHeight: 110,
     height: '100%',
   },
-  text: {
-    color: theme.palette.text.primary,
-  },
   completion_percentage: {
-    color: theme.palette.text.secondary,
     fontSize: '0.7rem',
     fontStyle: 'italic',
     fontWeight: 700,
@@ -31,25 +26,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BadgeItem = (props) => {
+type BadgeItemProps = {
+  badge: Badge;
+};
+
+const BadgeItem = ({ badge }: BadgeItemProps) => {
   const classes = useStyles();
-  const { data } = props;
 
   return (
     <Paper className={classes.paper}>
       <Grid container spacing={0}>
         <Grid item xs={3}>
-          <img alt={data.title} src={data.image} width={64} />
+          <img alt={badge.title} src={badge.image} width={64} />
         </Grid>
         <Grid item xs={9}>
           <Typography variant='h6'>
-            <strong>{data.title}</strong>
+            <strong>{badge.title}</strong>
           </Typography>
           <Grid alignItems='center' container direction='row' wrap='nowrap'>
-            <Typography variant='body2'>{data.description}</Typography>
+            <Typography variant='body2'>{badge.description}</Typography>
           </Grid>
           <Typography className={classes.completion_percentage} variant='subtitle2'>
-            <span className={classes.percent}>{data.total_completion_percentage.toFixed(1)}%</span> av medlemmer har denne badgen
+            <span className={classes.percent}>{badge.total_completion_percentage.toFixed(1)}%</span> av medlemmer har denne badgen
           </Typography>
         </Grid>
       </Grid>
@@ -58,8 +56,7 @@ const BadgeItem = (props) => {
 };
 
 const ProfileBadges = () => {
-  const classes = useStyles();
-  const [badges, setBadges] = useState([]);
+  const [badges, setBadges] = useState<Array<Badge>>([]);
   const { getUserData } = useUser();
 
   useEffect(() => {
@@ -71,28 +68,24 @@ const ProfileBadges = () => {
   }, [getUserData]);
 
   return (
-    <div className={classes.wrapper}>
+    <div>
       {badges.length ? (
         <Grid container spacing={1}>
           {badges.map((badgeData, key) => {
             return (
               <Grid item key={key} md={6} xs={12}>
-                <BadgeItem data={badgeData} />
+                <BadgeItem badge={badgeData} />
               </Grid>
             );
           })}
         </Grid>
       ) : (
-        <Typography align='center' className={classes.text} variant='subtitle1'>
+        <Typography align='center' variant='subtitle1'>
           Du har ingen badges enda
         </Typography>
       )}
     </div>
   );
-};
-
-BadgeItem.propTypes = {
-  data: PropTypes.object,
 };
 
 export default ProfileBadges;

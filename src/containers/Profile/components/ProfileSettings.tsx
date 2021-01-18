@@ -1,23 +1,20 @@
 import { useState, useEffect } from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import { getUserStudyLong, getUserClass } from '../../../utils';
-
-// API and store import
-import { useUser } from '../../../api/hooks/User';
+import { getUserStudyLong, getUserClass } from 'utils';
+import { User } from 'types/Types';
+import { useUser } from 'api/hooks/User';
+import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material-UI
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
-import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   mt: {
-    marginTop: '16px',
+    marginTop: theme.spacing(2),
   },
   inputWidth: {
     maxWidth: '100%',
@@ -31,7 +28,7 @@ const styles = (theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    '@media only screen and (max-width: 600px)': {
+    [theme.breakpoints.down('xs')]: {
       flexDirection: 'column',
     },
   },
@@ -40,24 +37,27 @@ const styles = (theme) => ({
     textAlign: 'left',
   },
   centerSelect: {
-    '@media only screen and (min-width: 600px)': {
-      margin: '16px 5px 8px 5px',
+    [theme.breakpoints.down('xs')]: {
+      margin: theme.spacing(2, 1, 1),
     },
   },
-  snackbar: {
-    marginTop: 55,
-    backgroundColor: theme.palette.background.smoke,
-    color: theme.palette.text.primary,
-  },
-});
+}));
 
-function ProfileSettings(props) {
-  const { classes } = props;
+export interface IFormInput {
+  cell: number;
+  study: string;
+  class: string;
+  gender: string;
+  tool: string;
+  allergy: string;
+}
+
+const ProfileSettings = () => {
+  const classes = useStyles();
   const { getUserData, updateUserData } = useUser();
-  const [userData, setUserData] = useState(null);
+  const showSnackbar = useSnackbar();
+  const [userData, setUserData] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   useEffect(() => {
     getUserData().then((user) => {
@@ -67,25 +67,24 @@ function ProfileSettings(props) {
     });
   }, [getUserData]);
 
-  const updateData = (e) => {
+  const updateData = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (isLoading) {
       return;
     }
 
-    setIsLoading(true);
-    updateUserData(userData.user_id, userData, true)
-      .then((data) => setSnackbarMessage(data.detail))
-      .catch((error) => setSnackbarMessage(error.detail))
-      .finally(() => {
-        setSnackbarOpen(true);
-        setIsLoading(false);
-      });
+    if (userData) {
+      setIsLoading(true);
+      updateUserData(userData.user_id, userData, true)
+        .then(() => showSnackbar('Bruker oppdatert', 'success'))
+        .catch((error) => showSnackbar(error.detail, 'error'))
+        .finally(() => setIsLoading(false));
+    }
   };
 
   return (
-    <div>
+    <>
       {userData && (
         <form onSubmit={updateData}>
           <Grid container direction='column'>
@@ -94,9 +93,9 @@ function ProfileSettings(props) {
               InputProps={{ type: 'number' }}
               label='Telefon'
               margin='normal'
-              onChange={(e) => setUserData({ ...userData, cell: e.target.value })}
-              onInput={(e) => {
-                e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 8);
+              onChange={(e) => setUserData({ ...userData, cell: Number(e.target.value) })}
+              onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
+                e.target.value = Math.max(0, Number(e.target.value)).toString().slice(0, 8);
               }}
               value={userData.cell}
               variant='outlined'
@@ -107,7 +106,7 @@ function ProfileSettings(props) {
                 disabled
                 label='Studie'
                 margin='normal'
-                onChange={(e) => setUserData({ ...userData, user_study: e.target.value })}
+                onChange={(e) => setUserData({ ...userData, user_study: Number(e.target.value) })}
                 select={true}
                 value={userData.user_study}
                 variant='outlined'>
@@ -122,7 +121,7 @@ function ProfileSettings(props) {
                 disabled
                 label='Klasse'
                 margin='normal'
-                onChange={(e) => setUserData({ ...userData, user_class: e.target.value })}
+                onChange={(e) => setUserData({ ...userData, user_class: Number(e.target.value) })}
                 select={true}
                 value={userData.user_class}
                 variant='outlined'>
@@ -136,7 +135,7 @@ function ProfileSettings(props) {
                 className={classNames(classes.inputWidth, classes.selectBox)}
                 label='Kjønn'
                 margin='normal'
-                onChange={(e) => setUserData({ ...userData, gender: e.target.value })}
+                onChange={(e) => setUserData({ ...userData, gender: Number(e.target.value) })}
                 select={true}
                 value={userData.gender}
                 variant='outlined'>
@@ -159,7 +158,7 @@ function ProfileSettings(props) {
               margin='normal'
               multiline={true}
               onChange={(e) => setUserData({ ...userData, allergy: e.target.value })}
-              onInput={(e) => (e.target.value = e.target.value.slice(0, 250))}
+              onInput={(e: React.ChangeEvent<HTMLInputElement>) => (e.target.value = e.target.value.slice(0, 250))}
               rows={3}
               value={userData.allergy}
               variant='outlined'
@@ -170,15 +169,8 @@ function ProfileSettings(props) {
           </Grid>
         </form>
       )}
-      <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'right' }} autoHideDuration={4000} onClose={() => setSnackbarOpen(false)} open={snackbarOpen}>
-        <SnackbarContent className={classes.snackbar} message={snackbarMessage} />
-      </Snackbar>
-    </div>
+    </>
   );
-}
-
-ProfileSettings.propTypes = {
-  classes: PropTypes.object,
 };
 
-export default withStyles(styles)(ProfileSettings);
+export default ProfileSettings;
