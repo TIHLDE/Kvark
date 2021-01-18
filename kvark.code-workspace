@@ -1,15 +1,18 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
+  "folders": [
+    {
+      "path": "."
+    }
   ],
   "settings": {
-    "editor.formatOnSave": false,
-    "[javascript]": { "editor.formatOnSave": false },
-    "[javascriptreact]": { "editor.formatOnSave": false },
-    "eslint.validate": [ "html", "javascript", "javascriptreact", "typescript" ],
-    "prettier.disableLanguages": [ "javascript", "javascriptreact" ],
+    "files.exclude": {
+      "**/.git": true,
+      "**/node_modules": true,
+      "**/build": true,
+      "**/coverage": true
+    },
+    "editor.formatOnSave": true,
+    "eslint.validate": ["html", "javascript", "javascriptreact", "typescript", "typescriptreact"],
     "editor.codeActionsOnSave": { "source.fixAll.eslint": true }
   }
 }

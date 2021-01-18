@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useUser } from '../../../api/hooks/User';
 import PropTypes from 'prop-types';
 
@@ -17,17 +17,17 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
   },
   text: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
   completion_percentage: {
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
     fontSize: '0.7rem',
     fontStyle: 'italic',
     fontWeight: 700,
     marginTop: theme.spacing(1),
   },
   percent: {
-    color: theme.palette.colors.status.red,
+    color: theme.palette.error.main,
   },
 }));
 

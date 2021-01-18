@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import parser from 'html-react-parser';
 import PropTypes from 'prop-types';
@@ -40,7 +40,7 @@ const styles = (theme) => ({
   },
   bottomContent: {
     marginTop: 50,
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
   },
   infocard: {
     '@media only screen and (max-width: 600px)': {
@@ -65,7 +65,7 @@ const styles = (theme) => ({
 function NewStudent(props) {
   const { classes } = props;
   return (
-    <Navigation fancyNavbar whitesmoke>
+    <Navigation fancyNavbar>
       <Helmet>
         <title>Ny student - TIHLDE</title>
       </Helmet>
@@ -90,19 +90,19 @@ function NewStudent(props) {
           </InfoCard>
           <InfoCard className={classes.infocard} header={Text.faq.header}>
             {Text.faq.categories.map((category, i) => (
-              <React.Fragment key={i}>
+              <Fragment key={i}>
                 <Typography className={classes.subheader} variant='subtitle1'>
                   {category.title}
                 </Typography>
                 <Paper noPadding>
                   {category.items.map((item, index) => (
-                    <React.Fragment key={index}>
+                    <Fragment key={index}>
                       <Expansion expand flat header={item.header} text={item.text} />
                       {index !== category.items.length - 1 && <Divider />}
-                    </React.Fragment>
+                    </Fragment>
                   ))}
                 </Paper>
-              </React.Fragment>
+              </Fragment>
             ))}
             <div className={classes.bottomContent}>{parser(Text.faq.subheader)}</div>
           </InfoCard>

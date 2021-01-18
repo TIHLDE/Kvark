@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 
 // Material UI Components
 import { makeStyles, useTheme, Theme } from '@material-ui/core/styles';
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   header: {
     display: 'flex',
     justifyContent: 'space-between',
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
     padding: theme.spacing(1, 1, 1, 2),
     alignItems: 'center',
   },
@@ -40,7 +40,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   drawerTop: theme.mixins.toolbar,
   drawerPaper: {
     width: theme.spacing(35),
-    background: theme.palette.colors.background.light,
     display: 'grid',
     gridTemplateRows: 'auto 1fr',
     overflow: 'hidden',
@@ -78,7 +77,7 @@ const SidebarList = ({ items, expiredItems, onItemClick, selectedItemId, getNext
   const classes = useStyles();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const transitionDuration = {
     enter: theme.transitions.duration.enteringScreen,

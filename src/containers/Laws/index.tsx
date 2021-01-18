@@ -1,4 +1,3 @@
-import React from 'react';
 import Helmet from 'react-helmet';
 
 // Material UI Components
@@ -37,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   button: {
-    background: theme.palette.colors.background.light,
+    background: theme.palette.background.paper,
     padding: theme.spacing(2, 3),
   },
   buttonLabel: {
@@ -73,7 +72,7 @@ function Laws() {
   ];
 
   return (
-    <Navigation banner={<Banner title='Lover og regler' />} fancyNavbar whitesmoke>
+    <Navigation banner={<Banner title='Lover og regler' />} fancyNavbar>
       <Helmet>
         <title>Lover og regler - TIHLDE</title>
       </Helmet>

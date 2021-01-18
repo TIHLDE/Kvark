@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useReducer, useCallback } from 'react';
+import { createContext, ReactNode, useContext, useState, useEffect, useReducer, useCallback } from 'react';
 import { parseISO, differenceInSeconds } from 'date-fns';
 import API from 'api/api';
 import { Event, EventRequired, Registration, RequestResponse } from 'types/Types';
@@ -12,7 +12,7 @@ export type Action =
   | { type: 'remove'; payload: number };
 
 export type Dispatch = (action: Action) => void;
-export type EventProviderProps = { children: React.ReactNode };
+export type EventProviderProps = { children: ReactNode };
 
 const EventStateContext = createContext<Array<Event> | undefined>(undefined);
 const EventDispatchContext = createContext<Dispatch | undefined>(undefined);

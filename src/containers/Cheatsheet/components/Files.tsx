@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 import classnames from 'classnames';
 import { CheatsheetType } from 'types/Enums';
 import { Cheatsheet } from 'types/Types';
@@ -48,12 +48,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     border: 'none',
   },
   icon: {
-    fill: theme.palette.colors.text.light,
+    fill: theme.palette.text.secondary,
     height: 26,
     width: 26,
   },
   verified: {
-    fill: theme.palette.colors.status.green,
+    fill: theme.palette.success.dark,
     height: 22,
     width: 22,
     margin: `auto 0 auto ${theme.spacing(0.5)}px`,
@@ -119,7 +119,7 @@ const Files = ({ files, nextPage, goToNextPage }: FilesProps) => {
         {files.length ? (
           <List aria-label='Filer'>
             {files.map((file, index) => (
-              <React.Fragment key={index}>
+              <Fragment key={index}>
                 <Divider />
                 <Paper className={classes.listItem} noPadding>
                   <ListItem button component='a' href={file.url} rel='noopener noreferrer' target='_blank'>
@@ -152,7 +152,7 @@ const Files = ({ files, nextPage, goToNextPage }: FilesProps) => {
                   </ListItem>
                 </Paper>
                 {index === files.length - 1 && <Divider />}
-              </React.Fragment>
+              </Fragment>
             ))}
           </List>
         ) : (

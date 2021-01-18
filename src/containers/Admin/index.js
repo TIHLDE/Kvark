@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import URLS from '../../URLS';
@@ -64,7 +63,7 @@ function Admin(props) {
   const { classes } = props;
 
   return (
-    <Navigation fancyNavbar whitesmoke>
+    <Navigation fancyNavbar>
       <Helmet>
         <title>Admin - TIHLDE</title>
       </Helmet>

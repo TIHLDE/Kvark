@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { MuiThemeProvider as Theme } from '@material-ui/core/styles';
-import { errorTheme } from '../../theme';
 import Helmet from 'react-helmet';
 
 // API and store imports
@@ -25,8 +23,10 @@ import Grow from '@material-ui/core/Grow';
 import ListItem from '../../components/miscellaneous/ListItem';
 import Navigation from '../../components/navigation/Navigation';
 import Banner from '../../components/layout/Banner';
+import Paper from '../../components/layout/Paper';
 import Pageination from '../../components/layout/Pageination';
 import NoEventsIndicator from './components/NoEventsIndicator';
+import Story from '../../components/story/Story';
 
 const styles = (theme) => ({
   root: {
@@ -70,6 +70,7 @@ const styles = (theme) => ({
     gridTemplateColumns: '1fr',
   },
   listRoot: {
+    display: 'grid',
     [theme.breakpoints.down('md')]: {
       order: 1,
     },
@@ -77,16 +78,12 @@ const styles = (theme) => ({
   settings: {
     position: 'sticky',
     top: 88,
-    padding: 28,
 
     [theme.breakpoints.down('md')]: {
       order: 0,
       position: 'static',
       top: 0,
     },
-    border: theme.palette.sizes.border.width + ' solid ' + theme.palette.colors.border.main,
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: theme.palette.colors.background.light,
   },
   paddingBtn: {
     paddingBottom: 10,
@@ -101,12 +98,16 @@ const styles = (theme) => ({
     },
   },
   mt: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
     marginTop: 10,
   },
   resetBtn: {
     marginTop: 10,
-    borderRadius: theme.shape.borderRadius,
+    color: theme.palette.error.main,
+    borderColor: theme.palette.error.main,
+    '&:hover': {
+      borderColor: theme.palette.error.light,
+    },
   },
 });
 
@@ -210,7 +211,7 @@ function Events(props) {
   };
 
   return (
-    <Navigation fancyNavbar whitesmoke>
+    <Navigation fancyNavbar>
       <Helmet>
         <title>Arrangementer - TIHLDE</title>
       </Helmet>
@@ -222,6 +223,7 @@ function Events(props) {
               <CircularProgress className={classes.progress} />
             ) : (
               <div className={classes.listRoot}>
+                <Story items={events} />
                 <Grow in={!isFetching}>
                   <div className={classes.list}>
                     <Pageination nextPage={getNextPage} page={nextPage}>
@@ -235,7 +237,7 @@ function Events(props) {
               </div>
             )}
             <div>
-              <div className={classes.settings}>
+              <Paper className={classes.settings}>
                 <form>
                   <TextField
                     className={classes.paddingBtn}
@@ -270,12 +272,10 @@ function Events(props) {
                 </TextField>
                 <Divider className={classes.mt} />
 
-                <Theme theme={errorTheme}>
-                  <Button className={classes.resetBtn} color='primary' fullWidth onClick={resetFilters} variant='outlined'>
-                    {Text.reset}
-                  </Button>
-                </Theme>
-              </div>
+                <Button className={classes.resetBtn} color='primary' fullWidth onClick={resetFilters} variant='outlined'>
+                  {Text.reset}
+                </Button>
+              </Paper>
             </div>
           </div>
         </div>

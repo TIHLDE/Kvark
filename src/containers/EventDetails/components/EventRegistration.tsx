@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { ComponentType, useState } from 'react';
 import { Event, Registration, User, EventForm, TextFieldSubmission, SelectFieldSubmission } from 'types/Types';
 import { FormType, FormFieldType } from 'types/Enums';
 import URLS from 'URLS';
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   icon: {
     marginRight: theme.spacing(1),
-    color: theme.palette.colors.text.lighter,
+    color: theme.palette.text.secondary,
   },
   listItem: {
     display: 'flex',
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 type ListItemProps = {
-  icon: React.ComponentType<{ className: string }>;
+  icon: ComponentType<{ className: string }>;
   text: string;
 };
 

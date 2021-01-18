@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import classNames from 'classnames';
 
 // Material UI Components
@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
     padding: theme.spacing(1),
-    backgroundColor: theme.palette.colors.background.light,
+    backgroundColor: theme.palette.background.paper,
   },
   fullWidth: {
     width: '100%',
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export type PageinationProps = {
   fullWidth?: boolean;
-  children?: React.ReactNode;
+  children?: ReactNode;
   nextPage: () => void;
   page?: string | number | null;
 };

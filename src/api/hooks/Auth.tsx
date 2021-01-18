@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import AUTH from 'api/auth';
 import { getCookie, setCookie, removeCookie } from 'api/cookie';
-import { ACCESS_TOKEN } from 'settings';
+import { ACCESS_TOKEN } from 'constant';
 import { User } from 'types/Types';
 
 export const useAuth = () => {

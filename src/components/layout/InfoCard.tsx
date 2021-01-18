@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import { Fragment, ReactNode } from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import parser from 'html-react-parser';
 import classNames from 'classnames';
@@ -13,22 +13,22 @@ import Paper from 'components/layout/Paper';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: theme.spacing(4),
-    [theme.breakpoints.down('md')]: {
-      margin: theme.spacing(0, 1),
-    },
   },
   wrapper: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
     height: '100%',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
     },
+  },
+  centerAlign: {
+    alignItems: 'center',
   },
   image: {
     maxWidth: 160,
     maxHeight: 160,
+    borderRadius: theme.shape.borderRadius,
   },
   margin: {
     display: 'flex',
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'center',
     marginRight: theme.spacing(4),
 
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       margin: theme.spacing(0, 4, 4, 4),
       minHeight: 160,
     },
@@ -49,38 +49,38 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   header: {
     marginBottom: theme.spacing(1),
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
   subheader: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
   },
   text: {
-    color: theme.palette.colors.text.light,
+    color: theme.palette.text.secondary,
+    whiteSpace: 'break-spaces',
   },
   grow: {
     flexGrow: 1,
   },
-  children: {},
 }));
 
 export type InfoCardProps = {
   header: string;
   text?: string;
   src?: string;
-  srcComponent?: React.ReactNode;
+  srcComponent?: ReactNode;
   alt?: string;
   justifyText?: boolean;
   subheader?: string;
   subText?: string;
   className?: string;
   imageClass?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 const InfoCard = ({ className, header, text, src, srcComponent, alt, justifyText, subheader, subText, imageClass, children }: InfoCardProps) => {
   const classes = useStyles();
   return (
     <Paper className={classNames(classes.root, className)} noPadding>
-      <div className={classes.wrapper}>
+      <div className={classNames(classes.wrapper, src && classes.centerAlign)}>
         {src ? (
           <div className={classes.margin}>
             <img alt={alt || header} className={classNames(classes.image, imageClass)} src={src} />
@@ -108,7 +108,7 @@ const InfoCard = ({ className, header, text, src, srcComponent, alt, justifyText
               </Typography>
             </Fragment>
           )}
-          {children && <div className={classNames(classes.grow, classes.padding, classes.children)}>{children}</div>}
+          {children && <div className={classNames(classes.grow, classes.padding)}>{children}</div>}
         </Grid>
       </div>
     </Paper>

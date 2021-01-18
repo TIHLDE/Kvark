@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import classNames from 'classnames';
 
 // Material-ui
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     'overflow-y': 'auto',
   },
   header: {
-    color: theme.palette.colors.text.main,
+    color: theme.palette.text.primary,
     marginBottom: theme.spacing(2),
   },
   button: {
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 export type ModalProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   onClose: () => void;
   className?: string;
   open: boolean;

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import URLS from '../../URLS';
 import PropTypes from 'prop-types';
@@ -38,7 +38,7 @@ function JobPostDetails(props) {
   }, [id, navigate, jobPost, error]);
 
   return (
-    <Navigation isLoading={!jobPost} whitesmoke>
+    <Navigation isLoading={!jobPost}>
       {jobPost && (
         <div className={classes.root}>
           <Helmet>

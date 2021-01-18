@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useReducer, useCallback } from 'react';
+import { createContext, ReactNode, useContext, useState, useEffect, useReducer, useCallback } from 'react';
 import API from 'api/api';
 import { useAuth } from 'api/hooks/Auth';
 import { User, Event } from 'types/Types';
@@ -12,7 +12,7 @@ export type Action =
   | { type: 'update'; payload: Partial<User> };
 
 export type Dispatch = (action: Action) => void;
-export type UserProviderProps = { children: React.ReactNode };
+export type UserProviderProps = { children: ReactNode };
 
 const UserStateContext = createContext<User | null>(null);
 const UserDispatchContext = createContext<Dispatch | undefined>(undefined);
@@ -77,7 +77,7 @@ const useUserDispatch = () => {
 };
 
 export type HavePermissionProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   groups: Array<Groups>;
 };
 
@@ -93,10 +93,14 @@ export const useHavePermission = (groups: Array<Groups>) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let subscribed = true;
     getUserData()
-      .then((user) => setHavePermission(Boolean(user?.groups.some((group) => groups.includes(group)))))
-      .catch(() => setHavePermission(false))
-      .finally(() => setIsLoading(false));
+      .then((user) => !subscribed || setHavePermission(Boolean(user?.groups.some((group) => groups.includes(group)))))
+      .catch(() => !subscribed || setHavePermission(false))
+      .finally(() => !subscribed || setIsLoading(false));
+    return () => {
+      subscribed = false;
+    };
   }, [user, getUserData, groups]);
 
   return [havePermission, isLoading] as const;

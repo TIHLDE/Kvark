@@ -1,5 +1,4 @@
-// React
-import React, { useState } from 'react';
+import { useState } from 'react';
 import URLS from '../../URLS';
 import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
@@ -64,7 +63,7 @@ function Profile(props) {
   };
 
   return (
-    <Navigation fancyNavbar isLoading={isLoading} whitesmoke>
+    <Navigation fancyNavbar isLoading={isLoading}>
       <Helmet>
         <title>Profil - TIHLDE</title>
       </Helmet>
