@@ -97,17 +97,9 @@ export const useJobPost = () => {
   const jobPost = useJobPostState();
   const dispatch = useJobPostDispatch();
 
-  const getJobPosts = useCallback(async (filters = null) => {
-    return API.getJobPosts(filters).then((response) => {
-      return !response.isError ? Promise.resolve(response.data) : Promise.reject(response.data);
-    });
-  }, []);
+  const getJobPosts = useCallback((filters = null) => API.getJobPosts(filters), []);
 
-  const getExpiredJobPosts = useCallback(async () => {
-    return API.getExpiredJobPosts().then((response) => {
-      return !response.isError ? Promise.resolve(response.data) : Promise.reject(response.data);
-    });
-  }, []);
+  const getExpiredJobPosts = useCallback(() => API.getExpiredJobPosts(), []);
 
   const getJobPostById = useCallback(
     async (id: number): Promise<JobPost> => {
@@ -115,13 +107,9 @@ export const useJobPost = () => {
       if (jobPostItem) {
         return Promise.resolve(jobPostItem);
       } else {
-        return API.getJobPost(id).then((response) => {
-          if (response.isError) {
-            return Promise.reject(response.data);
-          } else {
-            dispatch({ type: 'add', payload: response.data });
-            return Promise.resolve(response.data);
-          }
+        return API.getJobPost(id).then((data) => {
+          dispatch({ type: 'add', payload: data });
+          return data;
         });
       }
     },
@@ -129,53 +117,38 @@ export const useJobPost = () => {
   );
 
   const createJobPost = useCallback(
-    async (jobPostData: JobPostRequired) => {
-      return API.createJobPost(jobPostData).then((response) => {
-        if (response.isError) {
-          return Promise.reject(response.data);
-        } else {
-          dispatch({
-            type: 'add',
-            payload: response.data,
-          });
-          return Promise.resolve(response.data);
-        }
-      });
-    },
+    (jobPostData: JobPostRequired) =>
+      API.createJobPost(jobPostData).then((data) => {
+        dispatch({
+          type: 'add',
+          payload: data,
+        });
+        return data;
+      }),
     [dispatch],
   );
 
   const updateJobPost = useCallback(
-    async (id: number, jobPostData: JobPostRequired) => {
-      return API.putJobPost(id, jobPostData).then((response) => {
-        if (response.isError) {
-          return Promise.reject(response.data);
-        } else {
-          dispatch({
-            type: 'update',
-            payload: response.data,
-          });
-          return Promise.resolve(response.data);
-        }
-      });
-    },
+    (id: number, jobPostData: JobPostRequired) =>
+      API.putJobPost(id, jobPostData).then((data) => {
+        dispatch({
+          type: 'update',
+          payload: data,
+        });
+        return data;
+      }),
     [dispatch],
   );
 
   const deleteJobPost = useCallback(
-    async (id: number) => {
-      return API.deleteJobPost(id).then((response) => {
-        if (response.isError) {
-          return Promise.reject(response.data);
-        } else {
-          dispatch({
-            type: 'remove',
-            payload: id,
-          });
-          return Promise.resolve(response.data);
-        }
-      });
-    },
+    (id: number) =>
+      API.deleteJobPost(id).then((data) => {
+        dispatch({
+          type: 'remove',
+          payload: id,
+        });
+        return data;
+      }),
     [dispatch],
   );
 

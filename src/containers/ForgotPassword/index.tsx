@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
-import Helmet from 'react-helmet';
+import { Link } from 'react-router-dom';
 import URLS from 'URLS';
+import { EMAIL_REGEX } from 'constant';
+import Helmet from 'react-helmet';
 import { useAuth } from 'api/hooks/Auth';
-import { useMisc } from 'api/hooks/Misc';
+import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -42,41 +43,33 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     right: 0,
   },
-  buttons: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gridGap: theme.spacing(1),
-  },
   button: {
     marginTop: theme.spacing(2),
   },
 }));
 
-type LoginData = {
-  username: string;
-  password: string;
+type FormData = {
+  email: string;
 };
 
-const LogIn = () => {
+const ForgotPassword = () => {
   const classes = useStyles();
-  const navigate = useNavigate();
-  const { logIn } = useAuth();
-  const { setLogInRedirectURL, getLogInRedirectURL } = useMisc();
-  const { register, errors, handleSubmit, setError } = useForm<LoginData>();
+  const { forgotPassword } = useAuth();
+  const showSnackbar = useSnackbar();
+  const { register, errors, handleSubmit, setError } = useForm<FormData>();
   const [isLoading, setIsLoading] = useState(false);
 
-  const onLogin = async (data: LoginData) => {
+  const onSubmit = async (data: FormData) => {
     if (isLoading) {
       return;
     }
     setIsLoading(true);
     try {
-      await logIn(data.username, data.password);
-      const redirectURL = getLogInRedirectURL();
-      setLogInRedirectURL(null);
-      navigate(redirectURL || URLS.landing);
+      const response = await forgotPassword(data.email);
+      showSnackbar(response.detail, 'success');
     } catch (e) {
-      setError('password', { message: e.detail || 'Noe gikk galt' });
+      setError('email', e.detail);
+    } finally {
       setIsLoading(false);
     }
   };
@@ -84,50 +77,39 @@ const LogIn = () => {
   return (
     <Navigation banner={<div className={classes.top} />} fancyNavbar>
       <Helmet>
-        <title>Logg inn</title>
+        <title>Glemt passord</title>
       </Helmet>
       <Paper className={classes.paper}>
         {isLoading && <LinearProgress className={classes.progress} />}
         <TihldeLogo className={classes.logo} darkColor='white' lightColor='blue' size='large' />
-        <Typography variant='h3'>Logg inn</Typography>
-        <form onSubmit={handleSubmit(onLogin)}>
+        <Typography variant='h3'>Glemt passord</Typography>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <TextField
             disabled={isLoading}
             errors={errors}
-            label='Brukernavn'
-            name='username'
+            label='Epost'
+            name='email'
             register={register}
             required
             rules={{
               required: 'Feltet er påkrevd',
-              validate: (value: string) => (value.includes('@') ? 'Bruk feide brukernavn, ikke epost' : undefined),
+              pattern: {
+                value: EMAIL_REGEX,
+                message: 'Ugyldig e-post',
+              },
             }}
-          />
-          <TextField
-            disabled={isLoading}
-            errors={errors}
-            label='Passord'
-            name='password'
-            register={register}
-            required
-            rules={{ required: 'Feltet er påkrevd' }}
-            type='password'
+            type='email'
           />
           <Button className={classes.button} color='primary' disabled={isLoading} fullWidth type='submit' variant='contained'>
+            Få nytt passord
+          </Button>
+          <Button className={classes.button} color='primary' component={Link} disabled={isLoading} fullWidth to={URLS.login}>
             Logg inn
           </Button>
-          <div className={classes.buttons}>
-            <Button className={classes.button} color='primary' component={Link} disabled={isLoading} fullWidth to={URLS.forgotPassword}>
-              Glemt passord?
-            </Button>
-            <Button className={classes.button} color='primary' component={Link} disabled={isLoading} fullWidth to={URLS.signup}>
-              Opprett bruker
-            </Button>
-          </div>
         </form>
       </Paper>
     </Navigation>
   );
 };
 
-export default LogIn;
+export default ForgotPassword;

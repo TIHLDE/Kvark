@@ -4,6 +4,7 @@ import { CompaniesEmail } from 'types/Types';
 import { useMisc } from 'api/hooks/Misc';
 import useSnackbar from 'api/hooks/Snackbar';
 import addMonths from 'date-fns/addMonths';
+import { EMAIL_REGEX } from 'constant';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -41,7 +42,7 @@ const CompaniesForm = () => {
   const showSnackbar = useSnackbar();
   const { postEmail } = useMisc();
   const [isLoading, setIsLoading] = useState(false);
-  const { register, handleSubmit, errors, reset, setError } = useForm();
+  const { register, handleSubmit, errors, reset, setError } = useForm<CompaniesEmail>();
 
   const submitForm = async (data: CompaniesEmail) => {
     if (isLoading) {
@@ -53,7 +54,7 @@ const CompaniesForm = () => {
       showSnackbar(response.detail, 'success');
       reset({ info: { bedrift: '', kontaktperson: '', epost: '' }, comment: '' } as CompaniesEmail);
     } catch (e) {
-      setError('bedrift', { type: 'manual', message: e.detail || 'Noe gikk galt' });
+      setError('bedrift', { message: e.detail || 'Noe gikk galt' });
     } finally {
       setIsLoading(false);
     }
@@ -102,7 +103,13 @@ const CompaniesForm = () => {
           name='info.epost'
           register={register}
           required
-          rules={{ required: 'Feltet er påkrevd' }}
+          rules={{
+            required: 'Feltet er påkrevd',
+            pattern: {
+              value: EMAIL_REGEX,
+              message: 'Ugyldig e-post',
+            },
+          }}
           type='email'
         />
         <Divider />

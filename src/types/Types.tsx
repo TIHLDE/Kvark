@@ -43,6 +43,10 @@ export interface User {
   notifications: Array<Notification>;
   badges: Array<Badge>;
 }
+export type UserCreate = Pick<User, 'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study'> & {
+  password: string;
+};
+
 export type NewsRequired = Partial<News> & Pick<News, 'title' | 'header' | 'body'>;
 
 export interface Badge {

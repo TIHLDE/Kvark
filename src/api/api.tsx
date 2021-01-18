@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IFetch } from 'api/fetch';
-import { RequestMethodType, Study } from 'types/Enums';
+import { Study } from 'types/Enums';
 import {
   User,
+  UserCreate,
   Event,
   EventRequired,
   Registration,
@@ -15,124 +16,83 @@ import {
   RequestResponse,
   CompaniesEmail,
   PaginationResponse,
+  LoginRequestResponse,
   Cheatsheet,
 } from 'types/Types';
 
 export default {
+  // Auth
+  createUser: (item: UserCreate) => IFetch<RequestResponse>({ method: 'POST', url: 'user/', data: item, withAuth: false }),
+  authenticate: (username: string, password: string) =>
+    IFetch<LoginRequestResponse>({
+      method: 'POST',
+      url: 'auth/login/',
+      data: { user_id: username, password: password },
+      withAuth: false,
+    }),
+  forgotPassword: (email: string) =>
+    IFetch<RequestResponse>({ method: 'POST', url: 'auth/rest-auth/password/reset/', data: { email: email }, withAuth: false }),
+
   // Events
-  getEvent: (eventId: number) => {
-    return IFetch<Event>(RequestMethodType.GET, `events/${String(eventId)}/`, undefined);
-  },
-  getEvents: (filters?: any) => {
-    return IFetch<PaginationResponse<Event>>(RequestMethodType.GET, `events/`, filters || {});
-  },
-  getExpiredEvents: () => {
-    return IFetch<PaginationResponse<Event>>(RequestMethodType.GET, `events/`, { expired: true });
-  },
-  createEvent: (item: EventRequired) => {
-    return IFetch<Event>(RequestMethodType.POST, `events/`, item, true);
-  },
-  updateEvent: (eventId: number, item: Partial<Event>) => {
-    return IFetch<Event>(RequestMethodType.PUT, `events/${String(eventId)}/`, item, true);
-  },
-  deleteEvent: (eventId: number) => {
-    return IFetch<RequestResponse>(RequestMethodType.DELETE, `events/${String(eventId)}/`, undefined, true);
-  },
-  putAttended: (eventId: number, item: { has_attended: boolean }, userId: string) => {
-    return IFetch<RequestResponse>(RequestMethodType.PUT, `events/${String(eventId)}/users/${userId}/`, item, true);
-  },
-  getRegistration: (eventId: number, userId: string) => {
-    return IFetch<Registration>(RequestMethodType.GET, `events/${String(eventId)}/users/${userId}/`, undefined, true);
-  },
-  getEventRegistrations: (eventId: number) => {
-    return IFetch<Array<Registration>>(RequestMethodType.GET, `events/${String(eventId)}/users/`, undefined, true);
-  },
-  createRegistration: (eventId: number, item: Partial<Registration>) => {
-    return IFetch<Registration>(RequestMethodType.POST, `events/${String(eventId)}/users/`, item, true);
-  },
-  updateRegistration: (eventId: number, item: Partial<Registration>, userId: string) => {
-    return IFetch<Registration>(RequestMethodType.PUT, `events/${String(eventId)}/users/${userId}/`, item, true);
-  },
-  deleteRegistration: (eventId: number, userId: string) => {
-    return IFetch<RequestResponse>(RequestMethodType.DELETE, `events/${String(eventId)}/users/${userId}/`, undefined, true);
-  },
+  getEvent: (eventId: number) => IFetch<Event>({ method: 'GET', url: `events/${String(eventId)}/` }),
+  getEvents: (filters?: any) => IFetch<PaginationResponse<Event>>({ method: 'GET', url: `events/`, data: filters || {} }),
+  getExpiredEvents: () => IFetch<PaginationResponse<Event>>({ method: 'GET', url: `events/`, data: { expired: true } }),
+  createEvent: (item: EventRequired) => IFetch<Event>({ method: 'POST', url: `events/`, data: item }),
+  updateEvent: (eventId: number, item: Partial<Event>) => IFetch<Event>({ method: 'PUT', url: `events/${String(eventId)}/`, data: item }),
+  deleteEvent: (eventId: number) => IFetch<RequestResponse>({ method: 'DELETE', url: `events/${String(eventId)}/` }),
+  putAttended: (eventId: number, item: { has_attended: boolean }, userId: string) =>
+    IFetch<RequestResponse>({ method: 'PUT', url: `events/${String(eventId)}/users/${userId}/`, data: item }),
+  getRegistration: (eventId: number, userId: string) => IFetch<Registration>({ method: 'GET', url: `events/${String(eventId)}/users/${userId}/` }),
+  getEventRegistrations: (eventId: number) => IFetch<Array<Registration>>({ method: 'GET', url: `events/${String(eventId)}/users/` }),
+  createRegistration: (eventId: number, item: Partial<Registration>) =>
+    IFetch<Registration>({ method: 'POST', url: `events/${String(eventId)}/users/`, data: item }),
+  updateRegistration: (eventId: number, item: Partial<Registration>, userId: string) =>
+    IFetch<Registration>({ method: 'PUT', url: `events/${String(eventId)}/users/${userId}/`, data: item }),
+  deleteRegistration: (eventId: number, userId: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `events/${String(eventId)}/users/${userId}/` }),
 
   // Job posts
-  getJobPosts: (filters?: any) => {
-    return IFetch<PaginationResponse<JobPost>>(RequestMethodType.GET, `jobpost/`, filters || { newest: true });
-  },
-  getJobPost: (id: number) => {
-    return IFetch<JobPost>(RequestMethodType.GET, `jobpost/${String(id)}/`, undefined);
-  },
-  getExpiredJobPosts: () => {
-    return IFetch<PaginationResponse<JobPost>>(RequestMethodType.GET, `jobpost/`, { expired: true });
-  },
-  createJobPost: (item: JobPostRequired) => {
-    return IFetch<JobPost>(RequestMethodType.POST, `jobpost/`, item, true);
-  },
-  putJobPost: (id: number, item: JobPostRequired) => {
-    return IFetch<JobPost>(RequestMethodType.PUT, `jobpost/${String(id)}/`, item, true);
-  },
-  deleteJobPost: (id: number) => {
-    return IFetch<RequestResponse>(RequestMethodType.DELETE, `jobpost/${String(id)}/`, undefined, true);
-  },
+  getJobPosts: (filters?: any) => IFetch<PaginationResponse<JobPost>>({ method: 'GET', url: `jobpost/`, data: filters || { newest: true } }),
+  getJobPost: (id: number) => IFetch<JobPost>({ method: 'GET', url: `jobpost/${String(id)}/` }),
+  getExpiredJobPosts: () => IFetch<PaginationResponse<JobPost>>({ method: 'GET', url: `jobpost/`, data: { expired: true } }),
+  createJobPost: (item: JobPostRequired) => IFetch<JobPost>({ method: 'POST', url: `jobpost/`, data: item }),
+  putJobPost: (id: number, item: JobPostRequired) => IFetch<JobPost>({ method: 'PUT', url: `jobpost/${String(id)}/`, data: item }),
+  deleteJobPost: (id: number) => IFetch<RequestResponse>({ method: 'DELETE', url: `jobpost/${String(id)}/` }),
 
   // News
-  getNewsItem: (id: number) => {
-    return IFetch<News>(RequestMethodType.GET, `news/${String(id)}/`, undefined);
-  },
-  getNewsItems: (filters?: any) => {
-    return IFetch<Array<News>>(RequestMethodType.GET, `news/`, filters || {});
-  },
-  createNewsItem: (item: NewsRequired) => {
-    return IFetch<News>(RequestMethodType.POST, `news/`, item, true);
-  },
-  putNewsItem: (id: number, item: NewsRequired) => {
-    return IFetch<News>(RequestMethodType.PUT, `news/${String(id)}/`, item, true);
-  },
-  deleteNewsItem: (id: number) => {
-    return IFetch<RequestResponse>(RequestMethodType.DELETE, `news/${String(id)}/`, undefined, true);
-  },
+  getNewsItem: (id: number) => IFetch<News>({ method: 'GET', url: `news/${String(id)}/` }),
+  getNewsItems: (filters?: any) => IFetch<Array<News>>({ method: 'GET', url: `news/`, data: filters || {} }),
+  createNewsItem: (item: NewsRequired) => IFetch<News>({ method: 'POST', url: `news/`, data: item }),
+  putNewsItem: (id: number, item: NewsRequired) => IFetch<News>({ method: 'PUT', url: `news/${String(id)}/`, data: item }),
+  deleteNewsItem: (id: number) => IFetch<RequestResponse>({ method: 'DELETE', url: `news/${String(id)}/` }),
 
   // User
-  getUserData: () => {
-    return IFetch<User>(RequestMethodType.GET, `user/userdata/`, undefined, true);
-  },
-  getUsers: (filters?: any) => {
-    return IFetch<Array<User>>(RequestMethodType.GET, `user/`, filters || {}, true);
-  },
-  updateUserData: (userName: string, item: Partial<User>) => {
-    return IFetch<RequestResponse>(RequestMethodType.PUT, `user/${userName}/`, item, true);
-  },
+  getUserData: () => IFetch<User>({ method: 'GET', url: `user/userdata/` }),
+  getUsers: (filters?: any) => IFetch<Array<User>>({ method: 'GET', url: `user/`, data: filters || {} }),
+  updateUserData: (userName: string, item: Partial<User>) => IFetch<RequestResponse>({ method: 'PUT', url: `user/${userName}/`, data: item }),
 
   // Notifications
-  updateNotification: (id: number, item: { read: boolean }) => {
-    return IFetch<RequestResponse>(RequestMethodType.PUT, `notification/${String(id)}/`, item, true);
-  },
+  updateNotification: (id: number, item: { read: boolean }) => IFetch<RequestResponse>({ method: 'PUT', url: `notification/${String(id)}/`, data: item }),
 
   // Cheatsheet
   getCheatsheets: (study: Study, grade: number, filters?: any) => {
     const tempStudy = study === Study.DIGSEC ? 'DIGINC' : study;
-    return IFetch<PaginationResponse<Cheatsheet>>(RequestMethodType.GET, `cheatsheet/${tempStudy.toUpperCase()}/${String(grade)}/files/`, filters || {}, true);
+    return IFetch<PaginationResponse<Cheatsheet>>({
+      method: 'GET',
+      url: `cheatsheet/${tempStudy.toUpperCase()}/${String(grade)}/files/`,
+      data: filters || {},
+      withAuth: true,
+    });
   },
 
   // Warning
-  getWarning: () => {
-    return IFetch<Array<Warning>>(RequestMethodType.GET, `warning/`);
-  },
+  getWarning: () => IFetch<Array<Warning>>({ method: 'GET', url: `warning/` }),
 
   // Categories
-  getCategories: () => {
-    return IFetch<Array<Category>>(RequestMethodType.GET, `category/`);
-  },
+  getCategories: () => IFetch<Array<Category>>({ method: 'GET', url: `category/` }),
 
   // Company form
-  emailForm: (data: CompaniesEmail) => {
-    return IFetch<RequestResponse>(RequestMethodType.POST, `accept-form/`, data, false);
-  },
+  emailForm: (data: CompaniesEmail) => IFetch<RequestResponse>({ method: 'POST', url: `accept-form/`, data, withAuth: false }),
 
   // Badges
-  createUserBadge: (data: { badge_id: string }) => {
-    return IFetch<RequestResponse>(RequestMethodType.POST, `badge/`, data, true);
-  },
+  createUserBadge: (data: { badge_id: string }) => IFetch<RequestResponse>({ method: 'POST', url: `badge/`, data }),
 };

@@ -127,6 +127,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   selected: {
     borderBottom: '2px solid ' + theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
   },
+  loginBtn: {
+    marginLeft: theme.spacing(7),
+  },
   profileContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -367,7 +370,7 @@ function Navigation({ fancyNavbar, isLoading, noFooter, maxWidth, banner, childr
               <PersonIcon link={URLS.profile} user={userData} />
             ) : (
               <Hidden mdDown>
-                <IconButton className={classes.menuButton} component={Link} to={URLS.login}>
+                <IconButton className={classNames(classes.menuButton, classes.loginBtn)} component={Link} to={URLS.login}>
                   <PersonOutlineIcon />
                 </IconButton>
               </Hidden>

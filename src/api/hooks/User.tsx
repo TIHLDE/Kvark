@@ -116,13 +116,9 @@ export const useUser = () => {
       if (user) {
         return Promise.resolve(user);
       } else {
-        return API.getUserData().then((response) => {
-          if (response.isError) {
-            return Promise.reject(response.data);
-          } else {
-            dispatch({ type: 'set', payload: response.data });
-            return Promise.resolve(response.data);
-          }
+        return API.getUserData().then((data) => {
+          dispatch({ type: 'set', payload: data });
+          return data;
         });
       }
     } else {
@@ -130,44 +126,21 @@ export const useUser = () => {
     }
   }, [user, dispatch, isAuthenticated]);
 
-  const getUsers = useCallback(
-    async (filters = null) => {
-      if (isAuthenticated()) {
-        return API.getUsers(filters).then((response) => {
-          return !response.isError ? Promise.resolve(response.data) : Promise.reject(response.data);
-        });
-      }
-    },
-    [isAuthenticated],
-  );
+  const getUsers = useCallback((filters = null) => API.getUsers(filters), [isAuthenticated]);
 
   const updateUserData = useCallback(
     async (userName: string, userData: Partial<User>, updateLocally?: boolean) => {
-      return API.updateUserData(userName, userData).then((response) => {
-        if (response.isError) {
-          return Promise.reject(response.data);
-        } else {
-          !updateLocally || dispatch({ type: 'update', payload: userData });
-          return response.data;
-        }
+      return API.updateUserData(userName, userData).then((data) => {
+        !updateLocally || dispatch({ type: 'update', payload: userData });
+        return data;
       });
     },
     [dispatch],
   );
 
-  const addUserEvent = useCallback(
-    async (event: Event) => {
-      return dispatch({ type: 'add event', payload: event });
-    },
-    [dispatch],
-  );
+  const addUserEvent = useCallback((event: Event) => dispatch({ type: 'add event', payload: event }), [dispatch]);
 
-  const removeUserEvent = useCallback(
-    async (event: Event) => {
-      return dispatch({ type: 'remove event', payload: event });
-    },
-    [dispatch],
-  );
+  const removeUserEvent = useCallback((event: Event) => dispatch({ type: 'remove event', payload: event }), [dispatch]);
 
   return { getUserData, getUsers, updateUserData, addUserEvent, removeUserEvent };
 };
