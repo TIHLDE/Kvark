@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'grid',
     gridGap: theme.spacing(1),
     padding: theme.spacing(1, 1, 2, 2),
-    background: theme.palette.colors.background.main,
+    background: theme.palette.background.default,
   },
   row: {
     display: 'grid',
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 28,
   },
   deleteIcon: {
-    color: theme.palette.colors.status.red,
+    color: theme.palette.error.main,
   },
 }));
 

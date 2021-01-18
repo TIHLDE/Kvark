@@ -130,18 +130,18 @@ const EventRegistration = ({ event, user, setRegistration }: EventRegistrationPr
 
   const submit = (data: { answers: Array<TextFieldSubmission | SelectFieldSubmission> }) => {
     setIsLoading(true);
-    let errorsNo = 0;
+    let anyError = false;
     data.answers.forEach((answer, index) => {
       const field = form.fields.find((field) => field.id === answer.field);
       if (field && field.type === FormFieldType.MULTIPLE_SELECT && field.required) {
         const ans = answer as SelectFieldSubmission;
         if (!ans.selected_options.length) {
           setError(`answers[${index}].selected_options`, { type: 'manual', message: 'Du må velge ett eller flere alternativ' });
-          errorsNo++;
+          anyError = true;
         }
       }
     });
-    if (errorsNo) {
+    if (anyError) {
       setIsLoading(false);
       return;
     }
