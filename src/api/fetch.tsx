@@ -1,18 +1,19 @@
 import { getCookie } from 'api/cookie';
-import { TOKEN_HEADER_NAME, TIHLDE_API, ACCESS_TOKEN } from 'settings';
-import { RequestMethodType } from 'types/Enums';
+import { TOKEN_HEADER_NAME, TIHLDE_API, ACCESS_TOKEN } from 'constant';
+import { RequestResponse } from 'types/Types';
 
-export type RequestData<T> = { isError: false; data: T; status: number } | { isError: true; data: { detail: string }; status: number };
+type RequestMethodType = 'GET' | 'POST' | 'PUT' | 'DELETE';
+
+type FetchProps = {
+  method: RequestMethodType;
+  url: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data?: Record<string, unknown | any>;
+  withAuth?: boolean;
+};
 
 // eslint-disable-next-line comma-spacing
-export const IFetch = <T,>(
-  method: RequestMethodType,
-  url: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data?: Record<string, unknown | any>,
-  withAuth = true,
-  args?: Record<string, string>,
-): Promise<RequestData<T>> => {
+export const IFetch = <T,>({ method, url, data = {}, withAuth = true }: FetchProps): Promise<T> => {
   const urlAddress = TIHLDE_API.URL + url;
   const headers = new Headers();
   headers.append('Content-Type', 'application/json');
@@ -20,27 +21,27 @@ export const IFetch = <T,>(
   if (withAuth) {
     headers.append(TOKEN_HEADER_NAME, getCookie(ACCESS_TOKEN) as string);
   }
-  for (const key in args) {
-    headers.append(key, args[key] as string);
-  }
 
-  return fetch(request(method, urlAddress, headers, data || {})).then((response) => {
+  return fetch(request(method, urlAddress, headers, data)).then((response) => {
     const contentType = response.headers.get('content-type');
     if (!contentType || !contentType.includes('application/json') || !response.ok || response.json === undefined) {
-      return { status: response.status, isError: true, data: { detail: response.statusText } };
+      if (response.json) {
+        return response.json().then((responseData: RequestResponse) => {
+          throw responseData;
+        });
+      } else {
+        throw { detail: response.statusText } as RequestResponse;
+      }
     }
-
-    return response.json().then((responseData: T) => {
-      return { status: response.status, isError: false, data: responseData };
-    });
+    return response.json().then((responseData: T) => responseData);
   });
 };
 
 const request = (method: RequestMethodType, url: string, headers: Headers, data: Record<string, unknown>) => {
-  return new Request(method === RequestMethodType.GET ? url + argsToParams(data) : url, {
+  return new Request(method === 'GET' ? url + argsToParams(data) : url, {
     method: method,
     headers: headers,
-    ...(method !== RequestMethodType.GET && { body: JSON.stringify(data) }),
+    ...(method !== 'GET' && { body: JSON.stringify(data) }),
   });
 };
 

@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import URLS from '../../../URLS';
-import PropTypes from 'prop-types';
 import QRCode from 'qrcode.react';
-
-// API and store import
-import { useUser, useHavePermission } from '../../../api/hooks/User';
+import URLS from 'URLS';
+import { User, Notification } from 'types/Types';
+import { Groups } from 'types/Enums';
+import { useUser, useHavePermission } from 'api/hooks/User';
 
 // Material-UI
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import { SvgIconProps } from '@material-ui/core/SvgIcon';
 import Badge from '@material-ui/core/Badge';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
@@ -31,14 +31,14 @@ import LogOutIcon from '@material-ui/icons/ExitToAppRounded';
 import BadgesIcon from '@material-ui/icons/EmojiEventsOutlined';
 
 // Components
-import ProfileSettings from './ProfileSettings';
-import ProfileEvents from './ProfileEvents';
-import ProfileNotifications from './ProfileNotifications';
-import ProfileBadges from './ProfileBadges';
-import Paper from '../../../components/layout/Paper';
-import Modal from '../../../components/layout/Modal';
+import ProfileSettings from 'containers/Profile/components/ProfileSettings';
+import ProfileEvents from 'containers/Profile/components/ProfileEvents';
+import ProfileNotifications from 'containers/Profile/components/ProfileNotifications';
+import ProfileBadges from 'containers/Profile/components/ProfileBadges';
+import Paper from 'components/layout/Paper';
+import Modal from 'components/layout/Modal';
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     width: '100%',
     maxWidth: 1000,
@@ -47,12 +47,15 @@ const styles = (theme) => ({
     left: 0,
     right: 0,
     top: '-60px',
-    padding: '28px',
-    paddingTop: '110px',
+    padding: theme.spacing(4),
+    paddingTop: theme.spacing(14),
     textAlign: 'center',
   },
   button: {
-    margin: '7px auto 0px',
+    marginTop: theme.spacing(1),
+    marginRight: 'auto',
+    marginBottom: theme.spacing(0),
+    marginLeft: 'auto',
     minWidth: 150,
   },
   avatar: {
@@ -73,13 +76,13 @@ const styles = (theme) => ({
     minHeight: 35,
   },
   text: {
-    margin: '2px auto',
+    margin: `${theme.spacing(0.25)}px auto`,
     color: theme.palette.text.primary,
   },
   skeletonCircle: {
     width: 110,
-    margin: 45,
-    marginTop: 30,
+    margin: theme.spacing(5),
+    marginTop: theme.spacing(4),
     height: 150,
   },
   memberProof: {
@@ -90,10 +93,10 @@ const styles = (theme) => ({
   content: {
     display: 'grid',
     gridTemplateColumns: '250px 1fr',
-    gridGap: 10,
-    marginTop: -50,
-    marginBottom: 20,
-    '@media only screen and (max-width: 900px)': {
+    gridGap: theme.spacing(1),
+    marginTop: theme.spacing(-6),
+    marginBottom: theme.spacing(3),
+    [theme.breakpoints.down('sm')]: {
       gridTemplateColumns: '1fr',
     },
   },
@@ -101,7 +104,7 @@ const styles = (theme) => ({
     overflow: 'hidden',
   },
   list: {
-    padding: 0,
+    padding: theme.spacing(0),
   },
   redirect: {
     justifyContent: 'flex-end',
@@ -109,17 +112,19 @@ const styles = (theme) => ({
   logOutButton: {
     color: theme.palette.error.main,
   },
-});
+}));
 
-function ProfilePaper(props) {
-  const { classes, logoutMethod } = props;
+export type ProfilePaperProps = { logoutMethod: () => void };
+
+const ProfilePaper = ({ logoutMethod }: ProfilePaperProps) => {
+  const classes = useStyles();
   const { getUserData } = useUser();
-  const [userData, setUserData] = useState({});
-  const [isAdmin] = useHavePermission(['HS', 'Promo', 'NoK', 'Index']);
+  const [userData, setUserData] = useState<User | null>(null);
+  const [isAdmin] = useHavePermission([Groups.HS, Groups.PROMO, Groups.INDEX, Groups.NOK]);
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const eventTab = { label: 'Arrangementer', icon: EventIcon };
-  const notificationsTab = { label: 'Varsler', icon: NotificationsIcon, badge: userData.unread_notifications };
+  const notificationsTab = { label: 'Varsler', icon: NotificationsIcon, badge: userData?.unread_notifications };
   const badgesTab = { label: 'Badges', icon: BadgesIcon };
   const settingsTab = { label: 'Profil', icon: ProfileIcon };
   const adminTab = { label: 'Admin', icon: AdminIcon, iconEnd: NewTabIcon, component: Link, to: URLS.admin };
@@ -128,21 +133,30 @@ function ProfilePaper(props) {
   const [tab, setTab] = useState(eventTab.label);
 
   useEffect(() => {
+    let subscribed = true;
     getUserData()
       .then((user) => {
         if (user) {
           user.notifications.reverse();
-          setUserData(user);
+          !subscribed || setUserData(user);
         }
       })
-      .finally(() => setIsLoading(false));
+      .finally(() => !subscribed || setIsLoading(false));
+    return () => {
+      subscribed = false;
+    };
   }, [getUserData]);
 
   useEffect(() => {
-    if (tab === notificationsTab.label && userData.unread_notifications !== 0) {
+    if (tab === notificationsTab.label && userData && userData.unread_notifications !== 0) {
       setUserData({ ...userData, unread_notifications: 0 });
-    } else if (tab !== notificationsTab.label && userData.unread_notifications === 0 && userData.notifications.some((n) => !n.read)) {
-      const newNotifications = userData.notifications.map((notification) => {
+    } else if (
+      tab !== notificationsTab.label &&
+      userData &&
+      userData.unread_notifications === 0 &&
+      userData.notifications.some((notification) => !notification.read)
+    ) {
+      const newNotifications = userData.notifications.map((notification: Notification) => {
         return { ...notification, read: true };
       });
       setUserData({ ...userData, notifications: newNotifications });
@@ -150,11 +164,20 @@ function ProfilePaper(props) {
     // eslint-disable-next-line
   }, [tab]);
 
-  const NavListItem = ({ label, icon: Icon, iconEnd: IconEnd, onClick, badge, ...props }) => (
+  type NavListItem = {
+    label: string;
+    icon: React.ComponentType<SvgIconProps>;
+    iconEnd?: React.ComponentType<SvgIconProps>;
+    badge?: string | number;
+    onClick?: () => void;
+    className?: string;
+  };
+
+  const NavListItem = ({ label, icon: Icon, iconEnd: IconEnd, onClick, badge, className = '', ...props }: NavListItem) => (
     <ListItem button onClick={onClick ? onClick : () => setTab(label)} selected={tab === label} {...props}>
       <ListItemIcon>
         <Badge badgeContent={badge} color='error'>
-          <Icon className={props.className} color={tab === label ? 'primary' : 'inherit'} />
+          <Icon className={className} color={tab === label ? 'primary' : 'inherit'} />
         </Badge>
       </ListItemIcon>
       <ListItemText primary={label} />
@@ -165,14 +188,6 @@ function ProfilePaper(props) {
       )}
     </ListItem>
   );
-  NavListItem.propTypes = {
-    label: PropTypes.string.isRequired,
-    icon: PropTypes.object.isRequired,
-    iconEnd: PropTypes.object,
-    badge: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    onClick: PropTypes.func,
-    className: PropTypes.string,
-  };
 
   return (
     <>
@@ -183,16 +198,16 @@ function ProfilePaper(props) {
           </Modal>
         )}
         <Avatar className={classes.avatar}>
-          {userData.first_name ? (
-            String(userData.first_name.substring(0, 1)) + userData.last_name.substring(0, 1)
+          {userData?.first_name ? (
+            `${userData.first_name.substring(0, 1)}${userData.last_name.substring(0, 1)}`
           ) : (
             <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant='text' />
           )}
         </Avatar>
-        {userData.first_name ? (
+        {userData && userData.first_name ? (
           <>
             <Typography className={classes.text} variant='h4'>
-              {userData.first_name + ' ' + userData.last_name}
+              {`${userData.first_name} ${userData.last_name}`}
             </Typography>
             <Typography className={classes.text} variant='subtitle1'>
               {userData.email}
@@ -227,7 +242,7 @@ function ProfilePaper(props) {
             <ProfileEvents />
           </Collapse>
           <Collapse in={tab === notificationsTab.label}>
-            <ProfileNotifications isLoading={isLoading} notifications={userData.notifications || []} setUserData={setUserData} />
+            <ProfileNotifications isLoading={isLoading} notifications={userData?.notifications || []} />
           </Collapse>
           <Collapse in={tab === settingsTab.label}>
             <Paper>
@@ -241,11 +256,6 @@ function ProfilePaper(props) {
       </div>
     </>
   );
-}
-
-ProfilePaper.propTypes = {
-  classes: PropTypes.object,
-  logoutMethod: PropTypes.func,
 };
 
-export default withStyles(styles)(ProfilePaper);
+export default ProfilePaper;

@@ -1,6 +1,5 @@
-import { makeStyles, Theme } from '@material-ui/core/styles';
-
 // Material UI Components
+import { makeStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import IconButton from '@material-ui/core/IconButton';
@@ -9,7 +8,10 @@ import Typography from '@material-ui/core/Typography';
 // Icons
 import CloseIcon from '@material-ui/icons/Close';
 
-const useStyles = makeStyles((theme: Theme) => ({
+// Project components
+import Container from 'components/layout/Container';
+
+const useStyles = makeStyles((theme) => ({
   root: {
     width: 'auto',
     minHeight: 40,
@@ -52,7 +54,7 @@ const Snack = ({ open, message, onClose, className }: SnackProps) => {
         <SnackbarContent
           className={className}
           message={
-            <div className={classes.flex}>
+            <Container className={classes.flex}>
               <div className='pulse' />
               <Typography className={classes.color} color='inherit' variant='subtitle1'>
                 {message}
@@ -60,7 +62,7 @@ const Snack = ({ open, message, onClose, className }: SnackProps) => {
               <IconButton className={classes.color} color='inherit' onClick={onClose}>
                 <CloseIcon />
               </IconButton>
-            </div>
+            </Container>
           }
         />
       </Snackbar>

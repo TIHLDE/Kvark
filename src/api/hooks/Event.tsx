@@ -122,17 +122,9 @@ export const useEvent = () => {
   const dispatch = useEventDispatch();
   const { addUserEvent, removeUserEvent } = useUser();
 
-  const getEvents = useCallback(async (filters = null) => {
-    return API.getEvents(filters).then((response) => {
-      return !response.isError ? Promise.resolve(response.data) : Promise.reject(response.data);
-    });
-  }, []);
+  const getEvents = useCallback((filters = null) => API.getEvents(filters), []);
 
-  const getExpiredEvents = useCallback(async () => {
-    return API.getExpiredEvents().then((response) => {
-      return !response.isError ? Promise.resolve(response.data) : Promise.reject(response.data);
-    });
-  }, []);
+  const getExpiredEvents = useCallback(() => API.getExpiredEvents(), []);
 
   const getEventById = useCallback(
     async (id: number, forceReload?: boolean): Promise<Event> => {
@@ -140,13 +132,9 @@ export const useEvent = () => {
       if (eventItem && !forceReload) {
         return Promise.resolve(eventItem);
       } else {
-        return API.getEvent(id).then((response) => {
-          if (response.isError) {
-            return Promise.reject(response.data);
-          } else {
-            dispatch({ type: 'add', payload: response.data });
-            return Promise.resolve(response.data);
-          }
+        return API.getEvent(id).then((data) => {
+          dispatch({ type: 'add', payload: data });
+          return data;
         });
       }
     },
@@ -154,125 +142,87 @@ export const useEvent = () => {
   );
 
   const createEvent = useCallback(
-    async (eventData: EventRequired) => {
-      return API.createEvent(eventData).then((response) => {
-        if (response.isError) {
-          return Promise.reject(response.data);
-        } else {
-          dispatch({
-            type: 'add',
-            payload: response.data,
-          });
-          return Promise.resolve(response.data);
-        }
-      });
-    },
+    (eventData: EventRequired) =>
+      API.createEvent(eventData).then((data) => {
+        dispatch({
+          type: 'add',
+          payload: data,
+        });
+        return data;
+      }),
     [dispatch],
   );
 
   const updateEvent = useCallback(
-    async (id: number, eventData: Partial<Event>) => {
-      return API.updateEvent(id, eventData).then((response) => {
-        if (response.isError) {
-          return Promise.reject(response.data);
-        } else {
-          dispatch({
-            type: 'update',
-            payload: response.data,
-          });
-          return Promise.resolve(response.data);
-        }
-      });
-    },
+    (id: number, eventData: Partial<Event>) =>
+      API.updateEvent(id, eventData).then((data) => {
+        dispatch({
+          type: 'update',
+          payload: data,
+        });
+        return data;
+      }),
     [dispatch],
   );
 
   const deleteEvent = useCallback(
-    async (id: number) => {
-      return API.deleteEvent(id).then((response) => {
-        if (response.isError) {
-          return Promise.reject(response.data);
-        } else {
-          dispatch({
-            type: 'remove',
-            payload: id,
-          });
-          return Promise.resolve(response.data);
-        }
-      });
-    },
+    (id: number) =>
+      API.deleteEvent(id).then((data) => {
+        dispatch({
+          type: 'remove',
+          payload: id,
+        });
+        return data;
+      }),
     [dispatch],
   );
 
-  const updateAttendedStatus = useCallback(async (eventId: number, newAttendedStatus: boolean, userId: string) => {
-    return API.putAttended(eventId, { has_attended: newAttendedStatus }, userId).then((response) => {
-      return !response.isError ? Promise.resolve(response.data) : Promise.reject(response.data);
-    });
-  }, []);
+  const updateAttendedStatus = useCallback(
+    (eventId: number, newAttendedStatus: boolean, userId: string) => API.putAttended(eventId, { has_attended: newAttendedStatus }, userId),
+    [],
+  );
 
-  const getRegistration = useCallback(async (eventId: number, userId: string) => {
-    return API.getRegistration(eventId, userId).then((response) => {
-      return !response.isError ? Promise.resolve(response.data) : Promise.reject(response.data);
-    });
-  }, []);
+  const getRegistration = useCallback((eventId: number, userId: string) => API.getRegistration(eventId, userId), []);
 
-  const getEventRegistrations = useCallback(async (eventId: number) => {
-    return API.getEventRegistrations(eventId).then((response) => {
-      return !response.isError ? Promise.resolve(response.data) : Promise.reject(response.data);
-    });
-  }, []);
+  const getEventRegistrations = useCallback((eventId: number) => API.getEventRegistrations(eventId), []);
 
   const createRegistration = useCallback(
-    async (eventId: number, item: Partial<Registration>) => {
-      return API.createRegistration(eventId, item).then((response) => {
-        if (response.isError) {
-          return Promise.reject(response.data);
-        } else {
-          return getEventById(eventId).then((event) => {
-            const newEvent = { ...event };
-            if (response.data.is_on_wait) {
-              newEvent.waiting_list_count++;
-            } else {
-              newEvent.list_count++;
-            }
-            addUserEvent(event);
-            dispatch({ type: 'update', payload: newEvent });
-            return Promise.resolve(response.data);
-          });
-        }
-      });
-    },
+    (eventId: number, item: Partial<Registration>) =>
+      API.createRegistration(eventId, item).then((data) => {
+        return getEventById(eventId).then((event) => {
+          const newEvent = { ...event };
+          if (data.is_on_wait) {
+            newEvent.waiting_list_count++;
+          } else {
+            newEvent.list_count++;
+          }
+          addUserEvent(event);
+          dispatch({ type: 'update', payload: newEvent });
+          return data;
+        });
+      }),
     [getEventById, dispatch, addUserEvent],
   );
 
-  const updateRegistration = useCallback(async (eventId: number, item: Partial<Registration>, userId: string) => {
-    return API.updateRegistration(eventId, item, userId).then((response) => {
-      return !response.isError ? Promise.resolve(response.data) : Promise.reject(response.data);
-    });
-  }, []);
+  const updateRegistration = useCallback((eventId: number, item: Partial<Registration>, userId: string) => API.updateRegistration(eventId, item, userId), []);
 
   const deleteRegistration = useCallback(
-    async (eventId: number, userId: string, oldRegistration?: Registration | null) => {
-      return API.deleteRegistration(eventId, userId).then((response) => {
-        if (response.isError) {
-          return Promise.reject(response.data);
-        } else {
-          return getEventById(eventId).then((event) => {
-            const newEvent = { ...event };
-            if (oldRegistration) {
-              if (oldRegistration.is_on_wait) {
-                newEvent.waiting_list_count--;
-              } else {
-                newEvent.list_count--;
-              }
+    (eventId: number, userId: string, oldRegistration?: Registration | null) =>
+      API.deleteRegistration(eventId, userId).then((data) => {
+        return getEventById(eventId).then((event) => {
+          const newEvent = { ...event };
+          if (oldRegistration) {
+            if (oldRegistration.is_on_wait) {
+              newEvent.waiting_list_count--;
+            } else {
+              newEvent.list_count--;
             }
-            removeUserEvent(event);
-            dispatch({ type: 'update', payload: newEvent });
-            return Promise.resolve(response.data);
-          });
-        }
-      });
-    },
+          }
+          removeUserEvent(event);
+          dispatch({ type: 'update', payload: newEvent });
+          return data;
+        });
+      }),
     [getEventById, dispatch, removeUserEvent],
   );
 

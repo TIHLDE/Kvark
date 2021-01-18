@@ -1,6 +1,6 @@
 import { useCallback, useState, useEffect } from 'react';
 import classnames from 'classnames';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { Category, Event, EventRequired, RegistrationPriority } from 'types/Types';
 import { useEvent } from 'api/hooks/Event';
 import { useMisc } from 'api/hooks/Misc';
@@ -9,7 +9,6 @@ import { parseISO } from 'date-fns';
 
 // Material-UI
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -29,6 +28,8 @@ import EventRegistrationPriorities from 'containers/EventAdministration/componen
 import EventPreview from 'containers/EventAdministration/components/EventPreview';
 import Dialog from 'components/layout/Dialog';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
+import Select from 'components/inputs/Select';
+import TextField from 'components/inputs/TextField';
 
 const useStyles = makeStyles((theme: Theme) => ({
   grid: {
@@ -67,22 +68,23 @@ export type EventEditorProps = {
   setEvents: (newEvents: Array<Event> | ((prevEvents: Array<Event>) => Array<Event>)) => void;
 };
 
-type FormValues = {
-  title: string;
-  location: string;
-  start_date: string;
-  end_date: string;
-  description: string;
-  image: string;
-  image_alt: string;
-  priority: number;
-  category: number;
-  limit: number;
-  start_registration_at: string;
-  end_registration_at: string;
-  sign_off_deadline: string;
-  evaluate_link: string;
-};
+type FormValues = Pick<
+  Event,
+  | 'category'
+  | 'description'
+  | 'end_date'
+  | 'end_registration_at'
+  | 'evaluate_link'
+  | 'image'
+  | 'image_alt'
+  | 'limit'
+  | 'location'
+  | 'priority'
+  | 'sign_off_deadline'
+  | 'start_date'
+  | 'start_registration_at'
+  | 'title'
+>;
 
 const priorities = ['Lav', 'Middels', 'Høy'];
 
@@ -220,23 +222,23 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
     } as Event;
     if (event.sign_up) {
       if (parseISO(event.end_registration_at) < parseISO(event.start_registration_at)) {
-        setError('end_registration_at', { type: 'manual', message: 'Påmeldingsslutt må være etter påmeldingsstart' });
+        setError('end_registration_at', { message: 'Påmeldingsslutt må være etter påmeldingsstart' });
         return;
       }
       if (parseISO(event.sign_off_deadline) < parseISO(event.start_registration_at)) {
-        setError('sign_off_deadline', { type: 'manual', message: 'Avmeldingsfrist må være etter påmeldingsstart' });
+        setError('sign_off_deadline', { message: 'Avmeldingsfrist må være etter påmeldingsstart' });
         return;
       }
       if (parseISO(event.start_date) < parseISO(event.sign_off_deadline)) {
-        setError('sign_off_deadline', { type: 'manual', message: 'Avmeldingsfrist må være før start' });
+        setError('sign_off_deadline', { message: 'Avmeldingsfrist må være før start' });
         return;
       }
       if (parseISO(event.start_date) < parseISO(event.end_registration_at)) {
-        setError('end_registration_at', { type: 'manual', message: 'Påmeldingsslutt må være før start' });
+        setError('end_registration_at', { message: 'Påmeldingsslutt må være før start' });
         return;
       }
       if (parseISO(event.end_date) < parseISO(event.start_date)) {
-        setError('end_date', { type: 'manual', message: 'Slutt må være etter start' });
+        setError('end_date', { message: 'Slutt må være etter start' });
         return;
       }
     }
@@ -252,44 +254,29 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
       <form onSubmit={handleSubmit(submit)}>
         <Grid container direction='column' wrap='nowrap'>
           <div className={classes.grid}>
-            <Controller
-              as={TextField}
-              control={control}
-              defaultValue=''
-              error={Boolean(errors.title)}
-              helperText={errors.title?.message}
-              label='Tittel *'
-              margin='normal'
-              name='title'
-              rules={{ required: 'Feltet er påkrevd' }}
-              variant='outlined'
-            />
-            <Controller as={TextField} control={control} defaultValue='' label='Sted' margin='normal' name='location' variant='outlined' />
+            <TextField errors={errors} label='Tittel' name='title' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
+            <TextField errors={errors} label='Sted' name='location' register={register} />
           </div>
           <div className={classes.grid}>
             <TextField
-              defaultValue=''
-              error={Boolean(errors.start_date)}
-              helperText={errors.start_date?.message}
+              errors={errors}
               InputLabelProps={{ shrink: true }}
-              inputRef={register({ required: 'Feltet er påkrevd' })}
-              label='Start *'
-              margin='normal'
+              label='Start'
               name='start_date'
+              register={register}
+              required
+              rules={{ required: 'Feltet er påkrevd' }}
               type='datetime-local'
-              variant='outlined'
             />
             <TextField
-              defaultValue=''
-              error={Boolean(errors.end_date)}
-              helperText={errors.end_date?.message}
+              errors={errors}
               InputLabelProps={{ shrink: true }}
-              inputRef={register({ required: 'Feltet er påkrevd' })}
-              label='Slutt *'
-              margin='normal'
+              label='Slutt'
               name='end_date'
+              register={register}
+              required
+              rules={{ required: 'Feltet er påkrevd' }}
               type='datetime-local'
-              variant='outlined'
             />
           </div>
           <FormControlLabel
@@ -300,65 +287,54 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
           <Collapse in={signUp}>
             <div className={classes.grid}>
               <TextField
-                defaultValue=''
-                error={Boolean(errors.start_registration_at)}
-                helperText={errors.start_registration_at?.message}
+                errors={errors}
                 InputLabelProps={{ shrink: true }}
-                inputRef={register}
                 label='Start påmelding'
-                margin='normal'
                 name='start_registration_at'
+                register={register}
+                required={signUp}
+                rules={{ required: signUp ? 'Feltet er påkrevd' : undefined }}
                 type='datetime-local'
-                variant='outlined'
               />
               <TextField
-                defaultValue=''
-                error={Boolean(errors.end_registration_at)}
-                helperText={errors.end_registration_at?.message}
+                errors={errors}
                 InputLabelProps={{ shrink: true }}
-                inputRef={register}
-                label='Slutt påmelding'
-                margin='normal'
+                label='Start påmelding'
                 name='end_registration_at'
+                register={register}
+                required={signUp}
+                rules={{ required: signUp ? 'Feltet er påkrevd' : undefined }}
                 type='datetime-local'
-                variant='outlined'
               />
             </div>
             <div className={classes.grid}>
               <TextField
-                defaultValue=''
-                error={Boolean(errors.sign_off_deadline)}
-                helperText={errors.sign_off_deadline?.message}
+                errors={errors}
                 InputLabelProps={{ shrink: true }}
-                inputRef={register}
                 label='Avmeldingsfrist'
-                margin='normal'
                 name='sign_off_deadline'
+                register={register}
+                required={signUp}
+                rules={{ required: signUp ? 'Feltet er påkrevd' : undefined }}
                 type='datetime-local'
-                variant='outlined'
               />
               <TextField
-                defaultValue='0'
-                error={Boolean(errors.limit)}
-                helperText={Boolean(errors.limit) && 'Antall plasser må være et positivt tall'}
-                inputRef={register({ min: 0 })}
+                errors={errors}
+                InputLabelProps={{ shrink: true }}
+                inputProps={{ inputMode: 'numeric' }}
                 label='Antall plasser'
-                margin='normal'
                 name='limit'
-                type='number'
-                variant='outlined'
+                register={register}
+                required={signUp}
+                rules={{
+                  pattern: { value: RegExp(/^[0-9]*$/), message: 'Skriv inn et heltall som 0 eller høyere' },
+                  valueAsNumber: true,
+                  min: { value: 0, message: 'Antall plasser må være 0 eller høyere' },
+                  required: signUp ? 'Feltet er påkrevd' : undefined,
+                }}
               />
             </div>
-            <Controller
-              as={TextField}
-              control={control}
-              defaultValue=''
-              fullWidth
-              label='Evalueringsskjema-url'
-              margin='normal'
-              name='evaluate_link'
-              variant='outlined'
-            />
+            <TextField errors={errors} label='Evalueringsskjema (url)' name='evaluate_link' register={register} />
             <div className={classes.margin}>
               <ExpansionPanel className={classes.expansionPanel}>
                 <ExpansionPanelSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='priorities-header'>
@@ -377,25 +353,25 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
             name='description'
           />
           <div className={classes.grid}>
-            <Controller as={TextField} control={control} defaultValue='' label='Bilde-url' margin='normal' name='image' variant='outlined' />
-            <Controller as={TextField} control={control} defaultValue='' label='Bildetekst' margin='normal' name='image_alt' variant='outlined' />
+            <TextField errors={errors} label='Bilde-url' name='image' register={register} />
+            <TextField errors={errors} label='Bildetekst' name='image_alt' register={register} />
           </div>
           <div className={classes.grid}>
-            <Controller as={TextField} control={control} defaultValue='' label='Prioritering' margin='normal' name='priority' select variant='outlined'>
+            <Select control={control} errors={errors} label='Prioritering' name='priority'>
               {priorities.map((value, index) => (
                 <MenuItem key={index} value={index}>
                   {value}
                 </MenuItem>
               ))}
-            </Controller>
-            {categories.length && (
-              <Controller as={TextField} control={control} defaultValue='' label='Kategori' margin='normal' name='category' select variant='outlined'>
+            </Select>
+            {Boolean(categories.length) && (
+              <Select control={control} errors={errors} label='Kategori' name='category'>
                 {categories.map((value, index) => (
                   <MenuItem key={index} value={value.id}>
                     {value.text}
                   </MenuItem>
                 ))}
-              </Controller>
+              </Select>
             )}
           </div>
           <EventPreview className={classes.margin} getEvent={getEventPreview} />

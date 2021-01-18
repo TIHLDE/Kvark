@@ -1,7 +1,15 @@
 import { useMemo } from 'react';
+import classnames from 'classnames';
 
 // Material UI Components
-import { useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(() => ({
+  logo: {
+    margin: 'auto',
+    display: 'block',
+  },
+}));
 
 type TihldeLogoProps = {
   size: 'small' | 'large';
@@ -12,6 +20,7 @@ type TihldeLogoProps = {
 
 function TihldeLogo({ size, darkColor, lightColor, className }: TihldeLogoProps) {
   const theme = useTheme();
+  const classes = useStyles();
   const color = useMemo(() => {
     const isDark = theme.palette.type === 'dark';
     const prop = isDark ? darkColor : lightColor;
@@ -26,10 +35,9 @@ function TihldeLogo({ size, darkColor, lightColor, className }: TihldeLogoProps)
 
   return (
     <svg
-      className={className}
+      className={classnames(classes.logo, className)}
       height='400'
       id='svg2'
-      style={{ margin: 'auto', display: 'block' }}
       version='1.1'
       viewBox={size === 'large' ? '250 435 2000 450' : '335 365 400 580'}
       width={size === 'large' ? 2000 : 400}

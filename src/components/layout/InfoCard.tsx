@@ -13,22 +13,22 @@ import Paper from 'components/layout/Paper';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: theme.spacing(4),
-    [theme.breakpoints.down('md')]: {
-      margin: theme.spacing(0, 1),
-    },
   },
   wrapper: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
     height: '100%',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
     },
+  },
+  centerAlign: {
+    alignItems: 'center',
   },
   image: {
     maxWidth: 160,
     maxHeight: 160,
+    borderRadius: theme.shape.borderRadius,
   },
   margin: {
     display: 'flex',
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'center',
     marginRight: theme.spacing(4),
 
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       margin: theme.spacing(0, 4, 4, 4),
       minHeight: 160,
     },
@@ -56,11 +56,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   text: {
     color: theme.palette.text.secondary,
+    whiteSpace: 'break-spaces',
   },
   grow: {
     flexGrow: 1,
   },
-  children: {},
 }));
 
 export type InfoCardProps = {
@@ -80,7 +80,7 @@ const InfoCard = ({ className, header, text, src, srcComponent, alt, justifyText
   const classes = useStyles();
   return (
     <Paper className={classNames(classes.root, className)} noPadding>
-      <div className={classes.wrapper}>
+      <div className={classNames(classes.wrapper, src && classes.centerAlign)}>
         {src ? (
           <div className={classes.margin}>
             <img alt={alt || header} className={classNames(classes.image, imageClass)} src={src} />
@@ -108,7 +108,7 @@ const InfoCard = ({ className, header, text, src, srcComponent, alt, justifyText
               </Typography>
             </Fragment>
           )}
-          {children && <div className={classNames(classes.grow, classes.padding, classes.children)}>{children}</div>}
+          {children && <div className={classNames(classes.grow, classes.padding)}>{children}</div>}
         </Grid>
       </div>
     </Paper>

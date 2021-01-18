@@ -45,7 +45,7 @@
         "ignoreTrailingComments": false
       }
     ],
-    "no-console": "error",
+    "no-console": "warn",
     "no-empty-function": [
       "error",
       {

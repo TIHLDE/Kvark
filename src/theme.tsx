@@ -64,7 +64,8 @@ export const themes = themesDetails.map((theme) => theme.key);
 export type ThemeTypes = typeof themes[number];
 
 export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
-  const get = <T>({ light, dark }: { light: T; dark: T }): T => {
+  // eslint-disable-next-line comma-spacing
+  const get = <T,>({ light, dark }: { light: T; dark: T }): T => {
     switch (theme) {
       case 'automatic':
         return prefersDarkMode ? dark : light;

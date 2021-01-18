@@ -60,22 +60,14 @@ export const useMisc = () => {
     if (misc.warnings) {
       return Promise.resolve(misc.warnings);
     } else {
-      return API.getWarning().then((response) => {
-        if (response.isError) {
-          return Promise.reject(response.data);
-        } else {
-          dispatch({ type: 'set warnings', payload: response.data });
-          return Promise.resolve(response.data);
-        }
+      return API.getWarning().then((data) => {
+        dispatch({ type: 'set warnings', payload: data });
+        return data;
       });
     }
   }, [dispatch, misc.warnings]);
 
-  const postEmail = useCallback(async (data: CompaniesEmail) => {
-    return API.emailForm(data).then((response) => {
-      return !response.isError ? Promise.resolve(response.data) : Promise.reject(response.data);
-    });
-  }, []);
+  const postEmail = useCallback((data: CompaniesEmail) => API.emailForm(data), []);
 
   const setLogInRedirectURL = useCallback(
     (redirectUrl) => {
@@ -92,13 +84,9 @@ export const useMisc = () => {
     if (misc.categories) {
       return Promise.resolve(misc.categories);
     } else {
-      return API.getCategories().then((response) => {
-        if (response.isError) {
-          return Promise.reject(response.data);
-        } else {
-          dispatch({ type: 'set categories', payload: response.data });
-          return Promise.resolve(response.data);
-        }
+      return API.getCategories().then((data) => {
+        dispatch({ type: 'set categories', payload: data });
+        return data;
       });
     }
   }, [dispatch, misc.categories]);

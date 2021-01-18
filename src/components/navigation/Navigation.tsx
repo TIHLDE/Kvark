@@ -11,7 +11,7 @@ import { useMisc } from 'api/hooks/Misc';
 import { useAuth } from 'api/hooks/Auth';
 import { useUser } from 'api/hooks/User';
 import { getCookie, setCookie } from 'api/cookie';
-import { WARNINGS_READ } from 'settings';
+import { WARNINGS_READ } from 'constant';
 
 // Material UI Components
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
@@ -24,7 +24,6 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import IconButton from '@material-ui/core/IconButton';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Avatar from '@material-ui/core/Avatar';
-import Container from '@material-ui/core/Container';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
@@ -40,6 +39,7 @@ import ExpandIcon from '@material-ui/icons/ExpandMoreRounded';
 import Footer from 'components/navigation/Footer';
 import Sidebar from 'components/navigation/Sidebar';
 import Snack from 'components/navigation/Snack';
+import Container from 'components/layout/Container';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -56,7 +56,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   main: {
     minHeight: '101vh',
-    paddingBottom: theme.spacing(2),
     backgroundColor: theme.palette.background.default,
   },
   normalMain: {
@@ -90,12 +89,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   menuWrapper: {
     display: 'flex',
     alignItems: 'center',
-  },
-  container: {
-    [theme.breakpoints.down('sm')]: {
-      paddingRight: theme.spacing(2),
-      paddingLeft: theme.spacing(2),
-    },
   },
   sidebar: {
     minWidth: 200,
@@ -133,6 +126,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   selected: {
     borderBottom: '2px solid ' + theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
+  },
+  loginBtn: {
+    marginLeft: theme.spacing(7),
   },
   profileContainer: {
     display: 'flex',
@@ -374,7 +370,7 @@ function Navigation({ fancyNavbar, isLoading, noFooter, maxWidth, banner, childr
               <PersonIcon link={URLS.profile} user={userData} />
             ) : (
               <Hidden mdDown>
-                <IconButton className={classes.menuButton} component={Link} to={URLS.login}>
+                <IconButton className={classNames(classes.menuButton, classes.loginBtn)} component={Link} to={URLS.login}>
                   <PersonOutlineIcon />
                 </IconButton>
               </Hidden>
@@ -406,13 +402,7 @@ function Navigation({ fancyNavbar, isLoading, noFooter, maxWidth, banner, childr
         ) : banner || maxWidth ? (
           <>
             {banner}
-            {maxWidth === false ? (
-              <>{children}</>
-            ) : (
-              <Container className={classes.container} maxWidth={maxWidth || 'xl'}>
-                {children || <></>}
-              </Container>
-            )}
+            {maxWidth === false ? <>{children}</> : <Container maxWidth={maxWidth || 'xl'}>{children || <></>}</Container>}
           </>
         ) : (
           children

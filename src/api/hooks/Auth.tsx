@@ -1,32 +1,22 @@
 import { useCallback } from 'react';
-import AUTH from 'api/auth';
+import API from 'api/api';
 import { getCookie, setCookie, removeCookie } from 'api/cookie';
-import { ACCESS_TOKEN } from 'settings';
-import { User } from 'types/Types';
+import { ACCESS_TOKEN } from 'constant';
+import { UserCreate } from 'types/Types';
 
 export const useAuth = () => {
-  const createUser = useCallback((data: User) => {
-    return AUTH.createUser(data).then((response) => {
-      return !response.isError ? Promise.resolve(response.data) : Promise.reject(response.data);
-    });
-  }, []);
+  const createUser = useCallback((data: UserCreate) => API.createUser(data), []);
 
-  const logIn = useCallback((username: string, password: string) => {
-    return AUTH.authenticate(username, password).then((response) => {
-      if (!response.isError) {
-        setCookie(ACCESS_TOKEN, response.data.token);
-        return Promise.resolve(response.data);
-      } else {
-        return Promise.reject(response.data);
-      }
-    });
-  }, []);
+  const logIn = useCallback(
+    (username: string, password: string) =>
+      API.authenticate(username, password).then((data) => {
+        setCookie(ACCESS_TOKEN, data.token);
+        return data;
+      }),
+    [],
+  );
 
-  const forgotPassword = useCallback((email: string) => {
-    return AUTH.forgotPassword(email).then((response) => {
-      return !response.isError ? Promise.resolve(response.data) : Promise.reject(response.data);
-    });
-  }, []);
+  const forgotPassword = useCallback((email: string) => API.forgotPassword(email), []);
 
   const isAuthenticated = useCallback(() => {
     return typeof getCookie(ACCESS_TOKEN) !== 'undefined';

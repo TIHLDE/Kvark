@@ -97,11 +97,7 @@ export const useNews = () => {
   const news = useNewsState();
   const dispatch = useNewsDispatch();
 
-  const getNews = useCallback(async () => {
-    return API.getNewsItems().then((response) => {
-      return !response.isError ? Promise.resolve(response.data) : Promise.reject(response.data);
-    });
-  }, []);
+  const getNews = useCallback(() => API.getNewsItems(), []);
 
   const getNewsById = useCallback(
     async (id: number) => {
@@ -109,13 +105,9 @@ export const useNews = () => {
       if (newsItem) {
         return Promise.resolve(newsItem);
       } else {
-        return API.getNewsItem(id).then((response) => {
-          if (response.isError) {
-            return Promise.reject(response.data);
-          } else {
-            dispatch({ type: 'add', payload: response.data });
-            return Promise.resolve(response.data);
-          }
+        return API.getNewsItem(id).then((data) => {
+          dispatch({ type: 'add', payload: data });
+          return data;
         });
       }
     },
@@ -123,53 +115,38 @@ export const useNews = () => {
   );
 
   const createNews = useCallback(
-    async (newsData: NewsRequired) => {
-      return API.createNewsItem(newsData).then((response) => {
-        if (response.isError) {
-          return Promise.reject(response.data);
-        } else {
-          dispatch({
-            type: 'add',
-            payload: response.data,
-          });
-          return Promise.resolve(response.data);
-        }
-      });
-    },
+    (newsData: NewsRequired) =>
+      API.createNewsItem(newsData).then((data) => {
+        dispatch({
+          type: 'add',
+          payload: data,
+        });
+        return data;
+      }),
     [dispatch],
   );
 
   const updateNews = useCallback(
-    async (id: number, newsData: NewsRequired) => {
-      return API.putNewsItem(id, newsData).then((response) => {
-        if (response.isError) {
-          return Promise.reject(response.data);
-        } else {
-          dispatch({
-            type: 'update',
-            payload: response.data,
-          });
-          return Promise.resolve(response.data);
-        }
-      });
-    },
+    (id: number, newsData: NewsRequired) =>
+      API.putNewsItem(id, newsData).then((data) => {
+        dispatch({
+          type: 'update',
+          payload: data,
+        });
+        return data;
+      }),
     [dispatch],
   );
 
   const deleteNews = useCallback(
-    async (id: number) => {
-      return API.deleteNewsItem(id).then((response) => {
-        if (response.isError) {
-          return Promise.reject(response.data);
-        } else {
-          dispatch({
-            type: 'remove',
-            payload: id,
-          });
-          return Promise.resolve(response.data);
-        }
-      });
-    },
+    (id: number) =>
+      API.deleteNewsItem(id).then((data) => {
+        dispatch({
+          type: 'remove',
+          payload: id,
+        });
+        return data;
+      }),
     [dispatch],
   );
 
