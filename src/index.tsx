@@ -32,7 +32,6 @@ import JobPostDetails from 'containers/JobPostDetails';
 import Landing from 'containers/Landing';
 import NewsDetails from 'containers/NewsDetails';
 import Profile from 'containers/Profile';
-const Admin = lazy(() => import('containers/Admin'));
 const ContactInfo = lazy(() => import('containers/ContactInfo'));
 const EventAdministration = lazy(() => import('containers/EventAdministration'));
 const EventRegistration = lazy(() => import('containers/EventRegistration'));
@@ -138,7 +137,6 @@ const AppRoutes = () => {
       <AuthRoute element={<Cheatsheet />} path={`${URLS.cheatsheet}:studyId/:classId/`} />
       <AuthRoute element={<Cheatsheet />} path={`${URLS.cheatsheet}*`} />
 
-      <AuthRoute element={<Admin />} groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]} path={URLS.admin} />
       <AuthRoute element={<UserAdmin />} groups={[Groups.HS, Groups.INDEX]} path={URLS.userAdmin} />
       <AuthRoute element={<JobPostAdministration />} groups={[Groups.HS, Groups.INDEX, Groups.NOK]} path={URLS.jobpostsAdmin} />
       <AuthRoute groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]} path={URLS.eventAdmin}>

@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
 import QRCode from 'qrcode.react';
-import URLS from 'URLS';
 import { User, Notification } from 'types/Types';
 import { Groups } from 'types/Enums';
 import { useUser, useHavePermission } from 'api/hooks/User';
@@ -26,11 +24,11 @@ import EventIcon from '@material-ui/icons/DateRangeRounded';
 import NotificationsIcon from '@material-ui/icons/NotificationsNoneRounded';
 import ProfileIcon from '@material-ui/icons/InsertEmoticonRounded';
 import AdminIcon from '@material-ui/icons/TuneRounded';
-import NewTabIcon from '@material-ui/icons/LaunchRounded';
 import LogOutIcon from '@material-ui/icons/ExitToAppRounded';
 import BadgesIcon from '@material-ui/icons/EmojiEventsOutlined';
 
 // Components
+import ProfileAdmin from 'containers/Profile/components/ProfileAdmin';
 import ProfileSettings from 'containers/Profile/components/ProfileSettings';
 import ProfileEvents from 'containers/Profile/components/ProfileEvents';
 import ProfileNotifications from 'containers/Profile/components/ProfileNotifications';
@@ -127,7 +125,7 @@ const ProfilePaper = ({ logoutMethod }: ProfilePaperProps) => {
   const notificationsTab = { label: 'Varsler', icon: NotificationsIcon, badge: userData?.unread_notifications };
   const badgesTab = { label: 'Badges', icon: BadgesIcon };
   const settingsTab = { label: 'Profil', icon: ProfileIcon };
-  const adminTab = { label: 'Admin', icon: AdminIcon, iconEnd: NewTabIcon, component: Link, to: URLS.admin };
+  const adminTab = { label: 'Admin', icon: AdminIcon };
   const logoutTab = { label: 'Logg ut', icon: LogOutIcon, onClick: logoutMethod, className: classes.logOutButton };
   const tabs = [eventTab, notificationsTab, badgesTab, settingsTab, ...(isAdmin ? [adminTab] : []), logoutTab];
   const [tab, setTab] = useState(eventTab.label);
@@ -251,6 +249,9 @@ const ProfilePaper = ({ logoutMethod }: ProfilePaperProps) => {
           </Collapse>
           <Collapse in={tab === badgesTab.label}>
             <ProfileBadges />
+          </Collapse>
+          <Collapse in={tab === adminTab.label}>
+            <ProfileAdmin />
           </Collapse>
         </div>
       </div>

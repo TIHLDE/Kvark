@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'grid',
     gridTemplateColumns: '1fr',
     gridGap: theme.spacing(1),
+    paddingBottom: theme.spacing(2),
   },
   content: {
     display: 'grid',
@@ -57,18 +58,19 @@ function Laws() {
   const classes = useStyles();
 
   const largeList = [
-    { icon: GavelIcon, title: 'Lover for TIHLDE', link: 'https://old.tihlde.org/assets/2019/03/TIHLDEs_Lover.pdf' },
-    { icon: AccountBalanceIcon, title: 'Styreinstruks for hovedstyret', link: 'https://old.tihlde.org/assets/2019/02/Vedlegg-02.pdf' },
-    { icon: AccountBalanceIcon, title: 'Undergruppeinstrukser', link: 'https://old.tihlde.org/assets/2019/02/Vedlegg-03.pdf' },
+    { icon: GavelIcon, title: 'Lover for TIHLDE', link: 'https://drive.tihlde.org/index.php/s/XHSTzMdNNYkcii7' },
+    { icon: AccountBalanceIcon, title: 'Styreinstruks for hovedstyret', link: 'https://drive.tihlde.org/index.php/s/6ofQZDAACYjicAS' },
+    { icon: AccountBalanceIcon, title: 'Undergruppeinstrukser', link: 'https://drive.tihlde.org/index.php/s/PFCxsydPixPT7Rk' },
   ];
 
   const smallList = [
-    { title: 'Regler og instrukser for Sosialen', link: 'https://old.tihlde.org/assets/2019/02/Vedlegg-04.pdf' },
-    { title: 'Regler og instrukser for Næringsliv og kurs', link: 'https://old.tihlde.org/assets/2019/02/Vedlegg-05.pdf' },
-    { title: 'Regler og instrukser for Drift', link: 'https://old.tihlde.org/assets/2019/02/Vedlegg-06.pdf' },
-    { title: 'Regler og instrukser for Promo', link: 'https://old.tihlde.org/assets/2019/02/Vedlegg-07.pdf' },
-    { title: 'Regler og instrukser for De Eldstes Raad', link: 'https://old.tihlde.org/assets/2019/02/Vedlegg-08.pdf' },
-    { title: 'Regler og instrukser for TIHLDE-kontoret', link: 'https://old.tihlde.org/assets/2019/02/Vedlegg-09.pdf' },
+    { title: 'Regler og instrukser for Sosialen', link: 'https://drive.tihlde.org/index.php/s/6reZE8JAiCXDAAG' },
+    { title: 'Regler og instrukser for Næringsliv og kurs', link: 'https://drive.tihlde.org/index.php/s/koXWrtzzqmykTFP' },
+    { title: 'Regler og instrukser for Drift', link: 'https://drive.tihlde.org/index.php/s/o2aKNFBNzzndnmK' },
+    { title: 'Regler og instrukser for Promo', link: 'https://drive.tihlde.org/index.php/s/RFENK6jntf82F4k' },
+    { title: 'Regler og instrukser for De Eldstes Raad', link: 'https://drive.tihlde.org/index.php/s/aXn6QF8BrMPkQwr' },
+    { title: 'Regler og instrukser for TIHLDE-kontoret', link: 'https://drive.tihlde.org/index.php/s/ZRJHFicjRgCT4BA' },
+    { title: 'Regler og instrukser for Index', link: 'https://drive.tihlde.org/index.php/s/noqsxJDaAs5tySG' },
   ];
 
   return (
