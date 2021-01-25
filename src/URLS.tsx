@@ -18,7 +18,6 @@ export default {
   cheatsheet: '/kokebok/',
   news: '/nyheter/',
 
-  admin: '/admin/',
   userAdmin: '/admin/brukere/',
   eventAdmin: '/admin/arrangementer/',
   jobpostsAdmin: '/admin/karriere/',
