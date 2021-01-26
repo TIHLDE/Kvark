@@ -1,10 +1,6 @@
-import { useState, useEffect } from 'react';
 import { News } from 'types/Types';
 import URLS from 'URLS';
 import { Link } from 'react-router-dom';
-
-// API and store imports
-import { useNews } from 'api/hooks/News';
 
 // Material-UI
 import { makeStyles } from '@material-ui/core/styles';
@@ -39,19 +35,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+export type IProps = {
+  news: Array<News>;
+  isLoading: boolean;
+};
+
 const NO_OF_NEWS_TO_SHOW = 2;
 
-const NewsListView = () => {
+const NewsListView = ({ news, isLoading }: IProps) => {
   const classes = useStyles();
-  const { getNews } = useNews();
-  const [news, setNews] = useState<Array<News>>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    getNews()
-      .then((news) => setNews(news))
-      .finally(() => setIsLoading(false));
-  }, [getNews]);
 
   if (isLoading) {
     return (

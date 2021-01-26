@@ -119,6 +119,7 @@ export interface Event {
   end_registration_at: string;
   sign_off_deadline: string;
   registration_priorities: Array<RegistrationPriority>;
+  updated_at: string;
 }
 
 export interface RegistrationPriority {

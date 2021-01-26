@@ -52,10 +52,8 @@ const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme: Theme
   },
   story: {
     flex: '0 0 auto',
-    height: 105,
-    maxWidth: 90,
-    margin: theme.spacing(0, 1),
-    display: 'inline-block',
+    width: 110,
+    marginLeft: theme.spacing(1),
   },
   text: {
     color: theme.palette.text.primary,
@@ -68,9 +66,8 @@ const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme: Theme
   imgButton: {
     display: 'block',
     margin: 'auto',
-    width: 80,
-    height: 80,
-    borderRadius: '50%',
+    height: 75,
+    borderRadius: 16,
     padding: 2,
     borderWidth: 2,
     '&:hover': {
@@ -84,12 +81,17 @@ const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme: Theme
   image: {
     width: '100%',
     height: '100%',
-    borderRadius: '50%',
+    borderRadius: 12,
     objectFit: 'cover',
     objectPosition: 'center',
     margin: 'auto',
     display: 'block',
     background: theme.palette.common.white,
+  },
+  filler: {
+    width: 25,
+    height: 105,
+    flex: '0 0 auto',
   },
 }));
 
@@ -114,7 +116,7 @@ function Story({ items, fadeColor }: StoryProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const instanceOfEvent = (object: any): object is Event => 'start_date' in object;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const instanceOfNews = (object: any): object is News => 'body' in object;
+  const instanceOfNews = (object: any): object is News => 'header' in object;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const instanceOfJobPost = (object: any): object is JobPost => 'company' in object;
 
@@ -132,19 +134,19 @@ function Story({ items, fadeColor }: StoryProps) {
           description: `Sted: ${item.location} \n Når: ${formatDate(parseISO(item.start_date))}`,
           topText: 'Arrangement',
         });
-      } else if (instanceOfNews(item)) {
-        newItems.push({
-          ...newItem,
-          link: `${URLS.news}${item.id}/${urlEncode(item.title)}/`,
-          description: `${item.header}`,
-          topText: 'Nyhet',
-        });
       } else if (instanceOfJobPost(item)) {
         newItems.push({
           ...newItem,
           link: `${URLS.jobposts}${item.id}/${urlEncode(item.title)}/`,
           description: `Bedrift: ${item.company} \n Når: ${formatDate(parseISO(item.deadline))}`,
           topText: 'Annonse',
+        });
+      } else if (instanceOfNews(item)) {
+        newItems.push({
+          ...newItem,
+          link: `${URLS.news}${item.id}/${urlEncode(item.title)}/`,
+          description: `${item.header}`,
+          topText: 'Nyhet',
         });
       }
     });
@@ -185,6 +187,7 @@ function Story({ items, fadeColor }: StoryProps) {
         {storyItems.map((item, index) => (
           <StoryItem index={index} item={item} key={index} />
         ))}
+        <div className={classes.filler} />
       </div>
       <StoryPopup items={storyItems} onClose={() => setPopupOpen(false)} open={popupOpen} selectedItem={selectedItem} />
     </div>

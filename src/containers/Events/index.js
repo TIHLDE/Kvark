@@ -26,7 +26,6 @@ import Banner from '../../components/layout/Banner';
 import Paper from '../../components/layout/Paper';
 import Pageination from '../../components/layout/Pageination';
 import NoEventsIndicator from './components/NoEventsIndicator';
-import Story from '../../components/story/Story';
 
 const styles = (theme) => ({
   root: {
@@ -223,7 +222,6 @@ function Events(props) {
               <CircularProgress className={classes.progress} />
             ) : (
               <div className={classes.listRoot}>
-                <Story items={events} />
                 <Grow in={!isFetching}>
                   <div className={classes.list}>
                     <Pageination nextPage={getNextPage} page={nextPage}>
