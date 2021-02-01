@@ -10,7 +10,6 @@ import { EMAIL_REGEX } from 'constant';
 import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Checkbox from '@material-ui/core/Checkbox';
-import Button from '@material-ui/core/Button';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -18,6 +17,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 // Project components
 import Paper from 'components/layout/Paper';
+import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 
 const useStyles = makeStyles((theme) => ({
@@ -139,9 +139,9 @@ const CompaniesForm = () => {
         </div>
         <Divider />
         <TextField disabled={isLoading} errors={errors} label='Kommentar' multiline name='comment' register={register} rows={3} />
-        <Button color='primary' disabled={isLoading} fullWidth type='submit' variant='contained'>
+        <SubmitButton disabled={isLoading} errors={errors}>
           Send inn
-        </Button>
+        </SubmitButton>
       </form>
     </Paper>
   );

@@ -17,6 +17,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Navigation from 'components/navigation/Navigation';
 import Paper from 'components/layout/Paper';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
+import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 
 const useStyles = makeStyles((theme) => ({
@@ -100,9 +101,9 @@ const ForgotPassword = () => {
             }}
             type='email'
           />
-          <Button className={classes.button} color='primary' disabled={isLoading} fullWidth type='submit' variant='contained'>
+          <SubmitButton className={classes.button} disabled={isLoading} errors={errors}>
             Få nytt passord
-          </Button>
+          </SubmitButton>
           <Button className={classes.button} color='primary' component={Link} disabled={isLoading} fullWidth to={URLS.login}>
             Logg inn
           </Button>

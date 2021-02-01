@@ -29,6 +29,7 @@ import EventPreview from 'containers/EventAdministration/components/EventPreview
 import Dialog from 'components/layout/Dialog';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import Select from 'components/inputs/Select';
+import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -230,15 +231,15 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
         return;
       }
       if (parseISO(event.start_date) < parseISO(event.sign_off_deadline)) {
-        setError('sign_off_deadline', { message: 'Avmeldingsfrist må være før start' });
+        setError('sign_off_deadline', { message: 'Avmeldingsfrist må være før start på arrangement' });
         return;
       }
       if (parseISO(event.start_date) < parseISO(event.end_registration_at)) {
-        setError('end_registration_at', { message: 'Påmeldingsslutt må være før start' });
+        setError('end_registration_at', { message: 'Påmeldingsslutt må være før start på arrangement' });
         return;
       }
       if (parseISO(event.end_date) < parseISO(event.start_date)) {
-        setError('end_date', { message: 'Slutt må være etter start' });
+        setError('end_date', { message: 'Slutt på arrangement må være etter start på arrangement' });
         return;
       }
     }
@@ -299,7 +300,7 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
               <TextField
                 errors={errors}
                 InputLabelProps={{ shrink: true }}
-                label='Start påmelding'
+                label='Slutt påmelding'
                 name='end_registration_at'
                 register={register}
                 required={signUp}
@@ -375,9 +376,9 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
             )}
           </div>
           <EventPreview className={classes.margin} getEvent={getEventPreview} />
-          <Button className={classes.margin} color='primary' disabled={isLoading} type='submit' variant='contained'>
+          <SubmitButton className={classes.margin} disabled={isLoading} errors={errors}>
             {eventId ? 'Oppdater arrangement' : 'Opprett arrangement'}
-          </Button>
+          </SubmitButton>
           {Boolean(eventId) && (
             <div className={classes.grid}>
               <Button className={classnames(classes.margin, classes.red)} disabled={isLoading} onClick={() => setCloseEventDialogOpen(true)} variant='outlined'>
