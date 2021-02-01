@@ -8,9 +8,11 @@ import { Event, News, JobPost } from 'types/Types';
 
 // Material UI Components
 import { makeStyles, Theme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import MaterialListItem from '@material-ui/core/ListItem';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 import { SvgIconTypeMap } from '@material-ui/core';
 
@@ -22,7 +24,7 @@ import BusinessIcon from '@material-ui/icons/Business';
 // Project components
 import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     border: theme.palette.borderWidth + ' solid ' + theme.palette.divider,
     borderRadius: theme.shape.borderRadius,
@@ -83,6 +85,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 24,
     margin: theme.spacing(0),
   },
+  skeletonMaxWidth: {
+    maxWidth: '100%',
+  },
 }));
 
 type IconProps = {
@@ -113,6 +118,7 @@ type ListItemProps = {
 
 function ListItem({ event, news, jobpost, imgContain = false, className, largeImg = false }: ListItemProps) {
   const classes = useStyles();
+  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   const item = useMemo(() => {
     if (event) {
       return {
@@ -160,7 +166,7 @@ function ListItem({ event, news, jobpost, imgContain = false, className, largeIm
     <MaterialListItem button className={classNames(classes.root, className)} component={Link} to={item.link}>
       <AspectRatioImg
         alt={item.imgAlt || item.title}
-        className={classNames(classes.imgContainer, largeImg && classes.largeImg)}
+        className={classNames(classes.imgContainer, largeImg && lgUp && classes.largeImg)}
         imgContain={imgContain}
         src={item.img}
       />
@@ -176,3 +182,18 @@ function ListItem({ event, news, jobpost, imgContain = false, className, largeIm
   );
 }
 export default ListItem;
+
+export const ListItemLoading = ({ className, largeImg = false }: Pick<ListItemProps, 'largeImg' | 'className'>) => {
+  const classes = useStyles();
+  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
+  return (
+    <MaterialListItem className={classNames(classes.root, className)}>
+      <Skeleton className={classNames(classes.imgContainer, largeImg && lgUp && classes.largeImg)} height={largeImg && lgUp ? 250 : 150} variant='rect' />
+      <Grid className={classes.content} container direction='column' wrap='nowrap'>
+        <Skeleton className={classes.skeletonMaxWidth} height={60} width={200} />
+        <Skeleton className={classes.skeletonMaxWidth} height={30} width={300} />
+        <Skeleton className={classes.skeletonMaxWidth} height={30} width={250} />
+      </Grid>
+    </MaterialListItem>
+  );
+};

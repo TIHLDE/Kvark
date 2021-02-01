@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
+import classnames from 'classnames';
 import { Event, News, JobPost } from 'types/Types';
 import { useEvent } from 'api/hooks/Event';
 import { useNews } from 'api/hooks/News';
@@ -21,6 +22,15 @@ const useStyles = makeStyles((theme) => ({
   section: {
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
+    [theme.breakpoints.down('md')]: {
+      paddingTop: theme.spacing(2),
+    },
+  },
+  storiesSection: {
+    [theme.breakpoints.down('md')]: {
+      paddingLeft: 0,
+      paddingRight: 0,
+    },
   },
   smoke: {
     backgroundColor: theme.palette.background.smoke,
@@ -60,7 +70,7 @@ const Landing = () => {
         <title>Forsiden - TIHLDE</title>
       </Helmet>
       <div className={classes.smoke}>
-        <Container className={classes.section} maxWidth='lg'>
+        <Container className={classnames(classes.section, classes.storiesSection)} maxWidth='lg'>
           <Typography align='center' className={classes.header} color='inherit' variant='h2'>
             Siste
           </Typography>

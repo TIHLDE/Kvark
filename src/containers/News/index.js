@@ -7,11 +7,10 @@ import { useNews } from '../../api/hooks/News';
 
 // Material Components
 import { withStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Grow from '@material-ui/core/Grow';
 
 // Project components
-import ListItem from '../../components/miscellaneous/ListItem';
+import ListItem, { ListItemLoading } from '../../components/miscellaneous/ListItem';
 import Navigation from '../../components/navigation/Navigation';
 import Banner from '../../components/layout/Banner';
 import NoNewsIndicator from './components/NoNewsIndicator';
@@ -34,6 +33,7 @@ const styles = (theme) => ({
     margin: 'auto',
     gridGap: 15,
     justifyContent: 'center',
+    alignItems: 'self-start',
 
     '@media only screen and (max-width: 1200px)': {
       paddingLeft: 6,
@@ -58,15 +58,6 @@ const styles = (theme) => ({
     gridColumn: 'span 3',
     [theme.breakpoints.down('md')]: {
       gridColumn: 'span 1',
-    },
-  },
-  progress: {
-    display: 'block',
-    margin: 'auto',
-    marginTop: 10,
-
-    '@media only screen and (max-width: 800px)': {
-      order: 1,
     },
   },
 });
@@ -94,7 +85,12 @@ const News = (props) => {
         <Banner title='Nyheter' />
         <div className={classes.wrapper}>
           {!displayedNews ? (
-            <CircularProgress className={classes.progress} />
+            <div className={classes.list}>
+              <ListItemLoading className={classes.first} largeImg />
+              <ListItemLoading />
+              <ListItemLoading />
+              <ListItemLoading />
+            </div>
           ) : (
             <div className={classes.listRoot}>
               <Grow in={Boolean(displayedNews)}>

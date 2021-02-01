@@ -3,10 +3,9 @@ import { Event, News, JobPost } from 'types/Types';
 
 // Material-UI
 import { useTheme } from '@material-ui/core/styles';
-import LinearProgress from '@material-ui/core/LinearProgress';
 
 // Project componets/services
-import Story from 'components/story/Story';
+import Story, { StoryLoading } from 'components/story/Story';
 
 export type IProps = {
   events: Array<Event>;
@@ -26,7 +25,7 @@ const StoriesView = ({ events, jobposts, news, isLoading }: IProps) => {
   );
 
   if (isLoading) {
-    return <LinearProgress />;
+    return <StoryLoading fadeColor={theme.palette.background.smoke} />;
   } else {
     return <Story fadeColor={theme.palette.background.smoke} items={items} />;
   }

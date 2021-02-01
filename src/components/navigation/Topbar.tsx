@@ -91,6 +91,7 @@ const useStyles = makeStyles((theme) => ({
   },
   topbarItem: {
     color: theme.palette.common.white,
+    alignSelf: 'center',
   },
   menulist: {
     padding: theme.spacing(0.5, 0),
@@ -136,7 +137,7 @@ const TopBarItem = ({ items, text, to, type }: TopBarItemProps) => {
     );
   } else if (type === 'dropdown' && Array.isArray(items)) {
     return (
-      <div onMouseLeave={() => setIsOpen(false)}>
+      <div className={classes.topbarItem} onMouseLeave={() => setIsOpen(false)}>
         <Button
           className={classes.topbarItem}
           color='inherit'

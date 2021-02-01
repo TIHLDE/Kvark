@@ -5,11 +5,10 @@ import { Link } from 'react-router-dom';
 // Material-UI
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 
 // Project componets
-import ListItem from 'components/miscellaneous/ListItem';
+import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 
 // Styles
 const useStyles = makeStyles((theme) => ({
@@ -20,11 +19,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
     padding: theme.spacing(0.5),
     textAlign: 'center',
-  },
-  progress: {
-    margin: 'auto',
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
   },
   btn: {
     padding: theme.spacing(1),
@@ -43,8 +37,10 @@ const EventsListView = ({ events, isLoading = false }: EventsListViewProps) => {
 
   if (isLoading) {
     return (
-      <div className={classes.noEventText}>
-        <CircularProgress className={classes.progress} />
+      <div className={classes.container}>
+        <ListItemLoading />
+        <ListItemLoading />
+        <ListItemLoading />
       </div>
     );
   } else if (!events.length) {

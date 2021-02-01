@@ -13,6 +13,7 @@
 ---
 
 ## Neste versjon
+- 🎨 Finere innlastning av arrangementer, nyheter, jobbannonser og stories
 - ⚡ Lettere å se feilmeldinger i skjemaer ved at feil vises under knapp
 - ✨ Mulighet til å legge inn kort til arrangementer, nyheter og jobbannonser, samt utvidsbokser i markdown
 
