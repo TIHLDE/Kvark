@@ -87,8 +87,12 @@ export const useEventById = (id: number) => {
   }, refreshDelay);
 
   useEffect(() => {
+    let subscribed = true;
     getEventById(id)
       .then((data) => {
+        if (!subscribed) {
+          return;
+        }
         if (data.sign_up) {
           const SEC = 1000;
           const MIN = 60;
@@ -109,9 +113,15 @@ export const useEventById = (id: number) => {
         setError(null);
       })
       .catch((error: RequestResponse) => {
+        if (!subscribed) {
+          return;
+        }
         setError(error);
         setEventData(null);
       });
+    return () => {
+      subscribed = false;
+    };
   }, [id, getEventById, event]);
 
   return [eventData, error] as const;

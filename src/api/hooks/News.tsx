@@ -79,15 +79,19 @@ export const useNewsById = (id: number) => {
   const [error, setError] = useState<RequestResponse | null>(null);
 
   useEffect(() => {
+    let subscribed = true;
     getNewsById(id)
       .then((data) => {
-        setNewsData(data);
-        setError(null);
+        !subscribed || setNewsData(data);
+        !subscribed || setError(null);
       })
       .catch((error: RequestResponse) => {
-        setError(error);
-        setNewsData(null);
+        !subscribed || setError(error);
+        !subscribed || setNewsData(null);
       });
+    return () => {
+      subscribed = false;
+    };
   }, [id, getNewsById, news]);
 
   return [newsData, error] as const;
