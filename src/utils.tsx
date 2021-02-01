@@ -82,11 +82,6 @@ export const formatDate = (date: Date) => {
   );
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const getFormattedDate = (date: any) => {
-  return getDay(date.day()) + ' ' + date.date() + ' ' + getMonth(date.month()) + ' - kl. ' + date.format('HH:mm');
-};
-
 export const getDay = (day: number) => {
   switch (day) {
     case 0:

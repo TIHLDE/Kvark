@@ -39,9 +39,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     gridTemplateRows: 'auto',
     gridGap: theme.spacing(2),
     marginTop: theme.spacing(2),
-
     position: 'relative',
-    overflow: 'hidden',
 
     [theme.breakpoints.down('md')]: {
       gridTemplateColumns: '100%',
@@ -340,14 +338,14 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
             </Hidden>
           </div>
         </div>
-        <Paper className={classes.content}>
+        <Paper className={classes.content} shadow={view === Views.Apply && !registration}>
           <Typography className={classes.title} variant='h1'>
             {event.title}
           </Typography>
           <Collapse in={view === Views.Info || Boolean(registration)}>
             <MarkdownRenderer value={event.description} />
           </Collapse>
-          <Collapse in={view === Views.Apply && !registration} mountOnEnter unmountOnExit>
+          <Collapse in={view === Views.Apply && !registration} mountOnEnter>
             {user && <EventRegistration event={event} setRegistration={setRegistration} user={user} />}
           </Collapse>
         </Paper>

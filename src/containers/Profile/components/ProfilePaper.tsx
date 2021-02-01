@@ -242,13 +242,13 @@ const ProfilePaper = ({ logoutMethod }: ProfilePaperProps) => {
           <Collapse in={tab === notificationsTab.label}>
             <ProfileNotifications isLoading={isLoading} notifications={userData?.notifications || []} />
           </Collapse>
+          <Collapse in={tab === badgesTab.label}>
+            <ProfileBadges />
+          </Collapse>
           <Collapse in={tab === settingsTab.label}>
             <Paper>
               <ProfileSettings />
             </Paper>
-          </Collapse>
-          <Collapse in={tab === badgesTab.label}>
-            <ProfileBadges />
           </Collapse>
           <Collapse in={tab === adminTab.label}>
             <ProfileAdmin />

@@ -8,6 +8,7 @@ import URLS from 'URLS';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 // Project components
 import StoryPopup from 'components/story/StoryPopup';
@@ -24,10 +25,26 @@ const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme: Theme
     display: 'flex',
     flexWrap: 'nowrap',
     overflowX: 'scroll',
-    padding: theme.spacing(1),
+    padding: theme.spacing(0, 1),
     '-webkit-overflow-scrolling': 'touch',
+    '@media (any-pointer: coarse)': {
+      '&::-webkit-scrollbar': {
+        display: 'none',
+      },
+    },
     '&::-webkit-scrollbar': {
-      display: 'none',
+      height: 12,
+      background: 'transparent',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      borderRadius: theme.shape.borderRadius,
+      background: 'transparent',
+    },
+    ':hover&::-webkit-scrollbar-thumb': {
+      background: `${theme.palette.divider}88`,
+    },
+    '&::-webkit-scrollbar-thumb:hover': {
+      background: `${theme.palette.divider}`,
     },
     '&:before': {
       content: '""',
@@ -37,7 +54,7 @@ const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme: Theme
       left: 0,
       bottom: 0,
       background: (props) => `linear-gradient(to left, transparent, ${props.fadeColor || theme.palette.background.default} 65%)`,
-      width: 25,
+      width: theme.spacing(2),
     },
     '&:after': {
       content: '""',
@@ -47,15 +64,13 @@ const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme: Theme
       right: 0,
       bottom: 0,
       background: (props) => `linear-gradient(to right, transparent, ${props.fadeColor || theme.palette.background.default} 65%)`,
-      width: 25,
+      width: theme.spacing(2),
     },
   },
   story: {
     flex: '0 0 auto',
-    height: 105,
-    maxWidth: 90,
-    margin: theme.spacing(0, 1),
-    display: 'inline-block',
+    width: 110,
+    marginLeft: theme.spacing(1),
   },
   text: {
     color: theme.palette.text.primary,
@@ -68,9 +83,9 @@ const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme: Theme
   imgButton: {
     display: 'block',
     margin: 'auto',
-    width: 80,
-    height: 80,
-    borderRadius: '50%',
+    height: 75,
+    width: '100%',
+    borderRadius: 16,
     padding: 2,
     borderWidth: 2,
     '&:hover': {
@@ -84,12 +99,20 @@ const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme: Theme
   image: {
     width: '100%',
     height: '100%',
-    borderRadius: '50%',
+    borderRadius: 12,
     objectFit: 'cover',
     objectPosition: 'center',
     margin: 'auto',
     display: 'block',
     background: theme.palette.common.white,
+  },
+  filler: {
+    width: theme.spacing(2),
+    height: 1,
+    flex: '0 0 auto',
+  },
+  skeleton: {
+    margin: 'auto',
   },
 }));
 
@@ -114,7 +137,7 @@ function Story({ items, fadeColor }: StoryProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const instanceOfEvent = (object: any): object is Event => 'start_date' in object;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const instanceOfNews = (object: any): object is News => 'body' in object;
+  const instanceOfNews = (object: any): object is News => 'header' in object;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const instanceOfJobPost = (object: any): object is JobPost => 'company' in object;
 
@@ -132,19 +155,19 @@ function Story({ items, fadeColor }: StoryProps) {
           description: `Sted: ${item.location} \n Når: ${formatDate(parseISO(item.start_date))}`,
           topText: 'Arrangement',
         });
-      } else if (instanceOfNews(item)) {
-        newItems.push({
-          ...newItem,
-          link: `${URLS.news}${item.id}/${urlEncode(item.title)}/`,
-          description: `${item.header}`,
-          topText: 'Nyhet',
-        });
       } else if (instanceOfJobPost(item)) {
         newItems.push({
           ...newItem,
           link: `${URLS.jobposts}${item.id}/${urlEncode(item.title)}/`,
           description: `Bedrift: ${item.company} \n Når: ${formatDate(parseISO(item.deadline))}`,
           topText: 'Annonse',
+        });
+      } else if (instanceOfNews(item)) {
+        newItems.push({
+          ...newItem,
+          link: `${URLS.news}${item.id}/${urlEncode(item.title)}/`,
+          description: `${item.header}`,
+          topText: 'Nyhet',
         });
       }
     });
@@ -185,9 +208,26 @@ function Story({ items, fadeColor }: StoryProps) {
         {storyItems.map((item, index) => (
           <StoryItem index={index} item={item} key={index} />
         ))}
+        <div className={classes.filler} />
       </div>
       <StoryPopup items={storyItems} onClose={() => setPopupOpen(false)} open={popupOpen} selectedItem={selectedItem} />
     </div>
   );
 }
 export default Story;
+
+export const StoryLoading = ({ fadeColor }: Pick<StoryProps, 'fadeColor'>) => {
+  const classes = useStyles({ fadeColor });
+  return (
+    <div className={classes.root}>
+      <div className={classes.stories}>
+        {Array.from({ length: 7 }).map((i, index) => (
+          <div className={classes.story} key={index}>
+            <Skeleton className={classes.imgButton} variant='rect' />
+            <Skeleton className={classes.skeleton} width='80%' />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};

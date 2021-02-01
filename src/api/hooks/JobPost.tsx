@@ -79,15 +79,19 @@ export const useJobPostById = (id: number) => {
   const [error, setError] = useState<RequestResponse | null>(null);
 
   useEffect(() => {
+    let subscribed = true;
     getJobPostById(id)
       .then((data) => {
-        setJobPostData(data);
-        setError(null);
+        !subscribed || setJobPostData(data);
+        !subscribed || setError(null);
       })
       .catch((error: RequestResponse) => {
-        setError(error);
-        setJobPostData(null);
+        !subscribed || setError(error);
+        !subscribed || setJobPostData(null);
       });
+    return () => {
+      subscribed = false;
+    };
   }, [id, getJobPostById, jobPost]);
 
   return [jobPostData, error] as const;

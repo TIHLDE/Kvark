@@ -49,12 +49,13 @@ export type ExpansionProps = {
   text?: string;
   children?: ReactNode;
   subtext?: string;
+  className?: string;
 };
 
-const Expansion = ({ flat, header, subheader, text, children, subtext }: ExpansionProps) => {
+const Expansion = ({ className, flat, header, subheader, text, children, subtext }: ExpansionProps) => {
   const classes = useStyles();
   return (
-    <ExpansionPanel className={classNames(classes.root, flat ? classes.flat : null)}>
+    <ExpansionPanel className={classNames(classes.root, flat ? classes.flat : null, className)}>
       <ExpansionPanelSummary className={classes.summary} expandIcon={<ExpandMoreIcon />}>
         <Typography className={classes.heading}>{header}</Typography>
         {subheader && <Typography className={classes.secondaryHeading}>{htmlReactParser(subheader)}</Typography>}

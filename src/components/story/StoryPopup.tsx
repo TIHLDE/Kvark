@@ -35,15 +35,21 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: 0,
     height: '100vh',
     position: 'relative',
-    [theme.breakpoints.up('md')]: {
+    '@media (any-pointer: coarse)': {
       '&::-webkit-scrollbar': {
-        width: 12,
-        background: '#111',
+        display: 'none',
       },
-      '&::-webkit-scrollbar-thumb': {
-        borderRadius: theme.shape.borderRadius,
-        background: '#ccc',
-      },
+    },
+    '&::-webkit-scrollbar': {
+      width: 12,
+      background: '#111',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      borderRadius: theme.shape.borderRadius,
+      background: '#ccc',
+    },
+    '&::-webkit-scrollbar-thumb:hover': {
+      background: '#bbb',
     },
   },
   popup: {

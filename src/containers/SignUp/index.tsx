@@ -25,6 +25,7 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
 import Navigation from 'components/navigation/Navigation';
 import Paper from 'components/layout/Paper';
 import Select from 'components/inputs/Select';
+import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 
@@ -228,9 +229,9 @@ const SignUp = () => {
           <Typography variant='body2'>
             OBS: Når du har klikket &quot;Opprett bruker&quot; må vi godkjenne deg før du får logge inn. Les mer om hvorfor lengre ned.
           </Typography>
-          <Button className={classes.button} color='primary' disabled={isLoading} fullWidth type='submit' variant='contained'>
+          <SubmitButton className={classes.button} disabled={isLoading} errors={errors}>
             Opprett bruker
-          </Button>
+          </SubmitButton>
           <Button className={classes.button} color='primary' component={Link} disabled={isLoading} fullWidth to={URLS.login}>
             Logg inn
           </Button>

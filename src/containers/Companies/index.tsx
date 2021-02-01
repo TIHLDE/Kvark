@@ -52,10 +52,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.smoke,
   },
   bannerButton: {
-    width: '100%',
     color: theme.palette.common.white,
     borderColor: theme.palette.common.white + 'bb',
-    minWidth: 200,
     '&:hover': {
       borderColor: theme.palette.common.white,
     },
@@ -90,7 +88,7 @@ Vi kan også tilrettelegge for speed intervjuer dersom dette er ønskelig.`,
     <Navigation
       banner={
         <Banner text='<b>Alle arrangementer kan gjennomføres digitalt våren 2021<b/>' title='For Bedrifter'>
-          <Button className={classes.bannerButton} color='primary' onClick={() => scrollToForm()} startIcon={<SendIcon />} variant='outlined'>
+          <Button className={classes.bannerButton} color='primary' fullWidth onClick={scrollToForm} startIcon={<SendIcon />} variant='outlined'>
             Send oss en melding
           </Button>
         </Banner>

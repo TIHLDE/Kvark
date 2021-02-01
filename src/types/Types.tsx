@@ -119,6 +119,7 @@ export interface Event {
   end_registration_at: string;
   sign_off_deadline: string;
   registration_priorities: Array<RegistrationPriority>;
+  updated_at: string;
 }
 
 export interface RegistrationPriority {
@@ -170,4 +171,27 @@ export interface Category {
   id: number;
   text: string;
   updated_at: string;
+}
+
+export type PageRequired = Partial<Page> & Pick<Page, 'title' | 'slug' | 'path'>;
+
+export interface Page {
+  children: Array<{
+    title: string;
+    slug: string;
+  }>;
+  content: string;
+  created_at: string;
+  image?: string;
+  image_alt?: string;
+  path: string;
+  slug: string;
+  title: string;
+  updated_at: string;
+}
+
+export interface PageTree {
+  slug: string;
+  title: string;
+  children: Array<PageTree>;
 }

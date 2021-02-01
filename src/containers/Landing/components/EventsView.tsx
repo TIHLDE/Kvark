@@ -15,23 +15,19 @@ import EventsCalendarView from 'containers/Landing/components/EventsCalendarView
 import Reorder from '@material-ui/icons/Reorder';
 import DateRange from '@material-ui/icons/DateRange';
 
+export type IProps = {
+  events: Array<Event>;
+  isLoading: boolean;
+};
 enum Views {
   LIST,
   CALENDAR,
 }
 
-const EventsView = () => {
-  const { getEvents, getExpiredEvents } = useEvent();
-  const [events, setEvents] = useState<Array<Event>>([]);
+const EventsView = ({ events, isLoading }: IProps) => {
+  const { getExpiredEvents } = useEvent();
   const [oldEvents, setOldEvents] = useState<Array<Event>>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [tab, setTab] = useState(Views.LIST);
-
-  useEffect(() => {
-    getEvents()
-      .then((eventObject) => setEvents(eventObject.results))
-      .finally(() => setIsLoading(false));
-  }, [getEvents]);
 
   useEffect(() => {
     // Load expired events when switching to calendar tab and they havn't been loaded already

@@ -170,7 +170,7 @@ const Cheetsheet = () => {
             onChange={(e) => setStudyChoice(e.target.value as Study)}
             select
             style={{ gridArea: 'filterStudy' }}
-            value={getStudy()}
+            value={getStudy() || Study.DATAING}
             variant='outlined'>
             {[Study.DATAING, Study.DIGFOR, Study.DIGSEC, Study.DIGSAM].map((i) => (
               <MenuItem key={i} value={i}>
@@ -184,7 +184,7 @@ const Cheetsheet = () => {
             onChange={(e) => setClassChoice(Number(e.target.value))}
             select
             style={{ gridArea: 'filterClass' }}
-            value={classId}
+            value={classId || 1}
             variant='outlined'>
             {(getStudy() === Study.DIGSAM ? [4, 5] : [1, 2, 3]).map((i) => (
               <MenuItem key={i} value={i}>

@@ -24,7 +24,7 @@ version = '.'.join(version)
 
 today = datetime.now().strftime("%d.%m.%Y")
 file_data.insert(
-    next, f"### Frontend\n\n\n## Versjon {version} ({today})\n")
+    next, f"\n## Versjon {version} ({today})\n")
 with open(file_path, "w") as f:
     file_data = "".join(file_data)
     f.write(file_data)

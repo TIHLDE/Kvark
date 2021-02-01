@@ -24,6 +24,7 @@
     "react-markdown": "^5.0.2",
     "react-palette": "^1.0.1",
     "react-qr-reader": "^2.2.1",
+    "react-query": "^3.5.16",
     "react-router-dom": "^6.0.0-beta.0",
     "react-scripts": "^4.0.1",
     "slugify": "^1.4.5",

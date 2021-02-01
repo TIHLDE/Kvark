@@ -15,18 +15,16 @@ import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import MenuItem from '@material-ui/core/MenuItem';
 import Grow from '@material-ui/core/Grow';
 
 // Project components
-import ListItem from '../../components/miscellaneous/ListItem';
+import ListItem, { ListItemLoading } from '../../components/miscellaneous/ListItem';
 import Navigation from '../../components/navigation/Navigation';
 import Banner from '../../components/layout/Banner';
 import Paper from '../../components/layout/Paper';
 import Pageination from '../../components/layout/Pageination';
 import NoEventsIndicator from './components/NoEventsIndicator';
-import Story from '../../components/story/Story';
 
 const styles = (theme) => ({
   root: {
@@ -56,7 +54,7 @@ const styles = (theme) => ({
     gridTemplateColumns: '3fr 1fr',
     gridTemplateRows: 'auto',
     gridGap: 15,
-
+    alignItems: 'self-start',
     position: 'relative',
 
     [theme.breakpoints.down('md')]: {
@@ -87,15 +85,6 @@ const styles = (theme) => ({
   },
   paddingBtn: {
     paddingBottom: 10,
-  },
-  progress: {
-    display: 'block',
-    margin: 'auto',
-    marginTop: 10,
-
-    [theme.breakpoints.down('md')]: {
-      order: 1,
-    },
   },
   mt: {
     color: theme.palette.text.primary,
@@ -219,11 +208,14 @@ function Events(props) {
         <Banner title='Arrangementer' />
         <div className={classes.wrapper}>
           <div className={classes.grid}>
-            {isFetching ? (
-              <CircularProgress className={classes.progress} />
+            {isLoading ? (
+              <div className={classes.listRoot}>
+                <ListItemLoading />
+                <ListItemLoading />
+                <ListItemLoading />
+              </div>
             ) : (
               <div className={classes.listRoot}>
-                <Story items={events} />
                 <Grow in={!isFetching}>
                   <div className={classes.list}>
                     <Pageination nextPage={getNextPage} page={nextPage}>
@@ -236,47 +228,45 @@ function Events(props) {
                 </Grow>
               </div>
             )}
-            <div>
-              <Paper className={classes.settings}>
-                <form>
-                  <TextField
-                    className={classes.paddingBtn}
-                    fullWidth
-                    label='Søk...'
-                    onChange={(e) => setSearchInput(e.target.value)}
-                    value={searchInput}
-                    variant='outlined'
-                  />
-                  <Button color='primary' fullWidth onClick={searchForEvent} type='submit' variant='outlined'>
-                    {Text.search}
-                  </Button>
-                </form>
-                <Divider className={classes.mt} />
-                <Typography className={classes.mt} gutterBottom variant='h6'>
-                  {Text.category}
-                </Typography>
+            <Paper className={classes.settings}>
+              <form>
                 <TextField
-                  className={classes.paddingBottom}
+                  className={classes.paddingBtn}
                   fullWidth
-                  label='Kategori'
-                  onChange={handleCategoryChange}
-                  select
-                  value={category}
-                  variant='outlined'>
-                  <MenuItem value={0}>Alle</MenuItem>
-                  {categories.map((value, index) => (
-                    <MenuItem key={index} value={value.id}>
-                      {value.text}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <Divider className={classes.mt} />
-
-                <Button className={classes.resetBtn} color='primary' fullWidth onClick={resetFilters} variant='outlined'>
-                  {Text.reset}
+                  label='Søk...'
+                  onChange={(e) => setSearchInput(e.target.value)}
+                  value={searchInput}
+                  variant='outlined'
+                />
+                <Button color='primary' fullWidth onClick={searchForEvent} type='submit' variant='outlined'>
+                  {Text.search}
                 </Button>
-              </Paper>
-            </div>
+              </form>
+              <Divider className={classes.mt} />
+              <Typography className={classes.mt} gutterBottom variant='h6'>
+                {Text.category}
+              </Typography>
+              <TextField
+                className={classes.paddingBottom}
+                fullWidth
+                label='Kategori'
+                onChange={handleCategoryChange}
+                select
+                value={category}
+                variant='outlined'>
+                <MenuItem value={0}>Alle</MenuItem>
+                {categories.map((value, index) => (
+                  <MenuItem key={index} value={value.id}>
+                    {value.text}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <Divider className={classes.mt} />
+
+              <Button className={classes.resetBtn} color='primary' fullWidth onClick={resetFilters} variant='outlined'>
+                {Text.reset}
+              </Button>
+            </Paper>
           </div>
         </div>
       </div>

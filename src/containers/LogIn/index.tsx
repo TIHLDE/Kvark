@@ -16,6 +16,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Navigation from 'components/navigation/Navigation';
 import Paper from 'components/layout/Paper';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
+import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 
 const useStyles = makeStyles((theme) => ({
@@ -100,7 +101,7 @@ const LogIn = () => {
             required
             rules={{
               required: 'Feltet er påkrevd',
-              validate: (value: string) => (value.includes('@') ? 'Bruk feide brukernavn, ikke epost' : undefined),
+              validate: (value: string) => (value.includes('@') ? 'Bruk Feide-brukernavn, ikke epost' : undefined),
             }}
           />
           <TextField
@@ -113,9 +114,9 @@ const LogIn = () => {
             rules={{ required: 'Feltet er påkrevd' }}
             type='password'
           />
-          <Button className={classes.button} color='primary' disabled={isLoading} fullWidth type='submit' variant='contained'>
+          <SubmitButton className={classes.button} disabled={isLoading} errors={errors}>
             Logg inn
-          </Button>
+          </SubmitButton>
           <div className={classes.buttons}>
             <Button className={classes.button} color='primary' component={Link} disabled={isLoading} fullWidth to={URLS.forgotPassword}>
               Glemt passord?

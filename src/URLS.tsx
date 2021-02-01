@@ -2,7 +2,7 @@ export default {
   landing: '/',
   events: '/arrangementer/',
   company: '/bedrifter/',
-  about: '/om/',
+  about: '/om-tihlde/',
   contactInfo: '/kontakt/',
   services: '/tjenester/',
   newStudent: '/nystudent/',
@@ -17,6 +17,7 @@ export default {
   eventRules: '/arrangementsregler/',
   cheatsheet: '/kokebok/',
   news: '/nyheter/',
+  pages: '/om/',
 
   userAdmin: '/admin/brukere/',
   eventAdmin: '/admin/arrangementer/',
