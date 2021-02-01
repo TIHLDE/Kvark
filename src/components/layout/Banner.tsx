@@ -70,11 +70,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   children: {
     padding: theme.spacing(2, 0, 0),
-    minWidth: 300,
+    minWidth: 350,
+    height: 'fit-content',
     [theme.breakpoints.down('md')]: {
       minWidth: 200,
       padding: theme.spacing(2, 2, 0, 2),
     },
+    display: 'grid',
+    gridGap: theme.spacing(1),
   },
   svg: {
     marginTop: -1,
@@ -89,7 +92,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export type BannerProps = {
   className?: string;
-  title?: string;
+  title?: string | ReactNode;
   text?: string;
   children?: ReactNode;
   background?: string;

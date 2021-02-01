@@ -30,7 +30,7 @@ export type DialogProps = {
 function Dialog({ open, onClose, onCancel, onConfirm, titleText, children, contentText, closeText, confirmText }: DialogProps) {
   const classes = useStyles();
   return (
-    <MaterialDialog aria-labelledby='form-dialog-title' onClose={onClose} open={open}>
+    <MaterialDialog aria-labelledby='form-dialog-title' fullWidth maxWidth='md' onClose={onClose} open={open}>
       {titleText && <DialogTitle id='form-dialog-title'>{titleText}</DialogTitle>}
       {(contentText || children) && (
         <DialogContent>
@@ -42,9 +42,11 @@ function Dialog({ open, onClose, onCancel, onConfirm, titleText, children, conte
         <Button color='primary' onClick={onCancel || onClose}>
           {closeText || 'Lukk'}
         </Button>
-        <Button color='primary' onClick={onConfirm || onCancel} variant='contained'>
-          {confirmText || 'OK'}
-        </Button>
+        {onConfirm && (
+          <Button color='primary' onClick={onConfirm || onCancel} variant='contained'>
+            {confirmText || 'OK'}
+          </Button>
+        )}
       </DialogActions>
     </MaterialDialog>
   );

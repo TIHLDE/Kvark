@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import 'assets/css/index.css';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import URLS from 'URLS';
 import 'delayed-scroll-restoration-polyfill';
 import { Groups } from 'types/Enums';
@@ -31,6 +33,7 @@ import JobPosts from 'containers/JobPosts';
 import JobPostDetails from 'containers/JobPostDetails';
 import Landing from 'containers/Landing';
 import NewsDetails from 'containers/NewsDetails';
+import Pages from 'containers/Pages';
 import Profile from 'containers/Profile';
 const ContactInfo = lazy(() => import('containers/ContactInfo'));
 const EventAdministration = lazy(() => import('containers/EventAdministration'));
@@ -82,21 +85,32 @@ type ProvidersProps = {
 };
 
 export const Providers = ({ children }: ProvidersProps) => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 1000 * 60 * 2, // Don't refetch data before 2 min has passed
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
   return (
-    <MiscProvider>
-      <UserProvider>
-        <NewsProvider>
-          <JobPostProvider>
-            <EventProvider>
-              <ThemeProvider>
-                <CssBaseline />
-                <SnackbarProvider>{children}</SnackbarProvider>
-              </ThemeProvider>
-            </EventProvider>
-          </JobPostProvider>
-        </NewsProvider>
-      </UserProvider>
-    </MiscProvider>
+    <QueryClientProvider client={queryClient}>
+      <MiscProvider>
+        <UserProvider>
+          <NewsProvider>
+            <JobPostProvider>
+              <EventProvider>
+                <ThemeProvider>
+                  <CssBaseline />
+                  <SnackbarProvider>{children}</SnackbarProvider>
+                </ThemeProvider>
+              </EventProvider>
+            </JobPostProvider>
+          </NewsProvider>
+        </UserProvider>
+      </MiscProvider>
+      <ReactQueryDevtools />
+    </QueryClientProvider>
   );
 };
 
@@ -112,7 +126,7 @@ const AppRoutes = () => {
     <Routes>
       <Route element={<Landing />} path='/' />
       <Route path={URLS.events}>
-        <Route element={<EventRegistration />} path=':id/registrering/' />
+        <AuthRoute element={<EventRegistration />} groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]} path=':id/registrering/' />
         <Route element={<EventDetails />} path=':id/*' />
         <Route element={<Events />} path='' />
       </Route>
@@ -126,6 +140,7 @@ const AppRoutes = () => {
         <Route element={<JobPostDetails />} path=':id/*' />
         <Route element={<JobPosts />} path='' />
       </Route>
+      <Route element={<Pages />} path={`${URLS.pages}*`} />
       <Route element={<Laws />} path={URLS.laws} />
       <Route element={<PrivacyPolicy />} path={URLS.privacyPolicy} />
       <Route element={<EventRules />} path={URLS.eventRules} />

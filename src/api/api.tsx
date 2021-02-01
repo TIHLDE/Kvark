@@ -18,6 +18,9 @@ import {
   PaginationResponse,
   LoginRequestResponse,
   Cheatsheet,
+  Page,
+  PageTree,
+  PageRequired,
 } from 'types/Types';
 
 export default {
@@ -95,4 +98,11 @@ export default {
 
   // Badges
   createUserBadge: (data: { badge_id: string }) => IFetch<RequestResponse>({ method: 'POST', url: `badge/`, data }),
+
+  // Pages
+  getPageTree: () => IFetch<PageTree>({ method: 'GET', url: `page/tree/` }),
+  getPage: (path: string) => IFetch<Page>({ method: 'GET', url: `page/${path}` }),
+  createPage: (data: PageRequired) => IFetch<Page>({ method: 'POST', url: `page/`, data }),
+  updatePage: (path: string, data: Partial<Page>) => IFetch<Page>({ method: 'PUT', url: `page/${path}`, data }),
+  deletePage: (path: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `page/${path}` }),
 };

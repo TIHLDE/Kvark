@@ -172,3 +172,26 @@ export interface Category {
   text: string;
   updated_at: string;
 }
+
+export type PageRequired = Partial<Page> & Pick<Page, 'title' | 'slug' | 'path'>;
+
+export interface Page {
+  children: Array<{
+    title: string;
+    slug: string;
+  }>;
+  content: string;
+  created_at: string;
+  image?: string;
+  image_alt?: string;
+  path: string;
+  slug: string;
+  title: string;
+  updated_at: string;
+}
+
+export interface PageTree {
+  slug: string;
+  title: string;
+  children: Array<PageTree>;
+}

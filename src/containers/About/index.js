@@ -76,12 +76,8 @@ const styles = (theme) => ({
     backgroundColor: theme.palette.background.smoke,
   },
   button: {
-    marginTop: 8,
-    width: '100%',
     color: theme.palette.common.white,
     borderColor: theme.palette.common.white + 'bb',
-    minWidth: 200,
-    marginBottom: 8,
     '&:hover': {
       borderColor: theme.palette.common.white,
     },
@@ -101,10 +97,10 @@ function About(props) {
       <Grid alignItems='center' className={classes.root} container direction='column' wrap='nowrap'>
         <Banner text={Text.subheader} title={Text.header}>
           <>
-            <Button className={classes.button} color='primary' component={Link} to={URLS.laws} variant='outlined'>
+            <Button className={classes.button} color='primary' component={Link} fullWidth to={URLS.laws} variant='outlined'>
               TIHLDE&apos;s Lover
             </Button>
-            <Button className={classes.button} color='primary' component={Link} to={URLS.services} variant='outlined'>
+            <Button className={classes.button} color='primary' component={Link} fullWidth to={URLS.services} variant='outlined'>
               Tjenester
             </Button>
           </>
