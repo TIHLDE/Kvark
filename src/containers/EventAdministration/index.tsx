@@ -38,9 +38,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.text.primary,
     paddingLeft: theme.spacing(2),
   },
-  preview: {
-    padding: theme.spacing(1),
-  },
 }));
 
 const EventAdministration = () => {

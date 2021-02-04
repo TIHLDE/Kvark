@@ -256,7 +256,7 @@ const Members = (props) => {
                 </Typography>
               </Grid>
             </Hidden>
-            <Pageination fullWidth nextPage={getNextPage} page={nextPage}>
+            <Pageination fullWidth hasNextPage={nextPage} nextPage={getNextPage}>
               {memberList &&
                 memberList.map((value, index) => <PersonListItem data={value} handleMembers={handleMembers} isMember={props.isMember} key={index} />)}
             </Pageination>

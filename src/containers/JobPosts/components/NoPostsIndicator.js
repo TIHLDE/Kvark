@@ -2,11 +2,6 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
-// Material UI Components
-
-// Text
-import Text from '../../../text/JobPostText';
-
 // Icons
 import NoDataIcon from '../../../assets/icons/empty.svg';
 
@@ -44,7 +39,7 @@ class NoPostsIndicator extends Component {
         <div className={classes.imageWrapper}>
           <img alt='Ingen arrangementer' className={classes.image} src={NoDataIcon} />
         </div>
-        <MessageIndicator header={Text.noJobPost} subheader={Text.subNoPosts} />
+        <MessageIndicator header='Fant ingen annonser' subheader='' />
       </div>
     );
   }

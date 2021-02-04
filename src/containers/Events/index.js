@@ -218,7 +218,7 @@ function Events(props) {
               <div className={classes.listRoot}>
                 <Grow in={!isFetching}>
                   <div className={classes.list}>
-                    <Pageination nextPage={getNextPage} page={nextPage}>
+                    <Pageination hasNextPage={nextPage} nextPage={getNextPage}>
                       {events?.map((event) => (
                         <ListItem event={event} key={event.id} />
                       ))}

@@ -115,7 +115,7 @@ const Files = ({ files, nextPage, goToNextPage }: FilesProps) => {
           Fag:
         </Typography>
       </div>
-      <Pageination fullWidth nextPage={goToNextPage} page={nextPage}>
+      <Pageination fullWidth hasNextPage={nextPage} nextPage={goToNextPage}>
         {files.length ? (
           <List aria-label='Filer'>
             {files.map((file, index) => (

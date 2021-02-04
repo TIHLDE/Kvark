@@ -54,7 +54,7 @@ export default {
   deleteRegistration: (eventId: number, userId: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `events/${String(eventId)}/users/${userId}/` }),
 
   // Job posts
-  getJobPosts: (filters?: any) => IFetch<PaginationResponse<JobPost>>({ method: 'GET', url: `jobpost/`, data: filters || { newest: true } }),
+  getJobPosts: (filters: any = {}) => IFetch<PaginationResponse<JobPost>>({ method: 'GET', url: `jobpost/`, data: filters }),
   getJobPost: (id: number) => IFetch<JobPost>({ method: 'GET', url: `jobpost/${String(id)}/` }),
   getExpiredJobPosts: () => IFetch<PaginationResponse<JobPost>>({ method: 'GET', url: `jobpost/`, data: { expired: true } }),
   createJobPost: (item: JobPostRequired) => IFetch<JobPost>({ method: 'POST', url: `jobpost/`, data: item }),

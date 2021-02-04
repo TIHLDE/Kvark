@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
-import { Event, News, JobPost } from 'types/Types';
+import { Event, News } from 'types/Types';
 import { useEvent } from 'api/hooks/Event';
 import { useNews } from 'api/hooks/News';
-import { useJobPost } from 'api/hooks/JobPost';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -46,19 +45,15 @@ const Landing = () => {
   const classes = useStyles();
   const { getEvents } = useEvent();
   const { getNews } = useNews();
-  const { getJobPosts } = useJobPost();
-  const [jobposts, setJobposts] = useState<Array<JobPost>>([]);
   const [news, setNews] = useState<Array<News>>([]);
   const [events, setEvents] = useState<Array<Event>>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let subscribed = true;
-    Promise.all([
-      getNews().then((data) => !subscribed || setNews(data)),
-      getEvents().then((data) => !subscribed || setEvents(data.results)),
-      getJobPosts().then((data) => !subscribed || setJobposts(data.results)),
-    ]).then(() => !subscribed || setIsLoading(false));
+    Promise.all([getNews().then((data) => !subscribed || setNews(data)), getEvents().then((data) => !subscribed || setEvents(data.results))]).then(
+      () => !subscribed || setIsLoading(false),
+    );
     return () => {
       subscribed = false;
     };
@@ -74,7 +69,7 @@ const Landing = () => {
           <Typography align='center' className={classes.header} color='inherit' variant='h2'>
             Siste
           </Typography>
-          <StoriesView events={events} isLoading={isLoading} jobposts={jobposts} news={news} />
+          <StoriesView events={events} isLoading={isLoading} news={news} />
         </Container>
       </div>
       <Container className={classes.section} maxWidth='lg'>

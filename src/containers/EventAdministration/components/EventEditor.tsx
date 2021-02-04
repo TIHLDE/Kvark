@@ -25,12 +25,13 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 // Project components
 import EventRegistrationPriorities from 'containers/EventAdministration/components/EventRegistrationPriorities';
-import EventPreview from 'containers/EventAdministration/components/EventPreview';
+import EventRenderer from 'containers/EventDetails/components/EventRenderer';
 import Dialog from 'components/layout/Dialog';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
+import RendererPreview from 'components/miscellaneous/RendererPreview';
 
 const useStyles = makeStyles((theme: Theme) => ({
   grid: {
@@ -375,7 +376,7 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
               </Select>
             )}
           </div>
-          <EventPreview className={classes.margin} getEvent={getEventPreview} />
+          <RendererPreview className={classes.margin} getContent={getEventPreview} renderer={EventRenderer} />
           <SubmitButton className={classes.margin} disabled={isLoading} errors={errors}>
             {eventId ? 'Oppdater arrangement' : 'Opprett arrangement'}
           </SubmitButton>

@@ -75,23 +75,23 @@ export interface News {
   image_alt?: string;
 }
 
-export type JobPostRequired = Partial<JobPost> & Pick<JobPost, 'title' | 'ingress' | 'location' | 'company'>;
+export type JobPostRequired = Partial<JobPost> & Pick<JobPost, 'body' | 'company' | 'ingress' | 'location' | 'title'>;
 
 export interface JobPost {
-  id: number;
-  expired: boolean;
+  body: string;
+  company: string;
   created_at: string;
-  updated_at: string;
+  deadline: string;
+  email: string;
+  expired: boolean;
+  id: number;
+  ingress: string;
   image: string;
   image_alt: string;
-  title: string;
-  ingress: string;
-  body: string;
-  location: string;
-  deadline: string;
-  company: string;
-  email: string;
   link: string;
+  location: string;
+  title: string;
+  updated_at: string;
 }
 
 export type EventRequired = Partial<Event> & Pick<Event, 'title' | 'start_date' | 'end_date'>;

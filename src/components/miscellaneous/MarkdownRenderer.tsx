@@ -12,7 +12,7 @@ import Divider from '@material-ui/core/Divider';
 
 // Project components
 import Expansion from 'components/layout/Expand';
-import ListItem from 'components/miscellaneous/ListItem';
+import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 
 const useStyles = makeStyles((theme) => ({
   blockquote: {
@@ -64,15 +64,15 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
 
   const Event = ({ id }: ComponentProps) => {
     const [data] = useEventById(id);
-    return data ? <ListItem className={classes.content} event={data} largeImg /> : null; // TODO: Use ListItemLoading
+    return data ? <ListItem className={classes.content} event={data} largeImg /> : <ListItemLoading />;
   };
   const JobPost = ({ id }: ComponentProps) => {
-    const [data] = useJobPostById(id);
-    return data ? <ListItem className={classes.content} jobpost={data} largeImg /> : null; // TODO: Use ListItemLoading
+    const { data } = useJobPostById(id);
+    return data ? <ListItem className={classes.content} jobpost={data} largeImg /> : <ListItemLoading />;
   };
   const News = ({ id }: ComponentProps) => {
     const [data] = useNewsById(id);
-    return data ? <ListItem className={classes.content} largeImg news={data} /> : null; // TODO: Use ListItemLoading
+    return data ? <ListItem className={classes.content} largeImg news={data} /> : <ListItemLoading />;
   };
 
   enum LanguageTypes {

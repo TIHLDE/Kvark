@@ -101,7 +101,7 @@ function EventDetails() {
             <meta content={event.image || 'https://tihlde.org' + TIHLDELOGO} property='og:image' />
           </Helmet>
           <div className={classes.wrapper}>
-            <EventRenderer event={event} />
+            <EventRenderer data={event} />
           </div>
         </>
       )}

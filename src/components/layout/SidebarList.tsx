@@ -67,7 +67,7 @@ export type SidebarListProps = {
   getNextPage: () => void;
   isLoading: boolean;
   items: item[];
-  nextPage?: number | null;
+  nextPage?: boolean | number | null;
   onItemClick: (item: null | number) => void;
   selectedItemId: number;
   title: string;
@@ -107,7 +107,7 @@ const SidebarList = ({ items, expiredItems, onItemClick, selectedItemId, getNext
               <AddIcon />
             </IconButton>
           </div>
-          <Pageination nextPage={getNextPage} page={nextPage}>
+          <Pageination fullWidth hasNextPage={nextPage} nextPage={getNextPage}>
             {isLoading && <LinearProgress />}
             <List className={classes.list} dense disablePadding>
               {items.map((item) => (

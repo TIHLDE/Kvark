@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import classNames from 'classnames';
 
 // Material UI Components
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -10,25 +9,23 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(1),
     backgroundColor: theme.palette.background.paper,
   },
-  fullWidth: {
-    width: '100%',
-  },
 }));
 
 export type PageinationProps = {
   fullWidth?: boolean;
   children?: ReactNode;
   nextPage: () => void;
-  page?: string | number | null;
+  hasNextPage?: boolean | string | number | null;
+  isLoading?: boolean;
 };
 
-const Pageination = ({ children, fullWidth, nextPage, page }: PageinationProps) => {
+const Pageination = ({ children, fullWidth, isLoading, nextPage, hasNextPage }: PageinationProps) => {
   const classes = useStyles();
   return (
     <>
       <div>{children}</div>
-      {page && (
-        <Button className={classNames(classes.button, fullWidth && classes.fullWidth)} onClick={nextPage} variant='outlined'>
+      {hasNextPage && !isLoading && (
+        <Button className={classes.button} fullWidth={fullWidth} onClick={nextPage} variant='outlined'>
           Vis flere elementer
         </Button>
       )}
