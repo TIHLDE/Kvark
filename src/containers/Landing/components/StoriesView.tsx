@@ -14,7 +14,7 @@ export type IProps = {
   isLoading: boolean;
 };
 
-const STORIES_TO_DISPLAY = 15;
+const STORIES_TO_DISPLAY = 10;
 
 const StoriesView = ({ events, news, isLoading }: IProps) => {
   const theme = useTheme();

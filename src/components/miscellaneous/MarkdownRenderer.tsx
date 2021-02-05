@@ -49,6 +49,12 @@ const useStyles = makeStyles((theme) => ({
     border: `1px solid ${theme.palette.divider}`,
     background: theme.palette.background.smoke,
   },
+  image: {
+    maxWidth: '100%',
+    objectFit: 'contain',
+    height: 'auto',
+    borderRadius: theme.shape.borderRadius,
+  },
 }));
 
 export type MarkdownRendererProps = {
@@ -127,6 +133,7 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
       list: ({ children, ordered }: { children: ReactNode[]; ordered: boolean }) => createElement(ordered ? 'ol' : 'ul', { className: classes.list }, children),
       paragraph: ({ children }: { children: ReactNode[] }) => createElement(Typography, { variant: 'body1', className: classes.content }, children),
       thematicBreak: () => <Divider className={classes.divider} />,
+      image: ({ alt, src }: { alt: string; src: string }) => <img alt={alt} className={classes.image} src={src} />,
     }),
     [],
   );

@@ -160,7 +160,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
 
   const ApplyButton = () => {
     if (preview || !data.sign_up) {
-      return <></>;
+      return null;
     } else if (data.closed) {
       return (
         <Paper className={classes.details} noPadding>
@@ -169,25 +169,23 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           </Typography>
         </Paper>
       );
-    } else if (startRegistrationDate > now) {
-      return (
-        <Button className={classes.applyButton} color='primary' disabled fullWidth variant='contained'>
-          Påmelding har ikke startet
-        </Button>
-      );
     } else if (!user) {
-      return (
-        <Button
-          className={classes.applyButton}
-          color='primary'
-          component={Link}
-          fullWidth
-          onClick={() => setLogInRedirectURL(window.location.pathname)}
-          to={URLS.login}
-          variant='contained'>
-          Logg inn for å melde deg på
-        </Button>
-      );
+      if (endRegistrationDate > now) {
+        return (
+          <Button
+            className={classes.applyButton}
+            color='primary'
+            component={Link}
+            fullWidth
+            onClick={() => setLogInRedirectURL(window.location.pathname)}
+            to={URLS.login}
+            variant='contained'>
+            Logg inn for å melde deg på
+          </Button>
+        );
+      } else {
+        return null;
+      }
     } else if (registration) {
       return (
         <Paper className={classes.details} noPadding>
@@ -220,8 +218,14 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           )}
         </Paper>
       );
+    } else if (startRegistrationDate > now) {
+      return (
+        <Button className={classes.applyButton} color='primary' disabled fullWidth variant='contained'>
+          Påmelding har ikke startet
+        </Button>
+      );
     } else if (endRegistrationDate < now) {
-      return <></>;
+      return null;
     } else if (view === Views.Apply) {
       return (
         <Button className={classes.applyButton} color='primary' fullWidth onClick={() => setView(Views.Info)} variant='outlined'>
@@ -239,7 +243,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
 
   const AdminButton = () => {
     if (preview) {
-      return <></>;
+      return null;
     }
     return (
       <HavePermission groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]}>
