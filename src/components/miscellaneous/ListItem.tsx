@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { urlEncode, formatDate } from 'utils';
 import { parseISO } from 'date-fns';
 import URLS from 'URLS';
-import { Event, News, JobPost } from 'types/Types';
+import { EventCompact, News, JobPost } from 'types/Types';
 
 // Material UI Components
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -108,7 +108,7 @@ const InfoContent = ({ icon: Icon, label }: IconProps) => {
 };
 
 type ListItemProps = {
-  event?: Event;
+  event?: EventCompact;
   news?: News;
   jobpost?: JobPost;
   imgContain?: boolean;

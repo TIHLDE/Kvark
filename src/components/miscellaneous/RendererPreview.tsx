@@ -1,5 +1,4 @@
-import { useState, forwardRef, Ref, ReactElement } from 'react';
-import { Event } from 'types/Types';
+import { useState, forwardRef, Ref, ReactElement, FunctionComponent } from 'react';
 
 // Material-UI
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -12,9 +11,6 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import { TransitionProps } from '@material-ui/core/transitions';
-
-// Project components
-import EventRenderer from 'containers/EventDetails/components/EventRenderer';
 
 const useStyles = makeStyles((theme: Theme) => ({
   appBar: {
@@ -33,14 +29,16 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export type EventPreviewProps = {
+export type RendererPreviewProps<Type> = {
   className?: string;
-  getEvent: () => Event;
+  getContent: () => Type;
+  renderer: FunctionComponent<{ preview: boolean; data: Type }>;
 };
 
-const EventPreview = ({ className, getEvent }: EventPreviewProps) => {
+// eslint-disable-next-line comma-spacing
+const RendererPreview = <Type,>({ className, getContent, renderer: Renderer }: RendererPreviewProps<Type>) => {
   const classes = useStyles();
-  const [event, setEvent] = useState<Event | null>(null);
+  const [content, setContent] = useState<Type | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const Transition = forwardRef(function Transition(props: TransitionProps & { children?: ReactElement }, ref: Ref<unknown>) {
@@ -48,7 +46,7 @@ const EventPreview = ({ className, getEvent }: EventPreviewProps) => {
   });
 
   const handleClickOpen = () => {
-    setEvent(getEvent());
+    setContent(getContent());
     setIsOpen(true);
   };
 
@@ -57,7 +55,7 @@ const EventPreview = ({ className, getEvent }: EventPreviewProps) => {
       <Button className={className || ''} color='primary' onClick={handleClickOpen} variant='outlined'>
         Forhåndsvis
       </Button>
-      {isOpen && event && (
+      {isOpen && content && (
         <Dialog fullWidth maxWidth='lg' onClose={() => setIsOpen(false)} open={isOpen} TransitionComponent={Transition}>
           <DialogTitle className={classes.appBar} disableTypography>
             <Typography variant='h3'>Forhåndsvisning</Typography>
@@ -66,7 +64,7 @@ const EventPreview = ({ className, getEvent }: EventPreviewProps) => {
             </IconButton>
           </DialogTitle>
           <DialogContent className={classes.container}>
-            <EventRenderer event={event} preview />
+            <Renderer data={content} preview />
           </DialogContent>
         </Dialog>
       )}
@@ -74,4 +72,4 @@ const EventPreview = ({ className, getEvent }: EventPreviewProps) => {
   );
 };
 
-export default EventPreview;
+export default RendererPreview;

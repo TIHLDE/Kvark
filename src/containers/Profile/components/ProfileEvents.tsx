@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Event } from 'types/Types';
+import { EventCompact } from 'types/Types';
 import { useUser } from 'api/hooks/User';
 
 // Material-UI
@@ -10,7 +10,7 @@ import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 
 const ProfileEvents = () => {
   const { getUserData } = useUser();
-  const [events, setEvents] = useState<Array<Event> | null>(null);
+  const [events, setEvents] = useState<Array<EventCompact> | null>(null);
 
   useEffect(() => {
     let subscribed = true;

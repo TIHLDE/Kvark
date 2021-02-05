@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Event } from 'types/Types';
+import { EventCompact } from 'types/Types';
 
 // Material-UI
 import Tab from '@material-ui/core/Tab';
@@ -16,7 +16,7 @@ import Reorder from '@material-ui/icons/Reorder';
 import DateRange from '@material-ui/icons/DateRange';
 
 export type IProps = {
-  events: Array<Event>;
+  events: Array<EventCompact>;
   isLoading: boolean;
 };
 enum Views {
@@ -26,7 +26,7 @@ enum Views {
 
 const EventsView = ({ events, isLoading }: IProps) => {
   const { getExpiredEvents } = useEvent();
-  const [oldEvents, setOldEvents] = useState<Array<Event>>([]);
+  const [oldEvents, setOldEvents] = useState<Array<EventCompact>>([]);
   const [tab, setTab] = useState(Views.LIST);
 
   useEffect(() => {

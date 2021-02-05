@@ -8,6 +8,7 @@ import { getUserStudyLong, getUserClass } from 'utils';
 import { UserCreate } from 'types/Types';
 import { useAuth } from 'api/hooks/Auth';
 import { useMisc } from 'api/hooks/Misc';
+import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -74,7 +75,7 @@ const SignUp = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { createUser } = useAuth();
-
+  const showSnackbar = useSnackbar();
   const { handleSubmit, errors, control, setError, register } = useForm<SignUpData>();
   const { setLogInRedirectURL, getLogInRedirectURL } = useMisc();
   const [isLoading, setIsLoading] = useState(false);
@@ -115,9 +116,7 @@ const SignUp = () => {
       navigate(redirectURL || URLS.login);
     } catch (e) {
       setIsLoading(false);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      Object.keys(e.detail).forEach((field) => setError(field, { message: e.detail[field][0] }));
+      showSnackbar(e.detail, 'error');
     }
   };
 

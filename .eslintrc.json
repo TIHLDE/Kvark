@@ -15,7 +15,16 @@
     "es6": true,
     "jest": true
   },
-  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:@typescript-eslint/eslint-recommended", "plugin:@typescript-eslint/recommended"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/react",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
+  ],
   "globals": {
     "importScripts": true
   },
@@ -66,6 +75,7 @@
     "no-useless-computed-key": "off",
     "no-useless-return": "error",
     "no-whitespace-before-property": "error",
+    "prettier/prettier": "warn",
     "quote-props": "off",
     "react/react-in-jsx-scope": "off",
     "react/jsx-sort-props": [

@@ -28,7 +28,8 @@ export const useCreatePage = (): UseMutationResult<Page, RequestResponse, PageRe
   const queryClient = useQueryClient();
   return useMutation((newPage: PageRequired) => API.createPage(newPage), {
     onSuccess: (data) => {
-      invalidate(data.path, queryClient);
+      queryClient.setQueryData([QUERY_KEY, data.path], data);
+      invalidate(queryClient);
     },
   });
 };
@@ -38,9 +39,7 @@ export const useUpdatePage = (path: string): UseMutationResult<Page, RequestResp
   return useMutation((updatedPage: PageRequired) => API.updatePage(path, updatedPage), {
     onSuccess: (data) => {
       queryClient.setQueryData([QUERY_KEY, data.path], data);
-      if (path !== data.path) {
-        invalidate(path, queryClient);
-      }
+      invalidate(queryClient);
     },
   });
 };
@@ -49,7 +48,7 @@ export const useDeletePage = (path: string): UseMutationResult<RequestResponse, 
   const queryClient = useQueryClient();
   return useMutation(() => API.deletePage(path), {
     onSuccess: () => {
-      invalidate(path, queryClient);
+      invalidate(queryClient);
     },
   });
 };
@@ -60,8 +59,7 @@ const getParentPath = (path: string): string => {
   return parentPath.length ? `${parentPath}/` : '';
 };
 
-const invalidate = (path: string, queryClient: QueryClient) => {
-  queryClient.invalidateQueries([QUERY_KEY, path]);
-  queryClient.invalidateQueries([QUERY_KEY, getParentPath(path)]);
+const invalidate = (queryClient: QueryClient) => {
+  queryClient.invalidateQueries(QUERY_KEY);
   queryClient.invalidateQueries(QUERY_KEY_TREE);
 };

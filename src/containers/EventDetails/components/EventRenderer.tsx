@@ -16,7 +16,6 @@ import { useSnackbar } from 'api/hooks/Snackbar';
 // Material UI Components
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
 import Hidden from '@material-ui/core/Hidden';
@@ -28,6 +27,7 @@ import EventPriorities from 'containers/EventDetails/components/EventPriorities'
 import EventRegistration from 'containers/EventDetails/components/EventRegistration';
 import Paper from 'components/layout/Paper';
 import Dialog from 'components/layout/Dialog';
+import DetailContent from 'components/miscellaneous/DetailContent';
 
 const useStyles = makeStyles((theme: Theme) => ({
   image: {
@@ -60,22 +60,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       maxWidth: 'none',
       width: '100%',
     },
-  },
-  detail: {
-    width: 'auto',
-    flexDirection: 'column',
-    [theme.breakpoints.down('md')]: {
-      flexDirection: 'row',
-    },
-  },
-  detailTitle: {
-    marginRight: theme.spacing(0.5),
-    fontWeight: 'bold',
-    color: theme.palette.text.secondary,
-  },
-  detailInfo: {
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
   },
   waitlistContainer: {
     margin: `${theme.spacing(1)}px auto`,
@@ -112,27 +96,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-type DetailContentProps = {
-  title: string;
-  info: string;
-};
-
-const DetailContent = ({ title, info }: DetailContentProps) => {
-  const classes = useStyles();
-  return (
-    <Grid alignItems='center' className={classes.detail} container justify='flex-start' wrap='nowrap'>
-      <Typography className={classes.detailTitle} variant='subtitle1'>
-        {title}
-      </Typography>
-      <Typography className={classes.detailInfo} variant='subtitle1'>
-        {info}
-      </Typography>
-    </Grid>
-  );
-};
-
 export type EventRendererProps = {
-  event: Event;
+  data: Event;
   preview?: boolean;
 };
 
@@ -141,7 +106,7 @@ enum Views {
   Apply,
 }
 
-const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
+const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const classes = useStyles();
   const { getRegistration, deleteRegistration } = useEvent();
   const { getUserData } = useUser();
@@ -152,11 +117,11 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
   const [registration, setRegistration] = useState<Registration | null>(null);
   const [view, setView] = useState<Views>(Views.Info);
   const [signOffDialogOpen, setSignOffDialogOpen] = useState(false);
-  const startDate = parseISO(event.start_date);
-  const endDate = parseISO(event.end_date);
-  const startRegistrationDate = parseISO(event.start_registration_at);
-  const endRegistrationDate = parseISO(event.end_registration_at);
-  const signOffDeadlineDate = parseISO(event.sign_off_deadline);
+  const startDate = parseISO(data.start_date);
+  const endDate = parseISO(data.end_date);
+  const startRegistrationDate = parseISO(data.start_registration_at);
+  const endRegistrationDate = parseISO(data.end_registration_at);
+  const signOffDeadlineDate = parseISO(data.sign_off_deadline);
   const now = new Date();
 
   useEffect(() => {
@@ -166,7 +131,7 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
         .then((user) => {
           !subscribed || setUser(user);
           if (user) {
-            getRegistration(event.id, user.user_id)
+            getRegistration(data.id, user.user_id)
               .then((registration) => !subscribed || setRegistration(registration))
               .catch(() => !subscribed || setRegistration(null));
           }
@@ -176,12 +141,12 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
     return () => {
       subscribed = false;
     };
-  }, [event.id, getUserData, getRegistration, preview]);
+  }, [data.id, getUserData, getRegistration, preview]);
 
   const signOff = () => {
     setSignOffDialogOpen(false);
     if (user) {
-      deleteRegistration(event.id, user.user_id, registration)
+      deleteRegistration(data.id, user.user_id, registration)
         .then((data) => {
           showSnackbar(data.detail, 'success');
           setRegistration(null);
@@ -194,9 +159,9 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
   };
 
   const ApplyButton = () => {
-    if (preview || !event.sign_up) {
-      return <></>;
-    } else if (event.closed) {
+    if (preview || !data.sign_up) {
+      return null;
+    } else if (data.closed) {
       return (
         <Paper className={classes.details} noPadding>
           <Typography align='center' className={classes.redText} variant='subtitle1'>
@@ -204,25 +169,23 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
           </Typography>
         </Paper>
       );
-    } else if (startRegistrationDate > now) {
-      return (
-        <Button className={classes.applyButton} color='primary' disabled fullWidth variant='contained'>
-          Påmelding har ikke startet
-        </Button>
-      );
     } else if (!user) {
-      return (
-        <Button
-          className={classes.applyButton}
-          color='primary'
-          component={Link}
-          fullWidth
-          onClick={() => setLogInRedirectURL(window.location.pathname)}
-          to={URLS.login}
-          variant='contained'>
-          Logg inn for å melde deg på
-        </Button>
-      );
+      if (endRegistrationDate > now) {
+        return (
+          <Button
+            className={classes.applyButton}
+            color='primary'
+            component={Link}
+            fullWidth
+            onClick={() => setLogInRedirectURL(window.location.pathname)}
+            to={URLS.login}
+            variant='contained'>
+            Logg inn for å melde deg på
+          </Button>
+        );
+      } else {
+        return null;
+      }
     } else if (registration) {
       return (
         <Paper className={classes.details} noPadding>
@@ -255,8 +218,14 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
           )}
         </Paper>
       );
+    } else if (startRegistrationDate > now) {
+      return (
+        <Button className={classes.applyButton} color='primary' disabled fullWidth variant='contained'>
+          Påmelding har ikke startet
+        </Button>
+      );
     } else if (endRegistrationDate < now) {
-      return <></>;
+      return null;
     } else if (view === Views.Apply) {
       return (
         <Button className={classes.applyButton} color='primary' fullWidth onClick={() => setView(Views.Info)} variant='outlined'>
@@ -274,11 +243,11 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
 
   const AdminButton = () => {
     if (preview) {
-      return <></>;
+      return null;
     }
     return (
       <HavePermission groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]}>
-        <Button className={classes.applyButton} color='primary' component={Link} fullWidth to={`${URLS.eventAdmin}${event.id}/`} variant='outlined'>
+        <Button className={classes.applyButton} color='primary' component={Link} fullWidth to={`${URLS.eventAdmin}${data.id}/`} variant='outlined'>
           Endre arrangement
         </Button>
       </HavePermission>
@@ -296,7 +265,7 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
         open={signOffDialogOpen}
         titleText='Er du sikker?'
       />
-      <AspectRatioImg alt={event.image_alt || event.title} imgClassName={classes.image} src={event.image} />
+      <AspectRatioImg alt={data.image_alt || data.title} imgClassName={classes.image} src={data.image} />
       <div className={classes.rootGrid}>
         <div>
           <div className={classes.infoGrid}>
@@ -307,13 +276,13 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
             <Paper className={classes.details} noPadding>
               <DetailContent info={formatDate(startDate)} title='Fra: ' />
               <DetailContent info={formatDate(endDate)} title='Til: ' />
-              <DetailContent info={event.location} title='Sted: ' />
+              <DetailContent info={data.location} title='Sted: ' />
             </Paper>
-            {event.sign_up && (
+            {data.sign_up && (
               <>
                 <Paper className={classes.details} noPadding>
-                  <DetailContent info={`${event.list_count}/${event.limit}`} title='Påmeldte:' />
-                  <DetailContent info={String(event.waiting_list_count)} title='Venteliste:' />
+                  <DetailContent info={`${data.list_count}/${data.limit}`} title='Påmeldte:' />
+                  <DetailContent info={String(data.waiting_list_count)} title='Venteliste:' />
                   {registration && now < signOffDeadlineDate ? (
                     <DetailContent info={formatDate(signOffDeadlineDate)} title='Avmeldingsfrist:' />
                   ) : (
@@ -325,9 +294,9 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
                     </>
                   )}
                 </Paper>
-                {Boolean(event.registration_priorities.length) && event.registration_priorities.length !== 14 && (
+                {Boolean(data.registration_priorities.length) && data.registration_priorities.length !== 14 && (
                   <Paper className={classes.details} noPadding>
-                    <EventPriorities priorities={event.registration_priorities} title='Prioritert:' />
+                    <EventPriorities priorities={data.registration_priorities} title='Prioritert:' />
                   </Paper>
                 )}
               </>
@@ -340,13 +309,13 @@ const EventRenderer = ({ event, preview = false }: EventRendererProps) => {
         </div>
         <Paper className={classes.content} shadow={view === Views.Apply && !registration}>
           <Typography className={classes.title} variant='h1'>
-            {event.title}
+            {data.title}
           </Typography>
           <Collapse in={view === Views.Info || Boolean(registration)}>
-            <MarkdownRenderer value={event.description} />
+            <MarkdownRenderer value={data.description} />
           </Collapse>
           <Collapse in={view === Views.Apply && !registration} mountOnEnter>
-            {user && <EventRegistration event={event} setRegistration={setRegistration} user={user} />}
+            {user && <EventRegistration event={data} setRegistration={setRegistration} user={user} />}
           </Collapse>
         </Paper>
       </div>

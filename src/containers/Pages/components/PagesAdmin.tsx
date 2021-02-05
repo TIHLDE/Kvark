@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import URLS from 'URLS';
-import { formatDate } from 'utils';
+import { formatDate, urlEncode } from 'utils';
 import parseISO from 'date-fns/parseISO';
 import { usePageTree, useCreatePage, useUpdatePage, useDeletePage } from 'api/hooks/Pages';
 import { useSnackbar } from 'api/hooks/Snackbar';
@@ -29,6 +29,7 @@ import RightIcon from '@material-ui/icons/ChevronRight';
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
+import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 
 const useStyles = makeStyles((theme) => ({
@@ -70,9 +71,12 @@ const Tree = ({ selectedNode, setSelectedNode, page }: ITreeProps) => {
 
   const renderTree = (node: PageTree, parentPath: string) => {
     const id = `${parentPath}${node.slug}${node.slug === '' ? '' : '/'}`;
+    if (id === page.path) {
+      return null;
+    }
     return (
-      <TreeItem key={id} label={node.title} nodeId={id}>
-        {Array.isArray(node.children) && id !== page.path && node.children.map((child) => renderTree(child, id))}
+      <TreeItem key={id} label={node.title} nodeId={id === '' ? '/' : id}>
+        {Array.isArray(node.children) && node.children.map((childNode) => renderTree(childNode, id))}
       </TreeItem>
     );
   };
@@ -95,7 +99,7 @@ const Tree = ({ selectedNode, setSelectedNode, page }: ITreeProps) => {
             <TreeView
               className={classes.tree}
               defaultCollapseIcon={<ExpandMoreIcon />}
-              defaultExpanded={['']}
+              defaultExpanded={['/', ...page.path.split('/').map((slug) => `${slug}/`)]}
               defaultExpandIcon={<RightIcon />}
               onNodeSelect={(e: unknown, node: string) => setSelectedNode(node)}
               selected={selectedNode}>
@@ -129,6 +133,7 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
   const [treeNode, setTreeNode] = useState(parentPath);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
   const submit = async (data: FormData) => {
     if (isLoading) {
       return;
@@ -136,7 +141,7 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
     setIsLoading(true);
     if (mode === Modes.EDIT) {
       await updatePage.mutate(
-        { ...page, ...data, path: treeNode },
+        { ...page, ...data, slug: urlEncode(data.title), path: treeNode === '/' ? '' : treeNode },
         {
           onSuccess: (data) => {
             showSnackbar('Siden ble oppdatert', 'success');
@@ -150,7 +155,7 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
       );
     } else {
       await createPage.mutate(
-        { ...data, slug: data.title, path: page.path },
+        { ...data, slug: urlEncode(data.title), path: page.path },
         {
           onSuccess: (data) => {
             showSnackbar('Siden ble opprettet', 'success');
@@ -188,9 +193,9 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
         <TextField disabled={isLoading} errors={errors} label='Bilde-url' name='image' register={register} />
         <TextField disabled={isLoading} errors={errors} label='Bildetekst' name='image_alt' register={register} />
         {mode === Modes.EDIT && <Tree page={page} selectedNode={treeNode} setSelectedNode={setTreeNode} />}
-        <Button color='primary' disabled={isLoading} fullWidth type='submit' variant='contained'>
+        <SubmitButton disabled={isLoading} errors={errors}>
           {mode === Modes.EDIT ? 'Lagre' : 'Opprett'}
-        </Button>
+        </SubmitButton>
         {mode === Modes.EDIT && (
           <>
             <Button
@@ -207,7 +212,7 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
                 Du kan ikke slette en side som har undersider. Slett eller flytt undersidene først. (Evt snakk med Index)
               </Typography>
             )}
-            <Dialog onClose={() => setShowDeleteDialog(false)} onConfirm={handleDeletePage} open={showDeleteDialog} titleText='Slett side'>
+            <Dialog confirmText='Slett' onClose={() => setShowDeleteDialog(false)} onConfirm={handleDeletePage} open={showDeleteDialog} titleText='Slett side'>
               Er du helt sikker på at du vil slette denne siden?
             </Dialog>
             <Divider className={classes.divider} />

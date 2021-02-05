@@ -12,7 +12,7 @@ import Divider from '@material-ui/core/Divider';
 
 // Project components
 import Expansion from 'components/layout/Expand';
-import ListItem from 'components/miscellaneous/ListItem';
+import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 
 const useStyles = makeStyles((theme) => ({
   blockquote: {
@@ -49,6 +49,12 @@ const useStyles = makeStyles((theme) => ({
     border: `1px solid ${theme.palette.divider}`,
     background: theme.palette.background.smoke,
   },
+  image: {
+    maxWidth: '100%',
+    objectFit: 'contain',
+    height: 'auto',
+    borderRadius: theme.shape.borderRadius,
+  },
 }));
 
 export type MarkdownRendererProps = {
@@ -64,15 +70,15 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
 
   const Event = ({ id }: ComponentProps) => {
     const [data] = useEventById(id);
-    return data ? <ListItem className={classes.content} event={data} largeImg /> : null; // TODO: Use ListItemLoading
+    return data ? <ListItem className={classes.content} event={data} largeImg /> : <ListItemLoading />;
   };
   const JobPost = ({ id }: ComponentProps) => {
-    const [data] = useJobPostById(id);
-    return data ? <ListItem className={classes.content} jobpost={data} largeImg /> : null; // TODO: Use ListItemLoading
+    const { data } = useJobPostById(id);
+    return data ? <ListItem className={classes.content} jobpost={data} largeImg /> : <ListItemLoading />;
   };
   const News = ({ id }: ComponentProps) => {
     const [data] = useNewsById(id);
-    return data ? <ListItem className={classes.content} largeImg news={data} /> : null; // TODO: Use ListItemLoading
+    return data ? <ListItem className={classes.content} largeImg news={data} /> : <ListItemLoading />;
   };
 
   enum LanguageTypes {
@@ -127,6 +133,7 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
       list: ({ children, ordered }: { children: ReactNode[]; ordered: boolean }) => createElement(ordered ? 'ol' : 'ul', { className: classes.list }, children),
       paragraph: ({ children }: { children: ReactNode[] }) => createElement(Typography, { variant: 'body1', className: classes.content }, children),
       thematicBreak: () => <Divider className={classes.divider} />,
+      image: ({ alt, src }: { alt: string; src: string }) => <img alt={alt} className={classes.image} src={src} />,
     }),
     [],
   );

@@ -198,24 +198,30 @@ const MarkdownEditor = (props: TextFieldProps) => {
 
   ___
 
-  ## **Arrangement / Nyhet / Annonse**
+  ## **Arrangement- / Nyhet- / Annonse-kort**
   
   \`\`\`event
   19
   \`\`\`
+  
+  Kort med link til arrangementer, nyheter og annonser kan opprettes ved å skrive \`type\` kort og \`id\` til for eksempel arrangement inni:
 
+  *Arrangement:*
   ~~~
-  Arrangement:
   \`\`\`event
   19
   \`\`\`
+  ~~~
   
-  Jobbannonse:
+  *Jobbannonse:*
+  ~~~
   \`\`\`jobpost
   19
   \`\`\`
+  ~~~
   
-  Nyhet:
+  *Nyhet:*
+  ~~~
   \`\`\`news
   19
   \`\`\`

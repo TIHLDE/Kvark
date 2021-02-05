@@ -15,9 +15,11 @@ const TextField = ({ register, name, errors = {}, rules = {}, ...props }: IProps
       error={Boolean(errors[name])}
       fullWidth
       helperText={errors[name]?.message}
+      InputLabelProps={{ shrink: true }}
       inputRef={register && register(rules)}
       margin='normal'
       name={name}
+      placeholder={props.placeholder || 'Skriv her'}
       variant='outlined'
       {...props}
     />

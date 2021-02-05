@@ -33,7 +33,7 @@ const SnackbarProvider = ({ children }: { children: ReactNode }) => {
   const [queue, setQueue] = useState<Array<Snack>>([]);
 
   const showSnackbar: SnackbarProps = useCallback((title, severity, length) => {
-    const newSnack: Snack = { title: title, severity: severity, length: length };
+    const newSnack: Snack = { title: typeof title === 'string' ? title : JSON.stringify(title), severity: severity, length: length };
     setQueue((prev) => [...prev, newSnack]);
   }, []);
 

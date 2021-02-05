@@ -1,15 +1,14 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import Helmet from 'react-helmet';
 import URLS from 'URLS';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getUserStudyShort, getParameterByName } from 'utils';
+import { getUserStudyShort } from 'utils';
 import { Study } from 'types/Enums';
-import { Cheatsheet } from 'types/Types';
 
 // Material UI Components
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
 
 // API and store imports
 import { useUser } from 'api/hooks/User';
@@ -39,13 +38,9 @@ const Cheetsheet = () => {
   const classes = useStyles();
   const { studyId, classId } = useParams();
   const navigate = useNavigate();
-  const { getCheatsheets } = useCheatsheet();
   const { getUserData } = useUser();
   const [input, setInput] = useState('');
   const [search, setSearch] = useState('');
-  const [page, setPage] = useState(1);
-  const [nextPage, setNextPage] = useState<number | null>(null);
-  const [files, setFiles] = useState<Array<Cheatsheet>>([]);
 
   const getStudy = useCallback((): Study | undefined => {
     if (!studyId) {
@@ -61,13 +56,16 @@ const Cheetsheet = () => {
       case 'digsam':
         return Study.DIGSAM;
       default:
-        return undefined;
+        return Study.DATAING;
     }
   }, [studyId]);
 
   const getClass = useCallback((): number | undefined => {
     return classId ? Number(classId) : undefined;
   }, [classId]);
+
+  const { data, hasNextPage, fetchNextPage, isLoading } = useCheatsheet(getStudy() || Study.DATAING, getClass() || 1, { search: search });
+  const files = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   const isURLValid = useCallback(() => {
     const study = getStudy();
@@ -98,31 +96,11 @@ const Cheetsheet = () => {
     const studyClass = getClass();
     if (!study || !studyClass || !isURLValid()) {
       goToUserCheatsheet();
-      return;
     }
-    const filters = {
-      page: page,
-      search: search,
-    };
-    getCheatsheets(study, studyClass, filters)
-      .then((data) => {
-        const next = getParameterByName('page', data.next);
-        setNextPage(next ? Number(next) : null);
-        if (page === 1) {
-          setFiles(data.results);
-        } else {
-          setFiles((prevFiles) => [...prevFiles, ...data.results]);
-        }
-      })
-      .catch(() => {
-        setNextPage(null);
-        setFiles([]);
-      });
-  }, [getCheatsheets, getStudy, getClass, isURLValid, goToUserCheatsheet, page, search]);
+  }, [getStudy, getClass, isURLValid, goToUserCheatsheet, search]);
 
   const setStudyChoice = (newStudy: Study) => {
     setInput('');
-    setPage(1);
     setSearch('');
     if (newStudy !== getStudy() && newStudy === Study.DIGSAM) {
       if (![4, 5].includes(Number(classId))) {
@@ -140,7 +118,6 @@ const Cheetsheet = () => {
   };
 
   const setClassChoice = (newClass: number) => {
-    setPage(1);
     if (newClass !== getClass()) {
       navigate(`${URLS.cheatsheet}${studyId}/${newClass}/`);
     }
@@ -150,12 +127,6 @@ const Cheetsheet = () => {
     const timer = setTimeout(() => setSearch(input), 500);
     return () => clearTimeout(timer);
   }, [input]);
-
-  const goToNextPage = () => {
-    if (nextPage) {
-      setPage(nextPage);
-    }
-  };
 
   return (
     <Navigation banner={<Banner text={`${getStudy()} - ${getClass()}. klasse`} title='Kokeboka' />} fancyNavbar>
@@ -194,7 +165,7 @@ const Cheetsheet = () => {
           </TextField>
           <TextField fullWidth label='Søk' onChange={(e) => setInput(e.target.value)} style={{ gridArea: 'filterSearch' }} value={input} variant='outlined' />
         </div>
-        <Files files={files} goToNextPage={goToNextPage} nextPage={nextPage} />
+        <Files files={files} getNextPage={fetchNextPage} hasNextPage={hasNextPage} isLoading={isLoading} />
       </Paper>
     </Navigation>
   );

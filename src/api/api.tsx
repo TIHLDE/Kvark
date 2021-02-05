@@ -5,6 +5,7 @@ import {
   User,
   UserCreate,
   Event,
+  EventCompact,
   EventRequired,
   Registration,
   JobPost,
@@ -38,8 +39,8 @@ export default {
 
   // Events
   getEvent: (eventId: number) => IFetch<Event>({ method: 'GET', url: `events/${String(eventId)}/` }),
-  getEvents: (filters?: any) => IFetch<PaginationResponse<Event>>({ method: 'GET', url: `events/`, data: filters || {} }),
-  getExpiredEvents: () => IFetch<PaginationResponse<Event>>({ method: 'GET', url: `events/`, data: { expired: true } }),
+  getEvents: (filters?: any) => IFetch<PaginationResponse<EventCompact>>({ method: 'GET', url: `events/`, data: filters || {} }),
+  getExpiredEvents: () => IFetch<PaginationResponse<EventCompact>>({ method: 'GET', url: `events/`, data: { expired: true } }),
   createEvent: (item: EventRequired) => IFetch<Event>({ method: 'POST', url: `events/`, data: item }),
   updateEvent: (eventId: number, item: Partial<Event>) => IFetch<Event>({ method: 'PUT', url: `events/${String(eventId)}/`, data: item }),
   deleteEvent: (eventId: number) => IFetch<RequestResponse>({ method: 'DELETE', url: `events/${String(eventId)}/` }),
@@ -54,7 +55,7 @@ export default {
   deleteRegistration: (eventId: number, userId: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `events/${String(eventId)}/users/${userId}/` }),
 
   // Job posts
-  getJobPosts: (filters?: any) => IFetch<PaginationResponse<JobPost>>({ method: 'GET', url: `jobpost/`, data: filters || { newest: true } }),
+  getJobPosts: (filters: any = {}) => IFetch<PaginationResponse<JobPost>>({ method: 'GET', url: `jobpost/`, data: filters }),
   getJobPost: (id: number) => IFetch<JobPost>({ method: 'GET', url: `jobpost/${String(id)}/` }),
   getExpiredJobPosts: () => IFetch<PaginationResponse<JobPost>>({ method: 'GET', url: `jobpost/`, data: { expired: true } }),
   createJobPost: (item: JobPostRequired) => IFetch<JobPost>({ method: 'POST', url: `jobpost/`, data: item }),

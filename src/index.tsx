@@ -15,7 +15,6 @@ import { useAuth } from 'api/hooks/Auth';
 import { useMisc, MiscProvider } from 'api/hooks/Misc';
 import { useHavePermission, UserProvider } from 'api/hooks/User';
 import { NewsProvider } from 'api/hooks/News';
-import { JobPostProvider } from 'api/hooks/JobPost';
 import { EventProvider } from 'api/hooks/Event';
 import { SnackbarProvider } from './api/hooks/Snackbar';
 
@@ -98,14 +97,12 @@ export const Providers = ({ children }: ProvidersProps) => {
       <MiscProvider>
         <UserProvider>
           <NewsProvider>
-            <JobPostProvider>
-              <EventProvider>
-                <ThemeProvider>
-                  <CssBaseline />
-                  <SnackbarProvider>{children}</SnackbarProvider>
-                </ThemeProvider>
-              </EventProvider>
-            </JobPostProvider>
+            <EventProvider>
+              <ThemeProvider>
+                <CssBaseline />
+                <SnackbarProvider>{children}</SnackbarProvider>
+              </ThemeProvider>
+            </EventProvider>
           </NewsProvider>
         </UserProvider>
       </MiscProvider>
@@ -153,7 +150,10 @@ const AppRoutes = () => {
       <AuthRoute element={<Cheatsheet />} path={`${URLS.cheatsheet}*`} />
 
       <AuthRoute element={<UserAdmin />} groups={[Groups.HS, Groups.INDEX]} path={URLS.userAdmin} />
-      <AuthRoute element={<JobPostAdministration />} groups={[Groups.HS, Groups.INDEX, Groups.NOK]} path={URLS.jobpostsAdmin} />
+      <AuthRoute groups={[Groups.HS, Groups.INDEX, Groups.NOK]} path={URLS.jobpostsAdmin}>
+        <Route element={<JobPostAdministration />} path=':jobPostId/' />
+        <Route element={<JobPostAdministration />} path='' />
+      </AuthRoute>
       <AuthRoute groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]} path={URLS.eventAdmin}>
         <Route element={<EventAdministration />} path=':eventId/' />
         <Route element={<EventAdministration />} path='' />
