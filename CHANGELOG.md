@@ -19,5 +19,6 @@
 - 🎨 **Finere innlastning**. Finere innlastning av arrangementer, nyheter, jobbannonser og stories
 - ⚡ **Bedre feilmeldinger i skjemaer**. Lettere å se feilmeldinger i skjemaer ved at feil vises under knapp
 - ✨ **Nye muligheter i markdown**. Mulighet til å legge inn kort til arrangementer, nyheter og jobbannonser, samt utvidsbokser i markdown
+- ✨ **Updatert Cheatsheet**. Endret til bruk at react query istedenfor selv lagd hook
 
 ## Versjon 1.0.0 (25.01.2021)
