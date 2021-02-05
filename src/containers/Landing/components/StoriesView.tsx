@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Event, News } from 'types/Types';
+import { EventCompact, News } from 'types/Types';
 import { useJobPosts } from 'api/hooks/JobPost';
 
 // Material-UI
@@ -9,7 +9,7 @@ import { useTheme } from '@material-ui/core/styles';
 import Story, { StoryLoading } from 'components/story/Story';
 
 export type IProps = {
-  events: Array<Event>;
+  events: Array<EventCompact>;
   news: Array<News>;
   isLoading: boolean;
 };

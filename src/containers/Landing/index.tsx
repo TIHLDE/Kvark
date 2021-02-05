@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
-import { Event, News } from 'types/Types';
+import { EventCompact, News } from 'types/Types';
 import { useEvent } from 'api/hooks/Event';
 import { useNews } from 'api/hooks/News';
 
@@ -46,7 +46,7 @@ const Landing = () => {
   const { getEvents } = useEvent();
   const { getNews } = useNews();
   const [news, setNews] = useState<Array<News>>([]);
-  const [events, setEvents] = useState<Array<Event>>([]);
+  const [events, setEvents] = useState<Array<EventCompact>>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

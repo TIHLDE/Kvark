@@ -1,5 +1,5 @@
 import { ReactNode, useState, useEffect } from 'react';
-import { Event } from 'types/Types';
+import { EventCompact } from 'types/Types';
 import URLS from 'URLS';
 import { Link } from 'react-router-dom';
 import { parseISO } from 'date-fns';
@@ -23,8 +23,8 @@ const useStyles = makeStyles(() => ({
 }));
 
 export type EventsCalendarViewProps = {
-  events: Array<Event>;
-  oldEvents: Array<Event>;
+  events: Array<EventCompact>;
+  oldEvents: Array<EventCompact>;
 };
 
 const EventsCalendarView = ({ events, oldEvents }: EventsCalendarViewProps) => {

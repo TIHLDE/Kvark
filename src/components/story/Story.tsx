@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Event, News, JobPost } from 'types/Types';
+import { EventCompact, News, JobPost } from 'types/Types';
 import { parseISO } from 'date-fns';
 import { urlEncode, formatDate } from 'utils';
 import URLS from 'URLS';
@@ -125,7 +125,7 @@ export type StoryItem = {
 };
 
 export type StoryProps = {
-  items: Array<Event | News | JobPost>;
+  items: Array<EventCompact | News | JobPost>;
   fadeColor?: string;
 };
 
@@ -135,7 +135,7 @@ function Story({ items, fadeColor }: StoryProps) {
   const [selectedItem, setSelectedItem] = useState(0);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const instanceOfEvent = (object: any): object is Event => 'start_date' in object;
+  const instanceOfEvent = (object: any): object is EventCompact => 'start_date' in object;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const instanceOfNews = (object: any): object is News => 'header' in object;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

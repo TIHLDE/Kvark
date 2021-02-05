@@ -37,7 +37,7 @@ export interface User {
   tool: string;
   app_token: string;
   is_TIHLDE_member: boolean;
-  events: Array<Event>;
+  events: Array<EventCompact>;
   groups: Array<Groups>;
   unread_notifications: number;
   notifications: Array<Notification>;
@@ -94,33 +94,32 @@ export interface JobPost {
   updated_at: string;
 }
 
-export type EventRequired = Partial<Event> & Pick<Event, 'title' | 'start_date' | 'end_date'>;
-
 export interface Event {
-  id: number;
-  title: string;
-  start_date: string;
-  end_date: string;
-  location: string;
-  description: string;
-  sign_up: boolean;
-  priority: number;
+  closed: boolean;
   category: number;
+  description: string;
+  end_date: string;
+  end_registration_at: string;
+  evaluate_link: string;
   expired: boolean;
+  id: number;
   image?: string;
   image_alt?: string;
-  closed: boolean;
   limit: number;
   list_count: number;
-  waiting_list_count: number;
-  evaluate_link: string;
-  is_user_registered?: undefined;
-  start_registration_at: string;
-  end_registration_at: string;
-  sign_off_deadline: string;
+  location: string;
+  priority: number;
   registration_priorities: Array<RegistrationPriority>;
+  sign_off_deadline: string;
+  sign_up: boolean;
+  start_date: string;
+  start_registration_at: string;
+  title: string;
   updated_at: string;
+  waiting_list_count: number;
 }
+export type EventRequired = Partial<Event> & Pick<Event, 'end_date' | 'title' | 'start_date'>;
+export type EventCompact = Pick<Event, 'end_date' | 'expired' | 'id' | 'image' | 'image_alt' | 'location' | 'title' | 'start_date' | 'updated_at'>;
 
 export interface RegistrationPriority {
   user_class: UserClass;

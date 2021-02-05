@@ -1,4 +1,4 @@
-import { Event } from 'types/Types';
+import { EventCompact } from 'types/Types';
 import URLS from 'URLS';
 import { Link } from 'react-router-dom';
 
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export type EventsListViewProps = {
-  events: Array<Event>;
+  events: Array<EventCompact>;
   isLoading?: boolean;
 };
 

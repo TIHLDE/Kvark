@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect } from 'react';
 import classnames from 'classnames';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Category, Event, EventRequired, RegistrationPriority } from 'types/Types';
+import { Category, Event, EventCompact, EventRequired, RegistrationPriority } from 'types/Types';
 import { useEvent } from 'api/hooks/Event';
 import { useMisc } from 'api/hooks/Misc';
 import { useSnackbar } from 'api/hooks/Snackbar';
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export type EventEditorProps = {
   eventId: number | null;
   goToEvent: (newEvent: number | null) => void;
-  setEvents: (newEvents: Array<Event> | ((prevEvents: Array<Event>) => Array<Event>)) => void;
+  setEvents: (newEvents: Array<EventCompact> | ((prevEvents: Array<EventCompact>) => Array<EventCompact>)) => void;
 };
 
 type FormValues = Pick<

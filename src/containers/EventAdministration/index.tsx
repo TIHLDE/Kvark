@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import URLS from 'URLS';
 import { getParameterByName } from 'utils';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Event } from 'types/Types';
+import { EventCompact } from 'types/Types';
 
 // API and store imports
 import { useEvent } from 'api/hooks/Event';
@@ -47,8 +47,8 @@ const EventAdministration = () => {
   const { eventId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [tab, setTab] = useState(0);
-  const [events, setEvents] = useState<Array<Event>>([]);
-  const [expiredItems, setExpiredItems] = useState<Array<Event>>([]);
+  const [events, setEvents] = useState<Array<EventCompact>>([]);
+  const [expiredItems, setExpiredItems] = useState<Array<EventCompact>>([]);
   const [page, setPage] = useState<number | null>(1);
   const [nextPage, setNextPage] = useState<number | null>(null);
 
