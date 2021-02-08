@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Event, User } from 'types/Types';
+import { useState } from 'react';
+import { Event } from 'types/Types';
 import { Groups } from 'types/Enums';
 import URLS from 'URLS';
 import { parseISO, isPast, isFuture } from 'date-fns';
@@ -109,8 +109,7 @@ enum Views {
 
 const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const classes = useStyles();
-  const { getUserData } = useUser();
-  const [user, setUser] = useState<User | null>(null);
+  const { data: user } = useUser();
   const { data: registration } = useEventRegistration(data.id, preview || !user ? '' : user.user_id);
   const deleteRegistration = useDeleteEventRegistration(data.id);
   const { setLogInRedirectURL } = useMisc();
@@ -123,20 +122,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const startRegistrationDate = parseISO(data.start_registration_at);
   const endRegistrationDate = parseISO(data.end_registration_at);
   const signOffDeadlineDate = parseISO(data.sign_off_deadline);
-
-  useEffect(() => {
-    let subscribed = true;
-    if (!preview) {
-      getUserData()
-        .then((user) => {
-          !subscribed || setUser(user);
-        })
-        .catch(() => !subscribed || setUser(null));
-    }
-    return () => {
-      subscribed = false;
-    };
-  }, [data.id, getUserData, preview]);
 
   const signOff = async () => {
     setSignOffDialogOpen(false);
@@ -304,10 +289,10 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           <Typography className={classes.title} variant='h1'>
             {data.title}
           </Typography>
-          <Collapse in={view === Views.Info || Boolean(registration)}>
+          <Collapse in={view === Views.Info || Boolean(registration) || preview}>
             <MarkdownRenderer value={data.description} />
           </Collapse>
-          <Collapse in={view === Views.Apply && !registration} mountOnEnter>
+          <Collapse in={view === Views.Apply && !registration && !preview} mountOnEnter>
             {user && <EventRegistration event={data} user={user} />}
           </Collapse>
         </Paper>

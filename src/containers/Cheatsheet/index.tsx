@@ -41,7 +41,7 @@ const Cheetsheet = () => {
   const classes = useStyles();
   const { studyId, classId } = useParams();
   const navigate = useNavigate();
-  const { getUserData } = useUser();
+  const { data: user } = useUser();
   const [input, setInput] = useState('');
   const [search, setSearch] = useState('');
 
@@ -85,14 +85,12 @@ const Cheetsheet = () => {
   }, [getClass, getStudy]);
 
   const goToUserCheatsheet = useCallback(() => {
-    getUserData().then((user) => {
-      if (user && 1 <= user.user_study && user.user_study <= 4 && user.user_class > 0) {
-        navigate(`${URLS.cheatsheet}${getUserStudyShort(user.user_study)}/${user.user_class}/`);
-      } else {
-        navigate(`${URLS.cheatsheet}${getUserStudyShort(1)}/1/`);
-      }
-    });
-  }, [getUserData, navigate]);
+    if (user && 1 <= user.user_study && user.user_study <= 4 && user.user_class > 0) {
+      navigate(`${URLS.cheatsheet}${getUserStudyShort(user.user_study)}/${user.user_class}/`);
+    } else {
+      navigate(`${URLS.cheatsheet}${getUserStudyShort(1)}/1/`);
+    }
+  }, [user, navigate]);
 
   useEffect(() => {
     const study = getStudy();

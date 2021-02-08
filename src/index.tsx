@@ -11,9 +11,8 @@ import { Groups } from 'types/Enums';
 
 // Services
 import { ThemeProvider } from 'context/ThemeContext';
-import { useAuth } from 'api/hooks/Auth';
 import { useMisc, MiscProvider } from 'api/hooks/Misc';
-import { useHavePermission, UserProvider } from 'api/hooks/User';
+import { useHavePermission, useIsAuthenticated } from 'api/hooks/User';
 import { NewsProvider } from 'api/hooks/News';
 import { SnackbarProvider } from 'api/hooks/Snackbar';
 
@@ -59,12 +58,12 @@ type AuthRouteProps = {
 
 const AuthRoute = ({ groups = [], children, path, element }: AuthRouteProps) => {
   const { setLogInRedirectURL } = useMisc();
-  const { isAuthenticated } = useAuth();
-  const [allowAccess, isLoading] = useHavePermission(groups);
+  const isAuthenticated = useIsAuthenticated();
+  const { allowAccess, isLoading } = useHavePermission(groups);
 
   if (isLoading) {
     return <Navigation isLoading noFooter />;
-  } else if (!isAuthenticated()) {
+  } else if (!isAuthenticated) {
     setLogInRedirectURL(window.location.pathname);
     return <Navigate to={URLS.login} />;
   } else if (allowAccess || !groups.length) {
@@ -94,14 +93,12 @@ export const Providers = ({ children }: ProvidersProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <MiscProvider>
-        <UserProvider>
-          <NewsProvider>
-            <ThemeProvider>
-              <CssBaseline />
-              <SnackbarProvider>{children}</SnackbarProvider>
-            </ThemeProvider>
-          </NewsProvider>
-        </UserProvider>
+        <NewsProvider>
+          <ThemeProvider>
+            <CssBaseline />
+            <SnackbarProvider>{children}</SnackbarProvider>
+          </ThemeProvider>
+        </NewsProvider>
       </MiscProvider>
       <ReactQueryDevtools />
     </QueryClientProvider>

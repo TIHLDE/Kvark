@@ -1,79 +1,85 @@
-import { createContext, ReactNode, useContext, useState, useEffect, useReducer, useCallback } from 'react';
+import { ReactNode } from 'react';
+import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { useAuth } from 'api/hooks/Auth';
-import { User, Event } from 'types/Types';
+import { getParameterByName } from 'utils';
+import { User, UserCreate, LoginRequestResponse, PaginationResponse, RequestResponse } from 'types/Types';
 import { Groups } from 'types/Enums';
+import { getCookie, setCookie, removeCookie } from 'api/cookie';
+import { ACCESS_TOKEN } from 'constant';
 
-export type Action =
-  | { type: 'add event'; payload: Event }
-  | { type: 'remove event'; payload: Event }
-  | { type: 'set'; payload: User }
-  | { type: 'remove' }
-  | { type: 'update'; payload: Partial<User> };
+const QUERY_KEY = 'user';
+const QUERY_KEY_USERS = 'users';
 
-export type Dispatch = (action: Action) => void;
-export type UserProviderProps = { children: ReactNode };
-
-const UserStateContext = createContext<User | null>(null);
-const UserDispatchContext = createContext<Dispatch | undefined>(undefined);
-
-const userReducer = (state: User | null, action: Action): User | null => {
-  switch (action.type) {
-    case 'set': {
-      return action.payload;
-    }
-    case 'update': {
-      return { ...state, ...action.payload } as User;
-    }
-    case 'add event': {
-      if (state) {
-        return { ...state, events: [...state.events, action.payload] } as User;
-      } else {
-        return state;
-      }
-    }
-    case 'remove event': {
-      if (state) {
-        const newUserEvents = [...state.events];
-        for (let i = 0; i < newUserEvents.length; i++) {
-          if (newUserEvents[i].id === action.payload.id) {
-            newUserEvents.splice(i, 1);
-          }
-        }
-        return { ...state, events: newUserEvents } as User;
-      } else {
-        return state;
-      }
-    }
-    case 'remove': {
-      return null;
-    }
-  }
+export const useUser = () => {
+  const isAuthenticated = useIsAuthenticated();
+  return useQuery<User | undefined, RequestResponse>(QUERY_KEY, () => (isAuthenticated ? API.getUserData() : undefined));
 };
 
-export const UserProvider = ({ children }: UserProviderProps) => {
-  const [state, dispatch] = useReducer(userReducer, null);
-  return (
-    <UserStateContext.Provider value={state}>
-      <UserDispatchContext.Provider value={dispatch}>{children}</UserDispatchContext.Provider>
-    </UserStateContext.Provider>
+export const useRefreshUser = () => {
+  const queryClient = useQueryClient();
+  return () => {
+    queryClient.invalidateQueries(QUERY_KEY);
+  };
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const useUsers = (filters?: any) => {
+  return useInfiniteQuery<PaginationResponse<User>, RequestResponse>(
+    [QUERY_KEY_USERS, filters],
+    ({ pageParam = 1 }) => API.getUsers({ ...filters, page: pageParam }),
+    {
+      getNextPageParam: (lastPage) => getParameterByName('page', lastPage.next),
+    },
   );
 };
 
-const useUserState = () => {
-  const context = useContext(UserStateContext);
-  if (context === undefined) {
-    throw new Error('useUserState must be used within a UserProvider');
-  }
-  return context;
+export const useLogin = (): UseMutationResult<LoginRequestResponse, RequestResponse, { username: string; password: string }, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation(({ username, password }) => API.authenticate(username, password), {
+    onSuccess: (data) => {
+      setCookie(ACCESS_TOKEN, data.token);
+      queryClient.removeQueries(QUERY_KEY);
+      queryClient.prefetchQuery(QUERY_KEY, () => API.getUserData());
+    },
+  });
 };
 
-const useUserDispatch = () => {
-  const context = useContext(UserDispatchContext);
-  if (context === undefined) {
-    throw new Error('useUserDispatch must be used within a UserProvider');
-  }
-  return context;
+export const useForgotPassword = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => {
+  return useMutation((email) => API.forgotPassword(email));
+};
+
+export const useLogout = () => {
+  const queryClient = useQueryClient();
+  return () => {
+    removeCookie(ACCESS_TOKEN);
+    queryClient.removeQueries(QUERY_KEY);
+  };
+};
+
+export const useIsAuthenticated = () => {
+  return typeof getCookie(ACCESS_TOKEN) !== 'undefined';
+};
+
+export const useCreateUser = (): UseMutationResult<RequestResponse, RequestResponse, UserCreate, unknown> => {
+  return useMutation((user) => API.createUser(user));
+};
+
+export const useUpdateUser = (): UseMutationResult<User, RequestResponse, { userId: string; user: Partial<User> }, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation(({ userId, user }) => API.updateUserData(userId, user), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(QUERY_KEY_USERS);
+      const user = queryClient.getQueryData<User | undefined>(QUERY_KEY);
+      if (data.user_id === user?.user_id) {
+        queryClient.setQueryData(QUERY_KEY, data);
+      }
+    },
+  });
+};
+
+export const useHavePermission = (groups: Array<Groups>) => {
+  const { data, isLoading } = useUser();
+  return { allowAccess: isLoading ? false : Boolean(data?.groups.some((group) => groups.includes(group))), isLoading };
 };
 
 export type HavePermissionProps = {
@@ -82,71 +88,6 @@ export type HavePermissionProps = {
 };
 
 export const HavePermission = ({ children, groups }: HavePermissionProps) => {
-  const [allowAccess] = useHavePermission(groups);
+  const { allowAccess } = useHavePermission(groups);
   return <>{allowAccess && children}</>;
-};
-
-export const useHavePermission = (groups: Array<Groups>) => {
-  const user = useUserState();
-  const { getUserData } = useUser();
-  const [havePermission, setHavePermission] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    let subscribed = true;
-    getUserData()
-      .then((user) => !subscribed || setHavePermission(Boolean(user?.groups.some((group) => groups.includes(group)))))
-      .catch(() => !subscribed || setHavePermission(false))
-      .finally(() => !subscribed || setIsLoading(false));
-    return () => {
-      subscribed = false;
-    };
-  }, [user, getUserData, groups]);
-
-  return [havePermission, isLoading] as const;
-};
-
-export const useUser = () => {
-  const user = useUserState();
-  const dispatch = useUserDispatch();
-  const { isAuthenticated } = useAuth();
-
-  const getUserData = useCallback(async () => {
-    if (isAuthenticated()) {
-      if (user) {
-        return Promise.resolve(user);
-      } else {
-        return API.getUserData().then((data) => {
-          dispatch({ type: 'set', payload: data });
-          return data;
-        });
-      }
-    } else {
-      return null;
-    }
-  }, [user, dispatch, isAuthenticated]);
-
-  const refreshUserData = useCallback(() => {
-    if (isAuthenticated()) {
-      API.getUserData().then((data) => dispatch({ type: 'set', payload: data }));
-    }
-  }, [user, dispatch, isAuthenticated]);
-
-  const getUsers = useCallback((filters = null) => API.getUsers(filters), [isAuthenticated]);
-
-  const updateUserData = useCallback(
-    async (userName: string, userData: Partial<User>, updateLocally?: boolean) => {
-      return API.updateUserData(userName, userData).then((data) => {
-        !updateLocally || dispatch({ type: 'update', payload: userData });
-        return data;
-      });
-    },
-    [dispatch],
-  );
-
-  const addUserEvent = useCallback((event: Event) => dispatch({ type: 'add event', payload: event }), [dispatch]);
-
-  const removeUserEvent = useCallback((event: Event) => dispatch({ type: 'remove event', payload: event }), [dispatch]);
-
-  return { getUserData, refreshUserData, getUsers, updateUserData, addUserEvent, removeUserEvent };
 };

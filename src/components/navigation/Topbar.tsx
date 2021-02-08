@@ -2,9 +2,7 @@ import { useMemo, useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import classNames from 'classnames';
-import { User } from 'types/Types';
-import { useAuth } from 'api/hooks/Auth';
-import { useUser } from 'api/hooks/User';
+import { useUser, useIsAuthenticated } from 'api/hooks/User';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -175,10 +173,9 @@ export type IProps = {
 
 const Topbar = ({ fancyNavbar }: IProps) => {
   const classes = useStyles();
-  const { isAuthenticated } = useAuth();
-  const { getUserData } = useUser();
+  const isAuthenticated = useIsAuthenticated();
+  const { data: user } = useUser();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
   const [scrollLength, setScrollLength] = useState(0);
 
   const handleScroll = () => setScrollLength(window.pageYOffset);
@@ -188,18 +185,6 @@ const Topbar = ({ fancyNavbar }: IProps) => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  useEffect(() => {
-    let subscribed = true;
-    getUserData().then((userData) => {
-      if (userData && subscribed) {
-        setUser(userData);
-      }
-    });
-    return () => {
-      subscribed = false;
-    };
-  }, [getUserData]);
 
   const items = useMemo(
     () =>
@@ -215,7 +200,7 @@ const Topbar = ({ fancyNavbar }: IProps) => {
         { text: 'Arrangementer', to: URLS.events, type: 'link' },
         { text: 'Nyheter', to: URLS.news, type: 'link' },
         { text: 'Karriere', to: URLS.jobposts, type: 'link' },
-        isAuthenticated()
+        isAuthenticated
           ? {
               items: [{ text: 'Kokebok', to: URLS.cheatsheet }],
               text: 'For medlemmer',

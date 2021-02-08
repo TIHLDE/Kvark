@@ -1,11 +1,7 @@
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { Groups } from 'types/Enums';
-
-// API and store import
 import { HavePermission } from 'api/hooks/User';
-
-// Text imports
 import Text from 'text/AdminText';
 
 // Material UI Components

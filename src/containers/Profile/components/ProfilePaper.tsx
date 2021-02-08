@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import classNames from 'classnames';
 import QRCode from 'qrcode.react';
-import { User, Notification } from 'types/Types';
 import { Groups } from 'types/Enums';
 import { useUser, useHavePermission } from 'api/hooks/User';
 
@@ -38,13 +37,10 @@ import Modal from 'components/layout/Modal';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    width: '100%',
-    maxWidth: 1000,
-    margin: 'auto',
     position: 'relative',
     left: 0,
     right: 0,
-    top: '-60px',
+    top: -60,
     padding: theme.spacing(4),
     paddingTop: theme.spacing(14),
     textAlign: 'center',
@@ -116,51 +112,17 @@ export type ProfilePaperProps = { logoutMethod: () => void };
 
 const ProfilePaper = ({ logoutMethod }: ProfilePaperProps) => {
   const classes = useStyles();
-  const { getUserData } = useUser();
-  const [userData, setUserData] = useState<User | null>(null);
-  const [isAdmin] = useHavePermission([Groups.HS, Groups.PROMO, Groups.INDEX, Groups.NOK]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: user, isLoading } = useUser();
+  const { allowAccess: isAdmin } = useHavePermission([Groups.HS, Groups.PROMO, Groups.INDEX, Groups.NOK]);
   const [showModal, setShowModal] = useState(false);
   const eventTab = { label: 'Arrangementer', icon: EventIcon };
-  const notificationsTab = { label: 'Varsler', icon: NotificationsIcon, badge: userData?.unread_notifications };
+  const notificationsTab = { label: 'Varsler', icon: NotificationsIcon, badge: user?.unread_notifications };
   const badgesTab = { label: 'Badges', icon: BadgesIcon };
   const settingsTab = { label: 'Profil', icon: ProfileIcon };
   const adminTab = { label: 'Admin', icon: AdminIcon };
   const logoutTab = { label: 'Logg ut', icon: LogOutIcon, onClick: logoutMethod, className: classes.logOutButton };
   const tabs = [eventTab, notificationsTab, badgesTab, settingsTab, ...(isAdmin ? [adminTab] : []), logoutTab];
   const [tab, setTab] = useState(eventTab.label);
-
-  useEffect(() => {
-    let subscribed = true;
-    getUserData()
-      .then((user) => {
-        if (user) {
-          user.notifications.reverse();
-          !subscribed || setUserData(user);
-        }
-      })
-      .finally(() => !subscribed || setIsLoading(false));
-    return () => {
-      subscribed = false;
-    };
-  }, [getUserData]);
-
-  useEffect(() => {
-    if (tab === notificationsTab.label && userData && userData.unread_notifications !== 0) {
-      setUserData({ ...userData, unread_notifications: 0 });
-    } else if (
-      tab !== notificationsTab.label &&
-      userData &&
-      userData.unread_notifications === 0 &&
-      userData.notifications.some((notification) => !notification.read)
-    ) {
-      const newNotifications = userData.notifications.map((notification: Notification) => {
-        return { ...notification, read: true };
-      });
-      setUserData({ ...userData, notifications: newNotifications });
-    }
-    // eslint-disable-next-line
-  }, [tab]);
 
   type NavListItem = {
     label: string;
@@ -190,28 +152,28 @@ const ProfilePaper = ({ logoutMethod }: ProfilePaperProps) => {
   return (
     <>
       <Paper className={classes.paper} noPadding>
-        {showModal && userData && (
+        {showModal && user && (
           <Modal className={classes.memberProof} onClose={() => setShowModal(false)} open={showModal}>
-            <QRCode size={280} value={userData.user_id} />
+            <QRCode size={280} value={user.user_id} />
           </Modal>
         )}
         <Avatar className={classes.avatar}>
-          {userData?.first_name ? (
-            `${userData.first_name.substring(0, 1)}${userData.last_name.substring(0, 1)}`
+          {user?.first_name ? (
+            `${user.first_name.substring(0, 1)}${user.last_name.substring(0, 1)}`
           ) : (
             <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant='text' />
           )}
         </Avatar>
-        {userData && userData.first_name ? (
+        {user && user.first_name ? (
           <>
             <Typography className={classes.text} variant='h4'>
-              {`${userData.first_name} ${userData.last_name}`}
+              {`${user.first_name} ${user.last_name}`}
             </Typography>
             <Typography className={classes.text} variant='subtitle1'>
-              {userData.email}
+              {user.email}
             </Typography>
             <Typography className={classes.text} variant='subtitle1'>
-              {userData.user_id}
+              {user.user_id}
             </Typography>
           </>
         ) : (
@@ -240,15 +202,13 @@ const ProfilePaper = ({ logoutMethod }: ProfilePaperProps) => {
             <ProfileEvents />
           </Collapse>
           <Collapse in={tab === notificationsTab.label}>
-            <ProfileNotifications isLoading={isLoading} notifications={userData?.notifications || []} />
+            <ProfileNotifications isLoading={isLoading} notifications={user?.notifications.sort((a, b) => b.id - a.id) || []} />
           </Collapse>
           <Collapse in={tab === badgesTab.label}>
             <ProfileBadges />
           </Collapse>
           <Collapse in={tab === settingsTab.label}>
-            <Paper>
-              <ProfileSettings />
-            </Paper>
+            <Paper>{user && <ProfileSettings user={user} />}</Paper>
           </Collapse>
           <Collapse in={tab === adminTab.label}>
             <ProfileAdmin />

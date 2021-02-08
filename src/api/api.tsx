@@ -69,8 +69,8 @@ export default {
 
   // User
   getUserData: () => IFetch<User>({ method: 'GET', url: `user/userdata/` }),
-  getUsers: (filters?: any) => IFetch<Array<User>>({ method: 'GET', url: `user/`, data: filters || {} }),
-  updateUserData: (userName: string, item: Partial<User>) => IFetch<RequestResponse>({ method: 'PUT', url: `user/${userName}/`, data: item }),
+  getUsers: (filters?: any) => IFetch<PaginationResponse<User>>({ method: 'GET', url: `user/`, data: filters || {} }),
+  updateUserData: (userName: string, item: Partial<User>) => IFetch<User>({ method: 'PUT', url: `user/${userName}/`, data: item }),
 
   // Notifications
   updateNotification: (id: number, item: { read: boolean }) => IFetch<RequestResponse>({ method: 'PUT', url: `notification/${String(id)}/`, data: item }),

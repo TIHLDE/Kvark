@@ -1,10 +1,9 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { EMAIL_REGEX } from 'constant';
 import Helmet from 'react-helmet';
-import { useAuth } from 'api/hooks/Auth';
+import { useForgotPassword } from 'api/hooks/User';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
@@ -55,24 +54,19 @@ type FormData = {
 
 const ForgotPassword = () => {
   const classes = useStyles();
-  const { forgotPassword } = useAuth();
+  const forgotPassword = useForgotPassword();
   const showSnackbar = useSnackbar();
   const { register, errors, handleSubmit, setError } = useForm<FormData>();
-  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (data: FormData) => {
-    if (isLoading) {
-      return;
-    }
-    setIsLoading(true);
-    try {
-      const response = await forgotPassword(data.email);
-      showSnackbar(response.detail, 'success');
-    } catch (e) {
-      setError('email', e.detail);
-    } finally {
-      setIsLoading(false);
-    }
+    forgotPassword.mutate(data.email, {
+      onSuccess: (data) => {
+        showSnackbar(data.detail, 'success');
+      },
+      onError: (e) => {
+        setError('email', { message: e.detail });
+      },
+    });
   };
 
   return (
@@ -81,12 +75,12 @@ const ForgotPassword = () => {
         <title>Glemt passord</title>
       </Helmet>
       <Paper className={classes.paper}>
-        {isLoading && <LinearProgress className={classes.progress} />}
+        {forgotPassword.isLoading && <LinearProgress className={classes.progress} />}
         <TihldeLogo className={classes.logo} darkColor='white' lightColor='blue' size='large' />
         <Typography variant='h3'>Glemt passord</Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextField
-            disabled={isLoading}
+            disabled={forgotPassword.isLoading}
             errors={errors}
             label='Epost'
             name='email'
@@ -101,10 +95,10 @@ const ForgotPassword = () => {
             }}
             type='email'
           />
-          <SubmitButton className={classes.button} disabled={isLoading} errors={errors}>
+          <SubmitButton className={classes.button} disabled={forgotPassword.isLoading} errors={errors}>
             Få nytt passord
           </SubmitButton>
-          <Button className={classes.button} color='primary' component={Link} disabled={isLoading} fullWidth to={URLS.login}>
+          <Button className={classes.button} color='primary' component={Link} disabled={forgotPassword.isLoading} fullWidth to={URLS.login}>
             Logg inn
           </Button>
         </form>

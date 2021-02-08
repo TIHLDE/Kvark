@@ -1,6 +1,6 @@
 import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { useUser } from 'api/hooks/User';
+import { useRefreshUser } from 'api/hooks/User';
 import { getParameterByName } from 'utils';
 import { Event, EventRequired, EventCompact, Registration, PaginationResponse, RequestResponse } from 'types/Types';
 
@@ -64,12 +64,12 @@ export const useEventRegistration = (eventId: number, userId: string) => {
 
 export const useCreateEventRegistration = (eventId: number): UseMutationResult<Registration, RequestResponse, Partial<Registration>, unknown> => {
   const queryClient = useQueryClient();
-  const { refreshUserData } = useUser();
+  const refreshUser = useRefreshUser();
   return useMutation((newRegistration: Partial<Registration>) => API.createRegistration(eventId, newRegistration), {
     onSuccess: (data) => {
       queryClient.invalidateQueries([QUERY_KEY, eventId]);
       queryClient.setQueryData([QUERY_KEY, eventId, QUERY_KEY_REGISTRATION, data.user_info.user_id], data);
-      refreshUserData();
+      refreshUser();
     },
   });
 };
@@ -96,12 +96,11 @@ export const useUpdateEventRegistration = (
 
 export const useDeleteEventRegistration = (eventId: number): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => {
   const queryClient = useQueryClient();
-  const { refreshUserData } = useUser();
+  const refreshUser = useRefreshUser();
   return useMutation((userId: string) => API.deleteRegistration(eventId, userId), {
-    onSuccess: (data, userId) => {
-      queryClient.invalidateQueries([QUERY_KEY, eventId]);
-      queryClient.setQueryData([QUERY_KEY, eventId, QUERY_KEY_REGISTRATION, userId], undefined);
-      refreshUserData();
+    onSuccess: () => {
+      queryClient.removeQueries([QUERY_KEY, eventId]);
+      refreshUser();
     },
   });
 };

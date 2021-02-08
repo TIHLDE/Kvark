@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 // Serivce imports
-import { useAuth } from '../../api/hooks/Auth';
+import { useIsAuthenticated } from '../../api/hooks/User';
 
 // Imgs
 import http404img from '../../assets/img/http404.gif';
@@ -36,7 +36,7 @@ const styles = () => ({
 
 function Http404(props) {
   const { classes } = props;
-  const { isAuthenticated } = useAuth();
+  const isAuthenticated = useIsAuthenticated();
 
   return (
     <Navigation>
