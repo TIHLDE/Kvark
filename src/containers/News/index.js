@@ -13,7 +13,7 @@ import Grow from '@material-ui/core/Grow';
 import ListItem, { ListItemLoading } from '../../components/miscellaneous/ListItem';
 import Navigation from '../../components/navigation/Navigation';
 import Banner from '../../components/layout/Banner';
-import NoNewsIndicator from './components/NoNewsIndicator';
+import NotFoundIndicator from '../../components/miscellaneous/NotFoundIndicator';
 
 const styles = (theme) => ({
   root: {
@@ -98,7 +98,7 @@ const News = (props) => {
                   {displayedNews?.map((newsItem, i) => (
                     <ListItem className={i === 0 ? classes.first : ''} key={newsItem.id} largeImg={i === 0} news={newsItem} />
                   ))}
-                  {!displayedNews.length && <NoNewsIndicator />}
+                  {!displayedNews.length && <NotFoundIndicator header='Fant ingen nyheter' />}
                 </div>
               </Grow>
             </div>

@@ -16,7 +16,7 @@ import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 import Paper from 'components/layout/Paper';
 import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
-import NoPostsIndicator from 'containers/JobPosts/components/NoPostsIndicator';
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -86,7 +86,7 @@ const JobPosts = () => {
       <div className={classes.grid}>
         <div className={classes.list}>
           {isLoading && <ListItemLoading />}
-          {isEmpty && <NoPostsIndicator />}
+          {isEmpty && <NotFoundIndicator header='Fant ingen annonser' />}
           {error && <Paper>{error.detail}</Paper>}
           {data !== undefined && (
             <Pageination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>

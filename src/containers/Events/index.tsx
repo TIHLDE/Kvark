@@ -20,7 +20,7 @@ import Paper from 'components/layout/Paper';
 import Select from 'components/inputs/Select';
 import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
-import NoEventsIndicator from 'containers/Events/components/NoEventsIndicator';
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -96,7 +96,7 @@ const Events = () => {
       <div className={classes.grid}>
         <div className={classes.list}>
           {isLoading && <ListItemLoading />}
-          {isEmpty && <NoEventsIndicator />}
+          {isEmpty && <NotFoundIndicator header='Fant ingen arrangementer' />}
           {error && <Paper>{error.detail}</Paper>}
           {data !== undefined && (
             <Pageination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>

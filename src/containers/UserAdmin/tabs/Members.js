@@ -18,7 +18,7 @@ import TextField from '@material-ui/core/TextField';
 // Project components
 import PersonListItem from './components/PersonListItem';
 import Pageination from '../../../components/layout/Pageination';
-import NoPersonsIndicator from './components/NoPersonsIndicator';
+import NotFoundIndicator from '../../../components/miscellaneous/NotFoundIndicator';
 
 const styles = () => ({
   grid: {
@@ -260,7 +260,7 @@ const Members = (props) => {
               {memberList &&
                 memberList.map((value, index) => <PersonListItem data={value} handleMembers={handleMembers} isMember={props.isMember} key={index} />)}
             </Pageination>
-            {memberList && memberList.length === 0 && !isLoading && <NoPersonsIndicator />}
+            {memberList && memberList.length === 0 && !isLoading && <NotFoundIndicator header='Fant ingen brukere' />}
           </div>
         </Grow>
       )}
