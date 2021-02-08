@@ -22,7 +22,7 @@ import LocationIcon from '@material-ui/icons/LocationOn';
 import BusinessIcon from '@material-ui/icons/Business';
 
 // Project components
-import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
+import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -111,12 +111,11 @@ type ListItemProps = {
   event?: EventCompact;
   news?: News;
   jobpost?: JobPost;
-  imgContain?: boolean;
   className?: string;
   largeImg?: boolean;
 };
 
-function ListItem({ event, news, jobpost, imgContain = false, className, largeImg = false }: ListItemProps) {
+function ListItem({ event, news, jobpost, className, largeImg = false }: ListItemProps) {
   const classes = useStyles();
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   const item = useMemo(() => {
@@ -164,12 +163,7 @@ function ListItem({ event, news, jobpost, imgContain = false, className, largeIm
 
   return (
     <MaterialListItem button className={classNames(classes.root, className)} component={Link} to={item.link}>
-      <AspectRatioImg
-        alt={item.imgAlt || item.title}
-        className={classNames(classes.imgContainer, largeImg && lgUp && classes.largeImg)}
-        imgContain={imgContain}
-        src={item.img}
-      />
+      <AspectRatioImg alt={item.imgAlt || item.title} className={classNames(classes.imgContainer, largeImg && lgUp && classes.largeImg)} src={item.img} />
       <Grid className={classes.content} container direction='column' wrap='nowrap'>
         <Typography className={classes.title} variant='h2'>
           {item.title}
@@ -188,7 +182,7 @@ export const ListItemLoading = ({ className, largeImg = false }: Pick<ListItemPr
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   return (
     <MaterialListItem className={classNames(classes.root, className)}>
-      <Skeleton className={classNames(classes.imgContainer, largeImg && lgUp && classes.largeImg)} height={largeImg && lgUp ? 250 : 150} variant='rect' />
+      <AspectRatioLoading className={classNames(classes.imgContainer, largeImg && lgUp && classes.largeImg)} />
       <Grid className={classes.content} container direction='column' wrap='nowrap'>
         <Skeleton className={classes.skeletonMaxWidth} height={60} width={200} />
         <Skeleton className={classes.skeletonMaxWidth} height={30} width={300} />

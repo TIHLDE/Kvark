@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Registration } from 'types/Types';
 import { getUserStudyShort } from 'utils';
+import { useDeleteEventRegistration, useUpdateEventRegistration } from 'api/hooks/Event';
 
 // Material-ui
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -63,14 +64,15 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export type ParticipantProps = {
+  eventId: number;
   registration: Registration;
-  removeUserFromEvent: (registration: Registration) => void;
-  updateRegistration: (userId: string, parameters: Partial<Registration>) => void;
   showEmail: boolean;
 };
 
-const Participant = ({ registration, removeUserFromEvent, updateRegistration, showEmail }: ParticipantProps) => {
+const Participant = ({ registration, eventId, showEmail }: ParticipantProps) => {
   const classes = useStyles();
+  const updateRegistration = useUpdateEventRegistration(eventId);
+  const deleteRegistration = useDeleteEventRegistration(eventId);
   const userInfo = registration.user_info;
   const [checkedState, setCheckedState] = useState(registration.has_attended);
   const [showModal, setShowModal] = useState(false);
@@ -79,14 +81,25 @@ const Participant = ({ registration, removeUserFromEvent, updateRegistration, sh
     setCheckedState(registration.has_attended);
   }, [registration]);
 
-  const deleteHandler = () => {
-    removeUserFromEvent(registration);
+  const deleteHandler = async () => {
+    await deleteRegistration.mutate(registration.user_info.user_id);
     setShowModal(false);
   };
 
   const handleAttendedCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCheckedState(event.target.checked);
-    updateRegistration(registration.user_info.user_id, { has_attended: event.target.checked });
+    updateRegistration.mutate(
+      { registration: { has_attended: event.target.checked }, userId: registration.user_info.user_id },
+      {
+        onError: () => {
+          setCheckedState(!event.target.checked);
+        },
+      },
+    );
+  };
+
+  const changeList = (onWait: boolean) => {
+    updateRegistration.mutate({ registration: { is_on_wait: onWait }, userId: registration.user_info.user_id });
   };
 
   return (
@@ -118,9 +131,9 @@ const Participant = ({ registration, removeUserFromEvent, updateRegistration, sh
         )}
         <div className={classes.buttonContainer}>
           {registration.is_on_wait ? (
-            <ArrowUpwardIcon className={classes.arrowButton} onClick={() => updateRegistration(registration.user_info.user_id, { is_on_wait: false })} />
+            <ArrowUpwardIcon className={classes.arrowButton} onClick={() => changeList(false)} />
           ) : (
-            <ArrowDownwardIcon className={classes.arrowButton} onClick={() => updateRegistration(registration.user_info.user_id, { is_on_wait: true })} />
+            <ArrowDownwardIcon className={classes.arrowButton} onClick={() => changeList(true)} />
           )}
           <Delete className={classes.deleteButton} onClick={() => setShowModal(true)} />
         </div>

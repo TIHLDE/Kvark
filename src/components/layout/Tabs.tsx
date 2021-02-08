@@ -6,10 +6,6 @@ import MaterialTabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
 const useStyles = makeStyles((theme) => ({
-  tabsRoot: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    marginBottom: theme.spacing(1),
-  },
   tabsIndicator: {
     backgroundColor: theme.palette.primary.main,
     borderTopLeftRadius: 3,
@@ -22,8 +18,8 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 92,
     color: theme.palette.text.primary,
     '&:hover': {
-      color: theme.palette.secondary.main,
-      opacity: 1,
+      color: theme.palette.primary.main,
+      opacity: 0.85,
     },
     '&$selected': {
       color: theme.palette.primary.main,
@@ -66,7 +62,7 @@ const Tabs = ({ tabs, selected, setSelected }: IProps) => {
   return (
     <MaterialTabs
       aria-label='Tabs'
-      classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
+      classes={{ indicator: classes.tabsIndicator }}
       onChange={(e, newTab) => setSelected(newTab)}
       value={selected}
       variant='scrollable'>

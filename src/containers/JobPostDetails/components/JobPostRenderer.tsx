@@ -1,4 +1,3 @@
-import classnames from 'classnames';
 import parseISO from 'date-fns/parseISO';
 import { Link } from 'react-router-dom';
 import { formatDate } from 'utils';
@@ -15,7 +14,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 
 // Project Components
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
+import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 import Paper from 'components/layout/Paper';
 
@@ -126,7 +125,7 @@ export const JobPostRendererLoading = () => {
         <Skeleton className={classes.skeleton} height={40} width='90%' />
       </Paper>
       <div>
-        <Skeleton className={classnames(classes.infoBox, classes.image)} height={150} variant='rect' width='100%' />
+        <AspectRatioLoading className={classes.infoBox} imgClassName={classes.image} />
         <Paper className={classes.infoBox}>
           <DetailContentLoading />
           <DetailContentLoading />

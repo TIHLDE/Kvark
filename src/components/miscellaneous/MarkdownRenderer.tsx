@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     marginBottom: theme.spacing(1),
     color: theme.palette.text.primary,
-    overflowWrap: 'break-word',
+    overflowWrap: 'anywhere',
   },
   expansion: {
     border: `1px solid ${theme.palette.divider}`,
@@ -69,7 +69,7 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
   };
 
   const Event = ({ id }: ComponentProps) => {
-    const [data] = useEventById(id);
+    const { data } = useEventById(id);
     return data ? <ListItem className={classes.content} event={data} largeImg /> : <ListItemLoading />;
   };
   const JobPost = ({ id }: ComponentProps) => {

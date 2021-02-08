@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
   detailInfo: {
     textAlign: 'center',
     color: theme.palette.text.secondary,
+    overflowWrap: 'anywhere',
   },
   skeleton: {
     maxWidth: '100%',

@@ -1,21 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 import URLS from 'URLS';
-import { getParameterByName } from 'utils';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { EventCompact } from 'types/Types';
-
-// API and store imports
-import { useEvent } from 'api/hooks/Event';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useEvents } from 'api/hooks/Event';
 
 // Material-UI
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Collapse from '@material-ui/core/Collapse';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+
+// Icons
+import EditIcon from '@material-ui/icons/EditRounded';
+import ParticipantsIcon from '@material-ui/icons/PeopleRounded';
+import RegisterIcon from '@material-ui/icons/PlaylistAddCheckRounded';
 
 // Project components
 import Paper from 'components/layout/Paper';
+import Tabs from 'components/layout/Tabs';
 import Navigation from 'components/navigation/Navigation';
 import SidebarList from 'components/layout/SidebarList';
 import EventEditor from 'containers/EventAdministration/components/EventEditor';
@@ -43,50 +43,16 @@ const useStyles = makeStyles((theme: Theme) => ({
 const EventAdministration = () => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const { getEvents, getExpiredEvents } = useEvent();
   const { eventId } = useParams();
-  const [isLoading, setIsLoading] = useState(false);
-  const [tab, setTab] = useState(0);
-  const [events, setEvents] = useState<Array<EventCompact>>([]);
-  const [expiredItems, setExpiredItems] = useState<Array<EventCompact>>([]);
-  const [page, setPage] = useState<number | null>(1);
-  const [nextPage, setNextPage] = useState<number | null>(null);
-
-  useEffect(() => {
-    setIsLoading(true);
-    const parameters = {
-      page: page,
-      newest: true,
-    };
-    getEvents(parameters)
-      .then((data) => {
-        const next = getParameterByName('page', data.next);
-        setNextPage(next ? Number(next) : null);
-        setEvents((prevFiles) => [...prevFiles, ...data.results]);
-      })
-      .catch(() => {
-        setNextPage(null);
-        setEvents([]);
-      })
-      .finally(() => setIsLoading(false));
-  }, [page, getEvents]);
-
-  const fetchExpired = () => {
-    if (isLoading) {
-      return;
-    }
-    setIsLoading(true);
-
-    getExpiredEvents()
-      .then((data) => setExpiredItems(data.results || data || []))
-      .finally(() => setIsLoading(false));
-  };
-
-  const goToNextPage = () => {
-    if (nextPage) {
-      setPage(nextPage);
-    }
-  };
+  const { data, hasNextPage, fetchNextPage, isLoading } = useEvents();
+  const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const { data: expiredData, fetchNextPage: fetchNextExpiredPage } = useEvents({ expired: true });
+  const expiredEvents = useMemo(() => (expiredData ? expiredData.pages.map((page) => page.results).flat() : []), [expiredData]);
+  const editTab = { value: 'edit', label: eventId ? 'Endre' : 'Skriv', icon: EditIcon };
+  const participantsTab = { value: 'participants', label: 'Deltagere', icon: ParticipantsIcon };
+  const registerTab = { value: 'register', label: 'Registrering', icon: RegisterIcon };
+  const tabs = [editTab, participantsTab, registerTab];
+  const [tab, setTab] = useState(editTab.value);
 
   const goToEvent = (newEvent: number | null) => {
     if (newEvent) {
@@ -99,12 +65,12 @@ const EventAdministration = () => {
   return (
     <Navigation maxWidth={false} noFooter>
       <SidebarList
-        expiredItems={expiredItems}
-        fetchExpired={fetchExpired}
-        getNextPage={goToNextPage}
+        expiredItems={expiredEvents}
+        fetchExpired={() => fetchNextExpiredPage()}
+        getNextPage={() => fetchNextPage()}
         isLoading={isLoading}
         items={events}
-        nextPage={nextPage}
+        nextPage={hasNextPage}
         onItemClick={(id: number | null) => goToEvent(id || null)}
         selectedItemId={Number(eventId)}
         title='Arrangementer'
@@ -114,17 +80,16 @@ const EventAdministration = () => {
           <Typography className={classes.header} variant='h2'>
             {eventId ? 'Endre arrangement' : 'Nytt arrangement'}
           </Typography>
-          <Tabs indicatorColor='primary' onChange={(e, newTab) => setTab(newTab)} textColor='primary' value={tab} variant='scrollable'>
-            <Tab id='0' label={eventId ? 'Endre' : 'Skriv'} />
-            {eventId && <Tab id='1' label='Deltagere' />}
-            {eventId && <Tab component={Link} id='2' label='Registrering' to={`${URLS.events}${eventId}/registrering/`} />}
-          </Tabs>
+          <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
           <Paper>
-            <Collapse in={tab === 0} mountOnEnter>
-              <EventEditor eventId={Number(eventId)} goToEvent={goToEvent} setEvents={setEvents} />
+            <Collapse in={tab === editTab.value} mountOnEnter>
+              <EventEditor eventId={Number(eventId)} goToEvent={goToEvent} />
             </Collapse>
-            <Collapse in={tab === 1} mountOnEnter unmountOnExit>
+            <Collapse in={tab === participantsTab.value} mountOnEnter>
               <EventParticipants eventId={Number(eventId)} />
+            </Collapse>
+            <Collapse in={tab === registerTab.value} mountOnEnter>
+              <Navigate to={`${URLS.events}${eventId}/registrering/`} />
             </Collapse>
           </Paper>
         </div>

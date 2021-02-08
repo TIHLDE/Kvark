@@ -15,8 +15,7 @@ import { useAuth } from 'api/hooks/Auth';
 import { useMisc, MiscProvider } from 'api/hooks/Misc';
 import { useHavePermission, UserProvider } from 'api/hooks/User';
 import { NewsProvider } from 'api/hooks/News';
-import { EventProvider } from 'api/hooks/Event';
-import { SnackbarProvider } from './api/hooks/Snackbar';
+import { SnackbarProvider } from 'api/hooks/Snackbar';
 
 // Project components
 import MessageGDPR from 'components/miscellaneous/MessageGDPR';
@@ -97,12 +96,10 @@ export const Providers = ({ children }: ProvidersProps) => {
       <MiscProvider>
         <UserProvider>
           <NewsProvider>
-            <EventProvider>
-              <ThemeProvider>
-                <CssBaseline />
-                <SnackbarProvider>{children}</SnackbarProvider>
-              </ThemeProvider>
-            </EventProvider>
+            <ThemeProvider>
+              <CssBaseline />
+              <SnackbarProvider>{children}</SnackbarProvider>
+            </ThemeProvider>
           </NewsProvider>
         </UserProvider>
       </MiscProvider>

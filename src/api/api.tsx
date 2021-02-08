@@ -40,7 +40,6 @@ export default {
   // Events
   getEvent: (eventId: number) => IFetch<Event>({ method: 'GET', url: `events/${String(eventId)}/` }),
   getEvents: (filters?: any) => IFetch<PaginationResponse<EventCompact>>({ method: 'GET', url: `events/`, data: filters || {} }),
-  getExpiredEvents: () => IFetch<PaginationResponse<EventCompact>>({ method: 'GET', url: `events/`, data: { expired: true } }),
   createEvent: (item: EventRequired) => IFetch<Event>({ method: 'POST', url: `events/`, data: item }),
   updateEvent: (eventId: number, item: Partial<Event>) => IFetch<Event>({ method: 'PUT', url: `events/${String(eventId)}/`, data: item }),
   deleteEvent: (eventId: number) => IFetch<RequestResponse>({ method: 'DELETE', url: `events/${String(eventId)}/` }),
@@ -57,7 +56,6 @@ export default {
   // Job posts
   getJobPosts: (filters: any = {}) => IFetch<PaginationResponse<JobPost>>({ method: 'GET', url: `jobpost/`, data: filters }),
   getJobPost: (id: number) => IFetch<JobPost>({ method: 'GET', url: `jobpost/${String(id)}/` }),
-  getExpiredJobPosts: () => IFetch<PaginationResponse<JobPost>>({ method: 'GET', url: `jobpost/`, data: { expired: true } }),
   createJobPost: (item: JobPostRequired) => IFetch<JobPost>({ method: 'POST', url: `jobpost/`, data: item }),
   putJobPost: (id: number, item: JobPostRequired) => IFetch<JobPost>({ method: 'PUT', url: `jobpost/${String(id)}/`, data: item }),
   deleteJobPost: (id: number) => IFetch<RequestResponse>({ method: 'DELETE', url: `jobpost/${String(id)}/` }),

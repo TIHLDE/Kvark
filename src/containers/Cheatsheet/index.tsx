@@ -6,7 +6,7 @@ import { getUserStudyShort } from 'utils';
 import { Study } from 'types/Enums';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 
@@ -20,7 +20,10 @@ import Navigation from 'components/navigation/Navigation';
 import Paper from 'components/layout/Paper';
 import Files from 'containers/Cheatsheet/components/Files';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginBottom: theme.spacing(2),
+  },
   filterContainer: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
@@ -133,7 +136,7 @@ const Cheetsheet = () => {
       <Helmet>
         <title>Kokeboka - TIHLDE</title>
       </Helmet>
-      <Paper>
+      <Paper className={classes.root}>
         <div className={classes.filterContainer}>
           <TextField
             fullWidth

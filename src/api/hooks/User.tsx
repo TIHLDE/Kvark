@@ -82,8 +82,8 @@ export type HavePermissionProps = {
 };
 
 export const HavePermission = ({ children, groups }: HavePermissionProps) => {
-  const [allowAccess, isLoading] = useHavePermission(groups);
-  return allowAccess && !isLoading ? <>{children}</> : null;
+  const [allowAccess] = useHavePermission(groups);
+  return <>{allowAccess && children}</>;
 };
 
 export const useHavePermission = (groups: Array<Groups>) => {
@@ -126,6 +126,12 @@ export const useUser = () => {
     }
   }, [user, dispatch, isAuthenticated]);
 
+  const refreshUserData = useCallback(() => {
+    if (isAuthenticated()) {
+      API.getUserData().then((data) => dispatch({ type: 'set', payload: data }));
+    }
+  }, [user, dispatch, isAuthenticated]);
+
   const getUsers = useCallback((filters = null) => API.getUsers(filters), [isAuthenticated]);
 
   const updateUserData = useCallback(
@@ -142,5 +148,5 @@ export const useUser = () => {
 
   const removeUserEvent = useCallback((event: Event) => dispatch({ type: 'remove event', payload: event }), [dispatch]);
 
-  return { getUserData, getUsers, updateUserData, addUserEvent, removeUserEvent };
+  return { getUserData, refreshUserData, getUsers, updateUserData, addUserEvent, removeUserEvent };
 };
