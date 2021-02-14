@@ -185,14 +185,16 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               />
             </Paper>
           )}
-          {isFuture(signOffDeadlineDate) ? (
+          {(isFuture(signOffDeadlineDate) || registration.is_on_wait) && isFuture(startDate) ? (
             <Button className={classes.applyButton} fullWidth onClick={() => setSignOffDialogOpen(true)} variant='outlined'>
               Meld deg av
             </Button>
           ) : (
-            <Alert className={classes.details} severity='info' variant='outlined'>
-              Avmeldingsfristen er passert
-            </Alert>
+            isFuture(startDate) && (
+              <Alert className={classes.details} severity='info' variant='outlined'>
+                Avmeldingsfristen er passert
+              </Alert>
+            )
           )}
         </>
       );
