@@ -1,3 +1,4 @@
+import URLS from '../URLS';
 export default {
   header: 'Om TIHLDE',
   subheader:
@@ -21,7 +22,8 @@ export default {
 
   index: `Index ble utviklet med formål om å utforme en ny nettside til TIHLDE.
     Siden den ble lansert har Index jobbet kontinuerlig med videre utvikling av ny funksjonalitet på nettsiden.
-    I dag jobber det engasjerte og dyktige studenter med nettopp dette. Medlemmene har stor frihet til å jobbe med det de selv synes er mest interessant.`,
+    I dag jobber det engasjerte og dyktige studenter med nettopp dette. Medlemmene har stor frihet til å jobbe med det de selv synes er mest interessant.
+    Mer om Index kan leses <a href="${URLS.aboutIndex}">her</a>`,
 
   turkom: `TurKomitéen er en komité som ble startet av engasjerte og turglade studenter, etter ønske fra Generalforsamlingen.
     TurKom skal gi turglede hos TIHLDEs medlemmer, og skal gjøre dette ved å arrangere telt- og overnattingsturer 2 – 3 ganger i semesteret.

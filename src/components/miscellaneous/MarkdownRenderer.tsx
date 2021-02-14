@@ -38,7 +38,10 @@ const useStyles = makeStyles((theme) => ({
   },
   list: {
     listStylePosition: 'inside',
-    marginLeft: theme.spacing(2),
+    marginLeft: theme.spacing(1),
+  },
+  listItem: {
+    fontSize: theme.typography.body1.fontSize,
   },
   content: {
     marginBottom: theme.spacing(1),
@@ -131,6 +134,8 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
         createElement(Typography, { variant: level === 1 ? 'h2' : 'h3', className: classes.content }, children),
       inlineCode: ({ value }: { value: string }) => createElement('code', { className: classes.inlineCode }, value),
       list: ({ children, ordered }: { children: ReactNode[]; ordered: boolean }) => createElement(ordered ? 'ol' : 'ul', { className: classes.list }, children),
+      listItem: ({ children, checked }: { children: ReactNode[]; checked: boolean }) =>
+        createElement('li', { className: classes.listItem }, checked ? createElement('input', { type: 'checkbox', checked, readOnly: true }) : null, children),
       paragraph: ({ children }: { children: ReactNode[] }) => createElement(Typography, { variant: 'body1', className: classes.content }, children),
       thematicBreak: () => <Divider className={classes.divider} />,
       image: ({ alt, src }: { alt: string; src: string }) => <img alt={alt} className={classes.image} src={src} />,
