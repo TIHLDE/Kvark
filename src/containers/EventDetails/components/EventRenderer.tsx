@@ -75,8 +75,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   title: {
     color: theme.palette.text.primary,
-    padding: theme.spacing(0, 3, 3, 0),
-    fontSize: '2.6rem',
+    fontSize: '2.4rem',
+    wordWrap: 'break-word',
   },
   applyButton: {
     height: 50,
@@ -286,7 +286,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           </div>
         </div>
         <Paper className={classes.content}>
-          <Typography className={classes.title} variant='h1'>
+          <Typography className={classes.title} gutterBottom variant='h1'>
             {data.title}
           </Typography>
           <Collapse in={view === Views.Info || Boolean(registration) || preview}>

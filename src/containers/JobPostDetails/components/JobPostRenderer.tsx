@@ -33,9 +33,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.shape.borderRadius,
   },
   title: {
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '2rem',
-    },
+    fontSize: '2.4rem',
   },
   infoBox: {
     marginBottom: theme.spacing(2),

@@ -45,7 +45,7 @@ const Profile = () => {
   };
 
   return (
-    <Navigation banner={<div className={classes.top}></div>} fancyNavbar maxWidth='lg'>
+    <Navigation banner={<div className={classes.top}></div>} fancyNavbar>
       <Helmet>
         <title>Profil - TIHLDE</title>
       </Helmet>
