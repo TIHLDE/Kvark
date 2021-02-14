@@ -14,7 +14,7 @@ import Button from '@material-ui/core/Button';
 // Project Components
 import Navigation from 'components/navigation/Navigation';
 import Banner from 'components/layout/Banner';
-import Pageination from 'components/layout/Pageination';
+import Pagination from 'components/layout/Pagination';
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 import Paper from 'components/layout/Paper';
 import Select from 'components/inputs/Select';
@@ -99,7 +99,7 @@ const Events = () => {
           {isEmpty && <NotFoundIndicator header='Fant ingen arrangementer' />}
           {error && <Paper>{error.detail}</Paper>}
           {data !== undefined && (
-            <Pageination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
+            <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
               {data.pages.map((page, i) => (
                 <Fragment key={i}>
                   {page.results.map((event) => (
@@ -107,7 +107,7 @@ const Events = () => {
                   ))}
                 </Fragment>
               ))}
-            </Pageination>
+            </Pagination>
           )}
           {isFetching && <ListItemLoading />}
         </div>

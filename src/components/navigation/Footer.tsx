@@ -12,7 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Divider from '@material-ui/core/Divider';
 
 // Icons
-import LightIcon from '@material-ui/icons/WbSunnyOutlined';
+import LightIcon from '@material-ui/icons/WbSunnyRounded';
 
 // Assets import
 import SIT from 'assets/icons/sit.svg';

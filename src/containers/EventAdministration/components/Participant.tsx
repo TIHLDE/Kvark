@@ -11,9 +11,9 @@ import Typography from '@material-ui/core/Typography';
 import Collapse from '@material-ui/core/Collapse';
 
 // Icons
-import Delete from '@material-ui/icons/Delete';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import Delete from '@material-ui/icons/DeleteRounded';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownwardRounded';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpwardRounded';
 
 // Project components
 import Dialog from 'components/layout/Dialog';

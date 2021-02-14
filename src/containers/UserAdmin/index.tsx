@@ -14,7 +14,7 @@ import WaitingIcon from '@material-ui/icons/PlaylistAddRounded';
 
 // Project Components
 import Navigation from 'components/navigation/Navigation';
-import Pageination from 'components/layout/Pageination';
+import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import Tabs from 'components/layout/Tabs';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
@@ -104,7 +104,7 @@ const UserAdmin = () => {
         {isEmpty && <NotFoundIndicator header='Fant ingen brukere' />}
         {error && <Paper>{error.detail}</Paper>}
         {data !== undefined && (
-          <Pageination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
+          <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
             {data.pages.map((page, i) => (
               <Fragment key={i}>
                 {page.results.map((user) => (
@@ -112,7 +112,7 @@ const UserAdmin = () => {
                 ))}
               </Fragment>
             ))}
-          </Pageination>
+          </Pagination>
         )}
       </Paper>
     </Navigation>

@@ -5,7 +5,7 @@ import { useNotification } from 'api/hooks/Notification';
 import classNames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import InfoIcon from '@material-ui/icons/Info';
+import InfoIcon from '@material-ui/icons/InfoRounded';
 
 // Project components
 import Paper from 'components/layout/Paper';

@@ -22,7 +22,7 @@ import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 // Icons
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
 
 // Project components
 import EventRegistrationPriorities from 'containers/EventAdministration/components/EventRegistrationPriorities';

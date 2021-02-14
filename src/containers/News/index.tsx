@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 // Project Components
 import Navigation from 'components/navigation/Navigation';
 import Banner from 'components/layout/Banner';
-import Pageination from 'components/layout/Pageination';
+import Pagination from 'components/layout/Pagination';
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
@@ -49,7 +49,7 @@ const News = () => {
         {isEmpty && <NotFoundIndicator header='Fant ingen nyheter' />}
         {error && <Paper>{error.detail}</Paper>}
         {data !== undefined && (
-          <Pageination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
+          <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
             <div className={classes.list}>
               {data.pages.map((page, i) => (
                 <Fragment key={i}>
@@ -59,7 +59,7 @@ const News = () => {
                 </Fragment>
               ))}
             </div>
-          </Pageination>
+          </Pagination>
         )}
         {isFetching && <ListItemLoading />}
       </div>

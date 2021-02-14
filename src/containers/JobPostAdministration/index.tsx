@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import URLS from 'URLS';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -39,10 +38,6 @@ const JobPostAdministration = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { jobPostId } = useParams();
-  const { data, hasNextPage, fetchNextPage, isLoading } = useJobPosts();
-  const jobposts = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
-  const { data: expiredData, fetchNextPage: fetchNextExpiredPage } = useJobPosts({ expired: true });
-  const expiredJobposts = useMemo(() => (expiredData ? expiredData.pages.map((page) => page.results).flat() : []), [expiredData]);
 
   const goToJobPost = (newJobPost: number | null) => {
     if (newJobPost) {
@@ -55,15 +50,11 @@ const JobPostAdministration = () => {
   return (
     <Navigation maxWidth={false} noFooter>
       <SidebarList
-        expiredItems={expiredJobposts}
-        fetchExpired={() => fetchNextExpiredPage()}
-        getNextPage={() => fetchNextPage()}
-        isLoading={isLoading}
-        items={jobposts}
-        nextPage={hasNextPage}
+        descKey='company'
         onItemClick={(id: number | null) => goToJobPost(id || null)}
         selectedItemId={Number(jobPostId)}
         title='Annonser'
+        useHook={useJobPosts}
       />
       <div className={classes.root}>
         <div className={classes.content}>

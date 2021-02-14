@@ -11,7 +11,7 @@ import Button from '@material-ui/core/Button';
 // Project Components
 import Navigation from 'components/navigation/Navigation';
 import Banner from 'components/layout/Banner';
-import Pageination from 'components/layout/Pageination';
+import Pagination from 'components/layout/Pagination';
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 import Paper from 'components/layout/Paper';
 import TextField from 'components/inputs/TextField';
@@ -89,7 +89,7 @@ const JobPosts = () => {
           {isEmpty && <NotFoundIndicator header='Fant ingen annonser' />}
           {error && <Paper>{error.detail}</Paper>}
           {data !== undefined && (
-            <Pageination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
+            <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
               {data.pages.map((page, i) => (
                 <Fragment key={i}>
                   {page.results.map((jobpost) => (
@@ -97,7 +97,7 @@ const JobPosts = () => {
                   ))}
                 </Fragment>
               ))}
-            </Pageination>
+            </Pagination>
           )}
           {isFetching && <ListItemLoading />}
         </div>

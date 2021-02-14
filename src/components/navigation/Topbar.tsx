@@ -20,9 +20,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 
 // Assets/Icons
-import MenuIcon from '@material-ui/icons/Menu';
+import MenuIcon from '@material-ui/icons/MenuRounded';
 import CloseIcon from '@material-ui/icons/CloseRounded';
-import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
+import PersonOutlineIcon from '@material-ui/icons/PersonRounded';
 import ExpandIcon from '@material-ui/icons/ExpandMoreRounded';
 
 // Project Components

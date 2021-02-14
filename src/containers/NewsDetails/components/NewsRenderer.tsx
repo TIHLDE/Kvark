@@ -70,7 +70,6 @@ export type NewsRendererProps = {
 };
 const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
   const classes = useStyles();
-  const createdDate = parseISO(data.created_at || '');
 
   // Find a dominant color in the image, uses a proxy to be able to retrieve images with CORS-policy until all images are stored in our own server
   const { data: palette } = usePalette(
@@ -83,9 +82,6 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
     <div>
       <div className={classes.top} style={{ background: palette.muted ? palette.muted : '' }}>
         <Container className={classes.topContent} maxWidth='lg'>
-          <Typography gutterBottom variant='caption'>
-            Publisert: {formatDate(createdDate)}
-          </Typography>
           <Typography className={classes.title} variant='h1'>
             {data.title}
           </Typography>
@@ -103,9 +99,7 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
             </Button>
           </HavePermission>
         )}
-        <Typography gutterBottom variant='subtitle2'>
-          Publisert: {formatDate(parseISO(data.created_at))}
-        </Typography>
+        <Typography variant='subtitle2'>Publisert: {formatDate(parseISO(data.created_at))}</Typography>
         <Paper>
           <MarkdownRenderer value={data.body} />
         </Paper>

@@ -14,6 +14,9 @@
 
 ## Neste versjon
 
+- ⚡ **Bedre brukeradmin**. Nytt utseende og bedre filtrering/søk.
+- 🎨 **Avrundede ikoner**. Avrundet alle ikoner på siden for gjennomgående utseende.
+- ⚡ **Oppdatert nyheter**. Bedre caching og nytt utseede i admin og inn på spesifikke nyheter.
 - 🦟 **Bedre feilhåndtering**. Feilmeldinger som mottas fra backend håndteres bedre og mer sikkert.
 - ✨ **Oppdatert kokeboka**. Endret til bruk av react query istedenfor selvlaget hook.
 - ✨ **Oppdatert arrangementer**. Bedre caching med React Query og finere innlastning.

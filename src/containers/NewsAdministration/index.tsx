@@ -1,8 +1,5 @@
-import { useMemo } from 'react';
 import URLS from 'URLS';
 import { useNavigate, useParams } from 'react-router-dom';
-
-// API and store imports
 import { useNews } from 'api/hooks/News';
 
 // Material-UI
@@ -39,8 +36,6 @@ const NewsAdministration = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { newsId } = useParams();
-  const { data, hasNextPage, fetchNextPage, isLoading } = useNews();
-  const news = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   const goToNews = (newNews: number | null) => {
     if (newNews) {
@@ -53,13 +48,12 @@ const NewsAdministration = () => {
   return (
     <Navigation maxWidth={false} noFooter>
       <SidebarList
-        getNextPage={() => fetchNextPage()}
-        isLoading={isLoading}
-        items={news}
-        nextPage={hasNextPage}
+        descKey='header'
+        noExpired
         onItemClick={(id: number | null) => goToNews(id || null)}
         selectedItemId={Number(newsId)}
         title='Nyheter'
+        useHook={useNews}
       />
       <div className={classes.root}>
         <div className={classes.content}>

@@ -11,8 +11,8 @@ import EventsListView from 'containers/Landing/components/EventsListView';
 import EventsCalendarView from 'containers/Landing/components/EventsCalendarView';
 
 // Icons
-import Reorder from '@material-ui/icons/Reorder';
-import DateRange from '@material-ui/icons/DateRange';
+import Reorder from '@material-ui/icons/ReorderRounded';
+import DateRange from '@material-ui/icons/DateRangeRounded';
 
 enum Views {
   LIST,

@@ -24,7 +24,7 @@ import NotificationsIcon from '@material-ui/icons/NotificationsNoneRounded';
 import ProfileIcon from '@material-ui/icons/InsertEmoticonRounded';
 import AdminIcon from '@material-ui/icons/TuneRounded';
 import LogOutIcon from '@material-ui/icons/ExitToAppRounded';
-import BadgesIcon from '@material-ui/icons/EmojiEventsOutlined';
+import BadgesIcon from '@material-ui/icons/EmojiEventsRounded';
 
 // Components
 import ProfileAdmin from 'containers/Profile/components/ProfileAdmin';

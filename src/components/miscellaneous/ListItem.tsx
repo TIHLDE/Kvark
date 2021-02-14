@@ -17,9 +17,9 @@ import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 import { SvgIconTypeMap } from '@material-ui/core';
 
 // Icons
-import DateIcon from '@material-ui/icons/DateRange';
-import LocationIcon from '@material-ui/icons/LocationOn';
-import BusinessIcon from '@material-ui/icons/Business';
+import DateIcon from '@material-ui/icons/DateRangeRounded';
+import LocationIcon from '@material-ui/icons/LocationOnRounded';
+import BusinessIcon from '@material-ui/icons/BusinessRounded';
 
 // Project components
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';

@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export type PageinationProps = {
+export type PaginationProps = {
   fullWidth?: boolean;
   children?: ReactNode;
   nextPage: () => void;
@@ -19,7 +19,7 @@ export type PageinationProps = {
   isLoading?: boolean;
 };
 
-const Pageination = ({ children, fullWidth, isLoading, nextPage, hasNextPage }: PageinationProps) => {
+const Pagination = ({ children, fullWidth, isLoading, nextPage, hasNextPage }: PaginationProps) => {
   const classes = useStyles();
   return (
     <>
@@ -33,4 +33,4 @@ const Pageination = ({ children, fullWidth, isLoading, nextPage, hasNextPage }: 
   );
 };
 
-export default Pageination;
+export default Pagination;

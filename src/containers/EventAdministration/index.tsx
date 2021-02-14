@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import URLS from 'URLS';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useEvents } from 'api/hooks/Event';
@@ -44,10 +44,6 @@ const EventAdministration = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { eventId } = useParams();
-  const { data, hasNextPage, fetchNextPage, isLoading } = useEvents();
-  const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
-  const { data: expiredData, fetchNextPage: fetchNextExpiredPage } = useEvents({ expired: true });
-  const expiredEvents = useMemo(() => (expiredData ? expiredData.pages.map((page) => page.results).flat() : []), [expiredData]);
   const editTab = { value: 'edit', label: eventId ? 'Endre' : 'Skriv', icon: EditIcon };
   const participantsTab = { value: 'participants', label: 'Deltagere', icon: ParticipantsIcon };
   const registerTab = { value: 'register', label: 'Registrering', icon: RegisterIcon };
@@ -64,17 +60,7 @@ const EventAdministration = () => {
 
   return (
     <Navigation maxWidth={false} noFooter>
-      <SidebarList
-        expiredItems={expiredEvents}
-        fetchExpired={() => fetchNextExpiredPage()}
-        getNextPage={() => fetchNextPage()}
-        isLoading={isLoading}
-        items={events}
-        nextPage={hasNextPage}
-        onItemClick={(id: number | null) => goToEvent(id || null)}
-        selectedItemId={Number(eventId)}
-        title='Arrangementer'
-      />
+      <SidebarList onItemClick={(id: number | null) => goToEvent(id || null)} selectedItemId={Number(eventId)} title='Arrangementer' useHook={useEvents} />
       <div className={classes.root}>
         <div className={classes.content}>
           <Typography className={classes.header} variant='h2'>
