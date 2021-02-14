@@ -67,7 +67,7 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
         <Typography className={classes.title} gutterBottom variant='h1'>
           {data.title}
         </Typography>
-        <MarkdownRenderer value={data.ingress} />
+        <MarkdownRenderer value={data.ingress || ''} />
         <MarkdownRenderer value={data.body} />
       </Paper>
       <div>
@@ -76,7 +76,7 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
         </div>
         <Paper className={classes.infoBox}>
           <DetailContent info={data.company} title='Bedrift: ' />
-          <DetailContent info={deadline} title='Søknadsfrist: ' />
+          <DetailContent info={data.is_continuously_hiring ? 'Fortløpende opptak' : deadline} title='Søknadsfrist: ' />
           <DetailContent info={data.location} title='Sted: ' />
           {data.email && (
             <DetailContent

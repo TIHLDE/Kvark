@@ -92,6 +92,7 @@ export interface JobPost {
   location: string;
   title: string;
   updated_at: string;
+  is_continuously_hiring: boolean;
 }
 
 export interface Event {

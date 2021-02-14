@@ -23,6 +23,7 @@
 - ✨ **Oppdatert arrangementer**. Bedre caching med React Query og finere innlastning.
 - 🎨 **Ny footer**. Footeren har fått en oppgradering.
 - ✨ **Om Index**. Index har fått en egen side.
+- ✨ **Oppdatert karrieresider**. Ingress og link er ikke lenger krevet. I tillegg kan man velge at en jobbannonse har løpende opptak.
 
 ## Versjon 1.0.1 (01.02.2021)
 

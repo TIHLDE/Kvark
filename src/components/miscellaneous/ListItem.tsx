@@ -152,7 +152,7 @@ function ListItem({ event, news, jobpost, className, largeImg = false }: ListIte
       return [
         { label: jobpost.company, icon: BusinessIcon },
         { label: jobpost.location, icon: LocationIcon },
-        { label: formatDate(parseISO(jobpost.deadline)), icon: DateIcon },
+        { label: jobpost.is_continuously_hiring ? 'Fortløpende opptak' : formatDate(parseISO(jobpost.deadline)), icon: DateIcon },
       ];
     }
   }, [event, news, jobpost]);

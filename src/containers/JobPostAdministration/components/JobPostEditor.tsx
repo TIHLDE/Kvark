@@ -11,6 +11,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 // Project components
 import JobPostRenderer from 'containers/JobPostDetails/components/JobPostRenderer';
@@ -49,10 +51,14 @@ export type EventEditorProps = {
   goToJobPost: (newJobPost: number | null) => void;
 };
 
-type FormValues = Pick<JobPost, 'body' | 'company' | 'deadline' | 'email' | 'image' | 'image_alt' | 'ingress' | 'link' | 'location' | 'title'>;
+type FormValues = Pick<
+  JobPost,
+  'body' | 'company' | 'deadline' | 'email' | 'ingress' | 'image' | 'image_alt' | 'link' | 'location' | 'title' | 'is_continuously_hiring'
+>;
 
 const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
   const classes = useStyles();
+  const [isContinuouslyHiring, setIsContinuouslyHiring] = useState(false);
   const { data, isLoading, isError } = useJobPostById(jobpostId || -1);
   const createJobPost = useCreateJobPost();
   const updateJobPost = useUpdateJobPost(jobpostId || -1);
@@ -72,6 +78,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
 
   const setValues = useCallback(
     (newValues: JobPost | null) => {
+      setIsContinuouslyHiring(newValues?.is_continuously_hiring || false);
       reset({
         body: newValues?.body || '',
         company: newValues?.company || '',
@@ -100,6 +107,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
     return {
       ...getValues(),
       created_at: new Date().toISOString().substring(0, 16),
+      is_continuously_hiring: isContinuouslyHiring,
       id: 1,
       expired: false,
       updated_at: new Date().toISOString().substring(0, 16),
@@ -121,24 +129,30 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
 
   const submit: SubmitHandler<FormValues> = async (data) => {
     if (jobpostId) {
-      await updateJobPost.mutate(data, {
-        onSuccess: () => {
-          showSnackbar('Annonsen ble oppdatert', 'success');
+      await updateJobPost.mutate(
+        { ...data, is_continuously_hiring: isContinuouslyHiring },
+        {
+          onSuccess: () => {
+            showSnackbar('Annonsen ble oppdatert', 'success');
+          },
+          onError: (e) => {
+            showSnackbar(e.detail, 'error');
+          },
         },
-        onError: (e) => {
-          showSnackbar(e.detail, 'error');
-        },
-      });
+      );
     } else {
-      await createJobPost.mutate(data, {
-        onSuccess: (newJobPost) => {
-          showSnackbar('Annonsen ble opprettet', 'success');
-          goToJobPost(newJobPost.id);
+      await createJobPost.mutate(
+        { ...data, is_continuously_hiring: isContinuouslyHiring },
+        {
+          onSuccess: (newJobPost) => {
+            showSnackbar('Annonsen ble opprettet', 'success');
+            goToJobPost(newJobPost.id);
+          },
+          onError: (e) => {
+            showSnackbar(e.detail, 'error');
+          },
         },
-        onError: (e) => {
-          showSnackbar(e.detail, 'error');
-        },
-      });
+      );
     }
   };
 
@@ -154,25 +168,29 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
             <TextField errors={errors} label='Tittel' name='title' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
             <TextField errors={errors} label='Sted' name='location' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
           </div>
-          <TextField errors={errors} label='Ingress' name='ingress' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
+          <TextField errors={errors} label='Ingress' name='ingress' register={register} />
           <MarkdownEditor
             error={Boolean(errors.body)}
             helperText={Boolean(errors.body) && 'Gi annonsen en beskrivelse'}
             inputRef={register({ required: true })}
             name='body'
           />
+          <FormControlLabel
+            control={<Checkbox checked={isContinuouslyHiring} onChange={(e) => setIsContinuouslyHiring(e.target.checked)} />}
+            label={'Fortløpende opptak?'}
+          />
           <div className={classes.grid}>
             <TextField
               errors={errors}
               InputLabelProps={{ shrink: true }}
-              label='Frist'
+              label='Utløpsdato'
               name='deadline'
               register={register}
               required
               rules={{ required: 'Feltet er påkrevd' }}
               type='datetime-local'
             />
-            <TextField errors={errors} label='Link' name='link' register={register} required rules={{ required: 'Du må oppgi en link' }} />
+            <TextField errors={errors} label='Link' name='link' register={register} />
             <TextField errors={errors} label='Logo bilde-url' name='image' register={register} />
             <TextField errors={errors} label='Alternativ bildetekst' name='image_alt' register={register} />
             <TextField errors={errors} label='Bedrift' name='company' register={register} required rules={{ required: 'Du må oppgi en bedrift' }} />
