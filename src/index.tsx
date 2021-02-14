@@ -11,12 +11,9 @@ import { Groups } from 'types/Enums';
 
 // Services
 import { ThemeProvider } from 'context/ThemeContext';
-import { useAuth } from 'api/hooks/Auth';
 import { useMisc, MiscProvider } from 'api/hooks/Misc';
-import { useHavePermission, UserProvider } from 'api/hooks/User';
-import { NewsProvider } from 'api/hooks/News';
-import { EventProvider } from 'api/hooks/Event';
-import { SnackbarProvider } from './api/hooks/Snackbar';
+import { useHavePermission, useIsAuthenticated } from 'api/hooks/User';
+import { SnackbarProvider } from 'api/hooks/Snackbar';
 
 // Project components
 import MessageGDPR from 'components/miscellaneous/MessageGDPR';
@@ -24,6 +21,7 @@ import Navigation from 'components/navigation/Navigation';
 
 // Project containers
 import About from 'containers/About';
+import AboutIndex from 'containers/AboutIndex';
 import Cheatsheet from 'containers/Cheatsheet';
 import Companies from 'containers/Companies';
 import EventDetails from 'containers/EventDetails';
@@ -60,12 +58,12 @@ type AuthRouteProps = {
 
 const AuthRoute = ({ groups = [], children, path, element }: AuthRouteProps) => {
   const { setLogInRedirectURL } = useMisc();
-  const { isAuthenticated } = useAuth();
-  const [allowAccess, isLoading] = useHavePermission(groups);
+  const isAuthenticated = useIsAuthenticated();
+  const { allowAccess, isLoading } = useHavePermission(groups);
 
   if (isLoading) {
     return <Navigation isLoading noFooter />;
-  } else if (!isAuthenticated()) {
+  } else if (!isAuthenticated) {
     setLogInRedirectURL(window.location.pathname);
     return <Navigate to={URLS.login} />;
   } else if (allowAccess || !groups.length) {
@@ -95,16 +93,10 @@ export const Providers = ({ children }: ProvidersProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <MiscProvider>
-        <UserProvider>
-          <NewsProvider>
-            <EventProvider>
-              <ThemeProvider>
-                <CssBaseline />
-                <SnackbarProvider>{children}</SnackbarProvider>
-              </ThemeProvider>
-            </EventProvider>
-          </NewsProvider>
-        </UserProvider>
+        <ThemeProvider>
+          <CssBaseline />
+          <SnackbarProvider>{children}</SnackbarProvider>
+        </ThemeProvider>
       </MiscProvider>
       <ReactQueryDevtools />
     </QueryClientProvider>
@@ -128,6 +120,7 @@ const AppRoutes = () => {
         <Route element={<Events />} path='' />
       </Route>
       <Route element={<About />} path={URLS.about} />
+      <Route element={<AboutIndex />} path={URLS.aboutIndex} />
       <Route element={<ContactInfo />} path={URLS.contactInfo} />
       <Route element={<Services />} path={URLS.services} />
       <Route element={<Companies />} path={URLS.company} />
@@ -158,7 +151,10 @@ const AppRoutes = () => {
         <Route element={<EventAdministration />} path=':eventId/' />
         <Route element={<EventAdministration />} path='' />
       </AuthRoute>
-      <AuthRoute element={<NewsAdministration />} groups={[Groups.HS, Groups.INDEX]} path={URLS.newsAdmin} />
+      <AuthRoute groups={[Groups.HS, Groups.INDEX]} path={URLS.newsAdmin}>
+        <Route element={<NewsAdministration />} path=':newsId/' />
+        <Route element={<NewsAdministration />} path='' />
+      </AuthRoute>
 
       <Route element={<LogIn />} path={URLS.login} />
       <Route element={<ForgotPassword />} path={URLS.forgotPassword} />

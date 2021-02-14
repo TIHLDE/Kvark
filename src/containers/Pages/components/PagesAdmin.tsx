@@ -23,7 +23,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 // Icons
 import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
 import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
-import RightIcon from '@material-ui/icons/ChevronRight';
+import RightIcon from '@material-ui/icons/ChevronRightRounded';
 
 // Project components
 import Dialog from 'components/layout/Dialog';

@@ -6,7 +6,7 @@ import { getUserStudyShort } from 'utils';
 import { Study } from 'types/Enums';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 
@@ -20,7 +20,10 @@ import Navigation from 'components/navigation/Navigation';
 import Paper from 'components/layout/Paper';
 import Files from 'containers/Cheatsheet/components/Files';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginBottom: theme.spacing(2),
+  },
   filterContainer: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
@@ -38,7 +41,7 @@ const Cheetsheet = () => {
   const classes = useStyles();
   const { studyId, classId } = useParams();
   const navigate = useNavigate();
-  const { getUserData } = useUser();
+  const { data: user } = useUser();
   const [input, setInput] = useState('');
   const [search, setSearch] = useState('');
 
@@ -82,14 +85,12 @@ const Cheetsheet = () => {
   }, [getClass, getStudy]);
 
   const goToUserCheatsheet = useCallback(() => {
-    getUserData().then((user) => {
-      if (user && 1 <= user.user_study && user.user_study <= 4 && user.user_class > 0) {
-        navigate(`${URLS.cheatsheet}${getUserStudyShort(user.user_study)}/${user.user_class}/`);
-      } else {
-        navigate(`${URLS.cheatsheet}${getUserStudyShort(1)}/1/`);
-      }
-    });
-  }, [getUserData, navigate]);
+    if (user && 1 <= user.user_study && user.user_study <= 4 && user.user_class > 0) {
+      navigate(`${URLS.cheatsheet}${getUserStudyShort(user.user_study)}/${user.user_class}/`);
+    } else {
+      navigate(`${URLS.cheatsheet}${getUserStudyShort(1)}/1/`);
+    }
+  }, [user, navigate]);
 
   useEffect(() => {
     const study = getStudy();
@@ -133,7 +134,7 @@ const Cheetsheet = () => {
       <Helmet>
         <title>Kokeboka - TIHLDE</title>
       </Helmet>
-      <Paper>
+      <Paper className={classes.root}>
         <div className={classes.filterContainer}>
           <TextField
             fullWidth

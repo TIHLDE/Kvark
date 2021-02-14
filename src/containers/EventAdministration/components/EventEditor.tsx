@@ -1,8 +1,8 @@
 import { useCallback, useState, useEffect } from 'react';
 import classnames from 'classnames';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Category, Event, EventCompact, EventRequired, RegistrationPriority } from 'types/Types';
-import { useEvent } from 'api/hooks/Event';
+import { Category, Event, RegistrationPriority } from 'types/Types';
+import { useEventById, useCreateEvent, useUpdateEvent, useDeleteEvent } from 'api/hooks/Event';
 import { useMisc } from 'api/hooks/Misc';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { parseISO } from 'date-fns';
@@ -15,13 +15,14 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Collapse from '@material-ui/core/Collapse';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 // Icons
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
 
 // Project components
 import EventRegistrationPriorities from 'containers/EventAdministration/components/EventRegistrationPriorities';
@@ -67,7 +68,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 export type EventEditorProps = {
   eventId: number | null;
   goToEvent: (newEvent: number | null) => void;
-  setEvents: (newEvents: Array<EventCompact> | ((prevEvents: Array<EventCompact>) => Array<EventCompact>)) => void;
 };
 
 type FormValues = Pick<
@@ -107,18 +107,24 @@ const allPriorities = [
   { user_class: 5, user_study: 4 },
 ];
 
-const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
+const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const classes = useStyles();
-  const { getEventById, updateEvent, createEvent, deleteEvent } = useEvent();
-  const { getCategories } = useMisc();
+  const { data, isLoading, isError } = useEventById(eventId || -1);
+  const createEvent = useCreateEvent();
+  const updateEvent = useUpdateEvent(eventId || -1);
+  const deleteEvent = useDeleteEvent(eventId || -1);
   const showSnackbar = useSnackbar();
-  const [isLoading, setIsLoading] = useState(false);
   const [closeEventDialogOpen, setCloseEventDialogOpen] = useState(false);
   const [deleteEventDialogOpen, setDeleteEventDialogOpen] = useState(false);
   const [signUp, setSignUp] = useState(false);
   const [regPriorities, setRegPriorities] = useState<Array<RegistrationPriority>>([]);
   const { handleSubmit, register, control, errors, getValues, setError, reset } = useForm<FormValues>();
+  const { getCategories } = useMisc();
   const [categories, setCategories] = useState<Array<Category>>([]);
+
+  useEffect(() => {
+    !isError || goToEvent(null);
+  }, [isError]);
 
   const setValues = useCallback(
     (newValues: Event | null) => {
@@ -144,6 +150,14 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
     [reset],
   );
 
+  useEffect(() => {
+    if (data) {
+      setValues(data);
+    } else {
+      setValues(null);
+    }
+  }, [data, setValues]);
+
   const getEventPreview = () => {
     return {
       ...getValues(),
@@ -155,70 +169,37 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
   };
 
   useEffect(() => {
-    if (eventId) {
-      getEventById(Number(eventId))
-        .then((data) => setValues(data))
-        .catch(() => goToEvent(null));
-    } else {
-      setValues(null);
-    }
-  }, [eventId, getEventById, setValues, goToEvent]);
-
-  useEffect(() => {
-    getCategories().then((data) => setCategories(data));
+    getCategories().then(setCategories);
   }, [getCategories]);
 
-  const create = (event: EventRequired) => {
-    setIsLoading(true);
-    createEvent(event)
-      .then((data) => {
-        setEvents((events) => [data, ...events]);
-        goToEvent(data.id);
-        showSnackbar('Arrangementet ble opprettet', 'success');
-      })
-      .catch((e) => showSnackbar(e.detail, 'error'))
-      .finally(() => setIsLoading(false));
-  };
-
-  const update = (event: Partial<Event>) => {
-    setIsLoading(true);
-    updateEvent(Number(eventId), event)
-      .then((data) => {
-        goToEvent(data.id);
-        setEvents((events) =>
-          events.map((eventItem) => {
-            let returnValue = { ...eventItem };
-            if (eventItem.id === data.id) {
-              returnValue = data;
-            }
-            return returnValue;
-          }),
-        );
-        showSnackbar('Arrangementet ble oppdatert', 'success');
-      })
-      .catch((e) => showSnackbar(e.detail, 'error'))
-      .finally(() => setIsLoading(false));
-  };
-
-  const remove = () => {
-    deleteEvent(Number(eventId))
-      .then((data) => {
-        setEvents((events) => events.filter((eventItem) => eventItem.id !== Number(eventId)));
-        goToEvent(null);
+  const remove = async () => {
+    deleteEvent.mutate(null, {
+      onSuccess: (data) => {
         showSnackbar(data.detail, 'success');
-      })
-      .catch((e) => showSnackbar(e.detail, 'error'))
-      .finally(() => setDeleteEventDialogOpen(false));
+        setDeleteEventDialogOpen(false);
+        goToEvent(null);
+      },
+      onError: (e) => {
+        showSnackbar(e.detail, 'error');
+      },
+    });
   };
 
-  const closeEvent = () => {
-    update({ closed: true });
-    setCloseEventDialogOpen(false);
+  const closeEvent = async () => {
+    await updateEvent.mutate({ ...data, closed: true } as Event, {
+      onSuccess: () => {
+        showSnackbar('Arrangementet ble stengt', 'success');
+        setCloseEventDialogOpen(false);
+      },
+      onError: (e) => {
+        showSnackbar(e.detail, 'error');
+      },
+    });
   };
 
-  const submit: SubmitHandler<FormValues> = (data) => {
+  const submit: SubmitHandler<FormValues> = async (formData) => {
     const event = {
-      ...data,
+      ...formData,
       sign_up: signUp,
       registration_priorities: regPriorities,
     } as Event;
@@ -245,11 +226,30 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
       }
     }
     if (eventId) {
-      update(event);
+      await updateEvent.mutate(event, {
+        onSuccess: () => {
+          showSnackbar('Arrangementet ble oppdatert', 'success');
+        },
+        onError: (e) => {
+          showSnackbar(e.detail, 'error');
+        },
+      });
     } else {
-      create(event);
+      await createEvent.mutate(event, {
+        onSuccess: (newEvent) => {
+          showSnackbar('Arrangementet ble opprettet', 'success');
+          goToEvent(newEvent.id);
+        },
+        onError: (e) => {
+          showSnackbar(e.detail, 'error');
+        },
+      });
     }
   };
+
+  if (isLoading) {
+    return <LinearProgress />;
+  }
 
   return (
     <>
@@ -338,14 +338,14 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
             </div>
             <TextField errors={errors} label='Evalueringsskjema (url)' name='evaluate_link' register={register} />
             <div className={classes.margin}>
-              <ExpansionPanel className={classes.expansionPanel}>
-                <ExpansionPanelSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='priorities-header'>
+              <Accordion className={classes.expansionPanel}>
+                <AccordionSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='priorities-header'>
                   <Typography>Prioriterte</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                </AccordionSummary>
+                <AccordionDetails>
                   <EventRegistrationPriorities priorities={regPriorities} setPriorities={setRegPriorities} />
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
+                </AccordionDetails>
+              </Accordion>
             </div>
           </Collapse>
           <MarkdownEditor

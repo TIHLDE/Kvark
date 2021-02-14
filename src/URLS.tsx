@@ -18,6 +18,7 @@ export default {
   cheatsheet: '/kokebok/',
   news: '/nyheter/',
   pages: '/om/',
+  aboutIndex: '/om/undergrupper/index/',
 
   userAdmin: '/admin/brukere/',
   eventAdmin: '/admin/arrangementer/',

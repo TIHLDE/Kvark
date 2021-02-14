@@ -1,6 +1,5 @@
 import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { getParameterByName } from 'utils';
 import { JobPost, JobPostRequired, PaginationResponse, RequestResponse } from 'types/Types';
 
 const QUERY_KEY = 'jobpost';
@@ -15,7 +14,7 @@ export const useJobPosts = (filters?: any) => {
     [QUERY_KEY, filters],
     ({ pageParam = 1 }) => API.getJobPosts({ ...filters, page: pageParam }),
     {
-      getNextPageParam: (lastPage) => getParameterByName('page', lastPage.next),
+      getNextPageParam: (lastPage) => lastPage.next,
     },
   );
 };

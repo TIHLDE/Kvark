@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
-import { Event, User, Registration } from 'types/Types';
+import { useState } from 'react';
+import { Event } from 'types/Types';
 import { Groups } from 'types/Enums';
 import URLS from 'URLS';
-import { parseISO } from 'date-fns';
+import { parseISO, isPast, isFuture } from 'date-fns';
 import { formatDate } from 'utils';
 import QRCode from 'qrcode.react';
 import { Link } from 'react-router-dom';
 
 // Services
 import { useMisc } from 'api/hooks/Misc';
-import { useEvent } from 'api/hooks/Event';
+import { useEventRegistration, useDeleteEventRegistration } from 'api/hooks/Event';
 import { useUser, HavePermission } from 'api/hooks/User';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
@@ -19,15 +19,17 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
 import Hidden from '@material-ui/core/Hidden';
+import Skeleton from '@material-ui/lab/Skeleton';
+import Alert from '@material-ui/lab/Alert';
 
 // Project Components
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
+import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 import EventPriorities from 'containers/EventDetails/components/EventPriorities';
 import EventRegistration from 'containers/EventDetails/components/EventRegistration';
 import Paper from 'components/layout/Paper';
 import Dialog from 'components/layout/Dialog';
-import DetailContent from 'components/miscellaneous/DetailContent';
+import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 
 const useStyles = makeStyles((theme: Theme) => ({
   image: {
@@ -61,13 +63,8 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: '100%',
     },
   },
-  waitlistContainer: {
-    margin: `${theme.spacing(1)}px auto`,
-    textAlign: 'center',
-    padding: theme.spacing(1),
-  },
-  redText: {
-    color: theme.palette.error.main,
+  alert: {
+    marginBottom: theme.spacing(1),
   },
   content: {
     height: 'fit-content',
@@ -78,8 +75,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   title: {
     color: theme.palette.text.primary,
-    padding: theme.spacing(0, 3, 3, 0),
-    fontSize: '2.6rem',
+    fontSize: '2.4rem',
+    wordWrap: 'break-word',
   },
   applyButton: {
     height: 50,
@@ -93,6 +90,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100% !important',
     maxHeight: 350,
     objectFit: 'contain',
+  },
+  skeleton: {
+    maxWidth: '100%',
+    borderRadius: theme.shape.borderRadius,
   },
 }));
 
@@ -108,13 +109,12 @@ enum Views {
 
 const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const classes = useStyles();
-  const { getRegistration, deleteRegistration } = useEvent();
-  const { getUserData } = useUser();
+  const { data: user } = useUser();
+  const { data: registration } = useEventRegistration(data.id, preview || !user ? '' : user.user_id);
+  const deleteRegistration = useDeleteEventRegistration(data.id);
   const { setLogInRedirectURL } = useMisc();
   const showSnackbar = useSnackbar();
   const theme = useTheme();
-  const [user, setUser] = useState<User | null>(null);
-  const [registration, setRegistration] = useState<Registration | null>(null);
   const [view, setView] = useState<Views>(Views.Info);
   const [signOffDialogOpen, setSignOffDialogOpen] = useState(false);
   const startDate = parseISO(data.start_date);
@@ -122,39 +122,19 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const startRegistrationDate = parseISO(data.start_registration_at);
   const endRegistrationDate = parseISO(data.end_registration_at);
   const signOffDeadlineDate = parseISO(data.sign_off_deadline);
-  const now = new Date();
 
-  useEffect(() => {
-    let subscribed = true;
-    if (!preview) {
-      getUserData()
-        .then((user) => {
-          !subscribed || setUser(user);
-          if (user) {
-            getRegistration(data.id, user.user_id)
-              .then((registration) => !subscribed || setRegistration(registration))
-              .catch(() => !subscribed || setRegistration(null));
-          }
-        })
-        .catch(() => !subscribed || setUser(null));
-    }
-    return () => {
-      subscribed = false;
-    };
-  }, [data.id, getUserData, getRegistration, preview]);
-
-  const signOff = () => {
+  const signOff = async () => {
     setSignOffDialogOpen(false);
     if (user) {
-      deleteRegistration(data.id, user.user_id, registration)
-        .then((data) => {
+      deleteRegistration.mutate(user.user_id, {
+        onSuccess: (data) => {
           showSnackbar(data.detail, 'success');
-          setRegistration(null);
           setView(Views.Info);
-        })
-        .catch((error) => {
-          showSnackbar(error.detail, 'error');
-        });
+        },
+        onError: (e) => {
+          showSnackbar(e.detail, 'error');
+        },
+      });
     }
   };
 
@@ -163,14 +143,12 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       return null;
     } else if (data.closed) {
       return (
-        <Paper className={classes.details} noPadding>
-          <Typography align='center' className={classes.redText} variant='subtitle1'>
-            Dette arrangementet er stengt. Det er derfor ikke mulig å melde seg av eller på.
-          </Typography>
-        </Paper>
+        <Alert className={classes.details} severity='warning' variant='outlined'>
+          Dette arrangementet er stengt. Det er derfor ikke mulig å melde seg av eller på.
+        </Alert>
       );
     } else if (!user) {
-      if (endRegistrationDate > now) {
+      if (isFuture(endRegistrationDate)) {
         return (
           <Button
             className={classes.applyButton}
@@ -188,16 +166,16 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       }
     } else if (registration) {
       return (
-        <Paper className={classes.details} noPadding>
+        <>
           {registration.is_on_wait ? (
-            <Typography align='center' className={classes.redText} variant='subtitle1'>
+            <Alert className={classes.details} severity='info' variant='outlined'>
               Du står på ventelisten, vi gir deg beskjed hvis du får plass
-            </Typography>
+            </Alert>
           ) : (
-            <>
-              <Typography align='center' variant='subtitle1'>
+            <Paper className={classes.details} noPadding>
+              <Alert className={classes.alert} severity='success' variant='outlined'>
                 Du har plass på arrangementet! Bruk QR-koden for å komme raskere inn.
-              </Typography>
+              </Alert>
               <QRCode
                 bgColor={theme.palette.background.paper}
                 className={classes.qrcode}
@@ -205,26 +183,28 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
                 size={1000}
                 value={user.user_id}
               />
-            </>
+            </Paper>
           )}
-          {signOffDeadlineDate > now ? (
+          {(isFuture(signOffDeadlineDate) || registration.is_on_wait) && isFuture(startDate) ? (
             <Button className={classes.applyButton} fullWidth onClick={() => setSignOffDialogOpen(true)} variant='outlined'>
               Meld deg av
             </Button>
           ) : (
-            <Typography align='center' className={classes.redText} variant='subtitle1'>
-              Avmeldingsfristen er passert
-            </Typography>
+            isFuture(startDate) && (
+              <Alert className={classes.details} severity='info' variant='outlined'>
+                Avmeldingsfristen er passert
+              </Alert>
+            )
           )}
-        </Paper>
+        </>
       );
-    } else if (startRegistrationDate > now) {
+    } else if (isFuture(startRegistrationDate)) {
       return (
         <Button className={classes.applyButton} color='primary' disabled fullWidth variant='contained'>
           Påmelding har ikke startet
         </Button>
       );
-    } else if (endRegistrationDate < now) {
+    } else if (isPast(endRegistrationDate)) {
       return null;
     } else if (view === Views.Apply) {
       return (
@@ -283,12 +263,12 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
                 <Paper className={classes.details} noPadding>
                   <DetailContent info={`${data.list_count}/${data.limit}`} title='Påmeldte:' />
                   <DetailContent info={String(data.waiting_list_count)} title='Venteliste:' />
-                  {registration && now < signOffDeadlineDate ? (
+                  {registration && isFuture(signOffDeadlineDate) ? (
                     <DetailContent info={formatDate(signOffDeadlineDate)} title='Avmeldingsfrist:' />
                   ) : (
                     <>
-                      {startRegistrationDate > now && <DetailContent info={formatDate(startRegistrationDate)} title='Påmeldingsstart:' />}
-                      {startRegistrationDate < now && now < endRegistrationDate && (
+                      {isFuture(startRegistrationDate) && <DetailContent info={formatDate(startRegistrationDate)} title='Påmeldingsstart:' />}
+                      {isPast(startRegistrationDate) && isFuture(endRegistrationDate) && (
                         <DetailContent info={formatDate(endRegistrationDate)} title='Påmeldingsslutt:' />
                       )}
                     </>
@@ -307,15 +287,15 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             </Hidden>
           </div>
         </div>
-        <Paper className={classes.content} shadow={view === Views.Apply && !registration}>
-          <Typography className={classes.title} variant='h1'>
+        <Paper className={classes.content}>
+          <Typography className={classes.title} gutterBottom variant='h1'>
             {data.title}
           </Typography>
-          <Collapse in={view === Views.Info || Boolean(registration)}>
+          <Collapse in={view === Views.Info || Boolean(registration) || preview}>
             <MarkdownRenderer value={data.description} />
           </Collapse>
-          <Collapse in={view === Views.Apply && !registration} mountOnEnter>
-            {user && <EventRegistration event={data} setRegistration={setRegistration} user={user} />}
+          <Collapse in={view === Views.Apply && !registration && !preview} mountOnEnter>
+            {user && <EventRegistration event={data} user={user} />}
           </Collapse>
         </Paper>
       </div>
@@ -324,3 +304,35 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
 };
 
 export default EventRenderer;
+
+export const EventRendererLoading = () => {
+  const classes = useStyles();
+  return (
+    <>
+      <AspectRatioLoading imgClassName={classes.image} />
+      <div className={classes.rootGrid}>
+        <div>
+          <div className={classes.infoGrid}>
+            <Paper className={classes.details} noPadding>
+              <DetailContentLoading />
+              <DetailContentLoading />
+              <DetailContentLoading />
+            </Paper>
+            <Paper className={classes.details} noPadding>
+              <DetailContentLoading />
+              <DetailContentLoading />
+            </Paper>
+          </div>
+        </div>
+        <Paper className={classes.content}>
+          <Skeleton className={classes.skeleton} height={80} width='60%' />
+          <Skeleton className={classes.skeleton} height={40} width={250} />
+          <Skeleton className={classes.skeleton} height={40} width='80%' />
+          <Skeleton className={classes.skeleton} height={40} width='85%' />
+          <Skeleton className={classes.skeleton} height={40} width='75%' />
+          <Skeleton className={classes.skeleton} height={40} width='90%' />
+        </Paper>
+      </div>
+    </>
+  );
+};

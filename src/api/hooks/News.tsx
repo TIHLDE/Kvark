@@ -1,158 +1,45 @@
-import { createContext, ReactNode, useContext, useState, useEffect, useReducer, useCallback } from 'react';
+import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { News, NewsRequired, RequestResponse } from 'types/Types';
+import { News, NewsRequired, PaginationResponse, RequestResponse } from 'types/Types';
 
-export type Action =
-  | { type: 'set'; payload: Array<News> }
-  | { type: 'add'; payload: News }
-  | { type: 'update'; payload: News }
-  | { type: 'remove'; payload: number };
-
-export type Dispatch = (action: Action) => void;
-export type NewsProviderProps = { children: ReactNode };
-
-const NewsStateContext = createContext<Array<News> | undefined>(undefined);
-const NewsDispatchContext = createContext<Dispatch | undefined>(undefined);
-
-const newsReducer = (state: Array<News>, action: Action): Array<News> => {
-  switch (action.type) {
-    case 'set': {
-      return action.payload;
-    }
-    case 'add': {
-      if (state.find((item) => item.id === action.payload.id)) {
-        return state.map((newsItem) => {
-          let returnValue = { ...newsItem };
-          if (newsItem.id === action.payload.id) {
-            returnValue = { ...returnValue, ...action.payload };
-          }
-          return returnValue;
-        });
-      } else {
-        return [...state, action.payload];
-      }
-    }
-    case 'update': {
-      return state.map((newsItem) => {
-        let returnValue = { ...newsItem };
-        if (newsItem.id === action.payload.id) {
-          returnValue = { ...returnValue, ...action.payload };
-        }
-        return returnValue;
-      });
-    }
-    case 'remove': {
-      return state.filter((newsItem) => newsItem.id !== action.payload);
-    }
-  }
-};
-
-export const NewsProvider = ({ children }: NewsProviderProps) => {
-  const [state, dispatch] = useReducer(newsReducer, []);
-  return (
-    <NewsStateContext.Provider value={state}>
-      <NewsDispatchContext.Provider value={dispatch}>{children}</NewsDispatchContext.Provider>
-    </NewsStateContext.Provider>
-  );
-};
-
-const useNewsState = () => {
-  const context = useContext(NewsStateContext);
-  if (context === undefined) {
-    throw new Error('useNewsState must be used within a NewsProvider');
-  }
-  return context;
-};
-
-const useNewsDispatch = () => {
-  const context = useContext(NewsDispatchContext);
-  if (context === undefined) {
-    throw new Error('useNewsDispatch must be used within a NewsProvider');
-  }
-  return context;
-};
+const QUERY_KEY = 'news';
 
 export const useNewsById = (id: number) => {
-  const { getNewsById } = useNews();
-  const news = useNewsState();
-  const [newsData, setNewsData] = useState<News | null>(null);
-  const [error, setError] = useState<RequestResponse | null>(null);
-
-  useEffect(() => {
-    let subscribed = true;
-    getNewsById(id)
-      .then((data) => {
-        !subscribed || setNewsData(data);
-        !subscribed || setError(null);
-      })
-      .catch((error: RequestResponse) => {
-        !subscribed || setError(error);
-        !subscribed || setNewsData(null);
-      });
-    return () => {
-      subscribed = false;
-    };
-  }, [id, getNewsById, news]);
-
-  return [newsData, error] as const;
+  return useQuery<News, RequestResponse>([QUERY_KEY, id], () => API.getNewsItem(id), { enabled: id !== -1 });
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useNews = () => {
-  const news = useNewsState();
-  const dispatch = useNewsDispatch();
+  return useInfiniteQuery<PaginationResponse<News>, RequestResponse>([QUERY_KEY], ({ pageParam = 1 }) => API.getNewsItems({ page: pageParam }), {
+    getNextPageParam: (lastPage) => lastPage.next,
+  });
+};
 
-  const getNews = useCallback(() => API.getNewsItems(), []);
-
-  const getNewsById = useCallback(
-    async (id: number) => {
-      const newsItem = news.find((item) => item.id === Number(id));
-      if (newsItem) {
-        return Promise.resolve(newsItem);
-      } else {
-        return API.getNewsItem(id).then((data) => {
-          dispatch({ type: 'add', payload: data });
-          return data;
-        });
-      }
+export const useCreateNews = (): UseMutationResult<News, RequestResponse, NewsRequired, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation((newNewsItem: NewsRequired) => API.createNewsItem(newNewsItem), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(QUERY_KEY);
+      queryClient.setQueryData([QUERY_KEY, data.id], data);
     },
-    [news, dispatch],
-  );
+  });
+};
 
-  const createNews = useCallback(
-    (newsData: NewsRequired) =>
-      API.createNewsItem(newsData).then((data) => {
-        dispatch({
-          type: 'add',
-          payload: data,
-        });
-        return data;
-      }),
-    [dispatch],
-  );
+export const useUpdateNews = (id: number): UseMutationResult<News, RequestResponse, NewsRequired, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation((updatedNewsItem: NewsRequired) => API.putNewsItem(id, updatedNewsItem), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(QUERY_KEY);
+      queryClient.setQueryData([QUERY_KEY, id], data);
+    },
+  });
+};
 
-  const updateNews = useCallback(
-    (id: number, newsData: NewsRequired) =>
-      API.putNewsItem(id, newsData).then((data) => {
-        dispatch({
-          type: 'update',
-          payload: data,
-        });
-        return data;
-      }),
-    [dispatch],
-  );
-
-  const deleteNews = useCallback(
-    (id: number) =>
-      API.deleteNewsItem(id).then((data) => {
-        dispatch({
-          type: 'remove',
-          payload: id,
-        });
-        return data;
-      }),
-    [dispatch],
-  );
-
-  return { NewsProvider, getNews, getNewsById, createNews, updateNews, deleteNews };
+export const useDeleteNews = (id: number): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation(() => API.deleteNewsItem(id), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(QUERY_KEY);
+    },
+  });
 };

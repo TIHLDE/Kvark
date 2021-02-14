@@ -1,9 +1,5 @@
-import { useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
-import { EventCompact, News } from 'types/Types';
-import { useEvent } from 'api/hooks/Event';
-import { useNews } from 'api/hooks/News';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -43,21 +39,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Landing = () => {
   const classes = useStyles();
-  const { getEvents } = useEvent();
-  const { getNews } = useNews();
-  const [news, setNews] = useState<Array<News>>([]);
-  const [events, setEvents] = useState<Array<EventCompact>>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    let subscribed = true;
-    Promise.all([getNews().then((data) => !subscribed || setNews(data)), getEvents().then((data) => !subscribed || setEvents(data.results))]).then(
-      () => !subscribed || setIsLoading(false),
-    );
-    return () => {
-      subscribed = false;
-    };
-  }, [getEvents, getNews]);
 
   return (
     <Navigation banner={<Wave />} fancyNavbar maxWidth={false}>
@@ -69,21 +50,21 @@ const Landing = () => {
           <Typography align='center' className={classes.header} color='inherit' variant='h2'>
             Siste
           </Typography>
-          <StoriesView events={events} isLoading={isLoading} news={news} />
+          <StoriesView />
         </Container>
       </div>
       <Container className={classes.section} maxWidth='lg'>
         <Typography align='center' className={classes.header} color='inherit' variant='h2'>
           Arrangementer
         </Typography>
-        <EventsView events={events} isLoading={isLoading} />
+        <EventsView />
       </Container>
       <div className={classes.smoke}>
         <Container className={classes.section} maxWidth='lg'>
           <Typography align='center' className={classes.header} color='inherit' variant='h2'>
             Nyheter
           </Typography>
-          <NewsListView isLoading={isLoading} news={news} />
+          <NewsListView />
         </Container>
       </div>
     </Navigation>

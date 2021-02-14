@@ -1,20 +1,18 @@
 import URLS from 'URLS';
 import { useNavigate, useParams } from 'react-router-dom';
-
-// API and store imports
-import { useJobPosts } from 'api/hooks/JobPost';
+import { useNews } from 'api/hooks/News';
 
 // Material-UI
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 // Project components
 import Paper from 'components/layout/Paper';
 import Navigation from 'components/navigation/Navigation';
 import SidebarList from 'components/layout/SidebarList';
-import JobPostEditor from 'containers/JobPostAdministration/components/JobPostEditor';
+import NewsEditor from 'containers/NewsAdministration/components/NewsEditor';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(4),
     marginLeft: theme.spacing(35),
@@ -34,35 +32,36 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const JobPostAdministration = () => {
+const NewsAdministration = () => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const { jobPostId } = useParams();
+  const { newsId } = useParams();
 
-  const goToJobPost = (newJobPost: number | null) => {
-    if (newJobPost) {
-      navigate(`${URLS.jobpostsAdmin}${newJobPost}/`);
+  const goToNews = (newNews: number | null) => {
+    if (newNews) {
+      navigate(`${URLS.newsAdmin}${newNews}/`);
     } else {
-      navigate(URLS.jobpostsAdmin);
+      navigate(URLS.newsAdmin);
     }
   };
 
   return (
     <Navigation maxWidth={false} noFooter>
       <SidebarList
-        descKey='company'
-        onItemClick={(id: number | null) => goToJobPost(id || null)}
-        selectedItemId={Number(jobPostId)}
-        title='Annonser'
-        useHook={useJobPosts}
+        descKey='header'
+        noExpired
+        onItemClick={(id: number | null) => goToNews(id || null)}
+        selectedItemId={Number(newsId)}
+        title='Nyheter'
+        useHook={useNews}
       />
       <div className={classes.root}>
         <div className={classes.content}>
           <Typography className={classes.header} variant='h2'>
-            {jobPostId ? 'Endre annonse' : 'Ny annonse'}
+            {newsId ? 'Endre nyhet' : 'Ny nyhet'}
           </Typography>
           <Paper>
-            <JobPostEditor goToJobPost={goToJobPost} jobpostId={Number(jobPostId)} />
+            <NewsEditor goToNews={goToNews} newsId={Number(newsId)} />
           </Paper>
         </div>
       </div>
@@ -70,4 +69,4 @@ const JobPostAdministration = () => {
   );
 };
 
-export default JobPostAdministration;
+export default NewsAdministration;

@@ -18,8 +18,8 @@ export interface LoginRequestResponse {
 
 export interface PaginationResponse<T> {
   count: number;
-  next: string | null;
-  previous: string | null;
+  next: number | null;
+  previous: number | null;
   results: Array<T>;
 }
 
@@ -47,8 +47,6 @@ export type UserCreate = Pick<User, 'email' | 'first_name' | 'last_name' | 'user
   password: string;
 };
 
-export type NewsRequired = Partial<News> & Pick<News, 'title' | 'header' | 'body'>;
-
 export interface Badge {
   title: string;
   description: string;
@@ -63,6 +61,8 @@ export interface Notification {
   read: boolean;
   message: string;
 }
+
+export type NewsRequired = Partial<News> & Pick<News, 'title' | 'header' | 'body'>;
 
 export interface News {
   id: number;
@@ -92,6 +92,7 @@ export interface JobPost {
   location: string;
   title: string;
   updated_at: string;
+  is_continuously_hiring: boolean;
 }
 
 export interface Event {

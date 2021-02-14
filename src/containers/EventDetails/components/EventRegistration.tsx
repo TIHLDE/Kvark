@@ -1,8 +1,8 @@
 import { ComponentType, useState } from 'react';
-import { Event, Registration, User } from 'types/Types';
+import { Event, User } from 'types/Types';
 import URLS from 'URLS';
 import { getUserStudyShort, shortDownString } from 'utils';
-import { useEvent } from 'api/hooks/Event';
+import { useCreateEventRegistration } from 'api/hooks/Event';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
@@ -64,12 +64,11 @@ const ListItem = ({ icon: Icon, text }: ListItemProps) => {
 export type EventRegistrationProps = {
   event: Event;
   user: User;
-  setRegistration: (registration: Registration) => void;
 };
 
-const EventRegistration = ({ event, user, setRegistration }: EventRegistrationProps) => {
+const EventRegistration = ({ event, user }: EventRegistrationProps) => {
   const classes = useStyles();
-  const { createRegistration } = useEvent();
+  const createRegistration = useCreateEventRegistration(event.id);
   const showSnackbar = useSnackbar();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [questionsAnswered, setQuestionsAnswered] = useState(true);
@@ -78,17 +77,20 @@ const EventRegistration = ({ event, user, setRegistration }: EventRegistrationPr
   const [allowPhoto, setAllowPhoto] = useState(true);
   const allergy = user.allergy ? shortDownString(user.allergy, 20) : 'Ingen';
 
-  const register = () => {
+  const register = async () => {
     setIsLoading(true);
-    createRegistration(event.id, { allow_photo: allowPhoto })
-      .then((registration) => {
-        setRegistration(registration);
-        showSnackbar('Påmeldingen var vellykket', 'success');
-      })
-      .catch((error) => {
-        showSnackbar(error.detail, 'error');
-      })
-      .finally(() => setIsLoading(false));
+    await createRegistration.mutate(
+      { allow_photo: allowPhoto },
+      {
+        onSuccess: () => {
+          showSnackbar('Påmeldingen var vellykket', 'success');
+        },
+        onError: (e) => {
+          showSnackbar(e.detail, 'error');
+        },
+      },
+    );
+    setIsLoading(false);
   };
 
   return (

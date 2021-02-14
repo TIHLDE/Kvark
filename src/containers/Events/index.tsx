@@ -1,11 +1,14 @@
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import Helmet from 'react-helmet';
 import { useForm } from 'react-hook-form';
-import { useJobPosts } from 'api/hooks/JobPost';
+import { useEvents } from 'api/hooks/Event';
+import { useMisc } from 'api/hooks/Misc';
+import { Category } from 'types/Types';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
+import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 
 // Project Components
@@ -14,6 +17,7 @@ import Banner from 'components/layout/Banner';
 import Pagination from 'components/layout/Pagination';
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 import Paper from 'components/layout/Paper';
+import Select from 'components/inputs/Select';
 import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
@@ -60,40 +64,46 @@ const useStyles = makeStyles((theme) => ({
 
 type Filters = {
   search?: string;
+  category?: string;
 };
 
-const JobPosts = () => {
+const Events = () => {
   const classes = useStyles();
+  const { getCategories } = useMisc();
+  const [categories, setCategories] = useState<Array<Category>>([]);
   const [filters, setFilters] = useState<Filters>({});
-  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useJobPosts(filters);
-  const { register, handleSubmit, setValue } = useForm<Filters>();
+  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents(filters);
+  const { register, control, handleSubmit, setValue } = useForm<Filters>();
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 
+  useEffect(() => {
+    getCategories().then(setCategories);
+  }, []);
+
   const resetFilters = () => {
+    setValue('category', '');
     setValue('search', '');
     setFilters({});
   };
 
-  const search = (data: Filters) => {
-    setFilters(data.search?.trim() !== '' ? { search: data.search } : {});
-  };
+  const search = (data: Filters) => setFilters(data);
 
   return (
-    <Navigation banner={<Banner title='Karriere' />} fancyNavbar>
+    <Navigation banner={<Banner title='Arrangementer' />} fancyNavbar>
       <Helmet>
-        <title>Karriere</title>
+        <title>Arrangementer</title>
       </Helmet>
       <div className={classes.grid}>
         <div className={classes.list}>
           {isLoading && <ListItemLoading />}
-          {isEmpty && <NotFoundIndicator header='Fant ingen annonser' />}
+          {isEmpty && <NotFoundIndicator header='Fant ingen arrangementer' />}
           {error && <Paper>{error.detail}</Paper>}
           {data !== undefined && (
             <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
               {data.pages.map((page, i) => (
                 <Fragment key={i}>
-                  {page.results.map((jobpost) => (
-                    <ListItem jobpost={jobpost} key={jobpost.id} />
+                  {page.results.map((event) => (
+                    <ListItem event={event} key={event.id} />
                   ))}
                 </Fragment>
               ))}
@@ -103,7 +113,14 @@ const JobPosts = () => {
         </div>
         <Paper className={classes.settings}>
           <form onSubmit={handleSubmit(search)}>
-            <TextField disabled={isFetching} errors={{}} label='Søk' name='search' register={register} />
+            <TextField disabled={isFetching} errors={{}} label='Søk' margin='none' name='search' register={register} />
+            <Select control={control} errors={{}} label='Kategori' name='category'>
+              {categories.map((value, index) => (
+                <MenuItem key={index} value={value.id}>
+                  {value.text}
+                </MenuItem>
+              ))}
+            </Select>
             <SubmitButton disabled={isFetching} errors={{}}>
               Søk
             </SubmitButton>
@@ -118,4 +135,4 @@ const JobPosts = () => {
   );
 };
 
-export default JobPosts;
+export default Events;

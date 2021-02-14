@@ -1,9 +1,8 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import URLS from 'URLS';
-import { useAuth } from 'api/hooks/Auth';
+import { useLogin } from 'api/hooks/User';
 import { useMisc } from 'api/hooks/Misc';
 
 // Material UI Components
@@ -61,25 +60,24 @@ type LoginData = {
 const LogIn = () => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const { logIn } = useAuth();
+  const logIn = useLogin();
   const { setLogInRedirectURL, getLogInRedirectURL } = useMisc();
   const { register, errors, handleSubmit, setError } = useForm<LoginData>();
-  const [isLoading, setIsLoading] = useState(false);
 
   const onLogin = async (data: LoginData) => {
-    if (isLoading) {
-      return;
-    }
-    setIsLoading(true);
-    try {
-      await logIn(data.username, data.password);
-      const redirectURL = getLogInRedirectURL();
-      setLogInRedirectURL(null);
-      navigate(redirectURL || URLS.landing);
-    } catch (e) {
-      setError('password', { message: e.detail || 'Noe gikk galt' });
-      setIsLoading(false);
-    }
+    logIn.mutate(
+      { username: data.username, password: data.password },
+      {
+        onSuccess: () => {
+          const redirectURL = getLogInRedirectURL();
+          setLogInRedirectURL(null);
+          navigate(redirectURL || URLS.landing);
+        },
+        onError: (e) => {
+          setError('password', { message: e.detail || 'Noe gikk galt' });
+        },
+      },
+    );
   };
 
   return (
@@ -88,12 +86,12 @@ const LogIn = () => {
         <title>Logg inn</title>
       </Helmet>
       <Paper className={classes.paper}>
-        {isLoading && <LinearProgress className={classes.progress} />}
+        {logIn.isLoading && <LinearProgress className={classes.progress} />}
         <TihldeLogo className={classes.logo} darkColor='white' lightColor='blue' size='large' />
         <Typography variant='h3'>Logg inn</Typography>
         <form onSubmit={handleSubmit(onLogin)}>
           <TextField
-            disabled={isLoading}
+            disabled={logIn.isLoading}
             errors={errors}
             label='Brukernavn'
             name='username'
@@ -105,7 +103,7 @@ const LogIn = () => {
             }}
           />
           <TextField
-            disabled={isLoading}
+            disabled={logIn.isLoading}
             errors={errors}
             label='Passord'
             name='password'
@@ -114,14 +112,14 @@ const LogIn = () => {
             rules={{ required: 'Feltet er påkrevd' }}
             type='password'
           />
-          <SubmitButton className={classes.button} disabled={isLoading} errors={errors}>
+          <SubmitButton className={classes.button} disabled={logIn.isLoading} errors={errors}>
             Logg inn
           </SubmitButton>
           <div className={classes.buttons}>
-            <Button className={classes.button} color='primary' component={Link} disabled={isLoading} fullWidth to={URLS.forgotPassword}>
+            <Button className={classes.button} color='primary' component={Link} disabled={logIn.isLoading} fullWidth to={URLS.forgotPassword}>
               Glemt passord?
             </Button>
-            <Button className={classes.button} color='primary' component={Link} disabled={isLoading} fullWidth to={URLS.signup}>
+            <Button className={classes.button} color='primary' component={Link} disabled={logIn.isLoading} fullWidth to={URLS.signup}>
               Opprett bruker
             </Button>
           </div>

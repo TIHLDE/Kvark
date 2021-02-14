@@ -1,9 +1,7 @@
 import classNames from 'classnames';
 import URLS from 'URLS';
 import { Link } from 'react-router-dom';
-
-// Services
-import { useAuth } from 'api/hooks/Auth';
+import { useIsAuthenticated } from 'api/hooks/User';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -139,7 +137,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Wave = () => {
   const classes = useStyles();
-  const { isAuthenticated } = useAuth();
+  const isAuthenticated = useIsAuthenticated();
   return (
     <div className={classes.root}>
       <div className={classes.container}>
@@ -150,7 +148,7 @@ const Wave = () => {
             samhandling ved NTNU
           </Typography>
           <div className={classes.contentButtons}>
-            {isAuthenticated() ? (
+            {isAuthenticated ? (
               <Button className={classes.contentButtonPrimary} color='inherit' component={Link} to={URLS.profile} variant='contained'>
                 Min side
               </Button>

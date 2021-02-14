@@ -21,7 +21,7 @@ import OpenInNewIcon from '@material-ui/icons/OpenInNewRounded';
 
 // Project Components
 import Paper from 'components/layout/Paper';
-import Pageination from 'components/layout/Pageination';
+import Pagination from 'components/layout/Pagination';
 
 const useStyles = makeStyles((theme: Theme) => ({
   grid: {
@@ -116,7 +116,7 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
           Fag:
         </Typography>
       </div>
-      <Pageination fullWidth hasNextPage={hasNextPage} isLoading={isLoading} nextPage={getNextPage}>
+      <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isLoading} nextPage={getNextPage}>
         {files.length ? (
           <List aria-label='Filer'>
             {files.map((file, index) => (
@@ -159,7 +159,7 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
         ) : (
           <Typography align='center'>Fant ingen oppskrifter</Typography>
         )}
-      </Pageination>
+      </Pagination>
     </>
   );
 };

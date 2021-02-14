@@ -2,7 +2,7 @@ import { useState } from 'react';
 import classnames from 'classnames';
 import URLS from 'URLS';
 import { Link } from 'react-router-dom';
-import { useAuth } from 'api/hooks/Auth';
+import { useIsAuthenticated } from 'api/hooks/User';
 
 // Material UI Components
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -126,7 +126,7 @@ export type IProps = {
 
 const Sidebar = ({ items, onClose, open }: IProps) => {
   const classes = useStyles();
-  const { isAuthenticated } = useAuth();
+  const isAuthenticated = useIsAuthenticated();
   const theme = useTheme();
   return (
     <Drawer anchor='top' classes={{ paper: classes.sidebar }} onClose={onClose} open={open} style={{ zIndex: theme.zIndex.drawer - 1 }}>
@@ -134,7 +134,7 @@ const Sidebar = ({ items, onClose, open }: IProps) => {
         {items.map((item, i) => (
           <SidebarItem key={i} {...item} />
         ))}
-        {isAuthenticated() ? <SidebarItem text='Min side' to={URLS.profile} type='link' /> : <SidebarItem text='Logg inn' to={URLS.login} type='link' />}
+        {isAuthenticated ? <SidebarItem text='Min side' to={URLS.profile} type='link' /> : <SidebarItem text='Logg inn' to={URLS.login} type='link' />}
       </div>
     </Drawer>
   );

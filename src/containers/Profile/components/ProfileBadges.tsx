@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { useUser } from 'api/hooks/User';
 import { Badge } from 'types/Types';
 import Paper from 'components/layout/Paper';
@@ -56,25 +55,15 @@ const BadgeItem = ({ badge }: BadgeItemProps) => {
 };
 
 const ProfileBadges = () => {
-  const [badges, setBadges] = useState<Array<Badge>>([]);
-  const { getUserData } = useUser();
-
-  useEffect(() => {
-    getUserData().then((user) => {
-      if (user) {
-        setBadges(user.badges);
-      }
-    });
-  }, [getUserData]);
-
+  const { data: user } = useUser();
   return (
     <div>
-      {badges.length ? (
+      {user !== undefined && Boolean(user.badges.length) ? (
         <Grid container spacing={1}>
-          {badges.map((badgeData, key) => {
+          {user.badges.map((badge) => {
             return (
-              <Grid item key={key} md={6} xs={12}>
-                <BadgeItem badge={badgeData} />
+              <Grid item key={badge.id} md={6} xs={12}>
+                <BadgeItem badge={badge} />
               </Grid>
             );
           })}

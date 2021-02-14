@@ -6,7 +6,7 @@ import URLS from 'URLS';
 import { EMAIL_REGEX } from 'constant';
 import { getUserStudyLong, getUserClass } from 'utils';
 import { UserCreate } from 'types/Types';
-import { useAuth } from 'api/hooks/Auth';
+import { useCreateUser } from 'api/hooks/User';
 import { useMisc } from 'api/hooks/Misc';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
@@ -74,17 +74,13 @@ type SignUpData = UserCreate & {
 const SignUp = () => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const { createUser } = useAuth();
+  const createUser = useCreateUser();
   const showSnackbar = useSnackbar();
   const { handleSubmit, errors, control, setError, register } = useForm<SignUpData>();
   const { setLogInRedirectURL, getLogInRedirectURL } = useMisc();
-  const [isLoading, setIsLoading] = useState(false);
   const [faqOpen, setFaqOpen] = useState(false);
 
   const onSignUp = async (data: SignUpData) => {
-    if (isLoading) {
-      return;
-    }
     if (getUserStudyLong(data.user_study) === 'Digital samhandling' && ![4, 5].includes(data.user_class)) {
       setError('user_class', { message: 'Digital samhandling har kun 4 og 5 klasse' });
       return;
@@ -99,25 +95,25 @@ const SignUp = () => {
       return;
     }
 
-    setIsLoading(true);
-    try {
-      const userData = {
-        user_id: data.user_id.toLowerCase(),
-        first_name: data.first_name,
-        last_name: data.last_name,
-        email: data.email,
-        user_class: data.user_class,
-        user_study: data.user_study,
-        password: data.password,
-      } as UserCreate;
-      await createUser(userData);
-      const redirectURL = getLogInRedirectURL();
-      setLogInRedirectURL(null);
-      navigate(redirectURL || URLS.login);
-    } catch (e) {
-      setIsLoading(false);
-      showSnackbar(e.detail, 'error');
-    }
+    const userData = {
+      user_id: data.user_id.toLowerCase(),
+      first_name: data.first_name,
+      last_name: data.last_name,
+      email: data.email,
+      user_class: data.user_class,
+      user_study: data.user_study,
+      password: data.password,
+    } as UserCreate;
+    createUser.mutate(userData, {
+      onSuccess: () => {
+        const redirectURL = getLogInRedirectURL();
+        setLogInRedirectURL(null);
+        navigate(redirectURL || URLS.login);
+      },
+      onError: (e) => {
+        showSnackbar(e.detail, 'error');
+      },
+    });
   };
 
   return (
@@ -126,13 +122,13 @@ const SignUp = () => {
         <title>Ny bruker</title>
       </Helmet>
       <Paper className={classes.paper}>
-        {isLoading && <LinearProgress className={classes.progress} />}
+        {createUser.isLoading && <LinearProgress className={classes.progress} />}
         <TihldeLogo className={classes.logo} darkColor='white' lightColor='blue' size='large' />
         <Typography variant='h3'>Opprett bruker</Typography>
         <form onSubmit={handleSubmit(onSignUp)}>
           <div className={classes.double}>
             <TextField
-              disabled={isLoading}
+              disabled={createUser.isLoading}
               errors={errors}
               label='Fornavn'
               name='first_name'
@@ -141,7 +137,7 @@ const SignUp = () => {
               rules={{ required: 'Feltet er påkrevd' }}
             />
             <TextField
-              disabled={isLoading}
+              disabled={createUser.isLoading}
               errors={errors}
               label='Etternavn'
               name='last_name'
@@ -151,7 +147,7 @@ const SignUp = () => {
             />
           </div>
           <TextField
-            disabled={isLoading}
+            disabled={createUser.isLoading}
             errors={errors}
             label='Feide brukernavn'
             name='user_id'
@@ -160,7 +156,7 @@ const SignUp = () => {
             rules={{ required: 'Feltet er påkrevd', validate: (value) => !value.includes('@') || 'Brukernavn må være uten @stud.ntnu.no' }}
           />
           <TextField
-            disabled={isLoading}
+            disabled={createUser.isLoading}
             errors={errors}
             label='E-post'
             name='email'
@@ -193,7 +189,7 @@ const SignUp = () => {
           </div>
           <div className={classes.double}>
             <TextField
-              disabled={isLoading}
+              disabled={createUser.isLoading}
               errors={errors}
               label='Passord'
               name='password'
@@ -209,7 +205,7 @@ const SignUp = () => {
               type='password'
             />
             <TextField
-              disabled={isLoading}
+              disabled={createUser.isLoading}
               errors={errors}
               label='Gjenta passord'
               name='password_verify'
@@ -228,10 +224,10 @@ const SignUp = () => {
           <Typography variant='body2'>
             OBS: Når du har klikket &quot;Opprett bruker&quot; må vi godkjenne deg før du får logge inn. Les mer om hvorfor lengre ned.
           </Typography>
-          <SubmitButton className={classes.button} disabled={isLoading} errors={errors}>
+          <SubmitButton className={classes.button} disabled={createUser.isLoading} errors={errors}>
             Opprett bruker
           </SubmitButton>
-          <Button className={classes.button} color='primary' component={Link} disabled={isLoading} fullWidth to={URLS.login}>
+          <Button className={classes.button} color='primary' component={Link} disabled={createUser.isLoading} fullWidth to={URLS.login}>
             Logg inn
           </Button>
           <Button

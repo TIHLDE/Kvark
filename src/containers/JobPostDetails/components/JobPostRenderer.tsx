@@ -1,4 +1,3 @@
-import classnames from 'classnames';
 import parseISO from 'date-fns/parseISO';
 import { Link } from 'react-router-dom';
 import { formatDate } from 'utils';
@@ -15,7 +14,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 
 // Project Components
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
+import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 import Paper from 'components/layout/Paper';
 
@@ -34,9 +33,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.shape.borderRadius,
   },
   title: {
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '2rem',
-    },
+    fontSize: '2.4rem',
   },
   infoBox: {
     marginBottom: theme.spacing(2),
@@ -70,7 +67,7 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
         <Typography className={classes.title} gutterBottom variant='h1'>
           {data.title}
         </Typography>
-        <MarkdownRenderer value={data.ingress} />
+        <MarkdownRenderer value={data.ingress || ''} />
         <MarkdownRenderer value={data.body} />
       </Paper>
       <div>
@@ -79,7 +76,7 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
         </div>
         <Paper className={classes.infoBox}>
           <DetailContent info={data.company} title='Bedrift: ' />
-          <DetailContent info={deadline} title='Søknadsfrist: ' />
+          <DetailContent info={data.is_continuously_hiring ? 'Fortløpende opptak' : deadline} title='Søknadsfrist: ' />
           <DetailContent info={data.location} title='Sted: ' />
           {data.email && (
             <DetailContent
@@ -126,7 +123,7 @@ export const JobPostRendererLoading = () => {
         <Skeleton className={classes.skeleton} height={40} width='90%' />
       </Paper>
       <div>
-        <Skeleton className={classnames(classes.infoBox, classes.image)} height={150} variant='rect' width='100%' />
+        <AspectRatioLoading className={classes.infoBox} imgClassName={classes.image} />
         <Paper className={classes.infoBox}>
           <DetailContentLoading />
           <DetailContentLoading />
