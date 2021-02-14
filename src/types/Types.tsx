@@ -18,8 +18,8 @@ export interface LoginRequestResponse {
 
 export interface PaginationResponse<T> {
   count: number;
-  next: string | null;
-  previous: string | null;
+  next: number | null;
+  previous: number | null;
   results: Array<T>;
 }
 

@@ -1,7 +1,6 @@
 import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
 import { useRefreshUser } from 'api/hooks/User';
-import { getParameterByName } from 'utils';
 import { Event, EventRequired, EventCompact, Registration, PaginationResponse, RequestResponse } from 'types/Types';
 
 const QUERY_KEY = 'event';
@@ -17,7 +16,7 @@ export const useEvents = (filters?: any) => {
     [QUERY_KEY, filters],
     ({ pageParam = 1 }) => API.getEvents({ ...filters, page: pageParam }),
     {
-      getNextPageParam: (lastPage) => getParameterByName('page', lastPage.next),
+      getNextPageParam: (lastPage) => lastPage.next,
     },
   );
 };

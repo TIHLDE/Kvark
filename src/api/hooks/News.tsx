@@ -8,8 +8,11 @@ export const useNewsById = (id: number) => {
   return useQuery<News, RequestResponse>([QUERY_KEY, id], () => API.getNewsItem(id), { enabled: id !== -1 });
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useNews = () => {
-  return useInfiniteQuery<PaginationResponse<News>, RequestResponse>(QUERY_KEY, () => API.getNewsItems());
+  return useInfiniteQuery<PaginationResponse<News>, RequestResponse>([QUERY_KEY], ({ pageParam = 1 }) => API.getNewsItems({ page: pageParam }), {
+    getNextPageParam: (lastPage) => lastPage.next,
+  });
 };
 
 export const useCreateNews = (): UseMutationResult<News, RequestResponse, NewsRequired, unknown> => {

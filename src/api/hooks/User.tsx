@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { getParameterByName } from 'utils';
 import { User, UserCreate, LoginRequestResponse, PaginationResponse, RequestResponse } from 'types/Types';
 import { Groups } from 'types/Enums';
 import { getCookie, setCookie, removeCookie } from 'api/cookie';
@@ -28,7 +27,7 @@ export const useUsers = (filters?: any) => {
     [QUERY_KEY_USERS, filters],
     ({ pageParam = 1 }) => API.getUsers({ ...filters, page: pageParam }),
     {
-      getNextPageParam: (lastPage) => getParameterByName('page', lastPage.next),
+      getNextPageParam: (lastPage) => lastPage.next,
     },
   );
 };
