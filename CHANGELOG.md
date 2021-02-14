@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.0.2 (14.02.2021)
+
 - ⚡ **Bedre brukeradmin**. Nytt utseende og bedre filtrering/søk.
 - ⚡ **Avmelding på venteliste**. Personer på ventelisten kan nå melde seg av arrangementer også etter avmeldingsfristen.
 - 🎨 **Avrundede ikoner**. Avrundet alle ikoner på siden for gjennomgående utseende.
