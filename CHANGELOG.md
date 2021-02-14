@@ -20,6 +20,8 @@
 - 🦟 **Bedre feilhåndtering**. Feilmeldinger som mottas fra backend håndteres bedre og mer sikkert.
 - ✨ **Oppdatert kokeboka**. Endret til bruk av react query istedenfor selvlaget hook.
 - ✨ **Oppdatert arrangementer**. Bedre caching med React Query og finere innlastning.
+- 🎨 **Ny footer**. Footeren har fått en oppgradering.
+- ✨ **Om Index**. Index har fått en egen side.
 
 ## Versjon 1.0.1 (01.02.2021)
 

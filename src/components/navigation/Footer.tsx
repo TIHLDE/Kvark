@@ -137,7 +137,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   soMeIcon: {
     width: 38,
-    transition: 'transform .15s',
+    transition: 'transform .14s',
     '&:hover': {
       transform: 'scale(1.1)',
     },
