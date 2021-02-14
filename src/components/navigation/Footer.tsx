@@ -1,13 +1,15 @@
 import { useState } from 'react';
-import URLS from 'URLS';
 import classnames from 'classnames';
+import URLS from 'URLS';
 import ThemeSettings from 'components/miscellaneous/ThemeSettings';
+import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import { Link } from 'react-router-dom';
 
 // Material UI Components
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
+import Divider from '@material-ui/core/Divider';
 
 // Icons
 import LightIcon from '@material-ui/icons/WbSunnyOutlined';
@@ -28,55 +30,79 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     position: 'relative',
     backgroundColor: theme.palette.colors.footer,
-    padding: theme.spacing(5, 0),
+    padding: theme.spacing(1, 0, 4),
     display: 'grid',
-    gridGap: theme.spacing(5),
-    gridTemplateColumns: '1fr 1fr 1fr 1fr',
-    gridTemplateAreas: "'sponsors about sosialMedia theme'",
+    gridGap: theme.spacing(3),
+    gridTemplateColumns: '1fr 1fr 1fr',
+    gridTemplateAreas: "'about main sponsors' 'index index index'",
     justifyItems: 'center',
     color: theme.palette.getContrastText(theme.palette.colors.footer),
     boxShadow: '0px -2px 5px 0px rgba(0,0,0,0.1)',
     [theme.breakpoints.down('md')]: {
-      gridTemplateRows: '1fr 1fr',
-      gridTemplateAreas: "'about sosialMedia' 'sponsors theme'",
+      gridTemplateAreas: "'main main' 'about sponsors' 'index index'",
       gridTemplateColumns: '1fr 1fr',
     },
     [theme.breakpoints.down('sm')]: {
-      gridTemplateRows: 'auto auto auto auto',
-      gridTemplateAreas: "'theme' 'about' 'sosialMedia' 'sponsors'",
-      gridTemplateColumns: '100%',
+      gridTemplateRows: 'auto auto auto',
+      gridTemplateAreas: "'main' 'about' 'sponsors' 'index'",
+      gridTemplateColumns: '1fr',
+    },
+  },
+  marginTopColumns: {
+    marginTop: theme.spacing(12),
+    [theme.breakpoints.down('md')]: {
+      marginTop: theme.spacing(4),
     },
   },
   about: {
     gridArea: 'about',
   },
+  main: {
+    gridArea: 'main',
+  },
   sponsors: {
     gridArea: 'sponsors',
   },
-  sosialMedia: {
-    gridArea: 'sosialMedia',
-  },
-  themeWrapper: {
-    gridArea: 'theme',
+  index: {
+    gridArea: 'index',
+    padding: theme.spacing(1, 0, 0),
   },
   flexColumn: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
-  sosialMediaGrid: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr',
-    gridGap: theme.spacing(1),
+  socialMediaWrapper: {
+    alignItems: 'center',
+    display: 'flex',
+    margin: theme.spacing(1, 0),
+    [theme.breakpoints.down('lg')]: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr 1fr',
+      gridGap: theme.spacing(2),
+    },
+    [theme.breakpoints.down('md')]: {
+      alignItems: 'center',
+      display: 'flex',
+      margin: theme.spacing(1, 0),
+    },
+    [theme.breakpoints.down('sm')]: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr 1fr',
+      gridGap: theme.spacing(2),
+    },
   },
   marginBottom: {
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(2),
   },
   link: {
     color: 'white',
   },
   imgLink: {
-    margin: '0 4px',
+    margin: theme.spacing(0, 2.5),
+    [theme.breakpoints.down('md')]: {
+      margin: theme.spacing(0, 2),
+    },
   },
   themeSettingsContainer: {
     height: 54,
@@ -85,7 +111,36 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.getContrastText(theme.palette.colors.footer),
   },
   themeSettingsIcon: {
-    fontSize: 30,
+    fontSize: 36,
+  },
+  attribute: {
+    textAlign: 'center',
+    marginBottom: theme.spacing(2),
+  },
+  attributeName: {
+    textTransform: 'uppercase',
+    color: theme.palette.common.white,
+    fontWeight: 600,
+  },
+  logo: {
+    minWidth: '250px',
+    width: '46%',
+    height: 'auto',
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '200px',
+    },
+  },
+  divider: {
+    margin: theme.spacing(1, 0, 2),
+    backgroundColor: '#fff',
+    width: 175,
+  },
+  soMeIcon: {
+    width: 38,
+    transition: 'transform .15s',
+    '&:hover': {
+      transform: 'scale(1.1)',
+    },
   },
 }));
 
@@ -102,13 +157,48 @@ const Footer = () => {
     { img: DISCORD, link: 'https://discord.gg/SZR9vTS' },
   ];
 
+  const attributes = [
+    { key: 'e-post', value: 'hs@tihlde.org' },
+    { key: 'lokasjon', value: 'c/o IDI NTNU' },
+    { key: 'organisasjonsnummer', value: '989 684 193' },
+  ];
+
   return (
     <div className={classes.root}>
       {showModal && <ThemeSettings onClose={() => setShowModal(false)} open={showModal} />}
-      <div className={classnames(classes.sponsors, classes.flexColumn)}>
-        <Typography align='center' className={classes.marginBottom} color='inherit' variant='h3'>
-          Samarbeid
+      <div className={classnames(classes.about, classes.flexColumn, classes.marginTopColumns)}>
+        <Typography variant='h2'>Kontakt</Typography>
+        <Divider className={classes.divider} />
+        {attributes.map((attribute, index) => (
+          <div className={classes.attribute} key={index}>
+            <Typography className={classes.attributeName}>{attribute.key}</Typography>
+            <Typography>{attribute.value}</Typography>
+          </div>
+        ))}
+        <Typography className={classes.marginBottom} color='inherit'>
+          <Link className={classes.link} to={URLS.contactInfo}>
+            Kontakt oss
+          </Link>
         </Typography>
+      </div>
+      <div className={classnames(classes.main, classes.flexColumn)}>
+        <TihldeLogo className={classes.logo} darkColor='white' lightColor='white' size='small' />
+        <Divider className={classes.divider} />
+        <div className={classes.socialMediaWrapper}>
+          {mediaList.map((media, index) => (
+            <a className={classes.imgLink} href={media.link} key={index} rel='noopener noreferrer' target='_blank'>
+              <img alt='SoMe' className={classes.soMeIcon} src={media.img} />
+            </a>
+          ))}
+        </div>
+        <Divider className={classes.divider} />
+        <IconButton aria-label='delete' className={classnames(classes.themeSettingsContainer, classes.marginBottom)} onClick={() => setShowModal(true)}>
+          <LightIcon className={classes.themeSettingsIcon} />
+        </IconButton>
+      </div>
+      <div className={classnames(classes.sponsors, classes.flexColumn, classes.marginTopColumns)}>
+        <Typography variant='h2'>Samarbeid</Typography>
+        <Divider className={classes.divider} />
         <a href='https://vercel.com/?utm_source=kvark&utm_campaign=oss' rel='noopener noreferrer' target='_blank'>
           <img alt='Vercel' className={classes.marginBottom} src={VERCEL} width={150} />
         </a>
@@ -116,46 +206,13 @@ const Footer = () => {
         <img alt='sit' className={classes.marginBottom} src={SIT} width={80} />
         <img alt='nextron' className={classes.marginBottom} src={NEXTTRON} width={80} />
       </div>
-      <div className={classes.about}>
-        <Typography align='center' className={classes.marginBottom} color='inherit' variant='h3'>
-          TIHLDE
-        </Typography>
-        <Typography align='center' className={classes.marginBottom} color='inherit'>
-          <a className={classes.link} href='mailto:hs@tihlde.org'>
-            hs@tihlde.org
-          </a>
-        </Typography>
-        <Typography align='center' className={classes.marginBottom} color='inherit'>
-          c/o IDI NTNU
-        </Typography>
-        <Typography align='center' className={classes.marginBottom} color='inherit'>
-          OrgNr: 989 684 183
-        </Typography>
-        <Typography align='center' className={classes.marginBottom} color='inherit'>
-          <Link className={classes.link} to={URLS.contactInfo}>
-            Kontaktinfo
+      <div className={classes.index}>
+        <Typography>
+          Feil på siden?{' '}
+          <Link className={classes.link} to={URLS.aboutIndex}>
+            Rapporter til Index
           </Link>
         </Typography>
-      </div>
-      <div className={classes.sosialMedia}>
-        <Typography align='center' className={classes.marginBottom} color='inherit' variant='h3'>
-          Sosiale medier
-        </Typography>
-        <div className={classes.sosialMediaGrid}>
-          {mediaList.map((media, index) => (
-            <a className={classes.link} href={media.link} key={index} rel='noopener noreferrer' target='_blank'>
-              <img alt='SoMe' className={classes.marginBottom} src={media.img} width={40} />
-            </a>
-          ))}
-        </div>
-      </div>
-      <div className={classnames(classes.themeWrapper, classes.flexColumn)}>
-        <Typography align='center' className={classes.marginBottom} color='inherit' variant='h3'>
-          Temavelger
-        </Typography>
-        <IconButton aria-label='delete' className={classes.themeSettingsContainer} onClick={() => setShowModal(true)}>
-          <LightIcon className={classes.themeSettingsIcon} />
-        </IconButton>
       </div>
     </div>
   );
