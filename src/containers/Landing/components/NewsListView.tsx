@@ -1,4 +1,4 @@
-import { News } from 'types/Types';
+import { useMemo } from 'react';
 import URLS from 'URLS';
 import { Link } from 'react-router-dom';
 
@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 
 // Project componets
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
+import { useNews } from 'api/hooks/News';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -29,14 +30,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export type IProps = {
-  news: Array<News>;
-  isLoading: boolean;
-};
-
 const NO_OF_NEWS_TO_SHOW = 2;
 
-const NewsListView = ({ news, isLoading }: IProps) => {
+const NewsListView = () => {
+  const { data, isLoading } = useNews();
+  const news = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   const classes = useStyles();
 
   if (isLoading) {

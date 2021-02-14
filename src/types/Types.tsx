@@ -47,8 +47,6 @@ export type UserCreate = Pick<User, 'email' | 'first_name' | 'last_name' | 'user
   password: string;
 };
 
-export type NewsRequired = Partial<News> & Pick<News, 'title' | 'header' | 'body'>;
-
 export interface Badge {
   title: string;
   description: string;
@@ -63,6 +61,8 @@ export interface Notification {
   read: boolean;
   message: string;
 }
+
+export type NewsRequired = Partial<News> & Pick<News, 'title' | 'header' | 'body'>;
 
 export interface News {
   id: number;

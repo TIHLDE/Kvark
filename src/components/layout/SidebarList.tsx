@@ -57,12 +57,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export type item = {
   id: number;
-  location: string;
+  location?: string;
   title: string;
 };
 
 export type SidebarListProps = {
-  expiredItems: item[];
+  expiredItems?: item[];
   fetchExpired?: () => void;
   getNextPage: () => void;
   isLoading: boolean;
@@ -128,7 +128,7 @@ const SidebarList = ({ items, expiredItems, onItemClick, selectedItemId, getNext
               </div>
               {isLoading && <LinearProgress />}
               <List className={classes.list} dense disablePadding>
-                {expiredItems.map((item) => (
+                {expiredItems?.map((item) => (
                   <ListItem button className={classes.listItem} key={item.id} onClick={() => handleItemClick(item.id)} selected={item.id === selectedItemId}>
                     <ListItemText primary={item.title} secondary={item.location} />
                   </ListItem>

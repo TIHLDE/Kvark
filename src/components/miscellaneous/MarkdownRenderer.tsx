@@ -77,7 +77,7 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
     return data ? <ListItem className={classes.content} jobpost={data} largeImg /> : <ListItemLoading />;
   };
   const News = ({ id }: ComponentProps) => {
-    const [data] = useNewsById(id);
+    const { data } = useNewsById(id);
     return data ? <ListItem className={classes.content} largeImg news={data} /> : <ListItemLoading />;
   };
 

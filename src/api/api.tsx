@@ -62,7 +62,7 @@ export default {
 
   // News
   getNewsItem: (id: number) => IFetch<News>({ method: 'GET', url: `news/${String(id)}/` }),
-  getNewsItems: (filters?: any) => IFetch<Array<News>>({ method: 'GET', url: `news/`, data: filters || {} }),
+  getNewsItems: (filters?: any) => IFetch<PaginationResponse<News>>({ method: 'GET', url: `news/`, data: filters || {} }),
   createNewsItem: (item: NewsRequired) => IFetch<News>({ method: 'POST', url: `news/`, data: item }),
   putNewsItem: (id: number, item: NewsRequired) => IFetch<News>({ method: 'PUT', url: `news/${String(id)}/`, data: item }),
   deleteNewsItem: (id: number) => IFetch<RequestResponse>({ method: 'DELETE', url: `news/${String(id)}/` }),

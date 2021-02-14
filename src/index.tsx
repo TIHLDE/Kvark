@@ -13,7 +13,6 @@ import { Groups } from 'types/Enums';
 import { ThemeProvider } from 'context/ThemeContext';
 import { useMisc, MiscProvider } from 'api/hooks/Misc';
 import { useHavePermission, useIsAuthenticated } from 'api/hooks/User';
-import { NewsProvider } from 'api/hooks/News';
 import { SnackbarProvider } from 'api/hooks/Snackbar';
 
 // Project components
@@ -93,12 +92,10 @@ export const Providers = ({ children }: ProvidersProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <MiscProvider>
-        <NewsProvider>
-          <ThemeProvider>
-            <CssBaseline />
-            <SnackbarProvider>{children}</SnackbarProvider>
-          </ThemeProvider>
-        </NewsProvider>
+        <ThemeProvider>
+          <CssBaseline />
+          <SnackbarProvider>{children}</SnackbarProvider>
+        </ThemeProvider>
       </MiscProvider>
       <ReactQueryDevtools />
     </QueryClientProvider>
@@ -152,7 +149,10 @@ const AppRoutes = () => {
         <Route element={<EventAdministration />} path=':eventId/' />
         <Route element={<EventAdministration />} path='' />
       </AuthRoute>
-      <AuthRoute element={<NewsAdministration />} groups={[Groups.HS, Groups.INDEX]} path={URLS.newsAdmin} />
+      <AuthRoute groups={[Groups.HS, Groups.INDEX]} path={URLS.newsAdmin}>
+        <Route element={<NewsAdministration />} path=':newsId/' />
+        <Route element={<NewsAdministration />} path='' />
+      </AuthRoute>
 
       <Route element={<LogIn />} path={URLS.login} />
       <Route element={<ForgotPassword />} path={URLS.forgotPassword} />

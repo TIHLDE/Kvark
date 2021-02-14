@@ -1,8 +1,5 @@
-import { useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
-import { News } from 'types/Types';
-import { useNews } from 'api/hooks/News';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -42,22 +39,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Landing = () => {
   const classes = useStyles();
-  const { getNews } = useNews();
-  const [news, setNews] = useState<Array<News>>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    let subscribed = true;
-    getNews().then((data) => {
-      if (subscribed) {
-        setNews(data);
-        setIsLoading(false);
-      }
-    });
-    return () => {
-      subscribed = false;
-    };
-  }, [getNews]);
 
   return (
     <Navigation banner={<Wave />} fancyNavbar maxWidth={false}>
@@ -69,7 +50,7 @@ const Landing = () => {
           <Typography align='center' className={classes.header} color='inherit' variant='h2'>
             Siste
           </Typography>
-          <StoriesView isLoading={isLoading} news={news} />
+          <StoriesView />
         </Container>
       </div>
       <Container className={classes.section} maxWidth='lg'>
@@ -83,7 +64,7 @@ const Landing = () => {
           <Typography align='center' className={classes.header} color='inherit' variant='h2'>
             Nyheter
           </Typography>
-          <NewsListView isLoading={isLoading} news={news} />
+          <NewsListView />
         </Container>
       </div>
     </Navigation>
