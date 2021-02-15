@@ -1,7 +1,7 @@
-import { useEffect, useMemo } from 'react';
+import { lazy, Suspense, useEffect, useMemo } from 'react';
 import Helmet from 'react-helmet';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import URLS from 'URLS';
+import URLS, { PAGES_URLS } from 'URLS';
 import { usePage } from 'api/hooks/Pages';
 import { Page } from 'types/Types';
 
@@ -19,6 +19,8 @@ import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import PagesAdmin from 'containers/Pages/components/PagesAdmin';
 import PagesList from 'containers/Pages/components/PagesList';
 
+const Index = lazy(() => import('containers/Pages/specials/Index'));
+
 type ThemeProps = {
   data?: Page;
 };
@@ -30,9 +32,9 @@ const useStyles = makeStyles<Theme, ThemeProps>((theme) => ({
   breadcrumb: {
     textTransform: 'capitalize',
   },
-  content: {
+  grid: {
     display: 'grid',
-    gridTemplateColumns: ({ data }) => (data?.content === '' ? '1fr 350px' : '300px 1fr'),
+    gridTemplateColumns: '300px 1fr',
     gridGap: theme.spacing(2),
     margin: theme.spacing(1, 0, 2),
     alignItems: 'self-start',
@@ -43,12 +45,19 @@ const useStyles = makeStyles<Theme, ThemeProps>((theme) => ({
   },
   inner: {
     display: 'grid',
-    gridTemplateColumns: ({ data }) => (data?.content !== '' && data?.image ? '1fr 350px' : '1fr'),
+    gridTemplateColumns: ({ data }) => (data?.image ? '1fr 350px' : '1fr'),
     gridGap: theme.spacing(2),
     alignItems: 'self-start',
     [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: () => '1fr',
     },
+    [theme.breakpoints.down('md')]: {
+      gridGap: theme.spacing(1),
+    },
+  },
+  content: {
+    display: 'grid',
+    gridGap: theme.spacing(2),
     [theme.breakpoints.down('md')]: {
       gridGap: theme.spacing(1),
     },
@@ -79,6 +88,15 @@ const Pages = () => {
     }
   }, [navigate, location.pathname, data]);
 
+  const SpecialContent = () => {
+    switch (path) {
+      case PAGES_URLS.ABOUT_INDEX:
+        return <Index />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <Navigation
       banner={
@@ -96,7 +114,7 @@ const Pages = () => {
         ))}
         <Typography className={classes.breadcrumb}>{levels[levels.length - 1].replaceAll('-', ' ')}</Typography>
       </Breadcrumbs>
-      <div className={classes.content}>
+      <div className={classes.grid}>
         {isLoading ? (
           <>
             <Paper className={classes.paper} noPadding>
@@ -124,11 +142,16 @@ const Pages = () => {
                 <PagesList pages={data.children} />
               </Paper>
               <div className={classes.inner}>
-                {Boolean(data.content.trim().length) && (
-                  <Paper>
-                    <MarkdownRenderer value={data.content} />
-                  </Paper>
-                )}
+                <div className={classes.content}>
+                  {Boolean(data.content.trim().length) && (
+                    <Paper>
+                      <MarkdownRenderer value={data.content} />
+                    </Paper>
+                  )}
+                  <Suspense fallback={null}>
+                    <SpecialContent />
+                  </Suspense>
+                </div>
                 {data.image && <img alt={data.image_alt || data.title} className={classes.image} src={data.image} />}
               </div>
             </>

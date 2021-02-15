@@ -1,3 +1,8 @@
+const PAGES = '/om/';
+export const PAGES_URLS = {
+  ABOUT_INDEX: 'tihlde/undergrupper/index/',
+};
+
 export default {
   landing: '/',
   events: '/arrangementer/',
@@ -17,8 +22,8 @@ export default {
   eventRules: '/arrangementsregler/',
   cheatsheet: '/kokebok/',
   news: '/nyheter/',
-  pages: '/om/',
-  aboutIndex: '/om/undergrupper/index/',
+  pages: PAGES,
+  aboutIndex: `${PAGES}${PAGES_URLS.ABOUT_INDEX}`,
 
   userAdmin: '/admin/brukere/',
   eventAdmin: '/admin/arrangementer/',

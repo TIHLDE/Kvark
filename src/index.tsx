@@ -21,7 +21,6 @@ import Navigation from 'components/navigation/Navigation';
 
 // Project containers
 import About from 'containers/About';
-import AboutIndex from 'containers/AboutIndex';
 import Cheatsheet from 'containers/Cheatsheet';
 import Companies from 'containers/Companies';
 import EventDetails from 'containers/EventDetails';
@@ -120,7 +119,6 @@ const AppRoutes = () => {
         <Route element={<Events />} path='' />
       </Route>
       <Route element={<About />} path={URLS.about} />
-      <Route element={<AboutIndex />} path={URLS.aboutIndex} />
       <Route element={<ContactInfo />} path={URLS.contactInfo} />
       <Route element={<Services />} path={URLS.services} />
       <Route element={<Companies />} path={URLS.company} />

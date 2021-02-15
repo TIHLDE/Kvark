@@ -60,14 +60,16 @@ const PagesList = ({ homeButton, pages }: IPagesListProps) => {
           <ListItemText primary='Tilbake' />
         </ListItem>
       )}
-      {pages.map((page, i) => (
-        <ListItem button component={Link} divider={pages.length - 1 !== i} key={page.slug} to={getToLink(page.slug)}>
-          <ListItemIcon>
-            <PageIcon />
-          </ListItemIcon>
-          <ListItemText primary={page.title} />
-        </ListItem>
-      ))}
+      {pages
+        .sort((a, b) => a.title.localeCompare(b.title))
+        .map((page, i) => (
+          <ListItem button component={Link} divider={pages.length - 1 !== i} key={page.slug} to={getToLink(page.slug)}>
+            <ListItemIcon>
+              <PageIcon />
+            </ListItemIcon>
+            <ListItemText primary={page.title} />
+          </ListItem>
+        ))}
     </List>
   );
 };
