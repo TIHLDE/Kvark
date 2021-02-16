@@ -5,13 +5,12 @@ import { usePalette } from 'react-palette';
 import Helmet from 'react-helmet';
 import { useParams, useNavigate } from 'react-router-dom';
 import { urlEncode } from 'utils';
-
-// Service imports
 import { useEventById } from 'api/hooks/Event';
 
 // Project components
+import Http404 from 'containers/Http404';
 import Navigation from 'components/navigation/Navigation';
-import EventRenderer from 'containers/EventDetails/components/EventRenderer';
+import EventRenderer, { EventRendererLoading } from 'containers/EventDetails/components/EventRenderer';
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -60,51 +59,47 @@ const useStyles = makeStyles((theme: Theme) => ({
 function EventDetails() {
   const classes = useStyles();
   const { id } = useParams();
-  const [event, error] = useEventById(Number(id));
+  const { data, isLoading, isError } = useEventById(Number(id));
   const navigate = useNavigate();
   const [eventTitle, setEventTitle] = useState('');
 
   useEffect(() => {
-    if (error) {
-      navigate(URLS.events);
-    }
     // To avoid scroll to top on every event-change. It only happens if the title has changed
-    if (event && event.title !== eventTitle) {
-      setEventTitle(event.title);
-      navigate(`${URLS.events}${id}/${urlEncode(event.title)}/`, { replace: true });
+    if (data && data.title !== eventTitle) {
+      setEventTitle(data.title);
+      navigate(`${URLS.events}${id}/${urlEncode(data.title)}/`, { replace: true });
     }
-  }, [id, eventTitle, event, navigate, error]);
+  }, [id, eventTitle, data, navigate]);
 
   // Find a dominant color in the image, uses a proxy to be able to retrieve images with CORS-policy until all images are stored in our own server
-  const { data } = usePalette(
-    event
-      ? `https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=${encodeURIComponent(event.image || '')}`
+  const { data: palette } = usePalette(
+    data
+      ? `https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=${encodeURIComponent(data.image || '')}`
       : '',
   );
+
+  if (isError) {
+    return <Http404 />;
+  }
 
   return (
     <Navigation
       banner={
         <div className={classes.top}>
-          <div className={classes.topInner} style={{ background: data.muted ? data.muted : '' }} />
+          <div className={classes.topInner} style={{ background: palette.muted ? palette.muted : '' }} />
         </div>
       }
-      fancyNavbar
-      isLoading={!event}>
-      {event && (
-        <>
-          <Helmet>
-            <title>{event.title} - TIHLDE</title>
-            <meta content={event.title} property='og:title' />
-            <meta content='website' property='og:type' />
-            <meta content={window.location.href} property='og:url' />
-            <meta content={event.image || 'https://tihlde.org' + TIHLDELOGO} property='og:image' />
-          </Helmet>
-          <div className={classes.wrapper}>
-            <EventRenderer event={event} />
-          </div>
-        </>
+      fancyNavbar>
+      {data && (
+        <Helmet>
+          <title>{data.title} - TIHLDE</title>
+          <meta content={data.title} property='og:title' />
+          <meta content='website' property='og:type' />
+          <meta content={window.location.href} property='og:url' />
+          <meta content={data.image || 'https://tihlde.org' + TIHLDELOGO} property='og:image' />
+        </Helmet>
       )}
+      <div className={classes.wrapper}>{isLoading ? <EventRendererLoading /> : data !== undefined && <EventRenderer data={data} />}</div>
     </Navigation>
   );
 }

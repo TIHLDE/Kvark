@@ -3,26 +3,23 @@ import ReactDOM from 'react-dom';
 import 'assets/css/index.css';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import URLS from 'URLS';
 import 'delayed-scroll-restoration-polyfill';
 import { Groups } from 'types/Enums';
 
 // Services
 import { ThemeProvider } from 'context/ThemeContext';
-import { useAuth } from 'api/hooks/Auth';
 import { useMisc, MiscProvider } from 'api/hooks/Misc';
-import { useHavePermission, UserProvider } from 'api/hooks/User';
-import { NewsProvider } from 'api/hooks/News';
-import { JobPostProvider } from 'api/hooks/JobPost';
-import { EventProvider } from 'api/hooks/Event';
-import { SnackbarProvider } from './api/hooks/Snackbar';
+import { useHavePermission, useIsAuthenticated } from 'api/hooks/User';
+import { SnackbarProvider } from 'api/hooks/Snackbar';
 
 // Project components
 import MessageGDPR from 'components/miscellaneous/MessageGDPR';
 import Navigation from 'components/navigation/Navigation';
 
 // Project containers
-import About from 'containers/About';
 import Cheatsheet from 'containers/Cheatsheet';
 import Companies from 'containers/Companies';
 import EventDetails from 'containers/EventDetails';
@@ -31,22 +28,16 @@ import JobPosts from 'containers/JobPosts';
 import JobPostDetails from 'containers/JobPostDetails';
 import Landing from 'containers/Landing';
 import NewsDetails from 'containers/NewsDetails';
+import Pages from 'containers/Pages';
 import Profile from 'containers/Profile';
-const Admin = lazy(() => import('containers/Admin'));
-const ContactInfo = lazy(() => import('containers/ContactInfo'));
 const EventAdministration = lazy(() => import('containers/EventAdministration'));
 const EventRegistration = lazy(() => import('containers/EventRegistration'));
-const EventRules = lazy(() => import('containers/EventRules'));
 const ForgotPassword = lazy(() => import('containers/ForgotPassword'));
 const Http404 = lazy(() => import('containers/Http404'));
 const JobPostAdministration = lazy(() => import('containers/JobPostAdministration'));
-const Laws = lazy(() => import('containers/Laws'));
 const LogIn = lazy(() => import('containers/LogIn'));
 const News = lazy(() => import('containers/News'));
 const NewsAdministration = lazy(() => import('containers/NewsAdministration'));
-const NewStudent = lazy(() => import('containers/NewStudent'));
-const PrivacyPolicy = lazy(() => import('containers/PrivacyPolicy'));
-const Services = lazy(() => import('containers/Services'));
 const SignUp = lazy(() => import('containers/SignUp'));
 const UserAdmin = lazy(() => import('containers/UserAdmin'));
 
@@ -59,12 +50,12 @@ type AuthRouteProps = {
 
 const AuthRoute = ({ groups = [], children, path, element }: AuthRouteProps) => {
   const { setLogInRedirectURL } = useMisc();
-  const { isAuthenticated } = useAuth();
-  const [allowAccess, isLoading] = useHavePermission(groups);
+  const isAuthenticated = useIsAuthenticated();
+  const { allowAccess, isLoading } = useHavePermission(groups);
 
   if (isLoading) {
     return <Navigation isLoading noFooter />;
-  } else if (!isAuthenticated()) {
+  } else if (!isAuthenticated) {
     setLogInRedirectURL(window.location.pathname);
     return <Navigate to={URLS.login} />;
   } else if (allowAccess || !groups.length) {
@@ -83,21 +74,24 @@ type ProvidersProps = {
 };
 
 export const Providers = ({ children }: ProvidersProps) => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 1000 * 60 * 2, // Don't refetch data before 2 min has passed
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
   return (
-    <MiscProvider>
-      <UserProvider>
-        <NewsProvider>
-          <JobPostProvider>
-            <EventProvider>
-              <ThemeProvider>
-                <CssBaseline />
-                <SnackbarProvider>{children}</SnackbarProvider>
-              </ThemeProvider>
-            </EventProvider>
-          </JobPostProvider>
-        </NewsProvider>
-      </UserProvider>
-    </MiscProvider>
+    <QueryClientProvider client={queryClient}>
+      <MiscProvider>
+        <ThemeProvider>
+          <CssBaseline />
+          <SnackbarProvider>{children}</SnackbarProvider>
+        </ThemeProvider>
+      </MiscProvider>
+      <ReactQueryDevtools />
+    </QueryClientProvider>
   );
 };
 
@@ -113,23 +107,17 @@ const AppRoutes = () => {
     <Routes>
       <Route element={<Landing />} path='/' />
       <Route path={URLS.events}>
-        <Route element={<EventRegistration />} path=':id/registrering/' />
+        <AuthRoute element={<EventRegistration />} groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]} path=':id/registrering/' />
         <Route element={<EventDetails />} path=':id/*' />
         <Route element={<Events />} path='' />
       </Route>
-      <Route element={<About />} path={URLS.about} />
-      <Route element={<ContactInfo />} path={URLS.contactInfo} />
-      <Route element={<Services />} path={URLS.services} />
       <Route element={<Companies />} path={URLS.company} />
-      <Route element={<NewStudent />} path={URLS.newStudent} />
       <Route element={<Profile />} path={URLS.profile} />
       <Route path={URLS.jobposts}>
         <Route element={<JobPostDetails />} path=':id/*' />
         <Route element={<JobPosts />} path='' />
       </Route>
-      <Route element={<Laws />} path={URLS.laws} />
-      <Route element={<PrivacyPolicy />} path={URLS.privacyPolicy} />
-      <Route element={<EventRules />} path={URLS.eventRules} />
+      <Route element={<Pages />} path={`${URLS.pages}*`} />
       <Route path={URLS.news}>
         <Route element={<NewsDetails />} path=':id/*' />
         <Route element={<News />} path='' />
@@ -138,14 +126,19 @@ const AppRoutes = () => {
       <AuthRoute element={<Cheatsheet />} path={`${URLS.cheatsheet}:studyId/:classId/`} />
       <AuthRoute element={<Cheatsheet />} path={`${URLS.cheatsheet}*`} />
 
-      <AuthRoute element={<Admin />} groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]} path={URLS.admin} />
       <AuthRoute element={<UserAdmin />} groups={[Groups.HS, Groups.INDEX]} path={URLS.userAdmin} />
-      <AuthRoute element={<JobPostAdministration />} groups={[Groups.HS, Groups.INDEX, Groups.NOK]} path={URLS.jobpostsAdmin} />
+      <AuthRoute groups={[Groups.HS, Groups.INDEX, Groups.NOK]} path={URLS.jobpostsAdmin}>
+        <Route element={<JobPostAdministration />} path=':jobPostId/' />
+        <Route element={<JobPostAdministration />} path='' />
+      </AuthRoute>
       <AuthRoute groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]} path={URLS.eventAdmin}>
         <Route element={<EventAdministration />} path=':eventId/' />
         <Route element={<EventAdministration />} path='' />
       </AuthRoute>
-      <AuthRoute element={<NewsAdministration />} groups={[Groups.HS, Groups.INDEX]} path={URLS.newsAdmin} />
+      <AuthRoute groups={[Groups.HS, Groups.INDEX]} path={URLS.newsAdmin}>
+        <Route element={<NewsAdministration />} path=':newsId/' />
+        <Route element={<NewsAdministration />} path='' />
+      </AuthRoute>
 
       <Route element={<LogIn />} path={URLS.login} />
       <Route element={<ForgotPassword />} path={URLS.forgotPassword} />

@@ -1,13 +1,18 @@
 /* eslint-disable react/display-name */
-import { createElement, ReactNode } from 'react';
+import { createElement, useMemo, ReactNode } from 'react';
+import ReactMarkdown from 'react-markdown';
+import { useEventById } from 'api/hooks/Event';
+import { useJobPostById } from 'api/hooks/JobPost';
+import { useNewsById } from 'api/hooks/News';
 
 // Material UI
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 
-// External Imports
-import ReactMarkdown from 'react-markdown';
+// Project components
+import Expansion from 'components/layout/Expand';
+import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 
 const useStyles = makeStyles((theme) => ({
   blockquote: {
@@ -33,10 +38,25 @@ const useStyles = makeStyles((theme) => ({
   },
   list: {
     listStylePosition: 'inside',
+    marginLeft: theme.spacing(1),
   },
-  text: {
+  listItem: {
+    fontSize: theme.typography.body1.fontSize,
+  },
+  content: {
     marginBottom: theme.spacing(1),
     color: theme.palette.text.primary,
+    overflowWrap: 'anywhere',
+  },
+  expansion: {
+    border: `1px solid ${theme.palette.divider}`,
+    background: theme.palette.background.smoke,
+  },
+  image: {
+    maxWidth: '100%',
+    objectFit: 'contain',
+    height: 'auto',
+    borderRadius: theme.shape.borderRadius,
   },
 }));
 
@@ -44,28 +64,86 @@ export type MarkdownRendererProps = {
   value: string;
 };
 
-function MarkdownRenderer({ value }: MarkdownRendererProps) {
+const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
   const classes = useStyles();
-  const getHeadingLevel = (level: number) => {
-    switch (level) {
-      case 1:
-        return 'h2';
-      default:
-        return 'h3';
-    }
-  };
-  const renderers = {
-    blockquote: (props: { level: number; children: ReactNode[] }) => createElement('blockquote', { className: classes.blockquote }, props.children),
-    code: (props: { value: string }) => createElement('pre', { className: classes.code }, createElement('code', {}, props.value)),
-    heading: (props: { level: number; children: ReactNode[] }) =>
-      createElement(Typography, { variant: getHeadingLevel(props.level), className: classes.text }, props.children),
-    inlineCode: (props: { value: string }) => createElement('code', { className: classes.inlineCode }, props.value),
-    list: (props: { children: ReactNode[]; ordered: boolean }) => createElement(props.ordered ? 'ol' : 'ul', { className: classes.list }, props.children),
-    paragraph: (props: { children: ReactNode[] }) => createElement(Typography, { variant: 'body1', className: classes.text }, props.children),
-    thematicBreak: () => <Divider className={classes.divider} />,
+
+  type ComponentProps = {
+    id: number;
   };
 
+  const Event = ({ id }: ComponentProps) => {
+    const { data } = useEventById(id);
+    return data ? <ListItem className={classes.content} event={data} largeImg /> : <ListItemLoading />;
+  };
+  const JobPost = ({ id }: ComponentProps) => {
+    const { data } = useJobPostById(id);
+    return data ? <ListItem className={classes.content} jobpost={data} largeImg /> : <ListItemLoading />;
+  };
+  const News = ({ id }: ComponentProps) => {
+    const { data } = useNewsById(id);
+    return data ? <ListItem className={classes.content} largeImg news={data} /> : <ListItemLoading />;
+  };
+
+  enum LanguageTypes {
+    EXPANDLIST = 'expandlist',
+    EXPAND = 'expand',
+    EVENT = 'event',
+    JOBPOST = 'jobpost',
+    NEWS = 'news',
+  }
+
+  type CodeBlockProps = {
+    language: LanguageTypes | string;
+    value: string;
+  };
+  const CodeBlock = ({ language, value }: CodeBlockProps) => {
+    if (language === LanguageTypes.EXPANDLIST) {
+      return (
+        <div className={classes.content}>
+          <ReactMarkdown renderers={renderers}>{value}</ReactMarkdown>
+        </div>
+      );
+    } else if (language === LanguageTypes.EXPAND) {
+      const header = value.split('::')[0] || '';
+      const children = value.split('::')[1] || '';
+      return (
+        <Expansion className={classes.expansion} flat header={header}>
+          <ReactMarkdown renderers={renderers}>{children}</ReactMarkdown>
+        </Expansion>
+      );
+    } else if (language === LanguageTypes.EVENT || language === LanguageTypes.JOBPOST || language === LanguageTypes.NEWS) {
+      const id = Number(value);
+      if (!Number.isInteger(id)) {
+        return null;
+      } else if (language === LanguageTypes.EVENT) {
+        return <Event id={id} />;
+      } else if (language === LanguageTypes.JOBPOST) {
+        return <JobPost id={id} />;
+      } else if (language === LanguageTypes.NEWS) {
+        return <News id={id} />;
+      }
+    }
+    return createElement('pre', { className: classes.code }, createElement('code', {}, value));
+  };
+
+  const renderers = useMemo(
+    () => ({
+      blockquote: ({ children }: { children: ReactNode[] }) => createElement('blockquote', { className: classes.blockquote }, children),
+      code: CodeBlock,
+      heading: ({ level, children }: { level: number; children: ReactNode[] }) =>
+        createElement(Typography, { variant: level === 1 ? 'h2' : 'h3', className: classes.content }, children),
+      inlineCode: ({ value }: { value: string }) => createElement('code', { className: classes.inlineCode }, value),
+      list: ({ children, ordered }: { children: ReactNode[]; ordered: boolean }) => createElement(ordered ? 'ol' : 'ul', { className: classes.list }, children),
+      listItem: ({ children, checked }: { children: ReactNode[]; checked: boolean }) =>
+        createElement('li', { className: classes.listItem }, checked ? createElement('input', { type: 'checkbox', checked, readOnly: true }) : null, children),
+      paragraph: ({ children }: { children: ReactNode[] }) => createElement(Typography, { variant: 'body1', className: classes.content }, children),
+      thematicBreak: () => <Divider className={classes.divider} />,
+      image: ({ alt, src }: { alt: string; src: string }) => <img alt={alt} className={classes.image} src={src} />,
+    }),
+    [],
+  );
+
   return <ReactMarkdown renderers={renderers}>{value}</ReactMarkdown>;
-}
+};
 
 export default MarkdownRenderer;

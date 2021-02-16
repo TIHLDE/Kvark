@@ -45,7 +45,7 @@ function MessageGDPR() {
   };
 
   if (!display) {
-    return <></>;
+    return null;
   } else {
     return (
       <div className={classes.root}>

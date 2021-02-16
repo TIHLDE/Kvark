@@ -21,7 +21,7 @@ import OpenInNewIcon from '@material-ui/icons/OpenInNewRounded';
 
 // Project Components
 import Paper from 'components/layout/Paper';
-import Pageination from 'components/layout/Pageination';
+import Pagination from 'components/layout/Pagination';
 
 const useStyles = makeStyles((theme: Theme) => ({
   grid: {
@@ -65,11 +65,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export type FilesProps = {
   files: Array<Cheatsheet>;
-  nextPage: number | null;
-  goToNextPage: () => void;
+  hasNextPage: boolean | undefined;
+  getNextPage: () => void;
+  isLoading: boolean;
 };
 
-const Files = ({ files, nextPage, goToNextPage }: FilesProps) => {
+const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
   const classes = useStyles();
   const Icon = ({ cheatsheet }: { cheatsheet: Cheatsheet }) => {
     if (cheatsheet.type === CheatsheetType.FILE) {
@@ -115,7 +116,7 @@ const Files = ({ files, nextPage, goToNextPage }: FilesProps) => {
           Fag:
         </Typography>
       </div>
-      <Pageination fullWidth nextPage={goToNextPage} page={nextPage}>
+      <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isLoading} nextPage={getNextPage}>
         {files.length ? (
           <List aria-label='Filer'>
             {files.map((file, index) => (
@@ -158,7 +159,7 @@ const Files = ({ files, nextPage, goToNextPage }: FilesProps) => {
         ) : (
           <Typography align='center'>Fant ingen oppskrifter</Typography>
         )}
-      </Pageination>
+      </Pagination>
     </>
   );
 };

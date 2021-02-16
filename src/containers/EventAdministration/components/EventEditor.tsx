@@ -1,35 +1,39 @@
 import { useCallback, useState, useEffect } from 'react';
 import classnames from 'classnames';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { Category, Event, EventRequired, RegistrationPriority } from 'types/Types';
-import { useEvent } from 'api/hooks/Event';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { Category, Event, RegistrationPriority } from 'types/Types';
+import { useEventById, useCreateEvent, useUpdateEvent, useDeleteEvent } from 'api/hooks/Event';
 import { useMisc } from 'api/hooks/Misc';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { parseISO } from 'date-fns';
 
 // Material-UI
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Collapse from '@material-ui/core/Collapse';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 // Icons
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
 
 // Project components
 import EventFormEditor from 'containers/EventAdministration/components/EventFormEditor';
-import EventPreview from 'containers/EventAdministration/components/EventPreview';
 import EventRegistrationPriorities from 'containers/EventAdministration/components/EventRegistrationPriorities';
+import EventRenderer from 'containers/EventDetails/components/EventRenderer';
 import Dialog from 'components/layout/Dialog';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
+import Select from 'components/inputs/Select';
+import SubmitButton from 'components/inputs/SubmitButton';
+import TextField from 'components/inputs/TextField';
+import RendererPreview from 'components/miscellaneous/RendererPreview';
 
 const useStyles = makeStyles((theme: Theme) => ({
   grid: {
@@ -65,25 +69,25 @@ const useStyles = makeStyles((theme: Theme) => ({
 export type EventEditorProps = {
   eventId: number | null;
   goToEvent: (newEvent: number | null) => void;
-  setEvents: (newEvents: Array<Event> | ((prevEvents: Array<Event>) => Array<Event>)) => void;
 };
 
-type FormValues = {
-  title: string;
-  location: string;
-  start_date: string;
-  end_date: string;
-  description: string;
-  image: string;
-  image_alt: string;
-  priority: number;
-  category: number;
-  limit: number;
-  start_registration_at: string;
-  end_registration_at: string;
-  sign_off_deadline: string;
-  evaluate_link: string;
-};
+type FormValues = Pick<
+  Event,
+  | 'category'
+  | 'description'
+  | 'end_date'
+  | 'end_registration_at'
+  | 'evaluate_link'
+  | 'image'
+  | 'image_alt'
+  | 'limit'
+  | 'location'
+  | 'priority'
+  | 'sign_off_deadline'
+  | 'start_date'
+  | 'start_registration_at'
+  | 'title'
+>;
 
 const priorities = ['Lav', 'Middels', 'Høy'];
 
@@ -104,18 +108,24 @@ const allPriorities = [
   { user_class: 5, user_study: 4 },
 ];
 
-const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
+const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const classes = useStyles();
-  const { getEventById, updateEvent, createEvent, deleteEvent } = useEvent();
-  const { getCategories } = useMisc();
+  const { data, isLoading, isError } = useEventById(eventId || -1);
+  const createEvent = useCreateEvent();
+  const updateEvent = useUpdateEvent(eventId || -1);
+  const deleteEvent = useDeleteEvent(eventId || -1);
   const showSnackbar = useSnackbar();
-  const [isLoading, setIsLoading] = useState(false);
   const [closeEventDialogOpen, setCloseEventDialogOpen] = useState(false);
   const [deleteEventDialogOpen, setDeleteEventDialogOpen] = useState(false);
   const [signUp, setSignUp] = useState(false);
   const [regPriorities, setRegPriorities] = useState<Array<RegistrationPriority>>([]);
   const { handleSubmit, register, control, errors, getValues, setError, reset } = useForm<FormValues>();
+  const { getCategories } = useMisc();
   const [categories, setCategories] = useState<Array<Category>>([]);
+
+  useEffect(() => {
+    !isError || goToEvent(null);
+  }, [isError]);
 
   const setValues = useCallback(
     (newValues: Event | null) => {
@@ -141,6 +151,14 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
     [reset],
   );
 
+  useEffect(() => {
+    if (data) {
+      setValues(data);
+    } else {
+      setValues(null);
+    }
+  }, [data, setValues]);
+
   const getEventPreview = () => {
     return {
       ...getValues(),
@@ -152,145 +170,116 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
   };
 
   useEffect(() => {
-    if (eventId) {
-      getEventById(Number(eventId))
-        .then((data) => setValues(data))
-        .catch(() => goToEvent(null));
-    } else {
-      setValues(null);
-    }
-  }, [eventId, getEventById, setValues, goToEvent]);
-
-  useEffect(() => {
-    getCategories().then((data) => setCategories(data));
+    getCategories().then(setCategories);
   }, [getCategories]);
 
-  const create = (event: EventRequired) => {
-    setIsLoading(true);
-    createEvent(event)
-      .then((data) => {
-        setEvents((events) => [data, ...events]);
-        goToEvent(data.id);
-        showSnackbar('Arrangementet ble opprettet', 'success');
-      })
-      .catch((e) => showSnackbar(e.detail, 'error'))
-      .finally(() => setIsLoading(false));
-  };
-
-  const update = (event: Partial<Event>) => {
-    setIsLoading(true);
-    updateEvent(Number(eventId), event)
-      .then((data) => {
-        goToEvent(data.id);
-        setEvents((events) =>
-          events.map((eventItem) => {
-            let returnValue = { ...eventItem };
-            if (eventItem.id === data.id) {
-              returnValue = data;
-            }
-            return returnValue;
-          }),
-        );
-        showSnackbar('Arrangementet ble oppdatert', 'success');
-      })
-      .catch((e) => showSnackbar(e.detail, 'error'))
-      .finally(() => setIsLoading(false));
-  };
-
-  const remove = () => {
-    deleteEvent(Number(eventId))
-      .then((data) => {
-        setEvents((events) => events.filter((eventItem) => eventItem.id !== Number(eventId)));
-        goToEvent(null);
+  const remove = async () => {
+    deleteEvent.mutate(null, {
+      onSuccess: (data) => {
         showSnackbar(data.detail, 'success');
-      })
-      .catch((e) => showSnackbar(e.detail, 'error'))
-      .finally(() => setDeleteEventDialogOpen(false));
+        setDeleteEventDialogOpen(false);
+        goToEvent(null);
+      },
+      onError: (e) => {
+        showSnackbar(e.detail, 'error');
+      },
+    });
   };
 
-  const closeEvent = () => {
-    update({ closed: true });
-    setCloseEventDialogOpen(false);
+  const closeEvent = async () => {
+    await updateEvent.mutate({ ...data, closed: true } as Event, {
+      onSuccess: () => {
+        showSnackbar('Arrangementet ble stengt', 'success');
+        setCloseEventDialogOpen(false);
+      },
+      onError: (e) => {
+        showSnackbar(e.detail, 'error');
+      },
+    });
   };
 
-  const submit: SubmitHandler<FormValues> = (data) => {
+  const submit: SubmitHandler<FormValues> = async (formData) => {
     const event = {
-      ...data,
+      ...formData,
       sign_up: signUp,
       registration_priorities: regPriorities,
     } as Event;
     if (event.sign_up) {
       if (parseISO(event.end_registration_at) < parseISO(event.start_registration_at)) {
-        setError('end_registration_at', { type: 'manual', message: 'Påmeldingsslutt må være etter påmeldingsstart' });
+        setError('end_registration_at', { message: 'Påmeldingsslutt må være etter påmeldingsstart' });
         return;
       }
       if (parseISO(event.sign_off_deadline) < parseISO(event.start_registration_at)) {
-        setError('sign_off_deadline', { type: 'manual', message: 'Avmeldingsfrist må være etter påmeldingsstart' });
+        setError('sign_off_deadline', { message: 'Avmeldingsfrist må være etter påmeldingsstart' });
         return;
       }
       if (parseISO(event.start_date) < parseISO(event.sign_off_deadline)) {
-        setError('sign_off_deadline', { type: 'manual', message: 'Avmeldingsfrist må være før start' });
+        setError('sign_off_deadline', { message: 'Avmeldingsfrist må være før start på arrangement' });
         return;
       }
       if (parseISO(event.start_date) < parseISO(event.end_registration_at)) {
-        setError('end_registration_at', { type: 'manual', message: 'Påmeldingsslutt må være før start' });
+        setError('end_registration_at', { message: 'Påmeldingsslutt må være før start på arrangement' });
         return;
       }
       if (parseISO(event.end_date) < parseISO(event.start_date)) {
-        setError('end_date', { type: 'manual', message: 'Slutt må være etter start' });
+        setError('end_date', { message: 'Slutt på arrangement må være etter start på arrangement' });
         return;
       }
     }
     if (eventId) {
-      update(event);
+      await updateEvent.mutate(event, {
+        onSuccess: () => {
+          showSnackbar('Arrangementet ble oppdatert', 'success');
+        },
+        onError: (e) => {
+          showSnackbar(e.detail, 'error');
+        },
+      });
     } else {
-      create(event);
+      await createEvent.mutate(event, {
+        onSuccess: (newEvent) => {
+          showSnackbar('Arrangementet ble opprettet', 'success');
+          goToEvent(newEvent.id);
+        },
+        onError: (e) => {
+          showSnackbar(e.detail, 'error');
+        },
+      });
     }
   };
+
+  if (isLoading) {
+    return <LinearProgress />;
+  }
 
   return (
     <>
       <form onSubmit={handleSubmit(submit)}>
         <Grid container direction='column' wrap='nowrap'>
           <div className={classes.grid}>
-            <Controller
-              as={TextField}
-              control={control}
-              defaultValue=''
-              error={Boolean(errors.title)}
-              helperText={errors.title?.message}
-              label='Tittel *'
-              margin='normal'
-              name='title'
-              rules={{ required: 'Feltet er påkrevd' }}
-              variant='outlined'
-            />
-            <Controller as={TextField} control={control} defaultValue='' label='Sted' margin='normal' name='location' variant='outlined' />
+            <TextField errors={errors} label='Tittel' name='title' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
+            <TextField errors={errors} label='Sted' name='location' register={register} />
           </div>
           <div className={classes.grid}>
             <TextField
-              defaultValue=''
-              error={Boolean(errors.start_date)}
-              helperText={errors.start_date?.message}
+              errors={errors}
               InputLabelProps={{ shrink: true }}
-              inputRef={register({ required: 'Feltet er påkrevd' })}
-              label='Start *'
-              margin='normal'
+              label='Start'
               name='start_date'
+              register={register}
+              required
+              rules={{ required: 'Feltet er påkrevd' }}
               type='datetime-local'
-              variant='outlined'
             />
             <TextField
-              defaultValue=''
-              error={Boolean(errors.end_date)}
-              helperText={errors.end_date?.message}
+              errors={errors}
               InputLabelProps={{ shrink: true }}
-              inputRef={register({ required: 'Feltet er påkrevd' })}
-              label='Slutt *'
-              margin='normal'
+              label='Slutt'
               name='end_date'
+              register={register}
+              required
+              rules={{ required: 'Feltet er påkrevd' }}
               type='datetime-local'
-              variant='outlined'
             />
           </div>
           <FormControlLabel
@@ -301,88 +290,77 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
           <Collapse in={signUp}>
             <div className={classes.grid}>
               <TextField
-                defaultValue=''
-                error={Boolean(errors.start_registration_at)}
-                helperText={errors.start_registration_at?.message}
+                errors={errors}
                 InputLabelProps={{ shrink: true }}
-                inputRef={register}
                 label='Start påmelding'
-                margin='normal'
                 name='start_registration_at'
+                register={register}
+                required={signUp}
+                rules={{ required: signUp ? 'Feltet er påkrevd' : undefined }}
                 type='datetime-local'
-                variant='outlined'
               />
               <TextField
-                defaultValue=''
-                error={Boolean(errors.end_registration_at)}
-                helperText={errors.end_registration_at?.message}
+                errors={errors}
                 InputLabelProps={{ shrink: true }}
-                inputRef={register}
                 label='Slutt påmelding'
-                margin='normal'
                 name='end_registration_at'
+                register={register}
+                required={signUp}
+                rules={{ required: signUp ? 'Feltet er påkrevd' : undefined }}
                 type='datetime-local'
-                variant='outlined'
               />
             </div>
             <div className={classes.grid}>
               <TextField
-                defaultValue=''
-                error={Boolean(errors.sign_off_deadline)}
-                helperText={errors.sign_off_deadline?.message}
+                errors={errors}
                 InputLabelProps={{ shrink: true }}
-                inputRef={register}
                 label='Avmeldingsfrist'
-                margin='normal'
                 name='sign_off_deadline'
+                register={register}
+                required={signUp}
+                rules={{ required: signUp ? 'Feltet er påkrevd' : undefined }}
                 type='datetime-local'
-                variant='outlined'
               />
               <TextField
-                defaultValue='0'
-                error={Boolean(errors.limit)}
-                helperText={Boolean(errors.limit) && 'Antall plasser må være et positivt tall'}
-                inputRef={register({ min: 0 })}
+                errors={errors}
+                InputLabelProps={{ shrink: true }}
+                inputProps={{ inputMode: 'numeric' }}
                 label='Antall plasser'
-                margin='normal'
                 name='limit'
-                type='number'
-                variant='outlined'
+                register={register}
+                required={signUp}
+                rules={{
+                  pattern: { value: RegExp(/^[0-9]*$/), message: 'Skriv inn et heltall som 0 eller høyere' },
+                  valueAsNumber: true,
+                  min: { value: 0, message: 'Antall plasser må være 0 eller høyere' },
+                  required: signUp ? 'Feltet er påkrevd' : undefined,
+                }}
               />
             </div>
-            <Controller
-              as={TextField}
-              control={control}
-              defaultValue=''
-              fullWidth
-              label='Evalueringsskjema-url'
-              margin='normal'
-              name='evaluate_link'
-              variant='outlined'
-            />
+            <TextField errors={errors} label='Evalueringsskjema (url)' name='evaluate_link' register={register} />
             <div className={classes.margin}>
-              <ExpansionPanel className={classes.expansionPanel}>
-                <ExpansionPanelSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='priorities-header'>
+              <Accordion className={classes.expansionPanel}>
+                <AccordionSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='priorities-header'>
                   <Typography>Prioriterte</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                </AccordionSummary>
+                <AccordionDetails>
                   <EventRegistrationPriorities priorities={regPriorities} setPriorities={setRegPriorities} />
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
+                </AccordionDetails>
+              </Accordion>
             </div>
             <div className={classes.margin}>
-              <ExpansionPanel className={classes.expansionPanel}>
-                <ExpansionPanelSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='priorities-header'>
+              <Accordion className={classes.expansionPanel}>
+                <AccordionSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='priorities-header'>
                   <Typography>Spørsmål ved påmelding</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                </AccordionSummary>
+                <AccordionDetails>
                   {eventId ? (
                     <EventFormEditor eventId={eventId} />
                   ) : (
                     <Typography variant='subtitle2'>Du må opprette arrangementet før du kan legge til spørsmål</Typography>
                   )}
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
+                </AccordionDetails>
+              </Accordion>
             </div>
           </Collapse>
           <MarkdownEditor
@@ -392,31 +370,31 @@ const EventEditor = ({ eventId, goToEvent, setEvents }: EventEditorProps) => {
             name='description'
           />
           <div className={classes.grid}>
-            <Controller as={TextField} control={control} defaultValue='' label='Bilde-url' margin='normal' name='image' variant='outlined' />
-            <Controller as={TextField} control={control} defaultValue='' label='Bildetekst' margin='normal' name='image_alt' variant='outlined' />
+            <TextField errors={errors} label='Bilde-url' name='image' register={register} />
+            <TextField errors={errors} label='Bildetekst' name='image_alt' register={register} />
           </div>
           <div className={classes.grid}>
-            <Controller as={TextField} control={control} defaultValue='' label='Prioritering' margin='normal' name='priority' select variant='outlined'>
+            <Select control={control} errors={errors} label='Prioritering' name='priority'>
               {priorities.map((value, index) => (
                 <MenuItem key={index} value={index}>
                   {value}
                 </MenuItem>
               ))}
-            </Controller>
-            {categories.length && (
-              <Controller as={TextField} control={control} defaultValue='' label='Kategori' margin='normal' name='category' select variant='outlined'>
+            </Select>
+            {Boolean(categories.length) && (
+              <Select control={control} errors={errors} label='Kategori' name='category'>
                 {categories.map((value, index) => (
                   <MenuItem key={index} value={value.id}>
                     {value.text}
                   </MenuItem>
                 ))}
-              </Controller>
+              </Select>
             )}
           </div>
-          <EventPreview className={classes.margin} getEvent={getEventPreview} />
-          <Button className={classes.margin} color='primary' disabled={isLoading} type='submit' variant='contained'>
+          <RendererPreview className={classes.margin} getContent={getEventPreview} renderer={EventRenderer} />
+          <SubmitButton className={classes.margin} disabled={isLoading} errors={errors}>
             {eventId ? 'Oppdater arrangement' : 'Opprett arrangement'}
-          </Button>
+          </SubmitButton>
           {eventId !== null && (
             <div className={classes.grid}>
               <Button className={classnames(classes.margin, classes.red)} disabled={isLoading} onClick={() => setCloseEventDialogOpen(true)} variant='outlined'>

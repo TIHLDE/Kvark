@@ -7,7 +7,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from '@material-ui/icons/CloseRounded';
 import Typography from '@material-ui/core/Typography';
 
 // Project components
@@ -55,11 +55,11 @@ const MarkdownEditor = (props: TextFieldProps) => {
   };
 
   const guide = `
-  Markdown er en måte å formatere tekst. Her følger en rekke eksempler på hvordan du kan legge inn overskrifter, lister, linker, bilder, osv.
+  *Markdown* er en vanlig måte å formatere tekst på nettet og brukes også tihlde.org. Her følger en rekke eksempler på hvordan du kan legge inn overskrifter, lister, linker, bilder, osv. ved hjelp av vanlig Markdown. I tillegg kan du vise arrangement-, nyhet- og jobbannonse-kort, samt en utvid-boks.
 
   ___
 
-  ### Overskrifter:
+  ## **Overskrifter**
 
   # Stor overskrift
   ## Mindre overskrift
@@ -71,23 +71,27 @@ const MarkdownEditor = (props: TextFieldProps) => {
 
   ___
   
-  ### Typografi
+  ## **Typografi**
 
   **Fet tekst**
-  *Kursiv tekst*
+  _Kursiv tekst_
+  _**Fet og kursiv tekst**_
 
   ~~~
   **Fet tekst**
-  *Kursiv tekst*
+  _Kursiv tekst_
+  _**Fet og kursiv tekst**_
   ~~~
 
   ___
 
-  ### Link og bilde
+  ## **Link og bilde**
+
+  [tihlde.org](https://tihlde.org)
 
   ~~~
   Link:
-  [tekst](https://tihlde.org)
+  [tihlde.org](https://tihlde.org)
 
   Bilde:
   ![alternativ tekst](https://tihlde.org/image.jpg)
@@ -95,7 +99,7 @@ const MarkdownEditor = (props: TextFieldProps) => {
 
   ___
 
-  ### Sitat
+  ## **Sitat**
   
   > Sitat som får et innrykk
 
@@ -105,7 +109,7 @@ const MarkdownEditor = (props: TextFieldProps) => {
 
   ___
   
-  ### Liste
+  ## **Liste**
 
   Med tall:
   1. Første element
@@ -131,7 +135,7 @@ const MarkdownEditor = (props: TextFieldProps) => {
 
   ___
 
-  ### Delelinje
+  ## **Delelinje**
 
   ___
 
@@ -141,7 +145,7 @@ const MarkdownEditor = (props: TextFieldProps) => {
 
   ___
   
-  ### Kodeblokk
+  ## **Kodeblokk**
 
   \`Kodeblokk på en linje\`
 
@@ -155,6 +159,71 @@ const MarkdownEditor = (props: TextFieldProps) => {
   party.start();
 
   party.stop();
+  \`\`\`
+  ~~~
+
+  ___
+  
+  ## **Utvid**
+
+  ~~~expandlist
+  \`\`\`expand
+  Tittel 1::Innhold som kan **styles** på samme måte som resten
+  \`\`\`
+  \`\`\`expand
+  Tittel 2::Innhold som kan _styles_ på samme måte som resten
+  \`\`\`
+  ~~~
+
+  Utvid-bokser må ligge inne i en \`expandlist\`:
+
+  \`\`\`
+  ~~~expandlist
+  // Utvid-bokser her
+  ~~~
+  \`\`\`
+  
+  Utvid-bokser inneholder en tittel og innhold som separeres med \`::\`:
+
+  \`\`\`
+  ~~~expandlist
+    \`\`\`expand
+    Tittel 1::Innhold som kan **styles** på samme måte som resten
+    \`\`\`
+    \`\`\`expand
+    Tittel 2::Innhold som kan _styles_ på samme måte som resten
+    \`\`\`
+  ~~~
+  \`\`\`
+
+  ___
+
+  ## **Arrangement- / Nyhet- / Annonse-kort**
+  
+  \`\`\`event
+  19
+  \`\`\`
+  
+  Kort med link til arrangementer, nyheter og annonser kan opprettes ved å skrive \`type\` kort og \`id\` til for eksempel arrangement inni:
+
+  *Arrangement:*
+  ~~~
+  \`\`\`event
+  19
+  \`\`\`
+  ~~~
+  
+  *Jobbannonse:*
+  ~~~
+  \`\`\`jobpost
+  19
+  \`\`\`
+  ~~~
+  
+  *Nyhet:*
+  ~~~
+  \`\`\`news
+  19
   \`\`\`
   ~~~
   `;
@@ -173,17 +242,19 @@ const MarkdownEditor = (props: TextFieldProps) => {
         rowsMax={15}
         variant={props.variant || 'outlined'}
       />
-      <Dialog aria-labelledby='customized-dialog-title' fullWidth maxWidth='md' onClose={() => setHelpDialogOpen(false)} open={helpDialogOpen}>
-        <DialogTitle className={classes.dialogHeader} disableTypography id='customized-dialog-title'>
-          <Typography variant='h6'>Markdown-guide</Typography>
-          <IconButton aria-label='close' className={classes.closeButton} onClick={() => setHelpDialogOpen(false)}>
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent className={classes.dialogContent}>
-          <MarkdownRenderer value={guide} />
-        </DialogContent>
-      </Dialog>
+      {helpDialogOpen && (
+        <Dialog aria-labelledby='format-dialog-title' fullWidth maxWidth='md' onClose={() => setHelpDialogOpen(false)} open={helpDialogOpen}>
+          <DialogTitle className={classes.dialogHeader} disableTypography id='format-dialog-title'>
+            <Typography variant='h6'>Formaterings-guide</Typography>
+            <IconButton aria-label='close' className={classes.closeButton} onClick={() => setHelpDialogOpen(false)}>
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+          <DialogContent className={classes.dialogContent}>
+            <MarkdownRenderer value={guide} />
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 };

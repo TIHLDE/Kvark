@@ -1,9 +1,9 @@
 import { ComponentType, useState } from 'react';
-import { Event, Registration, User, EventForm, TextFieldSubmission, SelectFieldSubmission } from 'types/Types';
+import { Event, User, EventForm, TextFieldSubmission, SelectFieldSubmission } from 'types/Types';
 import { FormType, FormFieldType } from 'types/Enums';
 import URLS from 'URLS';
 import { getUserStudyShort, shortDownString } from 'utils';
-import { useEvent } from 'api/hooks/Event';
+import { useCreateEventRegistration } from 'api/hooks/Event';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { useForm } from 'react-hook-form';
 
@@ -66,12 +66,11 @@ const ListItem = ({ icon: Icon, text }: ListItemProps) => {
 export type EventRegistrationProps = {
   event: Event;
   user: User;
-  setRegistration: (registration: Registration) => void;
 };
 
-const EventRegistration = ({ event, user, setRegistration }: EventRegistrationProps) => {
+const EventRegistration = ({ event, user }: EventRegistrationProps) => {
   const classes = useStyles();
-  const { createRegistration } = useEvent();
+  const createRegistration = useCreateEventRegistration(event.id);
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const [agreeRules, setAgreeRules] = useState(false);
@@ -128,7 +127,7 @@ const EventRegistration = ({ event, user, setRegistration }: EventRegistrationPr
 
   const { register, handleSubmit, errors, setError } = useForm();
 
-  const submit = (data: { answers: Array<TextFieldSubmission | SelectFieldSubmission> }) => {
+  const submit = async (data: { answers: Array<TextFieldSubmission | SelectFieldSubmission> }) => {
     setIsLoading(true);
     let anyError = false;
     data.answers.forEach((answer, index) => {
@@ -145,15 +144,18 @@ const EventRegistration = ({ event, user, setRegistration }: EventRegistrationPr
       setIsLoading(false);
       return;
     }
-    createRegistration(event.id, { allow_photo: allowPhoto, ...data })
-      .then((registration) => {
-        setRegistration(registration);
-        showSnackbar('Påmeldingen var vellykket', 'success');
-      })
-      .catch((error) => {
-        showSnackbar(error.detail, 'error');
-      })
-      .finally(() => setIsLoading(false));
+    await createRegistration.mutate(
+      { allow_photo: allowPhoto, ...data },
+      {
+        onSuccess: () => {
+          showSnackbar('Påmeldingen var vellykket', 'success');
+        },
+        onError: (e) => {
+          showSnackbar(e.detail, 'error');
+        },
+      },
+    );
+    setIsLoading(false);
   };
 
   return (

@@ -82,11 +82,6 @@ export const formatDate = (date: Date) => {
   );
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const getFormattedDate = (date: any) => {
-  return getDay(date.day()) + ' ' + date.date() + ' ' + getMonth(date.month()) + ' - kl. ' + date.format('HH:mm');
-};
-
 export const getDay = (day: number) => {
   switch (day) {
     case 0:
@@ -136,20 +131,4 @@ export const getMonth = (month: number) => {
     default:
       return month;
   }
-};
-
-export const getParameterByName = (paramName: string, url: string | null) => {
-  if (!url) {
-    return null;
-  }
-  paramName = paramName.replace(/[\]]/g, '\\$&');
-  const regex = new RegExp('[?&]' + paramName + '(=([^&#]*)|&|#|$)'),
-    results = regex.exec(url);
-  if (!results) {
-    return null;
-  }
-  if (!results[2]) {
-    return '';
-  }
-  return decodeURIComponent(results[2].replace(/\+/g, ' '));
 };

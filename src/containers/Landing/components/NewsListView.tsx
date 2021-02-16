@@ -1,19 +1,15 @@
-import { useState, useEffect } from 'react';
-import { News } from 'types/Types';
+import { useMemo } from 'react';
 import URLS from 'URLS';
 import { Link } from 'react-router-dom';
-
-// API and store imports
-import { useNews } from 'api/hooks/News';
 
 // Material-UI
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 
 // Project componets
-import ListItem from 'components/miscellaneous/ListItem';
+import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
+import { useNews } from 'api/hooks/News';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -29,11 +25,6 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0.5),
     textAlign: 'center',
   },
-  progress: {
-    margin: 'auto',
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
   btn: {
     padding: theme.spacing(1),
   },
@@ -42,21 +33,15 @@ const useStyles = makeStyles((theme) => ({
 const NO_OF_NEWS_TO_SHOW = 2;
 
 const NewsListView = () => {
+  const { data, isLoading } = useNews();
+  const news = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   const classes = useStyles();
-  const { getNews } = useNews();
-  const [news, setNews] = useState<Array<News>>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    getNews()
-      .then((news) => setNews(news))
-      .finally(() => setIsLoading(false));
-  }, [getNews]);
 
   if (isLoading) {
     return (
-      <div className={classes.noNewsText}>
-        <CircularProgress className={classes.progress} />
+      <div className={classes.container}>
+        <ListItemLoading />
+        <ListItemLoading />
       </div>
     );
   } else if (news.length) {

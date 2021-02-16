@@ -1,11 +1,9 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useMemo, useState } from 'react';
 import QrReader from 'react-qr-reader';
 import Helmet from 'react-helmet';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Registration } from 'types/Types';
-
-// Service and action imports
-import { useEvent } from 'api/hooks/Event';
+import { useEventById, useEventRegistrations, useUpdateEventRegistration } from 'api/hooks/Event';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
@@ -13,19 +11,19 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Hidden from '@material-ui/core/Hidden';
 
 // Icons
-import TextFields from '@material-ui/icons/TextFields';
-import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
+import NameIcon from '@material-ui/icons/TextFieldsRounded';
+import QRIcon from '@material-ui/icons/CameraAltRounded';
 
 // Project Components
+import Http404 from 'containers/Http404';
 import Navigation from 'components/navigation/Navigation';
 import Paper from 'components/layout/Paper';
+import Tabs from 'components/layout/Tabs';
 
 const useStyles = makeStyles((theme: Theme) => ({
   top: {
@@ -107,7 +105,8 @@ export type ParticipantCardProps = {
 const ParticipantCard = ({ user, markAttended }: ParticipantCardProps) => {
   const classes = useStyles();
   const [checkedState, setCheckedState] = useState(user.has_attended);
-  const handleCheck = (e: ChangeEvent<HTMLInputElement>) => {
+
+  const handleCheck = async (e: ChangeEvent<HTMLInputElement>) => {
     setCheckedState(e.target.checked);
     markAttended(user.user_info.user_id, e.target.checked);
   };
@@ -132,14 +131,17 @@ const ParticipantCard = ({ user, markAttended }: ParticipantCardProps) => {
 function EventRegistration() {
   const classes = useStyles();
   const { id } = useParams();
-  const navigate = useNavigate();
-  const { getEventById, getEventRegistrations, updateAttendedStatus } = useEvent();
+  const { data, isError } = useEventById(Number(id));
+  const { data: participants } = useEventRegistrations(Number(id));
+  const updateRegistration = useUpdateEventRegistration(Number(id));
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
-  const [eventName, setEventName] = useState('');
   const [search, setSearch] = useState('');
-  const [tab, setTab] = useState(0);
-  const [participants, setParticipants] = useState<Array<Registration> | undefined>(undefined);
+  const participantsTab = { value: 'participants', label: 'Navn', icon: NameIcon };
+  const qrTab = { value: 'qr', label: 'QR-kode', icon: QRIcon };
+  const tabs = [participantsTab, qrTab];
+  const [tab, setTab] = useState(participantsTab.value);
+  const participantsIn = useMemo(() => (participants || []).filter((user) => !user.is_on_wait), [participants]);
 
   const handleScan = (username: string | null) => {
     if (!isLoading && username) {
@@ -161,53 +163,31 @@ function EventRegistration() {
     showSnackbar('En ukjent feil har oppstått, sjekk at vi har tilgang til å bruke kameraet', 'warning');
   };
 
-  useEffect(() => {
-    getEventById(Number(id)).then((event) => {
-      if (!event) {
-        navigate('/');
-      } else {
-        setIsLoading(false);
-        setEventName(event.title);
-      }
-    });
-    getEventRegistrations(Number(id)).then((participants) => {
-      const participantsIn = participants.filter((user) => !user.is_on_wait);
-      setIsLoading(false);
-      setParticipants(participantsIn);
-    });
-  }, [id, navigate, getEventById, getEventRegistrations]);
-
-  const markAttended = (username: string, attendedStatus: boolean) => {
+  const markAttended = async (username: string, attendedStatus: boolean) => {
     setIsLoading(true);
-    const oldParitcipantsList = participants;
-    const newParticipantsList = participants?.map((participant) => {
-      if (participant.user_info.user_id === username) {
-        return { ...participant, has_attended: attendedStatus };
-      } else {
-        return participant;
-      }
-    });
-    setParticipants(newParticipantsList);
-    updateAttendedStatus(Number(id), attendedStatus, username)
-      .then(() => {
-        showSnackbar(attendedStatus ? 'Deltageren er registrert ankommet!' : 'Vi har fjernet ankommet-statusen', 'success');
-      })
-      .catch((error) => {
-        setParticipants(oldParitcipantsList);
-        showSnackbar(error.detail, 'error');
-      })
-      .finally(() => setIsLoading(false));
+    await updateRegistration.mutate(
+      { registration: { has_attended: attendedStatus }, userId: username },
+      {
+        onSuccess: () => {
+          showSnackbar(attendedStatus ? 'Deltageren er registrert ankommet!' : 'Vi har fjernet ankommet-statusen', 'success');
+        },
+        onError: (error) => {
+          showSnackbar(error.detail, 'error');
+        },
+      },
+    );
+    setIsLoading(false);
   };
 
   const Participants = () => (
     <>
-      {participants?.length ? (
+      {participantsIn?.length ? (
         search.trim() !== '' ? (
-          participants
+          participantsIn
             .filter((user) => (user.user_info.first_name + ' ' + user.user_info.last_name).toLowerCase().includes(search.toLowerCase()))
             .map((user, key) => <ParticipantCard key={key} markAttended={markAttended} user={user} />)
         ) : (
-          participants.map((user, key) => <ParticipantCard key={key} markAttended={markAttended} user={user} />)
+          participantsIn.map((user, key) => <ParticipantCard key={key} markAttended={markAttended} user={user} />)
         )
       ) : (
         <Typography className={classes.lightText}>Ingen påmeldte.</Typography>
@@ -215,27 +195,28 @@ function EventRegistration() {
     </>
   );
 
+  if (isError) {
+    return <Http404 />;
+  }
+
   return (
     <Navigation banner={<div className={classes.top}></div>} fancyNavbar>
       <Helmet>
-        <title>{eventName} - Registrering - TIHLDE</title>
+        <title>{data?.title || ''} - Registrering - TIHLDE</title>
       </Helmet>
       <Paper className={classes.paper}>
         {isLoading && <LinearProgress className={classes.progress} />}
-        <Typography align='center' className={classes.title} variant='h5'>
-          {eventName}
+        <Typography align='center' className={classes.title} variant='h2'>
+          {data?.title || ''}
         </Typography>
-        <Tabs centered className={classes.lightText} onChange={(e, newTab) => setTab(newTab)} scrollButtons='on' value={tab} variant='fullWidth'>
-          <Tab icon={<TextFields />} id='0' label='Navn' />
-          <Tab icon={<PhotoCameraOutlinedIcon />} id='1' label='QR-kode' />
-        </Tabs>
-        {tab === 0 && (
+        <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
+        {tab === participantsTab.value && (
           <>
             <TextField fullWidth label='Søk' margin='normal' onChange={(e) => setSearch(e.target.value)} type='Søk' variant='outlined' />
             <Participants />
           </>
         )}
-        {tab === 1 && (
+        {tab === qrTab.value && (
           <>
             <QrReader onError={handleError} onScan={handleScan} showViewFinder={true} style={{ width: '100%' }} />
             <br />

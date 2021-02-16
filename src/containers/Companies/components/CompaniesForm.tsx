@@ -4,12 +4,12 @@ import { CompaniesEmail } from 'types/Types';
 import { useMisc } from 'api/hooks/Misc';
 import useSnackbar from 'api/hooks/Snackbar';
 import addMonths from 'date-fns/addMonths';
+import { EMAIL_REGEX } from 'constant';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Checkbox from '@material-ui/core/Checkbox';
-import Button from '@material-ui/core/Button';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -17,6 +17,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 // Project components
 import Paper from 'components/layout/Paper';
+import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 
 const useStyles = makeStyles((theme) => ({
@@ -41,7 +42,7 @@ const CompaniesForm = () => {
   const showSnackbar = useSnackbar();
   const { postEmail } = useMisc();
   const [isLoading, setIsLoading] = useState(false);
-  const { register, handleSubmit, errors, reset, setError } = useForm();
+  const { register, handleSubmit, errors, reset, setError } = useForm<CompaniesEmail>();
 
   const submitForm = async (data: CompaniesEmail) => {
     if (isLoading) {
@@ -53,7 +54,7 @@ const CompaniesForm = () => {
       showSnackbar(response.detail, 'success');
       reset({ info: { bedrift: '', kontaktperson: '', epost: '' }, comment: '' } as CompaniesEmail);
     } catch (e) {
-      setError('bedrift', { type: 'manual', message: e.detail || 'Noe gikk galt' });
+      setError('bedrift', { message: e.detail || 'Noe gikk galt' });
     } finally {
       setIsLoading(false);
     }
@@ -102,7 +103,13 @@ const CompaniesForm = () => {
           name='info.epost'
           register={register}
           required
-          rules={{ required: 'Feltet er påkrevd' }}
+          rules={{
+            required: 'Feltet er påkrevd',
+            pattern: {
+              value: EMAIL_REGEX,
+              message: 'Ugyldig e-post',
+            },
+          }}
           type='email'
         />
         <Divider />
@@ -132,9 +139,9 @@ const CompaniesForm = () => {
         </div>
         <Divider />
         <TextField disabled={isLoading} errors={errors} label='Kommentar' multiline name='comment' register={register} rows={3} />
-        <Button color='primary' disabled={isLoading} fullWidth type='submit' variant='contained'>
+        <SubmitButton disabled={isLoading} errors={errors}>
           Send inn
-        </Button>
+        </SubmitButton>
       </form>
     </Paper>
   );

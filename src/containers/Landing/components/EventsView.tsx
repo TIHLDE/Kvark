@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { Event } from 'types/Types';
+import { useState } from 'react';
 
 // Material-UI
 import Tab from '@material-ui/core/Tab';
@@ -7,13 +6,13 @@ import Tabs from '@material-ui/core/Tabs';
 import Collapse from '@material-ui/core/Collapse';
 
 // Project componets/services
-import { useEvent } from 'api/hooks/Event';
+import { useEvents } from 'api/hooks/Event';
 import EventsListView from 'containers/Landing/components/EventsListView';
 import EventsCalendarView from 'containers/Landing/components/EventsCalendarView';
 
 // Icons
-import Reorder from '@material-ui/icons/Reorder';
-import DateRange from '@material-ui/icons/DateRange';
+import Reorder from '@material-ui/icons/ReorderRounded';
+import DateRange from '@material-ui/icons/DateRangeRounded';
 
 enum Views {
   LIST,
@@ -21,24 +20,9 @@ enum Views {
 }
 
 const EventsView = () => {
-  const { getEvents, getExpiredEvents } = useEvent();
-  const [events, setEvents] = useState<Array<Event>>([]);
-  const [oldEvents, setOldEvents] = useState<Array<Event>>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data, isLoading } = useEvents();
+  const { data: oldEvents } = useEvents({ expired: true });
   const [tab, setTab] = useState(Views.LIST);
-
-  useEffect(() => {
-    getEvents()
-      .then((eventObject) => setEvents(eventObject.results))
-      .finally(() => setIsLoading(false));
-  }, [getEvents]);
-
-  useEffect(() => {
-    // Load expired events when switching to calendar tab and they havn't been loaded already
-    if (!oldEvents.length && tab === Views.CALENDAR) {
-      getExpiredEvents().then((eventObject) => setOldEvents(eventObject.results));
-    }
-  }, [tab, oldEvents, getExpiredEvents]);
 
   return (
     <>
@@ -47,10 +31,10 @@ const EventsView = () => {
         <Tab icon={<DateRange />} label='Kalendervisning' />
       </Tabs>
       <Collapse in={tab === Views.LIST}>
-        <EventsListView events={events} isLoading={isLoading} />
+        <EventsListView events={data?.pages[0]?.results || []} isLoading={isLoading} />
       </Collapse>
       <Collapse in={tab === Views.CALENDAR} mountOnEnter>
-        <EventsCalendarView events={events} oldEvents={oldEvents} />
+        <EventsCalendarView events={data?.pages[0]?.results || []} oldEvents={oldEvents?.pages[0]?.results || []} />
       </Collapse>
     </>
   );

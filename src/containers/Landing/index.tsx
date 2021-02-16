@@ -1,4 +1,5 @@
 import Helmet from 'react-helmet';
+import classnames from 'classnames';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,14 +8,24 @@ import Typography from '@material-ui/core/Typography';
 // Project Components
 import Navigation from 'components/navigation/Navigation';
 import Container from 'components/layout/Container';
-import Calendar from 'containers/Landing/components/EventsView';
+import EventsView from 'containers/Landing/components/EventsView';
 import NewsListView from 'containers/Landing/components/NewsListView';
+import StoriesView from 'containers/Landing/components/StoriesView';
 import Wave from 'containers/Landing/components/Wave';
 
 const useStyles = makeStyles((theme) => ({
   section: {
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
+    [theme.breakpoints.down('md')]: {
+      paddingTop: theme.spacing(2),
+    },
+  },
+  storiesSection: {
+    [theme.breakpoints.down('md')]: {
+      paddingLeft: 0,
+      paddingRight: 0,
+    },
   },
   smoke: {
     backgroundColor: theme.palette.background.smoke,
@@ -28,25 +39,34 @@ const useStyles = makeStyles((theme) => ({
 
 const Landing = () => {
   const classes = useStyles();
+
   return (
     <Navigation banner={<Wave />} fancyNavbar maxWidth={false}>
       <Helmet>
         <title>Forsiden - TIHLDE</title>
       </Helmet>
       <div className={classes.smoke}>
-        <Container className={classes.section} maxWidth='lg'>
+        <Container className={classnames(classes.section, classes.storiesSection)} maxWidth='lg'>
           <Typography align='center' className={classes.header} color='inherit' variant='h2'>
-            Arrangementer
+            Siste
           </Typography>
-          <Calendar />
+          <StoriesView />
         </Container>
       </div>
       <Container className={classes.section} maxWidth='lg'>
         <Typography align='center' className={classes.header} color='inherit' variant='h2'>
-          Nyheter
+          Arrangementer
         </Typography>
-        <NewsListView />
+        <EventsView />
       </Container>
+      <div className={classes.smoke}>
+        <Container className={classes.section} maxWidth='lg'>
+          <Typography align='center' className={classes.header} color='inherit' variant='h2'>
+            Nyheter
+          </Typography>
+          <NewsListView />
+        </Container>
+      </div>
     </Navigation>
   );
 };

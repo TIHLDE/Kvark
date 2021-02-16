@@ -1,13 +1,17 @@
-import { useCallback } from 'react';
 import { Study } from 'types/Enums';
 import API from 'api/api';
+import { useInfiniteQuery } from 'react-query';
+import { Cheatsheet, PaginationResponse, RequestResponse } from 'types/Types';
 
-export const useCheatsheet = () => {
-  const getCheatsheets = useCallback(async (study: Study, grade: number, filters = null) => {
-    return API.getCheatsheets(study, grade, filters).then((response) => {
-      return !response.isError ? Promise.resolve(response.data) : Promise.reject(response.data);
-    });
-  }, []);
+const QUERY_KEY = 'cheatsheet';
 
-  return { getCheatsheets };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const useCheatsheet = (study: Study, grade: number, filters?: any) => {
+  return useInfiniteQuery<PaginationResponse<Cheatsheet>, RequestResponse>(
+    [QUERY_KEY, study, grade, filters],
+    ({ pageParam = 1 }) => API.getCheatsheets(study, grade, { ...filters, page: pageParam }),
+    {
+      getNextPageParam: (lastPage) => lastPage.next,
+    },
+  );
 };

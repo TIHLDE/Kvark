@@ -1,15 +1,14 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import Helmet from 'react-helmet';
 import URLS from 'URLS';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getUserStudyShort, getParameterByName } from 'utils';
+import { getUserStudyShort } from 'utils';
 import { Study } from 'types/Enums';
-import { Cheatsheet } from 'types/Types';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
 
 // API and store imports
 import { useUser } from 'api/hooks/User';
@@ -21,7 +20,10 @@ import Navigation from 'components/navigation/Navigation';
 import Paper from 'components/layout/Paper';
 import Files from 'containers/Cheatsheet/components/Files';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginBottom: theme.spacing(2),
+  },
   filterContainer: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
@@ -39,13 +41,9 @@ const Cheetsheet = () => {
   const classes = useStyles();
   const { studyId, classId } = useParams();
   const navigate = useNavigate();
-  const { getCheatsheets } = useCheatsheet();
-  const { getUserData } = useUser();
+  const { data: user } = useUser();
   const [input, setInput] = useState('');
   const [search, setSearch] = useState('');
-  const [page, setPage] = useState(1);
-  const [nextPage, setNextPage] = useState<number | null>(null);
-  const [files, setFiles] = useState<Array<Cheatsheet>>([]);
 
   const getStudy = useCallback((): Study | undefined => {
     if (!studyId) {
@@ -61,13 +59,16 @@ const Cheetsheet = () => {
       case 'digsam':
         return Study.DIGSAM;
       default:
-        return undefined;
+        return Study.DATAING;
     }
   }, [studyId]);
 
   const getClass = useCallback((): number | undefined => {
     return classId ? Number(classId) : undefined;
   }, [classId]);
+
+  const { data, hasNextPage, fetchNextPage, isLoading } = useCheatsheet(getStudy() || Study.DATAING, getClass() || 1, { search: search });
+  const files = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   const isURLValid = useCallback(() => {
     const study = getStudy();
@@ -84,45 +85,23 @@ const Cheetsheet = () => {
   }, [getClass, getStudy]);
 
   const goToUserCheatsheet = useCallback(() => {
-    getUserData().then((user) => {
-      if (user && 1 <= user.user_study && user.user_study <= 4 && user.user_class > 0) {
-        navigate(`${URLS.cheatsheet}${getUserStudyShort(user.user_study)}/${user.user_class}/`);
-      } else {
-        navigate(`${URLS.cheatsheet}${getUserStudyShort(1)}/1/`);
-      }
-    });
-  }, [getUserData, navigate]);
+    if (user && 1 <= user.user_study && user.user_study <= 4 && user.user_class > 0) {
+      navigate(`${URLS.cheatsheet}${getUserStudyShort(user.user_study)}/${user.user_class}/`);
+    } else {
+      navigate(`${URLS.cheatsheet}${getUserStudyShort(1)}/1/`);
+    }
+  }, [user, navigate]);
 
   useEffect(() => {
     const study = getStudy();
     const studyClass = getClass();
     if (!study || !studyClass || !isURLValid()) {
       goToUserCheatsheet();
-      return;
     }
-    const filters = {
-      page: page,
-      search: search,
-    };
-    getCheatsheets(study, studyClass, filters)
-      .then((data) => {
-        const next = getParameterByName('page', data.next);
-        setNextPage(next ? Number(next) : null);
-        if (page === 1) {
-          setFiles(data.results);
-        } else {
-          setFiles((prevFiles) => [...prevFiles, ...data.results]);
-        }
-      })
-      .catch(() => {
-        setNextPage(null);
-        setFiles([]);
-      });
-  }, [getCheatsheets, getStudy, getClass, isURLValid, goToUserCheatsheet, page, search]);
+  }, [getStudy, getClass, isURLValid, goToUserCheatsheet, search]);
 
   const setStudyChoice = (newStudy: Study) => {
     setInput('');
-    setPage(1);
     setSearch('');
     if (newStudy !== getStudy() && newStudy === Study.DIGSAM) {
       if (![4, 5].includes(Number(classId))) {
@@ -140,7 +119,6 @@ const Cheetsheet = () => {
   };
 
   const setClassChoice = (newClass: number) => {
-    setPage(1);
     if (newClass !== getClass()) {
       navigate(`${URLS.cheatsheet}${studyId}/${newClass}/`);
     }
@@ -151,18 +129,12 @@ const Cheetsheet = () => {
     return () => clearTimeout(timer);
   }, [input]);
 
-  const goToNextPage = () => {
-    if (nextPage) {
-      setPage(nextPage);
-    }
-  };
-
   return (
     <Navigation banner={<Banner text={`${getStudy()} - ${getClass()}. klasse`} title='Kokeboka' />} fancyNavbar>
       <Helmet>
         <title>Kokeboka - TIHLDE</title>
       </Helmet>
-      <Paper>
+      <Paper className={classes.root}>
         <div className={classes.filterContainer}>
           <TextField
             fullWidth
@@ -170,7 +142,7 @@ const Cheetsheet = () => {
             onChange={(e) => setStudyChoice(e.target.value as Study)}
             select
             style={{ gridArea: 'filterStudy' }}
-            value={getStudy()}
+            value={getStudy() || Study.DATAING}
             variant='outlined'>
             {[Study.DATAING, Study.DIGFOR, Study.DIGSEC, Study.DIGSAM].map((i) => (
               <MenuItem key={i} value={i}>
@@ -184,7 +156,7 @@ const Cheetsheet = () => {
             onChange={(e) => setClassChoice(Number(e.target.value))}
             select
             style={{ gridArea: 'filterClass' }}
-            value={classId}
+            value={classId || 1}
             variant='outlined'>
             {(getStudy() === Study.DIGSAM ? [4, 5] : [1, 2, 3]).map((i) => (
               <MenuItem key={i} value={i}>
@@ -194,7 +166,7 @@ const Cheetsheet = () => {
           </TextField>
           <TextField fullWidth label='Søk' onChange={(e) => setInput(e.target.value)} style={{ gridArea: 'filterSearch' }} value={input} variant='outlined' />
         </div>
-        <Files files={files} goToNextPage={goToNextPage} nextPage={nextPage} />
+        <Files files={files} getNextPage={fetchNextPage} hasNextPage={hasNextPage} isLoading={isLoading} />
       </Paper>
     </Navigation>
   );

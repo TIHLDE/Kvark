@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { InfiniteQueryObserverResult } from 'react-query';
+import { PaginationResponse } from 'types/Types';
 
 // Material UI Components
 import { makeStyles, useTheme, Theme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
+import MuiListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Hidden from '@material-ui/core/Hidden';
 import Fab from '@material-ui/core/Fab';
@@ -13,15 +15,14 @@ import Zoom from '@material-ui/core/Zoom';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 // Icons
-import MenuIcon from '@material-ui/icons/Menu';
-import AddIcon from '@material-ui/icons/Add';
-import DownloadIcon from '@material-ui/icons/CloudDownload';
+import MenuIcon from '@material-ui/icons/MenuRounded';
+import AddIcon from '@material-ui/icons/AddRounded';
 
 // Project components
-import Pageination from 'components/layout/Pageination';
+import Pagination from 'components/layout/Pagination';
 
 const useStyles = makeStyles((theme: Theme) => ({
   header: {
@@ -36,6 +37,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   listItem: {
     borderRadius: theme.spacing(0, 3, 3, 0),
+  },
+  listItemSecondary: {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
   drawerTop: theme.mixins.toolbar,
   drawerPaper: {
@@ -55,26 +61,27 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export type item = {
+export type Item = {
   id: number;
-  location: string;
   title: string;
-};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+} & Record<string, any>;
 
 export type SidebarListProps = {
-  expiredItems: item[];
-  fetchExpired?: () => void;
-  getNextPage: () => void;
-  isLoading: boolean;
-  items: item[];
-  nextPage?: number | null;
-  onItemClick: (item: null | number) => void;
+  useHook: (args?: unknown) => InfiniteQueryObserverResult<PaginationResponse<Item>>;
+  onItemClick: (itemId: null | number) => void;
   selectedItemId: number;
   title: string;
+  noExpired?: boolean;
+  descKey?: string;
 };
 
-const SidebarList = ({ items, expiredItems, onItemClick, selectedItemId, getNextPage, nextPage, title, fetchExpired, isLoading }: SidebarListProps) => {
+const SidebarList = ({ useHook, onItemClick, selectedItemId, title, descKey = 'location', noExpired = false }: SidebarListProps) => {
   const classes = useStyles();
+  const { data, hasNextPage, fetchNextPage, isLoading } = useHook();
+  const items = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const { data: expiredData, hasNextPage: hasNextExpiredPage, fetchNextPage: fetchNextExpiredPage, isLoading: isExpiredLoading } = useHook({ expired: true });
+  const expiredItems = useMemo(() => (expiredData ? expiredData.pages.map((page) => page.results).flat() : []), [expiredData]);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -88,6 +95,17 @@ const SidebarList = ({ items, expiredItems, onItemClick, selectedItemId, getNext
     onItemClick(item);
     setMobileOpen(false);
   };
+
+  const ListItem = ({ item }: { item: Item }) => (
+    <MuiListItem button className={classes.listItem} onClick={() => handleItemClick(item.id)} selected={item.id === selectedItemId}>
+      <ListItemText classes={{ secondary: classes.listItemSecondary }} primary={item.title} secondary={item[descKey]} />
+    </MuiListItem>
+  );
+  const ListItemLoading = () => (
+    <MuiListItem className={classes.listItem} selected>
+      <ListItemText primary={<Skeleton width={140} />} secondary={<Skeleton width={90} />} />
+    </MuiListItem>
+  );
 
   return (
     <>
@@ -107,33 +125,28 @@ const SidebarList = ({ items, expiredItems, onItemClick, selectedItemId, getNext
               <AddIcon />
             </IconButton>
           </div>
-          <Pageination nextPage={getNextPage} page={nextPage}>
-            {isLoading && <LinearProgress />}
+          <Pagination fullWidth hasNextPage={hasNextPage} nextPage={fetchNextPage}>
             <List className={classes.list} dense disablePadding>
+              {isLoading && <ListItemLoading />}
               {items.map((item) => (
-                <ListItem button className={classes.listItem} key={item.id} onClick={() => handleItemClick(item.id)} selected={item.id === selectedItemId}>
-                  <ListItemText primary={item.title} secondary={item.location} />
-                </ListItem>
+                <ListItem item={item} key={item.id} />
               ))}
             </List>
-          </Pageination>
-          {fetchExpired && (
+          </Pagination>
+          {!noExpired && (
             <>
               <Divider />
               <div className={classes.header}>
                 <Typography variant='h3'>Tidligere</Typography>
-                <IconButton onClick={fetchExpired}>
-                  <DownloadIcon />
-                </IconButton>
               </div>
-              {isLoading && <LinearProgress />}
-              <List className={classes.list} dense disablePadding>
-                {expiredItems.map((item) => (
-                  <ListItem button className={classes.listItem} key={item.id} onClick={() => handleItemClick(item.id)} selected={item.id === selectedItemId}>
-                    <ListItemText primary={item.title} secondary={item.location} />
-                  </ListItem>
-                ))}
-              </List>
+              <Pagination fullWidth hasNextPage={hasNextExpiredPage} nextPage={fetchNextExpiredPage}>
+                <List className={classes.list} dense disablePadding>
+                  {isExpiredLoading && <ListItemLoading />}
+                  {expiredItems.map((item) => (
+                    <ListItem item={item} key={item.id} />
+                  ))}
+                </List>
+              </Pagination>
             </>
           )}
         </div>

@@ -8,7 +8,7 @@ function BadgeInput() {
   const { createUserBadge } = useBadge();
   const showSnackbar = useSnackbar();
   const submit = () => {
-    const formatedId = flag.replaceAll('flag{', '').replaceAll('}', '');
+    const formatedId = flag.replace(/flag{/gi, '').replace(/}/gi, '');
     createUserBadge(formatedId)
       .then((response) => showSnackbar(response.detail, 'success'))
       .catch((err) => showSnackbar(err.detail, 'error'))
