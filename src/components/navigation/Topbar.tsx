@@ -191,7 +191,7 @@ const Topbar = ({ fancyNavbar }: IProps) => {
       [
         {
           items: [
-            { text: 'Om TIHLDE', to: URLS.about },
+            { text: 'Om TIHLDE', to: URLS.pages },
             { text: 'Ny student', to: URLS.newStudent },
           ],
           text: 'Generelt',

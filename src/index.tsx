@@ -20,7 +20,6 @@ import MessageGDPR from 'components/miscellaneous/MessageGDPR';
 import Navigation from 'components/navigation/Navigation';
 
 // Project containers
-import About from 'containers/About';
 import Cheatsheet from 'containers/Cheatsheet';
 import Companies from 'containers/Companies';
 import EventDetails from 'containers/EventDetails';
@@ -31,20 +30,14 @@ import Landing from 'containers/Landing';
 import NewsDetails from 'containers/NewsDetails';
 import Pages from 'containers/Pages';
 import Profile from 'containers/Profile';
-const ContactInfo = lazy(() => import('containers/ContactInfo'));
 const EventAdministration = lazy(() => import('containers/EventAdministration'));
 const EventRegistration = lazy(() => import('containers/EventRegistration'));
-const EventRules = lazy(() => import('containers/EventRules'));
 const ForgotPassword = lazy(() => import('containers/ForgotPassword'));
 const Http404 = lazy(() => import('containers/Http404'));
 const JobPostAdministration = lazy(() => import('containers/JobPostAdministration'));
-const Laws = lazy(() => import('containers/Laws'));
 const LogIn = lazy(() => import('containers/LogIn'));
 const News = lazy(() => import('containers/News'));
 const NewsAdministration = lazy(() => import('containers/NewsAdministration'));
-const NewStudent = lazy(() => import('containers/NewStudent'));
-const PrivacyPolicy = lazy(() => import('containers/PrivacyPolicy'));
-const Services = lazy(() => import('containers/Services'));
 const SignUp = lazy(() => import('containers/SignUp'));
 const UserAdmin = lazy(() => import('containers/UserAdmin'));
 
@@ -118,20 +111,13 @@ const AppRoutes = () => {
         <Route element={<EventDetails />} path=':id/*' />
         <Route element={<Events />} path='' />
       </Route>
-      <Route element={<About />} path={URLS.about} />
-      <Route element={<ContactInfo />} path={URLS.contactInfo} />
-      <Route element={<Services />} path={URLS.services} />
       <Route element={<Companies />} path={URLS.company} />
-      <Route element={<NewStudent />} path={URLS.newStudent} />
       <Route element={<Profile />} path={URLS.profile} />
       <Route path={URLS.jobposts}>
         <Route element={<JobPostDetails />} path=':id/*' />
         <Route element={<JobPosts />} path='' />
       </Route>
       <Route element={<Pages />} path={`${URLS.pages}*`} />
-      <Route element={<Laws />} path={URLS.laws} />
-      <Route element={<PrivacyPolicy />} path={URLS.privacyPolicy} />
-      <Route element={<EventRules />} path={URLS.eventRules} />
       <Route path={URLS.news}>
         <Route element={<NewsDetails />} path=':id/*' />
         <Route element={<News />} path='' />

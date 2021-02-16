@@ -109,10 +109,10 @@ const Pages = () => {
       <Breadcrumbs aria-label='breadcrumb' maxItems={4}>
         {levels.slice(0, levels.length - 1).map((level, i) => (
           <Link className={classes.link} key={i} to={`/${levels.slice(0, i + 1).join('/')}`}>
-            <Typography className={classes.breadcrumb}>{level.replaceAll('-', ' ')}</Typography>
+            <Typography className={classes.breadcrumb}>{level.replace(/-/gi, ' ')}</Typography>
           </Link>
         ))}
-        <Typography className={classes.breadcrumb}>{levels[levels.length - 1].replaceAll('-', ' ')}</Typography>
+        <Typography className={classes.breadcrumb}>{levels[levels.length - 1].replace(/-/gi, ' ')}</Typography>
       </Breadcrumbs>
       <div className={classes.grid}>
         {isLoading ? (
