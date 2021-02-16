@@ -55,12 +55,9 @@ export default {
   deleteRegistration: (eventId: number, userId: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `events/${String(eventId)}/users/${userId}/` }),
 
   // Forms
-  createForm: (item: Form) => {
-    return IFetch<Form>(RequestMethodType.POST, `forms/`, item, true);
-  },
-  updateForm: (formId: string, item: Form) => {
-    return IFetch<Form>(RequestMethodType.PUT, `forms/${formId}/`, item, true);
-  },
+  getForm: (formId: string) => IFetch<Form>({ method: 'GET', url: `forms/${formId}/` }),
+  createForm: (item: Form) => IFetch<Form>({ method: 'POST', url: `forms/`, data: item }),
+  updateForm: (formId: string, item: Form) => IFetch<Form>({ method: 'PUT', url: `forms/${formId}/`, data: item }),
 
   // Job posts
   getJobPosts: (filters: any = {}) => IFetch<PaginationResponse<JobPost>>({ method: 'GET', url: `jobpost/`, data: filters }),

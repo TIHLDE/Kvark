@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Event, EventForm, TextFormField, SelectFormField } from 'types/Types';
-import { useEvent } from 'api/hooks/Event';
-import { useForms } from 'api/hooks/Form';
+import { EventForm, TextFormField, SelectFormField } from 'types/Types';
+import { useFormById, useCreateForm, useUpdateForm } from 'api/hooks/Form';
 
 // Material UI
 import Typography from '@material-ui/core/Typography';
@@ -12,30 +10,20 @@ import { FormType, FormFieldType } from 'types/Enums';
 
 export type EventFormEditorProps = {
   eventId: number;
+  formId: string | null;
 };
 
-const EventFormEditor = ({ eventId }: EventFormEditorProps) => {
-  const { getEventById } = useEvent();
-  const { createForm, updateForm } = useForms();
-  const [event, setEvent] = useState<Event | null>(null);
+const EventFormEditor = ({ eventId, formId }: EventFormEditorProps) => {
+  const { data, isLoading } = useFormById(formId || '-');
+  const createForm = useCreateForm();
+  const updateForm = useUpdateForm(formId || '-');
 
-  useEffect(() => {
-    let subscribed = true;
-    getEventById(eventId, true)
-      .then((data) => !subscribed || setEvent(data))
-      .catch(() => !subscribed || setEvent(null));
-    return () => {
-      subscribed = false;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventId]);
+  const onCreate = async (fields: Array<TextFormField | SelectFormField>) => createForm.mutate({ fields, event: eventId } as EventForm);
+  const onUpdate = async (fields: Array<TextFormField | SelectFormField>) =>
+    formId ? updateForm.mutate({ fields, event: eventId } as EventForm) : onCreate(fields);
 
-  const onCreate = (fields: Array<TextFormField | SelectFormField>) => createForm({ fields, event: eventId } as EventForm);
-  const onUpdate = (fields: Array<TextFormField | SelectFormField>) =>
-    event?.forms?.id ? updateForm(event.forms.id, { fields, event: eventId } as EventForm) : onCreate(fields);
-
-  if (!event) {
-    return <Typography variant='h3'>Noe gikk galt, vi kunne ikke finne arrangementet</Typography>;
+  if (isLoading) {
+    return <Typography variant='h3'>Laster skjemaet</Typography>;
   }
 
   const form: EventForm = {
@@ -88,7 +76,7 @@ const EventFormEditor = ({ eventId }: EventFormEditorProps) => {
 
   return (
     <div style={{ width: '100%' }}>
-      <FormEditor form={event.forms || form} onCreate={onCreate} onUpdate={onUpdate} />
+      <FormEditor form={data || form} onCreate={onCreate} onUpdate={onUpdate} />
       <Typography style={{ marginTop: 8 }} variant='body2'>
         OBS: Spørsmål til arrangement lagres uavhengig av resten av skjemaet! Du må altså trykke på lagre over for at spørsmålene skal lagres
       </Typography>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, TextFormField, SelectFormField } from 'types/Types';
 import { FormFieldType, FormType } from 'types/Enums';
-import { useForms } from 'api/hooks/Form';
+import { useCreateForm, useUpdateForm } from 'api/hooks/Form';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI
@@ -29,13 +29,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export type FormEditorProps = {
   form: Form | null;
-  onCreate?: (form: Array<TextFormField | SelectFormField>) => Promise<Form>;
-  onUpdate?: (form: Array<TextFormField | SelectFormField>) => Promise<Form>;
+  onCreate?: (form: Array<TextFormField | SelectFormField>) => Promise<void>;
+  onUpdate?: (form: Array<TextFormField | SelectFormField>) => Promise<void>;
 };
 
 const FormEditor = ({ form, onCreate, onUpdate }: FormEditorProps) => {
   const classes = useStyles();
-  const { createForm, updateForm } = useForms();
+  const createForm = useCreateForm();
+  const updateForm = useUpdateForm(form?.id || '-');
   const showSnackbar = useSnackbar();
   const [fields, setFields] = useState<Array<TextFormField | SelectFormField>>(form?.fields || []);
   const [open, setOpen] = React.useState(false);
@@ -73,13 +74,33 @@ const FormEditor = ({ form, onCreate, onUpdate }: FormEditorProps) => {
 
   const save = () => {
     if (form?.id) {
-      (onUpdate ? onUpdate(fields) : updateForm(form.id, { ...form, fields: fields }))
-        .then(() => showSnackbar('Spørsmålene ble oppdatert', 'success'))
-        .catch((e) => showSnackbar(e.detail, 'error'));
+      onUpdate
+        ? onUpdate(fields)
+        : updateForm.mutate(
+            { ...form, fields: fields },
+            {
+              onSuccess: () => {
+                showSnackbar('Spørsmålene ble oppdatert', 'success');
+              },
+              onError: (e) => {
+                showSnackbar(e.detail, 'error');
+              },
+            },
+          );
     } else {
-      (onCreate ? onCreate(fields) : createForm({ fields: fields, type: FormType.SURVEY }))
-        .then(() => showSnackbar('Spørsmålene ble oppdatert', 'success'))
-        .catch((e) => showSnackbar(e.detail, 'error'));
+      onCreate
+        ? onCreate(fields)
+        : createForm.mutate(
+            { fields: fields, type: FormType.SURVEY },
+            {
+              onSuccess: () => {
+                showSnackbar('Spørsmålene ble oppdatert', 'success');
+              },
+              onError: (e) => {
+                showSnackbar(e.detail, 'error');
+              },
+            },
+          );
     }
   };
 

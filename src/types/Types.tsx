@@ -103,7 +103,7 @@ export interface Event {
   end_registration_at: string;
   evaluate_link: string;
   expired: boolean;
-  forms?: EventForm;
+  formId: string | null;
   id: number;
   image?: string;
   image_alt?: string;

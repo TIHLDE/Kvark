@@ -4,6 +4,7 @@ import { FormType, FormFieldType } from 'types/Enums';
 import URLS from 'URLS';
 import { getUserStudyShort, shortDownString } from 'utils';
 import { useCreateEventRegistration } from 'api/hooks/Event';
+import { useFormById } from 'api/hooks/Form';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { useForm } from 'react-hook-form';
 
@@ -72,6 +73,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
   const classes = useStyles();
   const createRegistration = useCreateEventRegistration(event.id);
   const showSnackbar = useSnackbar();
+  const { data, isLoading: isFormLoading } = useFormById(event.formId || '-');
   const [isLoading, setIsLoading] = useState(false);
   const [agreeRules, setAgreeRules] = useState(false);
   const [allowPhoto, setAllowPhoto] = useState(true);
@@ -176,7 +178,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
           {Boolean(form.fields.length) && (
             <Paper className={classes.infoPaper}>
               <Typography variant='h3'>Spørsmål</Typography>
-              <FormView errors={errors} form={form} register={register} />
+              <FormView errors={errors} form={data || form} register={register} />
             </Paper>
           )}
           <FormControlLabel
@@ -192,7 +194,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
           <a href={URLS.eventRules} rel='noopener noreferrer' target='_blank'>
             <Typography variant='caption'>Les arrangementsreglene her (åpnes i ny fane)</Typography>
           </a>
-          <Button className={classes.button} color='primary' disabled={isLoading || !agreeRules} fullWidth type='submit' variant='contained'>
+          <Button className={classes.button} color='primary' disabled={isLoading || isFormLoading || !agreeRules} fullWidth type='submit' variant='contained'>
             Meld deg på
           </Button>
         </form>

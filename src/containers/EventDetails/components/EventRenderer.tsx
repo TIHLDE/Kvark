@@ -12,10 +12,9 @@ import { useMisc } from 'api/hooks/Misc';
 import { useEventRegistration, useDeleteEventRegistration } from 'api/hooks/Event';
 import { useUser, HavePermission } from 'api/hooks/User';
 import { useSnackbar } from 'api/hooks/Snackbar';
-import { useInterval } from 'api/hooks/Utils';
 
 // Material UI Components
-import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
@@ -32,7 +31,7 @@ import Paper from 'components/layout/Paper';
 import Dialog from 'components/layout/Dialog';
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   image: {
     borderRadius: theme.shape.borderRadius,
   },
@@ -141,16 +140,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         },
       });
     }
-  };
-
-  const CountdownButton = () => {
-    const [message, setMessage] = useState('Påmelding åpner om ' + formatDistanceStrict(startRegistrationDate, new Date(), { locale: nb }));
-    useInterval(() => setMessage('Påmelding åpner om ' + formatDistanceStrict(startRegistrationDate, new Date(), { locale: nb })), 1000);
-    return (
-      <Button className={classes.applyButton} color='primary' disabled fullWidth variant='contained'>
-        {message}
-      </Button>
-    );
   };
 
   const ApplyButton = () => {
