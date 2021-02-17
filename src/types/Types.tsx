@@ -27,6 +27,7 @@ export interface User {
   user_id: string;
   first_name: string;
   last_name: string;
+  image: string;
   email: string;
   cell: number;
   home_busstop?: string;
@@ -132,15 +133,7 @@ export interface Registration {
   has_attended: boolean;
   is_on_wait: boolean;
   registration_id: number;
-  user_info: Pick<User, 'allergy' | 'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study'>;
-}
-
-export interface Registration {
-  allow_photo: boolean;
-  has_attended: boolean;
-  is_on_wait: boolean;
-  registration_id: number;
-  user_info: Pick<User, 'allergy' | 'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study'>;
+  user_info: Pick<User, 'allergy' | 'email' | 'first_name' | 'last_name' | 'image' | 'user_class' | 'user_id' | 'user_study'>;
 }
 
 export interface CompaniesEmail {
