@@ -12,7 +12,7 @@ import TextField from '@material-ui/core/TextField';
 
 // API and store imports
 import { useUser } from 'api/hooks/User';
-import { useCheatsheet } from 'api/hooks/Cheatsheet';
+import { useCheatsheets } from 'api/hooks/Cheatsheet';
 
 // Project Components
 import Banner from 'components/layout/Banner';
@@ -67,7 +67,7 @@ const Cheetsheet = () => {
     return classId ? Number(classId) : undefined;
   }, [classId]);
 
-  const { data, hasNextPage, fetchNextPage, isLoading } = useCheatsheet(getStudy() || Study.DATAING, getClass() || 1, { search: search });
+  const { data, hasNextPage, fetchNextPage, isLoading } = useCheatsheets(getStudy() || Study.DATAING, getClass() || 1, { search: search });
   const files = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   const isURLValid = useCallback(() => {

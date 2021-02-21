@@ -76,6 +76,11 @@ export default {
   updateNotification: (id: number, item: { read: boolean }) => IFetch<RequestResponse>({ method: 'PUT', url: `notification/${String(id)}/`, data: item }),
 
   // Cheatsheet
+  getCheatsheet: (id: string, study: Study, grade: number) => {
+    const tempStudy = study === Study.DIGSEC ? 'DIGINC' : study;
+    return IFetch<Cheatsheet>({ method: 'GET', url: `cheatsheet/${tempStudy.toUpperCase()}/${String(grade)}/files/${id}` });
+  },
+
   getCheatsheets: (study: Study, grade: number, filters?: any) => {
     const tempStudy = study === Study.DIGSEC ? 'DIGINC' : study;
     return IFetch<PaginationResponse<Cheatsheet>>({
@@ -84,6 +89,31 @@ export default {
       data: filters || {},
       withAuth: true,
     });
+  },
+
+  createCheatsheet: (item: Cheatsheet, study: Study, grade: number) => {
+    const tempStudy = study === Study.DIGSEC ? 'DIGINC' : study;
+    return IFetch<Cheatsheet>({
+      method: 'POST',
+      url: `cheatsheet/${tempStudy.toUpperCase()}/${String(grade)}/files/`,
+      data: item,
+      withAuth: true,
+    });
+  },
+
+  putCheatsheet: (item: Cheatsheet, study: Study, grade: number, id: string) => {
+    const tempStudy = study === Study.DIGSEC ? 'DIGINC' : study;
+    return IFetch<Cheatsheet>({
+      method: 'PUT',
+      url: `cheatsheet/${tempStudy.toUpperCase()}/${String(grade)}/files/${id}`,
+      data: item,
+      withAuth: true,
+    });
+  },
+
+  deleteCheatsheet: (id: string, study: Study, grade: number) => {
+    const tempStudy = study === Study.DIGSEC ? 'DIGINC' : study;
+    return IFetch<RequestResponse>({ method: 'DELETE', url: `cheatsheet/${tempStudy.toUpperCase()}/${String(grade)}/files/${id}` });
   },
 
   // Warning
