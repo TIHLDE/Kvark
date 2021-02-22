@@ -23,7 +23,6 @@ const StoriesView = () => {
         .slice(0, STORIES_TO_DISPLAY),
     [events, jobposts, news],
   );
-
   if (isNewsLoading || isJobPostsLoading || isEventsLoading) {
     return <StoryLoading fadeColor={theme.palette.background.smoke} />;
   } else {
