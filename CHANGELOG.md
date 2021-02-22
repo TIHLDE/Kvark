@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.0.4 (22.02.2021)
+
 ## Versjon 1.0.3 (22.02.2021)
 
 - ✨ **Spesial innhold i pages**. Lagt til mulighet for at man kan lage spesial-komponenter som kommer inne på pages-sider.
