@@ -157,7 +157,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
     },
     typography: {
       allVariants: {
-        color: get<string>({ light: '#000000', dark: '#ffffff', ctf: '#000000' }),
+        color: get<string>({ light: 'inherit', dark: 'white', ctf: '#000000' }),
       },
       h1: {
         fontSize: '3.1rem',
