@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Registration } from 'types/Types';
-import { getUserStudyShort } from 'utils';
+import { getUserStudyShort, formatDate } from 'utils';
 import { useDeleteEventRegistration, useUpdateEventRegistration } from 'api/hooks/Event';
+import parseISO from 'date-fns/parseISO';
 
 // Material-ui
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -117,6 +118,7 @@ const Participant = ({ registration, eventId, showEmail }: ParticipantProps) => 
         <Typography>
           {userInfo.user_class}. klasse - {getUserStudyShort(userInfo.user_study)}
         </Typography>
+        <Typography>Påmeldt: {formatDate(parseISO(registration.created_at))}</Typography>
         <Collapse in={showEmail}>
           <Typography>{registration.user_info.email}</Typography>
         </Collapse>

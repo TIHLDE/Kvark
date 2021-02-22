@@ -130,6 +130,7 @@ export interface RegistrationPriority {
 
 export interface Registration {
   allow_photo: boolean;
+  created_at: string;
   has_attended: boolean;
   is_on_wait: boolean;
   registration_id: number;
