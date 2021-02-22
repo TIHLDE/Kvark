@@ -81,6 +81,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   description: {
     marginBottom: theme.spacing(1),
     whiteSpace: 'pre-line',
+    overflow: 'hidden',
+    '-webkit-line-clamp': 4,
+    display: '-webkit-box',
+    '-webkit-box-orient': 'vertical',
   },
   linkButton: {
     color: 'white',
