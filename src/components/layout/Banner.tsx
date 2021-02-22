@@ -47,6 +47,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('md')]: {
       fontSize: 50,
       padding: theme.spacing(0, 2),
+      overflowWrap: 'break-word',
+    },
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 40,
     },
   },
   text: {
