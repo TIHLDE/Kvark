@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Registration } from 'types/Types';
-import { getUserStudyShort, formatDate } from 'utils';
+import { getUserStudyShort, formatDate, getUserClass } from 'utils';
 import { useDeleteEventRegistration, useUpdateEventRegistration } from 'api/hooks/Event';
 import parseISO from 'date-fns/parseISO';
 
@@ -116,7 +116,7 @@ const Participant = ({ registration, eventId, showEmail }: ParticipantProps) => 
       <div className={classes.userName}>
         <Typography>{`${userInfo.first_name} ${userInfo.last_name}`}</Typography>
         <Typography>
-          {userInfo.user_class}. klasse - {getUserStudyShort(userInfo.user_study)}
+          {getUserClass(userInfo.user_class)} - {getUserStudyShort(userInfo.user_study)}
         </Typography>
         <Typography>Påmeldt: {formatDate(parseISO(registration.created_at))}</Typography>
         <Collapse in={showEmail}>
