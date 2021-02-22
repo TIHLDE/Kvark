@@ -1,24 +1,28 @@
+const PAGES = '/om/';
+export const PAGES_URLS = {
+  ABOUT_INDEX: 'tihlde/undergrupper/index/',
+  CONTACT_US: 'kontakt-oss/',
+  EVENT_RULES: 'annet/arrangementsregler/',
+  NEW_STUDENT: 'ny-student/',
+};
+
 export default {
   landing: '/',
   events: '/arrangementer/',
   company: '/bedrifter/',
-  about: '/om-tihlde/',
-  contactInfo: '/kontakt/',
-  services: '/tjenester/',
-  newStudent: '/nystudent/',
+  contactInfo: `${PAGES}${PAGES_URLS.CONTACT_US}`,
+  newStudent: `${PAGES}${PAGES_URLS.NEW_STUDENT}`,
   jobposts: '/karriere/',
   profile: '/profil/',
   login: '/logg-inn/',
   forgotPassword: '/glemt-passord/',
-  laws: '/lover/',
   newlanding: '/newlanding/',
   signup: '/ny-bruker/',
-  privacyPolicy: '/personvern/',
-  eventRules: '/arrangementsregler/',
+  eventRules: `${PAGES}${PAGES_URLS.EVENT_RULES}`,
   cheatsheet: '/kokebok/',
   news: '/nyheter/',
-  pages: '/om/',
-  aboutIndex: '/om/undergrupper/index/',
+  pages: PAGES,
+  aboutIndex: `${PAGES}${PAGES_URLS.ABOUT_INDEX}`,
 
   userAdmin: '/admin/brukere/',
   eventAdmin: '/admin/arrangementer/',

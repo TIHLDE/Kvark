@@ -12,7 +12,6 @@ import Typography from '@material-ui/core/Typography';
 import Hidden from '@material-ui/core/Hidden';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import Avatar from '@material-ui/core/Avatar';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
@@ -28,6 +27,7 @@ import ExpandIcon from '@material-ui/icons/ExpandMoreRounded';
 // Project Components
 import Sidebar from 'components/navigation/Sidebar';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
+import Avatar from 'components/miscellaneous/Avatar';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -191,7 +191,7 @@ const Topbar = ({ fancyNavbar }: IProps) => {
       [
         {
           items: [
-            { text: 'Om TIHLDE', to: URLS.about },
+            { text: 'Om TIHLDE', to: URLS.pages },
             { text: 'Ny student', to: URLS.newStudent },
           ],
           text: 'Generelt',
@@ -234,7 +234,7 @@ const Topbar = ({ fancyNavbar }: IProps) => {
               <Hidden smDown>
                 <Typography className={classes.profileName}>{user.first_name}</Typography>
               </Hidden>
-              <Avatar className={classes.avatar}>{`${user.first_name.substring(0, 1)}${user.last_name.substring(0, 1)}`}</Avatar>
+              <Avatar className={classes.avatar} user={user} />
             </Button>
           ) : (
             <Hidden mdDown>
