@@ -19,6 +19,7 @@ import Banner from 'components/layout/Banner';
 import Navigation from 'components/navigation/Navigation';
 import Paper from 'components/layout/Paper';
 import Files from 'containers/Cheatsheet/components/Files';
+import CheatsheetAdmin from 'containers/Cheatsheet/components/CheatsheetAdmin';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -134,6 +135,7 @@ const Cheetsheet = () => {
       <Helmet>
         <title>Kokeboka - TIHLDE</title>
       </Helmet>
+      <CheatsheetAdmin cheatsheets={files} grade={Number(classId) || 1} study={getStudy() || Study.DATAING} />
       <Paper className={classes.root}>
         <div className={classes.filterContainer}>
           <TextField

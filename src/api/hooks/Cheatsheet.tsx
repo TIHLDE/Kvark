@@ -6,7 +6,7 @@ import { Cheatsheet, PaginationResponse, RequestResponse } from 'types/Types';
 const QUERY_KEY = 'cheatsheet';
 
 export const useCheatsheet = (study: Study, grade: number, id: string) => {
-  return useQuery<Cheatsheet, RequestResponse>([QUERY_KEY, id], () => API.getCheatsheet(id, study, grade), { enabled: id !== -1 });
+  return useQuery<Cheatsheet, RequestResponse>([QUERY_KEY, id], () => API.getCheatsheet(id, study, grade), { enabled: id !== null });
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

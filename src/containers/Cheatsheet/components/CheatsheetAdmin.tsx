@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useCheatsheet, useUpdateCheatsheet, useDeleteCheatsheet, useCreateCheatsheet } from 'api/hooks/Cheatsheet';
 import { useSnackbar } from 'api/hooks/Snackbar';
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-type IFormProps = IPagesAdminProps & {
+type IFormProps = ICheatsheetAdminProps & {
   mode: Modes;
   closeDialog: () => void;
 };
@@ -56,12 +56,35 @@ const Form = ({ closeDialog, mode, study, grade, cheatsheets }: IFormProps) => {
   const [selectedId, setSelectedId] = useState<string>('');
   const { data: cheatsheet } = useCheatsheet(study, grade, selectedId);
   const createCheatsheet = useCreateCheatsheet(study, grade);
-  const updateCheatsheet = useUpdateCheatsheet(study, grade, cheatsheet.id || '');
-  const deleteCheatsheet = useDeleteCheatsheet(study, grade, cheatsheet.id || '');
-  const { register, errors, handleSubmit } = useForm(mode === Modes.EDIT ? { defaultValues: cheatsheet } : {});
+  const updateCheatsheet = useUpdateCheatsheet(study, grade, '');
+  const deleteCheatsheet = useDeleteCheatsheet(study, grade, '');
+  const { register, errors, handleSubmit, reset } = useForm(mode === Modes.EDIT ? { defaultValues: cheatsheet } : {});
   const showSnackbar = useSnackbar();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const setValues = useCallback(
+    (newValues: Cheatsheet | null) => {
+      reset({
+        title: newValues?.title || '',
+        creator: newValues?.creator || '',
+        grade: grade,
+        course: study,
+        type: newValues?.type || '',
+        official: newValues?.official,
+        url: newValues?.url || '',
+      });
+    },
+    [reset],
+  );
+
+  useEffect(() => {
+    if (cheatsheet) {
+      setValues(cheatsheet);
+    } else {
+      setValues(null);
+    }
+  }, [cheatsheet, setValues]);
 
   const submit = async (data: FormData) => {
     if (isLoading) {
@@ -126,8 +149,6 @@ const Form = ({ closeDialog, mode, study, grade, cheatsheets }: IFormProps) => {
       <form onSubmit={handleSubmit(submit)}>
         <TextField disabled={isLoading} errors={errors} label='Tittel' name='title' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
         <TextField disabled={isLoading} errors={errors} label='Av' name='creator' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
-        <TextField disabled={isLoading} errors={errors} label='Klasse' name='grade' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
-        <TextField disabled={isLoading} errors={errors} label='Studie' name='study' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
         <TextField disabled={isLoading} errors={errors} label='Type' name='type' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
         <TextField disabled={isLoading} errors={errors} label='link' name='url' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
         <SubmitButton disabled={isLoading} errors={errors}>
@@ -154,7 +175,7 @@ const Form = ({ closeDialog, mode, study, grade, cheatsheets }: IFormProps) => {
   );
 };
 
-export type IPagesAdminProps = {
+export type ICheatsheetAdminProps = {
   cheatsheets: Cheatsheet[];
   study: Study;
   grade: number;
@@ -164,7 +185,7 @@ enum Modes {
   EDIT,
 }
 
-const PagesAdmin = ({ cheatsheets, grade, study }: IPagesAdminProps) => {
+const CheatsheetAdmin = ({ cheatsheets, grade, study }: ICheatsheetAdminProps) => {
   const classes = useStyles();
   const [showDialog, setShowDialog] = useState(false);
   const [mode, setMode] = useState(Modes.CREATE);
@@ -193,4 +214,4 @@ const PagesAdmin = ({ cheatsheets, grade, study }: IPagesAdminProps) => {
   );
 };
 
-export default PagesAdmin;
+export default CheatsheetAdmin;
