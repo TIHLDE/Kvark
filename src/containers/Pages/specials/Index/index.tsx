@@ -1,30 +1,18 @@
 import ErrorCard from 'containers/Pages/specials/Index/ErrorCard';
 import WorkDoneCard from 'containers/Pages/specials/Index/WorkDoneCard';
 import MembersCard from 'containers/Pages/specials/Index/MembersCard';
+import { useMemberships } from 'api/hooks/Membership';
+import { Groups } from 'types/Enums';
 
 const AboutIndex = () => {
-  // TODO:
-  // Get this information from API
-  const members = [
-    'Eirik Steira',
-    'Olaf Rosendahl',
-    'Zaim Imran',
-    'Mads Lundegaard',
-    'Svein Jakob Høie',
-    'Omer Jonuzi',
-    'Tobias Rødahl Thingnes',
-    'Max Torre Schau',
-    'Hermann Owren Elton',
-    'Henriette Brekke Sunde',
-    'Minh Dan Nguyen',
-    'Norbert Gørke',
-  ];
+  const { data } = useMemberships(Groups.INDEX.toLowerCase());
+  const members = data?.map((member) => `${member.user.first_name} ${member.user.last_name}`);
   return (
     <>
       <WorkDoneCard changelogURL={'https://raw.githubusercontent.com/tihlde/Kvark/dev/CHANGELOG.md'} title={'Hva har vi gjort i frontend?'} />
       <WorkDoneCard changelogURL={'https://raw.githubusercontent.com/tihlde/Lepton/dev/CHANGELOG.md'} title={'Hva har vi gjort i backend?'} />
       <ErrorCard />
-      <MembersCard members={members} />
+      <MembersCard members={members || []} />
     </>
   );
 };

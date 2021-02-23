@@ -189,3 +189,6 @@ export interface PageTree {
   title: string;
   children: Array<PageTree>;
 }
+export interface Membership {
+  user: User;
+}
