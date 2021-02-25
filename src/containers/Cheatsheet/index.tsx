@@ -6,7 +6,7 @@ import { getUserStudyShort } from 'utils';
 import { Study } from 'types/Enums';
 
 // Material UI Components
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 
@@ -19,7 +19,6 @@ import Banner from 'components/layout/Banner';
 import Navigation from 'components/navigation/Navigation';
 import Paper from 'components/layout/Paper';
 import Files from 'containers/Cheatsheet/components/Files';
-import { getTheme, themes } from 'theme';
 import { getCookie } from 'api/cookie';
 
 const useStyles = makeStyles((theme) => ({

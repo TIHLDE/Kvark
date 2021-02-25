@@ -12,6 +12,9 @@ import EventsView from 'containers/Landing/components/EventsView';
 import NewsListView from 'containers/Landing/components/NewsListView';
 import StoriesView from 'containers/Landing/components/StoriesView';
 import Wave from 'containers/Landing/components/Wave';
+import BadgeInput from 'components/miscellaneous/BadgeInput';
+import { getCookie } from 'api/cookie';
+import ReactAudioPlayer from 'react-audio-player';
 
 const useStyles = makeStyles((theme) => ({
   section: {
@@ -45,6 +48,19 @@ const Landing = () => {
       <Helmet>
         <title>Forsiden - TIHLDE</title>
       </Helmet>
+      {/* TODO: style component */}
+      <div>
+        <BadgeInput />
+        {/* TODO: static sound */}
+        {getCookie('theme-cookie') === 'ctf' && (
+          <ReactAudioPlayer
+            autoPlay
+            id='rip_for_headphone_users'
+            src={'https://drive.tihlde.org/index.php/s/6fFnjRCJYytCgbR/download'}
+            title='rip_for_headphone_users'
+          />
+        )}
+      </div>
       <div className={classes.smoke}>
         <Container className={classnames(classes.section, classes.storiesSection)} maxWidth='lg'>
           <Typography align='center' className={classes.header} color='inherit' variant='h2'>
