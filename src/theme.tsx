@@ -4,6 +4,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import DarkIcon from '@material-ui/icons/Brightness2Outlined';
 import AutomaticIcon from '@material-ui/icons/DevicesOutlined';
 import LightIcon from '@material-ui/icons/WbSunnyOutlined';
+import EmojiFlagsIcon from '@material-ui/icons/EmojiFlags';
 
 declare module '@material-ui/core/styles/createPalette' {
   interface TypeBackground {
@@ -59,7 +60,7 @@ export const themesDetails = [
   { key: 'light', name: 'Lyst', icon: LightIcon },
   { key: 'automatic', name: 'Automatisk', icon: AutomaticIcon },
   { key: 'dark', name: 'Mørkt', icon: DarkIcon },
-  { key: 'ctf', name: 'CTF', icon: DarkIcon },
+  { key: 'ctf', name: 'CTF', icon: EmojiFlagsIcon },
 ] as const;
 export const themes = themesDetails.map((theme) => theme.key);
 export type ThemeTypes = typeof themes[number];
