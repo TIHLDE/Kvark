@@ -34,6 +34,7 @@ import Paper from 'components/layout/Paper';
 import Modal from 'components/layout/Modal';
 import Avatar from 'components/miscellaneous/Avatar';
 import QRCode from 'components/miscellaneous/QRCode';
+import ReactAudioPlayer from 'react-audio-player';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -147,7 +148,7 @@ const ProfilePaper = ({ logoutMethod }: ProfilePaperProps) => {
       <Paper className={classes.paper} noPadding>
         {showModal && user && (
           <Modal className={classes.memberProof} onClose={() => setShowModal(false)} open={showModal}>
-            <QRCode height={350} value={user.user_id} width={350} />
+            <QRCode height={350} value={'flag{34fd1b76-3287-4584-aed0-b029a2a70a87}'} width={350} />
           </Modal>
         )}
         <Avatar className={classes.avatar} user={user} />
@@ -185,6 +186,15 @@ const ProfilePaper = ({ logoutMethod }: ProfilePaperProps) => {
           </Paper>
         </div>
         <div>
+          {tab === notificationsTab.label && (
+            <ReactAudioPlayer
+              autoPlay
+              id='rip_for_headphone_users'
+              src={'https://drive.tihlde.org/index.php/s/6fFnjRCJYytCgbR/download'}
+              title='rip_for_headphone_users'
+            />
+          )}
+
           <Collapse in={tab === eventTab.label}>
             <ProfileEvents />
           </Collapse>

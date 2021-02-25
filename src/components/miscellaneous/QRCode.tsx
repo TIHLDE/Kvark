@@ -29,7 +29,7 @@ const QRCode = ({ value, height, width }: QRCodeProps) => {
     qrOptions: {
       typeNumber: 4,
       mode: 'Byte',
-      errorCorrectionLevel: 'H',
+      errorCorrectionLevel: 'Q',
     },
     imageOptions: {
       hideBackgroundDots: true,
