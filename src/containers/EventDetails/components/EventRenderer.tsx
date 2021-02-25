@@ -4,7 +4,6 @@ import { Groups } from 'types/Enums';
 import URLS from 'URLS';
 import { parseISO, isPast, isFuture } from 'date-fns';
 import { formatDate } from 'utils';
-import QRCode from 'qrcode.react';
 import { Link } from 'react-router-dom';
 
 // Services
@@ -14,7 +13,7 @@ import { useUser, HavePermission } from 'api/hooks/User';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
-import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
@@ -30,6 +29,7 @@ import EventRegistration from 'containers/EventDetails/components/EventRegistrat
 import Paper from 'components/layout/Paper';
 import Dialog from 'components/layout/Dialog';
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
+import QRCode from 'components/miscellaneous/QRCode';
 
 const useStyles = makeStyles((theme: Theme) => ({
   image: {
@@ -82,15 +82,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 50,
     fontWeight: 'bold',
   },
-  qrcode: {
-    padding: theme.spacing(4, 3),
-    display: 'block',
-    margin: '0 auto',
-    height: 'auto !important',
-    width: '100% !important',
-    maxHeight: 350,
-    objectFit: 'contain',
-  },
   skeleton: {
     maxWidth: '100%',
     borderRadius: theme.shape.borderRadius,
@@ -114,7 +105,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const deleteRegistration = useDeleteEventRegistration(data.id);
   const { setLogInRedirectURL } = useMisc();
   const showSnackbar = useSnackbar();
-  const theme = useTheme();
   const [view, setView] = useState<Views>(Views.Info);
   const [signOffDialogOpen, setSignOffDialogOpen] = useState(false);
   const startDate = parseISO(data.start_date);
@@ -176,13 +166,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               <Alert className={classes.alert} severity='success' variant='outlined'>
                 Du har plass på arrangementet! Bruk QR-koden for å komme raskere inn.
               </Alert>
-              <QRCode
-                bgColor={theme.palette.background.paper}
-                className={classes.qrcode}
-                fgColor={theme.palette.text.primary}
-                size={1000}
-                value={user.user_id}
-              />
+              <QRCode height={275} value={user.user_id} width={275} />
             </Paper>
           )}
           {(isFuture(signOffDeadlineDate) || registration.is_on_wait) && isFuture(startDate) ? (

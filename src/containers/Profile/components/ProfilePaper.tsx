@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import classNames from 'classnames';
-import QRCode from 'qrcode.react';
 import { Groups } from 'types/Enums';
 import { useUser, useHavePermission } from 'api/hooks/User';
 
@@ -34,6 +33,7 @@ import ProfileBadges from 'containers/Profile/components/ProfileBadges';
 import Paper from 'components/layout/Paper';
 import Modal from 'components/layout/Modal';
 import Avatar from 'components/miscellaneous/Avatar';
+import QRCode from 'components/miscellaneous/QRCode';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -74,7 +74,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
   },
   memberProof: {
-    background: theme.palette.common.white,
     display: 'flex',
     justifyContent: 'center',
   },
@@ -148,7 +147,7 @@ const ProfilePaper = ({ logoutMethod }: ProfilePaperProps) => {
       <Paper className={classes.paper} noPadding>
         {showModal && user && (
           <Modal className={classes.memberProof} onClose={() => setShowModal(false)} open={showModal}>
-            <QRCode size={280} value={user.user_id} />
+            <QRCode height={350} value={user.user_id} width={350} />
           </Modal>
         )}
         <Avatar className={classes.avatar} user={user} />

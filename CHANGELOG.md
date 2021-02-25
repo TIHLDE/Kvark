@@ -13,6 +13,7 @@
 ---
 
 ## Neste versjon
+- 🎨 **Nytt design av QRcode.** Laget custom QRcode theme for mer helhetlig tema.
 
 ## Versjon 1.0.3 (22.02.2021)
 
