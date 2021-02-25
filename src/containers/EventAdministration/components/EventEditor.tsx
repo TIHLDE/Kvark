@@ -118,7 +118,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const [deleteEventDialogOpen, setDeleteEventDialogOpen] = useState(false);
   const [signUp, setSignUp] = useState(false);
   const [regPriorities, setRegPriorities] = useState<Array<RegistrationPriority>>([]);
-  const { handleSubmit, register, control, errors, getValues, setError, reset } = useForm<FormValues>();
+  const { handleSubmit, register, control, errors, getValues, setError, reset, setValue } = useForm<FormValues>();
   const { getCategories } = useMisc();
   const [categories, setCategories] = useState<Array<Category>>([]);
 
@@ -247,6 +247,20 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     }
   };
 
+  const setTimeIntervals = () => {
+    /*
+    Start påmelding: 1 uke før kl 12
+    Slutt påmelding: Samme dag kl 12
+    Avmeldingsfrist: Dagen før kl 12
+    Slutt arrangement: 2 timer etter arrangementsstart
+    */
+    const start = getValues().start_date;
+    setValue('start_registration_at', new Date(new Date(start).setHours(14, 0, 0) - 6.048e8).toISOString().substring(0, 16));
+    setValue('end_registration_at', new Date(new Date(start).setHours(14, 0, 0)).toISOString().substring(0, 16));
+    setValue('sign_off_deadline', new Date(new Date(start).setHours(14, 0, 0) - 8.64e7).toISOString().substring(0, 16));
+    setValue('end_date', new Date(new Date(start).getTime() + 14.4e6).toISOString().substring(0, 16));
+  };
+
   if (isLoading) {
     return <LinearProgress />;
   }
@@ -265,6 +279,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               InputLabelProps={{ shrink: true }}
               label='Start'
               name='start_date'
+              onBlur={setTimeIntervals}
               register={register}
               required
               rules={{ required: 'Feltet er påkrevd' }}
