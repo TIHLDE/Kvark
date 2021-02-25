@@ -252,7 +252,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     Start påmelding: 1 uke før kl 12
     Slutt påmelding: Samme dag kl 12
     Avmeldingsfrist: Dagen før kl 12
-    Slutt arrangement: 2 timer etter arrangementsstart
+    Slutt arrangement: 2 timer etter start
     */
     const start = getValues().start_date;
     setValue('start_registration_at', new Date(new Date(start).setHours(14, 0, 0) - 6.048e8).toISOString().substring(0, 16));
