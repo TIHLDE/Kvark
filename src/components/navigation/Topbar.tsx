@@ -150,11 +150,21 @@ const TopBarItem = ({ items, text, to, type }: TopBarItemProps) => {
             <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
               <Paper>
                 <MenuList className={classes.menulist}>
-                  {items.map((item, i) => (
-                    <MenuItem className={classes.menulistItem} component={Link} key={i} to={item.to}>
-                      {item.text}
-                    </MenuItem>
-                  ))}
+                  {items.map((item, i) => {
+                    if (item.to === 'https://ctf.zaim.no/') {
+                      return (
+                        <MenuItem className={classes.menulistItem} component={'a'} href={item.to} key={i} rel='noopener noreferrer' target='_blank'>
+                          {item.text}
+                        </MenuItem>
+                      );
+                    } else {
+                      return (
+                        <MenuItem className={classes.menulistItem} component={Link} key={i} to={item.to}>
+                          {item.text}
+                        </MenuItem>
+                      );
+                    }
+                  })}
                 </MenuList>
               </Paper>
             </Grow>
@@ -202,7 +212,10 @@ const Topbar = ({ fancyNavbar }: IProps) => {
         { text: 'Karriere', to: URLS.jobposts, type: 'link' },
         isAuthenticated
           ? {
-              items: [{ text: 'Kokebok', to: URLS.cheatsheet }],
+              items: [
+                { text: 'Kokebok', to: URLS.cheatsheet },
+                { text: 'TIHLDE SPILL', to: 'https://ctf.zaim.no/' },
+              ],
               text: 'For medlemmer',
               type: 'dropdown',
             }
