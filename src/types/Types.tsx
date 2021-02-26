@@ -1,4 +1,4 @@
-import { FormFieldType, FormType, Groups, WarningType, Study, CheatsheetType, UserClass, UserStudy } from 'types/Enums';
+import { FormFieldType, FormResourceType, FormType, Groups, WarningType, Study, CheatsheetType, UserClass, UserStudy } from 'types/Enums';
 
 export interface Warning {
   created_at: string;
@@ -103,7 +103,7 @@ export interface Event {
   end_registration_at: string;
   evaluate_link: string;
   expired: boolean;
-  formId: string | null;
+  forms: Array<string>;
   id: number;
   image?: string;
   image_alt?: string;
@@ -139,15 +139,16 @@ export interface Registration {
 
 export interface Form {
   id?: string;
-  title?: string;
-  hidden?: boolean;
+  title: string;
   type: FormType;
   fields: Array<TextFormField | SelectFormField>;
+  resource_type: FormResourceType;
 }
 
 export interface EventForm extends Form {
   type: FormType.SURVEY;
   event: number;
+  resource_type: FormResourceType.EVENT_FORM;
 }
 
 export interface FormField {
@@ -157,6 +158,7 @@ export interface FormField {
 }
 
 export interface TextFormField extends FormField {
+  options: Array<unknown>;
   type: FormFieldType.TEXT_ANSWER;
 }
 
@@ -167,7 +169,7 @@ export interface SelectFormField extends FormField {
 
 export interface SelectFormFieldOption {
   id?: string;
-  text: string;
+  title: string;
 }
 
 export interface FieldSubmission {

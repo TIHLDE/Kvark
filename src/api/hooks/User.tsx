@@ -6,25 +6,25 @@ import { Groups } from 'types/Enums';
 import { getCookie, setCookie, removeCookie } from 'api/cookie';
 import { ACCESS_TOKEN } from 'constant';
 
-const QUERY_KEY = 'user';
-const QUERY_KEY_USERS = 'users';
+export const PAGES_QUERY_KEY = 'user';
+export const PAGES_QUERY_KEY_USERS = 'users';
 
 export const useUser = () => {
   const isAuthenticated = useIsAuthenticated();
-  return useQuery<User | undefined, RequestResponse>(QUERY_KEY, () => (isAuthenticated ? API.getUserData() : undefined));
+  return useQuery<User | undefined, RequestResponse>(PAGES_QUERY_KEY, () => (isAuthenticated ? API.getUserData() : undefined));
 };
 
 export const useRefreshUser = () => {
   const queryClient = useQueryClient();
   return () => {
-    queryClient.invalidateQueries(QUERY_KEY);
+    queryClient.invalidateQueries(PAGES_QUERY_KEY);
   };
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useUsers = (filters?: any) => {
   return useInfiniteQuery<PaginationResponse<User>, RequestResponse>(
-    [QUERY_KEY_USERS, filters],
+    [PAGES_QUERY_KEY_USERS, filters],
     ({ pageParam = 1 }) => API.getUsers({ ...filters, page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.next,
@@ -37,8 +37,8 @@ export const useLogin = (): UseMutationResult<LoginRequestResponse, RequestRespo
   return useMutation(({ username, password }) => API.authenticate(username, password), {
     onSuccess: (data) => {
       setCookie(ACCESS_TOKEN, data.token);
-      queryClient.removeQueries(QUERY_KEY);
-      queryClient.prefetchQuery(QUERY_KEY, () => API.getUserData());
+      queryClient.removeQueries(PAGES_QUERY_KEY);
+      queryClient.prefetchQuery(PAGES_QUERY_KEY, () => API.getUserData());
     },
   });
 };
@@ -51,7 +51,7 @@ export const useLogout = () => {
   const queryClient = useQueryClient();
   return () => {
     removeCookie(ACCESS_TOKEN);
-    queryClient.removeQueries(QUERY_KEY);
+    queryClient.removeQueries(PAGES_QUERY_KEY);
   };
 };
 
@@ -67,10 +67,10 @@ export const useUpdateUser = (): UseMutationResult<User, RequestResponse, { user
   const queryClient = useQueryClient();
   return useMutation(({ userId, user }) => API.updateUserData(userId, user), {
     onSuccess: (data) => {
-      queryClient.invalidateQueries(QUERY_KEY_USERS);
-      const user = queryClient.getQueryData<User | undefined>(QUERY_KEY);
+      queryClient.invalidateQueries(PAGES_QUERY_KEY_USERS);
+      const user = queryClient.getQueryData<User | undefined>(PAGES_QUERY_KEY);
       if (data.user_id === user?.user_id) {
-        queryClient.setQueryData(QUERY_KEY, data);
+        queryClient.setQueryData(PAGES_QUERY_KEY, data);
       }
     },
   });

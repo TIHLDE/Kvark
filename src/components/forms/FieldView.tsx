@@ -53,7 +53,7 @@ const FieldView = ({ field, register, errors, index }: FieldViewProps) => {
             <FormControlLabel
               control={<Checkbox inputRef={register} name={`answers[${index}].selected_options`} value={option.id} />}
               key={option.id}
-              label={option.text}
+              label={option.title}
             />
           ))}
         </FormGroup>
@@ -65,9 +65,9 @@ const FieldView = ({ field, register, errors, index }: FieldViewProps) => {
       <FormControl component='fieldset' error={Boolean(error)} fullWidth margin='normal' required={field.required}>
         <FormLabel component='legend'>{field.title}</FormLabel>
         <input name={`answers[${index}].field`} ref={register} type='hidden' value={field.id} />
-        <RadioGroup defaultValue={field.options[0].id} name={`answers[${index}].selected_options`}>
+        <RadioGroup defaultValue={field.options[0]?.id} name={`answers[${index}].selected_options`}>
           {field.options.map((option) => (
-            <FormControlLabel control={<Radio inputRef={register} value={option.id} />} key={option.id} label={option.text} />
+            <FormControlLabel control={<Radio inputRef={register} value={option.id} />} key={option.id} label={option.title} />
           ))}
         </RadioGroup>
         {Boolean(error) && <FormHelperText>{error || 'Feltet er påkrevd'}</FormHelperText>}

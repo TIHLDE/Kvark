@@ -47,6 +47,10 @@ export enum FormType {
   EVALUTATION = 'EVALUTATION',
 }
 
+export enum FormResourceType {
+  EVENT_FORM = 'EventForm',
+}
+
 export enum FormFieldType {
   SINGLE_SELECT = 'SINGLE_SELECT',
   MULTIPLE_SELECT = 'MULTIPLE_SELECT',

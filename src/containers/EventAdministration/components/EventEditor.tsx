@@ -355,7 +355,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 </AccordionSummary>
                 <AccordionDetails>
                   {eventId && data ? (
-                    <EventFormEditor eventId={eventId} formId={data.formId} />
+                    <EventFormEditor eventId={eventId} formId={data.forms[0] || null} />
                   ) : (
                     <Typography variant='subtitle2'>Du må opprette arrangementet før du kan legge til spørsmål</Typography>
                   )}

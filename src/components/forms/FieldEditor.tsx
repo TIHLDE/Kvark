@@ -58,13 +58,13 @@ const FieldEditor = ({ field, updateField, removeField }: FieldEditorProps) => {
 
   const addFieldOption = () => {
     if (field.type !== FormFieldType.TEXT_ANSWER) {
-      updateField({ ...field, options: [...field.options, { text: '' }] });
+      updateField({ ...field, options: [...field.options, { title: '' }] });
     }
   };
 
   const updateFieldOption = (newValue: string, index: number) => {
     if (field.type !== FormFieldType.TEXT_ANSWER) {
-      const newOptions = field.options.map((option, i) => (i === index ? { ...option, text: newValue } : option));
+      const newOptions = field.options.map((option, i) => (i === index ? { ...option, title: newValue } : option));
       updateField({ ...field, options: newOptions });
     }
   };
@@ -112,7 +112,7 @@ const FieldEditor = ({ field, updateField, removeField }: FieldEditorProps) => {
             <Grow in key={index} timeout={1000}>
               <div className={classnames(classes.row, classes.optionRow)}>
                 <TypeIcon />
-                <TextField fullWidth label='Alternativ' onChange={(e) => updateFieldOption(e.target.value, index)} size='small' value={option.text} />
+                <TextField fullWidth label='Alternativ' onChange={(e) => updateFieldOption(e.target.value, index)} size='small' value={option.title} />
                 {field.options.length > 1 && (
                   <IconButton onClick={() => deleteFieldOption(index)}>
                     <ClearIcon />
