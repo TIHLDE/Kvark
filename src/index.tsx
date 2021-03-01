@@ -30,6 +30,7 @@ import Landing from 'containers/Landing';
 import NewsDetails from 'containers/NewsDetails';
 import Pages from 'containers/Pages';
 import Profile from 'containers/Profile';
+import CTF from 'containers/CTF';
 const EventAdministration = lazy(() => import('containers/EventAdministration'));
 const EventRegistration = lazy(() => import('containers/EventRegistration'));
 const ForgotPassword = lazy(() => import('containers/ForgotPassword'));
@@ -125,6 +126,7 @@ const AppRoutes = () => {
 
       <AuthRoute element={<Cheatsheet />} path={`${URLS.cheatsheet}:studyId/:classId/`} />
       <AuthRoute element={<Cheatsheet />} path={`${URLS.cheatsheet}*`} />
+      <Route element={<CTF />} path={URLS.ctf} />
 
       <AuthRoute element={<UserAdmin />} groups={[Groups.HS, Groups.INDEX]} path={URLS.userAdmin} />
       <AuthRoute groups={[Groups.HS, Groups.INDEX, Groups.NOK]} path={URLS.jobpostsAdmin}>
