@@ -19,6 +19,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     fontSize: 36,
+    flexDirection: 'column',
+    textAlign: 'center',
   },
   inputField: {
     color: theme.palette.background.default,

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Grid, TextField } from '@material-ui/core';
+import { Button, Grid, TextField, Typography } from '@material-ui/core';
 import { useBadge } from 'api/hooks/Badge';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
@@ -17,6 +17,21 @@ function BadgeInput() {
 
   return (
     <Grid alignItems='center' container direction='column' justify='center'>
+      <Grid item>
+        <Typography variant='h2'>Velkommen til årets første CTF.</Typography>
+      </Grid>
+      <Grid item>
+        <Typography>I år har CTF teamet hos Index gjort klart 10 flagg.</Typography>
+      </Grid>
+      <Grid item>
+        <Typography>Under CTFen er det viktig å ha et klart hode og bruke ALLE sansene.</Typography>
+      </Grid>
+      <Grid item>
+        <Typography>Chug ned på PKen og gjør deg klar for TIHLDEs Retro-CTF</Typography>
+      </Grid>
+      <Grid item>
+        <Typography>Hilsen Zaim, Hermann og Mads fra Index</Typography>
+      </Grid>
       <Grid item>
         <TextField
           helperText='flag{xxx-xxx-xxx-xxx-xxx}'
