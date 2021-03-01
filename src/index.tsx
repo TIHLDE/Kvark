@@ -173,4 +173,5 @@ console.log(
 // eslint-disable-next-line no-console
 console.log('%cSnoker du rundt? Det liker vi. Vi i Index ser alltid etter nye medlemmer.', 'font-weight: bold; font-size: 1rem;color: yellow;', '');
 
+console.log('https://github.com/treyshotz/CTFPwn');
 ReactDOM.render(<Application />, document.getElementById('root'));

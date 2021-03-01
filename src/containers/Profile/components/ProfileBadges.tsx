@@ -23,6 +23,11 @@ const useStyles = makeStyles((theme) => ({
   percent: {
     color: theme.palette.error.main,
   },
+  centerImg: {
+    display: 'block',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
 }));
 
 type BadgeItemProps = {

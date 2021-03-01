@@ -48,16 +48,14 @@ const Landing = () => {
       <Helmet>
         <title>Forsiden - TIHLDE</title>
       </Helmet>
-      {/* TODO: style component */}
       <div>
         <BadgeInput />
-        {/* TODO: static sound */}
         {getCookie('theme-cookie') === 'ctf' && (
           <ReactAudioPlayer
             autoPlay
-            id='rip_for_headphone_users'
-            src={'https://drive.tihlde.org/index.php/s/6fFnjRCJYytCgbR/download'}
-            title='rip_for_headphone_users'
+            id='rip_for_headphone_users_using_audacity'
+            src={'https://drive.tihlde.org/index.php/s/nNL6n2XLedxzi2F/download'}
+            title='rip_for_headphone_users_using_audacity'
           />
         )}
       </div>
