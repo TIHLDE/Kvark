@@ -11,14 +11,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 
 // Project components
 import JobPostRenderer from 'containers/JobPostDetails/components/JobPostRenderer';
 import Dialog from 'components/layout/Dialog';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import SubmitButton from 'components/inputs/SubmitButton';
+import Bool from 'components/inputs/Bool';
 import TextField from 'components/inputs/TextField';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
 
@@ -58,14 +57,13 @@ type FormValues = Pick<
 
 const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
   const classes = useStyles();
-  const [isContinuouslyHiring, setIsContinuouslyHiring] = useState(false);
   const { data, isLoading, isError } = useJobPostById(jobpostId || -1);
   const createJobPost = useCreateJobPost();
   const updateJobPost = useUpdateJobPost(jobpostId || -1);
   const deleteJobPost = useDeleteJobPost(jobpostId || -1);
   const showSnackbar = useSnackbar();
   const [deleteJobPostDialogOpen, setDeleteJobPostDialogOpen] = useState(false);
-  const { handleSubmit, register, errors, getValues, reset } = useForm<FormValues>();
+  const { handleSubmit, control, register, errors, getValues, reset } = useForm<FormValues>();
   const isUpdating = useMemo(() => createJobPost.isLoading || updateJobPost.isLoading || deleteJobPost.isLoading, [
     createJobPost.isLoading,
     updateJobPost.isLoading,
@@ -78,7 +76,6 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
 
   const setValues = useCallback(
     (newValues: JobPost | null) => {
-      setIsContinuouslyHiring(newValues?.is_continuously_hiring || false);
       reset({
         body: newValues?.body || '',
         company: newValues?.company || '',
@@ -87,6 +84,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
         image: newValues?.image || '',
         image_alt: newValues?.image_alt || '',
         ingress: newValues?.ingress || '',
+        is_continuously_hiring: newValues?.is_continuously_hiring || false,
         link: newValues?.link || '',
         location: newValues?.location || '',
         title: newValues?.title || '',
@@ -107,7 +105,6 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
     return {
       ...getValues(),
       created_at: new Date().toISOString().substring(0, 16),
-      is_continuously_hiring: isContinuouslyHiring,
       id: 1,
       expired: false,
       updated_at: new Date().toISOString().substring(0, 16),
@@ -130,7 +127,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
   const submit: SubmitHandler<FormValues> = async (data) => {
     if (jobpostId) {
       await updateJobPost.mutate(
-        { ...data, is_continuously_hiring: isContinuouslyHiring },
+        { ...data },
         {
           onSuccess: () => {
             showSnackbar('Annonsen ble oppdatert', 'success');
@@ -142,7 +139,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
       );
     } else {
       await createJobPost.mutate(
-        { ...data, is_continuously_hiring: isContinuouslyHiring },
+        { ...data },
         {
           onSuccess: (newJobPost) => {
             showSnackbar('Annonsen ble opprettet', 'success');
@@ -175,10 +172,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
             inputRef={register({ required: true })}
             name='body'
           />
-          <FormControlLabel
-            control={<Checkbox checked={isContinuouslyHiring} onChange={(e) => setIsContinuouslyHiring(e.target.checked)} />}
-            label={'Fortløpende opptak?'}
-          />
+          <Bool control={control} errors={errors} label='Fortløpende opptak?' name='is_continuously_hiring' type='checkbox' />
           <div className={classes.grid}>
             <TextField
               errors={errors}

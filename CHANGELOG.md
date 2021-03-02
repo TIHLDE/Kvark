@@ -14,9 +14,15 @@
 
 ## Neste versjon
 
+- ⚡ **Refaktorert checkbox og switch**. Laget en egen komponent for checkboxes og switches som lettere kan brukes med react-hook-form
+- 🎨 **Nytt design av QRcode.** Laget custom QRcode theme for mer helhetlig tema.
+
+## Versjon 1.0.3 (22.02.2021)
+
 - ✨ **Spesial innhold i pages**. Lagt til mulighet for at man kan lage spesial-komponenter som kommer inne på pages-sider.
 - ⚡ **Flyttet innhold til pages**. Flyttet "Om TIHLDE", "Kontakt oss", "Tjenester", "Ny student", "Lover og regler", "Personvern" og "Arrangementsregler" til pages slik at det blir dynamisk.
 - ⚡ **404-side til Typescript**. Endret 404-siden til Typescript og oppdatert med nye linker.
+- ✨ **Profilbilde**. Legge til funksjonalitet for visning og endring av profilbilde
 
 ## Versjon 1.0.2 (14.02.2021)
 

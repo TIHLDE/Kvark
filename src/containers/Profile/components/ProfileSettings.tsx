@@ -28,7 +28,7 @@ export type ProfileSettingsProps = {
   user: User;
 };
 
-type FormData = Pick<User, 'cell' | 'gender' | 'allergy' | 'tool' | 'user_class' | 'user_study'>;
+type FormData = Pick<User, 'cell' | 'image' | 'gender' | 'allergy' | 'tool' | 'user_class' | 'user_study'>;
 
 const ProfileSettings = ({ user }: ProfileSettingsProps) => {
   const classes = useStyles();
@@ -59,6 +59,20 @@ const ProfileSettings = ({ user }: ProfileSettingsProps) => {
     return (
       <form onSubmit={handleSubmit(updateData)}>
         <TextField disabled={updateUser.isLoading} errors={errors} InputProps={{ type: 'number' }} label='Telefon' name='cell' register={register} />
+        <TextField
+          disabled={updateUser.isLoading}
+          errors={errors}
+          label='Profilbilde-link'
+          name='image'
+          register={register}
+          rules={{
+            pattern: {
+              // eslint-disable-next-line no-useless-escape
+              value: /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png|jpeg)/gi,
+              message: 'Oppgi en gydlig bildelink',
+            },
+          }}
+        />
         <div className={classes.selectGrid}>
           <Select control={control} disabled errors={errors} label='Studie' name='user_study'>
             <MenuItem value={user.user_study}>{getUserStudyLong(user.user_study)}</MenuItem>

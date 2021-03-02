@@ -12,6 +12,7 @@ import {
   JobPost,
   JobPostRequired,
   LoginRequestResponse,
+  Membership,
   News,
   NewsRequired,
   Page,
@@ -103,6 +104,9 @@ export default {
 
   // Badges
   createUserBadge: (data: { badge_id: string }) => IFetch<RequestResponse>({ method: 'POST', url: `badge/`, data }),
+
+  //Membership
+  getMemberships: (slug: string) => IFetch<Membership[]>({ method: 'GET', url: `group/${slug}/membership/` }),
 
   // Pages
   getPageTree: () => IFetch<PageTree>({ method: 'GET', url: `page/tree/` }),
