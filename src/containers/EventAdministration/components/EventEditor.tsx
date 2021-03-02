@@ -12,8 +12,6 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
 import Collapse from '@material-ui/core/Collapse';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -30,6 +28,7 @@ import EventRenderer from 'containers/EventDetails/components/EventRenderer';
 import Dialog from 'components/layout/Dialog';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import Select from 'components/inputs/Select';
+import Bool from 'components/inputs/Bool';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
@@ -83,6 +82,7 @@ type FormValues = Pick<
   | 'location'
   | 'priority'
   | 'sign_off_deadline'
+  | 'sign_up'
   | 'start_date'
   | 'start_registration_at'
   | 'title'
@@ -116,9 +116,9 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const showSnackbar = useSnackbar();
   const [closeEventDialogOpen, setCloseEventDialogOpen] = useState(false);
   const [deleteEventDialogOpen, setDeleteEventDialogOpen] = useState(false);
-  const [signUp, setSignUp] = useState(false);
   const [regPriorities, setRegPriorities] = useState<Array<RegistrationPriority>>([]);
-  const { handleSubmit, register, control, errors, getValues, setError, reset } = useForm<FormValues>();
+  const { handleSubmit, register, watch, control, errors, getValues, setError, reset } = useForm<FormValues>();
+  const watchSignUp = watch('sign_up');
   const { getCategories } = useMisc();
   const [categories, setCategories] = useState<Array<Category>>([]);
 
@@ -128,7 +128,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
 
   const setValues = useCallback(
     (newValues: Event | null) => {
-      setSignUp(newValues?.sign_up || false);
       setRegPriorities(newValues?.registration_priorities || allPriorities);
       reset({
         category: newValues?.category || 1,
@@ -142,6 +141,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         location: newValues?.location || '',
         priority: newValues?.priority || 2,
         sign_off_deadline: newValues?.sign_off_deadline.substring(0, 16) || new Date().toISOString().substring(0, 16),
+        sign_up: newValues?.sign_up || false,
         start_date: newValues?.start_date.substring(0, 16) || new Date().toISOString().substring(0, 16),
         start_registration_at: newValues?.start_registration_at.substring(0, 16) || new Date().toISOString().substring(0, 16),
         title: newValues?.title || '',
@@ -161,7 +161,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const getEventPreview = () => {
     return {
       ...getValues(),
-      sign_up: signUp,
       list_count: 0,
       registration_priorities: regPriorities,
       waiting_list_count: 0,
@@ -200,7 +199,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const submit: SubmitHandler<FormValues> = async (formData) => {
     const event = {
       ...formData,
-      sign_up: signUp,
       registration_priorities: regPriorities,
     } as Event;
     if (event.sign_up) {
@@ -281,12 +279,8 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               type='datetime-local'
             />
           </div>
-          <FormControlLabel
-            className={classes.switch}
-            control={<Switch checked={signUp} color='primary' onChange={(e) => setSignUp(e.target.checked)} />}
-            label='Åpen for påmelding'
-          />
-          <Collapse in={signUp}>
+          <Bool control={control} errors={errors} label='Åpen for påmelding' name='sign_up' type='switch' />
+          <Collapse in={watchSignUp}>
             <div className={classes.grid}>
               <TextField
                 errors={errors}
@@ -294,8 +288,8 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 label='Start påmelding'
                 name='start_registration_at'
                 register={register}
-                required={signUp}
-                rules={{ required: signUp ? 'Feltet er påkrevd' : undefined }}
+                required={watchSignUp}
+                rules={{ required: watchSignUp ? 'Feltet er påkrevd' : undefined }}
                 type='datetime-local'
               />
               <TextField
@@ -304,8 +298,8 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 label='Slutt påmelding'
                 name='end_registration_at'
                 register={register}
-                required={signUp}
-                rules={{ required: signUp ? 'Feltet er påkrevd' : undefined }}
+                required={watchSignUp}
+                rules={{ required: watchSignUp ? 'Feltet er påkrevd' : undefined }}
                 type='datetime-local'
               />
             </div>
@@ -316,8 +310,8 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 label='Avmeldingsfrist'
                 name='sign_off_deadline'
                 register={register}
-                required={signUp}
-                rules={{ required: signUp ? 'Feltet er påkrevd' : undefined }}
+                required={watchSignUp}
+                rules={{ required: watchSignUp ? 'Feltet er påkrevd' : undefined }}
                 type='datetime-local'
               />
               <TextField
@@ -327,12 +321,12 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 label='Antall plasser'
                 name='limit'
                 register={register}
-                required={signUp}
+                required={watchSignUp}
                 rules={{
                   pattern: { value: RegExp(/^[0-9]*$/), message: 'Skriv inn et heltall som 0 eller høyere' },
                   valueAsNumber: true,
                   min: { value: 0, message: 'Antall plasser må være 0 eller høyere' },
-                  required: signUp ? 'Feltet er påkrevd' : undefined,
+                  required: watchSignUp ? 'Feltet er påkrevd' : undefined,
                 }}
               />
             </div>

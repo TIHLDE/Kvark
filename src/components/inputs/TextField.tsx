@@ -20,6 +20,7 @@ const TextField = ({ register, name, errors = {}, rules = {}, ...props }: IProps
       margin='normal'
       name={name}
       placeholder={props.placeholder || 'Skriv her'}
+      required={Boolean(rules.required)}
       variant='outlined'
       {...props}
     />
