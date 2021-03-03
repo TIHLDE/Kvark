@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ⚡ **Pagination i varsler**. Lagt til pagination i varsler, samt forbedret håndtering av "leste" varsler.
 - ⚡ **Refaktorert checkbox og switch**. Laget en egen komponent for checkboxes og switches som lettere kan brukes med react-hook-form
 - 🎨 **Nytt design av QRcode.** Laget custom QRcode theme for mer helhetlig tema.
 
