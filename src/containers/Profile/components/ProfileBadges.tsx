@@ -35,8 +35,10 @@ const BadgeItem = ({ badge }: BadgeItemProps) => {
   return (
     <Paper className={classes.paper}>
       <Grid container spacing={0}>
-        <Grid item xs={3}>
-          <img alt={badge.title} src={badge.image} width={64} />
+        <Grid alignItems='center' container item justify='center' xs={3}>
+          <Grid item>
+            <img alt={badge.title} src={badge.image} width={64} />
+          </Grid>
         </Grid>
         <Grid item xs={9}>
           <Typography variant='h6'>
