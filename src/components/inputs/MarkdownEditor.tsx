@@ -245,7 +245,7 @@ const MarkdownEditor = (props: TextFieldProps) => {
       {helpDialogOpen && (
         <Dialog aria-labelledby='format-dialog-title' fullWidth maxWidth='md' onClose={() => setHelpDialogOpen(false)} open={helpDialogOpen}>
           <DialogTitle className={classes.dialogHeader} disableTypography id='format-dialog-title'>
-            <Typography variant='h6'>Formaterings-guide</Typography>
+            <Typography variant='h3'>Formaterings-guide</Typography>
             <IconButton aria-label='close' className={classes.closeButton} onClick={() => setHelpDialogOpen(false)}>
               <CloseIcon />
             </IconButton>
