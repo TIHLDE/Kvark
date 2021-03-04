@@ -21,7 +21,6 @@ export const useUpdateNotification = (id: number): UseMutationResult<Notificatio
     onSuccess: () => {
       queryClient.invalidateQueries(NOTIFICATION_QUERY_KEY);
       queryClient.invalidateQueries(USER_QUERY_KEY);
-      // queryClient.setQueryData([NOTIFICATION_QUERY_KEY, id], data);
     },
   });
 };
