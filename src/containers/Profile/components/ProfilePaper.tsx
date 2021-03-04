@@ -153,7 +153,7 @@ const ProfilePaper = ({ logoutMethod }: ProfilePaperProps) => {
         <Avatar className={classes.avatar} user={user} />
         {user && user.first_name ? (
           <>
-            <Typography className={classes.text} variant='h4'>
+            <Typography className={classes.text} variant='h1'>
               {`${user.first_name} ${user.last_name}`}
             </Typography>
             <Typography className={classes.text} variant='subtitle1'>

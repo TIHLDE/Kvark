@@ -9,11 +9,10 @@ import Divider from '@material-ui/core/Divider';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
+import List from '@material-ui/core/List';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 // Icons
-import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
-import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
 import CopyIcon from '@material-ui/icons/FileCopyOutlined';
 
 // Project
@@ -61,10 +60,7 @@ const useStyles = makeStyles((theme) => ({
   lightText: {
     color: theme.palette.text.secondary,
   },
-  emailButtons: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gridGap: theme.spacing(1),
+  emailButton: {
     margin: theme.spacing(0, 0, 1),
   },
 }));
@@ -79,19 +75,35 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
   const { data: participants } = useEventRegistrations(eventId);
   const showSnackbar = useSnackbar();
   const [showOnlyNotAttended, setShowOnlyNotAttended] = useState(false);
-  const [showEmails, setShowEmails] = useState(false);
 
   const getOnWaitlist = useMemo(() => (participants || []).filter((user) => user.is_on_wait), [participants]);
   const getAttending = useMemo(() => (participants || []).filter((user) => !user.is_on_wait), [participants]);
 
-  const printParticipants = (onWaitlist = false, onlyNotAttended = false) => {
+  type ParticipantsProps = {
+    onWaitlist?: boolean;
+    onlyNotAttended?: boolean;
+  };
+
+  const Participants = ({ onWaitlist = false, onlyNotAttended = false }: ParticipantsProps) => {
     const registrationsToPrint = onWaitlist ? getOnWaitlist : getAttending;
     if (registrationsToPrint.length) {
       return (
         <>
-          {(onlyNotAttended ? registrationsToPrint.filter((user) => !user.has_attended) : registrationsToPrint).map((registration) => (
-            <Participant eventId={eventId} key={registration.registration_id} registration={registration} showEmail={showEmails} />
-          ))}
+          <div className={classes.flexRow}>
+            <Typography className={classes.mainText} variant='caption'>
+              Detaljer
+            </Typography>
+            {!onWaitlist && (
+              <Typography className={classes.mainText} variant='caption'>
+                Ankommet
+              </Typography>
+            )}
+          </div>
+          <List className={classes.listView}>
+            {(onlyNotAttended ? registrationsToPrint.filter((user) => !user.has_attended) : registrationsToPrint).map((registration) => (
+              <Participant eventId={eventId} key={registration.registration_id} registration={registration} />
+            ))}
+          </List>
         </>
       );
     } else {
@@ -148,30 +160,25 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
             </div>
           </>
         )}
-        <div className={classes.emailButtons}>
-          <Button endIcon={showEmails ? <ExpandLessIcon /> : <ExpandMoreIcon />} fullWidth onClick={() => setShowEmails((now) => !now)} variant='outlined'>
-            Vis eposter
-          </Button>
-          <Button endIcon={<CopyIcon />} fullWidth onClick={copyEmails} variant='outlined'>
-            Kopier eposter
-          </Button>
-        </div>
+        <Button className={classes.emailButton} endIcon={<CopyIcon />} fullWidth onClick={copyEmails} variant='outlined'>
+          Kopier eposter
+        </Button>
         <div className={classes.flexRow}>
           <Typography className={classes.mainText} variant='h3'>
             Påmeldte ({getAttending.length})
           </Typography>
           <FormControlLabel
-            className={classes.lightText}
+            className={classes.mainText}
             control={<Checkbox checked={showOnlyNotAttended} className={classes.checkbox} onChange={(e) => setShowOnlyNotAttended(e.target.checked)} />}
             label='Ikke ankommet'
             labelPlacement='start'
           />
         </div>
-        <div className={classes.listView}>{printParticipants(false, showOnlyNotAttended)}</div>
+        <Participants onlyNotAttended={showOnlyNotAttended} onWaitlist={false} />
         <Typography className={classes.mainText} variant='h3'>
           Venteliste ({getOnWaitlist.length})
         </Typography>
-        <div className={classes.listView}>{printParticipants(true)}</div>
+        <Participants onWaitlist />
       </div>
     </>
   );

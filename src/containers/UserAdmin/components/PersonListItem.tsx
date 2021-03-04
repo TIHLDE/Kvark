@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   secondaryText: {
-    wordBreak: 'break-word',
+    whiteSpace: 'break-spaces',
   },
   content: {
     display: 'grid',

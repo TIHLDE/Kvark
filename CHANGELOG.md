@@ -17,6 +17,7 @@
 - 🦟 **Styling i tekst.** Fikset en bug der styling på elementer i tekst/markdown forsvant når man byttet tema.
 - ⚡ **Refaktorert checkbox og switch**. Laget en egen komponent for checkboxes og switches som lettere kan brukes med react-hook-form
 - 🎨 **Nytt design av QRcode.** Laget custom QRcode theme for mer helhetlig tema.
+- 🎨 **Nytt design arrangement-deltagere**. Mindre bokser på deltagerliste med mer info ved trykk på boks.
 
 ## Versjon 1.0.3 (22.02.2021)
 

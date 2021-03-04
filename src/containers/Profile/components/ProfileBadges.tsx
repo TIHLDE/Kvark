@@ -41,7 +41,7 @@ const BadgeItem = ({ badge }: BadgeItemProps) => {
           </Grid>
         </Grid>
         <Grid item xs={9}>
-          <Typography variant='h6'>
+          <Typography variant='h3'>
             <strong>{badge.title}</strong>
           </Typography>
           <Grid alignItems='center' container direction='row' wrap='nowrap'>
