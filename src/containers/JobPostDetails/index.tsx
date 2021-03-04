@@ -26,7 +26,7 @@ function JobPostDetails() {
   }
 
   return (
-    <Navigation maxWidth='xl'>
+    <Navigation>
       {isLoading ? (
         <JobPostRendererLoading />
       ) : (

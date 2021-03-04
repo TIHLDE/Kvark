@@ -18,6 +18,7 @@ const useStyles = makeStyles(() => ({
   root: {
     '& div:first-child': {
       overflowY: 'hidden',
+      whiteSpace: 'break-spaces',
     },
   },
 }));

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import classNames from 'classnames';
-import QRCode from 'qrcode.react';
 import { Groups } from 'types/Enums';
 import { useUser, useHavePermission } from 'api/hooks/User';
 
@@ -10,7 +9,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
 import Badge from '@material-ui/core/Badge';
 import Button from '@material-ui/core/Button';
-import Avatar from '@material-ui/core/Avatar';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Collapse from '@material-ui/core/Collapse';
 import List from '@material-ui/core/List';
@@ -34,6 +32,8 @@ import ProfileNotifications from 'containers/Profile/components/ProfileNotificat
 import ProfileBadges from 'containers/Profile/components/ProfileBadges';
 import Paper from 'components/layout/Paper';
 import Modal from 'components/layout/Modal';
+import Avatar from 'components/miscellaneous/Avatar';
+import QRCode from 'components/miscellaneous/QRCode';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -73,14 +73,7 @@ const useStyles = makeStyles((theme) => ({
     margin: `${theme.spacing(0.25)}px auto`,
     color: theme.palette.text.primary,
   },
-  skeletonCircle: {
-    width: 110,
-    margin: theme.spacing(5),
-    marginTop: theme.spacing(4),
-    height: 150,
-  },
   memberProof: {
-    background: theme.palette.common.white,
     display: 'flex',
     justifyContent: 'center',
   },
@@ -154,19 +147,13 @@ const ProfilePaper = ({ logoutMethod }: ProfilePaperProps) => {
       <Paper className={classes.paper} noPadding>
         {showModal && user && (
           <Modal className={classes.memberProof} onClose={() => setShowModal(false)} open={showModal}>
-            <QRCode size={280} value={user.user_id} />
+            <QRCode height={350} value={user.user_id} width={350} />
           </Modal>
         )}
-        <Avatar className={classes.avatar}>
-          {user?.first_name ? (
-            `${user.first_name.substring(0, 1)}${user.last_name.substring(0, 1)}`
-          ) : (
-            <Skeleton className={classNames(classes.skeleton, classes.skeletonCircle)} variant='text' />
-          )}
-        </Avatar>
+        <Avatar className={classes.avatar} user={user} />
         {user && user.first_name ? (
           <>
-            <Typography className={classes.text} variant='h4'>
+            <Typography className={classes.text} variant='h1'>
               {`${user.first_name} ${user.last_name}`}
             </Typography>
             <Typography className={classes.text} variant='subtitle1'>

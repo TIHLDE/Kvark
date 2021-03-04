@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { Groups } from 'types/Enums';
 import { HavePermission } from 'api/hooks/User';
-import Text from 'text/AdminText';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -35,28 +34,28 @@ function Admin() {
   return (
     <div className={classes.grid}>
       <HavePermission groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]}>
-        <InfoCard header='Arrangementer' justifyText src={EventAdminIcon} text={Text.events}>
+        <InfoCard header='Arrangementer' justifyText src={EventAdminIcon} text='Opprett, endre og slett arrangementer'>
           <Button className={classes.button} color='primary' component={Link} fullWidth to={URLS.eventAdmin} variant='contained'>
             Administrer arrangementer
           </Button>
         </InfoCard>
       </HavePermission>
       <HavePermission groups={[Groups.HS, Groups.INDEX, Groups.NOK]}>
-        <InfoCard header='Jobbannonser' justifyText src={JobPostAdminIcon} text={Text.jobposts}>
+        <InfoCard header='Jobbannonser' justifyText src={JobPostAdminIcon} text='Opprett, endre og slett jobbannonser'>
           <Button className={classes.button} color='primary' component={Link} fullWidth to={URLS.jobpostsAdmin} variant='contained'>
             Administrer jobbannonser
           </Button>
         </InfoCard>
       </HavePermission>
       <HavePermission groups={[Groups.HS, Groups.INDEX]}>
-        <InfoCard header='Nyheter' justifyText src={NewsAdminIcon} text={Text.news}>
+        <InfoCard header='Nyheter' justifyText src={NewsAdminIcon} text='Opprett, endre og slett nyheter'>
           <Button className={classes.button} color='primary' component={Link} fullWidth to={URLS.newsAdmin} variant='contained'>
             Administrer nyheter
           </Button>
         </InfoCard>
       </HavePermission>
       <HavePermission groups={[Groups.HS, Groups.INDEX]}>
-        <InfoCard header='Medlemmer' justifyText src={UserAdminIcon} text={Text.users}>
+        <InfoCard header='Medlemmer' justifyText src={UserAdminIcon} text='Aktiver, fjern og søk etter medlemmer'>
           <Button className={classes.button} color='primary' component={Link} fullWidth to={URLS.userAdmin} variant='contained'>
             Administrer medlemmer
           </Button>

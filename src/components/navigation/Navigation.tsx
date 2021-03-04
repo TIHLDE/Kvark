@@ -110,13 +110,11 @@ const Navigation = ({ fancyNavbar = false, isLoading = false, noFooter = false, 
       <main className={classNames(classes.main, !fancyNavbar && classes.normalMain)}>
         {isLoading ? (
           <LinearProgress />
-        ) : banner || maxWidth ? (
+        ) : (
           <>
             {banner}
             {maxWidth === false ? <>{children}</> : <Container maxWidth={maxWidth || 'xl'}>{children || <></>}</Container>}
           </>
-        ) : (
-          children
         )}
       </main>
       {!noFooter && !isLoading && <Footer />}

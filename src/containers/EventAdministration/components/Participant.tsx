@@ -1,14 +1,24 @@
 import { useState, useEffect } from 'react';
 import { Registration } from 'types/Types';
-import { getUserStudyShort } from 'utils';
+import { getUserStudyShort, formatDate, getUserClass } from 'utils';
 import { useDeleteEventRegistration, useUpdateEventRegistration } from 'api/hooks/Event';
+import parseISO from 'date-fns/parseISO';
+import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material-ui
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 import Collapse from '@material-ui/core/Collapse';
+import Button from '@material-ui/core/Button';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import Divider from '@material-ui/core/Divider';
+
+// Icons
+import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
+import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
 
 // Icons
 import Delete from '@material-ui/icons/DeleteRounded';
@@ -20,69 +30,66 @@ import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 
 const useStyles = makeStyles((theme: Theme) => ({
-  content: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    [theme.breakpoints.down('sm')]: {
-      flexDirection: 'column',
-    },
-    marginBottom: 3,
+  paper: {
+    marginBottom: theme.spacing(1),
+    overflow: 'hidden',
     background: theme.palette.background.smoke,
   },
-  userName: {
-    flexGrow: 1,
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  deleteButton: {
-    '&:hover': {
-      cursor: 'pointer',
-      color: theme.palette.error.main,
-    },
-  },
-  arrowButton: {
-    marginRight: theme.spacing(1),
-    '&:hover': {
-      cursor: 'pointer',
-      color: theme.palette.secondary.main,
-    },
-  },
-  buttonContainer: {
-    display: 'flex',
+  wrapper: {
+    display: 'grid',
+    gridTemplateColumns: '1fr auto',
+    paddingRight: theme.spacing(8),
     alignItems: 'center',
   },
-  actionArea: {
-    display: 'flex',
+  secondaryText: {
+    whiteSpace: 'break-spaces',
   },
-  button: {
-    width: '100%',
-    marginTop: theme.spacing(2),
+  content: {
+    display: 'grid',
+    gridGap: theme.spacing(1),
+    padding: theme.spacing(2),
   },
-  lightText: {
-    color: theme.palette.text.secondary,
+  actions: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gridGap: theme.spacing(1),
+    [theme.breakpoints.down('md')]: {
+      gridTemplateColumns: '1fr',
+    },
+  },
+  deleteButton: {
+    color: theme.palette.error.main,
+    borderColor: theme.palette.error.main,
+    '&:hover': {
+      borderColor: theme.palette.error.light,
+    },
   },
 }));
 
 export type ParticipantProps = {
   eventId: number;
   registration: Registration;
-  showEmail: boolean;
 };
 
-const Participant = ({ registration, eventId, showEmail }: ParticipantProps) => {
+const Participant = ({ registration, eventId }: ParticipantProps) => {
   const classes = useStyles();
   const updateRegistration = useUpdateEventRegistration(eventId);
   const deleteRegistration = useDeleteEventRegistration(eventId);
-  const userInfo = registration.user_info;
+  const showSnackbar = useSnackbar();
   const [checkedState, setCheckedState] = useState(registration.has_attended);
   const [showModal, setShowModal] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     setCheckedState(registration.has_attended);
   }, [registration]);
 
   const deleteHandler = async () => {
-    await deleteRegistration.mutate(registration.user_info.user_id);
+    await deleteRegistration.mutate(registration.user_info.user_id, {
+      onSuccess: () => {
+        showSnackbar(`Deltageren ble fjernet`, 'success');
+      },
+    });
     setShowModal(false);
   };
 
@@ -91,6 +98,9 @@ const Participant = ({ registration, eventId, showEmail }: ParticipantProps) => 
     updateRegistration.mutate(
       { registration: { has_attended: event.target.checked }, userId: registration.user_info.user_id },
       {
+        onSuccess: () => {
+          showSnackbar(`Deltageren ble satt til ${!event.target.checked ? 'ikke ' : ''}ankommet`, 'success');
+        },
         onError: () => {
           setCheckedState(!event.target.checked);
         },
@@ -103,41 +113,49 @@ const Participant = ({ registration, eventId, showEmail }: ParticipantProps) => 
   };
 
   return (
-    <Paper className={classes.content}>
+    <Paper className={classes.paper} noPadding>
       <Dialog
         confirmText='Ja, jeg er sikker'
-        contentText={`Er du sikker på at du vil fjerne ${userInfo.first_name} ${userInfo.last_name} fra arrangementet?`}
+        contentText={`Er du sikker på at du vil fjerne ${registration.user_info.first_name} ${registration.user_info.last_name} fra arrangementet?`}
         onClose={() => setShowModal(false)}
         onConfirm={deleteHandler}
         open={showModal}
         titleText='Er du sikker?'
       />
-      <div className={classes.userName}>
-        <Typography>{`${userInfo.first_name} ${userInfo.last_name}`}</Typography>
-        <Typography>
-          {userInfo.user_class}. klasse - {getUserStudyShort(userInfo.user_study)}
-        </Typography>
-        <Collapse in={showEmail}>
-          <Typography>{registration.user_info.email}</Typography>
-        </Collapse>
-        {userInfo.allergy !== '' && <Typography>Allergier: {userInfo.allergy}</Typography>}
-        {registration.allow_photo && !registration.allow_photo && <Typography>Vil ikke bli tatt bilde av</Typography>}
-      </div>
-      <div className={classes.actionArea}>
-        {!registration.is_on_wait && (
-          <div className={classes.buttonContainer}>
-            <FormControlLabel control={<Checkbox checked={checkedState} onChange={handleAttendedCheck} />} label='Ankommet' />
+      <ListItem button className={classes.wrapper} onClick={() => setExpanded((prev) => !prev)}>
+        <ListItemText
+          classes={{ secondary: classes.secondaryText }}
+          primary={`${registration.user_info.first_name} ${registration.user_info.last_name}`}
+          secondary={`${getUserClass(registration.user_info.user_class)} - ${getUserStudyShort(registration.user_info.user_study)}${
+            registration.user_info.allergy !== '' ? `\nAllergier: ${registration.user_info.allergy}` : ''
+          }${!registration.allow_photo ? `\nVil ikke bli tatt bilde av` : ''}`}
+        />
+        {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        <ListItemSecondaryAction>{!registration.is_on_wait && <Checkbox checked={checkedState} onChange={handleAttendedCheck} />}</ListItemSecondaryAction>
+      </ListItem>
+      <Collapse in={expanded}>
+        <Divider />
+        <div className={classes.content}>
+          <div>
+            <Typography variant='subtitle1'>{`Epost: ${registration.user_info.email}`}</Typography>
+            <Typography variant='subtitle1'>{`Påmeldt: ${formatDate(parseISO(registration.created_at))}`}</Typography>
           </div>
-        )}
-        <div className={classes.buttonContainer}>
-          {registration.is_on_wait ? (
-            <ArrowUpwardIcon className={classes.arrowButton} onClick={() => changeList(false)} />
-          ) : (
-            <ArrowDownwardIcon className={classes.arrowButton} onClick={() => changeList(true)} />
-          )}
-          <Delete className={classes.deleteButton} onClick={() => setShowModal(true)} />
+          <div className={classes.actions}>
+            {registration.is_on_wait ? (
+              <Button fullWidth onClick={() => changeList(false)} startIcon={<ArrowUpwardIcon />} variant='outlined'>
+                Flytt til påmeldte
+              </Button>
+            ) : (
+              <Button fullWidth onClick={() => changeList(true)} startIcon={<ArrowDownwardIcon />} variant='outlined'>
+                Flytt til venteliste
+              </Button>
+            )}
+            <Button className={classes.deleteButton} fullWidth onClick={() => setShowModal(true)} startIcon={<Delete />} variant='outlined'>
+              Fjern deltager
+            </Button>
+          </div>
         </div>
-      </div>
+      </Collapse>
     </Paper>
   );
 };

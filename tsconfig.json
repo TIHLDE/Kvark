@@ -1,12 +1,8 @@
 {
   "compilerOptions": {
     "target": "es2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -20,12 +16,8 @@
     "jsx": "react-jsx",
     "outDir": "./build",
     "baseUrl": "./src",
-    "typeRoots": [
-      "src/types"
-    ],
+    "typeRoots": ["src/types"],
     "noFallthroughCasesInSwitch": true
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

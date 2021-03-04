@@ -22,6 +22,7 @@ import {
   Page,
   PageTree,
   PageRequired,
+  Membership,
 } from 'types/Types';
 
 export default {
@@ -97,6 +98,9 @@ export default {
 
   // Badges
   createUserBadge: (data: { badge_id: string }) => IFetch<RequestResponse>({ method: 'POST', url: `badge/`, data }),
+
+  //Membership
+  getMemberships: (slug: string) => IFetch<Membership[]>({ method: 'GET', url: `group/${slug}/membership/` }),
 
   // Pages
   getPageTree: () => IFetch<PageTree>({ method: 'GET', url: `page/tree/` }),
