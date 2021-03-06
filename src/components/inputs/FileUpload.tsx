@@ -1,13 +1,17 @@
 import { useState } from 'react';
+import { RegisterOptions, UseFormMethods } from 'react-hook-form';
 import API from 'api/api';
+import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
 import Button, { ButtonProps } from '@material-ui/core/Button';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 // Project components
 import Paper from 'components/layout/Paper';
 import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -30,17 +34,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export type IProps = ButtonProps & {
-  label?: string;
-  onUpload: (url: string) => Promise<void>;
-  uploadOnClick?: boolean;
-  requiredRatio?: number;
-  url?: string | null;
-};
+export type IProps = ButtonProps &
+  Pick<UseFormMethods, 'register' | 'watch' | 'setValue' | 'errors'> & {
+    rules?: RegisterOptions;
+    name: string;
+    fileType: 'img' | 'file';
+    label?: string;
+    requiredRatio?: number;
+  };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const FileUpload = ({ label = 'Last opp fil', onUpload, uploadOnClick = false, requiredRatio, url, ...props }: IProps) => {
+const FileUpload = ({ fileType, register, watch, setValue, name, errors = {}, rules = {}, label = 'Last opp fil', requiredRatio, ...props }: IProps) => {
   const classes = useStyles();
+  const showSnackbar = useSnackbar();
+  const url = watch(name);
   const [isLoading, setIsLoading] = useState(false);
   const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -48,30 +54,38 @@ const FileUpload = ({ label = 'Last opp fil', onUpload, uploadOnClick = false, r
       setIsLoading(true);
       try {
         const data = await API.uploadFile(file);
-        await onUpload(data.data.url);
-        // console.log('Yey');
+        setValue(name, data.data.url);
+        showSnackbar('Filen ble lastet opp, husk å trykk lagre', 'info');
       } catch (e) {
-        // console.error(e);
+        showSnackbar(e.detail, 'error');
       }
       setIsLoading(false);
     }
   };
   return (
     <Paper className={classes.paper}>
-      {url &&
+      {fileType === 'img' ? (
+        url &&
         (requiredRatio ? (
           <AspectRatioImg alt='Forhåndsvisning' imgClassName={classes.ratioImg} ratio={requiredRatio} src={url} />
         ) : (
           <img className={classes.img} src={url} />
-        ))}
+        ))
+      ) : (
+        <Typography>
+          Fil: <a href={url}>{url}</a>
+        </Typography>
+      )}
       <div>
-        <input accept='image/*' hidden id='contained-button-file' onChange={upload} type='file' />
-        <label htmlFor='contained-button-file'>
+        <input hidden name={name} ref={register && register(rules)} />
+        <input accept={fileType === 'img' ? 'image/*' : undefined} hidden id='file-upload-button' onChange={upload} type='file' />
+        <label htmlFor='file-upload-button'>
           <Button className={classes.button} color='primary' component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
             {label}
           </Button>
         </label>
       </div>
+      {Boolean(errors[name]) && <FormHelperText error>{errors[name]?.message}</FormHelperText>}
     </Paper>
   );
 };
