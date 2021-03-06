@@ -10,10 +10,11 @@ type FetchProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: Record<string, unknown | any>;
   withAuth?: boolean;
+  file?: File;
 };
 
 // eslint-disable-next-line comma-spacing
-export const IFetch = <T,>({ method, url, data = {}, withAuth = true }: FetchProps): Promise<T> => {
+export const IFetch = <T,>({ method, url, data = {}, withAuth = true, file }: FetchProps): Promise<T> => {
   const urlAddress = TIHLDE_API.URL + url;
   const headers = new Headers();
   headers.append('Content-Type', 'application/json');
@@ -22,7 +23,7 @@ export const IFetch = <T,>({ method, url, data = {}, withAuth = true }: FetchPro
     headers.append(TOKEN_HEADER_NAME, getCookie(ACCESS_TOKEN) as string);
   }
 
-  return fetch(request(method, urlAddress, headers, data)).then((response) => {
+  return fetch(request(method, urlAddress, headers, data, file)).then((response) => {
     const contentType = response.headers.get('content-type');
     if (!contentType || !contentType.includes('application/json') || !response.ok || response.json === undefined) {
       if (response.json) {
@@ -37,12 +38,21 @@ export const IFetch = <T,>({ method, url, data = {}, withAuth = true }: FetchPro
   });
 };
 
-const request = (method: RequestMethodType, url: string, headers: Headers, data: Record<string, unknown>) => {
-  return new Request(method === 'GET' ? url + argsToParams(data) : url, {
-    method: method,
-    headers: headers,
-    ...(method !== 'GET' && { body: JSON.stringify(data) }),
-  });
+const request = (method: RequestMethodType, url: string, headers: Headers, data: Record<string, unknown>, file?: File) => {
+  if (file) {
+    const data = new FormData();
+    data.append('image', file);
+    return new Request('https://api.imgbb.com/1/upload?key=909df01fa93bd63405c9a36d662523f3', {
+      method: method,
+      body: data,
+    });
+  } else {
+    return new Request(method === 'GET' ? url + argsToParams(data) : url, {
+      method: method,
+      headers: headers,
+      ...(method !== 'GET' && { body: JSON.stringify(data) }),
+    });
+  }
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

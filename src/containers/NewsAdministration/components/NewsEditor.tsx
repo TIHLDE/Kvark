@@ -20,6 +20,7 @@ import TextField from 'components/inputs/TextField';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
 import NewsRenderer from 'containers/NewsDetails/components/NewsRenderer';
 import SubmitButton from 'components/inputs/SubmitButton';
+import FileUpload from 'components/inputs/FileUpload';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -133,6 +134,25 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
         });
   };
 
+  const onImageUpload = async (url: string) => {
+    if (data && newsId) {
+      // console.log(url);
+      await updateNews.mutate(
+        { ...data, image: url },
+        {
+          onSuccess: () => {
+            showSnackbar('Lastet opp bildet', 'success');
+            Promise.resolve();
+          },
+          onError: (err) => {
+            showSnackbar(err.detail, 'error');
+            Promise.resolve();
+          },
+        },
+      );
+    }
+  };
+
   if (isLoading) {
     return <LinearProgress />;
   }
@@ -141,8 +161,10 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
       <form onSubmit={handleSubmit(submit)}>
         <Grid container direction='column' wrap='nowrap'>
           <TextField errors={errors} label='Tittel' name='title' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
-
           <TextField errors={errors} label='Header' name='header' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
+
+          {newsId && <FileUpload label='Velg bilde' onUpload={onImageUpload} requiredRatio={21 / 9} url={data?.image} />}
+
           <MarkdownEditor
             error={Boolean(errors.body)}
             helperText={Boolean(errors.body) && 'Gi nyheten et innhold'}

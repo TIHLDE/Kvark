@@ -108,4 +108,13 @@ export default {
   createPage: (data: PageRequired) => IFetch<Page>({ method: 'POST', url: `page/`, data }),
   updatePage: (path: string, data: Partial<Page>) => IFetch<Page>({ method: 'PUT', url: `page/${path}`, data }),
   deletePage: (path: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `page/${path}` }),
+
+  // File-upload
+  uploadFile: (file: File) => IFetch<FileUploadResponse>({ method: 'POST', url: 'upload-file/', file }),
+};
+
+type FileUploadResponse = {
+  data: {
+    url: string;
+  };
 };
