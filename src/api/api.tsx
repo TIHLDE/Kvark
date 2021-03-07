@@ -110,7 +110,7 @@ export default {
   deletePage: (path: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `page/${path}` }),
 
   // File-upload
-  uploadFile: (file: File) => IFetch<FileUploadResponse>({ method: 'POST', url: 'upload-file/', file }),
+  uploadFile: (file: File | Blob) => IFetch<FileUploadResponse>({ method: 'POST', url: 'upload-file/', file }),
 };
 
 type FileUploadResponse = {

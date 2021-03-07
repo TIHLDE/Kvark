@@ -20,7 +20,7 @@ import TextField from 'components/inputs/TextField';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
 import NewsRenderer from 'containers/NewsDetails/components/NewsRenderer';
 import SubmitButton from 'components/inputs/SubmitButton';
-import FileUpload from 'components/inputs/FileUpload';
+import { ImageUpload } from 'components/inputs/Upload';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -150,16 +150,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
             label='Innhold'
             name='body'
           />
-          <FileUpload
-            errors={errors}
-            fileType='img'
-            label='Velg bilde'
-            name='image'
-            register={register}
-            requiredRatio={21 / 9}
-            setValue={setValue}
-            watch={watch}
-          />
+          <ImageUpload errors={errors} label='Velg bilde' name='image' ratio={21 / 9} register={register} setValue={setValue} watch={watch} />
           <TextField errors={errors} label='Alternativ bildetekst' name='image_alt' register={register} />
           <RendererPreview className={classes.margin} getContent={getNewsPreview} renderer={NewsRenderer} />
           <SubmitButton className={classes.margin} disabled={isUpdating} errors={errors}>

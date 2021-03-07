@@ -10,7 +10,7 @@ type FetchProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: Record<string, unknown | any>;
   withAuth?: boolean;
-  file?: File;
+  file?: File | Blob;
 };
 
 // eslint-disable-next-line comma-spacing
@@ -38,7 +38,7 @@ export const IFetch = <T,>({ method, url, data = {}, withAuth = true, file }: Fe
   });
 };
 
-const request = (method: RequestMethodType, url: string, headers: Headers, data: Record<string, unknown>, file?: File) => {
+const request = (method: RequestMethodType, url: string, headers: Headers, data: Record<string, unknown>, file?: File | Blob) => {
   if (file) {
     const data = new FormData();
     data.append('image', file);
