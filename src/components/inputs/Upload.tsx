@@ -13,7 +13,6 @@ import { Typography } from '@material-ui/core';
 // Project components
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
-import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
 import { getCroppedImgAsBlob, readFile } from 'components/inputs/ImageUploadUtils';
 
 const useStyles = makeStyles((theme) => ({
@@ -27,9 +26,6 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto',
     maxHeight: 200,
     width: 'auto',
-    borderRadius: theme.shape.borderRadius,
-  },
-  ratioImg: {
     borderRadius: theme.shape.borderRadius,
   },
   button: {
@@ -116,12 +112,7 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
   return (
     <>
       <Paper className={classes.paper}>
-        {url &&
-          (ratio ? (
-            <AspectRatioImg alt='Forhåndsvisning' imgClassName={classes.ratioImg} ratio={ratio} src={url} />
-          ) : (
-            <img className={classes.img} src={url} />
-          ))}
+        {url && <img className={classes.img} src={url} />}
         <div>
           <input hidden name={name} ref={register && register(rules)} />
           <input accept='image/*' hidden id='file-upload-button' onChange={onSelect} type='file' />
