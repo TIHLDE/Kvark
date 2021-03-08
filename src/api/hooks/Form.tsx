@@ -30,3 +30,16 @@ export const useUpdateForm = (id: string): UseMutationResult<Form, RequestRespon
     },
   });
 };
+
+export const useDeleteForm = (id: string): UseMutationResult<RequestResponse, RequestResponse, undefined, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation(() => API.deleteForm(id), {
+    onSuccess: () => {
+      const data = queryClient.getQueryData<Form>([FORM_QUERY_KEY, id]);
+      if ((data as EventForm).event) {
+        queryClient.invalidateQueries([EVENT_QUERY_KEY, (data as EventForm).event]);
+      }
+      queryClient.removeQueries([FORM_QUERY_KEY, id]);
+    },
+  });
+};

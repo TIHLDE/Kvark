@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { Form, TextFormField, SelectFormField } from 'types/Types';
 import { FormFieldType } from 'types/Enums';
-import { useUpdateForm } from 'api/hooks/Form';
+import { useUpdateForm, useDeleteForm } from 'api/hooks/Form';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI
@@ -15,6 +15,7 @@ import MenuList from '@material-ui/core/MenuList';
 import Button from '@material-ui/core/Button';
 
 // Project components
+import Dialog from 'components/layout/Dialog';
 import FieldEditor from 'components/forms/FieldEditor';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -25,6 +26,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   paper: {
     marginRight: theme.spacing(2),
   },
+  delete: {
+    color: theme.palette.error.main,
+    borderColor: theme.palette.error.main,
+    '&:hover': {
+      borderColor: theme.palette.error.light,
+    },
+  },
 }));
 
 export type FormEditorProps = {
@@ -34,14 +42,28 @@ export type FormEditorProps = {
 const FormEditor = ({ form }: FormEditorProps) => {
   const classes = useStyles();
   const updateForm = useUpdateForm(form.id || '-');
+  const deleteForm = useDeleteForm(form.id || '-');
   const showSnackbar = useSnackbar();
   const [fields, setFields] = useState<Array<TextFormField | SelectFormField>>(form.fields);
-  const [open, setOpen] = useState(false);
+  const [addButtonOpen, setAddButtonOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const anchorRef = useRef(null);
 
   useEffect(() => {
     setFields(form.fields);
   }, [form]);
+
+  const onDeleteForm = () => {
+    deleteForm.mutate(undefined, {
+      onSuccess: (data) => {
+        showSnackbar(data.detail, 'success');
+        setDeleteDialogOpen(false);
+      },
+      onError: (e) => {
+        showSnackbar(e.detail, 'error');
+      },
+    });
+  };
 
   const addField = (type: FormFieldType) => {
     type === FormFieldType.TEXT_ANSWER
@@ -63,7 +85,7 @@ const FormEditor = ({ form }: FormEditorProps) => {
             options: [{ title: '' }],
           },
         ]);
-    setOpen(false);
+    setAddButtonOpen(false);
   };
 
   const updateField = (newField: TextFormField | SelectFormField, index: number) => {
@@ -99,18 +121,21 @@ const FormEditor = ({ form }: FormEditorProps) => {
             updateField={(newField: TextFormField | SelectFormField) => updateField(newField, index)}
           />
         ))}
-        <Button color='primary' fullWidth onClick={() => setOpen(true)} ref={anchorRef} variant='outlined'>
+        <Button color='primary' fullWidth onClick={() => setAddButtonOpen(true)} ref={anchorRef} variant='outlined'>
           Nytt spørsmål
         </Button>
         <Button color='primary' fullWidth onClick={save} variant='contained'>
           Lagre
         </Button>
+        <Button className={classes.delete} fullWidth onClick={() => setDeleteDialogOpen(true)} variant='outlined'>
+          Slett skjema
+        </Button>
       </div>
-      <Popper anchorEl={anchorRef.current} open={open} role={undefined} transition>
+      <Popper anchorEl={anchorRef.current} open={addButtonOpen} role={undefined} transition>
         {({ TransitionProps }) => (
           <Grow {...TransitionProps}>
             <Paper>
-              <ClickAwayListener onClickAway={() => setOpen(false)}>
+              <ClickAwayListener onClickAway={() => setAddButtonOpen(false)}>
                 <MenuList id='menu-list-grow'>
                   <MenuItem onClick={() => addField(FormFieldType.TEXT_ANSWER)}>Tekstspørsmål</MenuItem>
                   <MenuItem onClick={() => addField(FormFieldType.SINGLE_SELECT)}>Flervalgsspørsmål</MenuItem>
@@ -121,6 +146,9 @@ const FormEditor = ({ form }: FormEditorProps) => {
           </Grow>
         )}
       </Popper>
+      <Dialog confirmText='Jeg er sikker' onClose={() => setDeleteDialogOpen(false)} onConfirm={onDeleteForm} open={deleteDialogOpen} titleText='Slett skjema'>
+        Er du sikker på at du vil slette dette skjemaet? Alle svar vil forsvinne.
+      </Dialog>
     </>
   );
 };

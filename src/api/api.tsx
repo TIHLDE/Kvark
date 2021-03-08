@@ -59,6 +59,7 @@ export default {
   getForm: (formId: string) => IFetch<Form>({ method: 'GET', url: `forms/${formId}/` }),
   createForm: (item: Form) => IFetch<Form>({ method: 'POST', url: `forms/`, data: item }),
   updateForm: (formId: string, item: Form) => IFetch<Form>({ method: 'PUT', url: `forms/${formId}/`, data: item }),
+  deleteForm: (formId: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `forms/${formId}/` }),
 
   // Job posts
   getJobPosts: (filters: any = {}) => IFetch<PaginationResponse<JobPost>>({ method: 'GET', url: `jobpost/`, data: filters }),
