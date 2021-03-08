@@ -41,7 +41,6 @@ export interface User {
   events: Array<EventCompact>;
   groups: Array<Groups>;
   unread_notifications: number;
-  notifications: Array<Notification>;
   badges: Array<Badge>;
 }
 export type UserCreate = Pick<User, 'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study'> & {
@@ -61,6 +60,7 @@ export interface Notification {
   id: number;
   read: boolean;
   message: string;
+  created_at: string;
 }
 
 export type NewsRequired = Partial<News> & Pick<News, 'title' | 'header' | 'body'>;
