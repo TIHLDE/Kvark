@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto',
     maxHeight: 200,
     width: 'auto',
+    maxWidth: '100%',
     borderRadius: theme.shape.borderRadius,
   },
   button: {
