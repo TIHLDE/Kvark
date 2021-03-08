@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('md')]: {
       fontSize: '2.3rem',
     },
-    paddingBottom: theme.spacing(1),
+    padding: theme.spacing(1, 0),
   },
   skeleton: {
     maxWidth: '100%',
