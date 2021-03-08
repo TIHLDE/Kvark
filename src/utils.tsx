@@ -82,6 +82,25 @@ export const formatDate = (date: Date) => {
   );
 };
 
+export const getTimeSince = (date: Date) => {
+  const ms = new Date().getTime() - date.getTime();
+  const sec = Number((ms / 1000).toFixed(0));
+  const min = Number((ms / (1000 * 60)).toFixed(0));
+  const hrs = Number((ms / (1000 * 60 * 60)).toFixed(0));
+  const days = Number((ms / (1000 * 60 * 60 * 24)).toFixed(0));
+  if (sec < 60) {
+    return `${sec} sekunder siden`;
+  } else if (min < 60) {
+    return `${min} minutter siden`;
+  } else if (hrs < 24) {
+    return `${hrs} timer siden`;
+  } else if (days < 7) {
+    return `${days} dager siden`;
+  } else {
+    return formatDate(date);
+  }
+};
+
 export const getDay = (day: number) => {
   switch (day) {
     case 0:

@@ -88,6 +88,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:hover': {
       borderColor: '#ffffffaa',
     },
+    height: 50,
   },
   topText: {
     margin: 'auto 0',
@@ -171,7 +172,7 @@ function StoryPopup({ items, open, onClose, selectedItem = 0 }: StoryPopupProps)
       `https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=${encodeURIComponent(item.image || '')}`,
     );
     return (
-      <div className={classes.popup} style={{ background: palette?.muted || '' }}>
+      <div className={classes.popup} style={{ background: palette ? `linear-gradient(to bottom, ${palette.muted}, ${palette.darkMuted})` : '' }}>
         <div className={classes.top}>
           <Typography className={classnames(classes.topText, classes.white)} variant='h3'>
             {item.topText}

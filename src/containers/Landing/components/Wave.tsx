@@ -164,9 +164,9 @@ const Wave = () => {
             )}
           </div>
         </div>
-        <div className='rain rain--far' />
+        {/* <div className='rain rain--far' />
         <div className='rain rain--mid' />
-        <div className='rain rain--near' />
+        <div className='rain rain--near' /> */}
 
         <div className={classes.waveWrapperInner}>
           <div className={classNames(classes.wave, classes.waveTop)}>

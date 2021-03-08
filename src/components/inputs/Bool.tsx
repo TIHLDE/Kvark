@@ -21,6 +21,7 @@ const Bool = ({ helperText, type, control, name, errors = {}, rules = {}, ...pro
     <MuiFormControl component='fieldset' error={Boolean(errors[name])} required={Boolean(rules.required)}>
       <Controller
         control={control}
+        defaultValue={false}
         name={name}
         render={({ onChange, value }) => (
           <MuiFormControlLabel {...props} control={<Child checked={value} color='primary' onChange={(e) => onChange(e.target.checked)} />} />
