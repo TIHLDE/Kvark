@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.0.5 (08.03.2021)
+
 ## Versjon 1.0.4 (08.03.2021)
 
 - ⚡ **Pagination i varsler**. Lagt til pagination i varsler, samt forbedret håndtering av "leste" varsler.
