@@ -1,99 +1,103 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto:wght@300;700;900&display=swap');
 
 * {
-    padding: 0;
-    box-sizing: border-box;
+  padding: 0;
+  box-sizing: border-box;
 }
 body {
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
 }
 
 /* PULSE EFFECT */
 .pulse {
-    display: block;
-    min-width: 14px;
-    min-height: 14px;
-    border-radius: 100%;
-    background: rgba(255,255,255,1);
-    box-shadow: 0 0 0 rgba(255,255,255,0.8);
-    animation: pulse 2s infinite;
-    margin-right: 20px;
+  display: block;
+  min-width: 14px;
+  min-height: 14px;
+  border-radius: 100%;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 0 0 rgba(255, 255, 255, 0.8);
+  animation: pulse 2s infinite;
+  margin-right: 20px;
 }
 
 @-webkit-keyframes pulse {
-    0% {
-        -webkit-box-shadow: 0 0 0 0 rgba(204,169,44, 0.9);
-    }
-    90% {
-        -webkit-box-shadow: 0 0 0 10px rgba(204,169,44, 0);
-    }
-    100% {
-        -webkit-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
-    }
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.9);
+  }
+  90% {
+    -webkit-box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+  }
 }
 @keyframes pulse {
-    0% {
-        -moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0.9);
-        box-shadow: 0 0 0 0 rgba(204,169,44, 0.9);
-    }
-    90% {
-        -moz-box-shadow: 0 0 0 10px rgba(204,169,44, 0);
-        box-shadow: 0 0 0 10px rgba(204,169,44, 0);
-    }
-    100% {
-        -moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
-        box-shadow: 0 0 0 0 rgba(204,169,44, 0);
-    }
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.9);
+    box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.9);
+  }
+  90% {
+    -moz-box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
+    box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+    box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+  }
 }
 
 /** Landing page rain animation **/
 .rain {
-    z-index: 15;
-    pointer-events: none;
-    position: absolute;
-    top: 0; right: 0; left: 0; height: 450px; width: 100%;
-    animation: falling linear infinite both;
-    transform: translate3D(0,-100%,0);
-    overflow: hidden;
+  z-index: 15;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 450px;
+  width: 100%;
+  animation: falling linear infinite both;
+  transform: translate3D(0, -100%, 0);
+  overflow: hidden;
 }
 
-  .rain--near {
-    animation-duration: 20s;
-    background-image: url('../img/rain/rain-near.png');
+.rain--near {
+  animation-duration: 20s;
+  background-image: url('../img/rain/rain-near.png');
 
-    background-size: contain;
-  }
-  .rain--near .rain--alt {
-    animation-delay: 5s;
-  }
+  background-size: contain;
+}
+.rain--near .rain--alt {
+  animation-delay: 5s;
+}
 
-  .rain--mid {
-    animation-duration: 30s;
-    background-image: url('../img/rain/rain-mid.png');
+.rain--mid {
+  animation-duration: 30s;
+  background-image: url('../img/rain/rain-mid.png');
 
-    background-size: contain;
-  }
-  .rain--mid .rain--alt {
-    animation-delay: 10s;
-  }
+  background-size: contain;
+}
+.rain--mid .rain--alt {
+  animation-delay: 10s;
+}
 
-  .rain--far {
-    animation-duration: 40s;
-    background-image: url('../img/rain/rain-far.png');
+.rain--far {
+  animation-duration: 40s;
+  background-image: url('../img/rain/rain-far.png');
 
-    background-size: contain;
-  }
-  .rain--far .rain--alt {
-    animation-delay: 20s;
-  }
+  background-size: contain;
+}
+.rain--far .rain--alt {
+  animation-delay: 20s;
+}
 
 @keyframes falling {
-    0% {
-        transform: translate3D(-7.5%,-100%, 0);
-    }
+  0% {
+    transform: translate3D(-7.5%, -100%, 0);
+  }
 
-    100% {
-        transform: translate3D(7.5%,100%, 0);
-    }  
+  100% {
+    transform: translate3D(7.5%, 100%, 0);
+  }
 }
