@@ -17,7 +17,9 @@ type FetchProps = {
 export const IFetch = <T,>({ method, url, data = {}, withAuth = true, file }: FetchProps): Promise<T> => {
   const urlAddress = TIHLDE_API.URL + url;
   const headers = new Headers();
-  headers.append('Content-Type', 'application/json');
+  if (!file) {
+    headers.append('Content-Type', 'application/json');
+  }
 
   if (withAuth) {
     headers.append(TOKEN_HEADER_NAME, getCookie(ACCESS_TOKEN) as string);
@@ -37,22 +39,22 @@ export const IFetch = <T,>({ method, url, data = {}, withAuth = true, file }: Fe
     return response.json().then((responseData: T) => responseData);
   });
 };
-
 const request = (method: RequestMethodType, url: string, headers: Headers, data: Record<string, unknown>, file?: File | Blob) => {
-  if (file) {
-    const data = new FormData();
-    data.append('image', file);
-    return new Request('https://api.imgbb.com/1/upload?key=909df01fa93bd63405c9a36d662523f3', {
-      method: method,
-      body: data,
-    });
-  } else {
-    return new Request(method === 'GET' ? url + argsToParams(data) : url, {
-      method: method,
-      headers: headers,
-      ...(method !== 'GET' && { body: JSON.stringify(data) }),
-    });
-  }
+  const getBody = () => {
+    if (file) {
+      const data = new FormData();
+      data.append('file', file);
+      return data;
+    } else {
+      return method !== 'GET' ? JSON.stringify(data) : undefined;
+    }
+  };
+  const requestUrl = method === 'GET' ? url + argsToParams(data) : url;
+  return new Request(requestUrl, {
+    method: method,
+    headers: headers,
+    body: getBody(),
+  });
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

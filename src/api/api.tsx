@@ -7,6 +7,7 @@ import {
   Event,
   EventCompact,
   EventRequired,
+  FileUploadResponse,
   Registration,
   JobPost,
   JobPostRequired,
@@ -112,11 +113,5 @@ export default {
   deletePage: (path: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `page/${path}` }),
 
   // File-upload
-  uploadFile: (file: File | Blob) => IFetch<FileUploadResponse>({ method: 'POST', url: 'upload-file/', file }),
-};
-
-type FileUploadResponse = {
-  data: {
-    url: string;
-  };
+  uploadFile: (file: File | Blob) => IFetch<FileUploadResponse>({ method: 'POST', url: 'upload/', file }),
 };

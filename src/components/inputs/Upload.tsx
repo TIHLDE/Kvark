@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { RegisterOptions, UseFormMethods } from 'react-hook-form';
 import Cropper from 'react-easy-crop';
+import compressImage from 'browser-image-compression';
 import API from 'api/api';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
@@ -8,7 +9,8 @@ import { useSnackbar } from 'api/hooks/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 // Project components
 import Dialog from 'components/layout/Dialog';
@@ -92,6 +94,7 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
   };
   const dialogConfirmCrop = async () => {
     try {
+      setIsLoading(true);
       const file = await getCroppedImgAsBlob(imageSrc, croppedAreaPixels, imageType);
       await uploadFile(file);
     } catch (e) {
@@ -102,9 +105,10 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
   const uploadFile = async (file: File | Blob) => {
     setIsLoading(true);
     try {
-      const data = await API.uploadFile(file);
-      setValue(name, data.data.url);
-      showSnackbar('Bildet ble lastet opp, husk å trykk lagre', 'info');
+      const compressedImage = await compressImage(file as File, { maxSizeMB: 0.8, maxWidthOrHeight: 1500 });
+      const data = await API.uploadFile(compressedImage);
+      setValue(name, data.url);
+      showSnackbar('Bildet ble lastet opp, husk å lagre', 'info');
     } catch (e) {
       showSnackbar(e.detail, 'error');
     }
@@ -125,10 +129,18 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
         </div>
         {Boolean(errors[name]) && <FormHelperText error>{errors[name]?.message}</FormHelperText>}
       </Paper>
-      <Dialog closeText='Avbryt' confirmText='Ferdig' onClose={closeDialog} onConfirm={() => dialogConfirmCrop()} open={dialogOpen} titleText='Tilpass bildet'>
+      <Dialog
+        closeText='Avbryt'
+        confirmText='Ferdig'
+        disabled={isLoading}
+        onClose={closeDialog}
+        onConfirm={() => dialogConfirmCrop()}
+        open={dialogOpen}
+        titleText='Tilpass bildet'>
         <div className={classes.cropper}>
           <Cropper aspect={ratio} crop={crop} image={imageSrc} onCropChange={setCrop} onCropComplete={onCropComplete} onZoomChange={setZoom} zoom={zoom} />
         </div>
+        {isLoading && <LinearProgress />}
       </Dialog>
     </>
   );
@@ -147,7 +159,7 @@ export const FileUpload = ({ register, watch, setValue, name, errors = {}, rules
       setIsLoading(true);
       try {
         const data = await API.uploadFile(file);
-        setValue(name, data.data.url);
+        setValue(name, data.url);
         showSnackbar('Filen ble lastet opp, husk å trykk lagre', 'info');
       } catch (e) {
         showSnackbar(e.detail, 'error');
