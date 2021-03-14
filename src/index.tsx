@@ -38,6 +38,7 @@ const JobPostAdministration = lazy(() => import('containers/JobPostAdministratio
 const LogIn = lazy(() => import('containers/LogIn'));
 const News = lazy(() => import('containers/News'));
 const NewsAdministration = lazy(() => import('containers/NewsAdministration'));
+const ShortLinks = lazy(() => import('containers/ShortLinks'));
 const SignUp = lazy(() => import('containers/SignUp'));
 const UserAdmin = lazy(() => import('containers/UserAdmin'));
 
@@ -125,6 +126,7 @@ const AppRoutes = () => {
 
       <AuthRoute element={<Cheatsheet />} path={`${URLS.cheatsheet}:studyId/:classId/`} />
       <AuthRoute element={<Cheatsheet />} path={`${URLS.cheatsheet}*`} />
+      <AuthRoute element={<ShortLinks />} path={URLS.shortLinks} />
 
       <AuthRoute element={<UserAdmin />} groups={[Groups.HS, Groups.INDEX]} path={URLS.userAdmin} />
       <AuthRoute groups={[Groups.HS, Groups.INDEX, Groups.NOK]} path={URLS.jobpostsAdmin}>

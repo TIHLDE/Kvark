@@ -63,6 +63,11 @@ export interface Notification {
   created_at: string;
 }
 
+export interface ShortLink {
+  name: string;
+  url: string;
+}
+
 export type NewsRequired = Partial<News> & Pick<News, 'title' | 'header' | 'body'>;
 
 export interface News {

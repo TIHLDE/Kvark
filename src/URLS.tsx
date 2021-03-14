@@ -21,6 +21,7 @@ export default {
   eventRules: `${PAGES}${PAGES_URLS.EVENT_RULES}`,
   cheatsheet: '/kokebok/',
   news: '/nyheter/',
+  shortLinks: '/linker/',
   pages: PAGES,
   aboutIndex: `${PAGES}${PAGES_URLS.ABOUT_INDEX}`,
 
