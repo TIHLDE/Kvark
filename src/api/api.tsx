@@ -15,6 +15,7 @@ import {
   Membership,
   News,
   NewsRequired,
+  Notification,
   Page,
   PageTree,
   PageRequired,
@@ -81,7 +82,8 @@ export default {
   updateUserData: (userName: string, item: Partial<User>) => IFetch<User>({ method: 'PUT', url: `user/${userName}/`, data: item }),
 
   // Notifications
-  updateNotification: (id: number, item: { read: boolean }) => IFetch<RequestResponse>({ method: 'PUT', url: `notification/${String(id)}/`, data: item }),
+  getNotifications: (filters?: any) => IFetch<PaginationResponse<Notification>>({ method: 'GET', url: `notification/`, data: filters || {} }),
+  updateNotification: (id: number, item: { read: boolean }) => IFetch<Notification>({ method: 'PUT', url: `notification/${String(id)}/`, data: item }),
 
   // Cheatsheet
   getCheatsheets: (study: Study, grade: number, filters?: any) => {

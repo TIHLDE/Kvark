@@ -105,7 +105,7 @@ export type ProfilePaperProps = { logoutMethod: () => void };
 
 const ProfilePaper = ({ logoutMethod }: ProfilePaperProps) => {
   const classes = useStyles();
-  const { data: user, isLoading } = useUser();
+  const { data: user } = useUser();
   const { allowAccess: isAdmin } = useHavePermission([Groups.HS, Groups.PROMO, Groups.INDEX, Groups.NOK]);
   const [showModal, setShowModal] = useState(false);
   const eventTab = { label: 'Arrangementer', icon: EventIcon };
@@ -153,7 +153,7 @@ const ProfilePaper = ({ logoutMethod }: ProfilePaperProps) => {
         <Avatar className={classes.avatar} user={user} />
         {user && user.first_name ? (
           <>
-            <Typography className={classes.text} variant='h4'>
+            <Typography className={classes.text} variant='h1'>
               {`${user.first_name} ${user.last_name}`}
             </Typography>
             <Typography className={classes.text} variant='subtitle1'>
@@ -188,8 +188,8 @@ const ProfilePaper = ({ logoutMethod }: ProfilePaperProps) => {
           <Collapse in={tab === eventTab.label}>
             <ProfileEvents />
           </Collapse>
-          <Collapse in={tab === notificationsTab.label}>
-            <ProfileNotifications isLoading={isLoading} notifications={user?.notifications.sort((a, b) => b.id - a.id) || []} />
+          <Collapse in={tab === notificationsTab.label} unmountOnExit>
+            <ProfileNotifications />
           </Collapse>
           <Collapse in={tab === badgesTab.label}>
             <ProfileBadges />

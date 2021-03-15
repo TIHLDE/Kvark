@@ -54,7 +54,7 @@ const Profile = () => {
           <ProfilePaper logoutMethod={logout} />
         ) : (
           <Paper className={classes.paper} noPadding>
-            <Typography variant='h6'>Du må være logget inn for å se profilen din</Typography>
+            <Typography variant='h3'>Du må være logget inn for å se profilen din</Typography>
             <Link to={URLS.login}>
               <Button className={classes.topSpacing} color='primary' variant='contained'>
                 Logg inn

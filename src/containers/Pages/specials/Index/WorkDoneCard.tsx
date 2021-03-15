@@ -6,13 +6,10 @@ const LATEST_VERION_INDEX = 3;
 const MARKDOWN_HEADER_DELIMITER = /(?=\n##\s *)/g;
 import { useQuery } from 'react-query';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   list: {
     '& ul': {
       listStyleType: 'none',
-      '& li': {
-        fontSize: theme.typography.body1.fontSize,
-      },
     },
   },
 }));

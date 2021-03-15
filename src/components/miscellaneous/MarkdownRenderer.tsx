@@ -140,7 +140,7 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
       thematicBreak: () => <Divider className={classes.divider} />,
       image: ({ alt, src }: { alt: string; src: string }) => <img alt={alt} className={classes.image} src={src} />,
     }),
-    [],
+    [classes],
   );
 
   return <ReactMarkdown renderers={renderers}>{value}</ReactMarkdown>;
