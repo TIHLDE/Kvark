@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- ✨ **Kalender**. Knapp for å legge til arrangement i kalenderen din.
+
 ## Versjon 1.0.4 (08.03.2021)
 
 - ⚡ **Pagination i varsler**. Lagt til pagination i varsler, samt forbedret håndtering av "leste" varsler.
