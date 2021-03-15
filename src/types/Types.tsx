@@ -103,8 +103,8 @@ export interface Event {
   end_date: string;
   end_registration_at: string;
   evaluate_link: string;
+  evaluation: string;
   expired: boolean;
-  forms: Array<string>;
   id: number;
   image?: string;
   image_alt?: string;
@@ -117,6 +117,7 @@ export interface Event {
   sign_up: boolean;
   start_date: string;
   start_registration_at: string;
+  survey: string;
   title: string;
   updated_at: string;
   waiting_list_count: number;
@@ -130,7 +131,7 @@ export interface RegistrationPriority {
 }
 
 export interface Registration {
-  allow_photo: boolean;  
+  allow_photo: boolean;
   created_at: string;
   has_attended: boolean;
   is_on_wait: boolean;

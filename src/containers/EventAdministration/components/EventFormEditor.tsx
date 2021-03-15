@@ -2,6 +2,7 @@ import { EventForm } from 'types/Types';
 import { useFormById, useCreateForm } from 'api/hooks/Form';
 
 // Material UI
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
@@ -14,7 +15,17 @@ export type EventFormEditorProps = {
   formId: string | null;
 };
 
+const useStyles = makeStyles((theme) => ({
+  fullWidth: {
+    width: '100%',
+  },
+  text: {
+    marginTop: theme.spacing(1),
+  },
+}));
+
 const EventFormEditor = ({ eventId, formId }: EventFormEditorProps) => {
+  const classes = useStyles();
   const { data, isLoading } = useFormById(formId || '-');
   const createForm = useCreateForm();
 
@@ -40,10 +51,10 @@ const EventFormEditor = ({ eventId, formId }: EventFormEditorProps) => {
   }
 
   return (
-    <div style={{ width: '100%' }}>
+    <div className={classes.fullWidth}>
       <FormEditor form={data} />
-      <Typography style={{ marginTop: 8 }} variant='body2'>
-        OBS: Spørsmål til arrangement lagres uavhengig av resten av skjemaet! Du må altså trykke på lagre over for at spørsmålene skal lagres
+      <Typography className={classes.text} variant='body2'>
+        {`OBS: Spørsmål til arrangement lagres uavhengig av resten av arrangementet! Du må altså trykke på "LAGRE"-knappen over for at spørsmålene skal lagres.`}
       </Typography>
     </div>
   );

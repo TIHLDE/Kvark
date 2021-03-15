@@ -342,20 +342,22 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 </AccordionDetails>
               </Accordion>
             </div>
-            <div className={classes.margin}>
-              <Accordion className={classes.expansionPanel}>
-                <AccordionSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='priorities-header'>
-                  <Typography>Spørsmål ved påmelding</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  {eventId && data ? (
-                    <EventFormEditor eventId={eventId} formId={data.forms[0] || null} />
-                  ) : (
-                    <Typography variant='subtitle2'>Du må opprette arrangementet før du kan legge til spørsmål</Typography>
-                  )}
-                </AccordionDetails>
-              </Accordion>
-            </div>
+            {location.hostname !== 'tihlde.org' && (
+              <div className={classes.margin}>
+                <Accordion className={classes.expansionPanel}>
+                  <AccordionSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='survey-header'>
+                    <Typography>Spørsmål ved påmelding</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    {eventId && data ? (
+                      <EventFormEditor eventId={eventId} formId={data.survey} />
+                    ) : (
+                      <Typography variant='subtitle2'>Du må opprette arrangementet før du kan legge til spørsmål</Typography>
+                    )}
+                  </AccordionDetails>
+                </Accordion>
+              </div>
+            )}
           </Collapse>
           <MarkdownEditor
             error={Boolean(errors.description)}

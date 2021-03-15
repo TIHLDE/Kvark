@@ -73,7 +73,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
   const classes = useStyles();
   const createRegistration = useCreateEventRegistration(event.id);
   const showSnackbar = useSnackbar();
-  const { data: form, isLoading: isFormLoading } = useFormById(event.forms[0] || '-');
+  const { data: form, isLoading: isFormLoading } = useFormById(event.survey || '-');
   const [isLoading, setIsLoading] = useState(false);
   const [agreeRules, setAgreeRules] = useState(false);
   const [allowPhoto, setAllowPhoto] = useState(true);
