@@ -23,7 +23,6 @@ import Alert from '@material-ui/lab/Alert';
 
 // Icons
 import CalendarIcon from '@material-ui/icons/EventRounded';
-import ShareIcon from '@material-ui/icons/ShareRounded';
 
 // Project Components
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
@@ -299,9 +298,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           <div className={classes.actions}>
             <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} target='_blank' variant='outlined'>
               Legg til i kalender
-            </Button>
-            <Button endIcon={<ShareIcon />} variant='outlined'>
-              Del
             </Button>
           </div>
         </div>
