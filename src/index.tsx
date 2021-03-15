@@ -33,6 +33,7 @@ import Profile from 'containers/Profile';
 const EventAdministration = lazy(() => import('containers/EventAdministration'));
 const EventRegistration = lazy(() => import('containers/EventRegistration'));
 const ForgotPassword = lazy(() => import('containers/ForgotPassword'));
+const GroupOverview = lazy(() => import('containers/GroupOverview'));
 const Http404 = lazy(() => import('containers/Http404'));
 const JobPostAdministration = lazy(() => import('containers/JobPostAdministration'));
 const LogIn = lazy(() => import('containers/LogIn'));
@@ -112,6 +113,7 @@ const AppRoutes = () => {
         <Route element={<Events />} path='' />
       </Route>
       <Route element={<Companies />} path={URLS.company} />
+      <Route element={<GroupOverview />} path={URLS.groups} />
       <Route element={<Profile />} path={URLS.profile} />
       <Route path={URLS.jobposts}>
         <Route element={<JobPostDetails />} path=':id/*' />

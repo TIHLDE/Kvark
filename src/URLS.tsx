@@ -15,6 +15,7 @@ export default {
   jobposts: '/karriere/',
   profile: '/profil/',
   login: '/logg-inn/',
+  groups: '/grupper',
   forgotPassword: '/glemt-passord/',
   newlanding: '/newlanding/',
   signup: '/ny-bruker/',
