@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames';
 
 // Material UI Components
@@ -44,6 +44,9 @@ export type AspectRatioImgProps = {
 const AspectRatioImg = ({ alt, className, imgClassName, ratio = 21 / 9, src }: AspectRatioImgProps) => {
   const classes = useStyles({ ratio });
   const [imgUrl, setImgUrl] = useState(src || TIHLDELOGO);
+  useEffect(() => {
+    setImgUrl(src || TIHLDELOGO);
+  }, [src]);
   return (
     <div className={classNames(classes.imgContainer, className)}>
       <img alt={alt} className={classNames(classes.img, classes.jpg, imgClassName)} onError={() => setImgUrl(TIHLDELOGO)} src={imgUrl} />
