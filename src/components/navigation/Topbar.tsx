@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { useUser, useIsAuthenticated } from 'api/hooks/User';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -29,7 +29,7 @@ import Sidebar from 'components/navigation/Sidebar';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import Avatar from 'components/miscellaneous/Avatar';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles<Theme, Pick<TopbarProps, 'whiteOnLight'>>((theme) => ({
   appBar: {
     boxSizing: 'border-box',
     backgroundColor: theme.palette.colors.gradient.main.top,
@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
   },
   fancyAppBar: {
     backgroundColor: 'transparent',
+  },
+  whiteAppBar: {
+    backgroundColor: () => (theme.palette.type === 'light' ? theme.palette.common.white : undefined),
   },
   toolbar: {
     width: '100%',
@@ -63,13 +66,15 @@ const useStyles = makeStyles((theme) => ({
   items: {
     display: 'flex',
     justifyContent: 'center',
+    color: (props) => (props.whiteOnLight && theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white),
   },
   right: {
     display: 'flex',
     justifyContent: 'flex-end',
   },
   menuButton: {
-    color: theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
+    color: (props) =>
+      props.whiteOnLight && theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
     margin: 'auto 0',
   },
   selected: {
@@ -77,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
   },
   profileName: {
     margin: `auto ${theme.spacing(1)}px`,
-    color: theme.palette.common.white,
+    // color: theme.palette.common.white,
     textAlign: 'right',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -88,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
     height: 45,
   },
   topbarItem: {
-    color: theme.palette.common.white,
+    // color: theme.palette.common.white,
     alignSelf: 'center',
   },
   menulist: {
@@ -118,10 +123,11 @@ export type TopBarItemProps = {
   text: string;
   to?: string;
   type: 'dropdown' | 'link';
+  whiteOnLight?: boolean;
 };
 
-const TopBarItem = ({ items, text, to, type }: TopBarItemProps) => {
-  const classes = useStyles();
+const TopBarItem = ({ items, text, to, type, whiteOnLight = false }: TopBarItemProps) => {
+  const classes = useStyles({ whiteOnLight });
   const [isOpen, setIsOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
   const selected = useMemo(() => location.pathname === to, [location.pathname, to]);
@@ -167,12 +173,13 @@ const TopBarItem = ({ items, text, to, type }: TopBarItemProps) => {
   }
 };
 
-export type IProps = {
-  fancyNavbar: boolean;
+export type TopbarProps = {
+  fancyNavbar?: boolean;
+  whiteOnLight?: boolean;
 };
 
-const Topbar = ({ fancyNavbar }: IProps) => {
-  const classes = useStyles();
+const Topbar = ({ fancyNavbar = false, whiteOnLight = false }: TopbarProps) => {
+  const classes = useStyles({ whiteOnLight });
   const isAuthenticated = useIsAuthenticated();
   const { data: user } = useUser();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -213,18 +220,18 @@ const Topbar = ({ fancyNavbar }: IProps) => {
 
   return (
     <AppBar
-      className={classNames(classes.appBar, fancyNavbar && scrollLength < 20 && !sidebarOpen && classes.fancyAppBar)}
+      className={classNames(classes.appBar, fancyNavbar && scrollLength < 20 && !sidebarOpen && classes.fancyAppBar, whiteOnLight && classes.whiteAppBar)}
       color='primary'
       elevation={(fancyNavbar && scrollLength < 20) || sidebarOpen ? 0 : 1}
       position='fixed'>
       <Toolbar className={classes.toolbar} disableGutters>
         <Link to={URLS.landing}>
-          <TihldeLogo className={classes.logo} darkColor='white' lightColor='white' size='large' />
+          <TihldeLogo className={classes.logo} darkColor='white' lightColor={whiteOnLight ? 'black' : 'white'} size='large' />
         </Link>
         <Hidden mdDown>
           <div className={classes.items}>
             {items.map((item, i) => (
-              <TopBarItem key={i} {...item} />
+              <TopBarItem key={i} whiteOnLight={whiteOnLight} {...item} />
             ))}
           </div>
         </Hidden>

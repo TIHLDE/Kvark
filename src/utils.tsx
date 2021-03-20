@@ -104,19 +104,19 @@ export const getTimeSince = (date: Date) => {
 export const getDay = (day: number) => {
   switch (day) {
     case 0:
-      return 'Søndag';
+      return 'Søn.';
     case 1:
-      return 'Mandag';
+      return 'Man.';
     case 2:
-      return 'Tirsdag';
+      return 'Tirs.';
     case 3:
-      return 'Onsdag';
+      return 'Ons.';
     case 4:
-      return 'Torsdag';
+      return 'Tors.';
     case 5:
-      return 'Fredag';
+      return 'Fre.';
     case 6:
-      return 'Lørdag';
+      return 'Lør.';
     default:
       return day;
   }

@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import URLS from 'URLS';
-import { usePalette } from 'react-palette';
 import Helmet from 'react-helmet';
 import { useParams, useNavigate } from 'react-router-dom';
 import { urlEncode } from 'utils';
@@ -12,84 +11,47 @@ import Http404 from 'containers/Http404';
 import Navigation from 'components/navigation/Navigation';
 import EventRenderer, { EventRendererLoading } from 'containers/EventDetails/components/EventRenderer';
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
+import Container from 'components/layout/Container';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   wrapper: {
-    margin: 'auto',
-    position: 'relative',
-    color: theme.palette.text.primary,
-    padding: theme.spacing(10),
+    background: theme.palette.background.paper,
+  },
+  container: {
+    padding: theme.spacing(1, 9),
     [theme.breakpoints.down('lg')]: {
-      padding: theme.spacing(10, 5),
+      padding: theme.spacing(1, 5),
     },
     [theme.breakpoints.down('md')]: {
-      padding: theme.spacing(10, 0, 5, 0),
-    },
-  },
-  top: {
-    position: 'absolute',
-    width: '100%',
-    overflow: 'hidden',
-
-    '&::after': {
-      position: 'absolute',
-      bottom: 0,
-      borderBottom: 'solid 100px ' + theme.palette.background.default,
-      borderLeft: '100vw solid rgba(0,0,0,0)',
-      content: '""',
-      [theme.breakpoints.down('sm')]: {
-        borderBottom: 'solid 50px ' + theme.palette.background.default,
-      },
-    },
-  },
-  topInner: {
-    height: 350,
-    padding: theme.spacing(8),
-    transition: '3s',
-    background: theme.palette.colors.gradient.main.top,
-    [theme.breakpoints.down('sm')]: {
-      height: 230,
-    },
-    [theme.breakpoints.down('xs')]: {
-      height: 200,
+      padding: theme.spacing(1, 1, 5),
     },
   },
 }));
 
-function EventDetails() {
+const EventDetails = () => {
   const classes = useStyles();
   const { id } = useParams();
   const { data, isLoading, isError } = useEventById(Number(id));
   const navigate = useNavigate();
-  const [eventTitle, setEventTitle] = useState('');
 
   useEffect(() => {
-    // To avoid scroll to top on every event-change. It only happens if the title has changed
-    if (data && data.title !== eventTitle) {
-      setEventTitle(data.title);
+    if (data) {
       navigate(`${URLS.events}${id}/${urlEncode(data.title)}/`, { replace: true });
     }
-  }, [id, eventTitle, data, navigate]);
+  }, [id, data, navigate]);
 
-  // Find a dominant color in the image, uses a proxy to be able to retrieve images with CORS-policy until all images are stored in our own server
-  const { data: palette } = usePalette(
-    data
-      ? `https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=${encodeURIComponent(data.image || '')}`
-      : '',
-  );
+  // const { data: palette } = usePalette(
+  //   data?.image
+  //     ? `https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=${encodeURIComponent(data.image || '')}`
+  //     : '',
+  // );
 
   if (isError) {
     return <Http404 />;
   }
 
   return (
-    <Navigation
-      banner={
-        <div className={classes.top}>
-          <div className={classes.topInner} style={{ background: palette.muted ? palette.muted : '' }} />
-        </div>
-      }
-      fancyNavbar>
+    <Navigation maxWidth={false} topbarProps={{ whiteOnLight: true }}>
       {data && (
         <Helmet>
           <title>{data.title} - TIHLDE</title>
@@ -99,9 +61,14 @@ function EventDetails() {
           <meta content={data.image || 'https://tihlde.org' + TIHLDELOGO} property='og:image' />
         </Helmet>
       )}
-      <div className={classes.wrapper}>{isLoading ? <EventRendererLoading /> : data !== undefined && <EventRenderer data={data} />}</div>
+      {/* <div className={classes.wrapper} style={{ background: palette.muted ? palette.muted : '' }}> */}
+      <div className={classes.wrapper}>
+        <Container className={classes.container} maxWidth='xl'>
+          {isLoading ? <EventRendererLoading /> : data !== undefined && <EventRenderer data={data} />}
+        </Container>
+      </div>
     </Navigation>
   );
-}
+};
 
 export default EventDetails;
