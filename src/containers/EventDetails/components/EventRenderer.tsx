@@ -59,11 +59,13 @@ const useStyles = makeStyles((theme) => ({
   },
   details: {
     padding: theme.spacing(1, 2),
-    width: 300,
+    width: 330,
     [theme.breakpoints.down('md')]: {
-      maxWidth: 'none',
       width: '100%',
     },
+  },
+  detailsHeader: {
+    fontSize: '1.5rem',
   },
   info: {
     [theme.breakpoints.down('md')]: {
@@ -225,10 +227,13 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       />
       <div className={classes.rootGrid}>
         <div className={classes.infoGrid}>
-          <Hidden mdDown>
+          <Hidden lgUp>
             <ApplyButton />
           </Hidden>
           <Paper className={classes.details} noPadding>
+            <Typography className={classes.detailsHeader} variant='h2'>
+              Info
+            </Typography>
             <DetailContent info={formatDate(startDate)} title='Fra: ' />
             <DetailContent info={formatDate(endDate)} title='Til: ' />
             <DetailContent info={data.location} title='Sted: ' />
@@ -236,27 +241,31 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           {data.sign_up && (
             <>
               <Paper className={classes.details} noPadding>
+                <Typography className={classes.detailsHeader} variant='h2'>
+                  Påmelding
+                </Typography>
                 <DetailContent info={`${data.list_count}/${data.limit}`} title='Påmeldte:' />
                 <DetailContent info={String(data.waiting_list_count)} title='Venteliste:' />
                 {registration && isFuture(signOffDeadlineDate) ? (
                   <DetailContent info={formatDate(signOffDeadlineDate)} title='Avmeldingsfrist:' />
                 ) : (
                   <>
-                    {isFuture(startRegistrationDate) && <DetailContent info={formatDate(startRegistrationDate)} title='Påmeldingsstart:' />}
-                    {isPast(startRegistrationDate) && isFuture(endRegistrationDate) && (
-                      <DetailContent info={formatDate(endRegistrationDate)} title='Påmeldingsslutt:' />
-                    )}
+                    {isFuture(startRegistrationDate) && <DetailContent info={formatDate(startRegistrationDate)} title='Start:' />}
+                    {isPast(startRegistrationDate) && isFuture(endRegistrationDate) && <DetailContent info={formatDate(endRegistrationDate)} title='Slutt:' />}
                   </>
                 )}
               </Paper>
-              {Boolean(data.registration_priorities.length) && data.registration_priorities.length !== 14 && (
+              {Boolean(data.registration_priorities.length) && data.registration_priorities.length === 14 && (
                 <Paper className={classes.details} noPadding>
-                  <EventPriorities priorities={data.registration_priorities} title='Prioritert:' />
+                  <Typography className={classes.detailsHeader} variant='h2'>
+                    Prioritert
+                  </Typography>
+                  <EventPriorities priorities={data.registration_priorities} />
                 </Paper>
               )}
             </>
           )}
-          <Hidden lgUp>
+          <Hidden mdDown>
             <ApplyButton />
           </Hidden>
           {!preview && (
@@ -290,23 +299,22 @@ export default EventRenderer;
 
 export const EventRendererLoading = () => {
   const classes = useStyles();
+
   return (
-    <>
-      <AspectRatioLoading imgClassName={classes.image} />
-      <div className={classes.rootGrid}>
-        <div>
-          <div className={classes.infoGrid}>
-            <Paper className={classes.details} noPadding>
-              <DetailContentLoading />
-              <DetailContentLoading />
-              <DetailContentLoading />
-            </Paper>
-            <Paper className={classes.details} noPadding>
-              <DetailContentLoading />
-              <DetailContentLoading />
-            </Paper>
-          </div>
-        </div>
+    <div className={classes.rootGrid}>
+      <div className={classes.infoGrid}>
+        <Paper className={classes.details} noPadding>
+          <DetailContentLoading />
+          <DetailContentLoading />
+          <DetailContentLoading />
+        </Paper>
+        <Paper className={classes.details} noPadding>
+          <DetailContentLoading />
+          <DetailContentLoading />
+        </Paper>
+      </div>
+      <div className={classnames(classes.infoGrid, classes.info)}>
+        <AspectRatioLoading imgClassName={classes.image} />
         <Paper className={classes.content}>
           <Skeleton className={classes.skeleton} height={80} width='60%' />
           <Skeleton className={classes.skeleton} height={40} width={250} />
@@ -316,6 +324,6 @@ export const EventRendererLoading = () => {
           <Skeleton className={classes.skeleton} height={40} width='90%' />
         </Paper>
       </div>
-    </>
+    </div>
   );
 };

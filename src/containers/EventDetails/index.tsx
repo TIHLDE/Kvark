@@ -16,14 +16,15 @@ import Container from 'components/layout/Container';
 const useStyles = makeStyles((theme) => ({
   wrapper: {
     background: theme.palette.background.paper,
+    minHeight: '101vh',
   },
   container: {
-    padding: theme.spacing(1, 9),
+    padding: theme.spacing(8, 9),
     [theme.breakpoints.down('lg')]: {
-      padding: theme.spacing(1, 5),
+      padding: theme.spacing(8, 5),
     },
     [theme.breakpoints.down('md')]: {
-      padding: theme.spacing(1, 1, 5),
+      padding: theme.spacing(8, 1, 5),
     },
   },
 }));
@@ -51,7 +52,7 @@ const EventDetails = () => {
   }
 
   return (
-    <Navigation maxWidth={false} topbarProps={{ whiteOnLight: true }}>
+    <Navigation fancyNavbar maxWidth={false} topbarProps={{ whiteOnLight: true }}>
       {data && (
         <Helmet>
           <title>{data.title} - TIHLDE</title>

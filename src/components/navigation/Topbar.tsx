@@ -82,7 +82,7 @@ const useStyles = makeStyles<Theme, Pick<TopbarProps, 'whiteOnLight'>>((theme) =
   },
   profileName: {
     margin: `auto ${theme.spacing(1)}px`,
-    // color: theme.palette.common.white,
+    color: (props) => (props.whiteOnLight && theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white),
     textAlign: 'right',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -93,7 +93,6 @@ const useStyles = makeStyles<Theme, Pick<TopbarProps, 'whiteOnLight'>>((theme) =
     height: 45,
   },
   topbarItem: {
-    // color: theme.palette.common.white,
     alignSelf: 'center',
   },
   menulist: {
@@ -123,11 +122,10 @@ export type TopBarItemProps = {
   text: string;
   to?: string;
   type: 'dropdown' | 'link';
-  whiteOnLight?: boolean;
 };
 
-const TopBarItem = ({ items, text, to, type, whiteOnLight = false }: TopBarItemProps) => {
-  const classes = useStyles({ whiteOnLight });
+const TopBarItem = ({ items, text, to, type }: TopBarItemProps) => {
+  const classes = useStyles({});
   const [isOpen, setIsOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
   const selected = useMemo(() => location.pathname === to, [location.pathname, to]);
@@ -179,10 +177,10 @@ export type TopbarProps = {
 };
 
 const Topbar = ({ fancyNavbar = false, whiteOnLight = false }: TopbarProps) => {
-  const classes = useStyles({ whiteOnLight });
   const isAuthenticated = useIsAuthenticated();
   const { data: user } = useUser();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const classes = useStyles({ whiteOnLight: whiteOnLight && !sidebarOpen });
   const [scrollLength, setScrollLength] = useState(0);
 
   const handleScroll = () => setScrollLength(window.pageYOffset);
@@ -220,18 +218,22 @@ const Topbar = ({ fancyNavbar = false, whiteOnLight = false }: TopbarProps) => {
 
   return (
     <AppBar
-      className={classNames(classes.appBar, fancyNavbar && scrollLength < 20 && !sidebarOpen && classes.fancyAppBar, whiteOnLight && classes.whiteAppBar)}
+      className={classNames(
+        classes.appBar,
+        fancyNavbar && scrollLength < 20 && !sidebarOpen && classes.fancyAppBar,
+        whiteOnLight && !sidebarOpen && classes.whiteAppBar,
+      )}
       color='primary'
       elevation={(fancyNavbar && scrollLength < 20) || sidebarOpen ? 0 : 1}
       position='fixed'>
       <Toolbar className={classes.toolbar} disableGutters>
         <Link to={URLS.landing}>
-          <TihldeLogo className={classes.logo} darkColor='white' lightColor={whiteOnLight ? 'black' : 'white'} size='large' />
+          <TihldeLogo className={classes.logo} darkColor='white' lightColor={whiteOnLight && !sidebarOpen ? 'black' : 'white'} size='large' />
         </Link>
         <Hidden mdDown>
           <div className={classes.items}>
             {items.map((item, i) => (
-              <TopBarItem key={i} whiteOnLight={whiteOnLight} {...item} />
+              <TopBarItem key={i} {...item} />
             ))}
           </div>
         </Hidden>
