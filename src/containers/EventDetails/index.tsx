@@ -41,12 +41,6 @@ const EventDetails = () => {
     }
   }, [id, data, navigate]);
 
-  // const { data: palette } = usePalette(
-  //   data?.image
-  //     ? `https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=${encodeURIComponent(data.image || '')}`
-  //     : '',
-  // );
-
   if (isError) {
     return <Http404 />;
   }
@@ -62,7 +56,6 @@ const EventDetails = () => {
           <meta content={data.image || 'https://tihlde.org' + TIHLDELOGO} property='og:image' />
         </Helmet>
       )}
-      {/* <div className={classes.wrapper} style={{ background: palette.muted ? palette.muted : '' }}> */}
       <div className={classes.wrapper}>
         <Container className={classes.container} maxWidth='xl'>
           {isLoading ? <EventRendererLoading /> : data !== undefined && <EventRenderer data={data} />}
