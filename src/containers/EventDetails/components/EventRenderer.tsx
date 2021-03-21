@@ -214,6 +214,17 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     }
   };
 
+  const Details = () => (
+    <Paper className={classes.details} noPadding>
+      <Typography className={classes.detailsHeader} variant='h2'>
+        Detaljer
+      </Typography>
+      <DetailContent info={formatDate(startDate)} title='Fra: ' />
+      <DetailContent info={formatDate(endDate)} title='Til: ' />
+      <DetailContent info={data.location} title='Sted: ' />
+    </Paper>
+  );
+
   return (
     <>
       <Dialog
@@ -230,14 +241,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           <Hidden lgUp>
             <ApplyButton />
           </Hidden>
-          <Paper className={classes.details} noPadding>
-            <Typography className={classes.detailsHeader} variant='h2'>
-              Info
-            </Typography>
-            <DetailContent info={formatDate(startDate)} title='Fra: ' />
-            <DetailContent info={formatDate(endDate)} title='Til: ' />
-            <DetailContent info={data.location} title='Sted: ' />
-          </Paper>
+          <Hidden mdDown>
+            <Details />
+          </Hidden>
           {data.sign_up && (
             <>
               <Paper className={classes.details} noPadding>
@@ -278,6 +284,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         </div>
         <div className={classnames(classes.infoGrid, classes.info)}>
           <AspectRatioImg alt={data.image_alt || data.title} imgClassName={classes.image} src={data.image} />
+          <Hidden lgUp>
+            <Details />
+          </Hidden>
           <Paper className={classes.content}>
             <Typography className={classes.title} gutterBottom variant='h1'>
               {data.title}
