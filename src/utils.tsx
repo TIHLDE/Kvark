@@ -1,6 +1,5 @@
 import slugify from 'slugify';
 import { parseISO, format } from 'date-fns';
-import { utcToZonedTime } from 'date-fns-tz';
 import { Event } from 'types/Types';
 import { UserStudy, UserClass } from 'types/Enums';
 
@@ -155,10 +154,14 @@ export const getMonth = (month: number) => {
   }
 };
 
+export const dateToUTC = (date: Date): Date => {
+  return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes()));
+};
+
 export const getICSFromEvent = (event: Event): string => {
   const formating = `yyyyMMdd'T'HHmmss'Z'`;
-  const start = format(utcToZonedTime(parseISO(event.start_date), 'utc'), formating);
-  const end = format(utcToZonedTime(parseISO(event.end_date), 'utc'), formating);
+  const start = format(dateToUTC(parseISO(event.start_date)), formating);
+  const end = format(dateToUTC(parseISO(event.end_date)), formating);
 
   const calendarChunks = [
     { key: 'BEGIN', value: 'VCALENDAR' },

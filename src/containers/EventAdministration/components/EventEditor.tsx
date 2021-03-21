@@ -6,7 +6,7 @@ import { useEventById, useCreateEvent, useUpdateEvent, useDeleteEvent } from 'ap
 import { useMisc } from 'api/hooks/Misc';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { addHours, subDays, parseISO } from 'date-fns';
-import { utcToZonedTime } from 'date-fns-tz';
+import { dateToUTC } from 'utils';
 
 // Material-UI
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -250,11 +250,13 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   useEffect(() => {
     if (watchStartDate) {
       const start = parseISO(watchStartDate);
-      const getTime = (daysBefore: number, hour: number) => new Date(subDays(start, daysBefore).setUTCHours(hour, 0, 0)).toISOString().substring(0, 16);
-      setValue('start_registration_at', getTime(7, 12));
-      setValue('end_registration_at', getTime(0, 12));
-      setValue('sign_off_deadline', getTime(1, 12));
-      setValue('end_date', utcToZonedTime(addHours(start, 2), 'utc').toISOString().substring(0, 16));
+      if (start instanceof Date && !isNaN(start.valueOf())) {
+        const getTime = (daysBefore: number, hour: number) => new Date(subDays(start, daysBefore).setUTCHours(hour, 0, 0)).toISOString().substring(0, 16);
+        setValue('start_registration_at', getTime(7, 12));
+        setValue('end_registration_at', getTime(0, 12));
+        setValue('sign_off_deadline', getTime(1, 12));
+        setValue('end_date', dateToUTC(addHours(start, 2)).toISOString().substring(0, 16));
+      }
     }
   }, [watchStartDate]);
 
