@@ -109,7 +109,6 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
       const newFile = blobToFile(compressedImage, imageFile?.name || '', imageFile?.type || '');
       const data = await API.uploadFile(newFile);
       setValue(name, data.url);
-      showSnackbar('Bildet ble lastet opp, husk å lagre', 'info');
     } catch (e) {
       showSnackbar(e.detail, 'error');
     }
