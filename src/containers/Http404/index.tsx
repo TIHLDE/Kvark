@@ -42,7 +42,7 @@ const Http404 = () => {
       <Helmet>
         <title>404 - TIHLDE</title>
       </Helmet>
-      {!isAuthenticated ? (
+      {isAuthenticated ? (
         <img alt='404' className={classes.img} src={http404ropeImg} />
       ) : (
         <img alt='404' className={classNames(classes.img, classes.imgPadding)} src={http404img} />

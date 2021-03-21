@@ -1,4 +1,6 @@
 import slugify from 'slugify';
+import { parseISO, format } from 'date-fns';
+import { Event } from 'types/Types';
 import { UserStudy, UserClass } from 'types/Enums';
 
 export const urlEncode = (text = '') => slugify(text, { lower: true, strict: true, locale: 'nb' });
@@ -150,4 +152,34 @@ export const getMonth = (month: number) => {
     default:
       return month;
   }
+};
+
+export const dateToUTC = (date: Date): Date => {
+  return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes()));
+};
+
+export const getICSFromEvent = (event: Event): string => {
+  const formating = `yyyyMMdd'T'HHmmss'Z'`;
+  const start = format(dateToUTC(parseISO(event.start_date)), formating);
+  const end = format(dateToUTC(parseISO(event.end_date)), formating);
+
+  const calendarChunks = [
+    { key: 'BEGIN', value: 'VCALENDAR' },
+    { key: 'VERSION', value: '2.0' },
+    { key: 'BEGIN', value: 'VEVENT' },
+    { key: 'URL', value: `https://s.tihlde.org/a/${event.id}/` },
+    { key: 'DTSTART', value: start },
+    { key: 'DTEND', value: end },
+    { key: 'SUMMARY', value: event.title },
+    { key: 'DESCRIPTION', value: `Se arrangementet på: https://s.tihlde.org/a/${event.id}/` },
+    { key: 'LOCATION', value: event.location },
+    { key: 'END', value: 'VEVENT' },
+    { key: 'END', value: 'VCALENDAR' },
+  ];
+
+  const calendarUrl = calendarChunks
+    .filter((chunk) => chunk.value)
+    .map((chunk) => `${chunk.key}:${encodeURIComponent(`${chunk.value}\n`)}`)
+    .join('');
+  return `data:text/calendar;charset=utf8,${calendarUrl}`;
 };

@@ -3,7 +3,7 @@ import { Event } from 'types/Types';
 import { Groups } from 'types/Enums';
 import URLS from 'URLS';
 import { parseISO, isPast, isFuture } from 'date-fns';
-import { formatDate } from 'utils';
+import { formatDate, getICSFromEvent } from 'utils';
 import { Link } from 'react-router-dom';
 
 // Services
@@ -20,6 +20,9 @@ import Collapse from '@material-ui/core/Collapse';
 import Hidden from '@material-ui/core/Hidden';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Alert from '@material-ui/lab/Alert';
+
+// Icons
+import CalendarIcon from '@material-ui/icons/EventRounded';
 
 // Project Components
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
@@ -72,6 +75,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       order: 1,
     },
+    marginBottom: theme.spacing(1),
   },
   title: {
     color: theme.palette.text.primary,
@@ -85,6 +89,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   skeleton: {
     maxWidth: '100%',
     borderRadius: theme.shape.borderRadius,
+  },
+  actions: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gridGap: theme.spacing(1),
+    [theme.breakpoints.down('md')]: {
+      gridTemplateColumns: '1fr',
+    },
   },
 }));
 
@@ -271,17 +283,24 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             </Hidden>
           </div>
         </div>
-        <Paper className={classes.content}>
-          <Typography className={classes.title} gutterBottom variant='h1'>
-            {data.title}
-          </Typography>
-          <Collapse in={view === Views.Info || Boolean(registration) || preview}>
-            <MarkdownRenderer value={data.description} />
-          </Collapse>
-          <Collapse in={view === Views.Apply && !registration && !preview} mountOnEnter>
-            {user && <EventRegistration event={data} user={user} />}
-          </Collapse>
-        </Paper>
+        <div>
+          <Paper className={classes.content}>
+            <Typography className={classes.title} gutterBottom variant='h1'>
+              {data.title}
+            </Typography>
+            <Collapse in={view === Views.Info || Boolean(registration) || preview}>
+              <MarkdownRenderer value={data.description} />
+            </Collapse>
+            <Collapse in={view === Views.Apply && !registration && !preview} mountOnEnter>
+              {user && <EventRegistration event={data} user={user} />}
+            </Collapse>
+          </Paper>
+          <div className={classes.actions}>
+            <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} variant='outlined'>
+              Legg til i kalender
+            </Button>
+          </div>
+        </div>
       </div>
     </>
   );
