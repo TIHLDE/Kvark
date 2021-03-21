@@ -15,7 +15,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 // Project components
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
-import { getCroppedImgAsBlob, readFile } from 'components/inputs/ImageUploadUtils';
+import { getCroppedImgAsBlob, blobToFile, readFile } from 'components/inputs/ImageUploadUtils';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -59,7 +59,7 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
   const [isLoading, setIsLoading] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const [imageType, setImageType] = useState<string | undefined>(undefined);
+  const [imageFile, setImageFile] = useState<File | undefined>(undefined);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
 
   const closeDialog = () => {
@@ -68,7 +68,7 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
     setZoom(1);
     setCrop({ x: 0, y: 0 });
     setCroppedAreaPixels(null);
-    setImageType(undefined);
+    setImageFile(undefined);
   };
 
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
@@ -80,7 +80,7 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
       if (e.target.files && e.target.files.length > 0) {
         const file = e.target.files[0];
         if (ratio) {
-          setImageType(file.type);
+          setImageFile(file);
           const imageDataUrl = await readFile(file);
           setImageSrc(imageDataUrl);
           setDialogOpen(true);
@@ -95,7 +95,7 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
   const dialogConfirmCrop = async () => {
     try {
       setIsLoading(true);
-      const file = await getCroppedImgAsBlob(imageSrc, croppedAreaPixels, imageType);
+      const file = await getCroppedImgAsBlob(imageSrc, croppedAreaPixels, imageFile?.type);
       await uploadFile(file);
     } catch (e) {
       showSnackbar(e.detail, 'error');
@@ -106,7 +106,8 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
     setIsLoading(true);
     try {
       const compressedImage = await compressImage(file as File, { maxSizeMB: 0.8, maxWidthOrHeight: 1500 });
-      const data = await API.uploadFile(compressedImage);
+      const newFile = blobToFile(compressedImage, imageFile?.name || '', imageFile?.type || '');
+      const data = await API.uploadFile(newFile);
       setValue(name, data.url);
       showSnackbar('Bildet ble lastet opp, husk å lagre', 'info');
     } catch (e) {

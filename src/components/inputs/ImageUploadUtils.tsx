@@ -38,7 +38,7 @@ export const getCroppedImgAsBlob = async (imageSrc: string, pixelCrop: any, imgT
   const ctx = canvas.getContext('2d');
 
   if (!ctx) {
-    return Promise.reject(new Error('Noo'));
+    return Promise.reject(new Error(`Could not load canvas`));
   }
 
   const maxSize = Math.max(image.width, image.height);
@@ -58,12 +58,16 @@ export const getCroppedImgAsBlob = async (imageSrc: string, pixelCrop: any, imgT
   ctx.putImageData(data, Math.round(0 - safeArea / 2 + image.width * 0.5 - pixelCrop.x), Math.round(0 - safeArea / 2 + image.height * 0.5 - pixelCrop.y));
 
   return new Promise((resolve, reject) => {
-    canvas.toBlob((file) => {
-      if (file) {
-        resolve(file);
+    canvas.toBlob((blob) => {
+      if (blob) {
+        resolve(blob);
       } else {
-        reject(new Error('Noo'));
+        reject(new Error('Error creating file'));
       }
     }, imgType);
   });
+};
+
+export const blobToFile = (blob: Blob, name: string, type: string): File => {
+  return new File([blob], name, { type });
 };
