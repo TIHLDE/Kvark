@@ -1,15 +1,11 @@
-import React from 'react';
 import { Form } from 'types/Types';
+import { UseFormMethods } from 'react-hook-form';
 
 // Project components
 import FieldView from 'components/forms/FieldView';
 
-export type FormViewProps = {
+export type FormViewProps = Pick<UseFormMethods, 'register' | 'errors'> & {
   form: Form;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  register: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  errors: any;
 };
 
 const FormView = ({ form, register, errors }: FormViewProps) => {

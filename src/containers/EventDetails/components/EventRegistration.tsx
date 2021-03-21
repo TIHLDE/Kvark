@@ -83,22 +83,22 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
 
   const submit = async (data: { answers: Array<TextFieldSubmission | SelectFieldSubmission> }) => {
     setIsLoading(true);
-    let anyError = false;
-    data.answers.forEach((answer, index) => {
-      const field = form?.fields.find((field) => field.id === answer.field);
-      if (field && field.type === FormFieldType.MULTIPLE_SELECT && field.required) {
-        const ans = answer as SelectFieldSubmission;
-        if (!ans.selected_options.length) {
-          setError(`answers[${index}].selected_options`, { type: 'manual', message: 'Du må velge ett eller flere alternativ' });
-          anyError = true;
+    try {
+      data.answers.forEach((answer, index) => {
+        const field = form?.fields.find((field) => field.id === answer.field);
+        if (field && field.type === FormFieldType.MULTIPLE_SELECT && field.required) {
+          const ans = answer as SelectFieldSubmission;
+          if (!ans.selected_options.length) {
+            throw new Error(`answers[${index}].selected_options`);
+          }
         }
-      }
-    });
-    if (anyError) {
+      });
+    } catch (e) {
+      setError(e.message, { message: 'Du må velge ett eller flere alternativ' });
       setIsLoading(false);
       return;
     }
-    await createRegistration.mutate(
+    createRegistration.mutate(
       { allow_photo: allowPhoto, ...data },
       {
         onSuccess: () => {
@@ -107,9 +107,11 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
         onError: (e) => {
           showSnackbar(e.detail, 'error');
         },
+        onSettled: () => {
+          setIsLoading(false);
+        },
       },
     );
-    setIsLoading(false);
   };
 
   return (

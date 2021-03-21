@@ -1,6 +1,6 @@
-import React from 'react';
 import { TextFormField, SelectFormField } from 'types/Types';
 import { FormFieldType } from 'types/Enums';
+import { UseFormMethods } from 'react-hook-form';
 
 // Material UI
 import TextField from '@material-ui/core/TextField';
@@ -13,12 +13,8 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
 import Radio from '@material-ui/core/Radio';
 
-export type FieldViewProps = {
+export type FieldViewProps = Pick<UseFormMethods, 'register' | 'errors'> & {
   field: TextFormField | SelectFormField;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  register: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  errors: any;
   index: number;
 };
 
