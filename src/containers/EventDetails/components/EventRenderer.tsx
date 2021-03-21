@@ -4,7 +4,7 @@ import { Event } from 'types/Types';
 import { Groups } from 'types/Enums';
 import URLS from 'URLS';
 import { parseISO, isPast, isFuture } from 'date-fns';
-import { formatDate } from 'utils';
+import { formatDate, getICSFromEvent } from 'utils';
 import { Link } from 'react-router-dom';
 
 // Services
@@ -21,6 +21,9 @@ import Collapse from '@material-ui/core/Collapse';
 import Hidden from '@material-ui/core/Hidden';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Alert from '@material-ui/lab/Alert';
+
+// Icons
+import CalendarIcon from '@material-ui/icons/EventRounded';
 
 // Project Components
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
@@ -81,6 +84,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       order: 1,
     },
+    marginBottom: theme.spacing(1),
   },
   title: {
     color: theme.palette.text.primary,
@@ -94,6 +98,14 @@ const useStyles = makeStyles((theme) => ({
   skeleton: {
     maxWidth: '100%',
     borderRadius: theme.shape.borderRadius,
+  },
+  actions: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gridGap: theme.spacing(1),
+    [theme.breakpoints.down('md')]: {
+      gridTemplateColumns: '1fr',
+    },
   },
 }));
 
@@ -274,6 +286,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           <Hidden mdDown>
             <ApplyButton />
           </Hidden>
+          <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} variant='outlined'>
+            Legg til i kalender
+          </Button>
           {!preview && (
             <HavePermission groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]}>
               <Button className={classes.applyButton} color='primary' component={Link} fullWidth to={`${URLS.eventAdmin}${data.id}/`} variant='outlined'>

@@ -30,6 +30,7 @@ import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import SubmitButton from 'components/inputs/SubmitButton';
+import { ImageUpload } from 'components/inputs/Upload';
 import TextField from 'components/inputs/TextField';
 
 const useStyles = makeStyles((theme) => ({
@@ -127,7 +128,7 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
   const createPage = useCreatePage();
   const updatePage = useUpdatePage(page.path);
   const deletePage = useDeletePage(page.path);
-  const { register, errors, handleSubmit } = useForm(mode === Modes.EDIT ? { defaultValues: page } : {});
+  const { register, errors, handleSubmit, watch, setValue } = useForm(mode === Modes.EDIT ? { defaultValues: page } : {});
   const navigate = useNavigate();
   const showSnackbar = useSnackbar();
   const [treeNode, setTreeNode] = useState(parentPath);
@@ -190,7 +191,7 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
       <form onSubmit={handleSubmit(submit)}>
         <TextField disabled={isLoading} errors={errors} label='Tittel' name='title' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
         <MarkdownEditor inputRef={register} name='content' />
-        <TextField disabled={isLoading} errors={errors} label='Bilde-url' name='image' register={register} />
+        <ImageUpload errors={errors} label='Velg bilde' name='image' register={register} setValue={setValue} watch={watch} />
         <TextField disabled={isLoading} errors={errors} label='Bildetekst' name='image_alt' register={register} />
         {mode === Modes.EDIT && <Tree page={page} selectedNode={treeNode} setSelectedNode={setTreeNode} />}
         <SubmitButton disabled={isLoading} errors={errors}>
