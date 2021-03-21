@@ -20,6 +20,7 @@ import {
   PaginationResponse,
   LoginRequestResponse,
   Cheatsheet,
+  ShortLink,
   Page,
   PageTree,
   PageRequired,
@@ -77,6 +78,11 @@ export default {
   // Notifications
   getNotifications: (filters?: any) => IFetch<PaginationResponse<Notification>>({ method: 'GET', url: `notification/`, data: filters || {} }),
   updateNotification: (id: number, item: { read: boolean }) => IFetch<Notification>({ method: 'PUT', url: `notification/${String(id)}/`, data: item }),
+
+  // Short links
+  getShortLinks: (filters?: any) => IFetch<Array<ShortLink>>({ method: 'GET', url: `short-link/`, data: filters || {} }),
+  createShortLink: (item: ShortLink) => IFetch<ShortLink>({ method: 'POST', url: `short-link/`, data: item }),
+  deleteShortLink: (slug: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `short-link/${slug}/` }),
 
   // Cheatsheet
   getCheatsheets: (study: Study, grade: number, filters?: any) => {
