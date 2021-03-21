@@ -296,7 +296,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             </Collapse>
           </Paper>
           <div className={classes.actions}>
-            <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} target='_blank' variant='outlined'>
+            <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} variant='outlined'>
               Legg til i kalender
             </Button>
           </div>
