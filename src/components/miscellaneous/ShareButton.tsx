@@ -1,39 +1,38 @@
 // Material UI Components
-import Button from '@material-ui/core/Button';
+import IconButton, { ButtonProps } from '@material-ui/core/Button';
+import ShareIcon from '@material-ui/icons/Share';
 
 import useShare from 'use-share';
+import { useMemo } from 'react';
 
-export type ShareProps = {
-  title?: string;
-  type: 'event' | 'news' | 'jobpost' | 'pages';
+export type ShareProps = ButtonProps & {
+  title: string;
+  shareType: 'event' | 'news' | 'jobpost' | 'pages';
   id: number | string;
 };
 
-const ShareButton = ({ type, id, title }: ShareProps) => {
-  let typeToURL = '';
+const ShareButton = ({ id, title, shareType, ...props }: ShareProps) => {
+  const urlType = useMemo(() => {
+    switch (shareType) {
+      case 'event':
+        return 'a';
+      case 'news':
+        return 'n';
+      case 'jobpost':
+        return 'k';
+      case 'pages':
+        return 'om';
+    }
+  }, [shareType]);
 
-  switch (type) {
-    case 'event':
-      typeToURL = 'a';
-      break;
-    case 'news':
-      typeToURL = 'n';
-      break;
-    case 'jobpost':
-      typeToURL = 'k';
-      break;
-    case 'pages':
-      typeToURL = 'om';
-      break;
-  }
   const { share, hasShared } = useShare({
     title: `${title}`,
-    url: `https://s.tihlde.org/${typeToURL}/${id}/`,
+    url: `https://s.tihlde.org/${urlType}/${id}/`,
   });
   return (
-    <Button disabled={hasShared} onClick={share}>
-      {hasShared ? 'Delt!' : 'Del'}
-    </Button>
+    <IconButton color='primary' disabled={hasShared} onClick={share} variant='outlined' {...props}>
+      {hasShared ? 'Delt!' : <ShareIcon />}
+    </IconButton>
   );
 };
 

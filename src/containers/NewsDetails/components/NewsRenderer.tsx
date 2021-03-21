@@ -6,6 +6,7 @@ import { usePalette } from 'react-palette';
 import { News } from 'types/Types';
 import { Groups } from 'types/Enums';
 import { HavePermission } from 'api/hooks/User';
+import { useParams } from 'react-router-dom';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -18,6 +19,7 @@ import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 import Paper from 'components/layout/Paper';
 import Container from 'components/layout/Container';
+import ShareButton from 'components/miscellaneous/ShareButton';
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -62,6 +64,14 @@ const useStyles = makeStyles((theme) => ({
   button: {
     height: 50,
   },
+  shareButton: {
+    width: 'fit-content',
+    marginRight: 10,
+  },
+  flex: {
+    display: 'flex',
+    alignItems: 'center',
+  },
 }));
 
 export type NewsRendererProps = {
@@ -70,6 +80,7 @@ export type NewsRendererProps = {
 };
 const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
   const classes = useStyles();
+  const { id } = useParams();
 
   // Find a dominant color in the image, uses a proxy to be able to retrieve images with CORS-policy until all images are stored in our own server
   const { data: palette } = usePalette(
@@ -99,7 +110,10 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
             </Button>
           </HavePermission>
         )}
-        <Typography variant='subtitle2'>Publisert: {formatDate(parseISO(data.created_at))}</Typography>
+        <div className={classes.flex}>
+          <ShareButton className={classes.shareButton} id={id} shareType='news' title={data.title} />
+          <Typography variant='subtitle2'>Publisert: {formatDate(parseISO(data.created_at))}</Typography>
+        </div>
         <Paper>
           <MarkdownRenderer value={data.body} />
         </Paper>
