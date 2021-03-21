@@ -3,26 +3,11 @@ import { ReactNode } from 'react';
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 const useStyles = makeStyles((theme) => ({
-  detail: {
-    width: 'auto',
-    flexDirection: 'column',
-    [theme.breakpoints.down('md')]: {
-      flexDirection: 'row',
-    },
-  },
-  detailTitle: {
-    marginRight: theme.spacing(0.5),
-    fontWeight: 'bold',
+  text: {
     color: theme.palette.text.primary,
-  },
-  detailInfo: {
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    overflowWrap: 'anywhere',
   },
   skeleton: {
     maxWidth: '100%',
@@ -37,14 +22,9 @@ export type DetailContentProps = {
 const DetailContent = ({ title, info }: DetailContentProps) => {
   const classes = useStyles();
   return (
-    <Grid alignItems='center' className={classes.detail} container justify='flex-start' wrap='nowrap'>
-      <Typography className={classes.detailTitle} variant='subtitle1'>
-        {title}
-      </Typography>
-      <Typography className={classes.detailInfo} variant='subtitle1'>
-        {info}
-      </Typography>
-    </Grid>
+    <Typography className={classes.text} variant='subtitle1'>
+      <b>{title}</b> {info}
+    </Typography>
   );
 };
 
