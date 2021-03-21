@@ -15,7 +15,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 
 // Project Components
 import Footer from 'components/navigation/Footer';
-import Topbar from 'components/navigation/Topbar';
+import Topbar, { TopbarProps } from 'components/navigation/Topbar';
 import Snack from 'components/navigation/Snack';
 import Container from 'components/layout/Container';
 
@@ -64,9 +64,10 @@ export type NavigationProps = {
   isLoading?: boolean;
   noFooter?: boolean;
   fancyNavbar?: boolean;
+  topbarProps?: TopbarProps;
 };
 
-const Navigation = ({ fancyNavbar = false, isLoading = false, noFooter = false, maxWidth, banner, children }: NavigationProps) => {
+const Navigation = ({ fancyNavbar = false, isLoading = false, noFooter = false, maxWidth, banner, children, topbarProps }: NavigationProps) => {
   const classes = useStyles();
   const { getWarnings } = useMisc();
   const [warning, setWarning] = useState<Warning | null>(null);
@@ -98,7 +99,7 @@ const Navigation = ({ fancyNavbar = false, isLoading = false, noFooter = false, 
       <Helmet>
         <title>TIHLDE</title>
       </Helmet>
-      <Topbar fancyNavbar={fancyNavbar} />
+      <Topbar fancyNavbar={fancyNavbar} {...topbarProps} />
       {warning && (
         <Snack
           className={classNames(classes.snack, classes.grow, warning.type === WarningType.MESSAGE ? classes.snackMessage : classes.snackWarning)}

@@ -120,7 +120,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       error: {
         main: get<string>({ light: '#b20101', dark: '#ff6060' }),
       },
-      divider: get<string>({ light: '#dddddd', dark: '#333333' }),
+      divider: get<string>({ light: '#cccccc', dark: '#333333' }),
       text: {
         secondary: get<string>({ light: '#333333', dark: '#cccccc' }),
       },
