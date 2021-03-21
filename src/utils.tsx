@@ -1,5 +1,5 @@
 import slugify from 'slugify';
-import { parseISO, format } from 'date-fns';
+import { parseISO, format, subMinutes } from 'date-fns';
 import { Event } from 'types/Types';
 import { UserStudy, UserClass } from 'types/Enums';
 
@@ -154,8 +154,12 @@ export const getMonth = (month: number) => {
   }
 };
 
-export const dateToUTC = (date: Date): Date => {
+export const dateAsUTC = (date: Date): Date => {
   return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes()));
+};
+
+export const dateToUTC = (date: Date): Date => {
+  return subMinutes(date, -date.getTimezoneOffset());
 };
 
 export const getICSFromEvent = (event: Event): string => {

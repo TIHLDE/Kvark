@@ -6,7 +6,7 @@ import { useEventById, useCreateEvent, useUpdateEvent, useDeleteEvent } from 'ap
 import { useMisc } from 'api/hooks/Misc';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { addHours, subDays, parseISO } from 'date-fns';
-import { dateToUTC } from 'utils';
+import { dateAsUTC } from 'utils';
 
 // Material-UI
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -121,7 +121,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const [regPriorities, setRegPriorities] = useState<Array<RegistrationPriority>>([]);
   const { handleSubmit, register, watch, control, errors, getValues, setError, reset, setValue } = useForm<FormValues>();
   const watchSignUp = watch('sign_up');
-  const watchStartDate = watch('start_date');
   const { getCategories } = useMisc();
   const [categories, setCategories] = useState<Array<Category>>([]);
 
@@ -136,17 +135,17 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         category: newValues?.category || 1,
         description: newValues?.description || '',
         end_date: newValues?.end_date.substring(0, 16) || new Date().toISOString().substring(0, 16),
-        end_registration_at: newValues?.end_registration_at.substring(0, 16) || new Date().toISOString().substring(0, 16),
+        end_registration_at: newValues?.end_registration_at?.substring(0, 16) || new Date().toISOString().substring(0, 16),
         evaluate_link: newValues?.evaluate_link || '',
         image: newValues?.image || '',
         image_alt: newValues?.image_alt || '',
         limit: newValues?.limit || 0,
         location: newValues?.location || '',
         priority: newValues?.priority || 2,
-        sign_off_deadline: newValues?.sign_off_deadline.substring(0, 16) || new Date().toISOString().substring(0, 16),
+        sign_off_deadline: newValues?.sign_off_deadline?.substring(0, 16) || new Date().toISOString().substring(0, 16),
         sign_up: newValues?.sign_up || false,
         start_date: newValues?.start_date.substring(0, 16) || new Date().toISOString().substring(0, 16),
-        start_registration_at: newValues?.start_registration_at.substring(0, 16) || new Date().toISOString().substring(0, 16),
+        start_registration_at: newValues?.start_registration_at?.substring(0, 16) || new Date().toISOString().substring(0, 16),
         title: newValues?.title || '',
       });
     },
@@ -248,18 +247,16 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     }
   };
 
-  useEffect(() => {
-    if (watchStartDate) {
-      const start = parseISO(watchStartDate);
-      if (start instanceof Date && !isNaN(start.valueOf())) {
-        const getTime = (daysBefore: number, hour: number) => new Date(subDays(start, daysBefore).setUTCHours(hour, 0, 0)).toISOString().substring(0, 16);
-        setValue('start_registration_at', getTime(7, 12));
-        setValue('end_registration_at', getTime(0, 12));
-        setValue('sign_off_deadline', getTime(1, 12));
-        setValue('end_date', dateToUTC(addHours(start, 2)).toISOString().substring(0, 16));
-      }
+  const updateDates = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    const start = parseISO(e.target.value);
+    if (start instanceof Date && !isNaN(start.valueOf())) {
+      const getTime = (daysBefore: number, hour: number) => new Date(subDays(start, daysBefore).setUTCHours(hour, 0, 0)).toISOString().substring(0, 16);
+      setValue('start_registration_at', getTime(7, 12));
+      setValue('end_registration_at', getTime(0, 12));
+      setValue('sign_off_deadline', getTime(1, 12));
+      setValue('end_date', dateAsUTC(addHours(start, 2)).toISOString().substring(0, 16));
     }
-  }, [watchStartDate]);
+  };
 
   if (isLoading) {
     return <LinearProgress />;
@@ -279,6 +276,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               InputLabelProps={{ shrink: true }}
               label='Start'
               name='start_date'
+              onChange={updateDates}
               register={register}
               required
               rules={{ required: 'Feltet er påkrevd' }}

@@ -278,9 +278,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           <Hidden mdDown>
             <ApplyButton />
           </Hidden>
-          <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} variant='outlined'>
-            Legg til i kalender
-          </Button>
           {!preview && (
             <HavePermission groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]}>
               <Button className={classes.applyButton} color='primary' component={Link} fullWidth to={`${URLS.eventAdmin}${data.id}/`} variant='outlined'>
@@ -288,6 +285,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               </Button>
             </HavePermission>
           )}
+          <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} variant='outlined'>
+            Legg til i kalender
+          </Button>
         </div>
         <div className={classnames(classes.infoGrid, classes.info)}>
           <AspectRatioImg alt={data.image_alt || data.title} imgClassName={classes.image} src={data.image} />
