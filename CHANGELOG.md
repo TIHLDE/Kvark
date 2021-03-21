@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- ✨ **Link-forkorter**. Medlemmer kan lage egne korte linker på s.tihlde.org/[navn].
+
 ## Versjon 1.0.4 (08.03.2021)
 
 - ⚡ **Pagination i varsler**. Lagt til pagination i varsler, samt forbedret håndtering av "leste" varsler.
