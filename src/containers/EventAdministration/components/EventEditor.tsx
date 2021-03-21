@@ -31,6 +31,7 @@ import Select from 'components/inputs/Select';
 import Bool from 'components/inputs/Bool';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
+import { ImageUpload } from 'components/inputs/Upload';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -366,10 +367,8 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
             inputRef={register({ required: true })}
             name='description'
           />
-          <div className={classes.grid}>
-            <TextField errors={errors} label='Bilde-url' name='image' register={register} />
-            <TextField errors={errors} label='Bildetekst' name='image_alt' register={register} />
-          </div>
+          <ImageUpload errors={errors} label='Velg bilde' name='image' ratio={21 / 9} register={register} setValue={setValue} watch={watch} />
+          <TextField errors={errors} label='Bildetekst' name='image_alt' register={register} />
           <div className={classes.grid}>
             <Select control={control} errors={errors} label='Prioritering' name='priority'>
               {priorities.map((value, index) => (
