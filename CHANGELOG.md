@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ✨ **Link-forkorter**. Medlemmer kan lage egne korte linker på s.tihlde.org/[navn].
 - ✨ **Kalender**. Knapp for å legge til arrangement i kalenderen din.
 
 ## Versjon 1.0.4 (08.03.2021)
