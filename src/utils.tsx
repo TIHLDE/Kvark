@@ -177,11 +177,9 @@ export const getICSFromEvent = (event: Event): string => {
     { key: 'END', value: 'VCALENDAR' },
   ];
 
-  let calendarUrl = '';
-  calendarChunks.forEach((chunk) => {
-    if (chunk.value) {
-      calendarUrl += `${chunk.key}:${encodeURIComponent(`${chunk.value}\n`)}`;
-    }
-  });
+  const calendarUrl = calendarChunks
+    .filter((chunk) => chunk.value)
+    .map((chunk) => `${chunk.key}:${encodeURIComponent(`${chunk.value}\n`)}`)
+    .join('');
   return `data:text/calendar;charset=utf8,${calendarUrl}`;
 };
