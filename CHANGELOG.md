@@ -15,6 +15,7 @@
 ## Neste versjon
 
 - ✨ **Spørsmål ved påmelding**. Lagt til støtte for spørsmål ved påmelding til arrangementer, men ikke aktivert det ettersom støtte for svar ikke er klart.
+- ✨ **Link-forkorter**. Medlemmer kan lage egne korte linker på s.tihlde.org/[navn].
 
 ## Versjon 1.0.4 (08.03.2021)
 
