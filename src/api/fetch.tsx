@@ -10,19 +10,22 @@ type FetchProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: Record<string, unknown | any>;
   withAuth?: boolean;
+  file?: File | Blob;
 };
 
 // eslint-disable-next-line comma-spacing
-export const IFetch = <T,>({ method, url, data = {}, withAuth = true }: FetchProps): Promise<T> => {
+export const IFetch = <T,>({ method, url, data = {}, withAuth = true, file }: FetchProps): Promise<T> => {
   const urlAddress = TIHLDE_API.URL + url;
   const headers = new Headers();
-  headers.append('Content-Type', 'application/json');
+  if (!file) {
+    headers.append('Content-Type', 'application/json');
+  }
 
   if (withAuth) {
     headers.append(TOKEN_HEADER_NAME, getCookie(ACCESS_TOKEN) as string);
   }
 
-  return fetch(request(method, urlAddress, headers, data)).then((response) => {
+  return fetch(request(method, urlAddress, headers, data, file)).then((response) => {
     const contentType = response.headers.get('content-type');
     if (!contentType || !contentType.includes('application/json') || !response.ok || response.json === undefined) {
       if (response.json) {
@@ -36,12 +39,21 @@ export const IFetch = <T,>({ method, url, data = {}, withAuth = true }: FetchPro
     return response.json().then((responseData: T) => responseData);
   });
 };
-
-const request = (method: RequestMethodType, url: string, headers: Headers, data: Record<string, unknown>) => {
-  return new Request(method === 'GET' ? url + argsToParams(data) : url, {
+const request = (method: RequestMethodType, url: string, headers: Headers, data: Record<string, unknown>, file?: File | Blob) => {
+  const getBody = () => {
+    if (file) {
+      const data = new FormData();
+      data.append('file', file);
+      return data;
+    } else {
+      return method !== 'GET' ? JSON.stringify(data) : undefined;
+    }
+  };
+  const requestUrl = method === 'GET' ? url + argsToParams(data) : url;
+  return new Request(requestUrl, {
     method: method,
     headers: headers,
-    ...(method !== 'GET' && { body: JSON.stringify(data) }),
+    body: getBody(),
   });
 };
 

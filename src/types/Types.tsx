@@ -22,6 +22,9 @@ export interface PaginationResponse<T> {
   previous: number | null;
   results: Array<T>;
 }
+export interface FileUploadResponse {
+  url: string;
+}
 
 export interface User {
   user_id: string;

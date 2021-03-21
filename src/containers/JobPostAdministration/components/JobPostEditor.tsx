@@ -19,6 +19,7 @@ import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import SubmitButton from 'components/inputs/SubmitButton';
 import Bool from 'components/inputs/Bool';
 import TextField from 'components/inputs/TextField';
+import { ImageUpload } from 'components/inputs/Upload';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
 
 const useStyles = makeStyles((theme) => ({
@@ -63,7 +64,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
   const deleteJobPost = useDeleteJobPost(jobpostId || -1);
   const showSnackbar = useSnackbar();
   const [deleteJobPostDialogOpen, setDeleteJobPostDialogOpen] = useState(false);
-  const { handleSubmit, control, register, errors, getValues, reset } = useForm<FormValues>();
+  const { handleSubmit, control, register, errors, getValues, reset, setValue, watch } = useForm<FormValues>();
   const isUpdating = useMemo(() => createJobPost.isLoading || updateJobPost.isLoading || deleteJobPost.isLoading, [
     createJobPost.isLoading,
     updateJobPost.isLoading,
@@ -185,8 +186,10 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
               type='datetime-local'
             />
             <TextField errors={errors} label='Link' name='link' register={register} />
-            <TextField errors={errors} label='Logo bilde-url' name='image' register={register} />
-            <TextField errors={errors} label='Alternativ bildetekst' name='image_alt' register={register} />
+          </div>
+          <ImageUpload errors={errors} label='Velg logo' name='image' ratio={21 / 9} register={register} setValue={setValue} watch={watch} />
+          <TextField errors={errors} label='Alternativ bildetekst' name='image_alt' register={register} />
+          <div className={classes.grid}>
             <TextField errors={errors} label='Bedrift' name='company' register={register} required rules={{ required: 'Du må oppgi en bedrift' }} />
             <TextField
               errors={errors}
@@ -201,10 +204,6 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
               }}
               type='email'
             />
-          </div>
-          <div className={classes.grid}>
-            <TextField errors={errors} label='Bilde-url' name='image' register={register} />
-            <TextField errors={errors} label='Bildetekst' name='image_alt' register={register} />
           </div>
           <RendererPreview className={classes.margin} getContent={getJobPostPreview} renderer={JobPostRenderer} />
           <SubmitButton className={classes.margin} disabled={isUpdating} errors={errors}>
