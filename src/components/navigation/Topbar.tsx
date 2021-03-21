@@ -228,7 +228,7 @@ const Topbar = ({ fancyNavbar = false, whiteOnLight = false }: TopbarProps) => {
       position='fixed'>
       <Toolbar className={classes.toolbar} disableGutters>
         <Link to={URLS.landing}>
-          <TihldeLogo className={classes.logo} darkColor='white' lightColor={whiteOnLight && !sidebarOpen ? 'black' : 'white'} size='large' />
+          <TihldeLogo className={classes.logo} darkColor='white' lightColor={whiteOnLight && !sidebarOpen ? 'blue' : 'white'} size='large' />
         </Link>
         <Hidden mdDown>
           <div className={classes.items}>
