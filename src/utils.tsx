@@ -154,14 +154,31 @@ export const getMonth = (month: number) => {
   }
 };
 
+/**
+ * Transforms a date to when UTC+0 will be at the same time.
+ * Ex.: 15:00 in UTC+2 is transformed to 17:00 as UTC+0 at that time will be 15:00
+ * @param date - The date to transform
+ * @returns A new date
+ */
 export const dateAsUTC = (date: Date): Date => {
   return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes()));
 };
 
+/**
+ * Transforms a date to UTC+0.
+ * Ex.: 15:00 in UTC+2 is transformed to 13:00 as thats the equivalent time in UTC+0
+ * @param date - The date to transform
+ * @returns A new date
+ */
 export const dateToUTC = (date: Date): Date => {
   return subMinutes(date, -date.getTimezoneOffset());
 };
 
+/**
+ * Create a ICS-file from an event
+ * @param event - The event
+ * @returns A ICS-string
+ */
 export const getICSFromEvent = (event: Event): string => {
   const formating = `yyyyMMdd'T'HHmmss'Z'`;
   const start = format(dateToUTC(parseISO(event.start_date)), formating);
