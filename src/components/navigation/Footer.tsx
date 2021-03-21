@@ -160,7 +160,7 @@ const Footer = () => {
   const attributes = [
     { key: 'e-post', value: 'hs@tihlde.org' },
     { key: 'lokasjon', value: 'c/o IDI NTNU' },
-    { key: 'organisasjonsnummer', value: '989 684 193' },
+    { key: 'organisasjonsnummer', value: '989 684 183' },
   ];
 
   return (
