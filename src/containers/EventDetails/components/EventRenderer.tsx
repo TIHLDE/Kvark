@@ -99,14 +99,6 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '100%',
     borderRadius: theme.shape.borderRadius,
   },
-  actions: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gridGap: theme.spacing(1),
-    [theme.breakpoints.down('md')]: {
-      gridTemplateColumns: '1fr',
-    },
-  },
 }));
 
 export type EventRendererProps = {
