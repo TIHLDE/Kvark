@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
-import { useUsers } from 'api/hooks/User';
+import { useGroups } from 'api/hooks/Group';
+import { Group } from 'types/Types';
 import Helmet from 'react-helmet';
 
 // Material UI Components
@@ -7,7 +8,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 // Icons
-import MembersIcon from '@material-ui/icons/PlaylistAddCheckRounded';
 import WaitingIcon from '@material-ui/icons/PlaylistAddRounded';
 
 // Project Components
@@ -16,6 +16,7 @@ import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import Tabs from 'components/layout/Tabs';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import GroupItem from './components/GroupItem';
 
 const useStyles = makeStyles((theme) => ({
   top: {
@@ -26,19 +27,37 @@ const useStyles = makeStyles((theme) => ({
     margin: '-60px auto 60px',
     position: 'relative',
   },
-  filterContainer: {
+  groupContainer: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gridGap: theme.spacing(1),
-    margin: theme.spacing(2, 0, 1),
-    [theme.breakpoints.down('md')]: {
-      gridTemplateColumns: '1fr',
-    },
+    gridGap: theme.spacing(3),
+    gridTemplateColumns: 'repeat(auto-fit, minmax(18rem, 1fr))',
+    gridAutoRows: '7rem',
+    marginBottom: theme.spacing(5),
+  },
+  undertitle: {
+    fontSize: '1.6rem',
+  },
+  marginMed: {
+    marginBottom: theme.spacing(5),
+  },
+  marginSm: {
+    marginBottom: theme.spacing(3),
   },
 }));
 
+interface Map {
+  [key: string]: string | undefined;
+}
+
+const groupTypes: Map = {
+  BOARD: 'Hovedstyret',
+  SUBGROUP: 'Undergrupper',
+  COMMITTEE: 'Komitéer',
+};
+
 const GroupOverview = () => {
   const classes = useStyles();
+  const { data } = useGroups();
 
   return (
     <Navigation banner={<div className={classes.top}></div>} fancyNavbar>
@@ -46,7 +65,25 @@ const GroupOverview = () => {
         <title>Gruppeoversikt</title>
       </Helmet>
       <Paper className={classes.content}>
-        <Typography variant='h1'>Gruppeoversikt</Typography>
+        <Typography className={classes.marginMed} variant='h1'>
+          Gruppeoversikt
+        </Typography>
+        {[...new Set(data?.map((group) => group.type))].map((groupType) => {
+          return (
+            <div key={groupType}>
+              <Typography className={[classes.marginSm, classes.undertitle].join(' ')} variant='h4'>
+                {groupTypes[groupType]}
+              </Typography>
+              <div className={classes.groupContainer}>
+                {data
+                  ?.filter((group) => group.type === groupType)
+                  .map((group) => {
+                    return <GroupItem group={group} key={group.name} />;
+                  })}
+              </div>
+            </div>
+          );
+        })}
       </Paper>
     </Navigation>
   );

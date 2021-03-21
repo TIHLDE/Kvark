@@ -24,6 +24,7 @@ import {
   PageTree,
   PageRequired,
   Membership,
+  Group,
 } from 'types/Types';
 
 export default {
@@ -73,6 +74,9 @@ export default {
   getUserData: () => IFetch<User>({ method: 'GET', url: `user/userdata/` }),
   getUsers: (filters?: any) => IFetch<PaginationResponse<User>>({ method: 'GET', url: `user/`, data: filters || {} }),
   updateUserData: (userName: string, item: Partial<User>) => IFetch<User>({ method: 'PUT', url: `user/${userName}/`, data: item }),
+
+  // Groups
+  getGroups: (filters?: any) => IFetch<Group[]>({ method: 'GET', url: `group/`, data: filters || {} }),
 
   // Notifications
   getNotifications: (filters?: any) => IFetch<PaginationResponse<Notification>>({ method: 'GET', url: `notification/`, data: filters || {} }),

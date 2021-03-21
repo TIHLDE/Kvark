@@ -41,3 +41,9 @@ export enum Groups {
   PROMO = 'Promo',
   NOK = 'NoK',
 }
+
+export enum GroupTypes {
+  BOARD = 'BOARD',
+  COMMITTEE = 'COMMITTEE',
+  SUBGROUP = 'SUBGROUP',
+}

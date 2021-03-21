@@ -192,3 +192,13 @@ export interface PageTree {
 export interface Membership {
   user: User;
 }
+
+export interface Group {
+  name: string;
+  permissions: any;
+  slug: string;
+  description: string;
+  contact_email: string;
+  type: string;
+  leader: Partial<User>;
+}
