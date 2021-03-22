@@ -269,7 +269,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
                   </>
                 )}
               </Paper>
-              {Boolean(data.registration_priorities.length) && data.registration_priorities.length === 14 && (
+              {Boolean(data.registration_priorities.length) && data.registration_priorities.length !== 14 && (
                 <Paper className={classes.details} noPadding>
                   <Typography className={classes.detailsHeader} variant='h2'>
                     Prioritert
