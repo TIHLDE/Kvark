@@ -9,9 +9,10 @@ import Button from '@material-ui/core/Button';
 
 // Icons
 import EventAdminIcon from 'assets/icons/eventadmin.svg';
+import GroupsAdminIcon from 'assets/icons/groups.svg';
 import JobPostAdminIcon from 'assets/icons/jobpostadmin.svg';
-import UserAdminIcon from 'assets/icons/useradmin.svg';
 import NewsAdminIcon from 'assets/icons/news.svg';
+import UserAdminIcon from 'assets/icons/useradmin.svg';
 
 // Project Components
 import InfoCard from 'components/layout/InfoCard';
@@ -40,6 +41,13 @@ function Admin() {
           </Button>
         </InfoCard>
       </HavePermission>
+      <HavePermission groups={[Groups.HS, Groups.INDEX]}>
+        <InfoCard header='Grupper' justifyText src={GroupsAdminIcon} text='Se og endre grupper'>
+          <Button className={classes.button} color='primary' component={Link} fullWidth to={URLS.groups} variant='contained'>
+            Administrer grupper
+          </Button>
+        </InfoCard>
+      </HavePermission>
       <HavePermission groups={[Groups.HS, Groups.INDEX, Groups.NOK]}>
         <InfoCard header='Jobbannonser' justifyText src={JobPostAdminIcon} text='Opprett, endre og slett jobbannonser'>
           <Button className={classes.button} color='primary' component={Link} fullWidth to={URLS.jobpostsAdmin} variant='contained'>
@@ -48,16 +56,16 @@ function Admin() {
         </InfoCard>
       </HavePermission>
       <HavePermission groups={[Groups.HS, Groups.INDEX]}>
-        <InfoCard header='Nyheter' justifyText src={NewsAdminIcon} text='Opprett, endre og slett nyheter'>
-          <Button className={classes.button} color='primary' component={Link} fullWidth to={URLS.newsAdmin} variant='contained'>
-            Administrer nyheter
+        <InfoCard header='Medlemmer' justifyText src={UserAdminIcon} text='Aktiver, fjern og søk etter medlemmer'>
+          <Button className={classes.button} color='primary' component={Link} fullWidth to={URLS.userAdmin} variant='contained'>
+            Administrer medlemmer
           </Button>
         </InfoCard>
       </HavePermission>
       <HavePermission groups={[Groups.HS, Groups.INDEX]}>
-        <InfoCard header='Medlemmer' justifyText src={UserAdminIcon} text='Aktiver, fjern og søk etter medlemmer'>
-          <Button className={classes.button} color='primary' component={Link} fullWidth to={URLS.userAdmin} variant='contained'>
-            Administrer medlemmer
+        <InfoCard header='Nyheter' justifyText src={NewsAdminIcon} text='Opprett, endre og slett nyheter'>
+          <Button className={classes.button} color='primary' component={Link} fullWidth to={URLS.newsAdmin} variant='contained'>
+            Administrer nyheter
           </Button>
         </InfoCard>
       </HavePermission>

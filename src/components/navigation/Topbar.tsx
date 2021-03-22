@@ -202,7 +202,10 @@ const Topbar = ({ fancyNavbar }: IProps) => {
         { text: 'Karriere', to: URLS.jobposts, type: 'link' },
         isAuthenticated
           ? {
-              items: [{ text: 'Kokebok', to: URLS.cheatsheet }],
+              items: [
+                { text: 'Gruppeoversikt', to: URLS.groups },
+                { text: 'Kokebok', to: URLS.cheatsheet },
+              ],
               text: 'For medlemmer',
               type: 'dropdown',
             }

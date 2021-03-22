@@ -25,9 +25,18 @@ const useStyles = makeStyles((theme) => ({
     transition: 'transform .2s',
     marginLeft: theme.spacing(1),
     fontSize: '1.6rem',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1.4rem',
+    },
   },
   leader: {
     display: 'flex',
+    alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      '& > *': {
+        fontSize: '0.8rem',
+      },
+    },
   },
   name: {
     marginLeft: '.3rem',
@@ -48,7 +57,9 @@ const GroupItem = ({ group }: GroupItemProps) => {
       </Typography>
       <div className={classes.leader}>
         <MembersIcon />
-        <Typography className={classes.name}>{group.leader.first_name}</Typography>
+        <Typography className={classes.name}>
+          {group.leader.first_name} {group.leader.last_name}
+        </Typography>
       </div>
     </div>
   );

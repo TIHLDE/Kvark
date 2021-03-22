@@ -1,21 +1,14 @@
-import { Fragment, useEffect, useMemo, useState } from 'react';
 import { useGroups } from 'api/hooks/Group';
-import { Group } from 'types/Types';
 import Helmet from 'react-helmet';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
-// Icons
-import WaitingIcon from '@material-ui/icons/PlaylistAddRounded';
-
 // Project Components
 import Navigation from 'components/navigation/Navigation';
-import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
-import Tabs from 'components/layout/Tabs';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import { PersonListItemLoading } from 'containers/UserAdmin/components/PersonListItem';
 import GroupItem from './components/GroupItem';
 
 const useStyles = makeStyles((theme) => ({
@@ -33,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
     gridTemplateColumns: 'repeat(auto-fit, minmax(18rem, 1fr))',
     gridAutoRows: '7rem',
     marginBottom: theme.spacing(5),
+    [theme.breakpoints.down('sm')]: {
+      gridTemplateColumns: 'repeat(auto-fit, minmax(14rem, 1fr))',
+    },
   },
   undertitle: {
     fontSize: '1.6rem',
@@ -42,6 +38,13 @@ const useStyles = makeStyles((theme) => ({
   },
   marginSm: {
     marginBottom: theme.spacing(3),
+  },
+  title: {
+    fontSize: '3rem',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '2.2rem',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(14rem, 1fr))',
+    },
   },
 }));
 
@@ -57,7 +60,7 @@ const groupTypes: Map = {
 
 const GroupOverview = () => {
   const classes = useStyles();
-  const { data } = useGroups();
+  const { data, error, isLoading } = useGroups();
 
   return (
     <Navigation banner={<div className={classes.top}></div>} fancyNavbar>
@@ -65,25 +68,28 @@ const GroupOverview = () => {
         <title>Gruppeoversikt</title>
       </Helmet>
       <Paper className={classes.content}>
-        <Typography className={classes.marginMed} variant='h1'>
+        <Typography className={[classes.marginMed, classes.title].join(' ')} variant='h1'>
           Gruppeoversikt
         </Typography>
-        {[...new Set(data?.map((group) => group.type))].map((groupType) => {
-          return (
-            <div key={groupType}>
-              <Typography className={[classes.marginSm, classes.undertitle].join(' ')} variant='h4'>
-                {groupTypes[groupType]}
-              </Typography>
-              <div className={classes.groupContainer}>
-                {data
-                  ?.filter((group) => group.type === groupType)
-                  .map((group) => {
-                    return <GroupItem group={group} key={group.name} />;
-                  })}
+        {isLoading && <PersonListItemLoading />}
+        {error && <Paper>{error.detail}</Paper>}
+        {data !== undefined &&
+          [...new Set(data.map((group) => group.type))].map((groupType) => {
+            return (
+              <div key={groupType}>
+                <Typography className={[classes.marginSm, classes.undertitle].join(' ')} variant='h4'>
+                  {groupTypes[groupType]}
+                </Typography>
+                <div className={classes.groupContainer}>
+                  {data
+                    ?.filter((group) => group.type === groupType)
+                    .map((group) => {
+                      return <GroupItem group={group} key={group.name} />;
+                    })}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </Paper>
     </Navigation>
   );
