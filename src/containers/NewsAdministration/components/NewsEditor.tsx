@@ -20,6 +20,7 @@ import TextField from 'components/inputs/TextField';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
 import NewsRenderer from 'containers/NewsDetails/components/NewsRenderer';
 import SubmitButton from 'components/inputs/SubmitButton';
+import { ImageUpload } from 'components/inputs/Upload';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -55,7 +56,7 @@ type FormValues = Pick<News, 'title' | 'header' | 'body' | 'image' | 'image_alt'
 const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
   const showSnackbar = useSnackbar();
   const classes = useStyles();
-  const { handleSubmit, register, errors, getValues, reset } = useForm<FormValues>();
+  const { handleSubmit, register, errors, getValues, reset, watch, setValue } = useForm<FormValues>();
   const [deleteNewsDialogOpen, setDeleteNewsDialogOpen] = useState(false);
   const { data, isError, isLoading } = useNewsById(newsId || -1);
   const createNews = useCreateNews();
@@ -141,7 +142,6 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
       <form onSubmit={handleSubmit(submit)}>
         <Grid container direction='column' wrap='nowrap'>
           <TextField errors={errors} label='Tittel' name='title' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
-
           <TextField errors={errors} label='Header' name='header' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
           <MarkdownEditor
             error={Boolean(errors.body)}
@@ -150,7 +150,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
             label='Innhold'
             name='body'
           />
-          <TextField errors={errors} label='Bilde url' name='image' register={register} />
+          <ImageUpload errors={errors} label='Velg bilde' name='image' ratio={21 / 9} register={register} setValue={setValue} watch={watch} />
           <TextField errors={errors} label='Alternativ bildetekst' name='image_alt' register={register} />
           <RendererPreview className={classes.margin} getContent={getNewsPreview} renderer={NewsRenderer} />
           <SubmitButton className={classes.margin} disabled={isUpdating} errors={errors}>

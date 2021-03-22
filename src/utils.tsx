@@ -1,4 +1,6 @@
 import slugify from 'slugify';
+import { parseISO, format, subMinutes } from 'date-fns';
+import { Event } from 'types/Types';
 import { UserStudy, UserClass } from 'types/Enums';
 
 export const urlEncode = (text = '') => slugify(text, { lower: true, strict: true, locale: 'nb' });
@@ -104,19 +106,19 @@ export const getTimeSince = (date: Date) => {
 export const getDay = (day: number) => {
   switch (day) {
     case 0:
-      return 'Søndag';
+      return 'Søn.';
     case 1:
-      return 'Mandag';
+      return 'Man.';
     case 2:
-      return 'Tirsdag';
+      return 'Tirs.';
     case 3:
-      return 'Onsdag';
+      return 'Ons.';
     case 4:
-      return 'Torsdag';
+      return 'Tors.';
     case 5:
-      return 'Fredag';
+      return 'Fre.';
     case 6:
-      return 'Lørdag';
+      return 'Lør.';
     default:
       return day;
   }
@@ -150,4 +152,55 @@ export const getMonth = (month: number) => {
     default:
       return month;
   }
+};
+
+/**
+ * Transforms a date to when UTC+0 will be at the same time.
+ * Ex.: 15:00 in UTC+2 is transformed to 17:00 as UTC+0 at that time will be 15:00
+ * @param date - The date to transform
+ * @returns A new date
+ */
+export const dateAsUTC = (date: Date): Date => {
+  return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes()));
+};
+
+/**
+ * Transforms a date to UTC+0.
+ * Ex.: 15:00 in UTC+2 is transformed to 13:00 as thats the equivalent time in UTC+0
+ * @param date - The date to transform
+ * @returns A new date
+ */
+export const dateToUTC = (date: Date): Date => {
+  return subMinutes(date, -date.getTimezoneOffset());
+};
+
+/**
+ * Create a ICS-file from an event
+ * @param event - The event
+ * @returns A ICS-string
+ */
+export const getICSFromEvent = (event: Event): string => {
+  const formating = `yyyyMMdd'T'HHmmss'Z'`;
+  const start = format(dateToUTC(parseISO(event.start_date)), formating);
+  const end = format(dateToUTC(parseISO(event.end_date)), formating);
+
+  const calendarChunks = [
+    { key: 'BEGIN', value: 'VCALENDAR' },
+    { key: 'VERSION', value: '2.0' },
+    { key: 'BEGIN', value: 'VEVENT' },
+    { key: 'URL', value: `https://s.tihlde.org/a/${event.id}/` },
+    { key: 'DTSTART', value: start },
+    { key: 'DTEND', value: end },
+    { key: 'SUMMARY', value: event.title },
+    { key: 'DESCRIPTION', value: `Se arrangementet på: https://s.tihlde.org/a/${event.id}/` },
+    { key: 'LOCATION', value: event.location },
+    { key: 'END', value: 'VEVENT' },
+    { key: 'END', value: 'VCALENDAR' },
+  ];
+
+  const calendarUrl = calendarChunks
+    .filter((chunk) => chunk.value)
+    .map((chunk) => `${chunk.key}:${encodeURIComponent(`${chunk.value}\n`)}`)
+    .join('');
+  return `data:text/calendar;charset=utf8,${calendarUrl}`;
 };

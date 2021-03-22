@@ -14,6 +14,11 @@
 
 ## Neste versjon
 
+## Versjon 1.0.5 (21.03.2021)
+
+- ✨ **Link-forkorter**. Medlemmer kan lage egne korte linker på s.tihlde.org/[navn].
+- ✨ **Kalender**. Knapp for å legge til arrangement i kalenderen din.
+
 ## Versjon 1.0.4 (08.03.2021)
 
 - ⚡ **Pagination i varsler**. Lagt til pagination i varsler, samt forbedret håndtering av "leste" varsler.

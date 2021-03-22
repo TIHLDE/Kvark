@@ -7,6 +7,7 @@ import {
   Event,
   EventCompact,
   EventRequired,
+  FileUploadResponse,
   Registration,
   JobPost,
   JobPostRequired,
@@ -20,6 +21,7 @@ import {
   PaginationResponse,
   LoginRequestResponse,
   Cheatsheet,
+  ShortLink,
   Page,
   PageTree,
   PageRequired,
@@ -82,6 +84,11 @@ export default {
   getNotifications: (filters?: any) => IFetch<PaginationResponse<Notification>>({ method: 'GET', url: `notification/`, data: filters || {} }),
   updateNotification: (id: number, item: { read: boolean }) => IFetch<Notification>({ method: 'PUT', url: `notification/${String(id)}/`, data: item }),
 
+  // Short links
+  getShortLinks: (filters?: any) => IFetch<Array<ShortLink>>({ method: 'GET', url: `short-link/`, data: filters || {} }),
+  createShortLink: (item: ShortLink) => IFetch<ShortLink>({ method: 'POST', url: `short-link/`, data: item }),
+  deleteShortLink: (slug: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `short-link/${slug}/` }),
+
   // Cheatsheet
   getCheatsheets: (study: Study, grade: number, filters?: any) => {
     const tempStudy = study === Study.DIGSEC ? 'DIGINC' : study;
@@ -114,4 +121,7 @@ export default {
   createPage: (data: PageRequired) => IFetch<Page>({ method: 'POST', url: `page/`, data }),
   updatePage: (path: string, data: Partial<Page>) => IFetch<Page>({ method: 'PUT', url: `page/${path}`, data }),
   deletePage: (path: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `page/${path}` }),
+
+  // File-upload
+  uploadFile: (file: File | Blob) => IFetch<FileUploadResponse>({ method: 'POST', url: 'upload/', file }),
 };

@@ -12,6 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from 'components/inputs/TextField';
 import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
+import { ImageUpload } from 'components/inputs/Upload';
 
 const useStyles = makeStyles((theme) => ({
   selectGrid: {
@@ -34,7 +35,7 @@ const ProfileSettings = ({ user }: ProfileSettingsProps) => {
   const classes = useStyles();
   const showSnackbar = useSnackbar();
   const updateUser = useUpdateUser();
-  const { register, handleSubmit, errors, control } = useForm<FormData>({ defaultValues: { ...user } });
+  const { register, handleSubmit, errors, control, setValue, watch } = useForm<FormData>({ defaultValues: { ...user } });
   const updateData = (data: FormData) => {
     if (updateUser.isLoading) {
       return;
@@ -59,20 +60,7 @@ const ProfileSettings = ({ user }: ProfileSettingsProps) => {
     return (
       <form onSubmit={handleSubmit(updateData)}>
         <TextField disabled={updateUser.isLoading} errors={errors} InputProps={{ type: 'number' }} label='Telefon' name='cell' register={register} />
-        <TextField
-          disabled={updateUser.isLoading}
-          errors={errors}
-          label='Profilbilde-link'
-          name='image'
-          register={register}
-          rules={{
-            pattern: {
-              // eslint-disable-next-line no-useless-escape
-              value: /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png|jpeg)/gi,
-              message: 'Oppgi en gydlig bildelink',
-            },
-          }}
-        />
+        <ImageUpload errors={errors} label='Velg profilbilde' name='image' ratio={1} register={register} setValue={setValue} watch={watch} />
         <div className={classes.selectGrid}>
           <Select control={control} disabled errors={errors} label='Studie' name='user_study'>
             <MenuItem value={user.user_study}>{getUserStudyLong(user.user_study)}</MenuItem>

@@ -22,6 +22,9 @@ export interface PaginationResponse<T> {
   previous: number | null;
   results: Array<T>;
 }
+export interface FileUploadResponse {
+  url: string;
+}
 
 export interface User {
   user_id: string;
@@ -61,6 +64,11 @@ export interface Notification {
   read: boolean;
   message: string;
   created_at: string;
+}
+
+export interface ShortLink {
+  name: string;
+  url: string;
 }
 
 export type NewsRequired = Partial<News> & Pick<News, 'title' | 'header' | 'body'>;
