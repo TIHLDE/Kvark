@@ -1,4 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles';
+import { IS_EASTER } from 'constant';
 
 // Icons
 import DarkIcon from '@material-ui/icons/Brightness2Outlined';
@@ -69,8 +70,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
   const get = <T,>({ light, dark, easter }: { light: T; dark: T; easter?: T }): T => {
     switch (theme) {
       case 'automatic':
-        return easter || light;
-      // return prefersDarkMode ? dark : light;
+        return IS_EASTER ? easter || light : prefersDarkMode ? dark : light;
       case 'dark':
         return dark;
       default:

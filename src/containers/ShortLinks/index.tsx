@@ -6,6 +6,7 @@ import { useShortLinks, useCreateShortLink, useDeleteShortLink } from 'api/hooks
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { useBadge } from 'api/hooks/Badge';
 import { ShortLink } from 'types/Types';
+import { IS_EASTER } from 'constant';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -167,7 +168,7 @@ const ShortLinks = () => {
     <Navigation
       banner={
         <Banner text='Opprett, se og slett dine korte linker' title='Link-forkorter'>
-          <Button onClick={click}></Button>
+          {IS_EASTER && <Button onClick={click}></Button>}
         </Banner>
       }
       fancyNavbar>
