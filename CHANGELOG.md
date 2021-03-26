@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.0.7 (26.03.2021)
+
 ## Versjon 1.0.6 (26.03.2021)
 
 - 🎨 **Påske**. Lagt til påsketema
