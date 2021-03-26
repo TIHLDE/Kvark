@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import URLS from 'URLS';
 import { Link } from 'react-router-dom';
 import { useIsAuthenticated } from 'api/hooks/User';
+import { IS_EASTER } from 'constant';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -164,9 +165,13 @@ const Wave = () => {
             )}
           </div>
         </div>
-        {/* <div className='rain rain--far' />
-        <div className='rain rain--mid' />
-        <div className='rain rain--near' /> */}
+        {IS_EASTER && (
+          <>
+            <div className='rain rain--far' />
+            <div className='rain rain--mid' />
+            <div className='rain rain--near' />
+          </>
+        )}
 
         <div className={classes.waveWrapperInner}>
           <div className={classNames(classes.wave, classes.waveTop)}>
