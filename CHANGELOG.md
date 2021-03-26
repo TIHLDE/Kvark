@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- 🎨 **Påske**. Lagt til påsketema
+
 ## Versjon 1.0.5 (21.03.2021)
 
 - ✨ **Link-forkorter**. Medlemmer kan lage egne korte linker på s.tihlde.org/[navn].
