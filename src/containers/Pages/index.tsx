@@ -19,6 +19,8 @@ import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import PagesAdmin from 'containers/Pages/components/PagesAdmin';
 import PagesList from 'containers/Pages/components/PagesList';
 import ShareButton from 'components/miscellaneous/ShareButton';
+import MembersCard from './specials/Index/MembersCard';
+import { Groups } from 'types/Enums';
 
 const Index = lazy(() => import('containers/Pages/specials/Index'));
 
@@ -91,6 +93,14 @@ const Pages = () => {
 
   const SpecialContent = () => {
     switch (path) {
+      case PAGES_URLS.SOSIALEN:
+        return <MembersCard slug={Groups.SOSIALEN} />;
+      case PAGES_URLS.DRIFT:
+        return <MembersCard slug={Groups.DRIFT} />;
+      case PAGES_URLS.NOK:
+        return <MembersCard slug={Groups.NOK} />;
+      case PAGES_URLS.PROMO:
+        return <MembersCard slug={Groups.PROMO} />;
       case PAGES_URLS.ABOUT_INDEX:
         return <Index />;
       default:

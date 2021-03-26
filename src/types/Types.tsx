@@ -248,4 +248,5 @@ export interface PageTree {
 }
 export interface Membership {
   user: User;
+  membership_type: 'LEADER' | 'MEMBER';
 }

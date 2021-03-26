@@ -40,6 +40,8 @@ export enum Groups {
   INDEX = 'Index',
   PROMO = 'Promo',
   NOK = 'NoK',
+  SOSIALEN = 'Sosialen',
+  DRIFT = 'Drift',
 }
 
 export enum FormType {
