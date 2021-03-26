@@ -4,7 +4,9 @@ import { useForm } from 'react-hook-form';
 import useShare from 'use-share';
 import { useShortLinks, useCreateShortLink, useDeleteShortLink } from 'api/hooks/ShortLink';
 import { useSnackbar } from 'api/hooks/Snackbar';
+import { useBadge } from 'api/hooks/Badge';
 import { ShortLink } from 'types/Types';
+import { IS_EASTER } from 'constant';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -131,6 +133,9 @@ const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
 
 const ShortLinks = () => {
   const classes = useStyles();
+  const { createUserBadge } = useBadge();
+  const [count, setCount] = useState(1);
+  const [showOskar, setShowOskar] = useState(false);
   const { data, error, isFetching } = useShortLinks();
   const createShortLink = useCreateShortLink();
   const showSnackbar = useSnackbar();
@@ -149,11 +154,30 @@ const ShortLinks = () => {
     });
   };
 
+  const click = async () => {
+    if (count < 3) {
+      setCount((prev) => prev + 1);
+    } else {
+      setShowOskar(true);
+      await createUserBadge('4eef2d23-c59f-4246-95f9-c6f23e0b09b6');
+      showSnackbar('Gratulerer! Du har fått badgen "Påskejakten 2021"!', 'success');
+    }
+  };
+
   return (
-    <Navigation banner={<Banner text='Opprett, se og slett dine korte linker' title='Link-forkorter' />} fancyNavbar>
+    <Navigation
+      banner={
+        <Banner text='Opprett, se og slett dine korte linker' title='Link-forkorter'>
+          {IS_EASTER && <Button onClick={click}></Button>}
+        </Banner>
+      }
+      fancyNavbar>
       <Helmet>
         <title>Link-forkorter</title>
       </Helmet>
+      <Dialog onClose={() => setShowOskar(false)} open={showOskar} titleText='God påske!'>
+        <img src='https://tihldestorage.blob.core.windows.net/imagepng/oskar.png' width='100%' />
+      </Dialog>
       <div className={classes.grid}>
         <div className={classes.list}>
           {error && <Paper>{error.detail}</Paper>}
