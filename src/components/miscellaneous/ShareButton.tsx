@@ -1,5 +1,5 @@
 // Material UI Components
-import IconButton, { ButtonProps } from '@material-ui/core/Button';
+import Button, { ButtonProps } from '@material-ui/core/Button';
 import ShareIcon from '@material-ui/icons/Share';
 
 import useShare from 'use-share';
@@ -8,10 +8,10 @@ import { useMemo } from 'react';
 export type ShareProps = ButtonProps & {
   title: string;
   shareType: 'event' | 'news' | 'jobpost' | 'pages';
-  id: number | string;
+  shareId: number | string;
 };
 
-const ShareButton = ({ id, title, shareType, ...props }: ShareProps) => {
+const ShareButton = ({ shareId, title, shareType, ...props }: ShareProps) => {
   const urlType = useMemo(() => {
     switch (shareType) {
       case 'event':
@@ -27,12 +27,12 @@ const ShareButton = ({ id, title, shareType, ...props }: ShareProps) => {
 
   const { share, hasShared } = useShare({
     title: `${title}`,
-    url: `https://s.tihlde.org/${urlType}/${id}/`,
+    url: `https://s.tihlde.org/${urlType}/${shareId}/`,
   });
   return (
-    <IconButton color='primary' disabled={hasShared} onClick={share} variant='outlined' {...props}>
-      {hasShared ? 'Delt!' : <ShareIcon />}
-    </IconButton>
+    <Button color='primary' disabled={hasShared} endIcon={<ShareIcon />} onClick={share} variant='outlined' {...props}>
+      {hasShared ? 'Delt!' : 'Del'}
+    </Button>
   );
 };
 
