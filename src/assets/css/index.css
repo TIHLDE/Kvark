@@ -64,7 +64,7 @@ body {
 
 .rain--near {
   animation-duration: 20s;
-  background-image: url('../img/rain/rain-near.png');
+  background-image: url('../img/rain/rain-near-easter.png');
 
   background-size: contain;
 }
@@ -74,7 +74,7 @@ body {
 
 .rain--mid {
   animation-duration: 30s;
-  background-image: url('../img/rain/rain-mid.png');
+  background-image: url('../img/rain/rain-mid-easter.png');
 
   background-size: contain;
 }
@@ -84,7 +84,7 @@ body {
 
 .rain--far {
   animation-duration: 40s;
-  background-image: url('../img/rain/rain-far.png');
+  background-image: url('../img/rain/rain-far-easter.png');
 
   background-size: contain;
 }
