@@ -19,16 +19,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MembersCard = ({ slug }: MembersCardProps) => {
-  const { data } = useMemberships(slug.toLowerCase());
+  const { data, isLoading } = useMemberships(slug.toLowerCase());
   const leader = data?.find((member) => member.membership_type === 'LEADER');
   const members = data?.filter((element) => element.membership_type === 'MEMBER').map((member) => `${member.user.first_name} ${member.user.last_name}`);
   const classes = useStyles();
 
-  if (!members) {
-    return <Skeleton height='100px' variant='rect' />;
+  if (isLoading) {
+    return (
+      <Paper>
+        <Skeleton height='100px' variant='rect' />
+      </Paper>
+    );
   }
 
-  if (members.length === 0 && !leader) {
+  if (!members?.length && !leader) {
     return null;
   }
 
@@ -48,23 +52,21 @@ const MembersCard = ({ slug }: MembersCardProps) => {
             </Grid>
           </>
         )}
-        {members.length > 0 && (
+        {members && members.length > 0 && (
           <Grid item xs={12}>
             <Typography variant='subtitle1'>
               <b>Medlemmer:</b>
             </Typography>
           </Grid>
         )}
-        {members.map((member) => {
+        {members?.map((member) => {
           return (
-            <>
-              <Grid item key={member} md={6} xs={12}>
-                <Box alignItems='center' display='flex' flexWrap='wrap'>
-                  <PersonIcon className={classes.icons} />
-                  <Typography variant='subtitle1'>{member}</Typography>
-                </Box>
-              </Grid>
-            </>
+            <Grid item key={member} md={6} xs={12}>
+              <Box alignItems='center' display='flex' flexWrap='wrap'>
+                <PersonIcon className={classes.icons} />
+                <Typography variant='subtitle1'>{member}</Typography>
+              </Box>
+            </Grid>
           );
         })}
       </Grid>
