@@ -40,17 +40,15 @@ const MembersCard = ({ slug }: MembersCardProps) => {
     <Paper>
       <Grid container spacing={2}>
         {leader && (
-          <>
-            <Grid item xs={12}>
-              <Typography variant='subtitle1'>
-                <b>Leder:</b>
-              </Typography>
-              <Box alignItems='center' display='flex' flexWrap='wrap'>
-                <StarIcon className={classes.icons} />
-                <Typography variant='subtitle1'>{`${leader?.user.first_name} ${leader?.user.last_name}`}</Typography>
-              </Box>
-            </Grid>
-          </>
+          <Grid item xs={12}>
+            <Typography variant='subtitle1'>
+              <b>Leder:</b>
+            </Typography>
+            <Box alignItems='center' display='flex' flexWrap='wrap'>
+              <StarIcon className={classes.icons} />
+              <Typography variant='subtitle1'>{`${leader?.user.first_name} ${leader?.user.last_name}`}</Typography>
+            </Box>
+          </Grid>
         )}
         {members && members.length > 0 && (
           <Grid item xs={12}>
