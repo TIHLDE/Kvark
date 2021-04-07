@@ -18,6 +18,7 @@ import Paper from 'components/layout/Paper';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import PagesAdmin from 'containers/Pages/components/PagesAdmin';
 import PagesList from 'containers/Pages/components/PagesList';
+import ShareButton from 'components/miscellaneous/ShareButton';
 
 const Index = lazy(() => import('containers/Pages/specials/Index'));
 
@@ -138,9 +139,12 @@ const Pages = () => {
         ) : (
           data !== undefined && (
             <>
-              <Paper className={classes.paper} noPadding>
-                <PagesList pages={data.children} />
-              </Paper>
+              <div className={classes.content}>
+                <Paper className={classes.paper} noPadding>
+                  <PagesList pages={data.children} />
+                </Paper>
+                <ShareButton color='default' fullWidth shareId={data.path} shareType='pages' title={data.title} />
+              </div>
               <div className={classes.inner}>
                 <div className={classes.content}>
                   {Boolean(data.content.trim().length) && (
