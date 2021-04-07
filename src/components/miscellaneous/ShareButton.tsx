@@ -24,10 +24,11 @@ const ShareButton = ({ shareId, title, shareType, ...props }: ShareProps) => {
         return 'om';
     }
   }, [shareType]);
+  const shareUrl = useMemo(() => `https://s.tihlde.org/${urlType}/${shareId}${shareType === 'pages' ? '' : '/'}`, [shareId, shareType]);
 
   const { share, hasShared } = useShare({
     title: `${title}`,
-    url: `https://s.tihlde.org/${urlType}/${shareId}/`,
+    url: shareUrl,
   });
   return (
     <Button color='primary' disabled={hasShared} endIcon={<ShareIcon />} onClick={share} variant='outlined' {...props}>

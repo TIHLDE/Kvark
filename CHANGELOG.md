@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- ✨ **Del**. Lagt til del-knapp på arrangementer, nyheter, annonser og pages.
+
 ## Versjon 1.0.6 (26.03.2021)
 
 - 🎨 **Påske**. Lagt til påsketema

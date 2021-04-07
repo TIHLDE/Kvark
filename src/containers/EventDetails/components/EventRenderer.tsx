@@ -34,6 +34,7 @@ import Paper from 'components/layout/Paper';
 import Dialog from 'components/layout/Dialog';
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 import QRCode from 'components/miscellaneous/QRCode';
+import ShareButton from 'components/miscellaneous/ShareButton';
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -218,15 +219,45 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     }
   };
 
-  const Details = () => (
-    <Paper className={classes.details} noPadding>
-      <Typography className={classes.detailsHeader} variant='h2'>
-        Detaljer
-      </Typography>
-      <DetailContent info={formatDate(startDate)} title='Fra: ' />
-      <DetailContent info={formatDate(endDate)} title='Til: ' />
-      <DetailContent info={data.location} title='Sted: ' />
-    </Paper>
+  const Info = () => (
+    <>
+      <Paper className={classes.details} noPadding>
+        <Typography className={classes.detailsHeader} variant='h2'>
+          Detaljer
+        </Typography>
+        <DetailContent info={formatDate(startDate)} title='Fra: ' />
+        <DetailContent info={formatDate(endDate)} title='Til: ' />
+        <DetailContent info={data.location} title='Sted: ' />
+      </Paper>
+      {data.sign_up && (
+        <>
+          <Paper className={classes.details} noPadding>
+            <Typography className={classes.detailsHeader} variant='h2'>
+              Påmelding
+            </Typography>
+            <DetailContent info={`${data.list_count}/${data.limit}`} title='Påmeldte:' />
+            <DetailContent info={String(data.waiting_list_count)} title='Venteliste:' />
+            {registration && isFuture(signOffDeadlineDate) ? (
+              <DetailContent info={formatDate(signOffDeadlineDate)} title='Avmeldingsfrist:' />
+            ) : (
+              <>
+                {isFuture(startRegistrationDate) && <DetailContent info={formatDate(startRegistrationDate)} title='Start:' />}
+                {isPast(startRegistrationDate) && isFuture(endRegistrationDate) && <DetailContent info={formatDate(endRegistrationDate)} title='Slutt:' />}
+              </>
+            )}
+          </Paper>
+          {Boolean(data.registration_priorities.length) && data.registration_priorities.length !== 14 && (
+            <Paper className={classes.details} noPadding>
+              <Typography className={classes.detailsHeader} variant='h2'>
+                Prioritert
+              </Typography>
+              <EventPriorities priorities={data.registration_priorities} />
+            </Paper>
+          )}
+        </>
+      )}
+      <ApplyButton />
+    </>
   );
 
   return (
@@ -242,57 +273,25 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       />
       <div className={classes.rootGrid}>
         <div className={classes.infoGrid}>
-          <Hidden lgUp>
-            <ApplyButton />
-          </Hidden>
           <Hidden mdDown>
-            <Details />
+            <Info />
           </Hidden>
-          {data.sign_up && (
-            <>
-              <Paper className={classes.details} noPadding>
-                <Typography className={classes.detailsHeader} variant='h2'>
-                  Påmelding
-                </Typography>
-                <DetailContent info={`${data.list_count}/${data.limit}`} title='Påmeldte:' />
-                <DetailContent info={String(data.waiting_list_count)} title='Venteliste:' />
-                {registration && isFuture(signOffDeadlineDate) ? (
-                  <DetailContent info={formatDate(signOffDeadlineDate)} title='Avmeldingsfrist:' />
-                ) : (
-                  <>
-                    {isFuture(startRegistrationDate) && <DetailContent info={formatDate(startRegistrationDate)} title='Start:' />}
-                    {isPast(startRegistrationDate) && isFuture(endRegistrationDate) && <DetailContent info={formatDate(endRegistrationDate)} title='Slutt:' />}
-                  </>
-                )}
-              </Paper>
-              {Boolean(data.registration_priorities.length) && data.registration_priorities.length !== 14 && (
-                <Paper className={classes.details} noPadding>
-                  <Typography className={classes.detailsHeader} variant='h2'>
-                    Prioritert
-                  </Typography>
-                  <EventPriorities priorities={data.registration_priorities} />
-                </Paper>
-              )}
-            </>
-          )}
-          <Hidden mdDown>
-            <ApplyButton />
-          </Hidden>
+          <ShareButton color='default' shareId={data.id} shareType='event' title={data.title} />
+          <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} variant='outlined'>
+            Legg til i kalender
+          </Button>
           {!preview && (
             <HavePermission groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]}>
-              <Button className={classes.applyButton} color='primary' component={Link} fullWidth to={`${URLS.eventAdmin}${data.id}/`} variant='outlined'>
+              <Button component={Link} fullWidth to={`${URLS.eventAdmin}${data.id}/`} variant='outlined'>
                 Endre arrangement
               </Button>
             </HavePermission>
           )}
-          <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} variant='outlined'>
-            Legg til i kalender
-          </Button>
         </div>
         <div className={classnames(classes.infoGrid, classes.info)}>
           <AspectRatioImg alt={data.image_alt || data.title} imgClassName={classes.image} src={data.image} />
           <Hidden lgUp>
-            <Details />
+            <Info />
           </Hidden>
           <Paper className={classes.content}>
             <Typography className={classes.title} gutterBottom variant='h1'>
