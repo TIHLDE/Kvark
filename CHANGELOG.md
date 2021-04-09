@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ✨ **Spørsmål ved påmelding**. Lagt til støtte for spørsmål ved påmelding til arrangementer, men ikke aktivert det ettersom støtte for svar ikke er klart.
 - ✨ **Del**. Lagt til del-knapp på arrangementer, nyheter, annonser og pages.
 
 ## Versjon 1.0.6 (26.03.2021)
