@@ -16,7 +16,6 @@ import { useHavePermission, useIsAuthenticated } from 'api/hooks/User';
 import { SnackbarProvider } from 'api/hooks/Snackbar';
 
 // Project components
-import AprilJoke from 'components/miscellaneous/AprilJoke';
 import MessageGDPR from 'components/miscellaneous/MessageGDPR';
 import Navigation from 'components/navigation/Navigation';
 
@@ -159,7 +158,6 @@ export const Application = () => {
         <Suspense fallback={<Navigation isLoading />}>
           <AppRoutes />
           <MessageGDPR />
-          <AprilJoke />
         </Suspense>
       </BrowserRouter>
     </Providers>
