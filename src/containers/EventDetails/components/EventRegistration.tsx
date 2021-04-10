@@ -89,7 +89,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
         if (field && field.type === FormFieldType.MULTIPLE_SELECT && field.required) {
           const ans = answer as SelectFieldSubmission;
           if (!ans.selected_options.length) {
-            throw new RangeError(`answers[${index}].selected_options`);
+            throw new Error(`answers[${index}].selected_options`);
           }
         }
       });
