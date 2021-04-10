@@ -85,7 +85,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
     setIsLoading(true);
     try {
       if (form) {
-        data.answers?.forEach((answer, index) => {
+        data.answers.forEach((answer, index) => {
           const field = form?.fields.find((field) => field.id === answer.field);
           if (field && field.type === FormFieldType.MULTIPLE_SELECT && field.required) {
             const ans = answer as SelectFieldSubmission;
