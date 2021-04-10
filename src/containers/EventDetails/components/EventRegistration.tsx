@@ -81,7 +81,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
 
   const { register, handleSubmit, errors, setError } = useForm();
 
-  const submit = async (data: { answers: Array<TextFieldSubmission | SelectFieldSubmission> }) => {
+  const submit = async (data: { answers?: Array<TextFieldSubmission | SelectFieldSubmission> }) => {
     setIsLoading(true);
     try {
       data.answers?.forEach((answer, index) => {
