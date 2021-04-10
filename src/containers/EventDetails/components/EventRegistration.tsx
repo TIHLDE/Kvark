@@ -84,19 +84,20 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
   const submit = async (data: { answers: Array<TextFieldSubmission | SelectFieldSubmission> }) => {
     setIsLoading(true);
     try {
-      data.answers.forEach((answer, index) => {
-        const field = form?.fields.find((field) => field.id === answer.field);
-        if (field && field.type === FormFieldType.MULTIPLE_SELECT && field.required) {
-          const ans = answer as SelectFieldSubmission;
-          if (!ans.selected_options.length) {
-            throw new Error(`answers[${index}].selected_options`);
+      if (form) {
+        data.answers.forEach((answer, index) => {
+          const field = form?.fields.find((field) => field.id === answer.field);
+          if (field && field.type === FormFieldType.MULTIPLE_SELECT && field.required) {
+            const ans = answer as SelectFieldSubmission;
+            if (!ans.selected_options.length) {
+              throw new RangeError(`answers[${index}].selected_options`);
+            }
           }
-        }
-      });
+        });
+      }
     } catch (e) {
       setError(e.message, { message: 'Du må velge ett eller flere alternativ' });
       setIsLoading(false);
-      return;
     }
     createRegistration.mutate(
       { allow_photo: allowPhoto, ...data },
