@@ -2,7 +2,7 @@ import parseISO from 'date-fns/parseISO';
 import { Link } from 'react-router-dom';
 import { formatDate } from 'utils';
 import { JobPost } from 'types/Types';
-import { Groups } from 'types/Enums';
+import { PermissionApp } from 'types/Enums';
 import URLS from 'URLS';
 import { HavePermission } from 'api/hooks/User';
 
@@ -97,7 +97,7 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
         )}
         <ShareButton className={classes.button} color='default' fullWidth shareId={data.id} shareType='jobpost' title={data.title} />
         {!preview && (
-          <HavePermission groups={[Groups.HS, Groups.INDEX, Groups.NOK]}>
+          <HavePermission apps={[PermissionApp.JOBPOST]}>
             <Button className={classes.button} color='primary' component={Link} fullWidth to={`${URLS.jobpostsAdmin}${data.id}/`} variant='outlined'>
               Endre annonse
             </Button>

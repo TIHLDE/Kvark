@@ -35,11 +35,13 @@ export enum UserClass {
   FIFTH = 5,
 }
 
-export enum Groups {
-  HS = 'HS',
-  INDEX = 'Index',
-  PROMO = 'Promo',
-  NOK = 'NoK',
+export enum PermissionApp {
+  CHEATSHEET = 'cheatsheet',
+  EVENT = 'event',
+  JOBPOST = 'jobpost',
+  NEWS = 'news',
+  PAGE = 'page',
+  USER = 'user',
 }
 
 export enum FormType {
