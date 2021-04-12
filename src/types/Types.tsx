@@ -203,7 +203,6 @@ export interface Membership {
 
 export interface Group {
   name: string;
-  permissions: any;
   slug: string;
   description: string;
   contact_email: string;

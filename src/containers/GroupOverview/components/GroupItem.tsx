@@ -1,9 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import { Group } from 'types/Types';
 
 import MembersIcon from '@material-ui/icons/PersonRounded';
 
-import { makeStyles } from '@material-ui/core/styles';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -11,23 +13,17 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.default,
     border: '1px solid #aaa',
     borderRadius: 10,
-    cursor: 'pointer',
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
     justifyContent: 'space-evenly',
     padding: theme.spacing(2),
-    '&:hover > h3': {
+    '&:hover > h6': {
       transform: 'scale(1.1)',
     },
   },
   group: {
     transition: 'transform .2s',
-    marginLeft: theme.spacing(1),
-    fontSize: '1.6rem',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '1.4rem',
-    },
   },
   leader: {
     display: 'flex',
@@ -39,7 +35,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   name: {
-    marginLeft: '.3rem',
+    marginLeft: theme.spacing(1),
+    fontSize: '0.8rem',
   },
 }));
 
@@ -49,19 +46,22 @@ export type GroupItemProps = {
 
 const GroupItem = ({ group }: GroupItemProps) => {
   const classes = useStyles();
+  const navigate = useNavigate();
 
   return (
-    <div className={classes.container}>
-      <Typography className={classes.group} variant='h3'>
+    <ButtonBase className={classes.container} onClick={() => navigate(`/grupper/${group.slug}`)}>
+      <Typography className={classes.group} variant='h6'>
         {group.name}
       </Typography>
-      <div className={classes.leader}>
-        <MembersIcon />
-        <Typography className={classes.name}>
-          {group.leader.first_name} {group.leader.last_name}
-        </Typography>
-      </div>
-    </div>
+      {group.leader && (
+        <div className={classes.leader}>
+          <MembersIcon />
+          <Typography className={classes.name}>
+            {group.leader.first_name} {group.leader.last_name}
+          </Typography>
+        </div>
+      )}
+    </ButtonBase>
   );
 };
 

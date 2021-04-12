@@ -198,6 +198,7 @@ const Topbar = ({ fancyNavbar = false, whiteOnLight = false }: TopbarProps) => {
           items: [
             { text: 'Om TIHLDE', to: URLS.pages },
             { text: 'Ny student', to: URLS.newStudent },
+            { text: 'Gruppeoversikt', to: URLS.groups },
           ],
           text: 'Generelt',
           type: 'dropdown',
@@ -208,8 +209,8 @@ const Topbar = ({ fancyNavbar = false, whiteOnLight = false }: TopbarProps) => {
         isAuthenticated
           ? {
               items: [
-                { text: 'Gruppeoversikt', to: URLS.groups },
                 { text: 'Kokebok', to: URLS.cheatsheet },
+                { text: 'Link-forkorter', to: URLS.shortLinks },
               ],
               text: 'For medlemmer',
               type: 'dropdown',

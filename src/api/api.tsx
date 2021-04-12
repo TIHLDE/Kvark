@@ -78,7 +78,7 @@ export default {
   updateUserData: (userName: string, item: Partial<User>) => IFetch<User>({ method: 'PUT', url: `user/${userName}/`, data: item }),
 
   // Groups
-  getGroups: (filters?: any) => IFetch<Group[]>({ method: 'GET', url: `group/`, data: filters || {} }),
+  getGroups: () => IFetch<Group[]>({ method: 'GET', url: `group/` }),
 
   // Notifications
   getNotifications: (filters?: any) => IFetch<PaginationResponse<Notification>>({ method: 'GET', url: `notification/`, data: filters || {} }),

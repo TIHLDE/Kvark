@@ -41,7 +41,7 @@ function Admin() {
           </Button>
         </InfoCard>
       </HavePermission>
-      <HavePermission groups={[Groups.HS, Groups.INDEX]}>
+      <HavePermission groups={[]}>
         <InfoCard header='Grupper' justifyText src={GroupsAdminIcon} text='Se og endre grupper'>
           <Button className={classes.button} color='primary' component={Link} fullWidth to={URLS.groups} variant='contained'>
             Administrer grupper

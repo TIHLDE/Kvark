@@ -1,15 +1,16 @@
-import { useGroups } from 'api/hooks/Group';
+import classNames from 'classnames';
 import Helmet from 'react-helmet';
+import { useGroups } from 'api/hooks/Group';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 
 // Project Components
 import Navigation from 'components/navigation/Navigation';
 import Paper from 'components/layout/Paper';
-import { PersonListItemLoading } from 'containers/UserAdmin/components/PersonListItem';
-import GroupItem from './components/GroupItem';
+import GroupItem from 'containers/GroupOverview/components/GroupItem';
 
 const useStyles = makeStyles((theme) => ({
   top: {
@@ -23,11 +24,14 @@ const useStyles = makeStyles((theme) => ({
   groupContainer: {
     display: 'grid',
     gridGap: theme.spacing(3),
-    gridTemplateColumns: 'repeat(auto-fit, minmax(18rem, 1fr))',
+    gridTemplateColumns: 'repeat(3, 1fr)',
     gridAutoRows: '7rem',
     marginBottom: theme.spacing(5),
+    [theme.breakpoints.down('md')]: {
+      gridTemplateColumns: 'repeat(2, 1fr)',
+    },
     [theme.breakpoints.down('sm')]: {
-      gridTemplateColumns: 'repeat(auto-fit, minmax(14rem, 1fr))',
+      gridTemplateColumns: '1fr',
     },
   },
   undertitle: {
@@ -43,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '3rem',
     [theme.breakpoints.down('sm')]: {
       fontSize: '2.2rem',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(14rem, 1fr))',
     },
   },
 }));
@@ -62,6 +65,25 @@ const GroupOverview = () => {
   const classes = useStyles();
   const { data, error, isLoading } = useGroups();
 
+  const content =
+    data &&
+    [...new Set(data.map((group) => group.type))].map((groupType) => {
+      return (
+        <div key={groupType}>
+          <Typography className={classNames(classes.marginSm, classes.undertitle)} variant='h4'>
+            {groupTypes[groupType]}
+          </Typography>
+          <div className={classes.groupContainer}>
+            {data
+              ?.filter((group) => group.type === groupType)
+              .map((group) => {
+                return <GroupItem group={group} key={group.name} />;
+              })}
+          </div>
+        </div>
+      );
+    });
+
   return (
     <Navigation banner={<div className={classes.top}></div>} fancyNavbar>
       <Helmet>
@@ -71,25 +93,9 @@ const GroupOverview = () => {
         <Typography className={[classes.marginMed, classes.title].join(' ')} variant='h1'>
           Gruppeoversikt
         </Typography>
-        {isLoading && <PersonListItemLoading />}
+        {isLoading && <LinearProgress />}
         {error && <Paper>{error.detail}</Paper>}
-        {data !== undefined &&
-          [...new Set(data.map((group) => group.type))].map((groupType) => {
-            return (
-              <div key={groupType}>
-                <Typography className={[classes.marginSm, classes.undertitle].join(' ')} variant='h4'>
-                  {groupTypes[groupType]}
-                </Typography>
-                <div className={classes.groupContainer}>
-                  {data
-                    ?.filter((group) => group.type === groupType)
-                    .map((group) => {
-                      return <GroupItem group={group} key={group.name} />;
-                    })}
-                </div>
-              </div>
-            );
-          })}
+        {data !== undefined && content}
       </Paper>
     </Navigation>
   );
