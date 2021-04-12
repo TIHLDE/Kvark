@@ -41,3 +41,18 @@ export enum Groups {
   PROMO = 'Promo',
   NOK = 'NoK',
 }
+
+export enum FormType {
+  SURVEY = 'SURVEY',
+  EVALUTATION = 'EVALUTATION',
+}
+
+export enum FormResourceType {
+  EVENT_FORM = 'EventForm',
+}
+
+export enum FormFieldType {
+  SINGLE_SELECT = 'SINGLE_SELECT',
+  MULTIPLE_SELECT = 'MULTIPLE_SELECT',
+  TEXT_ANSWER = 'TEXT_ANSWER',
+}

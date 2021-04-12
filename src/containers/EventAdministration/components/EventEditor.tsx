@@ -24,6 +24,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
 
 // Project components
+import EventFormEditor from 'containers/EventAdministration/components/EventFormEditor';
 import EventRegistrationPriorities from 'containers/EventAdministration/components/EventRegistrationPriorities';
 import EventRenderer from 'containers/EventDetails/components/EventRenderer';
 import Dialog from 'components/layout/Dialog';
@@ -355,6 +356,22 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 </AccordionDetails>
               </Accordion>
             </div>
+            {location.hostname !== 'tihlde.org' && (
+              <div className={classes.margin}>
+                <Accordion className={classes.expansionPanel}>
+                  <AccordionSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='survey-header'>
+                    <Typography>Spørsmål ved påmelding</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    {eventId && data ? (
+                      <EventFormEditor eventId={eventId} formId={data.survey} />
+                    ) : (
+                      <Typography variant='subtitle2'>Du må opprette arrangementet før du kan legge til spørsmål</Typography>
+                    )}
+                  </AccordionDetails>
+                </Accordion>
+              </div>
+            )}
           </Collapse>
           <MarkdownEditor
             error={Boolean(errors.description)}
@@ -386,7 +403,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           <SubmitButton className={classes.margin} disabled={isLoading} errors={errors}>
             {eventId ? 'Oppdater arrangement' : 'Opprett arrangement'}
           </SubmitButton>
-          {Boolean(eventId) && (
+          {eventId !== null && (
             <div className={classes.grid}>
               <Button className={classnames(classes.margin, classes.red)} disabled={isLoading} onClick={() => setCloseEventDialogOpen(true)} variant='outlined'>
                 Steng

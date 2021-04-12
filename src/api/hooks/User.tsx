@@ -7,7 +7,7 @@ import { getCookie, setCookie, removeCookie } from 'api/cookie';
 import { ACCESS_TOKEN } from 'constant';
 
 export const USER_QUERY_KEY = 'user';
-const QUERY_KEY_USERS = 'users';
+export const USERS_QUERY_KEY = 'users';
 
 export const useUser = () => {
   const isAuthenticated = useIsAuthenticated();
@@ -24,7 +24,7 @@ export const useRefreshUser = () => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useUsers = (filters?: any) => {
   return useInfiniteQuery<PaginationResponse<User>, RequestResponse>(
-    [QUERY_KEY_USERS, filters],
+    [USERS_QUERY_KEY, filters],
     ({ pageParam = 1 }) => API.getUsers({ ...filters, page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.next,
@@ -67,7 +67,7 @@ export const useUpdateUser = (): UseMutationResult<User, RequestResponse, { user
   const queryClient = useQueryClient();
   return useMutation(({ userId, user }) => API.updateUserData(userId, user), {
     onSuccess: (data) => {
-      queryClient.invalidateQueries(QUERY_KEY_USERS);
+      queryClient.invalidateQueries(USERS_QUERY_KEY);
       const user = queryClient.getQueryData<User | undefined>(USER_QUERY_KEY);
       if (data.user_id === user?.user_id) {
         queryClient.setQueryData(USER_QUERY_KEY, data);
