@@ -26,7 +26,7 @@ import Paper from 'components/layout/Paper';
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
-    marginRight: theme.spacing(1),
+    marginRight: theme.spacing(2),
   },
   paper: {
     marginBottom: theme.spacing(1),

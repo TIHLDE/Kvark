@@ -32,7 +32,7 @@ import Paper from 'components/layout/Paper';
 
 const useStyles = makeStyles((theme: Theme) => ({
   avatar: {
-    marginRight: theme.spacing(1),
+    marginRight: theme.spacing(2),
     [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
