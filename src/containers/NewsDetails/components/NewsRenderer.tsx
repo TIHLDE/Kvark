@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { usePalette } from 'react-palette';
 import { News } from 'types/Types';
-import { Groups } from 'types/Enums';
+import { PermissionApp } from 'types/Enums';
 import { HavePermission } from 'api/hooks/User';
 
 // Material UI Components
@@ -102,7 +102,7 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
       <Container className={classes.content} maxWidth='lg'>
         <AspectRatioImg alt={data.image_alt || data.title} imgClassName={classes.image} src={data.image} />
         {!preview && (
-          <HavePermission groups={[Groups.HS, Groups.INDEX]}>
+          <HavePermission apps={[PermissionApp.NEWS]}>
             <Button className={classes.button} color='primary' component={Link} fullWidth to={`${URLS.newsAdmin}${data.id}/`} variant='outlined'>
               Endre nyhet
             </Button>
