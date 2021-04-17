@@ -11,6 +11,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 import Collapse from '@material-ui/core/Collapse';
 import Button from '@material-ui/core/Button';
+import Hidden from '@material-ui/core/Hidden';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -33,9 +34,6 @@ import Paper from 'components/layout/Paper';
 const useStyles = makeStyles((theme: Theme) => ({
   avatar: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
-    },
   },
   paper: {
     marginBottom: theme.spacing(1),
@@ -128,7 +126,9 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
         titleText='Er du sikker?'
       />
       <ListItem button className={classes.wrapper} onClick={() => setExpanded((prev) => !prev)}>
-        <Avatar className={classes.avatar} user={registration.user_info} />
+        <Hidden smDown>
+          <Avatar className={classes.avatar} user={registration.user_info} />
+        </Hidden>
         <ListItemText
           classes={{ secondary: classes.secondaryText }}
           primary={`${registration.user_info.first_name} ${registration.user_info.last_name}`}
