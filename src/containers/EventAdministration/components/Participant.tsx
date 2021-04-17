@@ -26,18 +26,23 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownwardRounded';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpwardRounded';
 
 // Project components
+import Avatar from 'components/miscellaneous/Avatar';
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 
 const useStyles = makeStyles((theme: Theme) => ({
+  avatar: {
+    marginRight: theme.spacing(1),
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
   paper: {
     marginBottom: theme.spacing(1),
     overflow: 'hidden',
     background: theme.palette.background.smoke,
   },
   wrapper: {
-    display: 'grid',
-    gridTemplateColumns: '1fr auto',
     paddingRight: theme.spacing(8),
     alignItems: 'center',
   },
@@ -123,6 +128,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
         titleText='Er du sikker?'
       />
       <ListItem button className={classes.wrapper} onClick={() => setExpanded((prev) => !prev)}>
+        <Avatar className={classes.avatar} user={registration.user_info} />
         <ListItemText
           classes={{ secondary: classes.secondaryText }}
           primary={`${registration.user_info.first_name} ${registration.user_info.last_name}`}
