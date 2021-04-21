@@ -4,7 +4,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { User } from 'types/Types';
 
 type AvatarProps = {
-  user?: User;
+  user?: Pick<User, 'first_name' | 'last_name' | 'image'>;
 } & MuiAvatarProps;
 
 const useStyles = makeStyles({

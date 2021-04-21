@@ -20,18 +20,20 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
 import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
 
 // Project components
+import Avatar from 'components/miscellaneous/Avatar';
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 
 const useStyles = makeStyles((theme) => ({
+  avatar: {
+    marginRight: theme.spacing(2),
+  },
   paper: {
     marginBottom: theme.spacing(1),
     overflow: 'hidden',
     background: theme.palette.background.smoke,
   },
   wrapper: {
-    display: 'grid',
-    gridTemplateColumns: '1fr auto',
     alignItems: 'center',
   },
   secondaryText: {
@@ -74,6 +76,7 @@ const PersonListItem = ({ user }: PersonListItemProps) => {
   return (
     <Paper className={classes.paper} noPadding>
       <ListItem button className={classes.wrapper} onClick={() => setExpanded((prev) => !prev)}>
+        <Avatar className={classes.avatar} user={user} />
         <ListItemText
           classes={{ secondary: classes.secondaryText }}
           primary={`${user.first_name} ${user.last_name}`}
