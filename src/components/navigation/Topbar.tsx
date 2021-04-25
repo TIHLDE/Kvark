@@ -32,17 +32,25 @@ import Avatar from 'components/miscellaneous/Avatar';
 const useStyles = makeStyles<Theme, Pick<TopbarProps, 'whiteOnLight'>>((theme) => ({
   appBar: {
     boxSizing: 'border-box',
-    backgroundColor: theme.palette.colors.gradient.main.top,
+    backgroundColor: (props) => (props.whiteOnLight && theme.palette.type === 'light' ? theme.palette.common.white : theme.palette.colors.gradient.main.top),
     color: theme.palette.text.primary,
     flexGrow: 1,
     zIndex: theme.zIndex.drawer + 1,
-    transition: '0.4s',
+    transition: '0.2s',
   },
   fancyAppBar: {
-    backgroundColor: 'transparent',
+    backgroundColor: () => 'transparent',
   },
-  whiteAppBar: {
-    backgroundColor: () => (theme.palette.type === 'light' ? theme.palette.common.white : undefined),
+  backdrop: {
+    ...theme.palette.blurred,
+    ...theme.palette.transparent,
+    backgroundColor: (props) =>
+      props.whiteOnLight && theme.palette.type === 'light' ? `${theme.palette.common.white}bf` : `${theme.palette.colors.gradient.main.top}bf`,
+    borderTop: 'none',
+    borderRight: 'none',
+    borderLeft: 'none',
+    borderBottom: 'none',
+    boxShadow: 'none',
   },
   toolbar: {
     width: '100%',
@@ -224,7 +232,7 @@ const Topbar = ({ fancyNavbar = false, whiteOnLight = false }: TopbarProps) => {
       className={classNames(
         classes.appBar,
         fancyNavbar && scrollLength < 20 && !sidebarOpen && classes.fancyAppBar,
-        whiteOnLight && !sidebarOpen && classes.whiteAppBar,
+        fancyNavbar && scrollLength > 20 && !sidebarOpen && classes.backdrop,
       )}
       color='primary'
       elevation={(fancyNavbar && scrollLength < 20) || sidebarOpen ? 0 : 1}
