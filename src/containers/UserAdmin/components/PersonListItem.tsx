@@ -21,7 +21,6 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
 
 // Project components
 import Avatar from 'components/miscellaneous/Avatar';
-import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 
 const useStyles = makeStyles((theme) => ({
