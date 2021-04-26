@@ -206,6 +206,7 @@ const Topbar = ({ fancyNavbar = false, whiteOnLight = false }: TopbarProps) => {
           items: [
             { text: 'Om TIHLDE', to: URLS.pages },
             { text: 'Ny student', to: URLS.newStudent },
+            { text: 'Gruppeoversikt', to: URLS.groups },
           ],
           text: 'Generelt',
           type: 'dropdown',

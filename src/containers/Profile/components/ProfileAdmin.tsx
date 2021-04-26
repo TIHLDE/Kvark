@@ -9,9 +9,10 @@ import Button from '@material-ui/core/Button';
 
 // Icons
 import EventAdminIcon from 'assets/icons/eventadmin.svg';
+import GroupsAdminIcon from 'assets/icons/groups.svg';
 import JobPostAdminIcon from 'assets/icons/jobpostadmin.svg';
-import UserAdminIcon from 'assets/icons/useradmin.svg';
 import NewsAdminIcon from 'assets/icons/news.svg';
+import UserAdminIcon from 'assets/icons/useradmin.svg';
 
 // Project Components
 import InfoCard from 'components/layout/InfoCard';
@@ -37,6 +38,13 @@ function Admin() {
         <InfoCard header='Arrangementer' justifyText src={EventAdminIcon} text='Opprett, endre og slett arrangementer'>
           <Button className={classes.button} color='primary' component={Link} fullWidth to={URLS.eventAdmin} variant='contained'>
             Administrer arrangementer
+          </Button>
+        </InfoCard>
+      </HavePermission>
+      <HavePermission apps={[PermissionApp.GROUP]}>
+        <InfoCard header='Grupper' justifyText src={GroupsAdminIcon} text='Se og endre grupper'>
+          <Button className={classes.button} color='primary' component={Link} fullWidth to={URLS.groups} variant='contained'>
+            Administrer grupper
           </Button>
         </InfoCard>
       </HavePermission>
