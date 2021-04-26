@@ -66,9 +66,11 @@ const Group = () => {
             <Typography gutterBottom variant='subtitle1'>
               {data?.description}
             </Typography>
-            <Typography gutterBottom variant='subtitle1'>
-              <b>Kontakt: </b> {data?.contact_email}
-            </Typography>
+            {data?.contact_email && (
+              <Typography gutterBottom variant='subtitle1'>
+                <b>Kontakt: </b> {data?.contact_email}
+              </Typography>
+            )}
             {hasWriteAcccess && (
               <Button color='primary' onClick={() => setUpdateGroupModalIsOpen(true)} startIcon={<EditIcon />} variant='contained'>
                 Rediger gruppe
