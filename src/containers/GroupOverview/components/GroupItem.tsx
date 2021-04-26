@@ -49,7 +49,7 @@ const GroupItem = ({ group }: GroupItemProps) => {
   const navigate = useNavigate();
 
   return (
-    <ButtonBase className={classes.container} onClick={() => navigate(`/grupper/${group.slug}`)}>
+    <ButtonBase className={classes.container} onClick={() => navigate(`/grupper/${group.slug}/`)}>
       <Typography className={classes.group} variant='h3'>
         {group.name}
       </Typography>
