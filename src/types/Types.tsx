@@ -207,5 +207,5 @@ export interface Group {
   description: string;
   contact_email: string;
   type: string;
-  leader: Partial<User>;
+  leader: Pick<User, 'user_id' | 'first_name' | 'last_name'>;
 }

@@ -90,7 +90,7 @@ const GroupOverview = () => {
         <title>Gruppeoversikt</title>
       </Helmet>
       <Paper className={classes.content}>
-        <Typography className={[classes.marginMed, classes.title].join(' ')} variant='h1'>
+        <Typography className={classNames(classes.marginMed, classes.title)} variant='h1'>
           Gruppeoversikt
         </Typography>
         {isLoading && <LinearProgress />}

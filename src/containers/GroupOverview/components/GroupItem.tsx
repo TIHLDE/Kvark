@@ -11,14 +11,14 @@ const useStyles = makeStyles((theme) => ({
   container: {
     alignItems: 'center',
     backgroundColor: theme.palette.background.default,
-    border: '1px solid #aaa',
-    borderRadius: 10,
+    border: `${theme.palette.borderWidth} solid ${theme.palette.divider}`,
+    borderRadius: theme.shape.borderRadius,
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
     justifyContent: 'space-evenly',
     padding: theme.spacing(2),
-    '&:hover > h6': {
+    '&:hover > h3': {
       transform: 'scale(1.1)',
     },
   },
@@ -50,7 +50,7 @@ const GroupItem = ({ group }: GroupItemProps) => {
 
   return (
     <ButtonBase className={classes.container} onClick={() => navigate(`/grupper/${group.slug}`)}>
-      <Typography className={classes.group} variant='h6'>
+      <Typography className={classes.group} variant='h3'>
         {group.name}
       </Typography>
       {group.leader && (
