@@ -4,6 +4,10 @@ export const PAGES_URLS = {
   CONTACT_US: 'kontakt-oss/',
   EVENT_RULES: 'annet/arrangementsregler/',
   NEW_STUDENT: 'ny-student/',
+  SOSIALEN: 'tihlde/undergrupper/sosialen/',
+  DRIFT: 'tihlde/undergrupper/drift/',
+  NOK: 'tihlde/undergrupper/nringsliv-og-kurs/',
+  PROMO: 'tihlde/undergrupper/promo/',
 };
 
 export default {
@@ -30,4 +34,5 @@ export default {
   eventAdmin: '/admin/arrangementer/',
   jobpostsAdmin: '/admin/karriere/',
   newsAdmin: '/admin/nyheter/',
+  groups: '/grupper/',
 };

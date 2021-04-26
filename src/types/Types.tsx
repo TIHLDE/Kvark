@@ -1,4 +1,15 @@
-import { FormFieldType, FormResourceType, FormType, PermissionApp, WarningType, Study, CheatsheetType, UserClass, UserStudy } from 'types/Enums';
+import {
+  FormFieldType,
+  FormResourceType,
+  FormType,
+  MembershipType,
+  PermissionApp,
+  WarningType,
+  Study,
+  CheatsheetType,
+  UserClass,
+  UserStudy,
+} from 'types/Enums';
 
 export interface Warning {
   created_at: string;
@@ -253,6 +264,17 @@ export interface PageTree {
 }
 export interface Membership {
   user: User;
+  membership_type: MembershipType;
+  group: Group;
+}
+export interface Group {
+  name: string;
+  slug: string;
+  description: string;
+  contact_email: string;
+  type: string;
+  leader: User;
+  permissions: Permissions;
 }
 
 export interface Group {

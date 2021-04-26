@@ -44,6 +44,14 @@ export enum PermissionApp {
   PAGE = 'page',
   USER = 'user',
 }
+export enum Groups {
+  HS = 'HS',
+  INDEX = 'Index',
+  PROMO = 'Promo',
+  NOK = 'NoK',
+  SOSIALEN = 'Sosialen',
+  DRIFT = 'Drift',
+}
 
 export enum FormType {
   SURVEY = 'SURVEY',
@@ -64,4 +72,8 @@ export enum GroupTypes {
   BOARD = 'BOARD',
   COMMITTEE = 'COMMITTEE',
   SUBGROUP = 'SUBGROUP',
+}
+export enum MembershipType {
+  LEADER = 'LEADER',
+  MEMBER = 'MEMBER',
 }

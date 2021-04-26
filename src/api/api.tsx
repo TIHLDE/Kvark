@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IFetch } from 'api/fetch';
-import { Study } from 'types/Enums';
+import { MembershipType, Study } from 'types/Enums';
 import {
   Category,
   Cheatsheet,
@@ -28,6 +28,7 @@ import {
   User,
   UserCreate,
   Warning,
+  Group,
 } from 'types/Types';
 
 export default {
@@ -122,6 +123,16 @@ export default {
 
   //Membership
   getMemberships: (slug: string) => IFetch<Membership[]>({ method: 'GET', url: `group/${slug}/membership/` }),
+  createMembership: (slug: string, userId: string) =>
+    IFetch<Membership>({ method: 'POST', url: `group/${slug}/membership/`, data: { user: { user_id: userId } } }),
+  deleteMembership: (slug: string, userId: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `group/${slug}/membership/${userId}/` }),
+  updateMembership: (slug: string, userId: string, data: { membership_type: MembershipType }) =>
+    IFetch<Membership>({ method: 'PUT', url: `group/${slug}/membership/${userId}/`, data }),
+
+  //Group
+  getGroups: () => IFetch<Group[]>({ method: 'GET', url: `group/` }),
+  getGroup: (slug: string) => IFetch<Group>({ method: 'GET', url: `group/${slug}/` }),
+  updateGroup: (slug: string, data: Group) => IFetch<Group>({ method: 'PUT', url: `group/${slug}/`, data }),
 
   // Pages
   getPageTree: () => IFetch<PageTree>({ method: 'GET', url: `page/tree/` }),

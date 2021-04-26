@@ -42,6 +42,7 @@ const NewsAdministration = lazy(() => import('containers/NewsAdministration'));
 const ShortLinks = lazy(() => import('containers/ShortLinks'));
 const SignUp = lazy(() => import('containers/SignUp'));
 const UserAdmin = lazy(() => import('containers/UserAdmin'));
+import GroupAdmin from 'containers/GroupAdmin/index';
 
 type AuthRouteProps = {
   apps?: Array<PermissionApp>;
@@ -143,6 +144,8 @@ const AppRoutes = () => {
         <Route element={<NewsAdministration />} path=':newsId/' />
         <Route element={<NewsAdministration />} path='' />
       </AuthRoute>
+
+      <Route element={<GroupAdmin />} path={`${URLS.groups}:slug/`} />
 
       <Route element={<LogIn />} path={URLS.login} />
       <Route element={<ForgotPassword />} path={URLS.forgotPassword} />
