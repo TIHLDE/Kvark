@@ -254,3 +254,12 @@ export interface PageTree {
 export interface Membership {
   user: User;
 }
+
+export interface Group {
+  name: string;
+  slug: string;
+  description: string;
+  contact_email: string;
+  type: string;
+  leader: Pick<User, 'user_id' | 'first_name' | 'last_name'>;
+}

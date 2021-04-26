@@ -13,13 +13,14 @@ import {
   JobPost,
   JobPostRequired,
   LoginRequestResponse,
-  Membership,
   News,
   NewsRequired,
   Notification,
   Page,
   PageTree,
   PageRequired,
+  Membership,
+  Group,
   PaginationResponse,
   Registration,
   RequestResponse,
@@ -82,6 +83,9 @@ export default {
   getUserData: () => IFetch<User>({ method: 'GET', url: `user/userdata/` }),
   getUsers: (filters?: any) => IFetch<PaginationResponse<User>>({ method: 'GET', url: `user/`, data: filters || {} }),
   updateUserData: (userName: string, item: Partial<User>) => IFetch<User>({ method: 'PUT', url: `user/${userName}/`, data: item }),
+
+  // Groups
+  getGroups: () => IFetch<Group[]>({ method: 'GET', url: `group/` }),
 
   // Notifications
   getNotifications: (filters?: any) => IFetch<PaginationResponse<Notification>>({ method: 'GET', url: `notification/`, data: filters || {} }),

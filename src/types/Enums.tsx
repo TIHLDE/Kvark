@@ -38,6 +38,7 @@ export enum UserClass {
 export enum PermissionApp {
   CHEATSHEET = 'cheatsheet',
   EVENT = 'event',
+  GROUP = 'group',
   JOBPOST = 'jobpost',
   NEWS = 'news',
   PAGE = 'page',
@@ -57,4 +58,10 @@ export enum FormFieldType {
   SINGLE_SELECT = 'SINGLE_SELECT',
   MULTIPLE_SELECT = 'MULTIPLE_SELECT',
   TEXT_ANSWER = 'TEXT_ANSWER',
+}
+
+export enum GroupTypes {
+  BOARD = 'BOARD',
+  COMMITTEE = 'COMMITTEE',
+  SUBGROUP = 'SUBGROUP',
 }
