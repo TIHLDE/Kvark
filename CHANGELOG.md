@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.0.8 (26.04.2021)
+
 - ⚡ **Fjern bilde**. Det er nå mulig å fjerne et bilde som er lagt til arrangementer, nyheter, annonser og sider.
 - ⚡ **Tilgangs-håndtering**. Endret håndtering av tilganger til nytt system hvor brukere får tilganger basert på medlemskap i grupper.
 - ✨ **Gruppe-administrator**. Nå er det mulig for de ulike gruppe-lederne å legge til medlemmer i gruppen.
