@@ -28,7 +28,6 @@ import {
   User,
   UserCreate,
   Warning,
-  Group,
 } from 'types/Types';
 
 export default {
@@ -85,9 +84,6 @@ export default {
   getUsers: (filters?: any) => IFetch<PaginationResponse<User>>({ method: 'GET', url: `user/`, data: filters || {} }),
   updateUserData: (userName: string, item: Partial<User>) => IFetch<User>({ method: 'PUT', url: `user/${userName}/`, data: item }),
   activateUser: (userName: string) => IFetch<RequestResponse>({ method: 'POST', url: `activate-user/`, data: { user_id: userName } }),
-
-  // Groups
-  getGroups: () => IFetch<Group[]>({ method: 'GET', url: `group/` }),
 
   // Notifications
   getNotifications: (filters?: any) => IFetch<PaginationResponse<Notification>>({ method: 'GET', url: `notification/`, data: filters || {} }),
