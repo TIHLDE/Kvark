@@ -83,6 +83,7 @@ export default {
   getUserData: () => IFetch<User>({ method: 'GET', url: `user/userdata/` }),
   getUsers: (filters?: any) => IFetch<PaginationResponse<User>>({ method: 'GET', url: `user/`, data: filters || {} }),
   updateUserData: (userName: string, item: Partial<User>) => IFetch<User>({ method: 'PUT', url: `user/${userName}/`, data: item }),
+  activateUser: (userName: string) => IFetch<RequestResponse>({ method: 'POST', url: `activate-user/`, data: { user_id: userName } }),
 
   // Groups
   getGroups: () => IFetch<Group[]>({ method: 'GET', url: `group/` }),

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { User } from 'types/Types';
-import { useUpdateUser } from 'api/hooks/User';
+import { useActivateUser } from 'api/hooks/User';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { getUserClass, getUserStudyShort } from 'utils';
 
@@ -21,7 +21,6 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
 
 // Project components
 import Avatar from 'components/miscellaneous/Avatar';
-import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 
 const useStyles = makeStyles((theme) => ({
@@ -52,27 +51,18 @@ export type PersonListItemProps = {
 
 const PersonListItem = ({ user }: PersonListItemProps) => {
   const classes = useStyles();
-  const updateUser = useUpdateUser();
+  const activateUser = useActivateUser();
   const showSnackbar = useSnackbar();
   const [expanded, setExpanded] = useState(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const changeStatus = (newStatus: boolean) => {
-    updateUser.mutate(
-      {
-        userId: user.user_id,
-        user: { is_TIHLDE_member: newStatus },
+  const changeStatus = () =>
+    activateUser.mutate(user.user_id, {
+      onSuccess: (data) => {
+        showSnackbar(data.detail, 'success');
       },
-      {
-        onSuccess: () => {
-          showSnackbar('Oppdateringen var vellykket', 'success');
-        },
-        onError: (e) => {
-          showSnackbar(e.detail, 'error');
-        },
+      onError: (e) => {
+        showSnackbar(e.detail, 'error');
       },
-    );
-  };
-
+    });
   return (
     <Paper className={classes.paper} noPadding>
       <ListItem button className={classes.wrapper} onClick={() => setExpanded((prev) => !prev)}>
@@ -94,22 +84,13 @@ const PersonListItem = ({ user }: PersonListItemProps) => {
             <Typography variant='subtitle1'>{`Brukernavn: ${user.user_id}`}</Typography>
             <Typography variant='subtitle1'>{`Epost: ${user.email}`}</Typography>
           </div>
-          <Button color='primary' fullWidth onClick={user.is_TIHLDE_member ? () => setDialogOpen(true) : () => changeStatus(true)} variant='outlined'>
-            {user.is_TIHLDE_member ? 'Fjern medlem' : 'Legg til medlem'}
-          </Button>
+          {!user.is_TIHLDE_member && (
+            <Button color='primary' fullWidth onClick={() => changeStatus()} variant='outlined'>
+              Legg til medlem
+            </Button>
+          )}
         </div>
       </Collapse>
-      <Dialog
-        confirmText='Jeg er sikker'
-        contentText='Brukeren vil miste mulighet til å logge inn, melde seg på arrangementer og se innhold som er kun for medlemmer.'
-        onClose={() => setDialogOpen(true)}
-        onConfirm={() => {
-          changeStatus(false);
-          setDialogOpen(false);
-        }}
-        open={dialogOpen}
-        titleText='Er du sikker?'
-      />
     </Paper>
   );
 };
