@@ -7,7 +7,6 @@ import Paper from 'components/layout/Paper';
 import PersonIcon from '@material-ui/icons/Person';
 import { useMemberships } from 'api/hooks/Membership';
 import StarIcon from '@material-ui/icons/Star';
-import { sortBy } from 'lodash';
 
 export type MembersCardProps = {
   slug: string;
@@ -23,7 +22,8 @@ const MembersCard = ({ slug }: MembersCardProps) => {
   const { data, isLoading } = useMemberships(slug.toLowerCase());
   const leader = data?.find((member) => member.membership_type === 'LEADER');
   const members = data?.filter((element) => element.membership_type === 'MEMBER');
-  const membersSorted = sortBy(members, ['user.first_name', 'user.last_name']);
+  const membersSorted = members?.sort((a, b) => `${a.user.first_name} ${a.user.last_name}`.localeCompare(`${b.user.first_name} ${b.user.last_name}`));
+
   const classes = useStyles();
 
   if (isLoading) {
@@ -52,7 +52,7 @@ const MembersCard = ({ slug }: MembersCardProps) => {
             </Box>
           </Grid>
         )}
-        {Boolean(membersSorted.length) && (
+        {Boolean(membersSorted?.length) && (
           <Grid item xs={12}>
             <Typography variant='subtitle1'>
               <b>Medlemmer:</b>

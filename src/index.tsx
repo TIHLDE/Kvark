@@ -42,7 +42,7 @@ const NewsAdministration = lazy(() => import('containers/NewsAdministration'));
 const ShortLinks = lazy(() => import('containers/ShortLinks'));
 const SignUp = lazy(() => import('containers/SignUp'));
 const UserAdmin = lazy(() => import('containers/UserAdmin'));
-import GroupAdmin from 'containers/GroupAdmin/index';
+const GroupAdmin = lazy(() => import('containers/GroupAdmin/index'));
 
 type AuthRouteProps = {
   apps?: Array<PermissionApp>;

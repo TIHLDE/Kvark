@@ -85,7 +85,9 @@ const Group = () => {
               <Typography gutterBottom variant='subtitle1'>
                 <b>Medlemmer:</b>
               </Typography>
-              {membersSorted && membersSorted.map((member) => <MemberListItem key={member.user_id} slug={slug} user={member} />)}
+              {membersSorted.map((member) => (
+                <MemberListItem key={member.user_id} slug={slug} user={member} />
+              ))}
               <Button color='primary' onClick={() => setAddMemberModalIsOpen(true)} startIcon={<AddIcon />} variant='contained'>
                 Legg til medlem
               </Button>
