@@ -2,7 +2,7 @@ import parseISO from 'date-fns/parseISO';
 import { Link } from 'react-router-dom';
 import { formatDate } from 'utils';
 import { JobPost } from 'types/Types';
-import { Groups } from 'types/Enums';
+import { PermissionApp } from 'types/Enums';
 import URLS from 'URLS';
 import { HavePermission } from 'api/hooks/User';
 
@@ -17,6 +17,7 @@ import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 import Paper from 'components/layout/Paper';
+import ShareButton from 'components/miscellaneous/ShareButton';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -94,8 +95,9 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
             Søk
           </Button>
         )}
+        <ShareButton className={classes.button} color='default' fullWidth shareId={data.id} shareType='jobpost' title={data.title} />
         {!preview && (
-          <HavePermission groups={[Groups.HS, Groups.INDEX, Groups.NOK]}>
+          <HavePermission apps={[PermissionApp.JOBPOST]}>
             <Button className={classes.button} color='primary' component={Link} fullWidth to={`${URLS.jobpostsAdmin}${data.id}/`} variant='outlined'>
               Endre annonse
             </Button>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { usePalette } from 'react-palette';
 import { News } from 'types/Types';
-import { Groups } from 'types/Enums';
+import { PermissionApp } from 'types/Enums';
 import { HavePermission } from 'api/hooks/User';
 
 // Material UI Components
@@ -18,6 +18,7 @@ import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 import Paper from 'components/layout/Paper';
 import Container from 'components/layout/Container';
+import ShareButton from 'components/miscellaneous/ShareButton';
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -62,6 +63,14 @@ const useStyles = makeStyles((theme) => ({
   button: {
     height: 50,
   },
+  shareButton: {
+    width: 'fit-content',
+    marginRight: theme.spacing(1),
+  },
+  flex: {
+    display: 'flex',
+    alignItems: 'center',
+  },
 }));
 
 export type NewsRendererProps = {
@@ -93,13 +102,16 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
       <Container className={classes.content} maxWidth='lg'>
         <AspectRatioImg alt={data.image_alt || data.title} imgClassName={classes.image} src={data.image} />
         {!preview && (
-          <HavePermission groups={[Groups.HS, Groups.INDEX]}>
+          <HavePermission apps={[PermissionApp.NEWS]}>
             <Button className={classes.button} color='primary' component={Link} fullWidth to={`${URLS.newsAdmin}${data.id}/`} variant='outlined'>
               Endre nyhet
             </Button>
           </HavePermission>
         )}
-        <Typography variant='subtitle2'>Publisert: {formatDate(parseISO(data.created_at))}</Typography>
+        <div className={classes.flex}>
+          <ShareButton className={classes.shareButton} shareId={data.id} shareType='news' title={data.title} />
+          <Typography variant='subtitle2'>Publisert: {formatDate(parseISO(data.created_at))}</Typography>
+        </div>
         <Paper>
           <MarkdownRenderer value={data.body} />
         </Paper>

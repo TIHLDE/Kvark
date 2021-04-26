@@ -2,12 +2,12 @@ import { ReactNode } from 'react';
 import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
 import { User, UserCreate, LoginRequestResponse, PaginationResponse, RequestResponse } from 'types/Types';
-import { Groups } from 'types/Enums';
+import { PermissionApp } from 'types/Enums';
 import { getCookie, setCookie, removeCookie } from 'api/cookie';
 import { ACCESS_TOKEN } from 'constant';
 
 export const USER_QUERY_KEY = 'user';
-const QUERY_KEY_USERS = 'users';
+export const USERS_QUERY_KEY = 'users';
 
 export const useUser = () => {
   const isAuthenticated = useIsAuthenticated();
@@ -24,7 +24,7 @@ export const useRefreshUser = () => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useUsers = (filters?: any) => {
   return useInfiniteQuery<PaginationResponse<User>, RequestResponse>(
-    [QUERY_KEY_USERS, filters],
+    [USERS_QUERY_KEY, filters],
     ({ pageParam = 1 }) => API.getUsers({ ...filters, page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.next,
@@ -67,7 +67,7 @@ export const useUpdateUser = (): UseMutationResult<User, RequestResponse, { user
   const queryClient = useQueryClient();
   return useMutation(({ userId, user }) => API.updateUserData(userId, user), {
     onSuccess: (data) => {
-      queryClient.invalidateQueries(QUERY_KEY_USERS);
+      queryClient.invalidateQueries(USERS_QUERY_KEY);
       const user = queryClient.getQueryData<User | undefined>(USER_QUERY_KEY);
       if (data.user_id === user?.user_id) {
         queryClient.setQueryData(USER_QUERY_KEY, data);
@@ -76,17 +76,17 @@ export const useUpdateUser = (): UseMutationResult<User, RequestResponse, { user
   });
 };
 
-export const useHavePermission = (groups: Array<Groups>) => {
-  const { data, isLoading } = useUser();
-  return { allowAccess: isLoading ? false : Boolean(data?.groups.some((group) => groups.includes(group))), isLoading };
+export const useHavePermission = (apps: Array<PermissionApp>) => {
+  const { data: user, isLoading } = useUser();
+  return { allowAccess: isLoading ? false : Boolean(apps.some((app) => user?.permissions[app].write)), isLoading };
 };
 
 export type HavePermissionProps = {
   children: ReactNode;
-  groups: Array<Groups>;
+  apps: Array<PermissionApp>;
 };
 
-export const HavePermission = ({ children, groups }: HavePermissionProps) => {
-  const { allowAccess } = useHavePermission(groups);
+export const HavePermission = ({ children, apps }: HavePermissionProps) => {
+  const { allowAccess } = useHavePermission(apps);
   return <>{allowAccess && children}</>;
 };

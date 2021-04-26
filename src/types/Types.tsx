@@ -1,4 +1,4 @@
-import { Groups, WarningType, Study, CheatsheetType, UserClass, UserStudy } from 'types/Enums';
+import { FormFieldType, FormResourceType, FormType, PermissionApp, WarningType, Study, CheatsheetType, UserClass, UserStudy } from 'types/Enums';
 
 export interface Warning {
   created_at: string;
@@ -26,25 +26,30 @@ export interface FileUploadResponse {
   url: string;
 }
 
+export interface Permissions {
+  write: boolean;
+  read: boolean;
+}
+
 export interface User {
-  user_id: string;
-  first_name: string;
-  last_name: string;
-  image: string;
-  email: string;
-  cell: number;
-  home_busstop?: string;
-  gender: number;
-  user_class: number;
-  user_study: number;
-  allergy: string;
-  tool: string;
   app_token: string;
-  is_TIHLDE_member: boolean;
-  events: Array<EventCompact>;
-  groups: Array<Groups>;
-  unread_notifications: number;
+  allergy: string;
   badges: Array<Badge>;
+  cell: number;
+  email: string;
+  events: Array<EventCompact>;
+  first_name: string;
+  gender: number;
+  home_busstop?: string;
+  image: string;
+  is_TIHLDE_member: boolean;
+  last_name: string;
+  permissions: Record<PermissionApp, Permissions>;
+  tool: string;
+  unread_notifications: number;
+  user_class: number;
+  user_id: string;
+  user_study: number;
 }
 export type UserCreate = Pick<User, 'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study'> & {
   password: string;
@@ -111,6 +116,7 @@ export interface Event {
   end_date: string;
   end_registration_at: string;
   evaluate_link: string;
+  evaluation: string;
   expired: boolean;
   id: number;
   image?: string;
@@ -124,6 +130,7 @@ export interface Event {
   sign_up: boolean;
   start_date: string;
   start_registration_at: string;
+  survey: string;
   title: string;
   updated_at: string;
   waiting_list_count: number;
@@ -143,6 +150,53 @@ export interface Registration {
   is_on_wait: boolean;
   registration_id: number;
   user_info: Pick<User, 'allergy' | 'email' | 'first_name' | 'last_name' | 'image' | 'user_class' | 'user_id' | 'user_study'>;
+}
+
+export interface Form {
+  id?: string;
+  title: string;
+  type: FormType;
+  fields: Array<TextFormField | SelectFormField>;
+  resource_type: FormResourceType;
+}
+
+export interface EventForm extends Form {
+  type: FormType.SURVEY;
+  event: number;
+  resource_type: FormResourceType.EVENT_FORM;
+}
+
+export interface FormField {
+  id?: string;
+  title: string;
+  required: boolean;
+}
+
+export interface TextFormField extends FormField {
+  options: Array<unknown>;
+  type: FormFieldType.TEXT_ANSWER;
+}
+
+export interface SelectFormField extends FormField {
+  options: Array<SelectFormFieldOption>;
+  type: FormFieldType.MULTIPLE_SELECT | FormFieldType.SINGLE_SELECT;
+}
+
+export interface SelectFormFieldOption {
+  id?: string;
+  title: string;
+}
+
+export interface FieldSubmission {
+  field: string;
+}
+
+export interface TextFieldSubmission extends FieldSubmission {
+  text_answer: string;
+}
+
+export interface SelectFieldSubmission extends FieldSubmission {
+  selected_options: Array<string>;
 }
 
 export interface CompaniesEmail {

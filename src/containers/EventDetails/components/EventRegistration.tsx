@@ -1,9 +1,12 @@
 import { ComponentType, useState } from 'react';
-import { Event, User } from 'types/Types';
+import { Event, User, TextFieldSubmission, SelectFieldSubmission } from 'types/Types';
+import { FormFieldType } from 'types/Enums';
 import URLS from 'URLS';
 import { getUserStudyShort, shortDownString } from 'utils';
 import { useCreateEventRegistration } from 'api/hooks/Event';
+import { useFormById } from 'api/hooks/Form';
 import { useSnackbar } from 'api/hooks/Snackbar';
+import { useForm } from 'react-hook-form';
 
 // Material UI Components
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -21,6 +24,7 @@ import HomeIcon from '@material-ui/icons/HomeRounded';
 
 // Project components
 import Paper from 'components/layout/Paper';
+import FormView from 'components/forms/FormView';
 
 const useStyles = makeStyles((theme: Theme) => ({
   list: {
@@ -28,7 +32,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: 'column',
   },
   infoPaper: {
-    padding: theme.spacing(2),
     margin: theme.spacing(1, 0),
   },
   icon: {
@@ -70,17 +73,33 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
   const classes = useStyles();
   const createRegistration = useCreateEventRegistration(event.id);
   const showSnackbar = useSnackbar();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [questionsAnswered, setQuestionsAnswered] = useState(true);
+  const { data: form, isLoading: isFormLoading } = useFormById(event.survey || '-');
   const [isLoading, setIsLoading] = useState(false);
   const [agreeRules, setAgreeRules] = useState(false);
   const [allowPhoto, setAllowPhoto] = useState(true);
   const allergy = user.allergy ? shortDownString(user.allergy, 20) : 'Ingen';
 
-  const register = async () => {
+  const { register, handleSubmit, errors, setError } = useForm();
+
+  const submit = async (data: { answers?: Array<TextFieldSubmission | SelectFieldSubmission> }) => {
     setIsLoading(true);
-    await createRegistration.mutate(
-      { allow_photo: allowPhoto },
+    try {
+      data.answers?.forEach((answer, index) => {
+        const field = form?.fields.find((field) => field.id === answer.field);
+        if (field && field.type === FormFieldType.MULTIPLE_SELECT && field.required) {
+          const ans = answer as SelectFieldSubmission;
+          if (!ans.selected_options.length) {
+            throw new Error(`answers[${index}].selected_options`);
+          }
+        }
+      });
+    } catch (e) {
+      setError(e.message, { message: 'Du må velge ett eller flere alternativ' });
+      setIsLoading(false);
+      return;
+    }
+    createRegistration.mutate(
+      { allow_photo: allowPhoto, ...data },
       {
         onSuccess: () => {
           showSnackbar('Påmeldingen var vellykket', 'success');
@@ -88,9 +107,11 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
         onError: (e) => {
           showSnackbar(e.detail, 'error');
         },
+        onSettled: () => {
+          setIsLoading(false);
+        },
       },
     );
-    setIsLoading(false);
   };
 
   return (
@@ -100,14 +121,20 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
           Vennligst se over at følgende opplysninger stemmer. Dine opplysninger vil bli delt med TIHLDE. Du kan endre informasjonen i profilen din, også etter
           påmelding!
         </Typography>
-        <div className={classes.list}>
-          <Paper className={classes.infoPaper} noPadding>
+        <form className={classes.list} onSubmit={handleSubmit(submit)}>
+          <Paper className={classes.infoPaper}>
             <ListItem icon={PersonIcon} text={'Navn: ' + user.first_name + ' ' + user.last_name} />
             <ListItem icon={MailIcon} text={'Epost: ' + user.email} />
             <ListItem icon={SchoolIcon} text={'Studieprogram: ' + getUserStudyShort(user.user_study)} />
             <ListItem icon={HomeIcon} text={'Klasse: ' + user.user_class} />
             <ListItem icon={AllergyIcon} text={'Allergier: ' + allergy} />
           </Paper>
+          {form !== undefined && (
+            <Paper className={classes.infoPaper}>
+              <Typography variant='h3'>Spørsmål</Typography>
+              <FormView errors={errors} form={form} register={register} />
+            </Paper>
+          )}
           <FormControlLabel
             control={<Checkbox checked={allowPhoto} onChange={(e) => setAllowPhoto(e.target.checked)} />}
             disabled={isLoading}
@@ -121,16 +148,10 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
           <a href={URLS.eventRules} rel='noopener noreferrer' target='_blank'>
             <Typography variant='caption'>Les arrangementsreglene her (åpnes i ny fane)</Typography>
           </a>
-          <Button
-            className={classes.button}
-            color='primary'
-            disabled={isLoading || !agreeRules || !questionsAnswered}
-            fullWidth
-            onClick={register}
-            variant='contained'>
+          <Button className={classes.button} color='primary' disabled={isLoading || isFormLoading || !agreeRules} fullWidth type='submit' variant='contained'>
             Meld deg på
           </Button>
-        </div>
+        </form>
       </div>
     </>
   );

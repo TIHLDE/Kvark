@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { EventCompact, News, JobPost } from 'types/Types';
 import { parseISO } from 'date-fns';
 import { urlEncode, formatDate } from 'utils';

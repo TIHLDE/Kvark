@@ -8,7 +8,7 @@ import { usePageTree, useCreatePage, useUpdatePage, useDeletePage } from 'api/ho
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { HavePermission } from 'api/hooks/User';
 import { Page, PageTree } from 'types/Types';
-import { Groups } from 'types/Enums';
+import { PermissionApp } from 'types/Enums';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -250,7 +250,7 @@ const PagesAdmin = ({ page }: IPagesAdminProps) => {
   };
 
   return (
-    <HavePermission groups={[Groups.HS, Groups.INDEX]}>
+    <HavePermission apps={[PermissionApp.PAGE]}>
       {page.path !== '' && (
         <Button className={classes.button} color='inherit' fullWidth onClick={edit} variant='outlined'>
           Rediger side

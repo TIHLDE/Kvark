@@ -2,31 +2,32 @@
 import { IFetch } from 'api/fetch';
 import { Study } from 'types/Enums';
 import {
-  User,
-  UserCreate,
+  Category,
+  Cheatsheet,
+  CompaniesEmail,
   Event,
   EventCompact,
   EventRequired,
   FileUploadResponse,
-  Registration,
+  Form,
   JobPost,
   JobPostRequired,
+  LoginRequestResponse,
   News,
   NewsRequired,
   Notification,
-  Category,
-  Warning,
-  RequestResponse,
-  CompaniesEmail,
-  PaginationResponse,
-  LoginRequestResponse,
-  Cheatsheet,
-  ShortLink,
   Page,
   PageTree,
   PageRequired,
   Membership,
   Group,
+  PaginationResponse,
+  Registration,
+  RequestResponse,
+  ShortLink,
+  User,
+  UserCreate,
+  Warning,
 } from 'types/Types';
 
 export default {
@@ -57,6 +58,12 @@ export default {
   updateRegistration: (eventId: number, item: Partial<Registration>, userId: string) =>
     IFetch<Registration>({ method: 'PUT', url: `events/${String(eventId)}/users/${userId}/`, data: item }),
   deleteRegistration: (eventId: number, userId: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `events/${String(eventId)}/users/${userId}/` }),
+
+  // Forms
+  getForm: (formId: string) => IFetch<Form>({ method: 'GET', url: `forms/${formId}/` }),
+  createForm: (item: Form) => IFetch<Form>({ method: 'POST', url: `forms/`, data: item }),
+  updateForm: (formId: string, item: Form) => IFetch<Form>({ method: 'PUT', url: `forms/${formId}/`, data: item }),
+  deleteForm: (formId: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `forms/${formId}/` }),
 
   // Job posts
   getJobPosts: (filters: any = {}) => IFetch<PaginationResponse<JobPost>>({ method: 'GET', url: `jobpost/`, data: filters }),
