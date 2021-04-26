@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import classNames from 'classnames';
-import { Groups } from 'types/Enums';
+import { PermissionApp } from 'types/Enums';
 import { useUser, useHavePermission } from 'api/hooks/User';
 
 // Material-UI
@@ -106,7 +106,7 @@ export type ProfilePaperProps = { logoutMethod: () => void };
 const ProfilePaper = ({ logoutMethod }: ProfilePaperProps) => {
   const classes = useStyles();
   const { data: user } = useUser();
-  const { allowAccess: isAdmin } = useHavePermission([Groups.HS, Groups.PROMO, Groups.INDEX, Groups.NOK]);
+  const { allowAccess: isAdmin } = useHavePermission([PermissionApp.EVENT, PermissionApp.JOBPOST, PermissionApp.NEWS, PermissionApp.USER]);
   const [showModal, setShowModal] = useState(false);
   const eventTab = { label: 'Arrangementer', icon: EventIcon };
   const notificationsTab = { label: 'Varsler', icon: NotificationsIcon, badge: user?.unread_notifications };

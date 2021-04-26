@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
     height: 400,
     maxHeight: '90vh',
   },
+  remove: {
+    color: theme.palette.error.main,
+  },
 }));
 
 export type ImageUploadProps = ButtonProps &
@@ -128,6 +131,11 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
           </label>
         </div>
         {Boolean(errors[name]) && <FormHelperText error>{errors[name]?.message}</FormHelperText>}
+        {url && (
+          <Button className={classes.remove} color='primary' disabled={isLoading} fullWidth onClick={() => setValue(name, '')}>
+            Fjern bilde
+          </Button>
+        )}
       </Paper>
       <Dialog
         closeText='Avbryt'
@@ -184,6 +192,11 @@ export const FileUpload = ({ register, watch, setValue, name, errors = {}, rules
         </label>
       </div>
       {Boolean(errors[name]) && <FormHelperText error>{errors[name]?.message}</FormHelperText>}
+      {url && (
+        <Button className={classes.remove} color='primary' disabled={isLoading} fullWidth onClick={() => setValue(name, '')}>
+          Fjern fil
+        </Button>
+      )}
     </Paper>
   );
 };

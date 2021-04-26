@@ -1,4 +1,15 @@
-import { FormFieldType, FormResourceType, FormType, Groups, WarningType, Study, CheatsheetType, UserClass, UserStudy } from 'types/Enums';
+import {
+  FormFieldType,
+  FormResourceType,
+  FormType,
+  MembershipType,
+  PermissionApp,
+  WarningType,
+  Study,
+  CheatsheetType,
+  UserClass,
+  UserStudy,
+} from 'types/Enums';
 
 export interface Warning {
   created_at: string;
@@ -26,25 +37,30 @@ export interface FileUploadResponse {
   url: string;
 }
 
+export interface Permissions {
+  write: boolean;
+  read: boolean;
+}
+
 export interface User {
-  user_id: string;
-  first_name: string;
-  last_name: string;
-  image: string;
-  email: string;
-  cell: number;
-  home_busstop?: string;
-  gender: number;
-  user_class: number;
-  user_study: number;
-  allergy: string;
-  tool: string;
   app_token: string;
-  is_TIHLDE_member: boolean;
-  events: Array<EventCompact>;
-  groups: Array<Groups>;
-  unread_notifications: number;
+  allergy: string;
   badges: Array<Badge>;
+  cell: number;
+  email: string;
+  events: Array<EventCompact>;
+  first_name: string;
+  gender: number;
+  home_busstop?: string;
+  image: string;
+  is_TIHLDE_member: boolean;
+  last_name: string;
+  permissions: Record<PermissionApp, Permissions>;
+  tool: string;
+  unread_notifications: number;
+  user_class: number;
+  user_id: string;
+  user_study: number;
 }
 export type UserCreate = Pick<User, 'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study'> & {
   password: string;
@@ -248,4 +264,15 @@ export interface PageTree {
 }
 export interface Membership {
   user: User;
+  membership_type: MembershipType;
+  group: Group;
+}
+export interface Group {
+  name: string;
+  slug: string;
+  description: string;
+  contact_email: string;
+  type: string;
+  leader: User;
+  permissions: Permissions;
 }

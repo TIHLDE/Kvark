@@ -12,6 +12,15 @@ declare module '@material-ui/core/styles/createPalette' {
 
   interface Palette {
     borderWidth: string;
+    blurred: {
+      backdropFilter: string;
+      '-webkit-backdrop-filter': string;
+    };
+    transparent: {
+      boxShadow: string;
+      border: string;
+      background: string;
+    };
     colors: {
       footer: string;
       tihlde: string;
@@ -34,6 +43,15 @@ declare module '@material-ui/core/styles/createPalette' {
 
   interface PaletteOptions {
     borderWidth: string;
+    blurred: {
+      backdropFilter: string;
+      '-webkit-backdrop-filter': string;
+    };
+    transparent: {
+      boxShadow: string;
+      border: string;
+      background: string;
+    };
     colors: {
       footer: string;
       tihlde: string;
@@ -124,6 +142,15 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       text: {
         secondary: get<string>({ light: '#333333', dark: '#cccccc' }),
       },
+      blurred: {
+        backdropFilter: `blur(5px)`,
+        '-webkit-backdrop-filter': `blur(5px)`,
+      },
+      transparent: {
+        background: get<string>({ light: '#f6f5f340', dark: '#61616160' }),
+        border: get<string>({ light: '1px solid #d7d7d75c', dark: '1px solid #4545453b' }),
+        boxShadow: `0 8px 32px 0 ${get<string>({ light: '#cab2e7', dark: '#26292d' })}52`,
+      },
       borderWidth: '1px',
       background: {
         default: get<string>({ light: '#f8f8fa', dark: '#121519' }),
@@ -165,11 +192,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       },
       h3: {
         fontSize: '1.5rem',
-      },
-      h4: {
-        fontSize: '2.2rem',
-        fontFamily: 'Oswald, Roboto, sans-serif',
-        fontWeight: 700,
+        fontFamily: 'Cabin, Roboto, sans-serif',
       },
     },
   });

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import classnames from 'classnames';
 import { Event } from 'types/Types';
-import { Groups } from 'types/Enums';
+import { PermissionApp } from 'types/Enums';
 import URLS from 'URLS';
 import { parseISO, isPast, isFuture } from 'date-fns';
 import { formatDate, getICSFromEvent } from 'utils';
@@ -285,7 +285,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             Legg til i kalender
           </Button>
           {!preview && (
-            <HavePermission groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]}>
+            <HavePermission apps={[PermissionApp.EVENT]}>
               <Button component={Link} fullWidth to={`${URLS.eventAdmin}${data.id}/`} variant='outlined'>
                 Endre arrangement
               </Button>

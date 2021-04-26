@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
 import { User, UserCreate, LoginRequestResponse, PaginationResponse, RequestResponse } from 'types/Types';
-import { Groups } from 'types/Enums';
+import { PermissionApp } from 'types/Enums';
 import { getCookie, setCookie, removeCookie } from 'api/cookie';
 import { ACCESS_TOKEN } from 'constant';
 
@@ -76,17 +76,26 @@ export const useUpdateUser = (): UseMutationResult<User, RequestResponse, { user
   });
 };
 
-export const useHavePermission = (groups: Array<Groups>) => {
-  const { data, isLoading } = useUser();
-  return { allowAccess: isLoading ? false : Boolean(data?.groups.some((group) => groups.includes(group))), isLoading };
+export const useActivateUser = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation((userId) => API.activateUser(userId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(USERS_QUERY_KEY);
+    },
+  });
+};
+
+export const useHavePermission = (apps: Array<PermissionApp>) => {
+  const { data: user, isLoading } = useUser();
+  return { allowAccess: isLoading ? false : Boolean(apps.some((app) => user?.permissions[app].write)), isLoading };
 };
 
 export type HavePermissionProps = {
   children: ReactNode;
-  groups: Array<Groups>;
+  apps: Array<PermissionApp>;
 };
 
-export const HavePermission = ({ children, groups }: HavePermissionProps) => {
-  const { allowAccess } = useHavePermission(groups);
+export const HavePermission = ({ children, apps }: HavePermissionProps) => {
+  const { allowAccess } = useHavePermission(apps);
   return <>{allowAccess && children}</>;
 };

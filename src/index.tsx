@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import URLS from 'URLS';
 import 'delayed-scroll-restoration-polyfill';
-import { Groups } from 'types/Enums';
+import { PermissionApp } from 'types/Enums';
 
 // Services
 import { ThemeProvider } from 'context/ThemeContext';
@@ -33,6 +33,7 @@ import Profile from 'containers/Profile';
 const EventAdministration = lazy(() => import('containers/EventAdministration'));
 const EventRegistration = lazy(() => import('containers/EventRegistration'));
 const ForgotPassword = lazy(() => import('containers/ForgotPassword'));
+const GroupOverview = lazy(() => import('containers/GroupOverview'));
 const Http404 = lazy(() => import('containers/Http404'));
 const JobPostAdministration = lazy(() => import('containers/JobPostAdministration'));
 const LogIn = lazy(() => import('containers/LogIn'));
@@ -41,25 +42,26 @@ const NewsAdministration = lazy(() => import('containers/NewsAdministration'));
 const ShortLinks = lazy(() => import('containers/ShortLinks'));
 const SignUp = lazy(() => import('containers/SignUp'));
 const UserAdmin = lazy(() => import('containers/UserAdmin'));
+const GroupAdmin = lazy(() => import('containers/GroupAdmin/index'));
 
 type AuthRouteProps = {
-  groups?: Array<Groups>;
+  apps?: Array<PermissionApp>;
   path: string;
   element?: ReactElement | null;
   children?: ReactNode;
 };
 
-const AuthRoute = ({ groups = [], children, path, element }: AuthRouteProps) => {
+const AuthRoute = ({ apps = [], children, path, element }: AuthRouteProps) => {
   const { setLogInRedirectURL } = useMisc();
   const isAuthenticated = useIsAuthenticated();
-  const { allowAccess, isLoading } = useHavePermission(groups);
+  const { allowAccess, isLoading } = useHavePermission(apps);
 
   if (isLoading) {
     return <Navigation isLoading noFooter />;
   } else if (!isAuthenticated) {
     setLogInRedirectURL(window.location.pathname);
     return <Navigate to={URLS.login} />;
-  } else if (allowAccess || !groups.length) {
+  } else if (allowAccess || !apps.length) {
     return (
       <Route element={element} path={path}>
         {children}
@@ -108,11 +110,12 @@ const AppRoutes = () => {
     <Routes>
       <Route element={<Landing />} path='/' />
       <Route path={URLS.events}>
-        <AuthRoute element={<EventRegistration />} groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]} path=':id/registrering/' />
+        <AuthRoute apps={[PermissionApp.EVENT]} element={<EventRegistration />} path=':id/registrering/' />
         <Route element={<EventDetails />} path=':id/*' />
         <Route element={<Events />} path='' />
       </Route>
       <Route element={<Companies />} path={URLS.company} />
+      <Route element={<GroupOverview />} path={URLS.groups} />
       <Route element={<Profile />} path={URLS.profile} />
       <Route path={URLS.jobposts}>
         <Route element={<JobPostDetails />} path=':id/*' />
@@ -128,19 +131,21 @@ const AppRoutes = () => {
       <AuthRoute element={<Cheatsheet />} path={`${URLS.cheatsheet}*`} />
       <AuthRoute element={<ShortLinks />} path={URLS.shortLinks} />
 
-      <AuthRoute element={<UserAdmin />} groups={[Groups.HS, Groups.INDEX]} path={URLS.userAdmin} />
-      <AuthRoute groups={[Groups.HS, Groups.INDEX, Groups.NOK]} path={URLS.jobpostsAdmin}>
+      <AuthRoute apps={[PermissionApp.USER]} element={<UserAdmin />} path={URLS.userAdmin} />
+      <AuthRoute apps={[PermissionApp.JOBPOST]} path={URLS.jobpostsAdmin}>
         <Route element={<JobPostAdministration />} path=':jobPostId/' />
         <Route element={<JobPostAdministration />} path='' />
       </AuthRoute>
-      <AuthRoute groups={[Groups.HS, Groups.INDEX, Groups.NOK, Groups.PROMO]} path={URLS.eventAdmin}>
+      <AuthRoute apps={[PermissionApp.EVENT]} path={URLS.eventAdmin}>
         <Route element={<EventAdministration />} path=':eventId/' />
         <Route element={<EventAdministration />} path='' />
       </AuthRoute>
-      <AuthRoute groups={[Groups.HS, Groups.INDEX]} path={URLS.newsAdmin}>
+      <AuthRoute apps={[PermissionApp.NEWS]} path={URLS.newsAdmin}>
         <Route element={<NewsAdministration />} path=':newsId/' />
         <Route element={<NewsAdministration />} path='' />
       </AuthRoute>
+
+      <Route element={<GroupAdmin />} path={`${URLS.groups}:slug/`} />
 
       <Route element={<LogIn />} path={URLS.login} />
       <Route element={<ForgotPassword />} path={URLS.forgotPassword} />
