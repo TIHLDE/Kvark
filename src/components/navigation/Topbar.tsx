@@ -46,10 +46,7 @@ const useStyles = makeStyles<Theme, Pick<TopbarProps, 'whiteOnLight'>>((theme) =
     ...theme.palette.transparent,
     backgroundColor: (props) =>
       props.whiteOnLight && theme.palette.type === 'light' ? `${theme.palette.common.white}bf` : `${theme.palette.colors.gradient.main.top}bf`,
-    borderTop: 'none',
-    borderRight: 'none',
-    borderLeft: 'none',
-    borderBottom: 'none',
+    border: 'none',
     boxShadow: 'none',
   },
   toolbar: {
@@ -199,6 +196,8 @@ const Topbar = ({ fancyNavbar = false, whiteOnLight = false }: TopbarProps) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const isOnTop = useMemo(() => scrollLength < 20, [scrollLength]);
+
   const items = useMemo(
     () =>
       [
@@ -232,11 +231,11 @@ const Topbar = ({ fancyNavbar = false, whiteOnLight = false }: TopbarProps) => {
     <AppBar
       className={classNames(
         classes.appBar,
-        fancyNavbar && scrollLength < 20 && !sidebarOpen && classes.fancyAppBar,
-        fancyNavbar && scrollLength > 20 && !sidebarOpen && classes.backdrop,
+        fancyNavbar && isOnTop && !sidebarOpen && classes.fancyAppBar,
+        fancyNavbar && !isOnTop && !sidebarOpen && classes.backdrop,
       )}
       color='primary'
-      elevation={(fancyNavbar && scrollLength < 20) || sidebarOpen ? 0 : 1}
+      elevation={(fancyNavbar && isOnTop) || sidebarOpen ? 0 : 1}
       position='fixed'>
       <Toolbar className={classes.toolbar} disableGutters>
         <Link to={URLS.landing}>
