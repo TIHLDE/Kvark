@@ -181,14 +181,14 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
     },
     typography: {
       h1: {
-        fontSize: '3.1rem',
-        fontFamily: 'Oswald, Roboto, sans-serif',
-        fontWeight: 900,
-      },
-      h2: {
-        fontSize: '2.2rem',
+        fontSize: '3rem',
         fontFamily: 'Oswald, Roboto, sans-serif',
         fontWeight: 700,
+      },
+      h2: {
+        fontSize: '2rem',
+        fontFamily: 'Oswald, Roboto, sans-serif',
+        fontWeight: 500,
       },
       h3: {
         fontSize: '1.5rem',

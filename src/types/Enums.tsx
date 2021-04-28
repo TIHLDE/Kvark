@@ -53,6 +53,16 @@ export enum Groups {
   DRIFT = 'Drift',
 }
 
+export enum GroupType {
+  TIHLDE = 'TIHLDE',
+  BOARD = 'BOARD',
+  SUBGROUP = 'SUBGROUP',
+  COMMITTEE = 'COMMITTEE',
+  STUDYYEAR = 'STUDYYEAR',
+  INTERESTGROUP = 'INTERESTGROUP',
+  OTHER = 'OTHER',
+}
+
 export enum FormType {
   SURVEY = 'SURVEY',
   EVALUTATION = 'EVALUTATION',

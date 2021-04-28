@@ -5,6 +5,7 @@ import {
   MembershipType,
   PermissionApp,
   WarningType,
+  GroupType,
   Study,
   CheatsheetType,
   UserClass,
@@ -272,7 +273,7 @@ export interface Group {
   slug: string;
   description: string;
   contact_email: string;
-  type: string;
+  type: GroupType;
   leader: User;
   permissions: Permissions;
 }
