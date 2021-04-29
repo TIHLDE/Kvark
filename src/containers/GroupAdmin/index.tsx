@@ -69,14 +69,15 @@ const Group = () => {
         <title>{data.name}</title>
       </Helmet>
       {isLoadingMembers || !membersSorted ? (
-        <>
-          <Paper className={classes.gutterBottom}>
-            <Skeleton height='100px' variant='rect' />
-          </Paper>
-          <Paper>
-            <Skeleton height='200px' variant='rect' />
-          </Paper>
-        </>
+        <Paper className={classes.list}>
+          <Skeleton height={45} width={160} />
+          <Skeleton width={120} />
+          <Skeleton height={45} width={190} />
+          <Skeleton width={140} />
+          <Skeleton width={150} />
+          <Skeleton width={130} />
+          <Skeleton width={160} />
+        </Paper>
       ) : (
         <>
           {hasWriteAcccess ? (
