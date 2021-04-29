@@ -3,6 +3,7 @@ import API from 'api/api';
 import { Group, RequestResponse } from 'types/Types';
 
 export const GROUPS_QUERY_KEY = 'groups';
+
 export const useGroup = (slug: string) => {
   return useQuery<Group, RequestResponse>([GROUPS_QUERY_KEY, slug], () => API.getGroup(slug));
 };

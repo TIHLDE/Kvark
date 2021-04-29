@@ -53,16 +53,6 @@ export enum Groups {
   DRIFT = 'Drift',
 }
 
-export enum GroupType {
-  TIHLDE = 'TIHLDE',
-  BOARD = 'BOARD',
-  SUBGROUP = 'SUBGROUP',
-  COMMITTEE = 'COMMITTEE',
-  STUDYYEAR = 'STUDYYEAR',
-  INTERESTGROUP = 'INTERESTGROUP',
-  OTHER = 'OTHER',
-}
-
 export enum FormType {
   SURVEY = 'SURVEY',
   EVALUTATION = 'EVALUTATION',
@@ -78,12 +68,17 @@ export enum FormFieldType {
   TEXT_ANSWER = 'TEXT_ANSWER',
 }
 
-export enum GroupTypes {
-  BOARD = 'BOARD',
-  COMMITTEE = 'COMMITTEE',
-  SUBGROUP = 'SUBGROUP',
-}
 export enum MembershipType {
   LEADER = 'LEADER',
   MEMBER = 'MEMBER',
+}
+
+export enum GroupType {
+  TIHLDE = 'TIHLDE',
+  BOARD = 'BOARD',
+  SUBGROUP = 'SUBGROUP',
+  COMMITTEE = 'COMMITTEE',
+  STUDYYEAR = 'STUDYYEAR',
+  INTERESTGROUP = 'INTERESTGROUP',
+  OTHER = 'OTHER',
 }

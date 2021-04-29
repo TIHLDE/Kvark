@@ -1,4 +1,4 @@
-import { Box, Button, Collapse, Divider, ListItem, ListItemText, makeStyles } from '@material-ui/core';
+import { Button, Collapse, Divider, ListItem, ListItemText, makeStyles } from '@material-ui/core';
 import Paper from 'components/layout/Paper';
 import { useState } from 'react';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
@@ -7,25 +7,31 @@ import { User } from 'types/Types';
 import { getUserClass, getUserStudyShort } from 'utils';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import StarIcon from '@material-ui/icons/Star';
-import classNames from 'classnames';
 import { useDeleteMembership, useUpdateMembership } from 'api/hooks/Membership';
 import useSnackbar from 'api/hooks/Snackbar';
 import { MembershipType } from 'types/Enums';
 import Dialog from 'components/layout/Dialog';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    marginBottom: theme.spacing(2),
+  red: {
+    color: theme.palette.error.main,
+    borderColor: theme.palette.error.main,
+    '&:hover': {
+      borderColor: theme.palette.error.light,
+    },
   },
-  button: {
-    textTransform: 'none',
-  },
-  gutterBottom: {
-    marginBottom: theme.spacing(2),
+  content: {
+    display: 'grid',
+    padding: theme.spacing(1),
+    gap: theme.spacing(1),
+    gridTemplateColumns: '1fr 1fr',
+    [theme.breakpoints.down('md')]: {
+      gridTemplateColumns: '1fr',
+    },
   },
 }));
 
-type MemberListItemProps = {
+export type MemberListItemProps = {
   user: User;
   slug: string;
 };
@@ -65,7 +71,7 @@ const MemberListItem = ({ slug, user }: MemberListItemProps) => {
     });
   };
   return (
-    <Paper className={classes.root} noPadding>
+    <Paper noPadding>
       <Dialog
         onClose={handleClose}
         onConfirm={removeMemberFromGroup}
@@ -84,20 +90,14 @@ const MemberListItem = ({ slug, user }: MemberListItemProps) => {
       </ListItem>
       <Collapse in={expanded}>
         <Divider />
-        <Box display='flex' flexDirection='column' padding={1}>
-          <Button
-            className={classNames(classes.button, classes.gutterBottom)}
-            fullWidth
-            onClick={() => setConfirmDeleteModal(true)}
-            size='large'
-            startIcon={<HighlightOffIcon />}
-            variant='outlined'>
-            Fjern medlem
-          </Button>
-          <Button className={classes.button} fullWidth onClick={() => setConfirmSwitchLeader(true)} size='large' startIcon={<StarIcon />} variant='outlined'>
+        <div className={classes.content}>
+          <Button fullWidth onClick={() => setConfirmSwitchLeader(true)} startIcon={<StarIcon />} variant='outlined'>
             Promoter til leder
           </Button>
-        </Box>
+          <Button className={classes.red} fullWidth onClick={() => setConfirmDeleteModal(true)} startIcon={<HighlightOffIcon />} variant='outlined'>
+            Fjern medlem
+          </Button>
+        </div>
       </Collapse>
     </Paper>
   );
