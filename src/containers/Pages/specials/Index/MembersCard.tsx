@@ -1,4 +1,4 @@
-import { User } from 'types/Types';
+import { UserList } from 'types/Types';
 
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
@@ -42,7 +42,7 @@ const MembersCard = ({ slug }: MembersCardProps) => {
   }
 
   type PersonProps = {
-    user: User;
+    user: UserList;
     icon: React.ComponentType<SvgIconProps>;
   };
 

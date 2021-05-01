@@ -96,10 +96,10 @@ const Group = () => {
                 Medlemmer:
               </Typography>
               <div className={classes.list}>
+                <AddMemberModal groupSlug={slug} />
                 {membersSorted.map((member) => (
                   <MemberListItem key={member.user_id} slug={slug} user={member} />
                 ))}
-                <AddMemberModal groupSlug={slug} />
               </div>
             </Paper>
           ) : (

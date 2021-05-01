@@ -3,7 +3,7 @@ import Paper from 'components/layout/Paper';
 import { useState } from 'react';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
 import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
-import { User } from 'types/Types';
+import { UserList } from 'types/Types';
 import { getUserClass, getUserStudyShort } from 'utils';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import StarIcon from '@material-ui/icons/Star';
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export type MemberListItemProps = {
-  user: User;
+  user: UserList;
   slug: string;
 };
 

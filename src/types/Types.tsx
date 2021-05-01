@@ -54,7 +54,6 @@ export interface User {
   gender: number;
   home_busstop?: string;
   image: string;
-  is_TIHLDE_member: boolean;
   last_name: string;
   permissions: Record<PermissionApp, Permissions>;
   tool: string;
@@ -63,6 +62,10 @@ export interface User {
   user_id: string;
   user_study: number;
 }
+export type UserList = Pick<
+  User,
+  'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study' | 'allergy' | 'cell' | 'gender' | 'image' | 'tool'
+>;
 export type UserCreate = Pick<User, 'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study'> & {
   password: string;
 };
@@ -264,7 +267,7 @@ export interface PageTree {
   children: Array<PageTree>;
 }
 export interface Membership {
-  user: User;
+  user: UserList;
   membership_type: MembershipType;
   group: Group;
 }
@@ -274,6 +277,6 @@ export interface Group {
   description: string;
   contact_email: string;
   type: GroupType;
-  leader: User;
+  leader: UserList;
   permissions: Permissions;
 }

@@ -9,14 +9,14 @@ import { useCreateMembership } from 'api/hooks/Membership';
 import Dialog from 'components/layout/Dialog';
 import SubmitButton from 'components/inputs/SubmitButton';
 import AddIcon from '@material-ui/icons/Add';
-import { User } from 'types/Types';
+import { UserList } from 'types/Types';
 
 export type AddMemberModalProps = {
   groupSlug: string;
 };
 
 type FormData = {
-  user: User;
+  user: UserList;
 };
 
 const AddMemberModal = ({ groupSlug }: AddMemberModalProps) => {

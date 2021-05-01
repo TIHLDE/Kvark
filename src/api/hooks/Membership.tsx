@@ -2,6 +2,7 @@ import { useMutation, UseMutationResult, useQuery, useQueryClient } from 'react-
 import API from 'api/api';
 import { Membership, RequestResponse } from 'types/Types';
 import { MembershipType } from 'types/Enums';
+import { GROUPS_QUERY_KEY } from 'api/hooks/Group';
 
 export const MEMBERSHIP_QUERY_KEY = 'membership';
 
@@ -32,6 +33,7 @@ export const useUpdateMembership = (slug: string, userId: string): UseMutationRe
   const queryClient = useQueryClient();
   return useMutation((membership_type) => API.updateMembership(slug, userId, { membership_type }), {
     onSuccess: () => {
+      queryClient.invalidateQueries([GROUPS_QUERY_KEY, slug]);
       queryClient.invalidateQueries([MEMBERSHIP_QUERY_KEY, slug]);
     },
   });
