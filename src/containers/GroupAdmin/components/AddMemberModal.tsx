@@ -10,6 +10,7 @@ import Dialog from 'components/layout/Dialog';
 import SubmitButton from 'components/inputs/SubmitButton';
 import AddIcon from '@material-ui/icons/Add';
 import { UserList } from 'types/Types';
+import { useDebounce } from 'api/hooks/Utils';
 
 export type AddMemberModalProps = {
   groupSlug: string;
@@ -26,13 +27,14 @@ const AddMemberModal = ({ groupSlug }: AddMemberModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const [search, setSearch] = useState('');
+  const debouncedSearch = useDebounce(search, 500);
   const filters = useMemo(() => {
     const filters: Record<string, unknown> = {};
-    if (search) {
-      filters.search = search;
+    if (debouncedSearch) {
+      filters.search = debouncedSearch;
     }
     return filters;
-  }, [search]);
+  }, [debouncedSearch]);
 
   const { data } = useUsers(filters);
   const options = data?.pages.map((page) => page.results);
