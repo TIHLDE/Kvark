@@ -4,37 +4,37 @@ import { Membership, RequestResponse } from 'types/Types';
 import { MembershipType } from 'types/Enums';
 import { GROUPS_QUERY_KEY } from 'api/hooks/Group';
 
-export const QUERY_KEY = 'membership';
-export const useMemberships = (slug: string) => {
-  return useQuery<Membership[]>([QUERY_KEY, slug], () => API.getMemberships(slug));
+export const MEMBERSHIP_QUERY_KEY = 'membership';
+
+export const useMemberships = (groupSlug: string) => {
+  return useQuery<Membership[]>([MEMBERSHIP_QUERY_KEY, groupSlug], () => API.getMemberships(groupSlug));
 };
 
 export const useCreateMembership = (): UseMutationResult<Membership, RequestResponse, { groupSlug: string; userId: string }, unknown> => {
   const queryClient = useQueryClient();
   return useMutation(({ groupSlug, userId }) => API.createMembership(groupSlug, userId), {
     onSuccess: (data) => {
-      queryClient.invalidateQueries([QUERY_KEY, data.group.slug]);
-      queryClient.setQueryData([QUERY_KEY, data.group.slug], (cache) => [...Array(cache), data]);
+      queryClient.invalidateQueries([MEMBERSHIP_QUERY_KEY, data.group.slug]);
     },
   });
 };
 
-export const useDeleteMembership = (slug: string, user_id: string): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
+export const useDeleteMembership = (slug: string, userId: string): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
   const queryClient = useQueryClient();
 
-  return useMutation(() => API.deleteMembership(slug, user_id), {
+  return useMutation(() => API.deleteMembership(slug, userId), {
     onSuccess: () => {
-      queryClient.invalidateQueries([QUERY_KEY, slug]);
+      queryClient.invalidateQueries([MEMBERSHIP_QUERY_KEY, slug]);
     },
   });
 };
 
-export const useUpdateMembership = (slug: string, user_id: string): UseMutationResult<Membership, RequestResponse, MembershipType, unknown> => {
+export const useUpdateMembership = (slug: string, userId: string): UseMutationResult<Membership, RequestResponse, MembershipType, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((membership_type) => API.updateMembership(slug, user_id, { membership_type }), {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries([QUERY_KEY, slug]);
-      queryClient.setQueryData([GROUPS_QUERY_KEY, slug], data.group);
+  return useMutation((membership_type) => API.updateMembership(slug, userId, { membership_type }), {
+    onSuccess: () => {
+      queryClient.invalidateQueries([GROUPS_QUERY_KEY, slug]);
+      queryClient.invalidateQueries([MEMBERSHIP_QUERY_KEY, slug]);
     },
   });
 };

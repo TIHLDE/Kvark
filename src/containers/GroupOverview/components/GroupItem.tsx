@@ -1,23 +1,23 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Group } from 'types/Types';
+import URLS from 'URLS';
 
-import MembersIcon from '@material-ui/icons/PersonRounded';
-
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Typography from '@material-ui/core/Typography';
+// Material UI
+import { ButtonBase, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+
+// Icons
+import MembersIcon from '@material-ui/icons/PersonRounded';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    alignItems: 'center',
     backgroundColor: theme.palette.background.default,
     border: `${theme.palette.borderWidth} solid ${theme.palette.divider}`,
     borderRadius: theme.shape.borderRadius,
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    justifyContent: 'space-evenly',
-    padding: theme.spacing(2),
+    minHeight: 90,
     '&:hover > h3': {
       transform: 'scale(1.1)',
     },
@@ -28,10 +28,10 @@ const useStyles = makeStyles((theme) => ({
   leader: {
     display: 'flex',
     alignItems: 'center',
+  },
+  icon: {
     [theme.breakpoints.down('sm')]: {
-      '& > *': {
-        fontSize: '0.8rem',
-      },
+      fontSize: '1rem',
     },
   },
   name: {
@@ -46,16 +46,15 @@ export type GroupItemProps = {
 
 const GroupItem = ({ group }: GroupItemProps) => {
   const classes = useStyles();
-  const navigate = useNavigate();
 
   return (
-    <ButtonBase className={classes.container} onClick={() => navigate(`/grupper/${group.slug}/`)}>
+    <ButtonBase className={classes.container} component={Link} to={`${URLS.groups}${group.slug}/`}>
       <Typography className={classes.group} variant='h3'>
         {group.name}
       </Typography>
       {group.leader && (
         <div className={classes.leader}>
-          <MembersIcon />
+          <MembersIcon className={classes.icon} />
           <Typography className={classes.name}>
             {group.leader.first_name} {group.leader.last_name}
           </Typography>
