@@ -108,7 +108,7 @@ const UserAdmin = () => {
             {data.pages.map((page, i) => (
               <Fragment key={i}>
                 {page.results.map((user) => (
-                  <PersonListItem key={user.user_id} user={user} />
+                  <PersonListItem is_TIHLDE_member={tab === membersTab.value} key={user.user_id} user={user} />
                 ))}
               </Fragment>
             ))}
