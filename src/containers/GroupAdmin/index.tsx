@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet';
+import classnames from 'classnames';
 import { useParams } from 'react-router-dom';
 import { MembershipType } from 'types/Enums';
 import { useGroup } from 'api/hooks/Group';
@@ -69,7 +70,7 @@ const Group = () => {
         <title>{data.name}</title>
       </Helmet>
       {isLoadingMembers || !membersSorted ? (
-        <Paper className={classes.list}>
+        <Paper className={classnames(classes.gutterBottom, classes.list)}>
           <Skeleton height={45} width={160} />
           <Skeleton width={120} />
           <Skeleton height={45} width={190} />
@@ -81,7 +82,7 @@ const Group = () => {
       ) : (
         <>
           {hasWriteAcccess ? (
-            <Paper>
+            <Paper className={classes.gutterBottom}>
               {data?.leader && (
                 <>
                   <Typography gutterBottom variant='h3'>
