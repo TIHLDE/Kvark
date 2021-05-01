@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.0.9 (01.05.2021)
+
 ## Versjon 1.0.8 (26.04.2021)
 
 - ⚡ **Fjern bilde**. Det er nå mulig å fjerne et bilde som er lagt til arrangementer, nyheter, annonser og sider.
