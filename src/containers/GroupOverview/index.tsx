@@ -1,6 +1,9 @@
-import classNames from 'classnames';
+import { useMemo } from 'react';
 import Helmet from 'react-helmet';
 import { useGroups } from 'api/hooks/Group';
+import { useIsAuthenticated } from 'api/hooks/User';
+import { GroupType } from 'types/Enums';
+import { Group } from 'types/Types';
 
 // Material UI Components
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -23,10 +26,9 @@ const useStyles = makeStyles((theme) => ({
   },
   groupContainer: {
     display: 'grid',
-    gridGap: theme.spacing(3),
+    gridGap: theme.spacing(2),
     gridTemplateColumns: 'repeat(3, 1fr)',
-    gridAutoRows: '7rem',
-    marginBottom: theme.spacing(5),
+    marginBottom: theme.spacing(3),
     [theme.breakpoints.down('md')]: {
       gridTemplateColumns: 'repeat(2, 1fr)',
     },
@@ -34,55 +36,39 @@ const useStyles = makeStyles((theme) => ({
       gridTemplateColumns: '1fr',
     },
   },
-  undertitle: {
-    fontSize: '1.6rem',
-  },
-  marginMed: {
-    marginBottom: theme.spacing(5),
-  },
-  marginSm: {
-    marginBottom: theme.spacing(3),
-  },
-  title: {
-    fontSize: '3rem',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '2.2rem',
-    },
-  },
 }));
-
-interface Map {
-  [key: string]: string | undefined;
-}
-
-const groupTypes: Map = {
-  BOARD: 'Hovedstyret',
-  SUBGROUP: 'Undergrupper',
-  COMMITTEE: 'Komitéer',
-};
 
 const GroupOverview = () => {
   const classes = useStyles();
-  const { data, error, isLoading } = useGroups();
+  const isAuthenticated = useIsAuthenticated();
+  const { data: groups, error, isLoading } = useGroups();
+  const BOARD_GROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.BOARD) || [], [groups]);
+  const SUB_GROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.SUBGROUP) || [], [groups]);
+  const COMMITTEES = useMemo(() => groups?.filter((group) => group.type === GroupType.COMMITTEE) || [], [groups]);
+  const OTHER_GROUPS = useMemo(() => groups?.filter((group) => ![...BOARD_GROUPS, ...SUB_GROUPS, ...COMMITTEES].some((g) => group.slug === g.slug)) || [], [
+    groups,
+    BOARD_GROUPS,
+    SUB_GROUPS,
+    COMMITTEES,
+  ]);
 
-  const content =
-    data &&
-    [...new Set(data.map((group) => group.type))].map((groupType) => {
-      return (
-        <div key={groupType}>
-          <Typography className={classNames(classes.marginSm, classes.undertitle)} variant='h4'>
-            {groupTypes[groupType]}
-          </Typography>
-          <div className={classes.groupContainer}>
-            {data
-              ?.filter((group) => group.type === groupType)
-              .map((group) => {
-                return <GroupItem group={group} key={group.name} />;
-              })}
-          </div>
-        </div>
-      );
-    });
+  type CollectionProps = {
+    groups: Array<Group>;
+    title: string;
+  };
+
+  const Collection = ({ groups, title }: CollectionProps) => (
+    <div>
+      <Typography gutterBottom variant='h2'>
+        {title}
+      </Typography>
+      <div className={classes.groupContainer}>
+        {groups.map((group) => (
+          <GroupItem group={group} key={group.name} />
+        ))}
+      </div>
+    </div>
+  );
 
   return (
     <Navigation banner={<div className={classes.top}></div>} fancyNavbar>
@@ -90,12 +76,15 @@ const GroupOverview = () => {
         <title>Gruppeoversikt</title>
       </Helmet>
       <Paper className={classes.content}>
-        <Typography className={classNames(classes.marginMed, classes.title)} variant='h1'>
+        <Typography gutterBottom variant='h1'>
           Gruppeoversikt
         </Typography>
         {isLoading && <LinearProgress />}
         {error && <Paper>{error.detail}</Paper>}
-        {data !== undefined && content}
+        {Boolean(BOARD_GROUPS.length) && <Collection groups={BOARD_GROUPS} title='Hovedstyret' />}
+        {Boolean(SUB_GROUPS.length) && <Collection groups={SUB_GROUPS} title='Undergrupper' />}
+        {Boolean(COMMITTEES.length) && <Collection groups={COMMITTEES} title='Komitéer' />}
+        {isAuthenticated && Boolean(OTHER_GROUPS.length) && <Collection groups={OTHER_GROUPS} title='Andre grupper' />}
       </Paper>
     </Navigation>
   );

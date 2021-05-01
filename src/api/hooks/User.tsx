@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { User, UserCreate, LoginRequestResponse, PaginationResponse, RequestResponse } from 'types/Types';
+import { User, UserList, UserCreate, LoginRequestResponse, PaginationResponse, RequestResponse } from 'types/Types';
 import { PermissionApp } from 'types/Enums';
 import { getCookie, setCookie, removeCookie } from 'api/cookie';
 import { ACCESS_TOKEN } from 'constant';
@@ -23,7 +23,7 @@ export const useRefreshUser = () => {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useUsers = (filters?: any) => {
-  return useInfiniteQuery<PaginationResponse<User>, RequestResponse>(
+  return useInfiniteQuery<PaginationResponse<UserList>, RequestResponse>(
     [USERS_QUERY_KEY, filters],
     ({ pageParam = 1 }) => API.getUsers({ ...filters, page: pageParam }),
     {

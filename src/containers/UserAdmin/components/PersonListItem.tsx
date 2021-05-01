@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { User } from 'types/Types';
+import { UserList } from 'types/Types';
 import { useActivateUser } from 'api/hooks/User';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { getUserClass, getUserStudyShort } from 'utils';
@@ -46,10 +46,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export type PersonListItemProps = {
-  user: User;
+  user: UserList;
+  is_TIHLDE_member?: boolean;
 };
 
-const PersonListItem = ({ user }: PersonListItemProps) => {
+const PersonListItem = ({ user, is_TIHLDE_member = true }: PersonListItemProps) => {
   const classes = useStyles();
   const activateUser = useActivateUser();
   const showSnackbar = useSnackbar();
@@ -84,7 +85,7 @@ const PersonListItem = ({ user }: PersonListItemProps) => {
             <Typography variant='subtitle1'>{`Brukernavn: ${user.user_id}`}</Typography>
             <Typography variant='subtitle1'>{`Epost: ${user.email}`}</Typography>
           </div>
-          {!user.is_TIHLDE_member && (
+          {!is_TIHLDE_member && (
             <Button color='primary' fullWidth onClick={() => changeStatus()} variant='outlined'>
               Legg til medlem
             </Button>
