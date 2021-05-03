@@ -52,16 +52,7 @@ const Group = () => {
   return (
     <Navigation
       banner={
-        <Banner
-          text={`${data.description}
-              ${
-                data.contact_email
-                  ? `<br><span>
-                    Kontakt: <a href='mailto:${data.contact_email}'>${data.contact_email}</a>
-                  </span>`
-                  : ''
-              }`}
-          title={data.name}>
+        <Banner text={`${data.description} \n${data.contact_email ? `Kontakt: ${data.contact_email}` : ''}`} title={data.name}>
           {hasWriteAcccess && <UpdateGroupModal group={data} />}
         </Banner>
       }
