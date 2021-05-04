@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import parser from 'html-react-parser';
 import classNames from 'classnames';
-
+import MuiLinkify from 'material-ui-linkify';
 // Material UI Components
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     overflow: 'hidden',
     width: '100%',
+    whiteSpace: 'break-spaces',
   },
   top: {
     position: 'relative',
@@ -118,9 +119,11 @@ const Banner = (props: BannerProps) => {
                 </Typography>
               )}
               {text && (
-                <Typography className={classes.text} component='p' variant='subtitle2'>
-                  {parser(text)}
-                </Typography>
+                <MuiLinkify LinkProps={{ color: 'inherit', underline: 'always' }}>
+                  <Typography className={classes.text} component='p' variant='subtitle2'>
+                    {parser(text)}
+                  </Typography>
+                </MuiLinkify>
               )}
             </div>
             {children && <div className={classes.children}>{children}</div>}
