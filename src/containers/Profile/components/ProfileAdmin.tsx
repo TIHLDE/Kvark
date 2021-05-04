@@ -1,3 +1,4 @@
+import { ComponentType } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { PermissionApp } from 'types/Enums';
@@ -5,72 +6,102 @@ import { HavePermission } from 'api/hooks/User';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import { Avatar, List, ListItem, ListItemText, ListItemAvatar } from '@material-ui/core';
 
 // Icons
-import EventAdminIcon from 'assets/icons/eventadmin.svg';
-import GroupsAdminIcon from 'assets/icons/groups.svg';
-import JobPostAdminIcon from 'assets/icons/jobpostadmin.svg';
-import NewsAdminIcon from 'assets/icons/news.svg';
-import UserAdminIcon from 'assets/icons/useradmin.svg';
+import ArrowIcon from '@material-ui/icons/ArrowForwardRounded';
+import EventIcon from '@material-ui/icons/TodayRounded';
+import JobPostIcon from '@material-ui/icons/WorkOutlineRounded';
+import NewsIcon from '@material-ui/icons/DescriptionRounded';
+import UsersIcon from '@material-ui/icons/PermIdentityRounded';
+import GroupsIcon from '@material-ui/icons/GroupRounded';
 
 // Project Components
-import InfoCard from 'components/layout/InfoCard';
+import Paper from 'components/layout/Paper';
 
 const useStyles = makeStyles((theme) => ({
-  grid: {
-    width: '100%',
+  list: {
     display: 'grid',
-    gridTemplateColumns: '1fr',
     gridGap: theme.spacing(1),
   },
-  button: {
-    marginBottom: theme.spacing(1),
+  avatar: {
+    background: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
   },
 }));
 
-function Admin() {
+const Admin = () => {
   const classes = useStyles();
 
-  return (
-    <div className={classes.grid}>
-      <HavePermission apps={[PermissionApp.EVENT]}>
-        <InfoCard header='Arrangementer' justifyText src={EventAdminIcon} text='Opprett, endre og slett arrangementer'>
-          <Button className={classes.button} color='primary' component={Link} fullWidth to={URLS.eventAdmin} variant='contained'>
-            Administrer arrangementer
-          </Button>
-        </InfoCard>
-      </HavePermission>
-      <HavePermission apps={[PermissionApp.GROUP]}>
-        <InfoCard header='Grupper' justifyText src={GroupsAdminIcon} text='Se og endre grupper'>
-          <Button className={classes.button} color='primary' component={Link} fullWidth to={URLS.groups} variant='contained'>
-            Administrer grupper
-          </Button>
-        </InfoCard>
-      </HavePermission>
-      <HavePermission apps={[PermissionApp.JOBPOST]}>
-        <InfoCard header='Jobbannonser' justifyText src={JobPostAdminIcon} text='Opprett, endre og slett jobbannonser'>
-          <Button className={classes.button} color='primary' component={Link} fullWidth to={URLS.jobpostsAdmin} variant='contained'>
-            Administrer jobbannonser
-          </Button>
-        </InfoCard>
-      </HavePermission>
-      <HavePermission apps={[PermissionApp.NEWS]}>
-        <InfoCard header='Nyheter' justifyText src={NewsAdminIcon} text='Opprett, endre og slett nyheter'>
-          <Button className={classes.button} color='primary' component={Link} fullWidth to={URLS.newsAdmin} variant='contained'>
-            Administrer nyheter
-          </Button>
-        </InfoCard>
-      </HavePermission>
-      <HavePermission apps={[PermissionApp.USER]}>
-        <InfoCard header='Medlemmer' justifyText src={UserAdminIcon} text='Aktiver, fjern og søk etter medlemmer'>
-          <Button className={classes.button} color='primary' component={Link} fullWidth to={URLS.userAdmin} variant='contained'>
-            Administrer medlemmer
-          </Button>
-        </InfoCard>
-      </HavePermission>
-    </div>
+  type CardProps = {
+    apps: PermissionApp[];
+    to: string;
+    primary: string;
+    secondary: string;
+    icon: ComponentType;
+  };
+
+  const Card = ({ apps, icon: Icon, to, primary, secondary }: CardProps) => (
+    <HavePermission apps={apps}>
+      <Paper noPadding>
+        <ListItem button component={Link} to={to}>
+          <ListItemAvatar>
+            <Avatar className={classes.avatar}>
+              <Icon />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary={primary} secondary={secondary} />
+          <ArrowIcon />
+        </ListItem>
+      </Paper>
+    </HavePermission>
   );
-}
+
+  const cards: Array<CardProps> = [
+    {
+      apps: [PermissionApp.EVENT],
+      icon: EventIcon,
+      to: URLS.eventAdmin,
+      primary: 'Administrer arrangementer',
+      secondary: 'Opprett, endre og slett arrangementer',
+    },
+    {
+      apps: [PermissionApp.GROUP],
+      icon: GroupsIcon,
+      to: URLS.groups,
+      primary: 'Administrer grupper',
+      secondary: 'Se og endre grupper',
+    },
+    {
+      apps: [PermissionApp.JOBPOST],
+      icon: JobPostIcon,
+      to: URLS.jobpostsAdmin,
+      primary: 'Administrer jobbannonser',
+      secondary: 'Opprett, endre og slett jobbannonser',
+    },
+    {
+      apps: [PermissionApp.USER],
+      icon: UsersIcon,
+      to: URLS.eventAdmin,
+      primary: 'Administrer medlemmer',
+      secondary: 'Aktiver, rediger og søk etter medlemmer',
+    },
+    {
+      apps: [PermissionApp.NEWS],
+      icon: NewsIcon,
+      to: URLS.newsAdmin,
+      primary: 'Administrer nyheter',
+      secondary: 'Opprett, endre og slett nyheter',
+    },
+  ];
+
+  return (
+    <List className={classes.list} disablePadding>
+      {cards.map((card, i) => (
+        <Card key={i} {...card} />
+      ))}
+    </List>
+  );
+};
 
 export default Admin;
