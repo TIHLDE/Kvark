@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- ⚡ **Cache**. All cache på siden blir nå oppdatert når bruker logger inn eller ut.
+
 ## Versjon 1.0.8 (26.04.2021)
 
 - ⚡ **Fjern bilde**. Det er nå mulig å fjerne et bilde som er lagt til arrangementer, nyheter, annonser og sider.
