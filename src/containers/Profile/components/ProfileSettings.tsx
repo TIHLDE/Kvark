@@ -1,12 +1,12 @@
 import { useForm } from 'react-hook-form';
 import { getUserStudyLong, getUserClass } from 'utils';
-import { User } from 'types/Types';
+import { UserList } from 'types/Types';
 import { useUpdateUser } from 'api/hooks/User';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material-UI
 import { makeStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
+import { MenuItem, Typography } from '@material-ui/core';
 
 // Project components
 import TextField from 'components/inputs/TextField';
@@ -23,15 +23,19 @@ const useStyles = makeStyles((theme) => ({
       gridTemplateColumns: '1fr',
     },
   },
+  gutterTop: {
+    marginTop: theme.spacing(2),
+  },
 }));
 
 export type ProfileSettingsProps = {
-  user: User;
+  user: UserList;
+  isAdmin?: boolean;
 };
 
-type FormData = Pick<User, 'cell' | 'image' | 'gender' | 'allergy' | 'tool' | 'user_class' | 'user_study'>;
+type FormData = Pick<UserList, 'first_name' | 'last_name' | 'email' | 'cell' | 'image' | 'gender' | 'allergy' | 'tool' | 'user_class' | 'user_study'>;
 
-const ProfileSettings = ({ user }: ProfileSettingsProps) => {
+const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
   const classes = useStyles();
   const showSnackbar = useSnackbar();
   const updateUser = useUpdateUser();
@@ -40,7 +44,6 @@ const ProfileSettings = ({ user }: ProfileSettingsProps) => {
     if (updateUser.isLoading) {
       return;
     }
-
     updateUser.mutate(
       { userId: user.user_id, user: data },
       {
@@ -59,14 +62,29 @@ const ProfileSettings = ({ user }: ProfileSettingsProps) => {
   } else {
     return (
       <form onSubmit={handleSubmit(updateData)}>
+        {isAdmin && (
+          <div className={classes.selectGrid}>
+            <TextField disabled={updateUser.isLoading} errors={errors} label='Fornavn' name='first_name' register={register} />
+            <TextField disabled={updateUser.isLoading} errors={errors} label='Etternavn' name='last_name' register={register} />
+            <TextField disabled={updateUser.isLoading} errors={errors} label='Epost' name='email' register={register} />
+          </div>
+        )}
         <TextField disabled={updateUser.isLoading} errors={errors} InputProps={{ type: 'number' }} label='Telefon' name='cell' register={register} />
         <ImageUpload errors={errors} label='Velg profilbilde' name='image' ratio={1} register={register} setValue={setValue} watch={watch} />
         <div className={classes.selectGrid}>
-          <Select control={control} disabled errors={errors} label='Studie' name='user_study'>
-            <MenuItem value={user.user_study}>{getUserStudyLong(user.user_study)}</MenuItem>
+          <Select control={control} disabled={!isAdmin} errors={errors} label='Studie' name='user_study'>
+            {[1, 2, 3, 4, 5].map((i) => (
+              <MenuItem key={i} value={i}>
+                {getUserStudyLong(i)}
+              </MenuItem>
+            ))}
           </Select>
-          <Select control={control} disabled errors={errors} label='Klasse' name='user_class'>
-            <MenuItem value={user.user_class}>{getUserClass(user.user_class)}</MenuItem>
+          <Select control={control} disabled={!isAdmin} errors={errors} label='Klasse' name='user_class'>
+            {[1, 2, 3, 4, 5].map((i) => (
+              <MenuItem key={i} value={i}>
+                {getUserClass(i)}
+              </MenuItem>
+            ))}
           </Select>
           <Select control={control} disabled={updateUser.isLoading} errors={errors} label='Kjønn' name='gender'>
             <MenuItem value={1}>Mann</MenuItem>
@@ -79,6 +97,15 @@ const ProfileSettings = ({ user }: ProfileSettingsProps) => {
         <SubmitButton disabled={updateUser.isLoading} errors={errors}>
           Oppdater
         </SubmitButton>
+        {!isAdmin && (
+          <Typography className={classes.gutterTop} variant='body2'>
+            {`Er navn, epost, klasse eller studie er feil? Ta kontakt med oss på `}
+            <a href='https://m.me/tihlde' rel='noopener noreferrer' target='_blank'>
+              Messenger
+            </a>
+            {` eller Slack.`}
+          </Typography>
+        )}
       </form>
     );
   }
