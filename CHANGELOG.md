@@ -13,10 +13,10 @@
 ---
 
 ## Neste versjon
+
 - ✨ **Brukeradmin**. HS og Index kan nå redigere brukere i brukeradmin.
 - ⚡ **Grupper**. Info om grupper kan nå inneholde linker.
 - ⚡ **Cache**. All cache på siden blir nå oppdatert når bruker logger inn eller ut.
-
 - ⚡ **Admin**. Oppdatert utseende på liste over admin-funksjonalitet.
 
 ## Versjon 1.0.8 (26.04.2021)
