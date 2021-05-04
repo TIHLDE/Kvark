@@ -6,13 +6,7 @@ import { getUserClass, getUserStudyShort } from 'utils';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Collapse from '@material-ui/core/Collapse';
-import Hidden from '@material-ui/core/Hidden';
-import Button from '@material-ui/core/Button';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
+import { Typography, Collapse, Hidden, Button, ListItem, ListItemText, Divider } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 // Icons
@@ -22,6 +16,7 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
 // Project components
 import Avatar from 'components/miscellaneous/Avatar';
 import Paper from 'components/layout/Paper';
+import ProfileSettings from 'containers/Profile/components/ProfileSettings';
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -75,7 +70,7 @@ const PersonListItem = ({ user, is_TIHLDE_member = true }: PersonListItemProps) 
         />
         {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </ListItem>
-      <Collapse in={expanded}>
+      <Collapse in={expanded} mountOnEnter unmountOnExit>
         <Divider />
         <div className={classes.content}>
           <div>
@@ -83,9 +78,10 @@ const PersonListItem = ({ user, is_TIHLDE_member = true }: PersonListItemProps) 
               <Typography variant='subtitle1'>{`${getUserClass(user.user_class)} ${getUserStudyShort(user.user_study)}`}</Typography>
             </Hidden>
             <Typography variant='subtitle1'>{`Brukernavn: ${user.user_id}`}</Typography>
-            <Typography variant='subtitle1'>{`Epost: ${user.email}`}</Typography>
           </div>
-          {!is_TIHLDE_member && (
+          {is_TIHLDE_member ? (
+            <ProfileSettings isAdmin user={user} />
+          ) : (
             <Button color='primary' fullWidth onClick={() => changeStatus()} variant='outlined'>
               Legg til medlem
             </Button>
