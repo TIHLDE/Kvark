@@ -37,7 +37,7 @@ export const useLogin = (): UseMutationResult<LoginRequestResponse, RequestRespo
   return useMutation(({ username, password }) => API.authenticate(username, password), {
     onSuccess: (data) => {
       setCookie(ACCESS_TOKEN, data.token);
-      queryClient.removeQueries(USER_QUERY_KEY);
+      queryClient.removeQueries();
       queryClient.prefetchQuery(USER_QUERY_KEY, () => API.getUserData());
     },
   });
@@ -51,7 +51,7 @@ export const useLogout = () => {
   const queryClient = useQueryClient();
   return () => {
     removeCookie(ACCESS_TOKEN);
-    queryClient.removeQueries(USER_QUERY_KEY);
+    queryClient.removeQueries();
   };
 };
 
