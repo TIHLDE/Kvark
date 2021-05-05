@@ -6,7 +6,7 @@ import { HavePermission } from 'api/hooks/User';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
-import { Avatar, List, ListItem, ListItemText, ListItemAvatar } from '@material-ui/core';
+import { Avatar, List, ListItem, ListItemText, ListItemAvatar, Typography } from '@material-ui/core';
 
 // Icons
 import ArrowIcon from '@material-ui/icons/ArrowForwardRounded';
@@ -18,6 +18,7 @@ import GroupsIcon from '@material-ui/icons/GroupRounded';
 
 // Project Components
 import Paper from 'components/layout/Paper';
+import { FileUpload } from 'components/inputs/Upload';
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -100,6 +101,13 @@ const Admin = () => {
       {cards.map((card, i) => (
         <Card key={i} {...card} />
       ))}
+      <Paper className={classes.list}>
+        <Typography variant='h3'>Filopplastning</Typography>
+        <Typography variant='subtitle2'>
+          Last opp filer og få en link du kan dele med andre. Bruk <Link to={URLS.shortLinks}>link-forkorteren</Link> hvis du vil ha enda kortere linker.
+        </Typography>
+        <FileUpload />
+      </Paper>
     </List>
   );
 };
