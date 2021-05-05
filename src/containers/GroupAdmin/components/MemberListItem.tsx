@@ -1,4 +1,4 @@
-import { Button, Collapse, Divider, ListItem, ListItemText, makeStyles } from '@material-ui/core';
+import { Button, Collapse, Divider, ListItem, ListItemText, makeStyles, ListItemAvatar } from '@material-ui/core';
 import Paper from 'components/layout/Paper';
 import { useState } from 'react';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
@@ -11,6 +11,7 @@ import { useDeleteMembership, useUpdateMembership } from 'api/hooks/Membership';
 import useSnackbar from 'api/hooks/Snackbar';
 import { MembershipType } from 'types/Enums';
 import Dialog from 'components/layout/Dialog';
+import Avatar from 'components/miscellaneous/Avatar';
 
 const useStyles = makeStyles((theme) => ({
   red: {
@@ -85,6 +86,9 @@ const MemberListItem = ({ slug, user }: MemberListItemProps) => {
         titleText={`Promoter ${user.first_name} ${user.last_name} til leder?`}
       />
       <ListItem button onClick={() => setExpanded((prev) => !prev)}>
+        <ListItemAvatar>
+          <Avatar user={user} />
+        </ListItemAvatar>
         <ListItemText primary={`${user.first_name} ${user.last_name}`} secondary={`${getUserClass(user.user_class)}. ${getUserStudyShort(user.user_study)}`} />
         {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </ListItem>

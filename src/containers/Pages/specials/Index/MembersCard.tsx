@@ -1,36 +1,21 @@
 import { UserList } from 'types/Types';
 import { Fragment } from 'react';
-
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
+import { ListItem, ListItemText, ListItemAvatar, List, Grid, Typography } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { makeStyles } from '@material-ui/core/styles';
 import Paper from 'components/layout/Paper';
-import PersonIcon from '@material-ui/icons/Person';
 import { useMemberships } from 'api/hooks/Membership';
-import StarIcon from '@material-ui/icons/Star';
-import { SvgIconProps } from '@material-ui/core/SvgIcon';
 import Pagination from 'components/layout/Pagination';
 import { useGroup } from 'api/hooks/Group';
+import Avatar from 'components/miscellaneous/Avatar';
 
 export type MembersCardProps = {
   slug: string;
 };
 
-const useStyles = makeStyles((theme) => ({
-  icons: {
-    marginRight: theme.spacing(1),
-  },
-}));
-
 const MembersCard = ({ slug }: MembersCardProps) => {
-  const filters = { onlyMembers: true };
-  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useMemberships(slug, filters);
+  const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useMemberships(slug, { onlyMembers: true });
   const { data: group } = useGroup(slug);
   const leader = group?.leader;
-
-  const classes = useStyles();
 
   if (isLoading) {
     return (
@@ -46,16 +31,15 @@ const MembersCard = ({ slug }: MembersCardProps) => {
 
   type PersonProps = {
     user: UserList;
-    icon: React.ComponentType<SvgIconProps>;
   };
 
-  const Person = ({ user, icon: Icon }: PersonProps) => (
-    <Grid item xs={12}>
-      <Box alignItems='center' display='flex' flexWrap='wrap'>
-        <Icon className={classes.icons} />
-        <Typography variant='subtitle1'>{`${user.first_name} ${user.last_name}`}</Typography>
-      </Box>
-    </Grid>
+  const Person = ({ user }: PersonProps) => (
+    <ListItem>
+      <ListItemAvatar>
+        <Avatar user={user} />
+      </ListItemAvatar>
+      <ListItemText primary={`${user.first_name} ${user.last_name}`} />
+    </ListItem>
   );
 
   return (
@@ -66,20 +50,22 @@ const MembersCard = ({ slug }: MembersCardProps) => {
             <Typography variant='h3'>Leder:</Typography>
           </Grid>
         )}
-        {leader && <Person icon={StarIcon} user={leader} />}
+        {leader && <Person user={leader} />}
         {Boolean(data?.pages?.length) && (
           <Grid item xs={12}>
             <Typography variant='h3'>Medlemmer:</Typography>
           </Grid>
         )}
-        <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-          {data?.pages.map((page, i) => (
-            <Fragment key={i}>
-              {page.results.map((member) => (
-                <Person icon={PersonIcon} key={member.user.user_id} user={member.user} />
-              ))}
-            </Fragment>
-          ))}
+        <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
+          <List>
+            {data?.pages.map((page, i) => (
+              <Fragment key={i}>
+                {page.results.map((member) => (
+                  <Person key={member.user.user_id} user={member.user} />
+                ))}
+              </Fragment>
+            ))}
+          </List>
         </Pagination>
       </Grid>
     </Paper>

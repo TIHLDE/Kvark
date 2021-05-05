@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ⚡ **Grupper**. Lagt til pagination, og avatar på gruppe medlemmer.
 - ✨ **Brukeradmin**. HS og Index kan nå redigere brukere i brukeradmin.
 - ✨ **Filopplastning**. Admin kan nå laste opp filer i admin-tabben og motta en link de kan dele og bruke videre.
 - ⚡ **Grupper**. Info om grupper kan nå inneholde linker.

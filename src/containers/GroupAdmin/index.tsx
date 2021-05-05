@@ -2,7 +2,6 @@ import { Fragment } from 'react';
 import { Helmet } from 'react-helmet';
 import classnames from 'classnames';
 import { useParams } from 'react-router-dom';
-import { MembershipType } from 'types/Enums';
 import { useGroup } from 'api/hooks/Group';
 import { useMemberships } from 'api/hooks/Membership';
 
@@ -20,7 +19,6 @@ import MemberListItem from 'containers/GroupAdmin/components/MemberListItem';
 import AddMemberModal from 'containers/GroupAdmin/components/AddMemberModal';
 import MembersCard from 'containers/Pages/specials/Index/MembersCard';
 import Pagination from 'components/layout/Pagination';
-import { group } from 'console';
 
 const useStyles = makeStyles((theme) => ({
   gutterBottom: {
@@ -36,9 +34,7 @@ const Group = () => {
   const classes = useStyles();
   const { slug: slugParameter } = useParams();
   const slug = slugParameter.toLowerCase();
-
-  const filters = { onlyMembers: true };
-  const { data: membersData, error, hasNextPage, fetchNextPage, isLoading: isLoadingMembers, isFetching } = useMemberships(slug, filters);
+  const { data: membersData, hasNextPage, fetchNextPage, isLoading: isLoadingMembers, isFetching } = useMemberships(slug, { onlyMembers: true });
   const { data, isLoading: isLoadingGroups, isError } = useGroup(slug);
 
   const hasWriteAcccess = Boolean(data?.permissions.write);
@@ -91,7 +87,7 @@ const Group = () => {
               </Typography>
               <div className={classes.list}>
                 <AddMemberModal groupSlug={slug} />
-                <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
+                <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
                   {membersData?.pages.map((page, i) => (
                     <Fragment key={i}>
                       {page.results.map((member) => (

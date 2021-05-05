@@ -6,6 +6,7 @@ import { GROUPS_QUERY_KEY } from 'api/hooks/Group';
 
 export const MEMBERSHIP_QUERY_KEY = 'membership';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useMemberships = (groupSlug: string, filters?: any) => {
   return useInfiniteQuery<PaginationResponse<Membership>, RequestResponse>(
     [MEMBERSHIP_QUERY_KEY, groupSlug],
