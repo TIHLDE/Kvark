@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.0.10 (05.05.2021)
+
 ## Versjon 1.0.9 (05.05.2021)
 
 - ⚡ **Grupper**. Lagt til pagination, og avatar på gruppe medlemmer.
