@@ -45,12 +45,11 @@ const GroupOverview = () => {
   const BOARD_GROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.BOARD) || [], [groups]);
   const SUB_GROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.SUBGROUP) || [], [groups]);
   const COMMITTEES = useMemo(() => groups?.filter((group) => group.type === GroupType.COMMITTEE) || [], [groups]);
-  const OTHER_GROUPS = useMemo(() => groups?.filter((group) => ![...BOARD_GROUPS, ...SUB_GROUPS, ...COMMITTEES].some((g) => group.slug === g.slug)) || [], [
-    groups,
-    BOARD_GROUPS,
-    SUB_GROUPS,
-    COMMITTEES,
-  ]);
+  const INTERESTGROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.INTERESTGROUP) || [], [groups]);
+  const OTHER_GROUPS = useMemo(
+    () => groups?.filter((group) => ![...BOARD_GROUPS, ...SUB_GROUPS, ...COMMITTEES, ...INTERESTGROUPS].some((g) => group.slug === g.slug)) || [],
+    [groups, BOARD_GROUPS, SUB_GROUPS, COMMITTEES],
+  );
 
   type CollectionProps = {
     groups: Array<Group>;
@@ -84,6 +83,7 @@ const GroupOverview = () => {
         {Boolean(BOARD_GROUPS.length) && <Collection groups={BOARD_GROUPS} title='Hovedstyret' />}
         {Boolean(SUB_GROUPS.length) && <Collection groups={SUB_GROUPS} title='Undergrupper' />}
         {Boolean(COMMITTEES.length) && <Collection groups={COMMITTEES} title='Komitéer' />}
+        {Boolean(INTERESTGROUPS.length) && <Collection groups={INTERESTGROUPS} title='Interessegrupper' />}
         {isAuthenticated && Boolean(OTHER_GROUPS.length) && <Collection groups={OTHER_GROUPS} title='Andre grupper' />}
       </Paper>
     </Navigation>

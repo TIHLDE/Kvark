@@ -2,15 +2,27 @@ import { useState, useCallback } from 'react';
 import { RegisterOptions, UseFormMethods } from 'react-hook-form';
 import Cropper from 'react-easy-crop';
 import compressImage from 'browser-image-compression';
+import useShare from 'use-share';
 import API from 'api/api';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
-import Button, { ButtonProps } from '@material-ui/core/Button';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Typography from '@material-ui/core/Typography';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import {
+  Button,
+  ButtonProps,
+  FormHelperText,
+  Typography,
+  LinearProgress,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  IconButton,
+} from '@material-ui/core';
+
+// Icons
+import ShareIcon from '@material-ui/icons/ShareRounded';
 
 // Project components
 import Dialog from 'components/layout/Dialog';
@@ -42,6 +54,16 @@ const useStyles = makeStyles((theme) => ({
   },
   remove: {
     color: theme.palette.error.main,
+  },
+  links: {
+    display: 'grid',
+    gap: theme.spacing(1),
+  },
+  file: {
+    background: theme.palette.background.default,
+  },
+  link: {
+    wordWrap: 'break-word',
   },
 }));
 
@@ -123,8 +145,8 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
         {url && <img className={classes.img} src={url} />}
         <div>
           <input hidden name={name} ref={register && register(rules)} />
-          <input accept='image/*' hidden id='file-upload-button' onChange={onSelect} type='file' />
-          <label htmlFor='file-upload-button'>
+          <input accept='image/*' hidden id='image-upload-button' onChange={onSelect} type='file' />
+          <label htmlFor='image-upload-button'>
             <Button className={classes.button} color='primary' component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
               {label}
             </Button>
@@ -154,9 +176,9 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
   );
 };
 
-export type FileUploadProps = Omit<ImageUploadProps, 'ratio'>;
+export type FormFileUploadProps = Omit<ImageUploadProps, 'ratio'>;
 
-export const FileUpload = ({ register, watch, setValue, name, errors = {}, rules = {}, label = 'Last opp fil', ...props }: FileUploadProps) => {
+export const FormFileUpload = ({ register, watch, setValue, name, errors = {}, rules = {}, label = 'Last opp fil', ...props }: FormFileUploadProps) => {
   const classes = useStyles();
   const showSnackbar = useSnackbar();
   const url = watch(name);
@@ -197,6 +219,73 @@ export const FileUpload = ({ register, watch, setValue, name, errors = {}, rules
           Fjern fil
         </Button>
       )}
+    </Paper>
+  );
+};
+
+export type FileUploadProps = Pick<ImageUploadProps, 'label'> & ButtonProps;
+
+export const FileUpload = ({ label = 'Last opp filer', ...props }: FileUploadProps) => {
+  const classes = useStyles();
+  const showSnackbar = useSnackbar();
+  const [isLoading, setIsLoading] = useState(false);
+  const [uploaded, setUploaded] = useState<Array<string>>([]);
+  const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      setIsLoading(true);
+      try {
+        const data = await Promise.all(Array.from(files).map((file) => API.uploadFile(file)));
+        setUploaded(data.map((file) => file.url));
+        showSnackbar('Filen(e) ble lastet opp', 'info');
+      } catch (e) {
+        showSnackbar(e.detail, 'error');
+      }
+      setIsLoading(false);
+    }
+  };
+
+  const File = ({ url }: { url: string }) => {
+    const { share } = useShare({
+      title: 'Del fil',
+      url,
+    });
+    return (
+      <Paper className={classes.file} noPadding>
+        <ListItem>
+          <ListItemText
+            className={classes.link}
+            primary={
+              <a href={url} rel='noopener noreferrer' target='_blank'>
+                {url}
+              </a>
+            }
+          />
+          <ListItemSecondaryAction>
+            <IconButton onClick={share}>
+              <ShareIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+      </Paper>
+    );
+  };
+
+  return (
+    <Paper className={classes.paper}>
+      <List className={classes.links} disablePadding>
+        {uploaded.map((url, i) => (
+          <File key={i} url={url} />
+        ))}
+      </List>
+      <div>
+        <input hidden id='files-upload-button' multiple onChange={upload} type='file' />
+        <label htmlFor='files-upload-button'>
+          <Button className={classes.button} color='primary' component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
+            {label}
+          </Button>
+        </label>
+      </div>
     </Paper>
   );
 };

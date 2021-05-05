@@ -13,9 +13,12 @@
 ---
 
 ## Neste versjon
+
 - ✨ **Brukeradmin**. HS og Index kan nå redigere brukere i brukeradmin.
+- ✨ **Filopplastning**. Admin kan nå laste opp filer i admin-tabben og motta en link de kan dele og bruke videre.
 - ⚡ **Grupper**. Info om grupper kan nå inneholde linker.
 - ⚡ **Cache**. All cache på siden blir nå oppdatert når bruker logger inn eller ut.
+- ⚡ **Admin**. Oppdatert utseende på liste over admin-funksjonalitet.
 
 ## Versjon 1.0.8 (26.04.2021)
 

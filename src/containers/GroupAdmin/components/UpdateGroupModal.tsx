@@ -54,16 +54,7 @@ const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
       <Dialog onClose={() => setIsOpen(false)} open={isOpen} titleText='Oppdater gruppe'>
         <form onSubmit={handleSubmit(submit)}>
           <TextField defaultValue={group.name} errors={errors} label='Gruppenavn' name='name' register={register} required />
-          <TextField
-            defaultValue={group.description}
-            errors={errors}
-            label='Gruppebeskrivelse'
-            multiline
-            name='description'
-            register={register}
-            required
-            rows={6}
-          />
+          <TextField defaultValue={group.description} errors={errors} label='Gruppebeskrivelse' multiline name='description' register={register} rows={6} />
           <TextField
             defaultValue={group.contact_email}
             errors={errors}
