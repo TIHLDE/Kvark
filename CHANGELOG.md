@@ -14,6 +14,15 @@
 
 ## Neste versjon
 
+## Versjon 1.0.9 (05.05.2021)
+
+- ⚡ **Grupper**. Lagt til pagination, og avatar på gruppe medlemmer.
+- ✨ **Brukeradmin**. HS og Index kan nå redigere brukere i brukeradmin.
+- ✨ **Filopplastning**. Admin kan nå laste opp filer i admin-tabben og motta en link de kan dele og bruke videre.
+- ⚡ **Grupper**. Info om grupper kan nå inneholde linker.
+- ⚡ **Cache**. All cache på siden blir nå oppdatert når bruker logger inn eller ut.
+- ⚡ **Admin**. Oppdatert utseende på liste over admin-funksjonalitet.
+
 ## Versjon 1.0.8 (26.04.2021)
 
 - ⚡ **Fjern bilde**. Det er nå mulig å fjerne et bilde som er lagt til arrangementer, nyheter, annonser og sider.

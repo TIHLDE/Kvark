@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 // Material UI Components
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import Button, { ButtonProps } from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
@@ -11,22 +11,22 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export type PaginationProps = {
-  fullWidth?: boolean;
+export type PaginationProps = ButtonProps & {
   children?: ReactNode;
   nextPage: () => void;
   hasNextPage?: boolean | string | number | null;
   isLoading?: boolean;
+  label?: string;
 };
 
-const Pagination = ({ children, fullWidth, isLoading, nextPage, hasNextPage }: PaginationProps) => {
+const Pagination = ({ children, isLoading, nextPage, hasNextPage, label = 'Vis flere elementer', ...props }: PaginationProps) => {
   const classes = useStyles();
   return (
     <>
       <div>{children}</div>
       {hasNextPage && !isLoading && (
-        <Button className={classes.button} fullWidth={fullWidth} onClick={nextPage} variant='outlined'>
-          Vis flere elementer
+        <Button className={classes.button} onClick={nextPage} variant='outlined' {...props}>
+          {label}
         </Button>
       )}
     </>

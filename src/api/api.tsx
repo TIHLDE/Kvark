@@ -118,7 +118,8 @@ export default {
   createUserBadge: (data: { badge_id: string }) => IFetch<RequestResponse>({ method: 'POST', url: `badge/`, data }),
 
   //Membership
-  getMemberships: (slug: string) => IFetch<Membership[]>({ method: 'GET', url: `group/${slug}/membership/` }),
+  getMemberships: (slug: string, filters?: any) =>
+    IFetch<PaginationResponse<Membership>>({ method: 'GET', url: `group/${slug}/membership/`, data: filters || {} }),
   createMembership: (slug: string, userId: string) =>
     IFetch<Membership>({ method: 'POST', url: `group/${slug}/membership/`, data: { user: { user_id: userId } } }),
   deleteMembership: (slug: string, userId: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `group/${slug}/membership/${userId}/` }),
