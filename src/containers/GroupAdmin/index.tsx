@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import classnames from 'classnames';
 import { useParams } from 'react-router-dom';
@@ -6,7 +6,7 @@ import { useGroup } from 'api/hooks/Group';
 import { useMemberships } from 'api/hooks/Membership';
 
 // Material UI
-import { makeStyles, Typography } from '@material-ui/core';
+import { makeStyles, Typography, List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 
 // Project components
@@ -19,6 +19,7 @@ import MemberListItem from 'containers/GroupAdmin/components/MemberListItem';
 import AddMemberModal from 'containers/GroupAdmin/components/AddMemberModal';
 import MembersCard from 'containers/Pages/specials/Index/MembersCard';
 import Pagination from 'components/layout/Pagination';
+import Avatar from 'components/miscellaneous/Avatar';
 
 const useStyles = makeStyles((theme) => ({
   gutterBottom: {
@@ -35,6 +36,7 @@ const Group = () => {
   const { slug: slugParameter } = useParams();
   const slug = slugParameter.toLowerCase();
   const { data: membersData, hasNextPage, fetchNextPage, isLoading: isLoadingMembers, isFetching } = useMemberships(slug, { onlyMembers: true });
+  const members = useMemo(() => (membersData !== undefined ? membersData.pages.map((page) => page.results).flat(1) : []), [membersData]);
   const { data, isLoading: isLoadingGroups, isError } = useGroup(slug);
 
   const hasWriteAcccess = Boolean(data?.permissions.write);
@@ -75,11 +77,14 @@ const Group = () => {
               {data?.leader && (
                 <>
                   <Typography gutterBottom variant='h3'>
-                    Leder:{' '}
-                    <b>
-                      {data.leader.first_name} {data.leader.last_name}{' '}
-                    </b>{' '}
+                    Leder:
                   </Typography>
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar user={data.leader} />
+                    </ListItemAvatar>
+                    <ListItemText primary={`${data.leader.first_name} ${data.leader.last_name}`} />
+                  </ListItem>
                 </>
               )}
               <Typography gutterBottom variant='h3'>
@@ -88,13 +93,11 @@ const Group = () => {
               <div className={classes.list}>
                 <AddMemberModal groupSlug={slug} />
                 <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
-                  {membersData?.pages.map((page, i) => (
-                    <Fragment key={i}>
-                      {page.results.map((member) => (
-                        <MemberListItem key={member.user.user_id} slug={slug} user={member.user} />
-                      ))}
-                    </Fragment>
-                  ))}
+                  <List className={classes.list}>
+                    {members.map((member) => (
+                      <MemberListItem key={member.user.user_id} slug={slug} user={member.user} />
+                    ))}
+                  </List>
                 </Pagination>
               </div>
             </Paper>

@@ -4,7 +4,6 @@ import { useState } from 'react';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
 import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
 import { UserList } from 'types/Types';
-import { getUserClass, getUserStudyShort } from 'utils';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import StarIcon from '@material-ui/icons/Star';
 import { useDeleteMembership, useUpdateMembership } from 'api/hooks/Membership';
@@ -89,7 +88,7 @@ const MemberListItem = ({ slug, user }: MemberListItemProps) => {
         <ListItemAvatar>
           <Avatar user={user} />
         </ListItemAvatar>
-        <ListItemText primary={`${user.first_name} ${user.last_name}`} secondary={`${getUserClass(user.user_class)}. ${getUserStudyShort(user.user_study)}`} />
+        <ListItemText primary={`${user.first_name} ${user.last_name}`} />
         {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </ListItem>
       <Collapse in={expanded}>
