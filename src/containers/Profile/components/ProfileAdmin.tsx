@@ -83,7 +83,7 @@ const Admin = () => {
     {
       apps: [PermissionApp.USER],
       icon: UsersIcon,
-      to: URLS.eventAdmin,
+      to: URLS.userAdmin,
       primary: 'Medlemmer',
       secondary: 'Aktiver, rediger og søk etter medlemmer',
     },
