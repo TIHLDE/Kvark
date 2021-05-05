@@ -1,4 +1,5 @@
 import { UserList } from 'types/Types';
+import { Fragment } from 'react';
 
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
@@ -10,6 +11,8 @@ import PersonIcon from '@material-ui/icons/Person';
 import { useMemberships } from 'api/hooks/Membership';
 import StarIcon from '@material-ui/icons/Star';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
+import Pagination from 'components/layout/Pagination';
+import { useGroup } from 'api/hooks/Group';
 
 export type MembersCardProps = {
   slug: string;
@@ -22,10 +25,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MembersCard = ({ slug }: MembersCardProps) => {
-  const { data, isLoading } = useMemberships(slug.toLowerCase());
-  const leader = data?.find((member) => member.membership_type === 'LEADER');
-  const members = data?.filter((element) => element.membership_type === 'MEMBER') || [];
-  const membersSorted = members?.sort((a, b) => `${a.user.first_name} ${a.user.last_name}`.localeCompare(`${b.user.first_name} ${b.user.last_name}`));
+  const filters = { onlyMembers: true };
+  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useMemberships(slug, filters);
+  const { data: group } = useGroup(slug);
+  const leader = group?.leader;
 
   const classes = useStyles();
 
@@ -37,7 +40,7 @@ const MembersCard = ({ slug }: MembersCardProps) => {
     );
   }
 
-  if (!membersSorted?.length && !leader) {
+  if (!data?.pages?.length && !leader) {
     return null;
   }
 
@@ -58,20 +61,26 @@ const MembersCard = ({ slug }: MembersCardProps) => {
   return (
     <Paper>
       <Grid container spacing={2}>
-        {Boolean(membersSorted?.length) && (
+        {Boolean(data?.pages?.length) && (
           <Grid item xs={12}>
             <Typography variant='h3'>Leder:</Typography>
           </Grid>
         )}
-        {leader && <Person icon={StarIcon} user={leader.user} />}
-        {Boolean(membersSorted?.length) && (
+        {leader && <Person icon={StarIcon} user={leader} />}
+        {Boolean(data?.pages?.length) && (
           <Grid item xs={12}>
             <Typography variant='h3'>Medlemmer:</Typography>
           </Grid>
         )}
-        {membersSorted?.map((member) => (
-          <Person icon={PersonIcon} key={member.user.user_id} user={member.user} />
-        ))}
+        <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
+          {data?.pages.map((page, i) => (
+            <Fragment key={i}>
+              {page.results.map((member) => (
+                <Person icon={PersonIcon} key={member.user.user_id} user={member.user} />
+              ))}
+            </Fragment>
+          ))}
+        </Pagination>
       </Grid>
     </Paper>
   );

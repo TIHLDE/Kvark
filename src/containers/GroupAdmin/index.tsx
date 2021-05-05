@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { Helmet } from 'react-helmet';
 import classnames from 'classnames';
 import { useParams } from 'react-router-dom';
@@ -18,6 +19,8 @@ import UpdateGroupModal from 'containers/GroupAdmin/components/UpdateGroupModal'
 import MemberListItem from 'containers/GroupAdmin/components/MemberListItem';
 import AddMemberModal from 'containers/GroupAdmin/components/AddMemberModal';
 import MembersCard from 'containers/Pages/specials/Index/MembersCard';
+import Pagination from 'components/layout/Pagination';
+import { group } from 'console';
 
 const useStyles = makeStyles((theme) => ({
   gutterBottom: {
@@ -33,7 +36,9 @@ const Group = () => {
   const classes = useStyles();
   const { slug: slugParameter } = useParams();
   const slug = slugParameter.toLowerCase();
-  const { data: membersData, isLoading: isLoadingMembers } = useMemberships(slug);
+
+  const filters = { onlyMembers: true };
+  const { data: membersData, error, hasNextPage, fetchNextPage, isLoading: isLoadingMembers, isFetching } = useMemberships(slug, filters);
   const { data, isLoading: isLoadingGroups, isError } = useGroup(slug);
 
   const hasWriteAcccess = Boolean(data?.permissions.write);
@@ -46,9 +51,6 @@ const Group = () => {
     return <Navigation isLoading />;
   }
 
-  const members = membersData?.filter((memberObject) => memberObject.membership_type === MembershipType.MEMBER).map((member) => member.user) || [];
-  const membersSorted = members.sort((a, b) => `${a.first_name} ${a.last_name}`.localeCompare(`${b.first_name} ${b.last_name}`));
-
   return (
     <Navigation
       banner={
@@ -60,7 +62,7 @@ const Group = () => {
       <Helmet>
         <title>{data.name}</title>
       </Helmet>
-      {isLoadingMembers || !membersSorted ? (
+      {isLoadingMembers ? (
         <Paper className={classnames(classes.gutterBottom, classes.list)}>
           <Skeleton height={45} width={160} />
           <Skeleton width={120} />
@@ -89,9 +91,15 @@ const Group = () => {
               </Typography>
               <div className={classes.list}>
                 <AddMemberModal groupSlug={slug} />
-                {membersSorted.map((member) => (
-                  <MemberListItem key={member.user_id} slug={slug} user={member} />
-                ))}
+                <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
+                  {membersData?.pages.map((page, i) => (
+                    <Fragment key={i}>
+                      {page.results.map((member) => (
+                        <MemberListItem key={member.user.user_id} slug={slug} user={member.user} />
+                      ))}
+                    </Fragment>
+                  ))}
+                </Pagination>
               </div>
             </Paper>
           ) : (
