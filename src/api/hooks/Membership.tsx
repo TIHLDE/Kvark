@@ -1,13 +1,20 @@
-import { useMutation, UseMutationResult, useQuery, useQueryClient } from 'react-query';
+import { useInfiniteQuery, useMutation, UseMutationResult, useQueryClient } from 'react-query';
 import API from 'api/api';
-import { Membership, RequestResponse } from 'types/Types';
+import { Membership, PaginationResponse, RequestResponse } from 'types/Types';
 import { MembershipType } from 'types/Enums';
 import { GROUPS_QUERY_KEY } from 'api/hooks/Group';
 
 export const MEMBERSHIP_QUERY_KEY = 'membership';
 
-export const useMemberships = (groupSlug: string) => {
-  return useQuery<Membership[]>([MEMBERSHIP_QUERY_KEY, groupSlug], () => API.getMemberships(groupSlug));
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const useMemberships = (groupSlug: string, filters?: any) => {
+  return useInfiniteQuery<PaginationResponse<Membership>, RequestResponse>(
+    [MEMBERSHIP_QUERY_KEY, groupSlug],
+    ({ pageParam = 1 }) => API.getMemberships(groupSlug, { ...filters, page: pageParam }),
+    {
+      getNextPageParam: (lastPage) => lastPage.next,
+    },
+  );
 };
 
 export const useCreateMembership = (): UseMutationResult<Membership, RequestResponse, { groupSlug: string; userId: string }, unknown> => {
