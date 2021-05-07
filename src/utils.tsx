@@ -71,8 +71,8 @@ export const getUserClass = (userClass: UserClass) => {
 const addLeadingZero = (number: number) => (number < 10 ? '0' + number : number);
 
 export const formatDate = (date: Date) => {
-  const isEarlierYear = date.getFullYear() < new Date().getFullYear();
-  return `${getDay(date.getDay())} ${date.getDate()} ${getMonth(date.getMonth())} ${isEarlierYear ? date.getFullYear() : ''} - kl. ${addLeadingZero(
+  const isDifferentYear = date.getFullYear() !== new Date().getFullYear();
+  return `${getDay(date.getDay())} ${date.getDate()} ${getMonth(date.getMonth())} ${isDifferentYear ? date.getFullYear() : ''} - kl. ${addLeadingZero(
     date.getHours(),
   )}:${addLeadingZero(date.getMinutes())}`;
 };
