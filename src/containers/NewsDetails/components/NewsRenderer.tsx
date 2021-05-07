@@ -110,7 +110,7 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
         )}
         <div className={classes.flex}>
           <ShareButton className={classes.shareButton} shareId={data.id} shareType='news' title={data.title} />
-          <Typography variant='subtitle2'>Publisert: {formatDate(parseISO(data.created_at))}</Typography>
+          <Typography variant='subtitle2'>Publisert: {formatDate(parseISO(data.created_at), true)}</Typography>
         </div>
         <Paper>
           <MarkdownRenderer value={data.body} />
