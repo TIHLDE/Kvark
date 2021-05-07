@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- 🎨 **Nyheter**. Nyheter viser nå hvilket år de ble publisert
+
 ## Versjon 1.0.9 (05.05.2021)
 
 - ⚡ **Grupper**. Lagt til pagination, og avatar på gruppe medlemmer.

@@ -71,17 +71,10 @@ export const getUserClass = (userClass: UserClass) => {
 const addLeadingZero = (number: number) => (number < 10 ? '0' + number : number);
 
 export const formatDate = (date: Date) => {
-  return (
-    getDay(date.getDay()) +
-    ' ' +
-    date.getDate() +
-    ' ' +
-    getMonth(date.getMonth()) +
-    ' - kl. ' +
-    addLeadingZero(date.getHours()) +
-    ':' +
-    addLeadingZero(date.getMinutes())
-  );
+  const isDifferentYear = date.getFullYear() !== new Date().getFullYear();
+  return `${getDay(date.getDay())} ${date.getDate()} ${getMonth(date.getMonth())} ${isDifferentYear ? date.getFullYear() : ''} - kl. ${addLeadingZero(
+    date.getHours(),
+  )}:${addLeadingZero(date.getMinutes())}`;
 };
 
 export const getTimeSince = (date: Date) => {
