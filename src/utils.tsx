@@ -70,8 +70,9 @@ export const getUserClass = (userClass: UserClass) => {
 // Add leading zero to numbers below 10. Ex: 2 -> 02, 12 -> 12
 const addLeadingZero = (number: number) => (number < 10 ? '0' + number : number);
 
-export const formatDate = (date: Date, includeYear = false) => {
-  return `${getDay(date.getDay())} ${date.getDate()} ${getMonth(date.getMonth())} ${includeYear ? date.getFullYear() : ''} - kl. ${addLeadingZero(
+export const formatDate = (date: Date) => {
+  const isEarlierYear = date.getFullYear() < new Date().getFullYear();
+  return `${getDay(date.getDay())} ${date.getDate()} ${getMonth(date.getMonth())} ${isEarlierYear ? date.getFullYear() : ''} - kl. ${addLeadingZero(
     date.getHours(),
   )}:${addLeadingZero(date.getMinutes())}`;
 };
