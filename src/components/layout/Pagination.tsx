@@ -1,8 +1,7 @@
 import { ReactNode } from 'react';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Button, { ButtonProps } from '@material-ui/core/Button';
+import { Button, ButtonProps, makeStyles, Theme, Collapse } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
@@ -24,11 +23,11 @@ const Pagination = ({ children, isLoading, nextPage, hasNextPage, label = 'Vis f
   return (
     <>
       <div>{children}</div>
-      {hasNextPage && !isLoading && (
+      <Collapse in={Boolean(hasNextPage && !isLoading)}>
         <Button className={classes.button} onClick={nextPage} variant='outlined' {...props}>
           {label}
         </Button>
-      )}
+      </Collapse>
     </>
   );
 };

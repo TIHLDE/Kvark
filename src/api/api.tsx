@@ -17,6 +17,7 @@ import {
   NewsRequired,
   Notification,
   Page,
+  PageChildren,
   PageTree,
   PageRequired,
   Membership,
@@ -134,6 +135,7 @@ export default {
   // Pages
   getPageTree: () => IFetch<PageTree>({ method: 'GET', url: `page/tree/` }),
   getPage: (path: string) => IFetch<Page>({ method: 'GET', url: `page/${path}` }),
+  getPages: (filters: any) => IFetch<PaginationResponse<PageChildren>>({ method: 'GET', url: `page/`, data: filters }),
   createPage: (data: PageRequired) => IFetch<Page>({ method: 'POST', url: `page/`, data }),
   updatePage: (path: string, data: Partial<Page>) => IFetch<Page>({ method: 'PUT', url: `page/${path}`, data }),
   deletePage: (path: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `page/${path}` }),
