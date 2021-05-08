@@ -128,7 +128,7 @@ const Pages = () => {
             <Typography className={classes.breadcrumb}>{level.replace(/-/gi, ' ')}</Typography>
           </Link>
         ))}
-        <Typography className={classes.breadcrumb}>{levels[levels.length - 1].replace(/-/gi, ' ')}</Typography>
+        <Typography>{data?.title}</Typography>
       </Breadcrumbs>
       <div className={classnames(classes.grid, classes.root)}>
         {isLoading ? (
