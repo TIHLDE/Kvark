@@ -1,7 +1,7 @@
-import { useCallback, useMemo } from 'react';
+import { ComponentType, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import URLS from 'URLS';
-import { Page } from 'types/Types';
+import { PageChildren } from 'types/Types';
 
 // Material UI Components
 import List from '@material-ui/core/List';
@@ -15,60 +15,50 @@ import PageIcon from '@material-ui/icons/SubjectRounded';
 import HomeIcon from '@material-ui/icons/HomeRounded';
 
 export type IPagesListProps = {
-  pages: Page['children'];
+  pages: Array<PageChildren>;
   homeButton?: boolean;
+  noBackLink?: boolean;
+  linkOnClick?: () => void;
 };
 
-const PagesList = ({ homeButton, pages }: IPagesListProps) => {
+const PagesList = ({ homeButton = false, noBackLink = false, linkOnClick, pages }: IPagesListProps) => {
   const location = useLocation();
 
   const backLink = useMemo((): string | null => {
     const pathArray = location.pathname.split('/').filter((x) => x.trim() !== '');
-    return pathArray.length <= 1 ? null : `/${pathArray.splice(0, pathArray.length - 1).join('/')}/`;
+    return pathArray.length <= 1 || noBackLink ? null : `/${pathArray.splice(0, pathArray.length - 1).join('/')}/`;
   }, [location.pathname]);
 
-  const getToLink = useCallback(
-    (slug: string): string => {
-      return `/${location.pathname
-        .split('/')
-        .filter((x) => x.trim() !== '')
-        .join('/')}/${slug}/`;
-    },
-    [location.pathname],
+  type ElementProps = {
+    label: string;
+    to: string;
+    icon: ComponentType;
+    divider?: boolean;
+  };
+  const Element = ({ icon: Icon, divider, label, to }: ElementProps) => (
+    <ListItem button component={Link} divider={divider} onClick={linkOnClick} to={to}>
+      <ListItemIcon>
+        <Icon />
+      </ListItemIcon>
+      <ListItemText primary={label} />
+    </ListItem>
   );
 
   if (homeButton) {
     return (
       <List disablePadding>
-        <ListItem button component={Link} to={URLS.pages}>
-          <ListItemIcon>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText primary='Hjem' />
-        </ListItem>
+        <Element icon={HomeIcon} label='Hjem' to={URLS.pages} />
       </List>
     );
   }
 
   return (
     <List disablePadding>
-      {backLink !== null && (
-        <ListItem button component={Link} divider={Boolean(pages.length)} to={backLink}>
-          <ListItemIcon>
-            <BackIcon />
-          </ListItemIcon>
-          <ListItemText primary='Tilbake' />
-        </ListItem>
-      )}
+      {backLink !== null && <Element divider={Boolean(pages.length)} icon={BackIcon} label='Tilbake' to={backLink} />}
       {pages
         .sort((a, b) => a.title.localeCompare(b.title))
         .map((page, i) => (
-          <ListItem button component={Link} divider={pages.length - 1 !== i} key={page.slug} to={getToLink(page.slug)}>
-            <ListItemIcon>
-              <PageIcon />
-            </ListItemIcon>
-            <ListItemText primary={page.title} />
-          </ListItem>
+          <Element divider={pages.length - 1 !== i} icon={PageIcon} key={page.slug} label={page.title} to={page.path} />
         ))}
     </List>
   );

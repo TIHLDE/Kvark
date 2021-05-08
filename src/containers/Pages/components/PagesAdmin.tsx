@@ -34,13 +34,6 @@ import { ImageUpload } from 'components/inputs/Upload';
 import TextField from 'components/inputs/TextField';
 
 const useStyles = makeStyles((theme) => ({
-  button: {
-    color: theme.palette.common.white,
-    borderColor: theme.palette.common.white + 'bb',
-    '&:hover': {
-      borderColor: theme.palette.common.white,
-    },
-  },
   deleteButton: {
     marginTop: theme.spacing(2),
     color: theme.palette.error.main,
@@ -236,7 +229,6 @@ enum Modes {
 }
 
 const PagesAdmin = ({ page }: IPagesAdminProps) => {
-  const classes = useStyles();
   const [showDialog, setShowDialog] = useState(false);
   const [mode, setMode] = useState(Modes.CREATE);
 
@@ -252,11 +244,11 @@ const PagesAdmin = ({ page }: IPagesAdminProps) => {
   return (
     <HavePermission apps={[PermissionApp.PAGE]}>
       {page.path !== '' && (
-        <Button className={classes.button} color='inherit' fullWidth onClick={edit} variant='outlined'>
+        <Button fullWidth onClick={edit} variant='outlined'>
           Rediger side
         </Button>
       )}
-      <Button className={classes.button} color='inherit' fullWidth onClick={create} variant='outlined'>
+      <Button fullWidth onClick={create} variant='outlined'>
         Ny underside
       </Button>
       <Dialog onClose={() => setShowDialog(false)} open={showDialog} titleText={mode === Modes.EDIT ? 'Rediger side' : 'Opprett side'}>
