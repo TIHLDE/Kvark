@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
     '&:hover > h3': {
       transform: 'scale(1.1)',
     },
+    '&:focus > h3': {
+      transform: 'scale(1.1)',
+    },
   },
   group: {
     transition: 'transform .2s',
