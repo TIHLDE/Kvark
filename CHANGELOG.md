@@ -16,6 +16,7 @@
 
 - ✨ **Pages**. Lagt til mulighet til å søke innad i pages.
 - 🎨 **Nyheter**. Nyheter viser nå hvilket år de ble publisert
+- 🦟 **Sidebar**. Lukker sidebar ved klikk til annen side innad i pages.
 
 ## Versjon 1.0.9 (05.05.2021)
 
