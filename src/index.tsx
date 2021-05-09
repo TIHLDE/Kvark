@@ -20,16 +20,16 @@ import MessageGDPR from 'components/miscellaneous/MessageGDPR';
 import Navigation from 'components/navigation/Navigation';
 
 // Project containers
-import Cheatsheet from 'containers/Cheatsheet';
 import Companies from 'containers/Companies';
 import EventDetails from 'containers/EventDetails';
-import Events from 'containers/Events';
-import JobPosts from 'containers/JobPosts';
-import JobPostDetails from 'containers/JobPostDetails';
 import Landing from 'containers/Landing';
-import NewsDetails from 'containers/NewsDetails';
-import Pages from 'containers/Pages';
-import Profile from 'containers/Profile';
+const Cheatsheet = lazy(() => import('containers/Cheatsheet'));
+const Events = lazy(() => import('containers/Events'));
+const JobPosts = lazy(() => import('containers/JobPosts'));
+const JobPostDetails = lazy(() => import('containers/JobPostDetails'));
+const NewsDetails = lazy(() => import('containers/NewsDetails'));
+const Pages = lazy(() => import('containers/Pages'));
+const Profile = lazy(() => import('containers/Profile'));
 const EventAdministration = lazy(() => import('containers/EventAdministration'));
 const EventRegistration = lazy(() => import('containers/EventRegistration'));
 const ForgotPassword = lazy(() => import('containers/ForgotPassword'));
@@ -116,7 +116,6 @@ const AppRoutes = () => {
       </Route>
       <Route element={<Companies />} path={URLS.company} />
       <Route element={<GroupOverview />} path={URLS.groups} />
-      <Route element={<Profile />} path={URLS.profile} />
       <Route path={URLS.jobposts}>
         <Route element={<JobPostDetails />} path=':id/*' />
         <Route element={<JobPosts />} path='' />
@@ -126,6 +125,8 @@ const AppRoutes = () => {
         <Route element={<NewsDetails />} path=':id/*' />
         <Route element={<News />} path='' />
       </Route>
+
+      <AuthRoute element={<Profile />} path={URLS.profile} />
 
       <AuthRoute element={<Cheatsheet />} path={`${URLS.cheatsheet}:studyId/:classId/`} />
       <AuthRoute element={<Cheatsheet />} path={`${URLS.cheatsheet}*`} />

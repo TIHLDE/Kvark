@@ -283,3 +283,5 @@ export interface Group {
   leader: UserList;
   permissions: Permissions;
 }
+
+export type GroupList = Pick<Group, 'leader' | 'name' | 'slug' | 'type'>;
