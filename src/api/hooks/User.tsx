@@ -1,12 +1,15 @@
 import { ReactNode } from 'react';
 import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { User, UserList, UserCreate, LoginRequestResponse, PaginationResponse, RequestResponse } from 'types/Types';
+import { User, UserList, UserCreate, LoginRequestResponse, PaginationResponse, RequestResponse, Badge, EventCompact, GroupList } from 'types/Types';
 import { PermissionApp } from 'types/Enums';
 import { getCookie, setCookie, removeCookie } from 'api/cookie';
 import { ACCESS_TOKEN } from 'constant';
 
 export const USER_QUERY_KEY = 'user';
+export const USER_BADGES_QUERY_KEY = 'user_badges';
+export const USER_EVENTS_QUERY_KEY = 'user_events';
+export const USER_GROUPS_QUERY_KEY = 'user_groups';
 export const USERS_QUERY_KEY = 'users';
 
 export const useUser = () => {
@@ -14,11 +17,24 @@ export const useUser = () => {
   return useQuery<User | undefined, RequestResponse>(USER_QUERY_KEY, () => (isAuthenticated ? API.getUserData() : undefined));
 };
 
-export const useRefreshUser = () => {
-  const queryClient = useQueryClient();
-  return () => {
-    queryClient.invalidateQueries(USER_QUERY_KEY);
-  };
+export const useUserBadges = () => {
+  return useInfiniteQuery<PaginationResponse<Badge>, RequestResponse>(USER_BADGES_QUERY_KEY, ({ pageParam = 1 }) => API.getUserBadges({ page: pageParam }), {
+    getNextPageParam: (lastPage) => lastPage.next,
+  });
+};
+
+export const useUserEvents = () => {
+  return useInfiniteQuery<PaginationResponse<EventCompact>, RequestResponse>(
+    USER_EVENTS_QUERY_KEY,
+    ({ pageParam = 1 }) => API.getUserEvents({ page: pageParam }),
+    {
+      getNextPageParam: (lastPage) => lastPage.next,
+    },
+  );
+};
+
+export const useUserGroups = () => {
+  return useQuery<Array<GroupList>, RequestResponse>(USER_GROUPS_QUERY_KEY, () => API.getUserGroups());
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

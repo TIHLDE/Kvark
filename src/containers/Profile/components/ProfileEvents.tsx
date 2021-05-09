@@ -1,18 +1,25 @@
-import { useUser } from 'api/hooks/User';
+import { useMemo } from 'react';
+import { useUserEvents } from 'api/hooks/User';
 
 // Project componets
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import Pagination from 'components/layout/Pagination';
 
 const ProfileEvents = () => {
-  const { data: user } = useUser();
+  const { data, hasNextPage, fetchNextPage, isFetching } = useUserEvents();
+  const events = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
 
-  if (!user) {
+  if (!data) {
     return <ListItemLoading />;
-  } else if (!user.events.length) {
+  } else if (!events.length) {
     return <NotFoundIndicator header='Fant ingen arrangementer' subtitle='Du er ikke påmeldt noen kommende arrangementer' />;
   } else {
-    return <>{user.events?.map((event) => !event.expired && <ListItem event={event} key={event.id} />)}</>;
+    return (
+      <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere arrangementer' nextPage={() => fetchNextPage()}>
+        {events?.map((event) => !event.expired && <ListItem event={event} key={event.id} />)}
+      </Pagination>
+    );
   }
 };
 

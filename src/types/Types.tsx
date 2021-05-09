@@ -46,10 +46,8 @@ export interface Permissions {
 export interface User {
   app_token: string;
   allergy: string;
-  badges: Array<Badge>;
   cell: number;
   email: string;
-  events: Array<EventCompact>;
   first_name: string;
   gender: number;
   home_busstop?: string;

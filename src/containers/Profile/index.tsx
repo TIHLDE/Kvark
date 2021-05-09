@@ -31,12 +31,14 @@ import SettingsIcon from '@material-ui/icons/SettingsRounded';
 import AdminIcon from '@material-ui/icons/TuneRounded';
 import LogOutIcon from '@material-ui/icons/ExitToAppRounded';
 import BadgesIcon from '@material-ui/icons/EmojiEventsRounded';
+import GroupsIcon from '@material-ui/icons/PeopleOutlineRounded';
 
 // Project Components
 import Navigation from 'components/navigation/Navigation';
 import ProfileAdmin from 'containers/Profile/components/ProfileAdmin';
 import ProfileSettings from 'containers/Profile/components/ProfileSettings';
 import ProfileEvents from 'containers/Profile/components/ProfileEvents';
+import ProfileGroups from 'containers/Profile/components/ProfileGroups';
 import ProfileNotifications from 'containers/Profile/components/ProfileNotifications';
 import ProfileBadges from 'containers/Profile/components/ProfileBadges';
 import Paper from 'components/layout/Paper';
@@ -125,10 +127,11 @@ const Profile = () => {
   const eventTab = { label: 'Arrangementer', icon: EventIcon };
   const notificationsTab = { label: 'Varsler', icon: NotificationsIcon, badge: user?.unread_notifications };
   const badgesTab = { label: 'Badges', icon: BadgesIcon };
+  const groupsTab = { label: 'Grupper', icon: GroupsIcon };
   const settingsTab = { label: 'Innstillinger', icon: SettingsIcon };
   const adminTab = { label: 'Admin', icon: AdminIcon };
   const logoutTab = { label: 'Logg ut', icon: LogOutIcon, onClick: logout, className: classes.logOutButton };
-  const tabs = [eventTab, notificationsTab, badgesTab, settingsTab, ...(isAdmin ? [adminTab] : []), logoutTab];
+  const tabs = [eventTab, notificationsTab, badgesTab, groupsTab, settingsTab, ...(isAdmin ? [adminTab] : []), logoutTab];
   const [tab, setTab] = useState(eventTab.label);
 
   type NavListItem = {
@@ -203,13 +206,16 @@ const Profile = () => {
             <Collapse in={tab === notificationsTab.label} mountOnEnter unmountOnExit>
               <ProfileNotifications />
             </Collapse>
-            <Collapse in={tab === badgesTab.label}>
+            <Collapse in={tab === badgesTab.label} mountOnEnter>
               <ProfileBadges />
             </Collapse>
-            <Collapse in={tab === settingsTab.label}>
+            <Collapse in={tab === groupsTab.label} mountOnEnter>
+              <ProfileGroups />
+            </Collapse>
+            <Collapse in={tab === settingsTab.label} mountOnEnter>
               <Paper>{user && <ProfileSettings user={user} />}</Paper>
             </Collapse>
-            <Collapse in={tab === adminTab.label}>
+            <Collapse in={tab === adminTab.label} mountOnEnter>
               <ProfileAdmin />
             </Collapse>
           </div>
