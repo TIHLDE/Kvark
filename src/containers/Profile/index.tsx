@@ -200,7 +200,7 @@ const Profile = () => {
             <Collapse in={tab === eventTab.label}>
               <ProfileEvents />
             </Collapse>
-            <Collapse in={tab === notificationsTab.label} unmountOnExit>
+            <Collapse in={tab === notificationsTab.label} mountOnEnter unmountOnExit>
               <ProfileNotifications />
             </Collapse>
             <Collapse in={tab === badgesTab.label}>

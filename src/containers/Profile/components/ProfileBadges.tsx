@@ -6,6 +6,7 @@ import Paper from 'components/layout/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -71,9 +72,7 @@ const ProfileBadges = () => {
           })}
         </Grid>
       ) : (
-        <Typography align='center' variant='subtitle1'>
-          Du har ingen badges enda
-        </Typography>
+        <NotFoundIndicator header='Fant ingen badges' subtitle='Du har ingen badges enda' />
       )}
     </div>
   );
