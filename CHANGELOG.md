@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ✨ **Filtrering**. Det er mulig å finne tidligere arrangementer og annonser ved å justere filtrering.
 - ✨ **Pages**. Lagt til mulighet til å søke innad i pages.
 - 🎨 **Nyheter**. Nyheter viser nå hvilket år de ble publisert
 
