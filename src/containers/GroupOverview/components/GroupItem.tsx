@@ -12,7 +12,7 @@ import MembersIcon from '@material-ui/icons/PersonRounded';
 const useStyles = makeStyles((theme) => ({
   container: {
     width: '100%',
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: theme.palette.background.paper,
     border: `${theme.palette.borderWidth} solid ${theme.palette.divider}`,
     borderRadius: theme.shape.borderRadius,
     display: 'flex',
