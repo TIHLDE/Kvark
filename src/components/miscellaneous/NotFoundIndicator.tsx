@@ -26,10 +26,14 @@ const NotFoundIndicator = ({ header, subtitle }: NotFoundIndicatorProps) => {
   return (
     <div className={classes.root}>
       <img alt={header} height={100} src={NotFoundIcon} />
-      <Typography className={classes.header} variant='h3'>
+      <Typography align='center' className={classes.header} variant='h3'>
         {header}
       </Typography>
-      {subtitle && <Typography variant='subtitle1'>{subtitle}</Typography>}
+      {subtitle && (
+        <Typography align='center' variant='subtitle1'>
+          {subtitle}
+        </Typography>
+      )}
     </div>
   );
 };

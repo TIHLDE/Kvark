@@ -1,6 +1,6 @@
-import { useMutation, useQuery, useQueryClient, UseMutationResult, QueryClient } from 'react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient, UseMutationResult, QueryClient } from 'react-query';
 import API from 'api/api';
-import { Page, PageTree, PageRequired, RequestResponse } from 'types/Types';
+import { Page, PageChildren, PageTree, PageRequired, RequestResponse, PaginationResponse } from 'types/Types';
 
 export const PAGES_QUERY_KEY = 'page';
 export const PAGES_QUERY_KEY_TREE = `${PAGES_QUERY_KEY}/tree`;
@@ -9,6 +9,17 @@ export const usePageTree = () => {
   return useQuery<PageTree, RequestResponse>(PAGES_QUERY_KEY_TREE, () => API.getPageTree());
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const usePages = (filters: Record<string, any>) => {
+  return useInfiniteQuery<PaginationResponse<PageChildren>, RequestResponse>(
+    [PAGES_QUERY_KEY, filters],
+    ({ pageParam = 1 }) => API.getPages({ ...filters, page: pageParam }),
+    {
+      getNextPageParam: (lastPage) => lastPage.next,
+      enabled: Boolean(Object.keys(filters).length),
+    },
+  );
+};
 export const usePage = (path: string) => {
   const queryClient = useQueryClient();
   const response = useQuery<Page, RequestResponse>([PAGES_QUERY_KEY, path], () => API.getPage(path));

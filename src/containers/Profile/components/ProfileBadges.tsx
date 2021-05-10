@@ -1,4 +1,5 @@
-import { useUser } from 'api/hooks/User';
+import { useMemo } from 'react';
+import { useUserBadges } from 'api/hooks/User';
 import { Badge } from 'types/Types';
 import Paper from 'components/layout/Paper';
 
@@ -6,6 +7,8 @@ import Paper from 'components/layout/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import Pagination from 'components/layout/Pagination';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -57,25 +60,23 @@ const BadgeItem = ({ badge }: BadgeItemProps) => {
 };
 
 const ProfileBadges = () => {
-  const { data: user } = useUser();
+  const { data, hasNextPage, fetchNextPage, isFetching } = useUserBadges();
+  const badges = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
+  if (!data) {
+    return null;
+  } else if (!badges.length) {
+    return <NotFoundIndicator header='Fant ingen badges' subtitle='Du har ingen badges enda' />;
+  }
   return (
-    <div>
-      {user !== undefined && Boolean(user.badges.length) ? (
-        <Grid container spacing={1}>
-          {user.badges.map((badge) => {
-            return (
-              <Grid item key={badge.id} md={6} xs={12}>
-                <BadgeItem badge={badge} />
-              </Grid>
-            );
-          })}
-        </Grid>
-      ) : (
-        <Typography align='center' variant='subtitle1'>
-          Du har ingen badges enda
-        </Typography>
-      )}
-    </div>
+    <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere badges' nextPage={() => fetchNextPage()}>
+      <Grid container spacing={1}>
+        {badges.map((badge) => (
+          <Grid item key={badge.id} md={6} xs={12}>
+            <BadgeItem badge={badge} />
+          </Grid>
+        ))}
+      </Grid>
+    </Pagination>
   );
 };
 

@@ -1,12 +1,13 @@
 import { useCallback } from 'react';
+import { useQueryClient } from 'react-query';
 import API from 'api/api';
-import { useRefreshUser } from 'api/hooks/User';
+import { USER_BADGES_QUERY_KEY } from 'api/hooks/User';
 
 export const useBadge = () => {
-  const refreshUser = useRefreshUser();
+  const queryClient = useQueryClient();
   const createUserBadge = useCallback(async (badgeId: string) => {
     const response = await API.createUserBadge({ badge_id: badgeId });
-    refreshUser();
+    queryClient.invalidateQueries(USER_BADGES_QUERY_KEY);
     return response;
   }, []);
   return { createUserBadge };

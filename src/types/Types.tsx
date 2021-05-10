@@ -46,10 +46,8 @@ export interface Permissions {
 export interface User {
   app_token: string;
   allergy: string;
-  badges: Array<Badge>;
   cell: number;
   email: string;
-  events: Array<EventCompact>;
   first_name: string;
   gender: number;
   home_busstop?: string;
@@ -247,10 +245,7 @@ export interface Category {
 export type PageRequired = Partial<Page> & Pick<Page, 'title' | 'slug' | 'path'>;
 
 export interface Page {
-  children: Array<{
-    title: string;
-    slug: string;
-  }>;
+  children: Array<PageChildren>;
   content: string;
   created_at: string;
   image?: string;
@@ -259,6 +254,12 @@ export interface Page {
   slug: string;
   title: string;
   updated_at: string;
+}
+
+export interface PageChildren {
+  title: Page['title'];
+  slug: Page['slug'];
+  path: Page['path'];
 }
 
 export interface PageTree {
@@ -280,3 +281,5 @@ export interface Group {
   leader: UserList;
   permissions: Permissions;
 }
+
+export type GroupList = Pick<Group, 'leader' | 'name' | 'slug' | 'type'>;

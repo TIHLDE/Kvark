@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-type SidebarItemProps = {
+type SidebarItemType = {
   items?: {
     text: string;
     to: string;
@@ -73,7 +73,11 @@ type SidebarItemProps = {
   type: 'dropdown' | 'link';
 };
 
-const SidebarItem = ({ items, text, to, type }: SidebarItemProps) => {
+export type SidebarItemProps = SidebarItemType & {
+  onClose: SidebarProps['onClose'];
+};
+
+const SidebarItem = ({ items, text, to, type, onClose }: SidebarItemProps) => {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   if (type === 'link' && to) {
@@ -81,7 +85,7 @@ const SidebarItem = ({ items, text, to, type }: SidebarItemProps) => {
       <Typography
         className={classes.text}
         component={Link}
-        onClick={to === window.location.pathname ? () => window.location.reload() : undefined}
+        onClick={to === window.location.pathname ? () => window.location.reload() : onClose}
         to={to}
         variant='h2'>
         {text}
@@ -104,7 +108,7 @@ const SidebarItem = ({ items, text, to, type }: SidebarItemProps) => {
               className={classnames(classes.text, classes.itemText)}
               component={Link}
               key={i}
-              onClick={item.to === window.location.pathname ? () => window.location.reload() : undefined}
+              onClick={item.to === window.location.pathname ? () => window.location.reload() : onClose}
               to={item.to}
               variant='h3'>
               - {item.text}
@@ -118,13 +122,13 @@ const SidebarItem = ({ items, text, to, type }: SidebarItemProps) => {
   }
 };
 
-export type IProps = {
-  items: Array<SidebarItemProps>;
+export type SidebarProps = {
+  items: Array<SidebarItemType>;
   onClose: () => void;
   open: boolean;
 };
 
-const Sidebar = ({ items, onClose, open }: IProps) => {
+const Sidebar = ({ items, onClose, open }: SidebarProps) => {
   const classes = useStyles();
   const isAuthenticated = useIsAuthenticated();
   const theme = useTheme();
@@ -132,9 +136,13 @@ const Sidebar = ({ items, onClose, open }: IProps) => {
     <Drawer anchor='top' classes={{ paper: classes.sidebar }} onClose={onClose} open={open} style={{ zIndex: theme.zIndex.drawer - 1 }}>
       <div className={classes.root}>
         {items.map((item, i) => (
-          <SidebarItem key={i} {...item} />
+          <SidebarItem key={i} {...item} onClose={onClose} />
         ))}
-        {isAuthenticated ? <SidebarItem text='Min side' to={URLS.profile} type='link' /> : <SidebarItem text='Logg inn' to={URLS.login} type='link' />}
+        {isAuthenticated ? (
+          <SidebarItem onClose={onClose} text='Min side' to={URLS.profile} type='link' />
+        ) : (
+          <SidebarItem onClose={onClose} text='Logg inn' to={URLS.login} type='link' />
+        )}
       </div>
     </Drawer>
   );

@@ -6,14 +6,12 @@ import { GroupType } from 'types/Enums';
 import { Group } from 'types/Types';
 
 // Material UI Components
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Typography } from '@material-ui/core';
 
 // Project Components
 import Navigation from 'components/navigation/Navigation';
 import Paper from 'components/layout/Paper';
-import GroupItem from 'containers/GroupOverview/components/GroupItem';
+import GroupItem, { GroupItemLoading } from 'containers/GroupOverview/components/GroupItem';
 
 const useStyles = makeStyles((theme) => ({
   top: {
@@ -78,7 +76,12 @@ const GroupOverview = () => {
         <Typography gutterBottom variant='h1'>
           Gruppeoversikt
         </Typography>
-        {isLoading && <LinearProgress />}
+        {isLoading && (
+          <div className={classes.groupContainer}>
+            <GroupItemLoading />
+            <GroupItemLoading />
+          </div>
+        )}
         {error && <Paper>{error.detail}</Paper>}
         {Boolean(BOARD_GROUPS.length) && <Collection groups={BOARD_GROUPS} title='Hovedstyret' />}
         {Boolean(SUB_GROUPS.length) && <Collection groups={SUB_GROUPS} title='Undergrupper' />}

@@ -18,6 +18,7 @@ import Pagination from 'components/layout/Pagination';
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 import Paper from 'components/layout/Paper';
 import Select from 'components/inputs/Select';
+import Bool from 'components/inputs/Bool';
 import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
@@ -65,13 +66,14 @@ const useStyles = makeStyles((theme) => ({
 type Filters = {
   search?: string;
   category?: string;
+  expired: boolean;
 };
 
 const Events = () => {
   const classes = useStyles();
   const { getCategories } = useMisc();
   const [categories, setCategories] = useState<Array<Category>>([]);
-  const [filters, setFilters] = useState<Filters>({});
+  const [filters, setFilters] = useState<Filters>({ expired: false });
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents(filters);
   const { register, control, handleSubmit, setValue } = useForm<Filters>();
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
@@ -83,7 +85,8 @@ const Events = () => {
   const resetFilters = () => {
     setValue('category', '');
     setValue('search', '');
-    setFilters({});
+    setValue('expired', false);
+    setFilters({ expired: false });
   };
 
   const search = (data: Filters) => setFilters(data);
@@ -121,6 +124,7 @@ const Events = () => {
                 </MenuItem>
               ))}
             </Select>
+            <Bool control={control} errors={{}} label='Tidligere' name='expired' type='switch' />
             <SubmitButton disabled={isFetching} errors={{}}>
               Søk
             </SubmitButton>

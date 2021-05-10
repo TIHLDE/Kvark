@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo } from 'react';
+import classnames from 'classnames';
 import Helmet from 'react-helmet';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import URLS, { PAGES_URLS } from 'URLS';
@@ -18,6 +19,7 @@ import Paper from 'components/layout/Paper';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import PagesAdmin from 'containers/Pages/components/PagesAdmin';
 import PagesList from 'containers/Pages/components/PagesList';
+import PagesSearch from 'containers/Pages/components/PagesSearch';
 import ShareButton from 'components/miscellaneous/ShareButton';
 import MembersCard from './specials/Index/MembersCard';
 import { Groups } from 'types/Enums';
@@ -37,8 +39,10 @@ const useStyles = makeStyles<Theme, ThemeProps>((theme) => ({
   },
   grid: {
     display: 'grid',
-    gridTemplateColumns: '300px 1fr',
     gridGap: theme.spacing(2),
+  },
+  root: {
+    gridTemplateColumns: '300px 1fr',
     margin: theme.spacing(1, 0, 2),
     alignItems: 'self-start',
     [theme.breakpoints.down('md')]: {
@@ -47,9 +51,7 @@ const useStyles = makeStyles<Theme, ThemeProps>((theme) => ({
     },
   },
   inner: {
-    display: 'grid',
     gridTemplateColumns: ({ data }) => (data?.image ? '1fr 350px' : '1fr'),
-    gridGap: theme.spacing(2),
     alignItems: 'self-start',
     [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: () => '1fr',
@@ -59,11 +61,12 @@ const useStyles = makeStyles<Theme, ThemeProps>((theme) => ({
     },
   },
   content: {
-    display: 'grid',
-    gridGap: theme.spacing(2),
     [theme.breakpoints.down('md')]: {
       gridGap: theme.spacing(1),
     },
+  },
+  list: {
+    gridGap: theme.spacing(1),
   },
   paper: {
     overflow: 'hidden',
@@ -111,7 +114,9 @@ const Pages = () => {
   return (
     <Navigation
       banner={
-        <Banner title={isLoading ? <Skeleton width={300} /> : error ? 'Noe gikk galt' : data?.title}>{data !== undefined && <PagesAdmin page={data} />}</Banner>
+        <Banner title={isLoading ? <Skeleton width={300} /> : error ? 'Noe gikk galt' : data?.title}>
+          <PagesSearch />
+        </Banner>
       }
       fancyNavbar>
       <Helmet>
@@ -123,9 +128,9 @@ const Pages = () => {
             <Typography className={classes.breadcrumb}>{level.replace(/-/gi, ' ')}</Typography>
           </Link>
         ))}
-        <Typography className={classes.breadcrumb}>{levels[levels.length - 1].replace(/-/gi, ' ')}</Typography>
+        <Typography>{data?.title}</Typography>
       </Breadcrumbs>
-      <div className={classes.grid}>
+      <div className={classnames(classes.grid, classes.root)}>
         {isLoading ? (
           <>
             <Paper className={classes.paper} noPadding>
@@ -149,14 +154,15 @@ const Pages = () => {
         ) : (
           data !== undefined && (
             <>
-              <div className={classes.content}>
+              <div className={classnames(classes.grid, classes.list)}>
                 <Paper className={classes.paper} noPadding>
                   <PagesList pages={data.children} />
                 </Paper>
                 <ShareButton color='default' fullWidth shareId={data.path} shareType='pages' title={data.title} />
+                <PagesAdmin page={data} />
               </div>
-              <div className={classes.inner}>
-                <div className={classes.content}>
+              <div className={classnames(classes.grid, classes.inner)}>
+                <div className={classnames(classes.grid, classes.content)}>
                   {Boolean(data.content.trim().length) && (
                     <Paper>
                       <MarkdownRenderer value={data.content} />

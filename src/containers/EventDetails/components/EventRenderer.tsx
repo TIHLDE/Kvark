@@ -95,10 +95,6 @@ const useStyles = makeStyles((theme) => ({
   applyButton: {
     height: 50,
     fontWeight: 'bold',
-    maxWidth: 325,
-    [theme.breakpoints.down('md')]: {
-      maxWidth: 'none',
-    },
   },
   skeleton: {
     maxWidth: '100%',
