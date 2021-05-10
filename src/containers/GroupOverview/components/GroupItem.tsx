@@ -3,14 +3,15 @@ import { GroupList } from 'types/Types';
 import URLS from 'URLS';
 
 // Material UI
-import { ButtonBase, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, ButtonBase, Typography } from '@material-ui/core';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 // Icons
 import MembersIcon from '@material-ui/icons/PersonRounded';
 
 const useStyles = makeStyles((theme) => ({
   container: {
+    width: '100%',
     backgroundColor: theme.palette.background.default,
     border: `${theme.palette.borderWidth} solid ${theme.palette.divider}`,
     borderRadius: theme.shape.borderRadius,
@@ -18,15 +19,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     height: '100%',
     minHeight: 90,
-    '&:hover > h3': {
-      transform: 'scale(1.1)',
-    },
-    '&:focus > h3': {
-      transform: 'scale(1.1)',
-    },
-  },
-  group: {
-    transition: 'transform .2s',
   },
   leader: {
     display: 'flex',
@@ -51,10 +43,8 @@ const GroupItem = ({ group }: GroupItemProps) => {
   const classes = useStyles();
 
   return (
-    <ButtonBase className={classes.container} component={Link} to={`${URLS.groups}${group.slug}/`}>
-      <Typography className={classes.group} variant='h3'>
-        {group.name}
-      </Typography>
+    <ButtonBase className={classes.container} component={Link} focusRipple to={`${URLS.groups}${group.slug}/`}>
+      <Typography variant='h3'>{group.name}</Typography>
       {group.leader && (
         <div className={classes.leader}>
           <MembersIcon className={classes.icon} />
@@ -68,3 +58,16 @@ const GroupItem = ({ group }: GroupItemProps) => {
 };
 
 export default GroupItem;
+
+export const GroupItemLoading = () => {
+  const classes = useStyles();
+  return (
+    <ButtonBase className={classes.container} focusRipple>
+      <Skeleton width={100} />
+      <div className={classes.leader}>
+        <MembersIcon className={classes.icon} />
+        <Skeleton className={classes.name} width={120} />
+      </div>
+    </ButtonBase>
+  );
+};

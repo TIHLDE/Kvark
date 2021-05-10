@@ -62,22 +62,21 @@ const BadgeItem = ({ badge }: BadgeItemProps) => {
 const ProfileBadges = () => {
   const { data, hasNextPage, fetchNextPage, isFetching } = useUserBadges();
   const badges = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
+  if (!data) {
+    return null;
+  } else if (!badges.length) {
+    return <NotFoundIndicator header='Fant ingen badges' subtitle='Du har ingen badges enda' />;
+  }
   return (
-    <div>
-      {badges.length ? (
-        <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere badges' nextPage={() => fetchNextPage()}>
-          <Grid container spacing={1}>
-            {badges.map((badge) => (
-              <Grid item key={badge.id} md={6} xs={12}>
-                <BadgeItem badge={badge} />
-              </Grid>
-            ))}
+    <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere badges' nextPage={() => fetchNextPage()}>
+      <Grid container spacing={1}>
+        {badges.map((badge) => (
+          <Grid item key={badge.id} md={6} xs={12}>
+            <BadgeItem badge={badge} />
           </Grid>
-        </Pagination>
-      ) : (
-        <NotFoundIndicator header='Fant ingen badges' subtitle='Du har ingen badges enda' />
-      )}
-    </div>
+        ))}
+      </Grid>
+    </Pagination>
   );
 };
 
