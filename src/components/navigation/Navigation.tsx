@@ -1,35 +1,34 @@
-import { ReactNode, ReactElement, useState, useEffect } from 'react';
+import { ReactNode, ReactElement, useState, useEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import Helmet from 'react-helmet';
 import { Warning } from 'types/Types';
+import URLS from 'URLS';
 import { WarningType } from 'types/Enums';
-
-// API and store imports
+import { useIsAuthenticated } from 'api/hooks/User';
 import { useMisc } from 'api/hooks/Misc';
 import { getCookie, setCookie } from 'api/cookie';
 import { WARNINGS_READ } from 'constant';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import { makeStyles, LinearProgress, Hidden } from '@material-ui/core';
 
 // Project Components
 import Footer from 'components/navigation/Footer';
-import Topbar, { TopbarProps } from 'components/navigation/Topbar';
+import Topbar from 'components/navigation/Topbar';
+import BottomBar from 'components/navigation/BottomBar';
 import Snack from 'components/navigation/Snack';
 import Container from 'components/layout/Container';
 
 const useStyles = makeStyles((theme) => ({
   main: {
     minHeight: '101vh',
-    backgroundColor: theme.palette.background.default,
-  },
-  normalMain: {
     paddingTop: 64,
-    [theme.breakpoints.down('sm')]: {
-      paddingTop: 56,
+    [theme.breakpoints.down('md')]: {
+      paddingTop: 0,
+      paddingBottom: 64,
     },
   },
+  normalMain: {},
   grow: {
     display: 'flex',
     justifyContent: 'center',
@@ -64,12 +63,22 @@ export type NavigationProps = {
   isLoading?: boolean;
   noFooter?: boolean;
   fancyNavbar?: boolean;
-  topbarProps?: TopbarProps;
 };
 
-const Navigation = ({ fancyNavbar = false, isLoading = false, noFooter = false, maxWidth, banner, children, topbarProps }: NavigationProps) => {
+export type NavigationItem = {
+  items?: {
+    text: string;
+    to: string;
+  }[];
+  text: string;
+  to?: string;
+  type: 'dropdown' | 'link';
+};
+
+const Navigation = ({ children }: NavigationProps) => {
   const classes = useStyles();
   const { getWarnings } = useMisc();
+  const isAuthenticated = useIsAuthenticated();
   const [warning, setWarning] = useState<Warning | null>(null);
 
   useEffect(() => {
@@ -94,12 +103,42 @@ const Navigation = ({ fancyNavbar = false, isLoading = false, noFooter = false, 
     setWarning(null);
   };
 
+  const items = useMemo<Array<NavigationItem>>(
+    () => [
+      {
+        items: [
+          { text: 'Om TIHLDE', to: URLS.pages },
+          { text: 'Ny student', to: URLS.newStudent },
+          { text: 'Gruppeoversikt', to: URLS.groups },
+        ],
+        text: 'Generelt',
+        type: 'dropdown',
+      },
+      { text: 'Arrangementer', to: URLS.events, type: 'link' },
+      { text: 'Nyheter', to: URLS.news, type: 'link' },
+      { text: 'Karriere', to: URLS.jobposts, type: 'link' },
+      isAuthenticated
+        ? {
+            items: [
+              { text: 'Kokebok', to: URLS.cheatsheet },
+              { text: 'Link-forkorter', to: URLS.shortLinks },
+            ],
+            text: 'For medlemmer',
+            type: 'dropdown',
+          }
+        : { text: 'For bedrifter', to: URLS.company, type: 'link' },
+    ],
+    [isAuthenticated],
+  );
+
   return (
     <>
       <Helmet>
         <title>TIHLDE</title>
       </Helmet>
-      <Topbar fancyNavbar={fancyNavbar} {...topbarProps} />
+      <Hidden mdDown>
+        <Topbar items={items} />
+      </Hidden>
       {warning && (
         <Snack
           className={classNames(classes.snack, classes.grow, warning.type === WarningType.MESSAGE ? classes.snackMessage : classes.snackWarning)}
@@ -108,17 +147,10 @@ const Navigation = ({ fancyNavbar = false, isLoading = false, noFooter = false, 
           open={Boolean(warning)}
         />
       )}
-      <main className={classNames(classes.main, !fancyNavbar && classes.normalMain)}>
-        {isLoading ? (
-          <LinearProgress />
-        ) : (
-          <>
-            {banner}
-            {maxWidth === false ? <>{children}</> : <Container maxWidth={maxWidth || 'xl'}>{children || <></>}</Container>}
-          </>
-        )}
-      </main>
-      {!noFooter && !isLoading && <Footer />}
+      <main className={classes.main}>{children}</main>
+      <Hidden lgUp>
+        <BottomBar />
+      </Hidden>
     </>
   );
 };

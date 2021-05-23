@@ -107,53 +107,55 @@ const AppRoutes = () => {
     });
   }, [location]);
   return (
-    <Routes>
-      <Route element={<Landing />} path='/' />
-      <Route path={URLS.events}>
-        <AuthRoute apps={[PermissionApp.EVENT]} element={<EventRegistration />} path=':id/registrering/' />
-        <Route element={<EventDetails />} path=':id/*' />
-        <Route element={<Events />} path='' />
-      </Route>
-      <Route element={<Companies />} path={URLS.company} />
-      <Route element={<GroupOverview />} path={URLS.groups} />
-      <Route path={URLS.jobposts}>
-        <Route element={<JobPostDetails />} path=':id/*' />
-        <Route element={<JobPosts />} path='' />
-      </Route>
-      <Route element={<Pages />} path={`${URLS.pages}*`} />
-      <Route path={URLS.news}>
-        <Route element={<NewsDetails />} path=':id/*' />
-        <Route element={<News />} path='' />
-      </Route>
+    <Navigation>
+      <Routes>
+        <Route element={<Landing />} path='/' />
+        <Route path={URLS.events}>
+          <AuthRoute apps={[PermissionApp.EVENT]} element={<EventRegistration />} path=':id/registrering/' />
+          <Route element={<EventDetails />} path=':id/*' />
+          <Route element={<Events />} path='' />
+        </Route>
+        <Route element={<Companies />} path={URLS.company} />
+        <Route element={<GroupOverview />} path={URLS.groups} />
+        <Route path={URLS.jobposts}>
+          <Route element={<JobPostDetails />} path=':id/*' />
+          <Route element={<JobPosts />} path='' />
+        </Route>
+        <Route element={<Pages />} path={`${URLS.pages}*`} />
+        <Route path={URLS.news}>
+          <Route element={<NewsDetails />} path=':id/*' />
+          <Route element={<News />} path='' />
+        </Route>
 
-      <AuthRoute element={<Profile />} path={URLS.profile} />
+        <AuthRoute element={<Profile />} path={URLS.profile} />
 
-      <AuthRoute element={<Cheatsheet />} path={`${URLS.cheatsheet}:studyId/:classId/`} />
-      <AuthRoute element={<Cheatsheet />} path={`${URLS.cheatsheet}*`} />
-      <AuthRoute element={<ShortLinks />} path={URLS.shortLinks} />
+        <AuthRoute element={<Cheatsheet />} path={`${URLS.cheatsheet}:studyId/:classId/`} />
+        <AuthRoute element={<Cheatsheet />} path={`${URLS.cheatsheet}*`} />
+        <AuthRoute element={<ShortLinks />} path={URLS.shortLinks} />
 
-      <AuthRoute apps={[PermissionApp.USER]} element={<UserAdmin />} path={URLS.userAdmin} />
-      <AuthRoute apps={[PermissionApp.JOBPOST]} path={URLS.jobpostsAdmin}>
-        <Route element={<JobPostAdministration />} path=':jobPostId/' />
-        <Route element={<JobPostAdministration />} path='' />
-      </AuthRoute>
-      <AuthRoute apps={[PermissionApp.EVENT]} path={URLS.eventAdmin}>
-        <Route element={<EventAdministration />} path=':eventId/' />
-        <Route element={<EventAdministration />} path='' />
-      </AuthRoute>
-      <AuthRoute apps={[PermissionApp.NEWS]} path={URLS.newsAdmin}>
-        <Route element={<NewsAdministration />} path=':newsId/' />
-        <Route element={<NewsAdministration />} path='' />
-      </AuthRoute>
+        <AuthRoute apps={[PermissionApp.USER]} element={<UserAdmin />} path={URLS.userAdmin} />
+        <AuthRoute apps={[PermissionApp.JOBPOST]} path={URLS.jobpostsAdmin}>
+          <Route element={<JobPostAdministration />} path=':jobPostId/' />
+          <Route element={<JobPostAdministration />} path='' />
+        </AuthRoute>
+        <AuthRoute apps={[PermissionApp.EVENT]} path={URLS.eventAdmin}>
+          <Route element={<EventAdministration />} path=':eventId/' />
+          <Route element={<EventAdministration />} path='' />
+        </AuthRoute>
+        <AuthRoute apps={[PermissionApp.NEWS]} path={URLS.newsAdmin}>
+          <Route element={<NewsAdministration />} path=':newsId/' />
+          <Route element={<NewsAdministration />} path='' />
+        </AuthRoute>
 
-      <Route element={<GroupAdmin />} path={`${URLS.groups}:slug/`} />
+        <Route element={<GroupAdmin />} path={`${URLS.groups}:slug/`} />
 
-      <Route element={<LogIn />} path={URLS.login} />
-      <Route element={<ForgotPassword />} path={URLS.forgotPassword} />
-      <Route element={<SignUp />} path={URLS.signup} />
+        <Route element={<LogIn />} path={URLS.login} />
+        <Route element={<ForgotPassword />} path={URLS.forgotPassword} />
+        <Route element={<SignUp />} path={URLS.signup} />
 
-      <Route element={<Http404 />} path='*' />
-    </Routes>
+        <Route element={<Http404 />} path='*' />
+      </Routes>
+    </Navigation>
   );
 };
 

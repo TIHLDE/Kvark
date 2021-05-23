@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-type TihldeLogoProps = {
+export type TihldeLogoProps = {
   size: 'small' | 'large';
   darkColor: 'white' | 'blue' | 'black';
   lightColor: 'white' | 'blue' | 'black';

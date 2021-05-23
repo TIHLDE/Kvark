@@ -4,9 +4,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useEvents } from 'api/hooks/Event';
 
 // Material-UI
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Collapse from '@material-ui/core/Collapse';
+import { makeStyles, Typography, Collapse } from '@material-ui/core';
 
 // Icons
 import EditIcon from '@material-ui/icons/EditRounded';
@@ -16,17 +14,17 @@ import RegisterIcon from '@material-ui/icons/PlaylistAddCheckRounded';
 // Project components
 import Paper from 'components/layout/Paper';
 import Tabs from 'components/layout/Tabs';
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import SidebarList from 'components/layout/SidebarList';
 import EventEditor from 'containers/EventAdministration/components/EventEditor';
 import EventParticipants from 'containers/EventAdministration/components/EventParticipants';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(4),
     marginLeft: theme.spacing(35),
     [theme.breakpoints.down('md')]: {
-      padding: theme.spacing(4, 1, 6),
+      padding: theme.spacing(2, 1, 6),
       marginLeft: 0,
     },
   },
@@ -59,7 +57,7 @@ const EventAdministration = () => {
   };
 
   return (
-    <Navigation maxWidth={false} noFooter>
+    <Page filledTopbar maxWidth={false} noFooter title='Admin arrangementer'>
       <SidebarList onItemClick={(id: number | null) => goToEvent(id || null)} selectedItemId={Number(eventId)} title='Arrangementer' useHook={useEvents} />
       <div className={classes.root}>
         <div className={classes.content}>
@@ -80,7 +78,7 @@ const EventAdministration = () => {
           </Paper>
         </div>
       </div>
-    </Navigation>
+    </Page>
   );
 };
 

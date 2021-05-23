@@ -12,6 +12,7 @@ declare module '@material-ui/core/styles/createPalette' {
 
   interface Palette {
     borderWidth: string;
+    get: <T>({ light, dark }: { light: T; dark: T }) => T;
     blurred: {
       backdropFilter: string;
       '-webkit-backdrop-filter': string;
@@ -43,6 +44,7 @@ declare module '@material-ui/core/styles/createPalette' {
 
   interface PaletteOptions {
     borderWidth: string;
+    get: <T>({ light, dark }: { light: T; dark: T }) => T;
     blurred: {
       backdropFilter: string;
       '-webkit-backdrop-filter': string;
@@ -124,6 +126,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       },
     },
     palette: {
+      get,
       common: {
         black: '#000000',
         white: '#ffffff',

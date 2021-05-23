@@ -2,50 +2,34 @@ import { useMemo, useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import classNames from 'classnames';
-import { useUser, useIsAuthenticated } from 'api/hooks/User';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Hidden from '@material-ui/core/Hidden';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
+import { makeStyles, AppBar, Toolbar, Button, Grow, Paper, Popper, MenuItem, MenuList } from '@material-ui/core';
 
 // Assets/Icons
-import MenuIcon from '@material-ui/icons/MenuRounded';
-import CloseIcon from '@material-ui/icons/CloseRounded';
-import PersonOutlineIcon from '@material-ui/icons/PersonRounded';
 import ExpandIcon from '@material-ui/icons/ExpandMoreRounded';
 
 // Project Components
-import Sidebar from 'components/navigation/Sidebar';
+import { NavigationItem } from 'components/navigation/Navigation';
+import ProfileTopbarButton from 'components/navigation/ProfileTopbarButton';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
-import Avatar from 'components/miscellaneous/Avatar';
 
-const useStyles = makeStyles<Theme, Pick<TopbarProps, 'whiteOnLight'>>((theme) => ({
+const useStyles = makeStyles((theme) => ({
   appBar: {
     boxSizing: 'border-box',
-    backgroundColor: (props) => (props.whiteOnLight && theme.palette.type === 'light' ? theme.palette.common.white : theme.palette.colors.gradient.main.top),
+    backgroundColor: theme.palette.colors.gradient.main.top,
     color: theme.palette.text.primary,
     flexGrow: 1,
     zIndex: theme.zIndex.drawer + 1,
     transition: '0.2s',
   },
   fancyAppBar: {
-    backgroundColor: () => 'transparent',
+    backgroundColor: 'transparent',
   },
   backdrop: {
     ...theme.palette.blurred,
     ...theme.palette.transparent,
-    backgroundColor: (props) =>
-      props.whiteOnLight && theme.palette.type === 'light' ? `${theme.palette.common.white}bf` : `${theme.palette.colors.gradient.main.top}bf`,
+    backgroundColor: `${theme.palette.colors.gradient.main.top}bf`,
     border: 'none',
     boxShadow: 'none',
   },
@@ -55,13 +39,7 @@ const useStyles = makeStyles<Theme, Pick<TopbarProps, 'whiteOnLight'>>((theme) =
     margin: 'auto',
     padding: theme.spacing(0, 1),
     display: 'grid',
-    gridTemplateColumns: '220px 1fr 220px',
-    [theme.breakpoints.down('lg')]: {
-      gridTemplateColumns: '160px 1fr 160px',
-    },
-    [theme.breakpoints.down('md')]: {
-      gridTemplateColumns: '160px 1fr',
-    },
+    gridTemplateColumns: '170px 1fr 170px',
   },
   logo: {
     height: 32,
@@ -71,15 +49,14 @@ const useStyles = makeStyles<Theme, Pick<TopbarProps, 'whiteOnLight'>>((theme) =
   items: {
     display: 'flex',
     justifyContent: 'center',
-    color: (props) => (props.whiteOnLight && theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white),
+    color: theme.palette.common.white,
   },
   right: {
     display: 'flex',
     justifyContent: 'flex-end',
   },
   menuButton: {
-    color: (props) =>
-      props.whiteOnLight && theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
+    color: theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
     margin: 'auto 0',
   },
   selected: {
@@ -87,7 +64,7 @@ const useStyles = makeStyles<Theme, Pick<TopbarProps, 'whiteOnLight'>>((theme) =
   },
   profileName: {
     margin: `auto ${theme.spacing(1)}px`,
-    color: (props) => (props.whiteOnLight && theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white),
+    color: theme.palette.common.white,
     textAlign: 'right',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -130,7 +107,7 @@ export type TopBarItemProps = {
 };
 
 const TopBarItem = ({ items, text, to, type }: TopBarItemProps) => {
-  const classes = useStyles({});
+  const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
   const selected = useMemo(() => location.pathname === to, [location.pathname, to]);
@@ -177,98 +154,39 @@ const TopBarItem = ({ items, text, to, type }: TopBarItemProps) => {
 };
 
 export type TopbarProps = {
-  fancyNavbar?: boolean;
-  whiteOnLight?: boolean;
+  items: Array<NavigationItem>;
 };
 
-const Topbar = ({ fancyNavbar = false, whiteOnLight = false }: TopbarProps) => {
-  const isAuthenticated = useIsAuthenticated();
-  const { data: user } = useUser();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const classes = useStyles({ whiteOnLight: whiteOnLight && !sidebarOpen });
+const Topbar = ({ items }: TopbarProps) => {
+  const classes = useStyles();
   const [scrollLength, setScrollLength] = useState(0);
 
   const handleScroll = () => setScrollLength(window.pageYOffset);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const isOnTop = useMemo(() => scrollLength < 20, [scrollLength]);
 
-  const items = useMemo(
-    () =>
-      [
-        {
-          items: [
-            { text: 'Om TIHLDE', to: URLS.pages },
-            { text: 'Ny student', to: URLS.newStudent },
-            { text: 'Gruppeoversikt', to: URLS.groups },
-          ],
-          text: 'Generelt',
-          type: 'dropdown',
-        },
-        { text: 'Arrangementer', to: URLS.events, type: 'link' },
-        { text: 'Nyheter', to: URLS.news, type: 'link' },
-        { text: 'Karriere', to: URLS.jobposts, type: 'link' },
-        isAuthenticated
-          ? {
-              items: [
-                { text: 'Kokebok', to: URLS.cheatsheet },
-                { text: 'Link-forkorter', to: URLS.shortLinks },
-              ],
-              text: 'For medlemmer',
-              type: 'dropdown',
-            }
-          : { text: 'For bedrifter', to: URLS.company, type: 'link' },
-      ] as Array<TopBarItemProps>,
-    [isAuthenticated],
-  );
-
   return (
     <AppBar
-      className={classNames(
-        classes.appBar,
-        fancyNavbar && isOnTop && !sidebarOpen && classes.fancyAppBar,
-        fancyNavbar && !isOnTop && !sidebarOpen && classes.backdrop,
-      )}
+      className={classNames(classes.appBar, isOnTop && classes.fancyAppBar, !isOnTop && classes.backdrop)}
       color='primary'
-      elevation={(fancyNavbar && isOnTop) || sidebarOpen ? 0 : 1}
+      elevation={isOnTop ? 0 : 1}
       position='fixed'>
       <Toolbar className={classes.toolbar} disableGutters>
         <Link to={URLS.landing}>
-          <TihldeLogo className={classes.logo} darkColor='white' lightColor={whiteOnLight && !sidebarOpen ? 'blue' : 'white'} size='large' />
+          <TihldeLogo className={classes.logo} darkColor='white' lightColor='white' size='large' />
         </Link>
-        <Hidden mdDown>
-          <div className={classes.items}>
-            {items.map((item, i) => (
-              <TopBarItem key={i} {...item} />
-            ))}
-          </div>
-        </Hidden>
+        <div className={classes.items}>
+          {items.map((item, i) => (
+            <TopBarItem key={i} {...item} />
+          ))}
+        </div>
         <div className={classes.right}>
-          {user ? (
-            <Button component={Link} onClick={URLS.profile === location.pathname ? () => location.reload() : undefined} to={URLS.profile}>
-              <Hidden smDown>
-                <Typography className={classes.profileName}>{user.first_name}</Typography>
-              </Hidden>
-              <Avatar className={classes.avatar} user={user} />
-            </Button>
-          ) : (
-            <Hidden mdDown>
-              <IconButton className={classes.menuButton} component={Link} to={URLS.login}>
-                <PersonOutlineIcon />
-              </IconButton>
-            </Hidden>
-          )}
-          <Hidden lgUp>
-            <IconButton className={classes.menuButton} onClick={() => setSidebarOpen((prev) => !prev)}>
-              {sidebarOpen ? <CloseIcon /> : <MenuIcon />}
-            </IconButton>
-            <Sidebar items={items} onClose={() => setSidebarOpen(false)} open={sidebarOpen} />
-          </Hidden>
+          <ProfileTopbarButton />
         </div>
       </Toolbar>
     </AppBar>

@@ -46,7 +46,7 @@ const EventDetails = () => {
   }
 
   return (
-    <Navigation fancyNavbar maxWidth={false} topbarProps={{ whiteOnLight: true }}>
+    <Navigation fancyNavbar maxWidth={false}>
       {data && (
         <Helmet>
           <title>{data.title} - TIHLDE</title>
