@@ -8,11 +8,7 @@ import { Link } from 'react-router-dom';
 // Material UI Components
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
 import Divider from '@material-ui/core/Divider';
-
-// Icons
-import LightIcon from '@material-ui/icons/WbSunnyRounded';
 
 // Assets import
 import SIT from 'assets/icons/sit.svg';
@@ -41,6 +37,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('md')]: {
       gridTemplateAreas: "'main main' 'about sponsors' 'index index'",
       gridTemplateColumns: '1fr 1fr',
+      padding: theme.spacing(1, 0, 14),
     },
     [theme.breakpoints.down('sm')]: {
       gridTemplateRows: 'auto auto auto',
@@ -103,15 +100,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('md')]: {
       margin: theme.spacing(0, 2),
     },
-  },
-  themeSettingsContainer: {
-    height: 54,
-    width: 54,
-    marginTop: theme.spacing(2),
-    color: theme.palette.getContrastText(theme.palette.colors.footer),
-  },
-  themeSettingsIcon: {
-    fontSize: 36,
   },
   attribute: {
     textAlign: 'center',
@@ -191,10 +179,6 @@ const Footer = () => {
             </a>
           ))}
         </div>
-        <Divider className={classes.divider} />
-        <IconButton aria-label='delete' className={classnames(classes.themeSettingsContainer, classes.marginBottom)} onClick={() => setShowModal(true)}>
-          <LightIcon className={classes.themeSettingsIcon} />
-        </IconButton>
       </div>
       <div className={classnames(classes.sponsors, classes.flexColumn, classes.marginTopColumns)}>
         <Typography variant='h2'>Samarbeid</Typography>

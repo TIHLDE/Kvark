@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Container from 'components/layout/Container';
 import EventsView from 'containers/Landing/components/EventsView';
 import NewsListView from 'containers/Landing/components/NewsListView';
@@ -41,7 +41,7 @@ const Landing = () => {
   const classes = useStyles();
 
   return (
-    <Navigation banner={<Wave />} fancyNavbar maxWidth={false}>
+    <Page banner={<Wave />} maxWidth={false}>
       <Helmet>
         <title>Forsiden - TIHLDE</title>
       </Helmet>
@@ -67,7 +67,7 @@ const Landing = () => {
           <NewsListView />
         </Container>
       </div>
-    </Navigation>
+    </Page>
   );
 };
 

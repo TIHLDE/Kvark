@@ -57,7 +57,7 @@ const EventAdministration = () => {
   };
 
   return (
-    <Page filledTopbar maxWidth={false} noFooter title='Admin arrangementer'>
+    <Page maxWidth={false} navigationOptions={{ filledTopbar: true, gutterBottom: true, gutterTop: true, noFooter: true, title: 'Admin arrangementer' }}>
       <SidebarList onItemClick={(id: number | null) => goToEvent(id || null)} selectedItemId={Number(eventId)} title='Arrangementer' useHook={useEvents} />
       <div className={classes.root}>
         <div className={classes.content}>

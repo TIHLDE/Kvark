@@ -1,6 +1,7 @@
-import { ReactNode, ReactElement, useState, useEffect, useMemo } from 'react';
-import classNames from 'classnames';
+import { ReactNode, ReactElement, useState, useLayoutEffect, useEffect, useMemo, useCallback } from 'react';
+import classnames from 'classnames';
 import Helmet from 'react-helmet';
+import constate from 'constate';
 import { Warning } from 'types/Types';
 import URLS from 'URLS';
 import { WarningType } from 'types/Enums';
@@ -10,33 +11,26 @@ import { getCookie, setCookie } from 'api/cookie';
 import { WARNINGS_READ } from 'constant';
 
 // Material UI Components
-import { makeStyles, LinearProgress, Hidden } from '@material-ui/core';
+import { makeStyles, Hidden } from '@material-ui/core';
 
 // Project Components
-import Footer from 'components/navigation/Footer';
 import Topbar from 'components/navigation/Topbar';
+import Footer from 'components/navigation/Footer';
 import BottomBar from 'components/navigation/BottomBar';
 import Snack from 'components/navigation/Snack';
-import Container from 'components/layout/Container';
+import { ProfileTopbarButtonProps } from 'components/navigation/ProfileTopbarButton';
 
 const useStyles = makeStyles((theme) => ({
   main: {
     minHeight: '101vh',
-    paddingTop: 64,
-    [theme.breakpoints.down('md')]: {
-      paddingTop: 0,
-      paddingBottom: 64,
-    },
   },
-  normalMain: {},
-  grow: {
+
+  snack: {
     display: 'flex',
     justifyContent: 'center',
     flexGrow: 1,
     flexWrap: 'nowrap',
     alignItems: 'center',
-  },
-  snack: {
     position: 'absolute',
     top: 62,
     maxWidth: 'none',
@@ -54,8 +48,73 @@ const useStyles = makeStyles((theme) => ({
   snackMessage: {
     backgroundColor: theme.palette.colors.tihlde,
   },
+  gutterTop: {
+    paddingTop: 60,
+  },
+  gutterBottom: {
+    paddingBottom: 80,
+  },
 }));
 
+export type NavigationOptions = Required<ProfileTopbarButtonProps> & {
+  noFooter: boolean;
+  filledTopbar: boolean;
+  gutterBottom: boolean;
+  gutterTop: boolean;
+  title: string;
+};
+
+export type SetNavigationOptions = Partial<NavigationOptions>;
+
+const DEFAULT_OPTIONS: NavigationOptions = {
+  darkColor: 'white',
+  lightColor: 'blue',
+  noFooter: false,
+  filledTopbar: false,
+  title: 'TIHLDE',
+  gutterBottom: false,
+  gutterTop: false,
+};
+
+const useNavigationContext = () => {
+  const [navigationOptions, setNavigationOptions] = useState<NavigationOptions>(DEFAULT_OPTIONS);
+  const options = useMemo(() => navigationOptions, [navigationOptions]);
+  const setOptions = useCallback(
+    (options?: SetNavigationOptions) =>
+      setNavigationOptions({
+        darkColor: options?.darkColor || DEFAULT_OPTIONS.darkColor,
+        lightColor: options?.lightColor || DEFAULT_OPTIONS.lightColor,
+        filledTopbar: options?.filledTopbar || DEFAULT_OPTIONS.filledTopbar,
+        gutterBottom: options?.gutterBottom || DEFAULT_OPTIONS.gutterBottom,
+        gutterTop: options?.gutterTop || DEFAULT_OPTIONS.gutterTop,
+        noFooter: options?.gutterTop || DEFAULT_OPTIONS.noFooter,
+        title: `${options?.title} · TIHLDE` || DEFAULT_OPTIONS.title,
+      }),
+    [],
+  );
+  const reset = useCallback(() => setNavigationOptions(DEFAULT_OPTIONS), []);
+  return { setOptions, reset, options };
+};
+
+const [NavigationProvider, useSetOptions, useGetNavigationOptions, useResetOptions] = constate(
+  useNavigationContext,
+  (value) => value.setOptions,
+  (value) => value.options,
+  (value) => value.reset,
+);
+
+export const useSetNavigationOptions = (options?: SetNavigationOptions) => {
+  const setOptions = useSetOptions();
+  const resetOptions = useResetOptions();
+  useLayoutEffect(() => {
+    setOptions(options);
+    return () => {
+      resetOptions();
+    };
+  }, [options]);
+};
+
+// TODO: Delete this
 export type NavigationProps = {
   children?: ReactNode;
   banner?: ReactElement;
@@ -75,11 +134,12 @@ export type NavigationItem = {
   type: 'dropdown' | 'link';
 };
 
-const Navigation = ({ children }: NavigationProps) => {
+const NavigationContent = ({ children }: NavigationProps) => {
   const classes = useStyles();
   const { getWarnings } = useMisc();
   const isAuthenticated = useIsAuthenticated();
   const [warning, setWarning] = useState<Warning | null>(null);
+  const { title, darkColor, lightColor, filledTopbar, noFooter, gutterBottom, gutterTop } = useGetNavigationOptions();
 
   useEffect(() => {
     let subscribed = true;
@@ -133,26 +193,29 @@ const Navigation = ({ children }: NavigationProps) => {
 
   return (
     <>
-      <Helmet>
-        <title>TIHLDE</title>
-      </Helmet>
-      <Hidden mdDown>
-        <Topbar items={items} />
-      </Hidden>
+      <Helmet>{<title>{title}</title>}</Helmet>
+      <Topbar darkColor={darkColor} filledTopbar={filledTopbar} items={items} lightColor={lightColor} />
       {warning && (
         <Snack
-          className={classNames(classes.snack, classes.grow, warning.type === WarningType.MESSAGE ? classes.snackMessage : classes.snackWarning)}
+          className={classnames(classes.snack, warning.type === WarningType.MESSAGE ? classes.snackMessage : classes.snackWarning)}
           message={warning.text}
           onClose={() => closeSnackbar(warning)}
           open={Boolean(warning)}
         />
       )}
-      <main className={classes.main}>{children}</main>
+      <main className={classnames(classes.main, gutterTop && classes.gutterTop, gutterBottom && classes.gutterBottom)}>{children}</main>
+      {!noFooter && <Footer />}
       <Hidden lgUp>
         <BottomBar />
       </Hidden>
     </>
   );
 };
+
+const Navigation = ({ children }: NavigationProps) => (
+  <NavigationProvider>
+    <NavigationContent>{children}</NavigationContent>
+  </NavigationProvider>
+);
 
 export default Navigation;

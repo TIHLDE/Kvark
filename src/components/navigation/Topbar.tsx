@@ -4,13 +4,13 @@ import URLS from 'URLS';
 import classNames from 'classnames';
 
 // Material UI Components
-import { makeStyles, AppBar, Toolbar, Button, Grow, Paper, Popper, MenuItem, MenuList } from '@material-ui/core';
+import { makeStyles, Hidden, useTheme, AppBar, Toolbar, Button, Grow, Paper, Popper, MenuItem, MenuList } from '@material-ui/core';
 
 // Assets/Icons
 import ExpandIcon from '@material-ui/icons/ExpandMoreRounded';
 
 // Project Components
-import { NavigationItem } from 'components/navigation/Navigation';
+import { NavigationItem, NavigationOptions } from 'components/navigation/Navigation';
 import ProfileTopbarButton from 'components/navigation/ProfileTopbarButton';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.colors.gradient.main.top,
     color: theme.palette.text.primary,
     flexGrow: 1,
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: theme.zIndex.drawer + 2,
     transition: '0.2s',
   },
   fancyAppBar: {
@@ -41,6 +41,26 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
     gridTemplateColumns: '170px 1fr 170px',
   },
+  top: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 65,
+    background: theme.palette.colors.gradient.main.top,
+    zIndex: theme.zIndex.drawer + 1,
+  },
+  topbarMobile: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    padding: theme.spacing(0.5),
+    zIndex: theme.zIndex.drawer,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   logo: {
     height: 32,
     width: 'auto',
@@ -50,6 +70,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     color: theme.palette.common.white,
+  },
+  black: {
+    color: theme.palette.common.black,
   },
   right: {
     display: 'flex',
@@ -155,10 +178,11 @@ const TopBarItem = ({ items, text, to, type }: TopBarItemProps) => {
 
 export type TopbarProps = {
   items: Array<NavigationItem>;
-};
+} & Pick<NavigationOptions, 'darkColor' | 'lightColor' | 'filledTopbar'>;
 
-const Topbar = ({ items }: TopbarProps) => {
+const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => {
   const classes = useStyles();
+  const theme = useTheme();
   const [scrollLength, setScrollLength] = useState(0);
 
   const handleScroll = () => setScrollLength(window.pageYOffset);
@@ -170,26 +194,48 @@ const Topbar = ({ items }: TopbarProps) => {
 
   const isOnTop = useMemo(() => scrollLength < 20, [scrollLength]);
 
+  const colorOnDark = useMemo(() => (isOnTop && darkColor && !filledTopbar ? darkColor : 'white'), [darkColor, isOnTop, filledTopbar]);
+  const colorOnLight = useMemo(() => (isOnTop && lightColor && !filledTopbar ? lightColor : 'white'), [lightColor, isOnTop, filledTopbar]);
+
   return (
-    <AppBar
-      className={classNames(classes.appBar, isOnTop && classes.fancyAppBar, !isOnTop && classes.backdrop)}
-      color='primary'
-      elevation={isOnTop ? 0 : 1}
-      position='fixed'>
-      <Toolbar className={classes.toolbar} disableGutters>
-        <Link to={URLS.landing}>
-          <TihldeLogo className={classes.logo} darkColor='white' lightColor='white' size='large' />
-        </Link>
-        <div className={classes.items}>
-          {items.map((item, i) => (
-            <TopBarItem key={i} {...item} />
-          ))}
+    <>
+      <Hidden mdDown>
+        <>
+          <AppBar
+            className={classNames(classes.appBar, isOnTop && classes.fancyAppBar, !isOnTop && classes.backdrop)}
+            color='primary'
+            elevation={isOnTop ? 0 : 1}
+            position='fixed'>
+            <Toolbar className={classes.toolbar} disableGutters>
+              <Link to={URLS.landing}>
+                <TihldeLogo className={classes.logo} darkColor={colorOnDark} lightColor={colorOnLight} size='large' />
+              </Link>
+              <div
+                className={classNames(
+                  classes.items,
+                  (theme.palette.type === 'light' ? colorOnLight : colorOnDark) !== 'white' && !filledTopbar && classes.black,
+                )}>
+                {items.map((item, i) => (
+                  <TopBarItem key={i} {...item} />
+                ))}
+              </div>
+              <div className={classes.right}>
+                <ProfileTopbarButton darkColor={colorOnDark} lightColor={colorOnLight} />
+              </div>
+            </Toolbar>
+          </AppBar>
+          {filledTopbar && <div className={classes.top} />}
+        </>
+      </Hidden>
+      <Hidden lgUp>
+        <div className={classes.topbarMobile}>
+          <Link to={URLS.landing}>
+            <TihldeLogo className={classes.logo} darkColor={darkColor} lightColor={lightColor} size='large' />
+          </Link>
+          <ProfileTopbarButton darkColor={darkColor} lightColor={lightColor} />
         </div>
-        <div className={classes.right}>
-          <ProfileTopbarButton />
-        </div>
-      </Toolbar>
-    </AppBar>
+      </Hidden>
+    </>
   );
 };
 

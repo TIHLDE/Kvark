@@ -6,13 +6,10 @@ import { useMisc } from 'api/hooks/Misc';
 import { Category } from 'types/Types';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
-import Divider from '@material-ui/core/Divider';
-import MenuItem from '@material-ui/core/MenuItem';
-import Button from '@material-ui/core/Button';
+import { makeStyles, Divider, MenuItem, Button } from '@material-ui/core';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Banner from 'components/layout/Banner';
 import Pagination from 'components/layout/Pagination';
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
@@ -92,7 +89,7 @@ const Events = () => {
   const search = (data: Filters) => setFilters(data);
 
   return (
-    <Navigation banner={<Banner title='Arrangementer' />} fancyNavbar>
+    <Page banner={<Banner title='Arrangementer' />} navigationOptions={{ lightColor: 'white' }}>
       <Helmet>
         <title>Arrangementer</title>
       </Helmet>
@@ -135,7 +132,7 @@ const Events = () => {
           </Button>
         </Paper>
       </div>
-    </Navigation>
+    </Page>
   );
 };
 

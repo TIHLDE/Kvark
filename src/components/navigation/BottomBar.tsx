@@ -4,7 +4,6 @@ import { Link, useLocation } from 'react-router-dom';
 
 // Material UI Components
 import { makeStyles, BottomNavigation, BottomNavigationAction } from '@material-ui/core';
-// import ThemeIcon from '@material-ui/icons/LightModeRounded';
 import EventIcon from '@material-ui/icons/EventRounded';
 import MenuIcon from '@material-ui/icons/MenuRounded';
 import JobPostIcon from '@material-ui/icons/WorkOutlineRounded';
@@ -13,7 +12,6 @@ import PersonIcon from '@material-ui/icons/PersonOutlineRounded';
 // Project components
 import Paper from 'components/layout/Paper';
 import Logo from 'components/miscellaneous/TihldeLogo';
-import ThemeSettings from 'components/miscellaneous/ThemeSettings';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
     borderTopRightRadius: 2 * Number(theme.shape.borderRadius),
     ...theme.palette.blurred,
     ...theme.palette.transparent,
+    background: `${theme.palette.background.paper}80`,
   },
   navbar: {
     height: 80,
@@ -58,15 +57,16 @@ type Item = {
   to: string;
 };
 
-const MENU_TAB_KEY = 'menu';
 const MainLogo = () => {
   const classes = useStyles();
   return <Logo className={classes.tihldeLogo} darkColor='white' lightColor='black' size='small' />;
 };
+const MENU_TAB_KEY = 'menu';
 
 const BottomBar = () => {
   const classes = useStyles();
-  const [themeOpen, setThemeOpen] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const items = useMemo<Array<Item>>(
     () => [
@@ -125,11 +125,10 @@ const BottomBar = () => {
           classes={{ root: classes.action, selected: classes.selected }}
           icon={<MenuIcon />}
           label='Meny'
-          onClick={() => setThemeOpen(true)}
+          onClick={() => setMenuOpen(true)}
           value={MENU_TAB_KEY}
         />
       </BottomNavigation>
-      <ThemeSettings onClose={() => setThemeOpen(false)} open={themeOpen} />
     </Paper>
   );
 };

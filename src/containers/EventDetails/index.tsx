@@ -8,7 +8,7 @@ import { useEventById } from 'api/hooks/Event';
 
 // Project components
 import Http404 from 'containers/Http404';
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import EventRenderer, { EventRendererLoading } from 'containers/EventDetails/components/EventRenderer';
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
 import Container from 'components/layout/Container';
@@ -46,7 +46,7 @@ const EventDetails = () => {
   }
 
   return (
-    <Navigation fancyNavbar maxWidth={false}>
+    <Page maxWidth={false}>
       {data && (
         <Helmet>
           <title>{data.title} - TIHLDE</title>
@@ -61,7 +61,7 @@ const EventDetails = () => {
           {isLoading ? <EventRendererLoading /> : data !== undefined && <EventRenderer data={data} />}
         </Container>
       </div>
-    </Navigation>
+    </Page>
   );
 };
 
