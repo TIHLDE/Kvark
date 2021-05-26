@@ -49,10 +49,12 @@ const NewsAdministration = () => {
     <Navigation maxWidth={false} noFooter>
       <SidebarList
         descKey='header'
+        idKey='id'
         noExpired
         onItemClick={(id: number | null) => goToNews(id || null)}
         selectedItemId={Number(newsId)}
         title='Nyheter'
+        titleKey='title'
         useHook={useNews}
       />
       <div className={classes.root}>

@@ -40,7 +40,7 @@ const Landing = () => {
   const classes = useStyles();
 
   return (
-    <Page banner={<Wave />} maxWidth={false} navigationOptions={{ title: 'Forsiden' }}>
+    <Page banner={<Wave />} maxWidth={false} options={{ title: 'Forsiden' }}>
       <div className={classes.smoke}>
         <Container className={classnames(classes.section, classes.storiesSection)} maxWidth='lg'>
           <Typography align='center' className={classes.header} color='inherit' variant='h2'>

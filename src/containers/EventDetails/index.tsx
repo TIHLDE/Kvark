@@ -46,7 +46,7 @@ const EventDetails = () => {
   }
 
   return (
-    <Page maxWidth={false} navigationOptions={{ lightColor: 'blue', title: `${data ? data.title : 'Laster arrangement...'}` }}>
+    <Page maxWidth={false} options={{ lightColor: 'blue', title: `${data ? data.title : 'Laster arrangement...'}` }}>
       {data && (
         <Helmet>
           <meta content={data.title} property='og:title' />

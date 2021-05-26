@@ -43,7 +43,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
   },
-  drawerTop: theme.mixins.toolbar,
+  drawerTop: {
+    [theme.breakpoints.up('lg')]: {
+      ...theme.mixins.toolbar,
+    },
+  },
   drawerPaper: {
     width: theme.spacing(35),
     display: 'grid',
@@ -64,22 +68,31 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export type Item = {
-  id: number;
-  title: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-} & Record<string, any>;
-
-export type SidebarListProps = {
-  useHook: (args?: unknown) => InfiniteQueryObserverResult<PaginationResponse<Item>>;
+export type SidebarListProps<Type> = {
+  useHook: (args?: unknown) => InfiniteQueryObserverResult<PaginationResponse<Type>>;
   onItemClick: (itemId: null | number) => void;
   selectedItemId: number;
   title: string;
   noExpired?: boolean;
-  descKey?: string;
+  idKey: keyof Type;
+  titleKey: keyof Type;
+  descKey: keyof Type;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  formatDesc?: (content: any) => string;
 };
 
-const SidebarList = ({ useHook, onItemClick, selectedItemId, title, descKey = 'location', noExpired = false }: SidebarListProps) => {
+// eslint-disable-next-line comma-spacing
+const SidebarList = <Type,>({
+  useHook,
+  onItemClick,
+  selectedItemId,
+  title,
+  idKey,
+  titleKey,
+  descKey,
+  formatDesc,
+  noExpired = false,
+}: SidebarListProps<Type>) => {
   const classes = useStyles();
   const { data, hasNextPage, fetchNextPage, isLoading } = useHook();
   const items = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
@@ -99,9 +112,21 @@ const SidebarList = ({ useHook, onItemClick, selectedItemId, title, descKey = 'l
     setMobileOpen(false);
   };
 
-  const ListItem = ({ item }: { item: Item }) => (
-    <MuiListItem button className={classes.listItem} onClick={() => handleItemClick(item.id)} selected={item.id === selectedItemId}>
-      <ListItemText classes={{ secondary: classes.listItemSecondary }} primary={item.title} secondary={item[descKey]} />
+  type ListItemProps = {
+    item: Type;
+  };
+
+  const ListItem = ({ item }: ListItemProps) => (
+    <MuiListItem
+      button
+      className={classes.listItem}
+      onClick={() => handleItemClick(Number(item[idKey]))}
+      selected={Boolean(Number(item[idKey]) === selectedItemId)}>
+      <ListItemText
+        classes={{ secondary: classes.listItemSecondary }}
+        primary={item[titleKey]}
+        secondary={formatDesc ? formatDesc(item[descKey]) : item[descKey]}
+      />
     </MuiListItem>
   );
   const ListItemLoading = () => (
@@ -120,7 +145,7 @@ const SidebarList = ({ useHook, onItemClick, selectedItemId, title, descKey = 'l
         open={!isSmallScreen || mobileOpen}
         style={{ zIndex: theme.zIndex.drawer }}
         variant={isSmallScreen ? 'temporary' : 'permanent'}>
-        <div className={classes.drawerTop}></div>
+        <div className={classes.drawerTop} />
         <div className={classes.scroll}>
           <div className={classes.header}>
             <Typography variant='h3'>{title}</Typography>
@@ -128,11 +153,11 @@ const SidebarList = ({ useHook, onItemClick, selectedItemId, title, descKey = 'l
               <AddIcon />
             </IconButton>
           </div>
-          <Pagination fullWidth hasNextPage={hasNextPage} nextPage={fetchNextPage}>
+          <Pagination fullWidth hasNextPage={hasNextPage} nextPage={fetchNextPage} variant='text'>
             <List className={classes.list} dense disablePadding>
               {isLoading && <ListItemLoading />}
               {items.map((item) => (
-                <ListItem item={item} key={item.id} />
+                <ListItem item={item} key={String(item[idKey])} />
               ))}
             </List>
           </Pagination>
@@ -142,11 +167,11 @@ const SidebarList = ({ useHook, onItemClick, selectedItemId, title, descKey = 'l
               <div className={classes.header}>
                 <Typography variant='h3'>Tidligere</Typography>
               </div>
-              <Pagination fullWidth hasNextPage={hasNextExpiredPage} nextPage={fetchNextExpiredPage}>
+              <Pagination fullWidth hasNextPage={hasNextExpiredPage} nextPage={fetchNextExpiredPage} variant='text'>
                 <List className={classes.list} dense disablePadding>
                   {isExpiredLoading && <ListItemLoading />}
                   {expiredItems.map((item) => (
-                    <ListItem item={item} key={item.id} />
+                    <ListItem item={item} key={String(item[idKey])} />
                   ))}
                 </List>
               </Pagination>

@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import Helmet from 'react-helmet';
 import { useGroups } from 'api/hooks/Group';
 import { useIsAuthenticated } from 'api/hooks/User';
 import { GroupType } from 'types/Enums';
@@ -9,7 +8,7 @@ import { Group } from 'types/Types';
 import { makeStyles, Typography } from '@material-ui/core';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import GroupItem, { GroupItemLoading } from 'containers/GroupOverview/components/GroupItem';
 
@@ -68,10 +67,7 @@ const GroupOverview = () => {
   );
 
   return (
-    <Navigation banner={<div className={classes.top}></div>} fancyNavbar>
-      <Helmet>
-        <title>Gruppeoversikt</title>
-      </Helmet>
+    <Page banner={<div className={classes.top} />} options={{ title: 'Gruppeoversikt' }}>
       <Paper className={classes.content}>
         <Typography gutterBottom variant='h1'>
           Gruppeoversikt
@@ -89,7 +85,7 @@ const GroupOverview = () => {
         {Boolean(INTERESTGROUPS.length) && <Collection groups={INTERESTGROUPS} title='Interessegrupper' />}
         {isAuthenticated && Boolean(OTHER_GROUPS.length) && <Collection groups={OTHER_GROUPS} title='Andre grupper' />}
       </Paper>
-    </Navigation>
+    </Page>
   );
 };
 

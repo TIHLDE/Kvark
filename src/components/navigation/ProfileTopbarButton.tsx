@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { useUser } from 'api/hooks/User';
+import { useMisc } from 'api/hooks/Misc';
 
 // Material UI Components
 import { makeStyles, Theme, Button, IconButton } from '@material-ui/core';
@@ -40,27 +41,26 @@ export type ProfileTopbarButtonProps = Pick<TihldeLogoProps, 'darkColor' | 'ligh
 const ProfileTopbarButton = (props: ProfileTopbarButtonProps) => {
   const classes = useStyles(props);
   const { data: user } = useUser();
+  const { setLogInRedirectURL } = useMisc();
   const [showThemeSettings, setShowThemeSettings] = useState(false);
 
-  if (user) {
-    return (
-      <div>
-        <ThemeSettings onClose={() => setShowThemeSettings(false)} open={showThemeSettings} />
-        <IconButton aria-label='Endre tema' className={classes.themeButton} onClick={() => setShowThemeSettings(true)}>
-          <LightIcon className={classes.themeSettingsIcon} />
-        </IconButton>
+  return (
+    <div>
+      <ThemeSettings onClose={() => setShowThemeSettings(false)} open={showThemeSettings} />
+      <IconButton aria-label='Endre tema' className={classes.themeButton} onClick={() => setShowThemeSettings(true)}>
+        <LightIcon className={classes.themeSettingsIcon} />
+      </IconButton>
+      {user ? (
         <Button component={Link} onClick={URLS.profile === location.pathname ? () => location.reload() : undefined} to={URLS.profile}>
           <Avatar className={classes.avatar} user={user} />
         </Button>
-      </div>
-    );
-  } else {
-    return (
-      <IconButton className={classes.menuButton} component={Link} to={URLS.login}>
-        <PersonOutlineIcon />
-      </IconButton>
-    );
-  }
+      ) : (
+        <IconButton className={classes.menuButton} component={Link} onClick={() => setLogInRedirectURL(window.location.pathname)} to={URLS.login}>
+          <PersonOutlineIcon />
+        </IconButton>
+      )}
+    </div>
+  );
 };
 
 export default ProfileTopbarButton;

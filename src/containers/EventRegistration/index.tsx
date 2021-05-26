@@ -199,7 +199,7 @@ function EventRegistration() {
   }
 
   return (
-    <Page banner={<div className={classes.top}></div>} navigationOptions={{ title: `${data?.title || ''} - Registrering` }}>
+    <Page banner={<div className={classes.top}></div>} options={{ title: `${data?.title || ''} - Registrering` }}>
       <Paper className={classes.paper}>
         {isLoading && <LinearProgress className={classes.progress} />}
         <Typography align='center' className={classes.title} variant='h2'>

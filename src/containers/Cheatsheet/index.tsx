@@ -131,7 +131,7 @@ const Cheetsheet = () => {
   return (
     <Page
       banner={<Banner text={`${getStudy()} - ${getClass()}. klasse`} title='Kokeboka' />}
-      navigationOptions={{ title: `${getStudy()} - ${getClass()}. klasse - Kokeboka` }}>
+      options={{ title: `${getStudy()} - ${getClass()}. klasse - Kokeboka` }}>
       <Paper className={classes.root}>
         <div className={classes.filterContainer}>
           <TextField

@@ -86,7 +86,7 @@ const useNavigationContext = () => {
         filledTopbar: options?.filledTopbar || DEFAULT_OPTIONS.filledTopbar,
         gutterBottom: options?.gutterBottom || DEFAULT_OPTIONS.gutterBottom,
         gutterTop: options?.gutterTop || DEFAULT_OPTIONS.gutterTop,
-        noFooter: options?.gutterTop || DEFAULT_OPTIONS.noFooter,
+        noFooter: options?.noFooter || DEFAULT_OPTIONS.noFooter,
         title: `${options?.title} · TIHLDE` || DEFAULT_OPTIONS.title,
       }),
     [],

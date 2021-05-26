@@ -7,7 +7,7 @@ import { makeStyles, BottomNavigation, BottomNavigationAction } from '@material-
 import EventIcon from '@material-ui/icons/EventRounded';
 import MenuIcon from '@material-ui/icons/MenuRounded';
 import JobPostIcon from '@material-ui/icons/WorkOutlineRounded';
-import PersonIcon from '@material-ui/icons/PersonOutlineRounded';
+import NewsIcon from '@material-ui/icons/NewReleasesRounded';
 
 // Project components
 import Paper from 'components/layout/Paper';
@@ -81,14 +81,14 @@ const BottomBar = () => {
         to: URLS.events,
       },
       {
+        icon: NewsIcon,
+        text: 'Nyheter',
+        to: URLS.news,
+      },
+      {
         icon: JobPostIcon,
         text: 'Karriere',
         to: URLS.jobposts,
-      },
-      {
-        icon: PersonIcon,
-        text: 'Profil',
-        to: URLS.profile,
       },
     ],
     [],

@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { useIsAuthenticated } from 'api/hooks/User';
@@ -14,7 +13,7 @@ import http404img from 'assets/img/http404.gif';
 import http404ropeImg from 'assets/img/http404rope.gif';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 
 const useStyles = makeStyles((theme) => ({
   img: {
@@ -38,10 +37,7 @@ const Http404 = () => {
   const isAuthenticated = useIsAuthenticated();
 
   return (
-    <Navigation>
-      <Helmet>
-        <title>404 - TIHLDE</title>
-      </Helmet>
+    <Page options={{ filledTopbar: true, title: '404', lightColor: 'blue', gutterTop: true }}>
       {isAuthenticated ? (
         <img alt='404' className={classes.img} src={http404ropeImg} />
       ) : (
@@ -58,7 +54,7 @@ const Http404 = () => {
           Rapporter til Index
         </Button>
       </div>
-    </Navigation>
+    </Page>
   );
 };
 

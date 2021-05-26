@@ -2,6 +2,8 @@ import { useState } from 'react';
 import URLS from 'URLS';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useEvents } from 'api/hooks/Event';
+import { parseISO } from 'date-fns';
+import { formatDate } from 'utils';
 
 // Material-UI
 import { makeStyles, Typography, Collapse } from '@material-ui/core';
@@ -57,8 +59,17 @@ const EventAdministration = () => {
   };
 
   return (
-    <Page maxWidth={false} navigationOptions={{ filledTopbar: true, gutterBottom: true, gutterTop: true, noFooter: true, title: 'Admin arrangementer' }}>
-      <SidebarList onItemClick={(id: number | null) => goToEvent(id || null)} selectedItemId={Number(eventId)} title='Arrangementer' useHook={useEvents} />
+    <Page maxWidth={false} options={{ filledTopbar: true, gutterBottom: true, gutterTop: true, noFooter: true, title: 'Admin arrangementer' }}>
+      <SidebarList
+        descKey='start_date'
+        formatDesc={(desc) => formatDate(parseISO(desc))}
+        idKey='id'
+        onItemClick={(id: number | null) => goToEvent(id || null)}
+        selectedItemId={Number(eventId)}
+        title='Arrangementer'
+        titleKey='title'
+        useHook={useEvents}
+      />
       <div className={classes.root}>
         <div className={classes.content}>
           <Typography className={classes.header} variant='h2'>

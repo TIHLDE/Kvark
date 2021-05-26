@@ -88,7 +88,7 @@ const Events = () => {
   const search = (data: Filters) => setFilters(data);
 
   return (
-    <Page banner={<Banner title='Arrangementer' />} navigationOptions={{ title: 'Arrangementer' }}>
+    <Page banner={<Banner title='Arrangementer' />} options={{ title: 'Arrangementer' }}>
       <div className={classes.grid}>
         <div className={classes.list}>
           {isLoading && <ListItemLoading />}

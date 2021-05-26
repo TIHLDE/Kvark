@@ -4,7 +4,7 @@ import URLS from 'URLS';
 import classNames from 'classnames';
 
 // Material UI Components
-import { makeStyles, Hidden, useTheme, AppBar, Toolbar, Button, Grow, Paper, Popper, MenuItem, MenuList } from '@material-ui/core';
+import { makeStyles, Hidden, useTheme, AppBar, Toolbar, Button, Grow, Paper, Popper, MenuItem, MenuList, useMediaQuery } from '@material-ui/core';
 
 // Assets/Icons
 import ExpandIcon from '@material-ui/icons/ExpandMoreRounded';
@@ -172,6 +172,7 @@ const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => 
   const classes = useStyles();
   const theme = useTheme();
   const [scrollLength, setScrollLength] = useState(0);
+  const mdDown = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleScroll = () => setScrollLength(window.pageYOffset);
 
@@ -181,8 +182,9 @@ const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => 
   }, []);
 
   const isOnTop = useMemo(() => scrollLength < 20, [scrollLength]);
-  const colorOnDark = useMemo(() => (isOnTop && darkColor && !filledTopbar ? darkColor : 'white'), [darkColor, isOnTop, filledTopbar]);
-  const colorOnLight = useMemo(() => (isOnTop && lightColor && !filledTopbar ? lightColor : 'white'), [lightColor, isOnTop, filledTopbar]);
+  const wideScreenAndScrolledOrFilled = useMemo(() => (!mdDown && filledTopbar) || !isOnTop, [mdDown, isOnTop, filledTopbar]);
+  const colorOnDark = useMemo(() => (darkColor && !wideScreenAndScrolledOrFilled ? darkColor : 'white'), [darkColor, wideScreenAndScrolledOrFilled]);
+  const colorOnLight = useMemo(() => (lightColor && !wideScreenAndScrolledOrFilled ? lightColor : 'white'), [lightColor, wideScreenAndScrolledOrFilled]);
 
   return (
     <>

@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 
 // Project components
 import Paper from 'components/layout/Paper';
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import SidebarList from 'components/layout/SidebarList';
 import JobPostEditor from 'containers/JobPostAdministration/components/JobPostEditor';
 
@@ -48,12 +48,14 @@ const JobPostAdministration = () => {
   };
 
   return (
-    <Navigation maxWidth={false} noFooter>
+    <Page maxWidth={false} options={{ filledTopbar: true, gutterBottom: true, gutterTop: true, noFooter: true, title: 'Admin jobbannonser' }}>
       <SidebarList
         descKey='company'
+        idKey='id'
         onItemClick={(id: number | null) => goToJobPost(id || null)}
         selectedItemId={Number(jobPostId)}
         title='Annonser'
+        titleKey='title'
         useHook={useJobPosts}
       />
       <div className={classes.root}>
@@ -66,7 +68,7 @@ const JobPostAdministration = () => {
           </Paper>
         </div>
       </div>
-    </Navigation>
+    </Page>
   );
 };
 

@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { Helmet } from 'react-helmet';
 import classnames from 'classnames';
 import { useParams } from 'react-router-dom';
 import { useGroup } from 'api/hooks/Group';
@@ -11,7 +10,7 @@ import { Skeleton } from '@material-ui/lab';
 
 // Project components
 import Http404 from 'containers/Http404';
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Banner from 'components/layout/Banner';
 import Paper from 'components/layout/Paper';
 import UpdateGroupModal from 'containers/GroupAdmin/components/UpdateGroupModal';
@@ -46,20 +45,17 @@ const Group = () => {
   }
 
   if (isLoadingGroups || !data) {
-    return <Navigation isLoading />;
+    return null;
   }
 
   return (
-    <Navigation
+    <Page
       banner={
         <Banner text={`${data.description} \n${data.contact_email ? `Kontakt: ${data.contact_email}` : ''}`} title={data.name}>
           {hasWriteAcccess && <UpdateGroupModal group={data} />}
         </Banner>
       }
-      fancyNavbar>
-      <Helmet>
-        <title>{data.name}</title>
-      </Helmet>
+      options={{ title: data.name }}>
       {isLoadingMembers ? (
         <Paper className={classnames(classes.gutterBottom, classes.list)}>
           <Skeleton height={45} width={160} />
@@ -106,7 +102,7 @@ const Group = () => {
           )}
         </>
       )}
-    </Navigation>
+    </Page>
   );
 };
 

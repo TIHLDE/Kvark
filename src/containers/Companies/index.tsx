@@ -93,7 +93,7 @@ Vi kan også tilrettelegge for speed intervjuer dersom dette er ønskelig.`,
         </Banner>
       }
       maxWidth={false}
-      navigationOptions={{ title: 'For bedrifter' }}>
+      options={{ title: 'For bedrifter' }}>
       <Container className={classes.section}>
         <Typography align='center' gutterBottom variant='h2'>
           Vi tilbyr

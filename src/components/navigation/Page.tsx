@@ -7,11 +7,11 @@ export type PageProps = {
   children?: ReactNode;
   banner?: ReactElement;
   maxWidth?: ContainerProps['maxWidth'];
-  navigationOptions?: SetNavigationOptions;
+  options?: SetNavigationOptions;
 };
 
-const Page = ({ navigationOptions, maxWidth = 'xl', banner, children }: PageProps) => {
-  useSetNavigationOptions(navigationOptions);
+const Page = ({ options, maxWidth = 'xl', banner, children }: PageProps) => {
+  useSetNavigationOptions(options);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

@@ -2,7 +2,6 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { EMAIL_REGEX } from 'constant';
-import Helmet from 'react-helmet';
 import { useForgotPassword } from 'api/hooks/User';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
@@ -13,7 +12,7 @@ import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import SubmitButton from 'components/inputs/SubmitButton';
@@ -70,10 +69,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <Navigation banner={<div className={classes.top} />} fancyNavbar>
-      <Helmet>
-        <title>Glemt passord</title>
-      </Helmet>
+    <Page banner={<div className={classes.top} />} options={{ title: 'Glemt passord' }}>
       <Paper className={classes.paper}>
         {forgotPassword.isLoading && <LinearProgress className={classes.progress} />}
         <TihldeLogo className={classes.logo} darkColor='white' lightColor='blue' size='large' />
@@ -103,7 +99,7 @@ const ForgotPassword = () => {
           </Button>
         </form>
       </Paper>
-    </Navigation>
+    </Page>
   );
 };
 
