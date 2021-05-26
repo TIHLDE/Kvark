@@ -17,32 +17,33 @@ import { SnackbarProvider } from 'api/hooks/Snackbar';
 
 // Project components
 import MessageGDPR from 'components/miscellaneous/MessageGDPR';
+import Page from 'components/navigation/Page';
 import Navigation from 'components/navigation/Navigation';
 
 // Project containers
 import Companies from 'containers/Companies';
 import EventDetails from 'containers/EventDetails';
 import Landing from 'containers/Landing';
-const Cheatsheet = lazy(() => import('containers/Cheatsheet'));
-const Events = lazy(() => import('containers/Events'));
-const JobPosts = lazy(() => import('containers/JobPosts'));
-const JobPostDetails = lazy(() => import('containers/JobPostDetails'));
-const NewsDetails = lazy(() => import('containers/NewsDetails'));
-const Pages = lazy(() => import('containers/Pages'));
-const Profile = lazy(() => import('containers/Profile'));
-const EventAdministration = lazy(() => import('containers/EventAdministration'));
-const EventRegistration = lazy(() => import('containers/EventRegistration'));
-const ForgotPassword = lazy(() => import('containers/ForgotPassword'));
-const GroupOverview = lazy(() => import('containers/GroupOverview'));
-const Http404 = lazy(() => import('containers/Http404'));
-const JobPostAdministration = lazy(() => import('containers/JobPostAdministration'));
-const LogIn = lazy(() => import('containers/LogIn'));
-const News = lazy(() => import('containers/News'));
-const NewsAdministration = lazy(() => import('containers/NewsAdministration'));
-const ShortLinks = lazy(() => import('containers/ShortLinks'));
-const SignUp = lazy(() => import('containers/SignUp'));
-const UserAdmin = lazy(() => import('containers/UserAdmin'));
-const GroupAdmin = lazy(() => import('containers/GroupAdmin/index'));
+const Cheatsheet = lazy(() => import(/* webpackChunkName: "cheatsheet" */ 'containers/Cheatsheet'));
+const Events = lazy(() => import(/* webpackChunkName: "events" */ 'containers/Events'));
+const JobPosts = lazy(() => import(/* webpackChunkName: "jobposts" */ 'containers/JobPosts'));
+const JobPostDetails = lazy(() => import(/* webpackChunkName: "jobpost_details" */ 'containers/JobPostDetails'));
+const NewsDetails = lazy(() => import(/* webpackChunkName: "news_details" */ 'containers/NewsDetails'));
+const Pages = lazy(() => import(/* webpackChunkName: "pages" */ 'containers/Pages'));
+const Profile = lazy(() => import(/* webpackChunkName: "profile" */ 'containers/Profile'));
+const EventAdministration = lazy(() => import(/* webpackChunkName: "event_administration" */ 'containers/EventAdministration'));
+const EventRegistration = lazy(() => import(/* webpackChunkName: "event_registration" */ 'containers/EventRegistration'));
+const ForgotPassword = lazy(() => import(/* webpackChunkName: "forgot_password" */ 'containers/ForgotPassword'));
+const GroupOverview = lazy(() => import(/* webpackChunkName: "group_overview" */ 'containers/GroupOverview'));
+const Http404 = lazy(() => import(/* webpackChunkName: "http404" */ 'containers/Http404'));
+const JobPostAdministration = lazy(() => import(/* webpackChunkName: "jobpost_administration" */ 'containers/JobPostAdministration'));
+const LogIn = lazy(() => import(/* webpackChunkName: "login" */ 'containers/LogIn'));
+const News = lazy(() => import(/* webpackChunkName: "news" */ 'containers/News'));
+const NewsAdministration = lazy(() => import(/* webpackChunkName: "news_administration" */ 'containers/NewsAdministration'));
+const ShortLinks = lazy(() => import(/* webpackChunkName: "short_links" */ 'containers/ShortLinks'));
+const SignUp = lazy(() => import(/* webpackChunkName: "signup" */ 'containers/SignUp'));
+const UserAdmin = lazy(() => import(/* webpackChunkName: "user_admin" */ 'containers/UserAdmin'));
+const GroupAdmin = lazy(() => import(/* webpackChunkName: "group_admin" */ 'containers/GroupAdmin'));
 
 type AuthRouteProps = {
   apps?: Array<PermissionApp>;
@@ -57,7 +58,7 @@ const AuthRoute = ({ apps = [], children, path, element }: AuthRouteProps) => {
   const { allowAccess, isLoading } = useHavePermission(apps);
 
   if (isLoading) {
-    return <Navigation isLoading noFooter />;
+    return <Page />;
   } else if (!isAuthenticated) {
     setLogInRedirectURL(window.location.pathname);
     return <Navigate to={URLS.login} />;

@@ -78,20 +78,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'flex-end',
   },
-  menuButton: {
-    color: theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
-    margin: 'auto 0',
-  },
   selected: {
     borderBottom: '2px solid ' + theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
-  },
-  profileName: {
-    margin: `auto ${theme.spacing(1)}px`,
-    color: theme.palette.common.white,
-    textAlign: 'right',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
   },
   avatar: {
     width: 45,
@@ -193,7 +181,6 @@ const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => 
   }, []);
 
   const isOnTop = useMemo(() => scrollLength < 20, [scrollLength]);
-
   const colorOnDark = useMemo(() => (isOnTop && darkColor && !filledTopbar ? darkColor : 'white'), [darkColor, isOnTop, filledTopbar]);
   const colorOnLight = useMemo(() => (isOnTop && lightColor && !filledTopbar ? lightColor : 'white'), [lightColor, isOnTop, filledTopbar]);
 
@@ -230,9 +217,9 @@ const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => 
       <Hidden lgUp>
         <div className={classes.topbarMobile}>
           <Link to={URLS.landing}>
-            <TihldeLogo className={classes.logo} darkColor={darkColor} lightColor={lightColor} size='large' />
+            <TihldeLogo className={classes.logo} darkColor={colorOnDark} lightColor={colorOnLight} size='large' />
           </Link>
-          <ProfileTopbarButton darkColor={darkColor} lightColor={lightColor} />
+          <ProfileTopbarButton darkColor={colorOnDark} lightColor={colorOnLight} />
         </div>
       </Hidden>
     </>

@@ -1,6 +1,5 @@
 import { useRef } from 'react';
 import URLS from 'URLS';
-import Helmet from 'react-helmet';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,7 +11,7 @@ import Image from 'assets/img/glad.jpg';
 import SendIcon from '@material-ui/icons/SendRounded';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import InfoCard from 'components/layout/InfoCard';
 import Banner from 'components/layout/Banner';
 import CompaniesForm from 'containers/Companies/components/CompaniesForm';
@@ -85,7 +84,7 @@ Vi kan også tilrettelegge for speed intervjuer dersom dette er ønskelig.`,
   };
 
   return (
-    <Navigation
+    <Page
       banner={
         <Banner text='<b>Alle arrangementer kan gjennomføres digitalt våren 2021<b/>' title='For Bedrifter'>
           <Button className={classes.bannerButton} color='primary' fullWidth onClick={scrollToForm} startIcon={<SendIcon />} variant='outlined'>
@@ -93,11 +92,8 @@ Vi kan også tilrettelegge for speed intervjuer dersom dette er ønskelig.`,
           </Button>
         </Banner>
       }
-      fancyNavbar
-      maxWidth={false}>
-      <Helmet>
-        <title>For bedrifter</title>
-      </Helmet>
+      maxWidth={false}
+      navigationOptions={{ title: 'For bedrifter' }}>
       <Container className={classes.section}>
         <Typography align='center' gutterBottom variant='h2'>
           Vi tilbyr
@@ -134,7 +130,7 @@ Vi kan også tilrettelegge for speed intervjuer dersom dette er ønskelig.`,
           <InfoCard header='Om TIHLDE' imageClass={classes.imageClass} src={Image} text={text.aboutUs} />
         </Container>
       </div>
-    </Navigation>
+    </Page>
   );
 };
 

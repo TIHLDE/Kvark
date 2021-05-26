@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
   main: {
     minHeight: '101vh',
   },
-
   snack: {
     display: 'flex',
     justifyContent: 'center',
@@ -68,7 +67,7 @@ export type SetNavigationOptions = Partial<NavigationOptions>;
 
 const DEFAULT_OPTIONS: NavigationOptions = {
   darkColor: 'white',
-  lightColor: 'blue',
+  lightColor: 'white',
   noFooter: false,
   filledTopbar: false,
   title: 'TIHLDE',

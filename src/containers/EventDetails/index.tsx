@@ -46,10 +46,9 @@ const EventDetails = () => {
   }
 
   return (
-    <Page maxWidth={false}>
+    <Page maxWidth={false} navigationOptions={{ lightColor: 'blue', title: `${data ? data.title : 'Laster arrangement...'}` }}>
       {data && (
         <Helmet>
-          <title>{data.title} - TIHLDE</title>
           <meta content={data.title} property='og:title' />
           <meta content='website' property='og:type' />
           <meta content={window.location.href} property='og:url' />

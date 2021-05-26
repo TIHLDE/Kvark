@@ -1,6 +1,5 @@
 import { ChangeEvent, useMemo, useState } from 'react';
 import QrReader from 'react-qr-reader';
-import Helmet from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import { Registration } from 'types/Types';
 import { useEventById, useEventRegistrations, useUpdateEventRegistration } from 'api/hooks/Event';
@@ -21,7 +20,7 @@ import QRIcon from '@material-ui/icons/CameraAltRounded';
 
 // Project Components
 import Http404 from 'containers/Http404';
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import Tabs from 'components/layout/Tabs';
 
@@ -200,10 +199,7 @@ function EventRegistration() {
   }
 
   return (
-    <Navigation banner={<div className={classes.top}></div>} fancyNavbar>
-      <Helmet>
-        <title>{data?.title || ''} - Registrering - TIHLDE</title>
-      </Helmet>
+    <Page banner={<div className={classes.top}></div>} navigationOptions={{ title: `${data?.title || ''} - Registrering` }}>
       <Paper className={classes.paper}>
         {isLoading && <LinearProgress className={classes.progress} />}
         <Typography align='center' className={classes.title} variant='h2'>
@@ -224,7 +220,7 @@ function EventRegistration() {
           </>
         )}
       </Paper>
-    </Navigation>
+    </Page>
   );
 }
 

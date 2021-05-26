@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect, useMemo } from 'react';
-import Helmet from 'react-helmet';
 import URLS from 'URLS';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getUserStudyShort } from 'utils';
@@ -16,7 +15,7 @@ import { useCheatsheet } from 'api/hooks/Cheatsheet';
 
 // Project Components
 import Banner from 'components/layout/Banner';
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import Files from 'containers/Cheatsheet/components/Files';
 
@@ -130,10 +129,9 @@ const Cheetsheet = () => {
   }, [input]);
 
   return (
-    <Navigation banner={<Banner text={`${getStudy()} - ${getClass()}. klasse`} title='Kokeboka' />} fancyNavbar>
-      <Helmet>
-        <title>Kokeboka - TIHLDE</title>
-      </Helmet>
+    <Page
+      banner={<Banner text={`${getStudy()} - ${getClass()}. klasse`} title='Kokeboka' />}
+      navigationOptions={{ title: `${getStudy()} - ${getClass()}. klasse - Kokeboka` }}>
       <Paper className={classes.root}>
         <div className={classes.filterContainer}>
           <TextField
@@ -168,7 +166,7 @@ const Cheetsheet = () => {
         </div>
         <Files files={files} getNextPage={fetchNextPage} hasNextPage={hasNextPage} isLoading={isLoading} />
       </Paper>
-    </Navigation>
+    </Page>
   );
 };
 

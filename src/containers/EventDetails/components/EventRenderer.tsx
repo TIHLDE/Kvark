@@ -43,9 +43,9 @@ const useStyles = makeStyles((theme) => ({
   },
   rootGrid: {
     display: 'grid',
-    gridTemplateColumns: 'auto 1fr',
+    gridTemplateColumns: '325px 1fr',
     gridTemplateRows: 'auto',
-    gridGap: theme.spacing(2),
+    gridGap: theme.spacing(1),
     marginTop: theme.spacing(2),
     position: 'relative',
     alignItems: 'self-start',
@@ -63,10 +63,6 @@ const useStyles = makeStyles((theme) => ({
   },
   details: {
     padding: theme.spacing(1, 2),
-    width: 330,
-    [theme.breakpoints.down('md')]: {
-      width: '100%',
-    },
   },
   detailsHeader: {
     fontSize: '1.5rem',

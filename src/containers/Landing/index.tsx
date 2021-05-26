@@ -1,4 +1,3 @@
-import Helmet from 'react-helmet';
 import classnames from 'classnames';
 
 // Material UI Components
@@ -41,10 +40,7 @@ const Landing = () => {
   const classes = useStyles();
 
   return (
-    <Page banner={<Wave />} maxWidth={false}>
-      <Helmet>
-        <title>Forsiden - TIHLDE</title>
-      </Helmet>
+    <Page banner={<Wave />} maxWidth={false} navigationOptions={{ title: 'Forsiden' }}>
       <div className={classes.smoke}>
         <Container className={classnames(classes.section, classes.storiesSection)} maxWidth='lg'>
           <Typography align='center' className={classes.header} color='inherit' variant='h2'>

@@ -11,11 +11,6 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Dialog from 'components/layout/Dialog';
 
 const useStyles = makeStyles((theme) => ({
-  content: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'column',
-  },
   group: {
     background: theme.palette.background.smoke,
   },
@@ -47,22 +42,20 @@ const ThemeSettings = ({ open, onClose }: ThemeSettingsProps) => {
   };
 
   return (
-    <Dialog onClose={onClose} open={open}>
+    <Dialog maxWidth='sm' onClose={onClose} open={open}>
       <Typography align='center' gutterBottom variant='h2'>
         Tema
       </Typography>
-      <div className={classes.content}>
-        <ToggleButtonGroup aria-label='Tema' className={classes.group} exclusive onChange={changeTheme} orientation='vertical' value={themeName}>
-          {themesDetails.map((theme) => (
-            <ToggleButton aria-label={theme.name} key={theme.key} value={theme.key}>
-              <theme.icon />
-              <Typography className={classes.groupButton} variant='subtitle2'>
-                {theme.name}
-              </Typography>
-            </ToggleButton>
-          ))}
-        </ToggleButtonGroup>
-      </div>
+      <ToggleButtonGroup aria-label='Tema' className={classes.group} exclusive onChange={changeTheme} orientation='vertical' value={themeName}>
+        {themesDetails.map((theme) => (
+          <ToggleButton aria-label={theme.name} key={theme.key} value={theme.key}>
+            <theme.icon />
+            <Typography className={classes.groupButton} variant='subtitle2'>
+              {theme.name}
+            </Typography>
+          </ToggleButton>
+        ))}
+      </ToggleButtonGroup>
     </Dialog>
   );
 };

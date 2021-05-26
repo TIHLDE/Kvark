@@ -26,12 +26,27 @@ export type DialogProps = {
   closeText?: string;
   confirmText?: string;
   disabled?: boolean;
+  maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false;
+  fullWidth?: boolean;
 };
 
-function Dialog({ open, onClose, onCancel, onConfirm, titleText, children, contentText, closeText, confirmText, disabled = false }: DialogProps) {
+function Dialog({
+  open,
+  onClose,
+  onCancel,
+  onConfirm,
+  titleText,
+  children,
+  contentText,
+  closeText,
+  confirmText,
+  disabled = false,
+  maxWidth = 'md',
+  fullWidth,
+}: DialogProps) {
   const classes = useStyles();
   return (
-    <MaterialDialog aria-labelledby='form-dialog-title' fullWidth maxWidth='md' onClose={onClose} open={open}>
+    <MaterialDialog aria-labelledby='form-dialog-title' fullWidth={fullWidth} maxWidth={maxWidth} onClose={onClose} open={open}>
       {titleText && <DialogTitle id='form-dialog-title'>{titleText}</DialogTitle>}
       {(contentText || children) && (
         <DialogContent>

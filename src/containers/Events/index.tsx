@@ -1,5 +1,4 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
-import Helmet from 'react-helmet';
 import { useForm } from 'react-hook-form';
 import { useEvents } from 'api/hooks/Event';
 import { useMisc } from 'api/hooks/Misc';
@@ -89,10 +88,7 @@ const Events = () => {
   const search = (data: Filters) => setFilters(data);
 
   return (
-    <Page banner={<Banner title='Arrangementer' />} navigationOptions={{ lightColor: 'white' }}>
-      <Helmet>
-        <title>Arrangementer</title>
-      </Helmet>
+    <Page banner={<Banner title='Arrangementer' />} navigationOptions={{ title: 'Arrangementer' }}>
       <div className={classes.grid}>
         <div className={classes.list}>
           {isLoading && <ListItemLoading />}

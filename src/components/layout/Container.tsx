@@ -3,7 +3,7 @@ import classnames from 'classnames';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
-import MuiContainer, { ContainerProps } from '@material-ui/core/Container';
+import MuiContainer, { ContainerProps as MuiContainerProps } from '@material-ui/core/Container';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -13,6 +13,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+
+export type ContainerProps = MuiContainerProps;
 
 const Container = forwardRef(function Container({ className, children, maxWidth = 'xl', ...props }: ContainerProps, ref: Ref<HTMLDivElement>) {
   const classes = useStyles();
