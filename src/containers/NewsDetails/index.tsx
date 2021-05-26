@@ -8,7 +8,7 @@ import { useNewsById } from 'api/hooks/News';
 
 // Project components
 import Http404 from 'containers/Http404';
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import NewsRenderer, { NewsRendererLoading } from 'containers/NewsDetails/components/NewsRenderer';
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
 
@@ -37,10 +37,9 @@ const NewsDetails = () => {
   }
 
   return (
-    <Navigation fancyNavbar maxWidth={false}>
+    <Page maxWidth={false} options={{ title: data ? data.title : 'Laster nyhet...' }}>
       {data && (
         <Helmet>
-          <title>{data.title} - TIHLDE</title>
           <meta content={data.title} property='og:title' />
           <meta content='website' property='og:type' />
           <meta content={window.location.href} property='og:url' />
@@ -48,7 +47,7 @@ const NewsDetails = () => {
         </Helmet>
       )}
       <div className={classes.wrapper}>{isLoading ? <NewsRendererLoading /> : data !== undefined && <NewsRenderer data={data} />}</div>
-    </Navigation>
+    </Page>
   );
 };
 

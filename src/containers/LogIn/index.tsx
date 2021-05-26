@@ -1,6 +1,5 @@
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import Helmet from 'react-helmet';
 import URLS from 'URLS';
 import { useLogin } from 'api/hooks/User';
 import { useMisc } from 'api/hooks/Misc';
@@ -12,7 +11,7 @@ import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import SubmitButton from 'components/inputs/SubmitButton';
@@ -81,10 +80,7 @@ const LogIn = () => {
   };
 
   return (
-    <Navigation banner={<div className={classes.top} />} fancyNavbar>
-      <Helmet>
-        <title>Logg inn</title>
-      </Helmet>
+    <Page banner={<div className={classes.top} />} options={{ title: 'Logg inn' }}>
       <Paper className={classes.paper}>
         {logIn.isLoading && <LinearProgress className={classes.progress} />}
         <TihldeLogo className={classes.logo} darkColor='white' lightColor='blue' size='large' />
@@ -125,7 +121,7 @@ const LogIn = () => {
           </div>
         </form>
       </Paper>
-    </Navigation>
+    </Page>
   );
 };
 

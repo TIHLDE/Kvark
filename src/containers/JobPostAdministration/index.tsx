@@ -48,7 +48,9 @@ const JobPostAdministration = () => {
   };
 
   return (
-    <Page maxWidth={false} options={{ filledTopbar: true, gutterBottom: true, gutterTop: true, noFooter: true, title: 'Admin jobbannonser' }}>
+    <Page
+      maxWidth={false}
+      options={{ lightColor: 'blue', filledTopbar: true, gutterBottom: true, gutterTop: true, noFooter: true, title: 'Admin jobbannonser' }}>
       <SidebarList
         descKey='company'
         idKey='id'

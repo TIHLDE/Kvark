@@ -1,5 +1,4 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
-import Helmet from 'react-helmet';
 import { useUsers } from 'api/hooks/User';
 
 // Material UI Components
@@ -13,7 +12,7 @@ import MembersIcon from '@material-ui/icons/PlaylistAddCheckRounded';
 import WaitingIcon from '@material-ui/icons/PlaylistAddRounded';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import Tabs from 'components/layout/Tabs';
@@ -76,10 +75,7 @@ const UserAdmin = () => {
   }, [search]);
 
   return (
-    <Navigation banner={<div className={classes.top}></div>} fancyNavbar>
-      <Helmet>
-        <title>Brukeradmin</title>
-      </Helmet>
+    <Page banner={<div className={classes.top}></div>} options={{ title: 'Brukeradmin' }}>
       <Paper className={classes.content}>
         <Typography variant='h1'>Brukeradmin</Typography>
         <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
@@ -115,7 +111,7 @@ const UserAdmin = () => {
           </Pagination>
         )}
       </Paper>
-    </Navigation>
+    </Page>
   );
 };
 

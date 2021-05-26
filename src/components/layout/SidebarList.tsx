@@ -18,7 +18,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 // Icons
-import MenuIcon from '@material-ui/icons/MenuRounded';
+import MenuIcon from '@material-ui/icons/FormatListBulletedRounded';
 import AddIcon from '@material-ui/icons/AddRounded';
 
 // Project components

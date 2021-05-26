@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { useUser } from 'api/hooks/User';
-import Helmet from 'react-helmet';
 
 // Material-UI
 import { makeStyles, useMediaQuery, Typography, Button, Theme } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import ProfileContent from 'containers/Profile/components/ProfileContent';
 import Paper from 'components/layout/Paper';
 import Dialog from 'components/layout/Dialog';
@@ -60,10 +59,7 @@ const Profile = () => {
   const xsDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
 
   return (
-    <Navigation banner={<div className={classes.top} />} fancyNavbar>
-      <Helmet>
-        <title>Profil - TIHLDE</title>
-      </Helmet>
+    <Page banner={<div className={classes.top} />} options={{ title: 'Profil' }}>
       <div>
         <Paper className={classes.paper} noPadding>
           {showModal && user && (
@@ -97,7 +93,7 @@ const Profile = () => {
         </Paper>
         <ProfileContent />
       </div>
-    </Navigation>
+    </Page>
   );
 };
 

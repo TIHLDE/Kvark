@@ -1,5 +1,4 @@
 import { Fragment, useMemo, useState } from 'react';
-import Helmet from 'react-helmet';
 import { useForm } from 'react-hook-form';
 import { useJobPosts } from 'api/hooks/JobPost';
 
@@ -9,7 +8,7 @@ import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Banner from 'components/layout/Banner';
 import Pagination from 'components/layout/Pagination';
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
@@ -82,10 +81,7 @@ const JobPosts = () => {
   };
 
   return (
-    <Navigation banner={<Banner title='Karriere' />} fancyNavbar>
-      <Helmet>
-        <title>Karriere</title>
-      </Helmet>
+    <Page banner={<Banner title='Karriere' />} options={{ title: 'Karriere' }}>
       <div className={classes.grid}>
         <div className={classes.list}>
           {isLoading && <ListItemLoading />}
@@ -118,7 +114,7 @@ const JobPosts = () => {
           </Button>
         </Paper>
       </div>
-    </Navigation>
+    </Page>
   );
 };
 

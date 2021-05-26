@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Helmet from 'react-helmet';
 import { useForm } from 'react-hook-form';
 import useShare from 'use-share';
 import { useShortLinks, useCreateShortLink, useDeleteShortLink } from 'api/hooks/ShortLink';
@@ -19,7 +18,7 @@ import DeleteIcon from '@material-ui/icons/DeleteRounded';
 import ShareIcon from '@material-ui/icons/ShareRounded';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Banner from 'components/layout/Banner';
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
@@ -150,10 +149,7 @@ const ShortLinks = () => {
   };
 
   return (
-    <Navigation banner={<Banner text='Opprett, se og slett dine korte linker' title='Link-forkorter' />} fancyNavbar>
-      <Helmet>
-        <title>Link-forkorter</title>
-      </Helmet>
+    <Page banner={<Banner text='Opprett, se og slett dine korte linker' title='Link-forkorter' />} options={{ title: 'Link-forkorter' }}>
       <div className={classes.grid}>
         <div className={classes.list}>
           {error && <Paper>{error.detail}</Paper>}
@@ -191,7 +187,7 @@ const ShortLinks = () => {
           </form>
         </Paper>
       </div>
-    </Navigation>
+    </Page>
   );
 };
 

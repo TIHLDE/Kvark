@@ -59,7 +59,9 @@ const EventAdministration = () => {
   };
 
   return (
-    <Page maxWidth={false} options={{ filledTopbar: true, gutterBottom: true, gutterTop: true, noFooter: true, title: 'Admin arrangementer' }}>
+    <Page
+      maxWidth={false}
+      options={{ lightColor: 'blue', filledTopbar: true, gutterBottom: true, gutterTop: true, noFooter: true, title: 'Admin arrangementer' }}>
       <SidebarList
         descKey='start_date'
         formatDesc={(desc) => formatDate(parseISO(desc))}

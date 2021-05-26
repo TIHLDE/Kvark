@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 
 // Project components
 import Paper from 'components/layout/Paper';
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import SidebarList from 'components/layout/SidebarList';
 import NewsEditor from 'containers/NewsAdministration/components/NewsEditor';
 
@@ -46,7 +46,7 @@ const NewsAdministration = () => {
   };
 
   return (
-    <Navigation maxWidth={false} noFooter>
+    <Page maxWidth={false} options={{ lightColor: 'blue', filledTopbar: true, gutterBottom: true, gutterTop: true, noFooter: true, title: 'Admin nyheter' }}>
       <SidebarList
         descKey='header'
         idKey='id'
@@ -67,7 +67,7 @@ const NewsAdministration = () => {
           </Paper>
         </div>
       </div>
-    </Navigation>
+    </Page>
   );
 };
 

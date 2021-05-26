@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     borderTopRightRadius: 2 * Number(theme.shape.borderRadius),
     ...theme.palette.blurred,
     ...theme.palette.transparent,
-    background: `${theme.palette.background.paper}80`,
+    background: `${theme.palette.background.paper}aa`,
   },
   navbar: {
     height: 80,

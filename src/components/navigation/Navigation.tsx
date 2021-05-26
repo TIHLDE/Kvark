@@ -113,14 +113,8 @@ export const useSetNavigationOptions = (options?: SetNavigationOptions) => {
   }, [options]);
 };
 
-// TODO: Delete this
 export type NavigationProps = {
   children?: ReactNode;
-  banner?: ReactElement;
-  maxWidth?: false | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-  isLoading?: boolean;
-  noFooter?: boolean;
-  fancyNavbar?: boolean;
 };
 
 export type NavigationItem = {

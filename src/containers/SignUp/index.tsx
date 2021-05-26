@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import Helmet from 'react-helmet';
 import URLS from 'URLS';
 import { EMAIL_REGEX } from 'constant';
 import { getUserStudyLong, getUserClass } from 'utils';
@@ -23,7 +22,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
 import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
@@ -117,10 +116,7 @@ const SignUp = () => {
   };
 
   return (
-    <Navigation banner={<div className={classes.top} />} fancyNavbar>
-      <Helmet>
-        <title>Ny bruker</title>
-      </Helmet>
+    <Page banner={<div className={classes.top} />} options={{ title: 'Ny bruker' }}>
       <Paper className={classes.paper}>
         {createUser.isLoading && <LinearProgress className={classes.progress} />}
         <TihldeLogo className={classes.logo} darkColor='white' lightColor='blue' size='large' />
@@ -251,7 +247,7 @@ const SignUp = () => {
           </Collapse>
         </form>
       </Paper>
-    </Navigation>
+    </Page>
   );
 };
 

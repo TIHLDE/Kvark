@@ -164,7 +164,7 @@ export const Application = () => {
   return (
     <Providers>
       <BrowserRouter>
-        <Suspense fallback={<Navigation isLoading />}>
+        <Suspense fallback={<Navigation />}>
           <AppRoutes />
           <MessageGDPR />
         </Suspense>

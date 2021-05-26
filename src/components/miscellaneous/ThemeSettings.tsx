@@ -13,6 +13,7 @@ import Dialog from 'components/layout/Dialog';
 const useStyles = makeStyles((theme) => ({
   group: {
     background: theme.palette.background.smoke,
+    width: '100%',
   },
   groupButton: {
     margin: theme.spacing(0, 1),

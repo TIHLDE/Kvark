@@ -42,7 +42,7 @@ function Dialog({
   confirmText,
   disabled = false,
   maxWidth = 'md',
-  fullWidth,
+  fullWidth = true,
 }: DialogProps) {
   const classes = useStyles();
   return (
