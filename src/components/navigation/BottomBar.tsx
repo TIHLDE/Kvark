@@ -1,4 +1,4 @@
-import { ComponentType, useMemo, useState } from 'react';
+import { ComponentType, useEffect, useMemo, useState } from 'react';
 import URLS from 'URLS';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -8,9 +8,12 @@ import EventIcon from '@material-ui/icons/EventRounded';
 import MenuIcon from '@material-ui/icons/MenuRounded';
 import JobPostIcon from '@material-ui/icons/WorkOutlineRounded';
 import NewsIcon from '@material-ui/icons/NewReleasesRounded';
+import CloseIcon from '@material-ui/icons/CloseRounded';
 
 // Project components
 import Paper from 'components/layout/Paper';
+import { NavigationItem } from 'components/navigation/Navigation';
+import Sidebar from 'components/navigation/Sidebar';
 import Logo from 'components/miscellaneous/TihldeLogo';
 
 const useStyles = makeStyles((theme) => ({
@@ -63,12 +66,16 @@ const MainLogo = () => {
 };
 const MENU_TAB_KEY = 'menu';
 
-const BottomBar = () => {
+export type BottomBarProps = {
+  items: Array<NavigationItem>;
+};
+
+const BottomBar = ({ items }: BottomBarProps) => {
   const classes = useStyles();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
-  const items = useMemo<Array<Item>>(
+  const actions = useMemo<Array<Item>>(
     () => [
       {
         icon: MainLogo,
@@ -93,25 +100,20 @@ const BottomBar = () => {
     ],
     [],
   );
-  const routeVal = (path: string) => {
-    // if ()
-    items.forEach((item) => {
-      if (path.substring(0, item.to.length) === item.to) {
-        return item.to;
-      }
-    });
-    return path;
-  };
-  const [tab, setTab] = useState(routeVal(location.pathname));
+  useEffect(() => {
+    setMenuOpen(false);
+    setTab(location.pathname);
+  }, [location]);
+  const [tab, setTab] = useState(location.pathname);
 
   return (
     <Paper className={classes.root} noPadding>
       <BottomNavigation
         className={classes.navbar}
-        onChange={(event, newValue) => (items.some((item) => item.to === newValue) ? setTab(newValue) : null)}
+        onChange={(event, newValue) => (actions.some((item) => item.to === newValue) ? setTab(newValue) : null)}
         showLabels
         value={tab}>
-        {items.map(({ text, to, icon: Icon }, i) => (
+        {actions.map(({ text, to, icon: Icon }, i) => (
           <BottomNavigationAction
             classes={{ root: classes.action, selected: classes.selected }}
             component={Link}
@@ -124,12 +126,13 @@ const BottomBar = () => {
         ))}
         <BottomNavigationAction
           classes={{ root: classes.action, selected: classes.selected }}
-          icon={<MenuIcon />}
+          icon={menuOpen ? <CloseIcon /> : <MenuIcon />}
           label='Meny'
-          onClick={() => setMenuOpen(true)}
+          onClick={() => setMenuOpen((prev) => !prev)}
           value={MENU_TAB_KEY}
         />
       </BottomNavigation>
+      <Sidebar items={items} onClose={() => setMenuOpen(false)} open={menuOpen} />
     </Paper>
   );
 };

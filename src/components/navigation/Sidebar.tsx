@@ -14,13 +14,15 @@ import Drawer from '@material-ui/core/Drawer';
 // Icons
 import ExpandIcon from '@material-ui/icons/ExpandMoreRounded';
 
+// Project components
+import TihldeLogo from 'components/miscellaneous/TihldeLogo';
+
 const useStyles = makeStyles((theme) => ({
   sidebar: {
     backgroundColor: theme.palette.colors.gradient.main.top,
     width: '100vw',
     overflow: 'auto',
-    height: 'calc(100% - 64px)',
-    marginTop: 64,
+    height: '100%',
     [theme.breakpoints.down('xs')]: {
       height: 'calc(100% - 56px)',
       marginTop: 56,
@@ -60,6 +62,11 @@ const useStyles = makeStyles((theme) => ({
   },
   expanded: {
     transform: 'rotate(180deg)',
+  },
+  logo: {
+    height: 32,
+    width: 'auto',
+    margin: theme.spacing(2, 'auto', 0, 2),
   },
 }));
 
@@ -133,7 +140,8 @@ const Sidebar = ({ items, onClose, open }: SidebarProps) => {
   const isAuthenticated = useIsAuthenticated();
   const theme = useTheme();
   return (
-    <Drawer anchor='top' classes={{ paper: classes.sidebar }} onClose={onClose} open={open} style={{ zIndex: theme.zIndex.drawer - 1 }}>
+    <Drawer anchor='bottom' classes={{ paper: classes.sidebar }} onClose={onClose} open={open} style={{ zIndex: theme.zIndex.drawer }}>
+      <TihldeLogo className={classes.logo} darkColor='white' lightColor='white' size='large' />
       <div className={classes.root}>
         {items.map((item, i) => (
           <SidebarItem key={i} {...item} onClose={onClose} />

@@ -200,7 +200,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
       <main className={classnames(classes.main, gutterTop && classes.gutterTop, gutterBottom && classes.gutterBottom)}>{children}</main>
       {!noFooter && <Footer />}
       <Hidden lgUp>
-        <BottomBar />
+        <BottomBar items={items} />
       </Hidden>
     </>
   );
