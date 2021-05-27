@@ -20,6 +20,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     left: 0,
     right: 0,
     zIndex: theme.zIndex.snackbar,
+    [theme.breakpoints.down('md')]: {
+      bottom: theme.spacing(10),
+    },
   },
   paper: {
     display: 'grid',
@@ -34,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-function MessageGDPR() {
+const MessageGDPR = () => {
   const cookieValue = !getCookie(ACCEPTED_ANALYTICS);
   const [display, setDisplay] = useState<boolean>(cookieValue);
   const classes = useStyles();
@@ -71,6 +74,6 @@ function MessageGDPR() {
       </div>
     );
   }
-}
+};
 
 export default MessageGDPR;
