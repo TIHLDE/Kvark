@@ -12,9 +12,9 @@ import PersonOutlineIcon from '@material-ui/icons/PersonRounded';
 import LightIcon from '@material-ui/icons/WbSunnyRounded';
 
 // Project Components
-import { TihldeLogoProps } from 'components/miscellaneous/TihldeLogo';
 import Avatar from 'components/miscellaneous/Avatar';
 import ThemeSettings from 'components/miscellaneous/ThemeSettings';
+import { NavigationOptions } from 'components/navigation/Navigation';
 
 const useStyles = makeStyles<Theme, ProfileTopbarButtonProps>((theme) => ({
   themeButton: {
@@ -36,7 +36,7 @@ const getColor = ({ darkColor, lightColor }: ProfileTopbarButtonProps, theme: Th
   return type === 'white' ? theme.palette.common.white : type === 'blue' ? theme.palette.colors.tihlde : theme.palette.common.black;
 };
 
-export type ProfileTopbarButtonProps = Pick<TihldeLogoProps, 'darkColor' | 'lightColor'>;
+export type ProfileTopbarButtonProps = Pick<NavigationOptions, 'darkColor' | 'lightColor'>;
 
 const ProfileTopbarButton = (props: ProfileTopbarButtonProps) => {
   const classes = useStyles(props);

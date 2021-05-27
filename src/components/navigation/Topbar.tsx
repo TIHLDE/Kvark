@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
     gridTemplateColumns: '170px 1fr 170px',
   },
-  top: {
+  filledTopbar: {
     position: 'fixed',
     top: 0,
     left: 0,
@@ -80,6 +80,11 @@ const useStyles = makeStyles((theme) => ({
   },
   selected: {
     borderBottom: '2px solid ' + theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
+    '& a': {
+      fontWeight: 600,
+      borderBottomLeftRadius: 0,
+      borderBottomRightRadius: 0,
+    },
   },
   avatar: {
     width: 45,
@@ -191,7 +196,7 @@ const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => 
       <Hidden mdDown>
         <>
           <AppBar
-            className={classNames(classes.appBar, isOnTop && classes.fancyAppBar, !isOnTop && classes.backdrop)}
+            className={classNames(classes.appBar, isOnTop ? classes.fancyAppBar : classes.backdrop)}
             color='primary'
             elevation={isOnTop ? 0 : 1}
             position='fixed'>
@@ -213,7 +218,7 @@ const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => 
               </div>
             </Toolbar>
           </AppBar>
-          {filledTopbar && <div className={classes.top} />}
+          {filledTopbar && <div className={classes.filledTopbar} />}
         </>
       </Hidden>
       <Hidden lgUp>

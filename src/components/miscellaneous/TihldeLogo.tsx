@@ -4,6 +4,8 @@ import classnames from 'classnames';
 // Material UI Components
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
+import { NavigationOptions } from 'components/navigation/Navigation';
+
 const useStyles = makeStyles(() => ({
   logo: {
     margin: 'auto',
@@ -11,10 +13,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export type TihldeLogoProps = {
+export type TihldeLogoProps = Pick<NavigationOptions, 'darkColor' | 'lightColor'> & {
   size: 'small' | 'large';
-  darkColor: 'white' | 'blue' | 'black';
-  lightColor: 'white' | 'blue' | 'black';
   className?: string;
 };
 

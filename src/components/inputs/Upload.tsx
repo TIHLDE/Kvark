@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react';
 import { RegisterOptions, UseFormMethods } from 'react-hook-form';
 import Cropper from 'react-easy-crop';
-import compressImage from 'browser-image-compression';
 import useShare from 'use-share';
 import API from 'api/api';
 import { useSnackbar } from 'api/hooks/Snackbar';
@@ -130,6 +129,7 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
   const uploadFile = async (file: File | Blob) => {
     setIsLoading(true);
     try {
+      const { default: compressImage } = await import('browser-image-compression');
       const compressedImage = await compressImage(file as File, { maxSizeMB: 0.8, maxWidthOrHeight: 1500 });
       const newFile = blobToFile(compressedImage, imageFile?.name || '', imageFile?.type || '');
       const data = await API.uploadFile(newFile);

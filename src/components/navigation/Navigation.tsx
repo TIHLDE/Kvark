@@ -1,4 +1,4 @@
-import { ReactNode, ReactElement, useState, useLayoutEffect, useEffect, useMemo, useCallback } from 'react';
+import { ReactNode, useState, useLayoutEffect, useEffect, useMemo, useCallback } from 'react';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
 import constate from 'constate';
@@ -18,7 +18,6 @@ import Topbar from 'components/navigation/Topbar';
 import Footer from 'components/navigation/Footer';
 import BottomBar from 'components/navigation/BottomBar';
 import Snack from 'components/navigation/Snack';
-import { ProfileTopbarButtonProps } from 'components/navigation/ProfileTopbarButton';
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -55,12 +54,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export type NavigationOptions = Required<ProfileTopbarButtonProps> & {
+export type NavigationOptions = {
   noFooter: boolean;
   filledTopbar: boolean;
   gutterBottom: boolean;
   gutterTop: boolean;
   title: string;
+  darkColor: 'white' | 'blue' | 'black';
+  lightColor: 'white' | 'blue' | 'black';
 };
 
 export type SetNavigationOptions = Partial<NavigationOptions>;

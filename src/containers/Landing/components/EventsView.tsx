@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 
 // Material-UI
 import Tab from '@material-ui/core/Tab';
@@ -8,11 +8,12 @@ import Collapse from '@material-ui/core/Collapse';
 // Project componets/services
 import { useEvents } from 'api/hooks/Event';
 import EventsListView from 'containers/Landing/components/EventsListView';
-import EventsCalendarView from 'containers/Landing/components/EventsCalendarView';
 
 // Icons
 import Reorder from '@material-ui/icons/ReorderRounded';
 import DateRange from '@material-ui/icons/DateRangeRounded';
+
+const EventsCalendarView = lazy(() => import(/* webpackChunkName: "events_calendar" */ 'containers/Landing/components/EventsCalendarView'));
 
 enum Views {
   LIST,
@@ -34,7 +35,9 @@ const EventsView = () => {
         <EventsListView events={data?.pages[0]?.results || []} isLoading={isLoading} />
       </Collapse>
       <Collapse in={tab === Views.CALENDAR} mountOnEnter>
-        <EventsCalendarView events={data?.pages[0]?.results || []} oldEvents={oldEvents?.pages[0]?.results || []} />
+        <Suspense fallback={null}>
+          <EventsCalendarView events={data?.pages[0]?.results || []} oldEvents={oldEvents?.pages[0]?.results || []} />
+        </Suspense>
       </Collapse>
     </>
   );

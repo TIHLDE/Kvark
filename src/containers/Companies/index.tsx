@@ -2,9 +2,7 @@ import { useRef } from 'react';
 import URLS from 'URLS';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import { makeStyles, Typography } from '@material-ui/core';
 
 // Icons and images
 import Image from 'assets/img/glad.jpg';
@@ -13,7 +11,7 @@ import SendIcon from '@material-ui/icons/SendRounded';
 // Project Components
 import Page from 'components/navigation/Page';
 import InfoCard from 'components/layout/InfoCard';
-import Banner from 'components/layout/Banner';
+import Banner, { BannerButton } from 'components/layout/Banner';
 import CompaniesForm from 'containers/Companies/components/CompaniesForm';
 import Container from 'components/layout/Container';
 
@@ -50,13 +48,6 @@ const useStyles = makeStyles((theme) => ({
   smoke: {
     backgroundColor: theme.palette.background.smoke,
   },
-  bannerButton: {
-    color: theme.palette.common.white,
-    borderColor: theme.palette.common.white + 'bb',
-    '&:hover': {
-      borderColor: theme.palette.common.white,
-    },
-  },
 }));
 
 const Companies = () => {
@@ -87,9 +78,9 @@ Vi kan også tilrettelegge for speed intervjuer dersom dette er ønskelig.`,
     <Page
       banner={
         <Banner text='<b>Alle arrangementer kan gjennomføres digitalt våren 2021<b/>' title='For Bedrifter'>
-          <Button className={classes.bannerButton} color='primary' fullWidth onClick={scrollToForm} startIcon={<SendIcon />} variant='outlined'>
+          <BannerButton onClick={scrollToForm} startIcon={<SendIcon />}>
             Send oss en melding
-          </Button>
+          </BannerButton>
         </Banner>
       }
       maxWidth={false}

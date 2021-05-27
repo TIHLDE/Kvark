@@ -94,6 +94,7 @@ const BottomBar = () => {
     [],
   );
   const routeVal = (path: string) => {
+    // if ()
     items.forEach((item) => {
       if (path.substring(0, item.to.length) === item.to) {
         return item.to;

@@ -46,25 +46,21 @@ const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme: Theme
     '&::-webkit-scrollbar-thumb:hover': {
       background: `${theme.palette.divider}`,
     },
-    '&:before': {
+    '&:before,&:after': {
       content: '""',
       position: 'absolute',
       zIndex: 1,
       top: 0,
-      left: 0,
       bottom: 0,
-      background: (props) => `linear-gradient(to left, transparent, ${props.fadeColor || theme.palette.background.default} 65%)`,
       width: theme.spacing(2),
     },
+    '&:before': {
+      left: 0,
+      background: (props) => `linear-gradient(to left, #ffffff00, ${props.fadeColor || theme.palette.background.default} 65%)`,
+    },
     '&:after': {
-      content: '""',
-      position: 'absolute',
-      zIndex: 1,
-      top: 0,
       right: 0,
-      bottom: 0,
-      background: (props) => `linear-gradient(to right, transparent, ${props.fadeColor || theme.palette.background.default} 65%)`,
-      width: theme.spacing(2),
+      background: (props) => `linear-gradient(to right, #ffffff00, ${props.fadeColor || theme.palette.background.default} 65%)`,
     },
   },
   story: {
