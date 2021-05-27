@@ -11,10 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 
 // Assets import
-import SIT from 'assets/icons/sit.svg';
 import VERCEL from 'assets/icons/vercel.svg';
-import NEXTTRON from 'assets/img/Nextron.png';
-import ACADEMICWORK from 'assets/icons/academic_work.svg';
 import FACEBOOK from 'assets/icons/facebook.svg';
 import TWITTER from 'assets/icons/twitter.svg';
 import INSTAGRAM from 'assets/icons/instagram.svg';
@@ -186,9 +183,6 @@ const Footer = () => {
         <a href='https://vercel.com/?utm_source=kvark&utm_campaign=oss' rel='noopener noreferrer' target='_blank'>
           <img alt='Vercel' className={classes.marginBottom} src={VERCEL} width={150} />
         </a>
-        <img alt='academicwork' className={classes.marginBottom} src={ACADEMICWORK} width={80} />
-        <img alt='sit' className={classes.marginBottom} src={SIT} width={80} />
-        <img alt='nextron' className={classes.marginBottom} src={NEXTTRON} width={80} />
       </div>
       <div className={classes.index}>
         <Typography>
