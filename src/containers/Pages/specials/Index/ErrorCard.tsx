@@ -1,7 +1,8 @@
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import Paper from 'components/layout/Paper';
 import ContactMailIcon from '@material-ui/icons/ContactMail';

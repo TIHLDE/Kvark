@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useJobPosts } from 'api/hooks/JobPost';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 

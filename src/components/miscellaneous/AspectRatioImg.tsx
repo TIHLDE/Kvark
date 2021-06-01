@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import classNames from 'classnames';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 // Icons

@@ -2,7 +2,8 @@ import { ReactNode } from 'react';
 import classNames from 'classnames';
 
 // Material-ui
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import MaterialModal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';

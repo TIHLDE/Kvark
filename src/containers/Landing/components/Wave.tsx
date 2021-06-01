@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useIsAuthenticated } from 'api/hooks/User';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 

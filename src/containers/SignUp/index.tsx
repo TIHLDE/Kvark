@@ -10,7 +10,7 @@ import { useMisc } from 'api/hooks/Misc';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';

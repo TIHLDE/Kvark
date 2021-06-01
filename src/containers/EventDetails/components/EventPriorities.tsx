@@ -4,7 +4,8 @@ import { UserClass, UserStudy } from 'types/Enums';
 import { getUserStudyShort } from 'utils';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme: Theme) => ({

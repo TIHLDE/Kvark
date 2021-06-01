@@ -3,7 +3,7 @@ import { useEventById, useEventRegistrations } from 'api/hooks/Event';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material-UI
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import FormControlLabel from '@material-ui/core/FormControlLabel';

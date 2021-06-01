@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useNews } from 'api/hooks/News';
 
 // Material-UI
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 
 // Project components

@@ -5,7 +5,7 @@ import { useSnackbar } from 'api/hooks/Snackbar';
 import { getUserClass, getUserStudyShort } from 'utils';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import { Typography, Collapse, Hidden, Button, ListItem, ListItemText, Divider } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 

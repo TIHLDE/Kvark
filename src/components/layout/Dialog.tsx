@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import MaterialDialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';

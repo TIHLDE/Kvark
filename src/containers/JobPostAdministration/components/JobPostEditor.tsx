@@ -7,7 +7,7 @@ import { useSnackbar } from 'api/hooks/Snackbar';
 import { EMAIL_REGEX } from 'constant';
 
 // Material-UI
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import LinearProgress from '@material-ui/core/LinearProgress';

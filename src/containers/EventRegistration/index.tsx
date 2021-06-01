@@ -6,7 +6,8 @@ import { useEventById, useEventRegistrations, useUpdateEventRegistration } from 
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import LinearProgress from '@material-ui/core/LinearProgress';

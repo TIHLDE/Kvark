@@ -6,7 +6,7 @@ import API from 'api/api';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import {
   Button,
   ButtonProps,

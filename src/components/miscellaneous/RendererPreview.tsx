@@ -1,7 +1,8 @@
 import { useState, forwardRef, Ref, ReactElement, FunctionComponent } from 'react';
 
 // Material-UI
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';

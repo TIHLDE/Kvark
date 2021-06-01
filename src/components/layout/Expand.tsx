@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import classNames from 'classnames';
 import htmlReactParser from 'html-react-parser';
 

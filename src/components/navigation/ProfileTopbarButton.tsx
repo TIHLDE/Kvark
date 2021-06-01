@@ -32,7 +32,7 @@ const useStyles = makeStyles<Theme, ProfileTopbarButtonProps>((theme) => ({
 }));
 
 const getColor = ({ darkColor, lightColor }: ProfileTopbarButtonProps, theme: Theme) => {
-  const type = theme.palette.type === 'light' ? lightColor : darkColor;
+  const type = theme.palette.mode === 'light' ? lightColor : darkColor;
   return type === 'white' ? theme.palette.common.white : type === 'blue' ? theme.palette.colors.tihlde : theme.palette.common.black;
 };
 

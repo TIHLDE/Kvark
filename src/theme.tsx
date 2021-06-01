@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme, darkScrollbar } from '@material-ui/core';
 
 // Icons
 import DarkIcon from '@material-ui/icons/Brightness2Outlined';
@@ -96,7 +96,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
     }
   };
 
-  return createMuiTheme({
+  return createTheme({
     breakpoints: {
       values: {
         xs: 0,
@@ -106,18 +106,26 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
         xl: 1200,
       },
     },
-    overrides: {
+    components: {
       MuiAvatar: {
-        colorDefault: {
-          backgroundColor: '#b4345e',
-          color: 'white',
-          fontWeight: 'bold',
+        styleOverrides: {
+          root: {
+            backgroundColor: '#b4345e',
+            color: 'white',
+            fontWeight: 'bold',
+          },
         },
       },
       MuiCssBaseline: {
-        '@global': {
-          html: {
-            WebkitFontSmoothing: 'auto',
+        styleOverrides: {
+          body: {
+            // eslint-disable-next-line @typescript-eslint/ban-types
+            ...get<object>({ light: {}, dark: darkScrollbar() }),
+          },
+          '@global': {
+            html: {
+              WebkitFontSmoothing: 'auto',
+            },
           },
           a: {
             color: get<string>({ light: '#1D448C', dark: '#9ec0ff' }),
@@ -131,7 +139,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
         black: '#000000',
         white: '#ffffff',
       },
-      type: get<'light' | 'dark'>({ light: 'light', dark: 'dark' }),
+      mode: get<'light' | 'dark'>({ light: 'light', dark: 'dark' }),
       primary: {
         main: get<string>({ light: '#1D448C', dark: '#9ec0ff' }),
       },

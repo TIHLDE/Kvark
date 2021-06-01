@@ -4,7 +4,7 @@ import URLS from 'URLS';
 import { useIsAuthenticated } from 'api/hooks/User';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 

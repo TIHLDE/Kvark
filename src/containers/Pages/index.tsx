@@ -7,7 +7,8 @@ import { Page as IPage } from 'types/Types';
 import { Groups } from 'types/Enums';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Skeleton from '@material-ui/lab/Skeleton';

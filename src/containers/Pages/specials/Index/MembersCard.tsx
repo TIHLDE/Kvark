@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { UserList } from 'types/Types';
 
 import { ListItem, ListItemText, ListItemAvatar, List, Grid, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Paper from 'components/layout/Paper';
 import { useMemberships } from 'api/hooks/Membership';

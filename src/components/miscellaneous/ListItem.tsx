@@ -7,7 +7,8 @@ import URLS from 'URLS';
 import { EventCompact, News, JobPost } from 'types/Types';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';

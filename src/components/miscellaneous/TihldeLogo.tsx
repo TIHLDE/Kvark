@@ -2,7 +2,8 @@ import { useMemo } from 'react';
 import classnames from 'classnames';
 
 // Material UI Components
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { useTheme } from '@material-ui/core';
 
 import { NavigationOptions } from 'components/navigation/Navigation';
 
@@ -22,7 +23,7 @@ function TihldeLogo({ size, darkColor, lightColor, className }: TihldeLogoProps)
   const theme = useTheme();
   const classes = useStyles();
   const color = useMemo(() => {
-    const isDark = theme.palette.type === 'dark';
+    const isDark = theme.palette.mode === 'dark';
     const prop = isDark ? darkColor : lightColor;
     if (prop === 'black') {
       return '#000000';

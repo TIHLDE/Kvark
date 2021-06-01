@@ -7,7 +7,7 @@ import addMonths from 'date-fns/addMonths';
 import { EMAIL_REGEX } from 'constant';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Divider from '@material-ui/core/Divider';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormLabel from '@material-ui/core/FormLabel';

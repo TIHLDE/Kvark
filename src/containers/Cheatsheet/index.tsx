@@ -5,7 +5,7 @@ import { getUserStudyShort } from 'utils';
 import { Study } from 'types/Enums';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 

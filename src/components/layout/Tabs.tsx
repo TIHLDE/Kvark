@@ -1,7 +1,7 @@
 import { ComponentType } from 'react';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import MaterialTabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 

@@ -8,7 +8,7 @@ import { ViewState, AppointmentModel } from '@devexpress/dx-react-scheduler';
 import { Scheduler, MonthView, Toolbar, DateNavigator, Appointments } from '@devexpress/dx-react-scheduler-material-ui';
 
 // Material-UI
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 
 // Project components
 import Paper from 'components/layout/Paper';

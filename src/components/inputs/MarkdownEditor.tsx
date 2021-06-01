@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';

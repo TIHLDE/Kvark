@@ -5,7 +5,8 @@ import { useUpdateForm, useDeleteForm } from 'api/hooks/Form';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';

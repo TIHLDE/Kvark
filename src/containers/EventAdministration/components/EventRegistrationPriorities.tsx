@@ -4,7 +4,8 @@ import { RegistrationPriority } from 'types/Types';
 import { UserClass, UserStudy } from 'types/Enums';
 
 // Material-UI
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';

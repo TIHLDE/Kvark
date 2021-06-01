@@ -3,7 +3,8 @@ import { InfiniteQueryObserverResult } from 'react-query';
 import { PaginationResponse } from 'types/Types';
 
 // Material UI Components
-import { makeStyles, useTheme, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { Theme, useTheme } from '@material-ui/core';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';

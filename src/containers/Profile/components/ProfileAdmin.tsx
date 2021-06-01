@@ -5,7 +5,7 @@ import { PermissionApp } from 'types/Enums';
 import { HavePermission } from 'api/hooks/User';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import { Avatar, List, ListItem, ListItemText, ListItemAvatar, Typography } from '@material-ui/core';
 
 // Icons

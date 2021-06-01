@@ -11,7 +11,7 @@ import { Page, PageTree } from 'types/Types';
 import { PermissionApp } from 'types/Enums';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TreeView from '@material-ui/lab/TreeView';

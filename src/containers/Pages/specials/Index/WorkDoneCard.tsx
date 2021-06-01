@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Paper from 'components/layout/Paper';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';

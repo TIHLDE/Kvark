@@ -6,7 +6,8 @@ import parseISO from 'date-fns/parseISO';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material-ui
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 import Collapse from '@material-ui/core/Collapse';

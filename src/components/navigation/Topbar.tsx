@@ -207,7 +207,7 @@ const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => 
               <div
                 className={classNames(
                   classes.items,
-                  (theme.palette.type === 'light' ? colorOnLight : colorOnDark) !== 'white' && !filledTopbar && classes.black,
+                  (theme.palette.mode === 'light' ? colorOnLight : colorOnDark) !== 'white' && !filledTopbar && classes.black,
                 )}>
                 {items.map((item, i) => (
                   <TopBarItem key={i} {...item} />

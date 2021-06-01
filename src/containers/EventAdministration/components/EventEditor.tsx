@@ -9,7 +9,8 @@ import { addHours, subDays, parseISO } from 'date-fns';
 import { dateAsUTC } from 'utils';
 
 // Material-UI
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';

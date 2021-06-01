@@ -1,5 +1,6 @@
 import { Fragment, ReactNode } from 'react';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import parser from 'html-react-parser';
 import classNames from 'classnames';
 

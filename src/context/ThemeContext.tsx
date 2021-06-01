@@ -1,8 +1,7 @@
 import { useCallback, useState, useLayoutEffect, useContext, createContext, ReactNode } from 'react';
 import { getCookie, setCookie } from 'api/cookie';
 import { getTheme, themes, ThemeTypes } from '../theme';
-import { MuiThemeProvider } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useMediaQuery, ThemeProvider as MuiThemeProvider } from '@material-ui/core';
 
 const THEME_COOKIE = 'theme-cookie';
 

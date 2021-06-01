@@ -33,7 +33,7 @@ const QRCode = ({ value, background = 'default', className }: QRCodeProps) => {
       <QR
         bgColor={theme.palette.background[background === 'default' ? 'default' : 'paper']}
         className={classnames(classes.qrcode, className)}
-        fgColor={theme.palette.type === 'light' ? theme.palette.colors.tihlde : theme.palette.text.primary}
+        fgColor={theme.palette.mode === 'light' ? theme.palette.colors.tihlde : theme.palette.text.primary}
         size={1000}
         value={value}
       />

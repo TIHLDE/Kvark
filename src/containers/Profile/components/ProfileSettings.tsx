@@ -5,7 +5,7 @@ import { useUpdateUser } from 'api/hooks/User';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material-UI
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import { MenuItem, Typography } from '@material-ui/core';
 
 // Project components

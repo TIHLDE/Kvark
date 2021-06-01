@@ -5,7 +5,8 @@ import { urlEncode, formatDate } from 'utils';
 import URLS from 'URLS';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Skeleton from '@material-ui/lab/Skeleton';

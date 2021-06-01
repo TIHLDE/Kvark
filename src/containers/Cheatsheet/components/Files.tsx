@@ -4,7 +4,8 @@ import { CheatsheetType } from 'types/Enums';
 import { Cheatsheet } from 'types/Types';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Hidden from '@material-ui/core/Hidden';

@@ -3,7 +3,8 @@ import { Registration } from 'types/Types';
 import { getUserClass, getUserStudyShort } from 'utils';
 
 // Material-UI
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 
 // Project components
