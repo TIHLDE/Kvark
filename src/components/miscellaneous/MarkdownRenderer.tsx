@@ -1,18 +1,18 @@
 /* eslint-disable react/display-name */
-import { createElement, useMemo, ReactNode } from 'react';
-import ReactMarkdown from 'react-markdown';
+import { createElement, useMemo, ReactNode, lazy, Suspense } from 'react';
 import { useEventById } from 'api/hooks/Event';
 import { useJobPostById } from 'api/hooks/JobPost';
 import { useNewsById } from 'api/hooks/News';
 
 // Material UI
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
+import { makeStyles, Divider, Typography } from '@material-ui/core';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 // Project components
 import Expansion from 'components/layout/Expand';
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
+
+const ReactMarkdown = lazy(() => import('react-markdown'));
 
 const useStyles = makeStyles((theme) => ({
   blockquote: {
@@ -143,7 +143,20 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
     [classes],
   );
 
-  return <ReactMarkdown renderers={renderers}>{value}</ReactMarkdown>;
+  return (
+    <Suspense
+      fallback={
+        <>
+          <Skeleton height={40} width='60%' />
+          <Skeleton height={40} width='70%' />
+          <Skeleton height={40} width='40%' />
+          <Skeleton height={40} width='80%' />
+          <Skeleton height={40} width='90%' />
+        </>
+      }>
+      <ReactMarkdown renderers={renderers}>{value}</ReactMarkdown>
+    </Suspense>
+  );
 };
 
 export default MarkdownRenderer;

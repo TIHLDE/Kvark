@@ -176,7 +176,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               <Alert className={classes.alert} severity='success' variant='outlined'>
                 Du har plass på arrangementet!
               </Alert>
-              <QRCode height={275} value={user.user_id} width={275} />
+              <QRCode value={user.user_id} />
             </Paper>
           )}
           {(isFuture(signOffDeadlineDate) || registration.is_on_wait) && isFuture(startDate) ? (

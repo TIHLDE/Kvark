@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useUser } from 'api/hooks/User';
 
 // Material-UI
-import { makeStyles, useMediaQuery, Typography, Button, Theme } from '@material-ui/core';
+import { makeStyles, Typography, Button } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 // Project Components
@@ -56,7 +56,6 @@ const Profile = () => {
   const classes = useStyles();
   const { data: user } = useUser();
   const [showModal, setShowModal] = useState(false);
-  const xsDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
 
   return (
     <Page banner={<div className={classes.top} />} options={{ title: 'Profil' }}>
@@ -64,7 +63,7 @@ const Profile = () => {
         <Paper className={classes.paper} noPadding>
           {showModal && user && (
             <Dialog onClose={() => setShowModal(false)} open={showModal} titleText='Medlemsbevis'>
-              <QRCode height={xsDown ? 280 : 350} value={user.user_id} width={xsDown ? 280 : 350} />
+              <QRCode value={user.user_id} />
             </Dialog>
           )}
           <Avatar className={classes.avatar} user={user} />

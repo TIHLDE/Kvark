@@ -1,10 +1,11 @@
-import { ReactNode } from 'react';
+import { ReactNode, Suspense, lazy } from 'react';
 import parser from 'html-react-parser';
 import classNames from 'classnames';
-import MuiLinkify from 'material-ui-linkify';
 
 // Material UI Components
 import { makeStyles, Theme, Typography, Button, ButtonProps } from '@material-ui/core';
+
+const MuiLinkify = lazy(() => import('material-ui-linkify'));
 
 const useStyles = makeStyles<Theme, Pick<BannerProps, 'background'>>((theme) => ({
   banner: {
@@ -129,11 +130,13 @@ const Banner = (props: BannerProps) => {
               </Typography>
             )}
             {text && (
-              <MuiLinkify LinkProps={{ color: 'inherit', underline: 'always' }}>
-                <Typography className={classes.text} component='p' variant='subtitle2'>
-                  {parser(text)}
-                </Typography>
-              </MuiLinkify>
+              <Suspense fallback={null}>
+                <MuiLinkify LinkProps={{ color: 'inherit', underline: 'always' }}>
+                  <Typography className={classes.text} component='p' variant='subtitle2'>
+                    {parser(text)}
+                  </Typography>
+                </MuiLinkify>
+              </Suspense>
             )}
           </div>
           {children && <div className={classes.children}>{children}</div>}
