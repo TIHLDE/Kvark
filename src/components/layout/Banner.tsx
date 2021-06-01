@@ -115,9 +115,8 @@ export type BannerProps = {
   background?: string;
 };
 
-const Banner = (props: BannerProps) => {
-  const classes = useStyles(props);
-  const { className, title, text, children } = props;
+const Banner = ({ className, title, text, children, background }: BannerProps) => {
+  const classes = useStyles({ background });
   return (
     <div className={classNames(classes.banner, className)}>
       <div className={classNames(classes.bannerInner, classes.background)}>
@@ -129,7 +128,7 @@ const Banner = (props: BannerProps) => {
                 <div className={classes.line} />
               </Typography>
             )}
-            {text && (
+            {text && Boolean(text.trim().length) && (
               <Suspense fallback={null}>
                 <MuiLinkify LinkProps={{ color: 'inherit', underline: 'always' }}>
                   <Typography className={classes.text} component='p' variant='subtitle2'>
