@@ -4,19 +4,21 @@ import { PaginationResponse } from 'types/Types';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
-import { Theme, useTheme } from '@material-ui/core';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import MuiListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Hidden from '@material-ui/core/Hidden';
-import Fab from '@material-ui/core/Fab';
-import Zoom from '@material-ui/core/Zoom';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import Skeleton from '@material-ui/lab/Skeleton';
+import {
+  Theme,
+  useTheme,
+  useMediaQuery,
+  Drawer,
+  List,
+  ListItem as MuiListItem,
+  ListItemText,
+  Fab,
+  Zoom,
+  Typography,
+  Divider,
+  IconButton,
+  Skeleton,
+} from '@material-ui/core';
 
 // Icons
 import MenuIcon from '@material-ui/icons/FormatListBulletedRounded';
@@ -25,7 +27,7 @@ import AddIcon from '@material-ui/icons/AddRounded';
 // Project components
 import Pagination from 'components/layout/Pagination';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles<Theme>((theme) => ({
   header: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -63,7 +65,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     bottom: theme.spacing(2),
     right: theme.spacing(2),
     zIndex: 10,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       bottom: theme.spacing(12),
     },
   },
@@ -100,7 +102,7 @@ const SidebarList = <Type,>({
   const { data: expiredData, hasNextPage: hasNextExpiredPage, fetchNextPage: fetchNextExpiredPage, isLoading: isExpiredLoading } = useHook({ expired: true });
   const expiredItems = useMemo(() => (expiredData ? expiredData.pages.map((page) => page.results).flat() : []), [expiredData]);
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('lg'));
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const transitionDuration = {
@@ -180,13 +182,13 @@ const SidebarList = <Type,>({
           )}
         </div>
       </Drawer>
-      <Hidden lgUp>
+      {isSmallScreen && (
         <Zoom in={!mobileOpen} style={{ transitionDelay: `${mobileOpen ? 0 : transitionDuration.exit}ms` }} timeout={transitionDuration} unmountOnExit>
           <Fab aria-label='Meny' className={classes.fab} color='primary' onClick={() => setMobileOpen((prev) => !prev)} size='medium'>
             <MenuIcon />
           </Fab>
         </Zoom>
-      </Hidden>
+      )}
     </>
   );
 };

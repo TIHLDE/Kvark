@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   contentText: {
     color: theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
     margin: `${theme.spacing(1)}px auto`,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: '1.05rem',
     },
   },
@@ -118,7 +118,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     width: '100%',
     height: 120,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       height: 90,
     },
   },

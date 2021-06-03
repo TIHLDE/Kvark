@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     flexDirection: 'row',
     height: '100%',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       flexDirection: 'column',
     },
   },
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'center',
     marginRight: theme.spacing(4),
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       margin: theme.spacing(0, 4, 4, 4),
       minHeight: 160,
     },
@@ -89,7 +89,7 @@ const InfoCard = ({ className, header, text, src, srcComponent, alt, justifyText
         ) : (
           srcComponent && <>{srcComponent}</>
         )}
-        <Grid className={justifyText ? classes.cover : ''} container direction='column' justify='flex-start'>
+        <Grid className={justifyText ? classes.cover : ''} container direction='column' justifyContent='flex-start'>
           <Typography align='left' className={classes.header} variant='h3'>
             <strong>{header}</strong>
           </Typography>

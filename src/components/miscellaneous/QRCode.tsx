@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { useTheme } from '@material-ui/core';
 import classnames from 'classnames';
 import { Skeleton } from '@material-ui/lab';
 

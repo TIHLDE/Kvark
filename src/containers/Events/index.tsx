@@ -5,7 +5,8 @@ import { useMisc } from 'api/hooks/Misc';
 import { Category } from 'types/Types';
 
 // Material UI Components
-import { makeStyles, Divider, MenuItem, Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { Divider, MenuItem, Button } from '@material-ui/core';
 
 // Project Components
 import Page from 'components/navigation/Page';
@@ -27,14 +28,14 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'self-start',
     paddingBottom: theme.spacing(2),
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr',
     },
   },
   list: {
     display: 'grid',
     gridTemplateColumns: '1fr',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       order: 1,
     },
   },
@@ -44,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'sticky',
     top: 88,
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       order: 0,
       position: 'static',
       top: 0,

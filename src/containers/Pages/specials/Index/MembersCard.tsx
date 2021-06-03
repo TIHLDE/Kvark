@@ -30,7 +30,7 @@ const MembersCard = ({ slug }: MembersCardProps) => {
   if (isLoading) {
     return (
       <Paper>
-        <Skeleton height='100px' variant='rect' />
+        <Skeleton height='100px' variant='rectangular' />
       </Paper>
     );
   }

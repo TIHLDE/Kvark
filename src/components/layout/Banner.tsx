@@ -3,7 +3,8 @@ import parser from 'html-react-parser';
 import classNames from 'classnames';
 
 // Material UI Components
-import { makeStyles, Theme, Typography, Button, ButtonProps } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { Theme, Typography, Button, ButtonProps } from '@material-ui/core';
 
 const MuiLinkify = lazy(() => import('material-ui-linkify'));
 
@@ -25,24 +26,24 @@ const useStyles = makeStyles<Theme, Pick<BannerProps, 'background'>>((theme) => 
     padding: theme.spacing(3, 3, 1),
     display: 'flex',
     justifyContent: 'space-between',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: '2.1em',
       padding: theme.spacing(2),
       flexDirection: 'column',
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: theme.spacing(1),
     },
   },
   title: {
     color: ({ background }) => theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
     fontSize: theme.typography.pxToRem(66),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: theme.typography.pxToRem(50),
       padding: theme.spacing(0, 2),
       overflowWrap: 'break-word',
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: theme.typography.pxToRem(40),
     },
   },
@@ -52,7 +53,7 @@ const useStyles = makeStyles<Theme, Pick<BannerProps, 'background'>>((theme) => 
     maxWidth: 600,
     width: '50vw',
     fontSize: 18,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: 16,
       padding: theme.spacing(2),
       width: '100%',
@@ -61,9 +62,9 @@ const useStyles = makeStyles<Theme, Pick<BannerProps, 'background'>>((theme) => 
   line: {
     height: 4,
     backgroundColor: ({ background }) => theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
-    borderRadius: theme.shape.borderRadius / 2,
+    borderRadius: `calc(${theme.shape.borderRadius} / 2)`,
     width: 90,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: 50,
     },
   },
@@ -80,7 +81,7 @@ const useStyles = makeStyles<Theme, Pick<BannerProps, 'background'>>((theme) => 
     padding: theme.spacing(2, 0, 0),
     minWidth: 350,
     height: 'fit-content',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       minWidth: 200,
       padding: theme.spacing(2, 2, 0, 2),
     },

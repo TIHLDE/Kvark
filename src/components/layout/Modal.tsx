@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     'overflow-y': 'auto',
     transform: 'translate(-50%,-50%)',
     outline: 'none',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: '100%',
     },
   },

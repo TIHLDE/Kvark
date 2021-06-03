@@ -2,7 +2,8 @@ import { useRef } from 'react';
 import URLS from 'URLS';
 
 // Material UI Components
-import { makeStyles, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { Typography } from '@material-ui/core';
 
 // Icons and images
 import Image from 'assets/img/glad.jpg';
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     margin: '0 auto',
     gridGap: theme.spacing(2),
     justifyContent: 'center',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       gridGap: theme.spacing(1),
       gridTemplateColumns: '1fr',
     },
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 'none',
     maxHeight: 'none',
     height: 'auto',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },

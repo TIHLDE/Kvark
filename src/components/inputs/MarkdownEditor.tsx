@@ -237,9 +237,9 @@ const MarkdownEditor = (props: TextFieldProps) => {
         InputLabelProps={{ shrink: true }}
         label={props.label || 'Beskrivelse'}
         margin='normal'
+        maxRows={15}
         multiline
         rows={5}
-        rowsMax={15}
         variant={props.variant || 'outlined'}
       />
       {helpDialogOpen && (

@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     gridTemplateColumns: 'repeat(3, 1fr)',
     gridGap: theme.spacing(1),
     margin: theme.spacing(2, 0, 1),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr',
     },
   },

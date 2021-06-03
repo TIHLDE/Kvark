@@ -32,12 +32,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyItems: 'center',
     color: theme.palette.getContrastText(theme.palette.colors.footer),
     boxShadow: '0px -2px 5px 0px rgba(0,0,0,0.1)',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateAreas: "'main main' 'about sponsors' 'index index'",
       gridTemplateColumns: '1fr 1fr',
       padding: theme.spacing(1, 0, 14),
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       gridTemplateRows: 'auto auto auto',
       gridTemplateAreas: "'main' 'about' 'sponsors' 'index'",
       gridTemplateColumns: '1fr',
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   marginTopColumns: {
     marginTop: theme.spacing(12),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       marginTop: theme.spacing(4),
     },
   },
@@ -71,17 +71,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     display: 'flex',
     margin: theme.spacing(1, 0),
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       display: 'grid',
       gridTemplateColumns: '1fr 1fr 1fr',
       gridGap: theme.spacing(2),
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       alignItems: 'center',
       display: 'flex',
       margin: theme.spacing(1, 0),
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'grid',
       gridTemplateColumns: '1fr 1fr 1fr',
       gridGap: theme.spacing(2),
@@ -95,7 +95,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   imgLink: {
     margin: theme.spacing(0, 2.5),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       margin: theme.spacing(0, 2),
     },
   },
@@ -112,7 +112,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     minWidth: '250px',
     width: '46%',
     height: 'auto',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       minWidth: '200px',
     },
   },

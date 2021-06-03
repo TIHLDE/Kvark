@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     left: 0,
     right: 0,
     zIndex: theme.zIndex.snackbar,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       bottom: theme.spacing(10),
     },
   },
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'grid',
     gridGap: theme.spacing(2),
     gridTemplateColumns: '1fr auto',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       gridTemplateColumns: '1fr',
     },
   },

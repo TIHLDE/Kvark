@@ -1,6 +1,5 @@
-import { makeStyles } from '@material-ui/core';
-import MuiAvatar, { AvatarProps as MuiAvatarProps } from '@material-ui/core/Avatar';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { makeStyles } from '@material-ui/styles';
+import { Avatar as MuiAvatar, AvatarProps as MuiAvatarProps, Skeleton } from '@material-ui/core';
 import { User } from 'types/Types';
 
 type AvatarProps = {

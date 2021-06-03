@@ -15,12 +15,7 @@ import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Collapse from '@material-ui/core/Collapse';
-import Hidden from '@material-ui/core/Hidden';
-import Skeleton from '@material-ui/lab/Skeleton';
-import Alert from '@material-ui/lab/Alert';
+import { Typography, Button, Collapse, Skeleton, Alert, useMediaQuery, Theme } from '@material-ui/core';
 
 // Icons
 import CalendarIcon from '@material-ui/icons/EventRounded';
@@ -49,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     position: 'relative',
     alignItems: 'self-start',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '100%',
       justifyContent: 'center',
       gridGap: theme.spacing(1),
@@ -68,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '1.5rem',
   },
   info: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridRow: '1 / 2',
     },
   },
@@ -78,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     height: 'fit-content',
     overflowX: 'auto',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       order: 1,
     },
     marginBottom: theme.spacing(1),
@@ -122,6 +117,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const startRegistrationDate = parseISO(data.start_registration_at);
   const endRegistrationDate = parseISO(data.end_registration_at);
   const signOffDeadlineDate = parseISO(data.sign_off_deadline);
+  const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
   const signOff = async () => {
     setSignOffDialogOpen(false);
@@ -269,10 +265,8 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       />
       <div className={classes.rootGrid}>
         <div className={classes.infoGrid}>
-          <Hidden mdDown>
-            <Info />
-          </Hidden>
-          <ShareButton color='default' shareId={data.id} shareType='event' title={data.title} />
+          {lgDown && <Info />}
+          <ShareButton color='inherit' shareId={data.id} shareType='event' title={data.title} />
           <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} variant='outlined'>
             Legg til i kalender
           </Button>
@@ -286,9 +280,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         </div>
         <div className={classnames(classes.infoGrid, classes.info)}>
           <AspectRatioImg alt={data.image_alt || data.title} imgClassName={classes.image} src={data.image} />
-          <Hidden lgUp>
-            <Info />
-          </Hidden>
+          {!lgDown && <Info />}
           <Paper className={classes.content}>
             <Typography className={classes.title} gutterBottom variant='h1'>
               {data.title}

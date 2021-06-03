@@ -30,13 +30,13 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(20),
     background: theme.palette.colors.gradient.main.top,
     transition: '3s',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       paddingBottom: theme.spacing(15),
     },
   },
   topContent: {
     padding: theme.spacing(0, 5),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: theme.spacing(0, 3),
     },
   },
@@ -44,14 +44,14 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
     gridGap: theme.spacing(2),
     marginTop: -theme.spacing(18),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       marginTop: -theme.spacing(13),
       gridGap: theme.spacing(1),
     },
   },
   title: {
     wordWrap: 'break-word',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: '2.3rem',
     },
     padding: theme.spacing(1, 0),

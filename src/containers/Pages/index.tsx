@@ -44,7 +44,7 @@ const useStyles = makeStyles<Theme, ThemeProps>((theme) => ({
     gridTemplateColumns: '300px 1fr',
     margin: theme.spacing(1, 0, 2),
     alignItems: 'self-start',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridGap: theme.spacing(1),
       gridTemplateColumns: () => '1fr',
     },
@@ -52,15 +52,15 @@ const useStyles = makeStyles<Theme, ThemeProps>((theme) => ({
   inner: {
     gridTemplateColumns: ({ data }) => (data?.image ? '1fr 350px' : '1fr'),
     alignItems: 'self-start',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       gridTemplateColumns: () => '1fr',
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridGap: theme.spacing(1),
     },
   },
   content: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridGap: theme.spacing(1),
     },
   },
@@ -130,7 +130,7 @@ const Pages = () => {
         {isLoading ? (
           <>
             <Paper className={classes.paper} noPadding>
-              <Skeleton height={48} variant='rect' />
+              <Skeleton height={48} variant='rectangular' />
             </Paper>
             <Paper>
               <Skeleton height={50} variant='text' width='40%' />
@@ -154,7 +154,7 @@ const Pages = () => {
                 <Paper className={classes.paper} noPadding>
                   <PagesList pages={data.children} />
                 </Paper>
-                <ShareButton color='default' fullWidth shareId={data.path} shareType='pages' title={data.title} />
+                <ShareButton color='inherit' fullWidth shareId={data.path} shareType='pages' title={data.title} />
                 <PagesAdmin page={data} />
               </div>
               <div className={classnames(classes.grid, classes.inner)}>

@@ -1,9 +1,14 @@
-import { createTheme, darkScrollbar } from '@material-ui/core';
+import { createTheme, darkScrollbar, Theme } from '@material-ui/core';
 
 // Icons
 import DarkIcon from '@material-ui/icons/Brightness2Outlined';
 import AutomaticIcon from '@material-ui/icons/DevicesOutlined';
 import LightIcon from '@material-ui/icons/WbSunnyOutlined';
+
+declare module '@material-ui/styles' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends Theme {}
+}
 
 declare module '@material-ui/core/styles/createPalette' {
   interface TypeBackground {

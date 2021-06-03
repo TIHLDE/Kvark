@@ -5,7 +5,8 @@ import { useJobPostById } from 'api/hooks/JobPost';
 import { useNewsById } from 'api/hooks/News';
 
 // Material UI
-import { makeStyles, Divider, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { Divider, Typography } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 // Project components

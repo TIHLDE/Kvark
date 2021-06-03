@@ -13,7 +13,7 @@ import EventsListView from 'containers/Landing/components/EventsListView';
 import Reorder from '@material-ui/icons/ReorderRounded';
 import DateRange from '@material-ui/icons/DateRangeRounded';
 
-const EventsCalendarView = lazy(() => import(/* webpackChunkName: "events_calendar" */ 'containers/Landing/components/EventsCalendarView'));
+// const EventsCalendarView = lazy(() => import(/* webpackChunkName: "events_calendar" */ 'containers/Landing/components/EventsCalendarView'));
 
 enum Views {
   LIST,
@@ -36,7 +36,7 @@ const EventsView = () => {
       </Collapse>
       <Collapse in={tab === Views.CALENDAR} mountOnEnter>
         <Suspense fallback={null}>
-          <EventsCalendarView events={data?.pages[0]?.results || []} oldEvents={oldEvents?.pages[0]?.results || []} />
+          {/* <EventsCalendarView events={data?.pages[0]?.results || []} oldEvents={oldEvents?.pages[0]?.results || []} /> */}
         </Suspense>
       </Collapse>
     </>

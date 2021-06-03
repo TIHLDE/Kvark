@@ -3,7 +3,8 @@ import URLS from 'URLS';
 import { Link, useLocation } from 'react-router-dom';
 
 // Material UI Components
-import { makeStyles, BottomNavigation, BottomNavigationAction } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
 import EventIcon from '@material-ui/icons/EventRounded';
 import MenuIcon from '@material-ui/icons/MenuRounded';
 import JobPostIcon from '@material-ui/icons/WorkOutlineRounded';

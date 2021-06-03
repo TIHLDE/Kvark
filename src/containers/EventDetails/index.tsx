@@ -20,10 +20,10 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     padding: theme.spacing(8, 9),
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       padding: theme.spacing(8, 5),
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       padding: theme.spacing(8, 1, 5),
     },
   },

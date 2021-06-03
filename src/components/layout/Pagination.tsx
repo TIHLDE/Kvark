@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 
 // Material UI Components
-import { Button, ButtonProps, makeStyles, Theme, Collapse } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { Button, ButtonProps, Theme, Collapse } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {

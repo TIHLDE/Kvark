@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: theme.spacing(4),
     marginLeft: theme.spacing(35),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       padding: theme.spacing(4, 1, 6),
       marginLeft: 0,
     },

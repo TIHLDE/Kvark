@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     gridGap: theme.spacing(2),
     alignItems: 'self-start',
     padding: theme.spacing(2, 0),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr',
     },
   },
@@ -95,7 +95,7 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
             Søk
           </Button>
         )}
-        <ShareButton className={classes.button} color='default' fullWidth shareId={data.id} shareType='jobpost' title={data.title} />
+        <ShareButton className={classes.button} color='inherit' fullWidth shareId={data.id} shareType='jobpost' title={data.title} />
         {!preview && (
           <HavePermission apps={[PermissionApp.JOBPOST]}>
             <Button className={classes.button} color='primary' component={Link} fullWidth to={`${URLS.jobpostsAdmin}${data.id}/`} variant='outlined'>

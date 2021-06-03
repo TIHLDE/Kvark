@@ -11,7 +11,8 @@ import { getCookie, setCookie } from 'api/cookie';
 import { WARNINGS_READ } from 'constant';
 
 // Material UI Components
-import { makeStyles, Hidden } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { Theme, useMediaQuery } from '@material-ui/core';
 
 // Project Components
 import Topbar from 'components/navigation/Topbar';
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100vw',
     height: 'auto',
     padding: 0,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       top: 56,
     },
   },
@@ -134,6 +135,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
   const isAuthenticated = useIsAuthenticated();
   const [warning, setWarning] = useState<Warning | null>(null);
   const { title, darkColor, lightColor, filledTopbar, noFooter, gutterBottom, gutterTop } = useGetNavigationOptions();
+  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
 
   useEffect(() => {
     let subscribed = true;
@@ -199,9 +201,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
       )}
       <main className={classnames(classes.main, gutterTop && classes.gutterTop, gutterBottom && classes.gutterBottom)}>{children}</main>
       {!noFooter && <Footer />}
-      <Hidden lgUp>
-        <BottomBar items={items} />
-      </Hidden>
+      {lgUp && <BottomBar items={items} />}
     </>
   );
 };

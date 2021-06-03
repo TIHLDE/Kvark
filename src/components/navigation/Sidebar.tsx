@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100vw',
     overflow: 'auto',
     height: '100%',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       height: 'calc(100% - 56px)',
       marginTop: 56,
     },

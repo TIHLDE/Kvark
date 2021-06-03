@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     gridTemplateColumns: '1fr',
     gridGap: theme.spacing(1),
     paddingTop: theme.spacing(1),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr 1fr',
     },
   },
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
     color: theme.palette.text.secondary,
     gridGap: theme.spacing(1),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr',
     },
   },

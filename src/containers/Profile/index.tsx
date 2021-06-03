@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useUser } from 'api/hooks/User';
 
 // Material-UI
-import { makeStyles, Typography, Button } from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { makeStyles } from '@material-ui/styles';
+import { Skeleton, Typography, Button } from '@material-ui/core';
 
 // Project Components
 import Page from 'components/navigation/Page';

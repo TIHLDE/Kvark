@@ -123,7 +123,7 @@ export type StoryPopupProps = {
 function StoryPopup({ items, open, onClose, selectedItem = 0 }: StoryPopupProps) {
   const classes = useStyles();
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const fullScreen = useMediaQuery(theme.breakpoints.down('lg'));
   const container = useRef<HTMLDivElement>(null);
 
   const getStoryPositions = useCallback(() => {

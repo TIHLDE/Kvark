@@ -5,7 +5,8 @@ import { useUser } from 'api/hooks/User';
 import { useMisc } from 'api/hooks/Misc';
 
 // Material UI Components
-import { makeStyles, Theme, Button, IconButton } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { Theme, Button, IconButton } from '@material-ui/core';
 
 // Assets/Icons
 import PersonOutlineIcon from '@material-ui/icons/PersonRounded';

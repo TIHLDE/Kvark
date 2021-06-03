@@ -20,14 +20,14 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
     gridGap: theme.spacing(0, 1),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridGap: theme.spacing(1),
       gridTemplateColumns: '1fr',
     },
   },
   first: {
     gridColumn: 'span 3',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridColumn: 'span 1',
     },
   },

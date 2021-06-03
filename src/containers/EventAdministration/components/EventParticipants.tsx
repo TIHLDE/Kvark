@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     padding: theme.spacing(0, 0, 1),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       flexDirection: 'column',
     },
   },
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'end',
     flexDirection: 'column',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       textAlign: 'start',
     },
   },

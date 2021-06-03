@@ -7,13 +7,7 @@ import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
-import { Theme } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Hidden from '@material-ui/core/Hidden';
+import { Theme, Typography, TextField, LinearProgress, FormControlLabel, Checkbox, useMediaQuery } from '@material-ui/core';
 
 // Icons
 import NameIcon from '@material-ui/icons/TextFieldsRounded';
@@ -105,6 +99,7 @@ export type ParticipantCardProps = {
 const ParticipantCard = ({ user, markAttended }: ParticipantCardProps) => {
   const classes = useStyles();
   const [checkedState, setCheckedState] = useState(user.has_attended);
+  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
   const handleCheck = async (e: ChangeEvent<HTMLInputElement>) => {
     setCheckedState(e.target.checked);
@@ -120,7 +115,7 @@ const ParticipantCard = ({ user, markAttended }: ParticipantCardProps) => {
           <FormControlLabel
             className={classes.cardButtonLabel}
             control={<Checkbox checked={checkedState} onChange={handleCheck} />}
-            label={<Hidden smDown>Ankommet</Hidden>}
+            label={!mdDown && 'Ankommet'}
           />
         </div>
       </div>

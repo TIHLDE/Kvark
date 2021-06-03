@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     gridTemplateAreas: '"filterStudy filterClass filterSearch"',
     gridGap: theme.spacing(1),
     paddingBottom: theme.spacing(2),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr 1fr',
       gridTemplateAreas: '"filterStudy filterClass" "filterSearch filterSearch"',
     },

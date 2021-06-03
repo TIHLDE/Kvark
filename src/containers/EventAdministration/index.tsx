@@ -6,7 +6,8 @@ import { parseISO } from 'date-fns';
 import { formatDate } from 'utils';
 
 // Material-UI
-import { makeStyles, Typography, Collapse } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { Typography, Collapse } from '@material-ui/core';
 
 // Icons
 import EditIcon from '@material-ui/icons/EditRounded';
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(4),
     marginLeft: theme.spacing(35),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       padding: theme.spacing(2, 1, 6),
       marginLeft: 0,
     },

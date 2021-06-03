@@ -73,7 +73,7 @@ const AddMemberModal = ({ groupSlug }: AddMemberModalProps) => {
                 renderInput={(params) => (
                   <TextField margin='normal' {...params} label='Medlem' onChange={(e) => setSearch(e.target.value)} variant='outlined' />
                 )}
-                renderOption={(option) => (
+                renderOption={(props, option) => (
                   <ListItemText
                     primary={`${option.first_name} ${option.last_name}`}
                     secondary={`${getUserClass(option.user_class)} ${getUserStudyShort(option.user_study)}`}

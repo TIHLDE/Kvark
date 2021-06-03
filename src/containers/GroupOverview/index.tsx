@@ -5,7 +5,8 @@ import { GroupType } from 'types/Enums';
 import { Group } from 'types/Types';
 
 // Material UI Components
-import { makeStyles, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { Typography } from '@material-ui/core';
 
 // Project Components
 import Page from 'components/navigation/Page';
@@ -26,10 +27,10 @@ const useStyles = makeStyles((theme) => ({
     gridGap: theme.spacing(2),
     gridTemplateColumns: 'repeat(3, 1fr)',
     marginBottom: theme.spacing(3),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: 'repeat(2, 1fr)',
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       gridTemplateColumns: '1fr',
     },
   },

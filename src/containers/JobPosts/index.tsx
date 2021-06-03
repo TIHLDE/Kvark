@@ -26,14 +26,14 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'self-start',
     paddingBottom: theme.spacing(2),
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr',
     },
   },
   list: {
     display: 'grid',
     gridTemplateColumns: '1fr',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       order: 1,
     },
   },
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'sticky',
     top: 88,
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       order: 0,
       position: 'static',
       top: 0,

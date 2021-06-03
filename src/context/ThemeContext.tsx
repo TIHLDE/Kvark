@@ -1,7 +1,8 @@
 import { useCallback, useState, useLayoutEffect, useContext, createContext, ReactNode } from 'react';
 import { getCookie, setCookie } from 'api/cookie';
 import { getTheme, themes, ThemeTypes } from '../theme';
-import { useMediaQuery, ThemeProvider as MuiThemeProvider } from '@material-ui/core';
+import { useMediaQuery } from '@material-ui/core';
+import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 
 const THEME_COOKIE = 'theme-cookie';
 
@@ -52,6 +53,7 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   useLayoutEffect(() => updateTheme(getThemeFromStorage()), [getThemeFromStorage, updateTheme]);
 
+  console.log(getTheme(selectedTheme, prefersDarkMode));
   return (
     <ThemeContext.Provider value={themeStore}>
       <MuiThemeProvider theme={getTheme(selectedTheme, prefersDarkMode)}>{children}</MuiThemeProvider>

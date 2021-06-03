@@ -220,7 +220,7 @@ export const StoryLoading = ({ fadeColor }: Pick<StoryProps, 'fadeColor'>) => {
       <div className={classes.stories}>
         {Array.from({ length: 7 }).map((i, index) => (
           <div className={classes.story} key={index}>
-            <Skeleton className={classes.imgButton} variant='rect' />
+            <Skeleton className={classes.imgButton} variant='rectangular' />
             <Skeleton className={classes.skeleton} width='80%' />
           </div>
         ))}

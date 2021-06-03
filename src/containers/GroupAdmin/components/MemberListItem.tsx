@@ -1,4 +1,5 @@
-import { Button, Collapse, Divider, ListItem, ListItemText, makeStyles, ListItemAvatar } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { Button, Collapse, Divider, ListItem, ListItemText, ListItemAvatar } from '@material-ui/core';
 import Paper from 'components/layout/Paper';
 import { useState } from 'react';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     gap: theme.spacing(1),
     gridTemplateColumns: '1fr 1fr',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr',
     },
   },

@@ -7,7 +7,7 @@ import MuiContainer, { ContainerProps as MuiContainerProps } from '@material-ui/
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       paddingRight: theme.spacing(2),
       paddingLeft: theme.spacing(2),
     },

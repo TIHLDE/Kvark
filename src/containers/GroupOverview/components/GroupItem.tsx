@@ -3,8 +3,8 @@ import { GroupList } from 'types/Types';
 import URLS from 'URLS';
 
 // Material UI
-import { makeStyles, ButtonBase, Typography } from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { makeStyles } from '@material-ui/styles';
+import { Skeleton, ButtonBase, Typography } from '@material-ui/core';
 
 // Icons
 import MembersIcon from '@material-ui/icons/PersonRounded';
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   icon: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: '1rem',
     },
   },
