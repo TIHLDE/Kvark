@@ -135,7 +135,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
   const isAuthenticated = useIsAuthenticated();
   const [warning, setWarning] = useState<Warning | null>(null);
   const { title, darkColor, lightColor, filledTopbar, noFooter, gutterBottom, gutterTop } = useGetNavigationOptions();
-  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
+  const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
   useEffect(() => {
     let subscribed = true;
@@ -201,7 +201,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
       )}
       <main className={classnames(classes.main, gutterTop && classes.gutterTop, gutterBottom && classes.gutterBottom)}>{children}</main>
       {!noFooter && <Footer />}
-      {lgUp && <BottomBar items={items} />}
+      {lgDown && <BottomBar items={items} />}
     </>
   );
 };
