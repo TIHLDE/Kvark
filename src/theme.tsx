@@ -1,4 +1,5 @@
-import { createTheme, darkScrollbar, Theme } from '@material-ui/core';
+import { darkScrollbar } from '@material-ui/core';
+import { createTheme, Theme } from '@material-ui/core/styles';
 
 // Icons
 import DarkIcon from '@material-ui/icons/Brightness2Outlined';
@@ -101,7 +102,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
     }
   };
 
-  return createTheme({
+  const createdTheme = createTheme({
     breakpoints: {
       values: {
         xs: 0,
@@ -212,4 +213,6 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       },
     },
   });
+  createdTheme.shape.borderRadius = 8;
+  return createdTheme;
 };

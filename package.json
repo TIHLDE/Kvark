@@ -8,10 +8,10 @@
     "@devexpress/dx-react-scheduler-material-ui": "^2.7.0",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
-    "@material-ui/core": "^5.0.0-alpha.35",
-    "@material-ui/icons": "^5.0.0-alpha.35",
-    "@material-ui/lab": "^5.0.0-alpha.35",
-    "@material-ui/styles": "^4.11.4",
+    "@material-ui/core": "^5.0.0-alpha.36",
+    "@material-ui/icons": "^5.0.0-alpha.36",
+    "@material-ui/lab": "^5.0.0-alpha.36",
+    "@material-ui/styles": "^5.0.0-alpha.35",
     "browser-image-compression": "^1.0.14",
     "classnames": "^2.2.6",
     "constate": "^3.2.0",
@@ -78,6 +78,9 @@
     "prettier": "^2.1.1",
     "react-test-renderer": "^16.13.1",
     "typescript": "^4.1.3"
+  },
+  "resolutions": {
+    "@material-ui/pickers": "4.0.0-alpha.12"
   },
   "browserslist": [
     ">0.5%",

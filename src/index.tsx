@@ -3,14 +3,14 @@ import { ReactNode, Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import 'assets/css/index.css';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { StyledEngineProvider, createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { StyledEngineProvider } from '@material-ui/core/styles';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import 'delayed-scroll-restoration-polyfill';
 
 // Services
-// import { ThemeProvider } from 'context/ThemeContext';
+import { ThemeProvider } from 'context/ThemeContext';
 import { MiscProvider } from 'api/hooks/Misc';
 import { SnackbarProvider } from 'api/hooks/Snackbar';
 
@@ -33,15 +33,13 @@ export const Providers = ({ children }: ProvidersProps) => {
       },
     },
   });
-  const theme = createTheme();
   return (
     <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider>
         <CssBaseline />
         <QueryClientProvider client={queryClient}>
           <MiscProvider>
-            {/* <SnackbarProvider>{children}</SnackbarProvider> */}
-            {children}
+            <SnackbarProvider>{children}</SnackbarProvider>
           </MiscProvider>
           <ReactQueryDevtools />
         </QueryClientProvider>

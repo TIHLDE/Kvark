@@ -53,7 +53,6 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   useLayoutEffect(() => updateTheme(getThemeFromStorage()), [getThemeFromStorage, updateTheme]);
 
-  console.log(getTheme(selectedTheme, prefersDarkMode));
   return (
     <ThemeContext.Provider value={themeStore}>
       <MuiThemeProvider theme={getTheme(selectedTheme, prefersDarkMode)}>{children}</MuiThemeProvider>

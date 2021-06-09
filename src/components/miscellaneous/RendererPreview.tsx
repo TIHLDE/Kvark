@@ -58,7 +58,7 @@ const RendererPreview = <Type,>({ className, getContent, renderer: Renderer }: R
       </Button>
       {isOpen && content && (
         <Dialog fullWidth maxWidth='lg' onClose={() => setIsOpen(false)} open={isOpen} TransitionComponent={Transition}>
-          <DialogTitle className={classes.appBar} disableTypography>
+          <DialogTitle className={classes.appBar}>
             <Typography variant='h3'>Forhåndsvisning</Typography>
             <IconButton aria-label='close' className={classes.closeButton} color='inherit' edge='start' onClick={() => setIsOpen(false)}>
               <CloseIcon />

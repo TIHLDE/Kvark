@@ -1,11 +1,11 @@
 import { useEffect, useState, useContext, useCallback, useMemo, createContext, ReactNode } from 'react';
 
 import { makeStyles } from '@material-ui/styles';
-import { Snackbar as MaterialSnackbar, Alert as MaterialAlert, Theme } from '@material-ui/core';
+import { Snackbar as MaterialSnackbar, Alert as MaterialAlert } from '@material-ui/core';
 
-const useStyles = makeStyles<Theme>((theme) => ({
+const useStyles = makeStyles((theme) => ({
   snackbar: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       left: theme.spacing(1),
       right: theme.spacing(1),
       bottom: theme.spacing(1),
