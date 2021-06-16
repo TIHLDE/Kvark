@@ -5,28 +5,25 @@ import { makeStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => ({
-  main: {
+  border: {
     border: theme.palette.borderWidth + ' solid ' + theme.palette.divider,
   },
   padding: {
     padding: theme.spacing(3),
   },
-  noBorder: {
-    border: 'none',
-  },
 }));
 
 export type PaperProps = {
   children: ReactNode;
-  shadow?: boolean;
+  noBorder?: boolean;
   noPadding?: boolean;
   className?: string;
 };
 
-const Paper = ({ shadow, noPadding, children, className }: PaperProps) => {
+const Paper = ({ noBorder, noPadding, children, className }: PaperProps) => {
   const classes = useStyles();
   return (
-    <MaterialPaper className={classnames(classes.main, !noPadding && classes.padding, shadow && classes.noBorder, className)} elevation={shadow ? 2 : 0}>
+    <MaterialPaper className={classnames(!noBorder && classes.border, !noPadding && classes.padding, className)} elevation={0}>
       {children}
     </MaterialPaper>
   );

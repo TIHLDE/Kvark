@@ -140,6 +140,16 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
           },
         },
       },
+      MuiButton: {
+        styleOverrides: {
+          contained: {
+            boxShadow: 'none',
+            '&:hover': {
+              boxShadow: 'none',
+            },
+          },
+        },
+      },
     },
     palette: {
       get,
@@ -157,7 +167,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       error: {
         main: get<string>({ light: '#b20101', dark: '#ff6060' }),
       },
-      divider: get<string>({ light: '#cccccc', dark: '#333333' }),
+      divider: get<string>({ light: '#dbdbdb', dark: '#2d2d2d' }),
       text: {
         secondary: get<string>({ light: '#333333', dark: '#cccccc' }),
       },
@@ -172,9 +182,9 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       },
       borderWidth: '1px',
       background: {
-        default: get<string>({ light: '#f8f8fa', dark: '#121519' }),
+        default: get<string>({ light: '#ececec', dark: '#121519' }),
         paper: get<string>({ light: '#ffffff', dark: DARK_PAPER_COLOR }),
-        smoke: get<string>({ light: '#fefefe', dark: '#171b22' }),
+        smoke: get<string>({ light: '#f2f2f2', dark: '#171b22' }),
       },
       colors: {
         footer: DARK_PAPER_COLOR,
