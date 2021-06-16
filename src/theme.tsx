@@ -102,7 +102,9 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
     }
   };
 
-  const createdTheme = createTheme({
+  const DARK_PAPER_COLOR = '#19212f';
+
+  return createTheme({
     breakpoints: {
       values: {
         xs: 0,
@@ -171,15 +173,15 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       borderWidth: '1px',
       background: {
         default: get<string>({ light: '#f8f8fa', dark: '#121519' }),
-        paper: get<string>({ light: '#ffffff', dark: '#131924' }),
-        smoke: get<string>({ light: '#fefefe', dark: '#13171E' }),
+        paper: get<string>({ light: '#ffffff', dark: DARK_PAPER_COLOR }),
+        smoke: get<string>({ light: '#fefefe', dark: '#171b22' }),
       },
       colors: {
-        footer: '#1b1b2d',
+        footer: DARK_PAPER_COLOR,
         tihlde: '#1c458a',
         gradient: {
           main: {
-            top: get<string>({ light: '#16356e', dark: '#1c2230' }),
+            top: get<string>({ light: '#16356e', dark: DARK_PAPER_COLOR }),
             bottom: get<string>({ light: '#814a93', dark: '#581d6c' }),
           },
           secondary: {
@@ -194,25 +196,24 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       },
     },
     shape: {
-      borderRadius: 8,
+      borderRadius: 16,
     },
     typography: {
+      fontFamily: 'Inter',
       h1: {
         fontSize: '3rem',
-        fontFamily: 'Oswald, Roboto, sans-serif',
+        fontFamily: 'Oswald, Inter, sans-serif',
         fontWeight: 700,
       },
       h2: {
         fontSize: '2rem',
-        fontFamily: 'Oswald, Roboto, sans-serif',
+        fontFamily: 'Oswald, Inter, sans-serif',
         fontWeight: 500,
       },
       h3: {
         fontSize: '1.5rem',
-        fontFamily: 'Cabin, Roboto, sans-serif',
+        fontFamily: 'Cabin, Inter, sans-serif',
       },
     },
   });
-  createdTheme.shape.borderRadius = 8;
-  return createdTheme;
 };

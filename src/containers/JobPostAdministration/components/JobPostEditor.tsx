@@ -37,13 +37,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.shape.borderRadius,
     overflow: 'hidden',
   },
-  red: {
-    color: theme.palette.error.main,
-    borderColor: theme.palette.error.main,
-    '&:hover': {
-      borderColor: theme.palette.error.light,
-    },
-  },
 }));
 
 export type EventEditorProps = {
@@ -210,11 +203,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
             {jobpostId ? 'Oppdater annonse' : 'Opprett annonse'}
           </SubmitButton>
           {Boolean(jobpostId) && (
-            <Button
-              className={classnames(classes.margin, classes.red)}
-              disabled={isUpdating}
-              onClick={() => setDeleteJobPostDialogOpen(true)}
-              variant='outlined'>
+            <Button className={classes.margin} color='error' disabled={isUpdating} onClick={() => setDeleteJobPostDialogOpen(true)} variant='outlined'>
               Slett
             </Button>
           )}

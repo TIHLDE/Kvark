@@ -51,13 +51,6 @@ const useStyles = makeStyles((theme) => ({
       top: 0,
     },
   },
-  resetBtn: {
-    color: theme.palette.error.main,
-    borderColor: theme.palette.error.main,
-    '&:hover': {
-      borderColor: theme.palette.error.light,
-    },
-  },
 }));
 
 type Filters = {
@@ -124,7 +117,7 @@ const Events = () => {
             </SubmitButton>
           </form>
           <Divider />
-          <Button className={classes.resetBtn} fullWidth onClick={resetFilters} variant='outlined'>
+          <Button color='error' fullWidth onClick={resetFilters} variant='outlined'>
             Tilbakestill
           </Button>
         </Paper>

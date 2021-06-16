@@ -2,7 +2,6 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { News } from 'types/Types';
-import classNames from 'classnames';
 
 // API and store imports
 import { useUpdateNews, useCreateNews, useDeleteNews, useNewsById } from 'api/hooks/News';
@@ -36,13 +35,6 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(2, 0, 1),
     borderRadius: theme.shape.borderRadius,
     overflow: 'hidden',
-  },
-  red: {
-    color: theme.palette.error.main,
-    borderColor: theme.palette.error.main,
-    '&:hover': {
-      borderColor: theme.palette.error.light,
-    },
   },
 }));
 
@@ -157,7 +149,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
             {newsId ? 'Oppdater nyhet' : 'Opprett nyhet'}
           </SubmitButton>
           {Boolean(newsId) && (
-            <Button className={classNames(classes.margin, classes.red)} disabled={isUpdating} onClick={() => setDeleteNewsDialogOpen(true)} variant='outlined'>
+            <Button className={classes.margin} color='error' disabled={isUpdating} onClick={() => setDeleteNewsDialogOpen(true)} variant='outlined'>
               Slett
             </Button>
           )}

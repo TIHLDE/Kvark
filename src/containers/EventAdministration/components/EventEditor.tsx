@@ -1,5 +1,4 @@
 import { useCallback, useState, useEffect } from 'react';
-import classnames from 'classnames';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Category, Event, RegistrationPriority } from 'types/Types';
 import { useEventById, useCreateEvent, useUpdateEvent, useDeleteEvent } from 'api/hooks/Event';
@@ -58,13 +57,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   switch: {
     color: theme.palette.text.secondary,
-  },
-  red: {
-    color: theme.palette.error.main,
-    borderColor: theme.palette.error.main,
-    '&:hover': {
-      borderColor: theme.palette.error.light,
-    },
   },
 }));
 
@@ -406,14 +398,10 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           </SubmitButton>
           {eventId !== null && (
             <div className={classes.grid}>
-              <Button className={classnames(classes.margin, classes.red)} disabled={isLoading} onClick={() => setCloseEventDialogOpen(true)} variant='outlined'>
+              <Button className={classes.margin} color='error' disabled={isLoading} onClick={() => setCloseEventDialogOpen(true)} variant='outlined'>
                 Steng
               </Button>
-              <Button
-                className={classnames(classes.margin, classes.red)}
-                disabled={isLoading}
-                onClick={() => setDeleteEventDialogOpen(true)}
-                variant='outlined'>
+              <Button className={classes.margin} color='error' disabled={isLoading} onClick={() => setDeleteEventDialogOpen(true)} variant='outlined'>
                 Slett
               </Button>
             </div>

@@ -6,6 +6,7 @@ import { Theme } from '@material-ui/core';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import Paper from 'components/layout/Paper';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
+import GithubIcon from '@material-ui/icons/CodeRounded';
 
 const useStyles = makeStyles((theme: Theme) => ({
   wrapIcon: {
@@ -16,6 +17,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: theme.spacing(1),
   },
 }));
+
+const LINKS = [
+  { link: 'https://tihlde.slack.com/archives/C01CJ0EQCFM', label: 'Kontakt oss på Slack', icon: ContactMailIcon },
+  { link: 'mailto:index@tihlde.org', label: 'Kontakt oss med epost', icon: MailOutlineIcon },
+  { link: 'https://github.com/TIHLDE/Kvark/issues/new', label: 'Lag et issue i Github', icon: GithubIcon },
+];
+
 const ErrorCard = () => {
   const classes = useStyles();
   return (
@@ -26,22 +34,16 @@ const ErrorCard = () => {
             <Typography variant='h2'>Feil på siden?</Typography>
           </Box>
         </Grid>
-        <Grid item xs={12}>
-          <Box alignItems='center' display='flex' flexWrap='wrap'>
-            <ContactMailIcon className={classes.icons} />
-            <a className={classes.wrapIcon} href='https://tihlde.slack.com/archives/C01CJ0EQCFM' rel='noopener noreferrer' target='_blank'>
-              Kontakt oss på Slack
-            </a>
-          </Box>
-        </Grid>
-        <Grid item xs={12}>
-          <Box alignItems='center' display='flex' flexWrap='wrap'>
-            <MailOutlineIcon className={classes.icons} />
-            <a href='mailto:index@tihlde.org' rel='noopener noreferrer' target='_blank'>
-              Kontakt oss på Mail
-            </a>
-          </Box>
-        </Grid>
+        {LINKS.map((link, index) => (
+          <Grid item key={index} xs={12}>
+            <Box alignItems='center' display='flex' flexWrap='wrap'>
+              <link.icon className={classes.icons} />
+              <a href={link.link} rel='noopener noreferrer' target='_blank'>
+                {link.label}
+              </a>
+            </Box>
+          </Grid>
+        ))}
       </Grid>
     </Paper>
   );

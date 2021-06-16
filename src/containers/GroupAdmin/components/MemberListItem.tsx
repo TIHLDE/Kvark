@@ -14,13 +14,6 @@ import Dialog from 'components/layout/Dialog';
 import Avatar from 'components/miscellaneous/Avatar';
 
 const useStyles = makeStyles((theme) => ({
-  red: {
-    color: theme.palette.error.main,
-    borderColor: theme.palette.error.main,
-    '&:hover': {
-      borderColor: theme.palette.error.light,
-    },
-  },
   content: {
     display: 'grid',
     padding: theme.spacing(1),
@@ -98,7 +91,7 @@ const MemberListItem = ({ slug, user }: MemberListItemProps) => {
           <Button fullWidth onClick={() => setConfirmSwitchLeader(true)} startIcon={<StarIcon />} variant='outlined'>
             Promoter til leder
           </Button>
-          <Button className={classes.red} fullWidth onClick={() => setConfirmDeleteModal(true)} startIcon={<HighlightOffIcon />} variant='outlined'>
+          <Button color='error' fullWidth onClick={() => setConfirmDeleteModal(true)} startIcon={<HighlightOffIcon />} variant='outlined'>
             Fjern medlem
           </Button>
         </div>

@@ -9,9 +9,7 @@ import { HavePermission } from 'api/hooks/User';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { Typography, Button, Skeleton } from '@material-ui/core';
 
 // Project Components
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
@@ -29,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(10),
     paddingBottom: theme.spacing(20),
     background: theme.palette.colors.gradient.main.top,
-    transition: '3s',
+    transition: 'background 1s',
     [theme.breakpoints.down('lg')]: {
       paddingBottom: theme.spacing(15),
     },
@@ -43,9 +41,9 @@ const useStyles = makeStyles((theme) => ({
   content: {
     display: 'grid',
     gridGap: theme.spacing(2),
-    marginTop: -theme.spacing(18),
+    marginTop: `-${theme.spacing(18)}`,
     [theme.breakpoints.down('lg')]: {
-      marginTop: -theme.spacing(13),
+      marginTop: `-${theme.spacing(13)}`,
       gridGap: theme.spacing(1),
     },
   },

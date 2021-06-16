@@ -265,9 +265,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       />
       <div className={classes.rootGrid}>
         <div className={classes.infoGrid}>
-          {lgDown && <Info />}
+          {!lgDown && <Info />}
           <ShareButton color='inherit' shareId={data.id} shareType='event' title={data.title} />
-          <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} variant='outlined'>
+          <Button color='primary' component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} variant='outlined'>
             Legg til i kalender
           </Button>
           {!preview && (
@@ -280,7 +280,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         </div>
         <div className={classnames(classes.infoGrid, classes.info)}>
           <AspectRatioImg alt={data.image_alt || data.title} imgClassName={classes.image} src={data.image} />
-          {!lgDown && <Info />}
+          {lgDown && <Info />}
           <Paper className={classes.content}>
             <Typography className={classes.title} gutterBottom variant='h1'>
               {data.title}

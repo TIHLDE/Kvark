@@ -5,10 +5,12 @@ import { Snackbar as MaterialSnackbar, Alert as MaterialAlert } from '@material-
 
 const useStyles = makeStyles((theme) => ({
   snackbar: {
+    [theme.breakpoints.down('lg')]: {
+      bottom: theme.spacing(12),
+    },
     [theme.breakpoints.down('md')]: {
       left: theme.spacing(1),
       right: theme.spacing(1),
-      bottom: theme.spacing(1),
       transform: 'none',
     },
   },

@@ -1173,85 +1173,63 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
-"@date-io/core@^1.3.13":
-  version "1.3.13"
-  resolved "https://registry.yarnpkg.com/@date-io/core/-/core-1.3.13.tgz#90c71da493f20204b7a972929cc5c482d078b3fa"
-  integrity sha512-AlEKV7TxjeK+jxWVKcCFrfYAk8spX9aCyiToFIiLPtfQbsjmRGLIhb5VZgptQcJdHtLXo7+m0DuurwFgUToQuA==
-
 "@date-io/core@^2.10.11":
   version "2.10.11"
   resolved "https://registry.yarnpkg.com/@date-io/core/-/core-2.10.11.tgz#b1a3d57730f3eaaab54d5658be4a71727297e357"
   integrity sha512-keXQnwH0LM8wyvu+j5Z2KGK56D+eItjy7DnwuWl/oV+DM2UEYl0z5WhdPMpfswSyt/kjuPOzcVF/7u/skMLaoA==
 
-"@date-io/date-fns@^2.10.6", "@date-io/date-fns@^2.8.0":
+"@date-io/date-fns@^2.10.6":
   version "2.10.11"
   resolved "https://registry.yarnpkg.com/@date-io/date-fns/-/date-fns-2.10.11.tgz#1f3b40c6f2ea2e659260ca329fef80cb6dc64704"
   integrity sha512-QG9IAZ4bvwkJftoSVKtdb5ISH+Qp4zilrjhzcL4RXaeqkfIWiFeXqQPgJljvPl6gQ04zf2SjGkWjdh1eJxxwmQ==
   dependencies:
     "@date-io/core" "^2.10.11"
 
-"@date-io/dayjs@^2.10.6", "@date-io/dayjs@^2.8.0":
+"@date-io/dayjs@^2.10.6":
   version "2.10.11"
   resolved "https://registry.yarnpkg.com/@date-io/dayjs/-/dayjs-2.10.11.tgz#8106cbc756cad5c136b0c6e56a97821a293d8a9f"
   integrity sha512-4+OUOeIxwTXhUil5Cw197jxEDWqoUPZsNeXgfta+Rol5sS6XyeeFOXtAfSKDZee8xIJL0cSGzy46eSQUP279XA==
   dependencies:
     "@date-io/core" "^2.10.11"
 
-"@date-io/luxon@^2.10.6", "@date-io/luxon@^2.8.0":
+"@date-io/luxon@^2.10.6":
   version "2.10.11"
   resolved "https://registry.yarnpkg.com/@date-io/luxon/-/luxon-2.10.11.tgz#d0981b9fdf5e5f17f8ce59265a3ac6c335565fac"
   integrity sha512-SS6SIkp0Y9GFwpQycCTUAyW3OZTW05CWI1DJu10hUzcg8SmjJfhjs7hQY3TOeW+JT6VtXGTVGwbWPUBJsNkhZg==
   dependencies:
     "@date-io/core" "^2.10.11"
 
-"@date-io/moment@^1.3.11":
-  version "1.3.13"
-  resolved "https://registry.yarnpkg.com/@date-io/moment/-/moment-1.3.13.tgz#56c2772bc4f6675fc6970257e6033e7a7c2960f0"
-  integrity sha512-3kJYusJtQuOIxq6byZlzAHoW/18iExJer9qfRF5DyyzdAk074seTuJfdofjz4RFfTd/Idk8WylOQpWtERqvFuQ==
-  dependencies:
-    "@date-io/core" "^1.3.13"
-
-"@date-io/moment@^2.10.6", "@date-io/moment@^2.8.0":
+"@date-io/moment@^2.10.6":
   version "2.10.11"
   resolved "https://registry.yarnpkg.com/@date-io/moment/-/moment-2.10.11.tgz#14a56b3b3474fda0fca31ef7fb3011d46e7428d2"
   integrity sha512-xym/Ew0C7WSmH3w1KcEwoWoUnQ9UjjDZo1++SwlGdGIU0lPEv1QmMx59shWWL49GAz7KOsCEF2Gu9uDt8cEcVw==
   dependencies:
     "@date-io/core" "^2.10.11"
 
-"@devexpress/dx-core@2.7.4":
-  version "2.7.4"
-  resolved "https://registry.yarnpkg.com/@devexpress/dx-core/-/dx-core-2.7.4.tgz#a2fa69f03e6f59acb23086de46bef311c3064da1"
-  integrity sha512-bM56UDr8L0OmTrWYjvC5KkleZrvm/493xiNAzLk1iyQY9Ghbr/viOkDATAlknOEblKWr2l7jGsYIJtzA7f6qLQ==
+"@devexpress/dx-core@2.7.5":
+  version "2.7.5"
+  resolved "https://registry.yarnpkg.com/@devexpress/dx-core/-/dx-core-2.7.5.tgz#f1460c072f05765fdc97b836541240a10250738f"
+  integrity sha512-VQQkz0uUqQ7YuVZeBEx1JFqpSSe5Bz9Qy2T0XAbilBQ8IItj74xjzaFMCNjuASAKXOJGtG0RUh+BOKrMGV7jlg==
 
-"@devexpress/dx-react-core@^2.7.0":
-  version "2.7.4"
-  resolved "https://registry.yarnpkg.com/@devexpress/dx-react-core/-/dx-react-core-2.7.4.tgz#489c51c5d568a9c1dc82b9548f695ff111c82291"
-  integrity sha512-0TqHZ/uf32k3BxKq6q/Xnej9aybYQIrrErGnWd+qAEANsCpGGyOcwO1eF1KM5y55jOsE7PIpGos1HwQh+b1NUg==
+"@devexpress/dx-react-core@^2.7.5":
+  version "2.7.5"
+  resolved "https://registry.yarnpkg.com/@devexpress/dx-react-core/-/dx-react-core-2.7.5.tgz#978f1ead810819e9f3464e9f9d25ccbb87eaad96"
+  integrity sha512-YwJ4l8nnMs/vghqamo8OzirDnrbT1ZNIcMP5xJFJJQIyfYAXvGGDS4yLeYI4cwitBg/d2O4jMOReXDB8tUaDDQ==
   dependencies:
-    "@devexpress/dx-core" "2.7.4"
+    "@devexpress/dx-core" "2.7.5"
     prop-types "^15.7.2"
 
-"@devexpress/dx-react-scheduler-material-ui@^2.7.0":
-  version "2.7.4"
-  resolved "https://registry.yarnpkg.com/@devexpress/dx-react-scheduler-material-ui/-/dx-react-scheduler-material-ui-2.7.4.tgz#ace317b4ff96501bdb1d8c6fdde16c5b7ee57060"
-  integrity sha512-YQ7mj4m47OiZ2xr3B2yXucnMzyOIWRnHaqkQshcAKKnfgYn9if5QSaMzLlj9DrzaDHSsWMxDN0yXfHHEYdP6Rw==
+"@devexpress/dx-react-scheduler@^2.7.5":
+  version "2.7.5"
+  resolved "https://registry.yarnpkg.com/@devexpress/dx-react-scheduler/-/dx-react-scheduler-2.7.5.tgz#f70a57b8accca1bd3ff73c06aaf88b903b1ad333"
+  integrity sha512-PGvGxvvaGRTUtzliXeXSGbOWlg+4siRc4LsQ0eGpC18pUlsA+GJGMVi/6X7dLAxNnO3pnfSvrUF8kmC+9wG5KA==
   dependencies:
-    "@date-io/moment" "^1.3.11"
-    "@material-ui/pickers" "^3.2.10"
-    clsx "^1.0.4"
-    prop-types "^15.7.2"
+    "@devexpress/dx-scheduler-core" "2.7.5"
 
-"@devexpress/dx-react-scheduler@^2.7.0":
-  version "2.7.4"
-  resolved "https://registry.yarnpkg.com/@devexpress/dx-react-scheduler/-/dx-react-scheduler-2.7.4.tgz#afc2d242112984674ae37aa2d0b1c2c724a11dc4"
-  integrity sha512-JQVe7jR9n3KSErifcpL0E2c4D5A7/yLo/TrRieZmb1BtqN/e3CwrzelrUkHJ1QSwStVfOMRP86gNSmhNdKLW1g==
-  dependencies:
-    "@devexpress/dx-scheduler-core" "2.7.4"
-
-"@devexpress/dx-scheduler-core@2.7.4":
-  version "2.7.4"
-  resolved "https://registry.yarnpkg.com/@devexpress/dx-scheduler-core/-/dx-scheduler-core-2.7.4.tgz#6c78aa8ed17f87fa3fb768860035a9a0c945eac6"
-  integrity sha512-hy4RYXQ9UNRHckuWk+oh+EUr+c293S64mHEuskd/6vfTro9gbit0axEiJWipH7SJuP1QYBxYFlu6ku1Qwr7nxg==
+"@devexpress/dx-scheduler-core@2.7.5":
+  version "2.7.5"
+  resolved "https://registry.yarnpkg.com/@devexpress/dx-scheduler-core/-/dx-scheduler-core-2.7.5.tgz#ed5c7b10954e1517fcf1e7bca19e9f1aba2dddcb"
+  integrity sha512-NDtftJj3xuIF3s0YulXe/lgQb97F3O74TeUpUwsFN8X7S8Bes1NbWTYZNBqmcEXPfE1dlRHlovATGP7OgaJ1YQ==
   dependencies:
     moment "^2.24.0"
     rrule "2.6.4"
@@ -1691,17 +1669,17 @@
     "@babel/runtime" "^7.7.2"
     regenerator-runtime "^0.13.3"
 
-"@material-ui/core@^5.0.0-alpha.36":
-  version "5.0.0-alpha.36"
-  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-5.0.0-alpha.36.tgz#88031664ced5ac7173aee4388c323fa52a339598"
-  integrity sha512-14i+hgsycPIGPbBAz+g98gMnxQ5RTMhsqmsG3JgjFJckF5DhzZVFVVhax5N946mp8NUfcAvAUyCze7PvRKdvBg==
+"@material-ui/core@^5.0.0-alpha.37":
+  version "5.0.0-alpha.37"
+  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-5.0.0-alpha.37.tgz#f2b526056ecceaa1c95083838c3c66cc3f00a106"
+  integrity sha512-6jE8WbEM9EIzSBzQqcEeoU+Y15setZW7fNvoIn44tqvQy75ATwIziPIKThCOtMtc1X7D8SpG4EXEwsFzMlGgcw==
   dependencies:
     "@babel/runtime" "^7.4.4"
     "@material-ui/private-theming" "5.0.0-alpha.35"
     "@material-ui/styled-engine" "5.0.0-alpha.34"
-    "@material-ui/system" "5.0.0-alpha.36"
+    "@material-ui/system" "5.0.0-alpha.37"
     "@material-ui/types" "6.0.1"
-    "@material-ui/unstyled" "5.0.0-alpha.35"
+    "@material-ui/unstyled" "5.0.0-alpha.37"
     "@material-ui/utils" "5.0.0-alpha.35"
     "@popperjs/core" "^2.4.4"
     "@types/react-transition-group" "^4.2.0"
@@ -1712,42 +1690,28 @@
     react-is "^17.0.0"
     react-transition-group "^4.4.0"
 
-"@material-ui/icons@^5.0.0-alpha.36":
-  version "5.0.0-alpha.36"
-  resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-5.0.0-alpha.36.tgz#8bc72df8d794875237699c31ce8656c3955bac43"
-  integrity sha512-0nd1MTmgTyx+9lFV1PusbA7/Ow19aL83wsEIpHeAsT5q9Vuz7uS5erwV4YK7vzUj3Dinc5ggx7Wpjtv+2qJCnQ==
+"@material-ui/icons@^5.0.0-alpha.37":
+  version "5.0.0-alpha.37"
+  resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-5.0.0-alpha.37.tgz#8579986e0a3b4586dc7fbf23234d8bfe909b6c3c"
+  integrity sha512-VlUYYCvHyMGTrZB1pxdDIEqCeKle6STys8p+DMbzGbUQ/CuuVqRkA06a73FQaMdAUBgc5VMKrsUg2hwj1UkTfQ==
   dependencies:
     "@babel/runtime" "^7.4.4"
 
-"@material-ui/lab@^5.0.0-alpha.36":
-  version "5.0.0-alpha.36"
-  resolved "https://registry.yarnpkg.com/@material-ui/lab/-/lab-5.0.0-alpha.36.tgz#994ca08601aa36eae5cf2993b5ec190e0eaf3488"
-  integrity sha512-0aJrC4l1iKDZqUTsn85q9xzqVBVZr+qpO8l7rZV1KqI5yKsa4jzUG/wZqbx+dgjhKnxxigB58mQ+Q3Xfbc17jg==
+"@material-ui/lab@^5.0.0-alpha.37":
+  version "5.0.0-alpha.37"
+  resolved "https://registry.yarnpkg.com/@material-ui/lab/-/lab-5.0.0-alpha.37.tgz#989a75f81d8a3e9ddde25e2184edd50f06f03477"
+  integrity sha512-RjEoUdHyNWGYU6r9CXu83MEOJDGcgMD0YS8yrZ2t94rHRKaKosTEByCWd7gDBPXMxiNpv5EaZddJdEBVs56FHw==
   dependencies:
     "@babel/runtime" "^7.4.4"
     "@date-io/date-fns" "^2.10.6"
     "@date-io/dayjs" "^2.10.6"
     "@date-io/luxon" "^2.10.6"
     "@date-io/moment" "^2.10.6"
-    "@material-ui/system" "5.0.0-alpha.36"
+    "@material-ui/system" "5.0.0-alpha.37"
     "@material-ui/utils" "5.0.0-alpha.35"
     clsx "^1.0.4"
     prop-types "^15.7.2"
     react-is "^17.0.0"
-    react-transition-group "^4.4.1"
-    rifm "^0.12.0"
-
-"@material-ui/pickers@4.0.0-alpha.12", "@material-ui/pickers@^3.2.10":
-  version "4.0.0-alpha.12"
-  resolved "https://registry.yarnpkg.com/@material-ui/pickers/-/pickers-4.0.0-alpha.12.tgz#44ee222686ef537954f23bae58a713247106a1b8"
-  integrity sha512-Axk+9VDm2JE79mCNxhHnBVk6nEGUvQyckP2GQcbZnMiKrepBxvg9+Xkn7fXgMlBWsgbOtNp03aiyW11dpEMs9A==
-  dependencies:
-    "@date-io/date-fns" "^2.8.0"
-    "@date-io/dayjs" "^2.8.0"
-    "@date-io/luxon" "^2.8.0"
-    "@date-io/moment" "^2.8.0"
-    clsx "^1.0.2"
-    prop-types "^15.7.2"
     react-transition-group "^4.4.1"
     rifm "^0.12.0"
 
@@ -1792,12 +1756,13 @@
     jss-plugin-vendor-prefixer "^10.0.3"
     prop-types "^15.7.2"
 
-"@material-ui/system@5.0.0-alpha.36":
-  version "5.0.0-alpha.36"
-  resolved "https://registry.yarnpkg.com/@material-ui/system/-/system-5.0.0-alpha.36.tgz#db2db64068af9680cfb79f2dbea896b49de47b47"
-  integrity sha512-1QqINDfNv5y+5TY/p66qkWAZsQGO+HDPDFpTELXtSC9F7zzuosPdJGMM8YFD7vecY4KdDWhCvA4f2G/vI6x8nw==
+"@material-ui/system@5.0.0-alpha.37":
+  version "5.0.0-alpha.37"
+  resolved "https://registry.yarnpkg.com/@material-ui/system/-/system-5.0.0-alpha.37.tgz#0bac409badb8e9fcbd3c3da05ec071db2edf2630"
+  integrity sha512-4eu05aXLWMzth6nsgRT6bvr88jDlPEsum0s9JZ4SO6MR/vqoVSpWk8Vesv2YifwPlvr6k+dv5XXb+DCdsYhIrQ==
   dependencies:
     "@babel/runtime" "^7.4.4"
+    "@material-ui/private-theming" "5.0.0-alpha.35"
     "@material-ui/styled-engine" "5.0.0-alpha.34"
     "@material-ui/types" "6.0.1"
     "@material-ui/utils" "5.0.0-alpha.35"
@@ -1810,10 +1775,10 @@
   resolved "https://registry.yarnpkg.com/@material-ui/types/-/types-6.0.1.tgz#bfcdcd3bb5091e5feac2b191db516543d84e26af"
   integrity sha512-t53C2BZE59e8ao38EDIZdM2smPDSEo5Xx9XxQ/MNM9Ph63Mu4vj5pmECiXkYp0y2OrvFiiZhcqRWV34SBOA18g==
 
-"@material-ui/unstyled@5.0.0-alpha.35":
-  version "5.0.0-alpha.35"
-  resolved "https://registry.yarnpkg.com/@material-ui/unstyled/-/unstyled-5.0.0-alpha.35.tgz#5a9be11f1f2b010c5b6aeb6ef36816052b487ed2"
-  integrity sha512-iTlwlftnH/3w4hU/xaJePMDVsL/JtYJhruJxZ2Tt/2eVzGTvYq88PLQ5+o2VBRROnxQGKRjpNuX3nss+/RudPg==
+"@material-ui/unstyled@5.0.0-alpha.37":
+  version "5.0.0-alpha.37"
+  resolved "https://registry.yarnpkg.com/@material-ui/unstyled/-/unstyled-5.0.0-alpha.37.tgz#984e250f17fb7bff391ba58abfabd41bccd1d097"
+  integrity sha512-otny+k5PqaoT2nK/4DqeO1yguZByDKx9zC+RjVnI47Q3gm/iuxILy5URulXar3Sg+Zbnn48MddoWOKSFKFz6ew==
   dependencies:
     "@babel/runtime" "^7.4.4"
     "@material-ui/utils" "5.0.0-alpha.35"
@@ -1859,6 +1824,14 @@
   integrity sha512-Uv6h1sT+0DrblvIrolFtbvM1FgWm+/sy4B3pvLp67Zys+thcukzS5ekn7HsZFGpWP4Q3fYJCljbWQE/XivMRLw==
   dependencies:
     mkdirp "^1.0.4"
+
+"@olros/devexpress-dx-react-scheduler-material-ui@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@olros/devexpress-dx-react-scheduler-material-ui/-/devexpress-dx-react-scheduler-material-ui-3.0.2.tgz#b2a663fb4d4da3628bd4fec0c0a24166a469d8f5"
+  integrity sha512-fKYCubOSrOvTkno3Y1DojE/5nhsROmjKpdyDT+8eNF7eAQYEhiBBQRftmak6Q5pyyvQd1q5h9Fx/C0CpJhVpqg==
+  dependencies:
+    clsx "^1.0.4"
+    prop-types "^15.7.2"
 
 "@pmmmwh/react-refresh-webpack-plugin@0.4.2":
   version "0.4.2"
@@ -3874,7 +3847,7 @@ clone-deep@^4.0.1:
     kind-of "^6.0.2"
     shallow-clone "^3.0.0"
 
-clsx@^1.0.2, clsx@^1.0.4:
+clsx@^1.0.4:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
   integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==

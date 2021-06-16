@@ -5,8 +5,12 @@ import { useIsAuthenticated } from 'api/hooks/User';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import { Typography, Button } from '@material-ui/core';
+
+// Icons
+import SignupIcon from '@material-ui/icons/AddRounded';
+import LoginIcon from '@material-ui/icons/LoginRounded';
+import ProfileIcon from '@material-ui/icons/PersonOutlineRounded';
 
 // Images
 import { ReactComponent as WaveTop } from 'assets/img/waves/wave-top.svg';
@@ -41,7 +45,8 @@ const useStyles = makeStyles((theme) => ({
   },
   contentText: {
     color: theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
-    margin: `${theme.spacing(1)}px auto`,
+    margin: `${theme.spacing(1)} auto`,
+    fontSize: '1.2rem',
     [theme.breakpoints.down('lg')]: {
       fontSize: '1.05rem',
     },
@@ -54,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: 90,
   },
   contentButtons: {
-    margin: `${theme.spacing(2)}px auto 0`,
+    margin: `${theme.spacing(2)} auto 0`,
     display: 'flex',
     justifyContent: 'center',
   },
@@ -143,21 +148,21 @@ const Wave = () => {
       <div className={classes.container}>
         <div className={classes.content}>
           <TihldeLogo className={classes.logo} darkColor='white' lightColor='white' size='large' />
-          <Typography align='center' className={classes.contentText} variant='h6'>
+          <Typography align='center' className={classes.contentText} variant='body1'>
             Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Drift av datasystemer og Digital
             samhandling ved NTNU
           </Typography>
           <div className={classes.contentButtons}>
             {isAuthenticated ? (
-              <Button className={classes.contentButtonPrimary} color='inherit' component={Link} to={URLS.profile} variant='contained'>
-                Min side
+              <Button className={classes.contentButtonPrimary} color='inherit' component={Link} endIcon={<ProfileIcon />} to={URLS.profile} variant='contained'>
+                Min profil
               </Button>
             ) : (
               <>
-                <Button className={classes.contentButtonPrimary} color='inherit' component={Link} to={URLS.login} variant='contained'>
+                <Button className={classes.contentButtonPrimary} color='inherit' component={Link} endIcon={<LoginIcon />} to={URLS.login} variant='contained'>
                   Logg inn
                 </Button>
-                <Button className={classes.contentButtonSecondary} color='inherit' component={Link} to={URLS.signup}>
+                <Button className={classes.contentButtonSecondary} color='inherit' component={Link} endIcon={<SignupIcon />} to={URLS.signup}>
                   Opprett bruker
                 </Button>
               </>

@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fill: theme.palette.success.dark,
     height: 22,
     width: 22,
-    margin: `auto 0 auto ${theme.spacing(0.5)}px`,
+    margin: `auto 0 auto ${theme.spacing(0.5)}`,
   },
   flex: {
     display: 'flex',

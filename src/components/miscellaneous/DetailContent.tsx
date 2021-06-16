@@ -2,8 +2,7 @@ import { ReactNode } from 'react';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
-import Typography from '@material-ui/core/Typography';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { Typography, Skeleton } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   text: {

@@ -27,13 +27,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   paper: {
     marginRight: theme.spacing(2),
   },
-  delete: {
-    color: theme.palette.error.main,
-    borderColor: theme.palette.error.main,
-    '&:hover': {
-      borderColor: theme.palette.error.light,
-    },
-  },
 }));
 
 export type FormEditorProps = {
@@ -128,7 +121,7 @@ const FormEditor = ({ form }: FormEditorProps) => {
         <Button color='primary' fullWidth onClick={save} variant='contained'>
           Lagre
         </Button>
-        <Button className={classes.delete} fullWidth onClick={() => setDeleteDialogOpen(true)} variant='outlined'>
+        <Button color='error' fullWidth onClick={() => setDeleteDialogOpen(true)} variant='outlined'>
           Slett skjema
         </Button>
       </div>

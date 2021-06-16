@@ -62,9 +62,6 @@ const useStyles = makeStyles((theme) => ({
   adornment: {
     marginRight: 0,
   },
-  delete: {
-    color: theme.palette.error.main,
-  },
   shortLink: {
     padding: theme.spacing(2, 3),
   },
@@ -113,7 +110,7 @@ const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
       </div>
       <MuiTextField fullWidth label='Link' margin='dense' size='small' value={`https://s.tihlde.org/${shortLink.name}`} variant='outlined' />
       <MuiTextField fullWidth label='Leder til' margin='dense' size='small' value={shortLink.url} variant='outlined' />
-      <Button className={classes.delete} endIcon={<DeleteIcon />} fullWidth onClick={() => setRemoveDialogOpen(true)}>
+      <Button color='error' endIcon={<DeleteIcon />} fullWidth onClick={() => setRemoveDialogOpen(true)}>
         Slett link
       </Button>
       <Dialog

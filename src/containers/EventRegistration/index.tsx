@@ -11,7 +11,7 @@ import { Theme, Typography, TextField, LinearProgress, FormControlLabel, Checkbo
 
 // Icons
 import NameIcon from '@material-ui/icons/TextFieldsRounded';
-import QRIcon from '@material-ui/icons/CameraAltRounded';
+import QRIcon from '@material-ui/icons/QrCodeScannerRounded';
 
 // Project Components
 import Http404 from 'containers/Http404';
@@ -49,12 +49,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.up('lg')]: {
       whiteSpace: 'nowrap',
     },
-  },
-  snackbar_success: {
-    backgroundColor: theme.palette.success.dark,
-  },
-  snackbar_error: {
-    backgroundColor: theme.palette.error.main,
   },
   cardContent: {
     padding: theme.spacing(1, 2),

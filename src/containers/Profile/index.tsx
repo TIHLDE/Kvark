@@ -5,6 +5,9 @@ import { useUser } from 'api/hooks/User';
 import { makeStyles } from '@material-ui/styles';
 import { Skeleton, Typography, Button } from '@material-ui/core';
 
+// Icons
+import QrCodeIcon from '@material-ui/icons/QrCodeRounded';
+
 // Project Components
 import Page from 'components/navigation/Page';
 import ProfileContent from 'containers/Profile/components/ProfileContent';
@@ -47,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     minHeight: 35,
   },
   text: {
-    margin: `${theme.spacing(0.25)}px auto`,
+    margin: `${theme.spacing(0.25)} auto`,
     color: theme.palette.text.primary,
   },
 }));
@@ -86,7 +89,7 @@ const Profile = () => {
               <Skeleton className={classes.skeleton} variant='text' width='35%' />
             </>
           )}
-          <Button className={classes.button} color='primary' onClick={() => setShowModal(true)} variant='contained'>
+          <Button className={classes.button} color='primary' endIcon={<QrCodeIcon />} onClick={() => setShowModal(true)} variant='contained'>
             Medlemsbevis
           </Button>
         </Paper>

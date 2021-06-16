@@ -8,14 +8,8 @@ import { EventCompact, News, JobPost } from 'types/Types';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
-import { Theme } from '@material-ui/core';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import MaterialListItem from '@material-ui/core/ListItem';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { lighten, Theme, Skeleton, useMediaQuery, Grid, Typography, ListItem as MaterialListItem, SvgIconTypeMap } from '@material-ui/core';
 import { OverridableComponent } from '@material-ui/core/OverridableComponent';
-import { SvgIconTypeMap } from '@material-ui/core';
 
 // Icons
 import DateIcon from '@material-ui/icons/DateRangeRounded';
@@ -39,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
     '--multiplier': `calc( ${theme.breakpoints.values.md}px - 100%)`,
     backgroundColor: theme.palette.background.paper,
     gridGap: theme.spacing(1),
+    '&:hover': {
+      background: lighten(theme.palette.background.paper, 0.1),
+    },
   },
   content: {
     minWidth: '33%',

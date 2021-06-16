@@ -6,8 +6,7 @@ import { useNewsById } from 'api/hooks/News';
 
 // Material UI
 import { makeStyles } from '@material-ui/styles';
-import { Divider, Typography } from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { Divider, Typography, Skeleton } from '@material-ui/core';
 
 // Project components
 import Expansion from 'components/layout/Expand';
@@ -19,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   blockquote: {
     margin: theme.spacing(0, 2, 1),
     padding: theme.spacing(2, 3, 1),
-    borderLeft: `${theme.spacing(1)}px solid ${theme.palette.primary.main}`,
+    borderLeft: `${theme.spacing(1)} solid ${theme.palette.primary.main}`,
   },
   code: {
     color: theme.palette.text.primary,

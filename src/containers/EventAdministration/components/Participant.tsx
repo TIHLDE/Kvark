@@ -52,13 +52,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       gridTemplateColumns: '1fr',
     },
   },
-  deleteButton: {
-    color: theme.palette.error.main,
-    borderColor: theme.palette.error.main,
-    '&:hover': {
-      borderColor: theme.palette.error.light,
-    },
-  },
 }));
 
 export type ParticipantProps = {
@@ -147,7 +140,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
                 Flytt til venteliste
               </Button>
             )}
-            <Button className={classes.deleteButton} fullWidth onClick={() => setShowModal(true)} startIcon={<Delete />} variant='outlined'>
+            <Button color='error' fullWidth onClick={() => setShowModal(true)} startIcon={<Delete />} variant='outlined'>
               Fjern deltager
             </Button>
           </div>

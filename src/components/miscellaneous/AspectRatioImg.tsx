@@ -3,8 +3,7 @@ import classNames from 'classnames';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
-import { Theme } from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { Theme, Skeleton } from '@material-ui/core';
 
 // Icons
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';

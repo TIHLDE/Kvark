@@ -51,9 +51,6 @@ const useStyles = makeStyles((theme) => ({
     height: 400,
     maxHeight: '90vh',
   },
-  remove: {
-    color: theme.palette.error.main,
-  },
   links: {
     display: 'grid',
     gap: theme.spacing(1),
@@ -103,8 +100,8 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
     try {
       if (e.target.files && e.target.files.length > 0) {
         const file = e.target.files[0];
+        setImageFile(file);
         if (ratio) {
-          setImageFile(file);
           const imageDataUrl = await readFile(file);
           setImageSrc(imageDataUrl);
           setDialogOpen(true);
@@ -131,7 +128,7 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
     try {
       const { default: compressImage } = await import('browser-image-compression');
       const compressedImage = await compressImage(file as File, { maxSizeMB: 0.8, maxWidthOrHeight: 1500 });
-      const newFile = blobToFile(compressedImage, imageFile?.name || '', imageFile?.type || '');
+      const newFile = blobToFile(compressedImage, file instanceof File ? file.name : imageFile?.name || '', imageFile?.type || file.type || '');
       const data = await API.uploadFile(newFile);
       setValue(name, data.url);
     } catch (e) {
@@ -154,7 +151,7 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
         </div>
         {Boolean(errors[name]) && <FormHelperText error>{errors[name]?.message}</FormHelperText>}
         {url && (
-          <Button className={classes.remove} color='primary' disabled={isLoading} fullWidth onClick={() => setValue(name, '')}>
+          <Button color='error' disabled={isLoading} fullWidth onClick={() => setValue(name, '')}>
             Fjern bilde
           </Button>
         )}
@@ -215,7 +212,7 @@ export const FormFileUpload = ({ register, watch, setValue, name, errors = {}, r
       </div>
       {Boolean(errors[name]) && <FormHelperText error>{errors[name]?.message}</FormHelperText>}
       {url && (
-        <Button className={classes.remove} color='primary' disabled={isLoading} fullWidth onClick={() => setValue(name, '')}>
+        <Button color='error' disabled={isLoading} fullWidth onClick={() => setValue(name, '')}>
           Fjern fil
         </Button>
       )}

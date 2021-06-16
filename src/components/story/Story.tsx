@@ -6,10 +6,7 @@ import URLS from 'URLS';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
-import { Theme } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { Theme, Skeleton, Typography, Button } from '@material-ui/core';
 
 // Project components
 import StoryPopup from 'components/story/StoryPopup';
@@ -88,10 +85,6 @@ const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme: Theme
     '&:hover': {
       borderWidth: 2,
     },
-  },
-  imgButtonLabel: {
-    width: '100%',
-    height: '100%',
   },
   image: {
     width: '100%',
@@ -181,7 +174,7 @@ function Story({ items, fadeColor }: StoryProps) {
     const [imgUrl, setImgUrl] = useState(item.image || TIHLDELOGO);
     const openStory = () => {
       window.gtag('event', 'stories', {
-        event_category: 'Stories',
+        event_category: 'stories',
         event_label: 'Open story',
       });
       setSelectedItem(index);
@@ -189,7 +182,7 @@ function Story({ items, fadeColor }: StoryProps) {
     };
     return (
       <div className={classes.story}>
-        <Button classes={{ label: classes.imgButtonLabel }} className={classes.imgButton} color='primary' onClick={openStory} variant='outlined'>
+        <Button className={classes.imgButton} color='primary' onClick={openStory} variant='outlined'>
           <img alt={item.title} className={classes.image} onError={() => setImgUrl(TIHLDELOGO)} src={imgUrl} />
         </Button>
         <Typography className={classes.text} variant='body2'>
