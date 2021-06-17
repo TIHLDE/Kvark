@@ -6,7 +6,7 @@ import { EMAIL_REGEX } from 'constant';
 import { getUserStudyLong, getUserClass } from 'utils';
 import { UserCreate } from 'types/Types';
 import { useCreateUser } from 'api/hooks/User';
-import { useMisc } from 'api/hooks/Misc';
+import { useSetRedirectUrl, useRedirectUrl } from 'api/hooks/Misc';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
@@ -76,7 +76,8 @@ const SignUp = () => {
   const createUser = useCreateUser();
   const showSnackbar = useSnackbar();
   const { handleSubmit, errors, control, setError, register } = useForm<SignUpData>();
-  const { setLogInRedirectURL, getLogInRedirectURL } = useMisc();
+  const setLogInRedirectURL = useSetRedirectUrl();
+  const redirectURL = useRedirectUrl();
   const [faqOpen, setFaqOpen] = useState(false);
 
   const onSignUp = async (data: SignUpData) => {
@@ -105,7 +106,6 @@ const SignUp = () => {
     } as UserCreate;
     createUser.mutate(userData, {
       onSuccess: () => {
-        const redirectURL = getLogInRedirectURL();
         setLogInRedirectURL(null);
         navigate(redirectURL || URLS.login);
       },

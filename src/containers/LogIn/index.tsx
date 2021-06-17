@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import URLS from 'URLS';
 import { useLogin } from 'api/hooks/User';
-import { useMisc } from 'api/hooks/Misc';
+import { useSetRedirectUrl, useRedirectUrl } from 'api/hooks/Misc';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
@@ -60,7 +60,8 @@ const LogIn = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const logIn = useLogin();
-  const { setLogInRedirectURL, getLogInRedirectURL } = useMisc();
+  const setLogInRedirectURL = useSetRedirectUrl();
+  const redirectURL = useRedirectUrl();
   const { register, errors, handleSubmit, setError } = useForm<LoginData>();
 
   const onLogin = async (data: LoginData) => {
@@ -68,7 +69,6 @@ const LogIn = () => {
       { username: data.username, password: data.password },
       {
         onSuccess: () => {
-          const redirectURL = getLogInRedirectURL();
           setLogInRedirectURL(null);
           navigate(redirectURL || URLS.landing);
         },

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { useUser } from 'api/hooks/User';
-import { useMisc } from 'api/hooks/Misc';
+import { useSetRedirectUrl } from 'api/hooks/Misc';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
@@ -42,7 +42,7 @@ export type ProfileTopbarButtonProps = Pick<NavigationOptions, 'darkColor' | 'li
 const ProfileTopbarButton = (props: ProfileTopbarButtonProps) => {
   const classes = useStyles(props);
   const { data: user } = useUser();
-  const { setLogInRedirectURL } = useMisc();
+  const setLogInRedirectURL = useSetRedirectUrl();
   const [showThemeSettings, setShowThemeSettings] = useState(false);
 
   return (

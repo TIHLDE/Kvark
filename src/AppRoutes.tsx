@@ -4,7 +4,7 @@ import URLS from 'URLS';
 import { PermissionApp } from 'types/Enums';
 
 // Services
-import { useMisc } from 'api/hooks/Misc';
+import { useSetRedirectUrl } from 'api/hooks/Misc';
 import { useHavePermission, useIsAuthenticated } from 'api/hooks/User';
 
 // Project components
@@ -43,7 +43,7 @@ type AuthRouteProps = {
 };
 
 const AuthRoute = ({ apps = [], children, path, element }: AuthRouteProps) => {
-  const { setLogInRedirectURL } = useMisc();
+  const setLogInRedirectURL = useSetRedirectUrl();
   const isAuthenticated = useIsAuthenticated();
   const { allowAccess, isLoading } = useHavePermission(apps);
 

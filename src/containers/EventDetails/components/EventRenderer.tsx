@@ -8,7 +8,7 @@ import { formatDate, getICSFromEvent } from 'utils';
 import { Link } from 'react-router-dom';
 
 // Services
-import { useMisc } from 'api/hooks/Misc';
+import { useSetRedirectUrl } from 'api/hooks/Misc';
 import { useEventRegistration, useDeleteEventRegistration } from 'api/hooks/Event';
 import { useUser, HavePermission } from 'api/hooks/User';
 import { useSnackbar } from 'api/hooks/Snackbar';
@@ -108,7 +108,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const { data: user } = useUser();
   const { data: registration } = useEventRegistration(data.id, preview || !user ? '' : user.user_id);
   const deleteRegistration = useDeleteEventRegistration(data.id);
-  const { setLogInRedirectURL } = useMisc();
+  const setLogInRedirectURL = useSetRedirectUrl();
   const showSnackbar = useSnackbar();
   const [view, setView] = useState<Views>(Views.Info);
   const [signOffDialogOpen, setSignOffDialogOpen] = useState(false);
