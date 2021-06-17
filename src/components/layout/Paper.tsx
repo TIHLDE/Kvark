@@ -20,7 +20,12 @@ export type PaperProps = MaterialPaperProps & {
 const Paper = forwardRef(function Paper({ noBorder, noPadding, children, className, ...props }: PaperProps, ref: Ref<HTMLDivElement>) {
   const classes = useStyles();
   return (
-    <MaterialPaper className={classnames(!noBorder && classes.border, !noPadding && classes.padding, className)} elevation={0} ref={ref} {...props}>
+    <MaterialPaper
+      className={classnames(!noBorder && classes.border, !noPadding && classes.padding, className)}
+      elevation={0}
+      ref={ref}
+      sx={{ overflow: 'hidden' }}
+      {...props}>
       {children}
     </MaterialPaper>
   );

@@ -127,13 +127,13 @@ export const NewsRendererLoading = () => {
     <div>
       <div className={classes.top}>
         <Container className={classes.topContent} maxWidth='lg'>
-          <Skeleton className={classes.skeleton} width={200} />
           <Skeleton className={classes.skeleton} height={80} width='60%' />
           <Skeleton className={classes.skeleton} height={40} width={250} />
         </Container>
       </div>
       <Container className={classes.content} maxWidth='lg'>
         <AspectRatioLoading imgClassName={classes.image} />
+        <Skeleton className={classes.skeleton} height={40} width={250} />
         <Paper>
           <Skeleton className={classes.skeleton} width='80%' />
           <Skeleton className={classes.skeleton} width='85%' />

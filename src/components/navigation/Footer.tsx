@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     gridTemplateAreas: "'about main sponsors' 'index index index'",
     justifyItems: 'center',
     color: theme.palette.getContrastText(theme.palette.colors.footer),
-    boxShadow: '0px -2px 5px 0px rgba(0,0,0,0.1)',
+    borderTop: `${theme.palette.borderWidth} solid ${theme.palette.divider}`,
     [theme.breakpoints.down('lg')]: {
       gridTemplateAreas: "'main main' 'about sponsors' 'index index'",
       gridTemplateColumns: '1fr 1fr',

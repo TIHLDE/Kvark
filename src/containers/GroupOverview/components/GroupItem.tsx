@@ -9,12 +9,12 @@ import { Skeleton, ButtonBase, Typography } from '@material-ui/core';
 // Icons
 import MembersIcon from '@material-ui/icons/PersonRounded';
 
+// Project components
+import Paper from 'components/layout/Paper';
+
 const useStyles = makeStyles((theme) => ({
   container: {
     width: '100%',
-    backgroundColor: theme.palette.background.paper,
-    border: `${theme.palette.borderWidth} solid ${theme.palette.divider}`,
-    borderRadius: theme.shape.borderRadius,
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
@@ -43,17 +43,19 @@ const GroupItem = ({ group }: GroupItemProps) => {
   const classes = useStyles();
 
   return (
-    <ButtonBase className={classes.container} component={Link} focusRipple to={`${URLS.groups}${group.slug}/`}>
-      <Typography variant='h3'>{group.name}</Typography>
-      {group.leader && (
-        <div className={classes.leader}>
-          <MembersIcon className={classes.icon} />
-          <Typography className={classes.name}>
-            {group.leader.first_name} {group.leader.last_name}
-          </Typography>
-        </div>
-      )}
-    </ButtonBase>
+    <Paper noPadding>
+      <ButtonBase className={classes.container} component={Link} focusRipple to={`${URLS.groups}${group.slug}/`}>
+        <Typography variant='h3'>{group.name}</Typography>
+        {group.leader && (
+          <div className={classes.leader}>
+            <MembersIcon className={classes.icon} />
+            <Typography className={classes.name}>
+              {group.leader.first_name} {group.leader.last_name}
+            </Typography>
+          </div>
+        )}
+      </ButtonBase>
+    </Paper>
   );
 };
 
@@ -62,12 +64,14 @@ export default GroupItem;
 export const GroupItemLoading = () => {
   const classes = useStyles();
   return (
-    <ButtonBase className={classes.container} focusRipple>
-      <Skeleton width={100} />
-      <div className={classes.leader}>
-        <MembersIcon className={classes.icon} />
-        <Skeleton className={classes.name} width={120} />
-      </div>
-    </ButtonBase>
+    <Paper noPadding>
+      <ButtonBase className={classes.container} focusRipple>
+        <Skeleton width={100} />
+        <div className={classes.leader}>
+          <MembersIcon className={classes.icon} />
+          <Skeleton className={classes.name} width={120} />
+        </div>
+      </ButtonBase>
+    </Paper>
   );
 };
