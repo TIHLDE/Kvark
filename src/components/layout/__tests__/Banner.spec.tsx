@@ -1,4 +1,4 @@
-import { render } from '../../../test-utils';
+import { render, waitFor } from '../../../test-utils';
 import Banner from '../Banner';
 
 test('Banner should contain title', () => {
@@ -7,10 +7,10 @@ test('Banner should contain title', () => {
   expect(getByText('title')).toBeInTheDocument();
 });
 
-test('Banner should contain text', () => {
+test('Banner should contain text', async () => {
   const { getByText } = render(<Banner text='subtitle' title='title' />);
 
-  expect(getByText('subtitle')).toBeInTheDocument();
+  await waitFor(() => expect(getByText('subtitle')).toBeInTheDocument());
 });
 
 test('Banner should contain button', () => {
