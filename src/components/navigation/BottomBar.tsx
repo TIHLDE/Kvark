@@ -31,8 +31,9 @@ const useStyles = makeStyles((theme) => ({
     ...theme.palette.blurred,
     ...theme.palette.transparent,
     background: `${theme.palette.background.paper}aa`,
+    overflow: 'hidden',
   },
-  navbar: {
+  bottombar: {
     height: 80,
     background: 'transparent',
     padding: theme.spacing(1, 0, 3),
@@ -110,7 +111,7 @@ const BottomBar = ({ items }: BottomBarProps) => {
   return (
     <Paper className={classes.root} noPadding>
       <BottomNavigation
-        className={classes.navbar}
+        className={classes.bottombar}
         onChange={(event, newValue) => (actions.some((item) => item.to === newValue) ? setTab(newValue) : null)}
         showLabels
         value={tab}>

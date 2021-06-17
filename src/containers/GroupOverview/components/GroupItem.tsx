@@ -43,7 +43,7 @@ const GroupItem = ({ group }: GroupItemProps) => {
   const classes = useStyles();
 
   return (
-    <Paper noPadding>
+    <Paper noOverflow noPadding>
       <ButtonBase className={classes.container} component={Link} focusRipple to={`${URLS.groups}${group.slug}/`}>
         <Typography variant='h3'>{group.name}</Typography>
         {group.leader && (
@@ -64,7 +64,7 @@ export default GroupItem;
 export const GroupItemLoading = () => {
   const classes = useStyles();
   return (
-    <Paper noPadding>
+    <Paper noOverflow noPadding>
       <ButtonBase className={classes.container} focusRipple>
         <Skeleton width={100} />
         <div className={classes.leader}>

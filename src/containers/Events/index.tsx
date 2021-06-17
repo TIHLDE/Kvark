@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
     gridGap: theme.spacing(1),
     position: 'sticky',
-    top: 88,
+    top: 80,
 
     [theme.breakpoints.down('lg')]: {
       order: 0,
