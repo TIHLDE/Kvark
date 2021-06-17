@@ -53,7 +53,7 @@ export const Application = () => {
     <Providers>
       <BrowserRouter>
         <Navigation>
-          <Suspense fallback={<Page options={{ title: 'Laster...', lightColor: 'blue' }} />}>
+          <Suspense fallback={<Page options={{ title: 'Laster...', filledTopbar: true }} />}>
             <AppRoutes />
           </Suspense>
           <MessageGDPR />
