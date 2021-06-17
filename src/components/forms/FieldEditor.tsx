@@ -5,14 +5,7 @@ import classnames from 'classnames';
 
 // Material UI
 import { makeStyles } from '@material-ui/styles';
-import { Theme } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Button from '@material-ui/core/Button';
-import Grow from '@material-ui/core/Grow';
+import { TextField, Typography, IconButton, Checkbox, FormControlLabel, Button, Grow } from '@material-ui/core';
 
 // Icons
 import DeleteIcon from '@material-ui/icons/DeleteOutlineRounded';
@@ -23,7 +16,7 @@ import CheckBoxIcon from '@material-ui/icons/CheckBoxOutlineBlankRounded';
 // Project components
 import Paper from 'components/layout/Paper';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'grid',
     gridGap: theme.spacing(1),

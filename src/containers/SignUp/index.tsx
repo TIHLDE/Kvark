@@ -28,12 +28,9 @@ import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
+import { SecondaryTopBox } from 'components/layout/TopBox';
 
 const useStyles = makeStyles((theme) => ({
-  top: {
-    height: 220,
-    background: `radial-gradient(circle at bottom, ${theme.palette.colors.gradient.secondary.top}, ${theme.palette.colors.gradient.secondary.bottom})`,
-  },
   paper: {
     maxWidth: theme.breakpoints.values.md,
     margin: 'auto',
@@ -116,7 +113,7 @@ const SignUp = () => {
   };
 
   return (
-    <Page banner={<div className={classes.top} />} options={{ title: 'Ny bruker' }}>
+    <Page banner={<SecondaryTopBox />} options={{ title: 'Ny bruker' }}>
       <Paper className={classes.paper}>
         {createUser.isLoading && <LinearProgress className={classes.progress} />}
         <TihldeLogo className={classes.logo} darkColor='white' lightColor='blue' size='large' />

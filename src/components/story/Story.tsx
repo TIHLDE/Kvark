@@ -14,7 +14,7 @@ import StoryPopup from 'components/story/StoryPopup';
 // Icons
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
 
-const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme: Theme) => ({
+const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme) => ({
   root: {
     overflow: 'hidden',
     position: 'relative',

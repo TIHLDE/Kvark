@@ -18,12 +18,9 @@ import Http404 from 'containers/Http404';
 import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import Tabs from 'components/layout/Tabs';
+import { PrimaryTopBox } from 'components/layout/TopBox';
 
-const useStyles = makeStyles((theme: Theme) => ({
-  top: {
-    height: 220,
-    background: theme.palette.colors.gradient.main.top,
-  },
+const useStyles = makeStyles((theme) => ({
   paper: {
     maxWidth: theme.breakpoints.values.md,
     margin: 'auto',
@@ -189,7 +186,7 @@ function EventRegistration() {
   }
 
   return (
-    <Page banner={<div className={classes.top}></div>} options={{ title: `${data?.title || ''} - Registrering` }}>
+    <Page banner={<PrimaryTopBox />} options={{ title: `${data?.title || ''} - Registrering` }}>
       <Paper className={classes.paper}>
         {isLoading && <LinearProgress className={classes.progress} />}
         <Typography align='center' className={classes.title} variant='h2'>

@@ -23,7 +23,7 @@ import Avatar from 'components/miscellaneous/Avatar';
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   avatar: {
     marginRight: theme.spacing(2),
   },

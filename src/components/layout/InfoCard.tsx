@@ -1,17 +1,15 @@
 import { ReactNode } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { Theme } from '@material-ui/core';
 import classNames from 'classnames';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 
 // Material UI Components
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import { Grid, Typography } from '@material-ui/core';
 
 // Project Components
 import Paper from 'components/layout/Paper';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(4),
   },

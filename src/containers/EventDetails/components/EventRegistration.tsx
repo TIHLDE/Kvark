@@ -10,11 +10,7 @@ import { useForm } from 'react-hook-form';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
-import { Theme } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Button from '@material-ui/core/Button';
+import { Typography, FormControlLabel, Checkbox, Button } from '@material-ui/core';
 
 // Icons
 import PersonIcon from '@material-ui/icons/PersonOutlineRounded';
@@ -27,7 +23,7 @@ import HomeIcon from '@material-ui/icons/HomeRounded';
 import Paper from 'components/layout/Paper';
 import FormView from 'components/forms/FormView';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   list: {
     display: 'flex',
     flexDirection: 'column',

@@ -148,7 +148,7 @@ const Sidebar = ({ items, onClose, open }: SidebarProps) => {
           <SidebarItem key={i} {...item} onClose={onClose} />
         ))}
         {isAuthenticated ? (
-          <SidebarItem onClose={onClose} text='Min side' to={URLS.profile} type='link' />
+          <SidebarItem onClose={onClose} text='Min profil' to={URLS.profile} type='link' />
         ) : (
           <SidebarItem onClose={onClose} text='Logg inn' to={URLS.login} type='link' />
         )}

@@ -18,7 +18,7 @@ import OpenInNewIcon from '@material-ui/icons/OpenInNewRounded';
 import Paper from 'components/layout/Paper';
 import Pagination from 'components/layout/Pagination';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   grid: {
     display: 'grid',
     width: '100%',

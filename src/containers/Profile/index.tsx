@@ -15,12 +15,9 @@ import Paper from 'components/layout/Paper';
 import Dialog from 'components/layout/Dialog';
 import Avatar from 'components/miscellaneous/Avatar';
 import QRCode from 'components/miscellaneous/QRCode';
+import { ProfileTopBox } from 'components/layout/TopBox';
 
 const useStyles = makeStyles((theme) => ({
-  top: {
-    height: 260,
-    background: 'radial-gradient(circle at bottom, ' + theme.palette.colors.gradient.profile.top + ', ' + theme.palette.colors.gradient.profile.bottom + ')',
-  },
   paper: {
     position: 'relative',
     left: 0,
@@ -61,7 +58,7 @@ const Profile = () => {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <Page banner={<div className={classes.top} />} options={{ title: 'Profil' }}>
+    <Page banner={<ProfileTopBox />} options={{ title: 'Profil' }}>
       <div>
         <Paper className={classes.paper} noPadding>
           {showModal && user && (

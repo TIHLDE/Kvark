@@ -4,14 +4,12 @@ import { ACCEPTED_ANALYTICS } from 'constant';
 
 // Material UI
 import { makeStyles } from '@material-ui/styles';
-import { Theme } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import { Typography, Button } from '@material-ui/core';
 
 // Project components
 import Paper from 'components/layout/Paper';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: theme.breakpoints.values.lg,
     padding: theme.spacing(2),

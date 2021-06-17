@@ -1,14 +1,12 @@
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/styles';
-import { Theme } from '@material-ui/core';
+import { Box, Grid, Typography } from '@material-ui/core';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
-import Paper from 'components/layout/Paper';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
 import GithubIcon from '@material-ui/icons/CodeRounded';
 
-const useStyles = makeStyles((theme: Theme) => ({
+import Paper from 'components/layout/Paper';
+
+const useStyles = makeStyles((theme) => ({
   wrapIcon: {
     verticalAlign: 'middle',
     display: 'inline-flex',

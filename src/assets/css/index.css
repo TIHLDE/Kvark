@@ -1,4 +1,3 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Cabin&family=Oswald:wght@500;700&family=Roboto:wght@300;700;900&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Cabin&family=Oswald:wght@500;700&family=Inter:wght@300;700;900&&display=swap');
 
 * {
@@ -8,44 +7,6 @@
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
-}
-
-/* PULSE EFFECT */
-.pulse {
-  display: block;
-  min-width: 14px;
-  min-height: 14px;
-  border-radius: 100%;
-  background: rgba(255, 255, 255, 1);
-  box-shadow: 0 0 0 rgba(255, 255, 255, 0.8);
-  animation: pulse 2s infinite;
-  margin-right: 20px;
-}
-
-@-webkit-keyframes pulse {
-  0% {
-    -webkit-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.9);
-  }
-  90% {
-    -webkit-box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
-  }
-  100% {
-    -webkit-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
-  }
-}
-@keyframes pulse {
-  0% {
-    -moz-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.9);
-    box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.9);
-  }
-  90% {
-    -moz-box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
-    box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
-  }
-  100% {
-    -moz-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
-    box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
-  }
 }
 
 /** Landing page rain animation **/

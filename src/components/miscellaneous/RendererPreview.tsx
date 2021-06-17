@@ -2,18 +2,11 @@ import { useState, forwardRef, Ref, ReactElement, FunctionComponent } from 'reac
 
 // Material-UI
 import { makeStyles } from '@material-ui/styles';
-import { Theme } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
+import { Button, Dialog, DialogContent, DialogTitle, IconButton, Typography, Slide } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/CloseRounded';
-import Slide from '@material-ui/core/Slide';
 import { TransitionProps } from '@material-ui/core/transitions';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   appBar: {
     margin: 0,
     padding: theme.spacing(2),

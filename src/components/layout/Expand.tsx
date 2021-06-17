@@ -3,12 +3,12 @@ import { makeStyles } from '@material-ui/styles';
 import classNames from 'classnames';
 
 // Material UI Components
-import { Theme, Accordion, AccordionSummary, AccordionDetails, Typography } from '@material-ui/core';
+import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@material-ui/core';
 
 // Icons
 import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: '100%',
     overflow: 'hidden',

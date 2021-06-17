@@ -12,12 +12,9 @@ import { Typography } from '@material-ui/core';
 import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import GroupItem, { GroupItemLoading } from 'containers/GroupOverview/components/GroupItem';
+import { PrimaryTopBox } from 'components/layout/TopBox';
 
 const useStyles = makeStyles((theme) => ({
-  top: {
-    height: 220,
-    background: theme.palette.colors.gradient.main.top,
-  },
   content: {
     margin: '-60px auto 60px',
     position: 'relative',
@@ -68,7 +65,7 @@ const GroupOverview = () => {
   );
 
   return (
-    <Page banner={<div className={classes.top} />} options={{ title: 'Gruppeoversikt' }}>
+    <Page banner={<PrimaryTopBox />} options={{ title: 'Gruppeoversikt' }}>
       <Paper className={classes.content}>
         <Typography gutterBottom variant='h1'>
           Gruppeoversikt

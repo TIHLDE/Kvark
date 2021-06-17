@@ -9,16 +9,7 @@ import { dateAsUTC } from 'utils';
 
 // Material-UI
 import { makeStyles } from '@material-ui/styles';
-import { Theme } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import MenuItem from '@material-ui/core/MenuItem';
-import Collapse from '@material-ui/core/Collapse';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import Typography from '@material-ui/core/Typography';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import { Button, Grid, MenuItem, Collapse, Accordion, AccordionSummary, AccordionDetails, Typography, LinearProgress } from '@material-ui/core';
 
 // Icons
 import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
@@ -36,7 +27,7 @@ import TextField from 'components/inputs/TextField';
 import { ImageUpload } from 'components/inputs/Upload';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   grid: {
     display: 'grid',
     gridGap: theme.spacing(2),

@@ -6,20 +6,13 @@ import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI
 import { makeStyles } from '@material-ui/styles';
-import { Theme } from '@material-ui/core';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import Button from '@material-ui/core/Button';
+import { ClickAwayListener, Grow, Paper, Popper, MenuItem, MenuList, Button } from '@material-ui/core';
 
 // Project components
 import Dialog from 'components/layout/Dialog';
 import FieldEditor from 'components/forms/FieldEditor';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'grid',
     gridGap: theme.spacing(1),

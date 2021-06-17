@@ -14,6 +14,30 @@
 
 ## Neste versjon
 
+- ✨ **Material-UI**. Oppdatert Material-UI til v5 som inneholder nye komponenter, ikoner, utseende og annen forbedret funksjonalitet. Her er det også gjort en stor jobb ved å oppdatere breaking changes som også gjør det enklere å oppdatere til v6 når det blir aktuelt.
+- ✨ **Banner**. Tekst i banner leser nå markdown og det er dermed mulig å bruke markdown i gruppe-admins beskrivelse.
+- ✨ **Deling**. Hvis brukers enhet ikke støtter Web Share API, vises det nå en snackbar som sier at link er kopiert til utklippstavle ved klikk.
+- ✨ **Github**. Lagt til link til oppretting av nytt issue på Github i Index sin side i pages.
+- ✨ **Varsler**. Antall uleste varsler i profilen vises nå på mobil.
+- ⚡ **Dependencies**. Oppdatert en drøss av avhengigheter til nyeste versjon.
+- ⚡ **Cache**. Arrangements-kategorier og varsler fra admins blir nå cachet.
+- ⚡ **Navigering**. Menyen lukkes nå i en overgang og ikke umiddelbart slik at siden flyter bedre. Gjennom denne forbedringen har det også blitt enklere å justere utseende på menyen individuelt per side.
+- ⚡ **Varsler**. Hvis admins har sendt ut flere varsler samtidig vises nå alle i rekkefølge. Utseende er også oppdatert til å være lik andre deler av siden.
+- ⚡ **Ytelse**. Lazy loader flere tyngre komponenter for å øke farten på siden.
+- ⚡ **Ytelse**. Slettet 26 ubrukte filer slik at siden blir raskere.
+- 🎨 **Utseende**. Fargene på siden har blitt justert for å øke synlighet og kontraster. Hjørner og diverse annet design er også blitt forbedret.
+- 🎨 **Navigering**. Meny på mobil er flyttet til bunnen av skjermen slik at den blir enklere å bruke med en hånd, samt at man kan navigere mellom sidene raskere.
+- 🎨 **Switch**. Oppdatert utssende på switches som brukes på siden.
+- 🎨 **QR-kode**. Endret utseende på QR-koder for å gjøre skanning raskere.
+- 🎨 **Scrollbar**. Scrollbar har et nytt eget utseende i mørkt tema.
+- 🎨 **Font**. Roboto-fonten er byttet ut med Inter-fonten.
+- 🎨 **Banner**. Bølgen tar nå mindre plass.
+- 🎨 **Tema**. Tema-velgeren er flyttet til til toppen av siden slik at den blir enklere å finne.
+- 🦟 **Filopplastning**. Fikset bug der det ikke var mulig å laste opp nytt bilde i pages.
+- 🦟 **Bruker**. Admin-brukere kan oppdatere sin egen profil igjen.
+- 🦟 **Stories**. Fikset en bug der skyggen ved siden av stories på Safari ikke hadde riktige farger.
+- 🦟 **Pages**. Fikset bug der man måtte trykke tilbake-knappen i pages i nettleseren to ganger for å gå tilbake.
+
 ## Versjon 1.0.10 (10.05.2021)
 
 - ✨ **Filtrering**. Det er mulig å finne tidligere arrangementer og annonser ved å justere filtrering.

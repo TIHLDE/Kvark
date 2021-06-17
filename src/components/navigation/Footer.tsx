@@ -7,9 +7,7 @@ import { Link } from 'react-router-dom';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
-import { Theme } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
+import { Typography, Divider } from '@material-ui/core';
 
 // Assets import
 import VERCEL from 'assets/icons/vercel.svg';
@@ -20,7 +18,7 @@ import SNAPCHAT from 'assets/icons/snapchat.svg';
 import SLACK from 'assets/icons/slack.svg';
 import DISCORD from 'assets/icons/discord.svg';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     position: 'relative',
     backgroundColor: theme.palette.colors.footer,

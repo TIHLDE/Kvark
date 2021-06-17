@@ -17,12 +17,9 @@ import Paper from 'components/layout/Paper';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
+import { SecondaryTopBox } from 'components/layout/TopBox';
 
 const useStyles = makeStyles((theme) => ({
-  top: {
-    height: 220,
-    background: `radial-gradient(circle at bottom, ${theme.palette.colors.gradient.secondary.top}, ${theme.palette.colors.gradient.secondary.bottom})`,
-  },
   paper: {
     maxWidth: theme.breakpoints.values.sm,
     margin: 'auto',
@@ -69,7 +66,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <Page banner={<div className={classes.top} />} options={{ title: 'Glemt passord' }}>
+    <Page banner={<SecondaryTopBox />} options={{ title: 'Glemt passord' }}>
       <Paper className={classes.paper}>
         {forgotPassword.isLoading && <LinearProgress className={classes.progress} />}
         <TihldeLogo className={classes.logo} darkColor='white' lightColor='blue' size='large' />

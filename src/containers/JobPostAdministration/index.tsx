@@ -6,8 +6,7 @@ import { useJobPosts } from 'api/hooks/JobPost';
 
 // Material-UI
 import { makeStyles } from '@material-ui/styles';
-import { Theme } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+import { Typography } from '@material-ui/core';
 
 // Project components
 import Paper from 'components/layout/Paper';
@@ -15,7 +14,7 @@ import Page from 'components/navigation/Page';
 import SidebarList from 'components/layout/SidebarList';
 import JobPostEditor from 'containers/JobPostAdministration/components/JobPostEditor';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(4),
     marginLeft: theme.spacing(35),

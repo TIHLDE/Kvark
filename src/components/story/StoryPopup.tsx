@@ -5,11 +5,7 @@ import { usePalette } from 'react-palette';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
-import { Theme, useTheme } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { Typography, useTheme, Button, Dialog, useMediaQuery } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 
 // Project components
@@ -22,7 +18,7 @@ import UpIcon from '@material-ui/icons/ExpandLessRounded';
 import DownIcon from '@material-ui/icons/ExpandMoreRounded';
 import OpenIcon from '@material-ui/icons/KeyboardArrowRightRounded';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     borderRadius: 0,
     marginTop: 0,

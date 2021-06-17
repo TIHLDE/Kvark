@@ -4,13 +4,12 @@ import { getUserClass, getUserStudyShort } from 'utils';
 
 // Material-UI
 import { makeStyles } from '@material-ui/styles';
-import { Theme } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+import { Typography } from '@material-ui/core';
 
 // Project components
 import Paper from 'components/layout/Paper';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'grid',
     gridTemplateColumns: '1fr',

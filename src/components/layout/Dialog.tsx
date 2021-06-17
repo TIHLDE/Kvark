@@ -2,15 +2,9 @@ import { ReactNode } from 'react';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
-import { Theme } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import MaterialDialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import { Button, Dialog as MaterialDialog, DialogActions, DialogTitle, DialogContent, DialogContentText } from '@material-ui/core';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   contentText: {
     color: theme.palette.text.secondary,
   },

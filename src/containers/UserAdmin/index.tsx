@@ -18,12 +18,9 @@ import Paper from 'components/layout/Paper';
 import Tabs from 'components/layout/Tabs';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import PersonListItem, { PersonListItemLoading } from 'containers/UserAdmin/components/PersonListItem';
+import { PrimaryTopBox } from 'components/layout/TopBox';
 
 const useStyles = makeStyles((theme) => ({
-  top: {
-    height: 220,
-    background: theme.palette.colors.gradient.main.top,
-  },
   content: {
     margin: '-60px auto 60px',
     position: 'relative',
@@ -75,7 +72,7 @@ const UserAdmin = () => {
   }, [search]);
 
   return (
-    <Page banner={<div className={classes.top}></div>} options={{ title: 'Brukeradmin' }}>
+    <Page banner={<PrimaryTopBox />} options={{ title: 'Brukeradmin' }}>
       <Paper className={classes.content}>
         <Typography variant='h1'>Brukeradmin</Typography>
         <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
