@@ -1,9 +1,7 @@
 import { useState, lazy, Suspense } from 'react';
 
 // Material-UI
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
-import Collapse from '@material-ui/core/Collapse';
+import { Tab, Tabs, Collapse, Skeleton } from '@material-ui/core';
 
 // Project componets/services
 import { useEvents } from 'api/hooks/Event';
@@ -35,7 +33,7 @@ const EventsView = () => {
         <EventsListView events={data?.pages[0]?.results || []} isLoading={isLoading} />
       </Collapse>
       <Collapse in={tab === Views.CALENDAR} mountOnEnter>
-        <Suspense fallback={null}>
+        <Suspense fallback={<Skeleton height={695} sx={{ borderRadius: '10px' }} variant='rectangular' />}>
           <EventsCalendarView events={data?.pages[0]?.results || []} oldEvents={oldEvents?.pages[0]?.results || []} />
         </Suspense>
       </Collapse>

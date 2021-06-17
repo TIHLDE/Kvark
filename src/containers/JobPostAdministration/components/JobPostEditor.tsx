@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useState, useEffect } from 'react';
-import classnames from 'classnames';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { JobPost } from 'types/Types';
 import { useJobPostById, useCreateJobPost, useUpdateJobPost, useDeleteJobPost } from 'api/hooks/JobPost';
@@ -58,11 +57,10 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
   const showSnackbar = useSnackbar();
   const [deleteJobPostDialogOpen, setDeleteJobPostDialogOpen] = useState(false);
   const { handleSubmit, control, register, errors, getValues, reset, setValue, watch } = useForm<FormValues>();
-  const isUpdating = useMemo(() => createJobPost.isLoading || updateJobPost.isLoading || deleteJobPost.isLoading, [
-    createJobPost.isLoading,
-    updateJobPost.isLoading,
-    deleteJobPost.isLoading,
-  ]);
+  const isUpdating = useMemo(
+    () => createJobPost.isLoading || updateJobPost.isLoading || deleteJobPost.isLoading,
+    [createJobPost.isLoading, updateJobPost.isLoading, deleteJobPost.isLoading],
+  );
 
   useEffect(() => {
     !isError || goToJobPost(null);

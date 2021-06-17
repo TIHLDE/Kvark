@@ -1,12 +1,10 @@
-import { ReactNode, Suspense, lazy } from 'react';
-import parser from 'html-react-parser';
+import { ReactNode } from 'react';
 import classNames from 'classnames';
+import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
 import { Theme, Typography, Button, ButtonProps } from '@material-ui/core';
-
-const MuiLinkify = lazy(() => import('material-ui-linkify'));
 
 const useStyles = makeStyles<Theme, Pick<BannerProps, 'background'>>((theme) => ({
   banner: {
@@ -48,14 +46,19 @@ const useStyles = makeStyles<Theme, Pick<BannerProps, 'background'>>((theme) => 
     },
   },
   text: {
-    color: ({ background }) => theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
+    '& p,a': {
+      color: ({ background }) => theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
+      fontSize: 18,
+      [theme.breakpoints.down('lg')]: {
+        fontSize: 16,
+      },
+    },
     paddingTop: theme.spacing(2),
     maxWidth: 600,
     width: '50vw',
-    fontSize: 18,
     [theme.breakpoints.down('lg')]: {
       fontSize: 16,
-      padding: theme.spacing(2),
+      padding: theme.spacing(2, 2, 0),
       width: '100%',
     },
   },
@@ -130,13 +133,9 @@ const Banner = ({ className, title, text, children, background }: BannerProps) =
               </Typography>
             )}
             {text && Boolean(text.trim().length) && (
-              <Suspense fallback={null}>
-                <MuiLinkify LinkProps={{ color: 'inherit', underline: 'always' }}>
-                  <Typography className={classes.text} component='p' variant='subtitle2'>
-                    {parser(text)}
-                  </Typography>
-                </MuiLinkify>
-              </Suspense>
+              <div className={classes.text}>
+                <MarkdownRenderer value={text} />
+              </div>
             )}
           </div>
           {children && <div className={classes.children}>{children}</div>}

@@ -75,5 +75,4 @@ const useSnackbar = () => {
   return context;
 };
 
-export default useSnackbar;
 export { SnackbarProvider, useSnackbar };

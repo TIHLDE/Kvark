@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
   select: {
     background: theme.palette.background.paper,
+    borderRadius: theme.shape.borderRadius,
   },
   logOutButton: {
     color: theme.palette.error.main,
@@ -74,7 +75,7 @@ const ProfileContent = () => {
   const settingsTab = { label: 'Innstillinger', icon: SettingsIcon };
   const adminTab = { label: 'Admin', icon: AdminIcon };
   const logoutTab = { label: 'Logg ut', icon: LogOutIcon, onClick: logout, className: classes.logOutButton };
-  const tabs = [eventTab, notificationsTab, badgesTab, groupsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
+  const tabs: Array<NavListItem> = [eventTab, notificationsTab, badgesTab, groupsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
   const [tab, setTab] = useState(eventTab.label);
 
   type NavListItem = {
@@ -103,7 +104,7 @@ const ProfileContent = () => {
           <TextField aria-label='Velg innhold' className={classes.select} onChange={(e) => setTab(e.target.value)} select value={tab} variant='outlined'>
             {tabs.map((tab) => (
               <MenuItem key={tab.label} value={tab.label}>
-                {tab.label}
+                {`${tab.label}${tab.badge ? ` (${tab.badge})` : ''}`}
               </MenuItem>
             ))}
           </TextField>

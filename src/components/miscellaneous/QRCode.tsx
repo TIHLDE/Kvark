@@ -1,8 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { useTheme } from '@material-ui/core';
+import { useTheme, Skeleton } from '@material-ui/core';
 import classnames from 'classnames';
-import { Skeleton } from '@material-ui/lab';
 
 const QR = lazy(() => import('qrcode.react'));
 

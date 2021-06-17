@@ -1,9 +1,8 @@
-import { TextField, ListItemText, Button } from '@material-ui/core';
-import useSnackbar from 'api/hooks/Snackbar';
+import { TextField, ListItemText, Button, Autocomplete } from '@material-ui/core';
+import { useSnackbar } from 'api/hooks/Snackbar';
 import { Controller, useForm } from 'react-hook-form';
 import { useUsers } from 'api/hooks/User';
 import { useMemo, useState } from 'react';
-import { Autocomplete } from '@material-ui/lab';
 import { getUserClass, getUserStudyShort } from 'utils';
 import { useCreateMembership } from 'api/hooks/Membership';
 import Dialog from 'components/layout/Dialog';

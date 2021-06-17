@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import useShare from 'use-share';
+import { useShare } from 'api/hooks/Utils';
 import { useShortLinks, useCreateShortLink, useDeleteShortLink } from 'api/hooks/ShortLink';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { ShortLink } from 'types/Types';
@@ -83,10 +83,13 @@ const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   const deleteShortLink = useDeleteShortLink();
   const showSnackbar = useSnackbar();
-  const { share, hasShared } = useShare({
-    title: shortLink.name,
-    url: `https://s.tihlde.org/${shortLink.name}`,
-  });
+  const { share, hasShared } = useShare(
+    {
+      title: shortLink.name,
+      url: `https://s.tihlde.org/${shortLink.name}`,
+    },
+    'Linken ble kopiert til utklippstavlen',
+  );
   const remove = () => {
     deleteShortLink.mutate(shortLink.name, {
       onSuccess: () => {

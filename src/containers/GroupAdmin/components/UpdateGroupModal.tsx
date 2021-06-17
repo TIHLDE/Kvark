@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { EMAIL_REGEX } from 'constant';
 import { useUpdateGroup } from 'api/hooks/Group';
-import useSnackbar from 'api/hooks/Snackbar';
+import { useSnackbar } from 'api/hooks/Snackbar';
 import { Group } from 'types/Types';
 
 import EditIcon from '@material-ui/icons/Edit';

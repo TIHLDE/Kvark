@@ -13,6 +13,7 @@ import Expansion from 'components/layout/Expand';
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 
 const ReactMarkdown = lazy(() => import('react-markdown'));
+const MuiLinkify = lazy(() => import('material-ui-linkify'));
 
 const useStyles = makeStyles((theme) => ({
   blockquote: {
@@ -136,22 +137,26 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
       list: ({ children, ordered }: { children: ReactNode[]; ordered: boolean }) => createElement(ordered ? 'ol' : 'ul', { className: classes.list }, children),
       listItem: ({ children, checked }: { children: ReactNode[]; checked: boolean }) =>
         createElement('li', { className: classes.listItem }, checked ? createElement('input', { type: 'checkbox', checked, readOnly: true }) : null, children),
-      paragraph: ({ children }: { children: ReactNode[] }) => createElement(Typography, { variant: 'body1', className: classes.content }, children),
+      paragraph: ({ children }: { children: ReactNode[] }) =>
+        createElement(
+          MuiLinkify,
+          { LinkProps: { color: 'inherit', underline: 'always' } },
+          createElement(Typography, { variant: 'body1', className: classes.content }, children),
+        ),
       thematicBreak: () => <Divider className={classes.divider} />,
       image: ({ alt, src }: { alt: string; src: string }) => <img alt={alt} className={classes.image} src={src} />,
     }),
     [classes],
   );
+  const skeletonWidthArray = useMemo(() => Array.from({ length: value.length / 90 + 1 }).map(() => 50 + 40 * Math.random()), [value]);
 
   return (
     <Suspense
       fallback={
         <>
-          <Skeleton height={40} width='60%' />
-          <Skeleton height={40} width='70%' />
-          <Skeleton height={40} width='40%' />
-          <Skeleton height={40} width='80%' />
-          <Skeleton height={40} width='90%' />
+          {skeletonWidthArray.map((width, index) => (
+            <Skeleton height={38} key={index} width={`${width}%`} />
+          ))}
         </>
       }>
       <ReactMarkdown renderers={renderers}>{value}</ReactMarkdown>

@@ -54,11 +54,10 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
   const createNews = useCreateNews();
   const updateNews = useUpdateNews(newsId || -1);
   const deleteNews = useDeleteNews(newsId || -1);
-  const isUpdating = useMemo(() => createNews.isLoading || updateNews.isLoading || deleteNews.isLoading, [
-    createNews.isLoading,
-    updateNews.isLoading,
-    deleteNews.isLoading,
-  ]);
+  const isUpdating = useMemo(
+    () => createNews.isLoading || updateNews.isLoading || deleteNews.isLoading,
+    [createNews.isLoading, updateNews.isLoading, deleteNews.isLoading],
+  );
 
   useEffect(() => {
     !isError || goToNews(null);

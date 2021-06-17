@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { RegisterOptions, UseFormMethods } from 'react-hook-form';
 import Cropper from 'react-easy-crop';
-import useShare from 'use-share';
+import { useShare } from 'api/hooks/Utils';
 import API from 'api/api';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
@@ -243,10 +243,13 @@ export const FileUpload = ({ label = 'Last opp filer', ...props }: FileUploadPro
   };
 
   const File = ({ url }: { url: string }) => {
-    const { share } = useShare({
-      title: 'Del fil',
-      url,
-    });
+    const { share } = useShare(
+      {
+        title: 'Del fil',
+        url,
+      },
+      'Link til filen ble kopiert til utklippstavlen',
+    );
     return (
       <Paper className={classes.file} noPadding>
         <ListItem>

@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { CompaniesEmail } from 'types/Types';
 import { useMisc } from 'api/hooks/Misc';
-import useSnackbar from 'api/hooks/Snackbar';
+import { useSnackbar } from 'api/hooks/Snackbar';
 import addMonths from 'date-fns/addMonths';
 import { EMAIL_REGEX } from 'constant';
 

@@ -8,7 +8,7 @@ import { UserList } from 'types/Types';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import StarIcon from '@material-ui/icons/Star';
 import { useDeleteMembership, useUpdateMembership } from 'api/hooks/Membership';
-import useSnackbar from 'api/hooks/Snackbar';
+import { useSnackbar } from 'api/hooks/Snackbar';
 import { MembershipType } from 'types/Enums';
 import Dialog from 'components/layout/Dialog';
 import Avatar from 'components/miscellaneous/Avatar';

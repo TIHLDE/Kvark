@@ -69,7 +69,11 @@ const Events = () => {
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 
   useEffect(() => {
-    getCategories().then(setCategories);
+    let subscribed = true;
+    getCategories().then((categories) => !subscribed || setCategories(categories));
+    return () => {
+      subscribed = false;
+    };
   }, []);
 
   const resetFilters = () => {

@@ -1,9 +1,9 @@
+import { useMemo } from 'react';
+import { useShare } from 'api/hooks/Utils';
+
 // Material UI Components
 import Button, { ButtonProps } from '@material-ui/core/Button';
 import ShareIcon from '@material-ui/icons/Share';
-
-import useShare from 'use-share';
-import { useMemo } from 'react';
 
 export type ShareProps = ButtonProps & {
   title: string;
@@ -26,10 +26,13 @@ const ShareButton = ({ shareId, title, shareType, ...props }: ShareProps) => {
   }, [shareType]);
   const shareUrl = useMemo(() => `https://s.tihlde.org/${urlType}/${shareId}${shareType === 'pages' ? '' : '/'}`, [shareId, shareType]);
 
-  const { share, hasShared } = useShare({
-    title: `${title}`,
-    url: shareUrl,
-  });
+  const { share, hasShared } = useShare(
+    {
+      title: `${title}`,
+      url: shareUrl,
+    },
+    'Linken ble kopiert til utklippstavlen',
+  );
   return (
     <Button color='primary' disabled={hasShared} endIcon={<ShareIcon />} onClick={share} variant='outlined' {...props}>
       {hasShared ? 'Delt!' : 'Del'}
