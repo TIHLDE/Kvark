@@ -14,26 +14,27 @@ import Page from 'components/navigation/Page';
 import Companies from 'containers/Companies';
 import EventDetails from 'containers/EventDetails';
 import Landing from 'containers/Landing';
+import Profile from 'containers/Profile';
+import Events from 'containers/Events';
+import JobPosts from 'containers/JobPosts';
+import JobPostDetails from 'containers/JobPostDetails';
+import NewsDetails from 'containers/NewsDetails';
+import GroupOverview from 'containers/GroupOverview';
+import News from 'containers/News';
+
 const Cheatsheet = lazy(() => import(/* webpackChunkName: "cheatsheet" */ 'containers/Cheatsheet'));
-const Events = lazy(() => import(/* webpackChunkName: "events" */ 'containers/Events'));
-const JobPosts = lazy(() => import(/* webpackChunkName: "jobposts" */ 'containers/JobPosts'));
-const JobPostDetails = lazy(() => import(/* webpackChunkName: "jobpost_details" */ 'containers/JobPostDetails'));
-const NewsDetails = lazy(() => import(/* webpackChunkName: "news_details" */ 'containers/NewsDetails'));
-const Pages = lazy(() => import(/* webpackChunkName: "pages" */ 'containers/Pages'));
-const Profile = lazy(() => import(/* webpackChunkName: "profile" */ 'containers/Profile'));
 const EventAdministration = lazy(() => import(/* webpackChunkName: "event_administration" */ 'containers/EventAdministration'));
 const EventRegistration = lazy(() => import(/* webpackChunkName: "event_registration" */ 'containers/EventRegistration'));
 const ForgotPassword = lazy(() => import(/* webpackChunkName: "forgot_password" */ 'containers/ForgotPassword'));
-const GroupOverview = lazy(() => import(/* webpackChunkName: "group_overview" */ 'containers/GroupOverview'));
+const GroupAdmin = lazy(() => import(/* webpackChunkName: "group_admin" */ 'containers/GroupAdmin'));
 const Http404 = lazy(() => import(/* webpackChunkName: "http404" */ 'containers/Http404'));
 const JobPostAdministration = lazy(() => import(/* webpackChunkName: "jobpost_administration" */ 'containers/JobPostAdministration'));
 const LogIn = lazy(() => import(/* webpackChunkName: "login" */ 'containers/LogIn'));
-const News = lazy(() => import(/* webpackChunkName: "news" */ 'containers/News'));
 const NewsAdministration = lazy(() => import(/* webpackChunkName: "news_administration" */ 'containers/NewsAdministration'));
+const Pages = lazy(() => import(/* webpackChunkName: "pages" */ 'containers/Pages'));
 const ShortLinks = lazy(() => import(/* webpackChunkName: "short_links" */ 'containers/ShortLinks'));
 const SignUp = lazy(() => import(/* webpackChunkName: "signup" */ 'containers/SignUp'));
 const UserAdmin = lazy(() => import(/* webpackChunkName: "user_admin" */ 'containers/UserAdmin'));
-const GroupAdmin = lazy(() => import(/* webpackChunkName: "group_admin" */ 'containers/GroupAdmin'));
 
 type AuthRouteProps = {
   apps?: Array<PermissionApp>;
