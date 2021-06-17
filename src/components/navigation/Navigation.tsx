@@ -1,57 +1,38 @@
-import { ReactNode, useState, useLayoutEffect, useEffect, useMemo, useCallback } from 'react';
+import { ReactNode, useState, useLayoutEffect, useMemo, useCallback } from 'react';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
 import constate from 'constate';
-import { Warning } from 'types/Types';
 import URLS from 'URLS';
 import { WarningType } from 'types/Enums';
 import { useIsAuthenticated } from 'api/hooks/User';
-import { useMisc } from 'api/hooks/Misc';
-import { getCookie, setCookie } from 'api/cookie';
-import { WARNINGS_READ } from 'constant';
+import { useWarnings } from 'api/hooks/Warnings';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
-import { Theme, useMediaQuery } from '@material-ui/core';
+import { Theme, useMediaQuery, Snackbar as MaterialSnackbar, Alert as MaterialAlert } from '@material-ui/core';
 
 // Project Components
 import Topbar from 'components/navigation/Topbar';
 import Footer from 'components/navigation/Footer';
 import BottomBar from 'components/navigation/BottomBar';
-import Snack from 'components/navigation/Snack';
 
 const useStyles = makeStyles((theme) => ({
   main: {
     minHeight: '101vh',
-  },
-  snack: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexGrow: 1,
-    flexWrap: 'nowrap',
-    alignItems: 'center',
-    position: 'absolute',
-    top: 62,
-    maxWidth: 'none',
-    minHeight: 48,
-    width: '100vw',
-    height: 'auto',
-    padding: 0,
-    [theme.breakpoints.down('md')]: {
-      top: 56,
-    },
-  },
-  snackWarning: {
-    backgroundColor: theme.palette.error.main,
-  },
-  snackMessage: {
-    backgroundColor: theme.palette.colors.tihlde,
   },
   gutterTop: {
     paddingTop: 60,
   },
   gutterBottom: {
     paddingBottom: 80,
+  },
+  snackbar: {
+    maxWidth: `calc(100% - ${theme.spacing(2)})`,
+    width: theme.breakpoints.values.xl,
+    top: 70,
+    [theme.breakpoints.down('lg')]: {
+      position: 'absolute',
+    },
   },
 }));
 
@@ -131,33 +112,10 @@ export type NavigationItem = {
 
 const NavigationContent = ({ children }: NavigationProps) => {
   const classes = useStyles();
-  const { getWarnings } = useMisc();
+  const { data: warnings = [], closeWarning } = useWarnings();
   const isAuthenticated = useIsAuthenticated();
-  const [warning, setWarning] = useState<Warning | null>(null);
   const { title, darkColor, lightColor, filledTopbar, noFooter, gutterBottom, gutterTop } = useGetNavigationOptions();
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
-
-  useEffect(() => {
-    let subscribed = true;
-    getWarnings().then((data: Array<Warning>) => {
-      const warningsRead = getCookie(WARNINGS_READ);
-      const readArray = (warningsRead === undefined ? [] : warningsRead) as number[];
-      if (data?.length && !readArray.includes(data[data.length - 1].id) && subscribed) {
-        setWarning(data[data.length - 1]);
-      }
-    });
-    return () => {
-      subscribed = false;
-    };
-  }, [getWarnings]);
-
-  const closeSnackbar = (warning: Warning) => {
-    const warningsRead = getCookie(WARNINGS_READ);
-    const readArray = (warningsRead === undefined ? [] : warningsRead) as number[];
-    readArray.push(warning.id);
-    setCookie(WARNINGS_READ, JSON.stringify(readArray));
-    setWarning(null);
-  };
 
   const items = useMemo<Array<NavigationItem>>(
     () => [
@@ -187,17 +145,22 @@ const NavigationContent = ({ children }: NavigationProps) => {
     [isAuthenticated],
   );
 
+  const warning = useMemo(() => (warnings.length ? warnings[warnings.length - 1] : undefined), [warnings]);
+
   return (
     <>
       <Helmet>{<title>{title}</title>}</Helmet>
       <Topbar darkColor={darkColor} filledTopbar={filledTopbar} items={items} lightColor={lightColor} />
       {warning && (
-        <Snack
-          className={classnames(classes.snack, warning.type === WarningType.MESSAGE ? classes.snackMessage : classes.snackWarning)}
-          message={warning.text}
-          onClose={() => closeSnackbar(warning)}
-          open={Boolean(warning)}
-        />
+        <MaterialSnackbar anchorOrigin={{ horizontal: 'center', vertical: 'top' }} className={classes.snackbar} key={warning.id} open>
+          <MaterialAlert
+            elevation={6}
+            onClose={() => closeWarning(warning.id)}
+            severity={warning.type === WarningType.MESSAGE ? 'info' : 'warning'}
+            variant='filled'>
+            {warning.text}
+          </MaterialAlert>
+        </MaterialSnackbar>
       )}
       <main className={classnames(classes.main, gutterTop && classes.gutterTop, gutterBottom && classes.gutterBottom)}>{children}</main>
       {!noFooter && <Footer />}

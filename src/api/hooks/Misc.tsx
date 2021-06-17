@@ -1,13 +1,8 @@
 import { createContext, ReactNode, useContext, useReducer, useCallback } from 'react';
-import API from 'api/api';
-import { Category, Warning, CompaniesEmail } from 'types/Types';
 
-export type Action =
-  | { type: 'set redirect-url'; payload: string | null }
-  | { type: 'set warnings'; payload: Array<Warning> }
-  | { type: 'set categories'; payload: Array<Category> };
+export type Action = { type: 'set redirect-url'; payload: string | null };
 export type Dispatch = (action: Action) => void;
-export type State = { categories: Array<Category> | null; warnings: Array<Warning> | null; redirectUrl: string | null };
+export type State = { redirectUrl: string | null };
 export type MiscProviderProps = { children: ReactNode };
 
 const MiscStateContext = createContext<State | undefined>(undefined);
@@ -18,17 +13,11 @@ const miscReducer = (state: State, action: Action): State => {
     case 'set redirect-url': {
       return { ...state, redirectUrl: action.payload };
     }
-    case 'set warnings': {
-      return { ...state, warnings: action.payload };
-    }
-    case 'set categories': {
-      return { ...state, categories: action.payload };
-    }
   }
 };
 
 export const MiscProvider = ({ children }: MiscProviderProps) => {
-  const [state, dispatch] = useReducer(miscReducer, { warnings: null, redirectUrl: null, categories: null });
+  const [state, dispatch] = useReducer(miscReducer, { redirectUrl: null });
   return (
     <MiscStateContext.Provider value={state}>
       <MiscDispatchContext.Provider value={dispatch}>{children}</MiscDispatchContext.Provider>
@@ -56,19 +45,6 @@ export const useMisc = () => {
   const misc = useMiscState();
   const dispatch = useMiscDispatch();
 
-  const getWarnings = useCallback(async () => {
-    if (misc.warnings) {
-      return Promise.resolve(misc.warnings);
-    } else {
-      return API.getWarning().then((data) => {
-        dispatch({ type: 'set warnings', payload: data });
-        return data;
-      });
-    }
-  }, [dispatch, misc.warnings]);
-
-  const postEmail = useCallback((data: CompaniesEmail) => API.emailForm(data), []);
-
   const setLogInRedirectURL = useCallback(
     (redirectUrl) => {
       dispatch({ type: 'set redirect-url', payload: redirectUrl });
@@ -80,16 +56,5 @@ export const useMisc = () => {
     return misc.redirectUrl;
   }, [misc.redirectUrl]);
 
-  const getCategories = useCallback(async () => {
-    if (misc.categories) {
-      return Promise.resolve(misc.categories);
-    } else {
-      return API.getCategories().then((data) => {
-        dispatch({ type: 'set categories', payload: data });
-        return data;
-      });
-    }
-  }, [dispatch, misc.categories]);
-
-  return { getWarnings, postEmail, setLogInRedirectURL, getLogInRedirectURL, getCategories };
+  return { setLogInRedirectURL, getLogInRedirectURL };
 };

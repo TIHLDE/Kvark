@@ -45,7 +45,7 @@ const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
       return;
     }
     updateUser.mutate(
-      { userId: user.user_id, user: data },
+      { userId: user.user_id, user: { ...user, ...data } },
       {
         onSuccess: () => {
           showSnackbar('Bruker oppdatert', 'success');

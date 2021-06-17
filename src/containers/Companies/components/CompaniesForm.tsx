@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { CompaniesEmail } from 'types/Types';
-import { useMisc } from 'api/hooks/Misc';
+import API from 'api/api';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import addMonths from 'date-fns/addMonths';
 import { EMAIL_REGEX } from 'constant';
@@ -40,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
 const CompaniesForm = () => {
   const classes = useStyles();
   const showSnackbar = useSnackbar();
-  const { postEmail } = useMisc();
   const [isLoading, setIsLoading] = useState(false);
   const { register, handleSubmit, errors, reset, setError } = useForm<CompaniesEmail>();
 
@@ -50,7 +49,7 @@ const CompaniesForm = () => {
     }
     setIsLoading(true);
     try {
-      const response = await postEmail(data);
+      const response = await API.emailForm(data);
       showSnackbar(response.detail, 'success');
       reset({ info: { bedrift: '', kontaktperson: '', epost: '' }, comment: '' } as CompaniesEmail);
     } catch (e) {

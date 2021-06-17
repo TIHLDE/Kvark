@@ -1,8 +1,8 @@
 import { useCallback, useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Category, Event, RegistrationPriority } from 'types/Types';
+import { Event, RegistrationPriority } from 'types/Types';
 import { useEventById, useCreateEvent, useUpdateEvent, useDeleteEvent } from 'api/hooks/Event';
-import { useMisc } from 'api/hooks/Misc';
+import { useCategories } from 'api/hooks/Categories';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { addHours, subDays, parseISO } from 'date-fns';
 import { dateAsUTC } from 'utils';
@@ -115,8 +115,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const [regPriorities, setRegPriorities] = useState<Array<RegistrationPriority>>([]);
   const { handleSubmit, register, watch, control, errors, getValues, setError, reset, setValue } = useForm<FormValues>();
   const watchSignUp = watch('sign_up');
-  const { getCategories } = useMisc();
-  const [categories, setCategories] = useState<Array<Category>>([]);
+  const { data: categories = [] } = useCategories();
 
   useEffect(() => {
     !isError || goToEvent(null);
@@ -162,10 +161,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       waiting_list_count: 0,
     } as Event;
   };
-
-  useEffect(() => {
-    getCategories().then(setCategories);
-  }, [getCategories]);
 
   const remove = async () => {
     deleteEvent.mutate(null, {

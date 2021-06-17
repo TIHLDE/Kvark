@@ -1,8 +1,7 @@
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useEvents } from 'api/hooks/Event';
-import { useMisc } from 'api/hooks/Misc';
-import { Category } from 'types/Types';
+import { useCategories } from 'api/hooks/Categories';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
@@ -61,20 +60,11 @@ type Filters = {
 
 const Events = () => {
   const classes = useStyles();
-  const { getCategories } = useMisc();
-  const [categories, setCategories] = useState<Array<Category>>([]);
+  const { data: categories = [] } = useCategories();
   const [filters, setFilters] = useState<Filters>({ expired: false });
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents(filters);
   const { register, control, handleSubmit, setValue } = useForm<Filters>();
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
-
-  useEffect(() => {
-    let subscribed = true;
-    getCategories().then((categories) => !subscribed || setCategories(categories));
-    return () => {
-      subscribed = false;
-    };
-  }, []);
 
   const resetFilters = () => {
     setValue('category', '');
