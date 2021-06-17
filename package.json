@@ -42,6 +42,7 @@
     "test": "react-scripts test --env=jsdom --passWithNoTests",
     "eject": "react-scripts eject",
     "lint": "eslint --no-fix src --ext .js,.ts,.tsx",
+    "lint-staged": "eslint --cache --fix src --ext .js,.ts,.tsx",
     "format": "eslint --fix src --ext .js,.ts,.tsx",
     "prepare": "husky install"
   },
