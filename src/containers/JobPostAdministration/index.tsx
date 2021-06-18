@@ -1,16 +1,20 @@
+import { useState } from 'react';
 import URLS from 'URLS';
-import { useNavigate, useParams } from 'react-router-dom';
-
-// API and store imports
+import { useNavigate, useParams, Navigate } from 'react-router-dom';
 import { useJobPosts } from 'api/hooks/JobPost';
 
 // Material-UI
 import { makeStyles } from '@material-ui/styles';
-import { Typography } from '@material-ui/core';
+import { Typography, Collapse } from '@material-ui/core';
+
+// Icons
+import EditIcon from '@material-ui/icons/EditRounded';
+import OpenIcon from '@material-ui/icons/OpenInBrowserRounded';
 
 // Project components
 import Paper from 'components/layout/Paper';
 import Page from 'components/navigation/Page';
+import Tabs from 'components/layout/Tabs';
 import SidebarList from 'components/layout/SidebarList';
 import JobPostEditor from 'containers/JobPostAdministration/components/JobPostEditor';
 
@@ -38,11 +42,16 @@ const JobPostAdministration = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { jobPostId } = useParams();
+  const editTab = { value: 'edit', label: jobPostId ? 'Endre' : 'Skriv', icon: EditIcon };
+  const navigateTab = { value: 'navigate', label: 'Se annonse', icon: OpenIcon };
+  const tabs = jobPostId ? [editTab, navigateTab] : [editTab];
+  const [tab, setTab] = useState(editTab.value);
 
   const goToJobPost = (newJobPost: number | null) => {
     if (newJobPost) {
       navigate(`${URLS.jobpostsAdmin}${newJobPost}/`);
     } else {
+      setTab(editTab.value);
       navigate(URLS.jobpostsAdmin);
     }
   };
@@ -65,8 +74,12 @@ const JobPostAdministration = () => {
           <Typography className={classes.header} variant='h2'>
             {jobPostId ? 'Endre annonse' : 'Ny annonse'}
           </Typography>
+          <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
           <Paper>
-            <JobPostEditor goToJobPost={goToJobPost} jobpostId={Number(jobPostId)} />
+            <Collapse in={tab === editTab.value} mountOnEnter>
+              <JobPostEditor goToJobPost={goToJobPost} jobpostId={Number(jobPostId)} />
+            </Collapse>
+            {tab === navigateTab.value && <Navigate to={`${URLS.jobposts}${jobPostId}/`} />}
           </Paper>
         </div>
       </div>

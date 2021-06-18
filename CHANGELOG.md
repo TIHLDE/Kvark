@@ -17,6 +17,7 @@
 - ✨ **Material-UI**. Oppdatert Material-UI til v5 som inneholder nye komponenter, ikoner, utseende og annen forbedret funksjonalitet. Her er det også gjort en stor jobb ved å oppdatere breaking changes som også gjør det enklere å oppdatere til v6 når det blir aktuelt.
 - ✨ **Banner**. Tekst i banner leser nå markdown og det er dermed mulig å bruke markdown i gruppe-admins beskrivelse.
 - ✨ **Deling**. Hvis brukers enhet ikke støtter Web Share API, vises det nå en snackbar som sier at link er kopiert til utklippstavle ved klikk.
+- ✨ **Admin**. Det er nå mulig å gå direkte fra arrangement-/nyhet-/karriereadmin-sidene til det respektive innholdet ved hjelp av en ny knapp.
 - ✨ **Github**. Lagt til link til oppretting av nytt issue på Github i Index sin side i pages.
 - ✨ **Varsler**. Antall uleste varsler i profilen vises nå på mobil.
 - ⚡ **Dependencies**. Oppdatert en drøss av avhengigheter til nyeste versjon.

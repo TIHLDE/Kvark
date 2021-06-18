@@ -76,7 +76,7 @@ const AppRoutes = () => {
     <Routes>
       <Route element={<Landing />} path='/' />
       <Route path={URLS.events}>
-        <AuthRoute apps={[PermissionApp.EVENT]} element={<EventRegistration />} path=':id/registrering/' />
+        <AuthRoute apps={[PermissionApp.EVENT]} element={<EventRegistration />} path={`:id/${URLS.eventRegister}`} />
         <Route element={<EventDetails />} path=':id/*' />
         <Route element={<Events />} path='' />
       </Route>

@@ -1,14 +1,20 @@
+import { useState } from 'react';
 import URLS from 'URLS';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Navigate } from 'react-router-dom';
 import { useNews } from 'api/hooks/News';
 
 // Material-UI
 import { makeStyles } from '@material-ui/styles';
-import Typography from '@material-ui/core/Typography';
+import { Typography, Collapse } from '@material-ui/core';
+
+// Icons
+import EditIcon from '@material-ui/icons/EditRounded';
+import OpenIcon from '@material-ui/icons/OpenInBrowserRounded';
 
 // Project components
 import Paper from 'components/layout/Paper';
 import Page from 'components/navigation/Page';
+import Tabs from 'components/layout/Tabs';
 import SidebarList from 'components/layout/SidebarList';
 import NewsEditor from 'containers/NewsAdministration/components/NewsEditor';
 
@@ -36,11 +42,16 @@ const NewsAdministration = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { newsId } = useParams();
+  const editTab = { value: 'edit', label: newsId ? 'Endre' : 'Skriv', icon: EditIcon };
+  const navigateTab = { value: 'navigate', label: 'Se nyhet', icon: OpenIcon };
+  const tabs = newsId ? [editTab, navigateTab] : [editTab];
+  const [tab, setTab] = useState(editTab.value);
 
   const goToNews = (newNews: number | null) => {
     if (newNews) {
       navigate(`${URLS.newsAdmin}${newNews}/`);
     } else {
+      setTab(editTab.value);
       navigate(URLS.newsAdmin);
     }
   };
@@ -62,8 +73,12 @@ const NewsAdministration = () => {
           <Typography className={classes.header} variant='h2'>
             {newsId ? 'Endre nyhet' : 'Ny nyhet'}
           </Typography>
+          <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
           <Paper>
-            <NewsEditor goToNews={goToNews} newsId={Number(newsId)} />
+            <Collapse in={tab === editTab.value} mountOnEnter>
+              <NewsEditor goToNews={goToNews} newsId={Number(newsId)} />
+            </Collapse>
+            {tab === navigateTab.value && <Navigate to={`${URLS.news}${newsId}/`} />}
           </Paper>
         </div>
       </div>

@@ -13,6 +13,7 @@ import { Typography, Collapse } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/EditRounded';
 import ParticipantsIcon from '@material-ui/icons/PeopleRounded';
 import RegisterIcon from '@material-ui/icons/PlaylistAddCheckRounded';
+import OpenIcon from '@material-ui/icons/OpenInBrowserRounded';
 
 // Project components
 import Paper from 'components/layout/Paper';
@@ -48,13 +49,15 @@ const EventAdministration = () => {
   const editTab = { value: 'edit', label: eventId ? 'Endre' : 'Skriv', icon: EditIcon };
   const participantsTab = { value: 'participants', label: 'Deltagere', icon: ParticipantsIcon };
   const registerTab = { value: 'register', label: 'Registrering', icon: RegisterIcon };
-  const tabs = [editTab, participantsTab, registerTab];
+  const navigateTab = { value: 'navigate', label: 'Se arrangement', icon: OpenIcon };
+  const tabs = eventId ? [editTab, participantsTab, registerTab, navigateTab] : [editTab];
   const [tab, setTab] = useState(editTab.value);
 
   const goToEvent = (newEvent: number | null) => {
     if (newEvent) {
       navigate(`${URLS.eventAdmin}${newEvent}/`);
     } else {
+      setTab(editTab.value);
       navigate(URLS.eventAdmin);
     }
   };
@@ -86,9 +89,8 @@ const EventAdministration = () => {
             <Collapse in={tab === participantsTab.value} mountOnEnter>
               <EventParticipants eventId={Number(eventId)} />
             </Collapse>
-            <Collapse in={tab === registerTab.value} mountOnEnter>
-              <Navigate to={`${URLS.events}${eventId}/registrering/`} />
-            </Collapse>
+            {tab === registerTab.value && <Navigate to={`${URLS.events}${eventId}/${URLS.eventRegister}`} />}
+            {tab === navigateTab.value && <Navigate to={`${URLS.events}${eventId}/`} />}
           </Paper>
         </div>
       </div>
