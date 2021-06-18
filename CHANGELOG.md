@@ -27,6 +27,7 @@
 - ⚡ **Ytelse**. Slettet 26 ubrukte filer slik at siden blir raskere.
 - 🎨 **Utseende**. Fargene på siden har blitt justert for å øke synlighet og kontraster. Hjørner og diverse annet design er også blitt forbedret.
 - 🎨 **Navigering**. Meny på mobil er flyttet til bunnen av skjermen slik at den blir enklere å bruke med en hånd, samt at man kan navigere mellom sidene raskere.
+- 🎨 **Dato-velger**. Ny dato-velger som skal være enklere å bruke, samt at den også støttes i Safari.
 - 🎨 **Switch**. Oppdatert utssende på switches som brukes på siden.
 - 🎨 **QR-kode**. Endret utseende på QR-koder for å gjøre skanning raskere.
 - 🎨 **Scrollbar**. Scrollbar har et nytt eget utseende i mørkt tema.
