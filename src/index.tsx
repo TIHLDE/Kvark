@@ -2,8 +2,9 @@
 import { ReactNode, Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import 'assets/css/index.css';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { StyledEngineProvider } from '@material-ui/core/styles';
+import { CssBaseline, StyledEngineProvider } from '@material-ui/core';
+import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
+import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -36,13 +37,15 @@ export const Providers = ({ children }: ProvidersProps) => {
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider>
-        <CssBaseline />
-        <QueryClientProvider client={queryClient}>
-          <MiscProvider>
-            <SnackbarProvider>{children}</SnackbarProvider>
-          </MiscProvider>
-          <ReactQueryDevtools />
-        </QueryClientProvider>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <CssBaseline />
+          <QueryClientProvider client={queryClient}>
+            <MiscProvider>
+              <SnackbarProvider>{children}</SnackbarProvider>
+            </MiscProvider>
+            <ReactQueryDevtools />
+          </QueryClientProvider>
+        </LocalizationProvider>
       </ThemeProvider>
     </StyledEngineProvider>
   );
@@ -79,7 +82,13 @@ console.log(
   'background-color: #121212;font-family: "Monaco", monospace;padding: 2px; color: white;',
   '',
 );
-const rickroll = () => (window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+const rickroll = () => {
+  window.gtag('event', 'rickrolled', {
+    event_category: 'easter-egg',
+    event_label: 'Write badge() in the console',
+  });
+  window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).badge = rickroll;

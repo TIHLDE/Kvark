@@ -6,10 +6,12 @@ export type PaperProps = MuiPaperProps & {
   noOverflow?: boolean;
 };
 
-const Paper = styled(MuiPaper)<PaperProps>(({ theme, noBorder, noPadding, noOverflow }) => ({
-  ...(!noPadding && { padding: theme.spacing(3) }),
-  ...(!noBorder && { border: `${theme.palette.borderWidth} solid ${theme.palette.divider}` }),
-  ...(noOverflow && { overflow: 'hidden' }),
-}));
+const Paper = styled(MuiPaper, { shouldForwardProp: (prop) => prop !== 'noBorder' && prop !== 'noPadding' && prop !== 'noOverflow' })<PaperProps>(
+  ({ theme, noBorder, noPadding, noOverflow }) => ({
+    ...(!noPadding && { padding: theme.spacing(3) }),
+    ...(!noBorder && { border: `${theme.palette.borderWidth} solid ${theme.palette.divider}` }),
+    ...(noOverflow && { overflow: 'hidden' }),
+  }),
+);
 
 export default Paper;

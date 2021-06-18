@@ -87,9 +87,9 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
   const getNewsPreview = () => {
     return {
       ...getValues(),
-      created_at: new Date().toISOString().substring(0, 16),
+      created_at: new Date().toJSON(),
       id: 1,
-      updated_at: new Date().toISOString().substring(0, 16),
+      updated_at: new Date().toJSON(),
     };
   };
   const remove = async () => {

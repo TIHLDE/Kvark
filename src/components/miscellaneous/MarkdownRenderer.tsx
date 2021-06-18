@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export type MarkdownRendererProps = {
-  value: string;
+  value?: string;
 };
 
 const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
@@ -148,7 +148,7 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
     }),
     [classes],
   );
-  const skeletonWidthArray = useMemo(() => Array.from({ length: value.length / 90 + 1 }).map(() => 50 + 40 * Math.random()), [value]);
+  const skeletonWidthArray = useMemo(() => Array.from({ length: (value?.length || 100) / 90 + 1 }).map(() => 50 + 40 * Math.random()), [value]);
 
   return (
     <Suspense
@@ -159,7 +159,7 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
           ))}
         </>
       }>
-      <ReactMarkdown renderers={renderers}>{value}</ReactMarkdown>
+      <ReactMarkdown renderers={renderers}>{value || ''}</ReactMarkdown>
     </Suspense>
   );
 };

@@ -70,7 +70,7 @@ const useNavigationContext = () => {
         gutterBottom: options?.gutterBottom || DEFAULT_OPTIONS.gutterBottom,
         gutterTop: options?.gutterTop || DEFAULT_OPTIONS.gutterTop,
         noFooter: options?.noFooter || DEFAULT_OPTIONS.noFooter,
-        title: `${options?.title} · TIHLDE` || DEFAULT_OPTIONS.title,
+        title: options?.title ? `${options?.title} · TIHLDE` : DEFAULT_OPTIONS.title,
       }),
     [],
   );
