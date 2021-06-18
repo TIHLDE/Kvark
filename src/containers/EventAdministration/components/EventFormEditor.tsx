@@ -44,7 +44,7 @@ const EventFormEditor = ({ eventId, formId }: EventFormEditorProps) => {
 
   if (data === undefined || !formId) {
     return (
-      <Button color='primary' fullWidth onClick={onCreate} variant='outlined'>
+      <Button fullWidth onClick={onCreate} variant='outlined'>
         Opprett skjema
       </Button>
     );

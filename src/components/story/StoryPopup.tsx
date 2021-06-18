@@ -85,7 +85,6 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       borderColor: '#ffffffaa',
     },
-    height: 50,
   },
   topText: {
     margin: 'auto 0',
@@ -189,7 +188,7 @@ function StoryPopup({ items, open, onClose, selectedItem = 0 }: StoryPopupProps)
             <Typography className={classnames(classes.description, classes.white)} variant='subtitle1'>
               {item.description}
             </Typography>
-            <Button className={classes.linkButton} color='primary' component={Link} endIcon={<OpenIcon />} fullWidth to={item.link} variant='outlined'>
+            <Button className={classes.linkButton} component={Link} endIcon={<OpenIcon />} fullWidth to={item.link} variant='outlined'>
               Mer
             </Button>
           </div>

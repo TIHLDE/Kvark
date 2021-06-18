@@ -105,7 +105,7 @@ export type BannerButtonProps = ButtonProps & Pick<BannerProps, 'background'>;
 export const BannerButton = ({ background, children, className, ...props }: BannerButtonProps) => {
   const classes = useStyles({ background });
   return (
-    <Button className={classNames(classes.bannerButton, className)} color='primary' fullWidth variant='outlined' {...props}>
+    <Button className={classNames(classes.bannerButton, className)} fullWidth variant='outlined' {...props}>
       {children}
     </Button>
   );

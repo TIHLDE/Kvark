@@ -108,10 +108,10 @@ const FormEditor = ({ form }: FormEditorProps) => {
             updateField={(newField: TextFormField | SelectFormField) => updateField(newField, index)}
           />
         ))}
-        <Button color='primary' fullWidth onClick={() => setAddButtonOpen(true)} ref={anchorRef} variant='outlined'>
+        <Button fullWidth onClick={() => setAddButtonOpen(true)} ref={anchorRef} variant='outlined'>
           Nytt spørsmål
         </Button>
-        <Button color='primary' fullWidth onClick={save} variant='contained'>
+        <Button fullWidth onClick={save} variant='contained'>
           Lagre
         </Button>
         <Button color='error' fullWidth onClick={() => setDeleteDialogOpen(true)} variant='outlined'>

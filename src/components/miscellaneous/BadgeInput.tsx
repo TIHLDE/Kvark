@@ -28,7 +28,7 @@ function BadgeInput() {
         />
       </Grid>
       <Grid item>
-        <Button color='primary' onClick={submit} variant='contained'>
+        <Button onClick={submit} variant='contained'>
           Send inn
         </Button>
       </Grid>

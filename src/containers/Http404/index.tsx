@@ -47,10 +47,10 @@ const Http404 = () => {
         Kunne ikke finne siden
       </Typography>
       <div className={classes.buttons}>
-        <Button color='primary' component={Link} to={URLS.landing} variant='contained'>
+        <Button component={Link} to={URLS.landing} variant='contained'>
           Til forsiden
         </Button>
-        <Button color='primary' component={Link} to={URLS.aboutIndex} variant='outlined'>
+        <Button component={Link} to={URLS.aboutIndex} variant='outlined'>
           Rapporter til Index
         </Button>
       </div>

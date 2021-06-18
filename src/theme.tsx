@@ -142,11 +142,22 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       },
       MuiButton: {
         styleOverrides: {
+          root: {
+            height: 45,
+          },
           contained: {
             boxShadow: 'none',
+            fontWeight: get<'bold' | undefined>({ light: undefined, dark: 'bold' }),
             '&:hover': {
               boxShadow: 'none',
             },
+          },
+        },
+      },
+      MuiDialog: {
+        styleOverrides: {
+          paper: {
+            backgroundImage: 'none',
           },
         },
       },

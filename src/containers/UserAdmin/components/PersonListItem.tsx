@@ -80,7 +80,7 @@ const PersonListItem = ({ user, is_TIHLDE_member = true }: PersonListItemProps) 
           {is_TIHLDE_member ? (
             <ProfileSettings isAdmin user={user} />
           ) : (
-            <Button color='primary' fullWidth onClick={() => changeStatus()} variant='outlined'>
+            <Button fullWidth onClick={() => changeStatus()} variant='outlined'>
               Legg til medlem
             </Button>
           )}

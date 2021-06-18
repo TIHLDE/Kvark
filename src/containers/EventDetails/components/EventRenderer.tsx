@@ -83,10 +83,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '2.4rem',
     wordWrap: 'break-word',
   },
-  applyButton: {
-    height: 50,
-    fontWeight: 'bold',
-  },
   skeleton: {
     maxWidth: '100%',
     borderRadius: theme.shape.borderRadius,
@@ -146,14 +142,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     } else if (!user) {
       if (isFuture(endRegistrationDate)) {
         return (
-          <Button
-            className={classes.applyButton}
-            color='primary'
-            component={Link}
-            fullWidth
-            onClick={() => setLogInRedirectURL(window.location.pathname)}
-            to={URLS.login}
-            variant='contained'>
+          <Button component={Link} fullWidth onClick={() => setLogInRedirectURL(window.location.pathname)} to={URLS.login} variant='contained'>
             Logg inn for å melde deg på
           </Button>
         );
@@ -176,7 +165,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             </Paper>
           )}
           {(isFuture(signOffDeadlineDate) || registration.is_on_wait) && isFuture(startDate) ? (
-            <Button className={classes.applyButton} fullWidth onClick={() => setSignOffDialogOpen(true)} variant='outlined'>
+            <Button fullWidth onClick={() => setSignOffDialogOpen(true)} variant='outlined'>
               Meld deg av
             </Button>
           ) : (
@@ -190,7 +179,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       );
     } else if (isFuture(startRegistrationDate)) {
       return (
-        <Button className={classes.applyButton} color='primary' disabled fullWidth variant='contained'>
+        <Button disabled fullWidth variant='contained'>
           Påmelding har ikke startet
         </Button>
       );
@@ -198,13 +187,13 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       return null;
     } else if (view === Views.Apply) {
       return (
-        <Button className={classes.applyButton} color='primary' fullWidth onClick={() => setView(Views.Info)} variant='outlined'>
+        <Button fullWidth onClick={() => setView(Views.Info)} variant='outlined'>
           Se beskrivelse
         </Button>
       );
     } else {
       return (
-        <Button className={classes.applyButton} color='primary' fullWidth onClick={() => setView(Views.Apply)} variant='contained'>
+        <Button fullWidth onClick={() => setView(Views.Apply)} variant='contained'>
           Meld deg på
         </Button>
       );
@@ -267,7 +256,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         <div className={classes.infoGrid}>
           {!lgDown && <Info />}
           <ShareButton color='inherit' shareId={data.id} shareType='event' title={data.title} />
-          <Button color='primary' component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} variant='outlined'>
+          <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} variant='outlined'>
             Legg til i kalender
           </Button>
           {!preview && (

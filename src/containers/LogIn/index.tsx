@@ -108,10 +108,10 @@ const LogIn = () => {
             Logg inn
           </SubmitButton>
           <div className={classes.buttons}>
-            <Button className={classes.button} color='primary' component={Link} disabled={logIn.isLoading} fullWidth to={URLS.forgotPassword}>
+            <Button className={classes.button} component={Link} disabled={logIn.isLoading} fullWidth to={URLS.forgotPassword}>
               Glemt passord?
             </Button>
-            <Button className={classes.button} color='primary' component={Link} disabled={logIn.isLoading} fullWidth to={URLS.signup}>
+            <Button className={classes.button} component={Link} disabled={logIn.isLoading} fullWidth to={URLS.signup}>
               Opprett bruker
             </Button>
           </div>

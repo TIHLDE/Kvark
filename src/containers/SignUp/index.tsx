@@ -220,12 +220,11 @@ const SignUp = () => {
           <SubmitButton className={classes.button} disabled={createUser.isLoading} errors={errors}>
             Opprett bruker
           </SubmitButton>
-          <Button className={classes.button} color='primary' component={Link} disabled={createUser.isLoading} fullWidth to={URLS.login}>
+          <Button className={classes.button} component={Link} disabled={createUser.isLoading} fullWidth to={URLS.login}>
             Logg inn
           </Button>
           <Button
             className={classes.button}
-            color='primary'
             endIcon={faqOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             fullWidth
             onClick={() => setFaqOpen((oldState) => !oldState)}

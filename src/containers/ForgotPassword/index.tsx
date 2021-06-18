@@ -91,7 +91,7 @@ const ForgotPassword = () => {
           <SubmitButton className={classes.button} disabled={forgotPassword.isLoading} errors={errors}>
             Få nytt passord
           </SubmitButton>
-          <Button className={classes.button} color='primary' component={Link} disabled={forgotPassword.isLoading} fullWidth to={URLS.login}>
+          <Button className={classes.button} component={Link} disabled={forgotPassword.isLoading} fullWidth to={URLS.login}>
             Logg inn
           </Button>
         </form>

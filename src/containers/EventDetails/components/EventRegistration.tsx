@@ -40,8 +40,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'row',
   },
   button: {
-    height: 50,
-    fontWeight: 'bold',
     marginTop: theme.spacing(2),
   },
 }));
@@ -145,7 +143,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
           <a href={URLS.eventRules} rel='noopener noreferrer' target='_blank'>
             <Typography variant='caption'>Les arrangementsreglene her (åpnes i ny fane)</Typography>
           </a>
-          <Button className={classes.button} color='primary' disabled={isLoading || isFormLoading || !agreeRules} fullWidth type='submit' variant='contained'>
+          <Button className={classes.button} disabled={isLoading || isFormLoading || !agreeRules} fullWidth type='submit' variant='contained'>
             Meld deg på
           </Button>
         </form>

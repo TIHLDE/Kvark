@@ -58,9 +58,6 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '100%',
     borderRadius: theme.shape.borderRadius,
   },
-  button: {
-    height: 50,
-  },
   shareButton: {
     width: 'fit-content',
     marginRight: theme.spacing(1),
@@ -101,7 +98,7 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
         <AspectRatioImg alt={data.image_alt || data.title} imgClassName={classes.image} src={data.image} />
         {!preview && (
           <HavePermission apps={[PermissionApp.NEWS]}>
-            <Button className={classes.button} color='primary' component={Link} fullWidth to={`${URLS.newsAdmin}${data.id}/`} variant='outlined'>
+            <Button component={Link} fullWidth to={`${URLS.newsAdmin}${data.id}/`} variant='outlined'>
               Endre nyhet
             </Button>
           </HavePermission>

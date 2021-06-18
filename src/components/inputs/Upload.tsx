@@ -42,9 +42,6 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '100%',
     borderRadius: theme.shape.borderRadius,
   },
-  button: {
-    height: 50,
-  },
   cropper: {
     position: 'relative',
     width: '100%',
@@ -144,7 +141,7 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
           <input hidden name={name} ref={register && register(rules)} />
           <input accept='image/*' hidden id='image-upload-button' onChange={onSelect} type='file' />
           <label htmlFor='image-upload-button'>
-            <Button className={classes.button} color='primary' component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
+            <Button component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
               {label}
             </Button>
           </label>
@@ -205,7 +202,7 @@ export const FormFileUpload = ({ register, watch, setValue, name, errors = {}, r
         <input hidden name={name} ref={register && register(rules)} />
         <input hidden id='file-upload-button' onChange={upload} type='file' />
         <label htmlFor='file-upload-button'>
-          <Button className={classes.button} color='primary' component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
+          <Button component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
             {label}
           </Button>
         </label>
@@ -281,7 +278,7 @@ export const FileUpload = ({ label = 'Last opp filer', ...props }: FileUploadPro
       <div>
         <input hidden id='files-upload-button' multiple onChange={upload} type='file' />
         <label htmlFor='files-upload-button'>
-          <Button className={classes.button} color='primary' component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
+          <Button component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
             {label}
           </Button>
         </label>

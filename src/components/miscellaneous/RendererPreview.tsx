@@ -46,7 +46,7 @@ const RendererPreview = <Type,>({ className, getContent, renderer: Renderer }: R
 
   return (
     <>
-      <Button className={className || ''} color='primary' onClick={handleClickOpen} variant='outlined'>
+      <Button className={className || ''} onClick={handleClickOpen} variant='outlined'>
         Forhåndsvis
       </Button>
       {isOpen && content && (

@@ -3,21 +3,22 @@ import { useThemeSettings } from 'context/ThemeContext';
 import { ThemeTypes, themesDetails } from 'theme';
 
 // Material-ui
-import { makeStyles } from '@material-ui/styles';
-import { ToggleButton, ToggleButtonGroup, Typography } from '@material-ui/core';
+import { ToggleButton, ToggleButtonGroup, Typography, styled } from '@material-ui/core';
 
 // Project components
 import Dialog from 'components/layout/Dialog';
 
-const useStyles = makeStyles((theme) => ({
-  group: {
-    background: theme.palette.background.smoke,
-    width: '100%',
+const ThemeDialog = styled(Dialog)({
+  '& .MuiPaper-root': {
+    maxWidth: '250px',
   },
-  groupButton: {
-    margin: theme.spacing(0, 1),
-    color: theme.palette.text.secondary,
-  },
+});
+const ButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+  background: theme.palette.background.smoke,
+}));
+const ButtonText = styled(Typography)(({ theme }) => ({
+  margin: theme.spacing(0, 1),
+  color: theme.palette.text.secondary,
 }));
 
 export type ThemeSettingsProps = {
@@ -28,7 +29,6 @@ export type ThemeSettingsProps = {
 const ThemeSettings = ({ open, onClose }: ThemeSettingsProps) => {
   const themeSettings = useThemeSettings();
   const [themeName, setThemeName] = useState(themeSettings.getThemeFromStorage());
-  const classes = useStyles();
 
   const changeTheme = (e: ReactMouseEvent<HTMLElement, MouseEvent>, newThemeName: ThemeTypes) => {
     if (newThemeName) {
@@ -42,21 +42,19 @@ const ThemeSettings = ({ open, onClose }: ThemeSettingsProps) => {
   };
 
   return (
-    <Dialog maxWidth='sm' onClose={onClose} open={open}>
+    <ThemeDialog maxWidth={false} onClose={onClose} open={open}>
       <Typography align='center' gutterBottom variant='h2'>
         Tema
       </Typography>
-      <ToggleButtonGroup aria-label='Tema' className={classes.group} exclusive onChange={changeTheme} orientation='vertical' value={themeName}>
+      <ButtonGroup aria-label='Tema' exclusive fullWidth onChange={changeTheme} orientation='vertical' value={themeName}>
         {themesDetails.map((theme) => (
           <ToggleButton aria-label={theme.name} key={theme.key} value={theme.key}>
             <theme.icon />
-            <Typography className={classes.groupButton} variant='subtitle2'>
-              {theme.name}
-            </Typography>
+            <ButtonText variant='subtitle2'>{theme.name}</ButtonText>
           </ToggleButton>
         ))}
-      </ToggleButtonGroup>
-    </Dialog>
+      </ButtonGroup>
+    </ThemeDialog>
   );
 };
 

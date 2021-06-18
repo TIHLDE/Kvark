@@ -204,11 +204,7 @@ const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => 
   } else {
     return (
       <>
-        <AppBar
-          className={classNames(classes.appBar, isOnTop ? classes.fancyAppBar : classes.backdrop)}
-          color='primary'
-          elevation={isOnTop ? 0 : 1}
-          position='fixed'>
+        <AppBar className={classNames(classes.appBar, isOnTop ? classes.fancyAppBar : classes.backdrop)} elevation={isOnTop ? 0 : 1} position='fixed'>
           <Toolbar className={classes.toolbar} disableGutters>
             <Link to={URLS.landing}>
               <TihldeLogo className={classes.logo} darkColor={colorOnDark} lightColor={colorOnLight} size='large' />

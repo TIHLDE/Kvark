@@ -89,7 +89,7 @@ const FieldEditor = ({ field, updateField, removeField }: FieldEditorProps) => {
         <Typography variant='subtitle1'>{title}</Typography>
         <FormControlLabel
           className={classes.checkbox}
-          control={<Checkbox checked={field.required} color='primary' onChange={(e) => updateField({ ...field, required: e.target.checked })} />}
+          control={<Checkbox checked={field.required} onChange={(e) => updateField({ ...field, required: e.target.checked })} />}
           label='Påkrevd'
           labelPlacement='start'
         />
@@ -115,9 +115,7 @@ const FieldEditor = ({ field, updateField, removeField }: FieldEditorProps) => {
               </div>
             </Grow>
           ))}
-          <Button color='primary' onClick={addFieldOption}>
-            Legg til alternativ
-          </Button>
+          <Button onClick={addFieldOption}>Legg til alternativ</Button>
         </>
       )}
     </Paper>

@@ -34,7 +34,7 @@ const ShareButton = ({ shareId, title, shareType, ...props }: ShareProps) => {
     'Linken ble kopiert til utklippstavlen',
   );
   return (
-    <Button color='primary' disabled={hasShared} endIcon={<ShareIcon />} onClick={share} variant='outlined' {...props}>
+    <Button disabled={hasShared} endIcon={<ShareIcon />} onClick={share} variant='outlined' {...props}>
       {hasShared ? 'Delt!' : 'Del'}
     </Button>
   );

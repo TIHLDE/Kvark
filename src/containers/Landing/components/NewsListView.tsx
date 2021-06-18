@@ -48,7 +48,7 @@ const NewsListView = () => {
     return (
       <>
         <div className={classes.container}>{news.map((newsItem, index) => index < NO_OF_NEWS_TO_SHOW && <ListItem key={index} news={newsItem} />)}</div>
-        <Button className={classes.btn} color='primary' component={Link} fullWidth to={URLS.news} variant='outlined'>
+        <Button className={classes.btn} component={Link} fullWidth to={URLS.news} variant='outlined'>
           Alle nyheter
         </Button>
       </>

@@ -53,9 +53,7 @@ const Bool = ({ helperText, type, control, name, errors = {}, rules = {}, ...pro
         control={control}
         defaultValue={false}
         name={name}
-        render={({ onChange, value }) => (
-          <MuiFormControlLabel {...props} control={<Child checked={value} color='primary' onChange={(e) => onChange(e.target.checked)} />} />
-        )}
+        render={({ onChange, value }) => <MuiFormControlLabel {...props} control={<Child checked={value} onChange={(e) => onChange(e.target.checked)} />} />}
         rules={rules}
       />
       <MuiFormHelperText>

@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   button: {
-    height: 50,
     marginBottom: theme.spacing(2),
   },
   skeleton: {
@@ -89,14 +88,14 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
           )}
         </Paper>
         {data.link && (
-          <Button className={classes.button} color='primary' component='a' fullWidth href={data.link} rel='noreferrer' target='_blank' variant='contained'>
+          <Button className={classes.button} component='a' fullWidth href={data.link} rel='noreferrer' target='_blank' variant='contained'>
             Søk
           </Button>
         )}
         <ShareButton className={classes.button} color='inherit' fullWidth shareId={data.id} shareType='jobpost' title={data.title} />
         {!preview && (
           <HavePermission apps={[PermissionApp.JOBPOST]}>
-            <Button className={classes.button} color='primary' component={Link} fullWidth to={`${URLS.jobpostsAdmin}${data.id}/`} variant='outlined'>
+            <Button className={classes.button} component={Link} fullWidth to={`${URLS.jobpostsAdmin}${data.id}/`} variant='outlined'>
               Endre annonse
             </Button>
           </HavePermission>

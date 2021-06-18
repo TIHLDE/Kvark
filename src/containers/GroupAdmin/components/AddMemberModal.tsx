@@ -55,7 +55,7 @@ const AddMemberModal = ({ groupSlug }: AddMemberModalProps) => {
 
   return (
     <>
-      <Button color='primary' fullWidth onClick={() => setIsOpen(true)} startIcon={<AddIcon />} variant='outlined'>
+      <Button fullWidth onClick={() => setIsOpen(true)} startIcon={<AddIcon />} variant='outlined'>
         Legg til medlem
       </Button>
       <Dialog onClose={() => setIsOpen(false)} open={isOpen} titleText='Legg til medlem'>

@@ -63,7 +63,7 @@ const Profile = () => {
         <Paper className={classes.paper} noPadding>
           {showModal && user && (
             <Dialog onClose={() => setShowModal(false)} open={showModal} titleText='Medlemsbevis'>
-              <QRCode value={user.user_id} />
+              <QRCode background='paper' value={user.user_id} />
             </Dialog>
           )}
           <Avatar className={classes.avatar} user={user} />
@@ -86,7 +86,7 @@ const Profile = () => {
               <Skeleton className={classes.skeleton} variant='text' width='35%' />
             </>
           )}
-          <Button className={classes.button} color='primary' endIcon={<QrCodeIcon />} onClick={() => setShowModal(true)} variant='contained'>
+          <Button className={classes.button} endIcon={<QrCodeIcon />} onClick={() => setShowModal(true)} variant='contained'>
             Medlemsbevis
           </Button>
         </Paper>

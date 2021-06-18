@@ -62,7 +62,6 @@ const MessageGDPR = () => {
           </Typography>
           <Button
             className={classes.button}
-            color='primary'
             onClick={() => {
               closeDialog();
             }}

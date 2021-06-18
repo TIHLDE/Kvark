@@ -10,7 +10,7 @@ const SubmitButton = ({ errors = {}, children, disabled, ...props }: SubmitButto
   const errorList = Array.isArray(Object.keys(errors)) ? Object.keys(errors).map((error) => errors[error].message) : [];
   return (
     <>
-      <Button color='primary' disabled={disabled || Boolean(errorList.length)} fullWidth type='submit' variant='contained' {...props}>
+      <Button disabled={disabled || Boolean(errorList.length)} fullWidth type='submit' variant='contained' {...props}>
         {children}
       </Button>
       {errorList.map((error, i) => (
