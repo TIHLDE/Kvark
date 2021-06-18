@@ -59,7 +59,7 @@ export const AspectRatioLoading = ({ className, imgClassName, ratio = 21 / 9 }: 
   const classes = useStyles({ ratio });
   return (
     <div className={classNames(classes.imgContainer, className)}>
-      <Skeleton className={classNames(classes.img, classes.skeleton, imgClassName)} variant='rectangular' />
+      <Skeleton className={classNames(classes.img, imgClassName)} variant='rectangular' />
     </div>
   );
 };

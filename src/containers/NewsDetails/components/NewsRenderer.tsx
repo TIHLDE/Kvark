@@ -54,10 +54,6 @@ const useStyles = makeStyles((theme) => ({
     },
     padding: theme.spacing(1, 0),
   },
-  skeleton: {
-    maxWidth: '100%',
-    borderRadius: theme.shape.borderRadius,
-  },
   shareButton: {
     width: 'fit-content',
     marginRight: theme.spacing(1),
@@ -124,18 +120,18 @@ export const NewsRendererLoading = () => {
     <div>
       <div className={classes.top}>
         <Container className={classes.topContent} maxWidth='lg'>
-          <Skeleton className={classes.skeleton} height={80} width='60%' />
-          <Skeleton className={classes.skeleton} height={40} width={250} />
+          <Skeleton height={80} width='60%' />
+          <Skeleton height={40} width={250} />
         </Container>
       </div>
       <Container className={classes.content} maxWidth='lg'>
         <AspectRatioLoading imgClassName={classes.image} />
-        <Skeleton className={classes.skeleton} height={40} width={250} />
+        <Skeleton height={40} width={250} />
         <Paper>
-          <Skeleton className={classes.skeleton} width='80%' />
-          <Skeleton className={classes.skeleton} width='85%' />
-          <Skeleton className={classes.skeleton} width='75%' />
-          <Skeleton className={classes.skeleton} width='90%' />
+          <Skeleton width='80%' />
+          <Skeleton width='85%' />
+          <Skeleton width='75%' />
+          <Skeleton width='90%' />
         </Paper>
       </Container>
     </div>

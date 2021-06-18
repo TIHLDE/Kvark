@@ -103,6 +103,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
   };
 
   const DARK_PAPER_COLOR = '#19212f';
+  const BORDER_RADIUS = 16;
 
   return createTheme({
     breakpoints: {
@@ -131,20 +132,14 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
             ...get<object>({ light: {}, dark: darkScrollbar() }),
           },
           '@global': {
-            html: {
-              WebkitFontSmoothing: 'auto',
-            },
+            html: { WebkitFontSmoothing: 'auto' },
           },
-          a: {
-            color: get<string>({ light: '#1D448C', dark: '#9ec0ff' }),
-          },
+          a: { color: get<string>({ light: '#1D448C', dark: '#9ec0ff' }) },
         },
       },
       MuiButton: {
         styleOverrides: {
-          root: {
-            height: 45,
-          },
+          root: { height: 44 },
           contained: {
             boxShadow: 'none',
             fontWeight: get<'bold' | undefined>({ light: undefined, dark: 'bold' }),
@@ -156,10 +151,25 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       },
       MuiDialog: {
         styleOverrides: {
-          paper: {
-            backgroundImage: 'none',
-          },
+          paper: { backgroundImage: 'none' },
         },
+      },
+      MuiDrawer: {
+        styleOverrides: {
+          paper: { backgroundImage: 'none' },
+        },
+      },
+      MuiSkeleton: {
+        styleOverrides: {
+          root: { maxWidth: '100%' },
+          rectangular: { borderRadius: BORDER_RADIUS },
+        },
+      },
+      MuiContainer: {
+        defaultProps: { maxWidth: 'xl' },
+      },
+      MuiPaper: {
+        defaultProps: { elevation: 0 },
       },
     },
     palette: {
@@ -217,7 +227,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       },
     },
     shape: {
-      borderRadius: 16,
+      borderRadius: BORDER_RADIUS,
     },
     typography: {
       fontFamily: 'Inter',

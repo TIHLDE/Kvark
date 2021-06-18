@@ -40,10 +40,6 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginBottom: theme.spacing(2),
   },
-  skeleton: {
-    maxWidth: '100%',
-    borderRadius: theme.shape.borderRadius,
-  },
 }));
 
 export type JobPostRendererProps = {
@@ -113,13 +109,13 @@ export const JobPostRendererLoading = () => {
   return (
     <div className={classes.grid}>
       <Paper>
-        <Skeleton className={classes.skeleton} width={200} />
-        <Skeleton className={classes.skeleton} height={80} width='60%' />
-        <Skeleton className={classes.skeleton} height={40} width={250} />
-        <Skeleton className={classes.skeleton} height={40} width='80%' />
-        <Skeleton className={classes.skeleton} height={40} width='85%' />
-        <Skeleton className={classes.skeleton} height={40} width='75%' />
-        <Skeleton className={classes.skeleton} height={40} width='90%' />
+        <Skeleton height={80} width='60%' />
+        <Skeleton height={40} width={250} />
+        <Skeleton width={200} />
+        <Skeleton height={40} width='80%' />
+        <Skeleton height={40} width='85%' />
+        <Skeleton height={40} width='75%' />
+        <Skeleton height={40} width='90%' />
       </Paper>
       <div>
         <AspectRatioLoading className={classes.infoBox} imgClassName={classes.image} />

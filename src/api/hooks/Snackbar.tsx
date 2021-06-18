@@ -1,18 +1,15 @@
 import { useEffect, useState, useContext, useCallback, useMemo, createContext, ReactNode } from 'react';
 
-import { makeStyles } from '@material-ui/styles';
-import { Snackbar as MaterialSnackbar, Alert as MaterialAlert } from '@material-ui/core';
+import { Snackbar as MaterialSnackbar, Alert, styled } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-  snackbar: {
-    [theme.breakpoints.down('lg')]: {
-      bottom: theme.spacing(12),
-    },
-    [theme.breakpoints.down('md')]: {
-      left: theme.spacing(1),
-      right: theme.spacing(1),
-      transform: 'none',
-    },
+const Snackbar = styled(MaterialSnackbar)(({ theme }) => ({
+  [theme.breakpoints.down('lg')]: {
+    bottom: theme.spacing(12),
+  },
+  [theme.breakpoints.down('md')]: {
+    left: theme.spacing(1),
+    right: theme.spacing(1),
+    transform: 'none',
   },
 }));
 
@@ -26,7 +23,6 @@ type Snack = {
 const SnackbarContext = createContext<SnackbarProps | undefined>(undefined);
 
 const SnackbarProvider = ({ children }: { children: ReactNode }) => {
-  const classes = useStyles();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackTitle, setSnackTitle] = useState('');
   const [severity, setSeverity] = useState<Severity>('info');
@@ -58,11 +54,11 @@ const SnackbarProvider = ({ children }: { children: ReactNode }) => {
   return (
     <SnackbarContext.Provider value={value}>
       {children}
-      <MaterialSnackbar autoHideDuration={length || 6000} className={classes.snackbar} onClose={() => setSnackbarOpen(false)} open={snackbarOpen}>
-        <MaterialAlert elevation={6} onClose={() => setSnackbarOpen(false)} severity={severity} variant='filled'>
+      <Snackbar autoHideDuration={length || 6000} onClose={() => setSnackbarOpen(false)} open={snackbarOpen}>
+        <Alert elevation={6} onClose={() => setSnackbarOpen(false)} severity={severity} variant='filled'>
           {snackTitle}
-        </MaterialAlert>
-      </MaterialSnackbar>
+        </Alert>
+      </Snackbar>
     </SnackbarContext.Provider>
   );
 };

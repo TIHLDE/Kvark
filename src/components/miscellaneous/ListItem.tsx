@@ -83,9 +83,6 @@ const useStyles = makeStyles((theme) => ({
     width: 24,
     margin: theme.spacing(0),
   },
-  skeletonMaxWidth: {
-    maxWidth: '100%',
-  },
 }));
 
 type IconProps = {
@@ -182,9 +179,9 @@ export const ListItemLoading = ({ className, largeImg = false }: Pick<ListItemPr
     <MaterialListItem className={classNames(classes.root, className)}>
       <AspectRatioLoading className={classNames(classes.imgContainer, largeImg && lgUp && classes.largeImg)} />
       <Grid className={classes.content} container direction='column' wrap='nowrap'>
-        <Skeleton className={classes.skeletonMaxWidth} height={60} width={200} />
-        <Skeleton className={classes.skeletonMaxWidth} height={30} width={300} />
-        <Skeleton className={classes.skeletonMaxWidth} height={30} width={250} />
+        <Skeleton height={60} width={200} />
+        <Skeleton height={30} width={300} />
+        <Skeleton height={30} width={250} />
       </Grid>
     </MaterialListItem>
   );

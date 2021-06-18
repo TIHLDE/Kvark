@@ -41,11 +41,6 @@ const useStyles = makeStyles((theme) => ({
     height: 200,
     fontSize: 65,
   },
-  skeleton: {
-    animation: 'animate 1.5s ease-in-out infinite',
-    margin: 'auto',
-    minHeight: 35,
-  },
   text: {
     margin: `${theme.spacing(0.25)} auto`,
     color: theme.palette.text.primary,
@@ -81,9 +76,9 @@ const Profile = () => {
             </>
           ) : (
             <>
-              <Skeleton className={classes.skeleton} variant='text' width='75%' />
-              <Skeleton className={classes.skeleton} variant='text' width='45%' />
-              <Skeleton className={classes.skeleton} variant='text' width='35%' />
+              <Skeleton height={50} sx={{ m: 'auto' }} variant='text' width='75%' />
+              <Skeleton height={30} sx={{ m: 'auto' }} variant='text' width='45%' />
+              <Skeleton height={30} sx={{ m: 'auto' }} variant='text' width='35%' />
             </>
           )}
           <Button className={classes.button} endIcon={<QrCodeIcon />} onClick={() => setShowModal(true)} variant='contained'>

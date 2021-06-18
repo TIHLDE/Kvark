@@ -1,20 +1,9 @@
-import { makeStyles } from '@material-ui/styles';
 import { Box, Grid, Typography } from '@material-ui/core';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
 import GithubIcon from '@material-ui/icons/CodeRounded';
 
 import Paper from 'components/layout/Paper';
-
-const useStyles = makeStyles((theme) => ({
-  wrapIcon: {
-    verticalAlign: 'middle',
-    display: 'inline-flex',
-  },
-  icons: {
-    marginRight: theme.spacing(1),
-  },
-}));
 
 const LINKS = [
   { link: 'https://tihlde.slack.com/archives/C01CJ0EQCFM', label: 'Kontakt oss på Slack', icon: ContactMailIcon },
@@ -23,7 +12,6 @@ const LINKS = [
 ];
 
 const ErrorCard = () => {
-  const classes = useStyles();
   return (
     <Paper>
       <Grid container spacing={2}>
@@ -35,7 +23,7 @@ const ErrorCard = () => {
         {LINKS.map((link, index) => (
           <Grid item key={index} xs={12}>
             <Box alignItems='center' display='flex' flexWrap='wrap'>
-              <link.icon className={classes.icons} />
+              <link.icon sx={{ mr: (theme) => theme.spacing(1) }} />
               <a href={link.link} rel='noopener noreferrer' target='_blank'>
                 {link.label}
               </a>

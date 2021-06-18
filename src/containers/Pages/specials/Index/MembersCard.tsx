@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { UserList } from 'types/Types';
 
 import { ListItem, ListItemText, ListItemAvatar, List, Grid, Typography, Skeleton } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
 
 import Paper from 'components/layout/Paper';
 import { useMemberships } from 'api/hooks/Membership';
@@ -10,18 +9,11 @@ import Pagination from 'components/layout/Pagination';
 import { useGroup } from 'api/hooks/Group';
 import Avatar from 'components/miscellaneous/Avatar';
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginBottom: theme.spacing(2),
-  },
-}));
-
 export type MembersCardProps = {
   slug: string;
 };
 
 const MembersCard = ({ slug }: MembersCardProps) => {
-  const classes = useStyles();
   const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useMemberships(slug, { onlyMembers: true });
   const members = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
   const { data: group } = useGroup(slug);
@@ -53,7 +45,7 @@ const MembersCard = ({ slug }: MembersCardProps) => {
   );
 
   return (
-    <Paper className={classes.paper}>
+    <Paper sx={{ mb: ({ spacing }) => spacing(2) }}>
       <Grid container spacing={2}>
         {Boolean(data?.pages?.length) && (
           <Grid item xs={12}>

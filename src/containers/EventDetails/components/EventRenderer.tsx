@@ -83,10 +83,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '2.4rem',
     wordWrap: 'break-word',
   },
-  skeleton: {
-    maxWidth: '100%',
-    borderRadius: theme.shape.borderRadius,
-  },
 }));
 
 export type EventRendererProps = {
@@ -308,12 +304,12 @@ export const EventRendererLoading = () => {
       <div className={classnames(classes.infoGrid, classes.info)}>
         <AspectRatioLoading imgClassName={classes.image} />
         <Paper className={classes.content}>
-          <Skeleton className={classes.skeleton} height={80} width='60%' />
-          <Skeleton className={classes.skeleton} height={40} width={250} />
-          <Skeleton className={classes.skeleton} height={40} width='80%' />
-          <Skeleton className={classes.skeleton} height={40} width='85%' />
-          <Skeleton className={classes.skeleton} height={40} width='75%' />
-          <Skeleton className={classes.skeleton} height={40} width='90%' />
+          <Skeleton height={80} width='60%' />
+          <Skeleton height={40} width={250} />
+          <Skeleton height={40} width='80%' />
+          <Skeleton height={40} width='85%' />
+          <Skeleton height={40} width='75%' />
+          <Skeleton height={40} width='90%' />
         </Paper>
       </div>
     </div>

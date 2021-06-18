@@ -46,9 +46,6 @@ const useStyles = makeStyles((theme) => ({
     border: '1px solid ' + theme.palette.divider,
     background: theme.palette.background.smoke,
   },
-  switch: {
-    color: theme.palette.text.secondary,
-  },
 }));
 
 export type EventEditorProps = {

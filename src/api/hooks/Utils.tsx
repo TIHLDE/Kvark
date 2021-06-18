@@ -59,13 +59,14 @@ export const useShare = (shareData: globalThis.ShareData, fallbackSnackbar?: str
 
   /**
    * Copies text to the clipboard
-   * @param text - Text which should be copied to clipboard
+   * @param text Text which should be copied to clipboard
+   * @param noSnackbar If the snackbar not should be shown even if snackbar text is given
    */
-  const copyToClipboard = async (text: string) => {
+  const copyToClipboard = async (text: string, noSnackbar = false) => {
     const { default: copyToClipboard } = await import('copy-to-clipboard');
     const hasCopied = copyToClipboard(text);
     setShared(hasCopied);
-    if (fallbackSnackbar) {
+    if (fallbackSnackbar && !noSnackbar) {
       showSnackbar(fallbackSnackbar, 'info');
     }
   };
@@ -80,8 +81,9 @@ export const useShare = (shareData: globalThis.ShareData, fallbackSnackbar?: str
       navigator
         .share(shareData)
         .then(() => setShared(true))
-        .catch(() => copyToClipboard(fallbackCopyText));
+        .catch(() => copyToClipboard(fallbackCopyText, true));
     } else {
+      showSnackbar('else', 'error');
       copyToClipboard(fallbackCopyText);
     }
   };

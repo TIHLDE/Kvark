@@ -33,7 +33,7 @@ const EventsView = () => {
         <EventsListView events={data?.pages[0]?.results || []} isLoading={isLoading} />
       </Collapse>
       <Collapse in={tab === Views.CALENDAR} mountOnEnter>
-        <Suspense fallback={<Skeleton height={695} sx={{ borderRadius: '10px' }} variant='rectangular' />}>
+        <Suspense fallback={<Skeleton height={695} variant='rectangular' />}>
           <EventsCalendarView events={data?.pages[0]?.results || []} oldEvents={oldEvents?.pages[0]?.results || []} />
         </Suspense>
       </Collapse>
