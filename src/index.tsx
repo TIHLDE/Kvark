@@ -1,12 +1,15 @@
 /* eslint-disable no-console */
-import { ReactNode, Suspense } from 'react';
-import ReactDOM from 'react-dom';
+import { ReactNode } from 'react';
+import { render } from 'react-dom';
 import 'assets/css/index.css';
 import { CssBaseline, StyledEngineProvider } from '@material-ui/core';
 import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
 import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { persistQueryClient } from 'react-query/persistQueryClient-experimental';
+import { createWebStoragePersistor } from 'react-query/createWebStoragePersistor-experimental';
+import { broadcastQueryClient } from 'react-query/broadcastQueryClient-experimental';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import 'delayed-scroll-restoration-polyfill';
 
@@ -17,7 +20,6 @@ import { SnackbarProvider } from 'api/hooks/Snackbar';
 
 // Project components
 import MessageGDPR from 'components/miscellaneous/MessageGDPR';
-import Page from 'components/navigation/Page';
 import Navigation from 'components/navigation/Navigation';
 import AppRoutes from 'AppRoutes';
 
@@ -29,11 +31,30 @@ export const Providers = ({ children }: ProvidersProps) => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 1000 * 60 * 2, // Don't refetch data before 2 min has passed
+        staleTime: 1000 * 60 * 5, // Don't refetch data before 5 min has passed
         refetchOnWindowFocus: false,
+        cacheTime: 1000 * 60 * 60 * 24, // 24 hours
       },
     },
   });
+
+  /**
+   * ---------------------------------------------------------------------
+   * Experimental React Query plugins, can break when updating React Query
+   * ---------------------------------------------------------------------
+   */
+  const localStoragePersistor = createWebStoragePersistor({ storage: window.localStorage, key: 'TIHLDE_OFFLINE_CACHE' });
+  /**
+   * Persists the state between sessions which enables quicker loading of the website
+   * https://react-query.tanstack.com/plugins/persistQueryClient
+   */
+  persistQueryClient({ queryClient, persistor: localStoragePersistor });
+  /**
+   * Broadcasts changes to the state between tabs in the browser to ensure that the data is equal
+   * https://react-query.tanstack.com/plugins/broadcastQueryClient
+   */
+  broadcastQueryClient({ queryClient, broadcastChannel: 'TIHLDE' });
+
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider>
@@ -56,9 +77,7 @@ export const Application = () => {
     <Providers>
       <BrowserRouter>
         <Navigation>
-          <Suspense fallback={<Page options={{ title: 'Laster...', filledTopbar: true }} />}>
-            <AppRoutes />
-          </Suspense>
+          <AppRoutes />
           <MessageGDPR />
         </Navigation>
       </BrowserRouter>
@@ -93,4 +112,4 @@ const rickroll = () => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).badge = rickroll;
 
-ReactDOM.render(<Application />, document.getElementById('root'));
+render(<Application />, document.getElementById('root'));
