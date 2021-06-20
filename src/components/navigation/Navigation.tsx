@@ -16,8 +16,8 @@ import BottomBar from 'components/navigation/BottomBar';
 
 const Snackbar = styled(MaterialSnackbar)(({ theme }) => ({
   maxWidth: `calc(100% - ${theme.spacing(2)})`,
-  width: theme.breakpoints.values.xl,
-  top: 70,
+  width: theme.breakpoints.values.lg,
+  top: '70px !important',
   [theme.breakpoints.down('lg')]: {
     position: 'absolute',
   },
