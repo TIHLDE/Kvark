@@ -65,7 +65,7 @@ const useStyles = makeStyles<Theme, Pick<BannerProps, 'background'>>((theme) => 
   line: {
     height: 4,
     backgroundColor: ({ background }) => theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
-    borderRadius: `calc(${theme.shape.borderRadius} / 2)`,
+    borderRadius: theme.shape.borderRadius,
     width: 90,
     [theme.breakpoints.down('lg')]: {
       width: 50,

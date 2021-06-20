@@ -1,5 +1,4 @@
 import { ReactNode, useState, useLayoutEffect, useMemo, useCallback } from 'react';
-import classnames from 'classnames';
 import Helmet from 'react-helmet';
 import constate from 'constate';
 import URLS from 'URLS';
@@ -8,32 +7,28 @@ import { useIsAuthenticated } from 'api/hooks/User';
 import { useWarnings } from 'api/hooks/Warnings';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { Theme, useMediaQuery, Snackbar as MaterialSnackbar, Alert as MaterialAlert } from '@material-ui/core';
+import { Theme, useMediaQuery, Snackbar as MaterialSnackbar, Alert, styled } from '@material-ui/core';
 
 // Project Components
 import Topbar from 'components/navigation/Topbar';
 import Footer from 'components/navigation/Footer';
 import BottomBar from 'components/navigation/BottomBar';
 
-const useStyles = makeStyles((theme) => ({
-  main: {
-    minHeight: '101vh',
+const Snackbar = styled(MaterialSnackbar)(({ theme }) => ({
+  maxWidth: `calc(100% - ${theme.spacing(2)})`,
+  width: theme.breakpoints.values.xl,
+  top: 70,
+  [theme.breakpoints.down('lg')]: {
+    position: 'absolute',
   },
-  gutterTop: {
-    paddingTop: 60,
-  },
-  gutterBottom: {
-    paddingBottom: 80,
-  },
-  snackbar: {
-    maxWidth: `calc(100% - ${theme.spacing(2)})`,
-    width: theme.breakpoints.values.xl,
-    top: 70,
-    [theme.breakpoints.down('lg')]: {
-      position: 'absolute',
-    },
-  },
+}));
+
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'gutterTop' && prop !== 'gutterBottom' })<
+  Pick<NavigationOptions, 'gutterTop' | 'gutterBottom'>
+>(({ gutterTop, gutterBottom }) => ({
+  minHeight: '101vh',
+  ...(gutterTop && { paddingTop: 60 }),
+  ...(gutterBottom && { paddingBottom: 80 }),
 }));
 
 export type NavigationOptions = {
@@ -111,7 +106,6 @@ export type NavigationItem = {
 };
 
 const NavigationContent = ({ children }: NavigationProps) => {
-  const classes = useStyles();
   const { data: warnings = [], closeWarning } = useWarnings();
   const isAuthenticated = useIsAuthenticated();
   const { title, darkColor, lightColor, filledTopbar, noFooter, gutterBottom, gutterTop } = useGetNavigationOptions();
@@ -152,17 +146,15 @@ const NavigationContent = ({ children }: NavigationProps) => {
       <Helmet>{<title>{title}</title>}</Helmet>
       <Topbar darkColor={darkColor} filledTopbar={filledTopbar} items={items} lightColor={lightColor} />
       {warning && (
-        <MaterialSnackbar anchorOrigin={{ horizontal: 'center', vertical: 'top' }} className={classes.snackbar} key={warning.id} open>
-          <MaterialAlert
-            elevation={6}
-            onClose={() => closeWarning(warning.id)}
-            severity={warning.type === WarningType.MESSAGE ? 'info' : 'warning'}
-            variant='filled'>
+        <Snackbar anchorOrigin={{ horizontal: 'center', vertical: 'top' }} key={warning.id} open>
+          <Alert elevation={6} onClose={() => closeWarning(warning.id)} severity={warning.type === WarningType.MESSAGE ? 'info' : 'warning'} variant='filled'>
             {warning.text}
-          </MaterialAlert>
-        </MaterialSnackbar>
+          </Alert>
+        </Snackbar>
       )}
-      <main className={classnames(classes.main, gutterTop && classes.gutterTop, gutterBottom && classes.gutterBottom)}>{children}</main>
+      <Main gutterBottom={gutterBottom} gutterTop={gutterTop}>
+        {children}
+      </Main>
       {!noFooter && <Footer />}
       {lgDown && <BottomBar items={items} />}
     </>
