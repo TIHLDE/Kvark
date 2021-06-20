@@ -149,28 +149,17 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
           },
         },
       },
-      MuiDialog: {
-        styleOverrides: {
-          paper: { backgroundImage: 'none' },
-        },
-      },
-      MuiDrawer: {
-        styleOverrides: {
-          paper: { backgroundImage: 'none' },
-        },
-      },
+      MuiDialog: { styleOverrides: { paper: { backgroundImage: 'none' } } },
+      MuiDrawer: { styleOverrides: { paper: { backgroundImage: 'none' } } },
       MuiSkeleton: {
         styleOverrides: {
           root: { maxWidth: '100%' },
           rectangular: { borderRadius: BORDER_RADIUS },
         },
       },
-      MuiContainer: {
-        defaultProps: { maxWidth: 'xl' },
-      },
-      MuiPaper: {
-        defaultProps: { elevation: 0 },
-      },
+      MuiContainer: { defaultProps: { maxWidth: 'xl' } },
+      MuiPaper: { defaultProps: { elevation: 0 } },
+      MuiLinearProgress: { styleOverrides: { root: { borderRadius: BORDER_RADIUS } } },
     },
     palette: {
       get,
@@ -188,7 +177,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       error: {
         main: get<string>({ light: '#b20101', dark: '#ff6060' }),
       },
-      divider: get<string>({ light: '#dbdbdb', dark: '#2d2d2d' }),
+      divider: get<string>({ light: '#dbdbdb', dark: '#333333' }),
       text: {
         secondary: get<string>({ light: '#333333', dark: '#cccccc' }),
       },

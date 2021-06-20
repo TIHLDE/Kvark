@@ -76,7 +76,13 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
 
   const { register, handleSubmit, errors, setError } = useForm();
 
+  const registerDisabled = isLoading || isFormLoading || !agreeRules;
+
   const submit = async (data: { answers?: Array<TextFieldSubmission | SelectFieldSubmission> }) => {
+    if (registerDisabled) {
+      showSnackbar('Du må godkjenne arrangementsreglene før du kan melde deg på', 'warning');
+      return;
+    }
     setIsLoading(true);
     try {
       data.answers?.forEach((answer, index) => {
@@ -143,7 +149,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
           <a href={URLS.eventRules} rel='noopener noreferrer' target='_blank'>
             <Typography variant='caption'>Les arrangementsreglene her (åpnes i ny fane)</Typography>
           </a>
-          <Button className={classes.button} disabled={isLoading || isFormLoading || !agreeRules} fullWidth type='submit' variant='contained'>
+          <Button className={classes.button} disabled={registerDisabled} fullWidth type='submit' variant='contained'>
             Meld deg på
           </Button>
         </form>

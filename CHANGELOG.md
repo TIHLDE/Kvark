@@ -21,6 +21,7 @@
 - ✨ **Admin**. Det er nå mulig å gå direkte fra arrangement-/nyhet-/karriereadmin-sidene til det respektive innholdet ved hjelp av en ny knapp.
 - ✨ **Github**. Lagt til link til oppretting av nytt issue på Github i Index sin side i pages.
 - ✨ **Varsler**. Antall uleste varsler i profilen vises nå på mobil.
+- ⚡ **Arrangementer**. Ved registrering av oppmøte står det nå navn på deltager i tilbakemeldingen. Siden er også blitt raskere og det er slutt på at samme QR-kode skannes flere ganger etter hverandre.
 - ⚡ **Dependencies**. Oppdatert en drøss av avhengigheter til nyeste versjon.
 - ⚡ **Cache**. Arrangements-kategorier og varsler fra admins blir nå cachet.
 - ⚡ **Navigering**. Menyen lukkes nå i en overgang og ikke umiddelbart slik at siden flyter bedre. Gjennom denne forbedringen har det også blitt enklere å justere utseende på menyen individuelt per side.
