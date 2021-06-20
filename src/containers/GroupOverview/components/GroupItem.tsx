@@ -4,7 +4,7 @@ import URLS from 'URLS';
 
 // Material UI
 import { makeStyles } from '@material-ui/styles';
-import { Skeleton, ButtonBase, Typography } from '@material-ui/core';
+import { Theme, Skeleton, ButtonBase, Typography } from '@material-ui/core';
 
 // Icons
 import MembersIcon from '@material-ui/icons/PersonRounded';
@@ -37,13 +37,14 @@ const useStyles = makeStyles((theme) => ({
 
 export type GroupItemProps = {
   group: GroupList;
+  background?: keyof Theme['palette']['background'];
 };
 
-const GroupItem = ({ group }: GroupItemProps) => {
+const GroupItem = ({ group, background = 'paper' }: GroupItemProps) => {
   const classes = useStyles();
 
   return (
-    <Paper noOverflow noPadding>
+    <Paper noOverflow noPadding sx={{ background: (theme) => theme.palette.background[background] }}>
       <ButtonBase className={classes.container} component={Link} focusRipple to={`${URLS.groups}${group.slug}/`}>
         <Typography variant='h3'>{group.name}</Typography>
         {group.leader && (
@@ -61,10 +62,10 @@ const GroupItem = ({ group }: GroupItemProps) => {
 
 export default GroupItem;
 
-export const GroupItemLoading = () => {
+export const GroupItemLoading = ({ background = 'paper' }: Pick<GroupItemProps, 'background'>) => {
   const classes = useStyles();
   return (
-    <Paper noOverflow noPadding>
+    <Paper noOverflow noPadding sx={{ background: (theme) => theme.palette.background[background] }}>
       <ButtonBase className={classes.container} focusRipple>
         <Skeleton width={100} />
         <div className={classes.leader}>

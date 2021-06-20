@@ -7,8 +7,6 @@ import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
 import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { persistQueryClient } from 'react-query/persistQueryClient-experimental';
-import { createWebStoragePersistor } from 'react-query/createWebStoragePersistor-experimental';
 import { broadcastQueryClient } from 'react-query/broadcastQueryClient-experimental';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import 'delayed-scroll-restoration-polyfill';
@@ -43,12 +41,6 @@ export const Providers = ({ children }: ProvidersProps) => {
    * Experimental React Query plugins, can break when updating React Query
    * ---------------------------------------------------------------------
    */
-  const localStoragePersistor = createWebStoragePersistor({ storage: window.localStorage, key: 'TIHLDE_OFFLINE_CACHE' });
-  /**
-   * Persists the state between sessions which enables quicker loading of the website
-   * https://react-query.tanstack.com/plugins/persistQueryClient
-   */
-  persistQueryClient({ queryClient, persistor: localStoragePersistor });
   /**
    * Broadcasts changes to the state between tabs in the browser to ensure that the data is equal
    * https://react-query.tanstack.com/plugins/broadcastQueryClient

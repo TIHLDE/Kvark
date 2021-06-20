@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { makeStyles } from '@material-ui/styles';
 import URLS from 'URLS';
 import Helmet from 'react-helmet';
 import { useParams, useNavigate } from 'react-router-dom';
 import { urlEncode } from 'utils';
 import { useEventById } from 'api/hooks/Event';
+import { Box } from '@material-ui/core';
 
 // Project components
 import Http404 from 'containers/Http404';
@@ -13,24 +13,7 @@ import EventRenderer, { EventRendererLoading } from 'containers/EventDetails/com
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
 import Container from 'components/layout/Container';
 
-const useStyles = makeStyles((theme) => ({
-  wrapper: {
-    background: theme.palette.background.paper,
-    minHeight: '101vh',
-  },
-  container: {
-    padding: theme.spacing(8, 9),
-    [theme.breakpoints.down('xl')]: {
-      padding: theme.spacing(8, 5),
-    },
-    [theme.breakpoints.down('lg')]: {
-      padding: theme.spacing(8, 1, 5),
-    },
-  },
-}));
-
 const EventDetails = () => {
-  const classes = useStyles();
   const { id } = useParams();
   const { data, isLoading, isError } = useEventById(Number(id));
   const navigate = useNavigate();
@@ -55,11 +38,9 @@ const EventDetails = () => {
           <meta content={data.image || 'https://tihlde.org' + TIHLDELOGO} property='og:image' />
         </Helmet>
       )}
-      <div className={classes.wrapper}>
-        <Container className={classes.container} maxWidth='xl'>
-          {isLoading ? <EventRendererLoading /> : data !== undefined && <EventRenderer data={data} />}
-        </Container>
-      </div>
+      <Box sx={{ background: (theme) => theme.palette.background.paper, minHeight: '101vh', pt: 8 }}>
+        <Container sx={{ px: { xl: 9, lg: 5 } }}>{isLoading ? <EventRendererLoading /> : data !== undefined && <EventRenderer data={data} />}</Container>
+      </Box>
     </Page>
   );
 };

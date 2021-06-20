@@ -188,9 +188,9 @@ const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => 
   }, []);
 
   const isOnTop = useMemo(() => scrollLength < 20, [scrollLength]);
-  const wideScreenAndScrolledOrFilled = useMemo(() => (!lgDown && filledTopbar) || !isOnTop, [lgDown, isOnTop, filledTopbar]);
-  const colorOnDark = useMemo(() => (darkColor && !wideScreenAndScrolledOrFilled ? darkColor : 'white'), [darkColor, wideScreenAndScrolledOrFilled]);
-  const colorOnLight = useMemo(() => (lightColor && !wideScreenAndScrolledOrFilled ? lightColor : 'white'), [lightColor, wideScreenAndScrolledOrFilled]);
+  const shouldOverrideColorProp = useMemo(() => !lgDown && (filledTopbar || !isOnTop), [lgDown, isOnTop, filledTopbar]);
+  const colorOnDark = useMemo(() => (darkColor && !shouldOverrideColorProp ? darkColor : 'white'), [darkColor, shouldOverrideColorProp]);
+  const colorOnLight = useMemo(() => (lightColor && !shouldOverrideColorProp ? lightColor : 'white'), [lightColor, shouldOverrideColorProp]);
 
   if (lgDown) {
     return (
@@ -201,32 +201,28 @@ const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => 
         <ProfileTopbarButton darkColor={colorOnDark} lightColor={colorOnLight} />
       </div>
     );
-  } else {
-    return (
-      <>
-        <AppBar className={classNames(classes.appBar, isOnTop ? classes.fancyAppBar : classes.backdrop)} elevation={isOnTop ? 0 : 1} position='fixed'>
-          <Toolbar className={classes.toolbar} disableGutters>
-            <Link to={URLS.landing}>
-              <TihldeLogo className={classes.logo} darkColor={colorOnDark} lightColor={colorOnLight} size='large' />
-            </Link>
-            <div
-              className={classNames(
-                classes.items,
-                (theme.palette.mode === 'light' ? colorOnLight : colorOnDark) !== 'white' && !filledTopbar && classes.black,
-              )}>
-              {items.map((item, i) => (
-                <TopBarItem key={i} {...item} />
-              ))}
-            </div>
-            <div className={classes.right}>
-              <ProfileTopbarButton darkColor={colorOnDark} lightColor={colorOnLight} />
-            </div>
-          </Toolbar>
-        </AppBar>
-        {filledTopbar && <div className={classes.filledTopbar} />}
-      </>
-    );
   }
+  return (
+    <>
+      <AppBar className={classNames(classes.appBar, isOnTop ? classes.fancyAppBar : classes.backdrop)} elevation={isOnTop ? 0 : 1} position='fixed'>
+        <Toolbar className={classes.toolbar} disableGutters>
+          <Link to={URLS.landing}>
+            <TihldeLogo className={classes.logo} darkColor={colorOnDark} lightColor={colorOnLight} size='large' />
+          </Link>
+          <div
+            className={classNames(classes.items, (theme.palette.mode === 'light' ? colorOnLight : colorOnDark) !== 'white' && !filledTopbar && classes.black)}>
+            {items.map((item, i) => (
+              <TopBarItem key={i} {...item} />
+            ))}
+          </div>
+          <div className={classes.right}>
+            <ProfileTopbarButton darkColor={colorOnDark} lightColor={colorOnLight} />
+          </div>
+        </Toolbar>
+      </AppBar>
+      {filledTopbar && <div className={classes.filledTopbar} />}
+    </>
+  );
 };
 
 export default Topbar;

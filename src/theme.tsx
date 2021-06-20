@@ -157,7 +157,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
           rectangular: { borderRadius: BORDER_RADIUS },
         },
       },
-      MuiContainer: { defaultProps: { maxWidth: 'xl' } },
+      MuiContainer: { defaultProps: { maxWidth: 'xl', disableGutters: true } },
       MuiPaper: { defaultProps: { elevation: 0 } },
       MuiLinearProgress: { styleOverrides: { root: { borderRadius: BORDER_RADIUS } } },
     },

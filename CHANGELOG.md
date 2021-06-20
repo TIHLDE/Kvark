@@ -15,7 +15,7 @@
 ## Neste versjon
 
 - ✨ **Material-UI**. Oppdatert Material-UI til v5 som inneholder nye komponenter, ikoner, utseende og annen forbedret funksjonalitet. Her er det også gjort en stor jobb ved å oppdatere breaking changes som også gjør det enklere å oppdatere til v6 når det blir aktuelt.
-- ✨ **Data**. Data hentet fra API'et blir lagret mellom sesjoner som betyr at ny innlastning av siden mindre enn 24 timer siden forrige gang går ekstra kjapt. Hvis du har oppe siden i flere faner så blir også oppdatert data delt mellom fanene.
+- ✨ **Data**. Hvis du har oppe siden i flere faner så blir oppdatert data delt mellom fanene.
 - ✨ **Banner**. Tekst i banner leser nå markdown og det er dermed mulig å bruke markdown i gruppe-admins beskrivelse.
 - ✨ **Deling**. Hvis brukers enhet ikke støtter Web Share API, vises det nå en snackbar som sier at link er kopiert til utklippstavle ved klikk.
 - ✨ **Admin**. Det er nå mulig å gå direkte fra arrangement-/nyhet-/karriereadmin-sidene til det respektive innholdet ved hjelp av en ny knapp.
