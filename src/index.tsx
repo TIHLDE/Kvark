@@ -37,11 +37,7 @@ export const Providers = ({ children }: ProvidersProps) => {
   });
 
   /**
-   * ---------------------------------------------------------------------
-   * Experimental React Query plugins, can break when updating React Query
-   * ---------------------------------------------------------------------
-   */
-  /**
+   * Experimental React Query plugin, can break when updating React Query
    * Broadcasts changes to the state between tabs in the browser to ensure that the data is equal
    * https://react-query.tanstack.com/plugins/broadcastQueryClient
    */
