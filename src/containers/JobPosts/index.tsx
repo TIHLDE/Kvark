@@ -1,6 +1,8 @@
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, useMemo, useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { useJobPosts } from 'api/hooks/JobPost';
+import { argsToParams } from 'utils';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
@@ -57,20 +59,29 @@ type Filters = {
 };
 
 const JobPosts = () => {
+  const getInitialFilters = useCallback((): Filters => {
+    const params = new URLSearchParams(location.search);
+    const expired = params.get('expired') ? Boolean(params.get('expired') === 'true') : false;
+    const search = params.get('search') || undefined;
+    return { expired, search };
+  }, []);
   const classes = useStyles();
-  const [filters, setFilters] = useState<Filters>({ expired: false });
+  const navigate = useNavigate();
+  const [filters, setFilters] = useState<Filters>(getInitialFilters());
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useJobPosts(filters);
-  const { register, control, handleSubmit, setValue } = useForm<Filters>();
+  const { register, control, handleSubmit, setValue } = useForm<Filters>({ defaultValues: getInitialFilters() });
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 
   const resetFilters = () => {
     setValue('search', '');
     setValue('expired', false);
     setFilters({ expired: false });
+    navigate(`${location.pathname}${argsToParams({ expired: false })}`, { replace: true });
   };
 
   const search = (data: Filters) => {
-    setFilters({ ...data, search: data.search?.trim() !== '' ? data.search : undefined });
+    setFilters(data);
+    navigate(`${location.pathname}${argsToParams(data)}`, { replace: true });
   };
 
   return (
