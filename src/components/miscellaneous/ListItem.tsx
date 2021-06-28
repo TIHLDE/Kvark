@@ -13,8 +13,8 @@ import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 
 // Icons
 import DateIcon from '@material-ui/icons/DateRangeRounded';
-import LocationIcon from '@material-ui/icons/LocationOnRounded';
 import BusinessIcon from '@material-ui/icons/BusinessRounded';
+import DeadlineIcon from '@material-ui/icons/AlarmRounded';
 
 // Project components
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     justifyContent: 'space-evenly',
     width: 1,
-    minHeight: 110,
+    minHeight: 95,
   },
   imgContainer: {
     minWidth: '33%',
@@ -145,9 +145,8 @@ function ListItem({ event, news, jobpost, className, largeImg = false }: ListIte
       return [{ label: news.header }];
     } else if (jobpost) {
       return [
-        { label: jobpost.company, icon: BusinessIcon },
-        { label: jobpost.location, icon: LocationIcon },
-        { label: jobpost.is_continuously_hiring ? 'Fortløpende opptak' : formatDate(parseISO(jobpost.deadline)), icon: DateIcon },
+        { label: `${jobpost.company} | ${jobpost.location}`, icon: BusinessIcon },
+        { label: jobpost.is_continuously_hiring ? 'Fortløpende opptak' : formatDate(parseISO(jobpost.deadline)), icon: DeadlineIcon },
       ];
     }
   }, [event, news, jobpost]);

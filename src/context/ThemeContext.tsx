@@ -3,8 +3,7 @@ import { getCookie, setCookie } from 'api/cookie';
 import { getTheme, themes, ThemeTypes } from '../theme';
 import { useMediaQuery } from '@material-ui/core';
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
-
-const THEME_COOKIE = 'theme-cookie';
+import { SELECTED_THEME } from 'constant';
 
 interface ContextProps {
   getThemeFromStorage: () => ThemeTypes;
@@ -30,21 +29,21 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
       const value = getThemeType(newTheme);
       if (value !== undefined) {
         setSelectedTheme(value);
-        setCookie(THEME_COOKIE, value);
+        setCookie(SELECTED_THEME, value);
       } else {
         setSelectedTheme('automatic');
-        setCookie(THEME_COOKIE, 'automatic');
+        setCookie(SELECTED_THEME, 'automatic');
       }
     },
     [getThemeType],
   );
 
   const getThemeFromStorage = useCallback((): ThemeTypes => {
-    const value = getThemeType(getCookie(THEME_COOKIE));
+    const value = getThemeType(getCookie(SELECTED_THEME));
     if (value !== undefined) {
       return value;
     } else {
-      setCookie(THEME_COOKIE, 'automatic');
+      setCookie(SELECTED_THEME, 'automatic');
       return 'automatic';
     }
   }, [getThemeType]);
