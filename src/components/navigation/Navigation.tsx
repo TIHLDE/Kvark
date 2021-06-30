@@ -1,4 +1,4 @@
-import { ReactNode, useState, useLayoutEffect, useMemo, useCallback } from 'react';
+import { ReactNode, useState, useLayoutEffect, useMemo, useCallback, lazy, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import constate from 'constate';
 import URLS from 'URLS';
@@ -13,6 +13,7 @@ import { Theme, useMediaQuery, Snackbar as MaterialSnackbar, Alert, styled } fro
 import Topbar from 'components/navigation/Topbar';
 import Footer from 'components/navigation/Footer';
 import BottomBar from 'components/navigation/BottomBar';
+const MuiLinkify = lazy(() => import('material-ui-linkify'));
 
 const Snackbar = styled(MaterialSnackbar)(({ theme }) => ({
   maxWidth: `calc(100% - ${theme.spacing(2)})`,
@@ -146,11 +147,13 @@ const NavigationContent = ({ children }: NavigationProps) => {
       <Helmet>{<title>{title}</title>}</Helmet>
       <Topbar darkColor={darkColor} filledTopbar={filledTopbar} items={items} lightColor={lightColor} />
       {warning && (
-        <Snackbar anchorOrigin={{ horizontal: 'center', vertical: 'top' }} key={warning.id} open>
-          <Alert elevation={6} onClose={() => closeWarning(warning.id)} severity={warning.type === WarningType.MESSAGE ? 'info' : 'warning'} variant='filled'>
-            {warning.text}
-          </Alert>
-        </Snackbar>
+        <Suspense fallback={null}>
+          <Snackbar anchorOrigin={{ horizontal: 'center', vertical: 'top' }} key={warning.id} open>
+            <Alert elevation={6} onClose={() => closeWarning(warning.id)} severity={warning.type === WarningType.MESSAGE ? 'info' : 'warning'} variant='filled'>
+              <MuiLinkify LinkProps={{ color: 'inherit', underline: 'always' }}>{warning.text}</MuiLinkify>
+            </Alert>
+          </Snackbar>
+        </Suspense>
       )}
       <Main gutterBottom={gutterBottom} gutterTop={gutterTop}>
         {children}
