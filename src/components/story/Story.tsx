@@ -119,10 +119,11 @@ export type StoryProps = {
   fadeColor?: string;
 };
 
-function Story({ items, fadeColor }: StoryProps) {
+const Story = ({ items, fadeColor }: StoryProps) => {
   const classes = useStyles({ fadeColor });
-  const [popupOpen, setPopupOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(0);
+  const storyId = new URLSearchParams(location.search).get('story');
+  const [popupOpen, setPopupOpen] = useState(Boolean(storyId));
+  const [selectedItem, setSelectedItem] = useState(Number(storyId));
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const instanceOfEvent = (object: any): object is EventCompact => 'start_date' in object;
@@ -203,7 +204,7 @@ function Story({ items, fadeColor }: StoryProps) {
       <StoryPopup items={storyItems} onClose={() => setPopupOpen(false)} open={popupOpen} selectedItem={selectedItem} />
     </div>
   );
-}
+};
 export default Story;
 
 export const StoryLoading = ({ fadeColor }: Pick<StoryProps, 'fadeColor'>) => {

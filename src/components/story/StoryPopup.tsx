@@ -1,7 +1,8 @@
 import { useEffect, useCallback, useRef } from 'react';
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { usePalette } from 'react-palette';
+import { argsToParams } from 'utils';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
@@ -115,11 +116,17 @@ export type StoryPopupProps = {
   selectedItem?: number;
 };
 
-function StoryPopup({ items, open, onClose, selectedItem = 0 }: StoryPopupProps) {
+const StoryPopup = ({ items, open, onClose: closePopup, selectedItem = 0 }: StoryPopupProps) => {
   const classes = useStyles();
+  const navigate = useNavigate();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('lg'));
   const container = useRef<HTMLDivElement>(null);
+
+  const onClose = () => {
+    navigate(`${location.pathname}`, { replace: true });
+    closePopup();
+  };
 
   const getStoryPositions = useCallback(() => {
     if (!container?.current) {
@@ -188,7 +195,14 @@ function StoryPopup({ items, open, onClose, selectedItem = 0 }: StoryPopupProps)
             <Typography className={classnames(classes.description, classes.white)} variant='subtitle1'>
               {item.description}
             </Typography>
-            <Button className={classes.linkButton} component={Link} endIcon={<OpenIcon />} fullWidth to={item.link} variant='outlined'>
+            <Button
+              className={classes.linkButton}
+              component={Link}
+              endIcon={<OpenIcon />}
+              fullWidth
+              onClick={() => navigate(`${location.pathname}${argsToParams({ story: index })}`, { replace: true })}
+              to={item.link}
+              variant='outlined'>
               Mer
             </Button>
           </div>
@@ -218,5 +232,5 @@ function StoryPopup({ items, open, onClose, selectedItem = 0 }: StoryPopupProps)
       </div>
     </Dialog>
   );
-}
+};
 export default StoryPopup;

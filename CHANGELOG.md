@@ -18,9 +18,12 @@
 - ✨ **Data**. Hvis du har oppe siden i flere faner så blir oppdatert data delt mellom fanene.
 - ✨ **Banner**. Tekst i banner leser nå markdown og det er dermed mulig å bruke markdown i gruppe-admins beskrivelse.
 - ✨ **Deling**. Hvis brukers enhet ikke støtter Web Share API, vises det nå en snackbar som sier at link er kopiert til utklippstavle ved klikk.
+- ✨ **Stories**. Besøk i stories lagres i url slik at du kommer tilbake til riktig story ved navigering bakover i loggen.
+- ✨ **Navigering**. Søk og filtrering i arrangementer og karriere lagres i url slik at det gjennopprettes ved navigering bakover i loggen.
 - ✨ **Admin**. Det er nå mulig å gå direkte fra arrangement-/nyhet-/karriereadmin-sidene til det respektive innholdet ved hjelp av en ny knapp.
 - ✨ **Github**. Lagt til link til oppretting av nytt issue på Github i Index sin side i pages.
 - ✨ **Varsler**. Antall uleste varsler i profilen vises nå på mobil.
+- ✨ **Varsler**. Linker kan klikkes på.
 - ⚡ **Arrangementer**. Ved registrering av oppmøte står det nå navn på deltager i tilbakemeldingen. Siden er også blitt raskere og det er slutt på at samme QR-kode skannes flere ganger etter hverandre.
 - ⚡ **Dependencies**. Oppdatert en drøss av avhengigheter til nyeste versjon.
 - ⚡ **Cache**. Arrangements-kategorier og varsler fra admins blir nå cachet.
