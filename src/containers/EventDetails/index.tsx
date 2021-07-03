@@ -38,7 +38,7 @@ const EventDetails = () => {
           <meta content={data.image || 'https://tihlde.org' + TIHLDELOGO} property='og:image' />
         </Helmet>
       )}
-      <Box sx={{ background: (theme) => theme.palette.background.paper, minHeight: '101vh', pt: 8 }}>
+      <Box sx={{ background: (theme) => theme.palette.background.paper, minHeight: '101vh', pt: 8, pb: 1 }}>
         <Container sx={{ px: { xl: 9, lg: 5 } }}>{isLoading ? <EventRendererLoading /> : data !== undefined && <EventRenderer data={data} />}</Container>
       </Box>
     </Page>

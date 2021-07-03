@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
-import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
+import { BottomNavigation, BottomNavigationAction, SvgIcon } from '@material-ui/core';
 import EventIcon from '@material-ui/icons/EventRounded';
 import MenuIcon from '@material-ui/icons/MenuRounded';
 import JobPostIcon from '@material-ui/icons/WorkOutlineRounded';
@@ -48,12 +48,6 @@ const useStyles = makeStyles((theme) => ({
   selected: {
     // This must be empty to override the selected style
   },
-  tihldeLogo: {
-    width: 'auto',
-    height: 28,
-    marginBottom: -2,
-    marginTop: -2,
-  },
 }));
 
 type Item = {
@@ -62,10 +56,7 @@ type Item = {
   to: string;
 };
 
-const MainLogo = () => {
-  const classes = useStyles();
-  return <Logo className={classes.tihldeLogo} darkColor='white' lightColor='black' size='small' />;
-};
+const MainLogo = () => <SvgIcon component={Logo} darkColor='white' lightColor='black' size='small' />;
 const MENU_TAB_KEY = 'menu';
 
 export type BottomBarProps = {
