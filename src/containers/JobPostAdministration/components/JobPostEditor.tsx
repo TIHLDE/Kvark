@@ -1,16 +1,14 @@
 import { useCallback, useMemo, useState, useEffect } from 'react';
-import classnames from 'classnames';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { JobPost } from 'types/Types';
 import { useJobPostById, useCreateJobPost, useUpdateJobPost, useDeleteJobPost } from 'api/hooks/JobPost';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { EMAIL_REGEX } from 'constant';
+import { parseISO } from 'date-fns';
 
 // Material-UI
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import { makeStyles } from '@material-ui/styles';
+import { Button, Grid, LinearProgress } from '@material-ui/core';
 
 // Project components
 import JobPostRenderer from 'containers/JobPostDetails/components/JobPostRenderer';
@@ -18,6 +16,7 @@ import Dialog from 'components/layout/Dialog';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import SubmitButton from 'components/inputs/SubmitButton';
 import Bool from 'components/inputs/Bool';
+import DatePicker from 'components/inputs/DatePicker';
 import TextField from 'components/inputs/TextField';
 import { ImageUpload } from 'components/inputs/Upload';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
@@ -27,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
     gridGap: theme.spacing(2),
     gridTemplateColumns: '1fr 1fr',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       gridGap: 0,
       gridTemplateColumns: '1fr',
     },
@@ -37,13 +36,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.shape.borderRadius,
     overflow: 'hidden',
   },
-  red: {
-    color: theme.palette.error.main,
-    borderColor: theme.palette.error.main,
-    '&:hover': {
-      borderColor: theme.palette.error.light,
-    },
-  },
 }));
 
 export type EventEditorProps = {
@@ -51,10 +43,9 @@ export type EventEditorProps = {
   goToJobPost: (newJobPost: number | null) => void;
 };
 
-type FormValues = Pick<
-  JobPost,
-  'body' | 'company' | 'deadline' | 'email' | 'ingress' | 'image' | 'image_alt' | 'link' | 'location' | 'title' | 'is_continuously_hiring'
->;
+type FormValues = Pick<JobPost, 'body' | 'company' | 'email' | 'ingress' | 'image' | 'image_alt' | 'link' | 'location' | 'title' | 'is_continuously_hiring'> & {
+  deadline: Date;
+};
 
 const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
   const classes = useStyles();
@@ -65,11 +56,10 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
   const showSnackbar = useSnackbar();
   const [deleteJobPostDialogOpen, setDeleteJobPostDialogOpen] = useState(false);
   const { handleSubmit, control, register, errors, getValues, reset, setValue, watch } = useForm<FormValues>();
-  const isUpdating = useMemo(() => createJobPost.isLoading || updateJobPost.isLoading || deleteJobPost.isLoading, [
-    createJobPost.isLoading,
-    updateJobPost.isLoading,
-    deleteJobPost.isLoading,
-  ]);
+  const isUpdating = useMemo(
+    () => createJobPost.isLoading || updateJobPost.isLoading || deleteJobPost.isLoading,
+    [createJobPost.isLoading, updateJobPost.isLoading, deleteJobPost.isLoading],
+  );
 
   useEffect(() => {
     !isError || goToJobPost(null);
@@ -80,7 +70,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
       reset({
         body: newValues?.body || '',
         company: newValues?.company || '',
-        deadline: newValues?.deadline.substring(0, 16) || new Date().toISOString().substring(0, 16),
+        deadline: newValues?.deadline ? parseISO(newValues?.deadline) : new Date(),
         email: newValues?.email || '',
         image: newValues?.image || '',
         image_alt: newValues?.image_alt || '',
@@ -105,10 +95,11 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
   const getJobPostPreview = () => {
     return {
       ...getValues(),
-      created_at: new Date().toISOString().substring(0, 16),
+      created_at: new Date().toJSON(),
       id: 1,
       expired: false,
-      updated_at: new Date().toISOString().substring(0, 16),
+      updated_at: new Date().toJSON(),
+      deadline: getValues().deadline.toJSON(),
     };
   };
 
@@ -128,7 +119,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
   const submit: SubmitHandler<FormValues> = async (data) => {
     if (jobpostId) {
       await updateJobPost.mutate(
-        { ...data },
+        { ...data, deadline: data.deadline.toJSON() },
         {
           onSuccess: () => {
             showSnackbar('Annonsen ble oppdatert', 'success');
@@ -140,7 +131,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
       );
     } else {
       await createJobPost.mutate(
-        { ...data },
+        { ...data, deadline: data.deadline.toJSON() },
         {
           onSuccess: (newJobPost) => {
             showSnackbar('Annonsen ble opprettet', 'success');
@@ -175,15 +166,14 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
           />
           <Bool control={control} errors={errors} label='Fortløpende opptak?' name='is_continuously_hiring' type='checkbox' />
           <div className={classes.grid}>
-            <TextField
+            <DatePicker
+              control={control}
               errors={errors}
-              InputLabelProps={{ shrink: true }}
               label='Utløpsdato'
               name='deadline'
-              register={register}
               required
               rules={{ required: 'Feltet er påkrevd' }}
-              type='datetime-local'
+              type='date-time'
             />
             <TextField errors={errors} label='Link' name='link' register={register} />
           </div>
@@ -210,11 +200,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
             {jobpostId ? 'Oppdater annonse' : 'Opprett annonse'}
           </SubmitButton>
           {Boolean(jobpostId) && (
-            <Button
-              className={classnames(classes.margin, classes.red)}
-              disabled={isUpdating}
-              onClick={() => setDeleteJobPostDialogOpen(true)}
-              variant='outlined'>
+            <Button className={classes.margin} color='error' disabled={isUpdating} onClick={() => setDeleteJobPostDialogOpen(true)} variant='outlined'>
               Slett
             </Button>
           )}

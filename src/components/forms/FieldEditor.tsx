@@ -4,14 +4,8 @@ import { FormFieldType } from 'types/Enums';
 import classnames from 'classnames';
 
 // Material UI
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Button from '@material-ui/core/Button';
-import Grow from '@material-ui/core/Grow';
+import { makeStyles } from '@material-ui/styles';
+import { TextField, Typography, IconButton, Checkbox, FormControlLabel, Button, Grow } from '@material-ui/core';
 
 // Icons
 import DeleteIcon from '@material-ui/icons/DeleteOutlineRounded';
@@ -22,7 +16,7 @@ import CheckBoxIcon from '@material-ui/icons/CheckBoxOutlineBlankRounded';
 // Project components
 import Paper from 'components/layout/Paper';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'grid',
     gridGap: theme.spacing(1),
@@ -95,7 +89,7 @@ const FieldEditor = ({ field, updateField, removeField }: FieldEditorProps) => {
         <Typography variant='subtitle1'>{title}</Typography>
         <FormControlLabel
           className={classes.checkbox}
-          control={<Checkbox checked={field.required} color='primary' onChange={(e) => updateField({ ...field, required: e.target.checked })} />}
+          control={<Checkbox checked={field.required} onChange={(e) => updateField({ ...field, required: e.target.checked })} />}
           label='Påkrevd'
           labelPlacement='start'
         />
@@ -121,9 +115,7 @@ const FieldEditor = ({ field, updateField, removeField }: FieldEditorProps) => {
               </div>
             </Grow>
           ))}
-          <Button color='primary' onClick={addFieldOption}>
-            Legg til alternativ
-          </Button>
+          <Button onClick={addFieldOption}>Legg til alternativ</Button>
         </>
       )}
     </Paper>

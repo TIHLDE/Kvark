@@ -7,19 +7,14 @@ import URLS from 'URLS';
 import { EventCompact, News, JobPost } from 'types/Types';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import MaterialListItem from '@material-ui/core/ListItem';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { makeStyles } from '@material-ui/styles';
+import { lighten, Theme, Skeleton, useMediaQuery, Grid, Typography, ListItem as MaterialListItem, SvgIconTypeMap } from '@material-ui/core';
 import { OverridableComponent } from '@material-ui/core/OverridableComponent';
-import { SvgIconTypeMap } from '@material-ui/core';
 
 // Icons
 import DateIcon from '@material-ui/icons/DateRangeRounded';
-import LocationIcon from '@material-ui/icons/LocationOnRounded';
 import BusinessIcon from '@material-ui/icons/BusinessRounded';
+import DeadlineIcon from '@material-ui/icons/AlarmRounded';
 
 // Project components
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
@@ -38,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
     '--multiplier': `calc( ${theme.breakpoints.values.md}px - 100%)`,
     backgroundColor: theme.palette.background.paper,
     gridGap: theme.spacing(1),
+    '&:hover': {
+      background: lighten(theme.palette.background.paper, 0.1),
+    },
   },
   content: {
     minWidth: '33%',
@@ -47,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     justifyContent: 'space-evenly',
     width: 1,
-    minHeight: 110,
+    minHeight: 95,
   },
   imgContainer: {
     minWidth: '33%',
@@ -84,9 +82,6 @@ const useStyles = makeStyles((theme) => ({
     height: 24,
     width: 24,
     margin: theme.spacing(0),
-  },
-  skeletonMaxWidth: {
-    maxWidth: '100%',
   },
 }));
 
@@ -150,9 +145,8 @@ function ListItem({ event, news, jobpost, className, largeImg = false }: ListIte
       return [{ label: news.header }];
     } else if (jobpost) {
       return [
-        { label: jobpost.company, icon: BusinessIcon },
-        { label: jobpost.location, icon: LocationIcon },
-        { label: jobpost.is_continuously_hiring ? 'Fortløpende opptak' : formatDate(parseISO(jobpost.deadline)), icon: DateIcon },
+        { label: `${jobpost.company} | ${jobpost.location}`, icon: BusinessIcon },
+        { label: jobpost.is_continuously_hiring ? 'Fortløpende opptak' : formatDate(parseISO(jobpost.deadline)), icon: DeadlineIcon },
       ];
     }
   }, [event, news, jobpost]);
@@ -184,9 +178,9 @@ export const ListItemLoading = ({ className, largeImg = false }: Pick<ListItemPr
     <MaterialListItem className={classNames(classes.root, className)}>
       <AspectRatioLoading className={classNames(classes.imgContainer, largeImg && lgUp && classes.largeImg)} />
       <Grid className={classes.content} container direction='column' wrap='nowrap'>
-        <Skeleton className={classes.skeletonMaxWidth} height={60} width={200} />
-        <Skeleton className={classes.skeletonMaxWidth} height={30} width={300} />
-        <Skeleton className={classes.skeletonMaxWidth} height={30} width={250} />
+        <Skeleton height={60} width={200} />
+        <Skeleton height={30} width={300} />
+        <Skeleton height={30} width={250} />
       </Grid>
     </MaterialListItem>
   );

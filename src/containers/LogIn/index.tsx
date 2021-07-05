@@ -1,28 +1,23 @@
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import Helmet from 'react-helmet';
 import URLS from 'URLS';
 import { useLogin } from 'api/hooks/User';
-import { useMisc } from 'api/hooks/Misc';
+import { useSetRedirectUrl, useRedirectUrl } from 'api/hooks/Misc';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
-
+import { SecondaryTopBox } from 'components/layout/TopBox';
 const useStyles = makeStyles((theme) => ({
-  top: {
-    height: 220,
-    background: `radial-gradient(circle at bottom, ${theme.palette.colors.gradient.secondary.top}, ${theme.palette.colors.gradient.secondary.bottom})`,
-  },
   paper: {
     maxWidth: theme.breakpoints.values.sm,
     margin: 'auto',
@@ -61,7 +56,8 @@ const LogIn = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const logIn = useLogin();
-  const { setLogInRedirectURL, getLogInRedirectURL } = useMisc();
+  const setLogInRedirectURL = useSetRedirectUrl();
+  const redirectURL = useRedirectUrl();
   const { register, errors, handleSubmit, setError } = useForm<LoginData>();
 
   const onLogin = async (data: LoginData) => {
@@ -69,7 +65,6 @@ const LogIn = () => {
       { username: data.username, password: data.password },
       {
         onSuccess: () => {
-          const redirectURL = getLogInRedirectURL();
           setLogInRedirectURL(null);
           navigate(redirectURL || URLS.landing);
         },
@@ -81,10 +76,7 @@ const LogIn = () => {
   };
 
   return (
-    <Navigation banner={<div className={classes.top} />} fancyNavbar>
-      <Helmet>
-        <title>Logg inn</title>
-      </Helmet>
+    <Page banner={<SecondaryTopBox />} options={{ title: 'Logg inn' }}>
       <Paper className={classes.paper}>
         {logIn.isLoading && <LinearProgress className={classes.progress} />}
         <TihldeLogo className={classes.logo} darkColor='white' lightColor='blue' size='large' />
@@ -116,16 +108,16 @@ const LogIn = () => {
             Logg inn
           </SubmitButton>
           <div className={classes.buttons}>
-            <Button className={classes.button} color='primary' component={Link} disabled={logIn.isLoading} fullWidth to={URLS.forgotPassword}>
+            <Button className={classes.button} component={Link} disabled={logIn.isLoading} fullWidth to={URLS.forgotPassword}>
               Glemt passord?
             </Button>
-            <Button className={classes.button} color='primary' component={Link} disabled={logIn.isLoading} fullWidth to={URLS.signup}>
+            <Button className={classes.button} component={Link} disabled={logIn.isLoading} fullWidth to={URLS.signup}>
               Opprett bruker
             </Button>
           </div>
         </form>
       </Paper>
-    </Navigation>
+    </Page>
   );
 };
 

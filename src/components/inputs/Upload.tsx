@@ -1,13 +1,12 @@
 import { useState, useCallback } from 'react';
 import { RegisterOptions, UseFormMethods } from 'react-hook-form';
 import Cropper from 'react-easy-crop';
-import compressImage from 'browser-image-compression';
-import useShare from 'use-share';
+import { useShare } from 'api/hooks/Utils';
 import API from 'api/api';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import {
   Button,
   ButtonProps,
@@ -43,17 +42,11 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '100%',
     borderRadius: theme.shape.borderRadius,
   },
-  button: {
-    height: 50,
-  },
   cropper: {
     position: 'relative',
     width: '100%',
     height: 400,
     maxHeight: '90vh',
-  },
-  remove: {
-    color: theme.palette.error.main,
   },
   links: {
     display: 'grid',
@@ -104,8 +97,8 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
     try {
       if (e.target.files && e.target.files.length > 0) {
         const file = e.target.files[0];
+        setImageFile(file);
         if (ratio) {
-          setImageFile(file);
           const imageDataUrl = await readFile(file);
           setImageSrc(imageDataUrl);
           setDialogOpen(true);
@@ -130,8 +123,9 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
   const uploadFile = async (file: File | Blob) => {
     setIsLoading(true);
     try {
+      const { default: compressImage } = await import('browser-image-compression');
       const compressedImage = await compressImage(file as File, { maxSizeMB: 0.8, maxWidthOrHeight: 1500 });
-      const newFile = blobToFile(compressedImage, imageFile?.name || '', imageFile?.type || '');
+      const newFile = blobToFile(compressedImage, file instanceof File ? file.name : imageFile?.name || '', imageFile?.type || file.type || '');
       const data = await API.uploadFile(newFile);
       setValue(name, data.url);
     } catch (e) {
@@ -147,14 +141,14 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
           <input hidden name={name} ref={register && register(rules)} />
           <input accept='image/*' hidden id='image-upload-button' onChange={onSelect} type='file' />
           <label htmlFor='image-upload-button'>
-            <Button className={classes.button} color='primary' component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
+            <Button component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
               {label}
             </Button>
           </label>
         </div>
         {Boolean(errors[name]) && <FormHelperText error>{errors[name]?.message}</FormHelperText>}
         {url && (
-          <Button className={classes.remove} color='primary' disabled={isLoading} fullWidth onClick={() => setValue(name, '')}>
+          <Button color='error' disabled={isLoading} fullWidth onClick={() => setValue(name, '')}>
             Fjern bilde
           </Button>
         )}
@@ -208,14 +202,14 @@ export const FormFileUpload = ({ register, watch, setValue, name, errors = {}, r
         <input hidden name={name} ref={register && register(rules)} />
         <input hidden id='file-upload-button' onChange={upload} type='file' />
         <label htmlFor='file-upload-button'>
-          <Button className={classes.button} color='primary' component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
+          <Button component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
             {label}
           </Button>
         </label>
       </div>
       {Boolean(errors[name]) && <FormHelperText error>{errors[name]?.message}</FormHelperText>}
       {url && (
-        <Button className={classes.remove} color='primary' disabled={isLoading} fullWidth onClick={() => setValue(name, '')}>
+        <Button color='error' disabled={isLoading} fullWidth onClick={() => setValue(name, '')}>
           Fjern fil
         </Button>
       )}
@@ -246,10 +240,13 @@ export const FileUpload = ({ label = 'Last opp filer', ...props }: FileUploadPro
   };
 
   const File = ({ url }: { url: string }) => {
-    const { share } = useShare({
-      title: 'Del fil',
-      url,
-    });
+    const { share } = useShare(
+      {
+        title: 'Del fil',
+        url,
+      },
+      'Link til filen ble kopiert til utklippstavlen',
+    );
     return (
       <Paper className={classes.file} noPadding>
         <ListItem>
@@ -281,7 +278,7 @@ export const FileUpload = ({ label = 'Last opp filer', ...props }: FileUploadPro
       <div>
         <input hidden id='files-upload-button' multiple onChange={upload} type='file' />
         <label htmlFor='files-upload-button'>
-          <Button className={classes.button} color='primary' component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
+          <Button component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
             {label}
           </Button>
         </label>

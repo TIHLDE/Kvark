@@ -1,20 +1,18 @@
 import { useRef } from 'react';
 import URLS from 'URLS';
-import Helmet from 'react-helmet';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/styles';
+import { Typography } from '@material-ui/core';
 
 // Icons and images
 import Image from 'assets/img/glad.jpg';
 import SendIcon from '@material-ui/icons/SendRounded';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import InfoCard from 'components/layout/InfoCard';
-import Banner from 'components/layout/Banner';
+import Banner, { BannerButton } from 'components/layout/Banner';
 import CompaniesForm from 'containers/Companies/components/CompaniesForm';
 import Container from 'components/layout/Container';
 
@@ -25,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     margin: '0 auto',
     gridGap: theme.spacing(2),
     justifyContent: 'center',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       gridGap: theme.spacing(1),
       gridTemplateColumns: '1fr',
     },
@@ -44,19 +42,12 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 'none',
     maxHeight: 'none',
     height: 'auto',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       width: '100%',
     },
   },
   smoke: {
     backgroundColor: theme.palette.background.smoke,
-  },
-  bannerButton: {
-    color: theme.palette.common.white,
-    borderColor: theme.palette.common.white + 'bb',
-    '&:hover': {
-      borderColor: theme.palette.common.white,
-    },
   },
 }));
 
@@ -75,7 +66,7 @@ Det legger mye vekt på praktisk utvikling av systemer og programmer, og student
     drift: `Dette bachelorstudiet setter fokus på den drift-tekniske IKT-kompetansen bedrifter etterspør. Studentene lærer planleggingsprosesser og oppsett av virtuelle maskiner med bruk av teknologier som VMWare og HyperV. Videre temaer i studiet er Linux, Windows Server, “Cloud Computing” og overvåkning og sikkerhet i digital infrastruktur.`,
     digsec: `Digital samhandling er et veletablert forskningsområde som tar for seg hvordan utøvelse og koordinering av samarbeidsaktiviteter kan støttes ved hjelp av ulike IKT-systemer. Studentene ved denne 2 årige masteren er i stand til å samhandle effektivt i forskjellige tverrfaglige problemløsningsprosesser.`,
     digfor: `Digital forretningsutvikling kombinerer IT, økonomi og ledelse for å skape forretningsutviklere med tverrfaglig kompetanse. For at samfunnet skal digitaliseres er det nødvendig med ledere som har både teknisk og økonomisk kompetanse. Digital forretningsutvikling er lagt opp med høyt fokus på praktisk erfaring innenfor teamarbeid og kommunikasjon. Studiet søker å utdanne dyktige endringsagenter som kan effektivisere arbeidsprosesser og implementere digitale løsninger i bedrifter.`,
-    ads: `Vi tilbyr promotering av stillingsannonser ut til våre 600 dyktige studenter på vår karriereside <a href="${URLS.jobposts}">tihlde.org/karriere</a>.`,
+    ads: `Vi tilbyr promotering av stillingsannonser ut til våre 600 dyktige studenter på vår karriereside [tihlde.org/karriere](${URLS.jobposts}).`,
     course: `Et kurs er et faglig arrangement hvor fokuset skal være på å introdusere studentene for faglige erfaringer som de kan få bruk for i arbeidslivet. Kurset kan inneholde en rask presentasjon av bedriften før kurset starter. Vi legger tilrette for matservering på skolen etter kurset, eller bespisning på restaurant i etterkant.`,
     companyTrips: `Under et bedriftsbesøk reiser studentene til bedriftens lokale for et valgfritt arrangement. Et bedriftsbesøk gir dere som bedrift muligheten til å vise studentene frem hvor de kan jobbe, og bli godt kjent med dem. `,
     companies: `En bedriftspresentasjon gir dere som organisasjon mulighet til å presentere dere for TIHLDE sine studenter. Dette er en gylden mulighet til å gjøre studentene bevisst på hvem dere er, hva dere tilbyr og hvordan dere jobber.
@@ -85,19 +76,16 @@ Vi kan også tilrettelegge for speed intervjuer dersom dette er ønskelig.`,
   };
 
   return (
-    <Navigation
+    <Page
       banner={
-        <Banner text='<b>Alle arrangementer kan gjennomføres digitalt våren 2021<b/>' title='For Bedrifter'>
-          <Button className={classes.bannerButton} color='primary' fullWidth onClick={scrollToForm} startIcon={<SendIcon />} variant='outlined'>
+        <Banner text='**Alle arrangementer kan gjennomføres digitalt høsten 2021**' title='For Bedrifter'>
+          <BannerButton onClick={scrollToForm} startIcon={<SendIcon />}>
             Send oss en melding
-          </Button>
+          </BannerButton>
         </Banner>
       }
-      fancyNavbar
-      maxWidth={false}>
-      <Helmet>
-        <title>For bedrifter</title>
-      </Helmet>
+      maxWidth={false}
+      options={{ title: 'For bedrifter' }}>
       <Container className={classes.section}>
         <Typography align='center' gutterBottom variant='h2'>
           Vi tilbyr
@@ -134,7 +122,7 @@ Vi kan også tilrettelegge for speed intervjuer dersom dette er ønskelig.`,
           <InfoCard header='Om TIHLDE' imageClass={classes.imageClass} src={Image} text={text.aboutUs} />
         </Container>
       </div>
-    </Navigation>
+    </Page>
   );
 };
 

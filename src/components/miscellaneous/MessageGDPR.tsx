@@ -3,14 +3,13 @@ import { getCookie, setCookie } from 'api/cookie';
 import { ACCEPTED_ANALYTICS } from 'constant';
 
 // Material UI
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/styles';
+import { Typography, Button } from '@material-ui/core';
 
 // Project components
 import Paper from 'components/layout/Paper';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: theme.breakpoints.values.lg,
     padding: theme.spacing(2),
@@ -20,12 +19,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     left: 0,
     right: 0,
     zIndex: theme.zIndex.snackbar,
+    [theme.breakpoints.down('lg')]: {
+      bottom: theme.spacing(10),
+    },
   },
   paper: {
     display: 'grid',
     gridGap: theme.spacing(2),
     gridTemplateColumns: '1fr auto',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       gridTemplateColumns: '1fr',
     },
   },
@@ -34,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-function MessageGDPR() {
+const MessageGDPR = () => {
   const cookieValue = !getCookie(ACCEPTED_ANALYTICS);
   const [display, setDisplay] = useState<boolean>(cookieValue);
   const classes = useStyles();
@@ -60,7 +62,6 @@ function MessageGDPR() {
           </Typography>
           <Button
             className={classes.button}
-            color='primary'
             onClick={() => {
               closeDialog();
             }}
@@ -71,6 +72,6 @@ function MessageGDPR() {
       </div>
     );
   }
-}
+};
 
 export default MessageGDPR;

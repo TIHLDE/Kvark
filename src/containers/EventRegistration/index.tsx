@@ -1,198 +1,123 @@
 import { ChangeEvent, useMemo, useState } from 'react';
 import QrReader from 'react-qr-reader';
-import Helmet from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import { Registration } from 'types/Types';
 import { useEventById, useEventRegistrations, useUpdateEventRegistration } from 'api/hooks/Event';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Hidden from '@material-ui/core/Hidden';
+import { Theme, Stack, Typography, TextField, LinearProgress, FormControlLabel, Checkbox, useMediaQuery } from '@material-ui/core';
 
 // Icons
 import NameIcon from '@material-ui/icons/TextFieldsRounded';
-import QRIcon from '@material-ui/icons/CameraAltRounded';
+import QRIcon from '@material-ui/icons/QrCodeScannerRounded';
 
 // Project Components
 import Http404 from 'containers/Http404';
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import Tabs from 'components/layout/Tabs';
-
-const useStyles = makeStyles((theme: Theme) => ({
-  top: {
-    height: 220,
-    background: theme.palette.colors.gradient.main.top,
-  },
-  paper: {
-    maxWidth: theme.breakpoints.values.md,
-    margin: 'auto',
-    position: 'relative',
-    left: 0,
-    right: 0,
-    top: '-60px',
-  },
-  progress: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-  },
-  snackbar: {
-    bottom: theme.spacing(2),
-    position: 'fixed',
-    borderRadius: theme.shape.borderRadius,
-    color: theme.palette.common.white,
-    textAlign: 'center',
-    display: 'flex',
-    justifyContent: 'center',
-    [theme.breakpoints.up('lg')]: {
-      whiteSpace: 'nowrap',
-    },
-  },
-  snackbar_success: {
-    backgroundColor: theme.palette.success.dark,
-  },
-  snackbar_error: {
-    backgroundColor: theme.palette.error.main,
-  },
-  cardContent: {
-    padding: theme.spacing(1, 2),
-    display: 'flex',
-    marginBottom: 2,
-  },
-  cardUserName: {
-    flexGrow: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-  cardText: {
-    fontWeight: 'bold',
-    fontSize: '17px',
-    color: theme.palette.text.secondary,
-  },
-  cardButtonLabel: {
-    marginRight: theme.spacing(-1),
-  },
-  cardButtonContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    color: theme.palette.text.secondary,
-  },
-  cardActionArea: {
-    display: 'flex',
-  },
-  lightText: {
-    color: theme.palette.text.secondary,
-  },
-  title: {
-    color: theme.palette.text.primary,
-  },
-}));
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import { PrimaryTopBox } from 'components/layout/TopBox';
 
 export type ParticipantCardProps = {
   user: Registration;
-  markAttended: (username: string, attendedStatus: boolean) => void;
+  updateAttendedStatus: (username: string, attendedStatus: boolean) => void;
 };
 
-const ParticipantCard = ({ user, markAttended }: ParticipantCardProps) => {
-  const classes = useStyles();
+const ParticipantCard = ({ user, updateAttendedStatus }: ParticipantCardProps) => {
   const [checkedState, setCheckedState] = useState(user.has_attended);
+  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
-  const handleCheck = async (e: ChangeEvent<HTMLInputElement>) => {
+  const onCheck = async (e: ChangeEvent<HTMLInputElement>) => {
     setCheckedState(e.target.checked);
-    markAttended(user.user_info.user_id, e.target.checked);
+    updateAttendedStatus(user.user_info.user_id, e.target.checked);
   };
   return (
-    <Paper className={classes.cardContent}>
-      <div className={classes.cardUserName}>
-        <Typography className={classes.cardText}>{user.user_info.first_name + ' ' + user.user_info.last_name}</Typography>
-      </div>
-      <div className={classes.cardActionArea}>
-        <div className={classes.cardButtonContainer}>
-          <FormControlLabel
-            className={classes.cardButtonLabel}
-            control={<Checkbox checked={checkedState} onChange={handleCheck} />}
-            label={<Hidden smDown>Ankommet</Hidden>}
-          />
-        </div>
-      </div>
+    <Paper sx={{ padding: (theme) => theme.spacing(1, 2), display: 'flex' }}>
+      <Typography sx={{ fontWeight: 'bold', fontSize: '17px', width: '100%', margin: 'auto' }}>
+        {user.user_info.first_name + ' ' + user.user_info.last_name}
+      </Typography>
+      <FormControlLabel control={<Checkbox checked={checkedState} onChange={onCheck} />} label={!mdDown && 'Ankommet'} labelPlacement='start' />
     </Paper>
   );
 };
 
-function EventRegistration() {
-  const classes = useStyles();
+const EventRegistration = () => {
   const { id } = useParams();
   const { data, isError } = useEventById(Number(id));
-  const { data: participants } = useEventRegistrations(Number(id));
+  const { data: registrations } = useEventRegistrations(Number(id));
   const updateRegistration = useUpdateEventRegistration(Number(id));
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const [search, setSearch] = useState('');
-  const participantsTab = { value: 'participants', label: 'Navn', icon: NameIcon };
+  const registrationsTab = { value: 'registrations', label: 'Navn', icon: NameIcon };
   const qrTab = { value: 'qr', label: 'QR-kode', icon: QRIcon };
-  const tabs = [participantsTab, qrTab];
-  const [tab, setTab] = useState(participantsTab.value);
-  const participantsIn = useMemo(() => (participants || []).filter((user) => !user.is_on_wait), [participants]);
+  const tabs = [registrationsTab, qrTab];
+  const [tab, setTab] = useState(registrationsTab.value);
+  const registrationsNotOnWait = useMemo(() => (registrations || []).filter((user) => !user.is_on_wait), [registrations]);
 
-  const handleScan = (username: string | null) => {
+  const handleQrScan = (username: string | null) => {
     if (!isLoading && username) {
-      const participant = participants?.find((participant) => participant.user_info.user_id === username);
-      if (!participant) {
-        showSnackbar('Personen er ikke påmeldt dette arrangementet', 'error');
+      const registration = registrations?.find((registration) => registration.user_info.user_id === username);
+      if (!registration) {
+        showSnackbar(`Personen er ikke påmeldt dette arrangementet`, 'error');
         return;
       }
-      if (participant.has_attended) {
-        showSnackbar('Personen har allerede ankommet dette arrangementet', 'info');
+      if (registration.has_attended) {
+        showSnackbar(`${registration.user_info.first_name} ${registration.user_info.last_name} har allerede ankommet dette arrangementet`, 'warning');
         return;
       }
-      markAttended(username, true);
+      updateAttendedStatus(username, true);
     }
   };
 
-  const handleError = () => {
+  const handleQrError = () => {
     setIsLoading(false);
     showSnackbar('En ukjent feil har oppstått, sjekk at vi har tilgang til å bruke kameraet', 'warning');
   };
 
-  const markAttended = async (username: string, attendedStatus: boolean) => {
+  const updateAttendedStatus = async (username: string, attendedStatus: boolean) => {
     setIsLoading(true);
-    await updateRegistration.mutate(
+    return updateRegistration.mutateAsync(
       { registration: { has_attended: attendedStatus }, userId: username },
       {
-        onSuccess: () => {
-          showSnackbar(attendedStatus ? 'Deltageren er registrert ankommet!' : 'Vi har fjernet ankommet-statusen', 'success');
+        onSuccess: (registration) => {
+          showSnackbar(
+            attendedStatus
+              ? `${registration.user_info.first_name} ${registration.user_info.last_name} er registrert ankommet!`
+              : `Vi har fjernet ankommet-statusen til ${registration.user_info.first_name} ${registration.user_info.last_name}`,
+            attendedStatus ? 'success' : 'info',
+          );
         },
         onError: (error) => {
           showSnackbar(error.detail, 'error');
         },
+        onSettled: () => {
+          setTimeout(() => setIsLoading(false), tab === qrTab.value ? 2000 : 0);
+        },
       },
     );
-    setIsLoading(false);
   };
 
-  const Participants = () => (
-    <>
-      {participantsIn?.length ? (
-        search.trim() !== '' ? (
-          participantsIn
-            .filter((user) => (user.user_info.first_name + ' ' + user.user_info.last_name).toLowerCase().includes(search.toLowerCase()))
-            .map((user, key) => <ParticipantCard key={key} markAttended={markAttended} user={user} />)
-        ) : (
-          participantsIn.map((user, key) => <ParticipantCard key={key} markAttended={markAttended} user={user} />)
-        )
-      ) : (
-        <Typography className={classes.lightText}>Ingen påmeldte.</Typography>
-      )}
-    </>
+  const Participants = () =>
+    registrationsNotOnWait?.length ? (
+      <Stack spacing={0.25}>
+        {search.trim() !== ''
+          ? registrationsNotOnWait
+              .filter((user) => (user.user_info.first_name + ' ' + user.user_info.last_name).toLowerCase().includes(search.toLowerCase()))
+              .map((user, key) => <ParticipantCard key={key} updateAttendedStatus={updateAttendedStatus} user={user} />)
+          : registrationsNotOnWait.map((user, key) => <ParticipantCard key={key} updateAttendedStatus={updateAttendedStatus} user={user} />)}
+      </Stack>
+    ) : (
+      <NotFoundIndicator header='Ingen påmeldte' subtitle='Ingen er påmeldt dette arrangementet' />
+    );
+
+  const isiOSDevice = useMemo(
+    () =>
+      ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(navigator.platform) ||
+      (navigator.userAgent.includes('Mac') && 'ontouchend' in document),
+    [],
   );
 
   if (isError) {
@@ -200,17 +125,22 @@ function EventRegistration() {
   }
 
   return (
-    <Navigation banner={<div className={classes.top}></div>} fancyNavbar>
-      <Helmet>
-        <title>{data?.title || ''} - Registrering - TIHLDE</title>
-      </Helmet>
-      <Paper className={classes.paper}>
-        {isLoading && <LinearProgress className={classes.progress} />}
-        <Typography align='center' className={classes.title} variant='h2'>
+    <Page banner={<PrimaryTopBox />} options={{ title: `${data?.title || 'Laster arrangement...'} - Registrering` }}>
+      <Paper
+        sx={{
+          maxWidth: (theme) => theme.breakpoints.values.md,
+          margin: 'auto',
+          position: 'relative',
+          left: 0,
+          right: 0,
+          top: -60,
+        }}>
+        {isLoading && <LinearProgress sx={{ position: 'absolute', top: 0, left: (theme) => theme.spacing(1), right: (theme) => theme.spacing(1) }} />}
+        <Typography align='center' variant='h2'>
           {data?.title || ''}
         </Typography>
         <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
-        {tab === participantsTab.value && (
+        {tab === registrationsTab.value && (
           <>
             <TextField fullWidth label='Søk' margin='normal' onChange={(e) => setSearch(e.target.value)} type='Søk' variant='outlined' />
             <Participants />
@@ -218,14 +148,18 @@ function EventRegistration() {
         )}
         {tab === qrTab.value && (
           <>
-            <QrReader onError={handleError} onScan={handleScan} showViewFinder={true} style={{ width: '100%' }} />
-            <br />
-            <Typography variant='body1'>QR-scanning på iOS støttes kun i Safari</Typography>
+            <QrReader onError={handleQrError} onScan={handleQrScan} resolution={800} showViewFinder={true} style={{ width: '100%' }} />
+            {isiOSDevice && (
+              <>
+                <br />
+                <Typography sx={{ fontStyle: 'italic' }}>QR-scanning på iOS støttes kun i Safari</Typography>
+              </>
+            )}
           </>
         )}
       </Paper>
-    </Navigation>
+    </Page>
   );
-}
+};
 
 export default EventRegistration;

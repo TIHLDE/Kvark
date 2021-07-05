@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import classNames from 'classnames';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { makeStyles } from '@material-ui/styles';
+import { Theme, Skeleton } from '@material-ui/core';
 
 // Icons
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
@@ -59,7 +59,7 @@ export const AspectRatioLoading = ({ className, imgClassName, ratio = 21 / 9 }: 
   const classes = useStyles({ ratio });
   return (
     <div className={classNames(classes.imgContainer, className)}>
-      <Skeleton className={classNames(classes.img, classes.skeleton, imgClassName)} variant='rect' />
+      <Skeleton className={classNames(classes.img, imgClassName)} variant='rectangular' />
     </div>
   );
 };

@@ -4,12 +4,10 @@ import { RegistrationPriority } from 'types/Types';
 import { UserClass, UserStudy } from 'types/Enums';
 
 // Material-UI
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormLabel from '@material-ui/core/FormLabel';
-import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/styles';
+import { FormGroup, FormLabel, Button } from '@material-ui/core';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   formWrapper: {
     width: '100%',
   },
@@ -18,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
     flexWrap: 'nowrap',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr',
     },
   },
@@ -110,7 +108,6 @@ const EventRegistrationPriorities = ({ priorities, setPriorities }: EventRegistr
                           : { outlinedPrimary: classes.chipNo }
                       }
                       className={classes.mr}
-                      color='primary'
                       key={userClass}
                       onClick={handlePriorityChange(userClass, userStudy)}
                       variant='outlined'>
@@ -131,7 +128,6 @@ const EventRegistrationPriorities = ({ priorities, setPriorities }: EventRegistr
                 : { outlinedPrimary: classes.chipNo }
             }
             className={classes.mr}
-            color='primary'
             onClick={handlePriorityChange(4, 4)}
             variant='outlined'>
             {4 + '. ' + getUserStudyShort(4)}
@@ -143,7 +139,6 @@ const EventRegistrationPriorities = ({ priorities, setPriorities }: EventRegistr
                 : { outlinedPrimary: classes.chipNo }
             }
             className={classes.mr}
-            color='primary'
             onClick={handlePriorityChange(5, 4)}
             variant='outlined'>
             {5 + '. ' + getUserStudyShort(4)}
@@ -151,10 +146,10 @@ const EventRegistrationPriorities = ({ priorities, setPriorities }: EventRegistr
         </FormGroup>
       </FormGroup>
       <FormGroup className={classes.formGroupSmall}>
-        <Button className={classes.mr} color='primary' onClick={toggleAllPriorities(true)} variant='outlined'>
+        <Button className={classes.mr} onClick={toggleAllPriorities(true)} variant='outlined'>
           Alle
         </Button>
-        <Button className={classes.mr} color='primary' onClick={toggleAllPriorities(false)} variant='outlined'>
+        <Button className={classes.mr} onClick={toggleAllPriorities(false)} variant='outlined'>
           Ingen
         </Button>
       </FormGroup>

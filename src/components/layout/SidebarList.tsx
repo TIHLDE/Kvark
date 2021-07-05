@@ -3,28 +3,31 @@ import { InfiniteQueryObserverResult } from 'react-query';
 import { PaginationResponse } from 'types/Types';
 
 // Material UI Components
-import { makeStyles, useTheme, Theme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import MuiListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Hidden from '@material-ui/core/Hidden';
-import Fab from '@material-ui/core/Fab';
-import Zoom from '@material-ui/core/Zoom';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { makeStyles } from '@material-ui/styles';
+import {
+  Theme,
+  useTheme,
+  useMediaQuery,
+  Drawer,
+  List,
+  ListItem as MuiListItem,
+  ListItemText,
+  Fab,
+  Zoom,
+  Typography,
+  Divider,
+  IconButton,
+  Skeleton,
+} from '@material-ui/core';
 
 // Icons
-import MenuIcon from '@material-ui/icons/MenuRounded';
+import MenuIcon from '@material-ui/icons/FormatListBulletedRounded';
 import AddIcon from '@material-ui/icons/AddRounded';
 
 // Project components
 import Pagination from 'components/layout/Pagination';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles<Theme>((theme) => ({
   header: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -43,7 +46,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
   },
-  drawerTop: theme.mixins.toolbar,
+  drawerTop: {
+    [theme.breakpoints.up('lg')]: {
+      ...theme.mixins.toolbar,
+    },
+  },
   drawerPaper: {
     width: theme.spacing(35),
     display: 'grid',
@@ -58,32 +65,44 @@ const useStyles = makeStyles((theme: Theme) => ({
     bottom: theme.spacing(2),
     right: theme.spacing(2),
     zIndex: 10,
+    [theme.breakpoints.down('lg')]: {
+      bottom: theme.spacing(12),
+    },
   },
 }));
 
-export type Item = {
-  id: number;
-  title: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-} & Record<string, any>;
-
-export type SidebarListProps = {
-  useHook: (args?: unknown) => InfiniteQueryObserverResult<PaginationResponse<Item>>;
+export type SidebarListProps<Type> = {
+  useHook: (args?: unknown) => InfiniteQueryObserverResult<PaginationResponse<Type>>;
   onItemClick: (itemId: null | number) => void;
   selectedItemId: number;
   title: string;
   noExpired?: boolean;
-  descKey?: string;
+  idKey: keyof Type;
+  titleKey: keyof Type;
+  descKey: keyof Type;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  formatDesc?: (content: any) => string;
 };
 
-const SidebarList = ({ useHook, onItemClick, selectedItemId, title, descKey = 'location', noExpired = false }: SidebarListProps) => {
+// eslint-disable-next-line comma-spacing
+const SidebarList = <Type,>({
+  useHook,
+  onItemClick,
+  selectedItemId,
+  title,
+  idKey,
+  titleKey,
+  descKey,
+  formatDesc,
+  noExpired = false,
+}: SidebarListProps<Type>) => {
   const classes = useStyles();
   const { data, hasNextPage, fetchNextPage, isLoading } = useHook();
   const items = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   const { data: expiredData, hasNextPage: hasNextExpiredPage, fetchNextPage: fetchNextExpiredPage, isLoading: isExpiredLoading } = useHook({ expired: true });
   const expiredItems = useMemo(() => (expiredData ? expiredData.pages.map((page) => page.results).flat() : []), [expiredData]);
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('lg'));
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const transitionDuration = {
@@ -96,9 +115,21 @@ const SidebarList = ({ useHook, onItemClick, selectedItemId, title, descKey = 'l
     setMobileOpen(false);
   };
 
-  const ListItem = ({ item }: { item: Item }) => (
-    <MuiListItem button className={classes.listItem} onClick={() => handleItemClick(item.id)} selected={item.id === selectedItemId}>
-      <ListItemText classes={{ secondary: classes.listItemSecondary }} primary={item.title} secondary={item[descKey]} />
+  type ListItemProps = {
+    item: Type;
+  };
+
+  const ListItem = ({ item }: ListItemProps) => (
+    <MuiListItem
+      button
+      className={classes.listItem}
+      onClick={() => handleItemClick(Number(item[idKey]))}
+      selected={Boolean(Number(item[idKey]) === selectedItemId)}>
+      <ListItemText
+        classes={{ secondary: classes.listItemSecondary }}
+        primary={item[titleKey]}
+        secondary={formatDesc ? formatDesc(item[descKey]) : item[descKey]}
+      />
     </MuiListItem>
   );
   const ListItemLoading = () => (
@@ -117,7 +148,7 @@ const SidebarList = ({ useHook, onItemClick, selectedItemId, title, descKey = 'l
         open={!isSmallScreen || mobileOpen}
         style={{ zIndex: theme.zIndex.drawer }}
         variant={isSmallScreen ? 'temporary' : 'permanent'}>
-        <div className={classes.drawerTop}></div>
+        <div className={classes.drawerTop} />
         <div className={classes.scroll}>
           <div className={classes.header}>
             <Typography variant='h3'>{title}</Typography>
@@ -125,11 +156,11 @@ const SidebarList = ({ useHook, onItemClick, selectedItemId, title, descKey = 'l
               <AddIcon />
             </IconButton>
           </div>
-          <Pagination fullWidth hasNextPage={hasNextPage} nextPage={fetchNextPage}>
+          <Pagination fullWidth hasNextPage={hasNextPage} nextPage={fetchNextPage} variant='text'>
             <List className={classes.list} dense disablePadding>
               {isLoading && <ListItemLoading />}
               {items.map((item) => (
-                <ListItem item={item} key={item.id} />
+                <ListItem item={item} key={String(item[idKey])} />
               ))}
             </List>
           </Pagination>
@@ -139,11 +170,11 @@ const SidebarList = ({ useHook, onItemClick, selectedItemId, title, descKey = 'l
               <div className={classes.header}>
                 <Typography variant='h3'>Tidligere</Typography>
               </div>
-              <Pagination fullWidth hasNextPage={hasNextExpiredPage} nextPage={fetchNextExpiredPage}>
+              <Pagination fullWidth hasNextPage={hasNextExpiredPage} nextPage={fetchNextExpiredPage} variant='text'>
                 <List className={classes.list} dense disablePadding>
                   {isExpiredLoading && <ListItemLoading />}
                   {expiredItems.map((item) => (
-                    <ListItem item={item} key={item.id} />
+                    <ListItem item={item} key={String(item[idKey])} />
                   ))}
                 </List>
               </Pagination>
@@ -151,13 +182,13 @@ const SidebarList = ({ useHook, onItemClick, selectedItemId, title, descKey = 'l
           )}
         </div>
       </Drawer>
-      <Hidden lgUp>
+      {isSmallScreen && (
         <Zoom in={!mobileOpen} style={{ transitionDelay: `${mobileOpen ? 0 : transitionDuration.exit}ms` }} timeout={transitionDuration} unmountOnExit>
           <Fab aria-label='Meny' className={classes.fab} color='primary' onClick={() => setMobileOpen((prev) => !prev)} size='medium'>
             <MenuIcon />
           </Fab>
         </Zoom>
-      </Hidden>
+      )}
     </>
   );
 };

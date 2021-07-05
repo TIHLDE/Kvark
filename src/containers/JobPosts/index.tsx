@@ -1,15 +1,16 @@
-import { Fragment, useMemo, useState } from 'react';
-import Helmet from 'react-helmet';
+import { Fragment, useMemo, useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { useJobPosts } from 'api/hooks/JobPost';
+import { argsToParams } from 'utils';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Banner from 'components/layout/Banner';
 import Pagination from 'components/layout/Pagination';
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
@@ -27,14 +28,14 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'self-start',
     paddingBottom: theme.spacing(2),
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr',
     },
   },
   list: {
     display: 'grid',
     gridTemplateColumns: '1fr',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       order: 1,
     },
   },
@@ -42,19 +43,12 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
     gridGap: theme.spacing(1),
     position: 'sticky',
-    top: 88,
+    top: 80,
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       order: 0,
       position: 'static',
       top: 0,
-    },
-  },
-  resetBtn: {
-    color: theme.palette.error.main,
-    borderColor: theme.palette.error.main,
-    '&:hover': {
-      borderColor: theme.palette.error.light,
     },
   },
 }));
@@ -65,27 +59,33 @@ type Filters = {
 };
 
 const JobPosts = () => {
+  const getInitialFilters = useCallback((): Filters => {
+    const params = new URLSearchParams(location.search);
+    const expired = params.get('expired') ? Boolean(params.get('expired') === 'true') : false;
+    const search = params.get('search') || undefined;
+    return { expired, search };
+  }, []);
   const classes = useStyles();
-  const [filters, setFilters] = useState<Filters>({ expired: false });
+  const navigate = useNavigate();
+  const [filters, setFilters] = useState<Filters>(getInitialFilters());
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useJobPosts(filters);
-  const { register, control, handleSubmit, setValue } = useForm<Filters>();
+  const { register, control, handleSubmit, setValue } = useForm<Filters>({ defaultValues: getInitialFilters() });
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 
   const resetFilters = () => {
     setValue('search', '');
     setValue('expired', false);
     setFilters({ expired: false });
+    navigate(`${location.pathname}${argsToParams({ expired: false })}`, { replace: true });
   };
 
   const search = (data: Filters) => {
-    setFilters({ ...data, search: data.search?.trim() !== '' ? data.search : undefined });
+    setFilters(data);
+    navigate(`${location.pathname}${argsToParams(data)}`, { replace: true });
   };
 
   return (
-    <Navigation banner={<Banner title='Karriere' />} fancyNavbar>
-      <Helmet>
-        <title>Karriere</title>
-      </Helmet>
+    <Page banner={<Banner title='Karriere' />} options={{ title: 'Karriere' }}>
       <div className={classes.grid}>
         <div className={classes.list}>
           {isLoading && <ListItemLoading />}
@@ -113,12 +113,12 @@ const JobPosts = () => {
             </SubmitButton>
           </form>
           <Divider />
-          <Button className={classes.resetBtn} fullWidth onClick={resetFilters} variant='outlined'>
+          <Button color='error' fullWidth onClick={resetFilters} variant='outlined'>
             Tilbakestill
           </Button>
         </Paper>
       </div>
-    </Navigation>
+    </Page>
   );
 };
 

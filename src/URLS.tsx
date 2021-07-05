@@ -13,6 +13,7 @@ export const PAGES_URLS = {
 export default {
   landing: '/',
   events: '/arrangementer/',
+  eventRegister: 'registrering/',
   company: '/bedrifter/',
   contactInfo: `${PAGES}${PAGES_URLS.CONTACT_US}`,
   newStudent: `${PAGES}${PAGES_URLS.NEW_STUDENT}`,

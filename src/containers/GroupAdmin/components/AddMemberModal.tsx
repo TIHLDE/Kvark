@@ -1,9 +1,8 @@
-import { TextField, ListItemText, Button } from '@material-ui/core';
-import useSnackbar from 'api/hooks/Snackbar';
+import { TextField, ListItemText, Button, Autocomplete } from '@material-ui/core';
+import { useSnackbar } from 'api/hooks/Snackbar';
 import { Controller, useForm } from 'react-hook-form';
 import { useUsers } from 'api/hooks/User';
 import { useMemo, useState } from 'react';
-import { Autocomplete } from '@material-ui/lab';
 import { getUserClass, getUserStudyShort } from 'utils';
 import { useCreateMembership } from 'api/hooks/Membership';
 import Dialog from 'components/layout/Dialog';
@@ -56,7 +55,7 @@ const AddMemberModal = ({ groupSlug }: AddMemberModalProps) => {
 
   return (
     <>
-      <Button color='primary' fullWidth onClick={() => setIsOpen(true)} startIcon={<AddIcon />} variant='outlined'>
+      <Button fullWidth onClick={() => setIsOpen(true)} startIcon={<AddIcon />} variant='outlined'>
         Legg til medlem
       </Button>
       <Dialog onClose={() => setIsOpen(false)} open={isOpen} titleText='Legg til medlem'>
@@ -73,7 +72,7 @@ const AddMemberModal = ({ groupSlug }: AddMemberModalProps) => {
                 renderInput={(params) => (
                   <TextField margin='normal' {...params} label='Medlem' onChange={(e) => setSearch(e.target.value)} variant='outlined' />
                 )}
-                renderOption={(option) => (
+                renderOption={(props, option) => (
                   <ListItemText
                     primary={`${option.first_name} ${option.last_name}`}
                     secondary={`${getUserClass(option.user_class)} ${getUserStudyShort(option.user_study)}`}

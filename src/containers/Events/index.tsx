@@ -1,18 +1,16 @@
-import { Fragment, useEffect, useMemo, useState } from 'react';
-import Helmet from 'react-helmet';
+import { Fragment, useMemo, useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { useEvents } from 'api/hooks/Event';
-import { useMisc } from 'api/hooks/Misc';
-import { Category } from 'types/Types';
+import { useCategories } from 'api/hooks/Categories';
+import { argsToParams } from 'utils';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
-import Divider from '@material-ui/core/Divider';
-import MenuItem from '@material-ui/core/MenuItem';
-import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/styles';
+import { Divider, MenuItem, Button } from '@material-ui/core';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Banner from 'components/layout/Banner';
 import Pagination from 'components/layout/Pagination';
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
@@ -31,14 +29,14 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'self-start',
     paddingBottom: theme.spacing(2),
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr',
     },
   },
   list: {
     display: 'grid',
     gridTemplateColumns: '1fr',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       order: 1,
     },
   },
@@ -46,19 +44,12 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
     gridGap: theme.spacing(1),
     position: 'sticky',
-    top: 88,
+    top: 80,
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       order: 0,
       position: 'static',
       top: 0,
-    },
-  },
-  resetBtn: {
-    color: theme.palette.error.main,
-    borderColor: theme.palette.error.main,
-    '&:hover': {
-      borderColor: theme.palette.error.light,
     },
   },
 }));
@@ -70,32 +61,36 @@ type Filters = {
 };
 
 const Events = () => {
-  const classes = useStyles();
-  const { getCategories } = useMisc();
-  const [categories, setCategories] = useState<Array<Category>>([]);
-  const [filters, setFilters] = useState<Filters>({ expired: false });
-  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents(filters);
-  const { register, control, handleSubmit, setValue } = useForm<Filters>();
-  const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
-
-  useEffect(() => {
-    getCategories().then(setCategories);
+  const getInitialFilters = useCallback((): Filters => {
+    const params = new URLSearchParams(location.search);
+    const expired = params.get('expired') ? Boolean(params.get('expired') === 'true') : false;
+    const category = params.get('category') || undefined;
+    const search = params.get('search') || undefined;
+    return { expired, category, search };
   }, []);
+  const classes = useStyles();
+  const navigate = useNavigate();
+  const { data: categories = [] } = useCategories();
+  const [filters, setFilters] = useState<Filters>(getInitialFilters());
+  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents(filters);
+  const { register, control, handleSubmit, setValue } = useForm<Filters>({ defaultValues: getInitialFilters() });
+  const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 
   const resetFilters = () => {
     setValue('category', '');
     setValue('search', '');
     setValue('expired', false);
     setFilters({ expired: false });
+    navigate(`${location.pathname}${argsToParams({ expired: false })}`, { replace: true });
   };
 
-  const search = (data: Filters) => setFilters(data);
+  const search = (data: Filters) => {
+    setFilters(data);
+    navigate(`${location.pathname}${argsToParams(data)}`, { replace: true });
+  };
 
   return (
-    <Navigation banner={<Banner title='Arrangementer' />} fancyNavbar>
-      <Helmet>
-        <title>Arrangementer</title>
-      </Helmet>
+    <Page banner={<Banner title='Arrangementer' />} options={{ title: 'Arrangementer' }}>
       <div className={classes.grid}>
         <div className={classes.list}>
           {isLoading && <ListItemLoading />}
@@ -117,25 +112,27 @@ const Events = () => {
         <Paper className={classes.settings}>
           <form onSubmit={handleSubmit(search)}>
             <TextField disabled={isFetching} errors={{}} label='Søk' margin='none' name='search' register={register} />
-            <Select control={control} errors={{}} label='Kategori' name='category'>
-              {categories.map((value, index) => (
-                <MenuItem key={index} value={value.id}>
-                  {value.text}
-                </MenuItem>
-              ))}
-            </Select>
+            {Boolean(categories.length) && (
+              <Select control={control} errors={{}} label='Kategori' name='category'>
+                {categories.map((value, index) => (
+                  <MenuItem key={index} value={value.id}>
+                    {value.text}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
             <Bool control={control} errors={{}} label='Tidligere' name='expired' type='switch' />
             <SubmitButton disabled={isFetching} errors={{}}>
               Søk
             </SubmitButton>
           </form>
           <Divider />
-          <Button className={classes.resetBtn} fullWidth onClick={resetFilters} variant='outlined'>
+          <Button color='error' fullWidth onClick={resetFilters} variant='outlined'>
             Tilbakestill
           </Button>
         </Paper>
       </div>
-    </Navigation>
+    </Page>
   );
 };
 

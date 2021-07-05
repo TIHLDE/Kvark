@@ -2,33 +2,21 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { EMAIL_REGEX } from 'constant';
 import { useUpdateGroup } from 'api/hooks/Group';
-import useSnackbar from 'api/hooks/Snackbar';
+import { useSnackbar } from 'api/hooks/Snackbar';
 import { Group } from 'types/Types';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 
 import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
 import Dialog from 'components/layout/Dialog';
-
-const useStyles = makeStyles((theme) => ({
-  adminButton: {
-    color: theme.palette.common.white,
-    borderColor: theme.palette.common.white + 'bb',
-    '&:hover': {
-      borderColor: theme.palette.common.white,
-    },
-  },
-}));
+import { BannerButton } from 'components/layout/Banner';
 
 export type UpdateGroupModalProps = {
   group: Group;
 };
 
 const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
-  const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   const { register, errors, handleSubmit } = useForm();
   const updateGroup = useUpdateGroup();
@@ -48,9 +36,9 @@ const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
   };
   return (
     <>
-      <Button className={classes.adminButton} onClick={() => setIsOpen(true)} startIcon={<EditIcon />} variant='outlined'>
+      <BannerButton onClick={() => setIsOpen(true)} startIcon={<EditIcon />}>
         Rediger gruppe
-      </Button>
+      </BannerButton>
       <Dialog onClose={() => setIsOpen(false)} open={isOpen} titleText='Oppdater gruppe'>
         <form onSubmit={handleSubmit(submit)}>
           <TextField defaultValue={group.name} errors={errors} label='Gruppenavn' name='name' register={register} required />

@@ -5,10 +5,8 @@ import { urlEncode, formatDate } from 'utils';
 import URLS from 'URLS';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { makeStyles } from '@material-ui/styles';
+import { Theme, Skeleton, Typography, Button } from '@material-ui/core';
 
 // Project components
 import StoryPopup from 'components/story/StoryPopup';
@@ -16,7 +14,7 @@ import StoryPopup from 'components/story/StoryPopup';
 // Icons
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
 
-const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme: Theme) => ({
+const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme) => ({
   root: {
     overflow: 'hidden',
     position: 'relative',
@@ -46,25 +44,21 @@ const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme: Theme
     '&::-webkit-scrollbar-thumb:hover': {
       background: `${theme.palette.divider}`,
     },
-    '&:before': {
+    '&:before,&:after': {
       content: '""',
       position: 'absolute',
       zIndex: 1,
       top: 0,
-      left: 0,
       bottom: 0,
-      background: (props) => `linear-gradient(to left, transparent, ${props.fadeColor || theme.palette.background.default} 65%)`,
       width: theme.spacing(2),
     },
+    '&:before': {
+      left: 0,
+      background: (props) => `linear-gradient(to left, #ffffff00, ${props.fadeColor || theme.palette.background.default} 65%)`,
+    },
     '&:after': {
-      content: '""',
-      position: 'absolute',
-      zIndex: 1,
-      top: 0,
       right: 0,
-      bottom: 0,
-      background: (props) => `linear-gradient(to right, transparent, ${props.fadeColor || theme.palette.background.default} 65%)`,
-      width: theme.spacing(2),
+      background: (props) => `linear-gradient(to right, #ffffff00, ${props.fadeColor || theme.palette.background.default} 65%)`,
     },
   },
   story: {
@@ -91,10 +85,6 @@ const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme: Theme
     '&:hover': {
       borderWidth: 2,
     },
-  },
-  imgButtonLabel: {
-    width: '100%',
-    height: '100%',
   },
   image: {
     width: '100%',
@@ -129,10 +119,11 @@ export type StoryProps = {
   fadeColor?: string;
 };
 
-function Story({ items, fadeColor }: StoryProps) {
+const Story = ({ items, fadeColor }: StoryProps) => {
   const classes = useStyles({ fadeColor });
-  const [popupOpen, setPopupOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(0);
+  const storyId = new URLSearchParams(location.search).get('story');
+  const [popupOpen, setPopupOpen] = useState(Boolean(storyId));
+  const [selectedItem, setSelectedItem] = useState(Number(storyId));
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const instanceOfEvent = (object: any): object is EventCompact => 'start_date' in object;
@@ -184,7 +175,7 @@ function Story({ items, fadeColor }: StoryProps) {
     const [imgUrl, setImgUrl] = useState(item.image || TIHLDELOGO);
     const openStory = () => {
       window.gtag('event', 'stories', {
-        event_category: 'Stories',
+        event_category: 'stories',
         event_label: 'Open story',
       });
       setSelectedItem(index);
@@ -192,7 +183,7 @@ function Story({ items, fadeColor }: StoryProps) {
     };
     return (
       <div className={classes.story}>
-        <Button classes={{ label: classes.imgButtonLabel }} className={classes.imgButton} color='primary' onClick={openStory} variant='outlined'>
+        <Button className={classes.imgButton} onClick={openStory} variant='outlined'>
           <img alt={item.title} className={classes.image} onError={() => setImgUrl(TIHLDELOGO)} src={imgUrl} />
         </Button>
         <Typography className={classes.text} variant='body2'>
@@ -213,7 +204,7 @@ function Story({ items, fadeColor }: StoryProps) {
       <StoryPopup items={storyItems} onClose={() => setPopupOpen(false)} open={popupOpen} selectedItem={selectedItem} />
     </div>
   );
-}
+};
 export default Story;
 
 export const StoryLoading = ({ fadeColor }: Pick<StoryProps, 'fadeColor'>) => {
@@ -223,7 +214,7 @@ export const StoryLoading = ({ fadeColor }: Pick<StoryProps, 'fadeColor'>) => {
       <div className={classes.stories}>
         {Array.from({ length: 7 }).map((i, index) => (
           <div className={classes.story} key={index}>
-            <Skeleton className={classes.imgButton} variant='rect' />
+            <Skeleton className={classes.imgButton} variant='rectangular' />
             <Skeleton className={classes.skeleton} width='80%' />
           </div>
         ))}

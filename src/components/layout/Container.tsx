@@ -1,26 +1,18 @@
-import { forwardRef, Ref } from 'react';
-import classnames from 'classnames';
+import { Container as MuiContainer, ContainerProps as MuiContainerProps, styled } from '@material-ui/core';
 
-// Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
-import MuiContainer, { ContainerProps } from '@material-ui/core/Container';
+export type ContainerProps = MuiContainerProps;
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    [theme.breakpoints.down('sm')]: {
-      paddingRight: theme.spacing(2),
-      paddingLeft: theme.spacing(2),
-    },
+const Container = styled(MuiContainer)(({ theme }) => ({
+  paddingLeft: theme.spacing(3),
+  paddingRight: theme.spacing(3),
+  [theme.breakpoints.down('lg')]: {
+    paddingRight: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+  },
+  [theme.breakpoints.down('md')]: {
+    paddingRight: theme.spacing(1),
+    paddingLeft: theme.spacing(1),
   },
 }));
-
-const Container = forwardRef(function Container({ className, children, maxWidth = 'xl', ...props }: ContainerProps, ref: Ref<HTMLDivElement>) {
-  const classes = useStyles();
-  return (
-    <MuiContainer className={classnames(classes.container, className)} maxWidth={maxWidth} ref={ref} {...props}>
-      {children}
-    </MuiContainer>
-  );
-});
 
 export default Container;

@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import Helmet from 'react-helmet';
 import { useForm } from 'react-hook-form';
-import useShare from 'use-share';
+import { useShare } from 'api/hooks/Utils';
 import { useShortLinks, useCreateShortLink, useDeleteShortLink } from 'api/hooks/ShortLink';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { ShortLink } from 'types/Types';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -19,7 +18,7 @@ import DeleteIcon from '@material-ui/icons/DeleteRounded';
 import ShareIcon from '@material-ui/icons/ShareRounded';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Banner from 'components/layout/Banner';
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
@@ -35,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'self-start',
     paddingBottom: theme.spacing(2),
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr',
     },
   },
@@ -43,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
     gridGap: theme.spacing(2),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr',
       order: 1,
     },
@@ -52,9 +51,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
     gridGap: theme.spacing(1),
     position: 'sticky',
-    top: 88,
+    top: 80,
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       order: 0,
       position: 'static',
       top: 0,
@@ -62,9 +61,6 @@ const useStyles = makeStyles((theme) => ({
   },
   adornment: {
     marginRight: 0,
-  },
-  delete: {
-    color: theme.palette.error.main,
   },
   shortLink: {
     padding: theme.spacing(2, 3),
@@ -87,10 +83,13 @@ const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   const deleteShortLink = useDeleteShortLink();
   const showSnackbar = useSnackbar();
-  const { share, hasShared } = useShare({
-    title: shortLink.name,
-    url: `https://s.tihlde.org/${shortLink.name}`,
-  });
+  const { share, hasShared } = useShare(
+    {
+      title: shortLink.name,
+      url: `https://s.tihlde.org/${shortLink.name}`,
+    },
+    'Linken ble kopiert til utklippstavlen',
+  );
   const remove = () => {
     deleteShortLink.mutate(shortLink.name, {
       onSuccess: () => {
@@ -114,7 +113,7 @@ const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
       </div>
       <MuiTextField fullWidth label='Link' margin='dense' size='small' value={`https://s.tihlde.org/${shortLink.name}`} variant='outlined' />
       <MuiTextField fullWidth label='Leder til' margin='dense' size='small' value={shortLink.url} variant='outlined' />
-      <Button className={classes.delete} endIcon={<DeleteIcon />} fullWidth onClick={() => setRemoveDialogOpen(true)}>
+      <Button color='error' endIcon={<DeleteIcon />} fullWidth onClick={() => setRemoveDialogOpen(true)}>
         Slett link
       </Button>
       <Dialog
@@ -150,10 +149,7 @@ const ShortLinks = () => {
   };
 
   return (
-    <Navigation banner={<Banner text='Opprett, se og slett dine korte linker' title='Link-forkorter' />} fancyNavbar>
-      <Helmet>
-        <title>Link-forkorter</title>
-      </Helmet>
+    <Page banner={<Banner text='Opprett, se og slett dine korte linker' title='Link-forkorter' />} options={{ title: 'Link-forkorter' }}>
       <div className={classes.grid}>
         <div className={classes.list}>
           {error && <Paper>{error.detail}</Paper>}
@@ -191,7 +187,7 @@ const ShortLinks = () => {
           </form>
         </Paper>
       </div>
-    </Navigation>
+    </Page>
   );
 };
 

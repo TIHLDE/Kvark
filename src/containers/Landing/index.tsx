@@ -1,12 +1,11 @@
-import Helmet from 'react-helmet';
 import classnames from 'classnames';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Container from 'components/layout/Container';
 import EventsView from 'containers/Landing/components/EventsView';
 import NewsListView from 'containers/Landing/components/NewsListView';
@@ -17,12 +16,12 @@ const useStyles = makeStyles((theme) => ({
   section: {
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       paddingTop: theme.spacing(2),
     },
   },
   storiesSection: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       paddingLeft: 0,
       paddingRight: 0,
     },
@@ -41,10 +40,7 @@ const Landing = () => {
   const classes = useStyles();
 
   return (
-    <Navigation banner={<Wave />} fancyNavbar maxWidth={false}>
-      <Helmet>
-        <title>Forsiden - TIHLDE</title>
-      </Helmet>
+    <Page banner={<Wave />} maxWidth={false} options={{ title: 'Forsiden' }}>
       <div className={classes.smoke}>
         <Container className={classnames(classes.section, classes.storiesSection)} maxWidth='lg'>
           <Typography align='center' className={classes.header} color='inherit' variant='h2'>
@@ -67,7 +63,7 @@ const Landing = () => {
           <NewsListView />
         </Container>
       </div>
-    </Navigation>
+    </Page>
   );
 };
 

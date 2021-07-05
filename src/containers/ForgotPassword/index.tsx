@@ -2,28 +2,24 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { EMAIL_REGEX } from 'constant';
-import Helmet from 'react-helmet';
 import { useForgotPassword } from 'api/hooks/User';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
+import { SecondaryTopBox } from 'components/layout/TopBox';
 
 const useStyles = makeStyles((theme) => ({
-  top: {
-    height: 220,
-    background: `radial-gradient(circle at bottom, ${theme.palette.colors.gradient.secondary.top}, ${theme.palette.colors.gradient.secondary.bottom})`,
-  },
   paper: {
     maxWidth: theme.breakpoints.values.sm,
     margin: 'auto',
@@ -70,10 +66,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <Navigation banner={<div className={classes.top} />} fancyNavbar>
-      <Helmet>
-        <title>Glemt passord</title>
-      </Helmet>
+    <Page banner={<SecondaryTopBox />} options={{ title: 'Glemt passord' }}>
       <Paper className={classes.paper}>
         {forgotPassword.isLoading && <LinearProgress className={classes.progress} />}
         <TihldeLogo className={classes.logo} darkColor='white' lightColor='blue' size='large' />
@@ -98,12 +91,12 @@ const ForgotPassword = () => {
           <SubmitButton className={classes.button} disabled={forgotPassword.isLoading} errors={errors}>
             Få nytt passord
           </SubmitButton>
-          <Button className={classes.button} color='primary' component={Link} disabled={forgotPassword.isLoading} fullWidth to={URLS.login}>
+          <Button className={classes.button} component={Link} disabled={forgotPassword.isLoading} fullWidth to={URLS.login}>
             Logg inn
           </Button>
         </form>
       </Paper>
-    </Navigation>
+    </Page>
   );
 };
 

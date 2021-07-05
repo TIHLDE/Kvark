@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 import { useIsAuthenticated } from 'api/hooks/User';
 
 // Material UI Components
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
+import { useTheme } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
@@ -14,14 +15,16 @@ import Drawer from '@material-ui/core/Drawer';
 // Icons
 import ExpandIcon from '@material-ui/icons/ExpandMoreRounded';
 
+// Project components
+import TihldeLogo from 'components/miscellaneous/TihldeLogo';
+
 const useStyles = makeStyles((theme) => ({
   sidebar: {
     backgroundColor: theme.palette.colors.gradient.main.top,
     width: '100vw',
     overflow: 'auto',
-    height: 'calc(100% - 64px)',
-    marginTop: 64,
-    [theme.breakpoints.down('xs')]: {
+    height: '100%',
+    [theme.breakpoints.down('sm')]: {
       height: 'calc(100% - 56px)',
       marginTop: 56,
     },
@@ -60,6 +63,11 @@ const useStyles = makeStyles((theme) => ({
   },
   expanded: {
     transform: 'rotate(180deg)',
+  },
+  logo: {
+    height: 32,
+    width: 'auto',
+    margin: theme.spacing(2, 'auto', 0, 2),
   },
 }));
 
@@ -133,13 +141,14 @@ const Sidebar = ({ items, onClose, open }: SidebarProps) => {
   const isAuthenticated = useIsAuthenticated();
   const theme = useTheme();
   return (
-    <Drawer anchor='top' classes={{ paper: classes.sidebar }} onClose={onClose} open={open} style={{ zIndex: theme.zIndex.drawer - 1 }}>
+    <Drawer anchor='bottom' classes={{ paper: classes.sidebar }} onClose={onClose} open={open} style={{ zIndex: theme.zIndex.drawer }}>
+      <TihldeLogo className={classes.logo} darkColor='white' lightColor='white' size='large' />
       <div className={classes.root}>
         {items.map((item, i) => (
           <SidebarItem key={i} {...item} onClose={onClose} />
         ))}
         {isAuthenticated ? (
-          <SidebarItem onClose={onClose} text='Min side' to={URLS.profile} type='link' />
+          <SidebarItem onClose={onClose} text='Min profil' to={URLS.profile} type='link' />
         ) : (
           <SidebarItem onClose={onClose} text='Logg inn' to={URLS.login} type='link' />
         )}

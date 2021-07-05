@@ -3,19 +3,19 @@ import { Registration } from 'types/Types';
 import { getUserClass, getUserStudyShort } from 'utils';
 
 // Material-UI
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/styles';
+import { Typography } from '@material-ui/core';
 
 // Project components
 import Paper from 'components/layout/Paper';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'grid',
     gridTemplateColumns: '1fr',
     gridGap: theme.spacing(1),
     paddingTop: theme.spacing(1),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr 1fr',
     },
   },
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
     color: theme.palette.text.secondary,
     gridGap: theme.spacing(1),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr',
     },
   },

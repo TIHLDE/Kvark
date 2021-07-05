@@ -6,19 +6,11 @@ import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import { Link } from 'react-router-dom';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Divider from '@material-ui/core/Divider';
-
-// Icons
-import LightIcon from '@material-ui/icons/WbSunnyRounded';
+import { makeStyles } from '@material-ui/styles';
+import { Typography, Divider } from '@material-ui/core';
 
 // Assets import
-import SIT from 'assets/icons/sit.svg';
 import VERCEL from 'assets/icons/vercel.svg';
-import NEXTTRON from 'assets/img/Nextron.png';
-import ACADEMICWORK from 'assets/icons/academic_work.svg';
 import FACEBOOK from 'assets/icons/facebook.svg';
 import TWITTER from 'assets/icons/twitter.svg';
 import INSTAGRAM from 'assets/icons/instagram.svg';
@@ -26,7 +18,7 @@ import SNAPCHAT from 'assets/icons/snapchat.svg';
 import SLACK from 'assets/icons/slack.svg';
 import DISCORD from 'assets/icons/discord.svg';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     position: 'relative',
     backgroundColor: theme.palette.colors.footer,
@@ -37,12 +29,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     gridTemplateAreas: "'about main sponsors' 'index index index'",
     justifyItems: 'center',
     color: theme.palette.getContrastText(theme.palette.colors.footer),
-    boxShadow: '0px -2px 5px 0px rgba(0,0,0,0.1)',
-    [theme.breakpoints.down('md')]: {
+    borderTop: `${theme.palette.borderWidth} solid ${theme.palette.divider}`,
+    [theme.breakpoints.down('lg')]: {
       gridTemplateAreas: "'main main' 'about sponsors' 'index index'",
       gridTemplateColumns: '1fr 1fr',
+      padding: theme.spacing(1, 0, 14),
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       gridTemplateRows: 'auto auto auto',
       gridTemplateAreas: "'main' 'about' 'sponsors' 'index'",
       gridTemplateColumns: '1fr',
@@ -50,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   marginTopColumns: {
     marginTop: theme.spacing(12),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       marginTop: theme.spacing(4),
     },
   },
@@ -76,17 +69,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     display: 'flex',
     margin: theme.spacing(1, 0),
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       display: 'grid',
       gridTemplateColumns: '1fr 1fr 1fr',
       gridGap: theme.spacing(2),
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       alignItems: 'center',
       display: 'flex',
       margin: theme.spacing(1, 0),
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'grid',
       gridTemplateColumns: '1fr 1fr 1fr',
       gridGap: theme.spacing(2),
@@ -100,18 +93,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   imgLink: {
     margin: theme.spacing(0, 2.5),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       margin: theme.spacing(0, 2),
     },
-  },
-  themeSettingsContainer: {
-    height: 54,
-    width: 54,
-    marginTop: theme.spacing(2),
-    color: theme.palette.getContrastText(theme.palette.colors.footer),
-  },
-  themeSettingsIcon: {
-    fontSize: 36,
   },
   attribute: {
     textAlign: 'center',
@@ -126,7 +110,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     minWidth: '250px',
     width: '46%',
     height: 'auto',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       minWidth: '200px',
     },
   },
@@ -191,10 +175,6 @@ const Footer = () => {
             </a>
           ))}
         </div>
-        <Divider className={classes.divider} />
-        <IconButton aria-label='delete' className={classnames(classes.themeSettingsContainer, classes.marginBottom)} onClick={() => setShowModal(true)}>
-          <LightIcon className={classes.themeSettingsIcon} />
-        </IconButton>
       </div>
       <div className={classnames(classes.sponsors, classes.flexColumn, classes.marginTopColumns)}>
         <Typography variant='h2'>Samarbeid</Typography>
@@ -202,9 +182,6 @@ const Footer = () => {
         <a href='https://vercel.com/?utm_source=kvark&utm_campaign=oss' rel='noopener noreferrer' target='_blank'>
           <img alt='Vercel' className={classes.marginBottom} src={VERCEL} width={150} />
         </a>
-        <img alt='academicwork' className={classes.marginBottom} src={ACADEMICWORK} width={80} />
-        <img alt='sit' className={classes.marginBottom} src={SIT} width={80} />
-        <img alt='nextron' className={classes.marginBottom} src={NEXTTRON} width={80} />
       </div>
       <div className={classes.index}>
         <Typography>

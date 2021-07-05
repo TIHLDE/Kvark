@@ -2,13 +2,12 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { News } from 'types/Types';
-import classNames from 'classnames';
 
 // API and store imports
 import { useUpdateNews, useCreateNews, useDeleteNews, useNewsById } from 'api/hooks/News';
 
 // Material-UI
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -27,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
     gridGap: theme.spacing(2),
     gridTemplateColumns: '1fr 1fr',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       gridGap: 0,
       gridTemplateColumns: '1fr',
     },
@@ -36,13 +35,6 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(2, 0, 1),
     borderRadius: theme.shape.borderRadius,
     overflow: 'hidden',
-  },
-  red: {
-    color: theme.palette.error.main,
-    borderColor: theme.palette.error.main,
-    '&:hover': {
-      borderColor: theme.palette.error.light,
-    },
   },
 }));
 
@@ -62,11 +54,10 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
   const createNews = useCreateNews();
   const updateNews = useUpdateNews(newsId || -1);
   const deleteNews = useDeleteNews(newsId || -1);
-  const isUpdating = useMemo(() => createNews.isLoading || updateNews.isLoading || deleteNews.isLoading, [
-    createNews.isLoading,
-    updateNews.isLoading,
-    deleteNews.isLoading,
-  ]);
+  const isUpdating = useMemo(
+    () => createNews.isLoading || updateNews.isLoading || deleteNews.isLoading,
+    [createNews.isLoading, updateNews.isLoading, deleteNews.isLoading],
+  );
 
   useEffect(() => {
     !isError || goToNews(null);
@@ -96,9 +87,9 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
   const getNewsPreview = () => {
     return {
       ...getValues(),
-      created_at: new Date().toISOString().substring(0, 16),
+      created_at: new Date().toJSON(),
       id: 1,
-      updated_at: new Date().toISOString().substring(0, 16),
+      updated_at: new Date().toJSON(),
     };
   };
   const remove = async () => {
@@ -157,7 +148,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
             {newsId ? 'Oppdater nyhet' : 'Opprett nyhet'}
           </SubmitButton>
           {Boolean(newsId) && (
-            <Button className={classNames(classes.margin, classes.red)} disabled={isUpdating} onClick={() => setDeleteNewsDialogOpen(true)} variant='outlined'>
+            <Button className={classes.margin} color='error' disabled={isUpdating} onClick={() => setDeleteNewsDialogOpen(true)} variant='outlined'>
               Slett
             </Button>
           )}

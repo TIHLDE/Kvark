@@ -7,10 +7,8 @@ import URLS from 'URLS';
 import { HavePermission } from 'api/hooks/User';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { makeStyles } from '@material-ui/styles';
+import { Typography, Button, Skeleton } from '@material-ui/core';
 
 // Project Components
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
@@ -26,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     gridGap: theme.spacing(2),
     alignItems: 'self-start',
     padding: theme.spacing(2, 0),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr',
     },
   },
@@ -40,12 +38,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   button: {
-    height: 50,
     marginBottom: theme.spacing(2),
-  },
-  skeleton: {
-    maxWidth: '100%',
-    borderRadius: theme.shape.borderRadius,
   },
 }));
 
@@ -91,14 +84,14 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
           )}
         </Paper>
         {data.link && (
-          <Button className={classes.button} color='primary' component='a' fullWidth href={data.link} rel='noreferrer' target='_blank' variant='contained'>
+          <Button className={classes.button} component='a' fullWidth href={data.link} rel='noreferrer' target='_blank' variant='contained'>
             Søk
           </Button>
         )}
-        <ShareButton className={classes.button} color='default' fullWidth shareId={data.id} shareType='jobpost' title={data.title} />
+        <ShareButton className={classes.button} color='inherit' fullWidth shareId={data.id} shareType='jobpost' title={data.title} />
         {!preview && (
           <HavePermission apps={[PermissionApp.JOBPOST]}>
-            <Button className={classes.button} color='primary' component={Link} fullWidth to={`${URLS.jobpostsAdmin}${data.id}/`} variant='outlined'>
+            <Button className={classes.button} component={Link} fullWidth to={`${URLS.jobpostsAdmin}${data.id}/`} variant='outlined'>
               Endre annonse
             </Button>
           </HavePermission>
@@ -116,13 +109,13 @@ export const JobPostRendererLoading = () => {
   return (
     <div className={classes.grid}>
       <Paper>
-        <Skeleton className={classes.skeleton} width={200} />
-        <Skeleton className={classes.skeleton} height={80} width='60%' />
-        <Skeleton className={classes.skeleton} height={40} width={250} />
-        <Skeleton className={classes.skeleton} height={40} width='80%' />
-        <Skeleton className={classes.skeleton} height={40} width='85%' />
-        <Skeleton className={classes.skeleton} height={40} width='75%' />
-        <Skeleton className={classes.skeleton} height={40} width='90%' />
+        <Skeleton height={80} width='60%' />
+        <Skeleton height={40} width={250} />
+        <Skeleton width={200} />
+        <Skeleton height={40} width='80%' />
+        <Skeleton height={40} width='85%' />
+        <Skeleton height={40} width='75%' />
+        <Skeleton height={40} width='90%' />
       </Paper>
       <div>
         <AspectRatioLoading className={classes.infoBox} imgClassName={classes.image} />

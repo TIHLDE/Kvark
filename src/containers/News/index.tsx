@@ -1,12 +1,11 @@
 import { Fragment, useMemo } from 'react';
-import Helmet from 'react-helmet';
 import { useNews } from 'api/hooks/News';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Banner from 'components/layout/Banner';
 import Pagination from 'components/layout/Pagination';
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
@@ -21,14 +20,14 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
     gridGap: theme.spacing(0, 1),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridGap: theme.spacing(1),
       gridTemplateColumns: '1fr',
     },
   },
   first: {
     gridColumn: 'span 3',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridColumn: 'span 1',
     },
   },
@@ -40,10 +39,7 @@ const News = () => {
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 
   return (
-    <Navigation banner={<Banner title='Nyheter' />} fancyNavbar>
-      <Helmet>
-        <title>Nyheter</title>
-      </Helmet>
+    <Page banner={<Banner title='Nyheter' />} options={{ title: 'Nyheter' }}>
       <div className={classes.root}>
         {isLoading && <ListItemLoading />}
         {isEmpty && <NotFoundIndicator header='Fant ingen nyheter' />}
@@ -63,7 +59,7 @@ const News = () => {
         )}
         {isFetching && <ListItemLoading />}
       </div>
-    </Navigation>
+    </Page>
   );
 };
 

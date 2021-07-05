@@ -1,16 +1,15 @@
-import { Fragment, ReactNode } from 'react';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import parser from 'html-react-parser';
+import { ReactNode } from 'react';
+import { makeStyles } from '@material-ui/styles';
 import classNames from 'classnames';
+import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 
 // Material UI Components
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import { Grid, Typography } from '@material-ui/core';
 
 // Project Components
 import Paper from 'components/layout/Paper';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(4),
   },
@@ -18,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     flexDirection: 'row',
     height: '100%',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       flexDirection: 'column',
     },
   },
@@ -36,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'center',
     marginRight: theme.spacing(4),
 
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       margin: theme.spacing(0, 4, 4, 4),
       minHeight: 160,
     },
@@ -49,9 +48,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   header: {
     marginBottom: theme.spacing(1),
-    color: theme.palette.text.primary,
-  },
-  subheader: {
     color: theme.palette.text.primary,
   },
   text: {
@@ -67,47 +63,27 @@ export type InfoCardProps = {
   header: string;
   text?: string;
   src?: string;
-  srcComponent?: ReactNode;
   alt?: string;
   justifyText?: boolean;
-  subheader?: string;
-  subText?: string;
   className?: string;
   imageClass?: string;
   children?: ReactNode;
 };
-const InfoCard = ({ className, header, text, src, srcComponent, alt, justifyText, subheader, subText, imageClass, children }: InfoCardProps) => {
+const InfoCard = ({ className, header, text, src, alt, justifyText, imageClass, children }: InfoCardProps) => {
   const classes = useStyles();
   return (
     <Paper className={classNames(classes.root, className)} noPadding>
       <div className={classNames(classes.wrapper, src && classes.centerAlign)}>
-        {src ? (
+        {Boolean(src) && (
           <div className={classes.margin}>
             <img alt={alt || header} className={classNames(classes.image, imageClass)} src={src} />
           </div>
-        ) : (
-          srcComponent && <>{srcComponent}</>
         )}
-        <Grid className={justifyText ? classes.cover : ''} container direction='column' justify='flex-start'>
+        <Grid className={justifyText ? classes.cover : ''} container direction='column' justifyContent='flex-start'>
           <Typography align='left' className={classes.header} variant='h3'>
             <strong>{header}</strong>
           </Typography>
-          {text && (
-            <Typography className={classes.text} component='p'>
-              {parser(text)}
-            </Typography>
-          )}
-
-          {subText && (
-            <Fragment>
-              <Typography className={classNames(classes.padding, classes.subheader)} variant='subtitle1'>
-                <strong>{subheader}</strong>
-              </Typography>
-              <Typography className={classes.text} component='p'>
-                {parser(subText)}
-              </Typography>
-            </Fragment>
-          )}
+          {text && <MarkdownRenderer value={text} />}
           {children && <div className={classNames(classes.grow, classes.padding)}>{children}</div>}
         </Grid>
       </div>

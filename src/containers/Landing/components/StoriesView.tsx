@@ -3,7 +3,7 @@ import { useEvents } from 'api/hooks/Event';
 import { useJobPosts } from 'api/hooks/JobPost';
 
 // Material-UI
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core';
 
 // Project componets/services
 import Story, { StoryLoading } from 'components/story/Story';

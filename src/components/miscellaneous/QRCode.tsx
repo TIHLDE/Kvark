@@ -1,57 +1,43 @@
-import { useRef, useEffect } from 'react';
-import { useTheme } from '@material-ui/core/styles';
-import QRCodeStyling from 'qr-code-styling';
-import LogoIcon from 'assets/img/logoIcon.png';
-import { makeStyles } from '@material-ui/core/styles';
+import { lazy, Suspense } from 'react';
+import { makeStyles } from '@material-ui/styles';
+import { useTheme, Skeleton } from '@material-ui/core';
+import classnames from 'classnames';
+
+const QR = lazy(() => import('qrcode.react'));
 
 const useStyles = makeStyles((theme) => ({
-  QRCode: {
-    margin: theme.spacing(2),
-    display: 'flex',
-    justifyContent: 'center',
+  qrcode: {
+    padding: theme.spacing(4, 3),
+    display: 'block',
+    margin: '0 auto',
+    height: 'auto !important',
+    width: '100% !important',
+    maxHeight: 350,
+    objectFit: 'contain',
+  },
+  skeleton: {
+    height: '250px !important',
   },
 }));
 export type QRCodeProps = {
   value: string;
-  width: number;
-  height: number;
+  background?: 'default' | 'paper';
+  className?: string;
 };
 
-const QRCode = ({ value, height, width }: QRCodeProps) => {
+const QRCode = ({ value, background = 'default', className }: QRCodeProps) => {
   const classes = useStyles();
   const theme = useTheme();
-  const qrCodeColor = theme.palette.type === 'light' ? theme.palette.colors.tihlde : theme.palette.common.white;
-  const qrCode = new QRCodeStyling({
-    height: height,
-    width: width,
-    data: value,
-    image: LogoIcon,
-    qrOptions: {
-      typeNumber: 4,
-      mode: 'Byte',
-      errorCorrectionLevel: 'H',
-    },
-    imageOptions: {
-      hideBackgroundDots: true,
-      imageSize: 0.6,
-      margin: 11,
-    },
-    backgroundOptions: {
-      color: theme.palette.background.paper,
-    },
-    dotsOptions: {
-      type: 'extra-rounded',
-      color: qrCodeColor,
-    },
-    cornersSquareOptions: {
-      type: 'extra-rounded',
-      color: qrCodeColor,
-    },
-  });
-  const ref = useRef(null);
-  useEffect(() => {
-    qrCode.append(ref.current || undefined);
-  }, []);
-  return <div className={classes.QRCode} ref={ref} />;
+  return (
+    <Suspense fallback={<Skeleton className={classnames(classes.qrcode, classes.skeleton, className)} />}>
+      <QR
+        bgColor={theme.palette.background[background === 'default' ? 'default' : 'paper']}
+        className={classnames(classes.qrcode, className)}
+        fgColor={theme.palette.mode === 'light' ? theme.palette.colors.tihlde : theme.palette.text.primary}
+        size={1000}
+        value={value}
+      />
+    </Suspense>
+  );
 };
 export default QRCode;

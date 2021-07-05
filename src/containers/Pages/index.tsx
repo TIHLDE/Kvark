@@ -1,19 +1,17 @@
 import { lazy, Suspense, useEffect, useMemo } from 'react';
 import classnames from 'classnames';
-import Helmet from 'react-helmet';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import URLS, { PAGES_URLS } from 'URLS';
 import { usePage } from 'api/hooks/Pages';
-import { Page } from 'types/Types';
+import { Page as IPage } from 'types/Types';
+import { Groups } from 'types/Enums';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { makeStyles } from '@material-ui/styles';
+import { Theme, Typography, Breadcrumbs, Skeleton } from '@material-ui/core';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Banner from 'components/layout/Banner';
 import Paper from 'components/layout/Paper';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
@@ -21,13 +19,11 @@ import PagesAdmin from 'containers/Pages/components/PagesAdmin';
 import PagesList from 'containers/Pages/components/PagesList';
 import PagesSearch from 'containers/Pages/components/PagesSearch';
 import ShareButton from 'components/miscellaneous/ShareButton';
-import MembersCard from './specials/Index/MembersCard';
-import { Groups } from 'types/Enums';
-
+const MembersCard = lazy(() => import('containers/Pages/specials/Index/MembersCard'));
 const Index = lazy(() => import('containers/Pages/specials/Index'));
 
 type ThemeProps = {
-  data?: Page;
+  data?: IPage;
 };
 
 const useStyles = makeStyles<Theme, ThemeProps>((theme) => ({
@@ -45,7 +41,7 @@ const useStyles = makeStyles<Theme, ThemeProps>((theme) => ({
     gridTemplateColumns: '300px 1fr',
     margin: theme.spacing(1, 0, 2),
     alignItems: 'self-start',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridGap: theme.spacing(1),
       gridTemplateColumns: () => '1fr',
     },
@@ -53,15 +49,15 @@ const useStyles = makeStyles<Theme, ThemeProps>((theme) => ({
   inner: {
     gridTemplateColumns: ({ data }) => (data?.image ? '1fr 350px' : '1fr'),
     alignItems: 'self-start',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
       gridTemplateColumns: () => '1fr',
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridGap: theme.spacing(1),
     },
   },
   content: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridGap: theme.spacing(1),
     },
   },
@@ -90,7 +86,7 @@ const Pages = () => {
 
   useEffect(() => {
     if (data && location.pathname !== data.path) {
-      navigate(`${URLS.pages}${data.path}`);
+      navigate(`${URLS.pages}${data.path}`, { replace: true });
     }
   }, [navigate, location.pathname, data]);
 
@@ -112,16 +108,13 @@ const Pages = () => {
   };
 
   return (
-    <Navigation
+    <Page
       banner={
         <Banner title={isLoading ? <Skeleton width={300} /> : error ? 'Noe gikk galt' : data?.title}>
           <PagesSearch />
         </Banner>
       }
-      fancyNavbar>
-      <Helmet>
-        <title>{data?.title}</title>
-      </Helmet>
+      options={{ title: data ? data.title : 'Laster side...' }}>
       <Breadcrumbs aria-label='breadcrumb' maxItems={4}>
         {levels.slice(0, levels.length - 1).map((level, i) => (
           <Link className={classes.link} key={i} to={`/${levels.slice(0, i + 1).join('/')}`}>
@@ -134,7 +127,7 @@ const Pages = () => {
         {isLoading ? (
           <>
             <Paper className={classes.paper} noPadding>
-              <Skeleton height={48} variant='rect' />
+              <Skeleton height={48} variant='rectangular' />
             </Paper>
             <Paper>
               <Skeleton height={50} variant='text' width='40%' />
@@ -158,7 +151,7 @@ const Pages = () => {
                 <Paper className={classes.paper} noPadding>
                   <PagesList pages={data.children} />
                 </Paper>
-                <ShareButton color='default' fullWidth shareId={data.path} shareType='pages' title={data.title} />
+                <ShareButton color='inherit' fullWidth shareId={data.path} shareType='pages' title={data.title} />
                 <PagesAdmin page={data} />
               </div>
               <div className={classnames(classes.grid, classes.inner)}>
@@ -178,7 +171,7 @@ const Pages = () => {
           )
         )}
       </div>
-    </Navigation>
+    </Page>
   );
 };
 

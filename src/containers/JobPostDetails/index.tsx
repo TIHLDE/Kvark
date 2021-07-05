@@ -7,7 +7,7 @@ import { useJobPostById } from 'api/hooks/JobPost';
 
 // Project Components
 import Http404 from 'containers/Http404';
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import JobPostRenderer, { JobPostRendererLoading } from 'containers/JobPostDetails/components/JobPostRenderer';
 
 function JobPostDetails() {
@@ -26,14 +26,13 @@ function JobPostDetails() {
   }
 
   return (
-    <Navigation>
+    <Page options={{ title: data ? data.title : 'Laster annonse...', gutterTop: true, filledTopbar: true, lightColor: 'blue' }}>
       {isLoading ? (
         <JobPostRendererLoading />
       ) : (
         data !== undefined && (
           <>
             <Helmet>
-              <title>{data.title} - TIHLDE</title>
               <meta content={data.title} property='og:title' />
               <meta content='website' property='og:type' />
               <meta content={window.location.href} property='og:url' />
@@ -43,7 +42,7 @@ function JobPostDetails() {
           </>
         )
       )}
-    </Navigation>
+    </Page>
   );
 }
 

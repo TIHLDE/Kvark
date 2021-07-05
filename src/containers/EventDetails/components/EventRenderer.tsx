@@ -8,19 +8,14 @@ import { formatDate, getICSFromEvent } from 'utils';
 import { Link } from 'react-router-dom';
 
 // Services
-import { useMisc } from 'api/hooks/Misc';
+import { useSetRedirectUrl } from 'api/hooks/Misc';
 import { useEventRegistration, useDeleteEventRegistration } from 'api/hooks/Event';
 import { useUser, HavePermission } from 'api/hooks/User';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Collapse from '@material-ui/core/Collapse';
-import Hidden from '@material-ui/core/Hidden';
-import Skeleton from '@material-ui/lab/Skeleton';
-import Alert from '@material-ui/lab/Alert';
+import { makeStyles } from '@material-ui/styles';
+import { Typography, Button, Collapse, Skeleton, Alert, useMediaQuery, Theme } from '@material-ui/core';
 
 // Icons
 import CalendarIcon from '@material-ui/icons/EventRounded';
@@ -43,13 +38,13 @@ const useStyles = makeStyles((theme) => ({
   },
   rootGrid: {
     display: 'grid',
-    gridTemplateColumns: 'auto 1fr',
+    gridTemplateColumns: '325px 1fr',
     gridTemplateRows: 'auto',
-    gridGap: theme.spacing(2),
+    gridGap: theme.spacing(1),
     marginTop: theme.spacing(2),
     position: 'relative',
     alignItems: 'self-start',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '100%',
       justifyContent: 'center',
       gridGap: theme.spacing(1),
@@ -63,16 +58,12 @@ const useStyles = makeStyles((theme) => ({
   },
   details: {
     padding: theme.spacing(1, 2),
-    width: 330,
-    [theme.breakpoints.down('md')]: {
-      width: '100%',
-    },
   },
   detailsHeader: {
     fontSize: '1.5rem',
   },
   info: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridRow: '1 / 2',
     },
   },
@@ -82,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     height: 'fit-content',
     overflowX: 'auto',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       order: 1,
     },
     marginBottom: theme.spacing(1),
@@ -91,14 +82,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
     fontSize: '2.4rem',
     wordWrap: 'break-word',
-  },
-  applyButton: {
-    height: 50,
-    fontWeight: 'bold',
-  },
-  skeleton: {
-    maxWidth: '100%',
-    borderRadius: theme.shape.borderRadius,
   },
 }));
 
@@ -117,7 +100,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const { data: user } = useUser();
   const { data: registration } = useEventRegistration(data.id, preview || !user ? '' : user.user_id);
   const deleteRegistration = useDeleteEventRegistration(data.id);
-  const { setLogInRedirectURL } = useMisc();
+  const setLogInRedirectURL = useSetRedirectUrl();
   const showSnackbar = useSnackbar();
   const [view, setView] = useState<Views>(Views.Info);
   const [signOffDialogOpen, setSignOffDialogOpen] = useState(false);
@@ -126,6 +109,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const startRegistrationDate = parseISO(data.start_registration_at);
   const endRegistrationDate = parseISO(data.end_registration_at);
   const signOffDeadlineDate = parseISO(data.sign_off_deadline);
+  const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
   const signOff = async () => {
     setSignOffDialogOpen(false);
@@ -154,14 +138,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     } else if (!user) {
       if (isFuture(endRegistrationDate)) {
         return (
-          <Button
-            className={classes.applyButton}
-            color='primary'
-            component={Link}
-            fullWidth
-            onClick={() => setLogInRedirectURL(window.location.pathname)}
-            to={URLS.login}
-            variant='contained'>
+          <Button component={Link} fullWidth onClick={() => setLogInRedirectURL(window.location.pathname)} to={URLS.login} variant='contained'>
             Logg inn for å melde deg på
           </Button>
         );
@@ -180,11 +157,11 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               <Alert className={classes.alert} severity='success' variant='outlined'>
                 Du har plass på arrangementet!
               </Alert>
-              <QRCode height={275} value={user.user_id} width={275} />
+              <QRCode background='paper' value={user.user_id} />
             </Paper>
           )}
           {(isFuture(signOffDeadlineDate) || registration.is_on_wait) && isFuture(startDate) ? (
-            <Button className={classes.applyButton} fullWidth onClick={() => setSignOffDialogOpen(true)} variant='outlined'>
+            <Button fullWidth onClick={() => setSignOffDialogOpen(true)} variant='outlined'>
               Meld deg av
             </Button>
           ) : (
@@ -198,7 +175,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       );
     } else if (isFuture(startRegistrationDate)) {
       return (
-        <Button className={classes.applyButton} color='primary' disabled fullWidth variant='contained'>
+        <Button disabled fullWidth variant='contained'>
           Påmelding har ikke startet
         </Button>
       );
@@ -206,13 +183,13 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       return null;
     } else if (view === Views.Apply) {
       return (
-        <Button className={classes.applyButton} color='primary' fullWidth onClick={() => setView(Views.Info)} variant='outlined'>
+        <Button fullWidth onClick={() => setView(Views.Info)} variant='outlined'>
           Se beskrivelse
         </Button>
       );
     } else {
       return (
-        <Button className={classes.applyButton} color='primary' fullWidth onClick={() => setView(Views.Apply)} variant='contained'>
+        <Button fullWidth onClick={() => setView(Views.Apply)} variant='contained'>
           Meld deg på
         </Button>
       );
@@ -273,10 +250,8 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       />
       <div className={classes.rootGrid}>
         <div className={classes.infoGrid}>
-          <Hidden mdDown>
-            <Info />
-          </Hidden>
-          <ShareButton color='default' shareId={data.id} shareType='event' title={data.title} />
+          {!lgDown && <Info />}
+          <ShareButton color='inherit' shareId={data.id} shareType='event' title={data.title} />
           <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} variant='outlined'>
             Legg til i kalender
           </Button>
@@ -290,9 +265,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         </div>
         <div className={classnames(classes.infoGrid, classes.info)}>
           <AspectRatioImg alt={data.image_alt || data.title} imgClassName={classes.image} src={data.image} />
-          <Hidden lgUp>
-            <Info />
-          </Hidden>
+          {lgDown && <Info />}
           <Paper className={classes.content}>
             <Typography className={classes.title} gutterBottom variant='h1'>
               {data.title}
@@ -331,12 +304,12 @@ export const EventRendererLoading = () => {
       <div className={classnames(classes.infoGrid, classes.info)}>
         <AspectRatioLoading imgClassName={classes.image} />
         <Paper className={classes.content}>
-          <Skeleton className={classes.skeleton} height={80} width='60%' />
-          <Skeleton className={classes.skeleton} height={40} width={250} />
-          <Skeleton className={classes.skeleton} height={40} width='80%' />
-          <Skeleton className={classes.skeleton} height={40} width='85%' />
-          <Skeleton className={classes.skeleton} height={40} width='75%' />
-          <Skeleton className={classes.skeleton} height={40} width='90%' />
+          <Skeleton height={80} width='60%' />
+          <Skeleton height={40} width={250} />
+          <Skeleton height={40} width='80%' />
+          <Skeleton height={40} width='85%' />
+          <Skeleton height={40} width='75%' />
+          <Skeleton height={40} width='90%' />
         </Paper>
       </div>
     </div>

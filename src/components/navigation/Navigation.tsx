@@ -1,126 +1,173 @@
-import { ReactNode, ReactElement, useState, useEffect } from 'react';
-import classNames from 'classnames';
+import { ReactNode, useState, useLayoutEffect, useMemo, useCallback, lazy, Suspense } from 'react';
 import Helmet from 'react-helmet';
-import { Warning } from 'types/Types';
+import constate from 'constate';
+import URLS from 'URLS';
 import { WarningType } from 'types/Enums';
-
-// API and store imports
-import { useMisc } from 'api/hooks/Misc';
-import { getCookie, setCookie } from 'api/cookie';
-import { WARNINGS_READ } from 'constant';
+import { useIsAuthenticated } from 'api/hooks/User';
+import { useWarnings } from 'api/hooks/Warnings';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import { Theme, useMediaQuery, Snackbar as MaterialSnackbar, Alert, styled } from '@material-ui/core';
 
 // Project Components
+import Topbar from 'components/navigation/Topbar';
 import Footer from 'components/navigation/Footer';
-import Topbar, { TopbarProps } from 'components/navigation/Topbar';
-import Snack from 'components/navigation/Snack';
-import Container from 'components/layout/Container';
+import BottomBar from 'components/navigation/BottomBar';
+const MuiLinkify = lazy(() => import('material-ui-linkify'));
 
-const useStyles = makeStyles((theme) => ({
-  main: {
-    minHeight: '101vh',
-    backgroundColor: theme.palette.background.default,
-  },
-  normalMain: {
-    paddingTop: 64,
-    [theme.breakpoints.down('sm')]: {
-      paddingTop: 56,
-    },
-  },
-  grow: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexGrow: 1,
-    flexWrap: 'nowrap',
-    alignItems: 'center',
-  },
-  snack: {
+const Snackbar = styled(MaterialSnackbar)(({ theme }) => ({
+  maxWidth: `calc(100% - ${theme.spacing(2)})`,
+  width: theme.breakpoints.values.lg,
+  top: '70px !important',
+  [theme.breakpoints.down('lg')]: {
     position: 'absolute',
-    top: 62,
-    maxWidth: 'none',
-    minHeight: 48,
-    width: '100vw',
-    height: 'auto',
-    padding: 0,
-    [theme.breakpoints.down('sm')]: {
-      top: 56,
-    },
-  },
-  snackWarning: {
-    backgroundColor: theme.palette.error.main,
-  },
-  snackMessage: {
-    backgroundColor: theme.palette.colors.tihlde,
   },
 }));
 
-export type NavigationProps = {
-  children?: ReactNode;
-  banner?: ReactElement;
-  maxWidth?: false | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-  isLoading?: boolean;
-  noFooter?: boolean;
-  fancyNavbar?: boolean;
-  topbarProps?: TopbarProps;
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'gutterTop' && prop !== 'gutterBottom' })<
+  Pick<NavigationOptions, 'gutterTop' | 'gutterBottom'>
+>(({ gutterTop, gutterBottom }) => ({
+  minHeight: '101vh',
+  ...(gutterTop && { paddingTop: 60 }),
+  ...(gutterBottom && { paddingBottom: 80 }),
+}));
+
+export type NavigationOptions = {
+  noFooter: boolean;
+  filledTopbar: boolean;
+  gutterBottom: boolean;
+  gutterTop: boolean;
+  title: string;
+  darkColor: 'white' | 'blue' | 'black';
+  lightColor: 'white' | 'blue' | 'black';
 };
 
-const Navigation = ({ fancyNavbar = false, isLoading = false, noFooter = false, maxWidth, banner, children, topbarProps }: NavigationProps) => {
-  const classes = useStyles();
-  const { getWarnings } = useMisc();
-  const [warning, setWarning] = useState<Warning | null>(null);
+export type SetNavigationOptions = Partial<NavigationOptions>;
 
-  useEffect(() => {
-    let subscribed = true;
-    getWarnings().then((data: Array<Warning>) => {
-      const warningsRead = getCookie(WARNINGS_READ);
-      const readArray = (warningsRead === undefined ? [] : warningsRead) as number[];
-      if (data?.length && !readArray.includes(data[data.length - 1].id) && subscribed) {
-        setWarning(data[data.length - 1]);
-      }
-    });
+const DEFAULT_OPTIONS: NavigationOptions = {
+  darkColor: 'white',
+  lightColor: 'white',
+  noFooter: false,
+  filledTopbar: false,
+  title: 'TIHLDE',
+  gutterBottom: false,
+  gutterTop: false,
+};
+
+const useNavigationContext = () => {
+  const [navigationOptions, setNavigationOptions] = useState<NavigationOptions>(DEFAULT_OPTIONS);
+  const options = useMemo(() => navigationOptions, [navigationOptions]);
+  const setOptions = useCallback(
+    (options?: SetNavigationOptions) =>
+      setNavigationOptions({
+        darkColor: options?.darkColor || DEFAULT_OPTIONS.darkColor,
+        lightColor: options?.lightColor || DEFAULT_OPTIONS.lightColor,
+        filledTopbar: options?.filledTopbar || DEFAULT_OPTIONS.filledTopbar,
+        gutterBottom: options?.gutterBottom || DEFAULT_OPTIONS.gutterBottom,
+        gutterTop: options?.gutterTop || DEFAULT_OPTIONS.gutterTop,
+        noFooter: options?.noFooter || DEFAULT_OPTIONS.noFooter,
+        title: options?.title ? `${options?.title} · TIHLDE` : DEFAULT_OPTIONS.title,
+      }),
+    [],
+  );
+  const reset = useCallback(() => setNavigationOptions(DEFAULT_OPTIONS), []);
+  return { setOptions, reset, options };
+};
+
+const [NavigationProvider, useSetOptions, useGetNavigationOptions, useResetOptions] = constate(
+  useNavigationContext,
+  (value) => value.setOptions,
+  (value) => value.options,
+  (value) => value.reset,
+);
+
+export const useSetNavigationOptions = (options?: SetNavigationOptions) => {
+  const setOptions = useSetOptions();
+  const resetOptions = useResetOptions();
+  useLayoutEffect(() => {
+    setOptions(options);
     return () => {
-      subscribed = false;
+      resetOptions();
     };
-  }, [getWarnings]);
+  }, [options]);
+};
 
-  const closeSnackbar = (warning: Warning) => {
-    const warningsRead = getCookie(WARNINGS_READ);
-    const readArray = (warningsRead === undefined ? [] : warningsRead) as number[];
-    readArray.push(warning.id);
-    setCookie(WARNINGS_READ, JSON.stringify(readArray));
-    setWarning(null);
-  };
+export type NavigationProps = {
+  children?: ReactNode;
+};
+
+export type NavigationItem = {
+  items?: {
+    text: string;
+    to: string;
+  }[];
+  text: string;
+  to?: string;
+  type: 'dropdown' | 'link';
+};
+
+const NavigationContent = ({ children }: NavigationProps) => {
+  const { data: warnings = [], closeWarning } = useWarnings();
+  const isAuthenticated = useIsAuthenticated();
+  const { title, darkColor, lightColor, filledTopbar, noFooter, gutterBottom, gutterTop } = useGetNavigationOptions();
+  const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
+
+  const items = useMemo<Array<NavigationItem>>(
+    () => [
+      {
+        items: [
+          { text: 'Om TIHLDE', to: URLS.pages },
+          { text: 'Ny student', to: URLS.newStudent },
+          { text: 'Gruppeoversikt', to: URLS.groups },
+        ],
+        text: 'Generelt',
+        type: 'dropdown',
+      },
+      { text: 'Arrangementer', to: URLS.events, type: 'link' },
+      { text: 'Nyheter', to: URLS.news, type: 'link' },
+      { text: 'Karriere', to: URLS.jobposts, type: 'link' },
+      isAuthenticated
+        ? {
+            items: [
+              { text: 'Kokebok', to: URLS.cheatsheet },
+              { text: 'Link-forkorter', to: URLS.shortLinks },
+            ],
+            text: 'For medlemmer',
+            type: 'dropdown',
+          }
+        : { text: 'For bedrifter', to: URLS.company, type: 'link' },
+    ],
+    [isAuthenticated],
+  );
+
+  const warning = useMemo(() => (warnings.length ? warnings[warnings.length - 1] : undefined), [warnings]);
 
   return (
     <>
-      <Helmet>
-        <title>TIHLDE</title>
-      </Helmet>
-      <Topbar fancyNavbar={fancyNavbar} {...topbarProps} />
+      <Helmet>{<title>{title}</title>}</Helmet>
+      <Topbar darkColor={darkColor} filledTopbar={filledTopbar} items={items} lightColor={lightColor} />
       {warning && (
-        <Snack
-          className={classNames(classes.snack, classes.grow, warning.type === WarningType.MESSAGE ? classes.snackMessage : classes.snackWarning)}
-          message={warning.text}
-          onClose={() => closeSnackbar(warning)}
-          open={Boolean(warning)}
-        />
+        <Suspense fallback={null}>
+          <Snackbar anchorOrigin={{ horizontal: 'center', vertical: 'top' }} key={warning.id} open>
+            <Alert elevation={6} onClose={() => closeWarning(warning.id)} severity={warning.type === WarningType.MESSAGE ? 'info' : 'warning'} variant='filled'>
+              <MuiLinkify LinkProps={{ color: 'inherit', underline: 'always' }}>{warning.text}</MuiLinkify>
+            </Alert>
+          </Snackbar>
+        </Suspense>
       )}
-      <main className={classNames(classes.main, !fancyNavbar && classes.normalMain)}>
-        {isLoading ? (
-          <LinearProgress />
-        ) : (
-          <>
-            {banner}
-            {maxWidth === false ? <>{children}</> : <Container maxWidth={maxWidth || 'xl'}>{children || <></>}</Container>}
-          </>
-        )}
-      </main>
-      {!noFooter && !isLoading && <Footer />}
+      <Main gutterBottom={gutterBottom} gutterTop={gutterTop}>
+        {children}
+      </Main>
+      {!noFooter && <Footer />}
+      {lgDown && <BottomBar items={items} />}
     </>
   );
 };
+
+const Navigation = ({ children }: NavigationProps) => (
+  <NavigationProvider>
+    <NavigationContent>{children}</NavigationContent>
+  </NavigationProvider>
+);
 
 export default Navigation;

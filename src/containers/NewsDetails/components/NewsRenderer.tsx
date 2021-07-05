@@ -8,10 +8,8 @@ import { PermissionApp } from 'types/Enums';
 import { HavePermission } from 'api/hooks/User';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { makeStyles } from '@material-ui/styles';
+import { Typography, Button, Skeleton } from '@material-ui/core';
 
 // Project Components
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
@@ -29,39 +27,32 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(10),
     paddingBottom: theme.spacing(20),
     background: theme.palette.colors.gradient.main.top,
-    transition: '3s',
-    [theme.breakpoints.down('md')]: {
+    transition: 'background 1s',
+    [theme.breakpoints.down('lg')]: {
       paddingBottom: theme.spacing(15),
     },
   },
   topContent: {
     padding: theme.spacing(0, 5),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: theme.spacing(0, 3),
     },
   },
   content: {
     display: 'grid',
     gridGap: theme.spacing(2),
-    marginTop: -theme.spacing(18),
-    [theme.breakpoints.down('md')]: {
-      marginTop: -theme.spacing(13),
+    marginTop: `-${theme.spacing(18)}`,
+    [theme.breakpoints.down('lg')]: {
+      marginTop: `-${theme.spacing(13)}`,
       gridGap: theme.spacing(1),
     },
   },
   title: {
     wordWrap: 'break-word',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: '2.3rem',
     },
     padding: theme.spacing(1, 0),
-  },
-  skeleton: {
-    maxWidth: '100%',
-    borderRadius: theme.shape.borderRadius,
-  },
-  button: {
-    height: 50,
   },
   shareButton: {
     width: 'fit-content',
@@ -103,7 +94,7 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
         <AspectRatioImg alt={data.image_alt || data.title} imgClassName={classes.image} src={data.image} />
         {!preview && (
           <HavePermission apps={[PermissionApp.NEWS]}>
-            <Button className={classes.button} color='primary' component={Link} fullWidth to={`${URLS.newsAdmin}${data.id}/`} variant='outlined'>
+            <Button component={Link} fullWidth to={`${URLS.newsAdmin}${data.id}/`} variant='outlined'>
               Endre nyhet
             </Button>
           </HavePermission>
@@ -129,18 +120,18 @@ export const NewsRendererLoading = () => {
     <div>
       <div className={classes.top}>
         <Container className={classes.topContent} maxWidth='lg'>
-          <Skeleton className={classes.skeleton} width={200} />
-          <Skeleton className={classes.skeleton} height={80} width='60%' />
-          <Skeleton className={classes.skeleton} height={40} width={250} />
+          <Skeleton height={80} width='60%' />
+          <Skeleton height={40} width={250} />
         </Container>
       </div>
       <Container className={classes.content} maxWidth='lg'>
         <AspectRatioLoading imgClassName={classes.image} />
+        <Skeleton height={40} width={250} />
         <Paper>
-          <Skeleton className={classes.skeleton} width='80%' />
-          <Skeleton className={classes.skeleton} width='85%' />
-          <Skeleton className={classes.skeleton} width='75%' />
-          <Skeleton className={classes.skeleton} width='90%' />
+          <Skeleton width='80%' />
+          <Skeleton width='85%' />
+          <Skeleton width='75%' />
+          <Skeleton width='90%' />
         </Paper>
       </Container>
     </div>

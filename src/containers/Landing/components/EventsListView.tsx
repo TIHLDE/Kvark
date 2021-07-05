@@ -3,7 +3,7 @@ import URLS from 'URLS';
 import { Link } from 'react-router-dom';
 
 // Material-UI
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
@@ -53,7 +53,7 @@ const EventsListView = ({ events, isLoading = false }: EventsListViewProps) => {
     return (
       <div className={classes.container}>
         {events.map((event, index) => index < NO_OF_EVENTS_TO_SHOW && <ListItem event={event} key={event.id} />)}
-        <Button className={classes.btn} color='primary' component={Link} to={URLS.events} variant='outlined'>
+        <Button className={classes.btn} component={Link} to={URLS.events} variant='outlined'>
           Alle arrangementer ({events.length})
         </Button>
       </div>

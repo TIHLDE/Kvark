@@ -1,22 +1,9 @@
 import { ReactNode } from 'react';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import MaterialDialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import { Button, Dialog as MuiDialog, DialogProps as MuiDialogProps, DialogActions, DialogTitle, DialogContent, DialogContentText } from '@material-ui/core';
 
-const useStyles = makeStyles((theme: Theme) => ({
-  contentText: {
-    color: theme.palette.text.secondary,
-  },
-}));
-
-export type DialogProps = {
-  open: boolean;
+export type DialogProps = MuiDialogProps & {
   onClose: () => void;
   onCancel?: () => void;
   onConfirm?: () => void;
@@ -28,29 +15,40 @@ export type DialogProps = {
   disabled?: boolean;
 };
 
-function Dialog({ open, onClose, onCancel, onConfirm, titleText, children, contentText, closeText, confirmText, disabled = false }: DialogProps) {
-  const classes = useStyles();
+const Dialog = ({
+  open,
+  onClose,
+  onCancel,
+  onConfirm,
+  titleText,
+  children,
+  contentText,
+  closeText,
+  confirmText,
+  disabled = false,
+  maxWidth = 'md',
+  fullWidth = true,
+  ...props
+}: DialogProps) => {
   return (
-    <MaterialDialog aria-labelledby='form-dialog-title' fullWidth maxWidth='md' onClose={onClose} open={open}>
-      {titleText && <DialogTitle id='form-dialog-title'>{titleText}</DialogTitle>}
+    <MuiDialog aria-labelledby='dialog-title' fullWidth={fullWidth} maxWidth={maxWidth} onClose={onClose} open={open} {...props}>
+      {titleText && <DialogTitle id='dialog-title'>{titleText}</DialogTitle>}
       {(contentText || children) && (
         <DialogContent>
-          {contentText && <DialogContentText className={classes.contentText}>{contentText}</DialogContentText>}
+          {contentText && <DialogContentText>{contentText}</DialogContentText>}
           {children}
         </DialogContent>
       )}
       <DialogActions>
-        <Button color='primary' onClick={onCancel || onClose}>
-          {closeText || 'Lukk'}
-        </Button>
+        <Button onClick={onCancel || onClose}>{closeText || 'Lukk'}</Button>
         {onConfirm && (
-          <Button color='primary' disabled={disabled} onClick={onConfirm || onCancel} variant='contained'>
+          <Button disabled={disabled} onClick={onConfirm || onCancel} variant='contained'>
             {confirmText || 'OK'}
           </Button>
         )}
       </DialogActions>
-    </MaterialDialog>
+    </MuiDialog>
   );
-}
+};
 
 export default Dialog;
