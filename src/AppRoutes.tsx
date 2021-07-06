@@ -21,6 +21,7 @@ import JobPostDetails from 'containers/JobPostDetails';
 import NewsDetails from 'containers/NewsDetails';
 import GroupOverview from 'containers/GroupOverview';
 import News from 'containers/News';
+import NewStudent from 'containers/NewStudent';
 
 const Cheatsheet = lazy(() => import(/* webpackChunkName: "cheatsheet" */ 'containers/Cheatsheet'));
 const EventAdministration = lazy(() => import(/* webpackChunkName: "event_administration" */ 'containers/EventAdministration'));
@@ -76,6 +77,7 @@ const AppRoutes = () => {
     <Suspense fallback={<Page options={{ title: 'Laster...', filledTopbar: true }} />}>
       <Routes>
         <Route element={<Landing />} path='/' />
+        <Route element={<NewStudent />} path={URLS.fadderuka} />
         <Route path={URLS.events}>
           <AuthRoute apps={[PermissionApp.EVENT]} element={<EventRegistration />} path={`:id/${URLS.eventRegister}`} />
           <Route element={<EventDetails />} path=':id/*' />

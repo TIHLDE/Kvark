@@ -31,6 +31,8 @@ export default {
   pages: PAGES,
   aboutIndex: `${PAGES}${PAGES_URLS.ABOUT_INDEX}`,
 
+  fadderuka: '/fadderuka/',
+
   userAdmin: '/admin/brukere/',
   eventAdmin: '/admin/arrangementer/',
   jobpostsAdmin: '/admin/karriere/',
