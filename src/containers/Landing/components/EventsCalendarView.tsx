@@ -23,6 +23,9 @@ const useStyles = makeStyles(() => ({
       overflowY: 'hidden',
       whiteSpace: 'break-spaces',
     },
+    '& table': {
+      minWidth: 'unset',
+    },
   },
 }));
 
