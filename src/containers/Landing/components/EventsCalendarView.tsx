@@ -20,7 +20,6 @@ import Paper from 'components/layout/Paper';
 const useStyles = makeStyles(() => ({
   root: {
     '& div:first-of-type': {
-      overflowY: 'hidden',
       whiteSpace: 'break-spaces',
     },
     '& table': {

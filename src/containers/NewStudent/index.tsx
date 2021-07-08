@@ -3,20 +3,26 @@ import classnames from 'classnames';
 import { useQuery } from 'react-query';
 import { usePage } from 'api/hooks/Pages';
 import { useEvents } from 'api/hooks/Event';
+import { Link } from 'react-router-dom';
+import URLS from 'URLS';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
-import { Collapse, List, ListItemButton, ListItemIcon, ListItemText } from '@material-ui/core';
+import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography, Button } from '@material-ui/core';
 
 // Icons
 import EventIcon from '@material-ui/icons/EventRounded';
 import FaqIcon from '@material-ui/icons/HelpOutlineRounded';
 import VolunteerIcon from '@material-ui/icons/VolunteerActivismRounded';
 import SportsIcon from '@material-ui/icons/SportsSoccerRounded';
+import ListIcon from '@material-ui/icons/FormatListBulletedRounded';
+import CalendarIcon from '@material-ui/icons/DateRangeRounded';
+import SignupIcon from '@material-ui/icons/ArrowForwardRounded';
+import OpenInNewIcon from '@material-ui/icons/OpenInNewRounded';
 
 // Project Components
 import Page from 'components/navigation/Page';
-import Banner from 'components/layout/Banner';
+import Banner, { BannerButton } from 'components/layout/Banner';
 import Paper from 'components/layout/Paper';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import Tabs from 'components/layout/Tabs';
@@ -39,15 +45,6 @@ const useStyles = makeStyles((theme) => ({
       gridTemplateColumns: '1fr',
     },
   },
-  inner: {},
-  content: {
-    [theme.breakpoints.down('lg')]: {
-      gridGap: theme.spacing(1),
-    },
-  },
-  list: {
-    gridGap: theme.spacing(1),
-  },
 }));
 
 const FADDERUKA_EVENT_CATEGORY = 10;
@@ -56,15 +53,16 @@ const useGithubContent = (url: string) => useQuery(['github-wiki', url], () => f
 
 const NewStudent = () => {
   const classes = useStyles();
-  const eventsTab = { value: 'events', label: 'Arrangementer', icon: EventIcon };
+
+  const eventsTab = { value: 'events', label: 'Fadderuka - arrangementer', icon: EventIcon };
   const faqTab = { value: 'faq', label: 'FAQ', icon: FaqIcon };
   const volunteerTab = { value: 'volunteer', label: 'Verv', icon: VolunteerIcon };
   const sportsTab = { value: 'sports', label: 'Idrett', icon: SportsIcon };
   const tabs = [eventsTab, faqTab, volunteerTab, sportsTab];
   const [tab, setTab] = useState(eventsTab.value);
 
-  const eventsListView = { value: 'list', label: 'Liste', icon: EventIcon };
-  const eventsCalendarView = { value: 'calendar', label: 'Kalender', icon: FaqIcon };
+  const eventsListView = { value: 'list', label: 'Liste', icon: ListIcon };
+  const eventsCalendarView = { value: 'calendar', label: 'Kalender', icon: CalendarIcon };
   const eventTabs = [eventsListView, eventsCalendarView];
   const [eventTab, setEventTab] = useState(eventsListView.value);
 
@@ -76,10 +74,29 @@ const NewStudent = () => {
 
   return (
     <Page
-      banner={<Banner text='Velkommen til alle nye studenter i TIHLDE! Her finner du info om fadderuka, verv og ofte stilte spørsmål.' title='Ny student' />}
+      banner={
+        <Banner
+          text='Hei og velkommen til TIHLDE. Vi i TIHLDE vil gjerne ønske deg velkommen til Trondheim og vil at du skal bli kjent med både byen og dine medstudenter derfor arrangerer vi fadderuka for dere. Her kan du finne info om fadderuka, verv og idrett i TIHLDE, samt ofte stilte spørsmål og svar.'
+          title='Ny student'>
+          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+          {/* @ts-ignore */}
+          <BannerButton component='a' endIcon={<OpenInNewIcon />} href='https://tihlde.org/#TODO-bytt-ut' rel='noopener noreferrer' target='_blank'>
+            Meld deg på fadderuka
+          </BannerButton>
+          <Paper>
+            <Typography gutterBottom>
+              Hei! Hvis du er ny student i TIHLDE anbefaler vi deg å opprette bruker på nettsiden ASAP! Da får du muligheten til å melde deg på arrangementer,
+              få badges, se kokeboka og mer.
+            </Typography>
+            <Button component={Link} endIcon={<SignupIcon />} fullWidth to={URLS.signup} variant='outlined'>
+              Opprett bruker her
+            </Button>
+          </Paper>
+        </Banner>
+      }
       options={{ title: 'Ny student' }}>
       <div className={classnames(classes.grid, classes.root)}>
-        <Paper noOverflow noPadding>
+        <Paper noOverflow noPadding sx={{ position: { lg: 'sticky' }, top: { lg: 75 } }}>
           <List disablePadding>
             {tabs.map((tabItem) => (
               <ListItemButton key={tabItem.value} onClick={() => setTab(tabItem.value)} selected={tab === tabItem.value}>
@@ -93,7 +110,7 @@ const NewStudent = () => {
         </Paper>
         <div>
           <Collapse in={tab === eventsTab.value}>
-            <Tabs selected={eventTab} setSelected={setEventTab} tabs={eventTabs} />
+            <Tabs selected={eventTab} setSelected={setEventTab} sx={{ ml: 2 }} tabs={eventTabs} />
             <Collapse in={eventTab === eventsListView.value}>
               {isLoading && <ListItemLoading />}
               {noEventsFound && (

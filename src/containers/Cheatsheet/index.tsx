@@ -85,9 +85,9 @@ const Cheetsheet = () => {
 
   const goToUserCheatsheet = useCallback(() => {
     if (user && 1 <= user.user_study && user.user_study <= 4 && user.user_class > 0) {
-      navigate(`${URLS.cheatsheet}${getUserStudyShort(user.user_study)}/${user.user_class}/`);
+      navigate(`${URLS.cheatsheet}${getUserStudyShort(user.user_study)}/${user.user_class}/`, { replace: true });
     } else {
-      navigate(`${URLS.cheatsheet}${getUserStudyShort(1)}/1/`);
+      navigate(`${URLS.cheatsheet}${getUserStudyShort(1)}/1/`, { replace: true });
     }
   }, [user, navigate]);
 

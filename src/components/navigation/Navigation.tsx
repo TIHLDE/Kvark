@@ -123,6 +123,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
         text: 'Generelt',
         type: 'dropdown',
       },
+      { text: 'Ny student', to: URLS.fadderuka, type: 'link' },
       { text: 'Arrangementer', to: URLS.events, type: 'link' },
       { text: 'Nyheter', to: URLS.news, type: 'link' },
       { text: 'Karriere', to: URLS.jobposts, type: 'link' },
