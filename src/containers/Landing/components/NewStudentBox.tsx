@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 import { useUser, useIsAuthenticated } from 'api/hooks/User';
+import { Link } from 'react-router-dom';
+import URLS from 'URLS';
 
 // Material UI Components
 import { Typography, styled, Button } from '@material-ui/core';
@@ -49,7 +51,7 @@ const NewStudentBox = () => {
         {text}
       </Typography>
       {header !== 'Velkommen tilbake' && (
-        <Button endIcon={<OpenIcon />} fullWidth variant='contained'>
+        <Button component={Link} endIcon={<OpenIcon />} fullWidth to={URLS.fadderuka} variant='contained'>
           Nye studenter
         </Button>
       )}
