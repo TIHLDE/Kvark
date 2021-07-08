@@ -2,13 +2,15 @@ import { useState, Fragment, useMemo } from 'react';
 import classnames from 'classnames';
 import { useQuery } from 'react-query';
 import { usePage } from 'api/hooks/Pages';
+import { useIsAuthenticated } from 'api/hooks/User';
 import { useEvents } from 'api/hooks/Event';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
+import { Page as PageType } from 'types/Types';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
-import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography, Button } from '@material-ui/core';
+import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
 
 // Icons
 import EventIcon from '@material-ui/icons/EventRounded';
@@ -21,6 +23,7 @@ import SignupIcon from '@material-ui/icons/ArrowForwardRounded';
 import OpenInNewIcon from '@material-ui/icons/OpenInNewRounded';
 
 // Project Components
+import Expansion from 'components/layout/Expand';
 import Page from 'components/navigation/Page';
 import Banner, { BannerButton } from 'components/layout/Banner';
 import Paper from 'components/layout/Paper';
@@ -49,11 +52,30 @@ const useStyles = makeStyles((theme) => ({
 
 const FADDERUKA_EVENT_CATEGORY = 10;
 
-const useGithubContent = (url: string) => useQuery(['github-wiki', url], () => fetch(url).then((res) => res.text()));
+const usePageContent = (url: string) =>
+  useQuery<string>(['page', url], () =>
+    fetch(`https://api.tihlde.org/api/v1/page/${url}`)
+      .then((res) => res.json())
+      .then((page: PageType) => page.content),
+  );
+
+type VolunteerGroupProps = {
+  url: string;
+  title: string;
+};
+
+const VolunteerGroup = ({ url, title }: VolunteerGroupProps) => {
+  const { data: text = '' } = usePageContent(url);
+  return (
+    <Expansion flat header={title} sx={{ border: (theme) => `1px solid ${theme.palette.divider}`, background: (theme) => theme.palette.background.smoke }}>
+      <MarkdownRenderer value={text} />
+    </Expansion>
+  );
+};
 
 const NewStudent = () => {
   const classes = useStyles();
-
+  const isAuthenticated = useIsAuthenticated();
   const eventsTab = { value: 'events', label: 'Fadderuka - arrangementer', icon: EventIcon };
   const faqTab = { value: 'faq', label: 'FAQ', icon: FaqIcon };
   const volunteerTab = { value: 'volunteer', label: 'Verv', icon: VolunteerIcon };
@@ -69,8 +91,7 @@ const NewStudent = () => {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents({ category: FADDERUKA_EVENT_CATEGORY });
   const noEventsFound = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
   const { data: faqPage } = usePage('ny-student/');
-  const { data: volunteerText = '' } = useGithubContent('https://raw.githubusercontent.com/wiki/TIHLDE/Kvark/Verv-fadderuka-info.md');
-  const { data: sportsText = '' } = useGithubContent('https://raw.githubusercontent.com/wiki/TIHLDE/Kvark/Idrett-fadderuka-info.md');
+  const { data: sportsText = '' } = usePageContent('tihlde/interessegrupper/tihlde-pythons/');
 
   return (
     <Page
@@ -83,15 +104,19 @@ const NewStudent = () => {
           <BannerButton component='a' endIcon={<OpenInNewIcon />} href='https://tihlde.org/#TODO-bytt-ut' rel='noopener noreferrer' target='_blank'>
             Meld deg på fadderuka
           </BannerButton>
-          <Paper>
-            <Typography gutterBottom>
-              Hei! Hvis du er ny student i TIHLDE anbefaler vi deg å opprette bruker på nettsiden ASAP! Da får du muligheten til å melde deg på arrangementer,
-              få badges, se kokeboka og mer.
-            </Typography>
-            <Button component={Link} endIcon={<SignupIcon />} fullWidth to={URLS.signup} variant='outlined'>
-              Opprett bruker her
-            </Button>
-          </Paper>
+          {!isAuthenticated && (
+            <Paper sx={{ background: 'transparent', borderColor: (theme) => theme.palette.common.white }}>
+              <Typography gutterBottom sx={{ color: (theme) => theme.palette.common.white }}>
+                Hei! Hvis du er ny student i TIHLDE anbefaler vi deg å opprette bruker på nettsiden ASAP! Da får du muligheten til å melde deg på arrangementer,
+                få badges, se kokeboka og mer 🎉
+              </Typography>
+              {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+              {/* @ts-ignore */}
+              <BannerButton component={Link} endIcon={<SignupIcon />} to={URLS.signup}>
+                Opprett bruker her
+              </BannerButton>
+            </Paper>
+          )}
         </Banner>
       }
       options={{ title: 'Ny student' }}>
@@ -134,21 +159,46 @@ const NewStudent = () => {
               {isFetching && <ListItemLoading />}
             </Collapse>
             <Collapse in={eventTab === eventsCalendarView.value}>
-              {/* Calender funker ikke... */}
               <EventsCalendarView events={data?.pages[0]?.results || []} oldEvents={[]} />
             </Collapse>
           </Collapse>
-          <Collapse in={tab === faqTab.value}>
+          <Collapse in={tab === faqTab.value} mountOnEnter>
             <Paper sx={{ p: 2 }}>
               <MarkdownRenderer value={faqPage?.content || ''} />
             </Paper>
           </Collapse>
-          <Collapse in={tab === volunteerTab.value}>
+          <Collapse in={tab === volunteerTab.value} mountOnEnter>
             <Paper sx={{ p: 2 }}>
-              <MarkdownRenderer value={volunteerText} />
+              <Typography gutterBottom variant='h2'>
+                Bli med som frivillig i TIHLDE
+              </Typography>
+              <Typography gutterBottom>
+                Som frivillig i TIHLDE får du være med på mye gøy og blir kjent med kule folk! Vi har 5 undergrupper og 5 komitéer som jobber for medlemmene
+                våre. Her kan du lese mer om hva hver unergruppe/komite jobber med og hvordan du kan søke om å bli med i en eller flere.
+              </Typography>
+              <Typography gutterBottom variant='h3'>
+                Undergrupper:
+              </Typography>
+              <div>
+                <VolunteerGroup title='Index' url='tihlde/undergrupper/index/' />
+                <VolunteerGroup title='Drift' url='tihlde/undergrupper/drift/' />
+                <VolunteerGroup title='Næringsliv og Kurs' url='tihlde/undergrupper/nringsliv-og-kurs/' />
+                <VolunteerGroup title='Promo' url='tihlde/undergrupper/promo/' />
+                <VolunteerGroup title='Sosialen' url='tihlde/undergrupper/sosialen/' />
+              </div>
+              <Typography gutterBottom sx={{ mt: 1 }} variant='h3'>
+                Komitéer:
+              </Typography>
+              <div>
+                <VolunteerGroup title='FadderKom' url='tihlde/komiteer/fadderkom/' />
+                <VolunteerGroup title='JenteKom' url='tihlde/komiteer/jentekom/' />
+                <VolunteerGroup title='KontKom' url='tihlde/komiteer/kontkom/' />
+                <VolunteerGroup title='Redaksjonen' url='tihlde/komiteer/redaksjonen/' />
+                <VolunteerGroup title='TurTorial' url='tihlde/komiteer/turtorial/' />
+              </div>
             </Paper>
           </Collapse>
-          <Collapse in={tab === sportsTab.value}>
+          <Collapse in={tab === sportsTab.value} mountOnEnter>
             <Paper sx={{ p: 2 }}>
               <MarkdownRenderer value={sportsText} />
             </Paper>
