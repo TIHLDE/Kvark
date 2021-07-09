@@ -6,7 +6,6 @@ import { Typography, styled, Button } from '@material-ui/core';
 
 // Icons
 import OpenIcon from '@material-ui/icons/ArrowForwardRounded';
-
 const Box = styled('div')(({ theme }) => ({
   padding: theme.spacing(3),
   borderRadius: theme.shape.borderRadius,
@@ -17,13 +16,24 @@ const Box = styled('div')(({ theme }) => ({
 const NewStudentBox = () => {
   const { data: user, isLoading } = useUser();
   const isAuthenticated = useIsAuthenticated();
+  const HEADER = {
+    NEW_STUDENT: 'Nye studenter',
+    OLD_STUDENT: 'Velkommen tilbake',
+  };
+  const TEXT = {
+    NEW_STUDENT: `Hei, ${user?.first_name} 👋 Velkommen som ny student i TIHLDE! Vi gleder oss til å bli kjent med deg og håper at du vil være med på fadderuka og engasjere deg i linjeforeningen. Les alt på siden for nye studenter ⬇️`,
+    OLD_STUDENT: `Hei, ${user?.first_name} 👋 Velkommen tilbake til et nytt semester! Håper du har hatt en strålende sommer og er gira på å komme i gang igjen. Husk at det er lurt å sjekke nettsiden jevnlig for nye kule arrangementer og stillingsannonser 😃`,
+    NO_AUTH:
+      'Velkommen til alle nye studenter i TIHLDE 👋 Vi gleder oss til å bli kjent med dere og håper at dere vil være med på fadderuka og engasjere dere i linjeforeningen. Les alt om fadderuka, verv og FAQ på siden for nye studenter ⬇️',
+  };
+
   const header = useMemo(() => {
     if (isLoading && isAuthenticated) {
       return '';
     } else if (user?.user_class !== 1 && isAuthenticated) {
-      return `Velkommen tilbake`;
+      return HEADER.OLD_STUDENT;
     } else {
-      return 'Nye studenter';
+      return HEADER.NEW_STUDENT;
     }
   }, [user, isAuthenticated]);
   const text = useMemo(() => {
@@ -31,12 +41,12 @@ const NewStudentBox = () => {
       return '';
     } else if (user) {
       if (user.user_class === 1) {
-        return `Hei, ${user.first_name} 👋 Velkommen som ny student i TIHLDE! Vi gleder oss til å bli kjent med deg og håper at du vil være med på fadderuka og engasjere deg i linjeforeningen. Les alt på siden for nye studenter ⬇️`;
+        return TEXT.NEW_STUDENT;
       } else {
-        return `Hei, ${user.first_name} 👋 Velkommen tilbake til et nytt semester! Håper du har hatt en strålende sommer og er gira på å komme i gang igjen. Sjekk gjerne profilen din og se over at all informasjon er korrekt. Husk også at det er lurt å sjekke nettsiden jevnlig for nye kule arrangementer og stillingsannonser 😃`;
+        return TEXT.OLD_STUDENT;
       }
     } else {
-      return 'Velkommen til alle nye studenter i TIHLDE 👋 Vi gleder oss til å bli kjent med dere og håper at dere vil være med på fadderuka og engasjere dere i linjeforeningen. Lag gjerne en profil på siden med en gang du har fått Feide-bruker, så du får tilgang til mer. Les alt om fadderuka, verv og FAQ på siden for nye studenter ⬇️';
+      return TEXT.NO_AUTH;
     }
   }, [user, isAuthenticated]);
 

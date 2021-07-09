@@ -21,6 +21,7 @@ import ListIcon from '@material-ui/icons/FormatListBulletedRounded';
 import CalendarIcon from '@material-ui/icons/DateRangeRounded';
 import SignupIcon from '@material-ui/icons/ArrowForwardRounded';
 import OpenInNewIcon from '@material-ui/icons/OpenInNewRounded';
+import AboutIcon from '@material-ui/icons/InfoRounded';
 
 // Project Components
 import Expansion from 'components/layout/Expand';
@@ -59,6 +60,8 @@ const usePageContent = (url: string) =>
       .then((page: PageType) => page.content),
   );
 
+const useGithubContent = (url: string) => useQuery(['github-wiki', url], () => fetch(url).then((res) => res.text()));
+
 type VolunteerGroupProps = {
   url: string;
   title: string;
@@ -80,7 +83,8 @@ const NewStudent = () => {
   const faqTab = { value: 'faq', label: 'FAQ', icon: FaqIcon };
   const volunteerTab = { value: 'volunteer', label: 'Verv', icon: VolunteerIcon };
   const sportsTab = { value: 'sports', label: 'Idrett', icon: SportsIcon };
-  const tabs = [eventsTab, faqTab, volunteerTab, sportsTab];
+  const aboutTab = { value: 'about', label: 'Om TIHLDE.org', icon: AboutIcon };
+  const tabs = [eventsTab, faqTab, volunteerTab, sportsTab, aboutTab];
   const [tab, setTab] = useState(eventsTab.value);
 
   const eventsListView = { value: 'list', label: 'Liste', icon: ListIcon };
@@ -92,16 +96,17 @@ const NewStudent = () => {
   const noEventsFound = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
   const { data: faqPage } = usePage('ny-student/');
   const { data: sportsText = '' } = usePageContent('tihlde/interessegrupper/tihlde-pythons/');
+  const { data: aboutText = '' } = useGithubContent('https://raw.githubusercontent.com/wiki/TIHLDE/Kvark/Nettsiden-info.md');
 
   return (
     <Page
       banner={
         <Banner
-          text='Hei og velkommen til TIHLDE. Vi i TIHLDE vil gjerne ønske deg velkommen til Trondheim og vil at du skal bli kjent med både byen og dine medstudenter derfor arrangerer vi fadderuka for dere. Her kan du finne info om fadderuka, verv og idrett i TIHLDE, samt ofte stilte spørsmål og svar.'
+          text='Hei og velkommen til TIHLDE. Vi i TIHLDE vil gjerne ønske deg velkommen til Trondheim og vil at du skal bli kjent med både byen og dine medstudenter, derfor arrangerer vi fadderuka for dere. Her kan du finne info om fadderuka, verv og idrett i TIHLDE, samt ofte stilte spørsmål og svar.'
           title='Ny student'>
           {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
           {/* @ts-ignore */}
-          <BannerButton component='a' endIcon={<OpenInNewIcon />} href='https://tihlde.org/#TODO-bytt-ut' rel='noopener noreferrer' target='_blank'>
+          <BannerButton component='a' endIcon={<OpenInNewIcon />} href='https://s.tihlde.org/fadderuka-paamelding' rel='noopener noreferrer' target='_blank'>
             Meld deg på fadderuka
           </BannerButton>
           {!isAuthenticated && (
@@ -201,6 +206,11 @@ const NewStudent = () => {
           <Collapse in={tab === sportsTab.value} mountOnEnter>
             <Paper sx={{ p: 2 }}>
               <MarkdownRenderer value={sportsText} />
+            </Paper>
+          </Collapse>
+          <Collapse in={tab === aboutTab.value} mountOnEnter>
+            <Paper sx={{ p: 2 }}>
+              <MarkdownRenderer value={aboutText} />
             </Paper>
           </Collapse>
         </div>
