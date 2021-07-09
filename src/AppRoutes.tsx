@@ -77,7 +77,7 @@ const AppRoutes = () => {
     <Suspense fallback={<Page options={{ title: 'Laster...', filledTopbar: true }} />}>
       <Routes>
         <Route element={<Landing />} path='/' />
-        <Route element={<NewStudent />} path={URLS.fadderuka} />
+        <Route element={<NewStudent />} path={URLS.newStudent} />
         <Route path={URLS.events}>
           <AuthRoute apps={[PermissionApp.EVENT]} element={<EventRegistration />} path={`:id/${URLS.eventRegister}`} />
           <Route element={<EventDetails />} path=':id/*' />

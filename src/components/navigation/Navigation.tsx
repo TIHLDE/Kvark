@@ -5,6 +5,7 @@ import URLS from 'URLS';
 import { WarningType } from 'types/Enums';
 import { useIsAuthenticated } from 'api/hooks/User';
 import { useWarnings } from 'api/hooks/Warnings';
+import { SHOW_NEW_STUDENT_INFO } from 'constant';
 
 // Material UI Components
 import { Theme, useMediaQuery, Snackbar as MaterialSnackbar, Alert, styled } from '@material-ui/core';
@@ -123,7 +124,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
         text: 'Generelt',
         type: 'dropdown',
       },
-      { text: 'Ny student', to: URLS.fadderuka, type: 'link' },
+      ...(SHOW_NEW_STUDENT_INFO ? [{ text: 'Ny student', to: URLS.newStudent, type: 'link' } as NavigationItem] : []),
       { text: 'Arrangementer', to: URLS.events, type: 'link' },
       { text: 'Nyheter', to: URLS.news, type: 'link' },
       { text: 'Karriere', to: URLS.jobposts, type: 'link' },
