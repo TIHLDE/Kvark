@@ -1,7 +1,7 @@
 import { ComponentType } from 'react';
 
 // Material UI Components
-import { Tabs as MuiTabs, Tab as MuiTab, styled } from '@material-ui/core';
+import { Tabs as MuiTabs, Tab as MuiTab, styled, TabsProps as MuiTabsProps } from '@material-ui/core';
 
 const CustomTabs = styled(MuiTabs)(({ theme }) => ({
   '& .MuiTabs-indicator': {
@@ -49,10 +49,10 @@ export type TabsProps = {
     value: number | string;
   }>;
   marginBottom?: boolean;
-};
+} & MuiTabsProps;
 
-const Tabs = ({ tabs, selected, setSelected }: TabsProps) => (
-  <CustomTabs aria-label='Tabs' onChange={(e, newTab) => setSelected(newTab)} value={selected} variant='scrollable'>
+const Tabs = ({ tabs, selected, setSelected, ...props }: TabsProps) => (
+  <CustomTabs aria-label='Tabs' onChange={(e, newTab) => setSelected(newTab)} value={selected} variant='scrollable' {...props}>
     {tabs.map((tab, index) => {
       const Icon = tab.icon && styled(tab.icon)({ verticalAlign: 'middle', marginRight: 7, marginBottom: 3 });
       return (

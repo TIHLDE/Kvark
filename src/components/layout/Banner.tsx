@@ -48,10 +48,6 @@ const useStyles = makeStyles<Theme, Pick<BannerProps, 'background'>>((theme) => 
   text: {
     '& p,a': {
       color: ({ background }) => theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
-      fontSize: 18,
-      [theme.breakpoints.down('lg')]: {
-        fontSize: 16,
-      },
     },
     paddingTop: theme.spacing(2),
     maxWidth: 600,

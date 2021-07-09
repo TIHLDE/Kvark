@@ -1,3 +1,5 @@
+import { isAfter, isBefore, getYear } from 'date-fns';
+
 export const TIHLDE_API = {
   URL: process.env.REACT_APP_API_URL || '/api/v1/',
 };
@@ -11,3 +13,7 @@ export const EMAIL_REGEX = RegExp(
   // eslint-disable-next-line no-useless-escape
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 );
+
+const isAfterJuly20th = isAfter(new Date(), new Date(getYear(new Date()), 6, 20, 0, 0, 0));
+const isBeforeSeptember15th = isBefore(new Date(), new Date(getYear(new Date()), 8, 15, 0, 0, 0));
+export const SHOW_NEW_STUDENT_INFO = isAfterJuly20th && isBeforeSeptember15th;

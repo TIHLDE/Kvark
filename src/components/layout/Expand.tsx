@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 import classNames from 'classnames';
 
 // Material UI Components
-import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@material-ui/core';
+import { AccordionProps, Accordion, AccordionSummary, AccordionDetails, Typography } from '@material-ui/core';
 
 // Icons
 import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
@@ -35,17 +35,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export type ExpansionProps = {
+export type ExpansionProps = AccordionProps & {
   flat?: boolean;
   header: string;
   children?: ReactNode;
   className?: string;
 };
 
-const Expansion = ({ className, flat, header, children }: ExpansionProps) => {
+const Expansion = ({ className, flat, header, children, ...props }: ExpansionProps) => {
   const classes = useStyles();
   return (
-    <Accordion className={classNames(classes.root, flat && classes.flat, className)}>
+    <Accordion className={classNames(classes.root, flat && classes.flat, className)} {...props}>
       <AccordionSummary className={classes.summary} expandIcon={<ExpandMoreIcon />}>
         <Typography className={classes.heading}>{header}</Typography>
       </AccordionSummary>

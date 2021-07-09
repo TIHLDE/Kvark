@@ -11,6 +11,7 @@ import EventsView from 'containers/Landing/components/EventsView';
 import NewsListView from 'containers/Landing/components/NewsListView';
 import StoriesView from 'containers/Landing/components/StoriesView';
 import Wave from 'containers/Landing/components/Wave';
+import NewStudentBox from 'containers/Landing/components/NewStudentBox';
 
 const useStyles = makeStyles((theme) => ({
   section: {
@@ -43,6 +44,7 @@ const Landing = () => {
     <Page banner={<Wave />} maxWidth={false} options={{ title: 'Forsiden' }}>
       <div className={classes.smoke}>
         <Container className={classnames(classes.section, classes.storiesSection)} maxWidth='lg'>
+          <NewStudentBox />
           <Typography align='center' className={classes.header} color='inherit' variant='h2'>
             Siste
           </Typography>
