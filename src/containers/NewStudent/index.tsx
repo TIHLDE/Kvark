@@ -179,7 +179,7 @@ const NewStudent = () => {
               </Typography>
               <Typography gutterBottom>
                 Som frivillig i TIHLDE får du være med på mye gøy og blir kjent med kule folk! Vi har 5 undergrupper og 5 komitéer som jobber for medlemmene
-                våre. Her kan du lese mer om hva hver unergruppe/komite jobber med og hvordan du kan søke om å bli med i en eller flere.
+                våre. Her kan du lese mer om hva hver undergruppe/komité jobber med og hvordan du kan søke om å bli med i en eller flere.
               </Typography>
               <Typography gutterBottom variant='h3'>
                 Undergrupper:
