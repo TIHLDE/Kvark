@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.1.1 (11.07.2021)
+
 ## Versjon 1.1.0 (10.07.2021)
 
 - ✨ **Material-UI**. Oppdatert Material-UI til v5 som inneholder nye komponenter, ikoner, utseende og annen forbedret funksjonalitet. Her er det også gjort en stor jobb ved å oppdatere breaking changes som også gjør det enklere å oppdatere til v6 når det blir aktuelt.
