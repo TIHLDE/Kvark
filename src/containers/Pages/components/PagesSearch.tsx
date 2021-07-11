@@ -3,22 +3,17 @@ import { usePages } from 'api/hooks/Pages';
 import { useDebounce } from 'api/hooks/Utils';
 
 // Material UI Components
-import { makeStyles, Button, TextField, Collapse, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { TextField, Collapse, Typography } from '@material-ui/core';
 
 // Project components
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 import Pagination from 'components/layout/Pagination';
+import { BannerButton } from 'components/layout/Banner';
 import PagesList from 'containers/Pages/components/PagesList';
 
 const useStyles = makeStyles((theme) => ({
-  button: {
-    color: theme.palette.common.white,
-    borderColor: theme.palette.common.white + 'bb',
-    '&:hover': {
-      borderColor: theme.palette.common.white,
-    },
-  },
   paper: {
     marginBottom: theme.spacing(1),
     marginTop: theme.spacing(1),
@@ -42,9 +37,7 @@ const PagesSearch = () => {
   const toggle = () => setOpen((prev) => !prev);
   return (
     <>
-      <Button className={classes.button} color='inherit' fullWidth onClick={toggle} variant='outlined'>
-        Søk
-      </Button>
+      <BannerButton onClick={toggle}>Søk</BannerButton>
       <Dialog onClose={toggle} open={open}>
         <TextField fullWidth label='Søk etter side' onChange={(e) => setSearch(e.target.value)} value={search} variant='outlined' />
         <Collapse in={Boolean(pages.length && !isLoading)}>

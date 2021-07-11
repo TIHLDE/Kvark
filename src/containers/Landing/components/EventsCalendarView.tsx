@@ -5,10 +5,13 @@ import { Link } from 'react-router-dom';
 import { parseISO } from 'date-fns';
 import { urlEncode } from 'utils';
 import { ViewState, AppointmentModel } from '@devexpress/dx-react-scheduler';
-import { Scheduler, MonthView, Toolbar, DateNavigator, Appointments } from '@devexpress/dx-react-scheduler-material-ui';
+// TODO: Swap dependency with @devexpress/dx-react-scheduler-material-ui when it supports Material-UI v5
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { Scheduler, MonthView, Toolbar, DateNavigator, Appointments } from '@olros/devexpress-dx-react-scheduler-material-ui';
 
 // Material-UI
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 
 // Project components
 import Paper from 'components/layout/Paper';
@@ -16,9 +19,11 @@ import Paper from 'components/layout/Paper';
 // Styles
 const useStyles = makeStyles(() => ({
   root: {
-    '& div:first-child': {
-      overflowY: 'hidden',
+    '& div:first-of-type': {
       whiteSpace: 'break-spaces',
+    },
+    '& table': {
+      minWidth: 'unset',
     },
   },
 }));
@@ -33,6 +38,10 @@ const EventsCalendarView = ({ events, oldEvents }: EventsCalendarViewProps) => {
   const [displayedEvents, setDisplayedEvents] = useState<Array<AppointmentModel>>([]);
 
   useEffect(() => {
+    window.gtag('event', 'events', {
+      event_category: 'calendar',
+      event_label: 'Open calendar on landing page',
+    });
     const newEvents = [...events, ...oldEvents].map((event) => {
       return {
         ...event,

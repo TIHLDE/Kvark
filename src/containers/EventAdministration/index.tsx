@@ -2,31 +2,33 @@ import { useState } from 'react';
 import URLS from 'URLS';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useEvents } from 'api/hooks/Event';
+import { parseISO } from 'date-fns';
+import { formatDate } from 'utils';
 
 // Material-UI
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Collapse from '@material-ui/core/Collapse';
+import { makeStyles } from '@material-ui/styles';
+import { Typography, Collapse } from '@material-ui/core';
 
 // Icons
 import EditIcon from '@material-ui/icons/EditRounded';
 import ParticipantsIcon from '@material-ui/icons/PeopleRounded';
 import RegisterIcon from '@material-ui/icons/PlaylistAddCheckRounded';
+import OpenIcon from '@material-ui/icons/OpenInBrowserRounded';
 
 // Project components
 import Paper from 'components/layout/Paper';
 import Tabs from 'components/layout/Tabs';
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import SidebarList from 'components/layout/SidebarList';
 import EventEditor from 'containers/EventAdministration/components/EventEditor';
 import EventParticipants from 'containers/EventAdministration/components/EventParticipants';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(4),
     marginLeft: theme.spacing(35),
-    [theme.breakpoints.down('md')]: {
-      padding: theme.spacing(4, 1, 6),
+    [theme.breakpoints.down('lg')]: {
+      padding: theme.spacing(2, 1, 6),
       marginLeft: 0,
     },
   },
@@ -47,20 +49,33 @@ const EventAdministration = () => {
   const editTab = { value: 'edit', label: eventId ? 'Endre' : 'Skriv', icon: EditIcon };
   const participantsTab = { value: 'participants', label: 'Deltagere', icon: ParticipantsIcon };
   const registerTab = { value: 'register', label: 'Registrering', icon: RegisterIcon };
-  const tabs = [editTab, participantsTab, registerTab];
+  const navigateTab = { value: 'navigate', label: 'Se arrangement', icon: OpenIcon };
+  const tabs = eventId ? [editTab, participantsTab, registerTab, navigateTab] : [editTab];
   const [tab, setTab] = useState(editTab.value);
 
   const goToEvent = (newEvent: number | null) => {
     if (newEvent) {
       navigate(`${URLS.eventAdmin}${newEvent}/`);
     } else {
+      setTab(editTab.value);
       navigate(URLS.eventAdmin);
     }
   };
 
   return (
-    <Navigation maxWidth={false} noFooter>
-      <SidebarList onItemClick={(id: number | null) => goToEvent(id || null)} selectedItemId={Number(eventId)} title='Arrangementer' useHook={useEvents} />
+    <Page
+      maxWidth={false}
+      options={{ lightColor: 'blue', filledTopbar: true, gutterBottom: true, gutterTop: true, noFooter: true, title: 'Admin arrangementer' }}>
+      <SidebarList
+        descKey='start_date'
+        formatDesc={(desc) => formatDate(parseISO(desc))}
+        idKey='id'
+        onItemClick={(id: number | null) => goToEvent(id || null)}
+        selectedItemId={Number(eventId)}
+        title='Arrangementer'
+        titleKey='title'
+        useHook={useEvents}
+      />
       <div className={classes.root}>
         <div className={classes.content}>
           <Typography className={classes.header} variant='h2'>
@@ -74,13 +89,12 @@ const EventAdministration = () => {
             <Collapse in={tab === participantsTab.value} mountOnEnter>
               <EventParticipants eventId={Number(eventId)} />
             </Collapse>
-            <Collapse in={tab === registerTab.value} mountOnEnter>
-              <Navigate to={`${URLS.events}${eventId}/registrering/`} />
-            </Collapse>
+            {tab === registerTab.value && <Navigate to={`${URLS.events}${eventId}/${URLS.eventRegister}`} />}
+            {tab === navigateTab.value && <Navigate to={`${URLS.events}${eventId}/`} />}
           </Paper>
         </div>
       </div>
-    </Navigation>
+    </Page>
   );
 };
 

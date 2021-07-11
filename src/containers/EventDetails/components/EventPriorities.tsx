@@ -4,10 +4,10 @@ import { UserClass, UserStudy } from 'types/Enums';
 import { getUserStudyShort } from 'utils';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/styles';
+import { Typography } from '@material-ui/core';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   prioritiesContainer: {
     display: 'flex',
     flexWrap: 'wrap',

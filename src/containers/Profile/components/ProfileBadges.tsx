@@ -4,7 +4,7 @@ import { Badge } from 'types/Types';
 import Paper from 'components/layout/Paper';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
@@ -38,7 +38,7 @@ const BadgeItem = ({ badge }: BadgeItemProps) => {
   return (
     <Paper className={classes.paper}>
       <Grid container spacing={0}>
-        <Grid alignItems='center' container item justify='center' xs={3}>
+        <Grid alignItems='center' container item justifyContent='center' xs={3}>
           <Grid item>
             <img alt={badge.title} src={badge.image} width={64} />
           </Grid>

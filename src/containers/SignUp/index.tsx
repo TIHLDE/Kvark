@@ -1,17 +1,16 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import Helmet from 'react-helmet';
 import URLS from 'URLS';
 import { EMAIL_REGEX } from 'constant';
 import { getUserStudyLong, getUserClass } from 'utils';
 import { UserCreate } from 'types/Types';
 import { useCreateUser } from 'api/hooks/User';
-import { useMisc } from 'api/hooks/Misc';
+import { useSetRedirectUrl, useRedirectUrl } from 'api/hooks/Misc';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
@@ -23,18 +22,15 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
 import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
+import { SecondaryTopBox } from 'components/layout/TopBox';
 
 const useStyles = makeStyles((theme) => ({
-  top: {
-    height: 220,
-    background: `radial-gradient(circle at bottom, ${theme.palette.colors.gradient.secondary.top}, ${theme.palette.colors.gradient.secondary.bottom})`,
-  },
   paper: {
     maxWidth: theme.breakpoints.values.md,
     margin: 'auto',
@@ -61,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
     gridGap: theme.spacing(1),
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       gridTemplateColumns: '1fr',
     },
   },
@@ -77,7 +73,8 @@ const SignUp = () => {
   const createUser = useCreateUser();
   const showSnackbar = useSnackbar();
   const { handleSubmit, errors, control, setError, register } = useForm<SignUpData>();
-  const { setLogInRedirectURL, getLogInRedirectURL } = useMisc();
+  const setLogInRedirectURL = useSetRedirectUrl();
+  const redirectURL = useRedirectUrl();
   const [faqOpen, setFaqOpen] = useState(false);
 
   const onSignUp = async (data: SignUpData) => {
@@ -106,7 +103,6 @@ const SignUp = () => {
     } as UserCreate;
     createUser.mutate(userData, {
       onSuccess: () => {
-        const redirectURL = getLogInRedirectURL();
         setLogInRedirectURL(null);
         navigate(redirectURL || URLS.login);
       },
@@ -117,10 +113,7 @@ const SignUp = () => {
   };
 
   return (
-    <Navigation banner={<div className={classes.top} />} fancyNavbar>
-      <Helmet>
-        <title>Ny bruker</title>
-      </Helmet>
+    <Page banner={<SecondaryTopBox />} options={{ title: 'Ny bruker' }}>
       <Paper className={classes.paper}>
         {createUser.isLoading && <LinearProgress className={classes.progress} />}
         <TihldeLogo className={classes.logo} darkColor='white' lightColor='blue' size='large' />
@@ -227,12 +220,11 @@ const SignUp = () => {
           <SubmitButton className={classes.button} disabled={createUser.isLoading} errors={errors}>
             Opprett bruker
           </SubmitButton>
-          <Button className={classes.button} color='primary' component={Link} disabled={createUser.isLoading} fullWidth to={URLS.login}>
+          <Button className={classes.button} component={Link} disabled={createUser.isLoading} fullWidth to={URLS.login}>
             Logg inn
           </Button>
           <Button
             className={classes.button}
-            color='primary'
             endIcon={faqOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             fullWidth
             onClick={() => setFaqOpen((oldState) => !oldState)}
@@ -251,7 +243,7 @@ const SignUp = () => {
           </Collapse>
         </form>
       </Paper>
-    </Navigation>
+    </Page>
   );
 };
 

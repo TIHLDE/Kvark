@@ -1,43 +1,19 @@
 import { useMemo } from 'react';
-import Helmet from 'react-helmet';
 import { useGroups } from 'api/hooks/Group';
 import { useIsAuthenticated } from 'api/hooks/User';
 import { GroupType } from 'types/Enums';
 import { Group } from 'types/Types';
 
 // Material UI Components
-import { makeStyles, Typography } from '@material-ui/core';
+import { Typography, Grid } from '@material-ui/core';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import GroupItem, { GroupItemLoading } from 'containers/GroupOverview/components/GroupItem';
-
-const useStyles = makeStyles((theme) => ({
-  top: {
-    height: 220,
-    background: theme.palette.colors.gradient.main.top,
-  },
-  content: {
-    margin: '-60px auto 60px',
-    position: 'relative',
-  },
-  groupContainer: {
-    display: 'grid',
-    gridGap: theme.spacing(2),
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    marginBottom: theme.spacing(3),
-    [theme.breakpoints.down('md')]: {
-      gridTemplateColumns: 'repeat(2, 1fr)',
-    },
-    [theme.breakpoints.down('sm')]: {
-      gridTemplateColumns: '1fr',
-    },
-  },
-}));
+import { PrimaryTopBox } from 'components/layout/TopBox';
 
 const GroupOverview = () => {
-  const classes = useStyles();
   const isAuthenticated = useIsAuthenticated();
   const { data: groups, error, isLoading } = useGroups();
   const BOARD_GROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.BOARD) || [], [groups]);
@@ -55,32 +31,35 @@ const GroupOverview = () => {
   };
 
   const Collection = ({ groups, title }: CollectionProps) => (
-    <div>
+    <>
       <Typography gutterBottom variant='h2'>
         {title}
       </Typography>
-      <div className={classes.groupContainer}>
+      <Grid container spacing={2} sx={{ mb: 3 }}>
         {groups.map((group) => (
-          <GroupItem group={group} key={group.name} />
+          <Grid item key={group.name} lg={4} md={6} xs={12}>
+            <GroupItem background='smoke' group={group} />
+          </Grid>
         ))}
-      </div>
-    </div>
+      </Grid>
+    </>
   );
 
   return (
-    <Navigation banner={<div className={classes.top}></div>} fancyNavbar>
-      <Helmet>
-        <title>Gruppeoversikt</title>
-      </Helmet>
-      <Paper className={classes.content}>
+    <Page banner={<PrimaryTopBox />} options={{ title: 'Gruppeoversikt' }}>
+      <Paper sx={{ margin: '-60px auto 60px', position: 'relative' }}>
         <Typography gutterBottom variant='h1'>
           Gruppeoversikt
         </Typography>
         {isLoading && (
-          <div className={classes.groupContainer}>
-            <GroupItemLoading />
-            <GroupItemLoading />
-          </div>
+          <Grid container spacing={2} sx={{ mb: 3 }}>
+            <Grid item lg={4} md={6} xs={12}>
+              <GroupItemLoading />
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <GroupItemLoading />
+            </Grid>
+          </Grid>
         )}
         {error && <Paper>{error.detail}</Paper>}
         {Boolean(BOARD_GROUPS.length) && <Collection groups={BOARD_GROUPS} title='Hovedstyret' />}
@@ -89,7 +68,7 @@ const GroupOverview = () => {
         {Boolean(INTERESTGROUPS.length) && <Collection groups={INTERESTGROUPS} title='Interessegrupper' />}
         {isAuthenticated && Boolean(OTHER_GROUPS.length) && <Collection groups={OTHER_GROUPS} title='Andre grupper' />}
       </Paper>
-    </Navigation>
+    </Page>
   );
 };
 

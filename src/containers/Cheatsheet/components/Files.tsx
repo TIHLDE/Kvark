@@ -4,13 +4,8 @@ import { CheatsheetType } from 'types/Enums';
 import { Cheatsheet } from 'types/Types';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Divider from '@material-ui/core/Divider';
-import Typography from '@material-ui/core/Typography';
-import Hidden from '@material-ui/core/Hidden';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import Tooltip from '@material-ui/core/Tooltip';
+import { makeStyles } from '@material-ui/styles';
+import { Theme, Divider, useMediaQuery, Typography, List, ListItem, Tooltip } from '@material-ui/core';
 
 // Icons
 import { ReactComponent as GitHub } from 'assets/icons/github.svg';
@@ -23,13 +18,13 @@ import OpenInNewIcon from '@material-ui/icons/OpenInNewRounded';
 import Paper from 'components/layout/Paper';
 import Pagination from 'components/layout/Pagination';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   grid: {
     display: 'grid',
     width: '100%',
     gridGap: theme.spacing(2),
     gridTemplateColumns: '26px 4fr 2fr 3fr',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '26px 1fr 1fr',
       gridGap: theme.spacing(1),
     },
@@ -56,7 +51,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fill: theme.palette.success.dark,
     height: 22,
     width: 22,
-    margin: `auto 0 auto ${theme.spacing(0.5)}px`,
+    margin: `auto 0 auto ${theme.spacing(0.5)}`,
   },
   flex: {
     display: 'flex',
@@ -72,6 +67,8 @@ export type FilesProps = {
 
 const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
   const classes = useStyles();
+  const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
+
   const Icon = ({ cheatsheet }: { cheatsheet: Cheatsheet }) => {
     if (cheatsheet.type === CheatsheetType.FILE) {
       return (
@@ -107,11 +104,11 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
         <Typography className={classes.filesHeader} variant='subtitle1'>
           Tittel:
         </Typography>
-        <Hidden mdDown>
+        {!lgDown && (
           <Typography className={classes.filesHeader} variant='subtitle1'>
             Av:
           </Typography>
-        </Hidden>
+        )}
         <Typography className={classes.filesHeader} variant='subtitle1'>
           Fag:
         </Typography>
@@ -129,7 +126,7 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
                       <Typography variant='subtitle1'>
                         <strong>{file.title}</strong>
                       </Typography>
-                      <Hidden mdDown>
+                      {!lgDown && (
                         <div className={classes.flex}>
                           <Typography variant='subtitle1'>{file.creator}</Typography>
                           {file.official && (
@@ -138,15 +135,13 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
                             </Tooltip>
                           )}
                         </div>
-                      </Hidden>
+                      )}
                       <div className={classes.flex}>
                         <Typography variant='subtitle1'>{file.course}</Typography>
-                        {file.official && (
-                          <Hidden lgUp>
-                            <Tooltip title='Laget av NTNU'>
-                              <VerifiedIcon className={classnames(classes.icon, classes.verified)} />
-                            </Tooltip>
-                          </Hidden>
+                        {file.official && lgDown && (
+                          <Tooltip title='Laget av NTNU'>
+                            <VerifiedIcon className={classnames(classes.icon, classes.verified)} />
+                          </Tooltip>
                         )}
                       </div>
                     </div>

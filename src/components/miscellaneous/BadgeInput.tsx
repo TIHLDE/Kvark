@@ -16,7 +16,7 @@ function BadgeInput() {
   };
 
   return (
-    <Grid alignItems='center' container direction='column' justify='center'>
+    <Grid alignItems='center' container direction='column' justifyContent='center'>
       <Grid item>
         <TextField
           helperText='flag{xxx-xxx-xxx-xxx-xxx}'
@@ -28,7 +28,7 @@ function BadgeInput() {
         />
       </Grid>
       <Grid item>
-        <Button color='primary' onClick={submit} variant='contained'>
+        <Button onClick={submit} variant='contained'>
           Send inn
         </Button>
       </Grid>

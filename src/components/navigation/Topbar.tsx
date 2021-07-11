@@ -2,50 +2,35 @@ import { useMemo, useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import classNames from 'classnames';
-import { useUser, useIsAuthenticated } from 'api/hooks/User';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Hidden from '@material-ui/core/Hidden';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
+import { makeStyles } from '@material-ui/styles';
+import { useTheme, AppBar, Toolbar, Button, Grow, Paper, Popper, MenuItem, MenuList, useMediaQuery } from '@material-ui/core';
 
 // Assets/Icons
-import MenuIcon from '@material-ui/icons/MenuRounded';
-import CloseIcon from '@material-ui/icons/CloseRounded';
-import PersonOutlineIcon from '@material-ui/icons/PersonRounded';
 import ExpandIcon from '@material-ui/icons/ExpandMoreRounded';
 
 // Project Components
-import Sidebar from 'components/navigation/Sidebar';
+import { NavigationItem, NavigationOptions } from 'components/navigation/Navigation';
+import ProfileTopbarButton from 'components/navigation/ProfileTopbarButton';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
-import Avatar from 'components/miscellaneous/Avatar';
 
-const useStyles = makeStyles<Theme, Pick<TopbarProps, 'whiteOnLight'>>((theme) => ({
+const useStyles = makeStyles((theme) => ({
   appBar: {
     boxSizing: 'border-box',
-    backgroundColor: (props) => (props.whiteOnLight && theme.palette.type === 'light' ? theme.palette.common.white : theme.palette.colors.gradient.main.top),
+    backgroundColor: theme.palette.colors.gradient.main.top,
     color: theme.palette.text.primary,
     flexGrow: 1,
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: theme.zIndex.drawer + 2,
     transition: '0.2s',
   },
   fancyAppBar: {
-    backgroundColor: () => 'transparent',
+    backgroundColor: 'transparent',
   },
   backdrop: {
     ...theme.palette.blurred,
     ...theme.palette.transparent,
-    backgroundColor: (props) =>
-      props.whiteOnLight && theme.palette.type === 'light' ? `${theme.palette.common.white}bf` : `${theme.palette.colors.gradient.main.top}bf`,
+    backgroundColor: `${theme.palette.colors.gradient.main.top}bf`,
     border: 'none',
     boxShadow: 'none',
   },
@@ -55,13 +40,27 @@ const useStyles = makeStyles<Theme, Pick<TopbarProps, 'whiteOnLight'>>((theme) =
     margin: 'auto',
     padding: theme.spacing(0, 1),
     display: 'grid',
-    gridTemplateColumns: '220px 1fr 220px',
-    [theme.breakpoints.down('lg')]: {
-      gridTemplateColumns: '160px 1fr 160px',
-    },
-    [theme.breakpoints.down('md')]: {
-      gridTemplateColumns: '160px 1fr',
-    },
+    gridTemplateColumns: '170px 1fr 170px',
+  },
+  filledTopbar: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 65,
+    background: theme.palette.colors.gradient.main.top,
+    zIndex: theme.zIndex.drawer + 1,
+  },
+  topbarMobile: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    padding: theme.spacing(0.5),
+    zIndex: theme.zIndex.drawer,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   logo: {
     height: 32,
@@ -71,27 +70,22 @@ const useStyles = makeStyles<Theme, Pick<TopbarProps, 'whiteOnLight'>>((theme) =
   items: {
     display: 'flex',
     justifyContent: 'center',
-    color: (props) => (props.whiteOnLight && theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white),
+    color: theme.palette.common.white,
+  },
+  black: {
+    color: theme.palette.common.black,
   },
   right: {
     display: 'flex',
     justifyContent: 'flex-end',
   },
-  menuButton: {
-    color: (props) =>
-      props.whiteOnLight && theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
-    margin: 'auto 0',
-  },
   selected: {
     borderBottom: '2px solid ' + theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
-  },
-  profileName: {
-    margin: `auto ${theme.spacing(1)}px`,
-    color: (props) => (props.whiteOnLight && theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white),
-    textAlign: 'right',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
+    '& a': {
+      fontWeight: 600,
+      borderBottomLeftRadius: 0,
+      borderBottomRightRadius: 0,
+    },
   },
   avatar: {
     width: 45,
@@ -130,7 +124,7 @@ export type TopBarItemProps = {
 };
 
 const TopBarItem = ({ items, text, to, type }: TopBarItemProps) => {
-  const classes = useStyles({});
+  const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
   const selected = useMemo(() => location.pathname === to, [location.pathname, to]);
@@ -177,101 +171,57 @@ const TopBarItem = ({ items, text, to, type }: TopBarItemProps) => {
 };
 
 export type TopbarProps = {
-  fancyNavbar?: boolean;
-  whiteOnLight?: boolean;
-};
+  items: Array<NavigationItem>;
+} & Pick<NavigationOptions, 'darkColor' | 'lightColor' | 'filledTopbar'>;
 
-const Topbar = ({ fancyNavbar = false, whiteOnLight = false }: TopbarProps) => {
-  const isAuthenticated = useIsAuthenticated();
-  const { data: user } = useUser();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const classes = useStyles({ whiteOnLight: whiteOnLight && !sidebarOpen });
+const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => {
+  const classes = useStyles();
+  const theme = useTheme();
   const [scrollLength, setScrollLength] = useState(0);
+  const lgDown = useMediaQuery(theme.breakpoints.down('lg'));
 
   const handleScroll = () => setScrollLength(window.pageYOffset);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const isOnTop = useMemo(() => scrollLength < 20, [scrollLength]);
+  const shouldOverrideColorProp = useMemo(() => !lgDown && (filledTopbar || !isOnTop), [lgDown, isOnTop, filledTopbar]);
+  const colorOnDark = useMemo(() => (darkColor && !shouldOverrideColorProp ? darkColor : 'white'), [darkColor, shouldOverrideColorProp]);
+  const colorOnLight = useMemo(() => (lightColor && !shouldOverrideColorProp ? lightColor : 'white'), [lightColor, shouldOverrideColorProp]);
 
-  const items = useMemo(
-    () =>
-      [
-        {
-          items: [
-            { text: 'Om TIHLDE', to: URLS.pages },
-            { text: 'Ny student', to: URLS.newStudent },
-            { text: 'Gruppeoversikt', to: URLS.groups },
-          ],
-          text: 'Generelt',
-          type: 'dropdown',
-        },
-        { text: 'Arrangementer', to: URLS.events, type: 'link' },
-        { text: 'Nyheter', to: URLS.news, type: 'link' },
-        { text: 'Karriere', to: URLS.jobposts, type: 'link' },
-        isAuthenticated
-          ? {
-              items: [
-                { text: 'Kokebok', to: URLS.cheatsheet },
-                { text: 'Link-forkorter', to: URLS.shortLinks },
-              ],
-              text: 'For medlemmer',
-              type: 'dropdown',
-            }
-          : { text: 'For bedrifter', to: URLS.company, type: 'link' },
-      ] as Array<TopBarItemProps>,
-    [isAuthenticated],
-  );
-
-  return (
-    <AppBar
-      className={classNames(
-        classes.appBar,
-        fancyNavbar && isOnTop && !sidebarOpen && classes.fancyAppBar,
-        fancyNavbar && !isOnTop && !sidebarOpen && classes.backdrop,
-      )}
-      color='primary'
-      elevation={(fancyNavbar && isOnTop) || sidebarOpen ? 0 : 1}
-      position='fixed'>
-      <Toolbar className={classes.toolbar} disableGutters>
+  if (lgDown) {
+    return (
+      <div className={classes.topbarMobile}>
         <Link to={URLS.landing}>
-          <TihldeLogo className={classes.logo} darkColor='white' lightColor={whiteOnLight && !sidebarOpen ? 'blue' : 'white'} size='large' />
+          <TihldeLogo className={classes.logo} darkColor={colorOnDark} lightColor={colorOnLight} size='large' />
         </Link>
-        <Hidden mdDown>
-          <div className={classes.items}>
+        <ProfileTopbarButton darkColor={colorOnDark} lightColor={colorOnLight} />
+      </div>
+    );
+  }
+  return (
+    <>
+      <AppBar className={classNames(classes.appBar, isOnTop ? classes.fancyAppBar : classes.backdrop)} elevation={isOnTop ? 0 : 1} position='fixed'>
+        <Toolbar className={classes.toolbar} disableGutters>
+          <Link to={URLS.landing}>
+            <TihldeLogo className={classes.logo} darkColor={colorOnDark} lightColor={colorOnLight} size='large' />
+          </Link>
+          <div
+            className={classNames(classes.items, (theme.palette.mode === 'light' ? colorOnLight : colorOnDark) !== 'white' && !filledTopbar && classes.black)}>
             {items.map((item, i) => (
               <TopBarItem key={i} {...item} />
             ))}
           </div>
-        </Hidden>
-        <div className={classes.right}>
-          {user ? (
-            <Button component={Link} onClick={URLS.profile === location.pathname ? () => location.reload() : undefined} to={URLS.profile}>
-              <Hidden smDown>
-                <Typography className={classes.profileName}>{user.first_name}</Typography>
-              </Hidden>
-              <Avatar className={classes.avatar} user={user} />
-            </Button>
-          ) : (
-            <Hidden mdDown>
-              <IconButton className={classes.menuButton} component={Link} to={URLS.login}>
-                <PersonOutlineIcon />
-              </IconButton>
-            </Hidden>
-          )}
-          <Hidden lgUp>
-            <IconButton className={classes.menuButton} onClick={() => setSidebarOpen((prev) => !prev)}>
-              {sidebarOpen ? <CloseIcon /> : <MenuIcon />}
-            </IconButton>
-            <Sidebar items={items} onClose={() => setSidebarOpen(false)} open={sidebarOpen} />
-          </Hidden>
-        </div>
-      </Toolbar>
-    </AppBar>
+          <div className={classes.right}>
+            <ProfileTopbarButton darkColor={colorOnDark} lightColor={colorOnLight} />
+          </div>
+        </Toolbar>
+      </AppBar>
+      {filledTopbar && <div className={classes.filledTopbar} />}
+    </>
   );
 };
 

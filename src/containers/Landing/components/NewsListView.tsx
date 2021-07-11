@@ -3,7 +3,7 @@ import URLS from 'URLS';
 import { Link } from 'react-router-dom';
 
 // Material-UI
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
     gridGap: theme.spacing(0, 1),
     gridTemplateColumns: '1fr 1fr',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr',
     },
   },
@@ -48,7 +48,7 @@ const NewsListView = () => {
     return (
       <>
         <div className={classes.container}>{news.map((newsItem, index) => index < NO_OF_NEWS_TO_SHOW && <ListItem key={index} news={newsItem} />)}</div>
-        <Button className={classes.btn} color='primary' component={Link} fullWidth to={URLS.news} variant='outlined'>
+        <Button className={classes.btn} component={Link} fullWidth to={URLS.news} variant='outlined'>
           Alle nyheter
         </Button>
       </>

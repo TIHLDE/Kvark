@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { CompaniesEmail } from 'types/Types';
-import { useMisc } from 'api/hooks/Misc';
-import useSnackbar from 'api/hooks/Snackbar';
+import API from 'api/api';
+import { useSnackbar } from 'api/hooks/Snackbar';
 import addMonths from 'date-fns/addMonths';
 import { EMAIL_REGEX } from 'constant';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Divider from '@material-ui/core/Divider';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     gridTemplateColumns: '1fr 1fr',
     gridGap: theme.spacing(2),
     padding: theme.spacing(1, 2),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       gridTemplateColumns: '1fr',
       padding: theme.spacing(1),
       gridGap: theme.spacing(1),
@@ -40,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
 const CompaniesForm = () => {
   const classes = useStyles();
   const showSnackbar = useSnackbar();
-  const { postEmail } = useMisc();
   const [isLoading, setIsLoading] = useState(false);
   const { register, handleSubmit, errors, reset, setError } = useForm<CompaniesEmail>();
 
@@ -50,7 +49,7 @@ const CompaniesForm = () => {
     }
     setIsLoading(true);
     try {
-      const response = await postEmail(data);
+      const response = await API.emailForm(data);
       showSnackbar(response.detail, 'success');
       reset({ info: { bedrift: '', kontaktperson: '', epost: '' }, comment: '' } as CompaniesEmail);
     } catch (e) {

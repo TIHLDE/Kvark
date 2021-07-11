@@ -197,3 +197,24 @@ export const getICSFromEvent = (event: Event): string => {
     .join('');
   return `data:text/calendar;charset=utf8,${calendarUrl}`;
 };
+
+/**
+ * Converts a JSON-object into args which can be transfered in an URL
+ * @param data A JSON-object
+ * @returns String with format: `?key1=value1&key2=value2`
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const argsToParams = (data: Record<string, any>) => {
+  let args = '?';
+  for (const key in data) {
+    if (Array.isArray(data[key])) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      for (const value in data[key] as any) {
+        args += `&${key}=${data[key][value]}`;
+      }
+    } else if (!(data[key] === undefined || (typeof data[key] === 'string' && data[key].trim().length === 0))) {
+      args += `&${key}=${data[key]}`;
+    }
+  }
+  return args;
+};

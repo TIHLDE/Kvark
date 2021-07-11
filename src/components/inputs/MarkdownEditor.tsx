@@ -1,60 +1,13 @@
 import { useState } from 'react';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
-import TextField, { TextFieldProps } from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import IconButton from '@material-ui/core/IconButton';
+import { TextField, TextFieldProps, Dialog, DialogTitle, DialogContent, IconButton, Typography, styled } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/CloseRounded';
-import Typography from '@material-ui/core/Typography';
 
 // Project components
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 
-const useStyles = makeStyles((theme) => ({
-  help: {
-    color: theme.palette.text.secondary,
-    cursor: 'pointer',
-    textDecoration: 'underline',
-  },
-  dialogHeader: {
-    margin: 0,
-    padding: theme.spacing(2),
-  },
-  dialogContent: {
-    padding: theme.spacing(2),
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.text.primary,
-  },
-}));
-
-const MarkdownEditor = (props: TextFieldProps) => {
-  const classes = useStyles();
-  const [helpDialogOpen, setHelpDialogOpen] = useState(false);
-
-  const HelperText = () => {
-    return (
-      <>
-        {Boolean(props.error && props.helperText) && (
-          <>
-            {props.helperText}
-            <br />
-          </>
-        )}
-        <span className={classes.help} onClick={() => setHelpDialogOpen(true)}>
-          Hvordan formaterer jeg teksten?
-        </span>
-      </>
-    );
-  };
-
-  const guide = `
+const guide = `
   *Markdown* er en vanlig måte å formatere tekst på nettet og brukes også tihlde.org. Her følger en rekke eksempler på hvordan du kan legge inn overskrifter, lister, linker, bilder, osv. ved hjelp av vanlig Markdown. I tillegg kan du vise arrangement-, nyhet- og jobbannonse-kort, samt en utvid-boks.
 
   ___
@@ -228,6 +181,34 @@ const MarkdownEditor = (props: TextFieldProps) => {
   ~~~
   `;
 
+const CloseButton = styled(IconButton)(({ theme }) => ({
+  position: 'absolute',
+  right: theme.spacing(1),
+  top: theme.spacing(1),
+  color: theme.palette.text.primary,
+}));
+
+const HelpText = styled('span')(({ theme }) => ({
+  color: theme.palette.text.secondary,
+  cursor: 'pointer',
+  textDecoration: 'underline',
+}));
+
+const MarkdownEditor = (props: TextFieldProps) => {
+  const [helpDialogOpen, setHelpDialogOpen] = useState(false);
+
+  const HelperText = () => (
+    <>
+      {Boolean(props.error && props.helperText) && (
+        <>
+          {props.helperText}
+          <br />
+        </>
+      )}
+      <HelpText onClick={() => setHelpDialogOpen(true)}>Hvordan formaterer jeg teksten?</HelpText>
+    </>
+  );
+
   return (
     <>
       <TextField
@@ -237,20 +218,20 @@ const MarkdownEditor = (props: TextFieldProps) => {
         InputLabelProps={{ shrink: true }}
         label={props.label || 'Beskrivelse'}
         margin='normal'
+        maxRows={25}
+        minRows={5}
         multiline
-        rows={5}
-        rowsMax={15}
         variant={props.variant || 'outlined'}
       />
       {helpDialogOpen && (
         <Dialog aria-labelledby='format-dialog-title' fullWidth maxWidth='md' onClose={() => setHelpDialogOpen(false)} open={helpDialogOpen}>
-          <DialogTitle className={classes.dialogHeader} disableTypography id='format-dialog-title'>
+          <DialogTitle id='format-dialog-title' sx={{ p: 2, m: 0 }}>
             <Typography variant='h3'>Formaterings-guide</Typography>
-            <IconButton aria-label='close' className={classes.closeButton} onClick={() => setHelpDialogOpen(false)}>
+            <CloseButton aria-label='close' onClick={() => setHelpDialogOpen(false)}>
               <CloseIcon />
-            </IconButton>
+            </CloseButton>
           </DialogTitle>
-          <DialogContent className={classes.dialogContent}>
+          <DialogContent sx={{ p: 2 }}>
             <MarkdownRenderer value={guide} />
           </DialogContent>
         </Dialog>

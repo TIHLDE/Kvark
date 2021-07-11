@@ -2,7 +2,7 @@ import { EventForm } from 'types/Types';
 import { useFormById, useCreateForm } from 'api/hooks/Form';
 
 // Material UI
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
@@ -44,7 +44,7 @@ const EventFormEditor = ({ eventId, formId }: EventFormEditorProps) => {
 
   if (data === undefined || !formId) {
     return (
-      <Button color='primary' fullWidth onClick={onCreate} variant='outlined'>
+      <Button fullWidth onClick={onCreate} variant='outlined'>
         Opprett skjema
       </Button>
     );

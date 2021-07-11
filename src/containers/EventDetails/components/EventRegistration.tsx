@@ -9,11 +9,8 @@ import { useSnackbar } from 'api/hooks/Snackbar';
 import { useForm } from 'react-hook-form';
 
 // Material UI Components
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/styles';
+import { Typography, FormControlLabel, Checkbox, Button } from '@material-ui/core';
 
 // Icons
 import PersonIcon from '@material-ui/icons/PersonOutlineRounded';
@@ -26,7 +23,7 @@ import HomeIcon from '@material-ui/icons/HomeRounded';
 import Paper from 'components/layout/Paper';
 import FormView from 'components/forms/FormView';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   list: {
     display: 'flex',
     flexDirection: 'column',
@@ -43,8 +40,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: 'row',
   },
   button: {
-    height: 50,
-    fontWeight: 'bold',
     marginTop: theme.spacing(2),
   },
 }));
@@ -81,7 +76,13 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
 
   const { register, handleSubmit, errors, setError } = useForm();
 
+  const registerDisabled = isLoading || isFormLoading || !agreeRules;
+
   const submit = async (data: { answers?: Array<TextFieldSubmission | SelectFieldSubmission> }) => {
+    if (registerDisabled) {
+      showSnackbar('Du må godkjenne arrangementsreglene før du kan melde deg på', 'warning');
+      return;
+    }
     setIsLoading(true);
     try {
       data.answers?.forEach((answer, index) => {
@@ -148,7 +149,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
           <a href={URLS.eventRules} rel='noopener noreferrer' target='_blank'>
             <Typography variant='caption'>Les arrangementsreglene her (åpnes i ny fane)</Typography>
           </a>
-          <Button className={classes.button} color='primary' disabled={isLoading || isFormLoading || !agreeRules} fullWidth type='submit' variant='contained'>
+          <Button className={classes.button} disabled={registerDisabled} fullWidth type='submit' variant='contained'>
             Meld deg på
           </Button>
         </form>

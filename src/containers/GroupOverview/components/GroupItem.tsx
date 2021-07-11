@@ -3,18 +3,18 @@ import { GroupList } from 'types/Types';
 import URLS from 'URLS';
 
 // Material UI
-import { makeStyles, ButtonBase, Typography } from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { makeStyles } from '@material-ui/styles';
+import { Theme, Skeleton, ButtonBase, Typography } from '@material-ui/core';
 
 // Icons
 import MembersIcon from '@material-ui/icons/PersonRounded';
 
+// Project components
+import Paper from 'components/layout/Paper';
+
 const useStyles = makeStyles((theme) => ({
   container: {
     width: '100%',
-    backgroundColor: theme.palette.background.paper,
-    border: `${theme.palette.borderWidth} solid ${theme.palette.divider}`,
-    borderRadius: theme.shape.borderRadius,
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   icon: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: '1rem',
     },
   },
@@ -37,37 +37,42 @@ const useStyles = makeStyles((theme) => ({
 
 export type GroupItemProps = {
   group: GroupList;
+  background?: keyof Theme['palette']['background'];
 };
 
-const GroupItem = ({ group }: GroupItemProps) => {
+const GroupItem = ({ group, background = 'paper' }: GroupItemProps) => {
   const classes = useStyles();
 
   return (
-    <ButtonBase className={classes.container} component={Link} focusRipple to={`${URLS.groups}${group.slug}/`}>
-      <Typography variant='h3'>{group.name}</Typography>
-      {group.leader && (
-        <div className={classes.leader}>
-          <MembersIcon className={classes.icon} />
-          <Typography className={classes.name}>
-            {group.leader.first_name} {group.leader.last_name}
-          </Typography>
-        </div>
-      )}
-    </ButtonBase>
+    <Paper noOverflow noPadding sx={{ background: (theme) => theme.palette.background[background] }}>
+      <ButtonBase className={classes.container} component={Link} focusRipple to={`${URLS.groups}${group.slug}/`}>
+        <Typography variant='h3'>{group.name}</Typography>
+        {group.leader && (
+          <div className={classes.leader}>
+            <MembersIcon className={classes.icon} />
+            <Typography className={classes.name}>
+              {group.leader.first_name} {group.leader.last_name}
+            </Typography>
+          </div>
+        )}
+      </ButtonBase>
+    </Paper>
   );
 };
 
 export default GroupItem;
 
-export const GroupItemLoading = () => {
+export const GroupItemLoading = ({ background = 'paper' }: Pick<GroupItemProps, 'background'>) => {
   const classes = useStyles();
   return (
-    <ButtonBase className={classes.container} focusRipple>
-      <Skeleton width={100} />
-      <div className={classes.leader}>
-        <MembersIcon className={classes.icon} />
-        <Skeleton className={classes.name} width={120} />
-      </div>
-    </ButtonBase>
+    <Paper noOverflow noPadding sx={{ background: (theme) => theme.palette.background[background] }}>
+      <ButtonBase className={classes.container} focusRipple>
+        <Skeleton width={100} />
+        <div className={classes.leader}>
+          <MembersIcon className={classes.icon} />
+          <Skeleton className={classes.name} width={120} />
+        </div>
+      </ButtonBase>
+    </Paper>
   );
 };

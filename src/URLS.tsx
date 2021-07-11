@@ -13,9 +13,9 @@ export const PAGES_URLS = {
 export default {
   landing: '/',
   events: '/arrangementer/',
+  eventRegister: 'registrering/',
   company: '/bedrifter/',
   contactInfo: `${PAGES}${PAGES_URLS.CONTACT_US}`,
-  newStudent: `${PAGES}${PAGES_URLS.NEW_STUDENT}`,
   jobposts: '/karriere/',
   profile: '/profil/',
   login: '/logg-inn/',
@@ -29,6 +29,8 @@ export default {
   shortLinks: '/linker/',
   pages: PAGES,
   aboutIndex: `${PAGES}${PAGES_URLS.ABOUT_INDEX}`,
+
+  newStudent: '/fadderuka/',
 
   userAdmin: '/admin/brukere/',
   eventAdmin: '/admin/arrangementer/',

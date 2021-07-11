@@ -1,9 +1,8 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
-import Helmet from 'react-helmet';
 import { useUsers } from 'api/hooks/User';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -13,18 +12,15 @@ import MembersIcon from '@material-ui/icons/PlaylistAddCheckRounded';
 import WaitingIcon from '@material-ui/icons/PlaylistAddRounded';
 
 // Project Components
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import Tabs from 'components/layout/Tabs';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import PersonListItem, { PersonListItemLoading } from 'containers/UserAdmin/components/PersonListItem';
+import { PrimaryTopBox } from 'components/layout/TopBox';
 
 const useStyles = makeStyles((theme) => ({
-  top: {
-    height: 220,
-    background: theme.palette.colors.gradient.main.top,
-  },
   content: {
     margin: '-60px auto 60px',
     position: 'relative',
@@ -34,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     gridTemplateColumns: 'repeat(3, 1fr)',
     gridGap: theme.spacing(1),
     margin: theme.spacing(2, 0, 1),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr',
     },
   },
@@ -76,10 +72,7 @@ const UserAdmin = () => {
   }, [search]);
 
   return (
-    <Navigation banner={<div className={classes.top}></div>} fancyNavbar>
-      <Helmet>
-        <title>Brukeradmin</title>
-      </Helmet>
+    <Page banner={<PrimaryTopBox />} options={{ title: 'Brukeradmin' }}>
       <Paper className={classes.content}>
         <Typography variant='h1'>Brukeradmin</Typography>
         <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
@@ -115,7 +108,7 @@ const UserAdmin = () => {
           </Pagination>
         )}
       </Paper>
-    </Navigation>
+    </Page>
   );
 };
 

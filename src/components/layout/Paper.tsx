@@ -1,34 +1,17 @@
-import { ReactNode } from 'react';
-import MaterialPaper from '@material-ui/core/Paper';
-import classnames from 'classnames';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Paper as MuiPaper, PaperProps as MuiPaperProps, styled } from '@material-ui/core';
 
-const useStyles = makeStyles((theme: Theme) => ({
-  main: {
-    border: theme.palette.borderWidth + ' solid ' + theme.palette.divider,
-  },
-  padding: {
-    padding: theme.spacing(3),
-  },
-  noBorder: {
-    border: 'none',
-  },
-}));
-
-export type PaperProps = {
-  children: ReactNode;
-  shadow?: boolean;
+export type PaperProps = MuiPaperProps & {
+  noBorder?: boolean;
   noPadding?: boolean;
-  className?: string;
+  noOverflow?: boolean;
 };
 
-const Paper = ({ shadow, noPadding, children, className }: PaperProps) => {
-  const classes = useStyles();
-  return (
-    <MaterialPaper className={classnames(classes.main, !noPadding && classes.padding, shadow && classes.noBorder, className)} elevation={shadow ? 2 : 0}>
-      {children}
-    </MaterialPaper>
-  );
-};
+const Paper = styled(MuiPaper, { shouldForwardProp: (prop) => prop !== 'noBorder' && prop !== 'noPadding' && prop !== 'noOverflow' })<PaperProps>(
+  ({ theme, noBorder, noPadding, noOverflow }) => ({
+    ...(!noPadding && { padding: theme.spacing(3) }),
+    ...(!noBorder && { border: `${theme.palette.borderWidth} solid ${theme.palette.divider}` }),
+    ...(noOverflow && { overflow: 'hidden' }),
+  }),
+);
 
 export default Paper;

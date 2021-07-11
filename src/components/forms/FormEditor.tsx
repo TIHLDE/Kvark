@@ -5,33 +5,20 @@ import { useUpdateForm, useDeleteForm } from 'api/hooks/Form';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/styles';
+import { ClickAwayListener, Grow, Paper, Popper, MenuItem, MenuList, Button } from '@material-ui/core';
 
 // Project components
 import Dialog from 'components/layout/Dialog';
 import FieldEditor from 'components/forms/FieldEditor';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'grid',
     gridGap: theme.spacing(1),
   },
   paper: {
     marginRight: theme.spacing(2),
-  },
-  delete: {
-    color: theme.palette.error.main,
-    borderColor: theme.palette.error.main,
-    '&:hover': {
-      borderColor: theme.palette.error.light,
-    },
   },
 }));
 
@@ -121,13 +108,13 @@ const FormEditor = ({ form }: FormEditorProps) => {
             updateField={(newField: TextFormField | SelectFormField) => updateField(newField, index)}
           />
         ))}
-        <Button color='primary' fullWidth onClick={() => setAddButtonOpen(true)} ref={anchorRef} variant='outlined'>
+        <Button fullWidth onClick={() => setAddButtonOpen(true)} ref={anchorRef} variant='outlined'>
           Nytt spørsmål
         </Button>
-        <Button color='primary' fullWidth onClick={save} variant='contained'>
+        <Button fullWidth onClick={save} variant='contained'>
           Lagre
         </Button>
-        <Button className={classes.delete} fullWidth onClick={() => setDeleteDialogOpen(true)} variant='outlined'>
+        <Button color='error' fullWidth onClick={() => setDeleteDialogOpen(true)} variant='outlined'>
           Slett skjema
         </Button>
       </div>

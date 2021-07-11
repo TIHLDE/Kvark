@@ -1,25 +1,21 @@
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import { Typography, styled } from '@material-ui/core';
 import Paper from 'components/layout/Paper';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 const LATEST_VERION_INDEX = 3;
 const MARKDOWN_HEADER_DELIMITER = /(?=\n##\s *)/g;
 import { useQuery } from 'react-query';
 
-const useStyles = makeStyles(() => ({
-  list: {
-    '& ul': {
-      listStyleType: 'none',
-    },
+const ChangelogList = styled('div')({
+  '& ul': {
+    listStyleType: 'none',
   },
-}));
+});
 
 export type WorkDoneCardProps = {
   changelogURL: string;
   title: string;
 };
-const WorkDoneCard = ({ title, changelogURL }: WorkDoneCardProps) => {
-  const classes = useStyles();
+const Changelog = ({ title, changelogURL }: WorkDoneCardProps) => {
   const { data } = useQuery(['changelog', changelogURL], () =>
     fetch(changelogURL)
       .then((res) => res.text())
@@ -33,11 +29,11 @@ const WorkDoneCard = ({ title, changelogURL }: WorkDoneCardProps) => {
       <Typography gutterBottom variant='h2'>
         {title}
       </Typography>
-      <div className={classes.list}>
+      <ChangelogList>
         <MarkdownRenderer value={data || ''} />
-      </div>
+      </ChangelogList>
     </Paper>
   );
 };
 
-export default WorkDoneCard;
+export default Changelog;

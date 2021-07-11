@@ -1,24 +1,25 @@
 /* eslint-disable react/display-name */
-import { createElement, useMemo, ReactNode } from 'react';
-import ReactMarkdown from 'react-markdown';
+import { createElement, useMemo, ReactNode, lazy, Suspense } from 'react';
 import { useEventById } from 'api/hooks/Event';
 import { useJobPostById } from 'api/hooks/JobPost';
 import { useNewsById } from 'api/hooks/News';
 
 // Material UI
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
+import { makeStyles } from '@material-ui/styles';
+import { Divider, Typography, Skeleton } from '@material-ui/core';
 
 // Project components
 import Expansion from 'components/layout/Expand';
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 
+const ReactMarkdown = lazy(() => import('react-markdown'));
+const MuiLinkify = lazy(() => import('material-ui-linkify'));
+
 const useStyles = makeStyles((theme) => ({
   blockquote: {
     margin: theme.spacing(0, 2, 1),
     padding: theme.spacing(2, 3, 1),
-    borderLeft: `${theme.spacing(1)}px solid ${theme.palette.primary.main}`,
+    borderLeft: `${theme.spacing(1)} solid ${theme.palette.primary.main}`,
   },
   code: {
     color: theme.palette.text.primary,
@@ -61,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export type MarkdownRendererProps = {
-  value: string;
+  value?: string;
 };
 
 const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
@@ -136,14 +137,31 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
       list: ({ children, ordered }: { children: ReactNode[]; ordered: boolean }) => createElement(ordered ? 'ol' : 'ul', { className: classes.list }, children),
       listItem: ({ children, checked }: { children: ReactNode[]; checked: boolean }) =>
         createElement('li', { className: classes.listItem }, checked ? createElement('input', { type: 'checkbox', checked, readOnly: true }) : null, children),
-      paragraph: ({ children }: { children: ReactNode[] }) => createElement(Typography, { variant: 'body1', className: classes.content }, children),
+      paragraph: ({ children }: { children: ReactNode[] }) =>
+        createElement(
+          MuiLinkify,
+          { LinkProps: { color: 'inherit', underline: 'always' } },
+          createElement(Typography, { variant: 'body1', className: classes.content }, children),
+        ),
       thematicBreak: () => <Divider className={classes.divider} />,
       image: ({ alt, src }: { alt: string; src: string }) => <img alt={alt} className={classes.image} src={src} />,
     }),
     [classes],
   );
+  const skeletonWidthArray = useMemo(() => Array.from({ length: (value?.length || 100) / 90 + 1 }).map(() => 50 + 40 * Math.random()), [value]);
 
-  return <ReactMarkdown renderers={renderers}>{value}</ReactMarkdown>;
+  return (
+    <Suspense
+      fallback={
+        <>
+          {skeletonWidthArray.map((width, index) => (
+            <Skeleton height={38} key={index} width={`${width}%`} />
+          ))}
+        </>
+      }>
+      <ReactMarkdown renderers={renderers}>{value || ''}</ReactMarkdown>
+    </Suspense>
+  );
 };
 
 export default MarkdownRenderer;

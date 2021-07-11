@@ -6,16 +6,8 @@ import parseISO from 'date-fns/parseISO';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material-ui
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Checkbox from '@material-ui/core/Checkbox';
-import Typography from '@material-ui/core/Typography';
-import Collapse from '@material-ui/core/Collapse';
-import Button from '@material-ui/core/Button';
-import Hidden from '@material-ui/core/Hidden';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import Divider from '@material-ui/core/Divider';
+import { makeStyles } from '@material-ui/styles';
+import { Theme, useMediaQuery, Checkbox, Typography, Collapse, Button, ListItem, ListItemText, ListItemSecondaryAction, Divider } from '@material-ui/core';
 
 // Icons
 import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
@@ -31,7 +23,7 @@ import Avatar from 'components/miscellaneous/Avatar';
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   avatar: {
     marginRight: theme.spacing(2),
   },
@@ -56,15 +48,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
     gridGap: theme.spacing(1),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr',
-    },
-  },
-  deleteButton: {
-    color: theme.palette.error.main,
-    borderColor: theme.palette.error.main,
-    '&:hover': {
-      borderColor: theme.palette.error.light,
     },
   },
 }));
@@ -76,6 +61,7 @@ export type ParticipantProps = {
 
 const Participant = ({ registration, eventId }: ParticipantProps) => {
   const classes = useStyles();
+  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
   const updateRegistration = useUpdateEventRegistration(eventId);
   const deleteRegistration = useDeleteEventRegistration(eventId);
   const showSnackbar = useSnackbar();
@@ -126,9 +112,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
         titleText='Er du sikker?'
       />
       <ListItem button className={classes.wrapper} onClick={() => setExpanded((prev) => !prev)}>
-        <Hidden smDown>
-          <Avatar className={classes.avatar} user={registration.user_info} />
-        </Hidden>
+        {mdDown && <Avatar className={classes.avatar} user={registration.user_info} />}
         <ListItemText
           classes={{ secondary: classes.secondaryText }}
           primary={`${registration.user_info.first_name} ${registration.user_info.last_name}`}
@@ -156,7 +140,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
                 Flytt til venteliste
               </Button>
             )}
-            <Button className={classes.deleteButton} fullWidth onClick={() => setShowModal(true)} startIcon={<Delete />} variant='outlined'>
+            <Button color='error' fullWidth onClick={() => setShowModal(true)} startIcon={<Delete />} variant='outlined'>
               Fjern deltager
             </Button>
           </div>

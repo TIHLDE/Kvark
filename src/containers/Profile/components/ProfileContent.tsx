@@ -6,7 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { useLogout } from 'api/hooks/User';
 
 // Material-UI
-import { makeStyles, SvgIconProps, Badge, Collapse, List, ListItem, ListItemIcon, ListItemText, TextField, MenuItem, Hidden } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { SvgIconProps, Badge, Collapse, List, ListItem, ListItemIcon, ListItemText, TextField, MenuItem, Theme, useMediaQuery } from '@material-ui/core';
 
 // Icons
 import EventIcon from '@material-ui/icons/DateRangeRounded';
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'self-start',
     marginTop: theme.spacing(-6),
     marginBottom: theme.spacing(3),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       gridTemplateColumns: '1fr',
     },
   },
@@ -47,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
   select: {
     background: theme.palette.background.paper,
+    borderRadius: theme.shape.borderRadius,
   },
   logOutButton: {
     color: theme.palette.error.main,
@@ -59,6 +61,7 @@ const ProfileContent = () => {
   const logOut = useLogout();
   const { data: user } = useUser();
   const { allowAccess: isAdmin } = useHavePermission([PermissionApp.EVENT, PermissionApp.JOBPOST, PermissionApp.NEWS, PermissionApp.USER]);
+  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
   const logout = () => {
     logOut();
@@ -72,7 +75,7 @@ const ProfileContent = () => {
   const settingsTab = { label: 'Innstillinger', icon: SettingsIcon };
   const adminTab = { label: 'Admin', icon: AdminIcon };
   const logoutTab = { label: 'Logg ut', icon: LogOutIcon, onClick: logout, className: classes.logOutButton };
-  const tabs = [eventTab, notificationsTab, badgesTab, groupsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
+  const tabs: Array<NavListItem> = [eventTab, notificationsTab, badgesTab, groupsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
   const [tab, setTab] = useState(eventTab.label);
 
   type NavListItem = {
@@ -97,16 +100,15 @@ const ProfileContent = () => {
   return (
     <div className={classes.content}>
       <div className={classes.menu}>
-        <Hidden mdUp>
+        {mdDown ? (
           <TextField aria-label='Velg innhold' className={classes.select} onChange={(e) => setTab(e.target.value)} select value={tab} variant='outlined'>
             {tabs.map((tab) => (
               <MenuItem key={tab.label} value={tab.label}>
-                {tab.label}
+                {`${tab.label}${tab.badge ? ` (${tab.badge})` : ''}`}
               </MenuItem>
             ))}
           </TextField>
-        </Hidden>
-        <Hidden smDown>
+        ) : (
           <Paper className={classes.contentList} noPadding>
             <List aria-label='Profil innholdsliste' disablePadding>
               {tabs.map((tab) => (
@@ -114,7 +116,7 @@ const ProfileContent = () => {
               ))}
             </List>
           </Paper>
-        </Hidden>
+        )}
         <Paper className={classes.contentList} noPadding>
           <List aria-label='Logg ut' disablePadding>
             <NavListItem {...logoutTab} />

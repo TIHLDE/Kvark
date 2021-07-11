@@ -1,17 +1,14 @@
 import { useMemo } from 'react';
-import { Helmet } from 'react-helmet';
-import classnames from 'classnames';
 import { useParams } from 'react-router-dom';
 import { useGroup } from 'api/hooks/Group';
 import { useMemberships } from 'api/hooks/Membership';
 
 // Material UI
-import { makeStyles, Typography, List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
-import { Skeleton } from '@material-ui/lab';
+import { Skeleton, Typography, ListItem, ListItemAvatar, ListItemText, Stack } from '@material-ui/core';
 
 // Project components
 import Http404 from 'containers/Http404';
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Banner from 'components/layout/Banner';
 import Paper from 'components/layout/Paper';
 import UpdateGroupModal from 'containers/GroupAdmin/components/UpdateGroupModal';
@@ -21,18 +18,7 @@ import MembersCard from 'containers/Pages/specials/Index/MembersCard';
 import Pagination from 'components/layout/Pagination';
 import Avatar from 'components/miscellaneous/Avatar';
 
-const useStyles = makeStyles((theme) => ({
-  gutterBottom: {
-    marginBottom: theme.spacing(2),
-  },
-  list: {
-    display: 'grid',
-    gap: theme.spacing(1),
-  },
-}));
-
 const Group = () => {
-  const classes = useStyles();
   const { slug: slugParameter } = useParams();
   const slug = slugParameter.toLowerCase();
   const { data: membersData, hasNextPage, fetchNextPage, isLoading: isLoadingMembers, isFetching } = useMemberships(slug, { onlyMembers: true });
@@ -46,34 +32,33 @@ const Group = () => {
   }
 
   if (isLoadingGroups || !data) {
-    return <Navigation isLoading />;
+    return null;
   }
 
   return (
-    <Navigation
+    <Page
       banner={
         <Banner text={`${data.description} \n${data.contact_email ? `Kontakt: ${data.contact_email}` : ''}`} title={data.name}>
           {hasWriteAcccess && <UpdateGroupModal group={data} />}
         </Banner>
       }
-      fancyNavbar>
-      <Helmet>
-        <title>{data.name}</title>
-      </Helmet>
+      options={{ title: data.name }}>
       {isLoadingMembers ? (
-        <Paper className={classnames(classes.gutterBottom, classes.list)}>
-          <Skeleton height={45} width={160} />
-          <Skeleton width={120} />
-          <Skeleton height={45} width={190} />
-          <Skeleton width={140} />
-          <Skeleton width={150} />
-          <Skeleton width={130} />
-          <Skeleton width={160} />
+        <Paper sx={{ mb: 2 }}>
+          <Stack spacing={1}>
+            <Skeleton height={45} width={160} />
+            <Skeleton width={120} />
+            <Skeleton height={45} width={190} />
+            <Skeleton width={140} />
+            <Skeleton width={150} />
+            <Skeleton width={130} />
+            <Skeleton width={160} />
+          </Stack>
         </Paper>
       ) : (
         <>
           {hasWriteAcccess ? (
-            <Paper className={classes.gutterBottom}>
+            <Paper sx={{ mb: 2 }}>
               {data?.leader && (
                 <>
                   <Typography gutterBottom variant='h3'>
@@ -90,23 +75,23 @@ const Group = () => {
               <Typography gutterBottom variant='h3'>
                 Medlemmer:
               </Typography>
-              <div className={classes.list}>
+              <Stack spacing={1}>
                 <AddMemberModal groupSlug={slug} />
                 <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
-                  <List className={classes.list}>
+                  <Stack spacing={1}>
                     {members.map((member) => (
                       <MemberListItem key={member.user.user_id} slug={slug} user={member.user} />
                     ))}
-                  </List>
+                  </Stack>
                 </Pagination>
-              </div>
+              </Stack>
             </Paper>
           ) : (
             <MembersCard slug={slug} />
           )}
         </>
       )}
-    </Navigation>
+    </Page>
   );
 };
 

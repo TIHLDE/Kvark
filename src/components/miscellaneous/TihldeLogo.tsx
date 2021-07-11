@@ -1,28 +1,24 @@
 import { useMemo } from 'react';
-import classnames from 'classnames';
 
 // Material UI Components
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme, styled } from '@material-ui/core';
 
-const useStyles = makeStyles(() => ({
-  logo: {
-    margin: 'auto',
-    display: 'block',
-  },
-}));
+import { NavigationOptions } from 'components/navigation/Navigation';
 
-type TihldeLogoProps = {
+const Svg = styled('svg')({
+  margin: 'auto',
+  display: 'block',
+});
+
+export type TihldeLogoProps = Pick<NavigationOptions, 'darkColor' | 'lightColor'> & {
   size: 'small' | 'large';
-  darkColor: 'white' | 'blue' | 'black';
-  lightColor: 'white' | 'blue' | 'black';
   className?: string;
 };
 
 function TihldeLogo({ size, darkColor, lightColor, className }: TihldeLogoProps) {
   const theme = useTheme();
-  const classes = useStyles();
   const color = useMemo(() => {
-    const isDark = theme.palette.type === 'dark';
+    const isDark = theme.palette.mode === 'dark';
     const prop = isDark ? darkColor : lightColor;
     if (prop === 'black') {
       return '#000000';
@@ -34,8 +30,8 @@ function TihldeLogo({ size, darkColor, lightColor, className }: TihldeLogoProps)
   }, [theme.palette, darkColor, lightColor]);
 
   return (
-    <svg
-      className={classnames(classes.logo, className)}
+    <Svg
+      className={className}
       height='400'
       id='svg2'
       version='1.1'
@@ -112,7 +108,7 @@ function TihldeLogo({ size, darkColor, lightColor, className }: TihldeLogoProps)
           </g>
         </g>
       </g>
-    </svg>
+    </Svg>
   );
 }
 export default TihldeLogo;

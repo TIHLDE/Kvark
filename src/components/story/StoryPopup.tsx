@@ -1,14 +1,12 @@
 import { useEffect, useCallback, useRef } from 'react';
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { usePalette } from 'react-palette';
+import { argsToParams } from 'utils';
 
 // Material UI Components
-import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { makeStyles } from '@material-ui/styles';
+import { Typography, useTheme, Button, Dialog, useMediaQuery } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 
 // Project components
@@ -21,7 +19,7 @@ import UpIcon from '@material-ui/icons/ExpandLessRounded';
 import DownIcon from '@material-ui/icons/ExpandMoreRounded';
 import OpenIcon from '@material-ui/icons/KeyboardArrowRightRounded';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     borderRadius: 0,
     marginTop: 0,
@@ -88,7 +86,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:hover': {
       borderColor: '#ffffffaa',
     },
-    height: 50,
   },
   topText: {
     margin: 'auto 0',
@@ -119,11 +116,17 @@ export type StoryPopupProps = {
   selectedItem?: number;
 };
 
-function StoryPopup({ items, open, onClose, selectedItem = 0 }: StoryPopupProps) {
+const StoryPopup = ({ items, open, onClose: closePopup, selectedItem = 0 }: StoryPopupProps) => {
   const classes = useStyles();
+  const navigate = useNavigate();
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const fullScreen = useMediaQuery(theme.breakpoints.down('lg'));
   const container = useRef<HTMLDivElement>(null);
+
+  const onClose = () => {
+    navigate(`${location.pathname}`, { replace: true });
+    closePopup();
+  };
 
   const getStoryPositions = useCallback(() => {
     if (!container?.current) {
@@ -192,7 +195,14 @@ function StoryPopup({ items, open, onClose, selectedItem = 0 }: StoryPopupProps)
             <Typography className={classnames(classes.description, classes.white)} variant='subtitle1'>
               {item.description}
             </Typography>
-            <Button className={classes.linkButton} color='primary' component={Link} endIcon={<OpenIcon />} fullWidth to={item.link} variant='outlined'>
+            <Button
+              className={classes.linkButton}
+              component={Link}
+              endIcon={<OpenIcon />}
+              fullWidth
+              onClick={() => navigate(`${location.pathname}${argsToParams({ story: index })}`, { replace: true })}
+              to={item.link}
+              variant='outlined'>
               Mer
             </Button>
           </div>
@@ -222,5 +232,5 @@ function StoryPopup({ items, open, onClose, selectedItem = 0 }: StoryPopupProps)
       </div>
     </Dialog>
   );
-}
+};
 export default StoryPopup;

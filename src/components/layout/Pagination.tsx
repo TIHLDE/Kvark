@@ -1,14 +1,7 @@
 import { ReactNode } from 'react';
 
 // Material UI Components
-import { Button, ButtonProps, makeStyles, Theme, Collapse } from '@material-ui/core';
-
-const useStyles = makeStyles((theme: Theme) => ({
-  button: {
-    padding: theme.spacing(1),
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
+import { Button, ButtonProps, Collapse } from '@material-ui/core';
 
 export type PaginationProps = ButtonProps & {
   children?: ReactNode;
@@ -19,12 +12,11 @@ export type PaginationProps = ButtonProps & {
 };
 
 const Pagination = ({ children, isLoading, nextPage, hasNextPage, label = 'Vis flere elementer', ...props }: PaginationProps) => {
-  const classes = useStyles();
   return (
     <>
       <div>{children}</div>
       <Collapse in={Boolean(hasNextPage && !isLoading)}>
-        <Button className={classes.button} onClick={nextPage} variant='outlined' {...props}>
+        <Button onClick={nextPage} sx={{ backgroundColor: (theme) => theme.palette.background.paper }} variant='outlined' {...props}>
           {label}
         </Button>
       </Collapse>

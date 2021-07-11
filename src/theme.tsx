@@ -1,9 +1,15 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { darkScrollbar } from '@material-ui/core';
+import { createTheme, Theme } from '@material-ui/core/styles';
 
 // Icons
 import DarkIcon from '@material-ui/icons/Brightness2Outlined';
 import AutomaticIcon from '@material-ui/icons/DevicesOutlined';
 import LightIcon from '@material-ui/icons/WbSunnyOutlined';
+
+declare module '@material-ui/styles' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends Theme {}
+}
 
 declare module '@material-ui/core/styles/createPalette' {
   interface TypeBackground {
@@ -12,6 +18,7 @@ declare module '@material-ui/core/styles/createPalette' {
 
   interface Palette {
     borderWidth: string;
+    get: <T>({ light, dark }: { light: T; dark: T }) => T;
     blurred: {
       backdropFilter: string;
       '-webkit-backdrop-filter': string;
@@ -43,6 +50,7 @@ declare module '@material-ui/core/styles/createPalette' {
 
   interface PaletteOptions {
     borderWidth: string;
+    get: <T>({ light, dark }: { light: T; dark: T }) => T;
     blurred: {
       backdropFilter: string;
       '-webkit-backdrop-filter': string;
@@ -94,7 +102,10 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
     }
   };
 
-  return createMuiTheme({
+  const DARK_PAPER_COLOR = '#19212f';
+  const BORDER_RADIUS = 16;
+
+  return createTheme({
     breakpoints: {
       values: {
         xs: 0,
@@ -104,31 +115,59 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
         xl: 1200,
       },
     },
-    overrides: {
+    components: {
       MuiAvatar: {
-        colorDefault: {
-          backgroundColor: '#b4345e',
-          color: 'white',
-          fontWeight: 'bold',
+        styleOverrides: {
+          root: {
+            backgroundColor: '#b4345e',
+            color: 'white',
+            fontWeight: 'bold',
+          },
         },
       },
       MuiCssBaseline: {
-        '@global': {
-          html: {
-            WebkitFontSmoothing: 'auto',
+        styleOverrides: {
+          body: {
+            // eslint-disable-next-line @typescript-eslint/ban-types
+            ...get<object>({ light: {}, dark: darkScrollbar() }),
           },
-          a: {
-            color: get<string>({ light: '#1D448C', dark: '#9ec0ff' }),
+          '@global': {
+            html: { WebkitFontSmoothing: 'auto' },
+          },
+          a: { color: get<string>({ light: '#1D448C', dark: '#9ec0ff' }) },
+        },
+      },
+      MuiButton: {
+        styleOverrides: {
+          root: { height: 44 },
+          contained: {
+            boxShadow: 'none',
+            fontWeight: get<'bold' | undefined>({ light: undefined, dark: 'bold' }),
+            '&:hover': {
+              boxShadow: 'none',
+            },
           },
         },
       },
+      MuiDialog: { styleOverrides: { paper: { backgroundImage: 'none' } } },
+      MuiDrawer: { styleOverrides: { paper: { backgroundImage: 'none' } } },
+      MuiSkeleton: {
+        styleOverrides: {
+          root: { maxWidth: '100%' },
+          rectangular: { borderRadius: BORDER_RADIUS },
+        },
+      },
+      MuiContainer: { defaultProps: { maxWidth: 'xl', disableGutters: true } },
+      MuiPaper: { defaultProps: { elevation: 0 } },
+      MuiLinearProgress: { styleOverrides: { root: { borderRadius: BORDER_RADIUS } } },
     },
     palette: {
+      get,
       common: {
         black: '#000000',
         white: '#ffffff',
       },
-      type: get<'light' | 'dark'>({ light: 'light', dark: 'dark' }),
+      mode: get<'light' | 'dark'>({ light: 'light', dark: 'dark' }),
       primary: {
         main: get<string>({ light: '#1D448C', dark: '#9ec0ff' }),
       },
@@ -138,7 +177,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       error: {
         main: get<string>({ light: '#b20101', dark: '#ff6060' }),
       },
-      divider: get<string>({ light: '#cccccc', dark: '#333333' }),
+      divider: get<string>({ light: '#dbdbdb', dark: '#333333' }),
       text: {
         secondary: get<string>({ light: '#333333', dark: '#cccccc' }),
       },
@@ -147,22 +186,22 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
         '-webkit-backdrop-filter': `blur(5px)`,
       },
       transparent: {
-        background: get<string>({ light: '#f6f5f340', dark: '#61616160' }),
+        background: get<string>({ light: '#f6f5f380', dark: '#61616180' }),
         border: get<string>({ light: '1px solid #d7d7d75c', dark: '1px solid #4545453b' }),
         boxShadow: `0 8px 32px 0 ${get<string>({ light: '#cab2e7', dark: '#26292d' })}52`,
       },
       borderWidth: '1px',
       background: {
-        default: get<string>({ light: '#f8f8fa', dark: '#121519' }),
-        paper: get<string>({ light: '#ffffff', dark: '#131924' }),
-        smoke: get<string>({ light: '#fefefe', dark: '#13171E' }),
+        default: get<string>({ light: '#ececec', dark: '#121519' }),
+        paper: get<string>({ light: '#ffffff', dark: DARK_PAPER_COLOR }),
+        smoke: get<string>({ light: '#f2f2f2', dark: '#171b22' }),
       },
       colors: {
-        footer: '#1b1b2d',
+        footer: DARK_PAPER_COLOR,
         tihlde: '#1c458a',
         gradient: {
           main: {
-            top: get<string>({ light: '#16356e', dark: '#1c2230' }),
+            top: get<string>({ light: '#16356e', dark: DARK_PAPER_COLOR }),
             bottom: get<string>({ light: '#814a93', dark: '#581d6c' }),
           },
           secondary: {
@@ -177,22 +216,23 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       },
     },
     shape: {
-      borderRadius: 8,
+      borderRadius: BORDER_RADIUS,
     },
     typography: {
+      fontFamily: 'Inter',
       h1: {
         fontSize: '3rem',
-        fontFamily: 'Oswald, Roboto, sans-serif',
+        fontFamily: 'Oswald, Inter, sans-serif',
         fontWeight: 700,
       },
       h2: {
         fontSize: '2rem',
-        fontFamily: 'Oswald, Roboto, sans-serif',
+        fontFamily: 'Oswald, Inter, sans-serif',
         fontWeight: 500,
       },
       h3: {
         fontSize: '1.5rem',
-        fontFamily: 'Cabin, Roboto, sans-serif',
+        fontFamily: 'Cabin, Inter, sans-serif',
       },
     },
   });

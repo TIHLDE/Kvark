@@ -5,7 +5,7 @@ import { useUpdateUser } from 'api/hooks/User';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material-UI
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import { MenuItem, Typography } from '@material-ui/core';
 
 // Project components
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
     gridTemplateColumns: 'repeat(3, 1fr)',
     gridGap: theme.spacing(1),
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       gridTemplateColumns: '1fr',
     },
   },
@@ -45,7 +45,7 @@ const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
       return;
     }
     updateUser.mutate(
-      { userId: user.user_id, user: data },
+      { userId: user.user_id, user: { ...user, ...data } },
       {
         onSuccess: () => {
           showSnackbar('Bruker oppdatert', 'success');

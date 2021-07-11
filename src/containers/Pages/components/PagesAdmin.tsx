@@ -11,7 +11,7 @@ import { Page, PageTree } from 'types/Types';
 import { PermissionApp } from 'types/Enums';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TreeView from '@material-ui/lab/TreeView';
@@ -36,11 +36,6 @@ import TextField from 'components/inputs/TextField';
 const useStyles = makeStyles((theme) => ({
   deleteButton: {
     marginTop: theme.spacing(2),
-    color: theme.palette.error.main,
-    borderColor: theme.palette.error.main,
-    '&:hover': {
-      borderColor: theme.palette.error.light,
-    },
   },
   treeWrapper: {
     margin: theme.spacing(1, 0, 2),
@@ -194,7 +189,7 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
           <>
             <Button
               className={classes.deleteButton}
-              color='inherit'
+              color='error'
               disabled={isLoading || Boolean(page.children.length)}
               fullWidth
               onClick={() => setShowDeleteDialog(true)}

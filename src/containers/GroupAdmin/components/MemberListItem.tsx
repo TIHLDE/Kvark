@@ -1,35 +1,19 @@
-import { Button, Collapse, Divider, ListItem, ListItemText, makeStyles, ListItemAvatar } from '@material-ui/core';
-import Paper from 'components/layout/Paper';
 import { useState } from 'react';
+import { useDeleteMembership, useUpdateMembership } from 'api/hooks/Membership';
+import { useSnackbar } from 'api/hooks/Snackbar';
+import { MembershipType } from 'types/Enums';
+
+import { Button, Collapse, Divider, ListItem, ListItemText, ListItemAvatar, Grid } from '@material-ui/core';
+
 import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
 import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
 import { UserList } from 'types/Types';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import StarIcon from '@material-ui/icons/Star';
-import { useDeleteMembership, useUpdateMembership } from 'api/hooks/Membership';
-import useSnackbar from 'api/hooks/Snackbar';
-import { MembershipType } from 'types/Enums';
+
+import Paper from 'components/layout/Paper';
 import Dialog from 'components/layout/Dialog';
 import Avatar from 'components/miscellaneous/Avatar';
-
-const useStyles = makeStyles((theme) => ({
-  red: {
-    color: theme.palette.error.main,
-    borderColor: theme.palette.error.main,
-    '&:hover': {
-      borderColor: theme.palette.error.light,
-    },
-  },
-  content: {
-    display: 'grid',
-    padding: theme.spacing(1),
-    gap: theme.spacing(1),
-    gridTemplateColumns: '1fr 1fr',
-    [theme.breakpoints.down('md')]: {
-      gridTemplateColumns: '1fr',
-    },
-  },
-}));
 
 export type MemberListItemProps = {
   user: UserList;
@@ -37,7 +21,6 @@ export type MemberListItemProps = {
 };
 
 const MemberListItem = ({ slug, user }: MemberListItemProps) => {
-  const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const deleteMembership = useDeleteMembership(slug, user.user_id);
   const updateMembership = useUpdateMembership(slug, user.user_id);
@@ -71,7 +54,7 @@ const MemberListItem = ({ slug, user }: MemberListItemProps) => {
     });
   };
   return (
-    <Paper noPadding>
+    <Paper noOverflow noPadding>
       <Dialog
         onClose={handleClose}
         onConfirm={removeMemberFromGroup}
@@ -93,14 +76,18 @@ const MemberListItem = ({ slug, user }: MemberListItemProps) => {
       </ListItem>
       <Collapse in={expanded}>
         <Divider />
-        <div className={classes.content}>
-          <Button fullWidth onClick={() => setConfirmSwitchLeader(true)} startIcon={<StarIcon />} variant='outlined'>
-            Promoter til leder
-          </Button>
-          <Button className={classes.red} fullWidth onClick={() => setConfirmDeleteModal(true)} startIcon={<HighlightOffIcon />} variant='outlined'>
-            Fjern medlem
-          </Button>
-        </div>
+        <Grid container spacing={1} sx={{ p: 1 }}>
+          <Grid item lg={6} xs={12}>
+            <Button fullWidth onClick={() => setConfirmSwitchLeader(true)} startIcon={<StarIcon />} variant='outlined'>
+              Promoter til leder
+            </Button>
+          </Grid>
+          <Grid item lg={6} xs={12}>
+            <Button color='error' fullWidth onClick={() => setConfirmDeleteModal(true)} startIcon={<HighlightOffIcon />} variant='outlined'>
+              Fjern medlem
+            </Button>
+          </Grid>
+        </Grid>
       </Collapse>
     </Paper>
   );

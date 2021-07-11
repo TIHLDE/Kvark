@@ -1,12 +1,11 @@
 import { useState, useCallback, useEffect, useMemo } from 'react';
-import Helmet from 'react-helmet';
 import URLS from 'URLS';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getUserStudyShort } from 'utils';
 import { Study } from 'types/Enums';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 
@@ -16,7 +15,7 @@ import { useCheatsheet } from 'api/hooks/Cheatsheet';
 
 // Project Components
 import Banner from 'components/layout/Banner';
-import Navigation from 'components/navigation/Navigation';
+import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import Files from 'containers/Cheatsheet/components/Files';
 
@@ -30,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     gridTemplateAreas: '"filterStudy filterClass filterSearch"',
     gridGap: theme.spacing(1),
     paddingBottom: theme.spacing(2),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr 1fr',
       gridTemplateAreas: '"filterStudy filterClass" "filterSearch filterSearch"',
     },
@@ -86,9 +85,9 @@ const Cheetsheet = () => {
 
   const goToUserCheatsheet = useCallback(() => {
     if (user && 1 <= user.user_study && user.user_study <= 4 && user.user_class > 0) {
-      navigate(`${URLS.cheatsheet}${getUserStudyShort(user.user_study)}/${user.user_class}/`);
+      navigate(`${URLS.cheatsheet}${getUserStudyShort(user.user_study)}/${user.user_class}/`, { replace: true });
     } else {
-      navigate(`${URLS.cheatsheet}${getUserStudyShort(1)}/1/`);
+      navigate(`${URLS.cheatsheet}${getUserStudyShort(1)}/1/`, { replace: true });
     }
   }, [user, navigate]);
 
@@ -130,10 +129,9 @@ const Cheetsheet = () => {
   }, [input]);
 
   return (
-    <Navigation banner={<Banner text={`${getStudy()} - ${getClass()}. klasse`} title='Kokeboka' />} fancyNavbar>
-      <Helmet>
-        <title>Kokeboka - TIHLDE</title>
-      </Helmet>
+    <Page
+      banner={<Banner text={`${getStudy()} - ${getClass()}. klasse`} title='Kokeboka' />}
+      options={{ title: `${getStudy()} - ${getClass()}. klasse - Kokeboka` }}>
       <Paper className={classes.root}>
         <div className={classes.filterContainer}>
           <TextField
@@ -168,7 +166,7 @@ const Cheetsheet = () => {
         </div>
         <Files files={files} getNextPage={fetchNextPage} hasNextPage={hasNextPage} isLoading={isLoading} />
       </Paper>
-    </Navigation>
+    </Page>
   );
 };
 
