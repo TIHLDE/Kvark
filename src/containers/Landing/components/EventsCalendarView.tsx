@@ -38,7 +38,7 @@ const EventsCalendarView = ({ events, oldEvents }: EventsCalendarViewProps) => {
   const [displayedEvents, setDisplayedEvents] = useState<Array<AppointmentModel>>([]);
 
   useEffect(() => {
-    window.gtag('event', 'events', {
+    window.gtag('event', 'open', {
       event_category: 'calendar',
       event_label: 'Open calendar on landing page',
     });

@@ -147,6 +147,12 @@ const Footer = () => {
     { key: 'organisasjonsnummer', value: '989 684 183' },
   ];
 
+  const someAnalytics = (some: string) =>
+    window.gtag('event', `open`, {
+      event_category: 'social-media',
+      event_label: `Click on: ${some}`,
+    });
+
   return (
     <div className={classes.root}>
       {showModal && <ThemeSettings onClose={() => setShowModal(false)} open={showModal} />}
@@ -170,7 +176,7 @@ const Footer = () => {
         <Divider className={classes.divider} />
         <div className={classes.socialMediaWrapper}>
           {mediaList.map((media, index) => (
-            <a className={classes.imgLink} href={media.link} key={index} rel='noopener noreferrer' target='_blank'>
+            <a className={classes.imgLink} href={media.link} key={index} onClick={() => someAnalytics(media.link)} rel='noopener noreferrer' target='_blank'>
               <img alt='SoMe' className={classes.soMeIcon} src={media.img} />
             </a>
           ))}

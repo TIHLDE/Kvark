@@ -85,6 +85,10 @@ const Events = () => {
   };
 
   const search = (data: Filters) => {
+    window.gtag('event', 'search', {
+      event_category: 'events',
+      event_label: JSON.stringify(data),
+    });
     setFilters(data);
     navigate(`${location.pathname}${argsToParams(data)}`, { replace: true });
   };

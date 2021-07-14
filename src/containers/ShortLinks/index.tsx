@@ -89,11 +89,20 @@ const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
       url: `https://s.tihlde.org/${shortLink.name}`,
     },
     'Linken ble kopiert til utklippstavlen',
+    () =>
+      window.gtag('event', `share-shortlink`, {
+        event_category: 'share',
+        event_label: `https://s.tihlde.org/${shortLink.name}`,
+      }),
   );
   const remove = () => {
     deleteShortLink.mutate(shortLink.name, {
       onSuccess: () => {
         showSnackbar('Linken ble slettet', 'success');
+        window.gtag('event', 'delete', {
+          event_category: 'short-link',
+          event_label: `Delete ${shortLink.name}`,
+        });
       },
       onError: (e) => {
         showSnackbar(e.detail, 'error');
@@ -140,6 +149,10 @@ const ShortLinks = () => {
       onSuccess: () => {
         showSnackbar('Linken ble opprettet', 'success');
         reset();
+        window.gtag('event', 'create', {
+          event_category: 'short-link',
+          event_label: `Created ${data.name}`,
+        });
       },
       onError: (e) => {
         setError('name', { message: typeof e.detail === 'string' ? e.detail : JSON.stringify(e.detail) });

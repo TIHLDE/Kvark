@@ -49,6 +49,10 @@ const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
       {
         onSuccess: () => {
           showSnackbar('Bruker oppdatert', 'success');
+          window.gtag('event', 'update-settings', {
+            event_category: 'profile',
+            event_label: `Update`,
+          });
         },
         onError: (e) => {
           showSnackbar(e.detail, 'error');

@@ -58,6 +58,10 @@ const ForgotPassword = () => {
     forgotPassword.mutate(data.email, {
       onSuccess: (data) => {
         showSnackbar(data.detail, 'success');
+        window.gtag('event', 'forgot-password', {
+          event_category: 'auth',
+          event_label: `Forgot password`,
+        });
       },
       onError: (e) => {
         setError('email', { message: e.detail });

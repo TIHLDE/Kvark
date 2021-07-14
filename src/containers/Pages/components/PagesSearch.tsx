@@ -28,6 +28,10 @@ const PagesSearch = () => {
     const filters: Record<string, unknown> = {};
     if (debouncedSearch) {
       filters.search = debouncedSearch;
+      window.gtag('event', 'search', {
+        event_category: 'pages',
+        event_label: `Search for: ${debouncedSearch}`,
+      });
     }
     return filters;
   }, [debouncedSearch]);

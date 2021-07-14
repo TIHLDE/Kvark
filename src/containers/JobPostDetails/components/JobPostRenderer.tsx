@@ -52,6 +52,12 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
   const deadline = formatDate(parseISO(data.deadline));
   const publishedAt = formatDate(parseISO(data.created_at));
 
+  const goToApplyLink = () =>
+    window.gtag('event', 'apply', {
+      event_category: 'jobposts',
+      event_label: `Apply to: ${data.company}, ${data.title}`,
+    });
+
   return (
     <div className={classes.grid}>
       <Paper>
@@ -84,7 +90,15 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
           )}
         </Paper>
         {data.link && (
-          <Button className={classes.button} component='a' fullWidth href={data.link} rel='noreferrer' target='_blank' variant='contained'>
+          <Button
+            className={classes.button}
+            component='a'
+            fullWidth
+            href={data.link}
+            onClick={goToApplyLink}
+            rel='noreferrer'
+            target='_blank'
+            variant='contained'>
             Søk
           </Button>
         )}
