@@ -30,7 +30,7 @@ export default {
   pages: PAGES,
   aboutIndex: `${PAGES}${PAGES_URLS.ABOUT_INDEX}`,
 
-  newStudent: '/fadderuka/',
+  newStudent: '/ny-student/',
 
   userAdmin: '/admin/brukere/',
   eventAdmin: '/admin/arrangementer/',

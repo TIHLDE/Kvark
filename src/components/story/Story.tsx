@@ -54,11 +54,13 @@ const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme) => ({
     },
     '&:before': {
       left: 0,
-      background: (props) => `linear-gradient(to left, #ffffff00, ${props.fadeColor || theme.palette.background.default} 65%)`,
+      background: (props) =>
+        `linear-gradient(to left, ${props.fadeColor || theme.palette.background.default}00, ${props.fadeColor || theme.palette.background.default} 65%)`,
     },
     '&:after': {
       right: 0,
-      background: (props) => `linear-gradient(to right, #ffffff00, ${props.fadeColor || theme.palette.background.default} 65%)`,
+      background: (props) =>
+        `linear-gradient(to right, ${props.fadeColor || theme.palette.background.default}00, ${props.fadeColor || theme.palette.background.default} 65%)`,
     },
   },
   story: {

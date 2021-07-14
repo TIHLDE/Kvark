@@ -6,11 +6,12 @@ import URLS from 'URLS';
 import { SHOW_NEW_STUDENT_INFO } from 'constant';
 
 // Material UI Components
-import { Typography, styled, Button } from '@material-ui/core';
+import { Typography, styled, Button, Stack } from '@material-ui/core';
 
 // Icons
 import OpenIcon from '@material-ui/icons/ArrowForwardRounded';
 import CloseIcon from '@material-ui/icons/CloseRounded';
+import OpenInNewIcon from '@material-ui/icons/OpenInNewRounded';
 
 const Box = styled('div')(({ theme }) => ({
   padding: theme.spacing(3),
@@ -71,9 +72,21 @@ const NewStudentBox = () => {
         {text}
       </Typography>
       {header === HEADER.NEW_STUDENT && (
-        <Button component={Link} endIcon={<OpenIcon />} fullWidth to={URLS.newStudent} variant='contained'>
-          Nye studenter
-        </Button>
+        <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
+          <Button component={Link} endIcon={<OpenIcon />} fullWidth to={URLS.newStudent} variant='contained'>
+            Nye studenter
+          </Button>
+          <Button
+            component='a'
+            endIcon={<OpenInNewIcon />}
+            fullWidth
+            href='https://s.tihlde.org/fadderuka-paamelding'
+            rel='noopener noreferrer'
+            target='_blank'
+            variant='outlined'>
+            Meld deg på fadderuka
+          </Button>
+        </Stack>
       )}
       {isAuthenticated && (
         <Button

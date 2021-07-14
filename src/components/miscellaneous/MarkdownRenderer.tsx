@@ -48,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
     color: theme.palette.text.primary,
     overflowWrap: 'anywhere',
+    '@supports not (overflow-wrap: anywhere)': {
+      hyphens: 'auto',
+    },
   },
   expansion: {
     border: `1px solid ${theme.palette.divider}`,
