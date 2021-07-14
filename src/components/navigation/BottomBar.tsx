@@ -99,6 +99,16 @@ const BottomBar = ({ items }: BottomBarProps) => {
   }, [location]);
   const [tab, setTab] = useState(location.pathname);
 
+  const toggleMenu = () => {
+    if (!menuOpen) {
+      window.gtag('event', 'menu', {
+        event_category: 'bottom-bar',
+        event_label: 'Open menu',
+      });
+    }
+    setMenuOpen((prev) => !prev);
+  };
+
   return (
     <Paper className={classes.root} noPadding>
       <BottomNavigation
@@ -121,7 +131,7 @@ const BottomBar = ({ items }: BottomBarProps) => {
           classes={{ root: classes.action, selected: classes.selected }}
           icon={menuOpen ? <CloseIcon /> : <MenuIcon />}
           label='Meny'
-          onClick={() => setMenuOpen((prev) => !prev)}
+          onClick={toggleMenu}
           value={MENU_TAB_KEY}
         />
       </BottomNavigation>

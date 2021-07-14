@@ -115,9 +115,13 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     setSignOffDialogOpen(false);
     if (user) {
       deleteRegistration.mutate(user.user_id, {
-        onSuccess: (data) => {
-          showSnackbar(data.detail, 'success');
+        onSuccess: (response) => {
+          showSnackbar(response.detail, 'success');
           setView(Views.Info);
+          window.gtag('event', 'unregistered', {
+            event_category: 'event-registration',
+            event_label: `Unregistered for event: ${data.title}`,
+          });
         },
         onError: (e) => {
           showSnackbar(e.detail, 'error');
@@ -237,6 +241,12 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     </>
   );
 
+  const addToCalendarAnalytics = () =>
+    window.gtag('event', `add-to-calendar`, {
+      event_category: 'event',
+      event_label: `Event: ${data.title}`,
+    });
+
   return (
     <>
       <Dialog
@@ -252,7 +262,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         <div className={classes.infoGrid}>
           {!lgDown && <Info />}
           <ShareButton color='inherit' shareId={data.id} shareType='event' title={data.title} />
-          <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} variant='outlined'>
+          <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} onClick={addToCalendarAnalytics} variant='outlined'>
             Legg til i kalender
           </Button>
           {!preview && (

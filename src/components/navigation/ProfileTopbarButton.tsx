@@ -45,6 +45,12 @@ const ProfileTopbarButton = (props: ProfileTopbarButtonProps) => {
   const setLogInRedirectURL = useSetRedirectUrl();
   const [showThemeSettings, setShowThemeSettings] = useState(false);
 
+  const analytics = (page: string) =>
+    window.gtag('event', `go-to-${page}`, {
+      event_category: 'topbar-profile-button',
+      event_label: `Go to ${page}`,
+    });
+
   return (
     <div>
       <ThemeSettings onClose={() => setShowThemeSettings(false)} open={showThemeSettings} />
@@ -52,11 +58,18 @@ const ProfileTopbarButton = (props: ProfileTopbarButtonProps) => {
         <LightIcon className={classes.themeSettingsIcon} />
       </IconButton>
       {user ? (
-        <Button component={Link} onClick={URLS.profile === location.pathname ? () => location.reload() : undefined} to={URLS.profile}>
+        <Button component={Link} onClick={URLS.profile === location.pathname ? () => location.reload() : () => analytics('profile')} to={URLS.profile}>
           <Avatar className={classes.avatar} user={user} />
         </Button>
       ) : (
-        <IconButton className={classes.menuButton} component={Link} onClick={() => setLogInRedirectURL(window.location.pathname)} to={URLS.login}>
+        <IconButton
+          className={classes.menuButton}
+          component={Link}
+          onClick={() => {
+            setLogInRedirectURL(window.location.pathname);
+            analytics('log-in');
+          }}
+          to={URLS.login}>
           <PersonOutlineIcon />
         </IconButton>
       )}

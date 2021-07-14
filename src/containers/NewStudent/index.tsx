@@ -1,4 +1,4 @@
-import { useState, Fragment, useMemo } from 'react';
+import { useState, Fragment, useMemo, useEffect } from 'react';
 import classnames from 'classnames';
 import { useQuery } from 'react-query';
 import { usePage } from 'api/hooks/Pages';
@@ -87,6 +87,13 @@ const NewStudent = () => {
   const tabs = [eventsTab, faqTab, volunteerTab, sportsTab, aboutTab];
   const [tab, setTab] = useState(eventsTab.value);
 
+  useEffect(() => {
+    window.gtag('event', 'change-tab', {
+      event_category: 'new-student',
+      event_label: `Changed tab to: ${tab}`,
+    });
+  }, [tab]);
+
   const eventsListView = { value: 'list', label: 'Liste', icon: ListIcon };
   const eventsCalendarView = { value: 'calendar', label: 'Kalender', icon: CalendarIcon };
   const eventTabs = [eventsListView, eventsCalendarView];
@@ -98,15 +105,32 @@ const NewStudent = () => {
   const { data: sportsText = '' } = usePageContent('tihlde/interessegrupper/tihlde-pythons/');
   const { data: aboutText = '' } = useGithubContent('https://raw.githubusercontent.com/wiki/TIHLDE/Kvark/Nettsiden-info.md');
 
+  const fadderukaSignupAnalytics = () =>
+    window.gtag('event', 'signup-fadderuka', {
+      event_category: 'new-student',
+      event_label: `Clicked on link to signup for fadderuka`,
+    });
+  const createUserAnalytics = (page: string) =>
+    window.gtag('event', 'go-to-sign-up', {
+      event_category: 'new-student',
+      event_label: `Go to ${page}`,
+    });
+
   return (
     <Page
       banner={
         <Banner
           text='Hei og velkommen til TIHLDE. Vi i TIHLDE vil gjerne ønske deg velkommen til Trondheim og vil at du skal bli kjent med både byen og dine medstudenter, derfor arrangerer vi fadderuka for dere. Her kan du finne info om fadderuka, verv og idrett i TIHLDE, samt ofte stilte spørsmål og svar.'
           title='Ny student'>
-          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-          {/* @ts-ignore */}
-          <BannerButton component='a' endIcon={<OpenInNewIcon />} href='https://s.tihlde.org/fadderuka-paamelding' rel='noopener noreferrer' target='_blank'>
+          <BannerButton
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            component='a'
+            endIcon={<OpenInNewIcon />}
+            href='https://s.tihlde.org/fadderuka-paamelding'
+            onClick={fadderukaSignupAnalytics}
+            rel='noopener noreferrer'
+            target='_blank'>
             Meld deg på fadderuka
           </BannerButton>
           {!isAuthenticated && (
@@ -117,7 +141,7 @@ const NewStudent = () => {
               </Typography>
               {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
               {/* @ts-ignore */}
-              <BannerButton component={Link} endIcon={<SignupIcon />} to={URLS.signup}>
+              <BannerButton component={Link} endIcon={<SignupIcon />} onClick={createUserAnalytics} to={URLS.signup}>
                 Opprett bruker her
               </BannerButton>
             </Paper>
