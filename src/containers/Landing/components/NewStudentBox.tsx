@@ -70,6 +70,11 @@ const NewStudentBox = () => {
       event_label: 'Hide new student box on landing page',
     });
   };
+  const fadderukaSignupAnalytics = () =>
+    window.gtag('event', 'signup-fadderuka-from-box', {
+      event_category: 'new-student',
+      event_label: `Clicked on link to signup for fadderuka`,
+    });
 
   return (
     <Box>
@@ -89,6 +94,7 @@ const NewStudentBox = () => {
             endIcon={<OpenInNewIcon />}
             fullWidth
             href='https://s.tihlde.org/fadderuka-paamelding'
+            onClick={fadderukaSignupAnalytics}
             rel='noopener noreferrer'
             target='_blank'
             variant='outlined'>
