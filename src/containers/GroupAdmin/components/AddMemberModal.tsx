@@ -16,7 +16,7 @@ export type AddMemberModalProps = {
 };
 
 type FormData = {
-  user: UserList;
+  user?: UserList;
 };
 
 const AddMemberModal = ({ groupSlug }: AddMemberModalProps) => {
@@ -39,18 +39,22 @@ const AddMemberModal = ({ groupSlug }: AddMemberModalProps) => {
   const options = data?.pages.map((page) => page.results);
 
   const onSubmit = (formData: FormData) => {
-    createMembership.mutate(
-      { groupSlug: groupSlug, userId: formData.user.user_id },
-      {
-        onSuccess: () => {
-          showSnackbar('Medlem lagt til', 'success');
-          setIsOpen(false);
+    if (formData.user) {
+      createMembership.mutate(
+        { groupSlug: groupSlug, userId: formData.user.user_id },
+        {
+          onSuccess: () => {
+            showSnackbar('Medlem lagt til', 'success');
+            setIsOpen(false);
+          },
+          onError: (e) => {
+            showSnackbar(e.detail, 'error');
+          },
         },
-        onError: (e) => {
-          showSnackbar(e.detail, 'error');
-        },
-      },
-    );
+      );
+    } else {
+      showSnackbar('Du har ikke valgt et medlem', 'warning');
+    }
   };
 
   return (
@@ -73,10 +77,12 @@ const AddMemberModal = ({ groupSlug }: AddMemberModalProps) => {
                   <TextField margin='normal' {...params} label='Medlem' onChange={(e) => setSearch(e.target.value)} variant='outlined' />
                 )}
                 renderOption={(props, option) => (
-                  <ListItemText
-                    primary={`${option.first_name} ${option.last_name}`}
-                    secondary={`${getUserClass(option.user_class)} ${getUserStudyShort(option.user_study)}`}
-                  />
+                  <li {...props}>
+                    <ListItemText
+                      primary={`${option.first_name} ${option.last_name}`}
+                      secondary={`${getUserClass(option.user_class)} ${getUserStudyShort(option.user_study)}`}
+                    />
+                  </li>
                 )}
               />
             )}
