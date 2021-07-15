@@ -40,6 +40,9 @@ const useStyles = makeStyles<Theme, Pick<BannerProps, 'background'>>((theme) => 
       fontSize: theme.typography.pxToRem(50),
       padding: theme.spacing(0, 2),
       overflowWrap: 'break-word',
+      '@supports not (overflow-wrap: anywhere)': {
+        hyphens: 'auto',
+      },
     },
     [theme.breakpoints.down('md')]: {
       fontSize: theme.typography.pxToRem(40),

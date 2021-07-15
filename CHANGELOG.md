@@ -14,6 +14,12 @@
 
 ## Neste versjon
 
+- ✨ **Nye studenter**. Laget en side for nye studenter i TIHLDE med info om fadderuka, FAQ, verv, idrett, samt en infoboks på forsiden.
+- ⚡ **Google Analytics**. Lagt til flere "events" for å bedre kunne tilpasse siden etter hvordan brukerne benytter den.
+- ⚡ **Nyheter**. Lagt til publiseringsdato i nyhets-kort.
+- 🎨 **Profil**. Endret utseende på meny i profil på små skjermer.
+- 🦟 **Stories**. Fikset bug der skygge ved stories i dark-mode på iOS hadde feil farge.
+
 ## Versjon 1.1.0 (10.07.2021)
 
 - ✨ **Material-UI**. Oppdatert Material-UI til v5 som inneholder nye komponenter, ikoner, utseende og annen forbedret funksjonalitet. Her er det også gjort en stor jobb ved å oppdatere breaking changes som også gjør det enklere å oppdatere til v6 når det blir aktuelt.

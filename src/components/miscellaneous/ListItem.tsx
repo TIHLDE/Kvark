@@ -142,7 +142,7 @@ function ListItem({ event, news, jobpost, className, largeImg = false }: ListIte
     if (event) {
       return [{ label: formatDate(parseISO(event.start_date)), icon: DateIcon }];
     } else if (news) {
-      return [{ label: news.header }];
+      return [{ label: `Publisert: ${formatDate(parseISO(news.created_at))}` }, { label: news.header }];
     } else if (jobpost) {
       return [
         { label: `${jobpost.company} | ${jobpost.location}`, icon: BusinessIcon },

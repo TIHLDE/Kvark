@@ -14,6 +14,6 @@ export const EMAIL_REGEX = RegExp(
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 );
 
-const isAfterJuly20th = isAfter(new Date(), new Date(getYear(new Date()), 6, 20, 0, 0, 0));
-const isBeforeSeptember15th = isBefore(new Date(), new Date(getYear(new Date()), 8, 15, 0, 0, 0));
-export const SHOW_NEW_STUDENT_INFO = isAfterJuly20th && isBeforeSeptember15th;
+const IS_AFTER_JULY_20TH = isAfter(new Date(), new Date(getYear(new Date()), 6, 20, 0, 0, 0));
+const IS_BEFORE_SEPTEMBER_15TH = isBefore(new Date(), new Date(getYear(new Date()), 8, 15, 0, 0, 0));
+export const SHOW_NEW_STUDENT_INFO = IS_AFTER_JULY_20TH && IS_BEFORE_SEPTEMBER_15TH;
