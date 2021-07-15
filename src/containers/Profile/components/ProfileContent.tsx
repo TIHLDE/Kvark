@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PermissionApp } from 'types/Enums';
 import { useUser, useHavePermission } from 'api/hooks/User';
 import URLS from 'URLS';
@@ -52,6 +52,10 @@ const ProfileContent = () => {
   const { allowAccess: isAdmin } = useHavePermission([PermissionApp.EVENT, PermissionApp.JOBPOST, PermissionApp.NEWS, PermissionApp.USER]);
 
   const logout = () => {
+    window.gtag('event', 'log-out', {
+      event_category: 'profile',
+      event_label: `Logged out`,
+    });
     logOut();
     navigate(URLS.landing);
   };
@@ -65,6 +69,13 @@ const ProfileContent = () => {
   const logoutTab = { label: 'Logg ut', icon: LogOutIcon, onClick: logout, className: classes.logOutButton };
   const tabs: Array<NavListItem> = [eventTab, notificationsTab, badgesTab, groupsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
   const [tab, setTab] = useState(eventTab.label);
+
+  useEffect(() => {
+    window.gtag('event', 'change-tab', {
+      event_category: 'profile',
+      event_label: `Changed tab to: ${tab}`,
+    });
+  }, [tab]);
 
   type NavListItem = {
     label: string;

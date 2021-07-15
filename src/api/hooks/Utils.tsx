@@ -47,7 +47,7 @@ export const useDebounce = <Type,>(value: Type, delay: number) => {
  * @param shareData Content to be shared
  * @param fallbackSnackbar Text to be displayed in a snackbar when copied to clipboard if the Web Share API isn't supported
  */
-export const useShare = (shareData: globalThis.ShareData, fallbackSnackbar?: string) => {
+export const useShare = (shareData: globalThis.ShareData, fallbackSnackbar?: string, onShare?: () => void) => {
   const showSnackbar = useSnackbar();
   const [hasShared, setShared] = useState(false);
 
@@ -86,6 +86,9 @@ export const useShare = (shareData: globalThis.ShareData, fallbackSnackbar?: str
     } else {
       showSnackbar('else', 'error');
       copyToClipboard(fallbackCopyText);
+    }
+    if (onShare) {
+      onShare();
     }
   };
 

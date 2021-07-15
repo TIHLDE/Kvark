@@ -35,6 +35,12 @@ const NO_OF_EVENTS_TO_SHOW = 3;
 const EventsListView = ({ events, isLoading = false }: EventsListViewProps) => {
   const classes = useStyles();
 
+  const openEventsAnalytics = () =>
+    window.gtag('event', 'go-to-all-events', {
+      event_category: 'events-list-view',
+      event_label: `Go to all events`,
+    });
+
   if (isLoading) {
     return (
       <div className={classes.container}>
@@ -53,7 +59,7 @@ const EventsListView = ({ events, isLoading = false }: EventsListViewProps) => {
     return (
       <div className={classes.container}>
         {events.map((event, index) => index < NO_OF_EVENTS_TO_SHOW && <ListItem event={event} key={event.id} />)}
-        <Button className={classes.btn} component={Link} to={URLS.events} variant='outlined'>
+        <Button className={classes.btn} component={Link} onClick={openEventsAnalytics} to={URLS.events} variant='outlined'>
           Alle arrangementer ({events.length})
         </Button>
       </div>

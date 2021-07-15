@@ -65,6 +65,10 @@ const LogIn = () => {
       { username: data.username, password: data.password },
       {
         onSuccess: () => {
+          window.gtag('event', 'login', {
+            event_category: 'auth',
+            event_label: `Logged in`,
+          });
           setLogInRedirectURL(null);
           navigate(redirectURL || URLS.landing);
         },

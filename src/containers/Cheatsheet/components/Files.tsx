@@ -5,7 +5,7 @@ import { Cheatsheet } from 'types/Types';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
-import { Theme, Divider, useMediaQuery, Typography, List, ListItem, Tooltip } from '@material-ui/core';
+import { Theme, Divider, useMediaQuery, Typography, List, ListItemButton, Tooltip } from '@material-ui/core';
 
 // Icons
 import { ReactComponent as GitHub } from 'assets/icons/github.svg';
@@ -97,6 +97,12 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
     }
   };
 
+  const onOpenFile = (file: Cheatsheet) =>
+    window.gtag('event', 'open', {
+      event_category: 'cheatsheet',
+      event_label: `Opened ${file.title}, ${file.course}`,
+    });
+
   return (
     <>
       <div className={classnames(classes.grid, classes.filesHeaderContainer)}>
@@ -120,7 +126,7 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
               <Fragment key={index}>
                 <Divider />
                 <Paper className={classes.listItem} noPadding>
-                  <ListItem button component='a' href={file.url} rel='noopener noreferrer' target='_blank'>
+                  <ListItemButton component='a' href={file.url} onClick={() => onOpenFile(file)} rel='noopener noreferrer' target='_blank'>
                     <div className={classes.grid}>
                       <Icon cheatsheet={file} />
                       <Typography variant='subtitle1'>
@@ -145,7 +151,7 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
                         )}
                       </div>
                     </div>
-                  </ListItem>
+                  </ListItemButton>
                 </Paper>
                 {index === files.length - 1 && <Divider />}
               </Fragment>

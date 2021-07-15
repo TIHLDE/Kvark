@@ -63,6 +63,14 @@ const NewStudentBox = () => {
     return null;
   }
 
+  const hideBox = () => {
+    setShouldShowBox(false);
+    window.gtag('event', 'hide-box', {
+      event_category: 'new-student',
+      event_label: 'Hide new student box on landing page',
+    });
+  };
+
   return (
     <Box>
       <Typography align='center' color='inherit' gutterBottom variant='h2'>
@@ -92,7 +100,7 @@ const NewStudentBox = () => {
         <Button
           endIcon={<CloseIcon />}
           fullWidth
-          onClick={() => setShouldShowBox(false)}
+          onClick={hideBox}
           sx={{ mt: 1, color: (theme) => theme.palette.get<string>({ light: theme.palette.common.black, dark: theme.palette.common.white }) }}>
           Ikke vis igjen
         </Button>

@@ -176,9 +176,9 @@ const Story = ({ items, fadeColor }: StoryProps) => {
     const classes = useStyles({});
     const [imgUrl, setImgUrl] = useState(item.image || TIHLDELOGO);
     const openStory = () => {
-      window.gtag('event', 'stories', {
+      window.gtag('event', 'open', {
         event_category: 'stories',
-        event_label: 'Open story',
+        event_label: `Open "${item.title}" story`,
       });
       setSelectedItem(index);
       setPopupOpen(true);
