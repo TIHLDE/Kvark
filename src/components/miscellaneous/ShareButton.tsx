@@ -32,7 +32,13 @@ const ShareButton = ({ shareId, title, shareType, ...props }: ShareProps) => {
       url: shareUrl,
     },
     'Linken ble kopiert til utklippstavlen',
+    () =>
+      window.gtag('event', `share-${shareType}`, {
+        event_category: 'share',
+        event_label: shareUrl,
+      }),
   );
+
   return (
     <Button disabled={hasShared} endIcon={<ShareIcon />} onClick={share} variant='outlined' {...props}>
       {hasShared ? 'Delt!' : 'Del'}

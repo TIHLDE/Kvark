@@ -60,6 +60,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const analytics = () =>
+  window.gtag('event', 'upload', {
+    event_category: 'file-upload',
+    event_label: `Uploaded file`,
+  });
+
 export type ImageUploadProps = ButtonProps &
   Pick<UseFormMethods, 'register' | 'watch' | 'setValue' | 'errors'> & {
     rules?: RegisterOptions;
@@ -127,6 +133,7 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
       const compressedImage = await compressImage(file as File, { maxSizeMB: 0.8, maxWidthOrHeight: 1500 });
       const newFile = blobToFile(compressedImage, file instanceof File ? file.name : imageFile?.name || '', imageFile?.type || file.type || '');
       const data = await API.uploadFile(newFile);
+      analytics();
       setValue(name, data.url);
     } catch (e) {
       showSnackbar(e.detail, 'error');
@@ -183,6 +190,7 @@ export const FormFileUpload = ({ register, watch, setValue, name, errors = {}, r
       setIsLoading(true);
       try {
         const data = await API.uploadFile(file);
+        analytics();
         setValue(name, data.url);
         showSnackbar('Filen ble lastet opp, husk å trykk lagre', 'info');
       } catch (e) {
@@ -230,6 +238,7 @@ export const FileUpload = ({ label = 'Last opp filer', ...props }: FileUploadPro
       setIsLoading(true);
       try {
         const data = await Promise.all(Array.from(files).map((file) => API.uploadFile(file)));
+        analytics();
         setUploaded(data.map((file) => file.url));
         showSnackbar('Filen(e) ble lastet opp', 'info');
       } catch (e) {
@@ -246,6 +255,11 @@ export const FileUpload = ({ label = 'Last opp filer', ...props }: FileUploadPro
         url,
       },
       'Link til filen ble kopiert til utklippstavlen',
+      () =>
+        window.gtag('event', `share-uploaded-file`, {
+          event_category: 'share',
+          event_label: url,
+        }),
     );
     return (
       <Paper className={classes.file} noPadding>

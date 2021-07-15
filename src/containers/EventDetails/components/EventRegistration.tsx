@@ -104,6 +104,10 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
       {
         onSuccess: () => {
           showSnackbar('Påmeldingen var vellykket', 'success');
+          window.gtag('event', 'registered', {
+            event_category: 'event-registration',
+            event_label: `Registered for event: ${event.title}`,
+          });
         },
         onError: (e) => {
           showSnackbar(e.detail, 'error');

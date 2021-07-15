@@ -103,6 +103,10 @@ const SignUp = () => {
     } as UserCreate;
     createUser.mutate(userData, {
       onSuccess: () => {
+        window.gtag('event', 'signup', {
+          event_category: 'auth',
+          event_label: `Signed up`,
+        });
         setLogInRedirectURL(null);
         navigate(redirectURL || URLS.login);
       },

@@ -44,9 +44,17 @@ const useStyles = makeStyles((theme) => ({
     '&$selected': {
       color: theme.palette.text.primary,
     },
+    minWidth: 50,
   },
   selected: {
-    // This must be empty to override the selected style
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '0.8rem !important',
+    },
+  },
+  label: {
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '0.7rem',
+    },
   },
 }));
 
@@ -99,6 +107,16 @@ const BottomBar = ({ items }: BottomBarProps) => {
   }, [location]);
   const [tab, setTab] = useState(location.pathname);
 
+  const toggleMenu = () => {
+    if (!menuOpen) {
+      window.gtag('event', 'menu', {
+        event_category: 'bottom-bar',
+        event_label: 'Open menu',
+      });
+    }
+    setMenuOpen((prev) => !prev);
+  };
+
   return (
     <Paper className={classes.root} noPadding>
       <BottomNavigation
@@ -108,7 +126,7 @@ const BottomBar = ({ items }: BottomBarProps) => {
         value={tab}>
         {actions.map(({ text, to, icon: Icon }, i) => (
           <BottomNavigationAction
-            classes={{ root: classes.action, selected: classes.selected }}
+            classes={{ root: classes.action, selected: classes.selected, label: classes.label }}
             component={Link}
             icon={<Icon />}
             key={i}
@@ -118,10 +136,10 @@ const BottomBar = ({ items }: BottomBarProps) => {
           />
         ))}
         <BottomNavigationAction
-          classes={{ root: classes.action, selected: classes.selected }}
+          classes={{ root: classes.action, selected: classes.selected, label: classes.label }}
           icon={menuOpen ? <CloseIcon /> : <MenuIcon />}
           label='Meny'
-          onClick={() => setMenuOpen((prev) => !prev)}
+          onClick={toggleMenu}
           value={MENU_TAB_KEY}
         />
       </BottomNavigation>

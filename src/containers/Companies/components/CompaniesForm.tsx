@@ -50,6 +50,10 @@ const CompaniesForm = () => {
     setIsLoading(true);
     try {
       const response = await API.emailForm(data);
+      window.gtag('event', 'submit-form', {
+        event_category: 'companies',
+        event_label: `Company: ${data.info.bedrift}`,
+      });
       showSnackbar(response.detail, 'success');
       reset({ info: { bedrift: '', kontaktperson: '', epost: '' }, comment: '' } as CompaniesEmail);
     } catch (e) {

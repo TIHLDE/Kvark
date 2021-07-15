@@ -80,6 +80,10 @@ const JobPosts = () => {
   };
 
   const search = (data: Filters) => {
+    window.gtag('event', 'search', {
+      event_category: 'jobposts',
+      event_label: JSON.stringify(data),
+    });
     setFilters(data);
     navigate(`${location.pathname}${argsToParams(data)}`, { replace: true });
   };

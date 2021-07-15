@@ -54,11 +54,13 @@ const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme) => ({
     },
     '&:before': {
       left: 0,
-      background: (props) => `linear-gradient(to left, #ffffff00, ${props.fadeColor || theme.palette.background.default} 65%)`,
+      background: (props) =>
+        `linear-gradient(to left, ${props.fadeColor || theme.palette.background.default}00, ${props.fadeColor || theme.palette.background.default} 65%)`,
     },
     '&:after': {
       right: 0,
-      background: (props) => `linear-gradient(to right, #ffffff00, ${props.fadeColor || theme.palette.background.default} 65%)`,
+      background: (props) =>
+        `linear-gradient(to right, ${props.fadeColor || theme.palette.background.default}00, ${props.fadeColor || theme.palette.background.default} 65%)`,
     },
   },
   story: {
@@ -174,9 +176,9 @@ const Story = ({ items, fadeColor }: StoryProps) => {
     const classes = useStyles({});
     const [imgUrl, setImgUrl] = useState(item.image || TIHLDELOGO);
     const openStory = () => {
-      window.gtag('event', 'stories', {
+      window.gtag('event', 'open', {
         event_category: 'stories',
-        event_label: 'Open story',
+        event_label: `Open "${item.title}" story`,
       });
       setSelectedItem(index);
       setPopupOpen(true);

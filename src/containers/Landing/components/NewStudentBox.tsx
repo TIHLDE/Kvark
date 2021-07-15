@@ -6,11 +6,12 @@ import URLS from 'URLS';
 import { SHOW_NEW_STUDENT_INFO } from 'constant';
 
 // Material UI Components
-import { Typography, styled, Button } from '@material-ui/core';
+import { Typography, styled, Button, Stack } from '@material-ui/core';
 
 // Icons
 import OpenIcon from '@material-ui/icons/ArrowForwardRounded';
 import CloseIcon from '@material-ui/icons/CloseRounded';
+import OpenInNewIcon from '@material-ui/icons/OpenInNewRounded';
 
 const Box = styled('div')(({ theme }) => ({
   padding: theme.spacing(3),
@@ -62,6 +63,19 @@ const NewStudentBox = () => {
     return null;
   }
 
+  const hideBox = () => {
+    setShouldShowBox(false);
+    window.gtag('event', 'hide-box', {
+      event_category: 'new-student',
+      event_label: 'Hide new student box on landing page',
+    });
+  };
+  const fadderukaSignupAnalytics = () =>
+    window.gtag('event', 'signup-fadderuka-from-box', {
+      event_category: 'new-student',
+      event_label: `Clicked on link to signup for fadderuka`,
+    });
+
   return (
     <Box>
       <Typography align='center' color='inherit' gutterBottom variant='h2'>
@@ -71,15 +85,28 @@ const NewStudentBox = () => {
         {text}
       </Typography>
       {header === HEADER.NEW_STUDENT && (
-        <Button component={Link} endIcon={<OpenIcon />} fullWidth to={URLS.newStudent} variant='contained'>
-          Nye studenter
-        </Button>
+        <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
+          <Button component={Link} endIcon={<OpenIcon />} fullWidth to={URLS.newStudent} variant='contained'>
+            Nye studenter
+          </Button>
+          <Button
+            component='a'
+            endIcon={<OpenInNewIcon />}
+            fullWidth
+            href='https://s.tihlde.org/fadderuka-paamelding'
+            onClick={fadderukaSignupAnalytics}
+            rel='noopener noreferrer'
+            target='_blank'
+            variant='outlined'>
+            Meld deg på fadderuka
+          </Button>
+        </Stack>
       )}
       {isAuthenticated && (
         <Button
           endIcon={<CloseIcon />}
           fullWidth
-          onClick={() => setShouldShowBox(false)}
+          onClick={hideBox}
           sx={{ mt: 1, color: (theme) => theme.palette.get<string>({ light: theme.palette.common.black, dark: theme.palette.common.white }) }}>
           Ikke vis igjen
         </Button>

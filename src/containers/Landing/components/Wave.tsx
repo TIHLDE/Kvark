@@ -143,6 +143,12 @@ const useStyles = makeStyles((theme) => ({
 const Wave = () => {
   const classes = useStyles();
   const isAuthenticated = useIsAuthenticated();
+
+  const analytics = (page: string) =>
+    window.gtag('event', `go-to-page`, {
+      event_category: 'wave',
+      event_label: `Go to ${page}`,
+    });
   return (
     <div className={classes.root}>
       <div className={classes.container}>
@@ -154,15 +160,35 @@ const Wave = () => {
           </Typography>
           <div className={classes.contentButtons}>
             {isAuthenticated ? (
-              <Button className={classes.contentButtonPrimary} color='inherit' component={Link} endIcon={<ProfileIcon />} to={URLS.profile} variant='contained'>
+              <Button
+                className={classes.contentButtonPrimary}
+                color='inherit'
+                component={Link}
+                endIcon={<ProfileIcon />}
+                onClick={() => analytics('profile')}
+                to={URLS.profile}
+                variant='contained'>
                 Min profil
               </Button>
             ) : (
               <>
-                <Button className={classes.contentButtonPrimary} color='inherit' component={Link} endIcon={<LoginIcon />} to={URLS.login} variant='contained'>
+                <Button
+                  className={classes.contentButtonPrimary}
+                  color='inherit'
+                  component={Link}
+                  endIcon={<LoginIcon />}
+                  onClick={() => analytics('log-in')}
+                  to={URLS.login}
+                  variant='contained'>
                   Logg inn
                 </Button>
-                <Button className={classes.contentButtonSecondary} color='inherit' component={Link} endIcon={<SignupIcon />} to={URLS.signup}>
+                <Button
+                  className={classes.contentButtonSecondary}
+                  color='inherit'
+                  component={Link}
+                  endIcon={<SignupIcon />}
+                  onClick={() => analytics('sign-up')}
+                  to={URLS.signup}>
                   Opprett bruker
                 </Button>
               </>

@@ -34,7 +34,7 @@ const ThemeSettings = ({ open, onClose }: ThemeSettingsProps) => {
     if (newThemeName) {
       setThemeName(newThemeName);
       themeSettings.set(newThemeName);
-      window.gtag('event', 'theme-switch', {
+      window.gtag('event', 'switch', {
         event_category: 'theme',
         event_label: newThemeName,
       });

@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { broadcastQueryClient } from 'react-query/broadcastQueryClient-experimental';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import 'delayed-scroll-restoration-polyfill';
+import { SHOW_NEW_STUDENT_INFO } from 'constant';
 
 // Services
 import { ThemeProvider } from 'context/ThemeContext';
@@ -83,7 +84,12 @@ Laget av  ██║██╔██╗ ██║██║  ██║████�
           ╚═╝╚═╝  ╚═══╝╚═════╝ ╚══════╝╚═╝  ╚═╝`,
   'font-size: 1rem; color: #ff9400;',
 );
-console.log('%cSnoker du rundt? Det liker vi. Vi i Index ser alltid etter nye medlemmer.', 'font-weight: bold; font-size: 1rem;color: #ff9400;');
+console.log(
+  `%cSnoker du rundt? Det liker vi. Vi i Index ser alltid etter nye medlemmer. ${
+    SHOW_NEW_STUDENT_INFO ? 'Søk om å bli med da vel! https://s.tihlde.org/bli-med-i-index' : ''
+  }`,
+  'font-weight: bold; font-size: 1rem;color: #ff9400;',
+);
 console.log(
   'Lyst på en ny badge? Skriv %cbadge();%c i konsollen da vel!',
   'background-color: #121212;font-family: "Monaco", monospace;padding: 2px; color: white;',
@@ -92,9 +98,9 @@ console.log(
 const rickroll = () => {
   window.gtag('event', 'rickrolled', {
     event_category: 'easter-egg',
-    event_label: 'Write badge() in the console',
+    event_label: 'Rickrolled in the console',
   });
-  window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+  window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

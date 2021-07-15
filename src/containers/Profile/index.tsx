@@ -52,6 +52,14 @@ const Profile = () => {
   const { data: user } = useUser();
   const [showModal, setShowModal] = useState(false);
 
+  const openMemberProof = () => {
+    setShowModal(true);
+    window.gtag('event', 'open-memberproof', {
+      event_category: 'profile',
+      event_label: `Open`,
+    });
+  };
+
   return (
     <Page banner={<ProfileTopBox />} options={{ title: 'Profil' }}>
       <div>
@@ -81,7 +89,7 @@ const Profile = () => {
               <Skeleton height={30} sx={{ m: 'auto' }} variant='text' width='35%' />
             </>
           )}
-          <Button className={classes.button} endIcon={<QrCodeIcon />} onClick={() => setShowModal(true)} variant='contained'>
+          <Button className={classes.button} endIcon={<QrCodeIcon />} onClick={openMemberProof} variant='contained'>
             Medlemsbevis
           </Button>
         </Paper>

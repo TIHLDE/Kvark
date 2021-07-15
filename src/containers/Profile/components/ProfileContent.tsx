@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PermissionApp } from 'types/Enums';
 import { useUser, useHavePermission } from 'api/hooks/User';
 import URLS from 'URLS';
@@ -7,7 +7,7 @@ import { useLogout } from 'api/hooks/User';
 
 // Material-UI
 import { makeStyles } from '@material-ui/styles';
-import { SvgIconProps, Badge, Collapse, List, ListItem, ListItemIcon, ListItemText, TextField, MenuItem, Theme, useMediaQuery } from '@material-ui/core';
+import { SvgIconProps, Badge, Collapse, List, ListItem, ListItemIcon, ListItemText, Stack } from '@material-ui/core';
 
 // Icons
 import EventIcon from '@material-ui/icons/DateRangeRounded';
@@ -39,17 +39,6 @@ const useStyles = makeStyles((theme) => ({
       gridTemplateColumns: '1fr',
     },
   },
-  menu: {
-    display: 'grid',
-    gap: theme.spacing(1),
-  },
-  contentList: {
-    overflow: 'hidden',
-  },
-  select: {
-    background: theme.palette.background.paper,
-    borderRadius: theme.shape.borderRadius,
-  },
   logOutButton: {
     color: theme.palette.error.main,
   },
@@ -61,9 +50,12 @@ const ProfileContent = () => {
   const logOut = useLogout();
   const { data: user } = useUser();
   const { allowAccess: isAdmin } = useHavePermission([PermissionApp.EVENT, PermissionApp.JOBPOST, PermissionApp.NEWS, PermissionApp.USER]);
-  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
   const logout = () => {
+    window.gtag('event', 'log-out', {
+      event_category: 'profile',
+      event_label: `Logged out`,
+    });
     logOut();
     navigate(URLS.landing);
   };
@@ -78,6 +70,13 @@ const ProfileContent = () => {
   const tabs: Array<NavListItem> = [eventTab, notificationsTab, badgesTab, groupsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
   const [tab, setTab] = useState(eventTab.label);
 
+  useEffect(() => {
+    window.gtag('event', 'change-tab', {
+      event_category: 'profile',
+      event_label: `Changed tab to: ${tab}`,
+    });
+  }, [tab]);
+
   type NavListItem = {
     label: string;
     icon: React.ComponentType<SvgIconProps>;
@@ -87,8 +86,13 @@ const ProfileContent = () => {
   };
 
   const NavListItem = ({ label, icon: Icon, onClick, badge, className = '', ...props }: NavListItem) => (
-    <ListItem button onClick={onClick ? onClick : () => setTab(label)} selected={tab === label} {...props}>
-      <ListItemIcon>
+    <ListItem
+      button
+      onClick={onClick ? onClick : () => setTab(label)}
+      selected={tab === label}
+      sx={{ px: { xs: 1, sm: 2 }, borderRadius: ({ shape }) => `${shape.borderRadius}px` }}
+      {...props}>
+      <ListItemIcon sx={{ minWidth: { xs: 32, sm: 40 } }}>
         <Badge badgeContent={badge} color='error'>
           <Icon className={className} color={tab === label ? 'primary' : 'inherit'} />
         </Badge>
@@ -99,30 +103,20 @@ const ProfileContent = () => {
 
   return (
     <div className={classes.content}>
-      <div className={classes.menu}>
-        {mdDown ? (
-          <TextField aria-label='Velg innhold' className={classes.select} onChange={(e) => setTab(e.target.value)} select value={tab} variant='outlined'>
+      <Stack spacing={1}>
+        <Paper noOverflow noPadding>
+          <List aria-label='Profil innholdsliste' disablePadding sx={{ display: 'grid', gridTemplateColumns: { xs: '50% 50%', md: '1fr' } }}>
             {tabs.map((tab) => (
-              <MenuItem key={tab.label} value={tab.label}>
-                {`${tab.label}${tab.badge ? ` (${tab.badge})` : ''}`}
-              </MenuItem>
+              <NavListItem {...tab} key={tab.label} />
             ))}
-          </TextField>
-        ) : (
-          <Paper className={classes.contentList} noPadding>
-            <List aria-label='Profil innholdsliste' disablePadding>
-              {tabs.map((tab) => (
-                <NavListItem {...tab} key={tab.label} />
-              ))}
-            </List>
-          </Paper>
-        )}
-        <Paper className={classes.contentList} noPadding>
+          </List>
+        </Paper>
+        <Paper noOverflow noPadding>
           <List aria-label='Logg ut' disablePadding>
             <NavListItem {...logoutTab} />
           </List>
         </Paper>
-      </div>
+      </Stack>
       <div>
         <Collapse in={tab === eventTab.label}>
           <ProfileEvents />
