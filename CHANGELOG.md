@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.1.1 (15.07.2021)
+
 - ✨ **Nye studenter**. Laget en side for nye studenter i TIHLDE med info om fadderuka, FAQ, verv, idrett, samt en infoboks på forsiden.
 - ⚡ **Google Analytics**. Lagt til flere "events" for å bedre kunne tilpasse siden etter hvordan brukerne benytter den.
 - ⚡ **Nyheter**. Lagt til publiseringsdato i nyhets-kort.
