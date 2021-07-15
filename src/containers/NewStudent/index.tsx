@@ -34,6 +34,7 @@ import Pagination from 'components/layout/Pagination';
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import EventsCalendarView from 'containers/Landing/components/EventsCalendarView';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -78,6 +79,7 @@ const VolunteerGroup = ({ url, title }: VolunteerGroupProps) => {
 
 const NewStudent = () => {
   const classes = useStyles();
+  const { event } = useGoogleAnalytics();
   const isAuthenticated = useIsAuthenticated();
   const eventsTab = { value: 'events', label: 'Fadderuka - arrangementer', icon: EventIcon };
   const faqTab = { value: 'faq', label: 'FAQ', icon: FaqIcon };
@@ -87,12 +89,7 @@ const NewStudent = () => {
   const tabs = [eventsTab, faqTab, volunteerTab, sportsTab, aboutTab];
   const [tab, setTab] = useState(eventsTab.value);
 
-  useEffect(() => {
-    window.gtag('event', 'change-tab', {
-      event_category: 'new-student',
-      event_label: `Changed tab to: ${tab}`,
-    });
-  }, [tab]);
+  useEffect(() => event('change-tab', 'new-student', `Changed tab to: ${tab}`), [tab]);
 
   const eventsListView = { value: 'list', label: 'Liste', icon: ListIcon };
   const eventsCalendarView = { value: 'calendar', label: 'Kalender', icon: CalendarIcon };
@@ -105,16 +102,8 @@ const NewStudent = () => {
   const { data: sportsText = '' } = usePageContent('tihlde/interessegrupper/tihlde-pythons/');
   const { data: aboutText = '' } = useGithubContent('https://raw.githubusercontent.com/wiki/TIHLDE/Kvark/Nettsiden-info.md');
 
-  const fadderukaSignupAnalytics = () =>
-    window.gtag('event', 'signup-fadderuka', {
-      event_category: 'new-student',
-      event_label: `Clicked on link to signup for fadderuka`,
-    });
-  const createUserAnalytics = (page: string) =>
-    window.gtag('event', 'go-to-sign-up', {
-      event_category: 'new-student',
-      event_label: `Go to ${page}`,
-    });
+  const fadderukaSignupAnalytics = () => event('signup-fadderuka', 'new-student', 'Clicked on link to signup for fadderuka');
+  const createUserAnalytics = (page: string) => event('go-to-sign-up', 'new-student', `Go to ${page}`);
 
   return (
     <Page

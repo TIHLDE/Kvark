@@ -19,6 +19,7 @@ import { ReactComponent as WaveBottom } from 'assets/img/waves/wave-bottom.svg';
 
 // Project Components
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -142,13 +143,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Wave = () => {
   const classes = useStyles();
+  const { event } = useGoogleAnalytics();
   const isAuthenticated = useIsAuthenticated();
 
-  const analytics = (page: string) =>
-    window.gtag('event', `go-to-page`, {
-      event_category: 'wave',
-      event_label: `Go to ${page}`,
-    });
+  const analytics = (page: string) => event('go-to-page', 'wave', `Go to ${page}`);
+
   return (
     <div className={classes.root}>
       <div className={classes.container}>

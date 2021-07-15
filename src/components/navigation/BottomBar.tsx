@@ -16,6 +16,7 @@ import Paper from 'components/layout/Paper';
 import { NavigationItem } from 'components/navigation/Navigation';
 import Sidebar from 'components/navigation/Sidebar';
 import Logo from 'components/miscellaneous/TihldeLogo';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,6 +73,7 @@ export type BottomBarProps = {
 };
 
 const BottomBar = ({ items }: BottomBarProps) => {
+  const { event } = useGoogleAnalytics();
   const classes = useStyles();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [menuOpen, setMenuOpen] = useState(false);
@@ -109,10 +111,7 @@ const BottomBar = ({ items }: BottomBarProps) => {
 
   const toggleMenu = () => {
     if (!menuOpen) {
-      window.gtag('event', 'menu', {
-        event_category: 'bottom-bar',
-        event_label: 'Open menu',
-      });
+      event('menu', 'bottom-bar', 'Open menu');
     }
     setMenuOpen((prev) => !prev);
   };

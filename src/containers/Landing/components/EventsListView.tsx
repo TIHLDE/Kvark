@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 
 // Project componets
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 
 // Styles
 const useStyles = makeStyles((theme) => ({
@@ -34,12 +35,9 @@ const NO_OF_EVENTS_TO_SHOW = 3;
 
 const EventsListView = ({ events, isLoading = false }: EventsListViewProps) => {
   const classes = useStyles();
+  const { event } = useGoogleAnalytics();
 
-  const openEventsAnalytics = () =>
-    window.gtag('event', 'go-to-all-events', {
-      event_category: 'events-list-view',
-      event_label: `Go to all events`,
-    });
+  const openEventsAnalytics = () => event('go-to-all-events', 'events-list-view', `Go to all events`);
 
   if (isLoading) {
     return (

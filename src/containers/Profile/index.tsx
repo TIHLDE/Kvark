@@ -16,6 +16,7 @@ import Dialog from 'components/layout/Dialog';
 import Avatar from 'components/miscellaneous/Avatar';
 import QRCode from 'components/miscellaneous/QRCode';
 import { ProfileTopBox } from 'components/layout/TopBox';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -49,15 +50,13 @@ const useStyles = makeStyles((theme) => ({
 
 const Profile = () => {
   const classes = useStyles();
+  const { event } = useGoogleAnalytics();
   const { data: user } = useUser();
   const [showModal, setShowModal] = useState(false);
 
   const openMemberProof = () => {
     setShowModal(true);
-    window.gtag('event', 'open-memberproof', {
-      event_category: 'profile',
-      event_label: `Open`,
-    });
+    event('open-memberproof', 'profile', 'Open');
   };
 
   return (

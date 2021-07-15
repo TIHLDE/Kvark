@@ -22,6 +22,7 @@ import HomeIcon from '@material-ui/icons/HomeRounded';
 // Project components
 import Paper from 'components/layout/Paper';
 import FormView from 'components/forms/FormView';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -66,6 +67,7 @@ export type EventRegistrationProps = {
 
 const EventRegistration = ({ event, user }: EventRegistrationProps) => {
   const classes = useStyles();
+  const { event: GAEvent } = useGoogleAnalytics();
   const createRegistration = useCreateEventRegistration(event.id);
   const showSnackbar = useSnackbar();
   const { data: form, isLoading: isFormLoading } = useFormById(event.survey || '-');
@@ -103,10 +105,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
       {
         onSuccess: () => {
           showSnackbar('Påmeldingen var vellykket', 'success');
-          window.gtag('event', 'registered', {
-            event_category: 'event-registration',
-            event_label: `Registered for event: ${event.title}`,
-          });
+          GAEvent('registered', 'event-registration', `Registered for event: ${event.title}`);
         },
         onError: (e) => {
           showSnackbar(e.detail, 'error');

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useUser, useIsAuthenticated } from 'api/hooks/User';
-import { usePersistedState } from 'api/hooks/Utils';
+import { useGoogleAnalytics, usePersistedState } from 'api/hooks/Utils';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { SHOW_NEW_STUDENT_INFO } from 'constant';
@@ -21,6 +21,7 @@ const Box = styled('div')(({ theme }) => ({
 }));
 
 const NewStudentBox = () => {
+  const { event } = useGoogleAnalytics();
   const { data: user, isLoading } = useUser();
   const isAuthenticated = useIsAuthenticated();
   const [shouldShowBox, setShouldShowBox] = usePersistedState('ShowNewStudentBox', true, 1000 * 3600 * 24 * 60);
@@ -65,16 +66,9 @@ const NewStudentBox = () => {
 
   const hideBox = () => {
     setShouldShowBox(false);
-    window.gtag('event', 'hide-box', {
-      event_category: 'new-student',
-      event_label: 'Hide new student box on landing page',
-    });
+    event('hide-box', 'new-student', 'Hide new student box on landing page');
   };
-  const fadderukaSignupAnalytics = () =>
-    window.gtag('event', 'signup-fadderuka-from-box', {
-      event_category: 'new-student',
-      event_label: `Clicked on link to signup for fadderuka`,
-    });
+  const fadderukaSignupAnalytics = () => event('signup-fadderuka-from-box', 'new-student', 'Clicked on link to signup for fadderuka');
 
   return (
     <Box>

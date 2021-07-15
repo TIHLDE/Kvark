@@ -19,6 +19,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Paper from 'components/layout/Paper';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -38,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CompaniesForm = () => {
+  const { event } = useGoogleAnalytics();
   const classes = useStyles();
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
@@ -50,10 +52,7 @@ const CompaniesForm = () => {
     setIsLoading(true);
     try {
       const response = await API.emailForm(data);
-      window.gtag('event', 'submit-form', {
-        event_category: 'companies',
-        event_label: `Company: ${data.info.bedrift}`,
-      });
+      event('submit-form', 'companies', `Company: ${data.info.bedrift}`);
       showSnackbar(response.detail, 'success');
       reset({ info: { bedrift: '', kontaktperson: '', epost: '' }, comment: '' } as CompaniesEmail);
     } catch (e) {

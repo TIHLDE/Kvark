@@ -30,6 +30,7 @@ import Dialog from 'components/layout/Dialog';
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 import QRCode from 'components/miscellaneous/QRCode';
 import ShareButton from 'components/miscellaneous/ShareButton';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -96,6 +97,7 @@ enum Views {
 }
 
 const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
+  const { event } = useGoogleAnalytics();
   const classes = useStyles();
   const { data: user } = useUser();
   const { data: registration } = useEventRegistration(data.id, preview || !user ? '' : user.user_id);
@@ -118,10 +120,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         onSuccess: (response) => {
           showSnackbar(response.detail, 'success');
           setView(Views.Info);
-          window.gtag('event', 'unregistered', {
-            event_category: 'event-registration',
-            event_label: `Unregistered for event: ${data.title}`,
-          });
+          event('unregistered', 'event-registration', `Unregistered for event: ${data.title}`);
         },
         onError: (e) => {
           showSnackbar(e.detail, 'error');
@@ -241,11 +240,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     </>
   );
 
-  const addToCalendarAnalytics = () =>
-    window.gtag('event', `add-to-calendar`, {
-      event_category: 'event',
-      event_label: `Event: ${data.title}`,
-    });
+  const addToCalendarAnalytics = () => event('add-to-calendar', 'event', `Event: ${data.title}`);
 
   return (
     <>
