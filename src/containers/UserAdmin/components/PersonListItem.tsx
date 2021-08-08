@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { UserList } from 'types/Types';
-import { useActivateUser } from 'api/hooks/User';
+import { useActivateUser, useDeclineUser } from 'api/hooks/User';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { getUserClass, getUserStudyShort } from 'utils';
 
@@ -14,7 +15,52 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
 // Project components
 import Avatar from 'components/miscellaneous/Avatar';
 import Paper from 'components/layout/Paper';
+import Dialog from 'components/layout/Dialog';
+import TextField from 'components/inputs/TextField';
+import SubmitButton from 'components/inputs/SubmitButton';
 import ProfileSettings from 'containers/Profile/components/ProfileSettings';
+
+type FormValues = {
+  reason: string;
+};
+
+const DeclineUser = ({ user }: Pick<PersonListItemProps, 'user'>) => {
+  const [showDialog, setShowDialog] = useState(false);
+  const showSnackbar = useSnackbar();
+  const { handleSubmit, errors, register } = useForm<FormValues>();
+  const declineUser = useDeclineUser();
+  const decline = (data: FormValues) =>
+    declineUser.mutate(
+      { userId: user.user_id, reason: data.reason },
+      {
+        onSuccess: (data) => {
+          setShowDialog(false);
+          showSnackbar(data.detail, 'success');
+        },
+        onError: (e) => {
+          showSnackbar(e.detail, 'error');
+        },
+      },
+    );
+
+  return (
+    <>
+      <Button color='error' fullWidth onClick={() => setShowDialog(true)} variant='outlined'>
+        Slett
+      </Button>
+      <Dialog
+        contentText='Brukeren vil motta en epost om at brukeren er slettet sammen med begrunnelsen.'
+        onClose={() => setShowDialog(false)}
+        open={showDialog}
+        titleText='Slett bruker'>
+        <form onSubmit={handleSubmit(decline)}>
+          <TextField errors={errors} label='Begrunnelse (valgfri)' minRows={2} multiline name='reason' register={register} />
+          <SubmitButton errors={errors}>Slett bruker</SubmitButton>
+        </form>
+      </Dialog>
+    </>
+  );
+};
 
 export type PersonListItemProps = {
   user: UserList;
@@ -26,7 +72,7 @@ const PersonListItem = ({ user, is_TIHLDE_member = true }: PersonListItemProps) 
   const showSnackbar = useSnackbar();
   const [expanded, setExpanded] = useState(false);
   const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
-  const changeStatus = () =>
+  const activate = () =>
     activateUser.mutate(user.user_id, {
       onSuccess: (data) => {
         showSnackbar(data.detail, 'success');
@@ -59,9 +105,12 @@ const PersonListItem = ({ user, is_TIHLDE_member = true }: PersonListItemProps) 
           {is_TIHLDE_member ? (
             <ProfileSettings isAdmin user={user} />
           ) : (
-            <Button fullWidth onClick={() => changeStatus()} variant='outlined'>
-              Legg til medlem
-            </Button>
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
+              <Button fullWidth onClick={() => activate()} variant='outlined'>
+                Legg til medlem
+              </Button>
+              <DeclineUser user={user} />
+            </Stack>
           )}
         </Stack>
       </Collapse>
