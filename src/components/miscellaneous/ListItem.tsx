@@ -8,7 +8,17 @@ import { EventCompact, News, JobPost } from 'types/Types';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
-import { lighten, Theme, Skeleton, useMediaQuery, Grid, Typography, ListItem as MaterialListItem, SvgIconTypeMap } from '@material-ui/core';
+import {
+  lighten,
+  Theme,
+  Skeleton,
+  useMediaQuery,
+  Grid,
+  Typography,
+  ListItem as MaterialListItemButton,
+  ListItemProps as MaterialListItemButtonProps,
+  SvgIconTypeMap,
+} from '@material-ui/core';
 import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 
 // Icons
@@ -102,15 +112,16 @@ const InfoContent = ({ icon: Icon, label }: IconProps) => {
   );
 };
 
-type ListItemProps = {
+export type ListItemProps = {
   event?: EventCompact;
   news?: News;
   jobpost?: JobPost;
   className?: string;
   largeImg?: boolean;
+  sx?: MaterialListItemButtonProps['sx'];
 };
 
-function ListItem({ event, news, jobpost, className, largeImg = false }: ListItemProps) {
+const ListItem = ({ event, news, jobpost, className, largeImg = false, sx }: ListItemProps) => {
   const classes = useStyles();
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   const item = useMemo(() => {
@@ -156,7 +167,7 @@ function ListItem({ event, news, jobpost, className, largeImg = false }: ListIte
   }
 
   return (
-    <MaterialListItem button className={classNames(classes.root, className)} component={Link} to={item.link}>
+    <MaterialListItemButton className={classNames(classes.root, className)} component={Link} sx={sx} to={item.link}>
       <AspectRatioImg alt={item.imgAlt || item.title} className={classNames(classes.imgContainer, largeImg && lgUp && classes.largeImg)} src={item.img} />
       <Grid className={classes.content} container direction='column' wrap='nowrap'>
         <Typography className={classes.title} variant='h2'>
@@ -166,22 +177,22 @@ function ListItem({ event, news, jobpost, className, largeImg = false }: ListIte
           <InfoContent icon={infoItem.icon} key={index} label={infoItem.label} />
         ))}
       </Grid>
-    </MaterialListItem>
+    </MaterialListItemButton>
   );
-}
+};
 export default ListItem;
 
-export const ListItemLoading = ({ className, largeImg = false }: Pick<ListItemProps, 'largeImg' | 'className'>) => {
+export const ListItemLoading = ({ className, largeImg = false, sx }: Pick<ListItemProps, 'largeImg' | 'className' | 'sx'>) => {
   const classes = useStyles();
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   return (
-    <MaterialListItem className={classNames(classes.root, className)}>
+    <MaterialListItemButton className={classNames(classes.root, className)} sx={sx}>
       <AspectRatioLoading className={classNames(classes.imgContainer, largeImg && lgUp && classes.largeImg)} />
       <Grid className={classes.content} container direction='column' wrap='nowrap'>
         <Skeleton height={60} width={200} />
         <Skeleton height={30} width={300} />
         <Skeleton height={30} width={250} />
       </Grid>
-    </MaterialListItem>
+    </MaterialListItemButton>
   );
 };
