@@ -49,7 +49,7 @@ const DeclineUser = ({ user }: Pick<PersonListItemProps, 'user'>) => {
         Slett
       </Button>
       <Dialog
-        contentText='Brukeren vil motta en epost om at brukeren er slettet sammen med begrunnelsen.'
+        contentText='Brukeren vil få beskjed via epost om at brukeren ble avslått sammen med begrunnelsen.'
         onClose={() => setShowDialog(false)}
         open={showDialog}
         titleText='Slett bruker'>
