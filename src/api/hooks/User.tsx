@@ -101,6 +101,15 @@ export const useActivateUser = (): UseMutationResult<RequestResponse, RequestRes
   });
 };
 
+export const useDeclineUser = (): UseMutationResult<RequestResponse, RequestResponse, { userId: string; reason: string }, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation(({ userId, reason }) => API.declineUser(userId, reason), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(USERS_QUERY_KEY);
+    },
+  });
+};
+
 export const useHavePermission = (apps: Array<PermissionApp>) => {
   const { data: user, isLoading } = useUser();
   return { allowAccess: isLoading ? false : Boolean(apps.some((app) => user?.permissions[app].write)), isLoading };

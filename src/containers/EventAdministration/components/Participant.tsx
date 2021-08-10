@@ -36,9 +36,6 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: theme.spacing(8),
     alignItems: 'center',
   },
-  secondaryText: {
-    whiteSpace: 'break-spaces',
-  },
   content: {
     display: 'grid',
     gridGap: theme.spacing(1),
@@ -114,7 +111,6 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
       <ListItem button className={classes.wrapper} onClick={() => setExpanded((prev) => !prev)}>
         {mdDown && <Avatar className={classes.avatar} user={registration.user_info} />}
         <ListItemText
-          classes={{ secondary: classes.secondaryText }}
           primary={`${registration.user_info.first_name} ${registration.user_info.last_name}`}
           secondary={`${getUserClass(registration.user_info.user_class)} - ${getUserStudyShort(registration.user_info.user_study)}${
             registration.user_info.allergy !== '' ? `\nAllergier: ${registration.user_info.allergy}` : ''
