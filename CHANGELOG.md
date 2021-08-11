@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.1.3 (11.08.2021)
+
 ## Versjon 1.1.2 (11.08.2021)
 
 - ✨ **Brukere**. Administratorer kan nå slette nye brukere og legge ved en valgfri begrunnelse.
