@@ -14,6 +14,10 @@
 
 ## Neste versjon
 
+## Versjon 1.1.2 (11.08.2021)
+
+- ✨ **Brukere**. Administratorer kan nå slette nye brukere og legge ved en valgfri begrunnelse.
+
 ## Versjon 1.1.1 (15.07.2021)
 
 - ✨ **Nye studenter**. Laget en side for nye studenter i TIHLDE med info om fadderuka, FAQ, verv, idrett, samt en infoboks på forsiden.

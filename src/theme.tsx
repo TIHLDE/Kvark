@@ -160,6 +160,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       MuiContainer: { defaultProps: { maxWidth: 'xl', disableGutters: true } },
       MuiPaper: { defaultProps: { elevation: 0 } },
       MuiLinearProgress: { styleOverrides: { root: { borderRadius: BORDER_RADIUS } } },
+      MuiListItemText: { styleOverrides: { secondary: { whiteSpace: 'break-spaces' } } },
     },
     palette: {
       get,

@@ -1,17 +1,19 @@
-import { Paper as MuiPaper, PaperProps as MuiPaperProps, styled } from '@material-ui/core';
+import { Paper as MuiPaper, PaperProps as MuiPaperProps, styled, Theme } from '@material-ui/core';
 
 export type PaperProps = MuiPaperProps & {
   noBorder?: boolean;
   noPadding?: boolean;
   noOverflow?: boolean;
+  bgColor?: keyof Theme['palette']['background'];
 };
 
-const Paper = styled(MuiPaper, { shouldForwardProp: (prop) => prop !== 'noBorder' && prop !== 'noPadding' && prop !== 'noOverflow' })<PaperProps>(
-  ({ theme, noBorder, noPadding, noOverflow }) => ({
-    ...(!noPadding && { padding: theme.spacing(3) }),
-    ...(!noBorder && { border: `${theme.palette.borderWidth} solid ${theme.palette.divider}` }),
-    ...(noOverflow && { overflow: 'hidden' }),
-  }),
-);
+const Paper = styled(MuiPaper, {
+  shouldForwardProp: (prop) => prop !== 'noBorder' && prop !== 'noPadding' && prop !== 'noOverflow' && prop !== 'bgColor',
+})<PaperProps>(({ theme, noBorder, noPadding, noOverflow, bgColor }) => ({
+  ...(!noPadding && { padding: theme.spacing(3) }),
+  ...(!noBorder && { border: `${theme.palette.borderWidth} solid ${theme.palette.divider}` }),
+  ...(noOverflow && { overflow: 'hidden' }),
+  background: theme.palette.background[bgColor || 'paper'],
+}));
 
 export default Paper;
