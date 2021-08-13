@@ -2,7 +2,6 @@ import { useState } from 'react';
 import classnames from 'classnames';
 import URLS from 'URLS';
 import ThemeSettings from 'components/miscellaneous/ThemeSettings';
-import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import { Link } from 'react-router-dom';
 
 // Material UI Components
@@ -17,6 +16,7 @@ import INSTAGRAM from 'assets/icons/instagram.svg';
 import SNAPCHAT from 'assets/icons/snapchat.svg';
 import SLACK from 'assets/icons/slack.svg';
 import DISCORD from 'assets/icons/discord.svg';
+import MAINSPONSOR from 'assets/img/mainSponsor.png';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -126,6 +126,9 @@ const useStyles = makeStyles((theme) => ({
       transform: 'scale(1.1)',
     },
   },
+  caption: {
+    marginBottom: theme.spacing(4),
+  },
 }));
 
 const Footer = () => {
@@ -171,8 +174,13 @@ const Footer = () => {
           </Link>
         </Typography>
       </div>
-      <div className={classnames(classes.main, classes.flexColumn)}>
-        <TihldeLogo className={classes.logo} darkColor='white' lightColor='white' size='small' />
+      <div className={classnames(classes.main, classes.flexColumn, classes.marginTopColumns)}>
+        <a className={classes.attribute} href='https://www.accenture.com/no-en' rel='noopener noreferrer' target='_blank'>
+          <img alt='Sponsor' className={classes.logo} src={MAINSPONSOR} />
+        </a>
+        <Typography className={classes.caption} variant='subtitle2'>
+          Hovedsamarbeidspartner
+        </Typography>
         <Divider className={classes.divider} />
         <div className={classes.socialMediaWrapper}>
           {mediaList.map((media, index) => (
