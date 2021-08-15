@@ -22,9 +22,10 @@ body:
       label: What browsers are you seeing the problem on?
       multiple: true
       options:
-        - Chromium (Google Chrome, Microsoft Edge, etc...)
         - Firefox
-        - WebKit (Safari)
+        - Chrome
+        - Safari
+        - Microsoft Edge
     validations:
       required: true
   - type: dropdown
@@ -40,16 +41,6 @@ body:
         - Other
     validations:
       required: true
-  - type: dropdown
-    id: browsers
-    attributes:
-      label: What browsers are you seeing the problem on?
-      multiple: true
-      options:
-        - Firefox
-        - Chrome
-        - Safari
-        - Microsoft Edge
   - type: textarea
     id: logs
     attributes:
