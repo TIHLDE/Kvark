@@ -6,7 +6,6 @@ import API from 'api/api';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
 import {
   Button,
   ButtonProps,
@@ -18,6 +17,7 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   IconButton,
+  styled,
 } from '@material-ui/core';
 
 // Icons
@@ -28,37 +28,27 @@ import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 import { getCroppedImgAsBlob, blobToFile, readFile } from 'components/inputs/ImageUploadUtils';
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    display: 'grid',
-    gridGap: theme.spacing(1),
-    padding: theme.spacing(2),
-    background: theme.palette.background.default,
-  },
-  img: {
-    margin: 'auto',
-    maxHeight: 200,
-    width: 'auto',
-    maxWidth: '100%',
-    borderRadius: theme.shape.borderRadius,
-  },
-  cropper: {
-    position: 'relative',
-    width: '100%',
-    height: 400,
-    maxHeight: '90vh',
-  },
-  links: {
-    display: 'grid',
-    gap: theme.spacing(1),
-  },
-  file: {
-    background: theme.palette.background.default,
-  },
-  link: {
-    wordWrap: 'break-word',
-  },
+const UploadPaper = styled(Paper)(({ theme }) => ({
+  display: 'grid',
+  gridGap: theme.spacing(1),
+  padding: theme.spacing(2),
+  background: theme.palette.background.default,
 }));
+
+const Img = styled('img')(({ theme }) => ({
+  margin: 'auto',
+  maxHeight: 200,
+  width: 'auto',
+  maxWidth: '100%',
+  borderRadius: theme.shape.borderRadius,
+}));
+
+const CropperWrapper = styled('div')({
+  position: 'relative',
+  width: '100%',
+  height: 400,
+  maxHeight: '90vh',
+});
 
 const analytics = () =>
   window.gtag('event', 'upload', {
@@ -78,7 +68,6 @@ export type ImageUploadProps = ButtonProps &
   };
 
 export const ImageUpload = forwardRef(({ register, watch, setValue, formState, label = 'Last opp fil', ratio, ...props }: ImageUploadProps) => {
-  const classes = useStyles();
   const showSnackbar = useSnackbar();
   const url = watch(register.name);
   const [imageSrc, setImageSrc] = useState('');
@@ -145,8 +134,8 @@ export const ImageUpload = forwardRef(({ register, watch, setValue, formState, l
   };
   return (
     <>
-      <Paper className={classes.paper}>
-        {url && <img className={classes.img} src={url} />}
+      <UploadPaper>
+        {url && <Img src={url} />}
         <div>
           <input hidden {...register} />
           <input accept='image/*' hidden id='image-upload-button' onChange={onSelect} type='file' />
@@ -162,7 +151,7 @@ export const ImageUpload = forwardRef(({ register, watch, setValue, formState, l
             Fjern bilde
           </Button>
         )}
-      </Paper>
+      </UploadPaper>
       <Dialog
         closeText='Avbryt'
         confirmText='Ferdig'
@@ -171,9 +160,9 @@ export const ImageUpload = forwardRef(({ register, watch, setValue, formState, l
         onConfirm={() => dialogConfirmCrop()}
         open={dialogOpen}
         titleText='Tilpass bildet'>
-        <div className={classes.cropper}>
+        <CropperWrapper>
           <Cropper aspect={ratio} crop={crop} image={imageSrc} onCropChange={setCrop} onCropComplete={onCropComplete} onZoomChange={setZoom} zoom={zoom} />
-        </div>
+        </CropperWrapper>
         {isLoading && <LinearProgress />}
       </Dialog>
     </>
@@ -183,7 +172,6 @@ export const ImageUpload = forwardRef(({ register, watch, setValue, formState, l
 export type FormFileUploadProps = Omit<ImageUploadProps, 'ratio'>;
 
 export const FormFileUpload = ({ register, watch, setValue, formState, label = 'Last opp fil', ...props }: FormFileUploadProps) => {
-  const classes = useStyles();
   const showSnackbar = useSnackbar();
   const url = watch(register.name);
   const [isLoading, setIsLoading] = useState(false);
@@ -203,7 +191,7 @@ export const FormFileUpload = ({ register, watch, setValue, formState, label = '
     }
   };
   return (
-    <Paper className={classes.paper}>
+    <UploadPaper>
       {url && (
         <Typography>
           Fil: <a href={url}>{url}</a>
@@ -224,14 +212,13 @@ export const FormFileUpload = ({ register, watch, setValue, formState, label = '
           Fjern fil
         </Button>
       )}
-    </Paper>
+    </UploadPaper>
   );
 };
 
 export type FileUploadProps = Pick<ImageUploadProps, 'label'> & ButtonProps;
 
 export const FileUpload = ({ label = 'Last opp filer', ...props }: FileUploadProps) => {
-  const classes = useStyles();
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const [uploaded, setUploaded] = useState<Array<string>>([]);
@@ -265,15 +252,15 @@ export const FileUpload = ({ label = 'Last opp filer', ...props }: FileUploadPro
         }),
     );
     return (
-      <Paper className={classes.file} noPadding>
+      <Paper bgColor='default' noPadding>
         <ListItem>
           <ListItemText
-            className={classes.link}
             primary={
               <a href={url} rel='noopener noreferrer' target='_blank'>
                 {url}
               </a>
             }
+            sx={{ overflowWrap: 'anywhere' }}
           />
           <ListItemSecondaryAction>
             <IconButton onClick={share}>
@@ -286,8 +273,8 @@ export const FileUpload = ({ label = 'Last opp filer', ...props }: FileUploadPro
   };
 
   return (
-    <Paper className={classes.paper}>
-      <List className={classes.links} disablePadding>
+    <UploadPaper>
+      <List disablePadding sx={{ display: 'grid', gap: 1 }}>
         {uploaded.map((url, i) => (
           <File key={i} url={url} />
         ))}
@@ -300,6 +287,6 @@ export const FileUpload = ({ label = 'Last opp filer', ...props }: FileUploadPro
           </Button>
         </label>
       </div>
-    </Paper>
+    </UploadPaper>
   );
 };
