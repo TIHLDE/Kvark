@@ -1,53 +1,56 @@
 import { TextFormField, SelectFormField } from 'types/Types';
 import { FormFieldType } from 'types/Enums';
-import { UseFormMethods } from 'react-hook-form';
+import { UseFormReturn } from 'react-hook-form';
 
 // Material UI
-import TextField from '@material-ui/core/TextField';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Checkbox from '@material-ui/core/Checkbox';
-import Radio from '@material-ui/core/Radio';
+import { TextField, RadioGroup, FormLabel, FormControl, FormGroup, FormControlLabel, FormHelperText, Checkbox, Radio } from '@material-ui/core';
 
-export type FieldViewProps = Pick<UseFormMethods, 'register' | 'errors'> & {
+export type FieldViewProps = Pick<UseFormReturn, 'formState' | 'register'> & {
   field: TextFormField | SelectFormField;
   index: number;
 };
 
-const FieldView = ({ field, register, errors, index }: FieldViewProps) => {
-  const error = errors?.answers && errors.answers[index]?.selected_options?.message;
+const FieldView = ({ register, field, formState, index }: FieldViewProps) => {
+  const error = formState.errors?.answers && formState.errors.answers[index]?.selected_options?.message;
 
   if (field.type === FormFieldType.TEXT_ANSWER) {
+    const fieldRegister = register(`answers.${index}.text_answer`);
     return (
       <>
-        <input name={`answers[${index}].field`} ref={register} type='hidden' value={field.id} />
+        <input {...register(`answers.${index}.field`)} type='hidden' value={field.id} />
         <TextField
           defaultValue=''
           error={Boolean(error)}
           fullWidth
           helperText={error && (error || 'Feltet er påkrevd')}
-          inputRef={register}
+          inputRef={fieldRegister.ref}
           label={field.title}
           margin='normal'
-          name={`answers[${index}].text_answer`}
+          name={fieldRegister.name}
+          onChange={fieldRegister.onChange}
           required={field.required}
           variant='outlined'
         />
       </>
     );
   } else if (field.type === FormFieldType.MULTIPLE_SELECT) {
+    const fieldRegister = register(`answers.${index}.selected_options`);
     return (
       <FormControl component='fieldset' error={Boolean(error)} fullWidth margin='normal' required={field.required}>
         <FormLabel component='legend'>{field.title}</FormLabel>
-        <input name={`answers[${index}].field`} ref={register} type='hidden' value={field.id} />
+        <input {...register(`answers.${index}.field`)} type='hidden' value={field.id} />
         <FormGroup>
           {field.options.map((option) => (
             <FormControlLabel
-              control={<Checkbox inputRef={register} name={`answers[${index}].selected_options`} value={option.id} />}
+              control={
+                <Checkbox
+                  inputRef={fieldRegister.ref}
+                  name={fieldRegister.name}
+                  onBlur={fieldRegister.onBlur}
+                  onChange={fieldRegister.onChange}
+                  value={option.id}
+                />
+              }
               key={option.id}
               label={option.title}
             />
@@ -57,13 +60,14 @@ const FieldView = ({ field, register, errors, index }: FieldViewProps) => {
       </FormControl>
     );
   } else {
+    const fieldRegister = register(`answers.${index}.selected_options`);
     return (
       <FormControl component='fieldset' error={Boolean(error)} fullWidth margin='normal' required={field.required}>
         <FormLabel component='legend'>{field.title}</FormLabel>
-        <input name={`answers[${index}].field`} ref={register} type='hidden' value={field.id} />
-        <RadioGroup defaultValue={field.options[0]?.id} name={`answers[${index}].selected_options`}>
+        <input {...register(`answers.${index}.field`)} type='hidden' value={field.id} />
+        <RadioGroup defaultValue={field.options[0]?.id} name={`answers.${index}.selected_options`}>
           {field.options.map((option) => (
-            <FormControlLabel control={<Radio inputRef={register} value={option.id} />} key={option.id} label={option.title} />
+            <FormControlLabel control={<Radio inputRef={fieldRegister.ref} value={option.id} />} key={option.id} label={option.title} />
           ))}
         </RadioGroup>
         {Boolean(error) && <FormHelperText>{error || 'Feltet er påkrevd'}</FormHelperText>}

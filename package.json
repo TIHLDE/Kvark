@@ -25,7 +25,7 @@
     "react-dom": "^17.0.2",
     "react-easy-crop": "^3.5.1",
     "react-helmet": "^6.1.0",
-    "react-hook-form": "^6.14.1",
+    "react-hook-form": "^7.12.2",
     "react-markdown": "^6.0.3",
     "react-palette": "^1.0.1",
     "react-qr-reader": "^2.2.1",

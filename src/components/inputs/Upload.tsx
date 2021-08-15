@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import { RegisterOptions, UseFormMethods } from 'react-hook-form';
+import { useState, useCallback, forwardRef } from 'react';
+import { UseFormReturn, UseFormRegisterReturn, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import Cropper from 'react-easy-crop';
 import { useShare } from 'api/hooks/Utils';
 import API from 'api/api';
@@ -67,17 +67,20 @@ const analytics = () =>
   });
 
 export type ImageUploadProps = ButtonProps &
-  Pick<UseFormMethods, 'register' | 'watch' | 'setValue' | 'errors'> & {
-    rules?: RegisterOptions;
-    name: string;
+  Pick<UseFormReturn, 'formState'> & {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    watch: UseFormWatch<any>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    setValue: UseFormSetValue<any>;
+    register: UseFormRegisterReturn;
     label?: string;
     ratio?: number;
   };
 
-export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rules = {}, label = 'Last opp fil', ratio, ...props }: ImageUploadProps) => {
+export const ImageUpload = forwardRef(({ register, watch, setValue, formState, label = 'Last opp fil', ratio, ...props }: ImageUploadProps) => {
   const classes = useStyles();
   const showSnackbar = useSnackbar();
-  const url = watch(name);
+  const url = watch(register.name);
   const [imageSrc, setImageSrc] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -134,7 +137,7 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
       const newFile = blobToFile(compressedImage, file instanceof File ? file.name : imageFile?.name || '', imageFile?.type || file.type || '');
       const data = await API.uploadFile(newFile);
       analytics();
-      setValue(name, data.url);
+      setValue(register.name, data.url);
     } catch (e) {
       showSnackbar(e.detail, 'error');
     }
@@ -145,7 +148,7 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
       <Paper className={classes.paper}>
         {url && <img className={classes.img} src={url} />}
         <div>
-          <input hidden name={name} ref={register && register(rules)} />
+          <input hidden {...register} />
           <input accept='image/*' hidden id='image-upload-button' onChange={onSelect} type='file' />
           <label htmlFor='image-upload-button'>
             <Button component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
@@ -153,9 +156,9 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
             </Button>
           </label>
         </div>
-        {Boolean(errors[name]) && <FormHelperText error>{errors[name]?.message}</FormHelperText>}
+        {Boolean(formState.errors[register.name]) && <FormHelperText error>{formState.errors[register.name]?.message}</FormHelperText>}
         {url && (
-          <Button color='error' disabled={isLoading} fullWidth onClick={() => setValue(name, '')}>
+          <Button color='error' disabled={isLoading} fullWidth onClick={() => setValue(register.name, '')}>
             Fjern bilde
           </Button>
         )}
@@ -175,14 +178,14 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
       </Dialog>
     </>
   );
-};
+});
 
 export type FormFileUploadProps = Omit<ImageUploadProps, 'ratio'>;
 
-export const FormFileUpload = ({ register, watch, setValue, name, errors = {}, rules = {}, label = 'Last opp fil', ...props }: FormFileUploadProps) => {
+export const FormFileUpload = ({ register, watch, setValue, formState, label = 'Last opp fil', ...props }: FormFileUploadProps) => {
   const classes = useStyles();
   const showSnackbar = useSnackbar();
-  const url = watch(name);
+  const url = watch(register.name);
   const [isLoading, setIsLoading] = useState(false);
   const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -191,7 +194,7 @@ export const FormFileUpload = ({ register, watch, setValue, name, errors = {}, r
       try {
         const data = await API.uploadFile(file);
         analytics();
-        setValue(name, data.url);
+        setValue(register.name, data.url);
         showSnackbar('Filen ble lastet opp, husk å trykk lagre', 'info');
       } catch (e) {
         showSnackbar(e.detail, 'error');
@@ -207,7 +210,7 @@ export const FormFileUpload = ({ register, watch, setValue, name, errors = {}, r
         </Typography>
       )}
       <div>
-        <input hidden name={name} ref={register && register(rules)} />
+        <input hidden {...register} />
         <input hidden id='file-upload-button' onChange={upload} type='file' />
         <label htmlFor='file-upload-button'>
           <Button component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
@@ -215,9 +218,9 @@ export const FormFileUpload = ({ register, watch, setValue, name, errors = {}, r
           </Button>
         </label>
       </div>
-      {Boolean(errors[name]) && <FormHelperText error>{errors[name]?.message}</FormHelperText>}
+      {Boolean(formState.errors[register.name]) && <FormHelperText error>{formState.errors[register.name]?.message}</FormHelperText>}
       {url && (
-        <Button color='error' disabled={isLoading} fullWidth onClick={() => setValue(name, '')}>
+        <Button color='error' disabled={isLoading} fullWidth onClick={() => setValue(register.name, '')}>
           Fjern fil
         </Button>
       )}

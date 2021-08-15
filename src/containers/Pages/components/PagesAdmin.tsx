@@ -116,7 +116,7 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
   const createPage = useCreatePage();
   const updatePage = useUpdatePage(page.path);
   const deletePage = useDeletePage(page.path);
-  const { register, errors, handleSubmit, watch, setValue } = useForm(mode === Modes.EDIT ? { defaultValues: page } : {});
+  const { register, formState, handleSubmit, watch, setValue } = useForm<FormData>(mode === Modes.EDIT ? { defaultValues: page } : {});
   const navigate = useNavigate();
   const showSnackbar = useSnackbar();
   const [treeNode, setTreeNode] = useState(parentPath);
@@ -177,12 +177,12 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
   return (
     <>
       <form onSubmit={handleSubmit(submit)}>
-        <TextField disabled={isLoading} errors={errors} label='Tittel' name='title' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
-        <MarkdownEditor inputRef={register} name='content' />
-        <ImageUpload errors={errors} label='Velg bilde' name='image' register={register} setValue={setValue} watch={watch} />
-        <TextField disabled={isLoading} errors={errors} label='Bildetekst' name='image_alt' register={register} />
+        <TextField disabled={isLoading} formState={formState} label='Tittel' {...register('title', { required: 'Feltet er påkrevd' })} required />
+        <MarkdownEditor formState={formState} {...register('content')} />
+        <ImageUpload formState={formState} label='Velg bilde' register={register('image')} setValue={setValue} watch={watch} />
+        <TextField disabled={isLoading} formState={formState} label='Bildetekst' {...register('image_alt')} />
         {mode === Modes.EDIT && <Tree page={page} selectedNode={treeNode} setSelectedNode={setTreeNode} />}
-        <SubmitButton disabled={isLoading} errors={errors}>
+        <SubmitButton disabled={isLoading} formState={formState}>
           {mode === Modes.EDIT ? 'Lagre' : 'Opprett'}
         </SubmitButton>
         {mode === Modes.EDIT && (

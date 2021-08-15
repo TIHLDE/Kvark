@@ -72,7 +72,7 @@ const SignUp = () => {
   const navigate = useNavigate();
   const createUser = useCreateUser();
   const showSnackbar = useSnackbar();
-  const { handleSubmit, errors, control, setError, register } = useForm<SignUpData>();
+  const { handleSubmit, formState, control, getValues, setError, register } = useForm<SignUpData>();
   const setLogInRedirectURL = useSetRedirectUrl();
   const redirectURL = useRedirectUrl();
   const [faqOpen, setFaqOpen] = useState(false);
@@ -126,57 +126,49 @@ const SignUp = () => {
           <div className={classes.double}>
             <TextField
               disabled={createUser.isLoading}
-              errors={errors}
+              formState={formState}
               label='Fornavn'
-              name='first_name'
-              register={register}
+              {...register('first_name', { required: 'Feltet er påkrevd' })}
               required
-              rules={{ required: 'Feltet er påkrevd' }}
             />
             <TextField
               disabled={createUser.isLoading}
-              errors={errors}
+              formState={formState}
               label='Etternavn'
-              name='last_name'
-              register={register}
+              {...register('last_name', { required: 'Feltet er påkrevd' })}
               required
-              rules={{ required: 'Feltet er påkrevd' }}
             />
           </div>
           <TextField
             disabled={createUser.isLoading}
-            errors={errors}
+            formState={formState}
             label='Feide brukernavn'
-            name='user_id'
-            register={register}
+            {...register('user_id', { required: 'Feltet er påkrevd', validate: (value) => !value.includes('@') || 'Brukernavn må være uten @stud.ntnu.no' })}
             required
-            rules={{ required: 'Feltet er påkrevd', validate: (value) => !value.includes('@') || 'Brukernavn må være uten @stud.ntnu.no' }}
           />
           <TextField
             disabled={createUser.isLoading}
-            errors={errors}
+            formState={formState}
             label='E-post'
-            name='email'
-            register={register}
-            required
-            rules={{
+            {...register('email', {
               required: 'Feltet er påkrevd',
               pattern: {
                 value: EMAIL_REGEX,
                 message: 'Ugyldig e-post',
               },
-            }}
+            })}
+            required
             type='email'
           />
           <div className={classes.double}>
-            <Select control={control} errors={errors} label='Studie' name='user_study' rules={{ required: 'Feltet er påkrevd' }}>
+            <Select control={control} formState={formState} label='Studie' name='user_study' required rules={{ required: 'Feltet er påkrevd' }}>
               {[1, 2, 3, 4, 5].map((i) => (
                 <MenuItem key={i} value={i}>
                   {getUserStudyLong(i)}
                 </MenuItem>
               ))}
             </Select>
-            <Select control={control} errors={errors} label='Klasse' name='user_class' rules={{ required: 'Feltet er påkrevd' }}>
+            <Select control={control} formState={formState} label='Klasse' name='user_class' required rules={{ required: 'Feltet er påkrevd' }}>
               {[1, 2, 3, 4, 5].map((i) => (
                 <MenuItem key={i} value={i}>
                   {getUserClass(i)}
@@ -187,41 +179,36 @@ const SignUp = () => {
           <div className={classes.double}>
             <TextField
               disabled={createUser.isLoading}
-              errors={errors}
+              formState={formState}
               label='Passord'
-              name='password'
-              register={register}
-              required
-              rules={{
+              {...register('password', {
                 required: 'Feltet er påkrevd',
                 minLength: {
                   value: 8,
                   message: 'Minimum 8 karakterer',
                 },
-              }}
+              })}
+              required
               type='password'
             />
             <TextField
               disabled={createUser.isLoading}
-              errors={errors}
+              formState={formState}
               label='Gjenta passord'
-              name='password_verify'
-              register={register}
-              required
-              rules={{
+              {...register('password_verify', {
                 required: 'Feltet er påkrevd',
-                minLength: {
-                  value: 8,
-                  message: 'Minimum 8 karakterer',
+                validate: {
+                  passordEqual: (value) => value === getValues().password || 'Passordene er ikke like',
                 },
-              }}
+              })}
+              required
               type='password'
             />
           </div>
           <Typography variant='body2'>
             OBS: Når du har klikket &quot;Opprett bruker&quot; må vi godkjenne deg før du får logge inn. Les mer om hvorfor lengre ned.
           </Typography>
-          <SubmitButton className={classes.button} disabled={createUser.isLoading} errors={errors}>
+          <SubmitButton className={classes.button} disabled={createUser.isLoading} formState={formState}>
             Opprett bruker
           </SubmitButton>
           <Button className={classes.button} component={Link} disabled={createUser.isLoading} fullWidth to={URLS.login}>

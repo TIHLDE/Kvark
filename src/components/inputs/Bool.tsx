@@ -1,11 +1,20 @@
-import { Controller, RegisterOptions, UseFormMethods } from 'react-hook-form';
+import { Control, Controller, RegisterOptions, UseFormReturn } from 'react-hook-form';
 
 // Material UI Components
-import MuiFormControlLabel, { FormControlLabelProps } from '@material-ui/core/FormControlLabel';
-import { styled, Checkbox as MuiCheckbox, Switch as MuiSwitch, FormControl as MuiFormControl, FormHelperText as MuiFormHelperText } from '@material-ui/core';
+import {
+  styled,
+  FormControlLabel,
+  FormControlLabelProps,
+  Checkbox as MuiCheckbox,
+  Switch as MuiSwitch,
+  FormControl as MuiFormControl,
+  FormHelperText as MuiFormHelperText,
+} from '@material-ui/core';
 
 export type IBoolProps = Omit<FormControlLabelProps, 'control'> &
-  Pick<UseFormMethods, 'control' | 'errors'> & {
+  Pick<UseFormReturn, 'formState'> & {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    control: Control<any>;
     name: string;
     helperText?: string;
     rules?: RegisterOptions;
@@ -45,19 +54,21 @@ const Switch = styled(MuiSwitch)(({ theme }) => ({
   },
 }));
 
-const Bool = ({ helperText, type, control, name, errors = {}, rules = {}, ...props }: IBoolProps) => {
+const Bool = ({ helperText, type, control, name, formState, rules = {}, ...props }: IBoolProps) => {
   const Child = type === 'switch' ? Switch : MuiCheckbox;
   return (
-    <MuiFormControl component='fieldset' error={Boolean(errors[name])} required={Boolean(rules.required)}>
+    <MuiFormControl component='fieldset' error={Boolean(formState.errors[name])} required={Boolean(rules.required)}>
       <Controller
         control={control}
         defaultValue={false}
         name={name}
-        render={({ onChange, value }) => <MuiFormControlLabel {...props} control={<Child checked={value} onChange={(e) => onChange(e.target.checked)} />} />}
+        render={({ field: { value, onChange } }) => (
+          <FormControlLabel {...props} control={<Child checked={value} onChange={(e) => onChange(e.target.checked)} />} />
+        )}
         rules={rules}
       />
       <MuiFormHelperText>
-        {errors[name]?.message} {helperText}
+        {formState.errors[name]?.message} {helperText}
       </MuiFormHelperText>
     </MuiFormControl>
   );

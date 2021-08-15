@@ -27,7 +27,7 @@ type FormValues = {
 const DeclineUser = ({ user }: Pick<PersonListItemProps, 'user'>) => {
   const [showDialog, setShowDialog] = useState(false);
   const showSnackbar = useSnackbar();
-  const { handleSubmit, errors, register } = useForm<FormValues>();
+  const { handleSubmit, formState, register } = useForm<FormValues>();
   const declineUser = useDeclineUser();
   const decline = (data: FormValues) =>
     declineUser.mutate(
@@ -54,8 +54,8 @@ const DeclineUser = ({ user }: Pick<PersonListItemProps, 'user'>) => {
         open={showDialog}
         titleText='Slett bruker'>
         <form onSubmit={handleSubmit(decline)}>
-          <TextField errors={errors} label='Begrunnelse (valgfri)' minRows={2} multiline name='reason' register={register} />
-          <SubmitButton errors={errors}>Slett bruker</SubmitButton>
+          <TextField formState={formState} label='Begrunnelse (valgfri)' minRows={2} multiline {...register('reason')} />
+          <SubmitButton formState={formState}>Slett bruker</SubmitButton>
         </form>
       </Dialog>
     </>

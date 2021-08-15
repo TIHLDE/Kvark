@@ -1,30 +1,30 @@
-import { RegisterOptions, UseFormMethods } from 'react-hook-form';
+import { forwardRef } from 'react';
+import { UseFormReturn } from 'react-hook-form';
 
 // Material UI Components
-import MuiTextField, { TextFieldProps } from '@material-ui/core/TextField';
+import MuiTextField, { TextFieldProps as MuiTextFieldProps } from '@material-ui/core/TextField';
 
-export type IProps = TextFieldProps &
-  Pick<UseFormMethods, 'register' | 'errors'> & {
-    rules?: RegisterOptions;
+export type TextFieldProps = MuiTextFieldProps &
+  Pick<UseFormReturn, 'formState'> & {
     name: string;
   };
 
-const TextField = ({ register, name, errors = {}, rules = {}, ...props }: IProps) => {
+const TextField = forwardRef(({ name, formState, ...props }: TextFieldProps, ref) => {
   return (
     <MuiTextField
-      error={Boolean(errors[name])}
+      error={Boolean(formState.errors[name])}
       fullWidth
-      helperText={errors[name]?.message}
+      helperText={formState.errors[name]?.message}
       InputLabelProps={{ shrink: true }}
-      inputRef={register && register(rules)}
+      inputRef={ref}
       margin='normal'
       name={name}
       placeholder={props.placeholder || 'Skriv her'}
-      required={Boolean(rules.required)}
       variant='outlined'
       {...props}
     />
   );
-};
+});
 
+TextField.displayName = 'TextField';
 export default TextField;
