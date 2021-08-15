@@ -1,5 +1,5 @@
 import { ComponentType, useState } from 'react';
-import { Event, User, TextFieldSubmission, SelectFieldSubmission } from 'types/Types';
+import { Event, User, TextFieldSubmission, SelectFieldSubmission, Form } from 'types/Types';
 import { FormFieldType } from 'types/Enums';
 import URLS from 'URLS';
 import { getUserStudyShort, shortDownString } from 'utils';
@@ -74,7 +74,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
   const [allowPhoto, setAllowPhoto] = useState(true);
   const allergy = user.allergy ? shortDownString(user.allergy, 20) : 'Ingen';
 
-  const { register, handleSubmit, formState, setError } = useForm();
+  const { register, handleSubmit, formState, setError } = useForm<Form['fields']>();
 
   const registerDisabled = isLoading || isFormLoading || !agreeRules;
 
