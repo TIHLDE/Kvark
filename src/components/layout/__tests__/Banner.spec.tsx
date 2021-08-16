@@ -7,12 +7,6 @@ test('Banner should contain title', () => {
   expect(getByText('title')).toBeInTheDocument();
 });
 
-test('Banner should contain text', async () => {
-  const { getByText } = render(<Banner text='subtitle' title='title' />);
-
-  await waitFor(() => expect(getByText('subtitle')).toBeInTheDocument());
-});
-
 test('Banner should contain button', () => {
   const { getByText } = render(
     <Banner title='title'>
