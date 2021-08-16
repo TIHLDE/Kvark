@@ -18,7 +18,7 @@ export type UpdateGroupModalProps = {
 
 const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { register, errors, handleSubmit } = useForm();
+  const { register, formState, handleSubmit } = useForm();
   const updateGroup = useUpdateGroup();
   const showSnackbar = useSnackbar();
 
@@ -41,23 +41,21 @@ const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
       </BannerButton>
       <Dialog onClose={() => setIsOpen(false)} open={isOpen} titleText='Oppdater gruppe'>
         <form onSubmit={handleSubmit(submit)}>
-          <TextField defaultValue={group.name} errors={errors} label='Gruppenavn' name='name' register={register} required />
-          <TextField defaultValue={group.description} errors={errors} label='Gruppebeskrivelse' multiline name='description' register={register} rows={6} />
+          <TextField defaultValue={group.name} formState={formState} label='Gruppenavn' {...register('name', { required: 'Gruppen må ha et navn' })} required />
+          <TextField defaultValue={group.description} formState={formState} label='Gruppebeskrivelse' multiline {...register('description')} rows={6} />
           <TextField
             defaultValue={group.contact_email}
-            errors={errors}
+            formState={formState}
             label='Kontakt e-post'
-            name='contact_email'
-            register={register}
-            rules={{
+            {...register('contact_email', {
               pattern: {
                 value: EMAIL_REGEX,
                 message: 'Ugyldig e-post',
               },
-            }}
+            })}
             type='email'
           />
-          <SubmitButton errors={errors}>Oppdater gruppe</SubmitButton>
+          <SubmitButton formState={formState}>Oppdater gruppe</SubmitButton>
         </form>
       </Dialog>
     </>

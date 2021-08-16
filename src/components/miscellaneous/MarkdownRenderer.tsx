@@ -5,63 +5,71 @@ import { useJobPostById } from 'api/hooks/JobPost';
 import { useNewsById } from 'api/hooks/News';
 
 // Material UI
-import { makeStyles } from '@material-ui/styles';
-import { Divider, Typography, Skeleton } from '@material-ui/core';
+import { styled, Divider, Typography, Skeleton } from '@material-ui/core';
 
 // Project components
-import Expansion from 'components/layout/Expand';
+import Expand from 'components/layout/Expand';
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 
 const ReactMarkdown = lazy(() => import('react-markdown'));
 const MuiLinkify = lazy(() => import('material-ui-linkify'));
 
-const useStyles = makeStyles((theme) => ({
-  blockquote: {
-    margin: theme.spacing(0, 2, 1),
-    padding: theme.spacing(2, 3, 1),
-    borderLeft: `${theme.spacing(1)} solid ${theme.palette.primary.main}`,
+const Ol = styled('ol')(({ theme }) => ({
+  listStylePosition: 'inside',
+  marginLeft: theme.spacing(1),
+}));
+const Ul = styled('ul')(({ theme }) => ({
+  listStylePosition: 'inside',
+  marginLeft: theme.spacing(1),
+}));
+const Li = styled('li')(({ theme }) => ({
+  fontSize: theme.typography.body1.fontSize,
+}));
+
+const InlineCode = styled('code')(({ theme }) => ({
+  padding: theme.spacing(0.5, 1),
+  color: theme.palette.text.primary,
+  borderRadius: theme.shape.borderRadius,
+  background: theme.palette.action.selected,
+}));
+
+const Expansion = styled(Expand)(({ theme }) => ({
+  border: `1px solid ${theme.palette.divider}`,
+  background: theme.palette.background.smoke,
+}));
+
+const Heading = styled(Typography)(({ theme }) => ({
+  marginBottom: theme.spacing(1),
+  color: theme.palette.text.primary,
+  overflowWrap: 'anywhere',
+  '@supports not (overflow-wrap: anywhere)': {
+    hyphens: 'auto',
   },
-  code: {
-    color: theme.palette.text.primary,
-    background: theme.palette.action.selected,
-    borderRadius: theme.shape.borderRadius,
-    padding: theme.spacing(2),
-    overflowX: 'auto',
-  },
-  divider: {
-    margin: theme.spacing(1, 0),
-  },
-  inlineCode: {
-    padding: theme.spacing(0.5, 1),
-    color: theme.palette.text.primary,
-    borderRadius: theme.shape.borderRadius,
-    background: theme.palette.action.selected,
-  },
-  list: {
-    listStylePosition: 'inside',
-    marginLeft: theme.spacing(1),
-  },
-  listItem: {
-    fontSize: theme.typography.body1.fontSize,
-  },
-  content: {
-    marginBottom: theme.spacing(1),
-    color: theme.palette.text.primary,
-    overflowWrap: 'anywhere',
-    '@supports not (overflow-wrap: anywhere)': {
-      hyphens: 'auto',
-    },
-  },
-  expansion: {
-    border: `1px solid ${theme.palette.divider}`,
-    background: theme.palette.background.smoke,
-  },
-  image: {
-    maxWidth: '100%',
-    objectFit: 'contain',
-    height: 'auto',
-    borderRadius: theme.shape.borderRadius,
-  },
+}));
+
+const ExpandList = styled('div')(({ theme }) => ({
+  marginBottom: theme.spacing(1),
+}));
+
+const Pre = styled('pre')(({ theme }) => ({
+  color: theme.palette.text.primary,
+  background: theme.palette.action.selected,
+  borderRadius: theme.shape.borderRadius,
+  padding: theme.spacing(2),
+  overflowX: 'auto',
+}));
+
+const Blockquote = styled('blockquote')(({ theme }) => ({
+  margin: theme.spacing(0, 2, 1),
+  padding: theme.spacing(2, 3, 1),
+  borderLeft: `${theme.spacing(1)} solid ${theme.palette.primary.main}`,
+}));
+
+const Image = styled('img')(({ theme }) => ({
+  maxWidth: '100%',
+  objectFit: 'contain',
+  height: 'auto',
+  borderRadius: theme.shape.borderRadius,
 }));
 
 export type MarkdownRendererProps = {
@@ -69,50 +77,52 @@ export type MarkdownRendererProps = {
 };
 
 const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
-  const classes = useStyles();
-
   type ComponentProps = {
     id: number;
   };
 
   const Event = ({ id }: ComponentProps) => {
     const { data } = useEventById(id);
-    return data ? <ListItem className={classes.content} event={data} largeImg /> : <ListItemLoading />;
+    return data ? <ListItem event={data} largeImg sx={{ mb: 1 }} /> : <ListItemLoading sx={{ mb: 1 }} />;
   };
   const JobPost = ({ id }: ComponentProps) => {
     const { data } = useJobPostById(id);
-    return data ? <ListItem className={classes.content} jobpost={data} largeImg /> : <ListItemLoading />;
+    return data ? <ListItem jobpost={data} largeImg sx={{ mb: 1 }} /> : <ListItemLoading sx={{ mb: 1 }} />;
   };
   const News = ({ id }: ComponentProps) => {
     const { data } = useNewsById(id);
-    return data ? <ListItem className={classes.content} largeImg news={data} /> : <ListItemLoading />;
+    return data ? <ListItem largeImg news={data} sx={{ mb: 1 }} /> : <ListItemLoading sx={{ mb: 1 }} />;
   };
 
   enum LanguageTypes {
-    EXPANDLIST = 'expandlist',
-    EXPAND = 'expand',
-    EVENT = 'event',
-    JOBPOST = 'jobpost',
-    NEWS = 'news',
+    EXPANDLIST = 'language-expandlist',
+    EXPAND = 'language-expand',
+    EVENT = 'language-event',
+    JOBPOST = 'language-jobpost',
+    NEWS = 'language-news',
   }
 
   type CodeBlockProps = {
-    language: LanguageTypes | string;
-    value: string;
+    inline: boolean;
+    className: LanguageTypes | string;
+    children: string[];
   };
-  const CodeBlock = ({ language, value }: CodeBlockProps) => {
-    if (language === LanguageTypes.EXPANDLIST) {
+  const CodeBlock = ({ inline, className: language, children }: CodeBlockProps) => {
+    const value = children[0];
+    if (inline) {
+      return <InlineCode>{value}</InlineCode>;
+    } else if (language === LanguageTypes.EXPANDLIST) {
       return (
-        <div className={classes.content}>
-          <ReactMarkdown renderers={renderers}>{value}</ReactMarkdown>
-        </div>
+        <ExpandList>
+          <ReactMarkdown components={components}>{value}</ReactMarkdown>
+        </ExpandList>
       );
     } else if (language === LanguageTypes.EXPAND) {
       const header = value.split('::')[0] || '';
-      const children = value.split('::')[1] || '';
+      const val = value.split('::')[1] || '';
       return (
-        <Expansion className={classes.expansion} flat header={header}>
-          <ReactMarkdown renderers={renderers}>{children}</ReactMarkdown>
+        <Expansion flat header={header}>
+          <ReactMarkdown components={components}>{val}</ReactMarkdown>
         </Expansion>
       );
     } else if (language === LanguageTypes.EVENT || language === LanguageTypes.JOBPOST || language === LanguageTypes.NEWS) {
@@ -127,29 +137,32 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
         return <News id={id} />;
       }
     }
-    return createElement('pre', { className: classes.code }, createElement('code', {}, value));
+    return (
+      <Pre>
+        <code>{value}</code>
+      </Pre>
+    );
   };
 
-  const renderers = useMemo(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const components = useMemo<any>(
     () => ({
-      blockquote: ({ children }: { children: ReactNode[] }) => createElement('blockquote', { className: classes.blockquote }, children),
+      blockquote: ({ children }: { children: ReactNode[] }) => <Blockquote>{children}</Blockquote>,
       code: CodeBlock,
-      heading: ({ level, children }: { level: number; children: ReactNode[] }) =>
-        createElement(Typography, { variant: level === 1 ? 'h2' : 'h3', className: classes.content }, children),
-      inlineCode: ({ value }: { value: string }) => createElement('code', { className: classes.inlineCode }, value),
-      list: ({ children, ordered }: { children: ReactNode[]; ordered: boolean }) => createElement(ordered ? 'ol' : 'ul', { className: classes.list }, children),
-      listItem: ({ children, checked }: { children: ReactNode[]; checked: boolean }) =>
-        createElement('li', { className: classes.listItem }, checked ? createElement('input', { type: 'checkbox', checked, readOnly: true }) : null, children),
-      paragraph: ({ children }: { children: ReactNode[] }) =>
-        createElement(
-          MuiLinkify,
-          { LinkProps: { color: 'inherit', underline: 'always' } },
-          createElement(Typography, { variant: 'body1', className: classes.content }, children),
-        ),
-      thematicBreak: () => <Divider className={classes.divider} />,
-      image: ({ alt, src }: { alt: string; src: string }) => <img alt={alt} className={classes.image} src={src} />,
+      pre: ({ children }: { children: ReactNode[] }) => children,
+      h1: ({ children }: { children: ReactNode[] }) => <Heading variant='h2'>{children}</Heading>,
+      h2: ({ children }: { children: ReactNode[] }) => <Heading variant='h3'>{children}</Heading>,
+      h3: ({ children }: { children: ReactNode[] }) => <Heading variant='h3'>{children}</Heading>,
+      ol: ({ children }: { children: ReactNode[]; ordered: boolean }) => <Ol>{children}</Ol>,
+      ul: ({ children }: { children: ReactNode[]; ordered: boolean }) => <Ul>{children}</Ul>,
+      li: ({ children, checked }: { children: ReactNode[]; checked: boolean }) =>
+        createElement(Li, {}, checked ? createElement('input', { type: 'checkbox', checked, readOnly: true }) : null, children),
+      p: ({ children }: { children: ReactNode[] }) =>
+        createElement(MuiLinkify, { LinkProps: { color: 'inherit', underline: 'always' } }, <Heading variant='body1'>{children}</Heading>),
+      hr: () => <Divider sx={{ my: 1 }} />,
+      img: ({ alt, src }: { alt: string; src: string }) => <Image alt={alt} src={src} />,
     }),
-    [classes],
+    [],
   );
   const skeletonWidthArray = useMemo(() => Array.from({ length: (value?.length || 100) / 90 + 1 }).map(() => 50 + 40 * Math.random()), [value]);
 
@@ -162,7 +175,7 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
           ))}
         </>
       }>
-      <ReactMarkdown renderers={renderers}>{value || ''}</ReactMarkdown>
+      <ReactMarkdown components={components}>{value || ''}</ReactMarkdown>
     </Suspense>
   );
 };

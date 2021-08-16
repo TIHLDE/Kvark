@@ -1,12 +1,11 @@
-import { useState, useCallback } from 'react';
-import { RegisterOptions, UseFormMethods } from 'react-hook-form';
+import { useState, useCallback, forwardRef } from 'react';
+import { UseFormReturn, UseFormRegisterReturn, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import Cropper from 'react-easy-crop';
 import { useShare } from 'api/hooks/Utils';
 import API from 'api/api';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
 import {
   Button,
   ButtonProps,
@@ -18,6 +17,7 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   IconButton,
+  styled,
 } from '@material-ui/core';
 
 // Icons
@@ -28,37 +28,27 @@ import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 import { getCroppedImgAsBlob, blobToFile, readFile } from 'components/inputs/ImageUploadUtils';
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    display: 'grid',
-    gridGap: theme.spacing(1),
-    padding: theme.spacing(2),
-    background: theme.palette.background.default,
-  },
-  img: {
-    margin: 'auto',
-    maxHeight: 200,
-    width: 'auto',
-    maxWidth: '100%',
-    borderRadius: theme.shape.borderRadius,
-  },
-  cropper: {
-    position: 'relative',
-    width: '100%',
-    height: 400,
-    maxHeight: '90vh',
-  },
-  links: {
-    display: 'grid',
-    gap: theme.spacing(1),
-  },
-  file: {
-    background: theme.palette.background.default,
-  },
-  link: {
-    wordWrap: 'break-word',
-  },
+const UploadPaper = styled(Paper)(({ theme }) => ({
+  display: 'grid',
+  gridGap: theme.spacing(1),
+  padding: theme.spacing(2),
+  background: theme.palette.background.default,
 }));
+
+const Img = styled('img')(({ theme }) => ({
+  margin: 'auto',
+  maxHeight: 200,
+  width: 'auto',
+  maxWidth: '100%',
+  borderRadius: theme.shape.borderRadius,
+}));
+
+const CropperWrapper = styled('div')({
+  position: 'relative',
+  width: '100%',
+  height: 400,
+  maxHeight: '90vh',
+});
 
 const analytics = () =>
   window.gtag('event', 'upload', {
@@ -67,17 +57,19 @@ const analytics = () =>
   });
 
 export type ImageUploadProps = ButtonProps &
-  Pick<UseFormMethods, 'register' | 'watch' | 'setValue' | 'errors'> & {
-    rules?: RegisterOptions;
-    name: string;
+  Pick<UseFormReturn, 'formState'> & {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    watch: UseFormWatch<any>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    setValue: UseFormSetValue<any>;
+    register: UseFormRegisterReturn;
     label?: string;
     ratio?: number;
   };
 
-export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rules = {}, label = 'Last opp fil', ratio, ...props }: ImageUploadProps) => {
-  const classes = useStyles();
+export const ImageUpload = forwardRef(({ register, watch, setValue, formState, label = 'Last opp fil', ratio, ...props }: ImageUploadProps) => {
   const showSnackbar = useSnackbar();
-  const url = watch(name);
+  const url = watch(register.name);
   const [imageSrc, setImageSrc] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -134,7 +126,7 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
       const newFile = blobToFile(compressedImage, file instanceof File ? file.name : imageFile?.name || '', imageFile?.type || file.type || '');
       const data = await API.uploadFile(newFile);
       analytics();
-      setValue(name, data.url);
+      setValue(register.name, data.url);
     } catch (e) {
       showSnackbar(e.detail, 'error');
     }
@@ -142,10 +134,10 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
   };
   return (
     <>
-      <Paper className={classes.paper}>
-        {url && <img className={classes.img} src={url} />}
+      <UploadPaper>
+        {url && <Img src={url} />}
         <div>
-          <input hidden name={name} ref={register && register(rules)} />
+          <input hidden {...register} />
           <input accept='image/*' hidden id='image-upload-button' onChange={onSelect} type='file' />
           <label htmlFor='image-upload-button'>
             <Button component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
@@ -153,13 +145,13 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
             </Button>
           </label>
         </div>
-        {Boolean(errors[name]) && <FormHelperText error>{errors[name]?.message}</FormHelperText>}
+        {Boolean(formState.errors[register.name]) && <FormHelperText error>{formState.errors[register.name]?.message}</FormHelperText>}
         {url && (
-          <Button color='error' disabled={isLoading} fullWidth onClick={() => setValue(name, '')}>
+          <Button color='error' disabled={isLoading} fullWidth onClick={() => setValue(register.name, '')}>
             Fjern bilde
           </Button>
         )}
-      </Paper>
+      </UploadPaper>
       <Dialog
         closeText='Avbryt'
         confirmText='Ferdig'
@@ -168,21 +160,20 @@ export const ImageUpload = ({ register, watch, setValue, name, errors = {}, rule
         onConfirm={() => dialogConfirmCrop()}
         open={dialogOpen}
         titleText='Tilpass bildet'>
-        <div className={classes.cropper}>
+        <CropperWrapper>
           <Cropper aspect={ratio} crop={crop} image={imageSrc} onCropChange={setCrop} onCropComplete={onCropComplete} onZoomChange={setZoom} zoom={zoom} />
-        </div>
+        </CropperWrapper>
         {isLoading && <LinearProgress />}
       </Dialog>
     </>
   );
-};
+});
 
 export type FormFileUploadProps = Omit<ImageUploadProps, 'ratio'>;
 
-export const FormFileUpload = ({ register, watch, setValue, name, errors = {}, rules = {}, label = 'Last opp fil', ...props }: FormFileUploadProps) => {
-  const classes = useStyles();
+export const FormFileUpload = ({ register, watch, setValue, formState, label = 'Last opp fil', ...props }: FormFileUploadProps) => {
   const showSnackbar = useSnackbar();
-  const url = watch(name);
+  const url = watch(register.name);
   const [isLoading, setIsLoading] = useState(false);
   const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -191,7 +182,7 @@ export const FormFileUpload = ({ register, watch, setValue, name, errors = {}, r
       try {
         const data = await API.uploadFile(file);
         analytics();
-        setValue(name, data.url);
+        setValue(register.name, data.url);
         showSnackbar('Filen ble lastet opp, husk å trykk lagre', 'info');
       } catch (e) {
         showSnackbar(e.detail, 'error');
@@ -200,14 +191,14 @@ export const FormFileUpload = ({ register, watch, setValue, name, errors = {}, r
     }
   };
   return (
-    <Paper className={classes.paper}>
+    <UploadPaper>
       {url && (
         <Typography>
           Fil: <a href={url}>{url}</a>
         </Typography>
       )}
       <div>
-        <input hidden name={name} ref={register && register(rules)} />
+        <input hidden {...register} />
         <input hidden id='file-upload-button' onChange={upload} type='file' />
         <label htmlFor='file-upload-button'>
           <Button component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
@@ -215,20 +206,19 @@ export const FormFileUpload = ({ register, watch, setValue, name, errors = {}, r
           </Button>
         </label>
       </div>
-      {Boolean(errors[name]) && <FormHelperText error>{errors[name]?.message}</FormHelperText>}
+      {Boolean(formState.errors[register.name]) && <FormHelperText error>{formState.errors[register.name]?.message}</FormHelperText>}
       {url && (
-        <Button color='error' disabled={isLoading} fullWidth onClick={() => setValue(name, '')}>
+        <Button color='error' disabled={isLoading} fullWidth onClick={() => setValue(register.name, '')}>
           Fjern fil
         </Button>
       )}
-    </Paper>
+    </UploadPaper>
   );
 };
 
 export type FileUploadProps = Pick<ImageUploadProps, 'label'> & ButtonProps;
 
 export const FileUpload = ({ label = 'Last opp filer', ...props }: FileUploadProps) => {
-  const classes = useStyles();
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const [uploaded, setUploaded] = useState<Array<string>>([]);
@@ -262,15 +252,15 @@ export const FileUpload = ({ label = 'Last opp filer', ...props }: FileUploadPro
         }),
     );
     return (
-      <Paper className={classes.file} noPadding>
+      <Paper bgColor='default' noPadding>
         <ListItem>
           <ListItemText
-            className={classes.link}
             primary={
               <a href={url} rel='noopener noreferrer' target='_blank'>
                 {url}
               </a>
             }
+            sx={{ overflowWrap: 'anywhere' }}
           />
           <ListItemSecondaryAction>
             <IconButton onClick={share}>
@@ -283,8 +273,8 @@ export const FileUpload = ({ label = 'Last opp filer', ...props }: FileUploadPro
   };
 
   return (
-    <Paper className={classes.paper}>
-      <List className={classes.links} disablePadding>
+    <UploadPaper>
+      <List disablePadding sx={{ display: 'grid', gap: 1 }}>
         {uploaded.map((url, i) => (
           <File key={i} url={url} />
         ))}
@@ -297,6 +287,6 @@ export const FileUpload = ({ label = 'Last opp filer', ...props }: FileUploadPro
           </Button>
         </label>
       </div>
-    </Paper>
+    </UploadPaper>
   );
 };

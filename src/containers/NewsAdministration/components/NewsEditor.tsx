@@ -48,7 +48,7 @@ type FormValues = Pick<News, 'title' | 'header' | 'body' | 'image' | 'image_alt'
 const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
   const showSnackbar = useSnackbar();
   const classes = useStyles();
-  const { handleSubmit, register, errors, getValues, reset, watch, setValue } = useForm<FormValues>();
+  const { handleSubmit, register, formState, getValues, reset, watch, setValue } = useForm<FormValues>();
   const [deleteNewsDialogOpen, setDeleteNewsDialogOpen] = useState(false);
   const { data, isError, isLoading } = useNewsById(newsId || -1);
   const createNews = useCreateNews();
@@ -132,19 +132,13 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
     <>
       <form onSubmit={handleSubmit(submit)}>
         <Grid container direction='column' wrap='nowrap'>
-          <TextField errors={errors} label='Tittel' name='title' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
-          <TextField errors={errors} label='Header' name='header' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
-          <MarkdownEditor
-            error={Boolean(errors.body)}
-            helperText={Boolean(errors.body) && 'Gi nyheten et innhold'}
-            inputRef={register({ required: true })}
-            label='Innhold'
-            name='body'
-          />
-          <ImageUpload errors={errors} label='Velg bilde' name='image' ratio={21 / 9} register={register} setValue={setValue} watch={watch} />
-          <TextField errors={errors} label='Alternativ bildetekst' name='image_alt' register={register} />
+          <TextField formState={formState} label='Tittel' {...register('title', { required: 'Feltet er påkrevd' })} required />
+          <TextField formState={formState} label='Header' {...register('header', { required: 'Feltet er påkrevd' })} required />
+          <MarkdownEditor formState={formState} label='Innhold' {...register('body', { required: 'Gi nyheten et innhold' })} required />
+          <ImageUpload formState={formState} label='Velg bilde' ratio={21 / 9} register={register('image')} setValue={setValue} watch={watch} />
+          <TextField formState={formState} label='Alternativ bildetekst' {...register('image_alt')} />
           <RendererPreview className={classes.margin} getContent={getNewsPreview} renderer={NewsRenderer} />
-          <SubmitButton className={classes.margin} disabled={isUpdating} errors={errors}>
+          <SubmitButton className={classes.margin} disabled={isUpdating} formState={formState}>
             {newsId ? 'Oppdater nyhet' : 'Opprett nyhet'}
           </SubmitButton>
           {Boolean(newsId) && (

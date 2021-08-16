@@ -20,7 +20,7 @@ type FormData = {
 };
 
 const AddMemberModal = ({ groupSlug }: AddMemberModalProps) => {
-  const { control, handleSubmit, errors } = useForm<FormData>();
+  const { control, handleSubmit, formState } = useForm<FormData>();
   const showSnackbar = useSnackbar();
   const createMembership = useCreateMembership();
   const [isOpen, setIsOpen] = useState(false);
@@ -67,7 +67,7 @@ const AddMemberModal = ({ groupSlug }: AddMemberModalProps) => {
           <Controller
             control={control}
             name='user'
-            render={({ onChange }) => (
+            render={({ field: { onChange } }) => (
               <Autocomplete
                 getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
                 noOptionsText={'Fant ingen medlemmer'}
@@ -87,7 +87,7 @@ const AddMemberModal = ({ groupSlug }: AddMemberModalProps) => {
               />
             )}
           />
-          <SubmitButton errors={errors}>Legg til medlem</SubmitButton>
+          <SubmitButton formState={formState}>Legg til medlem</SubmitButton>
         </form>
       </Dialog>
     </>

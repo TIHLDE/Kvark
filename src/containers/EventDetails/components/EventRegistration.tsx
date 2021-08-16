@@ -1,5 +1,5 @@
 import { ComponentType, useState } from 'react';
-import { Event, User, TextFieldSubmission, SelectFieldSubmission } from 'types/Types';
+import { Event, User, TextFieldSubmission, SelectFieldSubmission, Form } from 'types/Types';
 import { FormFieldType } from 'types/Enums';
 import URLS from 'URLS';
 import { getUserStudyShort, shortDownString } from 'utils';
@@ -74,7 +74,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
   const [allowPhoto, setAllowPhoto] = useState(true);
   const allergy = user.allergy ? shortDownString(user.allergy, 20) : 'Ingen';
 
-  const { register, handleSubmit, errors, setError } = useForm();
+  const { register, handleSubmit, formState, setError } = useForm<Form['fields']>();
 
   const registerDisabled = isLoading || isFormLoading || !agreeRules;
 
@@ -89,15 +89,14 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
         const field = form?.fields.find((field) => field.id === answer.field);
         if (field && field.type === FormFieldType.MULTIPLE_SELECT && field.required) {
           const ans = answer as SelectFieldSubmission;
-          if (!ans.selected_options.length) {
-            throw new Error(`answers[${index}].selected_options`);
+          if (!ans.selected_options || !ans.selected_options.length) {
+            throw new Error(`answers.${index}.selected_options`);
           }
         }
       });
     } catch (e) {
       setError(e.message, { message: 'Du må velge ett eller flere alternativ' });
       setIsLoading(false);
-      return;
     }
     createRegistration.mutate(
       { allow_photo: allowPhoto, ...data },
@@ -137,7 +136,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
           {form !== undefined && (
             <Paper className={classes.infoPaper}>
               <Typography variant='h3'>Spørsmål</Typography>
-              <FormView errors={errors} form={form} register={register} />
+              <FormView form={form} formState={formState} register={register} />
             </Paper>
           )}
           <FormControlLabel

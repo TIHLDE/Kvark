@@ -73,7 +73,7 @@ const Events = () => {
   const { data: categories = [] } = useCategories();
   const [filters, setFilters] = useState<Filters>(getInitialFilters());
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents(filters);
-  const { register, control, handleSubmit, setValue } = useForm<Filters>({ defaultValues: getInitialFilters() });
+  const { register, control, handleSubmit, setValue, formState } = useForm<Filters>({ defaultValues: getInitialFilters() });
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 
   const resetFilters = () => {
@@ -115,9 +115,9 @@ const Events = () => {
         </div>
         <Paper className={classes.settings}>
           <form onSubmit={handleSubmit(search)}>
-            <TextField disabled={isFetching} errors={{}} label='Søk' margin='none' name='search' register={register} />
+            <TextField disabled={isFetching} formState={formState} label='Søk' margin='none' {...register('search')} />
             {Boolean(categories.length) && (
-              <Select control={control} errors={{}} label='Kategori' name='category'>
+              <Select control={control} formState={formState} label='Kategori' name='category'>
                 {categories.map((value, index) => (
                   <MenuItem key={index} value={value.id}>
                     {value.text}
@@ -125,8 +125,8 @@ const Events = () => {
                 ))}
               </Select>
             )}
-            <Bool control={control} errors={{}} label='Tidligere' name='expired' type='switch' />
-            <SubmitButton disabled={isFetching} errors={{}}>
+            <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
+            <SubmitButton disabled={isFetching} formState={formState}>
               Søk
             </SubmitButton>
           </form>

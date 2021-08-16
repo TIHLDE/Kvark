@@ -58,7 +58,7 @@ const LogIn = () => {
   const logIn = useLogin();
   const setLogInRedirectURL = useSetRedirectUrl();
   const redirectURL = useRedirectUrl();
-  const { register, errors, handleSubmit, setError } = useForm<LoginData>();
+  const { register, formState, handleSubmit, setError } = useForm<LoginData>();
 
   const onLogin = async (data: LoginData) => {
     logIn.mutate(
@@ -88,27 +88,23 @@ const LogIn = () => {
         <form onSubmit={handleSubmit(onLogin)}>
           <TextField
             disabled={logIn.isLoading}
-            errors={errors}
+            formState={formState}
             label='Brukernavn'
-            name='username'
-            register={register}
-            required
-            rules={{
+            {...register('username', {
               required: 'Feltet er påkrevd',
               validate: (value: string) => (value.includes('@') ? 'Bruk Feide-brukernavn, ikke epost' : undefined),
-            }}
+            })}
+            required
           />
           <TextField
             disabled={logIn.isLoading}
-            errors={errors}
+            formState={formState}
             label='Passord'
-            name='password'
-            register={register}
+            {...register('password', { required: 'Feltet er påkrevd' })}
             required
-            rules={{ required: 'Feltet er påkrevd' }}
             type='password'
           />
-          <SubmitButton className={classes.button} disabled={logIn.isLoading} errors={errors}>
+          <SubmitButton className={classes.button} disabled={logIn.isLoading} formState={formState}>
             Logg inn
           </SubmitButton>
           <div className={classes.buttons}>

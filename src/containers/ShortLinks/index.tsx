@@ -142,7 +142,7 @@ const ShortLinks = () => {
   const { data, error, isFetching } = useShortLinks();
   const createShortLink = useCreateShortLink();
   const showSnackbar = useSnackbar();
-  const { register, errors, handleSubmit, setError, reset } = useForm<ShortLink>();
+  const { register, formState, handleSubmit, setError, reset } = useForm<ShortLink>();
 
   const create = (data: ShortLink) => {
     createShortLink.mutate(data, {
@@ -180,7 +180,7 @@ const ShortLinks = () => {
             <Typography variant='h2'>Ny link</Typography>
             <TextField
               disabled={isFetching}
-              errors={errors}
+              formState={formState}
               InputProps={{
                 startAdornment: (
                   <InputAdornment className={classes.adornment} position='start'>
@@ -189,12 +189,11 @@ const ShortLinks = () => {
                 ),
               }}
               label='Navn'
-              name='name'
-              register={register}
-              rules={{ required: 'Du må gi linken et navn' }}
+              {...register('name', { required: 'Du må gi linken et navn' })}
+              required
             />
-            <TextField disabled={isFetching} errors={errors} label='URL' name='url' register={register} rules={{ required: 'Du må oppgi en link' }} />
-            <SubmitButton disabled={isFetching} errors={errors}>
+            <TextField disabled={isFetching} formState={formState} label='URL' {...register('url', { required: 'Du må oppgi en link' })} required />
+            <SubmitButton disabled={isFetching} formState={formState}>
               Opprett
             </SubmitButton>
           </form>
