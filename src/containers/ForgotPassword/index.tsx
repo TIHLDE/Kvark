@@ -52,7 +52,7 @@ const ForgotPassword = () => {
   const classes = useStyles();
   const forgotPassword = useForgotPassword();
   const showSnackbar = useSnackbar();
-  const { register, errors, handleSubmit, setError } = useForm<FormData>();
+  const { register, formState, handleSubmit, setError } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
     forgotPassword.mutate(data.email, {
@@ -78,21 +78,19 @@ const ForgotPassword = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextField
             disabled={forgotPassword.isLoading}
-            errors={errors}
+            formState={formState}
             label='Epost'
-            name='email'
-            register={register}
-            required
-            rules={{
+            {...register('email', {
               required: 'Feltet er påkrevd',
               pattern: {
                 value: EMAIL_REGEX,
                 message: 'Ugyldig e-post',
               },
-            }}
+            })}
+            required
             type='email'
           />
-          <SubmitButton className={classes.button} disabled={forgotPassword.isLoading} errors={errors}>
+          <SubmitButton className={classes.button} disabled={forgotPassword.isLoading} formState={formState}>
             Få nytt passord
           </SubmitButton>
           <Button className={classes.button} component={Link} disabled={forgotPassword.isLoading} fullWidth to={URLS.login}>

@@ -93,7 +93,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const [closeEventDialogOpen, setCloseEventDialogOpen] = useState(false);
   const [deleteEventDialogOpen, setDeleteEventDialogOpen] = useState(false);
   const [regPriorities, setRegPriorities] = useState<Array<RegistrationPriority>>([]);
-  const { handleSubmit, register, watch, control, errors, getValues, reset, setValue } = useForm<FormValues>();
+  const { handleSubmit, register, watch, control, formState, getValues, reset, setValue } = useForm<FormValues>();
   const watchSignUp = watch('sign_up');
   const { data: categories = [] } = useCategories();
 
@@ -228,13 +228,13 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       <form onSubmit={handleSubmit(submit)}>
         <Grid container direction='column' wrap='nowrap'>
           <div className={classes.grid}>
-            <TextField errors={errors} label='Tittel' name='title' register={register} required rules={{ required: 'Gi arrangementet en tittel' }} />
-            <TextField errors={errors} label='Sted' name='location' register={register} required rules={{ required: 'Oppgi et sted for arrangementet' }} />
+            <TextField formState={formState} label='Tittel' {...register('title', { required: 'Gi arrangementet en tittel' })} required />
+            <TextField formState={formState} label='Sted' {...register('location', { required: 'Oppgi et sted for arrangementet' })} required />
           </div>
           <div className={classes.grid}>
             <DatePicker
               control={control}
-              errors={errors}
+              formState={formState}
               label='Start'
               name='start_date'
               onDateChange={updateDates}
@@ -244,7 +244,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
             />
             <DatePicker
               control={control}
-              errors={errors}
+              formState={formState}
               label='Slutt'
               name='end_date'
               required
@@ -257,12 +257,12 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               type='date-time'
             />
           </div>
-          <Bool control={control} errors={errors} label='Åpen for påmelding' name='sign_up' type='switch' />
+          <Bool control={control} formState={formState} label='Åpen for påmelding' name='sign_up' type='switch' />
           <Collapse in={watchSignUp}>
             <div className={classes.grid}>
               <DatePicker
                 control={control}
-                errors={errors}
+                formState={formState}
                 label='Start påmelding'
                 name='start_registration_at'
                 required={watchSignUp}
@@ -271,7 +271,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               />
               <DatePicker
                 control={control}
-                errors={errors}
+                formState={formState}
                 label='Slutt påmelding'
                 name='end_registration_at'
                 required={watchSignUp}
@@ -289,7 +289,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
             <div className={classes.grid}>
               <DatePicker
                 control={control}
-                errors={errors}
+                formState={formState}
                 label='Avmeldingsfrist'
                 name='sign_off_deadline'
                 required={watchSignUp}
@@ -304,22 +304,20 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 type='date-time'
               />
               <TextField
-                errors={errors}
+                formState={formState}
                 InputLabelProps={{ shrink: true }}
                 inputProps={{ inputMode: 'numeric' }}
                 label='Antall plasser'
-                name='limit'
-                register={register}
-                required={watchSignUp}
-                rules={{
+                {...register('limit', {
                   pattern: { value: RegExp(/^[0-9]*$/), message: 'Skriv inn et heltall som 0 eller høyere' },
                   valueAsNumber: true,
                   min: { value: 0, message: 'Antall plasser må være 0 eller høyere' },
                   required: watchSignUp ? 'Feltet er påkrevd' : undefined,
-                }}
+                })}
+                required={watchSignUp}
               />
             </div>
-            <TextField errors={errors} label='Evalueringsskjema (url)' name='evaluate_link' register={register} />
+            <TextField formState={formState} label='Evalueringsskjema (url)' {...register('evaluate_link')} />
             <div className={classes.margin}>
               <Accordion className={classes.expansionPanel}>
                 <AccordionSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='priorities-header'>
@@ -347,17 +345,11 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               </div>
             )}
           </Collapse>
-          <MarkdownEditor
-            error={Boolean(errors.description)}
-            helperText={Boolean(errors.description) && 'Gi arrangementet en beskrivelse'}
-            inputRef={register({ required: true })}
-            name='description'
-            required
-          />
-          <ImageUpload errors={errors} label='Velg bilde' name='image' ratio={21 / 9} register={register} setValue={setValue} watch={watch} />
-          <TextField errors={errors} label='Bildetekst' name='image_alt' register={register} />
+          <MarkdownEditor formState={formState} {...register('description', { required: 'Gi arrangementet en beskrivelse' })} required />
+          <ImageUpload formState={formState} label='Velg bilde' ratio={21 / 9} register={register('image')} setValue={setValue} watch={watch} />
+          <TextField formState={formState} label='Bildetekst' {...register('image_alt')} />
           <div className={classes.grid}>
-            <Select control={control} errors={errors} label='Prioritering' name='priority'>
+            <Select control={control} formState={formState} label='Prioritering' name='priority'>
               {priorities.map((value, index) => (
                 <MenuItem key={index} value={index}>
                   {value}
@@ -365,7 +357,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               ))}
             </Select>
             {Boolean(categories.length) && (
-              <Select control={control} errors={errors} label='Kategori' name='category'>
+              <Select control={control} formState={formState} label='Kategori' name='category'>
                 {categories.map((value, index) => (
                   <MenuItem key={index} value={value.id}>
                     {value.text}
@@ -375,7 +367,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
             )}
           </div>
           <RendererPreview className={classes.margin} getContent={getEventPreview} renderer={EventRenderer} />
-          <SubmitButton className={classes.margin} disabled={isLoading} errors={errors}>
+          <SubmitButton className={classes.margin} disabled={isLoading} formState={formState}>
             {eventId ? 'Oppdater arrangement' : 'Opprett arrangement'}
           </SubmitButton>
           {eventId !== null && (

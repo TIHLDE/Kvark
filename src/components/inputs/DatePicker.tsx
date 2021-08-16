@@ -1,4 +1,4 @@
-import { Controller, RegisterOptions, UseFormMethods } from 'react-hook-form';
+import { Control, Controller, RegisterOptions, UseFormReturn } from 'react-hook-form';
 import { TextField as MuiTextField, TextFieldProps } from '@material-ui/core';
 import {
   DatePicker as MuiDatePicker,
@@ -8,7 +8,9 @@ import {
 } from '@material-ui/lab';
 
 export type DatePickerProps = TextFieldProps &
-  Pick<UseFormMethods, 'errors' | 'control'> & {
+  Pick<UseFormReturn, 'formState'> & {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    control: Control<any>;
     name: string;
     rules?: RegisterOptions;
     label: string;
@@ -18,21 +20,22 @@ export type DatePickerProps = TextFieldProps &
     onDateChange?: (date?: Date) => void;
   };
 
-const DatePicker = ({ type, name, label, control, errors, rules = {}, defaultValue = '', dateProps, onDateChange, ...props }: DatePickerProps) => {
+const DatePicker = ({ type, name, label, control, formState, rules = {}, defaultValue = '', dateProps, onDateChange, ...props }: DatePickerProps) => {
   const Picker = type === 'date' ? MuiDatePicker : MuiDateTimePicker;
   return (
     <Controller
       control={control}
       defaultValue={defaultValue}
       name={name}
-      render={({ onChange, value }) => (
+      render={({ field }) => (
         <Picker
+          {...field}
           {...dateProps}
           ampm={false}
           inputFormat={type === 'date' ? 'dd/MM/yyyy' : 'dd/MM/yyyy HH:mm'}
           label={label}
           onChange={(e) => {
-            onChange(e);
+            field.onChange(e);
             if (onDateChange) {
               onDateChange(e as Date | undefined);
             }
@@ -42,17 +45,16 @@ const DatePicker = ({ type, name, label, control, errors, rules = {}, defaultVal
               margin='normal'
               variant='outlined'
               {...params}
-              error={Boolean(errors[name])}
-              fullWidth
-              helperText={errors[name]?.message}
+              error={Boolean(formState.errors[name])}
+              helperText={formState.errors[name]?.message}
               {...props}
             />
           )}
-          value={value}
         />
       )}
       rules={rules}
     />
   );
 };
+
 export default DatePicker;

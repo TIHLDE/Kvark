@@ -39,7 +39,7 @@ const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
   const classes = useStyles();
   const showSnackbar = useSnackbar();
   const updateUser = useUpdateUser();
-  const { register, handleSubmit, errors, control, setValue, watch } = useForm<FormData>({ defaultValues: { ...user } });
+  const { register, handleSubmit, formState, control, setValue, watch } = useForm<FormData>({ defaultValues: { ...user } });
   const updateData = (data: FormData) => {
     if (updateUser.isLoading) {
       return;
@@ -68,37 +68,37 @@ const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
       <form onSubmit={handleSubmit(updateData)}>
         {isAdmin && (
           <div className={classes.selectGrid}>
-            <TextField disabled={updateUser.isLoading} errors={errors} label='Fornavn' name='first_name' register={register} />
-            <TextField disabled={updateUser.isLoading} errors={errors} label='Etternavn' name='last_name' register={register} />
-            <TextField disabled={updateUser.isLoading} errors={errors} label='Epost' name='email' register={register} />
+            <TextField disabled={updateUser.isLoading} formState={formState} label='Fornavn' {...register('first_name')} />
+            <TextField disabled={updateUser.isLoading} formState={formState} label='Etternavn' {...register('last_name')} />
+            <TextField disabled={updateUser.isLoading} formState={formState} label='Epost' {...register('email')} />
           </div>
         )}
-        <TextField disabled={updateUser.isLoading} errors={errors} InputProps={{ type: 'number' }} label='Telefon' name='cell' register={register} />
-        <ImageUpload errors={errors} label='Velg profilbilde' name='image' ratio={1} register={register} setValue={setValue} watch={watch} />
+        <TextField disabled={updateUser.isLoading} formState={formState} InputProps={{ type: 'number' }} label='Telefon' {...register('cell')} />
+        <ImageUpload formState={formState} label='Velg profilbilde' ratio={1} register={register('image')} setValue={setValue} watch={watch} />
         <div className={classes.selectGrid}>
-          <Select control={control} disabled={!isAdmin} errors={errors} label='Studie' name='user_study'>
+          <Select control={control} disabled={!isAdmin} formState={formState} label='Studie' name='user_study'>
             {[1, 2, 3, 4, 5].map((i) => (
               <MenuItem key={i} value={i}>
                 {getUserStudyLong(i)}
               </MenuItem>
             ))}
           </Select>
-          <Select control={control} disabled={!isAdmin} errors={errors} label='Klasse' name='user_class'>
+          <Select control={control} disabled={!isAdmin} formState={formState} label='Klasse' name='user_class'>
             {[1, 2, 3, 4, 5].map((i) => (
               <MenuItem key={i} value={i}>
                 {getUserClass(i)}
               </MenuItem>
             ))}
           </Select>
-          <Select control={control} disabled={updateUser.isLoading} errors={errors} label='Kjønn' name='gender'>
+          <Select control={control} disabled={updateUser.isLoading} formState={formState} label='Kjønn' name='gender'>
             <MenuItem value={1}>Mann</MenuItem>
             <MenuItem value={2}>Kvinne</MenuItem>
             <MenuItem value={3}>Annet</MenuItem>
           </Select>
         </div>
-        <TextField disabled={updateUser.isLoading} errors={errors} label='Kjøkkenredskap' name='tool' register={register} />
-        <TextField disabled={updateUser.isLoading} errors={errors} label='Evt allergier og annen info' multiline name='allergy' register={register} rows={3} />
-        <SubmitButton disabled={updateUser.isLoading} errors={errors}>
+        <TextField disabled={updateUser.isLoading} formState={formState} label='Kjøkkenredskap' {...register('tool')} />
+        <TextField disabled={updateUser.isLoading} formState={formState} label='Evt allergier og annen info' multiline {...register('allergy')} minRows={3} />
+        <SubmitButton disabled={updateUser.isLoading} formState={formState}>
           Oppdater
         </SubmitButton>
         {!isAdmin && (

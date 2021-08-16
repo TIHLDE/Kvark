@@ -1,10 +1,10 @@
 import { Button, ButtonProps, FormHelperText } from '@material-ui/core';
-import { UseFormMethods } from 'react-hook-form';
+import { UseFormReturn } from 'react-hook-form';
 
-export type SubmitButtonProps = ButtonProps & Pick<UseFormMethods, 'errors'>;
+export type SubmitButtonProps = ButtonProps & Pick<UseFormReturn, 'formState'>;
 
-const SubmitButton = ({ errors = {}, children, disabled, ...props }: SubmitButtonProps) => {
-  const isError = Boolean((Array.isArray(Object.keys(errors)) ? Object.keys(errors) : []).length);
+const SubmitButton = ({ formState, children, disabled, ...props }: SubmitButtonProps) => {
+  const isError = Boolean((Array.isArray(Object.keys(formState.errors)) ? Object.keys(formState.errors) : []).length);
   return (
     <>
       <Button disabled={disabled} fullWidth type='submit' variant='contained' {...props}>

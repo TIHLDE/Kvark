@@ -69,7 +69,7 @@ const JobPosts = () => {
   const navigate = useNavigate();
   const [filters, setFilters] = useState<Filters>(getInitialFilters());
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useJobPosts(filters);
-  const { register, control, handleSubmit, setValue } = useForm<Filters>({ defaultValues: getInitialFilters() });
+  const { register, control, handleSubmit, setValue, formState } = useForm<Filters>({ defaultValues: getInitialFilters() });
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 
   const resetFilters = () => {
@@ -110,9 +110,9 @@ const JobPosts = () => {
         </div>
         <Paper className={classes.settings}>
           <form onSubmit={handleSubmit(search)}>
-            <TextField disabled={isFetching} errors={{}} label='Søk' name='search' register={register} />
-            <Bool control={control} errors={{}} label='Tidligere' name='expired' type='switch' />
-            <SubmitButton disabled={isFetching} errors={{}}>
+            <TextField disabled={isFetching} formState={formState} label='Søk' {...register('search')} />
+            <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
+            <SubmitButton disabled={isFetching} formState={formState}>
               Søk
             </SubmitButton>
           </form>

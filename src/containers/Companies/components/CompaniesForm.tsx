@@ -41,7 +41,7 @@ const CompaniesForm = () => {
   const classes = useStyles();
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
-  const { register, handleSubmit, errors, reset, setError } = useForm<CompaniesEmail>();
+  const { register, handleSubmit, formState, reset, setError } = useForm<CompaniesEmail>();
 
   const submitForm = async (data: CompaniesEmail) => {
     if (isLoading) {
@@ -57,7 +57,7 @@ const CompaniesForm = () => {
       showSnackbar(response.detail, 'success');
       reset({ info: { bedrift: '', kontaktperson: '', epost: '' }, comment: '' } as CompaniesEmail);
     } catch (e) {
-      setError('bedrift', { message: e.detail || 'Noe gikk galt' });
+      setError('info.bedrift', { message: e.detail || 'Noe gikk galt' });
     } finally {
       setIsLoading(false);
     }
@@ -81,38 +81,26 @@ const CompaniesForm = () => {
   return (
     <Paper>
       <form onSubmit={handleSubmit(submitForm)}>
+        <TextField disabled={isLoading} formState={formState} label='Bedrift' {...register('info.bedrift', { required: 'Feltet er påkrevd' })} required />
         <TextField
           disabled={isLoading}
-          errors={errors}
-          label='Bedrift'
-          name='info.bedrift'
-          register={register}
-          required
-          rules={{ required: 'Feltet er påkrevd' }}
-        />
-        <TextField
-          disabled={isLoading}
-          errors={errors}
+          formState={formState}
           label='Kontaktperson'
-          name='info.kontaktperson'
-          register={register}
+          {...register('info.kontaktperson', { required: 'Feltet er påkrevd' })}
           required
-          rules={{ required: 'Feltet er påkrevd' }}
         />
         <TextField
           disabled={isLoading}
-          errors={errors}
+          formState={formState}
           label='Epost'
-          name='info.epost'
-          register={register}
-          required
-          rules={{
+          {...register('info.epost', {
             required: 'Feltet er påkrevd',
             pattern: {
               value: EMAIL_REGEX,
               message: 'Ugyldig e-post',
             },
-          }}
+          })}
+          required
           type='email'
         />
         <Divider />
@@ -121,28 +109,36 @@ const CompaniesForm = () => {
             <FormLabel className={classes.label} component='legend'>
               Semester
             </FormLabel>
-            <input name='time' ref={register} type='hidden' value='time' />
+            <input {...register('time')} type='hidden' value='time' />
             <FormGroup>
-              {semesters.map((semester) => (
-                <FormControlLabel control={<Checkbox inputRef={register} name='time' value={semester} />} key={semester} label={semester} />
-              ))}
+              {semesters.map((semester) => {
+                const semesterRef = register('time');
+                return (
+                  <FormControlLabel
+                    control={<Checkbox inputRef={semesterRef.ref} name={semesterRef.name} value={semester} />}
+                    key={semester}
+                    label={semester}
+                  />
+                );
+              })}
             </FormGroup>
           </FormControl>
           <FormControl component='fieldset' disabled={isLoading} fullWidth margin='normal'>
             <FormLabel className={classes.label} component='legend'>
               Arrangementer
             </FormLabel>
-            <input name='type' ref={register} type='hidden' value='type' />
+            <input {...register('type')} type='hidden' value='type' />
             <FormGroup>
-              {types.map((type) => (
-                <FormControlLabel control={<Checkbox inputRef={register} name='type' value={type} />} key={type} label={type} />
-              ))}
+              {types.map((type) => {
+                const typeRef = register('type');
+                return <FormControlLabel control={<Checkbox inputRef={typeRef.ref} name={typeRef.name} value={type} />} key={type} label={type} />;
+              })}
             </FormGroup>
           </FormControl>
         </div>
         <Divider />
-        <TextField disabled={isLoading} errors={errors} label='Kommentar' multiline name='comment' register={register} rows={3} />
-        <SubmitButton disabled={isLoading} errors={errors}>
+        <TextField disabled={isLoading} formState={formState} label='Kommentar' multiline {...register('comment')} rows={3} />
+        <SubmitButton disabled={isLoading} formState={formState}>
           Send inn
         </SubmitButton>
       </form>

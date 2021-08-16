@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, forwardRef } from 'react';
 
 // Material UI Components
-import { TextField, TextFieldProps, Dialog, DialogTitle, DialogContent, IconButton, Typography, styled } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, IconButton, Typography, styled } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/CloseRounded';
 
 // Project components
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
+import TextField, { TextFieldProps } from 'components/inputs/TextField';
 
 const guide = `
   *Markdown* er en vanlig måte å formatere tekst på nettet og brukes også tihlde.org. Her følger en rekke eksempler på hvordan du kan legge inn overskrifter, lister, linker, bilder, osv. ved hjelp av vanlig Markdown. I tillegg kan du vise arrangement-, nyhet- og jobbannonse-kort, samt en utvid-boks.
@@ -194,7 +195,7 @@ const HelpText = styled('span')(({ theme }) => ({
   textDecoration: 'underline',
 }));
 
-const MarkdownEditor = (props: TextFieldProps) => {
+const MarkdownEditor = forwardRef((props: TextFieldProps, ref) => {
   const [helpDialogOpen, setHelpDialogOpen] = useState(false);
 
   const HelperText = () => (
@@ -215,13 +216,12 @@ const MarkdownEditor = (props: TextFieldProps) => {
         {...props}
         fullWidth
         helperText={<HelperText />}
-        InputLabelProps={{ shrink: true }}
         label={props.label || 'Beskrivelse'}
         margin='normal'
         maxRows={25}
         minRows={5}
         multiline
-        variant={props.variant || 'outlined'}
+        ref={ref}
       />
       {helpDialogOpen && (
         <Dialog aria-labelledby='format-dialog-title' fullWidth maxWidth='md' onClose={() => setHelpDialogOpen(false)} open={helpDialogOpen}>
@@ -238,6 +238,7 @@ const MarkdownEditor = (props: TextFieldProps) => {
       )}
     </>
   );
-};
+});
 
+MarkdownEditor.displayName = 'MarkdownEditor';
 export default MarkdownEditor;

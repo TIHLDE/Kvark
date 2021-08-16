@@ -55,7 +55,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
   const deleteJobPost = useDeleteJobPost(jobpostId || -1);
   const showSnackbar = useSnackbar();
   const [deleteJobPostDialogOpen, setDeleteJobPostDialogOpen] = useState(false);
-  const { handleSubmit, control, register, errors, getValues, reset, setValue, watch } = useForm<FormValues>();
+  const { handleSubmit, control, register, formState, getValues, reset, setValue, watch } = useForm<FormValues>();
   const isUpdating = useMemo(
     () => createJobPost.isLoading || updateJobPost.isLoading || deleteJobPost.isLoading,
     [createJobPost.isLoading, updateJobPost.isLoading, deleteJobPost.isLoading],
@@ -154,49 +154,42 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
       <form onSubmit={handleSubmit(submit)}>
         <Grid container direction='column' wrap='nowrap'>
           <div className={classes.grid}>
-            <TextField errors={errors} label='Tittel' name='title' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
-            <TextField errors={errors} label='Sted' name='location' register={register} required rules={{ required: 'Feltet er påkrevd' }} />
+            <TextField formState={formState} label='Tittel' {...register('title', { required: 'En tittel er påkrevd' })} required />
+            <TextField formState={formState} label='Sted' {...register('location', { required: 'Et sted er påkrevd' })} required />
           </div>
-          <TextField errors={errors} label='Ingress' name='ingress' register={register} />
-          <MarkdownEditor
-            error={Boolean(errors.body)}
-            helperText={Boolean(errors.body) && 'Gi annonsen en beskrivelse'}
-            inputRef={register({ required: true })}
-            name='body'
-          />
-          <Bool control={control} errors={errors} label='Fortløpende opptak?' name='is_continuously_hiring' type='checkbox' />
+          <TextField formState={formState} label='Ingress' {...register('ingress')} />
+          <MarkdownEditor formState={formState} {...register('body', { required: 'Gi annonsen en beskrivelse' })} required />
+          <Bool control={control} formState={formState} label='Fortløpende opptak?' name='is_continuously_hiring' type='checkbox' />
           <div className={classes.grid}>
             <DatePicker
               control={control}
-              errors={errors}
+              formState={formState}
               label='Utløpsdato'
               name='deadline'
               required
               rules={{ required: 'Feltet er påkrevd' }}
               type='date-time'
             />
-            <TextField errors={errors} label='Link' name='link' register={register} />
+            <TextField formState={formState} label='Link' {...register('link')} />
           </div>
-          <ImageUpload errors={errors} label='Velg logo' name='image' ratio={21 / 9} register={register} setValue={setValue} watch={watch} />
-          <TextField errors={errors} label='Alternativ bildetekst' name='image_alt' register={register} />
+          <ImageUpload formState={formState} label='Velg logo' ratio={21 / 9} register={register('image')} setValue={setValue} watch={watch} />
+          <TextField formState={formState} label='Alternativ bildetekst' {...register('image_alt')} />
           <div className={classes.grid}>
-            <TextField errors={errors} label='Bedrift' name='company' register={register} required rules={{ required: 'Du må oppgi en bedrift' }} />
+            <TextField formState={formState} label='Bedrift' {...register('company', { required: 'Du må oppgi en bedrift' })} required />
             <TextField
-              errors={errors}
+              formState={formState}
               label='E-post'
-              name='email'
-              register={register}
-              rules={{
+              {...register('email', {
                 pattern: {
                   value: EMAIL_REGEX,
                   message: 'Ugyldig e-post',
                 },
-              }}
+              })}
               type='email'
             />
           </div>
           <RendererPreview className={classes.margin} getContent={getJobPostPreview} renderer={JobPostRenderer} />
-          <SubmitButton className={classes.margin} disabled={isUpdating} errors={errors}>
+          <SubmitButton className={classes.margin} disabled={isUpdating} formState={formState}>
             {jobpostId ? 'Oppdater annonse' : 'Opprett annonse'}
           </SubmitButton>
           {Boolean(jobpostId) && (
