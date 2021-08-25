@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useShare } from 'api/hooks/Utils';
+import { useGoogleAnalytics, useShare } from 'api/hooks/Utils';
 
 // Material UI Components
 import Button, { ButtonProps } from '@material-ui/core/Button';
@@ -12,6 +12,7 @@ export type ShareProps = ButtonProps & {
 };
 
 const ShareButton = ({ shareId, title, shareType, ...props }: ShareProps) => {
+  const { event } = useGoogleAnalytics();
   const urlType = useMemo(() => {
     switch (shareType) {
       case 'event':
@@ -32,11 +33,7 @@ const ShareButton = ({ shareId, title, shareType, ...props }: ShareProps) => {
       url: shareUrl,
     },
     'Linken ble kopiert til utklippstavlen',
-    () =>
-      window.gtag('event', `share-${shareType}`, {
-        event_category: 'share',
-        event_label: shareUrl,
-      }),
+    () => event(`share-${shareType}`, 'share', shareUrl),
   );
 
   return (

@@ -17,6 +17,7 @@ import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import { SecondaryTopBox } from 'components/layout/TopBox';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 const useStyles = makeStyles((theme) => ({
   paper: {
     maxWidth: theme.breakpoints.values.sm,
@@ -55,6 +56,7 @@ type LoginData = {
 const LogIn = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const { event } = useGoogleAnalytics();
   const logIn = useLogin();
   const setLogInRedirectURL = useSetRedirectUrl();
   const redirectURL = useRedirectUrl();
@@ -65,10 +67,7 @@ const LogIn = () => {
       { username: data.username, password: data.password },
       {
         onSuccess: () => {
-          window.gtag('event', 'login', {
-            event_category: 'auth',
-            event_label: `Logged in`,
-          });
+          event('login', 'auth', `Logged in`);
           setLogInRedirectURL(null);
           navigate(redirectURL || URLS.landing);
         },

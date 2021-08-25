@@ -1,7 +1,7 @@
 import { useState, useCallback, forwardRef } from 'react';
 import { UseFormReturn, UseFormRegisterReturn, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import Cropper from 'react-easy-crop';
-import { useShare } from 'api/hooks/Utils';
+import { useGoogleAnalytics, useShare } from 'api/hooks/Utils';
 import API from 'api/api';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
@@ -219,6 +219,7 @@ export const FormFileUpload = ({ register, watch, setValue, formState, label = '
 export type FileUploadProps = Pick<ImageUploadProps, 'label'> & ButtonProps;
 
 export const FileUpload = ({ label = 'Last opp filer', ...props }: FileUploadProps) => {
+  const { event } = useGoogleAnalytics();
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const [uploaded, setUploaded] = useState<Array<string>>([]);
@@ -245,11 +246,7 @@ export const FileUpload = ({ label = 'Last opp filer', ...props }: FileUploadPro
         url,
       },
       'Link til filen ble kopiert til utklippstavlen',
-      () =>
-        window.gtag('event', `share-uploaded-file`, {
-          event_category: 'share',
-          event_label: url,
-        }),
+      () => event('share-uploaded-file', 'share', url),
     );
     return (
       <Paper bgColor='default' noPadding>

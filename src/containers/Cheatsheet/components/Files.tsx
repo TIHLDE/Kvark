@@ -17,6 +17,7 @@ import OpenInNewIcon from '@material-ui/icons/OpenInNewRounded';
 // Project Components
 import Paper from 'components/layout/Paper';
 import Pagination from 'components/layout/Pagination';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -67,6 +68,7 @@ export type FilesProps = {
 
 const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
   const classes = useStyles();
+  const { event } = useGoogleAnalytics();
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
   const Icon = ({ cheatsheet }: { cheatsheet: Cheatsheet }) => {
@@ -97,11 +99,7 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
     }
   };
 
-  const onOpenFile = (file: Cheatsheet) =>
-    window.gtag('event', 'open', {
-      event_category: 'cheatsheet',
-      event_label: `Opened ${file.title}, ${file.course}`,
-    });
+  const onOpenFile = (file: Cheatsheet) => event('open', 'cheatsheet', `Opened ${file.title}, ${file.course}`);
 
   return (
     <>

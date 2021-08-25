@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { usePages } from 'api/hooks/Pages';
-import { useDebounce } from 'api/hooks/Utils';
+import { useDebounce, useGoogleAnalytics } from 'api/hooks/Utils';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
@@ -22,16 +22,14 @@ const useStyles = makeStyles((theme) => ({
 
 const PagesSearch = () => {
   const classes = useStyles();
+  const { event } = useGoogleAnalytics();
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 500);
   const filters = useMemo(() => {
     const filters: Record<string, unknown> = {};
     if (debouncedSearch) {
       filters.search = debouncedSearch;
-      window.gtag('event', 'search', {
-        event_category: 'pages',
-        event_label: `Search for: ${debouncedSearch}`,
-      });
+      event('search', 'pages', `Search for: ${debouncedSearch}`);
     }
     return filters;
   }, [debouncedSearch]);

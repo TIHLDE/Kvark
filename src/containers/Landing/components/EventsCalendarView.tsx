@@ -15,6 +15,7 @@ import { makeStyles } from '@material-ui/styles';
 
 // Project components
 import Paper from 'components/layout/Paper';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 
 // Styles
 const useStyles = makeStyles(() => ({
@@ -35,13 +36,11 @@ export type EventsCalendarViewProps = {
 
 const EventsCalendarView = ({ events, oldEvents }: EventsCalendarViewProps) => {
   const classes = useStyles();
+  const { event } = useGoogleAnalytics();
   const [displayedEvents, setDisplayedEvents] = useState<Array<AppointmentModel>>([]);
 
   useEffect(() => {
-    window.gtag('event', 'open', {
-      event_category: 'calendar',
-      event_label: 'Open calendar on landing page',
-    });
+    event('open', 'calendar', 'Open calendar on landing page');
     const newEvents = [...events, ...oldEvents].map((event) => {
       return {
         ...event,

@@ -16,6 +16,7 @@ import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/Asp
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 import Paper from 'components/layout/Paper';
 import ShareButton from 'components/miscellaneous/ShareButton';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -48,15 +49,12 @@ export type JobPostRendererProps = {
 };
 
 const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
+  const { event } = useGoogleAnalytics();
   const classes = useStyles();
   const deadline = formatDate(parseISO(data.deadline));
   const publishedAt = formatDate(parseISO(data.created_at));
 
-  const goToApplyLink = () =>
-    window.gtag('event', 'apply', {
-      event_category: 'jobposts',
-      event_label: `Apply to: ${data.company}, ${data.title}`,
-    });
+  const goToApplyLink = () => event('apply', 'jobposts', `Apply to: ${data.company}, ${data.title}`);
 
   return (
     <div className={classes.grid}>
