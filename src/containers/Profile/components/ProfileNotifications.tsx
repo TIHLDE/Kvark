@@ -5,6 +5,7 @@ import { Notification } from 'types/Types';
 import { useNotifications, useUpdateNotification } from 'api/hooks/Notification';
 import { useGoogleAnalytics } from 'api/hooks/Utils';
 import { getTimeSince } from 'utils';
+import MuiLinkify from 'material-ui-linkify';
 
 // Material-UI
 import { Skeleton, List, ListItem, ListItemText, ListItemIcon, IconButton } from '@material-ui/core';
@@ -54,7 +55,10 @@ const NotificationItem = ({ notification }: NotificationItemProps) => {
         <ListItemIcon>
           <Icon />
         </ListItemIcon>
-        <ListItemText primary={notification.message} secondary={getTimeSince(parseISO(notification.created_at))} />
+        <ListItemText
+          primary={<MuiLinkify LinkProps={{ color: 'inherit', underline: 'always' }}>{notification.message}</MuiLinkify>}
+          secondary={getTimeSince(parseISO(notification.created_at))}
+        />
       </ListItem>
     </Paper>
   );
