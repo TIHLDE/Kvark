@@ -1,50 +1,30 @@
-import { Fragment, useEffect, useMemo } from 'react';
-import classNames from 'classnames';
+import { useEffect, useMemo } from 'react';
 import parseISO from 'date-fns/parseISO';
+import { Link } from 'react-router-dom';
 import { Notification } from 'types/Types';
 import { useNotifications, useUpdateNotification } from 'api/hooks/Notification';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 import { getTimeSince } from 'utils';
 
 // Material-UI
-import { makeStyles } from '@material-ui/styles';
-import { Typography, Skeleton } from '@material-ui/core';
+import { Skeleton, List, ListItem, ListItemText, ListItemIcon, IconButton } from '@material-ui/core';
 
 // Icons
 import NotificationUnreadIcon from '@material-ui/icons/NotificationsRounded';
 import NotificationReadIcon from '@material-ui/icons/NotificationsNoneRounded';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForwardRounded';
 
 // Project components
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import Paper from 'components/layout/Paper';
 import Pagination from 'components/layout/Pagination';
 
-const useStyles = makeStyles((theme) => ({
-  message: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
-  icon: {
-    fontSize: 25,
-    margin: theme.spacing(1),
-    marginRight: theme.spacing(3),
-    color: theme.palette.text.secondary,
-  },
-  unread: {
-    backgroundColor: theme.palette.colors.tihlde + '25',
-  },
-  text: {
-    color: theme.palette.text.primary,
-  },
-}));
-
 type NotificationItemProps = {
   notification: Notification;
 };
 
 const NotificationItem = ({ notification }: NotificationItemProps) => {
-  const classes = useStyles();
+  const { event } = useGoogleAnalytics();
   const updateNotification = useUpdateNotification(notification.id);
 
   useEffect(() => {
@@ -56,26 +36,39 @@ const NotificationItem = ({ notification }: NotificationItemProps) => {
   }, [notification]);
 
   const Icon = notification.read ? NotificationReadIcon : NotificationUnreadIcon;
+
   return (
-    <Paper className={classNames(classes.message, !notification.read && classes.unread)}>
-      <Icon className={classes.icon} />
-      <div style={{ width: '100%' }}>
-        <Typography className={classes.text}>{notification.message}</Typography>
-        <Typography variant='caption'>{getTimeSince(parseISO(notification.created_at))}</Typography>
-      </div>
+    <Paper noPadding sx={{ mb: 1, ...(!notification.read && { backgroundColor: (theme) => theme.palette.colors.tihlde + '25' }) }}>
+      <ListItem
+        secondaryAction={
+          notification.link && (
+            <IconButton
+              {...(notification.link.substr(0, 4) === 'http' ? { component: 'a', href: notification.link } : { component: Link, to: notification.link })}
+              aria-label='Åpne link'
+              edge='end'
+              onClick={() => event('open-notification-link', 'notifications', `Opened notification link: ${notification.link}`)}>
+              <ArrowForwardIcon />
+            </IconButton>
+          )
+        }>
+        <ListItemIcon>
+          <Icon />
+        </ListItemIcon>
+        <ListItemText primary={notification.message} secondary={getTimeSince(parseISO(notification.created_at))} />
+      </ListItem>
     </Paper>
   );
 };
 
 const NotificationItemLoading = () => {
-  const classes = useStyles();
   return (
-    <Paper className={classes.message}>
-      <NotificationReadIcon className={classes.icon} />
-      <div style={{ width: '100%' }}>
-        <Skeleton height={24} width='40%' />
-        <Skeleton height={12} width='15%' />
-      </div>
+    <Paper noPadding sx={{ mb: 1 }}>
+      <ListItem>
+        <ListItemIcon>
+          <NotificationReadIcon />
+        </ListItemIcon>
+        <ListItemText primary={<Skeleton height={24} width='40%' />} secondary={<Skeleton height={12} width='15%' />} />
+      </ListItem>
     </Paper>
   );
 };
@@ -83,6 +76,7 @@ const NotificationItemLoading = () => {
 const ProfileNotifications = () => {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useNotifications();
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
+  const notifications = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   return (
     <>
@@ -91,13 +85,11 @@ const ProfileNotifications = () => {
       {error && <Paper>{error.detail}</Paper>}
       {data !== undefined && (
         <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-          {data.pages.map((page, i) => (
-            <Fragment key={i}>
-              {page.results.map((notification) => (
-                <NotificationItem key={notification.id} notification={notification} />
-              ))}
-            </Fragment>
-          ))}
+          <List dense disablePadding>
+            {notifications.map((notification) => (
+              <NotificationItem key={notification.id} notification={notification} />
+            ))}
+          </List>
         </Pagination>
       )}
       {isFetching && <NotificationItemLoading />}
