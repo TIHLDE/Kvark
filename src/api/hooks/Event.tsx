@@ -50,6 +50,11 @@ export const useDeleteEvent = (eventId: number): UseMutationResult<RequestRespon
   });
 };
 
+export const useNotifyEventRegistrations = (
+  eventId: number,
+): UseMutationResult<RequestResponse, RequestResponse, { title: string; message: string }, unknown> =>
+  useMutation(({ title, message }) => API.notifyEventRegistrations(eventId, title, message));
+
 export const useEventRegistrations = (eventId: number) => {
   return useQuery<Array<Registration>, RequestResponse>([EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_REGISTRATION], () => API.getEventRegistrations(eventId));
 };

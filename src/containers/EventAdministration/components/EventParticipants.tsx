@@ -4,13 +4,7 @@ import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material-UI
 import { makeStyles } from '@material-ui/styles';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import { Typography, Stack, Divider, FormControlLabel, Checkbox, Button, List, LinearProgress } from '@material-ui/core';
 
 // Icons
 import CopyIcon from '@material-ui/icons/FileCopyOutlined';
@@ -18,6 +12,7 @@ import CopyIcon from '@material-ui/icons/FileCopyOutlined';
 // Project
 import Participant from 'containers/EventAdministration/components/Participant';
 import EventStatistics from 'containers/EventAdministration/components/EventStatistics';
+import EventMessageSender from 'containers/EventAdministration/components/EventMessageSender';
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -59,9 +54,6 @@ const useStyles = makeStyles((theme) => ({
   },
   lightText: {
     color: theme.palette.text.secondary,
-  },
-  emailButton: {
-    margin: theme.spacing(0, 0, 1),
   },
 }));
 
@@ -160,9 +152,12 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
             </div>
           </>
         )}
-        <Button className={classes.emailButton} endIcon={<CopyIcon />} fullWidth onClick={copyEmails} variant='outlined'>
-          Kopier eposter
-        </Button>
+        <Stack direction={{ xs: 'column', md: 'row' }} spacing={1} sx={{ mb: 1 }}>
+          <Button endIcon={<CopyIcon />} fullWidth onClick={copyEmails} variant='outlined'>
+            Kopier eposter
+          </Button>
+          <EventMessageSender eventId={eventId} />
+        </Stack>
         <div className={classes.flexRow}>
           <Typography className={classes.mainText} variant='h3'>
             Påmeldte ({getAttending.length})
