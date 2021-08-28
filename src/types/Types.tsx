@@ -81,6 +81,7 @@ export interface Notification {
   id: number;
   read: boolean;
   message: string;
+  link?: string;
   created_at: string;
 }
 

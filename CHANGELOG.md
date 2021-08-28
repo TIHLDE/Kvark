@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- ✨ **Varsler**. Varsler har nå mulighet til å knyttes til en link. En kan for eks. rett til relevant arrangement.
+
 ## Versjon 1.1.2 (11.08.2021)
 
 - ✨ **Brukere**. Administratorer kan nå slette nye brukere og legge ved en valgfri begrunnelse.
