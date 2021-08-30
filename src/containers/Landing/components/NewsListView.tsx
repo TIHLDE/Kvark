@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 // Project componets
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 import { useNews } from 'api/hooks/News';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -33,15 +34,12 @@ const useStyles = makeStyles((theme) => ({
 const NO_OF_NEWS_TO_SHOW = 2;
 
 const NewsListView = () => {
+  const { event } = useGoogleAnalytics();
   const { data, isLoading } = useNews();
   const news = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   const classes = useStyles();
 
-  const openNewsAnalytics = () =>
-    window.gtag('event', 'go-to-all-news', {
-      event_category: 'news-list-view',
-      event_label: `Go to all news`,
-    });
+  const openNewsAnalytics = () => event('go-to-all-news', 'news-list-view', `Go to all news`);
 
   if (isLoading) {
     return (

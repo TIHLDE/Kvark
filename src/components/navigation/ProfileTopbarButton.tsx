@@ -16,6 +16,7 @@ import LightIcon from '@material-ui/icons/WbSunnyRounded';
 import Avatar from 'components/miscellaneous/Avatar';
 import ThemeSettings from 'components/miscellaneous/ThemeSettings';
 import { NavigationOptions } from 'components/navigation/Navigation';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 
 const useStyles = makeStyles<Theme, ProfileTopbarButtonProps>((theme) => ({
   themeButton: {
@@ -40,16 +41,13 @@ const getColor = ({ darkColor, lightColor }: ProfileTopbarButtonProps, theme: Th
 export type ProfileTopbarButtonProps = Pick<NavigationOptions, 'darkColor' | 'lightColor'>;
 
 const ProfileTopbarButton = (props: ProfileTopbarButtonProps) => {
+  const { event } = useGoogleAnalytics();
   const classes = useStyles(props);
   const { data: user } = useUser();
   const setLogInRedirectURL = useSetRedirectUrl();
   const [showThemeSettings, setShowThemeSettings] = useState(false);
 
-  const analytics = (page: string) =>
-    window.gtag('event', `go-to-${page}`, {
-      event_category: 'topbar-profile-button',
-      event_label: `Go to ${page}`,
-    });
+  const analytics = (page: string) => event(`go-to-${page}`, 'topbar-profile-button', `Go to ${page}`);
 
   return (
     <div>

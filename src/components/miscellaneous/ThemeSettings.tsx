@@ -7,6 +7,7 @@ import { ToggleButton, ToggleButtonGroup, Typography, styled } from '@material-u
 
 // Project components
 import Dialog from 'components/layout/Dialog';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 
 const ThemeDialog = styled(Dialog)({
   '& .MuiPaper-root': {
@@ -27,6 +28,7 @@ export type ThemeSettingsProps = {
 };
 
 const ThemeSettings = ({ open, onClose }: ThemeSettingsProps) => {
+  const { event } = useGoogleAnalytics();
   const themeSettings = useThemeSettings();
   const [themeName, setThemeName] = useState(themeSettings.getThemeFromStorage());
 
@@ -34,10 +36,7 @@ const ThemeSettings = ({ open, onClose }: ThemeSettingsProps) => {
     if (newThemeName) {
       setThemeName(newThemeName);
       themeSettings.set(newThemeName);
-      window.gtag('event', 'switch', {
-        event_category: 'theme',
-        event_label: newThemeName,
-      });
+      event('switch', 'theme', newThemeName);
     }
   };
 

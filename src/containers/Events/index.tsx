@@ -20,6 +20,7 @@ import Bool from 'components/inputs/Bool';
 import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -61,6 +62,7 @@ type Filters = {
 };
 
 const Events = () => {
+  const { event } = useGoogleAnalytics();
   const getInitialFilters = useCallback((): Filters => {
     const params = new URLSearchParams(location.search);
     const expired = params.get('expired') ? Boolean(params.get('expired') === 'true') : false;
@@ -85,10 +87,7 @@ const Events = () => {
   };
 
   const search = (data: Filters) => {
-    window.gtag('event', 'search', {
-      event_category: 'events',
-      event_label: JSON.stringify(data),
-    });
+    event('search', 'events', JSON.stringify(data));
     setFilters(data);
     navigate(`${location.pathname}${argsToParams(data)}`, { replace: true });
   };

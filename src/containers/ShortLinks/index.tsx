@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useShare } from 'api/hooks/Utils';
+import { useGoogleAnalytics, useShare } from 'api/hooks/Utils';
 import { useShortLinks, useCreateShortLink, useDeleteShortLink } from 'api/hooks/ShortLink';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { ShortLink } from 'types/Types';
@@ -80,6 +80,7 @@ type ShortLinkItemProps = {
 
 const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
   const classes = useStyles();
+  const { event } = useGoogleAnalytics();
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   const deleteShortLink = useDeleteShortLink();
   const showSnackbar = useSnackbar();
@@ -89,20 +90,13 @@ const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
       url: `https://s.tihlde.org/${shortLink.name}`,
     },
     'Linken ble kopiert til utklippstavlen',
-    () =>
-      window.gtag('event', `share-shortlink`, {
-        event_category: 'share',
-        event_label: `https://s.tihlde.org/${shortLink.name}`,
-      }),
+    () => event(`share-shortlink`, 'share', `https://s.tihlde.org/${shortLink.name}`),
   );
   const remove = () => {
     deleteShortLink.mutate(shortLink.name, {
       onSuccess: () => {
         showSnackbar('Linken ble slettet', 'success');
-        window.gtag('event', 'delete', {
-          event_category: 'short-link',
-          event_label: `Delete ${shortLink.name}`,
-        });
+        event('delete', 'short-link', `Delete ${shortLink.name}`);
       },
       onError: (e) => {
         showSnackbar(e.detail, 'error');
@@ -139,6 +133,7 @@ const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
 
 const ShortLinks = () => {
   const classes = useStyles();
+  const { event } = useGoogleAnalytics();
   const { data, error, isFetching } = useShortLinks();
   const createShortLink = useCreateShortLink();
   const showSnackbar = useSnackbar();
@@ -149,10 +144,7 @@ const ShortLinks = () => {
       onSuccess: () => {
         showSnackbar('Linken ble opprettet', 'success');
         reset();
-        window.gtag('event', 'create', {
-          event_category: 'short-link',
-          event_label: `Created ${data.name}`,
-        });
+        event('create', 'short-link', `Created ${data.name}`);
       },
       onError: (e) => {
         setError('name', { message: typeof e.detail === 'string' ? e.detail : JSON.stringify(e.detail) });

@@ -13,6 +13,7 @@ import TextField from 'components/inputs/TextField';
 import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import { ImageUpload } from 'components/inputs/Upload';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   selectGrid: {
@@ -37,6 +38,7 @@ type FormData = Pick<UserList, 'first_name' | 'last_name' | 'email' | 'cell' | '
 
 const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
   const classes = useStyles();
+  const { event } = useGoogleAnalytics();
   const showSnackbar = useSnackbar();
   const updateUser = useUpdateUser();
   const { register, handleSubmit, formState, control, setValue, watch } = useForm<FormData>({ defaultValues: { ...user } });
@@ -49,10 +51,7 @@ const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
       {
         onSuccess: () => {
           showSnackbar('Bruker oppdatert', 'success');
-          window.gtag('event', 'update-settings', {
-            event_category: 'profile',
-            event_label: `Update`,
-          });
+          event('update-settings', 'profile', 'Update');
         },
         onError: (e) => {
           showSnackbar(e.detail, 'error');

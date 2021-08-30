@@ -22,6 +22,7 @@ import NewsDetails from 'containers/NewsDetails';
 import GroupOverview from 'containers/GroupOverview';
 import News from 'containers/News';
 import NewStudent from 'containers/NewStudent';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 
 const Cheatsheet = lazy(() => import(/* webpackChunkName: "cheatsheet" */ 'containers/Cheatsheet'));
 const EventAdministration = lazy(() => import(/* webpackChunkName: "event_administration" */ 'containers/EventAdministration'));
@@ -67,12 +68,10 @@ const AuthRoute = ({ apps = [], children, path, element }: AuthRouteProps) => {
 
 const AppRoutes = () => {
   const location = useLocation();
-  useEffect(() => {
-    window.gtag('event', 'page_view', {
-      page_location: window.location.href,
-      page_path: window.location.pathname,
-    });
-  }, [location]);
+  const { event } = useGoogleAnalytics();
+
+  useEffect(() => event('page_view', window.location.href, window.location.pathname), [location]);
+
   return (
     <Suspense fallback={<Page options={{ title: 'Laster...', filledTopbar: true }} />}>
       <Routes>

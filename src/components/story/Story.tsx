@@ -13,6 +13,7 @@ import StoryPopup from 'components/story/StoryPopup';
 
 // Icons
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 
 const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme) => ({
   root: {
@@ -175,11 +176,9 @@ const Story = ({ items, fadeColor }: StoryProps) => {
   const StoryItem = ({ item, index }: StoryItemProps) => {
     const classes = useStyles({});
     const [imgUrl, setImgUrl] = useState(item.image || TIHLDELOGO);
+    const { event } = useGoogleAnalytics();
     const openStory = () => {
-      window.gtag('event', 'open', {
-        event_category: 'stories',
-        event_label: `Open "${item.title}" story`,
-      });
+      event('open', 'stories', `Open "${item.title}" story`);
       setSelectedItem(index);
       setPopupOpen(true);
     };

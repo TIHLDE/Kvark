@@ -29,6 +29,7 @@ import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import { SecondaryTopBox } from 'components/layout/TopBox';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -69,6 +70,7 @@ type SignUpData = UserCreate & {
 
 const SignUp = () => {
   const classes = useStyles();
+  const { event } = useGoogleAnalytics();
   const navigate = useNavigate();
   const createUser = useCreateUser();
   const showSnackbar = useSnackbar();
@@ -103,10 +105,7 @@ const SignUp = () => {
     } as UserCreate;
     createUser.mutate(userData, {
       onSuccess: () => {
-        window.gtag('event', 'signup', {
-          event_category: 'auth',
-          event_label: `Signed up`,
-        });
+        event('signup', 'auth', `Signed up`);
         setLogInRedirectURL(null);
         navigate(redirectURL || URLS.login);
       },

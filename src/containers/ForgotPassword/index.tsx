@@ -18,6 +18,7 @@ import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import { SecondaryTopBox } from 'components/layout/TopBox';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -50,6 +51,7 @@ type FormData = {
 
 const ForgotPassword = () => {
   const classes = useStyles();
+  const { event } = useGoogleAnalytics();
   const forgotPassword = useForgotPassword();
   const showSnackbar = useSnackbar();
   const { register, formState, handleSubmit, setError } = useForm<FormData>();
@@ -58,10 +60,7 @@ const ForgotPassword = () => {
     forgotPassword.mutate(data.email, {
       onSuccess: (data) => {
         showSnackbar(data.detail, 'success');
-        window.gtag('event', 'forgot-password', {
-          event_category: 'auth',
-          event_label: `Forgot password`,
-        });
+        event('forgot-password', 'auth', 'Forgot password');
       },
       onError: (e) => {
         setError('email', { message: e.detail });

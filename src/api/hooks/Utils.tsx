@@ -1,6 +1,7 @@
-import { EffectCallback, useEffect, useState, useRef } from 'react';
+import { EffectCallback, useEffect, useState, useRef, useCallback } from 'react';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { getCookie, setCookie } from 'api/cookie';
+import { useMemo } from 'react';
 
 export const useInterval = (callback: EffectCallback, msDelay: number | null) => {
   const savedCallback = useRef<EffectCallback>();
@@ -120,4 +121,23 @@ export const usePersistedState = <T,>(key: string, defaultValue: T, duration = 3
   }, [COOKIE_KEY, state, duration]);
 
   return [state, setState] as const;
+};
+
+export const useGoogleAnalytics = () => {
+  /**
+   * Create an event for tracking behaviour on the site.
+   * @param category - The object that was interacted with, eg 'Video'
+   * @param action - The type of interaction, eg 'play'
+   * @param label - Useful for categorizing events, eg 'Ny-student'
+   */
+  const event = useCallback((action: string, category: string, label: string) => {
+    window.gtag('event', action, {
+      event_category: category,
+      event_label: label,
+    });
+  }, []);
+
+  return useMemo(() => {
+    return { event };
+  }, [event]);
 };

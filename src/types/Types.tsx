@@ -80,7 +80,9 @@ export interface Badge {
 export interface Notification {
   id: number;
   read: boolean;
-  message: string;
+  title: string;
+  description: string;
+  link?: string;
   created_at: string;
 }
 
