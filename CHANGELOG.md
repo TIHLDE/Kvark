@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- ✨ **Arrangementer**. Arrangør av arrangementer kan sende ut informasjon til påmeldte deltagere via epost/varsler.
+
 ## Versjon 1.1.2 (11.08.2021)
 
 - ✨ **Brukere**. Administratorer kan nå slette nye brukere og legge ved en valgfri begrunnelse.
