@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.1.3 (30.08.2021)
+
 - ✨ **Varsler**. Varsler har nå mulighet til å knyttes til en link. En kan for eks. rett til relevant arrangement.
 - ✨ **Varsler**. Varsler kan nå inneholde en lengre beskrivelse slik at de kan inneholde all info som også kommer på epost.
 - ✨ **Arrangementer**. Arrangør av arrangementer kan sende ut informasjon til påmeldte deltagere via epost/varsler.
