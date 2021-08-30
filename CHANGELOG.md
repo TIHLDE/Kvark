@@ -15,6 +15,7 @@
 ## Neste versjon
 
 - ✨ **Varsler**. Varsler har nå mulighet til å knyttes til en link. En kan for eks. rett til relevant arrangement.
+- ✨ **Varsler**. Varsler kan nå inneholde en lengre beskrivelse slik at de kan inneholde all info som også kommer på epost.
 
 ## Versjon 1.1.2 (11.08.2021)
 
