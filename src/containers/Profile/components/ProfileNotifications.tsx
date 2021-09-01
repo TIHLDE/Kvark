@@ -72,7 +72,7 @@ const NotificationItem = ({ notification }: NotificationItemProps) => {
       </ListItem>
       <Collapse in={showDescription}>
         <Divider />
-        <Typography sx={{ py: 1, px: 2 }} variant='body2'>
+        <Typography sx={{ whiteSpace: 'break-spaces', overflowWrap: 'break-word', py: 1, px: 2 }} variant='body2'>
           <MuiLinkify LinkProps={{ color: 'inherit', underline: 'always' }}>{notification.description}</MuiLinkify>
         </Typography>
       </Collapse>

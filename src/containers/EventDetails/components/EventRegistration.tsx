@@ -9,8 +9,7 @@ import { useSnackbar } from 'api/hooks/Snackbar';
 import { useForm } from 'react-hook-form';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { Typography, FormControlLabel, Checkbox, Button } from '@material-ui/core';
+import { Box, IconProps, Typography, FormControlLabel, Checkbox, Button } from '@material-ui/core';
 
 // Icons
 import PersonIcon from '@material-ui/icons/PersonOutlineRounded';
@@ -24,41 +23,17 @@ import Paper from 'components/layout/Paper';
 import FormView from 'components/forms/FormView';
 import { useGoogleAnalytics } from 'api/hooks/Utils';
 
-const useStyles = makeStyles((theme) => ({
-  list: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  infoPaper: {
-    margin: theme.spacing(1, 0),
-  },
-  icon: {
-    marginRight: theme.spacing(1),
-    color: theme.palette.text.secondary,
-  },
-  listItem: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  button: {
-    marginTop: theme.spacing(2),
-  },
-}));
-
 type ListItemProps = {
-  icon: ComponentType<{ className: string }>;
+  icon: ComponentType<{ className?: string; sx?: IconProps['sx'] }>;
   text: string;
 };
 
-const ListItem = ({ icon: Icon, text }: ListItemProps) => {
-  const classes = useStyles();
-  return (
-    <div className={classes.listItem}>
-      <Icon className={classes.icon} />
-      <Typography>{text}</Typography>
-    </div>
-  );
-};
+const ListItem = ({ icon: Icon, text }: ListItemProps) => (
+  <Box sx={{ display: 'flex' }}>
+    <Icon sx={{ mr: 1, color: (theme) => theme.palette.text.secondary }} />
+    <Typography>{text}</Typography>
+  </Box>
+);
 
 export type EventRegistrationProps = {
   event: Event;
@@ -66,7 +41,6 @@ export type EventRegistrationProps = {
 };
 
 const EventRegistration = ({ event, user }: EventRegistrationProps) => {
-  const classes = useStyles();
   const { event: GAEvent } = useGoogleAnalytics();
   const createRegistration = useCreateEventRegistration(event.id);
   const showSnackbar = useSnackbar();
@@ -76,7 +50,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
   const [allowPhoto, setAllowPhoto] = useState(true);
   const allergy = user.allergy ? shortDownString(user.allergy, 20) : 'Ingen';
 
-  const { register, handleSubmit, formState, setError } = useForm<Form['fields']>();
+  const { register, handleSubmit, formState, setError, getValues, control } = useForm<Form['fields']>();
 
   const registerDisabled = isLoading || isFormLoading || !agreeRules;
 
@@ -99,6 +73,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
     } catch (e) {
       setError(e.message, { message: 'Du må velge ett eller flere alternativ' });
       setIsLoading(false);
+      return;
     }
     createRegistration.mutate(
       { allow_photo: allowPhoto, ...data },
@@ -119,13 +94,13 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
 
   return (
     <>
-      <div className={classes.list}>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Typography>
           Vennligst se over at følgende opplysninger stemmer. Dine opplysninger vil bli delt med TIHLDE. Du kan endre informasjonen i profilen din, også etter
           påmelding!
         </Typography>
-        <form className={classes.list} onSubmit={handleSubmit(submit)}>
-          <Paper className={classes.infoPaper}>
+        <Box component='form' onSubmit={handleSubmit(submit)} sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Paper sx={{ my: 1 }}>
             <ListItem icon={PersonIcon} text={'Navn: ' + user.first_name + ' ' + user.last_name} />
             <ListItem icon={MailIcon} text={'Epost: ' + user.email} />
             <ListItem icon={SchoolIcon} text={'Studieprogram: ' + getUserStudyShort(user.user_study)} />
@@ -133,9 +108,9 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
             <ListItem icon={AllergyIcon} text={'Allergier: ' + allergy} />
           </Paper>
           {form !== undefined && (
-            <Paper className={classes.infoPaper}>
+            <Paper sx={{ my: 1 }}>
               <Typography variant='h3'>Spørsmål</Typography>
-              <FormView form={form} formState={formState} register={register} />
+              <FormView control={control} form={form} formState={formState} getValues={getValues} register={register} />
             </Paper>
           )}
           <FormControlLabel
@@ -151,11 +126,11 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
           <a href={URLS.eventRules} rel='noopener noreferrer' target='_blank'>
             <Typography variant='caption'>Les arrangementsreglene her (åpnes i ny fane)</Typography>
           </a>
-          <Button className={classes.button} disabled={registerDisabled} fullWidth type='submit' variant='contained'>
+          <Button disabled={registerDisabled} fullWidth sx={{ mt: 2 }} type='submit' variant='contained'>
             Meld deg på
           </Button>
-        </form>
-      </div>
+        </Box>
+      </Box>
     </>
   );
 };

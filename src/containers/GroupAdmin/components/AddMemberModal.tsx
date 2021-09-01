@@ -87,7 +87,9 @@ const AddMemberModal = ({ groupSlug }: AddMemberModalProps) => {
               />
             )}
           />
-          <SubmitButton formState={formState}>Legg til medlem</SubmitButton>
+          <SubmitButton disabled={createMembership.isLoading} formState={formState}>
+            Legg til medlem
+          </SubmitButton>
         </form>
       </Dialog>
     </>

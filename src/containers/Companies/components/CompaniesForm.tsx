@@ -7,43 +7,20 @@ import addMonths from 'date-fns/addMonths';
 import { EMAIL_REGEX } from 'constant';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import Divider from '@material-ui/core/Divider';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { Divider, Stack } from '@material-ui/core';
 
 // Project components
 import Paper from 'components/layout/Paper';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
+import BoolArray from 'components/inputs/BoolArray';
 import { useGoogleAnalytics } from 'api/hooks/Utils';
-
-const useStyles = makeStyles((theme) => ({
-  content: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gridGap: theme.spacing(2),
-    padding: theme.spacing(1, 2),
-    [theme.breakpoints.down('md')]: {
-      gridTemplateColumns: '1fr',
-      padding: theme.spacing(1),
-      gridGap: theme.spacing(1),
-    },
-  },
-  label: {
-    color: theme.palette.text.primary,
-  },
-}));
 
 const CompaniesForm = () => {
   const { event } = useGoogleAnalytics();
-  const classes = useStyles();
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
-  const { register, handleSubmit, formState, reset, setError } = useForm<CompaniesEmail>();
+  const { register, control, handleSubmit, formState, getValues, reset, setError } = useForm<CompaniesEmail>();
 
   const submitForm = async (data: CompaniesEmail) => {
     if (isLoading) {
@@ -103,38 +80,26 @@ const CompaniesForm = () => {
           type='email'
         />
         <Divider />
-        <div className={classes.content}>
-          <FormControl component='fieldset' disabled={isLoading} fullWidth margin='normal'>
-            <FormLabel className={classes.label} component='legend'>
-              Semester
-            </FormLabel>
-            <input {...register('time')} type='hidden' value='time' />
-            <FormGroup>
-              {semesters.map((semester) => {
-                const semesterRef = register('time');
-                return (
-                  <FormControlLabel
-                    control={<Checkbox inputRef={semesterRef.ref} name={semesterRef.name} value={semester} />}
-                    key={semester}
-                    label={semester}
-                  />
-                );
-              })}
-            </FormGroup>
-          </FormControl>
-          <FormControl component='fieldset' disabled={isLoading} fullWidth margin='normal'>
-            <FormLabel className={classes.label} component='legend'>
-              Arrangementer
-            </FormLabel>
-            <input {...register('type')} type='hidden' value='type' />
-            <FormGroup>
-              {types.map((type) => {
-                const typeRef = register('type');
-                return <FormControlLabel control={<Checkbox inputRef={typeRef.ref} name={typeRef.name} value={type} />} key={type} label={type} />;
-              })}
-            </FormGroup>
-          </FormControl>
-        </div>
+        <Stack direction={{ xs: 'column', md: 'row' }} spacing={1} sx={{ p: 2 }}>
+          <BoolArray
+            control={control}
+            formState={formState}
+            getValues={getValues}
+            label='Semester'
+            name='time'
+            options={semesters.map((s) => ({ value: s, label: s }))}
+            type='checkbox'
+          />
+          <BoolArray
+            control={control}
+            formState={formState}
+            getValues={getValues}
+            label='Arrangementer'
+            name='type'
+            options={types.map((t) => ({ value: t, label: t }))}
+            type='checkbox'
+          />
+        </Stack>
         <Divider />
         <TextField disabled={isLoading} formState={formState} label='Kommentar' multiline {...register('comment')} rows={3} />
         <SubmitButton disabled={isLoading} formState={formState}>

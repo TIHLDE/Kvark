@@ -21,7 +21,7 @@ export type IBoolProps = Omit<FormControlLabelProps, 'control'> &
     type: 'checkbox' | 'switch';
   };
 
-const Switch = styled(MuiSwitch)(({ theme }) => ({
+export const Switch = styled(MuiSwitch)(({ theme }) => ({
   padding: 8,
   '& .MuiSwitch-track': {
     borderRadius: 22 / 2,

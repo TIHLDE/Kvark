@@ -367,7 +367,10 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
             )}
           </div>
           <RendererPreview className={classes.margin} getContent={getEventPreview} renderer={EventRenderer} />
-          <SubmitButton className={classes.margin} disabled={isLoading} formState={formState}>
+          <SubmitButton
+            className={classes.margin}
+            disabled={isLoading || createEvent.isLoading || updateEvent.isLoading || deleteEvent.isLoading}
+            formState={formState}>
             {eventId ? 'Oppdater arrangement' : 'Opprett arrangement'}
           </SubmitButton>
           {eventId !== null && (

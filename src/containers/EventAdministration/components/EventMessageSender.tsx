@@ -28,6 +28,9 @@ const EventMessageSender = ({ eventId }: EventMessageSenderProps) => {
   const notify = useNotifyEventRegistrations(eventId);
 
   const submit = (data: FormValues) => {
+    if (notify.isLoading) {
+      return;
+    }
     notify.mutate(
       { title: data.title, message: data.message },
       {
@@ -64,7 +67,9 @@ const EventMessageSender = ({ eventId }: EventMessageSenderProps) => {
             {...register('message', { required: 'Oppgi en melding' })}
             required
           />
-          <SubmitButton formState={formState}>Send melding</SubmitButton>
+          <SubmitButton disabled={notify.isLoading} formState={formState}>
+            Send melding
+          </SubmitButton>
         </form>
       </Dialog>
     </>

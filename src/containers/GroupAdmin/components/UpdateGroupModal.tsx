@@ -55,7 +55,9 @@ const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
             })}
             type='email'
           />
-          <SubmitButton formState={formState}>Oppdater gruppe</SubmitButton>
+          <SubmitButton disabled={updateGroup.isLoading} formState={formState}>
+            Oppdater gruppe
+          </SubmitButton>
         </form>
       </Dialog>
     </>

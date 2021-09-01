@@ -55,7 +55,9 @@ const DeclineUser = ({ user }: Pick<PersonListItemProps, 'user'>) => {
         titleText='Slett bruker'>
         <form onSubmit={handleSubmit(decline)}>
           <TextField formState={formState} label='Begrunnelse (valgfri)' minRows={2} multiline {...register('reason')} />
-          <SubmitButton formState={formState}>Slett bruker</SubmitButton>
+          <SubmitButton disabled={declineUser.isLoading} formState={formState}>
+            Slett bruker
+          </SubmitButton>
         </form>
       </Dialog>
     </>
