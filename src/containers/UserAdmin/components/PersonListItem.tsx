@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { UserList } from 'types/Types';
-import { useActivateUser, useDeclineUser } from 'api/hooks/User';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { useActivateUser, useDeclineUser } from 'hooks/User';
+import { useSnackbar } from 'hooks/Snackbar';
 import { getUserClass, getUserStudyShort } from 'utils';
 
 // Material UI Components

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useQueryClient } from 'react-query';
 import API from 'api/api';
-import { USER_BADGES_QUERY_KEY } from 'api/hooks/User';
+import { USER_BADGES_QUERY_KEY } from 'hooks/User';
 
 export const useBadge = () => {
   const queryClient = useQueryClient();

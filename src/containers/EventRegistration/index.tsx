@@ -2,8 +2,8 @@ import { ChangeEvent, useMemo, useState } from 'react';
 import QrReader from 'react-qr-reader';
 import { useParams } from 'react-router-dom';
 import { Registration } from 'types/Types';
-import { useEventById, useEventRegistrations, useUpdateEventRegistration } from 'api/hooks/Event';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { useEventById, useEventRegistrations, useUpdateEventRegistration } from 'hooks/Event';
+import { useSnackbar } from 'hooks/Snackbar';
 
 // Material UI Components
 import { Theme, Stack, Typography, TextField, LinearProgress, FormControlLabel, Checkbox, useMediaQuery } from '@mui/material';

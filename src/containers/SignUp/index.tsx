@@ -5,9 +5,9 @@ import URLS from 'URLS';
 import { EMAIL_REGEX } from 'constant';
 import { getUserStudyLong, getUserClass } from 'utils';
 import { UserCreate } from 'types/Types';
-import { useCreateUser } from 'api/hooks/User';
-import { useSetRedirectUrl, useRedirectUrl } from 'api/hooks/Misc';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { useCreateUser } from 'hooks/User';
+import { useSetRedirectUrl, useRedirectUrl } from 'hooks/Misc';
+import { useSnackbar } from 'hooks/Snackbar';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';
@@ -29,7 +29,7 @@ import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import { SecondaryTopBox } from 'components/layout/TopBox';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   paper: {

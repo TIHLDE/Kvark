@@ -2,9 +2,9 @@ import { ComponentType, useState } from 'react';
 import { Event, User, Submission, Form } from 'types/Types';
 import URLS from 'URLS';
 import { getUserStudyShort, shortDownString } from 'utils';
-import { useCreateEventRegistration } from 'api/hooks/Event';
-import { useFormById, useCreateSubmission, validateSubmissionInput } from 'api/hooks/Form';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { useCreateEventRegistration } from 'hooks/Event';
+import { useFormById, useCreateSubmission, validateSubmissionInput } from 'hooks/Form';
+import { useSnackbar } from 'hooks/Snackbar';
 import { useForm } from 'react-hook-form';
 
 // Material UI Components
@@ -20,7 +20,7 @@ import HomeIcon from '@mui/icons-material/HomeRounded';
 // Project components
 import Paper from 'components/layout/Paper';
 import FormView from 'components/forms/FormView';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 type ListItemProps = {
   icon: ComponentType<{ className?: string; sx?: IconProps['sx'] }>;

@@ -2,8 +2,8 @@ import { useEffect, useState, useMemo } from 'react';
 import parseISO from 'date-fns/parseISO';
 import { Link } from 'react-router-dom';
 import { Notification } from 'types/Types';
-import { useNotifications, useUpdateNotification } from 'api/hooks/Notification';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useNotifications, useUpdateNotification } from 'hooks/Notification';
+import { useGoogleAnalytics } from 'hooks/Utils';
 import { getTimeSince } from 'utils';
 import MuiLinkify from 'material-ui-linkify';
 

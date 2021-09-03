@@ -1,6 +1,6 @@
 import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { USER_EVENTS_QUERY_KEY } from 'api/hooks/User';
+import { USER_EVENTS_QUERY_KEY } from 'hooks/User';
 import { Event, EventRequired, EventCompact, Registration, PaginationResponse, RequestResponse } from 'types/Types';
 
 export const EVENT_QUERY_KEY = 'event';

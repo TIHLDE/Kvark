@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
-import { useUsers } from 'api/hooks/User';
+import { useUsers } from 'hooks/User';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';

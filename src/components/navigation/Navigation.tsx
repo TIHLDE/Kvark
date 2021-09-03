@@ -3,8 +3,8 @@ import Helmet from 'react-helmet';
 import constate from 'constate';
 import URLS from 'URLS';
 import { WarningType } from 'types/Enums';
-import { useIsAuthenticated } from 'api/hooks/User';
-import { useWarnings } from 'api/hooks/Warnings';
+import { useIsAuthenticated } from 'hooks/User';
+import { useWarnings } from 'hooks/Warnings';
 import { SHOW_NEW_STUDENT_INFO } from 'constant';
 
 // Material UI Components

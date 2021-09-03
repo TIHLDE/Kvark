@@ -4,9 +4,9 @@ import { UserList } from 'types/Types';
 import { ListItem, ListItemText, ListItemAvatar, List, Grid, Typography, Skeleton } from '@mui/material';
 
 import Paper from 'components/layout/Paper';
-import { useMemberships } from 'api/hooks/Membership';
+import { useMemberships } from 'hooks/Membership';
 import Pagination from 'components/layout/Pagination';
-import { useGroup } from 'api/hooks/Group';
+import { useGroup } from 'hooks/Group';
 import Avatar from 'components/miscellaneous/Avatar';
 
 export type MembersCardProps = {

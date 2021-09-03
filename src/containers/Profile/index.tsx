@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useUser } from 'api/hooks/User';
+import { useUser } from 'hooks/User';
 
 // Material-UI
 import { makeStyles } from '@mui/styles';
@@ -16,7 +16,7 @@ import Dialog from 'components/layout/Dialog';
 import Avatar from 'components/miscellaneous/Avatar';
 import QRCode from 'components/miscellaneous/QRCode';
 import { ProfileTopBox } from 'components/layout/TopBox';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   paper: {

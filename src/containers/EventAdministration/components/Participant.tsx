@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Registration } from 'types/Types';
 import { getUserStudyShort, formatDate, getUserClass } from 'utils';
-import { useDeleteEventRegistration, useUpdateEventRegistration } from 'api/hooks/Event';
+import { useDeleteEventRegistration, useUpdateEventRegistration } from 'hooks/Event';
 import parseISO from 'date-fns/parseISO';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { useSnackbar } from 'hooks/Snackbar';
 
 // Material-ui
 import { makeStyles } from '@mui/styles';

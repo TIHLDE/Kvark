@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useDeleteMembership, useUpdateMembership } from 'api/hooks/Membership';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { useDeleteMembership, useUpdateMembership } from 'hooks/Membership';
+import { useSnackbar } from 'hooks/Snackbar';
 import { MembershipType } from 'types/Enums';
 
 import { Button, Collapse, Divider, ListItem, ListItemText, ListItemAvatar, Grid } from '@mui/material';

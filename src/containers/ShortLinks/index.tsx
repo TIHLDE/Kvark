@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useGoogleAnalytics, useShare } from 'api/hooks/Utils';
-import { useShortLinks, useCreateShortLink, useDeleteShortLink } from 'api/hooks/ShortLink';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { useGoogleAnalytics, useShare } from 'hooks/Utils';
+import { useShortLinks, useCreateShortLink, useDeleteShortLink } from 'hooks/ShortLink';
+import { useSnackbar } from 'hooks/Snackbar';
 import { ShortLink } from 'types/Types';
 
 // Material UI Components

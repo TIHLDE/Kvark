@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { Form, TextFormField, SelectFormField } from 'types/Types';
 import { FormFieldType } from 'types/Enums';
-import { useUpdateForm, useDeleteForm } from 'api/hooks/Form';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { useUpdateForm, useDeleteForm } from 'hooks/Form';
+import { useSnackbar } from 'hooks/Snackbar';
 
 // Material UI
 import { makeStyles } from '@mui/styles';

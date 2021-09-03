@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useUserBadges } from 'api/hooks/User';
+import { useUserBadges } from 'hooks/User';
 import { Badge } from 'types/Types';
 import Paper from 'components/layout/Paper';
 

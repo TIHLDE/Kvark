@@ -4,9 +4,9 @@ import { useForm } from 'react-hook-form';
 import URLS from 'URLS';
 import { formatDate, urlEncode } from 'utils';
 import parseISO from 'date-fns/parseISO';
-import { usePageTree, useCreatePage, useUpdatePage, useDeletePage } from 'api/hooks/Pages';
-import { useSnackbar } from 'api/hooks/Snackbar';
-import { HavePermission } from 'api/hooks/User';
+import { usePageTree, useCreatePage, useUpdatePage, useDeletePage } from 'hooks/Pages';
+import { useSnackbar } from 'hooks/Snackbar';
+import { HavePermission } from 'hooks/User';
 import { Page, PageTree } from 'types/Types';
 import { PermissionApp } from 'types/Enums';
 

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
-import { usePages } from 'api/hooks/Pages';
-import { useDebounce, useGoogleAnalytics } from 'api/hooks/Utils';
+import { usePages } from 'hooks/Pages';
+import { useDebounce, useGoogleAnalytics } from 'hooks/Utils';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';

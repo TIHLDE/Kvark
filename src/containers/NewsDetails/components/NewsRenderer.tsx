@@ -5,7 +5,7 @@ import URLS from 'URLS';
 import { usePalette } from 'react-palette';
 import { News } from 'types/Types';
 import { PermissionApp } from 'types/Enums';
-import { HavePermission } from 'api/hooks/User';
+import { HavePermission } from 'hooks/User';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';

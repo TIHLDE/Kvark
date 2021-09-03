@@ -4,7 +4,7 @@ import { useState, lazy, Suspense } from 'react';
 import { Tab, Tabs, Collapse, Skeleton } from '@mui/material';
 
 // Project componets/services
-import { useEvents } from 'api/hooks/Event';
+import { useEvents } from 'hooks/Event';
 import EventsListView from 'containers/Landing/components/EventsListView';
 
 // Icons

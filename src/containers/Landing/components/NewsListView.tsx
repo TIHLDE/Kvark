@@ -9,8 +9,8 @@ import Button from '@mui/material/Button';
 
 // Project componets
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
-import { useNews } from 'api/hooks/News';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useNews } from 'hooks/News';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   container: {

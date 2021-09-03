@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
-import { useUser } from 'api/hooks/User';
-import { useSetRedirectUrl } from 'api/hooks/Misc';
+import { useUser } from 'hooks/User';
+import { useSetRedirectUrl } from 'hooks/Misc';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';
@@ -16,7 +16,7 @@ import LightIcon from '@mui/icons-material/WbSunnyRounded';
 import Avatar from 'components/miscellaneous/Avatar';
 import ThemeSettings from 'components/miscellaneous/ThemeSettings';
 import { NavigationOptions } from 'components/navigation/Navigation';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles<Theme, ProfileTopbarButtonProps>((theme) => ({
   themeButton: {

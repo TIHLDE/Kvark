@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import URLS from 'URLS';
 import { useNavigate, useParams, Navigate } from 'react-router-dom';
-import { useNews } from 'api/hooks/News';
+import { useNews } from 'hooks/News';
 
 // Material-UI
 import { makeStyles } from '@mui/styles';

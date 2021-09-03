@@ -1,9 +1,9 @@
 import { useCallback, useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Event, RegistrationPriority } from 'types/Types';
-import { useEventById, useCreateEvent, useUpdateEvent, useDeleteEvent } from 'api/hooks/Event';
-import { useCategories } from 'api/hooks/Categories';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { useEventById, useCreateEvent, useUpdateEvent, useDeleteEvent } from 'hooks/Event';
+import { useCategories } from 'hooks/Categories';
+import { useSnackbar } from 'hooks/Snackbar';
 import { addHours, subDays, parseISO, setHours, startOfHour } from 'date-fns';
 
 // Material-UI

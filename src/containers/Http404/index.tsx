@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
-import { useIsAuthenticated } from 'api/hooks/User';
+import { useIsAuthenticated } from 'hooks/User';
 
 // Material UI Components
 import { Button, Typography, styled } from '@mui/material';

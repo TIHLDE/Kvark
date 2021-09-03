@@ -1,10 +1,10 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { useSnackbar } from 'hooks/Snackbar';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { News } from 'types/Types';
 
 // API and store imports
-import { useUpdateNews, useCreateNews, useDeleteNews, useNewsById } from 'api/hooks/News';
+import { useUpdateNews, useCreateNews, useDeleteNews, useNewsById } from 'hooks/News';
 
 // Material-UI
 import { makeStyles } from '@mui/styles';

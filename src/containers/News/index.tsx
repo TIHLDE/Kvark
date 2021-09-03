@@ -1,5 +1,5 @@
 import { Fragment, useMemo } from 'react';
-import { useNews } from 'api/hooks/News';
+import { useNews } from 'hooks/News';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';

@@ -1,9 +1,9 @@
 import { useState, Fragment, useMemo, useEffect } from 'react';
 import classnames from 'classnames';
 import { useQuery } from 'react-query';
-import { usePage } from 'api/hooks/Pages';
-import { useIsAuthenticated } from 'api/hooks/User';
-import { useEvents } from 'api/hooks/Event';
+import { usePage } from 'hooks/Pages';
+import { useIsAuthenticated } from 'hooks/User';
+import { useEvents } from 'hooks/Event';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { Page as PageType } from 'types/Types';
@@ -34,7 +34,7 @@ import Pagination from 'components/layout/Pagination';
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import EventsCalendarView from 'containers/Landing/components/EventsCalendarView';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   grid: {

@@ -1,9 +1,9 @@
 import { useState, useCallback, forwardRef } from 'react';
 import { UseFormReturn, UseFormRegisterReturn, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import Cropper from 'react-easy-crop';
-import { useGoogleAnalytics, useShare } from 'api/hooks/Utils';
+import { useGoogleAnalytics, useShare } from 'hooks/Utils';
 import API from 'api/api';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { useSnackbar } from 'hooks/Snackbar';
 
 // Material UI Components
 import {

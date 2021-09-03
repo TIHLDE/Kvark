@@ -1,8 +1,8 @@
 /* eslint-disable react/display-name */
 import { createElement, useMemo, ReactNode, lazy, Suspense } from 'react';
-import { useEventById } from 'api/hooks/Event';
-import { useJobPostById } from 'api/hooks/JobPost';
-import { useNewsById } from 'api/hooks/News';
+import { useEventById } from 'hooks/Event';
+import { useJobPostById } from 'hooks/JobPost';
+import { useNewsById } from 'hooks/News';
 
 // Material UI
 import { styled, Divider, Typography, Skeleton } from '@mui/material';

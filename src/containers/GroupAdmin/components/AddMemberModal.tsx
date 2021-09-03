@@ -1,15 +1,15 @@
 import { TextField, ListItemText, Button, Autocomplete } from '@mui/material';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { useSnackbar } from 'hooks/Snackbar';
 import { Controller, useForm } from 'react-hook-form';
-import { useUsers } from 'api/hooks/User';
+import { useUsers } from 'hooks/User';
 import { useMemo, useState } from 'react';
 import { getUserClass, getUserStudyShort } from 'utils';
-import { useCreateMembership } from 'api/hooks/Membership';
+import { useCreateMembership } from 'hooks/Membership';
 import Dialog from 'components/layout/Dialog';
 import SubmitButton from 'components/inputs/SubmitButton';
 import AddIcon from '@mui/icons-material/Add';
 import { UserList } from 'types/Types';
-import { useDebounce } from 'api/hooks/Utils';
+import { useDebounce } from 'hooks/Utils';
 
 export type AddMemberModalProps = {
   groupSlug: string;

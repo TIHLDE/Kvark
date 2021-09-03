@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback } from 'react';
-import { useEventById, useEventRegistrations } from 'api/hooks/Event';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { useEventById, useEventRegistrations } from 'hooks/Event';
+import { useSnackbar } from 'hooks/Snackbar';
 
 // Material-UI
 import { makeStyles } from '@mui/styles';

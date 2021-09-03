@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 
 // Project componets
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 // Styles
 const useStyles = makeStyles((theme) => ({

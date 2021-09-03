@@ -13,7 +13,7 @@ import StoryPopup from 'components/story/StoryPopup';
 
 // Icons
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme) => ({
   root: {

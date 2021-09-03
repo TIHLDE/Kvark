@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import URLS from 'URLS';
 import { useNavigate, useParams, Navigate } from 'react-router-dom';
-import { useJobPosts } from 'api/hooks/JobPost';
+import { useJobPosts } from 'hooks/JobPost';
 
 // Material-UI
 import { makeStyles } from '@mui/styles';

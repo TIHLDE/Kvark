@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { EMAIL_REGEX } from 'constant';
-import { useUpdateGroup } from 'api/hooks/Group';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { useUpdateGroup } from 'hooks/Group';
+import { useSnackbar } from 'hooks/Snackbar';
 import { Group } from 'types/Types';
 
 import EditIcon from '@mui/icons-material/Edit';

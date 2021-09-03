@@ -8,10 +8,10 @@ import { formatDate, getICSFromEvent } from 'utils';
 import { Link } from 'react-router-dom';
 
 // Services
-import { useSetRedirectUrl } from 'api/hooks/Misc';
-import { useEventRegistration, useDeleteEventRegistration } from 'api/hooks/Event';
-import { useUser, HavePermission } from 'api/hooks/User';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { useSetRedirectUrl } from 'hooks/Misc';
+import { useEventRegistration, useDeleteEventRegistration } from 'hooks/Event';
+import { useUser, HavePermission } from 'hooks/User';
+import { useSnackbar } from 'hooks/Snackbar';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';
@@ -30,7 +30,7 @@ import Dialog from 'components/layout/Dialog';
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 import QRCode from 'components/miscellaneous/QRCode';
 import ShareButton from 'components/miscellaneous/ShareButton';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   image: {

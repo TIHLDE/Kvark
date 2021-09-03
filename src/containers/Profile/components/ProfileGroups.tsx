@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useUserGroups } from 'api/hooks/User';
+import { useUserGroups } from 'hooks/User';
 
 // Material UI Components
 import Grid from '@mui/material/Grid';

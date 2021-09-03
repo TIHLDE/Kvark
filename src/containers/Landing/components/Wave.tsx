@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import URLS from 'URLS';
 import { Link } from 'react-router-dom';
-import { useIsAuthenticated } from 'api/hooks/User';
+import { useIsAuthenticated } from 'hooks/User';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';
@@ -19,7 +19,7 @@ import { ReactComponent as WaveBottom } from 'assets/img/waves/wave-bottom.svg';
 
 // Project Components
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {

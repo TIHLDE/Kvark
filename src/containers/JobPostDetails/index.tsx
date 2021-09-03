@@ -3,7 +3,7 @@ import URLS from 'URLS';
 import Helmet from 'react-helmet';
 import { useParams, useNavigate } from 'react-router-dom';
 import { urlEncode } from 'utils';
-import { useJobPostById } from 'api/hooks/JobPost';
+import { useJobPostById } from 'hooks/JobPost';
 
 // Project Components
 import Http404 from 'containers/Http404';

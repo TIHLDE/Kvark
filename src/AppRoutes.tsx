@@ -4,8 +4,8 @@ import URLS from 'URLS';
 import { PermissionApp } from 'types/Enums';
 
 // Services
-import { useSetRedirectUrl } from 'api/hooks/Misc';
-import { useHavePermission, useIsAuthenticated } from 'api/hooks/User';
+import { useSetRedirectUrl } from 'hooks/Misc';
+import { useHavePermission, useIsAuthenticated } from 'hooks/User';
 
 // Project components
 import Page from 'components/navigation/Page';
@@ -22,7 +22,7 @@ import NewsDetails from 'containers/NewsDetails';
 import GroupOverview from 'containers/GroupOverview';
 import News from 'containers/News';
 import NewStudent from 'containers/NewStudent';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 const Cheatsheet = lazy(() => import(/* webpackChunkName: "cheatsheet" */ 'containers/Cheatsheet'));
 const EventAdministration = lazy(() => import(/* webpackChunkName: "event_administration" */ 'containers/EventAdministration'));

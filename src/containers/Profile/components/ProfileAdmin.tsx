@@ -2,7 +2,7 @@ import { ComponentType } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { PermissionApp } from 'types/Enums';
-import { HavePermission } from 'api/hooks/User';
+import { HavePermission } from 'hooks/User';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';

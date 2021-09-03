@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import URLS from 'URLS';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { useEvents } from 'api/hooks/Event';
+import { useEvents } from 'hooks/Event';
 import { parseISO } from 'date-fns';
 import { formatDate } from 'utils';
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNotifyEventRegistrations } from 'api/hooks/Event';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { useNotifyEventRegistrations } from 'hooks/Event';
+import { useSnackbar } from 'hooks/Snackbar';
 
 // Material-UI
 import { Button } from '@mui/material';

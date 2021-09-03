@@ -1,6 +1,6 @@
 import { ReactElement, ReactNode } from 'react';
 import { render } from '@testing-library/react';
-import { ThemeProvider } from 'context/ThemeContext';
+import { ThemeProvider } from 'hooks/Theme';
 
 interface IProps {
   children: ReactNode;

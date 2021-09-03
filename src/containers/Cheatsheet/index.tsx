@@ -10,8 +10,8 @@ import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 
 // API and store imports
-import { useUser } from 'api/hooks/User';
-import { useCheatsheet } from 'api/hooks/Cheatsheet';
+import { useUser } from 'hooks/User';
+import { useCheatsheet } from 'hooks/Cheatsheet';
 
 // Project Components
 import Banner from 'components/layout/Banner';

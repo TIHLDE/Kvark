@@ -4,7 +4,7 @@ import { formatDate } from 'utils';
 import { JobPost } from 'types/Types';
 import { PermissionApp } from 'types/Enums';
 import URLS from 'URLS';
-import { HavePermission } from 'api/hooks/User';
+import { HavePermission } from 'hooks/User';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';
@@ -16,7 +16,7 @@ import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/Asp
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 import Paper from 'components/layout/Paper';
 import ShareButton from 'components/miscellaneous/ShareButton';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   grid: {

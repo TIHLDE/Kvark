@@ -2,7 +2,7 @@ import { useInfiniteQuery, useMutation, UseMutationResult, useQueryClient } from
 import API from 'api/api';
 import { Membership, PaginationResponse, RequestResponse } from 'types/Types';
 import { MembershipType } from 'types/Enums';
-import { GROUPS_QUERY_KEY } from 'api/hooks/Group';
+import { GROUPS_QUERY_KEY } from 'hooks/Group';
 
 export const MEMBERSHIP_QUERY_KEY = 'membership';
 

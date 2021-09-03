@@ -3,7 +3,7 @@ import URLS from 'URLS';
 import Helmet from 'react-helmet';
 import { useParams, useNavigate } from 'react-router-dom';
 import { urlEncode } from 'utils';
-import { useEventById } from 'api/hooks/Event';
+import { useEventById } from 'hooks/Event';
 import { Box } from '@mui/material';
 
 // Project components

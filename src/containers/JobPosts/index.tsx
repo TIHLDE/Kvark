@@ -1,7 +1,7 @@
 import { Fragment, useMemo, useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useJobPosts } from 'api/hooks/JobPost';
+import { useJobPosts } from 'hooks/JobPost';
 import { argsToParams } from 'utils';
 
 // Material UI Components
@@ -19,7 +19,7 @@ import Bool from 'components/inputs/Bool';
 import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   grid: {

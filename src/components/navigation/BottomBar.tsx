@@ -16,7 +16,7 @@ import Paper from 'components/layout/Paper';
 import { NavigationItem } from 'components/navigation/Navigation';
 import Sidebar from 'components/navigation/Sidebar';
 import Logo from 'components/miscellaneous/TihldeLogo';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {

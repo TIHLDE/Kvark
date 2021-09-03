@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { useUser, useIsAuthenticated } from 'api/hooks/User';
-import { useGoogleAnalytics, usePersistedState } from 'api/hooks/Utils';
+import { useUser, useIsAuthenticated } from 'hooks/User';
+import { useGoogleAnalytics, usePersistedState } from 'hooks/Utils';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { SHOW_NEW_STUDENT_INFO } from 'constant';

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useUserEvents } from 'api/hooks/User';
+import { useUserEvents } from 'hooks/User';
 
 // Project componets
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';

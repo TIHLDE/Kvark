@@ -2,8 +2,8 @@ import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { CompaniesEmail } from 'types/Types';
 import API from 'api/api';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { useGoogleAnalytics } from 'hooks/Utils';
+import { useSnackbar } from 'hooks/Snackbar';
 import addMonths from 'date-fns/addMonths';
 import { EMAIL_REGEX } from 'constant';
 

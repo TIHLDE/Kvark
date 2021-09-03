@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useGoogleAnalytics, useShare } from 'api/hooks/Utils';
+import { useGoogleAnalytics, useShare } from 'hooks/Utils';
 
 // Material UI Components
 import Button, { ButtonProps } from '@mui/material/Button';

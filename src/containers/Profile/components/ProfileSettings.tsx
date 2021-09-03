@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { getUserStudyLong, getUserClass } from 'utils';
 import { UserList } from 'types/Types';
-import { useUpdateUser } from 'api/hooks/User';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { useUpdateUser } from 'hooks/User';
+import { useSnackbar } from 'hooks/Snackbar';
 
 // Material-UI
 import { makeStyles } from '@mui/styles';
@@ -13,7 +13,7 @@ import TextField from 'components/inputs/TextField';
 import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import { ImageUpload } from 'components/inputs/Upload';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   selectGrid: {

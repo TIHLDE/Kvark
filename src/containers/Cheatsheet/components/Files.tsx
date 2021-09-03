@@ -17,7 +17,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
 // Project Components
 import Paper from 'components/layout/Paper';
 import Pagination from 'components/layout/Pagination';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   grid: {

@@ -15,7 +15,7 @@ import { makeStyles } from '@mui/styles';
 
 // Project components
 import Paper from 'components/layout/Paper';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 // Styles
 const useStyles = makeStyles(() => ({

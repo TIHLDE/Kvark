@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { PermissionApp } from 'types/Enums';
-import { useUser, useHavePermission } from 'api/hooks/User';
+import { useUser, useHavePermission } from 'hooks/User';
 import URLS from 'URLS';
 import { useNavigate } from 'react-router-dom';
-import { useLogout } from 'api/hooks/User';
+import { useLogout } from 'hooks/User';
 
 // Material-UI
 import { makeStyles } from '@mui/styles';
@@ -26,7 +26,7 @@ import ProfileGroups from 'containers/Profile/components/ProfileGroups';
 import ProfileNotifications from 'containers/Profile/components/ProfileNotifications';
 import ProfileBadges from 'containers/Profile/components/ProfileBadges';
 import Paper from 'components/layout/Paper';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   content: {

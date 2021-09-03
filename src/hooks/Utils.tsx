@@ -1,5 +1,5 @@
 import { EffectCallback, useEffect, useState, useRef, useCallback } from 'react';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { useSnackbar } from 'hooks/Snackbar';
 import { getCookie, setCookie } from 'api/cookie';
 import { useMemo } from 'react';
 

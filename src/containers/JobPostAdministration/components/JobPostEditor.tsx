@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { JobPost } from 'types/Types';
-import { useJobPostById, useCreateJobPost, useUpdateJobPost, useDeleteJobPost } from 'api/hooks/JobPost';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { useJobPostById, useCreateJobPost, useUpdateJobPost, useDeleteJobPost } from 'hooks/JobPost';
+import { useSnackbar } from 'hooks/Snackbar';
 import { EMAIL_REGEX } from 'constant';
 import { parseISO } from 'date-fns';
 

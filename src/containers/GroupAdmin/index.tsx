@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGroup } from 'api/hooks/Group';
-import { useMemberships } from 'api/hooks/Membership';
+import { useGroup } from 'hooks/Group';
+import { useMemberships } from 'hooks/Membership';
 
 // Material UI
 import { Skeleton, Typography, ListItem, ListItemAvatar, ListItemText, Stack } from '@mui/material';

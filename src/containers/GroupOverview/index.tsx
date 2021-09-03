@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { useGroups } from 'api/hooks/Group';
-import { useIsAuthenticated } from 'api/hooks/User';
+import { useGroups } from 'hooks/Group';
+import { useIsAuthenticated } from 'hooks/User';
 import { GroupType } from 'types/Enums';
 import { Group } from 'types/Types';
 

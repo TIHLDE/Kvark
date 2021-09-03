@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import URLS from 'URLS';
-import { useLogin } from 'api/hooks/User';
-import { useSetRedirectUrl, useRedirectUrl } from 'api/hooks/Misc';
+import { useLogin } from 'hooks/User';
+import { useSetRedirectUrl, useRedirectUrl } from 'hooks/Misc';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';
@@ -17,7 +17,7 @@ import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import { SecondaryTopBox } from 'components/layout/TopBox';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 const useStyles = makeStyles((theme) => ({
   paper: {
     maxWidth: theme.breakpoints.values.sm,

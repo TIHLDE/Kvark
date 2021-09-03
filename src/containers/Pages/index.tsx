@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useMemo } from 'react';
 import classnames from 'classnames';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import URLS, { PAGES_URLS } from 'URLS';
-import { usePage } from 'api/hooks/Pages';
+import { usePage } from 'hooks/Pages';
 import { Page as IPage } from 'types/Types';
 import { Groups } from 'types/Enums';
 
