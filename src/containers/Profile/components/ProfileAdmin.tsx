@@ -5,16 +5,16 @@ import { PermissionApp } from 'types/Enums';
 import { HavePermission } from 'api/hooks/User';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { Avatar, List, ListItem, ListItemText, ListItemAvatar, Typography } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Avatar, List, ListItem, ListItemText, ListItemAvatar, Typography } from '@mui/material';
 
 // Icons
-import ArrowIcon from '@material-ui/icons/ArrowForwardRounded';
-import EventIcon from '@material-ui/icons/TodayRounded';
-import JobPostIcon from '@material-ui/icons/WorkOutlineRounded';
-import NewsIcon from '@material-ui/icons/DescriptionRounded';
-import UsersIcon from '@material-ui/icons/PermIdentityRounded';
-import GroupsIcon from '@material-ui/icons/GroupRounded';
+import ArrowIcon from '@mui/icons-material/ArrowForwardRounded';
+import EventIcon from '@mui/icons-material/TodayRounded';
+import JobPostIcon from '@mui/icons-material/WorkOutlineRounded';
+import NewsIcon from '@mui/icons-material/DescriptionRounded';
+import UsersIcon from '@mui/icons-material/PermIdentityRounded';
+import GroupsIcon from '@mui/icons-material/GroupRounded';
 
 // Project Components
 import Paper from 'components/layout/Paper';

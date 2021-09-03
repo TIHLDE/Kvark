@@ -3,13 +3,13 @@ import { useDeleteMembership, useUpdateMembership } from 'api/hooks/Membership';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { MembershipType } from 'types/Enums';
 
-import { Button, Collapse, Divider, ListItem, ListItemText, ListItemAvatar, Grid } from '@material-ui/core';
+import { Button, Collapse, Divider, ListItem, ListItemText, ListItemAvatar, Grid } from '@mui/material';
 
-import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
-import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 import { UserList } from 'types/Types';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import StarIcon from '@material-ui/icons/Star';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import StarIcon from '@mui/icons-material/Star';
 
 import Paper from 'components/layout/Paper';
 import Dialog from 'components/layout/Dialog';

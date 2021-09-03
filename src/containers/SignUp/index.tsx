@@ -10,16 +10,16 @@ import { useSetRedirectUrl, useRedirectUrl } from 'api/hooks/Misc';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Collapse from '@material-ui/core/Collapse';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import MenuItem from '@material-ui/core/MenuItem';
+import { makeStyles } from '@mui/styles';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
+import LinearProgress from '@mui/material/LinearProgress';
+import MenuItem from '@mui/material/MenuItem';
 
 // Icons
-import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
-import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 
 // Project Components
 import Page from 'components/navigation/Page';

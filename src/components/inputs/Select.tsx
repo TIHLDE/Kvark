@@ -1,7 +1,7 @@
-import FormControl, { FormControlProps } from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import InputLabel from '@material-ui/core/InputLabel';
-import MuiSelect from '@material-ui/core/Select';
+import FormControl, { FormControlProps } from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
+import InputLabel from '@mui/material/InputLabel';
+import MuiSelect from '@mui/material/Select';
 import { Control, Controller, RegisterOptions, UseFormReturn } from 'react-hook-form';
 
 export type SelectProps = FormControlProps &

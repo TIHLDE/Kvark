@@ -6,17 +6,17 @@ import parseISO from 'date-fns/parseISO';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material-ui
-import { makeStyles } from '@material-ui/styles';
-import { Theme, useMediaQuery, Checkbox, Typography, Collapse, Button, ListItem, ListItemText, ListItemSecondaryAction, Divider } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Theme, useMediaQuery, Checkbox, Typography, Collapse, Button, ListItem, ListItemText, ListItemSecondaryAction, Divider } from '@mui/material';
 
 // Icons
-import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
-import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 
 // Icons
-import Delete from '@material-ui/icons/DeleteRounded';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownwardRounded';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpwardRounded';
+import Delete from '@mui/icons-material/DeleteRounded';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownwardRounded';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpwardRounded';
 
 // Project components
 import Avatar from 'components/miscellaneous/Avatar';

@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
 // Material UI Components
-import MuiTextField, { TextFieldProps as MuiTextFieldProps } from '@material-ui/core/TextField';
+import MuiTextField, { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField';
 
 export type TextFieldProps = MuiTextFieldProps &
   Pick<UseFormReturn, 'formState'> & {

@@ -5,9 +5,9 @@ import { useJobPosts } from 'api/hooks/JobPost';
 import { argsToParams } from 'utils';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import Divider from '@material-ui/core/Divider';
-import Button from '@material-ui/core/Button';
+import { makeStyles } from '@mui/styles';
+import Divider from '@mui/material/Divider';
+import Button from '@mui/material/Button';
 
 // Project Components
 import Page from 'components/navigation/Page';

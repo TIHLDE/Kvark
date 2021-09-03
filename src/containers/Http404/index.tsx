@@ -3,7 +3,7 @@ import URLS from 'URLS';
 import { useIsAuthenticated } from 'api/hooks/User';
 
 // Material UI Components
-import { Button, Typography, styled } from '@material-ui/core';
+import { Button, Typography, styled } from '@mui/material';
 
 // Imgs
 import http404img from 'assets/img/http404.gif';

@@ -2,14 +2,14 @@ import { Fragment, useEffect, useMemo, useState } from 'react';
 import { useUsers } from 'api/hooks/User';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
+import { makeStyles } from '@mui/styles';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
 
 // Icons
-import MembersIcon from '@material-ui/icons/PlaylistAddCheckRounded';
-import WaitingIcon from '@material-ui/icons/PlaylistAddRounded';
+import MembersIcon from '@mui/icons-material/PlaylistAddCheckRounded';
+import WaitingIcon from '@mui/icons-material/PlaylistAddRounded';
 
 // Project Components
 import Page from 'components/navigation/Page';

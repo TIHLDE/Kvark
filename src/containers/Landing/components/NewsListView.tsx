@@ -3,9 +3,9 @@ import URLS from 'URLS';
 import { Link } from 'react-router-dom';
 
 // Material-UI
-import { makeStyles } from '@material-ui/styles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import { makeStyles } from '@mui/styles';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 
 // Project componets
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';

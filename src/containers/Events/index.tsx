@@ -6,8 +6,8 @@ import { useCategories } from 'api/hooks/Categories';
 import { argsToParams } from 'utils';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { Divider, MenuItem, Button } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Divider, MenuItem, Button } from '@mui/material';
 
 // Project Components
 import Page from 'components/navigation/Page';

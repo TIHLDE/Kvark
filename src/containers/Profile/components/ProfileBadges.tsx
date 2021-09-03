@@ -4,9 +4,9 @@ import { Badge } from 'types/Types';
 import Paper from 'components/layout/Paper';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@mui/styles';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import Pagination from 'components/layout/Pagination';
 

@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { useUser } from 'api/hooks/User';
 
 // Material-UI
-import { makeStyles } from '@material-ui/styles';
-import { Skeleton, Typography, Button } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Skeleton, Typography, Button } from '@mui/material';
 
 // Icons
-import QrCodeIcon from '@material-ui/icons/QrCodeRounded';
+import QrCodeIcon from '@mui/icons-material/QrCodeRounded';
 
 // Project Components
 import Page from 'components/navigation/Page';

@@ -4,8 +4,8 @@ import { useNotifyEventRegistrations } from 'api/hooks/Event';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material-UI
-import { Button } from '@material-ui/core';
-import SendIcon from '@material-ui/icons/SendRounded';
+import { Button } from '@mui/material';
+import SendIcon from '@mui/icons-material/SendRounded';
 
 // Project components
 import Dialog from 'components/layout/Dialog';

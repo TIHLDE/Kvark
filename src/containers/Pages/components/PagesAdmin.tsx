@@ -11,19 +11,19 @@ import { Page, PageTree } from 'types/Types';
 import { PermissionApp } from 'types/Enums';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import TreeView from '@material-ui/lab/TreeView';
-import TreeItem from '@material-ui/lab/TreeItem';
-import Collapse from '@material-ui/core/Collapse';
-import Divider from '@material-ui/core/Divider';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import { makeStyles } from '@mui/styles';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import TreeView from '@mui/lab/TreeView';
+import TreeItem from '@mui/lab/TreeItem';
+import Collapse from '@mui/material/Collapse';
+import Divider from '@mui/material/Divider';
+import LinearProgress from '@mui/material/LinearProgress';
 
 // Icons
-import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
-import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
-import RightIcon from '@material-ui/icons/ChevronRightRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import RightIcon from '@mui/icons-material/ChevronRightRounded';
 
 // Project components
 import Dialog from 'components/layout/Dialog';

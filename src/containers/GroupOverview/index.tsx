@@ -5,7 +5,7 @@ import { GroupType } from 'types/Enums';
 import { Group } from 'types/Types';
 
 // Material UI Components
-import { Typography, Grid } from '@material-ui/core';
+import { Typography, Grid } from '@mui/material';
 
 // Project Components
 import Page from 'components/navigation/Page';

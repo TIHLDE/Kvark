@@ -5,12 +5,12 @@ import { useUser } from 'api/hooks/User';
 import { useSetRedirectUrl } from 'api/hooks/Misc';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { Theme, Button, IconButton } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Theme, Button, IconButton } from '@mui/material';
 
 // Assets/Icons
-import PersonOutlineIcon from '@material-ui/icons/PersonRounded';
-import LightIcon from '@material-ui/icons/WbSunnyRounded';
+import PersonOutlineIcon from '@mui/icons-material/PersonRounded';
+import LightIcon from '@mui/icons-material/WbSunnyRounded';
 
 // Project Components
 import Avatar from 'components/miscellaneous/Avatar';

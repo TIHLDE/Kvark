@@ -4,7 +4,7 @@ import Helmet from 'react-helmet';
 import { useParams, useNavigate } from 'react-router-dom';
 import { urlEncode } from 'utils';
 import { useNewsById } from 'api/hooks/News';
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 
 // Project components
 import Http404 from 'containers/Http404';

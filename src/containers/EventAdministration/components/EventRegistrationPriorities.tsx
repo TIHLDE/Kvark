@@ -4,8 +4,8 @@ import { RegistrationPriority } from 'types/Types';
 import { UserClass, UserStudy } from 'types/Enums';
 
 // Material-UI
-import { makeStyles } from '@material-ui/styles';
-import { FormGroup, FormLabel, Button } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { FormGroup, FormLabel, Button } from '@mui/material';
 
 const useStyles = makeStyles((theme) => ({
   formWrapper: {

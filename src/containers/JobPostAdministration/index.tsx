@@ -4,12 +4,12 @@ import { useNavigate, useParams, Navigate } from 'react-router-dom';
 import { useJobPosts } from 'api/hooks/JobPost';
 
 // Material-UI
-import { makeStyles } from '@material-ui/styles';
-import { Typography, Collapse } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Typography, Collapse } from '@mui/material';
 
 // Icons
-import EditIcon from '@material-ui/icons/EditRounded';
-import OpenIcon from '@material-ui/icons/OpenInBrowserRounded';
+import EditIcon from '@mui/icons-material/EditRounded';
+import OpenIcon from '@mui/icons-material/OpenInBrowserRounded';
 
 // Project components
 import Paper from 'components/layout/Paper';

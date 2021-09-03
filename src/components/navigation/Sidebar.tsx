@@ -5,15 +5,15 @@ import { Link } from 'react-router-dom';
 import { useIsAuthenticated } from 'api/hooks/User';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { useTheme } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Collapse from '@material-ui/core/Collapse';
-import Drawer from '@material-ui/core/Drawer';
+import { makeStyles } from '@mui/styles';
+import { useTheme } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
+import Drawer from '@mui/material/Drawer';
 
 // Icons
-import ExpandIcon from '@material-ui/icons/ExpandMoreRounded';
+import ExpandIcon from '@mui/icons-material/ExpandMoreRounded';
 
 // Project components
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';

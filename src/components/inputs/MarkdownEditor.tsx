@@ -1,8 +1,8 @@
 import { useState, forwardRef } from 'react';
 
 // Material UI Components
-import { Dialog, DialogTitle, DialogContent, IconButton, Typography, styled } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/CloseRounded';
+import { Dialog, DialogTitle, DialogContent, IconButton, Typography, styled } from '@mui/material';
+import CloseIcon from '@mui/icons-material/CloseRounded';
 
 // Project components
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';

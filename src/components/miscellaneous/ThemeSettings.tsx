@@ -3,7 +3,7 @@ import { useThemeSettings } from 'context/ThemeContext';
 import { ThemeTypes, themesDetails } from 'theme';
 
 // Material-ui
-import { ToggleButton, ToggleButtonGroup, Typography, styled } from '@material-ui/core';
+import { ToggleButton, ToggleButtonGroup, Typography, styled } from '@mui/material';
 
 // Project components
 import Dialog from 'components/layout/Dialog';

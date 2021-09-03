@@ -6,12 +6,12 @@ import URLS from 'URLS';
 import { SHOW_NEW_STUDENT_INFO } from 'constant';
 
 // Material UI Components
-import { Typography, styled, Button, Stack } from '@material-ui/core';
+import { Typography, styled, Button, Stack } from '@mui/material';
 
 // Icons
-import OpenIcon from '@material-ui/icons/ArrowForwardRounded';
-import CloseIcon from '@material-ui/icons/CloseRounded';
-import OpenInNewIcon from '@material-ui/icons/OpenInNewRounded';
+import OpenIcon from '@mui/icons-material/ArrowForwardRounded';
+import CloseIcon from '@mui/icons-material/CloseRounded';
+import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
 
 const Box = styled('div')(({ theme }) => ({
   padding: theme.spacing(3),

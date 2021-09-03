@@ -4,11 +4,11 @@ import URLS from 'URLS';
 import classNames from 'classnames';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { useTheme, AppBar, Toolbar, Button, Grow, Paper, Popper, MenuItem, MenuList, useMediaQuery } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { useTheme, AppBar, Toolbar, Button, Grow, Paper, Popper, MenuItem, MenuList, useMediaQuery } from '@mui/material';
 
 // Assets/Icons
-import ExpandIcon from '@material-ui/icons/ExpandMoreRounded';
+import ExpandIcon from '@mui/icons-material/ExpandMoreRounded';
 
 // Project Components
 import { NavigationItem, NavigationOptions } from 'components/navigation/Navigation';

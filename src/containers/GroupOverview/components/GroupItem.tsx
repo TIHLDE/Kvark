@@ -3,11 +3,11 @@ import { GroupList } from 'types/Types';
 import URLS from 'URLS';
 
 // Material UI
-import { makeStyles } from '@material-ui/styles';
-import { Theme, Skeleton, ButtonBase, Typography } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Theme, Skeleton, ButtonBase, Typography } from '@mui/material';
 
 // Icons
-import MembersIcon from '@material-ui/icons/PersonRounded';
+import MembersIcon from '@mui/icons-material/PersonRounded';
 
 // Project components
 import Paper from 'components/layout/Paper';

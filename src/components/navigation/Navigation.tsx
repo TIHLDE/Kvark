@@ -8,7 +8,7 @@ import { useWarnings } from 'api/hooks/Warnings';
 import { SHOW_NEW_STUDENT_INFO } from 'constant';
 
 // Material UI Components
-import { Theme, useMediaQuery, Snackbar as MaterialSnackbar, Alert, styled } from '@material-ui/core';
+import { Theme, useMediaQuery, Snackbar as MaterialSnackbar, Alert, styled } from '@mui/material';
 
 // Project Components
 import Topbar from 'components/navigation/Topbar';

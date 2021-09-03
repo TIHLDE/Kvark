@@ -7,7 +7,7 @@ import URLS from 'URLS';
 import { EventCompact, News, JobPost } from 'types/Types';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 import {
   lighten,
   Theme,
@@ -18,13 +18,13 @@ import {
   ListItem as MaterialListItemButton,
   ListItemProps as MaterialListItemButtonProps,
   SvgIconTypeMap,
-} from '@material-ui/core';
-import { OverridableComponent } from '@material-ui/core/OverridableComponent';
+} from '@mui/material';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 // Icons
-import DateIcon from '@material-ui/icons/DateRangeRounded';
-import BusinessIcon from '@material-ui/icons/BusinessRounded';
-import DeadlineIcon from '@material-ui/icons/AlarmRounded';
+import DateIcon from '@mui/icons-material/DateRangeRounded';
+import BusinessIcon from '@mui/icons-material/BusinessRounded';
+import DeadlineIcon from '@mui/icons-material/AlarmRounded';
 
 // Project components
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';

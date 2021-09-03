@@ -7,8 +7,8 @@ import { EMAIL_REGEX } from 'constant';
 import { parseISO } from 'date-fns';
 
 // Material-UI
-import { makeStyles } from '@material-ui/styles';
-import { Button, Grid, LinearProgress } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Button, Grid, LinearProgress } from '@mui/material';
 
 // Project components
 import JobPostRenderer from 'containers/JobPostDetails/components/JobPostRenderer';

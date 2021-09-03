@@ -1,11 +1,11 @@
 import { Control, Controller, RegisterOptions, UseFormReturn } from 'react-hook-form';
-import { TextField as MuiTextField, TextFieldProps } from '@material-ui/core';
+import { TextField as MuiTextField, TextFieldProps } from '@mui/material';
 import {
   DatePicker as MuiDatePicker,
   DatePickerProps as MuiDatePickerProps,
   DateTimePicker as MuiDateTimePicker,
   DateTimePickerProps as MuiDateTimePickerProps,
-} from '@material-ui/lab';
+} from '@mui/lab';
 
 export type DatePickerProps = TextFieldProps &
   Pick<UseFormReturn, 'formState'> & {

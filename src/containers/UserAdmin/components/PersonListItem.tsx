@@ -6,11 +6,11 @@ import { useSnackbar } from 'api/hooks/Snackbar';
 import { getUserClass, getUserStudyShort } from 'utils';
 
 // Material UI Components
-import { Typography, Collapse, Theme, useMediaQuery, Skeleton, Button, ListItem, ListItemText, Divider, Stack } from '@material-ui/core';
+import { Typography, Collapse, Theme, useMediaQuery, Skeleton, Button, ListItem, ListItemText, Divider, Stack } from '@mui/material';
 
 // Icons
-import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
-import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 
 // Project components
 import Avatar from 'components/miscellaneous/Avatar';

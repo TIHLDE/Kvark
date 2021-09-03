@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { Theme, Typography, Button, ButtonProps } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Theme, Typography, Button, ButtonProps } from '@mui/material';
 
 const useStyles = makeStyles<Theme, Pick<BannerProps, 'background'>>((theme) => ({
   banner: {

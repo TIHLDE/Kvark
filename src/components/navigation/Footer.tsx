@@ -5,8 +5,8 @@ import ThemeSettings from 'components/miscellaneous/ThemeSettings';
 import { Link } from 'react-router-dom';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { Typography, Divider } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Typography, Divider } from '@mui/material';
 
 // Assets import
 import VERCEL from 'assets/icons/vercel.svg';

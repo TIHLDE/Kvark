@@ -1,10 +1,10 @@
 import { ReactNode } from 'react';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 import classNames from 'classnames';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 
 // Material UI Components
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@mui/material';
 
 // Project Components
 import Paper from 'components/layout/Paper';

@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 import { useGoogleAnalytics, useShare } from 'api/hooks/Utils';
 
 // Material UI Components
-import Button, { ButtonProps } from '@material-ui/core/Button';
-import ShareIcon from '@material-ui/icons/Share';
+import Button, { ButtonProps } from '@mui/material/Button';
+import ShareIcon from '@mui/icons-material/Share';
 
 export type ShareProps = ButtonProps & {
   title: string;

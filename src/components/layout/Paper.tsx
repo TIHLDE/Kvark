@@ -1,4 +1,4 @@
-import { Paper as MuiPaper, PaperProps as MuiPaperProps, styled, Theme } from '@material-ui/core';
+import { Paper as MuiPaper, PaperProps as MuiPaperProps, styled, Theme } from '@mui/material';
 
 export type PaperProps = MuiPaperProps & {
   noBorder?: boolean;

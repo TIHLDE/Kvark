@@ -7,10 +7,10 @@ import { News } from 'types/Types';
 import { useUpdateNews, useCreateNews, useDeleteNews, useNewsById } from 'api/hooks/News';
 
 // Material-UI
-import { makeStyles } from '@material-ui/styles';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import { makeStyles } from '@mui/styles';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import LinearProgress from '@mui/material/LinearProgress';
 
 // Project components
 import MarkdownEditor from 'components/inputs/MarkdownEditor';

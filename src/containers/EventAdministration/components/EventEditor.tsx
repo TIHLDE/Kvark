@@ -7,11 +7,11 @@ import { useSnackbar } from 'api/hooks/Snackbar';
 import { addHours, subDays, parseISO, setHours, startOfHour } from 'date-fns';
 
 // Material-UI
-import { makeStyles } from '@material-ui/styles';
-import { Button, Grid, MenuItem, Collapse, Accordion, AccordionSummary, AccordionDetails, Typography, LinearProgress } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Button, Grid, MenuItem, Collapse, Accordion, AccordionSummary, AccordionDetails, Typography, LinearProgress } from '@mui/material';
 
 // Icons
-import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 
 // Project components
 import EventFormEditor from 'containers/EventAdministration/components/EventFormEditor';

@@ -7,8 +7,8 @@ import URLS from 'URLS';
 import { HavePermission } from 'api/hooks/User';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { Typography, Button, Skeleton } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Typography, Button, Skeleton } from '@mui/material';
 
 // Project Components
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';

@@ -1,8 +1,8 @@
 import { useCallback, useState, useLayoutEffect, useContext, createContext, ReactNode } from 'react';
 import { getCookie, setCookie } from 'api/cookie';
 import { getTheme, themes, ThemeTypes } from '../theme';
-import { useMediaQuery } from '@material-ui/core';
-import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
+import { useMediaQuery } from '@mui/material';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { SELECTED_THEME } from 'constant';
 
 interface ContextProps {

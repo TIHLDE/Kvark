@@ -8,14 +8,14 @@ import { getTimeSince } from 'utils';
 import MuiLinkify from 'material-ui-linkify';
 
 // Material-UI
-import { Collapse, Skeleton, List, ListItem, ListItemText, ListItemIcon, Divider, Typography, IconButton } from '@material-ui/core';
+import { Collapse, Skeleton, List, ListItem, ListItemText, ListItemIcon, Divider, Typography, IconButton } from '@mui/material';
 
 // Icons
-import NotificationUnreadIcon from '@material-ui/icons/NotificationsRounded';
-import NotificationReadIcon from '@material-ui/icons/NotificationsNoneRounded';
-import LinkIcon from '@material-ui/icons/LinkRounded';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
-import ExpandLessIcon from '@material-ui/icons/ExpandLessRounded';
+import NotificationUnreadIcon from '@mui/icons-material/NotificationsRounded';
+import NotificationReadIcon from '@mui/icons-material/NotificationsNoneRounded';
+import LinkIcon from '@mui/icons-material/LinkRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 
 // Project components
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';

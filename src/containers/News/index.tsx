@@ -2,7 +2,7 @@ import { Fragment, useMemo } from 'react';
 import { useNews } from 'api/hooks/News';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 
 // Project Components
 import Page from 'components/navigation/Page';

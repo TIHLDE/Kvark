@@ -1,4 +1,4 @@
-import { TextField, ListItemText, Button, Autocomplete } from '@material-ui/core';
+import { TextField, ListItemText, Button, Autocomplete } from '@mui/material';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { Controller, useForm } from 'react-hook-form';
 import { useUsers } from 'api/hooks/User';
@@ -7,7 +7,7 @@ import { getUserClass, getUserStudyShort } from 'utils';
 import { useCreateMembership } from 'api/hooks/Membership';
 import Dialog from 'components/layout/Dialog';
 import SubmitButton from 'components/inputs/SubmitButton';
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@mui/icons-material/Add';
 import { UserList } from 'types/Types';
 import { useDebounce } from 'api/hooks/Utils';
 

@@ -18,10 +18,10 @@ import {
   ListItemSecondaryAction,
   IconButton,
   styled,
-} from '@material-ui/core';
+} from '@mui/material';
 
 // Icons
-import ShareIcon from '@material-ui/icons/ShareRounded';
+import ShareIcon from '@mui/icons-material/ShareRounded';
 
 // Project components
 import Dialog from 'components/layout/Dialog';

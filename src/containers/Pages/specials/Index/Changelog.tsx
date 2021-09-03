@@ -1,4 +1,4 @@
-import { Typography, styled } from '@material-ui/core';
+import { Typography, styled } from '@mui/material';
 import Paper from 'components/layout/Paper';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 const LATEST_VERION_INDEX = 3;

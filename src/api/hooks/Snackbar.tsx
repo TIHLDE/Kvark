@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext, useCallback, useMemo, createContext, ReactNode } from 'react';
 
-import { Snackbar as MaterialSnackbar, Alert, styled } from '@material-ui/core';
+import { Snackbar as MaterialSnackbar, Alert, styled } from '@mui/material';
 
 const Snackbar = styled(MaterialSnackbar)(({ theme }) => ({
   [theme.breakpoints.down('lg')]: {

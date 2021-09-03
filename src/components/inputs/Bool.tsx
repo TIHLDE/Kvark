@@ -9,7 +9,7 @@ import {
   Switch as MuiSwitch,
   FormControl as MuiFormControl,
   FormHelperText as MuiFormHelperText,
-} from '@material-ui/core';
+} from '@mui/material';
 
 export type IBoolProps = Omit<FormControlLabelProps, 'control'> &
   Pick<UseFormReturn, 'formState'> & {

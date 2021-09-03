@@ -5,8 +5,8 @@ import { useUpdateUser } from 'api/hooks/User';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material-UI
-import { makeStyles } from '@material-ui/styles';
-import { MenuItem, Typography } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { MenuItem, Typography } from '@mui/material';
 
 // Project components
 import TextField from 'components/inputs/TextField';

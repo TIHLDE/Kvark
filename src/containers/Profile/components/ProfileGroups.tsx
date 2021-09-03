@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useUserGroups } from 'api/hooks/User';
 
 // Material UI Components
-import Grid from '@material-ui/core/Grid';
+import Grid from '@mui/material/Grid';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import GroupItem, { GroupItemLoading } from 'containers/GroupOverview/components/GroupItem';
 

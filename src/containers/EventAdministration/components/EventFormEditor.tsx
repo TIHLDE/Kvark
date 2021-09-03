@@ -2,9 +2,9 @@ import { EventForm } from 'types/Types';
 import { useFormById, useCreateForm } from 'api/hooks/Form';
 
 // Material UI
-import { makeStyles } from '@material-ui/styles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import { makeStyles } from '@mui/styles';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 
 // Project components
 import FormEditor from 'components/forms/FormEditor';

@@ -6,17 +6,17 @@ import { useNavigate } from 'react-router-dom';
 import { useLogout } from 'api/hooks/User';
 
 // Material-UI
-import { makeStyles } from '@material-ui/styles';
-import { SvgIconProps, Badge, Collapse, List, ListItem, ListItemIcon, ListItemText, Stack } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { SvgIconProps, Badge, Collapse, List, ListItem, ListItemIcon, ListItemText, Stack } from '@mui/material';
 
 // Icons
-import EventIcon from '@material-ui/icons/DateRangeRounded';
-import NotificationsIcon from '@material-ui/icons/NotificationsNoneRounded';
-import SettingsIcon from '@material-ui/icons/SettingsRounded';
-import AdminIcon from '@material-ui/icons/TuneRounded';
-import LogOutIcon from '@material-ui/icons/ExitToAppRounded';
-import BadgesIcon from '@material-ui/icons/EmojiEventsRounded';
-import GroupsIcon from '@material-ui/icons/PeopleOutlineRounded';
+import EventIcon from '@mui/icons-material/DateRangeRounded';
+import NotificationsIcon from '@mui/icons-material/NotificationsNoneRounded';
+import SettingsIcon from '@mui/icons-material/SettingsRounded';
+import AdminIcon from '@mui/icons-material/TuneRounded';
+import LogOutIcon from '@mui/icons-material/ExitToAppRounded';
+import BadgesIcon from '@mui/icons-material/EmojiEventsRounded';
+import GroupsIcon from '@mui/icons-material/PeopleOutlineRounded';
 
 // Project Components
 import ProfileAdmin from 'containers/Profile/components/ProfileAdmin';

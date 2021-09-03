@@ -1,4 +1,4 @@
-import { Container as MuiContainer, ContainerProps as MuiContainerProps, styled } from '@material-ui/core';
+import { Container as MuiContainer, ContainerProps as MuiContainerProps, styled } from '@mui/material';
 
 export type ContainerProps = MuiContainerProps;
 

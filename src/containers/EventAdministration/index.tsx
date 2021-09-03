@@ -6,14 +6,14 @@ import { parseISO } from 'date-fns';
 import { formatDate } from 'utils';
 
 // Material-UI
-import { makeStyles } from '@material-ui/styles';
-import { Typography, Collapse } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Typography, Collapse } from '@mui/material';
 
 // Icons
-import EditIcon from '@material-ui/icons/EditRounded';
-import ParticipantsIcon from '@material-ui/icons/PeopleRounded';
-import RegisterIcon from '@material-ui/icons/PlaylistAddCheckRounded';
-import OpenIcon from '@material-ui/icons/OpenInBrowserRounded';
+import EditIcon from '@mui/icons-material/EditRounded';
+import ParticipantsIcon from '@mui/icons-material/PeopleRounded';
+import RegisterIcon from '@mui/icons-material/PlaylistAddCheckRounded';
+import OpenIcon from '@mui/icons-material/OpenInBrowserRounded';
 
 // Project components
 import Paper from 'components/layout/Paper';

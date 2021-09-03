@@ -1,7 +1,7 @@
-import { Box, Grid, Typography } from '@material-ui/core';
-import MailOutlineIcon from '@material-ui/icons/MailOutline';
-import ContactMailIcon from '@material-ui/icons/ContactMail';
-import GithubIcon from '@material-ui/icons/CodeRounded';
+import { Box, Grid, Typography } from '@mui/material';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import ContactMailIcon from '@mui/icons-material/ContactMail';
+import GithubIcon from '@mui/icons-material/CodeRounded';
 
 import Paper from 'components/layout/Paper';
 

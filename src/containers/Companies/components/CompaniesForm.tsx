@@ -8,7 +8,7 @@ import addMonths from 'date-fns/addMonths';
 import { EMAIL_REGEX } from 'constant';
 
 // Material UI Components
-import { Divider, Stack } from '@material-ui/core';
+import { Divider, Stack } from '@mui/material';
 
 // Project components
 import Paper from 'components/layout/Paper';

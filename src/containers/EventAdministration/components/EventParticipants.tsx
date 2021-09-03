@@ -3,11 +3,11 @@ import { useEventById, useEventRegistrations } from 'api/hooks/Event';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material-UI
-import { makeStyles } from '@material-ui/styles';
-import { Typography, Stack, Divider, FormControlLabel, Checkbox, Button, List, LinearProgress } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Typography, Stack, Divider, FormControlLabel, Checkbox, Button, List, LinearProgress } from '@mui/material';
 
 // Icons
-import CopyIcon from '@material-ui/icons/FileCopyOutlined';
+import CopyIcon from '@mui/icons-material/FileCopyOutlined';
 
 // Project
 import Participant from 'containers/EventAdministration/components/Participant';

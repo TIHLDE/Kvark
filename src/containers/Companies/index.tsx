@@ -2,12 +2,12 @@ import { useRef } from 'react';
 import URLS from 'URLS';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { Typography } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Typography } from '@mui/material';
 
 // Icons and images
 import Image from 'assets/img/glad.jpg';
-import SendIcon from '@material-ui/icons/SendRounded';
+import SendIcon from '@mui/icons-material/SendRounded';
 
 // Project Components
 import Page from 'components/navigation/Page';

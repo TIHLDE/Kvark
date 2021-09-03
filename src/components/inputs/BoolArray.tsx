@@ -1,7 +1,7 @@
 import { Control, Controller, RegisterOptions, UseFormReturn, UseFormGetValues } from 'react-hook-form';
 
 // Material UI Components
-import { FormControlLabel, Radio, FormControlLabelProps, Checkbox, FormHelperText, FormControl, FormGroup, FormLabel } from '@material-ui/core';
+import { FormControlLabel, Radio, FormControlLabelProps, Checkbox, FormHelperText, FormControl, FormGroup, FormLabel } from '@mui/material';
 import { Switch } from 'components/inputs/Bool';
 
 export type IBoolArrayProps<OptionType> = Pick<FormControlLabelProps, 'label' | 'disabled'> &

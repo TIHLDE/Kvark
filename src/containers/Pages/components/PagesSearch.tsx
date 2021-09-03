@@ -3,8 +3,8 @@ import { usePages } from 'api/hooks/Pages';
 import { useDebounce, useGoogleAnalytics } from 'api/hooks/Utils';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { TextField, Collapse, Typography } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { TextField, Collapse, Typography } from '@mui/material';
 
 // Project components
 import Dialog from 'components/layout/Dialog';

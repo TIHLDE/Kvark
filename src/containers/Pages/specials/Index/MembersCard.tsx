@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { UserList } from 'types/Types';
 
-import { ListItem, ListItemText, ListItemAvatar, List, Grid, Typography, Skeleton } from '@material-ui/core';
+import { ListItem, ListItemText, ListItemAvatar, List, Grid, Typography, Skeleton } from '@mui/material';
 
 import Paper from 'components/layout/Paper';
 import { useMemberships } from 'api/hooks/Membership';

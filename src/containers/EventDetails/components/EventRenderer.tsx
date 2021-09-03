@@ -14,11 +14,11 @@ import { useUser, HavePermission } from 'api/hooks/User';
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { Typography, Button, Collapse, Skeleton, Alert, useMediaQuery, Theme } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Typography, Button, Collapse, Skeleton, Alert, useMediaQuery, Theme } from '@mui/material';
 
 // Icons
-import CalendarIcon from '@material-ui/icons/EventRounded';
+import CalendarIcon from '@mui/icons-material/EventRounded';
 
 // Project Components
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';

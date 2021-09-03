@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 import { useIsAuthenticated } from 'api/hooks/User';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { Typography, Button } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Typography, Button } from '@mui/material';
 
 // Icons
-import SignupIcon from '@material-ui/icons/AddRounded';
-import LoginIcon from '@material-ui/icons/LoginRounded';
-import ProfileIcon from '@material-ui/icons/PersonOutlineRounded';
+import SignupIcon from '@mui/icons-material/AddRounded';
+import LoginIcon from '@mui/icons-material/LoginRounded';
+import ProfileIcon from '@mui/icons-material/PersonOutlineRounded';
 
 // Images
 import { ReactComponent as WaveTop } from 'assets/img/waves/wave-top.svg';

@@ -4,15 +4,15 @@ import { CheatsheetType } from 'types/Enums';
 import { Cheatsheet } from 'types/Types';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { Theme, Divider, useMediaQuery, Typography, List, ListItemButton, Tooltip } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Theme, Divider, useMediaQuery, Typography, List, ListItemButton, Tooltip } from '@mui/material';
 
 // Icons
 import { ReactComponent as GitHub } from 'assets/icons/github.svg';
-import VerifiedIcon from '@material-ui/icons/VerifiedUserRounded';
-import DocumentIcon from '@material-ui/icons/DescriptionRounded';
-import LinkIcon from '@material-ui/icons/LinkRounded';
-import OpenInNewIcon from '@material-ui/icons/OpenInNewRounded';
+import VerifiedIcon from '@mui/icons-material/VerifiedUserRounded';
+import DocumentIcon from '@mui/icons-material/DescriptionRounded';
+import LinkIcon from '@mui/icons-material/LinkRounded';
+import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
 
 // Project Components
 import Paper from 'components/layout/Paper';

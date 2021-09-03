@@ -5,7 +5,7 @@ import { useUpdateGroup } from 'api/hooks/Group';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { Group } from 'types/Types';
 
-import EditIcon from '@material-ui/icons/Edit';
+import EditIcon from '@mui/icons-material/Edit';
 
 import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';

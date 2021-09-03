@@ -9,19 +9,19 @@ import URLS from 'URLS';
 import { Page as PageType } from 'types/Types';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 
 // Icons
-import EventIcon from '@material-ui/icons/EventRounded';
-import FaqIcon from '@material-ui/icons/HelpOutlineRounded';
-import VolunteerIcon from '@material-ui/icons/VolunteerActivismRounded';
-import SportsIcon from '@material-ui/icons/SportsSoccerRounded';
-import ListIcon from '@material-ui/icons/FormatListBulletedRounded';
-import CalendarIcon from '@material-ui/icons/DateRangeRounded';
-import SignupIcon from '@material-ui/icons/ArrowForwardRounded';
-import OpenInNewIcon from '@material-ui/icons/OpenInNewRounded';
-import AboutIcon from '@material-ui/icons/InfoRounded';
+import EventIcon from '@mui/icons-material/EventRounded';
+import FaqIcon from '@mui/icons-material/HelpOutlineRounded';
+import VolunteerIcon from '@mui/icons-material/VolunteerActivismRounded';
+import SportsIcon from '@mui/icons-material/SportsSoccerRounded';
+import ListIcon from '@mui/icons-material/FormatListBulletedRounded';
+import CalendarIcon from '@mui/icons-material/DateRangeRounded';
+import SignupIcon from '@mui/icons-material/ArrowForwardRounded';
+import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
+import AboutIcon from '@mui/icons-material/InfoRounded';
 
 // Project Components
 import Expansion from 'components/layout/Expand';

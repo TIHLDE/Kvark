@@ -4,7 +4,7 @@ import { useGroup } from 'api/hooks/Group';
 import { useMemberships } from 'api/hooks/Membership';
 
 // Material UI
-import { Skeleton, Typography, ListItem, ListItemAvatar, ListItemText, Stack } from '@material-ui/core';
+import { Skeleton, Typography, ListItem, ListItemAvatar, ListItemText, Stack } from '@mui/material';
 
 // Project components
 import Http404 from 'containers/Http404';

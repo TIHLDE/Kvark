@@ -6,16 +6,16 @@ import { useSnackbar } from 'api/hooks/Snackbar';
 import { ShortLink } from 'types/Types';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import MuiTextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import { makeStyles } from '@mui/styles';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import MuiTextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
 
 // Icons
-import DeleteIcon from '@material-ui/icons/DeleteRounded';
-import ShareIcon from '@material-ui/icons/ShareRounded';
+import DeleteIcon from '@mui/icons-material/DeleteRounded';
+import ShareIcon from '@mui/icons-material/ShareRounded';
 
 // Project Components
 import Page from 'components/navigation/Page';

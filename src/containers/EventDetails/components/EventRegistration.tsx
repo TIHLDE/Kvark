@@ -8,14 +8,14 @@ import { useSnackbar } from 'api/hooks/Snackbar';
 import { useForm } from 'react-hook-form';
 
 // Material UI Components
-import { Box, IconProps, Typography, FormControlLabel, Checkbox, Button } from '@material-ui/core';
+import { Box, IconProps, Typography, FormControlLabel, Checkbox, Button } from '@mui/material';
 
 // Icons
-import PersonIcon from '@material-ui/icons/PersonOutlineRounded';
-import MailIcon from '@material-ui/icons/MailOutlineRounded';
-import AllergyIcon from '@material-ui/icons/FastfoodRounded';
-import SchoolIcon from '@material-ui/icons/SchoolRounded';
-import HomeIcon from '@material-ui/icons/HomeRounded';
+import PersonIcon from '@mui/icons-material/PersonOutlineRounded';
+import MailIcon from '@mui/icons-material/MailOutlineRounded';
+import AllergyIcon from '@mui/icons-material/FastfoodRounded';
+import SchoolIcon from '@mui/icons-material/SchoolRounded';
+import HomeIcon from '@mui/icons-material/HomeRounded';
 
 // Project components
 import Paper from 'components/layout/Paper';

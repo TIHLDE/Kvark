@@ -4,8 +4,8 @@ import { UserClass, UserStudy } from 'types/Enums';
 import { getUserStudyShort } from 'utils';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { Typography } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Typography } from '@mui/material';
 
 const useStyles = makeStyles((theme) => ({
   prioritiesContainer: {

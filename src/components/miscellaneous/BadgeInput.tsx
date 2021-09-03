@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Grid, TextField } from '@material-ui/core';
+import { Button, Grid, TextField } from '@mui/material';
 import { useBadge } from 'api/hooks/Badge';
 import { useSnackbar } from 'api/hooks/Snackbar';
 

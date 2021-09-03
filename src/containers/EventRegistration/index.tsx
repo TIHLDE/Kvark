@@ -6,11 +6,11 @@ import { useEventById, useEventRegistrations, useUpdateEventRegistration } from 
 import { useSnackbar } from 'api/hooks/Snackbar';
 
 // Material UI Components
-import { Theme, Stack, Typography, TextField, LinearProgress, FormControlLabel, Checkbox, useMediaQuery } from '@material-ui/core';
+import { Theme, Stack, Typography, TextField, LinearProgress, FormControlLabel, Checkbox, useMediaQuery } from '@mui/material';
 
 // Icons
-import NameIcon from '@material-ui/icons/TextFieldsRounded';
-import QRIcon from '@material-ui/icons/QrCodeScannerRounded';
+import NameIcon from '@mui/icons-material/TextFieldsRounded';
+import QRIcon from '@mui/icons-material/QrCodeScannerRounded';
 
 // Project Components
 import Http404 from 'containers/Http404';
