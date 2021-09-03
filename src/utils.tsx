@@ -5,15 +5,22 @@ import { UserStudy, UserClass } from 'types/Enums';
 
 export const urlEncode = (text = '') => slugify(text, { lower: true, strict: true, locale: 'nb' });
 
-// Short down string if needed
-export const shortDownString = (string: string, charsToShortDown: number) => {
-  if (string.length > charsToShortDown) {
-    string = string.slice(0, charsToShortDown) + '...';
+/**
+ * Short down string if longer than limit
+ * @param string String to shorten
+ * @param maxStringLength Max length of returned string
+ */
+export const shortDownString = (string: string, maxStringLength: number) => {
+  if (string.length > maxStringLength) {
+    string = string.slice(0, maxStringLength) + '...';
   }
   return string;
 };
 
-// Get user study short
+/**
+ * Get user study in shortened version
+ * @param userStudy User study
+ */
 export const getUserStudyShort = (userStudy: UserStudy) => {
   switch (userStudy) {
     case UserStudy.DATAING:
@@ -30,7 +37,11 @@ export const getUserStudyShort = (userStudy: UserStudy) => {
       return 'Ukjent studie';
   }
 };
-// Get user study long
+
+/**
+ * Get user study in long version
+ * @param userStudy User study
+ */
 export const getUserStudyLong = (userStudy: UserStudy) => {
   switch (userStudy) {
     case UserStudy.DATAING:
@@ -47,7 +58,11 @@ export const getUserStudyLong = (userStudy: UserStudy) => {
       return 'Ukjent studie';
   }
 };
-// Get user class
+
+/**
+ * Get user class as text
+ * @param userClass User class
+ */
 export const getUserClass = (userClass: UserClass) => {
   switch (userClass) {
     case UserClass.ALUMNI:
@@ -67,9 +82,17 @@ export const getUserClass = (userClass: UserClass) => {
   }
 };
 
-// Add leading zero to numbers below 10. Ex: 2 -> 02, 12 -> 12
+/**
+ * Add leading zero to numbers below 10. Ex: 2 -> 02, 12 -> 12
+ * @param number Number to add zeros to
+ */
 const addLeadingZero = (number: number) => (number < 10 ? '0' + number : number);
 
+/**
+ * Format date in format: `torsdag 12 oktober 2021 - kl. 08:30`
+ * Year is only shown if it's a different year than this year
+ * @param date Date to be formatted
+ */
 export const formatDate = (date: Date) => {
   const isDifferentYear = date.getFullYear() !== new Date().getFullYear();
   return `${getDay(date.getDay())} ${date.getDate()} ${getMonth(date.getMonth())} ${isDifferentYear ? date.getFullYear() : ''} - kl. ${addLeadingZero(
@@ -77,6 +100,11 @@ export const formatDate = (date: Date) => {
   )}:${addLeadingZero(date.getMinutes())}`;
 };
 
+/**
+ * Get time since a date, format: `x sekunder/minutter/timer/dager siden`
+ * Returns `formatDate(date)` if more than 7 days ago
+ * @param date Date to get time since
+ */
 export const getTimeSince = (date: Date) => {
   const ms = new Date().getTime() - date.getTime();
   const sec = Number((ms / 1000).toFixed(0));
@@ -96,6 +124,10 @@ export const getTimeSince = (date: Date) => {
   }
 };
 
+/**
+ * Translate a day of week number to a readable day
+ * @param day Day of week
+ */
 export const getDay = (day: number) => {
   switch (day) {
     case 0:
@@ -116,6 +148,11 @@ export const getDay = (day: number) => {
       return day;
   }
 };
+
+/**
+ * Translate a month of year number to a readable month
+ * @param month Month of year
+ */
 export const getMonth = (month: number) => {
   switch (month) {
     case 0:

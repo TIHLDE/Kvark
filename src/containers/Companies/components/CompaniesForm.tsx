@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { CompaniesEmail } from 'types/Types';
 import API from 'api/api';
+import { useGoogleAnalytics } from 'api/hooks/Utils';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import addMonths from 'date-fns/addMonths';
 import { EMAIL_REGEX } from 'constant';
@@ -14,24 +15,33 @@ import Paper from 'components/layout/Paper';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import BoolArray from 'components/inputs/BoolArray';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+
+type CompaniesEmailFormValues = Omit<CompaniesEmail, 'time' | 'type'> & {
+  time: Array<{ label: string }>;
+  type: Array<{ label: string }>;
+};
 
 const CompaniesForm = () => {
   const { event } = useGoogleAnalytics();
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
-  const { register, control, handleSubmit, formState, getValues, reset, setError } = useForm<CompaniesEmail>();
+  const { register, control, handleSubmit, formState, getValues, reset, setError } = useForm<CompaniesEmailFormValues>();
 
-  const submitForm = async (data: CompaniesEmail) => {
+  const submitForm = async (data: CompaniesEmailFormValues) => {
     if (isLoading) {
       return;
     }
     setIsLoading(true);
     try {
-      const response = await API.emailForm(data);
+      const companyData: CompaniesEmail = {
+        ...data,
+        time: data.time.map((t) => t.label),
+        type: data.type.map((t) => t.label),
+      };
+      const response = await API.emailForm(companyData);
       event('submit-form', 'companies', `Company: ${data.info.bedrift}`);
       showSnackbar(response.detail, 'success');
-      reset({ info: { bedrift: '', kontaktperson: '', epost: '' }, comment: '' } as CompaniesEmail);
+      reset({ info: { bedrift: '', kontaktperson: '', epost: '' }, comment: '', time: [], type: [] } as CompaniesEmailFormValues);
     } catch (e) {
       setError('info.bedrift', { message: e.detail || 'Noe gikk galt' });
     } finally {
@@ -87,7 +97,9 @@ const CompaniesForm = () => {
             getValues={getValues}
             label='Semester'
             name='time'
-            options={semesters.map((s) => ({ value: s, label: s }))}
+            optionLabelKey='label'
+            options={semesters.map((s) => ({ label: s }))}
+            optionValueKey='label'
             type='checkbox'
           />
           <BoolArray
@@ -96,7 +108,9 @@ const CompaniesForm = () => {
             getValues={getValues}
             label='Arrangementer'
             name='type'
-            options={types.map((t) => ({ value: t, label: t }))}
+            optionLabelKey='label'
+            options={types.map((t) => ({ label: t }))}
+            optionValueKey='label'
             type='checkbox'
           />
         </Stack>

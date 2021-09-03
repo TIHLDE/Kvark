@@ -1,10 +1,9 @@
 import { ComponentType, useState } from 'react';
-import { Event, User, TextFieldSubmission, SelectFieldSubmission, Form } from 'types/Types';
-import { FormFieldType } from 'types/Enums';
+import { Event, User, Submission, Form } from 'types/Types';
 import URLS from 'URLS';
 import { getUserStudyShort, shortDownString } from 'utils';
 import { useCreateEventRegistration } from 'api/hooks/Event';
-import { useFormById } from 'api/hooks/Form';
+import { useFormById, useCreateSubmission, validateSubmissionInput } from 'api/hooks/Form';
 import { useSnackbar } from 'api/hooks/Snackbar';
 import { useForm } from 'react-hook-form';
 
@@ -43,6 +42,7 @@ export type EventRegistrationProps = {
 const EventRegistration = ({ event, user }: EventRegistrationProps) => {
   const { event: GAEvent } = useGoogleAnalytics();
   const createRegistration = useCreateEventRegistration(event.id);
+  const createSubmission = useCreateSubmission(event.survey);
   const showSnackbar = useSnackbar();
   const { data: form, isLoading: isFormLoading } = useFormById(event.survey || '-');
   const [isLoading, setIsLoading] = useState(false);
@@ -54,29 +54,30 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
 
   const registerDisabled = isLoading || isFormLoading || !agreeRules;
 
-  const submit = async (data: { answers?: Array<TextFieldSubmission | SelectFieldSubmission> }) => {
+  const submit = async (data: Submission) => {
     if (registerDisabled) {
       showSnackbar('Du må godkjenne arrangementsreglene før du kan melde deg på', 'warning');
       return;
     }
     setIsLoading(true);
     try {
-      data.answers?.forEach((answer, index) => {
-        const field = form?.fields.find((field) => field.id === answer.field);
-        if (field && field.type === FormFieldType.MULTIPLE_SELECT && field.required) {
-          const ans = answer as SelectFieldSubmission;
-          if (!ans.selected_options || !ans.selected_options.length) {
-            throw new Error(`answers.${index}.selected_options`);
-          }
-        }
-      });
+      if (form) {
+        validateSubmissionInput(data, form);
+      }
     } catch (e) {
       setError(e.message, { message: 'Du må velge ett eller flere alternativ' });
       setIsLoading(false);
       return;
     }
+    try {
+      await createSubmission.mutateAsync(data);
+    } catch (e) {
+      showSnackbar(e.message, 'error');
+      setIsLoading(false);
+      return;
+    }
     createRegistration.mutate(
-      { allow_photo: allowPhoto, ...data },
+      { allow_photo: allowPhoto },
       {
         onSuccess: () => {
           showSnackbar('Påmeldingen var vellykket', 'success');

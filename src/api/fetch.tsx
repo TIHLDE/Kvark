@@ -1,5 +1,5 @@
 import { getCookie } from 'api/cookie';
-import { TOKEN_HEADER_NAME, TIHLDE_API, ACCESS_TOKEN } from 'constant';
+import { TOKEN_HEADER_NAME, TIHLDE_API_URL, ACCESS_TOKEN } from 'constant';
 import { RequestResponse } from 'types/Types';
 import { argsToParams } from 'utils';
 
@@ -16,7 +16,7 @@ type FetchProps = {
 
 // eslint-disable-next-line comma-spacing
 export const IFetch = <T,>({ method, url, data = {}, withAuth = true, file }: FetchProps): Promise<T> => {
-  const urlAddress = TIHLDE_API.URL + url;
+  const urlAddress = TIHLDE_API_URL + url;
   const headers = new Headers();
   if (!file) {
     headers.append('Content-Type', 'application/json');
