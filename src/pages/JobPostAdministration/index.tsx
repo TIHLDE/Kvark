@@ -1,0 +1,90 @@
+import { useState } from 'react';
+import URLS from 'URLS';
+import { useNavigate, useParams, Navigate } from 'react-router-dom';
+import { useJobPosts } from 'hooks/JobPost';
+
+// Material-UI
+import { makeStyles } from '@mui/styles';
+import { Typography, Collapse } from '@mui/material';
+
+// Icons
+import EditIcon from '@mui/icons-material/EditRounded';
+import OpenIcon from '@mui/icons-material/OpenInBrowserRounded';
+
+// Project components
+import Paper from 'components/layout/Paper';
+import Page from 'components/navigation/Page';
+import Tabs from 'components/layout/Tabs';
+import SidebarList from 'components/layout/SidebarList';
+import JobPostEditor from 'pages/JobPostAdministration/components/JobPostEditor';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: theme.spacing(4),
+    marginLeft: theme.spacing(35),
+    [theme.breakpoints.down('lg')]: {
+      padding: theme.spacing(4, 1, 6),
+      marginLeft: 0,
+    },
+  },
+  content: {
+    maxWidth: 900,
+    margin: '0 auto',
+  },
+  header: {
+    color: theme.palette.text.primary,
+    paddingLeft: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+  },
+}));
+
+const JobPostAdministration = () => {
+  const classes = useStyles();
+  const navigate = useNavigate();
+  const { jobPostId } = useParams();
+  const editTab = { value: 'edit', label: jobPostId ? 'Endre' : 'Skriv', icon: EditIcon };
+  const navigateTab = { value: 'navigate', label: 'Se annonse', icon: OpenIcon };
+  const tabs = jobPostId ? [editTab, navigateTab] : [editTab];
+  const [tab, setTab] = useState(editTab.value);
+
+  const goToJobPost = (newJobPost: number | null) => {
+    if (newJobPost) {
+      navigate(`${URLS.jobpostsAdmin}${newJobPost}/`);
+    } else {
+      setTab(editTab.value);
+      navigate(URLS.jobpostsAdmin);
+    }
+  };
+
+  return (
+    <Page
+      maxWidth={false}
+      options={{ lightColor: 'blue', filledTopbar: true, gutterBottom: true, gutterTop: true, noFooter: true, title: 'Admin jobbannonser' }}>
+      <SidebarList
+        descKey='company'
+        idKey='id'
+        onItemClick={(id: number | null) => goToJobPost(id || null)}
+        selectedItemId={Number(jobPostId)}
+        title='Annonser'
+        titleKey='title'
+        useHook={useJobPosts}
+      />
+      <div className={classes.root}>
+        <div className={classes.content}>
+          <Typography className={classes.header} variant='h2'>
+            {jobPostId ? 'Endre annonse' : 'Ny annonse'}
+          </Typography>
+          <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
+          <Paper>
+            <Collapse in={tab === editTab.value} mountOnEnter>
+              <JobPostEditor goToJobPost={goToJobPost} jobpostId={Number(jobPostId)} />
+            </Collapse>
+            {tab === navigateTab.value && <Navigate to={`${URLS.jobposts}${jobPostId}/`} />}
+          </Paper>
+        </div>
+      </div>
+    </Page>
+  );
+};
+
+export default JobPostAdministration;
