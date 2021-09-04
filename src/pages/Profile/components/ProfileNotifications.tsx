@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import { Notification } from 'types/Types';
 import { useNotifications, useUpdateNotification } from 'hooks/Notification';
 import { useGoogleAnalytics } from 'hooks/Utils';
-import { getTimeSince } from 'utils';
-import MuiLinkify from 'material-ui-linkify';
+import { getTimeSince, isExternalURL } from 'utils';
 
 // Material-UI
 import { Collapse, Skeleton, List, ListItem, ListItemText, ListItemIcon, Divider, Typography, IconButton } from '@mui/material';
@@ -19,6 +18,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 
 // Project components
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import Linkify from 'components/miscellaneous/Linkify';
 import Paper from 'components/layout/Paper';
 import Pagination from 'components/layout/Pagination';
 
@@ -48,7 +48,7 @@ const NotificationItem = ({ notification }: NotificationItemProps) => {
           <>
             {notification.link && (
               <IconButton
-                {...(notification.link.substr(0, 4) === 'http' ? { component: 'a', href: notification.link } : { component: Link, to: notification.link })}
+                {...(isExternalURL(notification.link) ? { component: 'a', href: notification.link } : { component: Link, to: notification.link })}
                 aria-label='Åpne link'
                 edge='start'
                 onClick={() => event('open-notification-link', 'notifications', `Opened notification link: ${notification.link}`)}>
@@ -65,15 +65,12 @@ const NotificationItem = ({ notification }: NotificationItemProps) => {
         <ListItemIcon>
           <Icon />
         </ListItemIcon>
-        <ListItemText
-          primary={<MuiLinkify LinkProps={{ color: 'inherit', underline: 'always' }}>{notification.title}</MuiLinkify>}
-          secondary={getTimeSince(parseISO(notification.created_at))}
-        />
+        <ListItemText primary={<Linkify>{notification.title}</Linkify>} secondary={getTimeSince(parseISO(notification.created_at))} />
       </ListItem>
       <Collapse in={showDescription}>
         <Divider />
         <Typography sx={{ whiteSpace: 'break-spaces', overflowWrap: 'break-word', py: 1, px: 2 }} variant='body2'>
-          <MuiLinkify LinkProps={{ color: 'inherit', underline: 'always' }}>{notification.description}</MuiLinkify>
+          <Linkify>{notification.description}</Linkify>
         </Typography>
       </Collapse>
     </Paper>

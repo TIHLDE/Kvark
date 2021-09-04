@@ -10,9 +10,9 @@ import { styled, Divider, Typography, Skeleton } from '@mui/material';
 // Project components
 import Expand from 'components/layout/Expand';
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
+import Linkify from 'components/miscellaneous/Linkify';
 
 const ReactMarkdown = lazy(() => import('react-markdown'));
-const MuiLinkify = lazy(() => import('material-ui-linkify'));
 
 const Ol = styled('ol')(({ theme }) => ({
   listStylePosition: 'inside',
@@ -157,8 +157,11 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
       ul: ({ children }: { children: ReactNode[]; ordered: boolean }) => <Ul>{children}</Ul>,
       li: ({ children, checked }: { children: ReactNode[]; checked: boolean }) =>
         createElement(Li, {}, checked ? createElement('input', { type: 'checkbox', checked, readOnly: true }) : null, children),
-      p: ({ children }: { children: ReactNode[] }) =>
-        createElement(MuiLinkify, { LinkProps: { color: 'inherit', underline: 'always' } }, <Heading variant='body1'>{children}</Heading>),
+      p: ({ children }: { children: ReactNode[] }) => (
+        <Linkify>
+          <Heading variant='body1'>{children}</Heading>
+        </Linkify>
+      ),
       hr: () => <Divider sx={{ my: 1 }} />,
       img: ({ alt, src }: { alt: string; src: string }) => <Image alt={alt} src={src} />,
     }),

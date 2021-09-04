@@ -3,7 +3,21 @@ import { parseISO, format, subMinutes } from 'date-fns';
 import { Event } from 'types/Types';
 import { UserStudy, UserClass } from 'types/Enums';
 
+/**
+ * Slugify a string to make it safe to use in an URL
+ * @param text The string the slugify
+ */
 export const urlEncode = (text = '') => slugify(text, { lower: true, strict: true, locale: 'nb' });
+
+/**
+ * Test if an URL points to an external website or an internal page
+ *
+ * *Examples:*
+ * - https://www.tihlde.org -> `true`
+ * - /arrangementer/8/ -> `false`
+ * @param url The URL to check
+ */
+export const isExternalURL = (url = '') => new RegExp('^(?:[a-z]+:)?//', 'i').test(url);
 
 /**
  * Short down string if longer than limit
