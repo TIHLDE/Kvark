@@ -1,16 +1,12 @@
-import { Control, Controller, RegisterOptions, UseFormReturn, UseFormGetValues } from 'react-hook-form';
+import { Controller, RegisterOptions, UseFormReturn, Path, FieldError, UnpackNestedValue, PathValue } from 'react-hook-form';
 
 // Material UI Components
 import { FormControlLabel, Radio, FormControlLabelProps, Checkbox, FormHelperText, FormControl, FormGroup, FormLabel } from '@mui/material';
 import { Switch } from 'components/inputs/Bool';
 
-export type IBoolArrayProps<OptionType> = Pick<FormControlLabelProps, 'label' | 'disabled'> &
-  Pick<UseFormReturn, 'formState'> & {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    control: Control<any>;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    getValues: UseFormGetValues<any>;
-    name: string;
+export type BoolArrayProps<OptionType, FormValues> = Pick<FormControlLabelProps, 'label' | 'disabled'> &
+  Pick<UseFormReturn<FormValues>, 'formState' | 'control' | 'getValues'> & {
+    name: Path<FormValues>;
     helperText?: string;
     rules?: RegisterOptions;
     type: 'checkbox' | 'switch' | 'radio';
@@ -39,8 +35,7 @@ export type IBoolArrayProps<OptionType> = Pick<FormControlLabelProps, 'label' | 
     getPathToObject?: (obj: any) => Array<string>;
   };
 
-// eslint-disable-next-line comma-spacing
-const BoolArray = <OptionType,>({
+const BoolArray = <OptionType, FormValues>({
   defaultValue = [],
   getPathToObject,
   options,
@@ -55,13 +50,15 @@ const BoolArray = <OptionType,>({
   rules = {},
   disabled,
   label,
-}: IBoolArrayProps<OptionType>) => {
+}: BoolArrayProps<OptionType, FormValues>) => {
   const error = getPathToObject ? getPathToObject(formState.errors) : formState.errors;
   const Child = type === 'switch' ? Switch : type === 'checkbox' ? Checkbox : Radio;
   const handleCheck = (checkedValue: OptionType[typeof optionValueKey]) => {
     if (type === 'radio') {
       return [{ [optionValueKey]: checkedValue }];
     }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const values: OptionType[] | null = getPathToObject ? getPathToObject(getValues()) : getValues()[name];
     return values?.some((value) => value[optionValueKey] === checkedValue)
       ? values.filter((option) => option[optionValueKey] !== checkedValue)
@@ -75,7 +72,7 @@ const BoolArray = <OptionType,>({
       <FormGroup>
         <Controller
           control={control}
-          defaultValue={defaultValue}
+          defaultValue={defaultValue as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>}
           name={name}
           render={({ field }) => (
             <>
@@ -83,7 +80,7 @@ const BoolArray = <OptionType,>({
                 <FormControlLabel
                   control={
                     <Child
-                      checked={field.value.some((o: OptionType) => o[optionValueKey] === option[optionValueKey])}
+                      checked={(field.value as Array<OptionType>).some((o: OptionType) => o[optionValueKey] === option[optionValueKey])}
                       onChange={() => field.onChange(handleCheck(option[optionValueKey]))}
                     />
                   }
@@ -97,7 +94,7 @@ const BoolArray = <OptionType,>({
         />
       </FormGroup>
       <FormHelperText error={Boolean(error)}>
-        {error?.message} {helperText}
+        {(error as FieldError)?.message} {helperText}
       </FormHelperText>
     </FormControl>
   );

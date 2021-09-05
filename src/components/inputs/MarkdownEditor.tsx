@@ -195,7 +195,8 @@ const HelpText = styled('span')(({ theme }) => ({
   textDecoration: 'underline',
 }));
 
-const MarkdownEditor = forwardRef((props: TextFieldProps, ref) => {
+// eslint-disable-next-line comma-spacing
+const GenericMarkdownEditor = <FormValues,>(props: TextFieldProps<FormValues>, ref: React.ForwardedRef<HTMLDivElement>) => {
   const [helpDialogOpen, setHelpDialogOpen] = useState(false);
 
   const HelperText = () => (
@@ -238,7 +239,10 @@ const MarkdownEditor = forwardRef((props: TextFieldProps, ref) => {
       )}
     </>
   );
-});
+};
 
-MarkdownEditor.displayName = 'MarkdownEditor';
+const MarkdownEditor = forwardRef(GenericMarkdownEditor) as <FormValues>(
+  props: TextFieldProps<FormValues> & { ref?: React.ForwardedRef<HTMLDivElement> },
+) => ReturnType<typeof GenericMarkdownEditor>;
+
 export default MarkdownEditor;

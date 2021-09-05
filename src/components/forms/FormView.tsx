@@ -4,12 +4,12 @@ import { UseFormReturn } from 'react-hook-form';
 // Project components
 import FieldView from 'components/forms/FieldView';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type FormViewProps = Pick<UseFormReturn<any>, 'formState' | 'register' | 'control' | 'getValues'> & {
+export type FormViewProps<FormValues> = Pick<UseFormReturn<FormValues>, 'formState' | 'register' | 'control' | 'getValues'> & {
   form: Form;
 };
 
-const FormView = ({ form, register, formState, control, getValues }: FormViewProps) => {
+// eslint-disable-next-line comma-spacing
+const FormView = <FormValues,>({ form, register, formState, control, getValues }: FormViewProps<FormValues>) => {
   return (
     <>
       {form.fields.map((field, index) => (

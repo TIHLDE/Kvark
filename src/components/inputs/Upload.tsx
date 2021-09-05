@@ -1,5 +1,5 @@
 import { useState, useCallback, forwardRef } from 'react';
-import { UseFormReturn, UseFormRegisterReturn, UseFormSetValue, UseFormWatch } from 'react-hook-form';
+import { UseFormReturn, UseFormRegisterReturn, Path, FieldError, UnpackNestedValue, PathValue } from 'react-hook-form';
 import Cropper from 'react-easy-crop';
 import { useGoogleAnalytics, useShare } from 'hooks/Utils';
 import API from 'api/api';
@@ -56,20 +56,26 @@ const analytics = () =>
     event_label: `Uploaded file`,
   });
 
-export type ImageUploadProps = ButtonProps &
-  Pick<UseFormReturn, 'formState'> & {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    watch: UseFormWatch<any>;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setValue: UseFormSetValue<any>;
+export type ImageUploadProps<FormValues> = ButtonProps &
+  Pick<UseFormReturn<FormValues>, 'formState' | 'watch' | 'setValue'> & {
     register: UseFormRegisterReturn;
     label?: string;
     ratio?: number;
   };
 
-export const ImageUpload = forwardRef(({ register, watch, setValue, formState, label = 'Last opp fil', ratio, ...props }: ImageUploadProps) => {
+// eslint-disable-next-line comma-spacing
+export const GenericImageUpload = <FormValues,>({
+  register,
+  watch,
+  setValue,
+  formState,
+  label = 'Last opp fil',
+  ratio,
+  ...props
+}: ImageUploadProps<FormValues>) => {
+  const name = register.name as Path<FormValues>;
   const showSnackbar = useSnackbar();
-  const url = watch(register.name);
+  const url = watch(name);
   const [imageSrc, setImageSrc] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -126,7 +132,7 @@ export const ImageUpload = forwardRef(({ register, watch, setValue, formState, l
       const newFile = blobToFile(compressedImage, file instanceof File ? file.name : imageFile?.name || '', imageFile?.type || file.type || '');
       const data = await API.uploadFile(newFile);
       analytics();
-      setValue(register.name, data.url);
+      setValue(name, data.url as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>);
     } catch (e) {
       showSnackbar(e.detail, 'error');
     }
@@ -135,7 +141,7 @@ export const ImageUpload = forwardRef(({ register, watch, setValue, formState, l
   return (
     <>
       <UploadPaper>
-        {url && <Img src={url} />}
+        {url && <Img src={url as string} />}
         <div>
           <input hidden {...register} />
           <input accept='image/*' hidden id='image-upload-button' onChange={onSelect} type='file' />
@@ -145,9 +151,9 @@ export const ImageUpload = forwardRef(({ register, watch, setValue, formState, l
             </Button>
           </label>
         </div>
-        {Boolean(formState.errors[register.name]) && <FormHelperText error>{formState.errors[register.name]?.message}</FormHelperText>}
+        {Boolean(formState.errors[name] as FieldError) && <FormHelperText error>{(formState.errors[name] as FieldError)?.message}</FormHelperText>}
         {url && (
-          <Button color='error' disabled={isLoading} fullWidth onClick={() => setValue(register.name, '')}>
+          <Button color='error' disabled={isLoading} fullWidth onClick={() => setValue(name, '' as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>)}>
             Fjern bilde
           </Button>
         )}
@@ -167,13 +173,19 @@ export const ImageUpload = forwardRef(({ register, watch, setValue, formState, l
       </Dialog>
     </>
   );
-});
+};
 
-export type FormFileUploadProps = Omit<ImageUploadProps, 'ratio'>;
+export const ImageUpload = forwardRef(GenericImageUpload) as <FormValues>(
+  props: ImageUploadProps<FormValues> & { ref?: React.ForwardedRef<HTMLDivElement> },
+) => ReturnType<typeof GenericImageUpload>;
 
-export const FormFileUpload = ({ register, watch, setValue, formState, label = 'Last opp fil', ...props }: FormFileUploadProps) => {
+export type FormFileUploadProps<FormValues> = Omit<ImageUploadProps<FormValues>, 'ratio'>;
+
+// eslint-disable-next-line comma-spacing
+export const FormFileUpload = <FormValues,>({ register, watch, setValue, formState, label = 'Last opp fil', ...props }: FormFileUploadProps<FormValues>) => {
+  const name = register.name as Path<FormValues>;
   const showSnackbar = useSnackbar();
-  const url = watch(register.name);
+  const url = watch(name);
   const [isLoading, setIsLoading] = useState(false);
   const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -182,7 +194,7 @@ export const FormFileUpload = ({ register, watch, setValue, formState, label = '
       try {
         const data = await API.uploadFile(file);
         analytics();
-        setValue(register.name, data.url);
+        setValue(name, data.url as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>);
         showSnackbar('Filen ble lastet opp, husk å trykk lagre', 'info');
       } catch (e) {
         showSnackbar(e.detail, 'error');
@@ -194,7 +206,7 @@ export const FormFileUpload = ({ register, watch, setValue, formState, label = '
     <UploadPaper>
       {url && (
         <Typography>
-          Fil: <a href={url}>{url}</a>
+          Fil: <a href={url as string}>{url as string}</a>
         </Typography>
       )}
       <div>
@@ -206,9 +218,9 @@ export const FormFileUpload = ({ register, watch, setValue, formState, label = '
           </Button>
         </label>
       </div>
-      {Boolean(formState.errors[register.name]) && <FormHelperText error>{formState.errors[register.name]?.message}</FormHelperText>}
+      {Boolean(formState.errors[name] as FieldError) && <FormHelperText error>{(formState.errors[name] as FieldError)?.message}</FormHelperText>}
       {url && (
-        <Button color='error' disabled={isLoading} fullWidth onClick={() => setValue(register.name, '')}>
+        <Button color='error' disabled={isLoading} fullWidth onClick={() => setValue(name, '' as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>)}>
           Fjern fil
         </Button>
       )}
@@ -216,9 +228,10 @@ export const FormFileUpload = ({ register, watch, setValue, formState, label = '
   );
 };
 
-export type FileUploadProps = Pick<ImageUploadProps, 'label'> & ButtonProps;
+export type FileUploadProps<FormValues> = Pick<ImageUploadProps<FormValues>, 'label'> & ButtonProps;
 
-export const FileUpload = ({ label = 'Last opp filer', ...props }: FileUploadProps) => {
+// eslint-disable-next-line comma-spacing
+export const FileUpload = <FormValues,>({ label = 'Last opp filer', ...props }: FileUploadProps<FormValues>) => {
   const { event } = useGoogleAnalytics();
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
