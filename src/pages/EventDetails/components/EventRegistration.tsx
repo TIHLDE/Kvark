@@ -60,21 +60,21 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
       return;
     }
     setIsLoading(true);
-    try {
-      if (form) {
+    if (form && data) {
+      try {
         validateSubmissionInput(data, form);
+      } catch (e) {
+        setError(e.message, { message: 'Du må velge ett eller flere alternativ' });
+        setIsLoading(false);
+        return;
       }
-    } catch (e) {
-      setError(e.message, { message: 'Du må velge ett eller flere alternativ' });
-      setIsLoading(false);
-      return;
-    }
-    try {
-      await createSubmission.mutateAsync(data);
-    } catch (e) {
-      showSnackbar(e.message, 'error');
-      setIsLoading(false);
-      return;
+      try {
+        await createSubmission.mutateAsync(data);
+      } catch (e) {
+        showSnackbar(e.message, 'error');
+        setIsLoading(false);
+        return;
+      }
     }
     createRegistration.mutate(
       { allow_photo: allowPhoto },
@@ -102,15 +102,16 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
         </Typography>
         <Box component='form' onSubmit={handleSubmit(submit)} sx={{ display: 'flex', flexDirection: 'column' }}>
           <Paper sx={{ my: 1 }}>
-            <ListItem icon={PersonIcon} text={'Navn: ' + user.first_name + ' ' + user.last_name} />
-            <ListItem icon={MailIcon} text={'Epost: ' + user.email} />
-            <ListItem icon={SchoolIcon} text={'Studieprogram: ' + getUserStudyShort(user.user_study)} />
-            <ListItem icon={HomeIcon} text={'Klasse: ' + user.user_class} />
-            <ListItem icon={AllergyIcon} text={'Allergier: ' + allergy} />
+            <ListItem icon={PersonIcon} text={`Navn: ${user.first_name} ${user.last_name}`} />
+            <ListItem icon={MailIcon} text={`Epost: ${user.email}`} />
+            <ListItem icon={SchoolIcon} text={`Studieprogram: ${getUserStudyShort(user.user_study)}`} />
+            <ListItem icon={HomeIcon} text={`Klasse: ${user.user_class}`} />
+            <ListItem icon={AllergyIcon} text={`Allergier: ${allergy}`} />
           </Paper>
           {form !== undefined && (
             <Paper sx={{ my: 1 }}>
               <Typography variant='h3'>Spørsmål</Typography>
+              <Typography variant='subtitle2'>Arrangøren ønsker at du svarer på disse spørsmålene</Typography>
               <FormView control={control} form={form} formState={formState} getValues={getValues} register={register} />
             </Paper>
           )}
@@ -124,9 +125,9 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
             disabled={isLoading}
             label='Jeg godtar arrangementsreglene'
           />
-          <a href={URLS.eventRules} rel='noopener noreferrer' target='_blank'>
-            <Typography variant='caption'>Les arrangementsreglene her (åpnes i ny fane)</Typography>
-          </a>
+          <Typography component='a' href={URLS.eventRules} rel='noopener noreferrer' target='_blank' variant='caption'>
+            Les arrangementsreglene her (åpnes i ny fane)
+          </Typography>
           <Button disabled={registerDisabled} fullWidth sx={{ mt: 2 }} type='submit' variant='contained'>
             Meld deg på
           </Button>
