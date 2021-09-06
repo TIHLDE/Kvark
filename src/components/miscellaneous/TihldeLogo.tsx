@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 // Material UI Components
-import { useTheme, styled } from '@material-ui/core';
+import { useTheme, styled } from '@mui/material';
 
 import { NavigationOptions } from 'components/navigation/Navigation';
 

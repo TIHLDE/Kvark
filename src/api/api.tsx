@@ -31,6 +31,7 @@ import {
   Warning,
   Badge,
   GroupList,
+  Submission,
 } from 'types/Types';
 
 export const AUTH_ENDPOINT = 'auth';
@@ -48,6 +49,7 @@ export const NEWS_ENDPOINT = 'news';
 export const NOTIFICATIONS_ENDPOINT = 'notification';
 export const PAGES_ENDPOINT = 'page';
 export const SHORT_LINKS_ENDPOINT = 'short-link';
+export const SUBMISSIONS_ENDPOINT = 'submission';
 export const USERS_ENDPOINT = 'user';
 export const WARNINGS_ENDPOINT = 'warning';
 
@@ -90,6 +92,10 @@ export default {
   createForm: (item: Form) => IFetch<Form>({ method: 'POST', url: `${FORMS_ENDPOINT}/`, data: item }),
   updateForm: (formId: string, item: Form) => IFetch<Form>({ method: 'PUT', url: `${FORMS_ENDPOINT}/${formId}/`, data: item }),
   deleteForm: (formId: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${FORMS_ENDPOINT}/${formId}/` }),
+
+  // Submissions
+  createSubmission: (formId: string, submission: Submission) =>
+    IFetch<Submission>({ method: 'POST', url: `${FORMS_ENDPOINT}/${formId}/${SUBMISSIONS_ENDPOINT}/`, data: submission }),
 
   // Job posts
   getJobPosts: (filters: any = {}) => IFetch<PaginationResponse<JobPost>>({ method: 'GET', url: `${JOBPOSTS_ENDPOINT}/`, data: filters }),

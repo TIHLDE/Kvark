@@ -4,14 +4,14 @@ import { FormFieldType } from 'types/Enums';
 import classnames from 'classnames';
 
 // Material UI
-import { makeStyles } from '@material-ui/styles';
-import { TextField, Typography, IconButton, Checkbox, FormControlLabel, Button, Grow } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { TextField, Typography, IconButton, Checkbox, FormControlLabel, Button, Grow } from '@mui/material';
 
 // Icons
-import DeleteIcon from '@material-ui/icons/DeleteOutlineRounded';
-import ClearIcon from '@material-ui/icons/ClearRounded';
-import RadioButtonIcon from '@material-ui/icons/RadioButtonUncheckedRounded';
-import CheckBoxIcon from '@material-ui/icons/CheckBoxOutlineBlankRounded';
+import DeleteIcon from '@mui/icons-material/DeleteOutlineRounded';
+import ClearIcon from '@mui/icons-material/ClearRounded';
+import RadioButtonIcon from '@mui/icons-material/RadioButtonUncheckedRounded';
+import CheckBoxIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded';
 
 // Project components
 import Paper from 'components/layout/Paper';

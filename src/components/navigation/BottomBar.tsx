@@ -3,20 +3,20 @@ import URLS from 'URLS';
 import { Link, useLocation } from 'react-router-dom';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { BottomNavigation, BottomNavigationAction, SvgIcon } from '@material-ui/core';
-import EventIcon from '@material-ui/icons/EventRounded';
-import MenuIcon from '@material-ui/icons/MenuRounded';
-import JobPostIcon from '@material-ui/icons/WorkOutlineRounded';
-import NewsIcon from '@material-ui/icons/NewReleasesRounded';
-import CloseIcon from '@material-ui/icons/CloseRounded';
+import { makeStyles } from '@mui/styles';
+import { BottomNavigation, BottomNavigationAction, SvgIcon } from '@mui/material';
+import EventIcon from '@mui/icons-material/EventRounded';
+import MenuIcon from '@mui/icons-material/MenuRounded';
+import JobPostIcon from '@mui/icons-material/WorkOutlineRounded';
+import NewsIcon from '@mui/icons-material/NewReleasesRounded';
+import CloseIcon from '@mui/icons-material/CloseRounded';
 
 // Project components
 import Paper from 'components/layout/Paper';
 import { NavigationItem } from 'components/navigation/Navigation';
 import Sidebar from 'components/navigation/Sidebar';
 import Logo from 'components/miscellaneous/TihldeLogo';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {

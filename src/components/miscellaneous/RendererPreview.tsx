@@ -1,10 +1,10 @@
 import { useState, forwardRef, Ref, ReactElement, FunctionComponent } from 'react';
 
 // Material-UI
-import { makeStyles } from '@material-ui/styles';
-import { Button, Dialog, DialogContent, DialogTitle, IconButton, Typography, Slide } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/CloseRounded';
-import { TransitionProps } from '@material-ui/core/transitions';
+import { makeStyles } from '@mui/styles';
+import { Button, Dialog, DialogContent, DialogTitle, IconButton, Typography, Slide } from '@mui/material';
+import CloseIcon from '@mui/icons-material/CloseRounded';
+import { TransitionProps } from '@mui/material/transitions';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {

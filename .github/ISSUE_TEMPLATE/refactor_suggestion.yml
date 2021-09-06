@@ -1,0 +1,16 @@
+name: Refactor suggestion
+description: Add a suggestion for something that could be refactored
+labels: [refactor]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this refactor suggestion!
+  - type: textarea
+    id: what-can-be-refactored
+    attributes:
+      label: Refactor suggestion
+      description: |
+        Let us know what could be refactored/improved in Kvark and optionally why it should be done.
+    validations:
+      required: true

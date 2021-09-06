@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import classNames from 'classnames';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { Theme, Skeleton } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Theme, Skeleton } from '@mui/material';
 
 // Icons
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';

@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Button, Grid, TextField } from '@material-ui/core';
-import { useBadge } from 'api/hooks/Badge';
-import { useSnackbar } from 'api/hooks/Snackbar';
+import { Button, Grid, TextField } from '@mui/material';
+import { useBadge } from 'hooks/Badge';
+import { useSnackbar } from 'hooks/Snackbar';
 
 function BadgeInput() {
   const [flag, setFlag] = useState<string>('');

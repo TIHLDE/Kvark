@@ -5,8 +5,8 @@ import ThemeSettings from 'components/miscellaneous/ThemeSettings';
 import { Link } from 'react-router-dom';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { Typography, Divider } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Typography, Divider } from '@mui/material';
 
 // Assets import
 import VERCEL from 'assets/icons/vercel.svg';
@@ -17,7 +17,7 @@ import SNAPCHAT from 'assets/icons/snapchat.svg';
 import SLACK from 'assets/icons/slack.svg';
 import DISCORD from 'assets/icons/discord.svg';
 import MAINSPONSOR from 'assets/img/mainSponsor.png';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
