@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.1.5 (06.09.2021)
+
 ## Versjon 1.1.4 (06.09.2021)
 
 - 🦟 **Bedrifter**. Fikset innsending av skjema for bedrifter slik at HS faktisk kan se hva de har krysset av.
