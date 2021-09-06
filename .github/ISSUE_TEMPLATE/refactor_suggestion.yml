@@ -1,6 +1,5 @@
 name: Refactor suggestion
 description: Add a suggestion for something that could be refactored
-title: ''
 labels: [refactor]
 body:
   - type: markdown
