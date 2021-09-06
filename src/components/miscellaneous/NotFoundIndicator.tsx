@@ -1,4 +1,4 @@
-import { Typography, styled } from '@material-ui/core';
+import { Typography, styled } from '@mui/material';
 
 // Assets
 import NotFoundIcon from 'assets/icons/empty.svg';

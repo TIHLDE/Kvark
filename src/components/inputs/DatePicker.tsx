@@ -1,17 +1,15 @@
-import { Control, Controller, RegisterOptions, UseFormReturn } from 'react-hook-form';
-import { TextField as MuiTextField, TextFieldProps } from '@material-ui/core';
+import { UnpackNestedValue, PathValue, FieldError, Controller, Path, RegisterOptions, UseFormReturn } from 'react-hook-form';
+import { TextField as MuiTextField, TextFieldProps } from '@mui/material';
 import {
   DatePicker as MuiDatePicker,
   DatePickerProps as MuiDatePickerProps,
   DateTimePicker as MuiDateTimePicker,
   DateTimePickerProps as MuiDateTimePickerProps,
-} from '@material-ui/lab';
+} from '@mui/lab';
 
-export type DatePickerProps = TextFieldProps &
-  Pick<UseFormReturn, 'formState'> & {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    control: Control<any>;
-    name: string;
+export type DatePickerProps<FormValues> = TextFieldProps &
+  Pick<UseFormReturn<FormValues>, 'formState' | 'control'> & {
+    name: Path<FormValues>;
     rules?: RegisterOptions;
     label: string;
     defaultValue?: string;
@@ -20,12 +18,24 @@ export type DatePickerProps = TextFieldProps &
     onDateChange?: (date?: Date) => void;
   };
 
-const DatePicker = ({ type, name, label, control, formState, rules = {}, defaultValue = '', dateProps, onDateChange, ...props }: DatePickerProps) => {
+// eslint-disable-next-line comma-spacing
+const DatePicker = <FormValues,>({
+  type,
+  name,
+  label,
+  control,
+  formState,
+  rules = {},
+  defaultValue = '',
+  dateProps,
+  onDateChange,
+  ...props
+}: DatePickerProps<FormValues>) => {
   const Picker = type === 'date' ? MuiDatePicker : MuiDateTimePicker;
   return (
     <Controller
       control={control}
-      defaultValue={defaultValue}
+      defaultValue={defaultValue as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>}
       name={name}
       render={({ field }) => (
         <Picker
@@ -45,8 +55,8 @@ const DatePicker = ({ type, name, label, control, formState, rules = {}, default
               margin='normal'
               variant='outlined'
               {...params}
-              error={Boolean(formState.errors[name])}
-              helperText={formState.errors[name]?.message}
+              error={Boolean(formState.errors[name] as FieldError)}
+              helperText={(formState.errors[name] as FieldError)?.message}
               {...props}
             />
           )}

@@ -14,6 +14,9 @@
 
 ## Neste versjon
 
+- 🦟 **Bedrifter**. Fikset innsending av skjema for bedrifter slik at HS faktisk kan se hva de har krysset av.
+- ✨ **Skjemaer**. Forberedt visning av skjemaer ved påmelding til arrangementer.
+
 ## Versjon 1.1.3 (30.08.2021)
 
 - ✨ **Varsler**. Varsler har nå mulighet til å knyttes til en link. En kan for eks. rett til relevant arrangement.

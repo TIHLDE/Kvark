@@ -2,9 +2,9 @@
 import { ReactNode } from 'react';
 import { render } from 'react-dom';
 import 'assets/css/index.css';
-import { CssBaseline, StyledEngineProvider } from '@material-ui/core';
-import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
-import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
+import { CssBaseline, StyledEngineProvider } from '@mui/material';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { broadcastQueryClient } from 'react-query/broadcastQueryClient-experimental';
@@ -13,9 +13,9 @@ import 'delayed-scroll-restoration-polyfill';
 import { SHOW_NEW_STUDENT_INFO } from 'constant';
 
 // Services
-import { ThemeProvider } from 'context/ThemeContext';
-import { MiscProvider } from 'api/hooks/Misc';
-import { SnackbarProvider } from 'api/hooks/Snackbar';
+import { ThemeProvider } from 'hooks/Theme';
+import { MiscProvider } from 'hooks/Misc';
+import { SnackbarProvider } from 'hooks/Snackbar';
 
 // Project components
 import MessageGDPR from 'components/miscellaneous/MessageGDPR';

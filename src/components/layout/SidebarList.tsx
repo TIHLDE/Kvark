@@ -3,7 +3,7 @@ import { InfiniteQueryObserverResult } from 'react-query';
 import { PaginationResponse } from 'types/Types';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 import {
   Theme,
   useTheme,
@@ -18,11 +18,11 @@ import {
   Divider,
   IconButton,
   Skeleton,
-} from '@material-ui/core';
+} from '@mui/material';
 
 // Icons
-import MenuIcon from '@material-ui/icons/FormatListBulletedRounded';
-import AddIcon from '@material-ui/icons/AddRounded';
+import MenuIcon from '@mui/icons-material/FormatListBulletedRounded';
+import AddIcon from '@mui/icons-material/AddRounded';
 
 // Project components
 import Pagination from 'components/layout/Pagination';

@@ -1,4 +1,4 @@
-import { Avatar as MuiAvatar, AvatarProps as MuiAvatarProps, Skeleton } from '@material-ui/core';
+import { Avatar as MuiAvatar, AvatarProps as MuiAvatarProps, Skeleton } from '@mui/material';
 import { User } from 'types/Types';
 
 type AvatarProps = {
