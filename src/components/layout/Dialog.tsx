@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
 // Material UI Components
-import { Button, Dialog as MuiDialog, DialogProps as MuiDialogProps, DialogActions, DialogTitle, DialogContent, DialogContentText } from '@material-ui/core';
+import { Button, Dialog as MuiDialog, DialogProps as MuiDialogProps, DialogActions, DialogTitle, DialogContent, DialogContentText } from '@mui/material';
 
 export type DialogProps = MuiDialogProps & {
   onClose: () => void;

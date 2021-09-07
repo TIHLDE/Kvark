@@ -3,8 +3,8 @@ import { getCookie, setCookie } from 'api/cookie';
 import { ACCEPTED_ANALYTICS } from 'constant';
 
 // Material UI
-import { makeStyles } from '@material-ui/styles';
-import { Typography, Button } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Typography, Button } from '@mui/material';
 
 // Project components
 import Paper from 'components/layout/Paper';

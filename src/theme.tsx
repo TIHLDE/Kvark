@@ -1,17 +1,17 @@
-import { darkScrollbar } from '@material-ui/core';
-import { createTheme, Theme } from '@material-ui/core/styles';
+import { darkScrollbar } from '@mui/material';
+import { createTheme, Theme } from '@mui/material/styles';
 
 // Icons
-import DarkIcon from '@material-ui/icons/Brightness2Outlined';
-import AutomaticIcon from '@material-ui/icons/DevicesOutlined';
-import LightIcon from '@material-ui/icons/WbSunnyOutlined';
+import DarkIcon from '@mui/icons-material/Brightness2Outlined';
+import AutomaticIcon from '@mui/icons-material/DevicesOutlined';
+import LightIcon from '@mui/icons-material/WbSunnyOutlined';
 
-declare module '@material-ui/styles' {
+declare module '@mui/styles' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
   interface DefaultTheme extends Theme {}
 }
 
-declare module '@material-ui/core/styles/createPalette' {
+declare module '@mui/material/styles/createPalette' {
   interface TypeBackground {
     smoke: React.CSSProperties['backgroundColor'];
   }

@@ -5,19 +5,19 @@ import { usePalette } from 'react-palette';
 import { argsToParams } from 'utils';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { Typography, useTheme, Button, Dialog, useMediaQuery } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
+import { makeStyles } from '@mui/styles';
+import { Typography, useTheme, Button, Dialog, useMediaQuery } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
 
 // Project components
 import { StoryItem } from 'components/story/Story';
 import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
 
 // Icons
-import CloseIcon from '@material-ui/icons/CloseRounded';
-import UpIcon from '@material-ui/icons/ExpandLessRounded';
-import DownIcon from '@material-ui/icons/ExpandMoreRounded';
-import OpenIcon from '@material-ui/icons/KeyboardArrowRightRounded';
+import CloseIcon from '@mui/icons-material/CloseRounded';
+import UpIcon from '@mui/icons-material/ExpandLessRounded';
+import DownIcon from '@mui/icons-material/ExpandMoreRounded';
+import OpenIcon from '@mui/icons-material/KeyboardArrowRightRounded';
 
 const useStyles = makeStyles((theme) => ({
   paper: {

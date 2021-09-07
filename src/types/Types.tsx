@@ -203,15 +203,21 @@ export interface SelectFormFieldOption {
 }
 
 export interface FieldSubmission {
-  field: string;
+  field: {
+    id: string;
+  };
 }
 
 export interface TextFieldSubmission extends FieldSubmission {
-  text_answer: string;
+  answer_text: string;
 }
 
 export interface SelectFieldSubmission extends FieldSubmission {
-  selected_options: Array<string>;
+  selected_options: Array<{ id: string }>;
+}
+
+export interface Submission {
+  answers: Array<TextFieldSubmission | SelectFieldSubmission>;
 }
 
 export interface CompaniesEmail {

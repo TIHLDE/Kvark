@@ -1,4 +1,4 @@
-import { styled } from '@material-ui/core';
+import { styled } from '@mui/material';
 
 export const ProfileTopBox = styled('div')(({ theme }) => ({
   height: 260,

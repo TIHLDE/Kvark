@@ -5,15 +5,15 @@ import { urlEncode, formatDate } from 'utils';
 import URLS from 'URLS';
 
 // Material UI Components
-import { makeStyles } from '@material-ui/styles';
-import { Theme, Skeleton, Typography, Button } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { Theme, Skeleton, Typography, Button } from '@mui/material';
 
 // Project components
 import StoryPopup from 'components/story/StoryPopup';
 
 // Icons
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
-import { useGoogleAnalytics } from 'api/hooks/Utils';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme) => ({
   root: {

@@ -1,7 +1,7 @@
 import { ComponentType } from 'react';
 
 // Material UI Components
-import { Tabs as MuiTabs, Tab as MuiTab, styled, TabsProps as MuiTabsProps } from '@material-ui/core';
+import { Tabs as MuiTabs, Tab as MuiTab, styled, TabsProps as MuiTabsProps } from '@mui/material';
 
 const CustomTabs = styled(MuiTabs)(({ theme }) => ({
   '& .MuiTabs-indicator': {

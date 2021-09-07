@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 import classNames from 'classnames';
 
 // Material UI Components
-import { AccordionProps, Accordion, AccordionSummary, AccordionDetails, Typography } from '@material-ui/core';
+import { AccordionProps, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 
 // Icons
-import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 
 const useStyles = makeStyles((theme) => ({
   root: {
