@@ -7,7 +7,7 @@ import { argsToParams } from 'utils';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/styles';
-import { Divider, MenuItem, Button } from '@material-ui/core';
+import { Divider, MenuItem, Button, useMediaQuery, Theme } from '@material-ui/core';
 
 // Project Components
 import Page from 'components/navigation/Page';
@@ -21,6 +21,7 @@ import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import { useGoogleAnalytics } from 'api/hooks/Utils';
+import Expansion from 'components/layout/Expand';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -53,6 +54,9 @@ const useStyles = makeStyles((theme) => ({
       top: 0,
     },
   },
+  accordion: {
+    background: theme.palette.background.paper,
+  },
 }));
 
 type Filters = {
@@ -72,6 +76,7 @@ const Events = () => {
   }, []);
   const classes = useStyles();
   const navigate = useNavigate();
+  const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
   const { data: categories = [] } = useCategories();
   const [filters, setFilters] = useState<Filters>(getInitialFilters());
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents(filters);
@@ -90,7 +95,33 @@ const Events = () => {
     event('search', 'events', JSON.stringify(data));
     setFilters(data);
     navigate(`${location.pathname}${argsToParams(data)}`, { replace: true });
+    !lgDown || setExpanded((prev) => !prev);
   };
+
+  const [expanded, setExpanded] = useState(false);
+
+  const SearchForm = () => (
+    <form onSubmit={handleSubmit(search)}>
+      <TextField disabled={isFetching} formState={formState} label='Søk' margin='none' {...register('search')} />
+      {Boolean(categories.length) && (
+        <Select control={control} formState={formState} label='Kategori' name='category'>
+          {categories.map((value, index) => (
+            <MenuItem key={index} value={value.id}>
+              {value.text}
+            </MenuItem>
+          ))}
+        </Select>
+      )}
+      <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
+      <SubmitButton disabled={isFetching} formState={formState}>
+        Søk
+      </SubmitButton>
+      <Divider sx={{ my: 1 }} />
+      <Button color='error' fullWidth onClick={resetFilters} variant='outlined'>
+        Tilbakestill
+      </Button>
+    </form>
+  );
 
   return (
     <Page banner={<Banner title='Arrangementer' />} options={{ title: 'Arrangementer' }}>
@@ -112,28 +143,17 @@ const Events = () => {
           )}
           {isFetching && <ListItemLoading />}
         </div>
-        <Paper className={classes.settings}>
-          <form onSubmit={handleSubmit(search)}>
-            <TextField disabled={isFetching} formState={formState} label='Søk' margin='none' {...register('search')} />
-            {Boolean(categories.length) && (
-              <Select control={control} formState={formState} label='Kategori' name='category'>
-                {categories.map((value, index) => (
-                  <MenuItem key={index} value={value.id}>
-                    {value.text}
-                  </MenuItem>
-                ))}
-              </Select>
-            )}
-            <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
-            <SubmitButton disabled={isFetching} formState={formState}>
-              Søk
-            </SubmitButton>
-          </form>
-          <Divider />
-          <Button color='error' fullWidth onClick={resetFilters} variant='outlined'>
-            Tilbakestill
-          </Button>
-        </Paper>
+        {lgDown ? (
+          <div>
+            <Expansion className={classes.accordion} expanded={expanded} header='Filtrering' onChange={() => setExpanded((prev) => !prev)}>
+              <SearchForm />
+            </Expansion>
+          </div>
+        ) : (
+          <Paper className={classes.settings}>
+            <SearchForm />
+          </Paper>
+        )}
       </div>
     </Page>
   );

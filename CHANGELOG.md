@@ -13,6 +13,7 @@
 ---
 
 ## Neste versjon
+- ✨ **Filterboks**. Filterboksen i arrangementer siden kan nå åpnes og lukkes på små skjermer.
 
 ## Versjon 1.1.3 (30.08.2021)
 
