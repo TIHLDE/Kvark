@@ -5,6 +5,7 @@ import { styled, Typography, LinearProgress } from '@mui/material';
 
 // Project
 import Expand from 'components/layout/Expand';
+import FormStatistics from 'components/forms/FormStatistics';
 import EventFormEditor from 'pages/EventAdministration/components/EventFormEditor';
 
 export type EventFormAdminProps = {
@@ -40,7 +41,7 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
           )}
         </Expansion>
         <Expansion flat header='Svar på flervalgsspørsmål'>
-          <div />
+          <FormStatistics formId={event.survey} />
         </Expansion>
         <Expansion flat header='Alle svar'>
           <div />

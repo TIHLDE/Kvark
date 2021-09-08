@@ -42,7 +42,7 @@ export type EventRegistrationProps = {
 const EventRegistration = ({ event, user }: EventRegistrationProps) => {
   const { event: GAEvent } = useGoogleAnalytics();
   const createRegistration = useCreateEventRegistration(event.id);
-  const createSubmission = useCreateSubmission(event.survey);
+  const createSubmission = useCreateSubmission(event.survey || '-');
   const showSnackbar = useSnackbar();
   const { data: form, isLoading: isFormLoading } = useFormById(event.survey || '-');
   const [isLoading, setIsLoading] = useState(false);

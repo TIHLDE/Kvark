@@ -11559,11 +11559,6 @@ react-markdown@^7.0.0:
     unist-util-visit "^4.0.0"
     vfile "^5.0.0"
 
-react-minimal-pie-chart@^8.2.0:
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/react-minimal-pie-chart/-/react-minimal-pie-chart-8.2.0.tgz#22b53af2363f040d818331721658dfa7a1ea847a"
-  integrity sha512-RhrHzprJt3KfBe4L3sE0Ha6fj4kYcwQtesQgscnld9Umf64+nZnxxInycnbimKsbIjxJONv77JIZp+qRbJD+bA==
-
 react-palette@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-palette/-/react-palette-1.0.2.tgz#170edefa27eea73a8cea21bbd8758c3e56498ec0"
