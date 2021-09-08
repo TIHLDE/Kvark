@@ -1,5 +1,5 @@
 import { Avatar as MuiAvatar, AvatarProps as MuiAvatarProps, Skeleton } from '@mui/material';
-import { User } from 'types/Types';
+import { User } from 'types';
 
 type AvatarProps = {
   user?: Pick<User, 'first_name' | 'last_name' | 'image'>;

@@ -1,6 +1,6 @@
 import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { News, NewsRequired, PaginationResponse, RequestResponse } from 'types/Types';
+import { News, NewsRequired, PaginationResponse, RequestResponse } from 'types';
 
 export const EXPORT_QUERY_KEY = 'news';
 

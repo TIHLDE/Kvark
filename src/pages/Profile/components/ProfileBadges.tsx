@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useUserBadges } from 'hooks/User';
-import { Badge } from 'types/Types';
+import { Badge } from 'types';
 import Paper from 'components/layout/Paper';
 
 // Material UI Components

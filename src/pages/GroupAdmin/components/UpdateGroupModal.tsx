@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { EMAIL_REGEX } from 'constant';
 import { useUpdateGroup } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
-import { Group } from 'types/Types';
+import { Group } from 'types';
 
 import EditIcon from '@mui/icons-material/Edit';
 

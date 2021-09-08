@@ -6,7 +6,7 @@ import { useIsAuthenticated } from 'hooks/User';
 import { useEvents } from 'hooks/Event';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
-import { Page as PageType } from 'types/Types';
+import { Page as PageType } from 'types';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';

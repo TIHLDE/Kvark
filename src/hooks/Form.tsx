@@ -1,14 +1,15 @@
 import { useMutation, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
 import { EVENT_QUERY_KEY } from 'hooks/Event';
-import { EventForm, Form, RequestResponse, Submission, SelectFieldSubmission } from 'types/Types';
+import { EventForm, Form, RequestResponse, PaginationResponse, UserSubmission, Submission, SelectFieldSubmission, FormStatistics } from 'types';
 import { FormFieldType } from 'types/Enums';
 
 export const FORM_QUERY_KEY = 'form';
 
-export const useFormById = (id: string) => {
-  return useQuery<Form, RequestResponse>([FORM_QUERY_KEY, id], () => API.getForm(id), { enabled: id !== '-' });
-};
+export const useFormById = (formId: string) =>
+  useQuery<Form, RequestResponse>([FORM_QUERY_KEY, formId], () => API.getForm(formId), { enabled: formId !== '-' });
+export const useFormStatisticsById = (formId: string) =>
+  useQuery<FormStatistics, RequestResponse>([FORM_QUERY_KEY, formId], () => API.getFormStatistics(formId), { enabled: formId !== '-' });
 
 export const useCreateForm = (): UseMutationResult<Form, RequestResponse, Form, unknown> => {
   const queryClient = useQueryClient();
@@ -23,27 +24,30 @@ export const useCreateForm = (): UseMutationResult<Form, RequestResponse, Form, 
   });
 };
 
-export const useUpdateForm = (id: string): UseMutationResult<Form, RequestResponse, Form, unknown> => {
+export const useUpdateForm = (formId: string): UseMutationResult<Form, RequestResponse, Form, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((updatedForm: Form) => API.updateForm(id, updatedForm), {
+  return useMutation((updatedForm: Form) => API.updateForm(formId, updatedForm), {
     onSuccess: (data) => {
-      queryClient.setQueryData([FORM_QUERY_KEY, id], data);
+      queryClient.setQueryData([FORM_QUERY_KEY, formId], data);
     },
   });
 };
 
-export const useDeleteForm = (id: string): UseMutationResult<RequestResponse, RequestResponse, undefined, unknown> => {
+export const useDeleteForm = (formId: string): UseMutationResult<RequestResponse, RequestResponse, undefined, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation(() => API.deleteForm(id), {
+  return useMutation(() => API.deleteForm(formId), {
     onSuccess: () => {
-      const data = queryClient.getQueryData<Form>([FORM_QUERY_KEY, id]);
+      const data = queryClient.getQueryData<Form>([FORM_QUERY_KEY, formId]);
       if ((data as EventForm).event) {
         queryClient.invalidateQueries([EVENT_QUERY_KEY, (data as EventForm).event]);
       }
-      queryClient.removeQueries([FORM_QUERY_KEY, id]);
+      queryClient.removeQueries([FORM_QUERY_KEY, formId]);
     },
   });
 };
+
+export const useFormSubmissions = (formId: string) =>
+  useQuery<PaginationResponse<UserSubmission>, RequestResponse>([FORM_QUERY_KEY, formId], () => API.getSubmissions(formId), { enabled: formId !== '-' });
 
 export const useCreateSubmission = (formId: string): UseMutationResult<Submission, RequestResponse, Submission, unknown> =>
   useMutation((submission) => API.createSubmission(formId, submission));

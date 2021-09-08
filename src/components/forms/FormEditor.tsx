@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { Form, TextFormField, SelectFormField } from 'types/Types';
+import { Form, TextFormField, SelectFormField } from 'types';
 import { FormFieldType } from 'types/Enums';
 import { useUpdateForm, useDeleteForm } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';

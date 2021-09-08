@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { JobPost } from 'types/Types';
+import { JobPost } from 'types';
 import { useJobPostById, useCreateJobPost, useUpdateJobPost, useDeleteJobPost } from 'hooks/JobPost';
 import { useSnackbar } from 'hooks/Snackbar';
 import { EMAIL_REGEX } from 'constant';

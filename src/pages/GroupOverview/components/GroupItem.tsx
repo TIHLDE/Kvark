@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { GroupList } from 'types/Types';
+import { GroupList } from 'types';
 import URLS from 'URLS';
 
 // Material UI

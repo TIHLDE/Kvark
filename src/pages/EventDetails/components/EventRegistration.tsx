@@ -1,5 +1,5 @@
 import { ComponentType, useState } from 'react';
-import { Event, User, Submission, Form } from 'types/Types';
+import { Event, User, Submission, Form } from 'types';
 import URLS from 'URLS';
 import { getUserStudyShort, shortDownString } from 'utils';
 import { useCreateEventRegistration } from 'hooks/Event';

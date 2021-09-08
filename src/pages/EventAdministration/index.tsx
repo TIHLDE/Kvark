@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import URLS from 'URLS';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { useEvents } from 'hooks/Event';
+import { useEvents, useEventById } from 'hooks/Event';
 import { parseISO } from 'date-fns';
 import { formatDate } from 'utils';
 
@@ -14,6 +14,7 @@ import EditIcon from '@mui/icons-material/EditRounded';
 import ParticipantsIcon from '@mui/icons-material/PeopleRounded';
 import RegisterIcon from '@mui/icons-material/PlaylistAddCheckRounded';
 import OpenIcon from '@mui/icons-material/OpenInBrowserRounded';
+import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
 
 // Project components
 import Paper from 'components/layout/Paper';
@@ -22,6 +23,7 @@ import Page from 'components/navigation/Page';
 import SidebarList from 'components/layout/SidebarList';
 import EventEditor from 'pages/EventAdministration/components/EventEditor';
 import EventParticipants from 'pages/EventAdministration/components/EventParticipants';
+import EventFormAdmin from 'pages/EventAdministration/components/EventFormAdmin';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,11 +48,15 @@ const EventAdministration = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { eventId } = useParams();
+  const { data: event } = useEventById(eventId ? Number(eventId) : -1);
   const editTab = { value: 'edit', label: eventId ? 'Endre' : 'Skriv', icon: EditIcon };
   const participantsTab = { value: 'participants', label: 'Deltagere', icon: ParticipantsIcon };
+  const formsTab = { value: 'forms', label: 'Spørsmål', icon: FormsIcon };
   const registerTab = { value: 'register', label: 'Registrering', icon: RegisterIcon };
   const navigateTab = { value: 'navigate', label: 'Se arrangement', icon: OpenIcon };
-  const tabs = eventId ? [editTab, participantsTab, registerTab, navigateTab] : [editTab];
+  const tabs = eventId
+    ? [editTab, ...(event?.sign_up ? [participantsTab, ...(location.hostname !== 'tihlde.org' ? [formsTab] : []), registerTab] : []), navigateTab]
+    : [editTab];
   const [tab, setTab] = useState(editTab.value);
 
   const goToEvent = (newEvent: number | null) => {
@@ -88,6 +94,9 @@ const EventAdministration = () => {
             </Collapse>
             <Collapse in={tab === participantsTab.value} mountOnEnter>
               <EventParticipants eventId={Number(eventId)} />
+            </Collapse>
+            <Collapse in={tab === formsTab.value} mountOnEnter>
+              <EventFormAdmin eventId={Number(eventId)} />
             </Collapse>
             {tab === registerTab.value && <Navigate to={`${URLS.events}${eventId}/${URLS.eventRegister}`} />}
             {tab === navigateTab.value && <Navigate to={`${URLS.events}${eventId}/`} />}
