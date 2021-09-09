@@ -95,10 +95,10 @@ const Events = () => {
     event('search', 'events', JSON.stringify(data));
     setFilters(data);
     navigate(`${location.pathname}${argsToParams(data)}`, { replace: true });
-    !lgDown || setExpanded((prev) => !prev);
+    !lgDown || setSearchFormExpanded((prev) => !prev);
   };
 
-  const [expanded, setExpanded] = useState(false);
+  const [searchFormExpanded, setSearchFormExpanded] = useState(false);
 
   const SearchForm = () => (
     <form onSubmit={handleSubmit(search)}>
@@ -145,7 +145,7 @@ const Events = () => {
         </div>
         {lgDown ? (
           <div>
-            <Expansion className={classes.accordion} expanded={expanded} header='Filtrering' onChange={() => setExpanded((prev) => !prev)}>
+            <Expansion className={classes.accordion} expanded={searchFormExpanded} header='Filtrering' onChange={() => setSearchFormExpanded((prev) => !prev)}>
               <SearchForm />
             </Expansion>
           </div>
