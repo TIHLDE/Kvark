@@ -54,9 +54,7 @@ const EventAdministration = () => {
   const formsTab = { value: 'forms', label: 'Spørsmål', icon: FormsIcon };
   const registerTab = { value: 'register', label: 'Registrering', icon: RegisterIcon };
   const navigateTab = { value: 'navigate', label: 'Se arrangement', icon: OpenIcon };
-  const tabs = eventId
-    ? [editTab, ...(event?.sign_up ? [participantsTab, ...(location.hostname !== 'tihlde.org' ? [formsTab] : []), registerTab] : []), navigateTab]
-    : [editTab];
+  const tabs = eventId ? [editTab, ...(event?.sign_up ? [participantsTab, formsTab, registerTab] : []), navigateTab] : [editTab];
   const [tab, setTab] = useState(editTab.value);
 
   const goToEvent = (newEvent: number | null) => {

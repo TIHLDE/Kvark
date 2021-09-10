@@ -5,6 +5,7 @@ import { styled, Typography, LinearProgress } from '@mui/material';
 
 // Project
 import Expand from 'components/layout/Expand';
+import FormAnswers from 'components/forms/FormAnswers';
 import FormStatistics from 'components/forms/FormStatistics';
 import EventFormEditor from 'pages/EventAdministration/components/EventFormEditor';
 
@@ -27,7 +28,7 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
   return (
     <>
       <div>
-        <Typography gutterBottom variant='h2'>
+        <Typography gutterBottom variant='h3'>
           Spørsmål ved påmelding
         </Typography>
         <Expansion flat header='Rediger spørsmål'>
@@ -40,11 +41,11 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
             <EventFormEditor eventId={eventId} formId={event.survey} />
           )}
         </Expansion>
-        <Expansion flat header='Svar på flervalgsspørsmål'>
+        <Expansion flat header='Sammendrag av flervalgsspørsmål'>
           <FormStatistics formId={event.survey} />
         </Expansion>
         <Expansion flat header='Alle svar'>
-          <div />
+          <FormAnswers formId={event.survey} />
         </Expansion>
       </div>
     </>

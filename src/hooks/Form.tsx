@@ -1,15 +1,16 @@
-import { useMutation, useQuery, useQueryClient, UseMutationResult } from 'react-query';
+import { useMutation, useQuery, useInfiniteQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
 import { EVENT_QUERY_KEY } from 'hooks/Event';
 import { EventForm, Form, RequestResponse, PaginationResponse, UserSubmission, Submission, SelectFieldSubmission, FormStatistics } from 'types';
 import { FormFieldType } from 'types/Enums';
 
 export const FORM_QUERY_KEY = 'form';
+export const SUBMISSIONS_QUERY_KEY = 'submission';
 
 export const useFormById = (formId: string) =>
   useQuery<Form, RequestResponse>([FORM_QUERY_KEY, formId], () => API.getForm(formId), { enabled: formId !== '-' });
 export const useFormStatisticsById = (formId: string) =>
-  useQuery<FormStatistics, RequestResponse>([FORM_QUERY_KEY, formId], () => API.getFormStatistics(formId), { enabled: formId !== '-' });
+  useQuery<FormStatistics, RequestResponse>([FORM_QUERY_KEY, formId, 'statistics'], () => API.getFormStatistics(formId), { enabled: formId !== '-' });
 
 export const useCreateForm = (): UseMutationResult<Form, RequestResponse, Form, unknown> => {
   const queryClient = useQueryClient();
@@ -46,8 +47,15 @@ export const useDeleteForm = (formId: string): UseMutationResult<RequestResponse
   });
 };
 
-export const useFormSubmissions = (formId: string) =>
-  useQuery<PaginationResponse<UserSubmission>, RequestResponse>([FORM_QUERY_KEY, formId], () => API.getSubmissions(formId), { enabled: formId !== '-' });
+export const useFormSubmissions = (formId: string, page: number) =>
+  useQuery<PaginationResponse<UserSubmission>, RequestResponse>(
+    [FORM_QUERY_KEY, formId, SUBMISSIONS_QUERY_KEY, { page }],
+    () => API.getSubmissions(formId, { page }),
+    {
+      enabled: formId !== '-',
+      keepPreviousData: true,
+    },
+  );
 
 export const useCreateSubmission = (formId: string): UseMutationResult<Submission, RequestResponse, Submission, unknown> =>
   useMutation((submission) => API.createSubmission(formId, submission));

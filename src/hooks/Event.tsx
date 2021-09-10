@@ -121,7 +121,7 @@ export const useDeleteEventRegistration = (eventId: number): UseMutationResult<R
   const queryClient = useQueryClient();
   return useMutation((userId: string) => API.deleteRegistration(eventId, userId), {
     onSuccess: () => {
-      queryClient.removeQueries([EVENT_QUERY_KEY, eventId]);
+      queryClient.removeQueries([EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_REGISTRATION]);
       queryClient.invalidateQueries(USER_EVENTS_QUERY_KEY);
     },
   });

@@ -41,7 +41,7 @@ export interface SelectFormFieldOption {
 }
 
 export interface FormStatistics extends Form {
-  fields: Array<TextFormField | SelectFormFieldStatistics>;
+  statistics: Array<SelectFormFieldStatistics>;
 }
 
 export interface SelectFormFieldStatistics extends SelectFormField {
@@ -50,15 +50,7 @@ export interface SelectFormFieldStatistics extends SelectFormField {
 
 export interface SelectFormFieldOptionStatistics extends SelectFormFieldOption {
   answer_amount: number;
-}
-
-export interface UserSubmission {
-  user: UserList;
-  answers: Array<TextFormFieldAnswer | SelectFormField>;
-}
-
-export interface TextFormFieldAnswer extends TextFormField {
-  answer_text: string;
+  answer_percentage: number;
 }
 
 // ------------------------------------
@@ -81,4 +73,9 @@ export interface TextFieldSubmission extends FieldSubmission {
 
 export interface SelectFieldSubmission extends FieldSubmission {
   selected_options: Array<{ id: string }>;
+}
+
+export interface UserSubmission {
+  user: UserList;
+  answers: Array<TextFieldSubmission | SelectFieldSubmission>;
 }
