@@ -2,7 +2,7 @@ import { FormFieldType } from 'types/Enums';
 import { useFormStatisticsById } from 'hooks/Form';
 
 // Material UI
-import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
+import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Stack } from '@mui/material';
 
 // Project components
 import Paper from 'components/layout/Paper';
@@ -22,9 +22,9 @@ const FormStatistics = ({ formId }: EventFormEditorProps) => {
   }
 
   return (
-    <>
+    <Stack gap={1}>
       {data.statistics.map((stat) => (
-        <TableContainer component={Paper} key={stat.id} noPadding sx={{ mb: 1 }}>
+        <TableContainer component={Paper} key={stat.id} noPadding>
           <Table aria-label={`Statistikk for ${stat.title}`} size='small' sx={{ minWidth: 250 }}>
             <TableHead>
               <TableRow>
@@ -55,7 +55,7 @@ const FormStatistics = ({ formId }: EventFormEditorProps) => {
           </Table>
         </TableContainer>
       ))}
-    </>
+    </Stack>
   );
 };
 

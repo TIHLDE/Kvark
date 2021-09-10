@@ -2,7 +2,7 @@ import { EventForm } from 'types';
 import { useFormById, useCreateForm } from 'hooks/Form';
 
 // Material UI
-import { Typography, Button, Box } from '@mui/material';
+import { Typography, Button } from '@mui/material';
 
 // Project components
 import FormEditor from 'components/forms/FormEditor';
@@ -26,11 +26,10 @@ const EventFormEditor = ({ eventId, formId }: EventFormEditorProps) => {
   };
 
   const onCreate = async () => createForm.mutate(newForm);
+
   if (isLoading) {
     return <Typography variant='h3'>Laster skjemaet</Typography>;
-  }
-
-  if (data === undefined || !formId) {
+  } else if (!data || !formId) {
     return (
       <Button fullWidth onClick={onCreate} variant='outlined'>
         Opprett skjema
@@ -38,14 +37,7 @@ const EventFormEditor = ({ eventId, formId }: EventFormEditorProps) => {
     );
   }
 
-  return (
-    <Box sx={{ width: '100%' }}>
-      <FormEditor form={data} />
-      <Typography sx={{ mt: 1 }} variant='body2'>
-        {`OBS: Spørsmål til arrangement lagres uavhengig av resten av arrangementet! Du må altså trykke på "LAGRE"-knappen over for at spørsmålene skal lagres.`}
-      </Typography>
-    </Box>
-  );
+  return <FormEditor form={data} />;
 };
 
 export default EventFormEditor;

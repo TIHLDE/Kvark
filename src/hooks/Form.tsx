@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useInfiniteQuery, useQueryClient, UseMutationResult } from 'react-query';
+import { useMutation, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
 import { EVENT_QUERY_KEY } from 'hooks/Event';
 import { EventForm, Form, RequestResponse, PaginationResponse, UserSubmission, Submission, SelectFieldSubmission, FormStatistics } from 'types';

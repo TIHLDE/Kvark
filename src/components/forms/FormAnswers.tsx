@@ -35,7 +35,7 @@ const FormAnswers = ({ formId }: EventFormEditorProps) => {
   };
 
   return (
-    <TableContainer component={Paper} noPadding sx={{ mb: 1 }}>
+    <TableContainer component={Paper} noPadding>
       <Table aria-label={`Svar for ${form.title}`} size='small' sx={{ minWidth: 250 }}>
         <TableHead>
           <TableRow>
@@ -62,14 +62,16 @@ const FormAnswers = ({ formId }: EventFormEditorProps) => {
           ))}
         </TableBody>
         <TableFooter>
-          <TablePagination
-            count={data.count}
-            labelDisplayedRows={({ from, to, count }) => `${from}-${to} av ${count}`}
-            onPageChange={(_, p) => setSelectedPage(p)}
-            page={selectedPage}
-            rowsPerPage={data.results.length || 25}
-            rowsPerPageOptions={[-1]}
-          />
+          <TableRow>
+            <TablePagination
+              count={data.count}
+              labelDisplayedRows={({ from, to, count }) => `${from}-${to} av ${count}`}
+              onPageChange={(_, p) => setSelectedPage(p)}
+              page={selectedPage}
+              rowsPerPage={data.results.length || 25}
+              rowsPerPageOptions={[-1]}
+            />
+          </TableRow>
         </TableFooter>
       </Table>
     </TableContainer>

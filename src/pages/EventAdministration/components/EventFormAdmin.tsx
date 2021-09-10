@@ -25,28 +25,34 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
     return <LinearProgress />;
   }
 
+  const formExists = Boolean(event.survey);
+
   return (
     <>
       <div>
         <Typography gutterBottom variant='h3'>
           Spørsmål ved påmelding
         </Typography>
-        <Expansion flat header='Rediger spørsmål'>
+        <Expansion flat header={formExists ? 'Rediger spørsmål' : 'Opprett skjema'}>
           {event.list_count > 0 || event.waiting_list_count > 0 ? (
             <Typography variant='body2'>
-              Du kan ikke endre spørsmålene etter at noen har svart på dem. Hvis du allikevel vil endre spørsmålene kan du fjerne alle påmeldte og alle på
+              Du kan ikke endre spørsmålene etter at noen har svart på dem. Hvis du allikevel vil endre spørsmålene må du fjerne alle påmeldte og alle på
               ventelisten.
             </Typography>
           ) : (
             <EventFormEditor eventId={eventId} formId={event.survey} />
           )}
         </Expansion>
-        <Expansion flat header='Sammendrag av flervalgsspørsmål'>
-          <FormStatistics formId={event.survey} />
-        </Expansion>
-        <Expansion flat header='Alle svar'>
-          <FormAnswers formId={event.survey} />
-        </Expansion>
+        {formExists && (
+          <>
+            <Expansion flat header='Sammendrag av flervalgsspørsmål'>
+              <FormStatistics formId={event.survey} />
+            </Expansion>
+            <Expansion flat header='Alle svar'>
+              <FormAnswers formId={event.survey} />
+            </Expansion>
+          </>
+        )}
       </div>
     </>
   );
