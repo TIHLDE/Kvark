@@ -77,5 +77,6 @@ export interface SelectFieldSubmission extends FieldSubmission {
 
 export interface UserSubmission {
   user: UserList;
+  form: string;
   answers: Array<TextFieldSubmission | SelectFieldSubmission>;
 }

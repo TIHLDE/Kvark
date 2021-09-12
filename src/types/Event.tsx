@@ -1,5 +1,6 @@
 import { UserClass, UserStudy } from 'types/Enums';
 import { User } from 'types/User';
+import { UserSubmission } from 'types/Form';
 
 export interface Category {
   created_at: string;
@@ -48,5 +49,6 @@ export interface Registration {
   has_attended: boolean;
   is_on_wait: boolean;
   registration_id: number;
+  survey_submission: UserSubmission;
   user_info: Pick<User, 'allergy' | 'email' | 'first_name' | 'last_name' | 'image' | 'user_class' | 'user_id' | 'user_study'>;
 }

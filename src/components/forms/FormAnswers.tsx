@@ -9,11 +9,11 @@ import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, Tab
 // Project components
 import Paper from 'components/layout/Paper';
 
-export type EventFormEditorProps = {
+export type FormAnswersProps = {
   formId: string | null;
 };
 
-const FormAnswers = ({ formId }: EventFormEditorProps) => {
+const FormAnswers = ({ formId }: FormAnswersProps) => {
   const [selectedPage, setSelectedPage] = useState(0);
   const { data: form } = useFormById(formId || '-');
   const { data, isLoading } = useFormSubmissions(formId || '-', selectedPage + 1);

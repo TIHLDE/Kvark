@@ -111,7 +111,9 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
           {form !== undefined && (
             <Paper sx={{ my: 1 }}>
               <Typography variant='h3'>Spørsmål</Typography>
-              <Typography variant='subtitle2'>Arrangøren ønsker at du svarer på disse spørsmålene</Typography>
+              <Typography gutterBottom variant='subtitle2'>
+                Arrangøren ønsker at du svarer på disse spørsmålene
+              </Typography>
               <FormView control={control} form={form} formState={formState} getValues={getValues} register={register} />
             </Paper>
           )}
