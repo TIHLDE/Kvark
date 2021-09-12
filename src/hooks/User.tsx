@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { User, UserList, UserCreate, LoginRequestResponse, PaginationResponse, RequestResponse, Badge, EventCompact, GroupList } from 'types/Types';
+import { User, UserList, UserCreate, LoginRequestResponse, PaginationResponse, RequestResponse, Badge, EventCompact, GroupList } from 'types';
 import { PermissionApp } from 'types/Enums';
 import { getCookie, setCookie, removeCookie } from 'api/cookie';
 import { ACCESS_TOKEN } from 'constant';

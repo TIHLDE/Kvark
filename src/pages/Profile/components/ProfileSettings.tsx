@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { getUserStudyLong, getUserClass } from 'utils';
-import { UserList } from 'types/Types';
+import { UserList } from 'types';
 import { useUpdateUser } from 'hooks/User';
 import { useSnackbar } from 'hooks/Snackbar';
 

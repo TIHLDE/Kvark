@@ -1,6 +1,6 @@
 import { useMutation, UseMutationResult, useQuery, useQueryClient } from 'react-query';
 import API from 'api/api';
-import { Group, RequestResponse } from 'types/Types';
+import { Group, RequestResponse } from 'types';
 
 export const GROUPS_QUERY_KEY = 'groups';
 

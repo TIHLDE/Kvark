@@ -2,6 +2,7 @@
 import { IFetch } from 'api/fetch';
 import { MembershipType, Study } from 'types/Enums';
 import {
+  Badge,
   Category,
   Cheatsheet,
   CompaniesEmail,
@@ -10,9 +11,13 @@ import {
   EventRequired,
   FileUploadResponse,
   Form,
+  FormStatistics,
+  Group,
+  GroupList,
   JobPost,
   JobPostRequired,
   LoginRequestResponse,
+  Membership,
   News,
   NewsRequired,
   Notification,
@@ -20,19 +25,16 @@ import {
   PageChildren,
   PageTree,
   PageRequired,
-  Membership,
-  Group,
   PaginationResponse,
   Registration,
   RequestResponse,
   ShortLink,
+  Submission,
   User,
   UserCreate,
+  UserSubmission,
   Warning,
-  Badge,
-  GroupList,
-  Submission,
-} from 'types/Types';
+} from 'types';
 
 export const AUTH_ENDPOINT = 'auth';
 export const BADGES_ENDPOINT = 'badge';
@@ -89,11 +91,14 @@ export default {
 
   // Forms
   getForm: (formId: string) => IFetch<Form>({ method: 'GET', url: `${FORMS_ENDPOINT}/${formId}/` }),
+  getFormStatistics: (formId: string) => IFetch<FormStatistics>({ method: 'GET', url: `${FORMS_ENDPOINT}/${formId}/statistics/` }),
   createForm: (item: Form) => IFetch<Form>({ method: 'POST', url: `${FORMS_ENDPOINT}/`, data: item }),
   updateForm: (formId: string, item: Form) => IFetch<Form>({ method: 'PUT', url: `${FORMS_ENDPOINT}/${formId}/`, data: item }),
   deleteForm: (formId: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${FORMS_ENDPOINT}/${formId}/` }),
 
   // Submissions
+  getSubmissions: (formId: string, filters?: any) =>
+    IFetch<PaginationResponse<UserSubmission>>({ method: 'GET', url: `${FORMS_ENDPOINT}/${formId}/${SUBMISSIONS_ENDPOINT}/`, data: filters || {} }),
   createSubmission: (formId: string, submission: Submission) =>
     IFetch<Submission>({ method: 'POST', url: `${FORMS_ENDPOINT}/${formId}/${SUBMISSIONS_ENDPOINT}/`, data: submission }),
 

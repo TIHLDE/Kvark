@@ -1,7 +1,7 @@
 import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
 import { USER_EVENTS_QUERY_KEY } from 'hooks/User';
-import { Event, EventRequired, EventCompact, Registration, PaginationResponse, RequestResponse } from 'types/Types';
+import { Event, EventRequired, EventCompact, Registration, PaginationResponse, RequestResponse } from 'types';
 
 export const EVENT_QUERY_KEY = 'event';
 export const EVENT_QUERY_KEY_REGISTRATION = 'event_registration';
@@ -121,7 +121,7 @@ export const useDeleteEventRegistration = (eventId: number): UseMutationResult<R
   const queryClient = useQueryClient();
   return useMutation((userId: string) => API.deleteRegistration(eventId, userId), {
     onSuccess: () => {
-      queryClient.removeQueries([EVENT_QUERY_KEY, eventId]);
+      queryClient.removeQueries([EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_REGISTRATION]);
       queryClient.invalidateQueries(USER_EVENTS_QUERY_KEY);
     },
   });

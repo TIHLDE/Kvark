@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { UserList } from 'types/Types';
+import { UserList } from 'types';
 import { useActivateUser, useDeclineUser } from 'hooks/User';
 import { useSnackbar } from 'hooks/Snackbar';
 import { getUserClass, getUserStudyShort } from 'utils';

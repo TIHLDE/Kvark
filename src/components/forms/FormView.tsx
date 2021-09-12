@@ -1,4 +1,4 @@
-import { Form } from 'types/Types';
+import { Form } from 'types';
 import { UseFormReturn } from 'react-hook-form';
 
 // Project components

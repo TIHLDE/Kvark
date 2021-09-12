@@ -1,6 +1,6 @@
 import { useMutation, useInfiniteQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { Notification, PaginationResponse, RequestResponse } from 'types/Types';
+import { Notification, PaginationResponse, RequestResponse } from 'types';
 import { USER_QUERY_KEY } from 'hooks/User';
 
 export const NOTIFICATION_QUERY_KEY = 'notification';

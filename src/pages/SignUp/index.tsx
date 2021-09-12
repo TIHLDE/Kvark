@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import URLS from 'URLS';
 import { EMAIL_REGEX } from 'constant';
 import { getUserStudyLong, getUserClass } from 'utils';
-import { UserCreate } from 'types/Types';
+import { UserCreate } from 'types';
 import { useCreateUser } from 'hooks/User';
 import { useSetRedirectUrl, useRedirectUrl } from 'hooks/Misc';
 import { useSnackbar } from 'hooks/Snackbar';

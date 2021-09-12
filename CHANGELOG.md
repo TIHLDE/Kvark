@@ -14,6 +14,10 @@
 
 ## Neste versjon
 
+## Versjon 1.2.0 (12.09.2021)
+
+- ✨ **Skjemaer**. Legg til statistikk og svar for spørsmål til arrangementer. Vis i produksjon.
+
 ## Versjon 1.1.4 (06.09.2021)
 
 - 🦟 **Bedrifter**. Fikset innsending av skjema for bedrifter slik at HS faktisk kan se hva de har krysset av.

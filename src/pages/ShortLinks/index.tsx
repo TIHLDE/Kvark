@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useGoogleAnalytics, useShare } from 'hooks/Utils';
 import { useShortLinks, useCreateShortLink, useDeleteShortLink } from 'hooks/ShortLink';
 import { useSnackbar } from 'hooks/Snackbar';
-import { ShortLink } from 'types/Types';
+import { ShortLink } from 'types';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';

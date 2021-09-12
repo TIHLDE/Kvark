@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback } from 'react';
 import { useQuery } from 'react-query';
 import API from 'api/api';
 import { getCookie, setCookie } from 'api/cookie';
-import { Warning, RequestResponse } from 'types/Types';
+import { Warning, RequestResponse } from 'types';
 import { WARNINGS_READ } from 'constant';
 
 export const WARNINGS_QUERY_KEY = 'warnings';

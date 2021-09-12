@@ -8,7 +8,7 @@ import { useCreateMembership } from 'hooks/Membership';
 import Dialog from 'components/layout/Dialog';
 import SubmitButton from 'components/inputs/SubmitButton';
 import AddIcon from '@mui/icons-material/Add';
-import { UserList } from 'types/Types';
+import { UserList } from 'types';
 import { useDebounce } from 'hooks/Utils';
 
 export type AddMemberModalProps = {

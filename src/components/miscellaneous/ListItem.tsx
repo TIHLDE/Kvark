@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { urlEncode, formatDate } from 'utils';
 import { parseISO } from 'date-fns';
 import URLS from 'URLS';
-import { EventCompact, News, JobPost } from 'types/Types';
+import { EventCompact, News, JobPost } from 'types';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';
