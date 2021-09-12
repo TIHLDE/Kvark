@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.1.5 (12.09.2021)
+
 - ✨ **Skjemaer**. Legg til statistikk og svar for spørsmål til arrangementer. Vis i produksjon.
 
 ## Versjon 1.1.4 (06.09.2021)
