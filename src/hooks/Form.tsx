@@ -6,11 +6,12 @@ import { FormFieldType } from 'types/Enums';
 
 export const FORM_QUERY_KEY = 'form';
 export const SUBMISSIONS_QUERY_KEY = 'submission';
+export const STATISTICS_QUERY_KEY = 'statistics';
 
 export const useFormById = (formId: string) =>
   useQuery<Form, RequestResponse>([FORM_QUERY_KEY, formId], () => API.getForm(formId), { enabled: formId !== '-' });
 export const useFormStatisticsById = (formId: string) =>
-  useQuery<FormStatistics, RequestResponse>([FORM_QUERY_KEY, formId, 'statistics'], () => API.getFormStatistics(formId), { enabled: formId !== '-' });
+  useQuery<FormStatistics, RequestResponse>([FORM_QUERY_KEY, formId, STATISTICS_QUERY_KEY], () => API.getFormStatistics(formId), { enabled: formId !== '-' });
 
 export const useCreateForm = (): UseMutationResult<Form, RequestResponse, Form, unknown> => {
   const queryClient = useQueryClient();
