@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { EventCompact, News, JobPost } from 'types/Types';
+import { EventCompact, News, JobPost } from 'types';
 import { parseISO } from 'date-fns';
 import { urlEncode, formatDate } from 'utils';
 import URLS from 'URLS';

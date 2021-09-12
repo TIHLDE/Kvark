@@ -1,6 +1,6 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient, UseMutationResult, QueryClient } from 'react-query';
 import API from 'api/api';
-import { Page, PageChildren, PageTree, PageRequired, RequestResponse, PaginationResponse } from 'types/Types';
+import { Page, PageChildren, PageTree, PageRequired, RequestResponse, PaginationResponse } from 'types';
 
 export const PAGES_QUERY_KEY = 'page';
 export const PAGES_QUERY_KEY_TREE = `${PAGES_QUERY_KEY}/tree`;

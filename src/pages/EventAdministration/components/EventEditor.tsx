@@ -1,6 +1,6 @@
 import { useCallback, useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Event, RegistrationPriority } from 'types/Types';
+import { Event, RegistrationPriority } from 'types';
 import { useEventById, useCreateEvent, useUpdateEvent, useDeleteEvent } from 'hooks/Event';
 import { useCategories } from 'hooks/Categories';
 import { useSnackbar } from 'hooks/Snackbar';
@@ -14,7 +14,6 @@ import { Button, Grid, MenuItem, Collapse, Accordion, AccordionSummary, Accordio
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 
 // Project components
-import EventFormEditor from 'pages/EventAdministration/components/EventFormEditor';
 import EventRegistrationPriorities from 'pages/EventAdministration/components/EventRegistrationPriorities';
 import EventRenderer from 'pages/EventDetails/components/EventRenderer';
 import Dialog from 'components/layout/Dialog';
@@ -328,22 +327,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 </AccordionDetails>
               </Accordion>
             </div>
-            {location.hostname !== 'tihlde.org' && (
-              <div className={classes.margin}>
-                <Accordion className={classes.expansionPanel}>
-                  <AccordionSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='survey-header'>
-                    <Typography>Spørsmål ved påmelding</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    {eventId && data ? (
-                      <EventFormEditor eventId={eventId} formId={data.survey} />
-                    ) : (
-                      <Typography variant='subtitle2'>Du må opprette arrangementet før du kan legge til spørsmål</Typography>
-                    )}
-                  </AccordionDetails>
-                </Accordion>
-              </div>
-            )}
           </Collapse>
           <MarkdownEditor formState={formState} {...register('description', { required: 'Gi arrangementet en beskrivelse' })} required />
           <ImageUpload formState={formState} label='Velg bilde' ratio={21 / 9} register={register('image')} setValue={setValue} watch={watch} />

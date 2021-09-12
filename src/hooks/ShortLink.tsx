@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { ShortLink, RequestResponse } from 'types/Types';
+import { ShortLink, RequestResponse } from 'types';
 
 export const SHORT_LINK_QUERY_KEY = 'short-link';
 

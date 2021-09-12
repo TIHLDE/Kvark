@@ -52,7 +52,12 @@ export type TabsProps = {
 } & MuiTabsProps;
 
 const Tabs = ({ tabs, selected, setSelected, ...props }: TabsProps) => (
-  <CustomTabs aria-label='Tabs' onChange={(e, newTab) => setSelected(newTab)} value={selected} variant='scrollable' {...props}>
+  <CustomTabs
+    aria-label='Tabs'
+    onChange={(e, newTab) => setSelected(newTab)}
+    value={tabs.some((t) => t.value === selected) ? selected : tabs[0]?.value}
+    variant='scrollable'
+    {...props}>
     {tabs.map((tab, index) => {
       const Icon = tab.icon && styled(tab.icon)({ verticalAlign: 'middle', marginRight: 7, marginBottom: 3 });
       return (

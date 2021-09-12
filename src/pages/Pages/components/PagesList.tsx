@@ -1,7 +1,7 @@
 import { ComponentType, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import URLS from 'URLS';
-import { PageChildren } from 'types/Types';
+import { PageChildren } from 'types';
 
 // Material UI Components
 import List from '@mui/material/List';

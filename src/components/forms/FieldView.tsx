@@ -1,4 +1,4 @@
-import { TextFormField, SelectFormField } from 'types/Types';
+import { TextFormField, SelectFormField } from 'types';
 import { FormFieldType } from 'types/Enums';
 import { UseFormReturn, Path } from 'react-hook-form';
 

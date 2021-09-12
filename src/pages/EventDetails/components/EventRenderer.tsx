@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import classnames from 'classnames';
-import { Event } from 'types/Types';
+import { Event } from 'types';
 import { PermissionApp } from 'types/Enums';
 import URLS from 'URLS';
 import { parseISO, isPast, isFuture } from 'date-fns';
@@ -30,6 +30,8 @@ import Dialog from 'components/layout/Dialog';
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 import QRCode from 'components/miscellaneous/QRCode';
 import ShareButton from 'components/miscellaneous/ShareButton';
+import FormUserAnswers from 'components/forms/FormUserAnswers';
+import Expand from 'components/layout/Expand';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
@@ -152,15 +154,25 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       return (
         <>
           {registration.is_on_wait ? (
-            <Alert className={classes.details} severity='info' variant='outlined'>
-              Du står på ventelisten, vi gir deg beskjed hvis du får plass
-            </Alert>
+            <>
+              <Alert className={classes.details} severity='info' variant='outlined'>
+                Du står på ventelisten, vi gir deg beskjed hvis du får plass
+              </Alert>
+              <Expand flat header='Dine svar på spørsmål'>
+                <FormUserAnswers submission={registration.survey_submission} />
+              </Expand>
+            </>
           ) : (
             <Paper className={classes.details} noPadding>
               <Alert className={classes.alert} severity='success' variant='outlined'>
                 Du har plass på arrangementet!
               </Alert>
               <QRCode background='paper' value={user.user_id} />
+              {registration.survey_submission.answers.length > 0 && (
+                <Expand flat header='Dine svar på spørsmål'>
+                  <FormUserAnswers submission={registration.survey_submission} />
+                </Expand>
+              )}
             </Paper>
           )}
           {(isFuture(signOffDeadlineDate) || registration.is_on_wait) && isFuture(startDate) ? (

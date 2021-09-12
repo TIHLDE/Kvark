@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useGroups } from 'hooks/Group';
 import { useIsAuthenticated } from 'hooks/User';
 import { GroupType } from 'types/Enums';
-import { Group } from 'types/Types';
+import { Group } from 'types';
 
 // Material UI Components
 import { Typography, Grid } from '@mui/material';

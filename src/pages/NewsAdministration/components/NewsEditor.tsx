@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useSnackbar } from 'hooks/Snackbar';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { News } from 'types/Types';
+import { News } from 'types';
 
 // API and store imports
 import { useUpdateNews, useCreateNews, useDeleteNews, useNewsById } from 'hooks/News';
