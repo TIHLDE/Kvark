@@ -78,7 +78,7 @@ const UserAdmin = () => {
   return (
     <Page banner={<PrimaryTopBox />} options={{ title: 'Brukeradmin' }}>
       <Paper className={classes.content}>
-        <Typography variant='h1'>Brukeradmin</Typography>
+        <Typography variant='h1'>Brukeradmin 5</Typography>
         <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
         <div className={classes.filterContainer}>
           <TextField fullWidth label='Klasser' onChange={(e) => setUserClassChoice(Number(e.target.value))} select value={userClassChoice} variant='outlined'>
