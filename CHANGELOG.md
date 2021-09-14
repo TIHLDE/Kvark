@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- ✨ **Profil**. Klargjører at brukere skal skrive allergier, og ikke tøys.
+
 ## Versjon 1.2.0 (12.09.2021)
 
 - ✨ **Skjemaer**. Legg til statistikk og svar for spørsmål til arrangementer. Vis i produksjon.
