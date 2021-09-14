@@ -1,4 +1,4 @@
-import { render, waitFor } from '../../../test-utils';
+import { render } from '../../../test-utils';
 import Banner from '../Banner';
 
 test('Banner should contain title', () => {
