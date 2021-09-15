@@ -8,7 +8,7 @@ import { addHours, subDays, parseISO, setHours, startOfHour } from 'date-fns';
 
 // Material-UI
 import { makeStyles } from '@mui/styles';
-import { Button, Grid, MenuItem, Collapse, Accordion, AccordionSummary, AccordionDetails, Typography, LinearProgress } from '@mui/material';
+import { Grid, MenuItem, Collapse, Accordion, AccordionSummary, AccordionDetails, Typography, LinearProgress } from '@mui/material';
 
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
@@ -16,7 +16,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 // Project components
 import EventRegistrationPriorities from 'pages/EventAdministration/components/EventRegistrationPriorities';
 import EventRenderer from 'pages/EventDetails/components/EventRenderer';
-import Dialog from 'components/layout/Dialog';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import Select from 'components/inputs/Select';
 import Bool from 'components/inputs/Bool';
@@ -25,6 +24,7 @@ import TextField from 'components/inputs/TextField';
 import DatePicker from 'components/inputs/DatePicker';
 import { ImageUpload } from 'components/inputs/Upload';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
+import VerifyDialog from 'components/layout/VerifyDialog';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -89,8 +89,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const updateEvent = useUpdateEvent(eventId || -1);
   const deleteEvent = useDeleteEvent(eventId || -1);
   const showSnackbar = useSnackbar();
-  const [closeEventDialogOpen, setCloseEventDialogOpen] = useState(false);
-  const [deleteEventDialogOpen, setDeleteEventDialogOpen] = useState(false);
+
   const [regPriorities, setRegPriorities] = useState<Array<RegistrationPriority>>([]);
   const { handleSubmit, register, watch, control, formState, getValues, reset, setValue } = useForm<FormValues>();
   const watchSignUp = watch('sign_up');
@@ -154,7 +153,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     deleteEvent.mutate(null, {
       onSuccess: (data) => {
         showSnackbar(data.detail, 'success');
-        setDeleteEventDialogOpen(false);
         goToEvent(null);
       },
       onError: (e) => {
@@ -167,7 +165,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     await updateEvent.mutate({ ...data, closed: true } as Event, {
       onSuccess: () => {
         showSnackbar('Arrangementet ble stengt', 'success');
-        setCloseEventDialogOpen(false);
       },
       onError: (e) => {
         showSnackbar(e.detail, 'error');
@@ -358,32 +355,26 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           </SubmitButton>
           {eventId !== null && (
             <div className={classes.grid}>
-              <Button className={classes.margin} color='error' disabled={isLoading} onClick={() => setCloseEventDialogOpen(true)} variant='outlined'>
+              <VerifyDialog
+                closeText='Ikke steng arrangementet'
+                color='warning'
+                contentText='Å stenge et arrangement kan ikke reverseres. Eventuell på- og avmelding vil bli stoppet.'
+                onConfirm={closeEvent}
+                titleText='Er du sikker?'>
                 Steng
-              </Button>
-              <Button className={classes.margin} color='error' disabled={isLoading} onClick={() => setDeleteEventDialogOpen(true)} variant='outlined'>
+              </VerifyDialog>
+              <VerifyDialog
+                closeText='Ikke slett arrangementet'
+                color='error'
+                contentText='Sletting av arrangementer kan ikke reverseres.'
+                onConfirm={remove}
+                titleText='Er du sikker?'>
                 Slett
-              </Button>
+              </VerifyDialog>
             </div>
           )}
         </Grid>
       </form>
-      <Dialog
-        confirmText='Ja, jeg er sikker'
-        contentText='Å stenge et arrangement kan ikke reverseres. Eventuell på- og avmelding vil bli stoppet.'
-        onClose={() => setCloseEventDialogOpen(false)}
-        onConfirm={closeEvent}
-        open={closeEventDialogOpen}
-        titleText='Er du sikker?'
-      />
-      <Dialog
-        confirmText='Ja, jeg er sikker'
-        contentText='Sletting av arrangementer kan ikke reverseres.'
-        onClose={() => setDeleteEventDialogOpen(false)}
-        onConfirm={remove}
-        open={deleteEventDialogOpen}
-        titleText='Er du sikker?'
-      />
     </>
   );
 };
