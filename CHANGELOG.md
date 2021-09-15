@@ -14,7 +14,7 @@
 
 ## Neste versjon
 
-- ⚡ **Admin**. Optimaliserte "er du sikker"-popups i administarsjonspanelet.
+- ⚡ **Admin**. Optimaliserte "er du sikker"-popups i adminpanelet.
 
 ## Versjon 1.2.0 (12.09.2021)
 
