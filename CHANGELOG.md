@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- ✨ **Profil**. Klargjører at brukere skal skrive allergier, og ikke tøys.
+
 - ✨ **Brukeradmin**. Lagt til alumni i Brukeradmin
 
 ## Versjon 1.2.0 (12.09.2021)
