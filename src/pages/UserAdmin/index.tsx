@@ -59,11 +59,7 @@ const UserAdmin = () => {
       filters.user_study = userStudyChoice;
     }
     if (userClassChoice !== 0) {
-      if (userClassChoice === 6) {
-        filters.user_class = -1;
-      } else {
-        filters.user_class = userClassChoice;
-      }
+      filters.user_class = userClassChoice === 6 ? -1 : userClassChoice;
     }
     return filters;
   }, [tab, userClassChoice, userStudyChoice, searchInput]);
