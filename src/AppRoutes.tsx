@@ -28,6 +28,7 @@ const Cheatsheet = lazy(() => import(/* webpackChunkName: "cheatsheet" */ 'pages
 const EventAdministration = lazy(() => import(/* webpackChunkName: "event_administration" */ 'pages/EventAdministration'));
 const EventRegistration = lazy(() => import(/* webpackChunkName: "event_registration" */ 'pages/EventRegistration'));
 const ForgotPassword = lazy(() => import(/* webpackChunkName: "forgot_password" */ 'pages/ForgotPassword'));
+const Form = lazy(() => import(/* webpackChunkName: "form" */ 'pages/Form'));
 const GroupAdmin = lazy(() => import(/* webpackChunkName: "group_admin" */ 'pages/GroupAdmin'));
 const Http404 = lazy(() => import(/* webpackChunkName: "http404" */ 'pages/Http404'));
 const JobPostAdministration = lazy(() => import(/* webpackChunkName: "jobpost_administration" */ 'pages/JobPostAdministration'));
@@ -83,6 +84,7 @@ const AppRoutes = () => {
           <Route element={<Events />} path='' />
         </Route>
         <Route element={<Companies />} path={URLS.company} />
+        <Route element={<Form />} path={`${URLS.form}:id/`} />
         <Route element={<GroupOverview />} path={URLS.groups} />
         <Route path={URLS.jobposts}>
           <Route element={<JobPostDetails />} path=':id/*' />

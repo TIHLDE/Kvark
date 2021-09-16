@@ -1,7 +1,8 @@
 import { useEventById } from 'hooks/Event';
+import { FormType } from 'types/Enums';
 
 // Material-UI
-import { styled, Typography, LinearProgress } from '@mui/material';
+import { styled, Typography, LinearProgress, Stack } from '@mui/material';
 
 // Project
 import Expand from 'components/layout/Expand';
@@ -25,25 +26,21 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
     return <LinearProgress />;
   }
 
-  const formExists = Boolean(event.survey);
+  const surveyFormExists = Boolean(event.survey);
+  const evaluationFormExists = Boolean(event.evaluation);
 
   return (
-    <>
+    <Stack gap={2}>
       <div>
-        <Typography gutterBottom variant='h3'>
-          Spørsmål ved påmelding
+        <Typography variant='h3'>Spørsmål ved påmelding</Typography>
+        <Typography variant='caption'>
+          Deltagere som melder seg på dette arrangementet vil måtte svare på disse spørsmålene først. Deltagerne kan la være å svare på spørsmål som ikke er
+          &quot;Påkrevd&quot;.
         </Typography>
-        <Expansion flat header={formExists ? 'Rediger spørsmål' : 'Opprett skjema'}>
-          {event.list_count > 0 || event.waiting_list_count > 0 ? (
-            <Typography variant='body2'>
-              Du kan ikke endre spørsmålene etter at noen har svart på dem. Hvis du allikevel vil endre spørsmålene må du fjerne alle påmeldte og alle på
-              ventelisten.
-            </Typography>
-          ) : (
-            <EventFormEditor eventId={eventId} formId={event.survey} />
-          )}
+        <Expansion flat header={surveyFormExists ? 'Rediger påmeldingsspørsmål' : 'Opprett påmeldingsskjema'} sx={{ mt: 1 }}>
+          <EventFormEditor eventId={eventId} formId={event.survey} formType={FormType.SURVEY} />
         </Expansion>
-        {formExists && (
+        {surveyFormExists && (
           <>
             <Expansion flat header='Sammendrag av flervalgsspørsmål'>
               <FormStatistics formId={event.survey} />
@@ -54,7 +51,28 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
           </>
         )}
       </div>
-    </>
+      <div>
+        <Typography variant='h3'>Evalueringsspørsmål</Typography>
+        <Typography variant='caption'>
+          Deltagerne som deltar på dette arrangementet <b>må</b> svare på disse spørsmålene før de kan melde seg på andre arrangementer. Blokkeringen av
+          påmelding trer i kraft når deltageren blir markert som &quot;Ankommet&quot;, og forsvinner med en gang deltageren har svart på evalueringsskjemaet.
+          Deltagerne vil motta epost med påminnelse om å svare på skjemaet kl 12.00 dagen etter arrangementet.
+        </Typography>
+        <Expansion flat header={surveyFormExists ? 'Rediger evalueringsspørsmål' : 'Opprett evalueringsskjema'} sx={{ mt: 1 }}>
+          <EventFormEditor eventId={eventId} formId={event.evaluation} formType={FormType.EVALUATION} />
+        </Expansion>
+        {evaluationFormExists && (
+          <>
+            <Expansion flat header='Sammendrag av flervalgsspørsmål'>
+              <FormStatistics formId={event.evaluation} />
+            </Expansion>
+            <Expansion flat header='Alle svar'>
+              <FormAnswers formId={event.evaluation} />
+            </Expansion>
+          </>
+        )}
+      </div>
+    </Stack>
   );
 };
 

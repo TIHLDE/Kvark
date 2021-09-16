@@ -61,6 +61,8 @@ const useStyles = makeStyles((theme) => ({
   },
   details: {
     padding: theme.spacing(1, 2),
+    display: 'grid',
+    gap: theme.spacing(1),
   },
   detailsHeader: {
     fontSize: '1.5rem',
@@ -172,6 +174,11 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
                 <Expand flat header='Dine svar på spørsmål'>
                   <FormUserAnswers submission={registration.survey_submission} />
                 </Expand>
+              )}
+              {data.viewer_has_unanswered_evaluations && (
+                <Button component={Link} fullWidth to={`${URLS.form}${data.evaluation}/`} variant='outlined'>
+                  Svar på evaluering
+                </Button>
               )}
             </Paper>
           )}

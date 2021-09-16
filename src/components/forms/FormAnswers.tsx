@@ -21,6 +21,8 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
     return <Typography>Laster statistikken</Typography>;
   } else if (!data || !form) {
     return <Typography>Du må opprette et skjema for å se svar</Typography>;
+  } else if (!data.results.length) {
+    return <Typography>Ingen har svart på dette skjemaet</Typography>;
   }
 
   const getTableCellText = (field: TextFormField | SelectFormField, submission: UserSubmission) => {

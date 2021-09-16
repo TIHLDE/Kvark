@@ -1,4 +1,5 @@
 import { UserList } from 'types/User';
+import { EventCompact } from 'types/Event';
 import { FormFieldType, FormResourceType, FormType } from 'types/Enums';
 
 // -----------------------------------------------------------
@@ -14,8 +15,8 @@ export interface Form {
 }
 
 export interface EventForm extends Form {
-  type: FormType.SURVEY;
-  event: number;
+  type: FormType.SURVEY | FormType.EVALUATION;
+  event: EventCompact;
   resource_type: FormResourceType.EVENT_FORM;
 }
 

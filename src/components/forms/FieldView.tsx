@@ -8,17 +8,25 @@ import TextField from 'components/inputs/TextField';
 export type FieldViewProps<FormValues> = Pick<UseFormReturn<FormValues>, 'formState' | 'register' | 'control' | 'getValues'> & {
   field: TextFormField | SelectFormField;
   index: number;
+  disabled?: boolean;
 };
 
 // eslint-disable-next-line comma-spacing
-const FieldView = <FormValues,>({ register, field, formState, index, control, getValues }: FieldViewProps<FormValues>) => (
+const FieldView = <FormValues,>({ register, field, formState, index, control, getValues, disabled = false }: FieldViewProps<FormValues>) => (
   <>
     <input {...register(`answers.${index}.field.id` as Path<FormValues>)} type='hidden' value={field.id} />
     {field.type === FormFieldType.TEXT_ANSWER ? (
-      <TextField formState={formState} label={field.title} {...register(`answers.${index}.answer_text` as Path<FormValues>)} required={field.required} />
+      <TextField
+        disabled={disabled}
+        formState={formState}
+        label={field.title}
+        {...register(`answers.${index}.answer_text` as Path<FormValues>)}
+        required={field.required}
+      />
     ) : field.type === FormFieldType.MULTIPLE_SELECT ? (
       <BoolArray
         control={control}
+        disabled={disabled}
         formState={formState}
         getPathToObject={(obj) => obj?.['answers']?.[index]?.['selected_options']}
         getValues={getValues}
@@ -33,6 +41,7 @@ const FieldView = <FormValues,>({ register, field, formState, index, control, ge
       <BoolArray
         control={control}
         defaultValue={field.required ? [field.options[0]] : []}
+        disabled={disabled}
         formState={formState}
         getPathToObject={(obj) => obj?.['answers']?.[index]?.['selected_options']}
         getValues={getValues}

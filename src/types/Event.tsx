@@ -16,7 +16,7 @@ export interface Event {
   end_date: string;
   end_registration_at: string;
   evaluate_link: string;
-  evaluation: string;
+  evaluation: string | null;
   expired: boolean;
   id: number;
   image?: string;
@@ -33,6 +33,7 @@ export interface Event {
   survey: string | null;
   title: string;
   updated_at: string;
+  viewer_has_unanswered_evaluations: boolean;
   waiting_list_count: number;
 }
 export type EventRequired = Partial<Event> & Pick<Event, 'end_date' | 'title' | 'start_date'>;
