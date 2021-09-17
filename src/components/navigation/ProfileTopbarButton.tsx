@@ -16,7 +16,7 @@ import NotificationsIcon from '@mui/icons-material/NotificationsNoneRounded';
 // Project Components
 import Avatar from 'components/miscellaneous/Avatar';
 import ThemeSettings from 'components/miscellaneous/ThemeSettings';
-import NotifcationsTopBar from 'components/miscellaneous/TopbarNotifications'
+import NotifcationsTopBar from 'components/miscellaneous/TopbarNotifications';
 import { NavigationOptions } from 'components/navigation/Navigation';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
@@ -52,14 +52,14 @@ const ProfileTopbarButton = (props: ProfileTopbarButtonProps) => {
 
   const analytics = (page: string) => event(`go-to-${page}`, 'topbar-profile-button', `Go to ${page}`);
 
-  const notificationsBadge = {icon: NotificationsIcon, badge: user?.unread_notifications };
+  const notificationsBadge = { icon: NotificationsIcon, badge: user?.unread_notifications };
 
   return (
     <div>
-      <NotifcationsTopBar onClose={() => setShowNotifcationItem(false)} open={showNotifcationItem}/>
+      <NotifcationsTopBar onClose={() => setShowNotifcationItem(false)} open={showNotifcationItem} />
       <IconButton aria-label='Vis meldinger' className={classes.themeButton} onClick={() => setShowNotifcationItem(true)}>
         <Badge badgeContent={notificationsBadge.badge} color='error'>
-          <notificationsBadge.icon/>
+          <notificationsBadge.icon />
         </Badge>
       </IconButton>
       <ThemeSettings onClose={() => setShowThemeSettings(false)} open={showThemeSettings} />
