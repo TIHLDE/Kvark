@@ -6,15 +6,17 @@ import { useSetRedirectUrl } from 'hooks/Misc';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';
-import { Theme, Button, IconButton } from '@mui/material';
+import { Theme, Button, IconButton, Badge } from '@mui/material';
 
 // Assets/Icons
 import PersonOutlineIcon from '@mui/icons-material/PersonRounded';
 import LightIcon from '@mui/icons-material/WbSunnyRounded';
+import NotificationsIcon from '@mui/icons-material/NotificationsNoneRounded';
 
 // Project Components
 import Avatar from 'components/miscellaneous/Avatar';
 import ThemeSettings from 'components/miscellaneous/ThemeSettings';
+import NotifcationsTopBar from 'components/miscellaneous/TopbarNotifications'
 import { NavigationOptions } from 'components/navigation/Navigation';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
@@ -46,11 +48,20 @@ const ProfileTopbarButton = (props: ProfileTopbarButtonProps) => {
   const { data: user } = useUser();
   const setLogInRedirectURL = useSetRedirectUrl();
   const [showThemeSettings, setShowThemeSettings] = useState(false);
+  const [showNotifcationItem, setShowNotifcationItem] = useState(false);
 
   const analytics = (page: string) => event(`go-to-${page}`, 'topbar-profile-button', `Go to ${page}`);
 
+  const notificationsBadge = {icon: NotificationsIcon, badge: user?.unread_notifications };
+
   return (
     <div>
+      <NotifcationsTopBar onClose={() => setShowNotifcationItem(false)} open={showNotifcationItem}/>
+      <IconButton aria-label='Vis meldinger' className={classes.themeButton} onClick={() => setShowNotifcationItem(true)}>
+        <Badge badgeContent={notificationsBadge.badge} color='error'>
+          <notificationsBadge.icon/>
+        </Badge>
+      </IconButton>
       <ThemeSettings onClose={() => setShowThemeSettings(false)} open={showThemeSettings} />
       <IconButton aria-label='Endre tema' className={classes.themeButton} onClick={() => setShowThemeSettings(true)}>
         <LightIcon className={classes.themeSettingsIcon} />
