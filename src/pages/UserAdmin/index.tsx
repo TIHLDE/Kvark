@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const USER_CLASSES = ['Alle', '1. klasse', '2. klasse', '3. klasse', '4. klasse', '5. klasse'];
+const USER_CLASSES = ['Alle', '1. klasse', '2. klasse', '3. klasse', '4. klasse', '5. klasse', 'Alumni'];
 const USER_STUDIES = ['Alle', 'Dataing', 'DigFor', 'DigSec', 'DigSam', 'Drift'];
 
 const UserAdmin = () => {
@@ -59,7 +59,7 @@ const UserAdmin = () => {
       filters.user_study = userStudyChoice;
     }
     if (userClassChoice !== 0) {
-      filters.user_class = userClassChoice;
+      filters.user_class = userClassChoice === 6 ? -1 : userClassChoice;
     }
     return filters;
   }, [tab, userClassChoice, userStudyChoice, searchInput]);
