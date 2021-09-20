@@ -7,7 +7,7 @@ import { useSnackbar } from 'hooks/Snackbar';
 
 // Material-ui
 import { makeStyles } from '@mui/styles';
-import { Theme, useMediaQuery, Checkbox, Typography, Collapse, Button, ListItem, ListItemText, ListItemSecondaryAction, Divider } from '@mui/material';
+import { Checkbox, Typography, Collapse, Button, ListItem, ListItemText, ListItemSecondaryAction, Divider } from '@mui/material';
 
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
