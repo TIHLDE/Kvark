@@ -12,13 +12,20 @@ export interface Form {
   type: FormType;
   fields: Array<TextFormField | SelectFormField>;
   resource_type: FormResourceType;
+  viewer_has_answered: boolean;
 }
+
+export type FormCreate = Omit<Form, 'id' | 'viewer_has_answered'>;
 
 export interface EventForm extends Form {
   type: FormType.SURVEY | FormType.EVALUATION;
   event: EventCompact;
   resource_type: FormResourceType.EVENT_FORM;
 }
+
+export type EventFormCreate = FormCreate & {
+  event: number;
+};
 
 interface FormField {
   id?: string;

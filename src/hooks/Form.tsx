@@ -1,7 +1,18 @@
 import { useMutation, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
 import { EVENT_QUERY_KEY } from 'hooks/Event';
-import { EventForm, Form, RequestResponse, PaginationResponse, UserSubmission, Submission, SelectFieldSubmission, FormStatistics } from 'types';
+import {
+  FormCreate,
+  EventFormCreate,
+  EventForm,
+  Form,
+  RequestResponse,
+  PaginationResponse,
+  UserSubmission,
+  Submission,
+  SelectFieldSubmission,
+  FormStatistics,
+} from 'types';
 import { FormFieldType } from 'types/Enums';
 
 export const FORM_QUERY_KEY = 'form';
@@ -13,9 +24,9 @@ export const useFormById = (formId: string) =>
 export const useFormStatisticsById = (formId: string) =>
   useQuery<FormStatistics, RequestResponse>([FORM_QUERY_KEY, formId, STATISTICS_QUERY_KEY], () => API.getFormStatistics(formId), { enabled: formId !== '-' });
 
-export const useCreateForm = (): UseMutationResult<Form, RequestResponse, Form, unknown> => {
+export const useCreateForm = <T extends FormCreate | EventFormCreate>(): UseMutationResult<Form, RequestResponse, T, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((newForm: Form) => API.createForm(newForm), {
+  return useMutation((newForm: T) => API.createForm(newForm), {
     onSuccess: (data) => {
       if ((data as EventForm).event) {
         queryClient.invalidateQueries([EVENT_QUERY_KEY, (data as EventForm).event]);
@@ -58,8 +69,14 @@ export const useFormSubmissions = (formId: string, page: number) =>
     },
   );
 
-export const useCreateSubmission = (formId: string): UseMutationResult<Submission, RequestResponse, Submission, unknown> =>
-  useMutation((submission) => API.createSubmission(formId, submission));
+export const useCreateSubmission = (formId: string): UseMutationResult<Submission, RequestResponse, Submission, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation((submission) => API.createSubmission(formId, submission), {
+    onSuccess: () => {
+      queryClient.invalidateQueries([FORM_QUERY_KEY, formId]);
+    },
+  });
+};
 
 export const validateSubmissionInput = (submission: Submission, form: Form) => {
   submission.answers.forEach((answer, index) => {

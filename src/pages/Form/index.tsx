@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Form, Submission, EventForm } from 'types';
 import { useFormById, useCreateSubmission, validateSubmissionInput } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { useGoogleAnalytics } from 'hooks/Utils';
 import { formatDate } from 'utils';
 import { parseISO } from 'date-fns';
+import URLS from 'URLS';
 
 // Material UI Components
 import { Divider, Button, Typography } from '@mui/material';
@@ -28,10 +29,19 @@ const FormPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const title = useMemo(() => (form?.type === FormType.EVALUATION ? 'Evaluering' : 'Spørreskjema'), [form]);
   const subtitle = useMemo(
-    () =>
-      form?.resource_type === FormResourceType.EVENT_FORM
-        ? `"${(form as EventForm).event.title}", ${formatDate(parseISO((form as EventForm).event.start_date))} på ${(form as EventForm).event.location}`
-        : '',
+    () => (
+      <>
+        {form?.resource_type === FormResourceType.EVENT_FORM && (
+          <>
+            {`Arrangøren av `}
+            <Link to={`${URLS.events}${(form as EventForm).event.id}/`}>{`"${(form as EventForm).event.title}"`}</Link>
+            {`, som ble holdt ${formatDate(parseISO((form as EventForm).event.start_date)).toLowerCase()} på ${
+              (form as EventForm).event.location
+            },  ønsker at du svarer på følgende spørsmål:`}
+          </>
+        )}
+      </>
+    ),
     [form],
   );
 
@@ -81,22 +91,31 @@ const FormPage = () => {
           right: 0,
           top: -60,
         }}>
-        <Typography align='center' variant='h2'>
-          {title}
-        </Typography>
-        <Typography align='center' variant='subtitle2'>
-          {subtitle}
-        </Typography>
-        <Typography align='center' variant='subtitle2'>
-          Arrangøren ønsker at du svarer på følgende spørsmål
-        </Typography>
-        <Divider sx={{ my: 2 }} />
-        <form onSubmit={handleSubmit(submit)}>
-          {form && <FormView control={control} disabled={submitDisabled} form={form} formState={formState} getValues={getValues} register={register} />}
-          <Button disabled={submitDisabled} fullWidth sx={{ mt: 2 }} type='submit' variant='contained'>
-            Send inn svar
-          </Button>
-        </form>
+        {form ? (
+          <>
+            <Typography align='center' variant='h2'>
+              {title}
+            </Typography>
+            <Typography align='center' variant='subtitle2'>
+              {subtitle}
+            </Typography>
+            <Divider sx={{ my: 2 }} />
+            {form.viewer_has_answered ? (
+              <Typography align='center'>Du har allerede svart på dette spørreskjemaet</Typography>
+            ) : (
+              <form onSubmit={handleSubmit(submit)}>
+                {form && <FormView control={control} disabled={submitDisabled} form={form} formState={formState} getValues={getValues} register={register} />}
+                <Button disabled={submitDisabled} fullWidth sx={{ mt: 2 }} type='submit' variant='contained'>
+                  Send inn svar
+                </Button>
+              </form>
+            )}
+          </>
+        ) : (
+          <Typography align='center' variant='h2'>
+            Laster spørreskjema...
+          </Typography>
+        )}
       </Paper>
     </Page>
   );

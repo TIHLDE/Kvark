@@ -1,4 +1,4 @@
-import { EventForm } from 'types';
+import { EventFormCreate } from 'types';
 import { useFormById, useCreateForm, useFormSubmissions } from 'hooks/Form';
 
 // Material UI
@@ -19,7 +19,7 @@ const EventFormEditor = ({ eventId, formId, formType }: EventFormEditorProps) =>
   const { data: submissions } = useFormSubmissions(formId || '-', 1);
   const createForm = useCreateForm();
 
-  const newForm: Omit<EventForm, 'event'> & { event: number } = {
+  const newForm: EventFormCreate = {
     title: String(eventId),
     type: formType,
     event: eventId,
