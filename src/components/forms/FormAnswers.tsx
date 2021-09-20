@@ -41,9 +41,9 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
       <Table aria-label={`Svar for ${form.title}`} size='small' sx={{ minWidth: 250 }}>
         <TableHead>
           <TableRow>
-            <TableCell sx={{ fontWeight: 'bold' }}>Navn</TableCell>
+            <TableCell sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>Navn</TableCell>
             {form.fields.map((field) => (
-              <TableCell align='right' key={field.id} sx={{ fontWeight: 'bold' }}>
+              <TableCell align='right' key={field.id} sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>
                 {`${field.title}${field.required ? ' *' : ''}`}
               </TableCell>
             ))}

@@ -9,6 +9,7 @@ export type BoolArrayProps<OptionType, FormValues> = Pick<FormControlLabelProps,
     name: Path<FormValues>;
     helperText?: string;
     rules?: RegisterOptions;
+    required?: boolean;
     type: 'checkbox' | 'switch' | 'radio';
     /**
      * The options that should be rendered
@@ -50,6 +51,7 @@ const BoolArray = <OptionType, FormValues>({
   rules = {},
   disabled,
   label,
+  required,
 }: BoolArrayProps<OptionType, FormValues>) => {
   const error = getPathToObject ? getPathToObject(formState.errors) : formState.errors;
   const Child = type === 'switch' ? Switch : type === 'checkbox' ? Checkbox : Radio;
@@ -59,15 +61,14 @@ const BoolArray = <OptionType, FormValues>({
     }
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const values: OptionType[] | null = getPathToObject ? getPathToObject(getValues()) : getValues()[name];
-    return values?.some((value) => value[optionValueKey] === checkedValue)
-      ? values.filter((option) => option[optionValueKey] !== checkedValue)
-      : [...(values ?? []), { [optionValueKey]: checkedValue }];
+    const values: OptionType[] = (getPathToObject ? getPathToObject(getValues()) : getValues()[name]) || [];
+    const valueAlreadyChecked = values.some((value) => value[optionValueKey] === checkedValue);
+    return valueAlreadyChecked ? values.filter((option) => option[optionValueKey] !== checkedValue) : [...(values ?? []), { [optionValueKey]: checkedValue }];
   };
   return (
     <FormControl component='fieldset' disabled={disabled} fullWidth>
       <FormLabel component='legend' sx={{ color: (theme) => theme.palette.text.primary }}>
-        {label}
+        {`${label} ${required ? '*' : ''}`}
       </FormLabel>
       <FormGroup>
         <Controller

@@ -114,17 +114,17 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
               <Typography gutterBottom variant='subtitle2'>
                 Arrangøren ønsker at du svarer på følgende spørsmål
               </Typography>
-              <FormView control={control} disabled={registerDisabled} form={form} formState={formState} getValues={getValues} register={register} />
+              <FormView control={control} disabled={isLoading || isFormLoading} form={form} formState={formState} getValues={getValues} register={register} />
             </Paper>
           )}
           <FormControlLabel
             control={<Checkbox checked={allowPhoto} onChange={(e) => setAllowPhoto(e.target.checked)} />}
-            disabled={registerDisabled}
+            disabled={isLoading || isFormLoading}
             label='Jeg godtar at bilder av meg kan deles på TIHLDE sine plattformer'
           />
           <FormControlLabel
             control={<Checkbox checked={agreeRules} onChange={(e) => setAgreeRules(e.target.checked)} />}
-            disabled={registerDisabled}
+            disabled={isLoading || isFormLoading}
             label='Jeg godtar arrangementsreglene'
           />
           <Typography component='a' href={URLS.eventRules} rel='noopener noreferrer' target='_blank' variant='caption'>

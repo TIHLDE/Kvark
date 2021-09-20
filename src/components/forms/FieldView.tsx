@@ -30,26 +30,28 @@ const FieldView = <FormValues,>({ register, field, formState, index, control, ge
         formState={formState}
         getPathToObject={(obj) => obj?.['answers']?.[index]?.['selected_options']}
         getValues={getValues}
-        label={`${field.title} ${field.required ? '*' : ''}`}
+        label={field.title}
         name={`answers.${index}.selected_options` as Path<FormValues>}
         optionLabelKey='title'
         options={field.options}
         optionValueKey='id'
+        required={field.required}
         type='checkbox'
       />
     ) : (
       <BoolArray
         control={control}
-        defaultValue={field.required ? [field.options[0]] : []}
+        defaultValue={[field.options[0]]}
         disabled={disabled}
         formState={formState}
         getPathToObject={(obj) => obj?.['answers']?.[index]?.['selected_options']}
         getValues={getValues}
-        label={`${field.title} ${field.required ? '*' : ''}`}
+        label={field.title}
         name={`answers.${index}.selected_options` as Path<FormValues>}
         optionLabelKey='title'
         options={field.options}
         optionValueKey='id'
+        required={field.required}
         type='radio'
       />
     )}

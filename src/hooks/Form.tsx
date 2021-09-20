@@ -1,12 +1,13 @@
 import { useMutation, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { USER_FORMS_QUERY_KEY } from 'hooks/User';
+import { USER_FORMS_QUERY_KEY, USER_QUERY_KEY } from 'hooks/User';
 import { EVENT_QUERY_KEY } from 'hooks/Event';
 import {
   FormCreate,
   EventFormCreate,
   EventForm,
   Form,
+  FormUpdate,
   RequestResponse,
   PaginationResponse,
   UserSubmission,
@@ -30,18 +31,18 @@ export const useCreateForm = <T extends FormCreate | EventFormCreate>(): UseMuta
   return useMutation((newForm: T) => API.createForm(newForm), {
     onSuccess: (data) => {
       if ((data as EventForm).event) {
-        queryClient.invalidateQueries([EVENT_QUERY_KEY, (data as EventForm).event]);
+        queryClient.invalidateQueries([EVENT_QUERY_KEY, (data as EventForm).event.id]);
       }
-      queryClient.invalidateQueries(FORM_QUERY_KEY);
       queryClient.setQueryData([FORM_QUERY_KEY, data.id], data);
     },
   });
 };
 
-export const useUpdateForm = (formId: string): UseMutationResult<Form, RequestResponse, Form, unknown> => {
+export const useUpdateForm = (formId: string): UseMutationResult<Form, RequestResponse, FormUpdate, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((updatedForm: Form) => API.updateForm(formId, updatedForm), {
+  return useMutation((updatedForm: FormUpdate) => API.updateForm(formId, updatedForm), {
     onSuccess: (data) => {
+      queryClient.invalidateQueries([FORM_QUERY_KEY, formId]);
       queryClient.setQueryData([FORM_QUERY_KEY, formId], data);
     },
   });
@@ -53,7 +54,7 @@ export const useDeleteForm = (formId: string): UseMutationResult<RequestResponse
     onSuccess: () => {
       const data = queryClient.getQueryData<Form>([FORM_QUERY_KEY, formId]);
       if ((data as EventForm).event) {
-        queryClient.invalidateQueries([EVENT_QUERY_KEY, (data as EventForm).event]);
+        queryClient.invalidateQueries([EVENT_QUERY_KEY, (data as EventForm).event.id]);
       }
       queryClient.removeQueries([FORM_QUERY_KEY, formId]);
     },
@@ -76,6 +77,7 @@ export const useCreateSubmission = (formId: string): UseMutationResult<Submissio
     onSuccess: () => {
       queryClient.invalidateQueries([FORM_QUERY_KEY, formId]);
       queryClient.invalidateQueries([USER_FORMS_QUERY_KEY]);
+      queryClient.invalidateQueries([USER_QUERY_KEY]);
     },
   });
 };

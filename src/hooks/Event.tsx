@@ -128,6 +128,7 @@ export const useDeleteEventRegistration = (eventId: number): UseMutationResult<R
       if (formId) {
         queryClient.invalidateQueries([FORM_QUERY_KEY, formId]);
       }
+      queryClient.removeQueries([EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_REGISTRATION]);
       queryClient.invalidateQueries([EVENT_QUERY_KEY, eventId]);
       queryClient.invalidateQueries([USER_EVENTS_QUERY_KEY]);
     },

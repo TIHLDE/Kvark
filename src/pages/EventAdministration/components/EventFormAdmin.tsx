@@ -58,7 +58,7 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
           påmelding trer i kraft når deltageren blir markert som &quot;Ankommet&quot;, og forsvinner med en gang deltageren har svart på evalueringsskjemaet.
           Deltagerne vil motta epost med påminnelse om å svare på skjemaet kl 12.00 dagen etter arrangementet.
         </Typography>
-        <Expansion flat header={surveyFormExists ? 'Rediger evalueringsspørsmål' : 'Opprett evalueringsskjema'} sx={{ mt: 1 }}>
+        <Expansion flat header={evaluationFormExists ? 'Rediger evalueringsspørsmål' : 'Opprett evalueringsskjema'} sx={{ mt: 1 }}>
           <EventFormEditor eventId={eventId} formId={event.evaluation} formType={FormType.EVALUATION} />
         </Expansion>
         {evaluationFormExists && (

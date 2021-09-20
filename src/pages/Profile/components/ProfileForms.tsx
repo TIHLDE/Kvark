@@ -5,7 +5,9 @@ import URLS from 'URLS';
 import { parseISO } from 'date-fns';
 import { formatDate } from 'utils';
 
-import { ListItemText, ListItem, ListItemButton, Skeleton, Typography } from '@mui/material';
+import { ListItemText, ListItemIcon, ListItem, ListItemButton, Skeleton, Typography } from '@mui/material';
+
+import ArrowIcon from '@mui/icons-material/ArrowForwardRounded';
 
 // Project componets
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
@@ -48,6 +50,9 @@ const ProfileForms = () => {
                   `Holdt ${formatDate(parseISO((form as EventForm).event.start_date)).toLowerCase()} på ${(form as EventForm).event.location}`
                 }
               />
+              <ListItemIcon sx={{ minWidth: 0 }}>
+                <ArrowIcon />
+              </ListItemIcon>
             </ListItemButton>
           </Paper>
         ))}

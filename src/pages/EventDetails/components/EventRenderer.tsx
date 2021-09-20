@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import classnames from 'classnames';
-import { Event, Registration } from 'types';
+import { Event } from 'types';
 import { PermissionApp } from 'types/Enums';
 import URLS from 'URLS';
 import { parseISO, isPast, isFuture } from 'date-fns';
@@ -130,62 +130,63 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     }
   };
 
-  const RegistrationInfo = ({ registration }: { registration: Registration }) => (
-    <>
-      {registration.is_on_wait ? (
-        <>
-          <Alert severity='info' variant='outlined'>
-            Du står på ventelisten, vi gir deg beskjed hvis du får plass
-          </Alert>
-          {registration.survey_submission.answers.length > 0 && (
-            <Expand flat header='Dine svar på spørsmål'>
-              <FormUserAnswers submission={registration.survey_submission} />
-            </Expand>
-          )}
-        </>
-      ) : (
-        <DetailsPaper noPadding>
-          <Alert severity='success' variant='outlined'>
-            {`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}
-          </Alert>
-          <QRCode background='paper' value={registration.user_info.user_id} />
-          {registration.survey_submission.answers.length > 0 && (
-            <Expand flat header='Dine svar på spørsmål'>
-              <FormUserAnswers submission={registration.survey_submission} />
-            </Expand>
-          )}
-          {registration.has_unanswered_evaluation && (
-            <>
-              <Alert severity='warning' variant='outlined'>
-                Du har ikke svart på evalueringen av dette arrangementet. Du må svare på den før du kan melde deg på flere arrangementer.
-              </Alert>
-              <Button component={Link} fullWidth to={`${URLS.form}${data.evaluation}/`} variant='contained'>
-                Svar på evaluering
-              </Button>
-            </>
-          )}
-        </DetailsPaper>
-      )}
-      {(isFuture(signOffDeadlineDate) || registration.is_on_wait) && isFuture(startDate) ? (
-        <VerifyDialog
-          closeText='Avbryt'
-          confirmText='Ja, jeg er sikker'
-          contentText={`Om du melder deg på igjen vil du havne på bunnen av en eventuell venteliste.`}
-          fullWidth
-          onConfirm={signOff}
-          titleText='Er du sikker?'
-          variant='outlined'>
-          Meld deg av
-        </VerifyDialog>
-      ) : (
-        isFuture(startDate) && (
-          <Alert severity='info' variant='outlined'>
-            Avmeldingsfristen er passert
-          </Alert>
-        )
-      )}
-    </>
-  );
+  const RegistrationInfo = () =>
+    !registration ? null : (
+      <>
+        {registration.is_on_wait ? (
+          <>
+            <Alert severity='info' variant='outlined'>
+              Du står på ventelisten, vi gir deg beskjed hvis du får plass
+            </Alert>
+            {registration.survey_submission.answers.length > 0 && (
+              <Expand flat header='Dine svar på spørsmål'>
+                <FormUserAnswers submission={registration.survey_submission} />
+              </Expand>
+            )}
+          </>
+        ) : (
+          <DetailsPaper noPadding>
+            <Alert severity='success' variant='outlined'>
+              {`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}
+            </Alert>
+            <QRCode background='paper' value={registration.user_info.user_id} />
+            {registration.survey_submission.answers.length > 0 && (
+              <Expand flat header='Dine svar på spørsmål'>
+                <FormUserAnswers submission={registration.survey_submission} />
+              </Expand>
+            )}
+            {registration.has_unanswered_evaluation && (
+              <>
+                <Alert severity='warning' variant='outlined'>
+                  Du har ikke svart på evalueringen av dette arrangementet. Du må svare på den før du kan melde deg på flere arrangementer.
+                </Alert>
+                <Button component={Link} fullWidth to={`${URLS.form}${data.evaluation}/`} variant='contained'>
+                  Svar på evaluering
+                </Button>
+              </>
+            )}
+          </DetailsPaper>
+        )}
+        {(isFuture(signOffDeadlineDate) || registration.is_on_wait) && isFuture(startDate) ? (
+          <VerifyDialog
+            closeText='Avbryt'
+            confirmText='Ja, jeg er sikker'
+            contentText={`Om du melder deg på igjen vil du havne på bunnen av en eventuell venteliste.`}
+            fullWidth
+            onConfirm={signOff}
+            titleText='Er du sikker?'
+            variant='outlined'>
+            Meld deg av
+          </VerifyDialog>
+        ) : (
+          isFuture(startDate) && (
+            <Alert severity='info' variant='outlined'>
+              Avmeldingsfristen er passert
+            </Alert>
+          )
+        )}
+      </>
+    );
 
   const HasUnansweredEvaluations = () =>
     user?.unanswered_evaluations_count ? (
@@ -218,7 +219,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             </Button>
           ) : null
         ) : registration ? (
-          <RegistrationInfo registration={registration} />
+          <RegistrationInfo />
         ) : isPast(endRegistrationDate) ? null : view === Views.Apply ? (
           <Button fullWidth onClick={() => setView(Views.Info)} variant='outlined'>
             Se beskrivelse
