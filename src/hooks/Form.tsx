@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
+import { USER_FORMS_QUERY_KEY } from 'hooks/User';
 import { EVENT_QUERY_KEY } from 'hooks/Event';
 import {
   FormCreate,
@@ -74,6 +75,7 @@ export const useCreateSubmission = (formId: string): UseMutationResult<Submissio
   return useMutation((submission) => API.createSubmission(formId, submission), {
     onSuccess: () => {
       queryClient.invalidateQueries([FORM_QUERY_KEY, formId]);
+      queryClient.invalidateQueries([USER_FORMS_QUERY_KEY]);
     },
   });
 };

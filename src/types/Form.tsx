@@ -7,7 +7,7 @@ import { FormFieldType, FormResourceType, FormType } from 'types/Enums';
 // -----------------------------------------------------------
 
 export interface Form {
-  id?: string;
+  id: string;
   title: string;
   type: FormType;
   fields: Array<TextFormField | SelectFormField>;

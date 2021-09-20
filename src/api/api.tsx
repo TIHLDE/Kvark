@@ -124,6 +124,8 @@ export default {
     IFetch<PaginationResponse<Badge>>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/${BADGES_ENDPOINT}/`, data: filters || {} }),
   getUserEvents: (filters?: any) =>
     IFetch<PaginationResponse<EventCompact>>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/${EVENTS_ENDPOINT}/`, data: filters || {} }),
+  getUserForms: (filters?: any) =>
+    IFetch<PaginationResponse<Form>>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/${FORMS_ENDPOINT}/`, data: filters || {} }),
   getUserGroups: () => IFetch<Array<GroupList>>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/${GROUPS_ENDPOINT}/` }),
   getUsers: (filters?: any) => IFetch<PaginationResponse<User>>({ method: 'GET', url: `${USERS_ENDPOINT}/`, data: filters || {} }),
   updateUserData: (userName: string, item: Partial<User>) => IFetch<User>({ method: 'PUT', url: `${USERS_ENDPOINT}/${userName}/`, data: item }),

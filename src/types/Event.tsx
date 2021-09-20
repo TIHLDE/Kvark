@@ -33,7 +33,6 @@ export interface Event {
   survey: string | null;
   title: string;
   updated_at: string;
-  viewer_has_unanswered_evaluations: boolean;
   waiting_list_count: number;
 }
 export type EventRequired = Partial<Event> & Pick<Event, 'end_date' | 'title' | 'start_date'>;
@@ -51,5 +50,6 @@ export interface Registration {
   is_on_wait: boolean;
   registration_id: number;
   survey_submission: UserSubmission;
+  has_unanswered_evaluation: boolean;
   user_info: Pick<User, 'allergy' | 'email' | 'first_name' | 'last_name' | 'image' | 'user_class' | 'user_id' | 'user_study'>;
 }

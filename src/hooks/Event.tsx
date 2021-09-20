@@ -75,7 +75,7 @@ export const useCreateEventRegistration = (eventId: number): UseMutationResult<R
       }
       queryClient.invalidateQueries([EVENT_QUERY_KEY, eventId]);
       queryClient.setQueryData([EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_REGISTRATION, data.user_info.user_id], data);
-      queryClient.invalidateQueries(USER_EVENTS_QUERY_KEY);
+      queryClient.invalidateQueries([USER_EVENTS_QUERY_KEY]);
     },
   });
 };
@@ -129,7 +129,7 @@ export const useDeleteEventRegistration = (eventId: number): UseMutationResult<R
         queryClient.invalidateQueries([FORM_QUERY_KEY, formId]);
       }
       queryClient.invalidateQueries([EVENT_QUERY_KEY, eventId]);
-      queryClient.invalidateQueries(USER_EVENTS_QUERY_KEY);
+      queryClient.invalidateQueries([USER_EVENTS_QUERY_KEY]);
     },
   });
 };

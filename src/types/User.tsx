@@ -21,6 +21,7 @@ export interface User {
   user_class: UserClass;
   user_id: string;
   user_study: UserStudy;
+  unanswered_evaluations_count: number;
 }
 export type UserList = Pick<
   User,
