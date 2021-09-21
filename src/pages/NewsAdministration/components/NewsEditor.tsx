@@ -1,25 +1,24 @@
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import { useSnackbar } from 'hooks/Snackbar';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { News } from 'types/Types';
+import { News } from 'types';
 
 // API and store imports
 import { useUpdateNews, useCreateNews, useDeleteNews, useNewsById } from 'hooks/News';
 
 // Material-UI
 import { makeStyles } from '@mui/styles';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import LinearProgress from '@mui/material/LinearProgress';
 
 // Project components
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
-import Dialog from 'components/layout/Dialog';
 import TextField from 'components/inputs/TextField';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
 import NewsRenderer from 'pages/NewsDetails/components/NewsRenderer';
 import SubmitButton from 'components/inputs/SubmitButton';
 import { ImageUpload } from 'components/inputs/Upload';
+import VerifyDialog from 'components/layout/VerifyDialog';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -49,7 +48,6 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
   const showSnackbar = useSnackbar();
   const classes = useStyles();
   const { handleSubmit, register, formState, getValues, reset, watch, setValue } = useForm<FormValues>();
-  const [deleteNewsDialogOpen, setDeleteNewsDialogOpen] = useState(false);
   const { data, isError, isLoading } = useNewsById(newsId || -1);
   const createNews = useCreateNews();
   const updateNews = useUpdateNews(newsId || -1);
@@ -96,7 +94,6 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
     deleteNews.mutate(null, {
       onSuccess: (data) => {
         showSnackbar(data.detail, 'success');
-        setDeleteNewsDialogOpen(false);
         goToNews(null);
       },
       onError: (e) => {
@@ -142,20 +139,17 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
             {newsId ? 'Oppdater nyhet' : 'Opprett nyhet'}
           </SubmitButton>
           {Boolean(newsId) && (
-            <Button className={classes.margin} color='error' disabled={isUpdating} onClick={() => setDeleteNewsDialogOpen(true)} variant='outlined'>
+            <VerifyDialog
+              closeText='Ikke slett nyheten'
+              color='error'
+              contentText='Sletting av nyheten kan ikke reverseres.'
+              onConfirm={remove}
+              titleText='Er du sikker?'>
               Slett
-            </Button>
+            </VerifyDialog>
           )}
         </Grid>
       </form>
-      <Dialog
-        confirmText='Ja, jeg er sikker'
-        contentText='Sletting av nyheten kan ikke reverseres.'
-        onClose={() => setDeleteNewsDialogOpen(false)}
-        onConfirm={remove}
-        open={deleteNewsDialogOpen}
-        titleText='Er du sikker?'
-      />
     </>
   );
 };

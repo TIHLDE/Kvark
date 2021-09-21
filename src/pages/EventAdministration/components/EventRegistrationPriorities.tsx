@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { getUserStudyShort } from 'utils';
-import { RegistrationPriority } from 'types/Types';
+import { RegistrationPriority } from 'types';
 import { UserClass, UserStudy } from 'types/Enums';
 
 // Material-UI

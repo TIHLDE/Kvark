@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { TextFormField, SelectFormField } from 'types/Types';
+import { TextFormField, SelectFormField } from 'types';
 import { FormFieldType } from 'types/Enums';
 import classnames from 'classnames';
 

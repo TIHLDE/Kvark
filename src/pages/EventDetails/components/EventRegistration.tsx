@@ -1,5 +1,5 @@
 import { ComponentType, useState } from 'react';
-import { Event, User, Submission, Form } from 'types/Types';
+import { Event, User, Submission, Form } from 'types';
 import URLS from 'URLS';
 import { getUserStudyShort, shortDownString } from 'utils';
 import { useCreateEventRegistration } from 'hooks/Event';
@@ -42,7 +42,7 @@ export type EventRegistrationProps = {
 const EventRegistration = ({ event, user }: EventRegistrationProps) => {
   const { event: GAEvent } = useGoogleAnalytics();
   const createRegistration = useCreateEventRegistration(event.id);
-  const createSubmission = useCreateSubmission(event.survey);
+  const createSubmission = useCreateSubmission(event.survey || '-');
   const showSnackbar = useSnackbar();
   const { data: form, isLoading: isFormLoading } = useFormById(event.survey || '-');
   const [isLoading, setIsLoading] = useState(false);
@@ -71,7 +71,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
       try {
         await createSubmission.mutateAsync(data);
       } catch (e) {
-        showSnackbar(e.message, 'error');
+        showSnackbar(e.detail, 'error');
         setIsLoading(false);
         return;
       }
@@ -111,18 +111,20 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
           {form !== undefined && (
             <Paper sx={{ my: 1 }}>
               <Typography variant='h3'>Spørsmål</Typography>
-              <Typography variant='subtitle2'>Arrangøren ønsker at du svarer på disse spørsmålene</Typography>
-              <FormView control={control} form={form} formState={formState} getValues={getValues} register={register} />
+              <Typography gutterBottom variant='subtitle2'>
+                Arrangøren ønsker at du svarer på følgende spørsmål
+              </Typography>
+              <FormView control={control} disabled={isLoading || isFormLoading} form={form} formState={formState} getValues={getValues} register={register} />
             </Paper>
           )}
           <FormControlLabel
             control={<Checkbox checked={allowPhoto} onChange={(e) => setAllowPhoto(e.target.checked)} />}
-            disabled={isLoading}
+            disabled={isLoading || isFormLoading}
             label='Jeg godtar at bilder av meg kan deles på TIHLDE sine plattformer'
           />
           <FormControlLabel
             control={<Checkbox checked={agreeRules} onChange={(e) => setAgreeRules(e.target.checked)} />}
-            disabled={isLoading}
+            disabled={isLoading || isFormLoading}
             label='Jeg godtar arrangementsreglene'
           />
           <Typography component='a' href={URLS.eventRules} rel='noopener noreferrer' target='_blank' variant='caption'>

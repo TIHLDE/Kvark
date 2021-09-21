@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { Form, TextFormField, SelectFormField } from 'types/Types';
+import { Form, TextFormField, SelectFormField } from 'types';
 import { FormFieldType } from 'types/Enums';
 import { useUpdateForm, useDeleteForm } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
@@ -85,7 +85,7 @@ const FormEditor = ({ form }: FormEditorProps) => {
 
   const save = () => {
     updateForm.mutate(
-      { ...form, fields: fields },
+      { fields: fields, resource_type: form.resource_type },
       {
         onSuccess: () => {
           showSnackbar('Spørsmålene ble oppdatert', 'success');

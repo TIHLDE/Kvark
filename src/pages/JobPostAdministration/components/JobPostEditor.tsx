@@ -1,6 +1,6 @@
-import { useCallback, useMemo, useState, useEffect } from 'react';
+import { useCallback, useMemo, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { JobPost } from 'types/Types';
+import { JobPost } from 'types';
 import { useJobPostById, useCreateJobPost, useUpdateJobPost, useDeleteJobPost } from 'hooks/JobPost';
 import { useSnackbar } from 'hooks/Snackbar';
 import { EMAIL_REGEX } from 'constant';
@@ -8,11 +8,10 @@ import { parseISO } from 'date-fns';
 
 // Material-UI
 import { makeStyles } from '@mui/styles';
-import { Button, Grid, LinearProgress } from '@mui/material';
+import { Grid, LinearProgress } from '@mui/material';
 
 // Project components
 import JobPostRenderer from 'pages/JobPostDetails/components/JobPostRenderer';
-import Dialog from 'components/layout/Dialog';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import SubmitButton from 'components/inputs/SubmitButton';
 import Bool from 'components/inputs/Bool';
@@ -20,6 +19,7 @@ import DatePicker from 'components/inputs/DatePicker';
 import TextField from 'components/inputs/TextField';
 import { ImageUpload } from 'components/inputs/Upload';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
+import VerifyDialog from 'components/layout/VerifyDialog';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -54,7 +54,6 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
   const updateJobPost = useUpdateJobPost(jobpostId || -1);
   const deleteJobPost = useDeleteJobPost(jobpostId || -1);
   const showSnackbar = useSnackbar();
-  const [deleteJobPostDialogOpen, setDeleteJobPostDialogOpen] = useState(false);
   const { handleSubmit, control, register, formState, getValues, reset, setValue, watch } = useForm<FormValues>();
   const isUpdating = useMemo(
     () => createJobPost.isLoading || updateJobPost.isLoading || deleteJobPost.isLoading,
@@ -107,7 +106,6 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
     deleteJobPost.mutate(null, {
       onSuccess: (data) => {
         showSnackbar(data.detail, 'success');
-        setDeleteJobPostDialogOpen(false);
         goToJobPost(null);
       },
       onError: (e) => {
@@ -193,20 +191,17 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
             {jobpostId ? 'Oppdater annonse' : 'Opprett annonse'}
           </SubmitButton>
           {Boolean(jobpostId) && (
-            <Button className={classes.margin} color='error' disabled={isUpdating} onClick={() => setDeleteJobPostDialogOpen(true)} variant='outlined'>
+            <VerifyDialog
+              closeText='Ikke slett annonsen'
+              color='error'
+              contentText='Sletting av annonser kan ikke reverseres.'
+              onConfirm={remove}
+              titleText='Er du sikker?'>
               Slett
-            </Button>
+            </VerifyDialog>
           )}
         </Grid>
       </form>
-      <Dialog
-        confirmText='Ja, jeg er sikker'
-        contentText='Sletting av annonser kan ikke reverseres.'
-        onClose={() => setDeleteJobPostDialogOpen(false)}
-        onConfirm={remove}
-        open={deleteJobPostDialogOpen}
-        titleText='Er du sikker?'
-      />
     </>
   );
 };

@@ -1,6 +1,6 @@
 import { useInfiniteQuery, useMutation, UseMutationResult, useQueryClient } from 'react-query';
 import API from 'api/api';
-import { Membership, PaginationResponse, RequestResponse } from 'types/Types';
+import { Membership, PaginationResponse, RequestResponse } from 'types';
 import { MembershipType } from 'types/Enums';
 import { GROUPS_QUERY_KEY } from 'hooks/Group';
 

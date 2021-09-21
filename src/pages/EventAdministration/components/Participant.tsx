@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Registration } from 'types/Types';
+import { Registration } from 'types';
 import { getUserStudyShort, formatDate, getUserClass } from 'utils';
 import { useDeleteEventRegistration, useUpdateEventRegistration } from 'hooks/Event';
 import parseISO from 'date-fns/parseISO';

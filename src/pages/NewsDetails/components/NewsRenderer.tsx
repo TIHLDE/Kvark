@@ -3,7 +3,7 @@ import { formatDate } from 'utils';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { usePalette } from 'react-palette';
-import { News } from 'types/Types';
+import { News } from 'types';
 import { PermissionApp } from 'types/Enums';
 import { HavePermission } from 'hooks/User';
 

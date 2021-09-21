@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { InfiniteQueryObserverResult } from 'react-query';
-import { PaginationResponse } from 'types/Types';
+import { PaginationResponse } from 'types';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';

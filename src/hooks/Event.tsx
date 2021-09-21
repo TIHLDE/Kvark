@@ -1,7 +1,8 @@
 import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
 import { USER_EVENTS_QUERY_KEY } from 'hooks/User';
-import { Event, EventRequired, EventCompact, Registration, PaginationResponse, RequestResponse } from 'types/Types';
+import { FORM_QUERY_KEY } from 'hooks/Form';
+import { Event, EventRequired, EventCompact, Registration, PaginationResponse, RequestResponse } from 'types';
 
 export const EVENT_QUERY_KEY = 'event';
 export const EVENT_QUERY_KEY_REGISTRATION = 'event_registration';
@@ -55,24 +56,26 @@ export const useNotifyEventRegistrations = (
 ): UseMutationResult<RequestResponse, RequestResponse, { title: string; message: string }, unknown> =>
   useMutation(({ title, message }) => API.notifyEventRegistrations(eventId, title, message));
 
-export const useEventRegistrations = (eventId: number) => {
-  return useQuery<Array<Registration>, RequestResponse>([EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_REGISTRATION], () => API.getEventRegistrations(eventId));
-};
+export const useEventRegistrations = (eventId: number) =>
+  useQuery<Array<Registration>, RequestResponse>([EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_REGISTRATION], () => API.getEventRegistrations(eventId));
 
-export const useEventRegistration = (eventId: number, userId: string) => {
-  return useQuery<Registration, RequestResponse>([EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_REGISTRATION, userId], () => API.getRegistration(eventId, userId), {
+export const useEventRegistration = (eventId: number, userId: string) =>
+  useQuery<Registration, RequestResponse>([EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_REGISTRATION, userId], () => API.getRegistration(eventId, userId), {
     enabled: userId !== '',
     retry: false,
   });
-};
 
 export const useCreateEventRegistration = (eventId: number): UseMutationResult<Registration, RequestResponse, Partial<Registration>, unknown> => {
   const queryClient = useQueryClient();
   return useMutation((newRegistration: Partial<Registration>) => API.createRegistration(eventId, newRegistration), {
     onSuccess: (data) => {
+      const formId = queryClient.getQueryData<Event>([EVENT_QUERY_KEY, eventId])?.survey;
+      if (formId) {
+        queryClient.invalidateQueries([FORM_QUERY_KEY, formId]);
+      }
       queryClient.invalidateQueries([EVENT_QUERY_KEY, eventId]);
       queryClient.setQueryData([EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_REGISTRATION, data.user_info.user_id], data);
-      queryClient.invalidateQueries(USER_EVENTS_QUERY_KEY);
+      queryClient.invalidateQueries([USER_EVENTS_QUERY_KEY]);
     },
   });
 };
@@ -121,8 +124,13 @@ export const useDeleteEventRegistration = (eventId: number): UseMutationResult<R
   const queryClient = useQueryClient();
   return useMutation((userId: string) => API.deleteRegistration(eventId, userId), {
     onSuccess: () => {
-      queryClient.removeQueries([EVENT_QUERY_KEY, eventId]);
-      queryClient.invalidateQueries(USER_EVENTS_QUERY_KEY);
+      const formId = queryClient.getQueryData<Event>([EVENT_QUERY_KEY, eventId])?.survey;
+      if (formId) {
+        queryClient.invalidateQueries([FORM_QUERY_KEY, formId]);
+      }
+      queryClient.removeQueries([EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_REGISTRATION]);
+      queryClient.invalidateQueries([EVENT_QUERY_KEY, eventId]);
+      queryClient.invalidateQueries([USER_EVENTS_QUERY_KEY]);
     },
   });
 };

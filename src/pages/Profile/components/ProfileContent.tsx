@@ -17,11 +17,13 @@ import AdminIcon from '@mui/icons-material/TuneRounded';
 import LogOutIcon from '@mui/icons-material/ExitToAppRounded';
 import BadgesIcon from '@mui/icons-material/EmojiEventsRounded';
 import GroupsIcon from '@mui/icons-material/PeopleOutlineRounded';
+import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
 
 // Project Components
 import ProfileAdmin from 'pages/Profile/components/ProfileAdmin';
 import ProfileSettings from 'pages/Profile/components/ProfileSettings';
 import ProfileEvents from 'pages/Profile/components/ProfileEvents';
+import ProfileForms from 'pages/Profile/components/ProfileForms';
 import ProfileGroups from 'pages/Profile/components/ProfileGroups';
 import ProfileNotifications from 'pages/Profile/components/ProfileNotifications';
 import ProfileBadges from 'pages/Profile/components/ProfileBadges';
@@ -59,14 +61,15 @@ const ProfileContent = () => {
     navigate(URLS.landing);
   };
 
-  const eventTab = { label: 'Arrangementer', icon: EventIcon };
-  const notificationsTab = { label: 'Varsler', icon: NotificationsIcon, badge: user?.unread_notifications };
-  const badgesTab = { label: 'Badges', icon: BadgesIcon };
-  const groupsTab = { label: 'Grupper', icon: GroupsIcon };
-  const settingsTab = { label: 'Innstillinger', icon: SettingsIcon };
-  const adminTab = { label: 'Admin', icon: AdminIcon };
-  const logoutTab = { label: 'Logg ut', icon: LogOutIcon, onClick: logout, className: classes.logOutButton };
-  const tabs: Array<NavListItem> = [eventTab, notificationsTab, badgesTab, groupsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
+  const eventTab: NavListItem = { label: 'Arrangementer', icon: EventIcon };
+  const notificationsTab: NavListItem = { label: 'Varsler', icon: NotificationsIcon, badge: user?.unread_notifications };
+  const badgesTab: NavListItem = { label: 'Badges', icon: BadgesIcon };
+  const groupsTab: NavListItem = { label: 'Grupper', icon: GroupsIcon };
+  const formsTab: NavListItem = { label: 'Spørreskjemaer', icon: FormsIcon, badge: user?.unanswered_evaluations_count };
+  const settingsTab: NavListItem = { label: 'Innstillinger', icon: SettingsIcon };
+  const adminTab: NavListItem = { label: 'Admin', icon: AdminIcon };
+  const logoutTab: NavListItem = { label: 'Logg ut', icon: LogOutIcon, onClick: logout, className: classes.logOutButton };
+  const tabs: Array<NavListItem> = [eventTab, notificationsTab, badgesTab, groupsTab, formsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
   const [tab, setTab] = useState(eventTab.label);
 
   useEffect(() => event('change-tab', 'profile', `Changed tab to: ${tab}`), [tab]);
@@ -123,6 +126,9 @@ const ProfileContent = () => {
         </Collapse>
         <Collapse in={tab === groupsTab.label} mountOnEnter>
           <ProfileGroups />
+        </Collapse>
+        <Collapse in={tab === formsTab.label} mountOnEnter>
+          <ProfileForms />
         </Collapse>
         <Collapse in={tab === settingsTab.label} mountOnEnter>
           <Paper>{user && <ProfileSettings user={user} />}</Paper>

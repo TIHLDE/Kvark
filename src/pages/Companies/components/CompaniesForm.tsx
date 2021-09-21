@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { CompaniesEmail } from 'types/Types';
+import { CompaniesEmail } from 'types';
 import API from 'api/api';
 import { useGoogleAnalytics } from 'hooks/Utils';
 import { useSnackbar } from 'hooks/Snackbar';
