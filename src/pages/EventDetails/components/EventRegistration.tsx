@@ -71,7 +71,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
       try {
         await createSubmission.mutateAsync(data);
       } catch (e) {
-        showSnackbar(e.message, 'error');
+        showSnackbar(e.detail, 'error');
         setIsLoading(false);
         return;
       }
@@ -112,19 +112,19 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
             <Paper sx={{ my: 1 }}>
               <Typography variant='h3'>Spørsmål</Typography>
               <Typography gutterBottom variant='subtitle2'>
-                Arrangøren ønsker at du svarer på disse spørsmålene
+                Arrangøren ønsker at du svarer på følgende spørsmål
               </Typography>
-              <FormView control={control} form={form} formState={formState} getValues={getValues} register={register} />
+              <FormView control={control} disabled={isLoading || isFormLoading} form={form} formState={formState} getValues={getValues} register={register} />
             </Paper>
           )}
           <FormControlLabel
             control={<Checkbox checked={allowPhoto} onChange={(e) => setAllowPhoto(e.target.checked)} />}
-            disabled={isLoading}
+            disabled={isLoading || isFormLoading}
             label='Jeg godtar at bilder av meg kan deles på TIHLDE sine plattformer'
           />
           <FormControlLabel
             control={<Checkbox checked={agreeRules} onChange={(e) => setAgreeRules(e.target.checked)} />}
-            disabled={isLoading}
+            disabled={isLoading || isFormLoading}
             label='Jeg godtar arrangementsreglene'
           />
           <Typography component='a' href={URLS.eventRules} rel='noopener noreferrer' target='_blank' variant='caption'>

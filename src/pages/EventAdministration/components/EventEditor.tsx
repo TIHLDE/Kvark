@@ -52,10 +52,7 @@ export type EventEditorProps = {
   goToEvent: (newEvent: number | null) => void;
 };
 
-type FormValues = Pick<
-  Event,
-  'category' | 'description' | 'evaluate_link' | 'image' | 'image_alt' | 'limit' | 'location' | 'priority' | 'sign_up' | 'title'
-> & {
+type FormValues = Pick<Event, 'category' | 'description' | 'image' | 'image_alt' | 'limit' | 'location' | 'priority' | 'sign_up' | 'title'> & {
   end_date: Date;
   end_registration_at: Date;
   sign_off_deadline: Date;
@@ -107,7 +104,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         description: newValues?.description || '',
         end_date: newValues?.end_date ? parseISO(newValues.end_date) : new Date(),
         end_registration_at: newValues?.end_registration_at ? parseISO(newValues.end_registration_at) : new Date(),
-        evaluate_link: newValues?.evaluate_link || '',
         image: newValues?.image || '',
         image_alt: newValues?.image_alt || '',
         limit: newValues?.limit || 0,
@@ -313,7 +309,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 required={watchSignUp}
               />
             </div>
-            <TextField formState={formState} label='Evalueringsskjema (url)' {...register('evaluate_link')} />
             <div className={classes.margin}>
               <Accordion className={classes.expansionPanel}>
                 <AccordionSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='priorities-header'>

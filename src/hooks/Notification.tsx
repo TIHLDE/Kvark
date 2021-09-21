@@ -19,8 +19,8 @@ export const useUpdateNotification = (id: number): UseMutationResult<Notificatio
   const queryClient = useQueryClient();
   return useMutation((newReadState: boolean) => API.updateNotification(id, { read: newReadState }), {
     onSuccess: () => {
-      queryClient.invalidateQueries(NOTIFICATION_QUERY_KEY);
-      queryClient.invalidateQueries(USER_QUERY_KEY);
+      queryClient.invalidateQueries([NOTIFICATION_QUERY_KEY]);
+      queryClient.invalidateQueries([USER_QUERY_KEY]);
     },
   });
 };
