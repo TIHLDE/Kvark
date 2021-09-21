@@ -22,6 +22,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpwardRounded';
 import Avatar from 'components/miscellaneous/Avatar';
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
+import VerifyDialog from 'components/layout/VerifyDialog';
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -128,9 +129,15 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
           </div>
           <div className={classes.actions}>
             {registration.is_on_wait ? (
-              <Button fullWidth onClick={() => changeList(false)} startIcon={<ArrowUpwardIcon />} variant='outlined'>
+              <VerifyDialog
+                contentText={'Om arangementet er fullt vil du lage en ekstra plass'}
+                fullWidth
+                onConfirm={() => changeList(false)}
+                startIcon={<ArrowUpwardIcon />}
+                titleText={'Er du sikker på at du vil flytte denne personen opp?'}
+                variant='outlined'>
                 Flytt til påmeldte
-              </Button>
+              </VerifyDialog>
             ) : (
               <Button fullWidth onClick={() => changeList(true)} startIcon={<ArrowDownwardIcon />} variant='outlined'>
                 Flytt til venteliste
