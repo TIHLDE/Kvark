@@ -329,13 +329,19 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           <ImageUpload formState={formState} label='Velg bilde' ratio={21 / 9} register={register('image')} setValue={setValue} watch={watch} />
           <TextField formState={formState} label='Bildetekst' {...register('image_alt')} />
           <div className={classes.grid}>
-            <Select control={control} formState={formState} label='Prioritering' name='priority'>
+            <Select
+              control={control}
+              formState={formState}
+              label='Prioritering'
+              name='priority'
+              tooltip='prioritering av arrangementer gjør bla bla bla og dit og datt'>
               {priorities.map((value, index) => (
                 <MenuItem key={index} value={index}>
                   {value}
                 </MenuItem>
               ))}
             </Select>
+
             {Boolean(categories.length) && (
               <Select control={control} formState={formState} label='Kategori' name='category'>
                 {categories.map((value, index) => (
