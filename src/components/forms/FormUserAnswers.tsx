@@ -36,8 +36,8 @@ const FormUserAnswers = ({ submission }: FormUserAnswersProps) => {
       <Table aria-label={`Svar for ${form.title}`} size='small' sx={{ minWidth: 250 }}>
         <TableHead>
           <TableRow>
-            <TableCell sx={{ fontWeight: 'bold' }}>Spørsmål</TableCell>
-            <TableCell align='right' sx={{ fontWeight: 'bold' }}>
+            <TableCell sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>Spørsmål</TableCell>
+            <TableCell align='right' sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>
               Svar
             </TableCell>
           </TableRow>

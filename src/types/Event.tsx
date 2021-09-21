@@ -15,8 +15,7 @@ export interface Event {
   description: string;
   end_date: string;
   end_registration_at: string;
-  evaluate_link: string;
-  evaluation: string;
+  evaluation: string | null;
   expired: boolean;
   id: number;
   image?: string;
@@ -50,5 +49,6 @@ export interface Registration {
   is_on_wait: boolean;
   registration_id: number;
   survey_submission: UserSubmission;
+  has_unanswered_evaluation: boolean;
   user_info: Pick<User, 'allergy' | 'email' | 'first_name' | 'last_name' | 'image' | 'user_class' | 'user_id' | 'user_study'>;
 }

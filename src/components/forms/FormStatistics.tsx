@@ -28,16 +28,16 @@ const FormStatistics = ({ formId }: EventFormEditorProps) => {
           <Table aria-label={`Statistikk for ${stat.title}`} size='small' sx={{ minWidth: 250 }}>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ fontWeight: 'bold' }}>{`${stat.title}${stat.required ? ' *' : ''} (${
+                <TableCell sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>{`${stat.title}${stat.required ? ' *' : ''} (${
                   stat.type === FormFieldType.MULTIPLE_SELECT ? 'Avkrysningsspørsmål' : 'Flervalgsspørsmål'
                 })`}</TableCell>
                 <Tooltip placement='top-end' title='Totalt antall som har valgt alternativet'>
-                  <TableCell align='right' sx={{ fontWeight: 'bold' }}>
+                  <TableCell align='right' sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>
                     Antall
                   </TableCell>
                 </Tooltip>
                 <Tooltip placement='top-end' title='Prosent av totalt antall som har valgt alternativet'>
-                  <TableCell align='right' sx={{ fontWeight: 'bold' }}>
+                  <TableCell align='right' sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>
                     Prosent
                   </TableCell>
                 </Tooltip>
