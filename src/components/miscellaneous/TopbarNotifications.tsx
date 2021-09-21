@@ -8,6 +8,7 @@ import { useUser } from 'hooks/User';
 
 // Material-ui
 import {
+  Box,
   Badge,
   ClickAwayListener,
   Collapse,
@@ -32,6 +33,7 @@ import LinkIcon from '@mui/icons-material/LinkRounded';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 import NotificationsIcon from '@mui/icons-material/NotificationsNoneRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 // Project components
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
@@ -117,7 +119,7 @@ const NotificationsTopbar = ({ color }: NotificationsTopbarProps) => {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useNotifications();
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
   const notifications = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
-  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
+  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
   const anchorRef = useRef<HTMLButtonElement>(null);
 
   const handleClose = (event: Event | React.SyntheticEvent) => {
@@ -153,17 +155,9 @@ const NotificationsTopbar = ({ color }: NotificationsTopbarProps) => {
 
   return (
     <>
-      <IconButton
-        aria-label='Vis varslinger'
-        onClick={() => setShowNotificationItem((prev) => !prev)}
-        ref={anchorRef}
-        sx={{
-          height: 54,
-          width: 54,
-          color: color,
-        }}>
+      <IconButton aria-label='Vis varslinger' onClick={() => setShowNotificationItem((prev) => !prev)} ref={anchorRef} sx={{ color: color }}>
         <Badge badgeContent={user?.unread_notifications} color='error'>
-          <NotificationsIcon />
+          {showNotificationItem ? <CloseRoundedIcon /> : <NotificationsIcon />}
         </Badge>
       </IconButton>
       {mdDown ? (
@@ -178,9 +172,11 @@ const NotificationsTopbar = ({ color }: NotificationsTopbarProps) => {
               style={{
                 transformOrigin: 'right top',
               }}>
-              <Paper>
+              <Paper elevation={2} noPadding sx={{ maxWidth: (theme) => theme.breakpoints.values.md }}>
                 <ClickAwayListener onClickAway={handleClose}>
-                  <NotificationsList />
+                  <Box sx={{ p: 2, height: 'calc(100vh - 130px)', overflow: 'auto' }}>
+                    <NotificationsList />
+                  </Box>
                 </ClickAwayListener>
               </Paper>
             </Grow>

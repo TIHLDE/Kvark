@@ -21,8 +21,6 @@ import { useGoogleAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles<Theme, ProfileTopbarButtonProps>((theme) => ({
   themeButton: {
-    height: 54,
-    width: 54,
     color: (props) => getColor(props, theme),
   },
   themeSettingsIcon: {
