@@ -96,7 +96,15 @@ const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
           </Select>
         </div>
         <TextField disabled={updateUser.isLoading} formState={formState} label='Kjøkkenredskap' {...register('tool')} />
-        <TextField disabled={updateUser.isLoading} formState={formState} label='Evt allergier og annen info' multiline {...register('allergy')} minRows={3} />
+        <TextField
+          disabled={updateUser.isLoading}
+          formState={formState}
+          helperText='Dine allergier vises til arrangører ved arrangementer'
+          label='Dine allergier'
+          multiline
+          {...register('allergy')}
+          minRows={3}
+        />
         <SubmitButton disabled={updateUser.isLoading} formState={formState}>
           Oppdater
         </SubmitButton>
