@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- ⚡ **Arrangementer**. Viser brukerens profilbilde på store skjermer ved arrangement registrering.
+
 - ✨ **Profil**. Klargjører at brukere skal skrive allergier, og ikke tøys.
 
 - ✨ **Brukeradmin**. Lagt til alumni i Brukeradmin
