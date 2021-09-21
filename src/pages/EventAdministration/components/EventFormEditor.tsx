@@ -1,5 +1,5 @@
-import { EventForm } from 'types';
-import { useFormById, useCreateForm } from 'hooks/Form';
+import { EventFormCreate } from 'types';
+import { useFormById, useCreateForm, useFormSubmissions } from 'hooks/Form';
 
 // Material UI
 import { Typography, Button } from '@mui/material';
@@ -11,15 +11,17 @@ import { FormType, FormResourceType } from 'types/Enums';
 export type EventFormEditorProps = {
   eventId: number;
   formId: string | null;
+  formType: FormType;
 };
 
-const EventFormEditor = ({ eventId, formId }: EventFormEditorProps) => {
+const EventFormEditor = ({ eventId, formId, formType }: EventFormEditorProps) => {
   const { data, isLoading } = useFormById(formId || '-');
+  const { data: submissions } = useFormSubmissions(formId || '-', 1);
   const createForm = useCreateForm();
 
-  const newForm: EventForm = {
+  const newForm: EventFormCreate = {
     title: String(eventId),
-    type: FormType.SURVEY,
+    type: formType,
     event: eventId,
     resource_type: FormResourceType.EVENT_FORM,
     fields: [],
@@ -27,14 +29,16 @@ const EventFormEditor = ({ eventId, formId }: EventFormEditorProps) => {
 
   const onCreate = async () => createForm.mutate(newForm);
 
-  if (isLoading) {
-    return <Typography variant='h3'>Laster skjemaet</Typography>;
-  } else if (!data || !formId) {
+  if (!formId) {
     return (
       <Button fullWidth onClick={onCreate} variant='outlined'>
         Opprett skjema
       </Button>
     );
+  } else if (isLoading || !data || !submissions) {
+    return <Typography variant='body2'>Laster skjemaet</Typography>;
+  } else if (submissions.count) {
+    return <Typography variant='body2'>Du kan ikke endre spørsmålene etter at noen har svart på dem</Typography>;
   }
 
   return <FormEditor form={data} />;

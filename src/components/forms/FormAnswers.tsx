@@ -21,6 +21,8 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
     return <Typography>Laster statistikken</Typography>;
   } else if (!data || !form) {
     return <Typography>Du må opprette et skjema for å se svar</Typography>;
+  } else if (!data.results.length) {
+    return <Typography>Ingen har svart på dette skjemaet</Typography>;
   }
 
   const getTableCellText = (field: TextFormField | SelectFormField, submission: UserSubmission) => {
@@ -39,9 +41,9 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
       <Table aria-label={`Svar for ${form.title}`} size='small' sx={{ minWidth: 250 }}>
         <TableHead>
           <TableRow>
-            <TableCell sx={{ fontWeight: 'bold' }}>Navn</TableCell>
+            <TableCell sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>Navn</TableCell>
             {form.fields.map((field) => (
-              <TableCell align='right' key={field.id} sx={{ fontWeight: 'bold' }}>
+              <TableCell align='right' key={field.id} sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>
                 {`${field.title}${field.required ? ' *' : ''}`}
               </TableCell>
             ))}

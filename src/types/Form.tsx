@@ -1,4 +1,5 @@
 import { UserList } from 'types/User';
+import { EventCompact } from 'types/Event';
 import { FormFieldType, FormResourceType, FormType } from 'types/Enums';
 
 // -----------------------------------------------------------
@@ -6,18 +7,26 @@ import { FormFieldType, FormResourceType, FormType } from 'types/Enums';
 // -----------------------------------------------------------
 
 export interface Form {
-  id?: string;
+  id: string;
   title: string;
   type: FormType;
   fields: Array<TextFormField | SelectFormField>;
   resource_type: FormResourceType;
+  viewer_has_answered: boolean;
 }
 
+export type FormCreate = Omit<Form, 'id' | 'viewer_has_answered'>;
+export type FormUpdate = Partial<Form> & Pick<Form, 'fields' | 'resource_type'>;
+
 export interface EventForm extends Form {
-  type: FormType.SURVEY;
-  event: number;
+  type: FormType.SURVEY | FormType.EVALUATION;
+  event: EventCompact;
   resource_type: FormResourceType.EVENT_FORM;
 }
+
+export type EventFormCreate = FormCreate & {
+  event: number;
+};
 
 interface FormField {
   id?: string;

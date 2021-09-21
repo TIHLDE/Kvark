@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { User, UserList, UserCreate, LoginRequestResponse, PaginationResponse, RequestResponse, Badge, EventCompact, GroupList } from 'types';
+import { User, UserList, UserCreate, LoginRequestResponse, PaginationResponse, RequestResponse, Badge, EventCompact, GroupList, Form } from 'types';
 import { PermissionApp } from 'types/Enums';
 import { getCookie, setCookie, removeCookie } from 'api/cookie';
 import { ACCESS_TOKEN } from 'constant';
@@ -10,22 +10,23 @@ export const USER_QUERY_KEY = 'user';
 export const USER_BADGES_QUERY_KEY = 'user_badges';
 export const USER_EVENTS_QUERY_KEY = 'user_events';
 export const USER_GROUPS_QUERY_KEY = 'user_groups';
+export const USER_FORMS_QUERY_KEY = 'user_forms';
 export const USERS_QUERY_KEY = 'users';
 
 export const useUser = () => {
   const isAuthenticated = useIsAuthenticated();
-  return useQuery<User | undefined, RequestResponse>(USER_QUERY_KEY, () => (isAuthenticated ? API.getUserData() : undefined));
+  return useQuery<User | undefined, RequestResponse>([USER_QUERY_KEY], () => (isAuthenticated ? API.getUserData() : undefined));
 };
 
 export const useUserBadges = () => {
-  return useInfiniteQuery<PaginationResponse<Badge>, RequestResponse>(USER_BADGES_QUERY_KEY, ({ pageParam = 1 }) => API.getUserBadges({ page: pageParam }), {
+  return useInfiniteQuery<PaginationResponse<Badge>, RequestResponse>([USER_BADGES_QUERY_KEY], ({ pageParam = 1 }) => API.getUserBadges({ page: pageParam }), {
     getNextPageParam: (lastPage) => lastPage.next,
   });
 };
 
 export const useUserEvents = () => {
   return useInfiniteQuery<PaginationResponse<EventCompact>, RequestResponse>(
-    USER_EVENTS_QUERY_KEY,
+    [USER_EVENTS_QUERY_KEY],
     ({ pageParam = 1 }) => API.getUserEvents({ page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.next,
@@ -33,8 +34,19 @@ export const useUserEvents = () => {
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const useUserForms = (filters?: any) => {
+  return useInfiniteQuery<PaginationResponse<Form>, RequestResponse>(
+    [USER_FORMS_QUERY_KEY, filters],
+    ({ pageParam = 1 }) => API.getUserForms({ ...filters, page: pageParam }),
+    {
+      getNextPageParam: (lastPage) => lastPage.next,
+    },
+  );
+};
+
 export const useUserGroups = () => {
-  return useQuery<Array<GroupList>, RequestResponse>(USER_GROUPS_QUERY_KEY, () => API.getUserGroups());
+  return useQuery<Array<GroupList>, RequestResponse>([USER_GROUPS_QUERY_KEY], () => API.getUserGroups());
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -54,7 +66,7 @@ export const useLogin = (): UseMutationResult<LoginRequestResponse, RequestRespo
     onSuccess: (data) => {
       setCookie(ACCESS_TOKEN, data.token);
       queryClient.removeQueries();
-      queryClient.prefetchQuery(USER_QUERY_KEY, () => API.getUserData());
+      queryClient.prefetchQuery([USER_QUERY_KEY], () => API.getUserData());
     },
   });
 };
@@ -83,10 +95,10 @@ export const useUpdateUser = (): UseMutationResult<User, RequestResponse, { user
   const queryClient = useQueryClient();
   return useMutation(({ userId, user }) => API.updateUserData(userId, user), {
     onSuccess: (data) => {
-      queryClient.invalidateQueries(USERS_QUERY_KEY);
-      const user = queryClient.getQueryData<User | undefined>(USER_QUERY_KEY);
+      queryClient.invalidateQueries([USERS_QUERY_KEY]);
+      const user = queryClient.getQueryData<User | undefined>([USER_QUERY_KEY]);
       if (data.user_id === user?.user_id) {
-        queryClient.setQueryData(USER_QUERY_KEY, data);
+        queryClient.setQueryData([USER_QUERY_KEY], data);
       }
     },
   });
@@ -96,7 +108,7 @@ export const useActivateUser = (): UseMutationResult<RequestResponse, RequestRes
   const queryClient = useQueryClient();
   return useMutation((userId) => API.activateUser(userId), {
     onSuccess: () => {
-      queryClient.invalidateQueries(USERS_QUERY_KEY);
+      queryClient.invalidateQueries([USERS_QUERY_KEY]);
     },
   });
 };
@@ -105,7 +117,7 @@ export const useDeclineUser = (): UseMutationResult<RequestResponse, RequestResp
   const queryClient = useQueryClient();
   return useMutation(({ userId, reason }) => API.declineUser(userId, reason), {
     onSuccess: () => {
-      queryClient.invalidateQueries(USERS_QUERY_KEY);
+      queryClient.invalidateQueries([USERS_QUERY_KEY]);
     },
   });
 };
