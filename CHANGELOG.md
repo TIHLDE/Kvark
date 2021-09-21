@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.2.1 (21.09.2021)
+
 - ✨ **Skjemaer**. Lagt til mulighet for å svare på evalueringsskjemaer.
 - ✨ **Profil**. Klargjører at brukere skal skrive allergier, og ikke tøys.
 - ✨ **Brukeradmin**. Lagt til alumni i Brukeradmin
