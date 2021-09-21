@@ -130,7 +130,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
           <div className={classes.actions}>
             {registration.is_on_wait ? (
               <VerifyDialog
-                contentText={'Om arangementet er fullt vil du lage en ekstra plass'}
+                contentText={'Om arrangementet er fullt vil du lage en ekstra plass'}
                 fullWidth
                 onConfirm={() => changeList(false)}
                 startIcon={<ArrowUpwardIcon />}
