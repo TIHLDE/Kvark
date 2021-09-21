@@ -151,9 +151,11 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             </Alert>
             <QRCode background='paper' value={registration.user_info.user_id} />
             {registration.survey_submission.answers.length > 0 && (
-              <Expand flat header='Dine svar på spørsmål'>
-                <FormUserAnswers submission={registration.survey_submission} />
-              </Expand>
+              <div>
+                <Expand flat header='Påmeldingsspørsmål'>
+                  <FormUserAnswers submission={registration.survey_submission} />
+                </Expand>
+              </div>
             )}
             {registration.has_unanswered_evaluation && (
               <>

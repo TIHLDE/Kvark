@@ -15,7 +15,6 @@ export interface Event {
   description: string;
   end_date: string;
   end_registration_at: string;
-  evaluate_link: string;
   evaluation: string | null;
   expired: boolean;
   id: number;
