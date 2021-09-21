@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import parseISO from 'date-fns/parseISO';
 import { Link } from 'react-router-dom';
-import { Notification } from 'types/Types';
+import { Notification } from 'types';
 import { useNotifications, useUpdateNotification } from 'hooks/Notification';
 import { useGoogleAnalytics } from 'hooks/Utils';
 import { getTimeSince, isExternalURL } from 'utils';

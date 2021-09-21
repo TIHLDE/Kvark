@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import URLS, { PAGES_URLS } from 'URLS';
 import { usePage } from 'hooks/Pages';
-import { Page as IPage } from 'types/Types';
+import { Page as IPage } from 'types';
 import { Groups } from 'types/Enums';
 
 // Material UI Components

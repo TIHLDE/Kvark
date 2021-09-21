@@ -1,6 +1,6 @@
 import { getCookie } from 'api/cookie';
 import { TOKEN_HEADER_NAME, TIHLDE_API_URL, ACCESS_TOKEN } from 'constant';
-import { RequestResponse } from 'types/Types';
+import { RequestResponse } from 'types';
 import { argsToParams } from 'utils';
 
 type RequestMethodType = 'GET' | 'POST' | 'PUT' | 'DELETE';

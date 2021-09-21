@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import classnames from 'classnames';
-import { Event } from 'types/Types';
+import { Event } from 'types';
 import { PermissionApp } from 'types/Enums';
 import URLS from 'URLS';
 import { parseISO, isPast, isFuture } from 'date-fns';
@@ -15,7 +15,7 @@ import { useSnackbar } from 'hooks/Snackbar';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';
-import { Typography, Button, Collapse, Skeleton, Alert, useMediaQuery, Theme } from '@mui/material';
+import { Typography, Button, Collapse, Skeleton, Alert as MuiAlert, useMediaQuery, Theme, styled } from '@mui/material';
 
 // Icons
 import CalendarIcon from '@mui/icons-material/EventRounded';
@@ -26,11 +26,36 @@ import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/Asp
 import EventPriorities from 'pages/EventDetails/components/EventPriorities';
 import EventRegistration from 'pages/EventDetails/components/EventRegistration';
 import Paper from 'components/layout/Paper';
-import Dialog from 'components/layout/Dialog';
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 import QRCode from 'components/miscellaneous/QRCode';
 import ShareButton from 'components/miscellaneous/ShareButton';
+import FormUserAnswers from 'components/forms/FormUserAnswers';
+import Expand from 'components/layout/Expand';
+import VerifyDialog from 'components/layout/VerifyDialog';
 import { useGoogleAnalytics } from 'hooks/Utils';
+
+const Alert = styled(MuiAlert)({
+  mb: 1,
+});
+
+const DetailsPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(1, 2),
+  display: 'grid',
+  gap: theme.spacing(1),
+}));
+
+const ContentPaper = styled(Paper)(({ theme }) => ({
+  height: 'fit-content',
+  overflowX: 'auto',
+  [theme.breakpoints.down('md')]: {
+    order: 1,
+  },
+  marginBottom: theme.spacing(1),
+}));
+
+const DetailsHeader = styled(Typography)({
+  fontSize: '1.5rem',
+});
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -57,32 +82,10 @@ const useStyles = makeStyles((theme) => ({
     gridGap: theme.spacing(1),
     alignItems: 'self-start',
   },
-  details: {
-    padding: theme.spacing(1, 2),
-  },
-  detailsHeader: {
-    fontSize: '1.5rem',
-  },
   info: {
     [theme.breakpoints.down('lg')]: {
       gridRow: '1 / 2',
     },
-  },
-  alert: {
-    marginBottom: theme.spacing(1),
-  },
-  content: {
-    height: 'fit-content',
-    overflowX: 'auto',
-    [theme.breakpoints.down('md')]: {
-      order: 1,
-    },
-    marginBottom: theme.spacing(1),
-  },
-  title: {
-    color: theme.palette.text.primary,
-    fontSize: '2.4rem',
-    wordWrap: 'break-word',
   },
 }));
 
@@ -105,7 +108,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const setLogInRedirectURL = useSetRedirectUrl();
   const showSnackbar = useSnackbar();
   const [view, setView] = useState<Views>(Views.Info);
-  const [signOffDialogOpen, setSignOffDialogOpen] = useState(false);
   const startDate = parseISO(data.start_date);
   const endDate = parseISO(data.end_date);
   const startRegistrationDate = parseISO(data.start_registration_at);
@@ -114,7 +116,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
   const signOff = async () => {
-    setSignOffDialogOpen(false);
     if (user) {
       deleteRegistration.mutate(user.user_id, {
         onSuccess: (response) => {
@@ -129,92 +130,122 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     }
   };
 
-  const ApplyButton = () => {
-    if (preview || !data.sign_up) {
-      return null;
-    } else if (data.closed) {
-      return (
-        <Alert className={classes.details} severity='warning' variant='outlined'>
-          Dette arrangementet er stengt. Det er derfor ikke mulig å melde seg av eller på.
-        </Alert>
-      );
-    } else if (!user) {
-      if (isFuture(endRegistrationDate)) {
-        return (
-          <Button component={Link} fullWidth onClick={() => setLogInRedirectURL(window.location.pathname)} to={URLS.login} variant='contained'>
-            Logg inn for å melde deg på
-          </Button>
-        );
-      } else {
-        return null;
-      }
-    } else if (registration) {
-      return (
-        <>
-          {registration.is_on_wait ? (
-            <Alert className={classes.details} severity='info' variant='outlined'>
+  const RegistrationInfo = () =>
+    !registration ? null : (
+      <>
+        {registration.is_on_wait ? (
+          <>
+            <Alert severity='info' variant='outlined'>
               Du står på ventelisten, vi gir deg beskjed hvis du får plass
             </Alert>
-          ) : (
-            <Paper className={classes.details} noPadding>
-              <Alert className={classes.alert} severity='success' variant='outlined'>
-                Du har plass på arrangementet!
-              </Alert>
-              <QRCode background='paper' value={user.user_id} />
-            </Paper>
-          )}
-          {(isFuture(signOffDeadlineDate) || registration.is_on_wait) && isFuture(startDate) ? (
-            <Button fullWidth onClick={() => setSignOffDialogOpen(true)} variant='outlined'>
-              Meld deg av
+            {registration.survey_submission.answers.length > 0 && (
+              <Expand flat header='Dine svar på spørsmål'>
+                <FormUserAnswers submission={registration.survey_submission} />
+              </Expand>
+            )}
+          </>
+        ) : (
+          <DetailsPaper noPadding>
+            <Alert severity='success' variant='outlined'>
+              {`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}
+            </Alert>
+            <QRCode background='paper' value={registration.user_info.user_id} />
+            {registration.survey_submission.answers.length > 0 && (
+              <div>
+                <Expand flat header='Påmeldingsspørsmål'>
+                  <FormUserAnswers submission={registration.survey_submission} />
+                </Expand>
+              </div>
+            )}
+            {registration.has_unanswered_evaluation && (
+              <>
+                <Alert severity='warning' variant='outlined'>
+                  Du har ikke svart på evalueringen av dette arrangementet. Du må svare på den før du kan melde deg på flere arrangementer.
+                </Alert>
+                <Button component={Link} fullWidth to={`${URLS.form}${data.evaluation}/`} variant='contained'>
+                  Svar på evaluering
+                </Button>
+              </>
+            )}
+          </DetailsPaper>
+        )}
+        {(isFuture(signOffDeadlineDate) || registration.is_on_wait) && isFuture(startDate) ? (
+          <VerifyDialog
+            closeText='Avbryt'
+            confirmText='Ja, jeg er sikker'
+            contentText={`Om du melder deg på igjen vil du havne på bunnen av en eventuell venteliste.`}
+            fullWidth
+            onConfirm={signOff}
+            titleText='Er du sikker?'
+            variant='outlined'>
+            Meld deg av
+          </VerifyDialog>
+        ) : (
+          isFuture(startDate) && (
+            <Alert severity='info' variant='outlined'>
+              Avmeldingsfristen er passert
+            </Alert>
+          )
+        )}
+      </>
+    );
+
+  const HasUnansweredEvaluations = () =>
+    user?.unanswered_evaluations_count ? (
+      <Alert severity='error' variant='outlined'>
+        {`Du må svare på ${user.unanswered_evaluations_count} ubesvarte evalueringsskjemaer før du kan melde deg på flere arrangementer. Du finner dine ubesvarte evalueringsskjemaer under "Spørreskjemaer" i profilen.`}
+      </Alert>
+    ) : null;
+
+  const ApplyInfo = () =>
+    preview || !data.sign_up ? null : (
+      <>
+        {data.closed ? (
+          <Alert severity='warning' variant='outlined'>
+            Dette arrangementet er stengt. Det er derfor ikke mulig å melde seg av eller på.
+          </Alert>
+        ) : isFuture(startRegistrationDate) ? (
+          <>
+            <HasUnansweredEvaluations />
+            <Button disabled fullWidth variant='contained'>
+              Påmelding har ikke startet
             </Button>
-          ) : (
-            isFuture(startDate) && (
-              <Alert className={classes.details} severity='info' variant='outlined'>
-                Avmeldingsfristen er passert
-              </Alert>
-            )
-          )}
-        </>
-      );
-    } else if (isFuture(startRegistrationDate)) {
-      return (
-        <Button disabled fullWidth variant='contained'>
-          Påmelding har ikke startet
-        </Button>
-      );
-    } else if (isPast(endRegistrationDate)) {
-      return null;
-    } else if (view === Views.Apply) {
-      return (
-        <Button fullWidth onClick={() => setView(Views.Info)} variant='outlined'>
-          Se beskrivelse
-        </Button>
-      );
-    } else {
-      return (
-        <Button fullWidth onClick={() => setView(Views.Apply)} variant='contained'>
-          Meld deg på
-        </Button>
-      );
-    }
-  };
+          </>
+        ) : !user ? (
+          isFuture(endRegistrationDate) ? (
+            <Button component={Link} fullWidth onClick={() => setLogInRedirectURL(window.location.pathname)} to={URLS.login} variant='contained'>
+              Logg inn for å melde deg på
+            </Button>
+          ) : null
+        ) : registration ? (
+          <RegistrationInfo />
+        ) : isPast(endRegistrationDate) ? null : view === Views.Apply ? (
+          <Button fullWidth onClick={() => setView(Views.Info)} variant='outlined'>
+            Se beskrivelse
+          </Button>
+        ) : (
+          <>
+            <HasUnansweredEvaluations />
+            <Button disabled={user?.unanswered_evaluations_count > 0} fullWidth onClick={() => setView(Views.Apply)} variant='contained'>
+              Meld deg på
+            </Button>
+          </>
+        )}
+      </>
+    );
 
   const Info = () => (
     <>
-      <Paper className={classes.details} noPadding>
-        <Typography className={classes.detailsHeader} variant='h2'>
-          Detaljer
-        </Typography>
+      <DetailsPaper noPadding>
+        <DetailsHeader variant='h2'>Detaljer</DetailsHeader>
         <DetailContent info={formatDate(startDate)} title='Fra: ' />
         <DetailContent info={formatDate(endDate)} title='Til: ' />
         <DetailContent info={data.location} title='Sted: ' />
-      </Paper>
+      </DetailsPaper>
       {data.sign_up && (
         <>
-          <Paper className={classes.details} noPadding>
-            <Typography className={classes.detailsHeader} variant='h2'>
-              Påmelding
-            </Typography>
+          <DetailsPaper noPadding>
+            <DetailsHeader variant='h2'>Påmelding</DetailsHeader>
             <DetailContent info={`${data.list_count}/${data.limit}`} title='Påmeldte:' />
             <DetailContent info={String(data.waiting_list_count)} title='Venteliste:' />
             {registration && isFuture(signOffDeadlineDate) ? (
@@ -225,66 +256,60 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
                 {isPast(startRegistrationDate) && isFuture(endRegistrationDate) && <DetailContent info={formatDate(endRegistrationDate)} title='Slutt:' />}
               </>
             )}
-          </Paper>
+          </DetailsPaper>
           {Boolean(data.registration_priorities.length) && data.registration_priorities.length !== 14 && (
-            <Paper className={classes.details} noPadding>
-              <Typography className={classes.detailsHeader} variant='h2'>
-                Prioritert
-              </Typography>
+            <DetailsPaper noPadding>
+              <DetailsHeader variant='h2'>Prioritert</DetailsHeader>
               <EventPriorities priorities={data.registration_priorities} />
-            </Paper>
+            </DetailsPaper>
           )}
         </>
       )}
-      <ApplyButton />
+      <ApplyInfo />
     </>
   );
 
   const addToCalendarAnalytics = () => event('add-to-calendar', 'event', `Event: ${data.title}`);
 
   return (
-    <>
-      <Dialog
-        closeText='Avbryt'
-        confirmText='Ja, jeg er sikker'
-        contentText='Om du melder deg på igjen vil du havne på bunnen av en eventuell venteliste.'
-        onClose={() => setSignOffDialogOpen(false)}
-        onConfirm={signOff}
-        open={signOffDialogOpen}
-        titleText='Er du sikker?'
-      />
-      <div className={classes.rootGrid}>
-        <div className={classes.infoGrid}>
-          {!lgDown && <Info />}
-          <ShareButton color='inherit' shareId={data.id} shareType='event' title={data.title} />
-          <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} onClick={addToCalendarAnalytics} variant='outlined'>
-            Legg til i kalender
-          </Button>
-          {!preview && (
-            <HavePermission apps={[PermissionApp.EVENT]}>
-              <Button component={Link} fullWidth to={`${URLS.eventAdmin}${data.id}/`} variant='outlined'>
-                Endre arrangement
-              </Button>
-            </HavePermission>
-          )}
-        </div>
-        <div className={classnames(classes.infoGrid, classes.info)}>
-          <AspectRatioImg alt={data.image_alt || data.title} imgClassName={classes.image} src={data.image} />
-          {lgDown && <Info />}
-          <Paper className={classes.content}>
-            <Typography className={classes.title} gutterBottom variant='h1'>
-              {data.title}
-            </Typography>
-            <Collapse in={view === Views.Info || Boolean(registration) || preview}>
-              <MarkdownRenderer value={data.description} />
-            </Collapse>
-            <Collapse in={view === Views.Apply && !registration && !preview} mountOnEnter>
-              {user && <EventRegistration event={data} user={user} />}
-            </Collapse>
-          </Paper>
-        </div>
+    <div className={classes.rootGrid}>
+      <div className={classes.infoGrid}>
+        {!lgDown && <Info />}
+        <ShareButton color='inherit' shareId={data.id} shareType='event' title={data.title} />
+        <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} onClick={addToCalendarAnalytics} variant='outlined'>
+          Legg til i kalender
+        </Button>
+        {!preview && (
+          <HavePermission apps={[PermissionApp.EVENT]}>
+            <Button component={Link} fullWidth to={`${URLS.eventAdmin}${data.id}/`} variant='outlined'>
+              Endre arrangement
+            </Button>
+          </HavePermission>
+        )}
       </div>
-    </>
+      <div className={classnames(classes.infoGrid, classes.info)}>
+        <AspectRatioImg alt={data.image_alt || data.title} imgClassName={classes.image} src={data.image} />
+        {lgDown && <Info />}
+        <ContentPaper>
+          <Typography
+            gutterBottom
+            sx={{
+              color: (theme) => theme.palette.text.primary,
+              fontSize: '2.4rem',
+              wordWrap: 'break-word',
+            }}
+            variant='h1'>
+            {data.title}
+          </Typography>
+          <Collapse in={view === Views.Info || Boolean(registration) || preview}>
+            <MarkdownRenderer value={data.description} />
+          </Collapse>
+          <Collapse in={view === Views.Apply && !registration && !preview} mountOnEnter>
+            {user && <EventRegistration event={data} user={user} />}
+          </Collapse>
+        </ContentPaper>
+      </div>
+    </div>
   );
 };
 
@@ -296,26 +321,26 @@ export const EventRendererLoading = () => {
   return (
     <div className={classes.rootGrid}>
       <div className={classes.infoGrid}>
-        <Paper className={classes.details} noPadding>
+        <DetailsPaper noPadding>
           <DetailContentLoading />
           <DetailContentLoading />
           <DetailContentLoading />
-        </Paper>
-        <Paper className={classes.details} noPadding>
+        </DetailsPaper>
+        <DetailsPaper noPadding>
           <DetailContentLoading />
           <DetailContentLoading />
-        </Paper>
+        </DetailsPaper>
       </div>
       <div className={classnames(classes.infoGrid, classes.info)}>
         <AspectRatioLoading imgClassName={classes.image} />
-        <Paper className={classes.content}>
+        <ContentPaper>
           <Skeleton height={80} width='60%' />
           <Skeleton height={40} width={250} />
           <Skeleton height={40} width='80%' />
           <Skeleton height={40} width='85%' />
           <Skeleton height={40} width='75%' />
           <Skeleton height={40} width='90%' />
-        </Paper>
+        </ContentPaper>
       </div>
     </div>
   );

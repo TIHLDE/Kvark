@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { RegistrationPriority } from 'types/Types';
+import { RegistrationPriority } from 'types';
 import { UserClass, UserStudy } from 'types/Enums';
 import { getUserStudyShort } from 'utils';
 

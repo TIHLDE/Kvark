@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import API from 'api/api';
-import { Category, RequestResponse } from 'types/Types';
+import { Category, RequestResponse } from 'types';
 
 export const CATEGORIES_QUERY_KEY = 'categories';
 

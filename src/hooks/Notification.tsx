@@ -1,6 +1,6 @@
 import { useMutation, useInfiniteQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { Notification, PaginationResponse, RequestResponse } from 'types/Types';
+import { Notification, PaginationResponse, RequestResponse } from 'types';
 import { USER_QUERY_KEY } from 'hooks/User';
 
 export const NOTIFICATION_QUERY_KEY = 'notification';
@@ -19,8 +19,8 @@ export const useUpdateNotification = (id: number): UseMutationResult<Notificatio
   const queryClient = useQueryClient();
   return useMutation((newReadState: boolean) => API.updateNotification(id, { read: newReadState }), {
     onSuccess: () => {
-      queryClient.invalidateQueries(NOTIFICATION_QUERY_KEY);
-      queryClient.invalidateQueries(USER_QUERY_KEY);
+      queryClient.invalidateQueries([NOTIFICATION_QUERY_KEY]);
+      queryClient.invalidateQueries([USER_QUERY_KEY]);
     },
   });
 };

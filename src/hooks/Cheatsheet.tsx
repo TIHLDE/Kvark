@@ -1,7 +1,7 @@
 import { Study } from 'types/Enums';
 import API from 'api/api';
 import { useInfiniteQuery } from 'react-query';
-import { Cheatsheet, PaginationResponse, RequestResponse } from 'types/Types';
+import { Cheatsheet, PaginationResponse, RequestResponse } from 'types';
 
 export const CHEATSHEET_QUERY_KEY = 'cheatsheet';
 

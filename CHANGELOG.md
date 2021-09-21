@@ -15,6 +15,16 @@
 ## Neste versjon
 - ✨ **Filterboks**. Filterboksen i arrangementer siden kan nå åpnes og lukkes på små skjermer.
 
+## Versjon 1.2.1 (21.09.2021)
+
+- ✨ **Skjemaer**. Lagt til mulighet for å svare på evalueringsskjemaer.
+- ✨ **Profil**. Klargjører at brukere skal skrive allergier, og ikke tøys.
+- ✨ **Brukeradmin**. Lagt til alumni i Brukeradmin
+
+## Versjon 1.2.0 (12.09.2021)
+
+- ✨ **Skjemaer**. Legg til statistikk og svar for spørsmål til arrangementer. Vis i produksjon.
+
 ## Versjon 1.1.4 (06.09.2021)
 
 - 🦟 **Bedrifter**. Fikset innsending av skjema for bedrifter slik at HS faktisk kan se hva de har krysset av.

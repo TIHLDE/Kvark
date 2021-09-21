@@ -1,7 +1,7 @@
 import { ChangeEvent, useMemo, useState } from 'react';
 import QrReader from 'react-qr-reader';
 import { useParams } from 'react-router-dom';
-import { Registration } from 'types/Types';
+import { Registration } from 'types';
 import { useEventById, useEventRegistrations, useUpdateEventRegistration } from 'hooks/Event';
 import { useSnackbar } from 'hooks/Snackbar';
 

@@ -55,7 +55,7 @@ export enum Groups {
 
 export enum FormType {
   SURVEY = 'SURVEY',
-  EVALUTATION = 'EVALUTATION',
+  EVALUATION = 'EVALUATION',
 }
 
 export enum FormResourceType {

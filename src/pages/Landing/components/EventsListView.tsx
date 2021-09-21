@@ -1,4 +1,4 @@
-import { EventCompact } from 'types/Types';
+import { EventCompact } from 'types';
 import URLS from 'URLS';
 import { Link } from 'react-router-dom';
 

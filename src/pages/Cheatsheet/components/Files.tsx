@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import classnames from 'classnames';
 import { CheatsheetType } from 'types/Enums';
-import { Cheatsheet } from 'types/Types';
+import { Cheatsheet } from 'types';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';

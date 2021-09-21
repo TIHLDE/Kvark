@@ -1,6 +1,6 @@
 import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { JobPost, JobPostRequired, PaginationResponse, RequestResponse } from 'types/Types';
+import { JobPost, JobPostRequired, PaginationResponse, RequestResponse } from 'types';
 
 export const JOBPOST_QUERY_KEY = 'jobpost';
 

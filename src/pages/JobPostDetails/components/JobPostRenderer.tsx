@@ -1,7 +1,7 @@
 import parseISO from 'date-fns/parseISO';
 import { Link } from 'react-router-dom';
 import { formatDate } from 'utils';
-import { JobPost } from 'types/Types';
+import { JobPost } from 'types';
 import { PermissionApp } from 'types/Enums';
 import URLS from 'URLS';
 import { HavePermission } from 'hooks/User';

@@ -1,6 +1,6 @@
 import slugify from 'slugify';
 import { parseISO, format, subMinutes } from 'date-fns';
-import { Event } from 'types/Types';
+import { Event } from 'types';
 import { UserStudy, UserClass } from 'types/Enums';
 
 /**

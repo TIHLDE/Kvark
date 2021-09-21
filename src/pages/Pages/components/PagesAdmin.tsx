@@ -7,7 +7,7 @@ import parseISO from 'date-fns/parseISO';
 import { usePageTree, useCreatePage, useUpdatePage, useDeletePage } from 'hooks/Pages';
 import { useSnackbar } from 'hooks/Snackbar';
 import { HavePermission } from 'hooks/User';
-import { Page, PageTree } from 'types/Types';
+import { Page, PageTree } from 'types';
 import { PermissionApp } from 'types/Enums';
 
 // Material UI Components

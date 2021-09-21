@@ -1,111 +1,61 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useEventById, useEventRegistrations } from 'hooks/Event';
 import { useSnackbar } from 'hooks/Snackbar';
+import { Registration } from 'types';
 
 // Material-UI
-import { makeStyles } from '@mui/styles';
-import { Typography, Stack, Divider, FormControlLabel, Checkbox, Button, List, LinearProgress } from '@mui/material';
+import { Typography, Stack, Divider, FormControlLabel, Checkbox, Button, List, LinearProgress, Box } from '@mui/material';
 
 // Icons
 import CopyIcon from '@mui/icons-material/FileCopyOutlined';
 
 // Project
 import Participant from 'pages/EventAdministration/components/Participant';
-import EventStatistics from 'pages/EventAdministration/components/EventStatistics';
+import EventParticipantsStatistics from 'pages/EventAdministration/components/EventParticipantsStatistics';
 import EventMessageSender from 'pages/EventAdministration/components/EventMessageSender';
-
-const useStyles = makeStyles((theme) => ({
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: theme.spacing(0, 0, 1),
-    [theme.breakpoints.down('lg')]: {
-      flexDirection: 'column',
-    },
-  },
-  numbers: {
-    minWidth: 160,
-    textAlign: 'end',
-    display: 'flex',
-    justifyContent: 'end',
-    flexDirection: 'column',
-    [theme.breakpoints.down('lg')]: {
-      textAlign: 'start',
-    },
-  },
-  content: {
-    paddingTop: theme.spacing(2),
-  },
-  listView: {
-    width: '100%',
-    padding: theme.spacing(1, 0, 2),
-  },
-  flexRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  checkbox: {
-    marginTop: theme.spacing(-0.75),
-    marginBottom: theme.spacing(-0.75),
-  },
-  mainText: {
-    color: theme.palette.text.primary,
-  },
-  lightText: {
-    color: theme.palette.text.secondary,
-  },
-}));
 
 export type EventParticipantsProps = {
   eventId: number;
 };
 
 const EventParticipants = ({ eventId }: EventParticipantsProps) => {
-  const classes = useStyles();
   const { data, isLoading } = useEventById(eventId);
   const { data: participants } = useEventRegistrations(eventId);
   const showSnackbar = useSnackbar();
   const [showOnlyNotAttended, setShowOnlyNotAttended] = useState(false);
 
-  const getOnWaitlist = useMemo(() => (participants || []).filter((user) => user.is_on_wait), [participants]);
-  const getAttending = useMemo(() => (participants || []).filter((user) => !user.is_on_wait), [participants]);
+  const registrationsOnWaitlist = useMemo(() => (participants || []).filter((user) => user.is_on_wait), [participants]);
+  const registrationsNotOnWait = useMemo(() => (participants || []).filter((user) => !user.is_on_wait), [participants]);
 
   type ParticipantsProps = {
     onWaitlist?: boolean;
     onlyNotAttended?: boolean;
+    registrations: Array<Registration>;
   };
 
-  const Participants = ({ onWaitlist = false, onlyNotAttended = false }: ParticipantsProps) => {
-    const registrationsToPrint = onWaitlist ? getOnWaitlist : getAttending;
-    if (registrationsToPrint.length) {
+  const Participants = ({ registrations, onWaitlist = false, onlyNotAttended = false }: ParticipantsProps) => {
+    if (registrations.length) {
       return (
         <>
-          <div className={classes.flexRow}>
-            <Typography className={classes.mainText} variant='caption'>
-              Detaljer
-            </Typography>
-            {!onWaitlist && (
-              <Typography className={classes.mainText} variant='caption'>
-                Ankommet
-              </Typography>
-            )}
-          </div>
-          <List className={classes.listView}>
-            {(onlyNotAttended ? registrationsToPrint.filter((user) => !user.has_attended) : registrationsToPrint).map((registration) => (
+          <Stack direction='row' sx={{ justifyContent: 'space-between' }}>
+            <Typography variant='caption'>Detaljer</Typography>
+            {!onWaitlist && <Typography variant='caption'>Ankommet</Typography>}
+          </Stack>
+          <List>
+            {(onlyNotAttended ? registrations.filter((user) => !user.has_attended) : registrations).map((registration) => (
               <Participant eventId={eventId} key={registration.registration_id} registration={registration} />
             ))}
           </List>
         </>
       );
     } else {
-      return <Typography className={classes.lightText}>Ingen påmeldte.</Typography>;
+      return <Typography>Ingen påmeldte.</Typography>;
     }
   };
 
   const getEmails = useCallback(() => {
     let emails = '';
-    const participants = getAttending;
+    const participants = registrationsNotOnWait;
     participants.forEach((participant, i) => {
       emails += participant.user_info.email;
       if (i < participants.length - 1) {
@@ -113,7 +63,7 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
       }
     });
     return emails;
-  }, [getAttending]);
+  }, [registrationsNotOnWait]);
 
   const copyEmails = () => {
     const tempInput = document.createElement('textarea');
@@ -131,25 +81,21 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
 
   return (
     <>
-      <div className={classes.header}>
-        <Typography className={classes.mainText} variant='h2'>
-          {data?.title || 'Laster...'}
-        </Typography>
-        <div className={classes.numbers}>
-          <Typography className={classes.lightText}>Antall påmeldte: {getAttending.length}</Typography>
-          <Typography className={classes.lightText}>Antall på venteliste: {getOnWaitlist.length}</Typography>
-        </div>
-      </div>
-      <Divider />
-      <div className={classes.content}>
-        {Boolean(getAttending.length) && (
+      <Stack direction={{ xs: 'column', lg: 'row' }} sx={{ justifyContent: 'space-between' }}>
+        <Typography variant='h2'>{data?.title || 'Laster...'}</Typography>
+        <Box sx={{ textAlign: { lg: 'end' } }}>
+          <Typography>Antall påmeldte: {registrationsNotOnWait.length}</Typography>
+          <Typography>Antall på venteliste: {registrationsOnWaitlist.length}</Typography>
+        </Box>
+      </Stack>
+      <Divider sx={{ my: 1 }} />
+      <div>
+        {Boolean(registrationsNotOnWait.length) && (
           <>
-            <Typography className={classes.mainText} variant='h3'>
-              Statistikk
-            </Typography>
-            <div className={classes.listView}>
-              <EventStatistics registrations={getAttending} />
-            </div>
+            <Typography variant='h3'>Statistikk</Typography>
+            <Box sx={{ pt: 1, pb: 2 }}>
+              <EventParticipantsStatistics registrations={registrationsNotOnWait} />
+            </Box>
           </>
         )}
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={1} sx={{ mb: 1 }}>
@@ -158,22 +104,17 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
           </Button>
           <EventMessageSender eventId={eventId} />
         </Stack>
-        <div className={classes.flexRow}>
-          <Typography className={classes.mainText} variant='h3'>
-            Påmeldte ({getAttending.length})
-          </Typography>
+        <Stack direction='row' sx={{ justifyContent: 'space-between' }}>
+          <Typography variant='h3'>Påmeldte ({registrationsNotOnWait.length})</Typography>
           <FormControlLabel
-            className={classes.mainText}
-            control={<Checkbox checked={showOnlyNotAttended} className={classes.checkbox} onChange={(e) => setShowOnlyNotAttended(e.target.checked)} />}
+            control={<Checkbox checked={showOnlyNotAttended} onChange={(e) => setShowOnlyNotAttended(e.target.checked)} sx={{ my: -0.75 }} />}
             label='Ikke ankommet'
             labelPlacement='start'
           />
-        </div>
-        <Participants onlyNotAttended={showOnlyNotAttended} onWaitlist={false} />
-        <Typography className={classes.mainText} variant='h3'>
-          Venteliste ({getOnWaitlist.length})
-        </Typography>
-        <Participants onWaitlist />
+        </Stack>
+        <Participants onlyNotAttended={showOnlyNotAttended} registrations={registrationsNotOnWait} />
+        <Typography variant='h3'>Venteliste ({registrationsOnWaitlist.length})</Typography>
+        <Participants onWaitlist registrations={registrationsOnWaitlist} />
       </div>
     </>
   );

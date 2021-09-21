@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { UserList } from 'types/Types';
+import { UserList } from 'types';
 
 import { ListItem, ListItemText, ListItemAvatar, List, Grid, Typography, Skeleton } from '@mui/material';
 
