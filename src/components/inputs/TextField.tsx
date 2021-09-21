@@ -3,23 +3,20 @@ import { UseFormReturn, FieldError, Path } from 'react-hook-form';
 
 // Material UI Components
 import MuiTextField, { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField';
-import { makeStyles } from '@mui/styles';
 
 import CustomTooltip from 'components/layout/ToolTip';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = {
   grid: {
-    display: 'grid',
-    gridGap: theme.spacing(2),
-    gridTemplateColumns: '1fr 40px',
-    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '15px',
   },
   normal: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    width: '100%',
+    display: 'flex',
   },
-}));
+};
+
 export type TextFieldProps<FormValues> = MuiTextFieldProps &
   Pick<UseFormReturn<FormValues>, 'formState'> & {
     name: Path<FormValues> | string;
@@ -28,9 +25,8 @@ export type TextFieldProps<FormValues> = MuiTextFieldProps &
 
 // eslint-disable-next-line comma-spacing
 const GenericTextField = <FormValues,>({ name, tooltip, formState, ...props }: TextFieldProps<FormValues>, ref: React.ForwardedRef<HTMLDivElement>) => {
-  const classes = useStyles();
   return (
-    <div className={tooltip ? classes.grid : classes.normal}>
+    <div style={tooltip ? useStyles.grid : useStyles.normal}>
       <MuiTextField
         error={Boolean(formState.errors[name] as FieldError)}
         fullWidth

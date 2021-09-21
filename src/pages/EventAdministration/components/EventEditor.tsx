@@ -356,7 +356,8 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           <SubmitButton
             className={classes.margin}
             disabled={isLoading || createEvent.isLoading || updateEvent.isLoading || deleteEvent.isLoading}
-            formState={formState}>
+            formState={formState}
+            tooltip='Denne knappen gjør masse farlig eting!'>
             {eventId ? 'Oppdater arrangement' : 'Opprett arrangement'}
           </SubmitButton>
           {eventId !== null && (
