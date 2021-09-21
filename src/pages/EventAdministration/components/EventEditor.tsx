@@ -224,7 +224,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       <form onSubmit={handleSubmit(submit)}>
         <Grid container direction='column' wrap='nowrap'>
           <div className={classes.grid}>
-            <TextField formState={formState} label='Tittel' {...register('title', { required: 'Gi arrangementet en tittel' })} required />
+            <TextField formState={formState} label='Tittel' tooltip='test' {...register('title', { required: 'Gi arrangementet en tittel' })} required />
             <TextField formState={formState} label='Sted' {...register('location', { required: 'Oppgi et sted for arrangementet' })} required />
           </div>
           <div className={classes.grid}>
