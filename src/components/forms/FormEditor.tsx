@@ -85,7 +85,7 @@ const FormEditor = ({ form }: FormEditorProps) => {
 
   const save = () => {
     updateForm.mutate(
-      { ...form, fields: fields },
+      { fields: fields, resource_type: form.resource_type },
       {
         onSuccess: () => {
           showSnackbar('Spørsmålene ble oppdatert', 'success');

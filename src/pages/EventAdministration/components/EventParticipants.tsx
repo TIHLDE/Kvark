@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useEventById, useEventRegistrations } from 'hooks/Event';
 import { useSnackbar } from 'hooks/Snackbar';
+import { Registration } from 'types';
 
 // Material-UI
 import { Typography, Stack, Divider, FormControlLabel, Checkbox, Button, List, LinearProgress, Box } from '@mui/material';
@@ -23,17 +24,17 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
   const showSnackbar = useSnackbar();
   const [showOnlyNotAttended, setShowOnlyNotAttended] = useState(false);
 
-  const getOnWaitlist = useMemo(() => (participants || []).filter((user) => user.is_on_wait), [participants]);
-  const getAttending = useMemo(() => (participants || []).filter((user) => !user.is_on_wait), [participants]);
+  const registrationsOnWaitlist = useMemo(() => (participants || []).filter((user) => user.is_on_wait), [participants]);
+  const registrationsNotOnWait = useMemo(() => (participants || []).filter((user) => !user.is_on_wait), [participants]);
 
   type ParticipantsProps = {
     onWaitlist?: boolean;
     onlyNotAttended?: boolean;
+    registrations: Array<Registration>;
   };
 
-  const Participants = ({ onWaitlist = false, onlyNotAttended = false }: ParticipantsProps) => {
-    const registrationsToPrint = onWaitlist ? getOnWaitlist : getAttending;
-    if (registrationsToPrint.length) {
+  const Participants = ({ registrations, onWaitlist = false, onlyNotAttended = false }: ParticipantsProps) => {
+    if (registrations.length) {
       return (
         <>
           <Stack direction='row' sx={{ justifyContent: 'space-between' }}>
@@ -41,7 +42,7 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
             {!onWaitlist && <Typography variant='caption'>Ankommet</Typography>}
           </Stack>
           <List>
-            {(onlyNotAttended ? registrationsToPrint.filter((user) => !user.has_attended) : registrationsToPrint).map((registration) => (
+            {(onlyNotAttended ? registrations.filter((user) => !user.has_attended) : registrations).map((registration) => (
               <Participant eventId={eventId} key={registration.registration_id} registration={registration} />
             ))}
           </List>
@@ -54,7 +55,7 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
 
   const getEmails = useCallback(() => {
     let emails = '';
-    const participants = getAttending;
+    const participants = registrationsNotOnWait;
     participants.forEach((participant, i) => {
       emails += participant.user_info.email;
       if (i < participants.length - 1) {
@@ -62,7 +63,7 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
       }
     });
     return emails;
-  }, [getAttending]);
+  }, [registrationsNotOnWait]);
 
   const copyEmails = () => {
     const tempInput = document.createElement('textarea');
@@ -83,17 +84,17 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
       <Stack direction={{ xs: 'column', lg: 'row' }} sx={{ justifyContent: 'space-between' }}>
         <Typography variant='h2'>{data?.title || 'Laster...'}</Typography>
         <Box sx={{ textAlign: { lg: 'end' } }}>
-          <Typography>Antall påmeldte: {getAttending.length}</Typography>
-          <Typography>Antall på venteliste: {getOnWaitlist.length}</Typography>
+          <Typography>Antall påmeldte: {registrationsNotOnWait.length}</Typography>
+          <Typography>Antall på venteliste: {registrationsOnWaitlist.length}</Typography>
         </Box>
       </Stack>
       <Divider sx={{ my: 1 }} />
       <div>
-        {Boolean(getAttending.length) && (
+        {Boolean(registrationsNotOnWait.length) && (
           <>
             <Typography variant='h3'>Statistikk</Typography>
             <Box sx={{ pt: 1, pb: 2 }}>
-              <EventParticipantsStatistics registrations={getAttending} />
+              <EventParticipantsStatistics registrations={registrationsNotOnWait} />
             </Box>
           </>
         )}
@@ -104,16 +105,16 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
           <EventMessageSender eventId={eventId} />
         </Stack>
         <Stack direction='row' sx={{ justifyContent: 'space-between' }}>
-          <Typography variant='h3'>Påmeldte ({getAttending.length})</Typography>
+          <Typography variant='h3'>Påmeldte ({registrationsNotOnWait.length})</Typography>
           <FormControlLabel
             control={<Checkbox checked={showOnlyNotAttended} onChange={(e) => setShowOnlyNotAttended(e.target.checked)} sx={{ my: -0.75 }} />}
             label='Ikke ankommet'
             labelPlacement='start'
           />
         </Stack>
-        <Participants onlyNotAttended={showOnlyNotAttended} onWaitlist={false} />
-        <Typography variant='h3'>Venteliste ({getOnWaitlist.length})</Typography>
-        <Participants onWaitlist />
+        <Participants onlyNotAttended={showOnlyNotAttended} registrations={registrationsNotOnWait} />
+        <Typography variant='h3'>Venteliste ({registrationsOnWaitlist.length})</Typography>
+        <Participants onWaitlist registrations={registrationsOnWaitlist} />
       </div>
     </>
   );
