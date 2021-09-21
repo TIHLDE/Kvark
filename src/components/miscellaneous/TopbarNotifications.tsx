@@ -1,12 +1,29 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import parseISO from 'date-fns/parseISO';
 import { Link } from 'react-router-dom';
 import { Notification } from 'types';
 import { useNotifications, useUpdateNotification } from 'hooks/Notification';
 import { getTimeSince, isExternalURL } from 'utils';
+import { useUser } from 'hooks/User';
 
 // Material-ui
-import { Collapse, Skeleton, List, ListItem, ListItemText, ListItemIcon, Divider, Typography, IconButton, styled } from '@mui/material';
+import {
+  Badge,
+  ClickAwayListener,
+  Collapse,
+  Skeleton,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Divider,
+  Typography,
+  useMediaQuery,
+  IconButton,
+  Theme,
+  Grow,
+  Popper,
+} from '@mui/material';
 
 // Icons
 import NotificationUnreadIcon from '@mui/icons-material/NotificationsRounded';
@@ -14,6 +31,7 @@ import NotificationReadIcon from '@mui/icons-material/NotificationsNoneRounded';
 import LinkIcon from '@mui/icons-material/LinkRounded';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import NotificationsIcon from '@mui/icons-material/NotificationsNoneRounded';
 
 // Project components
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
@@ -23,19 +41,12 @@ import Dialog from 'components/layout/Dialog';
 import { useGoogleAnalytics } from 'hooks/Utils';
 import Paper from 'components/layout/Paper';
 
-const NotifcationsDialog = styled(Dialog)({
-  '& .MuiPaper-root': {
-    maxWidth: '600px',
-  },
-});
-
 type NotificationItemProps = {
   notification: Notification;
 };
 
-type NotificationTopBarProps = {
-  open: boolean;
-  onClose: () => void;
+export type NotificationsTopbarProps = {
+  color: React.CSSProperties['backgroundColor'];
 };
 
 const NotificationItem = ({ notification }: NotificationItemProps) => {
@@ -100,16 +111,28 @@ const NotificationItemLoading = () => (
   </Paper>
 );
 
-const NotifcationsTopBar = ({ onClose, open }: NotificationTopBarProps) => {
+const NotificationsTopbar = ({ color }: NotificationsTopbarProps) => {
+  const [showNotificationItem, setShowNotificationItem] = useState(false);
+  const { data: user } = useUser();
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useNotifications();
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
   const notifications = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
+  const anchorRef = useRef<HTMLButtonElement>(null);
 
-  return (
-    <>
-      <NotifcationsDialog maxWidth={false} onClose={onClose} open={open}>
+  const handleClose = (event: Event | React.SyntheticEvent) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
+      return;
+    }
+
+    setShowNotificationItem(false);
+  };
+
+  const NotificationsList = () => {
+    return (
+      <>
         <Typography align='center' gutterBottom variant='h2'>
-          Meldinger
+          Varslinger
         </Typography>
         {isLoading && <NotificationItemLoading />}
         {isEmpty && <NotFoundIndicator header='Fant ingen varsler' />}
@@ -124,9 +147,48 @@ const NotifcationsTopBar = ({ onClose, open }: NotificationTopBarProps) => {
           </Pagination>
         )}
         {isFetching && <NotificationItemLoading />}
-      </NotifcationsDialog>
+      </>
+    );
+  };
+
+  return (
+    <>
+      <IconButton
+        aria-label='Vis varslinger'
+        onClick={() => setShowNotificationItem((prev) => !prev)}
+        ref={anchorRef}
+        sx={{
+          height: 54,
+          width: 54,
+          color: color,
+        }}>
+        <Badge badgeContent={user?.unread_notifications} color='error'>
+          <NotificationsIcon />
+        </Badge>
+      </IconButton>
+      {mdDown ? (
+        <Dialog fullScreen onClose={() => setShowNotificationItem(false)} open={showNotificationItem}>
+          <NotificationsList />
+        </Dialog>
+      ) : (
+        <Popper anchorEl={anchorRef.current} disablePortal open={showNotificationItem} role={undefined} transition>
+          {({ TransitionProps }) => (
+            <Grow
+              {...TransitionProps}
+              style={{
+                transformOrigin: 'right top',
+              }}>
+              <Paper>
+                <ClickAwayListener onClickAway={handleClose}>
+                  <NotificationsList />
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
+      )}
     </>
   );
 };
 
-export default NotifcationsTopBar;
+export default NotificationsTopbar;

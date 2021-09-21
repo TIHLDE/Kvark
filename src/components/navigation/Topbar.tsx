@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto',
     padding: theme.spacing(0, 1),
     display: 'grid',
-    gridTemplateColumns: '170px 1fr 172px', //*Her har jeg endret med 2px for å få plass til alle 3 ikoner til høyre
+    gridTemplateColumns: '172px 1fr 172px',
   },
   filledTopbar: {
     position: 'fixed',
