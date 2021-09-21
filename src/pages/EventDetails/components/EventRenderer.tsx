@@ -193,7 +193,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const HasUnansweredEvaluations = () =>
     user?.unanswered_evaluations_count ? (
       <Alert severity='error' variant='outlined'>
-        {`Du må svare på ${user.unanswered_evaluations_count} ubesvarte evalueringsskjemaer før du kan melde deg flere arrangementer. Du finner dine ubesvarte evalueringsskjemaer under "Spørreskjemaer" i profilen.`}
+        {`Du må svare på ${user.unanswered_evaluations_count} ubesvarte evalueringsskjemaer før du kan melde deg på flere arrangementer. Du finner dine ubesvarte evalueringsskjemaer under "Spørreskjemaer" i profilen.`}
       </Alert>
     ) : null;
 
@@ -206,9 +206,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           </Alert>
         ) : isFuture(startRegistrationDate) ? (
           <>
-            <Alert severity='success' variant='outlined'>
-              Du har plass på arrangementet!
-            </Alert>
             <HasUnansweredEvaluations />
             <Button disabled fullWidth variant='contained'>
               Påmelding har ikke startet
