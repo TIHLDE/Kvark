@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- ⚡ **Arrangementer**. Viser brukerens profilbilde på store skjermer ved arrangement registrering.
+
 ## Versjon 1.2.1 (21.09.2021)
 
 - ✨ **Skjemaer**. Lagt til mulighet for å svare på evalueringsskjemaer.
