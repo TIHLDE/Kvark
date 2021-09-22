@@ -25,6 +25,7 @@ import DatePicker from 'components/inputs/DatePicker';
 import { ImageUpload } from 'components/inputs/Upload';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
 import VerifyDialog from 'components/layout/VerifyDialog';
+import Tooltip from 'components/miscellaneous/ToolTip';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -44,6 +45,11 @@ const useStyles = makeStyles((theme) => ({
   expansionPanel: {
     border: '1px solid ' + theme.palette.divider,
     background: theme.palette.background.smoke,
+  },
+  flex: {
+    display: 'flex',
+    gap: '15px',
+    alignItems: 'center',
   },
 }));
 
@@ -224,7 +230,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       <form onSubmit={handleSubmit(submit)}>
         <Grid container direction='column' wrap='nowrap'>
           <div className={classes.grid}>
-            <TextField formState={formState} label='Tittel' tooltip='test' {...register('title', { required: 'Gi arrangementet en tittel' })} required />
+            <TextField formState={formState} label='Tittel' {...register('title', { required: 'Gi arrangementet en tittel' })} required />
             <TextField formState={formState} label='Sted' {...register('location', { required: 'Oppgi et sted for arrangementet' })} required />
           </div>
           <div className={classes.grid}>
@@ -253,7 +259,10 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               type='date-time'
             />
           </div>
-          <Bool control={control} formState={formState} label='Åpen for påmelding' name='sign_up' type='switch' />
+          <div className={classes.flex}>
+            <Bool control={control} formState={formState} label='Åpen for påmelding' name='sign_up' type='switch' />
+            <Tooltip title='Når du åpner for påmelding påvirker det ditt og datt med nettsiden/arrangementet' />
+          </div>
           <Collapse in={watchSignUp}>
             <div className={classes.grid}>
               <DatePicker
@@ -329,19 +338,16 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           <ImageUpload formState={formState} label='Velg bilde' ratio={21 / 9} register={register('image')} setValue={setValue} watch={watch} />
           <TextField formState={formState} label='Bildetekst' {...register('image_alt')} />
           <div className={classes.grid}>
-            <Select
-              control={control}
-              formState={formState}
-              label='Prioritering'
-              name='priority'
-              tooltip='prioritering av arrangementer gjør bla bla bla og dit og datt'>
-              {priorities.map((value, index) => (
-                <MenuItem key={index} value={index}>
-                  {value}
-                </MenuItem>
-              ))}
-            </Select>
-
+            <div className={classes.flex}>
+              <Select control={control} formState={formState} label='Prioritering' name='priority'>
+                {priorities.map((value, index) => (
+                  <MenuItem key={index} value={index}>
+                    {value}
+                  </MenuItem>
+                ))}
+              </Select>
+              <Tooltip title='Prioritering gjør bla bla bla og ditt og datt!' />
+            </div>
             {Boolean(categories.length) && (
               <Select control={control} formState={formState} label='Kategori' name='category'>
                 {categories.map((value, index) => (
@@ -356,8 +362,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           <SubmitButton
             className={classes.margin}
             disabled={isLoading || createEvent.isLoading || updateEvent.isLoading || deleteEvent.isLoading}
-            formState={formState}
-            tooltip='Denne knappen gjør masse farlig eting!'>
+            formState={formState}>
             {eventId ? 'Oppdater arrangement' : 'Opprett arrangement'}
           </SubmitButton>
           {eventId !== null && (
