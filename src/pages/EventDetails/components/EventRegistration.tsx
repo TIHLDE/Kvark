@@ -61,6 +61,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
     }
     setIsLoading(true);
     if (form && data) {
+      data.answers = data.answers || [];
       try {
         validateSubmissionInput(data, form);
       } catch (e) {
