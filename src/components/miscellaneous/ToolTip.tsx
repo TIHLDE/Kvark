@@ -1,9 +1,17 @@
+import { ReactElement } from 'react';
 import { IconButton, Tooltip as MuiTooltip, TooltipProps as MuiTooltipProps } from '@mui/material';
 import { HelpOutline } from '@mui/icons-material';
 
-export type TooltipProps = MuiTooltipProps;
+type Modify<T, R> = Omit<T, keyof R> & R;
 
-const Tooltip = (props: MuiTooltipProps) => (
+export type TooltipProps = Modify<
+  MuiTooltipProps,
+  {
+    children?: ReactElement;
+  }
+>;
+
+const Tooltip = (props: TooltipProps) => (
   <MuiTooltip arrow={true} placement='top' {...props}>
     <IconButton>
       <HelpOutline />
