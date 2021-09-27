@@ -11,7 +11,6 @@ import { SvgIconProps, Badge, Collapse, List, ListItem, ListItemIcon, ListItemTe
 
 // Icons
 import EventIcon from '@mui/icons-material/DateRangeRounded';
-import NotificationsIcon from '@mui/icons-material/NotificationsNoneRounded';
 import SettingsIcon from '@mui/icons-material/SettingsRounded';
 import AdminIcon from '@mui/icons-material/TuneRounded';
 import LogOutIcon from '@mui/icons-material/ExitToAppRounded';
@@ -25,7 +24,6 @@ import ProfileSettings from 'pages/Profile/components/ProfileSettings';
 import ProfileEvents from 'pages/Profile/components/ProfileEvents';
 import ProfileForms from 'pages/Profile/components/ProfileForms';
 import ProfileGroups from 'pages/Profile/components/ProfileGroups';
-import ProfileNotifications from 'pages/Profile/components/ProfileNotifications';
 import ProfileBadges from 'pages/Profile/components/ProfileBadges';
 import Paper from 'components/layout/Paper';
 import { useGoogleAnalytics } from 'hooks/Utils';
@@ -62,14 +60,13 @@ const ProfileContent = () => {
   };
 
   const eventTab: NavListItem = { label: 'Arrangementer', icon: EventIcon };
-  const notificationsTab: NavListItem = { label: 'Varsler', icon: NotificationsIcon, badge: user?.unread_notifications };
   const badgesTab: NavListItem = { label: 'Badges', icon: BadgesIcon };
   const groupsTab: NavListItem = { label: 'Grupper', icon: GroupsIcon };
   const formsTab: NavListItem = { label: 'Spørreskjemaer', icon: FormsIcon, badge: user?.unanswered_evaluations_count };
   const settingsTab: NavListItem = { label: 'Innstillinger', icon: SettingsIcon };
   const adminTab: NavListItem = { label: 'Admin', icon: AdminIcon };
   const logoutTab: NavListItem = { label: 'Logg ut', icon: LogOutIcon, onClick: logout, className: classes.logOutButton };
-  const tabs: Array<NavListItem> = [eventTab, notificationsTab, badgesTab, groupsTab, formsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
+  const tabs: Array<NavListItem> = [eventTab, badgesTab, groupsTab, formsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
   const [tab, setTab] = useState(eventTab.label);
 
   useEffect(() => event('change-tab', 'profile', `Changed tab to: ${tab}`), [tab]);
@@ -117,9 +114,6 @@ const ProfileContent = () => {
       <div>
         <Collapse in={tab === eventTab.label}>
           <ProfileEvents />
-        </Collapse>
-        <Collapse in={tab === notificationsTab.label} mountOnEnter unmountOnExit>
-          <ProfileNotifications />
         </Collapse>
         <Collapse in={tab === badgesTab.label} mountOnEnter>
           <ProfileBadges />
