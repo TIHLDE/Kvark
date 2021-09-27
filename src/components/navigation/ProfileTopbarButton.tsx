@@ -15,7 +15,7 @@ import LightIcon from '@mui/icons-material/WbSunnyRounded';
 // Project Components
 import Avatar from 'components/miscellaneous/Avatar';
 import ThemeSettings from 'components/miscellaneous/ThemeSettings';
-import TopbarNotifications from 'components/miscellaneous/TopbarNotifications';
+import TopbarNotifications from 'components/navigation/TopbarNotifications';
 import { NavigationOptions } from 'components/navigation/Navigation';
 import { useGoogleAnalytics } from 'hooks/Utils';
 

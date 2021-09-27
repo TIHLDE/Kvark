@@ -114,64 +114,58 @@ const NotificationItemLoading = () => (
 );
 
 const NotificationsTopbar = ({ color }: NotificationsTopbarProps) => {
-  const [showNotificationItem, setShowNotificationItem] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
   const { data: user } = useUser();
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useNotifications();
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
   const notifications = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
-  const anchorRef = useRef<HTMLButtonElement>(null);
+  const buttonAnchorRef = useRef<HTMLButtonElement>(null);
 
   const handleClose = (event: Event | React.SyntheticEvent) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
+    if (buttonAnchorRef.current && buttonAnchorRef.current.contains(event.target as HTMLElement)) {
       return;
     }
 
-    setShowNotificationItem(false);
+    setShowNotifications(false);
   };
 
-  const NotificationsList = () => {
-    return (
-      <>
-        <Typography align='center' gutterBottom variant='h2'>
-          Varslinger
-        </Typography>
-        {isLoading && <NotificationItemLoading />}
-        {isEmpty && <NotFoundIndicator header='Fant ingen varsler' />}
-        {error && <Paper>{error.detail}</Paper>}
-        {data !== undefined && (
-          <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-            <List dense disablePadding>
-              {notifications.map((notification) => (
-                <NotificationItem key={notification.id} notification={notification} />
-              ))}
-            </List>
-          </Pagination>
-        )}
-        {isFetching && <NotificationItemLoading />}
-      </>
-    );
-  };
+  const NotificationsList = () => (
+    <>
+      <Typography align='center' gutterBottom variant='h2'>
+        Varslinger
+      </Typography>
+      {isLoading && <NotificationItemLoading />}
+      {isEmpty && <NotFoundIndicator header='Fant ingen varsler' />}
+      {error && <Paper>{error.detail}</Paper>}
+      {data !== undefined && (
+        <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
+          <List dense disablePadding>
+            {notifications.map((notification) => (
+              <NotificationItem key={notification.id} notification={notification} />
+            ))}
+          </List>
+        </Pagination>
+      )}
+      {isFetching && <NotificationItemLoading />}
+    </>
+  );
 
   return (
     <>
-      <IconButton aria-label='Vis varslinger' onClick={() => setShowNotificationItem((prev) => !prev)} ref={anchorRef} sx={{ color: color }}>
+      <IconButton aria-label='Vis varslinger' onClick={() => setShowNotifications((prev) => !prev)} ref={buttonAnchorRef} sx={{ color: color }}>
         <Badge badgeContent={user?.unread_notifications} color='error'>
-          {showNotificationItem ? <CloseRoundedIcon /> : <NotificationsIcon />}
+          {showNotifications ? <CloseRoundedIcon /> : <NotificationsIcon />}
         </Badge>
       </IconButton>
       {mdDown ? (
-        <Dialog fullScreen onClose={() => setShowNotificationItem(false)} open={showNotificationItem}>
+        <Dialog fullScreen onClose={() => setShowNotifications(false)} open={showNotifications}>
           <NotificationsList />
         </Dialog>
       ) : (
-        <Popper anchorEl={anchorRef.current} disablePortal open={showNotificationItem} role={undefined} transition>
+        <Popper anchorEl={buttonAnchorRef.current} disablePortal open={showNotifications} role={undefined} transition>
           {({ TransitionProps }) => (
-            <Grow
-              {...TransitionProps}
-              style={{
-                transformOrigin: 'right top',
-              }}>
+            <Grow {...TransitionProps} style={{ transformOrigin: 'right top' }}>
               <Paper elevation={2} noPadding sx={{ maxWidth: (theme) => theme.breakpoints.values.md }}>
                 <ClickAwayListener onClickAway={handleClose}>
                   <Box sx={{ p: 2, height: 'calc(100vh - 130px)', overflow: 'auto' }}>

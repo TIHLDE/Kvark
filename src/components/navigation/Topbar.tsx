@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
   },
   right: {
     display: 'flex',
-    justifyContent: 'space-evenly',
+    justifyContent: 'flex-end',
   },
   selected: {
     borderBottom: '2px solid ' + theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
@@ -126,7 +126,7 @@ export type TopBarItemProps = {
 const TopBarItem = ({ items, text, to, type }: TopBarItemProps) => {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
-  const anchorRef = useRef<HTMLButtonElement>(null);
+  const buttonAnchorRef = useRef<HTMLButtonElement>(null);
   const selected = useMemo(() => location.pathname === to, [location.pathname, to]);
   if (type === 'link' && to) {
     return (
@@ -145,10 +145,10 @@ const TopBarItem = ({ items, text, to, type }: TopBarItemProps) => {
           endIcon={<ExpandIcon className={classNames(classes.dropdownIcon, isOpen && classes.expanded)} />}
           onClick={() => setIsOpen((prev) => !prev)}
           onMouseEnter={() => setIsOpen(true)}
-          ref={anchorRef}>
+          ref={buttonAnchorRef}>
           {text}
         </Button>
-        <Popper anchorEl={anchorRef.current} disablePortal open={isOpen} role={undefined} transition>
+        <Popper anchorEl={buttonAnchorRef.current} disablePortal open={isOpen} role={undefined} transition>
           {({ TransitionProps, placement }) => (
             <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
               <Paper>
