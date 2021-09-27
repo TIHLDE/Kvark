@@ -56,8 +56,11 @@ export const useNotifyEventRegistrations = (
 ): UseMutationResult<RequestResponse, RequestResponse, { title: string; message: string }, unknown> =>
   useMutation(({ title, message }) => API.notifyEventRegistrations(eventId, title, message));
 
-export const useEventRegistrations = (eventId: number) =>
-  useQuery<Array<Registration>, RequestResponse>([EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_REGISTRATION], () => API.getEventRegistrations(eventId));
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const useEventRegistrations = (eventId: number, filters?: any) =>
+  useInfiniteQuery<PaginationResponse<Registration>, RequestResponse>([EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_REGISTRATION], () =>
+    API.getEventRegistrations(eventId, filters),
+  );
 
 export const useEventRegistration = (eventId: number, userId: string) =>
   useQuery<Registration, RequestResponse>([EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_REGISTRATION, userId], () => API.getRegistration(eventId, userId), {

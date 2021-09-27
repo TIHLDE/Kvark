@@ -83,8 +83,12 @@ export default {
     IFetch<RequestResponse>({ method: 'PUT', url: `${EVENTS_ENDPOINT}/${String(eventId)}/${EVENT_REGISTRATIONS_ENDPOINT}/${userId}/`, data: item }),
   getRegistration: (eventId: number, userId: string) =>
     IFetch<Registration>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/${EVENT_REGISTRATIONS_ENDPOINT}/${userId}/` }),
-  getEventRegistrations: (eventId: number) =>
-    IFetch<Array<Registration>>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/${EVENT_REGISTRATIONS_ENDPOINT}/` }),
+  getEventRegistrations: (eventId: number, filters?: any) =>
+    IFetch<PaginationResponse<Registration>>({
+      method: 'GET',
+      url: `${EVENTS_ENDPOINT}/${String(eventId)}/${EVENT_REGISTRATIONS_ENDPOINT}/`,
+      data: filters || {},
+    }),
   createRegistration: (eventId: number, item: Partial<Registration>) =>
     IFetch<Registration>({ method: 'POST', url: `${EVENTS_ENDPOINT}/${String(eventId)}/${EVENT_REGISTRATIONS_ENDPOINT}/`, data: item }),
   updateRegistration: (eventId: number, item: Partial<Registration>, userId: string) =>

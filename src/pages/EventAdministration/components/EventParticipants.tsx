@@ -13,6 +13,7 @@ import CopyIcon from '@mui/icons-material/FileCopyOutlined';
 import Participant from 'pages/EventAdministration/components/Participant';
 import EventParticipantsStatistics from 'pages/EventAdministration/components/EventParticipantsStatistics';
 import EventMessageSender from 'pages/EventAdministration/components/EventMessageSender';
+import Pagination from 'components/layout/Pagination';
 
 export type EventParticipantsProps = {
   eventId: number;
@@ -20,12 +21,22 @@ export type EventParticipantsProps = {
 
 const EventParticipants = ({ eventId }: EventParticipantsProps) => {
   const { data, isLoading } = useEventById(eventId);
-  const { data: participants } = useEventRegistrations(eventId);
-  const showSnackbar = useSnackbar();
   const [showOnlyNotAttended, setShowOnlyNotAttended] = useState(false);
-
-  const registrationsOnWaitlist = useMemo(() => (participants || []).filter((user) => user.is_on_wait), [participants]);
-  const registrationsNotOnWait = useMemo(() => (participants || []).filter((user) => !user.is_on_wait), [participants]);
+  const {
+    data: notOnWait,
+    hasNextPage: notOnWaitHasNextPage,
+    isFetching: notOnWaitIsFetching,
+    fetchNextPage: notOnWaitFetchNextPage,
+  } = useEventRegistrations(eventId, { is_on_wait: false, has_attended: showOnlyNotAttended ? true : undefined });
+  const {
+    data: onWaitlist,
+    hasNextPage: onWaitlistHasNextPage,
+    isFetching: onWaitlistIsFetching,
+    fetchNextPage: onWaitlistFetchNextPage,
+  } = useEventRegistrations(eventId, { is_on_wait: true });
+  const registrationsNotOnWait = useMemo(() => (notOnWait ? notOnWait.pages.map((page) => page.results).flat() : []), [notOnWait]);
+  const registrationsOnWaitlist = useMemo(() => (onWaitlist ? onWaitlist.pages.map((page) => page.results).flat() : []), [onWaitlist]);
+  const showSnackbar = useSnackbar();
 
   type ParticipantsProps = {
     onWaitlist?: boolean;
@@ -112,9 +123,20 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
             labelPlacement='start'
           />
         </Stack>
-        <Participants onlyNotAttended={showOnlyNotAttended} registrations={registrationsNotOnWait} />
+        <Stack direction='row' sx={{ justifyContent: 'space-between' }}>
+          <Typography variant='caption'>Detaljer</Typography>
+          <Typography variant='caption'>Ankommet</Typography>
+        </Stack>
+        <Pagination fullWidth hasNextPage={notOnWaitHasNextPage} isLoading={notOnWaitIsFetching} nextPage={() => notOnWaitFetchNextPage()}>
+          <List dense disablePadding>
+            {registrationsNotOnWait.map((registration) => (
+              <Participant eventId={eventId} key={registration.registration_id} registration={registration} />
+            ))}
+          </List>
+        </Pagination>
+        {/* <Participants onlyNotAttended={showOnlyNotAttended} registrations={registrationsNotOnWait} /> */}
         <Typography variant='h3'>Venteliste ({registrationsOnWaitlist.length})</Typography>
-        <Participants onWaitlist registrations={registrationsOnWaitlist} />
+        {/* <Participants onWaitlist registrations={registrationsOnWaitlist} /> */}
       </div>
     </>
   );
