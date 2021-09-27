@@ -13,6 +13,9 @@
 ---
 
 ## Neste versjon
+
+✨ **Changelog**. Legger til tegnforklaringer på om-index siden
+
 - ✨ **Filterboks**. Filterboksen i arrangementer siden kan nå åpnes og lukkes på små skjermer.
 
 - ⚡ **Arrangementer**. Viser brukerens profilbilde på store skjermer ved arrangement registrering.
