@@ -8,19 +8,7 @@ import { addHours, subDays, parseISO, setHours, startOfHour } from 'date-fns';
 
 // Material-UI
 import { makeStyles } from '@mui/styles';
-import {
-  Stack,
-  Grid,
-  MenuItem,
-  Collapse,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Typography,
-  LinearProgress,
-  Theme,
-  useMediaQuery,
-} from '@mui/material';
+import { Stack, Grid, MenuItem, Collapse, Accordion, AccordionSummary, AccordionDetails, Typography, LinearProgress } from '@mui/material';
 
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
