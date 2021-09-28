@@ -2,6 +2,7 @@ name: Changelogger
 
 on:
   pull_request:
+    types: [opened]
     branches:
       - master
 
