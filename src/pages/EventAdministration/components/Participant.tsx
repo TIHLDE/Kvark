@@ -7,7 +7,7 @@ import { useSnackbar } from 'hooks/Snackbar';
 
 // Material-ui
 import { makeStyles } from '@mui/styles';
-import { Theme, useMediaQuery, Checkbox, Typography, Collapse, Button, ListItem, ListItemText, ListItemSecondaryAction, Divider } from '@mui/material';
+import { Checkbox, Typography, Collapse, Button, ListItem, ListItemText, ListItemSecondaryAction, Divider } from '@mui/material';
 
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
@@ -59,7 +59,6 @@ export type ParticipantProps = {
 
 const Participant = ({ registration, eventId }: ParticipantProps) => {
   const classes = useStyles();
-  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
   const updateRegistration = useUpdateEventRegistration(eventId);
   const deleteRegistration = useDeleteEventRegistration(eventId);
   const showSnackbar = useSnackbar();
@@ -112,7 +111,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
         titleText='Er du sikker?'
       />
       <ListItem button className={classes.wrapper} onClick={() => setExpanded((prev) => !prev)}>
-        {mdDown && <Avatar className={classes.avatar} user={registration.user_info} />}
+        <Avatar className={classes.avatar} user={registration.user_info} />
         <ListItemText
           primary={`${registration.user_info.first_name} ${registration.user_info.last_name}`}
           secondary={`${getUserClass(registration.user_info.user_class)} - ${getUserStudyShort(registration.user_info.user_study)}${
