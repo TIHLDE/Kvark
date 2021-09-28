@@ -133,7 +133,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
                 fullWidth
                 onConfirm={() => changeList(false)}
                 startIcon={<ArrowUpwardIcon />}
-                titleText={'Er du sikker på at du vil flytte denne personen opp?'}
+                titleText='Er du sikker?'
                 variant='outlined'>
                 Flytt til påmeldte
               </VerifyDialog>
