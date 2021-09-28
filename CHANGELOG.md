@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+✨ **Changelog**. Legger til tegnforklaringer på om-index siden
+
 ✨ **Arrangementer**. Muligheten for å laste ned svar på arrangementer som en csv fil.
 
 ## Versjon 1.2.2 (28.09.2021)
