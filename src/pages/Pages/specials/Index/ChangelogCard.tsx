@@ -1,4 +1,5 @@
 import { Typography, styled } from '@mui/material';
+import Expand from 'components/layout/Expand';
 import Paper from 'components/layout/Paper';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import { useQuery } from 'react-query';
@@ -12,43 +13,47 @@ const ChangelogList = styled('div')({
   },
 });
 
+const Expansion = styled(Expand)(({ theme }) => ({
+  border: `1px solid ${theme.palette.divider}`,
+}));
+
 export type WorkDoneCardProps = {
   changelogURL: string;
   title: string;
 };
 
-async function getReleaseAsString(changelogURL: string, index: number) {
-  const res = await fetch(changelogURL);
-  const text = await res.text();
-  const markdownSections = text.split(MARKDOWN_HEADER_DELIMITER);
-  console.log(markdownSections[index]);
-  return markdownSections[index];
-}
-
-async function GetReleaseAsStringArray(changelogURL: string) {
+const getReleaseAsStringArray = async (changelogURL: string) => {
   const res = await fetch(changelogURL);
   const text = await res.text();
   const markdownSections = text.split(MARKDOWN_HEADER_DELIMITER);
   return markdownSections;
-}
+};
 
-async function GetReleaseTitle(changelogURL: string, index: number) {
-  const release = await getReleaseAsString(changelogURL, index);
-  return release.split('\n')[0].substring(3);
-}
+const paragraphToArray = (changelog: string) => changelog.split('\n').filter((text) => text.trim() !== '');
+
+const getReleaseTitle = (changelog: string) => paragraphToArray(changelog)[0].substring(3);
+
+const getReleaseBody = (changelog: string) => paragraphToArray(changelog).slice(1).join('\n');
 
 const ChangelogCard = ({ title, changelogURL }: WorkDoneCardProps) => {
-  const { data } = useQuery(['changelog', changelogURL], () => getReleaseAsString(changelogURL, LATEST_VERSION_INDEX));
+  const { data = [] } = useQuery(['changelog', changelogURL], () => getReleaseAsStringArray(changelogURL));
   return (
     <Paper>
       <Typography gutterBottom variant='h2'>
         {title}
       </Typography>
       <ChangelogList>
-        <MarkdownRenderer value={data || ''} />
+        <MarkdownRenderer value={data[LATEST_VERSION_INDEX]} />
+        <Expansion header='Tidligere endringer'>
+          {data.slice(LATEST_VERSION_INDEX + 1).map((field, i) => (
+            <Expansion header={getReleaseTitle(field)} key={i}>
+              <MarkdownRenderer value={getReleaseBody(field)} />
+            </Expansion>
+          ))}
+        </Expansion>
       </ChangelogList>
     </Paper>
   );
 };
 
-export {ChangelogCard, GetReleaseAsStringArray, GetReleaseTitle};
+export default ChangelogCard;
