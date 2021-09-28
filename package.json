@@ -19,6 +19,7 @@
     "date-fns": "^2.23.0",
     "delayed-scroll-restoration-polyfill": "^0.1.1",
     "history": "^5.0.0",
+    "n": "^7.4.1",
     "qrcode.react": "^1.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -33,6 +34,7 @@
     "react-router-dom": "^6.0.0-beta.0",
     "react-scripts": "^4.0.3",
     "slugify": "^1.6.0",
+    "stable": "^0.1.8",
     "universal-cookie": "^4.0.4"
   },
   "scripts": {
