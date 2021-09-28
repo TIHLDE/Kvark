@@ -10,7 +10,7 @@ import { parseISO } from 'date-fns';
 import URLS from 'URLS';
 
 // Material UI Components
-import { Divider, Button, Typography } from '@mui/material';
+import { Button, Divider, Stack, Typography } from '@mui/material';
 
 // Project Components
 import Http404 from 'pages/Http404';
@@ -18,6 +18,7 @@ import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import { PrimaryTopBox } from 'components/layout/TopBox';
 import FormView from 'components/forms/FormView';
+import SubmitButton from 'components/inputs/SubmitButton';
 import { FormResourceType, FormType } from 'types/Enums';
 
 const FormPage = () => {
@@ -54,6 +55,7 @@ const FormPage = () => {
       return;
     }
     setIsLoading(true);
+    data.answers = data.answers || [];
     try {
       validateSubmissionInput(data, form);
     } catch (e) {
@@ -101,13 +103,35 @@ const FormPage = () => {
             </Typography>
             <Divider sx={{ my: 2 }} />
             {form.viewer_has_answered ? (
-              <Typography align='center'>Du har allerede svart på dette spørreskjemaet</Typography>
+              <>
+                <Typography align='center' variant='body2'>
+                  Du har allerede svart på dette spørreskjemaet, takk!
+                </Typography>
+                <Stack direction={{ xs: 'column', md: 'row' }} gap={1} sx={{ mt: 2 }}>
+                  <Button component={Link} fullWidth to={URLS.landing} variant='outlined'>
+                    Gå til forsiden
+                  </Button>
+                  <Button component={Link} fullWidth to={URLS.profile} variant='outlined'>
+                    Gå til profilen
+                  </Button>
+                </Stack>
+              </>
             ) : (
               <form onSubmit={handleSubmit(submit)}>
-                {form && <FormView control={control} disabled={submitDisabled} form={form} formState={formState} getValues={getValues} register={register} />}
-                <Button disabled={submitDisabled} fullWidth sx={{ mt: 2 }} type='submit' variant='contained'>
+                {form && (
+                  <FormView
+                    alignText='center'
+                    control={control}
+                    disabled={submitDisabled}
+                    form={form}
+                    formState={formState}
+                    getValues={getValues}
+                    register={register}
+                  />
+                )}
+                <SubmitButton disabled={submitDisabled} formState={formState} sx={{ mt: 2 }}>
                   Send inn svar
-                </Button>
+                </SubmitButton>
               </form>
             )}
           </>

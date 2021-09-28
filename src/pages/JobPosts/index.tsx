@@ -8,6 +8,7 @@ import { argsToParams } from 'utils';
 import { makeStyles } from '@mui/styles';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
+import { useMediaQuery, Theme } from '@mui/material';
 
 // Project Components
 import Page from 'components/navigation/Page';
@@ -20,6 +21,7 @@ import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import { useGoogleAnalytics } from 'hooks/Utils';
+import Expansion from 'components/layout/Expand';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -52,6 +54,9 @@ const useStyles = makeStyles((theme) => ({
       top: 0,
     },
   },
+  accordion: {
+    background: theme.palette.background.paper,
+  },
 }));
 
 type Filters = {
@@ -69,6 +74,7 @@ const JobPosts = () => {
   }, []);
   const classes = useStyles();
   const navigate = useNavigate();
+  const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
   const [filters, setFilters] = useState<Filters>(getInitialFilters());
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useJobPosts(filters);
   const { register, control, handleSubmit, setValue, formState } = useForm<Filters>({ defaultValues: getInitialFilters() });
@@ -85,7 +91,24 @@ const JobPosts = () => {
     event('search', 'jobposts', JSON.stringify(data));
     setFilters(data);
     navigate(`${location.pathname}${argsToParams(data)}`, { replace: true });
+    !lgDown || setSearchFormExpanded((prev) => !prev);
   };
+
+  const [searchFormExpanded, setSearchFormExpanded] = useState(false);
+
+  const SearchForm = () => (
+    <form onSubmit={handleSubmit(search)}>
+      <TextField disabled={isFetching} formState={formState} label='Søk' {...register('search')} />
+      <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
+      <SubmitButton disabled={isFetching} formState={formState}>
+        Søk
+      </SubmitButton>
+      <Divider sx={{ my: 1 }} />
+      <Button color='error' fullWidth onClick={resetFilters} variant='outlined'>
+        Tilbakestill
+      </Button>
+    </form>
+  );
 
   return (
     <Page banner={<Banner title='Karriere' />} options={{ title: 'Karriere' }}>
@@ -107,19 +130,17 @@ const JobPosts = () => {
           )}
           {isFetching && <ListItemLoading />}
         </div>
-        <Paper className={classes.settings}>
-          <form onSubmit={handleSubmit(search)}>
-            <TextField disabled={isFetching} formState={formState} label='Søk' {...register('search')} />
-            <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
-            <SubmitButton disabled={isFetching} formState={formState}>
-              Søk
-            </SubmitButton>
-          </form>
-          <Divider />
-          <Button color='error' fullWidth onClick={resetFilters} variant='outlined'>
-            Tilbakestill
-          </Button>
-        </Paper>
+        {lgDown ? (
+          <div>
+            <Expansion className={classes.accordion} expanded={searchFormExpanded} header='Filtrering' onChange={() => setSearchFormExpanded((prev) => !prev)}>
+              <SearchForm />
+            </Expansion>
+          </div>
+        ) : (
+          <Paper className={classes.settings}>
+            <SearchForm />
+          </Paper>
+        )}
       </div>
     </Page>
   );

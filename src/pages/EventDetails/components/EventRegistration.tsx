@@ -8,7 +8,7 @@ import { useSnackbar } from 'hooks/Snackbar';
 import { useForm } from 'react-hook-form';
 
 // Material UI Components
-import { Box, IconProps, Typography, FormControlLabel, Checkbox, Button } from '@mui/material';
+import { Box, IconProps, Typography, FormControlLabel, Checkbox } from '@mui/material';
 
 // Icons
 import PersonIcon from '@mui/icons-material/PersonOutlineRounded';
@@ -20,6 +20,7 @@ import HomeIcon from '@mui/icons-material/HomeRounded';
 // Project components
 import Paper from 'components/layout/Paper';
 import FormView from 'components/forms/FormView';
+import SubmitButton from 'components/inputs/SubmitButton';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
 type ListItemProps = {
@@ -61,6 +62,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
     }
     setIsLoading(true);
     if (form && data) {
+      data.answers = data.answers || [];
       try {
         validateSubmissionInput(data, form);
       } catch (e) {
@@ -112,7 +114,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
             <Paper sx={{ my: 1 }}>
               <Typography variant='h3'>Spørsmål</Typography>
               <Typography gutterBottom variant='subtitle2'>
-                Arrangøren ønsker at du svarer på følgende spørsmål
+                Arrangøren ønsker at du svarer på følgende spørsmål:
               </Typography>
               <FormView control={control} disabled={isLoading || isFormLoading} form={form} formState={formState} getValues={getValues} register={register} />
             </Paper>
@@ -130,9 +132,9 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
           <Typography component='a' href={URLS.eventRules} rel='noopener noreferrer' target='_blank' variant='caption'>
             Les arrangementsreglene her (åpnes i ny fane)
           </Typography>
-          <Button disabled={registerDisabled} fullWidth sx={{ mt: 2 }} type='submit' variant='contained'>
+          <SubmitButton disabled={registerDisabled} formState={formState} sx={{ mt: 2 }}>
             Meld deg på
-          </Button>
+          </SubmitButton>
         </Box>
       </Box>
     </>
