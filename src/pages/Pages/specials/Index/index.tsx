@@ -7,6 +7,7 @@ import { styled } from '@mui/material';
 
 const List = styled('ul')({
   listStyleType: 'none',
+  margin: 0,
 });
 
 const AboutIndex = () => {
