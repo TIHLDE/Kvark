@@ -2,24 +2,29 @@ import { useState } from 'react';
 import { FormFieldType } from 'types/Enums';
 import { UserSubmission, TextFieldSubmission, SelectFieldSubmission, TextFormField, SelectFormField } from 'types';
 import { useFormById, useFormSubmissions } from 'hooks/Form';
+import { SUBMISSIONS_ENDPOINT, FORMS_ENDPOINT } from 'api/api';
+import { getCookie } from 'api/cookie';
+import { TOKEN_HEADER_NAME, TIHLDE_API_URL, ACCESS_TOKEN } from 'constant';
 
 // Material UI
-import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableFooter, TablePagination } from '@mui/material';
+import { Button, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableFooter, TablePagination } from '@mui/material';
 
 // Project components
 import Paper from 'components/layout/Paper';
+import { useSnackbar } from 'hooks/Snackbar';
 
 export type FormAnswersProps = {
   formId: string | null;
 };
 
 const FormAnswers = ({ formId }: FormAnswersProps) => {
+  const showSnackbar = useSnackbar();
   const [selectedPage, setSelectedPage] = useState(0);
   const { data: form } = useFormById(formId || '-');
   const { data, isLoading } = useFormSubmissions(formId || '-', selectedPage + 1);
   if (isLoading) {
     return <Typography>Laster statistikken</Typography>;
-  } else if (!data || !form) {
+  } else if (!data || !form || !formId) {
     return <Typography>Du må opprette et skjema for å se svar</Typography>;
   } else if (!data.results.length) {
     return <Typography>Ingen har svart på dette skjemaet</Typography>;
@@ -36,47 +41,73 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
     }
   };
 
+  const downloadCSV = async () => {
+    try {
+      const headers = new Headers();
+      headers.append('Accept', 'text/csv');
+      headers.append(TOKEN_HEADER_NAME, getCookie(ACCESS_TOKEN) as string);
+      const response = await fetch(`${TIHLDE_API_URL}${FORMS_ENDPOINT}/${formId}/${SUBMISSIONS_ENDPOINT}/download/`, {
+        headers,
+        method: 'GET',
+      });
+      if (response.ok) {
+        const blob = await response.blob();
+        const file = window.URL.createObjectURL(blob);
+        window.location.assign(file);
+      } else {
+        showSnackbar('Noe gikk galt', 'error');
+      }
+    } catch {
+      showSnackbar('Noe gikk galt', 'error');
+    }
+  };
+
   return (
-    <TableContainer component={Paper} noPadding>
-      <Table aria-label={`Svar for ${form.title}`} size='small' sx={{ minWidth: 250 }}>
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>Navn</TableCell>
-            {form.fields.map((field) => (
-              <TableCell align='right' key={field.id} sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>
-                {`${field.title}${field.required ? ' *' : ''}`}
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.results.map((submission) => (
-            <TableRow key={submission.user.user_id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell>
-                {submission.user.first_name} {submission.user.last_name}
-              </TableCell>
+    <>
+      <Button onClick={downloadCSV} size='small' sx={{ width: 'fit-content', height: 35, mb: 2, ml: 'auto' }} variant='contained'>
+        Last ned CSV
+      </Button>
+      <TableContainer component={Paper} noPadding>
+        <Table aria-label={`Svar for ${form.title}`} size='small' sx={{ minWidth: 250 }}>
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>Navn</TableCell>
               {form.fields.map((field) => (
-                <TableCell align='right' key={field.id}>
-                  {getTableCellText(field, submission)}
+                <TableCell align='right' key={field.id} sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>
+                  {`${field.title}${field.required ? ' *' : ''}`}
                 </TableCell>
               ))}
             </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              count={data.count}
-              labelDisplayedRows={({ from, to, count }) => `${from}-${to} av ${count}`}
-              onPageChange={(_, p) => setSelectedPage(p)}
-              page={selectedPage}
-              rowsPerPage={25}
-              rowsPerPageOptions={[-1]}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {data.results.map((submission) => (
+              <TableRow key={submission.user.user_id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                <TableCell>
+                  {submission.user.first_name} {submission.user.last_name}
+                </TableCell>
+                {form.fields.map((field) => (
+                  <TableCell align='right' key={field.id}>
+                    {getTableCellText(field, submission)}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                count={data.count}
+                labelDisplayedRows={({ from, to, count }) => `${from}-${to} av ${count}`}
+                onPageChange={(_, p) => setSelectedPage(p)}
+                page={selectedPage}
+                rowsPerPage={25}
+                rowsPerPageOptions={[-1]}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </TableContainer>
+    </>
   );
 };
 
