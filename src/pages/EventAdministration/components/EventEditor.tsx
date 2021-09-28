@@ -8,7 +8,19 @@ import { addHours, subDays, parseISO, setHours, startOfHour } from 'date-fns';
 
 // Material-UI
 import { makeStyles } from '@mui/styles';
-import { Grid, MenuItem, Collapse, Accordion, AccordionSummary, AccordionDetails, Typography, LinearProgress, Theme, useMediaQuery } from '@mui/material';
+import {
+  Stack,
+  Grid,
+  MenuItem,
+  Collapse,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+  LinearProgress,
+  Theme,
+  useMediaQuery,
+} from '@mui/material';
 
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
@@ -30,16 +42,6 @@ const useStyles = makeStyles((theme) => ({
   grid: {
     display: 'grid',
     gridGap: theme.spacing(2),
-    gridTemplateColumns: '1fr 1fr',
-    [theme.breakpoints.down('md')]: {
-      gridGap: 0,
-      gridTemplateColumns: '1fr',
-    },
-  },
-  gridButtons: {
-    display: 'grid',
-    gridGap: theme.spacing(2),
-    margin: theme.spacing(2, 0, 1),
     gridTemplateColumns: '1fr 1fr',
     [theme.breakpoints.down('md')]: {
       gridGap: 0,
@@ -222,32 +224,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     }
   };
 
-  const StengButton = () => (
-    <>
-      <VerifyDialog
-        closeText='Ikke steng arrangementet'
-        color='warning'
-        contentText='Å stenge et arrangement kan ikke reverseres. Eventuell på- og avmelding vil bli stoppet.'
-        onConfirm={closeEvent}
-        titleText='Er du sikker?'>
-        Steng
-      </VerifyDialog>
-    </>
-  );
-
-  const SlettButton = () => (
-    <>
-      <VerifyDialog
-        closeText='Ikke slett arrangementet'
-        color='error'
-        contentText='Sletting av arrangementer kan ikke reverseres.'
-        onConfirm={remove}
-        titleText='Er du sikker?'>
-        Slett
-      </VerifyDialog>
-    </>
-  );
-
   if (isLoading) {
     return <LinearProgress />;
   }
@@ -386,23 +362,24 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
             {eventId ? 'Oppdater arrangement' : 'Opprett arrangement'}
           </SubmitButton>
           {eventId !== null && (
-            <>
-              {mdDown ? (
-                <>
-                  <div className={classes.margin}>
-                    <StengButton />
-                  </div>
-                  <div className={classes.margin}>
-                    <SlettButton />
-                  </div>
-                </>
-              ) : (
-                <div className={classes.gridButtons}>
-                  <StengButton />
-                  <SlettButton />
-                </div>
-              )}
-            </>
+            <Stack direction={{ xs: 'column', md: 'row' }} gap={3} sx={{ mt: 2, mb: 1 }}>
+              <VerifyDialog
+                closeText='Ikke steng arrangementet'
+                color='warning'
+                contentText='Å stenge et arrangement kan ikke reverseres. Eventuell på- og avmelding vil bli stoppet.'
+                onConfirm={closeEvent}
+                titleText='Er du sikker?'>
+                Steng
+              </VerifyDialog>
+              <VerifyDialog
+                closeText='Ikke slett arrangementet'
+                color='error'
+                contentText='Sletting av arrangementer kan ikke reverseres.'
+                onConfirm={remove}
+                titleText='Er du sikker?'>
+                Slett
+              </VerifyDialog>
+            </Stack>
           )}
         </Grid>
       </form>
