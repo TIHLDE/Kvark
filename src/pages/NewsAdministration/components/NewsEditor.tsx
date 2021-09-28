@@ -140,6 +140,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
           </SubmitButton>
           {Boolean(newsId) && (
             <VerifyDialog
+              className={classes.margin}
               closeText='Ikke slett nyheten'
               color='error'
               contentText='Sletting av nyheten kan ikke reverseres.'

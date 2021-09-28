@@ -6,6 +6,7 @@ import { useSnackbar } from 'hooks/Snackbar';
 import { Group } from 'types';
 
 import EditIcon from '@mui/icons-material/Edit';
+import { makeStyles } from '@mui/styles';
 
 import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
@@ -16,7 +17,16 @@ export type UpdateGroupModalProps = {
   group: Group;
 };
 
+const useStyles = makeStyles((theme) => ({
+  margin: {
+    margin: theme.spacing(2, 0, 1),
+    borderRadius: theme.shape.borderRadius,
+    overflow: 'hidden',
+  },
+}));
+
 const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
+  const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   const { register, formState, handleSubmit } = useForm();
   const updateGroup = useUpdateGroup();
@@ -55,7 +65,7 @@ const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
             })}
             type='email'
           />
-          <SubmitButton disabled={updateGroup.isLoading} formState={formState}>
+          <SubmitButton className={classes.margin} disabled={updateGroup.isLoading} formState={formState}>
             Oppdater gruppe
           </SubmitButton>
         </form>
