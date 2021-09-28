@@ -66,7 +66,6 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
   const [showModal, setShowModal] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const { data: event } = useEventById(eventId);
-  const verifyDialogText = 'Er du sikker på at du vil gi denne persone plass på dette arrangementet?';
 
   useEffect(() => {
     setCheckedState(registration.has_attended);
@@ -131,9 +130,9 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
           <div className={classes.actions}>
             {registration.is_on_wait ? (
               <VerifyDialog
-                contentText={
-                  event && event.list_count >= event.limit ? verifyDialogText.concat('Arrangementet er fullt og vil få en ekstra plass') : verifyDialogText
-                }
+                contentText={`Er du sikker på at du vil gi denne personen plass på dette arrangementet? ${
+                  event && event.list_count >= event.limit ? 'Arrangementet er fullt og vil få en ekstra plass' : ''
+                }`}
                 onConfirm={() => changeList(false)}
                 startIcon={<ArrowUpwardIcon />}
                 titleText={'Er du sikker?'}
