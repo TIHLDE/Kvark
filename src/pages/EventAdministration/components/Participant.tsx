@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Registration } from 'types';
 import { getUserStudyShort, formatDate, getUserClass } from 'utils';
-import { useDeleteEventRegistration, useUpdateEventRegistration } from 'hooks/Event';
+import { useDeleteEventRegistration, useUpdateEventRegistration, useEventById } from 'hooks/Event';
 import parseISO from 'date-fns/parseISO';
 import { useSnackbar } from 'hooks/Snackbar';
 
@@ -66,6 +66,8 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
   const [checkedState, setCheckedState] = useState(registration.has_attended);
   const [showModal, setShowModal] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const { data: event } = useEventById(eventId);
+  const verifyDialogText = 'Er du sikker på at du vil gi denne persone plass på dette arrangementet?';
 
   useEffect(() => {
     setCheckedState(registration.has_attended);
@@ -130,11 +132,12 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
           <div className={classes.actions}>
             {registration.is_on_wait ? (
               <VerifyDialog
-                contentText={'Om arrangementet er fullt vil du lage en ekstra plass'}
-                fullWidth
+                contentText={
+                  event && event.list_count >= event.limit ? verifyDialogText.concat('Arrangementet er fullt og vil få en ekstra plass') : verifyDialogText
+                }
                 onConfirm={() => changeList(false)}
                 startIcon={<ArrowUpwardIcon />}
-                titleText={'Er du sikker på at du vil flytte denne personen opp?'}
+                titleText={'Er du sikker?'}
                 variant='outlined'>
                 Flytt til påmeldte
               </VerifyDialog>

@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- ✨ **Påmelding**. Admin får nå melding om at flytting kan føre til økt antall plasser, og må bekrefte.
+
 ## Versjon 1.2.1 (21.09.2021)
 
 - ✨ **Skjemaer**. Lagt til mulighet for å svare på evalueringsskjemaer.
