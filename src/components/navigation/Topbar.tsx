@@ -61,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    height: 62,
   },
   logo: {
     height: 32,
