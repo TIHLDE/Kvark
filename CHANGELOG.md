@@ -13,8 +13,9 @@
 ---
 
 ## Neste versjon
-- ✨ **Filterboks**. Filterboksen i arrangementer siden kan nå åpnes og lukkes på små skjermer.
 
+- ✨ **Filterboks**. Filterboksen i arrangementer siden kan nå åpnes og lukkes på små skjermer.
+- ✨ **Changelog**. Expand bokser i changelog for å se tidligere endringer/versjoner.
 - ⚡ **Arrangementer**. Viser brukerens profilbilde på store skjermer ved arrangement registrering.
 
 ## Versjon 1.2.1 (21.09.2021)
