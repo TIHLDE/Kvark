@@ -70,7 +70,7 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
               labelDisplayedRows={({ from, to, count }) => `${from}-${to} av ${count}`}
               onPageChange={(_, p) => setSelectedPage(p)}
               page={selectedPage}
-              rowsPerPage={data.results.length || 25}
+              rowsPerPage={25}
               rowsPerPageOptions={[-1]}
             />
           </TableRow>
