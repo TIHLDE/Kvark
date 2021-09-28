@@ -131,7 +131,9 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
             {registration.is_on_wait ? (
               <VerifyDialog
                 contentText={`Er du sikker på at du vil gi denne personen plass på dette arrangementet? ${
-                  event && event.list_count >= event.limit ? 'Arrangementet er fullt og vil få en ekstra plass slik at antall påmeldte ikke blir større enn kapasiteten.' : ''
+                  event && event.list_count >= event.limit
+                    ? 'Arrangementet er fullt og vil få en ekstra plass slik at antall påmeldte ikke blir større enn kapasiteten.'
+                    : ''
                 }`}
                 onConfirm={() => changeList(false)}
                 startIcon={<ArrowUpwardIcon />}
