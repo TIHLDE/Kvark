@@ -8,6 +8,7 @@ import { TOKEN_HEADER_NAME, TIHLDE_API_URL, ACCESS_TOKEN } from 'constant';
 
 // Material UI
 import { Button, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableFooter, TablePagination } from '@mui/material';
+import DownloadIcon from '@mui/icons-material/FileDownloadRounded';
 
 // Project components
 import Paper from 'components/layout/Paper';
@@ -64,8 +65,8 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
 
   return (
     <>
-      <Button onClick={downloadCSV} size='small' sx={{ width: 'fit-content', height: 35, mb: 2, ml: 'auto' }} variant='contained'>
-        Last ned CSV
+      <Button endIcon={<DownloadIcon />} onClick={downloadCSV} size='small' sx={{ width: 'fit-content', height: 35, mb: 2, ml: 'auto' }} variant='contained'>
+        Last ned som csv
       </Button>
       <TableContainer component={Paper} noPadding>
         <Table aria-label={`Svar for ${form.title}`} size='small' sx={{ minWidth: 250 }}>
