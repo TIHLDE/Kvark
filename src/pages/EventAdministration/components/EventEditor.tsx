@@ -98,7 +98,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const updateEvent = useUpdateEvent(eventId || -1);
   const deleteEvent = useDeleteEvent(eventId || -1);
   const showSnackbar = useSnackbar();
-  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
   const [regPriorities, setRegPriorities] = useState<Array<RegistrationPriority>>([]);
   const { handleSubmit, register, watch, control, formState, getValues, reset, setValue } = useForm<FormValues>();
