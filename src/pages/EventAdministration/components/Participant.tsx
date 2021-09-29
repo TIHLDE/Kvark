@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Registration } from 'types';
 import { getUserStudyShort, formatDate, getUserClass } from 'utils';
-import { useDeleteEventRegistration, useUpdateEventRegistration } from 'hooks/Event';
+import { useDeleteEventRegistration, useUpdateEventRegistration, useEventById } from 'hooks/Event';
 import parseISO from 'date-fns/parseISO';
 import { useSnackbar } from 'hooks/Snackbar';
 
@@ -22,6 +22,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpwardRounded';
 import Avatar from 'components/miscellaneous/Avatar';
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
+import VerifyDialog from 'components/layout/VerifyDialog';
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -64,6 +65,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
   const [checkedState, setCheckedState] = useState(registration.has_attended);
   const [showModal, setShowModal] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const { data: event } = useEventById(eventId);
 
   useEffect(() => {
     setCheckedState(registration.has_attended);
@@ -127,9 +129,18 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
           </div>
           <div className={classes.actions}>
             {registration.is_on_wait ? (
-              <Button fullWidth onClick={() => changeList(false)} startIcon={<ArrowUpwardIcon />} variant='outlined'>
+              <VerifyDialog
+                contentText={`Er du sikker på at du vil gi denne personen plass på dette arrangementet? ${
+                  event && event.list_count >= event.limit
+                    ? 'Arrangementet er fullt og vil få en ekstra plass slik at antall påmeldte ikke blir større enn kapasiteten.'
+                    : ''
+                }`}
+                onConfirm={() => changeList(false)}
+                startIcon={<ArrowUpwardIcon />}
+                titleText={'Er du sikker?'}
+                variant='outlined'>
                 Flytt til påmeldte
-              </Button>
+              </VerifyDialog>
             ) : (
               <Button fullWidth onClick={() => changeList(true)} startIcon={<ArrowDownwardIcon />} variant='outlined'>
                 Flytt til venteliste
