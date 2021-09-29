@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.2.3 (29.09.2021)
+
 - ✨ **Påmelding**. Admin får nå melding om at flytting kan føre til økt antall plasser, og må bekrefte.
 - ✨ **Changelog**. Legger til tegnforklaringer på om-index siden
 - ✨ **Arrangementer**. Muligheten for å laste ned svar på arrangementer som en csv fil.
