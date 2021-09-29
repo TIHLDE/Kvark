@@ -8,7 +8,7 @@ import { addHours, subDays, parseISO, setHours, startOfHour } from 'date-fns';
 
 // Material-UI
 import { makeStyles } from '@mui/styles';
-import { Grid, MenuItem, Collapse, Accordion, AccordionSummary, AccordionDetails, Typography, LinearProgress } from '@mui/material';
+import { Stack, Grid, MenuItem, Collapse, Accordion, AccordionSummary, AccordionDetails, Typography, LinearProgress } from '@mui/material';
 
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
@@ -349,7 +349,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
             {eventId ? 'Oppdater arrangement' : 'Opprett arrangement'}
           </SubmitButton>
           {eventId !== null && (
-            <div className={classes.grid}>
+            <Stack direction={{ xs: 'column', md: 'row' }} gap={3} sx={{ mt: 2, mb: 1 }}>
               <VerifyDialog
                 closeText='Ikke steng arrangementet'
                 color='warning'
@@ -366,7 +366,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 titleText='Er du sikker?'>
                 Slett
               </VerifyDialog>
-            </div>
+            </Stack>
           )}
         </Grid>
       </form>
