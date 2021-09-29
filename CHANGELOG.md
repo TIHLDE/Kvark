@@ -14,6 +14,15 @@
 
 ## Neste versjon
 
+- ✨ **Påmelding**. Admin får nå melding om at flytting kan føre til økt antall plasser, og må bekrefte.
+- ✨ **Changelog**. Legger til tegnforklaringer på om-index siden
+- ✨ **Arrangementer**. Muligheten for å laste ned svar på arrangementer som en csv fil.
+
+## Versjon 1.2.2 (28.09.2021)
+
+- ✨ **Filterboks**. Filterboksen i arrangementer siden kan nå åpnes og lukkes på små skjermer.
+- ⚡ **Arrangementer**. Viser brukerens profilbilde på store skjermer ved arrangement registrering.
+
 ## Versjon 1.2.1 (21.09.2021)
 
 - ✨ **Skjemaer**. Lagt til mulighet for å svare på evalueringsskjemaer.
