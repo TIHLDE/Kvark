@@ -16,6 +16,7 @@
 
 ## Versjon 1.2.3 (29.09.2021)
 
+- ✨ **Varslinger**. Varsler har blitt flyttet til topbaren slik at man lettere ser nye varsler.
 - ✨ **Påmelding**. Admin får nå melding om at flytting kan føre til økt antall plasser, og må bekrefte.
 - ✨ **Changelog**. Legger til tegnforklaringer på om-index siden
 - ✨ **Arrangementer**. Muligheten for å laste ned svar på arrangementer som en csv fil.
