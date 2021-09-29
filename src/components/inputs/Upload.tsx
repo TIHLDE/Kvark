@@ -284,7 +284,7 @@ export const FileUpload = <FormValues,>({ label = 'Last opp filer', ...props }: 
 
   return (
     <UploadPaper>
-      <List disablePadding sx={{ display: 'grid', gap: 1, mt: 1 }}>
+      <List disablePadding sx={{ display: 'grid', gap: 1 }}>
         {uploaded.map((url, i) => (
           <File key={i} url={url} />
         ))}
