@@ -21,6 +21,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpwardRounded';
 import Avatar from 'components/miscellaneous/Avatar';
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
+import StrikeListItem from 'components/miscellaneous/StrikeListItem';
 
 export type ParticipantProps = {
   eventId: number;
@@ -116,6 +117,18 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
               startIcon={<Delete />}>
               Fjern deltager
             </VerifyDialog>
+          </Stack>
+          <Divider sx={{ my: 1 }} />
+          <Stack>
+            <Typography sx={{ fontWeight: 'bold' }} variant='subtitle1'>
+              Prikker ({registration.strikes.reduce((val, strike) => val + strike.strike_size, 0)})
+            </Typography>
+            {registration.strikes.map((strike) => (
+              <StrikeListItem key={strike.id} strike={strike} titleType='description' />
+            ))}
+            <Button size='small' variant='outlined'>
+              Lag ny prikk
+            </Button>
           </Stack>
         </Stack>
       </Collapse>

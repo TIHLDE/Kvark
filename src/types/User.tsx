@@ -23,10 +23,9 @@ export interface User {
   user_study: UserStudy;
   unanswered_evaluations_count: number;
 }
-export type UserList = Pick<
-  User,
-  'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study' | 'allergy' | 'cell' | 'gender' | 'image' | 'tool'
->;
+
+export type UserBase = Pick<User, 'user_id' | 'first_name' | 'last_name' | 'image'>;
+export type UserList = UserBase & Pick<User, 'email' | 'user_class' | 'user_study' | 'allergy' | 'cell' | 'gender' | 'tool'>;
 export type UserCreate = Pick<User, 'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study'> & {
   password: string;
 };

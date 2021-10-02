@@ -1,6 +1,7 @@
 import { UserClass, UserStudy } from 'types/Enums';
 import { User } from 'types/User';
 import { UserSubmission } from 'types/Form';
+import { Strike } from 'types/Strike';
 
 export interface Category {
   created_at: string;
@@ -51,4 +52,5 @@ export interface Registration {
   survey_submission: UserSubmission;
   has_unanswered_evaluation: boolean;
   user_info: Pick<User, 'allergy' | 'email' | 'first_name' | 'last_name' | 'image' | 'user_class' | 'user_id' | 'user_study'>;
+  strikes: Array<Omit<Strike, 'event' | 'user'>>;
 }
