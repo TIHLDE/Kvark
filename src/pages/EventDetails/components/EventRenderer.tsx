@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { Event } from 'types';
 import { PermissionApp } from 'types/Enums';
 import URLS from 'URLS';
-import { parseISO, isPast, isFuture } from 'date-fns';
+import { parseISO, isPast, isFuture, sub } from 'date-fns';
 import { formatDate, getICSFromEvent } from 'utils';
 import { Link } from 'react-router-dom';
 
@@ -180,12 +180,26 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             variant='outlined'>
             Meld deg av
           </VerifyDialog>
-        ) : (
-          isFuture(startDate) && (
-            <Alert severity='info' variant='outlined'>
-              Avmeldingsfristen er passert
+        ) : isFuture(sub(Date.parse(data.start_date), { hours: 2 })) ? (
+          <>
+            <VerifyDialog
+              closeText='Avbryt'
+              confirmText='Ja, jeg er sikker'
+              contentText={`Om du melder deg av nå vil du ikke kunne melde deg på igjen. I tillegg vil du få en prikk.`}
+              fullWidth
+              onConfirm={signOff}
+              titleText='Er du sikker?'
+              variant='outlined'>
+              Meld deg av
+            </VerifyDialog>
+            <Alert severity='warning' variant='outlined'>
+              Avmeldingsfristen har passert. Hvis du melder deg av nå, vil du få 1 prikk.
             </Alert>
-          )
+          </>
+        ) : (
+          <Alert severity='warning' variant='outlined'>
+            Du kan ikke lengre melde deg av arrangementet
+          </Alert>
         )}
       </>
     );
