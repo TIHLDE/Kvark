@@ -15,6 +15,7 @@
 ## Neste versjon
 
 - ✨ **Changelog**. Expand bokser i changelog for å se tidligere endringer/versjoner.
+- ✨ **Arrangementer**. Brukere kan melde seg av arrangementer opp til 2 timer før start, med blir varslet om at de får prikk.
 
 ## Versjon 1.2.3 (29.09.2021)
 
