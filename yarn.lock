@@ -9641,11 +9641,6 @@ multicast-dns@^6.0.1:
     dns-packet "^1.3.1"
     thunky "^1.0.2"
 
-n@^7.4.1:
-  version "7.4.1"
-  resolved "https://registry.yarnpkg.com/n/-/n-7.4.1.tgz#a6ce0659d730867be7defe4a36d150a6c29d78fb"
-  integrity sha512-B8VLz00TYRfsaYSBARWqkkLKfO66Ndnv8Ko4xPcUmJSV6fbWTSPaU1pX5o5IMFYwi4JC4UUBvaLC6ooroo8G7Q==
-
 nan@^2.12.1:
   version "2.14.2"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.2.tgz#f5376400695168f4cc694ac9393d0c9585eeea19"

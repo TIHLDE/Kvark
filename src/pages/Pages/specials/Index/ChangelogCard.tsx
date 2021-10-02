@@ -25,8 +25,7 @@ export type WorkDoneCardProps = {
 const getReleaseAsStringArray = async (changelogURL: string) => {
   const res = await fetch(changelogURL);
   const text = await res.text();
-  const markdownSections = text.split(MARKDOWN_HEADER_DELIMITER);
-  return markdownSections;
+  return text.split(MARKDOWN_HEADER_DELIMITER);
 };
 
 const paragraphToArray = (changelog: string) => changelog.split('\n').filter((text) => text.trim() !== '');
