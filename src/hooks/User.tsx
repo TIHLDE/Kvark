@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { User, UserList, UserCreate, LoginRequestResponse, PaginationResponse, RequestResponse, Badge, EventCompact, GroupList, Form } from 'types';
+import { User, UserList, UserCreate, LoginRequestResponse, PaginationResponse, RequestResponse, Badge, EventCompact, GroupList, Form, Strike } from 'types';
 import { PermissionApp } from 'types/Enums';
 import { getCookie, setCookie, removeCookie } from 'api/cookie';
 import { ACCESS_TOKEN } from 'constant';
@@ -11,11 +11,22 @@ export const USER_BADGES_QUERY_KEY = 'user_badges';
 export const USER_EVENTS_QUERY_KEY = 'user_events';
 export const USER_GROUPS_QUERY_KEY = 'user_groups';
 export const USER_FORMS_QUERY_KEY = 'user_forms';
+export const USER_STRIKES_QUERY_KEY = 'user_strikes';
 export const USERS_QUERY_KEY = 'users';
 
 export const useUser = () => {
   const isAuthenticated = useIsAuthenticated();
   return useQuery<User | undefined, RequestResponse>([USER_QUERY_KEY], () => (isAuthenticated ? API.getUserData() : undefined));
+};
+
+export const useUserStrikes = () => {
+  return useInfiniteQuery<PaginationResponse<Strike>, RequestResponse>(
+    [USER_BADGES_QUERY_KEY],
+    ({ pageParam = 1 }) => API.getUserStrikes({ page: pageParam }),
+    {
+      getNextPageParam: (lastPage) => lastPage.next,
+    },
+  );
 };
 
 export const useUserBadges = () => {

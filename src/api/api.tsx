@@ -37,6 +37,7 @@ import {
   UserCreate,
   UserSubmission,
   Warning,
+  Strike,
 } from 'types';
 
 export const AUTH_ENDPOINT = 'auth';
@@ -133,6 +134,8 @@ export default {
   activateUser: (userName: string) => IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/activate/`, data: { user_id: userName } }),
   declineUser: (userName: string, reason: string) =>
     IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/decline/`, data: { user_id: userName, reason } }),
+  getUserStrikes: (filters?: any) =>
+    IFetch<PaginationResponse<Strike>>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/strikes`, data: filters || {} }),
 
   // Notifications
   getNotifications: (filters?: any) => IFetch<PaginationResponse<Notification>>({ method: 'GET', url: `${NOTIFICATIONS_ENDPOINT}/`, data: filters || {} }),
