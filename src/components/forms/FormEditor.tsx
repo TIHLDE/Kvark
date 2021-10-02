@@ -34,7 +34,7 @@ const FormEditor = ({ form }: FormEditorProps) => {
   const [fields, setFields] = useState<Array<TextFormField | SelectFormField>>(form.fields);
   const [addButtonOpen, setAddButtonOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const anchorRef = useRef(null);
+  const buttonAnchorRef = useRef(null);
 
   useEffect(() => {
     setFields(form.fields);
@@ -108,7 +108,7 @@ const FormEditor = ({ form }: FormEditorProps) => {
             updateField={(newField: TextFormField | SelectFormField) => updateField(newField, index)}
           />
         ))}
-        <Button fullWidth onClick={() => setAddButtonOpen(true)} ref={anchorRef} variant='outlined'>
+        <Button fullWidth onClick={() => setAddButtonOpen(true)} ref={buttonAnchorRef} variant='outlined'>
           Nytt spørsmål
         </Button>
         <Button fullWidth onClick={save} variant='contained'>
@@ -118,7 +118,7 @@ const FormEditor = ({ form }: FormEditorProps) => {
           Slett skjema
         </Button>
       </div>
-      <Popper anchorEl={anchorRef.current} open={addButtonOpen} role={undefined} transition>
+      <Popper anchorEl={buttonAnchorRef.current} open={addButtonOpen} role={undefined} transition>
         {({ TransitionProps }) => (
           <Grow {...TransitionProps}>
             <Paper>

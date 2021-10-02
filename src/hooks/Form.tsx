@@ -83,7 +83,7 @@ export const useCreateSubmission = (formId: string): UseMutationResult<Submissio
 };
 
 export const validateSubmissionInput = (submission: Submission, form: Form) => {
-  submission.answers.forEach((answer, index) => {
+  submission.answers?.forEach((answer, index) => {
     const field = form.fields.find((field) => field.id === answer.field.id);
     if (field && field.type === FormFieldType.MULTIPLE_SELECT && field.required) {
       const ans = answer as SelectFieldSubmission;

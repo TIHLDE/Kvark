@@ -1,13 +1,30 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import parseISO from 'date-fns/parseISO';
 import { Link } from 'react-router-dom';
 import { Notification } from 'types';
 import { useNotifications, useUpdateNotification } from 'hooks/Notification';
-import { useGoogleAnalytics } from 'hooks/Utils';
 import { getTimeSince, isExternalURL } from 'utils';
+import { useUser } from 'hooks/User';
 
-// Material-UI
-import { Collapse, Skeleton, List, ListItem, ListItemText, ListItemIcon, Divider, Typography, IconButton } from '@mui/material';
+// Material-ui
+import {
+  Box,
+  Badge,
+  ClickAwayListener,
+  Collapse,
+  Skeleton,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Divider,
+  Typography,
+  useMediaQuery,
+  IconButton,
+  Theme,
+  Grow,
+  Popper,
+} from '@mui/material';
 
 // Icons
 import NotificationUnreadIcon from '@mui/icons-material/NotificationsRounded';
@@ -15,15 +32,23 @@ import NotificationReadIcon from '@mui/icons-material/NotificationsNoneRounded';
 import LinkIcon from '@mui/icons-material/LinkRounded';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import NotificationsIcon from '@mui/icons-material/NotificationsNoneRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 // Project components
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import Linkify from 'components/miscellaneous/Linkify';
-import Paper from 'components/layout/Paper';
 import Pagination from 'components/layout/Pagination';
+import Dialog from 'components/layout/Dialog';
+import { useGoogleAnalytics } from 'hooks/Utils';
+import Paper from 'components/layout/Paper';
 
 type NotificationItemProps = {
   notification: Notification;
+};
+
+export type NotificationsTopbarProps = {
+  color: React.CSSProperties['backgroundColor'];
 };
 
 const NotificationItem = ({ notification }: NotificationItemProps) => {
@@ -88,13 +113,28 @@ const NotificationItemLoading = () => (
   </Paper>
 );
 
-const ProfileNotifications = () => {
+const NotificationsTopbar = ({ color }: NotificationsTopbarProps) => {
+  const [showNotifications, setShowNotifications] = useState(false);
+  const { data: user } = useUser();
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useNotifications();
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
   const notifications = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
+  const buttonAnchorRef = useRef<HTMLButtonElement>(null);
 
-  return (
+  const handleClose = (event: Event | React.SyntheticEvent) => {
+    if (buttonAnchorRef.current && buttonAnchorRef.current.contains(event.target as HTMLElement)) {
+      return;
+    }
+
+    setShowNotifications(false);
+  };
+
+  const NotificationsList = () => (
     <>
+      <Typography align='center' gutterBottom variant='h2'>
+        Varslinger
+      </Typography>
       {isLoading && <NotificationItemLoading />}
       {isEmpty && <NotFoundIndicator header='Fant ingen varsler' />}
       {error && <Paper>{error.detail}</Paper>}
@@ -110,6 +150,35 @@ const ProfileNotifications = () => {
       {isFetching && <NotificationItemLoading />}
     </>
   );
+
+  return (
+    <>
+      <IconButton aria-label='Vis varslinger' onClick={() => setShowNotifications((prev) => !prev)} ref={buttonAnchorRef} sx={{ color: color }}>
+        <Badge badgeContent={user?.unread_notifications} color='error'>
+          {showNotifications ? <CloseRoundedIcon /> : <NotificationsIcon />}
+        </Badge>
+      </IconButton>
+      {mdDown ? (
+        <Dialog fullScreen onClose={() => setShowNotifications(false)} open={showNotifications}>
+          <NotificationsList />
+        </Dialog>
+      ) : (
+        <Popper anchorEl={buttonAnchorRef.current} disablePortal open={showNotifications} role={undefined} transition>
+          {({ TransitionProps }) => (
+            <Grow {...TransitionProps} style={{ transformOrigin: 'right top' }}>
+              <Paper elevation={2} noPadding sx={{ maxWidth: (theme) => theme.breakpoints.values.md }}>
+                <ClickAwayListener onClickAway={handleClose}>
+                  <Box sx={{ p: 2, height: 'calc(100vh - 130px)', overflow: 'auto' }}>
+                    <NotificationsList />
+                  </Box>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
+      )}
+    </>
+  );
 };
 
-export default ProfileNotifications;
+export default NotificationsTopbar;
