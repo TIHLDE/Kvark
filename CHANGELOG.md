@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- ✨ **Prikker**. Admins har mulighet til å gi deltagere på arrangementer prikker, se prikkene de allerede har mottatt og slette dem
+
 ## Versjon 1.2.3 (29.09.2021)
 
 - ✨ **Varslinger**. Varsler har blitt flyttet til topbaren slik at man lettere ser nye varsler.

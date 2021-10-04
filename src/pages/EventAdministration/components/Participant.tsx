@@ -2,17 +2,16 @@ import { useState, useEffect } from 'react';
 import { Registration } from 'types';
 import { getUserStudyShort, formatDate, getUserClass } from 'utils';
 import { useDeleteEventRegistration, useUpdateEventRegistration, useEventById } from 'hooks/Event';
+import { useEventRegistrationStrikes } from 'hooks/Strike';
 import parseISO from 'date-fns/parseISO';
 import { useSnackbar } from 'hooks/Snackbar';
 
 // Material-ui
-import { Stack, Checkbox, Typography, Collapse, Button, ListItem, ListItemButton, ListItemText, ListItemAvatar, Divider } from '@mui/material';
+import { Stack, Checkbox, Typography, Collapse, Button, Tooltip, ListItem, ListItemButton, ListItemText, ListItemAvatar, Divider } from '@mui/material';
 
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-
-// Icons
 import Delete from '@mui/icons-material/DeleteRounded';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownwardRounded';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpwardRounded';
@@ -22,6 +21,7 @@ import Avatar from 'components/miscellaneous/Avatar';
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import StrikeListItem from 'components/miscellaneous/StrikeListItem';
+import StrikeCreateDialog from 'components/miscellaneous/StrikeCreateDialog';
 
 export type ParticipantProps = {
   eventId: number;
@@ -68,9 +68,37 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
 
   const changeList = (onWait: boolean) => updateRegistration.mutate({ registration: { is_on_wait: onWait }, userId: registration.user_info.user_id });
 
+  const StrikesInfo = () => {
+    const { data = [] } = useEventRegistrationStrikes(eventId, registration.user_info.user_id);
+    return (
+      <>
+        <Typography variant='subtitle1'>{`Prikker på dette arrangementet (${data.reduce((val, strike) => val + strike.strike_size, 0)}):`}</Typography>
+        <Stack gap={1}>
+          {data.map((strike) => (
+            <StrikeListItem isAdmin key={strike.id} strike={strike} titleType='description' />
+          ))}
+          {!data.length && (
+            <Typography variant='subtitle2'>{`${registration.user_info.first_name} ${registration.user_info.last_name} har ikke fått noen prikker på dette arrangementet`}</Typography>
+          )}
+          <StrikeCreateDialog eventId={eventId} size='small' userId={registration.user_info.user_id}>
+            Lag ny prikk
+          </StrikeCreateDialog>
+        </Stack>
+      </>
+    );
+  };
+
   return (
     <Paper bgColor='smoke' noOverflow noPadding sx={{ mb: 1 }}>
-      <ListItem disablePadding secondaryAction={!registration.is_on_wait && <Checkbox checked={checkedState} onChange={handleAttendedCheck} />}>
+      <ListItem
+        disablePadding
+        secondaryAction={
+          !registration.is_on_wait && (
+            <Tooltip title={checkedState ? 'Merk som ikke ankommet' : 'Merk som ankommet'}>
+              <Checkbox checked={checkedState} onChange={handleAttendedCheck} />
+            </Tooltip>
+          )
+        }>
         <ListItemButton onClick={() => setExpanded((prev) => !prev)}>
           <ListItemAvatar>
             <Avatar user={registration.user_info} />
@@ -84,7 +112,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
           {expanded ? <ExpandLessIcon sx={{ mr: 2 }} /> : <ExpandMoreIcon sx={{ mr: 2 }} />}
         </ListItemButton>
       </ListItem>
-      <Collapse in={expanded}>
+      <Collapse in={expanded} mountOnEnter unmountOnExit>
         <Divider />
         <Stack gap={1} sx={{ p: 2 }}>
           <div>
@@ -119,17 +147,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
             </VerifyDialog>
           </Stack>
           <Divider sx={{ my: 1 }} />
-          <Stack>
-            <Typography sx={{ fontWeight: 'bold' }} variant='subtitle1'>
-              Prikker ({registration.strikes.reduce((val, strike) => val + strike.strike_size, 0)})
-            </Typography>
-            {registration.strikes.map((strike) => (
-              <StrikeListItem key={strike.id} strike={strike} titleType='description' />
-            ))}
-            <Button size='small' variant='outlined'>
-              Lag ny prikk
-            </Button>
-          </Stack>
+          <StrikesInfo />
         </Stack>
       </Collapse>
     </Paper>

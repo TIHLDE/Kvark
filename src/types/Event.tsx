@@ -52,5 +52,4 @@ export interface Registration {
   survey_submission: UserSubmission;
   has_unanswered_evaluation: boolean;
   user_info: Pick<User, 'allergy' | 'email' | 'first_name' | 'last_name' | 'image' | 'user_class' | 'user_id' | 'user_study'>;
-  strikes: Array<Omit<Strike, 'event' | 'user'>>;
 }

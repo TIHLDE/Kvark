@@ -11,6 +11,7 @@ export const USER_BADGES_QUERY_KEY = 'user_badges';
 export const USER_EVENTS_QUERY_KEY = 'user_events';
 export const USER_GROUPS_QUERY_KEY = 'user_groups';
 export const USER_FORMS_QUERY_KEY = 'user_forms';
+export const USER_STRIKES_QUERY_KEY = 'user_strikes';
 export const USERS_QUERY_KEY = 'users';
 
 export const useUser = () => {

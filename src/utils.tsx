@@ -1,7 +1,7 @@
 import slugify from 'slugify';
 import { parseISO, format, subMinutes } from 'date-fns';
 import { Event } from 'types';
-import { UserStudy, UserClass } from 'types/Enums';
+import { UserStudy, UserClass, StrikeReason } from 'types/Enums';
 
 /**
  * Slugify a string to make it safe to use in an URL
@@ -93,6 +93,27 @@ export const getUserClass = (userClass: UserClass) => {
       return '5. klasse';
     default:
       return 'Ukjent klasse';
+  }
+};
+
+/**
+ * Get strike reason as readable text
+ * @param strikeReason Strike reason enum
+ */
+export const getStrikeReasonAsText = (strikeReason: StrikeReason) => {
+  switch (strikeReason) {
+    case StrikeReason.BAD_BEHAVIOR:
+      return 'Du har fått prikk på grunn av upassende oppførsel på et arrangementet (1 prikk)';
+    case StrikeReason.EVAL_FORM:
+      return 'Du har fått prikk fordi du ikke svarte på evalueringsskjema til et arrangement (3 prikk)';
+    case StrikeReason.LATE:
+      return 'Du har fått prikk fordi du møtte sent på et arrangement (1 prikk)';
+    case StrikeReason.NO_SHOW:
+      return 'Du har fått prikk fordi du ikke møtte på et arrangement (2 prikk)';
+    case StrikeReason.PAST_DEADLINE:
+      return 'Du har fått prikk fordi du meldte deg av etter avmeldingsfristen (1 prikk)';
+    default:
+      return 'Ukjent grunn til prikk';
   }
 };
 
