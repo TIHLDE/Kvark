@@ -5,4 +5,5 @@ export * from 'types/Group';
 export * from 'types/JobPost';
 export * from 'types/News';
 export * from 'types/Page';
+export * from 'types/Strike';
 export * from 'types/User';
