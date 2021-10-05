@@ -30,7 +30,6 @@ import {
 // Icons
 import NotificationUnreadIcon from '@mui/icons-material/NotificationsRounded';
 import NotificationReadIcon from '@mui/icons-material/NotificationsNoneRounded';
-import LinkIcon from '@mui/icons-material/LinkRounded';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 import NotificationsIcon from '@mui/icons-material/NotificationsNoneRounded';
@@ -70,7 +69,7 @@ const NotificationItem = ({ notification, setShowNotifications }: NotificationIt
 
   const linkOnClick = () => {
     event('open-notification-link', 'notifications', `Opened notification link: ${notification.link}`);
-    setShowNotifications((prev) => !prev);
+    setShowNotifications(false);
   };
 
   return (
