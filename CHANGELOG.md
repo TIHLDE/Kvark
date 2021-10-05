@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- 🦟 **Varslinger**. Fikset slik at varsling menyen lukker seg når man trykker på en varsel.
+
 ## Versjon 1.2.3 (29.09.2021)
 
 - ✨ **Varslinger**. Varsler har blitt flyttet til topbaren slik at man lettere ser nye varsler.
