@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- 🦟 **Svarskjema**. Fikset slik at tekst svar vises nå på en bedre måte.
 - ✨ **Prikker**. Admins har mulighet til å gi deltagere på arrangementer prikker, se prikkene de allerede har mottatt og slette dem
 - ✨ **Changelog**. Expand bokser i changelog for å se tidligere endringer/versjoner.
 
