@@ -15,6 +15,7 @@
 ## Neste versjon
 
 - 🦟 **Svarskjema**. Fikset slik at tekst svar vises nå på en bedre måte.
+- ✨ **Changelog**. Expand bokser i changelog for å se tidligere endringer/versjoner.
 
 ## Versjon 1.2.3 (29.09.2021)
 

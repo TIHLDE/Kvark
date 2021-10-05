@@ -5,6 +5,7 @@ import { useFormById, useFormSubmissions } from 'hooks/Form';
 import { SUBMISSIONS_ENDPOINT, FORMS_ENDPOINT } from 'api/api';
 import { getCookie } from 'api/cookie';
 import { TOKEN_HEADER_NAME, TIHLDE_API_URL, ACCESS_TOKEN } from 'constant';
+import { urlEncode } from 'utils';
 
 // Material UI
 import { Button, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableFooter, TablePagination } from '@mui/material';
@@ -53,8 +54,20 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
       });
       if (response.ok) {
         const blob = await response.blob();
-        const file = window.URL.createObjectURL(blob);
-        window.location.assign(file);
+        // Creates a hidden <a> element
+        const a = document.createElement('a');
+        document.body.appendChild(a);
+        a.setAttribute('style', 'display: none');
+        // Adds a object url to the link
+        const url = URL.createObjectURL(blob);
+        a.href = url;
+        // Set filename
+        a.download = `${urlEncode(form.title)}_${form.type}.csv`;
+        // Clicks the link to download the file
+        a.click();
+        // Revokes link and removes the <a> from document
+        URL.revokeObjectURL(url);
+        a.remove();
       } else {
         showSnackbar('Noe gikk galt', 'error');
       }
