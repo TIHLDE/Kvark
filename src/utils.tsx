@@ -103,15 +103,15 @@ export const getUserClass = (userClass: UserClass) => {
 export const getStrikeReasonAsText = (strikeReason: StrikeReason) => {
   switch (strikeReason) {
     case StrikeReason.BAD_BEHAVIOR:
-      return 'Du har fått prikk på grunn av upassende oppførsel på et arrangementet (1 prikk)';
+      return 'Upassende oppførsel (1 prikk)';
     case StrikeReason.EVAL_FORM:
-      return 'Du har fått prikk fordi du ikke svarte på evalueringsskjema til et arrangement (3 prikk)';
+      return 'Ikke svart på evalueringsskjema (3 prikk)';
     case StrikeReason.LATE:
-      return 'Du har fått prikk fordi du møtte sent på et arrangement (1 prikk)';
+      return 'Møtte for sent (1 prikk)';
     case StrikeReason.NO_SHOW:
-      return 'Du har fått prikk fordi du ikke møtte på et arrangement (2 prikk)';
+      return 'Møtte ikke (2 prikk)';
     case StrikeReason.PAST_DEADLINE:
-      return 'Du har fått prikk fordi du meldte deg av etter avmeldingsfristen (1 prikk)';
+      return 'Meldt av etter avmeldingsfrist (1 prikk)';
     default:
       return 'Ukjent grunn til prikk';
   }

@@ -31,7 +31,12 @@ const StrikeCreateDialog = ({ userId, eventId, ...props }: StrikeCreateDialogPro
   const onSubmit = async (data: FormData) => {
     const baseStrikeInfo = { user_id: userId, event_id: eventId };
     createStrike.mutate(
-      { ...(data.strike_enum === 'custom' ? {} : { enum: data.strike_enum }), description: data.description, strike_size: data.strike_size, ...baseStrikeInfo },
+      {
+        ...(data.strike_enum === 'custom' ? {} : { enum: data.strike_enum }),
+        description: data.description,
+        strike_size: Number(data.strike_size),
+        ...baseStrikeInfo,
+      },
       {
         onSuccess: () => {
           setOpen(false);
@@ -55,7 +60,7 @@ const StrikeCreateDialog = ({ userId, eventId, ...props }: StrikeCreateDialogPro
         <form onSubmit={handleSubmit(onSubmit)}>
           <Select control={control} formState={formState} label='Begrunnelse' name='strike_enum'>
             {(Object.keys(StrikeReason) as Array<StrikeReason>).map((strikeEnum) => (
-              <MenuItem key={strikeEnum} value={strikeEnum}>
+              <MenuItem key={strikeEnum} sx={{ whiteSpace: 'break-spaces' }} value={strikeEnum}>
                 {getStrikeReasonAsText(strikeEnum)}
               </MenuItem>
             ))}

@@ -8,9 +8,8 @@ export type Strike = {
   strike_size: number;
   expires_at: string;
   created_at: string;
-  user: UserBase;
   creator?: UserBase | null;
-  event?: EventCompact;
+  event: EventCompact;
 };
 
 export type StrikeCreate = Pick<Strike, 'description' | 'strike_size'> & {

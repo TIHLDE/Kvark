@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { parseISO } from 'date-fns';
-import { Strike } from 'types';
+import { Strike, User } from 'types';
 import { formatDate } from 'utils';
 import { useDeleteStrike } from 'hooks/Strike';
 import { ListItem, ListItemText, ListItemButton, ListItemProps, Typography, Collapse, Stack, Divider } from '@mui/material';
@@ -13,24 +13,15 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import EventListItem from 'components/miscellaneous/ListItem';
-
-export type StrikeListType = Partial<Strike> & Pick<Strike, 'created_at' | 'creator' | 'description' | 'expires_at' | 'id' | 'strike_size'>;
-
 export type StrikeProps = {
-  strike: StrikeListType;
-  /**
-   * Defines what info that should be displayed as title, useful as different info is valuable at different pages.
-   *
-   * - `user_info` -> The receivers name is displayed
-   * - `description` -> The strike-desciption is displayed
-   */
-  titleType: 'user_info' | 'description';
+  strike: Strike;
+  userId: User['user_id'];
   /** Should the viewer see edit and delete options? */
   isAdmin?: boolean;
 } & ListItemProps;
 
-const StrikeListItem = ({ strike, titleType, isAdmin = false, ...props }: StrikeProps) => {
-  const deleteStrike = useDeleteStrike(strike.user?.user_id);
+const StrikeListItem = ({ strike, userId, isAdmin = false, ...props }: StrikeProps) => {
+  const deleteStrike = useDeleteStrike(userId);
   const [expanded, setExpanded] = useState(false);
   const deleteHandler = () => deleteStrike.mutate(strike.id);
   return (
@@ -40,12 +31,7 @@ const StrikeListItem = ({ strike, titleType, isAdmin = false, ...props }: Strike
           <Typography sx={{ fontWeight: 'bold', ml: 1, mr: 3 }} variant='h3'>
             {strike.strike_size}
           </Typography>
-          <ListItemText
-            primary={
-              titleType === 'user_info' ? `${strike.user?.first_name} ${strike.user?.last_name}` : titleType === 'description' ? strike.description : 'Prikk'
-            }
-            secondary={`Utløper ${formatDate(parseISO(strike.expires_at))}`}
-          />
+          <ListItemText primary={strike.description} secondary={`Utløper ${formatDate(parseISO(strike.expires_at))}`} />
           {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItemButton>
       </ListItem>
@@ -53,7 +39,6 @@ const StrikeListItem = ({ strike, titleType, isAdmin = false, ...props }: Strike
         <Divider />
         <Stack gap={1} sx={{ p: 2 }}>
           <div>
-            {titleType !== 'description' && <Typography variant='subtitle2'>{`Begrunnelse: ${strike.description}`}</Typography>}
             {isAdmin && Boolean(strike.creator) && (
               <Typography variant='subtitle2'>{`Opprettet av: ${strike.creator?.first_name} ${strike.creator?.last_name}`}</Typography>
             )}

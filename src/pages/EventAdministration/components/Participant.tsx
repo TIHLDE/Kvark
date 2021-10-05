@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Registration } from 'types';
 import { getUserStudyShort, formatDate, getUserClass } from 'utils';
 import { useDeleteEventRegistration, useUpdateEventRegistration, useEventById } from 'hooks/Event';
-import { useEventRegistrationStrikes } from 'hooks/Strike';
+import { useUserStrikes } from 'hooks/User';
 import parseISO from 'date-fns/parseISO';
 import { useSnackbar } from 'hooks/Snackbar';
 
@@ -69,18 +69,18 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
   const changeList = (onWait: boolean) => updateRegistration.mutate({ registration: { is_on_wait: onWait }, userId: registration.user_info.user_id });
 
   const StrikesInfo = () => {
-    const { data = [] } = useEventRegistrationStrikes(eventId, registration.user_info.user_id);
+    const { data = [] } = useUserStrikes(registration.user_info.user_id);
     return (
       <>
-        <Typography variant='subtitle1'>{`Prikker på dette arrangementet (${data.reduce((val, strike) => val + strike.strike_size, 0)}):`}</Typography>
+        <Typography variant='subtitle1'>{`Alle prikker (${data.reduce((val, strike) => val + strike.strike_size, 0)}):`}</Typography>
         <Stack gap={1}>
           {data.map((strike) => (
-            <StrikeListItem isAdmin key={strike.id} strike={strike} titleType='description' />
+            <StrikeListItem isAdmin key={strike.id} strike={strike} userId={registration.user_info.user_id} />
           ))}
           {!data.length && (
-            <Typography variant='subtitle2'>{`${registration.user_info.first_name} ${registration.user_info.last_name} har ikke fått noen prikker på dette arrangementet`}</Typography>
+            <Typography variant='subtitle2'>{`${registration.user_info.first_name} ${registration.user_info.last_name} har ingen aktive prikker`}</Typography>
           )}
-          <StrikeCreateDialog eventId={eventId} size='small' userId={registration.user_info.user_id}>
+          <StrikeCreateDialog eventId={eventId} userId={registration.user_info.user_id}>
             Lag ny prikk
           </StrikeCreateDialog>
         </Stack>
