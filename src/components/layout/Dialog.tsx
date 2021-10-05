@@ -35,7 +35,7 @@ const Dialog = ({
       {titleText && <DialogTitle id='dialog-title'>{titleText}</DialogTitle>}
       {(contentText || children) && (
         <DialogContent>
-          {contentText && <DialogContentText>{contentText}</DialogContentText>}
+          {contentText && <DialogContentText sx={{ whiteSpace: 'break-spaces' }}>{contentText}</DialogContentText>}
           {children}
         </DialogContent>
       )}

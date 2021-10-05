@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ✨ **Prikker**. Admins har mulighet til å gi deltagere på arrangementer prikker, se prikkene de allerede har mottatt og slette dem
 - ✨ **Changelog**. Expand bokser i changelog for å se tidligere endringer/versjoner.
 
 ## Versjon 1.2.3 (29.09.2021)
