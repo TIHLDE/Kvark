@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- 🦟 **Svarskjema**. Fikset slik at tekst svar vises nå på en bedre måte.
+
 ## Versjon 1.2.3 (29.09.2021)
 
 - ✨ **Varslinger**. Varsler har blitt flyttet til topbaren slik at man lettere ser nye varsler.
