@@ -195,5 +195,5 @@ export default {
   uploadFile: (file: File | Blob) => IFetch<FileUploadResponse>({ method: 'POST', url: 'upload/', file }),
 
   //Strikes
-  deleteStrike: (id: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${STRIKE_ENDPOINT}/${id}` }),
+  // getUserStrikes: (id: string, filters?: any) =>IFetch<PaginationResponse<Strike>>({ method: 'GET', url: `${USERS_ENDPOINT}/${id}/${STRIKE_ENDPOINT}/` }),
 };

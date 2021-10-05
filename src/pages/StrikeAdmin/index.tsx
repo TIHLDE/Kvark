@@ -6,6 +6,7 @@ import { makeStyles } from '@mui/styles';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
+import UserListItem from 'pages/StrikeAdmin/components/UserListItem';
 
 // Icons
 import MembersIcon from '@mui/icons-material/PlaylistAddCheckRounded';
@@ -101,7 +102,7 @@ const StrikeAdmin = () => {
             {data.pages.map((page, i) => (
               <Fragment key={i}>
                 {page.results.map((user) => (
-                  <PersonListItem is_TIHLDE_member={tab === membersTab.value} key={user.user_id} user={user} />
+                  <UserListItem key={user.user_id} user={user} />
                 ))}
               </Fragment>
             ))}

@@ -1,77 +1,65 @@
-import { useState, useEffect } from 'react';
-import { UserList } from 'types';
-
-import parseISO from 'date-fns/parseISO';
-import { useSnackbar } from 'hooks/Snackbar';
-
-// Material-ui
-import { makeStyles } from '@mui/styles';
-import { Checkbox, Typography, Collapse, Button, ListItem, ListItemText, ListItemSecondaryAction, Divider } from '@mui/material';
-
-// Icons
-import EpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-
-// Icons
-import Dlete from '@mui/icons-material/DeleteRounded';
-import ArrowDownwardIcon from '@mui/icons-material/ArroDownwardRounded';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpwardRounded';
-
-// Project components
-import Avatar from 'components/miscellaneous/Avatar';
-import Dialog from 'components/layout/Dialog';
+import { useMemo } from 'react';
 import Paper from 'components/layout/Paper';
-import VerifyDialog from 'components/layout/erifyDialog';
+import { formatDate } from 'utils';
+import { parseISO } from 'date-fns';
+
+// Material UI Components
+import { makeStyles } from '@mui/styles';
+import { Grid, Typography, Divider } from '@mui/material';
+
+import VerifyDialog from 'components/layout/VerifyDialog';
 
 const useStyles = makeStyles((theme) => ({
-  avatar: {
-    marginRght: theme.spacing(2),
-  },
   paper: {
-    marginottom: theme.spacing(1),
-    overflow: 'hidden',
-    background: theme.plette.background.smoke,
+    padding: theme.spacing(2, 2, 2, 4),
   },
-  wrpper: {
-    paddingRght: theme.spacing(8),
-    alignItems: 'center',
-  },
-  cotent: {
-    display:'grid',
-    gridGap: theme.sacing(1),
-    padding: theme.spacing(2),
-  },
-  acions: {
-    display:'grid',
-    gridTemplateColuns: '1fr 1fr',
-    gridGap: theme.spacing(1),
-    [theme.breakpoints.down('l')]: {
-      gridTemplateColumns: '1fr',
-    },
+  list: {
+    listStyleType: 'none',
+    margin: 0,
   },
 }));
 
 export type StrikeListItemProps = {
-  user: UserList;
+  userId: string;
 };
 
-const StrikeListItem = ({ user }: StrikeListItemProps) => {
+const StrikeListItem = ({ userId }: StrikeListItemProps) => {
   const classes = useStyles();
-  const showSnackbar = useSnackbar();
-  const [showModal, setShowModal] = useState(false);
-  const [expanded, setExpanded] = useState(false);
+  //   const { data, hasNextPage, fetchNextPage, isFetching } = useUserStrikes();
 
- return (
-    <Paper className={classes.paper} noPadding>
-      <Avatar className={classes.avatar} user={ser} />
-
-     <Collapse in={expanded}>
-        <Divider />
-        <div classNme={classes.content}>
-          <div className={classes.actions></div>
-        </div>
-      </Collape>
-    </Paper>
+  //   const strikes = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
+  const strikes: Array<number> = [1, 2, 3];
+  return (
+    <div>
+      {/* <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere spørreskjemaer' nextPage={() => fetchNextPage()}> */}
+      {strikes.map((strike) => (
+        <>
+          <Divider />
+          <div className={classes.paper} key={strike}>
+            <Grid alignItems='center' columns={{ xs: 2}} container direction='row' justifyContent='center'>
+              <Grid item xs={2} >
+                <Typography variant='h3'>{'strike.event.title'}</Typography>
+                <Typography>Begrunnelse: {'strike.description'}</Typography>
+                <Typography>
+                  Antall prikker: <a style={{ color: 'red' }}>hello</a>
+                </Typography>
+                <Typography>Utløper {formatDate(parseISO('strike.expires_at'))}</Typography>
+              </Grid>
+              <Grid item xs={2}>
+                <VerifyDialog
+                  closeText='Ikke slett arrangementet'
+                  color='error'
+                  contentText='Sletting av arrangementer kan ikke reverseres.'
+                  titleText='Er du sikker?'>
+                  Slett
+                </VerifyDialog>
+              </Grid>
+            </Grid>
+          </div>
+        </>
+      ))}
+      {/* // </Pagination> */}
+    </div>
   );
 };
 
