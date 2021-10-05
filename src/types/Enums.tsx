@@ -43,6 +43,7 @@ export enum PermissionApp {
   NEWS = 'news',
   PAGE = 'page',
   USER = 'user',
+  // PRIKKER = 'prikker',
 }
 export enum Groups {
   HS = 'HS',

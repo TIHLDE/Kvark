@@ -38,6 +38,7 @@ const Pages = lazy(() => import(/* webpackChunkName: "pages" */ 'pages/Pages'));
 const ShortLinks = lazy(() => import(/* webpackChunkName: "short_links" */ 'pages/ShortLinks'));
 const SignUp = lazy(() => import(/* webpackChunkName: "signup" */ 'pages/SignUp'));
 const UserAdmin = lazy(() => import(/* webpackChunkName: "user_admin" */ 'pages/UserAdmin'));
+const StrikeAdmin = lazy(() => import(/* webpackChunkName: "strike_admin" */ 'pages/StrikeAdmin'));
 
 type AuthRouteProps = {
   apps?: Array<PermissionApp>;
@@ -114,6 +115,9 @@ const AppRoutes = () => {
         <AuthRoute apps={[PermissionApp.NEWS]} path={URLS.newsAdmin}>
           <Route element={<NewsAdministration />} path=':newsId/' />
           <Route element={<NewsAdministration />} path='' />
+        </AuthRoute>
+        <AuthRoute apps={[PermissionApp.USER /*Husk å endre */]} path={URLS.strikeAdmin}>
+          <Route element={<StrikeAdmin />} path='' />
         </AuthRoute>
 
         <Route element={<GroupAdmin />} path={`${URLS.groups}:slug/`} />

@@ -57,6 +57,7 @@ export const SHORT_LINKS_ENDPOINT = 'short-link';
 export const SUBMISSIONS_ENDPOINT = 'submission';
 export const USERS_ENDPOINT = 'user';
 export const WARNINGS_ENDPOINT = 'warning';
+export const STRIKE_ENDPOINT = 'strikes';
 
 export default {
   // Auth
@@ -192,4 +193,7 @@ export default {
 
   // File-upload
   uploadFile: (file: File | Blob) => IFetch<FileUploadResponse>({ method: 'POST', url: 'upload/', file }),
+
+  //Strikes
+  deleteStrike: (id: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${STRIKE_ENDPOINT}/${id}` }),
 };

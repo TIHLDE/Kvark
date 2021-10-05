@@ -94,6 +94,13 @@ const Admin = () => {
       primary: 'Nyheter',
       secondary: 'Opprett, endre og slett nyheter',
     },
+    // {
+    //   apps: [PermissionApp.PRIKKER],
+    //   icon: NewsIcon,
+    //   to: URLS.newsAdmin,
+    //   primary: 'Prikker',
+    //   secondary: 'Se, endre og slett prikker',
+    // },
   ];
 
   return (
