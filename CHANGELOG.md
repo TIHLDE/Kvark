@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.2.4 (05.10.2021)
+
 - 🎨 **Admin**. Endret spacing på diverse knapper i admin-sider.
 - 🦟 **Svarskjema**. Fikset slik at tekst svar vises nå på en bedre måte.
 - ✨ **Prikker**. Admins har mulighet til å gi deltagere på arrangementer prikker, se prikkene de allerede har mottatt og slette dem
