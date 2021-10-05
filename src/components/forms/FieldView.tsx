@@ -17,7 +17,7 @@ const FieldView = <FormValues,>({ register, field, formState, index, control, ge
     <input {...register(`answers.${index}.field.id` as Path<FormValues>)} type='hidden' value={field.id} />
     {field.type === FormFieldType.TEXT_ANSWER ? (
       <>
-        {field.title}
+        {`${field.title} ${field.required ? '*' : ''}`}
         <TextField
           disabled={disabled}
           formState={formState}
