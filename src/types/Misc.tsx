@@ -73,19 +73,3 @@ export interface Warning {
   type: WarningType;
   updated_at: string;
 }
-
-export interface Strike {
-  id: string;
-  strike_size: number;
-  created_at: string;
-  expires_at: string;
-  description: string;
-  event: {
-    id: number;
-    title: string;
-  };
-  user: {
-    first_name: string;
-    last_name: string;
-  };
-}

@@ -1,11 +1,7 @@
 import { ReactNode } from 'react';
 import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
-<<<<<<< HEAD
-import { User, UserList, UserCreate, LoginRequestResponse, PaginationResponse, RequestResponse, Badge, EventCompact, GroupList, Form, Strike } from 'types';
-=======
 import { User, UserList, UserCreate, Strike, LoginRequestResponse, PaginationResponse, RequestResponse, Badge, EventCompact, GroupList, Form } from 'types';
->>>>>>> dev
 import { PermissionApp } from 'types/Enums';
 import { getCookie, setCookie, removeCookie } from 'api/cookie';
 import { ACCESS_TOKEN } from 'constant';
@@ -37,7 +33,6 @@ export const useUserBadges = () =>
 //     },
 //   );
 // };
-
 export const useUserEvents = () => {
   return useInfiniteQuery<PaginationResponse<EventCompact>, RequestResponse>(
     [USER_EVENTS_QUERY_KEY],
@@ -47,7 +42,6 @@ export const useUserEvents = () => {
     },
   );
 };
-
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useUserForms = (filters?: any) =>

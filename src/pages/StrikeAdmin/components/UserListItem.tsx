@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { UserList } from 'types';
+import { UserList, Strike } from 'types';
 import { getUserStudyShort, formatDate, getUserClass } from 'utils';
 import parseISO from 'date-fns/parseISO';
 import { useSnackbar } from 'hooks/Snackbar';
+import { useUserStrikes } from 'hooks/User';
 
 // Material-ui
 import { makeStyles } from '@mui/styles';
@@ -22,7 +23,7 @@ import Avatar from 'components/miscellaneous/Avatar';
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
-import StrikeListItem from './StrikeListItem';
+import StrikeListItem from 'components/miscellaneous/StrikeListItem';
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -60,7 +61,7 @@ const UserListItem = ({ user }: UserListItemProps) => {
   const classes = useStyles();
   const showSnackbar = useSnackbar();
   const [expanded, setExpanded] = useState(false);
-
+  const { data = [] } = useUserStrikes('index');
   return (
     <Paper className={classes.paper} noPadding>
       <ListItem button className={classes.wrapper} onClick={() => setExpanded((prev) => !prev)}>
@@ -69,7 +70,9 @@ const UserListItem = ({ user }: UserListItemProps) => {
         {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </ListItem>
       <Collapse in={expanded}>
-        <StrikeListItem userId={user.user_id} />
+      {data.map((strike) => (
+          <StrikeListItem isAdmin key={strike.id} strike = {strike} userId={user.user_id}/>
+      ))}
       </Collapse>
     </Paper>
   );
