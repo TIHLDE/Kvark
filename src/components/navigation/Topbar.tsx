@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto',
     padding: theme.spacing(0, 1),
     display: 'grid',
-    gridTemplateColumns: '170px 1fr 170px',
+    gridTemplateColumns: '172px 1fr 172px',
   },
   filledTopbar: {
     position: 'fixed',
@@ -61,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    height: 62,
   },
   logo: {
     height: 32,
@@ -88,8 +89,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   avatar: {
-    width: 45,
-    height: 45,
+    width: 55,
+    height: 55,
   },
   topbarItem: {
     alignSelf: 'center',
@@ -126,7 +127,7 @@ export type TopBarItemProps = {
 const TopBarItem = ({ items, text, to, type }: TopBarItemProps) => {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
-  const anchorRef = useRef<HTMLButtonElement>(null);
+  const buttonAnchorRef = useRef<HTMLButtonElement>(null);
   const selected = useMemo(() => location.pathname === to, [location.pathname, to]);
   if (type === 'link' && to) {
     return (
@@ -145,10 +146,10 @@ const TopBarItem = ({ items, text, to, type }: TopBarItemProps) => {
           endIcon={<ExpandIcon className={classNames(classes.dropdownIcon, isOpen && classes.expanded)} />}
           onClick={() => setIsOpen((prev) => !prev)}
           onMouseEnter={() => setIsOpen(true)}
-          ref={anchorRef}>
+          ref={buttonAnchorRef}>
           {text}
         </Button>
-        <Popper anchorEl={anchorRef.current} disablePortal open={isOpen} role={undefined} transition>
+        <Popper anchorEl={buttonAnchorRef.current} disablePortal open={isOpen} role={undefined} transition>
           {({ TransitionProps, placement }) => (
             <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
               <Paper>
