@@ -47,10 +47,7 @@ export const useUserEvents = () => {
     },
   );
 };
-export const useUserEvents = () =>
-  useInfiniteQuery<PaginationResponse<EventCompact>, RequestResponse>([USER_EVENTS_QUERY_KEY], ({ pageParam = 1 }) => API.getUserEvents({ page: pageParam }), {
-    getNextPageParam: (lastPage) => lastPage.next,
-  });
+
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useUserForms = (filters?: any) =>
