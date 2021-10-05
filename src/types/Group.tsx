@@ -1,5 +1,5 @@
 import { MembershipType, GroupType } from 'types/Enums';
-import { UserList } from 'types/User';
+import { UserBase } from 'types/User';
 import { Permissions } from 'types/Misc';
 
 export interface Group {
@@ -8,14 +8,14 @@ export interface Group {
   description: string;
   contact_email: string;
   type: GroupType;
-  leader: UserList;
+  leader: UserBase;
   permissions: Permissions;
 }
 
 export type GroupList = Pick<Group, 'leader' | 'name' | 'slug' | 'type'>;
 
 export interface Membership {
-  user: UserList;
+  user: UserBase;
   membership_type: MembershipType;
   group: Group;
 }

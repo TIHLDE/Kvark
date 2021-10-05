@@ -14,7 +14,9 @@
 
 ## Neste versjon
 
-- 🦟 **Varslinger**. Fikset slik at varsling menyen lukker seg når man trykker på en varsel.
+- ✨ **Prikker**. Admins har mulighet til å gi deltagere på arrangementer prikker, se prikkene de allerede har mottatt og slette dem
+- ✨ **Changelog**. Expand bokser i changelog for å se tidligere endringer/versjoner.
+- 🦟 **Varslinger**. Varslings-boksen lukkes ved klikk ppå link
 
 ## Versjon 1.2.3 (29.09.2021)
 
