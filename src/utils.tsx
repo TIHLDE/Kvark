@@ -1,7 +1,7 @@
 import slugify from 'slugify';
 import { parseISO, format, subMinutes } from 'date-fns';
 import { Event } from 'types';
-import { UserStudy, UserClass } from 'types/Enums';
+import { UserStudy, UserClass, JobPostType } from 'types/Enums';
 
 /**
  * Slugify a string to make it safe to use in an URL
@@ -93,6 +93,25 @@ export const getUserClass = (userClass: UserClass) => {
       return '5. klasse';
     default:
       return 'Ukjent klasse';
+  }
+};
+
+/**
+ * Get jobpost type as text
+ * @param jobpostType JobPost type
+ */
+export const getJobpostType = (jobpostType: JobPostType) => {
+  switch (jobpostType) {
+    case JobPostType.PART_TIME:
+      return 'Deltid';
+    case JobPostType.FULL_TIME:
+      return 'Fulltid';
+    case JobPostType.SUMMER_JOB:
+      return 'Sommerjob';
+    case JobPostType.OTHER:
+      return 'Annet';
+    default:
+      return 'Ukjent jobbtype';
   }
 };
 
