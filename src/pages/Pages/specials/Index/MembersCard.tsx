@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { UserList } from 'types';
+import { UserBase } from 'types';
 
 import { ListItem, ListItemText, ListItemAvatar, List, Grid, Typography, Skeleton } from '@mui/material';
 
@@ -32,7 +32,7 @@ const MembersCard = ({ slug }: MembersCardProps) => {
   }
 
   type PersonProps = {
-    user: UserList;
+    user: UserBase;
   };
 
   const Person = ({ user }: PersonProps) => (
