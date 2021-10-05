@@ -1,6 +1,7 @@
 import { UserClass, UserStudy } from 'types/Enums';
 import { User } from 'types/User';
 import { UserSubmission } from 'types/Form';
+import { Strike } from 'types/Strike';
 
 export interface Category {
   created_at: string;

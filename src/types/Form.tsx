@@ -1,4 +1,4 @@
-import { UserList } from 'types/User';
+import { UserBase } from 'types/User';
 import { EventCompact } from 'types/Event';
 import { FormFieldType, FormResourceType, FormType } from 'types/Enums';
 
@@ -85,7 +85,7 @@ export interface SelectFieldSubmission extends FieldSubmission {
 }
 
 export interface UserSubmission {
-  user: UserList;
+  user: UserBase;
   form: string;
   answers: Array<TextFieldSubmission | SelectFieldSubmission>;
 }
