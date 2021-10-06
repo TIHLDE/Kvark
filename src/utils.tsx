@@ -1,7 +1,7 @@
 import slugify from 'slugify';
 import { parseISO, format, subMinutes } from 'date-fns';
 import { Event } from 'types';
-import { UserStudy, UserClass } from 'types/Enums';
+import { UserStudy, UserClass, StrikeReason } from 'types/Enums';
 
 /**
  * Slugify a string to make it safe to use in an URL
@@ -93,6 +93,27 @@ export const getUserClass = (userClass: UserClass) => {
       return '5. klasse';
     default:
       return 'Ukjent klasse';
+  }
+};
+
+/**
+ * Get strike reason as readable text
+ * @param strikeReason Strike reason enum
+ */
+export const getStrikeReasonAsText = (strikeReason: StrikeReason) => {
+  switch (strikeReason) {
+    case StrikeReason.BAD_BEHAVIOR:
+      return 'Upassende oppførsel (1 prikk)';
+    case StrikeReason.EVAL_FORM:
+      return 'Ikke svart på evalueringsskjema (3 prikk)';
+    case StrikeReason.LATE:
+      return 'Møtte for sent (1 prikk)';
+    case StrikeReason.NO_SHOW:
+      return 'Møtte ikke (2 prikk)';
+    case StrikeReason.PAST_DEADLINE:
+      return 'Meldt av etter avmeldingsfrist (1 prikk)';
+    default:
+      return 'Ukjent grunn til prikk';
   }
 };
 
