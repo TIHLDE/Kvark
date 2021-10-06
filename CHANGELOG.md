@@ -14,6 +14,14 @@
 
 ## Neste versjon
 
+## Versjon 1.2.4 (05.10.2021)
+
+- 🎨 **Admin**. Endret spacing på diverse knapper i admin-sider.
+- 🦟 **Svarskjema**. Fikset slik at tekst svar vises nå på en bedre måte.
+- ✨ **Prikker**. Admins har mulighet til å gi deltagere på arrangementer prikker, se prikkene de allerede har mottatt og slette dem
+- ✨ **Changelog**. Expand bokser i changelog for å se tidligere endringer/versjoner.
+- 🦟 **Varslinger**. Varslings-boksen lukkes ved klikk ppå link
+
 ## Versjon 1.2.3 (29.09.2021)
 
 - ✨ **Varslinger**. Varsler har blitt flyttet til topbaren slik at man lettere ser nye varsler.

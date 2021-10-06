@@ -82,3 +82,11 @@ export enum GroupType {
   INTERESTGROUP = 'INTERESTGROUP',
   OTHER = 'OTHER',
 }
+
+export enum StrikeReason {
+  PAST_DEADLINE = 'PAST_DEADLINE',
+  NO_SHOW = 'NO_SHOW',
+  LATE = 'LATE',
+  BAD_BEHAVIOR = 'BAD_BEHAVIOR',
+  EVAL_FORM = 'EVAL_FORM',
+}

@@ -7,7 +7,7 @@ import { Button, Collapse, Divider, ListItem, ListItemText, ListItemAvatar, Grid
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import { UserList } from 'types';
+import { UserBase } from 'types';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import StarIcon from '@mui/icons-material/Star';
 
@@ -16,7 +16,7 @@ import Dialog from 'components/layout/Dialog';
 import Avatar from 'components/miscellaneous/Avatar';
 
 export type MemberListItemProps = {
-  user: UserList;
+  user: UserBase;
   slug: string;
 };
 
