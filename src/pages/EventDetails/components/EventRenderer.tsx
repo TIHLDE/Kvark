@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import classnames from 'classnames';
-import { Event } from 'types';
+import { Event, Registration } from 'types';
 import { PermissionApp } from 'types/Enums';
 import URLS from 'URLS';
 import { parseISO, isPast, isFuture, subHours } from 'date-fns';
@@ -130,8 +130,11 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     }
   };
 
-  const RegistrationInfo = () =>
-    !registration ? null : (
+  type RegistrationInfoProps = { registration: Registration };
+
+  const RegistrationInfo = ({ registration }: RegistrationInfoProps) => {
+    const unregisteringGivesStrike = isPast(signOffDeadlineDate) && !registration.is_on_wait;
+    return (
       <>
         {registration.is_on_wait ? (
           <>
@@ -169,34 +172,31 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             )}
           </DetailsPaper>
         )}
-        {(isFuture(signOffDeadlineDate) || registration.is_on_wait) && isFuture(startDate) ? (
-          <VerifyDialog
-            contentText={`Om du melder deg på igjen vil du havne på bunnen av en eventuell venteliste.`}
-            fullWidth
-            onConfirm={signOff}
-            variant='outlined'>
-            Meld deg av
-          </VerifyDialog>
-        ) : isFuture(subHours(parseISO(data.start_date), 2)) ? (
+        {isFuture(subHours(parseISO(data.start_date), 2)) ? (
           <>
             <VerifyDialog
-              contentText={`Om du melder deg av nå vil du ikke kunne melde deg på igjen. Du vil også få 1 prikk for å melde deg av etter avmeldingsfristen.`}
+              contentText={`Om du melder deg på igjen vil du havne på bunnen av en eventuell venteliste. ${
+                unregisteringGivesStrike ? 'Du vil også få 1 prikk for å melde deg av etter avmeldingsfristen.' : ''
+              }`}
               fullWidth
               onConfirm={signOff}
               variant='outlined'>
               Meld deg av
             </VerifyDialog>
-            <Alert severity='info' variant='outlined'>
-              Avmeldingsfristen har passert. Du kan allikevel melde deg av frem til 2 timer før arrangementsstart, men du vil da få 1 prikk.
-            </Alert>
+            {unregisteringGivesStrike && (
+              <Alert severity='info' variant='outlined'>
+                Avmeldingsfristen har passert. Du kan allikevel melde deg av frem til 2 timer før arrangementsstart, men du vil da få 1 prikk.
+              </Alert>
+            )}
           </>
         ) : (
           <Alert severity='info' variant='outlined'>
-            Du kan ikke lengre melde deg av arrangementet
+            Det er ikke lenger mulig å melde seg av arrangementet
           </Alert>
         )}
       </>
     );
+  };
 
   const HasUnansweredEvaluations = () =>
     user?.unanswered_evaluations_count ? (
@@ -226,7 +226,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             </Button>
           ) : null
         ) : registration ? (
-          <RegistrationInfo />
+          <RegistrationInfo registration={registration} />
         ) : isPast(endRegistrationDate) ? null : view === Views.Apply ? (
           <Button fullWidth onClick={() => setView(Views.Info)} variant='outlined'>
             Se beskrivelse
