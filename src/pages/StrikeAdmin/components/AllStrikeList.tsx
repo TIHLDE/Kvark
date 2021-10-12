@@ -14,7 +14,7 @@ const AllStrikesList = () => {
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 
   return (
-    <Fragment>
+    <>
       {isLoading && <PersonListItemLoading />}
       {isEmpty && <NotFoundIndicator header='Fant ingen prikker' />}
       {error && <Paper>{error.detail}</Paper>}
