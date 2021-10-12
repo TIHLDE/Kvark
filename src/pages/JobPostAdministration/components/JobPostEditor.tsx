@@ -214,14 +214,14 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
               <Select control={control} formState={formState} label='Fra år' name='class_start'>
                 {years.map((value) => (
                   <MenuItem key={value} value={value}>
-                    {value}
+                    {value + '.'}
                   </MenuItem>
                 ))}
               </Select>
               <Select control={control} formState={formState} label='Til år' name='class_end'>
                 {years.map((value) => (
                   <MenuItem key={value} value={value}>
-                    {value}
+                    {value + '.'}
                   </MenuItem>
                 ))}
               </Select>
