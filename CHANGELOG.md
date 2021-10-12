@@ -13,7 +13,10 @@
 ---
 
 ## Neste versjon
+
 - ✨ **Arrangementer**. Brukere kan melde seg av arrangementer opp til 2 timer før start, men blir varslet om at de får prikk.
+
+- ✨ **Bruker**. Brukere kan se sine egene prikker.
 
 ## Versjon 1.2.4 (05.10.2021)
 
@@ -22,7 +25,6 @@
 - ✨ **Prikker**. Admins har mulighet til å gi deltagere på arrangementer prikker, se prikkene de allerede har mottatt og slette dem
 - ✨ **Changelog**. Expand bokser i changelog for å se tidligere endringer/versjoner.
 - 🦟 **Varslinger**. Varslings-boksen lukkes ved klikk ppå link
-
 
 ## Versjon 1.2.3 (29.09.2021)
 
