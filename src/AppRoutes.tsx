@@ -116,7 +116,7 @@ const AppRoutes = () => {
           <Route element={<NewsAdministration />} path=':newsId/' />
           <Route element={<NewsAdministration />} path='' />
         </AuthRoute>
-        <AuthRoute apps={[PermissionApp.USER /*Husk å endre */]} path={URLS.strikeAdmin}>
+        <AuthRoute apps={[PermissionApp.STRIKE]} path={URLS.strikeAdmin}>
           <Route element={<StrikeAdmin />} path='' />
         </AuthRoute>
 
