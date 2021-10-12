@@ -192,6 +192,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
           </SubmitButton>
           {Boolean(jobpostId) && (
             <VerifyDialog
+              className={classes.margin}
               closeText='Ikke slett annonsen'
               color='error'
               contentText='Sletting av annonser kan ikke reverseres.'
