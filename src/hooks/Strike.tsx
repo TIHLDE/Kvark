@@ -5,7 +5,6 @@ import { useSnackbar } from 'hooks/Snackbar';
 import { USER_STRIKES_QUERY_KEY } from 'hooks/User';
 
 export const ALL_STRIKES_QUERY_KEY = 'strikes';
-export const EVENT_QUERY_KEY = '';
 
 export const useCreateStrike = () => {
   const queryClient = useQueryClient();
