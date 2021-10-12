@@ -1,12 +1,10 @@
-import { Fragment, useEffect, useMemo, useState } from 'react';
-import { useUsers } from 'hooks/User';
+import { useEffect, useMemo, useState } from 'react';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-import UserListItem from 'pages/StrikeAdmin/components/UserListItem';
 
 // Icons
 import MembersIcon from '@mui/icons-material/PlaylistAddCheckRounded';
@@ -14,12 +12,10 @@ import WaitingIcon from '@mui/icons-material/PlaylistAddRounded';
 
 // Project Components
 import Page from 'components/navigation/Page';
-import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import Tabs from 'components/layout/Tabs';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import PersonListItem, { PersonListItemLoading } from 'pages/UserAdmin/components/PersonListItem';
 import { PrimaryTopBox } from 'components/layout/TopBox';
+import UserStrikeList from 'pages/StrikeAdmin/components/UserStrikeList';
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -64,8 +60,6 @@ const StrikeAdmin = () => {
     }
     return filters;
   }, [tab, userClassChoice, userStudyChoice, searchInput]);
-  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useUsers({ is_TIHLDE_member: tab === membersTab.value, ...filters });
-  const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 
   useEffect(() => {
     const timer = setTimeout(() => setSearchInput(search), 500);
@@ -73,9 +67,9 @@ const StrikeAdmin = () => {
   }, [search]);
 
   return (
-    <Page banner={<PrimaryTopBox />} options={{ title: 'Brukeradmin' }}>
+    <Page banner={<PrimaryTopBox />} options={{ title: 'Prikke admin' }}>
       <Paper className={classes.content}>
-        <Typography variant='h1'>Brukeradmin</Typography>
+        <Typography variant='h1'>Prikke admin</Typography>
         <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
         <div className={classes.filterContainer}>
           <TextField fullWidth label='Klasser' onChange={(e) => setUserClassChoice(Number(e.target.value))} select value={userClassChoice} variant='outlined'>
@@ -94,20 +88,7 @@ const StrikeAdmin = () => {
           </TextField>
           <TextField fullWidth label='Søk' onChange={(e) => setSearch(e.target.value)} placeholder='Skriv her' value={search} variant='outlined' />
         </div>
-        {isLoading && <PersonListItemLoading />}
-        {isEmpty && <NotFoundIndicator header='Fant ingen brukere' />}
-        {error && <Paper>{error.detail}</Paper>}
-        {data !== undefined && (
-          <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-            {data.pages.map((page, i) => (
-              <Fragment key={i}>
-                {page.results.map((user) => (
-                  <UserListItem key={user.user_id} user={user} />
-                ))}
-              </Fragment>
-            ))}
-          </Pagination>
-        )}
+        <UserStrikeList filters={filters}/>
       </Paper>
     </Page>
   );

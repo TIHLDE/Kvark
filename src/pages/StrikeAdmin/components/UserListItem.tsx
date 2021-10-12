@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import { UserList, Strike } from 'types';
 import { getUserStudyShort, formatDate, getUserClass } from 'utils';
-import parseISO from 'date-fns/parseISO';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useUserStrikes } from 'hooks/User';
 
 // Material-ui
 import { makeStyles } from '@mui/styles';
-import { Checkbox, Typography, Collapse, Button, ListItem, ListItemText, ListItemSecondaryAction, Divider } from '@mui/material';
+import { Collapse, ListItem, ListItemText, ListItemSecondaryAction, Divider } from '@mui/material';
 
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
@@ -59,9 +58,8 @@ export type UserListItemProps = {
 
 const UserListItem = ({ user }: UserListItemProps) => {
   const classes = useStyles();
-  const showSnackbar = useSnackbar();
   const [expanded, setExpanded] = useState(false);
-  const { data = [] } = useUserStrikes('index');
+  const { data = [] } = useUserStrikes(user.user_id);
   return (
     <Paper className={classes.paper} noPadding>
       <ListItem button className={classes.wrapper} onClick={() => setExpanded((prev) => !prev)}>
