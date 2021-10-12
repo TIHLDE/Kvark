@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { parseISO } from 'date-fns';
-import { Strike, User } from 'types';
+import { Strike, UserBase } from 'types';
 import { formatDate } from 'utils';
 import { useDeleteStrike } from 'hooks/Strike';
 import { ListItem, ListItemText, ListItemButton, ListItemProps, Typography, Collapse, Stack, Divider } from '@mui/material';
@@ -15,15 +15,21 @@ import VerifyDialog from 'components/layout/VerifyDialog';
 import EventListItem from 'components/miscellaneous/ListItem';
 export type StrikeProps = {
   strike: Strike;
-  userId: User['user_id'];
+  user: UserBase;
   /** Should the viewer see edit and delete options? */
   isAdmin?: boolean;
+  allStrikes?: boolean;
 } & ListItemProps;
 
-const StrikeListItem = ({ strike, userId, isAdmin = false, ...props }: StrikeProps) => {
-  const deleteStrike = useDeleteStrike(userId);
+const StrikeListItem = ({ strike, user, isAdmin = false, allStrikes = false, ...props }: StrikeProps) => {
+  const deleteStrike = useDeleteStrike(user.user_id);
   const [expanded, setExpanded] = useState(false);
   const deleteHandler = () => deleteStrike.mutate(strike.id);
+  const description = allStrikes ? (
+    <ListItemText primary={`${user.first_name} ${user.last_name}`} secondary={`Utløper ${formatDate(parseISO(strike.expires_at))}`} />
+  ) : (
+    <ListItemText primary={strike.description} secondary={`Utløper ${formatDate(parseISO(strike.expires_at))}`} />
+  );
   return (
     <Paper noOverflow noPadding>
       <ListItem dense disablePadding {...props}>
@@ -31,7 +37,7 @@ const StrikeListItem = ({ strike, userId, isAdmin = false, ...props }: StrikePro
           <Typography sx={{ fontWeight: 'bold', ml: 1, mr: 3 }} variant='h3'>
             {strike.strike_size}
           </Typography>
-          <ListItemText primary={strike.description} secondary={`Utløper ${formatDate(parseISO(strike.expires_at))}`} />
+          {description}
           {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItemButton>
       </ListItem>
@@ -39,6 +45,12 @@ const StrikeListItem = ({ strike, userId, isAdmin = false, ...props }: StrikePro
         <Divider />
         <Stack gap={1} sx={{ p: 2 }}>
           <div>
+            {allStrikes && (
+              <Fragment>
+                <Typography variant='subtitle2'>{`Begrunnelse: ${strike.description}`}</Typography>
+              </Fragment>
+            )}
+
             {isAdmin && Boolean(strike.creator) && (
               <Typography variant='subtitle2'>{`Opprettet av: ${strike.creator?.first_name} ${strike.creator?.last_name}`}</Typography>
             )}

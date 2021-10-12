@@ -15,6 +15,7 @@ import JobPostIcon from '@mui/icons-material/WorkOutlineRounded';
 import NewsIcon from '@mui/icons-material/DescriptionRounded';
 import UsersIcon from '@mui/icons-material/PermIdentityRounded';
 import GroupsIcon from '@mui/icons-material/GroupRounded';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 // Project Components
 import Paper from 'components/layout/Paper';
@@ -94,13 +95,13 @@ const Admin = () => {
       primary: 'Nyheter',
       secondary: 'Opprett, endre og slett nyheter',
     },
-    // {
-    //   apps: [PermissionApp.PRIKKER],
-    //   icon: NewsIcon,
-    //   to: URLS.newsAdmin,
-    //   primary: 'Prikker',
-    //   secondary: 'Se, endre og slett prikker',
-    // },
+    {
+      apps: [PermissionApp.STRIKE],
+      icon: HighlightOffIcon,
+      to: URLS.strikeAdmin,
+      primary: 'Prikker',
+      secondary: 'Se, endre og slett prikker',
+    },
   ];
 
   return (

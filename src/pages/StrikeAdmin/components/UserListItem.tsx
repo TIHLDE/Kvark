@@ -1,27 +1,19 @@
-import { useState, useEffect } from 'react';
-import { UserList, Strike } from 'types';
-import { getUserStudyShort, formatDate, getUserClass } from 'utils';
-import { useSnackbar } from 'hooks/Snackbar';
+import { useState } from 'react';
+import { UserList } from 'types';
+import { getUserStudyShort, getUserClass } from 'utils';
 import { useUserStrikes } from 'hooks/User';
 
 // Material-ui
 import { makeStyles } from '@mui/styles';
-import { Collapse, ListItem, ListItemText, ListItemSecondaryAction, Divider } from '@mui/material';
+import { Collapse, ListItem, ListItemText } from '@mui/material';
 
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 
-// Icons
-import Delete from '@mui/icons-material/DeleteRounded';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownwardRounded';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpwardRounded';
-
 // Project components
 import Avatar from 'components/miscellaneous/Avatar';
-import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
-import VerifyDialog from 'components/layout/VerifyDialog';
 import StrikeListItem from 'components/miscellaneous/StrikeListItem';
 
 const useStyles = makeStyles((theme) => ({
@@ -68,9 +60,9 @@ const UserListItem = ({ user }: UserListItemProps) => {
         {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </ListItem>
       <Collapse in={expanded}>
-      {data.map((strike) => (
-          <StrikeListItem isAdmin key={strike.id} strike = {strike} userId={user.user_id}/>
-      ))}
+        {data.map((strike) => (
+          <StrikeListItem isAdmin key={strike.id} strike={strike} user={user} />
+        ))}
       </Collapse>
     </Paper>
   );

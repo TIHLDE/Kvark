@@ -1,10 +1,11 @@
-import { useMutation, useQueryClient } from 'react-query';
+import { useInfiniteQuery, useMutation, useQueryClient } from 'react-query';
 import API from 'api/api';
-import { Strike, StrikeCreate, RequestResponse } from 'types';
+import { Strike, StrikeCreate, RequestResponse, PaginationResponse, StrikeList } from 'types';
 import { useSnackbar } from 'hooks/Snackbar';
 import { USER_STRIKES_QUERY_KEY } from 'hooks/User';
 
 export const ALL_STRIKES_QUERY_KEY = 'strikes';
+export const EVENT_QUERY_KEY = '';
 
 export const useCreateStrike = () => {
   const queryClient = useQueryClient();
@@ -28,4 +29,14 @@ export const useDeleteStrike = (userId: string) => {
       showSnackbar('Prikken ble slettet', 'success');
     },
   });
+};
+
+export const useStrikes = (filters?: any) => {
+  return useInfiniteQuery<PaginationResponse<StrikeList>, RequestResponse>(
+    [ALL_STRIKES_QUERY_KEY, filters],
+    ({ pageParam = 1 }) => API.getStrikes({ ...filters, page: pageParam }),
+    {
+      getNextPageParam: (lastPage) => lastPage.next,
+    },
+  );
 };
