@@ -33,7 +33,7 @@ const FormEditor = ({ form }: FormEditorProps) => {
   const showSnackbar = useSnackbar();
   const [fields, setFields] = useState<Array<TextFormField | SelectFormField>>(form.fields);
   const [addButtonOpen, setAddButtonOpen] = useState(false);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(true);
   const buttonAnchorRef = useRef(null);
 
   useEffect(() => {
@@ -133,7 +133,7 @@ const FormEditor = ({ form }: FormEditorProps) => {
           </Grow>
         )}
       </Popper>
-      <Dialog confirmText='Jeg er sikker' onClose={() => setDeleteDialogOpen(false)} onConfirm={onDeleteForm} open={deleteDialogOpen} titleText='Slett skjema'>
+      <Dialog confirmText='Jeg er sikker' onClose={() => setDeleteDialogOpen(false)} onConfirm={onDeleteForm} open={deleteDialogOpen}>
         Er du sikker på at du vil slette dette skjemaet? Alle svar vil forsvinne.
       </Dialog>
     </>
