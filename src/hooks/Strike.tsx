@@ -31,6 +31,7 @@ export const useDeleteStrike = (userId: string) => {
   });
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useStrikes = (filters?: any) => {
   return useInfiniteQuery<PaginationResponse<StrikeList>, RequestResponse>(
     [ALL_STRIKES_QUERY_KEY, filters],
