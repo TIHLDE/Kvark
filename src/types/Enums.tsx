@@ -84,8 +84,8 @@ export enum GroupType {
 }
 
 export enum JobPostType {
-  PART_TIME = "PART_TIME",
-  FULL_TIME = "FULL_TIME",
-  SUMMER_JOB = "SUMMER_JOB",
-  OTHER = "OTHER",
+  PART_TIME = 'PART_TIME',
+  FULL_TIME = 'FULL_TIME',
+  SUMMER_JOB = 'SUMMER_JOB',
+  OTHER = 'OTHER',
 }

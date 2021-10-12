@@ -25,19 +25,10 @@ import VerifyDialog from 'components/layout/VerifyDialog';
 import { getJobpostType } from 'utils';
 
 const useStyles = makeStyles((theme) => ({
-  grid_standard: {
+  grid: {
     display: 'grid',
     gridGap: theme.spacing(2),
     gridTemplateColumns: '1fr 1fr',
-    [theme.breakpoints.down('md')]: {
-      gridGap: 0,
-      gridTemplateColumns: '1fr',
-    },
-  },
-  grid_spicy: {
-    display: 'grid',
-    gridGap: theme.spacing(2),
-    gridTemplateColumns: '100fr 100fr 207fr', //Quick fix perfect alignment
     [theme.breakpoints.down('md')]: {
       gridGap: 0,
       gridTemplateColumns: '1fr',
@@ -183,14 +174,14 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
     <>
       <form onSubmit={handleSubmit(submit)}>
         <Grid container direction='column' wrap='nowrap'>
-          <div className={classes.grid_standard}>
+          <div className={classes.grid}>
             <TextField formState={formState} label='Tittel' {...register('title', { required: 'En tittel er påkrevd' })} required />
             <TextField formState={formState} label='Sted' {...register('location', { required: 'Et sted er påkrevd' })} required />
           </div>
           <TextField formState={formState} label='Ingress' {...register('ingress')} />
           <MarkdownEditor formState={formState} {...register('body', { required: 'Gi annonsen en beskrivelse' })} required />
           <Bool control={control} formState={formState} label='Fortløpende opptak?' name='is_continuously_hiring' type='checkbox' />
-          <div className={classes.grid_standard}>
+          <div className={classes.grid}>
             <DatePicker
               control={control}
               formState={formState}
@@ -204,7 +195,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
           </div>
           <ImageUpload formState={formState} label='Velg logo' ratio={21 / 9} register={register('image')} setValue={setValue} watch={watch} />
           <TextField formState={formState} label='Alternativ bildetekst' {...register('image_alt')} />
-          <div className={classes.grid_standard}>
+          <div className={classes.grid}>
             <TextField formState={formState} label='Bedrift' {...register('company', { required: 'Du må oppgi en bedrift' })} required />
             <TextField
               formState={formState}
@@ -218,21 +209,23 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
               type='email'
             />
           </div>
-          <div className={classes.grid_spicy}>
-            <Select control={control} formState={formState} label='Fra år' name='class_start'>
-              {years.map((value) => (
-                <MenuItem key={value} value={value}>
-                  {value}
-                </MenuItem>
-              ))}
-            </Select>
-            <Select control={control} formState={formState} label='Til år' name='class_end'>
-              {years.map((value) => (
-                <MenuItem key={value} value={value}>
-                  {value}
-                </MenuItem>
-              ))}
-            </Select>
+          <div className={classes.grid}>
+            <div className={classes.grid}>
+              <Select control={control} formState={formState} label='Fra år' name='class_start'>
+                {years.map((value) => (
+                  <MenuItem key={value} value={value}>
+                    {value}
+                  </MenuItem>
+                ))}
+              </Select>
+              <Select control={control} formState={formState} label='Til år' name='class_end'>
+                {years.map((value) => (
+                  <MenuItem key={value} value={value}>
+                    {value}
+                  </MenuItem>
+                ))}
+              </Select>
+            </div>
             <Select control={control} formState={formState} label='Jobb type' name='job_type'>
               {(Object.keys(JobPostType) as Array<JobPostType>).map((jobPostTypeEnum) => (
                 <MenuItem key={jobPostTypeEnum} value={jobPostTypeEnum}>
