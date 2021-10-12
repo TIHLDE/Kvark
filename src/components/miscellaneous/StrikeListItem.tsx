@@ -42,11 +42,8 @@ const StrikeListItem = ({ strike, user, isAdmin = false, allStrikes = false, ...
         <Stack gap={1} sx={{ p: 2 }}>
           <div>
             {allStrikes && (
-              <Fragment>
-                <Typography variant='subtitle2'>{`Begrunnelse: ${strike.description}`}</Typography>
-              </Fragment>
+              <Typography variant='subtitle2'>{`Begrunnelse: ${strike.description}`}</Typography>
             )}
-
             {isAdmin && Boolean(strike.creator) && (
               <Typography variant='subtitle2'>{`Opprettet av: ${strike.creator?.first_name} ${strike.creator?.last_name}`}</Typography>
             )}
