@@ -3,7 +3,6 @@ import { Box } from '@mui/system';
 import { useUserStrikes, useUser } from 'hooks/User';
 
 import StrikeListItem from 'components/miscellaneous/StrikeListItem';
-
 import { makeStyles } from '@mui/styles';
 import { Typography, Paper, ListItem } from '@mui/material';
 
@@ -24,7 +23,9 @@ function ProfileStrikes() {
     <Box>
       <Paper className={classes.paper}>
         <ListItem>
-          <Typography>Feil med prikkene? Send mail til bedpres@tihlde.org</Typography>
+          <Typography>
+            Feil med prikkene? Send mail til <a href='mailto:bedpres@tihlde.org'>bedpres@tihlde.org</a>
+          </Typography>
         </ListItem>
       </Paper>
       {user &&
