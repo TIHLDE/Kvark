@@ -31,7 +31,7 @@ const AllStrikesList = () => {
           </Stack>
         </Pagination>
       )}
-    </Fragment>
+    </>
   );
 };
 

@@ -59,7 +59,7 @@ const UserStrikeList = () => {
   }, [search]);
 
   return (
-    <Fragment>
+    <>
       <div className={classes.filterContainer}>
         <TextField fullWidth label='Klasser' onChange={(e) => setUserClassChoice(Number(e.target.value))} select value={userClassChoice} variant='outlined'>
           {USER_CLASSES.map((value, index) => (
@@ -91,7 +91,7 @@ const UserStrikeList = () => {
           ))}
         </Pagination>
       )}
-    </Fragment>
+    </>
   );
 };
 

@@ -1,9 +1,9 @@
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import { parseISO } from 'date-fns';
 import { Strike, UserBase } from 'types';
 import { formatDate } from 'utils';
 import { useDeleteStrike } from 'hooks/Strike';
-import { ListItem, ListItemText, ListItemButton, ListItemProps, Typography, Collapse, Stack, Divider } from '@mui/material';
+import { ListItem, ListItemButton, ListItemProps, Typography, Collapse, Stack, Divider } from '@mui/material';
 
 // Icons
 import Delete from '@mui/icons-material/DeleteRounded';
@@ -33,7 +33,7 @@ const StrikeListItem = ({ strike, user, isAdmin = false, allStrikes = false, ...
           <Typography sx={{ fontWeight: 'bold', ml: 1, mr: 3 }} variant='h3'>
             {strike.strike_size}
           </Typography>
-          {description}
+          {primaryText}
           {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItemButton>
       </ListItem>
@@ -41,9 +41,7 @@ const StrikeListItem = ({ strike, user, isAdmin = false, allStrikes = false, ...
         <Divider />
         <Stack gap={1} sx={{ p: 2 }}>
           <div>
-            {allStrikes && (
-              <Typography variant='subtitle2'>{`Begrunnelse: ${strike.description}`}</Typography>
-            )}
+            {allStrikes && <Typography variant='subtitle2'>{`Begrunnelse: ${strike.description}`}</Typography>}
             {isAdmin && Boolean(strike.creator) && (
               <Typography variant='subtitle2'>{`Opprettet av: ${strike.creator?.first_name} ${strike.creator?.last_name}`}</Typography>
             )}
