@@ -25,11 +25,7 @@ const StrikeListItem = ({ strike, user, isAdmin = false, allStrikes = false, ...
   const deleteStrike = useDeleteStrike(user.user_id);
   const [expanded, setExpanded] = useState(false);
   const deleteHandler = () => deleteStrike.mutate(strike.id);
-  const description = allStrikes ? (
-    <ListItemText primary={`${user.first_name} ${user.last_name}`} secondary={`Utløper ${formatDate(parseISO(strike.expires_at))}`} />
-  ) : (
-    <ListItemText primary={strike.description} secondary={`Utløper ${formatDate(parseISO(strike.expires_at))}`} />
-  );
+  const primaryText = allStrikes ? `${user.first_name} ${user.last_name}` : strike.description;
   return (
     <Paper noOverflow noPadding>
       <ListItem dense disablePadding {...props}>
