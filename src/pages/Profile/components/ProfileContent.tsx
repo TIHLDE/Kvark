@@ -17,6 +17,7 @@ import LogOutIcon from '@mui/icons-material/ExitToAppRounded';
 import BadgesIcon from '@mui/icons-material/EmojiEventsRounded';
 import GroupsIcon from '@mui/icons-material/PeopleOutlineRounded';
 import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
+import Warning from '@mui/icons-material/WarningRounded';
 
 // Project Components
 import ProfileAdmin from 'pages/Profile/components/ProfileAdmin';
@@ -25,6 +26,7 @@ import ProfileEvents from 'pages/Profile/components/ProfileEvents';
 import ProfileForms from 'pages/Profile/components/ProfileForms';
 import ProfileGroups from 'pages/Profile/components/ProfileGroups';
 import ProfileBadges from 'pages/Profile/components/ProfileBadges';
+import ProfileStrikes from 'pages/Profile/components/ProfileStrikes';
 import Paper from 'components/layout/Paper';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
@@ -65,8 +67,10 @@ const ProfileContent = () => {
   const formsTab: NavListItem = { label: 'Spørreskjemaer', icon: FormsIcon, badge: user?.unanswered_evaluations_count };
   const settingsTab: NavListItem = { label: 'Innstillinger', icon: SettingsIcon };
   const adminTab: NavListItem = { label: 'Admin', icon: AdminIcon };
+  const strikesTab: NavListItem = { label: 'Prikker', icon: Warning };
   const logoutTab: NavListItem = { label: 'Logg ut', icon: LogOutIcon, onClick: logout, className: classes.logOutButton };
-  const tabs: Array<NavListItem> = [eventTab, badgesTab, groupsTab, formsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
+  const tabs: Array<NavListItem> = [eventTab, badgesTab, groupsTab, strikesTab, formsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
+
   const [tab, setTab] = useState(eventTab.label);
 
   useEffect(() => event('change-tab', 'profile', `Changed tab to: ${tab}`), [tab]);
@@ -123,6 +127,9 @@ const ProfileContent = () => {
         </Collapse>
         <Collapse in={tab === formsTab.label} mountOnEnter>
           <ProfileForms />
+        </Collapse>
+        <Collapse in={tab === strikesTab.label} mountOnEnter>
+          <ProfileStrikes />
         </Collapse>
         <Collapse in={tab === settingsTab.label} mountOnEnter>
           <Paper>{user && <ProfileSettings user={user} />}</Paper>
