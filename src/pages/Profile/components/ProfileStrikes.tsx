@@ -1,41 +1,26 @@
-import { Box } from '@mui/system';
-// Material UI Components
-import { useUserStrikes, useUser } from 'hooks/User';
+import { Typography, Paper, Stack } from '@mui/material';
 
 import StrikeListItem from 'components/miscellaneous/StrikeListItem';
-import { makeStyles } from '@mui/styles';
-import { Typography, Paper, ListItem } from '@mui/material';
+import { useUserStrikes, useUser } from 'hooks/User';
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
-const useStyles = makeStyles({
-  paper: {
-    marginBottom: 5,
-    padding: 10,
-  },
-  strikeContainer: {
-    marginBottom: 5,
-  },
-});
 function ProfileStrikes() {
-  const classes = useStyles();
   const { data = [] } = useUserStrikes();
   const { data: user } = useUser();
   return (
-    <Box>
-      <Paper className={classes.paper}>
-        <ListItem>
-          <Typography>
-            Feil med prikkene? Send mail til <a href='mailto:bedpres@tihlde.org'>bedpres@tihlde.org</a>
-          </Typography>
-        </ListItem>
+    <Stack gap={1}>
+      <Paper sx={{ padding: 2 }}>
+        <Typography>
+          Informasjon om prikksystemet finner du ved <a href='https://tihlde.org/om/annet/arrangementsregler/'>arrangementsreglementet</a>. Feil med prikkene?
+          Send mail til <a href='mailto:bedpres@tihlde.org'>bedpres@tihlde.org</a>
+        </Typography>
       </Paper>
-      {user &&
-        data.map((strike, i) => (
-          <Box className={classes.strikeContainer} key={i}>
-            <StrikeListItem key={strike.id} strike={strike} userId={user.user_id} />
-          </Box>
-        ))}
-      <Box></Box>
-    </Box>
+      {data ? (
+        user && data.map((strike) => <StrikeListItem key={strike.id} strike={strike} userId={user.user_id} />)
+      ) : (
+        <NotFoundIndicator header='Fant ingen prikker' subtitle='Du har ingen prikker!' />
+      )}
+    </Stack>
   );
 }
 
