@@ -17,7 +17,7 @@ import LogOutIcon from '@mui/icons-material/ExitToAppRounded';
 import BadgesIcon from '@mui/icons-material/EmojiEventsRounded';
 import GroupsIcon from '@mui/icons-material/PeopleOutlineRounded';
 import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
-import WarningIcon from '@mui/icons-material/WarningRounded';
+import WorkspacesIcon from '@mui/icons-material/WorkspacesRounded';
 
 // Project Components
 import ProfileAdmin from 'pages/Profile/components/ProfileAdmin';
@@ -67,7 +67,7 @@ const ProfileContent = () => {
   const formsTab: NavListItem = { label: 'Spørreskjemaer', icon: FormsIcon, badge: user?.unanswered_evaluations_count };
   const settingsTab: NavListItem = { label: 'Innstillinger', icon: SettingsIcon };
   const adminTab: NavListItem = { label: 'Admin', icon: AdminIcon };
-  const strikesTab: NavListItem = { label: 'Prikker', icon: WarningIcon };
+  const strikesTab: NavListItem = { label: 'Prikker', icon: WorkspacesIcon };
   const logoutTab: NavListItem = { label: 'Logg ut', icon: LogOutIcon, onClick: logout, className: classes.logOutButton };
   const tabs: Array<NavListItem> = [eventTab, badgesTab, groupsTab, strikesTab, formsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
 

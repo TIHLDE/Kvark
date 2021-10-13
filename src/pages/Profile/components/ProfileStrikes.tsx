@@ -1,7 +1,8 @@
 import { Typography, Paper, Stack } from '@mui/material';
-
+import { Link } from 'react-router-dom';
 import StrikeListItem from 'components/miscellaneous/StrikeListItem';
 import { useUserStrikes, useUser } from 'hooks/User';
+import URLS from 'URLS';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
 function ProfileStrikes() {
@@ -11,7 +12,7 @@ function ProfileStrikes() {
     <Stack gap={1}>
       <Paper sx={{ padding: 2 }}>
         <Typography>
-          Informasjon om prikksystemet finner du ved <a href='https://tihlde.org/om/annet/arrangementsregler/'>arrangementsreglementet</a>.
+          Informasjon om prikksystemet finner du ved <Link to={URLS.eventRules}>arrangementsreglene</Link>{' '}
           {data && (
             <span>
               Feil med prikkene? Send mail til <a href='mailto:bedpres@tihlde.org'>bedpres@tihlde.org</a>
