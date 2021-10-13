@@ -12,7 +12,7 @@ function ProfileStrikes() {
     <Stack gap={1}>
       <Paper sx={{ padding: 2 }}>
         <Typography>
-          Informasjon om prikksystemet finner du ved <Link to={URLS.eventRules}>arrangementsreglene</Link>{' '}
+          Informasjon om prikksystemet finner du ved <Link to={URLS.eventRules}>arrangementsreglene</Link>.{' '}
           {data && (
             <span>
               Feil med prikkene? Send mail til <a href='mailto:bedpres@tihlde.org'>bedpres@tihlde.org</a>
