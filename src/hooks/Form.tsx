@@ -23,6 +23,8 @@ export const STATISTICS_QUERY_KEY = 'statistics';
 
 export const useFormById = (formId: string) =>
   useQuery<Form, RequestResponse>([FORM_QUERY_KEY, formId], () => API.getForm(formId), { enabled: formId !== '-' });
+export const useFormTemplates = () => useQuery<Array<Form>, RequestResponse>([FORM_QUERY_KEY], () => API.getFormTemplates(), {});
+
 export const useFormStatisticsById = (formId: string) =>
   useQuery<FormStatistics, RequestResponse>([FORM_QUERY_KEY, formId, STATISTICS_QUERY_KEY], () => API.getFormStatistics(formId), { enabled: formId !== '-' });
 
