@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useEffect } from 'react';
-import { useForm, SubmitHandler, Validate } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { JobPost } from 'types';
 import { JobPostType } from 'types/Enums';
 import { useJobPostById, useCreateJobPost, useUpdateJobPost, useDeleteJobPost } from 'hooks/JobPost';
