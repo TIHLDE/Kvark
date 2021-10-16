@@ -25,6 +25,7 @@ import { OverridableComponent } from '@mui/material/OverridableComponent';
 import DateIcon from '@mui/icons-material/DateRangeRounded';
 import BusinessIcon from '@mui/icons-material/BusinessRounded';
 import DeadlineIcon from '@mui/icons-material/AlarmRounded';
+import SchoolIcon from '@mui/icons-material/School';
 
 // Project components
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
@@ -160,6 +161,7 @@ const ListItem = ({ event, news, jobpost, className, largeImg = false, sx }: Lis
         { label: jobpost.is_continuously_hiring ? 'Fortløpende opptak' : formatDate(parseISO(jobpost.deadline)), icon: DeadlineIcon },
         {
           label: `Årstrinn: ${jobpost.class_start === jobpost.class_end ? jobpost.class_start + '.' : jobpost.class_start + '. - ' + jobpost.class_end + '.'}`,
+          icon: SchoolIcon,
         },
       ];
     }
