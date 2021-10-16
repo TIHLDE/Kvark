@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useEffect } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, Validate } from 'react-hook-form';
 import { JobPost } from 'types';
 import { JobPostType } from 'types/Enums';
 import { useJobPostById, useCreateJobPost, useUpdateJobPost, useDeleteJobPost } from 'hooks/JobPost';
@@ -166,6 +166,10 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
     }
   };
 
+  // const monke: Validate<any> = (val1: number, val2: number) => {
+  //   return val1 > val2;
+  // };
+
   if (isLoading) {
     return <LinearProgress />;
   }
@@ -211,7 +215,16 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
           </div>
           <div className={classes.grid}>
             <div className={classes.grid}>
-              <Select control={control} formState={formState} label='Fra år' name='class_start'>
+              <Select
+                control={control}
+                formState={formState}
+                label='Fra år'
+                name='class_start'
+                rules={{
+                  validate: {
+                    wrongOrder: (value) => value <= getValues().class_end || '"Fra år" må være mindre eller lik "Til år"',
+                  },
+                }}>
                 {years.map((value) => (
                   <MenuItem key={value} value={value}>
                     {value + '.'}
