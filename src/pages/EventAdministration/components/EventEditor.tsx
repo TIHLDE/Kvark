@@ -1,7 +1,8 @@
 import { useCallback, useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Event, RegistrationPriority } from 'types';
+import { Event, EventRequired, GroupList, RegistrationPriority } from 'types';
 import { useEventById, useCreateEvent, useUpdateEvent, useDeleteEvent } from 'hooks/Event';
+import { useUserGroups } from 'hooks/User';
 import { useCategories } from 'hooks/Categories';
 import { useSnackbar } from 'hooks/Snackbar';
 import { addHours, subDays, parseISO, setHours, startOfHour } from 'date-fns';
@@ -25,6 +26,7 @@ import DatePicker from 'components/inputs/DatePicker';
 import { ImageUpload } from 'components/inputs/Upload';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
 import VerifyDialog from 'components/layout/VerifyDialog';
+import { GroupType } from 'types/Enums';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -55,6 +57,7 @@ export type EventEditorProps = {
 type FormValues = Pick<Event, 'category' | 'description' | 'image' | 'image_alt' | 'limit' | 'location' | 'priority' | 'sign_up' | 'title'> & {
   end_date: Date;
   end_registration_at: Date;
+  group: GroupList['slug'];
   sign_off_deadline: Date;
   start_date: Date;
   start_registration_at: Date;
@@ -81,6 +84,7 @@ const allPriorities = [
 
 const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const classes = useStyles();
+  const { data: userGroups } = useUserGroups();
   const { data, isLoading, isError } = useEventById(eventId || -1);
   const createEvent = useCreateEvent();
   const updateEvent = useUpdateEvent(eventId || -1);
@@ -104,6 +108,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         description: newValues?.description || '',
         end_date: newValues?.end_date ? parseISO(newValues.end_date) : new Date(),
         end_registration_at: newValues?.end_registration_at ? parseISO(newValues.end_registration_at) : new Date(),
+        group: newValues?.group.slug || '',
         image: newValues?.image || '',
         image_alt: newValues?.image_alt || '',
         limit: newValues?.limit || 0,
@@ -130,10 +135,21 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     }
   }, [data, setValues]);
 
-  const getEventPreview = () => {
+  const getEventPreview = (): Event => {
     const values = getValues();
     return {
       ...values,
+      group: {
+        leader: {
+          first_name: 'Ola',
+          last_name: 'Nordmann',
+          user_id: 'olanor',
+          image: '',
+        },
+        name: values.group,
+        slug: values.group,
+        type: GroupType.SUBGROUP,
+      },
       list_count: 0,
       registration_priorities: regPriorities,
       waiting_list_count: 0,
@@ -158,7 +174,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   };
 
   const closeEvent = async () => {
-    await updateEvent.mutate({ ...data, closed: true } as Event, {
+    await updateEvent.mutate({ ...data, closed: true } as EventRequired, {
       onSuccess: () => {
         showSnackbar('Arrangementet ble stengt', 'success');
       },
@@ -177,7 +193,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       sign_off_deadline: data.sign_off_deadline.toJSON(),
       start_date: data.start_date.toJSON(),
       start_registration_at: data.start_registration_at.toJSON(),
-    } as Event;
+    } as EventRequired;
     if (eventId) {
       await updateEvent.mutate(event, {
         onSuccess: () => {
@@ -324,13 +340,15 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           <ImageUpload formState={formState} label='Velg bilde' ratio={21 / 9} register={register('image')} setValue={setValue} watch={watch} />
           <TextField formState={formState} label='Bildetekst' {...register('image_alt')} />
           <div className={classes.grid}>
-            <Select control={control} formState={formState} label='Prioritering' name='priority'>
-              {priorities.map((value, index) => (
-                <MenuItem key={index} value={index}>
-                  {value}
-                </MenuItem>
-              ))}
-            </Select>
+            {userGroups && (
+              <Select control={control} formState={formState} label='Arrangør (Gruppe)' name='group'>
+                {userGroups.map((group) => (
+                  <MenuItem key={group.slug} value={group.slug}>
+                    {group.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
             {Boolean(categories.length) && (
               <Select control={control} formState={formState} label='Kategori' name='category'>
                 {categories.map((value, index) => (
@@ -341,6 +359,13 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               </Select>
             )}
           </div>
+          <Select control={control} formState={formState} label='Prioritering' name='priority'>
+            {priorities.map((value, index) => (
+              <MenuItem key={index} value={index}>
+                {value}
+              </MenuItem>
+            ))}
+          </Select>
           <RendererPreview className={classes.margin} getContent={getEventPreview} renderer={EventRenderer} />
           <SubmitButton
             className={classes.margin}
