@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- 🎨 **Forside**. Fjernet Drift av datasystemer fra linjeforeningens linjer på framsiden.
 - 🦟 **Admin**. Fikset bug hvor man kom på feil side ved bytting av arrangementer.
 - ⚡ **Admin**. Brukere må nå flyttes ned på ventelisten før nye brukere kan flyttes opp manuelt.
 - 🎨 **Admin**. Prioritering av selve arrangementer er fjernet.

@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     margin: 'auto',
-    maxWidth: '1000px',
+    maxWidth: '700px',
     padding: '150px 15px 100px',
     position: 'relative',
     zIndex: 20,
