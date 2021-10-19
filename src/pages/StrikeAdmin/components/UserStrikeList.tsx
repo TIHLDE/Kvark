@@ -6,15 +6,11 @@ import { makeStyles } from '@mui/styles';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import UserListItem from 'pages/StrikeAdmin/components/UserListItem';
+import UserStrikeListItem from 'pages/StrikeAdmin/components/UserStrikeListItem';
 import { PersonListItemLoading } from 'pages/UserAdmin/components/PersonListItem';
 import { MenuItem, TextField } from '@mui/material';
 
 const useStyles = makeStyles((theme) => ({
-  content: {
-    margin: '-60px auto 60px',
-    position: 'relative',
-  },
   filterContainer: {
     display: 'grid',
     gridTemplateColumns: 'repeat(3, 1fr)',
@@ -85,7 +81,7 @@ const UserStrikeList = () => {
           {data.pages.map((page, i) => (
             <Fragment key={i}>
               {page.results.map((user) => (
-                <UserListItem key={user.user_id} user={user} />
+                <UserStrikeListItem key={user.user_id} user={user} />
               ))}
             </Fragment>
           ))}

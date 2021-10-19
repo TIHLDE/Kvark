@@ -24,15 +24,6 @@ export const useUserBadges = () =>
     getNextPageParam: (lastPage) => lastPage.next,
   });
 
-// export const useUserStrikes = (id : String) => {
-//   return useInfiniteQuery<PaginationResponse<Strike>, RequestResponse>(
-//     [USER_BADGES_QUERY_KEY],
-//     // ({ pageParam = 1 }) => API.getUserStrikes(id, { page: pageParam }),
-//     {
-//       getNextPageParam: (lastPage) => lastPage.next,
-//     },
-//   );
-// };
 export const useUserEvents = () => {
   return useInfiniteQuery<PaginationResponse<EventCompact>, RequestResponse>(
     [USER_EVENTS_QUERY_KEY],

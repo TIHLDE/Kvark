@@ -16,19 +16,10 @@ import { PrimaryTopBox } from 'components/layout/TopBox';
 import UserStrikeList from 'pages/StrikeAdmin/components/UserStrikeList';
 import AllStrikesList from 'pages/StrikeAdmin/components/AllStrikeList';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   content: {
     margin: '-60px auto 60px',
     position: 'relative',
-  },
-  filterContainer: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gridGap: theme.spacing(1),
-    margin: theme.spacing(2, 0, 1),
-    [theme.breakpoints.down('lg')]: {
-      gridTemplateColumns: '1fr',
-    },
   },
 }));
 

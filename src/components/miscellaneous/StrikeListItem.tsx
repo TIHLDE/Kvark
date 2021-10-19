@@ -17,15 +17,15 @@ import EventListItem from 'components/miscellaneous/ListItem';
 export type StrikeProps = {
   strike: Strike;
   user: UserBase;
-  allStrikes?: boolean;
+  displayUserInfo?: boolean;
 } & ListItemProps;
 
-const StrikeListItem = ({ strike, user, allStrikes = false, ...props }: StrikeProps) => {
+const StrikeListItem = ({ strike, user, displayUserInfo = false, ...props }: StrikeProps) => {
   const { data: loggedInUser } = useUser();
   const deleteStrike = useDeleteStrike(user.user_id);
   const [expanded, setExpanded] = useState(false);
   const deleteHandler = () => deleteStrike.mutate(strike.id);
-  const primaryText = allStrikes ? `${user.first_name} ${user.last_name}` : strike.description;
+  const primaryText = displayUserInfo ? `${user.first_name} ${user.last_name}` : strike.description;
   return (
     <Paper noOverflow noPadding>
       <ListItem dense disablePadding {...props}>
