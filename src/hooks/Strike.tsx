@@ -15,6 +15,9 @@ export const useCreateStrike = () => {
       queryClient.invalidateQueries([USER_STRIKES_QUERY_KEY, variables.user_id]);
       showSnackbar('Prikken ble opprettet', 'success');
     },
+    onError: (e) => {
+      showSnackbar(e.detail, 'error');
+    },
   });
 };
 
@@ -26,6 +29,9 @@ export const useDeleteStrike = (userId: string) => {
       queryClient.invalidateQueries([ALL_STRIKES_QUERY_KEY]);
       queryClient.invalidateQueries([USER_STRIKES_QUERY_KEY, userId]);
       showSnackbar('Prikken ble slettet', 'success');
+    },
+    onError: (e) => {
+      showSnackbar(e.detail, 'error');
     },
   });
 };

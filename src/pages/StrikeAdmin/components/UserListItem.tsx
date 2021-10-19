@@ -35,7 +35,7 @@ const UserListItem = ({ user }: UserListItemProps) => {
       <Collapse in={expanded}>
         <Stack spacing={1} sx={{ p: 2 }}>
           {data.map((strike) => (
-            <StrikeListItem isAdmin key={strike.id} strike={strike} user={user} />
+            <StrikeListItem key={strike.id} strike={strike} user={user} />
           ))}
         </Stack>
       </Collapse>

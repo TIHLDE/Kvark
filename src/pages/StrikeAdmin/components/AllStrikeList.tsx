@@ -24,7 +24,7 @@ const AllStrikesList = () => {
             {data.pages.map((page, i) => (
               <Fragment key={i}>
                 {page.results.map((strike) => (
-                  <StrikeListItem allStrikes isAdmin key={strike.id} strike={strike} user={strike.user} />
+                  <StrikeListItem allStrikes key={strike.id} strike={strike} user={strike.user} />
                 ))}
               </Fragment>
             ))}

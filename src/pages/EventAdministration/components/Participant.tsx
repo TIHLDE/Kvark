@@ -75,7 +75,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
         <Typography variant='subtitle1'>{`Alle prikker (${data.reduce((val, strike) => val + strike.strike_size, 0)}):`}</Typography>
         <Stack gap={1}>
           {data.map((strike) => (
-            <StrikeListItem isAdmin key={strike.id} strike={strike} user={registration.user_info} />
+            <StrikeListItem key={strike.id} strike={strike} user={registration.user_info} />
           ))}
           {!data.length && (
             <Typography variant='subtitle2'>{`${registration.user_info.first_name} ${registration.user_info.last_name} har ingen aktive prikker`}</Typography>

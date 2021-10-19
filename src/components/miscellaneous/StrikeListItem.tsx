@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { parseISO } from 'date-fns';
 import { Strike, UserBase } from 'types';
 import { formatDate } from 'utils';
+import { useUser } from 'hooks/User';
 import { useDeleteStrike } from 'hooks/Strike';
 import { ListItem, ListItemButton, ListItemProps, Typography, Collapse, Stack, Divider, ListItemText } from '@mui/material';
 
@@ -16,12 +17,11 @@ import EventListItem from 'components/miscellaneous/ListItem';
 export type StrikeProps = {
   strike: Strike;
   user: UserBase;
-  /** Should the viewer see edit and delete options? */
-  isAdmin?: boolean;
   allStrikes?: boolean;
 } & ListItemProps;
 
-const StrikeListItem = ({ strike, user, isAdmin = false, allStrikes = false, ...props }: StrikeProps) => {
+const StrikeListItem = ({ strike, user, allStrikes = false, ...props }: StrikeProps) => {
+  const { data: loggedInUser } = useUser();
   const deleteStrike = useDeleteStrike(user.user_id);
   const [expanded, setExpanded] = useState(false);
   const deleteHandler = () => deleteStrike.mutate(strike.id);
@@ -41,14 +41,13 @@ const StrikeListItem = ({ strike, user, isAdmin = false, allStrikes = false, ...
         <Divider />
         <Stack gap={1} sx={{ p: 2 }}>
           <div>
-            {allStrikes && <Typography variant='subtitle2'>{`Begrunnelse: ${strike.description}`}</Typography>}
-            {isAdmin && Boolean(strike.creator) && (
+            {loggedInUser?.permissions.strike.read && Boolean(strike.creator) && (
               <Typography variant='subtitle2'>{`Opprettet av: ${strike.creator?.first_name} ${strike.creator?.last_name}`}</Typography>
             )}
             <Typography variant='subtitle2'>{`Opprettet: ${formatDate(parseISO(strike.created_at))}`}</Typography>
           </div>
           {strike.event !== undefined && <EventListItem event={strike.event} />}
-          {isAdmin && (
+          {loggedInUser?.permissions.strike.destroy && (
             <VerifyDialog color='error' contentText={`Er du sikker på at du vil slette denne prikken?`} onConfirm={deleteHandler} startIcon={<Delete />}>
               Slett prikk
             </VerifyDialog>

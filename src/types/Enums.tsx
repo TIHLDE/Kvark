@@ -42,8 +42,8 @@ export enum PermissionApp {
   JOBPOST = 'jobpost',
   NEWS = 'news',
   PAGE = 'page',
-  USER = 'user',
   STRIKE = 'strike',
+  USER = 'user',
 }
 export enum Groups {
   HS = 'HS',
