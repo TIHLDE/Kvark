@@ -334,10 +334,8 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 </AccordionDetails>
               </Accordion>
             </div>
-            <div>
+            <Stack>
               <Bool control={control} formState={formState} label='Dette arrangementet vil gi prikker' name='can_cause_strikes' type='switch' />
-            </div>
-            <div>
               <Bool
                 control={control}
                 formState={formState}
@@ -345,7 +343,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 name='enforces_previous_strikes'
                 type='switch'
               />
-            </div>
+            </Stack>
           </Collapse>
           <MarkdownEditor formState={formState} {...register('description', { required: 'Gi arrangementet en beskrivelse' })} required />
           <ImageUpload formState={formState} label='Velg bilde' ratio={21 / 9} register={register('image')} setValue={setValue} watch={watch} />
