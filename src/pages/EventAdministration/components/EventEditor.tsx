@@ -52,7 +52,20 @@ export type EventEditorProps = {
   goToEvent: (newEvent: number | null) => void;
 };
 
-type FormValues = Pick<Event, 'category' | 'description' | 'image' | 'image_alt' | 'limit' | 'location' | 'priority' | 'sign_up' | 'title'> & {
+type FormValues = Pick<
+  Event,
+  | 'category'
+  | 'description'
+  | 'image'
+  | 'image_alt'
+  | 'limit'
+  | 'location'
+  | 'priority'
+  | 'sign_up'
+  | 'title'
+  | 'can_cause_strikes'
+  | 'enforces_previous_strikes'
+> & {
   end_date: Date;
   end_registration_at: Date;
   sign_off_deadline: Date;
@@ -114,6 +127,8 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         start_date: newValues?.start_date ? parseISO(newValues.start_date) : new Date(),
         start_registration_at: newValues?.start_registration_at ? parseISO(newValues.start_registration_at) : new Date(),
         title: newValues?.title || '',
+        can_cause_strikes: newValues ? newValues.can_cause_strikes : true,
+        enforces_previous_strikes: newValues ? newValues.enforces_previous_strikes : true,
       });
       if (!newValues) {
         setTimeout(() => updateDates(new Date()), 100);
@@ -318,6 +333,18 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                   <EventRegistrationPriorities priorities={regPriorities} setPriorities={setRegPriorities} />
                 </AccordionDetails>
               </Accordion>
+            </div>
+            <div>
+              <Bool control={control} formState={formState} label='Dette arrangementet vil gi prikker' name='can_cause_strikes' type='switch' />
+            </div>
+            <div>
+              <Bool
+                control={control}
+                formState={formState}
+                label='Dette arrangementet vil håndheve straff for prikker'
+                name='enforces_previous_strikes'
+                type='switch'
+              />
             </div>
           </Collapse>
           <MarkdownEditor formState={formState} {...register('description', { required: 'Gi arrangementet en beskrivelse' })} required />

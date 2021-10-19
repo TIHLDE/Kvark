@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { Event, Registration } from 'types';
 import { PermissionApp } from 'types/Enums';
 import URLS from 'URLS';
-import { parseISO, isPast, isFuture, subHours } from 'date-fns';
+import { parseISO, isPast, isFuture, subHours, addHours } from 'date-fns';
 import { formatDate, getICSFromEvent } from 'utils';
 import { Link } from 'react-router-dom';
 
@@ -110,7 +110,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const [view, setView] = useState<Views>(Views.Info);
   const startDate = parseISO(data.start_date);
   const endDate = parseISO(data.end_date);
+  const penaltyHours = user ? (user.number_of_strikes === 1 ? 3 : user.number_of_strikes >= 2 ? 12 : 0) : 0;
   const startRegistrationDate = parseISO(data.start_registration_at);
+  const userStartRegistrationDate = addHours(startRegistrationDate, penaltyHours);
   const endRegistrationDate = parseISO(data.end_registration_at);
   const signOffDeadlineDate = parseISO(data.sign_off_deadline);
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
@@ -212,7 +214,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           <Alert severity='warning' variant='outlined'>
             Dette arrangementet er stengt. Det er derfor ikke mulig å melde seg av eller på.
           </Alert>
-        ) : isFuture(startRegistrationDate) ? (
+        ) : isFuture(userStartRegistrationDate) ? (
           <>
             <HasUnansweredEvaluations />
             <Button disabled fullWidth variant='contained'>
@@ -265,6 +267,21 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               </>
             )}
           </DetailsPaper>
+          {penaltyHours > 0 && data.enforces_previous_strikes && (
+            <Alert severity='warning' variant='outlined'>
+              Du må vente {penaltyHours} timer før du kan melde deg på
+            </Alert>
+          )}
+          {!data.can_cause_strikes && (
+            <Alert severity='info' variant='outlined'>
+              Dette arrangementet gir ikke prikker
+            </Alert>
+          )}
+          {!data.enforces_previous_strikes && (
+            <Alert severity='info' variant='outlined'>
+              Dette arrangementet håndhever ikke aktive prikker
+            </Alert>
+          )}
           {Boolean(data.registration_priorities.length) && data.registration_priorities.length !== 14 && (
             <DetailsPaper noPadding>
               <DetailsHeader variant='h2'>Prioritert</DetailsHeader>

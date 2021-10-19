@@ -15,6 +15,7 @@ export interface User {
   home_busstop?: string;
   image: string;
   last_name: string;
+  number_of_strikes: number;
   permissions: Record<PermissionApp, Permissions>;
   tool: string;
   unread_notifications: number;
