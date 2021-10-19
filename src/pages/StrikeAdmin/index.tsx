@@ -41,7 +41,6 @@ const StrikeAdmin = () => {
 
   return (
     <Page banner={<PrimaryTopBox />} options={{ title: 'Prikker admin' }}>
-    
       <Paper className={classes.content}>
         <Typography variant='h1'>Prikker admin</Typography>
         <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
