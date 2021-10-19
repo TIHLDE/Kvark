@@ -13,7 +13,13 @@
 ---
 
 ## Neste versjon
+
+- ⚡ **Admin**. Brukere må nå flyttes ned på ventelisten før nye brukere kan flyttes opp manuelt.
+- 🎨 **Admin**. Prioritering av selve arrangementer er fjernet.
+- ✨ **Strikes**. Ny admin side for strikes
+- ⚡ **Prikker**. Kun HS og Index får nå tilgang til å slette prikker.
 - ✨ **Arrangementer**. Brukere kan melde seg av arrangementer opp til 2 timer før start, men blir varslet om at de får prikk.
+- ✨ **Bruker**. Brukere kan se sine egene prikker.
 
 ## Versjon 1.2.4 (05.10.2021)
 
@@ -22,7 +28,6 @@
 - ✨ **Prikker**. Admins har mulighet til å gi deltagere på arrangementer prikker, se prikkene de allerede har mottatt og slette dem
 - ✨ **Changelog**. Expand bokser i changelog for å se tidligere endringer/versjoner.
 - 🦟 **Varslinger**. Varslings-boksen lukkes ved klikk ppå link
-
 
 ## Versjon 1.2.3 (29.09.2021)
 

@@ -25,7 +25,6 @@ export interface Event {
   limit: number;
   list_count: number;
   location: string;
-  priority: number;
   registration_priorities: Array<RegistrationPriority>;
   sign_off_deadline: string;
   sign_up: boolean;
@@ -35,6 +34,8 @@ export interface Event {
   title: string;
   updated_at: string;
   waiting_list_count: number;
+  can_cause_strikes: boolean;
+  enforces_previous_strikes: boolean;
 }
 export type EventRequired = Partial<Event> & Pick<Event, 'end_date' | 'title' | 'start_date'> & { group: GroupList['slug'] };
 export type EventCompact = Pick<Event, 'end_date' | 'expired' | 'group' | 'id' | 'image' | 'image_alt' | 'location' | 'title' | 'start_date' | 'updated_at'>;
