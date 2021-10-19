@@ -112,13 +112,7 @@ const FormEditor = ({ form }: FormEditorProps) => {
         <Button fullWidth onClick={save} variant='contained'>
           Lagre
         </Button>
-        <VerifyDialog
-          closeText='Ikke slett skjemaet'
-          color='error'
-          confirmText='Jeg er sikker'
-          contentText='Sletting av skjema kan ikke reverseres.'
-          onConfirm={onDeleteForm}
-          titleText='Er du sikker på at du vil slette dette skjemaet? Alle svar vil forsvinne.'>
+        <VerifyDialog color='error' contentText='Sletting av skjema kan ikke reverseres.' onConfirm={onDeleteForm}>
           Slett
         </VerifyDialog>
       </div>
