@@ -17,6 +17,7 @@ import AddMemberModal from 'pages/GroupAdmin/components/AddMemberModal';
 import MembersCard from 'pages/Pages/specials/Index/MembersCard';
 import Pagination from 'components/layout/Pagination';
 import Avatar from 'components/miscellaneous/Avatar';
+import { UserList } from 'types';
 
 const Group = () => {
   const { slug: slugParameter } = useParams();
@@ -80,7 +81,7 @@ const Group = () => {
                 <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
                   <Stack spacing={1}>
                     {members.map((member) => (
-                      <MemberListItem key={member.user.user_id} slug={slug} user={member.user} />
+                      <MemberListItem key={member.user.user_id} slug={slug} user={member.user as UserList} />
                     ))}
                   </Stack>
                 </Pagination>
