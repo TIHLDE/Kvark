@@ -21,7 +21,7 @@ function ProfileStrikes() {
         </Typography>
       </Paper>
       {data ? (
-        user && data.map((strike) => <StrikeListItem key={strike.id} strike={strike} userId={user.user_id} />)
+        user && data.map((strike) => <StrikeListItem key={strike.id} strike={strike} user={user} />)
       ) : (
         <NotFoundIndicator header='Fant ingen prikker' subtitle='Du har ingen prikker!' />
       )}
