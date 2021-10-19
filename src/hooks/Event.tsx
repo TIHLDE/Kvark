@@ -117,7 +117,8 @@ export const useUpdateEventRegistration = (
       }
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries([EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_REGISTRATION]);
+      queryClient.invalidateQueries([EVENT_QUERY_KEY, eventId]);
+      queryClient.invalidateQueries([USER_EVENTS_QUERY_KEY]);
       queryClient.setQueryData([EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_REGISTRATION, data.registration_id], data);
     },
   });

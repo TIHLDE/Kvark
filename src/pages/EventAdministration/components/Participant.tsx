@@ -7,7 +7,7 @@ import parseISO from 'date-fns/parseISO';
 import { useSnackbar } from 'hooks/Snackbar';
 
 // Material-ui
-import { Stack, Checkbox, Typography, Collapse, Button, Tooltip, ListItem, ListItemButton, ListItemText, ListItemAvatar, Divider } from '@mui/material';
+import { Stack, Checkbox, Typography, Collapse, Tooltip, ListItem, ListItemButton, ListItemText, ListItemAvatar, Divider } from '@mui/material';
 
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
@@ -48,6 +48,10 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
     });
   };
 
+  const moveHandler = (onWait: boolean) => {
+    updateRegistration.mutate({ registration: { is_on_wait: onWait }, userId: registration.user_info.user_id });
+  };
+
   const handleAttendedCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCheckedState(event.target.checked);
     updateRegistration.mutate(
@@ -66,8 +70,6 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
     );
   };
 
-  const changeList = (onWait: boolean) => updateRegistration.mutate({ registration: { is_on_wait: onWait }, userId: registration.user_info.user_id });
-
   const StrikesInfo = () => {
     const { data = [] } = useUserStrikes(registration.user_info.user_id);
     return (
@@ -75,7 +77,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
         <Typography variant='subtitle1'>{`Alle prikker (${data.reduce((val, strike) => val + strike.strike_size, 0)}):`}</Typography>
         <Stack gap={1}>
           {data.map((strike) => (
-            <StrikeListItem isAdmin key={strike.id} strike={strike} userId={registration.user_info.user_id} />
+            <StrikeListItem key={strike.id} strike={strike} user={registration.user_info} />
           ))}
           {!data.length && (
             <Typography variant='subtitle2'>{`${registration.user_info.first_name} ${registration.user_info.last_name} har ingen aktive prikker`}</Typography>
@@ -120,23 +122,28 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
             <Typography variant='subtitle1'>{`Påmeldt: ${formatDate(parseISO(registration.created_at))}`}</Typography>
           </div>
           <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
-            {registration.is_on_wait ? (
+            {registration.is_on_wait && event && event.list_count >= event.limit ? (
+              <VerifyDialog contentText='Du må flytte noen på ventelista før du kan flytte en deltager opp' startIcon={<ArrowUpwardIcon />}>
+                Flytt til påmeldte
+              </VerifyDialog>
+            ) : registration.is_on_wait && event && event.list_count <= event.limit ? (
               <VerifyDialog
-                contentText={`Er du sikker på at du vil gi denne personen plass på dette arrangementet? ${
-                  event && event.list_count >= event.limit
-                    ? 'Arrangementet er fullt og vil få en ekstra plass slik at antall påmeldte ikke blir større enn kapasiteten.'
-                    : ''
-                }`}
-                onConfirm={() => changeList(false)}
+                contentText={`Er du sikker på at du vil gi denne personen plass på dette arrangementet?`}
+                onConfirm={() => moveHandler(false)}
                 startIcon={<ArrowUpwardIcon />}
                 titleText={'Er du sikker?'}
                 variant='outlined'>
                 Flytt til påmeldte
               </VerifyDialog>
             ) : (
-              <Button fullWidth onClick={() => changeList(true)} startIcon={<ArrowDownwardIcon />} variant='outlined'>
+              <VerifyDialog
+                contentText={`Er du sikker på at du vil flytte denne personen til ventelista?`}
+                onConfirm={() => moveHandler(true)}
+                startIcon={<ArrowDownwardIcon />}
+                titleText={'Er du sikker?'}
+                variant='outlined'>
                 Flytt til venteliste
-              </Button>
+              </VerifyDialog>
             )}
             <VerifyDialog
               color='error'

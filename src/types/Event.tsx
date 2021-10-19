@@ -1,7 +1,6 @@
 import { UserClass, UserStudy } from 'types/Enums';
 import { User } from 'types/User';
 import { UserSubmission } from 'types/Form';
-import { Strike } from 'types/Strike';
 
 export interface Category {
   created_at: string;
@@ -24,7 +23,6 @@ export interface Event {
   limit: number;
   list_count: number;
   location: string;
-  priority: number;
   registration_priorities: Array<RegistrationPriority>;
   sign_off_deadline: string;
   sign_up: boolean;

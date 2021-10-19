@@ -32,6 +32,7 @@ export default {
   shortLinks: '/linker/',
 
   userAdmin: '/admin/brukere/',
+  strikeAdmin: '/admin/prikker/',
   eventAdmin: '/admin/arrangementer/',
   jobpostsAdmin: '/admin/karriere/',
   newsAdmin: '/admin/nyheter/',

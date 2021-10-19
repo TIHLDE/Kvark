@@ -15,6 +15,7 @@ import JobPostIcon from '@mui/icons-material/WorkOutlineRounded';
 import NewsIcon from '@mui/icons-material/DescriptionRounded';
 import UsersIcon from '@mui/icons-material/PermIdentityRounded';
 import GroupsIcon from '@mui/icons-material/GroupRounded';
+import WorkspacesIcon from '@mui/icons-material/Workspaces';
 
 // Project Components
 import Paper from 'components/layout/Paper';
@@ -93,6 +94,13 @@ const Admin = () => {
       to: URLS.newsAdmin,
       primary: 'Nyheter',
       secondary: 'Opprett, endre og slett nyheter',
+    },
+    {
+      apps: [PermissionApp.STRIKE],
+      icon: WorkspacesIcon,
+      to: URLS.strikeAdmin,
+      primary: 'Prikker',
+      secondary: 'Se og slett prikker',
     },
   ];
 
