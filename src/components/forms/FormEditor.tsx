@@ -9,7 +9,7 @@ import { makeStyles } from '@mui/styles';
 import { ClickAwayListener, Grow, Paper, Popper, MenuItem, MenuList, Button } from '@mui/material';
 
 // Project components
-import Dialog from 'components/layout/Dialog';
+import VerifyDialog from 'components/layout/VerifyDialog';
 import FieldEditor from 'components/forms/FieldEditor';
 
 const useStyles = makeStyles((theme) => ({
@@ -33,7 +33,6 @@ const FormEditor = ({ form }: FormEditorProps) => {
   const showSnackbar = useSnackbar();
   const [fields, setFields] = useState<Array<TextFormField | SelectFormField>>(form.fields);
   const [addButtonOpen, setAddButtonOpen] = useState(false);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(true);
   const buttonAnchorRef = useRef(null);
 
   useEffect(() => {
@@ -44,7 +43,6 @@ const FormEditor = ({ form }: FormEditorProps) => {
     deleteForm.mutate(undefined, {
       onSuccess: (data) => {
         showSnackbar(data.detail, 'success');
-        setDeleteDialogOpen(false);
       },
       onError: (e) => {
         showSnackbar(e.detail, 'error');
@@ -114,9 +112,15 @@ const FormEditor = ({ form }: FormEditorProps) => {
         <Button fullWidth onClick={save} variant='contained'>
           Lagre
         </Button>
-        <Button color='error' fullWidth onClick={() => setDeleteDialogOpen(true)} variant='outlined'>
-          Slett skjema
-        </Button>
+        <VerifyDialog
+          closeText='Ikke slett skjemaet'
+          color='error'
+          confirmText='Jeg er sikker'
+          contentText='Sletting av skjema kan ikke reverseres.'
+          onConfirm={onDeleteForm}
+          titleText='Er du sikker på at du vil slette dette skjemaet? Alle svar vil forsvinne.'>
+          Slett
+        </VerifyDialog>
       </div>
       <Popper anchorEl={buttonAnchorRef.current} open={addButtonOpen} role={undefined} transition>
         {({ TransitionProps }) => (
@@ -133,9 +137,6 @@ const FormEditor = ({ form }: FormEditorProps) => {
           </Grow>
         )}
       </Popper>
-      <Dialog confirmText='Jeg er sikker' onClose={() => setDeleteDialogOpen(false)} onConfirm={onDeleteForm} open={deleteDialogOpen}>
-        Er du sikker på at du vil slette dette skjemaet? Alle svar vil forsvinne.
-      </Dialog>
     </>
   );
 };

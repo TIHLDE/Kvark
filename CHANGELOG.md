@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- ⚡ **Admin**. Brukere må nå flyttes ned på ventelisten før nye brukere kan flyttes opp manuelt.
+
 ## Versjon 1.2.4 (05.10.2021)
 
 - 🎨 **Admin**. Endret spacing på diverse knapper i admin-sider.
