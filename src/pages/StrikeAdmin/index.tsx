@@ -14,7 +14,7 @@ import Paper from 'components/layout/Paper';
 import Tabs from 'components/layout/Tabs';
 import { PrimaryTopBox } from 'components/layout/TopBox';
 import UserStrikeList from 'pages/StrikeAdmin/components/UserStrikeList';
-import AllStrikesList from './components/AllStrikeList';
+import AllStrikesList from 'pages/StrikeAdmin/components/AllStrikeList';
 
 const useStyles = makeStyles((theme) => ({
   content: {
