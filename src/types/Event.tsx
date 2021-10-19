@@ -32,6 +32,8 @@ export interface Event {
   title: string;
   updated_at: string;
   waiting_list_count: number;
+  can_cause_strikes: boolean;
+  enforces_previous_strikes: boolean;
 }
 export type EventRequired = Partial<Event> & Pick<Event, 'end_date' | 'title' | 'start_date'>;
 export type EventCompact = Pick<Event, 'end_date' | 'expired' | 'id' | 'image' | 'image_alt' | 'location' | 'title' | 'start_date' | 'updated_at'>;
