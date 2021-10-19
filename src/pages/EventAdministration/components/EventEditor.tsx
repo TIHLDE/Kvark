@@ -52,16 +52,13 @@ export type EventEditorProps = {
   goToEvent: (newEvent: number | null) => void;
 };
 
-type FormValues = Pick<Event, 'category' | 'description' | 'image' | 'image_alt' | 'limit' | 'location' | 'priority' | 'sign_up' | 'title'> & {
+type FormValues = Pick<Event, 'category' | 'description' | 'image' | 'image_alt' | 'limit' | 'location' | 'sign_up' | 'title'> & {
   end_date: Date;
   end_registration_at: Date;
   sign_off_deadline: Date;
   start_date: Date;
   start_registration_at: Date;
 };
-
-const priorities = ['Lav', 'Middels', 'Høy'];
-
 const allPriorities = [
   { user_class: 1, user_study: 1 },
   { user_class: 1, user_study: 2 },
@@ -108,7 +105,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         image_alt: newValues?.image_alt || '',
         limit: newValues?.limit || 0,
         location: newValues?.location || '',
-        priority: newValues?.priority || 2,
         sign_off_deadline: newValues?.sign_off_deadline ? parseISO(newValues.sign_off_deadline) : new Date(),
         sign_up: newValues?.sign_up || false,
         start_date: newValues?.start_date ? parseISO(newValues.start_date) : new Date(),
@@ -323,14 +319,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           <MarkdownEditor formState={formState} {...register('description', { required: 'Gi arrangementet en beskrivelse' })} required />
           <ImageUpload formState={formState} label='Velg bilde' ratio={21 / 9} register={register('image')} setValue={setValue} watch={watch} />
           <TextField formState={formState} label='Bildetekst' {...register('image_alt')} />
-          <div className={classes.grid}>
-            <Select control={control} formState={formState} label='Prioritering' name='priority'>
-              {priorities.map((value, index) => (
-                <MenuItem key={index} value={index}>
-                  {value}
-                </MenuItem>
-              ))}
-            </Select>
+          <div className={classes.margin}>
             {Boolean(categories.length) && (
               <Select control={control} formState={formState} label='Kategori' name='category'>
                 {categories.map((value, index) => (
