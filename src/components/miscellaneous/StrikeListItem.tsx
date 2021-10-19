@@ -3,7 +3,7 @@ import { parseISO } from 'date-fns';
 import { Strike, UserBase } from 'types';
 import { formatDate } from 'utils';
 import { useDeleteStrike } from 'hooks/Strike';
-import { ListItem, ListItemButton, ListItemProps, Typography, Collapse, Stack, Divider } from '@mui/material';
+import { ListItem, ListItemButton, ListItemProps, Typography, Collapse, Stack, Divider, ListItemText } from '@mui/material';
 
 // Icons
 import Delete from '@mui/icons-material/DeleteRounded';
@@ -33,7 +33,7 @@ const StrikeListItem = ({ strike, user, isAdmin = false, allStrikes = false, ...
           <Typography sx={{ fontWeight: 'bold', ml: 1, mr: 3 }} variant='h3'>
             {strike.strike_size}
           </Typography>
-          {primaryText}
+          <ListItemText primary={primaryText} secondary={`Utløper ${formatDate(parseISO(strike.expires_at))}`} />
           {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItemButton>
       </ListItem>

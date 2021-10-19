@@ -50,7 +50,7 @@ const UserStrikeList = () => {
     return filters;
   }, [userClassChoice, userStudyChoice, searchInput]);
 
-  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useUsers(filters);
+  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useUsers({ has_active_strikes: true, ...filters });
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 
   useEffect(() => {

@@ -4,7 +4,7 @@ import { getUserStudyShort, getUserClass } from 'utils';
 import { useUserStrikes } from 'hooks/User';
 
 // Material-ui
-import { Collapse, ListItem, ListItemText, Stack } from '@mui/material';
+import { Collapse, ListItem, ListItemText, Stack, Typography } from '@mui/material';
 
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
@@ -27,6 +27,9 @@ const UserListItem = ({ user }: UserListItemProps) => {
       <ListItem button onClick={() => setExpanded((prev) => !prev)}>
         <Avatar sx={{ mr: 2 }} user={user} />
         <ListItemText primary={`${user.first_name} ${user.last_name}`} secondary={`${getUserClass(user.user_class)} - ${getUserStudyShort(user.user_study)}`} />
+        <Typography sx={{ fontWeight: 'bold', ml: 1, mr: 3 }} variant='h3'>
+          {user.number_of_strikes}
+        </Typography>
         {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </ListItem>
       <Collapse in={expanded}>

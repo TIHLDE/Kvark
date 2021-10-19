@@ -5,8 +5,8 @@ import { makeStyles } from '@mui/styles';
 import Typography from '@mui/material/Typography';
 
 // Icons
-import MembersIcon from '@mui/icons-material/PlaylistAddCheckRounded';
-import WaitingIcon from '@mui/icons-material/PlaylistAddRounded';
+import GroupIcon from '@mui/icons-material/Group';
+import WorkspacesIcon from '@mui/icons-material/Workspaces';
 
 // Project Components
 import Page from 'components/navigation/Page';
@@ -34,13 +34,14 @@ const useStyles = makeStyles((theme) => ({
 
 const StrikeAdmin = () => {
   const classes = useStyles();
-  const strikesTab = { value: 'strikes', label: 'Medlemmer med prikker', icon: MembersIcon };
-  const allStrikesTab = { value: 'allStrikes', label: 'Alle prikker', icon: WaitingIcon };
+  const strikesTab = { value: 'strikes', label: 'Medlemmer med prikker', icon: GroupIcon };
+  const allStrikesTab = { value: 'allStrikes', label: 'Alle prikker', icon: WorkspacesIcon };
   const tabs = [strikesTab, allStrikesTab];
   const [tab, setTab] = useState(strikesTab.value);
 
   return (
     <Page banner={<PrimaryTopBox />} options={{ title: 'Prikker admin' }}>
+    
       <Paper className={classes.content}>
         <Typography variant='h1'>Prikker admin</Typography>
         <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
