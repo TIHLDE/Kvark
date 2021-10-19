@@ -7,7 +7,7 @@ import parseISO from 'date-fns/parseISO';
 import { useSnackbar } from 'hooks/Snackbar';
 
 // Material-ui
-import { Stack, Checkbox, Typography, Collapse, Button, Tooltip, ListItem, ListItemButton, ListItemText, ListItemAvatar, Divider } from '@mui/material';
+import { Stack, Checkbox, Typography, Collapse, Tooltip, ListItem, ListItemButton, ListItemText, ListItemAvatar, Divider } from '@mui/material';
 
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
@@ -22,7 +22,6 @@ import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import StrikeListItem from 'components/miscellaneous/StrikeListItem';
 import StrikeCreateDialog from 'components/miscellaneous/StrikeCreateDialog';
-import Dialog from 'components/layout/Dialog';
 
 export type ParticipantProps = {
   eventId: number;
@@ -32,7 +31,6 @@ export type ParticipantProps = {
 const Participant = ({ registration, eventId }: ParticipantProps) => {
   const updateRegistration = useUpdateEventRegistration(eventId);
   const deleteRegistration = useDeleteEventRegistration(eventId);
-  const [dialogOpen, setDialogOpen] = useState(false);
   const showSnackbar = useSnackbar();
   const [checkedState, setCheckedState] = useState(registration.has_attended);
   const [expanded, setExpanded] = useState(false);
@@ -125,16 +123,9 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
           </div>
           <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
             {registration.is_on_wait && event && event.list_count >= event.limit ? (
-              <>
-                <Dialog
-                  contentText={`Du må flytte noen på ventelista før du kan flytte en deltager opp`}
-                  onClose={() => setDialogOpen(false)}
-                  open={dialogOpen}
-                  titleText='Flytting av deltager!'></Dialog>
-                <Button fullWidth onClick={() => setDialogOpen(true)} startIcon={<ArrowUpwardIcon />} variant='outlined'>
-                  Flytt til påmeldte
-                </Button>
-              </>
+              <VerifyDialog contentText='Du må flytte noen på ventelista før du kan flytte en deltager opp' startIcon={<ArrowUpwardIcon />}>
+                Flytt til påmeldte
+              </VerifyDialog>
             ) : registration.is_on_wait && event && event.list_count <= event.limit ? (
               <VerifyDialog
                 contentText={`Er du sikker på at du vil gi denne personen plass på dette arrangementet?`}
