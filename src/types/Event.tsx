@@ -23,7 +23,6 @@ export interface Event {
   limit: number;
   list_count: number;
   location: string;
-  priority: number;
   registration_priorities: Array<RegistrationPriority>;
   sign_off_deadline: string;
   sign_up: boolean;

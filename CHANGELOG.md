@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- 🎨 **Arrangementer**. Prioritering av selve arrangementer er fjernet.
 - ✨ **Strikes**. Ny admin side for strikes
 - ⚡ **Prikker**. Kun HS og Index får nå tilgang til å slette prikker.
 - ✨ **Arrangementer**. Brukere kan melde seg av arrangementer opp til 2 timer før start, men blir varslet om at de får prikk.
