@@ -154,8 +154,7 @@ const Wave = () => {
         <div className={classes.content}>
           <TihldeLogo className={classes.logo} darkColor='white' lightColor='white' size='large' />
           <Typography align='center' className={classes.contentText} variant='body1'>
-            Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Drift av datasystemer og Digital
-            samhandling ved NTNU
+            Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling og Digital samhandling ved NTNU
           </Typography>
           <div className={classes.contentButtons}>
             {isAuthenticated ? (
