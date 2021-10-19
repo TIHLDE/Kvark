@@ -100,7 +100,7 @@ const Admin = () => {
       icon: WorkspacesIcon,
       to: URLS.strikeAdmin,
       primary: 'Prikker',
-      secondary: 'Se, endre og slett prikker',
+      secondary: 'Se og slett prikker',
     },
   ];
 
