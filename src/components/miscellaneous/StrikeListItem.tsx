@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { parseISO } from 'date-fns';
 import { Strike, User } from 'types';
 import { formatDate } from 'utils';
+import { useUser } from 'hooks/User';
 import { useDeleteStrike } from 'hooks/Strike';
 import { ListItem, ListItemText, ListItemButton, ListItemProps, Typography, Collapse, Stack, Divider } from '@mui/material';
 
@@ -16,11 +17,10 @@ import EventListItem from 'components/miscellaneous/ListItem';
 export type StrikeProps = {
   strike: Strike;
   userId: User['user_id'];
-  /** Should the viewer see edit and delete options? */
-  isAdmin?: boolean;
 } & ListItemProps;
 
-const StrikeListItem = ({ strike, userId, isAdmin = false, ...props }: StrikeProps) => {
+const StrikeListItem = ({ strike, userId, ...props }: StrikeProps) => {
+  const { data: user } = useUser();
   const deleteStrike = useDeleteStrike(userId);
   const [expanded, setExpanded] = useState(false);
   const deleteHandler = () => deleteStrike.mutate(strike.id);
@@ -39,13 +39,13 @@ const StrikeListItem = ({ strike, userId, isAdmin = false, ...props }: StrikePro
         <Divider />
         <Stack gap={1} sx={{ p: 2 }}>
           <div>
-            {isAdmin && Boolean(strike.creator) && (
+            {user?.permissions.strike.read && Boolean(strike.creator) && (
               <Typography variant='subtitle2'>{`Opprettet av: ${strike.creator?.first_name} ${strike.creator?.last_name}`}</Typography>
             )}
             <Typography variant='subtitle2'>{`Opprettet: ${formatDate(parseISO(strike.created_at))}`}</Typography>
           </div>
           {strike.event !== undefined && <EventListItem event={strike.event} />}
-          {isAdmin && (
+          {user?.permissions.strike.destroy && (
             <VerifyDialog color='error' contentText={`Er du sikker på at du vil slette denne prikken?`} onConfirm={deleteHandler} startIcon={<Delete />}>
               Slett prikk
             </VerifyDialog>
