@@ -17,7 +17,7 @@ export const urlEncode = (text = '') => slugify(text, { lower: true, strict: tru
  * - /arrangementer/8/ -> `false`
  * @param url The URL to check
  */
-export const isExternalURL = (url = '') => new RegExp('^(?:[a-z]+:)?//', 'i').test(url);
+export const isExternalURL = (url = '') => url.indexOf(':') > -1 || url.indexOf('//') > -1;
 
 /**
  * Short down string if longer than limit
@@ -29,6 +29,19 @@ export const shortDownString = (string: string, maxStringLength: number) => {
     string = string.slice(0, maxStringLength) + '...';
   }
   return string;
+};
+
+/**
+ * Find how many hours a users start of registration to an event is delayed because of their strikes.
+ * @param numberOfStrikes The number of strikes the user have
+ */
+export const getStrikesDelayedRegistrationHours = (numberOfStrikes: number) => {
+  if (numberOfStrikes === 0) {
+    return 0;
+  } else if (numberOfStrikes === 1) {
+    return 3;
+  }
+  return 12;
 };
 
 /**

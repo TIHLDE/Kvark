@@ -22,6 +22,7 @@ const FieldView = <FormValues,>({ register, field, formState, index, control, ge
           disabled={disabled}
           formState={formState}
           {...register(`answers.${index}.answer_text` as Path<FormValues>)}
+          maxRows={3}
           multiline
           required={field.required}
         />

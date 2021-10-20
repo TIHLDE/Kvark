@@ -321,11 +321,11 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               </Accordion>
             </div>
             <Stack>
-              <Bool control={control} formState={formState} label='Dette arrangementet vil gi prikker' name='can_cause_strikes' type='switch' />
+              <Bool control={control} formState={formState} label='Gi prikker ved sen avmelding og ikke oppmøte' name='can_cause_strikes' type='switch' />
               <Bool
                 control={control}
                 formState={formState}
-                label='Dette arrangementet vil håndheve straff for prikker'
+                label='Håndhev straff for prikker (sen påmeldinsstart og lavere prioritering)'
                 name='enforces_previous_strikes'
                 type='switch'
               />
