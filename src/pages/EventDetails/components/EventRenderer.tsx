@@ -4,7 +4,7 @@ import { Event, Registration } from 'types';
 import { PermissionApp } from 'types/Enums';
 import URLS from 'URLS';
 import { parseISO, isPast, isFuture, subHours, addHours } from 'date-fns';
-import { formatDate, getICSFromEvent } from 'utils';
+import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 'utils';
 import { Link } from 'react-router-dom';
 
 // Services
@@ -12,6 +12,7 @@ import { useSetRedirectUrl } from 'hooks/Misc';
 import { useEventRegistration, useDeleteEventRegistration } from 'hooks/Event';
 import { useUser, HavePermission } from 'hooks/User';
 import { useSnackbar } from 'hooks/Snackbar';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';
@@ -32,7 +33,6 @@ import ShareButton from 'components/miscellaneous/ShareButton';
 import FormUserAnswers from 'components/forms/FormUserAnswers';
 import Expand from 'components/layout/Expand';
 import VerifyDialog from 'components/layout/VerifyDialog';
-import { useGoogleAnalytics } from 'hooks/Utils';
 
 const Alert = styled(MuiAlert)({
   mb: 1,
@@ -110,9 +110,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const [view, setView] = useState<Views>(Views.Info);
   const startDate = parseISO(data.start_date);
   const endDate = parseISO(data.end_date);
-  const penaltyHours = user ? (user.number_of_strikes === 1 ? 3 : user.number_of_strikes >= 2 ? 12 : 0) : 0;
+  const strikesDelayedRegistrationHours = user ? getStrikesDelayedRegistrationHours(user.number_of_strikes) : 0;
   const startRegistrationDate = parseISO(data.start_registration_at);
-  const userStartRegistrationDate = addHours(startRegistrationDate, penaltyHours);
+  const userStartRegistrationDate = addHours(startRegistrationDate, data.enforces_previous_strikes ? strikesDelayedRegistrationHours : 0);
   const endRegistrationDate = parseISO(data.end_registration_at);
   const signOffDeadlineDate = parseISO(data.sign_off_deadline);
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
@@ -267,19 +267,21 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               </>
             )}
           </DetailsPaper>
-          {penaltyHours > 0 && data.enforces_previous_strikes && (
-            <Alert severity='warning' variant='outlined'>
-              Du må vente {penaltyHours} timer før du kan melde deg på
+          {data.enforces_previous_strikes ? (
+            strikesDelayedRegistrationHours > 0 &&
+            isFuture(userStartRegistrationDate) && (
+              <Alert severity='warning' variant='outlined'>
+                Du har {user?.number_of_strikes} prikker og må dermed vente {strikesDelayedRegistrationHours} timer før du kan melde deg på
+              </Alert>
+            )
+          ) : (
+            <Alert severity='info' variant='outlined'>
+              Dette arrangementet håndhever ikke aktive prikker
             </Alert>
           )}
           {!data.can_cause_strikes && (
             <Alert severity='info' variant='outlined'>
               Dette arrangementet gir ikke prikker
-            </Alert>
-          )}
-          {!data.enforces_previous_strikes && (
-            <Alert severity='info' variant='outlined'>
-              Dette arrangementet håndhever ikke aktive prikker
             </Alert>
           )}
           {Boolean(data.registration_priorities.length) && data.registration_priorities.length !== 14 && (
