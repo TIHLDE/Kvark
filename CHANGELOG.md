@@ -14,7 +14,7 @@
 
 ## Neste versjon
 
-- ✨ **Spørrskjema**. Admin kan se skjema etter at det har blitt besvart, men ikke redigerer det.
+- ✨ **Spørreskjema**. Admin kan se skjema etter at det har blitt besvart, men kan ikke redigere det.
 - ✨ **Grupper**. Gruppeadmin kan nå se allergier, email, skoleår, og fag for alle medlemer i gruppen.
 - ⚡ **Admin**. Brukere må nå flyttes ned på ventelisten før nye brukere kan flyttes opp manuelt.
 - 🎨 **Admin**. Prioritering av selve arrangementer er fjernet.
