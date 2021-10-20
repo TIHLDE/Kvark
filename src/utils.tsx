@@ -107,7 +107,7 @@ export const getJobpostType = (jobpostType: JobPostType) => {
     case JobPostType.FULL_TIME:
       return 'Fulltid';
     case JobPostType.SUMMER_JOB:
-      return 'Sommerjob';
+      return 'Sommerjobb';
     case JobPostType.OTHER:
       return 'Annet';
     default:
