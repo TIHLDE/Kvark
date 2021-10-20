@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import URLS from 'URLS';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useEvents, useEventById } from 'hooks/Event';
@@ -48,7 +48,7 @@ const EventAdministration = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { eventId } = useParams();
-  const { data: event } = useEventById(eventId ? Number(eventId) : -1);
+  const { data: event, isLoading } = useEventById(eventId ? Number(eventId) : -1);
   const editTab = { value: 'edit', label: eventId ? 'Endre' : 'Skriv', icon: EditIcon };
   const participantsTab = { value: 'participants', label: 'Deltagere', icon: ParticipantsIcon };
   const formsTab = { value: 'forms', label: 'Spørsmål', icon: FormsIcon };
@@ -65,6 +65,12 @@ const EventAdministration = () => {
       navigate(URLS.eventAdmin);
     }
   };
+
+  useEffect(() => {
+    if (!isLoading && !tabs.some((t) => t.value === tab)) {
+      setTab(tabs[0].value);
+    }
+  }, [tab, isLoading]);
 
   return (
     <Page
