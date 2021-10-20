@@ -18,7 +18,7 @@ export interface Event {
   end_registration_at: string;
   evaluation: string | null;
   expired: boolean;
-  group: GroupList;
+  group: GroupList | null;
   id: number;
   image?: string;
   image_alt?: string;

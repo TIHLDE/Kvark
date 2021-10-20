@@ -85,7 +85,7 @@ const AppRoutes = () => {
           <Route element={<Events />} path='' />
         </Route>
         <Route element={<Companies />} path={URLS.company} />
-        <Route element={<Form />} path={`${URLS.form}:id/`} />
+        <AuthRoute element={<Form />} path={`${URLS.form}:id/`} />
         <Route element={<GroupOverview />} path={URLS.groups} />
         <Route path={URLS.jobposts}>
           <Route element={<JobPostDetails />} path=':id/*' />

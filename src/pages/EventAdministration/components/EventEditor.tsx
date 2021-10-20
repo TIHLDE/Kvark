@@ -108,7 +108,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         description: newValues?.description || '',
         end_date: newValues?.end_date ? parseISO(newValues.end_date) : new Date(),
         end_registration_at: newValues?.end_registration_at ? parseISO(newValues.end_registration_at) : new Date(),
-        group: newValues?.group.slug || '',
+        group: newValues?.group?.slug || '',
         image: newValues?.image || '',
         image_alt: newValues?.image_alt || '',
         limit: newValues?.limit || 0,
