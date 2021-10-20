@@ -3,20 +3,21 @@ import { useDeleteMembership, useUpdateMembership } from 'hooks/Membership';
 import { useSnackbar } from 'hooks/Snackbar';
 import { MembershipType } from 'types/Enums';
 
-import { Button, Collapse, Divider, ListItem, ListItemText, ListItemAvatar, Grid } from '@mui/material';
+import { Button, Collapse, Divider, ListItem, ListItemText, ListItemAvatar, Grid, Typography } from '@mui/material';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import { UserBase } from 'types';
+import { UserList } from 'types';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import StarIcon from '@mui/icons-material/Star';
 
 import Paper from 'components/layout/Paper';
 import Dialog from 'components/layout/Dialog';
 import Avatar from 'components/miscellaneous/Avatar';
+import { getUserClass, getUserStudyShort } from 'utils';
 
 export type MemberListItemProps = {
-  user: UserBase;
+  user: UserList;
   slug: string;
 };
 
@@ -75,6 +76,11 @@ const MemberListItem = ({ slug, user }: MemberListItemProps) => {
         {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </ListItem>
       <Collapse in={expanded}>
+        <Typography sx={{ whiteSpace: 'break-spaces', p: 2 }}>
+          {`Allergier: ${user.allergy ? user.allergy : 'Har ingen allergier'}
+E-post: ${user.email}
+${getUserClass(user.user_class)} - ${getUserStudyShort(user.user_study)}`}
+        </Typography>
         <Divider />
         <Grid container spacing={1} sx={{ p: 1 }}>
           <Grid item lg={6} xs={12}>
