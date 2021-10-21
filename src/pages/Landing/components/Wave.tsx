@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     margin: 'auto',
-    maxWidth: '1000px',
+    maxWidth: '700px',
     padding: '150px 15px 100px',
     position: 'relative',
     zIndex: 20,
@@ -154,8 +154,7 @@ const Wave = () => {
         <div className={classes.content}>
           <TihldeLogo className={classes.logo} darkColor='white' lightColor='white' size='large' />
           <Typography align='center' className={classes.contentText} variant='body1'>
-            Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Drift av datasystemer og Digital
-            samhandling ved NTNU
+            Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling og Digital samhandling ved NTNU
           </Typography>
           <div className={classes.contentButtons}>
             {isAuthenticated ? (
