@@ -52,16 +52,16 @@ export type EventEditorProps = {
   goToEvent: (newEvent: number | null) => void;
 };
 
-type FormValues = Pick<Event, 'category' | 'description' | 'image' | 'image_alt' | 'limit' | 'location' | 'priority' | 'sign_up' | 'title'> & {
+type FormValues = Pick<
+  Event,
+  'category' | 'description' | 'image' | 'image_alt' | 'limit' | 'location' | 'sign_up' | 'title' | 'can_cause_strikes' | 'enforces_previous_strikes'
+> & {
   end_date: Date;
   end_registration_at: Date;
   sign_off_deadline: Date;
   start_date: Date;
   start_registration_at: Date;
 };
-
-const priorities = ['Lav', 'Middels', 'Høy'];
-
 const allPriorities = [
   { user_class: 1, user_study: 1 },
   { user_class: 1, user_study: 2 },
@@ -108,12 +108,13 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         image_alt: newValues?.image_alt || '',
         limit: newValues?.limit || 0,
         location: newValues?.location || '',
-        priority: newValues?.priority || 2,
         sign_off_deadline: newValues?.sign_off_deadline ? parseISO(newValues.sign_off_deadline) : new Date(),
         sign_up: newValues?.sign_up || false,
         start_date: newValues?.start_date ? parseISO(newValues.start_date) : new Date(),
         start_registration_at: newValues?.start_registration_at ? parseISO(newValues.start_registration_at) : new Date(),
         title: newValues?.title || '',
+        can_cause_strikes: newValues ? newValues.can_cause_strikes : true,
+        enforces_previous_strikes: newValues ? newValues.enforces_previous_strikes : true,
       });
       if (!newValues) {
         setTimeout(() => updateDates(new Date()), 100);
@@ -319,18 +320,21 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 </AccordionDetails>
               </Accordion>
             </div>
+            <Stack>
+              <Bool control={control} formState={formState} label='Gi prikker ved sen avmelding og ikke oppmøte' name='can_cause_strikes' type='switch' />
+              <Bool
+                control={control}
+                formState={formState}
+                label='Håndhev straff for prikker (sen påmeldinsstart og lavere prioritering)'
+                name='enforces_previous_strikes'
+                type='switch'
+              />
+            </Stack>
           </Collapse>
           <MarkdownEditor formState={formState} {...register('description', { required: 'Gi arrangementet en beskrivelse' })} required />
           <ImageUpload formState={formState} label='Velg bilde' ratio={21 / 9} register={register('image')} setValue={setValue} watch={watch} />
           <TextField formState={formState} label='Bildetekst' {...register('image_alt')} />
-          <div className={classes.grid}>
-            <Select control={control} formState={formState} label='Prioritering' name='priority'>
-              {priorities.map((value, index) => (
-                <MenuItem key={index} value={index}>
-                  {value}
-                </MenuItem>
-              ))}
-            </Select>
+          <div className={classes.margin}>
             {Boolean(categories.length) && (
               <Select control={control} formState={formState} label='Kategori' name='category'>
                 {categories.map((value, index) => (

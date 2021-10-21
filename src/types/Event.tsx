@@ -1,7 +1,6 @@
 import { UserClass, UserStudy } from 'types/Enums';
 import { User } from 'types/User';
 import { UserSubmission } from 'types/Form';
-import { Strike } from 'types/Strike';
 
 export interface Category {
   created_at: string;
@@ -24,7 +23,6 @@ export interface Event {
   limit: number;
   list_count: number;
   location: string;
-  priority: number;
   registration_priorities: Array<RegistrationPriority>;
   sign_off_deadline: string;
   sign_up: boolean;
@@ -34,6 +32,8 @@ export interface Event {
   title: string;
   updated_at: string;
   waiting_list_count: number;
+  can_cause_strikes: boolean;
+  enforces_previous_strikes: boolean;
 }
 export type EventRequired = Partial<Event> & Pick<Event, 'end_date' | 'title' | 'start_date'>;
 export type EventCompact = Pick<Event, 'end_date' | 'expired' | 'id' | 'image' | 'image_alt' | 'location' | 'title' | 'start_date' | 'updated_at'>;

@@ -12,6 +12,10 @@ export type Strike = {
   event: EventCompact;
 };
 
+export type StrikeList = Strike & {
+  user: UserBase;
+};
+
 export type StrikeCreate = Pick<Strike, 'description' | 'strike_size'> & {
   user_id: UserBase['user_id'];
   event_id?: EventCompact['id'];

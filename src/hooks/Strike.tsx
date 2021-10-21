@@ -1,6 +1,6 @@
-import { useMutation, useQueryClient } from 'react-query';
+import { useInfiniteQuery, useMutation, useQueryClient } from 'react-query';
 import API from 'api/api';
-import { Strike, StrikeCreate, RequestResponse } from 'types';
+import { Strike, StrikeCreate, RequestResponse, PaginationResponse, StrikeList } from 'types';
 import { useSnackbar } from 'hooks/Snackbar';
 import { USER_STRIKES_QUERY_KEY } from 'hooks/User';
 
@@ -15,6 +15,9 @@ export const useCreateStrike = () => {
       queryClient.invalidateQueries([USER_STRIKES_QUERY_KEY, variables.user_id]);
       showSnackbar('Prikken ble opprettet', 'success');
     },
+    onError: (e) => {
+      showSnackbar(e.detail, 'error');
+    },
   });
 };
 
@@ -27,5 +30,19 @@ export const useDeleteStrike = (userId: string) => {
       queryClient.invalidateQueries([USER_STRIKES_QUERY_KEY, userId]);
       showSnackbar('Prikken ble slettet', 'success');
     },
+    onError: (e) => {
+      showSnackbar(e.detail, 'error');
+    },
   });
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const useStrikes = (filters?: any) => {
+  return useInfiniteQuery<PaginationResponse<StrikeList>, RequestResponse>(
+    [ALL_STRIKES_QUERY_KEY, filters],
+    ({ pageParam = 1 }) => API.getStrikes({ ...filters, page: pageParam }),
+    {
+      getNextPageParam: (lastPage) => lastPage.next,
+    },
+  );
 };

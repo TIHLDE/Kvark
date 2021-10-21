@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import classnames from 'classnames';
-import { Event } from 'types';
+import { Event, Registration } from 'types';
 import { PermissionApp } from 'types/Enums';
 import URLS from 'URLS';
-import { parseISO, isPast, isFuture } from 'date-fns';
-import { formatDate, getICSFromEvent } from 'utils';
+import { parseISO, isPast, isFuture, subHours, addHours } from 'date-fns';
+import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 'utils';
 import { Link } from 'react-router-dom';
 
 // Services
@@ -12,6 +12,7 @@ import { useSetRedirectUrl } from 'hooks/Misc';
 import { useEventRegistration, useDeleteEventRegistration } from 'hooks/Event';
 import { useUser, HavePermission } from 'hooks/User';
 import { useSnackbar } from 'hooks/Snackbar';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';
@@ -32,7 +33,6 @@ import ShareButton from 'components/miscellaneous/ShareButton';
 import FormUserAnswers from 'components/forms/FormUserAnswers';
 import Expand from 'components/layout/Expand';
 import VerifyDialog from 'components/layout/VerifyDialog';
-import { useGoogleAnalytics } from 'hooks/Utils';
 
 const Alert = styled(MuiAlert)({
   mb: 1,
@@ -110,7 +110,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const [view, setView] = useState<Views>(Views.Info);
   const startDate = parseISO(data.start_date);
   const endDate = parseISO(data.end_date);
+  const strikesDelayedRegistrationHours = user ? getStrikesDelayedRegistrationHours(user.number_of_strikes) : 0;
   const startRegistrationDate = parseISO(data.start_registration_at);
+  const userStartRegistrationDate = addHours(startRegistrationDate, data.enforces_previous_strikes ? strikesDelayedRegistrationHours : 0);
   const endRegistrationDate = parseISO(data.end_registration_at);
   const signOffDeadlineDate = parseISO(data.sign_off_deadline);
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
@@ -130,8 +132,11 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     }
   };
 
-  const RegistrationInfo = () =>
-    !registration ? null : (
+  type RegistrationInfoProps = { registration: Registration };
+
+  const RegistrationInfo = ({ registration }: RegistrationInfoProps) => {
+    const unregisteringGivesStrike = isPast(signOffDeadlineDate) && !registration.is_on_wait;
+    return (
       <>
         {registration.is_on_wait ? (
           <>
@@ -169,26 +174,31 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             )}
           </DetailsPaper>
         )}
-        {(isFuture(signOffDeadlineDate) || registration.is_on_wait) && isFuture(startDate) ? (
-          <VerifyDialog
-            closeText='Avbryt'
-            confirmText='Ja, jeg er sikker'
-            contentText={`Om du melder deg på igjen vil du havne på bunnen av en eventuell venteliste.`}
-            fullWidth
-            onConfirm={signOff}
-            titleText='Er du sikker?'
-            variant='outlined'>
-            Meld deg av
-          </VerifyDialog>
+        {isFuture(subHours(parseISO(data.start_date), 2)) ? (
+          <>
+            <VerifyDialog
+              contentText={`Om du melder deg på igjen vil du havne på bunnen av en eventuell venteliste. ${
+                unregisteringGivesStrike ? 'Du vil også få 1 prikk for å melde deg av etter avmeldingsfristen.' : ''
+              }`}
+              fullWidth
+              onConfirm={signOff}
+              variant='outlined'>
+              Meld deg av
+            </VerifyDialog>
+            {unregisteringGivesStrike && (
+              <Alert severity='info' variant='outlined'>
+                Avmeldingsfristen har passert. Du kan allikevel melde deg av frem til 2 timer før arrangementsstart, men du vil da få 1 prikk.
+              </Alert>
+            )}
+          </>
         ) : (
-          isFuture(startDate) && (
-            <Alert severity='info' variant='outlined'>
-              Avmeldingsfristen er passert
-            </Alert>
-          )
+          <Alert severity='info' variant='outlined'>
+            Det er ikke lenger mulig å melde seg av arrangementet
+          </Alert>
         )}
       </>
     );
+  };
 
   const HasUnansweredEvaluations = () =>
     user?.unanswered_evaluations_count ? (
@@ -204,7 +214,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           <Alert severity='warning' variant='outlined'>
             Dette arrangementet er stengt. Det er derfor ikke mulig å melde seg av eller på.
           </Alert>
-        ) : isFuture(startRegistrationDate) ? (
+        ) : isFuture(userStartRegistrationDate) ? (
           <>
             <HasUnansweredEvaluations />
             <Button disabled fullWidth variant='contained'>
@@ -218,7 +228,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             </Button>
           ) : null
         ) : registration ? (
-          <RegistrationInfo />
+          <RegistrationInfo registration={registration} />
         ) : isPast(endRegistrationDate) ? null : view === Views.Apply ? (
           <Button fullWidth onClick={() => setView(Views.Info)} variant='outlined'>
             Se beskrivelse
@@ -257,6 +267,23 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               </>
             )}
           </DetailsPaper>
+          {data.enforces_previous_strikes ? (
+            strikesDelayedRegistrationHours > 0 &&
+            isFuture(userStartRegistrationDate) && (
+              <Alert severity='warning' variant='outlined'>
+                Du har {user?.number_of_strikes} prikker og må dermed vente {strikesDelayedRegistrationHours} timer før du kan melde deg på
+              </Alert>
+            )
+          ) : (
+            <Alert severity='info' variant='outlined'>
+              Dette arrangementet håndhever ikke aktive prikker
+            </Alert>
+          )}
+          {!data.can_cause_strikes && (
+            <Alert severity='info' variant='outlined'>
+              Dette arrangementet gir ikke prikker
+            </Alert>
+          )}
           {Boolean(data.registration_priorities.length) && data.registration_priorities.length !== 14 && (
             <DetailsPaper noPadding>
               <DetailsHeader variant='h2'>Prioritert</DetailsHeader>
