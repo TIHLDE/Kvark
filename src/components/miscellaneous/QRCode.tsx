@@ -25,18 +25,11 @@ export type QRCodeProps = {
   className?: string;
 };
 
-const QRCode = ({ value, background = 'default', className }: QRCodeProps) => {
+const QRCode = ({ value, className }: QRCodeProps) => {
   const classes = useStyles();
-  const theme = useTheme();
   return (
     <Suspense fallback={<Skeleton className={classnames(classes.qrcode, classes.skeleton, className)} />}>
-      <QR
-        bgColor={theme.palette.background[background === 'default' ? 'default' : 'paper']}
-        className={classnames(classes.qrcode, className)}
-        fgColor={theme.palette.mode === 'light' ? theme.palette.colors.tihlde : theme.palette.text.primary}
-        size={1000}
-        value={value}
-      />
+      <QR bgColor={'white'} className={classnames(classes.qrcode, className)} fgColor={'black'} size={1000} value={value} />
     </Suspense>
   );
 };
