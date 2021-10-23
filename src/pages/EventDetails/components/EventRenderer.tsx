@@ -173,7 +173,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
                 <div style={{ marginTop: 200 }}>
                   <QRCode background='paper' value={registration.user_info.user_id} />
                 </div>
-                <Button onClick={() => setShowQR((prev) => !prev)} sx={{ margin: 'auto', width: 200, backgroundColor: 'rgb(26, 33, 48)' }} variant='outlined'>
+                <Button onClick={() => setShowQR((prev) => !prev)} sx={{ margin: 'auto', width: 200 }} variant='outlined'>
                   Lukk
                 </Button>
               </QRDialogue>
