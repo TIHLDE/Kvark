@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- 🦟 **QR-Koder**. Endret farge på QR-Koder for at de skal bli lettere å lese.
 
 ## Versjon 1.2.5 (20.10.2021)
 
