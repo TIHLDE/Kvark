@@ -83,7 +83,7 @@ const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
             ))}
           </Select>
           <Select control={control} disabled={!isAdmin} formState={formState} label='Klasse' name='user_class'>
-            {[1, 2, 3, 4, 5].map((i) => (
+            {[-1, 1, 2, 3, 4, 5].map((i) => (
               <MenuItem key={i} value={i}>
                 {getUserClass(i)}
               </MenuItem>

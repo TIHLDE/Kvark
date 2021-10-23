@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ✨ **Profil**. Lagt til alumni som klasse på profilen.
 
 ## Versjon 1.2.5 (20.10.2021)
 
