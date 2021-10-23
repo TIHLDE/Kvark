@@ -311,6 +311,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               />
             </div>
             <div className={classes.margin}>
+              <Bool control={control} formState={formState} label='Påmelding kun for prioriterte' name='only_allow_prioritized' type='switch' />
               <Accordion className={classes.expansionPanel}>
                 <AccordionSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='priorities-header'>
                   <Typography>Prioriterte</Typography>
