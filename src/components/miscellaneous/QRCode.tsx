@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { makeStyles } from '@mui/styles';
-import { Skeleton } from '@mui/material';
+import { Skeleton, useTheme } from '@mui/material';
 import classnames from 'classnames';
 
 const QR = lazy(() => import('qrcode.react'));
@@ -26,9 +26,16 @@ export type QRCodeProps = {
 
 const QRCode = ({ value, className }: QRCodeProps) => {
   const classes = useStyles();
+  const theme = useTheme();
   return (
     <Suspense fallback={<Skeleton className={classnames(classes.qrcode, classes.skeleton, className)} />}>
-      <QR bgColor={'white'} className={classnames(classes.qrcode, className)} fgColor={'black'} size={1000} value={value} />
+      <QR
+        bgColor={theme.palette.common.white}
+        className={classnames(classes.qrcode, className)}
+        fgColor={theme.palette.common.black}
+        size={1000}
+        value={value}
+      />
     </Suspense>
   );
 };
