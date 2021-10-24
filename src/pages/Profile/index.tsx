@@ -3,18 +3,14 @@ import { useUser } from 'hooks/User';
 
 // Material-UI
 import { makeStyles } from '@mui/styles';
-import { Skeleton, Typography, Button } from '@mui/material';
-
-// Icons
-import QrCodeIcon from '@mui/icons-material/QrCodeRounded';
+import { Skeleton, Typography } from '@mui/material';
 
 // Project Components
 import Page from 'components/navigation/Page';
 import ProfileContent from 'pages/Profile/components/ProfileContent';
 import Paper from 'components/layout/Paper';
-import Dialog from 'components/layout/Dialog';
 import Avatar from 'components/miscellaneous/Avatar';
-import QRCode from 'components/miscellaneous/QRCode';
+import QRButton from 'components/miscellaneous/QRButton';
 import { ProfileTopBox } from 'components/layout/TopBox';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
@@ -52,10 +48,8 @@ const Profile = () => {
   const classes = useStyles();
   const { event } = useGoogleAnalytics();
   const { data: user } = useUser();
-  const [showModal, setShowModal] = useState(false);
 
   const openMemberProof = () => {
-    setShowModal(true);
     event('open-memberproof', 'profile', 'Open');
   };
 
@@ -63,11 +57,6 @@ const Profile = () => {
     <Page banner={<ProfileTopBox />} options={{ title: 'Profil' }}>
       <div>
         <Paper className={classes.paper} noPadding>
-          {showModal && user && (
-            <Dialog onClose={() => setShowModal(false)} open={showModal} titleText='Medlemsbevis'>
-              <QRCode background='paper' value={user.user_id} />
-            </Dialog>
-          )}
           <Avatar className={classes.avatar} user={user} />
           {user && user.first_name ? (
             <>
@@ -88,9 +77,11 @@ const Profile = () => {
               <Skeleton height={30} sx={{ m: 'auto' }} variant='text' width='35%' />
             </>
           )}
-          <Button className={classes.button} endIcon={<QrCodeIcon />} onClick={openMemberProof} variant='contained'>
-            Medlemsbevis
-          </Button>
+          {user && (
+            <QRButton qrValue={user.user_id} variant='outlined'>
+              Medlemsbevis
+            </QRButton>
+          )}
         </Paper>
         <ProfileContent />
       </div>

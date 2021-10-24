@@ -16,11 +16,10 @@ import { useGoogleAnalytics } from 'hooks/Utils';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';
-import { Dialog, Typography, Button, Collapse, Skeleton, Alert as MuiAlert, useMediaQuery, Theme, styled } from '@mui/material';
+import { Typography, Button, Collapse, Skeleton, Alert as MuiAlert, useMediaQuery, Theme, styled } from '@mui/material';
 
 // Icons
 import CalendarIcon from '@mui/icons-material/EventRounded';
-import QrCodeIcon from '@mui/icons-material/QrCodeRounded';
 
 // Project Components
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
@@ -29,7 +28,7 @@ import EventPriorities from 'pages/EventDetails/components/EventPriorities';
 import EventRegistration from 'pages/EventDetails/components/EventRegistration';
 import Paper from 'components/layout/Paper';
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
-import QRCode from 'components/miscellaneous/QRCode';
+import QRButton from 'components/miscellaneous/QRButton';
 import ShareButton from 'components/miscellaneous/ShareButton';
 import FormUserAnswers from 'components/forms/FormUserAnswers';
 import Expand from 'components/layout/Expand';
@@ -78,9 +77,6 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(1),
     },
   },
-  button: {
-    minWidth: 250,
-  },
   infoGrid: {
     display: 'grid',
     gridGap: theme.spacing(1),
@@ -103,12 +99,6 @@ enum Views {
   Apply,
 }
 
-const QRDialogue = styled(Dialog)({
-  '& .MuiPaper-root': {
-    backgroundColor: 'white',
-  },
-});
-
 const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const { event } = useGoogleAnalytics();
   const classes = useStyles();
@@ -125,7 +115,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const userStartRegistrationDate = addHours(startRegistrationDate, data.enforces_previous_strikes ? strikesDelayedRegistrationHours : 0);
   const endRegistrationDate = parseISO(data.end_registration_at);
   const signOffDeadlineDate = parseISO(data.sign_off_deadline);
-  const [showQR, setShowQR] = useState(false);
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
   const signOff = async () => {
@@ -165,24 +154,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             <Alert severity='success' variant='outlined'>
               {`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}
             </Alert>
-            <Button className={classes.button} endIcon={<QrCodeIcon />} onClick={() => setShowQR((prev) => !prev)} variant='outlined'>
+            <QRButton qrValue={registration.user_info.user_id} variant='outlined'>
               Påmeldingsbevis
-            </Button>
-            {lgDown ? (
-              <QRDialogue fullScreen onClose={() => setShowQR(false)} open={showQR}>
-                <div style={{ marginTop: 200 }}>
-                  <QRCode background='paper' value={registration.user_info.user_id} />
-                </div>
-                <Button onClick={() => setShowQR((prev) => !prev)} sx={{ margin: 'auto', width: 200 }} variant='outlined'>
-                  Lukk
-                </Button>
-              </QRDialogue>
-            ) : (
-              <QRDialogue onClose={() => setShowQR(false)} open={showQR}>
-                <QRCode background='paper' value={registration.user_info.user_id} />
-              </QRDialogue>
-            )}
-
+            </QRButton>
             {registration.survey_submission.answers.length > 0 && (
               <div>
                 <Expand flat header='Påmeldingsspørsmål'>
