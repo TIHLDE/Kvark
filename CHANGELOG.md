@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ✨ **Profil**. Lagt til alumni som klasse på profilen.
 - ✨ **Karriere**. Bruker kan nå se jobbtype og ønsket årstrinn i jobbannonser. Admin kan redigere tidligere nevnte felt.
 
 ## Versjon 1.2.5 (20.10.2021)
