@@ -1,19 +1,60 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 
 // Material UI Components
-import { Button, ButtonProps, styled, useMediaQuery, Theme } from '@mui/material';
+import { Button, ButtonProps, styled, useMediaQuery, Theme, Skeleton, useTheme } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
 // Project components
-import Dialog, { DialogProps } from 'components/layout/Dialog';
-import QRCode from 'components/miscellaneous/QRCode';
+import Dialog from 'components/layout/Dialog';
+import classnames from 'classnames';
+
+// Project hooks
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 // Icons
 import QrCodeIcon from '@mui/icons-material/QrCodeRounded';
 
-export type QRButtonProps = ButtonProps &
-  Pick<DialogProps, 'closeText'> & {
-    qrValue: string;
-  };
+const QR = lazy(() => import('qrcode.react'));
+
+const useStyles = makeStyles((theme) => ({
+  qrcode: {
+    padding: theme.spacing(4, 3),
+    display: 'block',
+    margin: '0 auto',
+    height: 'auto !important',
+    width: '100% !important',
+    maxHeight: 350,
+    objectFit: 'contain',
+  },
+  skeleton: {
+    height: '250px !important',
+  },
+}));
+
+export type QRCodeProps = {
+  value: string;
+  className?: string;
+};
+
+const QRCode = ({ value, className }: QRCodeProps) => {
+  const classes = useStyles();
+  const theme = useTheme();
+  return (
+    <Suspense fallback={<Skeleton className={classnames(classes.qrcode, classes.skeleton, className)} />}>
+      <QR
+        bgColor={theme.palette.common.white}
+        className={classnames(classes.qrcode, className)}
+        fgColor={theme.palette.common.black}
+        size={1000}
+        value={value}
+      />
+    </Suspense>
+  );
+};
+
+export type QRButtonProps = ButtonProps & {
+  qrValue: string;
+};
 
 const QRDialog = styled(Dialog)({
   '& .MuiPaper-root': {
@@ -23,11 +64,22 @@ const QRDialog = styled(Dialog)({
 
 const QRButton = ({ qrValue, children, ...props }: QRButtonProps) => {
   const [showQR, setShowQR] = useState(false);
+  const { event } = useGoogleAnalytics();
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
+  const openQR = () => {
+    event('open-QR', 'profile', 'Open');
+  };
 
   return (
     <>
-      <Button endIcon={<QrCodeIcon />} sx={{ minWidth: 250 }} variant='outlined' {...props} onClick={() => setShowQR((prev) => !prev)}>
+      <Button
+        endIcon={<QrCodeIcon />}
+        sx={{ width: '100%', mt: 1 }}
+        variant='outlined'
+        {...props}
+        onClick={() => {
+          openQR(), setShowQR((prev) => !prev);
+        }}>
         {children}
       </Button>
       <QRDialog fullScreen={lgDown} onClose={() => setShowQR(false)} open={showQR}>

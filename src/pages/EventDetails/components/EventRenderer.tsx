@@ -150,7 +150,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             )}
           </>
         ) : (
-          <DetailsPaper noPadding>
+          <Paper>
             <Alert severity='success' variant='outlined'>
               {`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}
             </Alert>
@@ -174,7 +174,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
                 </Button>
               </>
             )}
-          </DetailsPaper>
+          </Paper>
         )}
         {isFuture(subHours(parseISO(data.start_date), 2)) ? (
           <>
