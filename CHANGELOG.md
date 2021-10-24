@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ✨ **Filopplasting**. Medlemmer kan nå laste opp filer på Link-forkorter siden
 - ✨ **Profil**. Lagt til alumni som klasse på profilen.
 - ✨ **Karriere**. Bruker kan nå se jobbtype og ønsket årstrinn i jobbannonser. Admin kan redigere tidligere nevnte felt.
 
