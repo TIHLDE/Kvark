@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 export type QRCodeProps = {
   value: string;
-  background?: 'default' | 'paper';
   className?: string;
 };
 
