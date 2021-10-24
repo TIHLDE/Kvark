@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ✨ **Filopplasting**. Medlemmer kan nå laste opp filer på Link-forkorter siden
 
 ## Versjon 1.2.5 (20.10.2021)
 
