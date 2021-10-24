@@ -1,3 +1,5 @@
+import { JobPostType } from 'types/Enums';
+
 export type JobPostRequired = Partial<JobPost> & Pick<JobPost, 'body' | 'company' | 'ingress' | 'location' | 'title'>;
 
 export interface JobPost {
@@ -16,4 +18,7 @@ export interface JobPost {
   title: string;
   updated_at: string;
   is_continuously_hiring: boolean;
+  job_type: JobPostType;
+  class_start: number;
+  class_end: number;
 }
