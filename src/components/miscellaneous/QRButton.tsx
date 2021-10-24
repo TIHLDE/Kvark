@@ -31,7 +31,7 @@ const QRButton = ({ qrValue, children, ...props }: QRButtonProps) => {
         {children}
       </Button>
       <QRDialog fullScreen={lgDown} onClose={() => setShowQR(false)} open={showQR}>
-        <QRCode background='paper' value={qrValue} />
+        <QRCode value={qrValue} />
       </QRDialog>
     </>
   );
