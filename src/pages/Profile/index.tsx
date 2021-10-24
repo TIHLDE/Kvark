@@ -11,6 +11,7 @@ import Paper from 'components/layout/Paper';
 import Avatar from 'components/miscellaneous/Avatar';
 import QRButton from 'components/miscellaneous/QRButton';
 import { ProfileTopBox } from 'components/layout/TopBox';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -44,7 +45,12 @@ const useStyles = makeStyles((theme) => ({
 
 const Profile = () => {
   const classes = useStyles();
+  const { event } = useGoogleAnalytics();
   const { data: user } = useUser();
+
+  const openMemberProof = () => {
+    event('open-memberproof', 'profile', 'Open');
+  };
 
   return (
     <Page banner={<ProfileTopBox />} options={{ title: 'Profil' }}>
@@ -71,8 +77,8 @@ const Profile = () => {
             </>
           )}
           {user && (
-            <QRButton qrValue={user.user_id} variant='outlined'>
-              Medlemsbevis
+            <QRButton onClick={openMemberProof} qrValue={user.user_id} variant='outlined'>
+              Medlemssbevis
             </QRButton>
           )}
         </Paper>
