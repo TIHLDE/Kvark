@@ -29,6 +29,7 @@ const DatePicker = <FormValues,>({
   defaultValue = '',
   dateProps,
   onDateChange,
+  helperText,
   ...props
 }: DatePickerProps<FormValues>) => {
   const Picker = type === 'date' ? MuiDatePicker : MuiDateTimePicker;
@@ -56,7 +57,13 @@ const DatePicker = <FormValues,>({
               variant='outlined'
               {...params}
               error={Boolean(formState.errors[name] as FieldError)}
-              helperText={(formState.errors[name] as FieldError)?.message}
+              helperText={
+                <>
+                  {(formState.errors[name] as FieldError)?.message}
+                  {helperText && Boolean(formState.errors[name] as FieldError) && <br />}
+                  {helperText}
+                </>
+              }
               {...props}
             />
           )}

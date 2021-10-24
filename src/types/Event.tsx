@@ -1,7 +1,8 @@
 import { UserClass, UserStudy } from 'types/Enums';
 import { User } from 'types/User';
 import { UserSubmission } from 'types/Form';
-import { GroupList } from 'types/Group';
+import { Group } from 'types/Group';
+import { Permissions } from 'types/Misc';
 
 export interface Category {
   created_at: string;
@@ -18,13 +19,14 @@ export interface Event {
   end_registration_at: string;
   evaluation: string | null;
   expired: boolean;
-  group: GroupList | null;
+  group: Group | null;
   id: number;
   image?: string;
   image_alt?: string;
   limit: number;
   list_count: number;
   location: string;
+  permissions: Permissions;
   registration_priorities: Array<RegistrationPriority>;
   sign_off_deadline: string;
   sign_up: boolean;
@@ -37,7 +39,7 @@ export interface Event {
   can_cause_strikes: boolean;
   enforces_previous_strikes: boolean;
 }
-export type EventRequired = Partial<Event> & Pick<Event, 'end_date' | 'title' | 'start_date'> & { group: GroupList['slug'] };
+export type EventRequired = Partial<Event> & Pick<Event, 'end_date' | 'title' | 'start_date'> & { group: Group['slug'] };
 export type EventCompact = Pick<Event, 'end_date' | 'expired' | 'group' | 'id' | 'image' | 'image_alt' | 'location' | 'title' | 'start_date' | 'updated_at'>;
 
 export interface RegistrationPriority {

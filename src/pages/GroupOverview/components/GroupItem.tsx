@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { GroupList } from 'types';
+import { Group } from 'types';
 import URLS from 'URLS';
 
 // Material UI
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export type GroupItemProps = {
-  group: GroupList;
+  group: Group;
   background?: keyof Theme['palette']['background'];
 };
 

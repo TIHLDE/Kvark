@@ -82,6 +82,8 @@ export type SidebarListProps<Type> = {
   descKey: keyof Type;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formatDesc?: (content: any) => string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  hookArgs?: Record<string, any>;
 };
 
 // eslint-disable-next-line comma-spacing
@@ -95,11 +97,17 @@ const SidebarList = <Type,>({
   descKey,
   formatDesc,
   noExpired = false,
+  hookArgs = {},
 }: SidebarListProps<Type>) => {
   const classes = useStyles();
-  const { data, hasNextPage, fetchNextPage, isLoading } = useHook();
+  const { data, hasNextPage, fetchNextPage, isLoading } = useHook({ ...hookArgs });
   const items = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
-  const { data: expiredData, hasNextPage: hasNextExpiredPage, fetchNextPage: fetchNextExpiredPage, isLoading: isExpiredLoading } = useHook({ expired: true });
+  const {
+    data: expiredData,
+    hasNextPage: hasNextExpiredPage,
+    fetchNextPage: fetchNextExpiredPage,
+    isLoading: isExpiredLoading,
+  } = useHook({ ...hookArgs, expired: true });
   const expiredItems = useMemo(() => (expiredData ? expiredData.pages.map((page) => page.results).flat() : []), [expiredData]);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('lg'));

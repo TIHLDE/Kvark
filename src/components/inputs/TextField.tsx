@@ -10,11 +10,17 @@ export type TextFieldProps<FormValues> = MuiTextFieldProps &
   };
 
 // eslint-disable-next-line comma-spacing
-const GenericTextField = <FormValues,>({ name, formState, ...props }: TextFieldProps<FormValues>, ref: React.ForwardedRef<HTMLDivElement>) => (
+const GenericTextField = <FormValues,>({ name, formState, helperText, ...props }: TextFieldProps<FormValues>, ref: React.ForwardedRef<HTMLDivElement>) => (
   <MuiTextField
     error={Boolean(formState.errors[name] as FieldError)}
     fullWidth
-    helperText={(formState.errors[name] as FieldError)?.message}
+    helperText={
+      <>
+        {(formState.errors[name] as FieldError)?.message}
+        {helperText && Boolean(formState.errors[name] as FieldError) && <br />}
+        {helperText}
+      </>
+    }
     InputLabelProps={{ shrink: true }}
     inputRef={ref}
     margin='normal'

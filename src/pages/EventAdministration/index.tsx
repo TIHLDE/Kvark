@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import URLS from 'URLS';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useEvents, useEventById } from 'hooks/Event';
@@ -48,7 +48,7 @@ const EventAdministration = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { eventId } = useParams();
-  const { data: event } = useEventById(eventId ? Number(eventId) : -1);
+  const { data: event, isError } = useEventById(eventId ? Number(eventId) : -1);
   const editTab = { value: 'edit', label: eventId ? 'Endre' : 'Skriv', icon: EditIcon };
   const participantsTab = { value: 'participants', label: 'Deltagere', icon: ParticipantsIcon };
   const formsTab = { value: 'forms', label: 'Spørsmål', icon: FormsIcon };
@@ -66,6 +66,15 @@ const EventAdministration = () => {
     }
   };
 
+  /**
+   * Go to "New Event" if there is an error loading current event or the user don't have write-access to the event
+   */
+  useEffect(() => {
+    if ((event && !event.permissions.write) || isError) {
+      goToEvent(null);
+    }
+  }, [isError, event]);
+
   return (
     <Page
       maxWidth={false}
@@ -73,6 +82,7 @@ const EventAdministration = () => {
       <SidebarList
         descKey='start_date'
         formatDesc={(desc) => formatDate(parseISO(desc))}
+        hookArgs={{ is_admin: true }}
         idKey='id'
         onItemClick={(id: number | null) => goToEvent(id || null)}
         selectedItemId={Number(eventId)}

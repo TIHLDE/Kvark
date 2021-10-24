@@ -14,7 +14,7 @@ import {
 export type BoolProps<FormValues> = Omit<FormControlLabelProps, 'control'> &
   Pick<UseFormReturn<FormValues>, 'formState' | 'control'> & {
     name: Path<FormValues>;
-    helperText?: string;
+    helperText?: React.ReactNode;
     rules?: RegisterOptions<FormValues>;
     type: 'checkbox' | 'switch';
   };
@@ -66,9 +66,8 @@ const Bool = <FormValues,>({ helperText, type, control, name, formState, rules =
         )}
         rules={rules}
       />
-      <MuiFormHelperText>
-        {(formState.errors[name] as FieldError)?.message} {helperText}
-      </MuiFormHelperText>
+      {helperText && <MuiFormHelperText>{helperText}</MuiFormHelperText>}
+      <MuiFormHelperText>{(formState.errors[name] as FieldError)?.message}</MuiFormHelperText>
     </MuiFormControl>
   );
 };

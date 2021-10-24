@@ -1,15 +1,16 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect, useMemo } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Event, EventRequired, GroupList, RegistrationPriority } from 'types';
+import { Event, EventRequired, RegistrationPriority, Group } from 'types';
 import { useEventById, useCreateEvent, useUpdateEvent, useDeleteEvent } from 'hooks/Event';
-import { useUserGroups } from 'hooks/User';
+import { useGroupsByType } from 'hooks/Group';
+import { useUser, useUserGroups } from 'hooks/User';
 import { useCategories } from 'hooks/Categories';
 import { useSnackbar } from 'hooks/Snackbar';
 import { addHours, subDays, parseISO, setHours, startOfHour } from 'date-fns';
 
 // Material-UI
 import { makeStyles } from '@mui/styles';
-import { Stack, Grid, MenuItem, Collapse, Accordion, AccordionSummary, AccordionDetails, Typography, LinearProgress } from '@mui/material';
+import { Stack, Grid, MenuItem, Collapse, Accordion, AccordionSummary, AccordionDetails, Typography, ListSubheader, LinearProgress } from '@mui/material';
 
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
@@ -25,6 +26,7 @@ import TextField from 'components/inputs/TextField';
 import DatePicker from 'components/inputs/DatePicker';
 import { ImageUpload } from 'components/inputs/Upload';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
+import { ShowMoreText, ShowMoreTooltip } from 'components/miscellaneous/ShowMoreText';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import { GroupType } from 'types/Enums';
 
@@ -60,7 +62,7 @@ type FormValues = Pick<
 > & {
   end_date: Date;
   end_registration_at: Date;
-  group: GroupList['slug'];
+  group: Group['slug'];
   sign_off_deadline: Date;
   start_date: Date;
   start_registration_at: Date;
@@ -84,8 +86,7 @@ const allPriorities = [
 
 const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const classes = useStyles();
-  const { data: userGroups } = useUserGroups();
-  const { data, isLoading, isError } = useEventById(eventId || -1);
+  const { data, isLoading } = useEventById(eventId || -1);
   const createEvent = useCreateEvent();
   const updateEvent = useUpdateEvent(eventId || -1);
   const deleteEvent = useDeleteEvent(eventId || -1);
@@ -95,10 +96,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const { handleSubmit, register, watch, control, formState, getValues, reset, setValue } = useForm<FormValues>();
   const watchSignUp = watch('sign_up');
   const { data: categories = [] } = useCategories();
-
-  useEffect(() => {
-    !isError || goToEvent(null);
-  }, [isError]);
 
   const setValues = useCallback(
     (newValues: Event | null) => {
@@ -122,35 +119,56 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         enforces_previous_strikes: newValues ? newValues.enforces_previous_strikes : true,
       });
       if (!newValues) {
-        setTimeout(() => updateDates(new Date()), 100);
+        setTimeout(() => updateDates(new Date()), 10);
       }
     },
     [reset],
   );
 
+  /**
+   * Update the form-data when the opened event changes
+   */
   useEffect(() => {
-    if (data) {
-      setValues(data);
-    } else {
-      setValues(null);
-    }
+    setValues(data || null);
   }, [data, setValues]);
+
+  const { data: userGroups = [] } = useUserGroups();
+  const { data: user } = useUser();
+  const { data: groups, BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS } = useGroupsByType();
+  const groupOptions = useMemo(() => {
+    type GroupOption = { type: 'header'; header: string } | { type: 'group'; disabled: boolean; group: Group };
+    const hasGroupAccess = (group: Group) =>
+      group.permissions.write ||
+      userGroups.some(
+        (userGroup) =>
+          userGroup.slug === group.slug &&
+          ([GroupType.COMMITTEE, GroupType.INTERESTGROUP].includes(group.type) ? user && userGroup.leader?.user_id === user?.user_id : true),
+      );
+    const array: Array<GroupOption> = [];
+    if (BOARD_GROUPS.length) {
+      array.push({ type: 'header', header: 'Hovedstyret' });
+      BOARD_GROUPS.forEach((group) => array.push({ type: 'group', group, disabled: !hasGroupAccess(group) }));
+    }
+    if (SUB_GROUPS.length) {
+      array.push({ type: 'header', header: 'Undergrupper' });
+      SUB_GROUPS.forEach((group) => array.push({ type: 'group', group, disabled: !hasGroupAccess(group) }));
+    }
+    if (COMMITTEES.length) {
+      array.push({ type: 'header', header: 'Komitéer' });
+      COMMITTEES.forEach((group) => array.push({ type: 'group', group, disabled: !hasGroupAccess(group) }));
+    }
+    if (INTERESTGROUPS.length) {
+      array.push({ type: 'header', header: 'Interessegrupper' });
+      INTERESTGROUPS.forEach((group) => array.push({ type: 'group', group, disabled: !hasGroupAccess(group) }));
+    }
+    return array;
+  }, [userGroups, user, BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS]);
 
   const getEventPreview = (): Event => {
     const values = getValues();
     return {
       ...values,
-      group: {
-        leader: {
-          first_name: 'Ola',
-          last_name: 'Nordmann',
-          user_id: 'olanor',
-          image: '',
-        },
-        name: values.group,
-        slug: values.group,
-        type: GroupType.SUBGROUP,
-      },
+      group: groups?.find((g) => g.slug === values.group) || null,
       list_count: 0,
       registration_priorities: regPriorities,
       waiting_list_count: 0,
@@ -217,6 +235,14 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     }
   };
 
+  /**
+   * Sets the dates of the event to a standarized structure compared to the start-date. Runned when start-date is changed.
+   * Registration start -> 12:00, 7 days before start
+   * Registration end -> 12:00, same day as start
+   * Sign off deadline -> 12:00, 1 days start
+   * End-date -> 2 hours after start
+   * @param start The start-date
+   */
   const updateDates = (start?: Date) => {
     if (start && start instanceof Date && !isNaN(start.valueOf())) {
       const getDate = (daysBefore: number, hour: number) =>
@@ -299,6 +325,9 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               <DatePicker
                 control={control}
                 formState={formState}
+                helperText={
+                  <ShowMoreText>Deltagere kan melde seg av etter fristen og helt frem til 2 timer før arrangementsstart, men vil da få 1 prikk.</ShowMoreText>
+                }
                 label='Avmeldingsfrist'
                 name='sign_off_deadline'
                 required={watchSignUp}
@@ -314,6 +343,12 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               />
               <TextField
                 formState={formState}
+                helperText={
+                  <ShowMoreText>
+                    Antall plasser på dette arrangementet. Når disse plassene er fyllt opp vil nye brukere som melder seg på havne på ventelisten, med mindre de
+                    er prioriterte og en med plass ikke er prioritert. I såfall vil den nyligst påmeldte som ikke er prioritert bli satt på ventelisten.
+                  </ShowMoreText>
+                }
                 InputLabelProps={{ shrink: true }}
                 inputProps={{ inputMode: 'numeric' }}
                 label='Antall plasser'
@@ -337,11 +372,33 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               </Accordion>
             </div>
             <Stack>
-              <Bool control={control} formState={formState} label='Dette arrangementet vil gi prikker' name='can_cause_strikes' type='switch' />
               <Bool
                 control={control}
                 formState={formState}
-                label='Dette arrangementet vil håndheve straff for prikker'
+                label={
+                  <>
+                    Dette arrangementet vil gi prikker
+                    <ShowMoreTooltip>
+                      Bestemmer om brukere skal kunne motta prikker ved å være påmeldt dette arrangementet. Hvis bryteren er skrudd av vil deltagere ikke få
+                      prikk for ikke oppmøte eller for sen avmelding.
+                    </ShowMoreTooltip>
+                  </>
+                }
+                name='can_cause_strikes'
+                type='switch'
+              />
+              <Bool
+                control={control}
+                formState={formState}
+                label={
+                  <>
+                    Dette arrangementet vil håndheve straff for prikker
+                    <ShowMoreTooltip>
+                      Denne bryteren styrer om brukeres aktive prikker skal håndheves ved påmelding. Det vil for eks. si at om bryteren er slått av så vil ikke
+                      en bruker med 1 prikk måtte vente 3 timer før den kan melde seg på.
+                    </ShowMoreTooltip>
+                  </>
+                }
                 name='enforces_previous_strikes'
                 type='switch'
               />
@@ -351,17 +408,42 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           <ImageUpload formState={formState} label='Velg bilde' ratio={21 / 9} register={register('image')} setValue={setValue} watch={watch} />
           <TextField formState={formState} label='Bildetekst' {...register('image_alt')} />
           <div className={classes.grid}>
-            {userGroups && (
-              <Select control={control} formState={formState} label='Arrangør (Gruppe)' name='group'>
-                {userGroups.map((group) => (
-                  <MenuItem key={group.slug} value={group.slug}>
-                    {group.name}
-                  </MenuItem>
-                ))}
+            {groupOptions.length > 0 && (
+              <Select
+                control={control}
+                formState={formState}
+                helperText={
+                  <ShowMoreText>
+                    Arrangøren vises på arrangementssiden. Den bestemmer også hvilke brukere som har tilgang til å endre arrangementet. Kun medlemmer av
+                    undergruppe/leder av komité eller interessegruppe som arrangerer et arrangement kan redigere det, se påmeldte og legge til spørreskjemaer.
+                  </ShowMoreText>
+                }
+                label='Arrangør (Gruppe)'
+                name='group'>
+                {data && !data.group && <MenuItem value=''>Ingen</MenuItem>}
+                {groupOptions.map((option) =>
+                  option.type === 'header' ? (
+                    <ListSubheader key={option.header}>{option.header}</ListSubheader>
+                  ) : (
+                    <MenuItem disabled={option.disabled} key={option.group.slug} value={option.group.slug}>
+                      {option.group.name}
+                    </MenuItem>
+                  ),
+                )}
               </Select>
             )}
             {Boolean(categories.length) && (
-              <Select control={control} formState={formState} label='Kategori' name='category'>
+              <Select
+                control={control}
+                formState={formState}
+                helperText={
+                  <ShowMoreText>
+                    Kategorien brukes til å la brukerne enklere skille mellom forskjellige type arrangementer. Det gjøres ved fargekategorisering og
+                    forskjellige kolonner på forsiden.
+                  </ShowMoreText>
+                }
+                label='Kategori'
+                name='category'>
                 {categories.map((value, index) => (
                   <MenuItem key={index} value={value.id}>
                     {value.text}

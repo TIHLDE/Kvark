@@ -8,11 +8,9 @@ export interface Group {
   description: string;
   contact_email: string;
   type: GroupType;
-  leader: UserBase;
+  leader?: UserBase;
   permissions: Permissions;
 }
-
-export type GroupList = Pick<Group, 'leader' | 'name' | 'slug' | 'type'>;
 
 export interface Membership {
   user: UserBase;

@@ -11,10 +11,11 @@ export type SelectProps<FormValues> = FormControlProps &
     children: React.ReactNode;
     label: string;
     defaultValue?: string;
+    helperText?: React.ReactNode;
   };
 
 // eslint-disable-next-line comma-spacing
-const Select = <FormValues,>({ name, label, control, formState, rules = {}, defaultValue = '', children, ...props }: SelectProps<FormValues>) => {
+const Select = <FormValues,>({ name, label, control, formState, rules = {}, defaultValue = '', children, helperText, ...props }: SelectProps<FormValues>) => {
   const labelId = `${name}-label`;
   return (
     <FormControl fullWidth margin='normal' variant='outlined' {...props}>
@@ -37,6 +38,7 @@ const Select = <FormValues,>({ name, label, control, formState, rules = {}, defa
           {(formState.errors[name] as FieldError)?.message}
         </FormHelperText>
       )}
+      {helperText && <FormHelperText variant='outlined'>{helperText}</FormHelperText>}
     </FormControl>
   );
 };
