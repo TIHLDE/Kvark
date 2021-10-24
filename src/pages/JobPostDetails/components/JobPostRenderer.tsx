@@ -77,7 +77,7 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
           <DetailContent info={data.is_continuously_hiring ? 'Fortløpende opptak' : deadline} title='Søknadsfrist: ' />
           <DetailContent
             info={data.class_start === data.class_end ? data.class_start + '.' : data.class_start + '. - ' + data.class_end + '.'}
-            title='Klassetrinn: '
+            title='Årstrinn: '
           />
           <DetailContent info={getJobpostType(data.job_type)} title='Stillingstype: ' />
           <DetailContent info={data.location} title='Sted: ' />

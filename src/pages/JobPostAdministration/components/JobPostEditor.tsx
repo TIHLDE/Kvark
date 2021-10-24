@@ -166,10 +166,6 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
     }
   };
 
-  // const monke: Validate<any> = (val1: number, val2: number) => {
-  //   return val1 > val2;
-  // };
-
   if (isLoading) {
     return <LinearProgress />;
   }
@@ -218,7 +214,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
               <Select
                 control={control}
                 formState={formState}
-                label='Fra år'
+                label='Fra årstrinn'
                 name='class_start'
                 rules={{
                   validate: {
@@ -227,19 +223,19 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
                 }}>
                 {years.map((value) => (
                   <MenuItem key={value} value={value}>
-                    {value + '.'}
+                    {`${value}`}
                   </MenuItem>
                 ))}
               </Select>
-              <Select control={control} formState={formState} label='Til år' name='class_end'>
+              <Select control={control} formState={formState} label='Til årstrinn' name='class_end'>
                 {years.map((value) => (
                   <MenuItem key={value} value={value}>
-                    {value + '.'}
+                    {`${value}`}
                   </MenuItem>
                 ))}
               </Select>
             </div>
-            <Select control={control} formState={formState} label='Jobb type' name='job_type'>
+            <Select control={control} formState={formState} label='Stillingstype' name='job_type'>
               {(Object.keys(JobPostType) as Array<JobPostType>).map((jobPostTypeEnum) => (
                 <MenuItem key={jobPostTypeEnum} value={jobPostTypeEnum}>
                   {getJobpostType(jobPostTypeEnum)}

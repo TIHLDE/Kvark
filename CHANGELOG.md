@@ -14,6 +14,13 @@
 
 ## Neste versjon
 
+- ✨ **Karriere**. Bruker kan nå se jobbtype og ønsket årstrinn i jobbannonser. Admin kan redigere tidligere nevnte felt.
+
+## Versjon 1.2.5 (20.10.2021)
+
+- 🎨 **Forside**. Fjernet Drift av datasystemer fra linjeforeningens linjer på framsiden.
+- 🦟 **Admin**. Fikset bug hvor man kom på feil side ved bytting av arrangementer
+- ✨ **Spørreskjema**. Admin kan se skjema etter at det har blitt besvart, men kan ikke redigere det.
 - ✨ **Grupper**. Gruppeadmin kan nå se allergier, email, skoleår, og fag for alle medlemer i gruppen.
 - ⚡ **Admin**. Brukere må nå flyttes ned på ventelisten før nye brukere kan flyttes opp manuelt.
 - 🎨 **Admin**. Prioritering av selve arrangementer er fjernet.
@@ -21,7 +28,6 @@
 - ⚡ **Prikker**. Kun HS og Index får nå tilgang til å slette prikker.
 - ✨ **Arrangementer**. Brukere kan melde seg av arrangementer opp til 2 timer før start, men blir varslet om at de får prikk.
 - ✨ **Bruker**. Brukere kan se sine egene prikker.
-- ✨ **Karriere**. Bruker kan nå se jobbtype og ønsket årstrinn i jobbannonser. Admin kan redigere tidligere nevnte felt.
 
 ## Versjon 1.2.4 (05.10.2021)
 
