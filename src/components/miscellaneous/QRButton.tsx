@@ -21,7 +21,7 @@ const QRDialog = styled(Dialog)({
   },
 });
 
-const QRButton = ({ qrValue, children, closeText, ...props }: QRButtonProps) => {
+const QRButton = ({ qrValue, children, ...props }: QRButtonProps) => {
   const [showQR, setShowQR] = useState(false);
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
@@ -30,7 +30,7 @@ const QRButton = ({ qrValue, children, closeText, ...props }: QRButtonProps) => 
       <Button endIcon={<QrCodeIcon />} sx={{ minWidth: 250 }} variant='outlined' {...props} onClick={() => setShowQR((prev) => !prev)}>
         {children}
       </Button>
-      <QRDialog closeText={closeText} fullScreen={lgDown} onClose={() => setShowQR(false)} open={showQR}>
+      <QRDialog fullScreen={lgDown} onClose={() => setShowQR(false)} open={showQR}>
         <QRCode background='paper' value={qrValue} />
       </QRDialog>
     </>
