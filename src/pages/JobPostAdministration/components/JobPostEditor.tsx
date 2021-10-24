@@ -218,7 +218,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
                 name='class_start'
                 rules={{
                   validate: {
-                    wrongOrder: (value) => value <= getValues().class_end || '"Fra år" må være mindre eller lik "Til år"',
+                    wrongOrder: (value) => value <= getValues().class_end || '"Fra årstrinn" må være mindre eller lik "Til årstrinn"',
                   },
                 }}>
                 {years.map((value) => (
