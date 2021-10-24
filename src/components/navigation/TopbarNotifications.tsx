@@ -15,6 +15,7 @@ import {
   Skeleton,
   List,
   ListItem,
+  ListItemButton,
   ListItemText,
   ListItemIcon,
   Divider,
@@ -29,7 +30,6 @@ import {
 // Icons
 import NotificationUnreadIcon from '@mui/icons-material/NotificationsRounded';
 import NotificationReadIcon from '@mui/icons-material/NotificationsNoneRounded';
-import LinkIcon from '@mui/icons-material/LinkRounded';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 import NotificationsIcon from '@mui/icons-material/NotificationsNoneRounded';
@@ -45,13 +45,14 @@ import Paper from 'components/layout/Paper';
 
 type NotificationItemProps = {
   notification: Notification;
+  setShowNotifications: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type NotificationsTopbarProps = {
   color: React.CSSProperties['backgroundColor'];
 };
 
-const NotificationItem = ({ notification }: NotificationItemProps) => {
+const NotificationItem = ({ notification, setShowNotifications }: NotificationItemProps) => {
   const [showDescription, setShowDescription] = useState(false);
   const { event } = useGoogleAnalytics();
   const updateNotification = useUpdateNotification(notification.id);
@@ -66,31 +67,42 @@ const NotificationItem = ({ notification }: NotificationItemProps) => {
 
   const Icon = notification.read ? NotificationReadIcon : NotificationUnreadIcon;
 
+  const linkOnClick = () => {
+    event('open-notification-link', 'notifications', `Opened notification link: ${notification.link}`);
+    setShowNotifications(false);
+  };
+
   return (
     <Paper noOverflow noPadding sx={{ mb: 1, ...(!notification.read && { backgroundColor: (theme) => theme.palette.colors.tihlde + '25' }) }}>
       <ListItem
+        disablePadding
         secondaryAction={
-          <>
-            {notification.link && (
-              <IconButton
-                {...(isExternalURL(notification.link) ? { component: 'a', href: notification.link } : { component: Link, to: notification.link })}
-                aria-label='Åpne link'
-                edge='start'
-                onClick={() => event('open-notification-link', 'notifications', `Opened notification link: ${notification.link}`)}>
-                <LinkIcon />
-              </IconButton>
-            )}
-            {notification.description !== '' && (
-              <IconButton aria-label='Åpne beskrivelse' edge='end' onClick={() => setShowDescription((prev) => !prev)}>
-                {showDescription ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-              </IconButton>
-            )}
-          </>
+          notification.description !== '' && (
+            <IconButton aria-label='Åpne beskrivelse' edge='end' onClick={() => setShowDescription((prev) => !prev)}>
+              {showDescription ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+            </IconButton>
+          )
         }>
-        <ListItemIcon>
-          <Icon />
-        </ListItemIcon>
-        <ListItemText primary={<Linkify>{notification.title}</Linkify>} secondary={getTimeSince(parseISO(notification.created_at))} />
+        {notification.link ? (
+          <ListItemButton
+            {...(isExternalURL(notification.link) ? { component: 'a', href: notification.link } : { component: Link, to: notification.link })}
+            aria-label='Åpne link'
+            onClick={linkOnClick}>
+            <ListItemIcon>
+              <Icon />
+            </ListItemIcon>
+            <ListItemText aria-label='Åpne beskrivelse' primary={notification.title} secondary={getTimeSince(parseISO(notification.created_at))} />
+          </ListItemButton>
+        ) : (
+          <>
+            <ListItem component='div'>
+              <ListItemIcon>
+                <Icon />
+              </ListItemIcon>
+              <ListItemText aria-label='Åpne beskrivelse' primary={notification.title} secondary={getTimeSince(parseISO(notification.created_at))} />
+            </ListItem>
+          </>
+        )}
       </ListItem>
       <Collapse in={showDescription}>
         <Divider />
@@ -142,7 +154,7 @@ const NotificationsTopbar = ({ color }: NotificationsTopbarProps) => {
         <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
           <List dense disablePadding>
             {notifications.map((notification) => (
-              <NotificationItem key={notification.id} notification={notification} />
+              <NotificationItem key={notification.id} notification={notification} setShowNotifications={setShowNotifications} />
             ))}
           </List>
         </Pagination>

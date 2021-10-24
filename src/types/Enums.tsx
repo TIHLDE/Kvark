@@ -42,6 +42,7 @@ export enum PermissionApp {
   JOBPOST = 'jobpost',
   NEWS = 'news',
   PAGE = 'page',
+  STRIKE = 'strike',
   USER = 'user',
 }
 export enum Groups {
@@ -88,4 +89,12 @@ export enum JobPostType {
   FULL_TIME = 'FULL_TIME',
   SUMMER_JOB = 'SUMMER_JOB',
   OTHER = 'OTHER',
+}
+
+export enum StrikeReason {
+  PAST_DEADLINE = 'PAST_DEADLINE',
+  NO_SHOW = 'NO_SHOW',
+  LATE = 'LATE',
+  BAD_BEHAVIOR = 'BAD_BEHAVIOR',
+  EVAL_FORM = 'EVAL_FORM',
 }

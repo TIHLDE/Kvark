@@ -16,13 +16,17 @@ const FieldView = <FormValues,>({ register, field, formState, index, control, ge
   <>
     <input {...register(`answers.${index}.field.id` as Path<FormValues>)} type='hidden' value={field.id} />
     {field.type === FormFieldType.TEXT_ANSWER ? (
-      <TextField
-        disabled={disabled}
-        formState={formState}
-        label={field.title}
-        {...register(`answers.${index}.answer_text` as Path<FormValues>)}
-        required={field.required}
-      />
+      <>
+        {`${field.title} ${field.required ? '*' : ''}`}
+        <TextField
+          disabled={disabled}
+          formState={formState}
+          {...register(`answers.${index}.answer_text` as Path<FormValues>)}
+          maxRows={3}
+          multiline
+          required={field.required}
+        />
+      </>
     ) : field.type === FormFieldType.MULTIPLE_SELECT ? (
       <BoolArray
         control={control}

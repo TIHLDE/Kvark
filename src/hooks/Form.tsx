@@ -75,6 +75,10 @@ export const useCreateSubmission = (formId: string): UseMutationResult<Submissio
   const queryClient = useQueryClient();
   return useMutation((submission) => API.createSubmission(formId, submission), {
     onSuccess: () => {
+      const data = queryClient.getQueryData<Form>([FORM_QUERY_KEY, formId]);
+      if ((data as EventForm).event) {
+        queryClient.invalidateQueries([EVENT_QUERY_KEY, (data as EventForm).event.id]);
+      }
       queryClient.invalidateQueries([FORM_QUERY_KEY, formId]);
       queryClient.invalidateQueries([USER_FORMS_QUERY_KEY]);
       queryClient.invalidateQueries([USER_QUERY_KEY]);
