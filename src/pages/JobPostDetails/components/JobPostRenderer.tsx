@@ -1,6 +1,6 @@
 import parseISO from 'date-fns/parseISO';
 import { Link } from 'react-router-dom';
-import { formatDate } from 'utils';
+import { formatDate, getJobpostType } from 'utils';
 import { JobPost } from 'types';
 import { PermissionApp } from 'types/Enums';
 import URLS from 'URLS';
@@ -75,6 +75,11 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
         <Paper className={classes.infoBox}>
           <DetailContent info={data.company} title='Bedrift: ' />
           <DetailContent info={data.is_continuously_hiring ? 'Fortløpende opptak' : deadline} title='Søknadsfrist: ' />
+          <DetailContent
+            info={data.class_start === data.class_end ? data.class_start + '.' : data.class_start + '. - ' + data.class_end + '.'}
+            title='Årstrinn: '
+          />
+          <DetailContent info={getJobpostType(data.job_type)} title='Stillingstype: ' />
           <DetailContent info={data.location} title='Sted: ' />
           {data.email && (
             <DetailContent

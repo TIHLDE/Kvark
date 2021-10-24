@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import { urlEncode, formatDate } from 'utils';
+import { urlEncode, formatDate, getJobpostType } from 'utils';
 import { parseISO } from 'date-fns';
 import URLS from 'URLS';
 import { EventCompact, News, JobPost } from 'types';
@@ -25,6 +25,7 @@ import { OverridableComponent } from '@mui/material/OverridableComponent';
 import DateIcon from '@mui/icons-material/DateRangeRounded';
 import BusinessIcon from '@mui/icons-material/BusinessRounded';
 import DeadlineIcon from '@mui/icons-material/AlarmRounded';
+import SchoolIcon from '@mui/icons-material/School';
 
 // Project components
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
@@ -156,8 +157,12 @@ const ListItem = ({ event, news, jobpost, className, largeImg = false, sx }: Lis
       return [{ label: `Publisert: ${formatDate(parseISO(news.created_at))}` }, { label: news.header }];
     } else if (jobpost) {
       return [
-        { label: `${jobpost.company} | ${jobpost.location}`, icon: BusinessIcon },
+        { label: `${jobpost.company} | ${jobpost.location} | ${getJobpostType(jobpost.job_type)}`, icon: BusinessIcon },
         { label: jobpost.is_continuously_hiring ? 'Fortløpende opptak' : formatDate(parseISO(jobpost.deadline)), icon: DeadlineIcon },
+        {
+          label: `Årstrinn: ${jobpost.class_start === jobpost.class_end ? `${jobpost.class_start}.` : `${jobpost.class_start}. - ${jobpost.class_end}.`}`,
+          icon: SchoolIcon,
+        },
       ];
     }
   }, [event, news, jobpost]);

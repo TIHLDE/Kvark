@@ -84,6 +84,13 @@ export enum GroupType {
   OTHER = 'OTHER',
 }
 
+export enum JobPostType {
+  PART_TIME = 'PART_TIME',
+  FULL_TIME = 'FULL_TIME',
+  SUMMER_JOB = 'SUMMER_JOB',
+  OTHER = 'OTHER',
+}
+
 export enum StrikeReason {
   PAST_DEADLINE = 'PAST_DEADLINE',
   NO_SHOW = 'NO_SHOW',
