@@ -1,7 +1,7 @@
 import slugify from 'slugify';
 import { parseISO, format, subMinutes } from 'date-fns';
 import { Event } from 'types';
-import { UserStudy, UserClass, StrikeReason } from 'types/Enums';
+import { UserStudy, UserClass, JobPostType, StrikeReason } from 'types/Enums';
 
 /**
  * Slugify a string to make it safe to use in an URL
@@ -17,7 +17,7 @@ export const urlEncode = (text = '') => slugify(text, { lower: true, strict: tru
  * - /arrangementer/8/ -> `false`
  * @param url The URL to check
  */
-export const isExternalURL = (url = '') => new RegExp('^(?:[a-z]+:)?//', 'i').test(url);
+export const isExternalURL = (url = '') => url.indexOf(':') > -1 || url.indexOf('//') > -1;
 
 /**
  * Short down string if longer than limit
@@ -29,6 +29,19 @@ export const shortDownString = (string: string, maxStringLength: number) => {
     string = string.slice(0, maxStringLength) + '...';
   }
   return string;
+};
+
+/**
+ * Find how many hours a users start of registration to an event is delayed because of their strikes.
+ * @param numberOfStrikes The number of strikes the user have
+ */
+export const getStrikesDelayedRegistrationHours = (numberOfStrikes: number) => {
+  if (numberOfStrikes === 0) {
+    return 0;
+  } else if (numberOfStrikes === 1) {
+    return 3;
+  }
+  return 12;
 };
 
 /**
@@ -93,6 +106,25 @@ export const getUserClass = (userClass: UserClass) => {
       return '5. klasse';
     default:
       return 'Ukjent klasse';
+  }
+};
+
+/**
+ * Get jobpost type as text
+ * @param jobpostType JobPost type
+ */
+export const getJobpostType = (jobpostType: JobPostType) => {
+  switch (jobpostType) {
+    case JobPostType.PART_TIME:
+      return 'Deltid';
+    case JobPostType.FULL_TIME:
+      return 'Fulltid';
+    case JobPostType.SUMMER_JOB:
+      return 'Sommerjobb';
+    case JobPostType.OTHER:
+      return 'Annet';
+    default:
+      return 'Ukjent jobbtype';
   }
 };
 

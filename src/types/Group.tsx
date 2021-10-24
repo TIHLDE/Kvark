@@ -1,6 +1,7 @@
 import { MembershipType, GroupType } from 'types/Enums';
 import { UserBase } from 'types/User';
 import { Permissions } from 'types/Misc';
+import { UserList } from 'types/User';
 
 export interface Group {
   name: string;
@@ -13,7 +14,7 @@ export interface Group {
 }
 
 export interface Membership {
-  user: UserBase;
+  user: UserBase | UserList;
   membership_type: MembershipType;
   group: Group;
 }

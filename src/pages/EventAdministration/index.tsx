@@ -48,7 +48,7 @@ const EventAdministration = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { eventId } = useParams();
-  const { data: event, isError } = useEventById(eventId ? Number(eventId) : -1);
+  const { data: event, isLoading, isError } = useEventById(eventId ? Number(eventId) : -1);
   const editTab = { value: 'edit', label: eventId ? 'Endre' : 'Skriv', icon: EditIcon };
   const participantsTab = { value: 'participants', label: 'Deltagere', icon: ParticipantsIcon };
   const formsTab = { value: 'forms', label: 'Spørsmål', icon: FormsIcon };
@@ -74,6 +74,12 @@ const EventAdministration = () => {
       goToEvent(null);
     }
   }, [isError, event]);
+
+  useEffect(() => {
+    if (!isLoading && !tabs.some((t) => t.value === tab)) {
+      setTab(tabs[0].value);
+    }
+  }, [tab, isLoading]);
 
   return (
     <Page

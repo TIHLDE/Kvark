@@ -377,7 +377,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 formState={formState}
                 label={
                   <>
-                    Dette arrangementet vil gi prikker
+                    Gi prikker ved sen avmelding og ikke oppmøte
                     <ShowMoreTooltip>
                       Bestemmer om brukere skal kunne motta prikker ved å være påmeldt dette arrangementet. Hvis bryteren er skrudd av vil deltagere ikke få
                       prikk for ikke oppmøte eller for sen avmelding.
@@ -392,7 +392,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 formState={formState}
                 label={
                   <>
-                    Dette arrangementet vil håndheve straff for prikker
+                    Håndhev straff for prikker (sen påmeldinsstart og lavere prioritering)
                     <ShowMoreTooltip>
                       Denne bryteren styrer om brukeres aktive prikker skal håndheves ved påmelding. Det vil for eks. si at om bryteren er slått av så vil ikke
                       en bruker med 1 prikk måtte vente 3 timer før den kan melde seg på.

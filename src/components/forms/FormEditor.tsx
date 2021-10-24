@@ -24,9 +24,10 @@ const useStyles = makeStyles((theme) => ({
 
 export type FormEditorProps = {
   form: Form;
+  disabled?: boolean;
 };
 
-const FormEditor = ({ form }: FormEditorProps) => {
+const FormEditor = ({ form, disabled = false }: FormEditorProps) => {
   const classes = useStyles();
   const updateForm = useUpdateForm(form.id || '-');
   const deleteForm = useDeleteForm(form.id || '-');
@@ -40,6 +41,9 @@ const FormEditor = ({ form }: FormEditorProps) => {
   }, [form]);
 
   const onDeleteForm = () => {
+    if (disabled) {
+      return;
+    }
     deleteForm.mutate(undefined, {
       onSuccess: (data) => {
         showSnackbar(data.detail, 'success');
@@ -51,6 +55,9 @@ const FormEditor = ({ form }: FormEditorProps) => {
   };
 
   const addField = (type: FormFieldType) => {
+    if (disabled) {
+      return;
+    }
     type === FormFieldType.TEXT_ANSWER
       ? setFields((prev) => [
           ...prev,
@@ -74,14 +81,23 @@ const FormEditor = ({ form }: FormEditorProps) => {
   };
 
   const updateField = (newField: TextFormField | SelectFormField, index: number) => {
+    if (disabled) {
+      return;
+    }
     setFields((prev) => prev.map((field, i) => (i === index ? newField : field)));
   };
 
   const removeField = (index: number) => {
+    if (disabled) {
+      return;
+    }
     setFields((prev) => prev.filter((field, i) => i !== index));
   };
 
   const save = () => {
+    if (disabled) {
+      return;
+    }
     updateForm.mutate(
       { fields: fields, resource_type: form.resource_type },
       {
@@ -100,19 +116,20 @@ const FormEditor = ({ form }: FormEditorProps) => {
       <div className={classes.root}>
         {fields.map((field, index) => (
           <FieldEditor
+            disabled={disabled}
             field={field}
             key={index}
             removeField={() => removeField(index)}
             updateField={(newField: TextFormField | SelectFormField) => updateField(newField, index)}
           />
         ))}
-        <Button fullWidth onClick={() => setAddButtonOpen(true)} ref={buttonAnchorRef} variant='outlined'>
+        <Button disabled={disabled} fullWidth onClick={() => setAddButtonOpen(true)} ref={buttonAnchorRef} variant='outlined'>
           Nytt spørsmål
         </Button>
-        <Button fullWidth onClick={save} variant='contained'>
+        <Button disabled={disabled} fullWidth onClick={save} variant='contained'>
           Lagre
         </Button>
-        <VerifyDialog color='error' contentText='Sletting av skjema kan ikke reverseres.' onConfirm={onDeleteForm}>
+        <VerifyDialog color='error' contentText='Sletting av skjema kan ikke reverseres.' disabled={disabled} onConfirm={onDeleteForm}>
           Slett
         </VerifyDialog>
       </div>
