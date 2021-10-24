@@ -54,7 +54,17 @@ export type EventEditorProps = {
 
 type FormValues = Pick<
   Event,
-  'category' | 'description' | 'image' | 'image_alt' | 'limit' | 'location' | 'sign_up' | 'title' | 'can_cause_strikes' | 'enforces_previous_strikes'
+  | 'only_allow_prioritized'
+  | 'category'
+  | 'description'
+  | 'image'
+  | 'image_alt'
+  | 'limit'
+  | 'location'
+  | 'sign_up'
+  | 'title'
+  | 'can_cause_strikes'
+  | 'enforces_previous_strikes'
 > & {
   end_date: Date;
   end_registration_at: Date;
