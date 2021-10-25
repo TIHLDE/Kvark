@@ -56,25 +56,25 @@ export type QRButtonProps = ButtonProps & {
   qrValue: string;
 };
 
-const QRDialog = styled(Dialog)({
-  '& .MuiPaper-root': {
-    backgroundColor: 'white',
-  },
-});
-
 const QRButton = ({ qrValue, children, ...props }: QRButtonProps) => {
   const [showQR, setShowQR] = useState(false);
+  const theme = useTheme();
   const { event } = useGoogleAnalytics();
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
   const openQR = () => {
     event('open-QR', 'profile', 'Open');
   };
 
+  const QRDialog = styled(Dialog)({
+    '& .MuiPaper-root': {
+      backgroundColor: theme.palette.common.white,
+    },
+  });
+
   return (
     <>
       <Button
         endIcon={<QrCodeIcon />}
-        sx={{ width: '100%', mt: 1 }}
         variant='outlined'
         {...props}
         onClick={() => {

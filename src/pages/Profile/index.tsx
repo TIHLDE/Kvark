@@ -71,8 +71,8 @@ const Profile = () => {
             </>
           )}
           {user && (
-            <QRButton qrValue={user.user_id} variant='outlined'>
-              Medlemssbevis
+            <QRButton qrValue={user.user_id} sx={{ mt: 1 }}>
+              Medlemsbevis
             </QRButton>
           )}
         </Paper>

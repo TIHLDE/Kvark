@@ -150,11 +150,11 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             )}
           </>
         ) : (
-          <Paper>
+          <>
             <Alert severity='success' variant='outlined'>
               {`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}
             </Alert>
-            <QRButton qrValue={registration.user_info.user_id} variant='outlined'>
+            <QRButton fullWidth qrValue={registration.user_info.user_id}>
               Påmeldingsbevis
             </QRButton>
             {registration.survey_submission.answers.length > 0 && (
@@ -174,7 +174,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
                 </Button>
               </>
             )}
-          </Paper>
+          </>
         )}
         {isFuture(subHours(parseISO(data.start_date), 2)) ? (
           <>
