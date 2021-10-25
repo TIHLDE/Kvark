@@ -15,13 +15,28 @@ import Avatar from 'components/miscellaneous/Avatar';
 import Paper from 'components/layout/Paper';
 import StrikeListItem from 'components/miscellaneous/StrikeListItem';
 
+export type StrikeListProps = {
+  user: UserList;
+};
+
+const StrikeList = ({ user }: StrikeListProps) => {
+  const { data = [] } = useUserStrikes(user.user_id);
+  return (
+    <Stack spacing={1} sx={{ p: 2 }}>
+      {data.map((strike) => (
+        <StrikeListItem key={strike.id} strike={strike} user={user} />
+      ))}
+    </Stack>
+  );
+};
+
 export type UserListItemProps = {
   user: UserList;
 };
 
 const UserStrikeListItem = ({ user }: UserListItemProps) => {
   const [expanded, setExpanded] = useState(false);
-  const { data = [] } = useUserStrikes(user.user_id);
+
   return (
     <Paper bgColor='smoke' noOverflow noPadding sx={{ mb: 1 }}>
       <ListItem button onClick={() => setExpanded((prev) => !prev)}>
@@ -32,12 +47,8 @@ const UserStrikeListItem = ({ user }: UserListItemProps) => {
         </Typography>
         {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </ListItem>
-      <Collapse in={expanded}>
-        <Stack spacing={1} sx={{ p: 2 }}>
-          {data.map((strike) => (
-            <StrikeListItem key={strike.id} strike={strike} user={user} />
-          ))}
-        </Stack>
+      <Collapse in={expanded} mountOnEnter>
+        <StrikeList user={user} />
       </Collapse>
     </Paper>
   );

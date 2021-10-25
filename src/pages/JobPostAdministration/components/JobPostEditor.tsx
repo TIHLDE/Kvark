@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { JobPost } from 'types';
+import { JobPostType } from 'types/Enums';
 import { useJobPostById, useCreateJobPost, useUpdateJobPost, useDeleteJobPost } from 'hooks/JobPost';
 import { useSnackbar } from 'hooks/Snackbar';
 import { EMAIL_REGEX } from 'constant';
@@ -8,18 +9,20 @@ import { parseISO } from 'date-fns';
 
 // Material-UI
 import { makeStyles } from '@mui/styles';
-import { Grid, LinearProgress } from '@mui/material';
+import { Grid, LinearProgress, MenuItem } from '@mui/material';
 
 // Project components
 import JobPostRenderer from 'pages/JobPostDetails/components/JobPostRenderer';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import SubmitButton from 'components/inputs/SubmitButton';
+import Select from 'components/inputs/Select';
 import Bool from 'components/inputs/Bool';
 import DatePicker from 'components/inputs/DatePicker';
 import TextField from 'components/inputs/TextField';
 import { ImageUpload } from 'components/inputs/Upload';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
 import VerifyDialog from 'components/layout/VerifyDialog';
+import { getJobpostType } from 'utils';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -38,12 +41,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const years = [1, 2, 3, 4, 5];
+
 export type EventEditorProps = {
   jobpostId: number | null;
   goToJobPost: (newJobPost: number | null) => void;
 };
 
-type FormValues = Pick<JobPost, 'body' | 'company' | 'email' | 'ingress' | 'image' | 'image_alt' | 'link' | 'location' | 'title' | 'is_continuously_hiring'> & {
+type FormValues = Pick<
+  JobPost,
+  | 'body'
+  | 'company'
+  | 'email'
+  | 'ingress'
+  | 'image'
+  | 'image_alt'
+  | 'link'
+  | 'location'
+  | 'title'
+  | 'is_continuously_hiring'
+  | 'job_type'
+  | 'class_start'
+  | 'class_end'
+> & {
   deadline: Date;
 };
 
@@ -78,6 +98,9 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
         link: newValues?.link || '',
         location: newValues?.location || '',
         title: newValues?.title || '',
+        job_type: newValues?.job_type || JobPostType.OTHER,
+        class_start: newValues?.class_start || years[0],
+        class_end: newValues?.class_end || years[years.length - 1],
       });
     },
     [reset],
@@ -185,6 +208,40 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
               })}
               type='email'
             />
+          </div>
+          <div className={classes.grid}>
+            <div className={classes.grid}>
+              <Select
+                control={control}
+                formState={formState}
+                label='Fra årstrinn'
+                name='class_start'
+                rules={{
+                  validate: {
+                    wrongOrder: (value) => value <= getValues().class_end || '"Fra årstrinn" må være mindre eller lik "Til årstrinn"',
+                  },
+                }}>
+                {years.map((value) => (
+                  <MenuItem key={value} value={value}>
+                    {`${value}`}
+                  </MenuItem>
+                ))}
+              </Select>
+              <Select control={control} formState={formState} label='Til årstrinn' name='class_end'>
+                {years.map((value) => (
+                  <MenuItem key={value} value={value}>
+                    {`${value}`}
+                  </MenuItem>
+                ))}
+              </Select>
+            </div>
+            <Select control={control} formState={formState} label='Stillingstype' name='job_type'>
+              {(Object.keys(JobPostType) as Array<JobPostType>).map((jobPostTypeEnum) => (
+                <MenuItem key={jobPostTypeEnum} value={jobPostTypeEnum}>
+                  {getJobpostType(jobPostTypeEnum)}
+                </MenuItem>
+              ))}
+            </Select>
           </div>
           <RendererPreview className={classes.margin} getContent={getJobPostPreview} renderer={JobPostRenderer} />
           <SubmitButton className={classes.margin} disabled={isUpdating} formState={formState}>
