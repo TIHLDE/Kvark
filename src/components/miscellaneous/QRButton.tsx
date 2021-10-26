@@ -2,7 +2,6 @@ import { useState, lazy, Suspense } from 'react';
 
 // Material UI Components
 import { Button, ButtonProps, styled, useMediaQuery, Theme, Skeleton, useTheme, Typography } from '@mui/material';
-import { Button, ButtonProps, styled, useMediaQuery, Theme, Skeleton, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 // Project components
