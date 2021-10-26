@@ -28,7 +28,7 @@ import EventPriorities from 'pages/EventDetails/components/EventPriorities';
 import EventRegistration from 'pages/EventDetails/components/EventRegistration';
 import Paper from 'components/layout/Paper';
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
-import QRCode from 'components/miscellaneous/QRCode';
+import QRButton from 'components/miscellaneous/QRButton';
 import ShareButton from 'components/miscellaneous/ShareButton';
 import FormUserAnswers from 'components/forms/FormUserAnswers';
 import Expand from 'components/layout/Expand';
@@ -150,11 +150,13 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             )}
           </>
         ) : (
-          <DetailsPaper noPadding>
+          <>
             <Alert severity='success' variant='outlined'>
               {`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}
             </Alert>
-            <QRCode background='paper' value={registration.user_info.user_id} />
+            <QRButton fullWidth qrValue={registration.user_info.user_id}>
+              Påmeldingsbevis
+            </QRButton>
             {registration.survey_submission.answers.length > 0 && (
               <div>
                 <Expand flat header='Påmeldingsspørsmål'>
@@ -172,7 +174,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
                 </Button>
               </>
             )}
-          </DetailsPaper>
+          </>
         )}
         {isFuture(subHours(parseISO(data.start_date), 2)) ? (
           <>
