@@ -14,6 +14,13 @@
 
 ## Neste versjon
 
+- 🦟 **QR-Koder**. Endret farge på QR-Koder for at de skal bli lettere å lese.
+
+## Versjon 1.2.6 (25.10.2021)
+
+- ✨ **Filopplasting**. Medlemmer kan nå laste opp filer på Link-forkorter siden
+- ✨ **Profil**. Lagt til alumni som klasse på profilen.
+- ✨ **Karriere**. Bruker kan nå se jobbtype og ønsket årstrinn i jobbannonser. Admin kan redigere tidligere nevnte felt.
 
 ## Versjon 1.2.5 (20.10.2021)
 
