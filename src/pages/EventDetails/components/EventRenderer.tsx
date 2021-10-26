@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import classnames from 'classnames';
 import { Event, Registration } from 'types';
-import { PermissionApp } from 'types/Enums';
 import URLS from 'URLS';
 import { parseISO, isPast, isFuture, subHours, addHours } from 'date-fns';
 import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 'utils';
@@ -10,7 +9,7 @@ import { Link } from 'react-router-dom';
 // Services
 import { useSetRedirectUrl } from 'hooks/Misc';
 import { useEventRegistration, useDeleteEventRegistration } from 'hooks/Event';
-import { useUser, HavePermission } from 'hooks/User';
+import { useUser } from 'hooks/User';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
@@ -306,12 +305,10 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} onClick={addToCalendarAnalytics} variant='outlined'>
           Legg til i kalender
         </Button>
-        {!preview && (
-          <HavePermission apps={[PermissionApp.EVENT]}>
-            <Button component={Link} fullWidth to={`${URLS.eventAdmin}${data.id}/`} variant='outlined'>
-              Endre arrangement
-            </Button>
-          </HavePermission>
+        {!preview && data.permissions.write && (
+          <Button component={Link} fullWidth to={`${URLS.eventAdmin}${data.id}/`} variant='outlined'>
+            Endre arrangement
+          </Button>
         )}
       </div>
       <div className={classnames(classes.infoGrid, classes.info)}>
