@@ -110,7 +110,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const [view, setView] = useState<Views>(Views.Info);
   const startDate = parseISO(data.start_date);
   const endDate = parseISO(data.end_date);
-  const onlyAllowPrioritized = data.only_allow_prioritized;
   const strikesDelayedRegistrationHours = user ? getStrikesDelayedRegistrationHours(user.number_of_strikes) : 0;
   const startRegistrationDate = parseISO(data.start_registration_at);
   const userStartRegistrationDate = addHours(startRegistrationDate, data.enforces_previous_strikes ? strikesDelayedRegistrationHours : 0);
@@ -270,9 +269,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               </>
             )}
           </DetailsPaper>
-          {/* {onlyAllowPrioritized && (
-            `${user.user_class && user.user_study}
-          )} */}
           {data.enforces_previous_strikes ? (
             strikesDelayedRegistrationHours > 0 &&
             isFuture(userStartRegistrationDate) && (
