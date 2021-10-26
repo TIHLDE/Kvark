@@ -14,7 +14,7 @@
 
 ## Neste versjon
 
-- 🦟 **QR-Koder**. Endret farge på QR-Koder for at de skal bli lettere å lese.
+- 🦟 **QR-Koder**. Endret farge på QR-Koder for at de skal bli lettere å lese. I tillegg vises for- og etternavn under QR-koder.
 
 ## Versjon 1.2.5 (20.10.2021)
 
