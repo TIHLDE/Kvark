@@ -123,6 +123,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         start_date: newValues?.start_date ? parseISO(newValues.start_date) : new Date(),
         start_registration_at: newValues?.start_registration_at ? parseISO(newValues.start_registration_at) : new Date(),
         title: newValues?.title || '',
+        only_allow_prioritized: newValues ? newValues.only_allow_prioritized : false,
         can_cause_strikes: newValues ? newValues.can_cause_strikes : true,
         enforces_previous_strikes: newValues ? newValues.enforces_previous_strikes : true,
       });
@@ -321,7 +322,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               />
             </div>
             <div className={classes.margin}>
-              <Bool control={control} formState={formState} label='Påmelding kun for prioriterte' name='only_allow_prioritized' type='switch' />
               <Accordion className={classes.expansionPanel}>
                 <AccordionSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='priorities-header'>
                   <Typography>Prioriterte</Typography>
@@ -332,6 +332,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               </Accordion>
             </div>
             <Stack>
+              <Bool control={control} formState={formState} label='Påmelding kun for prioriterte' name='only_allow_prioritized' type='switch' />
               <Bool control={control} formState={formState} label='Gi prikker ved sen avmelding og ikke oppmøte' name='can_cause_strikes' type='switch' />
               <Bool
                 control={control}

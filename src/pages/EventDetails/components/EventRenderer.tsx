@@ -235,6 +235,8 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           <Button fullWidth onClick={() => setView(Views.Info)} variant='outlined'>
             Se beskrivelse
           </Button>
+        ) : data.only_allow_prioritized ? (
+          <>Hei på deg</>
         ) : (
           <>
             <HasUnansweredEvaluations />
