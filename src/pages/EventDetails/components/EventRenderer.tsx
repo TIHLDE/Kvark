@@ -235,8 +235,11 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           <Button fullWidth onClick={() => setView(Views.Info)} variant='outlined'>
             Se beskrivelse
           </Button>
-        ) : data.only_allow_prioritized ? (
-          <>Hei på deg</>
+        ) : data.only_allow_prioritized &&
+          !data.registration_priorities.some((priority) => priority.user_class === user.user_class && priority.user_study === user.user_study) ? (
+          <Button disabled fullWidth variant='contained'>
+            Dette arrangementet er kun åpent for prioriterte
+          </Button>
         ) : (
           <>
             <HasUnansweredEvaluations />
