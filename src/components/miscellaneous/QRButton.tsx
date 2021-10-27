@@ -1,7 +1,7 @@
 import { useState, lazy, Suspense } from 'react';
 
 // Material UI Components
-import { Button, ButtonProps, styled, useMediaQuery, Theme, Skeleton, useTheme } from '@mui/material';
+import { Button, ButtonProps, styled, useMediaQuery, Theme, Skeleton, useTheme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 // Project components
@@ -54,9 +54,10 @@ const QRCode = ({ value, className }: QRCodeProps) => {
 
 export type QRButtonProps = ButtonProps & {
   qrValue: string;
+  subtitle?: string;
 };
 
-const QRButton = ({ qrValue, children, ...props }: QRButtonProps) => {
+const QRButton = ({ qrValue, subtitle, children, ...props }: QRButtonProps) => {
   const [showQR, setShowQR] = useState(false);
   const theme = useTheme();
   const { event } = useGoogleAnalytics();
@@ -84,6 +85,11 @@ const QRButton = ({ qrValue, children, ...props }: QRButtonProps) => {
       </Button>
       <QRDialog fullScreen={lgDown} onClose={() => setShowQR(false)} open={showQR}>
         <QRCode value={qrValue} />
+        {subtitle && (
+          <Typography align='center' sx={{ my: 0.25, color: (theme) => theme.palette.common.black }} variant='h3'>
+            {subtitle}
+          </Typography>
+        )}
       </QRDialog>
     </>
   );
