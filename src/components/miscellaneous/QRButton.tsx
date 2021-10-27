@@ -10,7 +10,6 @@ import classnames from 'classnames';
 
 // Project hooks
 import { useGoogleAnalytics } from 'hooks/Utils';
-import { useUser } from 'hooks/User';
 
 // Icons
 import QrCodeIcon from '@mui/icons-material/QrCodeRounded';
@@ -29,10 +28,6 @@ const useStyles = makeStyles((theme) => ({
   },
   skeleton: {
     height: '250px !important',
-  },
-  text: {
-    margin: `${theme.spacing(0.25)} auto`,
-    color: theme.palette.common.black,
   },
 }));
 
@@ -59,12 +54,11 @@ const QRCode = ({ value, className }: QRCodeProps) => {
 
 export type QRButtonProps = ButtonProps & {
   qrValue: string;
+  subtitle?: string;
 };
 
-const QRButton = ({ qrValue, children, ...props }: QRButtonProps) => {
+const QRButton = ({ qrValue, subtitle, children, ...props }: QRButtonProps) => {
   const [showQR, setShowQR] = useState(false);
-  const classes = useStyles();
-  const { data: user } = useUser();
   const theme = useTheme();
   const { event } = useGoogleAnalytics();
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
@@ -91,9 +85,9 @@ const QRButton = ({ qrValue, children, ...props }: QRButtonProps) => {
       </Button>
       <QRDialog fullScreen={lgDown} onClose={() => setShowQR(false)} open={showQR}>
         <QRCode value={qrValue} />
-        {user && (
-          <Typography className={classes.text} style={{ textAlign: 'center' }} variant='h3'>
-            {`${user.first_name} ${user.last_name}`}
+        {subtitle && (
+          <Typography align='center' sx={{ my: 0.25, color: (theme) => theme.palette.common.black }} variant='h3'>
+            {subtitle}
           </Typography>
         )}
       </QRDialog>
