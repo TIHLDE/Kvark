@@ -87,10 +87,6 @@ const useStyles = makeStyles((theme) => ({
       gridRow: '1 / 2',
     },
   },
-  text: {
-    margin: `${theme.spacing(0.25)} auto`,
-    color: theme.palette.common.black,
-  },
 }));
 
 export type EventRendererProps = {
