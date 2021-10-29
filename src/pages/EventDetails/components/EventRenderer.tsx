@@ -153,7 +153,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             <Alert severity='success' variant='outlined'>
               {`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}
             </Alert>
-            <QRButton fullWidth qrValue={registration.user_info.user_id}>
+            <QRButton fullWidth qrValue={registration.user_info.user_id} subtitle={`${registration.user_info.first_name} ${registration.user_info.last_name}`}>
               Påmeldingsbevis
             </QRButton>
             {registration.survey_submission.answers.length > 0 && (
