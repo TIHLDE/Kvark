@@ -40,7 +40,10 @@ export interface Event {
   enforces_previous_strikes: boolean;
 }
 export type EventRequired = Partial<Event> & Pick<Event, 'end_date' | 'title' | 'start_date'> & { group: Group['slug'] };
-export type EventCompact = Pick<Event, 'end_date' | 'expired' | 'group' | 'id' | 'image' | 'image_alt' | 'location' | 'title' | 'start_date' | 'updated_at'>;
+export type EventCompact = Pick<
+  Event,
+  'category' | 'end_date' | 'expired' | 'group' | 'id' | 'image' | 'image_alt' | 'location' | 'title' | 'start_date' | 'updated_at'
+>;
 
 export interface RegistrationPriority {
   user_class: UserClass;
