@@ -18,6 +18,7 @@ import MembersCard from 'pages/Pages/specials/Index/MembersCard';
 import Pagination from 'components/layout/Pagination';
 import Avatar from 'components/miscellaneous/Avatar';
 import { UserList } from 'types';
+import MembersHistoryCard from 'pages/Pages/specials/Index/MembersHistoryCard';
 
 const Group = () => {
   const { slug: slugParameter } = useParams();
@@ -90,6 +91,7 @@ const Group = () => {
           ) : (
             <MembersCard slug={slug} />
           )}
+          <MembersHistoryCard slug={slug} />
         </>
       )}
     </Page>

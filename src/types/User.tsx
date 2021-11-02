@@ -23,10 +23,13 @@ export interface User {
   user_study: UserStudy;
   unanswered_evaluations_count: number;
   number_of_strikes: number;
+  start_date: string;
+  end_date: string;
 }
 
 export type UserBase = Pick<User, 'user_id' | 'first_name' | 'last_name' | 'image'>;
-export type UserList = UserBase & Pick<User, 'email' | 'user_class' | 'user_study' | 'allergy' | 'cell' | 'gender' | 'tool' | 'number_of_strikes'>;
+export type UserList = UserBase &
+  Pick<User, 'email' | 'user_class' | 'user_study' | 'allergy' | 'cell' | 'gender' | 'tool' | 'number_of_strikes' | 'start_date' | 'end_date'>;
 export type UserCreate = Pick<User, 'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study'> & {
   password: string;
 };

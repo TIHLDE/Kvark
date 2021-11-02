@@ -9,7 +9,7 @@ export interface Group {
   description: string;
   contact_email: string;
   type: GroupType;
-  leader: UserBase;
+  leader: UserBase | UserList;
   permissions: Permissions;
 }
 
