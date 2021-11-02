@@ -23,6 +23,7 @@ const EventFormEditor = ({ eventId, formId, formType }: EventFormEditorProps) =>
   const [addButtonOpen, setAddButtonOpen] = useState(false);
   const buttonAnchorRef = useRef(null);
   const { data: formTemplates = [] } = useFormTemplates();
+  console.log(formTemplates)
   const newForm: EventFormCreate = {
     title: String(eventId),
     type: formType,
@@ -36,30 +37,9 @@ const EventFormEditor = ({ eventId, formId, formType }: EventFormEditorProps) =>
   if (!formId) {
     return (
       <Box>
-        <Button fullWidth onClick={() => setAddButtonOpen(true)} ref={buttonAnchorRef} variant='outlined'>
+        <Button fullWidth onClick={() => onCreate()} variant='outlined'>
           Opprett skjema
         </Button>
-        <Popper anchorEl={buttonAnchorRef.current} open={addButtonOpen} role={undefined} transition>
-          {({ TransitionProps }) => (
-            <Grow {...TransitionProps}>
-              <Paper>
-                <ClickAwayListener onClickAway={() => setAddButtonOpen(false)}>
-                  <MenuList id='menu-list-grow'>
-                    <MenuItem divider={true} onClick={() => onCreate(newForm)}>
-                      Tomt skjema
-                    </MenuItem>
-                    {formTemplates &&
-                      formTemplates.map((formTemplate) => (
-                        <MenuItem key={formTemplate.id} onClick={() => onCreate(formTemplate)}>
-                          {formTemplate.type}
-                        </MenuItem>
-                      ))}
-                  </MenuList>
-                </ClickAwayListener>
-              </Paper>
-            </Grow>
-          )}
-        </Popper>
       </Box>
     );
   } else if (isLoading || !data || !submissions) {
