@@ -1,22 +1,6 @@
 import React from 'react';
 import { ImageListItemBar, ImageList, ImageListItem } from '@mui/material';
 
-const ImageGrid = ({ setSelectedImg }) => {
-  const { docs } = useFirestore('images');
-  console.log(docs);
-
-  return (
-    <div className='img-grid'>
-      {docs &&
-        docs.map((doc) => (
-          <div className='img-wrap' key={doc.id} onClick={() => setSelectedImg(doc.url)}>
-            <img alt='uploaded pic' src={doc.url} />
-          </div>
-        ))}
-    </div>
-  );
-};
-
 const ImageGrid = () => {
   return (
     <ImageList cols={3} gap={8} variant='masonry'>
