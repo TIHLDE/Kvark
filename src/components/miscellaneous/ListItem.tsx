@@ -172,7 +172,7 @@ const ListItem = ({ event, news, jobpost, className, largeImg = false, sx }: Lis
         },
       ];
     }
-  }, [event, news, jobpost]);
+  }, [event, news, jobpost, categories]);
 
   if (!item || !info) {
     return null;
