@@ -2,11 +2,11 @@ import classNames from 'classnames';
 import URLS from 'URLS';
 import { Link } from 'react-router-dom';
 import { useIsAuthenticated } from 'hooks/User';
+import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';
 import { Typography, Button } from '@mui/material';
-
 // Icons
 import SignupIcon from '@mui/icons-material/AddRounded';
 import LoginIcon from '@mui/icons-material/LoginRounded';
@@ -193,9 +193,15 @@ const Wave = () => {
             )}
           </div>
         </div>
-        {/* <div className='rain rain--far' />
-        <div className='rain rain--mid' />
-        <div className='rain rain--near' /> */}
+
+        {/* Show snow if between November 15th and February 1st */}
+        {(isAfterDateOfYear(10, 15) || isBeforeDateOfYear(1, 1)) && (
+          <>
+            <div className='rain rain--far' />
+            <div className='rain rain--mid' />
+            <div className='rain rain--near' />
+          </>
+        )}
 
         <div className={classes.waveWrapperInner}>
           <div className={classNames(classes.wave, classes.waveTop)}>
