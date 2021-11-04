@@ -91,7 +91,7 @@ const EventFormEditor = ({ eventId, formId, formType }: EventFormEditorProps) =>
   } else if (isLoading || !data || !submissions) {
     return <Typography variant='body2'>Laster skjemaet</Typography>;
   } else if (submissions.count) {
-    return <Typography variant='body2'>Du kan ikke endre spørsmålene etter at noen har svart på dem</Typography>;
+    return <Typography variant='body2'>Du kan ikke endre spørsmålene etter at noen har svart på dem.</Typography>;
   }
 
   return <FormEditor form={data} />;
