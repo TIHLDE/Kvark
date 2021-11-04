@@ -8,13 +8,15 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 // Project componets
-import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
+import ListItem, { EventListItem, ListItemLoading } from 'components/miscellaneous/ListItem';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
 // Styles
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'grid',
+    gridTemplateColumns: '1fr',
+    gap: theme.spacing(1),
   },
   noEventText: {
     color: theme.palette.text.secondary,
@@ -31,7 +33,7 @@ export type EventsListViewProps = {
   isLoading?: boolean;
 };
 
-const NO_OF_EVENTS_TO_SHOW = 3;
+const NO_OF_EVENTS_TO_SHOW = 6;
 
 const EventsListView = ({ events, isLoading = false }: EventsListViewProps) => {
   const classes = useStyles();
@@ -56,10 +58,10 @@ const EventsListView = ({ events, isLoading = false }: EventsListViewProps) => {
   } else {
     return (
       <div className={classes.container}>
-        {events.map((event, index) => index < NO_OF_EVENTS_TO_SHOW && <ListItem event={event} key={event.id} />)}
-        <Button className={classes.btn} component={Link} onClick={openEventsAnalytics} to={URLS.events} variant='outlined'>
+        {events.map((event, index) => index < NO_OF_EVENTS_TO_SHOW && <EventListItem event={event} key={event.id} />)}
+        {/* <Button className={classes.btn} component={Link} onClick={openEventsAnalytics} to={URLS.events} variant='outlined'>
           Alle arrangementer ({events.length})
-        </Button>
+        </Button> */}
       </div>
     );
   }

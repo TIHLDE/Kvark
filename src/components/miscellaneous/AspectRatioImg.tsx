@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';
-import { Theme, Skeleton } from '@mui/material';
+import { Theme, Skeleton, Box, BoxProps } from '@mui/material';
 
 // Icons
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
@@ -39,27 +39,33 @@ export type AspectRatioImgProps = {
   imgClassName?: string;
   ratio?: number;
   src?: string;
+  sx?: BoxProps['sx'];
 };
 
-const AspectRatioImg = ({ alt, className, imgClassName, ratio = 21 / 9, src }: AspectRatioImgProps) => {
+const AspectRatioImg = ({ alt, className, imgClassName, ratio = 21 / 9, src, sx }: AspectRatioImgProps) => {
   const classes = useStyles({ ratio });
   const [imgUrl, setImgUrl] = useState(src || TIHLDELOGO);
   useEffect(() => {
     setImgUrl(src || TIHLDELOGO);
   }, [src]);
   return (
-    <div className={classNames(classes.imgContainer, className)}>
+    <Box className={classNames(classes.imgContainer, className)} sx={sx}>
       <img alt={alt} className={classNames(classes.img, classes.jpg, imgClassName)} onError={() => setImgUrl(TIHLDELOGO)} src={imgUrl} />
-    </div>
+    </Box>
   );
 };
 export default AspectRatioImg;
 
-export const AspectRatioLoading = ({ className, imgClassName, ratio = 21 / 9 }: Pick<AspectRatioImgProps, 'className' | 'imgClassName' | 'ratio'>) => {
+export const AspectRatioLoading = ({
+  className,
+  imgClassName,
+  ratio = 21 / 9,
+  sx,
+}: Pick<AspectRatioImgProps, 'className' | 'imgClassName' | 'ratio' | 'sx'>) => {
   const classes = useStyles({ ratio });
   return (
-    <div className={classNames(classes.imgContainer, className)}>
+    <Box className={classNames(classes.imgContainer, className)} sx={sx}>
       <Skeleton className={classNames(classes.img, imgClassName)} variant='rectangular' />
-    </div>
+    </Box>
   );
 };
