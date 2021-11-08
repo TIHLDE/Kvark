@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import { urlEncode, formatDate, getJobpostType } from 'utils';
 import { parseISO } from 'date-fns';
 import URLS from 'URLS';
-import { EventCompact, News, JobPost } from 'types';
-import { useCategories } from 'hooks/Categories';
+import { News, JobPost } from 'types';
 
 // Material UI Components
 import { makeStyles } from '@mui/styles';
@@ -23,11 +22,9 @@ import {
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 // Icons
-import DateIcon from '@mui/icons-material/DateRangeRounded';
 import BusinessIcon from '@mui/icons-material/BusinessRounded';
 import DeadlineIcon from '@mui/icons-material/AlarmRounded';
 import SchoolIcon from '@mui/icons-material/School';
-import CategoryIcon from '@mui/icons-material/CategoryRounded';
 
 // Project components
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
@@ -116,7 +113,6 @@ const InfoContent = ({ icon: Icon, label }: IconProps) => {
 };
 
 export type ListItemProps = {
-  event?: EventCompact;
   news?: News;
   jobpost?: JobPost;
   className?: string;
@@ -124,19 +120,11 @@ export type ListItemProps = {
   sx?: MaterialListItemButtonProps['sx'];
 };
 
-const ListItem = ({ event, news, jobpost, className, largeImg = false, sx }: ListItemProps) => {
+const ListItem = ({ news, jobpost, className, largeImg = false, sx }: ListItemProps) => {
   const classes = useStyles();
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
-  const { data: categories = [] } = useCategories();
   const item = useMemo(() => {
-    if (event) {
-      return {
-        title: event.title,
-        link: `${URLS.events}${event.id}/${urlEncode(event.title)}/`,
-        img: event.image,
-        imgAlt: event.image_alt,
-      };
-    } else if (news) {
+    if (news) {
       return {
         title: news.title,
         link: `${URLS.news}${news.id}/${urlEncode(news.title)}/`,
@@ -151,16 +139,10 @@ const ListItem = ({ event, news, jobpost, className, largeImg = false, sx }: Lis
         imgAlt: jobpost.image_alt,
       };
     }
-  }, [event, news, jobpost]);
+  }, [news, jobpost]);
 
   const info = useMemo((): Array<IconProps> | undefined => {
-    if (event) {
-      const categoryLabel = `${event.group ? `${event.group.name} | ` : ''}${categories.find((c) => c.id === event.category)?.text || 'Laster...'}`;
-      return [
-        { label: formatDate(parseISO(event.start_date)), icon: DateIcon },
-        { label: categoryLabel, icon: CategoryIcon },
-      ];
-    } else if (news) {
+    if (news) {
       return [{ label: `Publisert: ${formatDate(parseISO(news.created_at))}` }, { label: news.header }];
     } else if (jobpost) {
       return [
@@ -172,7 +154,7 @@ const ListItem = ({ event, news, jobpost, className, largeImg = false, sx }: Lis
         },
       ];
     }
-  }, [event, news, jobpost, categories]);
+  }, [news, jobpost]);
 
   if (!item || !info) {
     return null;
