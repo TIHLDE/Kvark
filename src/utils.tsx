@@ -1,7 +1,10 @@
 import slugify from 'slugify';
-import { parseISO, format, subMinutes } from 'date-fns';
+import { parseISO, format, subMinutes, getYear, isAfter, isBefore } from 'date-fns';
 import { Event } from 'types';
 import { UserStudy, UserClass, JobPostType, StrikeReason } from 'types/Enums';
+
+export const isAfterDateOfYear = (month: number, date: number) => isAfter(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
+export const isBeforeDateOfYear = (month: number, date: number) => isBefore(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
 
 /**
  * Slugify a string to make it safe to use in an URL
