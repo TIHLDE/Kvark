@@ -1,6 +1,6 @@
 import { useState, lazy, Suspense } from 'react';
 import { usePersistedState } from 'hooks/Utils';
-import { Collapse, Skeleton, Alert, AlertTitle, styled } from '@mui/material';
+import { Collapse, Skeleton, Alert, styled } from '@mui/material';
 
 // Project componets/services
 import { useEvents } from 'hooks/Event';
@@ -34,7 +34,6 @@ const EventsView = () => {
       <Tabs selected={tab} setSelected={setTab} sx={{ mx: 'auto', width: 'fit-content', mb: 1 }} tabs={tabs} />
       {shouldShowInfo && (
         <Alert onClose={() => setShouldShowInfo(false)} severity='info' sx={{ mb: 1 }} variant='outlined'>
-          {/* <AlertTitle>Farger</AlertTitle> */}
           Kurs og bedpres er <ColorInfo color='nok_event'>blå</ColorInfo>, mens sosiale og andre arrangementer er{' '}
           <ColorInfo color='other_event'>oransje</ColorInfo> slik at det er enkelt å se hva som er hva.
         </Alert>
