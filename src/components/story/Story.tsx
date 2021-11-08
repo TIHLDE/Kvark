@@ -80,7 +80,7 @@ const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme) => ({
   imgButton: {
     display: 'block',
     margin: 'auto',
-    height: 75,
+    height: 60,
     width: '100%',
     borderRadius: 16,
     padding: 2,

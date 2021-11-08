@@ -31,6 +31,8 @@ declare module '@mui/material/styles/createPalette' {
     colors: {
       footer: string;
       tihlde: string;
+      nok_event: string;
+      other_event: string;
       gradient: {
         main: {
           top: string;
@@ -63,6 +65,8 @@ declare module '@mui/material/styles/createPalette' {
     colors: {
       footer: string;
       tihlde: string;
+      nok_event: string;
+      other_event: string;
       gradient: {
         main: {
           top: string;
@@ -200,6 +204,8 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       colors: {
         footer: DARK_PAPER_COLOR,
         tihlde: '#1c458a',
+        nok_event: get<string>({ light: '#83C4F8', dark: '#83C4F8' }),
+        other_event: get<string>({ light: '#FFA675', dark: '#FFA675' }),
         gradient: {
           main: {
             top: get<string>({ light: '#16356e', dark: DARK_PAPER_COLOR }),

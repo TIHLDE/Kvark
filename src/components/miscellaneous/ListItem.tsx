@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { urlEncode, formatDate, getJobpostType } from 'utils';
 import { parseISO } from 'date-fns';
-import useDimensions from 'react-cool-dimensions';
 import URLS from 'URLS';
 import { EventCompact, News, JobPost } from 'types';
 import { useCategories } from 'hooks/Categories';
@@ -13,18 +12,13 @@ import { makeStyles } from '@mui/styles';
 import {
   lighten,
   Theme,
-  Button,
-  ButtonProps,
   Skeleton,
-  styled,
   useMediaQuery,
   Grid,
   Typography,
-  TypographyProps,
   ListItem as MaterialListItemButton,
   ListItemProps as MaterialListItemButtonProps,
   SvgIconTypeMap,
-  Stack,
 } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 
@@ -104,14 +98,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Title = styled((props: TypographyProps) => <Typography variant='h2' {...props} />)(({ theme }) => ({
-  color: theme.palette.text.primary,
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
-  textTransform: 'none',
-}));
-
 type IconProps = {
   icon?: OverridableComponent<SvgIconTypeMap<unknown, 'svg'>>;
   label: string;
@@ -126,90 +112,6 @@ const InfoContent = ({ icon: Icon, label }: IconProps) => {
         {label}
       </Typography>
     </Grid>
-  );
-};
-
-type EventInfoContentProps = {
-  icon?: OverridableComponent<SvgIconTypeMap<unknown, 'svg'>>;
-  label: string;
-};
-
-const EventInfoContent = ({ icon: Icon, label }: EventInfoContentProps) => (
-  <Grid alignItems='center' container direction='row' wrap='nowrap'>
-    {Icon && <Icon sx={{ m: 0, mr: 1, width: 20, height: 20 }} />}
-    <Typography sx={{ fontSize: 14, textTransform: 'none', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }} variant='subtitle1'>
-      {label}
-    </Typography>
-  </Grid>
-);
-
-export type EventListItemProps = {
-  event: EventCompact;
-  sx?: MaterialListItemButtonProps['sx'];
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const EventListItemButton = styled(Button)<ButtonProps<any, { component: any }>>(({ theme }) => ({
-  display: 'block',
-  margin: 'auto',
-  height: 'fit-content',
-  width: '100%',
-  border: theme.palette.borderWidth + ' solid ' + theme.palette.primary.main,
-  borderRadius: theme.shape.borderRadius,
-  padding: 2,
-  borderWidth: 2,
-}));
-
-const EventListItemInner = styled('div')<{ height: number }>(({ theme, height }) => ({
-  display: 'grid',
-  gap: theme.spacing(1),
-  gridTemplateColumns: `${(height / 9) * 21}px auto 1fr`,
-  height,
-  [theme.breakpoints.down('md')]: {
-    gap: theme.spacing(0.5),
-  },
-  borderRadius: Number(theme.shape.borderRadius) - Number(theme.shape.borderRadius) / 4,
-  width: '100%',
-  objectFit: 'cover',
-  objectPosition: 'center',
-  margin: 'auto',
-  background: theme.palette.background.paper,
-  overflow: 'hidden',
-  color: theme.palette.text.primary,
-}));
-
-const Divider = styled('div')(({ theme }) => ({
-  borderRadius: 3,
-  margin: theme.spacing(0.25, 0),
-  width: theme.spacing(1),
-  backgroundColor: theme.palette.primary.main,
-}));
-
-export const EventListItem = ({ event, sx }: EventListItemProps) => {
-  const { observe, width } = useDimensions();
-  const getHeight = () => {
-    if (width < 500) {
-      return 70;
-    } else if (width < 700) {
-      return 90;
-    }
-    return 110;
-  };
-  const { data: categories = [] } = useCategories();
-  const categoryLabel = `${event.group ? `${event.group.name} | ` : ''}${categories.find((c) => c.id === event.category)?.text || 'Laster...'}`;
-
-  return (
-    <EventListItemButton component={Link} ref={observe} sx={sx} to={`${URLS.events}${event.id}/${urlEncode(event.title)}/`}>
-      <EventListItemInner height={getHeight()}>
-        <AspectRatioImg alt={event.image_alt || event.title} src={event.image} />
-        <Divider />
-        <Stack justifyContent='center' sx={{ overflow: 'hidden', pr: 0.5 }}>
-          <Title sx={{ fontSize: 19 }}>{event.title}</Title>
-          <EventInfoContent icon={DateIcon} label={formatDate(parseISO(event.start_date))} />
-          <EventInfoContent icon={CategoryIcon} label={categoryLabel} />
-        </Stack>
-      </EventListItemInner>
-    </EventListItemButton>
   );
 };
 

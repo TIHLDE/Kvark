@@ -12,10 +12,12 @@ import { Scheduler, MonthView, Toolbar, DateNavigator, Appointments } from '@olr
 
 // Material-UI
 import { makeStyles } from '@mui/styles';
+import { useTheme } from '@mui/material';
 
 // Project components
 import Paper from 'components/layout/Paper';
 import { useGoogleAnalytics } from 'hooks/Utils';
+import { Groups } from 'types/Enums';
 
 // Styles
 const useStyles = makeStyles(() => ({
@@ -38,6 +40,9 @@ const EventsCalendarView = ({ events, oldEvents }: EventsCalendarViewProps) => {
   const classes = useStyles();
   const { event } = useGoogleAnalytics();
   const [displayedEvents, setDisplayedEvents] = useState<Array<AppointmentModel>>([]);
+  const theme = useTheme();
+
+  const getColor = (event: EventCompact) => theme.palette.colors[event.group?.slug.toLowerCase() === Groups.NOK.toLowerCase() ? 'nok_event' : 'other_event'];
 
   useEffect(() => {
     event('open', 'calendar', 'Open calendar on landing page');
@@ -56,15 +61,13 @@ const EventsCalendarView = ({ events, oldEvents }: EventsCalendarViewProps) => {
     data: AppointmentModel;
   };
 
-  const Appointment = ({ children, data }: AppointmentProps) => {
-    return (
-      <Link to={`${URLS.events}${data.id}/${urlEncode(data.title)}/`}>
-        <Appointments.Appointment data={data} draggable={false} resources={[]}>
-          {children}
-        </Appointments.Appointment>
-      </Link>
-    );
-  };
+  const Appointment = ({ children, data }: AppointmentProps) => (
+    <Link to={`${URLS.events}${data.id}/${urlEncode(data.title)}/`}>
+      <Appointments.Appointment data={data} draggable={false} resources={[]} style={{ backgroundColor: getColor(data as unknown as EventCompact) }}>
+        {children}
+      </Appointments.Appointment>
+    </Link>
+  );
 
   return (
     <Paper className={classes.root} noPadding>

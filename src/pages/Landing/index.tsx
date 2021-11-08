@@ -1,8 +1,8 @@
-import classnames from 'classnames';
-
-// Material UI Components
-import { makeStyles } from '@mui/styles';
-import Typography from '@mui/material/Typography';
+import { useGoogleAnalytics } from 'hooks/Utils';
+import URLS from 'URLS';
+import { Link } from 'react-router-dom';
+import { Typography, styled, IconButton } from '@mui/material';
+import ArrowIcon from '@mui/icons-material/ArrowForwardRounded';
 
 // Project Components
 import Page from 'components/navigation/Page';
@@ -13,58 +13,51 @@ import StoriesView from 'pages/Landing/components/StoriesView';
 import Wave from 'pages/Landing/components/Wave';
 import NewStudentBox from 'pages/Landing/components/NewStudentBox';
 
-const useStyles = makeStyles((theme) => ({
-  section: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-    [theme.breakpoints.down('lg')]: {
-      paddingTop: theme.spacing(2),
-    },
-  },
-  storiesSection: {
-    [theme.breakpoints.down('lg')]: {
-      paddingLeft: 0,
-      paddingRight: 0,
-    },
-  },
-  smoke: {
-    backgroundColor: theme.palette.background.smoke,
-  },
-  header: {
-    marginTop: theme.spacing(0.5),
-    marginBottom: theme.spacing(2),
-    color: theme.palette.text.primary,
+const Section = styled(Container)(({ theme }) => ({
+  paddingTop: theme.spacing(2),
+  paddingBottom: theme.spacing(2),
+  [theme.breakpoints.down('lg')]: {
+    paddingTop: theme.spacing(1.5),
   },
 }));
 
+const Smoke = styled('div')(({ theme }) => ({
+  backgroundColor: theme.palette.background.smoke,
+}));
+
 const Landing = () => {
-  const classes = useStyles();
+  const { event } = useGoogleAnalytics();
+  const openEventsAnalytics = () => event('go-to-all-events', 'events-list-view', `Go to all events`);
+  const openNewsAnalytics = () => event('go-to-all-news', 'news-list-view', `Go to all news`);
 
   return (
     <Page banner={<Wave />} maxWidth={false} options={{ title: 'Forsiden' }}>
-      <div className={classes.smoke}>
-        <Container className={classnames(classes.section, classes.storiesSection)} maxWidth='lg'>
+      <Smoke>
+        <Section maxWidth='lg' sx={{ px: { xs: 0, lg: 2 } }}>
           <NewStudentBox />
-          <Typography align='center' className={classes.header} color='inherit' variant='h2'>
-            Siste
-          </Typography>
           <StoriesView />
-        </Container>
-      </div>
-      <Container className={classes.section} maxWidth='lg'>
-        <Typography align='center' className={classes.header} color='inherit' variant='h2'>
+        </Section>
+      </Smoke>
+      <Section maxWidth='lg'>
+        <Typography align='center' gutterBottom variant='h2'>
           Arrangementer
+          <IconButton component={Link} onClick={openEventsAnalytics} sx={{ ml: 1 }} to={URLS.events}>
+            <ArrowIcon />
+          </IconButton>
         </Typography>
         <EventsView />
-      </Container>
-      <div className={classes.smoke}>
-        <Container className={classes.section} maxWidth='lg'>
-          <Typography align='center' className={classes.header} color='inherit' variant='h2'>
+      </Section>
+      <Smoke>
+        <Section maxWidth='lg'>
+          <Typography align='center' gutterBottom variant='h2'>
             Nyheter
+            <IconButton component={Link} onClick={openNewsAnalytics} sx={{ ml: 1 }} to={URLS.news}>
+              <ArrowIcon />
+            </IconButton>
           </Typography>
           <NewsListView />
-        </Container>
-      </div>
+        </Section>
+      </Smoke>
     </Page>
   );
 };

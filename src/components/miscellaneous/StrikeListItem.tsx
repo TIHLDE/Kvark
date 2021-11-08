@@ -13,7 +13,8 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
-import EventListItem from 'components/miscellaneous/ListItem';
+import EventListItem from 'components/miscellaneous/EventListItem';
+
 export type StrikeProps = {
   strike: Strike;
   user: UserBase;
