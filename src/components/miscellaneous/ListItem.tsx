@@ -155,7 +155,7 @@ const ListItem = ({ event, news, jobpost, className, largeImg = false, sx }: Lis
 
   const info = useMemo((): Array<IconProps> | undefined => {
     if (event) {
-      const categoryLabel = `${event.group ? `${event.group.name} | ` : ''}${categories.find((c) => c.id === event.category)?.text || 'Laster...'}`;
+      const categoryLabel = `${event.organizer ? `${event.organizer.name} | ` : ''}${categories.find((c) => c.id === event.category)?.text || 'Laster...'}`;
       return [
         { label: formatDate(parseISO(event.start_date)), icon: DateIcon },
         { label: categoryLabel, icon: CategoryIcon },

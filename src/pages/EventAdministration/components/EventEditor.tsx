@@ -62,7 +62,7 @@ type FormValues = Pick<
 > & {
   end_date: Date;
   end_registration_at: Date;
-  group: Group['slug'];
+  organizer: Group['slug'];
   sign_off_deadline: Date;
   start_date: Date;
   start_registration_at: Date;
@@ -105,7 +105,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         description: newValues?.description || '',
         end_date: newValues?.end_date ? parseISO(newValues.end_date) : new Date(),
         end_registration_at: newValues?.end_registration_at ? parseISO(newValues.end_registration_at) : new Date(),
-        group: newValues?.group?.slug || '',
+        organizer: newValues?.organizer?.slug || '',
         image: newValues?.image || '',
         image_alt: newValues?.image_alt || '',
         limit: newValues?.limit || 0,
@@ -168,7 +168,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     const values = getValues();
     return {
       ...values,
-      group: groups?.find((g) => g.slug === values.group) || null,
+      organizer: groups?.find((g) => g.slug === values.organizer) || null,
       list_count: 0,
       registration_priorities: regPriorities,
       waiting_list_count: 0,
@@ -419,8 +419,8 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                   </ShowMoreText>
                 }
                 label='Arrangør (Gruppe)'
-                name='group'>
-                {data && !data.group && <MenuItem value=''>Ingen</MenuItem>}
+                name='organizer'>
+                {data && !data.organizer && <MenuItem value=''>Ingen</MenuItem>}
                 {groupOptions.map((option) =>
                   option.type === 'header' ? (
                     <ListSubheader key={option.header}>{option.header}</ListSubheader>
