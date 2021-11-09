@@ -40,6 +40,7 @@ import {
   UserSubmission,
   Warning,
   StrikeList,
+  MembershipHistory,
 } from 'types';
 
 export const AUTH_ENDPOINT = 'auth';
@@ -53,6 +54,7 @@ export const GROUPS_ENDPOINT = 'group';
 export const JOBPOSTS_ENDPOINT = 'jobpost';
 export const ME_ENDPOINT = 'me';
 export const MEMBERSHIPS_ENDPOINT = 'membership';
+export const MEMBERSHIP_HISTORIES_ENDPOINT = 'membership-history';
 export const NEWS_ENDPOINT = 'news';
 export const NOTIFICATIONS_ENDPOINT = 'notification';
 export const PAGES_ENDPOINT = 'page';
@@ -179,6 +181,8 @@ export default {
   //Membership
   getMemberships: (slug: string, filters?: any) =>
     IFetch<PaginationResponse<Membership>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/${MEMBERSHIPS_ENDPOINT}/`, data: filters || {} }),
+  getMembershipsHistories: (slug: string, filters?: any) =>
+    IFetch<PaginationResponse<MembershipHistory>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/${MEMBERSHIP_HISTORIES_ENDPOINT}/`, data: filters || {} }),
   createMembership: (slug: string, userId: string) =>
     IFetch<Membership>({ method: 'POST', url: `${GROUPS_ENDPOINT}/${slug}/${MEMBERSHIPS_ENDPOINT}/`, data: { user: { user_id: userId } } }),
   deleteMembership: (slug: string, userId: string) =>

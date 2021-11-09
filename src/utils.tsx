@@ -1,7 +1,7 @@
 import slugify from 'slugify';
 import { parseISO, format, subMinutes } from 'date-fns';
 import { Event } from 'types';
-import { UserStudy, UserClass, JobPostType, StrikeReason } from 'types/Enums';
+import { UserStudy, UserClass, JobPostType, StrikeReason, MembershipType } from 'types/Enums';
 
 /**
  * Slugify a string to make it safe to use in an URL
@@ -125,6 +125,21 @@ export const getJobpostType = (jobpostType: JobPostType) => {
       return 'Annet';
     default:
       return 'Ukjent jobbtype';
+  }
+};
+
+/**
+ * Get membership type as text
+ * @param membershipType Membership type
+ */
+export const getMembershipType = (membershipType: MembershipType) => {
+  switch (membershipType) {
+    case MembershipType.LEADER:
+      return 'Leder';
+    case MembershipType.MEMBER:
+      return 'Medlem';
+    default:
+      return 'Ukjent medlemskapstype';
   }
 };
 

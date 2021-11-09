@@ -1,22 +1,23 @@
 import { useMemo } from 'react';
-import { UserList } from 'types';
+import { MembershipHistory } from 'types';
 
 import { ListItem, ListItemText, ListItemAvatar, List, Grid, Typography, Skeleton } from '@mui/material';
 import { parseISO } from 'date-fns';
 
 import Paper from 'components/layout/Paper';
-import { useMemberships } from 'hooks/Membership';
+import { useMembershipHistories } from 'hooks/Membership';
 import Pagination from 'components/layout/Pagination';
 import { useGroup } from 'hooks/Group';
 import Avatar from 'components/miscellaneous/Avatar';
+import { getMembershipType } from 'utils';
 
 export type MembersHistoryCardProps = {
   slug: string;
 };
 
 const MembersHistoryCard = ({ slug }: MembersHistoryCardProps) => {
-  const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useMemberships(slug, { onlyMembers: true });
-  const members = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
+  const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useMembershipHistories(slug);
+  const prevMembers = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
   const { data: group } = useGroup(slug);
   const leader = group?.leader;
 
@@ -33,15 +34,20 @@ const MembersHistoryCard = ({ slug }: MembersHistoryCardProps) => {
   }
 
   type PersonProps = {
-    user: UserList;
+    membership: MembershipHistory;
   };
 
-  const Person = ({ user }: PersonProps) => (
+  const Person = ({ membership }: PersonProps) => (
     <ListItem>
       <ListItemAvatar>
-        <Avatar user={user} />
+        <Avatar user={membership.user} />
       </ListItemAvatar>
-      <ListItemText primary={`${user.first_name} ${user.last_name}`} secondary={`${parseISO(user.start_date)} til ${parseISO(user.end_date)}`} />
+      <ListItemText
+        primary={`${membership.user.first_name} ${membership.user.last_name}`}
+        secondary={`${parseISO(membership.start_date).getFullYear()} til ${parseISO(membership.end_date).getFullYear()} - ${getMembershipType(
+          membership.membership_type,
+        )}`}
+      />
     </ListItem>
   );
 
@@ -50,19 +56,13 @@ const MembersHistoryCard = ({ slug }: MembersHistoryCardProps) => {
       <Grid container spacing={2}>
         {Boolean(data?.pages?.length) && (
           <Grid item xs={12}>
-            <Typography variant='h3'>Leder:</Typography>
-          </Grid>
-        )}
-        {leader && <Person user={leader as UserList} />}
-        {Boolean(data?.pages?.length) && (
-          <Grid item xs={12}>
-            <Typography variant='h3'>Medlemmer:</Typography>
+            <Typography variant='h3'>Tidligere medlemmer:</Typography>
           </Grid>
         )}
         <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
           <List>
-            {members.map((member) => (
-              <Person key={member.user.user_id} user={member.user as UserList} />
+            {prevMembers.map((member) => (
+              <Person key={member.user.user_id} membership={member} />
             ))}
           </List>
         </Pagination>
