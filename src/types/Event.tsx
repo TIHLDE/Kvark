@@ -19,7 +19,7 @@ export interface Event {
   end_registration_at: string;
   evaluation: string | null;
   expired: boolean;
-  group: Group | null;
+  organizer: Group | null;
   id: number;
   image?: string;
   image_alt?: string;
@@ -39,10 +39,10 @@ export interface Event {
   can_cause_strikes: boolean;
   enforces_previous_strikes: boolean;
 }
-export type EventRequired = Partial<Event> & Pick<Event, 'end_date' | 'title' | 'start_date'> & { group: Group['slug'] };
+export type EventRequired = Partial<Event> & Pick<Event, 'end_date' | 'title' | 'start_date'> & { organizer: Group['slug'] };
 export type EventCompact = Pick<
   Event,
-  'category' | 'end_date' | 'expired' | 'group' | 'id' | 'image' | 'image_alt' | 'location' | 'title' | 'start_date' | 'updated_at'
+  'category' | 'end_date' | 'expired' | 'organizer' | 'id' | 'image' | 'image_alt' | 'location' | 'title' | 'start_date' | 'updated_at'
 >;
 
 export interface RegistrationPriority {
