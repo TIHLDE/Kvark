@@ -42,7 +42,8 @@ const EventsCalendarView = ({ events, oldEvents }: EventsCalendarViewProps) => {
   const [displayedEvents, setDisplayedEvents] = useState<Array<AppointmentModel>>([]);
   const theme = useTheme();
 
-  const getColor = (event: EventCompact) => theme.palette.colors[event.group?.slug.toLowerCase() === Groups.NOK.toLowerCase() ? 'nok_event' : 'other_event'];
+  const getColor = (event: EventCompact) =>
+    theme.palette.colors[event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase() ? 'nok_event' : 'other_event'];
 
   useEffect(() => {
     event('open', 'calendar', 'Open calendar on landing page');

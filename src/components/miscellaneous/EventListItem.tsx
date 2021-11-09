@@ -105,7 +105,7 @@ const EventListItem = ({ event, sx }: EventListItemProps) => {
   const { observe, width } = useDimensions();
   const theme = useTheme();
 
-  const getColor = () => theme.palette.colors[event.group?.slug.toLowerCase() === Groups.NOK.toLowerCase() ? 'nok_event' : 'other_event'];
+  const getColor = () => theme.palette.colors[event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase() ? 'nok_event' : 'other_event'];
 
   const [height, titleFontSize, contentFontSize] = useMemo(() => {
     if (width < 400) {
@@ -119,7 +119,7 @@ const EventListItem = ({ event, sx }: EventListItemProps) => {
   }, [width]);
 
   const { data: categories = [] } = useCategories();
-  const categoryLabel = `${event.group ? `${event.group.name} | ` : ''}${categories.find((c) => c.id === event.category)?.text || 'Laster...'}`;
+  const categoryLabel = `${event.organizer ? `${event.organizer.name} | ` : ''}${categories.find((c) => c.id === event.category)?.text || 'Laster...'}`;
 
   return (
     <EventListItemButton

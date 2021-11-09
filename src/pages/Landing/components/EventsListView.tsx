@@ -58,8 +58,8 @@ const EventsListView = ({ events, isLoading = false }: EventsListViewProps) => {
     );
   }
 
-  const getNokEvents = () => events.filter((event) => event.group?.slug.toLowerCase() === Groups.NOK.toLowerCase()).slice(0, NO_OF_EVENTS_TO_SHOW);
-  const getOtherEvents = () => events.filter((event) => event.group?.slug.toLowerCase() !== Groups.NOK.toLowerCase()).slice(0, NO_OF_EVENTS_TO_SHOW);
+  const getNokEvents = () => events.filter((event) => event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase()).slice(0, NO_OF_EVENTS_TO_SHOW);
+  const getOtherEvents = () => events.filter((event) => event.organizer?.slug.toLowerCase() !== Groups.NOK.toLowerCase()).slice(0, NO_OF_EVENTS_TO_SHOW);
 
   return (
     <Container>
