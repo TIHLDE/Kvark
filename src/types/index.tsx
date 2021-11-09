@@ -7,3 +7,4 @@ export * from 'types/News';
 export * from 'types/Page';
 export * from 'types/Strike';
 export * from 'types/User';
+export * from 'types/Gallery';

@@ -40,6 +40,10 @@ import {
   UserSubmission,
   Warning,
   StrikeList,
+  Gallery,
+  GalleryRequired,
+  Picture,
+  PictureRequired,
 } from 'types';
 
 export const AUTH_ENDPOINT = 'auth';
@@ -49,6 +53,7 @@ export const CHEATSHEETS_ENDPOINT = 'cheatsheet';
 export const EVENTS_ENDPOINT = 'events';
 export const EVENT_REGISTRATIONS_ENDPOINT = 'users';
 export const FORMS_ENDPOINT = 'forms';
+export const GALLERY_ENDPOINT = 'gallery';
 export const GROUPS_ENDPOINT = 'group';
 export const JOBPOSTS_ENDPOINT = 'jobpost';
 export const ME_ENDPOINT = 'me';
@@ -56,6 +61,7 @@ export const MEMBERSHIPS_ENDPOINT = 'membership';
 export const NEWS_ENDPOINT = 'news';
 export const NOTIFICATIONS_ENDPOINT = 'notification';
 export const PAGES_ENDPOINT = 'page';
+export const PICTURE_ENDPOINT = 'pictures';
 export const SHORT_LINKS_ENDPOINT = 'short-link';
 export const STRIKES_ENDPOINT = 'strikes';
 export const SUBMISSIONS_ENDPOINT = 'submission';
@@ -148,6 +154,18 @@ export default {
   getShortLinks: (filters?: any) => IFetch<Array<ShortLink>>({ method: 'GET', url: `${SHORT_LINKS_ENDPOINT}/`, data: filters || {} }),
   createShortLink: (item: ShortLink) => IFetch<ShortLink>({ method: 'POST', url: `${SHORT_LINKS_ENDPOINT}/`, data: item }),
   deleteShortLink: (slug: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${SHORT_LINKS_ENDPOINT}/${slug}/` }),
+
+  // Album
+  getAlbum: (slug: string) => IFetch<Gallery>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${slug}/` }),
+  getAlbums: (filters?: any) => IFetch<PaginationResponse<Gallery>>({ method: 'GET', url: `${GALLERY_ENDPOINT}/`, data: filters || {} }),
+  createAlbum: (item: GalleryRequired) => IFetch<Gallery>({ method: 'POST', url: `${GALLERY_ENDPOINT}/`, data: item }),
+  deleteAlbum: (slug: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${GALLERY_ENDPOINT}/${slug}/` }),
+
+  // Picture
+  getAlbumPictures: (albumSlug: string, filters?: any) =>
+    IFetch<PaginationResponse<Picture>>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${albumSlug}/${PICTURE_ENDPOINT}/`, data: filters || {} }),
+  createPicture: (item: PictureRequired) => IFetch<Picture>({ method: 'POST', url: `${PICTURE_ENDPOINT}/`, data: item }),
+  deletePicture: (id: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${PICTURE_ENDPOINT}/${id}` }),
 
   // Strikes
   createStrike: (item: StrikeCreate) => IFetch<Strike>({ method: 'POST', url: `${STRIKES_ENDPOINT}/`, data: item }),
