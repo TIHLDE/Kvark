@@ -101,7 +101,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
     }
   };
 
-  const DARK_PAPER_COLOR = '#19212f';
+  const DARK_PAPER_COLOR = '#011830';
   const BORDER_RADIUS = 16;
 
   return createTheme({
@@ -173,7 +173,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       error: {
         main: get<string>({ light: '#b20101', dark: '#ff6060' }),
       },
-      divider: get<string>({ light: '#dbdbdb', dark: '#333333' }),
+      divider: get<string>({ light: '#e4e4e4', dark: '#132f4c' }),
       text: {
         secondary: get<string>({ light: '#333333', dark: '#cccccc' }),
       },
@@ -188,16 +188,16 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       },
       borderWidth: '1px',
       background: {
-        default: get<string>({ light: '#ececec', dark: '#121519' }),
+        default: get<string>({ light: '#eeeeee', dark: '#001328' }),
         paper: get<string>({ light: '#ffffff', dark: DARK_PAPER_COLOR }),
-        smoke: get<string>({ light: '#f2f2f2', dark: '#171b22' }),
+        smoke: get<string>({ light: '#f2f2f2', dark: '#071a2d' }),
       },
       colors: {
         footer: DARK_PAPER_COLOR,
         tihlde: '#1c458a',
         gradient: {
           main: {
-            top: get<string>({ light: '#16356e', dark: DARK_PAPER_COLOR }),
+            top: get<string>({ light: '#16356e', dark: '#0d2339' }),
             bottom: get<string>({ light: '#814a93', dark: '#581d6c' }),
           },
           secondary: {
