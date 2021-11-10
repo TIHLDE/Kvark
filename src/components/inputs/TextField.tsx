@@ -1,29 +1,33 @@
 import { forwardRef } from 'react';
-import { UseFormReturn, FieldError, Path } from 'react-hook-form';
+import { UseFormReturn, FieldError, Path, FieldValues } from 'react-hook-form';
 
 // Material UI Components
 import MuiTextField, { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField';
 
-export type TextFieldProps<FormValues> = MuiTextFieldProps &
+export type TextFieldProps<FormValues extends FieldValues = FieldValues> = MuiTextFieldProps &
   Pick<UseFormReturn<FormValues>, 'formState'> & {
     name: Path<FormValues> | string;
   };
 
 // eslint-disable-next-line comma-spacing
-const GenericTextField = <FormValues,>({ name, formState, ...props }: TextFieldProps<FormValues>, ref: React.ForwardedRef<HTMLDivElement>) => (
-  <MuiTextField
-    error={Boolean(formState.errors[name] as FieldError)}
-    fullWidth
-    helperText={(formState.errors[name] as FieldError)?.message}
-    InputLabelProps={{ shrink: true }}
-    inputRef={ref}
-    margin='normal'
-    name={name}
-    placeholder={props.placeholder || 'Skriv her'}
-    variant='outlined'
-    {...props}
-  />
-);
+const GenericTextField = <FormValues,>({ name, formState, ...props }: TextFieldProps<FormValues>, ref: React.ForwardedRef<HTMLDivElement>) => {
+  const { [name]: fieldError } = formState.errors;
+  const error = fieldError as FieldError;
+  return (
+    <MuiTextField
+      error={Boolean(error)}
+      fullWidth
+      helperText={error?.message}
+      InputLabelProps={{ shrink: true }}
+      inputRef={ref}
+      margin='normal'
+      name={name}
+      placeholder={props.placeholder || 'Skriv her'}
+      variant='outlined'
+      {...props}
+    />
+  );
+};
 
 const TextField = forwardRef(GenericTextField) as <FormValues>(
   props: TextFieldProps<FormValues> & { ref?: React.ForwardedRef<HTMLDivElement> },

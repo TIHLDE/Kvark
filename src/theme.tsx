@@ -1,4 +1,3 @@
-import { darkScrollbar } from '@mui/material';
 import { createTheme, Theme } from '@mui/material/styles';
 
 // Icons
@@ -127,10 +126,6 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       },
       MuiCssBaseline: {
         styleOverrides: {
-          body: {
-            // eslint-disable-next-line @typescript-eslint/ban-types
-            ...get<object>({ light: {}, dark: darkScrollbar() }),
-          },
           '@global': {
             html: { WebkitFontSmoothing: 'auto' },
           },

@@ -35,7 +35,7 @@ const RendererPreview = <Type,>({ className, getContent, renderer: Renderer }: R
   const [content, setContent] = useState<Type | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  const Transition = forwardRef(function Transition(props: TransitionProps & { children?: ReactElement }, ref: Ref<unknown>) {
+  const Transition = forwardRef(function Transition(props: TransitionProps & { children: ReactElement }, ref: Ref<unknown>) {
     return <Slide direction='up' ref={ref} {...props} />;
   });
 
