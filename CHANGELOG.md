@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.2.7 (11.11.2021)
+
 - 🎨 **Utseende**. Endret noen av fargene i mørkt modus.
 - ✨ **Jul**. Lagt til snø på forside og nisselue på logo som vises automatisk basert på dato.
 - 🦟 **QR-Koder**. Endret farge på QR-Koder for at de skal bli lettere å lese. I tillegg vises for- og etternavn under QR-koder.
