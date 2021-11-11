@@ -75,21 +75,22 @@ const AppRoutes = () => {
         <Route path={URLS.events}>
           <Route element={<AuthRoute apps={[PermissionApp.EVENT]} element={<EventRegistration />} />} path={`:id/${URLS.eventRegister}`} />
           <Route element={<EventDetails />} path=':id/*' />
-          <Route element={<Events />} path='' />
+          <Route element={<Events />} index />
         </Route>
         <Route element={<Companies />} path={URLS.company} />
         <Route element={<Form />} path={`${URLS.form}:id/`} />
-        <Route element={<GroupOverview />} path={URLS.groups}>
-          <Route element={<GroupAdmin />} path=':slug/' />
+        <Route path={URLS.groups}>
+          <Route element={<GroupAdmin />} path=':slug/*' />
+          <Route element={<GroupOverview />} index />
         </Route>
         <Route path={URLS.jobposts}>
           <Route element={<JobPostDetails />} path=':id/*' />
-          <Route element={<JobPosts />} path='' />
+          <Route element={<JobPosts />} index />
         </Route>
         <Route element={<Pages />} path={`${URLS.pages}*`} />
         <Route path={URLS.news}>
           <Route element={<NewsDetails />} path=':id/*' />
-          <Route element={<News />} path='' />
+          <Route element={<News />} index />
         </Route>
 
         <Route element={<AuthRoute element={<Profile />} />} path={URLS.profile} />
