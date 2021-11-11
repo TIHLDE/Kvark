@@ -49,7 +49,7 @@ export const Providers = ({ children }: ProvidersProps) => {
     <StyledEngineProvider injectFirst>
       <ThemeProvider>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <CssBaseline />
+          <CssBaseline enableColorScheme />
           <QueryClientProvider client={queryClient}>
             <MiscProvider>
               <SnackbarProvider>{children}</SnackbarProvider>

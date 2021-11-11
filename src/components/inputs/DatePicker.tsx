@@ -1,4 +1,4 @@
-import { UnpackNestedValue, PathValue, FieldError, Controller, Path, RegisterOptions, UseFormReturn } from 'react-hook-form';
+import { UnpackNestedValue, FieldValues, PathValue, FieldError, Controller, Path, RegisterOptions, UseFormReturn } from 'react-hook-form';
 import { TextField as MuiTextField, TextFieldProps } from '@mui/material';
 import {
   DatePicker as MuiDatePicker,
@@ -7,7 +7,7 @@ import {
   DateTimePickerProps as MuiDateTimePickerProps,
 } from '@mui/lab';
 
-export type DatePickerProps<FormValues> = TextFieldProps &
+export type DatePickerProps<FormValues extends FieldValues = FieldValues> = TextFieldProps &
   Pick<UseFormReturn<FormValues>, 'formState' | 'control'> & {
     name: Path<FormValues>;
     rules?: RegisterOptions;
@@ -31,6 +31,8 @@ const DatePicker = <FormValues,>({
   onDateChange,
   ...props
 }: DatePickerProps<FormValues>) => {
+  const { [name]: fieldError } = formState.errors;
+  const error = fieldError as FieldError;
   const Picker = type === 'date' ? MuiDatePicker : MuiDateTimePicker;
   return (
     <Controller
@@ -51,14 +53,7 @@ const DatePicker = <FormValues,>({
             }
           }}
           renderInput={(params) => (
-            <MuiTextField
-              margin='normal'
-              variant='outlined'
-              {...params}
-              error={Boolean(formState.errors[name] as FieldError)}
-              helperText={(formState.errors[name] as FieldError)?.message}
-              {...props}
-            />
+            <MuiTextField margin='normal' variant='outlined' {...params} error={Boolean(error)} helperText={error?.message} {...props} />
           )}
         />
       )}

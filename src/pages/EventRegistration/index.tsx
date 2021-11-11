@@ -38,7 +38,7 @@ const ParticipantCard = ({ user, updateAttendedStatus }: ParticipantCardProps) =
       <Typography sx={{ fontWeight: 'bold', fontSize: '17px', width: '100%', margin: 'auto' }}>
         {user.user_info.first_name + ' ' + user.user_info.last_name}
       </Typography>
-      <FormControlLabel control={<Checkbox checked={checkedState} onChange={onCheck} />} label={!mdDown && 'Ankommet'} labelPlacement='start' />
+      <FormControlLabel control={<Checkbox checked={checkedState} onChange={onCheck} />} label={!mdDown ? 'Ankommet' : ''} labelPlacement='start' />
     </Paper>
   );
 };
