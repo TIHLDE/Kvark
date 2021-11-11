@@ -57,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
   },
   accordion: {
     background: theme.palette.background.paper,
+    border: `1px solid ${theme.palette.divider}`,
   },
 }));
 

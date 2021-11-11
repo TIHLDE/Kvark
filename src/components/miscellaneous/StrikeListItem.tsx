@@ -46,6 +46,7 @@ const StrikeListItem = ({ strike, user, displayUserInfo = false, ...props }: Str
               <Typography variant='subtitle2'>{`Opprettet av: ${strike.creator?.first_name} ${strike.creator?.last_name}`}</Typography>
             )}
             <Typography variant='subtitle2'>{`Opprettet: ${formatDate(parseISO(strike.created_at))}`}</Typography>
+            {displayUserInfo && <Typography variant='subtitle2'>{`Begrunnelse: ${strike.description}`}</Typography>}
           </div>
           {strike.event !== undefined && <EventListItem event={strike.event} />}
           {loggedInUser?.permissions.strike.destroy && (

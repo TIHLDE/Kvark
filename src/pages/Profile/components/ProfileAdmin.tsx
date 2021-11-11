@@ -45,7 +45,7 @@ const Admin = () => {
 
   const Card = ({ apps, icon: Icon, to, primary, secondary }: CardProps) => (
     <HavePermission apps={apps}>
-      <Paper noPadding>
+      <Paper noOverflow noPadding>
         <ListItem button component={Link} to={to}>
           <ListItemAvatar>
             <Avatar className={classes.avatar}>
