@@ -84,8 +84,7 @@ export type SidebarListProps<Type> = {
   formatDesc?: (content: any) => string;
 };
 
-// eslint-disable-next-line comma-spacing
-const SidebarList = <Type,>({
+const SidebarList = <Type extends unknown>({
   useHook,
   onItemClick,
   selectedItemId,

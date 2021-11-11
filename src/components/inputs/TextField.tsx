@@ -9,8 +9,10 @@ export type TextFieldProps<FormValues extends FieldValues = FieldValues> = MuiTe
     name: Path<FormValues> | string;
   };
 
-// eslint-disable-next-line comma-spacing
-const GenericTextField = <FormValues,>({ name, formState, ...props }: TextFieldProps<FormValues>, ref: React.ForwardedRef<HTMLDivElement>) => {
+const GenericTextField = <FormValues extends FieldValues>(
+  { name, formState, ...props }: TextFieldProps<FormValues>,
+  ref: React.ForwardedRef<HTMLDivElement>,
+) => {
   const { [name]: fieldError } = formState.errors;
   const error = fieldError as FieldError;
   return (

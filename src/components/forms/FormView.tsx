@@ -1,5 +1,5 @@
 import { Form } from 'types';
-import { UseFormReturn } from 'react-hook-form';
+import { UseFormReturn, FieldValues } from 'react-hook-form';
 import { Typography, TypographyProps } from '@mui/material';
 
 // Project components
@@ -11,8 +11,15 @@ export type FormViewProps<FormValues> = Pick<UseFormReturn<FormValues>, 'formSta
   alignText?: TypographyProps['align'];
 };
 
-// eslint-disable-next-line comma-spacing
-const FormView = <FormValues,>({ form, register, formState, control, getValues, disabled = false, alignText }: FormViewProps<FormValues>) => (
+const FormView = <FormValues extends FieldValues>({
+  form,
+  register,
+  formState,
+  control,
+  getValues,
+  disabled = false,
+  alignText,
+}: FormViewProps<FormValues>) => (
   <>
     {!form.fields.length && (
       <Typography align={alignText} variant='body2'>
