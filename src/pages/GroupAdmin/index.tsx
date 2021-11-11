@@ -20,8 +20,8 @@ import Avatar from 'components/miscellaneous/Avatar';
 import { UserList } from 'types';
 
 const Group = () => {
-  const { slug: slugParameter } = useParams();
-  const slug = slugParameter.toLowerCase();
+  const { slug: slugParameter } = useParams<'slug'>();
+  const slug = (slugParameter || '-').toLowerCase();
   const { data: membersData, hasNextPage, fetchNextPage, isLoading: isLoadingMembers, isFetching } = useMemberships(slug, { onlyMembers: true });
   const members = useMemo(() => (membersData !== undefined ? membersData.pages.map((page) => page.results).flat(1) : []), [membersData]);
   const { data, isLoading: isLoadingGroups, isError } = useGroup(slug);

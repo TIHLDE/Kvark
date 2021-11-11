@@ -11,6 +11,7 @@ import { broadcastQueryClient } from 'react-query/broadcastQueryClient-experimen
 import { ReactQueryDevtools } from 'react-query/devtools';
 import 'delayed-scroll-restoration-polyfill';
 import { SHOW_NEW_STUDENT_INFO } from 'constant';
+import API from 'api/api';
 
 // Services
 import { ThemeProvider } from 'hooks/Theme';
@@ -48,7 +49,7 @@ export const Providers = ({ children }: ProvidersProps) => {
     <StyledEngineProvider injectFirst>
       <ThemeProvider>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <CssBaseline />
+          <CssBaseline enableColorScheme />
           <QueryClientProvider client={queryClient}>
             <MiscProvider>
               <SnackbarProvider>{children}</SnackbarProvider>
@@ -96,6 +97,8 @@ console.log(
   '',
 );
 const rickroll = () => {
+  const RICKROLLED_BADGE_ID = '8e4eb14a-77f5-4a10-b3ae-548d0f607528';
+  API.createUserBadge({ badge_id: RICKROLLED_BADGE_ID }).catch(() => null);
   window.gtag('event', 'rickrolled', {
     event_category: 'easter-egg',
     event_label: 'Rickrolled in the console',

@@ -17,7 +17,8 @@
     "outDir": "./build",
     "baseUrl": "./src",
     "typeRoots": ["src/types"],
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "useUnknownInCatchVariables": false
   },
   "include": ["src"]
 }

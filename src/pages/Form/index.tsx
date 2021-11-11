@@ -23,9 +23,9 @@ import { FormResourceType, FormType } from 'types/Enums';
 
 const FormPage = () => {
   const { event: GAEvent } = useGoogleAnalytics();
-  const { id } = useParams();
-  const { data: form, isError } = useFormById(id);
-  const createSubmission = useCreateSubmission(id);
+  const { id } = useParams<'id'>();
+  const { data: form, isError } = useFormById(id || '-');
+  const createSubmission = useCreateSubmission(id || '-');
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const title = useMemo(() => (form?.type === FormType.EVALUATION ? 'Evaluering' : 'Spørreskjema'), [form]);

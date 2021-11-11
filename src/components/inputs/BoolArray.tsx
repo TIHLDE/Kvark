@@ -86,7 +86,7 @@ const BoolArray = <OptionType, FormValues>({
                     />
                   }
                   key={i}
-                  label={option[optionLabelKey]}
+                  label={option[optionLabelKey] as unknown as string}
                 />
               ))}
             </>

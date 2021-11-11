@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode, useEffect, lazy, Suspense } from 'react';
+import { ReactElement, useEffect, lazy, Suspense } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import URLS from 'URLS';
 import { PermissionApp } from 'types/Enums';
@@ -42,12 +42,10 @@ const StrikeAdmin = lazy(() => import(/* webpackChunkName: "strike_admin" */ 'pa
 
 type AuthRouteProps = {
   apps?: Array<PermissionApp>;
-  path: string;
-  element?: ReactElement | null;
-  children?: ReactNode;
+  element: ReactElement;
 };
 
-const AuthRoute = ({ apps = [], children, path, element }: AuthRouteProps) => {
+const AuthRoute = ({ apps = [], element }: AuthRouteProps) => {
   const setLogInRedirectURL = useSetRedirectUrl();
   const isAuthenticated = useIsAuthenticated();
   const { allowAccess, isLoading } = useHavePermission(apps);
@@ -58,14 +56,9 @@ const AuthRoute = ({ apps = [], children, path, element }: AuthRouteProps) => {
     setLogInRedirectURL(window.location.pathname);
     return <Navigate to={URLS.login} />;
   } else if (allowAccess || !apps.length) {
-    return (
-      <Route element={element} path={path}>
-        {children}
-      </Route>
-    );
-  } else {
-    return <Navigate to={URLS.landing} />;
+    return element;
   }
+  return <Navigate to={URLS.landing} />;
 };
 
 const AppRoutes = () => {
@@ -77,50 +70,46 @@ const AppRoutes = () => {
   return (
     <Suspense fallback={<Page options={{ title: 'Laster...', filledTopbar: true }} />}>
       <Routes>
-        <Route element={<Landing />} path='/' />
+        <Route element={<Landing />} index />
         <Route element={<NewStudent />} path={URLS.newStudent} />
         <Route path={URLS.events}>
-          <AuthRoute apps={[PermissionApp.EVENT]} element={<EventRegistration />} path={`:id/${URLS.eventRegister}`} />
+          <Route element={<AuthRoute apps={[PermissionApp.EVENT]} element={<EventRegistration />} />} path={`:id/${URLS.eventRegister}`} />
           <Route element={<EventDetails />} path=':id/*' />
-          <Route element={<Events />} path='' />
+          <Route element={<Events />} index />
         </Route>
         <Route element={<Companies />} path={URLS.company} />
-        <AuthRoute element={<Form />} path={`${URLS.form}:id/`} />
-        <Route element={<GroupOverview />} path={URLS.groups} />
+        <Route element={<AuthRoute element={<Form />} />} path={`${URLS.form}:id/`} />
+        <Route path={URLS.groups}>
+          <Route element={<GroupAdmin />} path=':slug/*' />
+          <Route element={<GroupOverview />} index />
+        </Route>
         <Route path={URLS.jobposts}>
           <Route element={<JobPostDetails />} path=':id/*' />
-          <Route element={<JobPosts />} path='' />
+          <Route element={<JobPosts />} index />
         </Route>
         <Route element={<Pages />} path={`${URLS.pages}*`} />
         <Route path={URLS.news}>
           <Route element={<NewsDetails />} path=':id/*' />
-          <Route element={<News />} path='' />
+          <Route element={<News />} index />
         </Route>
 
-        <AuthRoute element={<Profile />} path={URLS.profile} />
+        <Route element={<AuthRoute element={<Profile />} />} path={URLS.profile} />
 
-        <AuthRoute element={<Cheatsheet />} path={`${URLS.cheatsheet}:studyId/:classId/`} />
-        <AuthRoute element={<Cheatsheet />} path={`${URLS.cheatsheet}*`} />
-        <AuthRoute element={<ShortLinks />} path={URLS.shortLinks} />
+        <Route element={<AuthRoute element={<Cheatsheet />} />} path={`${URLS.cheatsheet}:studyId/:classId/`} />
+        <Route element={<AuthRoute element={<Cheatsheet />} />} path={`${URLS.cheatsheet}*`} />
+        <Route element={<AuthRoute element={<ShortLinks />} />} path={URLS.shortLinks} />
 
-        <AuthRoute apps={[PermissionApp.USER]} element={<UserAdmin />} path={URLS.userAdmin} />
-        <AuthRoute apps={[PermissionApp.JOBPOST]} path={URLS.jobpostsAdmin}>
+        <Route element={<AuthRoute apps={[PermissionApp.JOBPOST]} element={<JobPostAdministration />} />} path={URLS.jobpostsAdmin}>
           <Route element={<JobPostAdministration />} path=':jobPostId/' />
-          <Route element={<JobPostAdministration />} path='' />
-        </AuthRoute>
-        <AuthRoute apps={[PermissionApp.EVENT]} path={URLS.eventAdmin}>
+        </Route>
+        <Route element={<AuthRoute apps={[PermissionApp.EVENT]} element={<EventAdministration />} />} path={URLS.eventAdmin}>
           <Route element={<EventAdministration />} path=':eventId/' />
-          <Route element={<EventAdministration />} path='' />
-        </AuthRoute>
-        <AuthRoute apps={[PermissionApp.NEWS]} path={URLS.newsAdmin}>
+        </Route>
+        <Route element={<AuthRoute apps={[PermissionApp.NEWS]} element={<NewsAdministration />} />} path={URLS.newsAdmin}>
           <Route element={<NewsAdministration />} path=':newsId/' />
-          <Route element={<NewsAdministration />} path='' />
-        </AuthRoute>
-        <AuthRoute apps={[PermissionApp.STRIKE]} path={URLS.strikeAdmin}>
-          <Route element={<StrikeAdmin />} path='' />
-        </AuthRoute>
-
-        <Route element={<GroupAdmin />} path={`${URLS.groups}:slug/`} />
+        </Route>
+        <Route element={<AuthRoute apps={[PermissionApp.USER]} element={<UserAdmin />} />} path={URLS.userAdmin} />
+        <Route element={<AuthRoute apps={[PermissionApp.STRIKE]} element={<StrikeAdmin />} />} path={URLS.strikeAdmin} />
 
         <Route element={<LogIn />} path={URLS.login} />
         <Route element={<ForgotPassword />} path={URLS.forgotPassword} />
