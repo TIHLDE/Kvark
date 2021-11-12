@@ -165,7 +165,7 @@ const Pages = () => {
                     <SpecialContent />
                   </Suspense>
                 </div>
-                {data.image && <img alt={data.image_alt || data.title} className={classes.image} src={data.image} />}
+                {data.image && <img alt={data.image_alt || data.title} className={classes.image} loading='lazy' src={data.image} />}
               </div>
             </>
           )

@@ -30,7 +30,11 @@ const Http404 = () => {
 
   return (
     <Page options={{ filledTopbar: true, title: '404', lightColor: 'blue', gutterTop: true }}>
-      {isAuthenticated ? <Img alt='404' src={http404ropeImg} /> : <Img alt='404' src={http404img} sx={{ paddingTop: (theme) => theme.spacing(3) }} />}
+      {isAuthenticated ? (
+        <Img alt='404' loading='lazy' src={http404ropeImg} />
+      ) : (
+        <Img alt='404' loading='lazy' src={http404img} sx={{ paddingTop: (theme) => theme.spacing(3) }} />
+      )}
       <Typography align='center' variant='h1'>
         Kunne ikke finne siden
       </Typography>

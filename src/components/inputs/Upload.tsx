@@ -142,7 +142,7 @@ export const GenericImageUpload = <FormValues extends FieldValues>({
   return (
     <>
       <UploadPaper>
-        {url && <Img src={url as string} />}
+        {url && <Img loading='lazy' src={url as string} />}
         <div>
           <input hidden {...register} />
           <input accept='image/*' hidden id='image-upload-button' onChange={onSelect} type='file' />
