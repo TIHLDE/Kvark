@@ -62,10 +62,6 @@ These should be put in a _.env_ file in the repository root.
 VITE_API_URL=YOUR_API_URL_HERE
 ```
 
-## ✅ Test the application
-
-The tests can be run by running `yarn test`.
-
 ## ❤ Contributing
 
 The Kvark frontend is an open source project build on voluntary work.
