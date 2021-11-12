@@ -174,7 +174,7 @@ const Footer = () => {
       </div>
       <div className={classnames(classes.main, classes.flexColumn, classes.marginTopColumns)}>
         <a className={classes.attribute} href='https://www.accenture.com/no-en' rel='noopener noreferrer' target='_blank'>
-          <img alt='Sponsor' className={classes.logo} src={MAINSPONSOR} />
+          <img alt='Sponsor' className={classes.logo} loading='lazy' src={MAINSPONSOR} />
         </a>
         <Typography className={classes.caption} variant='subtitle2'>
           Hovedsamarbeidspartner
@@ -183,7 +183,7 @@ const Footer = () => {
         <div className={classes.socialMediaWrapper}>
           {mediaList.map((media, index) => (
             <a className={classes.imgLink} href={media.link} key={index} onClick={() => someAnalytics(media.link)} rel='noopener noreferrer' target='_blank'>
-              <img alt='SoMe' className={classes.soMeIcon} src={media.img} />
+              <img alt='SoMe' className={classes.soMeIcon} loading='lazy' src={media.img} />
             </a>
           ))}
         </div>
@@ -192,7 +192,7 @@ const Footer = () => {
         <Typography variant='h2'>Samarbeid</Typography>
         <Divider className={classes.divider} />
         <a href='https://vercel.com/?utm_source=kvark&utm_campaign=oss' rel='noopener noreferrer' target='_blank'>
-          <img alt='Vercel' className={classes.marginBottom} src={VERCEL} width={150} />
+          <img alt='Vercel' className={classes.marginBottom} loading='lazy' src={VERCEL} width={150} />
         </a>
       </div>
       <div className={classes.index}>

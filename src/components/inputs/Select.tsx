@@ -13,8 +13,16 @@ export type SelectProps<FormValues extends FieldValues = FieldValues> = FormCont
     defaultValue?: string;
   };
 
-// eslint-disable-next-line comma-spacing
-const Select = <FormValues,>({ name, label, control, formState, rules = {}, defaultValue = '', children, ...props }: SelectProps<FormValues>) => {
+const Select = <FormValues extends FieldValues>({
+  name,
+  label,
+  control,
+  formState,
+  rules = {},
+  defaultValue = '',
+  children,
+  ...props
+}: SelectProps<FormValues>) => {
   const labelId = `${name}-label`;
   const { [name]: fieldError } = formState.errors;
   const error = fieldError as FieldError;
