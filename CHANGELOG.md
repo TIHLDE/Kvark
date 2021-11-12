@@ -14,6 +14,9 @@
 
 ## Neste versjon
 
+- ⚡ **Ytelse**. Laster inn bilder først når de skal vises på siden.
+- 🦟 **PWA**. Det funker nå å legge til nettsiden på hjemskjermen.
+
 ## Versjon 1.2.7 (11.11.2021)
 
 - 🎨 **Utseende**. Endret noen av fargene i mørkt modus.
