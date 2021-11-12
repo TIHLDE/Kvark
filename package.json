@@ -78,14 +78,6 @@
     "vite-plugin-svgr": "^0.5.1",
     "vite-tsconfig-paths": "^3.3.17"
   },
-  "browserslist": [
-    ">0.5%",
-    "last 2 versions",
-    "Firefox ESR",
-    "not dead",
-    "not IE 11",
-    "maintained node versions"
-  ],
   "jest": {
     "preset": "ts-jest/presets/default-esm",
     "globals": {
@@ -98,7 +90,7 @@
     },
     "testEnvironment": "node",
     "setupFilesAfterEnv": [
-      "src/setupTests.jsx"
+      "src/setupTests.tsx"
     ]
   }
 }
