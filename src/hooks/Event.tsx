@@ -13,15 +13,24 @@ export const useEventById = (eventId: number) => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const useEvents = (filters?: any) => {
-  return useInfiniteQuery<PaginationResponse<EventCompact>, RequestResponse>(
+export const useEvents = (filters?: any) =>
+  useInfiniteQuery<PaginationResponse<EventCompact>, RequestResponse>(
     [EVENT_QUERY_KEY, filters],
     ({ pageParam = 1 }) => API.getEvents({ ...filters, page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.next,
     },
   );
-};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const useEventsWhereIsAdmin = (filters?: any) =>
+  useInfiniteQuery<PaginationResponse<EventCompact>, RequestResponse>(
+    [EVENT_QUERY_KEY, filters],
+    ({ pageParam = 1 }) => API.getEventsWhereIsAdmin({ ...filters, page: pageParam }),
+    {
+      getNextPageParam: (lastPage) => lastPage.next,
+    },
+  );
 
 export const useCreateEvent = (): UseMutationResult<Event, RequestResponse, EventRequired, unknown> => {
   const queryClient = useQueryClient();
