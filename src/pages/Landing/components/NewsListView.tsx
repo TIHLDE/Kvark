@@ -3,7 +3,7 @@ import URLS from 'URLS';
 import { Link } from 'react-router-dom';
 
 // Material-UI
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
@@ -12,7 +12,7 @@ import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 import { useNews } from 'hooks/News';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   container: {
     display: 'grid',
     gridGap: theme.spacing(0, 1),
@@ -37,7 +37,7 @@ const NewsListView = () => {
   const { event } = useGoogleAnalytics();
   const { data, isLoading } = useNews();
   const news = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const openNewsAnalytics = () => event('go-to-all-news', 'news-list-view', `Go to all news`);
 

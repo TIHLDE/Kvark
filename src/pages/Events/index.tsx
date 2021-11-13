@@ -6,7 +6,7 @@ import { useCategories } from 'hooks/Categories';
 import { argsToParams } from 'utils';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Divider, MenuItem, Button, useMediaQuery, Theme } from '@mui/material';
 
 // Project Components
@@ -23,7 +23,7 @@ import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import { useGoogleAnalytics } from 'hooks/Utils';
 import Expansion from 'components/layout/Expand';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   grid: {
     display: 'grid',
     gridTemplateColumns: '3fr 1fr',
@@ -75,7 +75,7 @@ const Events = () => {
     const search = params.get('search') || undefined;
     return { expired, category, search };
   }, []);
-  const classes = useStyles();
+  const { classes } = useStyles();
   const navigate = useNavigate();
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
   const { data: categories = [] } = useCategories();

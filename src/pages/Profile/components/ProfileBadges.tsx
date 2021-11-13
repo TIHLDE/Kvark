@@ -4,13 +4,13 @@ import { Badge } from 'types';
 import Paper from 'components/layout/Paper';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import Pagination from 'components/layout/Pagination';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   paper: {
     padding: theme.spacing(2, 1),
     textAlign: 'start',
@@ -33,7 +33,7 @@ type BadgeItemProps = {
 };
 
 const BadgeItem = ({ badge }: BadgeItemProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <Paper className={classes.paper}>

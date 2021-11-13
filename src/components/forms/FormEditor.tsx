@@ -5,14 +5,14 @@ import { useUpdateForm, useDeleteForm } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
 
 // Material UI
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { ClickAwayListener, Grow, Paper, Popper, MenuItem, MenuList, Button } from '@mui/material';
 
 // Project components
 import VerifyDialog from 'components/layout/VerifyDialog';
 import FieldEditor from 'components/forms/FieldEditor';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     display: 'grid',
     gridGap: theme.spacing(1),
@@ -28,7 +28,7 @@ export type FormEditorProps = {
 };
 
 const FormEditor = ({ form, disabled = false }: FormEditorProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const updateForm = useUpdateForm(form.id || '-');
   const deleteForm = useDeleteForm(form.id || '-');
   const showSnackbar = useSnackbar();

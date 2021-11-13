@@ -1,14 +1,14 @@
-import { createTheme, Theme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
 // Icons
 import DarkIcon from '@mui/icons-material/Brightness2Outlined';
 import AutomaticIcon from '@mui/icons-material/DevicesOutlined';
 import LightIcon from '@mui/icons-material/WbSunnyOutlined';
 
-declare module '@mui/styles' {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface DefaultTheme extends Theme {}
-}
+// declare module '@mui/styles' {
+//   // eslint-disable-next-line @typescript-eslint/no-empty-interface
+//   interface DefaultTheme extends Theme {}
+// }
 
 declare module '@mui/material/styles/createPalette' {
   interface TypeBackground {
@@ -20,7 +20,7 @@ declare module '@mui/material/styles/createPalette' {
     get: <T>({ light, dark }: { light: T; dark: T }) => T;
     blurred: {
       backdropFilter: string;
-      '-webkit-backdrop-filter': string;
+      WebkitBackdropFilter: string;
     };
     transparent: {
       boxShadow: string;
@@ -52,7 +52,7 @@ declare module '@mui/material/styles/createPalette' {
     get: <T>({ light, dark }: { light: T; dark: T }) => T;
     blurred: {
       backdropFilter: string;
-      '-webkit-backdrop-filter': string;
+      WebkitBackdropFilter: string;
     };
     transparent: {
       boxShadow: string;
@@ -178,7 +178,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       },
       blurred: {
         backdropFilter: `blur(5px)`,
-        '-webkit-backdrop-filter': `blur(5px)`,
+        WebkitBackdropFilter: `blur(5px)`,
       },
       transparent: {
         background: get<string>({ light: '#f6f5f380', dark: '#61616180' }),
