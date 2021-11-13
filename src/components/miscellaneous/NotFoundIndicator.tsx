@@ -18,7 +18,7 @@ export type NotFoundIndicatorProps = {
 const NotFoundIndicator = ({ header, subtitle }: NotFoundIndicatorProps) => {
   return (
     <Root>
-      <img alt={header} height={100} src={NotFoundIcon} />
+      <img alt={header} height={100} loading='lazy' src={NotFoundIcon} />
       <Typography align='center' sx={{ m: (theme) => theme.spacing(1) }} variant='h3'>
         {header}
       </Typography>

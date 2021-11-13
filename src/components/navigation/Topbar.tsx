@@ -196,7 +196,7 @@ const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => 
   if (lgDown) {
     return (
       <div className={classes.topbarMobile}>
-        <Link to={URLS.landing}>
+        <Link aria-label='Til forsiden' to={URLS.landing}>
           <TihldeLogo className={classes.logo} darkColor={colorOnDark} lightColor={colorOnLight} size='large' />
         </Link>
         <ProfileTopbarButton darkColor={colorOnDark} lightColor={colorOnLight} />
@@ -207,7 +207,7 @@ const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => 
     <>
       <AppBar className={classNames(classes.appBar, isOnTop ? classes.fancyAppBar : classes.backdrop)} elevation={isOnTop ? 0 : 1} position='fixed'>
         <Toolbar className={classes.toolbar} disableGutters>
-          <Link to={URLS.landing}>
+          <Link aria-label='Til forsiden' to={URLS.landing}>
             <TihldeLogo className={classes.logo} darkColor={colorOnDark} lightColor={colorOnLight} size='large' />
           </Link>
           <div

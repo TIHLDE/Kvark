@@ -57,11 +57,16 @@ const ProfileTopbarButton = (props: ProfileTopbarButtonProps) => {
         <LightIcon className={classes.themeSettingsIcon} />
       </IconButton>
       {user ? (
-        <Button component={Link} onClick={URLS.profile === location.pathname ? () => location.reload() : () => analytics('profile')} to={URLS.profile}>
+        <Button
+          aria-label='Til profilen'
+          component={Link}
+          onClick={URLS.profile === location.pathname ? () => location.reload() : () => analytics('profile')}
+          to={URLS.profile}>
           <Avatar className={classes.avatar} user={user} />
         </Button>
       ) : (
         <IconButton
+          aria-label='Logg inn'
           className={classes.menuButton}
           component={Link}
           onClick={() => {
