@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import URLS from 'URLS';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { useEvents, useEventById } from 'hooks/Event';
+import { useEventsWhereIsAdmin, useEventById } from 'hooks/Event';
 import { parseISO } from 'date-fns';
 import { formatDate } from 'utils';
 
@@ -88,13 +88,12 @@ const EventAdministration = () => {
       <SidebarList
         descKey='start_date'
         formatDesc={(desc) => formatDate(parseISO(desc))}
-        hookArgs={{ is_admin: true }}
         idKey='id'
         onItemClick={(id: number | null) => goToEvent(id || null)}
         selectedItemId={Number(eventId)}
         title='Arrangementer'
         titleKey='title'
-        useHook={useEvents}
+        useHook={useEventsWhereIsAdmin}
       />
       <div className={classes.root}>
         <div className={classes.content}>
