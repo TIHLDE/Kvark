@@ -76,7 +76,7 @@ const InfoCard = ({ className, header, text, src, alt, justifyText, imageClass, 
       <div className={classNames(classes.wrapper, src && classes.centerAlign)}>
         {Boolean(src) && (
           <div className={classes.margin}>
-            <img alt={alt || header} className={classNames(classes.image, imageClass)} src={src} />
+            <img alt={alt || header} className={classNames(classes.image, imageClass)} loading='lazy' src={src} />
           </div>
         )}
         <Grid className={justifyText ? classes.cover : ''} container direction='column' justifyContent='flex-start'>

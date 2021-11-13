@@ -1,6 +1,6 @@
 import { TextFormField, SelectFormField } from 'types';
 import { FormFieldType } from 'types/Enums';
-import { UseFormReturn, Path } from 'react-hook-form';
+import { UseFormReturn, Path, FieldValues } from 'react-hook-form';
 
 import BoolArray from 'components/inputs/BoolArray';
 import TextField from 'components/inputs/TextField';
@@ -11,8 +11,7 @@ export type FieldViewProps<FormValues> = Pick<UseFormReturn<FormValues>, 'formSt
   disabled?: boolean;
 };
 
-// eslint-disable-next-line comma-spacing
-const FieldView = <FormValues,>({ register, field, formState, index, control, getValues, disabled = false }: FieldViewProps<FormValues>) => (
+const FieldView = <FormValues extends FieldValues>({ register, field, formState, index, control, getValues, disabled = false }: FieldViewProps<FormValues>) => (
   <>
     <input {...register(`answers.${index}.field.id` as Path<FormValues>)} type='hidden' value={field.id} />
     {field.type === FormFieldType.TEXT_ANSWER ? (

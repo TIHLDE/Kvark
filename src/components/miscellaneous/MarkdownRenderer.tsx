@@ -164,7 +164,7 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
         </Linkify>
       ),
       hr: () => <Divider sx={{ my: 1 }} />,
-      img: ({ alt, src }: { alt: string; src: string }) => <Image alt={alt} src={src} />,
+      img: ({ alt, src }: { alt: string; src: string }) => <Image alt={alt} loading='lazy' src={src} />,
     }),
     [],
   );

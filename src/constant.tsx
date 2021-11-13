@@ -3,7 +3,7 @@ import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
 /**
  * Url to backend
  */
-export const TIHLDE_API_URL = process.env.REACT_APP_API_URL;
+export const TIHLDE_API_URL = import.meta.env.VITE_API_URL;
 /**
  * Name of auth-token which is sent to backend to authenticate the user
  */

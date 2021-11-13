@@ -40,7 +40,7 @@ const BadgeItem = ({ badge }: BadgeItemProps) => {
       <Grid container spacing={0}>
         <Grid alignItems='center' container item justifyContent='center' xs={3}>
           <Grid item>
-            <img alt={badge.title} src={badge.image} width={64} />
+            <img alt={badge.title} loading='lazy' src={badge.image} width={64} />
           </Grid>
         </Grid>
         <Grid item xs={9}>

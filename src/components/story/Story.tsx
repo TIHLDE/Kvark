@@ -185,7 +185,7 @@ const Story = ({ items, fadeColor }: StoryProps) => {
     return (
       <div className={classes.story}>
         <Button className={classes.imgButton} onClick={openStory} variant='outlined'>
-          <img alt={item.title} className={classes.image} onError={() => setImgUrl(TIHLDELOGO)} src={imgUrl} />
+          <img alt={item.title} className={classes.image} loading='lazy' onError={() => setImgUrl(TIHLDELOGO)} src={imgUrl} />
         </Button>
         <Typography className={classes.text} variant='body2'>
           {item.title}

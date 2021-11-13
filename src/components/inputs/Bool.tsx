@@ -52,8 +52,7 @@ export const Switch = styled(MuiSwitch)(({ theme }) => ({
   },
 }));
 
-// eslint-disable-next-line comma-spacing
-const Bool = <FormValues,>({ helperText, type, control, name, formState, rules = {}, ...props }: BoolProps<FormValues>) => {
+const Bool = <FormValues extends FieldValues>({ helperText, type, control, name, formState, rules = {}, ...props }: BoolProps<FormValues>) => {
   const Child = type === 'switch' ? Switch : MuiCheckbox;
   const { [name]: fieldError } = formState.errors;
   const error = fieldError as FieldError;

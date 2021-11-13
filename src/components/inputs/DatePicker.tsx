@@ -18,8 +18,7 @@ export type DatePickerProps<FormValues extends FieldValues = FieldValues> = Text
     onDateChange?: (date?: Date) => void;
   };
 
-// eslint-disable-next-line comma-spacing
-const DatePicker = <FormValues,>({
+const DatePicker = <FormValues extends FieldValues>({
   type,
   name,
   label,

@@ -29,8 +29,7 @@ export type RendererPreviewProps<Type> = {
   renderer: FunctionComponent<{ preview: boolean; data: Type }>;
 };
 
-// eslint-disable-next-line comma-spacing
-const RendererPreview = <Type,>({ className, getContent, renderer: Renderer }: RendererPreviewProps<Type>) => {
+const RendererPreview = <Type extends unknown>({ className, getContent, renderer: Renderer }: RendererPreviewProps<Type>) => {
   const classes = useStyles();
   const [content, setContent] = useState<Type | null>(null);
   const [isOpen, setIsOpen] = useState(false);

@@ -1,4 +1,5 @@
 import { useState, forwardRef } from 'react';
+import { FieldValues } from 'react-hook-form';
 
 // Material UI Components
 import { Dialog, DialogTitle, DialogContent, IconButton, Typography, styled } from '@mui/material';
@@ -195,8 +196,7 @@ const HelpText = styled('span')(({ theme }) => ({
   textDecoration: 'underline',
 }));
 
-// eslint-disable-next-line comma-spacing
-const GenericMarkdownEditor = <FormValues,>(props: TextFieldProps<FormValues>, ref: React.ForwardedRef<HTMLDivElement>) => {
+const GenericMarkdownEditor = <FormValues extends FieldValues>(props: TextFieldProps<FormValues>, ref: React.ForwardedRef<HTMLDivElement>) => {
   const [helpDialogOpen, setHelpDialogOpen] = useState(false);
 
   const HelperText = () => (

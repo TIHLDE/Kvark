@@ -52,7 +52,7 @@ const AspectRatioImg = ({ alt, className, imgClassName, ratio = 21 / 9, src, sx 
   }, [src]);
   return (
     <Box className={classNames(classes.imgContainer, className)}>
-      <Img alt={alt} className={classNames(classes.img, classes.jpg, imgClassName)} onError={() => setImgUrl(TIHLDELOGO)} src={imgUrl} sx={sx} />
+      <Img alt={alt} className={classNames(classes.img, classes.jpg, imgClassName)} loading='lazy' onError={() => setImgUrl(TIHLDELOGO)} src={imgUrl} sx={sx} />
     </Box>
   );
 };
