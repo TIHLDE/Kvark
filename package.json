@@ -11,6 +11,7 @@
     "@mui/icons-material": "^5.1.0",
     "@mui/lab": "^5.0.0-alpha.54",
     "@mui/material": "^5.1.0",
+    "@mui/styles": "^5.1.0",
     "browser-image-compression": "^1.0.15",
     "constate": "^3.3.0",
     "copy-to-clipboard": "^3.3.1",
