@@ -1,8 +1,9 @@
 import { defineConfig, loadEnv } from 'vite';
-import reactRefresh from '@vitejs/plugin-react-refresh';
+import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr';
 import checker from 'vite-plugin-checker';
+import viteCompression from 'vite-plugin-compression';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, 'env');
@@ -25,17 +26,36 @@ export default defineConfig(({ mode }) => {
   return {
     build: {
       outDir: 'build',
-    },
-    esbuild: {
-      jsxInject: `import React from 'react'`,
+      assetsDir: 'static',
+      rollupOptions: {
+        output: {
+          entryFileNames: `static/js/[name].[hash].js`,
+          chunkFileNames: `static/js/[name].[hash].js`,
+          assetFileNames: ({ name }) => {
+            if (name && name.endsWith('.css')) {
+              return 'static/css/[name].[hash].[ext]';
+            }
+
+            return 'static/media/[name].[hash].[ext]';
+          },
+        },
+      },
     },
     /**
-     * checker -> Checks that Typescript and ESLint has no errors/warnings
      * htmlPlugin -> Use env-variables in `.html`-files
-     * reactRefresh -> Enables fast refresh on save
+     * react -> Enables fast refresh on save and jsx-compability
      * svgr -> Allows import of SVG-files as React-components
      * tsconfigPaths -> Adds support for absolute file import with Typescript
+     * checker -> Checks that Typescript and ESLint has no errors/warnings
+     * viteCompression -> Compresses files with brotli to minimize bundle size
      */
-    plugins: [checker({ typescript: true, eslint: { files: ['./src'], extensions: ['.tsx', '.ts'] } }), htmlPlugin(), reactRefresh(), svgr(), tsconfigPaths()],
+    plugins: [
+      htmlPlugin(),
+      react(),
+      svgr(),
+      tsconfigPaths(),
+      checker({ typescript: true, eslint: { files: ['./src'], extensions: ['.tsx', '.ts'] } }),
+      viteCompression({ algorithm: 'brotliCompress' }),
+    ],
   };
 });
