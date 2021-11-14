@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { urlEncode, formatDate, getJobpostType } from 'utils';
 import { parseISO } from 'date-fns';
@@ -8,7 +7,7 @@ import { EventCompact, News, JobPost } from 'types';
 import { useCategories } from 'hooks/Categories';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import {
   lighten,
   Theme,
@@ -32,7 +31,7 @@ import CategoryIcon from '@mui/icons-material/CategoryRounded';
 // Project components
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     border: theme.palette.borderWidth + ' solid ' + theme.palette.divider,
     borderRadius: theme.shape.borderRadius,
@@ -85,9 +84,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '1rem',
     textAlign: 'left',
     overflow: 'hidden',
-    '-webkit-line-clamp': 2,
+    WebkitLineClamp: 2,
     display: '-webkit-box',
-    '-webkit-box-orient': 'vertical',
+    WebkitBoxOrient: 'vertical',
   },
   icon: {
     marginRight: theme.spacing(1),
@@ -104,7 +103,7 @@ type IconProps = {
 };
 
 const InfoContent = ({ icon: Icon, label }: IconProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   return (
     <Grid alignItems='center' className={classes.infoRoot} container direction='row' wrap='nowrap'>
       {Icon && <Icon className={classes.icon} />}
@@ -125,7 +124,7 @@ export type ListItemProps = {
 };
 
 const ListItem = ({ event, news, jobpost, className, largeImg = false, sx }: ListItemProps) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   const { data: categories = [] } = useCategories();
   const item = useMemo(() => {
@@ -179,8 +178,8 @@ const ListItem = ({ event, news, jobpost, className, largeImg = false, sx }: Lis
   }
 
   return (
-    <MaterialListItemButton className={classNames(classes.root, className)} component={Link} sx={sx} to={item.link}>
-      <AspectRatioImg alt={item.imgAlt || item.title} className={classNames(classes.imgContainer, largeImg && lgUp && classes.largeImg)} src={item.img} />
+    <MaterialListItemButton className={cx(classes.root, className)} component={Link} sx={sx} to={item.link}>
+      <AspectRatioImg alt={item.imgAlt || item.title} className={cx(classes.imgContainer, largeImg && lgUp && classes.largeImg)} src={item.img} />
       <Grid className={classes.content} container direction='column' wrap='nowrap'>
         <Typography className={classes.title} variant='h2'>
           {item.title}
@@ -195,11 +194,11 @@ const ListItem = ({ event, news, jobpost, className, largeImg = false, sx }: Lis
 export default ListItem;
 
 export const ListItemLoading = ({ className, largeImg = false, sx }: Pick<ListItemProps, 'largeImg' | 'className' | 'sx'>) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   return (
-    <MaterialListItemButton className={classNames(classes.root, className)} sx={sx}>
-      <AspectRatioLoading className={classNames(classes.imgContainer, largeImg && lgUp && classes.largeImg)} />
+    <MaterialListItemButton className={cx(classes.root, className)} sx={sx}>
+      <AspectRatioLoading className={cx(classes.imgContainer, largeImg && lgUp && classes.largeImg)} />
       <Grid className={classes.content} container direction='column' wrap='nowrap'>
         <Skeleton height={60} width={200} />
         <Skeleton height={30} width={300} />

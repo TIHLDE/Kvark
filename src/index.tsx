@@ -2,7 +2,9 @@
 import { ReactNode } from 'react';
 import { render } from 'react-dom';
 import 'assets/css/index.css';
-import { CssBaseline, StyledEngineProvider } from '@mui/material';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
+import { CssBaseline } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { BrowserRouter } from 'react-router-dom';
@@ -22,6 +24,11 @@ import { SnackbarProvider } from 'hooks/Snackbar';
 import MessageGDPR from 'components/miscellaneous/MessageGDPR';
 import Navigation from 'components/navigation/Navigation';
 import AppRoutes from 'AppRoutes';
+
+export const muiCache = createCache({
+  key: 'mui',
+  prepend: true,
+});
 
 type ProvidersProps = {
   children: ReactNode;
@@ -46,7 +53,7 @@ export const Providers = ({ children }: ProvidersProps) => {
   broadcastQueryClient({ queryClient, broadcastChannel: 'TIHLDE' });
 
   return (
-    <StyledEngineProvider injectFirst>
+    <CacheProvider value={muiCache}>
       <ThemeProvider>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <CssBaseline enableColorScheme />
@@ -58,7 +65,7 @@ export const Providers = ({ children }: ProvidersProps) => {
           </QueryClientProvider>
         </LocalizationProvider>
       </ThemeProvider>
-    </StyledEngineProvider>
+    </CacheProvider>
   );
 };
 

@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { useUsers } from 'hooks/User';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 
 // Project Components
 import Pagination from 'components/layout/Pagination';
@@ -10,7 +10,7 @@ import UserStrikeListItem from 'pages/StrikeAdmin/components/UserStrikeListItem'
 import { PersonListItemLoading } from 'pages/UserAdmin/components/PersonListItem';
 import { MenuItem, TextField } from '@mui/material';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   filterContainer: {
     display: 'grid',
     gridTemplateColumns: 'repeat(3, 1fr)',
@@ -26,7 +26,7 @@ const USER_CLASSES = ['Alle', '1. klasse', '2. klasse', '3. klasse', '4. klasse'
 const USER_STUDIES = ['Alle', 'Dataing', 'DigFor', 'DigSec', 'DigSam', 'Drift'];
 
 const UserStrikeList = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const [userClassChoice, setUserClassChoice] = useState(0);
   const [userStudyChoice, setUserStudyChoice] = useState(0);
   const [search, setSearch] = useState('');

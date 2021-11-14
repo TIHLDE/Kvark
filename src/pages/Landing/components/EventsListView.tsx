@@ -3,7 +3,7 @@ import URLS from 'URLS';
 import { Link } from 'react-router-dom';
 
 // Material-UI
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
@@ -12,7 +12,7 @@ import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
 // Styles
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   container: {
     display: 'grid',
   },
@@ -34,7 +34,7 @@ export type EventsListViewProps = {
 const NO_OF_EVENTS_TO_SHOW = 3;
 
 const EventsListView = ({ events, isLoading = false }: EventsListViewProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { event } = useGoogleAnalytics();
 
   const openEventsAnalytics = () => event('go-to-all-events', 'events-list-view', `Go to all events`);

@@ -6,7 +6,7 @@ import { parseISO } from 'date-fns';
 import { formatDate } from 'utils';
 
 // Material-UI
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Typography, Collapse } from '@mui/material';
 
 // Icons
@@ -25,7 +25,7 @@ import EventEditor from 'pages/EventAdministration/components/EventEditor';
 import EventParticipants from 'pages/EventAdministration/components/EventParticipants';
 import EventFormAdmin from 'pages/EventAdministration/components/EventFormAdmin';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     padding: theme.spacing(4),
     marginLeft: theme.spacing(35),
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const EventAdministration = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const navigate = useNavigate();
   const { eventId } = useParams();
   const { data: event, isLoading, isError } = useEventById(eventId ? Number(eventId) : -1);

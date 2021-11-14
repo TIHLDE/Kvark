@@ -1,11 +1,10 @@
 import { useEffect, useCallback, useRef } from 'react';
-import classnames from 'classnames';
 import { Link, useNavigate } from 'react-router-dom';
 import { usePalette } from 'react-palette';
 import { argsToParams } from 'utils';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Typography, useTheme, Button, Dialog, useMediaQuery } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 
@@ -19,7 +18,7 @@ import UpIcon from '@mui/icons-material/ExpandLessRounded';
 import DownIcon from '@mui/icons-material/ExpandMoreRounded';
 import OpenIcon from '@mui/icons-material/KeyboardArrowRightRounded';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   paper: {
     borderRadius: 0,
     marginTop: 0,
@@ -117,7 +116,7 @@ export type StoryPopupProps = {
 };
 
 const StoryPopup = ({ items, open, onClose: closePopup, selectedItem = 0 }: StoryPopupProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const navigate = useNavigate();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('lg'));
@@ -170,14 +169,14 @@ const StoryPopup = ({ items, open, onClose: closePopup, selectedItem = 0 }: Stor
   };
 
   const PopupItem = ({ index, item }: PopupItemProps) => {
-    const classes = useStyles();
+    const { classes, cx } = useStyles();
     const { data: palette } = usePalette(
       `https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=${encodeURIComponent(item.image || '')}`,
     );
     return (
       <div className={classes.popup} style={{ background: palette ? `linear-gradient(to bottom, ${palette.muted}, ${palette.darkMuted})` : '' }}>
         <div className={classes.top}>
-          <Typography className={classnames(classes.topText, classes.white)} variant='h3'>
+          <Typography className={cx(classes.topText, classes.white)} variant='h3'>
             {item.topText}
           </Typography>
           <IconButton onClick={onClose}>
@@ -189,10 +188,10 @@ const StoryPopup = ({ items, open, onClose: closePopup, selectedItem = 0 }: Stor
         </div>
         <div className={classes.bottom}>
           <div>
-            <Typography className={classnames(classes.title, classes.white)} variant='h2'>
+            <Typography className={cx(classes.title, classes.white)} variant='h2'>
               {item.title}
             </Typography>
-            <Typography className={classnames(classes.description, classes.white)} variant='subtitle1'>
+            <Typography className={cx(classes.description, classes.white)} variant='subtitle1'>
               {item.description}
             </Typography>
             <Button
