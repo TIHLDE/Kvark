@@ -1,5 +1,4 @@
-import { ChangeEvent, useMemo, useState } from 'react';
-import QrReader from 'react-qr-reader';
+import { ChangeEvent, useMemo, useState, lazy, Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 import { Registration } from 'types';
 import { useEventById, useEventRegistrations, useUpdateEventRegistration } from 'hooks/Event';
@@ -19,6 +18,8 @@ import Paper from 'components/layout/Paper';
 import Tabs from 'components/layout/Tabs';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import { PrimaryTopBox } from 'components/layout/TopBox';
+
+const QrReader = lazy(() => import('react-qr-reader'));
 
 export type ParticipantCardProps = {
   user: Registration;
@@ -148,7 +149,9 @@ const EventRegistration = () => {
         )}
         {tab === qrTab.value && (
           <>
-            <QrReader onError={handleQrError} onScan={handleQrScan} resolution={800} showViewFinder={true} style={{ width: '100%' }} />
+            <Suspense fallback={null}>
+              <QrReader onError={handleQrError} onScan={handleQrScan} resolution={800} showViewFinder={true} style={{ width: '100%' }} />
+            </Suspense>
             {isiOSDevice && (
               <>
                 <br />

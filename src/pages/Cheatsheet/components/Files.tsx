@@ -1,10 +1,9 @@
 import { Fragment } from 'react';
-import classnames from 'classnames';
 import { CheatsheetType } from 'types/Enums';
 import { Cheatsheet } from 'types';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Theme, Divider, useMediaQuery, Typography, List, ListItemButton, Tooltip } from '@mui/material';
 
 // Icons
@@ -19,7 +18,7 @@ import Paper from 'components/layout/Paper';
 import Pagination from 'components/layout/Pagination';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   grid: {
     display: 'grid',
     width: '100%',
@@ -67,7 +66,7 @@ export type FilesProps = {
 };
 
 const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const { event } = useGoogleAnalytics();
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
@@ -103,7 +102,7 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
 
   return (
     <>
-      <div className={classnames(classes.grid, classes.filesHeaderContainer)}>
+      <div className={cx(classes.grid, classes.filesHeaderContainer)}>
         <div></div>
         <Typography className={classes.filesHeader} variant='subtitle1'>
           Tittel:
@@ -135,7 +134,7 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
                           <Typography variant='subtitle1'>{file.creator}</Typography>
                           {file.official && (
                             <Tooltip title='Laget av NTNU'>
-                              <VerifiedIcon className={classnames(classes.icon, classes.verified)} />
+                              <VerifiedIcon className={cx(classes.icon, classes.verified)} />
                             </Tooltip>
                           )}
                         </div>
@@ -144,7 +143,7 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
                         <Typography variant='subtitle1'>{file.course}</Typography>
                         {file.official && lgDown && (
                           <Tooltip title='Laget av NTNU'>
-                            <VerifiedIcon className={classnames(classes.icon, classes.verified)} />
+                            <VerifiedIcon className={cx(classes.icon, classes.verified)} />
                           </Tooltip>
                         )}
                       </div>

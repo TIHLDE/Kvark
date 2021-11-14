@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
-import { makeStyles } from '@mui/styles';
-import classNames from 'classnames';
+import { makeStyles } from 'makeStyles';
 
 // Material UI Components
 import { AccordionProps, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
@@ -8,7 +7,7 @@ import { AccordionProps, Accordion, AccordionSummary, AccordionDetails, Typograp
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     maxWidth: '100%',
     overflow: 'hidden',
@@ -43,9 +42,9 @@ export type ExpansionProps = AccordionProps & {
 };
 
 const Expansion = ({ className, flat, header, children, ...props }: ExpansionProps) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   return (
-    <Accordion className={classNames(classes.root, flat && classes.flat, className)} {...props}>
+    <Accordion className={cx(classes.root, flat && classes.flat, className)} {...props}>
       <AccordionSummary className={classes.summary} expandIcon={<ExpandMoreIcon />}>
         <Typography className={classes.heading}>{header}</Typography>
       </AccordionSummary>

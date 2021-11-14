@@ -3,7 +3,7 @@ import { GroupList } from 'types';
 import URLS from 'URLS';
 
 // Material UI
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Theme, Skeleton, ButtonBase, Typography } from '@mui/material';
 
 // Icons
@@ -12,7 +12,7 @@ import MembersIcon from '@mui/icons-material/PersonRounded';
 // Project components
 import Paper from 'components/layout/Paper';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   container: {
     width: '100%',
     display: 'flex',
@@ -41,7 +41,7 @@ export type GroupItemProps = {
 };
 
 const GroupItem = ({ group, background = 'paper' }: GroupItemProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <Paper noOverflow noPadding sx={{ background: (theme) => theme.palette.background[background] }}>
@@ -63,7 +63,7 @@ const GroupItem = ({ group, background = 'paper' }: GroupItemProps) => {
 export default GroupItem;
 
 export const GroupItemLoading = ({ background = 'paper' }: Pick<GroupItemProps, 'background'>) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   return (
     <Paper noOverflow noPadding sx={{ background: (theme) => theme.palette.background[background] }}>
       <ButtonBase className={classes.container} focusRipple>

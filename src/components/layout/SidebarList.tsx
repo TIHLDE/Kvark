@@ -3,9 +3,8 @@ import { InfiniteQueryObserverResult } from 'react-query';
 import { PaginationResponse } from 'types';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import {
-  Theme,
   useTheme,
   useMediaQuery,
   Drawer,
@@ -27,7 +26,7 @@ import AddIcon from '@mui/icons-material/AddRounded';
 // Project components
 import Pagination from 'components/layout/Pagination';
 
-const useStyles = makeStyles<Theme>((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   header: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -48,7 +47,8 @@ const useStyles = makeStyles<Theme>((theme) => ({
   },
   drawerTop: {
     [theme.breakpoints.up('lg')]: {
-      ...theme.mixins.toolbar,
+      // ...theme.mixins.toolbar,
+      minHeight: 64,
     },
   },
   drawerPaper: {
@@ -95,7 +95,7 @@ const SidebarList = <Type extends unknown>({
   formatDesc,
   noExpired = false,
 }: SidebarListProps<Type>) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { data, hasNextPage, fetchNextPage, isLoading } = useHook();
   const items = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   const { data: expiredData, hasNextPage: hasNextExpiredPage, fetchNextPage: fetchNextExpiredPage, isLoading: isExpiredLoading } = useHook({ expired: true });

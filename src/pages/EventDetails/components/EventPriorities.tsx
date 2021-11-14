@@ -4,10 +4,10 @@ import { UserClass, UserStudy } from 'types/Enums';
 import { getUserStudyShort } from 'utils';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Typography } from '@mui/material';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   prioritiesContainer: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -35,7 +35,7 @@ export type EventPrioritesProps = {
 };
 
 const EventPriorities = ({ priorities }: EventPrioritesProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   let prioritiesArr = [...priorities];
   const content: ReactNode[] = [];
 

@@ -4,10 +4,10 @@ import { RegistrationPriority } from 'types';
 import { UserClass, UserStudy } from 'types/Enums';
 
 // Material-UI
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { FormGroup, FormLabel, Button } from '@mui/material';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   formWrapper: {
     width: '100%',
   },
@@ -56,7 +56,7 @@ export type EventRegistrationPrioritiesProps = {
 };
 
 const EventRegistrationPriorities = ({ priorities, setPriorities }: EventRegistrationPrioritiesProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const handlePriorityChange = (userClass: UserClass, userStudy: UserStudy) => () => {
     if (priorities.some((item) => item.user_class === userClass && item.user_study === userStudy)) {

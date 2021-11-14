@@ -1,11 +1,10 @@
-import classNames from 'classnames';
 import URLS from 'URLS';
 import { Link } from 'react-router-dom';
 import { useIsAuthenticated } from 'hooks/User';
 import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Typography, Button } from '@mui/material';
 // Icons
 import SignupIcon from '@mui/icons-material/AddRounded';
@@ -21,7 +20,7 @@ import { ReactComponent as WaveBottom } from 'assets/img/waves/wave-bottom.svg';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     padding: 0,
     margin: 'unset',
@@ -142,7 +141,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Wave = () => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const { event } = useGoogleAnalytics();
   const isAuthenticated = useIsAuthenticated();
 
@@ -204,15 +203,15 @@ const Wave = () => {
         )}
 
         <div className={classes.waveWrapperInner}>
-          <div className={classNames(classes.wave, classes.waveTop)}>
+          <div className={cx(classes.wave, classes.waveTop)}>
             <WaveTop className={classes.svg} />
             <WaveTop className={classes.svg} />
           </div>
-          <div className={classNames(classes.wave, classes.waveMiddle)}>
+          <div className={cx(classes.wave, classes.waveMiddle)}>
             <WaveMid className={classes.svg} />
             <WaveMid className={classes.svg} />
           </div>
-          <div className={classNames(classes.wave, classes.waveBottom)}>
+          <div className={cx(classes.wave, classes.waveBottom)}>
             <WaveBottom className={classes.svg} />
             <WaveBottom className={classes.svg} />
           </div>
