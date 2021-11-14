@@ -1,4 +1,4 @@
-import { isAfter, isBefore, getYear } from 'date-fns';
+import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
 
 /**
  * Url to backend
@@ -35,11 +35,11 @@ export const EMAIL_REGEX = RegExp(
 /**
  * The results from Samordna Opptak is usually given at July 20th each year
  */
-const IS_AFTER_JULY_20TH = isAfter(new Date(), new Date(getYear(new Date()), 6, 20, 0, 0, 0));
+const IS_AFTER_JULY_20TH = isAfterDateOfYear(6, 20);
 /**
  * Fadderuka is usually finished by September 5th
  */
-const IS_BEFORE_SEPTEMBER_5TH = isBefore(new Date(), new Date(getYear(new Date()), 8, 5, 0, 0, 0));
+const IS_BEFORE_SEPTEMBER_5TH = isBeforeDateOfYear(8, 5);
 /**
  * Whether the new student-page and its belonging info-box at the landing-page should be shown or not
  */
