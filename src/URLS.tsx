@@ -30,7 +30,7 @@ export default {
   profile: '/profil/',
   signup: '/ny-bruker/',
   shortLinks: '/linker/',
-
+  gallery: '/album/',
   userAdmin: '/admin/brukere/',
   strikeAdmin: '/admin/prikker/',
   eventAdmin: '/admin/arrangementer/',

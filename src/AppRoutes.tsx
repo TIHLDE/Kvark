@@ -30,6 +30,7 @@ const EventRegistration = lazy(() => import(/* webpackChunkName: "event_registra
 const ForgotPassword = lazy(() => import(/* webpackChunkName: "forgot_password" */ 'pages/ForgotPassword'));
 const Form = lazy(() => import(/* webpackChunkName: "form" */ 'pages/Form'));
 const GroupAdmin = lazy(() => import(/* webpackChunkName: "group_admin" */ 'pages/GroupAdmin'));
+const Gallery = lazy(() => import(/* webpackChunkName: "galleries" */ 'pages/Gallery'));
 const Http404 = lazy(() => import(/* webpackChunkName: "http404" */ 'pages/Http404'));
 const JobPostAdministration = lazy(() => import(/* webpackChunkName: "jobpost_administration" */ 'pages/JobPostAdministration'));
 const LogIn = lazy(() => import(/* webpackChunkName: "login" */ 'pages/LogIn'));
@@ -37,8 +38,8 @@ const NewsAdministration = lazy(() => import(/* webpackChunkName: "news_administ
 const Pages = lazy(() => import(/* webpackChunkName: "pages" */ 'pages/Pages'));
 const ShortLinks = lazy(() => import(/* webpackChunkName: "short_links" */ 'pages/ShortLinks'));
 const SignUp = lazy(() => import(/* webpackChunkName: "signup" */ 'pages/SignUp'));
-const UserAdmin = lazy(() => import(/* webpackChunkName: "user_admin" */ 'pages/UserAdmin'));
 const StrikeAdmin = lazy(() => import(/* webpackChunkName: "strike_admin" */ 'pages/StrikeAdmin'));
+const UserAdmin = lazy(() => import(/* webpackChunkName: "user_admin" */ 'pages/UserAdmin'));
 
 type AuthRouteProps = {
   apps?: Array<PermissionApp>;
@@ -91,6 +92,7 @@ const AppRoutes = () => {
           <Route element={<JobPostDetails />} path=':id/*' />
           <Route element={<JobPosts />} path='' />
         </Route>
+        <Route element={<Gallery />} path={`${URLS.gallery}`} />
         <Route element={<Pages />} path={`${URLS.pages}*`} />
         <Route path={URLS.news}>
           <Route element={<NewsDetails />} path=':id/*' />
