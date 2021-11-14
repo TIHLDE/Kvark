@@ -1,21 +1,18 @@
 import { useEffect, useState } from 'react';
-import classNames from 'classnames';
-
-// Material UI Components
-import { makeStyles } from '@mui/styles';
-import { Theme, Skeleton, Box, SkeletonProps, styled } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { Skeleton, Box, SkeletonProps, styled } from '@mui/material';
 
 // Icons
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
 
-const useStyles = makeStyles<Theme, Pick<AspectRatioImgProps, 'ratio'>>((theme) => ({
+const useStyles = makeStyles<Pick<AspectRatioImgProps, 'ratio'>>()((theme, { ratio }) => ({
   imgContainer: {
     position: 'relative',
     '&::before': {
       height: 0,
       content: '""',
       display: 'block',
-      paddingBottom: (props) => `calc(100% / ( ${props.ratio} ))`,
+      paddingBottom: `calc(100% / ( ${ratio} ))`,
     },
   },
   img: {
@@ -45,14 +42,14 @@ export type AspectRatioImgProps = {
 const Img = styled('img')({});
 
 const AspectRatioImg = ({ alt, className, imgClassName, ratio = 21 / 9, src, sx }: AspectRatioImgProps) => {
-  const classes = useStyles({ ratio });
+  const { classes, cx } = useStyles({ ratio });
   const [imgUrl, setImgUrl] = useState(src || TIHLDELOGO);
   useEffect(() => {
     setImgUrl(src || TIHLDELOGO);
   }, [src]);
   return (
-    <Box className={classNames(classes.imgContainer, className)}>
-      <Img alt={alt} className={classNames(classes.img, classes.jpg, imgClassName)} loading='lazy' onError={() => setImgUrl(TIHLDELOGO)} src={imgUrl} sx={sx} />
+    <Box className={cx(classes.imgContainer, className)}>
+      <Img alt={alt} className={cx(classes.img, classes.jpg, imgClassName)} loading='lazy' onError={() => setImgUrl(TIHLDELOGO)} src={imgUrl} sx={sx} />
     </Box>
   );
 };
@@ -64,10 +61,10 @@ export const AspectRatioLoading = ({
   ratio = 21 / 9,
   sx,
 }: Pick<AspectRatioImgProps, 'className' | 'imgClassName' | 'ratio' | 'sx'>) => {
-  const classes = useStyles({ ratio });
+  const { classes, cx } = useStyles({ ratio });
   return (
-    <Box className={classNames(classes.imgContainer, className)}>
-      <Skeleton className={classNames(classes.img, imgClassName)} sx={sx} variant='rectangular' />
+    <Box className={cx(classes.imgContainer, className)}>
+      <Skeleton className={cx(classes.img, imgClassName)} sx={sx} variant='rectangular' />
     </Box>
   );
 };

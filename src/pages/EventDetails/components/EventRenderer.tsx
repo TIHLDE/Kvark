@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import classnames from 'classnames';
 import { Event, Registration } from 'types';
 import URLS from 'URLS';
 import { parseISO, isPast, isFuture, subHours, addHours } from 'date-fns';
@@ -13,7 +12,7 @@ import { useGoogleAnalytics } from 'hooks/Utils';
 import { useCategories } from 'hooks/Categories';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Typography, Button, Collapse, Skeleton, Alert as MuiAlert, useMediaQuery, Theme, styled } from '@mui/material';
 
 // Icons
@@ -55,7 +54,7 @@ const DetailsHeader = styled(Typography)({
   fontSize: '1.5rem',
 });
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   image: {
     borderRadius: theme.shape.borderRadius,
     border: `1px solid ${theme.palette.divider}`,
@@ -99,7 +98,7 @@ enum Views {
 
 const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const { event } = useGoogleAnalytics();
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const { data: user } = useUser();
   const { data: registration } = useEventRegistration(data.id, preview || !user ? '' : user.user_id);
   const deleteRegistration = useDeleteEventRegistration(data.id);
@@ -315,7 +314,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           </Button>
         )}
       </div>
-      <div className={classnames(classes.infoGrid, classes.info)}>
+      <div className={cx(classes.infoGrid, classes.info)}>
         <AspectRatioImg alt={data.image_alt || data.title} imgClassName={classes.image} src={data.image} />
         {lgDown && <Info />}
         <ContentPaper>
@@ -344,7 +343,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
 export default EventRenderer;
 
 export const EventRendererLoading = () => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   return (
     <div className={classes.rootGrid}>
@@ -359,7 +358,7 @@ export const EventRendererLoading = () => {
           <DetailContentLoading />
         </DetailsPaper>
       </div>
-      <div className={classnames(classes.infoGrid, classes.info)}>
+      <div className={cx(classes.infoGrid, classes.info)}>
         <AspectRatioLoading imgClassName={classes.image} />
         <ContentPaper>
           <Skeleton height={80} width='60%' />

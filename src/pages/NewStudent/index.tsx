@@ -1,5 +1,4 @@
 import { useState, useMemo, useEffect } from 'react';
-import classnames from 'classnames';
 import { useQuery } from 'react-query';
 import { usePage } from 'hooks/Pages';
 import { useIsAuthenticated } from 'hooks/User';
@@ -9,7 +8,7 @@ import URLS from 'URLS';
 import { Page as PageType } from 'types';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography, Stack } from '@mui/material';
 
 // Icons
@@ -36,7 +35,7 @@ import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import EventsCalendarView from 'pages/Landing/components/EventsCalendarView';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   grid: {
     display: 'grid',
     gridGap: theme.spacing(2),
@@ -78,7 +77,7 @@ const VolunteerGroup = ({ url, title }: VolunteerGroupProps) => {
 };
 
 const NewStudent = () => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const { event } = useGoogleAnalytics();
   const isAuthenticated = useIsAuthenticated();
   const eventsTab = { value: 'events', label: 'Fadderuka - arrangementer', icon: EventIcon };
@@ -138,7 +137,7 @@ const NewStudent = () => {
         </Banner>
       }
       options={{ title: 'Ny student' }}>
-      <div className={classnames(classes.grid, classes.root)}>
+      <div className={cx(classes.grid, classes.root)}>
         <Paper noOverflow noPadding sx={{ position: { lg: 'sticky' }, top: { lg: 75 } }}>
           <List disablePadding>
             {tabs.map((tabItem) => (

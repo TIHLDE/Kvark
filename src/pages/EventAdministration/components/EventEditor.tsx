@@ -9,7 +9,7 @@ import { useSnackbar } from 'hooks/Snackbar';
 import { addHours, subDays, parseISO, setHours, startOfHour } from 'date-fns';
 
 // Material-UI
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Stack, Grid, MenuItem, Collapse, Accordion, AccordionSummary, AccordionDetails, Typography, ListSubheader, LinearProgress } from '@mui/material';
 
 // Icons
@@ -30,7 +30,7 @@ import { ShowMoreText, ShowMoreTooltip } from 'components/miscellaneous/ShowMore
 import VerifyDialog from 'components/layout/VerifyDialog';
 import { GroupType } from 'types/Enums';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   grid: {
     display: 'grid',
     gridGap: theme.spacing(2),
@@ -85,7 +85,7 @@ const allPriorities = [
 ];
 
 const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { data, isLoading } = useEventById(eventId || -1);
   const createEvent = useCreateEvent();
   const updateEvent = useUpdateEvent(eventId || -1);

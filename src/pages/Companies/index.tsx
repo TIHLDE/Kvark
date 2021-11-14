@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import URLS from 'URLS';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Typography } from '@mui/material';
 
 // Icons and images
@@ -16,7 +16,7 @@ import Banner, { BannerButton } from 'components/layout/Banner';
 import CompaniesForm from 'pages/Companies/components/CompaniesForm';
 import Container from 'components/layout/Container';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   grid: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Companies = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const formRef = useRef<HTMLDivElement>(null);
 
   const scrollToForm = () => {

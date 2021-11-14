@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import Typography from '@mui/material/Typography';
 
 // Project componets
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 import { useNews } from 'hooks/News';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   container: {
     display: 'grid',
     gridGap: theme.spacing(0, 1),
@@ -30,7 +30,7 @@ const NO_OF_NEWS_TO_SHOW = 2;
 const NewsListView = () => {
   const { data, isLoading } = useNews();
   const news = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   if (isLoading) {
     return (
