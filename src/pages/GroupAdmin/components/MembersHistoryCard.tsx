@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { MembershipHistory } from 'types';
 
 import { ListItem, ListItemText, ListItemAvatar, List, Grid, Typography, Skeleton } from '@mui/material';
 import { parseISO } from 'date-fns';
@@ -33,23 +32,7 @@ const MembersHistoryCard = ({ slug }: MembersHistoryCardProps) => {
     return null;
   }
 
-  type PersonProps = {
-    membership: MembershipHistory;
-  };
-
-  const Person = ({ membership }: PersonProps) => (
-    <ListItem>
-      <ListItemAvatar>
-        <Avatar user={membership.user} />
-      </ListItemAvatar>
-      <ListItemText
-        primary={`${membership.user.first_name} ${membership.user.last_name}`}
-        secondary={`${parseISO(membership.start_date).getFullYear()} til ${parseISO(membership.end_date).getFullYear()} - ${getMembershipType(
-          membership.membership_type,
-        )}`}
-      />
-    </ListItem>
-  );
+  const formatter_month = new Intl.DateTimeFormat('no-NO', { month: 'long' });
 
   return (
     <Paper sx={{ mb: ({ spacing }) => spacing(2) }}>
@@ -62,7 +45,17 @@ const MembersHistoryCard = ({ slug }: MembersHistoryCardProps) => {
         <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
           <List>
             {prevMembers.map((member) => (
-              <Person key={member.user.user_id} membership={member} />
+              <ListItem key={member.user.user_id}>
+                <ListItemAvatar>
+                  <Avatar user={member.user} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={`${member.user.first_name} ${member.user.last_name}`}
+                  secondary={`${formatter_month.format(parseISO(member.start_date))} ${parseISO(member.start_date).getFullYear()} til ${formatter_month.format(
+                    parseISO(member.end_date),
+                  )} ${parseISO(member.end_date).getFullYear()} - ${getMembershipType(member.membership_type)}`}
+                />
+              </ListItem>
             ))}
           </List>
         </Pagination>
