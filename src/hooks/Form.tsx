@@ -23,7 +23,20 @@ export const STATISTICS_QUERY_KEY = 'statistics';
 
 export const useFormById = (formId: string) =>
   useQuery<Form, RequestResponse>([FORM_QUERY_KEY, formId], () => API.getForm(formId), { enabled: formId !== '-' });
-export const useFormTemplates = () => useQuery<Array<Form>, RequestResponse>([FORM_QUERY_KEY], () => API.getFormTemplates(), {});
+export const useFormTemplates = () => useQuery<Array<Form>, RequestResponse>([FORM_QUERY_KEY, 'templates'], () => API.getFormTemplates(), {});
+
+export const useDeleteFormTemplate = (formId: string): UseMutationResult<RequestResponse, RequestResponse, undefined, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation(() => API.deleteForm(formId), {
+    onSuccess: () => {
+      const data = queryClient.getQueryData<Form>([FORM_QUERY_KEY, formId]);
+      if ((data as EventForm).event) {
+        queryClient.invalidateQueries([EVENT_QUERY_KEY, (data as EventForm).event.id]);
+      }
+      queryClient.removeQueries([FORM_QUERY_KEY, formId]);
+    },
+  });
+};
 
 export const useFormStatisticsById = (formId: string) =>
   useQuery<FormStatistics, RequestResponse>([FORM_QUERY_KEY, formId, STATISTICS_QUERY_KEY], () => API.getFormStatistics(formId), { enabled: formId !== '-' });
@@ -32,6 +45,9 @@ export const useCreateForm = <T extends FormCreate | EventFormCreate>(): UseMuta
   const queryClient = useQueryClient();
   return useMutation((newForm: T) => API.createForm(newForm), {
     onSuccess: (data) => {
+      if (data.template) {
+        queryClient.invalidateQueries([FORM_QUERY_KEY]);
+      }
       if ((data as EventForm).event) {
         queryClient.invalidateQueries([EVENT_QUERY_KEY, (data as EventForm).event.id]);
       }
@@ -55,6 +71,9 @@ export const useDeleteForm = (formId: string): UseMutationResult<RequestResponse
   return useMutation(() => API.deleteForm(formId), {
     onSuccess: () => {
       const data = queryClient.getQueryData<Form>([FORM_QUERY_KEY, formId]);
+      if (data?.template) {
+        queryClient.invalidateQueries([FORM_QUERY_KEY]);
+      }
       if ((data as EventForm).event) {
         queryClient.invalidateQueries([EVENT_QUERY_KEY, (data as EventForm).event.id]);
       }

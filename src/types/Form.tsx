@@ -13,9 +13,10 @@ export interface Form {
   fields: Array<TextFormField | SelectFormField>;
   resource_type: FormResourceType;
   viewer_has_answered: boolean;
+  template: boolean;
 }
 
-export type FormCreate = Omit<Form, 'id' | 'viewer_has_answered'>;
+export type FormCreate = Omit<Form, 'id' | 'viewer_has_answered' | 'type'> & Partial<Pick<Form, 'type'>>;
 export type FormUpdate = Partial<Form> & Pick<Form, 'fields' | 'resource_type'>;
 
 export interface EventForm extends Form {

@@ -1,12 +1,12 @@
 import { useEffect, useState, useRef } from 'react';
-import { Form, TextFormField, SelectFormField } from 'types';
-import { FormFieldType } from 'types/Enums';
-import { useUpdateForm, useDeleteForm } from 'hooks/Form';
+import { Form, TextFormField, SelectFormField, FormCreate } from 'types';
+import { FormFieldType, FormResourceType } from 'types/Enums';
+import { useUpdateForm, useDeleteForm, useCreateForm } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
 
 // Material UI
 import { makeStyles } from '@mui/styles';
-import { ClickAwayListener, Grow, Paper, Popper, MenuItem, MenuList, Button } from '@mui/material';
+import { ClickAwayListener, Grow, Paper, TextField, Popper, MenuItem, MenuList, Button } from '@mui/material';
 
 // Project components
 import Dialog from 'components/layout/Dialog';
@@ -28,12 +28,15 @@ export type FormEditorProps = {
 
 const FormEditor = ({ form }: FormEditorProps) => {
   const classes = useStyles();
+  const createForm = useCreateForm();
   const updateForm = useUpdateForm(form.id || '-');
   const deleteForm = useDeleteForm(form.id || '-');
   const showSnackbar = useSnackbar();
   const [fields, setFields] = useState<Array<TextFormField | SelectFormField>>(form.fields);
   const [addButtonOpen, setAddButtonOpen] = useState(false);
+  const [formDialogOpen, setFormDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [templateTitle, setTemplateTitle] = useState('');
   const buttonAnchorRef = useRef(null);
 
   useEffect(() => {
@@ -97,6 +100,24 @@ const FormEditor = ({ form }: FormEditorProps) => {
     );
   };
 
+  const onCreateFormTemplate = async () => {
+    const newForm: FormCreate = {
+      title: templateTitle, // her kommer det en popup der man kan skrive inn navnet til templaten
+      fields: fields,
+      resource_type: FormResourceType.FORM,
+      template: true,
+    };
+    createForm.mutate(newForm, {
+      onSuccess: (data) => {
+        showSnackbar(data.title + ' malen ble lagret', 'success');
+      },
+      onError: (e) => {
+        showSnackbar(e.detail, 'error');
+      },
+    });
+    setFormDialogOpen(false);
+  };
+
   return (
     <>
       <div className={classes.root}>
@@ -113,6 +134,9 @@ const FormEditor = ({ form }: FormEditorProps) => {
         </Button>
         <Button fullWidth onClick={save} variant='contained'>
           Lagre
+        </Button>
+        <Button color='secondary' fullWidth onClick={() => setFormDialogOpen(true)} variant='outlined'>
+          Lagre som mal
         </Button>
         <Button color='error' fullWidth onClick={() => setDeleteDialogOpen(true)} variant='outlined'>
           Slett skjema
@@ -135,6 +159,15 @@ const FormEditor = ({ form }: FormEditorProps) => {
       </Popper>
       <Dialog confirmText='Jeg er sikker' onClose={() => setDeleteDialogOpen(false)} onConfirm={onDeleteForm} open={deleteDialogOpen} titleText='Slett skjema'>
         Er du sikker på at du vil slette dette skjemaet? Alle svar vil forsvinne.
+      </Dialog>
+      <Dialog
+        confirmText='Jeg er sikker'
+        onClose={() => setFormDialogOpen(false)}
+        onConfirm={onCreateFormTemplate}
+        open={formDialogOpen}
+        titleText='Opprett mal'>
+        Gi malen en passende tittel.
+        <TextField fullWidth id='standard-basic' label='Tittel' onChange={(e) => setTemplateTitle(e.target.value)} required variant='standard' />
       </Dialog>
     </>
   );
