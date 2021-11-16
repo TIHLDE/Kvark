@@ -14,6 +14,9 @@
 
 ## Neste versjon
 
+- ✨ **Arrangementer**. Lagt til mulighet for å knytte arrangementer til grupper. Gruppen som er koblet til et arrangement er også de enste som har admin-tilgang til det.
+- ⚡ **Opplæring**. Lagt til flere beskrivelser på felter i arrangements-admin, samt gjort det enkelt å gjøre dette andre steder også.
+- ⚡ **Spørreskjemaer**. Håndterer nå åpning av spørreskjemaer der bruker ikke er innlogget ved redirigering til innlogging.
 - ⚡ **Ytelse**. Laster inn bilder først når de skal vises på siden.
 - 🦟 **PWA**. Det funker nå å legge til nettsiden på hjemskjermen.
 

@@ -4,6 +4,7 @@ import { urlEncode, formatDate, getJobpostType } from 'utils';
 import { parseISO } from 'date-fns';
 import URLS from 'URLS';
 import { EventCompact, News, JobPost } from 'types';
+import { useCategories } from 'hooks/Categories';
 
 // Material UI Components
 import { makeStyles } from 'makeStyles';
@@ -25,6 +26,7 @@ import DateIcon from '@mui/icons-material/DateRangeRounded';
 import BusinessIcon from '@mui/icons-material/BusinessRounded';
 import DeadlineIcon from '@mui/icons-material/AlarmRounded';
 import SchoolIcon from '@mui/icons-material/School';
+import CategoryIcon from '@mui/icons-material/CategoryRounded';
 
 // Project components
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
@@ -124,6 +126,7 @@ export type ListItemProps = {
 const ListItem = ({ event, news, jobpost, className, largeImg = false, sx }: ListItemProps) => {
   const { classes, cx } = useStyles();
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
+  const { data: categories = [] } = useCategories();
   const item = useMemo(() => {
     if (event) {
       return {
@@ -151,7 +154,11 @@ const ListItem = ({ event, news, jobpost, className, largeImg = false, sx }: Lis
 
   const info = useMemo((): Array<IconProps> | undefined => {
     if (event) {
-      return [{ label: formatDate(parseISO(event.start_date)), icon: DateIcon }];
+      const categoryLabel = `${event.organizer ? `${event.organizer.name} | ` : ''}${categories.find((c) => c.id === event.category)?.text || 'Laster...'}`;
+      return [
+        { label: formatDate(parseISO(event.start_date)), icon: DateIcon },
+        { label: categoryLabel, icon: CategoryIcon },
+      ];
     } else if (news) {
       return [{ label: `Publisert: ${formatDate(parseISO(news.created_at))}` }, { label: news.header }];
     } else if (jobpost) {
@@ -164,7 +171,7 @@ const ListItem = ({ event, news, jobpost, className, largeImg = false, sx }: Lis
         },
       ];
     }
-  }, [event, news, jobpost]);
+  }, [event, news, jobpost, categories]);
 
   if (!item || !info) {
     return null;
