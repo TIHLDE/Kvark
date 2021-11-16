@@ -1,7 +1,7 @@
 import slugify from 'slugify';
 import { parseISO, format, subMinutes, getYear, isAfter, isBefore } from 'date-fns';
 import { Event } from 'types';
-import { UserStudy, UserClass, JobPostType, StrikeReason } from 'types/Enums';
+import { UserStudy, UserClass, JobPostType, StrikeReason, MembershipType } from 'types/Enums';
 
 export const isAfterDateOfYear = (month: number, date: number) => isAfter(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
 export const isBeforeDateOfYear = (month: number, date: number) => isBefore(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
@@ -128,6 +128,21 @@ export const getJobpostType = (jobpostType: JobPostType) => {
       return 'Annet';
     default:
       return 'Ukjent jobbtype';
+  }
+};
+
+/**
+ * Get membership type as text
+ * @param membershipType Membership type
+ */
+export const getMembershipType = (membershipType: MembershipType) => {
+  switch (membershipType) {
+    case MembershipType.LEADER:
+      return 'Leder';
+    case MembershipType.MEMBER:
+      return 'Medlem';
+    default:
+      return 'Ukjent medlemskapstype';
   }
 };
 

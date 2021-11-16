@@ -1,11 +1,11 @@
 import { PermissionApp, UserClass, UserStudy } from 'types/Enums';
 import { Permissions } from 'types/Misc';
 
-export interface LoginRequestResponse {
+export type LoginRequestResponse = {
   token: string;
-}
+};
 
-export interface User {
+export type User = {
   app_token: string;
   allergy: string;
   cell: number;
@@ -23,7 +23,7 @@ export interface User {
   user_study: UserStudy;
   unanswered_evaluations_count: number;
   number_of_strikes: number;
-}
+};
 
 export type UserBase = Pick<User, 'user_id' | 'first_name' | 'last_name' | 'image'>;
 export type UserList = UserBase & Pick<User, 'email' | 'user_class' | 'user_study' | 'allergy' | 'cell' | 'gender' | 'tool' | 'number_of_strikes'>;
