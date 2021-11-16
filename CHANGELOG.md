@@ -15,6 +15,7 @@
 ## Neste versjon
 
 - ✨ **Arrangementer**. Arrangementer kan nå være åpne for kun prioriterte.
+- 🎨 **Arrangementer**. Lagt til farger slik at brukere raskt kan se hva som er hva. Det vises også flere arrangementer på forsiden.
 - ✨ **Arrangementer**. Lagt til mulighet for å knytte arrangementer til grupper. Gruppen som er koblet til et arrangement er også de enste som har admin-tilgang til det.
 - ⚡ **Opplæring**. Lagt til flere beskrivelser på felter i arrangements-admin, samt gjort det enkelt å gjøre dette andre steder også.
 - ⚡ **Spørreskjemaer**. Håndterer nå åpning av spørreskjemaer der bruker ikke er innlogget ved redirigering til innlogging.
