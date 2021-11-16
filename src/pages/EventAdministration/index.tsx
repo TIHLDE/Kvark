@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import URLS from 'URLS';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { useEvents, useEventById } from 'hooks/Event';
+import { useEventsWhereIsAdmin, useEventById } from 'hooks/Event';
 import { parseISO } from 'date-fns';
 import { formatDate } from 'utils';
 
@@ -48,7 +48,7 @@ const EventAdministration = () => {
   const { classes } = useStyles();
   const navigate = useNavigate();
   const { eventId } = useParams();
-  const { data: event, isLoading } = useEventById(eventId ? Number(eventId) : -1);
+  const { data: event, isLoading, isError } = useEventById(eventId ? Number(eventId) : -1);
   const editTab = { value: 'edit', label: eventId ? 'Endre' : 'Skriv', icon: EditIcon };
   const participantsTab = { value: 'participants', label: 'Deltagere', icon: ParticipantsIcon };
   const formsTab = { value: 'forms', label: 'Spørsmål', icon: FormsIcon };
@@ -65,6 +65,15 @@ const EventAdministration = () => {
       navigate(URLS.eventAdmin);
     }
   };
+
+  /**
+   * Go to "New Event" if there is an error loading current event or the user don't have write-access to the event
+   */
+  useEffect(() => {
+    if ((event && !event.permissions.write) || isError) {
+      goToEvent(null);
+    }
+  }, [isError, event]);
 
   useEffect(() => {
     if (!isLoading && !tabs.some((t) => t.value === tab)) {
@@ -84,7 +93,7 @@ const EventAdministration = () => {
         selectedItemId={Number(eventId)}
         title='Arrangementer'
         titleKey='title'
-        useHook={useEvents}
+        useHook={useEventsWhereIsAdmin}
       />
       <div className={classes.root}>
         <div className={classes.content}>

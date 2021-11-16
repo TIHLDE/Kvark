@@ -1,17 +1,15 @@
 import { useState } from 'react';
 import { Event, Registration } from 'types';
-import { PermissionApp } from 'types/Enums';
 import URLS from 'URLS';
 import { parseISO, isPast, isFuture, subHours, addHours } from 'date-fns';
 import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 'utils';
 import { Link } from 'react-router-dom';
-
-// Services
 import { useSetRedirectUrl } from 'hooks/Misc';
 import { useEventRegistration, useDeleteEventRegistration } from 'hooks/Event';
-import { useUser, HavePermission } from 'hooks/User';
+import { useUser } from 'hooks/User';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useGoogleAnalytics } from 'hooks/Utils';
+import { useCategories } from 'hooks/Categories';
 
 // Material UI Components
 import { makeStyles } from 'makeStyles';
@@ -106,6 +104,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const deleteRegistration = useDeleteEventRegistration(data.id);
   const setLogInRedirectURL = useSetRedirectUrl();
   const showSnackbar = useSnackbar();
+  const { data: categories = [] } = useCategories();
   const [view, setView] = useState<Views>(Views.Info);
   const startDate = parseISO(data.start_date);
   const endDate = parseISO(data.end_date);
@@ -249,9 +248,11 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     <>
       <DetailsPaper noPadding>
         <DetailsHeader variant='h2'>Detaljer</DetailsHeader>
-        <DetailContent info={formatDate(startDate)} title='Fra: ' />
-        <DetailContent info={formatDate(endDate)} title='Til: ' />
-        <DetailContent info={data.location} title='Sted: ' />
+        <DetailContent info={formatDate(startDate)} title='Fra:' />
+        <DetailContent info={formatDate(endDate)} title='Til:' />
+        <DetailContent info={data.location} title='Sted:' />
+        <DetailContent info={categories.find((c) => c.id === data.category)?.text || 'Laster...'} title='Hva:' />
+        {data.organizer && <DetailContent info={<Link to={`${URLS.groups}${data.organizer.slug}/`}>{data.organizer.name}</Link>} title='Arrangør:' />}
       </DetailsPaper>
       {data.sign_up && (
         <>
@@ -307,12 +308,10 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} onClick={addToCalendarAnalytics} variant='outlined'>
           Legg til i kalender
         </Button>
-        {!preview && (
-          <HavePermission apps={[PermissionApp.EVENT]}>
-            <Button component={Link} fullWidth to={`${URLS.eventAdmin}${data.id}/`} variant='outlined'>
-              Endre arrangement
-            </Button>
-          </HavePermission>
+        {!preview && data.permissions.write && (
+          <Button component={Link} fullWidth to={`${URLS.eventAdmin}${data.id}/`} variant='outlined'>
+            Endre arrangement
+          </Button>
         )}
       </div>
       <div className={cx(classes.infoGrid, classes.info)}>

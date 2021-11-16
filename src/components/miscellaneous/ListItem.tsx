@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { urlEncode, formatDate, getJobpostType } from 'utils';
 import { parseISO } from 'date-fns';
 import URLS from 'URLS';
-import { EventCompact, News, JobPost } from 'types';
+import { News, JobPost } from 'types';
 
 // Material UI Components
 import { makeStyles } from 'makeStyles';
@@ -21,7 +21,6 @@ import {
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 // Icons
-import DateIcon from '@mui/icons-material/DateRangeRounded';
 import BusinessIcon from '@mui/icons-material/BusinessRounded';
 import DeadlineIcon from '@mui/icons-material/AlarmRounded';
 import SchoolIcon from '@mui/icons-material/School';
@@ -113,7 +112,6 @@ const InfoContent = ({ icon: Icon, label }: IconProps) => {
 };
 
 export type ListItemProps = {
-  event?: EventCompact;
   news?: News;
   jobpost?: JobPost;
   className?: string;
@@ -121,18 +119,11 @@ export type ListItemProps = {
   sx?: MaterialListItemButtonProps['sx'];
 };
 
-const ListItem = ({ event, news, jobpost, className, largeImg = false, sx }: ListItemProps) => {
+const ListItem = ({ news, jobpost, className, largeImg = false, sx }: ListItemProps) => {
   const { classes, cx } = useStyles();
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   const item = useMemo(() => {
-    if (event) {
-      return {
-        title: event.title,
-        link: `${URLS.events}${event.id}/${urlEncode(event.title)}/`,
-        img: event.image,
-        imgAlt: event.image_alt,
-      };
-    } else if (news) {
+    if (news) {
       return {
         title: news.title,
         link: `${URLS.news}${news.id}/${urlEncode(news.title)}/`,
@@ -147,12 +138,10 @@ const ListItem = ({ event, news, jobpost, className, largeImg = false, sx }: Lis
         imgAlt: jobpost.image_alt,
       };
     }
-  }, [event, news, jobpost]);
+  }, [news, jobpost]);
 
   const info = useMemo((): Array<IconProps> | undefined => {
-    if (event) {
-      return [{ label: formatDate(parseISO(event.start_date)), icon: DateIcon }];
-    } else if (news) {
+    if (news) {
       return [{ label: `Publisert: ${formatDate(parseISO(news.created_at))}` }, { label: news.header }];
     } else if (jobpost) {
       return [
@@ -164,7 +153,7 @@ const ListItem = ({ event, news, jobpost, className, largeImg = false, sx }: Lis
         },
       ];
     }
-  }, [event, news, jobpost]);
+  }, [news, jobpost]);
 
   if (!item || !info) {
     return null;

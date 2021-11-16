@@ -180,7 +180,7 @@ const addLeadingZero = (number: number) => (number < 10 ? '0' + number : number)
  */
 export const formatDate = (date: Date) => {
   const isDifferentYear = date.getFullYear() !== new Date().getFullYear();
-  return `${getDay(date.getDay())} ${date.getDate()} ${getMonth(date.getMonth())} ${isDifferentYear ? date.getFullYear() : ''} - kl. ${addLeadingZero(
+  return `${getDay(date.getDay())} ${date.getDate()} ${getMonth(date.getMonth())} ${isDifferentYear ? date.getFullYear() : ''} - ${addLeadingZero(
     date.getHours(),
   )}:${addLeadingZero(date.getMinutes())}`;
 };

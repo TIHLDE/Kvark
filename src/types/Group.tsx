@@ -7,9 +7,9 @@ export type Group = {
   name: string;
   slug: string;
   description: string;
-  contact_email: string;
+  contact_email: string | null;
   type: GroupType;
-  leader: UserBase | UserList;
+  leader?: UserBase | UserList;;
   permissions: Permissions;
 };
 
