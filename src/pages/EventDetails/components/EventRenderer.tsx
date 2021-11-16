@@ -236,8 +236,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             Se beskrivelse
           </Button>
         ) : data.only_allow_prioritized &&
-          data.registration_priorities.length > 0 &&
-          !data.registration_priorities.some((priority) => priority.user_class === user.user_class && priority.user_study === user.user_study) ? (
+          ((data.registration_priorities.length > 0 &&
+            !data.registration_priorities.some((priority) => priority.user_class === user.user_class && priority.user_study === user.user_study)) ||
+            user.number_of_strikes >= 3) ? (
           <Button disabled fullWidth variant='contained'>
             Kun åpent for prioriterte
           </Button>
