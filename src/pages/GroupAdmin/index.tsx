@@ -14,10 +14,11 @@ import Paper from 'components/layout/Paper';
 import UpdateGroupModal from 'pages/GroupAdmin/components/UpdateGroupModal';
 import MemberListItem from 'pages/GroupAdmin/components/MemberListItem';
 import AddMemberModal from 'pages/GroupAdmin/components/AddMemberModal';
-import MembersCard from 'pages/Pages/specials/Index/MembersCard';
+import MembersCard from 'pages/GroupAdmin/components/MembersCard';
 import Pagination from 'components/layout/Pagination';
 import Avatar from 'components/miscellaneous/Avatar';
 import { UserList } from 'types';
+import MembersHistoryCard from 'pages/GroupAdmin/components/MembersHistoryCard';
 
 const Group = () => {
   const { slug: slugParameter } = useParams<'slug'>();
@@ -90,6 +91,7 @@ const Group = () => {
           ) : (
             <MembersCard slug={slug} />
           )}
+          <MembersHistoryCard slug={slug} />
         </>
       )}
     </Page>
