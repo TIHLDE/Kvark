@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
-
-// Material UI Components
 import { makeStyles } from 'makeStyles';
-import { Skeleton } from '@mui/material';
+import { Skeleton, Box, SkeletonProps, styled } from '@mui/material';
 
 // Icons
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
@@ -38,27 +36,35 @@ export type AspectRatioImgProps = {
   imgClassName?: string;
   ratio?: number;
   src?: string;
+  sx?: SkeletonProps['sx'];
 };
 
-const AspectRatioImg = ({ alt, className, imgClassName, ratio = 21 / 9, src }: AspectRatioImgProps) => {
+const Img = styled('img')({});
+
+const AspectRatioImg = ({ alt, className, imgClassName, ratio = 21 / 9, src, sx }: AspectRatioImgProps) => {
   const { classes, cx } = useStyles({ ratio });
   const [imgUrl, setImgUrl] = useState(src || TIHLDELOGO);
   useEffect(() => {
     setImgUrl(src || TIHLDELOGO);
   }, [src]);
   return (
-    <div className={cx(classes.imgContainer, className)}>
-      <img alt={alt} className={cx(classes.img, classes.jpg, imgClassName)} loading='lazy' onError={() => setImgUrl(TIHLDELOGO)} src={imgUrl} />
-    </div>
+    <Box className={cx(classes.imgContainer, className)}>
+      <Img alt={alt} className={cx(classes.img, classes.jpg, imgClassName)} loading='lazy' onError={() => setImgUrl(TIHLDELOGO)} src={imgUrl} sx={sx} />
+    </Box>
   );
 };
 export default AspectRatioImg;
 
-export const AspectRatioLoading = ({ className, imgClassName, ratio = 21 / 9 }: Pick<AspectRatioImgProps, 'className' | 'imgClassName' | 'ratio'>) => {
+export const AspectRatioLoading = ({
+  className,
+  imgClassName,
+  ratio = 21 / 9,
+  sx,
+}: Pick<AspectRatioImgProps, 'className' | 'imgClassName' | 'ratio' | 'sx'>) => {
   const { classes, cx } = useStyles({ ratio });
   return (
-    <div className={cx(classes.imgContainer, className)}>
-      <Skeleton className={cx(classes.img, imgClassName)} variant='rectangular' />
-    </div>
+    <Box className={cx(classes.imgContainer, className)}>
+      <Skeleton className={cx(classes.img, imgClassName)} sx={sx} variant='rectangular' />
+    </Box>
   );
 };
