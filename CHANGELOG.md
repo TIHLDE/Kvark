@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.2.8 (16.11.2021)
+
 - ✨ **Arrangementer**. Arrangementer kan nå være åpne for kun prioriterte.
 - 🎨 **Arrangementer**. Lagt til farger slik at brukere raskt kan se hva som er hva. Det vises også flere arrangementer på forsiden.
 - ✨ **Arrangementer**. Lagt til mulighet for å knytte arrangementer til grupper. Gruppen som er koblet til et arrangement er også de enste som har admin-tilgang til det.
