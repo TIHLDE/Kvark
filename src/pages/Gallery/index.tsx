@@ -14,12 +14,42 @@ import { Gallery, Picture } from 'types';
 // Icons
 import PhotoLibraryRoundedIcon from '@mui/icons-material/PhotoLibraryRounded';
 
+const useStyles = makeStyles((theme) => ({
+  image: {
+    borderRadius: theme.shape.borderRadius,
+    border: `1px solid ${theme.palette.divider}`,
+  },
+}));
+
 export type GalleryPicturesProps = {
   gallery: Gallery;
 };
 
 export type GalleryProps = {
   gallery: Gallery;
+};
+
+const CreatePicture = () => {
+  const [file, setFile] = useState(null);
+
+  const types = ['image/png', 'image/jpeg'];
+
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.files?.[0];
+
+    if (selected && types.includes(selected.type)) {
+      setFile(selected);
+    } else {
+      setFile(null);
+    }
+  };
+
+  return (
+    <form>
+      <input onChange={changeHandler} type='file' />
+      <div className='output'>{file && <div> {file} </div>}</div>
+    </form>
+  );
 };
 
 const GalleryPictures = ({ gallery }: GalleryPicturesProps) => {
@@ -45,6 +75,8 @@ const GalleryPicturesLoading = () => (
     </ImageListItem>
   </ImageList>
 );
+
+const CreateGallery = () => {};
 
 const GalleryRenderer = ({ gallery }: GalleryProps) => {
   const [openPicture, setOpenPicture] = useState(null);
