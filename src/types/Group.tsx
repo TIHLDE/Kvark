@@ -9,7 +9,7 @@ export type Group = {
   description: string;
   contact_email: string | null;
   type: GroupType;
-  leader?: UserBase | UserList;;
+  leader?: UserBase | UserList;
   permissions: Permissions;
 };
 
