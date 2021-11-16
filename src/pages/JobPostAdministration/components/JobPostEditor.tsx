@@ -8,7 +8,7 @@ import { EMAIL_REGEX } from 'constant';
 import { parseISO } from 'date-fns';
 
 // Material-UI
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Grid, LinearProgress, MenuItem } from '@mui/material';
 
 // Project components
@@ -24,7 +24,7 @@ import RendererPreview from 'components/miscellaneous/RendererPreview';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import { getJobpostType } from 'utils';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   grid: {
     display: 'grid',
     gridGap: theme.spacing(2),
@@ -68,7 +68,7 @@ type FormValues = Pick<
 };
 
 const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { data, isLoading, isError } = useJobPostById(jobpostId || -1);
   const createJobPost = useCreateJobPost();
   const updateJobPost = useUpdateJobPost(jobpostId || -1);

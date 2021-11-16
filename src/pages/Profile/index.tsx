@@ -1,7 +1,7 @@
 import { useUser } from 'hooks/User';
 
 // Material-UI
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Skeleton, Typography } from '@mui/material';
 
 // Project Components
@@ -12,7 +12,7 @@ import Avatar from 'components/miscellaneous/Avatar';
 import QRButton from 'components/miscellaneous/QRButton';
 import { ProfileTopBox } from 'components/layout/TopBox';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   paper: {
     position: 'relative',
     left: 0,
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Profile = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { data: user } = useUser();
 
   return (

@@ -9,15 +9,23 @@ export type TextFieldProps<FormValues extends FieldValues = FieldValues> = MuiTe
     name: Path<FormValues> | string;
   };
 
-// eslint-disable-next-line comma-spacing
-const GenericTextField = <FormValues,>({ name, formState, ...props }: TextFieldProps<FormValues>, ref: React.ForwardedRef<HTMLDivElement>) => {
+const GenericTextField = <FormValues extends FieldValues>(
+  { name, formState, helperText, ...props }: TextFieldProps<FormValues>,
+  ref: React.ForwardedRef<HTMLDivElement>,
+) => {
   const { [name]: fieldError } = formState.errors;
   const error = fieldError as FieldError;
   return (
     <MuiTextField
       error={Boolean(error)}
       fullWidth
-      helperText={error?.message}
+      helperText={
+        <>
+          {error?.message}
+          {helperText && Boolean(error) && <br />}
+          {helperText}
+        </>
+      }
       InputLabelProps={{ shrink: true }}
       inputRef={ref}
       margin='normal'

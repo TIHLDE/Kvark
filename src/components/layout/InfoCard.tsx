@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
-import { makeStyles } from '@mui/styles';
-import classNames from 'classnames';
+import { makeStyles } from 'makeStyles';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 
 // Material UI Components
@@ -9,7 +8,7 @@ import { Grid, Typography } from '@mui/material';
 // Project Components
 import Paper from 'components/layout/Paper';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     padding: theme.spacing(4),
   },
@@ -70,13 +69,13 @@ export type InfoCardProps = {
   children?: ReactNode;
 };
 const InfoCard = ({ className, header, text, src, alt, justifyText, imageClass, children }: InfoCardProps) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   return (
-    <Paper className={classNames(classes.root, className)} noPadding>
-      <div className={classNames(classes.wrapper, src && classes.centerAlign)}>
+    <Paper className={cx(classes.root, className)} noPadding>
+      <div className={cx(classes.wrapper, src && classes.centerAlign)}>
         {Boolean(src) && (
           <div className={classes.margin}>
-            <img alt={alt || header} className={classNames(classes.image, imageClass)} src={src} />
+            <img alt={alt || header} className={cx(classes.image, imageClass)} loading='lazy' src={src} />
           </div>
         )}
         <Grid className={justifyText ? classes.cover : ''} container direction='column' justifyContent='flex-start'>
@@ -84,7 +83,7 @@ const InfoCard = ({ className, header, text, src, alt, justifyText, imageClass, 
             <strong>{header}</strong>
           </Typography>
           {text && <MarkdownRenderer value={text} />}
-          {children && <div className={classNames(classes.grow, classes.padding)}>{children}</div>}
+          {children && <div className={cx(classes.grow, classes.padding)}>{children}</div>}
         </Grid>
       </div>
     </Paper>

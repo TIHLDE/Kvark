@@ -8,7 +8,7 @@ import { PermissionApp } from 'types/Enums';
 import { HavePermission } from 'hooks/User';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Typography, Button, Skeleton } from '@mui/material';
 
 // Project Components
@@ -18,7 +18,7 @@ import Paper from 'components/layout/Paper';
 import Container from 'components/layout/Container';
 import ShareButton from 'components/miscellaneous/ShareButton';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   image: {
     borderRadius: theme.shape.borderRadius,
   },
@@ -69,7 +69,7 @@ export type NewsRendererProps = {
   preview?: boolean;
 };
 const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   // Find a dominant color in the image, uses a proxy to be able to retrieve images with CORS-policy until all images are stored in our own server
   const { data: palette } = usePalette(
@@ -114,7 +114,7 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
 export default NewsRenderer;
 
 export const NewsRendererLoading = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <div>

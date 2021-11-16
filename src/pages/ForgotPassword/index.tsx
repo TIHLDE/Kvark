@@ -6,7 +6,7 @@ import { useForgotPassword } from 'hooks/User';
 import { useSnackbar } from 'hooks/Snackbar';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -20,7 +20,7 @@ import TextField from 'components/inputs/TextField';
 import { SecondaryTopBox } from 'components/layout/TopBox';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   paper: {
     maxWidth: theme.breakpoints.values.sm,
     margin: 'auto',
@@ -50,7 +50,7 @@ type FormData = {
 };
 
 const ForgotPassword = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { event } = useGoogleAnalytics();
   const forgotPassword = useForgotPassword();
   const showSnackbar = useSnackbar();

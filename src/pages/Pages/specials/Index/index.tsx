@@ -1,6 +1,6 @@
 import ErrorCard from 'pages/Pages/specials/Index/ErrorCard';
 import ChangelogCard from 'pages/Pages/specials/Index/ChangelogCard';
-import MembersCard from 'pages/Pages/specials/Index/MembersCard';
+import MembersCard from 'pages/GroupAdmin/components/MembersCard';
 import { Groups } from 'types/Enums';
 import InfoCard from 'components/layout/InfoCard';
 import { styled } from '@mui/material';

@@ -18,8 +18,7 @@ export type DatePickerProps<FormValues extends FieldValues = FieldValues> = Text
     onDateChange?: (date?: Date) => void;
   };
 
-// eslint-disable-next-line comma-spacing
-const DatePicker = <FormValues,>({
+const DatePicker = <FormValues extends FieldValues>({
   type,
   name,
   label,
@@ -29,6 +28,7 @@ const DatePicker = <FormValues,>({
   defaultValue = '',
   dateProps,
   onDateChange,
+  helperText,
   ...props
 }: DatePickerProps<FormValues>) => {
   const { [name]: fieldError } = formState.errors;
@@ -53,7 +53,20 @@ const DatePicker = <FormValues,>({
             }
           }}
           renderInput={(params) => (
-            <MuiTextField margin='normal' variant='outlined' {...params} error={Boolean(error)} helperText={error?.message} {...props} />
+            <MuiTextField
+              margin='normal'
+              variant='outlined'
+              {...params}
+              error={Boolean(error)}
+              helperText={
+                <>
+                  {error?.message}
+                  {helperText && Boolean(error) && <br />}
+                  {helperText}
+                </>
+              }
+              {...props}
+            />
           )}
         />
       )}

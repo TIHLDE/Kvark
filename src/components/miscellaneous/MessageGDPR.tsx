@@ -3,13 +3,13 @@ import { getCookie, setCookie } from 'api/cookie';
 import { ACCEPTED_ANALYTICS } from 'constant';
 
 // Material UI
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Typography, Button } from '@mui/material';
 
 // Project components
 import Paper from 'components/layout/Paper';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     maxWidth: theme.breakpoints.values.lg,
     padding: theme.spacing(2),
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 const MessageGDPR = () => {
   const cookieValue = !getCookie(ACCEPTED_ANALYTICS);
   const [display, setDisplay] = useState<boolean>(cookieValue);
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const closeDialog = () => {
     setDisplay(false);

@@ -1,5 +1,4 @@
 import { lazy, Suspense, useEffect, useMemo } from 'react';
-import classnames from 'classnames';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import URLS, { PAGES_URLS } from 'URLS';
 import { usePage } from 'hooks/Pages';
@@ -7,8 +6,8 @@ import { Page as IPage } from 'types';
 import { Groups } from 'types/Enums';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
-import { Theme, Typography, Breadcrumbs, Skeleton } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { Typography, Breadcrumbs, Skeleton } from '@mui/material';
 
 // Project Components
 import Page from 'components/navigation/Page';
@@ -19,14 +18,14 @@ import PagesAdmin from 'pages/Pages/components/PagesAdmin';
 import PagesList from 'pages/Pages/components/PagesList';
 import PagesSearch from 'pages/Pages/components/PagesSearch';
 import ShareButton from 'components/miscellaneous/ShareButton';
-const MembersCard = lazy(() => import('pages/Pages/specials/Index/MembersCard'));
+const MembersCard = lazy(() => import('pages/GroupAdmin/components/MembersCard'));
 const Index = lazy(() => import('pages/Pages/specials/Index'));
 
 type ThemeProps = {
   data?: IPage;
 };
 
-const useStyles = makeStyles<Theme, ThemeProps>((theme) => ({
+const useStyles = makeStyles<ThemeProps>()((theme, { data }) => ({
   link: {
     textDecoration: 'none',
   },
@@ -43,14 +42,14 @@ const useStyles = makeStyles<Theme, ThemeProps>((theme) => ({
     alignItems: 'self-start',
     [theme.breakpoints.down('lg')]: {
       gridGap: theme.spacing(1),
-      gridTemplateColumns: () => '1fr',
+      gridTemplateColumns: '1fr',
     },
   },
   inner: {
-    gridTemplateColumns: ({ data }) => (data?.image ? '1fr 350px' : '1fr'),
+    gridTemplateColumns: data?.image ? '1fr 350px' : '1fr',
     alignItems: 'self-start',
     [theme.breakpoints.down('xl')]: {
-      gridTemplateColumns: () => '1fr',
+      gridTemplateColumns: '1fr',
     },
     [theme.breakpoints.down('lg')]: {
       gridGap: theme.spacing(1),
@@ -82,7 +81,7 @@ const Pages = () => {
   const levels = useMemo(() => location.pathname.split('/').filter((x) => x.trim() !== ''), [location.pathname]);
   const path = useMemo(() => (levels.slice(1).length ? `${levels.slice(1).join('/')}/` : ''), [levels]);
   const { data, error, isLoading } = usePage(path);
-  const classes = useStyles({ data });
+  const { classes, cx } = useStyles({ data });
 
   useEffect(() => {
     if (data && location.pathname !== data.path) {
@@ -123,7 +122,7 @@ const Pages = () => {
         ))}
         <Typography>{data?.title}</Typography>
       </Breadcrumbs>
-      <div className={classnames(classes.grid, classes.root)}>
+      <div className={cx(classes.grid, classes.root)}>
         {isLoading ? (
           <>
             <Paper className={classes.paper} noPadding>
@@ -147,15 +146,15 @@ const Pages = () => {
         ) : (
           data !== undefined && (
             <>
-              <div className={classnames(classes.grid, classes.list)}>
+              <div className={cx(classes.grid, classes.list)}>
                 <Paper className={classes.paper} noPadding>
                   <PagesList pages={data.children} />
                 </Paper>
                 <ShareButton color='inherit' fullWidth shareId={data.path} shareType='pages' title={data.title} />
                 <PagesAdmin page={data} />
               </div>
-              <div className={classnames(classes.grid, classes.inner)}>
-                <div className={classnames(classes.grid, classes.content)}>
+              <div className={cx(classes.grid, classes.inner)}>
+                <div className={cx(classes.grid, classes.content)}>
                   {Boolean(data.content.trim().length) && (
                     <Paper>
                       <MarkdownRenderer value={data.content} />
@@ -165,7 +164,7 @@ const Pages = () => {
                     <SpecialContent />
                   </Suspense>
                 </div>
-                {data.image && <img alt={data.image_alt || data.title} className={classes.image} src={data.image} />}
+                {data.image && <img alt={data.image_alt || data.title} className={classes.image} loading='lazy' src={data.image} />}
               </div>
             </>
           )

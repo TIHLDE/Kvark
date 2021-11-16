@@ -78,7 +78,7 @@ const AppRoutes = () => {
           <Route element={<Events />} index />
         </Route>
         <Route element={<Companies />} path={URLS.company} />
-        <Route element={<Form />} path={`${URLS.form}:id/`} />
+        <Route element={<AuthRoute element={<Form />} />} path={`${URLS.form}:id/`} />
         <Route path={URLS.groups}>
           <Route element={<GroupAdmin />} path=':slug/*' />
           <Route element={<GroupOverview />} index />
