@@ -5,7 +5,7 @@ import { useJobPosts } from 'hooks/JobPost';
 import { argsToParams } from 'utils';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import { useMediaQuery, Theme } from '@mui/material';
@@ -23,7 +23,7 @@ import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import { useGoogleAnalytics } from 'hooks/Utils';
 import Expansion from 'components/layout/Expand';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   grid: {
     display: 'grid',
     gridTemplateColumns: '3fr 1fr',
@@ -56,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
   },
   accordion: {
     background: theme.palette.background.paper,
+    border: `1px solid ${theme.palette.divider}`,
   },
 }));
 
@@ -72,7 +73,7 @@ const JobPosts = () => {
     const search = params.get('search') || undefined;
     return { expired, search };
   }, []);
-  const classes = useStyles();
+  const { classes } = useStyles();
   const navigate = useNavigate();
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
   const [filters, setFilters] = useState<Filters>(getInitialFilters());

@@ -2,11 +2,10 @@ import { useState, lazy, Suspense } from 'react';
 
 // Material UI Components
 import { Button, ButtonProps, styled, useMediaQuery, Theme, Skeleton, useTheme, Typography } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 
 // Project components
 import Dialog from 'components/layout/Dialog';
-import classnames from 'classnames';
 
 // Project hooks
 import { useGoogleAnalytics } from 'hooks/Utils';
@@ -16,7 +15,7 @@ import QrCodeIcon from '@mui/icons-material/QrCodeRounded';
 
 const QR = lazy(() => import('qrcode.react'));
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   qrcode: {
     padding: theme.spacing(4, 3),
     display: 'block',
@@ -37,17 +36,11 @@ export type QRCodeProps = {
 };
 
 const QRCode = ({ value, className }: QRCodeProps) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const theme = useTheme();
   return (
-    <Suspense fallback={<Skeleton className={classnames(classes.qrcode, classes.skeleton, className)} />}>
-      <QR
-        bgColor={theme.palette.common.white}
-        className={classnames(classes.qrcode, className)}
-        fgColor={theme.palette.common.black}
-        size={1000}
-        value={value}
-      />
+    <Suspense fallback={<Skeleton className={cx(classes.qrcode, classes.skeleton, className)} />}>
+      <QR bgColor={theme.palette.common.white} className={cx(classes.qrcode, className)} fgColor={theme.palette.common.black} size={1000} value={value} />
     </Suspense>
   );
 };

@@ -24,8 +24,7 @@ export const useInterval = (callback: EffectCallback, msDelay: number | null) =>
   }, [msDelay]);
 };
 
-// eslint-disable-next-line comma-spacing
-export const useDebounce = <Type,>(value: Type, delay: number) => {
+export const useDebounce = <Type extends unknown>(value: Type, delay: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {
@@ -102,8 +101,7 @@ export const useShare = (shareData: globalThis.ShareData, fallbackSnackbar?: str
  * @param defaultValue Default value of state
  * @param duration How long the cookie should live, default 24h
  */
-// eslint-disable-next-line comma-spacing
-export const usePersistedState = <T,>(key: string, defaultValue: T, duration = 3600 * 24000) => {
+export const usePersistedState = <T extends unknown>(key: string, defaultValue: T, duration = 3600 * 24000) => {
   const COOKIE_KEY = `TIHLDE-${key}`;
   const [state, setState] = useState<T>(() => {
     try {

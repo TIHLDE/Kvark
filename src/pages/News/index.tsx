@@ -2,7 +2,7 @@ import { Fragment, useMemo } from 'react';
 import { useNews } from 'hooks/News';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 
 // Project Components
 import Page from 'components/navigation/Page';
@@ -12,7 +12,7 @@ import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
 import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     paddingBottom: theme.spacing(2),
   },
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const News = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useNews();
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 

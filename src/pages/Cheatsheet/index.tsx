@@ -5,7 +5,7 @@ import { getUserStudyShort } from 'utils';
 import { Study } from 'types/Enums';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 
@@ -19,7 +19,7 @@ import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import Files from 'pages/Cheatsheet/components/Files';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     marginBottom: theme.spacing(2),
   },
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Cheetsheet = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { studyId, classId } = useParams();
   const navigate = useNavigate();
   const { data: user } = useUser();

@@ -1,7 +1,4 @@
-import classnames from 'classnames';
-
-// Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import Typography from '@mui/material/Typography';
 
 // Project Components
@@ -13,7 +10,7 @@ import StoriesView from 'pages/Landing/components/StoriesView';
 import Wave from 'pages/Landing/components/Wave';
 import NewStudentBox from 'pages/Landing/components/NewStudentBox';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   section: {
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
@@ -38,12 +35,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Landing = () => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   return (
     <Page banner={<Wave />} maxWidth={false} options={{ title: 'Forsiden' }}>
       <div className={classes.smoke}>
-        <Container className={classnames(classes.section, classes.storiesSection)} maxWidth='lg'>
+        <Container className={cx(classes.section, classes.storiesSection)} maxWidth='lg'>
           <NewStudentBox />
           <Typography align='center' className={classes.header} color='inherit' variant='h2'>
             Siste

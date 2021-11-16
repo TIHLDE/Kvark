@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import classnames from 'classnames';
 import URLS from 'URLS';
 import ThemeSettings from 'components/miscellaneous/ThemeSettings';
 import { Link } from 'react-router-dom';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Typography, Divider } from '@mui/material';
 
 // Assets import
@@ -19,7 +18,7 @@ import DISCORD from 'assets/icons/discord.svg';
 import MAINSPONSOR from 'assets/img/mainSponsor.png';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     position: 'relative',
     backgroundColor: theme.palette.colors.footer,
@@ -133,7 +132,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Footer = () => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const { event } = useGoogleAnalytics();
   const [showModal, setShowModal] = useState(false);
 
@@ -157,7 +156,7 @@ const Footer = () => {
   return (
     <div className={classes.root}>
       {showModal && <ThemeSettings onClose={() => setShowModal(false)} open={showModal} />}
-      <div className={classnames(classes.about, classes.flexColumn, classes.marginTopColumns)}>
+      <div className={cx(classes.about, classes.flexColumn, classes.marginTopColumns)}>
         <Typography variant='h2'>Kontakt</Typography>
         <Divider className={classes.divider} />
         {attributes.map((attribute, index) => (
@@ -172,9 +171,9 @@ const Footer = () => {
           </Link>
         </Typography>
       </div>
-      <div className={classnames(classes.main, classes.flexColumn, classes.marginTopColumns)}>
+      <div className={cx(classes.main, classes.flexColumn, classes.marginTopColumns)}>
         <a className={classes.attribute} href='https://www.accenture.com/no-en' rel='noopener noreferrer' target='_blank'>
-          <img alt='Sponsor' className={classes.logo} src={MAINSPONSOR} />
+          <img alt='Sponsor' className={classes.logo} loading='lazy' src={MAINSPONSOR} />
         </a>
         <Typography className={classes.caption} variant='subtitle2'>
           Hovedsamarbeidspartner
@@ -183,16 +182,16 @@ const Footer = () => {
         <div className={classes.socialMediaWrapper}>
           {mediaList.map((media, index) => (
             <a className={classes.imgLink} href={media.link} key={index} onClick={() => someAnalytics(media.link)} rel='noopener noreferrer' target='_blank'>
-              <img alt='SoMe' className={classes.soMeIcon} src={media.img} />
+              <img alt='SoMe' className={classes.soMeIcon} loading='lazy' src={media.img} />
             </a>
           ))}
         </div>
       </div>
-      <div className={classnames(classes.sponsors, classes.flexColumn, classes.marginTopColumns)}>
+      <div className={cx(classes.sponsors, classes.flexColumn, classes.marginTopColumns)}>
         <Typography variant='h2'>Samarbeid</Typography>
         <Divider className={classes.divider} />
         <a href='https://vercel.com/?utm_source=kvark&utm_campaign=oss' rel='noopener noreferrer' target='_blank'>
-          <img alt='Vercel' className={classes.marginBottom} src={VERCEL} width={150} />
+          <img alt='Vercel' className={classes.marginBottom} loading='lazy' src={VERCEL} width={150} />
         </a>
       </div>
       <div className={classes.index}>

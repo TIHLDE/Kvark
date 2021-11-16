@@ -1,12 +1,11 @@
 import { ReactNode } from 'react';
-import classNames from 'classnames';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
-import { Theme, Typography, Button, ButtonProps } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { Typography, Button, ButtonProps } from '@mui/material';
 
-const useStyles = makeStyles<Theme, Pick<BannerProps, 'background'>>((theme) => ({
+const useStyles = makeStyles<Pick<BannerProps, 'background'>>()((theme, { background }) => ({
   banner: {
     whiteSpace: 'break-spaces',
     position: 'relative',
@@ -16,7 +15,7 @@ const useStyles = makeStyles<Theme, Pick<BannerProps, 'background'>>((theme) => 
   bannerInner: {
     height: 'auto',
     padding: theme.spacing(8, 0, 0),
-    background: ({ background }) => background || theme.palette.colors.gradient.main.top,
+    background: background || theme.palette.colors.gradient.main.top,
   },
   bannerContent: {
     maxWidth: theme.breakpoints.values.xl,
@@ -34,7 +33,7 @@ const useStyles = makeStyles<Theme, Pick<BannerProps, 'background'>>((theme) => 
     },
   },
   title: {
-    color: ({ background }) => theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
+    color: theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
     fontSize: theme.typography.pxToRem(66),
     [theme.breakpoints.down('lg')]: {
       fontSize: theme.typography.pxToRem(50),
@@ -50,7 +49,7 @@ const useStyles = makeStyles<Theme, Pick<BannerProps, 'background'>>((theme) => 
   },
   text: {
     '& p,a': {
-      color: ({ background }) => theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
+      color: theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
     },
     paddingTop: theme.spacing(2),
     maxWidth: 600,
@@ -63,7 +62,7 @@ const useStyles = makeStyles<Theme, Pick<BannerProps, 'background'>>((theme) => 
   },
   line: {
     height: 4,
-    backgroundColor: ({ background }) => theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
+    backgroundColor: theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
     borderRadius: theme.shape.borderRadius,
     width: 90,
     [theme.breakpoints.down('lg')]: {
@@ -71,10 +70,10 @@ const useStyles = makeStyles<Theme, Pick<BannerProps, 'background'>>((theme) => 
     },
   },
   bannerButton: {
-    color: ({ background }) => theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
-    borderColor: ({ background }) => theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
+    color: theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
+    borderColor: theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
     '&:hover': {
-      borderColor: ({ background }) => theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
+      borderColor: theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
     },
   },
   children: {
@@ -94,7 +93,7 @@ const useStyles = makeStyles<Theme, Pick<BannerProps, 'background'>>((theme) => 
     marginLeft: -5,
   },
   background: {
-    fill: ({ background }) => background || theme.palette.colors.gradient.main.top,
+    fill: background || theme.palette.colors.gradient.main.top,
     fillOpacity: 1,
   },
 }));
@@ -102,9 +101,9 @@ const useStyles = makeStyles<Theme, Pick<BannerProps, 'background'>>((theme) => 
 export type BannerButtonProps = ButtonProps & Pick<BannerProps, 'background'>;
 
 export const BannerButton = ({ background, children, className, ...props }: BannerButtonProps) => {
-  const classes = useStyles({ background });
+  const { classes, cx } = useStyles({ background });
   return (
-    <Button className={classNames(classes.bannerButton, className)} fullWidth variant='outlined' {...props}>
+    <Button className={cx(classes.bannerButton, className)} fullWidth variant='outlined' {...props}>
       {children}
     </Button>
   );
@@ -119,10 +118,10 @@ export type BannerProps = {
 };
 
 const Banner = ({ className, title, text, children, background }: BannerProps) => {
-  const classes = useStyles({ background });
+  const { classes, cx } = useStyles({ background });
   return (
-    <div className={classNames(classes.banner, className)}>
-      <div className={classNames(classes.bannerInner, classes.background)}>
+    <div className={cx(classes.banner, className)}>
+      <div className={cx(classes.bannerInner, classes.background)}>
         <div className={classes.bannerContent}>
           <div>
             {title && (

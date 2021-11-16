@@ -7,13 +7,11 @@ export interface Group {
   name: string;
   slug: string;
   description: string;
-  contact_email: string;
+  contact_email: string | null;
   type: GroupType;
-  leader: UserBase;
+  leader?: UserBase;
   permissions: Permissions;
 }
-
-export type GroupList = Pick<Group, 'leader' | 'name' | 'slug' | 'type'>;
 
 export interface Membership {
   user: UserBase | UserList;
