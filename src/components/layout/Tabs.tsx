@@ -22,7 +22,7 @@ const Tab = styled(MuiTab)(({ theme }) => ({
       color: theme.palette.primary.main,
       opacity: 0.85,
     },
-    '&$selected': {
+    '& .Mui-selected': {
       color: theme.palette.primary.main,
     },
     '&:focus': {

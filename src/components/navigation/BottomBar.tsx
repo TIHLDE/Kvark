@@ -42,7 +42,7 @@ const useStyles = makeStyles()((theme) => ({
   action: {
     color: theme.palette.text.secondary,
     padding: 12,
-    '&$selected': {
+    '& .Mui-selected': {
       color: theme.palette.text.primary,
     },
     minWidth: 50,
