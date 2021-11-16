@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { User, UserList, UserCreate, Strike, LoginRequestResponse, PaginationResponse, RequestResponse, Badge, EventCompact, GroupList, Form } from 'types';
+import { User, UserList, Group, UserCreate, Strike, LoginRequestResponse, PaginationResponse, RequestResponse, Badge, EventCompact, Form } from 'types';
 import { PermissionApp } from 'types/Enums';
 import { getCookie, setCookie, removeCookie } from 'api/cookie';
 import { ACCESS_TOKEN } from 'constant';
@@ -44,7 +44,7 @@ export const useUserForms = (filters?: any) =>
     },
   );
 
-export const useUserGroups = () => useQuery<Array<GroupList>, RequestResponse>([USER_GROUPS_QUERY_KEY], () => API.getUserGroups());
+export const useUserGroups = () => useQuery<Array<Group>, RequestResponse>([USER_GROUPS_QUERY_KEY], () => API.getUserGroups());
 
 export const useUserStrikes = (userId?: string) => useQuery<Array<Strike>, RequestResponse>([USER_STRIKES_QUERY_KEY, userId], () => API.getUserStrikes(userId));
 

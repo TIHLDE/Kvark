@@ -4,7 +4,7 @@ import { useNavigate, useParams, Navigate } from 'react-router-dom';
 import { useNews } from 'hooks/News';
 
 // Material-UI
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Typography, Collapse } from '@mui/material';
 
 // Icons
@@ -18,7 +18,7 @@ import Tabs from 'components/layout/Tabs';
 import SidebarList from 'components/layout/SidebarList';
 import NewsEditor from 'pages/NewsAdministration/components/NewsEditor';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     padding: theme.spacing(4),
     marginLeft: theme.spacing(35),
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NewsAdministration = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const navigate = useNavigate();
   const { newsId } = useParams();
   const editTab = { value: 'edit', label: newsId ? 'Endre' : 'Skriv', icon: EditIcon };

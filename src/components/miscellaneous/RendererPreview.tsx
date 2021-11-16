@@ -1,12 +1,12 @@
 import { useState, forwardRef, Ref, ReactElement, FunctionComponent } from 'react';
 
 // Material-UI
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Button, Dialog, DialogContent, DialogTitle, IconButton, Typography, Slide } from '@mui/material';
 import CloseIcon from '@mui/icons-material/CloseRounded';
 import { TransitionProps } from '@mui/material/transitions';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   appBar: {
     margin: 0,
     padding: theme.spacing(2),
@@ -30,7 +30,7 @@ export type RendererPreviewProps<Type> = {
 };
 
 const RendererPreview = <Type extends unknown>({ className, getContent, renderer: Renderer }: RendererPreviewProps<Type>) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const [content, setContent] = useState<Type | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 

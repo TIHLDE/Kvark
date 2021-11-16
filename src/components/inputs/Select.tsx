@@ -11,6 +11,7 @@ export type SelectProps<FormValues extends FieldValues = FieldValues> = FormCont
     children: React.ReactNode;
     label: string;
     defaultValue?: string;
+    helperText?: React.ReactNode;
   };
 
 const Select = <FormValues extends FieldValues>({
@@ -21,6 +22,7 @@ const Select = <FormValues extends FieldValues>({
   rules = {},
   defaultValue = '',
   children,
+  helperText,
   ...props
 }: SelectProps<FormValues>) => {
   const labelId = `${name}-label`;
@@ -47,6 +49,7 @@ const Select = <FormValues extends FieldValues>({
           {error?.message}
         </FormHelperText>
       )}
+      {helperText && <FormHelperText variant='outlined'>{helperText}</FormHelperText>}
     </FormControl>
   );
 };

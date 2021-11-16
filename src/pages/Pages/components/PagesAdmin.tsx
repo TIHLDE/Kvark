@@ -11,7 +11,7 @@ import { Page, PageTree } from 'types';
 import { PermissionApp } from 'types/Enums';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TreeView from '@mui/lab/TreeView';
@@ -33,7 +33,7 @@ import SubmitButton from 'components/inputs/SubmitButton';
 import { ImageUpload } from 'components/inputs/Upload';
 import TextField from 'components/inputs/TextField';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   deleteButton: {
     marginTop: theme.spacing(2),
   },
@@ -54,7 +54,7 @@ type ITreeProps = IPagesAdminProps & {
 };
 
 const Tree = ({ selectedNode, setSelectedNode, page }: ITreeProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { data, error, isLoading } = usePageTree();
   const [viewTree, setViewTree] = useState(false);
 
@@ -111,7 +111,7 @@ type IFormProps = IPagesAdminProps & {
 type FormData = Pick<Page, 'title' | 'content' | 'image' | 'image_alt'>;
 
 const Form = ({ closeDialog, mode, page }: IFormProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const parentPath = page.path.slice(0, page.path.length - page.slug.length - 1);
   const createPage = useCreatePage();
   const updatePage = useUpdatePage(page.path);

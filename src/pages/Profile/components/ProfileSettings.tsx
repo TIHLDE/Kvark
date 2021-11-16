@@ -5,7 +5,7 @@ import { useUpdateUser } from 'hooks/User';
 import { useSnackbar } from 'hooks/Snackbar';
 
 // Material-UI
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { MenuItem, Typography } from '@mui/material';
 
 // Project components
@@ -15,7 +15,7 @@ import SubmitButton from 'components/inputs/SubmitButton';
 import { ImageUpload } from 'components/inputs/Upload';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   selectGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(3, 1fr)',
@@ -37,7 +37,7 @@ export type ProfileSettingsProps = {
 type FormData = Pick<UserList, 'first_name' | 'last_name' | 'email' | 'cell' | 'image' | 'gender' | 'allergy' | 'tool' | 'user_class' | 'user_study'>;
 
 const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { event } = useGoogleAnalytics();
   const showSnackbar = useSnackbar();
   const updateUser = useUpdateUser();

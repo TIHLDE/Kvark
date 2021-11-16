@@ -1,21 +1,18 @@
 import { useState } from 'react';
-import classnames from 'classnames';
 import { Event, Registration } from 'types';
-import { PermissionApp } from 'types/Enums';
 import URLS from 'URLS';
 import { parseISO, isPast, isFuture, subHours, addHours } from 'date-fns';
 import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 'utils';
 import { Link } from 'react-router-dom';
-
-// Services
 import { useSetRedirectUrl } from 'hooks/Misc';
 import { useEventRegistration, useDeleteEventRegistration } from 'hooks/Event';
-import { useUser, HavePermission } from 'hooks/User';
+import { useUser } from 'hooks/User';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useGoogleAnalytics } from 'hooks/Utils';
+import { useCategories } from 'hooks/Categories';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Typography, Button, Collapse, Skeleton, Alert as MuiAlert, useMediaQuery, Theme, styled } from '@mui/material';
 
 // Icons
@@ -57,7 +54,7 @@ const DetailsHeader = styled(Typography)({
   fontSize: '1.5rem',
 });
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   image: {
     borderRadius: theme.shape.borderRadius,
     border: `1px solid ${theme.palette.divider}`,
@@ -101,12 +98,13 @@ enum Views {
 
 const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const { event } = useGoogleAnalytics();
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const { data: user } = useUser();
   const { data: registration } = useEventRegistration(data.id, preview || !user ? '' : user.user_id);
   const deleteRegistration = useDeleteEventRegistration(data.id);
   const setLogInRedirectURL = useSetRedirectUrl();
   const showSnackbar = useSnackbar();
+  const { data: categories = [] } = useCategories();
   const [view, setView] = useState<Views>(Views.Info);
   const startDate = parseISO(data.start_date);
   const endDate = parseISO(data.end_date);
@@ -250,9 +248,11 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     <>
       <DetailsPaper noPadding>
         <DetailsHeader variant='h2'>Detaljer</DetailsHeader>
-        <DetailContent info={formatDate(startDate)} title='Fra: ' />
-        <DetailContent info={formatDate(endDate)} title='Til: ' />
-        <DetailContent info={data.location} title='Sted: ' />
+        <DetailContent info={formatDate(startDate)} title='Fra:' />
+        <DetailContent info={formatDate(endDate)} title='Til:' />
+        <DetailContent info={data.location} title='Sted:' />
+        <DetailContent info={categories.find((c) => c.id === data.category)?.text || 'Laster...'} title='Hva:' />
+        {data.organizer && <DetailContent info={<Link to={`${URLS.groups}${data.organizer.slug}/`}>{data.organizer.name}</Link>} title='Arrangør:' />}
       </DetailsPaper>
       {data.sign_up && (
         <>
@@ -308,15 +308,13 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} onClick={addToCalendarAnalytics} variant='outlined'>
           Legg til i kalender
         </Button>
-        {!preview && (
-          <HavePermission apps={[PermissionApp.EVENT]}>
-            <Button component={Link} fullWidth to={`${URLS.eventAdmin}${data.id}/`} variant='outlined'>
-              Endre arrangement
-            </Button>
-          </HavePermission>
+        {!preview && data.permissions.write && (
+          <Button component={Link} fullWidth to={`${URLS.eventAdmin}${data.id}/`} variant='outlined'>
+            Endre arrangement
+          </Button>
         )}
       </div>
-      <div className={classnames(classes.infoGrid, classes.info)}>
+      <div className={cx(classes.infoGrid, classes.info)}>
         <AspectRatioImg alt={data.image_alt || data.title} imgClassName={classes.image} src={data.image} />
         {lgDown && <Info />}
         <ContentPaper>
@@ -345,7 +343,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
 export default EventRenderer;
 
 export const EventRendererLoading = () => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   return (
     <div className={classes.rootGrid}>
@@ -360,7 +358,7 @@ export const EventRendererLoading = () => {
           <DetailContentLoading />
         </DetailsPaper>
       </div>
-      <div className={classnames(classes.infoGrid, classes.info)}>
+      <div className={cx(classes.infoGrid, classes.info)}>
         <AspectRatioLoading imgClassName={classes.image} />
         <ContentPaper>
           <Skeleton height={80} width='60%' />

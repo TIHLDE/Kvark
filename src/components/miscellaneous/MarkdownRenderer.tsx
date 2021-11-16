@@ -10,6 +10,7 @@ import { styled, Divider, Typography, Skeleton } from '@mui/material';
 // Project components
 import Expand from 'components/layout/Expand';
 import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
+import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
 import Linkify from 'components/miscellaneous/Linkify';
 
 const ReactMarkdown = lazy(() => import('react-markdown'));
@@ -83,7 +84,7 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
 
   const Event = ({ id }: ComponentProps) => {
     const { data } = useEventById(id);
-    return data ? <ListItem event={data} largeImg sx={{ mb: 1 }} /> : <ListItemLoading sx={{ mb: 1 }} />;
+    return data ? <EventListItem event={data} sx={{ mb: 1 }} /> : <EventListItemLoading sx={{ mb: 1 }} />;
   };
   const JobPost = ({ id }: ComponentProps) => {
     const { data } = useJobPostById(id);

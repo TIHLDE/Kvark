@@ -1,29 +1,19 @@
 import { EventCompact } from 'types';
-import URLS from 'URLS';
-import { Link } from 'react-router-dom';
-
-// Material-UI
-import { makeStyles } from '@mui/styles';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import { Groups } from 'types/Enums';
+import { Typography, styled, Stack, useMediaQuery, Theme } from '@mui/material';
 
 // Project componets
-import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
 
-// Styles
-const useStyles = makeStyles((theme) => ({
-  container: {
-    display: 'grid',
-  },
-  noEventText: {
-    color: theme.palette.text.secondary,
-    padding: theme.spacing(0.5),
-    textAlign: 'center',
-  },
-  btn: {
-    padding: theme.spacing(1),
-  },
+const Container = styled('div')(({ theme }) => ({
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: theme.spacing(1),
+}));
+
+const Text = styled(Typography)(({ theme }) => ({
+  color: theme.palette.text.secondary,
+  p: 0.5,
 }));
 
 export type EventsListViewProps = {
@@ -32,37 +22,67 @@ export type EventsListViewProps = {
 };
 
 const NO_OF_EVENTS_TO_SHOW = 3;
+const NO_OF_EVENTS_TO_SHOW_MD_DOWN = 4;
 
 const EventsListView = ({ events, isLoading = false }: EventsListViewProps) => {
-  const classes = useStyles();
-  const { event } = useGoogleAnalytics();
-
-  const openEventsAnalytics = () => event('go-to-all-events', 'events-list-view', `Go to all events`);
+  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
   if (isLoading) {
     return (
-      <div className={classes.container}>
-        <ListItemLoading />
-        <ListItemLoading />
-        <ListItemLoading />
-      </div>
+      <Container>
+        <Stack gap={1} sx={{ alignSelf: 'start' }}>
+          <EventListItemLoading />
+          <EventListItemLoading />
+          <EventListItemLoading />
+        </Stack>
+        <Stack gap={1} sx={{ alignSelf: 'start' }}>
+          <EventListItemLoading />
+          <EventListItemLoading />
+          <EventListItemLoading />
+        </Stack>
+      </Container>
     );
   } else if (!events.length) {
     return (
-      <Typography align='center' className={classes.noEventText} variant='subtitle1'>
+      <Text align='center' variant='subtitle1'>
         Ingen kommende arrangementer
-      </Typography>
+      </Text>
     );
-  } else {
+  } else if (mdDown) {
     return (
-      <div className={classes.container}>
-        {events.map((event, index) => index < NO_OF_EVENTS_TO_SHOW && <ListItem event={event} key={event.id} />)}
-        <Button className={classes.btn} component={Link} onClick={openEventsAnalytics} to={URLS.events} variant='outlined'>
-          Alle arrangementer ({events.length})
-        </Button>
-      </div>
+      <Stack gap={1}>
+        {events.slice(0, NO_OF_EVENTS_TO_SHOW_MD_DOWN).map((event) => (
+          <EventListItem event={event} key={event.id} />
+        ))}
+      </Stack>
     );
   }
+
+  const getNokEvents = () => events.filter((event) => event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase()).slice(0, NO_OF_EVENTS_TO_SHOW);
+  const getOtherEvents = () => events.filter((event) => event.organizer?.slug.toLowerCase() !== Groups.NOK.toLowerCase()).slice(0, NO_OF_EVENTS_TO_SHOW);
+
+  return (
+    <Container>
+      <Stack gap={1} sx={{ alignSelf: 'start' }}>
+        {getNokEvents().length ? (
+          getNokEvents().map((event) => <EventListItem event={event} key={event.id} />)
+        ) : (
+          <Text align='center' variant='subtitle1'>
+            Ingen kommende bedpres eller kurs
+          </Text>
+        )}
+      </Stack>
+      <Stack gap={1} sx={{ alignSelf: 'start' }}>
+        {getOtherEvents().length ? (
+          getOtherEvents().map((event) => <EventListItem event={event} key={event.id} />)
+        ) : (
+          <Text align='center' variant='subtitle1'>
+            Ingen kommende sosiale eller andre arrangementer
+          </Text>
+        )}
+      </Stack>
+    </Container>
+  );
 };
 
 export default EventsListView;

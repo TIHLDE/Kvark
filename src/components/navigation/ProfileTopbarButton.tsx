@@ -5,7 +5,7 @@ import { useUser } from 'hooks/User';
 import { useSetRedirectUrl } from 'hooks/Misc';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Theme, Button, IconButton, useTheme } from '@mui/material';
 
 // Assets/Icons
@@ -19,15 +19,15 @@ import TopbarNotifications from 'components/navigation/TopbarNotifications';
 import { NavigationOptions } from 'components/navigation/Navigation';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
-const useStyles = makeStyles<Theme, ProfileTopbarButtonProps>((theme) => ({
+const useStyles = makeStyles<ProfileTopbarButtonProps>()((theme, props) => ({
   themeButton: {
-    color: (props) => getColor(props, theme),
+    color: getColor(props, theme),
   },
   themeSettingsIcon: {
     fontSize: 26,
   },
   menuButton: {
-    color: (props) => getColor(props, theme),
+    color: getColor(props, theme),
     margin: 'auto 0',
   },
 }));
@@ -41,7 +41,7 @@ export type ProfileTopbarButtonProps = Pick<NavigationOptions, 'darkColor' | 'li
 
 const ProfileTopbarButton = (props: ProfileTopbarButtonProps) => {
   const { event } = useGoogleAnalytics();
-  const classes = useStyles(props);
+  const { classes } = useStyles(props);
   const { data: user } = useUser();
   const theme = useTheme();
   const setLogInRedirectURL = useSetRedirectUrl();
@@ -62,7 +62,7 @@ const ProfileTopbarButton = (props: ProfileTopbarButtonProps) => {
           component={Link}
           onClick={URLS.profile === location.pathname ? () => location.reload() : () => analytics('profile')}
           to={URLS.profile}>
-          <Avatar className={classes.avatar} user={user} />
+          <Avatar user={user} />
         </Button>
       ) : (
         <IconButton

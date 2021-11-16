@@ -1,14 +1,14 @@
-import { createTheme, Theme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
 // Icons
 import DarkIcon from '@mui/icons-material/Brightness2Outlined';
 import AutomaticIcon from '@mui/icons-material/DevicesOutlined';
 import LightIcon from '@mui/icons-material/WbSunnyOutlined';
 
-declare module '@mui/styles' {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface DefaultTheme extends Theme {}
-}
+// declare module '@mui/styles' {
+//   // eslint-disable-next-line @typescript-eslint/no-empty-interface
+//   interface DefaultTheme extends Theme {}
+// }
 
 declare module '@mui/material/styles/createPalette' {
   interface TypeBackground {
@@ -20,7 +20,7 @@ declare module '@mui/material/styles/createPalette' {
     get: <T>({ light, dark }: { light: T; dark: T }) => T;
     blurred: {
       backdropFilter: string;
-      '-webkit-backdrop-filter': string;
+      WebkitBackdropFilter: string;
     };
     transparent: {
       boxShadow: string;
@@ -30,6 +30,8 @@ declare module '@mui/material/styles/createPalette' {
     colors: {
       footer: string;
       tihlde: string;
+      nok_event: string;
+      other_event: string;
       gradient: {
         main: {
           top: string;
@@ -52,7 +54,7 @@ declare module '@mui/material/styles/createPalette' {
     get: <T>({ light, dark }: { light: T; dark: T }) => T;
     blurred: {
       backdropFilter: string;
-      '-webkit-backdrop-filter': string;
+      WebkitBackdropFilter: string;
     };
     transparent: {
       boxShadow: string;
@@ -62,6 +64,8 @@ declare module '@mui/material/styles/createPalette' {
     colors: {
       footer: string;
       tihlde: string;
+      nok_event: string;
+      other_event: string;
       gradient: {
         main: {
           top: string;
@@ -178,7 +182,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       },
       blurred: {
         backdropFilter: `blur(5px)`,
-        '-webkit-backdrop-filter': `blur(5px)`,
+        WebkitBackdropFilter: `blur(5px)`,
       },
       transparent: {
         background: get<string>({ light: '#f6f5f380', dark: '#61616180' }),
@@ -194,6 +198,8 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       colors: {
         footer: DARK_PAPER_COLOR,
         tihlde: '#1c458a',
+        nok_event: get<string>({ light: '#83C4F8', dark: '#83C4F8' }),
+        other_event: get<string>({ light: '#FFA675', dark: '#FFA675' }),
         gradient: {
           main: {
             top: get<string>({ light: '#16356e', dark: '#0d2339' }),

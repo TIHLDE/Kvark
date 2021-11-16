@@ -28,6 +28,7 @@ const DatePicker = <FormValues extends FieldValues>({
   defaultValue = '',
   dateProps,
   onDateChange,
+  helperText,
   ...props
 }: DatePickerProps<FormValues>) => {
   const { [name]: fieldError } = formState.errors;
@@ -52,7 +53,20 @@ const DatePicker = <FormValues extends FieldValues>({
             }
           }}
           renderInput={(params) => (
-            <MuiTextField margin='normal' variant='outlined' {...params} error={Boolean(error)} helperText={error?.message} {...props} />
+            <MuiTextField
+              margin='normal'
+              variant='outlined'
+              {...params}
+              error={Boolean(error)}
+              helperText={
+                <>
+                  {error?.message}
+                  {helperText && Boolean(error) && <br />}
+                  {helperText}
+                </>
+              }
+              {...props}
+            />
           )}
         />
       )}

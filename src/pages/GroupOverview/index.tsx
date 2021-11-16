@@ -1,7 +1,5 @@
-import { useMemo } from 'react';
-import { useGroups } from 'hooks/Group';
+import { useGroupsByType } from 'hooks/Group';
 import { useIsAuthenticated } from 'hooks/User';
-import { GroupType } from 'types/Enums';
 import { Group } from 'types';
 
 // Material UI Components
@@ -15,15 +13,7 @@ import { PrimaryTopBox } from 'components/layout/TopBox';
 
 const GroupOverview = () => {
   const isAuthenticated = useIsAuthenticated();
-  const { data: groups, error, isLoading } = useGroups();
-  const BOARD_GROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.BOARD) || [], [groups]);
-  const SUB_GROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.SUBGROUP) || [], [groups]);
-  const COMMITTEES = useMemo(() => groups?.filter((group) => group.type === GroupType.COMMITTEE) || [], [groups]);
-  const INTERESTGROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.INTERESTGROUP) || [], [groups]);
-  const OTHER_GROUPS = useMemo(
-    () => groups?.filter((group) => ![...BOARD_GROUPS, ...SUB_GROUPS, ...COMMITTEES, ...INTERESTGROUPS].some((g) => group.slug === g.slug)) || [],
-    [groups, BOARD_GROUPS, SUB_GROUPS, COMMITTEES],
-  );
+  const { BOARD_GROUPS, SUB_GROUPS, COMMITTEES, INTERESTGROUPS, OTHER_GROUPS, error, isLoading } = useGroupsByType();
 
   type CollectionProps = {
     groups: Array<Group>;

@@ -10,7 +10,7 @@ export type TextFieldProps<FormValues extends FieldValues = FieldValues> = MuiTe
   };
 
 const GenericTextField = <FormValues extends FieldValues>(
-  { name, formState, ...props }: TextFieldProps<FormValues>,
+  { name, formState, helperText, ...props }: TextFieldProps<FormValues>,
   ref: React.ForwardedRef<HTMLDivElement>,
 ) => {
   const { [name]: fieldError } = formState.errors;
@@ -19,7 +19,13 @@ const GenericTextField = <FormValues extends FieldValues>(
     <MuiTextField
       error={Boolean(error)}
       fullWidth
-      helperText={error?.message}
+      helperText={
+        <>
+          {error?.message}
+          {helperText && Boolean(error) && <br />}
+          {helperText}
+        </>
+      }
       InputLabelProps={{ shrink: true }}
       inputRef={ref}
       margin='normal'
