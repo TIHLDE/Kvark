@@ -7,7 +7,7 @@ import { News } from 'types';
 import { useUpdateNews, useCreateNews, useDeleteNews, useNewsById } from 'hooks/News';
 
 // Material-UI
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import Grid from '@mui/material/Grid';
 import LinearProgress from '@mui/material/LinearProgress';
 
@@ -20,7 +20,7 @@ import SubmitButton from 'components/inputs/SubmitButton';
 import { ImageUpload } from 'components/inputs/Upload';
 import VerifyDialog from 'components/layout/VerifyDialog';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   grid: {
     display: 'grid',
     gridGap: theme.spacing(2),
@@ -46,7 +46,7 @@ type FormValues = Pick<News, 'title' | 'header' | 'body' | 'image' | 'image_alt'
 
 const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
   const showSnackbar = useSnackbar();
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { handleSubmit, register, formState, getValues, reset, watch, setValue } = useForm<FormValues>();
   const { data, isError, isLoading } = useNewsById(newsId || -1);
   const createNews = useCreateNews();

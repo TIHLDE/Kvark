@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": false,
     "skipLibCheck": true,
@@ -8,7 +8,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -16,8 +16,9 @@
     "jsx": "react-jsx",
     "outDir": "./build",
     "baseUrl": "./src",
-    "typeRoots": ["src/types"],
-    "noFallthroughCasesInSwitch": true
+    "types": ["vite/client", "vite-plugin-svgr/client", "node"],
+    "noFallthroughCasesInSwitch": true,
+    "useUnknownInCatchVariables": false
   },
   "include": ["src"]
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import Typography from '@mui/material/Typography';
 
 // Icons
@@ -16,7 +16,7 @@ import { PrimaryTopBox } from 'components/layout/TopBox';
 import UserStrikeList from 'pages/StrikeAdmin/components/UserStrikeList';
 import AllStrikesList from 'pages/StrikeAdmin/components/AllStrikeList';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   content: {
     margin: '-60px auto 60px',
     position: 'relative',
@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const StrikeAdmin = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const strikesTab = { value: 'strikes', label: 'Medlemmer med prikker', icon: GroupIcon };
   const allStrikesTab = { value: 'allStrikes', label: 'Alle prikker', icon: WorkspacesIcon };
   const tabs = [strikesTab, allStrikesTab];

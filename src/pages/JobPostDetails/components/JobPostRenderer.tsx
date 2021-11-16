@@ -7,7 +7,7 @@ import URLS from 'URLS';
 import { HavePermission } from 'hooks/User';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Typography, Button, Skeleton } from '@mui/material';
 
 // Project Components
@@ -18,7 +18,7 @@ import Paper from 'components/layout/Paper';
 import ShareButton from 'components/miscellaneous/ShareButton';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   grid: {
     display: 'grid',
     gridTemplateColumns: '3fr 1fr',
@@ -50,7 +50,7 @@ export type JobPostRendererProps = {
 
 const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
   const { event } = useGoogleAnalytics();
-  const classes = useStyles();
+  const { classes } = useStyles();
   const deadline = formatDate(parseISO(data.deadline));
   const publishedAt = formatDate(parseISO(data.created_at));
 
@@ -121,7 +121,7 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
 export default JobPostRenderer;
 
 export const JobPostRendererLoading = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <div className={classes.grid}>

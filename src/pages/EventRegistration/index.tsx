@@ -1,5 +1,4 @@
-import { ChangeEvent, useMemo, useState } from 'react';
-import QrReader from 'react-qr-reader';
+import { ChangeEvent, useMemo, useState, lazy, Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 import { Registration } from 'types';
 import { useEventById, useEventRegistrations, useUpdateEventRegistration } from 'hooks/Event';
@@ -20,6 +19,8 @@ import Tabs from 'components/layout/Tabs';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import { PrimaryTopBox } from 'components/layout/TopBox';
 
+const QrReader = lazy(() => import('react-qr-reader'));
+
 export type ParticipantCardProps = {
   user: Registration;
   updateAttendedStatus: (username: string, attendedStatus: boolean) => void;
@@ -38,7 +39,7 @@ const ParticipantCard = ({ user, updateAttendedStatus }: ParticipantCardProps) =
       <Typography sx={{ fontWeight: 'bold', fontSize: '17px', width: '100%', margin: 'auto' }}>
         {user.user_info.first_name + ' ' + user.user_info.last_name}
       </Typography>
-      <FormControlLabel control={<Checkbox checked={checkedState} onChange={onCheck} />} label={!mdDown && 'Ankommet'} labelPlacement='start' />
+      <FormControlLabel control={<Checkbox checked={checkedState} onChange={onCheck} />} label={!mdDown ? 'Ankommet' : ''} labelPlacement='start' />
     </Paper>
   );
 };
@@ -148,7 +149,9 @@ const EventRegistration = () => {
         )}
         {tab === qrTab.value && (
           <>
-            <QrReader onError={handleQrError} onScan={handleQrScan} resolution={800} showViewFinder={true} style={{ width: '100%' }} />
+            <Suspense fallback={null}>
+              <QrReader onError={handleQrError} onScan={handleQrScan} resolution={800} showViewFinder={true} style={{ width: '100%' }} />
+            </Suspense>
             {isiOSDevice && (
               <>
                 <br />

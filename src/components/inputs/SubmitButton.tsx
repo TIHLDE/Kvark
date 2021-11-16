@@ -1,10 +1,9 @@
 import { Button, ButtonProps, FormHelperText } from '@mui/material';
-import { UseFormReturn } from 'react-hook-form';
+import { UseFormReturn, FieldValues } from 'react-hook-form';
 
 export type SubmitButtonProps<FormValues> = ButtonProps & Pick<UseFormReturn<FormValues>, 'formState'>;
 
-// eslint-disable-next-line comma-spacing
-const SubmitButton = <FormValues,>({ formState, children, disabled, ...props }: SubmitButtonProps<FormValues>) => {
+const SubmitButton = <FormValues extends FieldValues>({ formState, children, disabled, ...props }: SubmitButtonProps<FormValues>) => {
   const isError = Boolean((Array.isArray(Object.keys(formState.errors)) ? Object.keys(formState.errors) : []).length);
   return (
     <>

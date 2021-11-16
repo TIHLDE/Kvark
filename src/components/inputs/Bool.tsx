@@ -1,4 +1,4 @@
-import { Path, Controller, RegisterOptions, UseFormReturn, FieldError, UnpackNestedValue, PathValue } from 'react-hook-form';
+import { Path, Controller, FieldValues, RegisterOptions, UseFormReturn, FieldError, UnpackNestedValue, PathValue } from 'react-hook-form';
 
 // Material UI Components
 import {
@@ -11,10 +11,10 @@ import {
   FormHelperText as MuiFormHelperText,
 } from '@mui/material';
 
-export type BoolProps<FormValues> = Omit<FormControlLabelProps, 'control'> &
+export type BoolProps<FormValues extends FieldValues = FieldValues> = Omit<FormControlLabelProps, 'control'> &
   Pick<UseFormReturn<FormValues>, 'formState' | 'control'> & {
     name: Path<FormValues>;
-    helperText?: string;
+    helperText?: React.ReactNode;
     rules?: RegisterOptions<FormValues>;
     type: 'checkbox' | 'switch';
   };
@@ -52,11 +52,12 @@ export const Switch = styled(MuiSwitch)(({ theme }) => ({
   },
 }));
 
-// eslint-disable-next-line comma-spacing
-const Bool = <FormValues,>({ helperText, type, control, name, formState, rules = {}, ...props }: BoolProps<FormValues>) => {
+const Bool = <FormValues extends FieldValues>({ helperText, type, control, name, formState, rules = {}, ...props }: BoolProps<FormValues>) => {
   const Child = type === 'switch' ? Switch : MuiCheckbox;
+  const { [name]: fieldError } = formState.errors;
+  const error = fieldError as FieldError;
   return (
-    <MuiFormControl component='fieldset' error={Boolean(formState.errors[name] as FieldError)} required={Boolean(rules.required)}>
+    <MuiFormControl component='fieldset' error={Boolean(error)} required={Boolean(rules.required)}>
       <Controller
         control={control}
         defaultValue={false as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>}
@@ -66,9 +67,8 @@ const Bool = <FormValues,>({ helperText, type, control, name, formState, rules =
         )}
         rules={rules}
       />
-      <MuiFormHelperText>
-        {(formState.errors[name] as FieldError)?.message} {helperText}
-      </MuiFormHelperText>
+      {helperText && <MuiFormHelperText>{helperText}</MuiFormHelperText>}
+      <MuiFormHelperText>{error?.message}</MuiFormHelperText>
     </MuiFormControl>
   );
 };

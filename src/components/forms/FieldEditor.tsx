@@ -1,10 +1,9 @@
 import { useMemo } from 'react';
 import { TextFormField, SelectFormField } from 'types';
 import { FormFieldType } from 'types/Enums';
-import classnames from 'classnames';
 
 // Material UI
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { TextField, Typography, Tooltip, IconButton, Checkbox, FormControlLabel, Button, Grow } from '@mui/material';
 
 // Icons
@@ -16,7 +15,7 @@ import CheckBoxIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded';
 // Project components
 import Paper from 'components/layout/Paper';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     display: 'grid',
     gridGap: theme.spacing(1),
@@ -49,7 +48,7 @@ export type FieldEditorProps = {
 };
 
 const FieldEditor = ({ field, updateField, removeField, disabled = false }: FieldEditorProps) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   const addFieldOption = () => {
     if (field.type !== FormFieldType.TEXT_ANSWER && !disabled) {
@@ -117,7 +116,7 @@ const FieldEditor = ({ field, updateField, removeField, disabled = false }: Fiel
         <>
           {field.options.map((option, index) => (
             <Grow in key={index} timeout={1000}>
-              <div className={classnames(classes.row, classes.optionRow)}>
+              <div className={cx(classes.row, classes.optionRow)}>
                 <TypeIcon />
                 <TextField
                   disabled={disabled}

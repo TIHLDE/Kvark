@@ -14,6 +14,16 @@
 
 ## Neste versjon
 
+- ✨ **Arrangementer**. Lagt til mulighet for å knytte arrangementer til grupper. Gruppen som er koblet til et arrangement er også de enste som har admin-tilgang til det.
+- ⚡ **Opplæring**. Lagt til flere beskrivelser på felter i arrangements-admin, samt gjort det enkelt å gjøre dette andre steder også.
+- ⚡ **Spørreskjemaer**. Håndterer nå åpning av spørreskjemaer der bruker ikke er innlogget ved redirigering til innlogging.
+- ⚡ **Ytelse**. Laster inn bilder først når de skal vises på siden.
+- 🦟 **PWA**. Det funker nå å legge til nettsiden på hjemskjermen.
+
+## Versjon 1.2.7 (11.11.2021)
+
+- 🎨 **Utseende**. Endret noen av fargene i mørkt modus.
+- ✨ **Jul**. Lagt til snø på forside og nisselue på logo som vises automatisk basert på dato.
 - 🦟 **QR-Koder**. Endret farge på QR-Koder for at de skal bli lettere å lese. I tillegg vises for- og etternavn under QR-koder.
 
 ## Versjon 1.2.6 (25.10.2021)
