@@ -58,7 +58,17 @@ export type EventEditorProps = {
 
 type FormValues = Pick<
   Event,
-  'category' | 'description' | 'image' | 'image_alt' | 'limit' | 'location' | 'sign_up' | 'title' | 'can_cause_strikes' | 'enforces_previous_strikes'
+  | 'only_allow_prioritized'
+  | 'category'
+  | 'description'
+  | 'image'
+  | 'image_alt'
+  | 'limit'
+  | 'location'
+  | 'sign_up'
+  | 'title'
+  | 'can_cause_strikes'
+  | 'enforces_previous_strikes'
 > & {
   end_date: Date;
   end_registration_at: Date;
@@ -115,6 +125,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         start_date: newValues?.start_date ? parseISO(newValues.start_date) : new Date(),
         start_registration_at: newValues?.start_registration_at ? parseISO(newValues.start_registration_at) : new Date(),
         title: newValues?.title || '',
+        only_allow_prioritized: newValues ? newValues.only_allow_prioritized : false,
         can_cause_strikes: newValues ? newValues.can_cause_strikes : true,
         enforces_previous_strikes: newValues ? newValues.enforces_previous_strikes : true,
       });
@@ -372,6 +383,18 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               </Accordion>
             </div>
             <Stack>
+              <Bool
+                control={control}
+                formState={formState}
+                label={
+                  <>
+                    Påmelding kun for prioriterte
+                    <ShowMoreTooltip>Bestemmer om kun prioriterte brukere skal kunne melde seg på arrangementet.</ShowMoreTooltip>
+                  </>
+                }
+                name='only_allow_prioritized'
+                type='switch'
+              />
               <Bool
                 control={control}
                 formState={formState}
