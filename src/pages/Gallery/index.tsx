@@ -1,16 +1,35 @@
 import { useState, useMemo } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import * as React from 'react';
 
-// Components
+// Material UI Components
 import { ImageList, ImageListItem, Theme, useMediaQuery, Drawer, Button, List, Box, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+
+// Components
 import Http404 from 'pages/Http404';
+import { ImageUpload } from 'components/inputs/Upload';
+
 // Hooks
 import { useGoogleAnalytics } from 'hooks/Utils';
-import { useAlbumPictures, useAlbums, useAlbumsById } from 'hooks/Gallery';
+import { useSnackbar } from 'hooks/Snackbar';
+import {
+  useAlbumPictures,
+  useAlbums,
+  useAlbumsById,
+  useCreateAlbum,
+  useCreatePicture,
+  useUpdateAlbum,
+  useDeleteAlbum,
+  useDeletePicture,
+  useUpdatePicture,
+} from 'hooks/Gallery';
+
 // Styles
 import { makeStyles } from '@mui/styles';
+
 // Types
 import { Gallery, Picture } from 'types';
+
 // Icons
 import PhotoLibraryRoundedIcon from '@mui/icons-material/PhotoLibraryRounded';
 
@@ -29,49 +48,66 @@ export type GalleryProps = {
   gallery: Gallery;
 };
 
-const CreatePicture = () => {
-  const [file, setFile] = useState(null);
-
-  const types = ['image/png', 'image/jpeg'];
-
-  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selected = e.target.files?.[0];
-
-    if (selected && types.includes(selected.type)) {
-      setFile(selected);
-    } else {
-      setFile(null);
-    }
-  };
-
-  return (
-    <form>
-      <input onChange={changeHandler} type='file' />
-      <div className='output'>{file && <div> {file} </div>}</div>
-    </form>
-  );
+export type PictureEditorProps = {
+  id: string | '';
+  goToPicture: (newPicture: string) => void;
 };
 
-const GalleryPictures = ({ gallery }: GalleryPicturesProps) => {
-  const { event } = useGoogleAnalytics();
-  const { data } = useAlbumPictures(gallery.slug);
-  const pictures = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+type FormValues = Omit<Picture, 'id' | 'created_at' | 'updated_at'>;
 
+const PictureEditor = ({ id, goToPicture }: PictureEditorProps) => {
+  const { event } = useGoogleAnalytics();
+  const { data, isLoading, isError } = useAlbumPictures(id);
+  const pictures = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const createPicture = useCreatePicture();
+  const updatePicture = useUpdatePicture(id || '');
+  const deletePicture = useDeletePicture(id || '');
+  const showSnackbar = useSnackbar();
+
+  const { handleSubmit, register, watch, control, formState, getValues, reset, setValue } = useForm<FormValues>();
+  const submit: SubmitHandler<FormValues> = async (data) => {
+    const picture = {
+      ...data,
+    } as Picture;
+    if (id) {
+      await updatePicture.mutate(picture, {
+        onSuccess: () => {
+          showSnackbar('Bildet ble oppdatert', 'success');
+        },
+        onError: (e) => {
+          showSnackbar(e.detail, 'error');
+        },
+      });
+    } else {
+      await createPicture.mutate(picture, {
+        onSuccess: (newPicture) => {
+          showSnackbar('Bildet ble opprettet', 'success');
+          goToPicture(newPicture.id);
+        },
+        onError: (e) => {
+          showSnackbar(e.detail, 'error');
+        },
+      });
+    }
+  };
   return (
-    <ImageList cols={3} gap={8} variant='masonry'>
-      {pictures.map((item) => (
-        <ImageListItem key={item.id}>
-          <img alt={item?.image_alt} loading='lazy' src={item.image} srcSet={item.image}></img>
-        </ImageListItem>
-      ))}
-    </ImageList>
+    <form onSubmit={handleSubmit(submit)}>
+      <ImageUpload formstate={formState} label='Velg bilde' register={register('image')} setValue={setValue} watch={watch} />
+      <ImageList cols={3} gap={8} variant='masonry'>
+        {pictures.map((item) => (
+          <ImageListItem key={item.id}>
+            <img alt={item?.image_alt} loading='lazy' src={item.image} srcSet={item.image}></img>
+          </ImageListItem>
+        ))}
+      </ImageList>
+    </form>
   );
 };
 
 const GalleryPicturesLoading = () => (
   <ImageList cols={3} gap={8} variant='masonry'>
     <ImageListItem key={''}>
-      <img loading='lazy' src={`?w=248&fit=crop&auto=format`} srcSet={`?w=248&fit=crop&auto=format&dpr=2 2x`} />
+      <img loading='lazy' src={''} srcSet={''} />
     </ImageListItem>
   </ImageList>
 );

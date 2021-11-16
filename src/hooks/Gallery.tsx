@@ -30,6 +30,16 @@ export const useCreateAlbum = (): UseMutationResult<Gallery, RequestResponse, Ga
   });
 };
 
+export const useUpdateAlbum = (albumSlug: string): UseMutationResult<Gallery, RequestResponse, GalleryRequired, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation((updatedAlbum: GalleryRequired) => API.updateAlbum(albumSlug, updatedAlbum), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(GALLERY_QUERY_KEY);
+      queryClient.setQueryData([GALLERY_QUERY_KEY, albumSlug], data);
+    },
+  });
+};
+
 export const useDeleteAlbum = (albumSlug: string): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
   const queryClient = useQueryClient();
   return useMutation(() => API.deleteAlbum(albumSlug), {
@@ -55,6 +65,16 @@ export const useCreatePicture = (): UseMutationResult<Picture, RequestResponse, 
     onSuccess: (data) => {
       queryClient.invalidateQueries(PICTURE_QUERY_KEY);
       queryClient.setQueryData([PICTURE_QUERY_KEY, data.id], data);
+    },
+  });
+};
+
+export const useUpdatePicture = (id: string): UseMutationResult<Picture, RequestResponse, PictureRequired, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation((updatedPicture: PictureRequired) => API.updatePicture(id, updatedPicture), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(PICTURE_QUERY_KEY);
+      queryClient.setQueryData([PICTURE_QUERY_KEY, id], data);
     },
   });
 };
