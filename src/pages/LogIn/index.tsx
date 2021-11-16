@@ -5,7 +5,7 @@ import { useLogin } from 'hooks/User';
 import { useSetRedirectUrl, useRedirectUrl } from 'hooks/Misc';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -18,7 +18,7 @@ import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import { SecondaryTopBox } from 'components/layout/TopBox';
 import { useGoogleAnalytics } from 'hooks/Utils';
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   paper: {
     maxWidth: theme.breakpoints.values.sm,
     margin: 'auto',
@@ -54,7 +54,7 @@ type LoginData = {
 };
 
 const LogIn = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const navigate = useNavigate();
   const { event } = useGoogleAnalytics();
   const logIn = useLogin();

@@ -14,8 +14,7 @@ type FetchProps = {
   file?: File | Blob;
 };
 
-// eslint-disable-next-line comma-spacing
-export const IFetch = <T,>({ method, url, data = {}, withAuth = true, file }: FetchProps): Promise<T> => {
+export const IFetch = <T extends unknown>({ method, url, data = {}, withAuth = true, file }: FetchProps): Promise<T> => {
   const urlAddress = TIHLDE_API_URL + url;
   const headers = new Headers();
   if (!file) {

@@ -3,7 +3,7 @@ import { usePages } from 'hooks/Pages';
 import { useDebounce, useGoogleAnalytics } from 'hooks/Utils';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { TextField, Collapse, Typography } from '@mui/material';
 
 // Project components
@@ -13,7 +13,7 @@ import Pagination from 'components/layout/Pagination';
 import { BannerButton } from 'components/layout/Banner';
 import PagesList from 'pages/Pages/components/PagesList';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   paper: {
     marginBottom: theme.spacing(1),
     marginTop: theme.spacing(1),
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PagesSearch = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { event } = useGoogleAnalytics();
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 500);

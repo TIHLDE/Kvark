@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import classnames from 'classnames';
 import URLS from 'URLS';
 import { Link } from 'react-router-dom';
 import { useIsAuthenticated } from 'hooks/User';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -18,7 +17,7 @@ import ExpandIcon from '@mui/icons-material/ExpandMoreRounded';
 // Project components
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   sidebar: {
     backgroundColor: theme.palette.colors.gradient.main.top,
     width: '100vw',
@@ -82,7 +81,7 @@ export type SidebarItemProps = SidebarItemType & {
 };
 
 const SidebarItem = ({ items, text, to, type, onClose }: SidebarItemProps) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   if (type === 'link' && to) {
     return (
@@ -100,7 +99,7 @@ const SidebarItem = ({ items, text, to, type, onClose }: SidebarItemProps) => {
       <>
         <Button
           className={classes.dropdownButton}
-          endIcon={<ExpandIcon className={classnames(classes.dropdownIcon, isOpen && classes.expanded)} />}
+          endIcon={<ExpandIcon className={cx(classes.dropdownIcon, isOpen && classes.expanded)} />}
           onClick={() => setIsOpen((prev) => !prev)}>
           <Typography className={classes.text} variant='h2'>
             {text}
@@ -109,7 +108,7 @@ const SidebarItem = ({ items, text, to, type, onClose }: SidebarItemProps) => {
         <Collapse classes={{ wrapperInner: classes.dropdown }} in={isOpen}>
           {items.map((item, i) => (
             <Typography
-              className={classnames(classes.text, classes.itemText)}
+              className={cx(classes.text, classes.itemText)}
               component={Link}
               key={i}
               onClick={item.to === window.location.pathname ? () => window.location.reload() : onClose}
@@ -133,7 +132,7 @@ export type SidebarProps = {
 };
 
 const Sidebar = ({ items, onClose, open }: SidebarProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const isAuthenticated = useIsAuthenticated();
   const theme = useTheme();
   return (
