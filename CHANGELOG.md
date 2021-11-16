@@ -14,7 +14,7 @@
 
 ## Neste versjon
 
-## Versjon 1.2.8 (16.11.2021)
+## Versjon 1.3.0 (16.11.2021)
 
 - ✨ **Arrangementer**. Arrangementer kan nå være åpne for kun prioriterte.
 - 🎨 **Arrangementer**. Lagt til farger slik at brukere raskt kan se hva som er hva. Det vises også flere arrangementer på forsiden.
