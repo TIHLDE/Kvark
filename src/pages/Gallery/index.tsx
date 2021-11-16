@@ -25,7 +25,7 @@ import {
 } from 'hooks/Gallery';
 
 // Styles
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 
 // Types
 import { Gallery, Picture } from 'types';
@@ -33,7 +33,7 @@ import { Gallery, Picture } from 'types';
 // Icons
 import PhotoLibraryRoundedIcon from '@mui/icons-material/PhotoLibraryRounded';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   image: {
     borderRadius: theme.shape.borderRadius,
     border: `1px solid ${theme.palette.divider}`,
@@ -125,7 +125,7 @@ const GalleryRenderer = ({ gallery }: GalleryProps) => {
     <>
       {isLoading && <GalleryPicturesLoading />}
       {isError && <Http404 />}
-      <GalleryPictures gallery={gallery} />
+      {/* <GalleryPictures gallery={gallery} /> */}
     </>
   );
 };
