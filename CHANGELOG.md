@@ -16,6 +16,10 @@
 
 - ⚡ **Ytelse**. Laster inn bilder først når de skal vises på siden.
 - 🦟 **PWA**. Det funker nå å legge til nettsiden på hjemskjermen.
+<<<<<<< HEAD
+=======
+- ✨ **Gruppehistorikk**. Lagt til eget kort for å se info om tidligere medlemskap av TIHLDE sine ulike undergrupper.
+>>>>>>> feat/view-group-history
 
 ## Versjon 1.2.7 (11.11.2021)
 
