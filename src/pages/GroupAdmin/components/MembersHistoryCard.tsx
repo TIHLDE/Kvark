@@ -2,13 +2,13 @@ import { useMemo } from 'react';
 
 import { ListItem, ListItemText, ListItemAvatar, List, Grid, Typography, Skeleton } from '@mui/material';
 import { parseISO } from 'date-fns';
-
+import { getMonth as getMonthFromDate } from 'date-fns';
 import Paper from 'components/layout/Paper';
 import { useMembershipHistories } from 'hooks/Membership';
 import Pagination from 'components/layout/Pagination';
 import { useGroup } from 'hooks/Group';
 import Avatar from 'components/miscellaneous/Avatar';
-import { getMembershipType } from 'utils';
+import { getMembershipType, getMonth } from 'utils';
 
 export type MembersHistoryCardProps = {
   slug: string;
@@ -32,10 +32,8 @@ const MembersHistoryCard = ({ slug }: MembersHistoryCardProps) => {
     return null;
   }
 
-  const formatter_month = new Intl.DateTimeFormat('no-NO', { month: 'long' });
-
   return (
-    <Paper sx={{ mb: ({ spacing }) => spacing(2) }}>
+    <Paper sx={{ mb: 2 }}>
       <Grid container spacing={2}>
         {Boolean(data?.pages?.length) && (
           <Grid item xs={12}>
@@ -51,9 +49,9 @@ const MembersHistoryCard = ({ slug }: MembersHistoryCardProps) => {
                 </ListItemAvatar>
                 <ListItemText
                   primary={`${member.user.first_name} ${member.user.last_name}`}
-                  secondary={`${formatter_month.format(parseISO(member.start_date))} ${parseISO(member.start_date).getFullYear()} til ${formatter_month.format(
-                    parseISO(member.end_date),
-                  )} ${parseISO(member.end_date).getFullYear()} - ${getMembershipType(member.membership_type)}`}
+                  secondary={`${parseISO(member.start_date).getFullYear()} (${getMonth(getMonthFromDate(parseISO(member.start_date)))}) til ${parseISO(
+                    member.end_date,
+                  ).getFullYear()} (${getMonth(getMonthFromDate(parseISO(member.end_date)))}) - ${getMembershipType(member.membership_type)}`}
                 />
               </ListItem>
             ))}
