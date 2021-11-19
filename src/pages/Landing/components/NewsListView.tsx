@@ -32,7 +32,7 @@ const NewsListView = () => {
   const news = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   const { classes } = useStyles();
 
-  if (isLoading || 1 > 0) {
+  if (isLoading) {
     return (
       <div className={classes.container}>
         <NewsListItemLoading />

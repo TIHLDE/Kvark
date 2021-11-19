@@ -54,7 +54,7 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
       </TopContainer>
       <Container maxWidth='lg' sx={{ mt: { xs: -13, lg: -18 } }}>
         <Stack gap={1}>
-          <AspectRatioImg alt={data.image_alt || data.title} src={data.image} sx={{ borderRadius: (theme) => `${theme.shape.borderRadius}px` }} />
+          <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
           {!preview && (
             <HavePermission apps={[PermissionApp.NEWS]}>
               <Button component={Link} fullWidth to={`${URLS.newsAdmin}${data.id}/`} variant='outlined'>
@@ -87,7 +87,7 @@ export const NewsRendererLoading = () => (
     </TopContainer>
     <Container maxWidth='lg' sx={{ mt: { xs: -13, lg: -18 } }}>
       <Stack gap={1}>
-        <AspectRatioLoading sx={{ borderRadius: (theme) => `${theme.shape.borderRadius}px` }} />
+        <AspectRatioLoading borderRadius />
         <Skeleton height={40} width={250} />
         <Paper>
           <Skeleton width='80%' />

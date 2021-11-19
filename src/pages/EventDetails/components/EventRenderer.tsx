@@ -55,10 +55,6 @@ const DetailsHeader = styled(Typography)({
 });
 
 const useStyles = makeStyles()((theme) => ({
-  image: {
-    borderRadius: theme.shape.borderRadius,
-    border: `1px solid ${theme.palette.divider}`,
-  },
   rootGrid: {
     display: 'grid',
     gridTemplateColumns: '325px 1fr',
@@ -322,7 +318,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         )}
       </div>
       <div className={cx(classes.infoGrid, classes.info)}>
-        <AspectRatioImg alt={data.image_alt || data.title} imgClassName={classes.image} src={data.image} />
+        <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         {lgDown && <Info />}
         <ContentPaper>
           <Typography
@@ -366,7 +362,7 @@ export const EventRendererLoading = () => {
         </DetailsPaper>
       </div>
       <div className={cx(classes.infoGrid, classes.info)}>
-        <AspectRatioLoading imgClassName={classes.image} />
+        <AspectRatioLoading borderRadius />
         <ContentPaper>
           <Skeleton height={80} width='60%' />
           <Skeleton height={40} width={250} />

@@ -1,72 +1,49 @@
 import { useEffect, useState } from 'react';
-import { makeStyles } from 'makeStyles';
-import { Skeleton, Box, SkeletonProps, styled, BoxProps } from '@mui/material';
-
-// Icons
+import { Skeleton, styled, BoxProps } from '@mui/material';
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
-
-const useStyles = makeStyles<Pick<AspectRatioImgProps, 'ratio'>>()((theme, { ratio }) => ({
-  imgContainer: {
-    position: 'relative',
-    '&::before': {
-      height: 0,
-      content: '""',
-      display: 'block',
-      paddingBottom: `calc(100% / ( ${ratio} ))`,
-    },
-  },
-  img: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-  },
-  jpg: {
-    '&:not([src*=".jpg"])': {
-      background: theme.palette.common.white,
-    },
-  },
-}));
 
 export type AspectRatioImgProps = {
   alt: string;
+  borderRadius?: boolean;
   className?: string;
-  imgClassName?: string;
   ratio?: number;
   src?: string;
-  sx?: SkeletonProps['sx'];
-  boxSx?: BoxProps['sx'];
+  sx?: BoxProps['sx'];
 };
 
-const Img = styled('img')({});
+const Img = styled('img', { shouldForwardProp: (prop) => prop !== 'borderRadius' && prop !== 'ratio' })<Pick<AspectRatioImgProps, 'borderRadius' | 'ratio'>>(
+  ({ theme, borderRadius, ratio }) => ({
+    ...(borderRadius && { borderRadius: `${theme.shape.borderRadius}px` }),
+    aspectRatio: ratio ? String(ratio) : '21 / 9',
+    objectFit: 'cover',
+    width: '100%',
+    '&:not([src*=".jpg"])': {
+      background: theme.palette.common.white,
+    },
+  }),
+);
 
-const AspectRatioImg = ({ alt, boxSx, className, imgClassName, ratio = 21 / 9, src, sx }: AspectRatioImgProps) => {
-  const { classes, cx } = useStyles({ ratio });
+const AspectRatioImg = ({ alt, borderRadius, className, ratio = 21 / 9, src, sx }: AspectRatioImgProps) => {
   const [imgUrl, setImgUrl] = useState(src || TIHLDELOGO);
   useEffect(() => {
     setImgUrl(src || TIHLDELOGO);
   }, [src]);
   return (
-    <Box className={cx(classes.imgContainer, className)} sx={boxSx}>
-      <Img alt={alt} className={cx(classes.img, classes.jpg, imgClassName)} loading='lazy' onError={() => setImgUrl(TIHLDELOGO)} src={imgUrl} sx={sx} />
-    </Box>
+    <Img alt={alt} borderRadius={borderRadius} className={className} loading='lazy' onError={() => setImgUrl(TIHLDELOGO)} ratio={ratio} src={imgUrl} sx={sx} />
   );
 };
+
 export default AspectRatioImg;
 
 export const AspectRatioLoading = ({
-  boxSx,
+  borderRadius,
   className,
-  imgClassName,
   ratio = 21 / 9,
   sx,
-}: Pick<AspectRatioImgProps, 'boxSx' | 'className' | 'imgClassName' | 'ratio' | 'sx'>) => {
-  const { classes, cx } = useStyles({ ratio });
-  return (
-    <Box className={cx(classes.imgContainer, className)} sx={boxSx}>
-      <Skeleton className={cx(classes.img, imgClassName)} sx={sx} variant='rectangular' />
-    </Box>
-  );
-};
+}: Pick<AspectRatioImgProps, 'borderRadius' | 'className' | 'ratio' | 'sx'>) => (
+  <Skeleton
+    className={className}
+    sx={{ height: 'auto', borderRadius: borderRadius ? (theme) => `${theme.shape.borderRadius}px` : undefined, aspectRatio: String(ratio), ...sx }}
+    variant='rectangular'
+  />
+);
