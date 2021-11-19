@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- 🎨 **Design**. Oppdatert utseende på nyheter og jobbannonser.
+
 ## Versjon 1.3.0 (16.11.2021)
 
 - ✨ **Arrangementer**. Arrangementer kan nå være åpne for kun prioriterte.
