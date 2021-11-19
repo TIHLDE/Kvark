@@ -20,7 +20,7 @@ const TopContainer = styled('div', { shouldForwardProp: (prop) => prop !== 'bgCo
     color: theme.palette.common.white,
     paddingTop: theme.spacing(10),
     paddingBottom: theme.spacing(20),
-    background: `linear-gradient(${bgColor || theme.palette.colors.gradient.main.top} 40%, transparent)`,
+    background: bgColor || theme.palette.colors.gradient.main.top,
     transition: 'background 1s',
     [theme.breakpoints.down('lg')]: {
       paddingBottom: theme.spacing(15),
