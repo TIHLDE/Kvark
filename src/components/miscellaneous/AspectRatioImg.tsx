@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { makeStyles } from 'makeStyles';
-import { Skeleton, Box, SkeletonProps, styled } from '@mui/material';
+import { Skeleton, Box, SkeletonProps, styled, BoxProps } from '@mui/material';
 
 // Icons
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
@@ -37,18 +37,19 @@ export type AspectRatioImgProps = {
   ratio?: number;
   src?: string;
   sx?: SkeletonProps['sx'];
+  boxSx?: BoxProps['sx'];
 };
 
 const Img = styled('img')({});
 
-const AspectRatioImg = ({ alt, className, imgClassName, ratio = 21 / 9, src, sx }: AspectRatioImgProps) => {
+const AspectRatioImg = ({ alt, boxSx, className, imgClassName, ratio = 21 / 9, src, sx }: AspectRatioImgProps) => {
   const { classes, cx } = useStyles({ ratio });
   const [imgUrl, setImgUrl] = useState(src || TIHLDELOGO);
   useEffect(() => {
     setImgUrl(src || TIHLDELOGO);
   }, [src]);
   return (
-    <Box className={cx(classes.imgContainer, className)}>
+    <Box className={cx(classes.imgContainer, className)} sx={boxSx}>
       <Img alt={alt} className={cx(classes.img, classes.jpg, imgClassName)} loading='lazy' onError={() => setImgUrl(TIHLDELOGO)} src={imgUrl} sx={sx} />
     </Box>
   );
@@ -56,14 +57,15 @@ const AspectRatioImg = ({ alt, className, imgClassName, ratio = 21 / 9, src, sx 
 export default AspectRatioImg;
 
 export const AspectRatioLoading = ({
+  boxSx,
   className,
   imgClassName,
   ratio = 21 / 9,
   sx,
-}: Pick<AspectRatioImgProps, 'className' | 'imgClassName' | 'ratio' | 'sx'>) => {
+}: Pick<AspectRatioImgProps, 'boxSx' | 'className' | 'imgClassName' | 'ratio' | 'sx'>) => {
   const { classes, cx } = useStyles({ ratio });
   return (
-    <Box className={cx(classes.imgContainer, className)}>
+    <Box className={cx(classes.imgContainer, className)} sx={boxSx}>
       <Skeleton className={cx(classes.img, imgClassName)} sx={sx} variant='rectangular' />
     </Box>
   );

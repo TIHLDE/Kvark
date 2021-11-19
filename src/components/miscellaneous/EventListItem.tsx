@@ -8,20 +8,7 @@ import { EventCompact } from 'types';
 import { useCategories } from 'hooks/Categories';
 
 // Material UI Components
-import {
-  Button,
-  ButtonProps,
-  styled,
-  Grid,
-  Typography,
-  TypographyProps,
-  ListItemProps as MaterialListItemButtonProps,
-  SvgIconTypeMap,
-  Stack,
-  alpha,
-  useTheme,
-  Skeleton,
-} from '@mui/material';
+import { Button, ButtonProps, styled, Grid, Typography, ListItemProps, SvgIconTypeMap, Stack, alpha, useTheme, Skeleton } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 // Icons
@@ -31,14 +18,6 @@ import CategoryIcon from '@mui/icons-material/CategoryRounded';
 // Project components
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 import { Groups } from 'types/Enums';
-
-const Title = styled((props: TypographyProps) => <Typography variant='h2' {...props} />)(({ theme }) => ({
-  color: theme.palette.text.primary,
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
-  textTransform: 'none',
-}));
 
 type EventInfoContentProps = {
   icon?: OverridableComponent<SvgIconTypeMap<unknown, 'svg'>>;
@@ -59,7 +38,7 @@ const EventInfoContent = ({ icon: Icon, label, fontSize }: EventInfoContentProps
 
 export type EventListItemProps = {
   event: EventCompact;
-  sx?: MaterialListItemButtonProps['sx'];
+  sx?: ListItemProps['sx'];
 };
 
 const EventListItemButton = styled(Button, { shouldForwardProp: (prop) => prop !== 'borderColor' })<
@@ -133,7 +112,18 @@ const EventListItem = ({ event, sx }: EventListItemProps) => {
         <AspectRatioImg alt={event.image_alt || event.title} src={event.image} />
         <Divider sx={{ backgroundColor: getColor() }} />
         <Stack justifyContent='center' sx={{ overflow: 'hidden', pr: 0.5 }}>
-          <Title sx={{ fontSize: titleFontSize }}>{event.title}</Title>
+          <Typography
+            sx={{
+              fontSize: titleFontSize,
+              color: (theme) => theme.palette.text.primary,
+              textTransform: 'none',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+            }}
+            variant='h2'>
+            {event.title}
+          </Typography>
           <EventInfoContent fontSize={contentFontSize} icon={DateIcon} label={formatDate(parseISO(event.start_date))} />
           {width > 500 && <EventInfoContent fontSize={contentFontSize} icon={CategoryIcon} label={categoryLabel} />}
         </Stack>
