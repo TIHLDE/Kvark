@@ -30,11 +30,14 @@ const JobPostListItem = ({ jobpost, sx }: JobPostListItemProps) => (
           </Typography>
           <Typography variant='caption'>{`${jobpost.company} • ${jobpost.location}`}</Typography>
         </Box>
-        <AspectRatioImg
-          alt={jobpost.image_alt || jobpost.title}
-          src={jobpost.image}
-          sx={{ height: 45, width: 'auto', borderRadius: (theme) => `${Number(theme.shape.borderRadius) / 2}px` }}
-        />
+        {/* TODO: fjern div rundt AspectRatioImg når flere nettlesere støtter aspect-ratio i css - https://caniuse.com/mdn-css_properties_aspect-ratio */}
+        <div style={{ display: 'block', height: 45, width: (45 / 9) * 21 }}>
+          <AspectRatioImg
+            alt={jobpost.image_alt || jobpost.title}
+            src={jobpost.image}
+            sx={{ height: 45, width: 'auto', borderRadius: (theme) => `${Number(theme.shape.borderRadius) / 2}px` }}
+          />
+        </div>
       </Stack>
       <Divider />
       <Box sx={{ display: 'grid', py: 1, gridTemplateColumns: 'repeat(3, 1fr)' }}>

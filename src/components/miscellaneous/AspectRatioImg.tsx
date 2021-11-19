@@ -23,11 +23,49 @@ const Img = styled('img', { shouldForwardProp: (prop) => prop !== 'borderRadius'
   }),
 );
 
+// TODO: fjern når flere nettlesere støtter aspect-ratio i css - https://caniuse.com/mdn-css_properties_aspect-ratio
+const AspectRatioPolyfill = styled('div', { shouldForwardProp: (prop) => prop !== 'ratio' })<Pick<AspectRatioImgProps, 'ratio'>>(({ ratio }) => ({
+  position: 'relative',
+  width: '100%',
+  '&::before': {
+    height: 0,
+    content: '""',
+    display: 'block',
+    paddingBottom: `calc(100% / ( ${ratio} ))`,
+  },
+  '& > img': {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+  },
+}));
+
 const AspectRatioImg = ({ alt, borderRadius, className, ratio = 21 / 9, src, sx }: AspectRatioImgProps) => {
   const [imgUrl, setImgUrl] = useState(src || TIHLDELOGO);
   useEffect(() => {
     setImgUrl(src || TIHLDELOGO);
   }, [src]);
+
+  // TODO: fjern når flere nettlesere støtter aspect-ratio i css - https://caniuse.com/mdn-css_properties_aspect-ratio
+  if (!CSS.supports('aspect-ratio', String(ratio))) {
+    return (
+      <AspectRatioPolyfill ratio={ratio}>
+        <Img
+          alt={alt}
+          borderRadius={borderRadius}
+          className={className}
+          loading='lazy'
+          onError={() => setImgUrl(TIHLDELOGO)}
+          ratio={ratio}
+          src={imgUrl}
+          sx={sx}
+        />
+      </AspectRatioPolyfill>
+    );
+  }
   return (
     <Img alt={alt} borderRadius={borderRadius} className={className} loading='lazy' onError={() => setImgUrl(TIHLDELOGO)} ratio={ratio} src={imgUrl} sx={sx} />
   );

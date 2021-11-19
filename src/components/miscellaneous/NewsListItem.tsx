@@ -21,7 +21,8 @@ const NewsListItem = ({ news, sx }: NewsListItemProps) => (
     <ButtonBase
       component={Link}
       focusRipple
-      sx={{ borderRadius: (theme) => `${theme.shape.borderRadius}px` }}
+      // TODO: fjern display: block når flere nettlesere støtter aspect-ratio i css - https://caniuse.com/mdn-css_properties_aspect-ratio
+      sx={{ borderRadius: (theme) => `${theme.shape.borderRadius}px`, display: 'block' }}
       tabIndex={-1}
       to={`${URLS.news}${news.id}/${urlEncode(news.title)}/`}>
       <AspectRatioImg alt={news.image_alt || news.title} borderRadius className={touchRippleClasses.root} src={news.image} />
