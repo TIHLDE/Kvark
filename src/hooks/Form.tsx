@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient, UseMutationResult } from 'react-query';
+import { useMutation, useQuery, useQueryClient, UseMutationResult, useInfiniteQuery } from 'react-query';
 import API from 'api/api';
 import { USER_FORMS_QUERY_KEY, USER_QUERY_KEY } from 'hooks/User';
 import { EVENT_QUERY_KEY } from 'hooks/Event';
@@ -20,6 +20,12 @@ import { FormFieldType } from 'types/Enums';
 export const FORM_QUERY_KEY = 'form';
 export const SUBMISSIONS_QUERY_KEY = 'submission';
 export const STATISTICS_QUERY_KEY = 'statistics';
+
+export const useAllForms = () => {
+  return useInfiniteQuery<PaginationResponse<Form>, RequestResponse>([FORM_QUERY_KEY], ({ pageParam = 1 }) => API.getForms({ all: true, page: pageParam }), {
+    getNextPageParam: (lastPage) => lastPage.next,
+  });
+};
 
 export const useFormById = (formId: string) =>
   useQuery<Form, RequestResponse>([FORM_QUERY_KEY, formId], () => API.getForm(formId), { enabled: formId !== '-' });

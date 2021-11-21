@@ -11,6 +11,8 @@ import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
 import Dialog from 'components/layout/Dialog';
 import { BannerButton } from 'components/layout/Banner';
+import { useNavigate } from 'react-router';
+import URLS from 'URLS';
 
 export type UpdateGroupModalProps = {
   group: Group;
@@ -21,6 +23,7 @@ const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
   const { register, formState, handleSubmit } = useForm();
   const updateGroup = useUpdateGroup();
   const showSnackbar = useSnackbar();
+  const navigate = useNavigate();
 
   const submit = async (formData: Group) => {
     const data = { ...group, name: formData.name, description: formData.description, contact_email: formData.contact_email };
@@ -36,7 +39,7 @@ const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
   };
   return (
     <>
-      <BannerButton onClick={() => setIsOpen(true)} startIcon={<EditIcon />}>
+      <BannerButton onClick={() => navigate(`${URLS.groupAdmin}${group.slug}/`)} startIcon={<EditIcon />}>
         Rediger gruppe
       </BannerButton>
       <Dialog onClose={() => setIsOpen(false)} open={isOpen} titleText='Oppdater gruppe'>

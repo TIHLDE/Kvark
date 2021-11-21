@@ -102,6 +102,7 @@ export default {
 
   // Forms
   getForm: (formId: string) => IFetch<Form>({ method: 'GET', url: `${FORMS_ENDPOINT}/${formId}/` }),
+  getForms: (filters?: any) => IFetch<PaginationResponse<Form>>({ method: 'GET', url: `${FORMS_ENDPOINT}/`, data: filters || {} }),
   getFormStatistics: (formId: string) => IFetch<FormStatistics>({ method: 'GET', url: `${FORMS_ENDPOINT}/${formId}/statistics/` }),
   createForm: (item: FormCreate | EventFormCreate) => IFetch<Form>({ method: 'POST', url: `${FORMS_ENDPOINT}/`, data: item }),
   updateForm: (formId: string, item: FormUpdate) => IFetch<Form>({ method: 'PUT', url: `${FORMS_ENDPOINT}/${formId}/`, data: item }),
@@ -198,8 +199,7 @@ export default {
   updateGroup: (slug: string, data: Group) => IFetch<Group>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${slug}/`, data }),
 
   //Group form
-  getGroupForms: (slug: string, filters?: any) =>
-    IFetch<Array<GroupForm>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/${GROUP_FORMS_ENDPOINT}/`, data: filters || {} }),
+  getGroupForms: (slug: string) => IFetch<Array<GroupForm>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/${GROUP_FORMS_ENDPOINT}/` }),
 
   // Pages
   getPageTree: () => IFetch<PageTree>({ method: 'GET', url: `${PAGES_ENDPOINT}/tree/` }),

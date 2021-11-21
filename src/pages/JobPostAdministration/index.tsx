@@ -47,7 +47,7 @@ const JobPostAdministration = () => {
   const tabs = jobPostId ? [editTab, navigateTab] : [editTab];
   const [tab, setTab] = useState(editTab.value);
 
-  const goToJobPost = (newJobPost: number | null) => {
+  const goToJobPost = (newJobPost: number | null | string) => {
     if (newJobPost) {
       navigate(`${URLS.jobpostsAdmin}${newJobPost}/`);
     } else {
@@ -63,7 +63,7 @@ const JobPostAdministration = () => {
       <SidebarList
         descKey='company'
         idKey='id'
-        onItemClick={(id: number | null) => goToJobPost(id || null)}
+        onItemClick={(id: number | null | string) => goToJobPost(id || null || '')}
         selectedItemId={Number(jobPostId)}
         title='Annonser'
         titleKey='title'

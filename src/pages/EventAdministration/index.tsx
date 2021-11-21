@@ -57,7 +57,7 @@ const EventAdministration = () => {
   const tabs = eventId ? [editTab, ...(event?.sign_up ? [participantsTab, formsTab, registerTab] : []), navigateTab] : [editTab];
   const [tab, setTab] = useState(editTab.value);
 
-  const goToEvent = (newEvent: number | null) => {
+  const goToEvent = (newEvent: number | null | string) => {
     if (newEvent) {
       navigate(`${URLS.eventAdmin}${newEvent}/`);
     } else {
@@ -89,7 +89,7 @@ const EventAdministration = () => {
         descKey='start_date'
         formatDesc={(desc) => formatDate(parseISO(desc))}
         idKey='id'
-        onItemClick={(id: number | null) => goToEvent(id || null)}
+        onItemClick={(id: number | null | string) => goToEvent(id || null || '')}
         selectedItemId={Number(eventId)}
         title='Arrangementer'
         titleKey='title'

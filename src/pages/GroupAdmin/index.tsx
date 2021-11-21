@@ -34,7 +34,10 @@ const Group = () => {
   const { data: formsData, isLoading: isLoadingGroupForms, isFetching: isFetchingGroupForms } = useGroupForms(slug);
   const { data, isLoading: isLoadingGroups, isError } = useGroup(slug);
 
-  const hasWriteAcccess = Boolean(data?.permissions.write);
+  const [isEditingForms, setIsEditingForms] = useState(false);
+  const toggleIsEditingForms = () => setIsEditingForms((value: boolean) => !value);
+
+  const hasWriteAccess = Boolean(data?.permissions.write);
   const isAuthenticated = useIsAuthenticated();
 
   if (isError) {
@@ -49,7 +52,7 @@ const Group = () => {
     <Page
       banner={
         <Banner text={`${data.description} \n${data.contact_email ? `Kontakt: ${data.contact_email}` : ''}`} title={data.name}>
-          {hasWriteAcccess && <UpdateGroupModal group={data} />}
+          {hasWriteAccess && <UpdateGroupModal group={data} />}
         </Banner>
       }
       options={{ title: data.name }}>
@@ -67,9 +70,16 @@ const Group = () => {
                 <>
                   <Typography gutterBottom variant='h3'>
                     Gruppeskjemaer
+                    {hasWriteAccess && (
+                      <Button onClick={toggleIsEditingForms} variant='outlined'>
+                        Rediger
+                      </Button>
+                    )}
                   </Typography>
                   <Typography sx={{ mb: 2 }} variant='subtitle2'>
-                    Her kan du se og svare på skjemaer gruppen har laget for deg.
+                    {hasWriteAccess
+                      ? "Dette er skjemaer som tilhører gruppen din. Trykk på 'Rediger' oppe til høyre for å endre, legge til nye eller slette disse."
+                      : 'Her kan du se og svare på skjemaer gruppen har laget for deg.'}
                   </Typography>
                   <Expansion flat header='Vis alle skjemaer'>
                     <List dense disablePadding>
@@ -108,7 +118,7 @@ const Group = () => {
         </Paper>
       ) : (
         <>
-          {hasWriteAcccess ? (
+          {hasWriteAccess ? (
             <Paper sx={{ mb: 2 }}>
               {data?.leader && (
                 <>

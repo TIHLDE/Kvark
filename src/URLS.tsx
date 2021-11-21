@@ -36,4 +36,6 @@ export default {
   eventAdmin: '/admin/arrangementer/',
   jobpostsAdmin: '/admin/karriere/',
   newsAdmin: '/admin/nyheter/',
+  formsAdmin: '/admin/skjemaer/',
+  groupAdmin: '/admin/grupper/',
 };

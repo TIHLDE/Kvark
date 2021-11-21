@@ -47,7 +47,7 @@ const NewsAdministration = () => {
   const tabs = newsId ? [editTab, navigateTab] : [editTab];
   const [tab, setTab] = useState(editTab.value);
 
-  const goToNews = (newNews: number | null) => {
+  const goToNews = (newNews: number | null | string) => {
     if (newNews) {
       navigate(`${URLS.newsAdmin}${newNews}/`);
     } else {
@@ -62,7 +62,7 @@ const NewsAdministration = () => {
         descKey='header'
         idKey='id'
         noExpired
-        onItemClick={(id: number | null) => goToNews(id || null)}
+        onItemClick={(id: number | null | string) => goToNews(id || null || '')}
         selectedItemId={Number(newsId)}
         title='Nyheter'
         titleKey='title'

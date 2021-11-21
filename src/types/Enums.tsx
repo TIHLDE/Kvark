@@ -46,6 +46,7 @@ export enum PermissionApp {
   PAGE = 'page',
   STRIKE = 'strike',
   USER = 'user',
+  FORMS = 'form',
 }
 export enum Groups {
   HS = 'HS',

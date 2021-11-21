@@ -73,8 +73,9 @@ const useStyles = makeStyles()((theme) => ({
 
 export type SidebarListProps<Type> = {
   useHook: (args?: unknown) => InfiniteQueryObserverResult<PaginationResponse<Type>>;
-  onItemClick: (itemId: null | number) => void;
-  selectedItemId: number;
+  hookArguments?: unknown;
+  onItemClick: (itemId: null | number | string) => void;
+  selectedItemId: number | string;
   title: string;
   noExpired?: boolean;
   idKey: keyof Type;
@@ -88,6 +89,7 @@ export type SidebarListProps<Type> = {
 
 const SidebarList = <Type extends unknown>({
   useHook,
+  hookArguments,
   onItemClick,
   selectedItemId,
   title,
@@ -117,7 +119,7 @@ const SidebarList = <Type extends unknown>({
     exit: theme.transitions.duration.leavingScreen,
   };
 
-  const handleItemClick = (item: number | null) => {
+  const handleItemClick = (item: number | null | string) => {
     onItemClick(item);
     setMobileOpen(false);
   };
@@ -130,7 +132,13 @@ const SidebarList = <Type extends unknown>({
     <MuiListItem
       button
       className={classes.listItem}
-      onClick={() => handleItemClick(Number(item[idKey]))}
+      onClick={() => {
+        if (typeof item[idKey] === 'string') {
+          handleItemClick(String(item[idKey]));
+        } else {
+          handleItemClick(Number(item[idKey]));
+        }
+      }}
       selected={Boolean(Number(item[idKey]) === selectedItemId)}>
       <ListItemText
         classes={{ secondary: classes.listItemSecondary }}
