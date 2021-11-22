@@ -76,7 +76,7 @@ const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
         <ImageUpload formState={formState} label='Velg profilbilde' ratio={1} register={register('image')} setValue={setValue} watch={watch} />
         <div className={classes.selectGrid}>
           <Select control={control} disabled={!isAdmin} formState={formState} label='Studie' name='user_study'>
-            {[1, 2, 3, 4, 5].map((i) => (
+            {[1, 2, 3, 4, 5, 6].map((i) => (
               <MenuItem key={i} value={i}>
                 {getUserStudyLong(i)}
               </MenuItem>

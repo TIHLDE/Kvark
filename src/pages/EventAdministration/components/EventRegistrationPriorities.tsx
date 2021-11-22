@@ -75,14 +75,17 @@ const EventRegistrationPriorities = ({ priorities, setPriorities }: EventRegistr
         { user_class: 1, user_study: 2 },
         { user_class: 1, user_study: 3 },
         { user_class: 1, user_study: 5 },
+        { user_class: 1, user_study: 6 },
         { user_class: 2, user_study: 1 },
         { user_class: 2, user_study: 2 },
         { user_class: 2, user_study: 3 },
         { user_class: 2, user_study: 5 },
+        { user_class: 2, user_study: 6 },
         { user_class: 3, user_study: 1 },
         { user_class: 3, user_study: 2 },
         { user_class: 3, user_study: 3 },
         { user_class: 3, user_study: 5 },
+        { user_class: 3, user_study: 6 },
         { user_class: 4, user_study: 4 },
         { user_class: 5, user_study: 4 },
       ]);
@@ -94,7 +97,7 @@ const EventRegistrationPriorities = ({ priorities, setPriorities }: EventRegistr
   return (
     <div className={classes.formWrapper}>
       <FormGroup>
-        {[1, 2, 3, 5].map((userStudy) => {
+        {[1, 2, 3, 5, 6].map((userStudy) => {
           return (
             <Fragment key={userStudy}>
               <FormLabel component='legend'>{getUserStudyShort(userStudy)}</FormLabel>

@@ -1,7 +1,7 @@
 import slugify from 'slugify';
-import { parseISO, format, subMinutes, getYear, isAfter, isBefore } from 'date-fns';
+import { format, getYear, isAfter, isBefore, parseISO, subMinutes } from 'date-fns';
 import { Event } from 'types';
-import { UserStudy, UserClass, JobPostType, StrikeReason, MembershipType } from 'types/Enums';
+import { JobPostType, MembershipType, StrikeReason, UserClass, UserStudy } from 'types/Enums';
 
 export const isAfterDateOfYear = (month: number, date: number) => isAfter(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
 export const isBeforeDateOfYear = (month: number, date: number) => isBefore(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
@@ -63,6 +63,8 @@ export const getUserStudyShort = (userStudy: UserStudy) => {
       return 'DigSam';
     case UserStudy.DRIFT:
       return 'Drift';
+    case UserStudy.INFO:
+      return 'Info';
     default:
       return 'Ukjent studie';
   }
@@ -84,6 +86,8 @@ export const getUserStudyLong = (userStudy: UserStudy) => {
       return 'Digital samhandling';
     case UserStudy.DRIFT:
       return 'Drift av datasystemer';
+    case UserStudy.INFO:
+      return 'Informasjonsbehandling';
     default:
       return 'Ukjent studie';
   }
