@@ -29,9 +29,6 @@ const useStyles = makeStyles()((theme) => ({
       gridTemplateColumns: '1fr',
     },
   },
-  image: {
-    borderRadius: theme.shape.borderRadius,
-  },
   title: {
     fontSize: '2.4rem',
   },
@@ -70,7 +67,7 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
       </Paper>
       <div>
         <div className={classes.infoBox}>
-          <AspectRatioImg alt={data.image_alt || data.title} imgClassName={classes.image} src={data.image} />
+          <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         </div>
         <Paper className={classes.infoBox}>
           <DetailContent info={data.company} title='Bedrift: ' />
@@ -135,7 +132,7 @@ export const JobPostRendererLoading = () => {
         <Skeleton height={40} width='90%' />
       </Paper>
       <div>
-        <AspectRatioLoading className={classes.infoBox} imgClassName={classes.image} />
+        <AspectRatioLoading borderRadius />
         <Paper className={classes.infoBox}>
           <DetailContentLoading />
           <DetailContentLoading />

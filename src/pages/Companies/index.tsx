@@ -78,7 +78,7 @@ Vi kan også tilrettelegge for speed intervjuer dersom dette er ønskelig.`,
   return (
     <Page
       banner={
-        <Banner text='**Alle arrangementer kan gjennomføres digitalt høsten 2021**' title='For Bedrifter'>
+        <Banner text='**Alle arrangementer kan gjennomføres digitalt**' title='For Bedrifter'>
           <BannerButton onClick={scrollToForm} startIcon={<SendIcon />}>
             Send oss en melding
           </BannerButton>

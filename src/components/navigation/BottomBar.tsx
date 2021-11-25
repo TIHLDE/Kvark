@@ -33,6 +33,10 @@ const useStyles = makeStyles()((theme) => ({
     ...theme.palette.transparent,
     background: `${theme.palette.background.paper}aa`,
     overflow: 'hidden',
+    color: theme.palette.text.secondary,
+    '& .Mui-selected': {
+      color: theme.palette.text.primary,
+    },
   },
   bottombar: {
     height: 80,
@@ -42,9 +46,6 @@ const useStyles = makeStyles()((theme) => ({
   action: {
     color: theme.palette.text.secondary,
     padding: 12,
-    '& .Mui-selected': {
-      color: theme.palette.text.primary,
-    },
     minWidth: 50,
   },
   selected: {
@@ -65,7 +66,7 @@ type Item = {
   to: string;
 };
 
-const MainLogo = () => <SvgIcon component={Logo} darkColor='white' lightColor='black' size='small' />;
+const MainLogo = () => <SvgIcon component={Logo} darkColor='white' lightColor='black' size='small' sx={{ color: 'currentColor' }} />;
 const MENU_TAB_KEY = 'menu';
 
 export type BottomBarProps = {
