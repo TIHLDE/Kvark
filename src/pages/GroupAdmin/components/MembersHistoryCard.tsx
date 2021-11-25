@@ -5,7 +5,6 @@ import { format, parseISO } from 'date-fns';
 import Paper from 'components/layout/Paper';
 import { useMembershipHistories } from 'hooks/Membership';
 import Pagination from 'components/layout/Pagination';
-import { useGroup } from 'hooks/Group';
 import Avatar from 'components/miscellaneous/Avatar';
 import { getMembershipType } from 'utils';
 
@@ -16,8 +15,6 @@ export type MembersHistoryCardProps = {
 const MembersHistoryCard = ({ slug }: MembersHistoryCardProps) => {
   const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useMembershipHistories(slug);
   const prevMembers = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
-  const { data: group } = useGroup(slug);
-  const leader = group?.leader;
 
   if (isLoading) {
     return (
@@ -27,7 +24,7 @@ const MembersHistoryCard = ({ slug }: MembersHistoryCardProps) => {
     );
   }
 
-  if (!data?.pages?.length && !leader) {
+  if (!prevMembers.length) {
     return null;
   }
 
