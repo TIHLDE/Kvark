@@ -15,8 +15,8 @@ import InfoCard from 'components/layout/InfoCard';
 import Banner, { BannerButton } from 'components/layout/Banner';
 import CompaniesForm from 'pages/Companies/components/CompaniesForm';
 import Container from 'components/layout/Container';
-import { UserStudy } from '../../types/Enums';
-import { getUserStudyLong } from '../../utils';
+import { UserStudy } from 'types/Enums';
+import { getUserStudyLong } from 'utils';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {
