@@ -59,7 +59,7 @@ const MembersCard = ({ slug }: MembersCardProps) => {
           </Grid>
         )}
         <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
-          <List>
+          <List sx={{ width: '100%' }}>
             {members.map((member) => (
               <Person key={member.user.user_id} user={member.user} />
             ))}
