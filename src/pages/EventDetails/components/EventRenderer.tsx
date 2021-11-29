@@ -289,7 +289,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               Dette arrangementet gir ikke prikker
             </Alert>
           )}
-          {Boolean(data.registration_priorities.length) && data.registration_priorities.length !== 14 && (
+          {Boolean(data.registration_priorities.length) && (
             <DetailsPaper noPadding>
               <DetailsHeader variant='h2'>Prioritert</DetailsHeader>
               <EventPriorities priorities={data.registration_priorities} />
