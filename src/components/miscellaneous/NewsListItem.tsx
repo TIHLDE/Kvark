@@ -17,7 +17,7 @@ export type NewsListItemProps = {
 };
 
 const NewsListItem = ({ news, sx }: NewsListItemProps) => (
-  <Box sx={{ height: 'fit-content', ...sx }}>
+  <Box sx={{ height: 'fit-content', overflow: 'hidden', ...sx }}>
     <ButtonBase
       component={Link}
       focusRipple
