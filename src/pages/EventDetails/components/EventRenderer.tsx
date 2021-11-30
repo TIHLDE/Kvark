@@ -55,10 +55,6 @@ const DetailsHeader = styled(Typography)({
 });
 
 const useStyles = makeStyles()((theme) => ({
-  image: {
-    borderRadius: theme.shape.borderRadius,
-    border: `1px solid ${theme.palette.divider}`,
-  },
   rootGrid: {
     display: 'grid',
     gridTemplateColumns: '325px 1fr',
@@ -236,7 +232,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         ) : data.only_allow_prioritized &&
           ((data.registration_priorities.length > 0 &&
             !data.registration_priorities.some((priority) => priority.user_class === user.user_class && priority.user_study === user.user_study)) ||
-            user.number_of_strikes >= 3) ? (
+            (data.enforces_previous_strikes && user.number_of_strikes >= 3)) ? (
           <Button disabled fullWidth variant='contained'>
             Kun åpent for prioriterte
           </Button>
@@ -293,7 +289,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               Dette arrangementet gir ikke prikker
             </Alert>
           )}
-          {Boolean(data.registration_priorities.length) && data.registration_priorities.length !== 14 && (
+          {Boolean(data.registration_priorities.length) && (
             <DetailsPaper noPadding>
               <DetailsHeader variant='h2'>Prioritert</DetailsHeader>
               <EventPriorities priorities={data.registration_priorities} />
@@ -322,7 +318,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         )}
       </div>
       <div className={cx(classes.infoGrid, classes.info)}>
-        <AspectRatioImg alt={data.image_alt || data.title} imgClassName={classes.image} src={data.image} />
+        <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         {lgDown && <Info />}
         <ContentPaper>
           <Typography
@@ -366,7 +362,7 @@ export const EventRendererLoading = () => {
         </DetailsPaper>
       </div>
       <div className={cx(classes.infoGrid, classes.info)}>
-        <AspectRatioLoading imgClassName={classes.image} />
+        <AspectRatioLoading borderRadius />
         <ContentPaper>
           <Skeleton height={80} width='60%' />
           <Skeleton height={40} width={250} />

@@ -57,6 +57,8 @@ const Cheetsheet = () => {
         return Study.DIGSEC;
       case 'digsam':
         return Study.DIGSAM;
+      case 'info':
+        return Study.INFO;
       default:
         return Study.DATAING;
     }
@@ -76,7 +78,7 @@ const Cheetsheet = () => {
       studyClass &&
       study &&
       ((study === Study.DIGSAM && [4, 5].includes(studyClass)) ||
-        ([Study.DATAING, Study.DIGFOR, Study.DIGSEC].includes(study) && [1, 2, 3].includes(studyClass)))
+        ([Study.DATAING, Study.DIGFOR, Study.DIGSEC, Study.INFO].includes(study) && [1, 2, 3].includes(studyClass)))
     ) {
       return true;
     }
@@ -142,7 +144,7 @@ const Cheetsheet = () => {
             style={{ gridArea: 'filterStudy' }}
             value={getStudy() || Study.DATAING}
             variant='outlined'>
-            {[Study.DATAING, Study.DIGFOR, Study.DIGSEC, Study.DIGSAM].map((i) => (
+            {[Study.DATAING, Study.DIGFOR, Study.DIGSEC, Study.DIGSAM, Study.INFO].map((i) => (
               <MenuItem key={i} value={i}>
                 {i}
               </MenuItem>

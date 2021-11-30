@@ -9,6 +9,7 @@ export enum Study {
   DIGFOR = 'DigFor',
   DIGSEC = 'DigSec',
   DIGSAM = 'DigSam',
+  INFO = 'Info',
 }
 
 export enum CheatsheetType {
@@ -24,6 +25,7 @@ export enum UserStudy {
   DIGSEC = 3,
   DIGSAM = 4,
   DRIFT = 5,
+  INFO = 6,
 }
 
 export enum UserClass {

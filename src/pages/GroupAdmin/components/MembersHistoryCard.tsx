@@ -1,14 +1,12 @@
 import { useMemo } from 'react';
 
 import { ListItem, ListItemText, ListItemAvatar, List, Grid, Typography, Skeleton } from '@mui/material';
-import { parseISO } from 'date-fns';
-import { getMonth as getMonthFromDate } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import Paper from 'components/layout/Paper';
 import { useMembershipHistories } from 'hooks/Membership';
 import Pagination from 'components/layout/Pagination';
-import { useGroup } from 'hooks/Group';
 import Avatar from 'components/miscellaneous/Avatar';
-import { getMembershipType, getMonth } from 'utils';
+import { getMembershipType } from 'utils';
 
 export type MembersHistoryCardProps = {
   slug: string;
@@ -17,8 +15,6 @@ export type MembersHistoryCardProps = {
 const MembersHistoryCard = ({ slug }: MembersHistoryCardProps) => {
   const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useMembershipHistories(slug);
   const prevMembers = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
-  const { data: group } = useGroup(slug);
-  const leader = group?.leader;
 
   if (isLoading) {
     return (
@@ -28,7 +24,7 @@ const MembersHistoryCard = ({ slug }: MembersHistoryCardProps) => {
     );
   }
 
-  if (!data?.pages?.length && !leader) {
+  if (!prevMembers.length) {
     return null;
   }
 
@@ -49,9 +45,9 @@ const MembersHistoryCard = ({ slug }: MembersHistoryCardProps) => {
                 </ListItemAvatar>
                 <ListItemText
                   primary={`${member.user.first_name} ${member.user.last_name}`}
-                  secondary={`${parseISO(member.start_date).getFullYear()} (${getMonth(getMonthFromDate(parseISO(member.start_date)))}) til ${parseISO(
-                    member.end_date,
-                  ).getFullYear()} (${getMonth(getMonthFromDate(parseISO(member.end_date)))}) - ${getMembershipType(member.membership_type)}`}
+                  secondary={`${format(parseISO(member.start_date), 'MMMM yyyy')} til ${format(parseISO(member.end_date), 'MMMM yyyy')} - ${getMembershipType(
+                    member.membership_type,
+                  )}`}
                 />
               </ListItem>
             ))}

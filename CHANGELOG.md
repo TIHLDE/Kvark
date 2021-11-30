@@ -14,6 +14,11 @@
 
 ## Neste versjon
 
+## Versjon 1.3.1 (30.11.2021)
+
+- ✨ **Informasjonsbehandling**. Medlemmer kan nå velge studieretningen Informasjonsbehandling når de registrer seg. Drift'ere kan ikke lengre prioriteres på arrangementer ettersom det ikke lenger finnes studenter i Drift 1-3 klasse.
+- 🎨 **Design**. Oppdatert utseende på nyheter og jobbannonser.
+
 ## Versjon 1.3.0 (16.11.2021)
 
 - ✨ **Arrangementer**. Arrangementer kan nå være åpne for kun prioriterte.

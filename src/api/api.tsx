@@ -43,25 +43,25 @@ import {
 } from 'types';
 
 export const AUTH_ENDPOINT = 'auth';
-export const BADGES_ENDPOINT = 'badge';
-export const CATEGORIES_ENDPOINT = 'category';
-export const CHEATSHEETS_ENDPOINT = 'cheatsheet';
+export const BADGES_ENDPOINT = 'badges';
+export const CATEGORIES_ENDPOINT = 'categories';
+export const CHEATSHEETS_ENDPOINT = 'cheatsheets';
 export const EVENTS_ENDPOINT = 'events';
 export const EVENT_REGISTRATIONS_ENDPOINT = 'users';
 export const FORMS_ENDPOINT = 'forms';
-export const GROUPS_ENDPOINT = 'group';
-export const JOBPOSTS_ENDPOINT = 'jobpost';
+export const GROUPS_ENDPOINT = 'groups';
+export const JOBPOSTS_ENDPOINT = 'jobposts';
 export const ME_ENDPOINT = 'me';
-export const MEMBERSHIPS_ENDPOINT = 'membership';
-export const MEMBERSHIP_HISTORIES_ENDPOINT = 'membership-history';
+export const MEMBERSHIPS_ENDPOINT = 'memberships';
+export const MEMBERSHIP_HISTORIES_ENDPOINT = 'membership-histories';
 export const NEWS_ENDPOINT = 'news';
-export const NOTIFICATIONS_ENDPOINT = 'notification';
-export const PAGES_ENDPOINT = 'page';
-export const SHORT_LINKS_ENDPOINT = 'short-link';
+export const NOTIFICATIONS_ENDPOINT = 'notifications';
+export const PAGES_ENDPOINT = 'pages';
+export const SHORT_LINKS_ENDPOINT = 'short-links';
 export const STRIKES_ENDPOINT = 'strikes';
-export const SUBMISSIONS_ENDPOINT = 'submission';
-export const USERS_ENDPOINT = 'user';
-export const WARNINGS_ENDPOINT = 'warning';
+export const SUBMISSIONS_ENDPOINT = 'submissions';
+export const USERS_ENDPOINT = 'users';
+export const WARNINGS_ENDPOINT = 'warnings';
 
 export default {
   // Auth
