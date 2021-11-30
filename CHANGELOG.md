@@ -14,7 +14,7 @@
 
 ## Neste versjon
 
-- ✨ **Infomasjonsbehandling**. Medlemmer kan nå velge studieretningen BAINFO når de registrer seg.
+- ✨ **Informasjonsbehandling**. Medlemmer kan nå velge studieretningen Informasjonsbehandling når de registrer seg. Drift'ere kan ikke lengre prioriteres på arrangementer ettersom det ikke lenger finnes studenter i Drift 1-3 klasse.
 - 🎨 **Design**. Oppdatert utseende på nyheter og jobbannonser.
 
 ## Versjon 1.3.0 (16.11.2021)

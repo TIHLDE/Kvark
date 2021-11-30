@@ -51,11 +51,12 @@ const useStyles = makeStyles()((theme) => ({
 }));
 
 export type EventRegistrationPrioritiesProps = {
+  defaultPriorities: Array<RegistrationPriority>;
   priorities: Array<RegistrationPriority>;
   setPriorities: (newPriorities: Array<RegistrationPriority>) => void;
 };
 
-const EventRegistrationPriorities = ({ priorities, setPriorities }: EventRegistrationPrioritiesProps) => {
+const EventRegistrationPriorities = ({ defaultPriorities, priorities, setPriorities }: EventRegistrationPrioritiesProps) => {
   const { classes } = useStyles();
 
   const handlePriorityChange = (userClass: UserClass, userStudy: UserStudy) => () => {
@@ -70,22 +71,7 @@ const EventRegistrationPriorities = ({ priorities, setPriorities }: EventRegistr
 
   const toggleAllPriorities = (addAll: boolean) => () => {
     if (addAll) {
-      setPriorities([
-        { user_class: 1, user_study: 1 },
-        { user_class: 1, user_study: 2 },
-        { user_class: 1, user_study: 3 },
-        { user_class: 1, user_study: 6 },
-        { user_class: 2, user_study: 1 },
-        { user_class: 2, user_study: 2 },
-        { user_class: 2, user_study: 3 },
-        { user_class: 2, user_study: 6 },
-        { user_class: 3, user_study: 1 },
-        { user_class: 3, user_study: 2 },
-        { user_class: 3, user_study: 3 },
-        { user_class: 3, user_study: 6 },
-        { user_class: 4, user_study: 4 },
-        { user_class: 5, user_study: 4 },
-      ]);
+      setPriorities(defaultPriorities);
     } else {
       setPriorities([]);
     }

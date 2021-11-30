@@ -66,9 +66,10 @@ const Companies = () => {
     dataing: `Dataingeniør-studiet kombinerer det beste fra de spesialiserte informatikkutdanningene og de tradisjonelle ingeniørutdanningene.
 Det legger mye vekt på praktisk utvikling av systemer og programmer, og studentene får et godt grunnlag i datateknikk, matematikk og teknisk-naturvitenskapelige fag, samt varig og verdifull kompetanse om hvordan datateknikk kan benyttes.`,
     info: `Dette digitale bachelorstudiet kvalifiserer studenter til å tilrettelegge og organisere informasjon i en virksomhet. Man få kunnskap om programmering, webløsninger og datasikkerhet.`,
-    digsec: `Digital samhandling er et veletablert forskningsområde som tar for seg hvordan utøvelse og koordinering av samarbeidsaktiviteter kan støttes ved hjelp av ulike IKT-systemer. Studentene ved denne 2 årige masteren er i stand til å samhandle effektivt i forskjellige tverrfaglige problemløsningsprosesser.`,
+    digsec: `Dette bachelorstudiet setter fokus på den drift-tekniske IKT-kompetansen bedrifter etterspør. Studentene lærer planleggingsprosesser og oppsett av virtuelle maskiner med bruk av teknologier som VMWare og HyperV. Videre temaer i studiet er Linux, Windows Server, “Cloud Computing” og overvåkning og sikkerhet i digital infrastruktur.`,
+    digsam: `Digital samhandling er et veletablert forskningsområde som tar for seg hvordan utøvelse og koordinering av samarbeidsaktiviteter kan støttes ved hjelp av ulike IKT-systemer. Studentene ved denne 2 årige masteren er i stand til å samhandle effektivt i forskjellige tverrfaglige problemløsningsprosesser.`,
     digfor: `Digital forretningsutvikling kombinerer IT, økonomi og ledelse for å skape forretningsutviklere med tverrfaglig kompetanse. For at samfunnet skal digitaliseres er det nødvendig med ledere som har både teknisk og økonomisk kompetanse. Digital forretningsutvikling er lagt opp med høyt fokus på praktisk erfaring innenfor teamarbeid og kommunikasjon. Studiet søker å utdanne dyktige endringsagenter som kan effektivisere arbeidsprosesser og implementere digitale løsninger i bedrifter.`,
-    ads: `Vi tilbyr promotering av stillingsannonser ut til våre 600 dyktige studenter på vår karriereside [tihlde.org/karriere](${URLS.jobposts}).`,
+    ads: `Vi tilbyr promotering av stillingsannonser ut til våre 600 dyktige studenter på vår [karriereside](${URLS.jobposts}).`,
     course: `Et kurs er et faglig arrangement hvor fokuset skal være på å introdusere studentene for faglige erfaringer som de kan få bruk for i arbeidslivet. Kurset kan inneholde en rask presentasjon av bedriften før kurset starter. Vi legger tilrette for matservering på skolen etter kurset, eller bespisning på restaurant i etterkant.`,
     companyTrips: `Under et bedriftsbesøk reiser studentene til bedriftens lokale for et valgfritt arrangement. Et bedriftsbesøk gir dere som bedrift muligheten til å vise studentene frem hvor de kan jobbe, og bli godt kjent med dem. `,
     companies: `En bedriftspresentasjon gir dere som organisasjon mulighet til å presentere dere for TIHLDE sine studenter. Dette er en gylden mulighet til å gjøre studentene bevisst på hvem dere er, hva dere tilbyr og hvordan dere jobber.
@@ -107,10 +108,10 @@ Vi kan også tilrettelegge for speed intervjuer dersom dette er ønskelig.`,
           </Typography>
           <div className={classes.grid}>
             <InfoCard header={getUserStudyLong(UserStudy.DATAING)} justifyText text={text.dataing} />
-            <InfoCard header={getUserStudyLong(UserStudy.DIGSEC)} justifyText text={text.info} />
+            <InfoCard header={getUserStudyLong(UserStudy.DIGSEC)} justifyText text={text.digsec} />
             <InfoCard header={getUserStudyLong(UserStudy.DIGFOR)} justifyText text={text.digfor} />
-            <InfoCard header={getUserStudyLong(UserStudy.DIGSAM)} justifyText text={text.digsec} />
-            <InfoCard header={getUserStudyLong(UserStudy.INFO)} justifyText text={text.info} />
+            <InfoCard header={getUserStudyLong(UserStudy.DIGSAM)} justifyText text={text.digsam} />
+            <InfoCard className={classes.gridWide} header={getUserStudyLong(UserStudy.INFO)} justifyText text={text.info} />
           </div>
         </Container>
       </div>

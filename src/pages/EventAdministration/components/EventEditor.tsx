@@ -77,7 +77,7 @@ type FormValues = Pick<
   start_date: Date;
   start_registration_at: Date;
 };
-const allPriorities = [
+const DEFAULT_PRIORITIES = [
   { user_class: 1, user_study: 1 },
   { user_class: 1, user_study: 2 },
   { user_class: 1, user_study: 3 },
@@ -109,7 +109,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
 
   const setValues = useCallback(
     (newValues: Event | null) => {
-      setRegPriorities(newValues?.registration_priorities || allPriorities);
+      setRegPriorities(newValues?.registration_priorities || DEFAULT_PRIORITIES);
       reset({
         category: newValues?.category || 1,
         description: newValues?.description || '',
@@ -378,7 +378,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                   <Typography>Prioriterte</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <EventRegistrationPriorities priorities={regPriorities} setPriorities={setRegPriorities} />
+                  <EventRegistrationPriorities defaultPriorities={DEFAULT_PRIORITIES} priorities={regPriorities} setPriorities={setRegPriorities} />
                 </AccordionDetails>
               </Accordion>
             </div>
