@@ -13,8 +13,8 @@
 ---
 
 ## Neste versjon
-- ✨ **Infomasjonsbehandling**. Medlemmer kan nå velge studieretningen BAINFO når de registrer seg.
 
+- ✨ **Infomasjonsbehandling**. Medlemmer kan nå velge studieretningen BAINFO når de registrer seg.
 - 🎨 **Design**. Oppdatert utseende på nyheter og jobbannonser.
 
 ## Versjon 1.3.0 (16.11.2021)

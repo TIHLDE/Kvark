@@ -94,56 +94,27 @@ const EventRegistrationPriorities = ({ priorities, setPriorities }: EventRegistr
   return (
     <div className={classes.formWrapper}>
       <FormGroup>
-        {[1, 2, 3, 5, 6].map((userStudy) => {
-          return (
-            <Fragment key={userStudy}>
-              <FormLabel component='legend'>{getUserStudyShort(userStudy)}</FormLabel>
-              <FormGroup className={classes.formGroup} key={userStudy}>
-                {[1, 2, 3].map((userClass) => {
-                  return (
-                    <Button
-                      classes={
-                        priorities.some((item) => item.user_class === userClass && item.user_study === userStudy)
-                          ? { outlinedPrimary: classes.chipYes }
-                          : { outlinedPrimary: classes.chipNo }
-                      }
-                      className={classes.mr}
-                      key={userClass}
-                      onClick={handlePriorityChange(userClass, userStudy)}
-                      variant='outlined'>
-                      {userClass + '. ' + getUserStudyShort(userStudy)}
-                    </Button>
-                  );
-                })}
-              </FormGroup>
-            </Fragment>
-          );
-        })}
-        <FormLabel component='legend'>{getUserStudyShort(4)}</FormLabel>
-        <FormGroup className={classes.formGroup}>
-          <Button
-            classes={
-              priorities.some((item) => item.user_class === 4 && item.user_study === 4)
-                ? { outlinedPrimary: classes.chipYes }
-                : { outlinedPrimary: classes.chipNo }
-            }
-            className={classes.mr}
-            onClick={handlePriorityChange(4, 4)}
-            variant='outlined'>
-            {4 + '. ' + getUserStudyShort(4)}
-          </Button>
-          <Button
-            classes={
-              priorities.some((item) => item.user_class === 5 && item.user_study === 4)
-                ? { outlinedPrimary: classes.chipYes }
-                : { outlinedPrimary: classes.chipNo }
-            }
-            className={classes.mr}
-            onClick={handlePriorityChange(5, 4)}
-            variant='outlined'>
-            {5 + '. ' + getUserStudyShort(4)}
-          </Button>
-        </FormGroup>
+        {[1, 2, 3, 6, 4].map((userStudy) => (
+          <Fragment key={userStudy}>
+            <FormLabel component='legend'>{getUserStudyShort(userStudy)}</FormLabel>
+            <FormGroup className={classes.formGroup} key={userStudy}>
+              {(userStudy === 4 ? [4, 5] : [1, 2, 3]).map((userClass) => (
+                <Button
+                  classes={
+                    priorities.some((item) => item.user_class === userClass && item.user_study === userStudy)
+                      ? { outlinedPrimary: classes.chipYes }
+                      : { outlinedPrimary: classes.chipNo }
+                  }
+                  className={classes.mr}
+                  key={userClass}
+                  onClick={handlePriorityChange(userClass, userStudy)}
+                  variant='outlined'>
+                  {userClass + '. ' + getUserStudyShort(userStudy)}
+                </Button>
+              ))}
+            </FormGroup>
+          </Fragment>
+        ))}
       </FormGroup>
       <FormGroup className={classes.formGroupSmall}>
         <Button className={classes.mr} onClick={toggleAllPriorities(true)} variant='outlined'>
