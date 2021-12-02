@@ -1,4 +1,4 @@
-import { useParams, Routes, Route, Link } from 'react-router-dom';
+import { useParams, Link, Routes, Route } from 'react-router-dom';
 import URLS from 'URLS';
 
 import { useGroup } from 'hooks/Group';
@@ -15,9 +15,8 @@ import GroupInfo from 'pages/Groups/components/GroupInfo';
 import { RouterTabs } from 'components/layout/Tabs';
 
 const GroupDetails = () => {
-  const { slug: slugParameter } = useParams<'slug'>();
-  const slug = (slugParameter || '-').toLowerCase();
-  const { data, isLoading: isLoadingGroup, isError } = useGroup(slug);
+  const { slug } = useParams<'slug'>();
+  const { data, isLoading: isLoadingGroup, isError } = useGroup((slug || '-').toLowerCase());
   useSetNavigationOptions({ title: `Gruppe - ${data?.name || 'Laster...'}` });
 
   const hasWriteAcccess = Boolean(data?.permissions.write);
@@ -57,7 +56,7 @@ const GroupDetails = () => {
       />
       <Divider sx={{ mb: 2 }} />
       <Routes>
-        <Route element={<GroupInfo group={data} />} path='' />
+        <Route element={<GroupInfo />} path='' />
         <Route element={<p>Bøter</p>} path='boter/' />
         <Route element={<p>Lovverk</p>} path='lovverk/' />
       </Routes>

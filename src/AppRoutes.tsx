@@ -84,10 +84,6 @@ const AppRoutes = () => {
           <Route element={<GroupsOverview />} index />
           <Route element={<GroupDetails />} path=':slug/*' />
         </Route>
-        {/* <Route path={URLS.groups}>
-          <Route element={<GroupAdmin />} path=':slug/*' />
-          <Route element={<Groups />} index />
-        </Route> */}
         <Route path={URLS.jobposts}>
           <Route element={<JobPostDetails />} path=':id/*' />
           <Route element={<JobPosts />} index />

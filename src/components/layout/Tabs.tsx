@@ -32,12 +32,10 @@ const Tab = styled(MuiTab)(({ theme }) => ({
   },
 }));
 
-const a11yProps = (value: string | number) => {
-  return {
-    id: `simple-tab-${value}`,
-    'aria-controls': `tabpanel-${value}`,
-  };
-};
+const a11yProps = (value: string | number) => ({
+  id: `tab-${value}`,
+  'aria-controls': `tabpanel-${value}`,
+});
 
 export type TabsProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { ListItem, ListItemText, ListItemAvatar, List, Grid, Typography, Skeleton, Stack } from '@mui/material';
+import { ListItem, ListItemText, ListItemAvatar, Typography, Skeleton, Stack } from '@mui/material';
 import { format, parseISO } from 'date-fns';
 import { useMembershipHistories } from 'hooks/Membership';
 import Pagination from 'components/layout/Pagination';
@@ -34,16 +34,12 @@ const MembersHistoryCard = ({ slug }: MembersHistoryCardProps) => {
   }
 
   return (
-    <Grid container spacing={2}>
-      {Boolean(data?.pages?.length) && (
-        <Grid item xs={12}>
-          <Typography variant='h3'>Tidligere medlemmer:</Typography>
-        </Grid>
-      )}
+    <Stack gap={1}>
+      {Boolean(data?.pages?.length) && <Typography variant='h3'>Tidligere medlemmer:</Typography>}
       <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
-        <List>
+        <Stack gap={1}>
           {prevMembers.map((member) => (
-            <ListItem key={member.user.user_id}>
+            <ListItem disablePadding key={member.user.user_id}>
               <ListItemAvatar>
                 <Avatar user={member.user} />
               </ListItemAvatar>
@@ -55,9 +51,9 @@ const MembersHistoryCard = ({ slug }: MembersHistoryCardProps) => {
               />
             </ListItem>
           ))}
-        </List>
+        </Stack>
       </Pagination>
-    </Grid>
+    </Stack>
   );
 };
 

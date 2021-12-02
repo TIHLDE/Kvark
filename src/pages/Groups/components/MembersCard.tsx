@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { UserBase, UserList } from 'types';
 
-import { ListItem, ListItemText, ListItemAvatar, List, Typography, Skeleton, Stack, Divider } from '@mui/material';
+import { ListItem, ListItemText, ListItemAvatar, Typography, Skeleton, Stack, Divider } from '@mui/material';
 
 import { useMemberships } from 'hooks/Membership';
 import Pagination from 'components/layout/Pagination';
@@ -66,7 +66,7 @@ const MembersCard = ({ slug, showAdmin = false }: MembersCardProps) => {
             {hasWriteAcccess && showAdmin && <AddMemberModal groupSlug={slug} />}
           </Stack>
           <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
-            <List disablePadding sx={{ width: '100%' }}>
+            <Stack gap={1}>
               {members.map((member) =>
                 hasWriteAcccess && showAdmin ? (
                   <MemberListItem key={member.user.user_id} slug={group.slug} user={member.user as UserList} />
@@ -74,7 +74,7 @@ const MembersCard = ({ slug, showAdmin = false }: MembersCardProps) => {
                   <Person key={member.user.user_id} user={member.user} />
                 ),
               )}
-            </List>
+            </Stack>
             {!members.length && <NotFoundIndicator header='Denne gruppen har ingen medlemmer' />}
           </Pagination>
         </Stack>
