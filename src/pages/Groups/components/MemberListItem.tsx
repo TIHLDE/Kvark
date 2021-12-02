@@ -54,6 +54,7 @@ const MemberListItem = ({ slug, user }: MemberListItemProps) => {
       },
     });
   };
+
   return (
     <Paper noOverflow noPadding>
       <Dialog

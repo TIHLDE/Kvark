@@ -1,17 +1,18 @@
 import ErrorCard from 'pages/Pages/specials/Index/ErrorCard';
 import ChangelogCard from 'pages/Pages/specials/Index/ChangelogCard';
-import MembersCard from 'pages/GroupAdmin/components/MembersCard';
+import MembersCard from 'pages/Groups/components/MembersCard';
 import { Groups } from 'types/Enums';
 import InfoCard from 'components/layout/InfoCard';
 import { styled } from '@mui/material';
+import Paper from 'components/layout/Paper';
 
 const List = styled('ul')({
   listStyleType: 'none',
   margin: 0,
 });
 
-const FRONTEND_URL = 'https://raw.githubusercontent.com/tihlde/Kvark/master/CHANGELOG.md';
-const BACKEND_URL = 'https://raw.githubusercontent.com/tihlde/Lepton/master/CHANGELOG.md';
+const FRONTEND_URL = 'https://raw.githubusercontent.com/TIHLDE/Kvark/master/CHANGELOG.md';
+const BACKEND_URL = 'https://raw.githubusercontent.com/TIHLDE/Lepton/master/CHANGELOG.md';
 
 const AboutIndex = () => {
   return (
@@ -27,7 +28,9 @@ const AboutIndex = () => {
       <ChangelogCard changelogURL={FRONTEND_URL} title='Hva har vi gjort i frontend?' />
       <ChangelogCard changelogURL={BACKEND_URL} title='Hva har vi gjort i backend?' />
       <ErrorCard />
-      <MembersCard slug={Groups.INDEX} />
+      <Paper>
+        <MembersCard slug={Groups.INDEX} />
+      </Paper>
     </>
   );
 };

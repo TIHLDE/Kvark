@@ -4,7 +4,7 @@ import { useUserGroups } from 'hooks/User';
 // Material UI Components
 import Grid from '@mui/material/Grid';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import GroupItem, { GroupItemLoading } from 'pages/GroupOverview/components/GroupItem';
+import GroupItem, { GroupItemLoading } from 'pages/Groups/components/GroupItem';
 
 const ProfileGroups = () => {
   const { data } = useUserGroups();

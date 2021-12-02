@@ -59,8 +59,8 @@ const AddMemberModal = ({ groupSlug }: AddMemberModalProps) => {
 
   return (
     <>
-      <Button fullWidth onClick={() => setIsOpen(true)} startIcon={<AddIcon />} variant='outlined'>
-        Legg til medlem
+      <Button onClick={() => setIsOpen(true)} startIcon={<AddIcon />} sx={{ height: 'auto' }} variant='outlined'>
+        Legg til
       </Button>
       <Dialog onClose={() => setIsOpen(false)} open={isOpen} titleText='Legg til medlem'>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -74,7 +74,7 @@ const AddMemberModal = ({ groupSlug }: AddMemberModalProps) => {
                 onChange={(_, user) => onChange(user)}
                 options={options?.[0] || []}
                 renderInput={(params) => (
-                  <TextField margin='normal' {...params} label='Medlem' onChange={(e) => setSearch(e.target.value)} variant='outlined' />
+                  <TextField autoFocus margin='normal' {...params} label='Medlem' onChange={(e) => setSearch(e.target.value)} variant='outlined' />
                 )}
                 renderOption={(props, option) => (
                   <li {...props}>

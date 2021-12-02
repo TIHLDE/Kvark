@@ -36,7 +36,7 @@ const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
   };
   return (
     <>
-      <BannerButton onClick={() => setIsOpen(true)} startIcon={<EditIcon />}>
+      <BannerButton onClick={() => setIsOpen(true)} startIcon={<EditIcon />} sx={{ width: 'auto' }}>
         Rediger gruppe
       </BannerButton>
       <Dialog onClose={() => setIsOpen(false)} open={isOpen} titleText='Oppdater gruppe'>

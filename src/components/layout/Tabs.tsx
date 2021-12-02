@@ -2,6 +2,7 @@ import { ComponentType } from 'react';
 
 // Material UI Components
 import { Tabs as MuiTabs, Tab as MuiTab, styled, TabsProps as MuiTabsProps } from '@mui/material';
+import { Link, useLocation } from 'react-router-dom';
 
 const CustomTabs = styled(MuiTabs)(({ theme }) => ({
   '& .MuiTabs-indicator': {
@@ -76,5 +77,42 @@ const Tabs = ({ tabs, selected, setSelected, ...props }: TabsProps) => (
     })}
   </CustomTabs>
 );
+
+export type RouterTabsProps = {
+  tabs: Array<{
+    icon?: ComponentType;
+    label: string;
+    to: string;
+  }>;
+  marginBottom?: boolean;
+} & MuiTabsProps;
+
+export const RouterTabs = ({ tabs, ...props }: RouterTabsProps) => {
+  const location = useLocation();
+  return (
+    <CustomTabs aria-label='Tabs' value={location.pathname} variant='scrollable' {...props}>
+      {tabs.map((tab, index) => {
+        const Icon = tab.icon && styled(tab.icon)({ verticalAlign: 'middle', marginRight: 7, marginBottom: 3 });
+        return (
+          <Tab
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            component={Link}
+            key={index}
+            label={
+              <div>
+                {Icon && <Icon />}
+                {tab.label}
+              </div>
+            }
+            to={tab.to}
+            value={tab.to}
+            {...a11yProps(tab.to)}
+          />
+        );
+      })}
+    </CustomTabs>
+  );
+};
 
 export default Tabs;
