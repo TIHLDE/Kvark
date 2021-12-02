@@ -82,7 +82,7 @@ Vi kan også tilrettelegge for speed intervjuer dersom dette er ønskelig.`,
     <Page
       banner={
         <Banner text='**Alle arrangementer kan gjennomføres digitalt**' title='For Bedrifter'>
-          <BannerButton onClick={scrollToForm} startIcon={<SendIcon />}>
+          <BannerButton onClick={scrollToForm} startIcon={<SendIcon />} variant='outlined'>
             Send oss en melding
           </BannerButton>
         </Banner>

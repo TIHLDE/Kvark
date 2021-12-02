@@ -17,7 +17,7 @@ const GroupInfo = () => {
     <>
       {(group.description || group.contact_email) && (
         <>
-          <MarkdownRenderer value={`${group.description}${group.contact_email ? ` \nKontakt: ${group.contact_email}` : ''}`} />
+          <MarkdownRenderer value={`${group.description}${group.contact_email ? ` \n\n Kontakt: ${group.contact_email}` : ''}`} />
           <Divider sx={{ my: 2 }} />
         </>
       )}

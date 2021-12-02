@@ -4,13 +4,13 @@ import { EMAIL_REGEX } from 'constant';
 import { useUpdateGroup } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
 import { Group } from 'types';
+import { Button } from '@mui/material';
 
 import EditIcon from '@mui/icons-material/Edit';
 
 import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
 import Dialog from 'components/layout/Dialog';
-import { BannerButton } from 'components/layout/Banner';
 
 export type UpdateGroupModalProps = {
   group: Group;
@@ -36,9 +36,9 @@ const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
   };
   return (
     <>
-      <BannerButton onClick={() => setIsOpen(true)} startIcon={<EditIcon />} sx={{ width: 'auto' }}>
+      <Button onClick={() => setIsOpen(true)} startIcon={<EditIcon />} variant='outlined'>
         Rediger gruppe
-      </BannerButton>
+      </Button>
       <Dialog onClose={() => setIsOpen(false)} open={isOpen} titleText='Oppdater gruppe'>
         <form onSubmit={handleSubmit(submit)}>
           <TextField defaultValue={group.name} formState={formState} label='Gruppenavn' {...register('name', { required: 'Gruppen må ha et navn' })} required />

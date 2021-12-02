@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useParams, Link, Routes, Route } from 'react-router-dom';
 import URLS from 'URLS';
 
@@ -20,6 +21,20 @@ const GroupDetails = () => {
   useSetNavigationOptions({ title: `Gruppe - ${data?.name || 'Laster...'}` });
 
   const hasWriteAcccess = Boolean(data?.permissions.write);
+  const isMemberOfGroup = true;
+  const isFinesActive = true;
+
+  const tabs = useMemo(() => {
+    if (!data) {
+      return [];
+    }
+    const arr = [{ label: 'Om', to: `${URLS.groups}${data.slug}/`, icon: InfoIcon }];
+    if (isMemberOfGroup && isFinesActive) {
+      arr.push({ label: 'Bøter', to: `${URLS.groups}${data.slug}/${URLS.groups_fines}`, icon: FineIcon });
+      arr.push({ label: 'Lovverk', to: `${URLS.groups}${data.slug}/${URLS.groups_laws}`, icon: LawIcon });
+    }
+    return arr;
+  }, [isMemberOfGroup, isFinesActive, data]);
 
   if (isError) {
     return (
@@ -35,7 +50,6 @@ const GroupDetails = () => {
   if (isLoadingGroup || !data) {
     return null;
   }
-
   return (
     <>
       <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
@@ -47,18 +61,20 @@ const GroupDetails = () => {
         </Stack>
         {hasWriteAcccess && <UpdateGroupModal group={data} />}
       </Stack>
-      <RouterTabs
-        tabs={[
-          { label: 'Om', to: `${URLS.groups}${data.slug}/`, icon: InfoIcon },
-          { label: 'Bøter', to: `${URLS.groups}${data.slug}/boter/`, icon: FineIcon },
-          { label: 'Lovverk', to: `${URLS.groups}${data.slug}/lovverk/`, icon: LawIcon },
-        ]}
-      />
-      <Divider sx={{ mb: 2 }} />
+      {tabs.length > 1 && (
+        <>
+          <RouterTabs tabs={tabs} />
+          <Divider sx={{ mb: 2 }} />
+        </>
+      )}
       <Routes>
-        <Route element={<GroupInfo />} path='' />
-        <Route element={<p>Bøter</p>} path='boter/' />
-        <Route element={<p>Lovverk</p>} path='lovverk/' />
+        <Route element={<GroupInfo />} path='*' />
+        {isMemberOfGroup && (
+          <>
+            <Route element={<p>Bøter</p>} path={URLS.groups_fines} />
+            <Route element={<p>Lovverk</p>} path={URLS.groups_laws} />
+          </>
+        )}
       </Routes>
     </>
   );

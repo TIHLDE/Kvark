@@ -118,7 +118,8 @@ const NewStudent = () => {
             href='https://s.tihlde.org/fadderuka-paamelding'
             onClick={fadderukaSignupAnalytics}
             rel='noopener noreferrer'
-            target='_blank'>
+            target='_blank'
+            variant='outlined'>
             Meld deg på fadderuka
           </BannerButton>
           {!isAuthenticated && (
@@ -129,7 +130,7 @@ const NewStudent = () => {
               </Typography>
               {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
               {/* @ts-ignore */}
-              <BannerButton component={Link} endIcon={<SignupIcon />} onClick={createUserAnalytics} to={URLS.signup}>
+              <BannerButton component={Link} endIcon={<SignupIcon />} onClick={createUserAnalytics} to={URLS.signup} variant='outlined'>
                 Opprett bruker her
               </BannerButton>
             </Paper>

@@ -21,6 +21,7 @@ import JobPostDetails from 'pages/JobPostDetails';
 import NewsDetails from 'pages/NewsDetails';
 import Groups from 'pages/Groups';
 import GroupsOverview from 'pages/Groups/components/GroupsOverview';
+import GroupDetails from 'pages/Groups/components/GroupDetails';
 import News from 'pages/News';
 import NewStudent from 'pages/NewStudent';
 import { useGoogleAnalytics } from 'hooks/Utils';
@@ -30,7 +31,6 @@ const EventAdministration = lazy(() => import(/* webpackChunkName: "event_admini
 const EventRegistration = lazy(() => import(/* webpackChunkName: "event_registration" */ 'pages/EventRegistration'));
 const ForgotPassword = lazy(() => import(/* webpackChunkName: "forgot_password" */ 'pages/ForgotPassword'));
 const Form = lazy(() => import(/* webpackChunkName: "form" */ 'pages/Form'));
-const GroupDetails = lazy(() => import(/* webpackChunkName: "group_details" */ 'pages/Groups/components/GroupDetails'));
 const Http404 = lazy(() => import(/* webpackChunkName: "http404" */ 'pages/Http404'));
 const JobPostAdministration = lazy(() => import(/* webpackChunkName: "jobpost_administration" */ 'pages/JobPostAdministration'));
 const LogIn = lazy(() => import(/* webpackChunkName: "login" */ 'pages/LogIn'));
