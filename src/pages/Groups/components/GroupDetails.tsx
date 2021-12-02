@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useParams, Link, Routes, Route } from 'react-router-dom';
+import { useParams, Link, Routes, Route, Navigate } from 'react-router-dom';
 import URLS from 'URLS';
 
 import { useGroup } from 'hooks/Group';
@@ -21,8 +21,8 @@ const GroupDetails = () => {
   useSetNavigationOptions({ title: `Gruppe - ${data?.name || 'Laster...'}` });
 
   const hasWriteAcccess = Boolean(data?.permissions.write);
-  const isMemberOfGroup = true;
-  const isFinesActive = true;
+  const isMemberOfGroup = false;
+  const isFinesActive = false;
 
   const tabs = useMemo(() => {
     if (!data) {
@@ -68,13 +68,14 @@ const GroupDetails = () => {
         </>
       )}
       <Routes>
-        <Route element={<GroupInfo />} path='*' />
+        <Route element={<GroupInfo />} path='' />
         {isMemberOfGroup && (
           <>
             <Route element={<p>Bøter</p>} path={URLS.groups_fines} />
             <Route element={<p>Lovverk</p>} path={URLS.groups_laws} />
           </>
         )}
+        <Route element={<Navigate replace to={`${URLS.groups}${data.slug}/`} />} path='*' />
       </Routes>
     </>
   );
