@@ -1,7 +1,7 @@
 // Icons
 import EditIcon from '@mui/icons-material/EditRounded';
-import OpenIcon from '@mui/icons-material/OpenInBrowserRounded';
 import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
+import OpenIcon from '@mui/icons-material/OpenInBrowserRounded';
 import { Collapse, Typography } from '@mui/material';
 // Material-UI
 import { makeStyles } from '@mui/styles';
@@ -17,11 +17,9 @@ import { useSnackbar } from 'hooks/Snackbar';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { Group, GroupForm } from 'types';
+import { Group } from 'types';
 import URLS from 'URLS';
-import FormEditor from 'components/forms/FormEditor';
-import { useGroupForms } from 'hooks/GroupForms';
-import GroupFormAdmin from './components/FormEditList';
+import GroupFormAdmin from './components/GroupFormAdmin';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
 
 const GroupAdministration = () => {
   const classes = useStyles();
-  const navigate = useNavigate();
   const { slug: slugParameter } = useParams<'slug'>();
   const slug = (slugParameter || '-').toLowerCase();
   const { data: group, isLoading: isLoadingGroups, isError } = useGroup(slug);
@@ -60,30 +57,21 @@ const GroupAdministration = () => {
   const updateGroup = useUpdateGroup();
   const showSnackbar = useSnackbar();
 
-  const submit = async (formData: Group) => {
-    const data = { ...group, name: formData.name, description: formData.description, contact_email: formData.contact_email };
-    // updateGroup.mutate(data, {
-    //   onSuccess: () => {
-    //     showSnackbar('Gruppe oppdatert', 'success');
-    //   },
-    //   onError: (e) => {
-    //     showSnackbar(e.detail, 'error');
-    //   },
-    // });
-  };
-
-  const goToForm = (newForm: string | number | null) => {
-    if (newForm) {
-      navigate(`${URLS.formsAdmin}${newForm}/`);
-    } else {
-      setTab(editTab.value);
-      navigate(URLS.formsAdmin);
-    }
-  };
-
   if (isLoadingGroups || !group) {
     return null;
   }
+
+  const submit = async (formData: Group) => {
+    const data = { ...group, name: formData.name, description: formData.description, contact_email: formData.contact_email };
+    updateGroup.mutate(data, {
+      onSuccess: () => {
+        showSnackbar('Gruppe oppdatert', 'success');
+      },
+      onError: (e) => {
+        showSnackbar(e.detail, 'error');
+      },
+    });
+  };
 
   return (
     <Page maxWidth={false} options={{ lightColor: 'blue', filledTopbar: true, gutterBottom: true, gutterTop: true, noFooter: true, title: 'Admin grupper' }}>
@@ -105,7 +93,7 @@ const GroupAdministration = () => {
           <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
           <Paper>
             <Collapse in={tab === editTab.value} mountOnEnter>
-              {/* <FormAdmin formId={slug} goToForm={goToForm} /> */}
+              {/* TODO: make component */}
               <form onSubmit={handleSubmit(submit)}>
                 <TextField
                   defaultValue={group.name}
@@ -135,7 +123,7 @@ const GroupAdministration = () => {
             <Collapse in={tab === formsTab.value} mountOnEnter>
               <GroupFormAdmin slug={slug} />
             </Collapse>
-            {tab === navigateTab.value && <Navigate to={`${URLS.form}${slug}/`} />}
+            {tab === navigateTab.value && <Navigate to={`${URLS.groups}${slug}/`} />}
           </Paper>
         </div>
       </div>

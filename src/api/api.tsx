@@ -41,6 +41,7 @@ import {
   StrikeList,
   MembershipHistory,
   GroupForm,
+  GroupFormCreate,
 } from 'types';
 
 export const AUTH_ENDPOINT = 'auth';
@@ -104,7 +105,7 @@ export default {
   getForm: (formId: string) => IFetch<Form>({ method: 'GET', url: `${FORMS_ENDPOINT}/${formId}/` }),
   getForms: (filters?: any) => IFetch<PaginationResponse<Form>>({ method: 'GET', url: `${FORMS_ENDPOINT}/`, data: filters || {} }),
   getFormStatistics: (formId: string) => IFetch<FormStatistics>({ method: 'GET', url: `${FORMS_ENDPOINT}/${formId}/statistics/` }),
-  createForm: (item: FormCreate | EventFormCreate) => IFetch<Form>({ method: 'POST', url: `${FORMS_ENDPOINT}/`, data: item }),
+  createForm: (item: FormCreate | EventFormCreate | GroupFormCreate) => IFetch<Form>({ method: 'POST', url: `${FORMS_ENDPOINT}/`, data: item }),
   updateForm: (formId: string, item: FormUpdate) => IFetch<Form>({ method: 'PUT', url: `${FORMS_ENDPOINT}/${formId}/`, data: item }),
   deleteForm: (formId: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${FORMS_ENDPOINT}/${formId}/` }),
 

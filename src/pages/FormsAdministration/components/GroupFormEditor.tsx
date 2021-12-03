@@ -1,52 +1,95 @@
-import { EventFormCreate } from 'types';
-import { useFormById, useCreateForm, useFormSubmissions } from 'hooks/Form';
-
 // Material UI
-import { Typography, Button } from '@mui/material';
+import { Button } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { useForm } from 'react-hook-form';
+
+import FormEditor from 'components/forms/FormEditor';
+import { useCreateForm } from 'hooks/Form';
+import { useCallback, useState } from 'react';
+import { GroupFormCreate } from 'types';
+import { useSnackbar } from 'hooks/Snackbar';
 
 // Project components
-import FormEditor from 'components/forms/FormEditor';
-import { FormType, FormResourceType } from 'types/Enums';
+import { FormResourceType } from 'types/Enums';
+import TextField from 'components/inputs/TextField';
+import SubmitButton from 'components/inputs/SubmitButton';
 
-export type GroupFormEditorProps = {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'grid',
+    gridGap: theme.spacing(1),
+  },
+  paper: {
+    marginRight: theme.spacing(2),
+  },
+}));
+
+export type GroupFormCreateEditorProps = {
   groupSlug: string;
-  formId: string | null;
 };
 
-const GroupFormEditor = ({ groupSlug, formId }: GroupFormEditorProps) => {
-  const { data, isLoading } = useFormById(formId || '-');
-  const { data: submissions } = useFormSubmissions(formId || '-', 1);
-  const createForm = useCreateForm();
+type FormData = {
+  title: string;
+};
 
-  const newForm: EventFormCreate = {
-    title: String(groupSlug),
-    group: groupSlug,
-    resource_type: FormResourceType.GROUP_FORM,
-    fields: [],
+const GroupFormCreateEditor = ({ groupSlug }: GroupFormCreateEditorProps) => {
+  const classes = useStyles();
+  const [title, setTitle] = useState<string>('');
+  const { mutate: createForm, data, reset, isLoading } = useCreateForm();
+  const { handleSubmit, formState, control, getValues, setError, register } = useForm<FormData>();
+
+  const showSnackbar = useSnackbar();
+
+  const newForm = (data: FormData) =>
+    ({
+      title: data.title,
+      group: groupSlug,
+      resource_type: FormResourceType.GROUP_FORM,
+      fields: [],
+    } as GroupFormCreate);
+
+  const onCreate = async (data: FormData) => {
+    createForm(newForm(data), {
+      onSuccess: () => {
+        showSnackbar('Skjemaet ble opprettet. Legg til noen spørsmål!', 'success');
+      },
+      onError: (e) => {
+        showSnackbar(e.detail, 'error');
+      },
+    });
   };
 
-  const onCreate = async () => createForm.mutate(newForm);
+  const onReset = useCallback(() => {
+    reset();
+    setTitle('');
+  }, [reset]);
 
-  if (!formId) {
+  if (!data) {
     return (
-      <Button fullWidth onClick={onCreate} variant='outlined'>
-        Opprett skjema
-      </Button>
+      <form onSubmit={handleSubmit(onCreate)}>
+        <TextField
+          disabled={false}
+          formState={formState}
+          label='Tittel'
+          required
+          size='small'
+          {...register('title', { required: 'Skjemaet må ha en tittel' })}
+        />
+        <SubmitButton disabled={isLoading} formState={formState} fullWidth variant='outlined'>
+          Opprett nytt skjema
+        </SubmitButton>
+      </form>
     );
-  } else if (isLoading || !data || !submissions) {
-    return <Typography variant='body2'>Laster skjemaet</Typography>;
   }
 
   return (
-    <>
-      {Boolean(submissions.count) && (
-        <Typography gutterBottom variant='body2'>
-          Du kan ikke endre spørsmålene etter at noen har svart på dem
-        </Typography>
-      )}
-      <FormEditor disabled={Boolean(submissions.count)} form={data} />
-    </>
+    <div className={classes.root}>
+      <FormEditor form={data} />
+      <Button fullWidth onClick={onReset} variant='outlined'>
+        Ferdig
+      </Button>
+    </div>
   );
 };
 
-export default GroupFormEditor;
+export default GroupFormCreateEditor;

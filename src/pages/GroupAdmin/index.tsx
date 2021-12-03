@@ -7,7 +7,7 @@ import { useGroupForms } from 'hooks/GroupForms';
 import URLS from 'URLS';
 
 // Material UI
-import { Skeleton, Typography, List, ListItem, ListItemAvatar, ListItemText, Stack, ListItemButton, Icon, ListItemIcon, Button } from '@mui/material';
+import { Skeleton, Typography, List, ListItem, ListItemAvatar, ListItemText, Stack, ListItemButton, ListItemIcon, Button } from '@mui/material';
 import ArrowIcon from '@mui/icons-material/ArrowForwardRounded';
 
 // Project components
@@ -70,15 +70,10 @@ const Group = () => {
                 <>
                   <Typography gutterBottom variant='h3'>
                     Gruppeskjemaer
-                    {hasWriteAccess && (
-                      <Button onClick={toggleIsEditingForms} variant='outlined'>
-                        Rediger
-                      </Button>
-                    )}
                   </Typography>
                   <Typography sx={{ mb: 2 }} variant='subtitle2'>
                     {hasWriteAccess
-                      ? "Dette er skjemaer som tilhører gruppen din. Trykk på 'Rediger' oppe til høyre for å endre, legge til nye eller slette disse."
+                      ? "Dette er skjemaene som tilhører gruppen din. Du kan trykke på 'Rediger gruppe' oppe til høyre for å redigere dem."
                       : 'Her kan du se og svare på skjemaer gruppen har laget for deg.'}
                   </Typography>
                   <Expansion flat header='Vis alle skjemaer'>

@@ -73,7 +73,6 @@ const useStyles = makeStyles()((theme) => ({
 
 export type SidebarListProps<Type> = {
   useHook: (args?: unknown) => InfiniteQueryObserverResult<PaginationResponse<Type>>;
-  hookArguments?: unknown;
   onItemClick: (itemId: null | number | string) => void;
   selectedItemId: number | string;
   title: string;
@@ -89,7 +88,6 @@ export type SidebarListProps<Type> = {
 
 const SidebarList = <Type extends unknown>({
   useHook,
-  hookArguments,
   onItemClick,
   selectedItemId,
   title,

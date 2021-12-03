@@ -30,6 +30,10 @@ export interface GroupForm extends Form {
   resource_type: FormResourceType.GROUP_FORM;
 }
 
+export type GroupFormCreate = Omit<FormCreate, 'type'> & {
+  group: string;
+};
+
 export type EventFormCreate = FormCreate & {
   event: number;
 };

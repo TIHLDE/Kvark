@@ -14,8 +14,11 @@ import {
   Submission,
   SelectFieldSubmission,
   FormStatistics,
+  GroupFormCreate,
+  GroupForm,
 } from 'types';
 import { FormFieldType } from 'types/Enums';
+import { GROUP_FORMS_QUERY_KEY } from './GroupForms';
 
 export const FORM_QUERY_KEY = 'form';
 export const SUBMISSIONS_QUERY_KEY = 'submission';
@@ -32,12 +35,14 @@ export const useFormById = (formId: string) =>
 export const useFormStatisticsById = (formId: string) =>
   useQuery<FormStatistics, RequestResponse>([FORM_QUERY_KEY, formId, STATISTICS_QUERY_KEY], () => API.getFormStatistics(formId), { enabled: formId !== '-' });
 
-export const useCreateForm = <T extends FormCreate | EventFormCreate>(): UseMutationResult<Form, RequestResponse, T, unknown> => {
+export const useCreateForm = <T extends FormCreate | EventFormCreate | GroupFormCreate>(): UseMutationResult<Form, RequestResponse, T, unknown> => {
   const queryClient = useQueryClient();
   return useMutation((newForm: T) => API.createForm(newForm), {
     onSuccess: (data) => {
       if ((data as EventForm).event) {
         queryClient.invalidateQueries([EVENT_QUERY_KEY, (data as EventForm).event.id]);
+      } else if ((data as GroupForm).group) {
+        queryClient.invalidateQueries([GROUP_FORMS_QUERY_KEY, (data as GroupForm).group.slug]);
       }
       queryClient.setQueryData([FORM_QUERY_KEY, data.id], data);
     },
