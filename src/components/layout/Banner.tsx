@@ -59,7 +59,7 @@ const Content = styled('div')(({ theme }) => ({
   paddingTop: theme.spacing(2),
   [theme.breakpoints.down('lg')]: {
     minWidth: 200,
-    padding: theme.spacing(0, 2),
+    padding: theme.spacing(0, 2, 1),
   },
 }));
 
@@ -103,7 +103,7 @@ const Banner = ({ sx, title, text, children }: BannerProps) => (
         </Stack>
       </Container>
     </Box>
-    <Svg viewBox='0 15 500 20' xmlns='http://www.w3.org/2000/svg'>
+    <Svg viewBox='0 20 500 15' xmlns='http://www.w3.org/2000/svg'>
       <SvgPath d='M 0 25 C 251 52 268 10 500 25 L 500 0 L 0 0 Z' />
     </Svg>
   </Box>
