@@ -78,7 +78,8 @@ const FormPage = () => {
   };
 
   // Only allow users to view form if it's an evaluation-form
-  if (isError || (form && form.type !== FormType.EVALUATION)) {
+  if (isError) {
+    //  || (form && form.type !== FormType.EVALUATION)
     return <Http404 />;
   }
 
@@ -102,7 +103,7 @@ const FormPage = () => {
               {subtitle}
             </Typography>
             <Divider sx={{ my: 2 }} />
-            {form.viewer_has_answered ? (
+            {form.viewer_has_answered && form.resource_type !== FormResourceType.GROUP_FORM ? (
               <>
                 <Typography align='center' variant='body2'>
                   Du har allerede svart på dette spørreskjemaet, takk!

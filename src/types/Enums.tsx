@@ -63,6 +63,7 @@ export enum FormType {
 
 export enum FormResourceType {
   EVENT_FORM = 'EventForm',
+  GROUP_FORM = 'GroupForm',
 }
 
 export enum FormFieldType {

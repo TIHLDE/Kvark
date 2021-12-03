@@ -40,6 +40,7 @@ import {
   Warning,
   StrikeList,
   MembershipHistory,
+  GroupForm,
 } from 'types';
 
 export const AUTH_ENDPOINT = 'auth';
@@ -50,6 +51,7 @@ export const EVENTS_ENDPOINT = 'events';
 export const EVENT_REGISTRATIONS_ENDPOINT = 'users';
 export const FORMS_ENDPOINT = 'forms';
 export const GROUPS_ENDPOINT = 'groups';
+export const GROUP_FORMS_ENDPOINT = 'forms';
 export const JOBPOSTS_ENDPOINT = 'jobposts';
 export const ME_ENDPOINT = 'me';
 export const MEMBERSHIPS_ENDPOINT = 'memberships';
@@ -194,6 +196,10 @@ export default {
   getGroups: () => IFetch<Group[]>({ method: 'GET', url: `${GROUPS_ENDPOINT}/` }),
   getGroup: (slug: string) => IFetch<Group>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/` }),
   updateGroup: (slug: string, data: Group) => IFetch<Group>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${slug}/`, data }),
+
+  //Group form
+  getGroupForms: (slug: string, filters?: any) =>
+    IFetch<Array<GroupForm>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/${GROUP_FORMS_ENDPOINT}/`, data: filters || {} }),
 
   // Pages
   getPageTree: () => IFetch<PageTree>({ method: 'GET', url: `${PAGES_ENDPOINT}/tree/` }),

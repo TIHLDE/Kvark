@@ -1,3 +1,4 @@
+import { Group } from 'types/Group';
 import { UserBase } from 'types/User';
 import { EventCompact } from 'types/Event';
 import { FormFieldType, FormResourceType, FormType } from 'types/Enums';
@@ -22,6 +23,11 @@ export interface EventForm extends Form {
   type: FormType.SURVEY | FormType.EVALUATION;
   event: EventCompact;
   resource_type: FormResourceType.EVENT_FORM;
+}
+
+export interface GroupForm extends Form {
+  group: Group;
+  resource_type: FormResourceType.GROUP_FORM;
 }
 
 export type EventFormCreate = FormCreate & {
