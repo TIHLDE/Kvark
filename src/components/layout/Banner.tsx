@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import { Typography, Button, Stack, StackProps, styled, alpha, Box } from '@mui/material';
+import { Typography, Button, Stack, styled, alpha, Box } from '@mui/material';
 import Container from 'components/layout/Container';
 
 export const BannerButton = styled(Button)(({ theme }) => ({
@@ -59,7 +59,7 @@ const Content = styled('div')(({ theme }) => ({
   paddingTop: theme.spacing(2),
   [theme.breakpoints.down('lg')]: {
     minWidth: 200,
-    padding: theme.spacing(0, 2, 1),
+    padding: theme.spacing(0, 2),
   },
 }));
 
@@ -78,14 +78,13 @@ export type BannerProps = {
   text?: string;
   children?: ReactNode;
   background?: string;
-  sx?: StackProps['sx'];
 };
 
-const Banner = ({ sx, title, text, children }: BannerProps) => (
+const Banner = ({ title, text, children }: BannerProps) => (
   <Box sx={{ pb: 1, whiteSpace: 'break-spaces', position: 'relative', width: '100%', overflow: 'hidden' }}>
     <Box sx={{ background: (theme) => theme.palette.colors.gradient.main.top, pt: { xs: 8, lg: 10 }, pb: 0.25 }}>
       <Container maxWidth='xl'>
-        <Stack direction={{ xs: 'column', lg: 'row' }} gap={2} justifyContent='space-between' sx={{ ...sx }}>
+        <Stack direction={{ xs: 'column', lg: 'row' }} gap={2} justifyContent='space-between' sx={{ pb: { xs: 1, lg: 0 } }}>
           <div>
             {title && (
               <Title variant='h1'>

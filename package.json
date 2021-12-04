@@ -36,7 +36,7 @@
     "universal-cookie": "^4.0.4"
   },
   "scripts": {
-    "start": "vite",
+    "start": "vite --host",
     "check": "tsc",
     "build": "tsc && vite build",
     "preview": "vite preview",
