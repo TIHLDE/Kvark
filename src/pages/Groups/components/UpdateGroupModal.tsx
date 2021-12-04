@@ -36,7 +36,7 @@ const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
   };
   return (
     <>
-      <Button onClick={() => setIsOpen(true)} startIcon={<EditIcon />} variant='outlined'>
+      <Button onClick={() => setIsOpen(true)} startIcon={<EditIcon />} sx={{ mb: { sx: 1, lg: 0 } }} variant='outlined'>
         Rediger gruppen
       </Button>
       <Dialog onClose={() => setIsOpen(false)} open={isOpen} titleText='Rediger gruppen'>
