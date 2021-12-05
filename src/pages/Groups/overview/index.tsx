@@ -6,7 +6,7 @@ import { Typography, Grid } from '@mui/material';
 
 // Project Components
 import Paper from 'components/layout/Paper';
-import GroupItem, { GroupItemLoading } from 'pages/Groups/components/GroupItem';
+import GroupItem, { GroupItemLoading } from 'pages/Groups/overview/GroupItem';
 
 const GroupsOverview = () => {
   useSetNavigationOptions({ title: 'Gruppeoversikt' });

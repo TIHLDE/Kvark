@@ -12,7 +12,7 @@ import LawIcon from '@mui/icons-material/GavelRounded';
 
 // Project Components
 import GroupAdmin from 'pages/Groups/components/GroupAdmin';
-import GroupInfo from 'pages/Groups/components/GroupInfo';
+import GroupInfo from 'pages/Groups/about';
 import { RouterTabs } from 'components/layout/Tabs';
 
 const GroupDetails = () => {

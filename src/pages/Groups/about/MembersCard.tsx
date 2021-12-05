@@ -7,8 +7,8 @@ import { useMemberships } from 'hooks/Membership';
 import Pagination from 'components/layout/Pagination';
 import { useGroup } from 'hooks/Group';
 import Avatar from 'components/miscellaneous/Avatar';
-import MemberListItem from 'pages/Groups/components/MemberListItem';
-import AddGroupMember from 'pages/Groups/components/AddGroupMember';
+import MemberListItem from 'pages/Groups/about/MemberListItem';
+import AddGroupMember from 'pages/Groups/about/AddGroupMember';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
 export type MembersCardProps = {
