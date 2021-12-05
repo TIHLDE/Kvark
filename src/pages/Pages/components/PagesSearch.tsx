@@ -37,9 +37,12 @@ const PagesSearch = () => {
   const pages = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen((prev) => !prev);
+
   return (
     <>
-      <BannerButton onClick={toggle}>Søk</BannerButton>
+      <BannerButton onClick={toggle} variant='outlined'>
+        Søk
+      </BannerButton>
       <Dialog onClose={toggle} open={open}>
         <TextField fullWidth label='Søk etter side' onChange={(e) => setSearch(e.target.value)} value={search} variant='outlined' />
         <Collapse in={Boolean(pages.length && !isLoading)}>

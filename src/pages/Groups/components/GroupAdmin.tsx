@@ -4,19 +4,19 @@ import { EMAIL_REGEX } from 'constant';
 import { useUpdateGroup } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
 import { Group } from 'types';
+import { Button } from '@mui/material';
 
 import EditIcon from '@mui/icons-material/Edit';
 
 import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
 import Dialog from 'components/layout/Dialog';
-import { BannerButton } from 'components/layout/Banner';
 
 export type UpdateGroupModalProps = {
   group: Group;
 };
 
-const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
+const GroupAdmin = ({ group }: UpdateGroupModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { register, formState, handleSubmit } = useForm();
   const updateGroup = useUpdateGroup();
@@ -27,7 +27,7 @@ const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
     updateGroup.mutate(data, {
       onSuccess: () => {
         setIsOpen(false);
-        showSnackbar('Gruppe oppdatert', 'success');
+        showSnackbar('Gruppen ble oppdatert', 'success');
       },
       onError: (e) => {
         showSnackbar(e.detail, 'error');
@@ -36,10 +36,10 @@ const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
   };
   return (
     <>
-      <BannerButton onClick={() => setIsOpen(true)} startIcon={<EditIcon />}>
-        Rediger gruppe
-      </BannerButton>
-      <Dialog onClose={() => setIsOpen(false)} open={isOpen} titleText='Oppdater gruppe'>
+      <Button onClick={() => setIsOpen(true)} startIcon={<EditIcon />} variant='outlined'>
+        Rediger gruppen
+      </Button>
+      <Dialog onClose={() => setIsOpen(false)} open={isOpen} titleText='Rediger gruppen'>
         <form onSubmit={handleSubmit(submit)}>
           <TextField defaultValue={group.name} formState={formState} label='Gruppenavn' {...register('name', { required: 'Gruppen må ha et navn' })} required />
           <TextField defaultValue={group.description} formState={formState} label='Gruppebeskrivelse' multiline {...register('description')} rows={6} />
@@ -56,7 +56,7 @@ const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
             type='email'
           />
           <SubmitButton disabled={updateGroup.isLoading} formState={formState} sx={{ mt: 2 }}>
-            Oppdater gruppe
+            Oppdater gruppen
           </SubmitButton>
         </form>
       </Dialog>
@@ -64,4 +64,4 @@ const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
   );
 };
 
-export default UpdateGroupModal;
+export default GroupAdmin;

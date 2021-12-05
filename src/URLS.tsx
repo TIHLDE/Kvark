@@ -20,6 +20,8 @@ export default {
   forgotPassword: '/glemt-passord/',
   form: '/sporreskjema/',
   groups: '/grupper/',
+  groups_fines: 'boter/',
+  groups_laws: 'lovverk/',
   jobposts: '/karriere/',
   landing: '/',
   login: '/logg-inn/',

@@ -34,11 +34,11 @@ const useStyles = makeStyles()((theme) => ({
     position: 'absolute',
     width: '100%',
     height: 500,
-    background: 'linear-gradient(20deg, ' + theme.palette.colors.gradient.main.bottom + ' 20%, ' + theme.palette.colors.gradient.main.top + ' 80%)',
+    background: `linear-gradient(20deg, ${theme.palette.colors.gradient.main.bottom} 20%, ${theme.palette.colors.gradient.main.top} 80%)`,
   },
   content: {
     margin: 'auto',
-    maxWidth: '700px',
+    maxWidth: 920,
     padding: '150px 15px 100px',
     position: 'relative',
     zIndex: 20,
@@ -59,7 +59,7 @@ const useStyles = makeStyles()((theme) => ({
     maxHeight: 90,
   },
   contentButtons: {
-    margin: `${theme.spacing(2)} auto 0`,
+    margin: theme.spacing(2, 'auto', 0),
     display: 'flex',
     justifyContent: 'center',
   },
@@ -67,17 +67,17 @@ const useStyles = makeStyles()((theme) => ({
     color: theme.palette.text.primary,
     backgroundColor: theme.palette.background.paper,
     '&:hover': {
-      backgroundColor: theme.palette.background.paper + 'bb',
+      backgroundColor: `${theme.palette.background.paper}bb`,
     },
-    margin: 'auto 10px',
+    margin: theme.spacing('auto', 1),
   },
   contentButtonSecondary: {
     color: theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
     '&:hover': {
-      color: theme.palette.getContrastText(theme.palette.colors.gradient.main.top) + 'bb',
+      color: `${theme.palette.getContrastText(theme.palette.colors.gradient.main.top)}bb`,
     },
     textDecoration: 'none',
-    margin: 'auto 10px',
+    margin: theme.spacing('auto', 1),
   },
   waveWrapperInner: {
     position: 'absolute',
