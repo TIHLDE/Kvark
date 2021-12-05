@@ -1,15 +1,14 @@
-import { TextField, ListItemText, Button, Autocomplete } from '@mui/material';
-import { useSnackbar } from 'hooks/Snackbar';
-import { Controller, useForm } from 'react-hook-form';
-import { useUsers } from 'hooks/User';
-import { useMemo, useState } from 'react';
-import { getUserClass, getUserStudyShort } from 'utils';
-import { useCreateMembership } from 'hooks/Membership';
-import Dialog from 'components/layout/Dialog';
-import SubmitButton from 'components/inputs/SubmitButton';
-import AddIcon from '@mui/icons-material/Add';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { UserList } from 'types';
-import { useDebounce } from 'hooks/Utils';
+import { Button } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import { useSnackbar } from 'hooks/Snackbar';
+import { useCreateMembership } from 'hooks/Membership';
+
+import Dialog from 'components/layout/Dialog';
+import UserSearch from 'components/inputs/UserSearch';
+import SubmitButton from 'components/inputs/SubmitButton';
 
 export type AddMemberModalProps = {
   groupSlug: string;
@@ -24,19 +23,6 @@ const AddGroupMember = ({ groupSlug }: AddMemberModalProps) => {
   const showSnackbar = useSnackbar();
   const createMembership = useCreateMembership();
   const [isOpen, setIsOpen] = useState(false);
-
-  const [search, setSearch] = useState('');
-  const debouncedSearch = useDebounce(search, 500);
-  const filters = useMemo(() => {
-    const filters: Record<string, unknown> = {};
-    if (debouncedSearch) {
-      filters.search = debouncedSearch;
-    }
-    return filters;
-  }, [debouncedSearch]);
-
-  const { data } = useUsers(filters);
-  const options = data?.pages.map((page) => page.results);
 
   const onSubmit = (formData: FormData) => {
     if (formData.user) {
@@ -64,28 +50,13 @@ const AddGroupMember = ({ groupSlug }: AddMemberModalProps) => {
       </Button>
       <Dialog onClose={() => setIsOpen(false)} open={isOpen} titleText='Legg til medlem'>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Controller
+          <UserSearch
+            autoFocus
             control={control}
+            formState={formState}
+            helperText='Brukeren vil motta en epost/varsel om at de er lagt til i gruppen.'
+            label='Søk etter bruker'
             name='user'
-            render={({ field: { onChange } }) => (
-              <Autocomplete
-                getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
-                noOptionsText={'Fant ingen medlemmer'}
-                onChange={(_, user) => onChange(user)}
-                options={options?.[0] || []}
-                renderInput={(params) => (
-                  <TextField autoFocus margin='normal' {...params} label='Medlem' onChange={(e) => setSearch(e.target.value)} variant='outlined' />
-                )}
-                renderOption={(props, option) => (
-                  <li {...props}>
-                    <ListItemText
-                      primary={`${option.first_name} ${option.last_name}`}
-                      secondary={`${getUserClass(option.user_class)} ${getUserStudyShort(option.user_study)}`}
-                    />
-                  </li>
-                )}
-              />
-            )}
           />
           <SubmitButton disabled={createMembership.isLoading} formState={formState}>
             Legg til medlem
