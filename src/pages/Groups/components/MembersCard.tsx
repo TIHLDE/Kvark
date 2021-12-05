@@ -8,7 +8,7 @@ import Pagination from 'components/layout/Pagination';
 import { useGroup } from 'hooks/Group';
 import Avatar from 'components/miscellaneous/Avatar';
 import MemberListItem from 'pages/Groups/components/MemberListItem';
-import AddMemberModal from 'pages/Groups/components/AddMemberModal';
+import AddGroupMember from 'pages/Groups/components/AddGroupMember';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
 export type MembersCardProps = {
@@ -63,7 +63,7 @@ const MembersCard = ({ slug, showAdmin = false }: MembersCardProps) => {
         <Stack gap={1}>
           <Stack alignItems='center' direction='row' gap={1} justifyContent='space-between'>
             <Typography variant='h3'>Medlemmer:</Typography>
-            {hasWriteAcccess && showAdmin && <AddMemberModal groupSlug={slug} />}
+            {hasWriteAcccess && showAdmin && <AddGroupMember groupSlug={slug} />}
           </Stack>
           <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
             <Stack gap={1}>

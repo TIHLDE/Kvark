@@ -11,7 +11,7 @@ import FineIcon from '@mui/icons-material/PaymentsRounded';
 import LawIcon from '@mui/icons-material/GavelRounded';
 
 // Project Components
-import UpdateGroupModal from 'pages/Groups/components/UpdateGroupModal';
+import GroupAdmin from 'pages/Groups/components/GroupAdmin';
 import GroupInfo from 'pages/Groups/components/GroupInfo';
 import { RouterTabs } from 'components/layout/Tabs';
 
@@ -52,14 +52,14 @@ const GroupDetails = () => {
   }
   return (
     <>
-      <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
-        <Stack direction='row' gap={1} sx={{ mb: 1, alignItems: 'center', flex: 1 }}>
+      <Stack direction={{ xs: 'column', md: 'row' }} gap={1} sx={{ mb: 1 }}>
+        <Stack direction='row' gap={1} sx={{ alignItems: 'center', flex: 1 }}>
           <IconButton component={Link} to={URLS.groups}>
             <ArrowBackIcon />
           </IconButton>
           <Typography variant='h1'>{data.name}</Typography>
         </Stack>
-        {hasWriteAcccess && <UpdateGroupModal group={data} />}
+        {hasWriteAcccess && <GroupAdmin group={data} />}
       </Stack>
       {tabs.length > 1 && (
         <>

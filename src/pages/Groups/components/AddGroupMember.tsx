@@ -19,7 +19,7 @@ type FormData = {
   user?: UserList;
 };
 
-const AddMemberModal = ({ groupSlug }: AddMemberModalProps) => {
+const AddGroupMember = ({ groupSlug }: AddMemberModalProps) => {
   const { control, handleSubmit, formState } = useForm<FormData>();
   const showSnackbar = useSnackbar();
   const createMembership = useCreateMembership();
@@ -96,4 +96,4 @@ const AddMemberModal = ({ groupSlug }: AddMemberModalProps) => {
   );
 };
 
-export default AddMemberModal;
+export default AddGroupMember;

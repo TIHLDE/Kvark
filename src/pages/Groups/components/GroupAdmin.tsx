@@ -16,7 +16,7 @@ export type UpdateGroupModalProps = {
   group: Group;
 };
 
-const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
+const GroupAdmin = ({ group }: UpdateGroupModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { register, formState, handleSubmit } = useForm();
   const updateGroup = useUpdateGroup();
@@ -36,7 +36,7 @@ const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
   };
   return (
     <>
-      <Button onClick={() => setIsOpen(true)} startIcon={<EditIcon />} sx={{ mb: { sx: 1, lg: 0 } }} variant='outlined'>
+      <Button onClick={() => setIsOpen(true)} startIcon={<EditIcon />} variant='outlined'>
         Rediger gruppen
       </Button>
       <Dialog onClose={() => setIsOpen(false)} open={isOpen} titleText='Rediger gruppen'>
@@ -64,4 +64,4 @@ const UpdateGroupModal = ({ group }: UpdateGroupModalProps) => {
   );
 };
 
-export default UpdateGroupModal;
+export default GroupAdmin;
