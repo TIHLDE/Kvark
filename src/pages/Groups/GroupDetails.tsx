@@ -13,28 +13,31 @@ import LawIcon from '@mui/icons-material/GavelRounded';
 // Project Components
 import GroupAdmin from 'pages/Groups/components/GroupAdmin';
 import GroupInfo from 'pages/Groups/about';
+import GroupLaws from 'pages/Groups/laws';
 import { RouterTabs } from 'components/layout/Tabs';
 
 const GroupDetails = () => {
   const { slug } = useParams<'slug'>();
-  const { data, isLoading: isLoadingGroup, isError } = useGroup((slug || '-').toLowerCase());
+  const { data, isLoading: isLoadingGroup, isError } = useGroup(slug || '-');
   useSetNavigationOptions({ title: `Gruppe - ${data?.name || 'Laster...'}` });
 
   const hasWriteAcccess = Boolean(data?.permissions.write);
-  const isMemberOfGroup = false;
-  const isFinesActive = false;
+  const isMemberOfGroup = true;
+  const isFinesActive = Boolean(data?.fines_activated);
+
+  const showFinesAndLaws = isFinesActive && isMemberOfGroup;
 
   const tabs = useMemo(() => {
     if (!data) {
       return [];
     }
     const arr = [{ label: 'Om', to: `${URLS.groups}${data.slug}/`, icon: InfoIcon }];
-    if (isMemberOfGroup && isFinesActive) {
+    if (showFinesAndLaws) {
       arr.push({ label: 'Bøter', to: `${URLS.groups}${data.slug}/${URLS.groups_fines}`, icon: FineIcon });
       arr.push({ label: 'Lovverk', to: `${URLS.groups}${data.slug}/${URLS.groups_laws}`, icon: LawIcon });
     }
     return arr;
-  }, [isMemberOfGroup, isFinesActive, data]);
+  }, [showFinesAndLaws, data]);
 
   if (isError) {
     return (
@@ -69,10 +72,10 @@ const GroupDetails = () => {
       )}
       <Routes>
         <Route element={<GroupInfo />} path='' />
-        {isMemberOfGroup && (
+        {showFinesAndLaws && (
           <>
             <Route element={<p>Bøter</p>} path={URLS.groups_fines} />
-            <Route element={<p>Lovverk</p>} path={URLS.groups_laws} />
+            <Route element={<GroupLaws />} path={URLS.groups_laws} />
           </>
         )}
         <Route element={<Navigate replace to={`${URLS.groups}${data.slug}/`} />} path='*' />

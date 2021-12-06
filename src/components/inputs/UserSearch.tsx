@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { UseFormReturn, FieldError, Path, FieldValues, Controller, RegisterOptions } from 'react-hook-form';
-import { Autocomplete, TextField, ListItemText, TextFieldProps, Chip, Checkbox } from '@mui/material';
+import { Autocomplete, TextField, TextFieldProps, Chip, Checkbox } from '@mui/material';
 import { useUsers } from 'hooks/User';
 import { useDebounce } from 'hooks/Utils';
-import { getUserClass, getUserStudyShort } from 'utils';
 
 import CheckBoxBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import { UserList } from 'types';
+import { Group, UserBase } from 'types';
 
 export type UserSearchProps<FormValues extends FieldValues = FieldValues> = TextFieldProps &
   Pick<UseFormReturn<FormValues>, 'formState' | 'control'> & {
@@ -15,9 +14,22 @@ export type UserSearchProps<FormValues extends FieldValues = FieldValues> = Text
     rules?: RegisterOptions;
     label: string;
     helperText?: React.ReactNode;
-    /** Whether the user should be able to select multiple users. A list of UserList will be returned */
-    multiple?: boolean;
-  };
+    /** Only search for users in a specific group */
+    inGroup?: Group['slug'];
+  } & (
+    | {
+        /** Whether the user should be able to select multiple users. A list of UserBase will be returned */
+        multiple: true;
+        /** Initial selected users */
+        defaultValue?: Array<UserBase>;
+      }
+    | {
+        /** Whether the user should be able to select multiple users. A list of UserBase will be returned */
+        multiple?: false;
+        /** Initial selected users */
+        defaultValue?: UserBase | null;
+      }
+  );
 
 const UserSearch = <FormValues extends FieldValues>({
   name,
@@ -27,16 +39,18 @@ const UserSearch = <FormValues extends FieldValues>({
   formState,
   rules = {},
   helperText,
+  inGroup,
+  defaultValue,
   ...props
 }: UserSearchProps<FormValues>) => {
   const { [name]: fieldError } = formState.errors;
   const error = fieldError as FieldError;
-  const [selected, setSelected] = useState<Array<UserList> | UserList | null>(multiple ? [] : null);
+  const [selected, setSelected] = useState<Array<UserBase> | UserBase | null>(defaultValue || (multiple ? [] : null));
 
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 500);
 
-  const { data, isLoading } = useUsers({ search: debouncedSearch || undefined });
+  const { data, isLoading } = useUsers({ search: debouncedSearch || undefined, in_group: inGroup });
   const options = data?.pages.map((page) => page.results);
 
   return (
@@ -81,10 +95,7 @@ const UserSearch = <FormValues extends FieldValues>({
               {multiple && (
                 <Checkbox checked={selected} checkedIcon={<CheckBoxIcon fontSize='small' />} icon={<CheckBoxBlankIcon fontSize='small' />} sx={{ mr: 1 }} />
               )}
-              <ListItemText
-                primary={`${option.first_name} ${option.last_name}`}
-                secondary={`${getUserClass(option.user_class)} ${getUserStudyShort(option.user_study)}`}
-              />
+              {`${option.first_name} ${option.last_name}`}
             </li>
           )}
           renderTags={(value, getTagProps) =>

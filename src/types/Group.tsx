@@ -9,11 +9,21 @@ export type Group = {
   description: string;
   contact_email: string | null;
   type: GroupType;
-  leader?: UserBase | UserList;
+  leader: UserBase | UserList | null;
   permissions: Permissions;
+  fines_admin: UserBase | UserList | null;
+  fines_activated: boolean;
+  fine_info: string;
+  image: string | null;
+  image_alt: string | null;
 };
 
-export type GroupList = Pick<Group, 'leader' | 'name' | 'slug' | 'type'>;
+export type GroupMutate = Partial<Omit<Group, 'fines_admin' | 'permissions' | 'type'>> &
+  Pick<Group, 'slug'> & {
+    fines_admin?: string | null;
+  };
+
+export type GroupList = Pick<Group, 'description' | 'name' | 'slug' | 'type' | 'contact_email' | 'image' | 'image_alt'>;
 
 export type Membership = {
   user: UserBase | UserList;
@@ -25,3 +35,12 @@ export type MembershipHistory = Membership & {
   start_date: string;
   end_date: string;
 };
+
+export type Law = {
+  id: string;
+  description: string;
+  paragraph: string;
+  amount: number;
+};
+
+export type LawMutate = Omit<Law, 'id'>;

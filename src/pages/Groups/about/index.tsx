@@ -9,7 +9,7 @@ import MembersHistoryCard from 'pages/Groups/about/MembersHistoryCard';
 
 const GroupInfo = () => {
   const { slug } = useParams<'slug'>();
-  const { data: group, isLoading } = useGroup((slug || '-').toLowerCase());
+  const { data: group, isLoading } = useGroup(slug || '-');
   if (isLoading || !group) {
     return null;
   }
