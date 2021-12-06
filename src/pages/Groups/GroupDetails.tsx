@@ -7,7 +7,7 @@ import { useSetNavigationOptions } from 'components/navigation/Navigation';
 import { Typography, Stack, IconButton, Divider } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBackRounded';
 import InfoIcon from '@mui/icons-material/InfoRounded';
-import FineIcon from '@mui/icons-material/PaymentsRounded';
+import FineIcon from '@mui/icons-material/LocalAtmRounded';
 import LawIcon from '@mui/icons-material/GavelRounded';
 
 // Project Components

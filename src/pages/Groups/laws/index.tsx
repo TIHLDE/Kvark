@@ -8,6 +8,7 @@ import { Group, Law, LawMutate } from 'types';
 
 import { Divider, ListItem, ListItemText, ListItemSecondaryAction, IconButton, List, Typography, styled, Button } from '@mui/material';
 import EditIcon from '@mui/icons-material/EditRounded';
+import AddIcon from '@mui/icons-material/AddRounded';
 
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import Dialog from 'components/layout/Dialog';
@@ -80,7 +81,7 @@ const AddLawDialog = ({ groupSlug }: AddLawDialogProps) => {
           <LawItem groupSlug={groupSlug} law={{ ...values, id: '-' }} />
         </Paper>
       </Dialog>
-      <Button fullWidth onClick={() => setDialogOpen(true)} variant='outlined'>
+      <Button fullWidth onClick={() => setDialogOpen(true)} startIcon={<AddIcon />} variant='outlined'>
         Ny lovparagraf
       </Button>
     </>
