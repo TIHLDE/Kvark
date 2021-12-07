@@ -36,11 +36,29 @@ export type MembershipHistory = Membership & {
   end_date: string;
 };
 
-export type Law = {
+export type GroupLaw = {
   id: string;
   description: string;
   paragraph: string;
   amount: number;
 };
 
-export type LawMutate = Omit<Law, 'id'>;
+export type GroupLawMutate = Omit<GroupLaw, 'id'>;
+
+export type GroupFine = {
+  id: string;
+  user: UserBase;
+  amount: number;
+  approved: boolean;
+  payed: boolean;
+  description: string;
+  reason: string;
+  created_by: UserBase;
+  created_at: string;
+};
+
+export type GroupFineCreate = Pick<GroupFine, 'amount' | 'description' | 'reason'> & {
+  user: Array<UserBase['user_id']>;
+};
+
+export type GroupFineMutate = Partial<Pick<GroupFine, 'reason' | 'amount' | 'payed' | 'approved'>>;

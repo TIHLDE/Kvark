@@ -103,6 +103,7 @@ export const RouterTabs = ({ tabs, ...props }: RouterTabsProps) => {
                 {tab.label}
               </div>
             }
+            replace
             to={tab.to}
             value={tab.to}
             {...a11yProps(tab.to)}

@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGroup, useGroupLaws } from 'hooks/Group';
 import { useUser } from 'hooks/User';
@@ -7,7 +6,6 @@ import { List, styled } from '@mui/material';
 
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import Expand from 'components/layout/Expand';
-import Pagination from 'components/layout/Pagination';
 import LawItem from 'pages/Groups/laws/LawItem';
 import AddLawDialog from 'pages/Groups/laws/AddLawDialog';
 
@@ -20,12 +18,11 @@ const GroupLaws = () => {
   const { slug } = useParams<'slug'>();
   const { data: user } = useUser();
   const { data: group } = useGroup(slug || '-');
-  const { data, isLoading, hasNextPage, isFetching, fetchNextPage } = useGroupLaws(slug || '-');
-  const laws = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const { data: laws } = useGroupLaws(slug || '-');
 
   const isAdmin = (Boolean(user) && group?.fines_admin?.user_id === user?.user_id) || group?.permissions.write;
 
-  if (isLoading || !slug || !group) {
+  if (!laws || !slug || !group) {
     return null;
   }
 
@@ -39,13 +36,11 @@ const GroupLaws = () => {
         </div>
       )}
       {isAdmin && <AddLawDialog groupSlug={group.slug} />}
-      <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-        <List>
-          {laws.map((law) => (
-            <LawItem groupSlug={group.slug} isAdmin={isAdmin} key={law.id} law={law} />
-          ))}
-        </List>
-      </Pagination>
+      <List>
+        {laws.map((law) => (
+          <LawItem groupSlug={group.slug} isAdmin={isAdmin} key={law.id} law={law} />
+        ))}
+      </List>
     </>
   );
 };

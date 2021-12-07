@@ -16,11 +16,12 @@ import {
   FormStatistics,
   FormUpdate,
   Group,
+  GroupFine,
+  GroupLaw,
+  GroupLawMutate,
   GroupMutate,
   JobPost,
   JobPostRequired,
-  Law,
-  LawMutate,
   LoginRequestResponse,
   Membership,
   News,
@@ -43,6 +44,8 @@ import {
   Warning,
   StrikeList,
   MembershipHistory,
+  GroupFineCreate,
+  GroupFineMutate,
 } from 'types';
 
 export const AUTH_ENDPOINT = 'auth';
@@ -201,14 +204,23 @@ export default {
   updateGroup: (slug: Group['slug'], data: GroupMutate) => IFetch<Group>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${slug}/`, data }),
 
   // Group laws
-  getGroupLaws: (groupSlug: Group['slug'], filters?: any) =>
-    IFetch<PaginationResponse<Law>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_LAWS_ENDPOINT}/`, data: filters || {} }),
-  createGroupLaw: (groupSlug: Group['slug'], data: LawMutate) =>
-    IFetch<Law>({ method: 'POST', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_LAWS_ENDPOINT}/`, data }),
-  updateGroupLaw: (groupSlug: Group['slug'], lawId: Law['id'], data: LawMutate) =>
-    IFetch<Law>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_LAWS_ENDPOINT}/${lawId}/`, data }),
-  deleteGroupLaw: (groupSlug: Group['slug'], lawId: Law['id']) =>
+  getGroupLaws: (groupSlug: Group['slug']) => IFetch<Array<GroupLaw>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_LAWS_ENDPOINT}/` }),
+  createGroupLaw: (groupSlug: Group['slug'], data: GroupLawMutate) =>
+    IFetch<GroupLaw>({ method: 'POST', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_LAWS_ENDPOINT}/`, data }),
+  updateGroupLaw: (groupSlug: Group['slug'], lawId: GroupLaw['id'], data: GroupLawMutate) =>
+    IFetch<GroupLaw>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_LAWS_ENDPOINT}/${lawId}/`, data }),
+  deleteGroupLaw: (groupSlug: Group['slug'], lawId: GroupLaw['id']) =>
     IFetch<RequestResponse>({ method: 'DELETE', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_LAWS_ENDPOINT}/${lawId}/` }),
+
+  // Group fines
+  getGroupFines: (groupSlug: Group['slug'], filters?: any) =>
+    IFetch<PaginationResponse<GroupFine>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/`, data: filters || {} }),
+  createGroupFine: (groupSlug: Group['slug'], data: GroupFineCreate) =>
+    IFetch<GroupFine>({ method: 'POST', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/`, data }),
+  updateGroupFine: (groupSlug: Group['slug'], fineId: GroupFine['id'], data: GroupFineMutate) =>
+    IFetch<GroupFine>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/${fineId}/`, data }),
+  deleteGroupFine: (groupSlug: Group['slug'], fineId: GroupFine['id']) =>
+    IFetch<RequestResponse>({ method: 'DELETE', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/${fineId}/` }),
 
   // Pages
   getPageTree: () => IFetch<PageTree>({ method: 'GET', url: `${PAGES_ENDPOINT}/tree/` }),

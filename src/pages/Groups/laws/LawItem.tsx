@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useUpdateGroupLaw, useDeleteGroupLaw } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
-import { Group, Law, LawMutate } from 'types';
+import { Group, GroupLaw, GroupLawMutate } from 'types';
 
 import { Divider, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/EditRounded';
@@ -15,7 +15,7 @@ import VerifyDialog from 'components/layout/VerifyDialog';
 
 export type LawItemProps = {
   groupSlug: Group['slug'];
-  law: Law;
+  law: GroupLaw;
   isAdmin?: boolean;
 };
 
@@ -24,7 +24,7 @@ const LawItem = ({ law, groupSlug, isAdmin = false }: LawItemProps) => {
   const deleteLaw = useDeleteGroupLaw(groupSlug, law.id);
   const updateLaw = useUpdateGroupLaw(groupSlug, law.id);
   const showSnackbar = useSnackbar();
-  const { register, formState, handleSubmit, watch } = useForm<LawMutate>({ defaultValues: { ...law } });
+  const { register, formState, handleSubmit, watch } = useForm<GroupLawMutate>({ defaultValues: { ...law } });
   const values = watch();
 
   const handleDeleteLaw = () =>
@@ -37,7 +37,7 @@ const LawItem = ({ law, groupSlug, isAdmin = false }: LawItemProps) => {
       },
     });
 
-  const submit = async (data: LawMutate) =>
+  const submit = async (data: GroupLawMutate) =>
     updateLaw.mutate(data, {
       onSuccess: () => {
         showSnackbar('Lovparagrafen ble oppdatert', 'success');

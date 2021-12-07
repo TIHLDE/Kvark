@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useCreateGroupLaw } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
-import { Group, LawMutate } from 'types';
+import { Group, GroupLawMutate } from 'types';
 
 import { Divider, Typography, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/AddRounded';
@@ -22,14 +22,15 @@ const AddLawDialog = ({ groupSlug }: AddLawDialogProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const createLaw = useCreateGroupLaw(groupSlug);
   const showSnackbar = useSnackbar();
-  const { register, formState, handleSubmit, watch } = useForm<LawMutate>();
+  const { register, formState, handleSubmit, watch, reset } = useForm<GroupLawMutate>();
   const values = watch();
 
-  const submit = async (data: LawMutate) =>
+  const submit = async (data: GroupLawMutate) =>
     createLaw.mutate(data, {
       onSuccess: () => {
         showSnackbar('Lovparagrafen ble opprettet', 'success');
         setDialogOpen(false);
+        reset();
       },
       onError: (e) => {
         showSnackbar(e.detail, 'error');

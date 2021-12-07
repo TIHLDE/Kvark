@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { UserList } from 'types';
+import { UserBase } from 'types';
 import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useSnackbar } from 'hooks/Snackbar';
@@ -15,7 +15,7 @@ export type AddMemberModalProps = {
 };
 
 type FormData = {
-  user?: UserList;
+  user?: UserBase;
 };
 
 const AddGroupMember = ({ groupSlug }: AddMemberModalProps) => {
