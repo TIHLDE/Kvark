@@ -98,7 +98,12 @@ const AddFineDialog = ({ groupSlug }: AddFineDialogProps) => {
       <Fab
         color='primary'
         onClick={() => setDialogOpen(true)}
-        sx={{ position: 'fixed', zIndex: 1, bottom: (theme) => theme.spacing(2), right: (theme) => theme.spacing(2) }}
+        sx={{
+          position: 'fixed',
+          zIndex: 1,
+          bottom: (theme) => ({ xs: theme.spacing(12), lg: theme.spacing(2) }),
+          right: (theme) => theme.spacing(2),
+        }}
         variant='extended'>
         <AddIcon sx={{ mr: 1 }} />
         Gi bot

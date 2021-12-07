@@ -52,7 +52,7 @@ const Fines = () => {
             onChange={({ target: { value } }) => setApprovedFilter(value === 'true' ? true : value === 'false' ? false : undefined)}
             select
             size='small'
-            sx={{ minWidth: 150 }}
+            sx={{ minWidth: 120 }}
             value={String(approvedFilter)}>
             {APPROVED_STATES.map((option) => (
               <MenuItem key={option.label} value={String(option.value)}>
@@ -66,7 +66,7 @@ const Fines = () => {
             onChange={({ target: { value } }) => setPayedFilter(value === 'true' ? true : value === 'false' ? false : undefined)}
             select
             size='small'
-            sx={{ minWidth: 150 }}
+            sx={{ minWidth: 120 }}
             value={String(payedFilter)}>
             {PAYED_STATES.map((option) => (
               <MenuItem key={option.label} value={String(option.value)}>
