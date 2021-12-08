@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, forwardRef, Ref } from 'react';
 import { useForm } from 'react-hook-form';
 import { useCreateGroupFine, useGroupLaws } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
@@ -21,7 +21,7 @@ type FormValues = Omit<GroupFineCreate, 'user'> & {
   user: Array<UserBase>;
 };
 
-const AddFineDialog = ({ groupSlug }: AddFineDialogProps) => {
+const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug }: AddFineDialogProps, ref: Ref<HTMLButtonElement>) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const { data: laws } = useGroupLaws(groupSlug, { enabled: dialogOpen });
   const createFine = useCreateGroupFine(groupSlug);
@@ -40,9 +40,7 @@ const AddFineDialog = ({ groupSlug }: AddFineDialogProps) => {
           showSnackbar('Boten ble opprettet', 'success');
           setDialogOpen(false);
         },
-        onError: (e) => {
-          showSnackbar(e.detail, 'error');
-        },
+        onError: (e) => showSnackbar(e.detail, 'error'),
       },
     );
   };
@@ -60,7 +58,6 @@ const AddFineDialog = ({ groupSlug }: AddFineDialogProps) => {
               label='Hvem har begått et lovbrudd?'
               multiple
               name='user'
-              required
             />
             <Select
               control={control}
@@ -78,7 +75,6 @@ const AddFineDialog = ({ groupSlug }: AddFineDialogProps) => {
                   <ListSubheader key={law.id}>{`§${law.paragraph}`}</ListSubheader>
                 ),
               )}
-              <MenuItem value='custom'>Egendefinert begrunnelse</MenuItem>
             </Select>
             <TextField
               defaultValue={1}
@@ -95,21 +91,12 @@ const AddFineDialog = ({ groupSlug }: AddFineDialogProps) => {
           </form>
         </Dialog>
       )}
-      <Fab
-        color='primary'
-        onClick={() => setDialogOpen(true)}
-        sx={{
-          position: 'fixed',
-          zIndex: 1,
-          bottom: (theme) => ({ xs: theme.spacing(12), lg: theme.spacing(2) }),
-          right: (theme) => theme.spacing(2),
-        }}
-        variant='extended'>
+      <Fab color='primary' onClick={() => setDialogOpen(true)} ref={ref} variant='extended'>
         <AddIcon sx={{ mr: 1 }} />
         Gi bot
       </Fab>
     </>
   );
-};
+});
 
 export default AddFineDialog;

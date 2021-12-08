@@ -1,12 +1,26 @@
 import { useMemo } from 'react';
 import { useMutation, UseMutationResult, useQuery, useQueryClient, useInfiniteQuery, UseQueryOptions, UseInfiniteQueryOptions, QueryKey } from 'react-query';
 import API from 'api/api';
-import { Group, GroupMutate, GroupLaw, RequestResponse, PaginationResponse, GroupLawMutate, GroupFine, GroupFineCreate, GroupFineMutate } from 'types';
+import {
+  Group,
+  GroupMutate,
+  GroupLaw,
+  RequestResponse,
+  PaginationResponse,
+  GroupLawMutate,
+  GroupFine,
+  GroupFineCreate,
+  GroupFineMutate,
+  GroupFineBatchMutate,
+  GroupUserFine,
+  User,
+} from 'types';
 import { GroupType } from 'types/Enums';
 
 export const GROUPS_QUERY_KEY = 'groups';
 export const LAWS_QUERY_KEY = 'laws';
 export const FINES_QUERY_KEY = 'fines';
+export const USER_FINES_QUERY_KEY = 'user-fines';
 
 export const useGroup = (slug: Group['slug']) => {
   return useQuery<Group, RequestResponse>([GROUPS_QUERY_KEY, slug], () => API.getGroup(slug));
@@ -88,6 +102,43 @@ export const useGroupFines = (
     },
   );
 
+export const useGroupUserFines = (
+  groupSlug: Group['slug'],
+  userId: User['user_id'],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  filters?: any,
+  options?: UseInfiniteQueryOptions<PaginationResponse<GroupFine>, RequestResponse, PaginationResponse<GroupFine>, PaginationResponse<GroupFine>, QueryKey>,
+) =>
+  useInfiniteQuery<PaginationResponse<GroupFine>, RequestResponse>(
+    [GROUPS_QUERY_KEY, groupSlug, FINES_QUERY_KEY, USER_FINES_QUERY_KEY, userId, filters],
+    ({ pageParam = 1 }) => API.getGroupUserFines(groupSlug, userId, { ...filters, page: pageParam }),
+    {
+      ...options,
+      getNextPageParam: (lastPage) => lastPage.next,
+    },
+  );
+
+export const useGroupUsersFines = (
+  groupSlug: Group['slug'],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  filters?: any,
+  options?: UseInfiniteQueryOptions<
+    PaginationResponse<GroupUserFine>,
+    RequestResponse,
+    PaginationResponse<GroupUserFine>,
+    PaginationResponse<GroupUserFine>,
+    QueryKey
+  >,
+) =>
+  useInfiniteQuery<PaginationResponse<GroupUserFine>, RequestResponse>(
+    [GROUPS_QUERY_KEY, groupSlug, FINES_QUERY_KEY, USER_FINES_QUERY_KEY, filters],
+    ({ pageParam = 1 }) => API.getGroupUsersFines(groupSlug, { ...filters, page: pageParam }),
+    {
+      ...options,
+      getNextPageParam: (lastPage) => lastPage.next,
+    },
+  );
+
 export const useCreateGroupFine = (groupSlug: Group['slug']): UseMutationResult<GroupFine, RequestResponse, GroupFineCreate, unknown> => {
   const queryClient = useQueryClient();
 
@@ -105,6 +156,16 @@ export const useUpdateGroupFine = (
   const queryClient = useQueryClient();
 
   return useMutation((data) => API.updateGroupFine(groupSlug, fineId, data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries([GROUPS_QUERY_KEY, groupSlug, FINES_QUERY_KEY]);
+    },
+  });
+};
+
+export const useBatchUpdateGroupFine = (groupSlug: Group['slug']): UseMutationResult<RequestResponse, RequestResponse, GroupFineBatchMutate, unknown> => {
+  const queryClient = useQueryClient();
+
+  return useMutation((data) => API.batchUpdateGroupFine(groupSlug, data), {
     onSuccess: () => {
       queryClient.invalidateQueries([GROUPS_QUERY_KEY, groupSlug, FINES_QUERY_KEY]);
     },

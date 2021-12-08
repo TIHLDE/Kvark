@@ -15,6 +15,7 @@ import GroupAdmin from 'pages/Groups/components/GroupAdmin';
 import GroupInfo from 'pages/Groups/about';
 import GroupLaws from 'pages/Groups/laws';
 import GroupFines from 'pages/Groups/fines';
+import { FinesProvider } from 'pages/Groups/fines/FinesContext';
 import { RouterTabs } from 'components/layout/Tabs';
 
 const GroupDetails = () => {
@@ -75,7 +76,14 @@ const GroupDetails = () => {
         <Route element={<GroupInfo />} path='' />
         {showFinesAndLaws && (
           <>
-            <Route element={<GroupFines />} path={URLS.groups_fines} />
+            <Route
+              element={
+                <FinesProvider>
+                  <GroupFines />
+                </FinesProvider>
+              }
+              path={URLS.groups_fines}
+            />
             <Route element={<GroupLaws />} path={URLS.groups_laws} />
           </>
         )}

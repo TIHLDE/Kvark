@@ -17,13 +17,18 @@ import {
   FormUpdate,
   Group,
   GroupFine,
+  GroupFineCreate,
+  GroupFineBatchMutate,
+  GroupFineMutate,
   GroupLaw,
   GroupLawMutate,
   GroupMutate,
+  GroupUserFine,
   JobPost,
   JobPostRequired,
   LoginRequestResponse,
   Membership,
+  MembershipHistory,
   News,
   NewsRequired,
   Notification,
@@ -37,15 +42,12 @@ import {
   ShortLink,
   Strike,
   StrikeCreate,
+  StrikeList,
   Submission,
   User,
   UserCreate,
   UserSubmission,
   Warning,
-  StrikeList,
-  MembershipHistory,
-  GroupFineCreate,
-  GroupFineMutate,
 } from 'types';
 
 export const AUTH_ENDPOINT = 'auth';
@@ -215,10 +217,24 @@ export default {
   // Group fines
   getGroupFines: (groupSlug: Group['slug'], filters?: any) =>
     IFetch<PaginationResponse<GroupFine>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/`, data: filters || {} }),
+  getGroupUsersFines: (groupSlug: Group['slug'], filters?: any) =>
+    IFetch<PaginationResponse<GroupUserFine>>({
+      method: 'GET',
+      url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/${USERS_ENDPOINT}/`,
+      data: filters || {},
+    }),
+  getGroupUserFines: (groupSlug: Group['slug'], userId: User['user_id'], filters?: any) =>
+    IFetch<PaginationResponse<GroupFine>>({
+      method: 'GET',
+      url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/${USERS_ENDPOINT}/${userId}/`,
+      data: filters || {},
+    }),
   createGroupFine: (groupSlug: Group['slug'], data: GroupFineCreate) =>
     IFetch<GroupFine>({ method: 'POST', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/`, data }),
   updateGroupFine: (groupSlug: Group['slug'], fineId: GroupFine['id'], data: GroupFineMutate) =>
     IFetch<GroupFine>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/${fineId}/`, data }),
+  batchUpdateGroupFine: (groupSlug: Group['slug'], data: GroupFineBatchMutate) =>
+    IFetch<RequestResponse>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/batch-update/`, data }),
   deleteGroupFine: (groupSlug: Group['slug'], fineId: GroupFine['id']) =>
     IFetch<RequestResponse>({ method: 'DELETE', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/${fineId}/` }),
 

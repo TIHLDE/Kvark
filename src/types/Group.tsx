@@ -62,3 +62,13 @@ export type GroupFineCreate = Pick<GroupFine, 'amount' | 'description' | 'reason
 };
 
 export type GroupFineMutate = Partial<Pick<GroupFine, 'reason' | 'amount' | 'payed' | 'approved'>>;
+
+export type GroupFineBatchMutate = {
+  fine_ids: Array<GroupFine['id']>;
+  data: GroupFineMutate;
+};
+
+export type GroupUserFine = {
+  user: UserBase;
+  fines_amount: number;
+};

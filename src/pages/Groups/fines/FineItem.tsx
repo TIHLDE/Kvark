@@ -20,19 +20,21 @@ import SubmitButton from 'components/inputs/SubmitButton';
 import Paper from 'components/layout/Paper';
 import Dialog from 'components/layout/Dialog';
 import VerifyDialog from 'components/layout/VerifyDialog';
+import { useCheckedFines, useToggleCheckedFine } from 'pages/Groups/fines/FinesContext';
 
 export type FineItemProps = {
   fine: GroupFine;
   groupSlug: Group['slug'];
   isAdmin?: boolean;
-  checked?: boolean;
-  onCheck?: (id: GroupFine['id']) => void;
+  hideUserInfo?: boolean;
 } & ListItemProps;
 
-const FineItem = ({ fine, groupSlug, isAdmin, checked, onCheck, ...props }: FineItemProps) => {
+const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItemProps) => {
   const showSnackbar = useSnackbar();
   const updateFine = useUpdateGroupFine(groupSlug, fine.id);
   const deleteFine = useDeleteGroupFine(groupSlug, fine.id);
+  const checkedFines = useCheckedFines();
+  const onCheck = useToggleCheckedFine();
   const [editOpen, setEditOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const { register, formState, handleSubmit } = useForm<Pick<GroupFineMutate, 'amount' | 'reason'>>({
@@ -45,21 +47,15 @@ const FineItem = ({ fine, groupSlug, isAdmin, checked, onCheck, ...props }: Fine
         showSnackbar(`Boten er oppdatert}`, 'success');
         setEditOpen(false);
       },
-      onError: (e) => {
-        showSnackbar(e.detail, 'error');
-      },
+      onError: (e) => showSnackbar(e.detail, 'error'),
     });
 
   const toggleApproved = () =>
     updateFine.mutate(
       { approved: !fine.approved },
       {
-        onSuccess: () => {
-          showSnackbar(`Boten er nå markert som ${fine.approved ? 'ikke godkjent' : 'godkjent'}`, 'success');
-        },
-        onError: (e) => {
-          showSnackbar(e.detail, 'error');
-        },
+        onSuccess: () => showSnackbar(`Boten er nå markert som ${fine.approved ? 'ikke godkjent' : 'godkjent'}`, 'success'),
+        onError: (e) => showSnackbar(e.detail, 'error'),
       },
     );
 
@@ -67,12 +63,8 @@ const FineItem = ({ fine, groupSlug, isAdmin, checked, onCheck, ...props }: Fine
     updateFine.mutate(
       { payed: !fine.payed },
       {
-        onSuccess: () => {
-          showSnackbar(`Boten er nå markert som ${fine.payed ? 'ikke betalt' : 'betalt'}`, 'success');
-        },
-        onError: (e) => {
-          showSnackbar(e.detail, 'error');
-        },
+        onSuccess: () => showSnackbar(`Boten er nå markert som ${fine.payed ? 'ikke betalt' : 'betalt'}`, 'success'),
+        onError: (e) => showSnackbar(e.detail, 'error'),
       },
     );
 
@@ -81,16 +73,16 @@ const FineItem = ({ fine, groupSlug, isAdmin, checked, onCheck, ...props }: Fine
       <ListItem
         dense
         disablePadding
-        secondaryAction={isAdmin && onCheck && <Checkbox checked={checked} edge='end' onClick={() => onCheck(fine.id)} />}
+        secondaryAction={isAdmin && onCheck && <Checkbox checked={checkedFines.includes(fine.id)} edge='end' onClick={() => onCheck(fine.id)} />}
         {...props}>
-        <ListItemButton onClick={() => setExpanded((prev) => !prev)}>
+        <ListItemButton onClick={() => setExpanded((prev) => !prev)} sx={{ py: 0 }}>
           <Typography sx={{ fontWeight: 'bold', ml: 0.5, mr: 2 }} variant='h3'>
             {fine.amount}
           </Typography>
           <ListItemText
             primary={
               <>
-                {`${fine.user.first_name} ${fine.user.last_name}`}
+                {hideUserInfo ? fine.description : `${fine.user.first_name} ${fine.user.last_name}`}
                 <Tooltip title={`Boten er ${fine.approved ? '' : 'ikke '} godkjent`}>
                   <ApprovedIcon color={fine.approved ? 'success' : 'error'} sx={{ fontSize: 'inherit', ml: 0.5, mb: '-1px' }} />
                 </Tooltip>
@@ -99,14 +91,14 @@ const FineItem = ({ fine, groupSlug, isAdmin, checked, onCheck, ...props }: Fine
                 </Tooltip>
               </>
             }
-            secondary={fine.description}
+            secondary={hideUserInfo ? formatDate(parseISO(fine.created_at), { fullDayOfWeek: true, fullMonth: true }) : fine.description}
           />
           {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItemButton>
       </ListItem>
       <Collapse in={expanded}>
         <Divider />
-        <Stack gap={1} sx={{ p: 2 }}>
+        <Stack gap={1} sx={{ p: [1, undefined, 2] }}>
           <div>
             {fine.reason && <Typography variant='subtitle2'>{`Begrunnelse: ${fine.reason}`}</Typography>}
             <Typography variant='subtitle2'>{`Opprettet av: ${fine.created_by.first_name} ${fine.created_by.last_name}`}</Typography>
