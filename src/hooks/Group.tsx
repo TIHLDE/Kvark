@@ -61,9 +61,7 @@ export const useCreateGroupLaw = (groupSlug: Group['slug']): UseMutationResult<G
   const queryClient = useQueryClient();
 
   return useMutation((data) => API.createGroupLaw(groupSlug, data), {
-    onSuccess: () => {
-      queryClient.invalidateQueries([GROUPS_QUERY_KEY, groupSlug, LAWS_QUERY_KEY]);
-    },
+    onSuccess: () => queryClient.invalidateQueries([GROUPS_QUERY_KEY, groupSlug, LAWS_QUERY_KEY]),
   });
 };
 
@@ -71,9 +69,7 @@ export const useUpdateGroupLaw = (groupSlug: Group['slug'], lawId: GroupLaw['id'
   const queryClient = useQueryClient();
 
   return useMutation((data) => API.updateGroupLaw(groupSlug, lawId, data), {
-    onSuccess: () => {
-      queryClient.invalidateQueries([GROUPS_QUERY_KEY, groupSlug, LAWS_QUERY_KEY]);
-    },
+    onSuccess: () => queryClient.invalidateQueries([GROUPS_QUERY_KEY, groupSlug, LAWS_QUERY_KEY]),
   });
 };
 
@@ -81,9 +77,7 @@ export const useDeleteGroupLaw = (groupSlug: Group['slug'], lawId: GroupLaw['id'
   const queryClient = useQueryClient();
 
   return useMutation(() => API.deleteGroupLaw(groupSlug, lawId), {
-    onSuccess: () => {
-      queryClient.invalidateQueries([GROUPS_QUERY_KEY, groupSlug, LAWS_QUERY_KEY]);
-    },
+    onSuccess: () => queryClient.invalidateQueries([GROUPS_QUERY_KEY, groupSlug, LAWS_QUERY_KEY]),
   });
 };
 
@@ -143,9 +137,7 @@ export const useCreateGroupFine = (groupSlug: Group['slug']): UseMutationResult<
   const queryClient = useQueryClient();
 
   return useMutation((data) => API.createGroupFine(groupSlug, data), {
-    onSuccess: () => {
-      queryClient.invalidateQueries([GROUPS_QUERY_KEY, groupSlug, FINES_QUERY_KEY]);
-    },
+    onSuccess: () => queryClient.invalidateQueries([GROUPS_QUERY_KEY, groupSlug, FINES_QUERY_KEY]),
   });
 };
 
@@ -156,9 +148,7 @@ export const useUpdateGroupFine = (
   const queryClient = useQueryClient();
 
   return useMutation((data) => API.updateGroupFine(groupSlug, fineId, data), {
-    onSuccess: () => {
-      queryClient.invalidateQueries([GROUPS_QUERY_KEY, groupSlug, FINES_QUERY_KEY]);
-    },
+    onSuccess: () => queryClient.invalidateQueries([GROUPS_QUERY_KEY, groupSlug, FINES_QUERY_KEY]),
   });
 };
 
@@ -166,9 +156,18 @@ export const useBatchUpdateGroupFine = (groupSlug: Group['slug']): UseMutationRe
   const queryClient = useQueryClient();
 
   return useMutation((data) => API.batchUpdateGroupFine(groupSlug, data), {
-    onSuccess: () => {
-      queryClient.invalidateQueries([GROUPS_QUERY_KEY, groupSlug, FINES_QUERY_KEY]);
-    },
+    onSuccess: () => queryClient.invalidateQueries([GROUPS_QUERY_KEY, groupSlug, FINES_QUERY_KEY]),
+  });
+};
+
+export const useBatchUpdateUserGroupFines = (
+  groupSlug: Group['slug'],
+  userId: User['user_id'],
+): UseMutationResult<RequestResponse, RequestResponse, GroupFineMutate, unknown> => {
+  const queryClient = useQueryClient();
+
+  return useMutation((data) => API.batchUpdateUserGroupFines(groupSlug, userId, data), {
+    onSuccess: () => queryClient.invalidateQueries([GROUPS_QUERY_KEY, groupSlug, FINES_QUERY_KEY]),
   });
 };
 
@@ -179,8 +178,6 @@ export const useDeleteGroupFine = (
   const queryClient = useQueryClient();
 
   return useMutation(() => API.deleteGroupFine(groupSlug, fineId), {
-    onSuccess: () => {
-      queryClient.invalidateQueries([GROUPS_QUERY_KEY, groupSlug, FINES_QUERY_KEY]);
-    },
+    onSuccess: () => queryClient.invalidateQueries([GROUPS_QUERY_KEY, groupSlug, FINES_QUERY_KEY]),
   });
 };

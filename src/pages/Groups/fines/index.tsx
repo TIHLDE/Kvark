@@ -6,6 +6,7 @@ import { useUser } from 'hooks/User';
 import { List, Stack, ToggleButton, ToggleButtonGroup, TextField, MenuItem, useMediaQuery, Theme, Collapse } from '@mui/material';
 
 import Pagination from 'components/layout/Pagination';
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import FineItem from 'pages/Groups/fines/FineItem';
 import UserFineItem from 'pages/Groups/fines/UserFineItem';
 import AddFineDialog from 'pages/Groups/fines/AddFineDialog';
@@ -41,6 +42,7 @@ const Fines = () => {
   const fines = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   const {
     data: userFinesData,
+    isLoading: userFinesIsLoading,
     hasNextPage: userFinesHasNextPage,
     isFetching: userFinesIsFetching,
     fetchNextPage: userFinesFetchNextPage,
@@ -49,7 +51,7 @@ const Fines = () => {
 
   const isAdmin = (Boolean(user) && group?.fines_admin?.user_id === user?.user_id) || group?.permissions.write;
 
-  if (isLoading || !slug || !group) {
+  if (!slug || !group) {
     return null;
   }
 
@@ -117,6 +119,7 @@ const Fines = () => {
       )}
       <Collapse in={tab === 'all'} mountOnEnter>
         <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
+          {!isLoading && !fines.length && <NotFoundIndicator header='Fant ingen bøter' subtitle='Du finner kanskje bøter med en annen filtrering' />}
           <Stack component={List} gap={1}>
             {fines.map((fine) => (
               <FineItem fine={fine} groupSlug={group.slug} isAdmin={isAdmin} key={fine.id} />
@@ -126,6 +129,9 @@ const Fines = () => {
       </Collapse>
       <Collapse in={tab === 'users'} mountOnEnter>
         <Pagination fullWidth hasNextPage={userFinesHasNextPage} isLoading={userFinesIsFetching} nextPage={() => userFinesFetchNextPage()}>
+          {!userFinesIsLoading && !userFines.length && (
+            <NotFoundIndicator header='Fant ingen bøter' subtitle='Du finner kanskje bøter med en annen filtrering' />
+          )}
           <Stack component={List} gap={1}>
             {userFines.map((userFine) => (
               <UserFineItem groupSlug={group.slug} isAdmin={isAdmin} key={userFine.user.user_id} userFine={userFine} />
