@@ -1,6 +1,7 @@
 import { useState, forwardRef, Ref } from 'react';
 import { useBatchUpdateGroupFine } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
+import { useGoogleAnalytics } from 'hooks/Utils';
 import { Group, GroupFineBatchMutate } from 'types';
 
 import { Fab, Stack, Button, Zoom } from '@mui/material';
@@ -16,13 +17,15 @@ export type FineBatchUpdateDialogProps = {
 };
 
 const FineBatchUpdateDialog = forwardRef(function FineBatchUpdateDialog({ groupSlug }: FineBatchUpdateDialogProps, ref: Ref<HTMLButtonElement>) {
+  const { event } = useGoogleAnalytics();
   const checkedFines = useCheckedFines();
   const clearCheckedFines = useClearCheckedFines();
   const [dialogOpen, setDialogOpen] = useState(false);
   const batchUpdateFines = useBatchUpdateGroupFine(groupSlug);
   const showSnackbar = useSnackbar();
 
-  const onBatchUpdate = (data: GroupFineBatchMutate['data']) =>
+  const onBatchUpdate = (data: GroupFineBatchMutate['data']) => {
+    event('update-batch', 'fines', `Updated a batch of fines`);
     batchUpdateFines.mutate(
       { fine_ids: checkedFines, data },
       {
@@ -34,6 +37,7 @@ const FineBatchUpdateDialog = forwardRef(function FineBatchUpdateDialog({ groupS
         onError: (e) => showSnackbar(e.detail, 'error'),
       },
     );
+  };
 
   return (
     <>

@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { GroupUserFine } from 'types';
 import { useGroupUserFines, useBatchUpdateUserGroupFines } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
+import { useGoogleAnalytics } from 'hooks/Utils';
 import { Collapse, ListItem, ListItemText, Stack, Typography, List, Divider } from '@mui/material';
 
 // Icons
@@ -24,6 +25,7 @@ export type UserFineItemProps = Pick<FineItemProps, 'groupSlug' | 'isAdmin'> & {
 
 const UserFineItem = ({ userFine, groupSlug, isAdmin }: UserFineItemProps) => {
   const [expanded, setExpanded] = useState(false);
+  const { event } = useGoogleAnalytics();
   const finesFilter = useFinesFilter();
   const showSnackbar = useSnackbar();
   const updateUserFines = useBatchUpdateUserGroupFines(groupSlug, userFine.user.user_id);
@@ -31,7 +33,8 @@ const UserFineItem = ({ userFine, groupSlug, isAdmin }: UserFineItemProps) => {
   const { data, hasNextPage, isFetching, fetchNextPage } = useGroupUserFines(groupSlug, userFine.user.user_id, finesFilter, { enabled: expanded });
   const fines = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
-  const toggleApproved = () =>
+  const toggleApproved = () => {
+    event('update-batch', 'fines', `Approved all fines of user`);
     updateUserFines.mutate(
       { approved: true },
       {
@@ -39,8 +42,10 @@ const UserFineItem = ({ userFine, groupSlug, isAdmin }: UserFineItemProps) => {
         onError: (e) => showSnackbar(e.detail, 'error'),
       },
     );
+  };
 
-  const togglePayed = () =>
+  const togglePayed = () => {
+    event('update-batch', 'fines', `Payed all fines of user`);
     updateUserFines.mutate(
       { payed: true },
       {
@@ -48,7 +53,7 @@ const UserFineItem = ({ userFine, groupSlug, isAdmin }: UserFineItemProps) => {
         onError: (e) => showSnackbar(e.detail, 'error'),
       },
     );
-
+  };
   return (
     <Paper noOverflow noPadding>
       <ListItem button dense onClick={() => setExpanded((prev) => !prev)}>

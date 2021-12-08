@@ -5,6 +5,7 @@ import { GroupFine, GroupFineMutate, Group } from 'types';
 import { formatDate } from 'utils';
 import { useUpdateGroupFine, useDeleteGroupFine } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
+import { useGoogleAnalytics } from 'hooks/Utils';
 import { ListItem, ListItemButton, ListItemProps, Typography, Collapse, Button, Checkbox, Stack, Divider, ListItemText, Tooltip } from '@mui/material';
 
 // Icons
@@ -30,6 +31,7 @@ export type FineItemProps = {
 } & ListItemProps;
 
 const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItemProps) => {
+  const { event } = useGoogleAnalytics();
   const showSnackbar = useSnackbar();
   const updateFine = useUpdateGroupFine(groupSlug, fine.id);
   const deleteFine = useDeleteGroupFine(groupSlug, fine.id);
@@ -41,7 +43,8 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItem
     defaultValues: { amount: fine.amount, reason: fine.reason },
   });
 
-  const onUpdateFine = (data: Pick<GroupFineMutate, 'amount' | 'reason'>) =>
+  const onUpdateFine = (data: Pick<GroupFineMutate, 'amount' | 'reason'>) => {
+    event('update', 'fines', `Updated a single fine`);
     updateFine.mutate(data, {
       onSuccess: () => {
         showSnackbar(`Boten er oppdatert}`, 'success');
@@ -49,8 +52,10 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItem
       },
       onError: (e) => showSnackbar(e.detail, 'error'),
     });
+  };
 
-  const toggleApproved = () =>
+  const toggleApproved = () => {
+    event('update', 'fines', `Approved a single fine`);
     updateFine.mutate(
       { approved: !fine.approved },
       {
@@ -58,8 +63,10 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItem
         onError: (e) => showSnackbar(e.detail, 'error'),
       },
     );
+  };
 
-  const togglePayed = () =>
+  const togglePayed = () => {
+    event('update', 'fines', `Payed a single fine`);
     updateFine.mutate(
       { payed: !fine.payed },
       {
@@ -67,6 +74,7 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItem
         onError: (e) => showSnackbar(e.detail, 'error'),
       },
     );
+  };
 
   return (
     <Paper noOverflow noPadding>

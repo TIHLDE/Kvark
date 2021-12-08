@@ -16,9 +16,10 @@ export type Group = {
   fine_info: string;
   image: string | null;
   image_alt: string | null;
+  viewer_is_member: boolean;
 };
 
-export type GroupMutate = Partial<Omit<Group, 'fines_admin' | 'permissions' | 'type'>> &
+export type GroupMutate = Partial<Omit<Group, 'fines_admin' | 'permissions' | 'type' | 'viewer_is_member'>> &
   Pick<Group, 'slug'> & {
     fines_admin?: string | null;
   };

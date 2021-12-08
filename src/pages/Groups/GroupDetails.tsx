@@ -24,10 +24,10 @@ const GroupDetails = () => {
   useSetNavigationOptions({ title: `Gruppe - ${data?.name || 'Laster...'}` });
 
   const hasWriteAcccess = Boolean(data?.permissions.write);
-  const isMemberOfGroup = true;
+  const isMemberOfGroup = Boolean(data?.viewer_is_member);
   const isFinesActive = Boolean(data?.fines_activated);
 
-  const showFinesAndLaws = isFinesActive && isMemberOfGroup;
+  const showFinesAndLaws = isFinesActive && (isMemberOfGroup || hasWriteAcccess);
 
   const tabs = useMemo(() => {
     if (!data) {
