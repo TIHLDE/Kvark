@@ -56,7 +56,7 @@ const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug }: AddFineDi
           onClose={() => setDialogOpen(false)}
           open={dialogOpen}
           titleText='Gi bot'>
-          {Boolean(laws.length) && (
+          {Boolean(laws.filter((l) => Boolean(l.description)).length) && (
             <form onSubmit={handleSubmit(submit)}>
               <UserSearch
                 control={control}
