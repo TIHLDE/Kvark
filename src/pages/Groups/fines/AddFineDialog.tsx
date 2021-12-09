@@ -48,15 +48,17 @@ const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug }: AddFineDi
     );
   };
 
+  const selectableLawExists = Boolean(laws.filter((l) => Boolean(l.description)).length);
+
   return (
     <>
       {laws !== undefined && (
         <Dialog
-          contentText={!laws.length ? 'Du må legge til minst en lov i lovverket før du kan gi bot' : undefined}
+          contentText={!selectableLawExists ? 'Du må legge til minst en lov i lovverket før du kan gi bot' : undefined}
           onClose={() => setDialogOpen(false)}
           open={dialogOpen}
           titleText='Gi bot'>
-          {Boolean(laws.filter((l) => Boolean(l.description)).length) && (
+          {selectableLawExists && (
             <form onSubmit={handleSubmit(submit)}>
               <UserSearch
                 control={control}
