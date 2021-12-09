@@ -48,7 +48,7 @@ const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug }: AddFineDi
     );
   };
 
-  const selectableLawExists = Boolean(laws.filter((l) => Boolean(l.description)).length);
+  const selectableLawExists = Boolean(laws?.filter((l) => Boolean(l.description)).length);
 
   return (
     <>
