@@ -104,19 +104,17 @@ const Fines = () => {
           <ToggleButton value='users'>Bøter per medlem</ToggleButton>
         </ToggleButtonGroup>
       </Stack>
-      {isAdmin && (
-        <Stack
-          gap={1}
-          sx={{
-            position: 'fixed',
-            zIndex: 1,
-            bottom: (theme) => ({ xs: theme.spacing(12), lg: theme.spacing(2) }),
-            right: (theme) => theme.spacing(2),
-          }}>
-          <FineBatchUpdateDialog groupSlug={group.slug} />
-          <AddFineDialog groupSlug={group.slug} />
-        </Stack>
-      )}
+      <Stack
+        gap={1}
+        sx={{
+          position: 'fixed',
+          zIndex: 1,
+          bottom: (theme) => ({ xs: theme.spacing(12), lg: theme.spacing(2) }),
+          right: (theme) => theme.spacing(2),
+        }}>
+        {isAdmin && <FineBatchUpdateDialog groupSlug={group.slug} size={lgUp ? 'large' : 'medium'} />}
+        <AddFineDialog groupSlug={group.slug} size={lgUp ? 'large' : 'medium'} />
+      </Stack>
       <Collapse in={tab === 'all'} mountOnEnter>
         <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
           {!isLoading && !fines.length && <NotFoundIndicator header='Fant ingen bøter' subtitle='Du finner kanskje bøter med en annen filtrering' />}

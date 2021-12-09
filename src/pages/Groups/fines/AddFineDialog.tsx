@@ -5,7 +5,7 @@ import { useSnackbar } from 'hooks/Snackbar';
 import { useGoogleAnalytics } from 'hooks/Utils';
 import { Group, GroupFineCreate, UserBase } from 'types';
 
-import { Fab, MenuItem, ListSubheader } from '@mui/material';
+import { Fab, MenuItem, ListSubheader, FabProps } from '@mui/material';
 import AddIcon from '@mui/icons-material/AddRounded';
 
 import Dialog from 'components/layout/Dialog';
@@ -14,7 +14,7 @@ import UserSearch from 'components/inputs/UserSearch';
 import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
 
-export type AddFineDialogProps = {
+export type AddFineDialogProps = FabProps & {
   groupSlug: Group['slug'];
 };
 
@@ -22,7 +22,7 @@ type FormValues = Omit<GroupFineCreate, 'user'> & {
   user: Array<UserBase>;
 };
 
-const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug }: AddFineDialogProps, ref: Ref<HTMLButtonElement>) {
+const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug, ...props }: AddFineDialogProps, ref: Ref<HTMLButtonElement>) {
   const { event } = useGoogleAnalytics();
   const [dialogOpen, setDialogOpen] = useState(false);
   const { data: laws } = useGroupLaws(groupSlug, { enabled: dialogOpen });
@@ -30,7 +30,7 @@ const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug }: AddFineDi
   const showSnackbar = useSnackbar();
   const { register, formState, handleSubmit, control } = useForm<FormValues>();
 
-  const submit = async (data: FormValues) => {
+  const submit = (data: FormValues) => {
     if (!data.user?.length) {
       showSnackbar('Du må velge minst en person', 'warning');
       return;
@@ -48,7 +48,7 @@ const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug }: AddFineDi
     );
   };
 
-  const selectableLawExists = Boolean(laws?.filter((l) => Boolean(l.description)).length);
+  const selectableLawExists = Boolean(laws?.filter((law) => Boolean(law.description)).length);
 
   return (
     <>
@@ -57,7 +57,7 @@ const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug }: AddFineDi
           contentText={!selectableLawExists ? 'Du må legge til minst en lov i lovverket før du kan gi bot' : undefined}
           onClose={() => setDialogOpen(false)}
           open={dialogOpen}
-          titleText='Gi bot'>
+          titleText='Ny bot'>
           {selectableLawExists && (
             <form onSubmit={handleSubmit(submit)}>
               <UserSearch
@@ -102,7 +102,7 @@ const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug }: AddFineDi
           )}
         </Dialog>
       )}
-      <Fab color='primary' onClick={() => setDialogOpen(true)} ref={ref} variant='extended'>
+      <Fab color='primary' variant='extended' {...props} onClick={() => setDialogOpen(true)} ref={ref}>
         <AddIcon sx={{ mr: 1 }} />
         Ny bot
       </Fab>

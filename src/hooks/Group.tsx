@@ -6,14 +6,14 @@ import {
   Group,
   GroupMutate,
   GroupLaw,
-  RequestResponse,
-  PaginationResponse,
   GroupLawMutate,
   GroupFine,
   GroupFineCreate,
   GroupFineMutate,
   GroupFineBatchMutate,
   GroupUserFine,
+  PaginationResponse,
+  RequestResponse,
   User,
 } from 'types';
 import { GroupType } from 'types/Enums';

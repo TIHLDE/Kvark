@@ -25,22 +25,22 @@ const AddGroupMember = ({ groupSlug }: AddMemberModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const onSubmit = (formData: FormData) => {
-    if (formData.user) {
-      createMembership.mutate(
-        { groupSlug: groupSlug, userId: formData.user.user_id },
-        {
-          onSuccess: () => {
-            showSnackbar('Medlem lagt til', 'success');
-            setIsOpen(false);
-          },
-          onError: (e) => {
-            showSnackbar(e.detail, 'error');
-          },
-        },
-      );
-    } else {
+    if (!formData.user) {
       showSnackbar('Du har ikke valgt et medlem', 'warning');
+      return;
     }
+    createMembership.mutate(
+      { groupSlug: groupSlug, userId: formData.user.user_id },
+      {
+        onSuccess: () => {
+          showSnackbar('Medlem lagt til', 'success');
+          setIsOpen(false);
+        },
+        onError: (e) => {
+          showSnackbar(e.detail, 'error');
+        },
+      },
+    );
   };
 
   return (

@@ -25,16 +25,14 @@ const AddLawDialog = ({ groupSlug }: AddLawDialogProps) => {
   const { register, formState, handleSubmit, watch, reset } = useForm<GroupLawMutate>();
   const values = watch();
 
-  const submit = async (data: GroupLawMutate) =>
+  const submit = (data: GroupLawMutate) =>
     createLaw.mutate(data, {
       onSuccess: () => {
         showSnackbar('Lovparagrafen ble opprettet', 'success');
         setDialogOpen(false);
         reset();
       },
-      onError: (e) => {
-        showSnackbar(e.detail, 'error');
-      },
+      onError: (e) => showSnackbar(e.detail, 'error'),
     });
 
   return (

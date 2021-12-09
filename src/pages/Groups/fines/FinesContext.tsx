@@ -2,6 +2,9 @@ import { useState } from 'react';
 import constate from 'constate';
 import { GroupFine } from 'types';
 
+/**
+ * Holds the state of which fines-filters is selected and which fines have been checked
+ */
 const useFines = () => {
   const [finesFilter, setFinesFilter] = useState<{ approved?: boolean; payed?: boolean }>({ payed: false });
   const [checkedFines, setCheckedFines] = useState<Array<GroupFine['id']>>([]);

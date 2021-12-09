@@ -31,6 +31,11 @@ export type UserSearchProps<FormValues extends FieldValues = FieldValues> = Text
       }
   );
 
+/**
+ * Search for users in TIHLDE. Should be used in a React-Hook-Form.
+ * You can either find a single user or multiple.
+ * Use the `inGroup`-prop to only search for users in a specific group.
+ */
 const UserSearch = <FormValues extends FieldValues>({
   name,
   label,

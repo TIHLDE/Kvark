@@ -29,22 +29,14 @@ const LawItem = ({ law, groupSlug, isAdmin = false }: LawItemProps) => {
 
   const handleDeleteLaw = () =>
     deleteLaw.mutate(null, {
-      onSuccess: (data) => {
-        showSnackbar(data.detail, 'success');
-      },
-      onError: (e) => {
-        showSnackbar(e.detail, 'error');
-      },
+      onSuccess: (data) => showSnackbar(data.detail, 'success'),
+      onError: (e) => showSnackbar(e.detail, 'error'),
     });
 
-  const submit = async (data: GroupLawMutate) =>
+  const submit = (data: GroupLawMutate) =>
     updateLaw.mutate(data, {
-      onSuccess: () => {
-        showSnackbar('Lovparagrafen ble oppdatert', 'success');
-      },
-      onError: (e) => {
-        showSnackbar(e.detail, 'error');
-      },
+      onSuccess: () => showSnackbar('Lovparagrafen ble oppdatert', 'success'),
+      onError: (e) => showSnackbar(e.detail, 'error'),
     });
 
   return (

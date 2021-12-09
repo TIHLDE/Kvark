@@ -4,7 +4,7 @@ import { useSnackbar } from 'hooks/Snackbar';
 import { useGoogleAnalytics } from 'hooks/Utils';
 import { Group, GroupFineBatchMutate } from 'types';
 
-import { Fab, Stack, Button, Zoom } from '@mui/material';
+import { Fab, Stack, Button, Zoom, FabProps } from '@mui/material';
 import EditIcon from '@mui/icons-material/EditRounded';
 import PayedIcon from '@mui/icons-material/CreditScoreRounded';
 import ApprovedIcon from '@mui/icons-material/DoneOutlineRounded';
@@ -12,11 +12,11 @@ import ApprovedIcon from '@mui/icons-material/DoneOutlineRounded';
 import Dialog from 'components/layout/Dialog';
 import { useCheckedFines, useClearCheckedFines } from 'pages/Groups/fines/FinesContext';
 
-export type FineBatchUpdateDialogProps = {
+export type FineBatchUpdateDialogProps = FabProps & {
   groupSlug: Group['slug'];
 };
 
-const FineBatchUpdateDialog = forwardRef(function FineBatchUpdateDialog({ groupSlug }: FineBatchUpdateDialogProps, ref: Ref<HTMLButtonElement>) {
+const FineBatchUpdateDialog = forwardRef(function FineBatchUpdateDialog({ groupSlug, ...props }: FineBatchUpdateDialogProps, ref: Ref<HTMLButtonElement>) {
   const { event } = useGoogleAnalytics();
   const checkedFines = useCheckedFines();
   const clearCheckedFines = useClearCheckedFines();
@@ -56,7 +56,7 @@ const FineBatchUpdateDialog = forwardRef(function FineBatchUpdateDialog({ groupS
         </Stack>
       </Dialog>
       <Zoom in={Boolean(checkedFines.length)}>
-        <Fab color='primary' onClick={() => setDialogOpen(true)} ref={ref} variant='extended'>
+        <Fab color='primary' variant='extended' {...props} onClick={() => setDialogOpen(true)} ref={ref}>
           <EditIcon sx={{ mr: 1 }} />
           Endre
         </Fab>
