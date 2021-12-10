@@ -201,13 +201,8 @@ const GenericMarkdownEditor = <FormValues extends FieldValues>(props: TextFieldP
 
   const HelperText = () => (
     <>
-      {Boolean(props.error && props.helperText) && (
-        <>
-          {props.helperText}
-          <br />
-        </>
-      )}
       <HelpText onClick={() => setHelpDialogOpen(true)}>Hvordan formaterer jeg teksten?</HelpText>
+      {Boolean(props.helperText) && <>{props.helperText}</>}
     </>
   );
 
@@ -215,6 +210,7 @@ const GenericMarkdownEditor = <FormValues extends FieldValues>(props: TextFieldP
     <>
       <TextField
         {...props}
+        error={Boolean(props.error)}
         fullWidth
         helperText={<HelperText />}
         label={props.label || 'Beskrivelse'}

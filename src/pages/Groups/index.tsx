@@ -5,7 +5,7 @@ import Paper from 'components/layout/Paper';
 import { PrimaryTopBox } from 'components/layout/TopBox';
 
 const Groups = () => (
-  <Page banner={<PrimaryTopBox />} options={{ title: 'Gruppeoversikt' }}>
+  <Page banner={<PrimaryTopBox />}>
     <Paper sx={{ margin: '-60px auto 60px', position: 'relative' }}>
       <Outlet />
     </Paper>

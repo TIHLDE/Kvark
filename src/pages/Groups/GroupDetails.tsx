@@ -7,34 +7,39 @@ import { useSetNavigationOptions } from 'components/navigation/Navigation';
 import { Typography, Stack, IconButton, Divider } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBackRounded';
 import InfoIcon from '@mui/icons-material/InfoRounded';
-import FineIcon from '@mui/icons-material/PaymentsRounded';
+import FineIcon from '@mui/icons-material/LocalAtmRounded';
 import LawIcon from '@mui/icons-material/GavelRounded';
 
 // Project Components
 import GroupAdmin from 'pages/Groups/components/GroupAdmin';
-import GroupInfo from 'pages/Groups/components/GroupInfo';
+import GroupInfo from 'pages/Groups/about';
+import GroupLaws from 'pages/Groups/laws';
+import GroupFines from 'pages/Groups/fines';
+import { FinesProvider } from 'pages/Groups/fines/FinesContext';
 import { RouterTabs } from 'components/layout/Tabs';
 
 const GroupDetails = () => {
   const { slug } = useParams<'slug'>();
-  const { data, isLoading: isLoadingGroup, isError } = useGroup((slug || '-').toLowerCase());
+  const { data, isLoading: isLoadingGroup, isError } = useGroup(slug || '-');
   useSetNavigationOptions({ title: `Gruppe - ${data?.name || 'Laster...'}` });
 
   const hasWriteAcccess = Boolean(data?.permissions.write);
-  const isMemberOfGroup = false;
-  const isFinesActive = false;
+  const isMemberOfGroup = Boolean(data?.viewer_is_member);
+  const isFinesActive = Boolean(data?.fines_activated);
+
+  const showFinesAndLaws = isFinesActive && (isMemberOfGroup || hasWriteAcccess);
 
   const tabs = useMemo(() => {
     if (!data) {
       return [];
     }
     const arr = [{ label: 'Om', to: `${URLS.groups}${data.slug}/`, icon: InfoIcon }];
-    if (isMemberOfGroup && isFinesActive) {
+    if (showFinesAndLaws) {
       arr.push({ label: 'Bøter', to: `${URLS.groups}${data.slug}/${URLS.groups_fines}`, icon: FineIcon });
       arr.push({ label: 'Lovverk', to: `${URLS.groups}${data.slug}/${URLS.groups_laws}`, icon: LawIcon });
     }
     return arr;
-  }, [isMemberOfGroup, isFinesActive, data]);
+  }, [showFinesAndLaws, data]);
 
   if (isError) {
     return (
@@ -69,10 +74,17 @@ const GroupDetails = () => {
       )}
       <Routes>
         <Route element={<GroupInfo />} path='' />
-        {isMemberOfGroup && (
+        {showFinesAndLaws && (
           <>
-            <Route element={<p>Bøter</p>} path={URLS.groups_fines} />
-            <Route element={<p>Lovverk</p>} path={URLS.groups_laws} />
+            <Route
+              element={
+                <FinesProvider>
+                  <GroupFines />
+                </FinesProvider>
+              }
+              path={URLS.groups_fines}
+            />
+            <Route element={<GroupLaws />} path={URLS.groups_laws} />
           </>
         )}
         <Route element={<Navigate replace to={`${URLS.groups}${data.slug}/`} />} path='*' />

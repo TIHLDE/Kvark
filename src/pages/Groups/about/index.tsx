@@ -3,13 +3,13 @@ import { useGroup } from 'hooks/Group';
 import { Divider } from '@mui/material';
 
 // Project components
-import MembersCard from 'pages/Groups/components/MembersCard';
+import MembersCard from 'pages/Groups/about/MembersCard';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import MembersHistoryCard from 'pages/Groups/components/MembersHistoryCard';
+import MembersHistoryCard from 'pages/Groups/about/MembersHistoryCard';
 
 const GroupInfo = () => {
   const { slug } = useParams<'slug'>();
-  const { data: group, isLoading } = useGroup((slug || '-').toLowerCase());
+  const { data: group, isLoading } = useGroup(slug || '-');
   if (isLoading || !group) {
     return null;
   }

@@ -18,7 +18,7 @@ import PagesAdmin from 'pages/Pages/components/PagesAdmin';
 import PagesList from 'pages/Pages/components/PagesList';
 import PagesSearch from 'pages/Pages/components/PagesSearch';
 import ShareButton from 'components/miscellaneous/ShareButton';
-const MembersCard = lazy(() => import('pages/Groups/components/MembersCard'));
+const MembersCard = lazy(() => import('pages/Groups/about/MembersCard'));
 const Index = lazy(() => import('pages/Pages/specials/Index'));
 
 type ThemeProps = {

@@ -6,6 +6,7 @@ import { PermissionApp } from 'types/Enums';
 // Services
 import { useSetRedirectUrl } from 'hooks/Misc';
 import { useHavePermission, useIsAuthenticated } from 'hooks/User';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 // Project components
 import Page from 'components/navigation/Page';
@@ -20,11 +21,10 @@ import JobPosts from 'pages/JobPosts';
 import JobPostDetails from 'pages/JobPostDetails';
 import NewsDetails from 'pages/NewsDetails';
 import Groups from 'pages/Groups';
-import GroupsOverview from 'pages/Groups/components/GroupsOverview';
-import GroupDetails from 'pages/Groups/components/GroupDetails';
+import GroupsOverview from 'pages/Groups/overview';
+import GroupDetails from 'pages/Groups/GroupDetails';
 import News from 'pages/News';
 import NewStudent from 'pages/NewStudent';
-import { useGoogleAnalytics } from 'hooks/Utils';
 
 const Cheatsheet = lazy(() => import(/* webpackChunkName: "cheatsheet" */ 'pages/Cheatsheet'));
 const EventAdministration = lazy(() => import(/* webpackChunkName: "event_administration" */ 'pages/EventAdministration'));
@@ -46,7 +46,7 @@ type AuthRouteProps = {
   element: ReactElement;
 };
 
-const AuthRoute = ({ apps = [], element }: AuthRouteProps) => {
+export const AuthRoute = ({ apps = [], element }: AuthRouteProps) => {
   const setLogInRedirectURL = useSetRedirectUrl();
   const isAuthenticated = useIsAuthenticated();
   const { allowAccess, isLoading } = useHavePermission(apps);
