@@ -89,7 +89,7 @@ const EventAdministration = () => {
         descKey='start_date'
         formatDesc={(desc) => formatDate(parseISO(desc))}
         idKey='id'
-        onItemClick={(id: number | null | string) => goToEvent(id || null)}
+        onItemClick={(id: number | null) => goToEvent(id || null)}
         selectedItemId={Number(eventId)}
         title='Arrangementer'
         titleKey='title'

@@ -1,3 +1,5 @@
+import { Group } from 'types';
+
 const PAGES = '/om/';
 export const PAGES_URLS = {
   ABOUT_INDEX: 'tihlde/undergrupper/index/',
@@ -10,7 +12,7 @@ export const PAGES_URLS = {
   PROMO: 'tihlde/undergrupper/promo/',
 };
 
-export default {
+const URLS = {
   cheatsheet: '/kokebok/',
   company: '/bedrifter/',
   contactInfo: `${PAGES}${PAGES_URLS.CONTACT_US}`,
@@ -19,9 +21,16 @@ export default {
   eventRules: `${PAGES}${PAGES_URLS.EVENT_RULES}`,
   forgotPassword: '/glemt-passord/',
   form: '/sporreskjema/',
-  groups: '/grupper/',
-  groups_fines: 'boter/',
-  groups_laws: 'lovverk/',
+  groups: {
+    index: '/grupper/',
+    details: (groupSlug: Group['slug']) => `${URLS.groups.index}${groupSlug}/`,
+    fines_relative: 'boter/',
+    fines: (groupSlug: Group['slug']) => `${URLS.groups.details(groupSlug)}${URLS.groups.fines_relative}`,
+    forms_relative: 'skjemaer/',
+    forms: (groupSlug: Group['slug']) => `${URLS.groups.details(groupSlug)}${URLS.groups.forms_relative}`,
+    laws_relative: 'lovverk/',
+    laws: (groupSlug: Group['slug']) => `${URLS.groups.details(groupSlug)}${URLS.groups.laws_relative}`,
+  },
   jobposts: '/karriere/',
   landing: '/',
   login: '/logg-inn/',
@@ -38,6 +47,6 @@ export default {
   eventAdmin: '/admin/arrangementer/',
   jobpostsAdmin: '/admin/karriere/',
   newsAdmin: '/admin/nyheter/',
-  formsAdmin: '/admin/skjemaer/',
-  groupAdmin: '/admin/grupper/',
 };
+
+export default URLS;

@@ -31,7 +31,6 @@ const EventAdministration = lazy(() => import(/* webpackChunkName: "event_admini
 const EventRegistration = lazy(() => import(/* webpackChunkName: "event_registration" */ 'pages/EventRegistration'));
 const ForgotPassword = lazy(() => import(/* webpackChunkName: "forgot_password" */ 'pages/ForgotPassword'));
 const Form = lazy(() => import(/* webpackChunkName: "form" */ 'pages/Form'));
-const FormsAdmin = lazy(() => import(/* webpackChunkName: "form" */ 'pages/FormsAdministration'));
 const Http404 = lazy(() => import(/* webpackChunkName: "http404" */ 'pages/Http404'));
 const JobPostAdministration = lazy(() => import(/* webpackChunkName: "jobpost_administration" */ 'pages/JobPostAdministration'));
 const LogIn = lazy(() => import(/* webpackChunkName: "login" */ 'pages/LogIn'));
@@ -81,7 +80,7 @@ const AppRoutes = () => {
         </Route>
         <Route element={<Companies />} path={URLS.company} />
         <Route element={<AuthRoute element={<Form />} />} path={`${URLS.form}:id/`} />
-        <Route element={<Groups />} path={`${URLS.groups}*`}>
+        <Route element={<Groups />} path={`${URLS.groups.index}*`}>
           <Route element={<GroupsOverview />} index />
           <Route element={<GroupDetails />} path=':slug/*' />
         </Route>
@@ -112,7 +111,6 @@ const AppRoutes = () => {
         </Route>
         <Route element={<AuthRoute apps={[PermissionApp.USER]} element={<UserAdmin />} />} path={URLS.userAdmin} />
         <Route element={<AuthRoute apps={[PermissionApp.STRIKE]} element={<StrikeAdmin />} />} path={URLS.strikeAdmin} />
-        <Route element={<AuthRoute apps={[PermissionApp.GROUP]} element={<FormsAdmin />} />} path={`${URLS.groupAdmin}:slug/`} />
 
         <Route element={<LogIn />} path={URLS.login} />
         <Route element={<ForgotPassword />} path={URLS.forgotPassword} />

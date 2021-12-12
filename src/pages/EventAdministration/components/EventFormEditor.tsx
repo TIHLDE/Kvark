@@ -1,5 +1,5 @@
 import { EventFormCreate } from 'types';
-import { useFormById, useCreateForm, useFormSubmissions } from 'hooks/Form';
+import { useFormById, useCreateForm } from 'hooks/Form';
 
 // Material UI
 import { Typography, Button } from '@mui/material';
@@ -16,7 +16,6 @@ export type EventFormEditorProps = {
 
 const EventFormEditor = ({ eventId, formId, formType }: EventFormEditorProps) => {
   const { data, isLoading } = useFormById(formId || '-');
-  const { data: submissions } = useFormSubmissions(formId || '-', 1);
   const createForm = useCreateForm();
 
   const newForm: EventFormCreate = {
@@ -35,20 +34,11 @@ const EventFormEditor = ({ eventId, formId, formType }: EventFormEditorProps) =>
         Opprett skjema
       </Button>
     );
-  } else if (isLoading || !data || !submissions) {
+  } else if (isLoading || !data) {
     return <Typography variant='body2'>Laster skjemaet</Typography>;
   }
 
-  return (
-    <>
-      {Boolean(submissions.count) && (
-        <Typography gutterBottom variant='body2'>
-          Du kan ikke endre spørsmålene etter at noen har svart på dem
-        </Typography>
-      )}
-      <FormEditor disabled={Boolean(submissions.count)} form={data} />
-    </>
-  );
+  return <FormEditor form={data} />;
 };
 
 export default EventFormEditor;

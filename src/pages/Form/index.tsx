@@ -77,11 +77,13 @@ const FormPage = () => {
     });
   };
 
-  // Only allow users to view form if it's an evaluation-form
-  if (isError) {
-    //  || (form && form.type !== FormType.EVALUATION)
+  const isEventFormButNotEvaluation = Boolean(form && form.resource_type === FormResourceType.EVENT_FORM && form.type !== FormType.EVALUATION);
+
+  if (isError || isEventFormButNotEvaluation) {
     return <Http404 />;
   }
+
+  const canAnswerForm = Boolean(form && (!form.viewer_has_answered || form.resource_type === FormResourceType.GROUP_FORM));
 
   return (
     <Page banner={<PrimaryTopBox />} options={{ title: `${form?.title || 'Laster spørreskjema...'} - Spørreskjema` }}>
@@ -103,21 +105,7 @@ const FormPage = () => {
               {subtitle}
             </Typography>
             <Divider sx={{ my: 2 }} />
-            {form.viewer_has_answered && form.resource_type !== FormResourceType.GROUP_FORM ? (
-              <>
-                <Typography align='center' variant='body2'>
-                  Du har allerede svart på dette spørreskjemaet, takk!
-                </Typography>
-                <Stack direction={{ xs: 'column', md: 'row' }} gap={1} sx={{ mt: 2 }}>
-                  <Button component={Link} fullWidth to={URLS.landing} variant='outlined'>
-                    Gå til forsiden
-                  </Button>
-                  <Button component={Link} fullWidth to={URLS.profile} variant='outlined'>
-                    Gå til profilen
-                  </Button>
-                </Stack>
-              </>
-            ) : (
+            {canAnswerForm ? (
               <form onSubmit={handleSubmit(submit)}>
                 {form && (
                   <FormView
@@ -134,6 +122,20 @@ const FormPage = () => {
                   Send inn svar
                 </SubmitButton>
               </form>
+            ) : (
+              <>
+                <Typography align='center' variant='body2'>
+                  Du har allerede svart på dette spørreskjemaet, takk!
+                </Typography>
+                <Stack direction={{ xs: 'column', md: 'row' }} gap={1} sx={{ mt: 2 }}>
+                  <Button component={Link} fullWidth to={URLS.landing} variant='outlined'>
+                    Gå til forsiden
+                  </Button>
+                  <Button component={Link} fullWidth to={URLS.profile} variant='outlined'>
+                    Gå til profilen
+                  </Button>
+                </Stack>
+              </>
             )}
           </>
         ) : (

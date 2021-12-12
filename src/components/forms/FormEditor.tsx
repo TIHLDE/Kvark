@@ -1,38 +1,25 @@
 import { useEffect, useState, useRef } from 'react';
 import { Form, TextFormField, SelectFormField } from 'types';
 import { FormFieldType } from 'types/Enums';
-import { useUpdateForm, useDeleteForm } from 'hooks/Form';
+import { useUpdateForm, useDeleteForm, useFormSubmissions } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
-
-// Material UI
-import { makeStyles } from '@mui/styles';
-import { ClickAwayListener, Grow, Paper, Popper, TextField, MenuItem, MenuList, Button, Grid } from '@mui/material';
+import { ClickAwayListener, Grow, Paper, Popper, TextField, Typography, MenuItem, MenuList, Button, Stack } from '@mui/material';
 
 // Project components
 import VerifyDialog from 'components/layout/VerifyDialog';
 import FieldEditor from 'components/forms/FieldEditor';
 
-const useStyles = makeStyles()((theme) => ({
-  root: {
-    display: 'grid',
-    gridGap: theme.spacing(1),
-  },
-  paper: {
-    marginRight: theme.spacing(2),
-  },
-}));
-
 export type FormEditorProps = {
   form: Form;
-  disabled?: boolean;
 };
 
-const FormEditor = ({ form, disabled = false }: FormEditorProps) => {
-  const { classes } = useStyles();
+const FormEditor = ({ form }: FormEditorProps) => {
+  const { data: submissions } = useFormSubmissions(form.id || '-', 1);
+  const disabled = Boolean(submissions?.count);
   const updateForm = useUpdateForm(form.id || '-');
   const deleteForm = useDeleteForm(form.id || '-');
   const showSnackbar = useSnackbar();
-  const [title, setTitle] = useState<string>(form.title);
+  const [title, setTitle] = useState(form.title);
   const [fields, setFields] = useState<Array<TextFormField | SelectFormField>>(form.fields);
   const [addButtonOpen, setAddButtonOpen] = useState(false);
   const buttonAnchorRef = useRef(null);
@@ -114,7 +101,12 @@ const FormEditor = ({ form, disabled = false }: FormEditorProps) => {
 
   return (
     <>
-      <div className={classes.root}>
+      <Stack gap={1}>
+        {disabled && (
+          <Typography gutterBottom variant='body2'>
+            Du kan ikke endre spørsmålene etter at noen har svart på dem
+          </Typography>
+        )}
         <TextField disabled={disabled} fullWidth label='Tittel' maxRows={3} multiline onChange={(e) => setTitle(e.target.value)} size='small' value={title} />
         {fields.map((field, index) => (
           <FieldEditor
@@ -128,19 +120,15 @@ const FormEditor = ({ form, disabled = false }: FormEditorProps) => {
         <Button disabled={disabled} fullWidth onClick={() => setAddButtonOpen(true)} ref={buttonAnchorRef} variant='outlined'>
           Nytt spørsmål
         </Button>
-        <Grid container spacing={2}>
-          <Grid item sm={6} xs={12}>
-            <VerifyDialog color='error' contentText='Sletting av skjema kan ikke reverseres.' disabled={disabled} onConfirm={onDeleteForm}>
-              Slett
-            </VerifyDialog>
-          </Grid>
-          <Grid item sm={6} xs={12}>
-            <Button disabled={disabled} fullWidth onClick={save} variant='contained'>
-              Lagre
-            </Button>
-          </Grid>
-        </Grid>
-      </div>
+        <Stack direction={{ sx: 'column', md: 'row' }}>
+          <VerifyDialog color='error' contentText='Sletting av skjema kan ikke reverseres.' disabled={disabled} onConfirm={onDeleteForm}>
+            Slett
+          </VerifyDialog>
+          <Button disabled={disabled} fullWidth onClick={save} variant='contained'>
+            Lagre
+          </Button>
+        </Stack>
+      </Stack>
       <Popper anchorEl={buttonAnchorRef.current} open={addButtonOpen} role={undefined} transition>
         {({ TransitionProps }) => (
           <Grow {...TransitionProps}>
