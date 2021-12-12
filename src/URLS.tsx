@@ -26,7 +26,7 @@ const URLS = {
     details: (groupSlug: Group['slug']) => `${URLS.groups.index}${groupSlug}/`,
     fines_relative: 'boter/',
     fines: (groupSlug: Group['slug']) => `${URLS.groups.details(groupSlug)}${URLS.groups.fines_relative}`,
-    forms_relative: 'skjemaer/',
+    forms_relative: 'sporreskjema/',
     forms: (groupSlug: Group['slug']) => `${URLS.groups.details(groupSlug)}${URLS.groups.forms_relative}`,
     laws_relative: 'lovverk/',
     laws: (groupSlug: Group['slug']) => `${URLS.groups.details(groupSlug)}${URLS.groups.laws_relative}`,

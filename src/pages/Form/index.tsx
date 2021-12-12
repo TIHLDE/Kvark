@@ -28,7 +28,7 @@ const FormPage = () => {
   const createSubmission = useCreateSubmission(id || '-');
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
-  const title = useMemo(() => (form?.type === FormType.EVALUATION ? 'Evaluering' : 'Spørreskjema'), [form]);
+  const title = useMemo(() => (form ? (form.type === FormType.EVALUATION ? 'Evaluering' : form.title) : ''), [form]);
   const subtitle = useMemo(
     () => (
       <>

@@ -27,7 +27,15 @@ const NO_OF_EVENTS_TO_SHOW_MD_DOWN = 4;
 const EventsListView = ({ events, isLoading = false }: EventsListViewProps) => {
   const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
-  if (isLoading) {
+  if (isLoading && mdDown) {
+    return (
+      <Stack gap={1} sx={{ alignSelf: 'start' }}>
+        <EventListItemLoading />
+        <EventListItemLoading />
+        <EventListItemLoading />
+      </Stack>
+    );
+  } else if (isLoading) {
     return (
       <Container>
         <Stack gap={1} sx={{ alignSelf: 'start' }}>

@@ -41,7 +41,11 @@ const AddGroupFormDialog = ({ groupSlug, ...props }: AddGroupFormDialogProps) =>
 
   return (
     <>
-      <Dialog onClose={() => setDialogOpen(false)} open={dialogOpen} titleText='Nytt spørreskjema'>
+      <Dialog
+        contentText='Alle TIHLDE-medlemmer vil kunne svare på skjemaet, flere ganger om de ønsker. Du kan legge til spørsmål etter at du har opprettet skjemaet. Spørsmålene kan endres helt til noen har svart på skjemaet.'
+        onClose={() => setDialogOpen(false)}
+        open={dialogOpen}
+        titleText='Nytt spørreskjema'>
         <form onSubmit={handleSubmit(submit)}>
           <TextField formState={formState} label='Tittel' {...register('title', { required: 'Navngi spørreskjemaet' })} required />
           <SubmitButton disabled={createGroupForm.isLoading} formState={formState} sx={{ mt: 2 }}>

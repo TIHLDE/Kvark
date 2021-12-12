@@ -2,7 +2,7 @@ import { useEventById } from 'hooks/Event';
 import { FormType } from 'types/Enums';
 
 // Material-UI
-import { styled, Typography, LinearProgress, Stack } from '@mui/material';
+import { Typography, LinearProgress, Stack } from '@mui/material';
 
 // Project
 import Expand from 'components/layout/Expand';
@@ -13,11 +13,6 @@ import EventFormEditor from 'pages/EventAdministration/components/EventFormEdito
 export type EventFormAdminProps = {
   eventId: number;
 };
-
-const Expansion = styled(Expand)(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  background: theme.palette.background.smoke,
-}));
 
 const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
   const { data: event, isLoading } = useEventById(eventId);
@@ -37,17 +32,17 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
           Deltagere som melder seg på dette arrangementet vil måtte svare på disse spørsmålene først. Deltagerne kan la være å svare på spørsmål som ikke er
           &quot;Påkrevd&quot;.
         </Typography>
-        <Expansion flat header={surveyFormExists ? 'Rediger påmeldingsspørsmål' : 'Opprett påmeldingsskjema'} sx={{ mt: 1 }}>
+        <Expand flat header={surveyFormExists ? 'Rediger påmeldingsspørsmål' : 'Opprett påmeldingsskjema'} sx={{ mt: 1 }}>
           <EventFormEditor eventId={eventId} formId={event.survey} formType={FormType.SURVEY} />
-        </Expansion>
+        </Expand>
         {surveyFormExists && (
           <>
-            <Expansion flat header='Sammendrag av flervalgsspørsmål'>
+            <Expand flat header='Sammendrag av flervalgsspørsmål'>
               <FormStatistics formId={event.survey} />
-            </Expansion>
-            <Expansion flat header='Alle svar'>
+            </Expand>
+            <Expand flat header='Alle svar'>
               <FormAnswers formId={event.survey} />
-            </Expansion>
+            </Expand>
           </>
         )}
       </div>
@@ -58,17 +53,17 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
           påmelding trer i kraft når deltageren blir markert som &quot;Ankommet&quot;, og forsvinner med en gang deltageren har svart på evalueringsskjemaet.
           Deltagerne vil motta epost med påminnelse om å svare på skjemaet kl 12.00 dagen etter arrangementet.
         </Typography>
-        <Expansion flat header={evaluationFormExists ? 'Rediger evalueringsspørsmål' : 'Opprett evalueringsskjema'} sx={{ mt: 1 }}>
+        <Expand flat header={evaluationFormExists ? 'Rediger evalueringsspørsmål' : 'Opprett evalueringsskjema'} sx={{ mt: 1 }}>
           <EventFormEditor eventId={eventId} formId={event.evaluation} formType={FormType.EVALUATION} />
-        </Expansion>
+        </Expand>
         {evaluationFormExists && (
           <>
-            <Expansion flat header='Sammendrag av flervalgsspørsmål'>
+            <Expand flat header='Sammendrag av flervalgsspørsmål'>
               <FormStatistics formId={event.evaluation} />
-            </Expansion>
-            <Expansion flat header='Alle svar'>
+            </Expand>
+            <Expand flat header='Alle svar'>
               <FormAnswers formId={event.evaluation} />
-            </Expansion>
+            </Expand>
           </>
         )}
       </div>

@@ -35,11 +35,6 @@ const InlineCode = styled('code')(({ theme }) => ({
   background: theme.palette.action.selected,
 }));
 
-const Expansion = styled(Expand)(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  background: theme.palette.background.smoke,
-}));
-
 const Heading = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(1),
   color: theme.palette.text.primary,
@@ -123,9 +118,9 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
       const header = value.split('::')[0] || '';
       const val = value.split('::')[1] || '';
       return (
-        <Expansion flat header={header}>
+        <Expand flat header={header}>
           <ReactMarkdown components={components}>{val}</ReactMarkdown>
-        </Expansion>
+        </Expand>
       );
     } else if (language === LanguageTypes.EVENT || language === LanguageTypes.JOBPOST || language === LanguageTypes.NEWS) {
       const id = Number(value);
