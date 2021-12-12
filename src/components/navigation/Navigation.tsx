@@ -8,7 +8,7 @@ import { useWarnings } from 'hooks/Warnings';
 import { SHOW_NEW_STUDENT_INFO } from 'constant';
 
 // Material UI Components
-import { Theme, useMediaQuery, Snackbar as MaterialSnackbar, Alert, styled } from '@mui/material';
+import { Theme, useTheme, useMediaQuery, Snackbar as MaterialSnackbar, Alert, styled } from '@mui/material';
 
 // Project Components
 import Topbar from 'components/navigation/Topbar';
@@ -112,6 +112,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
   const isAuthenticated = useIsAuthenticated();
   const { title, darkColor, lightColor, filledTopbar, noFooter, gutterBottom, gutterTop } = useGetNavigationOptions();
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
+  const theme = useTheme();
 
   const items = useMemo<Array<NavigationItem>>(
     () => [
@@ -146,7 +147,10 @@ const NavigationContent = ({ children }: NavigationProps) => {
 
   return (
     <>
-      <Helmet>{<title>{title}</title>}</Helmet>
+      <Helmet>
+        <title>{title}</title>
+        <meta content={theme.palette.colors.gradient.main.top} name='theme-color' />
+      </Helmet>
       <Topbar darkColor={darkColor} filledTopbar={filledTopbar} items={items} lightColor={lightColor} />
       {warning && (
         <Snackbar anchorOrigin={{ horizontal: 'center', vertical: 'top' }} key={warning.id} open>

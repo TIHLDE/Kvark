@@ -5,11 +5,6 @@ import DarkIcon from '@mui/icons-material/Brightness2Outlined';
 import AutomaticIcon from '@mui/icons-material/DevicesOutlined';
 import LightIcon from '@mui/icons-material/WbSunnyOutlined';
 
-// declare module '@mui/styles' {
-//   // eslint-disable-next-line @typescript-eslint/no-empty-interface
-//   interface DefaultTheme extends Theme {}
-// }
-
 declare module '@mui/material/styles/createPalette' {
   interface TypeBackground {
     smoke: React.CSSProperties['backgroundColor'];

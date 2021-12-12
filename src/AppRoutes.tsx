@@ -6,6 +6,7 @@ import { PermissionApp } from 'types/Enums';
 // Services
 import { useSetRedirectUrl } from 'hooks/Misc';
 import { useHavePermission, useIsAuthenticated } from 'hooks/User';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 // Project components
 import Page from 'components/navigation/Page';
@@ -19,10 +20,11 @@ import Events from 'pages/Events';
 import JobPosts from 'pages/JobPosts';
 import JobPostDetails from 'pages/JobPostDetails';
 import NewsDetails from 'pages/NewsDetails';
-import GroupOverview from 'pages/GroupOverview';
+import Groups from 'pages/Groups';
+import GroupsOverview from 'pages/Groups/overview';
+import GroupDetails from 'pages/Groups/GroupDetails';
 import News from 'pages/News';
 import NewStudent from 'pages/NewStudent';
-import { useGoogleAnalytics } from 'hooks/Utils';
 
 const Cheatsheet = lazy(() => import(/* webpackChunkName: "cheatsheet" */ 'pages/Cheatsheet'));
 const EventAdministration = lazy(() => import(/* webpackChunkName: "event_administration" */ 'pages/EventAdministration'));
@@ -30,7 +32,6 @@ const EventRegistration = lazy(() => import(/* webpackChunkName: "event_registra
 const ForgotPassword = lazy(() => import(/* webpackChunkName: "forgot_password" */ 'pages/ForgotPassword'));
 const Form = lazy(() => import(/* webpackChunkName: "form" */ 'pages/Form'));
 const FormsAdmin = lazy(() => import(/* webpackChunkName: "form" */ 'pages/FormsAdministration'));
-const GroupAdmin = lazy(() => import(/* webpackChunkName: "group_admin" */ 'pages/GroupAdmin'));
 const Http404 = lazy(() => import(/* webpackChunkName: "http404" */ 'pages/Http404'));
 const JobPostAdministration = lazy(() => import(/* webpackChunkName: "jobpost_administration" */ 'pages/JobPostAdministration'));
 const LogIn = lazy(() => import(/* webpackChunkName: "login" */ 'pages/LogIn'));
@@ -46,7 +47,7 @@ type AuthRouteProps = {
   element: ReactElement;
 };
 
-const AuthRoute = ({ apps = [], element }: AuthRouteProps) => {
+export const AuthRoute = ({ apps = [], element }: AuthRouteProps) => {
   const setLogInRedirectURL = useSetRedirectUrl();
   const isAuthenticated = useIsAuthenticated();
   const { allowAccess, isLoading } = useHavePermission(apps);
@@ -80,9 +81,9 @@ const AppRoutes = () => {
         </Route>
         <Route element={<Companies />} path={URLS.company} />
         <Route element={<AuthRoute element={<Form />} />} path={`${URLS.form}:id/`} />
-        <Route path={URLS.groups}>
-          <Route element={<GroupAdmin />} path=':slug/*' />
-          <Route element={<GroupOverview />} index />
+        <Route element={<Groups />} path={`${URLS.groups}*`}>
+          <Route element={<GroupsOverview />} index />
+          <Route element={<GroupDetails />} path=':slug/*' />
         </Route>
         <Route path={URLS.jobposts}>
           <Route element={<JobPostDetails />} path=':id/*' />

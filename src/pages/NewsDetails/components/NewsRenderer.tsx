@@ -33,12 +33,7 @@ export type NewsRendererProps = {
   preview?: boolean;
 };
 const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
-  // Find a dominant color in the image, uses a proxy to be able to retrieve images with CORS-policy until all images are stored in our own server
-  const { data: palette } = usePalette(
-    data?.image
-      ? `https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=${encodeURIComponent(data.image || '')}`
-      : '',
-  );
+  const { data: palette } = usePalette(data?.image || '');
 
   return (
     <div>

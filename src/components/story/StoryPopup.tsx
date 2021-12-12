@@ -170,9 +170,7 @@ const StoryPopup = ({ items, open, onClose: closePopup, selectedItem = 0 }: Stor
 
   const PopupItem = ({ index, item }: PopupItemProps) => {
     const { classes, cx } = useStyles();
-    const { data: palette } = usePalette(
-      `https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=${encodeURIComponent(item.image || '')}`,
-    );
+    const { data: palette } = usePalette(item.image || '');
     return (
       <div className={classes.popup} style={{ background: palette ? `linear-gradient(to bottom, ${palette.muted}, ${palette.darkMuted})` : '' }}>
         <div className={classes.top}>
