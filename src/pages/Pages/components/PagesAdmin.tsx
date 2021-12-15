@@ -10,15 +10,8 @@ import { HavePermission } from 'hooks/User';
 import { Page, PageTree } from 'types';
 import { PermissionApp } from 'types/Enums';
 
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import TreeView from '@mui/lab/TreeView';
-import TreeItem from '@mui/lab/TreeItem';
-import Collapse from '@mui/material/Collapse';
-import Divider from '@mui/material/Divider';
-import LinearProgress from '@mui/material/LinearProgress';
+import { Button, Typography, Collapse, Divider, LinearProgress } from '@mui/material';
+import { TreeView, TreeItem } from '@mui/lab';
 
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
@@ -33,28 +26,12 @@ import SubmitButton from 'components/inputs/SubmitButton';
 import { ImageUpload } from 'components/inputs/Upload';
 import TextField from 'components/inputs/TextField';
 
-const useStyles = makeStyles()((theme) => ({
-  deleteButton: {
-    marginTop: theme.spacing(2),
-  },
-  treeWrapper: {
-    margin: theme.spacing(1, 0, 2),
-  },
-  tree: {
-    marginTop: theme.spacing(1),
-  },
-  divider: {
-    margin: theme.spacing(2, 0),
-  },
-}));
-
 type ITreeProps = IPagesAdminProps & {
   selectedNode: string;
   setSelectedNode: (newNode: string) => void;
 };
 
 const Tree = ({ selectedNode, setSelectedNode, page }: ITreeProps) => {
-  const { classes } = useStyles();
   const { data, error, isLoading } = usePageTree();
   const [viewTree, setViewTree] = useState(false);
 
@@ -76,27 +53,24 @@ const Tree = ({ selectedNode, setSelectedNode, page }: ITreeProps) => {
     return <Typography>{error.detail}</Typography>;
   } else if (data) {
     return (
-      <>
-        <Paper className={classes.treeWrapper} noPadding>
-          <Button endIcon={viewTree ? <ExpandLessIcon /> : <ExpandMoreIcon />} fullWidth onClick={() => setViewTree((prev) => !prev)}>
-            Flytt siden
-          </Button>
-          <Collapse in={viewTree}>
-            <Typography align='center' className={classes.tree} variant='subtitle2'>
-              Trykk på mappen du vil flytte denne siden til
-            </Typography>
-            <TreeView
-              className={classes.tree}
-              defaultCollapseIcon={<ExpandMoreIcon />}
-              defaultExpanded={['/', ...page.path.split('/').map((slug) => `${slug}/`)]}
-              defaultExpandIcon={<RightIcon />}
-              onNodeSelect={(e: unknown, node: string) => setSelectedNode(node)}
-              selected={selectedNode}>
-              {renderTree({ ...data, slug: '' }, '')}
-            </TreeView>
-          </Collapse>
-        </Paper>
-      </>
+      <Paper noPadding sx={{ mt: 1, mb: 2 }}>
+        <Button endIcon={viewTree ? <ExpandLessIcon /> : <ExpandMoreIcon />} fullWidth onClick={() => setViewTree((prev) => !prev)}>
+          Flytt siden
+        </Button>
+        <Collapse in={viewTree}>
+          <Typography align='center' sx={{ my: 1 }} variant='subtitle2'>
+            Trykk på mappen du vil flytte denne siden til
+          </Typography>
+          <TreeView
+            defaultCollapseIcon={<ExpandMoreIcon />}
+            defaultExpanded={['/', ...page.path.split('/').map((slug) => `${slug}/`)]}
+            defaultExpandIcon={<RightIcon />}
+            onNodeSelect={(e: unknown, node: string) => setSelectedNode(node)}
+            selected={selectedNode}>
+            {renderTree({ ...data, slug: '' }, '')}
+          </TreeView>
+        </Collapse>
+      </Paper>
     );
   } else {
     return null;
@@ -111,7 +85,6 @@ type IFormProps = IPagesAdminProps & {
 type FormData = Pick<Page, 'title' | 'content' | 'image' | 'image_alt'>;
 
 const Form = ({ closeDialog, mode, page }: IFormProps) => {
-  const { classes } = useStyles();
   const parentPath = page.path.slice(0, page.path.length - page.slug.length - 1);
   const createPage = useCreatePage();
   const updatePage = useUpdatePage(page.path);
@@ -188,11 +161,11 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
         {mode === Modes.EDIT && (
           <>
             <Button
-              className={classes.deleteButton}
               color='error'
               disabled={isLoading || Boolean(page.children.length)}
               fullWidth
               onClick={() => setShowDeleteDialog(true)}
+              sx={{ mt: 2 }}
               variant='outlined'>
               Slett side
             </Button>
@@ -204,7 +177,7 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
             <Dialog confirmText='Slett' onClose={() => setShowDeleteDialog(false)} onConfirm={handleDeletePage} open={showDeleteDialog} titleText='Slett side'>
               Er du helt sikker på at du vil slette denne siden?
             </Dialog>
-            <Divider className={classes.divider} />
+            <Divider sx={{ my: 2 }} />
             <Typography variant='caption'>Opprettet: {formatDate(parseISO(page.created_at))}</Typography>
             <br />
             <Typography variant='caption'>Sist oppdatert: {formatDate(parseISO(page.updated_at))}</Typography>

@@ -1,66 +1,118 @@
-import { ComponentType, useMemo } from 'react';
+import { useMemo, useEffect, useState, forwardRef, Ref } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import URLS from 'URLS';
-import { PageChildren } from 'types';
-
-// Material UI Components
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import { PageChildren, PageTree } from 'types';
+import { usePageTree } from 'hooks/Pages';
+import { Typography, Box, IconButton } from '@mui/material';
+import { TreeView, TreeItem, TreeItemContentProps, TreeItemProps, useTreeItem } from '@mui/lab';
 
 // Icons
-import BackIcon from '@mui/icons-material/ArrowBackIosRounded';
-import PageIcon from '@mui/icons-material/SubjectRounded';
-import HomeIcon from '@mui/icons-material/HomeRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import { makeStyles } from 'makeStyles';
 
-export type IPagesListProps = {
-  pages: Array<PageChildren>;
+const useStyles = makeStyles()({});
+
+const CustomContent = forwardRef(function CustomContent(props: TreeItemContentProps, ref) {
+  const { classes, className, label, nodeId, icon: iconProp, expansionIcon, displayIcon } = props;
+  const { cx } = useStyles();
+  const { disabled, expanded, selected, focused, handleExpansion, handleSelection, preventSelection } = useTreeItem(nodeId);
+  const icon = iconProp || expansionIcon || displayIcon;
+
+  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    preventSelection(event);
+  };
+
+  const handleExpansionClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    handleExpansion(event);
+  };
+
+  return (
+    <Box
+      className={cx(className, classes.root, {
+        [classes.expanded]: expanded,
+        [classes.selected]: selected,
+        [classes.focused]: focused,
+        [classes.disabled]: disabled,
+      })}
+      onMouseDown={handleMouseDown}
+      ref={ref as Ref<HTMLDivElement>}
+      sx={{ borderRadius: (theme) => theme.shape.borderRadius }}
+      tabIndex={-1}>
+      <Typography
+        className={classes.label}
+        component={Link}
+        onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => handleSelection(event)}
+        sx={{ textDecoration: 'none', color: (theme) => theme.palette.text.primary }}
+        to={nodeId === '/' ? URLS.pages : nodeId}>
+        {label}
+      </Typography>
+      <IconButton disabled={!icon} onClick={handleExpansionClick} sx={{ my: 0.5, width: 20, height: 20 }}>
+        {icon}
+      </IconButton>
+    </Box>
+  );
+});
+
+const CustomTreeItem = (props: TreeItemProps) => <TreeItem ContentComponent={CustomContent} {...props} />;
+
+export type PagesListProps = {
+  pages?: Array<PageChildren>;
   homeButton?: boolean;
   noBackLink?: boolean;
   linkOnClick?: () => void;
 };
 
-const PagesList = ({ homeButton = false, noBackLink = false, linkOnClick, pages }: IPagesListProps) => {
-  const location = useLocation();
+const getPathLevels = (url: string) =>
+  url
+    .split('/')
+    .filter((x) => x.trim() !== '')
+    .slice(1);
 
-  const backLink = useMemo((): string | null => {
-    const pathArray = location.pathname.split('/').filter((x) => x.trim() !== '');
-    return pathArray.length <= 1 || noBackLink ? null : `/${pathArray.splice(0, pathArray.length - 1).join('/')}/`;
+const getExpandedFromLevels = (levels: Array<string>) => {
+  const arr = ['/'];
+  for (let i = 0; i < levels.length; i++) {
+    arr.push(`${levels.slice(0, i + 1).join('/')}/`);
+  }
+  return arr;
+};
+
+const PagesList = () => {
+  const { data } = usePageTree();
+  const location = useLocation();
+  const levels = useMemo(() => getPathLevels(location.pathname), [location.pathname]);
+  const [expanded, setExpanded] = useState(getExpandedFromLevels(levels));
+
+  useEffect(() => {
+    setExpanded((prev) => [...prev, ...getExpandedFromLevels(getPathLevels(location.pathname))]);
   }, [location.pathname]);
 
-  type ElementProps = {
-    label: string;
-    to: string;
-    icon: ComponentType;
-    divider?: boolean;
-  };
-  const Element = ({ icon: Icon, divider, label, to }: ElementProps) => (
-    <ListItem button component={Link} divider={divider} onClick={linkOnClick} to={to}>
-      <ListItemIcon>
-        <Icon />
-      </ListItemIcon>
-      <ListItemText primary={label} />
-    </ListItem>
-  );
-
-  if (homeButton) {
+  const renderTree = (node: PageTree, parentPath: string) => {
+    const id = `${parentPath}${node.slug}${node.slug === '' ? '' : '/'}`;
+    if (id === location.pathname) {
+      return null;
+    }
     return (
-      <List disablePadding>
-        <Element icon={HomeIcon} label='Hjem' to={URLS.pages} />
-      </List>
+      <CustomTreeItem key={id} label={node.title} nodeId={id === '' ? '/' : id}>
+        {Array.isArray(node.children) && node.children.sort((a, b) => a.title.localeCompare(b.title)).map((childNode) => renderTree(childNode, id))}
+      </CustomTreeItem>
     );
+  };
+
+  if (!data) {
+    return null;
   }
 
   return (
-    <List disablePadding>
-      {backLink !== null && <Element divider={Boolean(pages.length)} icon={BackIcon} label='Tilbake' to={backLink} />}
-      {pages
-        .sort((a, b) => a.title.localeCompare(b.title))
-        .map((page, i) => (
-          <Element divider={pages.length - 1 !== i} icon={PageIcon} key={page.slug} label={page.title} to={page.path} />
-        ))}
-    </List>
+    <TreeView
+      defaultCollapseIcon={<ExpandLessIcon />}
+      defaultExpandIcon={<ExpandMoreIcon />}
+      expanded={expanded}
+      onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
+      selected={`${levels.join('/')}/`}
+      sx={{ p: 0.5 }}>
+      {renderTree({ ...data, slug: '' }, '')}
+    </TreeView>
   );
 };
 

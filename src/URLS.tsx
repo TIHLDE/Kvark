@@ -1,4 +1,4 @@
-const PAGES = '/om/';
+const PAGES = '/wiki/';
 export const PAGES_URLS = {
   ABOUT_INDEX: 'tihlde/undergrupper/index/',
   CONTACT_US: 'kontakt-oss/',

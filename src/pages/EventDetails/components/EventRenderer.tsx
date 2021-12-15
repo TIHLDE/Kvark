@@ -307,7 +307,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     <div className={classes.rootGrid}>
       <div className={classes.infoGrid}>
         {!lgDown && <Info />}
-        <ShareButton color='inherit' shareId={data.id} shareType='event' title={data.title} />
+        <ShareButton shareId={data.id} shareType='event' title={data.title} />
         <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} onClick={addToCalendarAnalytics} variant='outlined'>
           Legg til i kalender
         </Button>

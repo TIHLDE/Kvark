@@ -5,9 +5,6 @@ import { useIsAuthenticated } from 'hooks/User';
 import { useEvents } from 'hooks/Event';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
-import { Page as PageType } from 'types';
-
-// Material UI Components
 import { makeStyles } from 'makeStyles';
 import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography, Stack } from '@mui/material';
 
@@ -53,13 +50,6 @@ const useStyles = makeStyles()((theme) => ({
 
 const FADDERUKA_EVENT_CATEGORY = 10;
 
-const usePageContent = (url: string) =>
-  useQuery<string>(['page', url], () =>
-    fetch(`https://api.tihlde.org/api/v1/page/${url}`)
-      .then((res) => res.json())
-      .then((page: PageType) => page.content),
-  );
-
 const useGithubContent = (url: string) => useQuery(['github-wiki', url], () => fetch(url).then((res) => res.text()));
 
 type VolunteerGroupProps = {
@@ -68,10 +58,10 @@ type VolunteerGroupProps = {
 };
 
 const VolunteerGroup = ({ url, title }: VolunteerGroupProps) => {
-  const { data: text = '' } = usePageContent(url);
+  const { data } = usePage(url);
   return (
     <Expansion flat header={title} sx={{ border: (theme) => `1px solid ${theme.palette.divider}`, background: (theme) => theme.palette.background.smoke }}>
-      <MarkdownRenderer value={text} />
+      <MarkdownRenderer value={data?.content || ''} />
     </Expansion>
   );
 };
@@ -98,7 +88,7 @@ const NewStudent = () => {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents({ category: FADDERUKA_EVENT_CATEGORY });
   const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   const { data: faqPage } = usePage('ny-student/');
-  const { data: sportsText = '' } = usePageContent('tihlde/interessegrupper/tihlde-pythons/');
+  const { data: sportsText } = usePage('tihlde/interessegrupper/tihlde-pythons/');
   const { data: aboutText = '' } = useGithubContent('https://raw.githubusercontent.com/wiki/TIHLDE/Kvark/Nettsiden-info.md');
 
   const fadderukaSignupAnalytics = () => event('signup-fadderuka', 'new-student', 'Clicked on link to signup for fadderuka');
@@ -216,7 +206,7 @@ const NewStudent = () => {
           </Collapse>
           <Collapse in={tab === sportsTab.value} mountOnEnter>
             <Paper sx={{ p: 2 }}>
-              <MarkdownRenderer value={sportsText} />
+              <MarkdownRenderer value={sportsText?.content || ''} />
             </Paper>
           </Collapse>
           <Collapse in={tab === aboutTab.value} mountOnEnter>

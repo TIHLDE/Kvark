@@ -26,6 +26,7 @@ const Ul = styled('ul')(({ theme }) => ({
 }));
 const Li = styled('li')(({ theme }) => ({
   fontSize: theme.typography.body1.fontSize,
+  wordBreak: 'break-word',
 }));
 
 const InlineCode = styled('code')(({ theme }) => ({
@@ -43,6 +44,7 @@ const Expansion = styled(Expand)(({ theme }) => ({
 const Heading = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(1),
   color: theme.palette.text.primary,
+  wordBreak: 'break-word',
   overflowWrap: 'anywhere',
   '@supports not (overflow-wrap: anywhere)': {
     hyphens: 'auto',
