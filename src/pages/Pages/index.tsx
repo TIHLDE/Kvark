@@ -94,9 +94,7 @@ const Pages = () => {
       </Breadcrumbs>
       <Root>
         <Stack gap={1}>
-          <Paper noOverflow noPadding>
-            <PagesList />
-          </Paper>
+          <PagesList />
           {data && (
             <>
               <ShareButton fullWidth shareId={data.path} shareType='pages' title={data.title} />

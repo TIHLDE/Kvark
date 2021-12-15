@@ -1,5 +1,5 @@
 import { defineConfig, loadEnv } from 'vite';
-import reactRefresh from '@vitejs/plugin-react-refresh';
+import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr';
 import checker from 'vite-plugin-checker';
@@ -24,9 +24,6 @@ export default defineConfig(({ mode }) => {
   };
 
   return {
-    esbuild: {
-      jsxInject: `import React from 'react'`,
-    },
     build: {
       outDir: 'build',
       assetsDir: 'static',
@@ -51,7 +48,7 @@ export default defineConfig(({ mode }) => {
     },
     /**
      * htmlPlugin -> Use env-variables in `.html`-files
-     * reactRefresh -> Enables fast refresh on save
+     * react -> Enables fast refresh on save and jsx-syntax
      * svgr -> Allows import of SVG-files as React-components
      * tsconfigPaths -> Adds support for absolute file import with Typescript
      * checker -> Checks that Typescript and ESLint has no errors/warnings
@@ -59,7 +56,7 @@ export default defineConfig(({ mode }) => {
      */
     plugins: [
       htmlPlugin(),
-      reactRefresh(),
+      react(),
       svgr(),
       tsconfigPaths(),
       checker({ typescript: true, eslint: { files: ['./src'], extensions: ['.tsx', '.ts'] } }),

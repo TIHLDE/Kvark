@@ -5,11 +5,12 @@ import { PageChildren, PageTree } from 'types';
 import { usePageTree } from 'hooks/Pages';
 import { Typography, Box, IconButton } from '@mui/material';
 import { TreeView, TreeItem, TreeItemContentProps, TreeItemProps, useTreeItem } from '@mui/lab';
+import { makeStyles } from 'makeStyles';
+import Paper from 'components/layout/Paper';
 
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import { makeStyles } from 'makeStyles';
 
 const useStyles = makeStyles()({});
 
@@ -19,14 +20,6 @@ const CustomContent = forwardRef(function CustomContent(props: TreeItemContentPr
   const { disabled, expanded, selected, focused, handleExpansion, handleSelection, preventSelection } = useTreeItem(nodeId);
   const icon = iconProp || expansionIcon || displayIcon;
 
-  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    preventSelection(event);
-  };
-
-  const handleExpansionClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    handleExpansion(event);
-  };
-
   return (
     <Box
       className={cx(className, classes.root, {
@@ -35,7 +28,7 @@ const CustomContent = forwardRef(function CustomContent(props: TreeItemContentPr
         [classes.focused]: focused,
         [classes.disabled]: disabled,
       })}
-      onMouseDown={handleMouseDown}
+      onMouseDown={(e) => preventSelection(e)}
       ref={ref as Ref<HTMLDivElement>}
       sx={{ borderRadius: (theme) => theme.shape.borderRadius }}
       tabIndex={-1}>
@@ -47,7 +40,7 @@ const CustomContent = forwardRef(function CustomContent(props: TreeItemContentPr
         to={nodeId === '/' ? URLS.pages : nodeId}>
         {label}
       </Typography>
-      <IconButton disabled={!icon} onClick={handleExpansionClick} sx={{ my: 0.5, width: 20, height: 20 }}>
+      <IconButton disabled={!icon} onClick={(e) => handleExpansion(e)} sx={{ my: 0.5, width: 20, height: 20 }}>
         {icon}
       </IconButton>
     </Box>
@@ -104,15 +97,17 @@ const PagesList = () => {
   }
 
   return (
-    <TreeView
-      defaultCollapseIcon={<ExpandLessIcon />}
-      defaultExpandIcon={<ExpandMoreIcon />}
-      expanded={expanded}
-      onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
-      selected={`${levels.join('/')}/`}
-      sx={{ p: 0.5 }}>
-      {renderTree({ ...data, slug: '' }, '')}
-    </TreeView>
+    <Paper noOverflow noPadding>
+      <TreeView
+        defaultCollapseIcon={<ExpandLessIcon />}
+        defaultExpandIcon={<ExpandMoreIcon />}
+        expanded={expanded}
+        onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
+        selected={`${levels.join('/')}/`}
+        sx={{ p: 0.5 }}>
+        {renderTree({ ...data, slug: '' }, '')}
+      </TreeView>
+    </Paper>
   );
 };
 
