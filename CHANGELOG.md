@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ⚡ **WIKI**. Endret navn på pages til Wiki. Oppdatert navigasjon slik at det er enklere å få oversikt over innholdet.
 - ✨ **Botsystem**. Laget et botsystem for intern bruk i grupper. Gruppene kan lage et eget lovverk. Medlemmer kan så gi bøter til andre medlemmer. Leder og botsjef kan markere bøter som godkjent og betalt.
 - 🎨 **Grupper**. Oppdatert utseende.
 
