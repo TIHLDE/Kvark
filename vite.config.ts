@@ -24,6 +24,10 @@ export default defineConfig(({ mode }) => {
   };
 
   return {
+    esbuild: {
+      treeShaking: true,
+      jsxInject: mode === 'production' ? `import React from 'react'` : undefined,
+    },
     build: {
       outDir: 'build',
       assetsDir: 'static',
@@ -31,8 +35,7 @@ export default defineConfig(({ mode }) => {
         output: {
           manualChunks: {
             mui: ['@mui/material', '@mui/lab'],
-            calendar: ['@devexpress/dx-react-core', '@devexpress/dx-react-scheduler', '@devexpress/dx-react-scheduler-material-ui'],
-            dates: ['moment', 'rrule', 'luxon'],
+            calendar: ['@devexpress/dx-react-core', '@devexpress/dx-react-scheduler', '@devexpress/dx-react-scheduler-material-ui', 'moment', 'rrule', 'luxon'],
           },
           entryFileNames: `static/js/[name].[hash].js`,
           chunkFileNames: `static/js/[name].[hash].js`,
@@ -56,9 +59,9 @@ export default defineConfig(({ mode }) => {
      */
     plugins: [
       htmlPlugin(),
-      react(),
       svgr(),
       tsconfigPaths(),
+      ...(mode === 'development' ? [react()] : []),
       checker({ typescript: true, eslint: { files: ['./src'], extensions: ['.tsx', '.ts'] } }),
       viteCompression({ algorithm: 'brotliCompress' }),
     ],
