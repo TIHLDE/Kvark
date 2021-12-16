@@ -118,7 +118,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
     () => [
       {
         items: [
-          { text: 'Wiki', to: URLS.pages },
+          { text: 'Wiki', to: URLS.wiki },
           { text: 'Ny student', to: URLS.newStudent },
           { text: 'Gruppeoversikt', to: URLS.groups },
         ],

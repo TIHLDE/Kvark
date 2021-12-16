@@ -11,7 +11,7 @@ import Paper from 'components/layout/Paper';
 import Pagination from 'components/layout/Pagination';
 import { BannerButton } from 'components/layout/Banner';
 
-const PagesSearch = () => {
+const WikiSearch = () => {
   const { event } = useGoogleAnalytics();
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 500);
@@ -68,4 +68,4 @@ const PagesSearch = () => {
   );
 };
 
-export default PagesSearch;
+export default WikiSearch;

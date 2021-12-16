@@ -110,7 +110,7 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
           onSuccess: (data) => {
             showSnackbar('Siden ble oppdatert', 'success');
             closeDialog();
-            navigate(`${URLS.pages}${data.path}`);
+            navigate(`${URLS.wiki}${data.path}`);
           },
           onError: (e) => {
             showSnackbar(e.detail, 'error');
@@ -124,7 +124,7 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
           onSuccess: (data) => {
             showSnackbar('Siden ble opprettet', 'success');
             closeDialog();
-            navigate(`${URLS.pages}${data.path}`);
+            navigate(`${URLS.wiki}${data.path}`);
           },
           onError: (e) => {
             showSnackbar(e.detail, 'error');
@@ -141,7 +141,7 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
         showSnackbar(data.detail, 'success');
         setShowDeleteDialog(false);
         closeDialog();
-        navigate(`${URLS.pages}${parentPath}`);
+        navigate(`${URLS.wiki}${parentPath}`);
       },
       onError: (e) => {
         showSnackbar(e.detail, 'error');
@@ -198,7 +198,7 @@ enum Modes {
   EDIT,
 }
 
-const PagesAdmin = ({ page }: IPagesAdminProps) => {
+const WikiAdmin = ({ page }: IPagesAdminProps) => {
   const [showDialog, setShowDialog] = useState(false);
   const [mode, setMode] = useState(Modes.CREATE);
 
@@ -228,4 +228,4 @@ const PagesAdmin = ({ page }: IPagesAdminProps) => {
   );
 };
 
-export default PagesAdmin;
+export default WikiAdmin;

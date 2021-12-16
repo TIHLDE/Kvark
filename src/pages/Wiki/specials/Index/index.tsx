@@ -1,5 +1,5 @@
-import ErrorCard from 'pages/Pages/specials/Index/ErrorCard';
-import ChangelogCard from 'pages/Pages/specials/Index/ChangelogCard';
+import ErrorCard from 'pages/Wiki/specials/Index/ErrorCard';
+import ChangelogCard from 'pages/Wiki/specials/Index/ChangelogCard';
 import InfoCard from 'components/layout/InfoCard';
 import { styled } from '@mui/material';
 

@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import URLS, { PAGES_URLS } from 'URLS';
+import URLS, { WIKI_URLS } from 'URLS';
 import { usePage } from 'hooks/Pages';
 import { useGroup } from 'hooks/Group';
 import { Page as IPage } from 'types';
@@ -13,11 +13,11 @@ import Banner from 'components/layout/Banner';
 import Paper from 'components/layout/Paper';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import GroupItem from 'pages/Groups/overview/GroupItem';
-import PagesAdmin from 'pages/Pages/components/PagesAdmin';
-import PagesList from 'pages/Pages/components/PagesList';
-import PagesSearch from 'pages/Pages/components/PagesSearch';
+import WikiAdmin from 'pages/Wiki/components/WikiAdmin';
+import WikiNavigator from 'pages/Wiki/components/WikiNavigator';
+import WikiSearch from 'pages/Wiki/components/WikiSearch';
 import ShareButton from 'components/miscellaneous/ShareButton';
-import Index from 'pages/Pages/specials/Index';
+import Index from 'pages/Wiki/specials/Index';
 
 const Root = styled('div')(({ theme }) => ({
   display: 'grid',
@@ -52,7 +52,7 @@ const Image = styled('img')(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
 }));
 
-const Pages = () => {
+const Wiki = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const levels = useMemo(() => location.pathname.split('/').filter((x) => x.trim() !== ''), [location.pathname]);
@@ -72,7 +72,7 @@ const Pages = () => {
 
   useEffect(() => {
     if (data && location.pathname !== data.path) {
-      navigate(`${URLS.pages}${data.path}`, { replace: true });
+      navigate(`${URLS.wiki}${data.path}`, { replace: true });
     }
   }, [navigate, location.pathname, data]);
 
@@ -80,7 +80,7 @@ const Pages = () => {
     <Page
       banner={
         <Banner title={isLoading ? <Skeleton width={300} /> : error ? 'Noe gikk galt' : data?.title}>
-          <PagesSearch />
+          <WikiSearch />
         </Banner>
       }
       options={{ title: data ? data.title : 'Laster side...' }}>
@@ -94,11 +94,11 @@ const Pages = () => {
       </Breadcrumbs>
       <Root>
         <Stack gap={1}>
-          <PagesList />
+          <WikiNavigator />
           {data && (
             <>
               <ShareButton fullWidth shareId={data.path} shareType='pages' title={data.title} />
-              <PagesAdmin page={data} />
+              <WikiAdmin page={data} />
             </>
           )}
         </Stack>
@@ -121,7 +121,7 @@ const Pages = () => {
                     <MarkdownRenderer value={data.content} />
                   </Paper>
                 )}
-                {path === PAGES_URLS.ABOUT_INDEX && <Index />}
+                {path === WIKI_URLS.ABOUT_INDEX && <Index />}
                 {group && <GroupItem group={group} />}
               </Stack>
               {data.image && <Image alt={data.image_alt || data.title} loading='lazy' src={data.image} />}
@@ -133,4 +133,4 @@ const Pages = () => {
   );
 };
 
-export default Pages;
+export default Wiki;

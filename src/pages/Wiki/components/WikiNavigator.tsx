@@ -38,7 +38,7 @@ const CustomContent = forwardRef(function CustomContent(props: TreeItemContentPr
         component={Link}
         onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => handleSelection(event)}
         sx={{ textDecoration: 'none', color: (theme) => theme.palette.text.primary }}
-        to={nodeId === '/' ? URLS.pages : nodeId}>
+        to={nodeId === '/' ? URLS.wiki : nodeId}>
         {label}
       </Typography>
       <IconButton disabled={!icon} onClick={(e) => handleExpansion(e)} sx={{ my: 0.5, mr: -0.5, width: 30, height: 30 }}>
@@ -110,7 +110,7 @@ const Tree = () => {
   );
 };
 
-const PagesList = () => {
+const WikiNavigator = () => {
   const [open, setOpen] = useState(false);
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
@@ -158,4 +158,4 @@ const PagesList = () => {
   );
 };
 
-export default PagesList;
+export default WikiNavigator;

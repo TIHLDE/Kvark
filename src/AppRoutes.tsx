@@ -35,7 +35,7 @@ const Http404 = lazy(() => import(/* webpackChunkName: "http404" */ 'pages/Http4
 const JobPostAdministration = lazy(() => import(/* webpackChunkName: "jobpost_administration" */ 'pages/JobPostAdministration'));
 const LogIn = lazy(() => import(/* webpackChunkName: "login" */ 'pages/LogIn'));
 const NewsAdministration = lazy(() => import(/* webpackChunkName: "news_administration" */ 'pages/NewsAdministration'));
-const Pages = lazy(() => import(/* webpackChunkName: "pages" */ 'pages/Pages'));
+const Wiki = lazy(() => import(/* webpackChunkName: "pages" */ 'pages/Wiki'));
 const ShortLinks = lazy(() => import(/* webpackChunkName: "short_links" */ 'pages/ShortLinks'));
 const SignUp = lazy(() => import(/* webpackChunkName: "signup" */ 'pages/SignUp'));
 const UserAdmin = lazy(() => import(/* webpackChunkName: "user_admin" */ 'pages/UserAdmin'));
@@ -88,7 +88,7 @@ const AppRoutes = () => {
           <Route element={<JobPostDetails />} path=':id/*' />
           <Route element={<JobPosts />} index />
         </Route>
-        <Route element={<Pages />} path={`${URLS.pages}*`} />
+        <Route element={<Wiki />} path={`${URLS.wiki}*`} />
         <Route path={URLS.news}>
           <Route element={<NewsDetails />} path=':id/*' />
           <Route element={<News />} index />
