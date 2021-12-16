@@ -2,9 +2,8 @@ import { useEffect, useMemo } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import URLS, { WIKI_URLS } from 'URLS';
 import { useWikiPage } from 'hooks/Wiki';
-import { useGroup } from 'hooks/Group';
+import { useGroups } from 'hooks/Group';
 import { WikiPage } from 'types';
-import { Groups } from 'types/Enums';
 import { Typography, Breadcrumbs, Skeleton, Stack, styled } from '@mui/material';
 
 // Project Components
@@ -58,17 +57,8 @@ const Wiki = () => {
   const levels = useMemo(() => location.pathname.split('/').filter((x) => x.trim() !== ''), [location.pathname]);
   const path = useMemo(() => (levels.slice(1).length ? `${levels.slice(1).join('/')}/` : ''), [levels]);
   const { data, error, isLoading } = useWikiPage(path);
-
-  const possibleGroupSlug = useMemo(() => {
-    const lastElementInLevels = levels.slice(-1)[0];
-    return Object.values(Groups)
-      .map((group) => (group as string).toLowerCase())
-      .includes(lastElementInLevels)
-      ? lastElementInLevels
-      : null;
-  }, [levels]);
-
-  const { data: group } = useGroup(possibleGroupSlug || '-', { enabled: Boolean(possibleGroupSlug) });
+  const { data: groups = [] } = useGroups();
+  const group = useMemo(() => groups.find((group) => group.slug === levels[levels.length - 1]), [levels, groups]);
 
   useEffect(() => {
     if (data && location.pathname !== data.path) {
