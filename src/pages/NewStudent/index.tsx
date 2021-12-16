@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { usePage } from 'hooks/Pages';
+import { useWikiPage } from 'hooks/Wiki';
 import { useIsAuthenticated } from 'hooks/User';
 import { useEvents } from 'hooks/Event';
 import { Link } from 'react-router-dom';
@@ -58,7 +58,7 @@ type VolunteerGroupProps = {
 };
 
 const VolunteerGroup = ({ url, title }: VolunteerGroupProps) => {
-  const { data } = usePage(url);
+  const { data } = useWikiPage(url);
   return (
     <Expansion flat header={title} sx={{ border: (theme) => `1px solid ${theme.palette.divider}`, background: (theme) => theme.palette.background.smoke }}>
       <MarkdownRenderer value={data?.content || ''} />
@@ -87,8 +87,8 @@ const NewStudent = () => {
 
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents({ category: FADDERUKA_EVENT_CATEGORY });
   const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
-  const { data: faqPage } = usePage('ny-student/');
-  const { data: sportsText } = usePage('tihlde/interessegrupper/tihlde-pythons/');
+  const { data: faqPage } = useWikiPage('ny-student/');
+  const { data: sportsText } = useWikiPage('tihlde/interessegrupper/tihlde-pythons/');
   const { data: aboutText = '' } = useGithubContent('https://raw.githubusercontent.com/wiki/TIHLDE/Kvark/Nettsiden-info.md');
 
   const fadderukaSignupAnalytics = () => event('signup-fadderuka', 'new-student', 'Clicked on link to signup for fadderuka');

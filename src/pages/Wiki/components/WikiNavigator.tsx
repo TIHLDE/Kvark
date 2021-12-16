@@ -1,8 +1,8 @@
 import { useMemo, useEffect, useState, forwardRef, Ref } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import URLS from 'URLS';
-import { PageChildren, PageTree } from 'types';
-import { usePageTree } from 'hooks/Pages';
+import { WikiChildren, WikiTree } from 'types';
+import { useWikiTree } from 'hooks/Wiki';
 import { Typography, Box, IconButton, Drawer, Fab, useMediaQuery, Theme, Divider } from '@mui/material';
 import { TreeView, TreeItem, TreeItemContentProps, TreeItemProps, useTreeItem } from '@mui/lab';
 import { makeStyles } from 'makeStyles';
@@ -51,7 +51,7 @@ const CustomContent = forwardRef(function CustomContent(props: TreeItemContentPr
 const CustomTreeItem = (props: TreeItemProps) => <TreeItem ContentComponent={CustomContent} {...props} />;
 
 export type PagesListProps = {
-  pages?: Array<PageChildren>;
+  pages?: Array<WikiChildren>;
   homeButton?: boolean;
   noBackLink?: boolean;
   linkOnClick?: () => void;
@@ -72,7 +72,7 @@ const getExpandedFromLevels = (levels: Array<string>) => {
 };
 
 const Tree = () => {
-  const { data } = usePageTree();
+  const { data } = useWikiTree();
   const location = useLocation();
   const levels = useMemo(() => getPathLevels(location.pathname), [location.pathname]);
   const [expanded, setExpanded] = useState(getExpandedFromLevels(levels));
@@ -81,7 +81,7 @@ const Tree = () => {
     setExpanded((prev) => [...prev, ...getExpandedFromLevels(getPathLevels(location.pathname))]);
   }, [location.pathname]);
 
-  const renderTree = (node: PageTree, parentPath: string) => {
+  const renderTree = (node: WikiTree, parentPath: string) => {
     const id = `${parentPath}${node.slug}${node.slug === '' ? '' : '/'}`;
     if (id === location.pathname) {
       return null;

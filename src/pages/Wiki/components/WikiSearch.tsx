@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { usePages } from 'hooks/Pages';
+import { useWikiSearch } from 'hooks/Wiki';
 import { useDebounce, useGoogleAnalytics } from 'hooks/Utils';
 import { TextField, Collapse, Typography, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import PageIcon from '@mui/icons-material/SubjectRounded';
@@ -23,7 +23,7 @@ const WikiSearch = () => {
     }
     return filters;
   }, [debouncedSearch]);
-  const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = usePages(filters);
+  const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useWikiSearch(filters);
   const pages = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen((prev) => !prev);

@@ -4,10 +4,10 @@ import { useForm } from 'react-hook-form';
 import URLS from 'URLS';
 import { formatDate, urlEncode } from 'utils';
 import parseISO from 'date-fns/parseISO';
-import { usePageTree, useCreatePage, useUpdatePage, useDeletePage } from 'hooks/Pages';
+import { useWikiTree, useCreateWikiPage, useUpdateWikiPage, useDeleteWikiPage } from 'hooks/Wiki';
 import { useSnackbar } from 'hooks/Snackbar';
 import { HavePermission } from 'hooks/User';
-import { Page, PageTree } from 'types';
+import { WikiPage, WikiTree } from 'types';
 import { PermissionApp } from 'types/Enums';
 
 import { Button, Typography, Collapse, Divider, LinearProgress } from '@mui/material';
@@ -34,10 +34,10 @@ type ITreeProps = IPagesAdminProps & {
 };
 
 const Tree = ({ selectedNode, setSelectedNode, page }: ITreeProps) => {
-  const { data, error, isLoading } = usePageTree();
+  const { data, error, isLoading } = useWikiTree();
   const [viewTree, setViewTree] = useState(false);
 
-  const renderTree = (node: PageTree, parentPath: string) => {
+  const renderTree = (node: WikiTree, parentPath: string) => {
     const id = `${parentPath}${node.slug}${node.slug === '' ? '' : '/'}`;
     if (id === page.path) {
       return null;
@@ -84,13 +84,13 @@ type IFormProps = IPagesAdminProps & {
   closeDialog: () => void;
 };
 
-type FormData = Pick<Page, 'title' | 'content' | 'image' | 'image_alt'>;
+type FormData = Pick<WikiPage, 'title' | 'content' | 'image' | 'image_alt'>;
 
 const Form = ({ closeDialog, mode, page }: IFormProps) => {
   const parentPath = page.path.slice(0, page.path.length - page.slug.length - 1);
-  const createPage = useCreatePage();
-  const updatePage = useUpdatePage(page.path);
-  const deletePage = useDeletePage(page.path);
+  const createPage = useCreateWikiPage();
+  const updatePage = useUpdateWikiPage(page.path);
+  const deletePage = useDeleteWikiPage(page.path);
   const { register, formState, handleSubmit, watch, setValue } = useForm<FormData>(mode === Modes.EDIT ? { defaultValues: page } : {});
   const navigate = useNavigate();
   const showSnackbar = useSnackbar();
@@ -191,7 +191,7 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
 };
 
 export type IPagesAdminProps = {
-  page: Page;
+  page: WikiPage;
 };
 enum Modes {
   CREATE,

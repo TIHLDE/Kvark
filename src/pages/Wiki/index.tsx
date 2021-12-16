@@ -1,9 +1,9 @@
 import { useEffect, useMemo } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import URLS, { WIKI_URLS } from 'URLS';
-import { usePage } from 'hooks/Pages';
+import { useWikiPage } from 'hooks/Wiki';
 import { useGroup } from 'hooks/Group';
-import { Page as IPage } from 'types';
+import { WikiPage } from 'types';
 import { Groups } from 'types/Enums';
 import { Typography, Breadcrumbs, Skeleton, Stack, styled } from '@mui/material';
 
@@ -31,7 +31,7 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-const Content = styled('div', { shouldForwardProp: (prop) => prop !== 'data' })<{ data?: IPage }>(({ theme, data }) => ({
+const Content = styled('div', { shouldForwardProp: (prop) => prop !== 'data' })<{ data?: WikiPage }>(({ theme, data }) => ({
   display: 'grid',
   gridGap: theme.spacing(2),
   gridTemplateColumns: data?.image ? '1fr 350px' : '1fr',
@@ -57,7 +57,7 @@ const Wiki = () => {
   const navigate = useNavigate();
   const levels = useMemo(() => location.pathname.split('/').filter((x) => x.trim() !== ''), [location.pathname]);
   const path = useMemo(() => (levels.slice(1).length ? `${levels.slice(1).join('/')}/` : ''), [levels]);
-  const { data, error, isLoading } = usePage(path);
+  const { data, error, isLoading } = useWikiPage(path);
 
   const possibleGroupSlug = useMemo(() => {
     const lastElementInLevels = levels.slice(-1)[0];
