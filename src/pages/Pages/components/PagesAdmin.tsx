@@ -17,6 +17,8 @@ import { TreeView, TreeItem } from '@mui/lab';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 import RightIcon from '@mui/icons-material/ChevronRightRounded';
+import EditIcon from '@mui/icons-material/EditRounded';
+import AddIcon from '@mui/icons-material/AddRounded';
 
 // Project components
 import Dialog from 'components/layout/Dialog';
@@ -212,11 +214,11 @@ const PagesAdmin = ({ page }: IPagesAdminProps) => {
   return (
     <HavePermission apps={[PermissionApp.PAGE]}>
       {page.path !== '' && (
-        <Button fullWidth onClick={edit} variant='outlined'>
+        <Button endIcon={<EditIcon />} fullWidth onClick={edit} variant='outlined'>
           Rediger side
         </Button>
       )}
-      <Button fullWidth onClick={create} variant='outlined'>
+      <Button endIcon={<AddIcon />} fullWidth onClick={create} variant='outlined'>
         Ny underside
       </Button>
       <Dialog onClose={() => setShowDialog(false)} open={showDialog} titleText={mode === Modes.EDIT ? 'Rediger side' : 'Opprett side'}>

@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import URLS from 'URLS';
 import { PageChildren, PageTree } from 'types';
 import { usePageTree } from 'hooks/Pages';
-import { Typography, Box, IconButton } from '@mui/material';
+import { Typography, Box, IconButton, Drawer, Fab, useMediaQuery, Theme, Divider } from '@mui/material';
 import { TreeView, TreeItem, TreeItemContentProps, TreeItemProps, useTreeItem } from '@mui/lab';
 import { makeStyles } from 'makeStyles';
 import Paper from 'components/layout/Paper';
@@ -11,6 +11,7 @@ import Paper from 'components/layout/Paper';
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import ListIcon from '@mui/icons-material/SourceRounded';
 
 const useStyles = makeStyles()({});
 
@@ -30,7 +31,7 @@ const CustomContent = forwardRef(function CustomContent(props: TreeItemContentPr
       })}
       onMouseDown={(e) => preventSelection(e)}
       ref={ref as Ref<HTMLDivElement>}
-      sx={{ borderRadius: (theme) => theme.shape.borderRadius }}
+      sx={{ borderRadius: (theme) => `${theme.shape.borderRadius}px` }}
       tabIndex={-1}>
       <Typography
         className={classes.label}
@@ -40,7 +41,7 @@ const CustomContent = forwardRef(function CustomContent(props: TreeItemContentPr
         to={nodeId === '/' ? URLS.pages : nodeId}>
         {label}
       </Typography>
-      <IconButton disabled={!icon} onClick={(e) => handleExpansion(e)} sx={{ my: 0.5, width: 20, height: 20 }}>
+      <IconButton disabled={!icon} onClick={(e) => handleExpansion(e)} sx={{ my: 0.5, mr: -0.5, width: 30, height: 30 }}>
         {icon}
       </IconButton>
     </Box>
@@ -70,7 +71,7 @@ const getExpandedFromLevels = (levels: Array<string>) => {
   return arr;
 };
 
-const PagesList = () => {
+const Tree = () => {
   const { data } = usePageTree();
   const location = useLocation();
   const levels = useMemo(() => getPathLevels(location.pathname), [location.pathname]);
@@ -97,16 +98,62 @@ const PagesList = () => {
   }
 
   return (
+    <TreeView
+      defaultCollapseIcon={<ExpandLessIcon />}
+      defaultExpandIcon={<ExpandMoreIcon />}
+      expanded={expanded}
+      onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
+      selected={`${levels.join('/')}/`}
+      sx={{ p: 0.5 }}>
+      {renderTree({ ...data, slug: '' }, '')}
+    </TreeView>
+  );
+};
+
+const PagesList = () => {
+  const [open, setOpen] = useState(false);
+  const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
+
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname]);
+
+  if (lgDown) {
+    return (
+      <>
+        <Fab
+          color='primary'
+          onClick={() => setOpen(true)}
+          size='medium'
+          sx={{ position: 'fixed', bottom: (theme) => theme.spacing(12), right: (theme) => theme.spacing(2), zIndex: 1 }}
+          variant='extended'>
+          <ListIcon sx={{ mr: 1 }} />
+          Naviger
+        </Fab>
+        <Drawer
+          anchor='bottom'
+          onClose={() => setOpen(false)}
+          open={open}
+          sx={{
+            [`& .MuiDrawer-paper`]: {
+              pb: 12,
+              borderTopRightRadius: (theme) => `${theme.shape.borderRadius}px`,
+              borderTopLeftRadius: (theme) => `${theme.shape.borderRadius}px`,
+              border: (theme) => `${theme.palette.borderWidth} solid ${theme.palette.divider}`,
+            },
+          }}>
+          <Typography sx={{ p: 2 }} variant='h3'>
+            Naviger i Wiki
+          </Typography>
+          <Divider />
+          <Tree />
+        </Drawer>
+      </>
+    );
+  }
+  return (
     <Paper noOverflow noPadding>
-      <TreeView
-        defaultCollapseIcon={<ExpandLessIcon />}
-        defaultExpandIcon={<ExpandMoreIcon />}
-        expanded={expanded}
-        onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
-        selected={`${levels.join('/')}/`}
-        sx={{ p: 0.5 }}>
-        {renderTree({ ...data, slug: '' }, '')}
-      </TreeView>
+      <Tree />
     </Paper>
   );
 };
