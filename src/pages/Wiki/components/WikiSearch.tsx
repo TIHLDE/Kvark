@@ -55,7 +55,7 @@ const WikiSearch = () => {
         </Collapse>
         <Collapse in={Boolean(!pages.length && debouncedSearch.length && !isLoading)}>
           <Typography align='center' variant='subtitle2'>
-            Fant ingen sider
+            Fant ingen sider som inneholder det du leter etter
           </Typography>
         </Collapse>
         <Collapse in={Boolean(!debouncedSearch.length)}>

@@ -1,11 +1,11 @@
 import { useState, lazy, Suspense } from 'react';
-import { usePersistedState } from 'hooks/Utils';
-import { Collapse, Skeleton, Alert, styled } from '@mui/material';
+import { Collapse, Skeleton, styled } from '@mui/material';
 
 // Project componets/services
 import { useEvents } from 'hooks/Event';
 import EventsListView from 'pages/Landing/components/EventsListView';
 import Tabs from 'components/layout/Tabs';
+import { AlertOnce } from 'components/miscellaneous/UserInformation';
 
 // Icons
 import Reorder from '@mui/icons-material/ReorderRounded';
@@ -20,7 +20,6 @@ const EventsView = () => {
   const calendarTab = { value: 'calendar', label: 'Kalender', icon: DateRange };
   const tabs = [listTab, calendarTab];
   const [tab, setTab] = useState(listTab.value);
-  const [shouldShowInfo, setShouldShowInfo] = usePersistedState('NewEventColors', true, 1000 * 3600 * 24 * 360);
 
   const ColorInfo = styled('span', { shouldForwardProp: (prop) => prop !== 'color' })<{ color: 'nok_event' | 'other_event' }>(({ theme, color }) => ({
     background: theme.palette.colors[color],
@@ -32,12 +31,10 @@ const EventsView = () => {
   return (
     <>
       <Tabs selected={tab} setSelected={setTab} sx={{ mx: 'auto', width: 'fit-content', mb: 1 }} tabs={tabs} />
-      {shouldShowInfo && (
-        <Alert onClose={() => setShouldShowInfo(false)} severity='info' sx={{ mb: 1 }} variant='outlined'>
-          Kurs og bedpres er <ColorInfo color='nok_event'>blå</ColorInfo>, mens sosiale og andre arrangementer er{' '}
-          <ColorInfo color='other_event'>oransje</ColorInfo> slik at det er enkelt å se hva som er hva.
-        </Alert>
-      )}
+      <AlertOnce cookieKey='NewEventColors' severity='info' sx={{ mb: 1 }} variant='outlined'>
+        Kurs og bedpres er <ColorInfo color='nok_event'>blå</ColorInfo>, mens sosiale og andre arrangementer er{' '}
+        <ColorInfo color='other_event'>oransje</ColorInfo> slik at det er enkelt å se hva som er hva.
+      </AlertOnce>
       <Collapse in={tab === listTab.value}>
         <EventsListView events={data?.pages[0]?.results || []} isLoading={isLoading} />
       </Collapse>

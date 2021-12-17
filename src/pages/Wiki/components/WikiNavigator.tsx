@@ -3,15 +3,16 @@ import { Link, useLocation } from 'react-router-dom';
 import URLS from 'URLS';
 import { WikiChildren, WikiTree } from 'types';
 import { useWikiTree } from 'hooks/Wiki';
-import { Typography, Box, IconButton, Drawer, Fab, useMediaQuery, Theme, Divider } from '@mui/material';
+import { Typography, Box, IconButton, Drawer, Fab, useMediaQuery, Theme, Divider, Tooltip } from '@mui/material';
 import { TreeView, TreeItem, TreeItemContentProps, TreeItemProps, useTreeItem } from '@mui/lab';
 import { makeStyles } from 'makeStyles';
 import Paper from 'components/layout/Paper';
+import { AlertOnce } from 'components/miscellaneous/UserInformation';
 
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import ListIcon from '@mui/icons-material/SourceRounded';
+import WikiIcon from '@mui/icons-material/LibraryBooksRounded';
 
 const useStyles = makeStyles()({});
 
@@ -114,22 +115,23 @@ const WikiNavigator = () => {
   const [open, setOpen] = useState(false);
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
-  useEffect(() => {
-    setOpen(false);
-  }, [location.pathname]);
+  useEffect(() => setOpen(false), [location.pathname]);
 
   if (lgDown) {
     return (
       <>
-        <Fab
-          color='primary'
-          onClick={() => setOpen(true)}
-          size='medium'
-          sx={{ position: 'fixed', bottom: (theme) => theme.spacing(12), right: (theme) => theme.spacing(2), zIndex: 1 }}
-          variant='extended'>
-          <ListIcon sx={{ mr: 1 }} />
-          Naviger
-        </Fab>
+        <AlertOnce cookieKey='ShowWikiInfoMobile' severity='info' variant='outlined'>
+          På jakt etter noe? Klikk på den runde knappen nede til høyre for å utforske innholdet i wikien, eller bruk søket over!
+        </AlertOnce>
+        <Tooltip placement='left' title='Utforsk innholdet i Wiki'>
+          <Fab
+            color='primary'
+            onClick={() => setOpen(true)}
+            size='medium'
+            sx={{ position: 'fixed', bottom: (theme) => theme.spacing(12), right: (theme) => theme.spacing(2), zIndex: 1 }}>
+            <WikiIcon />
+          </Fab>
+        </Tooltip>
         <Drawer
           anchor='bottom'
           onClose={() => setOpen(false)}
@@ -142,8 +144,8 @@ const WikiNavigator = () => {
               border: (theme) => `${theme.palette.borderWidth} solid ${theme.palette.divider}`,
             },
           }}>
-          <Typography sx={{ p: 2 }} variant='h3'>
-            Naviger i Wiki
+          <Typography sx={{ px: 2, py: 1 }} variant='h3'>
+            Utforsk Wiki
           </Typography>
           <Divider />
           <Tree />
