@@ -437,8 +437,9 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 formState={formState}
                 helperText={
                   <ShowMoreText>
-                    Arrangøren vises på arrangementssiden. Den bestemmer også hvilke brukere som har tilgang til å endre arrangementet. Kun medlemmer av
-                    undergruppe/leder av komité eller interessegruppe som arrangerer et arrangement kan redigere det, se påmeldte og legge til spørreskjemaer.
+                    Arrangøren vises på arrangementssiden, samt bestemmer kolonne og farge på forsiden. Den bestemmer også hvilke brukere som har tilgang til å
+                    endre arrangementet. Kun medlemmer av undergruppe/leder av komité eller interessegruppe som arrangerer et arrangement kan redigere det, se
+                    påmeldte og legge til spørreskjemaer.
                   </ShowMoreText>
                 }
                 label='Arrangør (Gruppe)'
@@ -459,12 +460,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               <Select
                 control={control}
                 formState={formState}
-                helperText={
-                  <ShowMoreText>
-                    Kategorien brukes til å la brukerne enklere skille mellom forskjellige type arrangementer. Det gjøres ved fargekategorisering og
-                    forskjellige kolonner på forsiden.
-                  </ShowMoreText>
-                }
+                helperText={<ShowMoreText>Kategorien brukes til å la brukerne enklere finne arrangementer de ser etter.</ShowMoreText>}
                 label='Kategori'
                 name='category'>
                 {categories.map((value, index) => (
