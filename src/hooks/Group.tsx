@@ -12,6 +12,7 @@ import {
   GroupFineMutate,
   GroupFineBatchMutate,
   GroupForm,
+  GroupFineStatistics,
   GroupUserFine,
   PaginationResponse,
   RequestResponse,
@@ -26,6 +27,7 @@ export const GROUPS_QUERY_KEYS = {
   laws: (slug: Group['slug']) => [...GROUPS_QUERY_KEYS.detail(slug), 'laws'] as const,
   fines: {
     all: (slug: Group['slug']) => [...GROUPS_QUERY_KEYS.detail(slug), 'fines'] as const,
+    statistics: (slug: Group['slug']) => [...GROUPS_QUERY_KEYS.fines.all(slug), 'statistics'] as const,
     list: (slug: Group['slug'], filters?: any) => [...GROUPS_QUERY_KEYS.fines.all(slug), ...(filters ? [filters] : [])] as const,
     usersFines: (slug: Group['slug'], filters?: any) => [...GROUPS_QUERY_KEYS.fines.all(slug), 'user-fines', ...(filters ? [filters] : [])] as const,
     userFines: (slug: Group['slug'], userId: User['user_id'], filters?: any) =>
@@ -105,6 +107,9 @@ export const useGroupFines = (
       getNextPageParam: (lastPage) => lastPage.next,
     },
   );
+
+export const useGroupFinesStatistics = (slug: Group['slug'], options?: UseQueryOptions<GroupFineStatistics, RequestResponse, GroupFineStatistics, QueryKey>) =>
+  useQuery<GroupFineStatistics, RequestResponse>(GROUPS_QUERY_KEYS.fines.statistics(slug), () => API.getGroupFinesStatistics(slug), options);
 
 export const useGroupUserFines = (
   groupSlug: Group['slug'],

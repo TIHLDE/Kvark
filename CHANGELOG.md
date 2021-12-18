@@ -15,6 +15,7 @@
 ## Neste versjon
 
 - ✨ **Gruppe-skjemaer**. Grupper kan nå lage skjemaer som brukere kan svare på.
+- ✨ **Botsystem**. Lagt til statistikk for botsystemet. Brukere kan se antall betalt, antall godkjent og ikke betalt, samt antall ikke godkjent.
 - ⚡ **WIKI**. Endret navn på pages til Wiki. Oppdatert navigasjon slik at det er enklere å få oversikt over innholdet.
 - ✨ **Botsystem**. Laget et botsystem for intern bruk i grupper. Gruppene kan lage et eget lovverk. Medlemmer kan så gi bøter til andre medlemmer. Leder og botsjef kan markere bøter som godkjent og betalt.
 - 🎨 **Grupper**. Oppdatert utseende.
