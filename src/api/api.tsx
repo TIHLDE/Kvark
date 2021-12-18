@@ -32,10 +32,10 @@ import {
   News,
   NewsRequired,
   Notification,
-  Page,
-  PageChildren,
-  PageTree,
-  PageRequired,
+  WikiPage,
+  WikiChildren,
+  WikiTree,
+  WikiRequired,
   PaginationResponse,
   Registration,
   RequestResponse,
@@ -240,13 +240,13 @@ export default {
   deleteGroupFine: (groupSlug: Group['slug'], fineId: GroupFine['id']) =>
     IFetch<RequestResponse>({ method: 'DELETE', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/${fineId}/` }),
 
-  // Pages
-  getPageTree: () => IFetch<PageTree>({ method: 'GET', url: `${PAGES_ENDPOINT}/tree/` }),
-  getPage: (path: string) => IFetch<Page>({ method: 'GET', url: `${PAGES_ENDPOINT}/${path}` }),
-  getPages: (filters: any) => IFetch<PaginationResponse<PageChildren>>({ method: 'GET', url: `${PAGES_ENDPOINT}/`, data: filters }),
-  createPage: (data: PageRequired) => IFetch<Page>({ method: 'POST', url: `${PAGES_ENDPOINT}/`, data }),
-  updatePage: (path: string, data: Partial<Page>) => IFetch<Page>({ method: 'PUT', url: `${PAGES_ENDPOINT}/${path}`, data }),
-  deletePage: (path: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${PAGES_ENDPOINT}/${path}` }),
+  // Wiki
+  getWikiTree: () => IFetch<WikiTree>({ method: 'GET', url: `${PAGES_ENDPOINT}/tree/` }),
+  getWikiPage: (path: string) => IFetch<WikiPage>({ method: 'GET', url: `${PAGES_ENDPOINT}/${path}` }),
+  getWikiSearch: (filters: any) => IFetch<PaginationResponse<WikiChildren>>({ method: 'GET', url: `${PAGES_ENDPOINT}/`, data: filters }),
+  createWikiPage: (data: WikiRequired) => IFetch<WikiPage>({ method: 'POST', url: `${PAGES_ENDPOINT}/`, data }),
+  updateWikiPage: (path: string, data: Partial<WikiPage>) => IFetch<WikiPage>({ method: 'PUT', url: `${PAGES_ENDPOINT}/${path}`, data }),
+  deleteWikiPage: (path: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${PAGES_ENDPOINT}/${path}` }),
 
   // File-upload
   uploadFile: (file: File | Blob) => IFetch<FileUploadResponse>({ method: 'POST', url: 'upload/', file }),
