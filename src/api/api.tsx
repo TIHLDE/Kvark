@@ -34,10 +34,10 @@ import {
   News,
   NewsRequired,
   Notification,
-  Page,
-  PageChildren,
-  PageTree,
-  PageRequired,
+  WikiPage,
+  WikiChildren,
+  WikiTree,
+  WikiRequired,
   PaginationResponse,
   Registration,
   RequestResponse,
@@ -68,7 +68,7 @@ export const MEMBERSHIPS_ENDPOINT = 'memberships';
 export const MEMBERSHIP_HISTORIES_ENDPOINT = 'membership-histories';
 export const NEWS_ENDPOINT = 'news';
 export const NOTIFICATIONS_ENDPOINT = 'notifications';
-export const PAGES_ENDPOINT = 'pages';
+export const WIKI_ENDPOINT = 'pages';
 export const SHORT_LINKS_ENDPOINT = 'short-links';
 export const STRIKES_ENDPOINT = 'strikes';
 export const SUBMISSIONS_ENDPOINT = 'submissions';
@@ -246,13 +246,13 @@ export default {
   //Group forms
   getGroupForms: (slug: string) => IFetch<Array<GroupForm>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/${FORMS_ENDPOINT}/` }),
 
-  // Pages
-  getPageTree: () => IFetch<PageTree>({ method: 'GET', url: `${PAGES_ENDPOINT}/tree/` }),
-  getPage: (path: string) => IFetch<Page>({ method: 'GET', url: `${PAGES_ENDPOINT}/${path}` }),
-  getPages: (filters: any) => IFetch<PaginationResponse<PageChildren>>({ method: 'GET', url: `${PAGES_ENDPOINT}/`, data: filters }),
-  createPage: (data: PageRequired) => IFetch<Page>({ method: 'POST', url: `${PAGES_ENDPOINT}/`, data }),
-  updatePage: (path: string, data: Partial<Page>) => IFetch<Page>({ method: 'PUT', url: `${PAGES_ENDPOINT}/${path}`, data }),
-  deletePage: (path: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${PAGES_ENDPOINT}/${path}` }),
+  // Wiki
+  getWikiTree: () => IFetch<WikiTree>({ method: 'GET', url: `${WIKI_ENDPOINT}/tree/` }),
+  getWikiPage: (path: string) => IFetch<WikiPage>({ method: 'GET', url: `${WIKI_ENDPOINT}/${path}` }),
+  getWikiSearch: (filters: any) => IFetch<PaginationResponse<WikiChildren>>({ method: 'GET', url: `${WIKI_ENDPOINT}/`, data: filters }),
+  createWikiPage: (data: WikiRequired) => IFetch<WikiPage>({ method: 'POST', url: `${WIKI_ENDPOINT}/`, data }),
+  updateWikiPage: (path: string, data: Partial<WikiPage>) => IFetch<WikiPage>({ method: 'PUT', url: `${WIKI_ENDPOINT}/${path}`, data }),
+  deleteWikiPage: (path: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${WIKI_ENDPOINT}/${path}` }),
 
   // File-upload
   uploadFile: (file: File | Blob) => IFetch<FileUploadResponse>({ method: 'POST', url: 'upload/', file }),

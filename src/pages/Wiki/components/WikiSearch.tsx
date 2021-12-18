@@ -1,27 +1,17 @@
 import { useMemo, useState } from 'react';
-import { usePages } from 'hooks/Pages';
+import { Link } from 'react-router-dom';
+import { useWikiSearch } from 'hooks/Wiki';
 import { useDebounce, useGoogleAnalytics } from 'hooks/Utils';
-
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import { TextField, Collapse, Typography } from '@mui/material';
+import { TextField, Collapse, Typography, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import PageIcon from '@mui/icons-material/SubjectRounded';
 
 // Project components
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 import Pagination from 'components/layout/Pagination';
 import { BannerButton } from 'components/layout/Banner';
-import PagesList from 'pages/Pages/components/PagesList';
 
-const useStyles = makeStyles()((theme) => ({
-  paper: {
-    marginBottom: theme.spacing(1),
-    marginTop: theme.spacing(1),
-  },
-}));
-
-const PagesSearch = () => {
-  const { classes } = useStyles();
+const WikiSearch = () => {
   const { event } = useGoogleAnalytics();
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 500);
@@ -33,7 +23,7 @@ const PagesSearch = () => {
     }
     return filters;
   }, [debouncedSearch]);
-  const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = usePages(filters);
+  const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useWikiSearch(filters);
   const pages = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen((prev) => !prev);
@@ -44,22 +34,33 @@ const PagesSearch = () => {
         Søk
       </BannerButton>
       <Dialog onClose={toggle} open={open}>
-        <TextField fullWidth label='Søk etter side' onChange={(e) => setSearch(e.target.value)} value={search} variant='outlined' />
+        <TextField autoFocus fullWidth label='Søk i Wiki' onChange={(e) => setSearch(e.target.value)} sx={{ mb: 1 }} value={search} variant='outlined' />
         <Collapse in={Boolean(pages.length && !isLoading)}>
           <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere sider' nextPage={() => fetchNextPage()}>
-            <Paper className={classes.paper} noPadding>
-              <PagesList linkOnClick={toggle} noBackLink pages={pages} />
+            <Paper noOverflow noPadding>
+              <List disablePadding>
+                {pages.map((page, i) => (
+                  <ListItem disablePadding divider={pages.length - 1 !== i} key={page.path}>
+                    <ListItemButton component={Link} onClick={toggle} to={page.path}>
+                      <ListItemIcon>
+                        <PageIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={page.title} />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </List>
             </Paper>
           </Pagination>
         </Collapse>
         <Collapse in={Boolean(!pages.length && debouncedSearch.length && !isLoading)}>
-          <Typography align='center' className={classes.paper} variant='subtitle2'>
-            Fant ingen sider
+          <Typography align='center' variant='subtitle2'>
+            Fant ingen sider som inneholder det du leter etter
           </Typography>
         </Collapse>
         <Collapse in={Boolean(!debouncedSearch.length)}>
-          <Typography align='center' className={classes.paper} variant='subtitle2'>
-            Søk etter en side for å se resultater
+          <Typography align='center' variant='subtitle2'>
+            {`Søk etter innhold for å se resultater, for eks: "Lambo"`}
           </Typography>
         </Collapse>
       </Dialog>
@@ -67,4 +68,4 @@ const PagesSearch = () => {
   );
 };
 
-export default PagesSearch;
+export default WikiSearch;

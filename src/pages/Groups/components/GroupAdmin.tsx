@@ -14,7 +14,7 @@ import UserSearch from 'components/inputs/UserSearch';
 import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
 import Dialog from 'components/layout/Dialog';
-import { ShowMoreText, ShowMoreTooltip } from 'components/miscellaneous/ShowMoreText';
+import { ShowMoreText, ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
 
 export type UpdateGroupModalProps = {
   group: Group;

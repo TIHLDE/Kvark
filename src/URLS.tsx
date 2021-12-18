@@ -1,24 +1,19 @@
 import { Group } from 'types';
 
-const PAGES = '/om/';
-export const PAGES_URLS = {
+const WIKI = '/wiki/';
+export const WIKI_URLS = {
   ABOUT_INDEX: 'tihlde/undergrupper/index/',
   CONTACT_US: 'kontakt-oss/',
   EVENT_RULES: 'annet/arrangementsregler/',
-  NEW_STUDENT: 'ny-student/',
-  SOSIALEN: 'tihlde/undergrupper/sosialen/',
-  DRIFT: 'tihlde/undergrupper/drift/',
-  NOK: 'tihlde/undergrupper/nringsliv-og-kurs/',
-  PROMO: 'tihlde/undergrupper/promo/',
 };
 
 const URLS = {
   cheatsheet: '/kokebok/',
   company: '/bedrifter/',
-  contactInfo: `${PAGES}${PAGES_URLS.CONTACT_US}`,
+  contactInfo: `${WIKI}${WIKI_URLS.CONTACT_US}`,
   events: '/arrangementer/',
   eventRegister: 'registrering/',
-  eventRules: `${PAGES}${PAGES_URLS.EVENT_RULES}`,
+  eventRules: `${WIKI}${WIKI_URLS.EVENT_RULES}`,
   forgotPassword: '/glemt-passord/',
   form: '/sporreskjema/',
   groups: {
@@ -36,8 +31,8 @@ const URLS = {
   login: '/logg-inn/',
   newStudent: '/ny-student/',
   news: '/nyheter/',
-  pages: PAGES,
-  aboutIndex: `${PAGES}${PAGES_URLS.ABOUT_INDEX}`,
+  wiki: WIKI,
+  aboutIndex: `${WIKI}${WIKI_URLS.ABOUT_INDEX}`,
   profile: '/profil/',
   signup: '/ny-bruker/',
   shortLinks: '/linker/',

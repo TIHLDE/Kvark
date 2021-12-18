@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Typography, TypographyProps, Box, Tooltip } from '@mui/material';
+import { usePersistedState } from 'hooks/Utils';
+import { Typography, TypographyProps, Box, Tooltip, Alert, AlertProps } from '@mui/material';
 import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
 
 export type ShowMoreTextProps = {
@@ -31,3 +32,23 @@ export const ShowMoreTooltip = ({ children }: ShowMoreTooltipProps) => (
     <HelpOutlineRoundedIcon />
   </Tooltip>
 );
+
+export type AlertOnceProps = AlertProps & {
+  cookieKey: string;
+  /** How long should the cookie live? Default: 1 year */
+  duration?: number;
+};
+
+export const AlertOnce = ({ cookieKey, duration = 1000 * 3600 * 24 * 365, children, ...props }: AlertOnceProps) => {
+  const [shouldShowAlert, setShouldShowAlert] = usePersistedState(cookieKey, true, duration);
+
+  return (
+    <>
+      {shouldShowAlert && (
+        <Alert {...props} onClose={() => setShouldShowAlert(false)}>
+          {children}
+        </Alert>
+      )}
+    </>
+  );
+};

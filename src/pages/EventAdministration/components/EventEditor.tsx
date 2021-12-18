@@ -26,7 +26,7 @@ import TextField from 'components/inputs/TextField';
 import DatePicker from 'components/inputs/DatePicker';
 import { ImageUpload } from 'components/inputs/Upload';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
-import { ShowMoreText, ShowMoreTooltip } from 'components/miscellaneous/ShowMoreText';
+import { ShowMoreText, ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import { GroupType } from 'types/Enums';
 

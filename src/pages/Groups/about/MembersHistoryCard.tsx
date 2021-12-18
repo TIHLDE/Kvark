@@ -39,7 +39,7 @@ const MembersHistoryCard = ({ slug }: MembersHistoryCardProps) => {
       <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
         <Stack gap={1}>
           {prevMembers.map((member) => (
-            <ListItem disablePadding key={member.user.user_id}>
+            <ListItem disablePadding key={`${member.user.user_id}_${member.end_date}`}>
               <ListItemAvatar>
                 <Avatar user={member.user} />
               </ListItemAvatar>

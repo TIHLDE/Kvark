@@ -36,7 +36,8 @@ export const GROUPS_QUERY_KEYS = {
   },
 };
 
-export const useGroup = (slug: Group['slug']) => useQuery<Group, RequestResponse>(GROUPS_QUERY_KEYS.detail(slug), () => API.getGroup(slug));
+export const useGroup = (slug: Group['slug'], options?: UseQueryOptions<Group, RequestResponse, Group, QueryKey>) =>
+  useQuery<Group, RequestResponse>(GROUPS_QUERY_KEYS.detail(slug), () => API.getGroup(slug), options);
 
 export const useUpdateGroup = (): UseMutationResult<Group, RequestResponse, GroupMutate, unknown> => {
   const queryClient = useQueryClient();
