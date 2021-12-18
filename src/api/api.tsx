@@ -20,6 +20,7 @@ import {
   GroupFineCreate,
   GroupFineBatchMutate,
   GroupFineMutate,
+  GroupFineStatistics,
   GroupLaw,
   GroupLawMutate,
   GroupMutate,
@@ -217,6 +218,8 @@ export default {
   // Group fines
   getGroupFines: (groupSlug: Group['slug'], filters?: any) =>
     IFetch<PaginationResponse<GroupFine>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/`, data: filters || {} }),
+  getGroupFinesStatistics: (groupSlug: Group['slug']) =>
+    IFetch<GroupFineStatistics>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/statistics/` }),
   getGroupUsersFines: (groupSlug: Group['slug'], filters?: any) =>
     IFetch<PaginationResponse<GroupUserFine>>({
       method: 'GET',

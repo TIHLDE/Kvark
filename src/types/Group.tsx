@@ -73,3 +73,9 @@ export type GroupUserFine = {
   user: UserBase;
   fines_amount: number;
 };
+
+export type GroupFineStatistics = {
+  payed: number;
+  approved_and_not_payed: number;
+  not_approved: number;
+};
