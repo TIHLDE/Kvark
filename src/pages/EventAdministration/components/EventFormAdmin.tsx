@@ -1,14 +1,12 @@
+import { EventFormCreate } from 'types';
+import { FormType, FormResourceType } from 'types/Enums';
 import { useEventById } from 'hooks/Event';
-import { FormType } from 'types/Enums';
-
-// Material-UI
-import { Typography, LinearProgress, Stack } from '@mui/material';
+import { useCreateForm } from 'hooks/Form';
+import { Typography, LinearProgress, Stack, Button } from '@mui/material';
 
 // Project
-import Expand from 'components/layout/Expand';
-import FormAnswers from 'components/forms/FormAnswers';
-import FormStatistics from 'components/forms/FormStatistics';
-import EventFormEditor from 'pages/EventAdministration/components/EventFormEditor';
+import FormAdmin from 'components/forms/FormAdmin';
+import { ShowMoreText } from 'components/miscellaneous/UserInformation';
 
 export type EventFormAdminProps = {
   eventId: number;
@@ -21,51 +19,48 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
     return <LinearProgress />;
   }
 
-  const surveyFormExists = Boolean(event.survey);
-  const evaluationFormExists = Boolean(event.evaluation);
+  type EventFormEditorProps = {
+    formType: FormType;
+  };
+
+  const EventFormEditor = ({ formType }: EventFormEditorProps) => {
+    const createForm = useCreateForm();
+
+    const newForm: EventFormCreate = {
+      title: `${event.title} - ${formType === FormType.SURVEY ? 'påmeldingsskjema' : 'evalueringsskjema'}`,
+      type: formType,
+      event: event.id,
+      resource_type: FormResourceType.EVENT_FORM,
+      fields: [],
+    };
+
+    const onCreate = async () => createForm.mutate(newForm);
+
+    return (
+      <Button fullWidth onClick={onCreate} variant='outlined'>
+        Opprett {formType === FormType.SURVEY ? 'påmeldingsskjema' : 'evalueringsskjema'}
+      </Button>
+    );
+  };
 
   return (
     <Stack gap={2}>
       <div>
         <Typography variant='h3'>Spørsmål ved påmelding</Typography>
-        <Typography variant='caption'>
+        <ShowMoreText sx={{ mb: 1 }}>
           Deltagere som melder seg på dette arrangementet vil måtte svare på disse spørsmålene først. Deltagerne kan la være å svare på spørsmål som ikke er
           &quot;Påkrevd&quot;.
-        </Typography>
-        <Expand flat header={surveyFormExists ? 'Rediger påmeldingsspørsmål' : 'Opprett påmeldingsskjema'} sx={{ mt: 1 }}>
-          <EventFormEditor eventId={eventId} formId={event.survey} formType={FormType.SURVEY} />
-        </Expand>
-        {surveyFormExists && (
-          <>
-            <Expand flat header='Sammendrag av flervalgsspørsmål'>
-              <FormStatistics formId={event.survey} />
-            </Expand>
-            <Expand flat header='Alle svar'>
-              <FormAnswers formId={event.survey} />
-            </Expand>
-          </>
-        )}
+        </ShowMoreText>
+        {event.survey ? <FormAdmin formId={event.survey} /> : <EventFormEditor formType={FormType.SURVEY} />}
       </div>
       <div>
         <Typography variant='h3'>Evalueringsspørsmål</Typography>
-        <Typography variant='caption'>
+        <ShowMoreText sx={{ mb: 1 }}>
           Deltagerne som deltar på dette arrangementet <b>må</b> svare på disse spørsmålene før de kan melde seg på andre arrangementer. Blokkeringen av
           påmelding trer i kraft når deltageren blir markert som &quot;Ankommet&quot;, og forsvinner med en gang deltageren har svart på evalueringsskjemaet.
           Deltagerne vil motta epost med påminnelse om å svare på skjemaet kl 12.00 dagen etter arrangementet.
-        </Typography>
-        <Expand flat header={evaluationFormExists ? 'Rediger evalueringsspørsmål' : 'Opprett evalueringsskjema'} sx={{ mt: 1 }}>
-          <EventFormEditor eventId={eventId} formId={event.evaluation} formType={FormType.EVALUATION} />
-        </Expand>
-        {evaluationFormExists && (
-          <>
-            <Expand flat header='Sammendrag av flervalgsspørsmål'>
-              <FormStatistics formId={event.evaluation} />
-            </Expand>
-            <Expand flat header='Alle svar'>
-              <FormAnswers formId={event.evaluation} />
-            </Expand>
-          </>
-        )}
+        </ShowMoreText>
+        {event.evaluation ? <FormAdmin formId={event.evaluation} /> : <EventFormEditor formType={FormType.EVALUATION} />}
       </div>
     </Stack>
   );

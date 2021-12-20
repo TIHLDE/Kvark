@@ -9,7 +9,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBackRounded';
 import InfoIcon from '@mui/icons-material/InfoRounded';
 import FineIcon from '@mui/icons-material/LocalAtmRounded';
 import LawIcon from '@mui/icons-material/GavelRounded';
-import FormsIcon from '@mui/icons-material/DynamicFormRounded';
+import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
 
 // Project Components
 import { useSetNavigationOptions } from 'components/navigation/Navigation';

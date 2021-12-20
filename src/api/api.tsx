@@ -113,7 +113,6 @@ export default {
 
   // Forms
   getForm: (formId: string) => IFetch<Form>({ method: 'GET', url: `${FORMS_ENDPOINT}/${formId}/` }),
-  getForms: (filters?: any) => IFetch<PaginationResponse<Form>>({ method: 'GET', url: `${FORMS_ENDPOINT}/`, data: filters || {} }),
   getFormStatistics: (formId: string) => IFetch<FormStatistics>({ method: 'GET', url: `${FORMS_ENDPOINT}/${formId}/statistics/` }),
   createForm: (item: FormCreate | EventFormCreate | GroupFormCreate) => IFetch<Form>({ method: 'POST', url: `${FORMS_ENDPOINT}/`, data: item }),
   updateForm: (formId: string, item: FormUpdate) => IFetch<Form>({ method: 'PUT', url: `${FORMS_ENDPOINT}/${formId}/`, data: item }),

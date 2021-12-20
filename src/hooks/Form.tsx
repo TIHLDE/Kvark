@@ -35,7 +35,8 @@ export const useCreateForm = <T extends FormCreate | EventFormCreate | GroupForm
     onSuccess: (data) => {
       if ((data as EventForm).event) {
         queryClient.invalidateQueries([EVENT_QUERY_KEY, (data as EventForm).event.id]);
-      } else if ((data as GroupForm).group) {
+      }
+      if ((data as GroupForm).group) {
         queryClient.invalidateQueries(GROUPS_QUERY_KEYS.forms.all((data as GroupForm).group.slug));
       }
       queryClient.setQueryData([FORM_QUERY_KEY, data.id], data);
@@ -61,6 +62,9 @@ export const useDeleteForm = (formId: string): UseMutationResult<RequestResponse
       if ((data as EventForm).event) {
         queryClient.invalidateQueries([EVENT_QUERY_KEY, (data as EventForm).event.id]);
       }
+      if ((data as GroupForm).group) {
+        queryClient.invalidateQueries(GROUPS_QUERY_KEYS.forms.all((data as GroupForm).group.slug));
+      }
       queryClient.removeQueries([FORM_QUERY_KEY, formId]);
     },
   });
@@ -83,10 +87,13 @@ export const useCreateSubmission = (formId: string): UseMutationResult<Submissio
       const data = queryClient.getQueryData<Form>([FORM_QUERY_KEY, formId]);
       if ((data as EventForm).event) {
         queryClient.invalidateQueries([EVENT_QUERY_KEY, (data as EventForm).event.id]);
+        queryClient.invalidateQueries([USER_FORMS_QUERY_KEY]);
+        queryClient.invalidateQueries([USER_QUERY_KEY]);
+      }
+      if ((data as GroupForm).group) {
+        queryClient.invalidateQueries(GROUPS_QUERY_KEYS.forms.all((data as GroupForm).group.slug));
       }
       queryClient.invalidateQueries([FORM_QUERY_KEY, formId]);
-      queryClient.invalidateQueries([USER_FORMS_QUERY_KEY]);
-      queryClient.invalidateQueries([USER_QUERY_KEY]);
     },
   });
 };

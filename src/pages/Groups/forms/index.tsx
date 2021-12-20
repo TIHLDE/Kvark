@@ -8,9 +8,7 @@ import ViewIcon from '@mui/icons-material/PreviewRounded';
 
 import Expand from 'components/layout/Expand';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import FormAnswers from 'components/forms/FormAnswers';
-import FormEditor from 'components/forms/FormEditor';
-import FormStatistics from 'components/forms/FormStatistics';
+import FormAdmin from 'components/forms/FormAdmin';
 import AddGroupFormDialog from 'pages/Groups/forms/AddGroupFormDialog';
 import Paper from 'components/layout/Paper';
 import ShareButton from 'components/miscellaneous/ShareButton';
@@ -40,17 +38,7 @@ const GroupForms = () => {
                   </Button>
                   <ShareButton fullWidth shareId={form.id} shareType='form' title={form.title} />
                 </Stack>
-                <div>
-                  <Expand flat header='Rediger spørsmål'>
-                    <FormEditor form={form} />
-                  </Expand>
-                  <Expand flat header='Sammendrag av flervalgsspørsmål'>
-                    <FormStatistics formId={form.id} />
-                  </Expand>
-                  <Expand flat header='Alle svar'>
-                    <FormAnswers formId={form.id} />
-                  </Expand>
-                </div>
+                <FormAdmin formId={form.id} />
               </Expand>
             ))}
           </div>

@@ -120,7 +120,7 @@ const FormEditor = ({ form }: FormEditorProps) => {
         <Button disabled={disabled} fullWidth onClick={() => setAddButtonOpen(true)} ref={buttonAnchorRef} variant='outlined'>
           Nytt spørsmål
         </Button>
-        <Stack direction={{ sx: 'column', md: 'row' }}>
+        <Stack direction={{ sx: 'column', md: 'row' }} gap={1}>
           <VerifyDialog color='error' contentText='Sletting av skjema kan ikke reverseres.' disabled={disabled} onConfirm={onDeleteForm}>
             Slett
           </VerifyDialog>
