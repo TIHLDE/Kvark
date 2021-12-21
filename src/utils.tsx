@@ -1,7 +1,8 @@
 import slugify from 'slugify';
 import { parseISO, format, subMinutes, getYear, isAfter, isBefore } from 'date-fns';
+import nbLocale from 'date-fns/locale/nb';
 import { Event } from 'types';
-import { UserStudy, UserClass, JobPostType, StrikeReason } from 'types/Enums';
+import { JobPostType, MembershipType, StrikeReason, UserClass, UserStudy } from 'types/Enums';
 
 export const isAfterDateOfYear = (month: number, date: number) => isAfter(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
 export const isBeforeDateOfYear = (month: number, date: number) => isBefore(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
@@ -63,6 +64,8 @@ export const getUserStudyShort = (userStudy: UserStudy) => {
       return 'DigSam';
     case UserStudy.DRIFT:
       return 'Drift';
+    case UserStudy.INFO:
+      return 'Info';
     default:
       return 'Ukjent studie';
   }
@@ -84,6 +87,8 @@ export const getUserStudyLong = (userStudy: UserStudy) => {
       return 'Digital samhandling';
     case UserStudy.DRIFT:
       return 'Drift av datasystemer';
+    case UserStudy.INFO:
+      return 'Informasjonsbehandling';
     default:
       return 'Ukjent studie';
   }
@@ -132,6 +137,21 @@ export const getJobpostType = (jobpostType: JobPostType) => {
 };
 
 /**
+ * Get membership type as text
+ * @param membershipType Membership type
+ */
+export const getMembershipType = (membershipType: MembershipType) => {
+  switch (membershipType) {
+    case MembershipType.LEADER:
+      return 'Leder';
+    case MembershipType.MEMBER:
+      return 'Medlem';
+    default:
+      return 'Ukjent medlemskapstype';
+  }
+};
+
+/**
  * Get strike reason as readable text
  * @param strikeReason Strike reason enum
  */
@@ -156,18 +176,27 @@ export const getStrikeReasonAsText = (strikeReason: StrikeReason) => {
  * Add leading zero to numbers below 10. Ex: 2 -> 02, 12 -> 12
  * @param number Number to add zeros to
  */
-const addLeadingZero = (number: number) => (number < 10 ? '0' + number : number);
+// const addLeadingZero = (number: number) => (number < 10 ? '0' + number : number);
 
 /**
- * Format date in format: `torsdag 12 oktober 2021 - kl. 08:30`
+ * Format date in format: `Tor 12. okt. 2021 08:30`
  * Year is only shown if it's a different year than this year
  * @param date Date to be formatted
+ * @param options Configure what info the formatted date should contain
  */
-export const formatDate = (date: Date) => {
+export const formatDate = (
+  date: Date,
+  {
+    time = true,
+    fullMonth = false,
+    fullDayOfWeek = false,
+    capitalizeFirstLetter = true,
+  }: { time?: boolean; fullMonth?: boolean; fullDayOfWeek?: boolean; capitalizeFirstLetter?: boolean } = {},
+) => {
   const isDifferentYear = date.getFullYear() !== new Date().getFullYear();
-  return `${getDay(date.getDay())} ${date.getDate()} ${getMonth(date.getMonth())} ${isDifferentYear ? date.getFullYear() : ''} - kl. ${addLeadingZero(
-    date.getHours(),
-  )}:${addLeadingZero(date.getMinutes())}`;
+  const formatDateString = `${fullDayOfWeek ? 'EEEE' : 'E'} do ${fullMonth ? 'MMMM' : 'MMM'}${isDifferentYear ? ' yyyy' : ''}`;
+  const formatted = format(date, `${formatDateString}${time ? ' p' : ''}`, { locale: nbLocale });
+  return capitalizeFirstLetter ? `${formatted.charAt(0).toUpperCase()}${formatted.slice(1)}` : formatted;
 };
 
 /**
@@ -193,32 +222,6 @@ export const getTimeSince = (date: Date) => {
     return formatDate(date);
   }
 };
-
-/**
- * Translate a day of week number to a readable day
- * @param day Day of week
- */
-export const getDay = (day: number) => {
-  switch (day) {
-    case 0:
-      return 'Søn.';
-    case 1:
-      return 'Man.';
-    case 2:
-      return 'Tirs.';
-    case 3:
-      return 'Ons.';
-    case 4:
-      return 'Tors.';
-    case 5:
-      return 'Fre.';
-    case 6:
-      return 'Lør.';
-    default:
-      return day;
-  }
-};
-
 /**
  * Translate a month of year number to a readable month
  * @param month Month of year

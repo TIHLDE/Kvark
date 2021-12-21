@@ -37,7 +37,7 @@ const useStyles = makeStyles()((theme) => ({
 }));
 
 const USER_CLASSES = ['Alle', '1. klasse', '2. klasse', '3. klasse', '4. klasse', '5. klasse', 'Alumni'];
-const USER_STUDIES = ['Alle', 'Dataing', 'DigFor', 'DigSec', 'DigSam', 'Drift'];
+const USER_STUDIES = ['Alle', 'Dataing', 'DigFor', 'DigSec', 'DigSam', 'Drift', 'Info'];
 
 const UserAdmin = () => {
   const { classes } = useStyles();

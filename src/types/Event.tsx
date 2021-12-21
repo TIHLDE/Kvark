@@ -38,6 +38,7 @@ export interface Event {
   waiting_list_count: number;
   can_cause_strikes: boolean;
   enforces_previous_strikes: boolean;
+  only_allow_prioritized: boolean;
 }
 export type EventRequired = Partial<Event> & Pick<Event, 'end_date' | 'title' | 'start_date'> & { organizer: Group['slug'] };
 export type EventCompact = Pick<

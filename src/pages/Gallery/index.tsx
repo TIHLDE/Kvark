@@ -63,8 +63,8 @@ const PictureEditor = ({ id, goToPicture }: PictureEditorProps) => {
   const updatePicture = useUpdatePicture(id || '');
   const deletePicture = useDeletePicture(id || '');
   const showSnackbar = useSnackbar();
-
   const { handleSubmit, register, watch, control, formState, getValues, reset, setValue } = useForm<FormValues>();
+  const watchUpload = watch('image');
   const submit: SubmitHandler<FormValues> = async (data) => {
     const picture = {
       ...data,

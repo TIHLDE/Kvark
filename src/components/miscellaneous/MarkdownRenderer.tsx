@@ -9,7 +9,9 @@ import { styled, Divider, Typography, Skeleton } from '@mui/material';
 
 // Project components
 import Expand from 'components/layout/Expand';
-import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
+import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
+import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
+import NewsListItem, { NewsListItemLoading } from 'components/miscellaneous/NewsListItem';
 import Linkify from 'components/miscellaneous/Linkify';
 
 const ReactMarkdown = lazy(() => import('react-markdown'));
@@ -83,15 +85,15 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
 
   const Event = ({ id }: ComponentProps) => {
     const { data } = useEventById(id);
-    return data ? <ListItem event={data} largeImg sx={{ mb: 1 }} /> : <ListItemLoading sx={{ mb: 1 }} />;
+    return data ? <EventListItem event={data} sx={{ mb: 1 }} /> : <EventListItemLoading sx={{ mb: 1 }} />;
   };
   const JobPost = ({ id }: ComponentProps) => {
     const { data } = useJobPostById(id);
-    return data ? <ListItem jobpost={data} largeImg sx={{ mb: 1 }} /> : <ListItemLoading sx={{ mb: 1 }} />;
+    return data ? <JobPostListItem jobpost={data} sx={{ mb: 1 }} /> : <JobPostListItemLoading sx={{ mb: 1 }} />;
   };
   const News = ({ id }: ComponentProps) => {
     const { data } = useNewsById(id);
-    return data ? <ListItem largeImg news={data} sx={{ mb: 1 }} /> : <ListItemLoading sx={{ mb: 1 }} />;
+    return data ? <NewsListItem news={data} sx={{ mb: 1 }} /> : <NewsListItemLoading sx={{ mb: 1 }} />;
   };
 
   enum LanguageTypes {

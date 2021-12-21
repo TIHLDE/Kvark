@@ -14,11 +14,24 @@
 
 ## Neste versjon
 
+- ✨ **Botsystem**. Laget et botsystem for intern bruk i grupper. Gruppene kan lage et eget lovverk. Medlemmer kan så gi bøter til andre medlemmer. Leder og botsjef kan markere bøter som godkjent og betalt.
+- 🎨 **Grupper**. Oppdatert utseende.
+
+## Versjon 1.3.1 (30.11.2021)
+
+- ✨ **Informasjonsbehandling**. Medlemmer kan nå velge studieretningen Informasjonsbehandling når de registrer seg. Drift'ere kan ikke lengre prioriteres på arrangementer ettersom det ikke lenger finnes studenter i Drift 1-3 klasse.
+- 🎨 **Design**. Oppdatert utseende på nyheter og jobbannonser.
+
+## Versjon 1.3.0 (16.11.2021)
+
+- ✨ **Arrangementer**. Arrangementer kan nå være åpne for kun prioriterte.
+- 🎨 **Arrangementer**. Lagt til farger slik at brukere raskt kan se hva som er hva. Det vises også flere arrangementer på forsiden.
 - ✨ **Arrangementer**. Lagt til mulighet for å knytte arrangementer til grupper. Gruppen som er koblet til et arrangement er også de enste som har admin-tilgang til det.
 - ⚡ **Opplæring**. Lagt til flere beskrivelser på felter i arrangements-admin, samt gjort det enkelt å gjøre dette andre steder også.
 - ⚡ **Spørreskjemaer**. Håndterer nå åpning av spørreskjemaer der bruker ikke er innlogget ved redirigering til innlogging.
 - ⚡ **Ytelse**. Laster inn bilder først når de skal vises på siden.
 - 🦟 **PWA**. Det funker nå å legge til nettsiden på hjemskjermen.
+- ✨ **Gruppehistorikk**. Lagt til eget kort for å se info om tidligere medlemskap av TIHLDE sine ulike undergrupper.
 
 ## Versjon 1.2.7 (11.11.2021)
 

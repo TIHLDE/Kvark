@@ -16,10 +16,19 @@ import {
   FormStatistics,
   FormUpdate,
   Group,
+  GroupFine,
+  GroupFineCreate,
+  GroupFineBatchMutate,
+  GroupFineMutate,
+  GroupLaw,
+  GroupLawMutate,
+  GroupMutate,
+  GroupUserFine,
   JobPost,
   JobPostRequired,
   LoginRequestResponse,
   Membership,
+  MembershipHistory,
   News,
   NewsRequired,
   Notification,
@@ -33,39 +42,57 @@ import {
   ShortLink,
   Strike,
   StrikeCreate,
+  StrikeList,
   Submission,
   User,
   UserCreate,
   UserSubmission,
   Warning,
+<<<<<<< HEAD
   StrikeList,
   Gallery,
   GalleryRequired,
   Picture,
   PictureRequired,
+=======
+>>>>>>> d9222db95c2b201b0edaa019bc320d1a0aeefb33
 } from 'types';
 
 export const AUTH_ENDPOINT = 'auth';
-export const BADGES_ENDPOINT = 'badge';
-export const CATEGORIES_ENDPOINT = 'category';
-export const CHEATSHEETS_ENDPOINT = 'cheatsheet';
+export const BADGES_ENDPOINT = 'badges';
+export const CATEGORIES_ENDPOINT = 'categories';
+export const CHEATSHEETS_ENDPOINT = 'cheatsheets';
 export const EVENTS_ENDPOINT = 'events';
 export const EVENT_REGISTRATIONS_ENDPOINT = 'users';
 export const FORMS_ENDPOINT = 'forms';
+<<<<<<< HEAD
 export const GALLERY_ENDPOINT = 'gallery';
 export const GROUPS_ENDPOINT = 'group';
 export const JOBPOSTS_ENDPOINT = 'jobpost';
+=======
+export const GROUPS_ENDPOINT = 'groups';
+export const GROUP_LAWS_ENDPOINT = 'laws';
+export const GROUP_FINES_ENDPOINT = 'fines';
+export const JOBPOSTS_ENDPOINT = 'jobposts';
+>>>>>>> d9222db95c2b201b0edaa019bc320d1a0aeefb33
 export const ME_ENDPOINT = 'me';
-export const MEMBERSHIPS_ENDPOINT = 'membership';
+export const MEMBERSHIPS_ENDPOINT = 'memberships';
+export const MEMBERSHIP_HISTORIES_ENDPOINT = 'membership-histories';
 export const NEWS_ENDPOINT = 'news';
+<<<<<<< HEAD
 export const NOTIFICATIONS_ENDPOINT = 'notification';
 export const PAGES_ENDPOINT = 'page';
 export const PICTURE_ENDPOINT = 'pictures';
 export const SHORT_LINKS_ENDPOINT = 'short-link';
+=======
+export const NOTIFICATIONS_ENDPOINT = 'notifications';
+export const PAGES_ENDPOINT = 'pages';
+export const SHORT_LINKS_ENDPOINT = 'short-links';
+>>>>>>> d9222db95c2b201b0edaa019bc320d1a0aeefb33
 export const STRIKES_ENDPOINT = 'strikes';
-export const SUBMISSIONS_ENDPOINT = 'submission';
-export const USERS_ENDPOINT = 'user';
-export const WARNINGS_ENDPOINT = 'warning';
+export const SUBMISSIONS_ENDPOINT = 'submissions';
+export const USERS_ENDPOINT = 'users';
+export const WARNINGS_ENDPOINT = 'warnings';
 
 export default {
   // Auth
@@ -196,9 +223,11 @@ export default {
   // Badges
   createUserBadge: (data: { badge_id: string }) => IFetch<RequestResponse>({ method: 'POST', url: `${BADGES_ENDPOINT}/`, data }),
 
-  //Membership
+  // Membership
   getMemberships: (slug: string, filters?: any) =>
     IFetch<PaginationResponse<Membership>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/${MEMBERSHIPS_ENDPOINT}/`, data: filters || {} }),
+  getMembershipsHistories: (slug: string, filters?: any) =>
+    IFetch<PaginationResponse<MembershipHistory>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/${MEMBERSHIP_HISTORIES_ENDPOINT}/`, data: filters || {} }),
   createMembership: (slug: string, userId: string) =>
     IFetch<Membership>({ method: 'POST', url: `${GROUPS_ENDPOINT}/${slug}/${MEMBERSHIPS_ENDPOINT}/`, data: { user: { user_id: userId } } }),
   deleteMembership: (slug: string, userId: string) =>
@@ -206,10 +235,45 @@ export default {
   updateMembership: (slug: string, userId: string, data: { membership_type: MembershipType }) =>
     IFetch<Membership>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${slug}/${MEMBERSHIPS_ENDPOINT}/${userId}/`, data }),
 
-  //Group
+  // Group
   getGroups: () => IFetch<Group[]>({ method: 'GET', url: `${GROUPS_ENDPOINT}/` }),
-  getGroup: (slug: string) => IFetch<Group>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/` }),
-  updateGroup: (slug: string, data: Group) => IFetch<Group>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${slug}/`, data }),
+  getGroup: (slug: Group['slug']) => IFetch<Group>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/` }),
+  updateGroup: (slug: Group['slug'], data: GroupMutate) => IFetch<Group>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${slug}/`, data }),
+
+  // Group laws
+  getGroupLaws: (groupSlug: Group['slug']) => IFetch<Array<GroupLaw>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_LAWS_ENDPOINT}/` }),
+  createGroupLaw: (groupSlug: Group['slug'], data: GroupLawMutate) =>
+    IFetch<GroupLaw>({ method: 'POST', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_LAWS_ENDPOINT}/`, data }),
+  updateGroupLaw: (groupSlug: Group['slug'], lawId: GroupLaw['id'], data: GroupLawMutate) =>
+    IFetch<GroupLaw>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_LAWS_ENDPOINT}/${lawId}/`, data }),
+  deleteGroupLaw: (groupSlug: Group['slug'], lawId: GroupLaw['id']) =>
+    IFetch<RequestResponse>({ method: 'DELETE', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_LAWS_ENDPOINT}/${lawId}/` }),
+
+  // Group fines
+  getGroupFines: (groupSlug: Group['slug'], filters?: any) =>
+    IFetch<PaginationResponse<GroupFine>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/`, data: filters || {} }),
+  getGroupUsersFines: (groupSlug: Group['slug'], filters?: any) =>
+    IFetch<PaginationResponse<GroupUserFine>>({
+      method: 'GET',
+      url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/${USERS_ENDPOINT}/`,
+      data: filters || {},
+    }),
+  getGroupUserFines: (groupSlug: Group['slug'], userId: User['user_id'], filters?: any) =>
+    IFetch<PaginationResponse<GroupFine>>({
+      method: 'GET',
+      url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/${USERS_ENDPOINT}/${userId}/`,
+      data: filters || {},
+    }),
+  createGroupFine: (groupSlug: Group['slug'], data: GroupFineCreate) =>
+    IFetch<GroupFine>({ method: 'POST', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/`, data }),
+  updateGroupFine: (groupSlug: Group['slug'], fineId: GroupFine['id'], data: GroupFineMutate) =>
+    IFetch<GroupFine>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/${fineId}/`, data }),
+  batchUpdateGroupFine: (groupSlug: Group['slug'], data: GroupFineBatchMutate) =>
+    IFetch<RequestResponse>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/batch-update/`, data }),
+  batchUpdateUserGroupFines: (groupSlug: Group['slug'], userId: User['user_id'], data: GroupFineMutate) =>
+    IFetch<RequestResponse>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/batch-update/${userId}/`, data }),
+  deleteGroupFine: (groupSlug: Group['slug'], fineId: GroupFine['id']) =>
+    IFetch<RequestResponse>({ method: 'DELETE', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/${fineId}/` }),
 
   // Pages
   getPageTree: () => IFetch<PageTree>({ method: 'GET', url: `${PAGES_ENDPOINT}/tree/` }),

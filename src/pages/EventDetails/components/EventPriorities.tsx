@@ -49,7 +49,7 @@ const EventPriorities = ({ priorities }: EventPrioritesProps) => {
     </Typography>
   );
 
-  [UserStudy.DATAING, UserStudy.DIGFOR, UserStudy.DIGSEC, UserStudy.DIGSAM, UserStudy.DRIFT].forEach((study: UserStudy) => {
+  [UserStudy.DATAING, UserStudy.DIGFOR, UserStudy.DIGSEC, UserStudy.DIGSAM, UserStudy.INFO].forEach((study: UserStudy) => {
     if (study === UserStudy.DIGSAM) {
       if (
         prioritiesArr.some((item) => item.user_class === UserClass.FOURTH && item.user_study === study) &&
