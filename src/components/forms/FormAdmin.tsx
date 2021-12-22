@@ -3,7 +3,8 @@ import { useFormById } from 'hooks/Form';
 
 import Expand from 'components/layout/Expand';
 import FormAnswers from 'components/forms/FormAnswers';
-import FormEditor from 'components/forms/FormEditor';
+import FormFieldsEditor from 'components/forms/FormFieldsEditor';
+import FormDetailsEditor from 'components/forms/FormDetailsEditor';
 import FormStatistics from 'components/forms/FormStatistics';
 
 export type FormAdminProps = {
@@ -19,8 +20,11 @@ const FormAdmin = ({ formId }: FormAdminProps) => {
 
   return (
     <div>
+      <Expand flat header='Skjema-innstillinger' TransitionProps={{ mountOnEnter: true }}>
+        <FormDetailsEditor form={form} />
+      </Expand>
       <Expand flat header='Rediger spørsmål' TransitionProps={{ mountOnEnter: true }}>
-        <FormEditor form={form} />
+        <FormFieldsEditor form={form} />
       </Expand>
       <Expand flat header='Sammendrag av flervalgsspørsmål' TransitionProps={{ mountOnEnter: true }}>
         <FormStatistics formId={form.id} />

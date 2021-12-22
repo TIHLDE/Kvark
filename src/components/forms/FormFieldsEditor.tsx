@@ -1,46 +1,25 @@
 import { useEffect, useState, useRef } from 'react';
 import { Form, TextFormField, SelectFormField } from 'types';
 import { FormFieldType } from 'types/Enums';
-import { useUpdateForm, useDeleteForm, useFormSubmissions } from 'hooks/Form';
+import { useUpdateForm, useFormSubmissions } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
-import { ClickAwayListener, Grow, Paper, Popper, TextField, Typography, MenuItem, MenuList, Button, Stack } from '@mui/material';
-
-// Project components
-import VerifyDialog from 'components/layout/VerifyDialog';
+import { ClickAwayListener, Grow, Paper, Popper, Typography, MenuItem, MenuList, Button, Stack } from '@mui/material';
 import FieldEditor from 'components/forms/FieldEditor';
 
-export type FormEditorProps = {
+export type FormFieldsEditorProps = {
   form: Form;
 };
 
-const FormEditor = ({ form }: FormEditorProps) => {
-  const { data: submissions } = useFormSubmissions(form.id || '-', 1);
+const FormFieldsEditor = ({ form }: FormFieldsEditorProps) => {
+  const { data: submissions } = useFormSubmissions(form.id, 1);
   const disabled = Boolean(submissions?.count);
-  const updateForm = useUpdateForm(form.id || '-');
-  const deleteForm = useDeleteForm(form.id || '-');
+  const updateForm = useUpdateForm(form.id);
   const showSnackbar = useSnackbar();
-  const [title, setTitle] = useState(form.title);
   const [fields, setFields] = useState<Array<TextFormField | SelectFormField>>(form.fields);
   const [addButtonOpen, setAddButtonOpen] = useState(false);
   const buttonAnchorRef = useRef(null);
 
-  useEffect(() => {
-    setFields(form.fields);
-  }, [form]);
-
-  const onDeleteForm = () => {
-    if (disabled) {
-      return;
-    }
-    deleteForm.mutate(undefined, {
-      onSuccess: (data) => {
-        showSnackbar(data.detail, 'success');
-      },
-      onError: (e) => {
-        showSnackbar(e.detail, 'error');
-      },
-    });
-  };
+  useEffect(() => setFields(form.fields), [form]);
 
   const addField = (type: FormFieldType) => {
     if (disabled) {
@@ -87,7 +66,7 @@ const FormEditor = ({ form }: FormEditorProps) => {
       return;
     }
     updateForm.mutate(
-      { title: title, fields: fields, resource_type: form.resource_type },
+      { fields: fields, resource_type: form.resource_type },
       {
         onSuccess: () => {
           showSnackbar('Spørsmålene ble oppdatert', 'success');
@@ -107,7 +86,6 @@ const FormEditor = ({ form }: FormEditorProps) => {
             Du kan ikke endre spørsmålene etter at noen har svart på dem
           </Typography>
         )}
-        <TextField disabled={disabled} fullWidth label='Tittel' maxRows={3} multiline onChange={(e) => setTitle(e.target.value)} size='small' value={title} />
         {fields.map((field, index) => (
           <FieldEditor
             disabled={disabled}
@@ -120,14 +98,9 @@ const FormEditor = ({ form }: FormEditorProps) => {
         <Button disabled={disabled} fullWidth onClick={() => setAddButtonOpen(true)} ref={buttonAnchorRef} variant='outlined'>
           Nytt spørsmål
         </Button>
-        <Stack direction={{ sx: 'column', md: 'row' }} gap={1}>
-          <VerifyDialog color='error' contentText='Sletting av skjema kan ikke reverseres.' disabled={disabled} onConfirm={onDeleteForm}>
-            Slett
-          </VerifyDialog>
-          <Button disabled={disabled} fullWidth onClick={save} variant='contained'>
-            Lagre
-          </Button>
-        </Stack>
+        <Button disabled={disabled} fullWidth onClick={save} variant='contained'>
+          Lagre
+        </Button>
       </Stack>
       <Popper anchorEl={buttonAnchorRef.current} open={addButtonOpen} role={undefined} transition>
         {({ TransitionProps }) => (
@@ -148,4 +121,4 @@ const FormEditor = ({ form }: FormEditorProps) => {
   );
 };
 
-export default FormEditor;
+export default FormFieldsEditor;

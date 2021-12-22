@@ -86,7 +86,7 @@ const FormPage = () => {
     return <Http404 />;
   }
 
-  const canAnswerForm = Boolean(form && (!form.viewer_has_answered || form.resource_type === FormResourceType.GROUP_FORM));
+  const canAnswerForm = Boolean(form && (!form.viewer_has_answered || (form.resource_type === FormResourceType.GROUP_FORM && form.can_submit_multiple)));
 
   return (
     <Page banner={<PrimaryTopBox />} options={{ title: `${form?.title || 'Laster spørreskjema...'} - Spørreskjema` }}>

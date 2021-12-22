@@ -41,8 +41,8 @@ export type GroupFormCreate = Partial<Omit<GroupForm, 'group'>> &
     group: GroupForm['group']['slug'];
   };
 
-export type EventFormUpdate = Partial<EventFormCreate>;
-export type GroupFormUpdate = Partial<GroupFormCreate>;
+export type EventFormUpdate = Partial<EventFormCreate> & Pick<EventForm, 'resource_type'>;
+export type GroupFormUpdate = Partial<GroupFormCreate> & Pick<GroupForm, 'resource_type'>;
 
 export type FormCreate = EventFormCreate | GroupFormCreate;
 export type FormUpdate = EventFormUpdate | GroupFormUpdate;
