@@ -31,7 +31,12 @@ const GroupForms = () => {
           <AddGroupFormDialog groupSlug={slug} sx={{ mb: 2 }} />
           <div>
             {forms.map((form) => (
-              <Expand flat header={form.title} key={form.id} sx={{ background: (theme) => theme.palette.background.default }}>
+              <Expand
+                flat
+                header={form.title}
+                key={form.id}
+                sx={{ background: (theme) => theme.palette.background.default }}
+                TransitionProps={{ mountOnEnter: true }}>
                 <Stack direction={{ xs: 'column', md: 'row' }} gap={1} sx={{ mb: 1 }}>
                   <Button component={Link} endIcon={<ViewIcon />} fullWidth to={`${URLS.form}${form.id}/`} variant='outlined'>
                     Svar på/se skjema

@@ -57,7 +57,7 @@ export enum Groups {
   DRIFT = 'Drift',
 }
 
-export enum FormType {
+export enum EventFormType {
   SURVEY = 'SURVEY',
   EVALUATION = 'EVALUATION',
 }

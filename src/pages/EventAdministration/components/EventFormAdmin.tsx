@@ -1,5 +1,5 @@
 import { EventFormCreate } from 'types';
-import { FormType, FormResourceType } from 'types/Enums';
+import { EventFormType, FormResourceType } from 'types/Enums';
 import { useEventById } from 'hooks/Event';
 import { useCreateForm } from 'hooks/Form';
 import { Typography, LinearProgress, Stack, Button } from '@mui/material';
@@ -20,14 +20,14 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
   }
 
   type EventFormEditorProps = {
-    formType: FormType;
+    formType: EventFormType;
   };
 
   const EventFormEditor = ({ formType }: EventFormEditorProps) => {
     const createForm = useCreateForm();
 
     const newForm: EventFormCreate = {
-      title: `${event.title} - ${formType === FormType.SURVEY ? 'påmeldingsskjema' : 'evalueringsskjema'}`,
+      title: `${event.title} - ${formType === EventFormType.SURVEY ? 'påmeldingsskjema' : 'evalueringsskjema'}`,
       type: formType,
       event: event.id,
       resource_type: FormResourceType.EVENT_FORM,
@@ -38,7 +38,7 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
 
     return (
       <Button fullWidth onClick={onCreate} variant='outlined'>
-        Opprett {formType === FormType.SURVEY ? 'påmeldingsskjema' : 'evalueringsskjema'}
+        Opprett {formType === EventFormType.SURVEY ? 'påmeldingsskjema' : 'evalueringsskjema'}
       </Button>
     );
   };
@@ -51,7 +51,7 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
           Deltagere som melder seg på dette arrangementet vil måtte svare på disse spørsmålene først. Deltagerne kan la være å svare på spørsmål som ikke er
           &quot;Påkrevd&quot;.
         </ShowMoreText>
-        {event.survey ? <FormAdmin formId={event.survey} /> : <EventFormEditor formType={FormType.SURVEY} />}
+        {event.survey ? <FormAdmin formId={event.survey} /> : <EventFormEditor formType={EventFormType.SURVEY} />}
       </div>
       <div>
         <Typography variant='h3'>Evalueringsspørsmål</Typography>
@@ -60,7 +60,7 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
           påmelding trer i kraft når deltageren blir markert som &quot;Ankommet&quot;, og forsvinner med en gang deltageren har svart på evalueringsskjemaet.
           Deltagerne vil motta epost med påminnelse om å svare på skjemaet kl 12.00 dagen etter arrangementet.
         </ShowMoreText>
-        {event.evaluation ? <FormAdmin formId={event.evaluation} /> : <EventFormEditor formType={FormType.EVALUATION} />}
+        {event.evaluation ? <FormAdmin formId={event.evaluation} /> : <EventFormEditor formType={EventFormType.EVALUATION} />}
       </div>
     </Stack>
   );

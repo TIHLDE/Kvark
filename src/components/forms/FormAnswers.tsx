@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FormFieldType } from 'types/Enums';
+import { FormFieldType, FormResourceType } from 'types/Enums';
 import { UserSubmission, TextFieldSubmission, SelectFieldSubmission, TextFormField, SelectFormField } from 'types';
 import { useFormById, useFormSubmissions } from 'hooks/Form';
 import { SUBMISSIONS_ENDPOINT, FORMS_ENDPOINT } from 'api/api';
@@ -65,7 +65,7 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
         const url = URL.createObjectURL(blob);
         a.href = url;
         // Set filename
-        a.download = `${urlEncode(form.title)}_${form.type}.csv`;
+        a.download = form.resource_type === FormResourceType.EVENT_FORM ? `${urlEncode(form.title)}_${form.type}.csv` : `${urlEncode(form.title)}.csv`;
         // Clicks the link to download the file
         a.click();
         // Revokes link and removes the <a> from document

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Form, Submission, EventForm } from 'types';
+import { Form, Submission } from 'types';
 import { useFormById, useCreateSubmission, validateSubmissionInput } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useForm } from 'react-hook-form';
@@ -19,7 +19,7 @@ import Paper from 'components/layout/Paper';
 import { PrimaryTopBox } from 'components/layout/TopBox';
 import FormView from 'components/forms/FormView';
 import SubmitButton from 'components/inputs/SubmitButton';
-import { FormResourceType, FormType } from 'types/Enums';
+import { FormResourceType, EventFormType } from 'types/Enums';
 
 const FormPage = () => {
   const { event: GAEvent } = useGoogleAnalytics();
@@ -28,16 +28,19 @@ const FormPage = () => {
   const createSubmission = useCreateSubmission(id || '-');
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
-  const title = useMemo(() => (form ? (form.type === FormType.EVALUATION ? 'Evaluering' : form.title) : ''), [form]);
+  const title = useMemo(
+    () => (form ? (form.resource_type === FormResourceType.EVENT_FORM && form.type === EventFormType.EVALUATION ? 'Evaluering' : form.title) : ''),
+    [form],
+  );
   const subtitle = useMemo(
     () => (
       <>
         {form?.resource_type === FormResourceType.EVENT_FORM && (
           <>
             {`Arrangøren av `}
-            <Link to={`${URLS.events}${(form as EventForm).event.id}/`}>{`"${(form as EventForm).event.title}"`}</Link>
-            {`, som ble holdt ${formatDate(parseISO((form as EventForm).event.start_date)).toLowerCase()} på ${
-              (form as EventForm).event.location
+            <Link to={`${URLS.events}${form.event.id}/`}>{`"${form.event.title}"`}</Link>
+            {`, som ble holdt ${formatDate(parseISO(form.event.start_date)).toLowerCase()} på ${
+              form.event.location
             },  ønsker at du svarer på følgende spørsmål:`}
           </>
         )}
@@ -77,7 +80,7 @@ const FormPage = () => {
     });
   };
 
-  const isEventFormButNotEvaluation = Boolean(form && form.resource_type === FormResourceType.EVENT_FORM && form.type !== FormType.EVALUATION);
+  const isEventFormButNotEvaluation = Boolean(form && form.resource_type === FormResourceType.EVENT_FORM && form.type !== EventFormType.EVALUATION);
 
   if (isError || isEventFormButNotEvaluation) {
     return <Http404 />;
