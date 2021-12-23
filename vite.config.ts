@@ -33,10 +33,6 @@ export default defineConfig(({ mode }) => {
       assetsDir: 'static',
       rollupOptions: {
         output: {
-          manualChunks: {
-            mui: ['@mui/material', '@mui/lab'],
-            calendar: ['@devexpress/dx-react-core', '@devexpress/dx-react-scheduler', '@devexpress/dx-react-scheduler-material-ui', 'moment', 'rrule', 'luxon'],
-          },
           entryFileNames: `static/js/[name].[hash].js`,
           chunkFileNames: `static/js/[name].[hash].js`,
           assetFileNames: ({ name }) => {
