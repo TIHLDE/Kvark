@@ -45,7 +45,7 @@ export const EventsSubscription = () => {
             <a href='https://support.microsoft.com/nb-no/office/cff1429c-5af6-41ec-a5b4-74f2c278e98c' rel='noopener noreferrer' target='_blank'>
               Microsoft Outlook (fremgangsmåte)
             </a>{' '}
-            eller en annen kalender som støtter kalender-abonnering for å begynne å abonnere på arrangement-kalenderen din.
+            eller en annen kalender som støtter kalender-abonnering for å begynne å abonnere på arrangement-kalenderen din. Hvis det ikke kommer noen arrangementer inn i kalenderen din, så kan det være fordi kalenderen sjelden ser etter oppdateringer. Noen kalendere oppdateres kun daglig.
           </Typography>
           <Pre>{`${TIHLDE_API_URL}${USERS_ENDPOINT}/${user?.user_id || ''}/events.ics`}</Pre>
         </Stack>
