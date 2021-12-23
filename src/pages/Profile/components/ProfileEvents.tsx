@@ -1,11 +1,12 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { USERS_ENDPOINT } from 'api/api';
 import { TIHLDE_API_URL } from 'constant';
 import { useUserEvents, useUser } from 'hooks/User';
+import { useGoogleAnalytics } from 'hooks/Utils';
 import { Stack, Typography, Collapse, Divider, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import EventRoundedIcon from '@mui/icons-material/EventRounded';
+import CloudSyncIcon from '@mui/icons-material/CloudSyncRounded';
 
 // Project componets
 import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
@@ -17,15 +18,20 @@ import Paper from 'components/layout/Paper';
 export const EventsSubscription = () => {
   const [subscribeExpanded, setSubscribeExpanded] = useState(false);
   const { data: user } = useUser();
+  const { event } = useGoogleAnalytics();
+
+  useEffect(() => {
+    !subscribeExpanded || event('open', 'event-calendar-subscription', 'Opened info about event-subscriptions in calendar');
+  }, [subscribeExpanded]);
 
   return (
     <Paper noOverflow noPadding>
       <ListItem disablePadding>
         <ListItemButton onClick={() => setSubscribeExpanded((prev) => !prev)}>
           <ListItemIcon sx={{ minWidth: 35 }}>
-            <EventRoundedIcon />
+            <CloudSyncIcon />
           </ListItemIcon>
-          <ListItemText primary='Abonner på dine arrangementer' />
+          <ListItemText primary='Kalender-abonnement' secondary='Påmeldinger rett inn i kalenderen' />
           {subscribeExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItemButton>
       </ListItem>
@@ -33,7 +39,7 @@ export const EventsSubscription = () => {
         <Divider />
         <Stack gap={1} sx={{ p: 2 }}>
           <Typography variant='body2'>
-            Du kan abonnere på din arrangement-kalender alik at arrangementene du er påmeldt automatisk kommer inn i kalenderen din. Kopier URLen under og åpne{' '}
+            Du kan abonnere på din arrangement-kalender slik at nye påmeldinger kommer automatisk inn i kalenderen din. Kopier URLen under og åpne{' '}
             <a href='https://calendar.google.com/calendar/u/0/r/settings/addbyurl' rel='noopener noreferrer' target='_blank'>
               Google Calendar
             </a>
@@ -45,7 +51,9 @@ export const EventsSubscription = () => {
             <a href='https://support.microsoft.com/nb-no/office/cff1429c-5af6-41ec-a5b4-74f2c278e98c' rel='noopener noreferrer' target='_blank'>
               Microsoft Outlook (fremgangsmåte)
             </a>{' '}
-            eller en annen kalender som støtter kalender-abonnering for å begynne å abonnere på arrangement-kalenderen din. Hvis det ikke kommer noen arrangementer inn i kalenderen din, så kan det være fordi kalenderen sjelden ser etter oppdateringer. Noen kalendere oppdateres kun daglig.
+            eller en annen kalender for å begynne å abonnere på arrangement-kalenderen din. Hvis nye påmeldinger til arrangementer ikke kommer inn i kalenderen
+            din umiddelbart, så kan det være fordi kalenderen sjelden ser etter oppdateringer. Oppdaterings-frekvensen varierer fra kalender til kalender,
+            enkelte oppdateres kun daglig.
           </Typography>
           <Pre>{`${TIHLDE_API_URL}${USERS_ENDPOINT}/${user?.user_id || ''}/events.ics`}</Pre>
         </Stack>
