@@ -11,10 +11,10 @@ export type FormFieldsEditorProps = {
 };
 
 const FormFieldsEditor = ({ form }: FormFieldsEditorProps) => {
-  const { data: submissions } = useFormSubmissions(form.id, 1);
+  const { data: submissions, isLoading: isSubmissionsLoading } = useFormSubmissions(form.id, 1);
   const updateForm = useUpdateForm(form.id);
-  const disabledFromSubmissions = submissions ? Boolean(submissions.count) : true;
-  const disabled = updateForm.isLoading || disabledFromSubmissions;
+  const disabledFromSubmissions = (submissions ? Boolean(submissions.count) : true) && !isSubmissionsLoading;
+  const disabled = updateForm.isLoading || isSubmissionsLoading || disabledFromSubmissions;
   const showSnackbar = useSnackbar();
   const [fields, setFields] = useState<Array<TextFormField | SelectFormField>>(form.fields);
   const [addButtonOpen, setAddButtonOpen] = useState(false);
