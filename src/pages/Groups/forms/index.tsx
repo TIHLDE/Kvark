@@ -29,17 +29,17 @@ const GroupFormAdminListItem = ({ form }: { form: GroupForm }) => {
           <ListItemText
             primary={form.title}
             secondary={
-              <>
+              <Stack direction='row' gap={1}>
                 <Tooltip title={`Spørreskjemaet er ${form.is_open_for_submissions ? '' : 'ikke '}åpent for innsending av svar`}>
-                  <OpenIcon color={form.is_open_for_submissions ? 'success' : 'error'} sx={{ fontSize: 'inherit', mx: 0.5, mb: '-1px' }} />
+                  <OpenIcon color={form.is_open_for_submissions ? 'success' : 'error'} sx={{ fontSize: 'inherit' }} />
                 </Tooltip>
                 <Tooltip title={`Spørreskjemaet er åpent for ${form.only_for_group_members ? 'kun medlemmer av gruppen' : 'alle'}`}>
-                  <OnlyMembersIcon color={form.only_for_group_members ? 'error' : 'success'} sx={{ fontSize: 'inherit', mx: 0.5, mb: '-1px' }} />
+                  <OnlyMembersIcon color={form.only_for_group_members ? 'error' : 'success'} sx={{ fontSize: 'inherit' }} />
                 </Tooltip>
                 <Tooltip title={`Spørreskjemaet kan ${form.can_submit_multiple ? '' : 'ikke '}besvares flere ganger`}>
-                  <MultipleIcon color={form.can_submit_multiple ? 'success' : 'error'} sx={{ fontSize: 'inherit', mx: 0.5, mb: '-1px' }} />
+                  <MultipleIcon color={form.can_submit_multiple ? 'success' : 'error'} sx={{ fontSize: 'inherit' }} />
                 </Tooltip>
-              </>
+              </Stack>
             }
           />
           <ListItemIcon sx={{ minWidth: 0 }}>{expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}</ListItemIcon>

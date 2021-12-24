@@ -12,8 +12,9 @@ export type FormFieldsEditorProps = {
 
 const FormFieldsEditor = ({ form }: FormFieldsEditorProps) => {
   const { data: submissions } = useFormSubmissions(form.id, 1);
-  const disabled = Boolean(submissions?.count);
   const updateForm = useUpdateForm(form.id);
+  const disabledFromSubmissions = submissions ? Boolean(submissions.count) : true;
+  const disabled = updateForm.isLoading || disabledFromSubmissions;
   const showSnackbar = useSnackbar();
   const [fields, setFields] = useState<Array<TextFormField | SelectFormField>>(form.fields);
   const [addButtonOpen, setAddButtonOpen] = useState(false);
@@ -81,7 +82,7 @@ const FormFieldsEditor = ({ form }: FormFieldsEditorProps) => {
   return (
     <>
       <Stack gap={1}>
-        {disabled && (
+        {disabledFromSubmissions && (
           <Typography gutterBottom variant='body2'>
             Du kan ikke endre spørsmålene etter at noen har svart på dem
           </Typography>
