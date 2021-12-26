@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Form, Submission, EventForm } from 'types';
+import { Form, Submission } from 'types';
 import { useFormById, useCreateSubmission, validateSubmissionInput } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useForm } from 'react-hook-form';
@@ -19,7 +19,7 @@ import Paper from 'components/layout/Paper';
 import { PrimaryTopBox } from 'components/layout/TopBox';
 import FormView from 'components/forms/FormView';
 import SubmitButton from 'components/inputs/SubmitButton';
-import { FormResourceType, FormType } from 'types/Enums';
+import { FormResourceType, EventFormType } from 'types/Enums';
 
 const FormPage = () => {
   const { event: GAEvent } = useGoogleAnalytics();
@@ -28,16 +28,19 @@ const FormPage = () => {
   const createSubmission = useCreateSubmission(id || '-');
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
-  const title = useMemo(() => (form?.type === FormType.EVALUATION ? 'Evaluering' : 'Spørreskjema'), [form]);
+  const title = useMemo(
+    () => (form ? (form.resource_type === FormResourceType.EVENT_FORM && form.type === EventFormType.EVALUATION ? 'Evaluering' : form.title) : ''),
+    [form],
+  );
   const subtitle = useMemo(
     () => (
       <>
         {form?.resource_type === FormResourceType.EVENT_FORM && (
           <>
             {`Arrangøren av `}
-            <Link to={`${URLS.events}${(form as EventForm).event.id}/`}>{`"${(form as EventForm).event.title}"`}</Link>
-            {`, som ble holdt ${formatDate(parseISO((form as EventForm).event.start_date)).toLowerCase()} på ${
-              (form as EventForm).event.location
+            <Link to={`${URLS.events}${form.event.id}/`}>{`"${form.event.title}"`}</Link>
+            {`, som ble holdt ${formatDate(parseISO(form.event.start_date)).toLowerCase()} på ${
+              form.event.location
             },  ønsker at du svarer på følgende spørsmål:`}
           </>
         )}
@@ -77,10 +80,13 @@ const FormPage = () => {
     });
   };
 
-  // Only allow users to view form if it's an evaluation-form
-  if (isError || (form && form.type !== FormType.EVALUATION)) {
+  const isEventFormButNotEvaluation = Boolean(form && form.resource_type === FormResourceType.EVENT_FORM && form.type !== EventFormType.EVALUATION);
+
+  if (isError || isEventFormButNotEvaluation) {
     return <Http404 />;
   }
+
+  const canAnswerForm = Boolean(form && (!form.viewer_has_answered || (form.resource_type === FormResourceType.GROUP_FORM && form.can_submit_multiple)));
 
   return (
     <Page banner={<PrimaryTopBox />} options={{ title: `${form?.title || 'Laster spørreskjema...'} - Spørreskjema` }}>
@@ -102,21 +108,7 @@ const FormPage = () => {
               {subtitle}
             </Typography>
             <Divider sx={{ my: 2 }} />
-            {form.viewer_has_answered ? (
-              <>
-                <Typography align='center' variant='body2'>
-                  Du har allerede svart på dette spørreskjemaet, takk!
-                </Typography>
-                <Stack direction={{ xs: 'column', md: 'row' }} gap={1} sx={{ mt: 2 }}>
-                  <Button component={Link} fullWidth to={URLS.landing} variant='outlined'>
-                    Gå til forsiden
-                  </Button>
-                  <Button component={Link} fullWidth to={URLS.profile} variant='outlined'>
-                    Gå til profilen
-                  </Button>
-                </Stack>
-              </>
-            ) : (
+            {canAnswerForm ? (
               <form onSubmit={handleSubmit(submit)}>
                 {form && (
                   <FormView
@@ -133,6 +125,20 @@ const FormPage = () => {
                   Send inn svar
                 </SubmitButton>
               </form>
+            ) : (
+              <>
+                <Typography align='center' variant='body2'>
+                  Du har allerede svart på dette spørreskjemaet, takk!
+                </Typography>
+                <Stack direction={{ xs: 'column', md: 'row' }} gap={1} sx={{ mt: 2 }}>
+                  <Button component={Link} fullWidth to={URLS.landing} variant='outlined'>
+                    Gå til forsiden
+                  </Button>
+                  <Button component={Link} fullWidth to={URLS.profile} variant='outlined'>
+                    Gå til profilen
+                  </Button>
+                </Stack>
+              </>
             )}
           </>
         ) : (

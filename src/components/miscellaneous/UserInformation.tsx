@@ -1,16 +1,20 @@
 import { useState } from 'react';
 import { usePersistedState } from 'hooks/Utils';
-import { Typography, TypographyProps, Box, Tooltip, Alert, AlertProps } from '@mui/material';
+import { Typography, TypographyProps, Box, Tooltip, Alert, AlertProps, SxProps, Theme } from '@mui/material';
 import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
 
 export type ShowMoreTextProps = {
   children: TypographyProps['children'];
+  sx?: SxProps<Theme>;
 };
 
-export const ShowMoreText = ({ children }: ShowMoreTextProps) => {
+export const ShowMoreText = ({ children, sx = [] }: ShowMoreTextProps) => {
   const [showAll, setShowAll] = useState(false);
   return (
-    <Box component='span' onClick={() => setShowAll((prev) => !prev)} sx={{ display: 'grid', gridTemplateColumns: '1fr auto' }}>
+    <Box
+      component='span'
+      onClick={() => setShowAll((prev) => !prev)}
+      sx={[{ display: 'grid', gridTemplateColumns: '1fr auto' }, ...(Array.isArray(sx) ? sx : [sx])]}>
       <Typography sx={showAll ? undefined : { overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} variant='caption'>
         {children}
       </Typography>

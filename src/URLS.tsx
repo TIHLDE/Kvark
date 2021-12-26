@@ -1,3 +1,5 @@
+import { Group } from 'types';
+
 const WIKI = '/wiki/';
 export const WIKI_URLS = {
   ABOUT_INDEX: 'tihlde/undergrupper/index/',
@@ -5,7 +7,7 @@ export const WIKI_URLS = {
   EVENT_RULES: 'annet/arrangementsregler/',
 };
 
-export default {
+const URLS = {
   cheatsheet: '/kokebok/',
   company: '/bedrifter/',
   contactInfo: `${WIKI}${WIKI_URLS.CONTACT_US}`,
@@ -14,9 +16,16 @@ export default {
   eventRules: `${WIKI}${WIKI_URLS.EVENT_RULES}`,
   forgotPassword: '/glemt-passord/',
   form: '/sporreskjema/',
-  groups: '/grupper/',
-  groups_fines: 'boter/',
-  groups_laws: 'lovverk/',
+  groups: {
+    index: '/grupper/',
+    details: (groupSlug: Group['slug']) => `${URLS.groups.index}${groupSlug}/`,
+    fines_relative: 'boter/',
+    fines: (groupSlug: Group['slug']) => `${URLS.groups.details(groupSlug)}${URLS.groups.fines_relative}`,
+    forms_relative: 'sporreskjema/',
+    forms: (groupSlug: Group['slug']) => `${URLS.groups.details(groupSlug)}${URLS.groups.forms_relative}`,
+    laws_relative: 'lovverk/',
+    laws: (groupSlug: Group['slug']) => `${URLS.groups.details(groupSlug)}${URLS.groups.laws_relative}`,
+  },
   jobposts: '/karriere/',
   landing: '/',
   login: '/logg-inn/',
@@ -34,3 +43,5 @@ export default {
   jobpostsAdmin: '/admin/karriere/',
   newsAdmin: '/admin/nyheter/',
 };
+
+export default URLS;

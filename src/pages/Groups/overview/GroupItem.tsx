@@ -45,7 +45,7 @@ const GroupItem = ({ group, background = 'paper' }: GroupItemProps) => {
 
   return (
     <Paper noOverflow noPadding sx={{ background: (theme) => theme.palette.background[background] }}>
-      <ButtonBase className={classes.container} component={Link} focusRipple to={`${URLS.groups}${group.slug}/`}>
+      <ButtonBase className={classes.container} component={Link} focusRipple to={URLS.groups.details(group.slug)}>
         <Typography variant='h3'>{group.name}</Typography>
         {group.leader && (
           <div className={classes.leader}>
