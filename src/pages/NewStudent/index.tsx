@@ -20,7 +20,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
 import AboutIcon from '@mui/icons-material/InfoRounded';
 
 // Project Components
-import Expansion from 'components/layout/Expand';
+import Expand from 'components/layout/Expand';
 import Page from 'components/navigation/Page';
 import Banner, { BannerButton } from 'components/layout/Banner';
 import Paper from 'components/layout/Paper';
@@ -60,9 +60,9 @@ type VolunteerGroupProps = {
 const VolunteerGroup = ({ url, title }: VolunteerGroupProps) => {
   const { data } = useWikiPage(url);
   return (
-    <Expansion flat header={title} sx={{ border: (theme) => `1px solid ${theme.palette.divider}`, background: (theme) => theme.palette.background.smoke }}>
+    <Expand flat header={title}>
       <MarkdownRenderer value={data?.content || ''} />
-    </Expansion>
+    </Expand>
   );
 };
 

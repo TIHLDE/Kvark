@@ -36,11 +36,6 @@ export const InlineCode = styled('code')(({ theme }) => ({
   background: theme.palette.action.selected,
 }));
 
-export const Expansion = styled(Expand)(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  background: theme.palette.background.smoke,
-}));
-
 export const Heading = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(1),
   color: theme.palette.text.primary,
@@ -117,9 +112,9 @@ export const CodeBlock = ({ inline = false, className: language, children }: Cod
     const header = value.split('::')[0] || '';
     const val = value.split('::')[1] || '';
     return (
-      <Expansion flat header={header}>
+      <Expand flat header={header}>
         <ReactMarkdown components={components}>{val}</ReactMarkdown>
-      </Expansion>
+      </Expand>
     );
   } else if (language === LanguageTypes.EVENT || language === LanguageTypes.JOBPOST || language === LanguageTypes.NEWS) {
     const id = Number(value);

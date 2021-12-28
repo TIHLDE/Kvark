@@ -1,58 +1,26 @@
 import { useEffect, useState, useRef } from 'react';
 import { Form, TextFormField, SelectFormField } from 'types';
 import { FormFieldType } from 'types/Enums';
-import { useUpdateForm, useDeleteForm } from 'hooks/Form';
+import { useUpdateForm, useFormSubmissions } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
-
-// Material UI
-import { makeStyles } from 'makeStyles';
-import { ClickAwayListener, Grow, Paper, Popper, MenuItem, MenuList, Button } from '@mui/material';
-
-// Project components
-import VerifyDialog from 'components/layout/VerifyDialog';
+import { ClickAwayListener, Grow, Paper, Popper, Typography, MenuItem, MenuList, Button, Stack } from '@mui/material';
 import FieldEditor from 'components/forms/FieldEditor';
 
-const useStyles = makeStyles()((theme) => ({
-  root: {
-    display: 'grid',
-    gridGap: theme.spacing(1),
-  },
-  paper: {
-    marginRight: theme.spacing(2),
-  },
-}));
-
-export type FormEditorProps = {
+export type FormFieldsEditorProps = {
   form: Form;
-  disabled?: boolean;
 };
 
-const FormEditor = ({ form, disabled = false }: FormEditorProps) => {
-  const { classes } = useStyles();
-  const updateForm = useUpdateForm(form.id || '-');
-  const deleteForm = useDeleteForm(form.id || '-');
+const FormFieldsEditor = ({ form }: FormFieldsEditorProps) => {
+  const { data: submissions, isLoading: isSubmissionsLoading } = useFormSubmissions(form.id, 1);
+  const updateForm = useUpdateForm(form.id);
+  const disabledFromSubmissions = (submissions ? Boolean(submissions.count) : true) && !isSubmissionsLoading;
+  const disabled = updateForm.isLoading || isSubmissionsLoading || disabledFromSubmissions;
   const showSnackbar = useSnackbar();
   const [fields, setFields] = useState<Array<TextFormField | SelectFormField>>(form.fields);
   const [addButtonOpen, setAddButtonOpen] = useState(false);
   const buttonAnchorRef = useRef(null);
 
-  useEffect(() => {
-    setFields(form.fields);
-  }, [form]);
-
-  const onDeleteForm = () => {
-    if (disabled) {
-      return;
-    }
-    deleteForm.mutate(undefined, {
-      onSuccess: (data) => {
-        showSnackbar(data.detail, 'success');
-      },
-      onError: (e) => {
-        showSnackbar(e.detail, 'error');
-      },
-    });
-  };
+  useEffect(() => setFields(form.fields), [form]);
 
   const addField = (type: FormFieldType) => {
     if (disabled) {
@@ -113,7 +81,12 @@ const FormEditor = ({ form, disabled = false }: FormEditorProps) => {
 
   return (
     <>
-      <div className={classes.root}>
+      <Stack gap={1}>
+        {disabledFromSubmissions && (
+          <Typography gutterBottom variant='body2'>
+            Du kan ikke endre spørsmålene etter at noen har svart på dem
+          </Typography>
+        )}
         {fields.map((field, index) => (
           <FieldEditor
             disabled={disabled}
@@ -129,10 +102,7 @@ const FormEditor = ({ form, disabled = false }: FormEditorProps) => {
         <Button disabled={disabled} fullWidth onClick={save} variant='contained'>
           Lagre
         </Button>
-        <VerifyDialog color='error' contentText='Sletting av skjema kan ikke reverseres.' disabled={disabled} onConfirm={onDeleteForm}>
-          Slett
-        </VerifyDialog>
-      </div>
+      </Stack>
       <Popper anchorEl={buttonAnchorRef.current} open={addButtonOpen} role={undefined} transition>
         {({ TransitionProps }) => (
           <Grow {...TransitionProps}>
@@ -152,4 +122,4 @@ const FormEditor = ({ form, disabled = false }: FormEditorProps) => {
   );
 };
 
-export default FormEditor;
+export default FormFieldsEditor;

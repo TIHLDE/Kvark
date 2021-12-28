@@ -13,10 +13,6 @@ const ChangelogList = styled('div')({
   },
 });
 
-const Expansion = styled(Expand)(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-}));
-
 export type WorkDoneCardProps = {
   changelogURL: string;
   title: string;
@@ -43,13 +39,13 @@ const ChangelogCard = ({ title, changelogURL }: WorkDoneCardProps) => {
       </Typography>
       <ChangelogList>
         <MarkdownRenderer value={data[LATEST_VERSION_INDEX]} />
-        <Expansion header='Tidligere endringer'>
+        <Expand flat header='Tidligere endringer'>
           {data.slice(LATEST_VERSION_INDEX + 1).map((field, i) => (
-            <Expansion header={getReleaseTitle(field)} key={i}>
+            <Expand flat header={getReleaseTitle(field)} key={i}>
               <MarkdownRenderer value={getReleaseBody(field)} />
-            </Expansion>
+            </Expand>
           ))}
-        </Expansion>
+        </Expand>
       </ChangelogList>
     </Paper>
   );

@@ -257,7 +257,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         <DetailContent info={formatDate(endDate)} title='Til:' />
         <DetailContent info={data.location} title='Sted:' />
         <DetailContent info={categories.find((c) => c.id === data.category)?.text || 'Laster...'} title='Hva:' />
-        {data.organizer && <DetailContent info={<Link to={`${URLS.groups}${data.organizer.slug}/`}>{data.organizer.name}</Link>} title='Arrangør:' />}
+        {data.organizer && <DetailContent info={<Link to={URLS.groups.details(data.organizer.slug)}>{data.organizer.name}</Link>} title='Arrangør:' />}
       </DetailsPaper>
       {data.sign_up && (
         <>

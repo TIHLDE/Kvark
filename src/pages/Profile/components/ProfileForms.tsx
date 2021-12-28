@@ -6,15 +6,13 @@ import { parseISO } from 'date-fns';
 import { formatDate } from 'utils';
 
 import { ListItemText, ListItemIcon, ListItem, ListItemButton, Skeleton, Typography } from '@mui/material';
-
 import ArrowIcon from '@mui/icons-material/ArrowForwardRounded';
 
 // Project componets
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
-import { FormResourceType, FormType } from 'types/Enums';
-import { EventForm } from 'types';
+import { FormResourceType, EventFormType } from 'types/Enums';
 
 const ProfileForms = () => {
   const { data, hasNextPage, fetchNextPage, isFetching } = useUserForms({ unanswered: true });
@@ -41,13 +39,15 @@ const ProfileForms = () => {
             <ListItemButton component={Link} to={`${URLS.form}${form.id}/`}>
               <ListItemText
                 primary={
-                  <Typography variant='h3'>{`${form.resource_type === FormResourceType.EVENT_FORM ? (form as EventForm).event.title : form.title} - ${
-                    form.type === FormType.EVALUATION ? `Evaluering` : `Spørreskjema`
-                  }`}</Typography>
+                  <Typography variant='h3'>
+                    {form.resource_type === FormResourceType.EVENT_FORM
+                      ? `${form.event.title} - ${form.type === EventFormType.EVALUATION ? `Evaluering` : `Spørreskjema`}`
+                      : form.title}
+                  </Typography>
                 }
                 secondary={
                   form.resource_type === FormResourceType.EVENT_FORM &&
-                  `Holdt ${formatDate(parseISO((form as EventForm).event.start_date)).toLowerCase()} på ${(form as EventForm).event.location}`
+                  `Holdt ${formatDate(parseISO(form.event.start_date)).toLowerCase()} på ${form.event.location}`
                 }
               />
               <ListItemIcon sx={{ minWidth: 0 }}>

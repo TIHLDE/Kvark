@@ -11,6 +11,7 @@ import {
   GroupFineCreate,
   GroupFineMutate,
   GroupFineBatchMutate,
+  GroupForm,
   GroupFineStatistics,
   GroupUserFine,
   PaginationResponse,
@@ -31,6 +32,9 @@ export const GROUPS_QUERY_KEYS = {
     usersFines: (slug: Group['slug'], filters?: any) => [...GROUPS_QUERY_KEYS.fines.all(slug), 'user-fines', ...(filters ? [filters] : [])] as const,
     userFines: (slug: Group['slug'], userId: User['user_id'], filters?: any) =>
       [...GROUPS_QUERY_KEYS.fines.usersFines(slug), userId, ...(filters ? [filters] : [])] as const,
+  },
+  forms: {
+    all: (slug: Group['slug']) => [...GROUPS_QUERY_KEYS.detail(slug), 'forms'] as const,
   },
 };
 
@@ -190,3 +194,6 @@ export const useDeleteGroupFine = (
     onSuccess: () => queryClient.invalidateQueries(GROUPS_QUERY_KEYS.fines.all(groupSlug)),
   });
 };
+
+export const useGroupForms = (groupSlug: string) =>
+  useQuery<Array<GroupForm>, RequestResponse>(GROUPS_QUERY_KEYS.forms.all(groupSlug), () => API.getGroupForms(groupSlug));

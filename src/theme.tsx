@@ -218,17 +218,17 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       fontFamily: 'Inter',
       h1: {
         fontSize: '3rem',
-        fontFamily: 'Oswald, Inter, sans-serif',
+        fontFamily: `Oswald, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif`,
         fontWeight: 700,
       },
       h2: {
         fontSize: '2rem',
-        fontFamily: 'Oswald, Inter, sans-serif',
+        fontFamily: `Oswald, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif`,
         fontWeight: 500,
       },
       h3: {
         fontSize: '1.5rem',
-        fontFamily: 'Cabin, Inter, sans-serif',
+        fontFamily: `Cabin, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif`,
       },
     },
   });

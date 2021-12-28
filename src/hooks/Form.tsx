@@ -2,20 +2,10 @@ import { useMutation, useQuery, useQueryClient, UseMutationResult } from 'react-
 import API from 'api/api';
 import { USER_FORMS_QUERY_KEY, USER_QUERY_KEY } from 'hooks/User';
 import { EVENT_QUERY_KEY } from 'hooks/Event';
-import {
-  FormCreate,
-  EventFormCreate,
-  EventForm,
-  Form,
-  FormUpdate,
-  RequestResponse,
-  PaginationResponse,
-  UserSubmission,
-  Submission,
-  SelectFieldSubmission,
-  FormStatistics,
-} from 'types';
-import { FormFieldType } from 'types/Enums';
+import { FormCreate, Form, FormUpdate, RequestResponse, PaginationResponse, UserSubmission, Submission, SelectFieldSubmission, FormStatistics } from 'types';
+import { FormFieldType, FormResourceType } from 'types/Enums';
+import { GROUPS_QUERY_KEYS } from 'hooks/Group';
+import { useSnackbar } from 'hooks/Snackbar';
 
 export const FORM_QUERY_KEY = 'form';
 export const SUBMISSIONS_QUERY_KEY = 'submission';
@@ -26,12 +16,15 @@ export const useFormById = (formId: string) =>
 export const useFormStatisticsById = (formId: string) =>
   useQuery<FormStatistics, RequestResponse>([FORM_QUERY_KEY, formId, STATISTICS_QUERY_KEY], () => API.getFormStatistics(formId), { enabled: formId !== '-' });
 
-export const useCreateForm = <T extends FormCreate | EventFormCreate>(): UseMutationResult<Form, RequestResponse, T, unknown> => {
+export const useCreateForm = (): UseMutationResult<Form, RequestResponse, FormCreate, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((newForm: T) => API.createForm(newForm), {
+  return useMutation((newForm) => API.createForm(newForm), {
     onSuccess: (data) => {
-      if ((data as EventForm).event) {
-        queryClient.invalidateQueries([EVENT_QUERY_KEY, (data as EventForm).event.id]);
+      if (data.resource_type === FormResourceType.EVENT_FORM) {
+        queryClient.invalidateQueries([EVENT_QUERY_KEY, data.event.id]);
+      }
+      if (data.resource_type === FormResourceType.GROUP_FORM) {
+        queryClient.invalidateQueries(GROUPS_QUERY_KEYS.forms.all(data.group.slug));
       }
       queryClient.setQueryData([FORM_QUERY_KEY, data.id], data);
     },
@@ -42,6 +35,12 @@ export const useUpdateForm = (formId: string): UseMutationResult<Form, RequestRe
   const queryClient = useQueryClient();
   return useMutation((updatedForm: FormUpdate) => API.updateForm(formId, updatedForm), {
     onSuccess: (data) => {
+      if (data.resource_type === FormResourceType.EVENT_FORM) {
+        queryClient.invalidateQueries([EVENT_QUERY_KEY, data.event.id]);
+      }
+      if (data.resource_type === FormResourceType.GROUP_FORM) {
+        queryClient.invalidateQueries(GROUPS_QUERY_KEYS.forms.all(data.group.slug));
+      }
       queryClient.invalidateQueries([FORM_QUERY_KEY, formId]);
       queryClient.setQueryData([FORM_QUERY_KEY, formId], data);
     },
@@ -50,13 +49,21 @@ export const useUpdateForm = (formId: string): UseMutationResult<Form, RequestRe
 
 export const useDeleteForm = (formId: string): UseMutationResult<RequestResponse, RequestResponse, undefined, unknown> => {
   const queryClient = useQueryClient();
+  const showSnackbar = useSnackbar();
   return useMutation(() => API.deleteForm(formId), {
-    onSuccess: () => {
+    onSuccess: (response) => {
+      showSnackbar(response.detail, 'success');
       const data = queryClient.getQueryData<Form>([FORM_QUERY_KEY, formId]);
-      if ((data as EventForm).event) {
-        queryClient.invalidateQueries([EVENT_QUERY_KEY, (data as EventForm).event.id]);
+      if (data?.resource_type === FormResourceType.EVENT_FORM) {
+        queryClient.invalidateQueries([EVENT_QUERY_KEY, data.event.id]);
+      }
+      if (data?.resource_type === FormResourceType.GROUP_FORM) {
+        queryClient.invalidateQueries(GROUPS_QUERY_KEYS.forms.all(data.group.slug));
       }
       queryClient.removeQueries([FORM_QUERY_KEY, formId]);
+    },
+    onError: (e) => {
+      showSnackbar(e.detail, 'error');
     },
   });
 };
@@ -76,12 +83,15 @@ export const useCreateSubmission = (formId: string): UseMutationResult<Submissio
   return useMutation((submission) => API.createSubmission(formId, submission), {
     onSuccess: () => {
       const data = queryClient.getQueryData<Form>([FORM_QUERY_KEY, formId]);
-      if ((data as EventForm).event) {
-        queryClient.invalidateQueries([EVENT_QUERY_KEY, (data as EventForm).event.id]);
+      if (data?.resource_type === FormResourceType.EVENT_FORM) {
+        queryClient.invalidateQueries([EVENT_QUERY_KEY, data.event.id]);
+        queryClient.invalidateQueries([USER_FORMS_QUERY_KEY]);
+        queryClient.invalidateQueries([USER_QUERY_KEY]);
+      }
+      if (data?.resource_type === FormResourceType.GROUP_FORM) {
+        queryClient.invalidateQueries(GROUPS_QUERY_KEYS.forms.all(data.group.slug));
       }
       queryClient.invalidateQueries([FORM_QUERY_KEY, formId]);
-      queryClient.invalidateQueries([USER_FORMS_QUERY_KEY]);
-      queryClient.invalidateQueries([USER_QUERY_KEY]);
     },
   });
 };

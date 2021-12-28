@@ -80,7 +80,7 @@ const AppRoutes = () => {
         </Route>
         <Route element={<Companies />} path={URLS.company} />
         <Route element={<AuthRoute element={<Form />} />} path={`${URLS.form}:id/`} />
-        <Route element={<Groups />} path={`${URLS.groups}*`}>
+        <Route element={<Groups />} path={`${URLS.groups.index}*`}>
           <Route element={<GroupsOverview />} index />
           <Route element={<GroupDetails />} path=':slug/*' />
         </Route>

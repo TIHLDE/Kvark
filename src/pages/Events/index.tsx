@@ -21,7 +21,7 @@ import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import { useGoogleAnalytics } from 'hooks/Utils';
-import Expansion from 'components/layout/Expand';
+import Expand from 'components/layout/Expand';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {
@@ -54,10 +54,6 @@ const useStyles = makeStyles()((theme) => ({
       position: 'static',
       top: 0,
     },
-  },
-  accordion: {
-    background: theme.palette.background.paper,
-    border: `1px solid ${theme.palette.divider}`,
   },
 }));
 
@@ -146,9 +142,9 @@ const Events = () => {
         </div>
         {lgDown ? (
           <div>
-            <Expansion className={classes.accordion} expanded={searchFormExpanded} header='Filtrering' onChange={() => setSearchFormExpanded((prev) => !prev)}>
+            <Expand expanded={searchFormExpanded} flat header='Filtrering' onChange={() => setSearchFormExpanded((prev) => !prev)}>
               <SearchForm />
-            </Expansion>
+            </Expand>
           </div>
         ) : (
           <Paper className={classes.settings}>
