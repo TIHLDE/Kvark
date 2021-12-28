@@ -30,6 +30,7 @@ import ShareButton from 'components/miscellaneous/ShareButton';
 import FormUserAnswers from 'components/forms/FormUserAnswers';
 import Expand from 'components/layout/Expand';
 import VerifyDialog from 'components/layout/VerifyDialog';
+import { EventsSubscription } from 'pages/Profile/components/ProfileEvents';
 
 const Alert = styled(MuiAlert)({
   mb: 1,
@@ -57,7 +58,7 @@ const DetailsHeader = styled(Typography)({
 const useStyles = makeStyles()((theme) => ({
   rootGrid: {
     display: 'grid',
-    gridTemplateColumns: '325px 1fr',
+    gridTemplateColumns: '335px 1fr',
     gridTemplateRows: 'auto',
     gridGap: theme.spacing(1),
     marginTop: theme.spacing(2),
@@ -173,6 +174,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         {isFuture(subHours(parseISO(data.start_date), 2)) ? (
           <>
             <VerifyDialog
+              color='error'
               contentText={`Om du melder deg på igjen vil du havne på bunnen av en eventuell venteliste. ${
                 unregisteringGivesStrike ? 'Du vil også få 1 prikk for å melde deg av etter avmeldingsfristen.' : ''
               }`}
@@ -311,6 +313,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} onClick={addToCalendarAnalytics} variant='outlined'>
           Legg til i kalender
         </Button>
+        {Boolean(user) && <EventsSubscription />}
         {!preview && data.permissions.write && (
           <Button component={Link} fullWidth to={`${URLS.eventAdmin}${data.id}/`} variant='outlined'>
             Endre arrangement
@@ -321,14 +324,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         {lgDown && <Info />}
         <ContentPaper>
-          <Typography
-            gutterBottom
-            sx={{
-              color: (theme) => theme.palette.text.primary,
-              fontSize: '2.4rem',
-              wordWrap: 'break-word',
-            }}
-            variant='h1'>
+          <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h1'>
             {data.title}
           </Typography>
           <Collapse in={view === Views.Info || Boolean(registration) || preview}>
