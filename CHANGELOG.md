@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.3.2 (30.12.2021)
+
 - ✨ **Gruppe-skjemaer**. Grupper kan nå lage skjemaer som brukere kan svare på. Admin/leder av gruppe kan styre om det tillates flere besvarelser, om skjemaet er åpent og begrense svar til kun gruppens medlemmer.
 - ✨ **Botsystem**. Lagt til statistikk for botsystemet. Brukere kan se antall betalt, antall godkjent og ikke betalt, samt antall ikke godkjent.
 - ✨ **Arrangementer**. Brukere kan nå få arrangementene sine automatisk inn i sin egen kalender gjennom å abonnere på en gitt URL. Fremgangsmåte ligger i profilen, samt i hvert arrangement.
