@@ -31,7 +31,7 @@ const StrikeListItem = ({ strike, user, displayUserInfo = false, ...props }: Str
     <Paper noOverflow noPadding>
       <ListItem dense disablePadding {...props}>
         <ListItemButton onClick={() => setExpanded((prev) => !prev)}>
-          <Typography sx={{ fontWeight: 'bold', ml: 1, mr: 3 }} variant='h3'>
+          <Typography sx={{ fontWeight: 'bold', ml: 0.5, mr: 2 }} variant='h3'>
             {strike.strike_size}
           </Typography>
           <ListItemText primary={primaryText} secondary={`Utløper ${formatDate(parseISO(strike.expires_at))}`} />

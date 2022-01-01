@@ -46,6 +46,7 @@ export enum PermissionApp {
   PAGE = 'page',
   STRIKE = 'strike',
   USER = 'user',
+  FORMS = 'form',
 }
 export enum Groups {
   HS = 'HS',
@@ -56,13 +57,14 @@ export enum Groups {
   DRIFT = 'Drift',
 }
 
-export enum FormType {
+export enum EventFormType {
   SURVEY = 'SURVEY',
   EVALUATION = 'EVALUATION',
 }
 
 export enum FormResourceType {
   EVENT_FORM = 'EventForm',
+  GROUP_FORM = 'GroupForm',
 }
 
 export enum FormFieldType {

@@ -1,0 +1,118 @@
+import { useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { GroupForm } from 'types';
+import URLS from 'URLS';
+import { useGroup, useGroupForms } from 'hooks/Group';
+
+import { List, ListItem, ListItemButton, ListItemText, Button, ListItemIcon, Stack, Collapse, Divider, Tooltip, Typography } from '@mui/material';
+import ArrowIcon from '@mui/icons-material/ArrowForwardRounded';
+import ViewIcon from '@mui/icons-material/PreviewRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import OpenIcon from '@mui/icons-material/LockOpenRounded';
+import MultipleIcon from '@mui/icons-material/AllInclusiveRounded';
+import OnlyMembersIcon from '@mui/icons-material/GroupsRounded';
+
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import FormAdmin from 'components/forms/FormAdmin';
+import AddGroupFormDialog from 'pages/Groups/forms/AddGroupFormDialog';
+import Paper from 'components/layout/Paper';
+import ShareButton from 'components/miscellaneous/ShareButton';
+
+const GroupFormAdminListItem = ({ form }: { form: GroupForm }) => {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <Paper key={form.id} noOverflow noPadding>
+      <ListItem disablePadding>
+        <ListItemButton onClick={() => setExpanded((prev) => !prev)}>
+          <ListItemText
+            primary={form.title}
+            secondary={
+              <Stack direction='row' gap={1}>
+                <Tooltip title={`Spørreskjemaet er ${form.is_open_for_submissions ? '' : 'ikke '}åpent for innsending av svar`}>
+                  <OpenIcon color={form.is_open_for_submissions ? 'success' : 'error'} sx={{ fontSize: 'inherit' }} />
+                </Tooltip>
+                <Tooltip title={`Spørreskjemaet er åpent for ${form.only_for_group_members ? 'kun medlemmer av gruppen' : 'alle'}`}>
+                  <OnlyMembersIcon color={form.only_for_group_members ? 'error' : 'success'} sx={{ fontSize: 'inherit' }} />
+                </Tooltip>
+                <Tooltip title={`Spørreskjemaet kan ${form.can_submit_multiple ? '' : 'ikke '}besvares flere ganger`}>
+                  <MultipleIcon color={form.can_submit_multiple ? 'success' : 'error'} sx={{ fontSize: 'inherit' }} />
+                </Tooltip>
+              </Stack>
+            }
+          />
+          <ListItemIcon sx={{ minWidth: 0 }}>{expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}</ListItemIcon>
+        </ListItemButton>
+      </ListItem>
+      <Collapse in={expanded} mountOnEnter unmountOnExit>
+        <Divider />
+        <Stack gap={1} sx={{ p: 1 }}>
+          {!form.is_open_for_submissions && (
+            <Typography variant='body2'>{`Du må åpne spørreskjemaet for innsending i "Skjema-innstillinger" for å kunne svare på og dele skjemaet`}</Typography>
+          )}
+          <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
+            <Button
+              component={Link}
+              disabled={!form.is_open_for_submissions}
+              endIcon={<ViewIcon />}
+              fullWidth
+              to={`${URLS.form}${form.id}/`}
+              variant='outlined'>
+              Svar på/se skjema
+            </Button>
+            <ShareButton disabled={!form.is_open_for_submissions} fullWidth shareId={form.id} shareType='form' title={form.title} />
+          </Stack>
+          <FormAdmin formId={form.id} />
+        </Stack>
+      </Collapse>
+    </Paper>
+  );
+};
+
+const GroupForms = () => {
+  const { slug } = useParams<'slug'>();
+  const { data: group } = useGroup(slug || '-');
+  const { data: forms } = useGroupForms(slug || '-');
+
+  const isAdmin = group?.permissions.write;
+
+  if (!forms || !slug || !group) {
+    return null;
+  }
+
+  return (
+    <>
+      {isAdmin ? (
+        <>
+          <AddGroupFormDialog groupSlug={slug} sx={{ mb: 2 }} />
+          <div>
+            <Stack component={List} disablePadding gap={1}>
+              {forms.map((form) => (
+                <GroupFormAdminListItem form={form} key={form.id} />
+              ))}
+            </Stack>
+          </div>
+        </>
+      ) : (
+        <List disablePadding>
+          {forms.map((form) => (
+            <Paper key={form.id} noOverflow noPadding sx={{ mb: 1 }}>
+              <ListItem disablePadding>
+                <ListItemButton component={Link} to={`${URLS.form}${form.id}/`}>
+                  <ListItemText primary={form.title} />
+                  <ListItemIcon sx={{ minWidth: 0 }}>
+                    <ArrowIcon />
+                  </ListItemIcon>
+                </ListItemButton>
+              </ListItem>
+            </Paper>
+          ))}
+        </List>
+      )}
+      {!forms.length && <NotFoundIndicator header='Gruppen har ingen spørreskjemaer' />}
+    </>
+  );
+};
+
+export default GroupForms;

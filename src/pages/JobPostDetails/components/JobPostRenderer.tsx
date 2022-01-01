@@ -102,7 +102,7 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
             Søk
           </Button>
         )}
-        <ShareButton className={classes.button} color='inherit' fullWidth shareId={data.id} shareType='jobpost' title={data.title} />
+        <ShareButton className={classes.button} fullWidth shareId={data.id} shareType='jobpost' title={data.title} />
         {!preview && (
           <HavePermission apps={[PermissionApp.JOBPOST]}>
             <Button className={classes.button} component={Link} fullWidth to={`${URLS.jobpostsAdmin}${data.id}/`} variant='outlined'>

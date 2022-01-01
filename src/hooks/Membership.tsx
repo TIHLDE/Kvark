@@ -2,7 +2,7 @@ import { useInfiniteQuery, useMutation, UseMutationResult, useQueryClient } from
 import API from 'api/api';
 import { Membership, MembershipHistory, PaginationResponse, RequestResponse } from 'types';
 import { MembershipType } from 'types/Enums';
-import { GROUPS_QUERY_KEY } from 'hooks/Group';
+import { GROUPS_QUERY_KEYS } from 'hooks/Group';
 
 export const MEMBERSHIP_QUERY_KEY = 'membership';
 export const MEMBERSHIP_HISTORY_QUERY_KEY = 'membership-history';
@@ -52,7 +52,7 @@ export const useUpdateMembership = (slug: string, userId: string): UseMutationRe
   const queryClient = useQueryClient();
   return useMutation((membership_type) => API.updateMembership(slug, userId, { membership_type }), {
     onSuccess: () => {
-      queryClient.invalidateQueries([GROUPS_QUERY_KEY, slug]);
+      queryClient.invalidateQueries(GROUPS_QUERY_KEYS.detail(slug));
       queryClient.invalidateQueries([MEMBERSHIP_QUERY_KEY, slug]);
     },
   });

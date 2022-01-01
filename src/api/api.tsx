@@ -8,7 +8,6 @@ import {
   CompaniesEmail,
   Event,
   EventCompact,
-  EventFormCreate,
   EventRequired,
   FileUploadResponse,
   Form,
@@ -16,30 +15,40 @@ import {
   FormStatistics,
   FormUpdate,
   Group,
+  GroupFine,
+  GroupFineCreate,
+  GroupFineBatchMutate,
+  GroupFineMutate,
+  GroupForm,
+  GroupFineStatistics,
+  GroupLaw,
+  GroupLawMutate,
+  GroupMutate,
+  GroupUserFine,
   JobPost,
   JobPostRequired,
   LoginRequestResponse,
   Membership,
+  MembershipHistory,
   News,
   NewsRequired,
   Notification,
-  Page,
-  PageChildren,
-  PageTree,
-  PageRequired,
+  WikiPage,
+  WikiChildren,
+  WikiTree,
+  WikiRequired,
   PaginationResponse,
   Registration,
   RequestResponse,
   ShortLink,
   Strike,
   StrikeCreate,
+  StrikeList,
   Submission,
   User,
   UserCreate,
   UserSubmission,
   Warning,
-  StrikeList,
-  MembershipHistory,
 } from 'types';
 
 export const AUTH_ENDPOINT = 'auth';
@@ -50,13 +59,15 @@ export const EVENTS_ENDPOINT = 'events';
 export const EVENT_REGISTRATIONS_ENDPOINT = 'users';
 export const FORMS_ENDPOINT = 'forms';
 export const GROUPS_ENDPOINT = 'groups';
+export const GROUP_LAWS_ENDPOINT = 'laws';
+export const GROUP_FINES_ENDPOINT = 'fines';
 export const JOBPOSTS_ENDPOINT = 'jobposts';
 export const ME_ENDPOINT = 'me';
 export const MEMBERSHIPS_ENDPOINT = 'memberships';
 export const MEMBERSHIP_HISTORIES_ENDPOINT = 'membership-histories';
 export const NEWS_ENDPOINT = 'news';
 export const NOTIFICATIONS_ENDPOINT = 'notifications';
-export const PAGES_ENDPOINT = 'pages';
+export const WIKI_ENDPOINT = 'pages';
 export const SHORT_LINKS_ENDPOINT = 'short-links';
 export const STRIKES_ENDPOINT = 'strikes';
 export const SUBMISSIONS_ENDPOINT = 'submissions';
@@ -101,7 +112,7 @@ export default {
   // Forms
   getForm: (formId: string) => IFetch<Form>({ method: 'GET', url: `${FORMS_ENDPOINT}/${formId}/` }),
   getFormStatistics: (formId: string) => IFetch<FormStatistics>({ method: 'GET', url: `${FORMS_ENDPOINT}/${formId}/statistics/` }),
-  createForm: (item: FormCreate | EventFormCreate) => IFetch<Form>({ method: 'POST', url: `${FORMS_ENDPOINT}/`, data: item }),
+  createForm: (item: FormCreate) => IFetch<Form>({ method: 'POST', url: `${FORMS_ENDPOINT}/`, data: item }),
   updateForm: (formId: string, item: FormUpdate) => IFetch<Form>({ method: 'PUT', url: `${FORMS_ENDPOINT}/${formId}/`, data: item }),
   deleteForm: (formId: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${FORMS_ENDPOINT}/${formId}/` }),
 
@@ -178,7 +189,7 @@ export default {
   // Badges
   createUserBadge: (data: { badge_id: string }) => IFetch<RequestResponse>({ method: 'POST', url: `${BADGES_ENDPOINT}/`, data }),
 
-  //Membership
+  // Membership
   getMemberships: (slug: string, filters?: any) =>
     IFetch<PaginationResponse<Membership>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/${MEMBERSHIPS_ENDPOINT}/`, data: filters || {} }),
   getMembershipsHistories: (slug: string, filters?: any) =>
@@ -190,18 +201,58 @@ export default {
   updateMembership: (slug: string, userId: string, data: { membership_type: MembershipType }) =>
     IFetch<Membership>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${slug}/${MEMBERSHIPS_ENDPOINT}/${userId}/`, data }),
 
-  //Group
+  // Group
   getGroups: () => IFetch<Group[]>({ method: 'GET', url: `${GROUPS_ENDPOINT}/` }),
-  getGroup: (slug: string) => IFetch<Group>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/` }),
-  updateGroup: (slug: string, data: Group) => IFetch<Group>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${slug}/`, data }),
+  getGroup: (slug: Group['slug']) => IFetch<Group>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/` }),
+  updateGroup: (slug: Group['slug'], data: GroupMutate) => IFetch<Group>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${slug}/`, data }),
 
-  // Pages
-  getPageTree: () => IFetch<PageTree>({ method: 'GET', url: `${PAGES_ENDPOINT}/tree/` }),
-  getPage: (path: string) => IFetch<Page>({ method: 'GET', url: `${PAGES_ENDPOINT}/${path}` }),
-  getPages: (filters: any) => IFetch<PaginationResponse<PageChildren>>({ method: 'GET', url: `${PAGES_ENDPOINT}/`, data: filters }),
-  createPage: (data: PageRequired) => IFetch<Page>({ method: 'POST', url: `${PAGES_ENDPOINT}/`, data }),
-  updatePage: (path: string, data: Partial<Page>) => IFetch<Page>({ method: 'PUT', url: `${PAGES_ENDPOINT}/${path}`, data }),
-  deletePage: (path: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${PAGES_ENDPOINT}/${path}` }),
+  // Group laws
+  getGroupLaws: (groupSlug: Group['slug']) => IFetch<Array<GroupLaw>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_LAWS_ENDPOINT}/` }),
+  createGroupLaw: (groupSlug: Group['slug'], data: GroupLawMutate) =>
+    IFetch<GroupLaw>({ method: 'POST', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_LAWS_ENDPOINT}/`, data }),
+  updateGroupLaw: (groupSlug: Group['slug'], lawId: GroupLaw['id'], data: GroupLawMutate) =>
+    IFetch<GroupLaw>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_LAWS_ENDPOINT}/${lawId}/`, data }),
+  deleteGroupLaw: (groupSlug: Group['slug'], lawId: GroupLaw['id']) =>
+    IFetch<RequestResponse>({ method: 'DELETE', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_LAWS_ENDPOINT}/${lawId}/` }),
+
+  // Group fines
+  getGroupFines: (groupSlug: Group['slug'], filters?: any) =>
+    IFetch<PaginationResponse<GroupFine>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/`, data: filters || {} }),
+  getGroupFinesStatistics: (groupSlug: Group['slug']) =>
+    IFetch<GroupFineStatistics>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/statistics/` }),
+  getGroupUsersFines: (groupSlug: Group['slug'], filters?: any) =>
+    IFetch<PaginationResponse<GroupUserFine>>({
+      method: 'GET',
+      url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/${USERS_ENDPOINT}/`,
+      data: filters || {},
+    }),
+  getGroupUserFines: (groupSlug: Group['slug'], userId: User['user_id'], filters?: any) =>
+    IFetch<PaginationResponse<GroupFine>>({
+      method: 'GET',
+      url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/${USERS_ENDPOINT}/${userId}/`,
+      data: filters || {},
+    }),
+  createGroupFine: (groupSlug: Group['slug'], data: GroupFineCreate) =>
+    IFetch<GroupFine>({ method: 'POST', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/`, data }),
+  updateGroupFine: (groupSlug: Group['slug'], fineId: GroupFine['id'], data: GroupFineMutate) =>
+    IFetch<GroupFine>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/${fineId}/`, data }),
+  batchUpdateGroupFine: (groupSlug: Group['slug'], data: GroupFineBatchMutate) =>
+    IFetch<RequestResponse>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/batch-update/`, data }),
+  batchUpdateUserGroupFines: (groupSlug: Group['slug'], userId: User['user_id'], data: GroupFineMutate) =>
+    IFetch<RequestResponse>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/batch-update/${userId}/`, data }),
+  deleteGroupFine: (groupSlug: Group['slug'], fineId: GroupFine['id']) =>
+    IFetch<RequestResponse>({ method: 'DELETE', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/${fineId}/` }),
+
+  //Group forms
+  getGroupForms: (slug: string) => IFetch<Array<GroupForm>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/${FORMS_ENDPOINT}/` }),
+
+  // Wiki
+  getWikiTree: () => IFetch<WikiTree>({ method: 'GET', url: `${WIKI_ENDPOINT}/tree/` }),
+  getWikiPage: (path: string) => IFetch<WikiPage>({ method: 'GET', url: `${WIKI_ENDPOINT}/${path}` }),
+  getWikiSearch: (filters: any) => IFetch<PaginationResponse<WikiChildren>>({ method: 'GET', url: `${WIKI_ENDPOINT}/`, data: filters }),
+  createWikiPage: (data: WikiRequired) => IFetch<WikiPage>({ method: 'POST', url: `${WIKI_ENDPOINT}/`, data }),
+  updateWikiPage: (path: string, data: Partial<WikiPage>) => IFetch<WikiPage>({ method: 'PUT', url: `${WIKI_ENDPOINT}/${path}`, data }),
+  deleteWikiPage: (path: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${WIKI_ENDPOINT}/${path}` }),
 
   // File-upload
   uploadFile: (file: File | Blob) => IFetch<FileUploadResponse>({ method: 'POST', url: 'upload/', file }),

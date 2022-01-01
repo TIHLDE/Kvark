@@ -20,7 +20,10 @@ const EventDetails = () => {
 
   useEffect(() => {
     if (data) {
-      navigate(`${URLS.events}${id}/${urlEncode(data.title)}/`, { replace: true });
+      const urlWithTitle = `${URLS.events}${id}/${urlEncode(data.title)}/`;
+      if (urlWithTitle !== window.location.pathname) {
+        navigate(urlWithTitle, { replace: true });
+      }
     }
   }, [id, data, navigate]);
 

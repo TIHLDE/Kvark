@@ -7,7 +7,7 @@ import { useLogout } from 'hooks/User';
 
 // Material-UI
 import { makeStyles } from 'makeStyles';
-import { SvgIconProps, Badge, Collapse, List, ListItem, ListItemIcon, ListItemText, Stack } from '@mui/material';
+import { SvgIconProps, Badge, Collapse, List, ListItem, ListItemIcon, ListItemText, Stack, Box } from '@mui/material';
 
 // Icons
 import EventIcon from '@mui/icons-material/DateRangeRounded';
@@ -115,7 +115,7 @@ const ProfileContent = () => {
           </List>
         </Paper>
       </Stack>
-      <div>
+      <Box sx={{ overflowX: 'auto' }}>
         <Collapse in={tab === eventTab.label}>
           <ProfileEvents />
         </Collapse>
@@ -137,7 +137,7 @@ const ProfileContent = () => {
         <Collapse in={tab === adminTab.label} mountOnEnter>
           <ProfileAdmin />
         </Collapse>
-      </div>
+      </Box>
     </div>
   );
 };

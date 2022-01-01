@@ -5,6 +5,7 @@ import { User, UserList, Group, UserCreate, Strike, LoginRequestResponse, Pagina
 import { PermissionApp } from 'types/Enums';
 import { getCookie, setCookie, removeCookie } from 'api/cookie';
 import { ACCESS_TOKEN } from 'constant';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 export const USER_QUERY_KEY = 'user';
 export const USER_BADGES_QUERY_KEY = 'user_badges';
@@ -16,7 +17,10 @@ export const USERS_QUERY_KEY = 'users';
 
 export const useUser = () => {
   const isAuthenticated = useIsAuthenticated();
-  return useQuery<User | undefined, RequestResponse>([USER_QUERY_KEY], () => (isAuthenticated ? API.getUserData() : undefined));
+  const { setUserId } = useGoogleAnalytics();
+  return useQuery<User | undefined, RequestResponse>([USER_QUERY_KEY], () => (isAuthenticated ? API.getUserData() : undefined), {
+    onSuccess: (data) => !data || setUserId(data.user_id),
+  });
 };
 
 export const useUserBadges = () =>
