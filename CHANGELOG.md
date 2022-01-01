@@ -14,7 +14,7 @@
 
 ## Neste versjon
 
-## Versjon 1.3.2 (30.12.2021)
+## Versjon 1.4.0 (01.01.2022)
 
 - ✨ **Gruppe-skjemaer**. Grupper kan nå lage skjemaer som brukere kan svare på. Admin/leder av gruppe kan styre om det tillates flere besvarelser, om skjemaet er åpent og begrense svar til kun gruppens medlemmer.
 - ✨ **Botsystem**. Lagt til statistikk for botsystemet. Brukere kan se antall betalt, antall godkjent og ikke betalt, samt antall ikke godkjent.
