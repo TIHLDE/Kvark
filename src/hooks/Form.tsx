@@ -15,11 +15,15 @@ export const useFormById = (formId: string) =>
   useQuery<Form, RequestResponse>([FORM_QUERY_KEY, formId], () => API.getForm(formId), { enabled: formId !== '-' });
 export const useFormStatisticsById = (formId: string) =>
   useQuery<FormStatistics, RequestResponse>([FORM_QUERY_KEY, formId, STATISTICS_QUERY_KEY], () => API.getFormStatistics(formId), { enabled: formId !== '-' });
+export const useFormTemplates = () => useQuery<Array<Form>, RequestResponse>([FORM_QUERY_KEY, 'templates'], () => API.getFormTemplates(), {});
 
 export const useCreateForm = (): UseMutationResult<Form, RequestResponse, FormCreate, unknown> => {
   const queryClient = useQueryClient();
   return useMutation((newForm) => API.createForm(newForm), {
     onSuccess: (data) => {
+      if (data.resource_type === FormResourceType.FORM) {
+        queryClient.invalidateQueries([FORM_QUERY_KEY]);
+      }
       if (data.resource_type === FormResourceType.EVENT_FORM) {
         queryClient.invalidateQueries([EVENT_QUERY_KEY, data.event.id]);
       }
@@ -54,6 +58,9 @@ export const useDeleteForm = (formId: string): UseMutationResult<RequestResponse
     onSuccess: (response) => {
       showSnackbar(response.detail, 'success');
       const data = queryClient.getQueryData<Form>([FORM_QUERY_KEY, formId]);
+      if (data?.resource_type === FormResourceType.FORM) {
+        queryClient.invalidateQueries([FORM_QUERY_KEY]);
+      }
       if (data?.resource_type === FormResourceType.EVENT_FORM) {
         queryClient.invalidateQueries([EVENT_QUERY_KEY, data.event.id]);
       }
