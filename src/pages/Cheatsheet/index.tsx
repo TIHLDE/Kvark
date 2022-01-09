@@ -140,7 +140,7 @@ const Cheetsheet = () => {
   }, [liveCheatingAmount]);
 
   useEffect(() => setLiveCheatingAmount(generateLiveCheatingAmount()), []);
-  useInterval(() => setLiveCheatingAmount(generateLiveCheatingAmount()), 150);
+  useInterval(() => setLiveCheatingAmount(generateLiveCheatingAmount()), 20000);
 
   return (
     <Page
