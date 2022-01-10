@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ⚡ **Arrangementer**. Påmeldingsknappen teller ned til påmeldingsstart og aktiveres automatisk ved påmeldingsstart uten at en må laste inn siden på nytt.
 - ✨ **Kokeboka**. Lagt til "Antall koker nå" teller (ikke faktiske tall).
 - ⚡ **Botsystem**. Lovverket er bedre sortert. Ved ny bot endres beløp når valgt lovbrudd endres.
 
