@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { Event, Registration } from 'types';
 import URLS from 'URLS';
-import { parseISO, isPast, isFuture, subHours, addHours } from 'date-fns';
+import nbLocale from 'date-fns/locale/nb';
+import { parseISO, isPast, isFuture, subHours, addHours, formatDistanceToNowStrict } from 'date-fns';
 import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 'utils';
 import { Link } from 'react-router-dom';
 import { useSetRedirectUrl } from 'hooks/Misc';
 import { useEventRegistration, useDeleteEventRegistration } from 'hooks/Event';
 import { useUser } from 'hooks/User';
 import { useSnackbar } from 'hooks/Snackbar';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useGoogleAnalytics, useInterval } from 'hooks/Utils';
 import { useCategories } from 'hooks/Categories';
 
 // Material UI Components
@@ -205,18 +206,29 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       </Alert>
     ) : null;
 
-  const ApplyInfo = () =>
-    preview || !data.sign_up ? null : (
+  const ApplyInfo = () => {
+    const [notOpenText, setNotOpenText] = useState<string | null>(
+      isFuture(userStartRegistrationDate) ? formatDistanceToNowStrict(userStartRegistrationDate, { addSuffix: true, locale: nbLocale }) : null,
+    );
+    useInterval(() => {
+      if (isFuture(userStartRegistrationDate)) {
+        setNotOpenText(formatDistanceToNowStrict(userStartRegistrationDate, { addSuffix: true, locale: nbLocale }));
+      } else {
+        !notOpenText || setNotOpenText(null);
+      }
+    }, 1000);
+
+    return preview || !data.sign_up ? null : (
       <>
         {data.closed ? (
           <Alert severity='warning' variant='outlined'>
             Dette arrangementet er stengt. Det er derfor ikke mulig å melde seg av eller på.
           </Alert>
-        ) : isFuture(userStartRegistrationDate) ? (
+        ) : notOpenText ? (
           <>
             <HasUnansweredEvaluations />
             <Button disabled fullWidth variant='contained'>
-              Påmelding har ikke startet
+              {`Påmelding åpner ${notOpenText}`}
             </Button>
           </>
         ) : !user ? (
@@ -248,6 +260,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         )}
       </>
     );
+  };
 
   const Info = () => (
     <>
