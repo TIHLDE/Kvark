@@ -175,7 +175,7 @@ const ShortLinks = () => {
               <TextField
                 disabled={isFetching}
                 formState={formState}
-                InputProps={{
+                inputProps={{
                   startAdornment: (
                     <InputAdornment className={classes.adornment} position='start'>
                       s.tihlde.org/
