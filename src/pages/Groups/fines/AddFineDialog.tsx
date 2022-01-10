@@ -1,4 +1,4 @@
-import { useState, forwardRef, Ref } from 'react';
+import { useState, forwardRef, Ref, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useCreateGroupFine, useGroupLaws } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
@@ -13,6 +13,7 @@ import Select from 'components/inputs/Select';
 import UserSearch from 'components/inputs/UserSearch';
 import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
+import { formatLawHeader } from 'utils';
 
 export type AddFineDialogProps = FabProps & {
   groupSlug: Group['slug'];
@@ -28,16 +29,30 @@ const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug, ...props }:
   const { data: laws } = useGroupLaws(groupSlug, { enabled: dialogOpen });
   const createFine = useCreateGroupFine(groupSlug);
   const showSnackbar = useSnackbar();
-  const { register, formState, handleSubmit, control } = useForm<FormValues>();
+  const { register, formState, handleSubmit, control, watch, setValue } = useForm<FormValues>();
+
+  const selectedLaw = watch('description');
+
+  useEffect(() => {
+    const law = laws?.find((law) => law.id === selectedLaw);
+    if (law) {
+      setValue('amount', law.amount);
+    }
+  }, [selectedLaw]);
 
   const submit = (data: FormValues) => {
+    const law = laws?.find((law) => law.id === data.description);
+    if (!law) {
+      showSnackbar('Du må velge en lov', 'warning');
+      return;
+    }
     if (!data.user?.length) {
       showSnackbar('Du må velge minst en person', 'warning');
       return;
     }
     event('create', 'fines', `Created a new fine`);
     createFine.mutate(
-      { ...data, user: data.user.map((u) => u.user_id) },
+      { ...data, description: formatLawHeader(law), user: data.user.map((u) => u.user_id) },
       {
         onSuccess: () => {
           showSnackbar('Boten ble opprettet', 'success');
@@ -54,7 +69,7 @@ const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug, ...props }:
     <>
       {laws !== undefined && (
         <Dialog
-          contentText={!selectableLawExists ? 'Du må legge til minst en lov i lovverket før du kan gi bot' : undefined}
+          contentText={!selectableLawExists ? 'Det er ingen lover i lovverket, du kan ikke gi bot for å ha brutt en lov som ikke finnes' : undefined}
           onClose={() => setDialogOpen(false)}
           open={dialogOpen}
           titleText='Ny bot'>
@@ -71,25 +86,25 @@ const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug, ...props }:
               />
               <Select
                 control={control}
-                defaultValue={`§${laws.filter((l) => Boolean(l.description))[0].paragraph}`}
+                defaultValue={laws.filter((l) => Boolean(l.description))[0].id}
                 formState={formState}
-                label='Begrunnelse'
+                label='Lovbrudd'
                 name='description'
                 required>
                 {laws.map((law) =>
                   law.description ? (
-                    <MenuItem key={law.id} sx={{ whiteSpace: 'break-spaces' }} value={`§${law.paragraph}`}>
-                      {`§${law.paragraph}`}
+                    <MenuItem key={law.id} sx={{ whiteSpace: 'break-spaces' }} value={law.id}>
+                      {formatLawHeader(law)}
                     </MenuItem>
                   ) : (
-                    <ListSubheader key={law.id}>{`§${law.paragraph}`}</ListSubheader>
+                    <ListSubheader key={law.id}>{formatLawHeader(law)}</ListSubheader>
                   ),
                 )}
               </Select>
               <TextField
                 defaultValue={1}
                 formState={formState}
-                InputProps={{ type: 'number' }}
+                inputProps={{ type: 'number' }}
                 label='Forslag til antall bøter'
                 {...register('amount')}
                 required

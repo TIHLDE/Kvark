@@ -12,6 +12,7 @@ import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
+import { formatLawHeader } from 'utils';
 
 export type LawItemProps = {
   groupSlug: Group['slug'];
@@ -46,14 +47,26 @@ const LawItem = ({ law, groupSlug, isAdmin = false }: LawItemProps) => {
           <form onSubmit={handleSubmit(submit)}>
             <TextField
               formState={formState}
-              helperText='For eks.: 1.1 Forsentkomming'
+              helperText='Heltall for overskrift. Maks 2 siffer på hver side av komma'
+              inputProps={{ inputMode: 'numeric', pattern: '^[0-9]{1,2}(.[0-9]{1,2})?$' }}
               label='Paragraf'
-              {...register('paragraph', { required: 'Navngi paragrafen' })}
+              placeholder='For eks.: 12.01'
+              {...register('paragraph', {
+                required: 'Hvilken paragraf',
+                valueAsNumber: true,
+              })}
               required
             />
             <TextField
               formState={formState}
-              helperText='La stå tom for å gjøre til overskrift'
+              helperText='For eks.: Forsentkomming'
+              label='Tittel'
+              {...register('title', { required: 'Navngi paragrafen' })}
+              required
+            />
+            <TextField
+              formState={formState}
+              helperText='La stå tom for å ikke kunne velges ved botgivning'
               label='Beskrivelse'
               maxRows={4}
               minRows={2}
@@ -63,7 +76,7 @@ const LawItem = ({ law, groupSlug, isAdmin = false }: LawItemProps) => {
             <TextField
               formState={formState}
               helperText='Brukes for å forhåndsutfylle antall bøter når det lages en ny'
-              InputProps={{ type: 'number' }}
+              inputProps={{ type: 'number' }}
               label='Veiledende antall bøter'
               {...register('amount')}
               required
@@ -85,9 +98,9 @@ const LawItem = ({ law, groupSlug, isAdmin = false }: LawItemProps) => {
       <ListItem disablePadding>
         <ListItemText
           primary={
-            <Typography
-              sx={{ fontFamily: 'Century Schoolbook, Georgia, serif', fontWeight: 'bold' }}
-              variant={law.description ? 'subtitle1' : 'h3'}>{`§${law.paragraph}`}</Typography>
+            <Typography sx={{ fontFamily: 'Century Schoolbook, Georgia, serif', fontWeight: 'bold' }} variant={law.paragraph % 1 !== 0 ? 'subtitle1' : 'h3'}>
+              {formatLawHeader(law)}
+            </Typography>
           }
           secondary={
             Boolean(law.description) && (

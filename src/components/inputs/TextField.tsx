@@ -10,7 +10,7 @@ export type TextFieldProps<FormValues extends FieldValues = FieldValues> = MuiTe
   };
 
 const GenericTextField = <FormValues extends FieldValues>(
-  { name, formState, helperText, ...props }: TextFieldProps<FormValues>,
+  { name, formState, helperText, placeholder, ...props }: TextFieldProps<FormValues>,
   ref: React.ForwardedRef<HTMLDivElement>,
 ) => {
   const { [name]: fieldError } = formState.errors;
@@ -30,7 +30,7 @@ const GenericTextField = <FormValues extends FieldValues>(
       inputRef={ref}
       margin='normal'
       name={name}
-      placeholder={props.placeholder || 'Skriv her'}
+      placeholder={placeholder || 'Skriv her'}
       variant='outlined'
       {...props}
     />

@@ -1,7 +1,7 @@
 import slugify from 'slugify';
 import { parseISO, format, subMinutes, getYear, isAfter, isBefore } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
-import { Event } from 'types';
+import { Event, GroupLaw } from 'types';
 import { JobPostType, MembershipType, StrikeReason, UserClass, UserStudy } from 'types/Enums';
 
 export const isAfterDateOfYear = (month: number, date: number) => isAfter(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
@@ -276,6 +276,13 @@ export const dateAsUTC = (date: Date): Date => {
 export const dateToUTC = (date: Date): Date => {
   return subMinutes(date, -date.getTimezoneOffset());
 };
+
+/**
+ * Formats a law header
+ * @param law the law
+ * @returns String with format: `§1.23 - Title`
+ */
+export const formatLawHeader = (law: GroupLaw): string => `§${law.paragraph % 1 === 0 ? ~~law.paragraph : law.paragraph} - ${law.title}`;
 
 /**
  * Create a ICS-file from an event
