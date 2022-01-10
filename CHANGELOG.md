@@ -14,6 +14,9 @@
 
 ## Neste versjon
 
+- ✨ **Kokeboka**. Lagt til "Antall koker nå" teller (ikke faktiske tall).
+- ⚡ **Botsystem**. Lovverket er bedre sortert. Ved ny bot endres beløp når valgt lovbrudd endres.
+
 ## Versjon 1.4.0 (01.01.2022)
 
 - ✨ **Gruppe-skjemaer**. Grupper kan nå lage skjemaer som brukere kan svare på. Admin/leder av gruppe kan styre om det tillates flere besvarelser, om skjemaet er åpent og begrense svar til kun gruppens medlemmer.
