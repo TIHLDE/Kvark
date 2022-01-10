@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ✨ **Kokeboka**. Lagt til "Antall koker nå" teller (ikke faktiske tall).
 - ⚡ **Botsystem**. Lovverket er bedre sortert. Ved ny bot endres beløp når valgt lovbrudd endres.
 
 ## Versjon 1.4.0 (01.01.2022)
