@@ -297,7 +297,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
 
   return (
     <Stack direction={{ xs: 'column-reverse', lg: 'row' }} gap={1} sx={{ mt: { xs: 1, lg: 2 } }}>
-      <Stack gap={1} sx={{ maxWidth: { lg: 335 } }}>
+      <Stack gap={1} sx={{ width: '100%', maxWidth: { lg: 335 } }}>
         {!lgDown && <Info />}
         <ShareButton shareId={data.id} shareType='event' title={data.title} />
         <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} onClick={addToCalendarAnalytics} variant='outlined'>
@@ -310,7 +310,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           </Button>
         )}
       </Stack>
-      <Stack gap={1}>
+      <Stack gap={1} sx={{ width: '100%' }}>
         <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         {lgDown && <Info />}
         <ContentPaper>
@@ -333,7 +333,7 @@ export default EventRenderer;
 
 export const EventRendererLoading = () => (
   <Stack direction={{ xs: 'column-reverse', lg: 'row' }} gap={1} sx={{ mt: { xs: 1, lg: 2 } }}>
-    <Stack gap={1} sx={{ maxWidth: { lg: 335 } }}>
+    <Stack gap={1} sx={{ width: '100%', maxWidth: { lg: 335 } }}>
       <DetailsPaper noPadding>
         <DetailContentLoading />
         <DetailContentLoading />
@@ -344,7 +344,7 @@ export const EventRendererLoading = () => (
         <DetailContentLoading />
       </DetailsPaper>
     </Stack>
-    <Stack gap={1}>
+    <Stack gap={1} sx={{ width: '100%' }}>
       <AspectRatioLoading borderRadius />
       <ContentPaper>
         <Skeleton height={80} width='60%' />
