@@ -128,7 +128,7 @@ const NotificationItemLoading = () => (
 const NotificationsTopbar = ({ color }: NotificationsTopbarProps) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const { data: user } = useUser();
-  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useNotifications();
+  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useNotifications({ enabled: showNotifications });
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
   const notifications = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
@@ -171,11 +171,11 @@ const NotificationsTopbar = ({ color }: NotificationsTopbarProps) => {
         </Badge>
       </IconButton>
       {mdDown ? (
-        <Dialog fullScreen onClose={() => setShowNotifications(false)} open={showNotifications}>
+        <Dialog fullScreen onClose={() => setShowNotifications(false)} open={showNotifications && !isLoading}>
           <NotificationsList />
         </Dialog>
       ) : (
-        <Popper anchorEl={buttonAnchorRef.current} disablePortal open={showNotifications} role={undefined} transition>
+        <Popper anchorEl={buttonAnchorRef.current} disablePortal open={showNotifications && !isLoading} role={undefined} transition>
           {({ TransitionProps }) => (
             <Grow {...TransitionProps} style={{ transformOrigin: 'right top' }}>
               <Paper elevation={2} noPadding sx={{ maxWidth: (theme) => theme.breakpoints.values.md }}>
