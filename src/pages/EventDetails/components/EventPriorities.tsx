@@ -1,80 +1,48 @@
-import { ReactNode } from 'react';
+import { useMemo } from 'react';
 import { RegistrationPriority } from 'types';
 import { UserClass, UserStudy } from 'types/Enums';
 import { getUserStudyShort } from 'utils';
+import { Typography, Stack, styled } from '@mui/material';
 
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import { Typography } from '@mui/material';
-
-const useStyles = makeStyles()((theme) => ({
-  prioritiesContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    width: '100%',
-  },
-  priority: {
-    padding: '0 3px',
-    border: theme.palette.borderWidth + ' solid ' + theme.palette.divider,
-    borderRadius: theme.shape.borderRadius,
-    margin: 3,
-    color: theme.palette.text.primary,
-  },
+const Item = styled(Typography)(({ theme }) => ({
+  padding: '0 3px',
+  border: theme.palette.borderWidth + ' solid ' + theme.palette.divider,
+  borderRadius: theme.shape.borderRadius,
+  margin: 3,
+  color: theme.palette.text.primary,
 }));
-
-const removeStudyFromArray = (array: Array<RegistrationPriority>, userStudy: UserStudy) => {
-  while (array.some((item) => item.user_study === userStudy)) {
-    const index = array.findIndex((item) => item.user_study === userStudy);
-    array.splice(index, 1);
-  }
-  return array;
-};
 
 export type EventPrioritesProps = {
   priorities: Array<RegistrationPriority>;
 };
 
 const EventPriorities = ({ priorities }: EventPrioritesProps) => {
-  const { classes } = useStyles();
-  let prioritiesArr = [...priorities];
-  const content: ReactNode[] = [];
-
-  type ItemProps = {
-    label: string;
-  };
-
-  const Item = ({ label }: ItemProps) => (
-    <Typography className={classes.priority} component='span' variant='subtitle1'>
-      {label}
-    </Typography>
-  );
-
-  [UserStudy.DATAING, UserStudy.DIGFOR, UserStudy.DIGSEC, UserStudy.DIGSAM, UserStudy.INFO].forEach((study: UserStudy) => {
-    if (study === UserStudy.DIGSAM) {
-      if (
-        prioritiesArr.some((item) => item.user_class === UserClass.FOURTH && item.user_study === study) &&
-        prioritiesArr.some((item) => item.user_class === UserClass.FIFTH && item.user_study === study)
-      ) {
-        content.push(<Item key={study} label={getUserStudyShort(study)} />);
-        prioritiesArr = removeStudyFromArray(prioritiesArr, study);
+  const prioritiesArray = useMemo(() => {
+    const arr: Array<string> = [];
+    [UserStudy.DATAING, UserStudy.DIGFOR, UserStudy.DIGSEC, UserStudy.DIGSAM, UserStudy.INFO].forEach((study: UserStudy) => {
+      const classes_in_study = study === UserStudy.DIGSAM ? [UserClass.FOURTH, UserClass.FIFTH] : [UserClass.FIRST, UserClass.SECOND, UserClass.THIRD];
+      const all_classes_in_study_prioritized = classes_in_study.every((user_class) =>
+        priorities.some((item) => item.user_class === user_class && item.user_study === study),
+      );
+      if (all_classes_in_study_prioritized) {
+        arr.push(getUserStudyShort(study));
+      } else {
+        priorities
+          .filter((priority) => priority.user_study === study)
+          .forEach((priority) => arr.push(`${priority.user_class}. ${getUserStudyShort(priority.user_study)}`));
       }
-    } else if (
-      prioritiesArr.some((item) => item.user_class === UserClass.FIRST && item.user_study === study) &&
-      prioritiesArr.some((item) => item.user_class === UserClass.SECOND && item.user_study === study) &&
-      prioritiesArr.some((item) => item.user_class === UserClass.THIRD && item.user_study === study)
-    ) {
-      content.push(<Item key={study} label={getUserStudyShort(study)} />);
-      prioritiesArr = removeStudyFromArray(prioritiesArr, study);
-    }
-  });
+    });
+    return arr;
+  }, [priorities]);
 
   return (
-    <div className={classes.prioritiesContainer}>
-      {content}
-      {prioritiesArr.map((priority, index) => (
-        <Item key={index} label={priority.user_class + '. ' + getUserStudyShort(priority.user_study)} />
+    <Stack direction='row' flexWrap='wrap'>
+      {prioritiesArray.map((priority, index) => (
+        <Item key={index} variant='subtitle1'>
+          {priority}
+        </Item>
       ))}
-    </div>
+    </Stack>
   );
 };
 
