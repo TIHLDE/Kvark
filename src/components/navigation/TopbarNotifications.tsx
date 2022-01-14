@@ -1,8 +1,8 @@
-import { useEffect, useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import parseISO from 'date-fns/parseISO';
 import { Link } from 'react-router-dom';
 import { Notification } from 'types';
-import { useNotifications, useUpdateNotification } from 'hooks/Notification';
+import { useNotifications } from 'hooks/Notification';
 import { getTimeSince, isExternalURL } from 'utils';
 import { useUser } from 'hooks/User';
 
@@ -55,15 +55,6 @@ export type NotificationsTopbarProps = {
 const NotificationItem = ({ notification, setShowNotifications }: NotificationItemProps) => {
   const [showDescription, setShowDescription] = useState(false);
   const { event } = useGoogleAnalytics();
-  const updateNotification = useUpdateNotification(notification.id);
-
-  useEffect(() => {
-    return () => {
-      if (!notification.read) {
-        updateNotification.mutate(true);
-      }
-    };
-  }, [notification]);
 
   const Icon = notification.read ? NotificationReadIcon : NotificationUnreadIcon;
 
