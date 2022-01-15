@@ -173,12 +173,6 @@ export const getStrikeReasonAsText = (strikeReason: StrikeReason) => {
 };
 
 /**
- * Add leading zero to numbers below 10. Ex: 2 -> 02, 12 -> 12
- * @param number Number to add zeros to
- */
-// const addLeadingZero = (number: number) => (number < 10 ? '0' + number : number);
-
-/**
  * Format date in format: `Tor 12. okt. 2021 08:30`
  * Year is only shown if it's a different year than this year
  * @param date Date to be formatted
@@ -220,40 +214,6 @@ export const getTimeSince = (date: Date) => {
     return `${days} dager siden`;
   } else {
     return formatDate(date);
-  }
-};
-/**
- * Translate a month of year number to a readable month
- * @param month Month of year
- */
-export const getMonth = (month: number) => {
-  switch (month) {
-    case 0:
-      return 'jan';
-    case 1:
-      return 'feb';
-    case 2:
-      return 'mars';
-    case 3:
-      return 'april';
-    case 4:
-      return 'mai';
-    case 5:
-      return 'juni';
-    case 6:
-      return 'juli';
-    case 7:
-      return 'aug';
-    case 8:
-      return 'sep';
-    case 9:
-      return 'okt';
-    case 10:
-      return 'nov';
-    case 11:
-      return 'des';
-    default:
-      return month;
   }
 };
 
