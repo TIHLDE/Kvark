@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.4.1 (15.01.2022)
+
 - ⚡ **Arrangementer**. Brukere kan nå se om de er prioritert på et arrangement.
 - ⚡ **Arrangementer**. Påmeldingsknappen teller ned til påmeldingsstart og aktiveres automatisk ved påmeldingsstart uten at en må laste inn siden på nytt.
 - ✨ **Kokeboka**. Lagt til "Antall koker nå" teller (ikke faktiske tall).
