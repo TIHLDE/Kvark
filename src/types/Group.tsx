@@ -40,7 +40,8 @@ export type MembershipHistory = Membership & {
 export type GroupLaw = {
   id: string;
   description: string;
-  paragraph: string;
+  paragraph: number;
+  title: string;
   amount: number;
 };
 

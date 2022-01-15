@@ -40,15 +40,28 @@ const AddLawDialog = ({ groupSlug }: AddLawDialogProps) => {
       <Dialog onClose={() => setDialogOpen(false)} open={dialogOpen} titleText='Ny lovparagraf'>
         <form onSubmit={handleSubmit(submit)}>
           <TextField
+            defaultValue={1}
             formState={formState}
-            helperText='For eks.: 1.1 Forsentkomming'
+            helperText='Heltall for overskrift. Maks 2 siffer på hver side av komma'
+            inputProps={{ inputMode: 'numeric', pattern: '^[0-9]{1,2}(.[0-9]{1,2})?$' }}
             label='Paragraf'
-            {...register('paragraph', { required: 'Navngi paragrafen' })}
+            placeholder='For eks.: 12.01'
+            {...register('paragraph', {
+              required: 'Hvilken paragraf',
+              valueAsNumber: true,
+            })}
             required
           />
           <TextField
             formState={formState}
-            helperText='La stå tom for å gjøre til overskrift'
+            helperText='For eks.: Forsentkomming'
+            label='Tittel'
+            {...register('title', { required: 'Navngi paragrafen' })}
+            required
+          />
+          <TextField
+            formState={formState}
+            helperText='La stå tom for å ikke kunne velges ved botgivning'
             label='Beskrivelse'
             maxRows={4}
             minRows={2}
@@ -59,7 +72,7 @@ const AddLawDialog = ({ groupSlug }: AddLawDialogProps) => {
             defaultValue={1}
             formState={formState}
             helperText='Brukes for å forhåndsutfylle antall bøter når det lages en ny'
-            InputProps={{ type: 'number' }}
+            inputProps={{ type: 'number' }}
             label='Veiledende antall bøter'
             {...register('amount')}
             required
@@ -71,7 +84,7 @@ const AddLawDialog = ({ groupSlug }: AddLawDialogProps) => {
         <Divider sx={{ my: 2 }} />
         <Typography gutterBottom>Forhåndsvisning:</Typography>
         <Paper noPadding sx={{ px: 2, py: 1 }}>
-          <LawItem groupSlug={groupSlug} law={{ ...values, id: '-' }} />
+          <LawItem groupSlug={groupSlug} law={{ ...values, paragraph: values.paragraph || 1, title: values.title || '', id: '-' }} />
         </Paper>
       </Dialog>
       <Button fullWidth onClick={() => setDialogOpen(true)} startIcon={<AddIcon />} variant='outlined'>
