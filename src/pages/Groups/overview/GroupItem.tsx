@@ -22,20 +22,19 @@ const useStyles = makeStyles()((theme) => ({
     minHeight: 90,
   },
   listcontainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
     width: '80%',
   },
   leader: {
     display: 'flex',
     alignItems: 'center',
-    alignSelf: 'left',
+    gridArea: '1 / 1',
   },
   mail: {
     display: 'flex',
     alignItems: 'center',
-    marginLeft: 'auto',
+    gridArea: '1 / 2',
   },
   icon: {
     [theme.breakpoints.down('md')]: {
