@@ -49,7 +49,7 @@ export type TemplateFormCreate = Omit<TemplateForm, 'id'>;
 
 export type EventFormUpdate = Partial<EventFormCreate> & Pick<EventForm, 'resource_type'>;
 export type GroupFormUpdate = Partial<GroupFormCreate> & Pick<GroupForm, 'resource_type'>;
-export type TemplateFormUpdate = Partial<TemplateFormCreate> & Pick<TemplateForm, 'resource_type'>;
+export type TemplateFormUpdate = Partial<TemplateFormCreate> & Pick<TemplateFormCreate, 'resource_type'>;
 
 export type FormCreate = EventFormCreate | GroupFormCreate | TemplateFormCreate;
 export type FormUpdate = EventFormUpdate | GroupFormUpdate | TemplateFormUpdate;
@@ -61,7 +61,7 @@ interface FormField {
 }
 
 export interface TextFormField extends FormField {
-  options: Array<SelectFormFieldOption>;
+  options: Array<unknown>;
   type: FormFieldType.TEXT_ANSWER;
 }
 

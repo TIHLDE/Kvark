@@ -1,9 +1,9 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Form, GroupForm, GroupFormUpdate } from 'types';
-import { FormResourceType } from 'types/Enums';
-import { useUpdateForm, useDeleteForm } from 'hooks/Form';
+import { EventForm, Form, FormCreate, GroupForm, GroupFormUpdate, SelectFormField, SelectFormFieldOption, TemplateForm, TextFormField } from 'types';
+import { FormFieldType, FormResourceType } from 'types/Enums';
+import { useUpdateForm, useDeleteForm, useCreateForm } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
-import { Stack } from '@mui/material';
+import { Stack, TextField as MuiTextField } from '@mui/material';
 
 // Project components
 import VerifyDialog from 'components/layout/VerifyDialog';
@@ -11,6 +11,7 @@ import SubmitButton from 'components/inputs/SubmitButton';
 import Bool from 'components/inputs/Bool';
 import TextField from 'components/inputs/TextField';
 import { ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
+import { useState } from 'react';
 
 export type FormDetailsEditorProps = {
   form: Form;
@@ -117,7 +118,71 @@ const GroupFormDetailsEditor = ({ form }: GroupFormDetailsEditorProps) => {
   );
 };
 
+type DeafultFormDetailsEditor = {
+  form: EventForm | TemplateForm;
+};
+
+export const removeIdsFromFields = (fields: Array<TextFormField | SelectFormField>) => {
+  const newFields: Array<TextFormField | SelectFormField> = [];
+  fields.forEach((field) => {
+    const { id, ...restField } = field; // eslint-disable-line
+    const newOptions: Array<SelectFormFieldOption> = [];
+    if (field.type !== FormFieldType.TEXT_ANSWER) {
+      field.options.forEach((option) => {
+        const { id, ...restOption } = option; // eslint-disable-line
+        newOptions.push(restOption as SelectFormFieldOption);
+      });
+    }
+    newFields.push({ ...restField, options: newOptions } as TextFormField | SelectFormField);
+  });
+  return newFields;
+};
+const DeafultFormDetailsEditor = ({ form }: DeafultFormDetailsEditor) => {
+  const createForm = useCreateForm();
+  const [formtemplateName, setFormtemplateName] = useState('');
+  const showSnackbar = useSnackbar();
+
+  const saveAsTemplate = () => {
+    const formTemplate: FormCreate = {
+      title: formtemplateName,
+      fields: removeIdsFromFields(form.fields),
+      resource_type: FormResourceType.FORM,
+      viewer_has_answered: false,
+      template: true,
+    };
+    createForm.mutate(formTemplate, {
+      onSuccess: (data) => {
+        showSnackbar(data.title + ' Malen ble lagret.', 'success');
+      },
+      onError: (e) => {
+        showSnackbar(e.detail, 'error');
+      },
+    });
+  };
+  return (
+    <Stack gap={1}>
+      <VerifyDialog
+        contentText='Når du lager en mal så kan du enkelt bruke feltene i dette skjemaet i andre skjemaer senere. Gi malen en passende tittel.'
+        dialogChildren={
+          <MuiTextField
+            disabled={false}
+            fullWidth
+            label='Tittel'
+            margin='normal'
+            onChange={(e) => setFormtemplateName(e.target.value)}
+            value={formtemplateName}
+          />
+        }
+        onConfirm={saveAsTemplate}
+        title='Lagre som mal'>
+        Lagre som mal
+      </VerifyDialog>
+      <DeleteFormButton form={form} />
+    </Stack>
+  );
+};
+
 const FormDetailsEditor = ({ form }: FormDetailsEditorProps) =>
-  form.resource_type === FormResourceType.GROUP_FORM ? <GroupFormDetailsEditor form={form} /> : <DeleteFormButton form={form} />;
+  form.resource_type === FormResourceType.GROUP_FORM ? <GroupFormDetailsEditor form={form} /> : <DeafultFormDetailsEditor form={form} />;
 
 export default FormDetailsEditor;

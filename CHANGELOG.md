@@ -14,7 +14,7 @@
 
 ## Neste versjon
 
-- ✨ **Skjemamaler**. Administratorer kan nå tilpasse maler som man kan ta utgangspunkt i når man oppretter ett skjema. 
+- ✨ **Skjemamaler**. Administratorer kan nå lage maler som man kan ta utgangspunkt i når man lager et nytt skjema.
 
 ## Versjon 1.4.0 (01.01.2022)
 
