@@ -2,7 +2,7 @@ import { EventFormCreate, Form, FormCreate, SelectFormField, SelectFormFieldOpti
 import { EventFormType, FormFieldType, FormResourceType } from 'types/Enums';
 import { useEventById } from 'hooks/Event';
 import { useForm } from 'react-hook-form';
-import { useCreateForm, useFormTemplates, useDeleteForm } from 'hooks/Form';
+import { useCreateForm, useFormTemplates, useDeleteForm, useFormById } from 'hooks/Form';
 import { Typography, LinearProgress, Stack, Button, TextField } from '@mui/material';
 
 // Project
@@ -117,7 +117,6 @@ const FormTemplatePreview = ({ formtemplate, eventId, formType }: FormTemplatePr
 
 const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
   const { data: event, isLoading } = useEventById(eventId);
-
   if (isLoading || !event) {
     return <LinearProgress />;
   }
@@ -128,7 +127,13 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
 
   const EventFormEditor = ({ formType }: EventFormEditorProps) => {
     const createForm = useCreateForm();
+    const showSnackbar = useSnackbar();
+
     const { data: formtemplates = [] } = useFormTemplates();
+    const [isCreatingForm, setIsCreatingTemplate] = useState(false);
+    const [formtemplateTitle, setFormtemplateTitle] = useState('');
+    const [formtemplateId, setFormtemplateId] = useState('-');
+    const { data: form, isLoading, isError } = useFormById(formtemplateId);
 
     const newForm: FormCreate = {
       title: `${event.title} - ${formType === EventFormType.SURVEY ? 'påmeldingsskjema' : 'evalueringsskjema'}`,
@@ -138,7 +143,28 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
       fields: [],
     };
 
+    const newFormTemplateCreate: FormCreate = {
+      title: 'EMPTY',
+      resource_type: FormResourceType.FORM,
+      fields: [],
+      viewer_has_answered: false,
+      template: true,
+    };
+
     const onCreate = async () => createForm.mutate(newForm);
+
+    const onCreateTemplate = async () => {
+      createForm.mutate(newFormTemplateCreate, {
+        onSuccess: (data) => {
+          showSnackbar(data.title, 'success');
+          setFormtemplateId(data.id);
+        },
+        onError: (e) => {
+          showSnackbar(e.detail, 'error');
+        },
+      });
+      setIsCreatingTemplate(true);
+    };
 
     return (
       <>
@@ -146,10 +172,25 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
           Opprett {formType === EventFormType.SURVEY ? 'påmeldingsskjema' : 'evalueringsskjema'}
         </Button>
         <Expand flat header='Bruk en mal' sx={{ mt: 1 }}>
-          <Typography variant='body2'>Bruk en ferdiglagd mal som utgangspunkt når du oppretter ett skjema.</Typography>
-          {formtemplates.map((formtemplate) => (
-            <FormTemplatePreview eventId={eventId} formtemplate={formtemplate} formType={formType} key={formtemplate.id} />
-          ))}
+          {isCreatingForm ? (
+            <>
+              <TextField label='Navn' onChange={(e) => setFormtemplateTitle(e.target.value)} sx={{ mb: 1 }} type='text' value={formtemplateTitle} />
+              {!isLoading && !isError && form ? <FormFieldsEditor form={form} newTitle={formtemplateTitle}></FormFieldsEditor> : ''}
+              <Button onClick={() => setIsCreatingTemplate(false)} sx={{ mt: 1 }} variant='outlined'>
+                Gå ut (lagre først)
+              </Button>
+            </>
+          ) : (
+            <>
+              <Typography variant='body2'>Bruk en ferdiglagd mal som utgangspunkt når du oppretter ett skjema.</Typography>
+              {formtemplates.map((formtemplate) => (
+                <FormTemplatePreview eventId={eventId} formtemplate={formtemplate} formType={formType} key={formtemplate.id} />
+              ))}
+              <Button onClick={onCreateTemplate} sx={{ mt: 1 }} variant='outlined'>
+                Lag ny mal
+              </Button>
+            </>
+          )}
         </Expand>
       </>
     );
