@@ -16,25 +16,23 @@ import { Mail } from '@mui/icons-material';
 const useStyles = makeStyles()((theme) => ({
   container: {
     width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
     height: '100%',
     minHeight: 90,
   },
+  groupname: {
+    display: 'flex',
+    flexDirection: 'column',
+    textAlign: 'center',
+  },
   listcontainer: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    width: '80%',
+    display: 'flex',
+    flexDirection: 'column',
   },
-  leader: {
+  listitemcontainer: {
     display: 'flex',
     alignItems: 'center',
-    gridArea: '1 / 1',
-  },
-  mail: {
-    display: 'flex',
-    alignItems: 'center',
-    gridArea: '1 / 2',
   },
   icon: {
     [theme.breakpoints.down('md')]: {
@@ -58,10 +56,12 @@ const GroupItem = ({ group, background = 'paper' }: GroupItemProps) => {
   return (
     <Paper noOverflow noPadding sx={{ background: (theme) => theme.palette.background[background] }}>
       <ButtonBase className={classes.container} component={Link} focusRipple to={URLS.groups.details(group.slug)}>
-        <Typography variant='h3'>{group.name}</Typography>
+        <Typography className={classes.groupname} variant='h3'>
+          {group.name}
+        </Typography>
         <div className={classes.listcontainer}>
           {group.leader && (
-            <div className={classes.leader}>
+            <div className={classes.listitemcontainer}>
               <MembersIcon className={classes.icon} />
               <Typography className={classes.text}>
                 {group.leader.first_name} {group.leader.last_name}
@@ -69,7 +69,7 @@ const GroupItem = ({ group, background = 'paper' }: GroupItemProps) => {
             </div>
           )}
           {group.contact_email && (
-            <div className={classes.mail}>
+            <div className={classes.listitemcontainer}>
               <Mail className={classes.icon} />
               <Typography className={classes.text}>{group.contact_email}</Typography>
             </div>
@@ -89,11 +89,11 @@ export const GroupItemLoading = ({ background = 'paper' }: Pick<GroupItemProps, 
       <ButtonBase className={classes.container} focusRipple>
         <Skeleton width={100} />
         <div className={classes.listcontainer}>
-          <div className={classes.leader}>
+          <div className={classes.listitemcontainer}>
             <MembersIcon className={classes.icon} />
             <Skeleton className={classes.text} width={120} />
           </div>
-          <div className={classes.mail}>
+          <div className={classes.listitemcontainer}>
             <Mail className={classes.icon} />
             <Skeleton className={classes.text} width={120} />
           </div>
