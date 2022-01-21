@@ -20,6 +20,7 @@ import Events from 'pages/Events';
 import JobPosts from 'pages/JobPosts';
 import JobPostDetails from 'pages/JobPostDetails';
 import NewsDetails from 'pages/NewsDetails';
+import Gallery from 'pages/Gallery';
 import Groups from 'pages/Groups';
 import GroupsOverview from 'pages/Groups/overview';
 import GroupDetails from 'pages/Groups/GroupDetails';
@@ -31,11 +32,7 @@ const EventAdministration = lazy(() => import(/* webpackChunkName: "event_admini
 const EventRegistration = lazy(() => import(/* webpackChunkName: "event_registration" */ 'pages/EventRegistration'));
 const ForgotPassword = lazy(() => import(/* webpackChunkName: "forgot_password" */ 'pages/ForgotPassword'));
 const Form = lazy(() => import(/* webpackChunkName: "form" */ 'pages/Form'));
-<<<<<<< HEAD
-const GroupAdmin = lazy(() => import(/* webpackChunkName: "group_admin" */ 'pages/GroupAdmin'));
-const Gallery = lazy(() => import(/* webpackChunkName: "galleries" */ 'pages/Gallery'));
-=======
->>>>>>> d9222db95c2b201b0edaa019bc320d1a0aeefb33
+const Albums = lazy(() => import(/* webpackChunkName: "galleries" */ 'pages/Gallery'));
 const Http404 = lazy(() => import(/* webpackChunkName: "http404" */ 'pages/Http404'));
 const JobPostAdministration = lazy(() => import(/* webpackChunkName: "jobpost_administration" */ 'pages/JobPostAdministration'));
 const LogIn = lazy(() => import(/* webpackChunkName: "login" */ 'pages/LogIn'));
@@ -93,7 +90,10 @@ const AppRoutes = () => {
           <Route element={<JobPostDetails />} path=':id/*' />
           <Route element={<JobPosts />} index />
         </Route>
-        <Route element={<Gallery />} path={`${URLS.gallery}`} />
+        <Route path={URLS.gallery}>
+          <Route element={<Gallery />} index />
+          {/* <Route element={<Galleries />}  /> */}
+        </Route>
         <Route element={<Pages />} path={`${URLS.pages}*`} />
         <Route path={URLS.news}>
           <Route element={<NewsDetails />} path=':id/*' />
