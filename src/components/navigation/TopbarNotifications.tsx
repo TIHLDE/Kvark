@@ -1,8 +1,8 @@
-import { useEffect, useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import parseISO from 'date-fns/parseISO';
 import { Link } from 'react-router-dom';
 import { Notification } from 'types';
-import { useNotifications, useUpdateNotification } from 'hooks/Notification';
+import { useNotifications } from 'hooks/Notification';
 import { getTimeSince, isExternalURL } from 'utils';
 import { useUser } from 'hooks/User';
 
@@ -55,15 +55,6 @@ export type NotificationsTopbarProps = {
 const NotificationItem = ({ notification, setShowNotifications }: NotificationItemProps) => {
   const [showDescription, setShowDescription] = useState(false);
   const { event } = useGoogleAnalytics();
-  const updateNotification = useUpdateNotification(notification.id);
-
-  useEffect(() => {
-    return () => {
-      if (!notification.read) {
-        updateNotification.mutate(true);
-      }
-    };
-  }, [notification]);
 
   const Icon = notification.read ? NotificationReadIcon : NotificationUnreadIcon;
 
@@ -128,7 +119,7 @@ const NotificationItemLoading = () => (
 const NotificationsTopbar = ({ color }: NotificationsTopbarProps) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const { data: user } = useUser();
-  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useNotifications();
+  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useNotifications({ enabled: showNotifications });
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
   const notifications = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
@@ -171,11 +162,11 @@ const NotificationsTopbar = ({ color }: NotificationsTopbarProps) => {
         </Badge>
       </IconButton>
       {mdDown ? (
-        <Dialog fullScreen onClose={() => setShowNotifications(false)} open={showNotifications}>
+        <Dialog fullScreen onClose={() => setShowNotifications(false)} open={showNotifications && !isLoading}>
           <NotificationsList />
         </Dialog>
       ) : (
-        <Popper anchorEl={buttonAnchorRef.current} disablePortal open={showNotifications} role={undefined} transition>
+        <Popper anchorEl={buttonAnchorRef.current} disablePortal open={showNotifications && !isLoading} role={undefined} transition>
           {({ TransitionProps }) => (
             <Grow {...TransitionProps} style={{ transformOrigin: 'right top' }}>
               <Paper elevation={2} noPadding sx={{ maxWidth: (theme) => theme.breakpoints.values.md }}>

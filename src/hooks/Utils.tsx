@@ -103,7 +103,6 @@ export const useShare = (shareData: globalThis.ShareData, fallbackSnackbar?: str
         .then(() => setShared(true))
         .catch(() => copyToClipboard(fallbackCopyText, true));
     } else {
-      showSnackbar('else', 'error');
       copyToClipboard(fallbackCopyText);
     }
     if (onShare) {
