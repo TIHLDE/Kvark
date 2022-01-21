@@ -1,19 +1,21 @@
-import { EventFormCreate, Form, FormCreate, SelectFormField, SelectFormFieldOption, TextFormField } from 'types';
-import { EventFormType, FormFieldType, FormResourceType } from 'types/Enums';
+import { EventFormCreate, Form, FormCreate } from 'types';
+import { EventFormType, FormResourceType } from 'types/Enums';
+import { useState } from 'react';
 import { useEventById } from 'hooks/Event';
 import { useForm } from 'react-hook-form';
-import { useCreateForm, useFormTemplates, useDeleteForm, useFormById } from 'hooks/Form';
-import { Typography, LinearProgress, Stack, Button, TextField } from '@mui/material';
+import { Typography, LinearProgress, Stack, Button } from '@mui/material';
 
 // Project
 import { useSnackbar } from 'hooks/Snackbar';
+import { useCreateForm, useFormTemplates, useDeleteForm, useFormById } from 'hooks/Form';
+import { removeIdsFromFields } from 'hooks/Utils';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import FormView from 'components/forms/FormView';
 import Expand from 'components/layout/Expand';
 import FormAdmin from 'components/forms/FormAdmin';
 import { ShowMoreText } from 'components/miscellaneous/UserInformation';
 import FormFieldsEditor from 'components/forms/FormFieldsEditor';
-import { useState } from 'react';
+
 export type EventFormAdminProps = {
   eventId: number;
 };
@@ -27,42 +29,21 @@ export type EventFormEditorProps = {
 type FormTemplatePreviewType = Omit<EventFormEditorProps, 'formId'> & {
   formtemplate: Form;
 };
-const removeIdsFromForm = (form: Form): FormCreate => {
-  const { id, ...restForm } = form; // eslint-disable-line
-  const newFields: Array<TextFormField | SelectFormField> = [];
-
-  form.fields.forEach((field) => {
-    const { id, ...restField } = field; // eslint-disable-line
-    const newOptions: Array<SelectFormFieldOption> = [];
-
-    if (field.type !== FormFieldType.TEXT_ANSWER) {
-      field.options.forEach((option) => {
-        const { id, ...restOption } = option; // eslint-disable-line
-        newOptions.push(restOption as SelectFormFieldOption);
-      });
-    }
-    newFields.push({ ...restField, options: newOptions } as TextFormField | SelectFormField);
-  });
-
-  return { ...restForm, fields: newFields } as FormCreate;
-};
 
 const FormTemplatePreview = ({ formtemplate, eventId, formType }: FormTemplatePreviewType) => {
   const deleteForm = useDeleteForm(formtemplate.id || '-');
   const { register, formState, getValues, control } = useForm<Form['fields']>();
   const [isEditing, setIsEditing] = useState(false);
-  const [formtemplateTitle, setFormtemplateTitle] = useState(formtemplate.title);
   const createForm = useCreateForm();
   const showSnackbar = useSnackbar();
 
   const onCreateFormFromTemplate = async () => {
-    const updatedTemplate = removeIdsFromForm(formtemplate);
     const newForm: EventFormCreate = {
       title: String(eventId),
       type: formType,
       event: eventId,
       resource_type: FormResourceType.EVENT_FORM,
-      fields: updatedTemplate.fields,
+      fields: removeIdsFromFields(formtemplate.fields),
       template: false,
     };
     createForm.mutate(newForm, {
@@ -89,19 +70,16 @@ const FormTemplatePreview = ({ formtemplate, eventId, formType }: FormTemplatePr
   return (
     <Expand flat header={formtemplate.title} sx={{ mt: 1 }}>
       {isEditing ? (
-        <>
-          <TextField label='Navn' onChange={(e) => setFormtemplateTitle(e.target.value)} type='text' value={formtemplateTitle} />
-          <FormFieldsEditor form={formtemplate} newTitle={formtemplateTitle} onSave={() => setIsEditing(false)} />
-        </>
+        <FormFieldsEditor canEditTitle={true} form={formtemplate} onSave={() => setIsEditing(false)} />
       ) : (
         <>
           <FormView control={control} disabled={true} form={formtemplate} formState={formState} getValues={getValues} register={register} />
-          <Stack>
-            <Stack direction={{ xs: 'column', md: 'row' }} spacing={1} sx={{ pb: 1 }}>
+          <Stack gap={1}>
+            <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
               <Button color='primary' fullWidth onClick={() => setIsEditing(true)} variant='outlined'>
                 Rediger malen
               </Button>
-              <VerifyDialog color='warning' contentText='Å slette en mal kan ikke reverseres.' onConfirm={onDeleteForm} titleText='Er du sikker?'>
+              <VerifyDialog color='error' contentText='Å slette en mal kan ikke reverseres.' onConfirm={onDeleteForm} titleText='Er du sikker?'>
                 Slett malen
               </VerifyDialog>
             </Stack>
@@ -128,10 +106,8 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
   const EventFormEditor = ({ formType }: EventFormEditorProps) => {
     const createForm = useCreateForm();
     const showSnackbar = useSnackbar();
-
     const { data: formtemplates = [] } = useFormTemplates();
     const [isCreatingForm, setIsCreatingTemplate] = useState(false);
-    const [formtemplateTitle, setFormtemplateTitle] = useState('');
     const [formtemplateId, setFormtemplateId] = useState('-');
     const { data: form, isLoading, isError } = useFormById(formtemplateId);
 
@@ -144,7 +120,7 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
     };
 
     const newFormTemplateCreate: FormCreate = {
-      title: 'EMPTY',
+      title: 'BLANK',
       resource_type: FormResourceType.FORM,
       fields: [],
       viewer_has_answered: false,
@@ -158,12 +134,12 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
         onSuccess: (data) => {
           showSnackbar(data.title, 'success');
           setFormtemplateId(data.id);
+          setIsCreatingTemplate(true);
         },
         onError: (e) => {
           showSnackbar(e.detail, 'error');
         },
       });
-      setIsCreatingTemplate(true);
     };
 
     return (
@@ -174,11 +150,9 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
         <Expand flat header='Bruk en mal' sx={{ mt: 1 }}>
           {isCreatingForm ? (
             <>
-              <TextField label='Navn' onChange={(e) => setFormtemplateTitle(e.target.value)} sx={{ mb: 1 }} type='text' value={formtemplateTitle} />
-              {!isLoading && !isError && form ? <FormFieldsEditor form={form} newTitle={formtemplateTitle}></FormFieldsEditor> : ''}
-              <Button onClick={() => setIsCreatingTemplate(false)} sx={{ mt: 1 }} variant='outlined'>
-                Gå ut (lagre først)
-              </Button>
+              {!isLoading && !isError && form && (
+                <FormFieldsEditor canEditTitle={true} form={form} onSave={() => setIsCreatingTemplate(false)}></FormFieldsEditor>
+              )}
             </>
           ) : (
             <>
@@ -186,7 +160,7 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
               {formtemplates.map((formtemplate) => (
                 <FormTemplatePreview eventId={eventId} formtemplate={formtemplate} formType={formType} key={formtemplate.id} />
               ))}
-              <Button onClick={onCreateTemplate} sx={{ mt: 1 }} variant='outlined'>
+              <Button onClick={onCreateTemplate} sx={{ mt: 1 }} variant='contained'>
                 Lag ny mal
               </Button>
             </>

@@ -2,17 +2,17 @@ import { useEffect, useState, useRef } from 'react';
 import { Form, TextFormField, SelectFormField } from 'types';
 import { FormFieldType } from 'types/Enums';
 import { useUpdateForm, useFormSubmissions } from 'hooks/Form';
-import { ClickAwayListener, Grow, Paper, Popper, Typography, MenuItem, MenuList, Button, Stack } from '@mui/material';
+import { ClickAwayListener, Grow, Paper, Popper, Typography, MenuItem, MenuList, Button, Stack, TextField } from '@mui/material';
 import FieldEditor from 'components/forms/FieldEditor';
 import { useSnackbar } from 'hooks/Snackbar';
 
 export type FormFieldsEditorProps = {
   form: Form;
   onSave?: () => void;
-  newTitle?: string;
+  canEditTitle?: boolean;
 };
 
-const FormFieldsEditor = ({ form, onSave, newTitle }: FormFieldsEditorProps) => {
+const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps) => {
   const { data: submissions, isLoading: isSubmissionsLoading } = useFormSubmissions(form.id, 1);
   const updateForm = useUpdateForm(form.id);
   const disabledFromSubmissions = (submissions ? Boolean(submissions.count) : true) && !isSubmissionsLoading;
@@ -21,6 +21,7 @@ const FormFieldsEditor = ({ form, onSave, newTitle }: FormFieldsEditorProps) => 
   const [fields, setFields] = useState<Array<TextFormField | SelectFormField>>(form.fields);
   const [addButtonOpen, setAddButtonOpen] = useState(false);
   const buttonAnchorRef = useRef(null);
+  const [formTitle, setFormTitle] = useState(form.title);
 
   useEffect(() => setFields(form.fields), [form]);
 
@@ -69,7 +70,7 @@ const FormFieldsEditor = ({ form, onSave, newTitle }: FormFieldsEditorProps) => 
       return;
     }
     updateForm.mutate(
-      { title: newTitle, fields: fields, resource_type: form.resource_type || 'Form' },
+      { title: formTitle, fields: fields, resource_type: form.resource_type || 'Form' },
       {
         onSuccess: () => {
           showSnackbar('Spørsmålene ble oppdatert', 'success');
@@ -87,6 +88,7 @@ const FormFieldsEditor = ({ form, onSave, newTitle }: FormFieldsEditorProps) => 
   return (
     <>
       <Stack gap={1}>
+        {canEditTitle && <TextField label='Malen sitt navn' onChange={(e) => setFormTitle(e.target.value)} type='text' value={formTitle} />}
         {disabledFromSubmissions && (
           <Typography gutterBottom variant='body2'>
             Du kan ikke endre spørsmålene etter at noen har svart på dem

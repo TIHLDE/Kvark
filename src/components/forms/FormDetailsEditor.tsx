@@ -1,6 +1,7 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { EventForm, Form, FormCreate, GroupForm, GroupFormUpdate, SelectFormField, SelectFormFieldOption, TemplateForm, TextFormField } from 'types';
-import { FormFieldType, FormResourceType } from 'types/Enums';
+import { useState } from 'react';
+import { EventForm, Form, FormCreate, GroupForm, GroupFormUpdate, TemplateForm } from 'types';
+import { FormResourceType } from 'types/Enums';
 import { useUpdateForm, useDeleteForm, useCreateForm } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
 import { Stack, TextField as MuiTextField } from '@mui/material';
@@ -11,7 +12,7 @@ import SubmitButton from 'components/inputs/SubmitButton';
 import Bool from 'components/inputs/Bool';
 import TextField from 'components/inputs/TextField';
 import { ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
-import { useState } from 'react';
+import { removeIdsFromFields } from 'hooks/Utils';
 
 export type FormDetailsEditorProps = {
   form: Form;
@@ -122,22 +123,7 @@ type DeafultFormDetailsEditor = {
   form: EventForm | TemplateForm;
 };
 
-export const removeIdsFromFields = (fields: Array<TextFormField | SelectFormField>) => {
-  const newFields: Array<TextFormField | SelectFormField> = [];
-  fields.forEach((field) => {
-    const { id, ...restField } = field; // eslint-disable-line
-    const newOptions: Array<SelectFormFieldOption> = [];
-    if (field.type !== FormFieldType.TEXT_ANSWER) {
-      field.options.forEach((option) => {
-        const { id, ...restOption } = option; // eslint-disable-line
-        newOptions.push(restOption as SelectFormFieldOption);
-      });
-    }
-    newFields.push({ ...restField, options: newOptions } as TextFormField | SelectFormField);
-  });
-  return newFields;
-};
-const DeafultFormDetailsEditor = ({ form }: DeafultFormDetailsEditor) => {
+const EventFormDetailsEditor = ({ form }: DeafultFormDetailsEditor) => {
   const createForm = useCreateForm();
   const [formtemplateName, setFormtemplateName] = useState('');
   const showSnackbar = useSnackbar();
@@ -152,7 +138,7 @@ const DeafultFormDetailsEditor = ({ form }: DeafultFormDetailsEditor) => {
     };
     createForm.mutate(formTemplate, {
       onSuccess: (data) => {
-        showSnackbar(data.title + ' Malen ble lagret.', 'success');
+        showSnackbar(`Lagret mal med navn "${data.title}"`, 'success');
       },
       onError: (e) => {
         showSnackbar(e.detail, 'error');
@@ -183,6 +169,12 @@ const DeafultFormDetailsEditor = ({ form }: DeafultFormDetailsEditor) => {
 };
 
 const FormDetailsEditor = ({ form }: FormDetailsEditorProps) =>
-  form.resource_type === FormResourceType.GROUP_FORM ? <GroupFormDetailsEditor form={form} /> : <DeafultFormDetailsEditor form={form} />;
+  form.resource_type === FormResourceType.GROUP_FORM ? (
+    <GroupFormDetailsEditor form={form} />
+  ) : form.resource_type === FormResourceType.EVENT_FORM ? (
+    <EventFormDetailsEditor form={form} />
+  ) : (
+    <DeleteFormButton form={form} />
+  );
 
 export default FormDetailsEditor;
