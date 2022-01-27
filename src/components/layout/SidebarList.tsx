@@ -134,16 +134,16 @@ const SidebarList = <Type extends unknown>({
       className={classes.listItem}
       onClick={() => handleItemClick(Number(item[idKey]))}
       selected={Boolean(Number(item[idKey]) === selectedItemId)}>
-      {closedKey && item[closedKey] && (
-        <ListItemIcon>
-          <PauseCircle color='warning' />
-        </ListItemIcon>
-      )}
       <ListItemText
         classes={{ secondary: classes.listItemSecondary }}
         primary={item[titleKey]}
         secondary={formatDesc ? formatDesc(item[descKey]) : item[descKey]}
       />
+      {closedKey && !expiredItems.includes(item) && item[closedKey] && (
+        <ListItemIcon>
+          <PauseCircle color='warning' />
+        </ListItemIcon>
+      )}
     </MuiListItem>
   );
   const ListItemLoading = () => (
