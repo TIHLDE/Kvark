@@ -7,7 +7,7 @@ import { formatDate } from 'utils';
 
 // Material-UI
 import { makeStyles } from 'makeStyles';
-import { Typography, Collapse } from '@mui/material';
+import { Typography, Collapse, Alert } from '@mui/material';
 
 // Icons
 import EditIcon from '@mui/icons-material/EditRounded';
@@ -98,6 +98,7 @@ const EventAdministration = () => {
       />
       <div className={classes.root}>
         <div className={classes.content}>
+          {event && event.closed && <Alert severity='warning'>Dette arrangementet er stengt.</Alert>}
           <Typography className={classes.header} variant='h2'>
             {eventId ? 'Endre arrangement' : 'Nytt arrangement'}
           </Typography>

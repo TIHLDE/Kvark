@@ -23,7 +23,7 @@ import {
 // Icons
 import MenuIcon from '@mui/icons-material/FormatListBulletedRounded';
 import AddIcon from '@mui/icons-material/AddRounded';
-import PauseCircle from '@mui/icons-material/PauseCircle';
+import WarningAmber from '@mui/icons-material/WarningAmber';
 // Project components
 import Pagination from 'components/layout/Pagination';
 const useStyles = makeStyles()((theme) => ({
@@ -141,7 +141,7 @@ const SidebarList = <Type extends unknown>({
       />
       {closedKey && !expiredItems.includes(item) && item[closedKey] && (
         <ListItemIcon>
-          <PauseCircle color='warning' />
+          <WarningAmber color='warning' />
         </ListItemIcon>
       )}
     </MuiListItem>
