@@ -155,7 +155,7 @@ const Story = ({ items, fadeColor }: StoryProps) => {
         newItems.push({
           ...newItem,
           link: `${URLS.jobposts}${item.id}/${urlEncode(item.title)}/`,
-          description: `Bedrift: ${item.company} \n Når: ${formatDate(parseISO(item.deadline))}`,
+          description: `Bedrift: ${item.company} \n ${item.is_continuously_hiring ? 'Fortløpende opptak' : `Når: ${formatDate(parseISO(item.deadline))}`}`,
           topText: 'Annonse',
         });
       } else if (instanceOfNews(item)) {
