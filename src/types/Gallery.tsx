@@ -5,7 +5,7 @@ export type PictureRequired = Partial<Picture> & Pick<Picture, 'image'>;
 
 export type Gallery = {
   title: string;
-  event: EventCompact;
+  event?: EventCompact;
   image: string;
   slug: string;
   image_alt: string;

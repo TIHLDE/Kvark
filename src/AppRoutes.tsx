@@ -32,7 +32,7 @@ const EventAdministration = lazy(() => import(/* webpackChunkName: "event_admini
 const EventRegistration = lazy(() => import(/* webpackChunkName: "event_registration" */ 'pages/EventRegistration'));
 const ForgotPassword = lazy(() => import(/* webpackChunkName: "forgot_password" */ 'pages/ForgotPassword'));
 const Form = lazy(() => import(/* webpackChunkName: "form" */ 'pages/Form'));
-const Albums = lazy(() => import(/* webpackChunkName: "galleries" */ 'pages/Gallery'));
+const Galleries = lazy(() => import(/* webpackChunkName: "galleries" */ 'pages/Gallery'));
 const Http404 = lazy(() => import(/* webpackChunkName: "http404" */ 'pages/Http404'));
 const JobPostAdministration = lazy(() => import(/* webpackChunkName: "jobpost_administration" */ 'pages/JobPostAdministration'));
 const LogIn = lazy(() => import(/* webpackChunkName: "login" */ 'pages/LogIn'));
