@@ -17,13 +17,12 @@ import {
   Divider,
   IconButton,
   Skeleton,
-  ListItemIcon,
 } from '@mui/material';
 
 // Icons
 import MenuIcon from '@mui/icons-material/FormatListBulletedRounded';
 import AddIcon from '@mui/icons-material/AddRounded';
-import WarningAmber from '@mui/icons-material/WarningAmber';
+
 // Project components
 import Pagination from 'components/layout/Pagination';
 const useStyles = makeStyles()((theme) => ({
@@ -76,7 +75,6 @@ export type SidebarListProps<Type> = {
   onItemClick: (itemId: null | number) => void;
   selectedItemId: number;
   title: string;
-  closedKey?: keyof Type;
   noExpired?: boolean;
   idKey: keyof Type;
   titleKey: keyof Type;
@@ -94,7 +92,6 @@ const SidebarList = <Type extends unknown>({
   title,
   idKey,
   titleKey,
-  closedKey,
   descKey,
   formatDesc,
   noExpired = false,
@@ -139,11 +136,6 @@ const SidebarList = <Type extends unknown>({
         primary={item[titleKey]}
         secondary={formatDesc ? formatDesc(item[descKey]) : item[descKey]}
       />
-      {closedKey && !expiredItems.includes(item) && item[closedKey] && (
-        <ListItemIcon>
-          <WarningAmber color='warning' />
-        </ListItemIcon>
-      )}
     </MuiListItem>
   );
   const ListItemLoading = () => (

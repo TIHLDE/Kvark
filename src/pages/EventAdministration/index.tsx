@@ -86,7 +86,6 @@ const EventAdministration = () => {
       maxWidth={false}
       options={{ lightColor: 'blue', filledTopbar: true, gutterBottom: true, gutterTop: true, noFooter: true, title: 'Admin arrangementer' }}>
       <SidebarList
-        closedKey='closed'
         descKey='start_date'
         formatDesc={(desc) => formatDate(parseISO(desc))}
         idKey='id'
@@ -98,7 +97,11 @@ const EventAdministration = () => {
       />
       <div className={classes.root}>
         <div className={classes.content}>
-          {event && event.closed && <Alert severity='warning'>Dette arrangementet er stengt.</Alert>}
+          {event && event.closed && (
+            <Alert severity='warning' sx={{ mb: 1 }}>
+              Dette arrangementet er stengt.
+            </Alert>
+          )}
           <Typography className={classes.header} variant='h2'>
             {eventId ? 'Endre arrangement' : 'Nytt arrangement'}
           </Typography>
