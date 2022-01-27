@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- 🦟 **Eventadmin**. Viser at et arrangement er stengt i adminpanelet.
+
 ## Versjon 1.4.1 (15.01.2022)
 
 - ⚡ **Arrangementer**. Brukere kan nå se om de er prioritert på et arrangement.
