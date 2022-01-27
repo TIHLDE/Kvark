@@ -14,8 +14,8 @@ export type Group = {
   fines_admin: UserBase | UserList | null;
   fines_activated: boolean;
   fine_info: string;
-  image: string | null;
-  image_alt: string | null;
+  image?: string;
+  image_alt?: string;
   viewer_is_member: boolean;
 };
 
