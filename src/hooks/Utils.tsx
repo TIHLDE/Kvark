@@ -2,9 +2,8 @@ import { EffectCallback, useEffect, useState, useRef, useCallback } from 'react'
 import { useSnackbar } from 'hooks/Snackbar';
 import { getCookie, setCookie } from 'api/cookie';
 import { useMemo } from 'react';
-import { SelectFormField, SelectFormFieldOption, TextFormField, User } from 'types';
+import { User } from 'types';
 import { GA_MEASUREMENT_ID } from 'constant';
-import { FormFieldType } from 'types/Enums';
 
 export const useInterval = (callback: EffectCallback, msDelay: number | null) => {
   const savedCallback = useRef<EffectCallback>();
@@ -41,22 +40,6 @@ export const useDebounce = <Type extends unknown>(value: Type, delay: number) =>
   }, [value]);
 
   return debouncedValue;
-};
-
-export const removeIdsFromFields = (fields: Array<TextFormField | SelectFormField>) => {
-  const newFields: Array<TextFormField | SelectFormField> = [];
-  fields.forEach((field) => {
-    const { id, ...restField } = field; // eslint-disable-line
-    const newOptions: Array<SelectFormFieldOption> = [];
-    if (field.type !== FormFieldType.TEXT_ANSWER) {
-      field.options.forEach((option) => {
-        const { id, ...restOption } = option; // eslint-disable-line
-        newOptions.push(restOption as SelectFormFieldOption);
-      });
-    }
-    newFields.push({ ...restField, options: newOptions } as TextFormField | SelectFormField);
-  });
-  return newFields;
 };
 
 /**

@@ -70,7 +70,7 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
       return;
     }
     updateForm.mutate(
-      { title: formTitle, fields: fields, resource_type: form.resource_type || 'Form' },
+      { title: formTitle, fields: fields, resource_type: form.resource_type },
       {
         onSuccess: () => {
           showSnackbar('Spørsmålene ble oppdatert', 'success');

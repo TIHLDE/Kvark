@@ -1,8 +1,8 @@
 import slugify from 'slugify';
 import { parseISO, format, subMinutes, getYear, isAfter, isBefore } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
-import { Event } from 'types';
-import { JobPostType, MembershipType, StrikeReason, UserClass, UserStudy } from 'types/Enums';
+import { Event, SelectFormField, SelectFormFieldOption, TextFormField } from 'types';
+import { FormFieldType, JobPostType, MembershipType, StrikeReason, UserClass, UserStudy } from 'types/Enums';
 
 export const isAfterDateOfYear = (month: number, date: number) => isAfter(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
 export const isBeforeDateOfYear = (month: number, date: number) => isBefore(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
@@ -327,4 +327,25 @@ export const argsToParams = (data: Record<string, any>) => {
     }
   }
   return args;
+};
+
+/**
+ * Removes id's from fields and the options of the given fields
+ *
+ * @param fields The fields to remove the id's from
+ */
+export const removeIdsFromFields = (fields: Array<TextFormField | SelectFormField>) => {
+  const newFields: Array<TextFormField | SelectFormField> = [];
+  fields.forEach((field) => {
+    const { id, ...restField } = field; // eslint-disable-line
+    const newOptions: Array<SelectFormFieldOption> = [];
+    if (field.type !== FormFieldType.TEXT_ANSWER) {
+      field.options.forEach((option) => {
+        const { id, ...restOption } = option; // eslint-disable-line
+        newOptions.push(restOption as SelectFormFieldOption);
+      });
+    }
+    newFields.push({ ...restField, options: newOptions } as TextFormField | SelectFormField);
+  });
+  return newFields;
 };

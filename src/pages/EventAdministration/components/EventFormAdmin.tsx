@@ -1,6 +1,6 @@
 import { EventFormCreate, Form, FormCreate } from 'types';
 import { EventFormType, FormResourceType } from 'types/Enums';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useEventById } from 'hooks/Event';
 import { useForm } from 'react-hook-form';
 import { Typography, LinearProgress, Stack, Button } from '@mui/material';
@@ -8,7 +8,7 @@ import { Typography, LinearProgress, Stack, Button } from '@mui/material';
 // Project
 import { useSnackbar } from 'hooks/Snackbar';
 import { useCreateForm, useFormTemplates, useDeleteForm, useFormById } from 'hooks/Form';
-import { removeIdsFromFields } from 'hooks/Utils';
+import { removeIdsFromFields } from 'utils';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import FormView from 'components/forms/FormView';
 import Expand from 'components/layout/Expand';
@@ -36,6 +36,10 @@ const FormTemplatePreview = ({ formtemplate, eventId, formType }: FormTemplatePr
   const [isEditing, setIsEditing] = useState(false);
   const createForm = useCreateForm();
   const showSnackbar = useSnackbar();
+
+  useEffect(() => {
+    formtemplate.resource_type = FormResourceType.FORM;
+  }, [formtemplate]);
 
   const onCreateFormFromTemplate = async () => {
     const newForm: EventFormCreate = {
@@ -66,9 +70,8 @@ const FormTemplatePreview = ({ formtemplate, eventId, formType }: FormTemplatePr
       },
     });
   };
-
   return (
-    <Expand flat header={formtemplate.title} sx={{ mt: 1 }}>
+    <Expand flat header={formtemplate.title}>
       {isEditing ? (
         <FormFieldsEditor canEditTitle={true} form={formtemplate} onSave={() => setIsEditing(false)} />
       ) : (
@@ -120,7 +123,7 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
     };
 
     const newFormTemplateCreate: FormCreate = {
-      title: 'BLANK',
+      title: 'Ny mal',
       resource_type: FormResourceType.FORM,
       fields: [],
       viewer_has_answered: false,
@@ -129,10 +132,10 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
 
     const onCreate = async () => createForm.mutate(newForm);
 
-    const onCreateTemplate = async () => {
+    const onCreateTemplate = () => {
       createForm.mutate(newFormTemplateCreate, {
         onSuccess: (data) => {
-          showSnackbar(data.title, 'success');
+          showSnackbar(`Malen med navn "${data.title} ble opprettet"`, 'success');
           setFormtemplateId(data.id);
           setIsCreatingTemplate(true);
         },
@@ -141,7 +144,6 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
         },
       });
     };
-
     return (
       <>
         <Button fullWidth onClick={onCreate} variant='outlined'>
@@ -149,14 +151,12 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
         </Button>
         <Expand flat header='Bruk en mal' sx={{ mt: 1 }}>
           {isCreatingForm ? (
-            <>
-              {!isLoading && !isError && form && (
-                <FormFieldsEditor canEditTitle={true} form={form} onSave={() => setIsCreatingTemplate(false)}></FormFieldsEditor>
-              )}
-            </>
+            <>{!isLoading && !isError && form && <FormFieldsEditor canEditTitle={true} form={form} onSave={() => setIsCreatingTemplate(false)} />}</>
           ) : (
             <>
-              <Typography variant='body2'>Bruk en ferdiglagd mal som utgangspunkt når du oppretter ett skjema.</Typography>
+              <Typography gutterBottom variant='body2'>
+                Bruk en ferdiglagd mal som utgangspunkt når du oppretter ett skjema.
+              </Typography>
               {formtemplates.map((formtemplate) => (
                 <FormTemplatePreview eventId={eventId} formtemplate={formtemplate} formType={formType} key={formtemplate.id} />
               ))}

@@ -12,7 +12,7 @@ import SubmitButton from 'components/inputs/SubmitButton';
 import Bool from 'components/inputs/Bool';
 import TextField from 'components/inputs/TextField';
 import { ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
-import { removeIdsFromFields } from 'hooks/Utils';
+import { removeIdsFromFields } from 'utils';
 
 export type FormDetailsEditorProps = {
   form: Form;
@@ -119,11 +119,11 @@ const GroupFormDetailsEditor = ({ form }: GroupFormDetailsEditorProps) => {
   );
 };
 
-type DeafultFormDetailsEditor = {
+type EventFormDetailsEditorProps = {
   form: EventForm | TemplateForm;
 };
 
-const EventFormDetailsEditor = ({ form }: DeafultFormDetailsEditor) => {
+const EventFormDetailsEditor = ({ form }: EventFormDetailsEditorProps) => {
   const createForm = useCreateForm();
   const [formtemplateName, setFormtemplateName] = useState('');
   const showSnackbar = useSnackbar();
