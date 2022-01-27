@@ -17,15 +17,15 @@ import {
   Divider,
   IconButton,
   Skeleton,
+  ListItemIcon,
 } from '@mui/material';
 
 // Icons
 import MenuIcon from '@mui/icons-material/FormatListBulletedRounded';
 import AddIcon from '@mui/icons-material/AddRounded';
-
+import PauseCircle from '@mui/icons-material/PauseCircle';
 // Project components
 import Pagination from 'components/layout/Pagination';
-
 const useStyles = makeStyles()((theme) => ({
   header: {
     display: 'flex',
@@ -76,6 +76,7 @@ export type SidebarListProps<Type> = {
   onItemClick: (itemId: null | number) => void;
   selectedItemId: number;
   title: string;
+  closedKey?: keyof Type;
   noExpired?: boolean;
   idKey: keyof Type;
   titleKey: keyof Type;
@@ -93,6 +94,7 @@ const SidebarList = <Type extends unknown>({
   title,
   idKey,
   titleKey,
+  closedKey,
   descKey,
   formatDesc,
   noExpired = false,
@@ -132,6 +134,11 @@ const SidebarList = <Type extends unknown>({
       className={classes.listItem}
       onClick={() => handleItemClick(Number(item[idKey]))}
       selected={Boolean(Number(item[idKey]) === selectedItemId)}>
+      {closedKey && item[closedKey] && (
+        <ListItemIcon>
+          <PauseCircle color='warning' />
+        </ListItemIcon>
+      )}
       <ListItemText
         classes={{ secondary: classes.listItemSecondary }}
         primary={item[titleKey]}

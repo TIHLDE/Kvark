@@ -86,6 +86,7 @@ const EventAdministration = () => {
       maxWidth={false}
       options={{ lightColor: 'blue', filledTopbar: true, gutterBottom: true, gutterTop: true, noFooter: true, title: 'Admin arrangementer' }}>
       <SidebarList
+        closedKey='closed'
         descKey='start_date'
         formatDesc={(desc) => formatDate(parseISO(desc))}
         idKey='id'

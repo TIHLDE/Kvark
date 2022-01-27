@@ -43,7 +43,7 @@ export interface Event {
 export type EventRequired = Partial<Event> & Pick<Event, 'end_date' | 'title' | 'start_date'> & { organizer: Group['slug'] };
 export type EventCompact = Pick<
   Event,
-  'category' | 'end_date' | 'expired' | 'organizer' | 'id' | 'image' | 'image_alt' | 'location' | 'title' | 'start_date' | 'updated_at'
+  'category' | 'end_date' | 'expired' | 'organizer' | 'id' | 'image' | 'image_alt' | 'location' | 'title' | 'start_date' | 'updated_at' | 'closed'
 >;
 
 export interface RegistrationPriority {
