@@ -6,7 +6,7 @@ export const GALLERY_QUERY_KEY = 'gallery';
 export const PICTURE_QUERY_KEY = 'pictures';
 
 export const useAlbumsById = (albumSlug: string) => {
-  return useQuery<PaginationResponse<Gallery>, RequestResponse>([GALLERY_QUERY_KEY, albumSlug], () => API.getAlbums());
+  return useQuery<Gallery, RequestResponse>([GALLERY_QUERY_KEY, albumSlug], () => API.getAlbum(albumSlug));
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

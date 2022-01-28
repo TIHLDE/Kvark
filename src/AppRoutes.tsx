@@ -21,6 +21,7 @@ import JobPosts from 'pages/JobPosts';
 import JobPostDetails from 'pages/JobPostDetails';
 import NewsDetails from 'pages/NewsDetails';
 import Gallery from 'pages/Gallery';
+import GalleryDetails from 'pages/GalleryDetails';
 import Groups from 'pages/Groups';
 import GroupsOverview from 'pages/Groups/overview';
 import GroupDetails from 'pages/Groups/GroupDetails';
@@ -32,7 +33,6 @@ const EventAdministration = lazy(() => import(/* webpackChunkName: "event_admini
 const EventRegistration = lazy(() => import(/* webpackChunkName: "event_registration" */ 'pages/EventRegistration'));
 const ForgotPassword = lazy(() => import(/* webpackChunkName: "forgot_password" */ 'pages/ForgotPassword'));
 const Form = lazy(() => import(/* webpackChunkName: "form" */ 'pages/Form'));
-const Galleries = lazy(() => import(/* webpackChunkName: "galleries" */ 'pages/Gallery'));
 const Http404 = lazy(() => import(/* webpackChunkName: "http404" */ 'pages/Http404'));
 const JobPostAdministration = lazy(() => import(/* webpackChunkName: "jobpost_administration" */ 'pages/JobPostAdministration'));
 const LogIn = lazy(() => import(/* webpackChunkName: "login" */ 'pages/LogIn'));
@@ -91,8 +91,8 @@ const AppRoutes = () => {
           <Route element={<JobPosts />} index />
         </Route>
         <Route path={URLS.gallery}>
+          <Route element={<GalleryDetails />} path=':slug/*' />
           <Route element={<Gallery />} index />
-          {/* <Route element={<Galleries />}  /> */}
         </Route>
         <Route element={<Pages />} path={`${URLS.pages}*`} />
         <Route path={URLS.news}>

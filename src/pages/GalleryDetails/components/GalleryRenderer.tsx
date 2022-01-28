@@ -1,17 +1,17 @@
 import { useState } from 'react';
+import { Gallery } from 'types';
 import ImageGrid from './ImageGrid';
-import { Gallery } from 'types/Gallery';
 
 type GalleryRendererProps = {
-  slug: string;
+  data: Gallery;
 };
 
-const GalleryRenderer = ({ slug }: GalleryRendererProps) => {
-  const [openPicture, setOpenPicture] = useState(null);
+const GalleryRenderer = ({ data }: GalleryRendererProps) => {
+  // const [openPicture, setOpenPicture] = useState(null);
 
   return (
     <div>
-      <ImageGrid slug={slug} />
+      <ImageGrid slug={data.slug} />
       {/* {openPicture && <Modal openPicture={openPicture} setOpenPicture={setOpenPicture} />} */}
     </div>
   );
