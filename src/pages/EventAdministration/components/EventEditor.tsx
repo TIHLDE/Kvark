@@ -484,6 +484,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 closeText='Ikke steng arrangementet'
                 color='warning'
                 contentText='Å stenge et arrangement kan ikke reverseres. Eventuell på- og avmelding vil bli stoppet.'
+                disabled={data?.closed}
                 onConfirm={closeEvent}
                 titleText='Er du sikker?'>
                 Steng
