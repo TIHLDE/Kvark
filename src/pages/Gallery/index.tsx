@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { useNews } from 'hooks/News';
 import { useAlbums } from 'hooks/Gallery';
 import { styled } from '@mui/material';
 
@@ -11,7 +10,7 @@ import GalleryListItem, { GalleryListItemLoading } from 'components/miscellaneou
 import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
-const NewsGrid = styled('div')(({ theme }) => ({
+const AlbumGrid = styled('div')(({ theme }) => ({
   display: 'grid',
   gridTemplateColumns: '1fr 1fr 1fr',
   gridGap: theme.spacing(1),
@@ -29,7 +28,7 @@ const Albums = () => {
 
   return (
     <Page banner={<Banner title='Album' />} options={{ title: 'Album' }}>
-      <NewsGrid>
+      <AlbumGrid>
         {isLoading && <GalleryListItemLoading />}
         {!isLoading && !albums.length && <NotFoundIndicator header='Fant ingen album' />}
         {error && <Paper>{error.detail}</Paper>}
@@ -41,7 +40,7 @@ const Albums = () => {
           </Pagination>
         )}
         {isFetching && <GalleryListItemLoading />}
-      </NewsGrid>
+      </AlbumGrid>
     </Page>
   );
 };

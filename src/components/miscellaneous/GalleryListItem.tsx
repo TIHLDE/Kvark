@@ -9,12 +9,12 @@ import { Box, Typography, BoxProps, Skeleton, touchRippleClasses, ButtonBase } f
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 import Paper from 'components/layout/Paper';
 
-export type NewsListItemProps = {
+export type GalleryListItemProps = {
   album: Gallery;
   sx?: BoxProps['sx'];
 };
 
-const GalleryListItem = ({ album, sx }: NewsListItemProps) => (
+const GalleryListItem = ({ album, sx }: GalleryListItemProps) => (
   <Box sx={{ height: 'fit-content', overflow: 'hidden', ...sx }}>
     <ButtonBase
       component={Link}
@@ -46,7 +46,7 @@ const GalleryListItem = ({ album, sx }: NewsListItemProps) => (
 
 export default GalleryListItem;
 
-export const GalleryListItemLoading = ({ sx }: Pick<NewsListItemProps, 'sx'>) => (
+export const GalleryListItemLoading = ({ sx }: Pick<GalleryListItemProps, 'sx'>) => (
   <Box sx={{ textDecoration: 'none', ...sx }}>
     <AspectRatioLoading borderRadius />
     <Paper elevation={0} sx={{ textAlign: 'center', p: 1, width: '80%', margin: '-40px auto 0', position: 'relative' }}>
