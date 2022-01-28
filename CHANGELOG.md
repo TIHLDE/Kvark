@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- ✨ **Bruker**. Det er mulig å eksportere sin brukerdata.
+- ✨ **Bruker**. Det er mulig å slette sin egen bruker.
 - 🦟 **Eventadmin**. Viser at et arrangement er stengt i adminpanelet.
 - 🦟 **Stories**. Annonser som har fortløpende opptak vises med "fortløpende opptak".
 
