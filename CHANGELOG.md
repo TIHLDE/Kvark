@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ✨ **Offentlige profiler**. Det er nå mulig å se andre brukeres profiler med deres badges og medlemskap i grupper.
 - 🦟 **Eventadmin**. Viser at et arrangement er stengt i adminpanelet.
 - 🦟 **Stories**. Annonser som har fortløpende opptak vises med "fortløpende opptak".
 

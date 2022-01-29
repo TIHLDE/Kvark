@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import URLS from 'URLS';
 import { PermissionApp } from 'types/Enums';
 import { useUser, useHavePermission } from 'hooks/User';
 import { useGoogleAnalytics } from 'hooks/Utils';
-import URLS from 'URLS';
-import { useNavigate, useParams } from 'react-router-dom';
 import { useLogout } from 'hooks/User';
+import { getUserClass, getUserStudyLong } from 'utils';
 import {
   SvgIconProps,
   Badge,
@@ -34,6 +35,7 @@ import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
 import WorkspacesIcon from '@mui/icons-material/WorkspacesRounded';
 
 // Project Components
+import Http404 from 'pages/Http404';
 import ProfileAdmin from 'pages/Profile/components/ProfileAdmin';
 import ProfileSettings from 'pages/Profile/components/ProfileSettings';
 import ProfileEvents from 'pages/Profile/components/ProfileEvents';
@@ -45,7 +47,6 @@ import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import Avatar from 'components/miscellaneous/Avatar';
 import QRButton from 'components/miscellaneous/QRButton';
-import { getUserClass, getUserStudyLong } from 'utils';
 
 const Content = styled('div')(({ theme }) => ({
   display: 'grid',
@@ -61,7 +62,7 @@ const Content = styled('div')(({ theme }) => ({
 
 const Profile = () => {
   const { userId } = useParams();
-  const { data: user } = useUser(userId);
+  const { data: user, isError } = useUser(userId);
   const navigate = useNavigate();
   const { event } = useGoogleAnalytics();
   const logOut = useLogout();
@@ -121,6 +122,10 @@ const Profile = () => {
     </ListItem>
   );
 
+  if (isError) {
+    return <Http404 title='Kunne ikke finne brukeren' />;
+  }
+
   return (
     <Page options={{ title: 'Profil', gutterTop: true, lightColor: 'blue' }}>
       <Stack component={Paper} direction={{ xs: 'column', md: 'row' }} gap={1} sx={{ p: 2, mt: 1 }}>
@@ -128,11 +133,13 @@ const Profile = () => {
           <Avatar sx={{ width: { xs: 70, md: 140 }, height: { xs: 70, md: 140 }, fontSize: { xs: '1.8rem', md: '3rem' } }} user={user} />
           {user && user.first_name ? (
             <Stack sx={{ m: 'auto', mx: 1, flex: 1 }}>
-              <Typography sx={{ fontSize: { xs: '1.8rem', md: '3rem' } }} variant='h1'>{`${user.first_name} ${user.last_name}`}</Typography>
-              <Typography variant='subtitle1'>
-                {user.user_id} | {user.email}
+              <Typography
+                sx={{ wordBreak: 'break-word', fontSize: { xs: '1.6rem', md: '3rem' } }}
+                variant='h1'>{`${user.first_name} ${user.last_name}`}</Typography>
+              <Typography sx={{ wordBreak: 'break-word' }} variant='subtitle1'>
+                {user.user_id} | <a href={`mailto:${user.email}`}>{user.email}</a>
               </Typography>
-              <Typography variant='subtitle1'>
+              <Typography sx={{ wordBreak: 'break-word' }} variant='subtitle1'>
                 {getUserClass(user.user_class)} {getUserStudyLong(user.user_study)}
               </Typography>
             </Stack>
