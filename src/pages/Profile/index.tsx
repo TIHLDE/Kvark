@@ -3,7 +3,7 @@ import { PermissionApp } from 'types/Enums';
 import { useUser, useHavePermission } from 'hooks/User';
 import { useGoogleAnalytics } from 'hooks/Utils';
 import URLS from 'URLS';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useLogout } from 'hooks/User';
 import {
   SvgIconProps,
@@ -25,8 +25,8 @@ import {
 
 // Icons
 import EventIcon from '@mui/icons-material/DateRangeRounded';
-import SettingsIcon from '@mui/icons-material/SettingsRounded';
-import AdminIcon from '@mui/icons-material/TuneRounded';
+import SettingsIcon from '@mui/icons-material/TuneRounded';
+import AdminIcon from '@mui/icons-material/AdminPanelSettingsRounded';
 import LogOutIcon from '@mui/icons-material/ExitToAppRounded';
 import BadgesIcon from '@mui/icons-material/EmojiEventsRounded';
 import GroupsIcon from '@mui/icons-material/PeopleOutlineRounded';
@@ -45,6 +45,7 @@ import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import Avatar from 'components/miscellaneous/Avatar';
 import QRButton from 'components/miscellaneous/QRButton';
+import { getUserClass, getUserStudyLong } from 'utils';
 
 const Content = styled('div')(({ theme }) => ({
   display: 'grid',
@@ -59,11 +60,19 @@ const Content = styled('div')(({ theme }) => ({
 }));
 
 const Profile = () => {
-  const { data: user } = useUser();
+  const { userId } = useParams();
+  const { data: user } = useUser(userId);
   const navigate = useNavigate();
   const { event } = useGoogleAnalytics();
   const logOut = useLogout();
-  const { allowAccess: isAdmin } = useHavePermission([PermissionApp.EVENT, PermissionApp.JOBPOST, PermissionApp.NEWS, PermissionApp.USER]);
+  const { allowAccess: isAdmin } = useHavePermission([
+    PermissionApp.EVENT,
+    PermissionApp.JOBPOST,
+    PermissionApp.NEWS,
+    PermissionApp.USER,
+    PermissionApp.STRIKE,
+    PermissionApp.GROUP,
+  ]);
 
   const logout = () => {
     event('log-out', 'profile', 'Logged out');
@@ -75,14 +84,17 @@ const Profile = () => {
   const badgesTab: NavListItem = { label: 'Badges', icon: BadgesIcon };
   const groupsTab: NavListItem = { label: 'Grupper', icon: GroupsIcon };
   const formsTab: NavListItem = { label: 'Spørreskjemaer', icon: FormsIcon, badge: user?.unanswered_evaluations_count };
-  const settingsTab: NavListItem = { label: 'Innstillinger', icon: SettingsIcon };
+  const settingsTab: NavListItem = { label: 'Endre profil', icon: SettingsIcon };
   const adminTab: NavListItem = { label: 'Admin', icon: AdminIcon };
   const strikesTab: NavListItem = { label: 'Prikker', icon: WorkspacesIcon };
   const logoutTab: NavListItem = { label: 'Logg ut', icon: LogOutIcon, onClick: logout, iconProps: { sx: { color: (theme) => theme.palette.error.main } } };
-  const tabs: Array<NavListItem> = [eventTab, badgesTab, groupsTab, strikesTab, formsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
+  const tabs: Array<NavListItem> = userId
+    ? [badgesTab, groupsTab]
+    : [eventTab, badgesTab, groupsTab, strikesTab, formsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
 
-  const [tab, setTab] = useState(eventTab.label);
+  const [tab, setTab] = useState(userId ? badgesTab.label : eventTab.label);
 
+  useEffect(() => setTab(userId ? badgesTab.label : eventTab.label), [userId]);
   useEffect(() => event('change-tab', 'profile', `Changed tab to: ${tab}`), [tab]);
 
   type NavListItem = ListItemProps &
@@ -120,6 +132,9 @@ const Profile = () => {
               <Typography variant='subtitle1'>
                 {user.user_id} | {user.email}
               </Typography>
+              <Typography variant='subtitle1'>
+                {getUserClass(user.user_class)} {getUserStudyLong(user.user_study)}
+              </Typography>
             </Stack>
           ) : (
             <Stack sx={{ m: 'auto', mx: 1, flex: 1 }}>
@@ -128,7 +143,7 @@ const Profile = () => {
             </Stack>
           )}
         </Stack>
-        {user && (
+        {!userId && user && (
           <QRButton qrValue={user.user_id} subtitle={`${user.first_name} ${user.last_name}`} sx={{ mb: 'auto' }}>
             Medlemsbevis
           </QRButton>
@@ -143,11 +158,13 @@ const Profile = () => {
               ))}
             </List>
           </Paper>
-          <Paper noOverflow noPadding>
-            <List aria-label='Logg ut' disablePadding>
-              <NavListItem {...logoutTab} />
-            </List>
-          </Paper>
+          {!userId && (
+            <Paper noOverflow noPadding>
+              <List aria-label='Logg ut' disablePadding>
+                <NavListItem {...logoutTab} />
+              </List>
+            </Paper>
+          )}
         </Stack>
         <Box sx={{ overflowX: 'auto' }}>
           <Collapse in={tab === eventTab.label}>

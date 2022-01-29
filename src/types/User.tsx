@@ -6,13 +6,11 @@ export type LoginRequestResponse = {
 };
 
 export type User = {
-  app_token: string;
   allergy: string;
   cell: number;
   email: string;
   first_name: string;
   gender: number;
-  home_busstop?: string;
   image: string;
   last_name: string;
   permissions: Record<PermissionApp, Permissions>;
@@ -25,7 +23,7 @@ export type User = {
   number_of_strikes: number;
 };
 
-export type UserBase = Pick<User, 'user_id' | 'first_name' | 'last_name' | 'image'>;
+export type UserBase = Pick<User, 'user_id' | 'first_name' | 'last_name' | 'image' | 'email' | 'user_class' | 'user_study' | 'gender'>;
 export type UserList = UserBase & Pick<User, 'email' | 'user_class' | 'user_study' | 'allergy' | 'cell' | 'gender' | 'tool' | 'number_of_strikes'>;
 export type UserCreate = Pick<User, 'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study'> & {
   password: string;
