@@ -1,8 +1,5 @@
 import { useUser } from 'hooks/User';
-
-// Material-UI
-import { makeStyles } from 'makeStyles';
-import { Skeleton, Typography } from '@mui/material';
+import { Skeleton, Typography, Stack } from '@mui/material';
 
 // Project Components
 import Page from 'components/navigation/Page';
@@ -10,72 +7,36 @@ import ProfileContent from 'pages/Profile/components/ProfileContent';
 import Paper from 'components/layout/Paper';
 import Avatar from 'components/miscellaneous/Avatar';
 import QRButton from 'components/miscellaneous/QRButton';
-import { ProfileTopBox } from 'components/layout/TopBox';
-
-const useStyles = makeStyles()((theme) => ({
-  paper: {
-    position: 'relative',
-    left: 0,
-    right: 0,
-    top: theme.spacing(-7),
-    padding: theme.spacing(4),
-    paddingTop: theme.spacing(14),
-    textAlign: 'center',
-  },
-  button: {
-    margin: theme.spacing(1, 'auto', 0),
-    minWidth: 150,
-  },
-  avatar: {
-    position: 'absolute',
-    margin: 'auto',
-    left: 0,
-    right: 0,
-    top: -100,
-    width: 200,
-    height: 200,
-    fontSize: 65,
-  },
-  text: {
-    margin: `${theme.spacing(0.25)} auto`,
-    color: theme.palette.text.primary,
-  },
-}));
 
 const Profile = () => {
-  const { classes } = useStyles();
   const { data: user } = useUser();
 
   return (
-    <Page banner={<ProfileTopBox />} options={{ title: 'Profil' }}>
+    <Page options={{ title: 'Profil', gutterTop: true, lightColor: 'blue' }}>
       <div>
-        <Paper className={classes.paper} noPadding>
-          <Avatar className={classes.avatar} user={user} />
-          {user && user.first_name ? (
-            <>
-              <Typography className={classes.text} variant='h1'>
-                {`${user.first_name} ${user.last_name}`}
-              </Typography>
-              <Typography className={classes.text} variant='subtitle1'>
-                {user.email}
-              </Typography>
-              <Typography className={classes.text} variant='subtitle1'>
-                {user.user_id}
-              </Typography>
-            </>
-          ) : (
-            <>
-              <Skeleton height={50} sx={{ m: 'auto' }} variant='text' width='75%' />
-              <Skeleton height={30} sx={{ m: 'auto' }} variant='text' width='45%' />
-              <Skeleton height={30} sx={{ m: 'auto' }} variant='text' width='35%' />
-            </>
-          )}
+        <Stack component={Paper} direction={{ xs: 'column', md: 'row' }} gap={1} sx={{ p: 2, mt: 1 }}>
+          <Stack direction='row' gap={1} sx={{ flex: 1 }}>
+            <Avatar sx={{ width: { xs: 70, md: 140 }, height: { xs: 70, md: 140 }, fontSize: { xs: '1.8rem', md: '3rem' } }} user={user} />
+            {user && user.first_name ? (
+              <Stack sx={{ m: 'auto', mx: 1, flex: 1 }}>
+                <Typography sx={{ fontSize: { xs: '1.8rem', md: '3rem' } }} variant='h1'>{`${user.first_name} ${user.last_name}`}</Typography>
+                <Typography variant='subtitle1'>
+                  {user.user_id} | {user.email}
+                </Typography>
+              </Stack>
+            ) : (
+              <Stack sx={{ m: 'auto', mx: 1, flex: 1 }}>
+                <Skeleton sx={{ fontSize: { xs: '1.8rem', md: '3rem' } }} variant='text' width={230} />
+                <Skeleton variant='text' width={170} />
+              </Stack>
+            )}
+          </Stack>
           {user && (
-            <QRButton qrValue={user.user_id} subtitle={`${user.first_name} ${user.last_name}`} sx={{ mt: 1 }}>
+            <QRButton qrValue={user.user_id} subtitle={`${user.first_name} ${user.last_name}`} sx={{ mb: 'auto' }}>
               Medlemsbevis
             </QRButton>
           )}
-        </Paper>
+        </Stack>
         <ProfileContent />
       </div>
     </Page>

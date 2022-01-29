@@ -36,7 +36,7 @@ const useStyles = makeStyles()((theme) => ({
     gridTemplateColumns: '250px 1fr',
     gridGap: theme.spacing(1),
     alignItems: 'self-start',
-    marginTop: theme.spacing(-6),
+    marginTop: theme.spacing(1),
     marginBottom: theme.spacing(3),
     [theme.breakpoints.down('md')]: {
       gridTemplateColumns: '1fr',
