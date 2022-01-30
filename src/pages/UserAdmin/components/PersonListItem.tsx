@@ -4,13 +4,29 @@ import { UserList } from 'types';
 import { useActivateUser, useDeclineUser } from 'hooks/User';
 import { useSnackbar } from 'hooks/Snackbar';
 import { getUserClass, getUserStudyShort } from 'utils';
+import URLS from 'URLS';
 
 // Material UI Components
-import { Typography, Collapse, Theme, useMediaQuery, Skeleton, Button, ListItem, ListItemText, Divider, Stack } from '@mui/material';
+import {
+  Typography,
+  Collapse,
+  Theme,
+  useMediaQuery,
+  Skeleton,
+  Button,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+  Stack,
+  IconButton,
+} from '@mui/material';
 
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
 
 // Project components
 import Avatar from 'components/miscellaneous/Avatar';
@@ -86,13 +102,22 @@ const PersonListItem = ({ user, is_TIHLDE_member = true }: PersonListItemProps) 
 
   return (
     <Paper bgColor='smoke' noOverflow noPadding sx={{ mb: 1 }}>
-      <ListItem button onClick={() => setExpanded((prev) => !prev)}>
-        <Avatar sx={{ mr: 2 }} user={user} />
-        <ListItemText
-          primary={`${user.first_name} ${user.last_name}`}
-          secondary={!mdDown && `${getUserClass(user.user_class)} ${getUserStudyShort(user.user_study)}`}
-        />
-        {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+      <ListItem
+        disablePadding
+        onClick={() => setExpanded((prev) => !prev)}
+        secondaryAction={
+          <IconButton component='a' href={`${URLS.profile}${user.user_id}/`} rel='noopener noreferrer' target='_blank'>
+            <OpenInNewIcon />
+          </IconButton>
+        }>
+        <ListItemButton>
+          <Avatar sx={{ mr: 2 }} user={user} />
+          <ListItemText
+            primary={`${user.first_name} ${user.last_name}`}
+            secondary={!mdDown && `${getUserClass(user.user_class)} ${getUserStudyShort(user.user_study)}`}
+          />
+          <ListItemIcon sx={{ minWidth: 45 }}>{expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}</ListItemIcon>
+        </ListItemButton>
       </ListItem>
       <Collapse in={expanded} mountOnEnter unmountOnExit>
         <Divider />
