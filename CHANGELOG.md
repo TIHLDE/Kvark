@@ -14,6 +14,11 @@
 
 ## Neste versjon
 
+## Versjon 1.4.2 (31.01.2022)
+
+- 🦟 **Eventadmin**. Viser at et arrangement er stengt i adminpanelet.
+- 🦟 **Stories**. Annonser som har fortløpende opptak vises med "fortløpende opptak".
+
 ## Versjon 1.4.1 (15.01.2022)
 
 - ⚡ **Arrangementer**. Brukere kan nå se om de er prioritert på et arrangement.
