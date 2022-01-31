@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { usePersistedState } from 'hooks/Utils';
-import { Typography, TypographyProps, Box, Tooltip, Alert, AlertProps, SxProps, Theme } from '@mui/material';
+import { Typography, TypographyProps, Box, Tooltip, TooltipProps, Alert, AlertProps, SxProps, Theme } from '@mui/material';
 import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
 
 export type ShowMoreTextProps = {
@@ -28,7 +28,7 @@ export const ShowMoreText = ({ children, sx = [] }: ShowMoreTextProps) => {
 };
 
 export type ShowMoreTooltipProps = {
-  children: string;
+  children: TooltipProps['title'];
 };
 
 export const ShowMoreTooltip = ({ children }: ShowMoreTooltipProps) => (

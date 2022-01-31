@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- ✨ **Arrangementer**. Alle innloggede brukere kan nå se hvem som er påmeldt arrangementer. Brukere kan reservere seg mot å bli oppført på deltagerlisten.
+
 ## Versjon 1.4.2 (31.01.2022)
 
 - 🦟 **Eventadmin**. Viser at et arrangement er stengt i adminpanelet.
