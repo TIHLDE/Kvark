@@ -25,7 +25,6 @@ import AddIcon from '@mui/icons-material/AddRounded';
 
 // Project components
 import Pagination from 'components/layout/Pagination';
-
 const useStyles = makeStyles()((theme) => ({
   header: {
     display: 'flex',
