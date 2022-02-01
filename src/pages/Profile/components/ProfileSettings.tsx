@@ -85,7 +85,7 @@ const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
             <>
               Offentlige arrangementspåmeldinger
               <ShowMoreTooltip>
-                Bestemmer to ting:
+                Bestemmer:
                 <br />
                 1. Om du skal stå oppført med navnet ditt eller være anonym i deltagerlister på arrangementer.
                 <br />
@@ -94,7 +94,7 @@ const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
             </>
           }
           name='public_event_registrations'
-          type='checkbox'
+          type='switch'
         />
         <ImageUpload formState={formState} label='Velg profilbilde' ratio={1} register={register('image')} setValue={setValue} watch={watch} />
         <div className={classes.selectGrid}>

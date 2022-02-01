@@ -32,7 +32,7 @@ export type ShowMoreTooltipProps = {
 };
 
 export const ShowMoreTooltip = ({ children }: ShowMoreTooltipProps) => (
-  <Tooltip sx={{ fontSize: 'inherit', ml: 0.5, mb: -0.25 }} title={children}>
+  <Tooltip arrow sx={{ fontSize: 'inherit', ml: 0.5, mb: -0.25 }} title={children}>
     <HelpOutlineRoundedIcon />
   </Tooltip>
 );

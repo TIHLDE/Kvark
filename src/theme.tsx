@@ -150,6 +150,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
           rectangular: { borderRadius: BORDER_RADIUS },
         },
       },
+      MuiTooltip: { styleOverrides: { tooltip: { fontSize: '0.85rem' } } },
       MuiContainer: { defaultProps: { maxWidth: 'xl', disableGutters: true } },
       MuiPaper: { defaultProps: { elevation: 0 } },
       MuiLinearProgress: { styleOverrides: { root: { borderRadius: BORDER_RADIUS } } },
