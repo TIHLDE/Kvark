@@ -1,7 +1,7 @@
 import slugify from 'slugify';
 import { parseISO, format, subMinutes, getYear, isAfter, isBefore } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
-import { Event, SelectFormField, SelectFormFieldOption, TextFormField } from 'types';
+import { Event, GroupLaw, SelectFormField, SelectFormFieldOption, TextFormField } from 'types';
 import { FormFieldType, JobPostType, MembershipType, StrikeReason, UserClass, UserStudy } from 'types/Enums';
 
 export const isAfterDateOfYear = (month: number, date: number) => isAfter(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
