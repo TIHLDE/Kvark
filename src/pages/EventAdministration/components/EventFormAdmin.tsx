@@ -37,10 +37,6 @@ const FormTemplatePreview = ({ formtemplate, eventId, formType }: FormTemplatePr
   const createForm = useCreateForm();
   const showSnackbar = useSnackbar();
 
-  useEffect(() => {
-    formtemplate.resource_type = FormResourceType.FORM;
-  }, [formtemplate]);
-
   const onCreateFormFromTemplate = async () => {
     const newForm: EventFormCreate = {
       title: String(eventId),
