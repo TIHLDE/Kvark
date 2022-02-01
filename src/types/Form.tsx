@@ -29,7 +29,11 @@ export interface GroupForm extends FormBase {
   is_open_for_submissions: boolean;
 }
 
-export type Form = EventForm | GroupForm;
+export interface TemplateForm extends FormBase {
+  resource_type: FormResourceType.FORM;
+}
+
+export type Form = EventForm | GroupForm | TemplateForm;
 
 export type EventFormCreate = Partial<Omit<EventForm, 'event'>> &
   Pick<EventForm, 'resource_type' | 'type' | 'title' | 'fields'> & {
@@ -41,11 +45,14 @@ export type GroupFormCreate = Partial<Omit<GroupForm, 'group'>> &
     group: GroupForm['group']['slug'];
   };
 
+export type TemplateFormCreate = Omit<TemplateForm, 'id'>;
+
 export type EventFormUpdate = Partial<EventFormCreate> & Pick<EventForm, 'resource_type'>;
 export type GroupFormUpdate = Partial<GroupFormCreate> & Pick<GroupForm, 'resource_type'>;
+export type TemplateFormUpdate = Partial<TemplateFormCreate> & Pick<TemplateFormCreate, 'resource_type'>;
 
-export type FormCreate = EventFormCreate | GroupFormCreate;
-export type FormUpdate = EventFormUpdate | GroupFormUpdate;
+export type FormCreate = EventFormCreate | GroupFormCreate | TemplateFormCreate;
+export type FormUpdate = EventFormUpdate | GroupFormUpdate | TemplateFormUpdate;
 
 interface FormField {
   id?: string;

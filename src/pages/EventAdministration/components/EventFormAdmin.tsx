@@ -1,20 +1,99 @@
-import { EventFormCreate } from 'types';
+import { EventFormCreate, Form, FormCreate } from 'types';
 import { EventFormType, FormResourceType } from 'types/Enums';
+import { useEffect, useState } from 'react';
 import { useEventById } from 'hooks/Event';
-import { useCreateForm } from 'hooks/Form';
+import { useForm } from 'react-hook-form';
 import { Typography, LinearProgress, Stack, Button } from '@mui/material';
 
 // Project
+import { useSnackbar } from 'hooks/Snackbar';
+import { useCreateForm, useFormTemplates, useDeleteForm, useFormById } from 'hooks/Form';
+import { removeIdsFromFields } from 'utils';
+import VerifyDialog from 'components/layout/VerifyDialog';
+import FormView from 'components/forms/FormView';
+import Expand from 'components/layout/Expand';
 import FormAdmin from 'components/forms/FormAdmin';
 import { ShowMoreText } from 'components/miscellaneous/UserInformation';
+import FormFieldsEditor from 'components/forms/FormFieldsEditor';
 
 export type EventFormAdminProps = {
   eventId: number;
 };
 
+export type EventFormEditorProps = {
+  eventId: number;
+  formId: string | null;
+  formType: EventFormType;
+};
+
+type FormTemplatePreviewType = Omit<EventFormEditorProps, 'formId'> & {
+  formtemplate: Form;
+};
+
+const FormTemplatePreview = ({ formtemplate, eventId, formType }: FormTemplatePreviewType) => {
+  const deleteForm = useDeleteForm(formtemplate.id || '-');
+  const { register, formState, getValues, control } = useForm<Form['fields']>();
+  const [isEditing, setIsEditing] = useState(false);
+  const createForm = useCreateForm();
+  const showSnackbar = useSnackbar();
+
+  const onCreateFormFromTemplate = async () => {
+    const newForm: EventFormCreate = {
+      title: String(eventId),
+      type: formType,
+      event: eventId,
+      resource_type: FormResourceType.EVENT_FORM,
+      fields: removeIdsFromFields(formtemplate.fields),
+      template: false,
+    };
+    createForm.mutate(newForm, {
+      onSuccess: (data) => {
+        showSnackbar(data.title, 'success');
+      },
+      onError: (e) => {
+        showSnackbar(e.detail, 'error');
+      },
+    });
+  };
+
+  const onDeleteForm = () => {
+    deleteForm.mutate(undefined, {
+      onSuccess: (data) => {
+        showSnackbar(data.detail, 'success');
+      },
+      onError: (e) => {
+        showSnackbar(e.detail, 'error');
+      },
+    });
+  };
+  return (
+    <Expand flat header={formtemplate.title}>
+      {isEditing ? (
+        <FormFieldsEditor canEditTitle={true} form={formtemplate} onSave={() => setIsEditing(false)} />
+      ) : (
+        <>
+          <FormView control={control} disabled={true} form={formtemplate} formState={formState} getValues={getValues} register={register} />
+          <Stack gap={1}>
+            <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
+              <Button color='primary' fullWidth onClick={() => setIsEditing(true)} variant='outlined'>
+                Rediger malen
+              </Button>
+              <VerifyDialog color='error' contentText='Å slette en mal kan ikke reverseres.' onConfirm={onDeleteForm} titleText='Er du sikker?'>
+                Slett malen
+              </VerifyDialog>
+            </Stack>
+            <Button fullWidth onClick={onCreateFormFromTemplate} variant='outlined'>
+              Bruk denne malen
+            </Button>
+          </Stack>
+        </>
+      )}
+    </Expand>
+  );
+};
+
 const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
   const { data: event, isLoading } = useEventById(eventId);
-
   if (isLoading || !event) {
     return <LinearProgress />;
   }
@@ -25,8 +104,13 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
 
   const EventFormEditor = ({ formType }: EventFormEditorProps) => {
     const createForm = useCreateForm();
+    const showSnackbar = useSnackbar();
+    const { data: formtemplates = [] } = useFormTemplates();
+    const [isCreatingForm, setIsCreatingTemplate] = useState(false);
+    const [formtemplateId, setFormtemplateId] = useState('-');
+    const { data: form, isLoading, isError } = useFormById(formtemplateId);
 
-    const newForm: EventFormCreate = {
+    const newForm: FormCreate = {
       title: `${event.title} - ${formType === EventFormType.SURVEY ? 'påmeldingsskjema' : 'evalueringsskjema'}`,
       type: formType,
       event: event.id,
@@ -34,12 +118,51 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
       fields: [],
     };
 
+    const newFormTemplateCreate: FormCreate = {
+      title: 'Ny mal',
+      resource_type: FormResourceType.FORM,
+      fields: [],
+      viewer_has_answered: false,
+      template: true,
+    };
+
     const onCreate = async () => createForm.mutate(newForm);
 
+    const onCreateTemplate = () => {
+      createForm.mutate(newFormTemplateCreate, {
+        onSuccess: (data) => {
+          showSnackbar(`Malen med navn "${data.title} ble opprettet"`, 'success');
+          setFormtemplateId(data.id);
+          setIsCreatingTemplate(true);
+        },
+        onError: (e) => {
+          showSnackbar(e.detail, 'error');
+        },
+      });
+    };
     return (
-      <Button fullWidth onClick={onCreate} variant='outlined'>
-        Opprett {formType === EventFormType.SURVEY ? 'påmeldingsskjema' : 'evalueringsskjema'}
-      </Button>
+      <>
+        <Button fullWidth onClick={onCreate} variant='outlined'>
+          Opprett {formType === EventFormType.SURVEY ? 'påmeldingsskjema' : 'evalueringsskjema'}
+        </Button>
+        <Expand flat header='Bruk en mal' sx={{ mt: 1 }}>
+          {isCreatingForm ? (
+            <>{!isLoading && !isError && form && <FormFieldsEditor canEditTitle={true} form={form} onSave={() => setIsCreatingTemplate(false)} />}</>
+          ) : (
+            <>
+              <Typography gutterBottom variant='body2'>
+                Bruk en ferdiglagd mal som utgangspunkt når du oppretter ett skjema.
+              </Typography>
+              {formtemplates.map((formtemplate) => (
+                <FormTemplatePreview eventId={eventId} formtemplate={formtemplate} formType={formType} key={formtemplate.id} />
+              ))}
+              <Button onClick={onCreateTemplate} sx={{ mt: 1 }} variant='contained'>
+                Lag ny mal
+              </Button>
+            </>
+          )}
+        </Expand>
+      </>
     );
   };
 
