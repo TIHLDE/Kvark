@@ -60,7 +60,7 @@ export type ImageUploadProps<FormValues extends FieldValues = FieldValues> = But
   Pick<UseFormReturn<FormValues>, 'formState' | 'watch' | 'setValue'> & {
     register: UseFormRegisterReturn;
     label?: string;
-    ratio?: number;
+    ratio?: `${number}:${number}`;
   };
 
 export const GenericImageUpload = <FormValues extends FieldValues>({
@@ -84,7 +84,10 @@ export const GenericImageUpload = <FormValues extends FieldValues>({
   const [zoom, setZoom] = useState(1);
   const [imageFile, setImageFile] = useState<File | undefined>(undefined);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-
+  const ratioFloat = ratio
+    ?.split(':')
+    .map((value) => parseInt(value))
+    .reduce((previousValue, currentValue) => previousValue / currentValue);
   const closeDialog = () => {
     setDialogOpen(false);
     setImageSrc('');
@@ -167,9 +170,20 @@ export const GenericImageUpload = <FormValues extends FieldValues>({
         onConfirm={() => dialogConfirmCrop()}
         open={dialogOpen}
         titleText='Tilpass bildet'>
-        <CropperWrapper>
-          <Cropper aspect={ratio} crop={crop} image={imageSrc} onCropChange={setCrop} onCropComplete={onCropComplete} onZoomChange={setZoom} zoom={zoom} />
-        </CropperWrapper>
+        <>
+          <CropperWrapper>
+            <Cropper
+              aspect={ratioFloat}
+              crop={crop}
+              image={imageSrc}
+              onCropChange={setCrop}
+              onCropComplete={onCropComplete}
+              onZoomChange={setZoom}
+              zoom={zoom}
+            />
+          </CropperWrapper>
+          <Typography textAlign='center'>Bildet bør være på formatet: {ratio}</Typography>
+        </>
         {isLoading && <LinearProgress />}
       </Dialog>
     </>

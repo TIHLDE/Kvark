@@ -1,6 +1,6 @@
 import { EventFormCreate, Form, FormCreate } from 'types';
 import { EventFormType, FormResourceType } from 'types/Enums';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useEventById } from 'hooks/Event';
 import { useForm } from 'react-hook-form';
 import { Typography, LinearProgress, Stack, Button } from '@mui/material';
