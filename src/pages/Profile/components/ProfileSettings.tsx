@@ -38,10 +38,10 @@ const DeleteUserDialog = ({ isAdmin, user }: ProfileSettingsProps) => {
   return (
     <VerifyDialog
       color='error'
-      confirmText='Det er ikke mulig å angre denne handlingen.'
+      confirmText='Det er ikke mulig å angre denne handlingen. Bekreft ved å skrive inn ditt brukernavn.'
       dialogChildren={
         <>
-          <TextField disabled={deleteUser.isLoading} formState={formState} label='Fornavn' {...register('user_id')} />
+          <TextField disabled={deleteUser.isLoading} formState={formState} label='Brukernavn' {...register('user_id')} />
           <Button color='error' disabled={user.user_id !== writtenUserId} fullWidth onClick={runDeleteUser} variant='outlined'>
             Slett din konto
           </Button>
