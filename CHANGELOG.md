@@ -15,6 +15,7 @@
 ## Neste versjon
 
 - ✨ **Arrangementer**. Alle innloggede brukere kan nå se hvem som er påmeldt arrangementer. Brukere kan reservere seg mot å bli oppført på deltagerlisten.
+- ⚡ **Tilganger**. Laster inn tilganger fra backend først når de trengs.
 - ✨ **Skjemamaler**. Administratorer kan nå lage maler som man kan ta utgangspunkt i når man lager et nytt skjema.
 
 ## Versjon 1.4.2 (31.01.2022)
