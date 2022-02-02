@@ -13,7 +13,6 @@ export type User = {
   gender: number;
   image: string;
   last_name: string;
-  permissions: Record<PermissionApp, Permissions>;
   tool: string;
   unread_notifications: number;
   user_class: UserClass;
@@ -27,4 +26,8 @@ export type UserBase = Pick<User, 'user_id' | 'first_name' | 'last_name' | 'imag
 export type UserList = UserBase & Pick<User, 'email' | 'user_class' | 'user_study' | 'allergy' | 'cell' | 'gender' | 'tool' | 'number_of_strikes'>;
 export type UserCreate = Pick<User, 'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study'> & {
   password: string;
+};
+
+export type UserPermissions = {
+  permissions: Record<PermissionApp, Permissions>;
 };

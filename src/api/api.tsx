@@ -47,6 +47,7 @@ import {
   Submission,
   User,
   UserCreate,
+  UserPermissions,
   UserSubmission,
   Warning,
 } from 'types';
@@ -139,6 +140,7 @@ export default {
 
   // User
   getUserData: (userId?: User['user_id']) => IFetch<User>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/` }),
+  getUserPermissions: () => IFetch<UserPermissions>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/permissions/` }),
   getUserBadges: (userId?: User['user_id'], filters?: any) =>
     IFetch<PaginationResponse<Badge>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${BADGES_ENDPOINT}/`, data: filters || {} }),
   getUserEvents: (userId?: User['user_id'], filters?: any) =>
