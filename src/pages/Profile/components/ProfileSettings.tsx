@@ -38,7 +38,7 @@ const DeleteUserDialog = ({ isAdmin, user }: ProfileSettingsProps) => {
   return (
     <VerifyDialog
       color='error'
-      confirmText='Det er ikke mulig å angre denne handlingen. Bekreft ved å skrive inn ditt brukernavn.'
+      contentText='Det er ikke mulig å angre denne handlingen. Bekreft ved å skrive inn ditt brukernavn.'
       dialogChildren={
         <>
           <TextField disabled={deleteUser.isLoading} formState={formState} label='Brukernavn' {...register('user_id')} />
