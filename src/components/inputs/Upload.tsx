@@ -86,7 +86,7 @@ export const GenericImageUpload = <FormValues extends FieldValues>({
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const ratioFloat = ratio
     ?.split(':')
-    .map((value) => parseInt(value))
+    .map(Number)
     .reduce((previousValue, currentValue) => previousValue / currentValue);
   const closeDialog = () => {
     setDialogOpen(false);
@@ -182,7 +182,7 @@ export const GenericImageUpload = <FormValues extends FieldValues>({
               zoom={zoom}
             />
           </CropperWrapper>
-          <Typography textAlign='center'>Bildet bør være på formatet: {ratio}</Typography>
+          <Typography textAlign='center'>Anbefalt størrelsesforhold: {ratio}</Typography>
         </>
         {isLoading && <LinearProgress />}
       </Dialog>
