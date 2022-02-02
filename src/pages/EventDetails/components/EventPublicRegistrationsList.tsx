@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { IconButton, IconButtonProps, Stack, Tooltip, List, ListItem, ListItemText, ListItemAvatar } from '@mui/material';
+import { IconButton, IconButtonProps, Stack, Tooltip, List, ListItem, ListItemText, ListItemAvatar, Typography, Skeleton } from '@mui/material';
 import { usePublicEventRegistrations } from 'hooks/Event';
 import { Event } from 'types';
 
@@ -9,6 +9,7 @@ import Pagination from 'components/layout/Pagination';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import Avatar from 'components/miscellaneous/Avatar';
 import Dialog from 'components/layout/Dialog';
+import Paper from 'components/layout/Paper';
 
 export type EventPublicRegistrationsListProps = IconButtonProps & {
   eventId: Event['id'];
@@ -16,7 +17,7 @@ export type EventPublicRegistrationsListProps = IconButtonProps & {
 
 const EventPublicRegistrationsList = ({ eventId, ...props }: EventPublicRegistrationsListProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading, hasNextPage, fetchNextPage, isFetching } = usePublicEventRegistrations(eventId, { enabled: isOpen });
+  const { data, isLoading, isError, error, hasNextPage, fetchNextPage, isFetching } = usePublicEventRegistrations(eventId, { enabled: isOpen });
   const registrations = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   return (
@@ -32,16 +33,25 @@ const EventPublicRegistrationsList = ({ eventId, ...props }: EventPublicRegistra
         open={isOpen}
         titleText='Deltagerliste'>
         <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere deltagere' nextPage={() => fetchNextPage()}>
-          {!isLoading && !registrations.length && <NotFoundIndicator header='Ingen brukere er påmeldt dette arrangementet' />}
+          {isError && <Typography>Noe gikk galt: {error?.detail}</Typography>}
+          {!isLoading && !registrations.length && !isError && <NotFoundIndicator header='Ingen brukere er påmeldt dette arrangementet' />}
           <Stack component={List} gap={1}>
             {registrations.map((registration, index) => (
-              <ListItem divider={index + 1 !== data?.pages[0]?.count} key={index}>
+              <ListItem component={Paper} dense key={index} noPadding>
                 <ListItemAvatar>
                   <Avatar user={registration.user_info || { first_name: '?', last_name: '', image: '' }} />
                 </ListItemAvatar>
                 <ListItemText primary={registration.user_info ? `${registration.user_info.first_name} ${registration.user_info.last_name}` : 'Anonym'} />
               </ListItem>
             ))}
+            {(isFetching || isLoading) && (
+              <ListItem component={Paper} dense noPadding>
+                <ListItemAvatar>
+                  <Avatar />
+                </ListItemAvatar>
+                <ListItemText primary={<Skeleton height={30} width={150} />} />
+              </ListItem>
+            )}
           </Stack>
         </Pagination>
       </Dialog>
