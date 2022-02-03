@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { getUserStudyLong, getUserClass } from 'utils';
-import { UserList } from 'types';
+import { User } from 'types';
 import URLS from 'URLS';
 import { useUpdateUser, useExportUserData, useDeleteUser, useLogout } from 'hooks/User';
 import { useSnackbar } from 'hooks/Snackbar';
@@ -15,7 +15,6 @@ import Bool from 'components/inputs/Bool';
 import SubmitButton from 'components/inputs/SubmitButton';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import { ImageUpload } from 'components/inputs/Upload';
-import { useGoogleAnalytics } from 'hooks/Utils';
 import { ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
 
 const DeleteUserDialog = ({ isAdmin, user }: ProfileSettingsProps) => {
