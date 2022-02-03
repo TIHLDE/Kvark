@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
+import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseQueryOptions, QueryKey, UseMutationResult } from 'react-query';
 import API from 'api/api';
 import {
   User,
@@ -29,11 +29,12 @@ export const USER_STRIKES_QUERY_KEY = 'user_strikes';
 export const USER_PERMISSIONS_QUERY_KEY = 'user_permissions';
 export const USERS_QUERY_KEY = 'users';
 
-export const useUser = () => {
+export const useUser = (userId?: User['user_id'], options?: UseQueryOptions<User | undefined, RequestResponse, User | undefined, QueryKey>) => {
   const isAuthenticated = useIsAuthenticated();
   const { setUserId } = useGoogleAnalytics();
-  return useQuery<User | undefined, RequestResponse>([USER_QUERY_KEY], () => (isAuthenticated ? API.getUserData() : undefined), {
-    onSuccess: (data) => !data || setUserId(data.user_id),
+  return useQuery<User | undefined, RequestResponse>([USER_QUERY_KEY, userId], () => (isAuthenticated ? API.getUserData(userId) : undefined), {
+    ...options,
+    onSuccess: (data) => !data || userId || setUserId(data.user_id),
   });
 };
 
