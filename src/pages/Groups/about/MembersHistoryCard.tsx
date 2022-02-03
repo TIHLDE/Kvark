@@ -1,11 +1,14 @@
 import { useMemo } from 'react';
-
-import { ListItem, ListItemText, ListItemAvatar, Typography, Skeleton, Stack } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
-import { useMembershipHistories } from 'hooks/Membership';
-import Pagination from 'components/layout/Pagination';
-import Avatar from 'components/miscellaneous/Avatar';
+import URLS from 'URLS';
 import { getMembershipType } from 'utils';
+import { useMembershipHistories } from 'hooks/Membership';
+
+import { ListItem, ListItemButton, ListItemText, ListItemAvatar, Typography, Skeleton, Stack } from '@mui/material';
+import Pagination from 'components/layout/Pagination';
+import Paper from 'components/layout/Paper';
+import Avatar from 'components/miscellaneous/Avatar';
 
 export type MembersHistoryCardProps = {
   slug: string;
@@ -34,21 +37,23 @@ const MembersHistoryCard = ({ slug }: MembersHistoryCardProps) => {
   }
 
   return (
-    <Stack gap={1}>
+    <Stack gap={1} sx={{ mt: 1 }}>
       {Boolean(data?.pages?.length) && <Typography variant='h3'>Tidligere medlemmer:</Typography>}
       <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
         <Stack gap={1}>
           {prevMembers.map((member) => (
-            <ListItem disablePadding key={`${member.user.user_id}_${member.end_date}`}>
-              <ListItemAvatar>
-                <Avatar user={member.user} />
-              </ListItemAvatar>
-              <ListItemText
-                primary={`${member.user.first_name} ${member.user.last_name}`}
-                secondary={`${format(parseISO(member.start_date), 'MMMM yyyy')} til ${format(parseISO(member.end_date), 'MMMM yyyy')} - ${getMembershipType(
-                  member.membership_type,
-                )}`}
-              />
+            <ListItem component={Paper} disablePadding key={`${member.user.user_id}_${member.end_date}`} noOverflow noPadding>
+              <ListItemButton component={Link} sx={{ py: 0 }} to={`${URLS.profile}${member.user.user_id}/`}>
+                <ListItemAvatar>
+                  <Avatar user={member.user} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={`${member.user.first_name} ${member.user.last_name}`}
+                  secondary={`${format(parseISO(member.start_date), 'MMMM yyyy')} til ${format(parseISO(member.end_date), 'MMMM yyyy')} - ${getMembershipType(
+                    member.membership_type,
+                  )}`}
+                />
+              </ListItemButton>
             </ListItem>
           ))}
         </Stack>

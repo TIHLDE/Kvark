@@ -129,7 +129,7 @@ const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
           minRows={3}
         />
         <SubmitButton disabled={updateUser.isLoading} formState={formState}>
-          Oppdater
+          Lagre
         </SubmitButton>
         {!isAdmin && (
           <Typography className={classes.gutterTop} variant='body2'>
