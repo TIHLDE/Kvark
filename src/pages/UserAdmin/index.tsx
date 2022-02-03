@@ -65,7 +65,7 @@ const UserAdmin = () => {
   }, [tab, userClassChoice, userStudyChoice, searchInput]);
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useUsers({ is_TIHLDE_member: tab === membersTab.value, ...filters });
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
-  const membersAmount = `${data?.pages[0]?.count || '_'} medlemmer 
+  const membersAmount = `${data?.pages[0]?.count || '0'} medlemmer 
   ${userClassChoice !== 0 || userStudyChoice !== 0 ? 'i' : 'totalt'}
   ${userClassChoice !== 0 ? USER_CLASSES[userClassChoice] : ''} 
   ${userStudyChoice !== 0 ? USER_STUDIES[userStudyChoice] : ''}`;
