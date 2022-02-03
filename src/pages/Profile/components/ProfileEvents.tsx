@@ -3,7 +3,7 @@ import { USERS_ENDPOINT } from 'api/api';
 import { TIHLDE_API_URL } from 'constant';
 import { useUserEvents, useUser } from 'hooks/User';
 import { useGoogleAnalytics } from 'hooks/Utils';
-import { Stack, Typography, Collapse, Divider, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Stack, Typography, Collapse, Divider, ListItem, ListItemButton, ListItemIcon, ListItemText, Alert } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 import CloudSyncIcon from '@mui/icons-material/CloudSyncRounded';
@@ -55,7 +55,13 @@ export const EventsSubscription = () => {
             din umiddelbart, så kan det være fordi kalenderen sjelden ser etter oppdateringer. Oppdaterings-frekvensen varierer fra kalender til kalender,
             enkelte oppdateres kun daglig.
           </Typography>
-          <Pre>{`${TIHLDE_API_URL}${USERS_ENDPOINT}/${user?.user_id || ''}/events.ics`}</Pre>
+          {!user ? null : user.public_event_registrations ? (
+            <Pre>{`${TIHLDE_API_URL}${USERS_ENDPOINT}/${user.user_id}/events.ics`}</Pre>
+          ) : (
+            <Alert color='info' variant='outlined'>
+              Du har skrudd av offentlige arrangementspåmeldinger. Du må skru det på i profilen for å kunne abonnere på din arrangement-kalender.
+            </Alert>
+          )}
         </Stack>
       </Collapse>
     </Paper>
