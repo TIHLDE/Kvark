@@ -9,6 +9,7 @@ import Http404 from 'pages/Http404';
 import Page from 'components/navigation/Page';
 import GalleryRenderer from './components/GalleryRenderer';
 import { ImageGridLoading } from './components/ImageGrid';
+import Banner from 'components/layout/Banner';
 
 const GalleryDetails = () => {
   const { slug } = useParams();
@@ -26,7 +27,9 @@ const GalleryDetails = () => {
   }
 
   return (
-    <Page options={{ title: data ? data.title : 'Laster album...', gutterTop: true, filledTopbar: true, lightColor: 'blue' }}>
+    <Page
+      banner={data && !undefined && <Banner title={data.title} />}
+      options={{ title: data ? data.title : 'Laster album...', gutterTop: false, filledTopbar: true, lightColor: 'blue' }}>
       {isLoading ? (
         <ImageGridLoading />
       ) : (

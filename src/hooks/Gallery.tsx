@@ -51,7 +51,7 @@ export const useDeleteAlbum = (albumSlug: string): UseMutationResult<RequestResp
 
 export const useAlbumPictures = (albumSlug: string) => {
   return useInfiniteQuery<PaginationResponse<Picture>, RequestResponse>(
-    [GALLERY_QUERY_KEY, albumSlug],
+    [GALLERY_QUERY_KEY, albumSlug, PICTURE_QUERY_KEY],
     ({ pageParam = 1 }) => API.getAlbumPictures(albumSlug, { page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.next,

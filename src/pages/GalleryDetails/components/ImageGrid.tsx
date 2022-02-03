@@ -4,26 +4,29 @@ import { useMemo } from 'react';
 
 type ImageGridProps = {
   slug: string;
+  setSelectedImg: React.Dispatch<React.SetStateAction<string>>;
+  setOpenPicture: (open: boolean) => void;
 };
 
 export const ImageGridLoading = () => {
   return (
     <ImageList cols={3} gap={8} variant='masonry'>
       <ImageListItem key={''}>
-        <img loading='lazy' src={''} srcSet={''} />
+        <img loading='lazy' />
       </ImageListItem>
     </ImageList>
   );
 };
 
-const ImageGrid = ({ slug }: ImageGridProps) => {
-  const { data, isLoading, isError } = useAlbumPictures(slug);
+const ImageGrid = ({ slug, setSelectedImg, setOpenPicture }: ImageGridProps) => {
+  const { data } = useAlbumPictures(slug);
   const pictures = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const openModalWithImg = (image: string) => {
+    setSelectedImg(image);
+    setOpenPicture(true);
+  };
   return (
     <>
-      Error?
-      {/* {isLoading && <ImageGridLoading />}
-      {isError && <Http404 />}
       <ImageList cols={3} gap={8} variant='masonry'>
         {data !== undefined &&
           pictures.map((image) => (
@@ -31,13 +34,13 @@ const ImageGrid = ({ slug }: ImageGridProps) => {
               <img
                 alt='uploaded pic'
                 loading='lazy'
-                //   onClick={() => goToPicture(image.image)}
+                onClick={() => openModalWithImg(image.image)}
                 src={`${image.image}?w=248&fit=crop&auto=format`}
                 srcSet={`${image.image}?w=248&fit=crop&auto=format&dpr=2 2x`}
               />
             </ImageListItem>
           ))}
-      </ImageList> */}
+      </ImageList>
     </>
   );
 };
