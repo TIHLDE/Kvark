@@ -110,7 +110,7 @@ const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
           </Stack>
         )}
         <TextField disabled={updateUser.isLoading} formState={formState} InputProps={{ type: 'number' }} label='Telefon' {...register('cell')} />
-        <ImageUpload formState={formState} label='Velg profilbilde' ratio={1} register={register('image')} setValue={setValue} watch={watch} />
+        <ImageUpload formState={formState} label='Velg profilbilde' ratio='1:1' register={register('image')} setValue={setValue} watch={watch} />
         <Stack direction={['column', 'row']} gap={[0, 1]}>
           <Select control={control} disabled={!isAdmin} formState={formState} label='Studie' name='user_study'>
             {[1, 2, 3, 4, 5, 6].map((i) => (
