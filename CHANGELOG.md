@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.4.3 (03.02.2022)
+
 - ✨ **Bruker**. Det er mulig å eksportere sin brukerdata.
 - ✨ **Bruker**. Det er mulig å slette sin egen bruker.
 - ✨ **Offentlige profiler**. Det er nå mulig å se andre brukeres profiler med deres badges og medlemskap i grupper.
