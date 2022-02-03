@@ -94,7 +94,9 @@ const AppRoutes = () => {
           <Route element={<News />} index />
         </Route>
 
-        <Route element={<AuthRoute element={<Profile />} />} path={URLS.profile} />
+        <Route element={<AuthRoute element={<Profile />} />} path={URLS.profile}>
+          <Route element={<Profile />} path=':userId/' />
+        </Route>
 
         <Route element={<AuthRoute element={<Cheatsheet />} />} path={`${URLS.cheatsheet}:studyId/:classId/`} />
         <Route element={<AuthRoute element={<Cheatsheet />} />} path={`${URLS.cheatsheet}*`} />

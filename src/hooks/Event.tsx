@@ -1,12 +1,13 @@
-import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
+import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult, UseInfiniteQueryOptions, QueryKey } from 'react-query';
 import API from 'api/api';
 import { USER_EVENTS_QUERY_KEY, USER_QUERY_KEY } from 'hooks/User';
 import { FORM_QUERY_KEY } from 'hooks/Form';
 import { NOTIFICATION_QUERY_KEY } from 'hooks/Notification';
-import { Event, EventRequired, EventCompact, Registration, PaginationResponse, RequestResponse } from 'types';
+import { Event, EventRequired, EventCompact, Registration, PaginationResponse, PublicRegistration, RequestResponse } from 'types';
 
 export const EVENT_QUERY_KEY = 'event';
 export const EVENT_QUERY_KEY_REGISTRATION = 'event_registration';
+export const EVENT_QUERY_KEY_PUBLIC_REGISTRATIONS = 'event_public_registrations';
 
 export const useEventById = (eventId: number) => {
   return useQuery<Event, RequestResponse>([EVENT_QUERY_KEY, eventId], () => API.getEvent(eventId), { enabled: eventId !== -1 });
@@ -65,6 +66,30 @@ export const useNotifyEventRegistrations = (
   eventId: number,
 ): UseMutationResult<RequestResponse, RequestResponse, { title: string; message: string }, unknown> =>
   useMutation(({ title, message }) => API.notifyEventRegistrations(eventId, title, message));
+
+/**
+ * Get "public" event registrations, registrations which all members is allowed to see. Users can anonymize themself through their profile-settings
+ * @param eventId The event-id
+ * @param options UseInfiniteQueryOptions
+ */
+export const usePublicEventRegistrations = (
+  eventId: number,
+  options?: UseInfiniteQueryOptions<
+    PaginationResponse<PublicRegistration>,
+    RequestResponse,
+    PaginationResponse<PublicRegistration>,
+    PaginationResponse<PublicRegistration>,
+    QueryKey
+  >,
+) =>
+  useInfiniteQuery<PaginationResponse<PublicRegistration>, RequestResponse>(
+    [EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_PUBLIC_REGISTRATIONS],
+    ({ pageParam = 1 }) => API.getPublicEventRegistrations(eventId, { page: pageParam }),
+    {
+      ...options,
+      getNextPageParam: (lastPage) => lastPage.next,
+    },
+  );
 
 export const useEventRegistrations = (eventId: number) =>
   useQuery<Array<Registration>, RequestResponse>([EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_REGISTRATION], () => API.getEventRegistrations(eventId));

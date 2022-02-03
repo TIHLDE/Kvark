@@ -48,6 +48,7 @@ export enum PermissionApp {
   USER = 'user',
   FORMS = 'form',
 }
+
 export enum Groups {
   HS = 'HS',
   INDEX = 'Index',
@@ -63,6 +64,7 @@ export enum EventFormType {
 }
 
 export enum FormResourceType {
+  FORM = 'Form',
   EVENT_FORM = 'EventForm',
   GROUP_FORM = 'GroupForm',
 }

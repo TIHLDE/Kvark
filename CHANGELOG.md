@@ -14,6 +14,16 @@
 
 ## Neste versjon
 
+## Versjon 1.4.3 (03.02.2022)
+
+- ✨ **Bruker**. Det er mulig å eksportere sin brukerdata.
+- ✨ **Bruker**. Det er mulig å slette sin egen bruker.
+- ✨ **Offentlige profiler**. Det er nå mulig å se andre brukeres profiler med deres badges og medlemskap i grupper.
+- ✨ **Arrangementer**. Alle innloggede brukere kan nå se hvem som er påmeldt arrangementer. Brukere kan reservere seg mot å bli oppført på deltagerlisten.
+- ⚡ **Tilganger**. Laster inn tilganger fra backend først når de trengs.
+- ✨ **Skjemamaler**. Administratorer kan nå lage maler som man kan ta utgangspunkt i når man lager et nytt skjema.
+- ✨ **Bildeopplastning**. Viser foretrukket størrelsesforhold på bilder ved bildeopplastning.
+
 ## Versjon 1.4.2 (31.01.2022)
 
 - 🦟 **Eventadmin**. Viser at et arrangement er stengt i adminpanelet.

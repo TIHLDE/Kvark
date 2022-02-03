@@ -1,7 +1,20 @@
 import { ReactNode } from 'react';
-import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
+import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseQueryOptions, QueryKey, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { User, UserList, Group, UserCreate, Strike, LoginRequestResponse, PaginationResponse, RequestResponse, Badge, EventCompact, Form } from 'types';
+import {
+  User,
+  UserList,
+  Group,
+  UserCreate,
+  Strike,
+  LoginRequestResponse,
+  PaginationResponse,
+  RequestResponse,
+  Badge,
+  EventCompact,
+  Form,
+  UserPermissions,
+} from 'types';
 import { PermissionApp } from 'types/Enums';
 import { getCookie, setCookie, removeCookie } from 'api/cookie';
 import { ACCESS_TOKEN } from 'constant';
@@ -13,25 +26,41 @@ export const USER_EVENTS_QUERY_KEY = 'user_events';
 export const USER_GROUPS_QUERY_KEY = 'user_groups';
 export const USER_FORMS_QUERY_KEY = 'user_forms';
 export const USER_STRIKES_QUERY_KEY = 'user_strikes';
+export const USER_PERMISSIONS_QUERY_KEY = 'user_permissions';
 export const USERS_QUERY_KEY = 'users';
 
-export const useUser = () => {
+export const useUser = (userId?: User['user_id'], options?: UseQueryOptions<User | undefined, RequestResponse, User | undefined, QueryKey>) => {
   const isAuthenticated = useIsAuthenticated();
+  const logOut = useLogout();
   const { setUserId } = useGoogleAnalytics();
-  return useQuery<User | undefined, RequestResponse>([USER_QUERY_KEY], () => (isAuthenticated ? API.getUserData() : undefined), {
-    onSuccess: (data) => !data || setUserId(data.user_id),
+  return useQuery<User | undefined, RequestResponse>([USER_QUERY_KEY, userId], () => (isAuthenticated ? API.getUserData(userId) : undefined), {
+    ...options,
+    onSuccess: (data) => !data || userId || setUserId(data.user_id),
+    onError: () => {
+      logOut();
+      window.location.reload();
+    },
   });
 };
 
-export const useUserBadges = () =>
-  useInfiniteQuery<PaginationResponse<Badge>, RequestResponse>([USER_BADGES_QUERY_KEY], ({ pageParam = 1 }) => API.getUserBadges({ page: pageParam }), {
-    getNextPageParam: (lastPage) => lastPage.next,
-  });
+export const useUserPermissions = () => {
+  const isAuthenticated = useIsAuthenticated();
+  return useQuery<UserPermissions | undefined, RequestResponse>([USER_PERMISSIONS_QUERY_KEY], () => (isAuthenticated ? API.getUserPermissions() : undefined));
+};
 
-export const useUserEvents = () => {
+export const useUserBadges = (userId?: User['user_id']) =>
+  useInfiniteQuery<PaginationResponse<Badge>, RequestResponse>(
+    [USER_BADGES_QUERY_KEY, userId],
+    ({ pageParam = 1 }) => API.getUserBadges(userId, { page: pageParam }),
+    {
+      getNextPageParam: (lastPage) => lastPage.next,
+    },
+  );
+
+export const useUserEvents = (userId?: User['user_id']) => {
   return useInfiniteQuery<PaginationResponse<EventCompact>, RequestResponse>(
-    [USER_EVENTS_QUERY_KEY],
-    ({ pageParam = 1 }) => API.getUserEvents({ page: pageParam }),
+    [USER_EVENTS_QUERY_KEY, userId],
+    ({ pageParam = 1 }) => API.getUserEvents(userId, { page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.next,
     },
@@ -48,7 +77,8 @@ export const useUserForms = (filters?: any) =>
     },
   );
 
-export const useUserGroups = () => useQuery<Array<Group>, RequestResponse>([USER_GROUPS_QUERY_KEY], () => API.getUserGroups());
+export const useUserGroups = (userId?: User['user_id']) =>
+  useQuery<Array<Group>, RequestResponse>([USER_GROUPS_QUERY_KEY, userId], () => API.getUserGroups(userId));
 
 export const useUserStrikes = (userId?: string) => useQuery<Array<Strike>, RequestResponse>([USER_STRIKES_QUERY_KEY, userId], () => API.getUserStrikes(userId));
 
@@ -100,6 +130,11 @@ export const useUpdateUser = (): UseMutationResult<User, RequestResponse, { user
   });
 };
 
+export const useExportUserData = (): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => useMutation(() => API.exportUserData());
+
+export const useDeleteUser = (): UseMutationResult<RequestResponse, RequestResponse, string | undefined, unknown> =>
+  useMutation((userId) => API.deleteUser(userId));
+
 export const useActivateUser = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => {
   const queryClient = useQueryClient();
   return useMutation((userId) => API.activateUser(userId), {
@@ -119,8 +154,8 @@ export const useDeclineUser = (): UseMutationResult<RequestResponse, RequestResp
 };
 
 export const useHavePermission = (apps: Array<PermissionApp>) => {
-  const { data: user, isLoading } = useUser();
-  return { allowAccess: isLoading ? false : Boolean(apps.some((app) => user?.permissions[app].write)), isLoading };
+  const { data, isLoading } = useUserPermissions();
+  return { allowAccess: isLoading ? false : Boolean(apps.some((app) => data?.permissions[app].write)), isLoading };
 };
 
 export type HavePermissionProps = {
