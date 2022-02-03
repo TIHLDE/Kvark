@@ -17,7 +17,9 @@ const FieldView = <FormValues extends FieldValues>({ register, field, formState,
     <input {...register(`answers.${index}.field.id` as Path<FormValues>)} type='hidden' value={field.id} />
     {field.type === FormFieldType.TEXT_ANSWER ? (
       <>
-        <Typography style={{ color: disabled ? 'grey' : 'theme.palette.text.secondary' }}>{`${field.title} ${field.required ? '*' : ''}`}</Typography>
+        <Typography sx={{ color: (theme) => theme.palette.text[disabled ? 'disabled' : 'primary'] }}>{`${field.title} ${
+          field.required ? '*' : ''
+        }`}</Typography>
         <TextField
           disabled={disabled}
           formState={formState}
