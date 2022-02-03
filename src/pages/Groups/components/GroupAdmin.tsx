@@ -15,16 +15,17 @@ import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
 import Dialog from 'components/layout/Dialog';
 import { ShowMoreText, ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
+import { ImageUpload } from 'components/inputs/Upload';
 
 export type UpdateGroupModalProps = {
   group: Group;
 };
 
-type FormValues = Pick<Group, 'contact_email' | 'description' | 'fine_info' | 'fines_activated' | 'name' | 'fines_admin'>;
+type FormValues = Pick<Group, 'contact_email' | 'description' | 'fine_info' | 'fines_activated' | 'name' | 'fines_admin' | 'image' | 'image_alt'>;
 
 const GroupAdmin = ({ group }: UpdateGroupModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { register, formState, handleSubmit, control, watch } = useForm<FormValues>({ defaultValues: { ...group } });
+  const { register, formState, handleSubmit, control, watch, setValue } = useForm<FormValues>({ defaultValues: { ...group } });
   const watchFinesActivated = watch('fines_activated');
   const updateGroup = useUpdateGroup();
   const showSnackbar = useSnackbar();
@@ -52,6 +53,7 @@ const GroupAdmin = ({ group }: UpdateGroupModalProps) => {
       <Dialog onClose={() => setIsOpen(false)} open={isOpen} titleText='Rediger gruppen'>
         <form onSubmit={handleSubmit(submit)}>
           <TextField formState={formState} label='Gruppenavn' {...register('name', { required: 'Gruppen må ha et navn' })} required />
+          <ImageUpload formState={formState} label='Velg bilde' ratio={1 / 1} register={register('image')} setValue={setValue} watch={watch} />
           <MarkdownEditor formState={formState} label='Gruppebeskrivelse' {...register('description')} />
           <TextField
             formState={formState}

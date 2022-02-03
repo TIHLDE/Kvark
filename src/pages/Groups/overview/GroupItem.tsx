@@ -19,6 +19,9 @@ const useStyles = makeStyles()((theme) => ({
     height: '100%',
     minHeight: 90,
   },
+  grouplogo: {
+    borderRadius: '20px',
+  },
   contentRowContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -46,11 +49,11 @@ const GroupItem = ({ group, background = 'paper' }: GroupItemProps) => {
   return (
     <Paper noOverflow noPadding sx={{ background: (theme) => theme.palette.background[background] }}>
       <ButtonBase className={classes.container} component={Link} focusRipple to={URLS.groups.details(group.slug)}>
-        <Grid container spacing={0}>
-          <Grid alignItems='center' container item justifyContent='center' xs={3}>
-            <img alt={group.image_alt} loading='lazy' src={group.image} width={64} />
+        <Grid container spacing={2}>
+          <Grid alignItems='center' container item justifyContent='center' xs={4}>
+            <img alt={group.image_alt} className={classes.grouplogo} loading='lazy' src={group.image} width={64} />
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={8}>
             <Typography variant='h3'>{group.name}</Typography>
             {group.leader && (
               <div className={classes.contentRowContainer}>
