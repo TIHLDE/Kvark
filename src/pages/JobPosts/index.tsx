@@ -8,7 +8,7 @@ import { argsToParams } from 'utils';
 import { makeStyles } from '@mui/styles';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
-import { useMediaQuery, Theme } from '@mui/material';
+import { useMediaQuery, Box, Slider, Theme } from '@mui/material';
 
 // Project Components
 import Page from 'components/navigation/Page';
@@ -59,8 +59,40 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const marks = [
+  {
+    value: 1,
+    label: '1. År',
+  },
+  {
+    value: 2,
+    label: '2. År',
+  },
+  {
+    value: 3,
+    label: '3. År',
+  },
+  {
+    value: 4,
+    label: '4. År',
+  },
+  {
+    value: 5,
+    label: '5. År',
+  },
+];
+
+function valuetext(value: number) {
+  return `${value} Årstrinn`;
+}
+
+function valueLabelFormat(value: number) {
+  return marks.findIndex((mark) => mark.value === value) + 1;
+}
+
 type Filters = {
   search?: string;
+  classes?: number[];
   expired: boolean;
 };
 
@@ -89,7 +121,7 @@ const JobPosts = () => {
 
   const search = (data: Filters) => {
     event('search', 'jobposts', JSON.stringify(data));
-    setFilters(data);
+    setFilters(data); //må få value
     navigate(`${location.pathname}${argsToParams(data)}`, { replace: true });
     !lgDown || setSearchFormExpanded((prev) => !prev);
   };
@@ -99,6 +131,19 @@ const JobPosts = () => {
   const SearchForm = () => (
     <form onSubmit={handleSubmit(search)}>
       <TextField disabled={isFetching} formState={formState} label='Søk' {...register('search')} />
+      <Box>
+        <Slider
+          aria-label='Restricted values'
+          defaultValue={[1, 5]}
+          getAriaValueText={valuetext}
+          marks={marks}
+          max={5}
+          min={1}
+          step={null}
+          valueLabelDisplay='auto'
+          valueLabelFormat={valueLabelFormat}
+        />
+      </Box>
       <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
       <SubmitButton disabled={isFetching} formState={formState}>
         Søk
