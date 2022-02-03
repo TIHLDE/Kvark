@@ -1,150 +1,111 @@
 import { ReactNode } from 'react';
-import classNames from 'classnames';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
+import { Typography, Button, Stack, styled, alpha, Box } from '@mui/material';
+import Container from 'components/layout/Container';
 
-// Material UI Components
-import { makeStyles } from '@mui/styles';
-import { Theme, Typography, Button, ButtonProps } from '@mui/material';
-
-const useStyles = makeStyles<Theme, Pick<BannerProps, 'background'>>((theme) => ({
-  banner: {
-    whiteSpace: 'break-spaces',
-    position: 'relative',
-    width: '100%',
-    overflow: 'hidden',
-  },
-  bannerInner: {
-    height: 'auto',
-    padding: theme.spacing(8, 0, 0),
-    background: ({ background }) => background || theme.palette.colors.gradient.main.top,
-  },
-  bannerContent: {
-    maxWidth: theme.breakpoints.values.xl,
-    margin: 'auto',
-    padding: theme.spacing(3, 3, 1),
-    display: 'flex',
-    justifyContent: 'space-between',
-    [theme.breakpoints.down('lg')]: {
-      fontSize: '2.1em',
-      padding: theme.spacing(2),
-      flexDirection: 'column',
-    },
-    [theme.breakpoints.down('md')]: {
-      padding: theme.spacing(1),
-    },
-  },
-  title: {
-    color: ({ background }) => theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
-    fontSize: theme.typography.pxToRem(66),
-    [theme.breakpoints.down('lg')]: {
-      fontSize: theme.typography.pxToRem(50),
-      padding: theme.spacing(0, 2),
-      overflowWrap: 'break-word',
-      '@supports not (overflow-wrap: anywhere)': {
-        hyphens: 'auto',
-      },
-    },
-    [theme.breakpoints.down('md')]: {
-      fontSize: theme.typography.pxToRem(40),
-    },
-  },
-  text: {
-    '& p,a': {
-      color: ({ background }) => theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
-    },
-    paddingTop: theme.spacing(2),
-    maxWidth: 600,
-    width: '50vw',
-    [theme.breakpoints.down('lg')]: {
-      fontSize: 16,
-      padding: theme.spacing(2, 2, 0),
-      width: '100%',
-    },
-  },
-  line: {
-    height: 4,
-    backgroundColor: ({ background }) => theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
-    borderRadius: theme.shape.borderRadius,
-    width: 90,
-    [theme.breakpoints.down('lg')]: {
-      width: 50,
-    },
-  },
-  bannerButton: {
-    color: ({ background }) => theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
-    borderColor: ({ background }) => theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
-    '&:hover': {
-      borderColor: ({ background }) => theme.palette.getContrastText(background || theme.palette.colors.gradient.main.top),
-    },
-  },
-  children: {
-    display: 'grid',
-    gridGap: theme.spacing(1),
-    padding: theme.spacing(2, 0, 0),
-    minWidth: 350,
-    height: 'fit-content',
-    [theme.breakpoints.down('lg')]: {
-      minWidth: 200,
-      padding: theme.spacing(2, 2, 0, 2),
-    },
-  },
-  svg: {
-    marginTop: -1,
-    marginRight: -5,
-    marginLeft: -5,
-  },
-  background: {
-    fill: ({ background }) => background || theme.palette.colors.gradient.main.top,
-    fillOpacity: 1,
+export const BannerButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
+  borderColor: theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
+  '&:hover': {
+    borderColor: alpha(theme.palette.getContrastText(theme.palette.colors.gradient.main.top), 0.8),
   },
 }));
 
-export type BannerButtonProps = ButtonProps & Pick<BannerProps, 'background'>;
+const Title = styled(Typography)(({ theme }) => ({
+  color: theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
+  fontSize: theme.typography.pxToRem(66),
+  [theme.breakpoints.down('lg')]: {
+    fontSize: theme.typography.pxToRem(50),
+    padding: theme.spacing(0, 2),
+    overflowWrap: 'break-word',
+    '@supports not (overflow-wrap: anywhere)': {
+      hyphens: 'auto',
+    },
+  },
+  [theme.breakpoints.down('md')]: {
+    fontSize: theme.typography.pxToRem(40),
+  },
+}));
 
-export const BannerButton = ({ background, children, className, ...props }: BannerButtonProps) => {
-  const classes = useStyles({ background });
-  return (
-    <Button className={classNames(classes.bannerButton, className)} fullWidth variant='outlined' {...props}>
-      {children}
-    </Button>
-  );
-};
+const Text = styled('div')(({ theme }) => ({
+  '& p,a': {
+    color: theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
+  },
+  paddingTop: theme.spacing(2),
+  maxWidth: 600,
+  width: '50vw',
+  [theme.breakpoints.down('lg')]: {
+    fontSize: 16,
+    padding: theme.spacing(2, 2, 0),
+    width: '100%',
+  },
+}));
+
+const Line = styled('div')(({ theme }) => ({
+  height: 4,
+  backgroundColor: theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
+  borderRadius: theme.shape.borderRadius,
+  width: 90,
+  [theme.breakpoints.down('lg')]: {
+    width: 50,
+  },
+}));
+
+const Content = styled('div')(({ theme }) => ({
+  display: 'grid',
+  gridGap: theme.spacing(1),
+  minWidth: 350,
+  height: 'fit-content',
+  paddingTop: theme.spacing(2),
+  [theme.breakpoints.down('lg')]: {
+    minWidth: 200,
+    padding: theme.spacing(0, 2),
+  },
+}));
+
+const Svg = styled('svg')(() => ({
+  marginTop: -1,
+  display: 'block',
+}));
+
+const SvgPath = styled('path')(({ theme }) => ({
+  fill: theme.palette.colors.gradient.main.top,
+  fillOpacity: 1,
+}));
 
 export type BannerProps = {
-  className?: string;
   title?: string | ReactNode;
   text?: string;
   children?: ReactNode;
   background?: string;
 };
 
-const Banner = ({ className, title, text, children, background }: BannerProps) => {
-  const classes = useStyles({ background });
-  return (
-    <div className={classNames(classes.banner, className)}>
-      <div className={classNames(classes.bannerInner, classes.background)}>
-        <div className={classes.bannerContent}>
+const Banner = ({ title, text, children }: BannerProps) => (
+  <Box sx={{ pb: 1, whiteSpace: 'break-spaces', position: 'relative', width: '100%', overflow: 'hidden' }}>
+    <Box sx={{ background: (theme) => theme.palette.colors.gradient.main.top, pt: { xs: 8, lg: 10 }, pb: 0.25 }}>
+      <Container maxWidth='xl'>
+        <Stack direction={{ xs: 'column', lg: 'row' }} gap={2} justifyContent='space-between' sx={{ pb: { xs: 1, lg: 0 } }}>
           <div>
             {title && (
-              <Typography className={classes.title} variant='h1'>
+              <Title variant='h1'>
                 {title}
-                <div className={classes.line} />
-              </Typography>
+                <Line />
+              </Title>
             )}
             {text && Boolean(text.trim().length) && (
-              <div className={classes.text}>
+              <Text>
                 <MarkdownRenderer value={text} />
-              </div>
+              </Text>
             )}
           </div>
-          {children && <div className={classes.children}>{children}</div>}
-        </div>
-      </div>
-      <svg className={classes.svg} viewBox='0 35 500 35' xmlns='http://www.w3.org/2000/svg'>
-        <path className={classes.background} d='M0.00,49.99 C233.29,86.15 256.43,22.00 500.00,49.99 L500.00,-0.00 L0.00,-0.00 Z'></path>
-      </svg>
-    </div>
-  );
-};
+          {children && <Content>{children}</Content>}
+        </Stack>
+      </Container>
+    </Box>
+    <Svg viewBox='0 20 500 15' xmlns='http://www.w3.org/2000/svg'>
+      <SvgPath d='M 0 25 C 251 52 268 10 500 25 L 500 0 L 0 0 Z' />
+    </Svg>
+  </Box>
+);
 
 export default Banner;

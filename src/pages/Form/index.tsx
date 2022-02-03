@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Form, Submission, EventForm } from 'types';
+import { Form, Submission } from 'types';
 import { useFormById, useCreateSubmission, validateSubmissionInput } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useForm } from 'react-hook-form';
@@ -10,7 +10,7 @@ import { parseISO } from 'date-fns';
 import URLS from 'URLS';
 
 // Material UI Components
-import { Divider, Button, Typography } from '@mui/material';
+import { Button, Divider, Stack, Typography } from '@mui/material';
 
 // Project Components
 import Http404 from 'pages/Http404';
@@ -18,25 +18,29 @@ import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import { PrimaryTopBox } from 'components/layout/TopBox';
 import FormView from 'components/forms/FormView';
-import { FormResourceType, FormType } from 'types/Enums';
+import SubmitButton from 'components/inputs/SubmitButton';
+import { FormResourceType, EventFormType } from 'types/Enums';
 
 const FormPage = () => {
   const { event: GAEvent } = useGoogleAnalytics();
-  const { id } = useParams();
-  const { data: form, isError } = useFormById(id);
-  const createSubmission = useCreateSubmission(id);
+  const { id } = useParams<'id'>();
+  const { data: form, isError } = useFormById(id || '-');
+  const createSubmission = useCreateSubmission(id || '-');
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
-  const title = useMemo(() => (form?.type === FormType.EVALUATION ? 'Evaluering' : 'Spørreskjema'), [form]);
+  const title = useMemo(
+    () => (form ? (form.resource_type === FormResourceType.EVENT_FORM && form.type === EventFormType.EVALUATION ? 'Evaluering' : form.title) : ''),
+    [form],
+  );
   const subtitle = useMemo(
     () => (
       <>
         {form?.resource_type === FormResourceType.EVENT_FORM && (
           <>
             {`Arrangøren av `}
-            <Link to={`${URLS.events}${(form as EventForm).event.id}/`}>{`"${(form as EventForm).event.title}"`}</Link>
-            {`, som ble holdt ${formatDate(parseISO((form as EventForm).event.start_date)).toLowerCase()} på ${
-              (form as EventForm).event.location
+            <Link to={`${URLS.events}${form.event.id}/`}>{`"${form.event.title}"`}</Link>
+            {`, som ble holdt ${formatDate(parseISO(form.event.start_date)).toLowerCase()} på ${
+              form.event.location
             },  ønsker at du svarer på følgende spørsmål:`}
           </>
         )}
@@ -54,6 +58,7 @@ const FormPage = () => {
       return;
     }
     setIsLoading(true);
+    data.answers = data.answers || [];
     try {
       validateSubmissionInput(data, form);
     } catch (e) {
@@ -75,10 +80,13 @@ const FormPage = () => {
     });
   };
 
-  // Only allow users to view form if it's an evaluation-form
-  if (isError || (form && form.type !== FormType.EVALUATION)) {
+  const isEventFormButNotEvaluation = Boolean(form && form.resource_type === FormResourceType.EVENT_FORM && form.type !== EventFormType.EVALUATION);
+
+  if (isError || isEventFormButNotEvaluation) {
     return <Http404 />;
   }
+
+  const canAnswerForm = Boolean(form && (!form.viewer_has_answered || (form.resource_type === FormResourceType.GROUP_FORM && form.can_submit_multiple)));
 
   return (
     <Page banner={<PrimaryTopBox />} options={{ title: `${form?.title || 'Laster spørreskjema...'} - Spørreskjema` }}>
@@ -100,15 +108,37 @@ const FormPage = () => {
               {subtitle}
             </Typography>
             <Divider sx={{ my: 2 }} />
-            {form.viewer_has_answered ? (
-              <Typography align='center'>Du har allerede svart på dette spørreskjemaet</Typography>
-            ) : (
+            {canAnswerForm ? (
               <form onSubmit={handleSubmit(submit)}>
-                {form && <FormView control={control} disabled={submitDisabled} form={form} formState={formState} getValues={getValues} register={register} />}
-                <Button disabled={submitDisabled} fullWidth sx={{ mt: 2 }} type='submit' variant='contained'>
+                {form && (
+                  <FormView
+                    alignText='center'
+                    control={control}
+                    disabled={submitDisabled}
+                    form={form}
+                    formState={formState}
+                    getValues={getValues}
+                    register={register}
+                  />
+                )}
+                <SubmitButton disabled={submitDisabled} formState={formState} sx={{ mt: 2 }}>
                   Send inn svar
-                </Button>
+                </SubmitButton>
               </form>
+            ) : (
+              <>
+                <Typography align='center' variant='body2'>
+                  Du har allerede svart på dette spørreskjemaet, takk!
+                </Typography>
+                <Stack direction={{ xs: 'column', md: 'row' }} gap={1} sx={{ mt: 2 }}>
+                  <Button component={Link} fullWidth to={URLS.landing} variant='outlined'>
+                    Gå til forsiden
+                  </Button>
+                  <Button component={Link} fullWidth to={URLS.profile} variant='outlined'>
+                    Gå til profilen
+                  </Button>
+                </Stack>
+              </>
             )}
           </>
         ) : (

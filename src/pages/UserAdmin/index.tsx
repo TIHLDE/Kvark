@@ -2,7 +2,7 @@ import { Fragment, useEffect, useMemo, useState } from 'react';
 import { useUsers } from 'hooks/User';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
@@ -20,7 +20,7 @@ import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import PersonListItem, { PersonListItemLoading } from 'pages/UserAdmin/components/PersonListItem';
 import { PrimaryTopBox } from 'components/layout/TopBox';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   content: {
     margin: '-60px auto 60px',
     position: 'relative',
@@ -37,10 +37,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const USER_CLASSES = ['Alle', '1. klasse', '2. klasse', '3. klasse', '4. klasse', '5. klasse', 'Alumni'];
-const USER_STUDIES = ['Alle', 'Dataing', 'DigFor', 'DigSec', 'DigSam', 'Drift'];
+const USER_STUDIES = ['Alle', 'Dataing', 'DigFor', 'DigSec', 'DigSam', 'Drift', 'Info'];
 
 const UserAdmin = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const membersTab = { value: 'members', label: 'Medlemmer', icon: MembersIcon };
   const waitingTab = { value: 'waiting', label: 'Ventende', icon: WaitingIcon };
   const tabs = [membersTab, waitingTab];

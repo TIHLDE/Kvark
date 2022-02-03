@@ -1,32 +1,58 @@
-import { UserList } from 'types/User';
+import { Group } from 'types/Group';
+import { UserBase } from 'types/User';
 import { EventCompact } from 'types/Event';
-import { FormFieldType, FormResourceType, FormType } from 'types/Enums';
+import { FormFieldType, FormResourceType, EventFormType } from 'types/Enums';
 
 // -----------------------------------------------------------
 // Interfaces used for the creating of forms and viewing forms
 // -----------------------------------------------------------
 
-export interface Form {
+export interface FormBase {
   id: string;
   title: string;
-  type: FormType;
   fields: Array<TextFormField | SelectFormField>;
-  resource_type: FormResourceType;
   viewer_has_answered: boolean;
+  template: boolean;
 }
 
-export type FormCreate = Omit<Form, 'id' | 'viewer_has_answered'>;
-export type FormUpdate = Partial<Form> & Pick<Form, 'fields' | 'resource_type'>;
-
-export interface EventForm extends Form {
-  type: FormType.SURVEY | FormType.EVALUATION;
+export interface EventForm extends FormBase {
+  type: EventFormType;
   event: EventCompact;
   resource_type: FormResourceType.EVENT_FORM;
 }
 
-export type EventFormCreate = FormCreate & {
-  event: number;
-};
+export interface GroupForm extends FormBase {
+  group: Group;
+  resource_type: FormResourceType.GROUP_FORM;
+  can_submit_multiple: boolean;
+  only_for_group_members: boolean;
+  is_open_for_submissions: boolean;
+}
+
+export interface TemplateForm extends FormBase {
+  resource_type: FormResourceType.FORM;
+}
+
+export type Form = EventForm | GroupForm | TemplateForm;
+
+export type EventFormCreate = Partial<Omit<EventForm, 'event'>> &
+  Pick<EventForm, 'resource_type' | 'type' | 'title' | 'fields'> & {
+    event: EventForm['event']['id'];
+  };
+
+export type GroupFormCreate = Partial<Omit<GroupForm, 'group'>> &
+  Pick<GroupForm, 'resource_type' | 'title' | 'fields'> & {
+    group: GroupForm['group']['slug'];
+  };
+
+export type TemplateFormCreate = Omit<TemplateForm, 'id'>;
+
+export type EventFormUpdate = Partial<EventFormCreate> & Pick<EventForm, 'resource_type'>;
+export type GroupFormUpdate = Partial<GroupFormCreate> & Pick<GroupForm, 'resource_type'>;
+export type TemplateFormUpdate = Partial<TemplateFormCreate> & Pick<TemplateFormCreate, 'resource_type'>;
+
+export type FormCreate = EventFormCreate | GroupFormCreate | TemplateFormCreate;
+export type FormUpdate = EventFormUpdate | GroupFormUpdate | TemplateFormUpdate;
 
 interface FormField {
   id?: string;
@@ -49,7 +75,7 @@ export interface SelectFormFieldOption {
   title: string;
 }
 
-export interface FormStatistics extends Form {
+export interface FormStatistics extends FormBase {
   statistics: Array<SelectFormFieldStatistics>;
 }
 
@@ -85,7 +111,7 @@ export interface SelectFieldSubmission extends FieldSubmission {
 }
 
 export interface UserSubmission {
-  user: UserList;
+  user: UserBase;
   form: string;
   answers: Array<TextFieldSubmission | SelectFieldSubmission>;
 }

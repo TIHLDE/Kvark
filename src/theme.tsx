@@ -1,15 +1,9 @@
-import { darkScrollbar } from '@mui/material';
-import { createTheme, Theme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
 // Icons
 import DarkIcon from '@mui/icons-material/Brightness2Outlined';
 import AutomaticIcon from '@mui/icons-material/DevicesOutlined';
 import LightIcon from '@mui/icons-material/WbSunnyOutlined';
-
-declare module '@mui/styles' {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface DefaultTheme extends Theme {}
-}
 
 declare module '@mui/material/styles/createPalette' {
   interface TypeBackground {
@@ -21,7 +15,7 @@ declare module '@mui/material/styles/createPalette' {
     get: <T>({ light, dark }: { light: T; dark: T }) => T;
     blurred: {
       backdropFilter: string;
-      '-webkit-backdrop-filter': string;
+      WebkitBackdropFilter: string;
     };
     transparent: {
       boxShadow: string;
@@ -31,6 +25,8 @@ declare module '@mui/material/styles/createPalette' {
     colors: {
       footer: string;
       tihlde: string;
+      nok_event: string;
+      other_event: string;
       gradient: {
         main: {
           top: string;
@@ -53,7 +49,7 @@ declare module '@mui/material/styles/createPalette' {
     get: <T>({ light, dark }: { light: T; dark: T }) => T;
     blurred: {
       backdropFilter: string;
-      '-webkit-backdrop-filter': string;
+      WebkitBackdropFilter: string;
     };
     transparent: {
       boxShadow: string;
@@ -63,6 +59,8 @@ declare module '@mui/material/styles/createPalette' {
     colors: {
       footer: string;
       tihlde: string;
+      nok_event: string;
+      other_event: string;
       gradient: {
         main: {
           top: string;
@@ -90,8 +88,7 @@ export const themes = themesDetails.map((theme) => theme.key);
 export type ThemeTypes = typeof themes[number];
 
 export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
-  // eslint-disable-next-line comma-spacing
-  const get = <T,>({ light, dark }: { light: T; dark: T }): T => {
+  const get = <T extends unknown>({ light, dark }: { light: T; dark: T }): T => {
     switch (theme) {
       case 'automatic':
         return prefersDarkMode ? dark : light;
@@ -102,7 +99,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
     }
   };
 
-  const DARK_PAPER_COLOR = '#19212f';
+  const DARK_PAPER_COLOR = '#011830';
   const BORDER_RADIUS = 16;
 
   return createTheme({
@@ -127,10 +124,6 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       },
       MuiCssBaseline: {
         styleOverrides: {
-          body: {
-            // eslint-disable-next-line @typescript-eslint/ban-types
-            ...get<object>({ light: {}, dark: darkScrollbar() }),
-          },
           '@global': {
             html: { WebkitFontSmoothing: 'auto' },
           },
@@ -157,6 +150,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
           rectangular: { borderRadius: BORDER_RADIUS },
         },
       },
+      MuiTooltip: { styleOverrides: { tooltip: { fontSize: '0.85rem' } } },
       MuiContainer: { defaultProps: { maxWidth: 'xl', disableGutters: true } },
       MuiPaper: { defaultProps: { elevation: 0 } },
       MuiLinearProgress: { styleOverrides: { root: { borderRadius: BORDER_RADIUS } } },
@@ -178,13 +172,13 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       error: {
         main: get<string>({ light: '#b20101', dark: '#ff6060' }),
       },
-      divider: get<string>({ light: '#dbdbdb', dark: '#333333' }),
+      divider: get<string>({ light: '#e4e4e4', dark: '#132f4c' }),
       text: {
         secondary: get<string>({ light: '#333333', dark: '#cccccc' }),
       },
       blurred: {
         backdropFilter: `blur(5px)`,
-        '-webkit-backdrop-filter': `blur(5px)`,
+        WebkitBackdropFilter: `blur(5px)`,
       },
       transparent: {
         background: get<string>({ light: '#f6f5f380', dark: '#61616180' }),
@@ -193,16 +187,18 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       },
       borderWidth: '1px',
       background: {
-        default: get<string>({ light: '#ececec', dark: '#121519' }),
+        default: get<string>({ light: '#eeeeee', dark: '#001328' }),
         paper: get<string>({ light: '#ffffff', dark: DARK_PAPER_COLOR }),
-        smoke: get<string>({ light: '#f2f2f2', dark: '#171b22' }),
+        smoke: get<string>({ light: '#f2f2f2', dark: '#071a2d' }),
       },
       colors: {
         footer: DARK_PAPER_COLOR,
         tihlde: '#1c458a',
+        nok_event: get<string>({ light: '#83C4F8', dark: '#83C4F8' }),
+        other_event: get<string>({ light: '#FFA675', dark: '#FFA675' }),
         gradient: {
           main: {
-            top: get<string>({ light: '#16356e', dark: DARK_PAPER_COLOR }),
+            top: get<string>({ light: '#16356e', dark: '#0d2339' }),
             bottom: get<string>({ light: '#814a93', dark: '#581d6c' }),
           },
           secondary: {
@@ -223,17 +219,17 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
       fontFamily: 'Inter',
       h1: {
         fontSize: '3rem',
-        fontFamily: 'Oswald, Inter, sans-serif',
+        fontFamily: `Oswald, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif`,
         fontWeight: 700,
       },
       h2: {
         fontSize: '2rem',
-        fontFamily: 'Oswald, Inter, sans-serif',
+        fontFamily: `Oswald, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif`,
         fontWeight: 500,
       },
       h3: {
         fontSize: '1.5rem',
-        fontFamily: 'Cabin, Inter, sans-serif',
+        fontFamily: `Cabin, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif`,
       },
     },
   });

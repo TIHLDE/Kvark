@@ -6,7 +6,7 @@ import { useSnackbar } from 'hooks/Snackbar';
 import { ShortLink } from 'types';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -25,8 +25,9 @@ import Paper from 'components/layout/Paper';
 import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import { FileUpload } from 'components/inputs/Upload';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   grid: {
     display: 'grid',
     gridTemplateColumns: '2fr 1fr',
@@ -49,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
   create: {
     display: 'grid',
-    gridGap: theme.spacing(1),
+    gridGap: theme.spacing(2),
     position: 'sticky',
     top: 80,
 
@@ -79,7 +80,7 @@ type ShortLinkItemProps = {
 };
 
 const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { event } = useGoogleAnalytics();
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   const deleteShortLink = useDeleteShortLink();
@@ -132,7 +133,7 @@ const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
 };
 
 const ShortLinks = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { event } = useGoogleAnalytics();
   const { data, error, isFetching } = useShortLinks();
   const createShortLink = useCreateShortLink();
@@ -167,29 +168,38 @@ const ShortLinks = () => {
             </>
           )}
         </div>
-        <Paper className={classes.create}>
-          <form onSubmit={handleSubmit(create)}>
-            <Typography variant='h2'>Ny link</Typography>
-            <TextField
-              disabled={isFetching}
-              formState={formState}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment className={classes.adornment} position='start'>
-                    s.tihlde.org/
-                  </InputAdornment>
-                ),
-              }}
-              label='Navn'
-              {...register('name', { required: 'Du må gi linken et navn' })}
-              required
-            />
-            <TextField disabled={isFetching} formState={formState} label='URL' {...register('url', { required: 'Du må oppgi en link' })} required />
-            <SubmitButton disabled={isFetching} formState={formState}>
-              Opprett
-            </SubmitButton>
-          </form>
-        </Paper>
+        <div className={classes.create}>
+          <Paper>
+            <form onSubmit={handleSubmit(create)}>
+              <Typography variant='h2'>Ny link</Typography>
+              <TextField
+                disabled={isFetching}
+                formState={formState}
+                inputProps={{
+                  startAdornment: (
+                    <InputAdornment className={classes.adornment} position='start'>
+                      s.tihlde.org/
+                    </InputAdornment>
+                  ),
+                }}
+                label='Navn'
+                {...register('name', { required: 'Du må gi linken et navn' })}
+                required
+              />
+              <TextField disabled={isFetching} formState={formState} label='URL' {...register('url', { required: 'Du må oppgi en link' })} required />
+              <SubmitButton disabled={isFetching} formState={formState}>
+                Opprett
+              </SubmitButton>
+            </form>
+          </Paper>
+          <Paper>
+            <Typography variant='h3'>Filopplastning</Typography>
+            <Typography variant='subtitle2'>
+              Last opp filer og få en link du kan dele med andre. Bruk link-forkorteren hvis du vil ha enda kortere linker.
+            </Typography>
+            <FileUpload />
+          </Paper>
+        </div>
       </div>
     </Page>
   );

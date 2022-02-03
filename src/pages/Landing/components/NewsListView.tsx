@@ -1,23 +1,17 @@
 import { useMemo } from 'react';
-import URLS from 'URLS';
-import { Link } from 'react-router-dom';
-
-// Material-UI
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 
 // Project componets
-import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
+import NewsListItem, { NewsListItemLoading } from 'components/miscellaneous/NewsListItem';
 import { useNews } from 'hooks/News';
-import { useGoogleAnalytics } from 'hooks/Utils';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   container: {
     display: 'grid',
-    gridGap: theme.spacing(0, 1),
+    gridGap: theme.spacing(1),
     gridTemplateColumns: '1fr 1fr',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       gridTemplateColumns: '1fr',
     },
   },
@@ -34,29 +28,19 @@ const useStyles = makeStyles((theme) => ({
 const NO_OF_NEWS_TO_SHOW = 2;
 
 const NewsListView = () => {
-  const { event } = useGoogleAnalytics();
   const { data, isLoading } = useNews();
   const news = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
-  const classes = useStyles();
-
-  const openNewsAnalytics = () => event('go-to-all-news', 'news-list-view', `Go to all news`);
+  const { classes } = useStyles();
 
   if (isLoading) {
     return (
       <div className={classes.container}>
-        <ListItemLoading />
-        <ListItemLoading />
+        <NewsListItemLoading />
+        <NewsListItemLoading />
       </div>
     );
   } else if (news.length) {
-    return (
-      <>
-        <div className={classes.container}>{news.map((newsItem, index) => index < NO_OF_NEWS_TO_SHOW && <ListItem key={index} news={newsItem} />)}</div>
-        <Button className={classes.btn} component={Link} fullWidth onClick={openNewsAnalytics} to={URLS.news} variant='outlined'>
-          Alle nyheter
-        </Button>
-      </>
-    );
+    return <div className={classes.container}>{news.map((newsItem, index) => index < NO_OF_NEWS_TO_SHOW && <NewsListItem key={index} news={newsItem} />)}</div>;
   } else {
     return (
       <Typography align='center' className={classes.noNewsText} variant='subtitle1'>

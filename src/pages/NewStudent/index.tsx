@@ -1,16 +1,12 @@
-import { useState, Fragment, useMemo, useEffect } from 'react';
-import classnames from 'classnames';
+import { useState, useMemo, useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { usePage } from 'hooks/Pages';
+import { useWikiPage } from 'hooks/Wiki';
 import { useIsAuthenticated } from 'hooks/User';
 import { useEvents } from 'hooks/Event';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
-import { Page as PageType } from 'types';
-
-// Material UI Components
-import { makeStyles } from '@mui/styles';
-import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography, Stack } from '@mui/material';
 
 // Icons
 import EventIcon from '@mui/icons-material/EventRounded';
@@ -24,19 +20,19 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
 import AboutIcon from '@mui/icons-material/InfoRounded';
 
 // Project Components
-import Expansion from 'components/layout/Expand';
+import Expand from 'components/layout/Expand';
 import Page from 'components/navigation/Page';
 import Banner, { BannerButton } from 'components/layout/Banner';
 import Paper from 'components/layout/Paper';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import Tabs from 'components/layout/Tabs';
 import Pagination from 'components/layout/Pagination';
-import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
+import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import EventsCalendarView from 'pages/Landing/components/EventsCalendarView';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   grid: {
     display: 'grid',
     gridGap: theme.spacing(2),
@@ -54,13 +50,6 @@ const useStyles = makeStyles((theme) => ({
 
 const FADDERUKA_EVENT_CATEGORY = 10;
 
-const usePageContent = (url: string) =>
-  useQuery<string>(['page', url], () =>
-    fetch(`https://api.tihlde.org/api/v1/page/${url}`)
-      .then((res) => res.json())
-      .then((page: PageType) => page.content),
-  );
-
 const useGithubContent = (url: string) => useQuery(['github-wiki', url], () => fetch(url).then((res) => res.text()));
 
 type VolunteerGroupProps = {
@@ -69,16 +58,16 @@ type VolunteerGroupProps = {
 };
 
 const VolunteerGroup = ({ url, title }: VolunteerGroupProps) => {
-  const { data: text = '' } = usePageContent(url);
+  const { data } = useWikiPage(url);
   return (
-    <Expansion flat header={title} sx={{ border: (theme) => `1px solid ${theme.palette.divider}`, background: (theme) => theme.palette.background.smoke }}>
-      <MarkdownRenderer value={text} />
-    </Expansion>
+    <Expand flat header={title}>
+      <MarkdownRenderer value={data?.content || ''} />
+    </Expand>
   );
 };
 
 const NewStudent = () => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const { event } = useGoogleAnalytics();
   const isAuthenticated = useIsAuthenticated();
   const eventsTab = { value: 'events', label: 'Fadderuka - arrangementer', icon: EventIcon };
@@ -97,9 +86,9 @@ const NewStudent = () => {
   const [eventTab, setEventTab] = useState(eventsListView.value);
 
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents({ category: FADDERUKA_EVENT_CATEGORY });
-  const noEventsFound = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
-  const { data: faqPage } = usePage('ny-student/');
-  const { data: sportsText = '' } = usePageContent('tihlde/interessegrupper/tihlde-pythons/');
+  const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const { data: faqPage } = useWikiPage('ny-student/');
+  const { data: sportsText } = useWikiPage('tihlde/interessegrupper/tihlde-pythons/');
   const { data: aboutText = '' } = useGithubContent('https://raw.githubusercontent.com/wiki/TIHLDE/Kvark/Nettsiden-info.md');
 
   const fadderukaSignupAnalytics = () => event('signup-fadderuka', 'new-student', 'Clicked on link to signup for fadderuka');
@@ -119,7 +108,8 @@ const NewStudent = () => {
             href='https://s.tihlde.org/fadderuka-paamelding'
             onClick={fadderukaSignupAnalytics}
             rel='noopener noreferrer'
-            target='_blank'>
+            target='_blank'
+            variant='outlined'>
             Meld deg på fadderuka
           </BannerButton>
           {!isAuthenticated && (
@@ -130,7 +120,7 @@ const NewStudent = () => {
               </Typography>
               {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
               {/* @ts-ignore */}
-              <BannerButton component={Link} endIcon={<SignupIcon />} onClick={createUserAnalytics} to={URLS.signup}>
+              <BannerButton component={Link} endIcon={<SignupIcon />} onClick={createUserAnalytics} to={URLS.signup} variant='outlined'>
                 Opprett bruker her
               </BannerButton>
             </Paper>
@@ -138,7 +128,7 @@ const NewStudent = () => {
         </Banner>
       }
       options={{ title: 'Ny student' }}>
-      <div className={classnames(classes.grid, classes.root)}>
+      <div className={cx(classes.grid, classes.root)}>
         <Paper noOverflow noPadding sx={{ position: { lg: 'sticky' }, top: { lg: 75 } }}>
           <List disablePadding>
             {tabs.map((tabItem) => (
@@ -155,8 +145,8 @@ const NewStudent = () => {
           <Collapse in={tab === eventsTab.value}>
             <Tabs selected={eventTab} setSelected={setEventTab} sx={{ ml: 2 }} tabs={eventTabs} />
             <Collapse in={eventTab === eventsListView.value}>
-              {isLoading && <ListItemLoading />}
-              {noEventsFound && (
+              {isLoading && <EventListItemLoading />}
+              {!events.length && !isLoading && (
                 <NotFoundIndicator
                   header='Fant ingen arrangementer'
                   subtitle='Ingen arrangementer tilknyttet fadderuka er publisert enda. Kom tilbake senere!'
@@ -165,16 +155,14 @@ const NewStudent = () => {
               {error && <Paper>{error.detail}</Paper>}
               {data !== undefined && (
                 <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-                  {data.pages.map((page, i) => (
-                    <Fragment key={i}>
-                      {page.results.map((event) => (
-                        <ListItem event={event} key={event.id} />
-                      ))}
-                    </Fragment>
-                  ))}
+                  <Stack gap={1}>
+                    {events.map((event) => (
+                      <EventListItem event={event} key={event.id} />
+                    ))}
+                  </Stack>
                 </Pagination>
               )}
-              {isFetching && <ListItemLoading />}
+              {isFetching && <EventListItemLoading />}
             </Collapse>
             <Collapse in={eventTab === eventsCalendarView.value}>
               <EventsCalendarView events={data?.pages[0]?.results || []} oldEvents={[]} />
@@ -218,7 +206,7 @@ const NewStudent = () => {
           </Collapse>
           <Collapse in={tab === sportsTab.value} mountOnEnter>
             <Paper sx={{ p: 2 }}>
-              <MarkdownRenderer value={sportsText} />
+              <MarkdownRenderer value={sportsText?.content || ''} />
             </Paper>
           </Collapse>
           <Collapse in={tab === aboutTab.value} mountOnEnter>

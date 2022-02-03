@@ -5,7 +5,7 @@ import { PermissionApp } from 'types/Enums';
 import { HavePermission } from 'hooks/User';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Avatar, List, ListItem, ListItemText, ListItemAvatar, Typography } from '@mui/material';
 
 // Icons
@@ -15,12 +15,13 @@ import JobPostIcon from '@mui/icons-material/WorkOutlineRounded';
 import NewsIcon from '@mui/icons-material/DescriptionRounded';
 import UsersIcon from '@mui/icons-material/PermIdentityRounded';
 import GroupsIcon from '@mui/icons-material/GroupRounded';
+import WorkspacesIcon from '@mui/icons-material/Workspaces';
 
 // Project Components
 import Paper from 'components/layout/Paper';
 import { FileUpload } from 'components/inputs/Upload';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   list: {
     display: 'grid',
     gridGap: theme.spacing(1),
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Admin = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   type CardProps = {
     apps: PermissionApp[];
@@ -44,7 +45,7 @@ const Admin = () => {
 
   const Card = ({ apps, icon: Icon, to, primary, secondary }: CardProps) => (
     <HavePermission apps={apps}>
-      <Paper noPadding>
+      <Paper noOverflow noPadding>
         <ListItem button component={Link} to={to}>
           <ListItemAvatar>
             <Avatar className={classes.avatar}>
@@ -69,7 +70,7 @@ const Admin = () => {
     {
       apps: [PermissionApp.GROUP],
       icon: GroupsIcon,
-      to: URLS.groups,
+      to: URLS.groups.index,
       primary: 'Grupper',
       secondary: 'Se og endre grupper',
     },
@@ -93,6 +94,13 @@ const Admin = () => {
       to: URLS.newsAdmin,
       primary: 'Nyheter',
       secondary: 'Opprett, endre og slett nyheter',
+    },
+    {
+      apps: [PermissionApp.STRIKE],
+      icon: WorkspacesIcon,
+      to: URLS.strikeAdmin,
+      primary: 'Prikker',
+      secondary: 'Se og slett prikker',
     },
   ];
 

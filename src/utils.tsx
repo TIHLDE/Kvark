@@ -1,7 +1,11 @@
 import slugify from 'slugify';
-import { parseISO, format, subMinutes } from 'date-fns';
-import { Event } from 'types';
-import { UserStudy, UserClass } from 'types/Enums';
+import { parseISO, format, subMinutes, getYear, isAfter, isBefore } from 'date-fns';
+import nbLocale from 'date-fns/locale/nb';
+import { Event, GroupLaw, SelectFormField, SelectFormFieldOption, TextFormField } from 'types';
+import { FormFieldType, JobPostType, MembershipType, StrikeReason, UserClass, UserStudy } from 'types/Enums';
+
+export const isAfterDateOfYear = (month: number, date: number) => isAfter(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
+export const isBeforeDateOfYear = (month: number, date: number) => isBefore(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
 
 /**
  * Slugify a string to make it safe to use in an URL
@@ -17,7 +21,7 @@ export const urlEncode = (text = '') => slugify(text, { lower: true, strict: tru
  * - /arrangementer/8/ -> `false`
  * @param url The URL to check
  */
-export const isExternalURL = (url = '') => new RegExp('^(?:[a-z]+:)?//', 'i').test(url);
+export const isExternalURL = (url = '') => url.indexOf(':') > -1 || url.indexOf('//') > -1;
 
 /**
  * Short down string if longer than limit
@@ -29,6 +33,19 @@ export const shortDownString = (string: string, maxStringLength: number) => {
     string = string.slice(0, maxStringLength) + '...';
   }
   return string;
+};
+
+/**
+ * Find how many hours a users start of registration to an event is delayed because of their strikes.
+ * @param numberOfStrikes The number of strikes the user have
+ */
+export const getStrikesDelayedRegistrationHours = (numberOfStrikes: number) => {
+  if (numberOfStrikes === 0) {
+    return 0;
+  } else if (numberOfStrikes === 1) {
+    return 3;
+  }
+  return 12;
 };
 
 /**
@@ -47,6 +64,8 @@ export const getUserStudyShort = (userStudy: UserStudy) => {
       return 'DigSam';
     case UserStudy.DRIFT:
       return 'Drift';
+    case UserStudy.INFO:
+      return 'Info';
     default:
       return 'Ukjent studie';
   }
@@ -68,6 +87,8 @@ export const getUserStudyLong = (userStudy: UserStudy) => {
       return 'Digital samhandling';
     case UserStudy.DRIFT:
       return 'Drift av datasystemer';
+    case UserStudy.INFO:
+      return 'Informasjonsbehandling';
     default:
       return 'Ukjent studie';
   }
@@ -97,21 +118,79 @@ export const getUserClass = (userClass: UserClass) => {
 };
 
 /**
- * Add leading zero to numbers below 10. Ex: 2 -> 02, 12 -> 12
- * @param number Number to add zeros to
+ * Get jobpost type as text
+ * @param jobpostType JobPost type
  */
-const addLeadingZero = (number: number) => (number < 10 ? '0' + number : number);
+export const getJobpostType = (jobpostType: JobPostType) => {
+  switch (jobpostType) {
+    case JobPostType.PART_TIME:
+      return 'Deltid';
+    case JobPostType.FULL_TIME:
+      return 'Fulltid';
+    case JobPostType.SUMMER_JOB:
+      return 'Sommerjobb';
+    case JobPostType.OTHER:
+      return 'Annet';
+    default:
+      return 'Ukjent jobbtype';
+  }
+};
 
 /**
- * Format date in format: `torsdag 12 oktober 2021 - kl. 08:30`
+ * Get membership type as text
+ * @param membershipType Membership type
+ */
+export const getMembershipType = (membershipType: MembershipType) => {
+  switch (membershipType) {
+    case MembershipType.LEADER:
+      return 'Leder';
+    case MembershipType.MEMBER:
+      return 'Medlem';
+    default:
+      return 'Ukjent medlemskapstype';
+  }
+};
+
+/**
+ * Get strike reason as readable text
+ * @param strikeReason Strike reason enum
+ */
+export const getStrikeReasonAsText = (strikeReason: StrikeReason) => {
+  switch (strikeReason) {
+    case StrikeReason.BAD_BEHAVIOR:
+      return 'Upassende oppførsel (1 prikk)';
+    case StrikeReason.EVAL_FORM:
+      return 'Ikke svart på evalueringsskjema (3 prikk)';
+    case StrikeReason.LATE:
+      return 'Møtte for sent (1 prikk)';
+    case StrikeReason.NO_SHOW:
+      return 'Møtte ikke (2 prikk)';
+    case StrikeReason.PAST_DEADLINE:
+      return 'Meldt av etter avmeldingsfrist (1 prikk)';
+    default:
+      return 'Ukjent grunn til prikk';
+  }
+};
+
+/**
+ * Format date in format: `Tor 12. okt. 2021 08:30`
  * Year is only shown if it's a different year than this year
  * @param date Date to be formatted
+ * @param options Configure what info the formatted date should contain
  */
-export const formatDate = (date: Date) => {
+export const formatDate = (
+  date: Date,
+  {
+    time = true,
+    fullMonth = false,
+    fullDayOfWeek = false,
+    capitalizeFirstLetter = true,
+  }: { time?: boolean; fullMonth?: boolean; fullDayOfWeek?: boolean; capitalizeFirstLetter?: boolean } = {},
+) => {
   const isDifferentYear = date.getFullYear() !== new Date().getFullYear();
-  return `${getDay(date.getDay())} ${date.getDate()} ${getMonth(date.getMonth())} ${isDifferentYear ? date.getFullYear() : ''} - kl. ${addLeadingZero(
-    date.getHours(),
-  )}:${addLeadingZero(date.getMinutes())}`;
+  const formatDateString = `${fullDayOfWeek ? 'EEEE' : 'E'} do ${fullMonth ? 'MMMM' : 'MMM'}${isDifferentYear ? ' yyyy' : ''}`;
+  const formatted = format(date, `${formatDateString}${time ? ' p' : ''}`, { locale: nbLocale });
+  return capitalizeFirstLetter ? `${formatted.charAt(0).toUpperCase()}${formatted.slice(1)}` : formatted;
 };
 
 /**
@@ -139,66 +218,6 @@ export const getTimeSince = (date: Date) => {
 };
 
 /**
- * Translate a day of week number to a readable day
- * @param day Day of week
- */
-export const getDay = (day: number) => {
-  switch (day) {
-    case 0:
-      return 'Søn.';
-    case 1:
-      return 'Man.';
-    case 2:
-      return 'Tirs.';
-    case 3:
-      return 'Ons.';
-    case 4:
-      return 'Tors.';
-    case 5:
-      return 'Fre.';
-    case 6:
-      return 'Lør.';
-    default:
-      return day;
-  }
-};
-
-/**
- * Translate a month of year number to a readable month
- * @param month Month of year
- */
-export const getMonth = (month: number) => {
-  switch (month) {
-    case 0:
-      return 'jan';
-    case 1:
-      return 'feb';
-    case 2:
-      return 'mars';
-    case 3:
-      return 'april';
-    case 4:
-      return 'mai';
-    case 5:
-      return 'juni';
-    case 6:
-      return 'juli';
-    case 7:
-      return 'aug';
-    case 8:
-      return 'sep';
-    case 9:
-      return 'okt';
-    case 10:
-      return 'nov';
-    case 11:
-      return 'des';
-    default:
-      return month;
-  }
-};
-
-/**
  * Transforms a date to when UTC+0 will be at the same time.
  * Ex.: 15:00 in UTC+2 is transformed to 17:00 as UTC+0 at that time will be 15:00
  * @param date - The date to transform
@@ -217,6 +236,13 @@ export const dateAsUTC = (date: Date): Date => {
 export const dateToUTC = (date: Date): Date => {
   return subMinutes(date, -date.getTimezoneOffset());
 };
+
+/**
+ * Formats a law header
+ * @param law the law
+ * @returns String with format: `§1.23 - Title`
+ */
+export const formatLawHeader = (law: GroupLaw): string => `§${law.paragraph % 1 === 0 ? ~~law.paragraph : law.paragraph} - ${law.title}`;
 
 /**
  * Create a ICS-file from an event
@@ -268,4 +294,25 @@ export const argsToParams = (data: Record<string, any>) => {
     }
   }
   return args;
+};
+
+/**
+ * Removes id's from fields and the options of the given fields
+ *
+ * @param fields The fields to remove the id's from
+ */
+export const removeIdsFromFields = (fields: Array<TextFormField | SelectFormField>) => {
+  const newFields: Array<TextFormField | SelectFormField> = [];
+  fields.forEach((field) => {
+    const { id, ...restField } = field; // eslint-disable-line
+    const newOptions: Array<SelectFormFieldOption> = [];
+    if (field.type !== FormFieldType.TEXT_ANSWER) {
+      field.options.forEach((option) => {
+        const { id, ...restOption } = option; // eslint-disable-line
+        newOptions.push(restOption as SelectFormFieldOption);
+      });
+    }
+    newFields.push({ ...restField, options: newOptions } as TextFormField | SelectFormField);
+  });
+  return newFields;
 };

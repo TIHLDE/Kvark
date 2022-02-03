@@ -1,28 +1,52 @@
 import { ReactNode } from 'react';
-import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
+import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseQueryOptions, QueryKey, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { User, UserList, UserCreate, LoginRequestResponse, PaginationResponse, RequestResponse, Badge, EventCompact, GroupList, Form } from 'types';
+import {
+  User,
+  UserList,
+  Group,
+  UserCreate,
+  Strike,
+  LoginRequestResponse,
+  PaginationResponse,
+  RequestResponse,
+  Badge,
+  EventCompact,
+  Form,
+  UserPermissions,
+} from 'types';
 import { PermissionApp } from 'types/Enums';
 import { getCookie, setCookie, removeCookie } from 'api/cookie';
 import { ACCESS_TOKEN } from 'constant';
+import { useGoogleAnalytics } from 'hooks/Utils';
 
 export const USER_QUERY_KEY = 'user';
 export const USER_BADGES_QUERY_KEY = 'user_badges';
 export const USER_EVENTS_QUERY_KEY = 'user_events';
 export const USER_GROUPS_QUERY_KEY = 'user_groups';
 export const USER_FORMS_QUERY_KEY = 'user_forms';
+export const USER_STRIKES_QUERY_KEY = 'user_strikes';
+export const USER_PERMISSIONS_QUERY_KEY = 'user_permissions';
 export const USERS_QUERY_KEY = 'users';
 
-export const useUser = () => {
+export const useUser = (userId?: User['user_id'], options?: UseQueryOptions<User | undefined, RequestResponse, User | undefined, QueryKey>) => {
   const isAuthenticated = useIsAuthenticated();
-  return useQuery<User | undefined, RequestResponse>([USER_QUERY_KEY], () => (isAuthenticated ? API.getUserData() : undefined));
-};
-
-export const useUserBadges = () => {
-  return useInfiniteQuery<PaginationResponse<Badge>, RequestResponse>([USER_BADGES_QUERY_KEY], ({ pageParam = 1 }) => API.getUserBadges({ page: pageParam }), {
-    getNextPageParam: (lastPage) => lastPage.next,
+  const { setUserId } = useGoogleAnalytics();
+  return useQuery<User | undefined, RequestResponse>([USER_QUERY_KEY, userId], () => (isAuthenticated ? API.getUserData(userId) : undefined), {
+    ...options,
+    onSuccess: (data) => !data || userId || setUserId(data.user_id),
   });
 };
+
+export const useUserPermissions = () => {
+  const isAuthenticated = useIsAuthenticated();
+  return useQuery<UserPermissions | undefined, RequestResponse>([USER_PERMISSIONS_QUERY_KEY], () => (isAuthenticated ? API.getUserPermissions() : undefined));
+};
+
+export const useUserBadges = () =>
+  useInfiniteQuery<PaginationResponse<Badge>, RequestResponse>([USER_BADGES_QUERY_KEY], ({ pageParam = 1 }) => API.getUserBadges({ page: pageParam }), {
+    getNextPageParam: (lastPage) => lastPage.next,
+  });
 
 export const useUserEvents = () => {
   return useInfiniteQuery<PaginationResponse<EventCompact>, RequestResponse>(
@@ -35,30 +59,28 @@ export const useUserEvents = () => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const useUserForms = (filters?: any) => {
-  return useInfiniteQuery<PaginationResponse<Form>, RequestResponse>(
+export const useUserForms = (filters?: any) =>
+  useInfiniteQuery<PaginationResponse<Form>, RequestResponse>(
     [USER_FORMS_QUERY_KEY, filters],
     ({ pageParam = 1 }) => API.getUserForms({ ...filters, page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.next,
     },
   );
-};
 
-export const useUserGroups = () => {
-  return useQuery<Array<GroupList>, RequestResponse>([USER_GROUPS_QUERY_KEY], () => API.getUserGroups());
-};
+export const useUserGroups = () => useQuery<Array<Group>, RequestResponse>([USER_GROUPS_QUERY_KEY], () => API.getUserGroups());
+
+export const useUserStrikes = (userId?: string) => useQuery<Array<Strike>, RequestResponse>([USER_STRIKES_QUERY_KEY, userId], () => API.getUserStrikes(userId));
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const useUsers = (filters?: any) => {
-  return useInfiniteQuery<PaginationResponse<UserList>, RequestResponse>(
+export const useUsers = (filters?: any) =>
+  useInfiniteQuery<PaginationResponse<UserList>, RequestResponse>(
     [USERS_QUERY_KEY, filters],
     ({ pageParam = 1 }) => API.getUsers({ ...filters, page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.next,
     },
   );
-};
 
 export const useLogin = (): UseMutationResult<LoginRequestResponse, RequestResponse, { username: string; password: string }, unknown> => {
   const queryClient = useQueryClient();
@@ -71,9 +93,7 @@ export const useLogin = (): UseMutationResult<LoginRequestResponse, RequestRespo
   });
 };
 
-export const useForgotPassword = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => {
-  return useMutation((email) => API.forgotPassword(email));
-};
+export const useForgotPassword = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => useMutation((email) => API.forgotPassword(email));
 
 export const useLogout = () => {
   const queryClient = useQueryClient();
@@ -83,13 +103,9 @@ export const useLogout = () => {
   };
 };
 
-export const useIsAuthenticated = () => {
-  return typeof getCookie(ACCESS_TOKEN) !== 'undefined';
-};
+export const useIsAuthenticated = () => typeof getCookie(ACCESS_TOKEN) !== 'undefined';
 
-export const useCreateUser = (): UseMutationResult<RequestResponse, RequestResponse, UserCreate, unknown> => {
-  return useMutation((user) => API.createUser(user));
-};
+export const useCreateUser = (): UseMutationResult<RequestResponse, RequestResponse, UserCreate, unknown> => useMutation((user) => API.createUser(user));
 
 export const useUpdateUser = (): UseMutationResult<User, RequestResponse, { userId: string; user: Partial<User> }, unknown> => {
   const queryClient = useQueryClient();
@@ -123,8 +139,8 @@ export const useDeclineUser = (): UseMutationResult<RequestResponse, RequestResp
 };
 
 export const useHavePermission = (apps: Array<PermissionApp>) => {
-  const { data: user, isLoading } = useUser();
-  return { allowAccess: isLoading ? false : Boolean(apps.some((app) => user?.permissions[app].write)), isLoading };
+  const { data, isLoading } = useUserPermissions();
+  return { allowAccess: isLoading ? false : Boolean(apps.some((app) => data?.permissions[app].write)), isLoading };
 };
 
 export type HavePermissionProps = {

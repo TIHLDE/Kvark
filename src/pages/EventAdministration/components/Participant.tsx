@@ -1,55 +1,27 @@
 import { useState, useEffect } from 'react';
 import { Registration } from 'types';
 import { getUserStudyShort, formatDate, getUserClass } from 'utils';
-import { useDeleteEventRegistration, useUpdateEventRegistration } from 'hooks/Event';
+import { useDeleteEventRegistration, useUpdateEventRegistration, useEventById } from 'hooks/Event';
+import { useUserStrikes } from 'hooks/User';
 import parseISO from 'date-fns/parseISO';
 import { useSnackbar } from 'hooks/Snackbar';
 
 // Material-ui
-import { makeStyles } from '@mui/styles';
-import { Checkbox, Typography, Collapse, Button, ListItem, ListItemText, ListItemSecondaryAction, Divider } from '@mui/material';
+import { Stack, Checkbox, Typography, Collapse, Tooltip, ListItem, ListItemButton, ListItemText, ListItemAvatar, Divider } from '@mui/material';
 
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-
-// Icons
 import Delete from '@mui/icons-material/DeleteRounded';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownwardRounded';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpwardRounded';
 
 // Project components
 import Avatar from 'components/miscellaneous/Avatar';
-import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
-
-const useStyles = makeStyles((theme) => ({
-  avatar: {
-    marginRight: theme.spacing(2),
-  },
-  paper: {
-    marginBottom: theme.spacing(1),
-    overflow: 'hidden',
-    background: theme.palette.background.smoke,
-  },
-  wrapper: {
-    paddingRight: theme.spacing(8),
-    alignItems: 'center',
-  },
-  content: {
-    display: 'grid',
-    gridGap: theme.spacing(1),
-    padding: theme.spacing(2),
-  },
-  actions: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gridGap: theme.spacing(1),
-    [theme.breakpoints.down('lg')]: {
-      gridTemplateColumns: '1fr',
-    },
-  },
-}));
+import VerifyDialog from 'components/layout/VerifyDialog';
+import StrikeListItem from 'components/miscellaneous/StrikeListItem';
+import StrikeCreateDialog from 'components/miscellaneous/StrikeCreateDialog';
 
 export type ParticipantProps = {
   eventId: number;
@@ -57,13 +29,12 @@ export type ParticipantProps = {
 };
 
 const Participant = ({ registration, eventId }: ParticipantProps) => {
-  const classes = useStyles();
   const updateRegistration = useUpdateEventRegistration(eventId);
   const deleteRegistration = useDeleteEventRegistration(eventId);
   const showSnackbar = useSnackbar();
   const [checkedState, setCheckedState] = useState(registration.has_attended);
-  const [showModal, setShowModal] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const { data: event } = useEventById(eventId);
 
   useEffect(() => {
     setCheckedState(registration.has_attended);
@@ -75,7 +46,10 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
         showSnackbar(`Deltageren ble fjernet`, 'success');
       },
     });
-    setShowModal(false);
+  };
+
+  const moveHandler = (onWait: boolean) => {
+    updateRegistration.mutate({ registration: { is_on_wait: onWait }, userId: registration.user_info.user_id });
   };
 
   const handleAttendedCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,7 +58,10 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
       { registration: { has_attended: event.target.checked }, userId: registration.user_info.user_id },
       {
         onSuccess: () => {
-          showSnackbar(`Deltageren ble satt til ${!event.target.checked ? 'ikke ' : ''}ankommet`, 'success');
+          showSnackbar(
+            `${registration.user_info.first_name} ${registration.user_info.last_name} ble satt til ${!event.target.checked ? 'ikke ' : ''}ankommet`,
+            'success',
+          );
         },
         onError: () => {
           setCheckedState(!event.target.checked);
@@ -93,53 +70,92 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
     );
   };
 
-  const changeList = (onWait: boolean) => {
-    updateRegistration.mutate({ registration: { is_on_wait: onWait }, userId: registration.user_info.user_id });
+  const StrikesInfo = () => {
+    const { data = [] } = useUserStrikes(registration.user_info.user_id);
+    return (
+      <>
+        <Typography variant='subtitle1'>{`Alle prikker (${data.reduce((val, strike) => val + strike.strike_size, 0)}):`}</Typography>
+        <Stack gap={1}>
+          {data.map((strike) => (
+            <StrikeListItem key={strike.id} strike={strike} user={registration.user_info} />
+          ))}
+          {!data.length && (
+            <Typography variant='subtitle2'>{`${registration.user_info.first_name} ${registration.user_info.last_name} har ingen aktive prikker`}</Typography>
+          )}
+          <StrikeCreateDialog eventId={eventId} userId={registration.user_info.user_id}>
+            Lag ny prikk
+          </StrikeCreateDialog>
+        </Stack>
+      </>
+    );
   };
 
   return (
-    <Paper className={classes.paper} noPadding>
-      <Dialog
-        confirmText='Ja, jeg er sikker'
-        contentText={`Er du sikker på at du vil fjerne ${registration.user_info.first_name} ${registration.user_info.last_name} fra arrangementet?`}
-        onClose={() => setShowModal(false)}
-        onConfirm={deleteHandler}
-        open={showModal}
-        titleText='Er du sikker?'
-      />
-      <ListItem button className={classes.wrapper} onClick={() => setExpanded((prev) => !prev)}>
-        <Avatar className={classes.avatar} user={registration.user_info} />
-        <ListItemText
-          primary={`${registration.user_info.first_name} ${registration.user_info.last_name}`}
-          secondary={`${getUserClass(registration.user_info.user_class)} - ${getUserStudyShort(registration.user_info.user_study)}${
-            registration.user_info.allergy !== '' ? `\nAllergier: ${registration.user_info.allergy}` : ''
-          }${!registration.allow_photo ? `\nVil ikke bli tatt bilde av` : ''}`}
-        />
-        {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-        <ListItemSecondaryAction>{!registration.is_on_wait && <Checkbox checked={checkedState} onChange={handleAttendedCheck} />}</ListItemSecondaryAction>
+    <Paper bgColor='smoke' noOverflow noPadding sx={{ mb: 1 }}>
+      <ListItem
+        disablePadding
+        secondaryAction={
+          !registration.is_on_wait && (
+            <Tooltip title={checkedState ? 'Merk som ikke ankommet' : 'Merk som ankommet'}>
+              <Checkbox checked={checkedState} onChange={handleAttendedCheck} />
+            </Tooltip>
+          )
+        }>
+        <ListItemButton onClick={() => setExpanded((prev) => !prev)}>
+          <ListItemAvatar>
+            <Avatar user={registration.user_info} />
+          </ListItemAvatar>
+          <ListItemText
+            primary={`${registration.user_info.first_name} ${registration.user_info.last_name}`}
+            secondary={`${getUserClass(registration.user_info.user_class)} - ${getUserStudyShort(registration.user_info.user_study)}${
+              registration.user_info.allergy !== '' ? `\nAllergier: ${registration.user_info.allergy}` : ''
+            }${!registration.allow_photo ? `\nVil ikke bli tatt bilde av` : ''}`}
+          />
+          {expanded ? <ExpandLessIcon sx={{ mr: 2 }} /> : <ExpandMoreIcon sx={{ mr: 2 }} />}
+        </ListItemButton>
       </ListItem>
-      <Collapse in={expanded}>
+      <Collapse in={expanded} mountOnEnter unmountOnExit>
         <Divider />
-        <div className={classes.content}>
+        <Stack gap={1} sx={{ p: 2 }}>
           <div>
             <Typography variant='subtitle1'>{`Epost: ${registration.user_info.email}`}</Typography>
             <Typography variant='subtitle1'>{`Påmeldt: ${formatDate(parseISO(registration.created_at))}`}</Typography>
           </div>
-          <div className={classes.actions}>
-            {registration.is_on_wait ? (
-              <Button fullWidth onClick={() => changeList(false)} startIcon={<ArrowUpwardIcon />} variant='outlined'>
+          <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
+            {registration.is_on_wait && event && event.list_count >= event.limit ? (
+              <VerifyDialog contentText='Du må flytte noen på ventelista før du kan flytte en deltager opp' startIcon={<ArrowUpwardIcon />}>
                 Flytt til påmeldte
-              </Button>
+              </VerifyDialog>
+            ) : registration.is_on_wait && event && event.list_count <= event.limit ? (
+              <VerifyDialog
+                contentText={`Er du sikker på at du vil gi denne personen plass på dette arrangementet?`}
+                onConfirm={() => moveHandler(false)}
+                startIcon={<ArrowUpwardIcon />}
+                titleText={'Er du sikker?'}
+                variant='outlined'>
+                Flytt til påmeldte
+              </VerifyDialog>
             ) : (
-              <Button fullWidth onClick={() => changeList(true)} startIcon={<ArrowDownwardIcon />} variant='outlined'>
+              <VerifyDialog
+                contentText={`Er du sikker på at du vil flytte denne personen til ventelista?`}
+                onConfirm={() => moveHandler(true)}
+                startIcon={<ArrowDownwardIcon />}
+                titleText={'Er du sikker?'}
+                variant='outlined'>
                 Flytt til venteliste
-              </Button>
+              </VerifyDialog>
             )}
-            <Button color='error' fullWidth onClick={() => setShowModal(true)} startIcon={<Delete />} variant='outlined'>
+            <VerifyDialog
+              color='error'
+              contentText={`Er du sikker på at du vil fjerne ${registration.user_info.first_name} ${registration.user_info.last_name} fra arrangementet?`}
+              onConfirm={deleteHandler}
+              startIcon={<Delete />}>
               Fjern deltager
-            </Button>
-          </div>
-        </div>
+            </VerifyDialog>
+          </Stack>
+          <Divider sx={{ my: 1 }} />
+          <StrikesInfo />
+        </Stack>
       </Collapse>
     </Paper>
   );

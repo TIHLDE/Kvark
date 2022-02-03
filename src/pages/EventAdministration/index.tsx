@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import URLS from 'URLS';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { useEvents, useEventById } from 'hooks/Event';
+import { useEventsWhereIsAdmin, useEventById } from 'hooks/Event';
 import { parseISO } from 'date-fns';
 import { formatDate } from 'utils';
 
 // Material-UI
-import { makeStyles } from '@mui/styles';
-import { Typography, Collapse } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { Typography, Collapse, Alert } from '@mui/material';
 
 // Icons
 import EditIcon from '@mui/icons-material/EditRounded';
@@ -25,7 +25,7 @@ import EventEditor from 'pages/EventAdministration/components/EventEditor';
 import EventParticipants from 'pages/EventAdministration/components/EventParticipants';
 import EventFormAdmin from 'pages/EventAdministration/components/EventFormAdmin';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     padding: theme.spacing(4),
     marginLeft: theme.spacing(35),
@@ -45,10 +45,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const EventAdministration = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const navigate = useNavigate();
   const { eventId } = useParams();
-  const { data: event } = useEventById(eventId ? Number(eventId) : -1);
+  const { data: event, isLoading, isError } = useEventById(eventId ? Number(eventId) : -1);
   const editTab = { value: 'edit', label: eventId ? 'Endre' : 'Skriv', icon: EditIcon };
   const participantsTab = { value: 'participants', label: 'Deltagere', icon: ParticipantsIcon };
   const formsTab = { value: 'forms', label: 'Spørsmål', icon: FormsIcon };
@@ -66,6 +66,21 @@ const EventAdministration = () => {
     }
   };
 
+  /**
+   * Go to "New Event" if there is an error loading current event or the user don't have write-access to the event
+   */
+  useEffect(() => {
+    if ((event && !event.permissions.write) || isError) {
+      goToEvent(null);
+    }
+  }, [isError, event]);
+
+  useEffect(() => {
+    if (!isLoading && !tabs.some((t) => t.value === tab)) {
+      setTab(tabs[0].value);
+    }
+  }, [tab, isLoading]);
+
   return (
     <Page
       maxWidth={false}
@@ -78,10 +93,15 @@ const EventAdministration = () => {
         selectedItemId={Number(eventId)}
         title='Arrangementer'
         titleKey='title'
-        useHook={useEvents}
+        useHook={useEventsWhereIsAdmin}
       />
       <div className={classes.root}>
         <div className={classes.content}>
+          {event && event.closed && (
+            <Alert severity='warning' sx={{ mb: 1 }}>
+              Dette arrangementet er stengt.
+            </Alert>
+          )}
           <Typography className={classes.header} variant='h2'>
             {eventId ? 'Endre arrangement' : 'Nytt arrangement'}
           </Typography>

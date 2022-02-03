@@ -6,18 +6,18 @@ import { useNavigate } from 'react-router-dom';
 import { useLogout } from 'hooks/User';
 
 // Material-UI
-import { makeStyles } from '@mui/styles';
-import { SvgIconProps, Badge, Collapse, List, ListItem, ListItemIcon, ListItemText, Stack } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { SvgIconProps, Badge, Collapse, List, ListItem, ListItemIcon, ListItemText, Stack, Box } from '@mui/material';
 
 // Icons
 import EventIcon from '@mui/icons-material/DateRangeRounded';
-import NotificationsIcon from '@mui/icons-material/NotificationsNoneRounded';
 import SettingsIcon from '@mui/icons-material/SettingsRounded';
 import AdminIcon from '@mui/icons-material/TuneRounded';
 import LogOutIcon from '@mui/icons-material/ExitToAppRounded';
 import BadgesIcon from '@mui/icons-material/EmojiEventsRounded';
 import GroupsIcon from '@mui/icons-material/PeopleOutlineRounded';
 import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
+import WorkspacesIcon from '@mui/icons-material/WorkspacesRounded';
 
 // Project Components
 import ProfileAdmin from 'pages/Profile/components/ProfileAdmin';
@@ -25,12 +25,12 @@ import ProfileSettings from 'pages/Profile/components/ProfileSettings';
 import ProfileEvents from 'pages/Profile/components/ProfileEvents';
 import ProfileForms from 'pages/Profile/components/ProfileForms';
 import ProfileGroups from 'pages/Profile/components/ProfileGroups';
-import ProfileNotifications from 'pages/Profile/components/ProfileNotifications';
 import ProfileBadges from 'pages/Profile/components/ProfileBadges';
+import ProfileStrikes from 'pages/Profile/components/ProfileStrikes';
 import Paper from 'components/layout/Paper';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   content: {
     display: 'grid',
     gridTemplateColumns: '250px 1fr',
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProfileContent = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const navigate = useNavigate();
   const { event } = useGoogleAnalytics();
   const logOut = useLogout();
@@ -62,14 +62,15 @@ const ProfileContent = () => {
   };
 
   const eventTab: NavListItem = { label: 'Arrangementer', icon: EventIcon };
-  const notificationsTab: NavListItem = { label: 'Varsler', icon: NotificationsIcon, badge: user?.unread_notifications };
   const badgesTab: NavListItem = { label: 'Badges', icon: BadgesIcon };
   const groupsTab: NavListItem = { label: 'Grupper', icon: GroupsIcon };
   const formsTab: NavListItem = { label: 'Spørreskjemaer', icon: FormsIcon, badge: user?.unanswered_evaluations_count };
   const settingsTab: NavListItem = { label: 'Innstillinger', icon: SettingsIcon };
   const adminTab: NavListItem = { label: 'Admin', icon: AdminIcon };
+  const strikesTab: NavListItem = { label: 'Prikker', icon: WorkspacesIcon };
   const logoutTab: NavListItem = { label: 'Logg ut', icon: LogOutIcon, onClick: logout, className: classes.logOutButton };
-  const tabs: Array<NavListItem> = [eventTab, notificationsTab, badgesTab, groupsTab, formsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
+  const tabs: Array<NavListItem> = [eventTab, badgesTab, groupsTab, strikesTab, formsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
+
   const [tab, setTab] = useState(eventTab.label);
 
   useEffect(() => event('change-tab', 'profile', `Changed tab to: ${tab}`), [tab]);
@@ -114,12 +115,9 @@ const ProfileContent = () => {
           </List>
         </Paper>
       </Stack>
-      <div>
+      <Box sx={{ overflowX: 'auto' }}>
         <Collapse in={tab === eventTab.label}>
           <ProfileEvents />
-        </Collapse>
-        <Collapse in={tab === notificationsTab.label} mountOnEnter unmountOnExit>
-          <ProfileNotifications />
         </Collapse>
         <Collapse in={tab === badgesTab.label} mountOnEnter>
           <ProfileBadges />
@@ -130,13 +128,16 @@ const ProfileContent = () => {
         <Collapse in={tab === formsTab.label} mountOnEnter>
           <ProfileForms />
         </Collapse>
+        <Collapse in={tab === strikesTab.label} mountOnEnter>
+          <ProfileStrikes />
+        </Collapse>
         <Collapse in={tab === settingsTab.label} mountOnEnter>
           <Paper>{user && <ProfileSettings user={user} />}</Paper>
         </Collapse>
         <Collapse in={tab === adminTab.label} mountOnEnter>
           <ProfileAdmin />
         </Collapse>
-      </div>
+      </Box>
     </div>
   );
 };

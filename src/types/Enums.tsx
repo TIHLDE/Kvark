@@ -9,6 +9,7 @@ export enum Study {
   DIGFOR = 'DigFor',
   DIGSEC = 'DigSec',
   DIGSAM = 'DigSam',
+  INFO = 'Info',
 }
 
 export enum CheatsheetType {
@@ -24,6 +25,7 @@ export enum UserStudy {
   DIGSEC = 3,
   DIGSAM = 4,
   DRIFT = 5,
+  INFO = 6,
 }
 
 export enum UserClass {
@@ -42,8 +44,11 @@ export enum PermissionApp {
   JOBPOST = 'jobpost',
   NEWS = 'news',
   PAGE = 'page',
+  STRIKE = 'strike',
   USER = 'user',
+  FORMS = 'form',
 }
+
 export enum Groups {
   HS = 'HS',
   INDEX = 'Index',
@@ -53,13 +58,15 @@ export enum Groups {
   DRIFT = 'Drift',
 }
 
-export enum FormType {
+export enum EventFormType {
   SURVEY = 'SURVEY',
   EVALUATION = 'EVALUATION',
 }
 
 export enum FormResourceType {
+  FORM = 'Form',
   EVENT_FORM = 'EventForm',
+  GROUP_FORM = 'GroupForm',
 }
 
 export enum FormFieldType {
@@ -81,4 +88,19 @@ export enum GroupType {
   STUDYYEAR = 'STUDYYEAR',
   INTERESTGROUP = 'INTERESTGROUP',
   OTHER = 'OTHER',
+}
+
+export enum JobPostType {
+  PART_TIME = 'PART_TIME',
+  FULL_TIME = 'FULL_TIME',
+  SUMMER_JOB = 'SUMMER_JOB',
+  OTHER = 'OTHER',
+}
+
+export enum StrikeReason {
+  PAST_DEADLINE = 'PAST_DEADLINE',
+  NO_SHOW = 'NO_SHOW',
+  LATE = 'LATE',
+  BAD_BEHAVIOR = 'BAD_BEHAVIOR',
+  EVAL_FORM = 'EVAL_FORM',
 }

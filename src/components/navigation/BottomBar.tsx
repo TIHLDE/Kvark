@@ -3,7 +3,7 @@ import URLS from 'URLS';
 import { Link, useLocation } from 'react-router-dom';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { BottomNavigation, BottomNavigationAction, SvgIcon } from '@mui/material';
 import EventIcon from '@mui/icons-material/EventRounded';
 import MenuIcon from '@mui/icons-material/MenuRounded';
@@ -18,7 +18,7 @@ import Sidebar from 'components/navigation/Sidebar';
 import Logo from 'components/miscellaneous/TihldeLogo';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     position: 'fixed',
     bottom: 0,
@@ -33,6 +33,10 @@ const useStyles = makeStyles((theme) => ({
     ...theme.palette.transparent,
     background: `${theme.palette.background.paper}aa`,
     overflow: 'hidden',
+    color: theme.palette.text.secondary,
+    '& .Mui-selected': {
+      color: theme.palette.text.primary,
+    },
   },
   bottombar: {
     height: 80,
@@ -42,9 +46,6 @@ const useStyles = makeStyles((theme) => ({
   action: {
     color: theme.palette.text.secondary,
     padding: 12,
-    '&$selected': {
-      color: theme.palette.text.primary,
-    },
     minWidth: 50,
   },
   selected: {
@@ -65,7 +66,7 @@ type Item = {
   to: string;
 };
 
-const MainLogo = () => <SvgIcon component={Logo} darkColor='white' lightColor='black' size='small' />;
+const MainLogo = () => <SvgIcon component={Logo} darkColor='white' lightColor='black' size='small' sx={{ color: 'currentColor' }} />;
 const MENU_TAB_KEY = 'menu';
 
 export type BottomBarProps = {
@@ -74,7 +75,7 @@ export type BottomBarProps = {
 
 const BottomBar = ({ items }: BottomBarProps) => {
   const { event } = useGoogleAnalytics();
-  const classes = useStyles();
+  const { classes } = useStyles();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();

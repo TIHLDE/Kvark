@@ -1,10 +1,9 @@
 import { useMemo, useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
-import classNames from 'classnames';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { useTheme, AppBar, Toolbar, Button, Grow, Paper, Popper, MenuItem, MenuList, useMediaQuery } from '@mui/material';
 
 // Assets/Icons
@@ -15,7 +14,7 @@ import { NavigationItem, NavigationOptions } from 'components/navigation/Navigat
 import ProfileTopbarButton from 'components/navigation/ProfileTopbarButton';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   appBar: {
     boxSizing: 'border-box',
     backgroundColor: theme.palette.colors.gradient.main.top,
@@ -40,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto',
     padding: theme.spacing(0, 1),
     display: 'grid',
-    gridTemplateColumns: '170px 1fr 170px',
+    gridTemplateColumns: '172px 1fr 172px',
   },
   filledTopbar: {
     position: 'fixed',
@@ -61,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    height: 62,
   },
   logo: {
     height: 32,
@@ -88,8 +88,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   avatar: {
-    width: 45,
-    height: 45,
+    width: 55,
+    height: 55,
   },
   topbarItem: {
     alignSelf: 'center',
@@ -124,13 +124,13 @@ export type TopBarItemProps = {
 };
 
 const TopBarItem = ({ items, text, to, type }: TopBarItemProps) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const [isOpen, setIsOpen] = useState(false);
-  const anchorRef = useRef<HTMLButtonElement>(null);
+  const buttonAnchorRef = useRef<HTMLButtonElement>(null);
   const selected = useMemo(() => location.pathname === to, [location.pathname, to]);
   if (type === 'link' && to) {
     return (
-      <div className={classNames(classes.topbarItem, selected && classes.selected)}>
+      <div className={cx(classes.topbarItem, selected && classes.selected)}>
         <Button color='inherit' component={Link} onClick={selected ? () => window.location.reload() : undefined} to={to}>
           {text}
         </Button>
@@ -142,13 +142,13 @@ const TopBarItem = ({ items, text, to, type }: TopBarItemProps) => {
         <Button
           className={classes.topbarItem}
           color='inherit'
-          endIcon={<ExpandIcon className={classNames(classes.dropdownIcon, isOpen && classes.expanded)} />}
+          endIcon={<ExpandIcon className={cx(classes.dropdownIcon, isOpen && classes.expanded)} />}
           onClick={() => setIsOpen((prev) => !prev)}
           onMouseEnter={() => setIsOpen(true)}
-          ref={anchorRef}>
+          ref={buttonAnchorRef}>
           {text}
         </Button>
-        <Popper anchorEl={anchorRef.current} disablePortal open={isOpen} role={undefined} transition>
+        <Popper anchorEl={buttonAnchorRef.current} disablePortal open={isOpen} role={undefined} transition>
           {({ TransitionProps, placement }) => (
             <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
               <Paper>
@@ -175,7 +175,7 @@ export type TopbarProps = {
 } & Pick<NavigationOptions, 'darkColor' | 'lightColor' | 'filledTopbar'>;
 
 const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const theme = useTheme();
   const [scrollLength, setScrollLength] = useState(0);
   const lgDown = useMediaQuery(theme.breakpoints.down('lg'));
@@ -195,7 +195,7 @@ const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => 
   if (lgDown) {
     return (
       <div className={classes.topbarMobile}>
-        <Link to={URLS.landing}>
+        <Link aria-label='Til forsiden' to={URLS.landing}>
           <TihldeLogo className={classes.logo} darkColor={colorOnDark} lightColor={colorOnLight} size='large' />
         </Link>
         <ProfileTopbarButton darkColor={colorOnDark} lightColor={colorOnLight} />
@@ -204,13 +204,12 @@ const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => 
   }
   return (
     <>
-      <AppBar className={classNames(classes.appBar, isOnTop ? classes.fancyAppBar : classes.backdrop)} elevation={isOnTop ? 0 : 1} position='fixed'>
+      <AppBar className={cx(classes.appBar, isOnTop ? classes.fancyAppBar : classes.backdrop)} elevation={isOnTop ? 0 : 1} position='fixed'>
         <Toolbar className={classes.toolbar} disableGutters>
-          <Link to={URLS.landing}>
+          <Link aria-label='Til forsiden' to={URLS.landing}>
             <TihldeLogo className={classes.logo} darkColor={colorOnDark} lightColor={colorOnLight} size='large' />
           </Link>
-          <div
-            className={classNames(classes.items, (theme.palette.mode === 'light' ? colorOnLight : colorOnDark) !== 'white' && !filledTopbar && classes.black)}>
+          <div className={cx(classes.items, (theme.palette.mode === 'light' ? colorOnLight : colorOnDark) !== 'white' && !filledTopbar && classes.black)}>
             {items.map((item, i) => (
               <TopBarItem key={i} {...item} />
             ))}
