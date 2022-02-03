@@ -61,3 +61,7 @@ export interface Registration {
   has_unanswered_evaluation: boolean;
   user_info: UserList;
 }
+
+export type PublicRegistration = {
+  user_info: Registration['user_info'] | null;
+};

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { UserList } from 'types';
-import { useActivateUser, useDeclineUser } from 'hooks/User';
+import { useActivateUser, useDeclineUser, useUser } from 'hooks/User';
 import { useSnackbar } from 'hooks/Snackbar';
 import { getUserClass, getUserStudyShort } from 'utils';
 import URLS from 'URLS';
@@ -89,6 +89,7 @@ const PersonListItem = ({ user, is_TIHLDE_member = true }: PersonListItemProps) 
   const activateUser = useActivateUser();
   const showSnackbar = useSnackbar();
   const [expanded, setExpanded] = useState(false);
+  const { data } = useUser(user.user_id, { enabled: expanded && is_TIHLDE_member });
   const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
   const activate = () =>
     activateUser.mutate(user.user_id, {
@@ -130,10 +131,10 @@ const PersonListItem = ({ user, is_TIHLDE_member = true }: PersonListItemProps) 
             </Typography>
           </div>
           {is_TIHLDE_member ? (
-            <ProfileSettings isAdmin user={user} />
+            data && <ProfileSettings isAdmin user={data} />
           ) : (
             <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
-              <Button fullWidth onClick={() => activate()} variant='outlined'>
+              <Button fullWidth onClick={activate} variant='outlined'>
                 Legg til medlem
               </Button>
               <DeclineUser user={user} />
