@@ -14,6 +14,18 @@
 
 ## Neste versjon
 
+- ✨ **Offentlige profiler**. Det er nå mulig å se andre brukeres profiler med deres badges og medlemskap i grupper.
+- ✨ **Arrangementer**. Alle innloggede brukere kan nå se hvem som er påmeldt arrangementer. Brukere kan reservere seg mot å bli oppført på deltagerlisten.
+- ⚡ **Tilganger**. Laster inn tilganger fra backend først når de trengs.
+- ✨ **Skjemamaler**. Administratorer kan nå lage maler som man kan ta utgangspunkt i når man lager et nytt skjema.
+- ✨ **Bildeopplastning**. Viser foretrukket størrelsesforhold på bilder ved bildeopplastning.
+- ✨ **Gruppe mail og logo visning** Viser en gruppes kontakt mail og logo på oversikt side og mer detaljert side. Samt mulgihet for opplasting av gruppe logo. 
+
+## Versjon 1.4.2 (31.01.2022)
+
+- 🦟 **Eventadmin**. Viser at et arrangement er stengt i adminpanelet.
+- 🦟 **Stories**. Annonser som har fortløpende opptak vises med "fortløpende opptak".
+
 ## Versjon 1.4.1 (15.01.2022)
 
 - ⚡ **Arrangementer**. Brukere kan nå se om de er prioritert på et arrangement.

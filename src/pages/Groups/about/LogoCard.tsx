@@ -15,11 +15,15 @@ const useStyles = makeStyles()(() => ({
     height: '100px',
     width: '100px',
     margin: '10px',
+    borderRadius: '20px',
   },
 }));
 
 const LogoCard = ({ group }: LogoCardProps) => {
   const { classes } = useStyles();
+  if (group.image === null) {
+    return null;
+  }
   return (
     <>
       <div className={classes.container}>
