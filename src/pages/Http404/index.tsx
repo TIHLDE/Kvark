@@ -25,7 +25,11 @@ const Img = styled('img')({
   objectFit: 'contain',
 });
 
-const Http404 = () => {
+export type Http404Props = {
+  title?: string;
+};
+
+const Http404 = ({ title = 'Kunne ikke finne siden' }: Http404Props) => {
   const isAuthenticated = useIsAuthenticated();
 
   return (
@@ -36,7 +40,7 @@ const Http404 = () => {
         <Img alt='404' loading='lazy' src={http404img} sx={{ paddingTop: (theme) => theme.spacing(3) }} />
       )}
       <Typography align='center' variant='h1'>
-        Kunne ikke finne siden
+        {title}
       </Typography>
       <Buttons>
         <Button component={Link} to={URLS.landing} variant='contained'>
