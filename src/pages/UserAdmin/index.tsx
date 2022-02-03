@@ -65,7 +65,10 @@ const UserAdmin = () => {
   }, [tab, userClassChoice, userStudyChoice, searchInput]);
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useUsers({ is_TIHLDE_member: tab === membersTab.value, ...filters });
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
-  const members = data !== undefined ? data.pages.map((page) => page.results.length) + ' medlemmer' : '';
+  const membersAmount = `${data?.pages[0]?.count || '_'} medlemmer 
+  ${userClassChoice !== 0 || userStudyChoice !== 0 ? 'i' : 'totalt'}
+  ${userClassChoice !== 0 ? USER_CLASSES[userClassChoice] : ''} 
+  ${userStudyChoice !== 0 ? USER_STUDIES[userStudyChoice] : ''}`;
 
   useEffect(() => {
     const timer = setTimeout(() => setSearchInput(search), 500);
@@ -76,7 +79,7 @@ const UserAdmin = () => {
     <Page banner={<PrimaryTopBox />} options={{ title: 'Brukeradmin' }}>
       <Paper className={classes.content}>
         <Typography variant='h1'>Brukeradmin</Typography>
-        <p>{members}</p>
+        <Typography>{membersAmount}</Typography>
         <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
         <div className={classes.filterContainer}>
           <TextField fullWidth label='Klasser' onChange={(e) => setUserClassChoice(Number(e.target.value))} select value={userClassChoice} variant='outlined'>
