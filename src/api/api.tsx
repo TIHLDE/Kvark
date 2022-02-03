@@ -156,6 +156,8 @@ export default {
   activateUser: (userName: string) => IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/activate/`, data: { user_id: userName } }),
   declineUser: (userName: string, reason: string) =>
     IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/decline/`, data: { user_id: userName, reason } }),
+  exportUserData: () => IFetch<RequestResponse>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/data/` }),
+  deleteUser: (userId?: User['user_id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/` }),
   getUserStrikes: (userId?: User['user_id']) =>
     IFetch<Array<Strike>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${STRIKES_ENDPOINT}/` }),
 

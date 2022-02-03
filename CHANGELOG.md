@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- ✨ **Bruker**. Det er mulig å eksportere sin brukerdata.
+- ✨ **Bruker**. Det er mulig å slette sin egen bruker.
 - ✨ **Offentlige profiler**. Det er nå mulig å se andre brukeres profiler med deres badges og medlemskap i grupper.
 - ✨ **Arrangementer**. Alle innloggede brukere kan nå se hvem som er påmeldt arrangementer. Brukere kan reservere seg mot å bli oppført på deltagerlisten.
 - ⚡ **Tilganger**. Laster inn tilganger fra backend først når de trengs.

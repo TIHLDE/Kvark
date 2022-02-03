@@ -31,10 +31,15 @@ export const USERS_QUERY_KEY = 'users';
 
 export const useUser = (userId?: User['user_id'], options?: UseQueryOptions<User | undefined, RequestResponse, User | undefined, QueryKey>) => {
   const isAuthenticated = useIsAuthenticated();
+  const logOut = useLogout();
   const { setUserId } = useGoogleAnalytics();
   return useQuery<User | undefined, RequestResponse>([USER_QUERY_KEY, userId], () => (isAuthenticated ? API.getUserData(userId) : undefined), {
     ...options,
     onSuccess: (data) => !data || userId || setUserId(data.user_id),
+    onError: () => {
+      logOut();
+      window.location.reload();
+    },
   });
 };
 
@@ -124,6 +129,11 @@ export const useUpdateUser = (): UseMutationResult<User, RequestResponse, { user
     },
   });
 };
+
+export const useExportUserData = (): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => useMutation(() => API.exportUserData());
+
+export const useDeleteUser = (): UseMutationResult<RequestResponse, RequestResponse, string | undefined, unknown> =>
+  useMutation((userId) => API.deleteUser(userId));
 
 export const useActivateUser = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => {
   const queryClient = useQueryClient();
