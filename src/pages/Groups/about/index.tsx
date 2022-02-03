@@ -22,7 +22,6 @@ const GroupInfo = () => {
         </>
       )}
       <MembersCard showAdmin slug={group.slug} />
-      <Divider sx={{ mb: 2, mt: 1 }} />
       <MembersHistoryCard slug={group.slug} />
     </>
   );
