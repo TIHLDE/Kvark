@@ -21,6 +21,7 @@ import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 import EventPriorities from 'pages/EventDetails/components/EventPriorities';
 import EventRegistration from 'pages/EventDetails/components/EventRegistration';
+import EventPublicRegistrationsList from 'pages/EventDetails/components/EventPublicRegistrationsList';
 import Paper from 'components/layout/Paper';
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 import QRButton from 'components/miscellaneous/QRButton';
@@ -252,7 +253,10 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       {data.sign_up && (
         <>
           <DetailsPaper noPadding>
-            <DetailsHeader variant='h2'>Påmelding</DetailsHeader>
+            <Stack direction='row' gap={1} justifyContent='space-between' sx={{ position: 'relative' }}>
+              {user && <EventPublicRegistrationsList eventId={data.id} sx={{ position: 'absolute', right: ({ spacing }) => spacing(-1) }} />}
+              <DetailsHeader variant='h2'>Påmelding</DetailsHeader>
+            </Stack>
             <DetailContent info={`${data.list_count}/${data.limit}`} title='Påmeldte:' />
             <DetailContent info={String(data.waiting_list_count)} title='Venteliste:' />
             {registration && isFuture(signOffDeadlineDate) ? (

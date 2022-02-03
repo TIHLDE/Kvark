@@ -1,20 +1,22 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useDeleteMembership, useUpdateMembership } from 'hooks/Membership';
 import { useSnackbar } from 'hooks/Snackbar';
 import { MembershipType } from 'types/Enums';
+import { UserList } from 'types';
+import URLS from 'URLS';
+import { getUserClass, getUserStudyShort } from 'utils';
 
-import { Stack, Collapse, Divider, ListItem, ListItemText, ListItemAvatar, Typography } from '@mui/material';
+import { Stack, Collapse, Divider, IconButton, ListItem, ListItemButton, ListItemText, ListItemAvatar, Typography } from '@mui/material';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import { UserList } from 'types';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import StarIcon from '@mui/icons-material/Star';
 
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import Avatar from 'components/miscellaneous/Avatar';
-import { getUserClass, getUserStudyShort } from 'utils';
 
 export type MemberListItemProps = {
   user: UserList;
@@ -51,12 +53,15 @@ const MemberListItem = ({ slug, user }: MemberListItemProps) => {
 
   return (
     <Paper noOverflow noPadding>
-      <ListItem button onClick={() => setExpanded((prev) => !prev)}>
-        <ListItemAvatar>
-          <Avatar user={user} />
-        </ListItemAvatar>
-        <ListItemText primary={`${user.first_name} ${user.last_name}`} />
-        {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+      <ListItem
+        disablePadding
+        secondaryAction={<IconButton onClick={() => setExpanded((prev) => !prev)}>{expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}</IconButton>}>
+        <ListItemButton component={Link} to={`${URLS.profile}${user.user_id}/`}>
+          <ListItemAvatar>
+            <Avatar user={user} />
+          </ListItemAvatar>
+          <ListItemText primary={`${user.first_name} ${user.last_name}`} />
+        </ListItemButton>
       </ListItem>
       <Collapse in={expanded}>
         <Typography sx={{ whiteSpace: 'break-spaces', p: 2 }}>

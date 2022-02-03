@@ -11,9 +11,12 @@ import { MenuItem, Typography, Stack, Divider, Button } from '@mui/material';
 // Project components
 import TextField from 'components/inputs/TextField';
 import Select from 'components/inputs/Select';
+import Bool from 'components/inputs/Bool';
 import SubmitButton from 'components/inputs/SubmitButton';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import { ImageUpload } from 'components/inputs/Upload';
+import { useGoogleAnalytics } from 'hooks/Utils';
+import { ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
 
 const DeleteUserDialog = ({ isAdmin, user }: ProfileSettingsProps) => {
   const { event } = useGoogleAnalytics();
@@ -21,7 +24,7 @@ const DeleteUserDialog = ({ isAdmin, user }: ProfileSettingsProps) => {
   const deleteUser = useDeleteUser();
   const logOut = useLogout();
   const showSnackbar = useSnackbar();
-  const { register, formState, watch } = useForm<Pick<UserList, 'user_id'>>();
+  const { register, formState, watch } = useForm<Pick<User, 'user_id'>>();
   const writtenUserId = watch('user_id');
 
   const runDeleteUser = () =>
@@ -55,11 +58,14 @@ const DeleteUserDialog = ({ isAdmin, user }: ProfileSettingsProps) => {
 };
 
 export type ProfileSettingsProps = {
-  user: UserList;
+  user: User;
   isAdmin?: boolean;
 };
 
-type FormData = Pick<UserList, 'first_name' | 'last_name' | 'email' | 'cell' | 'image' | 'gender' | 'allergy' | 'tool' | 'user_class' | 'user_study'>;
+type FormData = Pick<
+  User,
+  'first_name' | 'last_name' | 'email' | 'image' | 'gender' | 'allergy' | 'tool' | 'user_class' | 'user_study' | 'public_event_registrations'
+>;
 
 const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
   const { event } = useGoogleAnalytics();
@@ -109,7 +115,25 @@ const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
             <TextField disabled={updateUser.isLoading} formState={formState} label='Epost' {...register('email')} />
           </Stack>
         )}
-        <TextField disabled={updateUser.isLoading} formState={formState} InputProps={{ type: 'number' }} label='Telefon' {...register('cell')} />
+        <Bool
+          control={control}
+          disabled={updateUser.isLoading}
+          formState={formState}
+          label={
+            <>
+              Offentlige arrangementspåmeldinger
+              <ShowMoreTooltip>
+                Bestemmer:
+                <br />
+                1. Om du skal stå oppført med navnet ditt eller være anonym i deltagerlister på arrangementer.
+                <br />
+                2. Om arrangement-kalenderen din skal være aktivert og mulig å abonnere på.
+              </ShowMoreTooltip>
+            </>
+          }
+          name='public_event_registrations'
+          type='switch'
+        />
         <ImageUpload formState={formState} label='Velg profilbilde' ratio='1:1' register={register('image')} setValue={setValue} watch={watch} />
         <Stack direction={['column', 'row']} gap={[0, 1]}>
           <Select control={control} disabled={!isAdmin} formState={formState} label='Studie' name='user_study'>
@@ -143,7 +167,7 @@ const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
           minRows={3}
         />
         <SubmitButton disabled={updateUser.isLoading} formState={formState}>
-          Oppdater
+          Lagre
         </SubmitButton>
         {!isAdmin && (
           <Typography sx={{ mt: 1 }} variant='body2'>
