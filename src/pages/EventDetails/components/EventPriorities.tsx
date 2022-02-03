@@ -1,80 +1,66 @@
-import { ReactNode } from 'react';
+import { useMemo } from 'react';
 import { RegistrationPriority } from 'types';
 import { UserClass, UserStudy } from 'types/Enums';
+import { useUser } from 'hooks/User';
 import { getUserStudyShort } from 'utils';
+import { Typography, Stack, Tooltip, styled, alpha } from '@mui/material';
 
-// Material UI Components
-import { makeStyles } from '@mui/styles';
-import { Typography } from '@mui/material';
-
-const useStyles = makeStyles((theme) => ({
-  prioritiesContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    width: '100%',
-  },
-  priority: {
-    padding: '0 3px',
-    border: theme.palette.borderWidth + ' solid ' + theme.palette.divider,
-    borderRadius: theme.shape.borderRadius,
-    margin: 3,
-    color: theme.palette.text.primary,
-  },
+const Item = styled(Typography)(({ theme }) => ({
+  padding: theme.spacing(0, 0.75),
+  border: theme.palette.borderWidth + ' solid ' + theme.palette.divider,
+  borderRadius: theme.shape.borderRadius,
+  margin: 3,
+  color: theme.palette.text.primary,
 }));
-
-const removeStudyFromArray = (array: Array<RegistrationPriority>, userStudy: UserStudy) => {
-  while (array.some((item) => item.user_study === userStudy)) {
-    const index = array.findIndex((item) => item.user_study === userStudy);
-    array.splice(index, 1);
-  }
-  return array;
-};
 
 export type EventPrioritesProps = {
   priorities: Array<RegistrationPriority>;
 };
 
 const EventPriorities = ({ priorities }: EventPrioritesProps) => {
-  const classes = useStyles();
-  let prioritiesArr = [...priorities];
-  const content: ReactNode[] = [];
-
-  type ItemProps = {
-    label: string;
-  };
-
-  const Item = ({ label }: ItemProps) => (
-    <Typography className={classes.priority} component='span' variant='subtitle1'>
-      {label}
-    </Typography>
-  );
-
-  [UserStudy.DATAING, UserStudy.DIGFOR, UserStudy.DIGSEC, UserStudy.DIGSAM, UserStudy.DRIFT].forEach((study: UserStudy) => {
-    if (study === UserStudy.DIGSAM) {
-      if (
-        prioritiesArr.some((item) => item.user_class === UserClass.FOURTH && item.user_study === study) &&
-        prioritiesArr.some((item) => item.user_class === UserClass.FIFTH && item.user_study === study)
-      ) {
-        content.push(<Item key={study} label={getUserStudyShort(study)} />);
-        prioritiesArr = removeStudyFromArray(prioritiesArr, study);
+  const { data: user } = useUser();
+  const prioritiesArray = useMemo(() => {
+    const arr: Array<{ label: string; member_of: boolean }> = [];
+    [UserStudy.DATAING, UserStudy.DIGFOR, UserStudy.DIGSEC, UserStudy.DIGSAM, UserStudy.INFO].forEach((study: UserStudy) => {
+      const classes_in_study = study === UserStudy.DIGSAM ? [UserClass.FOURTH, UserClass.FIFTH] : [UserClass.FIRST, UserClass.SECOND, UserClass.THIRD];
+      const all_classes_in_study_prioritized = classes_in_study.every((user_class) =>
+        priorities.some((item) => item.user_class === user_class && item.user_study === study),
+      );
+      if (all_classes_in_study_prioritized) {
+        arr.push({
+          label: getUserStudyShort(study),
+          member_of: classes_in_study.some((user_class) => user_class === user?.user_class && study === user?.user_study),
+        });
+      } else {
+        priorities
+          .filter((priority) => priority.user_study === study)
+          .forEach((priority) =>
+            arr.push({
+              label: `${priority.user_class}. ${getUserStudyShort(priority.user_study)}`,
+              member_of: priority.user_class === user?.user_class && priority.user_study === user?.user_study,
+            }),
+          );
       }
-    } else if (
-      prioritiesArr.some((item) => item.user_class === UserClass.FIRST && item.user_study === study) &&
-      prioritiesArr.some((item) => item.user_class === UserClass.SECOND && item.user_study === study) &&
-      prioritiesArr.some((item) => item.user_class === UserClass.THIRD && item.user_study === study)
-    ) {
-      content.push(<Item key={study} label={getUserStudyShort(study)} />);
-      prioritiesArr = removeStudyFromArray(prioritiesArr, study);
-    }
-  });
+    });
+    return arr;
+  }, [priorities, user]);
 
   return (
-    <div className={classes.prioritiesContainer}>
-      {content}
-      {prioritiesArr.map((priority, index) => (
-        <Item key={index} label={priority.user_class + '. ' + getUserStudyShort(priority.user_study)} />
-      ))}
-    </div>
+    <Stack direction='row' flexWrap='wrap'>
+      {prioritiesArray.map((priority, index) =>
+        priority.member_of ? (
+          <Tooltip arrow key={index} title='Du er medlem av denne klassen/studiet og er dermed prioritert på dette arrangementet'>
+            <Item sx={{ borderColor: (theme) => alpha(theme.palette.info.dark, 0.8) }} variant='subtitle1'>
+              {priority.label}
+            </Item>
+          </Tooltip>
+        ) : (
+          <Item key={index} variant='subtitle1'>
+            {priority.label}
+          </Item>
+        ),
+      )}
+    </Stack>
   );
 };
 

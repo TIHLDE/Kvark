@@ -1,4 +1,4 @@
-import { Fragment, useMemo, useState, useCallback } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useEvents } from 'hooks/Event';
@@ -6,14 +6,14 @@ import { useCategories } from 'hooks/Categories';
 import { argsToParams } from 'utils';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
-import { Divider, MenuItem, Button, useMediaQuery, Theme } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { Divider, MenuItem, Button, useMediaQuery, Theme, Stack } from '@mui/material';
 
 // Project Components
 import Page from 'components/navigation/Page';
 import Banner from 'components/layout/Banner';
 import Pagination from 'components/layout/Pagination';
-import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
+import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
 import Paper from 'components/layout/Paper';
 import Select from 'components/inputs/Select';
 import Bool from 'components/inputs/Bool';
@@ -21,9 +21,9 @@ import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import { useGoogleAnalytics } from 'hooks/Utils';
-import Expansion from 'components/layout/Expand';
+import Expand from 'components/layout/Expand';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   grid: {
     display: 'grid',
     gridTemplateColumns: '3fr 1fr',
@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
   list: {
     display: 'grid',
     gridTemplateColumns: '1fr',
+    gap: theme.spacing(1),
     [theme.breakpoints.down('lg')]: {
       order: 1,
     },
@@ -53,9 +54,6 @@ const useStyles = makeStyles((theme) => ({
       position: 'static',
       top: 0,
     },
-  },
-  accordion: {
-    background: theme.palette.background.paper,
   },
 }));
 
@@ -74,12 +72,13 @@ const Events = () => {
     const search = params.get('search') || undefined;
     return { expired, category, search };
   }, []);
-  const classes = useStyles();
+  const { classes } = useStyles();
   const navigate = useNavigate();
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
   const { data: categories = [] } = useCategories();
   const [filters, setFilters] = useState<Filters>(getInitialFilters());
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents(filters);
+  const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   const { register, control, handleSubmit, setValue, formState } = useForm<Filters>({ defaultValues: getInitialFilters() });
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 
@@ -127,27 +126,25 @@ const Events = () => {
     <Page banner={<Banner title='Arrangementer' />} options={{ title: 'Arrangementer' }}>
       <div className={classes.grid}>
         <div className={classes.list}>
-          {isLoading && <ListItemLoading />}
+          {isLoading && <EventListItemLoading />}
           {isEmpty && <NotFoundIndicator header='Fant ingen arrangementer' />}
           {error && <Paper>{error.detail}</Paper>}
           {data !== undefined && (
             <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-              {data.pages.map((page, i) => (
-                <Fragment key={i}>
-                  {page.results.map((event) => (
-                    <ListItem event={event} key={event.id} />
-                  ))}
-                </Fragment>
-              ))}
+              <Stack gap={1}>
+                {events.map((event) => (
+                  <EventListItem event={event} key={event.id} />
+                ))}
+              </Stack>
             </Pagination>
           )}
-          {isFetching && <ListItemLoading />}
+          {isFetching && <EventListItemLoading />}
         </div>
         {lgDown ? (
           <div>
-            <Expansion className={classes.accordion} expanded={searchFormExpanded} header='Filtrering' onChange={() => setSearchFormExpanded((prev) => !prev)}>
+            <Expand expanded={searchFormExpanded} flat header='Filtrering' onChange={() => setSearchFormExpanded((prev) => !prev)}>
               <SearchForm />
-            </Expansion>
+            </Expand>
           </div>
         ) : (
           <Paper className={classes.settings}>

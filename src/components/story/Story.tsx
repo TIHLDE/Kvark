@@ -5,8 +5,8 @@ import { urlEncode, formatDate } from 'utils';
 import URLS from 'URLS';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
-import { Theme, Skeleton, Typography, Button } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { Skeleton, Typography, Button } from '@mui/material';
 
 // Project components
 import StoryPopup from 'components/story/StoryPopup';
@@ -15,7 +15,7 @@ import StoryPopup from 'components/story/StoryPopup';
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
-const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme) => ({
+const useStyles = makeStyles<Pick<StoryProps, 'fadeColor'>>()((theme, props) => ({
   root: {
     overflow: 'hidden',
     position: 'relative',
@@ -25,7 +25,7 @@ const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme) => ({
     flexWrap: 'nowrap',
     overflowX: 'scroll',
     padding: theme.spacing(0, 1),
-    '-webkit-overflow-scrolling': 'touch',
+    WebkitOverflowScrolling: 'touch',
     '@media (any-pointer: coarse)': {
       '&::-webkit-scrollbar': {
         display: 'none',
@@ -55,13 +55,15 @@ const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme) => ({
     },
     '&:before': {
       left: 0,
-      background: (props) =>
-        `linear-gradient(to left, ${props.fadeColor || theme.palette.background.default}00, ${props.fadeColor || theme.palette.background.default} 65%)`,
+      background: `linear-gradient(to left, ${props.fadeColor || theme.palette.background.default}00, ${
+        props.fadeColor || theme.palette.background.default
+      } 65%)`,
     },
     '&:after': {
       right: 0,
-      background: (props) =>
-        `linear-gradient(to right, ${props.fadeColor || theme.palette.background.default}00, ${props.fadeColor || theme.palette.background.default} 65%)`,
+      background: `linear-gradient(to right, ${props.fadeColor || theme.palette.background.default}00, ${
+        props.fadeColor || theme.palette.background.default
+      } 65%)`,
     },
   },
   story: {
@@ -80,7 +82,7 @@ const useStyles = makeStyles<Theme, Pick<StoryProps, 'fadeColor'>>((theme) => ({
   imgButton: {
     display: 'block',
     margin: 'auto',
-    height: 75,
+    height: 60,
     width: '100%',
     borderRadius: 16,
     padding: 2,
@@ -123,7 +125,7 @@ export type StoryProps = {
 };
 
 const Story = ({ items, fadeColor }: StoryProps) => {
-  const classes = useStyles({ fadeColor });
+  const { classes } = useStyles({ fadeColor });
   const storyId = new URLSearchParams(location.search).get('story');
   const [popupOpen, setPopupOpen] = useState(Boolean(storyId));
   const [selectedItem, setSelectedItem] = useState(Number(storyId));
@@ -153,7 +155,7 @@ const Story = ({ items, fadeColor }: StoryProps) => {
         newItems.push({
           ...newItem,
           link: `${URLS.jobposts}${item.id}/${urlEncode(item.title)}/`,
-          description: `Bedrift: ${item.company} \n Når: ${formatDate(parseISO(item.deadline))}`,
+          description: `Bedrift: ${item.company} \n ${item.is_continuously_hiring ? 'Fortløpende opptak' : `Når: ${formatDate(parseISO(item.deadline))}`}`,
           topText: 'Annonse',
         });
       } else if (instanceOfNews(item)) {
@@ -174,7 +176,7 @@ const Story = ({ items, fadeColor }: StoryProps) => {
   };
 
   const StoryItem = ({ item, index }: StoryItemProps) => {
-    const classes = useStyles({});
+    const { classes } = useStyles({});
     const [imgUrl, setImgUrl] = useState(item.image || TIHLDELOGO);
     const { event } = useGoogleAnalytics();
     const openStory = () => {
@@ -185,7 +187,7 @@ const Story = ({ items, fadeColor }: StoryProps) => {
     return (
       <div className={classes.story}>
         <Button className={classes.imgButton} onClick={openStory} variant='outlined'>
-          <img alt={item.title} className={classes.image} onError={() => setImgUrl(TIHLDELOGO)} src={imgUrl} />
+          <img alt={item.title} className={classes.image} loading='lazy' onError={() => setImgUrl(TIHLDELOGO)} src={imgUrl} />
         </Button>
         <Typography className={classes.text} variant='body2'>
           {item.title}
@@ -209,7 +211,7 @@ const Story = ({ items, fadeColor }: StoryProps) => {
 export default Story;
 
 export const StoryLoading = ({ fadeColor }: Pick<StoryProps, 'fadeColor'>) => {
-  const classes = useStyles({ fadeColor });
+  const { classes } = useStyles({ fadeColor });
   return (
     <div className={classes.root}>
       <div className={classes.stories}>

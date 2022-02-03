@@ -19,7 +19,10 @@ const NewsDetails = () => {
 
   useEffect(() => {
     if (data) {
-      navigate(`${URLS.news}${id}/${urlEncode(data.title)}/`, { replace: true });
+      const urlWithTitle = `${URLS.news}${id}/${urlEncode(data.title)}/`;
+      if (urlWithTitle !== window.location.pathname) {
+        navigate(urlWithTitle, { replace: true });
+      }
     }
   }, [id, navigate, data]);
 

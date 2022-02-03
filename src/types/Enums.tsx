@@ -9,6 +9,7 @@ export enum Study {
   DIGFOR = 'DigFor',
   DIGSEC = 'DigSec',
   DIGSAM = 'DigSam',
+  INFO = 'Info',
 }
 
 export enum CheatsheetType {
@@ -24,6 +25,7 @@ export enum UserStudy {
   DIGSEC = 3,
   DIGSAM = 4,
   DRIFT = 5,
+  INFO = 6,
 }
 
 export enum UserClass {
@@ -44,7 +46,9 @@ export enum PermissionApp {
   PAGE = 'page',
   STRIKE = 'strike',
   USER = 'user',
+  FORMS = 'form',
 }
+
 export enum Groups {
   HS = 'HS',
   INDEX = 'Index',
@@ -54,13 +58,15 @@ export enum Groups {
   DRIFT = 'Drift',
 }
 
-export enum FormType {
+export enum EventFormType {
   SURVEY = 'SURVEY',
   EVALUATION = 'EVALUATION',
 }
 
 export enum FormResourceType {
+  FORM = 'Form',
   EVENT_FORM = 'EventForm',
+  GROUP_FORM = 'GroupForm',
 }
 
 export enum FormFieldType {

@@ -10,7 +10,7 @@ import { useSetRedirectUrl, useRedirectUrl } from 'hooks/Misc';
 import { useSnackbar } from 'hooks/Snackbar';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
@@ -31,7 +31,7 @@ import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import { SecondaryTopBox } from 'components/layout/TopBox';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   paper: {
     maxWidth: theme.breakpoints.values.md,
     margin: 'auto',
@@ -69,7 +69,7 @@ type SignUpData = UserCreate & {
 };
 
 const SignUp = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { event } = useGoogleAnalytics();
   const navigate = useNavigate();
   const createUser = useCreateUser();
@@ -161,7 +161,7 @@ const SignUp = () => {
           />
           <div className={classes.double}>
             <Select control={control} formState={formState} label='Studie' name='user_study' required rules={{ required: 'Feltet er påkrevd' }}>
-              {[1, 2, 3, 4, 5].map((i) => (
+              {[1, 2, 3, 4, 5, 6].map((i) => (
                 <MenuItem key={i} value={i}>
                   {getUserStudyLong(i)}
                 </MenuItem>

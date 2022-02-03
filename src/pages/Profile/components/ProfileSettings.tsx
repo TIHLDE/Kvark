@@ -1,21 +1,23 @@
 import { useForm } from 'react-hook-form';
 import { getUserStudyLong, getUserClass } from 'utils';
-import { UserList } from 'types';
+import { User } from 'types';
 import { useUpdateUser } from 'hooks/User';
 import { useSnackbar } from 'hooks/Snackbar';
 
 // Material-UI
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { MenuItem, Typography } from '@mui/material';
 
 // Project components
 import TextField from 'components/inputs/TextField';
 import Select from 'components/inputs/Select';
+import Bool from 'components/inputs/Bool';
 import SubmitButton from 'components/inputs/SubmitButton';
 import { ImageUpload } from 'components/inputs/Upload';
 import { useGoogleAnalytics } from 'hooks/Utils';
+import { ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   selectGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(3, 1fr)',
@@ -30,14 +32,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export type ProfileSettingsProps = {
-  user: UserList;
+  user: User;
   isAdmin?: boolean;
 };
 
-type FormData = Pick<UserList, 'first_name' | 'last_name' | 'email' | 'cell' | 'image' | 'gender' | 'allergy' | 'tool' | 'user_class' | 'user_study'>;
+type FormData = Pick<
+  User,
+  'first_name' | 'last_name' | 'email' | 'image' | 'gender' | 'allergy' | 'tool' | 'user_class' | 'user_study' | 'public_event_registrations'
+>;
 
 const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { event } = useGoogleAnalytics();
   const showSnackbar = useSnackbar();
   const updateUser = useUpdateUser();
@@ -72,11 +77,29 @@ const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
             <TextField disabled={updateUser.isLoading} formState={formState} label='Epost' {...register('email')} />
           </div>
         )}
-        <TextField disabled={updateUser.isLoading} formState={formState} InputProps={{ type: 'number' }} label='Telefon' {...register('cell')} />
-        <ImageUpload formState={formState} label='Velg profilbilde' ratio={1} register={register('image')} setValue={setValue} watch={watch} />
+        <Bool
+          control={control}
+          disabled={updateUser.isLoading}
+          formState={formState}
+          label={
+            <>
+              Offentlige arrangementspåmeldinger
+              <ShowMoreTooltip>
+                Bestemmer:
+                <br />
+                1. Om du skal stå oppført med navnet ditt eller være anonym i deltagerlister på arrangementer.
+                <br />
+                2. Om arrangement-kalenderen din skal være aktivert og mulig å abonnere på.
+              </ShowMoreTooltip>
+            </>
+          }
+          name='public_event_registrations'
+          type='switch'
+        />
+        <ImageUpload formState={formState} label='Velg profilbilde' ratio='1:1' register={register('image')} setValue={setValue} watch={watch} />
         <div className={classes.selectGrid}>
           <Select control={control} disabled={!isAdmin} formState={formState} label='Studie' name='user_study'>
-            {[1, 2, 3, 4, 5].map((i) => (
+            {[1, 2, 3, 4, 5, 6].map((i) => (
               <MenuItem key={i} value={i}>
                 {getUserStudyLong(i)}
               </MenuItem>

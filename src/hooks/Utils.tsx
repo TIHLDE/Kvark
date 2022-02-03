@@ -2,6 +2,8 @@ import { EffectCallback, useEffect, useState, useRef, useCallback } from 'react'
 import { useSnackbar } from 'hooks/Snackbar';
 import { getCookie, setCookie } from 'api/cookie';
 import { useMemo } from 'react';
+import { User } from 'types';
+import { GA_MEASUREMENT_ID } from 'constant';
 
 export const useInterval = (callback: EffectCallback, msDelay: number | null) => {
   const savedCallback = useRef<EffectCallback>();
@@ -24,8 +26,7 @@ export const useInterval = (callback: EffectCallback, msDelay: number | null) =>
   }, [msDelay]);
 };
 
-// eslint-disable-next-line comma-spacing
-export const useDebounce = <Type,>(value: Type, delay: number) => {
+export const useDebounce = <Type extends unknown>(value: Type, delay: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {
@@ -85,7 +86,6 @@ export const useShare = (shareData: globalThis.ShareData, fallbackSnackbar?: str
         .then(() => setShared(true))
         .catch(() => copyToClipboard(fallbackCopyText, true));
     } else {
-      showSnackbar('else', 'error');
       copyToClipboard(fallbackCopyText);
     }
     if (onShare) {
@@ -102,8 +102,7 @@ export const useShare = (shareData: globalThis.ShareData, fallbackSnackbar?: str
  * @param defaultValue Default value of state
  * @param duration How long the cookie should live, default 24h
  */
-// eslint-disable-next-line comma-spacing
-export const usePersistedState = <T,>(key: string, defaultValue: T, duration = 3600 * 24000) => {
+export const usePersistedState = <T extends unknown>(key: string, defaultValue: T, duration = 3600 * 24000) => {
   const COOKIE_KEY = `TIHLDE-${key}`;
   const [state, setState] = useState<T>(() => {
     try {
@@ -137,7 +136,34 @@ export const useGoogleAnalytics = () => {
     });
   }, []);
 
+  /**
+   * Hash a string stable. The same string will always return the same hash.
+   * @param str The string to hash
+   * @returns A hashed string.
+   */
+  const stableStringHash = (str: string) => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    let color = '';
+    for (let i = 0; i < 3; i++) {
+      const value = (hash >> (i * 8)) & 0xff;
+      color += ('00' + value.toString(16)).slice(-2);
+    }
+    return color;
+  };
+
+  /**
+   * Sets the user-id for Google Analytics, hashed. This improves the tracking since
+   * GA can understand that a user is the same across different devices.
+   * @param userId User_id of the user
+   */
+  const setUserId = useCallback((userId: User['user_id']) => {
+    window.gtag('config', GA_MEASUREMENT_ID, { user_id: stableStringHash(userId) });
+  }, []);
+
   return useMemo(() => {
-    return { event };
+    return { event, setUserId };
   }, [event]);
 };

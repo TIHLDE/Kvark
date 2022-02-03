@@ -1,39 +1,38 @@
 import { useMemo } from 'react';
+import URLS from 'URLS';
 import { useGoogleAnalytics, useShare } from 'hooks/Utils';
-
-// Material UI Components
-import Button, { ButtonProps } from '@mui/material/Button';
+import { Button, ButtonProps } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
 
 export type ShareProps = ButtonProps & {
   title: string;
-  shareType: 'event' | 'news' | 'jobpost' | 'pages';
+  shareType: 'event' | 'news' | 'jobpost' | 'pages' | 'form';
   shareId: number | string;
 };
 
 const ShareButton = ({ shareId, title, shareType, ...props }: ShareProps) => {
   const { event } = useGoogleAnalytics();
-  const urlType = useMemo(() => {
+  const [urlFromType, useShortener] = useMemo(() => {
     switch (shareType) {
       case 'event':
-        return 'a';
+        return ['a', true];
       case 'news':
-        return 'n';
+        return ['n', true];
       case 'jobpost':
-        return 'k';
+        return ['k', true];
       case 'pages':
-        return 'om';
+        return ['om', true];
+      case 'form':
+        return [URLS.form, false];
     }
   }, [shareType]);
-  const shareUrl = useMemo(() => `https://s.tihlde.org/${urlType}/${shareId}${shareType === 'pages' ? '' : '/'}`, [shareId, shareType]);
+  const shareUrl = useMemo(
+    () => (useShortener ? `https://s.tihlde.org/${urlFromType}/${shareId}${shareType === 'pages' ? '' : '/'}` : `${location.origin}${urlFromType}${shareId}/`),
+    [shareId, shareType, urlFromType, useShortener],
+  );
 
-  const { share, hasShared } = useShare(
-    {
-      title: `${title}`,
-      url: shareUrl,
-    },
-    'Linken ble kopiert til utklippstavlen',
-    () => event(`share-${shareType}`, 'share', shareUrl),
+  const { share, hasShared } = useShare({ title: title, url: shareUrl }, 'Linken ble kopiert til utklippstavlen', () =>
+    event(`share-${shareType}`, 'share', shareUrl),
   );
 
   return (

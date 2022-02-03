@@ -6,7 +6,7 @@ import { useSnackbar } from 'hooks/Snackbar';
 import { ShortLink } from 'types';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -27,7 +27,7 @@ import SubmitButton from 'components/inputs/SubmitButton';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import { FileUpload } from 'components/inputs/Upload';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   grid: {
     display: 'grid',
     gridTemplateColumns: '2fr 1fr',
@@ -80,7 +80,7 @@ type ShortLinkItemProps = {
 };
 
 const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { event } = useGoogleAnalytics();
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   const deleteShortLink = useDeleteShortLink();
@@ -133,7 +133,7 @@ const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
 };
 
 const ShortLinks = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { event } = useGoogleAnalytics();
   const { data, error, isFetching } = useShortLinks();
   const createShortLink = useCreateShortLink();
@@ -175,7 +175,7 @@ const ShortLinks = () => {
               <TextField
                 disabled={isFetching}
                 formState={formState}
-                InputProps={{
+                inputProps={{
                   startAdornment: (
                     <InputAdornment className={classes.adornment} position='start'>
                       s.tihlde.org/

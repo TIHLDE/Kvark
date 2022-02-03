@@ -2,7 +2,7 @@ import { Fragment, useEffect, useMemo, useState } from 'react';
 import { useUsers } from 'hooks/User';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
@@ -20,7 +20,7 @@ import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import PersonListItem, { PersonListItemLoading } from 'pages/UserAdmin/components/PersonListItem';
 import { PrimaryTopBox } from 'components/layout/TopBox';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   content: {
     margin: '-60px auto 60px',
     position: 'relative',
@@ -37,10 +37,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const USER_CLASSES = ['Alle', '1. klasse', '2. klasse', '3. klasse', '4. klasse', '5. klasse', 'Alumni'];
-const USER_STUDIES = ['Alle', 'Dataing', 'DigFor', 'DigSec', 'DigSam', 'Drift'];
+const USER_STUDIES = ['Alle', 'Dataing', 'DigFor', 'DigSec', 'DigSam', 'Drift', 'Info'];
 
 const UserAdmin = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const membersTab = { value: 'members', label: 'Medlemmer', icon: MembersIcon };
   const waitingTab = { value: 'waiting', label: 'Ventende', icon: WaitingIcon };
   const tabs = [membersTab, waitingTab];
@@ -65,6 +65,10 @@ const UserAdmin = () => {
   }, [tab, userClassChoice, userStudyChoice, searchInput]);
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useUsers({ is_TIHLDE_member: tab === membersTab.value, ...filters });
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
+  const membersAmount = `${data?.pages[0]?.count || '0'} medlemmer 
+  ${userClassChoice !== 0 || userStudyChoice !== 0 ? 'i' : 'totalt'}
+  ${userClassChoice !== 0 ? USER_CLASSES[userClassChoice] : ''} 
+  ${userStudyChoice !== 0 ? USER_STUDIES[userStudyChoice] : ''}`;
 
   useEffect(() => {
     const timer = setTimeout(() => setSearchInput(search), 500);
@@ -75,6 +79,7 @@ const UserAdmin = () => {
     <Page banner={<PrimaryTopBox />} options={{ title: 'Brukeradmin' }}>
       <Paper className={classes.content}>
         <Typography variant='h1'>Brukeradmin</Typography>
+        <Typography>{membersAmount}</Typography>
         <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
         <div className={classes.filterContainer}>
           <TextField fullWidth label='Klasser' onChange={(e) => setUserClassChoice(Number(e.target.value))} select value={userClassChoice} variant='outlined'>

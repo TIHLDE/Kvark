@@ -7,7 +7,7 @@ import URLS from 'URLS';
 import { HavePermission } from 'hooks/User';
 
 // Material UI Components
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'makeStyles';
 import { Typography, Button, Skeleton } from '@mui/material';
 
 // Project Components
@@ -18,7 +18,7 @@ import Paper from 'components/layout/Paper';
 import ShareButton from 'components/miscellaneous/ShareButton';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   grid: {
     display: 'grid',
     gridTemplateColumns: '3fr 1fr',
@@ -28,9 +28,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('lg')]: {
       gridTemplateColumns: '1fr',
     },
-  },
-  image: {
-    borderRadius: theme.shape.borderRadius,
   },
   title: {
     fontSize: '2.4rem',
@@ -50,7 +47,7 @@ export type JobPostRendererProps = {
 
 const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
   const { event } = useGoogleAnalytics();
-  const classes = useStyles();
+  const { classes } = useStyles();
   const deadline = formatDate(parseISO(data.deadline));
   const publishedAt = formatDate(parseISO(data.created_at));
 
@@ -70,7 +67,7 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
       </Paper>
       <div>
         <div className={classes.infoBox}>
-          <AspectRatioImg alt={data.image_alt || data.title} imgClassName={classes.image} src={data.image} />
+          <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         </div>
         <Paper className={classes.infoBox}>
           <DetailContent info={data.company} title='Bedrift: ' />
@@ -105,7 +102,7 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
             Søk
           </Button>
         )}
-        <ShareButton className={classes.button} color='inherit' fullWidth shareId={data.id} shareType='jobpost' title={data.title} />
+        <ShareButton className={classes.button} fullWidth shareId={data.id} shareType='jobpost' title={data.title} />
         {!preview && (
           <HavePermission apps={[PermissionApp.JOBPOST]}>
             <Button className={classes.button} component={Link} fullWidth to={`${URLS.jobpostsAdmin}${data.id}/`} variant='outlined'>
@@ -121,7 +118,7 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
 export default JobPostRenderer;
 
 export const JobPostRendererLoading = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <div className={classes.grid}>
@@ -135,7 +132,7 @@ export const JobPostRendererLoading = () => {
         <Skeleton height={40} width='90%' />
       </Paper>
       <div>
-        <AspectRatioLoading className={classes.infoBox} imgClassName={classes.image} />
+        <AspectRatioLoading borderRadius />
         <Paper className={classes.infoBox}>
           <DetailContentLoading />
           <DetailContentLoading />

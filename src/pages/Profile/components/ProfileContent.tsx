@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { useLogout } from 'hooks/User';
 
 // Material-UI
-import { makeStyles } from '@mui/styles';
-import { SvgIconProps, Badge, Collapse, List, ListItem, ListItemIcon, ListItemText, Stack } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { SvgIconProps, Badge, Collapse, List, ListItem, ListItemIcon, ListItemText, Stack, Box } from '@mui/material';
 
 // Icons
 import EventIcon from '@mui/icons-material/DateRangeRounded';
@@ -30,7 +30,7 @@ import ProfileStrikes from 'pages/Profile/components/ProfileStrikes';
 import Paper from 'components/layout/Paper';
 import { useGoogleAnalytics } from 'hooks/Utils';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   content: {
     display: 'grid',
     gridTemplateColumns: '250px 1fr',
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProfileContent = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const navigate = useNavigate();
   const { event } = useGoogleAnalytics();
   const logOut = useLogout();
@@ -115,7 +115,7 @@ const ProfileContent = () => {
           </List>
         </Paper>
       </Stack>
-      <div>
+      <Box sx={{ overflowX: 'auto' }}>
         <Collapse in={tab === eventTab.label}>
           <ProfileEvents />
         </Collapse>
@@ -137,7 +137,7 @@ const ProfileContent = () => {
         <Collapse in={tab === adminTab.label} mountOnEnter>
           <ProfileAdmin />
         </Collapse>
-      </div>
+      </Box>
     </div>
   );
 };
