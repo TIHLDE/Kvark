@@ -17,6 +17,7 @@
 - ✨ **Offentlige profiler**. Det er nå mulig å se andre brukeres profiler med deres badges og medlemskap i grupper.
 - ⚡ **Tilganger**. Laster inn tilganger fra backend først når de trengs.
 - ✨ **Skjemamaler**. Administratorer kan nå lage maler som man kan ta utgangspunkt i når man lager et nytt skjema.
+- ✨ **Bildeopplastning**. Viser foretrukket størrelsesforhold på bilder ved bildeopplastning.
 
 ## Versjon 1.4.2 (31.01.2022)
 
