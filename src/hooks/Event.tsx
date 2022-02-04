@@ -3,15 +3,15 @@ import API from 'api/api';
 import { USER_EVENTS_QUERY_KEY, USER_QUERY_KEY } from 'hooks/User';
 import { FORM_QUERY_KEY } from 'hooks/Form';
 import { NOTIFICATION_QUERY_KEY } from 'hooks/Notification';
-import { Event, EventRequired, EventCompact, Registration, PaginationResponse, PublicRegistration, RequestResponse, User } from 'types';
+import { Event, EventRequired, EventCompact, EventStatistics, Registration, PaginationResponse, PublicRegistration, RequestResponse, User } from 'types';
 
 export const EVENT_QUERY_KEY = 'event';
 export const EVENT_QUERY_KEY_REGISTRATION = 'event_registration';
 export const EVENT_QUERY_KEY_PUBLIC_REGISTRATIONS = 'event_public_registrations';
+export const EVENT_QUERY_KEY_STATISTICS = 'event_statistics';
 
-export const useEventById = (eventId: Event['id']) => {
-  return useQuery<Event, RequestResponse>([EVENT_QUERY_KEY, eventId], () => API.getEvent(eventId), { enabled: eventId !== -1 });
-};
+export const useEventById = (eventId: Event['id']) =>
+  useQuery<Event, RequestResponse>([EVENT_QUERY_KEY, eventId], () => API.getEvent(eventId), { enabled: eventId !== -1 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useEvents = (filters?: any) =>
@@ -67,10 +67,28 @@ export const useNotifyEventRegistrations = (
 ): UseMutationResult<RequestResponse, RequestResponse, { title: string; message: string }, unknown> =>
   useMutation(({ title, message }) => API.notifyEventRegistrations(eventId, title, message));
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const useEventRegistrations = (eventId: Event['id'], filters?: any) =>
-  useInfiniteQuery<PaginationResponse<Registration>, RequestResponse>([EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_REGISTRATION], () =>
-    API.getEventRegistrations(eventId, filters),
+export const useEventStatistics = (eventId: Event['id']) =>
+  useQuery<EventStatistics, RequestResponse>([EVENT_QUERY_KEY_STATISTICS, eventId], () => API.getEventStatistics(eventId));
+
+export const useEventRegistrations = (
+  eventId: Event['id'],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  filters?: any,
+  options?: UseInfiniteQueryOptions<
+    PaginationResponse<Registration>,
+    RequestResponse,
+    PaginationResponse<Registration>,
+    PaginationResponse<Registration>,
+    QueryKey
+  >,
+) =>
+  useInfiniteQuery<PaginationResponse<Registration>, RequestResponse>(
+    [EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_REGISTRATION, filters],
+    ({ pageParam = 1 }) => API.getEventRegistrations(eventId, { ...filters, page: pageParam }),
+    {
+      ...options,
+      getNextPageParam: (lastPage) => lastPage.next,
+    },
   );
 
 /**

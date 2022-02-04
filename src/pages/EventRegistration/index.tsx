@@ -56,11 +56,12 @@ const EventRegistration = () => {
   const qrTab = { value: 'qr', label: 'QR-kode', icon: QRIcon };
   const tabs = [registrationsTab, qrTab];
   const [tab, setTab] = useState(registrationsTab.value);
-  const registrationsNotOnWait = useMemo(() => (registrations || []).filter((user) => !user.is_on_wait), [registrations]);
+  // const registrationsNotOnWait = useMemo(() => (registrations || []).filter((user) => !user.is_on_wait), [registrations]);
+  const registrationsNotOnWait: Array<Registration> = [];
 
   const handleQrScan = (username: string | null) => {
     if (!isLoading && username) {
-      const registration = registrations?.find((registration) => registration.user_info.user_id === username);
+      const registration = registrationsNotOnWait?.find((registration) => registration.user_info.user_id === username);
       if (!registration) {
         showSnackbar(`Personen er ikke påmeldt dette arrangementet`, 'error');
         return;
