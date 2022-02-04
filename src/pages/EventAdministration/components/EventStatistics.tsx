@@ -41,7 +41,7 @@ const EventStatistics = ({ eventId }: EventStatisticsProps) => {
           <Typography>Klasse:</Typography>
           <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
             {data.classes.map((cls) => (
-              <Stat key={cls[0]} label={getUserClass(cls[0])} number={cls[1]} />
+              <Stat key={cls.user_class} label={getUserClass(cls.user_class)} number={cls.amount} />
             ))}
           </Stack>
         </Box>
@@ -49,7 +49,7 @@ const EventStatistics = ({ eventId }: EventStatisticsProps) => {
           <Typography>Studie:</Typography>
           <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
             {data.studies.map((study) => (
-              <Stat key={study[0]} label={getUserStudyShort(study[0])} number={study[1]} />
+              <Stat key={study.user_study} label={getUserStudyShort(study.user_study)} number={study.amount} />
             ))}
           </Stack>
         </Box>
