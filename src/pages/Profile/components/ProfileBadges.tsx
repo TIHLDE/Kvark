@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useParams } from 'react-router-dom';
 import { useUserBadges } from 'hooks/User';
 import { Badge } from 'types';
 import Paper from 'components/layout/Paper';
@@ -60,12 +61,13 @@ const BadgeItem = ({ badge }: BadgeItemProps) => {
 };
 
 const ProfileBadges = () => {
-  const { data, hasNextPage, fetchNextPage, isFetching } = useUserBadges();
+  const { userId } = useParams();
+  const { data, hasNextPage, fetchNextPage, isFetching } = useUserBadges(userId);
   const badges = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
   if (!data) {
     return null;
   } else if (!badges.length) {
-    return <NotFoundIndicator header='Fant ingen badges' subtitle='Du har ingen badges enda' />;
+    return <NotFoundIndicator header='Fant ingen badges' subtitle={`${userId ? 'Brukeren' : 'Du'} har ingen badges enda`} />;
   }
   return (
     <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere badges' nextPage={() => fetchNextPage()}>

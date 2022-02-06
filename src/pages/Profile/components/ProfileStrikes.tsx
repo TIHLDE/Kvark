@@ -14,14 +14,14 @@ function ProfileStrikes() {
       <Paper>
         <Typography>
           Informasjon om prikksystemet finner du i <Link to={URLS.eventRules}>arrangementsreglene</Link>.{' '}
-          {data && (
+          {Boolean(data.length) && (
             <span>
-              Feil med prikkene? Send mail til <a href='mailto:bedpres@tihlde.org'>bedpres@tihlde.org</a>
+              Uenig i en prikk? Send epost til <a href='mailto:bedpres@tihlde.org'>bedpres@tihlde.org</a>.
             </span>
           )}
         </Typography>
       </Paper>
-      {data ? (
+      {data.length ? (
         user && data.map((strike) => <StrikeListItem key={strike.id} strike={strike} user={user} />)
       ) : (
         <NotFoundIndicator header='Fant ingen prikker' subtitle='Du har ingen prikker!' />

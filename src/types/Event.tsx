@@ -1,5 +1,5 @@
 import { UserClass, UserStudy } from 'types/Enums';
-import { User } from 'types/User';
+import { UserList } from 'types/User';
 import { UserSubmission } from 'types/Form';
 import { Group } from 'types/Group';
 import { Permissions } from 'types/Misc';
@@ -59,7 +59,7 @@ export interface Registration {
   registration_id: number;
   survey_submission: UserSubmission;
   has_unanswered_evaluation: boolean;
-  user_info: Pick<User, 'allergy' | 'email' | 'first_name' | 'last_name' | 'image' | 'user_class' | 'user_id' | 'user_study'>;
+  user_info: UserList;
 }
 
 export type PublicRegistration = {
