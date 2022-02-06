@@ -123,7 +123,7 @@ export const usePersistedState = <T extends unknown>(key: string, defaultValue: 
 };
 
 export const useAnalytics = () => {
-  const { trackEvent } = Plausible({ domain: PLAUSIBLE_DOMAIN, trackLocalhost: true });
+  const { trackEvent } = Plausible({ domain: PLAUSIBLE_DOMAIN });
 
   /**
    * Create an event for tracking behaviour on the site.
@@ -132,10 +132,7 @@ export const useAnalytics = () => {
    * @param label - Useful for categorizing events, eg 'Ny-student'
    */
   const event = useCallback((action: string, category: string, label: string) => {
-    window.gtag('event', action, {
-      event_category: category,
-      event_label: label,
-    });
+    window.gtag('event', action, { event_category: category, event_label: label });
     trackEvent(category, { props: { action, label } });
   }, []);
 

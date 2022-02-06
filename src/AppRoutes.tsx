@@ -71,7 +71,7 @@ const AppRoutes = () => {
   useEffect(() => event('page_view', window.location.href, window.location.pathname), [location]);
 
   useEffect(() => {
-    const { enableAutoPageviews, enableAutoOutboundTracking } = Plausible({ domain: PLAUSIBLE_DOMAIN, trackLocalhost: true });
+    const { enableAutoPageviews, enableAutoOutboundTracking } = Plausible({ domain: PLAUSIBLE_DOMAIN });
     const cleanupPageViews = enableAutoPageviews();
     const cleanupOutboundTracking = enableAutoOutboundTracking();
 
