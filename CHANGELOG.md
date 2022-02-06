@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.4.4 (06.02.2022)
+
 - ✨ **Konfetti**. Lagt til konfetti ved brukerregistrering og påmelding til arrangement.
 
 ## Versjon 1.4.3 (03.02.2022)
