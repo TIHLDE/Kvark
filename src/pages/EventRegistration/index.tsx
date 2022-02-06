@@ -37,7 +37,7 @@ const ParticipantCard = ({ user, updateAttendedStatus }: ParticipantCardProps) =
     updateAttendedStatus(user.user_info.user_id, e.target.checked);
   };
   return (
-    <Paper sx={{ py: 1, px: 2, mb: 1, display: 'flex' }}>
+    <Paper sx={{ py: 0.5, px: 2, mb: 1, display: 'flex' }}>
       <Typography sx={{ fontWeight: 'bold', fontSize: '17px', width: '100%', margin: 'auto' }}>
         {`${user.user_info.first_name} ${user.user_info.last_name}`}
       </Typography>
@@ -92,7 +92,7 @@ const EventRegistration = () => {
     [],
   );
 
-  if (isError) {
+  if (isError || (event && !event.sign_up)) {
     return <Http404 />;
   }
 
@@ -109,7 +109,9 @@ const EventRegistration = () => {
         {tab === registrationsTab.value && (
           <>
             <TextField fullWidth label='Søk' margin='normal' onChange={(e) => setSearch(e.target.value)} type='Søk' variant='outlined' />
-            {!isLoading && !registrations.length && <NotFoundIndicator header='Ingen påmeldte' />}
+            {!isLoading && !registrations.length && (
+              <NotFoundIndicator header={search ? `Ingen påmeldte med navn som inneholder "${search}"` : 'Ingen påmeldte'} />
+            )}
             <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
               <List dense disablePadding>
                 {registrations.map((registration) => (
