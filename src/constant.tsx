@@ -1,6 +1,11 @@
 import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
 
 /**
+ * Google Analytics measurement-ID
+ */
+export const GA_MEASUREMENT_ID = import.meta.env.VITE_ANALYTICS;
+
+/**
  * Url to backend
  */
 export const TIHLDE_API_URL = import.meta.env.VITE_API_URL;

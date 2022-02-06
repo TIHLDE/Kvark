@@ -1,13 +1,15 @@
 import { useMemo } from 'react';
+import { useParams } from 'react-router-dom';
 import { useUserGroups } from 'hooks/User';
 
 // Material UI Components
 import Grid from '@mui/material/Grid';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import GroupItem, { GroupItemLoading } from 'pages/GroupOverview/components/GroupItem';
+import GroupItem, { GroupItemLoading } from 'pages/Groups/overview/GroupItem';
 
 const ProfileGroups = () => {
-  const { data } = useUserGroups();
+  const { userId } = useParams();
+  const { data } = useUserGroups(userId);
   const groups = useMemo(() => data || [], [data]);
   if (!data) {
     return (
@@ -18,7 +20,7 @@ const ProfileGroups = () => {
       </Grid>
     );
   } else if (!groups.length) {
-    return <NotFoundIndicator header='Fant ingen grupper' subtitle='Du er ikke medlem av noen grupper' />;
+    return <NotFoundIndicator header='Fant ingen grupper' subtitle={`${userId ? 'Brukeren' : 'Du'} er ikke medlem av noen grupper`} />;
   }
   return (
     <Grid container spacing={1}>

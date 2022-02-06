@@ -22,6 +22,7 @@ import Paper from 'components/layout/Paper';
 import FormView from 'components/forms/FormView';
 import SubmitButton from 'components/inputs/SubmitButton';
 import { useGoogleAnalytics } from 'hooks/Utils';
+import { useConfetti } from 'hooks/Confetti';
 
 type ListItemProps = {
   icon: ComponentType<{ className?: string; sx?: IconProps['sx'] }>;
@@ -41,6 +42,7 @@ export type EventRegistrationProps = {
 };
 
 const EventRegistration = ({ event, user }: EventRegistrationProps) => {
+  const { run } = useConfetti();
   const { event: GAEvent } = useGoogleAnalytics();
   const createRegistration = useCreateEventRegistration(event.id);
   const createSubmission = useCreateSubmission(event.survey || '-');
@@ -82,6 +84,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
       { allow_photo: allowPhoto },
       {
         onSuccess: () => {
+          run();
           showSnackbar('Påmeldingen var vellykket', 'success');
           GAEvent('registered', 'event-registration', `Registered for event: ${event.title}`);
         },

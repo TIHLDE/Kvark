@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FormFieldType } from 'types/Enums';
+import { FormFieldType, FormResourceType } from 'types/Enums';
 import { UserSubmission, TextFieldSubmission, SelectFieldSubmission, TextFormField, SelectFormField } from 'types';
 import { useFormById, useFormSubmissions } from 'hooks/Form';
 import { SUBMISSIONS_ENDPOINT, FORMS_ENDPOINT } from 'api/api';
@@ -22,11 +22,14 @@ export type FormAnswersProps = {
 const FormAnswers = ({ formId }: FormAnswersProps) => {
   const showSnackbar = useSnackbar();
   const [selectedPage, setSelectedPage] = useState(0);
-  const { data: form } = useFormById(formId || '-');
-  const { data, isLoading } = useFormSubmissions(formId || '-', selectedPage + 1);
-  if (isLoading) {
-    return <Typography>Laster statistikken</Typography>;
-  } else if (!data || !form || !formId) {
+  const { data: form, isLoading: isFormLoading } = useFormById(formId || '-');
+  const { data, isLoading, error } = useFormSubmissions(formId || '-', selectedPage + 1);
+
+  if (isLoading || isFormLoading) {
+    return <Typography>Laster statistikken...</Typography>;
+  } else if (error) {
+    return <Typography>Noe gikk galt: {error.detail}</Typography>;
+  } else if (!form || !formId || !data) {
     return <Typography>Du må opprette et skjema for å se svar</Typography>;
   } else if (!data.results.length) {
     return <Typography>Ingen har svart på dette skjemaet</Typography>;
@@ -62,7 +65,7 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
         const url = URL.createObjectURL(blob);
         a.href = url;
         // Set filename
-        a.download = `${urlEncode(form.title)}_${form.type}.csv`;
+        a.download = form.resource_type === FormResourceType.EVENT_FORM ? `${urlEncode(form.title)}_${form.type}.csv` : `${urlEncode(form.title)}.csv`;
         // Clicks the link to download the file
         a.click();
         // Revokes link and removes the <a> from document

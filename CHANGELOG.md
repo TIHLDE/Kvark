@@ -14,11 +14,54 @@
 
 ## Neste versjon
 
+- ✨ **Konfetti**. Lagt til konfetti ved brukerregistrering og påmelding til arrangement.
+
+## Versjon 1.4.3 (03.02.2022)
+
+- ✨ **Bruker**. Det er mulig å eksportere sin brukerdata.
+- ✨ **Bruker**. Det er mulig å slette sin egen bruker.
+- ✨ **Offentlige profiler**. Det er nå mulig å se andre brukeres profiler med deres badges og medlemskap i grupper.
+- ✨ **Arrangementer**. Alle innloggede brukere kan nå se hvem som er påmeldt arrangementer. Brukere kan reservere seg mot å bli oppført på deltagerlisten.
+- ⚡ **Tilganger**. Laster inn tilganger fra backend først når de trengs.
+- ✨ **Skjemamaler**. Administratorer kan nå lage maler som man kan ta utgangspunkt i når man lager et nytt skjema.
+- ✨ **Bildeopplastning**. Viser foretrukket størrelsesforhold på bilder ved bildeopplastning.
+
+## Versjon 1.4.2 (31.01.2022)
+
+- 🦟 **Eventadmin**. Viser at et arrangement er stengt i adminpanelet.
+- 🦟 **Stories**. Annonser som har fortløpende opptak vises med "fortløpende opptak".
+
+## Versjon 1.4.1 (15.01.2022)
+
+- ⚡ **Arrangementer**. Brukere kan nå se om de er prioritert på et arrangement.
+- ⚡ **Arrangementer**. Påmeldingsknappen teller ned til påmeldingsstart og aktiveres automatisk ved påmeldingsstart uten at en må laste inn siden på nytt.
+- ✨ **Kokeboka**. Lagt til "Antall koker nå" teller (ikke faktiske tall).
+- ⚡ **Botsystem**. Lovverket er bedre sortert. Ved ny bot endres beløp når valgt lovbrudd endres.
+
+## Versjon 1.4.0 (01.01.2022)
+
+- ✨ **Gruppe-skjemaer**. Grupper kan nå lage skjemaer som brukere kan svare på. Admin/leder av gruppe kan styre om det tillates flere besvarelser, om skjemaet er åpent og begrense svar til kun gruppens medlemmer.
+- ✨ **Botsystem**. Lagt til statistikk for botsystemet. Brukere kan se antall betalt, antall godkjent og ikke betalt, samt antall ikke godkjent.
+- ✨ **Arrangementer**. Brukere kan nå få arrangementene sine automatisk inn i sin egen kalender gjennom å abonnere på en gitt URL. Fremgangsmåte ligger i profilen, samt i hvert arrangement.
+- ⚡ **WIKI**. Endret navn på pages til Wiki. Oppdatert navigasjon slik at det er enklere å få oversikt over innholdet.
+- ✨ **Botsystem**. Laget et botsystem for intern bruk i grupper. Gruppene kan lage et eget lovverk. Medlemmer kan så gi bøter til andre medlemmer. Leder og botsjef kan markere bøter som godkjent og betalt.
+- 🎨 **Grupper**. Oppdatert utseende.
+
+## Versjon 1.3.1 (30.11.2021)
+
+- ✨ **Informasjonsbehandling**. Medlemmer kan nå velge studieretningen Informasjonsbehandling når de registrer seg. Drift'ere kan ikke lengre prioriteres på arrangementer ettersom det ikke lenger finnes studenter i Drift 1-3 klasse.
+- 🎨 **Design**. Oppdatert utseende på nyheter og jobbannonser.
+
+## Versjon 1.3.0 (16.11.2021)
+
+- ✨ **Arrangementer**. Arrangementer kan nå være åpne for kun prioriterte.
+- 🎨 **Arrangementer**. Lagt til farger slik at brukere raskt kan se hva som er hva. Det vises også flere arrangementer på forsiden.
 - ✨ **Arrangementer**. Lagt til mulighet for å knytte arrangementer til grupper. Gruppen som er koblet til et arrangement er også de enste som har admin-tilgang til det.
 - ⚡ **Opplæring**. Lagt til flere beskrivelser på felter i arrangements-admin, samt gjort det enkelt å gjøre dette andre steder også.
 - ⚡ **Spørreskjemaer**. Håndterer nå åpning av spørreskjemaer der bruker ikke er innlogget ved redirigering til innlogging.
 - ⚡ **Ytelse**. Laster inn bilder først når de skal vises på siden.
 - 🦟 **PWA**. Det funker nå å legge til nettsiden på hjemskjermen.
+- ✨ **Gruppehistorikk**. Lagt til eget kort for å se info om tidligere medlemskap av TIHLDE sine ulike undergrupper.
 
 ## Versjon 1.2.7 (11.11.2021)
 

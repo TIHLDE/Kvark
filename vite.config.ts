@@ -1,5 +1,5 @@
 import { defineConfig, loadEnv } from 'vite';
-import reactRefresh from '@vitejs/plugin-react-refresh';
+import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr';
 import checker from 'vite-plugin-checker';
@@ -25,18 +25,14 @@ export default defineConfig(({ mode }) => {
 
   return {
     esbuild: {
-      jsxInject: `import React from 'react'`,
+      treeShaking: true,
+      jsxInject: mode === 'production' ? `import React from 'react'` : undefined,
     },
     build: {
       outDir: 'build',
       assetsDir: 'static',
       rollupOptions: {
         output: {
-          manualChunks: {
-            mui: ['@mui/material', '@mui/lab'],
-            calendar: ['@devexpress/dx-react-core', '@devexpress/dx-react-scheduler', '@devexpress/dx-react-scheduler-material-ui'],
-            dates: ['moment', 'rrule', 'luxon'],
-          },
           entryFileNames: `static/js/[name].[hash].js`,
           chunkFileNames: `static/js/[name].[hash].js`,
           assetFileNames: ({ name }) => {
@@ -51,7 +47,7 @@ export default defineConfig(({ mode }) => {
     },
     /**
      * htmlPlugin -> Use env-variables in `.html`-files
-     * reactRefresh -> Enables fast refresh on save
+     * react -> Enables fast refresh on save and jsx-syntax
      * svgr -> Allows import of SVG-files as React-components
      * tsconfigPaths -> Adds support for absolute file import with Typescript
      * checker -> Checks that Typescript and ESLint has no errors/warnings
@@ -59,10 +55,10 @@ export default defineConfig(({ mode }) => {
      */
     plugins: [
       htmlPlugin(),
-      reactRefresh(),
       svgr(),
       tsconfigPaths(),
-      checker({ typescript: true, eslint: { files: ['./src'], extensions: ['.tsx', '.ts'] } }),
+      ...(mode === 'development' ? [react()] : []),
+      checker({ typescript: true, eslint: { files: ['./src'], extensions: ['.tsx', '.ts'] }, overlay: false }),
       viteCompression({ algorithm: 'brotliCompress' }),
     ],
   };

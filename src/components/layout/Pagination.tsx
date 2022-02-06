@@ -11,17 +11,15 @@ export type PaginationProps = ButtonProps & {
   label?: string;
 };
 
-const Pagination = ({ children, isLoading, nextPage, hasNextPage, label = 'Vis flere elementer', ...props }: PaginationProps) => {
-  return (
-    <>
-      <div>{children}</div>
-      <Collapse in={Boolean(hasNextPage && !isLoading)}>
-        <Button onClick={nextPage} sx={{ backgroundColor: (theme) => theme.palette.background.paper }} variant='outlined' {...props}>
-          {label}
-        </Button>
-      </Collapse>
-    </>
-  );
-};
+const Pagination = ({ children, isLoading, nextPage, hasNextPage, label = 'Last inn mer', ...props }: PaginationProps) => (
+  <>
+    {children}
+    <Collapse in={Boolean(hasNextPage && !isLoading)}>
+      <Button onClick={nextPage} sx={{ backgroundColor: (theme) => theme.palette.background.paper }} variant='outlined' {...props}>
+        {label}
+      </Button>
+    </Collapse>
+  </>
+);
 
 export default Pagination;

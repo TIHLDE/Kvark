@@ -87,7 +87,9 @@ const FieldEditor = ({ field, updateField, removeField, disabled = false }: Fiel
     <Paper className={classes.root} noPadding>
       <div className={classes.row}>
         <Tooltip placement='top-start' title={description}>
-          <Typography variant='subtitle1'>{title}</Typography>
+          <Typography sx={{ color: (theme) => theme.palette.text[disabled ? 'disabled' : 'primary'] }} variant='subtitle1'>
+            {title}
+          </Typography>
         </Tooltip>
         <FormControlLabel
           className={classes.checkbox}
@@ -117,7 +119,7 @@ const FieldEditor = ({ field, updateField, removeField, disabled = false }: Fiel
           {field.options.map((option, index) => (
             <Grow in key={index} timeout={1000}>
               <div className={cx(classes.row, classes.optionRow)}>
-                <TypeIcon />
+                <TypeIcon sx={{ color: (theme) => theme.palette.text[disabled ? 'disabled' : 'primary'] }} />
                 <TextField
                   disabled={disabled}
                   fullWidth

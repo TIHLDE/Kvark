@@ -1,5 +1,5 @@
 import { UserClass, UserStudy } from 'types/Enums';
-import { User } from 'types/User';
+import { UserList } from 'types/User';
 import { UserSubmission } from 'types/Form';
 import { Group } from 'types/Group';
 import { Permissions } from 'types/Misc';
@@ -38,6 +38,7 @@ export interface Event {
   waiting_list_count: number;
   can_cause_strikes: boolean;
   enforces_previous_strikes: boolean;
+  only_allow_prioritized: boolean;
 }
 export type EventRequired = Partial<Event> & Pick<Event, 'end_date' | 'title' | 'start_date'> & { organizer: Group['slug'] };
 export type EventCompact = Pick<
@@ -58,5 +59,17 @@ export interface Registration {
   registration_id: number;
   survey_submission: UserSubmission;
   has_unanswered_evaluation: boolean;
-  user_info: Pick<User, 'allergy' | 'email' | 'first_name' | 'last_name' | 'image' | 'user_class' | 'user_id' | 'user_study'>;
+  user_info: UserList;
 }
+
+export type PublicRegistration = {
+  user_info: Registration['user_info'] | null;
+};
+
+export type EventStatistics = {
+  has_attended_count: number;
+  list_count: number;
+  waiting_list_count: number;
+  classes: Array<{ user_class: UserClass; amount: number }>;
+  studies: Array<{ user_study: UserStudy; amount: number }>;
+};

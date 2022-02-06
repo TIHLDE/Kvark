@@ -3,15 +3,11 @@ import URLS from 'URLS';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getUserStudyShort } from 'utils';
 import { Study } from 'types/Enums';
-
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import MenuItem from '@mui/material/MenuItem';
-import TextField from '@mui/material/TextField';
-
-// API and store imports
+import { useInterval } from 'hooks/Utils';
 import { useUser } from 'hooks/User';
 import { useCheatsheet } from 'hooks/Cheatsheet';
+import { MenuItem, TextField, styled } from '@mui/material';
+import { getHours, getDay } from 'date-fns';
 
 // Project Components
 import Banner from 'components/layout/Banner';
@@ -19,25 +15,19 @@ import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import Files from 'pages/Cheatsheet/components/Files';
 
-const useStyles = makeStyles()((theme) => ({
-  root: {
-    marginBottom: theme.spacing(2),
-  },
-  filterContainer: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr',
-    gridTemplateAreas: '"filterStudy filterClass filterSearch"',
-    gridGap: theme.spacing(1),
-    paddingBottom: theme.spacing(2),
-    [theme.breakpoints.down('lg')]: {
-      gridTemplateColumns: '1fr 1fr',
-      gridTemplateAreas: '"filterStudy filterClass" "filterSearch filterSearch"',
-    },
+const FilterContainer = styled('div')(({ theme }) => ({
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr 1fr',
+  gridTemplateAreas: '"filterStudy filterClass filterSearch"',
+  gap: theme.spacing(1),
+  paddingBottom: theme.spacing(2),
+  [theme.breakpoints.down('lg')]: {
+    gridTemplateColumns: '1fr 1fr',
+    gridTemplateAreas: '"filterStudy filterClass" "filterSearch filterSearch"',
   },
 }));
 
 const Cheetsheet = () => {
-  const { classes } = useStyles();
   const { studyId, classId } = useParams();
   const navigate = useNavigate();
   const { data: user } = useUser();
@@ -57,6 +47,8 @@ const Cheetsheet = () => {
         return Study.DIGSEC;
       case 'digsam':
         return Study.DIGSAM;
+      case 'info':
+        return Study.INFO;
       default:
         return Study.DATAING;
     }
@@ -76,7 +68,7 @@ const Cheetsheet = () => {
       studyClass &&
       study &&
       ((study === Study.DIGSAM && [4, 5].includes(studyClass)) ||
-        ([Study.DATAING, Study.DIGFOR, Study.DIGSEC].includes(study) && [1, 2, 3].includes(studyClass)))
+        ([Study.DATAING, Study.DIGFOR, Study.DIGSEC, Study.INFO].includes(study) && [1, 2, 3].includes(studyClass)))
     ) {
       return true;
     }
@@ -128,21 +120,43 @@ const Cheetsheet = () => {
     return () => clearTimeout(timer);
   }, [input]);
 
+  const [liveCheatingAmount, setLiveCheatingAmount] = useState(1);
+
+  /**
+   * Generate a fake number of other cheatsheet-visitors right now.
+   * The number never change by more than 1 to simulate a natural increase/decrease of traffic.
+   * Time of day and weekday vs weekend is also taken into account to make things believable.
+   */
+  const generateLiveCheatingAmount = useCallback(() => {
+    const hour = getHours(new Date());
+    const isWeekday = getDay(new Date()) > 0 && getDay(new Date()) < 6;
+    const max = isWeekday ? (hour < 7 || hour > 20 ? 1 : hour < 16 ? 4 : 2) : 1;
+    const direction = Math.round(Math.random() * 2);
+    return direction === 0 && liveCheatingAmount < max
+      ? liveCheatingAmount + 1
+      : direction === 1 && liveCheatingAmount > 0
+      ? liveCheatingAmount - 1
+      : liveCheatingAmount;
+  }, [liveCheatingAmount]);
+
+  useEffect(() => setLiveCheatingAmount(generateLiveCheatingAmount()), []);
+  useInterval(() => setLiveCheatingAmount(generateLiveCheatingAmount()), 20000);
+
   return (
     <Page
-      banner={<Banner text={`${getStudy()} - ${getClass()}. klasse`} title='Kokeboka' />}
+      banner={<Banner text={`${getStudy()} - ${getClass()}. klasse\n**${liveCheatingAmount}** brukere koker akkurat nå`} title='Kokeboka' />}
       options={{ title: `${getStudy()} - ${getClass()}. klasse - Kokeboka` }}>
-      <Paper className={classes.root}>
-        <div className={classes.filterContainer}>
+      <Paper sx={{ mb: 2 }}>
+        <FilterContainer>
           <TextField
             fullWidth
             label='Studie'
             onChange={(e) => setStudyChoice(e.target.value as Study)}
             select
-            style={{ gridArea: 'filterStudy' }}
+            sx={{ gridArea: 'filterStudy' }}
             value={getStudy() || Study.DATAING}
             variant='outlined'>
-            {[Study.DATAING, Study.DIGFOR, Study.DIGSEC, Study.DIGSAM].map((i) => (
+            {[Study.DATAING, Study.DIGFOR, Study.DIGSEC, Study.DIGSAM, Study.INFO].map((i) => (
               <MenuItem key={i} value={i}>
                 {i}
               </MenuItem>
@@ -153,7 +167,7 @@ const Cheetsheet = () => {
             label='Klasse'
             onChange={(e) => setClassChoice(Number(e.target.value))}
             select
-            style={{ gridArea: 'filterClass' }}
+            sx={{ gridArea: 'filterClass' }}
             value={classId || 1}
             variant='outlined'>
             {(getStudy() === Study.DIGSAM ? [4, 5] : [1, 2, 3]).map((i) => (
@@ -162,8 +176,8 @@ const Cheetsheet = () => {
               </MenuItem>
             ))}
           </TextField>
-          <TextField fullWidth label='Søk' onChange={(e) => setInput(e.target.value)} style={{ gridArea: 'filterSearch' }} value={input} variant='outlined' />
-        </div>
+          <TextField fullWidth label='Søk' onChange={(e) => setInput(e.target.value)} sx={{ gridArea: 'filterSearch' }} value={input} variant='outlined' />
+        </FilterContainer>
         <Files files={files} getNextPage={fetchNextPage} hasNextPage={hasNextPage} isLoading={isLoading} />
       </Paper>
     </Page>

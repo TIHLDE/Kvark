@@ -14,14 +14,14 @@ import { useMediaQuery, Theme } from '@mui/material';
 import Page from 'components/navigation/Page';
 import Banner from 'components/layout/Banner';
 import Pagination from 'components/layout/Pagination';
-import ListItem, { ListItemLoading } from 'components/miscellaneous/ListItem';
+import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
 import Paper from 'components/layout/Paper';
 import Bool from 'components/inputs/Bool';
 import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import { useGoogleAnalytics } from 'hooks/Utils';
-import Expansion from 'components/layout/Expand';
+import Expand from 'components/layout/Expand';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {
@@ -37,9 +37,13 @@ const useStyles = makeStyles()((theme) => ({
   },
   list: {
     display: 'grid',
-    gridTemplateColumns: '1fr',
+    gridTemplateColumns: '1fr 1fr',
+    gap: theme.spacing(1),
     [theme.breakpoints.down('lg')]: {
       order: 1,
+    },
+    [theme.breakpoints.down('md')]: {
+      gridTemplateColumns: '1fr',
     },
   },
   settings: {
@@ -53,10 +57,6 @@ const useStyles = makeStyles()((theme) => ({
       position: 'static',
       top: 0,
     },
-  },
-  accordion: {
-    background: theme.palette.background.paper,
-    border: `1px solid ${theme.palette.divider}`,
   },
 }));
 
@@ -115,7 +115,7 @@ const JobPosts = () => {
     <Page banner={<Banner title='Karriere' />} options={{ title: 'Karriere' }}>
       <div className={classes.grid}>
         <div className={classes.list}>
-          {isLoading && <ListItemLoading />}
+          {isLoading && <JobPostListItemLoading />}
           {isEmpty && <NotFoundIndicator header='Fant ingen annonser' />}
           {error && <Paper>{error.detail}</Paper>}
           {data !== undefined && (
@@ -123,19 +123,19 @@ const JobPosts = () => {
               {data.pages.map((page, i) => (
                 <Fragment key={i}>
                   {page.results.map((jobpost) => (
-                    <ListItem jobpost={jobpost} key={jobpost.id} />
+                    <JobPostListItem jobpost={jobpost} key={jobpost.id} />
                   ))}
                 </Fragment>
               ))}
             </Pagination>
           )}
-          {isFetching && <ListItemLoading />}
+          {isFetching && <JobPostListItemLoading />}
         </div>
         {lgDown ? (
           <div>
-            <Expansion className={classes.accordion} expanded={searchFormExpanded} header='Filtrering' onChange={() => setSearchFormExpanded((prev) => !prev)}>
+            <Expand expanded={searchFormExpanded} flat header='Filtrering' onChange={() => setSearchFormExpanded((prev) => !prev)}>
               <SearchForm />
-            </Expansion>
+            </Expand>
           </div>
         ) : (
           <Paper className={classes.settings}>

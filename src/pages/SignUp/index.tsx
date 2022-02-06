@@ -30,6 +30,7 @@ import TextField from 'components/inputs/TextField';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import { SecondaryTopBox } from 'components/layout/TopBox';
 import { useGoogleAnalytics } from 'hooks/Utils';
+import { useConfetti } from 'hooks/Confetti';
 
 const useStyles = makeStyles()((theme) => ({
   paper: {
@@ -70,6 +71,7 @@ type SignUpData = UserCreate & {
 
 const SignUp = () => {
   const { classes } = useStyles();
+  const { run } = useConfetti();
   const { event } = useGoogleAnalytics();
   const navigate = useNavigate();
   const createUser = useCreateUser();
@@ -105,6 +107,7 @@ const SignUp = () => {
     } as UserCreate;
     createUser.mutate(userData, {
       onSuccess: () => {
+        run();
         event('signup', 'auth', `Signed up`);
         setLogInRedirectURL(null);
         navigate(redirectURL || URLS.login);
@@ -161,7 +164,7 @@ const SignUp = () => {
           />
           <div className={classes.double}>
             <Select control={control} formState={formState} label='Studie' name='user_study' required rules={{ required: 'Feltet er påkrevd' }}>
-              {[1, 2, 3, 4, 5].map((i) => (
+              {[1, 2, 3, 4, 5, 6].map((i) => (
                 <MenuItem key={i} value={i}>
                   {getUserStudyLong(i)}
                 </MenuItem>
