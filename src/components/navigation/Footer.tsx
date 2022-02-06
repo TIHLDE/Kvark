@@ -16,7 +16,7 @@ import SNAPCHAT from 'assets/icons/snapchat.svg';
 import SLACK from 'assets/icons/slack.svg';
 import DISCORD from 'assets/icons/discord.svg';
 import MAINSPONSOR from 'assets/img/mainSponsor.png';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles()((theme) => ({
   root: {
@@ -133,7 +133,7 @@ const useStyles = makeStyles()((theme) => ({
 
 const Footer = () => {
   const { classes, cx } = useStyles();
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const [showModal, setShowModal] = useState(false);
 
   const mediaList = [

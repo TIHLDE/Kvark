@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- ⚡ **Sentry**. Lagt til Sentry-feil catching.
+
 ## Versjon 1.4.4 (06.02.2022)
 
 - ✨ **Konfetti**. Lagt til konfetti ved brukerregistrering og påmelding til arrangement.

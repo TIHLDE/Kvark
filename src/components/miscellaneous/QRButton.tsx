@@ -8,7 +8,7 @@ import { makeStyles } from 'makeStyles';
 import Dialog from 'components/layout/Dialog';
 
 // Project hooks
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 
 // Icons
 import QrCodeIcon from '@mui/icons-material/QrCodeRounded';
@@ -53,7 +53,7 @@ export type QRButtonProps = ButtonProps & {
 const QRButton = ({ qrValue, subtitle, children, ...props }: QRButtonProps) => {
   const [showQR, setShowQR] = useState(false);
   const theme = useTheme();
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
   const openQR = () => {
     event('open-QR', 'profile', 'Open');

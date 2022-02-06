@@ -1,7 +1,7 @@
 import { useState, forwardRef, Ref } from 'react';
 import { useBatchUpdateGroupFine } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 import { Group, GroupFineBatchMutate } from 'types';
 
 import { Fab, Stack, Button, Zoom, FabProps } from '@mui/material';
@@ -17,7 +17,7 @@ export type FineBatchUpdateDialogProps = FabProps & {
 };
 
 const FineBatchUpdateDialog = forwardRef(function FineBatchUpdateDialog({ groupSlug, ...props }: FineBatchUpdateDialogProps, ref: Ref<HTMLButtonElement>) {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const checkedFines = useCheckedFines();
   const clearCheckedFines = useClearCheckedFines();
   const [dialogOpen, setDialogOpen] = useState(false);

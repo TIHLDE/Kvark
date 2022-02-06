@@ -2,7 +2,7 @@ import { useMemo, useState, useEffect } from 'react';
 import { USERS_ENDPOINT } from 'api/api';
 import { TIHLDE_API_URL } from 'constant';
 import { useUserEvents, useUser } from 'hooks/User';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 import { Stack, Typography, Collapse, Divider, ListItem, ListItemButton, ListItemIcon, ListItemText, Alert } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
@@ -18,7 +18,7 @@ import Paper from 'components/layout/Paper';
 export const EventsSubscription = () => {
   const [subscribeExpanded, setSubscribeExpanded] = useState(false);
   const { data: user } = useUser();
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
 
   useEffect(() => {
     !subscribeExpanded || event('open', 'event-calendar-subscription', 'Opened info about event-subscriptions in calendar');

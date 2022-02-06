@@ -1,4 +1,4 @@
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 import URLS from 'URLS';
 import { Link } from 'react-router-dom';
 import { Typography, styled, IconButton } from '@mui/material';
@@ -26,7 +26,7 @@ const Smoke = styled('div')(({ theme }) => ({
 }));
 
 const Landing = () => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const openEventsAnalytics = () => event('go-to-all-events', 'events-list-view', `Go to all events`);
   const openNewsAnalytics = () => event('go-to-all-news', 'news-list-view', `Go to all news`);
 

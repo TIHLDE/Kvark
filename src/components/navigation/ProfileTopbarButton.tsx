@@ -17,7 +17,7 @@ import Avatar from 'components/miscellaneous/Avatar';
 import ThemeSettings from 'components/miscellaneous/ThemeSettings';
 import TopbarNotifications from 'components/navigation/TopbarNotifications';
 import { NavigationOptions } from 'components/navigation/Navigation';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles<ProfileTopbarButtonProps>()((theme, props) => ({
   themeButton: {
@@ -40,7 +40,7 @@ export const getColor = ({ darkColor, lightColor }: ProfileTopbarButtonProps, th
 export type ProfileTopbarButtonProps = Pick<NavigationOptions, 'darkColor' | 'lightColor'>;
 
 const ProfileTopbarButton = (props: ProfileTopbarButtonProps) => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const { classes } = useStyles(props);
   const { data: user } = useUser();
   const theme = useTheme();

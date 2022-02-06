@@ -10,7 +10,7 @@ import { Scheduler, MonthView, Toolbar, DateNavigator, Appointments } from '@dev
 
 // Project components
 import Paper from 'components/layout/Paper';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 import { Groups } from 'types/Enums';
 
 export type EventsCalendarViewProps = {
@@ -38,7 +38,7 @@ const Appointment = ({ children, data }: AppointmentProps) => {
 };
 
 const EventsCalendarView = ({ events, oldEvents }: EventsCalendarViewProps) => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
 
   useEffect(() => {
     event('open', 'calendar', 'Open calendar on landing page');
