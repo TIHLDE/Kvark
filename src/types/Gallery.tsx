@@ -1,5 +1,4 @@
 import { EventCompact } from 'types';
-
 export type GalleryRequired = Partial<Gallery> & Pick<Gallery, 'title'>;
 export type PictureRequired = Partial<Picture> & Pick<Picture, 'image'>;
 
