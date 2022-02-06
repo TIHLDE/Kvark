@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+## Versjon 1.4.5 (06.02.2022)
+
 - ⚡ **Sentry**. Lagt til Sentry-feil catching.
 
 ## Versjon 1.4.4 (06.02.2022)
