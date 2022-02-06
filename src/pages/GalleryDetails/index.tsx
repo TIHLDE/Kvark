@@ -34,7 +34,7 @@ const GalleryDetails = () => {
       banner={
         data &&
         !undefined && (
-          <Banner title={data.title}>
+          <Banner text={data.description} title={data.title}>
             <HavePermission apps={[PermissionApp.PICTURE]}>
               <PictureUploadDialog slug={data.slug} />
             </HavePermission>
