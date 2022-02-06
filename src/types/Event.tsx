@@ -65,3 +65,11 @@ export interface Registration {
 export type PublicRegistration = {
   user_info: Registration['user_info'] | null;
 };
+
+export type EventStatistics = {
+  has_attended_count: number;
+  list_count: number;
+  waiting_list_count: number;
+  classes: Array<{ user_class: UserClass; amount: number }>;
+  studies: Array<{ user_study: UserStudy; amount: number }>;
+};

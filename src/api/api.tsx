@@ -9,6 +9,7 @@ import {
   Event,
   EventCompact,
   EventRequired,
+  EventStatistics,
   FileUploadResponse,
   Form,
   FormCreate,
@@ -58,7 +59,7 @@ export const BADGES_ENDPOINT = 'badges';
 export const CATEGORIES_ENDPOINT = 'categories';
 export const CHEATSHEETS_ENDPOINT = 'cheatsheets';
 export const EVENTS_ENDPOINT = 'events';
-export const EVENT_REGISTRATIONS_ENDPOINT = 'users';
+export const EVENT_REGISTRATIONS_ENDPOINT = 'registrations';
 export const FORMS_ENDPOINT = 'forms';
 export const GROUPS_ENDPOINT = 'groups';
 export const GROUP_LAWS_ENDPOINT = 'laws';
@@ -91,6 +92,7 @@ export default {
 
   // Events
   getEvent: (eventId: Event['id']) => IFetch<Event>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/` }),
+  getEventStatistics: (eventId: Event['id']) => IFetch<EventStatistics>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/statistics/` }),
   getEvents: (filters?: any) => IFetch<PaginationResponse<EventCompact>>({ method: 'GET', url: `${EVENTS_ENDPOINT}/`, data: filters || {} }),
   getEventsWhereIsAdmin: (filters?: any) => IFetch<PaginationResponse<EventCompact>>({ method: 'GET', url: `${EVENTS_ENDPOINT}/admin/`, data: filters || {} }),
   createEvent: (item: EventRequired) => IFetch<Event>({ method: 'POST', url: `${EVENTS_ENDPOINT}/`, data: item }),
@@ -104,8 +106,12 @@ export default {
   // Event registrations
   getRegistration: (eventId: Event['id'], userId: User['user_id']) =>
     IFetch<Registration>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/${EVENT_REGISTRATIONS_ENDPOINT}/${userId}/` }),
-  getEventRegistrations: (eventId: Event['id']) =>
-    IFetch<Array<Registration>>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/${EVENT_REGISTRATIONS_ENDPOINT}/` }),
+  getEventRegistrations: (eventId: Event['id'], filters?: any) =>
+    IFetch<PaginationResponse<Registration>>({
+      method: 'GET',
+      url: `${EVENTS_ENDPOINT}/${String(eventId)}/${EVENT_REGISTRATIONS_ENDPOINT}/`,
+      data: filters || {},
+    }),
   createRegistration: (eventId: Event['id'], item: Partial<Registration>) =>
     IFetch<Registration>({ method: 'POST', url: `${EVENTS_ENDPOINT}/${String(eventId)}/${EVENT_REGISTRATIONS_ENDPOINT}/`, data: item }),
   updateRegistration: (eventId: Event['id'], item: Partial<Registration>, userId: User['user_id']) =>

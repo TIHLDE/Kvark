@@ -37,8 +37,10 @@ export const useUser = (userId?: User['user_id'], options?: UseQueryOptions<User
     ...options,
     onSuccess: (data) => !data || userId || setUserId(data.user_id),
     onError: () => {
-      logOut();
-      window.location.reload();
+      if (!userId) {
+        logOut();
+        window.location.reload();
+      }
     },
   });
 };
