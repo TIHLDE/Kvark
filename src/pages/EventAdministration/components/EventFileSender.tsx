@@ -4,12 +4,11 @@ import { useSnackbar } from 'hooks/Snackbar';
 import { FileUploader } from 'react-drag-drop-files';
 
 // Material-UI
-import { Button, IconButton, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { Button, IconButton, List, ListItem, ListItemIcon, ListItemText, Box } from '@mui/material';
 import { AttachFileRounded, CloseRounded } from '@mui/icons-material/';
 
 // Project components
 import Dialog from 'components/layout/Dialog';
-import { Box } from '@mui/system';
 
 export type EventFileSenderProps = {
   eventId: number;
