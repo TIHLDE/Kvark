@@ -21,6 +21,7 @@
     "react": "^17.0.2",
     "react-cool-dimensions": "^2.0.7",
     "react-dom": "^17.0.2",
+    "react-drag-drop-files": "^2.3.2",
     "react-easy-crop": "^4.0.1",
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.12.2",

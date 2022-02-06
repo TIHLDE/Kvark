@@ -13,6 +13,7 @@ import CopyIcon from '@mui/icons-material/FileCopyOutlined';
 import Participant from 'pages/EventAdministration/components/Participant';
 import EventParticipantsStatistics from 'pages/EventAdministration/components/EventParticipantsStatistics';
 import EventMessageSender from 'pages/EventAdministration/components/EventMessageSender';
+import EventFileSender from 'pages/EventAdministration/components/EventFileSender';
 
 export type EventParticipantsProps = {
   eventId: number;
@@ -103,6 +104,7 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
             Kopier eposter
           </Button>
           <EventMessageSender eventId={eventId} />
+          <EventFileSender eventId={eventId} />
         </Stack>
         <Stack direction='row' sx={{ justifyContent: 'space-between' }}>
           <Typography variant='h3'>Påmeldte ({registrationsNotOnWait.length})</Typography>

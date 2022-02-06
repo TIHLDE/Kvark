@@ -67,6 +67,9 @@ export const useNotifyEventRegistrations = (
 ): UseMutationResult<RequestResponse, RequestResponse, { title: string; message: string }, unknown> =>
   useMutation(({ title, message }) => API.notifyEventRegistrations(eventId, title, message));
 
+export const useSendFilesToAttendees = (eventId: number): UseMutationResult<RequestResponse, RequestResponse, { files: File | File[] | Blob }, unknown> =>
+  useMutation(({ files }) => API.sendFilesToAttendees(eventId, files));
+
 /**
  * Get "public" event registrations, registrations which all members is allowed to see. Users can anonymize themself through their profile-settings
  * @param eventId The event-id
