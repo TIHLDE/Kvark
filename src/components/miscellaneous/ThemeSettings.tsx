@@ -7,7 +7,7 @@ import { ToggleButton, ToggleButtonGroup, Typography, styled } from '@mui/materi
 
 // Project components
 import Dialog from 'components/layout/Dialog';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 
 const ThemeDialog = styled(Dialog)({
   '& .MuiPaper-root': {
@@ -28,7 +28,7 @@ export type ThemeSettingsProps = {
 };
 
 const ThemeSettings = ({ open, onClose }: ThemeSettingsProps) => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const themeSettings = useThemeSettings();
   const [themeName, setThemeName] = useState(themeSettings.getThemeFromStorage());
 

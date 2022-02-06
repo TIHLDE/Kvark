@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { CompaniesEmail } from 'types';
 import API from 'api/api';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 import { useSnackbar } from 'hooks/Snackbar';
 import addMonths from 'date-fns/addMonths';
 import { EMAIL_REGEX } from 'constant';
@@ -22,7 +22,7 @@ type CompaniesEmailFormValues = Omit<CompaniesEmail, 'time' | 'type'> & {
 };
 
 const CompaniesForm = () => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const { register, control, handleSubmit, formState, getValues, reset, setError } = useForm<CompaniesEmailFormValues>();

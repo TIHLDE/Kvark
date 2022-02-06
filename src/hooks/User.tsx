@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import * as Sentry from '@sentry/react';
 import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseQueryOptions, QueryKey, UseMutationResult } from 'react-query';
 import API from 'api/api';
 import {
@@ -18,7 +19,8 @@ import {
 import { PermissionApp } from 'types/Enums';
 import { getCookie, setCookie, removeCookie } from 'api/cookie';
 import { ACCESS_TOKEN } from 'constant';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useNavigate } from 'react-router-dom';
+import URLS from 'URLS';
 
 export const USER_QUERY_KEY = 'user';
 export const USER_BADGES_QUERY_KEY = 'user_badges';
@@ -32,10 +34,13 @@ export const USERS_QUERY_KEY = 'users';
 export const useUser = (userId?: User['user_id'], options?: UseQueryOptions<User | undefined, RequestResponse, User | undefined, QueryKey>) => {
   const isAuthenticated = useIsAuthenticated();
   const logOut = useLogout();
-  const { setUserId } = useGoogleAnalytics();
   return useQuery<User | undefined, RequestResponse>([USER_QUERY_KEY, userId], () => (isAuthenticated ? API.getUserData(userId) : undefined), {
     ...options,
-    onSuccess: (data) => !data || userId || setUserId(data.user_id),
+    onSuccess: (data) => {
+      if (data && !userId) {
+        Sentry.setUser({ username: data.user_id });
+      }
+    },
     onError: () => {
       if (!userId) {
         logOut();
@@ -108,10 +113,13 @@ export const useLogin = (): UseMutationResult<LoginRequestResponse, RequestRespo
 export const useForgotPassword = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => useMutation((email) => API.forgotPassword(email));
 
 export const useLogout = () => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   return () => {
     removeCookie(ACCESS_TOKEN);
     queryClient.removeQueries();
+    Sentry.configureScope((scope) => scope.setUser(null));
+    navigate(URLS.landing);
   };
 };
 

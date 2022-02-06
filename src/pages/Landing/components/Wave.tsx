@@ -18,7 +18,7 @@ import { ReactComponent as WaveBottom } from 'assets/img/waves/wave-bottom.svg';
 
 // Project Components
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles()((theme) => ({
   root: {
@@ -142,7 +142,7 @@ const useStyles = makeStyles()((theme) => ({
 
 const Wave = () => {
   const { classes, cx } = useStyles();
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const isAuthenticated = useIsAuthenticated();
 
   const analytics = (page: string) => event('go-to-page', 'wave', `Go to ${page}`);

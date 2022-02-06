@@ -1,11 +1,9 @@
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { getUserStudyLong, getUserClass } from 'utils';
 import { User } from 'types';
-import URLS from 'URLS';
 import { useUpdateUser, useExportUserData, useDeleteUser, useLogout } from 'hooks/User';
 import { useSnackbar } from 'hooks/Snackbar';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 import { MenuItem, Typography, Stack, Divider, Button } from '@mui/material';
 
 // Project components
@@ -18,8 +16,7 @@ import { ImageUpload } from 'components/inputs/Upload';
 import { ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
 
 const DeleteUserDialog = ({ isAdmin, user }: ProfileSettingsProps) => {
-  const { event } = useGoogleAnalytics();
-  const navigate = useNavigate();
+  const { event } = useAnalytics();
   const deleteUser = useDeleteUser();
   const logOut = useLogout();
   const showSnackbar = useSnackbar();
@@ -32,7 +29,6 @@ const DeleteUserDialog = ({ isAdmin, user }: ProfileSettingsProps) => {
         showSnackbar(data.detail, 'success');
         event('delete-user', 'profile', 'Deleted user');
         logOut();
-        navigate(URLS.landing);
       },
       onError: (e) => showSnackbar(e.detail, 'error'),
     });
@@ -67,7 +63,7 @@ type FormData = Pick<
 >;
 
 const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const showSnackbar = useSnackbar();
   const updateUser = useUpdateUser();
   const exportUserData = useExportUserData();

@@ -1,12 +1,13 @@
 import { ReactElement, useEffect, lazy, Suspense } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import Plausible from 'plausible-tracker';
 import URLS from 'URLS';
 import { PermissionApp } from 'types/Enums';
 
 // Services
 import { useSetRedirectUrl } from 'hooks/Misc';
 import { useHavePermission, useIsAuthenticated } from 'hooks/User';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 
 // Project components
 import Page from 'components/navigation/Page';
@@ -25,6 +26,7 @@ import GroupsOverview from 'pages/Groups/overview';
 import GroupDetails from 'pages/Groups/GroupDetails';
 import News from 'pages/News';
 import NewStudent from 'pages/NewStudent';
+import { PLAUSIBLE_DOMAIN } from 'constant';
 
 const Cheatsheet = lazy(() => import(/* webpackChunkName: "cheatsheet" */ 'pages/Cheatsheet'));
 const EventAdministration = lazy(() => import(/* webpackChunkName: "event_administration" */ 'pages/EventAdministration'));
@@ -64,9 +66,20 @@ export const AuthRoute = ({ apps = [], element }: AuthRouteProps) => {
 
 const AppRoutes = () => {
   const location = useLocation();
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
 
   useEffect(() => event('page_view', window.location.href, window.location.pathname), [location]);
+
+  useEffect(() => {
+    const { enableAutoPageviews, enableAutoOutboundTracking } = Plausible({ domain: PLAUSIBLE_DOMAIN });
+    const cleanupPageViews = enableAutoPageviews();
+    const cleanupOutboundTracking = enableAutoOutboundTracking();
+
+    return () => {
+      cleanupPageViews();
+      cleanupOutboundTracking();
+    };
+  }, []);
 
   return (
     <Suspense fallback={<Page options={{ title: 'Laster...', filledTopbar: true }} />}>

@@ -16,7 +16,7 @@ import Paper from 'components/layout/Paper';
 import { NavigationItem } from 'components/navigation/Navigation';
 import Sidebar from 'components/navigation/Sidebar';
 import Logo from 'components/miscellaneous/TihldeLogo';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles()((theme) => ({
   root: {
@@ -74,7 +74,7 @@ export type BottomBarProps = {
 };
 
 const BottomBar = ({ items }: BottomBarProps) => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const { classes } = useStyles();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [menuOpen, setMenuOpen] = useState(false);

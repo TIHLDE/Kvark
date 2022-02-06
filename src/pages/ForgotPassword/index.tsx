@@ -18,7 +18,7 @@ import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import { SecondaryTopBox } from 'components/layout/TopBox';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles()((theme) => ({
   paper: {
@@ -51,7 +51,7 @@ type FormData = {
 
 const ForgotPassword = () => {
   const { classes } = useStyles();
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const forgotPassword = useForgotPassword();
   const showSnackbar = useSnackbar();
   const { register, formState, handleSubmit, setError } = useForm<FormData>();

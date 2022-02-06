@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useUser, useIsAuthenticated } from 'hooks/User';
-import { useGoogleAnalytics, usePersistedState } from 'hooks/Utils';
+import { useAnalytics, usePersistedState } from 'hooks/Utils';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { SHOW_NEW_STUDENT_INFO } from 'constant';
@@ -21,7 +21,7 @@ const Box = styled('div')(({ theme }) => ({
 }));
 
 const NewStudentBox = () => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const { data: user, isLoading } = useUser();
   const isAuthenticated = useIsAuthenticated();
   const [shouldShowBox, setShouldShowBox] = usePersistedState('ShowNewStudentBox', true, 1000 * 3600 * 24 * 60);

@@ -9,7 +9,7 @@ import { useSetRedirectUrl } from 'hooks/Misc';
 import { useEventRegistration, useDeleteEventRegistration } from 'hooks/Event';
 import { useUser } from 'hooks/User';
 import { useSnackbar } from 'hooks/Snackbar';
-import { useGoogleAnalytics, useInterval } from 'hooks/Utils';
+import { useAnalytics, useInterval } from 'hooks/Utils';
 import { useCategories } from 'hooks/Categories';
 import { Typography, Button, Collapse, Skeleton, Alert, useMediaQuery, Theme, Stack, styled } from '@mui/material';
 
@@ -57,7 +57,7 @@ enum Views {
 }
 
 const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const { data: user } = useUser();
   const { data: registration } = useEventRegistration(data.id, preview || !user ? '' : user.user_id);
   const deleteRegistration = useDeleteEventRegistration(data.id);

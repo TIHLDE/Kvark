@@ -40,7 +40,7 @@ import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import Linkify from 'components/miscellaneous/Linkify';
 import Pagination from 'components/layout/Pagination';
 import Dialog from 'components/layout/Dialog';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 import Paper from 'components/layout/Paper';
 
 type NotificationItemProps = {
@@ -54,7 +54,7 @@ export type NotificationsTopbarProps = {
 
 const NotificationItem = ({ notification, setShowNotifications }: NotificationItemProps) => {
   const [showDescription, setShowDescription] = useState(false);
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
 
   const Icon = notification.read ? NotificationReadIcon : NotificationUnreadIcon;
 

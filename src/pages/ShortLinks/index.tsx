@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useGoogleAnalytics, useShare } from 'hooks/Utils';
+import { useAnalytics, useShare } from 'hooks/Utils';
 import { useShortLinks, useCreateShortLink, useDeleteShortLink } from 'hooks/ShortLink';
 import { useSnackbar } from 'hooks/Snackbar';
 import { ShortLink } from 'types';
@@ -81,7 +81,7 @@ type ShortLinkItemProps = {
 
 const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
   const { classes } = useStyles();
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   const deleteShortLink = useDeleteShortLink();
   const showSnackbar = useSnackbar();
@@ -134,7 +134,7 @@ const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
 
 const ShortLinks = () => {
   const { classes } = useStyles();
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const { data, error, isFetching } = useShortLinks();
   const createShortLink = useCreateShortLink();
   const showSnackbar = useSnackbar();

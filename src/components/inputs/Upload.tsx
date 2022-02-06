@@ -1,7 +1,7 @@
 import { useState, useCallback, forwardRef } from 'react';
 import { UseFormReturn, UseFormRegisterReturn, Path, FieldError, UnpackNestedValue, PathValue, FieldValues } from 'react-hook-form';
 import Cropper from 'react-easy-crop';
-import { useGoogleAnalytics, useShare } from 'hooks/Utils';
+import { useAnalytics, useShare } from 'hooks/Utils';
 import API from 'api/api';
 import { useSnackbar } from 'hooks/Snackbar';
 
@@ -254,7 +254,7 @@ export const FormFileUpload = <FormValues extends FieldValues>({
 export type FileUploadProps<FormValues> = Pick<ImageUploadProps<FormValues>, 'label'> & ButtonProps;
 
 export const FileUpload = <FormValues extends FieldValues>({ label = 'Last opp filer', ...props }: FileUploadProps<FormValues>) => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const [uploaded, setUploaded] = useState<Array<string>>([]);

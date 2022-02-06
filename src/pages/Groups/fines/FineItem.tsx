@@ -5,7 +5,7 @@ import { GroupFine, GroupFineMutate, Group } from 'types';
 import { formatDate } from 'utils';
 import { useUpdateGroupFine, useDeleteGroupFine } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 import { ListItem, ListItemButton, ListItemProps, Typography, Collapse, Button, Checkbox, Stack, Divider, ListItemText, Tooltip } from '@mui/material';
 
 // Icons
@@ -31,7 +31,7 @@ export type FineItemProps = {
 } & ListItemProps;
 
 const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItemProps) => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const showSnackbar = useSnackbar();
   const updateFine = useUpdateGroupFine(groupSlug, fine.id);
   const deleteFine = useDeleteGroupFine(groupSlug, fine.id);

@@ -29,7 +29,7 @@ import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import { SecondaryTopBox } from 'components/layout/TopBox';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 import { useConfetti } from 'hooks/Confetti';
 
 const useStyles = makeStyles()((theme) => ({
@@ -72,7 +72,7 @@ type SignUpData = UserCreate & {
 const SignUp = () => {
   const { classes } = useStyles();
   const { run } = useConfetti();
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const navigate = useNavigate();
   const createUser = useCreateUser();
   const showSnackbar = useSnackbar();

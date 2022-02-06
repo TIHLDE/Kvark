@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { GroupUserFine } from 'types';
 import { useGroupUserFines, useBatchUpdateUserGroupFines } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 import { Collapse, ListItem, ListItemText, Stack, Typography, List, Divider } from '@mui/material';
 
 // Icons
@@ -25,7 +25,7 @@ export type UserFineItemProps = Pick<FineItemProps, 'groupSlug' | 'isAdmin'> & {
 
 const UserFineItem = ({ userFine, groupSlug, isAdmin }: UserFineItemProps) => {
   const [expanded, setExpanded] = useState(false);
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const finesFilter = useFinesFilter();
   const showSnackbar = useSnackbar();
   const updateUserFines = useBatchUpdateUserGroupFines(groupSlug, userFine.user.user_id);
