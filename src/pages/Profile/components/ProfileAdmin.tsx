@@ -70,7 +70,7 @@ const Admin = () => {
     {
       apps: [PermissionApp.GROUP],
       icon: GroupsIcon,
-      to: URLS.groups,
+      to: URLS.groups.index,
       primary: 'Grupper',
       secondary: 'Se og endre grupper',
     },

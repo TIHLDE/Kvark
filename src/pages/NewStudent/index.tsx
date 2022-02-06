@@ -1,13 +1,10 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { usePage } from 'hooks/Pages';
+import { useWikiPage } from 'hooks/Wiki';
 import { useIsAuthenticated } from 'hooks/User';
 import { useEvents } from 'hooks/Event';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
-import { Page as PageType } from 'types';
-
-// Material UI Components
 import { makeStyles } from 'makeStyles';
 import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography, Stack } from '@mui/material';
 
@@ -23,7 +20,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
 import AboutIcon from '@mui/icons-material/InfoRounded';
 
 // Project Components
-import Expansion from 'components/layout/Expand';
+import Expand from 'components/layout/Expand';
 import Page from 'components/navigation/Page';
 import Banner, { BannerButton } from 'components/layout/Banner';
 import Paper from 'components/layout/Paper';
@@ -53,13 +50,6 @@ const useStyles = makeStyles()((theme) => ({
 
 const FADDERUKA_EVENT_CATEGORY = 10;
 
-const usePageContent = (url: string) =>
-  useQuery<string>(['page', url], () =>
-    fetch(`https://api.tihlde.org/api/v1/page/${url}`)
-      .then((res) => res.json())
-      .then((page: PageType) => page.content),
-  );
-
 const useGithubContent = (url: string) => useQuery(['github-wiki', url], () => fetch(url).then((res) => res.text()));
 
 type VolunteerGroupProps = {
@@ -68,11 +58,11 @@ type VolunteerGroupProps = {
 };
 
 const VolunteerGroup = ({ url, title }: VolunteerGroupProps) => {
-  const { data: text = '' } = usePageContent(url);
+  const { data } = useWikiPage(url);
   return (
-    <Expansion flat header={title} sx={{ border: (theme) => `1px solid ${theme.palette.divider}`, background: (theme) => theme.palette.background.smoke }}>
-      <MarkdownRenderer value={text} />
-    </Expansion>
+    <Expand flat header={title}>
+      <MarkdownRenderer value={data?.content || ''} />
+    </Expand>
   );
 };
 
@@ -97,8 +87,8 @@ const NewStudent = () => {
 
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents({ category: FADDERUKA_EVENT_CATEGORY });
   const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
-  const { data: faqPage } = usePage('ny-student/');
-  const { data: sportsText = '' } = usePageContent('tihlde/interessegrupper/tihlde-pythons/');
+  const { data: faqPage } = useWikiPage('ny-student/');
+  const { data: sportsText } = useWikiPage('tihlde/interessegrupper/tihlde-pythons/');
   const { data: aboutText = '' } = useGithubContent('https://raw.githubusercontent.com/wiki/TIHLDE/Kvark/Nettsiden-info.md');
 
   const fadderukaSignupAnalytics = () => event('signup-fadderuka', 'new-student', 'Clicked on link to signup for fadderuka');
@@ -216,7 +206,7 @@ const NewStudent = () => {
           </Collapse>
           <Collapse in={tab === sportsTab.value} mountOnEnter>
             <Paper sx={{ p: 2 }}>
-              <MarkdownRenderer value={sportsText} />
+              <MarkdownRenderer value={sportsText?.content || ''} />
             </Paper>
           </Collapse>
           <Collapse in={tab === aboutTab.value} mountOnEnter>

@@ -14,6 +14,36 @@
 
 ## Neste versjon
 
+- ✨ **Konfetti**. Lagt til konfetti ved brukerregistrering og påmelding til arrangement.
+
+## Versjon 1.4.3 (03.02.2022)
+
+- ✨ **Bruker**. Det er mulig å eksportere sin brukerdata.
+- ✨ **Bruker**. Det er mulig å slette sin egen bruker.
+- ✨ **Offentlige profiler**. Det er nå mulig å se andre brukeres profiler med deres badges og medlemskap i grupper.
+- ✨ **Arrangementer**. Alle innloggede brukere kan nå se hvem som er påmeldt arrangementer. Brukere kan reservere seg mot å bli oppført på deltagerlisten.
+- ⚡ **Tilganger**. Laster inn tilganger fra backend først når de trengs.
+- ✨ **Skjemamaler**. Administratorer kan nå lage maler som man kan ta utgangspunkt i når man lager et nytt skjema.
+- ✨ **Bildeopplastning**. Viser foretrukket størrelsesforhold på bilder ved bildeopplastning.
+
+## Versjon 1.4.2 (31.01.2022)
+
+- 🦟 **Eventadmin**. Viser at et arrangement er stengt i adminpanelet.
+- 🦟 **Stories**. Annonser som har fortløpende opptak vises med "fortløpende opptak".
+
+## Versjon 1.4.1 (15.01.2022)
+
+- ⚡ **Arrangementer**. Brukere kan nå se om de er prioritert på et arrangement.
+- ⚡ **Arrangementer**. Påmeldingsknappen teller ned til påmeldingsstart og aktiveres automatisk ved påmeldingsstart uten at en må laste inn siden på nytt.
+- ✨ **Kokeboka**. Lagt til "Antall koker nå" teller (ikke faktiske tall).
+- ⚡ **Botsystem**. Lovverket er bedre sortert. Ved ny bot endres beløp når valgt lovbrudd endres.
+
+## Versjon 1.4.0 (01.01.2022)
+
+- ✨ **Gruppe-skjemaer**. Grupper kan nå lage skjemaer som brukere kan svare på. Admin/leder av gruppe kan styre om det tillates flere besvarelser, om skjemaet er åpent og begrense svar til kun gruppens medlemmer.
+- ✨ **Botsystem**. Lagt til statistikk for botsystemet. Brukere kan se antall betalt, antall godkjent og ikke betalt, samt antall ikke godkjent.
+- ✨ **Arrangementer**. Brukere kan nå få arrangementene sine automatisk inn i sin egen kalender gjennom å abonnere på en gitt URL. Fremgangsmåte ligger i profilen, samt i hvert arrangement.
+- ⚡ **WIKI**. Endret navn på pages til Wiki. Oppdatert navigasjon slik at det er enklere å få oversikt over innholdet.
 - ✨ **Botsystem**. Laget et botsystem for intern bruk i grupper. Gruppene kan lage et eget lovverk. Medlemmer kan så gi bøter til andre medlemmer. Leder og botsjef kan markere bøter som godkjent og betalt.
 - 🎨 **Grupper**. Oppdatert utseende.
 

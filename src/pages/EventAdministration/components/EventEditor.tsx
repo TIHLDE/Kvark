@@ -26,7 +26,7 @@ import TextField from 'components/inputs/TextField';
 import DatePicker from 'components/inputs/DatePicker';
 import { ImageUpload } from 'components/inputs/Upload';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
-import { ShowMoreText, ShowMoreTooltip } from 'components/miscellaneous/ShowMoreText';
+import { ShowMoreText, ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import { GroupType } from 'types/Enums';
 
@@ -428,7 +428,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
             </Stack>
           </Collapse>
           <MarkdownEditor formState={formState} {...register('description', { required: 'Gi arrangementet en beskrivelse' })} required />
-          <ImageUpload formState={formState} label='Velg bilde' ratio={21 / 9} register={register('image')} setValue={setValue} watch={watch} />
+          <ImageUpload formState={formState} label='Velg bilde' ratio='21:9' register={register('image')} setValue={setValue} watch={watch} />
           <TextField formState={formState} label='Bildetekst' {...register('image_alt')} />
           <div className={classes.grid}>
             {groupOptions.length > 0 && (
@@ -437,8 +437,9 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 formState={formState}
                 helperText={
                   <ShowMoreText>
-                    Arrangøren vises på arrangementssiden. Den bestemmer også hvilke brukere som har tilgang til å endre arrangementet. Kun medlemmer av
-                    undergruppe/leder av komité eller interessegruppe som arrangerer et arrangement kan redigere det, se påmeldte og legge til spørreskjemaer.
+                    Arrangøren vises på arrangementssiden, samt bestemmer kolonne og farge på forsiden. Den bestemmer også hvilke brukere som har tilgang til å
+                    endre arrangementet. Kun medlemmer av undergruppe/leder av komité eller interessegruppe som arrangerer et arrangement kan redigere det, se
+                    påmeldte og legge til spørreskjemaer.
                   </ShowMoreText>
                 }
                 label='Arrangør (Gruppe)'
@@ -459,12 +460,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               <Select
                 control={control}
                 formState={formState}
-                helperText={
-                  <ShowMoreText>
-                    Kategorien brukes til å la brukerne enklere skille mellom forskjellige type arrangementer. Det gjøres ved fargekategorisering og
-                    forskjellige kolonner på forsiden.
-                  </ShowMoreText>
-                }
+                helperText={<ShowMoreText>Kategorien brukes til å la brukerne enklere finne arrangementer de ser etter.</ShowMoreText>}
                 label='Kategori'
                 name='category'>
                 {categories.map((value, index) => (
@@ -488,6 +484,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 closeText='Ikke steng arrangementet'
                 color='warning'
                 contentText='Å stenge et arrangement kan ikke reverseres. Eventuell på- og avmelding vil bli stoppet.'
+                disabled={data?.closed}
                 onConfirm={closeEvent}
                 titleText='Er du sikker?'>
                 Steng

@@ -11,6 +11,8 @@ import {
   GroupFineCreate,
   GroupFineMutate,
   GroupFineBatchMutate,
+  GroupForm,
+  GroupFineStatistics,
   GroupUserFine,
   PaginationResponse,
   RequestResponse,
@@ -25,14 +27,19 @@ export const GROUPS_QUERY_KEYS = {
   laws: (slug: Group['slug']) => [...GROUPS_QUERY_KEYS.detail(slug), 'laws'] as const,
   fines: {
     all: (slug: Group['slug']) => [...GROUPS_QUERY_KEYS.detail(slug), 'fines'] as const,
+    statistics: (slug: Group['slug']) => [...GROUPS_QUERY_KEYS.fines.all(slug), 'statistics'] as const,
     list: (slug: Group['slug'], filters?: any) => [...GROUPS_QUERY_KEYS.fines.all(slug), ...(filters ? [filters] : [])] as const,
     usersFines: (slug: Group['slug'], filters?: any) => [...GROUPS_QUERY_KEYS.fines.all(slug), 'user-fines', ...(filters ? [filters] : [])] as const,
     userFines: (slug: Group['slug'], userId: User['user_id'], filters?: any) =>
       [...GROUPS_QUERY_KEYS.fines.usersFines(slug), userId, ...(filters ? [filters] : [])] as const,
   },
+  forms: {
+    all: (slug: Group['slug']) => [...GROUPS_QUERY_KEYS.detail(slug), 'forms'] as const,
+  },
 };
 
-export const useGroup = (slug: Group['slug']) => useQuery<Group, RequestResponse>(GROUPS_QUERY_KEYS.detail(slug), () => API.getGroup(slug));
+export const useGroup = (slug: Group['slug'], options?: UseQueryOptions<Group, RequestResponse, Group, QueryKey>) =>
+  useQuery<Group, RequestResponse>(GROUPS_QUERY_KEYS.detail(slug), () => API.getGroup(slug), options);
 
 export const useUpdateGroup = (): UseMutationResult<Group, RequestResponse, GroupMutate, unknown> => {
   const queryClient = useQueryClient();
@@ -100,6 +107,9 @@ export const useGroupFines = (
       getNextPageParam: (lastPage) => lastPage.next,
     },
   );
+
+export const useGroupFinesStatistics = (slug: Group['slug'], options?: UseQueryOptions<GroupFineStatistics, RequestResponse, GroupFineStatistics, QueryKey>) =>
+  useQuery<GroupFineStatistics, RequestResponse>(GROUPS_QUERY_KEYS.fines.statistics(slug), () => API.getGroupFinesStatistics(slug), options);
 
 export const useGroupUserFines = (
   groupSlug: Group['slug'],
@@ -184,3 +194,6 @@ export const useDeleteGroupFine = (
     onSuccess: () => queryClient.invalidateQueries(GROUPS_QUERY_KEYS.fines.all(groupSlug)),
   });
 };
+
+export const useGroupForms = (groupSlug: string) =>
+  useQuery<Array<GroupForm>, RequestResponse>(GROUPS_QUERY_KEYS.forms.all(groupSlug), () => API.getGroupForms(groupSlug));

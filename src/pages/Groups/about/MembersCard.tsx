@@ -1,11 +1,14 @@
 import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { UserBase, UserList } from 'types';
-
-import { ListItem, ListItemText, ListItemAvatar, Typography, Skeleton, Stack, Divider } from '@mui/material';
-
-import { useMemberships } from 'hooks/Membership';
-import Pagination from 'components/layout/Pagination';
+import URLS from 'URLS';
 import { useGroup } from 'hooks/Group';
+import { useMemberships } from 'hooks/Membership';
+
+import { ListItem, ListItemButton, ListItemText, ListItemAvatar, Typography, Skeleton, Stack } from '@mui/material';
+
+import Pagination from 'components/layout/Pagination';
+import Paper from 'components/layout/Paper';
 import Avatar from 'components/miscellaneous/Avatar';
 import MemberListItem from 'pages/Groups/about/MemberListItem';
 import AddGroupMember from 'pages/Groups/about/AddGroupMember';
@@ -42,11 +45,13 @@ const MembersCard = ({ slug, showAdmin = false }: MembersCardProps) => {
   };
 
   const Person = ({ user }: PersonProps) => (
-    <ListItem disablePadding>
-      <ListItemAvatar>
-        <Avatar user={user} />
-      </ListItemAvatar>
-      <ListItemText primary={`${user.first_name} ${user.last_name}`} />
+    <ListItem component={Paper} disablePadding noOverflow noPadding>
+      <ListItemButton component={Link} to={`${URLS.profile}${user.user_id}/`}>
+        <ListItemAvatar>
+          <Avatar user={user} />
+        </ListItemAvatar>
+        <ListItemText primary={`${user.first_name} ${user.last_name}`} />
+      </ListItemButton>
     </ListItem>
   );
 
@@ -57,7 +62,6 @@ const MembersCard = ({ slug, showAdmin = false }: MembersCardProps) => {
           <Stack gap={1}>
             <Typography variant='h3'>Leder:</Typography>
             <Person user={leader} />
-            <Divider sx={{ mt: 1 }} />
           </Stack>
         )}
         <Stack gap={1}>

@@ -4,26 +4,21 @@ import { useForm } from 'react-hook-form';
 import URLS from 'URLS';
 import { formatDate, urlEncode } from 'utils';
 import parseISO from 'date-fns/parseISO';
-import { usePageTree, useCreatePage, useUpdatePage, useDeletePage } from 'hooks/Pages';
+import { useWikiTree, useCreateWikiPage, useUpdateWikiPage, useDeleteWikiPage } from 'hooks/Wiki';
 import { useSnackbar } from 'hooks/Snackbar';
 import { HavePermission } from 'hooks/User';
-import { Page, PageTree } from 'types';
+import { WikiPage, WikiTree } from 'types';
 import { PermissionApp } from 'types/Enums';
 
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import TreeView from '@mui/lab/TreeView';
-import TreeItem from '@mui/lab/TreeItem';
-import Collapse from '@mui/material/Collapse';
-import Divider from '@mui/material/Divider';
-import LinearProgress from '@mui/material/LinearProgress';
+import { Button, Typography, Collapse, Divider, LinearProgress } from '@mui/material';
+import { TreeView, TreeItem } from '@mui/lab';
 
 // Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 import RightIcon from '@mui/icons-material/ChevronRightRounded';
+import EditIcon from '@mui/icons-material/EditRounded';
+import AddIcon from '@mui/icons-material/AddRounded';
 
 // Project components
 import Dialog from 'components/layout/Dialog';
@@ -33,32 +28,16 @@ import SubmitButton from 'components/inputs/SubmitButton';
 import { ImageUpload } from 'components/inputs/Upload';
 import TextField from 'components/inputs/TextField';
 
-const useStyles = makeStyles()((theme) => ({
-  deleteButton: {
-    marginTop: theme.spacing(2),
-  },
-  treeWrapper: {
-    margin: theme.spacing(1, 0, 2),
-  },
-  tree: {
-    marginTop: theme.spacing(1),
-  },
-  divider: {
-    margin: theme.spacing(2, 0),
-  },
-}));
-
 type ITreeProps = IPagesAdminProps & {
   selectedNode: string;
   setSelectedNode: (newNode: string) => void;
 };
 
 const Tree = ({ selectedNode, setSelectedNode, page }: ITreeProps) => {
-  const { classes } = useStyles();
-  const { data, error, isLoading } = usePageTree();
+  const { data, error, isLoading } = useWikiTree();
   const [viewTree, setViewTree] = useState(false);
 
-  const renderTree = (node: PageTree, parentPath: string) => {
+  const renderTree = (node: WikiTree, parentPath: string) => {
     const id = `${parentPath}${node.slug}${node.slug === '' ? '' : '/'}`;
     if (id === page.path) {
       return null;
@@ -76,27 +55,24 @@ const Tree = ({ selectedNode, setSelectedNode, page }: ITreeProps) => {
     return <Typography>{error.detail}</Typography>;
   } else if (data) {
     return (
-      <>
-        <Paper className={classes.treeWrapper} noPadding>
-          <Button endIcon={viewTree ? <ExpandLessIcon /> : <ExpandMoreIcon />} fullWidth onClick={() => setViewTree((prev) => !prev)}>
-            Flytt siden
-          </Button>
-          <Collapse in={viewTree}>
-            <Typography align='center' className={classes.tree} variant='subtitle2'>
-              Trykk på mappen du vil flytte denne siden til
-            </Typography>
-            <TreeView
-              className={classes.tree}
-              defaultCollapseIcon={<ExpandMoreIcon />}
-              defaultExpanded={['/', ...page.path.split('/').map((slug) => `${slug}/`)]}
-              defaultExpandIcon={<RightIcon />}
-              onNodeSelect={(e: unknown, node: string) => setSelectedNode(node)}
-              selected={selectedNode}>
-              {renderTree({ ...data, slug: '' }, '')}
-            </TreeView>
-          </Collapse>
-        </Paper>
-      </>
+      <Paper noPadding sx={{ mt: 1, mb: 2 }}>
+        <Button endIcon={viewTree ? <ExpandLessIcon /> : <ExpandMoreIcon />} fullWidth onClick={() => setViewTree((prev) => !prev)}>
+          Flytt siden
+        </Button>
+        <Collapse in={viewTree}>
+          <Typography align='center' sx={{ my: 1 }} variant='subtitle2'>
+            Trykk på mappen du vil flytte denne siden til
+          </Typography>
+          <TreeView
+            defaultCollapseIcon={<ExpandMoreIcon />}
+            defaultExpanded={['/', ...page.path.split('/').map((slug) => `${slug}/`)]}
+            defaultExpandIcon={<RightIcon />}
+            onNodeSelect={(e: unknown, node: string) => setSelectedNode(node)}
+            selected={selectedNode}>
+            {renderTree({ ...data, slug: '' }, '')}
+          </TreeView>
+        </Collapse>
+      </Paper>
     );
   } else {
     return null;
@@ -108,14 +84,13 @@ type IFormProps = IPagesAdminProps & {
   closeDialog: () => void;
 };
 
-type FormData = Pick<Page, 'title' | 'content' | 'image' | 'image_alt'>;
+type FormData = Pick<WikiPage, 'title' | 'content' | 'image' | 'image_alt'>;
 
 const Form = ({ closeDialog, mode, page }: IFormProps) => {
-  const { classes } = useStyles();
   const parentPath = page.path.slice(0, page.path.length - page.slug.length - 1);
-  const createPage = useCreatePage();
-  const updatePage = useUpdatePage(page.path);
-  const deletePage = useDeletePage(page.path);
+  const createPage = useCreateWikiPage();
+  const updatePage = useUpdateWikiPage(page.path);
+  const deletePage = useDeleteWikiPage(page.path);
   const { register, formState, handleSubmit, watch, setValue } = useForm<FormData>(mode === Modes.EDIT ? { defaultValues: page } : {});
   const navigate = useNavigate();
   const showSnackbar = useSnackbar();
@@ -135,7 +110,7 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
           onSuccess: (data) => {
             showSnackbar('Siden ble oppdatert', 'success');
             closeDialog();
-            navigate(`${URLS.pages}${data.path}`);
+            navigate(`${URLS.wiki}${data.path}`);
           },
           onError: (e) => {
             showSnackbar(e.detail, 'error');
@@ -149,7 +124,7 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
           onSuccess: (data) => {
             showSnackbar('Siden ble opprettet', 'success');
             closeDialog();
-            navigate(`${URLS.pages}${data.path}`);
+            navigate(`${URLS.wiki}${data.path}`);
           },
           onError: (e) => {
             showSnackbar(e.detail, 'error');
@@ -166,7 +141,7 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
         showSnackbar(data.detail, 'success');
         setShowDeleteDialog(false);
         closeDialog();
-        navigate(`${URLS.pages}${parentPath}`);
+        navigate(`${URLS.wiki}${parentPath}`);
       },
       onError: (e) => {
         showSnackbar(e.detail, 'error');
@@ -188,11 +163,11 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
         {mode === Modes.EDIT && (
           <>
             <Button
-              className={classes.deleteButton}
               color='error'
               disabled={isLoading || Boolean(page.children.length)}
               fullWidth
               onClick={() => setShowDeleteDialog(true)}
+              sx={{ mt: 2 }}
               variant='outlined'>
               Slett side
             </Button>
@@ -204,7 +179,7 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
             <Dialog confirmText='Slett' onClose={() => setShowDeleteDialog(false)} onConfirm={handleDeletePage} open={showDeleteDialog} titleText='Slett side'>
               Er du helt sikker på at du vil slette denne siden?
             </Dialog>
-            <Divider className={classes.divider} />
+            <Divider sx={{ my: 2 }} />
             <Typography variant='caption'>Opprettet: {formatDate(parseISO(page.created_at))}</Typography>
             <br />
             <Typography variant='caption'>Sist oppdatert: {formatDate(parseISO(page.updated_at))}</Typography>
@@ -216,14 +191,14 @@ const Form = ({ closeDialog, mode, page }: IFormProps) => {
 };
 
 export type IPagesAdminProps = {
-  page: Page;
+  page: WikiPage;
 };
 enum Modes {
   CREATE,
   EDIT,
 }
 
-const PagesAdmin = ({ page }: IPagesAdminProps) => {
+const WikiAdmin = ({ page }: IPagesAdminProps) => {
   const [showDialog, setShowDialog] = useState(false);
   const [mode, setMode] = useState(Modes.CREATE);
 
@@ -239,11 +214,11 @@ const PagesAdmin = ({ page }: IPagesAdminProps) => {
   return (
     <HavePermission apps={[PermissionApp.PAGE]}>
       {page.path !== '' && (
-        <Button fullWidth onClick={edit} variant='outlined'>
+        <Button endIcon={<EditIcon />} fullWidth onClick={edit} variant='outlined'>
           Rediger side
         </Button>
       )}
-      <Button fullWidth onClick={create} variant='outlined'>
+      <Button endIcon={<AddIcon />} fullWidth onClick={create} variant='outlined'>
         Ny underside
       </Button>
       <Dialog onClose={() => setShowDialog(false)} open={showDialog} titleText={mode === Modes.EDIT ? 'Rediger side' : 'Opprett side'}>
@@ -253,4 +228,4 @@ const PagesAdmin = ({ page }: IPagesAdminProps) => {
   );
 };
 
-export default PagesAdmin;
+export default WikiAdmin;

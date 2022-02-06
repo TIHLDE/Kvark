@@ -1,19 +1,17 @@
 import { useState } from 'react';
 import { Event, Registration } from 'types';
 import URLS from 'URLS';
-import { parseISO, isPast, isFuture, subHours, addHours } from 'date-fns';
+import nbLocale from 'date-fns/locale/nb';
+import { parseISO, isPast, isFuture, subHours, addHours, formatDistanceToNowStrict } from 'date-fns';
 import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 'utils';
 import { Link } from 'react-router-dom';
 import { useSetRedirectUrl } from 'hooks/Misc';
 import { useEventRegistration, useDeleteEventRegistration } from 'hooks/Event';
 import { useUser } from 'hooks/User';
 import { useSnackbar } from 'hooks/Snackbar';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useGoogleAnalytics, useInterval } from 'hooks/Utils';
 import { useCategories } from 'hooks/Categories';
-
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import { Typography, Button, Collapse, Skeleton, Alert as MuiAlert, useMediaQuery, Theme, styled } from '@mui/material';
+import { Typography, Button, Collapse, Skeleton, Alert, useMediaQuery, Theme, Stack, styled } from '@mui/material';
 
 // Icons
 import CalendarIcon from '@mui/icons-material/EventRounded';
@@ -23,6 +21,7 @@ import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 import EventPriorities from 'pages/EventDetails/components/EventPriorities';
 import EventRegistration from 'pages/EventDetails/components/EventRegistration';
+import EventPublicRegistrationsList from 'pages/EventDetails/components/EventPublicRegistrationsList';
 import Paper from 'components/layout/Paper';
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 import QRButton from 'components/miscellaneous/QRButton';
@@ -30,10 +29,7 @@ import ShareButton from 'components/miscellaneous/ShareButton';
 import FormUserAnswers from 'components/forms/FormUserAnswers';
 import Expand from 'components/layout/Expand';
 import VerifyDialog from 'components/layout/VerifyDialog';
-
-const Alert = styled(MuiAlert)({
-  mb: 1,
-});
+import { EventsSubscription } from 'pages/Profile/components/ProfileEvents';
 
 const DetailsPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1, 2),
@@ -41,46 +37,14 @@ const DetailsPaper = styled(Paper)(({ theme }) => ({
   gap: theme.spacing(1),
 }));
 
-const ContentPaper = styled(Paper)(({ theme }) => ({
+const ContentPaper = styled(Paper)({
   height: 'fit-content',
   overflowX: 'auto',
-  [theme.breakpoints.down('md')]: {
-    order: 1,
-  },
-  marginBottom: theme.spacing(1),
-}));
+});
 
 const DetailsHeader = styled(Typography)({
   fontSize: '1.5rem',
 });
-
-const useStyles = makeStyles()((theme) => ({
-  rootGrid: {
-    display: 'grid',
-    gridTemplateColumns: '325px 1fr',
-    gridTemplateRows: 'auto',
-    gridGap: theme.spacing(1),
-    marginTop: theme.spacing(2),
-    position: 'relative',
-    alignItems: 'self-start',
-    [theme.breakpoints.down('lg')]: {
-      gridTemplateColumns: '100%',
-      justifyContent: 'center',
-      gridGap: theme.spacing(1),
-      marginTop: theme.spacing(1),
-    },
-  },
-  infoGrid: {
-    display: 'grid',
-    gridGap: theme.spacing(1),
-    alignItems: 'self-start',
-  },
-  info: {
-    [theme.breakpoints.down('lg')]: {
-      gridRow: '1 / 2',
-    },
-  },
-}));
 
 export type EventRendererProps = {
   data: Event;
@@ -94,7 +58,6 @@ enum Views {
 
 const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const { event } = useGoogleAnalytics();
-  const { classes, cx } = useStyles();
   const { data: user } = useUser();
   const { data: registration } = useEventRegistration(data.id, preview || !user ? '' : user.user_id);
   const deleteRegistration = useDeleteEventRegistration(data.id);
@@ -173,6 +136,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         {isFuture(subHours(parseISO(data.start_date), 2)) ? (
           <>
             <VerifyDialog
+              color='error'
               contentText={`Om du melder deg på igjen vil du havne på bunnen av en eventuell venteliste. ${
                 unregisteringGivesStrike ? 'Du vil også få 1 prikk for å melde deg av etter avmeldingsfristen.' : ''
               }`}
@@ -203,49 +167,78 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       </Alert>
     ) : null;
 
-  const ApplyInfo = () =>
-    preview || !data.sign_up ? null : (
-      <>
-        {data.closed ? (
-          <Alert severity='warning' variant='outlined'>
-            Dette arrangementet er stengt. Det er derfor ikke mulig å melde seg av eller på.
-          </Alert>
-        ) : isFuture(userStartRegistrationDate) ? (
-          <>
-            <HasUnansweredEvaluations />
-            <Button disabled fullWidth variant='contained'>
-              Påmelding har ikke startet
-            </Button>
-          </>
-        ) : !user ? (
-          isFuture(endRegistrationDate) ? (
-            <Button component={Link} fullWidth onClick={() => setLogInRedirectURL(window.location.pathname)} to={URLS.login} variant='contained'>
-              Logg inn for å melde deg på
-            </Button>
-          ) : null
-        ) : registration ? (
-          <RegistrationInfo registration={registration} />
-        ) : isPast(endRegistrationDate) ? null : view === Views.Apply ? (
-          <Button fullWidth onClick={() => setView(Views.Info)} variant='outlined'>
-            Se beskrivelse
-          </Button>
-        ) : data.only_allow_prioritized &&
-          ((data.registration_priorities.length > 0 &&
-            !data.registration_priorities.some((priority) => priority.user_class === user.user_class && priority.user_study === user.user_study)) ||
-            (data.enforces_previous_strikes && user.number_of_strikes >= 3)) ? (
+  const ApplyInfo = () => {
+    const [notOpenText, setNotOpenText] = useState<string | null>(
+      isFuture(userStartRegistrationDate) ? formatDistanceToNowStrict(userStartRegistrationDate, { addSuffix: true, locale: nbLocale }) : null,
+    );
+
+    useInterval(() => {
+      if (isFuture(userStartRegistrationDate)) {
+        setNotOpenText(formatDistanceToNowStrict(userStartRegistrationDate, { addSuffix: true, locale: nbLocale }));
+      } else {
+        !notOpenText || setNotOpenText(null);
+      }
+    }, 1000);
+
+    if (preview || !data.sign_up) {
+      return null;
+    }
+    if (data.closed) {
+      return (
+        <Alert severity='warning' variant='outlined'>
+          Dette arrangementet er stengt. Det er derfor ikke mulig å melde seg av eller på.
+        </Alert>
+      );
+    }
+    if (notOpenText) {
+      return (
+        <>
+          <HasUnansweredEvaluations />
           <Button disabled fullWidth variant='contained'>
-            Kun åpent for prioriterte
+            {`Påmelding åpner ${notOpenText}`}
           </Button>
-        ) : (
-          <>
-            <HasUnansweredEvaluations />
-            <Button disabled={user?.unanswered_evaluations_count > 0} fullWidth onClick={() => setView(Views.Apply)} variant='contained'>
-              Meld deg på
-            </Button>
-          </>
-        )}
+        </>
+      );
+    }
+    if (!user) {
+      return isFuture(endRegistrationDate) ? (
+        <Button component={Link} fullWidth onClick={() => setLogInRedirectURL(window.location.pathname)} to={URLS.login} variant='contained'>
+          Logg inn for å melde deg på
+        </Button>
+      ) : null;
+    }
+    if (registration) {
+      return <RegistrationInfo registration={registration} />;
+    }
+    if (isPast(endRegistrationDate)) {
+      return null;
+    }
+    if (view === Views.Apply) {
+      return (
+        <Button fullWidth onClick={() => setView(Views.Info)} variant='outlined'>
+          Se beskrivelse
+        </Button>
+      );
+    }
+    const is_prioritized =
+      data.registration_priorities.some((priority) => priority.user_class === user.user_class && priority.user_study === user.user_study) &&
+      (data.enforces_previous_strikes ? user.number_of_strikes < 3 : true);
+    if (data.only_allow_prioritized && data.registration_priorities.length > 0 && !is_prioritized) {
+      return (
+        <Button disabled fullWidth variant='contained'>
+          Kun åpent for prioriterte
+        </Button>
+      );
+    }
+    return (
+      <>
+        <HasUnansweredEvaluations />
+        <Button disabled={user?.unanswered_evaluations_count > 0} fullWidth onClick={() => setView(Views.Apply)} variant='contained'>
+          Meld deg på
+        </Button>
       </>
     );
+  };
 
   const Info = () => (
     <>
@@ -255,23 +248,32 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         <DetailContent info={formatDate(endDate)} title='Til:' />
         <DetailContent info={data.location} title='Sted:' />
         <DetailContent info={categories.find((c) => c.id === data.category)?.text || 'Laster...'} title='Hva:' />
-        {data.organizer && <DetailContent info={<Link to={`${URLS.groups}${data.organizer.slug}/`}>{data.organizer.name}</Link>} title='Arrangør:' />}
+        {data.organizer && <DetailContent info={<Link to={URLS.groups.details(data.organizer.slug)}>{data.organizer.name}</Link>} title='Arrangør:' />}
       </DetailsPaper>
       {data.sign_up && (
         <>
           <DetailsPaper noPadding>
-            <DetailsHeader variant='h2'>Påmelding</DetailsHeader>
+            <Stack direction='row' gap={1} justifyContent='space-between' sx={{ position: 'relative' }}>
+              {user && <EventPublicRegistrationsList eventId={data.id} sx={{ position: 'absolute', right: ({ spacing }) => spacing(-1) }} />}
+              <DetailsHeader variant='h2'>Påmelding</DetailsHeader>
+            </Stack>
             <DetailContent info={`${data.list_count}/${data.limit}`} title='Påmeldte:' />
             <DetailContent info={String(data.waiting_list_count)} title='Venteliste:' />
             {registration && isFuture(signOffDeadlineDate) ? (
               <DetailContent info={formatDate(signOffDeadlineDate)} title='Avmeldingsfrist:' />
             ) : (
               <>
-                {isFuture(startRegistrationDate) && <DetailContent info={formatDate(startRegistrationDate)} title='Start:' />}
-                {isPast(startRegistrationDate) && isFuture(endRegistrationDate) && <DetailContent info={formatDate(endRegistrationDate)} title='Slutt:' />}
+                {isFuture(userStartRegistrationDate) && <DetailContent info={formatDate(startRegistrationDate)} title='Start:' />}
+                {isPast(userStartRegistrationDate) && isFuture(endRegistrationDate) && <DetailContent info={formatDate(endRegistrationDate)} title='Slutt:' />}
               </>
             )}
           </DetailsPaper>
+          {Boolean(data.registration_priorities.length) && (
+            <DetailsPaper noPadding>
+              <DetailsHeader variant='h2'>Prioritert</DetailsHeader>
+              <EventPriorities priorities={data.registration_priorities} />
+            </DetailsPaper>
+          )}
           {data.enforces_previous_strikes ? (
             strikesDelayedRegistrationHours > 0 &&
             isFuture(userStartRegistrationDate) && (
@@ -289,12 +291,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               Dette arrangementet gir ikke prikker
             </Alert>
           )}
-          {Boolean(data.registration_priorities.length) && (
-            <DetailsPaper noPadding>
-              <DetailsHeader variant='h2'>Prioritert</DetailsHeader>
-              <EventPriorities priorities={data.registration_priorities} />
-            </DetailsPaper>
-          )}
         </>
       )}
       <ApplyInfo />
@@ -304,31 +300,25 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const addToCalendarAnalytics = () => event('add-to-calendar', 'event', `Event: ${data.title}`);
 
   return (
-    <div className={classes.rootGrid}>
-      <div className={classes.infoGrid}>
+    <Stack direction={{ xs: 'column-reverse', lg: 'row' }} gap={1} sx={{ mt: { xs: 1, lg: 2 } }}>
+      <Stack gap={1} sx={{ width: '100%', maxWidth: { lg: 335 } }}>
         {!lgDown && <Info />}
-        <ShareButton color='inherit' shareId={data.id} shareType='event' title={data.title} />
+        <ShareButton shareId={data.id} shareType='event' title={data.title} />
         <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} onClick={addToCalendarAnalytics} variant='outlined'>
           Legg til i kalender
         </Button>
+        {Boolean(user) && <EventsSubscription />}
         {!preview && data.permissions.write && (
           <Button component={Link} fullWidth to={`${URLS.eventAdmin}${data.id}/`} variant='outlined'>
             Endre arrangement
           </Button>
         )}
-      </div>
-      <div className={cx(classes.infoGrid, classes.info)}>
+      </Stack>
+      <Stack gap={1} sx={{ width: '100%' }}>
         <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         {lgDown && <Info />}
         <ContentPaper>
-          <Typography
-            gutterBottom
-            sx={{
-              color: (theme) => theme.palette.text.primary,
-              fontSize: '2.4rem',
-              wordWrap: 'break-word',
-            }}
-            variant='h1'>
+          <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h1'>
             {data.title}
           </Typography>
           <Collapse in={view === Views.Info || Boolean(registration) || preview}>
@@ -338,40 +328,36 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             {user && <EventRegistration event={data} user={user} />}
           </Collapse>
         </ContentPaper>
-      </div>
-    </div>
+      </Stack>
+    </Stack>
   );
 };
 
 export default EventRenderer;
 
-export const EventRendererLoading = () => {
-  const { classes, cx } = useStyles();
-
-  return (
-    <div className={classes.rootGrid}>
-      <div className={classes.infoGrid}>
-        <DetailsPaper noPadding>
-          <DetailContentLoading />
-          <DetailContentLoading />
-          <DetailContentLoading />
-        </DetailsPaper>
-        <DetailsPaper noPadding>
-          <DetailContentLoading />
-          <DetailContentLoading />
-        </DetailsPaper>
-      </div>
-      <div className={cx(classes.infoGrid, classes.info)}>
-        <AspectRatioLoading borderRadius />
-        <ContentPaper>
-          <Skeleton height={80} width='60%' />
-          <Skeleton height={40} width={250} />
-          <Skeleton height={40} width='80%' />
-          <Skeleton height={40} width='85%' />
-          <Skeleton height={40} width='75%' />
-          <Skeleton height={40} width='90%' />
-        </ContentPaper>
-      </div>
-    </div>
-  );
-};
+export const EventRendererLoading = () => (
+  <Stack direction={{ xs: 'column-reverse', lg: 'row' }} gap={1} sx={{ mt: { xs: 1, lg: 2 } }}>
+    <Stack gap={1} sx={{ width: '100%', maxWidth: { lg: 335 } }}>
+      <DetailsPaper noPadding>
+        <DetailContentLoading />
+        <DetailContentLoading />
+        <DetailContentLoading />
+      </DetailsPaper>
+      <DetailsPaper noPadding>
+        <DetailContentLoading />
+        <DetailContentLoading />
+      </DetailsPaper>
+    </Stack>
+    <Stack gap={1} sx={{ width: '100%' }}>
+      <AspectRatioLoading borderRadius />
+      <ContentPaper>
+        <Skeleton height={80} width='60%' />
+        <Skeleton height={40} width={250} />
+        <Skeleton height={40} width='80%' />
+        <Skeleton height={40} width='85%' />
+        <Skeleton height={40} width='75%' />
+        <Skeleton height={40} width='90%' />
+      </ContentPaper>
+    </Stack>
+  </Stack>
+);

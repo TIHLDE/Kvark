@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_ANALYTICS%"></script>
+    <script type="module" defer src="https://www.googletagmanager.com/gtag/js?id=%VITE_ANALYTICS%"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
@@ -15,6 +15,14 @@
 
       gtag('config', '%VITE_ANALYTICS%');
     </script>
+
+    <!-- Cloudflare Web Analytics -->
+    <script type="module" defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "%VITE_CF_ANALYTICS%"}'></script>
+    <!-- End Cloudflare Web Analytics -->
+
+    <!-- Plausible Web Analytics -->
+    <script type="module" defer data-domain="%VITE_PLAUSIBLE_ANALYTICS%" src="https://plausible.io/js/plausible.js"></script>
+    <!-- End Plausible Web Analytics -->
 
     <meta name="theme-color" content="#16356e" data-react-helmet="true" />
     <title>TIHLDE</title>

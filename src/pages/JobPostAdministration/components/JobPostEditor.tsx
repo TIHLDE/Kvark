@@ -193,7 +193,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
             />
             <TextField formState={formState} label='Link' {...register('link')} />
           </div>
-          <ImageUpload formState={formState} label='Velg logo' ratio={21 / 9} register={register('image')} setValue={setValue} watch={watch} />
+          <ImageUpload formState={formState} label='Velg logo' ratio='21:9' register={register('image')} setValue={setValue} watch={watch} />
           <TextField formState={formState} label='Alternativ bildetekst' {...register('image_alt')} />
           <div className={classes.grid}>
             <TextField formState={formState} label='Bedrift' {...register('company', { required: 'Du må oppgi en bedrift' })} required />

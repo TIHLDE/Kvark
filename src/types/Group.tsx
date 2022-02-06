@@ -40,7 +40,8 @@ export type MembershipHistory = Membership & {
 export type GroupLaw = {
   id: string;
   description: string;
-  paragraph: string;
+  paragraph: number;
+  title: string;
   amount: number;
 };
 
@@ -72,4 +73,10 @@ export type GroupFineBatchMutate = {
 export type GroupUserFine = {
   user: UserBase;
   fines_amount: number;
+};
+
+export type GroupFineStatistics = {
+  payed: number;
+  approved_and_not_payed: number;
+  not_approved: number;
 };

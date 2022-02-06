@@ -118,9 +118,9 @@ const NavigationContent = ({ children }: NavigationProps) => {
     () => [
       {
         items: [
-          { text: 'Om TIHLDE', to: URLS.pages },
+          { text: 'Wiki', to: URLS.wiki },
           { text: 'Ny student', to: URLS.newStudent },
-          { text: 'Gruppeoversikt', to: URLS.groups },
+          { text: 'Gruppeoversikt', to: URLS.groups.index },
         ],
         text: 'Generelt',
         type: 'dropdown',

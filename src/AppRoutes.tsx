@@ -37,7 +37,7 @@ const Http404 = lazy(() => import(/* webpackChunkName: "http404" */ 'pages/Http4
 const JobPostAdministration = lazy(() => import(/* webpackChunkName: "jobpost_administration" */ 'pages/JobPostAdministration'));
 const LogIn = lazy(() => import(/* webpackChunkName: "login" */ 'pages/LogIn'));
 const NewsAdministration = lazy(() => import(/* webpackChunkName: "news_administration" */ 'pages/NewsAdministration'));
-const Pages = lazy(() => import(/* webpackChunkName: "pages" */ 'pages/Pages'));
+const Wiki = lazy(() => import(/* webpackChunkName: "pages" */ 'pages/Wiki'));
 const ShortLinks = lazy(() => import(/* webpackChunkName: "short_links" */ 'pages/ShortLinks'));
 const SignUp = lazy(() => import(/* webpackChunkName: "signup" */ 'pages/SignUp'));
 const StrikeAdmin = lazy(() => import(/* webpackChunkName: "strike_admin" */ 'pages/StrikeAdmin'));
@@ -82,7 +82,7 @@ const AppRoutes = () => {
         </Route>
         <Route element={<Companies />} path={URLS.company} />
         <Route element={<AuthRoute element={<Form />} />} path={`${URLS.form}:id/`} />
-        <Route element={<Groups />} path={`${URLS.groups}*`}>
+        <Route element={<Groups />} path={`${URLS.groups.index}*`}>
           <Route element={<GroupsOverview />} index />
           <Route element={<GroupDetails />} path=':slug/*' />
         </Route>
@@ -94,13 +94,15 @@ const AppRoutes = () => {
           <Route element={<GalleryDetails />} path=':slug/*' />
           <Route element={<Gallery />} index />
         </Route>
-        <Route element={<Pages />} path={`${URLS.pages}*`} />
+        <Route element={<Wiki />} path={`${URLS.wiki}*`} />
         <Route path={URLS.news}>
           <Route element={<NewsDetails />} path=':id/*' />
           <Route element={<News />} index />
         </Route>
 
-        <Route element={<AuthRoute element={<Profile />} />} path={URLS.profile} />
+        <Route element={<AuthRoute element={<Profile />} />} path={URLS.profile}>
+          <Route element={<Profile />} path=':userId/' />
+        </Route>
 
         <Route element={<AuthRoute element={<Cheatsheet />} />} path={`${URLS.cheatsheet}:studyId/:classId/`} />
         <Route element={<AuthRoute element={<Cheatsheet />} />} path={`${URLS.cheatsheet}*`} />

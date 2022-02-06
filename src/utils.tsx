@@ -1,8 +1,8 @@
 import slugify from 'slugify';
 import { parseISO, format, subMinutes, getYear, isAfter, isBefore } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
-import { Event } from 'types';
-import { JobPostType, MembershipType, StrikeReason, UserClass, UserStudy } from 'types/Enums';
+import { Event, GroupLaw, SelectFormField, SelectFormFieldOption, TextFormField } from 'types';
+import { FormFieldType, JobPostType, MembershipType, StrikeReason, UserClass, UserStudy } from 'types/Enums';
 
 export const isAfterDateOfYear = (month: number, date: number) => isAfter(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
 export const isBeforeDateOfYear = (month: number, date: number) => isBefore(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
@@ -173,12 +173,6 @@ export const getStrikeReasonAsText = (strikeReason: StrikeReason) => {
 };
 
 /**
- * Add leading zero to numbers below 10. Ex: 2 -> 02, 12 -> 12
- * @param number Number to add zeros to
- */
-// const addLeadingZero = (number: number) => (number < 10 ? '0' + number : number);
-
-/**
  * Format date in format: `Tor 12. okt. 2021 08:30`
  * Year is only shown if it's a different year than this year
  * @param date Date to be formatted
@@ -222,40 +216,6 @@ export const getTimeSince = (date: Date) => {
     return formatDate(date);
   }
 };
-/**
- * Translate a month of year number to a readable month
- * @param month Month of year
- */
-export const getMonth = (month: number) => {
-  switch (month) {
-    case 0:
-      return 'jan';
-    case 1:
-      return 'feb';
-    case 2:
-      return 'mars';
-    case 3:
-      return 'april';
-    case 4:
-      return 'mai';
-    case 5:
-      return 'juni';
-    case 6:
-      return 'juli';
-    case 7:
-      return 'aug';
-    case 8:
-      return 'sep';
-    case 9:
-      return 'okt';
-    case 10:
-      return 'nov';
-    case 11:
-      return 'des';
-    default:
-      return month;
-  }
-};
 
 /**
  * Transforms a date to when UTC+0 will be at the same time.
@@ -276,6 +236,13 @@ export const dateAsUTC = (date: Date): Date => {
 export const dateToUTC = (date: Date): Date => {
   return subMinutes(date, -date.getTimezoneOffset());
 };
+
+/**
+ * Formats a law header
+ * @param law the law
+ * @returns String with format: `§1.23 - Title`
+ */
+export const formatLawHeader = (law: GroupLaw): string => `§${law.paragraph % 1 === 0 ? ~~law.paragraph : law.paragraph} - ${law.title}`;
 
 /**
  * Create a ICS-file from an event
@@ -327,4 +294,25 @@ export const argsToParams = (data: Record<string, any>) => {
     }
   }
   return args;
+};
+
+/**
+ * Removes id's from fields and the options of the given fields
+ *
+ * @param fields The fields to remove the id's from
+ */
+export const removeIdsFromFields = (fields: Array<TextFormField | SelectFormField>) => {
+  const newFields: Array<TextFormField | SelectFormField> = [];
+  fields.forEach((field) => {
+    const { id, ...restField } = field; // eslint-disable-line
+    const newOptions: Array<SelectFormFieldOption> = [];
+    if (field.type !== FormFieldType.TEXT_ANSWER) {
+      field.options.forEach((option) => {
+        const { id, ...restOption } = option; // eslint-disable-line
+        newOptions.push(restOption as SelectFormFieldOption);
+      });
+    }
+    newFields.push({ ...restField, options: newOptions } as TextFormField | SelectFormField);
+  });
+  return newFields;
 };
