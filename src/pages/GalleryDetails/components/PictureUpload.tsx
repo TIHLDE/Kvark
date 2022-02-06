@@ -18,6 +18,7 @@ import TextField from 'components/inputs/TextField';
 
 // Types
 import { Picture, PictureRequired } from 'types';
+import { BannerButton } from 'components/layout/Banner';
 
 const useStyles = makeStyles()((theme) => ({
   uploadInput: {
@@ -47,11 +48,15 @@ const useStyles = makeStyles()((theme) => ({
 }));
 type FormValues = Omit<Picture, 'id' | 'created_at' | 'updated_at'>;
 
-const PictureUpload = () => {
+type PictureUploadProps = {
+  slug: string;
+};
+
+const PictureUpload = ({ slug }: PictureUploadProps) => {
   const [acceptedFileTypesOpen, setAcceptedFileTypesOpen] = useState<boolean>(false);
   const { handleSubmit, register, watch, formState, setValue } = useForm<FormValues>();
   const acceptedFileTypes = ['jpg', 'png'];
-  const createImage = useCreatePicture();
+  const createImage = useCreatePicture(slug);
   const { classes } = useStyles();
   const showSnackbar = useSnackbar();
 
@@ -63,7 +68,7 @@ const PictureUpload = () => {
       description: data.description,
       image: data.image,
     } as PictureRequired;
-    await createImage.mutate(Image, {
+    await createImage.mutate([Image], {
       onSuccess: () => {
         showSnackbar('Bildet ble lastet opp', 'success');
       },
@@ -98,15 +103,15 @@ const PictureUpload = () => {
   );
 };
 
-const PictureUploadDialog = () => {
+const PictureUploadDialog = ({ slug }: PictureUploadProps) => {
   const [open, setOpen] = useState<boolean>(false);
   return (
-    <Box sx={{ width: '50%', m: '100px auto', padding: 2 }}>
-      <Button onClick={() => setOpen(true)} variant='outlined'>
+    <Box>
+      <BannerButton onClick={() => setOpen(true)} variant='outlined'>
         Last opp et bilde
-      </Button>
+      </BannerButton>
       <Dialog onClose={() => setOpen(false)} open={open}>
-        <PictureUpload />
+        <PictureUpload slug={slug} />
       </Dialog>
     </Box>
   );

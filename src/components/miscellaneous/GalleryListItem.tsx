@@ -19,7 +19,6 @@ const GalleryListItem = ({ album, sx }: GalleryListItemProps) => (
     <ButtonBase
       component={Link}
       focusRipple
-      // TODO: fjern display: block når flere nettlesere støtter aspect-ratio i css - https://caniuse.com/mdn-css_properties_aspect-ratio
       sx={{ borderRadius: (theme) => `${theme.shape.borderRadius}px`, display: 'block' }}
       tabIndex={-1}
       to={`${URLS.gallery}${album.slug}/`}>

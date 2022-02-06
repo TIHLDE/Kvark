@@ -67,7 +67,7 @@ export const EVENT_REGISTRATIONS_ENDPOINT = 'registrations';
 export const FORMS_ENDPOINT = 'forms';
 export const GALLERY_ENDPOINT = 'galleries';
 export const PICTURE_ENDPOINT = 'pictures';
-export const GROUPS_ENDPOINT = 'group';
+export const GROUPS_ENDPOINT = 'groups';
 export const GROUP_LAWS_ENDPOINT = 'laws';
 export const GROUP_FINES_ENDPOINT = 'fines';
 export const JOBPOSTS_ENDPOINT = 'jobposts';
@@ -193,8 +193,8 @@ export default {
   // Picture
   getAlbumPictures: (albumSlug: string, filters?: any) =>
     IFetch<PaginationResponse<Picture>>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${albumSlug}/${PICTURE_ENDPOINT}/`, data: filters || {} }),
-  createPicture: (albumSlug: string, item: PictureRequired) =>
-    IFetch<Picture>({ method: 'POST', url: `${GALLERY_ENDPOINT}/${albumSlug}/${PICTURE_ENDPOINT}/`, data: item }),
+  createPicture: (albumSlug: string, items: Array<PictureRequired>) =>
+    IFetch<Picture>({ method: 'POST', url: `${GALLERY_ENDPOINT}/${albumSlug}/${PICTURE_ENDPOINT}/`, data: items }),
   updatePicture: (albumSlug: string, id: string, item: Partial<Picture>) =>
     IFetch<Picture>({ method: 'PUT', url: `${GALLERY_ENDPOINT}/${albumSlug}/${PICTURE_ENDPOINT}/${id}/`, data: item }),
   deletePicture: (albumSlug: string, id: string) =>

@@ -3,6 +3,9 @@ import URLS from 'URLS';
 import Helmet from 'react-helmet';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAlbumsById } from 'hooks/Gallery';
+import { PermissionApp } from 'types/Enums';
+import { HavePermission } from 'hooks/User';
+import PictureUploadDialog from './components/PictureUpload';
 
 // Project components
 import Http404 from 'pages/Http404';
@@ -28,7 +31,16 @@ const GalleryDetails = () => {
 
   return (
     <Page
-      banner={data && !undefined && <Banner title={data.title} />}
+      banner={
+        data &&
+        !undefined && (
+          <Banner title={data.title}>
+            <HavePermission apps={[PermissionApp.PICTURE]}>
+              <PictureUploadDialog slug={data.slug} />
+            </HavePermission>
+          </Banner>
+        )
+      }
       options={{ title: data ? data.title : 'Laster album...', gutterTop: false, filledTopbar: true, lightColor: 'blue' }}>
       {isLoading ? (
         <ImageGridLoading />

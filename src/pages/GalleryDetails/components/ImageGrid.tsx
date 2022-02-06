@@ -1,4 +1,4 @@
-import { ImageList, ImageListItem } from '@mui/material';
+import { ImageList, ImageListItem, Theme, useMediaQuery } from '@mui/material';
 import { useAlbumPictures } from 'hooks/Gallery';
 import { useMemo } from 'react';
 
@@ -25,9 +25,12 @@ const ImageGrid = ({ slug, setSelectedImg, setOpenPicture }: ImageGridProps) => 
     setSelectedImg(image);
     setOpenPicture(true);
   };
+  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
+  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
+
   return (
     <>
-      <ImageList cols={3} gap={8} variant='masonry'>
+      <ImageList cols={mdDown ? 1 : lgUp ? 3 : 2} gap={8} variant='masonry'>
         {data !== undefined &&
           pictures.map((image) => (
             <ImageListItem key={image.id}>

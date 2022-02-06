@@ -59,9 +59,9 @@ export const useAlbumPictures = (albumSlug: string) => {
   );
 };
 
-export const useCreatePicture = (): UseMutationResult<Picture, RequestResponse, PictureRequired, unknown> => {
+export const useCreatePicture = (albumSlug: string): UseMutationResult<Picture, RequestResponse, Array<PictureRequired>, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((newPicture: PictureRequired) => API.createPicture(newPicture), {
+  return useMutation((newPicture: Array<PictureRequired>) => API.createPicture(albumSlug, newPicture), {
     onSuccess: (data) => {
       queryClient.invalidateQueries(PICTURE_QUERY_KEY);
       queryClient.setQueryData([PICTURE_QUERY_KEY, data.id], data);
@@ -69,9 +69,9 @@ export const useCreatePicture = (): UseMutationResult<Picture, RequestResponse, 
   });
 };
 
-export const useUpdatePicture = (id: string): UseMutationResult<Picture, RequestResponse, PictureRequired, unknown> => {
+export const useUpdatePicture = (albumSlug: string, id: string): UseMutationResult<Picture, RequestResponse, PictureRequired, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((updatedPicture: PictureRequired) => API.updatePicture(id, updatedPicture), {
+  return useMutation((updatedPicture: PictureRequired) => API.updatePicture(albumSlug, id, updatedPicture), {
     onSuccess: (data) => {
       queryClient.invalidateQueries(PICTURE_QUERY_KEY);
       queryClient.setQueryData([PICTURE_QUERY_KEY, id], data);
@@ -79,9 +79,9 @@ export const useUpdatePicture = (id: string): UseMutationResult<Picture, Request
   });
 };
 
-export const useDeletePicture = (id: string): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
+export const useDeletePicture = (albumSlug: string, id: string): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation(() => API.deletePicture(id), {
+  return useMutation(() => API.deletePicture(albumSlug, id), {
     onSuccess: () => {
       queryClient.invalidateQueries(PICTURE_QUERY_KEY);
     },
