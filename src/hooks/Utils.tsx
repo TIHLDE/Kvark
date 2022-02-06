@@ -1,9 +1,9 @@
 import { EffectCallback, useEffect, useState, useRef, useCallback } from 'react';
+import Plausible from 'plausible-tracker';
 import { useSnackbar } from 'hooks/Snackbar';
 import { getCookie, setCookie } from 'api/cookie';
 import { useMemo } from 'react';
-import { User } from 'types';
-import { GA_MEASUREMENT_ID } from 'constant';
+import { PLAUSIBLE_DOMAIN } from 'constant';
 
 export const useInterval = (callback: EffectCallback, msDelay: number | null) => {
   const savedCallback = useRef<EffectCallback>();
@@ -123,6 +123,8 @@ export const usePersistedState = <T extends unknown>(key: string, defaultValue: 
 };
 
 export const useGoogleAnalytics = () => {
+  const { trackEvent } = Plausible({ domain: PLAUSIBLE_DOMAIN, trackLocalhost: true });
+
   /**
    * Create an event for tracking behaviour on the site.
    * @param category - The object that was interacted with, eg 'Video'
@@ -134,36 +136,10 @@ export const useGoogleAnalytics = () => {
       event_category: category,
       event_label: label,
     });
-  }, []);
-
-  /**
-   * Hash a string stable. The same string will always return the same hash.
-   * @param str The string to hash
-   * @returns A hashed string.
-   */
-  const stableStringHash = (str: string) => {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    let color = '';
-    for (let i = 0; i < 3; i++) {
-      const value = (hash >> (i * 8)) & 0xff;
-      color += ('00' + value.toString(16)).slice(-2);
-    }
-    return color;
-  };
-
-  /**
-   * Sets the user-id for Google Analytics, hashed. This improves the tracking since
-   * GA can understand that a user is the same across different devices.
-   * @param userId User_id of the user
-   */
-  const setUserId = useCallback((userId: User['user_id']) => {
-    window.gtag('config', GA_MEASUREMENT_ID, { user_id: stableStringHash(userId) });
+    trackEvent(category, { props: { action, label } });
   }, []);
 
   return useMemo(() => {
-    return { event, setUserId };
+    return { event };
   }, [event]);
 };

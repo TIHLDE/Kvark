@@ -1,8 +1,6 @@
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { getUserStudyLong, getUserClass } from 'utils';
 import { User } from 'types';
-import URLS from 'URLS';
 import { useUpdateUser, useExportUserData, useDeleteUser, useLogout } from 'hooks/User';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useGoogleAnalytics } from 'hooks/Utils';
@@ -19,7 +17,6 @@ import { ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
 
 const DeleteUserDialog = ({ isAdmin, user }: ProfileSettingsProps) => {
   const { event } = useGoogleAnalytics();
-  const navigate = useNavigate();
   const deleteUser = useDeleteUser();
   const logOut = useLogout();
   const showSnackbar = useSnackbar();
@@ -32,7 +29,6 @@ const DeleteUserDialog = ({ isAdmin, user }: ProfileSettingsProps) => {
         showSnackbar(data.detail, 'success');
         event('delete-user', 'profile', 'Deleted user');
         logOut();
-        navigate(URLS.landing);
       },
       onError: (e) => showSnackbar(e.detail, 'error'),
     });

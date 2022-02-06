@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import URLS from 'URLS';
+import { useParams } from 'react-router-dom';
 import { PermissionApp } from 'types/Enums';
 import { useUser, useHavePermission } from 'hooks/User';
 import { useGoogleAnalytics } from 'hooks/Utils';
@@ -63,7 +62,6 @@ const Content = styled('div')(({ theme }) => ({
 const Profile = () => {
   const { userId } = useParams();
   const { data: user, isError } = useUser(userId);
-  const navigate = useNavigate();
   const { event } = useGoogleAnalytics();
   const logOut = useLogout();
   const { allowAccess: isAdmin } = useHavePermission([
@@ -78,7 +76,6 @@ const Profile = () => {
   const logout = () => {
     event('log-out', 'profile', 'Logged out');
     logOut();
-    navigate(URLS.landing);
   };
 
   const eventTab: NavListItem = { label: 'Arrangementer', icon: EventIcon };

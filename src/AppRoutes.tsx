@@ -1,5 +1,6 @@
 import { ReactElement, useEffect, lazy, Suspense } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import Plausible from 'plausible-tracker';
 import URLS from 'URLS';
 import { PermissionApp } from 'types/Enums';
 
@@ -25,6 +26,7 @@ import GroupsOverview from 'pages/Groups/overview';
 import GroupDetails from 'pages/Groups/GroupDetails';
 import News from 'pages/News';
 import NewStudent from 'pages/NewStudent';
+import { PLAUSIBLE_DOMAIN } from 'constant';
 
 const Cheatsheet = lazy(() => import(/* webpackChunkName: "cheatsheet" */ 'pages/Cheatsheet'));
 const EventAdministration = lazy(() => import(/* webpackChunkName: "event_administration" */ 'pages/EventAdministration'));
@@ -67,6 +69,17 @@ const AppRoutes = () => {
   const { event } = useGoogleAnalytics();
 
   useEffect(() => event('page_view', window.location.href, window.location.pathname), [location]);
+
+  useEffect(() => {
+    const { enableAutoPageviews, enableAutoOutboundTracking } = Plausible({ domain: PLAUSIBLE_DOMAIN, trackLocalhost: true });
+    const cleanupPageViews = enableAutoPageviews();
+    const cleanupOutboundTracking = enableAutoOutboundTracking();
+
+    return () => {
+      cleanupPageViews();
+      cleanupOutboundTracking();
+    };
+  }, []);
 
   return (
     <Suspense fallback={<Page options={{ title: 'Laster...', filledTopbar: true }} />}>
