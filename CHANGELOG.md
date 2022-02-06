@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- ✨ **Event**. Admin kan sende filer til deltagere ved et arrangement.
+
 ## Versjon 1.4.3 (03.02.2022)
 
 - ✨ **Bruker**. Det er mulig å eksportere sin brukerdata.
