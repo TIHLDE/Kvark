@@ -21,7 +21,7 @@ import HomeIcon from '@mui/icons-material/HomeRounded';
 import Paper from 'components/layout/Paper';
 import FormView from 'components/forms/FormView';
 import SubmitButton from 'components/inputs/SubmitButton';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 import { useConfetti } from 'hooks/Confetti';
 
 type ListItemProps = {
@@ -43,7 +43,7 @@ export type EventRegistrationProps = {
 
 const EventRegistration = ({ event, user }: EventRegistrationProps) => {
   const { run } = useConfetti();
-  const { event: GAEvent } = useGoogleAnalytics();
+  const { event: GAEvent } = useAnalytics();
   const createRegistration = useCreateEventRegistration(event.id);
   const createSubmission = useCreateSubmission(event.survey || '-');
   const showSnackbar = useSnackbar();

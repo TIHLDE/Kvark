@@ -16,7 +16,7 @@ import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/Asp
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 import Paper from 'components/layout/Paper';
 import ShareButton from 'components/miscellaneous/ShareButton';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {
@@ -46,7 +46,7 @@ export type JobPostRendererProps = {
 };
 
 const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const { classes } = useStyles();
   const deadline = formatDate(parseISO(data.deadline));
   const publishedAt = formatDate(parseISO(data.created_at));

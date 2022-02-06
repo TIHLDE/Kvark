@@ -4,7 +4,7 @@ import { Form, Submission } from 'types';
 import { useFormById, useCreateSubmission, validateSubmissionInput } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useForm } from 'react-hook-form';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 import { formatDate } from 'utils';
 import { parseISO } from 'date-fns';
 import URLS from 'URLS';
@@ -22,7 +22,7 @@ import SubmitButton from 'components/inputs/SubmitButton';
 import { FormResourceType, EventFormType } from 'types/Enums';
 
 const FormPage = () => {
-  const { event: GAEvent } = useGoogleAnalytics();
+  const { event: GAEvent } = useAnalytics();
   const { id } = useParams<'id'>();
   const { data: form, isError } = useFormById(id || '-');
   const createSubmission = useCreateSubmission(id || '-');

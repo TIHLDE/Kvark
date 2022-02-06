@@ -20,7 +20,7 @@ import Bool from 'components/inputs/Bool';
 import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 import Expand from 'components/layout/Expand';
 
 const useStyles = makeStyles()((theme) => ({
@@ -64,7 +64,7 @@ type Filters = {
 };
 
 const Events = () => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const getInitialFilters = useCallback((): Filters => {
     const params = new URLSearchParams(location.search);
     const expired = params.get('expired') ? Boolean(params.get('expired') === 'true') : false;

@@ -3,7 +3,7 @@ import { getUserStudyLong, getUserClass } from 'utils';
 import { User } from 'types';
 import { useUpdateUser, useExportUserData, useDeleteUser, useLogout } from 'hooks/User';
 import { useSnackbar } from 'hooks/Snackbar';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 import { MenuItem, Typography, Stack, Divider, Button } from '@mui/material';
 
 // Project components
@@ -16,7 +16,7 @@ import { ImageUpload } from 'components/inputs/Upload';
 import { ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
 
 const DeleteUserDialog = ({ isAdmin, user }: ProfileSettingsProps) => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const deleteUser = useDeleteUser();
   const logOut = useLogout();
   const showSnackbar = useSnackbar();
@@ -63,7 +63,7 @@ type FormData = Pick<
 >;
 
 const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const showSnackbar = useSnackbar();
   const updateUser = useUpdateUser();
   const exportUserData = useExportUserData();

@@ -30,7 +30,7 @@ import Pagination from 'components/layout/Pagination';
 import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import EventsCalendarView from 'pages/Landing/components/EventsCalendarView';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {
@@ -68,7 +68,7 @@ const VolunteerGroup = ({ url, title }: VolunteerGroupProps) => {
 
 const NewStudent = () => {
   const { classes, cx } = useStyles();
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const isAuthenticated = useIsAuthenticated();
   const eventsTab = { value: 'events', label: 'Fadderuka - arrangementer', icon: EventIcon };
   const faqTab = { value: 'faq', label: 'FAQ', icon: FaqIcon };

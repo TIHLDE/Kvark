@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import URLS from 'URLS';
-import { useGoogleAnalytics, useShare } from 'hooks/Utils';
+import { useAnalytics, useShare } from 'hooks/Utils';
 import { Button, ButtonProps } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
 
@@ -11,7 +11,7 @@ export type ShareProps = ButtonProps & {
 };
 
 const ShareButton = ({ shareId, title, shareType, ...props }: ShareProps) => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const [urlFromType, useShortener] = useMemo(() => {
     switch (shareType) {
       case 'event':

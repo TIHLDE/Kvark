@@ -122,7 +122,7 @@ export const usePersistedState = <T extends unknown>(key: string, defaultValue: 
   return [state, setState] as const;
 };
 
-export const useGoogleAnalytics = () => {
+export const useAnalytics = () => {
   const { trackEvent } = Plausible({ domain: PLAUSIBLE_DOMAIN, trackLocalhost: true });
 
   /**

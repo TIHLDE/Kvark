@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { PermissionApp } from 'types/Enums';
 import { useUser, useHavePermission } from 'hooks/User';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 import { useLogout } from 'hooks/User';
 import { getUserClass, getUserStudyLong } from 'utils';
 import {
@@ -62,7 +62,7 @@ const Content = styled('div')(({ theme }) => ({
 const Profile = () => {
   const { userId } = useParams();
   const { data: user, isError } = useUser(userId);
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const logOut = useLogout();
   const { allowAccess: isAdmin } = useHavePermission([
     PermissionApp.EVENT,

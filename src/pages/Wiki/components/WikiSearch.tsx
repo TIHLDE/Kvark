@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useWikiSearch } from 'hooks/Wiki';
-import { useDebounce, useGoogleAnalytics } from 'hooks/Utils';
+import { useDebounce, useAnalytics } from 'hooks/Utils';
 import { TextField, Collapse, Typography, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import PageIcon from '@mui/icons-material/SubjectRounded';
 
@@ -12,7 +12,7 @@ import Pagination from 'components/layout/Pagination';
 import { BannerButton } from 'components/layout/Banner';
 
 const WikiSearch = () => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 500);
   const filters = useMemo(() => {

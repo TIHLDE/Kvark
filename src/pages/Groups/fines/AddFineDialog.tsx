@@ -2,7 +2,7 @@ import { useState, forwardRef, Ref, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useCreateGroupFine, useGroupLaws } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 import { Group, GroupFineCreate, UserBase } from 'types';
 
 import { Fab, MenuItem, ListSubheader, FabProps } from '@mui/material';
@@ -24,7 +24,7 @@ type FormValues = Omit<GroupFineCreate, 'user'> & {
 };
 
 const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug, ...props }: AddFineDialogProps, ref: Ref<HTMLButtonElement>) {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const [dialogOpen, setDialogOpen] = useState(false);
   const { data: laws } = useGroupLaws(groupSlug, { enabled: dialogOpen });
   const createFine = useCreateGroupFine(groupSlug);

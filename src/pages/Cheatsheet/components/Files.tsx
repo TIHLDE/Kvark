@@ -16,7 +16,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
 // Project Components
 import Paper from 'components/layout/Paper';
 import Pagination from 'components/layout/Pagination';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {
@@ -67,7 +67,7 @@ export type FilesProps = {
 
 const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
   const { classes, cx } = useStyles();
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
   const Icon = ({ cheatsheet }: { cheatsheet: Cheatsheet }) => {

@@ -7,7 +7,7 @@ import { PermissionApp } from 'types/Enums';
 // Services
 import { useSetRedirectUrl } from 'hooks/Misc';
 import { useHavePermission, useIsAuthenticated } from 'hooks/User';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { useAnalytics } from 'hooks/Utils';
 
 // Project components
 import Page from 'components/navigation/Page';
@@ -66,7 +66,7 @@ export const AuthRoute = ({ apps = [], element }: AuthRouteProps) => {
 
 const AppRoutes = () => {
   const location = useLocation();
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
 
   useEffect(() => event('page_view', window.location.href, window.location.pathname), [location]);
 
