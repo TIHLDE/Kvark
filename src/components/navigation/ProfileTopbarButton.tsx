@@ -1,4 +1,3 @@
-Assets / Icons;
 import PersonOutlineIcon from '@mui/icons-material/PersonRounded';
 import LightIcon from '@mui/icons-material/WbSunnyRounded';
 import { Button, IconButton, Theme, useTheme } from '@mui/material';

@@ -10,8 +10,6 @@ import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import Dialog from 'components/layout/Dialog';
 
-Material - UI;
-
 export type EventMessageSenderProps = ButtonProps & {
   eventId: number;
 };

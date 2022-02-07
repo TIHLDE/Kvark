@@ -17,8 +17,6 @@ import Expand from 'components/layout/Expand';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import { ShowMoreText } from 'components/miscellaneous/UserInformation';
 
-Project;
-
 export type EventFormAdminProps = {
   eventId: number;
 };

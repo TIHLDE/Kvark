@@ -7,7 +7,6 @@ import { Event } from 'types';
 import { useEventById, useEventRegistrations } from 'hooks/Event';
 import { useSnackbar } from 'hooks/Snackbar';
 
-Project;
 import EventMessageSender from 'pages/EventAdministration/components/EventMessageSender';
 import EventStatistics from 'pages/EventAdministration/components/EventStatistics';
 import Participant from 'pages/EventAdministration/components/Participant';

@@ -7,8 +7,6 @@ import { useAnalytics } from 'hooks/Utils';
 
 import Dialog from 'components/layout/Dialog';
 
-Material - ui;
-
 const ThemeDialog = styled(Dialog)({
   '& .MuiPaper-root': {
     maxWidth: '250px',

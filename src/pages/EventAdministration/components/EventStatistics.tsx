@@ -7,8 +7,6 @@ import { useEventStatistics } from 'hooks/Event';
 
 import Paper from 'components/layout/Paper';
 
-Material - UI;
-
 export type EventStatisticsProps = {
   eventId: Event['id'];
 };
