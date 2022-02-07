@@ -1,12 +1,9 @@
-import { ReactNode } from 'react';
-import { makeStyles } from 'makeStyles';
-import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-
-// Material UI Components
 import { Grid, Typography } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { ReactNode } from 'react';
 
-// Project Components
 import Paper from 'components/layout/Paper';
+import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 
 const useStyles = makeStyles()((theme) => ({
   root: {

@@ -29,7 +29,8 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ github.token }}
-          commit-message: "docs(changelog): Iterate changelog version"
+          title: "docs(changelog): iterate changelog version"
+          commit-message: "docs(changelog): iterate changelog version"
           branch: docs/iterate_changelog
           delete-branch: true
           base: dev

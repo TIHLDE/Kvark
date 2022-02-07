@@ -1,15 +1,16 @@
-import { useState, useMemo } from 'react';
-import { IconButton, IconButtonProps, Stack, Tooltip, List, ListItem, ListItemText, ListItemAvatar, Typography, Skeleton } from '@mui/material';
-import { usePublicEventRegistrations } from 'hooks/Event';
+import ParticipantsIcon from '@mui/icons-material/PeopleRounded';
+import { IconButton, IconButtonProps, List, ListItem, ListItemAvatar, ListItemText, Skeleton, Stack, Tooltip, Typography } from '@mui/material';
+import { useMemo, useState } from 'react';
+
 import { Event } from 'types';
 
-import ParticipantsIcon from '@mui/icons-material/PeopleRounded';
+import { usePublicEventRegistrations } from 'hooks/Event';
 
-import Pagination from 'components/layout/Pagination';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Avatar from 'components/miscellaneous/Avatar';
 import Dialog from 'components/layout/Dialog';
+import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
+import Avatar from 'components/miscellaneous/Avatar';
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
 export type EventPublicRegistrationsListProps = IconButtonProps & {
   eventId: Event['id'];

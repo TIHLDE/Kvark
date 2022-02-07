@@ -1,14 +1,15 @@
 import { useEffect } from 'react';
+import { Helmet } from 'react-helmet';
+import { useNavigate, useParams } from 'react-router-dom';
 import URLS from 'URLS';
-import Helmet from 'react-helmet';
-import { useParams, useNavigate } from 'react-router-dom';
 import { urlEncode } from 'utils';
+
 import { useJobPostById } from 'hooks/JobPost';
 
-// Project Components
 import Http404 from 'pages/Http404';
-import Page from 'components/navigation/Page';
 import JobPostRenderer, { JobPostRendererLoading } from 'pages/JobPostDetails/components/JobPostRenderer';
+
+import Page from 'components/navigation/Page';
 
 function JobPostDetails() {
   const { id } = useParams();

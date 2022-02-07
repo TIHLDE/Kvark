@@ -1,7 +1,9 @@
-import { getCookie } from 'api/cookie';
-import { TOKEN_HEADER_NAME, TIHLDE_API_URL, ACCESS_TOKEN } from 'constant';
-import { RequestResponse } from 'types';
+import { ACCESS_TOKEN, TIHLDE_API_URL, TOKEN_HEADER_NAME } from 'constant';
 import { argsToParams } from 'utils';
+
+import { RequestResponse } from 'types';
+
+import { getCookie } from 'api/cookie';
 
 type RequestMethodType = 'GET' | 'POST' | 'PUT' | 'DELETE';
 

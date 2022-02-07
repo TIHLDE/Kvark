@@ -1,18 +1,19 @@
+import EditIcon from '@mui/icons-material/EditRounded';
+import { Divider, IconButton, ListItem, ListItemSecondaryAction, ListItemText, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useUpdateGroupLaw, useDeleteGroupLaw } from 'hooks/Group';
-import { useSnackbar } from 'hooks/Snackbar';
+import { formatLawHeader } from 'utils';
+
 import { Group, GroupLaw, GroupLawMutate } from 'types';
 
-import { Divider, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Typography } from '@mui/material';
-import EditIcon from '@mui/icons-material/EditRounded';
+import { useDeleteGroupLaw, useUpdateGroupLaw } from 'hooks/Group';
+import { useSnackbar } from 'hooks/Snackbar';
 
-import Dialog from 'components/layout/Dialog';
-import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
+import TextField from 'components/inputs/TextField';
+import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
-import { formatLawHeader } from 'utils';
 
 export type LawItemProps = {
   groupSlug: Group['slug'];

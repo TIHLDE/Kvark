@@ -1,5 +1,5 @@
 import { Button, ButtonProps, FormHelperText } from '@mui/material';
-import { UseFormReturn, FieldValues } from 'react-hook-form';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
 
 export type SubmitButtonProps<FormValues> = ButtonProps & Pick<UseFormReturn<FormValues>, 'formState'>;
 

@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { parseISO } from 'date-fns';
-import { Strike, UserBase } from 'types';
-import { formatDate } from 'utils';
-import { useUserPermissions } from 'hooks/User';
-import { useDeleteStrike } from 'hooks/Strike';
-import { ListItem, ListItemButton, ListItemProps, Typography, Collapse, Stack, Divider, ListItemText } from '@mui/material';
-
-// Icons
 import Delete from '@mui/icons-material/DeleteRounded';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import { Collapse, Divider, ListItem, ListItemButton, ListItemProps, ListItemText, Stack, Typography } from '@mui/material';
+import { parseISO } from 'date-fns';
+import { useState } from 'react';
+import { formatDate } from 'utils';
+
+import { Strike, UserBase } from 'types';
+
+import { useDeleteStrike } from 'hooks/Strike';
+import { useUserPermissions } from 'hooks/User';
 
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';

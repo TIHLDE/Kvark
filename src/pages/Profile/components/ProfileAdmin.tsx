@@ -1,25 +1,22 @@
+import ArrowIcon from '@mui/icons-material/ArrowForwardRounded';
+import NewsIcon from '@mui/icons-material/DescriptionRounded';
+import GroupsIcon from '@mui/icons-material/GroupRounded';
+import UsersIcon from '@mui/icons-material/PermIdentityRounded';
+import EventIcon from '@mui/icons-material/TodayRounded';
+import JobPostIcon from '@mui/icons-material/WorkOutlineRounded';
+import WorkspacesIcon from '@mui/icons-material/Workspaces';
+import { Avatar, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
+import { makeStyles } from 'makeStyles';
 import { ComponentType } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
+
 import { PermissionApp } from 'types/Enums';
+
 import { HavePermission } from 'hooks/User';
 
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import { Avatar, List, ListItem, ListItemText, ListItemAvatar, Typography } from '@mui/material';
-
-// Icons
-import ArrowIcon from '@mui/icons-material/ArrowForwardRounded';
-import EventIcon from '@mui/icons-material/TodayRounded';
-import JobPostIcon from '@mui/icons-material/WorkOutlineRounded';
-import NewsIcon from '@mui/icons-material/DescriptionRounded';
-import UsersIcon from '@mui/icons-material/PermIdentityRounded';
-import GroupsIcon from '@mui/icons-material/GroupRounded';
-import WorkspacesIcon from '@mui/icons-material/Workspaces';
-
-// Project Components
-import Paper from 'components/layout/Paper';
 import { FileUpload } from 'components/inputs/Upload';
+import Paper from 'components/layout/Paper';
 
 const useStyles = makeStyles()((theme) => ({
   list: {

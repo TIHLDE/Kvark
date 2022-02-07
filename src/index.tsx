@@ -1,34 +1,42 @@
 /* eslint-disable no-console */
-import { ReactNode } from 'react';
-import { render } from 'react-dom';
 import 'assets/css/index.css';
-import { CacheProvider } from '@emotion/react';
+import 'delayed-scroll-restoration-polyfill';
 import createCache from '@emotion/cache';
-import { CssBaseline } from '@mui/material';
+import { CacheProvider } from '@emotion/react';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { BrowserRouter } from 'react-router-dom';
+import { CssBaseline } from '@mui/material';
+import * as Sentry from '@sentry/react';
+import { BrowserTracing } from '@sentry/tracing';
+import AppRoutes from 'AppRoutes';
+import { SHOW_NEW_STUDENT_INFO } from 'constant';
+import { ReactNode } from 'react';
+import { render } from 'react-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { broadcastQueryClient } from 'react-query/broadcastQueryClient-experimental';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import 'delayed-scroll-restoration-polyfill';
-import { SHOW_NEW_STUDENT_INFO } from 'constant';
+import { BrowserRouter } from 'react-router-dom';
+
 import API from 'api/api';
 
-// Services
-import { ThemeProvider } from 'hooks/Theme';
 import { MiscProvider } from 'hooks/Misc';
 import { SnackbarProvider } from 'hooks/Snackbar';
+import { ThemeProvider } from 'hooks/Theme';
 
-// Project components
 import MessageGDPR from 'components/miscellaneous/MessageGDPR';
 import Navigation from 'components/navigation/Navigation';
-import AppRoutes from 'AppRoutes';
 
-export const muiCache = createCache({
-  key: 'mui',
-  prepend: true,
-});
+const SENTRY_DSN = import.meta.env.VITE_SENTRY_DSN;
+
+if (SENTRY_DSN) {
+  Sentry.init({
+    dsn: SENTRY_DSN,
+    integrations: [new BrowserTracing()],
+    tracesSampleRate: 0.8,
+  });
+}
+
+export const muiCache = createCache({ key: 'mui', prepend: true });
 
 type ProvidersProps = {
   children: ReactNode;
@@ -69,8 +77,23 @@ export const Providers = ({ children }: ProvidersProps) => {
   );
 };
 
-export const Application = () => {
-  return (
+export const Application = () => (
+  <Sentry.ErrorBoundary
+    dialogOptions={{
+      title: 'Det ser ut som vi har problemer',
+      subtitle: 'Index har blitt varslet.',
+      subtitle2: 'Hvis du vil hjelpe oss kan du fortelle oss hva som skjedde nedenfor.',
+      labelName: 'Navn',
+      labelEmail: 'Epost',
+      labelComments: 'Hva skjedde?',
+      labelClose: 'Lukk',
+      labelSubmit: 'Send',
+      errorGeneric: 'Det oppstod en ukjent feil under innsending av rapporten. Vennligst prøv igjen.',
+      errorFormEntry: 'Noen felt var ugyldige. Rett opp feilene og prøv igjen.',
+      successMessage: 'Din tilbakemelding er sendt. Tusen takk!',
+    }}
+    fallback={<a href='/'>Gå til forsiden</a>}
+    showDialog>
     <Providers>
       <BrowserRouter>
         <Navigation>
@@ -79,8 +102,8 @@ export const Application = () => {
         </Navigation>
       </BrowserRouter>
     </Providers>
-  );
-};
+  </Sentry.ErrorBoundary>
+);
 
 console.log(
   `%c

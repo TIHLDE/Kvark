@@ -1,16 +1,13 @@
+import { Button, styled, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
+
 import { useIsAuthenticated } from 'hooks/User';
 
-// Material UI Components
-import { Button, Typography, styled } from '@mui/material';
+import Page from 'components/navigation/Page';
 
-// Imgs
 import http404img from 'assets/img/http404.gif';
 import http404ropeImg from 'assets/img/http404rope.gif';
-
-// Project Components
-import Page from 'components/navigation/Page';
 
 const Buttons = styled('div')(({ theme }) => ({
   margin: theme.spacing(2, 'auto'),

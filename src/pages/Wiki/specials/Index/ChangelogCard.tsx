@@ -1,8 +1,9 @@
-import { Typography, styled } from '@mui/material';
+import { styled, Typography } from '@mui/material';
+import { useQuery } from 'react-query';
+
 import Expand from 'components/layout/Expand';
 import Paper from 'components/layout/Paper';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import { useQuery } from 'react-query';
 
 const LATEST_VERSION_INDEX = 3;
 const MARKDOWN_HEADER_DELIMITER = /(?=\n##\s *)/g;

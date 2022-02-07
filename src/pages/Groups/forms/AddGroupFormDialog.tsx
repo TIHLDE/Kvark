@@ -1,16 +1,17 @@
+import AddIcon from '@mui/icons-material/AddRounded';
+import { Button, ButtonProps } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useCreateForm } from 'hooks/Form';
-import { useSnackbar } from 'hooks/Snackbar';
+
 import { Group, GroupFormCreate } from 'types';
 import { FormResourceType } from 'types/Enums';
 
-import { Button, ButtonProps } from '@mui/material';
-import AddIcon from '@mui/icons-material/AddRounded';
+import { useCreateForm } from 'hooks/Form';
+import { useSnackbar } from 'hooks/Snackbar';
 
-import Dialog from 'components/layout/Dialog';
-import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
+import TextField from 'components/inputs/TextField';
+import Dialog from 'components/layout/Dialog';
 
 export type AddGroupFormDialogProps = ButtonProps & {
   groupSlug: Group['slug'];
