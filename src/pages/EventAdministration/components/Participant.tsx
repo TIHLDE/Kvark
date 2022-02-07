@@ -1,27 +1,26 @@
-import { useState, useEffect } from 'react';
-import { Registration } from 'types';
-import { getUserStudyShort, formatDate, getUserClass } from 'utils';
-import { useDeleteEventRegistration, useUpdateEventRegistration, useEventById } from 'hooks/Event';
-import { useUserStrikes } from 'hooks/User';
-import parseISO from 'date-fns/parseISO';
-import { useSnackbar } from 'hooks/Snackbar';
+Material - ui;
 
-// Material-ui
-import { Stack, Checkbox, Typography, Collapse, Tooltip, ListItem, ListItemButton, ListItemText, ListItemAvatar, Divider } from '@mui/material';
-
-// Icons
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import Delete from '@mui/icons-material/DeleteRounded';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownwardRounded';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpwardRounded';
+import Delete from '@mui/icons-material/DeleteRounded';
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import { Checkbox, Collapse, Divider, ListItem, ListItemAvatar, ListItemButton, ListItemText, Stack, Tooltip, Typography } from '@mui/material';
+import parseISO from 'date-fns/parseISO';
+import { useEffect, useState } from 'react';
+import { formatDate, getUserClass, getUserStudyShort } from 'utils';
 
-// Project components
-import Avatar from 'components/miscellaneous/Avatar';
+import { Registration } from 'types';
+
+import { useDeleteEventRegistration, useEventById, useUpdateEventRegistration } from 'hooks/Event';
+import { useSnackbar } from 'hooks/Snackbar';
+import { useUserStrikes } from 'hooks/User';
+
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
-import StrikeListItem from 'components/miscellaneous/StrikeListItem';
+import Avatar from 'components/miscellaneous/Avatar';
 import StrikeCreateDialog from 'components/miscellaneous/StrikeCreateDialog';
+import StrikeListItem from 'components/miscellaneous/StrikeListItem';
 
 export type ParticipantProps = {
   eventId: number;

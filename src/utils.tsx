@@ -1,6 +1,6 @@
+import nbLocale, { format, getYear, isAfter, isBefore, parseISO, subMinutes } from 'date-fns';
 import slugify from 'slugify';
-import { parseISO, format, subMinutes, getYear, isAfter, isBefore } from 'date-fns';
-import nbLocale from 'date-fns/locale/nb';
+
 import { Event, GroupLaw, SelectFormField, SelectFormFieldOption, TextFormField } from 'types';
 import { FormFieldType, JobPostType, MembershipType, StrikeReason, UserClass, UserStudy } from 'types/Enums';
 

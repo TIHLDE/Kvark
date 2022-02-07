@@ -1,15 +1,11 @@
+import MembersIcon from '@mui/icons-material/PersonRounded';
+import { ButtonBase, Skeleton, Theme, Typography } from '@mui/material';
+import { makeStyles } from 'makeStyles';
 import { Link } from 'react-router-dom';
-import { Group } from 'types';
 import URLS from 'URLS';
 
-// Material UI
-import { makeStyles } from 'makeStyles';
-import { Theme, Skeleton, ButtonBase, Typography } from '@mui/material';
+import { Group } from 'types';
 
-// Icons
-import MembersIcon from '@mui/icons-material/PersonRounded';
-
-// Project components
 import Paper from 'components/layout/Paper';
 
 const useStyles = makeStyles()((theme) => ({

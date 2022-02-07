@@ -1,13 +1,14 @@
+import { List } from '@mui/material';
 import { useParams } from 'react-router-dom';
+
 import { useGroup, useGroupLaws } from 'hooks/Group';
 import { useUser } from 'hooks/User';
 
-import { List } from '@mui/material';
-
-import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import Expand from 'components/layout/Expand';
-import LawItem from 'pages/Groups/laws/LawItem';
 import AddLawDialog from 'pages/Groups/laws/AddLawDialog';
+import LawItem from 'pages/Groups/laws/LawItem';
+
+import Expand from 'components/layout/Expand';
+import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
 const GroupLaws = () => {

@@ -1,12 +1,13 @@
-import { Event } from 'types';
+import { Box, Stack, Typography } from '@mui/material';
 import { getUserClass, getUserStudyShort } from 'utils';
+
+import { Event } from 'types';
+
 import { useEventStatistics } from 'hooks/Event';
 
-// Material-UI
-import { Typography, Stack, Box } from '@mui/material';
-
-// Project components
 import Paper from 'components/layout/Paper';
+
+Material - UI;
 
 export type EventStatisticsProps = {
   eventId: Event['id'];

@@ -1,11 +1,12 @@
 import { Form } from 'types';
+
 import { useFormById } from 'hooks/Form';
 
-import Expand from 'components/layout/Expand';
 import FormAnswers from 'components/forms/FormAnswers';
-import FormFieldsEditor from 'components/forms/FormFieldsEditor';
 import FormDetailsEditor from 'components/forms/FormDetailsEditor';
+import FormFieldsEditor from 'components/forms/FormFieldsEditor';
 import FormStatistics from 'components/forms/FormStatistics';
+import Expand from 'components/layout/Expand';
 
 export type FormAdminProps = {
   formId: Form['id'];

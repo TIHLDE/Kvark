@@ -1,19 +1,20 @@
-import { useMemo, useState, useEffect } from 'react';
-import { USERS_ENDPOINT } from 'api/api';
-import { TIHLDE_API_URL } from 'constant';
-import { useUserEvents, useUser } from 'hooks/User';
-import { useAnalytics } from 'hooks/Utils';
-import { Stack, Typography, Collapse, Divider, ListItem, ListItemButton, ListItemIcon, ListItemText, Alert } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 import CloudSyncIcon from '@mui/icons-material/CloudSyncRounded';
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import { Alert, Collapse, Divider, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Typography } from '@mui/material';
+import { TIHLDE_API_URL } from 'constant';
+import { useEffect, useMemo, useState } from 'react';
 
-// Project componets
+import { USERS_ENDPOINT } from 'api/api';
+
+import { useUser, useUserEvents } from 'hooks/User';
+import { useAnalytics } from 'hooks/Utils';
+
+import Pagination from 'components/layout/Pagination';
+import Paper from 'components/layout/Paper';
 import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
 import { Pre } from 'components/miscellaneous/MarkdownRenderer';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Pagination from 'components/layout/Pagination';
-import Paper from 'components/layout/Paper';
 
 export const EventsSubscription = () => {
   const [subscribeExpanded, setSubscribeExpanded] = useState(false);

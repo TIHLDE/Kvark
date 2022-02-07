@@ -1,4 +1,5 @@
 import { Avatar as MuiAvatar, AvatarProps as MuiAvatarProps, Skeleton } from '@mui/material';
+
 import { User } from 'types';
 
 type AvatarProps = {

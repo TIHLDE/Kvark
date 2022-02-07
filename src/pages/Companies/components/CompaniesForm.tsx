@@ -1,20 +1,20 @@
+import { Divider, Stack } from '@mui/material';
+import { EMAIL_REGEX } from 'constant';
+import addMonths from 'date-fns/addMonths';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+
 import { CompaniesEmail } from 'types';
+
 import API from 'api/api';
-import { useAnalytics } from 'hooks/Utils';
+
 import { useSnackbar } from 'hooks/Snackbar';
-import addMonths from 'date-fns/addMonths';
-import { EMAIL_REGEX } from 'constant';
+import { useAnalytics } from 'hooks/Utils';
 
-// Material UI Components
-import { Divider, Stack } from '@mui/material';
-
-// Project components
-import Paper from 'components/layout/Paper';
+import BoolArray from 'components/inputs/BoolArray';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
-import BoolArray from 'components/inputs/BoolArray';
+import Paper from 'components/layout/Paper';
 
 type CompaniesEmailFormValues = Omit<CompaniesEmail, 'time' | 'type'> & {
   time: Array<{ label: string }>;

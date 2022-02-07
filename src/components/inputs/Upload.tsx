@@ -1,32 +1,29 @@
-import { useState, useCallback, forwardRef } from 'react';
-import { UseFormReturn, UseFormRegisterReturn, Path, FieldError, UnpackNestedValue, PathValue, FieldValues } from 'react-hook-form';
-import Cropper from 'react-easy-crop';
-import { useAnalytics, useShare } from 'hooks/Utils';
-import API from 'api/api';
-import { useSnackbar } from 'hooks/Snackbar';
-
-// Material UI Components
+import ShareIcon from '@mui/icons-material/ShareRounded';
 import {
   Button,
   ButtonProps,
   FormHelperText,
-  Typography,
+  IconButton,
   LinearProgress,
   List,
   ListItem,
-  ListItemText,
   ListItemSecondaryAction,
-  IconButton,
+  ListItemText,
   styled,
+  Typography,
 } from '@mui/material';
+import { forwardRef, useCallback, useState } from 'react';
+import Cropper from 'react-easy-crop';
+import { FieldError, FieldValues, Path, PathValue, UnpackNestedValue, UseFormRegisterReturn, UseFormReturn } from 'react-hook-form';
 
-// Icons
-import ShareIcon from '@mui/icons-material/ShareRounded';
+import API from 'api/api';
 
-// Project components
+import { useSnackbar } from 'hooks/Snackbar';
+import { useAnalytics, useShare } from 'hooks/Utils';
+
+import { blobToFile, getCroppedImgAsBlob, readFile } from 'components/inputs/ImageUploadUtils';
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
-import { getCroppedImgAsBlob, blobToFile, readFile } from 'components/inputs/ImageUploadUtils';
 
 const UploadPaper = styled(Paper)(({ theme }) => ({
   display: 'grid',

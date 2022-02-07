@@ -1,15 +1,15 @@
+import PageIcon from '@mui/icons-material/SubjectRounded';
+import { Collapse, List, ListItem, ListItemButton, ListItemIcon, ListItemText, TextField, Typography } from '@mui/material';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useWikiSearch } from 'hooks/Wiki';
-import { useDebounce, useAnalytics } from 'hooks/Utils';
-import { TextField, Collapse, Typography, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import PageIcon from '@mui/icons-material/SubjectRounded';
 
-// Project components
-import Dialog from 'components/layout/Dialog';
-import Paper from 'components/layout/Paper';
-import Pagination from 'components/layout/Pagination';
+import { useAnalytics, useDebounce } from 'hooks/Utils';
+import { useWikiSearch } from 'hooks/Wiki';
+
 import { BannerButton } from 'components/layout/Banner';
+import Dialog from 'components/layout/Dialog';
+import Pagination from 'components/layout/Pagination';
+import Paper from 'components/layout/Paper';
 
 const WikiSearch = () => {
   const { event } = useAnalytics();

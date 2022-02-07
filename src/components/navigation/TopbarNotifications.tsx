@@ -1,47 +1,43 @@
-import { useState, useMemo, useRef } from 'react';
-import parseISO from 'date-fns/parseISO';
-import { Link } from 'react-router-dom';
-import { Notification } from 'types';
-import { useNotifications } from 'hooks/Notification';
-import { getTimeSince, isExternalURL } from 'utils';
-import { useUser } from 'hooks/User';
-
-// Material-ui
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import NotificationReadIcon from '@mui/icons-material/NotificationsNoneRounded';
+import NotificationUnreadIcon from '@mui/icons-material/NotificationsRounded';
 import {
-  Box,
   Badge,
+  Box,
   ClickAwayListener,
   Collapse,
-  Skeleton,
+  Divider,
+  Grow,
+  IconButton,
   List,
   ListItem,
   ListItemButton,
-  ListItemText,
   ListItemIcon,
-  Divider,
+  ListItemText,
+  Popper,
+  Skeleton,
+  Theme,
   Typography,
   useMediaQuery,
-  IconButton,
-  Theme,
-  Grow,
-  Popper,
 } from '@mui/material';
+import parseISO from 'date-fns/parseISO';
+import { useMemo, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { getTimeSince, isExternalURL } from 'utils';
 
-// Icons
-import NotificationUnreadIcon from '@mui/icons-material/NotificationsRounded';
-import NotificationReadIcon from '@mui/icons-material/NotificationsNoneRounded';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import NotificationsIcon from '@mui/icons-material/NotificationsNoneRounded';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import { Notification } from 'types';
 
-// Project components
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Linkify from 'components/miscellaneous/Linkify';
-import Pagination from 'components/layout/Pagination';
-import Dialog from 'components/layout/Dialog';
+import { useNotifications } from 'hooks/Notification';
+import { useUser } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
+
+import Dialog from 'components/layout/Dialog';
+import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
+import Linkify from 'components/miscellaneous/Linkify';
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
 type NotificationItemProps = {
   notification: Notification;
@@ -158,7 +154,7 @@ const NotificationsTopbar = ({ color }: NotificationsTopbarProps) => {
     <>
       <IconButton aria-label='Vis varslinger' onClick={() => setShowNotifications((prev) => !prev)} ref={buttonAnchorRef} sx={{ color: color }}>
         <Badge badgeContent={user?.unread_notifications} color='error'>
-          {showNotifications ? <CloseRoundedIcon /> : <NotificationsIcon />}
+          {showNotifications ? <CloseRoundedIcon /> : <NotificationReadIcon />}
         </Badge>
       </IconButton>
       {mdDown ? (

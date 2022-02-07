@@ -1,7 +1,5 @@
-import { ReactNode } from 'react';
-
-// Material UI Components
 import { Button, ButtonProps, Collapse } from '@mui/material';
+import { ReactNode } from 'react';
 
 export type PaginationProps = ButtonProps & {
   children?: ReactNode;

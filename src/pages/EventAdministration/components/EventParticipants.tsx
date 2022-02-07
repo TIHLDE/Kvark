@@ -1,16 +1,17 @@
-import { useState, useMemo, useCallback } from 'react';
+import CopyIcon from '@mui/icons-material/FileCopyOutlined';
+import { Alert, AlertTitle, Box, Button, Checkbox, Divider, FormControlLabel, LinearProgress, List, Stack, Typography } from '@mui/material';
+import { useCallback, useMemo, useState } from 'react';
+
+import { Event } from 'types';
+
 import { useEventById, useEventRegistrations } from 'hooks/Event';
 import { useSnackbar } from 'hooks/Snackbar';
-import { Event } from 'types';
-import { Typography, Stack, Divider, FormControlLabel, Checkbox, Button, List, LinearProgress, Box, Alert, AlertTitle } from '@mui/material';
 
-// Icons
-import CopyIcon from '@mui/icons-material/FileCopyOutlined';
-
-// Project
-import Participant from 'pages/EventAdministration/components/Participant';
-import EventStatistics from 'pages/EventAdministration/components/EventStatistics';
+Project;
 import EventMessageSender from 'pages/EventAdministration/components/EventMessageSender';
+import EventStatistics from 'pages/EventAdministration/components/EventStatistics';
+import Participant from 'pages/EventAdministration/components/Participant';
+
 import Pagination from 'components/layout/Pagination';
 
 type RegistrationsProps = {

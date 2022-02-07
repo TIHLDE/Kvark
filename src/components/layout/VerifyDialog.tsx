@@ -1,9 +1,6 @@
-import { useState, ReactNode } from 'react';
-
-// Material UI Components
 import { Button, ButtonProps, IconButton } from '@mui/material';
+import { ReactNode, useState } from 'react';
 
-// Project components
 import Dialog, { DialogProps } from 'components/layout/Dialog';
 
 export type VerifyDialogProps = ButtonProps &

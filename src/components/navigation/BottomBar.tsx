@@ -1,22 +1,20 @@
-import { ComponentType, useEffect, useMemo, useState } from 'react';
-import URLS from 'URLS';
-import { Link, useLocation } from 'react-router-dom';
-
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import { BottomNavigation, BottomNavigationAction, SvgIcon } from '@mui/material';
+import CloseIcon from '@mui/icons-material/CloseRounded';
 import EventIcon from '@mui/icons-material/EventRounded';
 import MenuIcon from '@mui/icons-material/MenuRounded';
-import JobPostIcon from '@mui/icons-material/WorkOutlineRounded';
 import NewsIcon from '@mui/icons-material/NewReleasesRounded';
-import CloseIcon from '@mui/icons-material/CloseRounded';
+import JobPostIcon from '@mui/icons-material/WorkOutlineRounded';
+import { BottomNavigation, BottomNavigationAction, SvgIcon } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { ComponentType, useEffect, useMemo, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import URLS from 'URLS';
 
-// Project components
+import { useAnalytics } from 'hooks/Utils';
+
 import Paper from 'components/layout/Paper';
+import Logo from 'components/miscellaneous/TihldeLogo';
 import { NavigationItem } from 'components/navigation/Navigation';
 import Sidebar from 'components/navigation/Sidebar';
-import Logo from 'components/miscellaneous/TihldeLogo';
-import { useAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles()((theme) => ({
   root: {

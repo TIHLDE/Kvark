@@ -1,18 +1,18 @@
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import StarIcon from '@mui/icons-material/Star';
+import { Collapse, Divider, IconButton, ListItem, ListItemAvatar, ListItemButton, ListItemText, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useDeleteMembership, useUpdateMembership } from 'hooks/Membership';
-import { useSnackbar } from 'hooks/Snackbar';
-import { MembershipType } from 'types/Enums';
-import { UserList } from 'types';
 import URLS from 'URLS';
 import { getUserClass, getUserStudyShort } from 'utils';
 
-import { Stack, Collapse, Divider, IconButton, ListItem, ListItemButton, ListItemText, ListItemAvatar, Typography } from '@mui/material';
+import { UserList } from 'types';
+import { MembershipType } from 'types/Enums';
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import StarIcon from '@mui/icons-material/Star';
+import { useDeleteMembership, useUpdateMembership } from 'hooks/Membership';
+import { useSnackbar } from 'hooks/Snackbar';
 
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';

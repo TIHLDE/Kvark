@@ -1,8 +1,6 @@
-import { forwardRef } from 'react';
-import { UseFormReturn, FieldError, Path, FieldValues } from 'react-hook-form';
-
-// Material UI Components
 import MuiTextField, { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField';
+import { forwardRef } from 'react';
+import { FieldError, FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
 export type TextFieldProps<FormValues extends FieldValues = FieldValues> = MuiTextFieldProps &
   Pick<UseFormReturn<FormValues>, 'formState'> & {

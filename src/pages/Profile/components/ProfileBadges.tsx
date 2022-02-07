@@ -1,15 +1,16 @@
-import { useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-import { useUserBadges } from 'hooks/User';
-import { Badge } from 'types';
-import Paper from 'components/layout/Paper';
-
-// Material UI Components
-import { makeStyles } from 'makeStyles';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import { makeStyles } from 'makeStyles';
+import { useMemo } from 'react';
+import { useParams } from 'react-router-dom';
+
+import { Badge } from 'types';
+
+import { useUserBadges } from 'hooks/User';
+
 import Pagination from 'components/layout/Pagination';
+import Paper from 'components/layout/Paper';
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
 const useStyles = makeStyles()((theme) => ({
   paper: {

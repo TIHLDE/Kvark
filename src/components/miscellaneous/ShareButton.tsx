@@ -1,8 +1,9 @@
+import ShareIcon from '@mui/icons-material/Share';
+import { Button, ButtonProps } from '@mui/material';
 import { useMemo } from 'react';
 import URLS from 'URLS';
+
 import { useAnalytics, useShare } from 'hooks/Utils';
-import { Button, ButtonProps } from '@mui/material';
-import ShareIcon from '@mui/icons-material/Share';
 
 export type ShareProps = ButtonProps & {
   title: string;

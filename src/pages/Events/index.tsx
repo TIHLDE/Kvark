@@ -1,27 +1,25 @@
-import { useMemo, useState, useCallback } from 'react';
+import { Button, Divider, MenuItem, Stack, Theme, useMediaQuery } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useEvents } from 'hooks/Event';
-import { useCategories } from 'hooks/Categories';
 import { argsToParams } from 'utils';
 
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import { Divider, MenuItem, Button, useMediaQuery, Theme, Stack } from '@mui/material';
-
-// Project Components
-import Page from 'components/navigation/Page';
-import Banner from 'components/layout/Banner';
-import Pagination from 'components/layout/Pagination';
-import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
-import Paper from 'components/layout/Paper';
-import Select from 'components/inputs/Select';
-import Bool from 'components/inputs/Bool';
-import TextField from 'components/inputs/TextField';
-import SubmitButton from 'components/inputs/SubmitButton';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import { useCategories } from 'hooks/Categories';
+import { useEvents } from 'hooks/Event';
 import { useAnalytics } from 'hooks/Utils';
+
+import Bool from 'components/inputs/Bool';
+import Select from 'components/inputs/Select';
+import SubmitButton from 'components/inputs/SubmitButton';
+import TextField from 'components/inputs/TextField';
+import Banner from 'components/layout/Banner';
 import Expand from 'components/layout/Expand';
+import Pagination from 'components/layout/Pagination';
+import Paper from 'components/layout/Paper';
+import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import Page from 'components/navigation/Page';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {

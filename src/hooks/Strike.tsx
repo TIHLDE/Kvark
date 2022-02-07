@@ -1,6 +1,9 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from 'react-query';
+
+import { PaginationResponse, RequestResponse, Strike, StrikeCreate, StrikeList } from 'types';
+
 import API from 'api/api';
-import { Strike, StrikeCreate, RequestResponse, PaginationResponse, StrikeList } from 'types';
+
 import { useSnackbar } from 'hooks/Snackbar';
 import { USER_STRIKES_QUERY_KEY } from 'hooks/User';
 

@@ -1,32 +1,30 @@
+import AddIcon from '@mui/icons-material/AddRounded';
+import RightIcon from '@mui/icons-material/ChevronRightRounded';
+import EditIcon from '@mui/icons-material/EditRounded';
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import { TreeItem, TreeView } from '@mui/lab';
+import { Button, Collapse, Divider, LinearProgress, Typography } from '@mui/material';
+import parseISO from 'date-fns/parseISO';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import URLS from 'URLS';
 import { formatDate, urlEncode } from 'utils';
-import parseISO from 'date-fns/parseISO';
-import { useWikiTree, useCreateWikiPage, useUpdateWikiPage, useDeleteWikiPage } from 'hooks/Wiki';
-import { useSnackbar } from 'hooks/Snackbar';
-import { HavePermission } from 'hooks/User';
+
 import { WikiPage, WikiTree } from 'types';
 import { PermissionApp } from 'types/Enums';
 
-import { Button, Typography, Collapse, Divider, LinearProgress } from '@mui/material';
-import { TreeView, TreeItem } from '@mui/lab';
+import { useSnackbar } from 'hooks/Snackbar';
+import { HavePermission } from 'hooks/User';
+import { useCreateWikiPage, useDeleteWikiPage, useUpdateWikiPage, useWikiTree } from 'hooks/Wiki';
 
-// Icons
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import RightIcon from '@mui/icons-material/ChevronRightRounded';
-import EditIcon from '@mui/icons-material/EditRounded';
-import AddIcon from '@mui/icons-material/AddRounded';
-
-// Project components
-import Dialog from 'components/layout/Dialog';
-import Paper from 'components/layout/Paper';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import SubmitButton from 'components/inputs/SubmitButton';
-import { ImageUpload } from 'components/inputs/Upload';
 import TextField from 'components/inputs/TextField';
+import { ImageUpload } from 'components/inputs/Upload';
+import Dialog from 'components/layout/Dialog';
+import Paper from 'components/layout/Paper';
 
 type ITreeProps = IPagesAdminProps & {
   selectedNode: string;

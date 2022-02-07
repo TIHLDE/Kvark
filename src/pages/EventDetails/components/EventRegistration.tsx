@@ -1,28 +1,25 @@
+import AllergyIcon from '@mui/icons-material/FastfoodRounded';
+import HomeIcon from '@mui/icons-material/HomeRounded';
+import MailIcon from '@mui/icons-material/MailOutlineRounded';
+import PersonIcon from '@mui/icons-material/PersonOutlineRounded';
+import SchoolIcon from '@mui/icons-material/SchoolRounded';
+import { Box, Checkbox, FormControlLabel, IconProps, Typography } from '@mui/material';
 import { ComponentType, useState } from 'react';
-import { Event, User, Submission, Form } from 'types';
+import { useForm } from 'react-hook-form';
 import URLS from 'URLS';
 import { getUserStudyShort, shortDownString } from 'utils';
+
+import { Event, Form, Submission, User } from 'types';
+
+import { useConfetti } from 'hooks/Confetti';
 import { useCreateEventRegistration } from 'hooks/Event';
-import { useFormById, useCreateSubmission, validateSubmissionInput } from 'hooks/Form';
+import { useCreateSubmission, useFormById, validateSubmissionInput } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
-import { useForm } from 'react-hook-form';
+import { useAnalytics } from 'hooks/Utils';
 
-// Material UI Components
-import { Box, IconProps, Typography, FormControlLabel, Checkbox } from '@mui/material';
-
-// Icons
-import PersonIcon from '@mui/icons-material/PersonOutlineRounded';
-import MailIcon from '@mui/icons-material/MailOutlineRounded';
-import AllergyIcon from '@mui/icons-material/FastfoodRounded';
-import SchoolIcon from '@mui/icons-material/SchoolRounded';
-import HomeIcon from '@mui/icons-material/HomeRounded';
-
-// Project components
-import Paper from 'components/layout/Paper';
 import FormView from 'components/forms/FormView';
 import SubmitButton from 'components/inputs/SubmitButton';
-import { useAnalytics } from 'hooks/Utils';
-import { useConfetti } from 'hooks/Confetti';
+import Paper from 'components/layout/Paper';
 
 type ListItemProps = {
   icon: ComponentType<{ className?: string; sx?: IconProps['sx'] }>;

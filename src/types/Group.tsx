@@ -1,7 +1,6 @@
-import { MembershipType, GroupType } from 'types/Enums';
-import { UserBase } from 'types/User';
+import { GroupType, MembershipType } from 'types/Enums';
 import { Permissions } from 'types/Misc';
-import { UserList } from 'types/User';
+import { UserBase, UserList } from 'types/User';
 
 export type Group = {
   name: string;

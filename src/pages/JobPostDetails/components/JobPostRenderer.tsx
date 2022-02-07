@@ -1,22 +1,21 @@
+import { Button, Skeleton, Typography } from '@mui/material';
 import parseISO from 'date-fns/parseISO';
+import { makeStyles } from 'makeStyles';
 import { Link } from 'react-router-dom';
+import URLS from 'URLS';
 import { formatDate, getJobpostType } from 'utils';
+
 import { JobPost } from 'types';
 import { PermissionApp } from 'types/Enums';
-import URLS from 'URLS';
+
 import { HavePermission } from 'hooks/User';
+import { useAnalytics } from 'hooks/Utils';
 
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import { Typography, Button, Skeleton } from '@mui/material';
-
-// Project Components
-import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
+import Paper from 'components/layout/Paper';
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
-import Paper from 'components/layout/Paper';
+import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import ShareButton from 'components/miscellaneous/ShareButton';
-import { useAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {

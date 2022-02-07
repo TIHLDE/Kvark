@@ -1,51 +1,50 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { PermissionApp } from 'types/Enums';
-import { useUser, useHavePermission } from 'hooks/User';
-import { useAnalytics } from 'hooks/Utils';
-import { useLogout } from 'hooks/User';
-import { getUserClass, getUserStudyLong } from 'utils';
+import AdminIcon from '@mui/icons-material/AdminPanelSettingsRounded';
+import EventIcon from '@mui/icons-material/DateRangeRounded';
+import BadgesIcon from '@mui/icons-material/EmojiEventsRounded';
+import LogOutIcon from '@mui/icons-material/ExitToAppRounded';
+import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
+import GroupsIcon from '@mui/icons-material/PeopleOutlineRounded';
+import SettingsIcon from '@mui/icons-material/TuneRounded';
+import WorkspacesIcon from '@mui/icons-material/WorkspacesRounded';
 import {
-  SvgIconProps,
   Badge,
+  Box,
   Collapse,
   List,
   ListItem,
   ListItemButton,
   ListItemButtonProps,
-  ListItemProps,
   ListItemIcon,
+  ListItemProps,
   ListItemText,
-  Stack,
   Skeleton,
-  Typography,
-  Box,
+  Stack,
   styled,
+  SvgIconProps,
+  Typography,
 } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getUserClass, getUserStudyLong } from 'utils';
 
-// Icons
-import EventIcon from '@mui/icons-material/DateRangeRounded';
-import SettingsIcon from '@mui/icons-material/TuneRounded';
-import AdminIcon from '@mui/icons-material/AdminPanelSettingsRounded';
-import LogOutIcon from '@mui/icons-material/ExitToAppRounded';
-import BadgesIcon from '@mui/icons-material/EmojiEventsRounded';
-import GroupsIcon from '@mui/icons-material/PeopleOutlineRounded';
-import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
-import WorkspacesIcon from '@mui/icons-material/WorkspacesRounded';
+import { PermissionApp } from 'types/Enums';
 
-// Project Components
+import { useHavePermission, useLogout, useUser } from 'hooks/User';
+import { useAnalytics } from 'hooks/Utils';
+
 import Http404 from 'pages/Http404';
 import ProfileAdmin from 'pages/Profile/components/ProfileAdmin';
-import ProfileSettings from 'pages/Profile/components/ProfileSettings';
+import ProfileBadges from 'pages/Profile/components/ProfileBadges';
 import ProfileEvents from 'pages/Profile/components/ProfileEvents';
 import ProfileForms from 'pages/Profile/components/ProfileForms';
 import ProfileGroups from 'pages/Profile/components/ProfileGroups';
-import ProfileBadges from 'pages/Profile/components/ProfileBadges';
+import ProfileSettings from 'pages/Profile/components/ProfileSettings';
 import ProfileStrikes from 'pages/Profile/components/ProfileStrikes';
-import Page from 'components/navigation/Page';
+
 import Paper from 'components/layout/Paper';
 import Avatar from 'components/miscellaneous/Avatar';
 import QRButton from 'components/miscellaneous/QRButton';
+import Page from 'components/navigation/Page';
 
 const Content = styled('div')(({ theme }) => ({
   display: 'grid',
