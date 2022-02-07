@@ -1,16 +1,18 @@
-import { useState, forwardRef, Ref } from 'react';
+import PayedIcon from '@mui/icons-material/CreditScoreRounded';
+import ApprovedIcon from '@mui/icons-material/DoneOutlineRounded';
+import EditIcon from '@mui/icons-material/EditRounded';
+import { Button, Fab, FabProps, Stack, Zoom } from '@mui/material';
+import { forwardRef, Ref, useState } from 'react';
+
+import { Group, GroupFineBatchMutate } from 'types';
+
 import { useBatchUpdateGroupFine } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useAnalytics } from 'hooks/Utils';
-import { Group, GroupFineBatchMutate } from 'types';
 
-import { Fab, Stack, Button, Zoom, FabProps } from '@mui/material';
-import EditIcon from '@mui/icons-material/EditRounded';
-import PayedIcon from '@mui/icons-material/CreditScoreRounded';
-import ApprovedIcon from '@mui/icons-material/DoneOutlineRounded';
+import { useCheckedFines, useClearCheckedFines } from 'pages/Groups/fines/FinesContext';
 
 import Dialog from 'components/layout/Dialog';
-import { useCheckedFines, useClearCheckedFines } from 'pages/Groups/fines/FinesContext';
 
 export type FineBatchUpdateDialogProps = FabProps & {
   groupSlug: Group['slug'];

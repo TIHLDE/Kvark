@@ -1,25 +1,23 @@
-import { ChangeEvent, useMemo, useState, lazy, Suspense } from 'react';
+import QRIcon from '@mui/icons-material/QrCodeScannerRounded';
+import NameIcon from '@mui/icons-material/TextFieldsRounded';
+import { Checkbox, FormControlLabel, LinearProgress, List, TextField, Theme, Typography, useMediaQuery } from '@mui/material';
+import { ChangeEvent, lazy, Suspense, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
+
 import { Registration } from 'types';
+
 import { useEventById, useEventRegistrations, useUpdateEventRegistration } from 'hooks/Event';
 import { useSnackbar } from 'hooks/Snackbar';
+import { useDebounce } from 'hooks/Utils';
 
-// Material UI Components
-import { Theme, List, Typography, TextField, LinearProgress, FormControlLabel, Checkbox, useMediaQuery } from '@mui/material';
-
-// Icons
-import NameIcon from '@mui/icons-material/TextFieldsRounded';
-import QRIcon from '@mui/icons-material/QrCodeScannerRounded';
-
-// Project Components
 import Http404 from 'pages/Http404';
-import Page from 'components/navigation/Page';
+
+import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import Tabs from 'components/layout/Tabs';
-import Pagination from 'components/layout/Pagination';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import { PrimaryTopBox } from 'components/layout/TopBox';
-import { useDebounce } from 'hooks/Utils';
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import Page from 'components/navigation/Page';
 
 const QrReader = lazy(() => import('react-qr-reader'));
 

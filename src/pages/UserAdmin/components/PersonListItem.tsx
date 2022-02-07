@@ -1,40 +1,38 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { UserList } from 'types';
-import { useActivateUser, useDeclineUser, useUser } from 'hooks/User';
-import { useSnackbar } from 'hooks/Snackbar';
-import { getUserClass, getUserStudyShort } from 'utils';
-import URLS from 'URLS';
-
-// Material UI Components
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
 import {
-  Typography,
-  Collapse,
-  Theme,
-  useMediaQuery,
-  Skeleton,
   Button,
+  Collapse,
+  Divider,
+  IconButton,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Divider,
+  Skeleton,
   Stack,
-  IconButton,
+  Theme,
+  Typography,
+  useMediaQuery,
 } from '@mui/material';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import URLS from 'URLS';
+import { getUserClass, getUserStudyShort } from 'utils';
 
-// Icons
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
+import { UserList } from 'types';
 
-// Project components
-import Avatar from 'components/miscellaneous/Avatar';
-import Paper from 'components/layout/Paper';
-import Dialog from 'components/layout/Dialog';
-import TextField from 'components/inputs/TextField';
-import SubmitButton from 'components/inputs/SubmitButton';
+import { useSnackbar } from 'hooks/Snackbar';
+import { useActivateUser, useDeclineUser, useUser } from 'hooks/User';
+
 import ProfileSettings from 'pages/Profile/components/ProfileSettings';
+
+import SubmitButton from 'components/inputs/SubmitButton';
+import TextField from 'components/inputs/TextField';
+import Dialog from 'components/layout/Dialog';
+import Paper from 'components/layout/Paper';
+import Avatar from 'components/miscellaneous/Avatar';
 
 type FormValues = {
   reason: string;

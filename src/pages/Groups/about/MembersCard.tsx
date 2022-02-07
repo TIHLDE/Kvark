@@ -1,17 +1,19 @@
+import { ListItem, ListItemAvatar, ListItemButton, ListItemText, Skeleton, Stack, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { UserBase, UserList } from 'types';
 import URLS from 'URLS';
+
+import { UserBase, UserList } from 'types';
+
 import { useGroup } from 'hooks/Group';
 import { useMemberships } from 'hooks/Membership';
 
-import { ListItem, ListItemButton, ListItemText, ListItemAvatar, Typography, Skeleton, Stack } from '@mui/material';
+import AddGroupMember from 'pages/Groups/about/AddGroupMember';
+import MemberListItem from 'pages/Groups/about/MemberListItem';
 
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import Avatar from 'components/miscellaneous/Avatar';
-import MemberListItem from 'pages/Groups/about/MemberListItem';
-import AddGroupMember from 'pages/Groups/about/AddGroupMember';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
 export type MembersCardProps = {

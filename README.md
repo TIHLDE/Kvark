@@ -32,13 +32,13 @@
 
 <br/>
 <p align="center">
-    <img width="80%" src="https://i.ibb.co/CtHxCph/Skjermbilde-2020-10-31-224329.png" alt="TIHLDEs nettside">   
+    <img width="80%" src="https://s.tihlde.org/tihlde_forsidepng" alt="TIHLDEs nettside">   
 </p>
 <br/>
 
 ## 🚀 Getting started
 
-Kvark requires Node and Yarn.
+Kvark requires Node 14.x or higher and Yarn.
 
 ```
 # Setup a local repository

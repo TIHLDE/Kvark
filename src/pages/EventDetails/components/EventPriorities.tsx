@@ -1,9 +1,11 @@
+import { alpha, Stack, styled, Tooltip, Typography } from '@mui/material';
 import { useMemo } from 'react';
+import { getUserStudyShort } from 'utils';
+
 import { RegistrationPriority } from 'types';
 import { UserClass, UserStudy } from 'types/Enums';
+
 import { useUser } from 'hooks/User';
-import { getUserStudyShort } from 'utils';
-import { Typography, Stack, Tooltip, styled, alpha } from '@mui/material';
 
 const Item = styled(Typography)(({ theme }) => ({
   padding: theme.spacing(0, 0.75),

@@ -1,13 +1,10 @@
-import { useState, forwardRef } from 'react';
+import CloseIcon from '@mui/icons-material/CloseRounded';
+import { Dialog, DialogContent, DialogTitle, IconButton, styled, Typography } from '@mui/material';
+import { forwardRef, useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 
-// Material UI Components
-import { Dialog, DialogTitle, DialogContent, IconButton, Typography, styled } from '@mui/material';
-import CloseIcon from '@mui/icons-material/CloseRounded';
-
-// Project components
-import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import TextField, { TextFieldProps } from 'components/inputs/TextField';
+import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 
 const guide = `
   *Markdown* er en vanlig måte å formatere tekst på nettet og brukes også tihlde.org. Her følger en rekke eksempler på hvordan du kan legge inn overskrifter, lister, linker, bilder, osv. ved hjelp av vanlig Markdown. I tillegg kan du vise arrangement-, nyhet- og jobbannonse-kort, samt en utvid-boks.

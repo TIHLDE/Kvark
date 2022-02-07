@@ -1,31 +1,30 @@
 /* eslint-disable no-console */
-import { ReactNode } from 'react';
-import { render } from 'react-dom';
 import 'assets/css/index.css';
-import * as Sentry from '@sentry/react';
-import { BrowserTracing } from '@sentry/tracing';
-import { CacheProvider } from '@emotion/react';
+import 'delayed-scroll-restoration-polyfill';
 import createCache from '@emotion/cache';
-import { CssBaseline } from '@mui/material';
+import { CacheProvider } from '@emotion/react';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { BrowserRouter } from 'react-router-dom';
+import { CssBaseline } from '@mui/material';
+import * as Sentry from '@sentry/react';
+import { BrowserTracing } from '@sentry/tracing';
+import AppRoutes from 'AppRoutes';
+import { SHOW_NEW_STUDENT_INFO } from 'constant';
+import { ReactNode } from 'react';
+import { render } from 'react-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { broadcastQueryClient } from 'react-query/broadcastQueryClient-experimental';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import 'delayed-scroll-restoration-polyfill';
-import { SHOW_NEW_STUDENT_INFO } from 'constant';
+import { BrowserRouter } from 'react-router-dom';
+
 import API from 'api/api';
 
-// Services
-import { ThemeProvider } from 'hooks/Theme';
 import { MiscProvider } from 'hooks/Misc';
 import { SnackbarProvider } from 'hooks/Snackbar';
+import { ThemeProvider } from 'hooks/Theme';
 
-// Project components
 import MessageGDPR from 'components/miscellaneous/MessageGDPR';
 import Navigation from 'components/navigation/Navigation';
-import AppRoutes from 'AppRoutes';
 
 const SENTRY_DSN = import.meta.env.VITE_SENTRY_DSN;
 

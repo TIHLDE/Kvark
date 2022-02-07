@@ -1,8 +1,7 @@
-import { ReactNode, ReactElement, useEffect } from 'react';
+import { ReactElement, ReactNode, useEffect } from 'react';
 
-// Project Components
 import Container, { ContainerProps } from 'components/layout/Container';
-import { useSetNavigationOptions, SetNavigationOptions } from 'components/navigation/Navigation';
+import { SetNavigationOptions, useSetNavigationOptions } from 'components/navigation/Navigation';
 export type PageProps = {
   children?: ReactNode;
   banner?: ReactElement;

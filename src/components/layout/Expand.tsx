@@ -1,10 +1,6 @@
-import { ReactNode } from 'react';
-
-// Material UI Components
-import { AccordionProps, Accordion, AccordionSummary, AccordionDetails, Typography, styled } from '@mui/material';
-
-// Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import { Accordion, AccordionDetails, AccordionProps, AccordionSummary, styled, Typography } from '@mui/material';
+import { ReactNode } from 'react';
 
 export type ExpandProps = AccordionProps & {
   header: string;

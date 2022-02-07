@@ -1,22 +1,20 @@
-import { Fragment } from 'react';
-import { CheatsheetType } from 'types/Enums';
-import { Cheatsheet } from 'types';
-
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import { Theme, Divider, useMediaQuery, Typography, List, ListItemButton, Tooltip } from '@mui/material';
-
-// Icons
-import { ReactComponent as GitHub } from 'assets/icons/github.svg';
-import VerifiedIcon from '@mui/icons-material/VerifiedUserRounded';
 import DocumentIcon from '@mui/icons-material/DescriptionRounded';
 import LinkIcon from '@mui/icons-material/LinkRounded';
 import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
+import VerifiedIcon from '@mui/icons-material/VerifiedUserRounded';
+import { Divider, List, ListItemButton, Theme, Tooltip, Typography, useMediaQuery } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { Fragment } from 'react';
 
-// Project Components
-import Paper from 'components/layout/Paper';
-import Pagination from 'components/layout/Pagination';
+import { Cheatsheet } from 'types';
+import { CheatsheetType } from 'types/Enums';
+
 import { useAnalytics } from 'hooks/Utils';
+
+import Pagination from 'components/layout/Pagination';
+import Paper from 'components/layout/Paper';
+
+import { ReactComponent as GitHub } from 'assets/icons/github.svg';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {

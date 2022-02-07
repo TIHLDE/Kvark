@@ -1,18 +1,19 @@
+import { Button, Divider, MenuItem, Stack, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { getUserStudyLong, getUserClass } from 'utils';
-import { User } from 'types';
-import { useUpdateUser, useExportUserData, useDeleteUser, useLogout } from 'hooks/User';
-import { useSnackbar } from 'hooks/Snackbar';
-import { useAnalytics } from 'hooks/Utils';
-import { MenuItem, Typography, Stack, Divider, Button } from '@mui/material';
+import { getUserClass, getUserStudyLong } from 'utils';
 
-// Project components
-import TextField from 'components/inputs/TextField';
-import Select from 'components/inputs/Select';
+import { User } from 'types';
+
+import { useSnackbar } from 'hooks/Snackbar';
+import { useDeleteUser, useExportUserData, useLogout, useUpdateUser } from 'hooks/User';
+import { useAnalytics } from 'hooks/Utils';
+
 import Bool from 'components/inputs/Bool';
+import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
-import VerifyDialog from 'components/layout/VerifyDialog';
+import TextField from 'components/inputs/TextField';
 import { ImageUpload } from 'components/inputs/Upload';
+import VerifyDialog from 'components/layout/VerifyDialog';
 import { ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
 
 const DeleteUserDialog = ({ isAdmin, user }: ProfileSettingsProps) => {

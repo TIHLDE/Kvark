@@ -1,11 +1,10 @@
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+
+import { SelectFieldSubmission, SelectFormField, TextFieldSubmission, TextFormField, UserSubmission } from 'types';
 import { FormFieldType } from 'types/Enums';
-import { UserSubmission, TextFieldSubmission, SelectFieldSubmission, TextFormField, SelectFormField } from 'types';
+
 import { useFormById } from 'hooks/Form';
 
-// Material UI
-import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-
-// Project components
 import Paper from 'components/layout/Paper';
 
 export type FormUserAnswersProps = {

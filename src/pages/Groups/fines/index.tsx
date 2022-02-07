@@ -1,18 +1,19 @@
-import { useMemo, useState, useEffect } from 'react';
+import { Box, Collapse, List, MenuItem, Stack, TextField, Theme, ToggleButton, ToggleButtonGroup, Typography, useMediaQuery } from '@mui/material';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGroup, useGroupFines, useGroupUsersFines, useGroupFinesStatistics } from 'hooks/Group';
+
+import { useGroup, useGroupFines, useGroupFinesStatistics, useGroupUsersFines } from 'hooks/Group';
 import { useUser } from 'hooks/User';
 
-import { List, Stack, ToggleButton, ToggleButtonGroup, TextField, MenuItem, useMediaQuery, Theme, Collapse, Box, Typography } from '@mui/material';
-
-import Paper from 'components/layout/Paper';
-import Pagination from 'components/layout/Pagination';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import FineItem from 'pages/Groups/fines/FineItem';
-import UserFineItem from 'pages/Groups/fines/UserFineItem';
 import AddFineDialog from 'pages/Groups/fines/AddFineDialog';
 import FineBatchUpdateDialog from 'pages/Groups/fines/FineBatchUpdateDialog';
-import { useFinesFilter, useSetFinesFilter, useClearCheckedFines } from 'pages/Groups/fines/FinesContext';
+import FineItem from 'pages/Groups/fines/FineItem';
+import { useClearCheckedFines, useFinesFilter, useSetFinesFilter } from 'pages/Groups/fines/FinesContext';
+import UserFineItem from 'pages/Groups/fines/UserFineItem';
+
+import Pagination from 'components/layout/Pagination';
+import Paper from 'components/layout/Paper';
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
 const PAYED_STATES = [
   { value: true, label: 'Betalt' },

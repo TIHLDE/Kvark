@@ -1,4 +1,4 @@
-import { WarningType, Study, CheatsheetType } from 'types/Enums';
+import { CheatsheetType, Study, WarningType } from 'types/Enums';
 
 export interface Badge {
   title: string;
