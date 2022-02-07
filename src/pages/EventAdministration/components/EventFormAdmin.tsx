@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { removeIdsFromFields } from 'utils';
 
-import { EventFormCreate, Form, FormCreate } from 'types';
+import { EventFormCreate, Form, FormCreate, Submission } from 'types';
 import { EventFormType, FormResourceType } from 'types/Enums';
 
 import { useEventById } from 'hooks/Event';
@@ -33,7 +33,7 @@ type FormTemplatePreviewType = Omit<EventFormEditorProps, 'formId'> & {
 
 const FormTemplatePreview = ({ formtemplate, eventId, formType }: FormTemplatePreviewType) => {
   const deleteForm = useDeleteForm(formtemplate.id || '-');
-  const { register, formState, getValues, control } = useForm<Form['fields']>();
+  const { register, formState, getValues, control } = useForm<Submission['answers']>();
   const [isEditing, setIsEditing] = useState(false);
   const createForm = useCreateForm();
   const showSnackbar = useSnackbar();

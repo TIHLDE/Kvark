@@ -1,11 +1,10 @@
+import { ArticleRounded, AttachFileRounded, CloseRounded, PictureAsPdfRounded } from '@mui/icons-material/';
+import { Box, Button, IconButton, List, ListItem, ListItemIcon, ListItemText, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
-import { useSendFilesToAttendees } from 'hooks/Event';
-import { useSnackbar } from 'hooks/Snackbar';
 import { FileUploader } from 'react-drag-drop-files';
 
-// Material-UI
-import { Button, IconButton, List, ListItem, ListItemIcon, ListItemText, Box, Typography } from '@mui/material';
-import { AttachFileRounded, CloseRounded } from '@mui/icons-material/';
+import { useSendGiftCardsToAttendees } from 'hooks/Event';
+import { useSnackbar } from 'hooks/Snackbar';
 
 // Project components
 import Dialog from 'components/layout/Dialog';
@@ -14,21 +13,22 @@ export type EventFileSenderProps = {
   eventId: number;
 };
 
-const EventFileSender = ({ eventId }: EventFileSenderProps) => {
+const FILE_TYPES = ['JPG', 'PNG', 'GIF', 'PDF', 'DOCX'];
+
+const EventGiftCardSender = ({ eventId }: EventFileSenderProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const showSnackbar = useSnackbar();
   const [files, setFiles] = useState<File[]>([]);
-  const fileTypes = ['JPG', 'PNG', 'GIF', 'PDF', 'DOCX'];
 
   const handleFileUpload = (newFiles: FileList) => {
-    setFiles([...Array.from(newFiles).filter((newFile) => files.every((file) => file.name !== newFile.name)), ...files]);
+    setFiles((prev) => [...prev, ...Array.from(newFiles)]);
   };
 
-  const deleteFile = (id: number) => {
-    setFiles(files.filter((item, i) => i !== id));
+  const deleteFile = (index: number) => {
+    setFiles(files.filter((item, i) => i !== index));
   };
 
-  const sendEmail = useSendFilesToAttendees(eventId);
+  const sendEmail = useSendGiftCardsToAttendees(eventId);
 
   const submit = () => {
     if (sendEmail.isLoading || !files) {
@@ -39,12 +39,9 @@ const EventFileSender = ({ eventId }: EventFileSenderProps) => {
       {
         onSuccess: (data) => {
           showSnackbar(data.detail, 'success');
-          //reset();
           setDialogOpen(false);
         },
-        onError: (error) => {
-          showSnackbar(error.detail, 'error');
-        },
+        onError: (error) => showSnackbar(error.detail, 'error'),
       },
     );
   };
@@ -65,7 +62,24 @@ const EventFileSender = ({ eventId }: EventFileSenderProps) => {
               Du har lastet opp <b>{files.length}</b> filer
             </Typography>
           )}
-          <FileUploader handleChange={handleFileUpload} label='Last opp eller dra filer hit' multiple={true} name='Filer' types={fileTypes} />
+          <FileUploader handleChange={handleFileUpload} label='Last opp eller dra filer hit' multiple={true} name='Filer' types={FILE_TYPES}>
+            <Box
+              sx={{
+                p: 2,
+                borderRadius: '20px',
+                border: '2px dashed white',
+                '&:hover': {
+                  backgroundColor: 'primary.main',
+                  opacity: [0.9, 0.8, 0.7],
+                },
+              }}>
+              <Stack direction={{ xs: 'column', md: 'row' }} justifyContent='center' spacing={1}>
+                <PictureAsPdfRounded fontSize='large' />
+                <ArticleRounded fontSize='large' />
+                <Typography>Last opp filer</Typography>
+              </Stack>
+            </Box>
+          </FileUploader>
         </Box>
         <List sx={{ mb: 2, maxHeight: 300, overflowY: 'scroll' }}>
           {files.map((file, i) => (
@@ -87,4 +101,4 @@ const EventFileSender = ({ eventId }: EventFileSenderProps) => {
   );
 };
 
-export default EventFileSender;
+export default EventGiftCardSender;

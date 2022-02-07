@@ -7,12 +7,10 @@ import { Event } from 'types';
 import { useEventById, useEventRegistrations } from 'hooks/Event';
 import { useSnackbar } from 'hooks/Snackbar';
 
-import EventMessageSender from 'pages/EventAdministration/components/EventMessageSender';
-
-import EventFileSender from 'pages/EventAdministration/components/EventFileSender';
+import EventFileSender from 'pages/EventAdministration/components/EventGiftCardSender';
+import EventGiftCardSender from 'pages/EventAdministration/components/EventMessageSender';
 import EventStatistics from 'pages/EventAdministration/components/EventStatistics';
 import Participant from 'pages/EventAdministration/components/Participant';
-
 
 import Pagination from 'components/layout/Pagination';
 
@@ -28,9 +26,9 @@ const Registrations = ({ onWait = false, eventId }: RegistrationsProps) => {
     () =>
       data
         ? data.pages
-            .map((page) => page.results)
-            .flat()
-            .filter((registration) => !showOnlyNotAttended || !registration.has_attended)
+          .map((page) => page.results)
+          .flat()
+          .filter((registration) => !showOnlyNotAttended || !registration.has_attended)
         : [],
     [data, showOnlyNotAttended],
   );
@@ -125,7 +123,7 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
           <EventStatistics eventId={eventId} />
         </Box>
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={1} sx={{ mb: 1 }}>
-          <EventMessageSender eventId={eventId} />
+          <EventGiftCardSender eventId={eventId} />
           <EventFileSender eventId={eventId} />
         </Stack>
         <Registrations eventId={eventId} />

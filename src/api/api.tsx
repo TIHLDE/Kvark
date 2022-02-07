@@ -101,7 +101,7 @@ export default {
   deleteEvent: (eventId: Event['id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${EVENTS_ENDPOINT}/${String(eventId)}/` }),
   notifyEventRegistrations: (eventId: Event['id'], title: string, message: string) =>
     IFetch<RequestResponse>({ method: 'POST', url: `${EVENTS_ENDPOINT}/${String(eventId)}/notify/`, data: { title, message } }),
-  sendFilesToAttendees: (eventId: Event['id'], files: File | File[] | Blob) =>
+  sendGiftCardsToAttendees: (eventId: Event['id'], files: File | File[] | Blob) =>
     IFetch<RequestResponse>({ method: 'POST', url: `${EVENTS_ENDPOINT}/${String(eventId)}/mail-gift-cards/`, file: files }),
   getPublicEventRegistrations: (eventId: Event['id'], filters?: any) =>
     IFetch<PaginationResponse<PublicRegistration>>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/public_registrations/`, data: filters || {} }),

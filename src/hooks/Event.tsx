@@ -70,8 +70,8 @@ export const useNotifyEventRegistrations = (
 ): UseMutationResult<RequestResponse, RequestResponse, { title: string; message: string }, unknown> =>
   useMutation(({ title, message }) => API.notifyEventRegistrations(eventId, title, message));
 
-export const useSendFilesToAttendees = (eventId: number): UseMutationResult<RequestResponse, RequestResponse, { files: File | File[] | Blob }, unknown> =>
-  useMutation(({ files }) => API.sendFilesToAttendees(eventId, files));
+export const useSendGiftCardsToAttendees = (eventId: number): UseMutationResult<RequestResponse, RequestResponse, { files: File | File[] | Blob }, unknown> =>
+  useMutation(({ files }) => API.sendGiftCardsToAttendees(eventId, files));
 
 export const useEventStatistics = (eventId: Event['id']) =>
   useQuery<EventStatistics, RequestResponse>([EVENT_QUERY_KEY_STATISTICS, eventId], () => API.getEventStatistics(eventId));

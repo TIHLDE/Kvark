@@ -6,7 +6,7 @@ import { Link, useParams } from 'react-router-dom';
 import URLS from 'URLS';
 import { formatDate } from 'utils';
 
-import { Form, Submission } from 'types';
+import { Submission } from 'types';
 import { EventFormType, FormResourceType } from 'types/Enums';
 
 import { useCreateSubmission, useFormById, validateSubmissionInput } from 'hooks/Form';
@@ -49,7 +49,7 @@ const FormPage = () => {
     [form],
   );
 
-  const { register, handleSubmit, formState, setError, getValues, control } = useForm<Form['fields']>();
+  const { register, handleSubmit, formState, setError, getValues, control } = useForm<Submission>();
 
   const submitDisabled = isLoading || createSubmission.isLoading || !form;
 
