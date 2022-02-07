@@ -4,7 +4,7 @@ import { useSnackbar } from 'hooks/Snackbar';
 import { FileUploader } from 'react-drag-drop-files';
 
 // Material-UI
-import { Button, IconButton, List, ListItem, ListItemIcon, ListItemText, Box } from '@mui/material';
+import { Button, IconButton, List, ListItem, ListItemIcon, ListItemText, Box, Typography } from '@mui/material';
 import { AttachFileRounded, CloseRounded } from '@mui/icons-material/';
 
 // Project components
@@ -20,8 +20,8 @@ const EventFileSender = ({ eventId }: EventFileSenderProps) => {
   const [files, setFiles] = useState<File[]>([]);
   const fileTypes = ['JPG', 'PNG', 'GIF', 'PDF', 'DOCX'];
 
-  const handleFileUpload = (files: FileList) => {
-    setFiles((oldArray) => [...oldArray, ...Array.from(files)]);
+  const handleFileUpload = (newFiles: FileList) => {
+    setFiles([...Array.from(newFiles).filter((newFile) => files.every((file) => file.name !== newFile.name)), ...files]);
   };
 
   const deleteFile = (id: number) => {
@@ -59,10 +59,15 @@ const EventFileSender = ({ eventId }: EventFileSenderProps) => {
         onClose={() => setDialogOpen(false)}
         open={dialogOpen}
         titleText='Send filer til deltagere'>
-        <Box sx={{ mt: 2 }}>
+        <Box sx={{ my: 2 }}>
+          {files.length > 0 && (
+            <Typography textAlign='center'>
+              Du har lastet opp <b>{files.length}</b> filer
+            </Typography>
+          )}
           <FileUploader handleChange={handleFileUpload} label='Last opp eller dra filer hit' multiple={true} name='Filer' types={fileTypes} />
         </Box>
-        <List>
+        <List sx={{ mb: 2, maxHeight: 300, overflowY: 'scroll' }}>
           {files.map((file, i) => (
             <ListItem dense={true} divider={true} key={i}>
               <ListItemIcon>
