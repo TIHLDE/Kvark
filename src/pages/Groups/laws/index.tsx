@@ -27,7 +27,7 @@ const GroupLaws = () => {
     <>
       {group.fine_info && (
         <div>
-          <Expand flat header='Praktiske detaljer' sx={{ mb: 1 }}>
+          <Expand flat header='Praktiske detaljer'>
             <MarkdownRenderer value={group.fine_info} />
           </Expand>
         </div>

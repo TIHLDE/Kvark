@@ -88,7 +88,7 @@ const AddLawDialog = ({ groupSlug }: AddLawDialogProps) => {
           <LawItem groupSlug={groupSlug} law={{ ...values, paragraph: values.paragraph || 1, title: values.title || '', id: '-' }} />
         </Paper>
       </Dialog>
-      <Button fullWidth onClick={() => setDialogOpen(true)} startIcon={<AddIcon />} variant='outlined'>
+      <Button fullWidth onClick={() => setDialogOpen(true)} startIcon={<AddIcon />} sx={{ mt: 1 }} variant='outlined'>
         Ny lovparagraf
       </Button>
     </>
