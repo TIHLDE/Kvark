@@ -1,6 +1,4 @@
-// eslint-disable-next-line import/no-duplicates
 import { format, getYear, isAfter, isBefore, parseISO, subMinutes } from 'date-fns';
-// eslint-disable-next-line import/no-duplicates
 import nbLocale from 'date-fns/locale/nb';
 import slugify from 'slugify';
 

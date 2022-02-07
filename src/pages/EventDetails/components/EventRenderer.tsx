@@ -1,8 +1,6 @@
 import CalendarIcon from '@mui/icons-material/EventRounded';
 import { Alert, Button, Collapse, Skeleton, Stack, styled, Theme, Typography, useMediaQuery } from '@mui/material';
-// eslint-disable-next-line import/no-duplicates
 import { addHours, formatDistanceToNowStrict, isFuture, isPast, parseISO, subHours } from 'date-fns';
-// eslint-disable-next-line import/no-duplicates
 import nbLocale from 'date-fns/locale/nb';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';

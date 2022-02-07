@@ -1,7 +1,7 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "plugins": ["react", "react-hooks", "@typescript-eslint"],
+  "plugins": ["react", "react-hooks", "@typescript-eslint", "eslint-plugin-import-helpers"],
   "parserOptions": {
     "ecmaVersion": 11,
     "sourceType": "module",
@@ -20,38 +20,18 @@
     "plugin:react/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended",
-    "plugin:import/recommended",
-    "plugin:import/typescript"
+    "plugin:prettier/recommended"
   ],
   "globals": {
     "importScripts": true
   },
   "rules": {
-    "import/order": [
+    "import-helpers/order-imports": [
       "warn",
       {
-        "groups": ["builtin", "external", "type", "internal", ["sibling", "parent", "index"]],
-        "pathGroups": [
-          { "pattern": "AppRoutes", "group": "external" },
-          { "pattern": "constant", "group": "external" },
-          { "pattern": "makeStyles", "group": "external" },
-          { "pattern": "theme", "group": "external" },
-          { "pattern": "URLS", "group": "external" },
-          { "pattern": "utils", "group": "external" },
-          { "pattern": "components/**", "group": "internal", "position": "after" },
-          { "pattern": "api/**", "group": "internal", "position": "before" },
-          { "pattern": "hooks/**", "group": "internal", "position": "before" },
-          { "pattern": "pages/**", "group": "internal" },
-          { "pattern": "types", "group": "type" },
-          { "pattern": "types/**", "group": "type" },
-          { "pattern": "assets/**", "group": "internal", "position": "after" }
-        ],
-        "newlines-between": "always",
-        "alphabetize": {
-          "order": "asc",
-          "caseInsensitive": true
-        }
+        "groups": [["absolute", "module"], "/^types/", "/^api/", "/^hooks/", "/^pages/", "/^components/", "/^assets/", ["sibling", "parent", "index"]],
+        "newlinesBetween": "always",
+        "alphabetize": { "order": "asc", "ignoreCase": true }
       }
     ],
     "sort-imports": ["error", { "ignoreCase": true, "ignoreDeclarationSort": true }],
