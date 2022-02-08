@@ -1,4 +1,4 @@
-import { ArticleRounded, AttachFileRounded, CloseRounded, PictureAsPdfRounded } from '@mui/icons-material/';
+import { CloseRounded, PictureAsPdfRounded } from '@mui/icons-material/';
 import { Box, Button, IconButton, List, ListItem, ListItemIcon, ListItemText, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
@@ -13,7 +13,7 @@ export type EventFileSenderProps = {
   eventId: number;
 };
 
-const FILE_TYPES = ['JPG', 'PNG', 'GIF', 'PDF', 'DOCX'];
+const FILE_TYPES = ['PDF', 'DOCX'];
 
 const EventGiftCardSender = ({ eventId }: EventFileSenderProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -48,21 +48,21 @@ const EventGiftCardSender = ({ eventId }: EventFileSenderProps) => {
 
   return (
     <>
-      <Button endIcon={<AttachFileRounded />} fullWidth onClick={() => setDialogOpen(true)} variant='outlined'>
-        Send filer til deltagere
+      <Button endIcon={<PictureAsPdfRounded />} fullWidth onClick={() => setDialogOpen(true)} variant='outlined'>
+        Send gavekort til deltagere
       </Button>
       <Dialog
-        contentText='Send en fil på epost til alle deltagere som er merket som ankommet.'
+        contentText='Send et gavekort på epost til alle deltagere som er merket som ankommet.'
         onClose={() => setDialogOpen(false)}
         open={dialogOpen}
-        titleText='Send filer til deltagere'>
+        titleText='Send gavekort til deltagere'>
         <Box sx={{ my: 2 }}>
           {files.length > 0 && (
             <Typography textAlign='center'>
-              Du har lastet opp <b>{files.length}</b> filer
+              Lastet opp: <b>{files.length}</b>
             </Typography>
           )}
-          <FileUploader handleChange={handleFileUpload} label='Last opp eller dra filer hit' multiple={true} name='Filer' types={FILE_TYPES}>
+          <FileUploader handleChange={handleFileUpload} multiple={true} types={FILE_TYPES}>
             <Box
               sx={{
                 p: 2,
@@ -73,10 +73,11 @@ const EventGiftCardSender = ({ eventId }: EventFileSenderProps) => {
                   opacity: [0.9, 0.8, 0.7],
                 },
               }}>
-              <Stack direction={{ xs: 'column', md: 'row' }} justifyContent='center' spacing={1}>
+              <Stack alignItems='center' direction={{ xs: 'column', md: 'row' }} spacing={1}>
                 <PictureAsPdfRounded fontSize='large' />
-                <ArticleRounded fontSize='large' />
-                <Typography>Last opp filer</Typography>
+                <Typography color='GrayText' textAlign='center'>
+                  Last opp eller dra gavekort hit.
+                </Typography>
               </Stack>
             </Box>
           </FileUploader>
@@ -94,7 +95,7 @@ const EventGiftCardSender = ({ eventId }: EventFileSenderProps) => {
           ))}
         </List>
         <Button disabled={files.length < 1 || sendEmail.isLoading} fullWidth onClick={submit} variant='contained'>
-          Send filer
+          Send Gavekort
         </Button>
       </Dialog>
     </>
