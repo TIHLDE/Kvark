@@ -59,6 +59,10 @@ export const useAlbumPictures = (albumSlug: string) => {
   );
 };
 
+export const usePictureById = (albumSlug: string, id: string) => {
+  return useQuery<Picture, RequestResponse>([GALLERY_QUERY_KEY, PICTURE_QUERY_KEY, id, albumSlug], () => API.getPicture(albumSlug, id));
+};
+
 export const useCreatePicture = (albumSlug: string): UseMutationResult<Picture, RequestResponse, Array<PictureRequired>, unknown> => {
   const queryClient = useQueryClient();
   return useMutation((newPicture: Array<PictureRequired>) => API.createPicture(albumSlug, newPicture), {
