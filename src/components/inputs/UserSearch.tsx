@@ -1,12 +1,13 @@
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import { Autocomplete, Checkbox, Chip, TextField, TextFieldProps } from '@mui/material';
 import { useState } from 'react';
-import { UseFormReturn, FieldError, Path, FieldValues, Controller, RegisterOptions } from 'react-hook-form';
-import { Autocomplete, TextField, TextFieldProps, Chip, Checkbox } from '@mui/material';
+import { Controller, FieldError, FieldValues, Path, RegisterOptions, UseFormReturn } from 'react-hook-form';
+
+import { Group, UserBase } from 'types';
+
 import { useUsers } from 'hooks/User';
 import { useDebounce } from 'hooks/Utils';
-
-import CheckBoxBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import { Group, UserBase } from 'types';
 
 export type UserSearchProps<FormValues extends FieldValues = FieldValues> = TextFieldProps &
   Pick<UseFormReturn<FormValues>, 'formState' | 'control'> & {

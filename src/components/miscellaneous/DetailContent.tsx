@@ -1,5 +1,5 @@
+import { Skeleton, Typography } from '@mui/material';
 import { ReactNode } from 'react';
-import { Typography, Skeleton } from '@mui/material';
 
 export type DetailContentProps = {
   title: string | ReactNode;

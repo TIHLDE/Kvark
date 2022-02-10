@@ -1,7 +1,5 @@
+import { Tab as MuiTab, Tabs as MuiTabs, TabsProps as MuiTabsProps, styled } from '@mui/material';
 import { ComponentType } from 'react';
-
-// Material UI Components
-import { Tabs as MuiTabs, Tab as MuiTab, styled, TabsProps as MuiTabsProps } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 
 const CustomTabs = styled(MuiTabs)(({ theme }) => ({

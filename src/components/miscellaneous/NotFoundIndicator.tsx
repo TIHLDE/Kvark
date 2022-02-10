@@ -1,6 +1,5 @@
-import { Typography, styled } from '@mui/material';
+import { styled, Typography } from '@mui/material';
 
-// Assets
 import NotFoundIcon from 'assets/icons/empty.svg';
 
 const Root = styled('div')(({ theme }) => ({

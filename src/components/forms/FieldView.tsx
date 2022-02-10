@@ -1,6 +1,8 @@
-import { TextFormField, SelectFormField } from 'types';
+import { Typography } from '@mui/material';
+import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
+
+import { SelectFormField, TextFormField } from 'types';
 import { FormFieldType } from 'types/Enums';
-import { UseFormReturn, Path, FieldValues } from 'react-hook-form';
 
 import BoolArray from 'components/inputs/BoolArray';
 import TextField from 'components/inputs/TextField';
@@ -16,7 +18,9 @@ const FieldView = <FormValues extends FieldValues>({ register, field, formState,
     <input {...register(`answers.${index}.field.id` as Path<FormValues>)} type='hidden' value={field.id} />
     {field.type === FormFieldType.TEXT_ANSWER ? (
       <>
-        {`${field.title} ${field.required ? '*' : ''}`}
+        <Typography sx={{ color: (theme) => theme.palette.text[disabled ? 'disabled' : 'primary'] }}>{`${field.title} ${
+          field.required ? '*' : ''
+        }`}</Typography>
         <TextField
           disabled={disabled}
           formState={formState}

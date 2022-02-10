@@ -1,27 +1,25 @@
-import { Fragment, useMemo, useState, useCallback } from 'react';
+import { Theme, useMediaQuery } from '@mui/material';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import { makeStyles } from 'makeStyles';
+import { Fragment, useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useJobPosts } from 'hooks/JobPost';
 import { argsToParams } from 'utils';
 
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import Divider from '@mui/material/Divider';
-import Button from '@mui/material/Button';
-import { useMediaQuery, Theme } from '@mui/material';
+import { useJobPosts } from 'hooks/JobPost';
+import { useAnalytics } from 'hooks/Utils';
 
-// Project Components
-import Page from 'components/navigation/Page';
-import Banner from 'components/layout/Banner';
-import Pagination from 'components/layout/Pagination';
-import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
-import Paper from 'components/layout/Paper';
 import Bool from 'components/inputs/Bool';
-import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import TextField from 'components/inputs/TextField';
+import Banner from 'components/layout/Banner';
 import Expand from 'components/layout/Expand';
+import Pagination from 'components/layout/Pagination';
+import Paper from 'components/layout/Paper';
+import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import Page from 'components/navigation/Page';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {
@@ -66,7 +64,7 @@ type Filters = {
 };
 
 const JobPosts = () => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const getInitialFilters = useCallback((): Filters => {
     const params = new URLSearchParams(location.search);
     const expired = params.get('expired') ? Boolean(params.get('expired') === 'true') : false;

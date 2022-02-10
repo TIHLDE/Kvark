@@ -1,28 +1,28 @@
-import { useMemo, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { Form, Submission } from 'types';
-import { useFormById, useCreateSubmission, validateSubmissionInput } from 'hooks/Form';
-import { useSnackbar } from 'hooks/Snackbar';
-import { useForm } from 'react-hook-form';
-import { useGoogleAnalytics } from 'hooks/Utils';
-import { formatDate } from 'utils';
-import { parseISO } from 'date-fns';
-import URLS from 'URLS';
-
-// Material UI Components
 import { Button, Divider, Stack, Typography } from '@mui/material';
+import { parseISO } from 'date-fns';
+import { useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link, useParams } from 'react-router-dom';
+import URLS from 'URLS';
+import { formatDate } from 'utils';
 
-// Project Components
+import { Form, Submission } from 'types';
+import { EventFormType, FormResourceType } from 'types/Enums';
+
+import { useCreateSubmission, useFormById, validateSubmissionInput } from 'hooks/Form';
+import { useSnackbar } from 'hooks/Snackbar';
+import { useAnalytics } from 'hooks/Utils';
+
 import Http404 from 'pages/Http404';
-import Page from 'components/navigation/Page';
-import Paper from 'components/layout/Paper';
-import { PrimaryTopBox } from 'components/layout/TopBox';
+
 import FormView from 'components/forms/FormView';
 import SubmitButton from 'components/inputs/SubmitButton';
-import { FormResourceType, EventFormType } from 'types/Enums';
+import Paper from 'components/layout/Paper';
+import { PrimaryTopBox } from 'components/layout/TopBox';
+import Page from 'components/navigation/Page';
 
 const FormPage = () => {
-  const { event: GAEvent } = useGoogleAnalytics();
+  const { event: GAEvent } = useAnalytics();
   const { id } = useParams<'id'>();
   const { data: form, isError } = useFormById(id || '-');
   const createSubmission = useCreateSubmission(id || '-');

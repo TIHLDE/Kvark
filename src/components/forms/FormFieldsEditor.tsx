@@ -1,10 +1,13 @@
-import { useEffect, useState, useRef } from 'react';
-import { Form, TextFormField, SelectFormField } from 'types';
+import { Button, ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper, Stack, TextField, Typography } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
+
+import { Form, SelectFormField, TextFormField } from 'types';
 import { FormFieldType } from 'types/Enums';
-import { useUpdateForm, useFormSubmissions } from 'hooks/Form';
-import { ClickAwayListener, Grow, Paper, Popper, Typography, MenuItem, MenuList, Button, Stack, TextField } from '@mui/material';
-import FieldEditor from 'components/forms/FieldEditor';
+
+import { useFormSubmissions, useUpdateForm } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
+
+import FieldEditor from 'components/forms/FieldEditor';
 
 export type FormFieldsEditorProps = {
   form: Form;

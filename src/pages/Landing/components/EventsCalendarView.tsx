@@ -1,26 +1,26 @@
-import { ReactNode, useEffect, useMemo, useState } from 'react';
-import { useEvents } from 'hooks/Event';
-import { EventCompact } from 'types';
-import URLS from 'URLS';
-import { Link } from 'react-router-dom';
-import { parseISO } from 'date-fns';
-import { urlEncode } from 'utils';
-import { ViewState, AppointmentModel } from '@devexpress/dx-react-scheduler';
+import { AppointmentModel, ViewState } from '@devexpress/dx-react-scheduler';
+import { Appointments, DateNavigator, MonthView, Scheduler, Toolbar } from '@devexpress/dx-react-scheduler-material-ui';
 import { useTheme } from '@mui/material';
-import { Scheduler, MonthView, Toolbar, DateNavigator, Appointments } from '@devexpress/dx-react-scheduler-material-ui';
+import { endOfMonth, parseISO, startOfMonth } from 'date-fns';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import URLS from 'URLS';
+import { urlEncode } from 'utils';
 
-// Project components
-import Paper from 'components/layout/Paper';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { EventCompact } from 'types';
 import { Groups } from 'types/Enums';
+
+import { useEvents } from 'hooks/Event';
+import { useAnalytics } from 'hooks/Utils';
+
+import Paper from 'components/layout/Paper';
 
 type Filters = {
   start_date_before?: string;
   start_date_after?: string;
-  category?: number;
 };
 export type EventsCalendarViewProps = {
-  eventsFilters?: Filters;
+  category?: number;
 };
 
 type AppointmentProps = {
@@ -42,24 +42,24 @@ const Appointment = ({ children, data }: AppointmentProps) => {
   );
 };
 
-const EventsCalendarView = ({ eventsFilters }: EventsCalendarViewProps) => {
-  const { event } = useGoogleAnalytics();
+const EventsCalendarView = ({ category }: EventsCalendarViewProps) => {
+  const { event } = useAnalytics();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [filters, setFilters] = useState<Filters>();
-  const { data } = useEvents({ ...eventsFilters, ...filters });
+  const { data } = useEvents({ category, ...filters });
   const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   useEffect(() => {
     event('open', 'calendar', 'Open calendar on landing page');
   }, [event]);
 
   useEffect(() => {
-    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-    const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+    const firstDay = startOfMonth(currentDate);
+    const lastDay = endOfMonth(currentDate);
     setFilters({ start_date_before: lastDay.toLocaleDateString(), start_date_after: firstDay.toLocaleDateString() });
   }, [currentDate]);
   const displayedEvents = useMemo(
     () =>
-      [...events].map(
+      events.map(
         (event) =>
           ({
             ...event,
@@ -67,7 +67,7 @@ const EventsCalendarView = ({ eventsFilters }: EventsCalendarViewProps) => {
             endDate: parseISO(event.end_date),
           } as AppointmentModel),
       ),
-    [data],
+    [events],
   );
   return (
     <Paper noPadding sx={{ '& div:first-of-type': { whiteSpace: 'break-spaces' }, '& table': { minWidth: 'unset' } }}>

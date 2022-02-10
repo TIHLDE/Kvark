@@ -1,14 +1,14 @@
-import { useMemo } from 'react';
-import { useNews } from 'hooks/News';
 import { styled } from '@mui/material';
+import { useMemo } from 'react';
 
-// Project Components
-import Page from 'components/navigation/Page';
+import { useNews } from 'hooks/News';
+
 import Banner from 'components/layout/Banner';
 import Pagination from 'components/layout/Pagination';
-import NewsListItem, { NewsListItemLoading } from 'components/miscellaneous/NewsListItem';
 import Paper from 'components/layout/Paper';
+import NewsListItem, { NewsListItemLoading } from 'components/miscellaneous/NewsListItem';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import Page from 'components/navigation/Page';
 
 const NewsGrid = styled('div')(({ theme }) => ({
   display: 'grid',

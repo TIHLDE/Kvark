@@ -1,29 +1,26 @@
-import { useState, useEffect } from 'react';
-import URLS from 'URLS';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { useEventsWhereIsAdmin, useEventById } from 'hooks/Event';
-import { parseISO } from 'date-fns';
-import { formatDate } from 'utils';
-
-// Material-UI
-import { makeStyles } from 'makeStyles';
-import { Typography, Collapse, Alert } from '@mui/material';
-
-// Icons
 import EditIcon from '@mui/icons-material/EditRounded';
+import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
+import OpenIcon from '@mui/icons-material/OpenInBrowserRounded';
 import ParticipantsIcon from '@mui/icons-material/PeopleRounded';
 import RegisterIcon from '@mui/icons-material/PlaylistAddCheckRounded';
-import OpenIcon from '@mui/icons-material/OpenInBrowserRounded';
-import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
+import { Alert, Collapse, Typography } from '@mui/material';
+import { parseISO } from 'date-fns';
+import { makeStyles } from 'makeStyles';
+import { useEffect, useState } from 'react';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import URLS from 'URLS';
+import { formatDate } from 'utils';
 
-// Project components
+import { useEventById, useEventsWhereIsAdmin } from 'hooks/Event';
+
+import EventEditor from 'pages/EventAdministration/components/EventEditor';
+import EventFormAdmin from 'pages/EventAdministration/components/EventFormAdmin';
+import EventParticipants from 'pages/EventAdministration/components/EventParticipants';
+
 import Paper from 'components/layout/Paper';
+import SidebarList from 'components/layout/SidebarList';
 import Tabs from 'components/layout/Tabs';
 import Page from 'components/navigation/Page';
-import SidebarList from 'components/layout/SidebarList';
-import EventEditor from 'pages/EventAdministration/components/EventEditor';
-import EventParticipants from 'pages/EventAdministration/components/EventParticipants';
-import EventFormAdmin from 'pages/EventAdministration/components/EventFormAdmin';
 
 const useStyles = makeStyles()((theme) => ({
   root: {

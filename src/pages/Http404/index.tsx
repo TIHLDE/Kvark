@@ -1,16 +1,13 @@
+import { Button, styled, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
+
 import { useIsAuthenticated } from 'hooks/User';
 
-// Material UI Components
-import { Button, Typography, styled } from '@mui/material';
+import Page from 'components/navigation/Page';
 
-// Imgs
 import http404img from 'assets/img/http404.gif';
 import http404ropeImg from 'assets/img/http404rope.gif';
-
-// Project Components
-import Page from 'components/navigation/Page';
 
 const Buttons = styled('div')(({ theme }) => ({
   margin: theme.spacing(2, 'auto'),
@@ -25,7 +22,11 @@ const Img = styled('img')({
   objectFit: 'contain',
 });
 
-const Http404 = () => {
+export type Http404Props = {
+  title?: string;
+};
+
+const Http404 = ({ title = 'Kunne ikke finne siden' }: Http404Props) => {
   const isAuthenticated = useIsAuthenticated();
 
   return (
@@ -36,7 +37,7 @@ const Http404 = () => {
         <Img alt='404' loading='lazy' src={http404img} sx={{ paddingTop: (theme) => theme.spacing(3) }} />
       )}
       <Typography align='center' variant='h1'>
-        Kunne ikke finne siden
+        {title}
       </Typography>
       <Buttons>
         <Button component={Link} to={URLS.landing} variant='contained'>

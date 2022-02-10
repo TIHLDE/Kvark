@@ -1,22 +1,20 @@
+import SendIcon from '@mui/icons-material/SendRounded';
+import { Typography } from '@mui/material';
+import { makeStyles } from 'makeStyles';
 import { useRef } from 'react';
 import URLS from 'URLS';
-
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import { Typography } from '@mui/material';
-
-// Icons and images
-import Image from 'assets/img/glad.jpg';
-import SendIcon from '@mui/icons-material/SendRounded';
-
-// Project Components
-import Page from 'components/navigation/Page';
-import InfoCard from 'components/layout/InfoCard';
-import Banner, { BannerButton } from 'components/layout/Banner';
-import CompaniesForm from 'pages/Companies/components/CompaniesForm';
-import Container from 'components/layout/Container';
-import { UserStudy } from 'types/Enums';
 import { getUserStudyLong } from 'utils';
+
+import { UserStudy } from 'types/Enums';
+
+import CompaniesForm from 'pages/Companies/components/CompaniesForm';
+
+import Banner, { BannerButton } from 'components/layout/Banner';
+import Container from 'components/layout/Container';
+import InfoCard from 'components/layout/InfoCard';
+import Page from 'components/navigation/Page';
+
+import Image from 'assets/img/glad.jpg';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {

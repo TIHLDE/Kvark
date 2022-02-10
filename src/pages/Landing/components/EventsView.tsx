@@ -1,15 +1,14 @@
-import { useState, lazy, Suspense } from 'react';
+import DateRange from '@mui/icons-material/DateRangeRounded';
+import Reorder from '@mui/icons-material/ReorderRounded';
 import { Collapse, Skeleton, styled } from '@mui/material';
+import { lazy, Suspense, useState } from 'react';
 
-// Project componets/services
 import { useEvents } from 'hooks/Event';
+
 import EventsListView from 'pages/Landing/components/EventsListView';
+
 import Tabs from 'components/layout/Tabs';
 import { AlertOnce } from 'components/miscellaneous/UserInformation';
-
-// Icons
-import Reorder from '@mui/icons-material/ReorderRounded';
-import DateRange from '@mui/icons-material/DateRangeRounded';
 
 const EventsCalendarView = lazy(() => import(/* webpackChunkName: "events_calendar" */ 'pages/Landing/components/EventsCalendarView'));
 

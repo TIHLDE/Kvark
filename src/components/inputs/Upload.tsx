@@ -1,32 +1,29 @@
-import { useState, useCallback, forwardRef } from 'react';
-import { UseFormReturn, UseFormRegisterReturn, Path, FieldError, UnpackNestedValue, PathValue, FieldValues } from 'react-hook-form';
-import Cropper from 'react-easy-crop';
-import { useGoogleAnalytics, useShare } from 'hooks/Utils';
-import API from 'api/api';
-import { useSnackbar } from 'hooks/Snackbar';
-
-// Material UI Components
+import ShareIcon from '@mui/icons-material/ShareRounded';
 import {
   Button,
   ButtonProps,
   FormHelperText,
-  Typography,
+  IconButton,
   LinearProgress,
   List,
   ListItem,
-  ListItemText,
   ListItemSecondaryAction,
-  IconButton,
+  ListItemText,
   styled,
+  Typography,
 } from '@mui/material';
+import { forwardRef, useCallback, useState } from 'react';
+import Cropper from 'react-easy-crop';
+import { FieldError, FieldValues, Path, PathValue, UnpackNestedValue, UseFormRegisterReturn, UseFormReturn } from 'react-hook-form';
 
-// Icons
-import ShareIcon from '@mui/icons-material/ShareRounded';
+import API from 'api/api';
 
-// Project components
+import { useSnackbar } from 'hooks/Snackbar';
+import { useAnalytics, useShare } from 'hooks/Utils';
+
+import { blobToFile, getCroppedImgAsBlob, readFile } from 'components/inputs/ImageUploadUtils';
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
-import { getCroppedImgAsBlob, blobToFile, readFile } from 'components/inputs/ImageUploadUtils';
 
 const UploadPaper = styled(Paper)(({ theme }) => ({
   display: 'grid',
@@ -254,7 +251,7 @@ export const FormFileUpload = <FormValues extends FieldValues>({
 export type FileUploadProps<FormValues> = Pick<ImageUploadProps<FormValues>, 'label'> & ButtonProps;
 
 export const FileUpload = <FormValues extends FieldValues>({ label = 'Last opp filer', ...props }: FileUploadProps<FormValues>) => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const [uploaded, setUploaded] = useState<Array<string>>([]);

@@ -1,24 +1,28 @@
+import * as Sentry from '@sentry/react';
+import { ACCESS_TOKEN } from 'constant';
 import { ReactNode } from 'react';
-import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseQueryOptions, QueryKey, UseMutationResult } from 'react-query';
-import API from 'api/api';
+import { QueryKey, useInfiniteQuery, useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryOptions } from 'react-query';
+import { useNavigate } from 'react-router-dom';
+import URLS from 'URLS';
+
 import {
-  User,
-  UserList,
-  Group,
-  UserCreate,
-  Strike,
-  LoginRequestResponse,
-  PaginationResponse,
-  RequestResponse,
   Badge,
   EventCompact,
   Form,
+  Group,
+  LoginRequestResponse,
+  PaginationResponse,
+  RequestResponse,
+  Strike,
+  User,
+  UserCreate,
+  UserList,
   UserPermissions,
 } from 'types';
 import { PermissionApp } from 'types/Enums';
-import { getCookie, setCookie, removeCookie } from 'api/cookie';
-import { ACCESS_TOKEN } from 'constant';
-import { useGoogleAnalytics } from 'hooks/Utils';
+
+import API from 'api/api';
+import { getCookie, removeCookie, setCookie } from 'api/cookie';
 
 export const USER_QUERY_KEY = 'user';
 export const USER_BADGES_QUERY_KEY = 'user_badges';
@@ -31,10 +35,20 @@ export const USERS_QUERY_KEY = 'users';
 
 export const useUser = (userId?: User['user_id'], options?: UseQueryOptions<User | undefined, RequestResponse, User | undefined, QueryKey>) => {
   const isAuthenticated = useIsAuthenticated();
-  const { setUserId } = useGoogleAnalytics();
+  const logOut = useLogout();
   return useQuery<User | undefined, RequestResponse>([USER_QUERY_KEY, userId], () => (isAuthenticated ? API.getUserData(userId) : undefined), {
     ...options,
-    onSuccess: (data) => !data || userId || setUserId(data.user_id),
+    onSuccess: (data) => {
+      if (data && !userId) {
+        Sentry.setUser({ username: data.user_id });
+      }
+    },
+    onError: () => {
+      if (!userId) {
+        logOut();
+        window.location.reload();
+      }
+    },
   });
 };
 
@@ -43,15 +57,19 @@ export const useUserPermissions = () => {
   return useQuery<UserPermissions | undefined, RequestResponse>([USER_PERMISSIONS_QUERY_KEY], () => (isAuthenticated ? API.getUserPermissions() : undefined));
 };
 
-export const useUserBadges = () =>
-  useInfiniteQuery<PaginationResponse<Badge>, RequestResponse>([USER_BADGES_QUERY_KEY], ({ pageParam = 1 }) => API.getUserBadges({ page: pageParam }), {
-    getNextPageParam: (lastPage) => lastPage.next,
-  });
+export const useUserBadges = (userId?: User['user_id']) =>
+  useInfiniteQuery<PaginationResponse<Badge>, RequestResponse>(
+    [USER_BADGES_QUERY_KEY, userId],
+    ({ pageParam = 1 }) => API.getUserBadges(userId, { page: pageParam }),
+    {
+      getNextPageParam: (lastPage) => lastPage.next,
+    },
+  );
 
-export const useUserEvents = () => {
+export const useUserEvents = (userId?: User['user_id']) => {
   return useInfiniteQuery<PaginationResponse<EventCompact>, RequestResponse>(
-    [USER_EVENTS_QUERY_KEY],
-    ({ pageParam = 1 }) => API.getUserEvents({ page: pageParam }),
+    [USER_EVENTS_QUERY_KEY, userId],
+    ({ pageParam = 1 }) => API.getUserEvents(userId, { page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.next,
     },
@@ -68,7 +86,8 @@ export const useUserForms = (filters?: any) =>
     },
   );
 
-export const useUserGroups = () => useQuery<Array<Group>, RequestResponse>([USER_GROUPS_QUERY_KEY], () => API.getUserGroups());
+export const useUserGroups = (userId?: User['user_id']) =>
+  useQuery<Array<Group>, RequestResponse>([USER_GROUPS_QUERY_KEY, userId], () => API.getUserGroups(userId));
 
 export const useUserStrikes = (userId?: string) => useQuery<Array<Strike>, RequestResponse>([USER_STRIKES_QUERY_KEY, userId], () => API.getUserStrikes(userId));
 
@@ -96,10 +115,13 @@ export const useLogin = (): UseMutationResult<LoginRequestResponse, RequestRespo
 export const useForgotPassword = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => useMutation((email) => API.forgotPassword(email));
 
 export const useLogout = () => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   return () => {
     removeCookie(ACCESS_TOKEN);
     queryClient.removeQueries();
+    Sentry.configureScope((scope) => scope.setUser(null));
+    navigate(URLS.landing);
   };
 };
 
@@ -119,6 +141,11 @@ export const useUpdateUser = (): UseMutationResult<User, RequestResponse, { user
     },
   });
 };
+
+export const useExportUserData = (): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => useMutation(() => API.exportUserData());
+
+export const useDeleteUser = (): UseMutationResult<RequestResponse, RequestResponse, string | undefined, unknown> =>
+  useMutation((userId) => API.deleteUser(userId));
 
 export const useActivateUser = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => {
   const queryClient = useQueryClient();
