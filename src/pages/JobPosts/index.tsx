@@ -2,13 +2,13 @@ import { Fragment, useMemo, useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useJobPosts } from 'hooks/JobPost';
-import { argsToParams } from 'utils';
+import { argsToParams, getUserClass } from 'utils';
 
 // Material UI Components
 import { makeStyles } from 'makeStyles';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
-import { useMediaQuery, Box, Slider, Theme } from '@mui/material';
+import { useMediaQuery, Theme } from '@mui/material';
 
 // Project Components
 import Page from 'components/navigation/Page';
@@ -22,6 +22,7 @@ import SubmitButton from 'components/inputs/SubmitButton';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import { useGoogleAnalytics } from 'hooks/Utils';
 import Expand from 'components/layout/Expand';
+import { useUser } from 'hooks/User';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {
@@ -60,69 +61,56 @@ const useStyles = makeStyles()((theme) => ({
   },
 }));
 
-const marks = [
-  {
-    value: 1,
-    label: '1. År',
-  },
-  {
-    value: 2,
-    label: '2. År',
-  },
-  {
-    value: 3,
-    label: '3. År',
-  },
-  {
-    value: 4,
-    label: '4. År',
-  },
-  {
-    value: 5,
-    label: '5. År',
-  },
-];
-
-function valuetext(value: number) {
-  return `${value} Årstrinn`;
-}
-
-function valueLabelFormat(value: number) {
-  return marks.findIndex((mark) => mark.value === value) + 1;
-}
-
 type Filters = {
   search?: string;
   classes?: number[];
   expired: boolean;
 };
 
+type FormState = {
+  search?: string;
+  classes?: boolean;
+  expired: boolean;
+};
+
 const JobPosts = () => {
+  const { data: user } = useUser();
   const { event } = useGoogleAnalytics();
-  const getInitialFilters = useCallback((): Filters => {
+  const getInitialFilters = useCallback((): FormState => {
     const params = new URLSearchParams(location.search);
     const expired = params.get('expired') ? Boolean(params.get('expired') === 'true') : false;
     const search = params.get('search') || undefined;
-    return { expired, search };
+    const classes = params.get('classes') ? Boolean(params.get('classes') === 'true') : false;
+
+    //const classes = params.get('classes') || undefined;
+    return { classes, expired, search };
   }, []);
   const { classes } = useStyles();
   const navigate = useNavigate();
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
-  const [filters, setFilters] = useState<Filters>(getInitialFilters());
+  const [filters, setFilters] = useState<Filters>();
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useJobPosts(filters);
-  const { register, control, handleSubmit, setValue, formState } = useForm<Filters>({ defaultValues: getInitialFilters() });
+  const { register, control, handleSubmit, setValue, formState } = useForm<FormState>({ defaultValues: getInitialFilters() });
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 
   const resetFilters = () => {
     setValue('search', '');
     setValue('expired', false);
+    setValue('classes', false);
+
     setFilters({ expired: false });
+
+    //setFilters({ classes: undefined });
     navigate(`${location.pathname}${argsToParams({ expired: false })}`, { replace: true });
   };
 
-  const search = (data: Filters) => {
+  const search = (data: FormState) => {
     event('search', 'jobposts', JSON.stringify(data));
-    setFilters(data); //må få value
+      setFilters({
+        search: data.search,
+        expired : data.expired,
+        classes: data.classes && user ? [user.user_class] : undefined
+      });
     navigate(`${location.pathname}${argsToParams(data)}`, { replace: true });
     !lgDown || setSearchFormExpanded((prev) => !prev);
   };
@@ -132,19 +120,7 @@ const JobPosts = () => {
   const SearchForm = () => (
     <form onSubmit={handleSubmit(search)}>
       <TextField disabled={isFetching} formState={formState} label='Søk' {...register('search')} />
-      <Box>
-        <Slider
-          aria-label='Restricted values'
-          defaultValue={[1, 5]}
-          getAriaValueText={valuetext}
-          marks={marks}
-          max={5}
-          min={1}
-          step={null}
-          valueLabelDisplay='auto'
-          valueLabelFormat={valueLabelFormat}
-        />
-      </Box>
+      <Bool control={control} formState={formState} label='Relevant år' name='classes' type='switch' />
       <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
       <SubmitButton disabled={isFetching} formState={formState}>
         Søk
