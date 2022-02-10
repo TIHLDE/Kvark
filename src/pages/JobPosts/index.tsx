@@ -2,7 +2,7 @@ import { Fragment, useMemo, useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useJobPosts } from 'hooks/JobPost';
-import { argsToParams, getUserClass } from 'utils';
+import { argsToParams } from 'utils';
 
 // Material UI Components
 import { makeStyles } from 'makeStyles';
