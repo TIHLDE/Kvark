@@ -1,4 +1,5 @@
-import { ReactNode, useEffect, useMemo } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { useEvents } from 'hooks/Event';
 import { EventCompact } from 'types';
 import URLS from 'URLS';
 import { Link } from 'react-router-dom';
@@ -13,9 +14,13 @@ import Paper from 'components/layout/Paper';
 import { useGoogleAnalytics } from 'hooks/Utils';
 import { Groups } from 'types/Enums';
 
+type Filters = {
+  start_date_before?: string;
+  start_date_after?: string;
+  category?: number;
+};
 export type EventsCalendarViewProps = {
-  events: Array<EventCompact>;
-  oldEvents: Array<EventCompact>;
+  eventsFilters?: Filters;
 };
 
 type AppointmentProps = {
@@ -37,16 +42,24 @@ const Appointment = ({ children, data }: AppointmentProps) => {
   );
 };
 
-const EventsCalendarView = ({ events, oldEvents }: EventsCalendarViewProps) => {
+const EventsCalendarView = ({ eventsFilters }: EventsCalendarViewProps) => {
   const { event } = useGoogleAnalytics();
-
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [filters, setFilters] = useState<Filters>();
+  const { data } = useEvents({ ...eventsFilters, ...filters });
+  const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   useEffect(() => {
     event('open', 'calendar', 'Open calendar on landing page');
   }, [event]);
 
+  useEffect(() => {
+    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+    setFilters({ start_date_before: lastDay.toLocaleDateString(), start_date_after: firstDay.toLocaleDateString() });
+  }, [currentDate]);
   const displayedEvents = useMemo(
     () =>
-      [...events, ...oldEvents].map(
+      [...events].map(
         (event) =>
           ({
             ...event,
@@ -54,13 +67,12 @@ const EventsCalendarView = ({ events, oldEvents }: EventsCalendarViewProps) => {
             endDate: parseISO(event.end_date),
           } as AppointmentModel),
       ),
-    [oldEvents, events],
+    [data],
   );
-
   return (
     <Paper noPadding sx={{ '& div:first-of-type': { whiteSpace: 'break-spaces' }, '& table': { minWidth: 'unset' } }}>
       <Scheduler data={displayedEvents} firstDayOfWeek={1} locale='no-NB'>
-        <ViewState />
+        <ViewState currentDate={currentDate} onCurrentDateChange={setCurrentDate} />
         <MonthView />
         <Toolbar />
         <DateNavigator />

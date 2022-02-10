@@ -15,7 +15,6 @@ const EventsCalendarView = lazy(() => import(/* webpackChunkName: "events_calend
 
 const EventsView = () => {
   const { data, isLoading } = useEvents();
-  const { data: oldEvents } = useEvents({ expired: true });
   const listTab = { value: 'list', label: 'Liste', icon: Reorder };
   const calendarTab = { value: 'calendar', label: 'Kalender', icon: DateRange };
   const tabs = [listTab, calendarTab];
@@ -40,7 +39,7 @@ const EventsView = () => {
       </Collapse>
       <Collapse in={tab === calendarTab.value} mountOnEnter>
         <Suspense fallback={<Skeleton height={695} variant='rectangular' />}>
-          <EventsCalendarView events={data?.pages[0]?.results || []} oldEvents={oldEvents?.pages[0]?.results || []} />
+          <EventsCalendarView />
         </Suspense>
       </Collapse>
     </>

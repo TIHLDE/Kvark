@@ -165,7 +165,7 @@ const NewStudent = () => {
               {isFetching && <EventListItemLoading />}
             </Collapse>
             <Collapse in={eventTab === eventsCalendarView.value}>
-              <EventsCalendarView events={data?.pages[0]?.results || []} oldEvents={[]} />
+              <EventsCalendarView eventsFilters={{ category: FADDERUKA_EVENT_CATEGORY }} />
             </Collapse>
           </Collapse>
           <Collapse in={tab === faqTab.value} mountOnEnter>
