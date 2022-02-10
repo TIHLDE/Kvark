@@ -21,7 +21,7 @@ export type UpdateGroupModalProps = {
   group: Group;
 };
 
-type FormValues = Pick<Group, 'contact_email' | 'description' | 'fine_info' | 'fines_activated' | 'name' | 'fines_admin' | 'image' | 'image_alt'>;
+type FormValues = Pick<Group, 'contact_email' | 'description' | 'fine_info' | 'fines_activated' | 'name' | 'fines_admin' | 'image'>;
 
 const GroupAdmin = ({ group }: UpdateGroupModalProps) => {
   const [isOpen, setIsOpen] = useState(false);

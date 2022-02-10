@@ -4,7 +4,7 @@ import URLS from 'URLS';
 
 // Material UI
 import { makeStyles } from 'makeStyles';
-import { Theme, Skeleton, ButtonBase, Typography, Grid } from '@mui/material';
+import { Theme, Skeleton, ButtonBase, Typography, Stack, Divider } from '@mui/material';
 
 // Icons
 import MembersIcon from '@mui/icons-material/PersonRounded';
@@ -18,14 +18,11 @@ const useStyles = makeStyles()((theme) => ({
     width: '100%',
     height: '100%',
     minHeight: 90,
+    justifyContent: 'flex-start',
   },
   grouplogo: {
     borderRadius: '20px',
-  },
-  contentRowContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+    marginLeft: '16px',
   },
   icon: {
     [theme.breakpoints.down('md')]: {
@@ -45,32 +42,32 @@ export type GroupItemProps = {
 
 const GroupItem = ({ group, background = 'paper' }: GroupItemProps) => {
   const { classes } = useStyles();
+  const logo = group.image === null ? undefined : group.image;
+  const logo_alt = group.image_alt === null ? undefined : group.image_alt;
 
   return (
     <Paper noOverflow noPadding sx={{ background: (theme) => theme.palette.background[background] }}>
       <ButtonBase className={classes.container} component={Link} focusRipple to={URLS.groups.details(group.slug)}>
-        <Grid container spacing={2}>
-          <Grid alignItems='center' container item justifyContent='center' xs={4}>
-            <img alt={group.image_alt} className={classes.grouplogo} loading='lazy' src={group.image} width={64} />
-          </Grid>
-          <Grid item xs={8}>
+        <Stack alignItems='center' direction='row' divider={<Divider flexItem orientation='vertical' />} justifyContent='flex-start' spacing={2}>
+          <img alt={logo_alt} className={classes.grouplogo} loading='lazy' src={logo} width={64} />
+          <Stack>
             <Typography variant='h3'>{group.name}</Typography>
             {group.leader && (
-              <div className={classes.contentRowContainer}>
+              <Stack alignItems='center' direction='row'>
                 <MembersIcon className={classes.icon} />
                 <Typography className={classes.text}>
                   {group.leader.first_name} {group.leader.last_name}
                 </Typography>
-              </div>
+              </Stack>
             )}
             {group.contact_email && (
-              <div className={classes.contentRowContainer}>
+              <Stack alignItems='center' direction='row'>
                 <Mail className={classes.icon} />
                 <Typography className={classes.text}>{group.contact_email}</Typography>
-              </div>
+              </Stack>
             )}
-          </Grid>
-        </Grid>
+          </Stack>
+        </Stack>
       </ButtonBase>
     </Paper>
   );
@@ -86,14 +83,14 @@ export const GroupItemLoading = ({ background = 'paper' }: Pick<GroupItemProps, 
         <Skeleton width={100} />
         <img width={64} />
 
-        <div className={classes.contentRowContainer}>
+        <Stack direction='row'>
           <MembersIcon className={classes.icon} />
           <Skeleton className={classes.text} width={120} />
-        </div>
-        <div className={classes.contentRowContainer}>
+        </Stack>
+        <Stack direction='row'>
           <Mail className={classes.icon} />
           <Skeleton className={classes.text} width={120} />
-        </div>
+        </Stack>
       </ButtonBase>
     </Paper>
   );
