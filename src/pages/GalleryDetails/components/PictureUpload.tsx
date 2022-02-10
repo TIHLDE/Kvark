@@ -21,31 +21,13 @@ import { Picture, PictureRequired } from 'types';
 import { BannerButton } from 'components/layout/Banner';
 
 const useStyles = makeStyles()((theme) => ({
-  uploadInput: {
-    display: 'grid',
-    gridGap: theme.spacing(1),
-    padding: theme.spacing(2),
-    background: theme.palette.background.default,
-  },
-  grid: {
-    display: 'grid',
-    gridGap: theme.spacing(2),
-    gridTemplateColumns: '1fr 1fr',
-    [theme.breakpoints.down('md')]: {
-      gridGap: 0,
-      gridTemplateColumns: '1fr',
-    },
-  },
   margin: {
     margin: theme.spacing(2, 0, 1),
     borderRadius: theme.shape.borderRadius,
     overflow: 'hidden',
   },
-  expansionPanel: {
-    border: '1px solid ' + theme.palette.divider,
-    background: theme.palette.background.smoke,
-  },
 }));
+
 type FormValues = Omit<Picture, 'id' | 'created_at' | 'updated_at'>;
 
 type PictureUploadProps = {
