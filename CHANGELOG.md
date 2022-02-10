@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- ⚡ **Grupper**. Gir bedre beskrivelse til tidligere gruppermedlemmer.
+
 ## Versjon 2022.02.06
 
 - ⚡ **Sentry**. Lagt til Sentry-feil catching.
