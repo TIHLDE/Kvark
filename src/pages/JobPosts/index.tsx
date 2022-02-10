@@ -106,11 +106,11 @@ const JobPosts = () => {
 
   const search = (data: FormState) => {
     event('search', 'jobposts', JSON.stringify(data));
-      setFilters({
-        search: data.search,
-        expired : data.expired,
-        classes: data.classes && user ? [user.user_class] : undefined
-      });
+    setFilters({
+      search: data.search,
+      expired: data.expired,
+      classes: data.classes && user ? [user.user_class] : undefined,
+    });
     navigate(`${location.pathname}${argsToParams(data)}`, { replace: true });
     !lgDown || setSearchFormExpanded((prev) => !prev);
   };
