@@ -315,7 +315,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         )}
       </Stack>
       <Stack gap={1} sx={{ width: '100%' }}>
-        <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
+        <AspectRatioImg alt={data.image_alt || data.title} borderRadius ratio={21 / 9} src={data.image} />
         {lgDown && <Info />}
         <ContentPaper>
           <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h1'>

@@ -22,7 +22,7 @@ const GalleryListItem = ({ album, sx }: GalleryListItemProps) => (
       sx={{ borderRadius: (theme) => `${theme.shape.borderRadius}px`, display: 'block' }}
       tabIndex={-1}
       to={`${URLS.gallery}${album.slug}/`}>
-      <AspectRatioImg alt={album.image_alt || album.title} borderRadius className={touchRippleClasses.root} src={album.image} />
+      <AspectRatioImg alt={album.image_alt || album.title} borderRadius className={touchRippleClasses.root} ratio={16 / 9} src={album.image} />
     </ButtonBase>
     <ButtonBase
       component={Link}

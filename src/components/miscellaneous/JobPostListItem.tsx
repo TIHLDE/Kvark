@@ -34,6 +34,7 @@ const JobPostListItem = ({ jobpost, sx }: JobPostListItemProps) => (
         <div style={{ display: 'block', height: 45, width: (45 / 9) * 21 }}>
           <AspectRatioImg
             alt={jobpost.image_alt || jobpost.title}
+            ratio={21 / 9}
             src={jobpost.image}
             sx={{ height: 45, width: 'auto', borderRadius: (theme) => `${Number(theme.shape.borderRadius) / 2}px` }}
           />
