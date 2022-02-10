@@ -26,9 +26,9 @@ const Registrations = ({ onWait = false, eventId }: RegistrationsProps) => {
     () =>
       data
         ? data.pages
-          .map((page) => page.results)
-          .flat()
-          .filter((registration) => !showOnlyNotAttended || !registration.has_attended)
+            .map((page) => page.results)
+            .flat()
+            .filter((registration) => !showOnlyNotAttended || !registration.has_attended)
         : [],
     [data, showOnlyNotAttended],
   );
