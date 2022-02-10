@@ -39,7 +39,7 @@ const MembersHistoryCard = ({ slug }: MembersHistoryCardProps) => {
 
   return (
     <Stack gap={1} sx={{ mt: 1 }}>
-      {Boolean(data?.pages?.length) && <Typography variant='h3'>Tidligere medlemmer:</Typography>}
+      {Boolean(data?.pages?.length) && <Typography variant='h3'>Medlemshistorikk:</Typography>}
       <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
         <Stack gap={1}>
           {prevMembers.map((member) => (
