@@ -12,6 +12,7 @@ import MembersIcon from '@mui/icons-material/PersonRounded';
 // Project components
 import Paper from 'components/layout/Paper';
 import { Mail } from '@mui/icons-material';
+import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 
 const useStyles = makeStyles()((theme) => ({
   container: {
@@ -20,7 +21,9 @@ const useStyles = makeStyles()((theme) => ({
     minHeight: 90,
     justifyContent: 'flex-start',
   },
-  grouplogo: {
+  logo: {
+    height: '64px',
+    width: '64px',
     borderRadius: '20px',
     marginLeft: '16px',
   },
@@ -42,14 +45,12 @@ export type GroupItemProps = {
 
 const GroupItem = ({ group, background = 'paper' }: GroupItemProps) => {
   const { classes } = useStyles();
-  const logo = group.image === null ? undefined : group.image;
-  const logo_alt = group.image_alt === null ? undefined : group.image_alt;
 
   return (
     <Paper noOverflow noPadding sx={{ background: (theme) => theme.palette.background[background] }}>
       <ButtonBase className={classes.container} component={Link} focusRipple to={URLS.groups.details(group.slug)}>
-        <Stack alignItems='center' direction='row' divider={<Divider flexItem orientation='vertical' />} justifyContent='flex-start' spacing={2}>
-          <img alt={logo_alt} className={classes.grouplogo} loading='lazy' src={logo} width={64} />
+        <Stack alignItems='center' direction='row' divider={<Divider flexItem orientation='vertical' />} gap={1} justifyContent='flex-start' sx={{ pl: 1 }}>
+          <AspectRatioImg alt={group?.image_alt || ''} borderRadius ratio={1} src={group?.image || ''} sx={{ width: 70, height: 70 }} />
           <Stack>
             <Typography variant='h3'>{group.name}</Typography>
             {group.leader && (
@@ -80,16 +81,20 @@ export const GroupItemLoading = ({ background = 'paper' }: Pick<GroupItemProps, 
   return (
     <Paper noOverflow noPadding sx={{ background: (theme) => theme.palette.background[background] }}>
       <ButtonBase className={classes.container} focusRipple>
-        <Skeleton width={100} />
-        <img width={64} />
+        <Stack alignItems='center' direction='row' divider={<Divider flexItem orientation='vertical' />} gap={1} justifyContent='flex-start' sx={{ pl: 1 }}>
+          <AspectRatioLoading sx={{ width: 70, height: 70 }} />
+          <Stack>
+            <Skeleton width={100} />
 
-        <Stack direction='row'>
-          <MembersIcon className={classes.icon} />
-          <Skeleton className={classes.text} width={120} />
-        </Stack>
-        <Stack direction='row'>
-          <Mail className={classes.icon} />
-          <Skeleton className={classes.text} width={120} />
+            <Stack direction='row'>
+              <MembersIcon className={classes.icon} />
+              <Skeleton className={classes.text} width={120} />
+            </Stack>
+            <Stack direction='row'>
+              <Mail className={classes.icon} />
+              <Skeleton className={classes.text} width={120} />
+            </Stack>
+          </Stack>
         </Stack>
       </ButtonBase>
     </Paper>

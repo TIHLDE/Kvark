@@ -4,7 +4,7 @@ import URLS from 'URLS';
 import { useIsAuthenticated } from 'hooks/User';
 import { useGroup } from 'hooks/Group';
 
-import { Typography, Stack, IconButton, Divider } from '@mui/material';
+import { Typography, Stack, IconButton, Divider, Box } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBackRounded';
 import InfoIcon from '@mui/icons-material/InfoRounded';
 import FineIcon from '@mui/icons-material/LocalAtmRounded';
@@ -20,6 +20,7 @@ import GroupFines from 'pages/Groups/fines';
 import GroupForms from 'pages/Groups/forms';
 import { FinesProvider } from 'pages/Groups/fines/FinesContext';
 import { RouterTabs } from 'components/layout/Tabs';
+import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
 
 const GroupDetails = () => {
   const { slug } = useParams<'slug'>();
@@ -70,6 +71,9 @@ const GroupDetails = () => {
           <IconButton component={Link} to={URLS.groups.index}>
             <ArrowBackIcon />
           </IconButton>
+          <Box sx={{ display: 'block', height: { xs: 45, md: 70 }, width: { xs: 45, md: 70 } }}>
+            <AspectRatioImg alt={data?.image_alt || ''} borderRadius ratio={1} src={data?.image || ''} />
+          </Box>
           <Typography variant='h1'>{data.name}</Typography>
         </Stack>
         {hasWriteAcccess && <GroupAdmin group={data} />}
