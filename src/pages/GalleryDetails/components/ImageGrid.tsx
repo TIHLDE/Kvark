@@ -1,6 +1,11 @@
-import { ImageList, ImageListItem, Theme, useMediaQuery } from '@mui/material';
-import { useAlbumPictures } from 'hooks/Gallery';
+// React
 import { useMemo } from 'react';
+
+// Material UI
+import { ImageList, ImageListItem, Theme, useMediaQuery } from '@mui/material';
+
+// >Hooks
+import { useAlbumPictures } from 'hooks/Gallery';
 
 type ImageGridProps = {
   slug: string;

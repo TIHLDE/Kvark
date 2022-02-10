@@ -15,6 +15,7 @@ import Dialog from 'components/layout/Dialog';
 import { ImageUpload } from 'components/inputs/Upload';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
+import { BannerButton } from 'components/layout/Banner';
 
 // Types
 import { Gallery, GalleryRequired } from 'types';
@@ -102,10 +103,10 @@ const CreateAlbum = () => {
 const CreateAlbumDialog = () => {
   const [open, setOpen] = useState<boolean>(false);
   return (
-    <Box sx={{ width: '50%', m: '100px auto', padding: 2 }}>
-      <Button onClick={() => setOpen(true)} variant='outlined'>
+    <Box>
+      <BannerButton onClick={() => setOpen(true)} variant='outlined'>
         Opprett nytt album
-      </Button>
+      </BannerButton>
       <Dialog onClose={() => setOpen(false)} open={open}>
         <CreateAlbum />
       </Dialog>

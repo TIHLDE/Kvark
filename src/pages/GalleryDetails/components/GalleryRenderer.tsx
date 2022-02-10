@@ -1,5 +1,10 @@
+// React
 import { useState } from 'react';
+
+// Types
 import { Gallery } from 'types';
+
+// Components
 import ImageDialog from './ImageDialog';
 import ImageGrid from './ImageGrid';
 
