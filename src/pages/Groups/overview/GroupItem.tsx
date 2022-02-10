@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { Group } from 'types';
 import URLS from 'URLS';
 
 // Material UI
@@ -8,8 +7,7 @@ import { Theme, Skeleton, ButtonBase, Typography, Stack, Divider } from '@mui/ma
 
 // Icons
 import MembersIcon from '@mui/icons-material/PersonRounded';
-
-// Project components
+import { Group } from 'types';
 import Paper from 'components/layout/Paper';
 import { Mail } from '@mui/icons-material';
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
