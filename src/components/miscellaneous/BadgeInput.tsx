@@ -1,7 +1,7 @@
 import { Button, Grid, Stack, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 
-import { useBadge } from 'hooks/Badge';
+import { useCreateBadge } from 'hooks/Badge';
 import { useSnackbar } from 'hooks/Snackbar';
 
 import Paper from 'components/layout/Paper';
@@ -14,15 +14,18 @@ export type BadgeInputProps = {
 
 const BadgeInput = ({ flagCount, title, allBadgesFound = false }: BadgeInputProps) => {
   const [flag, setFlag] = useState<string>('');
-  const { createUserBadge } = useBadge();
+  const createUserBadge = useCreateBadge();
   const showSnackbar = useSnackbar();
   const infoText = `Velkommen til TIHLDE ${title}. Vi i Index har er skjult ${flagCount} flagg rundt omkring på siden.`;
   const submit = () => {
     const formatedId = flag.replace(/flag{/gi, '').replace(/}/gi, '');
-    createUserBadge(formatedId)
-      .then((response) => showSnackbar(response.detail, 'success'))
-      .catch((err) => showSnackbar(err.detail, 'error'))
-      .finally(() => setFlag(''));
+    createUserBadge.mutate(formatedId, {
+      onSuccess: (data) => {
+        showSnackbar(data.detail, 'success');
+        setFlag('');
+      },
+      onError: (e) => showSnackbar(e.detail, 'error'),
+    });
   };
 
   return (

@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Badge,
+  BadgeCategory,
+  BadgesOverallLeaderboard,
   Category,
   Cheatsheet,
   CompaniesEmail,
@@ -57,6 +59,7 @@ import { IFetch } from 'api/fetch';
 
 export const AUTH_ENDPOINT = 'auth';
 export const BADGES_ENDPOINT = 'badges';
+export const BADGES_LEADERBOARD_ENDPOINT = 'leaderboard';
 export const CATEGORIES_ENDPOINT = 'categories';
 export const CHEATSHEETS_ENDPOINT = 'cheatsheets';
 export const EVENTS_ENDPOINT = 'events';
@@ -203,7 +206,13 @@ export default {
   emailForm: (data: CompaniesEmail) => IFetch<RequestResponse>({ method: 'POST', url: `accept-form/`, data, withAuth: false }),
 
   // Badges
-  createUserBadge: (data: { badge_id: string }) => IFetch<RequestResponse>({ method: 'POST', url: `${BADGES_ENDPOINT}/`, data }),
+  getBadge: (badgeId: Badge['id']) => IFetch<Badge>({ method: 'GET', url: `${BADGES_ENDPOINT}/${badgeId}/` }),
+  getBadges: (filters?: any) => IFetch<PaginationResponse<Badge>>({ method: 'GET', url: `${BADGES_ENDPOINT}/`, data: filters || {} }),
+  createUserBadge: (data: { flag: string }) => IFetch<RequestResponse>({ method: 'POST', url: `${BADGES_ENDPOINT}/`, data }),
+  getBadgeCategories: (filters?: any) =>
+    IFetch<PaginationResponse<BadgeCategory>>({ method: 'GET', url: `${BADGES_ENDPOINT}/categories/`, data: filters || {} }),
+  getOverallBadgesLeaderboard: (filters?: any) =>
+    IFetch<PaginationResponse<BadgesOverallLeaderboard>>({ method: 'GET', url: `${BADGES_ENDPOINT}/${BADGES_LEADERBOARD_ENDPOINT}/`, data: filters || {} }),
 
   // Membership
   getMemberships: (slug: string, filters?: any) =>
