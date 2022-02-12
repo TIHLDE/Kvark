@@ -43,6 +43,7 @@ export default defineConfig(({ mode }) => {
 
             return 'static/media/[name].[hash].[ext]';
           },
+          sourcemap: true,
         },
       },
     },
