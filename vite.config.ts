@@ -31,6 +31,7 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: 'build',
       assetsDir: 'static',
+      sourcemap: true,
       rollupOptions: {
         output: {
           entryFileNames: `static/js/[name].[hash].js`,
