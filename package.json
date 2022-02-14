@@ -38,7 +38,7 @@
     "react-query": "^3.34.3",
     "react-router-dom": "^6.1.1",
     "slugify": "^1.6.3",
-    "tss-react": "^3.2.2",
+    "tss-react": "^3.4.1",
     "universal-cookie": "^4.0.4"
   },
   "scripts": {
