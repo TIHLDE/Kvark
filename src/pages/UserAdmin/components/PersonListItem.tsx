@@ -1,24 +1,38 @@
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
+import {
+  Button,
+  Collapse,
+  Divider,
+  IconButton,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Skeleton,
+  Stack,
+  Theme,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { UserList } from 'types';
-import { useActivateUser, useDeclineUser } from 'hooks/User';
-import { useSnackbar } from 'hooks/Snackbar';
+import URLS from 'URLS';
 import { getUserClass, getUserStudyShort } from 'utils';
 
-// Material UI Components
-import { Typography, Collapse, Theme, useMediaQuery, Skeleton, Button, ListItem, ListItemText, Divider, Stack } from '@mui/material';
+import { UserList } from 'types';
 
-// Icons
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import { useSnackbar } from 'hooks/Snackbar';
+import { useActivateUser, useDeclineUser, useUser } from 'hooks/User';
 
-// Project components
-import Avatar from 'components/miscellaneous/Avatar';
-import Paper from 'components/layout/Paper';
-import Dialog from 'components/layout/Dialog';
-import TextField from 'components/inputs/TextField';
-import SubmitButton from 'components/inputs/SubmitButton';
 import ProfileSettings from 'pages/Profile/components/ProfileSettings';
+
+import SubmitButton from 'components/inputs/SubmitButton';
+import TextField from 'components/inputs/TextField';
+import Dialog from 'components/layout/Dialog';
+import Paper from 'components/layout/Paper';
+import Avatar from 'components/miscellaneous/Avatar';
 
 type FormValues = {
   reason: string;
@@ -73,6 +87,7 @@ const PersonListItem = ({ user, is_TIHLDE_member = true }: PersonListItemProps) 
   const activateUser = useActivateUser();
   const showSnackbar = useSnackbar();
   const [expanded, setExpanded] = useState(false);
+  const { data } = useUser(user.user_id, { enabled: expanded && is_TIHLDE_member });
   const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
   const activate = () =>
     activateUser.mutate(user.user_id, {
@@ -86,13 +101,22 @@ const PersonListItem = ({ user, is_TIHLDE_member = true }: PersonListItemProps) 
 
   return (
     <Paper bgColor='smoke' noOverflow noPadding sx={{ mb: 1 }}>
-      <ListItem button onClick={() => setExpanded((prev) => !prev)}>
-        <Avatar sx={{ mr: 2 }} user={user} />
-        <ListItemText
-          primary={`${user.first_name} ${user.last_name}`}
-          secondary={!mdDown && `${getUserClass(user.user_class)} ${getUserStudyShort(user.user_study)}`}
-        />
-        {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+      <ListItem
+        disablePadding
+        onClick={() => setExpanded((prev) => !prev)}
+        secondaryAction={
+          <IconButton component='a' href={`${URLS.profile}${user.user_id}/`} rel='noopener noreferrer' target='_blank'>
+            <OpenInNewIcon />
+          </IconButton>
+        }>
+        <ListItemButton>
+          <Avatar sx={{ mr: 2 }} user={user} />
+          <ListItemText
+            primary={`${user.first_name} ${user.last_name}`}
+            secondary={!mdDown && `${getUserClass(user.user_class)} ${getUserStudyShort(user.user_study)}`}
+          />
+          <ListItemIcon sx={{ minWidth: 45 }}>{expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}</ListItemIcon>
+        </ListItemButton>
       </ListItem>
       <Collapse in={expanded} mountOnEnter unmountOnExit>
         <Divider />
@@ -105,10 +129,10 @@ const PersonListItem = ({ user, is_TIHLDE_member = true }: PersonListItemProps) 
             </Typography>
           </div>
           {is_TIHLDE_member ? (
-            <ProfileSettings isAdmin user={user} />
+            data && <ProfileSettings isAdmin user={data} />
           ) : (
             <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
-              <Button fullWidth onClick={() => activate()} variant='outlined'>
+              <Button fullWidth onClick={activate} variant='outlined'>
                 Legg til medlem
               </Button>
               <DeclineUser user={user} />

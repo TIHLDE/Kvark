@@ -1,25 +1,33 @@
-import { useMutation, useQuery, useQueryClient, UseMutationResult } from 'react-query';
-import API from 'api/api';
-import { USER_FORMS_QUERY_KEY, USER_QUERY_KEY } from 'hooks/User';
-import { EVENT_QUERY_KEY } from 'hooks/Event';
-import { FormCreate, Form, FormUpdate, RequestResponse, PaginationResponse, UserSubmission, Submission, SelectFieldSubmission, FormStatistics } from 'types';
+import { useMutation, UseMutationResult, useQuery, useQueryClient } from 'react-query';
+
+import { Form, FormCreate, FormStatistics, FormUpdate, PaginationResponse, RequestResponse, SelectFieldSubmission, Submission, UserSubmission } from 'types';
 import { FormFieldType, FormResourceType } from 'types/Enums';
+
+import API from 'api/api';
+
+import { EVENT_QUERY_KEY } from 'hooks/Event';
 import { GROUPS_QUERY_KEYS } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
+import { USER_FORMS_QUERY_KEY, USER_QUERY_KEY } from 'hooks/User';
 
 export const FORM_QUERY_KEY = 'form';
 export const SUBMISSIONS_QUERY_KEY = 'submission';
 export const STATISTICS_QUERY_KEY = 'statistics';
+export const TEMPLATE_QUERY_KEY = 'templates';
 
 export const useFormById = (formId: string) =>
   useQuery<Form, RequestResponse>([FORM_QUERY_KEY, formId], () => API.getForm(formId), { enabled: formId !== '-' });
 export const useFormStatisticsById = (formId: string) =>
   useQuery<FormStatistics, RequestResponse>([FORM_QUERY_KEY, formId, STATISTICS_QUERY_KEY], () => API.getFormStatistics(formId), { enabled: formId !== '-' });
+export const useFormTemplates = () => useQuery<Array<Form>, RequestResponse>([FORM_QUERY_KEY, TEMPLATE_QUERY_KEY], () => API.getFormTemplates(), {});
 
 export const useCreateForm = (): UseMutationResult<Form, RequestResponse, FormCreate, unknown> => {
   const queryClient = useQueryClient();
   return useMutation((newForm) => API.createForm(newForm), {
     onSuccess: (data) => {
+      if (data.resource_type === FormResourceType.FORM) {
+        queryClient.invalidateQueries([FORM_QUERY_KEY]);
+      }
       if (data.resource_type === FormResourceType.EVENT_FORM) {
         queryClient.invalidateQueries([EVENT_QUERY_KEY, data.event.id]);
       }
@@ -41,6 +49,7 @@ export const useUpdateForm = (formId: string): UseMutationResult<Form, RequestRe
       if (data.resource_type === FormResourceType.GROUP_FORM) {
         queryClient.invalidateQueries(GROUPS_QUERY_KEYS.forms.all(data.group.slug));
       }
+      queryClient.invalidateQueries([FORM_QUERY_KEY, TEMPLATE_QUERY_KEY]);
       queryClient.invalidateQueries([FORM_QUERY_KEY, formId]);
       queryClient.setQueryData([FORM_QUERY_KEY, formId], data);
     },
@@ -60,6 +69,7 @@ export const useDeleteForm = (formId: string): UseMutationResult<RequestResponse
       if (data?.resource_type === FormResourceType.GROUP_FORM) {
         queryClient.invalidateQueries(GROUPS_QUERY_KEYS.forms.all(data.group.slug));
       }
+      queryClient.invalidateQueries([FORM_QUERY_KEY, TEMPLATE_QUERY_KEY]);
       queryClient.removeQueries([FORM_QUERY_KEY, formId]);
     },
     onError: (e) => {

@@ -1,13 +1,13 @@
-import { Link } from 'react-router-dom';
-import { urlEncode, formatDate, getJobpostType } from 'utils';
+import { Box, Divider, ListItemButton, Skeleton, Stack, Typography } from '@mui/material';
 import { parseISO } from 'date-fns';
+import { Link } from 'react-router-dom';
 import URLS from 'URLS';
-import { JobPost } from 'types';
-import { Box, Stack, Typography, ListItemButton, Skeleton, Divider } from '@mui/material';
+import { formatDate, getJobpostType, urlEncode } from 'utils';
 
-// Project components
-import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
+import { JobPost } from 'types';
+
 import Paper, { PaperProps } from 'components/layout/Paper';
+import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 
 export type JobPostListItemProps = {
   jobpost: JobPost;

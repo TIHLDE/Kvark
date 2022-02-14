@@ -1,5 +1,6 @@
-import { useState } from 'react';
 import constate from 'constate';
+import { useState } from 'react';
+
 import { GroupFine } from 'types';
 
 /**

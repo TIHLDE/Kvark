@@ -1,18 +1,19 @@
-import { useMemo, useEffect, useState, forwardRef, Ref } from 'react';
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import WikiIcon from '@mui/icons-material/LibraryBooksRounded';
+import { TreeItem, TreeItemContentProps, TreeItemProps, TreeView, useTreeItem } from '@mui/lab';
+import { Box, Divider, Drawer, Fab, IconButton, Theme, Tooltip, Typography, useMediaQuery } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { forwardRef, Ref, useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import URLS from 'URLS';
+
 import { WikiChildren, WikiTree } from 'types';
+
 import { useWikiTree } from 'hooks/Wiki';
-import { Typography, Box, IconButton, Drawer, Fab, useMediaQuery, Theme, Divider, Tooltip } from '@mui/material';
-import { TreeView, TreeItem, TreeItemContentProps, TreeItemProps, useTreeItem } from '@mui/lab';
-import { makeStyles } from 'makeStyles';
+
 import Paper from 'components/layout/Paper';
 import { AlertOnce } from 'components/miscellaneous/UserInformation';
-
-// Icons
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import WikiIcon from '@mui/icons-material/LibraryBooksRounded';
 
 const useStyles = makeStyles()({});
 

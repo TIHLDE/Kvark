@@ -1,35 +1,33 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
-import URLS from 'URLS';
-import { EMAIL_REGEX } from 'constant';
-import { getUserStudyLong, getUserClass } from 'utils';
-import { UserCreate } from 'types';
-import { useCreateUser } from 'hooks/User';
-import { useSetRedirectUrl, useRedirectUrl } from 'hooks/Misc';
-import { useSnackbar } from 'hooks/Snackbar';
-
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import Typography from '@mui/material/Typography';
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import LinearProgress from '@mui/material/LinearProgress';
 import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
+import { EMAIL_REGEX } from 'constant';
+import { makeStyles } from 'makeStyles';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
+import URLS from 'URLS';
+import { getUserClass, getUserStudyLong } from 'utils';
 
-// Icons
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import { UserCreate } from 'types';
 
-// Project Components
-import Page from 'components/navigation/Page';
-import Paper from 'components/layout/Paper';
+import { useConfetti } from 'hooks/Confetti';
+import { useRedirectUrl, useSetRedirectUrl } from 'hooks/Misc';
+import { useSnackbar } from 'hooks/Snackbar';
+import { useCreateUser } from 'hooks/User';
+import { useAnalytics } from 'hooks/Utils';
+
 import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
-import TihldeLogo from 'components/miscellaneous/TihldeLogo';
+import Paper from 'components/layout/Paper';
 import { SecondaryTopBox } from 'components/layout/TopBox';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import TihldeLogo from 'components/miscellaneous/TihldeLogo';
+import Page from 'components/navigation/Page';
 
 const useStyles = makeStyles()((theme) => ({
   paper: {
@@ -70,7 +68,8 @@ type SignUpData = UserCreate & {
 
 const SignUp = () => {
   const { classes } = useStyles();
-  const { event } = useGoogleAnalytics();
+  const { run } = useConfetti();
+  const { event } = useAnalytics();
   const navigate = useNavigate();
   const createUser = useCreateUser();
   const showSnackbar = useSnackbar();
@@ -105,6 +104,7 @@ const SignUp = () => {
     } as UserCreate;
     createUser.mutate(userData, {
       onSuccess: () => {
+        run();
         event('signup', 'auth', `Signed up`);
         setLogInRedirectURL(null);
         navigate(redirectURL || URLS.login);

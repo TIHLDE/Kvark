@@ -1,14 +1,16 @@
-import { useMemo } from 'react';
-import { useUserBadges } from 'hooks/User';
-import { Badge } from 'types';
-import Paper from 'components/layout/Paper';
-
-// Material UI Components
-import { makeStyles } from 'makeStyles';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import { makeStyles } from 'makeStyles';
+import { useMemo } from 'react';
+import { useParams } from 'react-router-dom';
+
+import { Badge } from 'types';
+
+import { useUserBadges } from 'hooks/User';
+
 import Pagination from 'components/layout/Pagination';
+import Paper from 'components/layout/Paper';
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
 const useStyles = makeStyles()((theme) => ({
   paper: {
@@ -60,12 +62,13 @@ const BadgeItem = ({ badge }: BadgeItemProps) => {
 };
 
 const ProfileBadges = () => {
-  const { data, hasNextPage, fetchNextPage, isFetching } = useUserBadges();
+  const { userId } = useParams();
+  const { data, hasNextPage, fetchNextPage, isFetching } = useUserBadges(userId);
   const badges = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
   if (!data) {
     return null;
   } else if (!badges.length) {
-    return <NotFoundIndicator header='Fant ingen badges' subtitle='Du har ingen badges enda' />;
+    return <NotFoundIndicator header='Fant ingen badges' subtitle={`${userId ? 'Brukeren' : 'Du'} har ingen badges enda`} />;
   }
   return (
     <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere badges' nextPage={() => fetchNextPage()}>

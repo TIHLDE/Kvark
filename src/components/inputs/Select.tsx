@@ -2,7 +2,7 @@ import FormControl, { FormControlProps } from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
 import MuiSelect from '@mui/material/Select';
-import { Path, Controller, RegisterOptions, UseFormReturn, FieldError, UnpackNestedValue, PathValue, FieldValues } from 'react-hook-form';
+import { Controller, FieldError, FieldValues, Path, PathValue, RegisterOptions, UnpackNestedValue, UseFormReturn } from 'react-hook-form';
 
 export type SelectProps<FormValues extends FieldValues = FieldValues> = FormControlProps &
   Pick<UseFormReturn<FormValues>, 'formState' | 'control'> & {

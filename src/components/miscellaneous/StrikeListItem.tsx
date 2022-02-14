@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { parseISO } from 'date-fns';
-import { Strike, UserBase } from 'types';
-import { formatDate } from 'utils';
-import { useUser } from 'hooks/User';
-import { useDeleteStrike } from 'hooks/Strike';
-import { ListItem, ListItemButton, ListItemProps, Typography, Collapse, Stack, Divider, ListItemText } from '@mui/material';
-
-// Icons
 import Delete from '@mui/icons-material/DeleteRounded';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import { Collapse, Divider, ListItem, ListItemButton, ListItemProps, ListItemText, Stack, Typography } from '@mui/material';
+import { parseISO } from 'date-fns';
+import { useState } from 'react';
+import { formatDate } from 'utils';
+
+import { Strike, UserBase } from 'types';
+
+import { useDeleteStrike } from 'hooks/Strike';
+import { useUserPermissions } from 'hooks/User';
 
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
@@ -22,7 +22,7 @@ export type StrikeProps = {
 } & ListItemProps;
 
 const StrikeListItem = ({ strike, user, displayUserInfo = false, ...props }: StrikeProps) => {
-  const { data: loggedInUser } = useUser();
+  const { data: permissions } = useUserPermissions();
   const deleteStrike = useDeleteStrike(user.user_id);
   const [expanded, setExpanded] = useState(false);
   const deleteHandler = () => deleteStrike.mutate(strike.id);
@@ -42,14 +42,14 @@ const StrikeListItem = ({ strike, user, displayUserInfo = false, ...props }: Str
         <Divider />
         <Stack gap={1} sx={{ p: 2 }}>
           <div>
-            {loggedInUser?.permissions.strike.read && Boolean(strike.creator) && (
+            {permissions?.permissions.strike.read && Boolean(strike.creator) && (
               <Typography variant='subtitle2'>{`Opprettet av: ${strike.creator?.first_name} ${strike.creator?.last_name}`}</Typography>
             )}
             <Typography variant='subtitle2'>{`Opprettet: ${formatDate(parseISO(strike.created_at))}`}</Typography>
             {displayUserInfo && <Typography variant='subtitle2'>{`Begrunnelse: ${strike.description}`}</Typography>}
           </div>
           {strike.event !== undefined && <EventListItem event={strike.event} />}
-          {loggedInUser?.permissions.strike.destroy && (
+          {permissions?.permissions.strike.destroy && (
             <VerifyDialog color='error' contentText={`Er du sikker på at du vil slette denne prikken?`} onConfirm={deleteHandler} startIcon={<Delete />}>
               Slett prikk
             </VerifyDialog>

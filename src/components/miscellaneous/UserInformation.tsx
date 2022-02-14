@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import { usePersistedState } from 'hooks/Utils';
-import { Typography, TypographyProps, Box, Tooltip, Alert, AlertProps, SxProps, Theme } from '@mui/material';
 import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
+import { Alert, AlertProps, Box, SxProps, Theme, Tooltip, TooltipProps, Typography, TypographyProps } from '@mui/material';
+import { useState } from 'react';
+
+import { usePersistedState } from 'hooks/Utils';
 
 export type ShowMoreTextProps = {
   children: TypographyProps['children'];
@@ -28,11 +29,11 @@ export const ShowMoreText = ({ children, sx = [] }: ShowMoreTextProps) => {
 };
 
 export type ShowMoreTooltipProps = {
-  children: string;
+  children: TooltipProps['title'];
 };
 
 export const ShowMoreTooltip = ({ children }: ShowMoreTooltipProps) => (
-  <Tooltip sx={{ fontSize: 'inherit', ml: 0.5, mb: -0.25 }} title={children}>
+  <Tooltip arrow sx={{ fontSize: 'inherit', ml: 0.5, mb: -0.25 }} title={children}>
     <HelpOutlineRoundedIcon />
   </Tooltip>
 );

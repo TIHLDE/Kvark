@@ -1,23 +1,19 @@
+import PersonOutlineIcon from '@mui/icons-material/PersonRounded';
+import LightIcon from '@mui/icons-material/WbSunnyRounded';
+import { Button, IconButton, Theme, useTheme } from '@mui/material';
+import { makeStyles } from 'makeStyles';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
-import { useUser } from 'hooks/User';
+
 import { useSetRedirectUrl } from 'hooks/Misc';
+import { useUser } from 'hooks/User';
+import { useAnalytics } from 'hooks/Utils';
 
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import { Theme, Button, IconButton, useTheme } from '@mui/material';
-
-// Assets/Icons
-import PersonOutlineIcon from '@mui/icons-material/PersonRounded';
-import LightIcon from '@mui/icons-material/WbSunnyRounded';
-
-// Project Components
 import Avatar from 'components/miscellaneous/Avatar';
 import ThemeSettings from 'components/miscellaneous/ThemeSettings';
-import TopbarNotifications from 'components/navigation/TopbarNotifications';
 import { NavigationOptions } from 'components/navigation/Navigation';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import TopbarNotifications from 'components/navigation/TopbarNotifications';
 
 const useStyles = makeStyles<ProfileTopbarButtonProps>()((theme, props) => ({
   themeButton: {
@@ -40,7 +36,7 @@ export const getColor = ({ darkColor, lightColor }: ProfileTopbarButtonProps, th
 export type ProfileTopbarButtonProps = Pick<NavigationOptions, 'darkColor' | 'lightColor'>;
 
 const ProfileTopbarButton = (props: ProfileTopbarButtonProps) => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const { classes } = useStyles(props);
   const { data: user } = useUser();
   const theme = useTheme();

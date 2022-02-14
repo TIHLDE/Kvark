@@ -3,18 +3,21 @@ import LawIcon from '@mui/icons-material/GavelRounded';
 import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
 import InfoIcon from '@mui/icons-material/InfoRounded';
 import FineIcon from '@mui/icons-material/LocalAtmRounded';
-import { Divider, IconButton, Stack, Typography, Box } from '@mui/material';
+import { Box, Divider, IconButton, Stack, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { Link, Navigate, Route, Routes, useParams } from 'react-router-dom';
 import URLS from 'URLS';
+
 import { useGroup } from 'hooks/Group';
 import { useIsAuthenticated } from 'hooks/User';
+
 import GroupInfo from 'pages/Groups/about';
 import GroupAdmin from 'pages/Groups/components/GroupAdmin';
 import GroupFines from 'pages/Groups/fines';
 import { FinesProvider } from 'pages/Groups/fines/FinesContext';
 import GroupForms from 'pages/Groups/forms';
 import GroupLaws from 'pages/Groups/laws';
+
 import { RouterTabs } from 'components/layout/Tabs';
 import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
 import { useSetNavigationOptions } from 'components/navigation/Navigation';

@@ -1,28 +1,28 @@
-import { useCallback, useMemo, useEffect } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { JobPost } from 'types';
-import { JobPostType } from 'types/Enums';
-import { useJobPostById, useCreateJobPost, useUpdateJobPost, useDeleteJobPost } from 'hooks/JobPost';
-import { useSnackbar } from 'hooks/Snackbar';
+import { Grid, LinearProgress, MenuItem } from '@mui/material';
 import { EMAIL_REGEX } from 'constant';
 import { parseISO } from 'date-fns';
-
-// Material-UI
 import { makeStyles } from 'makeStyles';
-import { Grid, LinearProgress, MenuItem } from '@mui/material';
+import { useCallback, useEffect, useMemo } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { getJobpostType } from 'utils';
 
-// Project components
+import { JobPost } from 'types';
+import { JobPostType } from 'types/Enums';
+
+import { useCreateJobPost, useDeleteJobPost, useJobPostById, useUpdateJobPost } from 'hooks/JobPost';
+import { useSnackbar } from 'hooks/Snackbar';
+
 import JobPostRenderer from 'pages/JobPostDetails/components/JobPostRenderer';
-import MarkdownEditor from 'components/inputs/MarkdownEditor';
-import SubmitButton from 'components/inputs/SubmitButton';
-import Select from 'components/inputs/Select';
+
 import Bool from 'components/inputs/Bool';
 import DatePicker from 'components/inputs/DatePicker';
+import MarkdownEditor from 'components/inputs/MarkdownEditor';
+import Select from 'components/inputs/Select';
+import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import { ImageUpload } from 'components/inputs/Upload';
-import RendererPreview from 'components/miscellaneous/RendererPreview';
 import VerifyDialog from 'components/layout/VerifyDialog';
-import { getJobpostType } from 'utils';
+import RendererPreview from 'components/miscellaneous/RendererPreview';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {
@@ -193,7 +193,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
             />
             <TextField formState={formState} label='Link' {...register('link')} />
           </div>
-          <ImageUpload formState={formState} label='Velg logo' ratio={21 / 9} register={register('image')} setValue={setValue} watch={watch} />
+          <ImageUpload formState={formState} label='Velg logo' ratio='21:9' register={register('image')} setValue={setValue} watch={watch} />
           <TextField formState={formState} label='Alternativ bildetekst' {...register('image_alt')} />
           <div className={classes.grid}>
             <TextField formState={formState} label='Bedrift' {...register('company', { required: 'Du må oppgi en bedrift' })} required />

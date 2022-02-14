@@ -1,9 +1,9 @@
 import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
 
 /**
- * Google Analytics measurement-ID
+ * Plausible analytics-domain
  */
-export const GA_MEASUREMENT_ID = import.meta.env.VITE_ANALYTICS;
+export const PLAUSIBLE_DOMAIN = import.meta.env.VITE_PLAUSIBLE_ANALYTICS;
 
 /**
  * Url to backend

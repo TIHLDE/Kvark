@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IFetch } from 'api/fetch';
-import { MembershipType, Study } from 'types/Enums';
 import {
   Badge,
   Category,
@@ -9,6 +7,7 @@ import {
   Event,
   EventCompact,
   EventRequired,
+  EventStatistics,
   FileUploadResponse,
   Form,
   FormCreate,
@@ -16,11 +15,11 @@ import {
   FormUpdate,
   Group,
   GroupFine,
-  GroupFineCreate,
   GroupFineBatchMutate,
+  GroupFineCreate,
   GroupFineMutate,
-  GroupForm,
   GroupFineStatistics,
+  GroupForm,
   GroupLaw,
   GroupLawMutate,
   GroupMutate,
@@ -33,11 +32,8 @@ import {
   News,
   NewsRequired,
   Notification,
-  WikiPage,
-  WikiChildren,
-  WikiTree,
-  WikiRequired,
   PaginationResponse,
+  PublicRegistration,
   Registration,
   RequestResponse,
   ShortLink,
@@ -47,16 +43,24 @@ import {
   Submission,
   User,
   UserCreate,
+  UserPermissions,
   UserSubmission,
   Warning,
+  WikiChildren,
+  WikiPage,
+  WikiRequired,
+  WikiTree,
 } from 'types';
+import { MembershipType, Study } from 'types/Enums';
+
+import { IFetch } from 'api/fetch';
 
 export const AUTH_ENDPOINT = 'auth';
 export const BADGES_ENDPOINT = 'badges';
 export const CATEGORIES_ENDPOINT = 'categories';
 export const CHEATSHEETS_ENDPOINT = 'cheatsheets';
 export const EVENTS_ENDPOINT = 'events';
-export const EVENT_REGISTRATIONS_ENDPOINT = 'users';
+export const EVENT_REGISTRATIONS_ENDPOINT = 'registrations';
 export const FORMS_ENDPOINT = 'forms';
 export const GROUPS_ENDPOINT = 'groups';
 export const GROUP_LAWS_ENDPOINT = 'laws';
@@ -88,29 +92,37 @@ export default {
     IFetch<RequestResponse>({ method: 'POST', url: `${AUTH_ENDPOINT}/rest-auth/password/reset/`, data: { email: email }, withAuth: false }),
 
   // Events
-  getEvent: (eventId: number) => IFetch<Event>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/` }),
+  getEvent: (eventId: Event['id']) => IFetch<Event>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/` }),
+  getEventStatistics: (eventId: Event['id']) => IFetch<EventStatistics>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/statistics/` }),
   getEvents: (filters?: any) => IFetch<PaginationResponse<EventCompact>>({ method: 'GET', url: `${EVENTS_ENDPOINT}/`, data: filters || {} }),
   getEventsWhereIsAdmin: (filters?: any) => IFetch<PaginationResponse<EventCompact>>({ method: 'GET', url: `${EVENTS_ENDPOINT}/admin/`, data: filters || {} }),
   createEvent: (item: EventRequired) => IFetch<Event>({ method: 'POST', url: `${EVENTS_ENDPOINT}/`, data: item }),
-  updateEvent: (eventId: number, item: Partial<Event>) => IFetch<Event>({ method: 'PUT', url: `${EVENTS_ENDPOINT}/${String(eventId)}/`, data: item }),
-  deleteEvent: (eventId: number) => IFetch<RequestResponse>({ method: 'DELETE', url: `${EVENTS_ENDPOINT}/${String(eventId)}/` }),
-  notifyEventRegistrations: (eventId: number, title: string, message: string) =>
+  updateEvent: (eventId: Event['id'], item: Partial<Event>) => IFetch<Event>({ method: 'PUT', url: `${EVENTS_ENDPOINT}/${String(eventId)}/`, data: item }),
+  deleteEvent: (eventId: Event['id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${EVENTS_ENDPOINT}/${String(eventId)}/` }),
+  notifyEventRegistrations: (eventId: Event['id'], title: string, message: string) =>
     IFetch<RequestResponse>({ method: 'POST', url: `${EVENTS_ENDPOINT}/${String(eventId)}/notify/`, data: { title, message } }),
+  getPublicEventRegistrations: (eventId: Event['id'], filters?: any) =>
+    IFetch<PaginationResponse<PublicRegistration>>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/public_registrations/`, data: filters || {} }),
 
   // Event registrations
-  getRegistration: (eventId: number, userId: string) =>
+  getRegistration: (eventId: Event['id'], userId: User['user_id']) =>
     IFetch<Registration>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/${EVENT_REGISTRATIONS_ENDPOINT}/${userId}/` }),
-  getEventRegistrations: (eventId: number) =>
-    IFetch<Array<Registration>>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/${EVENT_REGISTRATIONS_ENDPOINT}/` }),
-  createRegistration: (eventId: number, item: Partial<Registration>) =>
+  getEventRegistrations: (eventId: Event['id'], filters?: any) =>
+    IFetch<PaginationResponse<Registration>>({
+      method: 'GET',
+      url: `${EVENTS_ENDPOINT}/${String(eventId)}/${EVENT_REGISTRATIONS_ENDPOINT}/`,
+      data: filters || {},
+    }),
+  createRegistration: (eventId: Event['id'], item: Partial<Registration>) =>
     IFetch<Registration>({ method: 'POST', url: `${EVENTS_ENDPOINT}/${String(eventId)}/${EVENT_REGISTRATIONS_ENDPOINT}/`, data: item }),
-  updateRegistration: (eventId: number, item: Partial<Registration>, userId: string) =>
+  updateRegistration: (eventId: Event['id'], item: Partial<Registration>, userId: User['user_id']) =>
     IFetch<Registration>({ method: 'PUT', url: `${EVENTS_ENDPOINT}/${String(eventId)}/${EVENT_REGISTRATIONS_ENDPOINT}/${userId}/`, data: item }),
-  deleteRegistration: (eventId: number, userId: string) =>
+  deleteRegistration: (eventId: Event['id'], userId: User['user_id']) =>
     IFetch<RequestResponse>({ method: 'DELETE', url: `${EVENTS_ENDPOINT}/${String(eventId)}/${EVENT_REGISTRATIONS_ENDPOINT}/${userId}/` }),
 
   // Forms
   getForm: (formId: string) => IFetch<Form>({ method: 'GET', url: `${FORMS_ENDPOINT}/${formId}/` }),
+  getFormTemplates: () => IFetch<Array<Form>>({ method: 'GET', url: `${FORMS_ENDPOINT}/` }),
   getFormStatistics: (formId: string) => IFetch<FormStatistics>({ method: 'GET', url: `${FORMS_ENDPOINT}/${formId}/statistics/` }),
   createForm: (item: FormCreate) => IFetch<Form>({ method: 'POST', url: `${FORMS_ENDPOINT}/`, data: item }),
   updateForm: (formId: string, item: FormUpdate) => IFetch<Form>({ method: 'PUT', url: `${FORMS_ENDPOINT}/${formId}/`, data: item }),
@@ -137,20 +149,24 @@ export default {
   deleteNewsItem: (id: number) => IFetch<RequestResponse>({ method: 'DELETE', url: `${NEWS_ENDPOINT}/${String(id)}/` }),
 
   // User
-  getUserData: () => IFetch<User>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/` }),
-  getUserBadges: (filters?: any) =>
-    IFetch<PaginationResponse<Badge>>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/${BADGES_ENDPOINT}/`, data: filters || {} }),
-  getUserEvents: (filters?: any) =>
-    IFetch<PaginationResponse<EventCompact>>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/${EVENTS_ENDPOINT}/`, data: filters || {} }),
+  getUserData: (userId?: User['user_id']) => IFetch<User>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/` }),
+  getUserPermissions: () => IFetch<UserPermissions>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/permissions/` }),
+  getUserBadges: (userId?: User['user_id'], filters?: any) =>
+    IFetch<PaginationResponse<Badge>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${BADGES_ENDPOINT}/`, data: filters || {} }),
+  getUserEvents: (userId?: User['user_id'], filters?: any) =>
+    IFetch<PaginationResponse<EventCompact>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${EVENTS_ENDPOINT}/`, data: filters || {} }),
   getUserForms: (filters?: any) =>
     IFetch<PaginationResponse<Form>>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/${FORMS_ENDPOINT}/`, data: filters || {} }),
-  getUserGroups: () => IFetch<Array<Group>>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/${GROUPS_ENDPOINT}/` }),
+  getUserGroups: (userId?: User['user_id']) => IFetch<Array<Group>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${GROUPS_ENDPOINT}/` }),
   getUsers: (filters?: any) => IFetch<PaginationResponse<User>>({ method: 'GET', url: `${USERS_ENDPOINT}/`, data: filters || {} }),
   updateUserData: (userName: string, item: Partial<User>) => IFetch<User>({ method: 'PUT', url: `${USERS_ENDPOINT}/${userName}/`, data: item }),
   activateUser: (userName: string) => IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/activate/`, data: { user_id: userName } }),
   declineUser: (userName: string, reason: string) =>
     IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/decline/`, data: { user_id: userName, reason } }),
-  getUserStrikes: (userId?: string) => IFetch<Array<Strike>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${STRIKES_ENDPOINT}/` }),
+  exportUserData: () => IFetch<RequestResponse>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/data/` }),
+  deleteUser: (userId?: User['user_id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/` }),
+  getUserStrikes: (userId?: User['user_id']) =>
+    IFetch<Array<Strike>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${STRIKES_ENDPOINT}/` }),
 
   // Notifications
   getNotifications: (filters?: any) => IFetch<PaginationResponse<Notification>>({ method: 'GET', url: `${NOTIFICATIONS_ENDPOINT}/`, data: filters || {} }),

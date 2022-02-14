@@ -1,15 +1,18 @@
+import { TextField as MuiTextField, Stack } from '@mui/material';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Form, GroupForm, GroupFormUpdate } from 'types';
-import { FormResourceType } from 'types/Enums';
-import { useUpdateForm, useDeleteForm } from 'hooks/Form';
-import { useSnackbar } from 'hooks/Snackbar';
-import { Stack } from '@mui/material';
+import { removeIdsFromFields } from 'utils';
 
-// Project components
-import VerifyDialog from 'components/layout/VerifyDialog';
-import SubmitButton from 'components/inputs/SubmitButton';
+import { EventForm, Form, FormCreate, GroupForm, GroupFormUpdate, TemplateForm } from 'types';
+import { FormResourceType } from 'types/Enums';
+
+import { useCreateForm, useDeleteForm, useUpdateForm } from 'hooks/Form';
+import { useSnackbar } from 'hooks/Snackbar';
+
 import Bool from 'components/inputs/Bool';
+import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
+import VerifyDialog from 'components/layout/VerifyDialog';
 import { ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
 
 export type FormDetailsEditorProps = {
@@ -117,7 +120,62 @@ const GroupFormDetailsEditor = ({ form }: GroupFormDetailsEditorProps) => {
   );
 };
 
+type EventFormDetailsEditorProps = {
+  form: EventForm | TemplateForm;
+};
+
+const EventFormDetailsEditor = ({ form }: EventFormDetailsEditorProps) => {
+  const createForm = useCreateForm();
+  const [formtemplateName, setFormtemplateName] = useState('');
+  const showSnackbar = useSnackbar();
+
+  const saveAsTemplate = () => {
+    const formTemplate: FormCreate = {
+      title: formtemplateName,
+      fields: removeIdsFromFields(form.fields),
+      resource_type: FormResourceType.FORM,
+      viewer_has_answered: false,
+      template: true,
+    };
+    createForm.mutate(formTemplate, {
+      onSuccess: (data) => {
+        showSnackbar(`Lagret mal med navn "${data.title}"`, 'success');
+      },
+      onError: (e) => {
+        showSnackbar(e.detail, 'error');
+      },
+    });
+  };
+  return (
+    <Stack gap={1}>
+      <VerifyDialog
+        contentText='Når du lager en mal så kan du enkelt bruke feltene i dette skjemaet i andre skjemaer senere. Gi malen en passende tittel.'
+        dialogChildren={
+          <MuiTextField
+            disabled={false}
+            fullWidth
+            label='Tittel'
+            margin='normal'
+            onChange={(e) => setFormtemplateName(e.target.value)}
+            value={formtemplateName}
+          />
+        }
+        onConfirm={saveAsTemplate}
+        title='Lagre som mal'>
+        Lagre som mal
+      </VerifyDialog>
+      <DeleteFormButton form={form} />
+    </Stack>
+  );
+};
+
 const FormDetailsEditor = ({ form }: FormDetailsEditorProps) =>
-  form.resource_type === FormResourceType.GROUP_FORM ? <GroupFormDetailsEditor form={form} /> : <DeleteFormButton form={form} />;
+  form.resource_type === FormResourceType.GROUP_FORM ? (
+    <GroupFormDetailsEditor form={form} />
+  ) : form.resource_type === FormResourceType.EVENT_FORM ? (
+    <EventFormDetailsEditor form={form} />
+  ) : (
+    <DeleteFormButton form={form} />
+  );
 
 export default FormDetailsEditor;

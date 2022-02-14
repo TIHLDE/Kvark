@@ -1,19 +1,20 @@
-import { useState, forwardRef, Ref, useEffect } from 'react';
+import AddIcon from '@mui/icons-material/AddRounded';
+import { Fab, FabProps, ListSubheader, MenuItem } from '@mui/material';
+import { forwardRef, Ref, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useCreateGroupFine, useGroupLaws } from 'hooks/Group';
-import { useSnackbar } from 'hooks/Snackbar';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { formatLawHeader } from 'utils';
+
 import { Group, GroupFineCreate, UserBase } from 'types';
 
-import { Fab, MenuItem, ListSubheader, FabProps } from '@mui/material';
-import AddIcon from '@mui/icons-material/AddRounded';
+import { useCreateGroupFine, useGroupLaws } from 'hooks/Group';
+import { useSnackbar } from 'hooks/Snackbar';
+import { useAnalytics } from 'hooks/Utils';
 
-import Dialog from 'components/layout/Dialog';
 import Select from 'components/inputs/Select';
-import UserSearch from 'components/inputs/UserSearch';
-import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
-import { formatLawHeader } from 'utils';
+import TextField from 'components/inputs/TextField';
+import UserSearch from 'components/inputs/UserSearch';
+import Dialog from 'components/layout/Dialog';
 
 export type AddFineDialogProps = FabProps & {
   groupSlug: Group['slug'];
@@ -24,7 +25,7 @@ type FormValues = Omit<GroupFineCreate, 'user'> & {
 };
 
 const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug, ...props }: AddFineDialogProps, ref: Ref<HTMLButtonElement>) {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const [dialogOpen, setDialogOpen] = useState(false);
   const { data: laws } = useGroupLaws(groupSlug, { enabled: dialogOpen });
   const createFine = useCreateGroupFine(groupSlug);

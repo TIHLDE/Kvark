@@ -1,24 +1,22 @@
-import { useEffect, useCallback, useMemo } from 'react';
-import { useSnackbar } from 'hooks/Snackbar';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { News } from 'types';
-
-// API and store imports
-import { useUpdateNews, useCreateNews, useDeleteNews, useNewsById } from 'hooks/News';
-
-// Material-UI
-import { makeStyles } from 'makeStyles';
 import Grid from '@mui/material/Grid';
 import LinearProgress from '@mui/material/LinearProgress';
+import { makeStyles } from 'makeStyles';
+import { useCallback, useEffect, useMemo } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
-// Project components
-import MarkdownEditor from 'components/inputs/MarkdownEditor';
-import TextField from 'components/inputs/TextField';
-import RendererPreview from 'components/miscellaneous/RendererPreview';
+import { News } from 'types';
+
+import { useCreateNews, useDeleteNews, useNewsById, useUpdateNews } from 'hooks/News';
+import { useSnackbar } from 'hooks/Snackbar';
+
 import NewsRenderer from 'pages/NewsDetails/components/NewsRenderer';
+
+import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import SubmitButton from 'components/inputs/SubmitButton';
+import TextField from 'components/inputs/TextField';
 import { ImageUpload } from 'components/inputs/Upload';
 import VerifyDialog from 'components/layout/VerifyDialog';
+import RendererPreview from 'components/miscellaneous/RendererPreview';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {
@@ -132,7 +130,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
           <TextField formState={formState} label='Tittel' {...register('title', { required: 'Feltet er påkrevd' })} required />
           <TextField formState={formState} label='Header' {...register('header', { required: 'Feltet er påkrevd' })} required />
           <MarkdownEditor formState={formState} label='Innhold' {...register('body', { required: 'Gi nyheten et innhold' })} required />
-          <ImageUpload formState={formState} label='Velg bilde' ratio={21 / 9} register={register('image')} setValue={setValue} watch={watch} />
+          <ImageUpload formState={formState} label='Velg bilde' ratio='21:9' register={register('image')} setValue={setValue} watch={watch} />
           <TextField formState={formState} label='Alternativ bildetekst' {...register('image_alt')} />
           <RendererPreview className={classes.margin} getContent={getNewsPreview} renderer={NewsRenderer} />
           <SubmitButton className={classes.margin} disabled={isUpdating} formState={formState}>

@@ -1,8 +1,8 @@
 import { Outlet } from 'react-router-dom';
 
-import Page from 'components/navigation/Page';
 import Paper from 'components/layout/Paper';
 import { PrimaryTopBox } from 'components/layout/TopBox';
+import Page from 'components/navigation/Page';
 
 const Groups = () => (
   <Page banner={<PrimaryTopBox />}>

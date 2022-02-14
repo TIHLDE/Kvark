@@ -1,10 +1,10 @@
-import { useMemo } from 'react';
-import { makeStyles } from 'makeStyles';
 import Typography from '@mui/material/Typography';
+import { makeStyles } from 'makeStyles';
+import { useMemo } from 'react';
 
-// Project componets
-import NewsListItem, { NewsListItemLoading } from 'components/miscellaneous/NewsListItem';
 import { useNews } from 'hooks/News';
+
+import NewsListItem, { NewsListItemLoading } from 'components/miscellaneous/NewsListItem';
 
 const useStyles = makeStyles()((theme) => ({
   container: {

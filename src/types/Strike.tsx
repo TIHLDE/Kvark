@@ -1,6 +1,6 @@
+import { StrikeReason } from 'types/Enums';
 import { EventCompact } from 'types/Event';
 import { UserBase } from 'types/User';
-import { StrikeReason } from 'types/Enums';
 
 export type Strike = {
   id: string;

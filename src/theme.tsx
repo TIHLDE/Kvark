@@ -1,9 +1,7 @@
-import { createTheme } from '@mui/material/styles';
-
-// Icons
 import DarkIcon from '@mui/icons-material/Brightness2Outlined';
 import AutomaticIcon from '@mui/icons-material/DevicesOutlined';
 import LightIcon from '@mui/icons-material/WbSunnyOutlined';
+import { createTheme } from '@mui/material/styles';
 
 declare module '@mui/material/styles/createPalette' {
   interface TypeBackground {
@@ -150,6 +148,7 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
           rectangular: { borderRadius: BORDER_RADIUS },
         },
       },
+      MuiTooltip: { styleOverrides: { tooltip: { fontSize: '0.85rem' } } },
       MuiContainer: { defaultProps: { maxWidth: 'xl', disableGutters: true } },
       MuiPaper: { defaultProps: { elevation: 0 } },
       MuiLinearProgress: { styleOverrides: { root: { borderRadius: BORDER_RADIUS } } },
