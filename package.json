@@ -30,7 +30,7 @@
     "react-dom": "^17.0.2",
     "react-easy-crop": "^4.0.1",
     "react-helmet": "^6.1.0",
-    "react-hook-form": "^7.12.2",
+    "react-hook-form": "^7.27.0",
     "react-linkify": "^1.0.0-alpha",
     "react-markdown": "^8.0.0",
     "react-palette": "^1.0.1",
