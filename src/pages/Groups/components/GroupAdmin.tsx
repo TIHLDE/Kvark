@@ -1,21 +1,22 @@
+import EditIcon from '@mui/icons-material/Edit';
+import { Button, Collapse } from '@mui/material';
+import { EMAIL_REGEX } from 'constant';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { EMAIL_REGEX } from 'constant';
+
+import { Group } from 'types';
+
 import { useUpdateGroup } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
-import { Group } from 'types';
-import { Button, Collapse } from '@mui/material';
-
-import EditIcon from '@mui/icons-material/Edit';
 
 import Bool from 'components/inputs/Bool';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
-import UserSearch from 'components/inputs/UserSearch';
-import TextField from 'components/inputs/TextField';
 import SubmitButton from 'components/inputs/SubmitButton';
+import TextField from 'components/inputs/TextField';
+import { ImageUpload } from 'components/inputs/Upload';
+import UserSearch from 'components/inputs/UserSearch';
 import Dialog from 'components/layout/Dialog';
 import { ShowMoreText, ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
-import { ImageUpload } from 'components/inputs/Upload';
 
 export type UpdateGroupModalProps = {
   group: Group;

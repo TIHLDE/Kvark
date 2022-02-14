@@ -1,15 +1,17 @@
+import { Mail } from '@mui/icons-material';
+import MembersIcon from '@mui/icons-material/PersonRounded';
+import { ButtonBase, Divider, Skeleton, Stack, Theme, Typography } from '@mui/material';
+import { makeStyles } from 'makeStyles';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 
 // Material UI
-import { makeStyles } from 'makeStyles';
-import { Theme, Skeleton, ButtonBase, Typography, Stack, Divider } from '@mui/material';
 
 // Icons
-import MembersIcon from '@mui/icons-material/PersonRounded';
+
 import { Group } from 'types';
+
 import Paper from 'components/layout/Paper';
-import { Mail } from '@mui/icons-material';
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 
 const useStyles = makeStyles()((theme) => ({
