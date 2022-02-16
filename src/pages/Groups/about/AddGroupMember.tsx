@@ -1,14 +1,16 @@
+import AddIcon from '@mui/icons-material/Add';
+import { Button } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { UserBase } from 'types';
-import { Button } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import { useSnackbar } from 'hooks/Snackbar';
-import { useCreateMembership } from 'hooks/Membership';
 
-import Dialog from 'components/layout/Dialog';
-import UserSearch from 'components/inputs/UserSearch';
+import { UserBase } from 'types';
+
+import { useCreateMembership } from 'hooks/Membership';
+import { useSnackbar } from 'hooks/Snackbar';
+
 import SubmitButton from 'components/inputs/SubmitButton';
+import UserSearch from 'components/inputs/UserSearch';
+import Dialog from 'components/layout/Dialog';
 
 export type AddMemberModalProps = {
   groupSlug: string;

@@ -1,22 +1,19 @@
-import { useState } from 'react';
-import URLS from 'URLS';
-import { useNavigate, useParams, Navigate } from 'react-router-dom';
-import { useJobPosts } from 'hooks/JobPost';
-
-// Material-UI
-import { makeStyles } from 'makeStyles';
-import { Typography, Collapse } from '@mui/material';
-
-// Icons
 import EditIcon from '@mui/icons-material/EditRounded';
 import OpenIcon from '@mui/icons-material/OpenInBrowserRounded';
+import { Collapse, Typography } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { useState } from 'react';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import URLS from 'URLS';
 
-// Project components
-import Paper from 'components/layout/Paper';
-import Page from 'components/navigation/Page';
-import Tabs from 'components/layout/Tabs';
-import SidebarList from 'components/layout/SidebarList';
+import { useJobPosts } from 'hooks/JobPost';
+
 import JobPostEditor from 'pages/JobPostAdministration/components/JobPostEditor';
+
+import Paper from 'components/layout/Paper';
+import SidebarList from 'components/layout/SidebarList';
+import Tabs from 'components/layout/Tabs';
+import Page from 'components/navigation/Page';
 
 const useStyles = makeStyles()((theme) => ({
   root: {

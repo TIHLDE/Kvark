@@ -1,15 +1,13 @@
-import { Path, Controller, FieldValues, RegisterOptions, UseFormReturn, FieldError, UnpackNestedValue, PathValue } from 'react-hook-form';
-
-// Material UI Components
 import {
-  styled,
   FormControlLabel,
   FormControlLabelProps,
   Checkbox as MuiCheckbox,
-  Switch as MuiSwitch,
   FormControl as MuiFormControl,
   FormHelperText as MuiFormHelperText,
+  Switch as MuiSwitch,
+  styled,
 } from '@mui/material';
+import { Controller, FieldError, FieldValues, Path, PathValue, RegisterOptions, UnpackNestedValue, UseFormReturn } from 'react-hook-form';
 
 export type BoolProps<FormValues extends FieldValues = FieldValues> = Omit<FormControlLabelProps, 'control'> &
   Pick<UseFormReturn<FormValues>, 'formState' | 'control'> & {

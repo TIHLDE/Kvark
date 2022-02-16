@@ -1,7 +1,7 @@
+import { EventFormType, FormFieldType, FormResourceType } from 'types/Enums';
+import { EventCompact } from 'types/Event';
 import { Group } from 'types/Group';
 import { UserBase } from 'types/User';
-import { EventCompact } from 'types/Event';
-import { FormFieldType, FormResourceType, EventFormType } from 'types/Enums';
 
 // -----------------------------------------------------------
 // Interfaces used for the creating of forms and viewing forms

@@ -1,18 +1,19 @@
+import AddIcon from '@mui/icons-material/AddRounded';
+import { Button, Divider, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useCreateGroupLaw } from 'hooks/Group';
-import { useSnackbar } from 'hooks/Snackbar';
+
 import { Group, GroupLawMutate } from 'types';
 
-import { Divider, Typography, Button } from '@mui/material';
-import AddIcon from '@mui/icons-material/AddRounded';
-
-import Dialog from 'components/layout/Dialog';
-import TextField from 'components/inputs/TextField';
-import SubmitButton from 'components/inputs/SubmitButton';
-import Paper from 'components/layout/Paper';
+import { useCreateGroupLaw } from 'hooks/Group';
+import { useSnackbar } from 'hooks/Snackbar';
 
 import LawItem from 'pages/Groups/laws/LawItem';
+
+import SubmitButton from 'components/inputs/SubmitButton';
+import TextField from 'components/inputs/TextField';
+import Dialog from 'components/layout/Dialog';
+import Paper from 'components/layout/Paper';
 
 export type AddLawDialogProps = {
   groupSlug: Group['slug'];
@@ -87,7 +88,7 @@ const AddLawDialog = ({ groupSlug }: AddLawDialogProps) => {
           <LawItem groupSlug={groupSlug} law={{ ...values, paragraph: values.paragraph || 1, title: values.title || '', id: '-' }} />
         </Paper>
       </Dialog>
-      <Button fullWidth onClick={() => setDialogOpen(true)} startIcon={<AddIcon />} variant='outlined'>
+      <Button fullWidth onClick={() => setDialogOpen(true)} startIcon={<AddIcon />} sx={{ mt: 1 }} variant='outlined'>
         Ny lovparagraf
       </Button>
     </>

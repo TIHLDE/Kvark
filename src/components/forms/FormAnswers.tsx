@@ -1,19 +1,19 @@
+import DownloadIcon from '@mui/icons-material/FileDownloadRounded';
+import { Button, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
+import { ACCESS_TOKEN, TIHLDE_API_URL, TOKEN_HEADER_NAME } from 'constant';
 import { useState } from 'react';
-import { FormFieldType, FormResourceType } from 'types/Enums';
-import { UserSubmission, TextFieldSubmission, SelectFieldSubmission, TextFormField, SelectFormField } from 'types';
-import { useFormById, useFormSubmissions } from 'hooks/Form';
-import { SUBMISSIONS_ENDPOINT, FORMS_ENDPOINT } from 'api/api';
-import { getCookie } from 'api/cookie';
-import { TOKEN_HEADER_NAME, TIHLDE_API_URL, ACCESS_TOKEN } from 'constant';
 import { urlEncode } from 'utils';
 
-// Material UI
-import { Button, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableFooter, TablePagination } from '@mui/material';
-import DownloadIcon from '@mui/icons-material/FileDownloadRounded';
+import { SelectFieldSubmission, SelectFormField, TextFieldSubmission, TextFormField, UserSubmission } from 'types';
+import { FormFieldType, FormResourceType } from 'types/Enums';
 
-// Project components
-import Paper from 'components/layout/Paper';
+import { FORMS_ENDPOINT, SUBMISSIONS_ENDPOINT } from 'api/api';
+import { getCookie } from 'api/cookie';
+
+import { useFormById, useFormSubmissions } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
+
+import Paper from 'components/layout/Paper';
 
 export type FormAnswersProps = {
   formId: string | null;

@@ -1,24 +1,22 @@
+import Button from '@mui/material/Button';
+import LinearProgress from '@mui/material/LinearProgress';
+import Typography from '@mui/material/Typography';
+import { EMAIL_REGEX } from 'constant';
+import { makeStyles } from 'makeStyles';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
-import { EMAIL_REGEX } from 'constant';
-import { useForgotPassword } from 'hooks/User';
+
 import { useSnackbar } from 'hooks/Snackbar';
+import { useForgotPassword } from 'hooks/User';
+import { useAnalytics } from 'hooks/Utils';
 
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import LinearProgress from '@mui/material/LinearProgress';
-
-// Project Components
-import Page from 'components/navigation/Page';
-import Paper from 'components/layout/Paper';
-import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
+import Paper from 'components/layout/Paper';
 import { SecondaryTopBox } from 'components/layout/TopBox';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import TihldeLogo from 'components/miscellaneous/TihldeLogo';
+import Page from 'components/navigation/Page';
 
 const useStyles = makeStyles()((theme) => ({
   paper: {
@@ -51,7 +49,7 @@ type FormData = {
 
 const ForgotPassword = () => {
   const { classes } = useStyles();
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const forgotPassword = useForgotPassword();
   const showSnackbar = useSnackbar();
   const { register, formState, handleSubmit, setError } = useForm<FormData>();

@@ -1,10 +1,12 @@
-import { Typography, Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import StrikeListItem from 'components/miscellaneous/StrikeListItem';
-import { useUserStrikes, useUser } from 'hooks/User';
 import URLS from 'URLS';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+
+import { useUser, useUserStrikes } from 'hooks/User';
+
 import Paper from 'components/layout/Paper';
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import StrikeListItem from 'components/miscellaneous/StrikeListItem';
 
 function ProfileStrikes() {
   const { data = [] } = useUserStrikes();
