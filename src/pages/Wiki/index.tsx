@@ -1,22 +1,24 @@
+import { Breadcrumbs, Skeleton, Stack, styled, Typography } from '@mui/material';
 import { useEffect, useMemo } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import URLS, { WIKI_URLS } from 'URLS';
-import { useWikiPage } from 'hooks/Wiki';
-import { useGroups } from 'hooks/Group';
-import { WikiPage } from 'types';
-import { Typography, Breadcrumbs, Skeleton, Stack, styled } from '@mui/material';
 
-// Project Components
-import Page from 'components/navigation/Page';
-import Banner from 'components/layout/Banner';
-import Paper from 'components/layout/Paper';
-import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
+import { WikiPage } from 'types';
+
+import { useGroups } from 'hooks/Group';
+import { useWikiPage } from 'hooks/Wiki';
+
 import GroupItem from 'pages/Groups/overview/GroupItem';
 import WikiAdmin from 'pages/Wiki/components/WikiAdmin';
 import WikiNavigator from 'pages/Wiki/components/WikiNavigator';
 import WikiSearch from 'pages/Wiki/components/WikiSearch';
-import ShareButton from 'components/miscellaneous/ShareButton';
 import Index from 'pages/Wiki/specials/Index';
+
+import Banner from 'components/layout/Banner';
+import Paper from 'components/layout/Paper';
+import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
+import ShareButton from 'components/miscellaneous/ShareButton';
+import Page from 'components/navigation/Page';
 
 const Root = styled('div')(({ theme }) => ({
   display: 'grid',

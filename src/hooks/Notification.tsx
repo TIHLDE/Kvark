@@ -1,7 +1,10 @@
-import { useState, useEffect } from 'react';
-import { useInfiniteQuery, useQueryClient, UseInfiniteQueryOptions, InfiniteData, QueryKey } from 'react-query';
-import API from 'api/api';
+import { useEffect, useState } from 'react';
+import { InfiniteData, QueryKey, useInfiniteQuery, UseInfiniteQueryOptions, useQueryClient } from 'react-query';
+
 import { Notification, PaginationResponse, RequestResponse } from 'types';
+
+import API from 'api/api';
+
 import { USER_QUERY_KEY } from 'hooks/User';
 
 export const NOTIFICATION_QUERY_KEY = 'notification';

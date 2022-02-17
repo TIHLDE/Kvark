@@ -1,8 +1,10 @@
-import { useState } from 'react';
 import { Button, Grid, Stack, TextField, Typography } from '@mui/material';
+import { useState } from 'react';
+
 import { useBadge } from 'hooks/Badge';
-import Paper from 'components/layout/Paper';
 import { useSnackbar } from 'hooks/Snackbar';
+
+import Paper from 'components/layout/Paper';
 
 export type BadgeInputProps = {
   flagCount: number;

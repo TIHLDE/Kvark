@@ -1,20 +1,21 @@
+import { Button, LinearProgress, Stack, Typography } from '@mui/material';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { removeIdsFromFields } from 'utils';
+
 import { EventFormCreate, Form, FormCreate } from 'types';
 import { EventFormType, FormResourceType } from 'types/Enums';
-import { useState } from 'react';
-import { useEventById } from 'hooks/Event';
-import { useForm } from 'react-hook-form';
-import { Typography, LinearProgress, Stack, Button } from '@mui/material';
 
-// Project
+import { useEventById } from 'hooks/Event';
+import { useCreateForm, useDeleteForm, useFormById, useFormTemplates } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
-import { useCreateForm, useFormTemplates, useDeleteForm, useFormById } from 'hooks/Form';
-import { removeIdsFromFields } from 'utils';
-import VerifyDialog from 'components/layout/VerifyDialog';
+
+import FormAdmin from 'components/forms/FormAdmin';
+import FormFieldsEditor from 'components/forms/FormFieldsEditor';
 import FormView from 'components/forms/FormView';
 import Expand from 'components/layout/Expand';
-import FormAdmin from 'components/forms/FormAdmin';
+import VerifyDialog from 'components/layout/VerifyDialog';
 import { ShowMoreText } from 'components/miscellaneous/UserInformation';
-import FormFieldsEditor from 'components/forms/FormFieldsEditor';
 
 export type EventFormAdminProps = {
   eventId: number;

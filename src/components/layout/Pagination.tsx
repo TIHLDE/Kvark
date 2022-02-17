@@ -1,7 +1,5 @@
-import { ReactNode } from 'react';
-
-// Material UI Components
 import { Button, ButtonProps, Collapse } from '@mui/material';
+import { ReactNode } from 'react';
 
 export type PaginationProps = ButtonProps & {
   children?: ReactNode;
@@ -11,7 +9,7 @@ export type PaginationProps = ButtonProps & {
   label?: string;
 };
 
-const Pagination = ({ children, isLoading, nextPage, hasNextPage, label = 'Vis flere elementer', ...props }: PaginationProps) => (
+const Pagination = ({ children, isLoading, nextPage, hasNextPage, label = 'Last inn mer', ...props }: PaginationProps) => (
   <>
     {children}
     <Collapse in={Boolean(hasNextPage && !isLoading)}>

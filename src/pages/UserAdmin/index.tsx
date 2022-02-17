@@ -1,24 +1,21 @@
-import { Fragment, useEffect, useMemo, useState } from 'react';
-import { useUsers } from 'hooks/User';
-
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-
-// Icons
 import MembersIcon from '@mui/icons-material/PlaylistAddCheckRounded';
 import WaitingIcon from '@mui/icons-material/PlaylistAddRounded';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'makeStyles';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 
-// Project Components
-import Page from 'components/navigation/Page';
+import { useUsers } from 'hooks/User';
+
+import PersonListItem, { PersonListItemLoading } from 'pages/UserAdmin/components/PersonListItem';
+
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import Tabs from 'components/layout/Tabs';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import PersonListItem, { PersonListItemLoading } from 'pages/UserAdmin/components/PersonListItem';
 import { PrimaryTopBox } from 'components/layout/TopBox';
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import Page from 'components/navigation/Page';
 
 const useStyles = makeStyles()((theme) => ({
   content: {

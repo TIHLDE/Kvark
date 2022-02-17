@@ -1,17 +1,18 @@
-import { ReactNode, useEffect, useMemo } from 'react';
-import { EventCompact } from 'types';
-import URLS from 'URLS';
-import { Link } from 'react-router-dom';
-import { parseISO } from 'date-fns';
-import { urlEncode } from 'utils';
-import { ViewState, AppointmentModel } from '@devexpress/dx-react-scheduler';
+import { AppointmentModel, ViewState } from '@devexpress/dx-react-scheduler';
+import { Appointments, DateNavigator, MonthView, Scheduler, Toolbar } from '@devexpress/dx-react-scheduler-material-ui';
 import { useTheme } from '@mui/material';
-import { Scheduler, MonthView, Toolbar, DateNavigator, Appointments } from '@devexpress/dx-react-scheduler-material-ui';
+import { parseISO } from 'date-fns';
+import { ReactNode, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import URLS from 'URLS';
+import { urlEncode } from 'utils';
 
-// Project components
-import Paper from 'components/layout/Paper';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import { EventCompact } from 'types';
 import { Groups } from 'types/Enums';
+
+import { useAnalytics } from 'hooks/Utils';
+
+import Paper from 'components/layout/Paper';
 
 export type EventsCalendarViewProps = {
   events: Array<EventCompact>;
@@ -38,7 +39,7 @@ const Appointment = ({ children, data }: AppointmentProps) => {
 };
 
 const EventsCalendarView = ({ events, oldEvents }: EventsCalendarViewProps) => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
 
   useEffect(() => {
     event('open', 'calendar', 'Open calendar on landing page');

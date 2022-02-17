@@ -1,13 +1,14 @@
+import { Stack } from '@mui/material';
+import { Fragment, useMemo } from 'react';
+
 import { useStrikes } from 'hooks/Strike';
 
-// Project Components
+import { PersonListItemLoading } from 'pages/UserAdmin/components/PersonListItem';
+
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import { PersonListItemLoading } from 'pages/UserAdmin/components/PersonListItem';
 import StrikeListItem from 'components/miscellaneous/StrikeListItem';
-import { Fragment, useMemo } from 'react';
-import { Stack } from '@mui/material';
 
 const AllStrikesList = () => {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useStrikes();

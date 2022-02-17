@@ -1,61 +1,41 @@
-import { useState, useMemo, useCallback } from 'react';
+import CopyIcon from '@mui/icons-material/FileCopyOutlined';
+import { Alert, AlertTitle, Box, Button, Checkbox, Divider, FormControlLabel, LinearProgress, List, Stack, Typography } from '@mui/material';
+import { useCallback, useMemo, useState } from 'react';
+
+import { Event } from 'types';
+
 import { useEventById, useEventRegistrations } from 'hooks/Event';
 import { useSnackbar } from 'hooks/Snackbar';
-import { Registration } from 'types';
 
-// Material-UI
-import { Typography, Stack, Divider, FormControlLabel, Checkbox, Button, List, LinearProgress, Box } from '@mui/material';
-
-// Icons
-import CopyIcon from '@mui/icons-material/FileCopyOutlined';
-
-// Project
-import Participant from 'pages/EventAdministration/components/Participant';
-import EventParticipantsStatistics from 'pages/EventAdministration/components/EventParticipantsStatistics';
 import EventMessageSender from 'pages/EventAdministration/components/EventMessageSender';
+import EventStatistics from 'pages/EventAdministration/components/EventStatistics';
+import Participant from 'pages/EventAdministration/components/Participant';
 
-export type EventParticipantsProps = {
-  eventId: number;
+import Pagination from 'components/layout/Pagination';
+
+type RegistrationsProps = {
+  onWait?: boolean;
+  eventId: Event['id'];
 };
 
-const EventParticipants = ({ eventId }: EventParticipantsProps) => {
-  const { data, isLoading } = useEventById(eventId);
-  const { data: participants } = useEventRegistrations(eventId);
-  const showSnackbar = useSnackbar();
+const Registrations = ({ onWait = false, eventId }: RegistrationsProps) => {
   const [showOnlyNotAttended, setShowOnlyNotAttended] = useState(false);
-
-  const registrationsOnWaitlist = useMemo(() => (participants || []).filter((user) => user.is_on_wait), [participants]);
-  const registrationsNotOnWait = useMemo(() => (participants || []).filter((user) => !user.is_on_wait), [participants]);
-
-  type ParticipantsProps = {
-    onWaitlist?: boolean;
-    onlyNotAttended?: boolean;
-    registrations: Array<Registration>;
-  };
-
-  const Participants = ({ registrations, onWaitlist = false, onlyNotAttended = false }: ParticipantsProps) => {
-    if (registrations.length) {
-      return (
-        <>
-          <Stack direction='row' sx={{ justifyContent: 'space-between' }}>
-            <Typography variant='caption'>Detaljer</Typography>
-            {!onWaitlist && <Typography variant='caption'>Ankommet</Typography>}
-          </Stack>
-          <List>
-            {(onlyNotAttended ? registrations.filter((user) => !user.has_attended) : registrations).map((registration) => (
-              <Participant eventId={eventId} key={registration.registration_id} registration={registration} />
-            ))}
-          </List>
-        </>
-      );
-    } else {
-      return <Typography>Ingen påmeldte.</Typography>;
-    }
-  };
+  const { data, hasNextPage, isFetching, isLoading, fetchNextPage } = useEventRegistrations(eventId, { is_on_wait: onWait });
+  const registrations = useMemo(
+    () =>
+      data
+        ? data.pages
+            .map((page) => page.results)
+            .flat()
+            .filter((registration) => !showOnlyNotAttended || !registration.has_attended)
+        : [],
+    [data, showOnlyNotAttended],
+  );
+  const showSnackbar = useSnackbar();
 
   const getEmails = useCallback(() => {
     let emails = '';
-    const participants = registrationsNotOnWait;
+    const participants = registrations;
     participants.forEach((participant, i) => {
       emails += participant.user_info.email;
       if (i < participants.length - 1) {
@@ -63,7 +43,7 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
       }
     });
     return emails;
-  }, [registrationsNotOnWait]);
+  }, [registrations]);
 
   const copyEmails = () => {
     const tempInput = document.createElement('textarea');
@@ -75,46 +55,75 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
     showSnackbar('Epostene ble kopiert til utklippstavlen', 'info');
   };
 
+  return (
+    <>
+      <Stack direction='row' sx={{ mt: 2, justifyContent: 'space-between' }}>
+        <Typography variant='h3'>{`${onWait ? 'Venteliste' : 'Påmeldte'} (${data?.pages[0]?.count || 0})`}</Typography>
+        {!onWait && (
+          <FormControlLabel
+            control={<Checkbox checked={showOnlyNotAttended} onChange={(e) => setShowOnlyNotAttended(e.target.checked)} sx={{ my: -0.75 }} />}
+            label='Ikke ankommet'
+            labelPlacement='start'
+          />
+        )}
+      </Stack>
+      {isLoading ? null : registrations.length ? (
+        <>
+          <Stack direction='row' sx={{ justifyContent: 'space-between' }}>
+            <Typography variant='caption'>Detaljer</Typography>
+            {!onWait && <Typography variant='caption'>Ankommet</Typography>}
+          </Stack>
+          <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
+            <List dense disablePadding>
+              {registrations.map((registration) => (
+                <Participant eventId={eventId} key={registration.registration_id} registration={registration} />
+              ))}
+            </List>
+            {!onWait && !hasNextPage && (
+              <>
+                <Alert color='warning' sx={{ mb: 1 }} variant='outlined'>
+                  <AlertTitle>Sende epost?</AlertTitle>
+                  Bruk &quot;Send epost til deltagere&quot; hvis du kan. Det er lurt at alle eposter kommer fra samme epost og ser like ut for at brukerne skal
+                  stole på eposter som mottas. Våre eposter havner heller ikke i søppelpost. Kopier alle eposter kun om du virkelig er nødt til å sende epost
+                  selv.
+                </Alert>
+                <Button endIcon={<CopyIcon />} fullWidth onClick={copyEmails} variant='outlined'>
+                  Kopier alle eposter
+                </Button>
+              </>
+            )}
+          </Pagination>
+        </>
+      ) : (
+        <Typography>{onWait ? 'Ingen på ventelisten' : 'Ingen påmeldte'}</Typography>
+      )}
+    </>
+  );
+};
+
+export type EventParticipantsProps = {
+  eventId: Event['id'];
+};
+
+const EventParticipants = ({ eventId }: EventParticipantsProps) => {
+  const { data, isLoading } = useEventById(eventId);
+
   if (isLoading) {
     return <LinearProgress />;
   }
 
   return (
     <>
-      <Stack direction={{ xs: 'column', lg: 'row' }} sx={{ justifyContent: 'space-between' }}>
-        <Typography variant='h2'>{data?.title || 'Laster...'}</Typography>
-        <Box sx={{ textAlign: { lg: 'end' } }}>
-          <Typography>Antall påmeldte: {registrationsNotOnWait.length}</Typography>
-          <Typography>Antall på venteliste: {registrationsOnWaitlist.length}</Typography>
-        </Box>
-      </Stack>
+      <Typography variant='h2'>{data?.title || 'Laster...'}</Typography>
       <Divider sx={{ my: 1 }} />
       <div>
-        {Boolean(registrationsNotOnWait.length) && (
-          <>
-            <Typography variant='h3'>Statistikk</Typography>
-            <Box sx={{ pt: 1, pb: 2 }}>
-              <EventParticipantsStatistics registrations={registrationsNotOnWait} />
-            </Box>
-          </>
-        )}
-        <Stack direction={{ xs: 'column', md: 'row' }} spacing={1} sx={{ mb: 1 }}>
-          <Button endIcon={<CopyIcon />} fullWidth onClick={copyEmails} variant='outlined'>
-            Kopier eposter
-          </Button>
-          <EventMessageSender eventId={eventId} />
-        </Stack>
-        <Stack direction='row' sx={{ justifyContent: 'space-between' }}>
-          <Typography variant='h3'>Påmeldte ({registrationsNotOnWait.length})</Typography>
-          <FormControlLabel
-            control={<Checkbox checked={showOnlyNotAttended} onChange={(e) => setShowOnlyNotAttended(e.target.checked)} sx={{ my: -0.75 }} />}
-            label='Ikke ankommet'
-            labelPlacement='start'
-          />
-        </Stack>
-        <Participants onlyNotAttended={showOnlyNotAttended} registrations={registrationsNotOnWait} />
-        <Typography variant='h3'>Venteliste ({registrationsOnWaitlist.length})</Typography>
-        <Participants onWaitlist registrations={registrationsOnWaitlist} />
+        <Typography variant='h3'>Statistikk</Typography>
+        <Box sx={{ pt: 1, pb: 2 }}>
+          <EventStatistics eventId={eventId} />
+        </Box>
+        <EventMessageSender eventId={eventId} />
+        <Registrations eventId={eventId} />
+        <Registrations eventId={eventId} onWait />
       </div>
     </>
   );

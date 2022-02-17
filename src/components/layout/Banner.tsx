@@ -1,7 +1,8 @@
+import { alpha, Box, Button, Stack, styled, Typography } from '@mui/material';
 import { ReactNode } from 'react';
-import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import { Typography, Button, Stack, styled, alpha, Box } from '@mui/material';
+
 import Container from 'components/layout/Container';
+import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 
 export const BannerButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText(theme.palette.colors.gradient.main.top),

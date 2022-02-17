@@ -1,12 +1,14 @@
+import { Grid, Typography } from '@mui/material';
+
+import { Group } from 'types';
+
 import { useGroupsByType } from 'hooks/Group';
 import { useIsAuthenticated } from 'hooks/User';
-import { useSetNavigationOptions } from 'components/navigation/Navigation';
-import { Group } from 'types';
-import { Typography, Grid } from '@mui/material';
 
-// Project Components
-import Paper from 'components/layout/Paper';
 import GroupItem, { GroupItemLoading } from 'pages/Groups/overview/GroupItem';
+
+import Paper from 'components/layout/Paper';
+import { useSetNavigationOptions } from 'components/navigation/Navigation';
 
 const GroupsOverview = () => {
   useSetNavigationOptions({ title: 'Gruppeoversikt' });

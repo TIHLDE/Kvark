@@ -1,12 +1,13 @@
-import { useParams } from 'react-router-dom';
-import { useGroup } from 'hooks/Group';
 import { Divider } from '@mui/material';
+import { useParams } from 'react-router-dom';
+
+import { useGroup } from 'hooks/Group';
 
 // Project components
 import MembersCard from 'pages/Groups/about/MembersCard';
-import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import MembersHistoryCard from 'pages/Groups/about/MembersHistoryCard';
 
+import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 const GroupInfo = () => {
   const { slug } = useParams<'slug'>();
   const { data: group, isLoading } = useGroup(slug || '-');
@@ -22,10 +23,8 @@ const GroupInfo = () => {
         </>
       )}
       <MembersCard showAdmin slug={group.slug} />
-      <Divider sx={{ mb: 2, mt: 1 }} />
       <MembersHistoryCard slug={group.slug} />
     </>
   );
 };
-
 export default GroupInfo;

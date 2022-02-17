@@ -1,8 +1,9 @@
+import ShareIcon from '@mui/icons-material/Share';
+import { Button, ButtonProps } from '@mui/material';
 import { useMemo } from 'react';
 import URLS from 'URLS';
-import { useGoogleAnalytics, useShare } from 'hooks/Utils';
-import { Button, ButtonProps } from '@mui/material';
-import ShareIcon from '@mui/icons-material/Share';
+
+import { useAnalytics, useShare } from 'hooks/Utils';
 
 export type ShareProps = ButtonProps & {
   title: string;
@@ -11,7 +12,7 @@ export type ShareProps = ButtonProps & {
 };
 
 const ShareButton = ({ shareId, title, shareType, ...props }: ShareProps) => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const [urlFromType, useShortener] = useMemo(() => {
     switch (shareType) {
       case 'event':

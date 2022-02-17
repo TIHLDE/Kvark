@@ -1,23 +1,22 @@
+import Button from '@mui/material/Button';
+import LinearProgress from '@mui/material/LinearProgress';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'makeStyles';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import URLS from 'URLS';
+
+import { useRedirectUrl, useSetRedirectUrl } from 'hooks/Misc';
 import { useLogin } from 'hooks/User';
-import { useSetRedirectUrl, useRedirectUrl } from 'hooks/Misc';
+import { useAnalytics } from 'hooks/Utils';
 
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import LinearProgress from '@mui/material/LinearProgress';
-
-// Project Components
-import Page from 'components/navigation/Page';
-import Paper from 'components/layout/Paper';
-import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
+import Paper from 'components/layout/Paper';
 import { SecondaryTopBox } from 'components/layout/TopBox';
-import { useGoogleAnalytics } from 'hooks/Utils';
+import TihldeLogo from 'components/miscellaneous/TihldeLogo';
+import Page from 'components/navigation/Page';
+
 const useStyles = makeStyles()((theme) => ({
   paper: {
     maxWidth: theme.breakpoints.values.sm,
@@ -56,7 +55,7 @@ type LoginData = {
 const LogIn = () => {
   const { classes } = useStyles();
   const navigate = useNavigate();
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const logIn = useLogin();
   const setLogInRedirectURL = useSetRedirectUrl();
   const redirectURL = useRedirectUrl();

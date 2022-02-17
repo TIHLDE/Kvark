@@ -1,18 +1,19 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { TextField as MuiTextField, Stack } from '@mui/material';
 import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { removeIdsFromFields } from 'utils';
+
 import { EventForm, Form, FormCreate, GroupForm, GroupFormUpdate, TemplateForm } from 'types';
 import { FormResourceType } from 'types/Enums';
-import { useUpdateForm, useDeleteForm, useCreateForm } from 'hooks/Form';
-import { useSnackbar } from 'hooks/Snackbar';
-import { Stack, TextField as MuiTextField } from '@mui/material';
 
-// Project components
-import VerifyDialog from 'components/layout/VerifyDialog';
-import SubmitButton from 'components/inputs/SubmitButton';
+import { useCreateForm, useDeleteForm, useUpdateForm } from 'hooks/Form';
+import { useSnackbar } from 'hooks/Snackbar';
+
 import Bool from 'components/inputs/Bool';
+import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
+import VerifyDialog from 'components/layout/VerifyDialog';
 import { ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
-import { removeIdsFromFields } from 'utils';
 
 export type FormDetailsEditorProps = {
   form: Form;
