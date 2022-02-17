@@ -14,6 +14,9 @@
 
 ## Neste versjon
 
+- ⚡ **Grupper**. Gir bedre beskrivelse til tidligere gruppermedlemmer.
+- ✨ **Gruppe mail og logo visning** Viser en gruppes kontakt mail og logo på oversikt side og mer detaljert side. Samt mulighet for opplasting av gruppe logo.
+
 ## Versjon 2022.02.06
 
 - ⚡ **Sentry**. Lagt til Sentry-feil catching.

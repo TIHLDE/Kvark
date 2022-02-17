@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { urlEncode } from 'utils';
 
-import { EventCompact } from 'types';
+import { Category, EventCompact } from 'types';
 import { Groups } from 'types/Enums';
 
 import { useEvents } from 'hooks/Event';
@@ -16,11 +16,11 @@ import { useAnalytics } from 'hooks/Utils';
 import Paper from 'components/layout/Paper';
 
 type Filters = {
-  start_date_before?: string;
-  start_date_after?: string;
+  start_range?: string;
+  end_range?: string;
 };
 export type EventsCalendarViewProps = {
-  category?: number;
+  category?: Category['id'];
 };
 
 type AppointmentProps = {
@@ -55,7 +55,7 @@ const EventsCalendarView = ({ category }: EventsCalendarViewProps) => {
   useEffect(() => {
     const firstDay = startOfMonth(currentDate);
     const lastDay = endOfMonth(currentDate);
-    setFilters({ start_date_before: lastDay.toLocaleDateString(), start_date_after: firstDay.toLocaleDateString() });
+    setFilters({ end_range: lastDay.toJSON(), start_range: firstDay.toJSON() });
   }, [currentDate]);
   const displayedEvents = useMemo(
     () =>

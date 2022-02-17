@@ -112,7 +112,7 @@ const Events = () => {
         </Select>
       )}
       <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
-      <Bool control={control} formState={formState} label='Åpen påmelding' name='open_for_sign_up' type='switch' />
+      <Bool control={control} formState={formState} label='Kun med åpen påmelding' name='open_for_sign_up' type='switch' />
       <SubmitButton disabled={isFetching} formState={formState}>
         Søk
       </SubmitButton>
