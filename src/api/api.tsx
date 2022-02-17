@@ -2,6 +2,7 @@
 import {
   Badge,
   BadgeCategory,
+  BadgeLeaderboard,
   BadgesOverallLeaderboard,
   Category,
   Cheatsheet,
@@ -210,6 +211,8 @@ export default {
   getBadge: (badgeId: Badge['id']) => IFetch<Badge>({ method: 'GET', url: `${BADGES_ENDPOINT}/${badgeId}/` }),
   getBadges: (filters?: any) => IFetch<PaginationResponse<Badge>>({ method: 'GET', url: `${BADGES_ENDPOINT}/`, data: filters || {} }),
   createUserBadge: (data: { flag: string }) => IFetch<RequestResponse>({ method: 'POST', url: `${BADGES_ENDPOINT}/`, data }),
+  getBadgeLeaderboard: (badgeId: Badge['id'], filters?: any) =>
+    IFetch<PaginationResponse<BadgeLeaderboard>>({ method: 'GET', url: `${BADGES_ENDPOINT}/${badgeId}/${BADGES_LEADERBOARD_ENDPOINT}/`, data: filters || {} }),
   getOverallBadgesLeaderboard: (filters?: any) =>
     IFetch<PaginationResponse<BadgesOverallLeaderboard>>({ method: 'GET', url: `${BADGES_ENDPOINT}/${BADGES_LEADERBOARD_ENDPOINT}/`, data: filters || {} }),
   getBadgeCategories: (filters?: any) =>

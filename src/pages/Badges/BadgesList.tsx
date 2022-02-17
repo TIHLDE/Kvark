@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Alert, Box } from '@mui/material';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -17,12 +17,15 @@ export const BadgesList = () => {
 
   return (
     <>
+      <Alert severity='info' sx={{ my: 1 }} variant='outlined'>
+        Her vises kun offentlige badges. Det kan finnes andre badges som er mulig å få, men som ikke vises her for å hindre at det blir for lett å finne dem.
+      </Alert>
       {isLoading && <BadgeItemLoading />}
-      {!isLoading && !badges && <NotFoundIndicator header='Fant ingen offentlige badges' />}
+      {!isLoading && !badges.length && <NotFoundIndicator header='Fant ingen offentlige badges' />}
       {error && <Paper>{error.detail}</Paper>}
       {data !== undefined && (
         <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 1, py: 1 }}>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 1 }}>
             {badges.map((badge) => (
               <BadgeItem badge={badge} key={badge.id} />
             ))}

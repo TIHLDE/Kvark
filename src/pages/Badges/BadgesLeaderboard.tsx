@@ -20,7 +20,7 @@ export const BadgesLeaderboard = ({ queryResult }: BadgesLeaderboard) => {
 
   return (
     <>
-      {!isLoading && !leaderboardEntries && <NotFoundIndicator header='Ingen har mottatt badges enda' />}
+      {!isLoading && !leaderboardEntries.length && <NotFoundIndicator header='Ingen har mottatt badges enda' />}
       {error && <Paper>{error.detail}</Paper>}
       {data !== undefined && (
         <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
