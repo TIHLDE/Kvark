@@ -14,6 +14,8 @@
 
 ## Neste versjon
 
+- ✨ **Arrangementer**. Alle brukere kan nå se andre brukeres profiler ved å klikke på dem i listen med påmeldte brukere.
+- ✨ **Form**. Lagt til konfetti når man svarer på et spørreskjema
 - ⚡ **Grupper**. Gir bedre beskrivelse til tidligere gruppermedlemmer.
 - ✨ **Gruppe mail og logo visning** Viser en gruppes kontakt mail og logo på oversikt side og mer detaljert side. Samt mulighet for opplasting av gruppe logo.
 
