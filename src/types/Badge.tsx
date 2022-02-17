@@ -16,6 +16,8 @@ export type BadgeCategory = {
   id: string;
   name: string;
   description: string;
+  image: string | null;
+  image_alt: string | null;
 };
 
 export type UserBadge = {

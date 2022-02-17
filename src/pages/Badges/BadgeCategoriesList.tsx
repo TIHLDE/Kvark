@@ -1,4 +1,3 @@
-import CategoryIcon from '@mui/icons-material/CategoryRounded';
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack } from '@mui/material';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
@@ -8,6 +7,7 @@ import { useBadgeCategories } from 'hooks/Badge';
 
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
+import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
 export const BadgeCategoriesList = () => {
@@ -21,12 +21,17 @@ export const BadgeCategoriesList = () => {
       {error && <Paper>{error.detail}</Paper>}
       {data !== undefined && (
         <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-          <Stack component={List} dense gap={1}>
+          <Stack component={List} gap={1}>
             {badgeCategories.map((badgeCategory) => (
               <ListItem component={Paper} disablePadding key={badgeCategory.id} noOverflow noPadding>
                 <ListItemButton component={Link} to={URLS.badges.category_leaderboard(badgeCategory.id)}>
                   <ListItemIcon>
-                    <CategoryIcon />
+                    <AspectRatioImg
+                      alt={badgeCategory.name}
+                      ratio={1}
+                      src={badgeCategory.image || ''}
+                      sx={{ height: 100, borderRadius: (theme) => `${theme.shape.borderRadius}px`, mr: 1 }}
+                    />
                   </ListItemIcon>
                   <ListItemText primary={badgeCategory.name} secondary={badgeCategory.description} />
                 </ListItemButton>

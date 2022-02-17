@@ -26,10 +26,11 @@ import Profile from 'pages/Profile';
 
 import Page from 'components/navigation/Page';
 
-const Badges = lazy(() => import(/* webpackChunkName: "badges" */ 'pages/Badges'));
-const BadgeCategoriesList = lazy(() => import(/* webpackChunkName: "badges" */ 'pages/Badges/BadgeCategoriesList'));
-const BadgesList = lazy(() => import(/* webpackChunkName: "badges" */ 'pages/Badges/BadgesList'));
-const BadgesOverallLeaderboard = lazy(() => import(/* webpackChunkName: "badges" */ 'pages/Badges/BadgesOverallLeaderboard'));
+const Badges = lazy(() => import('pages/Badges'));
+const BadgeCategoriesList = lazy(() => import('pages/Badges/BadgeCategoriesList'));
+const BadgesList = lazy(() => import('pages/Badges/BadgesList'));
+const BadgesOverallLeaderboard = lazy(() => import('pages/Badges/BadgesOverallLeaderboard'));
+const BadgeCategory = lazy(() => import('pages/BadgeCategory'));
 const Cheatsheet = lazy(() => import(/* webpackChunkName: "cheatsheet" */ 'pages/Cheatsheet'));
 const EventAdministration = lazy(() => import(/* webpackChunkName: "event_administration" */ 'pages/EventAdministration'));
 const EventRegistration = lazy(() => import(/* webpackChunkName: "event_registration" */ 'pages/EventRegistration'));
@@ -105,7 +106,10 @@ const AppRoutes = () => {
             <Route element={<BadgeCategoriesList />} path={URLS.badges.category_relative} />
             <Route element={<BadgesList />} path={URLS.badges.public_badges_relative} />
           </Route>
-          <Route element={<p>Category page</p>} path={`${URLS.badges.category_relative}:categoryId/`} />
+          <Route element={<BadgeCategory />} path={`${URLS.badges.category_relative}:categoryId/*`}>
+            <Route element={<BadgesOverallLeaderboard />} index />
+            <Route element={<BadgesList />} path={URLS.badges.category_badges_relative} />
+          </Route>
           <Route element={<p>Badge page</p>} path=':badgeId/' />
         </Route>
         <Route path={URLS.jobposts}>

@@ -60,6 +60,7 @@ import { IFetch } from 'api/fetch';
 export const AUTH_ENDPOINT = 'auth';
 export const BADGES_ENDPOINT = 'badges';
 export const BADGES_LEADERBOARD_ENDPOINT = 'leaderboard';
+export const BADGE_CATEGORIES_ENDPOINT = 'categories';
 export const CATEGORIES_ENDPOINT = 'categories';
 export const CHEATSHEETS_ENDPOINT = 'cheatsheets';
 export const EVENTS_ENDPOINT = 'events';
@@ -209,10 +210,18 @@ export default {
   getBadge: (badgeId: Badge['id']) => IFetch<Badge>({ method: 'GET', url: `${BADGES_ENDPOINT}/${badgeId}/` }),
   getBadges: (filters?: any) => IFetch<PaginationResponse<Badge>>({ method: 'GET', url: `${BADGES_ENDPOINT}/`, data: filters || {} }),
   createUserBadge: (data: { flag: string }) => IFetch<RequestResponse>({ method: 'POST', url: `${BADGES_ENDPOINT}/`, data }),
-  getBadgeCategories: (filters?: any) =>
-    IFetch<PaginationResponse<BadgeCategory>>({ method: 'GET', url: `${BADGES_ENDPOINT}/categories/`, data: filters || {} }),
   getOverallBadgesLeaderboard: (filters?: any) =>
     IFetch<PaginationResponse<BadgesOverallLeaderboard>>({ method: 'GET', url: `${BADGES_ENDPOINT}/${BADGES_LEADERBOARD_ENDPOINT}/`, data: filters || {} }),
+  getBadgeCategories: (filters?: any) =>
+    IFetch<PaginationResponse<BadgeCategory>>({ method: 'GET', url: `${BADGES_ENDPOINT}/${BADGE_CATEGORIES_ENDPOINT}/`, data: filters || {} }),
+  getBadgeCategory: (badgeCategoryId: BadgeCategory['id']) =>
+    IFetch<BadgeCategory>({ method: 'GET', url: `${BADGES_ENDPOINT}/${BADGE_CATEGORIES_ENDPOINT}/${badgeCategoryId}/` }),
+  getBadgeCategoryLeaderboard: (badgeCategoryId: BadgeCategory['id'], filters?: any) =>
+    IFetch<PaginationResponse<BadgesOverallLeaderboard>>({
+      method: 'GET',
+      url: `${BADGES_ENDPOINT}/${BADGE_CATEGORIES_ENDPOINT}/${badgeCategoryId}/${BADGES_LEADERBOARD_ENDPOINT}/`,
+      data: filters || {},
+    }),
 
   // Membership
   getMemberships: (slug: string, filters?: any) =>
