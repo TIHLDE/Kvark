@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { argsToParams } from 'utils';
 
 import { useJobPosts } from 'hooks/JobPost';
+import { useUser } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
 import Bool from 'components/inputs/Bool';
@@ -19,10 +20,7 @@ import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Expand from 'components/layout/Expand';
-import { useUser } from 'hooks/User';
 import Page from 'components/navigation/Page';
-
 
 const useStyles = makeStyles()((theme) => ({
   grid: {
@@ -77,7 +75,6 @@ const JobPosts = () => {
   const { data: user } = useUser();
   const { event } = useAnalytics();
   const getInitialFilters = useCallback((): FormState => {
-  
     const params = new URLSearchParams(location.search);
     const expired = params.get('expired') ? Boolean(params.get('expired') === 'true') : false;
     const search = params.get('search') || undefined;
