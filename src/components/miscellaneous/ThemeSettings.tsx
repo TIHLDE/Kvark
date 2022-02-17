@@ -1,13 +1,11 @@
+import { styled, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { MouseEvent as ReactMouseEvent, useState } from 'react';
+import { themesDetails, ThemeTypes } from 'theme';
+
 import { useThemeSettings } from 'hooks/Theme';
-import { ThemeTypes, themesDetails } from 'theme';
-
-// Material-ui
-import { ToggleButton, ToggleButtonGroup, Typography, styled } from '@mui/material';
-
-// Project components
-import Dialog from 'components/layout/Dialog';
 import { useAnalytics } from 'hooks/Utils';
+
+import Dialog from 'components/layout/Dialog';
 
 const ThemeDialog = styled(Dialog)({
   '& .MuiPaper-root': {

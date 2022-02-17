@@ -1,26 +1,28 @@
-import { ReactNode } from 'react';
 import * as Sentry from '@sentry/react';
-import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseQueryOptions, QueryKey, UseMutationResult } from 'react-query';
-import API from 'api/api';
+import { ACCESS_TOKEN } from 'constant';
+import { ReactNode } from 'react';
+import { QueryKey, useInfiniteQuery, useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryOptions } from 'react-query';
+import { useNavigate } from 'react-router-dom';
+import URLS from 'URLS';
+
 import {
-  User,
-  UserList,
-  Group,
-  UserCreate,
-  Strike,
-  LoginRequestResponse,
-  PaginationResponse,
-  RequestResponse,
   Badge,
   EventCompact,
   Form,
+  Group,
+  LoginRequestResponse,
+  PaginationResponse,
+  RequestResponse,
+  Strike,
+  User,
+  UserCreate,
+  UserList,
   UserPermissions,
 } from 'types';
 import { PermissionApp } from 'types/Enums';
-import { getCookie, setCookie, removeCookie } from 'api/cookie';
-import { ACCESS_TOKEN } from 'constant';
-import { useNavigate } from 'react-router-dom';
-import URLS from 'URLS';
+
+import API from 'api/api';
+import { getCookie, removeCookie, setCookie } from 'api/cookie';
 
 export const USER_QUERY_KEY = 'user';
 export const USER_BADGES_QUERY_KEY = 'user_badges';

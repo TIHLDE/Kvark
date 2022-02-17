@@ -1,22 +1,21 @@
-import { useState } from 'react';
-import URLS from 'URLS';
-import ThemeSettings from 'components/miscellaneous/ThemeSettings';
-import { Link } from 'react-router-dom';
-
-// Material UI Components
+import { Divider, Typography } from '@mui/material';
 import { makeStyles } from 'makeStyles';
-import { Typography, Divider } from '@mui/material';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import URLS from 'URLS';
 
-// Assets import
-import VERCEL from 'assets/icons/vercel.svg';
-import FACEBOOK from 'assets/icons/facebook.svg';
-import TWITTER from 'assets/icons/twitter.svg';
-import INSTAGRAM from 'assets/icons/instagram.svg';
-import SNAPCHAT from 'assets/icons/snapchat.svg';
-import SLACK from 'assets/icons/slack.svg';
-import DISCORD from 'assets/icons/discord.svg';
-import MAINSPONSOR from 'assets/img/mainSponsor.png';
 import { useAnalytics } from 'hooks/Utils';
+
+import ThemeSettings from 'components/miscellaneous/ThemeSettings';
+
+import DISCORD from 'assets/icons/discord.svg';
+import FACEBOOK from 'assets/icons/facebook.svg';
+import INSTAGRAM from 'assets/icons/instagram.svg';
+import SLACK from 'assets/icons/slack.svg';
+import SNAPCHAT from 'assets/icons/snapchat.svg';
+import TWITTER from 'assets/icons/twitter.svg';
+import VERCEL from 'assets/icons/vercel.svg';
+import MAINSPONSOR from 'assets/img/mainSponsor.png';
 
 const useStyles = makeStyles()((theme) => ({
   root: {

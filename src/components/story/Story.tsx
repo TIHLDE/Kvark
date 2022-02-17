@@ -1,19 +1,17 @@
-import { useMemo, useState } from 'react';
-import { EventCompact, News, JobPost } from 'types';
+import { Button, Skeleton, Typography } from '@mui/material';
 import { parseISO } from 'date-fns';
-import { urlEncode, formatDate } from 'utils';
-import URLS from 'URLS';
-
-// Material UI Components
 import { makeStyles } from 'makeStyles';
-import { Skeleton, Typography, Button } from '@mui/material';
+import { useMemo, useState } from 'react';
+import URLS from 'URLS';
+import { formatDate, urlEncode } from 'utils';
 
-// Project components
+import { EventCompact, JobPost, News } from 'types';
+
+import { useAnalytics } from 'hooks/Utils';
+
 import StoryPopup from 'components/story/StoryPopup';
 
-// Icons
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
-import { useAnalytics } from 'hooks/Utils';
 
 const useStyles = makeStyles<Pick<StoryProps, 'fadeColor'>>()((theme, props) => ({
   root: {

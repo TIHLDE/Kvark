@@ -1,7 +1,9 @@
-import ErrorCard from 'pages/Wiki/specials/Index/ErrorCard';
-import ChangelogCard from 'pages/Wiki/specials/Index/ChangelogCard';
-import InfoCard from 'components/layout/InfoCard';
 import { styled } from '@mui/material';
+
+import ChangelogCard from 'pages/Wiki/specials/Index/ChangelogCard';
+import ErrorCard from 'pages/Wiki/specials/Index/ErrorCard';
+
+import InfoCard from 'components/layout/InfoCard';
 
 const List = styled('ul')({
   listStyleType: 'none',

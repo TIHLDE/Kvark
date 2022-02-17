@@ -1,18 +1,15 @@
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import { Collapse, ListItem, ListItemText, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
+import { getUserClass, getUserStudyShort } from 'utils';
+
 import { UserList } from 'types';
-import { getUserStudyShort, getUserClass } from 'utils';
+
 import { useUserStrikes } from 'hooks/User';
 
-// Material-ui
-import { Collapse, ListItem, ListItemText, Stack, Typography } from '@mui/material';
-
-// Icons
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-
-// Project components
-import Avatar from 'components/miscellaneous/Avatar';
 import Paper from 'components/layout/Paper';
+import Avatar from 'components/miscellaneous/Avatar';
 import StrikeListItem from 'components/miscellaneous/StrikeListItem';
 
 export type StrikeListProps = {

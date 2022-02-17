@@ -1,19 +1,21 @@
-import { useState, useCallback, useEffect, useMemo } from 'react';
-import URLS from 'URLS';
+import { MenuItem, styled, TextField } from '@mui/material';
+import { getDay, getHours } from 'date-fns';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import URLS from 'URLS';
 import { getUserStudyShort } from 'utils';
-import { Study } from 'types/Enums';
-import { useInterval } from 'hooks/Utils';
-import { useUser } from 'hooks/User';
-import { useCheatsheet } from 'hooks/Cheatsheet';
-import { MenuItem, TextField, styled } from '@mui/material';
-import { getHours, getDay } from 'date-fns';
 
-// Project Components
-import Banner from 'components/layout/Banner';
-import Page from 'components/navigation/Page';
-import Paper from 'components/layout/Paper';
+import { Study } from 'types/Enums';
+
+import { useCheatsheet } from 'hooks/Cheatsheet';
+import { useUser } from 'hooks/User';
+import { useInterval } from 'hooks/Utils';
+
 import Files from 'pages/Cheatsheet/components/Files';
+
+import Banner from 'components/layout/Banner';
+import Paper from 'components/layout/Paper';
+import Page from 'components/navigation/Page';
 
 const FilterContainer = styled('div')(({ theme }) => ({
   display: 'grid',

@@ -1,24 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMemo } from 'react';
-import { useMutation, UseMutationResult, useQuery, useQueryClient, useInfiniteQuery, UseQueryOptions, UseInfiniteQueryOptions, QueryKey } from 'react-query';
-import API from 'api/api';
+import { QueryKey, useInfiniteQuery, UseInfiniteQueryOptions, useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryOptions } from 'react-query';
+
 import {
   Group,
-  GroupMutate,
-  GroupLaw,
-  GroupLawMutate,
   GroupFine,
+  GroupFineBatchMutate,
   GroupFineCreate,
   GroupFineMutate,
-  GroupFineBatchMutate,
-  GroupForm,
   GroupFineStatistics,
+  GroupForm,
+  GroupLaw,
+  GroupLawMutate,
+  GroupMutate,
   GroupUserFine,
   PaginationResponse,
   RequestResponse,
   User,
 } from 'types';
 import { GroupType } from 'types/Enums';
+
+import API from 'api/api';
 
 export const GROUPS_QUERY_KEYS = {
   all: ['groups'] as const,

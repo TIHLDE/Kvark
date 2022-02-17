@@ -1,24 +1,20 @@
-import URLS from 'URLS';
-import { Link } from 'react-router-dom';
-import { useIsAuthenticated } from 'hooks/User';
-import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
-
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import { Typography, Button } from '@mui/material';
-// Icons
 import SignupIcon from '@mui/icons-material/AddRounded';
 import LoginIcon from '@mui/icons-material/LoginRounded';
 import ProfileIcon from '@mui/icons-material/PersonOutlineRounded';
+import { Button, Typography } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { Link } from 'react-router-dom';
+import URLS from 'URLS';
+import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
 
-// Images
-import { ReactComponent as WaveTop } from 'assets/img/waves/wave-top.svg';
-import { ReactComponent as WaveMid } from 'assets/img/waves/wave-mid.svg';
-import { ReactComponent as WaveBottom } from 'assets/img/waves/wave-bottom.svg';
-
-// Project Components
-import TihldeLogo from 'components/miscellaneous/TihldeLogo';
+import { useIsAuthenticated } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
+
+import TihldeLogo from 'components/miscellaneous/TihldeLogo';
+
+import { ReactComponent as WaveBottom } from 'assets/img/waves/wave-bottom.svg';
+import { ReactComponent as WaveMid } from 'assets/img/waves/wave-mid.svg';
+import { ReactComponent as WaveTop } from 'assets/img/waves/wave-top.svg';
 
 const useStyles = makeStyles()((theme) => ({
   root: {

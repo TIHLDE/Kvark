@@ -1,18 +1,13 @@
-import { useMemo, useRef, useState, useEffect } from 'react';
+import ExpandIcon from '@mui/icons-material/ExpandMoreRounded';
+import { AppBar, Button, Grow, MenuItem, MenuList, Paper, Popper, Toolbar, useMediaQuery, useTheme } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import { useTheme, AppBar, Toolbar, Button, Grow, Paper, Popper, MenuItem, MenuList, useMediaQuery } from '@mui/material';
-
-// Assets/Icons
-import ExpandIcon from '@mui/icons-material/ExpandMoreRounded';
-
-// Project Components
+import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import { NavigationItem, NavigationOptions } from 'components/navigation/Navigation';
 import ProfileTopbarButton from 'components/navigation/ProfileTopbarButton';
-import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 
 const useStyles = makeStyles()((theme) => ({
   appBar: {

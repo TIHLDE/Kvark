@@ -1,17 +1,11 @@
-import { useState, lazy, Suspense } from 'react';
-
-// Material UI Components
-import { Button, ButtonProps, styled, useMediaQuery, Theme, Skeleton, useTheme, Typography } from '@mui/material';
+import QrCodeIcon from '@mui/icons-material/QrCodeRounded';
+import { Button, ButtonProps, Skeleton, styled, Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { makeStyles } from 'makeStyles';
+import { lazy, Suspense, useState } from 'react';
 
-// Project components
-import Dialog from 'components/layout/Dialog';
-
-// Project hooks
 import { useAnalytics } from 'hooks/Utils';
 
-// Icons
-import QrCodeIcon from '@mui/icons-material/QrCodeRounded';
+import Dialog from 'components/layout/Dialog';
 
 const QR = lazy(() => import('qrcode.react'));
 

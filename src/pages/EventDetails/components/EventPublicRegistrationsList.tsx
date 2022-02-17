@@ -1,15 +1,18 @@
-import { useState, useMemo } from 'react';
-import { IconButton, IconButtonProps, Stack, Tooltip, List, ListItem, ListItemText, ListItemAvatar, Typography, Skeleton } from '@mui/material';
-import { usePublicEventRegistrations } from 'hooks/Event';
+import ParticipantsIcon from '@mui/icons-material/PeopleRounded';
+import { IconButton, IconButtonProps, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Skeleton, Stack, Tooltip, Typography } from '@mui/material';
+import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import URLS from 'URLS';
+
 import { Event } from 'types';
 
-import ParticipantsIcon from '@mui/icons-material/PeopleRounded';
+import { usePublicEventRegistrations } from 'hooks/Event';
 
-import Pagination from 'components/layout/Pagination';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Avatar from 'components/miscellaneous/Avatar';
 import Dialog from 'components/layout/Dialog';
+import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
+import Avatar from 'components/miscellaneous/Avatar';
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
 export type EventPublicRegistrationsListProps = IconButtonProps & {
   eventId: Event['id'];
@@ -38,10 +41,12 @@ const EventPublicRegistrationsList = ({ eventId, ...props }: EventPublicRegistra
           <Stack component={List} gap={1}>
             {registrations.map((registration, index) => (
               <ListItem component={Paper} dense key={index} noPadding>
-                <ListItemAvatar>
-                  <Avatar user={registration.user_info || { first_name: '?', last_name: '', image: '' }} />
-                </ListItemAvatar>
-                <ListItemText primary={registration.user_info ? `${registration.user_info.first_name} ${registration.user_info.last_name}` : 'Anonym'} />
+                <ListItemButton component={Link} to={`${URLS.profile}${registration.user_info?.user_id}/`}>
+                  <ListItemAvatar>
+                    <Avatar user={registration.user_info || { first_name: '?', last_name: '', image: '' }} />
+                  </ListItemAvatar>
+                  <ListItemText primary={registration.user_info ? `${registration.user_info.first_name} ${registration.user_info.last_name}` : 'Anonym'} />
+                </ListItemButton>
               </ListItem>
             ))}
             {(isFetching || isLoading) && (

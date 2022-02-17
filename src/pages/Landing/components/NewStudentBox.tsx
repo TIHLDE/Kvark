@@ -1,17 +1,14 @@
-import { useMemo } from 'react';
-import { useUser, useIsAuthenticated } from 'hooks/User';
-import { useAnalytics, usePersistedState } from 'hooks/Utils';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-import { SHOW_NEW_STUDENT_INFO } from 'constant';
-
-// Material UI Components
-import { Typography, styled, Button, Stack } from '@mui/material';
-
-// Icons
 import OpenIcon from '@mui/icons-material/ArrowForwardRounded';
 import CloseIcon from '@mui/icons-material/CloseRounded';
 import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
+import { Button, Stack, styled, Typography } from '@mui/material';
+import { SHOW_NEW_STUDENT_INFO } from 'constant';
+import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import URLS from 'URLS';
+
+import { useIsAuthenticated, useUser } from 'hooks/User';
+import { useAnalytics, usePersistedState } from 'hooks/Utils';
 
 const Box = styled('div')(({ theme }) => ({
   padding: theme.spacing(3),

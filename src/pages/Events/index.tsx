@@ -1,27 +1,25 @@
-import { useMemo, useState, useCallback } from 'react';
+import { Button, Divider, MenuItem, Stack, Theme, useMediaQuery } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useEvents } from 'hooks/Event';
-import { useCategories } from 'hooks/Categories';
 import { argsToParams } from 'utils';
 
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import { Divider, MenuItem, Button, useMediaQuery, Theme, Stack } from '@mui/material';
-
-// Project Components
-import Page from 'components/navigation/Page';
-import Banner from 'components/layout/Banner';
-import Pagination from 'components/layout/Pagination';
-import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
-import Paper from 'components/layout/Paper';
-import Select from 'components/inputs/Select';
-import Bool from 'components/inputs/Bool';
-import TextField from 'components/inputs/TextField';
-import SubmitButton from 'components/inputs/SubmitButton';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import { useCategories } from 'hooks/Categories';
+import { useEvents } from 'hooks/Event';
 import { useAnalytics } from 'hooks/Utils';
+
+import Bool from 'components/inputs/Bool';
+import Select from 'components/inputs/Select';
+import SubmitButton from 'components/inputs/SubmitButton';
+import TextField from 'components/inputs/TextField';
+import Banner from 'components/layout/Banner';
 import Expand from 'components/layout/Expand';
+import Pagination from 'components/layout/Pagination';
+import Paper from 'components/layout/Paper';
+import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import Page from 'components/navigation/Page';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {
@@ -60,6 +58,7 @@ const useStyles = makeStyles()((theme) => ({
 type Filters = {
   search?: string;
   category?: string;
+  open_for_sign_up: boolean | undefined;
   expired: boolean;
 };
 
@@ -68,9 +67,10 @@ const Events = () => {
   const getInitialFilters = useCallback((): Filters => {
     const params = new URLSearchParams(location.search);
     const expired = params.get('expired') ? Boolean(params.get('expired') === 'true') : false;
+    const open_for_sign_up = params.get('open_for_sign_up') ? Boolean(params.get('open_for_sign_up') === 'true') : undefined;
     const category = params.get('category') || undefined;
     const search = params.get('search') || undefined;
-    return { expired, category, search };
+    return { expired, category, search, open_for_sign_up };
   }, []);
   const { classes } = useStyles();
   const navigate = useNavigate();
@@ -86,7 +86,7 @@ const Events = () => {
     setValue('category', '');
     setValue('search', '');
     setValue('expired', false);
-    setFilters({ expired: false });
+    setFilters({ expired: false, open_for_sign_up: false });
     navigate(`${location.pathname}${argsToParams({ expired: false })}`, { replace: true });
   };
 
@@ -112,6 +112,7 @@ const Events = () => {
         </Select>
       )}
       <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
+      <Bool control={control} formState={formState} label='Kun med åpen påmelding' name='open_for_sign_up' type='switch' />
       <SubmitButton disabled={isFetching} formState={formState}>
         Søk
       </SubmitButton>

@@ -1,20 +1,16 @@
-import { useState } from 'react';
-import URLS from 'URLS';
-import { Link } from 'react-router-dom';
-import { useIsAuthenticated } from 'hooks/User';
-
-// Material UI Components
-import { makeStyles } from 'makeStyles';
+import ExpandIcon from '@mui/icons-material/ExpandMoreRounded';
 import { useTheme } from '@mui/material';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import Drawer from '@mui/material/Drawer';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'makeStyles';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import URLS from 'URLS';
 
-// Icons
-import ExpandIcon from '@mui/icons-material/ExpandMoreRounded';
+import { useIsAuthenticated } from 'hooks/User';
 
-// Project components
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 
 const useStyles = makeStyles()((theme) => ({

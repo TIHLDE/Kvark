@@ -1,17 +1,19 @@
-import { useEffect } from 'react';
-import URLS from 'URLS';
-import Helmet from 'react-helmet';
-import { useParams, useNavigate } from 'react-router-dom';
-import { urlEncode } from 'utils';
-import { useEventById } from 'hooks/Event';
 import { Box } from '@mui/material';
+import { useEffect } from 'react';
+import { Helmet } from 'react-helmet';
+import { useNavigate, useParams } from 'react-router-dom';
+import URLS from 'URLS';
+import { urlEncode } from 'utils';
 
-// Project components
-import Http404 from 'pages/Http404';
-import Page from 'components/navigation/Page';
+import { useEventById } from 'hooks/Event';
+
 import EventRenderer, { EventRendererLoading } from 'pages/EventDetails/components/EventRenderer';
-import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
+import Http404 from 'pages/Http404';
+
 import Container from 'components/layout/Container';
+import Page from 'components/navigation/Page';
+
+import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
 
 const EventDetails = () => {
   const { id } = useParams();

@@ -1,36 +1,35 @@
-import { useState, useMemo, useEffect } from 'react';
+import SignupIcon from '@mui/icons-material/ArrowForwardRounded';
+import CalendarIcon from '@mui/icons-material/DateRangeRounded';
+import EventIcon from '@mui/icons-material/EventRounded';
+import ListIcon from '@mui/icons-material/FormatListBulletedRounded';
+import FaqIcon from '@mui/icons-material/HelpOutlineRounded';
+import AboutIcon from '@mui/icons-material/InfoRounded';
+import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
+import SportsIcon from '@mui/icons-material/SportsSoccerRounded';
+import VolunteerIcon from '@mui/icons-material/VolunteerActivismRounded';
+import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Stack, Typography } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
-import { useWikiPage } from 'hooks/Wiki';
-import { useIsAuthenticated } from 'hooks/User';
-import { useEvents } from 'hooks/Event';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
-import { makeStyles } from 'makeStyles';
-import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Typography, Stack } from '@mui/material';
 
-// Icons
-import EventIcon from '@mui/icons-material/EventRounded';
-import FaqIcon from '@mui/icons-material/HelpOutlineRounded';
-import VolunteerIcon from '@mui/icons-material/VolunteerActivismRounded';
-import SportsIcon from '@mui/icons-material/SportsSoccerRounded';
-import ListIcon from '@mui/icons-material/FormatListBulletedRounded';
-import CalendarIcon from '@mui/icons-material/DateRangeRounded';
-import SignupIcon from '@mui/icons-material/ArrowForwardRounded';
-import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
-import AboutIcon from '@mui/icons-material/InfoRounded';
-
-// Project Components
-import Expand from 'components/layout/Expand';
-import Page from 'components/navigation/Page';
-import Banner, { BannerButton } from 'components/layout/Banner';
-import Paper from 'components/layout/Paper';
-import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import Tabs from 'components/layout/Tabs';
-import Pagination from 'components/layout/Pagination';
-import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import EventsCalendarView from 'pages/Landing/components/EventsCalendarView';
+import { useEvents } from 'hooks/Event';
+import { useIsAuthenticated } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
+import { useWikiPage } from 'hooks/Wiki';
+
+import EventsCalendarView from 'pages/Landing/components/EventsCalendarView';
+
+import Banner, { BannerButton } from 'components/layout/Banner';
+import Expand from 'components/layout/Expand';
+import Pagination from 'components/layout/Pagination';
+import Paper from 'components/layout/Paper';
+import Tabs from 'components/layout/Tabs';
+import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
+import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import Page from 'components/navigation/Page';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {
@@ -165,7 +164,7 @@ const NewStudent = () => {
               {isFetching && <EventListItemLoading />}
             </Collapse>
             <Collapse in={eventTab === eventsCalendarView.value}>
-              <EventsCalendarView events={data?.pages[0]?.results || []} oldEvents={[]} />
+              <EventsCalendarView category={FADDERUKA_EVENT_CATEGORY} />
             </Collapse>
           </Collapse>
           <Collapse in={tab === faqTab.value} mountOnEnter>

@@ -1,9 +1,10 @@
-import { EffectCallback, useEffect, useState, useRef, useCallback } from 'react';
-import Plausible from 'plausible-tracker';
-import { useSnackbar } from 'hooks/Snackbar';
-import { getCookie, setCookie } from 'api/cookie';
-import { useMemo } from 'react';
 import { PLAUSIBLE_DOMAIN } from 'constant';
+import Plausible from 'plausible-tracker';
+import { EffectCallback, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+import { getCookie, setCookie } from 'api/cookie';
+
+import { useSnackbar } from 'hooks/Snackbar';
 
 export const useInterval = (callback: EffectCallback, msDelay: number | null) => {
   const savedCallback = useRef<EffectCallback>();

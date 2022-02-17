@@ -1,32 +1,30 @@
-import { ReactElement, useEffect, lazy, Suspense } from 'react';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { PLAUSIBLE_DOMAIN } from 'constant';
 import Plausible from 'plausible-tracker';
+import { lazy, ReactElement, Suspense, useEffect } from 'react';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import URLS from 'URLS';
+
 import { PermissionApp } from 'types/Enums';
 
-// Services
 import { useSetRedirectUrl } from 'hooks/Misc';
 import { useHavePermission, useIsAuthenticated } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
-// Project components
-import Page from 'components/navigation/Page';
-
-// Project pages
 import Companies from 'pages/Companies';
 import EventDetails from 'pages/EventDetails';
-import Landing from 'pages/Landing';
-import Profile from 'pages/Profile';
 import Events from 'pages/Events';
-import JobPosts from 'pages/JobPosts';
-import JobPostDetails from 'pages/JobPostDetails';
-import NewsDetails from 'pages/NewsDetails';
 import Groups from 'pages/Groups';
-import GroupsOverview from 'pages/Groups/overview';
 import GroupDetails from 'pages/Groups/GroupDetails';
+import GroupsOverview from 'pages/Groups/overview';
+import JobPostDetails from 'pages/JobPostDetails';
+import JobPosts from 'pages/JobPosts';
+import Landing from 'pages/Landing';
 import News from 'pages/News';
+import NewsDetails from 'pages/NewsDetails';
 import NewStudent from 'pages/NewStudent';
-import { PLAUSIBLE_DOMAIN } from 'constant';
+import Profile from 'pages/Profile';
+
+import Page from 'components/navigation/Page';
 
 const Cheatsheet = lazy(() => import(/* webpackChunkName: "cheatsheet" */ 'pages/Cheatsheet'));
 const EventAdministration = lazy(() => import(/* webpackChunkName: "event_administration" */ 'pages/EventAdministration'));
