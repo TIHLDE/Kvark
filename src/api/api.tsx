@@ -103,6 +103,8 @@ export default {
     IFetch<RequestResponse>({ method: 'POST', url: `${EVENTS_ENDPOINT}/${String(eventId)}/notify/`, data: { title, message } }),
   getPublicEventRegistrations: (eventId: Event['id'], filters?: any) =>
     IFetch<PaginationResponse<PublicRegistration>>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/public_registrations/`, data: filters || {} }),
+  sendGiftCardsToAttendees: (eventId: Event['id'], files: File | File[] | Blob) =>
+    IFetch<RequestResponse>({ method: 'POST', url: `${EVENTS_ENDPOINT}/${String(eventId)}/mail-gift-cards/`, file: files }),
 
   // Event registrations
   getRegistration: (eventId: Event['id'], userId: User['user_id']) =>
