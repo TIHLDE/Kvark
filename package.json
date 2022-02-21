@@ -9,7 +9,7 @@
     "@devexpress/dx-react-core": "^3.0.0-beta.2",
     "@devexpress/dx-react-scheduler": "^3.0.0-beta.2",
     "@devexpress/dx-react-scheduler-material-ui": "^3.0.0-beta.2",
-    "@emotion/react": "^11.7.1",
+    "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.6.0",
     "@mui/icons-material": "^5.2.4",
     "@mui/lab": "^5.0.0-alpha.60",
