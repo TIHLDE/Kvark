@@ -13,8 +13,6 @@ export const BADGES_QUERY_KEYS = {
   categories: {
     list: (filters?: any) => [...BADGES_QUERY_KEYS.self, 'categories', filters] as const,
     detail: (badgeCategoryId: BadgeCategory['id']) => [...BADGES_QUERY_KEYS.categories.list(), badgeCategoryId] as const,
-    leaderboard: (badgeCategoryId: BadgeCategory['id'], filters?: any) =>
-      [...BADGES_QUERY_KEYS.categories.detail(badgeCategoryId), 'leaderboard', filters] as const,
   },
   overallLeaderboard: (filters?: any) => [...BADGES_QUERY_KEYS.self, 'overall_leaderboard', filters] as const,
   badge: {
@@ -108,23 +106,3 @@ export const useBadgesOverallLeaderboard = (
 
 export const useBadgeCategory = (badgeCategoryId: BadgeCategory['id'], options?: UseQueryOptions<BadgeCategory, RequestResponse, BadgeCategory, QueryKey>) =>
   useQuery<BadgeCategory, RequestResponse>(BADGES_QUERY_KEYS.categories.detail(badgeCategoryId), () => API.getBadgeCategory(badgeCategoryId), options);
-
-export const useBadgeCategoryLeaderboard = (
-  badgeCategoryId: BadgeCategory['id'],
-  filters?: any,
-  options?: UseInfiniteQueryOptions<
-    PaginationResponse<BadgesOverallLeaderboard>,
-    RequestResponse,
-    PaginationResponse<BadgesOverallLeaderboard>,
-    PaginationResponse<BadgesOverallLeaderboard>,
-    QueryKey
-  >,
-) =>
-  useInfiniteQuery<PaginationResponse<BadgesOverallLeaderboard>, RequestResponse>(
-    BADGES_QUERY_KEYS.categories.leaderboard(badgeCategoryId, filters),
-    ({ pageParam = 1 }) => API.getBadgeCategoryLeaderboard(badgeCategoryId, { ...filters, page: pageParam }),
-    {
-      ...options,
-      getNextPageParam: (lastPage) => lastPage.next,
-    },
-  );

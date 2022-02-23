@@ -27,9 +27,9 @@ import Profile from 'pages/Profile';
 import Page from 'components/navigation/Page';
 
 const Badges = lazy(() => import('pages/Badges'));
-const BadgeCategoriesList = lazy(() => import('pages/Badges/BadgeCategoriesList'));
-const BadgesList = lazy(() => import('pages/Badges/BadgesList'));
-const BadgesOverallLeaderboard = lazy(() => import('pages/Badges/BadgesOverallLeaderboard'));
+const BadgeCategoriesList = lazy(() => import('pages/Badges/overview/BadgeCategoriesList'));
+const BadgesList = lazy(() => import('pages/Badges/overview/BadgesList'));
+const BadgesOverallLeaderboard = lazy(() => import('pages/Badges/overview/BadgesOverallLeaderboard'));
 const BadgeDetails = lazy(() => import('pages/Badges/details'));
 const BadgeCategory = lazy(() => import('pages/Badges/category'));
 const BadgesCategoryLeaderboard = lazy(() => import('pages/Badges/category/BadgesCategoryLeaderboard'));

@@ -219,12 +219,6 @@ export default {
     IFetch<PaginationResponse<BadgeCategory>>({ method: 'GET', url: `${BADGES_ENDPOINT}/${BADGE_CATEGORIES_ENDPOINT}/`, data: filters || {} }),
   getBadgeCategory: (badgeCategoryId: BadgeCategory['id']) =>
     IFetch<BadgeCategory>({ method: 'GET', url: `${BADGES_ENDPOINT}/${BADGE_CATEGORIES_ENDPOINT}/${badgeCategoryId}/` }),
-  getBadgeCategoryLeaderboard: (badgeCategoryId: BadgeCategory['id'], filters?: any) =>
-    IFetch<PaginationResponse<BadgesOverallLeaderboard>>({
-      method: 'GET',
-      url: `${BADGES_ENDPOINT}/${BADGE_CATEGORIES_ENDPOINT}/${badgeCategoryId}/${BADGES_LEADERBOARD_ENDPOINT}/`,
-      data: filters || {},
-    }),
 
   // Membership
   getMemberships: (slug: string, filters?: any) =>

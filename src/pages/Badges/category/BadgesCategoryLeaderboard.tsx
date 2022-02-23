@@ -1,12 +1,12 @@
 import { useParams } from 'react-router-dom';
 
-import { useBadgeCategoryLeaderboard } from 'hooks/Badge';
+import { useBadgesOverallLeaderboard } from 'hooks/Badge';
 
 import BadgesLeaderboard from 'pages/Badges/BadgesLeaderboard';
 
 export const BadgesOverallLeaderboard = () => {
   const { categoryId } = useParams<'categoryId'>();
-  const queryResult = useBadgeCategoryLeaderboard(categoryId || '_');
+  const queryResult = useBadgesOverallLeaderboard({ category: categoryId || '_' }, { enabled: Boolean(categoryId) });
   return <BadgesLeaderboard queryResult={queryResult} />;
 };
 

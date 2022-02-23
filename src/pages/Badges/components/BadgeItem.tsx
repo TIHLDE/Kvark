@@ -24,10 +24,10 @@ const BadgeItem = ({ badge, sx }: BadgeItemProps) => (
         </Typography>
         <Typography variant='body2'>{badge.description}</Typography>
         <Typography sx={{ fontSize: '0.7rem', fontStyle: 'italic', fontWeight: 'bold', mt: 0.5 }} variant='subtitle2'>
+          Ervervet av{' '}
           <Box component='span' sx={{ color: (theme) => theme.palette.error.main }}>
             {badge.total_completion_percentage.toFixed(1)}%
-          </Box>{' '}
-          har denne badgen
+          </Box>
         </Typography>
       </Stack>
     </Stack>

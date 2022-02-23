@@ -1,9 +1,8 @@
-import ArrowBackIcon from '@mui/icons-material/ArrowBackRounded';
 import BadgesIcon from '@mui/icons-material/EmojiEventsRounded';
 import LeaderboardIcon from '@mui/icons-material/LeaderboardRounded';
-import { Box, IconButton, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { Suspense } from 'react';
-import { Link, Outlet, useParams } from 'react-router-dom';
+import { Outlet, useParams } from 'react-router-dom';
 import URLS from 'URLS';
 
 import { useBadgeCategory } from 'hooks/Badge';
@@ -25,9 +24,6 @@ const BadgeCategory = () => {
     <Page banner={<PrimaryTopBox />} options={{ title: data?.name || 'Laster...' }}>
       <Paper sx={{ margin: '-60px auto 60px', position: 'relative' }}>
         <Stack direction='row' gap={1} sx={{ alignItems: 'center', flex: 1 }}>
-          <IconButton component={Link} to={URLS.badges.categories()}>
-            <ArrowBackIcon />
-          </IconButton>
           <Box sx={{ display: 'block', height: { xs: 45, md: 70 }, width: { xs: 45, md: 70 } }}>
             <AspectRatioImg alt={data?.image_alt || ''} borderRadius ratio={1} src={data?.image || ''} />
           </Box>

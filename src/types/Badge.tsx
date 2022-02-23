@@ -5,7 +5,7 @@ export type Badge = {
   title: string;
   description: string;
   total_completion_percentage: number;
-  badge_category: string;
+  badge_category: BadgeCategory['id'] | null;
   active_from: string;
   active_to: string;
   image: string | null;
