@@ -18,6 +18,8 @@ const URLS = {
     public_badges_relative: 'alle/',
     public_badges: () => `${URLS.badges.index}${URLS.badges.public_badges_relative}`,
     badge_leaderboard: (badgeId: Badge['id']) => `${URLS.badges.index}${badgeId}/`,
+    get_badge_relative: 'erverv/',
+    get_badge: () => `${URLS.badges.index}${URLS.badges.get_badge_relative}`,
   },
   cheatsheet: '/kokebok/',
   company: '/bedrifter/',

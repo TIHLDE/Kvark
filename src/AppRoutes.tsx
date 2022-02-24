@@ -32,6 +32,7 @@ const BadgesList = lazy(() => import('pages/Badges/overview/BadgesList'));
 const BadgesOverallLeaderboard = lazy(() => import('pages/Badges/overview/BadgesOverallLeaderboard'));
 const BadgeDetails = lazy(() => import('pages/Badges/details'));
 const BadgeCategory = lazy(() => import('pages/Badges/category'));
+const BadgesGet = lazy(() => import('pages/Badges/get'));
 const BadgesCategoryLeaderboard = lazy(() => import('pages/Badges/category/BadgesCategoryLeaderboard'));
 const Cheatsheet = lazy(() => import(/* webpackChunkName: "cheatsheet" */ 'pages/Cheatsheet'));
 const EventAdministration = lazy(() => import(/* webpackChunkName: "event_administration" */ 'pages/EventAdministration'));
@@ -107,6 +108,7 @@ const AppRoutes = () => {
             <Route element={<BadgesOverallLeaderboard />} index />
             <Route element={<BadgeCategoriesList />} path={URLS.badges.category_relative} />
             <Route element={<BadgesList />} path={URLS.badges.public_badges_relative} />
+            <Route element={<BadgesGet />} path={URLS.badges.get_badge_relative} />
           </Route>
           <Route element={<BadgeCategory />} path={`${URLS.badges.category_relative}:categoryId/*`}>
             <Route element={<BadgesCategoryLeaderboard />} index />

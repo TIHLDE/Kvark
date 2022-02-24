@@ -6,8 +6,7 @@ import BadgesLeaderboard from 'pages/Badges/BadgesLeaderboard';
 
 export const BadgesOverallLeaderboard = () => {
   const { categoryId } = useParams<'categoryId'>();
-  const queryResult = useBadgesOverallLeaderboard({ category: categoryId || '_' }, { enabled: Boolean(categoryId) });
-  return <BadgesLeaderboard queryResult={queryResult} />;
+  return <BadgesLeaderboard filters={{ category: categoryId || '_' }} options={{ enabled: Boolean(categoryId) }} useHook={useBadgesOverallLeaderboard} />;
 };
 
 export default BadgesOverallLeaderboard;

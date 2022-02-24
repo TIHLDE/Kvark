@@ -1,5 +1,6 @@
 import CategoryIcon from '@mui/icons-material/CategoryRounded';
 import BadgesIcon from '@mui/icons-material/EmojiEventsRounded';
+import GetBadgeIcon from '@mui/icons-material/GetAppRounded';
 import LeaderboardIcon from '@mui/icons-material/LeaderboardRounded';
 import { Typography } from '@mui/material';
 import { Suspense } from 'react';
@@ -15,7 +16,8 @@ const Badges = () => {
   const leaderboardTab = { to: URLS.badges.index, label: 'Ledertavle', icon: LeaderboardIcon };
   const badgesTab = { to: URLS.badges.public_badges(), label: 'Offentlige badges', icon: BadgesIcon };
   const categoriesTab = { to: URLS.badges.categories(), label: 'Kategorier', icon: CategoryIcon };
-  const tabs = [leaderboardTab, badgesTab, categoriesTab];
+  const getTab = { to: URLS.badges.get_badge(), label: 'Erverv badge', icon: GetBadgeIcon };
+  const tabs = [leaderboardTab, badgesTab, categoriesTab, getTab];
 
   return (
     <Page banner={<PrimaryTopBox />} options={{ title: 'Badges' }}>
