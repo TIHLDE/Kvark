@@ -26,6 +26,14 @@ import Profile from 'pages/Profile';
 
 import Page from 'components/navigation/Page';
 
+const Badges = lazy(() => import('pages/Badges'));
+const BadgeCategoriesList = lazy(() => import('pages/Badges/overview/BadgeCategoriesList'));
+const BadgesList = lazy(() => import('pages/Badges/overview/BadgesList'));
+const BadgesOverallLeaderboard = lazy(() => import('pages/Badges/overview/BadgesOverallLeaderboard'));
+const BadgeDetails = lazy(() => import('pages/Badges/details'));
+const BadgeCategory = lazy(() => import('pages/Badges/category'));
+const BadgesGet = lazy(() => import('pages/Badges/get'));
+const BadgesCategoryLeaderboard = lazy(() => import('pages/Badges/category/BadgesCategoryLeaderboard'));
 const Cheatsheet = lazy(() => import(/* webpackChunkName: "cheatsheet" */ 'pages/Cheatsheet'));
 const EventAdministration = lazy(() => import(/* webpackChunkName: "event_administration" */ 'pages/EventAdministration'));
 const EventRegistration = lazy(() => import(/* webpackChunkName: "event_registration" */ 'pages/EventRegistration'));
@@ -94,6 +102,19 @@ const AppRoutes = () => {
         <Route element={<Groups />} path={`${URLS.groups.index}*`}>
           <Route element={<GroupsOverview />} index />
           <Route element={<GroupDetails />} path=':slug/*' />
+        </Route>
+        <Route path={`${URLS.badges.index}`}>
+          <Route element={<Badges />} path='*'>
+            <Route element={<BadgesOverallLeaderboard />} index />
+            <Route element={<BadgeCategoriesList />} path={URLS.badges.category_relative} />
+            <Route element={<BadgesList />} path={URLS.badges.public_badges_relative} />
+            <Route element={<BadgesGet />} path={URLS.badges.get_badge_relative} />
+          </Route>
+          <Route element={<BadgeCategory />} path={`${URLS.badges.category_relative}:categoryId/*`}>
+            <Route element={<BadgesCategoryLeaderboard />} index />
+            <Route element={<BadgesList />} path={URLS.badges.category_badges_relative} />
+          </Route>
+          <Route element={<BadgeDetails />} path=':badgeId/' />
         </Route>
         <Route path={URLS.jobposts}>
           <Route element={<JobPostDetails />} path=':id/*' />

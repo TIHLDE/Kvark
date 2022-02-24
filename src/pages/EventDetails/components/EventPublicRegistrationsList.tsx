@@ -1,6 +1,8 @@
 import ParticipantsIcon from '@mui/icons-material/PeopleRounded';
-import { IconButton, IconButtonProps, List, ListItem, ListItemAvatar, ListItemText, Skeleton, Stack, Tooltip, Typography } from '@mui/material';
+import { IconButton, IconButtonProps, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Skeleton, Stack, Tooltip, Typography } from '@mui/material';
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import URLS from 'URLS';
 
 import { Event } from 'types';
 
@@ -38,11 +40,13 @@ const EventPublicRegistrationsList = ({ eventId, ...props }: EventPublicRegistra
           {!isLoading && !registrations.length && !isError && <NotFoundIndicator header='Ingen brukere er påmeldt dette arrangementet' />}
           <Stack component={List} gap={1}>
             {registrations.map((registration, index) => (
-              <ListItem component={Paper} dense key={index} noPadding>
-                <ListItemAvatar>
-                  <Avatar user={registration.user_info || { first_name: '?', last_name: '', image: '' }} />
-                </ListItemAvatar>
-                <ListItemText primary={registration.user_info ? `${registration.user_info.first_name} ${registration.user_info.last_name}` : 'Anonym'} />
+              <ListItem component={Paper} dense disablePadding key={index} noOverflow noPadding>
+                <ListItemButton component={Link} to={`${URLS.profile}${registration.user_info?.user_id}/`}>
+                  <ListItemAvatar>
+                    <Avatar user={registration.user_info || { first_name: '?', last_name: '', image: '' }} />
+                  </ListItemAvatar>
+                  <ListItemText primary={registration.user_info ? `${registration.user_info.first_name} ${registration.user_info.last_name}` : 'Anonym'} />
+                </ListItemButton>
               </ListItem>
             ))}
             {(isFetching || isLoading) && (
