@@ -13,6 +13,9 @@
 ---
 
 ## Neste versjon
+
+- ✨ **Badges**. Lagt til ledertavle og kategorier.
+
 ## Versjon 2022.02.17
 
 - ✨ **Arrangementer**. Alle brukere kan nå se andre brukeres profiler ved å klikke på dem i listen med påmeldte brukere.
