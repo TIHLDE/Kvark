@@ -26,11 +26,11 @@ type GridFileItemProps = {
 };
 
 const GridFileItem = ({ index, deleteFile, file }: GridFileItemProps) => {
-  const ImageURL = useRef(URL.createObjectURL(file));
+  const imageURL = useRef(URL.createObjectURL(file));
   const isImage = file.type === 'image/jpeg' || file.type === 'image/png';
 
   useEffect(() => {
-    return URL.revokeObjectURL(ImageURL.current);
+    return URL.revokeObjectURL(imageURL.current);
   }, []);
 
   return (
@@ -39,7 +39,7 @@ const GridFileItem = ({ index, deleteFile, file }: GridFileItemProps) => {
         elevation={2}
         sx={{
           height: '100px',
-          background: isImage ? `url(${ImageURL.current})` : 'white',
+          background: isImage ? `url(${imageURL.current})` : 'white',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'contain',
@@ -71,7 +71,7 @@ const GridFileItem = ({ index, deleteFile, file }: GridFileItemProps) => {
   );
 };
 
-type FileUploaderProps = {
+export type FileUploaderProps = {
   fileTypes: ('application/pdf' | 'image/jpeg' | 'image/png')[];
   files: File[];
   title: string;
