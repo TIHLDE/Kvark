@@ -11,7 +11,7 @@
       "**/build": true,
       "**/coverage": true
     },
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": false,
     "eslint.validate": ["html", "javascript", "javascriptreact", "typescript", "typescriptreact"],
     "editor.codeActionsOnSave": { "source.fixAll.eslint": true }
   },

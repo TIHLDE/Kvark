@@ -1,7 +1,7 @@
 import { CloseRounded, FileUploadRounded, GridViewRounded, ListRounded } from '@mui/icons-material';
 import { Box, Grid, IconButton, List, ListItem, ListItemIcon, ListItemText, Paper, Stack, Typography } from '@mui/material';
 import { makeStyles } from 'makeStyles';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 const useStyles = makeStyles()((theme) => ({
@@ -19,6 +19,58 @@ const useStyles = makeStyles()((theme) => ({
   },
 }));
 
+type GridFileItemProps = {
+  index: number;
+  deleteFile: (index: number) => void;
+  file: File;
+};
+
+const GridFileItem = ({ index, deleteFile, file }: GridFileItemProps) => {
+  const ImageURL = useRef(URL.createObjectURL(file));
+  const isImage = file.type === 'image/jpeg' || file.type === 'image/png';
+
+  useEffect(() => {
+    return URL.revokeObjectURL(ImageURL.current);
+  }, []);
+
+  return (
+    <Grid item key={index} md={4} sm={4} xs={2}>
+      <Paper
+        elevation={2}
+        sx={{
+          height: '100px',
+          background: isImage ? `url(${ImageURL.current})` : 'white',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'contain',
+        }}>
+        <IconButton
+          onClick={() => deleteFile(index)}
+          size='small'
+          sx={{
+            background: 'rgba(0,0,0,0.2)',
+            '&:hover': {
+              background: 'rgba(0,0,0,0.5)',
+            },
+          }}>
+          <CloseRounded />
+        </IconButton>
+
+        {!isImage && (
+          <Box sx={{ px: 2 }}>
+            <Typography color='black' fontWeight='bold' noWrap={true} textAlign='center'>
+              {file.name}
+            </Typography>
+            <Typography color='black' textAlign='center'>
+              {file.type.split('/')[1]}
+            </Typography>
+          </Box>
+        )}
+      </Paper>
+    </Grid>
+  );
+};
+
 type FileUploaderProps = {
   fileTypes: ('application/pdf' | 'image/jpeg' | 'image/png')[];
   files: File[];
@@ -28,28 +80,20 @@ type FileUploaderProps = {
 
 const FileUploader = ({ fileTypes, files, setFiles, title }: FileUploaderProps) => {
   const { classes } = useStyles();
-  const [previewImages, setPreviewImages] = useState<(string | boolean)[]>([]);
   const [view, setView] = useState('list');
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setFiles((prev) => [...prev, ...Array.from(acceptedFiles)]);
-    setPreviewImages((prev) => [
-      ...prev,
-      ...Array.from(acceptedFiles).map((newFile) => (newFile.type === 'image/jpeg' || newFile.type === 'image/png' ? URL.createObjectURL(newFile) : false)),
-    ]);
   }, []);
 
-  const { getRootProps } = useDropzone({
+  const deleteFile = (index: number) => {
+    setFiles(files.filter((item, i) => i !== index));
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: fileTypes.join(','),
   });
-  const deleteFile = (index: number) => {
-    setFiles(files.filter((item, i) => i !== index));
-    setPreviewImages(previewImages.filter((item, i) => i !== index));
-  };
-  useEffect(() => {
-    return previewImages.forEach((imageUrl) => typeof imageUrl === 'string' && URL.revokeObjectURL(imageUrl));
-  }, []);
 
   return (
     <>
@@ -62,6 +106,7 @@ const FileUploader = ({ fileTypes, files, setFiles, title }: FileUploaderProps) 
       </Box>
       <Box className={classes.uploadBox} {...getRootProps()}>
         <Stack alignItems='center' direction={{ xs: 'column', md: 'row' }} spacing={1}>
+          <input {...getInputProps()} />
           <FileUploadRounded fontSize='large' />
           <Typography color='GrayText' textAlign='center'>
             {title}
@@ -80,10 +125,10 @@ const FileUploader = ({ fileTypes, files, setFiles, title }: FileUploaderProps) 
       <Box sx={{ mb: 2, maxHeight: 250, overflowY: 'scroll' }}>
         {view === 'list' && (
           <List>
-            {files.map((file, i) => (
-              <ListItem dense={true} divider={true} key={i}>
+            {files.map((file, index) => (
+              <ListItem dense={true} divider={true} key={index}>
                 <ListItemIcon>
-                  <IconButton onClick={() => deleteFile(i)}>
+                  <IconButton onClick={() => deleteFile(index)}>
                     <CloseRounded />
                   </IconButton>
                 </ListItemIcon>
@@ -94,41 +139,8 @@ const FileUploader = ({ fileTypes, files, setFiles, title }: FileUploaderProps) 
         )}
         {view === 'grid' && (
           <Grid columns={{ xs: 4, sm: 8, md: 12 }} container spacing={{ xs: 2, md: 3 }}>
-            {files.map((file, i) => (
-              <Grid item key={i} md={4} sm={4} xs={2}>
-                <Paper
-                  elevation={2}
-                  sx={{
-                    height: '100px',
-                    background: previewImages[i] ? `url(${previewImages[i]})` : 'white',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundSize: 'cover',
-                  }}>
-                  <IconButton
-                    onClick={() => deleteFile(i)}
-                    size='small'
-                    sx={{
-                      background: 'rgba(0,0,0,0.2)',
-                      '&:hover': {
-                        background: 'rgba(0,0,0,0.5)',
-                      },
-                    }}>
-                    <CloseRounded />
-                  </IconButton>
-
-                  {!previewImages[i] && (
-                    <Box sx={{ px: 2 }}>
-                      <Typography color='black' fontWeight='bold' noWrap={true} textAlign='center'>
-                        {file.name}
-                      </Typography>
-                      <Typography color='black' textAlign='center'>
-                        {file.type.split('/')[1]}
-                      </Typography>
-                    </Box>
-                  )}
-                </Paper>
-              </Grid>
+            {files.map((file, index) => (
+              <GridFileItem deleteFile={deleteFile} file={file} index={index} key={index} />
             ))}
           </Grid>
         )}
