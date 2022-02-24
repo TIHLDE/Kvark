@@ -13,6 +13,7 @@
 ---
 
 ## Neste versjon
+## Versjon 2022.02.24
 
 - ✨ **Badges**. Lagt til ledertavle og kategorier.
 
