@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -16,24 +16,18 @@ const ProfileBadges = () => {
 
   return (
     <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere badges' nextPage={() => fetchNextPage()}>
-      <Grid container spacing={1}>
+      {!isLoading && !badges && <NotFoundIndicator header='Fant ingen badges' subtitle={`${userId ? 'Brukeren' : 'Du'} har ingen badges enda`} />}
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' }, gap: 1, mb: 1 }}>
         {isLoading && (
           <>
-            <Grid item md={6} xs={12}>
-              <BadgeItemLoading />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <BadgeItemLoading />
-            </Grid>
+            <BadgeItemLoading />
+            <BadgeItemLoading />
           </>
         )}
-        {!isLoading && !badges && <NotFoundIndicator header='Fant ingen badges' subtitle={`${userId ? 'Brukeren' : 'Du'} har ingen badges enda`} />}
         {badges.map((badge) => (
-          <Grid item key={badge.id} md={6} xs={12}>
-            <BadgeItem badge={badge} />
-          </Grid>
+          <BadgeItem badge={badge} key={badge.id} />
         ))}
-      </Grid>
+      </Box>
     </Pagination>
   );
 };
