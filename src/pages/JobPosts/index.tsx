@@ -1,6 +1,4 @@
-import { Theme, useMediaQuery } from '@mui/material';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
+import { Button, Divider, Theme, useMediaQuery } from '@mui/material';
 import { makeStyles } from 'makeStyles';
 import { Fragment, useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -10,7 +8,7 @@ import { argsToParams } from 'utils';
 import { UserClass } from 'types/Enums';
 
 import { useJobPosts } from 'hooks/JobPost';
-import { useIsAuthenticated, useUser } from 'hooks/User';
+import { useUser } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
 import Bool from 'components/inputs/Bool';
@@ -85,7 +83,6 @@ const JobPosts = () => {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useJobPosts(filters);
   const { register, control, handleSubmit, setValue, formState } = useForm<FormState>({ defaultValues: getInitialFilters() });
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
-  const isAuthenticated = useIsAuthenticated();
 
   const resetFilters = () => {
     setValue('search', '');
@@ -114,7 +111,7 @@ const JobPosts = () => {
   const SearchForm = () => (
     <form onSubmit={handleSubmit(search)}>
       <TextField disabled={isFetching} formState={formState} label='Søk' {...register('search')} />
-      {isAuthenticated ? <Bool control={control} formState={formState} label='Relevant år' name='classes' type='switch' /> : null}
+      {user && <Bool control={control} formState={formState} label='Relevant år' name='classes' type='switch' />}
       <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
       <SubmitButton disabled={isFetching} formState={formState}>
         Søk
