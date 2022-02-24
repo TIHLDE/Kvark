@@ -25,7 +25,7 @@ export const BadgesList = () => {
       {error && <Paper>{error.detail}</Paper>}
       {data !== undefined && (
         <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 1 }}>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 1, mb: 1 }}>
             {badges.map((badge) => (
               <BadgeItem badge={badge} key={badge.id} />
             ))}
