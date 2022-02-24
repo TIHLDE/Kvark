@@ -6,9 +6,10 @@ import { Link, useParams } from 'react-router-dom';
 import URLS from 'URLS';
 import { formatDate } from 'utils';
 
-import { Form, Submission } from 'types';
+import { Submission } from 'types';
 import { EventFormType, FormResourceType } from 'types/Enums';
 
+import { useConfetti } from 'hooks/Confetti';
 import { useCreateSubmission, useFormById, validateSubmissionInput } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useAnalytics } from 'hooks/Utils';
@@ -22,6 +23,7 @@ import { PrimaryTopBox } from 'components/layout/TopBox';
 import Page from 'components/navigation/Page';
 
 const FormPage = () => {
+  const { run } = useConfetti();
   const { event: GAEvent } = useAnalytics();
   const { id } = useParams<'id'>();
   const { data: form, isError } = useFormById(id || '-');
@@ -49,7 +51,7 @@ const FormPage = () => {
     [form],
   );
 
-  const { register, handleSubmit, formState, setError, getValues, control } = useForm<Form['fields']>();
+  const { register, handleSubmit, formState, setError, getValues, control } = useForm<Submission>();
 
   const submitDisabled = isLoading || createSubmission.isLoading || !form;
 
@@ -68,6 +70,7 @@ const FormPage = () => {
     }
     createSubmission.mutate(data, {
       onSuccess: () => {
+        run();
         showSnackbar('Innsendingen var vellykket', 'success');
         GAEvent('submitted', 'forms', `Submitted submission for form: ${form.title}`);
       },

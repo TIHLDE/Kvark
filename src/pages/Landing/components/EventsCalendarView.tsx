@@ -1,22 +1,26 @@
 import { AppointmentModel, ViewState } from '@devexpress/dx-react-scheduler';
 import { Appointments, DateNavigator, MonthView, Scheduler, Toolbar } from '@devexpress/dx-react-scheduler-material-ui';
 import { useTheme } from '@mui/material';
-import { parseISO } from 'date-fns';
-import { ReactNode, useEffect, useMemo } from 'react';
+import { endOfMonth, parseISO, startOfMonth } from 'date-fns';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { urlEncode } from 'utils';
 
-import { EventCompact } from 'types';
+import { Category, EventCompact } from 'types';
 import { Groups } from 'types/Enums';
 
+import { useEvents } from 'hooks/Event';
 import { useAnalytics } from 'hooks/Utils';
 
 import Paper from 'components/layout/Paper';
 
+type Filters = {
+  start_range?: string;
+  end_range?: string;
+};
 export type EventsCalendarViewProps = {
-  events: Array<EventCompact>;
-  oldEvents: Array<EventCompact>;
+  category?: Category['id'];
 };
 
 type AppointmentProps = {
@@ -38,16 +42,24 @@ const Appointment = ({ children, data }: AppointmentProps) => {
   );
 };
 
-const EventsCalendarView = ({ events, oldEvents }: EventsCalendarViewProps) => {
+const EventsCalendarView = ({ category }: EventsCalendarViewProps) => {
   const { event } = useAnalytics();
-
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [filters, setFilters] = useState<Filters>();
+  const { data } = useEvents({ category, ...filters });
+  const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   useEffect(() => {
     event('open', 'calendar', 'Open calendar on landing page');
   }, [event]);
 
+  useEffect(() => {
+    const firstDay = startOfMonth(currentDate);
+    const lastDay = endOfMonth(currentDate);
+    setFilters({ end_range: lastDay.toJSON(), start_range: firstDay.toJSON() });
+  }, [currentDate]);
   const displayedEvents = useMemo(
     () =>
-      [...events, ...oldEvents].map(
+      events.map(
         (event) =>
           ({
             ...event,
@@ -55,13 +67,12 @@ const EventsCalendarView = ({ events, oldEvents }: EventsCalendarViewProps) => {
             endDate: parseISO(event.end_date),
           } as AppointmentModel),
       ),
-    [oldEvents, events],
+    [events],
   );
-
   return (
     <Paper noPadding sx={{ '& div:first-of-type': { whiteSpace: 'break-spaces' }, '& table': { minWidth: 'unset' } }}>
       <Scheduler data={displayedEvents} firstDayOfWeek={1} locale='no-NB'>
-        <ViewState />
+        <ViewState currentDate={currentDate} onCurrentDateChange={setCurrentDate} />
         <MonthView />
         <Toolbar />
         <DateNavigator />

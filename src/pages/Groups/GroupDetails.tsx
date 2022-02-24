@@ -3,7 +3,7 @@ import LawIcon from '@mui/icons-material/GavelRounded';
 import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
 import InfoIcon from '@mui/icons-material/InfoRounded';
 import FineIcon from '@mui/icons-material/LocalAtmRounded';
-import { Divider, IconButton, Stack, Typography } from '@mui/material';
+import { Box, Divider, IconButton, Stack, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { Link, Navigate, Route, Routes, useParams } from 'react-router-dom';
 import URLS from 'URLS';
@@ -19,6 +19,7 @@ import GroupForms from 'pages/Groups/forms';
 import GroupLaws from 'pages/Groups/laws';
 
 import { RouterTabs } from 'components/layout/Tabs';
+import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
 import { useSetNavigationOptions } from 'components/navigation/Navigation';
 
 const GroupDetails = () => {
@@ -70,6 +71,9 @@ const GroupDetails = () => {
           <IconButton component={Link} to={URLS.groups.index}>
             <ArrowBackIcon />
           </IconButton>
+          <Box sx={{ display: 'block', height: { xs: 45, md: 70 }, width: { xs: 45, md: 70 } }}>
+            <AspectRatioImg alt={data?.image_alt || ''} borderRadius ratio={1} src={data?.image || ''} />
+          </Box>
           <Typography variant='h1'>{data.name}</Typography>
         </Stack>
         {hasWriteAcccess && <GroupAdmin group={data} />}
