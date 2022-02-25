@@ -63,7 +63,7 @@
     "@types/react-linkify": "^1.0.1",
     "@types/react-qr-reader": "^2.1.4",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
-    "@typescript-eslint/parser": "^5.11.0",
+    "@typescript-eslint/parser": "^5.12.1",
     "@vitejs/plugin-react": "^1.2.0",
     "eslint": "^8.9.0",
     "eslint-config-prettier": "^8.3.0",
