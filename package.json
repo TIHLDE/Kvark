@@ -15,7 +15,7 @@
     "@mui/lab": "^5.0.0-alpha.60",
     "@mui/material": "^5.4.1",
     "@sentry/react": "^6.17.4",
-    "@sentry/tracing": "^6.17.4",
+    "@sentry/tracing": "^6.18.0",
     "browser-image-compression": "^1.0.17",
     "canvas-confetti": "^1.5.1",
     "constate": "^3.3.0",
@@ -74,7 +74,7 @@
     "prettier": "^2.5.1",
     "typescript": "^4.5.4",
     "vite": "^2.8.2",
-    "vite-plugin-checker": "^0.3.4",
+    "vite-plugin-checker": "^0.4.2",
     "vite-plugin-compression": "^0.3.6",
     "vite-plugin-svgr": "^1.0.1",
     "vite-tsconfig-paths": "^3.4.1"
