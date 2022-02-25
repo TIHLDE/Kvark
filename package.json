@@ -36,7 +36,7 @@
     "react-palette": "^1.0.1",
     "react-qr-reader": "^2.2.1",
     "react-query": "^3.34.3",
-    "react-router-dom": "^6.1.1",
+    "react-router-dom": "^6.2.1",
     "slugify": "^1.6.3",
     "tss-react": "^3.4.1",
     "universal-cookie": "^4.0.4"
