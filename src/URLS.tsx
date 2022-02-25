@@ -32,6 +32,8 @@ const URLS = {
   groups: {
     index: '/grupper/',
     details: (groupSlug: Group['slug']) => `${URLS.groups.index}${groupSlug}/`,
+    events_relative: 'arrangementer/',
+    events: (groupSlug: Group['slug']) => `${URLS.groups.details(groupSlug)}${URLS.groups.events_relative}`,
     fines_relative: 'boter/',
     fines: (groupSlug: Group['slug']) => `${URLS.groups.details(groupSlug)}${URLS.groups.fines_relative}`,
     forms_relative: 'sporreskjema/',

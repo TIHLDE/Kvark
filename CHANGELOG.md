@@ -15,6 +15,7 @@
 ## Neste versjon
 
 - ✨ **Spørreskjema**. Bli varslet på epost ved nye svar på gruppe-spørreskjemaer.
+- ✨ **Grupper**. Se hver gruppes arrangementer.
 
 ## Versjon 2022.02.24
 

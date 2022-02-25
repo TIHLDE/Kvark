@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "engines": {
-    "node": "14.x"
+    "node": ">=14.x"
   },
   "dependencies": {
     "@devexpress/dx-react-core": "^3.0.0-beta.2",
@@ -11,7 +11,7 @@
     "@devexpress/dx-react-scheduler-material-ui": "^3.0.0-beta.2",
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
-    "@mui/icons-material": "^5.2.4",
+    "@mui/icons-material": "^5.4.2",
     "@mui/lab": "^5.0.0-alpha.60",
     "@mui/material": "^5.4.1",
     "@sentry/react": "^6.17.4",
@@ -28,6 +28,7 @@
     "react": "^17.0.2",
     "react-cool-dimensions": "^2.0.7",
     "react-dom": "^17.0.2",
+    "react-dropzone": "^12.0.4",
     "react-easy-crop": "^4.0.1",
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.27.1",
@@ -36,7 +37,7 @@
     "react-palette": "^1.0.1",
     "react-qr-reader": "^2.2.1",
     "react-query": "^3.34.3",
-    "react-router-dom": "^6.1.1",
+    "react-router-dom": "^6.2.1",
     "slugify": "^1.6.3",
     "tss-react": "^3.4.1",
     "universal-cookie": "^4.0.4"
@@ -61,7 +62,7 @@
     "@types/react-helmet": "^6.1.2",
     "@types/react-linkify": "^1.0.1",
     "@types/react-qr-reader": "^2.1.4",
-    "@typescript-eslint/eslint-plugin": "^5.7.0",
+    "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "^5.11.0",
     "@vitejs/plugin-react": "^1.2.0",
     "eslint": "^8.9.0",
@@ -74,8 +75,8 @@
     "prettier": "^2.5.1",
     "typescript": "^4.5.4",
     "vite": "^2.8.2",
-    "vite-plugin-checker": "^0.3.4",
-    "vite-plugin-compression": "^0.3.6",
+    "vite-plugin-checker": "^0.4.2",
+    "vite-plugin-compression": "^0.5.1",
     "vite-plugin-svgr": "^1.0.1",
     "vite-tsconfig-paths": "^3.4.1"
   }
