@@ -13,9 +13,12 @@
 ---
 
 ## Neste versjon
+
+- ✨ **Spørreskjema**. Bli varslet på epost ved nye svar på gruppe-spørreskjemaer.
+
 ## Versjon 2022.02.24
 
-- ✨ **Karriere**. Bruker kan nå filtrere jobbanonser til sitt relevante år. 
+- ✨ **Karriere**. Bruker kan nå filtrere jobbanonser til sitt relevante år.
 - ✨ **Badges**. Lagt til ledertavle og kategorier.
 
 ## Versjon 2022.02.17
