@@ -1,35 +1,35 @@
-import { useState } from 'react';
-import { Event, Registration } from 'types';
-import URLS from 'URLS';
-import nbLocale from 'date-fns/locale/nb';
-import { parseISO, isPast, isFuture, subHours, addHours, formatDistanceToNowStrict } from 'date-fns';
-import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 'utils';
-import { Link } from 'react-router-dom';
-import { useSetRedirectUrl } from 'hooks/Misc';
-import { useEventRegistration, useDeleteEventRegistration } from 'hooks/Event';
-import { useUser } from 'hooks/User';
-import { useSnackbar } from 'hooks/Snackbar';
-import { useGoogleAnalytics, useInterval } from 'hooks/Utils';
-import { useCategories } from 'hooks/Categories';
-import { Typography, Button, Collapse, Skeleton, Alert, useMediaQuery, Theme, Stack, styled } from '@mui/material';
-
-// Icons
 import CalendarIcon from '@mui/icons-material/EventRounded';
+import { Alert, Button, Collapse, Skeleton, Stack, styled, Theme, Typography, useMediaQuery } from '@mui/material';
+import { addHours, formatDistanceToNowStrict, isFuture, isPast, parseISO, subHours } from 'date-fns';
+import nbLocale from 'date-fns/locale/nb';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import URLS from 'URLS';
+import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 'utils';
 
-// Project Components
-import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
+import { Event, Registration } from 'types';
+
+import { useCategories } from 'hooks/Categories';
+import { useDeleteEventRegistration, useEventRegistration } from 'hooks/Event';
+import { useSetRedirectUrl } from 'hooks/Misc';
+import { useSnackbar } from 'hooks/Snackbar';
+import { useUser } from 'hooks/User';
+import { useAnalytics, useInterval } from 'hooks/Utils';
+
 import EventPriorities from 'pages/EventDetails/components/EventPriorities';
-import EventRegistration from 'pages/EventDetails/components/EventRegistration';
 import EventPublicRegistrationsList from 'pages/EventDetails/components/EventPublicRegistrationsList';
-import Paper from 'components/layout/Paper';
-import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
-import QRButton from 'components/miscellaneous/QRButton';
-import ShareButton from 'components/miscellaneous/ShareButton';
+import EventRegistration from 'pages/EventDetails/components/EventRegistration';
+import { EventsSubscription } from 'pages/Profile/components/ProfileEvents';
+
 import FormUserAnswers from 'components/forms/FormUserAnswers';
 import Expand from 'components/layout/Expand';
+import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
-import { EventsSubscription } from 'pages/Profile/components/ProfileEvents';
+import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
+import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
+import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
+import QRButton from 'components/miscellaneous/QRButton';
+import ShareButton from 'components/miscellaneous/ShareButton';
 
 const DetailsPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1, 2),
@@ -57,7 +57,7 @@ enum Views {
 }
 
 const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const { data: user } = useUser();
   const { data: registration } = useEventRegistration(data.id, preview || !user ? '' : user.user_id);
   const deleteRegistration = useDeleteEventRegistration(data.id);

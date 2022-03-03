@@ -1,16 +1,14 @@
+import SendIcon from '@mui/icons-material/SendRounded';
+import { Button, ButtonProps } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+
 import { useNotifyEventRegistrations } from 'hooks/Event';
 import { useSnackbar } from 'hooks/Snackbar';
 
-// Material-UI
-import { Button, ButtonProps } from '@mui/material';
-import SendIcon from '@mui/icons-material/SendRounded';
-
-// Project components
-import Dialog from 'components/layout/Dialog';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
+import Dialog from 'components/layout/Dialog';
 
 export type EventMessageSenderProps = ButtonProps & {
   eventId: number;

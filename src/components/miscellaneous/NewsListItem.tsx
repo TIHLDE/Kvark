@@ -1,15 +1,13 @@
-import { Link } from 'react-router-dom';
-import { urlEncode, formatDate } from 'utils';
+import { Box, BoxProps, ButtonBase, Skeleton, touchRippleClasses, Typography } from '@mui/material';
 import { parseISO } from 'date-fns';
+import { Link } from 'react-router-dom';
 import URLS from 'URLS';
+import { formatDate, urlEncode } from 'utils';
+
 import { News } from 'types';
 
-// Material UI Components
-import { Box, Typography, BoxProps, Skeleton, touchRippleClasses, ButtonBase } from '@mui/material';
-
-// Project components
-import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 import Paper from 'components/layout/Paper';
+import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 
 export type NewsListItemProps = {
   news: News;

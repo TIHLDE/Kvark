@@ -1,15 +1,17 @@
-import { useState } from 'react';
-import { StrikeCreate, User, Event } from 'types';
-import { StrikeReason } from 'types/Enums';
-import { getStrikeReasonAsText } from 'utils';
-import { useForm } from 'react-hook-form';
-import { useCreateStrike } from 'hooks/Strike';
 import { Button, ButtonProps, MenuItem } from '@mui/material';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { getStrikeReasonAsText } from 'utils';
 
-import Dialog from 'components/layout/Dialog';
-import TextField from 'components/inputs/TextField';
+import { Event, StrikeCreate, User } from 'types';
+import { StrikeReason } from 'types/Enums';
+
+import { useCreateStrike } from 'hooks/Strike';
+
 import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
+import TextField from 'components/inputs/TextField';
+import Dialog from 'components/layout/Dialog';
 
 export type StrikeCreateDialogProps = {
   userId: User['user_id'];

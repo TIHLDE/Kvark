@@ -1,11 +1,12 @@
+import Grid from '@mui/material/Grid';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
+
 import { useUserGroups } from 'hooks/User';
 
-// Material UI Components
-import Grid from '@mui/material/Grid';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import GroupItem, { GroupItemLoading } from 'pages/Groups/overview/GroupItem';
+
+import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
 const ProfileGroups = () => {
   const { userId } = useParams();

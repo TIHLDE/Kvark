@@ -1,13 +1,11 @@
+import { useTheme } from '@mui/material';
 import { useMemo } from 'react';
+
 import { useEvents } from 'hooks/Event';
 import { useJobPosts } from 'hooks/JobPost';
-
-// Material-UI
-import { useTheme } from '@mui/material';
-
-// Project componets/services
-import Story, { StoryLoading } from 'components/story/Story';
 import { useNews } from 'hooks/News';
+
+import Story, { StoryLoading } from 'components/story/Story';
 
 const STORIES_TO_DISPLAY = 10;
 

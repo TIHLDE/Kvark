@@ -1,14 +1,15 @@
-import { Fragment, useEffect, useMemo, useState } from 'react';
-import { useUsers } from 'hooks/User';
+import { MenuItem, TextField } from '@mui/material';
 import { makeStyles } from 'makeStyles';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 
-// Project Components
+import { useUsers } from 'hooks/User';
+
+import UserStrikeListItem from 'pages/StrikeAdmin/components/UserStrikeListItem';
+import { PersonListItemLoading } from 'pages/UserAdmin/components/PersonListItem';
+
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import UserStrikeListItem from 'pages/StrikeAdmin/components/UserStrikeListItem';
-import { PersonListItemLoading } from 'pages/UserAdmin/components/PersonListItem';
-import { MenuItem, TextField } from '@mui/material';
 
 const useStyles = makeStyles()((theme) => ({
   filterContainer: {

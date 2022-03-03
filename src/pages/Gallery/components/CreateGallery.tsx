@@ -1,57 +1,35 @@
-// React
-import { useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-
-// Material-UI
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, MenuItem } from '@mui/material';
 import { makeStyles } from 'makeStyles';
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
-// Hooks
-import { useSnackbar } from 'hooks/Snackbar';
-import { useCreateAlbum } from 'hooks/Gallery';
-
-// Components
-import Dialog from 'components/layout/Dialog';
-import { ImageUpload } from 'components/inputs/Upload';
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import { BannerButton } from 'components/layout/Banner';
-
-// Types
 import { Gallery, GalleryRequired } from 'types';
 
+import { useEvents } from 'hooks/Event';
+import { useCreateAlbum } from 'hooks/Gallery';
+import { useSnackbar } from 'hooks/Snackbar';
+
+import Select from 'components/inputs/Select';
+import SubmitButton from 'components/inputs/SubmitButton';
+import TextField from 'components/inputs/TextField';
+import { ImageUpload } from 'components/inputs/Upload';
+import { BannerButton } from 'components/layout/Banner';
+import Dialog from 'components/layout/Dialog';
+
 const useStyles = makeStyles()((theme) => ({
-  uploadInput: {
-    display: 'grid',
-    gridGap: theme.spacing(1),
-    padding: theme.spacing(2),
-    background: theme.palette.background.default,
-  },
-  grid: {
-    display: 'grid',
-    gridGap: theme.spacing(2),
-    gridTemplateColumns: '1fr 1fr',
-    [theme.breakpoints.down('md')]: {
-      gridGap: 0,
-      gridTemplateColumns: '1fr',
-    },
-  },
   margin: {
     margin: theme.spacing(2, 0, 1),
     borderRadius: theme.shape.borderRadius,
     overflow: 'hidden',
-  },
-  expansionPanel: {
-    border: '1px solid ' + theme.palette.divider,
-    background: theme.palette.background.smoke,
   },
 }));
 type FormValues = Omit<Gallery, 'slug'>;
 
 const CreateAlbum = () => {
   const [acceptedFileTypesOpen, setAcceptedFileTypesOpen] = useState<boolean>(false);
-  const { handleSubmit, register, watch, formState, setValue } = useForm<FormValues>();
+  const { handleSubmit, register, watch, formState, setValue, control } = useForm<FormValues>();
   const acceptedFileTypes = ['jpg', 'png'];
+  const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   const createAlbum = useCreateAlbum();
   const { classes } = useStyles();
   const showSnackbar = useSnackbar();
@@ -78,12 +56,20 @@ const CreateAlbum = () => {
   return (
     <Box>
       <form onSubmit={handleSubmit(submit)}>
-        <Typography sx={{ fontSize: 40 }}>Opprett et nytt bilde album</Typography>
         <TextField formState={formState} label='Tittel' {...register('title', { required: 'Gi bildet en tittel' })} required />
         <TextField formState={formState} label='Beskrivelse' {...register('description', { required: 'Gi bildet en beskrivelse' })} required />
         <Button onClick={() => setAcceptedFileTypesOpen(true)} sx={{ mb: 2, width: '100%' }} variant='outlined'>
           Tillatte Filtyper
         </Button>
+        {Boolean(events.length) && (
+          <Select control={control} formState={formState} label='Kategori' name='category'>
+            {events.map((value, index) => (
+              <MenuItem key={index} value={value.id}>
+                {value.text}
+              </MenuItem>
+            ))}
+          </Select>
+        )}
         <ImageUpload formState={formState} label='Velg display bilde' register={register('image')} setValue={setValue} watch={watch} />
         <TextField formState={formState} label='Alt-tekst til bildet' {...register('image_alt', { required: 'Gi bildet en alt-tekst' })} required />
         <SubmitButton className={classes.margin} formState={formState}>
@@ -107,7 +93,7 @@ const CreateAlbumDialog = () => {
       <BannerButton onClick={() => setOpen(true)} variant='outlined'>
         Opprett nytt album
       </BannerButton>
-      <Dialog onClose={() => setOpen(false)} open={open}>
+      <Dialog onClose={() => setOpen(false)} open={open} titleText={'Opprett et nytt bilde album'}>
         <CreateAlbum />
       </Dialog>
     </Box>

@@ -1,5 +1,5 @@
-import ReactLinkify, { Props } from 'react-linkify';
 import { styled } from '@mui/material';
+import ReactLinkify, { Props } from 'react-linkify';
 import { Link } from 'react-router-dom';
 import { isExternalURL } from 'utils';
 

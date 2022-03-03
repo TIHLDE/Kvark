@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IFetch } from 'api/fetch';
-import { MembershipType, Study } from 'types/Enums';
 import {
   Badge,
   Category,
@@ -15,13 +13,15 @@ import {
   FormCreate,
   FormStatistics,
   FormUpdate,
+  Gallery,
+  GalleryRequired,
   Group,
   GroupFine,
-  GroupFineCreate,
   GroupFineBatchMutate,
+  GroupFineCreate,
   GroupFineMutate,
-  GroupForm,
   GroupFineStatistics,
+  GroupForm,
   GroupLaw,
   GroupLawMutate,
   GroupMutate,
@@ -34,12 +34,10 @@ import {
   News,
   NewsRequired,
   Notification,
-  WikiPage,
-  WikiChildren,
-  WikiTree,
-  WikiRequired,
-  PublicRegistration,
   PaginationResponse,
+  Picture,
+  PictureRequired,
+  PublicRegistration,
   Registration,
   RequestResponse,
   ShortLink,
@@ -52,11 +50,14 @@ import {
   UserPermissions,
   UserSubmission,
   Warning,
-  Gallery,
-  GalleryRequired,
-  Picture,
-  PictureRequired,
+  WikiChildren,
+  WikiPage,
+  WikiRequired,
+  WikiTree,
 } from 'types';
+import { MembershipType, Study } from 'types/Enums';
+
+import { IFetch } from 'api/fetch';
 
 export const AUTH_ENDPOINT = 'auth';
 export const BADGES_ENDPOINT = 'badges';

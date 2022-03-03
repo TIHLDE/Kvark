@@ -1,13 +1,9 @@
-// Material UI Components
-import { Dialog as MuiDialog, DialogProps as MuiDialogProps, DialogTitle } from '@mui/material';
+import { DialogTitle, Dialog as MuiDialog, DialogProps as MuiDialogProps, Paper, Typography } from '@mui/material';
 
-// Enums
 import { PermissionApp } from 'types/Enums';
 
-// Hooks
 import { HavePermission } from 'hooks/User';
 
-// Components
 import PictureEditorDialog from './PictureEditor';
 
 export type DialogProps = MuiDialogProps & {
@@ -24,12 +20,20 @@ const ImageDialog = ({ data, open, onClose, titleText, maxWidth = 'md', fullWidt
       <div style={{ overflow: 'hidden', display: 'grid', alignContent: 'center', alignItems: 'center' }}>
         {titleText && <DialogTitle id='dialog-title'>{titleText}</DialogTitle>}
         {data !== undefined && (
-          <>
-            <img src={data[2]} width='100%' />
-            <HavePermission apps={[PermissionApp.PICTURE]}>
-              <PictureEditorDialog id={data[1]} slug={data[0]} />
-            </HavePermission>
-          </>
+          <div style={{ maxWidth: '100%' }}>
+            <Paper>
+              <img src={data[2]} style={{ display: 'block', maxHeight: 'calc(100vh - 100px)', width: '100%', margin: 'auto' }} />
+            </Paper>
+            <Paper>
+              {/* <Typography>{data[3]}</Typography>
+              <Typography>{data[4]}</Typography> */}
+              <div style={{ marginRight: 0, marginLeft: 'auto' }}>
+                <HavePermission apps={[PermissionApp.PICTURE]}>
+                  <PictureEditorDialog id={data[1]} slug={data[0]} />
+                </HavePermission>
+              </div>
+            </Paper>
+          </div>
         )}
       </div>
     </MuiDialog>

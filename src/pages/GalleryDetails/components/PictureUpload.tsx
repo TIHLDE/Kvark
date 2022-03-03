@@ -1,24 +1,18 @@
-// React
-import { useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-
-// Material-UI
-import { Box, Button, Typography } from '@mui/material';
+import { Button } from '@mui/material';
 import { makeStyles } from 'makeStyles';
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
-// Hooks
-import { useSnackbar } from 'hooks/Snackbar';
+import { Picture, PictureRequired } from 'types';
+
 import { useCreatePicture } from 'hooks/Gallery';
+import { useSnackbar } from 'hooks/Snackbar';
 
-// Components
-import Dialog from 'components/layout/Dialog';
-import { ImageUpload } from 'components/inputs/Upload';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
-
-// Types
-import { Picture, PictureRequired } from 'types';
+import { ImageUpload } from 'components/inputs/Upload';
 import { BannerButton } from 'components/layout/Banner';
+import Dialog from 'components/layout/Dialog';
 
 const useStyles = makeStyles()((theme) => ({
   margin: {
@@ -61,9 +55,8 @@ const PictureUpload = ({ slug }: PictureUploadProps) => {
   };
 
   return (
-    <Box>
+    <>
       <form onSubmit={handleSubmit(submit)}>
-        <Typography sx={{ fontSize: 40 }}>Last opp et bilde</Typography>
         <TextField formState={formState} label='Tittel' {...register('title', { required: 'Gi bildet en tittel' })} required />
         <TextField formState={formState} label='Beskrivelse' {...register('description', { required: 'Gi bildet en beskrivelse' })} required />
         <Button onClick={() => setAcceptedFileTypesOpen(true)} sx={{ mb: 2, width: '100%' }} variant='outlined'>
@@ -81,21 +74,21 @@ const PictureUpload = ({ slug }: PictureUploadProps) => {
         open={acceptedFileTypesOpen}
         titleText='Godkjente filtyper'
       />
-    </Box>
+    </>
   );
 };
 
 const PictureUploadDialog = ({ slug }: PictureUploadProps) => {
   const [open, setOpen] = useState<boolean>(false);
   return (
-    <Box>
+    <>
       <BannerButton onClick={() => setOpen(true)} variant='outlined'>
         Last opp et bilde
       </BannerButton>
-      <Dialog onClose={() => setOpen(false)} open={open}>
+      <Dialog onClose={() => setOpen(false)} open={open} titleText={'Last opp bilde'}>
         <PictureUpload slug={slug} />
       </Dialog>
-    </Box>
+    </>
   );
 };
 

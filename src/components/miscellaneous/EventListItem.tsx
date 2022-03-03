@@ -1,23 +1,20 @@
-import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import { urlEncode, formatDate } from 'utils';
+import CategoryIcon from '@mui/icons-material/CategoryRounded';
+import DateIcon from '@mui/icons-material/DateRangeRounded';
+import { alpha, Button, ButtonProps, Grid, ListItemProps, Skeleton, Stack, styled, SvgIconTypeMap, Typography, useTheme } from '@mui/material';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { parseISO } from 'date-fns';
+import { useMemo } from 'react';
 import useDimensions from 'react-cool-dimensions';
+import { Link } from 'react-router-dom';
 import URLS from 'URLS';
+import { formatDate, urlEncode } from 'utils';
+
 import { EventCompact } from 'types';
+import { Groups } from 'types/Enums';
+
 import { useCategories } from 'hooks/Categories';
 
-// Material UI Components
-import { Button, ButtonProps, styled, Grid, Typography, ListItemProps, SvgIconTypeMap, Stack, alpha, useTheme, Skeleton } from '@mui/material';
-import { OverridableComponent } from '@mui/material/OverridableComponent';
-
-// Icons
-import DateIcon from '@mui/icons-material/DateRangeRounded';
-import CategoryIcon from '@mui/icons-material/CategoryRounded';
-
-// Project components
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
-import { Groups } from 'types/Enums';
 
 type EventInfoContentProps = {
   icon?: OverridableComponent<SvgIconTypeMap<unknown, 'svg'>>;

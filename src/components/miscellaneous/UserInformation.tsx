@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import { usePersistedState } from 'hooks/Utils';
-import { Typography, TypographyProps, Box, Tooltip, TooltipProps, Alert, AlertProps, SxProps, Theme } from '@mui/material';
 import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
+import { Alert, AlertProps, Box, SxProps, Theme, Tooltip, TooltipProps, Typography, TypographyProps } from '@mui/material';
+import { useState } from 'react';
+
+import { usePersistedState } from 'hooks/Utils';
 
 export type ShowMoreTextProps = {
   children: TypographyProps['children'];

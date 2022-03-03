@@ -1,11 +1,12 @@
+import { ListItem, ListItemAvatar, ListItemButton, ListItemText, Skeleton, Stack, Typography } from '@mui/material';
+import { format, parseISO } from 'date-fns';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { format, parseISO } from 'date-fns';
 import URLS from 'URLS';
 import { getMembershipType } from 'utils';
+
 import { useMembershipHistories } from 'hooks/Membership';
 
-import { ListItem, ListItemButton, ListItemText, ListItemAvatar, Typography, Skeleton, Stack } from '@mui/material';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import Avatar from 'components/miscellaneous/Avatar';
@@ -38,7 +39,7 @@ const MembersHistoryCard = ({ slug }: MembersHistoryCardProps) => {
 
   return (
     <Stack gap={1} sx={{ mt: 1 }}>
-      {Boolean(data?.pages?.length) && <Typography variant='h3'>Tidligere medlemmer:</Typography>}
+      {Boolean(data?.pages?.length) && <Typography variant='h3'>Medlemshistorikk:</Typography>}
       <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
         <Stack gap={1}>
           {prevMembers.map((member) => (

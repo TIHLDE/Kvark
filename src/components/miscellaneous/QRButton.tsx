@@ -1,17 +1,11 @@
-import { useState, lazy, Suspense } from 'react';
-
-// Material UI Components
-import { Button, ButtonProps, styled, useMediaQuery, Theme, Skeleton, useTheme, Typography } from '@mui/material';
-import { makeStyles } from 'makeStyles';
-
-// Project components
-import Dialog from 'components/layout/Dialog';
-
-// Project hooks
-import { useGoogleAnalytics } from 'hooks/Utils';
-
-// Icons
 import QrCodeIcon from '@mui/icons-material/QrCodeRounded';
+import { Button, ButtonProps, Skeleton, styled, Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { lazy, Suspense, useState } from 'react';
+
+import { useAnalytics } from 'hooks/Utils';
+
+import Dialog from 'components/layout/Dialog';
 
 const QR = lazy(() => import('qrcode.react'));
 
@@ -53,7 +47,7 @@ export type QRButtonProps = ButtonProps & {
 const QRButton = ({ qrValue, subtitle, children, ...props }: QRButtonProps) => {
   const [showQR, setShowQR] = useState(false);
   const theme = useTheme();
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
   const openQR = () => {
     event('open-QR', 'profile', 'Open');

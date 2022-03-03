@@ -1,23 +1,23 @@
-import { useState, useMemo } from 'react';
-import { GroupUserFine } from 'types';
-import { useGroupUserFines, useBatchUpdateUserGroupFines } from 'hooks/Group';
-import { useSnackbar } from 'hooks/Snackbar';
-import { useGoogleAnalytics } from 'hooks/Utils';
-import { Collapse, ListItem, ListItemText, Stack, Typography, List, Divider } from '@mui/material';
-
-// Icons
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 import PayedIcon from '@mui/icons-material/CreditScoreRounded';
 import ApprovedIcon from '@mui/icons-material/DoneOutlineRounded';
+import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import { Collapse, Divider, List, ListItem, ListItemText, Stack, Typography } from '@mui/material';
+import { useMemo, useState } from 'react';
 
-// Project components
-import Avatar from 'components/miscellaneous/Avatar';
-import Pagination from 'components/layout/Pagination';
-import VerifyDialog from 'components/layout/VerifyDialog';
-import Paper from 'components/layout/Paper';
+import { GroupUserFine } from 'types';
+
+import { useBatchUpdateUserGroupFines, useGroupUserFines } from 'hooks/Group';
+import { useSnackbar } from 'hooks/Snackbar';
+import { useAnalytics } from 'hooks/Utils';
+
 import FineItem, { FineItemProps } from 'pages/Groups/fines/FineItem';
 import { useFinesFilter } from 'pages/Groups/fines/FinesContext';
+
+import Pagination from 'components/layout/Pagination';
+import Paper from 'components/layout/Paper';
+import VerifyDialog from 'components/layout/VerifyDialog';
+import Avatar from 'components/miscellaneous/Avatar';
 
 export type UserFineItemProps = Pick<FineItemProps, 'groupSlug' | 'isAdmin'> & {
   userFine: GroupUserFine;
@@ -25,7 +25,7 @@ export type UserFineItemProps = Pick<FineItemProps, 'groupSlug' | 'isAdmin'> & {
 
 const UserFineItem = ({ userFine, groupSlug, isAdmin }: UserFineItemProps) => {
   const [expanded, setExpanded] = useState(false);
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const finesFilter = useFinesFilter();
   const showSnackbar = useSnackbar();
   const updateUserFines = useBatchUpdateUserGroupFines(groupSlug, userFine.user.user_id);

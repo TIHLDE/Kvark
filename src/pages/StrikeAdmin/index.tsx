@@ -1,20 +1,16 @@
-import { useState } from 'react';
-
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import Typography from '@mui/material/Typography';
-
-// Icons
 import GroupIcon from '@mui/icons-material/Group';
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'makeStyles';
+import { useState } from 'react';
 
-// Project Components
-import Page from 'components/navigation/Page';
+import AllStrikesList from 'pages/StrikeAdmin/components/AllStrikeList';
+import UserStrikeList from 'pages/StrikeAdmin/components/UserStrikeList';
+
 import Paper from 'components/layout/Paper';
 import Tabs from 'components/layout/Tabs';
 import { PrimaryTopBox } from 'components/layout/TopBox';
-import UserStrikeList from 'pages/StrikeAdmin/components/UserStrikeList';
-import AllStrikesList from 'pages/StrikeAdmin/components/AllStrikeList';
+import Page from 'components/navigation/Page';
 
 const useStyles = makeStyles()(() => ({
   content: {

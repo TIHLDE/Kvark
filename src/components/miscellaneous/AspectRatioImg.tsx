@@ -1,5 +1,6 @@
+import { BoxProps, Skeleton, styled } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { Skeleton, styled, BoxProps } from '@mui/material';
+
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
 
 export type AspectRatioImgProps = {

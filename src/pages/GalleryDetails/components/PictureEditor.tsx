@@ -1,24 +1,17 @@
-// React
-import { useCallback, useState, useEffect } from 'react';
+import { Box, Button } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-// Material-UI
-import { Box, Button, Typography } from '@mui/material';
-import { makeStyles } from 'makeStyles';
-
-// Hooks
-import { useUpdatePicture, useDeletePicture, usePictureById } from 'hooks/Gallery';
-import { useSnackbar } from 'hooks/Snackbar';
-
-//Types
 import { Picture, PictureRequired } from 'types';
 
-// Components
-import Dialog from 'components/layout/Dialog';
-import { ImageUpload } from 'components/inputs/Upload';
+import { useDeletePicture, usePictureById, useUpdatePicture } from 'hooks/Gallery';
+import { useSnackbar } from 'hooks/Snackbar';
+
 import SubmitButton from 'components/inputs/SubmitButton';
-import VerifyDialog from 'components/layout/VerifyDialog';
 import TextField from 'components/inputs/TextField';
+import Dialog from 'components/layout/Dialog';
+import VerifyDialog from 'components/layout/VerifyDialog';
 
 const useStyles = makeStyles()((theme) => ({
   margin: {
@@ -41,14 +34,11 @@ const PictureEditor = ({ id, slug }: PictureEditorProps) => {
   const editPicture = useUpdatePicture(slug, id);
   const deletePicture = useDeletePicture(slug, id);
   const showSnackbar = useSnackbar();
-  const acceptedFileTypes = ['jpg', 'png'];
-  const [acceptedFileTypesOpen, setAcceptedFileTypesOpen] = useState<boolean>(false);
-  const { handleSubmit, register, watch, formState, setValue, reset } = useForm<FormValues>();
+  const { handleSubmit, register, formState, reset } = useForm<FormValues>();
   const setValues = useCallback(
     (newValues: Picture | null) => {
       reset({
         title: newValues?.title || '',
-        image: newValues?.image || '',
         description: newValues?.description || '',
         image_alt: newValues?.image_alt || '',
       });
@@ -77,7 +67,6 @@ const PictureEditor = ({ id, slug }: PictureEditorProps) => {
       title: data.title,
       image_alt: data.image_alt,
       description: data.description,
-      image: data.image,
     } as PictureRequired;
     await editPicture.mutate(Image, {
       onSuccess: () => {
@@ -96,32 +85,21 @@ const PictureEditor = ({ id, slug }: PictureEditorProps) => {
   return (
     <Box>
       <form onSubmit={handleSubmit(submit)}>
-        <Typography sx={{ fontSize: 40 }}>Rediger bildet</Typography>
         <TextField formState={formState} label='Tittel' {...register('title', { required: 'Gi bildet en tittel' })} required />
         <TextField formState={formState} label='Beskrivelse' {...register('description', { required: 'Gi bildet en beskrivelse' })} required />
-        <Button onClick={() => setAcceptedFileTypesOpen(true)} sx={{ mb: 2, width: '100%' }} variant='outlined'>
-          Tillatte Filtyper
-        </Button>
-        <ImageUpload formState={formState} label='Velg bilde' register={register('image')} setValue={setValue} watch={watch} />
         <TextField formState={formState} label='Alt-tekst' {...register('image_alt', { required: 'Gi bildet en alt-tekst' })} required />
         <SubmitButton className={classes.margin} formState={formState}>
           Rediger
         </SubmitButton>
         <VerifyDialog
-          closeText='Ikke slett arrangementet'
+          closeText='Ikke slett bildet'
           color='error'
-          contentText='Sletting av bildet kan ikke reverseres.'
+          contentText='Sletting av bilder kan ikke reverseres.'
           onConfirm={remove}
           titleText='Er du sikker?'>
           Slett
         </VerifyDialog>
       </form>
-      <Dialog
-        contentText={acceptedFileTypes.join(', ').toUpperCase()}
-        onClose={() => setAcceptedFileTypesOpen(false)}
-        open={acceptedFileTypesOpen}
-        titleText='Godkjente filtyper'
-      />
     </Box>
   );
 };
@@ -131,9 +109,9 @@ const PictureEditorDialog = ({ slug, id }: PictureEditorProps) => {
   return (
     <Box>
       <Button onClick={() => setOpen(true)} variant='outlined'>
-        Last opp et bilde
+        Rediger
       </Button>
-      <Dialog onClose={() => setOpen(false)} open={open}>
+      <Dialog onClose={() => setOpen(false)} open={open} titleText={'Rediger bilde'}>
         <PictureEditor id={id} slug={slug} />
       </Dialog>
     </Box>

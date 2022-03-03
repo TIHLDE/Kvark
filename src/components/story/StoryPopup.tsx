@@ -1,22 +1,17 @@
-import { useEffect, useCallback, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { usePalette } from 'react-palette';
-import { argsToParams } from 'utils';
-
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import { Typography, useTheme, Button, Dialog, useMediaQuery } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-
-// Project components
-import { StoryItem } from 'components/story/Story';
-import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
-
-// Icons
 import CloseIcon from '@mui/icons-material/CloseRounded';
 import UpIcon from '@mui/icons-material/ExpandLessRounded';
 import DownIcon from '@mui/icons-material/ExpandMoreRounded';
 import OpenIcon from '@mui/icons-material/KeyboardArrowRightRounded';
+import { Button, Dialog, Typography, useMediaQuery, useTheme } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { makeStyles } from 'makeStyles';
+import { useCallback, useEffect, useRef } from 'react';
+import { usePalette } from 'react-palette';
+import { Link, useNavigate } from 'react-router-dom';
+import { argsToParams } from 'utils';
+
+import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
+import { StoryItem } from 'components/story/Story';
 
 const useStyles = makeStyles()((theme) => ({
   paper: {

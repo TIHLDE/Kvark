@@ -1,10 +1,6 @@
-// React
+import { ImageList, ImageListItem, Theme, useMediaQuery } from '@mui/material';
 import { useMemo } from 'react';
 
-// Material UI
-import { ImageList, ImageListItem, Theme, useMediaQuery } from '@mui/material';
-
-// >Hooks
 import { useAlbumPictures } from 'hooks/Gallery';
 
 type ImageGridProps = {
@@ -26,8 +22,8 @@ export const ImageGridLoading = () => {
 const ImageGrid = ({ slug, setSelectedImg, setOpenPicture }: ImageGridProps) => {
   const { data } = useAlbumPictures(slug);
   const pictures = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
-  const openModalWithImg = (slug: string, id: string, image: string) => {
-    setSelectedImg([slug, id, image]);
+  const openModalWithImg = (slug: string, id: string, image: string, title: string, description: string) => {
+    setSelectedImg([slug, id, image, title, description]);
     setOpenPicture(true);
   };
   const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
@@ -42,7 +38,7 @@ const ImageGrid = ({ slug, setSelectedImg, setOpenPicture }: ImageGridProps) => 
               <img
                 alt='uploaded pic'
                 loading='lazy'
-                onClick={() => openModalWithImg(slug, image.id, image.image)}
+                onClick={() => openModalWithImg(slug, image.id, image.image, image.title, image.description)}
                 src={`${image.image}?w=248&fit=crop&auto=format`}
                 srcSet={`${image.image}?w=248&fit=crop&auto=format&dpr=2 2x`}
               />

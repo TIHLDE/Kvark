@@ -1,12 +1,10 @@
-import { useState } from 'react';
-import { getCookie, setCookie } from 'api/cookie';
+import { Button, Typography } from '@mui/material';
 import { ACCEPTED_ANALYTICS } from 'constant';
-
-// Material UI
 import { makeStyles } from 'makeStyles';
-import { Typography, Button } from '@mui/material';
+import { useState } from 'react';
 
-// Project components
+import { getCookie, setCookie } from 'api/cookie';
+
 import Paper from 'components/layout/Paper';
 
 const useStyles = makeStyles()((theme) => ({
