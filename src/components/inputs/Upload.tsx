@@ -58,6 +58,7 @@ export type ImageUploadProps<FormValues extends FieldValues = FieldValues> = But
     register: UseFormRegisterReturn;
     label?: string;
     ratio?: `${number}:${number}`;
+    showFlag?: boolean;
   };
 
 export const GenericImageUpload = <FormValues extends FieldValues>({
