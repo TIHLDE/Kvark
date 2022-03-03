@@ -3,11 +3,11 @@ import { useParams } from 'react-router-dom';
 
 import { useGroup } from 'hooks/Group';
 
+// Project components
 import MembersCard from 'pages/Groups/about/MembersCard';
 import MembersHistoryCard from 'pages/Groups/about/MembersHistoryCard';
 
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-
 const GroupInfo = () => {
   const { slug } = useParams<'slug'>();
   const { data: group, isLoading } = useGroup(slug || '-');
@@ -27,5 +27,4 @@ const GroupInfo = () => {
     </>
   );
 };
-
 export default GroupInfo;
