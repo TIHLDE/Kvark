@@ -1,24 +1,26 @@
 // React
+import { styled } from '@mui/material';
 import { useMemo } from 'react';
 
 // Hooks
+import { PermissionApp } from 'types/Enums';
+
 import { useAlbums } from 'hooks/Gallery';
 import { HavePermission } from 'hooks/User';
 
 // Material UI
-import { styled } from '@mui/material';
 
 // Project Components
-import Page from 'components/navigation/Page';
 import Banner from 'components/layout/Banner';
 import Pagination from 'components/layout/Pagination';
-import GalleryListItem, { GalleryListItemLoading } from 'components/miscellaneous/GalleryListItem';
 import Paper from 'components/layout/Paper';
+import GalleryListItem, { GalleryListItemLoading } from 'components/miscellaneous/GalleryListItem';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import Page from 'components/navigation/Page';
+
 import CreateAlbumDialog from './components/CreateGallery';
 
 // Types
-import { PermissionApp } from 'types/Enums';
 
 const AlbumGrid = styled('div')(({ theme }) => ({
   display: 'grid',

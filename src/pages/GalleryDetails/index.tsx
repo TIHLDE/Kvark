@@ -1,18 +1,22 @@
 import { useEffect } from 'react';
-import URLS from 'URLS';
 import Helmet from 'react-helmet';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useAlbumsById } from 'hooks/Gallery';
+import { useNavigate, useParams } from 'react-router-dom';
+import URLS from 'URLS';
+
 import { PermissionApp } from 'types/Enums';
+
+import { useAlbumsById } from 'hooks/Gallery';
 import { HavePermission } from 'hooks/User';
-import PictureUploadDialog from './components/PictureUpload';
 
 // Project components
 import Http404 from 'pages/Http404';
+
+import Banner from 'components/layout/Banner';
 import Page from 'components/navigation/Page';
+
 import GalleryRenderer from './components/GalleryRenderer';
 import { ImageGridLoading } from './components/ImageGrid';
-import Banner from 'components/layout/Banner';
+import PictureUploadDialog from './components/PictureUpload';
 
 const GalleryDetails = () => {
   const { slug } = useParams();

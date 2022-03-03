@@ -13,6 +13,8 @@ import { useAnalytics } from 'hooks/Utils';
 import Companies from 'pages/Companies';
 import EventDetails from 'pages/EventDetails';
 import Events from 'pages/Events';
+import Gallery from 'pages/Gallery';
+import GalleryDetails from 'pages/GalleryDetails';
 import Groups from 'pages/Groups';
 import GroupDetails from 'pages/Groups/GroupDetails';
 import GroupsOverview from 'pages/Groups/overview';
@@ -23,8 +25,6 @@ import News from 'pages/News';
 import NewsDetails from 'pages/NewsDetails';
 import NewStudent from 'pages/NewStudent';
 import Profile from 'pages/Profile';
-import Gallery from 'pages/Gallery';
-import GalleryDetails from 'pages/GalleryDetails';
 
 import Page from 'components/navigation/Page';
 

@@ -1,13 +1,14 @@
+import { Box, BoxProps, ButtonBase, Skeleton, touchRippleClasses, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
+
 import { Gallery } from 'types';
 
 // Material UI Components
-import { Box, Typography, BoxProps, Skeleton, touchRippleClasses, ButtonBase } from '@mui/material';
 
 // Project components
-import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 import Paper from 'components/layout/Paper';
+import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 
 export type GalleryListItemProps = {
   album: Gallery;

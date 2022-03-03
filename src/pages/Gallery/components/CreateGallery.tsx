@@ -61,7 +61,7 @@ const CreateAlbum = () => {
         <Button onClick={() => setAcceptedFileTypesOpen(true)} sx={{ mb: 2, width: '100%' }} variant='outlined'>
           Tillatte Filtyper
         </Button>
-        {Boolean(events.length) && (
+        {/* {Boolean(events.length) && (
           <Select control={control} formState={formState} label='Kategori' name='category'>
             {events.map((value, index) => (
               <MenuItem key={index} value={value.id}>
@@ -69,7 +69,7 @@ const CreateAlbum = () => {
               </MenuItem>
             ))}
           </Select>
-        )}
+        )} */}
         <ImageUpload formState={formState} label='Velg display bilde' register={register('image')} setValue={setValue} watch={watch} />
         <TextField formState={formState} label='Alt-tekst til bildet' {...register('image_alt', { required: 'Gi bildet en alt-tekst' })} required />
         <SubmitButton className={classes.margin} formState={formState}>

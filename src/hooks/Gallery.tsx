@@ -1,6 +1,8 @@
-import { useMutation, useQuery, useQueryClient, UseMutationResult, useInfiniteQuery } from 'react-query';
+import { useInfiniteQuery, useMutation, UseMutationResult, useQuery, useQueryClient } from 'react-query';
+
+import { Gallery, GalleryRequired, PaginationResponse, Picture, PictureRequired, RequestResponse } from 'types';
+
 import API from 'api/api';
-import { Gallery, GalleryRequired, Picture, PictureRequired, PaginationResponse, RequestResponse } from 'types';
 
 export const GALLERY_QUERY_KEY = 'gallery';
 export const PICTURE_QUERY_KEY = 'pictures';
