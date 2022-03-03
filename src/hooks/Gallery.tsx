@@ -65,13 +65,10 @@ export const usePictureById = (albumSlug: string, id: string) => {
   return useQuery<Picture, RequestResponse>([GALLERY_QUERY_KEY, PICTURE_QUERY_KEY, id, albumSlug], () => API.getPicture(albumSlug, id));
 };
 
-export const useCreatePicture = (albumSlug: string): UseMutationResult<Picture, RequestResponse, Array<PictureRequired>, unknown> => {
+export const useUploadPictures = (albumSlug: string): UseMutationResult<RequestResponse, RequestResponse, { files: File | File[] | Blob }, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((newPicture: Array<PictureRequired>) => API.createPicture(albumSlug, newPicture), {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(PICTURE_QUERY_KEY);
-      queryClient.setQueryData([PICTURE_QUERY_KEY, data.id], data);
-    },
+  return useMutation((files) => API.createPicture(albumSlug, files.files), {
+    onSuccess: () => queryClient.invalidateQueries([GALLERY_QUERY_KEY, albumSlug, PICTURE_QUERY_KEY]),
   });
 };
 

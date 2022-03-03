@@ -29,7 +29,7 @@ const CreateAlbum = () => {
   const [acceptedFileTypesOpen, setAcceptedFileTypesOpen] = useState<boolean>(false);
   const { handleSubmit, register, watch, formState, setValue, control } = useForm<FormValues>();
   const acceptedFileTypes = ['jpg', 'png'];
-  const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  // const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   const createAlbum = useCreateAlbum();
   const { classes } = useStyles();
   const showSnackbar = useSnackbar();

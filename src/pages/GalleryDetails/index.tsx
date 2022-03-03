@@ -16,7 +16,7 @@ import Page from 'components/navigation/Page';
 
 import GalleryRenderer from './components/GalleryRenderer';
 import { ImageGridLoading } from './components/ImageGrid';
-import PictureUploadDialog from './components/PictureUpload';
+import PictureUpload from './components/PictureUpload';
 
 const GalleryDetails = () => {
   const { slug } = useParams();
@@ -40,7 +40,7 @@ const GalleryDetails = () => {
         !undefined && (
           <Banner text={data.description} title={data.title}>
             <HavePermission apps={[PermissionApp.PICTURE]}>
-              <PictureUploadDialog slug={data.slug} />
+              <PictureUpload slug={data.slug} />
             </HavePermission>
           </Banner>
         )

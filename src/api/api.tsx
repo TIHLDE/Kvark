@@ -202,8 +202,8 @@ export default {
   getAlbumPictures: (albumSlug: string, filters?: any) =>
     IFetch<PaginationResponse<Picture>>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${albumSlug}/${PICTURE_ENDPOINT}/`, data: filters || {} }),
   getPicture: (albumSlug: string, id: string) => IFetch<Picture>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${albumSlug}/${PICTURE_ENDPOINT}/${id}` }),
-  createPicture: (albumSlug: string, items: Array<PictureRequired>) =>
-    IFetch<Picture>({ method: 'POST', url: `${GALLERY_ENDPOINT}/${albumSlug}/${PICTURE_ENDPOINT}/`, data: items }),
+  createPicture: (albumSlug: string, files: File | File[] | Blob) =>
+    IFetch<RequestResponse>({ method: 'POST', url: `${GALLERY_ENDPOINT}/${albumSlug}/${PICTURE_ENDPOINT}/`, file: files }),
   updatePicture: (albumSlug: string, id: string, item: Partial<Picture>) =>
     IFetch<Picture>({ method: 'PUT', url: `${GALLERY_ENDPOINT}/${albumSlug}/${PICTURE_ENDPOINT}/${id}/`, data: item }),
   deletePicture: (albumSlug: string, id: string) =>
