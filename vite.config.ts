@@ -60,7 +60,7 @@ export default defineConfig(({ mode }) => {
       svgr(),
       tsconfigPaths(),
       ...(mode === 'development' ? [react()] : []),
-      checker({ typescript: true, overlay: false }),
+      checker({ typescript: true, eslint: { lintCommand: 'eslint "./src/**/*.{ts,tsx}"' }, overlay: false }),
       viteCompression({ algorithm: 'brotliCompress' }),
     ],
   };

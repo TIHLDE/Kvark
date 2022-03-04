@@ -34,11 +34,14 @@ const ImageGrid = ({ slug, setSelectedImg, setOpenPicture }: ImageGridProps) => 
       <ImageList cols={mdDown ? 1 : lgUp ? 3 : 2} gap={8} variant='masonry'>
         {data !== undefined &&
           pictures.map((image) => (
-            <ImageListItem key={image.id}>
+            <ImageListItem
+              component='button'
+              key={image.id}
+              onClick={() => openModalWithImg(slug, image.id, image.image, image.title, image.description)}
+              sx={{ cursor: 'pointer', border: 'none' }}>
               <img
                 alt='uploaded pic'
                 loading='lazy'
-                onClick={() => openModalWithImg(slug, image.id, image.image, image.title, image.description)}
                 src={`${image.image}?w=248&fit=crop&auto=format`}
                 srcSet={`${image.image}?w=248&fit=crop&auto=format&dpr=2 2x`}
               />

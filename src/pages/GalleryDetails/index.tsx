@@ -14,6 +14,7 @@ import Http404 from 'pages/Http404';
 import Banner from 'components/layout/Banner';
 import Page from 'components/navigation/Page';
 
+import GalleryEditorDialog from './components/GalleryEditor';
 import GalleryRenderer from './components/GalleryRenderer';
 import { ImageGridLoading } from './components/ImageGrid';
 import PictureUpload from './components/PictureUpload';
@@ -41,6 +42,9 @@ const GalleryDetails = () => {
           <Banner text={data.description} title={data.title}>
             <HavePermission apps={[PermissionApp.PICTURE]}>
               <PictureUpload slug={data.slug} />
+            </HavePermission>
+            <HavePermission apps={[PermissionApp.PICTURE]}>
+              <GalleryEditorDialog slug={data.slug} />
             </HavePermission>
           </Banner>
         )

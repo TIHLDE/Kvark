@@ -1,17 +1,11 @@
 import { Button } from '@mui/material';
 import { makeStyles } from 'makeStyles';
 import { useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-
-import { Picture, PictureRequired } from 'types';
 
 import { useUploadPictures } from 'hooks/Gallery';
 import { useSnackbar } from 'hooks/Snackbar';
 
 import FileUploader from 'components/inputs/FileUploader';
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import { ImageUpload } from 'components/inputs/Upload';
 import { BannerButton } from 'components/layout/Banner';
 import Dialog from 'components/layout/Dialog';
 
@@ -22,8 +16,6 @@ const useStyles = makeStyles()((theme) => ({
     overflow: 'hidden',
   },
 }));
-
-type FormValues = Omit<Picture, 'id' | 'created_at' | 'updated_at'>;
 
 type PictureUploadProps = {
   slug: string;
@@ -63,9 +55,9 @@ const PictureUpload = ({ slug }: PictureUploadProps) => {
         <Button onClick={() => setAcceptedFileTypesOpen(true)} sx={{ mb: 2, width: '100%' }} variant='outlined'>
           Tillatte Filtyper
         </Button>
-        <FileUploader files={files} fileTypes={['application/pdf']} setFiles={setFiles} title='Last opp eller dra gavekort hit.' />
+        <FileUploader files={files} fileTypes={['image/jpeg', 'image/png']} setFiles={setFiles} title='Last opp eller dra bilder hit.' />
         <Button className={classes.margin} disabled={files.length < 1 || upload.isLoading} fullWidth onClick={submit} variant='contained'>
-          Send Gavekort
+          Last opp bilder
         </Button>
         <Dialog
           contentText={acceptedFileTypes.join(', ').toUpperCase()}

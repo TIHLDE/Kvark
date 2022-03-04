@@ -76,7 +76,7 @@ export const useUpdatePicture = (albumSlug: string, id: string): UseMutationResu
   const queryClient = useQueryClient();
   return useMutation((updatedPicture: PictureRequired) => API.updatePicture(albumSlug, id, updatedPicture), {
     onSuccess: (data) => {
-      queryClient.invalidateQueries(PICTURE_QUERY_KEY);
+      queryClient.invalidateQueries([GALLERY_QUERY_KEY, PICTURE_QUERY_KEY, id, albumSlug]);
       queryClient.setQueryData([PICTURE_QUERY_KEY, id], data);
     },
   });
@@ -86,7 +86,7 @@ export const useDeletePicture = (albumSlug: string, id: string): UseMutationResu
   const queryClient = useQueryClient();
   return useMutation(() => API.deletePicture(albumSlug, id), {
     onSuccess: () => {
-      queryClient.invalidateQueries(PICTURE_QUERY_KEY);
+      queryClient.invalidateQueries([GALLERY_QUERY_KEY, albumSlug]);
     },
   });
 };

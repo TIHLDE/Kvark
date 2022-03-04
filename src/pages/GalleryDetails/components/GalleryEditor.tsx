@@ -4,9 +4,9 @@ import { makeStyles } from 'makeStyles';
 import { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { Picture, PictureRequired } from 'types';
+import { Gallery, GalleryRequired } from 'types';
 
-import { useDeletePicture, usePictureById, useUpdatePicture } from 'hooks/Gallery';
+import { useAlbumsById, useDeleteAlbum, useUpdateAlbum } from 'hooks/Gallery';
 import { useSnackbar } from 'hooks/Snackbar';
 
 import SubmitButton from 'components/inputs/SubmitButton';
@@ -20,34 +20,23 @@ const useStyles = makeStyles()((theme) => ({
     borderRadius: theme.shape.borderRadius,
     overflow: 'hidden',
   },
-  editButton: {
-    float: 'left',
-    position: 'absolute',
-    left: theme.spacing(2),
-    top: theme.spacing(2),
-    zIndex: 1000,
-    bg: '#92AD40',
-    p: '5px',
-    color: 'white',
-  },
 }));
 
-type PictureEditorProps = {
-  id: string;
+type GalleryEditorProps = {
   slug: string;
 };
 
-type FormValues = Omit<Picture, 'id' | 'created_at' | 'updated_at'>;
+type FormValues = Omit<Gallery, 'id' | 'created_at' | 'updated_at'>;
 
-const PictureEditor = ({ id, slug }: PictureEditorProps) => {
+const GalleryEditor = ({ slug }: GalleryEditorProps) => {
   const { classes } = useStyles();
-  const { data } = usePictureById(slug, id);
-  const editPicture = useUpdatePicture(slug, id);
-  const deletePicture = useDeletePicture(slug, id);
+  const { data } = useAlbumsById(slug);
+  const editGallery = useUpdateAlbum(slug);
+  const deleteGallery = useDeleteAlbum(slug);
   const showSnackbar = useSnackbar();
   const { handleSubmit, register, formState, reset } = useForm<FormValues>();
   const setValues = useCallback(
-    (newValues: Picture | null) => {
+    (newValues: Gallery | null) => {
       reset({
         title: newValues?.title || '',
         description: newValues?.description || '',
@@ -62,7 +51,7 @@ const PictureEditor = ({ id, slug }: PictureEditorProps) => {
   }, [data, setValues]);
 
   const remove = async () => {
-    deletePicture.mutate(null, {
+    deleteGallery.mutate(null, {
       onSuccess: () => {
         showSnackbar('Slettet', 'success');
       },
@@ -73,16 +62,16 @@ const PictureEditor = ({ id, slug }: PictureEditorProps) => {
   };
 
   const submit: SubmitHandler<FormValues> = async (data) => {
-    const Image = {
+    const Album = {
       ...data,
       image: data.image,
       title: data.title,
       image_alt: data.image_alt,
       description: data.description,
-    } as PictureRequired;
-    await editPicture.mutate(Image, {
+    } as GalleryRequired;
+    await editGallery.mutate(Album, {
       onSuccess: () => {
-        showSnackbar('Bildet ble redigert', 'success');
+        showSnackbar('Albumet ble oppdatert', 'success');
       },
       onError: (e) => {
         showSnackbar(e.detail, 'error');
@@ -105,9 +94,9 @@ const PictureEditor = ({ id, slug }: PictureEditorProps) => {
           Oppdater
         </SubmitButton>
         <VerifyDialog
-          closeText='Ikke slett bildet'
+          closeText='Ikke slett albumet'
           color='error'
-          contentText='Sletting av bilder kan ikke reverseres.'
+          contentText='Sletting av album kan ikke reverseres.'
           onConfirm={remove}
           titleText='Er du sikker?'>
           Slett
@@ -117,19 +106,19 @@ const PictureEditor = ({ id, slug }: PictureEditorProps) => {
   );
 };
 
-const PictureEditorDialog = ({ slug, id }: PictureEditorProps) => {
+const GalleryEditorDialog = ({ slug }: GalleryEditorProps) => {
   const { classes } = useStyles();
   const [open, setOpen] = useState<boolean>(false);
   return (
     <Box>
-      <IconButton className={classes.editButton} onClick={() => setOpen(true)}>
+      <IconButton onClick={() => setOpen(true)}>
         <EditRoundedIcon />
       </IconButton>
-      <Dialog onClose={() => setOpen(false)} open={open} titleText={'Rediger bilde'}>
-        <PictureEditor id={id} slug={slug} />
+      <Dialog onClose={() => setOpen(false)} open={open} titleText={'Rediger album'}>
+        <GalleryEditor slug={slug} />
       </Dialog>
     </Box>
   );
 };
 
-export default PictureEditorDialog;
+export default GalleryEditorDialog;
