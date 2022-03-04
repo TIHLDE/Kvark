@@ -29,10 +29,9 @@ const useStyles = makeStyles()((theme) => ({
   text: {
     float: 'left',
     position: 'absolute',
-    left: theme.spacing(2),
-    bottom: theme.spacing(2),
+    left: theme.spacing(1),
+    top: theme.spacing(1),
     zIndex: 1000,
-    p: '5px',
     color: 'black',
   },
 }));
