@@ -1,3 +1,4 @@
+import { Grid } from '@mui/material';
 import { useEffect } from 'react';
 import Helmet from 'react-helmet';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -40,12 +41,14 @@ const GalleryDetails = () => {
         data &&
         !undefined && (
           <Banner text={data.description} title={data.title}>
-            <HavePermission apps={[PermissionApp.PICTURE]}>
-              <PictureUpload slug={data.slug} />
-            </HavePermission>
-            <HavePermission apps={[PermissionApp.PICTURE]}>
-              <GalleryEditorDialog slug={data.slug} />
-            </HavePermission>
+            <Grid alignItems='center' container direction='row' gap={2} wrap='nowrap'>
+              <HavePermission apps={[PermissionApp.PICTURE]}>
+                <PictureUpload slug={data.slug} />
+              </HavePermission>
+              <HavePermission apps={[PermissionApp.PICTURE]}>
+                <GalleryEditorDialog slug={data.slug} />
+              </HavePermission>
+            </Grid>
           </Banner>
         )
       }

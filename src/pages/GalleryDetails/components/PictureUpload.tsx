@@ -6,7 +6,6 @@ import { useUploadPictures } from 'hooks/Gallery';
 import { useSnackbar } from 'hooks/Snackbar';
 
 import FileUploader from 'components/inputs/FileUploader';
-import { BannerButton } from 'components/layout/Banner';
 import Dialog from 'components/layout/Dialog';
 
 const useStyles = makeStyles()((theme) => ({
@@ -48,9 +47,9 @@ const PictureUpload = ({ slug }: PictureUploadProps) => {
 
   return (
     <>
-      <BannerButton onClick={() => setOpen(true)} variant='outlined'>
+      <Button onClick={() => setOpen(true)} variant='outlined'>
         Last opp et bilde
-      </BannerButton>
+      </Button>
       <Dialog onClose={() => setOpen(false)} open={open} titleText={'Last opp bilde'}>
         <Button onClick={() => setAcceptedFileTypesOpen(true)} sx={{ mb: 2, width: '100%' }} variant='outlined'>
           Tillatte Filtyper

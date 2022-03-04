@@ -107,7 +107,6 @@ const GalleryEditor = ({ slug }: GalleryEditorProps) => {
 };
 
 const GalleryEditorDialog = ({ slug }: GalleryEditorProps) => {
-  const { classes } = useStyles();
   const [open, setOpen] = useState<boolean>(false);
   return (
     <Box>
