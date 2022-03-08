@@ -109,16 +109,6 @@ const useStyles = makeStyles()((theme) => ({
   },
 }));
 
-export type TopBarItemProps = {
-  items?: {
-    text: string;
-    to: string;
-  }[];
-  text: string;
-  to?: string;
-  type: 'dropdown' | 'link';
-};
-
 const TopBarItem = (props: NavigationItem) => {
   const { classes, cx } = useStyles();
   const [isOpen, setIsOpen] = useState(false);
