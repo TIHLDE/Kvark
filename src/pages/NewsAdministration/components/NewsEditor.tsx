@@ -141,12 +141,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
           <UserSearch
             control={control}
             formState={formState}
-            helperText={
-              <ShowMoreText>
-                Botsjefen får tilgang til å endre lovverket, godkjenne bøter, markere bøter som betalt og slette bøter. Du som leder av gruppen har også tilgang
-                til dette.
-              </ShowMoreText>
-            }
+            helperText='Velg forfatter av nyheten. Når forfatteren er satt er det ikke mulig å endre etterpå.'
             label='Forfatter'
             name='creator'
             required
