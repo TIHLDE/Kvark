@@ -1,4 +1,5 @@
 import ExpandIcon from '@mui/icons-material/ExpandMoreRounded';
+import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
 import { useTheme } from '@mui/material';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
@@ -12,6 +13,7 @@ import URLS from 'URLS';
 import { useIsAuthenticated } from 'hooks/User';
 
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
+import { NavigationItem } from 'components/navigation/Navigation';
 
 const useStyles = makeStyles()((theme) => ({
   sidebar: {
@@ -62,47 +64,46 @@ const useStyles = makeStyles()((theme) => ({
   },
 }));
 
-type SidebarItemType = {
-  items?: {
-    text: string;
-    to: string;
-  }[];
-  text: string;
-  to?: string;
-  type: 'dropdown' | 'link';
-};
-
-export type SidebarItemProps = SidebarItemType & {
+export type SidebarItemProps = NavigationItem & {
   onClose: SidebarProps['onClose'];
 };
 
-const SidebarItem = ({ items, text, to, type, onClose }: SidebarItemProps) => {
+const SidebarItem = ({ onClose, ...props }: SidebarItemProps) => {
   const { classes, cx } = useStyles();
   const [isOpen, setIsOpen] = useState(false);
-  if (type === 'link' && to) {
-    return (
+  if (props.type === 'link') {
+    return props.external ? (
+      <Typography className={classes.text} component='a' href={props.to} variant='h2'>
+        {props.text} <OpenInNewIcon fontSize='inherit' sx={{ mb: '-2px' }} />
+      </Typography>
+    ) : (
       <Typography
         className={classes.text}
         component={Link}
-        onClick={to === window.location.pathname ? () => window.location.reload() : onClose}
-        to={to}
+        onClick={props.to === window.location.pathname ? () => window.location.reload() : onClose}
+        to={props.to}
         variant='h2'>
-        {text}
+        {props.text}
       </Typography>
     );
-  } else if (type === 'dropdown' && Array.isArray(items)) {
-    return (
-      <>
-        <Button
-          className={classes.dropdownButton}
-          endIcon={<ExpandIcon className={cx(classes.dropdownIcon, isOpen && classes.expanded)} />}
-          onClick={() => setIsOpen((prev) => !prev)}>
-          <Typography className={classes.text} variant='h2'>
-            {text}
-          </Typography>
-        </Button>
-        <Collapse classes={{ wrapperInner: classes.dropdown }} in={isOpen}>
-          {items.map((item, i) => (
+  }
+  return (
+    <>
+      <Button
+        className={classes.dropdownButton}
+        endIcon={<ExpandIcon className={cx(classes.dropdownIcon, isOpen && classes.expanded)} />}
+        onClick={() => setIsOpen((prev) => !prev)}>
+        <Typography className={classes.text} variant='h2'>
+          {props.text}
+        </Typography>
+      </Button>
+      <Collapse classes={{ wrapperInner: classes.dropdown }} in={isOpen}>
+        {props.items.map((item, i) =>
+          item.external ? (
+            <Typography className={cx(classes.text, classes.itemText)} component='a' href={item.to} key={i} variant='h3'>
+              - {item.text} <OpenInNewIcon fontSize='inherit' sx={{ mb: '-4px' }} />
+            </Typography>
+          ) : (
             <Typography
               className={cx(classes.text, classes.itemText)}
               component={Link}
@@ -112,17 +113,15 @@ const SidebarItem = ({ items, text, to, type, onClose }: SidebarItemProps) => {
               variant='h3'>
               - {item.text}
             </Typography>
-          ))}
-        </Collapse>
-      </>
-    );
-  } else {
-    return null;
-  }
+          ),
+        )}
+      </Collapse>
+    </>
+  );
 };
 
 export type SidebarProps = {
-  items: Array<SidebarItemType>;
+  items: Array<NavigationItem>;
   onClose: () => void;
   open: boolean;
 };
