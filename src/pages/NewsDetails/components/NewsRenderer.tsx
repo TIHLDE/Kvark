@@ -59,7 +59,10 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
             </HavePermission>
           )}
           <Stack alignItems='center' direction='row' justifyContent='space-between'>
-            <Typography variant='body2'>Publisert: {formatDate(parseISO(data.created_at), { time: false })}</Typography>
+            <Stack direction='row' gap={3}>
+              <Typography variant='body2'>Publisert: {formatDate(parseISO(data.created_at), { time: false })}</Typography>
+              {data.creator && <Typography variant='body2'>Skrevet av: {data.creator}</Typography>}
+            </Stack>
             <ShareButton shareId={data.id} shareType='news' title={data.title} />
           </Stack>
           <Paper>
