@@ -13,6 +13,9 @@
 ---
 
 ## Neste versjon
+
+- ✨ **Nyheter**. Forfatter på alle nye nyheter.
+
 ## Versjon 2022.03.01
 
 - ✨ **Spørreskjema**. Bli varslet på epost ved nye svar på gruppe-spørreskjemaer.

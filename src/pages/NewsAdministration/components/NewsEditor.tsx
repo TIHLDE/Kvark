@@ -18,7 +18,6 @@ import { ImageUpload } from 'components/inputs/Upload';
 import UserSearch from 'components/inputs/UserSearch';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
-import { ShowMoreText } from 'components/miscellaneous/UserInformation';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {
