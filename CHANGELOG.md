@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ✨ **Fondet**. Lagt inn fondet på nettsiden.
 - 🦟 **Arrangementer**. Brukere som er anonyme i den offentlige påmeldingslisten kan nå ikke lenger klikkes på.
 
 ## Versjon 2022.03.01
