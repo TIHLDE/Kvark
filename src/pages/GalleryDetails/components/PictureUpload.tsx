@@ -22,8 +22,6 @@ type PictureUploadProps = {
 
 const PictureUpload = ({ slug }: PictureUploadProps) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [acceptedFileTypesOpen, setAcceptedFileTypesOpen] = useState<boolean>(false);
-  const acceptedFileTypes = ['jpg', 'png'];
   const upload = useUploadPictures(slug);
   const [files, setFiles] = useState<File[]>([]);
   const { classes } = useStyles();
@@ -51,19 +49,10 @@ const PictureUpload = ({ slug }: PictureUploadProps) => {
         Last opp et bilde
       </Button>
       <Dialog onClose={() => setOpen(false)} open={open} titleText={'Last opp bilde'}>
-        <Button onClick={() => setAcceptedFileTypesOpen(true)} sx={{ mb: 2, width: '100%' }} variant='outlined'>
-          Tillatte Filtyper
-        </Button>
         <FileUploader files={files} fileTypes={['image/jpeg', 'image/png']} setFiles={setFiles} title='Last opp eller dra bilder hit.' />
         <Button className={classes.margin} disabled={files.length < 1 || upload.isLoading} fullWidth onClick={submit} variant='contained'>
           Last opp bilder
         </Button>
-        <Dialog
-          contentText={acceptedFileTypes.join(', ').toUpperCase()}
-          onClose={() => setAcceptedFileTypesOpen(false)}
-          open={acceptedFileTypesOpen}
-          titleText='Godkjente filtyper'
-        />
       </Dialog>
     </>
   );

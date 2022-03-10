@@ -23,7 +23,7 @@ const NewsListItem = ({ news, sx }: NewsListItemProps) => (
       sx={{ borderRadius: (theme) => `${theme.shape.borderRadius}px`, display: 'block' }}
       tabIndex={-1}
       to={`${URLS.news}${news.id}/${urlEncode(news.title)}/`}>
-      <AspectRatioImg alt={news.image_alt || news.title} borderRadius className={touchRippleClasses.root} ratio={21 / 9} src={news.image} />
+      <AspectRatioImg alt={news.image_alt || news.title} borderRadius className={touchRippleClasses.root} src={news.image} />
     </ButtonBase>
     <ButtonBase
       component={Link}

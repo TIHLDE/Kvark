@@ -1,16 +1,13 @@
-// React
 import { styled } from '@mui/material';
 import { useMemo } from 'react';
 
-// Hooks
 import { PermissionApp } from 'types/Enums';
 
-import { useAlbums } from 'hooks/Gallery';
+import { useGalleries } from 'hooks/Gallery';
 import { HavePermission } from 'hooks/User';
 
-// Material UI
+import CreateGalleryDialog from 'pages/Gallery/components/CreateGallery';
 
-// Project Components
 import Banner from 'components/layout/Banner';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
@@ -18,11 +15,7 @@ import GalleryListItem, { GalleryListItemLoading } from 'components/miscellaneou
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import Page from 'components/navigation/Page';
 
-import CreateAlbumDialog from './components/CreateGallery';
-
-// Types
-
-const AlbumGrid = styled('div')(({ theme }) => ({
+const GalleryGrid = styled('div')(({ theme }) => ({
   display: 'grid',
   gridTemplateColumns: '1fr 1fr 1fr',
   gridGap: theme.spacing(1),
@@ -34,35 +27,35 @@ const AlbumGrid = styled('div')(({ theme }) => ({
   },
 }));
 
-const Albums = () => {
-  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useAlbums();
-  const albums = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+const Galleries = () => {
+  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useGalleries();
+  const galleries = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   return (
     <Page
       banner={
-        <Banner title='Album'>
+        <Banner title='Galleri'>
           <HavePermission apps={[PermissionApp.GALLERY]}>
-            <CreateAlbumDialog />
+            <CreateGalleryDialog />
           </HavePermission>
         </Banner>
       }
-      options={{ title: 'Album' }}>
-      <AlbumGrid>
+      options={{ title: 'Galleri' }}>
+      <GalleryGrid>
         {isLoading && <GalleryListItemLoading />}
-        {!isLoading && !albums.length && <NotFoundIndicator header='Fant ingen album' />}
+        {!isLoading && !galleries.length && <NotFoundIndicator header='Fant ingen galleri' />}
         {error && <Paper>{error.detail}</Paper>}
         {data !== undefined && (
           <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-            {albums.map((albumItem) => (
-              <GalleryListItem album={albumItem} key={albumItem.slug} />
+            {galleries.map((galleryItem) => (
+              <GalleryListItem gallery={galleryItem} key={galleryItem.slug} />
             ))}
           </Pagination>
         )}
         {isFetching && <GalleryListItemLoading />}
-      </AlbumGrid>
+      </GalleryGrid>
     </Page>
   );
 };
 
-export default Albums;
+export default Galleries;

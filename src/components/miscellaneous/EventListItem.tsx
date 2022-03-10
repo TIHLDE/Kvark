@@ -106,7 +106,7 @@ const EventListItem = ({ event, sx }: EventListItemProps) => {
       to={`${URLS.events}${event.id}/${urlEncode(event.title)}/`}
       variant='outlined'>
       <EventListItemInner height={height}>
-        <AspectRatioImg alt={event.image_alt || event.title} ratio={21 / 9} src={event.image} />
+        <AspectRatioImg alt={event.image_alt || event.title} src={event.image} />
         <Divider sx={{ backgroundColor: getColor() }} />
         <Stack justifyContent='center' sx={{ overflow: 'hidden', pr: 0.5 }}>
           <Typography

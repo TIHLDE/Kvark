@@ -39,7 +39,6 @@ import {
   Notification,
   PaginationResponse,
   Picture,
-  PictureRequired,
   PublicRegistration,
   Registration,
   RequestResponse,
@@ -191,23 +190,23 @@ export default {
   createShortLink: (item: ShortLink) => IFetch<ShortLink>({ method: 'POST', url: `${SHORT_LINKS_ENDPOINT}/`, data: item }),
   deleteShortLink: (slug: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${SHORT_LINKS_ENDPOINT}/${slug}/` }),
 
-  // Album
-  getAlbum: (albumSlug: string) => IFetch<Gallery>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${albumSlug}/` }),
-  getAlbums: (filters?: any) => IFetch<PaginationResponse<Gallery>>({ method: 'GET', url: `${GALLERY_ENDPOINT}/`, data: filters || {} }),
-  createAlbum: (item: GalleryRequired) => IFetch<Gallery>({ method: 'POST', url: `${GALLERY_ENDPOINT}/`, data: item }),
-  updateAlbum: (albumSlug: string, item: Partial<Gallery>) => IFetch<Gallery>({ method: 'PUT', url: `${GALLERY_ENDPOINT}/${albumSlug}/`, data: item }),
-  deleteAlbum: (albumSlug: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${GALLERY_ENDPOINT}/${albumSlug}/` }),
+  // Gallery
+  getGallery: (gallerySlug: string) => IFetch<Gallery>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${gallerySlug}/` }),
+  getGallerys: (filters?: any) => IFetch<PaginationResponse<Gallery>>({ method: 'GET', url: `${GALLERY_ENDPOINT}/`, data: filters || {} }),
+  createGallery: (item: GalleryRequired) => IFetch<Gallery>({ method: 'POST', url: `${GALLERY_ENDPOINT}/`, data: item }),
+  updateGallery: (gallerySlug: string, item: Partial<Gallery>) => IFetch<Gallery>({ method: 'PUT', url: `${GALLERY_ENDPOINT}/${gallerySlug}/`, data: item }),
+  deleteGallery: (gallerySlug: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${GALLERY_ENDPOINT}/${gallerySlug}/` }),
 
   // Picture
-  getAlbumPictures: (albumSlug: string, filters?: any) =>
-    IFetch<PaginationResponse<Picture>>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${albumSlug}/${PICTURE_ENDPOINT}/`, data: filters || {} }),
-  getPicture: (albumSlug: string, id: string) => IFetch<Picture>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${albumSlug}/${PICTURE_ENDPOINT}/${id}` }),
-  createPicture: (albumSlug: string, files: File | File[] | Blob) =>
-    IFetch<RequestResponse>({ method: 'POST', url: `${GALLERY_ENDPOINT}/${albumSlug}/${PICTURE_ENDPOINT}/`, file: files }),
-  updatePicture: (albumSlug: string, id: string, item: Partial<Picture>) =>
-    IFetch<Picture>({ method: 'PUT', url: `${GALLERY_ENDPOINT}/${albumSlug}/${PICTURE_ENDPOINT}/${id}/`, data: item }),
-  deletePicture: (albumSlug: string, id: string) =>
-    IFetch<RequestResponse>({ method: 'DELETE', url: `${GALLERY_ENDPOINT}/${albumSlug}/${PICTURE_ENDPOINT}/${id}` }),
+  getGalleryPictures: (gallerySlug: string, filters?: any) =>
+    IFetch<PaginationResponse<Picture>>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${gallerySlug}/${PICTURE_ENDPOINT}/`, data: filters || {} }),
+  getPicture: (gallerySlug: string, id: string) => IFetch<Picture>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${gallerySlug}/${PICTURE_ENDPOINT}/${id}` }),
+  createPicture: (gallerySlug: string, files: File | File[] | Blob) =>
+    IFetch<RequestResponse>({ method: 'POST', url: `${GALLERY_ENDPOINT}/${gallerySlug}/${PICTURE_ENDPOINT}/`, file: files }),
+  updatePicture: (gallerySlug: string, id: string, item: Partial<Picture>) =>
+    IFetch<Picture>({ method: 'PUT', url: `${GALLERY_ENDPOINT}/${gallerySlug}/${PICTURE_ENDPOINT}/${id}/`, data: item }),
+  deletePicture: (gallerySlug: string, id: string) =>
+    IFetch<RequestResponse>({ method: 'DELETE', url: `${GALLERY_ENDPOINT}/${gallerySlug}/${PICTURE_ENDPOINT}/${id}` }),
 
   // Strikes
   createStrike: (item: StrikeCreate) => IFetch<Strike>({ method: 'POST', url: `${STRIKES_ENDPOINT}/`, data: item }),

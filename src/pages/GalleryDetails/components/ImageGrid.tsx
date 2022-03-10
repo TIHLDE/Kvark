@@ -1,9 +1,9 @@
 import { ImageList, ImageListItem, Theme, useMediaQuery } from '@mui/material';
 import { useMemo } from 'react';
 
-import { useAlbumPictures } from 'hooks/Gallery';
+import { useGalleryPictures } from 'hooks/Gallery';
 
-type ImageGridProps = {
+export type ImageGridProps = {
   slug: string;
   setSelectedImg: (data: string[]) => void;
   setOpenPicture: (open: boolean) => void;
@@ -12,7 +12,7 @@ type ImageGridProps = {
 export const ImageGridLoading = () => {
   return (
     <ImageList cols={3} gap={8} variant='masonry'>
-      <ImageListItem key={''}>
+      <ImageListItem>
         <img loading='lazy' />
       </ImageListItem>
     </ImageList>
@@ -20,7 +20,7 @@ export const ImageGridLoading = () => {
 };
 
 const ImageGrid = ({ slug, setSelectedImg, setOpenPicture }: ImageGridProps) => {
-  const { data } = useAlbumPictures(slug);
+  const { data } = useGalleryPictures(slug);
   const pictures = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   const openModalWithImg = (slug: string, id: string, image: string, title: string, description: string) => {
     setSelectedImg([slug, id, image, title, description]);

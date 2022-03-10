@@ -13,8 +13,6 @@ import { useAnalytics } from 'hooks/Utils';
 import Companies from 'pages/Companies';
 import EventDetails from 'pages/EventDetails';
 import Events from 'pages/Events';
-import Gallery from 'pages/Gallery';
-import GalleryDetails from 'pages/GalleryDetails';
 import Groups from 'pages/Groups';
 import GroupDetails from 'pages/Groups/GroupDetails';
 import GroupsOverview from 'pages/Groups/overview';
@@ -28,6 +26,8 @@ import Profile from 'pages/Profile';
 
 import Page from 'components/navigation/Page';
 
+const Gallery = lazy(() => import(/* webpackChunkName: "gallery" */ 'pages/Gallery'));
+const GalleryDetails = lazy(() => import(/* webpackChunkName: "gallery_details" */ 'pages/GalleryDetails'));
 const Badges = lazy(() => import('pages/Badges'));
 const BadgeCategoriesList = lazy(() => import('pages/Badges/overview/BadgeCategoriesList'));
 const BadgesList = lazy(() => import('pages/Badges/overview/BadgesList'));

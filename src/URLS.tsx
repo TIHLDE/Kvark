@@ -51,7 +51,7 @@ const URLS = {
   profile: '/profil/',
   signup: '/ny-bruker/',
   shortLinks: '/linker/',
-  gallery: '/albumer/',
+  gallery: '/galleri/',
   userAdmin: '/admin/brukere/',
   strikeAdmin: '/admin/prikker/',
   eventAdmin: '/admin/arrangementer/',

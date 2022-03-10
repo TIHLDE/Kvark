@@ -66,7 +66,7 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
       </Paper>
       <div>
         <div className={classes.infoBox}>
-          <AspectRatioImg alt={data.image_alt || data.title} borderRadius ratio={21 / 9} src={data.image} />
+          <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         </div>
         <Paper className={classes.infoBox}>
           <DetailContent info={data.company} title='Bedrift: ' />

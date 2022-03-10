@@ -6,23 +6,21 @@ import URLS from 'URLS';
 
 import { PermissionApp } from 'types/Enums';
 
-import { useAlbumsById } from 'hooks/Gallery';
+import { useGalleriesById } from 'hooks/Gallery';
 import { HavePermission } from 'hooks/User';
 
-// Project components
+import GalleryEditorDialog from 'pages/GalleryDetails/components/GalleryEditor';
+import GalleryRenderer from 'pages/GalleryDetails/components/GalleryRenderer';
+import { ImageGridLoading } from 'pages/GalleryDetails/components/ImageGrid';
+import PictureUpload from 'pages/GalleryDetails/components/PictureUpload';
 import Http404 from 'pages/Http404';
 
 import Banner from 'components/layout/Banner';
 import Page from 'components/navigation/Page';
 
-import GalleryEditorDialog from './components/GalleryEditor';
-import GalleryRenderer from './components/GalleryRenderer';
-import { ImageGridLoading } from './components/ImageGrid';
-import PictureUpload from './components/PictureUpload';
-
 const GalleryDetails = () => {
   const { slug } = useParams();
-  const { data, isLoading, isError } = useAlbumsById(String(slug));
+  const { data, isLoading, isError } = useGalleriesById(String(slug));
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,7 +50,7 @@ const GalleryDetails = () => {
           </Banner>
         )
       }
-      options={{ title: data ? data.title : 'Laster album...', gutterTop: false, filledTopbar: true, lightColor: 'blue' }}>
+      options={{ title: data ? data.title : 'Laster galleri...', gutterTop: false, filledTopbar: true, lightColor: 'blue' }}>
       {isLoading ? (
         <ImageGridLoading />
       ) : (
@@ -64,7 +62,7 @@ const GalleryDetails = () => {
               <meta content={window.location.href} property='og:url' />
               <meta content={data.image} property='og:image' />
             </Helmet>
-            <GalleryRenderer data={data} />
+            <GalleryRenderer gallery={data} />
           </>
         )
       )}

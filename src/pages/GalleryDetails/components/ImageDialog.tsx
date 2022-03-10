@@ -5,7 +5,7 @@ import { PermissionApp } from 'types/Enums';
 
 import { HavePermission } from 'hooks/User';
 
-import PictureEditorDialog from './PictureEditor';
+import PictureEditorDialog from 'pages/GalleryDetails/components/PictureEditor';
 
 export type ImageTextProps = {
   title: string;
@@ -41,12 +41,8 @@ const ImageText = ({ title, description }: ImageTextProps) => {
   return (
     <div className={classes.background}>
       <div className={classes.text}>
-        <Typography fontSize={'150%'} variant='h2'>
-          {title}
-        </Typography>
-        <Typography fontSize={'100%'} variant='h4'>
-          {description}
-        </Typography>
+        <Typography variant='h3'>{title}</Typography>
+        <Typography variant='body1'>{description}</Typography>
       </div>
     </div>
   );

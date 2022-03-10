@@ -177,7 +177,7 @@ const StoryPopup = ({ items, open, onClose: closePopup, selectedItem = 0 }: Stor
           </IconButton>
         </div>
         <div className={classes.middle}>
-          <AspectRatioImg alt={item.title} className={classes.fgImage} ratio={21 / 9} src={item.image} />
+          <AspectRatioImg alt={item.title} className={classes.fgImage} src={item.image} />
         </div>
         <div className={classes.bottom}>
           <div>

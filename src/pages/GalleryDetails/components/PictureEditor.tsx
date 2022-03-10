@@ -1,5 +1,5 @@
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import { Box, IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { makeStyles } from 'makeStyles';
 import { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -95,7 +95,7 @@ const PictureEditor = ({ id, slug }: PictureEditorProps) => {
   }, [data, setValues]);
 
   return (
-    <Box>
+    <>
       <form onSubmit={handleSubmit(submit)}>
         <TextField formState={formState} label='Tittel' {...register('title')} />
         <TextField formState={formState} label='Beskrivelse' {...register('description')} />
@@ -113,7 +113,7 @@ const PictureEditor = ({ id, slug }: PictureEditorProps) => {
           Slett
         </VerifyDialog>
       </form>
-    </Box>
+    </>
   );
 };
 
@@ -121,14 +121,14 @@ const PictureEditorDialog = ({ slug, id }: PictureEditorProps) => {
   const { classes } = useStyles();
   const [open, setOpen] = useState<boolean>(false);
   return (
-    <Box>
+    <>
       <IconButton className={classes.editButton} onClick={() => setOpen(true)}>
         <EditRoundedIcon />
       </IconButton>
       <Dialog onClose={() => setOpen(false)} open={open} titleText={'Rediger bilde'}>
         <PictureEditor id={id} slug={slug} />
       </Dialog>
-    </Box>
+    </>
   );
 };
 
