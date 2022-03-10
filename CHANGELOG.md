@@ -13,6 +13,9 @@
 ---
 
 ## Neste versjon
+
+- ✨ **Galleri**. Lagt til digitalt fotoalbum for arrangementer.
+
 ## Versjon 2022.03.01
 
 - ✨ **Spørreskjema**. Bli varslet på epost ved nye svar på gruppe-spørreskjemaer.
