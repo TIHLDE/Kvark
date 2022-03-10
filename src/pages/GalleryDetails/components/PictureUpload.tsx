@@ -46,7 +46,7 @@ const PictureUpload = ({ slug }: PictureUploadProps) => {
   return (
     <>
       <Button onClick={() => setOpen(true)} variant='outlined'>
-        Last opp et bilde
+        Last opp bilder
       </Button>
       <Dialog onClose={() => setOpen(false)} open={open} titleText={'Last opp bilde'}>
         <FileUploader files={files} fileTypes={['image/jpeg', 'image/png']} setFiles={setFiles} title='Last opp eller dra bilder hit.' />

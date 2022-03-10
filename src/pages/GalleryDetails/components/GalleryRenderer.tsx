@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Gallery } from 'types';
+import { Gallery, Picture } from 'types';
 
 import ImageDialog from 'pages/GalleryDetails/components/ImageDialog';
 import ImageGrid from 'pages/GalleryDetails/components/ImageGrid';
@@ -10,13 +10,13 @@ export type GalleryRendererProps = {
 };
 
 const GalleryRenderer = ({ gallery }: GalleryRendererProps) => {
-  const [selectedImg, setSelectedImg] = useState(['']);
-  const [openPicture, setOpenPicture] = useState(false);
+  const [selectedImg, setSelectedImg] = useState<Picture>();
+  const [pictureDialogOpen, setPictureDialogOpen] = useState(false);
 
   return (
     <>
-      <ImageGrid setOpenPicture={setOpenPicture} setSelectedImg={setSelectedImg} slug={gallery.slug} />
-      {selectedImg && <ImageDialog data={selectedImg} onClose={() => setOpenPicture(false)} open={openPicture} />}
+      <ImageGrid setPictureDialogOpen={setPictureDialogOpen} setSelectedImg={setSelectedImg} slug={gallery.slug} />
+      {selectedImg && <ImageDialog onClose={() => setPictureDialogOpen(false)} open={pictureDialogOpen} picture={selectedImg} slug={gallery.slug} />}
     </>
   );
 };

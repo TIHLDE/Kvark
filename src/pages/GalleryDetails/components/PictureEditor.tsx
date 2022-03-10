@@ -35,11 +35,12 @@ const useStyles = makeStyles()((theme) => ({
 type PictureEditorProps = {
   id: string;
   slug: string;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type FormValues = Omit<Picture, 'id' | 'created_at' | 'updated_at'>;
 
-const PictureEditor = ({ id, slug }: PictureEditorProps) => {
+const PictureEditor = ({ id, slug, setOpen }: PictureEditorProps) => {
   const { classes } = useStyles();
   const { data } = usePictureById(slug, id);
   const editPicture = useUpdatePicture(slug, id);
@@ -64,7 +65,8 @@ const PictureEditor = ({ id, slug }: PictureEditorProps) => {
   const remove = async () => {
     deletePicture.mutate(null, {
       onSuccess: () => {
-        showSnackbar('Slettet', 'success');
+        showSnackbar('Bildet ble slettet', 'success');
+        setOpen(false);
       },
       onError: (e) => {
         showSnackbar(e.detail, 'error');
@@ -83,6 +85,7 @@ const PictureEditor = ({ id, slug }: PictureEditorProps) => {
     await editPicture.mutate(Image, {
       onSuccess: () => {
         showSnackbar('Bildet ble redigert', 'success');
+        setOpen(false);
       },
       onError: (e) => {
         showSnackbar(e.detail, 'error');
@@ -117,7 +120,12 @@ const PictureEditor = ({ id, slug }: PictureEditorProps) => {
   );
 };
 
-const PictureEditorDialog = ({ slug, id }: PictureEditorProps) => {
+type PictureEditorDialogProps = {
+  id: string;
+  slug: string;
+};
+
+const PictureEditorDialog = ({ slug, id }: PictureEditorDialogProps) => {
   const { classes } = useStyles();
   const [open, setOpen] = useState<boolean>(false);
   return (
@@ -126,7 +134,7 @@ const PictureEditorDialog = ({ slug, id }: PictureEditorProps) => {
         <EditRoundedIcon />
       </IconButton>
       <Dialog onClose={() => setOpen(false)} open={open} titleText={'Rediger bilde'}>
-        <PictureEditor id={id} slug={slug} />
+        <PictureEditor id={id} setOpen={setOpen} slug={slug} />
       </Dialog>
     </>
   );

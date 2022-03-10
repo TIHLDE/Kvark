@@ -134,6 +134,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
               { text: 'Kokebok', to: URLS.cheatsheet },
               { text: 'Link-forkorter', to: URLS.shortLinks },
               { text: 'Badges ledertavler', to: URLS.badges.index },
+              { text: 'Galleri', to: URLS.gallery },
             ],
             text: 'For medlemmer',
             type: 'dropdown',

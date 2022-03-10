@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +12,6 @@ import { useSnackbar } from 'hooks/Snackbar';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import { ImageUpload } from 'components/inputs/Upload';
-import { BannerButton } from 'components/layout/Banner';
 import Dialog from 'components/layout/Dialog';
 
 type FormValues = Omit<Gallery, 'slug'>;
@@ -57,9 +57,9 @@ const CreateGalleryDialog = () => {
   const [open, setOpen] = useState<boolean>(false);
   return (
     <>
-      <BannerButton onClick={() => setOpen(true)} variant='outlined'>
+      <Button onClick={() => setOpen(true)} variant='outlined'>
         Opprett nytt galleri
-      </BannerButton>
+      </Button>
       <Dialog onClose={() => setOpen(false)} open={open} titleText={'Opprett nytt galleri'}>
         <CreateGallery />
       </Dialog>

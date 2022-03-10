@@ -1,12 +1,14 @@
 import { ImageList, ImageListItem, Theme, useMediaQuery } from '@mui/material';
 import { useMemo } from 'react';
 
+import { Picture } from 'types';
+
 import { useGalleryPictures } from 'hooks/Gallery';
 
 export type ImageGridProps = {
   slug: string;
-  setSelectedImg: (data: string[]) => void;
-  setOpenPicture: (open: boolean) => void;
+  setSelectedImg: (picture?: Picture) => void;
+  setPictureDialogOpen: (open: boolean) => void;
 };
 
 export const ImageGridLoading = () => {
@@ -19,12 +21,12 @@ export const ImageGridLoading = () => {
   );
 };
 
-const ImageGrid = ({ slug, setSelectedImg, setOpenPicture }: ImageGridProps) => {
+const ImageGrid = ({ slug, setSelectedImg, setPictureDialogOpen }: ImageGridProps) => {
   const { data } = useGalleryPictures(slug);
   const pictures = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
-  const openModalWithImg = (slug: string, id: string, image: string, title: string, description: string) => {
-    setSelectedImg([slug, id, image, title, description]);
-    setOpenPicture(true);
+  const openModalWithImg = (picture: Picture) => {
+    setSelectedImg(picture);
+    setPictureDialogOpen(true);
   };
   const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
@@ -34,11 +36,7 @@ const ImageGrid = ({ slug, setSelectedImg, setOpenPicture }: ImageGridProps) => 
       <ImageList cols={mdDown ? 1 : lgUp ? 3 : 2} gap={8} variant='masonry'>
         {data !== undefined &&
           pictures.map((image) => (
-            <ImageListItem
-              component='button'
-              key={image.id}
-              onClick={() => openModalWithImg(slug, image.id, image.image, image.title, image.description)}
-              sx={{ cursor: 'pointer', border: 'none' }}>
+            <ImageListItem component='button' key={image.id} onClick={() => openModalWithImg(image)} sx={{ cursor: 'pointer', border: 'none' }}>
               <img
                 alt='uploaded pic'
                 loading='lazy'
