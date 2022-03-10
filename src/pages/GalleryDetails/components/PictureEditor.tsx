@@ -101,7 +101,7 @@ const PictureEditor = ({ id, slug, setOpen }: PictureEditorProps) => {
     <>
       <form onSubmit={handleSubmit(submit)}>
         <TextField formState={formState} label='Tittel' {...register('title')} />
-        <TextField formState={formState} label='Beskrivelse' {...register('description')} />
+        <TextField formState={formState} inputProps={{ maxLength: 100 }} label='Beskrivelse' {...register('description')} />
         <TextField formState={formState} label='Alt-tekst' {...register('image_alt')} />
         <input hidden value={data?.image} {...register('image')} />
         <SubmitButton className={classes.margin} formState={formState}>

@@ -8,46 +8,19 @@ import { HavePermission } from 'hooks/User';
 
 import PictureEditorDialog from 'pages/GalleryDetails/components/PictureEditor';
 
-export type ImageTextProps = {
-  title: string;
-  description: string;
-};
-
 const useStyles = makeStyles()((theme) => ({
-  background: {
+  test: {
     position: 'absolute',
-    left: 0,
-    bottom: 0,
-    zIndex: 1000,
+    bottom: 1,
     background: 'rgba(255, 255, 255, 0.5)',
-    p: '5px',
-    color: 'white',
-    maxWidth: '100%',
+    color: theme.palette.colors.tihlde,
     width: '100%',
-    maxHeight: '20%',
-    height: '100%',
-  },
-  text: {
-    float: 'left',
-    position: 'absolute',
-    left: theme.spacing(1),
-    top: theme.spacing(1),
-    zIndex: 1000,
-    color: 'black',
+    inlineSize: '100%',
+    overflowWrap: 'break-word',
+    hyphens: 'auto',
+    padding: theme.spacing(1),
   },
 }));
-
-const ImageText = ({ title, description }: ImageTextProps) => {
-  const { classes } = useStyles();
-  return (
-    <div className={classes.background}>
-      <div className={classes.text}>
-        <Typography variant='h3'>{title}</Typography>
-        <Typography variant='body1'>{description}</Typography>
-      </div>
-    </div>
-  );
-};
 
 export type DialogProps = MuiDialogProps & {
   onClose: () => void;
@@ -58,6 +31,7 @@ export type DialogProps = MuiDialogProps & {
 };
 
 const ImageDialog = ({ slug, picture, open, onClose, maxWidth = 'md', fullWidth = false, ...props }: DialogProps) => {
+  const { classes } = useStyles();
   return (
     <MuiDialog aria-labelledby='dialog-title' fullWidth={fullWidth} maxWidth={maxWidth} onClose={onClose} open={open} {...props}>
       <div style={{ overflow: 'hidden', display: 'grid', alignContent: 'center', alignItems: 'center' }}>
@@ -68,7 +42,12 @@ const ImageDialog = ({ slug, picture, open, onClose, maxWidth = 'md', fullWidth 
               <HavePermission apps={[PermissionApp.PICTURE]}>
                 <PictureEditorDialog id={picture.id} slug={slug} />
               </HavePermission>
-              {picture.title !== '' && <ImageText description={picture.description} title={picture.title} />}
+              {picture.title !== '' && (
+                <div className={classes.test}>
+                  <Typography variant='h3'>{picture.title}</Typography>
+                  <Typography variant='body1'>{picture.description}</Typography>
+                </div>
+              )}
             </Paper>
           </div>
         )}
