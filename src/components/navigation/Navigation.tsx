@@ -96,15 +96,22 @@ export type NavigationProps = {
   children?: ReactNode;
 };
 
-export type NavigationItem = {
-  items?: {
-    text: string;
-    to: string;
-  }[];
-  text: string;
-  to?: string;
-  type: 'dropdown' | 'link';
-};
+export type NavigationItem =
+  | {
+      text: string;
+      to: string;
+      external?: boolean;
+      type: 'link';
+    }
+  | {
+      items: {
+        external?: boolean;
+        text: string;
+        to: string;
+      }[];
+      text: string;
+      type: 'dropdown';
+    };
 
 const NavigationContent = ({ children }: NavigationProps) => {
   const { data: warnings = [], closeWarning } = useWarnings();
@@ -120,6 +127,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
           { text: 'Wiki', to: URLS.wiki },
           { text: 'Ny student', to: URLS.newStudent },
           { text: 'Gruppeoversikt', to: URLS.groups.index },
+          { text: 'Fondet', to: 'https://fondet.tihlde.org', external: true },
         ],
         text: 'Generelt',
         type: 'dropdown',
