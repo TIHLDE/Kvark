@@ -3350,10 +3350,10 @@ react-dropzone@^12.0.4:
     file-selector "^0.4.0"
     prop-types "^15.8.1"
 
-react-easy-crop@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/react-easy-crop/-/react-easy-crop-4.0.1.tgz#0f540086e20055c51920e443dca5f8f79bdf609c"
-  integrity sha512-cREis2557y/ZkvgiNaLlFrzjduUSUvEYYxbglwggpo2gnxCjBQZeRgAPoedvXX0e0BgyGAI0zD3motVucJGhzA==
+react-easy-crop@^4.1.3:
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/react-easy-crop/-/react-easy-crop-4.1.3.tgz#895122abb41070859e1a85ff45fa2ac4472c2f2b"
+  integrity sha512-H/93VdmadyZzT0R+f7dQXyyP8tT9jU2g32s/Weyaoh2wQKNf5ZnVZ67CvZJ/Iyv3M5S4gFhOju4nwDyzEQF5UA==
   dependencies:
     normalize-wheel "^1.0.1"
     tslib "2.0.1"
