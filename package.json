@@ -11,7 +11,7 @@
     "@devexpress/dx-react-scheduler-material-ui": "^3.0.0-beta.2",
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
-    "@mui/icons-material": "^5.4.2",
+    "@mui/icons-material": "^5.5.0",
     "@mui/lab": "^5.0.0-alpha.60",
     "@mui/material": "^5.5.0",
     "@sentry/react": "^6.18.1",
