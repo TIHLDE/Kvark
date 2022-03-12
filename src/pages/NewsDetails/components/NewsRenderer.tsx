@@ -1,4 +1,4 @@
-import { Box, Button, Skeleton, Stack, styled, Typography } from '@mui/material';
+import { Button, Skeleton, Stack, styled, Typography } from '@mui/material';
 import parseISO from 'date-fns/parseISO';
 import { usePalette } from 'react-palette';
 import { Link } from 'react-router-dom';
@@ -13,7 +13,6 @@ import { HavePermission } from 'hooks/User';
 import Container from 'components/layout/Container';
 import Paper from 'components/layout/Paper';
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
-import Avatar from 'components/miscellaneous/Avatar';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import ShareButton from 'components/miscellaneous/ShareButton';
 
@@ -59,28 +58,20 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
               </Button>
             </HavePermission>
           )}
-          <Stack alignItems='center' direction={{ xs: 'column', md: 'row' }} justifyContent='space-between'>
-            <div>
+          <Stack alignItems='center' direction='row' justifyContent='space-between'>
+            <Typography variant='body2'>
+              Publisert: {formatDate(parseISO(data.created_at), { time: false })}
               {data.creator && (
-                <Stack direction='column'>
-                  <Typography textAlign='center' variant='body2'>
-                    Forfatter:
-                  </Typography>
-                  <Button component={Link} to={`${URLS.profile}${data.creator.user_id}/`}>
-                    <Avatar user={data.creator} />
-                    <Box sx={{ mx: 2 }}>
-                      <Typography variant='body1'>
-                        {data.creator.first_name} {data.creator.last_name}
-                      </Typography>
-                    </Box>
-                  </Button>
-                </Stack>
+                <>
+                  <br />
+                  Forfatter:{' '}
+                  <Link to={`${URLS.profile}${data.creator.user_id}/`}>
+                    {data.creator.first_name} {data.creator.last_name}
+                  </Link>
+                </>
               )}
-            </div>
-            <Stack alignItems='center' direction='row' gap={3}>
-              <Typography variant='body2'>Publisert: {formatDate(parseISO(data.created_at), { time: false })}</Typography>
-              <ShareButton shareId={data.id} shareType='news' title={data.title} />
-            </Stack>
+            </Typography>
+            <ShareButton shareId={data.id} shareType='news' title={data.title} />
           </Stack>
           <Paper>
             <MarkdownRenderer value={data.body} />

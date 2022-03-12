@@ -137,14 +137,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
         <Grid container direction='column' wrap='nowrap'>
           <TextField formState={formState} label='Tittel' {...register('title', { required: 'Feltet er påkrevd' })} required />
           <TextField formState={formState} label='Header' {...register('header', { required: 'Feltet er påkrevd' })} required />
-          <UserSearch
-            control={control}
-            formState={formState}
-            helperText='Velg forfatter av nyheten. Når forfatteren er satt er det ikke mulig å endre etterpå.'
-            label='Forfatter'
-            name='creator'
-            required
-          />
+          <UserSearch control={control} formState={formState} label='Forfatter' name='creator' />
           <MarkdownEditor formState={formState} label='Innhold' {...register('body', { required: 'Gi nyheten et innhold' })} required />
           <ImageUpload formState={formState} label='Velg bilde' ratio='21:9' register={register('image')} setValue={setValue} watch={watch} />
           <TextField formState={formState} label='Alternativ bildetekst' {...register('image_alt')} />
