@@ -387,7 +387,7 @@
     source-map "^0.5.7"
     stylis "4.0.13"
 
-"@emotion/cache@^11.7.1":
+"@emotion/cache@*", "@emotion/cache@^11.7.1":
   version "11.7.1"
   resolved "https://registry.yarnpkg.com/@emotion/cache/-/cache-11.7.1.tgz#08d080e396a42e0037848214e8aa7bf879065539"
   integrity sha512-r65Zy4Iljb8oyjtLeCuBH8Qjiy107dOYC6SJq7g7GV5UCQWMObY4SJDPGFjiiVpPrOJ2hmJOoBiYTC7hwx9E2A==
@@ -3896,11 +3896,12 @@ tslib@^2.0.3:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
 
-tss-react@^3.4.1:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/tss-react/-/tss-react-3.4.1.tgz#d4f097a2315c54655fc9011e9ac838bb6a39b70c"
-  integrity sha512-S/OA9+8wBatj5B7JoWaz3K07dVY7UjPDwong0IZwOtqLUjTgJuT4GTrs7hxurq/cvF6DzPLv9HI754Aw1p3lqA==
+tss-react@^3.5.2:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/tss-react/-/tss-react-3.5.2.tgz#1b5db1f4a71fe62c939eed5368ea7809ca2ad0a9"
+  integrity sha512-IgGizaOhbntrWdh2EISJYnhYEEWXXWf3sn5aa8LYf7e59NCM5mg0PxJuEoLx9pLG5WlJF80zTRN/Y1Jnjw9LYA==
   dependencies:
+    "@emotion/cache" "*"
     "@emotion/serialize" "*"
     "@emotion/utils" "*"
 
