@@ -59,7 +59,18 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
             </HavePermission>
           )}
           <Stack alignItems='center' direction='row' justifyContent='space-between'>
-            <Typography variant='body2'>Publisert: {formatDate(parseISO(data.created_at), { time: false })}</Typography>
+            <Typography variant='body2'>
+              Publisert: {formatDate(parseISO(data.created_at), { time: false })}
+              {data.creator && (
+                <>
+                  <br />
+                  Forfatter:{' '}
+                  <Link to={`${URLS.profile}${data.creator.user_id}/`}>
+                    {data.creator.first_name} {data.creator.last_name}
+                  </Link>
+                </>
+              )}
+            </Typography>
             <ShareButton shareId={data.id} shareType='news' title={data.title} />
           </Stack>
           <Paper>
