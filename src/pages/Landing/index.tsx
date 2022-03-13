@@ -1,17 +1,18 @@
-import { useGoogleAnalytics } from 'hooks/Utils';
-import URLS from 'URLS';
-import { Link } from 'react-router-dom';
-import { Typography, styled, IconButton } from '@mui/material';
 import ArrowIcon from '@mui/icons-material/ArrowForwardRounded';
+import { IconButton, styled, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
+import URLS from 'URLS';
 
-// Project Components
-import Page from 'components/navigation/Page';
-import Container from 'components/layout/Container';
+import { useAnalytics } from 'hooks/Utils';
+
 import EventsView from 'pages/Landing/components/EventsView';
 import NewsListView from 'pages/Landing/components/NewsListView';
+import NewStudentBox from 'pages/Landing/components/NewStudentBox';
 import StoriesView from 'pages/Landing/components/StoriesView';
 import Wave from 'pages/Landing/components/Wave';
-import NewStudentBox from 'pages/Landing/components/NewStudentBox';
+
+import Container from 'components/layout/Container';
+import Page from 'components/navigation/Page';
 
 const Section = styled(Container)(({ theme }) => ({
   paddingTop: theme.spacing(2),
@@ -26,7 +27,7 @@ const Smoke = styled('div')(({ theme }) => ({
 }));
 
 const Landing = () => {
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const openEventsAnalytics = () => event('go-to-all-events', 'events-list-view', `Go to all events`);
   const openNewsAnalytics = () => event('go-to-all-news', 'news-list-view', `Go to all news`);
 

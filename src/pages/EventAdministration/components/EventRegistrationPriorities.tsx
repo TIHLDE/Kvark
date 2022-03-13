@@ -1,11 +1,10 @@
+import { Button, FormGroup, FormLabel } from '@mui/material';
+import { makeStyles } from 'makeStyles';
 import { Fragment } from 'react';
 import { getUserStudyShort } from 'utils';
+
 import { RegistrationPriority } from 'types';
 import { UserClass, UserStudy } from 'types/Enums';
-
-// Material-UI
-import { makeStyles } from 'makeStyles';
-import { FormGroup, FormLabel, Button } from '@mui/material';
 
 const useStyles = makeStyles()((theme) => ({
   formWrapper: {

@@ -1,8 +1,8 @@
-import { Form } from 'types';
-import { UseFormReturn, FieldValues } from 'react-hook-form';
 import { Typography, TypographyProps } from '@mui/material';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
 
-// Project components
+import { Form } from 'types';
+
 import FieldView from 'components/forms/FieldView';
 
 export type FormViewProps<FormValues> = Pick<UseFormReturn<FormValues>, 'formState' | 'register' | 'control' | 'getValues'> & {

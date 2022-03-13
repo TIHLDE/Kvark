@@ -1,18 +1,17 @@
-import { createElement, useMemo, ReactNode, lazy, Suspense } from 'react';
-import { Event, News, JobPost } from 'types';
+import { Divider, Skeleton, styled, Typography } from '@mui/material';
+import { createElement, lazy, ReactNode, Suspense, useMemo } from 'react';
+
+import { Event, JobPost, News } from 'types';
+
 import { useEventById } from 'hooks/Event';
 import { useJobPostById } from 'hooks/JobPost';
 import { useNewsById } from 'hooks/News';
 
-// Material UI
-import { styled, Divider, Typography, Skeleton } from '@mui/material';
-
-// Project components
 import Expand from 'components/layout/Expand';
-import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
 import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
-import NewsListItem, { NewsListItemLoading } from 'components/miscellaneous/NewsListItem';
+import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
 import Linkify from 'components/miscellaneous/Linkify';
+import NewsListItem, { NewsListItemLoading } from 'components/miscellaneous/NewsListItem';
 
 const ReactMarkdown = lazy(() => import('react-markdown'));
 

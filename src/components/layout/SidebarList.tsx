@@ -1,30 +1,27 @@
+import AddIcon from '@mui/icons-material/AddRounded';
+import MenuIcon from '@mui/icons-material/FormatListBulletedRounded';
+import {
+  Divider,
+  Drawer,
+  Fab,
+  IconButton,
+  List,
+  ListItemText,
+  ListItem as MuiListItem,
+  Skeleton,
+  Typography,
+  useMediaQuery,
+  useTheme,
+  Zoom,
+} from '@mui/material';
+import { makeStyles } from 'makeStyles';
 import { useMemo, useState } from 'react';
 import { InfiniteQueryObserverResult } from 'react-query';
+
 import { PaginationResponse } from 'types';
 
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import {
-  useTheme,
-  useMediaQuery,
-  Drawer,
-  List,
-  ListItem as MuiListItem,
-  ListItemText,
-  Fab,
-  Zoom,
-  Typography,
-  Divider,
-  IconButton,
-  Skeleton,
-} from '@mui/material';
-
-// Icons
-import MenuIcon from '@mui/icons-material/FormatListBulletedRounded';
-import AddIcon from '@mui/icons-material/AddRounded';
-
-// Project components
 import Pagination from 'components/layout/Pagination';
+
 const useStyles = makeStyles()((theme) => ({
   header: {
     display: 'flex',
@@ -46,7 +43,6 @@ const useStyles = makeStyles()((theme) => ({
   },
   drawerTop: {
     [theme.breakpoints.up('lg')]: {
-      // ...theme.mixins.toolbar,
       minHeight: 64,
     },
   },

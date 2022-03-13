@@ -1,18 +1,19 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { TextField as MuiTextField, Stack } from '@mui/material';
 import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { removeIdsFromFields } from 'utils';
+
 import { EventForm, Form, FormCreate, GroupForm, GroupFormUpdate, TemplateForm } from 'types';
 import { FormResourceType } from 'types/Enums';
-import { useUpdateForm, useDeleteForm, useCreateForm } from 'hooks/Form';
-import { useSnackbar } from 'hooks/Snackbar';
-import { Stack, TextField as MuiTextField } from '@mui/material';
 
-// Project components
-import VerifyDialog from 'components/layout/VerifyDialog';
-import SubmitButton from 'components/inputs/SubmitButton';
+import { useCreateForm, useDeleteForm, useUpdateForm } from 'hooks/Form';
+import { useSnackbar } from 'hooks/Snackbar';
+
 import Bool from 'components/inputs/Bool';
+import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
+import VerifyDialog from 'components/layout/VerifyDialog';
 import { ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
-import { removeIdsFromFields } from 'utils';
 
 export type FormDetailsEditorProps = {
   form: Form;
@@ -36,7 +37,10 @@ type GroupFormDetailsEditorProps = {
   form: GroupForm;
 };
 
-type GroupFormUpdateValues = Pick<GroupFormUpdate, 'can_submit_multiple' | 'is_open_for_submissions' | 'only_for_group_members' | 'title'>;
+type GroupFormUpdateValues = Pick<
+  GroupFormUpdate,
+  'can_submit_multiple' | 'is_open_for_submissions' | 'only_for_group_members' | 'title' | 'email_receiver_on_submit'
+>;
 
 const GroupFormDetailsEditor = ({ form }: GroupFormDetailsEditorProps) => {
   const updateForm = useUpdateForm(form.id || '-');
@@ -66,8 +70,16 @@ const GroupFormDetailsEditor = ({ form }: GroupFormDetailsEditorProps) => {
 
   return (
     <>
-      <Stack component='form' gap={1} onSubmit={handleSubmit(save)}>
+      <Stack component='form' onSubmit={handleSubmit(save)}>
         <TextField disabled={updateForm.isLoading} formState={formState} label='Tittel' {...register('title', { required: 'Feltet er påkrevd' })} required />
+        <TextField
+          disabled={updateForm.isLoading}
+          formState={formState}
+          helperText='Legg inn en epost-adresse for å bli varslet via epost når spørreskjemaet mottar nye svar'
+          label='Epost-mottager ved svar'
+          type='email'
+          {...register('email_receiver_on_submit')}
+        />
         <Bool
           control={control}
           formState={formState}
@@ -110,7 +122,7 @@ const GroupFormDetailsEditor = ({ form }: GroupFormDetailsEditorProps) => {
           name='only_for_group_members'
           type='checkbox'
         />
-        <SubmitButton disabled={updateForm.isLoading} formState={formState}>
+        <SubmitButton disabled={updateForm.isLoading} formState={formState} sx={{ mb: 1 }}>
           Lagre
         </SubmitButton>
         <DeleteFormButton form={form} />

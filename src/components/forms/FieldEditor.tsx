@@ -1,18 +1,14 @@
+import CheckBoxIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded';
+import ClearIcon from '@mui/icons-material/ClearRounded';
+import DeleteIcon from '@mui/icons-material/DeleteOutlineRounded';
+import RadioButtonIcon from '@mui/icons-material/RadioButtonUncheckedRounded';
+import { Button, Checkbox, FormControlLabel, Grow, IconButton, TextField, Tooltip, Typography } from '@mui/material';
+import { makeStyles } from 'makeStyles';
 import { useMemo } from 'react';
-import { TextFormField, SelectFormField } from 'types';
+
+import { SelectFormField, TextFormField } from 'types';
 import { FormFieldType } from 'types/Enums';
 
-// Material UI
-import { makeStyles } from 'makeStyles';
-import { TextField, Typography, Tooltip, IconButton, Checkbox, FormControlLabel, Button, Grow } from '@mui/material';
-
-// Icons
-import DeleteIcon from '@mui/icons-material/DeleteOutlineRounded';
-import ClearIcon from '@mui/icons-material/ClearRounded';
-import RadioButtonIcon from '@mui/icons-material/RadioButtonUncheckedRounded';
-import CheckBoxIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded';
-
-// Project components
 import Paper from 'components/layout/Paper';
 
 const useStyles = makeStyles()((theme) => ({

@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Button, Grid, Stack, TextField, Typography } from '@mui/material';
-import { useBadge } from 'hooks/Badge';
+import { Grid, Typography } from '@mui/material';
+
+import BadgesGet from 'pages/Badges/get';
+
 import Paper from 'components/layout/Paper';
-import { useSnackbar } from 'hooks/Snackbar';
 
 export type BadgeInputProps = {
   flagCount: number;
@@ -11,17 +11,7 @@ export type BadgeInputProps = {
 };
 
 const BadgeInput = ({ flagCount, title, allBadgesFound = false }: BadgeInputProps) => {
-  const [flag, setFlag] = useState<string>('');
-  const { createUserBadge } = useBadge();
-  const showSnackbar = useSnackbar();
   const infoText = `Velkommen til TIHLDE ${title}. Vi i Index har er skjult ${flagCount} flagg rundt omkring på siden.`;
-  const submit = () => {
-    const formatedId = flag.replace(/flag{/gi, '').replace(/}/gi, '');
-    createUserBadge(formatedId)
-      .then((response) => showSnackbar(response.detail, 'success'))
-      .catch((err) => showSnackbar(err.detail, 'error'))
-      .finally(() => setFlag(''));
-  };
 
   return (
     <Paper sx={{ mx: 2 }}>
@@ -39,19 +29,7 @@ const BadgeInput = ({ flagCount, title, allBadgesFound = false }: BadgeInputProp
         <Typography align='center' gutterBottom>
           Lykke til!!
         </Typography>
-        <Stack direction={{ xs: 'column', md: 'row' }} gap={2}>
-          <TextField
-            helperText='flag{xxx-xxx-xxx-xxx-xxx}'
-            id='ctf-flag-input'
-            label='Send inn flagg'
-            onChange={(event) => setFlag(event.target.value)}
-            value={flag}
-            variant='outlined'
-          />
-          <Button onClick={submit} sx={{ height: { md: 56 } }} variant='contained'>
-            Send inn
-          </Button>
-        </Stack>
+        <BadgesGet />
       </Grid>
     </Paper>
   );

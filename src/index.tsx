@@ -1,40 +1,44 @@
 /* eslint-disable no-console */
-import { ReactNode } from 'react';
-import { render } from 'react-dom';
 import 'assets/css/index.css';
-import { CacheProvider } from '@emotion/react';
+import 'delayed-scroll-restoration-polyfill';
 import createCache from '@emotion/cache';
-import { CssBaseline } from '@mui/material';
+import { CacheProvider } from '@emotion/react';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { BrowserRouter } from 'react-router-dom';
+import { CssBaseline } from '@mui/material';
+import * as Sentry from '@sentry/react';
+import { BrowserTracing } from '@sentry/tracing';
+import AppRoutes from 'AppRoutes';
+import { SHOW_NEW_STUDENT_INFO } from 'constant';
+import { ReactNode } from 'react';
+import { render } from 'react-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { broadcastQueryClient } from 'react-query/broadcastQueryClient-experimental';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import 'delayed-scroll-restoration-polyfill';
-import { SHOW_NEW_STUDENT_INFO } from 'constant';
+import { BrowserRouter } from 'react-router-dom';
+
 import API from 'api/api';
 
-// Services
-import { ThemeProvider } from 'hooks/Theme';
 import { MiscProvider } from 'hooks/Misc';
 import { SnackbarProvider } from 'hooks/Snackbar';
+import { ThemeProvider } from 'hooks/Theme';
 
-// Project components
 import MessageGDPR from 'components/miscellaneous/MessageGDPR';
 import Navigation from 'components/navigation/Navigation';
-import AppRoutes from 'AppRoutes';
 
-export const muiCache = createCache({
-  key: 'mui',
-  prepend: true,
-});
+const SENTRY_DSN = import.meta.env.VITE_SENTRY_DSN;
 
-type ProvidersProps = {
-  children: ReactNode;
-};
+if (SENTRY_DSN && import.meta.env.PROD) {
+  Sentry.init({
+    dsn: SENTRY_DSN,
+    integrations: [new BrowserTracing()],
+    tracesSampleRate: 0.5,
+  });
+}
 
-export const Providers = ({ children }: ProvidersProps) => {
+export const muiCache = createCache({ key: 'mui', prepend: true });
+
+export const Providers = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -69,8 +73,32 @@ export const Providers = ({ children }: ProvidersProps) => {
   );
 };
 
-export const Application = () => {
-  return (
+const ErrorBoundary = ({ children }: { children: ReactNode }) =>
+  import.meta.env.PROD ? (
+    <Sentry.ErrorBoundary
+      dialogOptions={{
+        title: 'Det ser ut som vi har problemer',
+        subtitle: 'Index har blitt varslet.',
+        subtitle2: 'Hvis du vil hjelpe oss kan du fortelle oss hva som skjedde nedenfor.',
+        labelName: 'Navn',
+        labelEmail: 'Epost',
+        labelComments: 'Hva skjedde?',
+        labelClose: 'Lukk',
+        labelSubmit: 'Send',
+        errorGeneric: 'Det oppstod en ukjent feil under innsending av rapporten. Vennligst prøv igjen.',
+        errorFormEntry: 'Noen felt var ugyldige. Rett opp feilene og prøv igjen.',
+        successMessage: 'Din tilbakemelding er sendt. Tusen takk!',
+      }}
+      fallback={<a href='/'>Gå til forsiden</a>}
+      showDialog>
+      {children}
+    </Sentry.ErrorBoundary>
+  ) : (
+    <>{children}</>
+  );
+
+export const Application = () => (
+  <ErrorBoundary>
     <Providers>
       <BrowserRouter>
         <Navigation>
@@ -79,8 +107,8 @@ export const Application = () => {
         </Navigation>
       </BrowserRouter>
     </Providers>
-  );
-};
+  </ErrorBoundary>
+);
 
 console.log(
   `%c
@@ -104,8 +132,8 @@ console.log(
   '',
 );
 const rickroll = () => {
-  const RICKROLLED_BADGE_ID = '8e4eb14a-77f5-4a10-b3ae-548d0f607528';
-  API.createUserBadge({ badge_id: RICKROLLED_BADGE_ID }).catch(() => null);
+  const RICKROLLED_BADGE_ID = '372e3278-3d8f-4c0e-a83a-f693804f8cbb';
+  API.createUserBadge({ flag: RICKROLLED_BADGE_ID }).catch(() => null);
   window.gtag('event', 'rickrolled', {
     event_category: 'easter-egg',
     event_label: 'Rickrolled in the console',

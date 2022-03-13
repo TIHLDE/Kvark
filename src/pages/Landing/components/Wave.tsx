@@ -1,24 +1,35 @@
-import URLS from 'URLS';
-import { Link } from 'react-router-dom';
-import { useIsAuthenticated } from 'hooks/User';
-import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
-
-// Material UI Components
-import { makeStyles } from 'makeStyles';
-import { Typography, Button } from '@mui/material';
-// Icons
+import { keyframes } from '@emotion/react';
 import SignupIcon from '@mui/icons-material/AddRounded';
 import LoginIcon from '@mui/icons-material/LoginRounded';
 import ProfileIcon from '@mui/icons-material/PersonOutlineRounded';
+import { Button, Typography } from '@mui/material';
+import { makeStyles } from 'makeStyles';
+import { Link } from 'react-router-dom';
+import URLS from 'URLS';
+import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
 
-// Images
-import { ReactComponent as WaveTop } from 'assets/img/waves/wave-top.svg';
-import { ReactComponent as WaveMid } from 'assets/img/waves/wave-mid.svg';
-import { ReactComponent as WaveBottom } from 'assets/img/waves/wave-bottom.svg';
+import { useIsAuthenticated } from 'hooks/User';
+import { useAnalytics } from 'hooks/Utils';
 
-// Project Components
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
-import { useGoogleAnalytics } from 'hooks/Utils';
+
+import { ReactComponent as WaveBottom } from 'assets/img/waves/wave-bottom.svg';
+import { ReactComponent as WaveMid } from 'assets/img/waves/wave-mid.svg';
+import { ReactComponent as WaveTop } from 'assets/img/waves/wave-top.svg';
+
+const moveWave = keyframes`
+  0% {
+    transform: translateX(0) translateZ(0) scaleY(1);
+  }
+
+  50% {
+    transform: translateX(-25%) translateZ(0) scaleY(0.55);
+  }
+
+  100% {
+    transform: translateX(-50%) translateZ(0) scaleY(1);
+  }
+`;
 
 const useStyles = makeStyles()((theme) => ({
   root: {
@@ -102,20 +113,20 @@ const useStyles = makeStyles()((theme) => ({
   waveTop: {
     zIndex: 18,
     opacity: 0.5,
-    animation: `$moveWave 60s linear alternate infinite`,
+    animation: `${moveWave} 60s linear alternate infinite`,
     transformOrigin: 'bottom center',
   },
   waveMiddle: {
     zIndex: 17,
     opacity: 0.6,
-    animation: `$moveWave 20s linear alternate infinite`,
+    animation: `${moveWave} 20s linear alternate infinite`,
     transformOrigin: 'bottom left',
   },
   waveBottom: {
     zIndex: 16,
     opacity: 0.7,
     width: '280%',
-    animation: `$moveWave 25s linear alternate infinite`,
+    animation: `${moveWave} 25s linear alternate infinite`,
     transformOrigin: 'bottom right',
   },
   svg: {
@@ -127,22 +138,11 @@ const useStyles = makeStyles()((theme) => ({
       height: 90,
     },
   },
-  '@keyframes moveWave': {
-    '0%': {
-      transform: 'translateX(0) translateZ(0) scaleY(1)',
-    },
-    '50%': {
-      transform: 'translateX(-25%) translateZ(0) scaleY(0.55)',
-    },
-    '100%': {
-      transform: 'translateX(-50%) translateZ(0) scaleY(1)',
-    },
-  },
 }));
 
 const Wave = () => {
   const { classes, cx } = useStyles();
-  const { event } = useGoogleAnalytics();
+  const { event } = useAnalytics();
   const isAuthenticated = useIsAuthenticated();
 
   const analytics = (page: string) => event('go-to-page', 'wave', `Go to ${page}`);

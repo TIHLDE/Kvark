@@ -1,10 +1,9 @@
+import { Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
+
 import { FormFieldType } from 'types/Enums';
+
 import { useFormStatisticsById } from 'hooks/Form';
 
-// Material UI
-import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Stack } from '@mui/material';
-
-// Project components
 import Paper from 'components/layout/Paper';
 
 export type EventFormEditorProps = {

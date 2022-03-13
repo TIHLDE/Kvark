@@ -1,34 +1,32 @@
-import { useCallback, useState, useEffect, useMemo } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { Event, EventRequired, RegistrationPriority, Group } from 'types';
-import { useEventById, useCreateEvent, useUpdateEvent, useDeleteEvent } from 'hooks/Event';
-import { useGroupsByType } from 'hooks/Group';
-import { useUser, useUserGroups } from 'hooks/User';
-import { useCategories } from 'hooks/Categories';
-import { useSnackbar } from 'hooks/Snackbar';
-import { addHours, subDays, parseISO, setHours, startOfHour } from 'date-fns';
-
-// Material-UI
-import { makeStyles } from 'makeStyles';
-import { Stack, Grid, MenuItem, Collapse, Accordion, AccordionSummary, AccordionDetails, Typography, ListSubheader, LinearProgress } from '@mui/material';
-
-// Icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import { Accordion, AccordionDetails, AccordionSummary, Collapse, Grid, LinearProgress, ListSubheader, MenuItem, Stack, Typography } from '@mui/material';
+import { addHours, parseISO, setHours, startOfHour, subDays } from 'date-fns';
+import { makeStyles } from 'makeStyles';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
-// Project components
+import { Event, EventRequired, Group, RegistrationPriority } from 'types';
+import { GroupType } from 'types/Enums';
+
+import { useCategories } from 'hooks/Categories';
+import { useCreateEvent, useDeleteEvent, useEventById, useUpdateEvent } from 'hooks/Event';
+import { useGroupsByType } from 'hooks/Group';
+import { useSnackbar } from 'hooks/Snackbar';
+import { useUser, useUserGroups } from 'hooks/User';
+
 import EventRegistrationPriorities from 'pages/EventAdministration/components/EventRegistrationPriorities';
 import EventRenderer from 'pages/EventDetails/components/EventRenderer';
+
+import Bool from 'components/inputs/Bool';
+import DatePicker from 'components/inputs/DatePicker';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import Select from 'components/inputs/Select';
-import Bool from 'components/inputs/Bool';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
-import DatePicker from 'components/inputs/DatePicker';
 import { ImageUpload } from 'components/inputs/Upload';
+import VerifyDialog from 'components/layout/VerifyDialog';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
 import { ShowMoreText, ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
-import VerifyDialog from 'components/layout/VerifyDialog';
-import { GroupType } from 'types/Enums';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {

@@ -1,6 +1,7 @@
-import slugify from 'slugify';
-import { parseISO, format, subMinutes, getYear, isAfter, isBefore } from 'date-fns';
+import { format, getYear, isAfter, isBefore, parseISO, subMinutes } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
+import slugify from 'slugify';
+
 import { Event, GroupLaw, SelectFormField, SelectFormFieldOption, TextFormField } from 'types';
 import { FormFieldType, JobPostType, MembershipType, StrikeReason, UserClass, UserStudy } from 'types/Enums';
 
@@ -116,6 +117,9 @@ export const getUserClass = (userClass: UserClass) => {
       return 'Ukjent klasse';
   }
 };
+
+export const USER_CLASSES = [UserClass.FIRST, UserClass.SECOND, UserClass.THIRD, UserClass.FOURTH, UserClass.FIFTH, UserClass.ALUMNI];
+export const USER_STUDIES = [UserStudy.DATAING, UserStudy.DIGFOR, UserStudy.DIGSEC, UserStudy.DIGSAM, UserStudy.DRIFT, UserStudy.INFO];
 
 /**
  * Get jobpost type as text

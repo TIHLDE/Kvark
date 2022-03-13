@@ -1,13 +1,4 @@
-import { WarningType, Study, CheatsheetType } from 'types/Enums';
-
-export interface Badge {
-  title: string;
-  description: string;
-  total_completion_percentage: number;
-  image?: string;
-  image_alt?: string;
-  id: string;
-}
+import { CheatsheetType, Study, WarningType } from 'types/Enums';
 
 export interface Cheatsheet {
   course: string;

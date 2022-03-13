@@ -1,8 +1,8 @@
+import { Stack, styled, Theme, Typography, useMediaQuery } from '@mui/material';
+
 import { EventCompact } from 'types';
 import { Groups } from 'types/Enums';
-import { Typography, styled, Stack, useMediaQuery, Theme } from '@mui/material';
 
-// Project componets
 import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
 
 const Container = styled('div')(({ theme }) => ({

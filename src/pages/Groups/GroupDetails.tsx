@@ -1,25 +1,28 @@
-import { useMemo } from 'react';
-import { useParams, Link, Routes, Route, Navigate } from 'react-router-dom';
-import URLS from 'URLS';
-import { useIsAuthenticated } from 'hooks/User';
-import { useGroup } from 'hooks/Group';
-
-import { Typography, Stack, IconButton, Divider } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBackRounded';
-import InfoIcon from '@mui/icons-material/InfoRounded';
-import FineIcon from '@mui/icons-material/LocalAtmRounded';
 import LawIcon from '@mui/icons-material/GavelRounded';
 import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
+import InfoIcon from '@mui/icons-material/InfoRounded';
+import FineIcon from '@mui/icons-material/LocalAtmRounded';
+import EventIcon from '@mui/icons-material/TodayRounded';
+import { Box, Divider, IconButton, Stack, Typography } from '@mui/material';
+import { useMemo } from 'react';
+import { Link, Navigate, Route, Routes, useParams } from 'react-router-dom';
+import URLS from 'URLS';
 
-// Project Components
-import { useSetNavigationOptions } from 'components/navigation/Navigation';
-import GroupAdmin from 'pages/Groups/components/GroupAdmin';
+import { useGroup } from 'hooks/Group';
+import { useIsAuthenticated } from 'hooks/User';
+
 import GroupInfo from 'pages/Groups/about';
-import GroupLaws from 'pages/Groups/laws';
+import GroupAdmin from 'pages/Groups/components/GroupAdmin';
+import GroupEvents from 'pages/Groups/events';
 import GroupFines from 'pages/Groups/fines';
-import GroupForms from 'pages/Groups/forms';
 import { FinesProvider } from 'pages/Groups/fines/FinesContext';
+import GroupForms from 'pages/Groups/forms';
+import GroupLaws from 'pages/Groups/laws';
+
 import { RouterTabs } from 'components/layout/Tabs';
+import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
+import { useSetNavigationOptions } from 'components/navigation/Navigation';
 
 const GroupDetails = () => {
   const { slug } = useParams<'slug'>();
@@ -38,7 +41,10 @@ const GroupDetails = () => {
     if (!data) {
       return [];
     }
-    const arr = [{ label: 'Om', to: URLS.groups.details(data.slug), icon: InfoIcon }];
+    const arr = [
+      { label: 'Om', to: URLS.groups.details(data.slug), icon: InfoIcon },
+      { label: 'Arrangementer', to: URLS.groups.events(data.slug), icon: EventIcon },
+    ];
     if (showFinesAndLaws) {
       arr.push({ label: 'Bøter', to: URLS.groups.fines(data.slug), icon: FineIcon });
       arr.push({ label: 'Lovverk', to: URLS.groups.laws(data.slug), icon: LawIcon });
@@ -70,6 +76,9 @@ const GroupDetails = () => {
           <IconButton component={Link} to={URLS.groups.index}>
             <ArrowBackIcon />
           </IconButton>
+          <Box sx={{ display: 'block', height: { xs: 45, md: 70 }, width: { xs: 45, md: 70 } }}>
+            <AspectRatioImg alt={data?.image_alt || ''} borderRadius ratio={1} src={data?.image || ''} />
+          </Box>
           <Typography variant='h1'>{data.name}</Typography>
         </Stack>
         {hasWriteAcccess && <GroupAdmin group={data} />}
@@ -82,6 +91,7 @@ const GroupDetails = () => {
       )}
       <Routes>
         <Route element={<GroupInfo />} path='' />
+        <Route element={<GroupEvents />} path={`${URLS.groups.events_relative}`} />
         {showFinesAndLaws && (
           <>
             <Route

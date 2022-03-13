@@ -1,9 +1,7 @@
-import { createTheme } from '@mui/material/styles';
-
-// Icons
 import DarkIcon from '@mui/icons-material/Brightness2Outlined';
 import AutomaticIcon from '@mui/icons-material/DevicesOutlined';
 import LightIcon from '@mui/icons-material/WbSunnyOutlined';
+import { createTheme } from '@mui/material/styles';
 
 declare module '@mui/material/styles/createPalette' {
   interface TypeBackground {

@@ -1,10 +1,8 @@
+import { BoxProps, styled, useTheme } from '@mui/material';
 import { useMemo } from 'react';
-
-// Material UI Components
-import { useTheme, styled, BoxProps } from '@mui/material';
+import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
 
 import { NavigationOptions } from 'components/navigation/Navigation';
-import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
 
 const Svg = styled('svg')({
   margin: 'auto',

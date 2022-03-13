@@ -30,7 +30,7 @@ const Events = () => {
       </Collapse>
       <Collapse in={tab === calendarTab.value} mountOnEnter>
         <Suspense fallback={<Skeleton height={695} variant='rectangular' />}>
-          <EventsCalendarView events={data?.pages[0]?.results || []} oldEvents={oldEvents?.pages[0]?.results || []} />
+          <EventsCalendarView />
         </Suspense>
       </Collapse>
     </Page>

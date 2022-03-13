@@ -1,7 +1,7 @@
+import { EventFormType, FormFieldType, FormResourceType } from 'types/Enums';
+import { EventCompact } from 'types/Event';
 import { Group } from 'types/Group';
 import { UserBase } from 'types/User';
-import { EventCompact } from 'types/Event';
-import { FormFieldType, FormResourceType, EventFormType } from 'types/Enums';
 
 // -----------------------------------------------------------
 // Interfaces used for the creating of forms and viewing forms
@@ -27,6 +27,7 @@ export interface GroupForm extends FormBase {
   can_submit_multiple: boolean;
   only_for_group_members: boolean;
   is_open_for_submissions: boolean;
+  email_receiver_on_submit: string | null;
 }
 
 export interface TemplateForm extends FormBase {

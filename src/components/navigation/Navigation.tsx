@@ -1,20 +1,19 @@
-import { ReactNode, useState, useLayoutEffect, useMemo, useCallback } from 'react';
-import Helmet from 'react-helmet';
+import { Alert, Snackbar as MaterialSnackbar, styled, Theme, useMediaQuery, useTheme } from '@mui/material';
+import { SHOW_NEW_STUDENT_INFO } from 'constant';
 import constate from 'constate';
+import { ReactNode, useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import URLS from 'URLS';
+
 import { WarningType } from 'types/Enums';
+
 import { useIsAuthenticated } from 'hooks/User';
 import { useWarnings } from 'hooks/Warnings';
-import { SHOW_NEW_STUDENT_INFO } from 'constant';
 
-// Material UI Components
-import { Theme, useTheme, useMediaQuery, Snackbar as MaterialSnackbar, Alert, styled } from '@mui/material';
-
-// Project Components
-import Topbar from 'components/navigation/Topbar';
-import Footer from 'components/navigation/Footer';
-import BottomBar from 'components/navigation/BottomBar';
 import Linkify from 'components/miscellaneous/Linkify';
+import BottomBar from 'components/navigation/BottomBar';
+import Footer from 'components/navigation/Footer';
+import Topbar from 'components/navigation/Topbar';
 
 const Snackbar = styled(MaterialSnackbar)(({ theme }) => ({
   maxWidth: `calc(100% - ${theme.spacing(2)})`,
@@ -134,6 +133,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
             items: [
               { text: 'Kokebok', to: URLS.cheatsheet },
               { text: 'Link-forkorter', to: URLS.shortLinks },
+              { text: 'Badges ledertavler', to: URLS.badges.index },
             ],
             text: 'For medlemmer',
             type: 'dropdown',

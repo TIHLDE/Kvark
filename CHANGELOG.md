@@ -13,26 +13,53 @@
 ---
 
 ## Neste versjon
+## Versjon 2022.03.01
 
 - ✨ **Kalender**. Brukere kan klikke på et arrangement i kalenderen for å se generell informasjon uten å måtte gå til arrangementsiden.
+- ✨ **Spørreskjema**. Bli varslet på epost ved nye svar på gruppe-spørreskjemaer.
+- ✨ **Grupper**. Se hver gruppes arrangementer.
+
+## Versjon 2022.02.24
+
+- ✨ **Karriere**. Bruker kan nå filtrere jobbanonser til sitt relevante år.
+- ✨ **Badges**. Lagt til ledertavle og kategorier.
+
+## Versjon 2022.02.17
+
+- ✨ **Arrangementer**. Alle brukere kan nå se andre brukeres profiler ved å klikke på dem i listen med påmeldte brukere.
+- ✨ **Form**. Lagt til konfetti når man svarer på et spørreskjema
+- ⚡ **Grupper**. Gir bedre beskrivelse til tidligere gruppermedlemmer.
+- ✨ **Gruppe mail og logo visning** Viser en gruppes kontakt mail og logo på oversikt side og mer detaljert side. Samt mulighet for opplasting av gruppe logo.
+
+## Versjon 2022.02.06
+
+- ⚡ **Sentry**. Lagt til Sentry-feil catching.
+- ✨ **Konfetti**. Lagt til konfetti ved brukerregistrering og påmelding til arrangement.
+- ⚡ **Analyse**. La til alternative tjenester for analyse.
+
+## Versjon 2022.02.03
+
+- ✨ **Bruker**. Det er mulig å eksportere sin brukerdata.
+- ✨ **Bruker**. Det er mulig å slette sin egen bruker.
+- ✨ **Offentlige profiler**. Det er nå mulig å se andre brukeres profiler med deres badges og medlemskap i grupper.
 - ✨ **Arrangementer**. Alle innloggede brukere kan nå se hvem som er påmeldt arrangementer. Brukere kan reservere seg mot å bli oppført på deltagerlisten.
 - ⚡ **Tilganger**. Laster inn tilganger fra backend først når de trengs.
 - ✨ **Skjemamaler**. Administratorer kan nå lage maler som man kan ta utgangspunkt i når man lager et nytt skjema.
 - ✨ **Bildeopplastning**. Viser foretrukket størrelsesforhold på bilder ved bildeopplastning.
 
-## Versjon 1.4.2 (31.01.2022)
+## Versjon 2022.01.31
 
 - 🦟 **Eventadmin**. Viser at et arrangement er stengt i adminpanelet.
 - 🦟 **Stories**. Annonser som har fortløpende opptak vises med "fortløpende opptak".
 
-## Versjon 1.4.1 (15.01.2022)
+## Versjon 2022.01.15
 
 - ⚡ **Arrangementer**. Brukere kan nå se om de er prioritert på et arrangement.
 - ⚡ **Arrangementer**. Påmeldingsknappen teller ned til påmeldingsstart og aktiveres automatisk ved påmeldingsstart uten at en må laste inn siden på nytt.
 - ✨ **Kokeboka**. Lagt til "Antall koker nå" teller (ikke faktiske tall).
 - ⚡ **Botsystem**. Lovverket er bedre sortert. Ved ny bot endres beløp når valgt lovbrudd endres.
 
-## Versjon 1.4.0 (01.01.2022)
+## Versjon 2022.01.01
 
 - ✨ **Gruppe-skjemaer**. Grupper kan nå lage skjemaer som brukere kan svare på. Admin/leder av gruppe kan styre om det tillates flere besvarelser, om skjemaet er åpent og begrense svar til kun gruppens medlemmer.
 - ✨ **Botsystem**. Lagt til statistikk for botsystemet. Brukere kan se antall betalt, antall godkjent og ikke betalt, samt antall ikke godkjent.
@@ -41,12 +68,12 @@
 - ✨ **Botsystem**. Laget et botsystem for intern bruk i grupper. Gruppene kan lage et eget lovverk. Medlemmer kan så gi bøter til andre medlemmer. Leder og botsjef kan markere bøter som godkjent og betalt.
 - 🎨 **Grupper**. Oppdatert utseende.
 
-## Versjon 1.3.1 (30.11.2021)
+## Versjon 2021.11.30
 
 - ✨ **Informasjonsbehandling**. Medlemmer kan nå velge studieretningen Informasjonsbehandling når de registrer seg. Drift'ere kan ikke lengre prioriteres på arrangementer ettersom det ikke lenger finnes studenter i Drift 1-3 klasse.
 - 🎨 **Design**. Oppdatert utseende på nyheter og jobbannonser.
 
-## Versjon 1.3.0 (16.11.2021)
+## Versjon 2021.11.16
 
 - ✨ **Arrangementer**. Arrangementer kan nå være åpne for kun prioriterte.
 - 🎨 **Arrangementer**. Lagt til farger slik at brukere raskt kan se hva som er hva. Det vises også flere arrangementer på forsiden.
@@ -57,19 +84,19 @@
 - 🦟 **PWA**. Det funker nå å legge til nettsiden på hjemskjermen.
 - ✨ **Gruppehistorikk**. Lagt til eget kort for å se info om tidligere medlemskap av TIHLDE sine ulike undergrupper.
 
-## Versjon 1.2.7 (11.11.2021)
+## Versjon 2021.11.11
 
 - 🎨 **Utseende**. Endret noen av fargene i mørkt modus.
 - ✨ **Jul**. Lagt til snø på forside og nisselue på logo som vises automatisk basert på dato.
 - 🦟 **QR-Koder**. Endret farge på QR-Koder for at de skal bli lettere å lese. I tillegg vises for- og etternavn under QR-koder.
 
-## Versjon 1.2.6 (25.10.2021)
+## Versjon 2021.10.25
 
 - ✨ **Filopplasting**. Medlemmer kan nå laste opp filer på Link-forkorter siden
 - ✨ **Profil**. Lagt til alumni som klasse på profilen.
 - ✨ **Karriere**. Bruker kan nå se jobbtype og ønsket årstrinn i jobbannonser. Admin kan redigere tidligere nevnte felt.
 
-## Versjon 1.2.5 (20.10.2021)
+## Versjon 2021.10.20
 
 - 🎨 **Forside**. Fjernet Drift av datasystemer fra linjeforeningens linjer på framsiden.
 - 🦟 **Admin**. Fikset bug hvor man kom på feil side ved bytting av arrangementer
@@ -82,7 +109,7 @@
 - ✨ **Arrangementer**. Brukere kan melde seg av arrangementer opp til 2 timer før start, men blir varslet om at de får prikk.
 - ✨ **Bruker**. Brukere kan se sine egene prikker.
 
-## Versjon 1.2.4 (05.10.2021)
+## Versjon 2021.10.05
 
 - 🎨 **Admin**. Endret spacing på diverse knapper i admin-sider.
 - 🦟 **Svarskjema**. Fikset slik at tekst svar vises nå på en bedre måte.
@@ -90,44 +117,44 @@
 - ✨ **Changelog**. Expand bokser i changelog for å se tidligere endringer/versjoner.
 - 🦟 **Varslinger**. Varslings-boksen lukkes ved klikk ppå link
 
-## Versjon 1.2.3 (29.09.2021)
+## Versjon 2021.09.29
 
 - ✨ **Varslinger**. Varsler har blitt flyttet til topbaren slik at man lettere ser nye varsler.
 - ✨ **Påmelding**. Admin får nå melding om at flytting kan føre til økt antall plasser, og må bekrefte.
 - ✨ **Changelog**. Legger til tegnforklaringer på om-index siden
 - ✨ **Arrangementer**. Muligheten for å laste ned svar på arrangementer som en csv fil.
 
-## Versjon 1.2.2 (28.09.2021)
+## Versjon 2021.09.28
 
 - ✨ **Filterboks**. Filterboksen i arrangementer siden kan nå åpnes og lukkes på små skjermer.
 - ⚡ **Arrangementer**. Viser brukerens profilbilde på store skjermer ved arrangement registrering.
 
-## Versjon 1.2.1 (21.09.2021)
+## Versjon 2021.09.21
 
 - ✨ **Skjemaer**. Lagt til mulighet for å svare på evalueringsskjemaer.
 - ✨ **Profil**. Klargjører at brukere skal skrive allergier, og ikke tøys.
 - ✨ **Brukeradmin**. Lagt til alumni i Brukeradmin
 
-## Versjon 1.2.0 (12.09.2021)
+## Versjon 2021.09.12
 
 - ✨ **Skjemaer**. Legg til statistikk og svar for spørsmål til arrangementer. Vis i produksjon.
 
-## Versjon 1.1.4 (06.09.2021)
+## Versjon 2021.09.06
 
 - 🦟 **Bedrifter**. Fikset innsending av skjema for bedrifter slik at HS faktisk kan se hva de har krysset av.
 - ✨ **Skjemaer**. Forberedt visning av skjemaer ved påmelding til arrangementer.
 
-## Versjon 1.1.3 (30.08.2021)
+## Versjon 2021.08.30
 
 - ✨ **Varsler**. Varsler har nå mulighet til å knyttes til en link. En kan for eks. rett til relevant arrangement.
 - ✨ **Varsler**. Varsler kan nå inneholde en lengre beskrivelse slik at de kan inneholde all info som også kommer på epost.
 - ✨ **Arrangementer**. Arrangør av arrangementer kan sende ut informasjon til påmeldte deltagere via epost/varsler.
 
-## Versjon 1.1.2 (11.08.2021)
+## Versjon 2021.08.11
 
 - ✨ **Brukere**. Administratorer kan nå slette nye brukere og legge ved en valgfri begrunnelse.
 
-## Versjon 1.1.1 (15.07.2021)
+## Versjon 2021.07.15
 
 - ✨ **Nye studenter**. Laget en side for nye studenter i TIHLDE med info om fadderuka, FAQ, verv, idrett, samt en infoboks på forsiden.
 - ⚡ **Google Analytics**. Lagt til flere "events" for å bedre kunne tilpasse siden etter hvordan brukerne benytter den.
@@ -135,7 +162,7 @@
 - 🎨 **Profil**. Endret utseende på meny i profil på små skjermer.
 - 🦟 **Stories**. Fikset bug der skygge ved stories i dark-mode på iOS hadde feil farge.
 
-## Versjon 1.1.0 (10.07.2021)
+## Versjon 2021.07.10
 
 - ✨ **Material-UI**. Oppdatert Material-UI til v5 som inneholder nye komponenter, ikoner, utseende og annen forbedret funksjonalitet. Her er det også gjort en stor jobb ved å oppdatere breaking changes som også gjør det enklere å oppdatere til v6 når det blir aktuelt.
 - ✨ **Data**. Hvis du har oppe siden i flere faner så blir oppdatert data delt mellom fanene.
@@ -168,7 +195,7 @@
 - 🦟 **Stories**. Fikset en bug der skyggen ved siden av stories på Safari ikke hadde riktige farger.
 - 🦟 **Pages**. Fikset bug der man måtte trykke tilbake-knappen i pages i nettleseren to ganger for å gå tilbake.
 
-## Versjon 1.0.10 (10.05.2021)
+## Versjon 2021.05.10
 
 - ✨ **Filtrering**. Det er mulig å finne tidligere arrangementer og annonser ved å justere filtrering.
 - ✨ **Pages**. Lagt til mulighet til å søke innad i pages.
@@ -176,7 +203,7 @@
 - 🎨 **Nyheter**. Nyheter viser nå hvilket år de ble publisert
 - 🦟 **Sidebar**. Lukker sidebar ved klikk til annen side innad i pages.
 
-## Versjon 1.0.9 (05.05.2021)
+## Versjon 2021.05.05
 
 - ⚡ **Grupper**. Lagt til pagination, og avatar på gruppe medlemmer.
 - ✨ **Brukeradmin**. HS og Index kan nå redigere brukere i brukeradmin.
@@ -185,27 +212,27 @@
 - ⚡ **Cache**. All cache på siden blir nå oppdatert når bruker logger inn eller ut.
 - ⚡ **Admin**. Oppdatert utseende på liste over admin-funksjonalitet.
 
-## Versjon 1.0.8 (26.04.2021)
+## Versjon 2021.04.26
 
 - ⚡ **Fjern bilde**. Det er nå mulig å fjerne et bilde som er lagt til arrangementer, nyheter, annonser og sider.
 - ⚡ **Tilgangs-håndtering**. Endret håndtering av tilganger til nytt system hvor brukere får tilganger basert på medlemskap i grupper.
 - ✨ **Gruppe-administrator**. Nå er det mulig for de ulike gruppe-lederne å legge til medlemmer i gruppen.
 
-## Versjon 1.0.7 (09.04.2021)
+## Versjon 2021.04.09
 
 - ✨ **Spørsmål ved påmelding**. Lagt til støtte for spørsmål ved påmelding til arrangementer, men ikke aktivert det ettersom støtte for svar ikke er klart.
 - ✨ **Del**. Lagt til del-knapp på arrangementer, nyheter, annonser og pages.
 
-## Versjon 1.0.6 (26.03.2021)
+## Versjon 2021.03.26
 
 - 🎨 **Påske**. Lagt til påsketema
 
-## Versjon 1.0.5 (21.03.2021)
+## Versjon 2021.03.21
 
 - ✨ **Link-forkorter**. Medlemmer kan lage egne korte linker på s.tihlde.org/[navn].
 - ✨ **Kalender**. Knapp for å legge til arrangement i kalenderen din.
 
-## Versjon 1.0.4 (08.03.2021)
+## Versjon 2021.03.08
 
 - ⚡ **Pagination i varsler**. Lagt til pagination i varsler, samt forbedret håndtering av "leste" varsler.
 - 🦟 **Styling i tekst.** Fikset en bug der styling på elementer i tekst/markdown forsvant når man byttet tema.
@@ -213,14 +240,14 @@
 - 🎨 **Nytt design av QRcode.** Laget custom QRcode theme for mer helhetlig tema.
 - 🎨 **Nytt design arrangement-deltagere**. Mindre bokser på deltagerliste med mer info ved trykk på boks.
 
-## Versjon 1.0.3 (22.02.2021)
+## Versjon 2021.02.22
 
 - ✨ **Spesial innhold i pages**. Lagt til mulighet for at man kan lage spesial-komponenter som kommer inne på pages-sider.
 - ⚡ **Flyttet innhold til pages**. Flyttet "Om TIHLDE", "Kontakt oss", "Tjenester", "Ny student", "Lover og regler", "Personvern" og "Arrangementsregler" til pages slik at det blir dynamisk.
 - ⚡ **404-side til Typescript**. Endret 404-siden til Typescript og oppdatert med nye linker.
 - ✨ **Profilbilde**. Legge til funksjonalitet for visning og endring av profilbilde
 
-## Versjon 1.0.2 (14.02.2021)
+## Versjon 2021.02.14
 
 - ⚡ **Bedre brukeradmin**. Nytt utseende og bedre filtrering/søk.
 - ⚡ **Avmelding på venteliste**. Personer på ventelisten kan nå melde seg av arrangementer også etter avmeldingsfristen.
@@ -233,11 +260,9 @@
 - ✨ **Om Index**. Index har fått en egen side.
 - ✨ **Oppdatert karrieresider**. Ingress og link er ikke lenger krevet. I tillegg kan man velge at en jobbannonse har løpende opptak.
 
-## Versjon 1.0.1 (01.02.2021)
+## Versjon 2021.02.01
 
 - ✨ **Lagt til pages**. Legg til pages, et eget CMS der man kan publisere sider med tilhørende undersider med relevant innhold
 - 🎨 **Finere innlastning**. Finere innlastning av arrangementer, nyheter, jobbannonser og stories
 - ⚡ **Bedre feilmeldinger i skjemaer**. Lettere å se feilmeldinger i skjemaer ved at feil vises under knapp
 - ✨ **Nye muligheter i markdown**. Mulighet til å legge inn kort til arrangementer, nyheter og jobbannonser, samt utvidsbokser i markdown
-
-## Versjon 1.0.0 (25.01.2021)
