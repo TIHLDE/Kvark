@@ -1,18 +1,15 @@
-import { ReactNode, useEffect, useMemo } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { EventCompact } from 'types';
-import URLS from 'URLS';
-import { Link } from 'react-router-dom';
 import { parseISO } from 'date-fns';
-import { urlEncode } from 'utils';
 import { ViewState, AppointmentModel } from '@devexpress/dx-react-scheduler';
-import { useTheme } from '@mui/material';
+import { useTheme, Popper, ClickAwayListener } from '@mui/material';
 import { Scheduler, MonthView, Toolbar, DateNavigator, Appointments } from '@devexpress/dx-react-scheduler-material-ui';
 
 // Project components
 import Paper from 'components/layout/Paper';
 import { useGoogleAnalytics } from 'hooks/Utils';
 import { Groups } from 'types/Enums';
-
+import EventsCalendarPopover from './EventsCalendarPopover';
 export type EventsCalendarViewProps = {
   events: Array<EventCompact>;
   oldEvents: Array<EventCompact>;
@@ -25,15 +22,42 @@ type AppointmentProps = {
 
 const Appointment = ({ children, data }: AppointmentProps) => {
   const theme = useTheme();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
+
+  const handleClickAway = () => {
+    setAnchorEl(null);
+  };
 
   const getColor = (event: EventCompact) =>
     theme.palette.colors[event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase() ? 'nok_event' : 'other_event'];
   return (
-    <Link to={`${URLS.events}${data.id}/${urlEncode(data.title)}/`}>
-      <Appointments.Appointment data={data} draggable={false} resources={[]} style={{ backgroundColor: getColor(data as unknown as EventCompact) }}>
-        {children}
-      </Appointments.Appointment>
-    </Link>
+    <div>
+      <div onClick={handleClick}>
+        <Appointments.Appointment data={data} draggable={false} resources={[]} style={{ backgroundColor: getColor(data as unknown as EventCompact) }}>
+          {children}
+        </Appointments.Appointment>
+      </div>
+      <Popper
+        anchorEl={anchorEl}
+        modifiers={[
+          {
+            name: 'flip',
+            enabled: false,
+          },
+        ]}
+        open={open}
+        placement='top'
+        style={{ zIndex: 1000000 }}>
+        <ClickAwayListener onClickAway={handleClickAway}>
+          <div>{typeof data.id === 'number' ? <EventsCalendarPopover id={data.id} /> : null}</div>
+        </ClickAwayListener>
+      </Popper>
+    </div>
   );
 };
 
