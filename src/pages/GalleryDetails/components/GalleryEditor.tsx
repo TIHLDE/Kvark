@@ -1,6 +1,4 @@
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import { IconButton } from '@mui/material';
-import { makeStyles } from 'makeStyles';
 import { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -8,32 +6,24 @@ import URLS from 'URLS';
 
 import { Gallery } from 'types';
 
-import { useDeleteGallery, useGalleriesById, useUpdateGallery } from 'hooks/Gallery';
+import { useDeleteGallery, useGalleryById, useUpdateGallery } from 'hooks/Gallery';
 import { useSnackbar } from 'hooks/Snackbar';
 
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import { ImageUpload } from 'components/inputs/Upload';
+import { BannerButton } from 'components/layout/Banner';
 import Dialog from 'components/layout/Dialog';
 import VerifyDialog from 'components/layout/VerifyDialog';
 
-const useStyles = makeStyles()((theme) => ({
-  margin: {
-    margin: theme.spacing(2, 0, 1),
-    borderRadius: theme.shape.borderRadius,
-    overflow: 'hidden',
-  },
-}));
-
-type GalleryEditorProps = {
-  slug: string;
+export type GalleryEditorProps = {
+  slug: Gallery['slug'];
 };
 
 type FormValues = Omit<Gallery, 'id' | 'created_at' | 'updated_at'>;
 
 const GalleryEditor = ({ slug }: GalleryEditorProps) => {
-  const { classes } = useStyles();
-  const { data } = useGalleriesById(slug);
+  const { data } = useGalleryById(slug);
   const editGallery = useUpdateGallery(slug);
   const deleteGallery = useDeleteGallery(slug);
   const showSnackbar = useSnackbar();
@@ -55,64 +45,53 @@ const GalleryEditor = ({ slug }: GalleryEditorProps) => {
     setValues(data || null);
   }, [data, setValues]);
 
-  const remove = async () => {
+  const remove = async () =>
     deleteGallery.mutate(null, {
       onSuccess: () => {
         showSnackbar('Galleriet ble slettet', 'success');
         navigate(URLS.gallery);
       },
-      onError: (e) => {
-        showSnackbar(e.detail, 'error');
-      },
+      onError: (e) => showSnackbar(e.detail, 'error'),
     });
-  };
 
   const submit: SubmitHandler<FormValues> = async (data) => {
-    await editGallery.mutate(data, {
-      onSuccess: () => {
-        showSnackbar('Galleriet ble oppdatert', 'success');
+    await editGallery.mutate(
+      { ...data, slug },
+      {
+        onSuccess: () => {
+          showSnackbar('Galleriet ble oppdatert', 'success');
+        },
+        onError: (e) => {
+          showSnackbar(e.detail, 'error');
+        },
       },
-      onError: (e) => {
-        showSnackbar(e.detail, 'error');
-      },
-    });
+    );
   };
 
-  useEffect(() => {
-    setValues(data || null);
-  }, [data, setValues]);
-
   return (
-    <>
-      <form onSubmit={handleSubmit(submit)}>
-        <TextField formState={formState} label='Tittel' {...register('title')} />
-        <TextField formState={formState} label='Beskrivelse' {...register('description')} />
-        <TextField formState={formState} label='Alt-tekst' {...register('image_alt')} />
-        <ImageUpload formState={formState} label='Velg bilde' register={register('image')} setValue={setValue} watch={watch} />
-        <SubmitButton className={classes.margin} formState={formState}>
-          Oppdater
-        </SubmitButton>
-        <VerifyDialog
-          closeText='Ikke slett galleriet'
-          color='error'
-          contentText='Sletting av galleri kan ikke reverseres.'
-          onConfirm={remove}
-          titleText='Er du sikker?'>
-          Slett
-        </VerifyDialog>
-      </form>
-    </>
+    <form onSubmit={handleSubmit(submit)}>
+      <TextField formState={formState} label='Tittel' {...register('title')} />
+      <TextField formState={formState} label='Beskrivelse' {...register('description')} />
+      <ImageUpload formState={formState} label='Velg bilde' register={register('image')} setValue={setValue} watch={watch} />
+      <TextField formState={formState} label='Bildetekst' {...register('image_alt')} />
+      <SubmitButton formState={formState} sx={{ my: 2 }}>
+        Oppdater galleri
+      </SubmitButton>
+      <VerifyDialog closeText='Avbryt' color='error' contentText='Sletting av galleri kan ikke reverseres.' onConfirm={remove}>
+        Slett galleri
+      </VerifyDialog>
+    </form>
   );
 };
 
 const GalleryEditorDialog = ({ slug }: GalleryEditorProps) => {
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState(false);
   return (
     <>
-      <IconButton onClick={() => setOpen(true)}>
-        <EditRoundedIcon />
-      </IconButton>
-      <Dialog onClose={() => setOpen(false)} open={open} titleText={'Rediger galleri'}>
+      <BannerButton endIcon={<EditRoundedIcon />} onClick={() => setOpen(true)} variant='outlined'>
+        Rediger galleri
+      </BannerButton>
+      <Dialog onClose={() => setOpen(false)} open={open} titleText='Rediger galleri'>
         <GalleryEditor slug={slug} />
       </Dialog>
     </>
