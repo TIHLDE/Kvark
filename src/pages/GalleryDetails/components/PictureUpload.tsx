@@ -31,6 +31,7 @@ const PictureUpload = ({ slug }: PictureUploadProps) => {
         onSuccess: (data) => {
           showSnackbar(data.detail, 'success');
           setOpen(false);
+          setFiles([]);
         },
         onError: (error) => showSnackbar(error.detail, 'error'),
       },
