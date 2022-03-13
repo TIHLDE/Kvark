@@ -1,8 +1,8 @@
-import URLS from 'URLS';
+import { styled, Typography } from '@mui/material';
 import { parseISO } from 'date-fns';
 import { formatDate, urlEncode } from 'utils';
 import { Link } from 'react-router-dom';
-import { Typography, styled } from '@mui/material';
+import URLS from 'URLS';
 
 // Project components
 import Paper from 'components/layout/Paper';

@@ -1,13 +1,12 @@
-import { useState, lazy, Suspense } from 'react';
 import { Collapse, Skeleton } from '@mui/material';
-
+import { lazy, Suspense, useState } from 'react';
 // Project componets/services
 import Page from 'components/navigation/Page';
 import Banner from 'components/layout/Banner';
 import { useEvents } from 'hooks/Event';
+
 import EventsDefaultView from 'pages/Events/components/EventsDefaultView';
 import Tabs from 'components/layout/Tabs';
-
 // Icons
 import Reorder from '@mui/icons-material/ReorderRounded';
 import DateRange from '@mui/icons-material/DateRangeRounded';

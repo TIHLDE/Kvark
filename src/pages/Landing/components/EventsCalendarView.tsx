@@ -1,8 +1,9 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { Category, EventCompact } from 'types';
-import { ViewState, AppointmentModel } from '@devexpress/dx-react-scheduler';
-import { useTheme, Popper, ClickAwayListener } from '@mui/material';
-import { Scheduler, MonthView, Toolbar, DateNavigator, Appointments } from '@devexpress/dx-react-scheduler-material-ui';
+
+import { AppointmentModel, ViewState } from '@devexpress/dx-react-scheduler';
+import { ClickAwayListener, Popper, useTheme } from '@mui/material';
+import { Appointments, DateNavigator, MonthView, Scheduler, Toolbar } from '@devexpress/dx-react-scheduler-material-ui';
 import { endOfMonth, parseISO, startOfMonth } from 'date-fns';
 
 import { Groups } from 'types/Enums';

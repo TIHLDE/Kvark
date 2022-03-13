@@ -13,7 +13,6 @@ import Bool from 'components/inputs/Bool';
 import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
-import Banner from 'components/layout/Banner';
 import Expand from 'components/layout/Expand';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
