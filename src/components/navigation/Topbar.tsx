@@ -1,4 +1,5 @@
 import ExpandIcon from '@mui/icons-material/ExpandMoreRounded';
+import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
 import { AppBar, Button, Grow, MenuItem, MenuList, Paper, Popper, Toolbar, useMediaQuery, useTheme } from '@mui/material';
 import { makeStyles } from 'makeStyles';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -108,61 +109,62 @@ const useStyles = makeStyles()((theme) => ({
   },
 }));
 
-export type TopBarItemProps = {
-  items?: {
-    text: string;
-    to: string;
-  }[];
-  text: string;
-  to?: string;
-  type: 'dropdown' | 'link';
-};
-
-const TopBarItem = ({ items, text, to, type }: TopBarItemProps) => {
+const TopBarItem = (props: NavigationItem) => {
   const { classes, cx } = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   const buttonAnchorRef = useRef<HTMLButtonElement>(null);
-  const selected = useMemo(() => location.pathname === to, [location.pathname, to]);
-  if (type === 'link' && to) {
+
+  if (props.type === 'link') {
+    const selected = location.pathname === props.to;
     return (
       <div className={cx(classes.topbarItem, selected && classes.selected)}>
-        <Button color='inherit' component={Link} onClick={selected ? () => window.location.reload() : undefined} to={to}>
-          {text}
-        </Button>
+        {props.external ? (
+          <Button color='inherit' component='a' endIcon={<OpenInNewIcon />} href={props.to}>
+            {props.text}
+          </Button>
+        ) : (
+          <Button color='inherit' component={Link} onClick={selected ? () => window.location.reload() : undefined} to={props.to}>
+            {props.text}
+          </Button>
+        )}
       </div>
     );
-  } else if (type === 'dropdown' && Array.isArray(items)) {
-    return (
-      <div className={classes.topbarItem} onMouseLeave={() => setIsOpen(false)}>
-        <Button
-          className={classes.topbarItem}
-          color='inherit'
-          endIcon={<ExpandIcon className={cx(classes.dropdownIcon, isOpen && classes.expanded)} />}
-          onClick={() => setIsOpen((prev) => !prev)}
-          onMouseEnter={() => setIsOpen(true)}
-          ref={buttonAnchorRef}>
-          {text}
-        </Button>
-        <Popper anchorEl={buttonAnchorRef.current} disablePortal open={isOpen} role={undefined} transition>
-          {({ TransitionProps, placement }) => (
-            <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
-              <Paper>
-                <MenuList className={classes.menulist}>
-                  {items.map((item, i) => (
+  }
+
+  return (
+    <div className={classes.topbarItem} onMouseLeave={() => setIsOpen(false)}>
+      <Button
+        className={classes.topbarItem}
+        color='inherit'
+        endIcon={<ExpandIcon className={cx(classes.dropdownIcon, isOpen && classes.expanded)} />}
+        onClick={() => setIsOpen((prev) => !prev)}
+        onMouseEnter={() => setIsOpen(true)}
+        ref={buttonAnchorRef}>
+        {props.text}
+      </Button>
+      <Popper anchorEl={buttonAnchorRef.current} disablePortal open={isOpen} role={undefined} transition>
+        {({ TransitionProps, placement }) => (
+          <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
+            <Paper>
+              <MenuList className={classes.menulist}>
+                {props.items.map((item, i) =>
+                  item.external ? (
+                    <MenuItem className={classes.menulistItem} component='a' href={item.to} key={i}>
+                      {item.text} <OpenInNewIcon fontSize='inherit' sx={{ mb: '-2px' }} />
+                    </MenuItem>
+                  ) : (
                     <MenuItem className={classes.menulistItem} component={Link} key={i} to={item.to}>
                       {item.text}
                     </MenuItem>
-                  ))}
-                </MenuList>
-              </Paper>
-            </Grow>
-          )}
-        </Popper>
-      </div>
-    );
-  } else {
-    return null;
-  }
+                  ),
+                )}
+              </MenuList>
+            </Paper>
+          </Grow>
+        )}
+      </Popper>
+    </div>
+  );
 };
 
 export type TopbarProps = {

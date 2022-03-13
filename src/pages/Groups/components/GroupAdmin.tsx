@@ -87,7 +87,6 @@ const GroupAdmin = ({ group }: UpdateGroupModalProps) => {
           <Collapse in={watchFinesActivated}>
             <UserSearch
               control={control}
-              defaultValue={group.fines_admin}
               formState={formState}
               helperText={
                 <ShowMoreText>

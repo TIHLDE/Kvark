@@ -1,4 +1,5 @@
 import { PermissionApp, UserClass, UserStudy } from 'types/Enums';
+import { Group } from 'types/Group';
 import { Permissions } from 'types/Misc';
 
 export type LoginRequestResponse = {
@@ -26,6 +27,8 @@ export type UserBase = Pick<User, 'user_id' | 'first_name' | 'last_name' | 'imag
 export type UserList = UserBase & Pick<User, 'email' | 'user_class' | 'user_study' | 'allergy' | 'gender' | 'tool' | 'number_of_strikes'>;
 export type UserCreate = Pick<User, 'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study'> & {
   password: string;
+  study: Group['slug'] | null;
+  class: Group['slug'] | null;
 };
 
 export type UserPermissions = {
