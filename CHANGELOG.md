@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+## Versjon 2022.03.13
 
 - ✨ **Nyheter**. Forfatter på alle nye nyheter.
 - ✨ **Fondet**. Lagt inn fondet på nettsiden.
