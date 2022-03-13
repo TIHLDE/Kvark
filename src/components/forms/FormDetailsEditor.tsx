@@ -50,6 +50,7 @@ const GroupFormDetailsEditor = ({ form }: GroupFormDetailsEditorProps) => {
       can_submit_multiple: form.can_submit_multiple,
       is_open_for_submissions: form.is_open_for_submissions,
       only_for_group_members: form.only_for_group_members,
+      email_receiver_on_submit: form.email_receiver_on_submit,
       title: form.title,
     },
   });
