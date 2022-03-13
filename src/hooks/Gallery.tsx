@@ -81,6 +81,6 @@ export const useUpdatePicture = (gallerySlug: string, id: string): UseMutationRe
 export const useDeletePicture = (gallerySlug: string, id: string): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
   const queryClient = useQueryClient();
   return useMutation(() => API.deletePicture(gallerySlug, id), {
-    onSuccess: () => queryClient.invalidateQueries([GALLERY_QUERY_KEY, gallerySlug]),
+    onSuccess: () => queryClient.invalidateQueries([GALLERY_QUERY_KEY, gallerySlug, PICTURE_QUERY_KEY]),
   });
 };

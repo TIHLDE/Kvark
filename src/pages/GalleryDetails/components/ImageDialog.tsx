@@ -40,7 +40,7 @@ const ImageDialog = ({ slug, picture, open, onClose, maxWidth = 'md', fullWidth 
             <Paper>
               <img src={picture.image} style={{ display: 'block', maxHeight: 'calc(100vh - 100px)', width: '100%', margin: 'auto' }} />
               <HavePermission apps={[PermissionApp.PICTURE]}>
-                <PictureEditorDialog id={picture.id} slug={slug} />
+                <PictureEditorDialog id={picture.id} setOpenModal={onClose} slug={slug} />
               </HavePermission>
               {picture.title !== '' && (
                 <div className={classes.test}>

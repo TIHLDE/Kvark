@@ -36,11 +36,12 @@ type PictureEditorProps = {
   id: string;
   slug: string;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type FormValues = Omit<Picture, 'id' | 'created_at' | 'updated_at'>;
 
-const PictureEditor = ({ id, slug, setOpen }: PictureEditorProps) => {
+const PictureEditor = ({ id, slug, setOpen, setOpenModal }: PictureEditorProps) => {
   const { classes } = useStyles();
   const { data } = usePictureById(slug, id);
   const editPicture = useUpdatePicture(slug, id);
@@ -67,6 +68,7 @@ const PictureEditor = ({ id, slug, setOpen }: PictureEditorProps) => {
       onSuccess: () => {
         showSnackbar('Bildet ble slettet', 'success');
         setOpen(false);
+        setOpenModal(false);
       },
       onError: (e) => {
         showSnackbar(e.detail, 'error');
@@ -86,6 +88,7 @@ const PictureEditor = ({ id, slug, setOpen }: PictureEditorProps) => {
       onSuccess: () => {
         showSnackbar('Bildet ble redigert', 'success');
         setOpen(false);
+        setOpenModal(false);
       },
       onError: (e) => {
         showSnackbar(e.detail, 'error');
@@ -123,9 +126,10 @@ const PictureEditor = ({ id, slug, setOpen }: PictureEditorProps) => {
 type PictureEditorDialogProps = {
   id: string;
   slug: string;
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const PictureEditorDialog = ({ slug, id }: PictureEditorDialogProps) => {
+const PictureEditorDialog = ({ slug, id, setOpenModal }: PictureEditorDialogProps) => {
   const { classes } = useStyles();
   const [open, setOpen] = useState<boolean>(false);
   return (
@@ -134,7 +138,7 @@ const PictureEditorDialog = ({ slug, id }: PictureEditorDialogProps) => {
         <EditRoundedIcon />
       </IconButton>
       <Dialog onClose={() => setOpen(false)} open={open} titleText={'Rediger bilde'}>
-        <PictureEditor id={id} setOpen={setOpen} slug={slug} />
+        <PictureEditor id={id} setOpen={setOpen} setOpenModal={setOpenModal} slug={slug} />
       </Dialog>
     </>
   );
