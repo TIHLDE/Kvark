@@ -1,13 +1,14 @@
 import { styled, Typography } from '@mui/material';
 import { parseISO } from 'date-fns';
-import { formatDate, urlEncode } from 'utils';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
+import { formatDate, urlEncode } from 'utils';
 
 // Project components
+import { useEventById } from 'hooks/Event';
+
 import Paper from 'components/layout/Paper';
 import DetailContent from 'components/miscellaneous/DetailContent';
-import { useEventById } from 'hooks/Event';
 
 const DetailsPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1, 2),

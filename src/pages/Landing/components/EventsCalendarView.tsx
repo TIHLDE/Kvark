@@ -1,16 +1,18 @@
-import { ReactNode, useEffect, useMemo, useState } from 'react';
-import { Category, EventCompact } from 'types';
-
 import { AppointmentModel, ViewState } from '@devexpress/dx-react-scheduler';
-import { ClickAwayListener, Popper, useTheme } from '@mui/material';
 import { Appointments, DateNavigator, MonthView, Scheduler, Toolbar } from '@devexpress/dx-react-scheduler-material-ui';
+import { ClickAwayListener, Popper, useTheme } from '@mui/material';
 import { endOfMonth, parseISO, startOfMonth } from 'date-fns';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 
+import { Category, EventCompact } from 'types';
 import { Groups } from 'types/Enums';
-import EventsCalendarPopover from './EventsCalendarPopover';
+
 import { useEvents } from 'hooks/Event';
 import { useAnalytics } from 'hooks/Utils';
+
 import Paper from 'components/layout/Paper';
+
+import EventsCalendarPopover from './EventsCalendarPopover';
 
 type Filters = {
   start_range?: string;
