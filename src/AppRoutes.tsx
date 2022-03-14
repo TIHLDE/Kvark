@@ -26,6 +26,8 @@ import Profile from 'pages/Profile';
 
 import Page from 'components/navigation/Page';
 
+const Gallery = lazy(() => import(/* webpackChunkName: "gallery" */ 'pages/Gallery'));
+const GalleryDetails = lazy(() => import(/* webpackChunkName: "gallery_details" */ 'pages/GalleryDetails'));
 const Badges = lazy(() => import('pages/Badges'));
 const BadgeCategoriesList = lazy(() => import('pages/Badges/overview/BadgeCategoriesList'));
 const BadgesList = lazy(() => import('pages/Badges/overview/BadgesList'));
@@ -46,8 +48,8 @@ const NewsAdministration = lazy(() => import(/* webpackChunkName: "news_administ
 const Wiki = lazy(() => import(/* webpackChunkName: "pages" */ 'pages/Wiki'));
 const ShortLinks = lazy(() => import(/* webpackChunkName: "short_links" */ 'pages/ShortLinks'));
 const SignUp = lazy(() => import(/* webpackChunkName: "signup" */ 'pages/SignUp'));
-const UserAdmin = lazy(() => import(/* webpackChunkName: "user_admin" */ 'pages/UserAdmin'));
 const StrikeAdmin = lazy(() => import(/* webpackChunkName: "strike_admin" */ 'pages/StrikeAdmin'));
+const UserAdmin = lazy(() => import(/* webpackChunkName: "user_admin" */ 'pages/UserAdmin'));
 
 type AuthRouteProps = {
   apps?: Array<PermissionApp>;
@@ -119,6 +121,10 @@ const AppRoutes = () => {
         <Route path={URLS.jobposts}>
           <Route element={<JobPostDetails />} path=':id/*' />
           <Route element={<JobPosts />} index />
+        </Route>
+        <Route path={URLS.gallery}>
+          <Route element={<GalleryDetails />} path=':slug/*' />
+          <Route element={<Gallery />} index />
         </Route>
         <Route element={<Wiki />} path={`${URLS.wiki}*`} />
         <Route path={URLS.news}>

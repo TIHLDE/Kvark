@@ -46,6 +46,8 @@ export enum PermissionApp {
   PAGE = 'page',
   STRIKE = 'strike',
   USER = 'user',
+  GALLERY = 'album',
+  PICTURE = 'picture',
   FORMS = 'form',
 }
 
