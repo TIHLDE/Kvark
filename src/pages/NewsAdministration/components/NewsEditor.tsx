@@ -104,7 +104,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
   const submit = async (data: FormValues) => {
     newsId
       ? updateNews.mutate(
-          { ...data, creator: data.creator?.user_id || '' },
+          { ...data, creator: data.creator?.user_id || null },
           {
             onSuccess: () => {
               showSnackbar('Nyheten ble oppdatert', 'success');
