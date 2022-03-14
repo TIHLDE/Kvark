@@ -17,7 +17,7 @@ export type PictureDialogProps = Omit<DialogProps, 'open'> & {
 
 const PictureDialog = ({ gallerySlug, picture, onClose, ...props }: PictureDialogProps) => {
   const { allowAccess } = useHavePermission([PermissionApp.PICTURE]);
-  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
+  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
   return (
     <Dialog aria-labelledby={picture.title} maxWidth='lg' {...props} onClose={onClose} open>
       <Box sx={{ overflow: 'hidden', display: 'grid', alignContent: 'center', alignItems: 'center' }}>
@@ -25,7 +25,12 @@ const PictureDialog = ({ gallerySlug, picture, onClose, ...props }: PictureDialo
           <Box
             component='img'
             src={picture.image}
-            sx={{ display: 'block', maxHeight: 'calc(100vh - 100px)', width: `${lgUp ? 'auto' : '100%'}`, margin: 'auto' }}
+            sx={{
+              display: 'block',
+              maxHeight: `${mdDown ? 'auto' : 'calc(100vh - 100px)'}`,
+              width: `${mdDown ? 'calc(100vw - 50px)' : 'auto'}`,
+              margin: 'auto',
+            }}
           />
           {(allowAccess || picture.title || picture.description) && (
             <Stack
@@ -35,9 +40,9 @@ const PictureDialog = ({ gallerySlug, picture, onClose, ...props }: PictureDialo
               sx={{
                 borderTopLeftRadius: 0,
                 borderTopRightRadius: 0,
-                py: 1,
+                py: 0,
                 px: 2,
-                pb: `${lgUp ? '4' : '1'}`,
+                pb: `${mdDown ? '0' : '6'}`,
                 alignItems: 'center',
                 justifyContent: 'space-between',
               }}>
