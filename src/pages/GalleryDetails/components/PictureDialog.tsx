@@ -21,7 +21,7 @@ const PictureDialog = ({ gallerySlug, picture, onClose, ...props }: PictureDialo
   const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
   return (
     <Dialog aria-labelledby={picture.title} maxWidth='lg' {...props} onClose={onClose} open>
-      <Box sx={{ overflow: 'hidden', display: 'grid', alignContent: 'center', alignItems: 'center' }}>
+      <Box id='picture' sx={{ overflow: 'hidden', display: 'grid', alignContent: 'center', alignItems: 'center' }}>
         <Stack>
           <Box
             component='img'
@@ -29,6 +29,8 @@ const PictureDialog = ({ gallerySlug, picture, onClose, ...props }: PictureDialo
             sx={{
               display: 'block',
               maxHeight: `${mdDown ? 'auto' : 'calc(80vh)'}`,
+              height: '100%',
+              maxWidth: '100%',
               width: `${smDown ? 'calc(85vw)' : mdDown ? 'calc(60vw)' : 'auto'}`,
               margin: 'auto',
             }}
@@ -41,9 +43,9 @@ const PictureDialog = ({ gallerySlug, picture, onClose, ...props }: PictureDialo
               sx={{
                 borderTopLeftRadius: 0,
                 borderTopRightRadius: 0,
-                py: 0,
+                py: 1,
                 px: 2,
-                pb: `${mdDown ? '0' : '6'}`,
+                pb: `${smDown ? '0' : '1'}`,
                 alignItems: 'center',
                 justifyContent: 'space-between',
               }}>
