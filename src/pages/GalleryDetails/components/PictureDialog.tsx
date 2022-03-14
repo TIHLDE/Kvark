@@ -28,10 +28,10 @@ const PictureDialog = ({ gallerySlug, picture, onClose, ...props }: PictureDialo
             src={picture.image}
             sx={{
               display: 'block',
-              maxHeight: `${mdDown ? 'auto' : 'calc(80vh)'}`,
+              maxHeight: `${mdDown ? 'auto' : '80vh'}`,
               height: '100%',
               maxWidth: '100%',
-              width: `${smDown ? 'calc(85vw)' : mdDown ? 'calc(60vw)' : 'auto'}`,
+              width: `${smDown ? '85vw' : mdDown ? '60vw' : 'auto'}`,
               margin: 'auto',
             }}
           />
