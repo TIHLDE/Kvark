@@ -46,12 +46,10 @@ const UserSearch = <FormValues extends FieldValues>({
   rules = {},
   helperText,
   inGroup,
-  defaultValue,
   ...props
 }: UserSearchProps<FormValues>) => {
   const { [name]: fieldError } = formState.errors;
   const error = fieldError as FieldError;
-  const [selected, setSelected] = useState<Array<UserBase> | UserBase | null>(defaultValue || (multiple ? [] : null));
 
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 500);
@@ -63,7 +61,7 @@ const UserSearch = <FormValues extends FieldValues>({
     <Controller
       control={control}
       name={name}
-      render={({ field: { onChange } }) => (
+      render={({ field: { onChange, value } }) => (
         <Autocomplete
           disableCloseOnSelect={multiple}
           filterOptions={(x) => x}
@@ -73,10 +71,7 @@ const UserSearch = <FormValues extends FieldValues>({
           loadingText='Laster...'
           multiple={multiple}
           noOptionsText='Fant ingen brukere'
-          onChange={(_, user) => {
-            onChange(user);
-            setSelected(user);
-          }}
+          onChange={(_, user) => onChange(user)}
           options={options?.[0] || []}
           renderInput={(params) => (
             <TextField
@@ -109,7 +104,9 @@ const UserSearch = <FormValues extends FieldValues>({
               <Chip {...getTagProps({ index })} key={option.user_id} label={`${option.first_name} ${option.last_name}`} variant='outlined' />
             ))
           }
-          value={selected}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          value={value || (multiple ? [] : null)}
         />
       )}
       rules={rules}

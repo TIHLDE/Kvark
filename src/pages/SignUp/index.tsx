@@ -93,7 +93,7 @@ const SignUp = () => {
       return;
     }
 
-    const userData = {
+    const userData: UserCreate = {
       user_id: data.user_id.toLowerCase(),
       first_name: data.first_name,
       last_name: data.last_name,
@@ -101,7 +101,9 @@ const SignUp = () => {
       user_class: data.user_class,
       user_study: data.user_study,
       password: data.password,
-    } as UserCreate;
+      class: null,
+      study: null,
+    };
     createUser.mutate(userData, {
       onSuccess: () => {
         run();
