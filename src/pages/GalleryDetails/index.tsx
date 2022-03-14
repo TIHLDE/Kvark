@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useEffect } from 'react';
 import Helmet from 'react-helmet';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -6,12 +6,11 @@ import URLS from 'URLS';
 
 import { PermissionApp } from 'types/Enums';
 
-import { useGalleriesById } from 'hooks/Gallery';
+import { useGalleryById } from 'hooks/Gallery';
 import { HavePermission } from 'hooks/User';
 
 import GalleryEditorDialog from 'pages/GalleryDetails/components/GalleryEditor';
-import GalleryRenderer from 'pages/GalleryDetails/components/GalleryRenderer';
-import { ImageGridLoading } from 'pages/GalleryDetails/components/ImageGrid';
+import GalleryRenderer, { GalleryRendererLoading } from 'pages/GalleryDetails/components/GalleryRenderer';
 import PictureUpload from 'pages/GalleryDetails/components/PictureUpload';
 import Http404 from 'pages/Http404';
 
@@ -20,7 +19,7 @@ import Page from 'components/navigation/Page';
 
 const GalleryDetails = () => {
   const { slug } = useParams();
-  const { data, isLoading, isError } = useGalleriesById(String(slug));
+  const { data, isError } = useGalleryById(String(slug));
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,35 +35,30 @@ const GalleryDetails = () => {
   return (
     <Page
       banner={
-        data &&
-        !undefined && (
-          <Banner text={data.description} title={data.title}>
-            <Grid alignItems='center' container direction='row' gap={2} wrap='nowrap'>
-              <HavePermission apps={[PermissionApp.PICTURE]}>
+        <Banner text={data?.description} title={data?.title || 'Laster galleri...'}>
+          <HavePermission apps={[PermissionApp.PICTURE]}>
+            {data && (
+              <Stack gap={1}>
                 <PictureUpload slug={data.slug} />
-              </HavePermission>
-              <HavePermission apps={[PermissionApp.PICTURE]}>
                 <GalleryEditorDialog slug={data.slug} />
-              </HavePermission>
-            </Grid>
-          </Banner>
-        )
+              </Stack>
+            )}
+          </HavePermission>
+        </Banner>
       }
-      options={{ title: data ? data.title : 'Laster galleri...', gutterTop: false, filledTopbar: true, lightColor: 'blue' }}>
-      {isLoading ? (
-        <ImageGridLoading />
+      options={{ title: data?.title || 'Laster galleri...', gutterTop: false, filledTopbar: true, lightColor: 'blue' }}>
+      {data ? (
+        <>
+          <Helmet>
+            <meta content={data.title} property='og:title' />
+            <meta content='website' property='og:type' />
+            <meta content={window.location.href} property='og:url' />
+            <meta content={data.image} property='og:image' />
+          </Helmet>
+          <GalleryRenderer slug={data.slug} />
+        </>
       ) : (
-        data !== undefined && (
-          <>
-            <Helmet>
-              <meta content={data.title} property='og:title' />
-              <meta content='website' property='og:type' />
-              <meta content={window.location.href} property='og:url' />
-              <meta content={data.image} property='og:image' />
-            </Helmet>
-            <GalleryRenderer gallery={data} />
-          </>
-        )
+        <GalleryRendererLoading />
       )}
     </Page>
   );
