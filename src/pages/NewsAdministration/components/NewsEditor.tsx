@@ -115,7 +115,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
           },
         )
       : createNews.mutate(
-          { ...data, creator: data.creator?.user_id || '' },
+          { ...data, creator: data.creator?.user_id || null },
           {
             onSuccess: (newNewsItem) => {
               showSnackbar('Nyheten ble opprettet', 'success');
