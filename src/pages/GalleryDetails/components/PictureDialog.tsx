@@ -17,6 +17,7 @@ export type PictureDialogProps = Omit<DialogProps, 'open'> & {
 
 const PictureDialog = ({ gallerySlug, picture, onClose, ...props }: PictureDialogProps) => {
   const { allowAccess } = useHavePermission([PermissionApp.PICTURE]);
+  const smDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
   const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
   return (
     <Dialog aria-labelledby={picture.title} maxWidth='lg' {...props} onClose={onClose} open>
@@ -27,8 +28,8 @@ const PictureDialog = ({ gallerySlug, picture, onClose, ...props }: PictureDialo
             src={picture.image}
             sx={{
               display: 'block',
-              maxHeight: `${mdDown ? 'auto' : 'calc(100vh - 100px)'}`,
-              width: `${mdDown ? 'calc(100vw - 50px)' : 'auto'}`,
+              maxHeight: `${mdDown ? 'auto' : 'calc(80vh)'}`,
+              width: `${smDown ? 'calc(85vw)' : mdDown ? 'calc(60vw)' : 'auto'}`,
               margin: 'auto',
             }}
           />
