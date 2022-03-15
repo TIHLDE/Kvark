@@ -2,7 +2,7 @@ import { UserBase } from 'types/User';
 
 export type NewsRequired = Omit<Partial<News>, 'creator'> &
   Pick<News, 'title' | 'header' | 'body'> & {
-    creator: UserBase['user_id'];
+    creator: UserBase['user_id'] | null;
   };
 
 export type News = {
