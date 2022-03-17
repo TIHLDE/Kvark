@@ -1,10 +1,13 @@
-import PayedIcon from '@mui/icons-material/CreditScoreRounded';
+import PaidIcon from '@mui/icons-material/CreditScoreRounded';
+import GavelIcon from '@mui/icons-material/Gavel';
 import Delete from '@mui/icons-material/DeleteRounded';
+import TimeIcon from '@mui/icons-material/AccessTime';
+import HelpIcon from '@mui/icons-material/HelpCenter';
 import ApprovedIcon from '@mui/icons-material/DoneOutlineRounded';
 import EditRounded from '@mui/icons-material/EditRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import { Button, Checkbox, Collapse, Divider, ListItem, ListItemButton, ListItemProps, ListItemText, Stack, Tooltip, Typography } from '@mui/material';
+import { Button, Checkbox, Chip, Collapse, Divider, ListItem, ListItemButton, ListItemProps, ListItemText, Stack, Tooltip, Typography } from '@mui/material';
 import { parseISO } from 'date-fns';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -89,26 +92,34 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItem
             {fine.amount}
           </Typography>
           <ListItemText
-            primary={<>{hideUserInfo ? fine.description : `${fine.user.first_name} ${fine.user.last_name}`}</>}
+            primary={
+              <>
+                {hideUserInfo ? fine.description : `${fine.user.first_name} ${fine.user.last_name}`}
+                <Tooltip title={`Boten er ${fine.approved ? '' : 'ikke '} godkjent`}>
+                  <ApprovedIcon color={fine.approved ? 'success' : 'error'} sx={{ fontSize: 'inherit', ml: 0.5, mb: '-1px' }} />
+                </Tooltip>
+                <Tooltip title={`Boten er ${fine.payed ? '' : 'ikke '} betalt`}>
+                  <PaidIcon color={fine.payed ? 'success' : 'error'} sx={{ fontSize: 'inherit', ml: 0.5, mb: '-1px' }} />
+                </Tooltip>
+              </>
+            }
             secondary={hideUserInfo ? formatDate(parseISO(fine.created_at), { fullDayOfWeek: true, fullMonth: true }) : fine.description}
           />
-          <Tooltip title={`Boten er ${fine.approved ? '' : 'ikke '} godkjent`}>
-            <ApprovedIcon color={fine.approved ? 'success' : 'error'} sx={{ fontSize: '1.5em', mr: 1 }} />
-          </Tooltip>
-          <Tooltip title={`Boten er ${fine.payed ? '' : 'ikke '} betalt`}>
-            <PayedIcon color={fine.payed ? 'success' : 'error'} sx={{ fontSize: '1.5em', mr: 1 }} />
-          </Tooltip>
           {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItemButton>
       </ListItem>
       <Collapse in={expanded}>
         <Divider />
         <Stack gap={1} sx={{ p: [1, undefined, 2] }}>
-          <div>
-            {fine.reason && <Typography variant='subtitle2'>{`Begrunnelse: ${fine.reason}`}</Typography>}
-            <Typography variant='subtitle2'>{`Opprettet av: ${fine.created_by.first_name} ${fine.created_by.last_name}`}</Typography>
-            <Typography variant='subtitle2'>{`Dato: ${formatDate(parseISO(fine.created_at), { fullDayOfWeek: true, fullMonth: true })}`}</Typography>
-          </div>
+          <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
+            {fine.reason && <Chip icon={<HelpIcon />} label={fine.reason} variant='outlined' />}
+            <Chip icon={<GavelIcon />} label={`${fine.created_by.first_name} ${fine.created_by.last_name}`} variant='outlined' />
+            <Chip icon={<TimeIcon />} label={`${formatDate(parseISO(fine.created_at), { fullDayOfWeek: true, fullMonth: true })}`} variant='outlined' />
+          </Stack>
+          <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
+            <Chip icon={<ApprovedIcon />} label={fine.approved ? 'Godkjent' : 'Ikke godkjent'} variant='outlined' />
+            <Chip icon={<PaidIcon />} label={fine.payed ? 'Betalt' : 'Ikke betalt'} variant='outlined' />
+          </Stack>
           {isAdmin && (
             <>
               <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
@@ -126,7 +137,7 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItem
                   disabled={!fine.approved}
                   fullWidth
                   onClick={togglePayed}
-                  startIcon={<PayedIcon />}
+                  startIcon={<PaidIcon />}
                   variant='outlined'>
                   {fine.payed ? 'Merk som ubetalt' : 'Merk som betalt'}
                 </Button>
