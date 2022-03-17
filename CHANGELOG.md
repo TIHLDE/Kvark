@@ -16,6 +16,7 @@
 
 - 🦟 **Nyheter**. Nyheter trenger ikke å ha forfatter.
 - ✨ **Galleri**. Lagt til digitalt fotoalbum for arrangementer.
+- 🎨 **Botsystem**. Endret tittelen på enkelte knapper slik at de beskriver hva knappen gjør.
 
 ## Versjon 2022.03.13
 

@@ -89,19 +89,15 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItem
             {fine.amount}
           </Typography>
           <ListItemText
-            primary={
-              <>
-                {hideUserInfo ? fine.description : `${fine.user.first_name} ${fine.user.last_name}`}
-                <Tooltip title={`Boten er ${fine.approved ? '' : 'ikke '} godkjent`}>
-                  <ApprovedIcon color={fine.approved ? 'success' : 'error'} sx={{ fontSize: 'inherit', ml: 0.5, mb: '-1px' }} />
-                </Tooltip>
-                <Tooltip title={`Boten er ${fine.payed ? '' : 'ikke '} betalt`}>
-                  <PayedIcon color={fine.payed ? 'success' : 'error'} sx={{ fontSize: 'inherit', ml: 0.5, mb: '-1px' }} />
-                </Tooltip>
-              </>
-            }
+            primary={<>{hideUserInfo ? fine.description : `${fine.user.first_name} ${fine.user.last_name}`}</>}
             secondary={hideUserInfo ? formatDate(parseISO(fine.created_at), { fullDayOfWeek: true, fullMonth: true }) : fine.description}
           />
+          <Tooltip title={`Boten er ${fine.approved ? '' : 'ikke '} godkjent`}>
+            <ApprovedIcon color={fine.approved ? 'success' : 'error'} sx={{ fontSize: '1.5em', mr: 1 }} />
+          </Tooltip>
+          <Tooltip title={`Boten er ${fine.payed ? '' : 'ikke '} betalt`}>
+            <PayedIcon color={fine.payed ? 'success' : 'error'} sx={{ fontSize: '1.5em', mr: 1 }} />
+          </Tooltip>
           {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItemButton>
       </ListItem>
@@ -117,22 +113,22 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItem
             <>
               <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
                 <Button
-                  color={fine.approved ? 'success' : 'error'}
+                  color={fine.approved ? 'error' : 'success'}
                   disabled={fine.payed}
                   fullWidth
                   onClick={toggleApproved}
                   startIcon={<ApprovedIcon />}
-                  variant='contained'>
-                  {fine.approved ? 'Godkjent' : 'Ikke godkjent'}
+                  variant='outlined'>
+                  {fine.approved ? 'Merk som ikke godkjent' : 'Merk som godkjent'}
                 </Button>
                 <Button
-                  color={fine.payed ? 'success' : 'error'}
+                  color={fine.payed ? 'error' : 'success'}
                   disabled={!fine.approved}
                   fullWidth
                   onClick={togglePayed}
                   startIcon={<PayedIcon />}
-                  variant='contained'>
-                  {fine.payed ? 'Betalt' : 'Ikke betalt'}
+                  variant='outlined'>
+                  {fine.payed ? 'Merk som ubetalt' : 'Merk som betalt'}
                 </Button>
               </Stack>
               <Dialog onClose={() => setEditOpen(false)} open={editOpen} titleText='Endre bot'>
