@@ -47,8 +47,8 @@ export type EventCompact = Pick<
   'category' | 'end_date' | 'expired' | 'organizer' | 'id' | 'image' | 'image_alt' | 'location' | 'title' | 'start_date' | 'updated_at'
 >;
 
-export type EventInterested = {
-  is_interested: boolean;
+export type EventFavorite = {
+  is_favorite: boolean;
 };
 
 export type RegistrationPriority = {

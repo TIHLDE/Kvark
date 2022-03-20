@@ -1,7 +1,7 @@
 import CalendarIcon from '@mui/icons-material/EventRounded';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import FavoriteFilledIcon from '@mui/icons-material/FavoriteRounded';
-import { Alert, Button, Collapse, IconButton, Skeleton, Stack, styled, Theme, Tooltip, Typography, useMediaQuery } from '@mui/material';
+import { Alert, Button, Collapse, IconButton, IconButtonProps, Skeleton, Stack, styled, Theme, Tooltip, Typography, useMediaQuery } from '@mui/material';
 import { addHours, formatDistanceToNowStrict, isFuture, isPast, parseISO, subHours } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
 import { useState } from 'react';
@@ -12,7 +12,7 @@ import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 
 import { Event, Registration } from 'types';
 
 import { useCategories } from 'hooks/Categories';
-import { useDeleteEventRegistration, useEventIsInterested, useEventRegistration, useEventSetIsInterested } from 'hooks/Event';
+import { useDeleteEventRegistration, useEventIsFavorite, useEventRegistration, useEventSetIsFavorite } from 'hooks/Event';
 import { useSetRedirectUrl } from 'hooks/Misc';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useUser } from 'hooks/User';
@@ -242,92 +242,101 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     );
   };
 
-  const Info = () => {
-    const { data: interested } = useEventIsInterested(data.id);
-    const updateInterest = useEventSetIsInterested(data.id);
-    const toggleInterest = (isInterested: boolean) =>
-      updateInterest.mutate(
-        { is_interested: isInterested },
+  type FavoriteProps = IconButtonProps & {
+    eventId: Event['id'];
+  };
+
+  const Favorite = ({ eventId, ...props }: FavoriteProps) => {
+    const { data: favorite } = useEventIsFavorite(eventId);
+    const updateFavorite = useEventSetIsFavorite(eventId);
+    const toggleFavorite = (isFavorite: boolean) => {
+      event('mark-as-favorite', 'event', `Marked event (${data.title}) as favorite`);
+      updateFavorite.mutate(
+        { is_favorite: isFavorite },
         {
           onSuccess: (data) =>
             showSnackbar(
-              data.is_interested
-                ? 'Dette arrangementet er nå en av dine favoritter. Du finner alle dine favoritter i profilen din. Vi vil varsle deg ved påmeldingsstart.'
-                : 'Dette arrangementet er ikke lenger en av dine favoritter',
-              data.is_interested ? 'success' : 'info',
+              data.is_favorite
+                ? 'Arrangementet er nå en av dine favoritter. Du kan finne dine favoritter med filtrering på arrangement-siden. Vi vil varsle deg ved påmeldingsstart.'
+                : 'Arrangementet er ikke lenger en av dine favoritter',
+              data.is_favorite ? 'success' : 'info',
             ),
           onError: (e) => showSnackbar(e.detail, 'error'),
         },
       );
+    };
 
-    return (
-      <>
-        <DetailsPaper noPadding>
-          <Stack direction='row' gap={1} justifyContent='space-between' sx={{ position: 'relative' }}>
-            {interested && (
-              <Tooltip title={interested.is_interested ? 'Fjern favorittmarkering' : 'Merk som favoritt. Du vil motta varsel ved påmeldingsstart'}>
-                <IconButton onClick={() => toggleInterest(!interested.is_interested)} sx={{ position: 'absolute', right: ({ spacing }) => spacing(-1) }}>
-                  {interested.is_interested ? <FavoriteFilledIcon color='error' /> : <FavoriteOutlinedIcon />}
-                </IconButton>
-              </Tooltip>
-            )}
-            <DetailsHeader variant='h2'>Detaljer</DetailsHeader>
-          </Stack>
-          <DetailContent info={formatDate(startDate)} title='Fra:' />
-          <DetailContent info={formatDate(endDate)} title='Til:' />
-          <DetailContent info={data.location} title='Sted:' />
-          <DetailContent info={categories.find((c) => c.id === data.category)?.text || 'Laster...'} title='Hva:' />
-          {data.organizer && <DetailContent info={<Link to={URLS.groups.details(data.organizer.slug)}>{data.organizer.name}</Link>} title='Arrangør:' />}
-        </DetailsPaper>
-        {data.sign_up && (
-          <>
-            <DetailsPaper noPadding>
-              <Stack direction='row' gap={1} justifyContent='space-between' sx={{ position: 'relative' }}>
-                {user && <EventPublicRegistrationsList eventId={data.id} sx={{ position: 'absolute', right: ({ spacing }) => spacing(-1) }} />}
-                <DetailsHeader variant='h2'>Påmelding</DetailsHeader>
-              </Stack>
-              <DetailContent info={`${data.list_count}/${data.limit}`} title='Påmeldte:' />
-              <DetailContent info={String(data.waiting_list_count)} title='Venteliste:' />
-              {registration && isFuture(signOffDeadlineDate) ? (
-                <DetailContent info={formatDate(signOffDeadlineDate)} title='Avmeldingsfrist:' />
-              ) : (
-                <>
-                  {isFuture(userStartRegistrationDate) && <DetailContent info={formatDate(startRegistrationDate)} title='Start:' />}
-                  {isPast(userStartRegistrationDate) && isFuture(endRegistrationDate) && (
-                    <DetailContent info={formatDate(endRegistrationDate)} title='Slutt:' />
-                  )}
-                </>
-              )}
-            </DetailsPaper>
-            {Boolean(data.registration_priorities.length) && (
-              <DetailsPaper noPadding>
-                <DetailsHeader variant='h2'>Prioritert</DetailsHeader>
-                <EventPriorities priorities={data.registration_priorities} />
-              </DetailsPaper>
-            )}
-            {data.enforces_previous_strikes ? (
-              strikesDelayedRegistrationHours > 0 &&
-              isFuture(userStartRegistrationDate) && (
-                <Alert severity='warning' variant='outlined'>
-                  Du har {user?.number_of_strikes} prikker og må dermed vente {strikesDelayedRegistrationHours} timer før du kan melde deg på
-                </Alert>
-              )
-            ) : (
-              <Alert severity='info' variant='outlined'>
-                Dette arrangementet håndhever ikke aktive prikker
-              </Alert>
-            )}
-            {!data.can_cause_strikes && (
-              <Alert severity='info' variant='outlined'>
-                Dette arrangementet gir ikke prikker
-              </Alert>
-            )}
-          </>
-        )}
-        <ApplyInfo />
-      </>
-    );
+    if (favorite) {
+      return (
+        <Tooltip title={favorite.is_favorite ? 'Fjern favorittmarkering' : 'Merk som favoritt'}>
+          <IconButton {...props} onClick={() => toggleFavorite(!favorite.is_favorite)}>
+            {favorite.is_favorite ? <FavoriteFilledIcon color='error' /> : <FavoriteOutlinedIcon />}
+          </IconButton>
+        </Tooltip>
+      );
+    }
+    return null;
   };
+
+  const Info = () => (
+    <>
+      <DetailsPaper noPadding>
+        <Stack direction='row' gap={1} justifyContent='space-between' sx={{ position: 'relative' }}>
+          {user && <Favorite eventId={data.id} sx={{ position: 'absolute', right: ({ spacing }) => spacing(-1) }} />}
+          <DetailsHeader variant='h2'>Detaljer</DetailsHeader>
+        </Stack>
+        <DetailContent info={formatDate(startDate)} title='Fra:' />
+        <DetailContent info={formatDate(endDate)} title='Til:' />
+        <DetailContent info={data.location} title='Sted:' />
+        <DetailContent info={categories.find((c) => c.id === data.category)?.text || 'Laster...'} title='Hva:' />
+        {data.organizer && <DetailContent info={<Link to={URLS.groups.details(data.organizer.slug)}>{data.organizer.name}</Link>} title='Arrangør:' />}
+      </DetailsPaper>
+      {data.sign_up && (
+        <>
+          <DetailsPaper noPadding>
+            <Stack direction='row' gap={1} justifyContent='space-between' sx={{ position: 'relative' }}>
+              {user && <EventPublicRegistrationsList eventId={data.id} sx={{ position: 'absolute', right: ({ spacing }) => spacing(-1) }} />}
+              <DetailsHeader variant='h2'>Påmelding</DetailsHeader>
+            </Stack>
+            <DetailContent info={`${data.list_count}/${data.limit}`} title='Påmeldte:' />
+            <DetailContent info={String(data.waiting_list_count)} title='Venteliste:' />
+            {registration && isFuture(signOffDeadlineDate) ? (
+              <DetailContent info={formatDate(signOffDeadlineDate)} title='Avmeldingsfrist:' />
+            ) : (
+              <>
+                {isFuture(userStartRegistrationDate) && <DetailContent info={formatDate(startRegistrationDate)} title='Start:' />}
+                {isPast(userStartRegistrationDate) && isFuture(endRegistrationDate) && <DetailContent info={formatDate(endRegistrationDate)} title='Slutt:' />}
+              </>
+            )}
+          </DetailsPaper>
+          {Boolean(data.registration_priorities.length) && (
+            <DetailsPaper noPadding>
+              <DetailsHeader variant='h2'>Prioritert</DetailsHeader>
+              <EventPriorities priorities={data.registration_priorities} />
+            </DetailsPaper>
+          )}
+          {data.enforces_previous_strikes ? (
+            strikesDelayedRegistrationHours > 0 &&
+            isFuture(userStartRegistrationDate) && (
+              <Alert severity='warning' variant='outlined'>
+                Du har {user?.number_of_strikes} prikker og må dermed vente {strikesDelayedRegistrationHours} timer før du kan melde deg på
+              </Alert>
+            )
+          ) : (
+            <Alert severity='info' variant='outlined'>
+              Dette arrangementet håndhever ikke aktive prikker
+            </Alert>
+          )}
+          {!data.can_cause_strikes && (
+            <Alert severity='info' variant='outlined'>
+              Dette arrangementet gir ikke prikker
+            </Alert>
+          )}
+        </>
+      )}
+      <ApplyInfo />
+    </>
+  );
 
   const addToCalendarAnalytics = () => event('add-to-calendar', 'event', `Event: ${data.title}`);
 

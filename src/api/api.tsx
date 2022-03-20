@@ -9,7 +9,7 @@ import {
   CompaniesEmail,
   Event,
   EventCompact,
-  EventInterested,
+  EventFavorite,
   EventRequired,
   EventStatistics,
   FileUploadResponse,
@@ -116,9 +116,9 @@ export default {
     IFetch<PaginationResponse<PublicRegistration>>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/public_registrations/`, data: filters || {} }),
   sendGiftCardsToAttendees: (eventId: Event['id'], files: File | File[] | Blob) =>
     IFetch<RequestResponse>({ method: 'POST', url: `${EVENTS_ENDPOINT}/${String(eventId)}/mail-gift-cards/`, file: files }),
-  getEventIsInterested: (eventId: Event['id']) => IFetch<EventInterested>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/interested/` }),
-  setEventIsInterested: (eventId: Event['id'], data: EventInterested) =>
-    IFetch<EventInterested>({ method: 'PUT', url: `${EVENTS_ENDPOINT}/${String(eventId)}/interested/`, data }),
+  getEventIsFavorite: (eventId: Event['id']) => IFetch<EventFavorite>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/favorite/` }),
+  setEventIsFavorite: (eventId: Event['id'], data: EventFavorite) =>
+    IFetch<EventFavorite>({ method: 'PUT', url: `${EVENTS_ENDPOINT}/${String(eventId)}/favorite/`, data }),
 
   // Event registrations
   getRegistration: (eventId: Event['id'], userId: User['user_id']) =>

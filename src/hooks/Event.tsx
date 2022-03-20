@@ -4,7 +4,7 @@ import { QueryKey, useInfiniteQuery, UseInfiniteQueryOptions, useMutation, UseMu
 import {
   Event,
   EventCompact,
-  EventInterested,
+  EventFavorite,
   EventRequired,
   EventStatistics,
   PaginationResponse,
@@ -26,7 +26,7 @@ export const EVENT_QUERY_KEYS = {
   list_admin: (filters?: any) => [...EVENT_QUERY_KEYS.all, 'admin_list', ...(filters ? [filters] : [])] as const,
   detail: (eventId: Event['id']) => [...EVENT_QUERY_KEYS.all, eventId] as const,
   statistics: (eventId: Event['id']) => [...EVENT_QUERY_KEYS.detail(eventId), 'statistics'] as const,
-  interested: (eventId: Event['id']) => [...EVENT_QUERY_KEYS.detail(eventId), 'interested'] as const,
+  favorite: (eventId: Event['id']) => [...EVENT_QUERY_KEYS.detail(eventId), 'favorite'] as const,
   public_registrations: (eventId: Event['id']) => [...EVENT_QUERY_KEYS.detail(eventId), 'public_registrations'] as const,
   registrations: {
     all: (eventId: Event['id']) => [...EVENT_QUERY_KEYS.detail(eventId), 'registrations'] as const,
@@ -83,14 +83,14 @@ export const useDeleteEvent = (eventId: Event['id']): UseMutationResult<RequestR
   });
 };
 
-export const useEventIsInterested = (eventId: Event['id']) =>
-  useQuery<EventInterested, RequestResponse>(EVENT_QUERY_KEYS.interested(eventId), () => API.getEventIsInterested(eventId), { enabled: eventId !== -1 });
+export const useEventIsFavorite = (eventId: Event['id']) =>
+  useQuery<EventFavorite, RequestResponse>(EVENT_QUERY_KEYS.favorite(eventId), () => API.getEventIsFavorite(eventId), { enabled: eventId !== -1 });
 
-export const useEventSetIsInterested = (eventId: Event['id']): UseMutationResult<EventInterested, RequestResponse, EventInterested, unknown> => {
+export const useEventSetIsFavorite = (eventId: Event['id']): UseMutationResult<EventFavorite, RequestResponse, EventFavorite, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((eventInterest) => API.setEventIsInterested(eventId, eventInterest), {
+  return useMutation((eventFavorite) => API.setEventIsFavorite(eventId, eventFavorite), {
     onSuccess: (data) => {
-      queryClient.setQueryData(EVENT_QUERY_KEYS.interested(eventId), data);
+      queryClient.setQueryData(EVENT_QUERY_KEYS.favorite(eventId), data);
     },
   });
 };
