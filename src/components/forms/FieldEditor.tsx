@@ -1,10 +1,12 @@
 import CheckBoxIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded';
 import ClearIcon from '@mui/icons-material/ClearRounded';
 import DeleteIcon from '@mui/icons-material/DeleteOutlineRounded';
+import DragHandleIcon from '@mui/icons-material/DragHandleRounded';
 import RadioButtonIcon from '@mui/icons-material/RadioButtonUncheckedRounded';
-import { Button, Checkbox, FormControlLabel, Grow, IconButton, TextField, Tooltip, Typography } from '@mui/material';
+import { Button, Checkbox, FormControlLabel, Grow, IconButton, Stack, TextField, Tooltip, Typography } from '@mui/material';
 import { makeStyles } from 'makeStyles';
 import { useMemo } from 'react';
+import { useDrag } from 'react-dnd';
 
 import { SelectFormField, TextFormField } from 'types';
 import { FormFieldType } from 'types/Enums';
@@ -46,6 +48,13 @@ export type FieldEditorProps = {
 const FieldEditor = ({ field, updateField, removeField, disabled = false }: FieldEditorProps) => {
   const { classes, cx } = useStyles();
 
+  const [{ isDragging }, drag, preview] = useDrag(() => ({
+    type: 'field',
+    collect: (monitor) => ({
+      isDragging: Boolean(monitor.isDragging()),
+    }),
+  }));
+
   const addFieldOption = () => {
     if (field.type !== FormFieldType.TEXT_ANSWER && !disabled) {
       updateField({ ...field, options: [...field.options, { title: '' }] });
@@ -80,13 +89,16 @@ const FieldEditor = ({ field, updateField, removeField, disabled = false }: Fiel
   const TypeIcon = useMemo(() => (field.type === FormFieldType.SINGLE_SELECT ? RadioButtonIcon : CheckBoxIcon), [field]);
 
   return (
-    <Paper className={classes.root} noPadding>
+    <Paper className={classes.root} noPadding ref={preview} sx={{ opacity: isDragging ? 0.5 : 1 }}>
       <div className={classes.row}>
-        <Tooltip placement='top-start' title={description}>
-          <Typography sx={{ color: (theme) => theme.palette.text[disabled ? 'disabled' : 'primary'] }} variant='subtitle1'>
-            {title}
-          </Typography>
-        </Tooltip>
+        <Stack direction='row' gap={1} ref={drag}>
+          <DragHandleIcon />
+          <Tooltip placement='top-start' title={description}>
+            <Typography sx={{ color: (theme) => theme.palette.text[disabled ? 'disabled' : 'primary'] }} variant='subtitle1'>
+              {title}
+            </Typography>
+          </Tooltip>
+        </Stack>
         <FormControlLabel
           className={classes.checkbox}
           control={<Checkbox checked={field.required} onChange={(e) => updateField({ ...field, required: e.target.checked })} />}
