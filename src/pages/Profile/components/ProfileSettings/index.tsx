@@ -10,7 +10,7 @@ import { useSnackbar } from 'hooks/Snackbar';
 import { useExportUserData } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
-import UserNotificationSettings from 'pages/Profile/components/ProfileSettings/NotificationSettings';
+import UserNotificationSettings, { ConnectWithSlack } from 'pages/Profile/components/ProfileSettings/NotificationSettings';
 import UserDeleteDialog from 'pages/Profile/components/ProfileSettings/UserDeleteDialog';
 import UserSettings from 'pages/Profile/components/ProfileSettings/UserSettings';
 
@@ -35,6 +35,7 @@ const ProfileSettings = ({ user }: ProfileSettingsProps) => {
 
   return (
     <Stack gap={1}>
+      <ConnectWithSlack />
       <StandaloneExpand icon={<NotificationSettingsIcon />} primary='Varslingsinnstillinger' secondary='Bestem hvor du ønsker å motta ulike typer varsler'>
         <UserNotificationSettings user={user} />
       </StandaloneExpand>

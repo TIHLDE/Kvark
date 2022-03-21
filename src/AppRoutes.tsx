@@ -23,6 +23,7 @@ import News from 'pages/News';
 import NewsDetails from 'pages/NewsDetails';
 import NewStudent from 'pages/NewStudent';
 import Profile from 'pages/Profile';
+import { SlackConnectPage } from 'pages/Profile/components/ProfileSettings/NotificationSettings';
 
 import Page from 'components/navigation/Page';
 
@@ -132,6 +133,7 @@ const AppRoutes = () => {
           <Route element={<News />} index />
         </Route>
 
+        <Route element={<SlackConnectPage />} path='slack/' />
         <Route element={<AuthRoute element={<Profile />} />} path={URLS.profile}>
           <Route element={<Profile />} path=':userId/' />
         </Route>

@@ -108,6 +108,13 @@ export const useUpdateUserNotificationSettings = (): UseMutationResult<UserNotif
   });
 };
 
+export const useSlackConnect = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation((slackCode) => API.slackConnect(slackCode), {
+    onSuccess: () => queryClient.invalidateQueries([USER_QUERY_KEY]),
+  });
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useUsers = (filters?: any) =>
   useInfiniteQuery<PaginationResponse<UserList>, RequestResponse>(
