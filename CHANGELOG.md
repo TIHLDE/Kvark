@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- 🦟 **Nyheter**. Nyheter trenger ikke å ha forfatter.
 - ✨ **Galleri**. Lagt til digitalt fotoalbum for arrangementer.
 
 ## Versjon 2022.03.13
