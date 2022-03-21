@@ -50,6 +50,8 @@ import {
   Submission,
   User,
   UserCreate,
+  UserNotificationSetting,
+  UserNotificationSettingChoice,
   UserPermissions,
   UserSubmission,
   Warning,
@@ -82,6 +84,7 @@ export const MEMBERSHIPS_ENDPOINT = 'memberships';
 export const MEMBERSHIP_HISTORIES_ENDPOINT = 'membership-histories';
 export const NEWS_ENDPOINT = 'news';
 export const NOTIFICATIONS_ENDPOINT = 'notifications';
+export const NOTIFICATION_SETTINGS_ENDPOINT = 'notification-settings';
 export const WIKI_ENDPOINT = 'pages';
 export const SHORT_LINKS_ENDPOINT = 'short-links';
 export const STRIKES_ENDPOINT = 'strikes';
@@ -174,15 +177,19 @@ export default {
   getUserForms: (filters?: any) =>
     IFetch<PaginationResponse<Form>>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/${FORMS_ENDPOINT}/`, data: filters || {} }),
   getUserGroups: (userId?: User['user_id']) => IFetch<Array<Group>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${GROUPS_ENDPOINT}/` }),
+  getUserStrikes: (userId?: User['user_id']) =>
+    IFetch<Array<Strike>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${STRIKES_ENDPOINT}/` }),
   getUsers: (filters?: any) => IFetch<PaginationResponse<User>>({ method: 'GET', url: `${USERS_ENDPOINT}/`, data: filters || {} }),
-  updateUserData: (userName: string, item: Partial<User>) => IFetch<User>({ method: 'PUT', url: `${USERS_ENDPOINT}/${userName}/`, data: item }),
-  activateUser: (userName: string) => IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/activate/`, data: { user_id: userName } }),
-  declineUser: (userName: string, reason: string) =>
+  updateUserData: (userName: User['user_id'], item: Partial<User>) => IFetch<User>({ method: 'PUT', url: `${USERS_ENDPOINT}/${userName}/`, data: item }),
+  getUserNotificationSettings: () => IFetch<Array<UserNotificationSetting>>({ method: 'GET', url: `${NOTIFICATION_SETTINGS_ENDPOINT}/` }),
+  updateUserNotificationSettings: (data: UserNotificationSetting) =>
+    IFetch<UserNotificationSetting>({ method: 'POST', url: `${NOTIFICATION_SETTINGS_ENDPOINT}/`, data }),
+  getUserNotificationSettingChoices: () => IFetch<Array<UserNotificationSettingChoice>>({ method: 'GET', url: `${NOTIFICATION_SETTINGS_ENDPOINT}/choices/` }),
+  activateUser: (userName: User['user_id']) => IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/activate/`, data: { user_id: userName } }),
+  declineUser: (userName: User['user_id'], reason: string) =>
     IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/decline/`, data: { user_id: userName, reason } }),
   exportUserData: () => IFetch<RequestResponse>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/data/` }),
   deleteUser: (userId?: User['user_id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/` }),
-  getUserStrikes: (userId?: User['user_id']) =>
-    IFetch<Array<Strike>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${STRIKES_ENDPOINT}/` }),
 
   // Notifications
   getNotifications: (filters?: any) => IFetch<PaginationResponse<Notification>>({ method: 'GET', url: `${NOTIFICATIONS_ENDPOINT}/`, data: filters || {} }),

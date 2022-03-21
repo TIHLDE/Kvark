@@ -17,6 +17,8 @@ import {
   User,
   UserCreate,
   UserList,
+  UserNotificationSetting,
+  UserNotificationSettingChoice,
   UserPermissions,
 } from 'types';
 import { PermissionApp } from 'types/Enums';
@@ -31,6 +33,8 @@ export const USER_GROUPS_QUERY_KEY = 'user_groups';
 export const USER_FORMS_QUERY_KEY = 'user_forms';
 export const USER_STRIKES_QUERY_KEY = 'user_strikes';
 export const USER_PERMISSIONS_QUERY_KEY = 'user_permissions';
+export const USER_NOTIFICATION_SETTINGS_QUERY_KEY = 'user_notification_settings';
+export const USER_NOTIFICATION_SETTING_CHOICES_QUERY_KEY = 'user_notification_setting_choices';
 export const USERS_QUERY_KEY = 'users';
 
 export const useUser = (userId?: User['user_id'], options?: UseQueryOptions<User | undefined, RequestResponse, User | undefined, QueryKey>) => {
@@ -90,6 +94,19 @@ export const useUserGroups = (userId?: User['user_id']) =>
   useQuery<Array<Group>, RequestResponse>([USER_GROUPS_QUERY_KEY, userId], () => API.getUserGroups(userId));
 
 export const useUserStrikes = (userId?: string) => useQuery<Array<Strike>, RequestResponse>([USER_STRIKES_QUERY_KEY, userId], () => API.getUserStrikes(userId));
+
+export const useUserNotificationSettings = () =>
+  useQuery<Array<UserNotificationSetting>, RequestResponse>([USER_NOTIFICATION_SETTINGS_QUERY_KEY], () => API.getUserNotificationSettings());
+
+export const useUserNotificationSettingChoices = () =>
+  useQuery<Array<UserNotificationSettingChoice>, RequestResponse>([USER_NOTIFICATION_SETTING_CHOICES_QUERY_KEY], () => API.getUserNotificationSettingChoices());
+
+export const useUpdateUserNotificationSettings = (): UseMutationResult<UserNotificationSetting, RequestResponse, UserNotificationSetting, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation((data) => API.updateUserNotificationSettings(data), {
+    onSuccess: () => queryClient.invalidateQueries([USER_NOTIFICATION_SETTINGS_QUERY_KEY]),
+  });
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useUsers = (filters?: any) =>
