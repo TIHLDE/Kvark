@@ -149,7 +149,7 @@ const TopBarItem = (props: NavigationItem) => {
               <MenuList className={classes.menulist}>
                 {props.items.map((item, i) =>
                   item.external ? (
-                    <MenuItem className={classes.menulistItem} component='a' href={item.to} key={i}>
+                    <MenuItem className={classes.menulistItem} component='a' href={item.to} key={i} target='_blank'>
                       {item.text} <OpenInNewIcon fontSize='inherit' sx={{ mb: '-2px' }} />
                     </MenuItem>
                   ) : (

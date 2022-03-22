@@ -7,6 +7,7 @@ import { argsToParams } from 'utils';
 
 import { useCategories } from 'hooks/Categories';
 import { useEvents } from 'hooks/Event';
+import { useIsAuthenticated } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
 import Bool from 'components/inputs/Bool';
@@ -64,6 +65,7 @@ type Filters = {
 };
 
 const Events = () => {
+  const isAuthenticated = useIsAuthenticated();
   const { event } = useAnalytics();
   const getInitialFilters = useCallback((): Filters => {
     const params = new URLSearchParams(location.search);
@@ -115,7 +117,7 @@ const Events = () => {
       )}
       <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
       <Bool control={control} formState={formState} label='Kun med åpen påmelding' name='open_for_sign_up' type='switch' />
-      <Bool control={control} formState={formState} label='Favoritter' name='user_favorite' type='switch' />
+      {isAuthenticated && <Bool control={control} formState={formState} label='Favoritter' name='user_favorite' type='switch' />}
       <SubmitButton disabled={isFetching} formState={formState}>
         Søk
       </SubmitButton>

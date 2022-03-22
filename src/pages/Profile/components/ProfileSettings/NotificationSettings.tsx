@@ -93,7 +93,7 @@ export const ConnectWithSlack = (props: PaperProps) => {
         }
         target='_blank'
         variant='outlined'>
-        Koble sammen med din Slack-bruker
+        Koble til din Slack-bruker
       </Button>
     </Paper>
   );
@@ -154,6 +154,9 @@ export const UserNotificationSettings = ({ user }: UserNotificationSettingsProps
   return (
     <>
       <ConnectWithSlack sx={{ mb: 2 }} />
+      <Typography gutterBottom variant='body2'>
+        For å være sikker på at du mottar nødvendig informasjon må du velge minst én informasjonskanal for hver type varsel
+      </Typography>
       <Box sx={{ overflow: 'auto', display: 'grid', gridTemplateColumns: '1fr repeat(3, auto)', gap: 1 }}>
         <Typography sx={{ fontWeight: 'bold' }}>Type</Typography>
         <Typography align='center' sx={{ fontWeight: 'bold', minWidth: 75 }}>
