@@ -183,7 +183,7 @@ export default {
   updateUserData: (userName: User['user_id'], item: Partial<User>) => IFetch<User>({ method: 'PUT', url: `${USERS_ENDPOINT}/${userName}/`, data: item }),
   getUserNotificationSettings: () => IFetch<Array<UserNotificationSetting>>({ method: 'GET', url: `${NOTIFICATION_SETTINGS_ENDPOINT}/` }),
   updateUserNotificationSettings: (data: UserNotificationSetting) =>
-    IFetch<UserNotificationSetting>({ method: 'POST', url: `${NOTIFICATION_SETTINGS_ENDPOINT}/`, data }),
+    IFetch<Array<UserNotificationSetting>>({ method: 'POST', url: `${NOTIFICATION_SETTINGS_ENDPOINT}/`, data }),
   getUserNotificationSettingChoices: () => IFetch<Array<UserNotificationSettingChoice>>({ method: 'GET', url: `${NOTIFICATION_SETTINGS_ENDPOINT}/choices/` }),
   slackConnect: (slackCode: string) => IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/slack/`, data: { code: slackCode } }),
   activateUser: (userName: User['user_id']) => IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/activate/`, data: { user_id: userName } }),

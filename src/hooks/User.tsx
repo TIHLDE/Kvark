@@ -101,10 +101,12 @@ export const useUserNotificationSettings = () =>
 export const useUserNotificationSettingChoices = () =>
   useQuery<Array<UserNotificationSettingChoice>, RequestResponse>([USER_NOTIFICATION_SETTING_CHOICES_QUERY_KEY], () => API.getUserNotificationSettingChoices());
 
-export const useUpdateUserNotificationSettings = (): UseMutationResult<UserNotificationSetting, RequestResponse, UserNotificationSetting, unknown> => {
+export const useUpdateUserNotificationSettings = (): UseMutationResult<Array<UserNotificationSetting>, RequestResponse, UserNotificationSetting, unknown> => {
   const queryClient = useQueryClient();
   return useMutation((data) => API.updateUserNotificationSettings(data), {
-    onSuccess: () => queryClient.invalidateQueries([USER_NOTIFICATION_SETTINGS_QUERY_KEY]),
+    onSuccess: (data) => {
+      queryClient.setQueryData([USER_NOTIFICATION_SETTINGS_QUERY_KEY], data);
+    },
   });
 };
 
