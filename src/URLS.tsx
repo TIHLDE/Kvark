@@ -46,6 +46,7 @@ const URLS = {
   login: '/logg-inn/',
   newStudent: '/ny-student/',
   news: '/nyheter/',
+  toddel: '/toddel/',
   wiki: WIKI,
   aboutIndex: `${WIKI}${WIKI_URLS.ABOUT_INDEX}`,
   profile: '/profil/',

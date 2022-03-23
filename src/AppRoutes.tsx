@@ -49,6 +49,7 @@ const Wiki = lazy(() => import(/* webpackChunkName: "pages" */ 'pages/Wiki'));
 const ShortLinks = lazy(() => import(/* webpackChunkName: "short_links" */ 'pages/ShortLinks'));
 const SignUp = lazy(() => import(/* webpackChunkName: "signup" */ 'pages/SignUp'));
 const StrikeAdmin = lazy(() => import(/* webpackChunkName: "strike_admin" */ 'pages/StrikeAdmin'));
+const Toddel = lazy(() => import(/* webpackChunkName: "strike_admin" */ 'pages/Toddel'));
 const UserAdmin = lazy(() => import(/* webpackChunkName: "user_admin" */ 'pages/UserAdmin'));
 
 type AuthRouteProps = {
@@ -100,6 +101,7 @@ const AppRoutes = () => {
           <Route element={<Events />} index />
         </Route>
         <Route element={<Companies />} path={URLS.company} />
+        <Route element={<Toddel />} path={URLS.toddel} />
         <Route element={<AuthRoute element={<Form />} />} path={`${URLS.form}:id/`} />
         <Route element={<Groups />} path={`${URLS.groups.index}*`}>
           <Route element={<GroupsOverview />} index />
