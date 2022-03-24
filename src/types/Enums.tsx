@@ -49,6 +49,7 @@ export enum PermissionApp {
   GALLERY = 'album',
   PICTURE = 'picture',
   FORMS = 'form',
+  TODDEL = 'toddel',
 }
 
 export enum Groups {
