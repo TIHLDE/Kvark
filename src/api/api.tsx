@@ -9,6 +9,7 @@ import {
   CompaniesEmail,
   Event,
   EventCompact,
+  EventFavorite,
   EventRequired,
   EventStatistics,
   FileUploadResponse,
@@ -115,6 +116,9 @@ export default {
     IFetch<PaginationResponse<PublicRegistration>>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/public_registrations/`, data: filters || {} }),
   sendGiftCardsToAttendees: (eventId: Event['id'], files: File | File[] | Blob) =>
     IFetch<RequestResponse>({ method: 'POST', url: `${EVENTS_ENDPOINT}/${String(eventId)}/mail-gift-cards/`, file: files }),
+  getEventIsFavorite: (eventId: Event['id']) => IFetch<EventFavorite>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/favorite/` }),
+  setEventIsFavorite: (eventId: Event['id'], data: EventFavorite) =>
+    IFetch<EventFavorite>({ method: 'PUT', url: `${EVENTS_ENDPOINT}/${String(eventId)}/favorite/`, data }),
 
   // Event registrations
   getRegistration: (eventId: Event['id'], userId: User['user_id']) =>
