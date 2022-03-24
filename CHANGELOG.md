@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ✨ **Arrangementer**. Marker arrangementer som favoritter og motta varsel ved påmeldingsstart.
 - 🦟 **Nyheter**. Nyheter trenger ikke å ha forfatter.
 - ✨ **Galleri**. Lagt til digitalt fotoalbum for arrangementer.
 - 🎨 **Botsystem**. Endret tittelen på enkelte knapper slik at de beskriver hva knappen gjør.
@@ -23,7 +24,6 @@
 - ✨ **Nyheter**. Forfatter på alle nye nyheter.
 - ✨ **Fondet**. Lagt inn fondet på nettsiden.
 - 🦟 **Arrangementer**. Brukere som er anonyme i den offentlige påmeldingslisten kan nå ikke lenger klikkes på.
-
 
 ## Versjon 2022.03.01
 
