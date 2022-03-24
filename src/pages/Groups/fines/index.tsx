@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useGroup, useGroupFines, useGroupFinesStatistics, useGroupUsersFines } from 'hooks/Group';
+import { useMemberships } from 'hooks/Membership';
 import { useUser } from 'hooks/User';
 
 import AddFineDialog from 'pages/Groups/fines/AddFineDialog';
@@ -31,6 +32,7 @@ const Fines = () => {
   const { slug } = useParams<'slug'>();
   const { data: user } = useUser();
   const { data: group } = useGroup(slug || '-');
+  const { data: members } = useMemberships(slug || '-');
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
 
   const [tab, setTab] = useState<'all' | 'users'>('all');
@@ -60,18 +62,33 @@ const Fines = () => {
 
   return (
     <Stack direction={{ xs: 'column', lg: 'row-reverse' }} gap={{ xs: 2, lg: 1 }}>
-      <Paper sx={{ width: { xs: '100%', lg: 250 }, p: 1, alignSelf: 'self-start' }}>
+      <Paper sx={{ width: { xs: '100%', lg: 270 }, p: 1, alignSelf: 'self-start' }}>
         <Typography gutterBottom variant='h3'>
           Statistikk
         </Typography>
-        <Typography variant='body2'>
+        <Typography sx={{ fontWeight: 'bold' }} variant='body1'>
+          Totalt
+        </Typography>
+        <Typography sx={{ ml: 1 }} variant='body2'>
           Ikke godkjent: <b>{statistics?.not_approved}</b>
         </Typography>
-        <Typography variant='body2'>
+        <Typography sx={{ ml: 1 }} variant='body2'>
           Godkjent, ikke betalt: <b>{statistics?.approved_and_not_payed}</b>
         </Typography>
-        <Typography variant='body2'>
+        <Typography gutterBottom sx={{ ml: 1 }} variant='body2'>
           Betalt: <b>{statistics?.payed}</b>
+        </Typography>
+        <Typography sx={{ fontWeight: 'bold' }} variant='body1'>
+          Snitt per medlem
+        </Typography>
+        <Typography sx={{ ml: 1 }} variant='body2'>
+          Ikke godkjent: <b>{((statistics?.not_approved || 0) / (members?.pages[0].count || 1)).toFixed(1)}</b>
+        </Typography>
+        <Typography sx={{ ml: 1 }} variant='body2'>
+          Godkjent, ikke betalt: <b>{((statistics?.approved_and_not_payed || 0) / (members?.pages[0].count || 1)).toFixed(1)}</b>
+        </Typography>
+        <Typography sx={{ ml: 1 }} variant='body2'>
+          Betalt: <b>{((statistics?.payed || 0) / (members?.pages[0].count || 1)).toFixed(1)}</b>
         </Typography>
       </Paper>
       <Box sx={{ width: '100%' }}>
