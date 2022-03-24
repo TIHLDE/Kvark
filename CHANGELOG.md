@@ -13,6 +13,7 @@
 ---
 
 ## Neste versjon
+## Versjon 2022.03.24
 
 - ⚡ **Spørreskjemaer**. Spørreskjemaer som kan besvares flere ganger blir nå tømt når de besvares.
 - ✨ **Töddel**. Lagt til Töddel som egen side på nettsiden med mulighet for å åpne alle publikasjonene deres.
