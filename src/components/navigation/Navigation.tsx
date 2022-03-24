@@ -125,6 +125,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
       {
         items: [
           { text: 'Wiki', to: URLS.wiki },
+          { text: 'Töddel', to: URLS.toddel },
           { text: 'Ny student', to: URLS.newStudent },
           { text: 'Gruppeoversikt', to: URLS.groups.index },
           { text: 'Fondet', to: 'https://fondet.tihlde.org', external: true },
@@ -142,6 +143,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
               { text: 'Kokebok', to: URLS.cheatsheet },
               { text: 'Link-forkorter', to: URLS.shortLinks },
               { text: 'Badges ledertavler', to: URLS.badges.index },
+              { text: 'Galleri', to: URLS.gallery },
             ],
             text: 'For medlemmer',
             type: 'dropdown',

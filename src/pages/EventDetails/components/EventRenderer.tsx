@@ -1,5 +1,7 @@
 import CalendarIcon from '@mui/icons-material/EventRounded';
-import { Alert, Button, Collapse, Skeleton, Stack, styled, Theme, Typography, useMediaQuery } from '@mui/material';
+import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteBorderRounded';
+import FavoriteFilledIcon from '@mui/icons-material/FavoriteRounded';
+import { Alert, Button, Collapse, IconButton, IconButtonProps, Skeleton, Stack, styled, Theme, Tooltip, Typography, useMediaQuery } from '@mui/material';
 import { addHours, formatDistanceToNowStrict, isFuture, isPast, parseISO, subHours } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
 import { useState } from 'react';
@@ -10,7 +12,7 @@ import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 
 import { Event, Registration } from 'types';
 
 import { useCategories } from 'hooks/Categories';
-import { useDeleteEventRegistration, useEventRegistration } from 'hooks/Event';
+import { useDeleteEventRegistration, useEventIsFavorite, useEventRegistration, useEventSetIsFavorite } from 'hooks/Event';
 import { useSetRedirectUrl } from 'hooks/Misc';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useUser } from 'hooks/User';
@@ -240,10 +242,49 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     );
   };
 
+  type FavoriteProps = IconButtonProps & {
+    eventId: Event['id'];
+  };
+
+  const Favorite = ({ eventId, ...props }: FavoriteProps) => {
+    const { data: favorite } = useEventIsFavorite(eventId);
+    const updateFavorite = useEventSetIsFavorite(eventId);
+    const toggleFavorite = (isFavorite: boolean) => {
+      event('mark-as-favorite', 'event', `Marked event (${data.title}) as favorite`);
+      updateFavorite.mutate(
+        { is_favorite: isFavorite },
+        {
+          onSuccess: (data) =>
+            showSnackbar(
+              data.is_favorite
+                ? 'Arrangementet er nå en av dine favoritter. Du kan finne dine favoritter med filtrering på arrangement-siden. Vi vil varsle deg ved påmeldingsstart.'
+                : 'Arrangementet er ikke lenger en av dine favoritter',
+              data.is_favorite ? 'success' : 'info',
+            ),
+          onError: (e) => showSnackbar(e.detail, 'error'),
+        },
+      );
+    };
+
+    if (favorite) {
+      return (
+        <Tooltip title={favorite.is_favorite ? 'Fjern favorittmarkering' : 'Merk som favoritt'}>
+          <IconButton {...props} onClick={() => toggleFavorite(!favorite.is_favorite)}>
+            {favorite.is_favorite ? <FavoriteFilledIcon color='error' /> : <FavoriteOutlinedIcon />}
+          </IconButton>
+        </Tooltip>
+      );
+    }
+    return null;
+  };
+
   const Info = () => (
     <>
       <DetailsPaper noPadding>
-        <DetailsHeader variant='h2'>Detaljer</DetailsHeader>
+        <Stack direction='row' gap={1} justifyContent='space-between' sx={{ position: 'relative' }}>
+          {user && <Favorite eventId={data.id} sx={{ position: 'absolute', right: ({ spacing }) => spacing(-1) }} />}
+          <DetailsHeader variant='h2'>Detaljer</DetailsHeader>
+        </Stack>
         <DetailContent info={formatDate(startDate)} title='Fra:' />
         <DetailContent info={formatDate(endDate)} title='Til:' />
         <DetailContent info={data.location} title='Sted:' />

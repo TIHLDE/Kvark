@@ -4,14 +4,14 @@ import { Group } from 'types/Group';
 import { Permissions } from 'types/Misc';
 import { UserList } from 'types/User';
 
-export interface Category {
+export type Category = {
   created_at: string;
   id: number;
   text: string;
   updated_at: string;
-}
+};
 
-export interface Event {
+export type Event = {
   closed: boolean;
   category: number;
   description: string;
@@ -39,19 +39,24 @@ export interface Event {
   can_cause_strikes: boolean;
   enforces_previous_strikes: boolean;
   only_allow_prioritized: boolean;
-}
+};
+
 export type EventRequired = Partial<Event> & Pick<Event, 'end_date' | 'title' | 'start_date'> & { organizer: Group['slug'] };
 export type EventCompact = Pick<
   Event,
   'category' | 'end_date' | 'expired' | 'organizer' | 'id' | 'image' | 'image_alt' | 'location' | 'title' | 'start_date' | 'updated_at'
 >;
 
-export interface RegistrationPriority {
+export type EventFavorite = {
+  is_favorite: boolean;
+};
+
+export type RegistrationPriority = {
   user_class: UserClass;
   user_study: UserStudy;
-}
+};
 
-export interface Registration {
+export type Registration = {
   allow_photo: boolean;
   created_at: string;
   has_attended: boolean;
@@ -60,7 +65,7 @@ export interface Registration {
   survey_submission: UserSubmission;
   has_unanswered_evaluation: boolean;
   user_info: UserList;
-}
+};
 
 export type PublicRegistration = {
   user_info: Registration['user_info'] | null;

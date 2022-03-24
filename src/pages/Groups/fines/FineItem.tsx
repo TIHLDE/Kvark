@@ -1,10 +1,10 @@
-import PayedIcon from '@mui/icons-material/CreditScoreRounded';
+import PaidIcon from '@mui/icons-material/CreditScoreRounded';
 import Delete from '@mui/icons-material/DeleteRounded';
 import ApprovedIcon from '@mui/icons-material/DoneOutlineRounded';
 import EditRounded from '@mui/icons-material/EditRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import { Button, Checkbox, Collapse, Divider, ListItem, ListItemButton, ListItemProps, ListItemText, Stack, Tooltip, Typography } from '@mui/material';
+import { Button, Checkbox, Chip, Collapse, Divider, ListItem, ListItemButton, ListItemProps, ListItemText, Stack, Tooltip, Typography } from '@mui/material';
 import { parseISO } from 'date-fns';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -96,7 +96,7 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItem
                   <ApprovedIcon color={fine.approved ? 'success' : 'error'} sx={{ fontSize: 'inherit', ml: 0.5, mb: '-1px' }} />
                 </Tooltip>
                 <Tooltip title={`Boten er ${fine.payed ? '' : 'ikke '} betalt`}>
-                  <PayedIcon color={fine.payed ? 'success' : 'error'} sx={{ fontSize: 'inherit', ml: 0.5, mb: '-1px' }} />
+                  <PaidIcon color={fine.payed ? 'success' : 'error'} sx={{ fontSize: 'inherit', ml: 0.5, mb: '-1px' }} />
                 </Tooltip>
               </>
             }
@@ -108,6 +108,10 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItem
       <Collapse in={expanded}>
         <Divider />
         <Stack gap={1} sx={{ p: [1, undefined, 2] }}>
+          <Stack direction='row' gap={1}>
+            <Chip color={fine.approved ? 'success' : 'error'} icon={<ApprovedIcon />} label={fine.approved ? 'Godkjent' : 'Ikke godkjent'} variant='outlined' />
+            <Chip color={fine.payed ? 'success' : 'error'} icon={<PaidIcon />} label={fine.payed ? 'Betalt' : 'Ikke betalt'} variant='outlined' />
+          </Stack>
           <div>
             {fine.reason && <Typography variant='subtitle2'>{`Begrunnelse: ${fine.reason}`}</Typography>}
             <Typography variant='subtitle2'>{`Opprettet av: ${fine.created_by.first_name} ${fine.created_by.last_name}`}</Typography>
@@ -117,22 +121,22 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItem
             <>
               <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
                 <Button
-                  color={fine.approved ? 'success' : 'error'}
+                  color={fine.approved ? 'error' : 'success'}
                   disabled={fine.payed}
                   fullWidth
                   onClick={toggleApproved}
                   startIcon={<ApprovedIcon />}
                   variant='contained'>
-                  {fine.approved ? 'Godkjent' : 'Ikke godkjent'}
+                  Merk som {fine.approved ? 'ikke godkjent' : 'godkjent'}
                 </Button>
                 <Button
-                  color={fine.payed ? 'success' : 'error'}
+                  color={fine.payed ? 'error' : 'success'}
                   disabled={!fine.approved}
                   fullWidth
                   onClick={togglePayed}
-                  startIcon={<PayedIcon />}
+                  startIcon={<PaidIcon />}
                   variant='contained'>
-                  {fine.payed ? 'Betalt' : 'Ikke betalt'}
+                  Merk som {fine.payed ? 'ikke betalt' : 'betalt'}
                 </Button>
               </Stack>
               <Dialog onClose={() => setEditOpen(false)} open={editOpen} titleText='Endre bot'>

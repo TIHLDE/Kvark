@@ -7,6 +7,7 @@ import { argsToParams } from 'utils';
 
 import { useCategories } from 'hooks/Categories';
 import { useEvents } from 'hooks/Event';
+import { useIsAuthenticated } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
 import Bool from 'components/inputs/Bool';
@@ -58,19 +59,22 @@ const useStyles = makeStyles()((theme) => ({
 type Filters = {
   search?: string;
   category?: string;
-  open_for_sign_up: boolean | undefined;
+  open_for_sign_up?: boolean;
+  user_favorite?: boolean;
   expired: boolean;
 };
 
 const Events = () => {
+  const isAuthenticated = useIsAuthenticated();
   const { event } = useAnalytics();
   const getInitialFilters = useCallback((): Filters => {
     const params = new URLSearchParams(location.search);
     const expired = params.get('expired') ? Boolean(params.get('expired') === 'true') : false;
     const open_for_sign_up = params.get('open_for_sign_up') ? Boolean(params.get('open_for_sign_up') === 'true') : undefined;
+    const user_favorite = params.get('user_favorite') ? Boolean(params.get('user_favorite') === 'true') : undefined;
     const category = params.get('category') || undefined;
     const search = params.get('search') || undefined;
-    return { expired, category, search, open_for_sign_up };
+    return { expired, category, search, open_for_sign_up, user_favorite };
   }, []);
   const { classes } = useStyles();
   const navigate = useNavigate();
@@ -86,7 +90,7 @@ const Events = () => {
     setValue('category', '');
     setValue('search', '');
     setValue('expired', false);
-    setFilters({ expired: false, open_for_sign_up: false });
+    setFilters({ expired: false, open_for_sign_up: false, user_favorite: false });
     navigate(`${location.pathname}${argsToParams({ expired: false })}`, { replace: true });
   };
 
@@ -113,6 +117,7 @@ const Events = () => {
       )}
       <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
       <Bool control={control} formState={formState} label='Kun med åpen påmelding' name='open_for_sign_up' type='switch' />
+      {isAuthenticated && <Bool control={control} formState={formState} label='Favoritter' name='user_favorite' type='switch' />}
       <SubmitButton disabled={isFetching} formState={formState}>
         Søk
       </SubmitButton>

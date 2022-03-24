@@ -21,6 +21,7 @@ export type User = {
   unanswered_evaluations_count: number;
   number_of_strikes: number;
   public_event_registrations: boolean;
+  slack_user_id: string;
 };
 
 export type UserBase = Pick<User, 'user_id' | 'first_name' | 'last_name' | 'image' | 'email' | 'user_class' | 'user_study' | 'gender'>;
@@ -29,6 +30,18 @@ export type UserCreate = Pick<User, 'email' | 'first_name' | 'last_name' | 'user
   password: string;
   study: Group['slug'] | null;
   class: Group['slug'] | null;
+};
+
+export type UserNotificationSetting = {
+  notification_type: string;
+  email: boolean;
+  website: boolean;
+  slack: boolean;
+};
+
+export type UserNotificationSettingChoice = {
+  notification_type: string;
+  label: string;
 };
 
 export type UserPermissions = {
