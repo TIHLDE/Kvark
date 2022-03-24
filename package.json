@@ -39,7 +39,7 @@
     "react-query": "^3.34.3",
     "react-router-dom": "^6.2.1",
     "slugify": "^1.6.3",
-    "tss-react": "^3.5.2",
+    "tss-react": "^3.6.0",
     "universal-cookie": "^4.0.4"
   },
   "scripts": {
@@ -77,7 +77,7 @@
     "vite": "^2.8.2",
     "vite-plugin-checker": "^0.4.2",
     "vite-plugin-compression": "^0.5.1",
-    "vite-plugin-svgr": "^1.0.1",
+    "vite-plugin-svgr": "^1.1.0",
     "vite-tsconfig-paths": "^3.4.1"
   }
 }
