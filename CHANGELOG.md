@@ -18,6 +18,7 @@
 - ✨ **Arrangementer**. Marker arrangementer som favoritter og motta varsel ved påmeldingsstart.
 - 🦟 **Nyheter**. Nyheter trenger ikke å ha forfatter.
 - ✨ **Galleri**. Lagt til digitalt fotoalbum for arrangementer.
+- ⚡ **Hovedorgan**. Tilrettelagt for gruppe til Forvalitningsgruppen og De Eldstes Råd.
 
 ## Versjon 2022.03.13
 
