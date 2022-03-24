@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ⚡ **Spørreskjemaer**. Spørreskjemaer som kan besvares flere ganger blir nå tømt når de besvares.
 - ✨ **Töddel**. Lagt til Töddel som egen side på nettsiden med mulighet for å åpne alle publikasjonene deres.
 - ✨ **Arrangementer**. Marker arrangementer som favoritter og motta varsel ved påmeldingsstart.
 - 🦟 **Nyheter**. Nyheter trenger ikke å ha forfatter.
