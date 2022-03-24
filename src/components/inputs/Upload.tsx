@@ -23,7 +23,7 @@ import { useAnalytics, useShare } from 'hooks/Utils';
 
 import { blobToFile, getCroppedImgAsBlob, readFile } from 'components/inputs/ImageUploadUtils';
 import Dialog from 'components/layout/Dialog';
-import Paper from 'components/layout/Paper';
+import Paper, { PaperProps } from 'components/layout/Paper';
 
 const UploadPaper = styled(Paper)(({ theme }) => ({
   display: 'grid',
@@ -58,6 +58,7 @@ export type ImageUploadProps<FormValues extends FieldValues = FieldValues> = But
     register: UseFormRegisterReturn;
     label?: string;
     ratio?: `${number}:${number}`;
+    paperProps?: PaperProps;
   };
 
 export const GenericImageUpload = <FormValues extends FieldValues>({
@@ -67,6 +68,7 @@ export const GenericImageUpload = <FormValues extends FieldValues>({
   formState,
   label = 'Last opp fil',
   ratio,
+  paperProps,
   ...props
 }: ImageUploadProps<FormValues>) => {
   const name = register.name as Path<FormValues>;
@@ -141,7 +143,7 @@ export const GenericImageUpload = <FormValues extends FieldValues>({
   };
   return (
     <>
-      <UploadPaper>
+      <UploadPaper {...paperProps}>
         {url && <Img loading='lazy' src={url as string} />}
         <div>
           <input hidden {...register} />
@@ -191,7 +193,9 @@ export const ImageUpload = forwardRef(GenericImageUpload) as <FormValues>(
   props: ImageUploadProps<FormValues> & { ref?: React.ForwardedRef<HTMLDivElement> },
 ) => ReturnType<typeof GenericImageUpload>;
 
-export type FormFileUploadProps<FormValues> = Omit<ImageUploadProps<FormValues>, 'ratio'>;
+export type FormFileUploadProps<FormValues> = Omit<ImageUploadProps<FormValues>, 'ratio'> & {
+  accept?: React.InputHTMLAttributes<HTMLInputElement>['accept'];
+};
 
 export const FormFileUpload = <FormValues extends FieldValues>({
   register,
@@ -199,6 +203,8 @@ export const FormFileUpload = <FormValues extends FieldValues>({
   setValue,
   formState,
   label = 'Last opp fil',
+  paperProps,
+  accept,
   ...props
 }: FormFileUploadProps<FormValues>) => {
   const name = register.name as Path<FormValues>;
@@ -223,15 +229,18 @@ export const FormFileUpload = <FormValues extends FieldValues>({
     }
   };
   return (
-    <UploadPaper>
+    <UploadPaper {...paperProps}>
       {url && (
         <Typography>
-          Fil: <a href={url as string}>{url as string}</a>
+          Fil:{' '}
+          <Typography component='a' href={url as string} sx={{ overflowWrap: 'anywhere' }}>
+            {url as string}
+          </Typography>
         </Typography>
       )}
       <div>
         <input hidden {...register} />
-        <input hidden id='file-upload-button' onChange={upload} type='file' />
+        <input accept={accept} hidden id='file-upload-button' onChange={upload} type='file' />
         <label htmlFor='file-upload-button'>
           <Button component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
             {label}
@@ -248,9 +257,11 @@ export const FormFileUpload = <FormValues extends FieldValues>({
   );
 };
 
-export type FileUploadProps<FormValues> = Pick<ImageUploadProps<FormValues>, 'label'> & ButtonProps;
+export type FileUploadProps<FormValues> = Pick<ImageUploadProps<FormValues>, 'label' | 'paperProps'> &
+  ButtonProps &
+  Pick<FormFileUploadProps<FormValues>, 'accept'>;
 
-export const FileUpload = <FormValues extends FieldValues>({ label = 'Last opp filer', ...props }: FileUploadProps<FormValues>) => {
+export const FileUpload = <FormValues extends FieldValues>({ label = 'Last opp filer', accept, paperProps, ...props }: FileUploadProps<FormValues>) => {
   const { event } = useAnalytics();
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
@@ -302,14 +313,14 @@ export const FileUpload = <FormValues extends FieldValues>({ label = 'Last opp f
   };
 
   return (
-    <UploadPaper>
+    <UploadPaper {...paperProps}>
       <List disablePadding sx={{ display: 'grid', gap: 1 }}>
         {uploaded.map((url, i) => (
           <File key={i} url={url} />
         ))}
       </List>
       <div>
-        <input hidden id='files-upload-button' multiple onChange={upload} type='file' />
+        <input accept={accept} hidden id='files-upload-button' multiple onChange={upload} type='file' />
         <label htmlFor='files-upload-button'>
           <Button component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
             {label}

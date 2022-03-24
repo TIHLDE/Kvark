@@ -8,4 +8,5 @@ export * from 'types/News';
 export * from 'types/Strike';
 export * from 'types/User';
 export * from 'types/Gallery';
+export * from 'types/Toddel';
 export * from 'types/Wiki';

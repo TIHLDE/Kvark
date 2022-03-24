@@ -14,10 +14,12 @@
 
 ## Neste versjon
 
+- ✨ **Töddel**. Lagt til Töddel som egen side på nettsiden med mulighet for å åpne alle publikasjonene deres.
 - ✨ **Arrangementer**. Marker arrangementer som favoritter og motta varsel ved påmeldingsstart.
 - 🦟 **Nyheter**. Nyheter trenger ikke å ha forfatter.
 - ✨ **Galleri**. Lagt til digitalt fotoalbum for arrangementer.
 - 🎨 **Botsystem**. Endret tittelen på enkelte knapper slik at de beskriver hva knappen gjør.
+- ⚡ **Hovedorgan**. Tilrettelagt for gruppe til Forvalitningsgruppen og De Eldstes Råd.
 
 ## Versjon 2022.03.13
 
