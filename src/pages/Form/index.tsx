@@ -51,7 +51,7 @@ const FormPage = () => {
     [form],
   );
 
-  const { register, handleSubmit, formState, setError, getValues, control } = useForm<Submission>();
+  const { register, handleSubmit, formState, setError, getValues, control, reset } = useForm<Submission>();
 
   const submitDisabled = isLoading || createSubmission.isLoading || !form;
 
@@ -73,6 +73,7 @@ const FormPage = () => {
         run();
         showSnackbar('Innsendingen var vellykket', 'success');
         GAEvent('submitted', 'forms', `Submitted submission for form: ${form.title}`);
+        reset();
       },
       onError: (e) => {
         showSnackbar(e.detail, 'error');
