@@ -21,6 +21,7 @@
 - ✨ **Galleri**. Lagt til digitalt fotoalbum for arrangementer.
 - 🎨 **Botsystem**. Endret tittelen på enkelte knapper slik at de beskriver hva knappen gjør.
 - ⚡ **Hovedorgan**. Tilrettelagt for gruppe til Forvalitningsgruppen og De Eldstes Råd.
+- ⚡ **Stories**. Tar deg nå rett til ressursen.
 
 ## Versjon 2022.03.13
 
