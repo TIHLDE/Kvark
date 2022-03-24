@@ -62,7 +62,7 @@
     "@types/react-helmet": "^6.1.2",
     "@types/react-linkify": "^1.0.1",
     "@types/react-qr-reader": "^2.1.4",
-    "@typescript-eslint/eslint-plugin": "^5.14.0",
+    "@typescript-eslint/eslint-plugin": "^5.16.0",
     "@typescript-eslint/parser": "^5.14.0",
     "@vitejs/plugin-react": "^1.2.0",
     "eslint": "^8.11.0",
