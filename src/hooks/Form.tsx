@@ -5,7 +5,7 @@ import { FormFieldType, FormResourceType } from 'types/Enums';
 
 import API from 'api/api';
 
-import { EVENT_QUERY_KEY } from 'hooks/Event';
+import { EVENT_QUERY_KEYS } from 'hooks/Event';
 import { GROUPS_QUERY_KEYS } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
 import { USER_FORMS_QUERY_KEY, USER_QUERY_KEY } from 'hooks/User';
@@ -29,7 +29,7 @@ export const useCreateForm = (): UseMutationResult<Form, RequestResponse, FormCr
         queryClient.invalidateQueries([FORM_QUERY_KEY]);
       }
       if (data.resource_type === FormResourceType.EVENT_FORM) {
-        queryClient.invalidateQueries([EVENT_QUERY_KEY, data.event.id]);
+        queryClient.invalidateQueries(EVENT_QUERY_KEYS.detail(data.event.id));
       }
       if (data.resource_type === FormResourceType.GROUP_FORM) {
         queryClient.invalidateQueries(GROUPS_QUERY_KEYS.forms.all(data.group.slug));
@@ -44,7 +44,7 @@ export const useUpdateForm = (formId: string): UseMutationResult<Form, RequestRe
   return useMutation((updatedForm: FormUpdate) => API.updateForm(formId, updatedForm), {
     onSuccess: (data) => {
       if (data.resource_type === FormResourceType.EVENT_FORM) {
-        queryClient.invalidateQueries([EVENT_QUERY_KEY, data.event.id]);
+        queryClient.invalidateQueries(EVENT_QUERY_KEYS.detail(data.event.id));
       }
       if (data.resource_type === FormResourceType.GROUP_FORM) {
         queryClient.invalidateQueries(GROUPS_QUERY_KEYS.forms.all(data.group.slug));
@@ -64,7 +64,7 @@ export const useDeleteForm = (formId: string): UseMutationResult<RequestResponse
       showSnackbar(response.detail, 'success');
       const data = queryClient.getQueryData<Form>([FORM_QUERY_KEY, formId]);
       if (data?.resource_type === FormResourceType.EVENT_FORM) {
-        queryClient.invalidateQueries([EVENT_QUERY_KEY, data.event.id]);
+        queryClient.invalidateQueries(EVENT_QUERY_KEYS.detail(data.event.id));
       }
       if (data?.resource_type === FormResourceType.GROUP_FORM) {
         queryClient.invalidateQueries(GROUPS_QUERY_KEYS.forms.all(data.group.slug));
@@ -94,7 +94,7 @@ export const useCreateSubmission = (formId: string): UseMutationResult<Submissio
     onSuccess: () => {
       const data = queryClient.getQueryData<Form>([FORM_QUERY_KEY, formId]);
       if (data?.resource_type === FormResourceType.EVENT_FORM) {
-        queryClient.invalidateQueries([EVENT_QUERY_KEY, data.event.id]);
+        queryClient.invalidateQueries(EVENT_QUERY_KEYS.detail(data.event.id));
         queryClient.invalidateQueries([USER_FORMS_QUERY_KEY]);
         queryClient.invalidateQueries([USER_QUERY_KEY]);
       }
