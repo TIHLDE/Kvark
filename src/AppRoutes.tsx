@@ -26,8 +26,8 @@ import Profile from 'pages/Profile';
 
 import Page from 'components/navigation/Page';
 
-const Gallery = lazy(() => import(/* webpackChunkName: "gallery" */ 'pages/Gallery'));
-const GalleryDetails = lazy(() => import(/* webpackChunkName: "gallery_details" */ 'pages/GalleryDetails'));
+const Gallery = lazy(() => import('pages/Gallery'));
+const GalleryDetails = lazy(() => import('pages/GalleryDetails'));
 const Badges = lazy(() => import('pages/Badges'));
 const BadgeCategoriesList = lazy(() => import('pages/Badges/overview/BadgeCategoriesList'));
 const BadgesList = lazy(() => import('pages/Badges/overview/BadgesList'));
@@ -36,21 +36,21 @@ const BadgeDetails = lazy(() => import('pages/Badges/details'));
 const BadgeCategory = lazy(() => import('pages/Badges/category'));
 const BadgesGet = lazy(() => import('pages/Badges/get'));
 const BadgesCategoryLeaderboard = lazy(() => import('pages/Badges/category/BadgesCategoryLeaderboard'));
-const Cheatsheet = lazy(() => import(/* webpackChunkName: "cheatsheet" */ 'pages/Cheatsheet'));
-const EventAdministration = lazy(() => import(/* webpackChunkName: "event_administration" */ 'pages/EventAdministration'));
-const EventRegistration = lazy(() => import(/* webpackChunkName: "event_registration" */ 'pages/EventRegistration'));
-const ForgotPassword = lazy(() => import(/* webpackChunkName: "forgot_password" */ 'pages/ForgotPassword'));
-const Form = lazy(() => import(/* webpackChunkName: "form" */ 'pages/Form'));
-const Http404 = lazy(() => import(/* webpackChunkName: "http404" */ 'pages/Http404'));
-const JobPostAdministration = lazy(() => import(/* webpackChunkName: "jobpost_administration" */ 'pages/JobPostAdministration'));
-const LogIn = lazy(() => import(/* webpackChunkName: "login" */ 'pages/LogIn'));
-const NewsAdministration = lazy(() => import(/* webpackChunkName: "news_administration" */ 'pages/NewsAdministration'));
-const Wiki = lazy(() => import(/* webpackChunkName: "pages" */ 'pages/Wiki'));
-const ShortLinks = lazy(() => import(/* webpackChunkName: "short_links" */ 'pages/ShortLinks'));
-const SignUp = lazy(() => import(/* webpackChunkName: "signup" */ 'pages/SignUp'));
-const StrikeAdmin = lazy(() => import(/* webpackChunkName: "strike_admin" */ 'pages/StrikeAdmin'));
-const Toddel = lazy(() => import(/* webpackChunkName: "strike_admin" */ 'pages/Toddel'));
-const UserAdmin = lazy(() => import(/* webpackChunkName: "user_admin" */ 'pages/UserAdmin'));
+const Cheatsheet = lazy(() => import('pages/Cheatsheet'));
+const EventAdministration = lazy(() => import('pages/EventAdministration'));
+const EventRegistration = lazy(() => import('pages/EventRegistration'));
+const ForgotPassword = lazy(() => import('pages/ForgotPassword'));
+const Form = lazy(() => import('pages/Form'));
+const Http404 = lazy(() => import('pages/Http404'));
+const JobPostAdministration = lazy(() => import('pages/JobPostAdministration'));
+const LogIn = lazy(() => import('pages/LogIn'));
+const NewsAdministration = lazy(() => import('pages/NewsAdministration'));
+const Wiki = lazy(() => import('pages/Wiki'));
+const ShortLinks = lazy(() => import('pages/ShortLinks'));
+const SignUp = lazy(() => import('pages/SignUp'));
+const StrikeAdmin = lazy(() => import('pages/StrikeAdmin'));
+const Toddel = lazy(() => import('pages/Toddel'));
+const UserAdmin = lazy(() => import('pages/UserAdmin'));
 
 type AuthRouteProps = {
   apps?: Array<PermissionApp>;
