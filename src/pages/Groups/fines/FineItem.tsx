@@ -1,8 +1,5 @@
 import PaidIcon from '@mui/icons-material/CreditScoreRounded';
-import GavelIcon from '@mui/icons-material/Gavel';
 import Delete from '@mui/icons-material/DeleteRounded';
-import TimeIcon from '@mui/icons-material/AccessTime';
-import HelpIcon from '@mui/icons-material/HelpCenter';
 import ApprovedIcon from '@mui/icons-material/DoneOutlineRounded';
 import EditRounded from '@mui/icons-material/EditRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
@@ -111,15 +108,15 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItem
       <Collapse in={expanded}>
         <Divider />
         <Stack gap={1} sx={{ p: [1, undefined, 2] }}>
-          <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
-            {fine.reason && <Chip icon={<HelpIcon />} label={fine.reason} variant='outlined' />}
-            <Chip icon={<GavelIcon />} label={`${fine.created_by.first_name} ${fine.created_by.last_name}`} variant='outlined' />
-            <Chip icon={<TimeIcon />} label={`${formatDate(parseISO(fine.created_at), { fullDayOfWeek: true, fullMonth: true })}`} variant='outlined' />
+          <Stack direction='row' gap={1}>
+            <Chip color={fine.approved ? 'success' : 'error'} icon={<ApprovedIcon />} label={fine.approved ? 'Godkjent' : 'Ikke godkjent'} variant='outlined' />
+            <Chip color={fine.payed ? 'success' : 'error'} icon={<PaidIcon />} label={fine.payed ? 'Betalt' : 'Ikke betalt'} variant='outlined' />
           </Stack>
-          <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
-            <Chip icon={<ApprovedIcon />} label={fine.approved ? 'Godkjent' : 'Ikke godkjent'} variant='outlined' />
-            <Chip icon={<PaidIcon />} label={fine.payed ? 'Betalt' : 'Ikke betalt'} variant='outlined' />
-          </Stack>
+          <div>
+            {fine.reason && <Typography variant='subtitle2'>{`Begrunnelse: ${fine.reason}`}</Typography>}
+            <Typography variant='subtitle2'>{`Opprettet av: ${fine.created_by.first_name} ${fine.created_by.last_name}`}</Typography>
+            <Typography variant='subtitle2'>{`Dato: ${formatDate(parseISO(fine.created_at), { fullDayOfWeek: true, fullMonth: true })}`}</Typography>
+          </div>
           {isAdmin && (
             <>
               <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
@@ -129,8 +126,8 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItem
                   fullWidth
                   onClick={toggleApproved}
                   startIcon={<ApprovedIcon />}
-                  variant='outlined'>
-                  {fine.approved ? 'Merk som ikke godkjent' : 'Merk som godkjent'}
+                  variant='contained'>
+                  Merk som {fine.approved ? 'ikke godkjent' : 'godkjent'}
                 </Button>
                 <Button
                   color={fine.payed ? 'error' : 'success'}
@@ -138,8 +135,8 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItem
                   fullWidth
                   onClick={togglePayed}
                   startIcon={<PaidIcon />}
-                  variant='outlined'>
-                  {fine.payed ? 'Merk som ubetalt' : 'Merk som betalt'}
+                  variant='contained'>
+                  Merk som {fine.payed ? 'ikke betalt' : 'betalt'}
                 </Button>
               </Stack>
               <Dialog onClose={() => setEditOpen(false)} open={editOpen} titleText='Endre bot'>
