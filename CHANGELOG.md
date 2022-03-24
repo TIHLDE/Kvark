@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ⚡ **Spørreskjemaer**. Spørreskjemaer som kan besvares flere ganger blir nå tømt når de besvares.
 - ✨ **Arrangementer**. Marker arrangementer som favoritter og motta varsel ved påmeldingsstart.
 - 🦟 **Nyheter**. Nyheter trenger ikke å ha forfatter.
 - ✨ **Galleri**. Lagt til digitalt fotoalbum for arrangementer.
