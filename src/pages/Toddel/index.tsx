@@ -36,13 +36,13 @@ const ToddelPage = () => {
   return (
     <Page
       banner={
-        <Banner text='Linjeforeningsbladet til TIHLDE' title='Töddel'>
+        <Banner text='Linjeforeningsbladet til TIHLDE' title='TÖDDEL'>
           <HavePermission apps={[PermissionApp.TODDEL]}>
             <CreateToddelDialog />
           </HavePermission>
         </Banner>
       }
-      options={{ title: 'Töddel' }}>
+      options={{ title: 'TÖDDEL' }}>
       <ToddelGrid>
         {isLoading && <ToddelListItemLoading />}
         {!isLoading && !toddels.length && <NotFoundIndicator header='Fant ingen publikasjoner' />}

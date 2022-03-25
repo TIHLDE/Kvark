@@ -77,9 +77,17 @@ const GroupDetails = () => {
             <ArrowBackIcon />
           </IconButton>
           <Box sx={{ display: 'block', height: { xs: 45, md: 70 }, width: { xs: 45, md: 70 } }}>
-            <AspectRatioImg alt={data?.image_alt || ''} borderRadius ratio={1} src={data?.image || ''} />
+            <AspectRatioImg
+              alt={data?.image_alt || ''}
+              borderRadius
+              ratio={1}
+              src={data?.image || ''}
+              sx={{ height: { xs: 45, md: 70 }, width: { xs: 45, md: 70 } }}
+            />
           </Box>
-          <Typography variant='h1'>{data.name}</Typography>
+          <Typography sx={{ overflowWrap: 'anywhere' }} variant='h1'>
+            {data.name}
+          </Typography>
         </Stack>
         {hasWriteAcccess && <GroupAdmin group={data} />}
       </Stack>
