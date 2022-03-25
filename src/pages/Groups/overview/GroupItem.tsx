@@ -27,6 +27,7 @@ const GroupItem = ({ group, background = 'paper' }: GroupItemProps) => (
         gap={1}
         justifyContent='flex-start'
         sx={{ pl: 1, overflow: 'hidden' }}>
+        {/* TODO: fjern div rundt AspectRatioImg når flere nettlesere støtter aspect-ratio i css - https://caniuse.com/mdn-css_properties_aspect-ratio */}
         <Box sx={{ display: 'block', height: 70, width: 70 }}>
           <AspectRatioImg alt={group?.image_alt || ''} borderRadius ratio={1} src={group?.image || ''} sx={{ width: 70, height: 70 }} />
         </Box>

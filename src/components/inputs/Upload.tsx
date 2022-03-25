@@ -233,7 +233,7 @@ export const FormFileUpload = <FormValues extends FieldValues>({
       {url && (
         <Typography>
           Fil:{' '}
-          <Typography component='a' href={url as string} sx={{ overflowWrap: 'anywhere' }}>
+          <Typography component='a' href={url as string} sx={{ wordBreak: 'break-word' }}>
             {url as string}
           </Typography>
         </Typography>
@@ -300,7 +300,7 @@ export const FileUpload = <FormValues extends FieldValues>({ label = 'Last opp f
                 {url}
               </a>
             }
-            sx={{ overflowWrap: 'anywhere' }}
+            sx={{ wordBreak: 'break-word' }}
           />
           <ListItemSecondaryAction>
             <IconButton onClick={share}>
