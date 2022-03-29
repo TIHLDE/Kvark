@@ -1,4 +1,5 @@
 import { Button, ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper, Stack, TextField, Typography } from '@mui/material';
+import update from 'immutability-helper';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -9,7 +10,7 @@ import { FormFieldType } from 'types/Enums';
 import { useFormSubmissions, useUpdateForm } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
 
-import FieldEditor from 'components/forms/FieldEditor';
+import FieldEditor, { FieldEditorProps } from 'components/forms/FieldEditor';
 export type FormFieldsEditorProps = {
   form: Form;
   onSave?: () => void;
@@ -35,23 +36,23 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
     }
     type === FormFieldType.TEXT_ANSWER
       ? setFields((prev) => [
-        ...prev,
-        {
-          title: '',
-          required: false,
-          type: type,
-          options: [],
-        },
-      ])
+          ...prev,
+          {
+            title: '',
+            required: false,
+            type: type,
+            options: [],
+          },
+        ])
       : setFields((prev) => [
-        ...prev,
-        {
-          title: '',
-          required: false,
-          type: type,
-          options: [{ title: '' }],
-        },
-      ]);
+          ...prev,
+          {
+            title: '',
+            required: false,
+            type: type,
+            options: [{ title: '' }],
+          },
+        ]);
     setAddButtonOpen(false);
   };
 
@@ -63,8 +64,16 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
   };
 
   const moveField = useCallback((dragIndex: number, hoverIndex: number) => {
-    setFields((prevFields: (TextFormField | SelectFormField)[]) => []);
+    setFields((prevCards: (TextFormField | SelectFormField)[]) =>
+      update(prevCards, {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, prevCards[dragIndex] as TextFormField | SelectFormField],
+        ],
+      }),
+    );
   }, []);
+
   const removeField = (index: number) => {
     if (disabled) {
       return;
@@ -91,6 +100,19 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
       },
     );
   };
+  const renderFieldEditor = useCallback((field: TextFormField | SelectFormField, index: number) => {
+    return (
+      <FieldEditor
+        disabled={disabled}
+        field={field}
+        index={index}
+        key={index}
+        moveField={moveField}
+        removeField={() => removeField(index)}
+        updateField={(newField: TextFormField | SelectFormField) => updateField(newField, index)}
+      />
+    );
+  }, []);
 
   return (
     <>
@@ -101,17 +123,7 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
             Du kan ikke endre spørsmålene etter at noen har svart på dem
           </Typography>
         )}
-        <DndProvider backend={HTML5Backend}>
-          {fields.map((field, index) => (
-            <FieldEditor
-              disabled={disabled}
-              field={field}
-              key={index}
-              removeField={() => removeField(index)}
-              updateField={(newField: TextFormField | SelectFormField) => updateField(newField, index)}
-            />
-          ))}
-        </DndProvider>
+        <DndProvider backend={HTML5Backend}>{fields.map((field, index) => renderFieldEditor(field, index))}</DndProvider>
         <Button disabled={disabled} fullWidth onClick={() => setAddButtonOpen(true)} ref={buttonAnchorRef} variant='outlined'>
           Nytt spørsmål
         </Button>

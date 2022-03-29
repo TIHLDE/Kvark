@@ -5,8 +5,8 @@ import DragHandleIcon from '@mui/icons-material/DragHandleRounded';
 import RadioButtonIcon from '@mui/icons-material/RadioButtonUncheckedRounded';
 import { Button, Checkbox, FormControlLabel, Grow, IconButton, Stack, TextField, Tooltip, Typography } from '@mui/material';
 import { makeStyles } from 'makeStyles';
-import { useMemo } from 'react';
-import { useDrag } from 'react-dnd';
+import { useMemo, useRef } from 'react';
+import { useDrag, useDrop, XYCoord } from 'react-dnd';
 
 import { SelectFormField, TextFormField } from 'types';
 import { FormFieldType } from 'types/Enums';
@@ -39,21 +39,87 @@ const useStyles = makeStyles()((theme) => ({
 }));
 
 export type FieldEditorProps = {
+  index: number;
   field: TextFormField | SelectFormField;
   updateField: (newField: TextFormField | SelectFormField) => void;
+  moveField: (dragIndex: number, hoverIndex: number) => void;
   removeField: () => void;
   disabled?: boolean;
 };
 
-const FieldEditor = ({ field, updateField, removeField, disabled = false }: FieldEditorProps) => {
-  const { classes, cx } = useStyles();
+interface DragItem {
+  index: number;
+  id: string;
+  type: string;
+}
 
-  const [{ isDragging }, drag, preview] = useDrag(() => ({
-    type: 'field',
-    collect: (monitor) => ({
-      isDragging: Boolean(monitor.isDragging()),
+const FieldEditor = ({ moveField, index, field, updateField, removeField, disabled = false }: FieldEditorProps) => {
+  const { classes, cx } = useStyles();
+  const ref = useRef<HTMLDivElement>(null);
+  const [{ isDragging }, drag] = useDrag({
+    type: 'Field',
+    item: (id) => {
+      return { id, index };
+    },
+    collect: (monitor: any) => ({
+      isDragging: monitor.isDragging(),
     }),
-  }));
+  });
+
+  const [{ handlerId }, drop] = useDrop<DragItem, void, { handlerId: string | symbol | null }>({
+    accept: 'Field',
+    collect(monitor) {
+      return {
+        handlerId: monitor.getHandlerId(),
+      };
+    },
+    hover(item: DragItem, monitor) {
+      if (!ref.current) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = index;
+
+      // Don't replace items with themselves
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+
+      // Determine rectangle on screen
+      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+
+      // Get vertical middle
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+
+      // Determine mouse position
+      const clientOffset = monitor.getClientOffset();
+
+      // Get pixels to the top
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
+
+      // Only perform the move when the mouse has crossed half of the items height
+      // When dragging downwards, only move when the cursor is below 50%
+      // When dragging upwards, only move when the cursor is above 50%
+
+      // Dragging downwards
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+
+      // Dragging upwards
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+      // Time to actually perform the action
+      moveField(dragIndex, hoverIndex);
+
+      // Note: we're mutating the monitor item here!
+      // Generally it's better to avoid mutations,
+      // but it's good here for the sake of performance
+      // to avoid expensive index searches.
+      item.index = hoverIndex;
+    },
+  });
 
   const addFieldOption = () => {
     if (field.type !== FormFieldType.TEXT_ANSWER && !disabled) {
@@ -87,11 +153,11 @@ const FieldEditor = ({ field, updateField, removeField, disabled = false }: Fiel
   }, [field]);
 
   const TypeIcon = useMemo(() => (field.type === FormFieldType.SINGLE_SELECT ? RadioButtonIcon : CheckBoxIcon), [field]);
-
+  drag(drop(ref));
   return (
-    <Paper className={classes.root} noPadding ref={preview} sx={{ opacity: isDragging ? 0.5 : 1 }}>
+    <Paper className={classes.root} data-handler-id={handlerId} noPadding ref={ref} sx={{ opacity: isDragging ? 0.5 : 1 }}>
       <div className={classes.row}>
-        <Stack direction='row' gap={1} ref={drag}>
+        <Stack direction='row' gap={1}>
           <DragHandleIcon />
           <Tooltip placement='top-start' title={description}>
             <Typography sx={{ color: (theme) => theme.palette.text[disabled ? 'disabled' : 'primary'] }} variant='subtitle1'>
