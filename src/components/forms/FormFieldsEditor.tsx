@@ -102,19 +102,6 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
       },
     );
   };
-  const renderFieldEditor = useCallback((field: TextFormField | SelectFormField, index: number) => {
-    return (
-      <FieldEditor
-        disabled={disabled}
-        field={field}
-        index={index}
-        key={index}
-        moveField={moveField}
-        removeField={() => removeField(index)}
-        updateField={(newField: TextFormField | SelectFormField) => updateField(newField, index)}
-      />
-    );
-  }, []);
 
   return (
     <>
@@ -125,7 +112,19 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
             Du kan ikke endre spørsmålene etter at noen har svart på dem
           </Typography>
         )}
-        <DndProvider backend={HTML5Backend}>{fields.map((field, index) => renderFieldEditor(field, index))}</DndProvider>
+        <DndProvider backend={HTML5Backend}>
+          {fields.map((field, index) => (
+            <FieldEditor
+              disabled={disabled}
+              field={field}
+              index={index}
+              key={index}
+              moveField={moveField}
+              removeField={() => removeField(index)}
+              updateField={(newField: TextFormField | SelectFormField) => updateField(newField, index)}
+            />
+          ))}
+        </DndProvider>
         <Button disabled={disabled} fullWidth onClick={() => setAddButtonOpen(true)} ref={buttonAnchorRef} variant='outlined'>
           Nytt spørsmål
         </Button>
