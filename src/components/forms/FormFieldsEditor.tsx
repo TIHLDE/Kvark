@@ -10,7 +10,7 @@ import { FormFieldType } from 'types/Enums';
 import { useFormSubmissions, useUpdateForm } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
 
-import FieldEditor, { FieldEditorProps } from 'components/forms/FieldEditor';
+import FieldEditor from 'components/forms/FieldEditor';
 export type FormFieldsEditorProps = {
   form: Form;
   onSave?: () => void;
@@ -40,6 +40,7 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
           {
             title: '',
             required: false,
+            order: fields.length,
             type: type,
             options: [],
           },
@@ -49,6 +50,7 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
           {
             title: '',
             required: false,
+            order: fields.length,
             type: type,
             options: [{ title: '' }],
           },
@@ -64,13 +66,13 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
   };
 
   const moveField = useCallback((dragIndex: number, hoverIndex: number) => {
-    setFields((prevCards: (TextFormField | SelectFormField)[]) =>
-      update(prevCards, {
+    setFields((prevFields: (TextFormField | SelectFormField)[]) =>
+      update(prevFields, {
         $splice: [
           [dragIndex, 1],
-          [hoverIndex, 0, prevCards[dragIndex] as TextFormField | SelectFormField],
+          [hoverIndex, 0, prevFields[dragIndex] as TextFormField | SelectFormField],
         ],
-      }),
+      }).map((prevField, i) => update(prevField, { order: { $apply: () => i } })),
     );
   }, []);
 

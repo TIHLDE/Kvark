@@ -56,12 +56,12 @@ interface DragItem {
 const FieldEditor = ({ moveField, index, field, updateField, removeField, disabled = false }: FieldEditorProps) => {
   const { classes, cx } = useStyles();
   const ref = useRef<HTMLDivElement>(null);
-  const [{ isDragging }, drag] = useDrag({
+  const [{ isDragging }, drag, preview] = useDrag({
     type: 'Field',
     item: (id) => {
       return { id, index };
     },
-    collect: (monitor: any) => ({
+    collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
@@ -79,38 +79,22 @@ const FieldEditor = ({ moveField, index, field, updateField, removeField, disabl
       }
       const dragIndex = item.index;
       const hoverIndex = index;
-
-      // Don't replace items with themselves
       if (dragIndex === hoverIndex) {
         return;
       }
-
-      // Determine rectangle on screen
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
-
-      // Get vertical middle
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-
-      // Determine mouse position
       const clientOffset = monitor.getClientOffset();
-
-      // Get pixels to the top
       const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
-
-      // Only perform the move when the mouse has crossed half of the items height
-      // When dragging downwards, only move when the cursor is below 50%
-      // When dragging upwards, only move when the cursor is above 50%
-
       // Dragging downwards
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
       }
-
       // Dragging upwards
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return;
       }
-      // Time to actually perform the action
+
       moveField(dragIndex, hoverIndex);
 
       // Note: we're mutating the monitor item here!
@@ -153,11 +137,11 @@ const FieldEditor = ({ moveField, index, field, updateField, removeField, disabl
   }, [field]);
 
   const TypeIcon = useMemo(() => (field.type === FormFieldType.SINGLE_SELECT ? RadioButtonIcon : CheckBoxIcon), [field]);
-  drag(drop(ref));
+  drop(drag(ref));
   return (
-    <Paper className={classes.root} data-handler-id={handlerId} noPadding ref={ref} sx={{ opacity: isDragging ? 0.5 : 1 }}>
+    <Paper className={classes.root} data-handler-id={handlerId} noPadding ref={preview} sx={{ opacity: isDragging ? 0.5 : 1 }}>
       <div className={classes.row}>
-        <Stack direction='row' gap={1}>
+        <Stack direction='row' gap={1} ref={ref}>
           <DragHandleIcon />
           <Tooltip placement='top-start' title={description}>
             <Typography sx={{ color: (theme) => theme.palette.text[disabled ? 'disabled' : 'primary'] }} variant='subtitle1'>
