@@ -58,9 +58,7 @@ const FieldEditor = ({ moveField, index, field, updateField, removeField, disabl
   const ref = useRef<HTMLDivElement>(null);
   const [{ isDragging }, drag, preview] = useDrag({
     type: 'Field',
-    item: (id) => {
-      return { id, index };
-    },
+    item: (id) => ({ id, index }),
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -86,21 +84,16 @@ const FieldEditor = ({ moveField, index, field, updateField, removeField, disabl
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
       const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
-      // Dragging downwards
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
       }
-      // Dragging upwards
+
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return;
       }
 
       moveField(dragIndex, hoverIndex);
 
-      // Note: we're mutating the monitor item here!
-      // Generally it's better to avoid mutations,
-      // but it's good here for the sake of performance
-      // to avoid expensive index searches.
       item.index = hoverIndex;
     },
   });
@@ -141,7 +134,7 @@ const FieldEditor = ({ moveField, index, field, updateField, removeField, disabl
   return (
     <Paper className={classes.root} data-handler-id={handlerId} noPadding ref={preview} sx={{ opacity: isDragging ? 0.5 : 1 }}>
       <div className={classes.row}>
-        <Stack direction='row' gap={1} ref={ref}>
+        <Stack direction='row' gap={1} ref={ref} sx={{ cursor: 'pointer' }}>
           <DragHandleIcon />
           <Tooltip placement='top-start' title={description}>
             <Typography sx={{ color: (theme) => theme.palette.text[disabled ? 'disabled' : 'primary'] }} variant='subtitle1'>
