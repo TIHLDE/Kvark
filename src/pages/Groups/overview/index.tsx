@@ -51,7 +51,7 @@ const GroupsOverview = () => {
         </Grid>
       )}
       {error && <Paper>{error.detail}</Paper>}
-      {Boolean(BOARD_GROUPS.length) && <Collection groups={BOARD_GROUPS} title='Hovedstyret' />}
+      {Boolean(BOARD_GROUPS.length) && <Collection groups={BOARD_GROUPS} title='Hovedorgan' />}
       {Boolean(SUB_GROUPS.length) && <Collection groups={SUB_GROUPS} title='Undergrupper' />}
       {Boolean(COMMITTEES.length) && <Collection groups={COMMITTEES} title='Komitéer' />}
       {Boolean(INTERESTGROUPS.length) && <Collection groups={INTERESTGROUPS} title='Interessegrupper' />}

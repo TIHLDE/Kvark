@@ -81,7 +81,7 @@ const Profile = () => {
   const badgesTab: NavListItem = { label: 'Badges', icon: BadgesIcon };
   const groupsTab: NavListItem = { label: 'Grupper', icon: GroupsIcon };
   const formsTab: NavListItem = { label: 'Spørreskjemaer', icon: FormsIcon, badge: user?.unanswered_evaluations_count };
-  const settingsTab: NavListItem = { label: 'Endre profil', icon: SettingsIcon };
+  const settingsTab: NavListItem = { label: 'Innstillinger', icon: SettingsIcon };
   const adminTab: NavListItem = { label: 'Admin', icon: AdminIcon };
   const strikesTab: NavListItem = { label: 'Prikker', icon: WorkspacesIcon };
   const logoutTab: NavListItem = { label: 'Logg ut', icon: LogOutIcon, onClick: logout, iconProps: { sx: { color: (theme) => theme.palette.error.main } } };
@@ -186,7 +186,7 @@ const Profile = () => {
             <ProfileStrikes />
           </Collapse>
           <Collapse in={tab === settingsTab.label} mountOnEnter>
-            <Paper>{user && <ProfileSettings user={user} />}</Paper>
+            {user && <ProfileSettings user={user} />}
           </Collapse>
           <Collapse in={tab === adminTab.label} mountOnEnter>
             <ProfileAdmin />

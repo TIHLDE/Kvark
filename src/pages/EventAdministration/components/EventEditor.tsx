@@ -155,7 +155,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       );
     const array: Array<GroupOption> = [];
     if (BOARD_GROUPS.length) {
-      array.push({ type: 'header', header: 'Hovedstyret' });
+      array.push({ type: 'header', header: 'Hovedorgan' });
       BOARD_GROUPS.forEach((group) => array.push({ type: 'group', group, disabled: !hasGroupAccess(group) }));
     }
     if (SUB_GROUPS.length) {

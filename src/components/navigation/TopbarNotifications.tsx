@@ -93,7 +93,7 @@ const NotificationItem = ({ notification, setShowNotifications }: NotificationIt
       </ListItem>
       <Collapse in={showDescription}>
         <Divider />
-        <Typography sx={{ whiteSpace: 'break-spaces', overflowWrap: 'break-word', py: 1, px: 2 }} variant='body2'>
+        <Typography sx={{ whiteSpace: 'break-spaces', wordBreak: 'break-word', py: 1, px: 2 }} variant='body2'>
           <Linkify>{notification.description}</Linkify>
         </Typography>
       </Collapse>

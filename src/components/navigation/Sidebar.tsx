@@ -73,7 +73,7 @@ const SidebarItem = ({ onClose, ...props }: SidebarItemProps) => {
   const [isOpen, setIsOpen] = useState(false);
   if (props.type === 'link') {
     return props.external ? (
-      <Typography className={classes.text} component='a' href={props.to} variant='h2'>
+      <Typography className={classes.text} component='a' href={props.to} target='_blank' variant='h2'>
         {props.text} <OpenInNewIcon fontSize='inherit' sx={{ mb: '-2px' }} />
       </Typography>
     ) : (
