@@ -7,6 +7,7 @@ import { UserBase, UserList } from 'types';
 
 import { useGroup } from 'hooks/Group';
 import { useMemberships } from 'hooks/Membership';
+import { useIsAuthenticated } from 'hooks/User';
 
 import AddGroupMember from 'pages/Groups/about/AddGroupMember';
 import MemberListItem from 'pages/Groups/about/MemberListItem';
@@ -22,7 +23,8 @@ export type MembersCardProps = {
 };
 
 const MembersCard = ({ slug, showAdmin = false }: MembersCardProps) => {
-  const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useMemberships(slug, { onlyMembers: true });
+  const isAuthenticated = useIsAuthenticated();
+  const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useMemberships(slug, { onlyMembers: true }, { enabled: isAuthenticated });
   const members = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
   const { data: group } = useGroup(slug);
   const hasWriteAcccess = Boolean(group?.permissions.write);
@@ -66,24 +68,26 @@ const MembersCard = ({ slug, showAdmin = false }: MembersCardProps) => {
             <Person user={leader} />
           </Stack>
         )}
-        <Stack gap={1}>
-          <Stack alignItems='center' direction='row' gap={1} justifyContent='space-between'>
-            <Typography variant='h3'>Medlemmer:</Typography>
-            {hasWriteAcccess && showAdmin && <AddGroupMember groupSlug={slug} />}
-          </Stack>
-          <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
-            <Stack gap={1}>
-              {members.map((member) =>
-                hasWriteAcccess && showAdmin ? (
-                  <MemberListItem key={member.user.user_id} slug={group.slug} user={member.user as UserList} />
-                ) : (
-                  <Person key={member.user.user_id} user={member.user} />
-                ),
-              )}
+        {isAuthenticated && (
+          <Stack gap={1}>
+            <Stack alignItems='center' direction='row' gap={1} justifyContent='space-between'>
+              <Typography variant='h3'>Medlemmer:</Typography>
+              {hasWriteAcccess && showAdmin && <AddGroupMember groupSlug={slug} />}
             </Stack>
-            {!members.length && <NotFoundIndicator header='Denne gruppen har ingen medlemmer' />}
-          </Pagination>
-        </Stack>
+            <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
+              <Stack gap={1}>
+                {members.map((member) =>
+                  hasWriteAcccess && showAdmin ? (
+                    <MemberListItem key={member.user.user_id} slug={group.slug} user={member.user as UserList} />
+                  ) : (
+                    <Person key={member.user.user_id} user={member.user} />
+                  ),
+                )}
+              </Stack>
+              {!members.length && <NotFoundIndicator header='Denne gruppen har ingen medlemmer' />}
+            </Pagination>
+          </Stack>
+        )}
       </Stack>
     </>
   );
