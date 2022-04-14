@@ -1413,12 +1413,11 @@ broadcast-channel@^3.4.1:
     rimraf "3.0.2"
     unload "2.2.0"
 
-browser-image-compression@^1.0.17:
-  version "1.0.17"
-  resolved "https://registry.yarnpkg.com/browser-image-compression/-/browser-image-compression-1.0.17.tgz#5b97bb65297dadfee123be6c40ecb355c4758cf2"
-  integrity sha512-TMDh3gyNlVA5Vvn0D0AdWr33s2ftIeokHK406z8cYlLJ4ANAq1x6eMaSzqedDoZwUGyTVB+0rhNVaSFgM3YAZg==
+browser-image-compression@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/browser-image-compression/-/browser-image-compression-2.0.0.tgz#f421381a76d474d4da7dcd82810daf595b09bef6"
+  integrity sha512-kBlkZo13yOOfcmrPW0M0K/UdZPogIQj2gRvXIM3FktAnfW6VRq9aY2RI+F6O0x6DMj1Xm+WLGgWcFK8Fu/ddnw==
   dependencies:
-    core-js "^3.16.1"
     uzip "0.20201231.0"
 
 browserslist@^4.17.5:
@@ -1587,11 +1586,6 @@ copy-to-clipboard@^3.3.1:
   integrity sha512-i13qo6kIHTTpCm8/Wup+0b1mVWETvu2kIMzKoK8FpkLkFxlt0znUAHcMzox+T8sPlqtZXq3CulEjQHsYiGFJUw==
   dependencies:
     toggle-selection "^1.0.6"
-
-core-js@^3.16.1:
-  version "3.19.1"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.19.1.tgz#f6f173cae23e73a7d88fa23b6e9da329276c6641"
-  integrity sha512-Tnc7E9iKd/b/ff7GFbhwPVzJzPztGrChB8X8GLqoYGdEOG8IpLnK1xPyo3ZoO3HsK6TodJS58VGPOxA+hLHQMg==
 
 cosmiconfig@^6.0.0:
   version "6.0.0"
