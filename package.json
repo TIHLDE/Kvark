@@ -57,7 +57,7 @@
     "@types/gtag.js": "^0.0.8",
     "@types/node": "^17.0.15",
     "@types/qrcode.react": "^1.0.2",
-    "@types/react": "^17.0.37",
+    "@types/react": "^18.0.5",
     "@types/react-dom": "^17.0.11",
     "@types/react-helmet": "^6.1.2",
     "@types/react-linkify": "^1.0.1",
