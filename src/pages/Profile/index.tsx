@@ -79,7 +79,7 @@ const Profile = () => {
 
   const eventTab: NavListItem = { label: 'Arrangementer', icon: EventIcon };
   const badgesTab: NavListItem = { label: 'Badges', icon: BadgesIcon };
-  const groupsTab: NavListItem = { label: 'Grupper', icon: GroupsIcon };
+  const groupsTab: NavListItem = { label: 'Medlemskap', icon: GroupsIcon };
   const formsTab: NavListItem = { label: 'Spørreskjemaer', icon: FormsIcon, badge: user?.unanswered_evaluations_count };
   const settingsTab: NavListItem = { label: 'Innstillinger', icon: SettingsIcon };
   const adminTab: NavListItem = { label: 'Admin', icon: AdminIcon };

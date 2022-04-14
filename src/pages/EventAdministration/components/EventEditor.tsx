@@ -12,7 +12,7 @@ import { useCategories } from 'hooks/Categories';
 import { useCreateEvent, useDeleteEvent, useEventById, useUpdateEvent } from 'hooks/Event';
 import { useGroupsByType } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
-import { useUser, useUserGroups } from 'hooks/User';
+import { useUser, useUserMemberships } from 'hooks/User';
 
 import EventRegistrationPriorities from 'pages/EventAdministration/components/EventRegistrationPriorities';
 import EventRenderer from 'pages/EventDetails/components/EventRenderer';
@@ -141,17 +141,18 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     setValues(data || null);
   }, [data, setValues]);
 
-  const { data: userGroups = [] } = useUserGroups();
+  const { data: userGroups } = useUserMemberships();
+  const memberships = useMemo(() => (userGroups ? userGroups.pages.map((page) => page.results).flat() : []), [userGroups]);
   const { data: user } = useUser();
   const { data: groups, BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS } = useGroupsByType();
-  const groupOptions = useMemo(() => {
-    type GroupOption = { type: 'header'; header: string } | { type: 'group'; disabled: boolean; group: Group };
+  type GroupOption = { type: 'header'; header: string } | { type: 'group'; disabled: boolean; group: Group };
+  const groupOptions = useMemo<Array<GroupOption>>(() => {
     const hasGroupAccess = (group: Group) =>
       group.permissions.write ||
-      userGroups.some(
-        (userGroup) =>
-          userGroup.slug === group.slug &&
-          ([GroupType.COMMITTEE, GroupType.INTERESTGROUP].includes(group.type) ? user && userGroup.leader?.user_id === user?.user_id : true),
+      memberships.some(
+        (membership) =>
+          membership.group.slug === group.slug &&
+          ([GroupType.COMMITTEE, GroupType.INTERESTGROUP].includes(group.type) ? user && membership.group.leader?.user_id === user?.user_id : true),
       );
     const array: Array<GroupOption> = [];
     if (BOARD_GROUPS.length) {
@@ -171,7 +172,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       INTERESTGROUPS.forEach((group) => array.push({ type: 'group', group, disabled: !hasGroupAccess(group) }));
     }
     return array;
-  }, [userGroups, user, BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS]);
+  }, [memberships, user, BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS]);
 
   const getEventPreview = (): Event => {
     const values = getValues();
