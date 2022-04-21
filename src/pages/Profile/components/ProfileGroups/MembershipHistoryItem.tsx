@@ -42,8 +42,10 @@ const MembershipHistoryItem = ({ membershipHistory }: MembershipItemProps) => (
             {membershipHistory.group.name} - {getMembershipType(membershipHistory.membership_type)}
           </Typography>
           <Typography sx={{ fontSize: '0.8rem' }}>
-            {formatDate(parseISO(membershipHistory.start_date), { time: false, fullMonth: true })} -{' '}
-            {formatDate(parseISO(membershipHistory.end_date), { time: false, fullMonth: true })}
+            {`${formatDate(parseISO(membershipHistory.start_date), { time: false, fullMonth: true })} -> ${formatDate(parseISO(membershipHistory.end_date), {
+              time: false,
+              fullMonth: true,
+            })}`}
           </Typography>
         </Stack>
       </Stack>

@@ -38,6 +38,8 @@ export type MembershipHistory = Pick<Membership, 'group' | 'user' | 'membership_
   end_date: string;
 };
 
+export type MembershipHistoryMutate = Pick<MembershipHistory, 'end_date' | 'start_date' | 'membership_type'>;
+
 export type GroupLaw = {
   id: string;
   description: string;

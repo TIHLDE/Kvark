@@ -33,9 +33,11 @@ const MembershipItem = ({ membership }: MembershipItemProps) => (
         </Box>
         <Stack>
           <Typography sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} variant='h3'>
-            {membership.group.name} - {getMembershipType(membership.membership_type)}
+            {membership.group.name}
           </Typography>
-          <Typography sx={{ fontSize: '0.8rem' }}>{formatDate(parseISO(membership.created_at), { time: false, fullMonth: true })} - nå</Typography>
+          <Typography sx={{ fontSize: '0.8rem' }}>
+            {`${formatDate(parseISO(membership.created_at), { time: false, fullMonth: true })} -> nå - ${getMembershipType(membership.membership_type)}`}
+          </Typography>
         </Stack>
       </Stack>
     </ButtonBase>
