@@ -103,9 +103,11 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               Du står på ventelisten, vi gir deg beskjed hvis du får plass
             </Alert>
             {registration.survey_submission.answers.length > 0 && (
-              <Expand flat header='Dine svar på spørsmål'>
-                <FormUserAnswers submission={registration.survey_submission} />
-              </Expand>
+              <div>
+                <Expand flat header='Dine svar på spørsmål'>
+                  <FormUserAnswers submission={registration.survey_submission} />
+                </Expand>
+              </div>
             )}
           </>
         ) : (
