@@ -1,5 +1,16 @@
 import { CheatsheetType, Study, WarningType } from 'types/Enums';
 
+export type Banner = {
+  id: string;
+  image?: string;
+  image_alt?: string;
+  title: string;
+  description: string;
+  url?: string;
+  visiblefrom: string;
+  visibleuntil: string;
+};
+
 export interface Cheatsheet {
   course: string;
   creator: string;

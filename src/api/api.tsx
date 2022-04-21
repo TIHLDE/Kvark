@@ -4,6 +4,7 @@ import {
   BadgeCategory,
   BadgeLeaderboard,
   BadgesOverallLeaderboard,
+  Banner,
   Category,
   Cheatsheet,
   CompaniesEmail,
@@ -66,6 +67,7 @@ export const AUTH_ENDPOINT = 'auth';
 export const BADGES_ENDPOINT = 'badges';
 export const BADGES_LEADERBOARD_ENDPOINT = 'leaderboard';
 export const BADGE_CATEGORIES_ENDPOINT = 'categories';
+export const BANNER_ENDPOINT = 'banners';
 export const CATEGORIES_ENDPOINT = 'categories';
 export const CHEATSHEETS_ENDPOINT = 'cheatsheets';
 export const EVENTS_ENDPOINT = 'events';
@@ -101,6 +103,13 @@ export default {
     }),
   forgotPassword: (email: string) =>
     IFetch<RequestResponse>({ method: 'POST', url: `${AUTH_ENDPOINT}/rest-auth/password/reset/`, data: { email: email }, withAuth: false }),
+
+  //  Banner
+  getBanners: (filters?: any) => IFetch<PaginationResponse<Banner>>({ method: 'GET', url: BANNER_ENDPOINT, data: filters || {} }),
+  getVisibleBanners: (filters?: any) => IFetch<Array<Banner>>({ method: 'GET', url: `${BANNER_ENDPOINT}/visible`, data: filters || {} }),
+  createBanner: (item: Banner) => IFetch<Banner>({ method: 'POST', url: BANNER_ENDPOINT, data: item }),
+  updateBanner: (bannerId: Banner['id'], item: Partial<Banner>) => IFetch<Banner>({ method: 'PUT', url: `${BANNER_ENDPOINT}/${bannerId}/`, data: item }),
+  deleteBanner: (bannerId: Banner['id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${BANNER_ENDPOINT}/${bannerId}/` }),
 
   // Events
   getEvent: (eventId: Event['id']) => IFetch<Event>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/` }),

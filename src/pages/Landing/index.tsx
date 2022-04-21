@@ -12,6 +12,7 @@ import StoriesView from 'pages/Landing/components/StoriesView';
 import Wave from 'pages/Landing/components/Wave';
 
 import Container from 'components/layout/Container';
+import InfoBanner from 'components/miscellaneous/InfoBanner';
 import Page from 'components/navigation/Page';
 
 const Section = styled(Container)(({ theme }) => ({
@@ -36,6 +37,7 @@ const Landing = () => {
       <Smoke>
         <Section maxWidth='lg' sx={{ px: { xs: 0, lg: 2 } }}>
           <NewStudentBox />
+          <InfoBanner />
           <StoriesView />
         </Section>
       </Smoke>
