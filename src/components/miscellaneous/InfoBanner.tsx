@@ -21,14 +21,7 @@ const InfoBanner = () => {
           </Typography>
           <Typography align='center'>{banner.description}</Typography>
           {banner.url && (
-            <Button
-              fullWidth
-              onClick={(e) => {
-                e.preventDefault();
-                window.location.href = `${banner.url}`;
-              }}
-              sx={{ mt: 1 }}
-              variant='outlined'>
+            <Button component='a' fullWidth href={banner.url} sx={{ mt: 1 }} variant='outlined'>
               Åpne link
             </Button>
           )}
