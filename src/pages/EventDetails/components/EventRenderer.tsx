@@ -266,7 +266,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       );
     };
 
-    if (favorite) {
+    if (favorite && !preview) {
       return (
         <Tooltip title={favorite.is_favorite ? 'Fjern favorittmarkering' : 'Merk som favoritt'}>
           <IconButton {...props} onClick={() => toggleFavorite(!favorite.is_favorite)}>
