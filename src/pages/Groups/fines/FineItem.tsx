@@ -5,6 +5,7 @@ import EditRounded from '@mui/icons-material/EditRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import {
+  Box,
   Button,
   Checkbox,
   Chip,
@@ -15,7 +16,6 @@ import {
   ListItemProps,
   ListItemText,
   Stack,
-  styled,
   Tooltip,
   Typography,
 } from '@mui/material';
@@ -37,8 +37,6 @@ import TextField from 'components/inputs/TextField';
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
-
-const Img = styled('img')(({ theme }) => ({ borderRadius: theme.shape.borderRadius, maxWidth: 600, margin: 'auto' }));
 
 export type FineItemProps = {
   fine: GroupFine;
@@ -133,7 +131,9 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItem
             <Typography variant='subtitle2'>{`Opprettet av: ${fine.created_by.first_name} ${fine.created_by.last_name}`}</Typography>
             <Typography variant='subtitle2'>{`Dato: ${formatDate(parseISO(fine.created_at), { fullDayOfWeek: true, fullMonth: true })}`}</Typography>
           </div>
-          {fine.image && <Img alt='Bildebevis' loading='lazy' src={fine.image} width='100%' />}
+          {fine.image && (
+            <Box alt='Bildebevis' component='img' loading='lazy' src={fine.image} sx={{ borderRadius: 1, maxWidth: 600, m: 'auto', width: '100%' }} />
+          )}
           {isAdmin && (
             <>
               <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
