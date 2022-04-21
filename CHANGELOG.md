@@ -13,6 +13,9 @@
 ---
 
 ## Neste versjon
+
+- ✨ **Spørreskjemaer**. Administartor kan sortere spørreskjema-spørsmål i rekkefølgen som ønskes.
+
 ## Versjon 2022.03.24
 
 - ⚡ **Spørreskjemaer**. Spørreskjemaer som kan besvares flere ganger blir nå tømt når de besvares.
