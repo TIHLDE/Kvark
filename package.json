@@ -24,7 +24,7 @@
     "delayed-scroll-restoration-polyfill": "^0.1.1",
     "history": "^5.3.0",
     "plausible-tracker": "^0.3.5",
-    "qrcode.react": "^2.0.0",
+    "qrcode.react": "^3.0.1",
     "react": "^17.0.2",
     "react-cool-dimensions": "^2.0.7",
     "react-dom": "^17.0.2",
