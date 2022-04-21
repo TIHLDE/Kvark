@@ -54,15 +54,16 @@ export type GroupFine = {
   payed: boolean;
   description: string;
   reason: string;
+  image: string | null;
   created_by: UserBase;
   created_at: string;
 };
 
-export type GroupFineCreate = Pick<GroupFine, 'amount' | 'description' | 'reason'> & {
+export type GroupFineCreate = Pick<GroupFine, 'amount' | 'description' | 'image' | 'reason'> & {
   user: Array<UserBase['user_id']>;
 };
 
-export type GroupFineMutate = Partial<Pick<GroupFine, 'reason' | 'amount' | 'payed' | 'approved'>>;
+export type GroupFineMutate = Partial<Pick<GroupFine, 'reason' | 'amount' | 'image' | 'payed' | 'approved'>>;
 
 export type GroupFineBatchMutate = {
   fine_ids: Array<GroupFine['id']>;

@@ -4,7 +4,21 @@ import ApprovedIcon from '@mui/icons-material/DoneOutlineRounded';
 import EditRounded from '@mui/icons-material/EditRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import { Button, Checkbox, Chip, Collapse, Divider, ListItem, ListItemButton, ListItemProps, ListItemText, Stack, Tooltip, Typography } from '@mui/material';
+import {
+  Button,
+  Checkbox,
+  Chip,
+  Collapse,
+  Divider,
+  ListItem,
+  ListItemButton,
+  ListItemProps,
+  ListItemText,
+  Stack,
+  styled,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { parseISO } from 'date-fns';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -23,6 +37,8 @@ import TextField from 'components/inputs/TextField';
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
+
+const Img = styled('img')(({ theme }) => ({ borderRadius: theme.shape.borderRadius, maxWidth: 600, margin: 'auto' }));
 
 export type FineItemProps = {
   fine: GroupFine;
@@ -117,6 +133,7 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItem
             <Typography variant='subtitle2'>{`Opprettet av: ${fine.created_by.first_name} ${fine.created_by.last_name}`}</Typography>
             <Typography variant='subtitle2'>{`Dato: ${formatDate(parseISO(fine.created_at), { fullDayOfWeek: true, fullMonth: true })}`}</Typography>
           </div>
+          {fine.image && <Img alt='Bildebevis' loading='lazy' src={fine.image} width='100%' />}
           {isAdmin && (
             <>
               <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
