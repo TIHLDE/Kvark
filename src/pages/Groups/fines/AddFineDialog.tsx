@@ -13,6 +13,7 @@ import { useAnalytics } from 'hooks/Utils';
 import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
+import { ImageUpload } from 'components/inputs/Upload';
 import UserSearch from 'components/inputs/UserSearch';
 import Dialog from 'components/layout/Dialog';
 
@@ -111,6 +112,7 @@ const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug, ...props }:
                 required
               />
               <TextField formState={formState} label='Begrunnelse' maxRows={4} minRows={2} multiline {...register('reason')} />
+              <ImageUpload formState={formState} label='Bildebevis (Valgfritt)' register={register('image')} setValue={setValue} watch={watch} />
               <SubmitButton disabled={createFine.isLoading} formState={formState} sx={{ mt: 2 }}>
                 Opprett bot
               </SubmitButton>

@@ -13,6 +13,9 @@
 ---
 
 ## Neste versjon
+
+- ✨ **Botsystem**. Legg til bilder som bevis på bøter.
+
 ## Versjon 2022.03.24
 
 - ⚡ **Spørreskjemaer**. Spørreskjemaer som kan besvares flere ganger blir nå tømt når de besvares.
