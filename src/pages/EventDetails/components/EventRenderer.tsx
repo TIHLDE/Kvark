@@ -266,7 +266,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       );
     };
 
-    if (favorite && !preview) {
+    if (favorite) {
       return (
         <Tooltip title={favorite.is_favorite ? 'Fjern favorittmarkering' : 'Merk som favoritt'}>
           <IconButton {...props} onClick={() => toggleFavorite(!favorite.is_favorite)}>
@@ -282,7 +282,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     <>
       <DetailsPaper noPadding>
         <Stack direction='row' gap={1} justifyContent='space-between' sx={{ position: 'relative' }}>
-          {user && <Favorite eventId={data.id} sx={{ position: 'absolute', right: ({ spacing }) => spacing(-1) }} />}
+          {user && !preview && <Favorite eventId={data.id} sx={{ position: 'absolute', right: ({ spacing }) => spacing(-1) }} />}
           <DetailsHeader variant='h2'>Detaljer</DetailsHeader>
         </Stack>
         <DetailContent info={formatDate(startDate)} title='Fra:' />
