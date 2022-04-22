@@ -6,12 +6,10 @@ import { CacheProvider } from '@emotion/react';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { CssBaseline } from '@mui/material';
-import * as Sentry from '@sentry/react';
-import { BrowserTracing } from '@sentry/tracing';
 import AppRoutes from 'AppRoutes';
 import { SHOW_NEW_STUDENT_INFO } from 'constant';
 import { ReactNode } from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { broadcastQueryClient } from 'react-query/broadcastQueryClient-experimental';
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -25,16 +23,6 @@ import { ThemeProvider } from 'hooks/Theme';
 
 import MessageGDPR from 'components/miscellaneous/MessageGDPR';
 import Navigation from 'components/navigation/Navigation';
-
-const SENTRY_DSN = import.meta.env.VITE_SENTRY_DSN;
-
-if (SENTRY_DSN && import.meta.env.PROD) {
-  Sentry.init({
-    dsn: SENTRY_DSN,
-    integrations: [new BrowserTracing()],
-    tracesSampleRate: 0.5,
-  });
-}
 
 export const muiCache = createCache({ key: 'mui', prepend: true });
 
@@ -73,41 +61,15 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const ErrorBoundary = ({ children }: { children: ReactNode }) =>
-  import.meta.env.PROD ? (
-    <Sentry.ErrorBoundary
-      dialogOptions={{
-        title: 'Det ser ut som vi har problemer',
-        subtitle: 'Index har blitt varslet.',
-        subtitle2: 'Hvis du vil hjelpe oss kan du fortelle oss hva som skjedde nedenfor.',
-        labelName: 'Navn',
-        labelEmail: 'Epost',
-        labelComments: 'Hva skjedde?',
-        labelClose: 'Lukk',
-        labelSubmit: 'Send',
-        errorGeneric: 'Det oppstod en ukjent feil under innsending av rapporten. Vennligst prøv igjen.',
-        errorFormEntry: 'Noen felt var ugyldige. Rett opp feilene og prøv igjen.',
-        successMessage: 'Din tilbakemelding er sendt. Tusen takk!',
-      }}
-      fallback={<a href='/'>Gå til forsiden</a>}
-      showDialog>
-      {children}
-    </Sentry.ErrorBoundary>
-  ) : (
-    <>{children}</>
-  );
-
 export const Application = () => (
-  <ErrorBoundary>
-    <Providers>
-      <BrowserRouter>
-        <Navigation>
-          <AppRoutes />
-          <MessageGDPR />
-        </Navigation>
-      </BrowserRouter>
-    </Providers>
-  </ErrorBoundary>
+  <Providers>
+    <BrowserRouter>
+      <Navigation>
+        <AppRoutes />
+        <MessageGDPR />
+      </Navigation>
+    </BrowserRouter>
+  </Providers>
 );
 
 console.log(
@@ -144,4 +106,5 @@ const rickroll = () => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).badge = rickroll;
 
-render(<Application />, document.getElementById('root'));
+const root = createRoot(document.getElementById('root') as HTMLElement);
+root.render(<Application />);

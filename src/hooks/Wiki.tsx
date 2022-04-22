@@ -7,7 +7,7 @@ import API from 'api/api';
 export const WIKI_QUERY_KEY = 'wiki';
 export const WIKI_QUERY_KEY_TREE = `${WIKI_QUERY_KEY}/tree`;
 
-export const useWikiTree = () => useQuery<WikiTree, RequestResponse>(WIKI_QUERY_KEY_TREE, () => API.getWikiTree());
+export const useWikiTree = () => useQuery<WikiTree, RequestResponse>([WIKI_QUERY_KEY_TREE], () => API.getWikiTree());
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useWikiSearch = (filters: Record<string, any>) => {
@@ -53,6 +53,6 @@ export const useDeleteWikiPage = (path: string): UseMutationResult<RequestRespon
 };
 
 const invalidate = (queryClient: QueryClient) => {
-  queryClient.invalidateQueries(WIKI_QUERY_KEY);
-  queryClient.invalidateQueries(WIKI_QUERY_KEY_TREE);
+  queryClient.invalidateQueries([WIKI_QUERY_KEY]);
+  queryClient.invalidateQueries([WIKI_QUERY_KEY_TREE]);
 };

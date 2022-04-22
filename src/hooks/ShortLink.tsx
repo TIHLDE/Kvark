@@ -14,7 +14,7 @@ export const useCreateShortLink = (): UseMutationResult<ShortLink, RequestRespon
   const queryClient = useQueryClient();
   return useMutation((item) => API.createShortLink(item), {
     onSuccess: () => {
-      queryClient.invalidateQueries(SHORT_LINK_QUERY_KEY);
+      queryClient.invalidateQueries([SHORT_LINK_QUERY_KEY]);
     },
   });
 };
@@ -23,7 +23,7 @@ export const useDeleteShortLink = (): UseMutationResult<RequestResponse, Request
   const queryClient = useQueryClient();
   return useMutation((slug) => API.deleteShortLink(slug), {
     onSuccess: () => {
-      queryClient.invalidateQueries(SHORT_LINK_QUERY_KEY);
+      queryClient.invalidateQueries([SHORT_LINK_QUERY_KEY]);
     },
   });
 };

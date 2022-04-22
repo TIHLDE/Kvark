@@ -4,14 +4,14 @@ import { News, NewsRequired, PaginationResponse, RequestResponse } from 'types';
 
 import API from 'api/api';
 
-export const EXPORT_QUERY_KEY = 'news';
+export const NEWS_QUERY_KEY = 'news';
 
 export const useNewsById = (id: number) => {
-  return useQuery<News, RequestResponse>([EXPORT_QUERY_KEY, id], () => API.getNewsItem(id), { enabled: id !== -1 });
+  return useQuery<News, RequestResponse>([NEWS_QUERY_KEY, id], () => API.getNewsItem(id), { enabled: id !== -1 });
 };
 
 export const useNews = () => {
-  return useInfiniteQuery<PaginationResponse<News>, RequestResponse>([EXPORT_QUERY_KEY], ({ pageParam = 1 }) => API.getNewsItems({ page: pageParam }), {
+  return useInfiniteQuery<PaginationResponse<News>, RequestResponse>([NEWS_QUERY_KEY], ({ pageParam = 1 }) => API.getNewsItems({ page: pageParam }), {
     getNextPageParam: (lastPage) => lastPage.next,
   });
 };
@@ -20,8 +20,8 @@ export const useCreateNews = (): UseMutationResult<News, RequestResponse, NewsRe
   const queryClient = useQueryClient();
   return useMutation((newNewsItem: NewsRequired) => API.createNewsItem(newNewsItem), {
     onSuccess: (data) => {
-      queryClient.invalidateQueries(EXPORT_QUERY_KEY);
-      queryClient.setQueryData([EXPORT_QUERY_KEY, data.id], data);
+      queryClient.invalidateQueries([NEWS_QUERY_KEY]);
+      queryClient.setQueryData([NEWS_QUERY_KEY, data.id], data);
     },
   });
 };
@@ -30,8 +30,8 @@ export const useUpdateNews = (id: number): UseMutationResult<News, RequestRespon
   const queryClient = useQueryClient();
   return useMutation((updatedNewsItem: NewsRequired) => API.putNewsItem(id, updatedNewsItem), {
     onSuccess: (data) => {
-      queryClient.invalidateQueries(EXPORT_QUERY_KEY);
-      queryClient.setQueryData([EXPORT_QUERY_KEY, id], data);
+      queryClient.invalidateQueries([NEWS_QUERY_KEY]);
+      queryClient.setQueryData([NEWS_QUERY_KEY, id], data);
     },
   });
 };
@@ -40,7 +40,7 @@ export const useDeleteNews = (id: number): UseMutationResult<RequestResponse, Re
   const queryClient = useQueryClient();
   return useMutation(() => API.deleteNewsItem(id), {
     onSuccess: () => {
-      queryClient.invalidateQueries(EXPORT_QUERY_KEY);
+      queryClient.invalidateQueries([NEWS_QUERY_KEY]);
     },
   });
 };

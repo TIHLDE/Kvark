@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/react';
 import { ACCESS_TOKEN } from 'constant';
 import { ReactNode } from 'react';
 import { QueryKey, useInfiniteQuery, useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryOptions } from 'react-query';
@@ -40,13 +39,8 @@ export const USERS_QUERY_KEY = 'users';
 export const useUser = (userId?: User['user_id'], options?: UseQueryOptions<User | undefined, RequestResponse, User | undefined, QueryKey>) => {
   const isAuthenticated = useIsAuthenticated();
   const logOut = useLogout();
-  return useQuery<User | undefined, RequestResponse>([USER_QUERY_KEY, userId], () => (isAuthenticated ? API.getUserData(userId) : undefined), {
+  return useQuery<User | undefined, RequestResponse>([USER_QUERY_KEY, userId], () => (isAuthenticated ? API.getUserData(userId) : Promise.resolve(undefined)), {
     ...options,
-    onSuccess: (data) => {
-      if (data && !userId) {
-        Sentry.setUser({ username: data.user_id });
-      }
-    },
     onError: () => {
       if (!userId) {
         logOut();
@@ -58,7 +52,9 @@ export const useUser = (userId?: User['user_id'], options?: UseQueryOptions<User
 
 export const useUserPermissions = () => {
   const isAuthenticated = useIsAuthenticated();
-  return useQuery<UserPermissions | undefined, RequestResponse>([USER_PERMISSIONS_QUERY_KEY], () => (isAuthenticated ? API.getUserPermissions() : undefined));
+  return useQuery<UserPermissions | undefined, RequestResponse>([USER_PERMISSIONS_QUERY_KEY], () =>
+    isAuthenticated ? API.getUserPermissions() : Promise.resolve(undefined),
+  );
 };
 
 export const useUserBadges = (userId?: User['user_id']) =>
@@ -146,7 +142,6 @@ export const useLogout = () => {
   return () => {
     removeCookie(ACCESS_TOKEN);
     queryClient.removeQueries();
-    Sentry.configureScope((scope) => scope.setUser(null));
     navigate(URLS.landing);
   };
 };

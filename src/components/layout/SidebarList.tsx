@@ -129,8 +129,8 @@ const SidebarList = <Type extends unknown>({
       selected={Boolean(Number(item[idKey]) === selectedItemId)}>
       <ListItemText
         classes={{ secondary: classes.listItemSecondary }}
-        primary={item[titleKey]}
-        secondary={formatDesc ? formatDesc(item[descKey]) : item[descKey]}
+        primary={item[titleKey] as unknown as string}
+        secondary={formatDesc ? formatDesc(item[descKey]) : (item[descKey] as unknown as string)}
       />
     </MuiListItem>
   );

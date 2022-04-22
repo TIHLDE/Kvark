@@ -25,7 +25,7 @@ export const useCreateJobPost = (): UseMutationResult<JobPost, RequestResponse, 
   const queryClient = useQueryClient();
   return useMutation((newJobPost: JobPostRequired) => API.createJobPost(newJobPost), {
     onSuccess: (data) => {
-      queryClient.invalidateQueries(JOBPOST_QUERY_KEY);
+      queryClient.invalidateQueries([JOBPOST_QUERY_KEY]);
       queryClient.setQueryData([JOBPOST_QUERY_KEY, data.id], data);
     },
   });
@@ -35,7 +35,7 @@ export const useUpdateJobPost = (id: number): UseMutationResult<JobPost, Request
   const queryClient = useQueryClient();
   return useMutation((updatedJobPost: JobPostRequired) => API.putJobPost(id, updatedJobPost), {
     onSuccess: (data) => {
-      queryClient.invalidateQueries(JOBPOST_QUERY_KEY);
+      queryClient.invalidateQueries([JOBPOST_QUERY_KEY]);
       queryClient.setQueryData([JOBPOST_QUERY_KEY, id], data);
     },
   });
@@ -45,7 +45,7 @@ export const useDeleteJobPost = (id: number): UseMutationResult<RequestResponse,
   const queryClient = useQueryClient();
   return useMutation(() => API.deleteJobPost(id), {
     onSuccess: () => {
-      queryClient.invalidateQueries(JOBPOST_QUERY_KEY);
+      queryClient.invalidateQueries([JOBPOST_QUERY_KEY]);
     },
   });
 };
