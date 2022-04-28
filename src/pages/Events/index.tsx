@@ -3,13 +3,11 @@ import Reorder from '@mui/icons-material/ReorderRounded';
 import { Collapse, Skeleton } from '@mui/material';
 import { lazy, Suspense, useState } from 'react';
 
-// Project componets/services
 import EventsDefaultView from 'pages/Events/components/EventsDefaultView';
 
 import Banner from 'components/layout/Banner';
 import Tabs from 'components/layout/Tabs';
 import Page from 'components/navigation/Page';
-// Icons
 
 const EventsCalendarView = lazy(() => import(/* webpackChunkName: "events_calendar" */ 'pages/Landing/components/EventsCalendarView'));
 

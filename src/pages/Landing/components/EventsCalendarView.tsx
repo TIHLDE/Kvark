@@ -1,6 +1,6 @@
 import { AppointmentModel, ViewState } from '@devexpress/dx-react-scheduler';
 import { Appointments, DateNavigator, MonthView, Scheduler, Toolbar } from '@devexpress/dx-react-scheduler-material-ui';
-import { ClickAwayListener, Popper, useTheme } from '@mui/material';
+import { Button, ClickAwayListener, Popper, useTheme } from '@mui/material';
 import { endOfMonth, parseISO, startOfMonth } from 'date-fns';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 
@@ -43,12 +43,12 @@ const Appointment = ({ children, data }: AppointmentProps) => {
   const getColor = (event: EventCompact) =>
     theme.palette.colors[event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase() ? 'nok_event' : 'other_event'];
   return (
-    <div>
-      <div onClick={handleClick}>
+    <>
+      <Button onClick={handleClick} sx={{ width: '100%', height: '100%', textAlign: 'left', textTransform: 'none' }}>
         <Appointments.Appointment data={data} draggable={false} resources={[]} style={{ backgroundColor: getColor(data as unknown as EventCompact) }}>
           {children}
         </Appointments.Appointment>
-      </div>
+      </Button>
       <Popper
         anchorEl={anchorEl}
         modifiers={[
@@ -61,10 +61,10 @@ const Appointment = ({ children, data }: AppointmentProps) => {
         placement='top'
         style={{ zIndex: 1000000 }}>
         <ClickAwayListener onClickAway={handleClickAway}>
-          <div>{typeof data.id === 'number' ? <EventsCalendarPopover id={data.id} /> : null}</div>
+          <EventsCalendarPopover id={Number(data.id)} />
         </ClickAwayListener>
       </Popper>
-    </div>
+    </>
   );
 };
 
