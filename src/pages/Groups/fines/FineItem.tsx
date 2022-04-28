@@ -4,7 +4,21 @@ import ApprovedIcon from '@mui/icons-material/DoneOutlineRounded';
 import EditRounded from '@mui/icons-material/EditRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import { Button, Checkbox, Chip, Collapse, Divider, ListItem, ListItemButton, ListItemProps, ListItemText, Stack, Tooltip, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Checkbox,
+  Chip,
+  Collapse,
+  Divider,
+  ListItem,
+  ListItemButton,
+  ListItemProps,
+  ListItemText,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { parseISO } from 'date-fns';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -117,6 +131,9 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItem
             <Typography variant='subtitle2'>{`Opprettet av: ${fine.created_by.first_name} ${fine.created_by.last_name}`}</Typography>
             <Typography variant='subtitle2'>{`Dato: ${formatDate(parseISO(fine.created_at), { fullDayOfWeek: true, fullMonth: true })}`}</Typography>
           </div>
+          {fine.image && (
+            <Box alt='Bildebevis' component='img' loading='lazy' src={fine.image} sx={{ borderRadius: 1, maxWidth: 600, m: 'auto', width: '100%' }} />
+          )}
           {isAdmin && (
             <>
               <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
