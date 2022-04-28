@@ -12,6 +12,7 @@ import {
   GroupForm,
   GroupLaw,
   GroupLawMutate,
+  GroupMemberStatistics,
   GroupMutate,
   GroupUserFine,
   PaginationResponse,
@@ -27,6 +28,7 @@ export const GROUPS_QUERY_KEYS = {
   list: (filters?: any) => [...GROUPS_QUERY_KEYS.all, 'list', ...(filters ? [filters] : [])] as const,
   detail: (slug: Group['slug']) => [...GROUPS_QUERY_KEYS.all, slug] as const,
   laws: (slug: Group['slug']) => [...GROUPS_QUERY_KEYS.detail(slug), 'laws'] as const,
+  statistics: (slug: Group['slug']) => [...GROUPS_QUERY_KEYS.detail(slug), 'statistics'] as const,
   fines: {
     all: (slug: Group['slug']) => [...GROUPS_QUERY_KEYS.detail(slug), 'fines'] as const,
     statistics: (slug: Group['slug']) => [...GROUPS_QUERY_KEYS.fines.all(slug), 'statistics'] as const,
@@ -199,3 +201,6 @@ export const useDeleteGroupFine = (
 
 export const useGroupForms = (groupSlug: string) =>
   useQuery<Array<GroupForm>, RequestResponse>(GROUPS_QUERY_KEYS.forms.all(groupSlug), () => API.getGroupForms(groupSlug));
+
+export const useGroupStatistics = (groupSlug: string) =>
+  useQuery<GroupMemberStatistics, RequestResponse>(GROUPS_QUERY_KEYS.statistics(groupSlug), () => API.getGroupStatistics(groupSlug));

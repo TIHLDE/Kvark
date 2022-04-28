@@ -1,4 +1,4 @@
-import { GroupType, MembershipType } from 'types/Enums';
+import { GroupType, MembershipType, UserClass, UserStudy } from 'types/Enums';
 import { Permissions } from 'types/Misc';
 import { UserBase, UserList } from 'types/User';
 
@@ -79,4 +79,9 @@ export type GroupFineStatistics = {
   payed: number;
   approved_and_not_payed: number;
   not_approved: number;
+};
+
+export type GroupMemberStatistics = {
+  classes: Array<{ user_class: UserClass; amount: number }>;
+  studies: Array<{ user_study: UserStudy; amount: number }>;
 };
