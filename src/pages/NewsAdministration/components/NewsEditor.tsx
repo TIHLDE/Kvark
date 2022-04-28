@@ -2,7 +2,7 @@ import Grid from '@mui/material/Grid';
 import LinearProgress from '@mui/material/LinearProgress';
 import { makeStyles } from 'makeStyles';
 import { useCallback, useEffect, useMemo } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { News } from 'types';
 
@@ -15,6 +15,7 @@ import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import { ImageUpload } from 'components/inputs/Upload';
+import UserSearch from 'components/inputs/UserSearch';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
 
@@ -40,12 +41,12 @@ export type NewsEditorProps = {
   goToNews: (newNews: number | null) => void;
 };
 
-type FormValues = Pick<News, 'title' | 'header' | 'body' | 'image' | 'image_alt'>;
+type FormValues = Pick<News, 'title' | 'header' | 'body' | 'image' | 'image_alt' | 'creator'>;
 
 const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
   const showSnackbar = useSnackbar();
   const { classes } = useStyles();
-  const { handleSubmit, register, formState, getValues, reset, watch, setValue } = useForm<FormValues>();
+  const { control, handleSubmit, register, formState, getValues, reset, watch, setValue } = useForm<FormValues>();
   const { data, isError, isLoading } = useNewsById(newsId || -1);
   const createNews = useCreateNews();
   const updateNews = useUpdateNews(newsId || -1);
@@ -64,6 +65,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
       reset({
         title: newValues?.title || '',
         header: newValues?.header || '',
+        creator: newValues?.creator || null,
         body: newValues?.body || '',
         image: newValues?.image || '',
         image_alt: newValues?.image_alt || '',
@@ -99,25 +101,31 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
       },
     });
   };
-  const submit: SubmitHandler<FormValues> = async (data) => {
+  const submit = async (data: FormValues) => {
     newsId
-      ? await updateNews.mutate(data, {
-          onSuccess: () => {
-            showSnackbar('Nyheten ble oppdatert', 'success');
+      ? updateNews.mutate(
+          { ...data, creator: data.creator?.user_id || null },
+          {
+            onSuccess: () => {
+              showSnackbar('Nyheten ble oppdatert', 'success');
+            },
+            onError: (err) => {
+              showSnackbar(err.detail, 'error');
+            },
           },
-          onError: (err) => {
-            showSnackbar(err.detail, 'error');
+        )
+      : createNews.mutate(
+          { ...data, creator: data.creator?.user_id || null },
+          {
+            onSuccess: (newNewsItem) => {
+              showSnackbar('Nyheten ble opprettet', 'success');
+              goToNews(newNewsItem.id);
+            },
+            onError: (err) => {
+              showSnackbar(err.detail, 'error');
+            },
           },
-        })
-      : await createNews.mutate(data, {
-          onSuccess: (newNewsItem) => {
-            showSnackbar('Nyheten ble opprettet', 'success');
-            goToNews(newNewsItem.id);
-          },
-          onError: (err) => {
-            showSnackbar(err.detail, 'error');
-          },
-        });
+        );
   };
 
   if (isLoading) {
@@ -129,6 +137,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
         <Grid container direction='column' wrap='nowrap'>
           <TextField formState={formState} label='Tittel' {...register('title', { required: 'Feltet er påkrevd' })} required />
           <TextField formState={formState} label='Header' {...register('header', { required: 'Feltet er påkrevd' })} required />
+          <UserSearch control={control} formState={formState} label='Forfatter' name='creator' />
           <MarkdownEditor formState={formState} label='Innhold' {...register('body', { required: 'Gi nyheten et innhold' })} required />
           <ImageUpload formState={formState} label='Velg bilde' ratio='21:9' register={register('image')} setValue={setValue} watch={watch} />
           <TextField formState={formState} label='Alternativ bildetekst' {...register('image_alt')} />

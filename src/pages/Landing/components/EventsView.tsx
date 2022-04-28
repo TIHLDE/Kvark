@@ -10,7 +10,7 @@ import EventsListView from 'pages/Landing/components/EventsListView';
 import Tabs from 'components/layout/Tabs';
 import { AlertOnce } from 'components/miscellaneous/UserInformation';
 
-const EventsCalendarView = lazy(() => import(/* webpackChunkName: "events_calendar" */ 'pages/Landing/components/EventsCalendarView'));
+const EventsCalendarView = lazy(() => import('pages/Landing/components/EventsCalendarView'));
 
 const EventsView = () => {
   const { data, isLoading } = useEvents();

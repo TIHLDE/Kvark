@@ -1,4 +1,5 @@
 import { PermissionApp, UserClass, UserStudy } from 'types/Enums';
+import { Group } from 'types/Group';
 import { Permissions } from 'types/Misc';
 
 export type LoginRequestResponse = {
@@ -20,12 +21,27 @@ export type User = {
   unanswered_evaluations_count: number;
   number_of_strikes: number;
   public_event_registrations: boolean;
+  slack_user_id: string;
 };
 
 export type UserBase = Pick<User, 'user_id' | 'first_name' | 'last_name' | 'image' | 'email' | 'user_class' | 'user_study' | 'gender'>;
 export type UserList = UserBase & Pick<User, 'email' | 'user_class' | 'user_study' | 'allergy' | 'gender' | 'tool' | 'number_of_strikes'>;
 export type UserCreate = Pick<User, 'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study'> & {
   password: string;
+  study: Group['slug'] | null;
+  class: Group['slug'] | null;
+};
+
+export type UserNotificationSetting = {
+  notification_type: string;
+  email: boolean;
+  website: boolean;
+  slack: boolean;
+};
+
+export type UserNotificationSettingChoice = {
+  notification_type: string;
+  label: string;
 };
 
 export type UserPermissions = {
