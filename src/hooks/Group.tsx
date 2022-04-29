@@ -54,10 +54,10 @@ export const useUpdateGroup = (): UseMutationResult<Group, RequestResponse, Grou
   });
 };
 
-export const useGroups = () => useQuery<Group[], RequestResponse>(GROUPS_QUERY_KEYS.list(), () => API.getGroups());
+export const useGroups = (filters?: any) => useQuery<Group[], RequestResponse>(GROUPS_QUERY_KEYS.list(filters), () => API.getGroups({ ...filters }));
 
-export const useGroupsByType = () => {
-  const { data: groups, ...response } = useGroups();
+export const useGroupsByType = (filters?: any) => {
+  const { data: groups, ...response } = useGroups(filters);
   const BOARD_GROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.BOARD) || [], [groups]);
   const SUB_GROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.SUBGROUP) || [], [groups]);
   const COMMITTEES = useMemo(() => groups?.filter((group) => group.type === GroupType.COMMITTEE) || [], [groups]);

@@ -13,7 +13,7 @@ import { useSetNavigationOptions } from 'components/navigation/Navigation';
 const GroupsOverview = () => {
   useSetNavigationOptions({ title: 'Gruppeoversikt' });
   const isAuthenticated = useIsAuthenticated();
-  const { BOARD_GROUPS, SUB_GROUPS, COMMITTEES, INTERESTGROUPS, OTHER_GROUPS, error, isLoading } = useGroupsByType();
+  const { BOARD_GROUPS, SUB_GROUPS, COMMITTEES, INTERESTGROUPS, OTHER_GROUPS, error, isLoading } = useGroupsByType({ overview: true });
 
   type CollectionProps = {
     groups: Array<Group>;

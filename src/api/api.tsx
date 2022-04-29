@@ -271,7 +271,7 @@ export default {
     IFetch<Membership>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${slug}/${MEMBERSHIPS_ENDPOINT}/${userId}/`, data }),
 
   // Group
-  getGroups: () => IFetch<Group[]>({ method: 'GET', url: `${GROUPS_ENDPOINT}/` }),
+  getGroups: (filters?: any) => IFetch<Group[]>({ method: 'GET', url: `${GROUPS_ENDPOINT}/`, data: filters || {} }),
   getGroup: (slug: Group['slug']) => IFetch<Group>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/` }),
   updateGroup: (slug: Group['slug'], data: GroupMutate) => IFetch<Group>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${slug}/`, data }),
 

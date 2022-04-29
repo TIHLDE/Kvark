@@ -13,6 +13,7 @@
 ---
 
 ## Neste versjon
+
 ## Versjon 2022.04.21
 
 - ✨ **Botsystem**. Legg til bilder som bevis på bøter.
