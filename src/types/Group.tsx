@@ -33,12 +33,16 @@ export type Membership = {
   user: UserBase | UserList;
   membership_type: MembershipType;
   group: Group;
+  created_at: string;
 };
 
-export type MembershipHistory = Membership & {
+export type MembershipHistory = Pick<Membership, 'group' | 'user' | 'membership_type'> & {
+  id: string;
   start_date: string;
   end_date: string;
 };
+
+export type MembershipHistoryMutate = Pick<MembershipHistory, 'end_date' | 'start_date' | 'membership_type'>;
 
 export type GroupLaw = {
   id: string;
