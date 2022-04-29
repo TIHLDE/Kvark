@@ -1,5 +1,6 @@
 import { ListItem, ListItemAvatar, ListItemButton, ListItemText, Skeleton, Stack, Typography } from '@mui/material';
 import { format, parseISO } from 'date-fns';
+import nbLocale from 'date-fns/locale/nb';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
@@ -50,9 +51,9 @@ const MembersHistoryCard = ({ slug }: MembersHistoryCardProps) => {
                 </ListItemAvatar>
                 <ListItemText
                   primary={`${member.user.first_name} ${member.user.last_name}`}
-                  secondary={`${format(parseISO(member.start_date), 'MMMM yyyy')} til ${format(parseISO(member.end_date), 'MMMM yyyy')} - ${getMembershipType(
-                    member.membership_type,
-                  )}`}
+                  secondary={`${format(parseISO(member.start_date), 'MMMM yyyy', { locale: nbLocale })} til ${format(parseISO(member.end_date), 'MMMM yyyy', {
+                    locale: nbLocale,
+                  })} - ${getMembershipType(member.membership_type)}`}
                 />
               </ListItemButton>
             </ListItem>
