@@ -23,7 +23,7 @@ export type MembersCardProps = {
 
 const MembersCard = ({ groupSlug }: MembersCardProps) => {
   const isAuthenticated = useIsAuthenticated();
-  const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useMemberships(groupSlug, { onlyMembers: true });
+  const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useMemberships(groupSlug, { onlyMembers: true }, { enabled: isAuthenticated });
   const memberships = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
   const { data: group } = useGroup(groupSlug);
   const hasWriteAcccess = Boolean(group?.permissions.write);

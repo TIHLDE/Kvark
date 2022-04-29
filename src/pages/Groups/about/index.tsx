@@ -2,13 +2,15 @@ import { Divider } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
 import { useGroup } from 'hooks/Group';
+import { useIsAuthenticated } from 'hooks/User';
 
-// Project components
 import MembersCard from 'pages/Groups/about/MembersCard';
 import MembersHistoryCard from 'pages/Groups/about/MembersHistoryCard';
 
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
+
 const GroupInfo = () => {
+  const isAuthenticated = useIsAuthenticated();
   const { slug } = useParams<'slug'>();
   const { data: group, isLoading } = useGroup(slug || '-');
   if (isLoading || !group) {
@@ -23,7 +25,7 @@ const GroupInfo = () => {
         </>
       )}
       <MembersCard groupSlug={group.slug} />
-      <MembersHistoryCard groupSlug={group.slug} />
+      {isAuthenticated && <MembersHistoryCard groupSlug={group.slug} />}
     </>
   );
 };
