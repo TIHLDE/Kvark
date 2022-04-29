@@ -2,6 +2,10 @@ import { GroupType, MembershipType } from 'types/Enums';
 import { Permissions } from 'types/Misc';
 import { UserBase, UserList } from 'types/User';
 
+export type GroupPermissions = Permissions & {
+  group_form: boolean;
+};
+
 export type Group = {
   name: string;
   slug: string;
@@ -9,7 +13,7 @@ export type Group = {
   contact_email: string | null;
   type: GroupType;
   leader: UserBase | UserList | null;
-  permissions: Permissions;
+  permissions: GroupPermissions;
   fines_admin: UserBase | UserList | null;
   fines_activated: boolean;
   fine_info: string;

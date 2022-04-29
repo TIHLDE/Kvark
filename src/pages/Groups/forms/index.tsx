@@ -77,8 +77,7 @@ const GroupForms = () => {
   const { data: group } = useGroup(slug || '-');
   const { data: forms } = useGroupForms(slug || '-');
 
-  const isAdmin = group?.permissions.write;
-
+  const isAdmin = group?.permissions.group_form;
   if (!forms || !slug || !group) {
     return null;
   }
