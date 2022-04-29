@@ -7,6 +7,7 @@ import { Group } from 'types';
 
 import { useGroup } from 'hooks/Group';
 import { useMemberships } from 'hooks/Membership';
+import { useIsAuthenticated } from 'hooks/User';
 
 import AddGroupMember from 'pages/Groups/about/AddGroupMember';
 import MembershipListItem from 'pages/Groups/about/MembershipListItem';
@@ -21,6 +22,7 @@ export type MembersCardProps = {
 };
 
 const MembersCard = ({ groupSlug }: MembersCardProps) => {
+  const isAuthenticated = useIsAuthenticated();
   const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useMemberships(groupSlug, { onlyMembers: true });
   const memberships = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
   const { data: group } = useGroup(groupSlug);
@@ -57,20 +59,22 @@ const MembersCard = ({ groupSlug }: MembersCardProps) => {
             </ListItem>
           </Stack>
         )}
-        <Stack gap={1}>
-          <Stack alignItems='center' direction='row' gap={1} justifyContent='space-between'>
-            <Typography variant='h3'>Medlemmer:</Typography>
-            {hasWriteAcccess && <AddGroupMember groupSlug={groupSlug} />}
-          </Stack>
-          <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
-            <Stack gap={1}>
-              {memberships.map((membership) => (
-                <MembershipListItem isAdmin={hasWriteAcccess} key={membership.user.user_id} membership={membership} />
-              ))}
+        {isAuthenticated && (
+          <Stack gap={1}>
+            <Stack alignItems='center' direction='row' gap={1} justifyContent='space-between'>
+              <Typography variant='h3'>Medlemmer:</Typography>
+              {hasWriteAcccess && <AddGroupMember groupSlug={groupSlug} />}
             </Stack>
-            {!memberships.length && <NotFoundIndicator header='Denne gruppen har ingen medlemmer' />}
-          </Pagination>
-        </Stack>
+            <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
+              <Stack gap={1}>
+                {memberships.map((membership) => (
+                  <MembershipListItem isAdmin={hasWriteAcccess} key={membership.user.user_id} membership={membership} />
+                ))}
+              </Stack>
+              {!memberships.length && <NotFoundIndicator header='Denne gruppen har ingen medlemmer' />}
+            </Pagination>
+          </Stack>
+        )}
       </Stack>
     </>
   );

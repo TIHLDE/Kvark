@@ -17,6 +17,10 @@
 - ✨ **Medlemskap**. Gruppe-admin kan nå redigere tidligere medlemskap.
 - ✨ **Profil**. Det er mulig å se brukeres tidligere medlemskap, samt rolle i dem.
 
+## Versjon 2022.04.21
+
+- ✨ **Botsystem**. Legg til bilder som bevis på bøter.
+
 ## Versjon 2022.03.24
 
 - ⚡ **Spørreskjemaer**. Spørreskjemaer som kan besvares flere ganger blir nå tømt når de besvares.

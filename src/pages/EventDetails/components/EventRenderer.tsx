@@ -103,9 +103,11 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               Du står på ventelisten, vi gir deg beskjed hvis du får plass
             </Alert>
             {registration.survey_submission.answers.length > 0 && (
-              <Expand flat header='Dine svar på spørsmål'>
-                <FormUserAnswers submission={registration.survey_submission} />
-              </Expand>
+              <div>
+                <Expand flat header='Dine svar på spørsmål'>
+                  <FormUserAnswers submission={registration.survey_submission} />
+                </Expand>
+              </div>
             )}
           </>
         ) : (
@@ -282,7 +284,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     <>
       <DetailsPaper noPadding>
         <Stack direction='row' gap={1} justifyContent='space-between' sx={{ position: 'relative' }}>
-          {user && <Favorite eventId={data.id} sx={{ position: 'absolute', right: ({ spacing }) => spacing(-1) }} />}
+          {user && !preview && <Favorite eventId={data.id} sx={{ position: 'absolute', right: ({ spacing }) => spacing(-1) }} />}
           <DetailsHeader variant='h2'>Detaljer</DetailsHeader>
         </Stack>
         <DetailContent info={formatDate(startDate)} title='Fra:' />
