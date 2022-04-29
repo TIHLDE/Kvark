@@ -10,9 +10,9 @@ import { GROUPS_QUERY_KEYS } from 'hooks/Group';
 export const MEMBERSHIP_QUERY_KEY = 'membership';
 export const MEMBERSHIP_HISTORY_QUERY_KEY = 'membership-history';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useMemberships = (
   groupSlug: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   filters?: any,
   options?: UseInfiniteQueryOptions<PaginationResponse<Membership>, RequestResponse, PaginationResponse<Membership>, PaginationResponse<Membership>, QueryKey>,
 ) => {
