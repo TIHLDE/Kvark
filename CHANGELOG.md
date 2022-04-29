@@ -13,6 +13,7 @@
 ---
 
 ## Neste versjon
+## Versjon 2022.04.29
 
 - ✨ **Medlemskap**. Gruppe-admin kan nå redigere tidligere medlemskap.
 - ✨ **Profil**. Det er mulig å se brukeres tidligere medlemskap, samt rolle i dem.
