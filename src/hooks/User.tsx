@@ -1,16 +1,17 @@
 import * as Sentry from '@sentry/react';
 import { ACCESS_TOKEN } from 'constant';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { QueryKey, useInfiniteQuery, useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryOptions } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import URLS from 'URLS';
 
-import {
+import type {
   Badge,
   EventCompact,
   Form,
-  Group,
   LoginRequestResponse,
+  Membership,
+  MembershipHistory,
   PaginationResponse,
   RequestResponse,
   Strike,
@@ -21,7 +22,7 @@ import {
   UserNotificationSettingChoice,
   UserPermissions,
 } from 'types';
-import { PermissionApp } from 'types/Enums';
+import type { PermissionApp } from 'types/Enums';
 
 import API from 'api/api';
 import { getCookie, removeCookie, setCookie } from 'api/cookie';
@@ -29,7 +30,8 @@ import { getCookie, removeCookie, setCookie } from 'api/cookie';
 export const USER_QUERY_KEY = 'user';
 export const USER_BADGES_QUERY_KEY = 'user_badges';
 export const USER_EVENTS_QUERY_KEY = 'user_events';
-export const USER_GROUPS_QUERY_KEY = 'user_groups';
+export const USER_MEMBERSHIPS_QUERY_KEY = 'user_memberships';
+export const USER_MEMBERSHIP_HISTORIES_QUERY_KEY = 'user_membership_histories';
 export const USER_FORMS_QUERY_KEY = 'user_forms';
 export const USER_STRIKES_QUERY_KEY = 'user_strikes';
 export const USER_PERMISSIONS_QUERY_KEY = 'user_permissions';
@@ -90,8 +92,13 @@ export const useUserForms = (filters?: any) =>
     },
   );
 
-export const useUserGroups = (userId?: User['user_id']) =>
-  useQuery<Array<Group>, RequestResponse>([USER_GROUPS_QUERY_KEY, userId], () => API.getUserGroups(userId));
+export const useUserMemberships = (userId?: User['user_id']) =>
+  useInfiniteQuery<PaginationResponse<Membership>, RequestResponse>([USER_MEMBERSHIPS_QUERY_KEY, userId], () => API.getUserMemberships(userId));
+
+export const useUserMembershipHistories = (userId?: User['user_id']) =>
+  useInfiniteQuery<PaginationResponse<MembershipHistory>, RequestResponse>([USER_MEMBERSHIP_HISTORIES_QUERY_KEY, userId], () =>
+    API.getUserMembershipHistories(userId),
+  );
 
 export const useUserStrikes = (userId?: string) => useQuery<Array<Strike>, RequestResponse>([USER_STRIKES_QUERY_KEY, userId], () => API.getUserStrikes(userId));
 
