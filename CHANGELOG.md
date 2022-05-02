@@ -13,6 +13,10 @@
 ---
 
 ## Neste versjon
+
+- ✨ **Ny bruker**. Brukere kan velge kull-tilhørighet.
+- ⚡ **Arrangementer**. Tillat Promo å redigere alle arrangementer.
+
 ## Versjon 2022.04.29
 
 - ✨ **Medlemskap**. Gruppe-admin kan nå redigere tidligere medlemskap.
