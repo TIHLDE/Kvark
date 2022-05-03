@@ -4,6 +4,7 @@ import ApprovedIcon from '@mui/icons-material/DoneOutlineRounded';
 import EditRounded from '@mui/icons-material/EditRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
+import DefenseIcon from '@mui/icons-material/ShieldRounded';
 import {
   Box,
   Button,
@@ -175,7 +176,7 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItem
           )}
           {fine.user.user_id === user?.user_id && (
             <>
-              <Button fullWidth onClick={() => setEditDefenseOpen(true)} startIcon={<PaidIcon />} variant='outlined'>
+              <Button fullWidth onClick={() => setEditDefenseOpen(true)} startIcon={<DefenseIcon />} variant='outlined'>
                 {fine.defense ? 'Endre forsvar' : 'Legg til forsvar'}
               </Button>
               <Dialog onClose={() => setEditDefenseOpen(false)} open={editDefenseOpen} titleText='Endre forsvar'>
