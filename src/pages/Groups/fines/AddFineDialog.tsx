@@ -10,6 +10,7 @@ import { useCreateGroupFine, useGroupLaws } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useAnalytics } from 'hooks/Utils';
 
+import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
@@ -111,7 +112,7 @@ const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug, ...props }:
                 {...register('amount')}
                 required
               />
-              <TextField formState={formState} label='Begrunnelse' maxRows={4} minRows={2} multiline {...register('reason')} />
+              <MarkdownEditor formState={formState} label='Begrunnelse' {...register('reason')} />
               <ImageUpload formState={formState} label='Bildebevis (Valgfritt)' register={register('image')} setValue={setValue} watch={watch} />
               <SubmitButton disabled={createFine.isLoading} formState={formState} sx={{ mt: 2 }}>
                 Opprett bot

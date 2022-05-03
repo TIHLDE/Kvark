@@ -7,6 +7,7 @@ import {
   GroupFine,
   GroupFineBatchMutate,
   GroupFineCreate,
+  GroupFineDefenseMutate,
   GroupFineMutate,
   GroupFineStatistics,
   GroupForm,
@@ -163,6 +164,17 @@ export const useUpdateGroupFine = (
   const queryClient = useQueryClient();
 
   return useMutation((data) => API.updateGroupFine(groupSlug, fineId, data), {
+    onSuccess: () => queryClient.invalidateQueries(GROUPS_QUERY_KEYS.fines.all(groupSlug)),
+  });
+};
+
+export const useUpdateGroupFineDefense = (
+  groupSlug: Group['slug'],
+  fineId: GroupFine['id'],
+): UseMutationResult<GroupFine, RequestResponse, GroupFineDefenseMutate, unknown> => {
+  const queryClient = useQueryClient();
+
+  return useMutation((data) => API.updateGroupFineDefense(groupSlug, fineId, data), {
     onSuccess: () => queryClient.invalidateQueries(GROUPS_QUERY_KEYS.fines.all(groupSlug)),
   });
 };
