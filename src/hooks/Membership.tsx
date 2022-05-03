@@ -40,7 +40,7 @@ export const useMembershipHistories = (groupSlug: Group['slug'], filters?: any) 
 export const useCreateMembership = (): UseMutationResult<Membership, RequestResponse, { groupSlug: Group['slug']; userId: User['user_id'] }, unknown> => {
   const queryClient = useQueryClient();
   return useMutation(({ groupSlug, userId }) => API.createMembership(groupSlug, userId), {
-    onSuccess: (data) => queryClient.invalidateQueries([MEMBERSHIP_QUERY_KEY, data.group.slug]),
+    onSuccess: (_, { groupSlug }) => queryClient.invalidateQueries([MEMBERSHIP_QUERY_KEY, groupSlug]),
   });
 };
 
