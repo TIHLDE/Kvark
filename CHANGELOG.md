@@ -13,6 +13,9 @@
 ---
 
 ## Neste versjon
+
+- ✨ **Bøter**. Det er mulig å legge til forsvar av egen bot
+
 ## Versjon 2022.04.29
 
 - ✨ **Medlemskap**. Gruppe-admin kan nå redigere tidligere medlemskap.
