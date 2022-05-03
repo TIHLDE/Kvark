@@ -13,7 +13,10 @@
 ---
 
 ## Neste versjon
+## Versjon 2022.05.03
 
+- ✨ **Ny bruker**. Brukere kan velge kull-tilhørighet.
+- ⚡ **Arrangementer**. Tillat Promo å redigere alle arrangementer.
 - ✨ **Bøter**. Det er mulig å legge til forsvar av mottatte bøter
 
 ## Versjon 2022.04.29
