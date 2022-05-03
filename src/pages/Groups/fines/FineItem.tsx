@@ -25,7 +25,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { formatDate } from 'utils';
 
-import { Group, GroupFine, GroupFineDefenseMutate, GroupFineMutate } from 'types';
+import { Group, GroupFine, GroupFineDefenseMutate, GroupFineMutate, UserBase } from 'types';
 
 import { useDeleteGroupFine, useUpdateGroupFine, useUpdateGroupFineDefense } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
@@ -47,9 +47,10 @@ export type FineItemProps = {
   groupSlug: Group['slug'];
   isAdmin?: boolean;
   hideUserInfo?: boolean;
+  fineUser?: UserBase;
 } & ListItemProps;
 
-const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItemProps) => {
+const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser, ...props }: FineItemProps) => {
   const { data: user } = useUser();
   const { event } = useAnalytics();
   const showSnackbar = useSnackbar();
@@ -174,7 +175,7 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, ...props }: FineItem
               <MarkdownRenderer value={fine.defense} />
             </Paper>
           )}
-          {fine.user.user_id === user?.user_id && (
+          {(fineUser || fine.user)?.user_id === user?.user_id && (
             <>
               <Button fullWidth onClick={() => setEditDefenseOpen(true)} startIcon={<DefenseIcon />} variant='outlined'>
                 {fine.defense ? 'Endre forsvar' : 'Legg til forsvar'}

@@ -87,7 +87,7 @@ const UserFineItem = ({ userFine, groupSlug, isAdmin }: UserFineItemProps) => {
               </Stack>
             )}
             {fines.map((fine) => (
-              <FineItem fine={fine} groupSlug={groupSlug} hideUserInfo isAdmin={isAdmin} key={fine.id} />
+              <FineItem fine={fine} fineUser={userFine.user} groupSlug={groupSlug} hideUserInfo isAdmin={isAdmin} key={fine.id} />
             ))}
           </Stack>
         </Pagination>
