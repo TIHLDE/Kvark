@@ -46,6 +46,7 @@ export interface PaginationResponse<T> {
 export interface Permissions {
   write: boolean;
   read: boolean;
+  write_all?: boolean;
   destroy?: boolean;
 }
 

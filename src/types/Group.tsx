@@ -22,17 +22,17 @@ export type Group = {
   viewer_is_member: boolean;
 };
 
+export type GroupList = Pick<Group, 'name' | 'slug' | 'type' | 'viewer_is_member' | 'image' | 'image_alt'>;
+
 export type GroupMutate = Partial<Omit<Group, 'fines_admin' | 'permissions' | 'type' | 'viewer_is_member'>> &
   Pick<Group, 'slug'> & {
     fines_admin?: string | null;
   };
 
-export type GroupList = Pick<Group, 'description' | 'name' | 'slug' | 'type' | 'contact_email' | 'image' | 'image_alt'>;
-
 export type Membership = {
   user: UserBase | UserList;
   membership_type: MembershipType;
-  group: Group;
+  group: GroupList;
   created_at: string;
 };
 
