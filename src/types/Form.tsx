@@ -58,6 +58,7 @@ export type FormUpdate = EventFormUpdate | GroupFormUpdate | TemplateFormUpdate;
 interface FormField {
   id?: string;
   title: string;
+  order: number;
   required: boolean;
 }
 

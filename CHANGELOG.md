@@ -13,6 +13,9 @@
 ---
 
 ## Neste versjon
+
+- ✨ **Spørreskjemaer**. Administartor kan sortere spørreskjema-spørsmål i rekkefølgen som ønskes.
+
 ## Versjon 2022.05.03
 
 - ✨ **Ny bruker**. Brukere kan velge kull-tilhørighet.
