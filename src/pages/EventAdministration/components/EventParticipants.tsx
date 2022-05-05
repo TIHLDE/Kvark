@@ -1,6 +1,7 @@
 import CopyIcon from '@mui/icons-material/FileCopyOutlined';
 import { Alert, AlertTitle, Box, Button, Checkbox, Divider, FormControlLabel, LinearProgress, List, Stack, Typography } from '@mui/material';
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 import { Event } from 'types';
 
@@ -13,15 +14,25 @@ import EventStatistics from 'pages/EventAdministration/components/EventStatistic
 import Participant from 'pages/EventAdministration/components/Participant';
 
 import Pagination from 'components/layout/Pagination';
+import Paper from 'components/layout/Paper';
 
 type RegistrationsProps = {
   onWait?: boolean;
   eventId: Event['id'];
 };
 
+type RegistrationsCopyDetails = {
+  names: boolean;
+  emails: boolean;
+};
+
 const Registrations = ({ onWait = false, eventId }: RegistrationsProps) => {
   const [showOnlyNotAttended, setShowOnlyNotAttended] = useState(false);
   const { data, hasNextPage, isFetching, isLoading, fetchNextPage } = useEventRegistrations(eventId, { is_on_wait: onWait });
+  const { register, handleSubmit } = useForm({
+    defaultValues: { names: false, emails: false },
+  });
+
   const registrations = useMemo(
     () =>
       data
@@ -34,26 +45,32 @@ const Registrations = ({ onWait = false, eventId }: RegistrationsProps) => {
   );
   const showSnackbar = useSnackbar();
 
-  const getEmails = useCallback(() => {
-    let emails = '';
+  const getRegistrationDetails = ({ names, emails }: RegistrationsCopyDetails) => {
+    if (!names && !emails) {
+      return '';
+    }
+    let data = '';
     const participants = registrations;
     participants.forEach((participant, i) => {
-      emails += participant.user_info.email;
+      data += names ? `${participant.user_info.first_name} ${participant.user_info.last_name}` : '';
+      data += names && emails ? ',' : '';
+      data += emails ? participant.user_info.email : '';
+
       if (i < participants.length - 1) {
-        emails += ' \n';
+        data += ' \n';
       }
     });
-    return emails;
-  }, [registrations]);
+    return data;
+  };
 
-  const copyEmails = () => {
+  const copyRegistrationDetails = ({ names, emails }: RegistrationsCopyDetails) => {
     const tempInput = document.createElement('textarea');
-    tempInput.value = getEmails();
+    tempInput.value = getRegistrationDetails({ names: names, emails: emails });
     document.body.appendChild(tempInput);
     tempInput.select();
     document.execCommand('copy');
     document.body.removeChild(tempInput);
-    showSnackbar('Epostene ble kopiert til utklippstavlen', 'info');
+    showSnackbar('Detaljene ble kopiert til utklippstavlen', 'info');
   };
 
   return (
@@ -88,9 +105,18 @@ const Registrations = ({ onWait = false, eventId }: RegistrationsProps) => {
                   stole på eposter som mottas. Våre eposter havner heller ikke i søppelpost. Kopier alle eposter kun om du virkelig er nødt til å sende epost
                   selv.
                 </Alert>
-                <Button endIcon={<CopyIcon />} fullWidth onClick={copyEmails} variant='outlined'>
-                  Kopier alle eposter
-                </Button>
+                <Paper>
+                  <form onSubmit={handleSubmit((data) => copyRegistrationDetails(data))}>
+                    <Box margin={1}>
+                      <Typography>Kopier detaljer om deltagere på arrangementet til utklippstavlen. Huk av for detaljene du ønsker å kopiere. </Typography>
+                      <FormControlLabel control={<Checkbox {...register('names')} />} label='Navn' />
+                      <FormControlLabel control={<Checkbox {...register('emails')} />} label='Epost' />
+                    </Box>
+                    <Button endIcon={<CopyIcon />} fullWidth type='submit' variant='outlined'>
+                      Kopier deltager detaljer
+                    </Button>
+                  </form>
+                </Paper>
               </>
             )}
           </Pagination>
