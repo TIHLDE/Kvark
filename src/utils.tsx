@@ -1,9 +1,9 @@
-import { format, getMonth, getYear, isAfter, isBefore, parseISO, subMinutes } from 'date-fns';
+import { format, getYear, isAfter, isBefore, parseISO, subMinutes } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
 import slugify from 'slugify';
 
 import { Event, GroupLaw, SelectFormField, SelectFormFieldOption, TextFormField, UserBase } from 'types';
-import { FormFieldType, JobPostType, MembershipType, StrikeReason, StudyNew, UserClass, UserStudy } from 'types/Enums';
+import { FormFieldType, JobPostType, MembershipType, StrikeReason, Study, UserClass, UserStudy } from 'types/Enums';
 
 export const isAfterDateOfYear = (month: number, date: number) => isAfter(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
 export const isBeforeDateOfYear = (month: number, date: number) => isBefore(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
@@ -49,30 +49,24 @@ export const getStrikesDelayedRegistrationHours = (numberOfStrikes: number) => {
   return 12;
 };
 
-// export const getUserStudyyears = (): Array<number> => {
-//   const JULY = 6;
-//   const FIRST_YEAR = new Date(2016, 1, 1);
-//   const CURRENT_YEAR = getYear(new Date());
-//   const CURRENT_MONTH = getMonth(new Date());
-//   return eachYearOfInterval({
-//     start: FIRST_YEAR,
-//     end: new Date(CURRENT_YEAR - (CURRENT_MONTH > JULY ? 0 : 1), 1, 1)
-//   }).map(getYear);
-// }
-
 /**
- * Get the user's affiliation as a string
+ * Get the user's affiliation as a string.
+ *
+ * July 15th, users are "moved" up a class as it's the middle of the summer.
+ * Ex.: In May 2022, a user in Dataingeniør which started in 2020 is in "2. klasse".
+ * In August 2022 the same user is in "3. klasse".
+ *
+ * Users which started for more than 3 years ago and does not study DigSam is shown as "Startet i <start-year>".
+ *
  * @param user the user
  * @returns `Dataingeniør - 2. klasse` or `Dataingeniør - Startet i 2017`
  */
 export const getUserAffiliation = (user: UserBase, includeStudy = true, includeStudyyear = true): string => {
   const getStudyyear = (groupName: UserBase['studyyear']['group']['name']) => {
-    const JULY = 6;
     const STUDYYEAR = Number(groupName);
-    const CURRENT_MONTH = getMonth(new Date());
     const CURRENT_YEAR = getYear(new Date());
-    const diff = CURRENT_YEAR - STUDYYEAR + (CURRENT_MONTH > JULY ? 1 : 0);
-    if ((user.study.group?.name === StudyNew.DIGSAM && diff <= 5) || diff <= 3) {
+    const diff = CURRENT_YEAR - STUDYYEAR + (isAfterDateOfYear(6, 15) ? 1 : 0);
+    if ((user.study.group?.name === Study.DIGSAM && diff <= 5) || diff <= 3) {
       return `${diff}. klasse`;
     }
     return `Startet i ${STUDYYEAR}`;

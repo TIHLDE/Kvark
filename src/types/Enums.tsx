@@ -4,7 +4,7 @@ export enum WarningType {
   MESSAGE = 2,
 }
 
-export enum Study {
+export enum CheatsheetStudy {
   DATAING = 'Dataing',
   DIGFOR = 'DigFor',
   DIGSEC = 'DigSec',
@@ -12,7 +12,7 @@ export enum Study {
   INFO = 'Info',
 }
 
-export enum StudyNew {
+export enum Study {
   DATAING = 'dataingenir',
   DIGFOR = 'digital-forretningsutvikling',
   DIGSEC = 'digital-infrastruktur-og-cybersikkerhet',
