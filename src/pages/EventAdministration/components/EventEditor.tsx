@@ -5,14 +5,14 @@ import { makeStyles } from 'makeStyles';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { Event, EventRequired, Group, RegistrationPriority } from 'types';
-import { GroupType } from 'types/Enums';
+import { Event, EventRequired, Group, GroupList, RegistrationPriority } from 'types';
+import { GroupType, MembershipType } from 'types/Enums';
 
 import { useCategories } from 'hooks/Categories';
 import { useCreateEvent, useDeleteEvent, useEventById, useUpdateEvent } from 'hooks/Event';
 import { useGroupsByType } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
-import { useUser, useUserGroups } from 'hooks/User';
+import { useUser, useUserMemberships, useUserPermissions } from 'hooks/User';
 
 import EventRegistrationPriorities from 'pages/EventAdministration/components/EventRegistrationPriorities';
 import EventRenderer from 'pages/EventDetails/components/EventRenderer';
@@ -141,37 +141,41 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     setValues(data || null);
   }, [data, setValues]);
 
-  const { data: userGroups = [] } = useUserGroups();
+  const { data: permissions } = useUserPermissions();
+  const { data: userGroups } = useUserMemberships();
+  const memberships = useMemo(() => (userGroups ? userGroups.pages.map((page) => page.results).flat() : []), [userGroups]);
   const { data: user } = useUser();
   const { data: groups, BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS } = useGroupsByType();
-  const groupOptions = useMemo(() => {
-    type GroupOption = { type: 'header'; header: string } | { type: 'group'; disabled: boolean; group: Group };
-    const hasGroupAccess = (group: Group) =>
-      group.permissions.write ||
-      userGroups.some(
-        (userGroup) =>
-          userGroup.slug === group.slug &&
-          ([GroupType.COMMITTEE, GroupType.INTERESTGROUP].includes(group.type) ? user && userGroup.leader?.user_id === user?.user_id : true),
-      );
-    const array: Array<GroupOption> = [];
-    if (BOARD_GROUPS.length) {
-      array.push({ type: 'header', header: 'Hovedorgan' });
-      BOARD_GROUPS.forEach((group) => array.push({ type: 'group', group, disabled: !hasGroupAccess(group) }));
+
+  type GroupOption = { type: 'header'; header: string } | { type: 'group'; group: GroupList };
+  const groupOptions = useMemo<Array<GroupOption>>(() => {
+    if (!permissions) {
+      return [];
     }
-    if (SUB_GROUPS.length) {
-      array.push({ type: 'header', header: 'Undergrupper' });
-      SUB_GROUPS.forEach((group) => array.push({ type: 'group', group, disabled: !hasGroupAccess(group) }));
+    if (permissions.permissions.event.write_all) {
+      const array: Array<GroupOption> = [];
+      if (BOARD_GROUPS.length) {
+        array.push({ type: 'header', header: 'Hovedorgan' });
+        BOARD_GROUPS.forEach((group) => array.push({ type: 'group', group }));
+      }
+      if (SUB_GROUPS.length) {
+        array.push({ type: 'header', header: 'Undergrupper' });
+        SUB_GROUPS.forEach((group) => array.push({ type: 'group', group }));
+      }
+      if (COMMITTEES.length) {
+        array.push({ type: 'header', header: 'Komitéer' });
+        COMMITTEES.forEach((group) => array.push({ type: 'group', group }));
+      }
+      if (INTERESTGROUPS.length) {
+        array.push({ type: 'header', header: 'Interessegrupper' });
+        INTERESTGROUPS.forEach((group) => array.push({ type: 'group', group }));
+      }
+      return array;
     }
-    if (COMMITTEES.length) {
-      array.push({ type: 'header', header: 'Komitéer' });
-      COMMITTEES.forEach((group) => array.push({ type: 'group', group, disabled: !hasGroupAccess(group) }));
-    }
-    if (INTERESTGROUPS.length) {
-      array.push({ type: 'header', header: 'Interessegrupper' });
-      INTERESTGROUPS.forEach((group) => array.push({ type: 'group', group, disabled: !hasGroupAccess(group) }));
-    }
-    return array;
-  }, [userGroups, user, BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS]);
+    return memberships
+      .filter((membership) => membership.membership_type === MembershipType.LEADER || [GroupType.BOARD, GroupType.SUBGROUP].includes(membership.group.type))
+      .map((membership) => ({ type: 'group', group: membership.group }));
+  }, [memberships, permissions, user, BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS]);
 
   const getEventPreview = (): Event => {
     const values = getValues();
@@ -441,13 +445,14 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                   </ShowMoreText>
                 }
                 label='Arrangør (Gruppe)'
-                name='organizer'>
-                {data && !data.organizer && <MenuItem value=''>Ingen</MenuItem>}
+                name='organizer'
+                required
+                rules={{ required: 'Du må velge en arrangør' }}>
                 {groupOptions.map((option) =>
                   option.type === 'header' ? (
                     <ListSubheader key={option.header}>{option.header}</ListSubheader>
                   ) : (
-                    <MenuItem disabled={option.disabled} key={option.group.slug} value={option.group.slug}>
+                    <MenuItem key={option.group.slug} value={option.group.slug}>
                       {option.group.name}
                     </MenuItem>
                   ),

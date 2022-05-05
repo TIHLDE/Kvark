@@ -7,6 +7,7 @@ import {
   GroupFine,
   GroupFineBatchMutate,
   GroupFineCreate,
+  GroupFineDefenseMutate,
   GroupFineMutate,
   GroupFineStatistics,
   GroupForm,
@@ -54,10 +55,10 @@ export const useUpdateGroup = (): UseMutationResult<Group, RequestResponse, Grou
   });
 };
 
-export const useGroups = () => useQuery<Group[], RequestResponse>(GROUPS_QUERY_KEYS.list(), () => API.getGroups());
+export const useGroups = (filters?: any) => useQuery<Group[], RequestResponse>(GROUPS_QUERY_KEYS.list(filters), () => API.getGroups({ ...filters }));
 
-export const useGroupsByType = () => {
-  const { data: groups, ...response } = useGroups();
+export const useGroupsByType = (filters?: any) => {
+  const { data: groups, ...response } = useGroups(filters);
   const BOARD_GROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.BOARD) || [], [groups]);
   const SUB_GROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.SUBGROUP) || [], [groups]);
   const COMMITTEES = useMemo(() => groups?.filter((group) => group.type === GroupType.COMMITTEE) || [], [groups]);
@@ -163,6 +164,17 @@ export const useUpdateGroupFine = (
   const queryClient = useQueryClient();
 
   return useMutation((data) => API.updateGroupFine(groupSlug, fineId, data), {
+    onSuccess: () => queryClient.invalidateQueries(GROUPS_QUERY_KEYS.fines.all(groupSlug)),
+  });
+};
+
+export const useUpdateGroupFineDefense = (
+  groupSlug: Group['slug'],
+  fineId: GroupFine['id'],
+): UseMutationResult<GroupFine, RequestResponse, GroupFineDefenseMutate, unknown> => {
+  const queryClient = useQueryClient();
+
+  return useMutation((data) => API.updateGroupFineDefense(groupSlug, fineId, data), {
     onSuccess: () => queryClient.invalidateQueries(GROUPS_QUERY_KEYS.fines.all(groupSlug)),
   });
 };
