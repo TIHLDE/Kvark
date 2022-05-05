@@ -23,6 +23,7 @@ import {
   GroupFine,
   GroupFineBatchMutate,
   GroupFineCreate,
+  GroupFineDefenseMutate,
   GroupFineMutate,
   GroupFineStatistics,
   GroupForm,
@@ -35,6 +36,7 @@ import {
   LoginRequestResponse,
   Membership,
   MembershipHistory,
+  MembershipHistoryMutate,
   News,
   NewsRequired,
   Notification,
@@ -176,7 +178,10 @@ export default {
     IFetch<PaginationResponse<EventCompact>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${EVENTS_ENDPOINT}/`, data: filters || {} }),
   getUserForms: (filters?: any) =>
     IFetch<PaginationResponse<Form>>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/${FORMS_ENDPOINT}/`, data: filters || {} }),
-  getUserGroups: (userId?: User['user_id']) => IFetch<Array<Group>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${GROUPS_ENDPOINT}/` }),
+  getUserMemberships: (userId?: User['user_id']) =>
+    IFetch<PaginationResponse<Membership>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${MEMBERSHIPS_ENDPOINT}/` }),
+  getUserMembershipHistories: (userId?: User['user_id']) =>
+    IFetch<PaginationResponse<MembershipHistory>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${MEMBERSHIP_HISTORIES_ENDPOINT}/` }),
   getUserStrikes: (userId?: User['user_id']) =>
     IFetch<Array<Strike>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${STRIKES_ENDPOINT}/` }),
   getUsers: (filters?: any) => IFetch<PaginationResponse<User>>({ method: 'GET', url: `${USERS_ENDPOINT}/`, data: filters || {} }),
@@ -259,19 +264,27 @@ export default {
     IFetch<BadgeCategory>({ method: 'GET', url: `${BADGES_ENDPOINT}/${BADGE_CATEGORIES_ENDPOINT}/${badgeCategoryId}/` }),
 
   // Membership
-  getMemberships: (slug: string, filters?: any) =>
-    IFetch<PaginationResponse<Membership>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/${MEMBERSHIPS_ENDPOINT}/`, data: filters || {} }),
-  getMembershipsHistories: (slug: string, filters?: any) =>
-    IFetch<PaginationResponse<MembershipHistory>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/${MEMBERSHIP_HISTORIES_ENDPOINT}/`, data: filters || {} }),
-  createMembership: (slug: string, userId: string) =>
-    IFetch<Membership>({ method: 'POST', url: `${GROUPS_ENDPOINT}/${slug}/${MEMBERSHIPS_ENDPOINT}/`, data: { user: { user_id: userId } } }),
-  deleteMembership: (slug: string, userId: string) =>
-    IFetch<RequestResponse>({ method: 'DELETE', url: `${GROUPS_ENDPOINT}/${slug}/${MEMBERSHIPS_ENDPOINT}/${userId}/` }),
-  updateMembership: (slug: string, userId: string, data: { membership_type: MembershipType }) =>
-    IFetch<Membership>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${slug}/${MEMBERSHIPS_ENDPOINT}/${userId}/`, data }),
+  getMemberships: (groupSlug: Group['slug'], filters?: any) =>
+    IFetch<PaginationResponse<Membership>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${groupSlug}/${MEMBERSHIPS_ENDPOINT}/`, data: filters || {} }),
+  getMembershipsHistories: (groupSlug: Group['slug'], filters?: any) =>
+    IFetch<PaginationResponse<MembershipHistory>>({
+      method: 'GET',
+      url: `${GROUPS_ENDPOINT}/${groupSlug}/${MEMBERSHIP_HISTORIES_ENDPOINT}/`,
+      data: filters || {},
+    }),
+  createMembership: (groupSlug: Group['slug'], userId: User['user_id']) =>
+    IFetch<Membership>({ method: 'POST', url: `${GROUPS_ENDPOINT}/${groupSlug}/${MEMBERSHIPS_ENDPOINT}/`, data: { user: { user_id: userId } } }),
+  deleteMembership: (groupSlug: Group['slug'], userId: User['user_id']) =>
+    IFetch<RequestResponse>({ method: 'DELETE', url: `${GROUPS_ENDPOINT}/${groupSlug}/${MEMBERSHIPS_ENDPOINT}/${userId}/` }),
+  updateMembership: (groupSlug: Group['slug'], userId: User['user_id'], data: { membership_type: MembershipType }) =>
+    IFetch<Membership>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${MEMBERSHIPS_ENDPOINT}/${userId}/`, data }),
+  deleteMembershipHistory: (groupSlug: Group['slug'], id: MembershipHistory['id']) =>
+    IFetch<RequestResponse>({ method: 'DELETE', url: `${GROUPS_ENDPOINT}/${groupSlug}/${MEMBERSHIP_HISTORIES_ENDPOINT}/${id}/` }),
+  updateMembershipHistory: (groupSlug: Group['slug'], id: MembershipHistory['id'], data: MembershipHistoryMutate) =>
+    IFetch<MembershipHistory>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${MEMBERSHIP_HISTORIES_ENDPOINT}/${id}/`, data }),
 
   // Group
-  getGroups: () => IFetch<Group[]>({ method: 'GET', url: `${GROUPS_ENDPOINT}/` }),
+  getGroups: (filters?: any) => IFetch<Group[]>({ method: 'GET', url: `${GROUPS_ENDPOINT}/`, data: filters || {} }),
   getGroup: (slug: Group['slug']) => IFetch<Group>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/` }),
   updateGroup: (slug: Group['slug'], data: GroupMutate) => IFetch<Group>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${slug}/`, data }),
 
@@ -305,6 +318,8 @@ export default {
     IFetch<GroupFine>({ method: 'POST', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/`, data }),
   updateGroupFine: (groupSlug: Group['slug'], fineId: GroupFine['id'], data: GroupFineMutate) =>
     IFetch<GroupFine>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/${fineId}/`, data }),
+  updateGroupFineDefense: (groupSlug: Group['slug'], fineId: GroupFine['id'], data: GroupFineDefenseMutate) =>
+    IFetch<GroupFine>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/${fineId}/defense/`, data }),
   batchUpdateGroupFine: (groupSlug: Group['slug'], data: GroupFineBatchMutate) =>
     IFetch<RequestResponse>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/batch-update/`, data }),
   batchUpdateUserGroupFines: (groupSlug: Group['slug'], userId: User['user_id'], data: GroupFineMutate) =>
