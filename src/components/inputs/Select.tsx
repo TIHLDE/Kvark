@@ -23,6 +23,7 @@ const Select = <FormValues extends FieldValues>({
   defaultValue = '',
   children,
   helperText,
+  required,
   ...props
 }: SelectProps<FormValues>) => {
   const labelId = `${name}-label`;
@@ -30,7 +31,7 @@ const Select = <FormValues extends FieldValues>({
   const error = fieldError as FieldError;
   return (
     <FormControl fullWidth margin='normal' variant='outlined' {...props}>
-      <InputLabel id={labelId} required={Boolean(error)}>
+      <InputLabel id={labelId} required={required}>
         {label}
       </InputLabel>
       <Controller

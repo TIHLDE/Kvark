@@ -12,7 +12,7 @@ export type PaginationProps = ButtonProps & {
 const Pagination = ({ children, isLoading, nextPage, hasNextPage, label = 'Last inn mer', ...props }: PaginationProps) => (
   <>
     {children}
-    <Collapse in={Boolean(hasNextPage && !isLoading)}>
+    <Collapse in={Boolean(hasNextPage && !isLoading)} mountOnEnter unmountOnExit>
       <Button onClick={nextPage} sx={{ backgroundColor: (theme) => theme.palette.background.paper }} variant='outlined' {...props}>
         {label}
       </Button>
