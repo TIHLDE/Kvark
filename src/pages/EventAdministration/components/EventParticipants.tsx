@@ -49,18 +49,15 @@ const Registrations = ({ onWait = false, eventId }: RegistrationsProps) => {
     if (!names && !emails) {
       return '';
     }
-    let data = '';
     const participants = registrations;
-    participants.forEach((participant, i) => {
-      data += names ? `${participant.user_info.first_name} ${participant.user_info.last_name}` : '';
-      data += names && emails ? ',' : '';
-      data += emails ? participant.user_info.email : '';
-
-      if (i < participants.length - 1) {
-        data += ' \n';
-      }
-    });
-    return data;
+    return participants
+      .map((participant) => {
+        const data: string[] = [];
+        names && data.push(`${participant.user_info.first_name} ${participant.user_info.last_name}`);
+        emails && data.push(participant.user_info.email);
+        return data.join(',');
+      })
+      .join('\n');
   };
 
   const copyRegistrationDetails = ({ names, emails }: RegistrationsCopyDetails) => {
