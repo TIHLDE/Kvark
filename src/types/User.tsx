@@ -1,5 +1,5 @@
 import { PermissionApp, UserClass, UserStudy } from 'types/Enums';
-import { Group } from 'types/Group';
+import { Group, MembershipWithoutUser } from 'types/Group';
 import { Permissions } from 'types/Misc';
 
 export type LoginRequestResponse = {
@@ -22,10 +22,13 @@ export type User = {
   number_of_strikes: number;
   public_event_registrations: boolean;
   slack_user_id: string;
+  study: MembershipWithoutUser;
+  studyyear: MembershipWithoutUser;
 };
 
-export type UserBase = Pick<User, 'user_id' | 'first_name' | 'last_name' | 'image' | 'email' | 'user_class' | 'user_study' | 'gender'>;
-export type UserList = UserBase & Pick<User, 'email' | 'user_class' | 'user_study' | 'allergy' | 'gender' | 'tool' | 'number_of_strikes'>;
+export type UserBase = Pick<User, 'user_id' | 'first_name' | 'last_name' | 'image' | 'email' | 'user_class' | 'user_study' | 'gender' | 'study' | 'studyyear'>;
+export type UserList = UserBase &
+  Pick<User, 'email' | 'user_class' | 'user_study' | 'study' | 'studyyear' | 'allergy' | 'gender' | 'tool' | 'number_of_strikes'>;
 export type UserCreate = Pick<User, 'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study'> & {
   password: string;
   study: Group['slug'] | null;

@@ -12,6 +12,15 @@ export enum Study {
   INFO = 'Info',
 }
 
+export enum StudyNew {
+  DATAING = 'dataingenir',
+  DIGFOR = 'digital-forretningsutvikling',
+  DIGSEC = 'digital-infrastruktur-og-cybersikkerhet',
+  DIGSAM = 'digital-samhandling',
+  DRIFT = 'drift-studie',
+  INFO = 'informasjonsbehandling',
+}
+
 export enum CheatsheetType {
   FILE = 'FILE',
   GITHUB = 'GITHUB',

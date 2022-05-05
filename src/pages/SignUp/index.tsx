@@ -9,10 +9,9 @@ import URLS from 'URLS';
 import { getUserClass, getUserStudyLong } from 'utils';
 
 import { UserCreate } from 'types';
-import { GroupType } from 'types/Enums';
 
 import { useConfetti } from 'hooks/Confetti';
-import { useGroups } from 'hooks/Group';
+import { useStudyGroups, useStudyyearGroups } from 'hooks/Group';
 import { useRedirectUrl, useSetRedirectUrl } from 'hooks/Misc';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useCreateUser } from 'hooks/User';
@@ -33,8 +32,8 @@ type SignUpData = UserCreate & {
 const SignUp = () => {
   const { run } = useConfetti();
   const { event } = useAnalytics();
-  const { data: studies } = useGroups({ type: GroupType.STUDY });
-  const { data: studyyears } = useGroups({ type: GroupType.STUDYYEAR });
+  const { data: studies } = useStudyGroups();
+  const { data: studyyears } = useStudyyearGroups();
   const navigate = useNavigate();
   const createUser = useCreateUser();
   const showSnackbar = useSnackbar();
@@ -44,14 +43,6 @@ const SignUp = () => {
   const [faqOpen, setFaqOpen] = useState(false);
 
   const onSignUp = async (data: SignUpData) => {
-    if (getUserStudyLong(data.user_study) === 'Digital samhandling' && ![4, 5].includes(data.user_class)) {
-      setError('user_class', { message: 'Digital samhandling har kun 4 og 5 klasse' });
-      return;
-    }
-    if (!(getUserStudyLong(data.user_study) === 'Digital samhandling') && [4, 5].includes(data.user_class)) {
-      setError('user_class', { message: `${getUserStudyLong(data.user_study)} har ikke 4 og 5 klasse` });
-      return;
-    }
     if (data.password !== data.password_verify) {
       setError('password', { message: 'Passordene må være like' });
       setError('password_verify', { message: 'Passordene må være like' });
