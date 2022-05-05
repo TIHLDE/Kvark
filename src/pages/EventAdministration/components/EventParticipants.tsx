@@ -108,7 +108,7 @@ const Registrations = ({ onWait = false, eventId }: RegistrationsProps) => {
                 <Paper>
                   <form onSubmit={handleSubmit((data) => copyRegistrationDetails(data))}>
                     <Box margin={1}>
-                      <Typography>Kopier detaljer om deltagere på arrangementet til utklippstavlen. Huk av for detaljene du ønsker å kopiere. </Typography>
+                      <Typography>Kopier detaljer om deltagerene på arrangementet til utklippstavlen. Huk av for detaljene du ønsker å kopiere. </Typography>
                       <FormControlLabel control={<Checkbox {...register('names')} />} label='Navn' />
                       <FormControlLabel control={<Checkbox {...register('emails')} />} label='Epost' />
                     </Box>
