@@ -13,6 +13,7 @@
 ---
 
 ## Neste versjon
+## Versjon 2022.05.06
 
 - ⚡ **Arrangementer**. Kopiere navn og epost til arrangement deltagere til utklippstavla.
 - ✨ **Spørreskjemaer**. Administartor kan sortere spørreskjema-spørsmål i rekkefølgen som ønskes.

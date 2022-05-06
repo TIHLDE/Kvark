@@ -62,7 +62,7 @@ import {
   WikiRequired,
   WikiTree,
 } from 'types';
-import { MembershipType, Study } from 'types/Enums';
+import { CheatsheetStudy, MembershipType } from 'types/Enums';
 
 import { IFetch } from 'api/fetch';
 
@@ -231,8 +231,8 @@ export default {
   getStrikes: (filters?: any) => IFetch<PaginationResponse<StrikeList>>({ method: 'GET', url: `${STRIKES_ENDPOINT}/`, data: filters || {} }),
 
   // Cheatsheet
-  getCheatsheets: (study: Study, grade: number, filters?: any) => {
-    const tempStudy = study === Study.DIGSEC ? 'DIGINC' : study;
+  getCheatsheets: (study: CheatsheetStudy, grade: number, filters?: any) => {
+    const tempStudy = study === CheatsheetStudy.DIGSEC ? 'DIGINC' : study;
     return IFetch<PaginationResponse<Cheatsheet>>({
       method: 'GET',
       url: `${CHEATSHEETS_ENDPOINT}/${tempStudy.toUpperCase()}/${String(grade)}/files/`,

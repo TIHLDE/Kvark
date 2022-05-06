@@ -7,7 +7,7 @@ import { parseISO } from 'date-fns';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
-import { formatDate, getUserClass, getUserStudyShort } from 'utils';
+import { formatDate, getUserAffiliation } from 'utils';
 
 import { Membership, UserList } from 'types';
 import { MembershipType } from 'types/Enums';
@@ -62,7 +62,7 @@ const MembershipListItem = ({ membership, isAdmin }: MembershipListItemProps) =>
         <Typography sx={{ whiteSpace: 'break-spaces', p: 2 }}>
           {`Allergier: ${user.allergy ? user.allergy : 'Har ingen allergier'}
 E-post: ${user.email}
-${getUserClass(user.user_class)} - ${getUserStudyShort(user.user_study)}`}
+${getUserAffiliation(user)}`}
         </Typography>
         <Divider />
         <Stack direction={{ xs: 'column', lg: 'row' }} gap={1} sx={{ p: 1 }}>

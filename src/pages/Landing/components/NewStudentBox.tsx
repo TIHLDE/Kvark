@@ -3,6 +3,7 @@ import CloseIcon from '@mui/icons-material/CloseRounded';
 import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
 import { Button, Stack, styled, Typography } from '@mui/material';
 import { SHOW_NEW_STUDENT_INFO } from 'constant';
+import { getYear } from 'date-fns';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
@@ -33,27 +34,17 @@ const NewStudentBox = () => {
       'Velkommen til alle nye studenter i TIHLDE 👋 Vi gleder oss til å bli kjent med dere og håper at dere vil være med på fadderuka og engasjere dere i linjeforeningen. Les alt om fadderuka, verv og FAQ på siden for nye studenter ⬇️',
   };
 
-  const header = useMemo(() => {
+  const [header, text] = useMemo(() => {
     if (isLoading && isAuthenticated) {
-      return '';
-    } else if (user?.user_class !== 1 && isAuthenticated) {
-      return HEADER.OLD_STUDENT;
-    } else {
-      return HEADER.NEW_STUDENT;
-    }
-  }, [user, isAuthenticated]);
-
-  const text = useMemo(() => {
-    if (isLoading && isAuthenticated) {
-      return '';
+      return ['', ''];
     } else if (user) {
-      if (user.user_class === 1) {
-        return TEXT.NEW_STUDENT;
+      if (user.studyyear.group?.name === `${getYear(new Date())}`) {
+        return [HEADER.NEW_STUDENT, TEXT.NEW_STUDENT];
       } else {
-        return TEXT.OLD_STUDENT;
+        return [HEADER.OLD_STUDENT, TEXT.OLD_STUDENT];
       }
     } else {
-      return TEXT.NO_AUTH;
+      return [HEADER.NEW_STUDENT, TEXT.NO_AUTH];
     }
   }, [user, isAuthenticated]);
 

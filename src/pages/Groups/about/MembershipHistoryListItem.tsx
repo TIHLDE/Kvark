@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
-import { formatDate, getMembershipType, getUserClass, getUserStudyShort } from 'utils';
+import { formatDate, getMembershipType, getUserAffiliation } from 'utils';
 
 import { MembershipHistory, MembershipHistoryMutate } from 'types';
 import { MembershipType } from 'types/Enums';
@@ -81,7 +81,7 @@ const MembershipHistoryListItem = ({ membership, isAdmin }: MembershipHistoryLis
       <Collapse in={expanded && isAdmin} mountOnEnter>
         <Typography sx={{ whiteSpace: 'break-spaces', p: 2 }}>
           {`E-post: ${user.email}
-${getUserClass(user.user_class)} - ${getUserStudyShort(user.user_study)}`}
+${getUserAffiliation(user)}`}
         </Typography>
         <Divider />
         <Stack direction={{ xs: 'column', lg: 'row' }} gap={1} sx={{ p: 1 }}>

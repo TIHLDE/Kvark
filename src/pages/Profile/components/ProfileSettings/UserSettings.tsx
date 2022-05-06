@@ -1,6 +1,5 @@
 import { MenuItem, Stack, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { getUserClass, getUserStudyLong } from 'utils';
 
 import { User } from 'types';
 
@@ -20,10 +19,7 @@ export type UserSettingsProps = {
   isAdmin?: boolean;
 };
 
-type FormData = Pick<
-  User,
-  'first_name' | 'last_name' | 'email' | 'image' | 'gender' | 'allergy' | 'tool' | 'user_class' | 'user_study' | 'public_event_registrations'
->;
+type FormData = Pick<User, 'first_name' | 'last_name' | 'email' | 'image' | 'gender' | 'allergy' | 'tool' | 'public_event_registrations'>;
 
 export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
   const { event } = useAnalytics();
@@ -83,20 +79,6 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
       />
       <ImageUpload formState={formState} label='Velg profilbilde' ratio='1:1' register={register('image')} setValue={setValue} watch={watch} />
       <Stack direction={['column', 'row']} gap={[0, 1]}>
-        <Select control={control} disabled={!isAdmin} formState={formState} label='Studie' name='user_study'>
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <MenuItem key={i} value={i}>
-              {getUserStudyLong(i)}
-            </MenuItem>
-          ))}
-        </Select>
-        <Select control={control} disabled={!isAdmin} formState={formState} label='Klasse' name='user_class'>
-          {[1, 2, 3, 4, 5, -1].map((i) => (
-            <MenuItem key={i} value={i}>
-              {getUserClass(i)}
-            </MenuItem>
-          ))}
-        </Select>
         <Select control={control} disabled={updateUser.isLoading} formState={formState} label='Kjønn' name='gender'>
           <MenuItem value={1}>Mann</MenuItem>
           <MenuItem value={2}>Kvinne</MenuItem>

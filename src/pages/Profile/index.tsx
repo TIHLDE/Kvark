@@ -25,7 +25,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getUserClass, getUserStudyLong } from 'utils';
+import { getUserAffiliation } from 'utils';
 
 import { PermissionApp } from 'types/Enums';
 
@@ -136,7 +136,7 @@ const Profile = () => {
                 {user.user_id} | <a href={`mailto:${user.email}`}>{user.email}</a>
               </Typography>
               <Typography sx={{ wordBreak: 'break-word' }} variant='subtitle1'>
-                {getUserClass(user.user_class)} {getUserStudyLong(user.user_study)}
+                {getUserAffiliation(user)}
               </Typography>
             </Stack>
           ) : (
