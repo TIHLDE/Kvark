@@ -49,12 +49,11 @@ const Registrations = ({ onWait = false, eventId }: RegistrationsProps) => {
     if (!names && !emails) {
       return '';
     }
-    const participants = registrations;
-    return participants
-      .map((participant) => {
+    return registrations
+      .map((registration) => {
         const data: string[] = [];
-        names && data.push(`${participant.user_info.first_name} ${participant.user_info.last_name}`);
-        emails && data.push(participant.user_info.email);
+        names && data.push(`${registration.user_info.first_name} ${registration.user_info.last_name}`);
+        emails && data.push(registration.user_info.email);
         return data.join(',');
       })
       .join('\n');
@@ -110,7 +109,7 @@ const Registrations = ({ onWait = false, eventId }: RegistrationsProps) => {
                       <FormControlLabel control={<Checkbox {...register('emails')} />} label='Epost' />
                     </Box>
                     <Button endIcon={<CopyIcon />} fullWidth type='submit' variant='outlined'>
-                      Kopier deltager detaljer
+                      Kopier detaljer om deltagere
                     </Button>
                   </form>
                 </Paper>

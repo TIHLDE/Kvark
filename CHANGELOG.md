@@ -14,7 +14,7 @@
 
 ## Neste versjon
 
-- ⚡ - **Arrangementer**. Kopiere navn og epost til arrangement deltagere til utklippstavla.
+- ⚡ **Arrangementer**. Kopiere navn og epost til arrangement deltagere til utklippstavla.
 - ✨ **Spørreskjemaer**. Administartor kan sortere spørreskjema-spørsmål i rekkefølgen som ønskes.
 
 ## Versjon 2022.05.03
@@ -31,7 +31,6 @@
 ## Versjon 2022.04.21
 
 - ✨ **Botsystem**. Legg til bilder som bevis på bøter.
-
 
 ## Versjon 2022.03.24
 
