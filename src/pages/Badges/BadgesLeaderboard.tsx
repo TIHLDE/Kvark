@@ -4,9 +4,10 @@ import { useForm } from 'react-hook-form';
 import { InfiniteQueryObserverResult, QueryKey, UseInfiniteQueryOptions } from 'react-query';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
-import { getUserClass, getUserStudyLong, USER_CLASSES, USER_STUDIES } from 'utils';
 
-import { BadgesOverallLeaderboard, PaginationResponse, RequestResponse } from 'types';
+import { BadgesOverallLeaderboard, Group, PaginationResponse, RequestResponse } from 'types';
+
+import { useStudyGroups, useStudyyearGroups } from 'hooks/Group';
 
 import Select from 'components/inputs/Select';
 import Pagination from 'components/layout/Pagination';
@@ -30,17 +31,19 @@ export type BadgesLeaderboard = {
 };
 
 type Filters = {
-  user_class: number | 'all';
-  user_study: number | 'all';
+  study: Group['slug'] | 'all';
+  studyyear: Group['slug'] | 'all';
 };
 
 export const BadgesLeaderboard = ({ useHook, filters, options }: BadgesLeaderboard) => {
-  const { formState, control, watch } = useForm<Filters>({ defaultValues: { user_class: 'all', user_study: 'all' } });
+  const { data: studies = [] } = useStudyGroups();
+  const { data: studyyears = [] } = useStudyyearGroups();
+  const { formState, control, watch } = useForm<Filters>({ defaultValues: { studyyear: 'all', study: 'all' } });
   const watchFilters = watch();
   const formFilters = useMemo(
     () => ({
-      user_class: watchFilters.user_class === 'all' ? undefined : watchFilters.user_class,
-      user_study: watchFilters.user_study === 'all' ? undefined : watchFilters.user_study,
+      studyyear: watchFilters.studyyear === 'all' ? undefined : watchFilters.studyyear,
+      study: watchFilters.study === 'all' ? undefined : watchFilters.study,
     }),
     [watchFilters],
   );
@@ -51,19 +54,19 @@ export const BadgesLeaderboard = ({ useHook, filters, options }: BadgesLeaderboa
   return (
     <>
       <Stack direction={{ xs: 'column', md: 'row' }} gap={{ xs: 0, md: 2 }}>
-        <Select control={control} formState={formState} label='Klasser' name='user_class'>
+        <Select control={control} formState={formState} label='Klasser' name='studyyear'>
           <MenuItem value='all'>Alle</MenuItem>
-          {USER_CLASSES.map((value) => (
-            <MenuItem key={value} value={value}>
-              {getUserClass(value)}
+          {studyyears.map((group) => (
+            <MenuItem key={group.slug} value={group.slug}>
+              {`Brukere som startet i ${group.name}`}
             </MenuItem>
           ))}
         </Select>
-        <Select control={control} formState={formState} label='Studier' name='user_study'>
+        <Select control={control} formState={formState} label='Studier' name='study'>
           <MenuItem value='all'>Alle</MenuItem>
-          {USER_STUDIES.map((value) => (
-            <MenuItem key={value} value={value}>
-              {getUserStudyLong(value)}
+          {studies.map((group) => (
+            <MenuItem key={group.slug} value={group.slug}>
+              {group.name}
             </MenuItem>
           ))}
         </Select>

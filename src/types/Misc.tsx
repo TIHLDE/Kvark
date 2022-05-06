@@ -1,4 +1,4 @@
-import { CheatsheetType, Study, WarningType } from 'types/Enums';
+import { CheatsheetStudy, CheatsheetType, WarningType } from 'types/Enums';
 
 export interface Cheatsheet {
   course: string;
@@ -6,7 +6,7 @@ export interface Cheatsheet {
   grade: number;
   id: string;
   official: boolean;
-  study: Study;
+  study: CheatsheetStudy;
   title: string;
   type: CheatsheetType;
   url: string;
