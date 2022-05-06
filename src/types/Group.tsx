@@ -36,6 +36,8 @@ export type Membership = {
   created_at: string;
 };
 
+export type MembershipWithoutUser = Omit<Membership, 'user'>;
+
 export type MembershipHistory = Pick<Membership, 'group' | 'user' | 'membership_type'> & {
   id: string;
   start_date: string;

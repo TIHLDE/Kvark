@@ -2,8 +2,8 @@ import { format, getYear, isAfter, isBefore, parseISO, subMinutes } from 'date-f
 import nbLocale from 'date-fns/locale/nb';
 import slugify from 'slugify';
 
-import { Event, GroupLaw, SelectFormField, SelectFormFieldOption, TextFormField } from 'types';
-import { FormFieldType, JobPostType, MembershipType, StrikeReason, UserClass, UserStudy } from 'types/Enums';
+import { Event, GroupLaw, SelectFormField, SelectFormFieldOption, TextFormField, UserBase } from 'types';
+import { FormFieldType, JobPostType, MembershipType, StrikeReason, Study, UserClass, UserStudy } from 'types/Enums';
 
 export const isAfterDateOfYear = (month: number, date: number) => isAfter(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
 export const isBeforeDateOfYear = (month: number, date: number) => isBefore(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
@@ -47,6 +47,38 @@ export const getStrikesDelayedRegistrationHours = (numberOfStrikes: number) => {
     return 3;
   }
   return 12;
+};
+
+/**
+ * Get the user's affiliation as a string.
+ *
+ * July 15th, users are "moved" up a class as it's the middle of the summer.
+ * Ex.: In May 2022, a user in Dataingeniør which started in 2020 is in "2. klasse".
+ * In August 2022 the same user is in "3. klasse".
+ *
+ * Users which started for more than 3 years ago and does not study DigSam is shown as "Startet i <start-year>".
+ *
+ * @param user the user
+ * @returns `Dataingeniør - 2. klasse` or `Dataingeniør - Startet i 2017`
+ */
+export const getUserAffiliation = (user: UserBase, includeStudy = true, includeStudyyear = true): string => {
+  const getStudyyear = (groupName: UserBase['studyyear']['group']['name']) => {
+    const STUDYYEAR = Number(groupName);
+    const CURRENT_YEAR = getYear(new Date());
+    const diff = CURRENT_YEAR - STUDYYEAR + (isAfterDateOfYear(6, 15) ? 1 : 0);
+    if ((user.study.group?.name === Study.DIGSAM && diff <= 5) || diff <= 3) {
+      return `${diff}. klasse`;
+    }
+    return `Startet i ${STUDYYEAR}`;
+  };
+  const info = [];
+  if (includeStudy) {
+    info.push(user.study.group?.name || 'Ukjent studie');
+  }
+  if (includeStudyyear) {
+    info.push(user.studyyear.group?.name ? getStudyyear(user.studyyear.group.name) : 'Ukjent kull');
+  }
+  return info.join(' - ');
 };
 
 /**
@@ -117,9 +149,6 @@ export const getUserClass = (userClass: UserClass) => {
       return 'Ukjent klasse';
   }
 };
-
-export const USER_CLASSES = [UserClass.FIRST, UserClass.SECOND, UserClass.THIRD, UserClass.FOURTH, UserClass.FIFTH, UserClass.ALUMNI];
-export const USER_STUDIES = [UserStudy.DATAING, UserStudy.DIGFOR, UserStudy.DIGSEC, UserStudy.DIGSAM, UserStudy.DRIFT, UserStudy.INFO];
 
 /**
  * Get jobpost type as text

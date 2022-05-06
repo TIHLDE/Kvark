@@ -75,6 +75,6 @@ export type EventStatistics = {
   has_attended_count: number;
   list_count: number;
   waiting_list_count: number;
-  classes: Array<{ user_class: UserClass; amount: number }>;
-  studies: Array<{ user_study: UserStudy; amount: number }>;
+  studyyears: Array<{ studyyear: Group['name']; amount: number }>;
+  studies: Array<{ study: Group['name']; amount: number }>;
 };
