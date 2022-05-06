@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { urlEncode } from 'utils';
 
-import { EventCompact, JobPost, News } from 'types';
+import { EventList, JobPost, News } from 'types';
 
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
 
@@ -110,7 +110,7 @@ export type StoryItem = {
 };
 
 export type StoryProps = {
-  items: Array<EventCompact | News | JobPost>;
+  items: Array<EventList | News | JobPost>;
   fadeColor?: string;
 };
 
@@ -118,7 +118,7 @@ const Story = ({ items, fadeColor }: StoryProps) => {
   const { classes } = useStyles({ fadeColor });
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const instanceOfEvent = (object: any): object is EventCompact => 'start_date' in object;
+  const instanceOfEvent = (object: any): object is EventList => 'start_date' in object;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const instanceOfNews = (object: any): object is News => 'header' in object;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

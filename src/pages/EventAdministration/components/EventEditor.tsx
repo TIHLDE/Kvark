@@ -5,7 +5,7 @@ import { makeStyles } from 'makeStyles';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { Event, EventRequired, Group, GroupList, RegistrationPriority } from 'types';
+import { Event, EventMutate, Group, GroupList, PriorityPool, PriorityPoolMutate } from 'types';
 import { GroupType, MembershipType } from 'types/Enums';
 
 import { useCategories } from 'hooks/Categories';
@@ -14,7 +14,7 @@ import { useGroupsByType } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useUser, useUserMemberships, useUserPermissions } from 'hooks/User';
 
-import EventRegistrationPriorities from 'pages/EventAdministration/components/EventRegistrationPriorities';
+import EventEditPriorityPools from 'pages/EventAdministration/components/EventEditPriorityPools';
 import EventRenderer from 'pages/EventDetails/components/EventRenderer';
 
 import Bool from 'components/inputs/Bool';
@@ -75,22 +75,6 @@ type FormValues = Pick<
   start_date: Date;
   start_registration_at: Date;
 };
-const DEFAULT_PRIORITIES = [
-  { user_class: 1, user_study: 1 },
-  { user_class: 1, user_study: 2 },
-  { user_class: 1, user_study: 3 },
-  { user_class: 1, user_study: 6 },
-  { user_class: 2, user_study: 1 },
-  { user_class: 2, user_study: 2 },
-  { user_class: 2, user_study: 3 },
-  { user_class: 2, user_study: 6 },
-  { user_class: 3, user_study: 1 },
-  { user_class: 3, user_study: 2 },
-  { user_class: 3, user_study: 3 },
-  { user_class: 3, user_study: 6 },
-  { user_class: 4, user_study: 4 },
-  { user_class: 5, user_study: 4 },
-];
 
 const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const { classes } = useStyles();
@@ -100,14 +84,14 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const deleteEvent = useDeleteEvent(eventId || -1);
   const showSnackbar = useSnackbar();
 
-  const [regPriorities, setRegPriorities] = useState<Array<RegistrationPriority>>([]);
+  const [priorityPools, setPriorityPools] = useState<Array<PriorityPoolMutate>>([]);
   const { handleSubmit, register, watch, control, formState, getValues, reset, setValue } = useForm<FormValues>();
   const watchSignUp = watch('sign_up');
   const { data: categories = [] } = useCategories();
 
   const setValues = useCallback(
     (newValues: Event | null) => {
-      setRegPriorities(newValues?.registration_priorities || DEFAULT_PRIORITIES);
+      setPriorityPools(newValues?.priority_pools.map((pool) => ({ groups: pool.groups.map((group) => group.slug) })) || []);
       reset({
         category: newValues?.category || 1,
         description: newValues?.description || '',
@@ -183,7 +167,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       ...values,
       organizer: groups?.find((g) => g.slug === values.organizer) || null,
       list_count: 0,
-      registration_priorities: regPriorities,
+      priority_pools: priorityPools.map((pool) => ({ groups: pool.groups.map((group) => groups?.find((g) => g.slug === group)) })) as Array<PriorityPool>,
       waiting_list_count: 0,
       end_date: values.end_date.toJSON(),
       end_registration_at: values.end_registration_at.toJSON(),
@@ -206,7 +190,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   };
 
   const closeEvent = async () => {
-    await updateEvent.mutate({ ...data, closed: true } as EventRequired, {
+    await updateEvent.mutate({ closed: true } as EventMutate, {
       onSuccess: () => {
         showSnackbar('Arrangementet ble stengt', 'success');
       },
@@ -219,13 +203,13 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const submit: SubmitHandler<FormValues> = async (data) => {
     const event = {
       ...data,
-      registration_priorities: regPriorities,
+      priority_pools: priorityPools,
       end_date: data.end_date.toJSON(),
       end_registration_at: data.end_registration_at.toJSON(),
       sign_off_deadline: data.sign_off_deadline.toJSON(),
       start_date: data.start_date.toJSON(),
       start_registration_at: data.start_registration_at.toJSON(),
-    } as EventRequired;
+    } as EventMutate;
     if (eventId) {
       await updateEvent.mutate(event, {
         onSuccess: () => {
@@ -377,10 +361,10 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
             <div className={classes.margin}>
               <Accordion className={classes.expansionPanel}>
                 <AccordionSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='priorities-header'>
-                  <Typography>Prioriterte</Typography>
+                  <Typography>Prioriteringer</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <EventRegistrationPriorities defaultPriorities={DEFAULT_PRIORITIES} priorities={regPriorities} setPriorities={setRegPriorities} />
+                  <EventEditPriorityPools priorityPools={priorityPools} setPriorityPools={setPriorityPools} />
                 </AccordionDetails>
               </Accordion>
             </div>

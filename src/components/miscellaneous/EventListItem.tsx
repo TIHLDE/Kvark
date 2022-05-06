@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { formatDate, urlEncode } from 'utils';
 
-import { EventCompact } from 'types';
+import { EventList } from 'types';
 import { Groups } from 'types/Enums';
 
 import { useCategories } from 'hooks/Categories';
@@ -34,7 +34,7 @@ const EventInfoContent = ({ icon: Icon, label, fontSize }: EventInfoContentProps
 );
 
 export type EventListItemProps = {
-  event: EventCompact;
+  event: EventList;
   sx?: ListItemProps['sx'];
 };
 

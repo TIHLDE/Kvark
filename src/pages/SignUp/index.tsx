@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import URLS from 'URLS';
-import { getUserClass, getUserStudyLong } from 'utils';
 
 import { UserCreate } from 'types';
 
@@ -54,8 +53,6 @@ const SignUp = () => {
       first_name: data.first_name,
       last_name: data.last_name,
       email: data.email,
-      user_class: data.user_class,
-      user_study: data.user_study,
       password: data.password,
       class: data.class,
       study: data.study,
@@ -119,44 +116,7 @@ const SignUp = () => {
             type='email'
           />
           <Stack direction={{ xs: 'column', sm: 'row' }} gap={1}>
-            <Select
-              control={control}
-              formState={formState}
-              helperText='Midlertidig: Fyll inn studie her og studie lenger ned'
-              label='Studie'
-              name='user_study'
-              required
-              rules={{ required: 'Feltet er påkrevd' }}>
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <MenuItem key={i} value={i}>
-                  {getUserStudyLong(i)}
-                </MenuItem>
-              ))}
-            </Select>
-            <Select
-              control={control}
-              formState={formState}
-              helperText='Fyll inn klasse her og kull lenger ned'
-              label='Klasse'
-              name='user_class'
-              required
-              rules={{ required: 'Feltet er påkrevd' }}>
-              {[1, 2, 3, 4, 5].map((i) => (
-                <MenuItem key={i} value={i}>
-                  {getUserClass(i)}
-                </MenuItem>
-              ))}
-            </Select>
-          </Stack>
-          <Stack direction={{ xs: 'column', sm: 'row' }} gap={1}>
-            <Select
-              control={control}
-              formState={formState}
-              helperText='Fyll inn studie her og studie lenger opp'
-              label='Studie'
-              name='study'
-              required
-              rules={{ required: 'Feltet er påkrevd' }}>
+            <Select control={control} formState={formState} label='Studie' name='study' required rules={{ required: 'Feltet er påkrevd' }}>
               {studies?.map((study) => (
                 <MenuItem key={study.slug} value={study.slug}>
                   {study.name}
@@ -166,7 +126,7 @@ const SignUp = () => {
             <Select
               control={control}
               formState={formState}
-              helperText='Hvilket år begynte du på studiet ditt?'
+              helperText='Hvilket år begynte du på studiet ditt? Hvis du går DigSam: trekk fra 3. Ex.: Du begynte på DigSam i 2022, velg da 2019.'
               label='Kull'
               name='class'
               required

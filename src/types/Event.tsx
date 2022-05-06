@@ -1,6 +1,6 @@
 import { UserClass, UserStudy } from 'types/Enums';
 import { UserSubmission } from 'types/Form';
-import { Group } from 'types/Group';
+import { Group, GroupList } from 'types/Group';
 import { Permissions } from 'types/Misc';
 import { UserList } from 'types/User';
 
@@ -27,7 +27,7 @@ export type Event = {
   list_count: number;
   location: string;
   permissions: Permissions;
-  registration_priorities: Array<RegistrationPriority>;
+  priority_pools: Array<PriorityPool>;
   sign_off_deadline: string;
   sign_up: boolean;
   start_date: string;
@@ -41,8 +41,13 @@ export type Event = {
   only_allow_prioritized: boolean;
 };
 
-export type EventRequired = Partial<Event> & Pick<Event, 'end_date' | 'title' | 'start_date'> & { organizer: Group['slug'] };
-export type EventCompact = Pick<
+export type EventMutate = Partial<Omit<Event, 'organizer' | 'priority_pools'>> &
+  Pick<Event, 'end_date' | 'title' | 'start_date'> & {
+    organizer: Group['slug'] | null;
+    priority_pools: Array<PriorityPoolMutate>;
+  };
+
+export type EventList = Pick<
   Event,
   'category' | 'end_date' | 'expired' | 'organizer' | 'id' | 'image' | 'image_alt' | 'location' | 'title' | 'start_date' | 'updated_at'
 >;
@@ -51,9 +56,12 @@ export type EventFavorite = {
   is_favorite: boolean;
 };
 
-export type RegistrationPriority = {
-  user_class: UserClass;
-  user_study: UserStudy;
+export type PriorityPool = {
+  groups: Array<GroupList>;
+};
+
+export type PriorityPoolMutate = {
+  groups: Array<GroupList['slug']>;
 };
 
 export type Registration = {
