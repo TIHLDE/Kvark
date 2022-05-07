@@ -1,4 +1,3 @@
-import { UserClass, UserStudy } from 'types/Enums';
 import { UserSubmission } from 'types/Form';
 import { Group, GroupList } from 'types/Group';
 import { Permissions } from 'types/Misc';

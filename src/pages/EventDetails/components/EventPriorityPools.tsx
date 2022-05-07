@@ -1,6 +1,6 @@
 import CheckIcon from '@mui/icons-material/CheckRounded';
 import CrossIcon from '@mui/icons-material/CloseRounded';
-import { Stack, styled, Tooltip, Typography } from '@mui/material';
+import { Stack, Tooltip, Typography } from '@mui/material';
 
 import { PriorityPool } from 'types';
 import { GroupType } from 'types/Enums';
@@ -8,14 +8,7 @@ import { GroupType } from 'types/Enums';
 import { useUser } from 'hooks/User';
 
 import Paper from 'components/layout/Paper';
-import { ShowMoreText, ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
-
-const Item = styled(Typography)(({ theme }) => ({
-  padding: theme.spacing(0, 0.75),
-  border: theme.palette.borderWidth + ' solid ' + theme.palette.divider,
-  borderRadius: theme.shape.borderRadius,
-  color: theme.palette.text.primary,
-}));
+import { ShowMoreText } from 'components/miscellaneous/UserInformation';
 
 export type EventPriorityPoolsProps = {
   priorityPools: Array<PriorityPool>;
@@ -26,36 +19,30 @@ const EventPriorityPools = ({ priorityPools }: EventPriorityPoolsProps) => {
 
   return (
     <Stack gap={0.5}>
-      <Typography variant='body2'>Medlemmer i en av de følgende:</Typography>
       {priorityPools.map((pool, index) => (
-        <Stack gap={0.5} key={index}>
-          <Stack alignItems='center' direction='row' gap={1}>
-            {pool.groups.filter((group) => !group.viewer_is_member).length === 0 ? (
-              <Tooltip title='Du er prioritert ettersom du er medlem av alle disse gruppene!'>
-                <CheckIcon sx={{ color: (theme) => theme.palette.success.main }} />
-              </Tooltip>
-            ) : (
-              <Tooltip title='Du er ikke medlem av alle disse gruppene'>
-                <CrossIcon sx={{ color: (theme) => theme.palette.error.main }} />
-              </Tooltip>
-            )}
-            <Typography variant='body2'>
-              {pool.groups.map((group) => (group.type === GroupType.STUDYYEAR ? `${group.name}-kullet` : group.name)).join(' og ')}
-            </Typography>
-          </Stack>
-          {index !== priorityPools.length - 1 && (
-            <Typography sx={{ ml: 5 }} variant='body2'>
-              Eller
-            </Typography>
+        <Stack alignItems='center' component={Paper} direction='row' gap={1} key={index} sx={{ py: 0.5, px: 1 }}>
+          {pool.groups.filter((group) => !group.viewer_is_member).length === 0 ? (
+            <Tooltip arrow title='Du er prioritert gjennom denne prioriteringsgruppen!'>
+              <CheckIcon aria-label='Du er prioritert gjennom denne prioriteringsgruppen!' sx={{ color: (theme) => theme.palette.success.main }} />
+            </Tooltip>
+          ) : (
+            <Tooltip arrow title='Du er ikke prioritert gjennom denne prioriteringsgruppen'>
+              <CrossIcon aria-label='Du er ikke prioritert gjennom denne prioriteringsgruppen' sx={{ color: (theme) => theme.palette.error.main }} />
+            </Tooltip>
           )}
+          <Typography variant='body2'>
+            {pool.groups.map((group) => (group.type === GroupType.STUDYYEAR ? `${group.name}-kullet` : group.name)).join(' og ')}
+          </Typography>
         </Stack>
       ))}
-      <ShowMoreText>
-        {`Hvem er prioritert? For å være prioritert til dette arrangementet må du være medlem av alle gruppene i minst én av punktene med grupper over. Punktet er grønt hvis du er medlem av alle gruppene og dermed prioritert.
+      <ShowMoreText sx={{ mt: 1 }}>
+        <b>Hvem er prioritert?</b>
+        {`
+Boksene ovenfor viser dette arrangementets prioriteringsgrupper. Du er prioritert om du er medlem av alle gruppene i en prioriteringsgruppe. Ikonet til venstre viser om du er medlem av alle gruppene i prioriteringsgruppen, og dermed også prioritert.
 
-Hvis du er prioritert og har plass på arrangementet, kan du ikke miste denne. Hvis du ikke er prioritert og får plass til arrangementet, kan du risikere å miste plassen din om en annen som er prioritert melder seg på.
+Hvis du er prioritert og har plass på arrangementet, kan du ikke miste denne. Hvis du ikke er prioritert og får plass til arrangementet, kan du miste plassen din om en annen som er prioritert melder seg på.
 
-Med "-kullet" menes året du begynte på studiet. Du er en del av ${user?.studyyear.group?.name}-kullet.`}
+Med "-kullet" menes året du startet på studiet. ${user ? `Du er en del av ${user.studyyear.group?.name}-kullet.` : ''}`}
       </ShowMoreText>
     </Stack>
   );
