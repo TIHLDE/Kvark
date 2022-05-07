@@ -63,12 +63,17 @@ export const AuthRoute = ({ apps = [], element }: AuthRouteProps) => {
   const isAuthenticated = useIsAuthenticated();
   const { allowAccess, isLoading } = useHavePermission(apps);
 
-  if (isLoading) {
-    return <Page />;
-  } else if (!isAuthenticated) {
+  if (!isAuthenticated) {
     setLogInRedirectURL(window.location.pathname);
     return <Navigate to={URLS.login} />;
-  } else if (allowAccess || !apps.length) {
+  }
+  if (!apps.length) {
+    return element;
+  }
+  if (isLoading) {
+    return <Page />;
+  }
+  if (allowAccess) {
     return element;
   }
   return <Navigate to={URLS.landing} />;
