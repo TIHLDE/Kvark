@@ -6,21 +6,22 @@ import { usePersistedState } from 'hooks/Utils';
 
 export type ShowMoreTextProps = {
   children: TypographyProps['children'];
+  variant?: TypographyProps['variant'];
   sx?: SxProps<Theme>;
 };
 
-export const ShowMoreText = ({ children, sx = [] }: ShowMoreTextProps) => {
+export const ShowMoreText = ({ children, variant = 'caption', sx = [] }: ShowMoreTextProps) => {
   const [showAll, setShowAll] = useState(false);
   return (
     <Box
       component='span'
       onClick={() => setShowAll((prev) => !prev)}
       sx={[{ display: 'grid', gridTemplateColumns: '1fr auto' }, ...(Array.isArray(sx) ? sx : [sx])]}>
-      <Typography sx={showAll ? { whiteSpace: 'break-spaces' } : { overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} variant='caption'>
+      <Typography sx={showAll ? { whiteSpace: 'break-spaces' } : { overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }} variant={variant}>
         {children}
       </Typography>
       {!showAll && (
-        <Typography sx={{ ml: 0.5, cursor: 'pointer', color: (theme) => theme.palette.primary.main }} variant='caption'>
+        <Typography sx={{ ml: 0.5, cursor: 'pointer', color: (theme) => theme.palette.primary.main }} variant={variant}>
           Vis mer
         </Typography>
       )}

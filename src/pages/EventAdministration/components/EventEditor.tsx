@@ -75,6 +75,7 @@ type FormValues = Pick<
   start_date: Date;
   start_registration_at: Date;
 };
+type GroupOption = { type: 'header'; header: string } | { type: 'group'; group: BaseGroup };
 
 const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const { classes } = useStyles();
@@ -131,7 +132,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const { data: user } = useUser();
   const { data: groups, BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS } = useGroupsByType();
 
-  type GroupOption = { type: 'header'; header: string } | { type: 'group'; group: BaseGroup };
   const groupOptions = useMemo<Array<GroupOption>>(() => {
     if (!permissions) {
       return [];
@@ -375,7 +375,10 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 label={
                   <>
                     Påmelding kun for prioriterte
-                    <ShowMoreTooltip>Bestemmer om kun prioriterte brukere skal kunne melde seg på arrangementet.</ShowMoreTooltip>
+                    <ShowMoreTooltip>
+                      Bestemmer om kun prioriterte brukere skal kunne melde seg på arrangementet. Hvis bryteren er skrudd på kan kun brukere som er medlem av
+                      minst én prioriteringsgruppe melde seg på dette arrangementet.
+                    </ShowMoreTooltip>
                   </>
                 }
                 name='only_allow_prioritized'

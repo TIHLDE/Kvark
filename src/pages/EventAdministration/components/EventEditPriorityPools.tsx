@@ -1,11 +1,15 @@
 import DeleteIcon from '@mui/icons-material/DeleteRounded';
 import {
+  Alert,
+  AlertTitle,
   Box,
   Button,
+  Checkbox,
   Chip,
   FormControl,
   IconButton,
   InputLabel,
+  ListItemText,
   ListSubheader,
   MenuItem,
   OutlinedInput,
@@ -13,7 +17,6 @@ import {
   SelectChangeEvent,
   Stack,
   Tooltip,
-  Typography,
 } from '@mui/material';
 import { useMemo } from 'react';
 
@@ -23,10 +26,13 @@ import { GroupType } from 'types/Enums';
 import { useGroupsByType } from 'hooks/Group';
 import { useUser } from 'hooks/User';
 
+import { ShowMoreText } from 'components/miscellaneous/UserInformation';
+
 export type EventEditPriorityPoolsProps = {
   priorityPools: Array<PriorityPoolMutate>;
   setPriorityPools: React.Dispatch<React.SetStateAction<PriorityPoolMutate[]>>;
 };
+type GroupOption = { type: 'header'; header: string } | { type: 'group'; group: BaseGroup };
 
 const EventEditPriorityPools = ({ priorityPools, setPriorityPools }: EventEditPriorityPoolsProps) => {
   const { data: user } = useUser();
@@ -42,7 +48,6 @@ const EventEditPriorityPools = ({ priorityPools, setPriorityPools }: EventEditPr
   const addPriorityPool = () => setPriorityPools((prev) => [...prev, { groups: [] }]);
   const removePriorityPool = (index: number) => setPriorityPools((prev) => prev.filter((_, i) => i !== index));
 
-  type GroupOption = { type: 'header'; header: string } | { type: 'group'; group: BaseGroup };
   const groupOptions = useMemo<Array<GroupOption>>(() => {
     const array: Array<GroupOption> = [];
     if (BOARD_GROUPS.length) {
@@ -79,9 +84,16 @@ const EventEditPriorityPools = ({ priorityPools, setPriorityPools }: EventEditPr
 
   return (
     <Stack gap={2}>
-      <Typography variant='body2'>
-        {`Definer prioriteringsgrupper her. For at en bruker skal bli prioritert må den være medlem av <b>alle</b> gruppene i en av prioriteringsgruppene. Med "-kullet" menes året du startet på studiet. Du er en del av ${user?.studyyear.group?.name}-kullet.`}
-      </Typography>
+      <Alert severity='info' variant='outlined'>
+        <AlertTitle>Hva er en prioriteringsgruppe?</AlertTitle>
+        <ShowMoreText variant='body2'>
+          {`Prioriteringsgruppene definerer hvem som er prioritert til et arrangement. For at en bruker skal bli prioritert må den være medlem av alle gruppene i en av prioriteringsgruppene. Rekkefølgen til prioriteringsgruppene har ingenting å si. Med "-kullet" menes året du startet på studiet. Du er for eksempel en del av ${user?.studyyear.group?.name}-kullet.
+          
+Om du for eksempel vil prioritere ${user?.studyyear.group?.name}-kullet til Dataingeniør og Digital forretningsutvikling må du lage 2 prioriteringsgrupper:
+- ${user?.studyyear.group?.name}-kullet og Dataingeniør
+- ${user?.studyyear.group?.name}-kullet og Digital forretningsutvikling`}
+        </ShowMoreText>
+      </Alert>
       {priorityPools.map((pool, index) => (
         <Stack direction='row' gap={1} key={index} sx={{ alignItems: 'center' }}>
           <FormControl fullWidth>
@@ -106,7 +118,8 @@ const EventEditPriorityPools = ({ priorityPools, setPriorityPools }: EventEditPr
                   <ListSubheader key={option.header}>{option.header}</ListSubheader>
                 ) : (
                   <MenuItem key={option.group.slug} value={option.group.slug}>
-                    {option.group.name}
+                    <Checkbox checked={pool.groups.includes(option.group.slug)} />
+                    <ListItemText primary={option.group.name} />
                   </MenuItem>
                 ),
               )}
