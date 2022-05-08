@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { urlEncode } from 'utils';
 
-import { Category, EventCompact } from 'types';
+import { Category, EventList } from 'types';
 import { Groups } from 'types/Enums';
 
 import { useEvents } from 'hooks/Event';
@@ -31,11 +31,10 @@ type AppointmentProps = {
 const Appointment = ({ children, data }: AppointmentProps) => {
   const theme = useTheme();
 
-  const getColor = (event: EventCompact) =>
-    theme.palette.colors[event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase() ? 'nok_event' : 'other_event'];
+  const getColor = (event: EventList) => theme.palette.colors[event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase() ? 'nok_event' : 'other_event'];
   return (
     <Link to={`${URLS.events}${data.id}/${urlEncode(data.title)}/`}>
-      <Appointments.Appointment data={data} draggable={false} resources={[]} style={{ backgroundColor: getColor(data as unknown as EventCompact) }}>
+      <Appointments.Appointment data={data} draggable={false} resources={[]} style={{ backgroundColor: getColor(data as unknown as EventList) }}>
         {children}
       </Appointments.Appointment>
     </Link>

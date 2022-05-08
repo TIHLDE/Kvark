@@ -3,9 +3,9 @@ import { QueryKey, useInfiniteQuery, UseInfiniteQueryOptions, useMutation, UseMu
 
 import {
   Event,
-  EventCompact,
   EventFavorite,
-  EventRequired,
+  EventList,
+  EventMutate,
   EventStatistics,
   PaginationResponse,
   PublicRegistration,
@@ -39,7 +39,7 @@ export const useEventById = (eventId: Event['id']) =>
   useQuery<Event, RequestResponse>(EVENT_QUERY_KEYS.detail(eventId), () => API.getEvent(eventId), { enabled: eventId !== -1 });
 
 export const useEvents = (filters?: any) =>
-  useInfiniteQuery<PaginationResponse<EventCompact>, RequestResponse>(
+  useInfiniteQuery<PaginationResponse<EventList>, RequestResponse>(
     EVENT_QUERY_KEYS.list(filters),
     ({ pageParam = 1 }) => API.getEvents({ ...filters, page: pageParam }),
     {
@@ -48,7 +48,7 @@ export const useEvents = (filters?: any) =>
   );
 
 export const useEventsWhereIsAdmin = (filters?: any) =>
-  useInfiniteQuery<PaginationResponse<EventCompact>, RequestResponse>(
+  useInfiniteQuery<PaginationResponse<EventList>, RequestResponse>(
     EVENT_QUERY_KEYS.list_admin(filters),
     ({ pageParam = 1 }) => API.getEventsWhereIsAdmin({ ...filters, page: pageParam }),
     {
@@ -56,9 +56,9 @@ export const useEventsWhereIsAdmin = (filters?: any) =>
     },
   );
 
-export const useCreateEvent = (): UseMutationResult<Event, RequestResponse, EventRequired, unknown> => {
+export const useCreateEvent = (): UseMutationResult<Event, RequestResponse, EventMutate, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((newEvent: EventRequired) => API.createEvent(newEvent), {
+  return useMutation((newEvent: EventMutate) => API.createEvent(newEvent), {
     onSuccess: (data) => {
       queryClient.invalidateQueries(EVENT_QUERY_KEYS.all);
       queryClient.setQueryData(EVENT_QUERY_KEYS.detail(data.id), data);
@@ -66,9 +66,9 @@ export const useCreateEvent = (): UseMutationResult<Event, RequestResponse, Even
   });
 };
 
-export const useUpdateEvent = (eventId: Event['id']): UseMutationResult<Event, RequestResponse, EventRequired, unknown> => {
+export const useUpdateEvent = (eventId: Event['id']): UseMutationResult<Event, RequestResponse, EventMutate, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((updatedEvent: EventRequired) => API.updateEvent(eventId, updatedEvent), {
+  return useMutation((updatedEvent: EventMutate) => API.updateEvent(eventId, updatedEvent), {
     onSuccess: (data) => {
       queryClient.invalidateQueries(EVENT_QUERY_KEYS.all);
       queryClient.setQueryData(EVENT_QUERY_KEYS.detail(eventId), data);

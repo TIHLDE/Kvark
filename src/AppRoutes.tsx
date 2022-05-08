@@ -54,21 +54,31 @@ const Toddel = lazy(() => import('pages/Toddel'));
 const UserAdmin = lazy(() => import('pages/UserAdmin'));
 
 type AuthRouteProps = {
+  /** List of permissions where the user must have access through at least one of them to be given access */
   apps?: Array<PermissionApp>;
+  /** The element to render if have permission */
   element: ReactElement;
 };
 
+/**
+ * Protects a route with permission checks. If `apps` is empty or not present, all authenticated users are given access.
+ */
 export const AuthRoute = ({ apps = [], element }: AuthRouteProps) => {
   const setLogInRedirectURL = useSetRedirectUrl();
   const isAuthenticated = useIsAuthenticated();
-  const { allowAccess, isLoading } = useHavePermission(apps);
+  const { allowAccess, isLoading } = useHavePermission(apps, { enabled: Boolean(apps.length) });
 
-  if (isLoading) {
-    return <Page />;
-  } else if (!isAuthenticated) {
+  if (!isAuthenticated) {
     setLogInRedirectURL(window.location.pathname);
     return <Navigate to={URLS.login} />;
-  } else if (allowAccess || !apps.length) {
+  }
+  if (!apps.length) {
+    return element;
+  }
+  if (isLoading) {
+    return <Page />;
+  }
+  if (allowAccess) {
     return element;
   }
   return <Navigate to={URLS.landing} />;

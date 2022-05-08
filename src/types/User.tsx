@@ -1,4 +1,4 @@
-import { PermissionApp, UserClass, UserStudy } from 'types/Enums';
+import { PermissionApp } from 'types/Enums';
 import { Group, MembershipWithoutUser } from 'types/Group';
 import { Permissions } from 'types/Misc';
 
@@ -15,9 +15,7 @@ export type User = {
   last_name: string;
   tool: string;
   unread_notifications: number;
-  user_class: UserClass;
   user_id: string;
-  user_study: UserStudy;
   unanswered_evaluations_count: number;
   number_of_strikes: number;
   public_event_registrations: boolean;
@@ -26,10 +24,9 @@ export type User = {
   studyyear: MembershipWithoutUser;
 };
 
-export type UserBase = Pick<User, 'user_id' | 'first_name' | 'last_name' | 'image' | 'email' | 'user_class' | 'user_study' | 'gender' | 'study' | 'studyyear'>;
-export type UserList = UserBase &
-  Pick<User, 'email' | 'user_class' | 'user_study' | 'study' | 'studyyear' | 'allergy' | 'gender' | 'tool' | 'number_of_strikes'>;
-export type UserCreate = Pick<User, 'email' | 'first_name' | 'last_name' | 'user_class' | 'user_id' | 'user_study'> & {
+export type UserBase = Pick<User, 'user_id' | 'first_name' | 'last_name' | 'image' | 'email' | 'gender' | 'study' | 'studyyear'>;
+export type UserList = UserBase & Pick<User, 'email' | 'study' | 'studyyear' | 'allergy' | 'gender' | 'tool' | 'number_of_strikes'>;
+export type UserCreate = Pick<User, 'email' | 'first_name' | 'last_name' | 'user_id'> & {
   password: string;
   study: Group['slug'] | null;
   class: Group['slug'] | null;

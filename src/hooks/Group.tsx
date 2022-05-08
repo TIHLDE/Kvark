@@ -13,6 +13,7 @@ import {
   GroupForm,
   GroupLaw,
   GroupLawMutate,
+  GroupList,
   GroupMutate,
   GroupUserFine,
   PaginationResponse,
@@ -55,7 +56,7 @@ export const useUpdateGroup = (): UseMutationResult<Group, RequestResponse, Grou
   });
 };
 
-export const useGroups = (filters?: any) => useQuery<Group[], RequestResponse>(GROUPS_QUERY_KEYS.list(filters), () => API.getGroups({ ...filters }));
+export const useGroups = (filters?: any) => useQuery<GroupList[], RequestResponse>(GROUPS_QUERY_KEYS.list(filters), () => API.getGroups({ ...filters }));
 export const useStudyGroups = (filters?: any) => useGroups({ ...filters, type: GroupType.STUDY });
 export const useStudyyearGroups = (filters?: any) => useGroups({ ...filters, type: GroupType.STUDYYEAR });
 
@@ -65,11 +66,16 @@ export const useGroupsByType = (filters?: any) => {
   const SUB_GROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.SUBGROUP) || [], [groups]);
   const COMMITTEES = useMemo(() => groups?.filter((group) => group.type === GroupType.COMMITTEE) || [], [groups]);
   const INTERESTGROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.INTERESTGROUP) || [], [groups]);
+  const STUDYGROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.STUDY) || [], [groups]);
+  const STUDYYEARGROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.STUDYYEAR) || [], [groups]);
   const OTHER_GROUPS = useMemo(
-    () => groups?.filter((group) => ![...BOARD_GROUPS, ...SUB_GROUPS, ...COMMITTEES, ...INTERESTGROUPS].some((g) => group.slug === g.slug)) || [],
-    [groups, BOARD_GROUPS, SUB_GROUPS, COMMITTEES],
+    () =>
+      groups?.filter(
+        (group) => ![...BOARD_GROUPS, ...SUB_GROUPS, ...COMMITTEES, ...INTERESTGROUPS, ...STUDYGROUPS, ...STUDYYEARGROUPS].some((g) => group.slug === g.slug),
+      ) || [],
+    [groups, BOARD_GROUPS, SUB_GROUPS, COMMITTEES, STUDYGROUPS, STUDYYEARGROUPS],
   );
-  return { BOARD_GROUPS, SUB_GROUPS, COMMITTEES, INTERESTGROUPS, OTHER_GROUPS, data: groups, ...response };
+  return { BOARD_GROUPS, SUB_GROUPS, COMMITTEES, INTERESTGROUPS, STUDYGROUPS, STUDYYEARGROUPS, OTHER_GROUPS, data: groups, ...response };
 };
 
 export const useGroupLaws = (groupSlug: Group['slug'], options?: UseQueryOptions<Array<GroupLaw>, RequestResponse, Array<GroupLaw>, QueryKey>) =>

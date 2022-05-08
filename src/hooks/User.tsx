@@ -6,7 +6,7 @@ import URLS from 'URLS';
 
 import type {
   Badge,
-  EventCompact,
+  EventList,
   Form,
   LoginRequestResponse,
   Membership,
@@ -52,9 +52,13 @@ export const useUser = (userId?: User['user_id'], options?: UseQueryOptions<User
   });
 };
 
-export const useUserPermissions = () => {
+export const useUserPermissions = (options?: UseQueryOptions<UserPermissions | undefined, RequestResponse, UserPermissions | undefined, QueryKey>) => {
   const isAuthenticated = useIsAuthenticated();
-  return useQuery<UserPermissions | undefined, RequestResponse>([USER_PERMISSIONS_QUERY_KEY], () => (isAuthenticated ? API.getUserPermissions() : undefined));
+  return useQuery<UserPermissions | undefined, RequestResponse>(
+    [USER_PERMISSIONS_QUERY_KEY],
+    () => (isAuthenticated ? API.getUserPermissions() : undefined),
+    options,
+  );
 };
 
 export const useUserBadges = (userId?: User['user_id']) =>
@@ -67,7 +71,7 @@ export const useUserBadges = (userId?: User['user_id']) =>
   );
 
 export const useUserEvents = (userId?: User['user_id']) => {
-  return useInfiniteQuery<PaginationResponse<EventCompact>, RequestResponse>(
+  return useInfiniteQuery<PaginationResponse<EventList>, RequestResponse>(
     [USER_EVENTS_QUERY_KEY, userId],
     ({ pageParam = 1 }) => API.getUserEvents(userId, { page: pageParam }),
     {
@@ -191,8 +195,11 @@ export const useDeclineUser = (): UseMutationResult<RequestResponse, RequestResp
   });
 };
 
-export const useHavePermission = (apps: Array<PermissionApp>) => {
-  const { data, isLoading } = useUserPermissions();
+export const useHavePermission = (
+  apps: Array<PermissionApp>,
+  options?: UseQueryOptions<UserPermissions | undefined, RequestResponse, UserPermissions | undefined, QueryKey>,
+) => {
+  const { data, isLoading } = useUserPermissions(options);
   return { allowAccess: isLoading ? false : Boolean(apps.some((app) => data?.permissions[app].write)), isLoading };
 };
 
