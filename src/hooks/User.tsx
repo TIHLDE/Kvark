@@ -52,9 +52,13 @@ export const useUser = (userId?: User['user_id'], options?: UseQueryOptions<User
   });
 };
 
-export const useUserPermissions = () => {
+export const useUserPermissions = (options?: UseQueryOptions<UserPermissions | undefined, RequestResponse, UserPermissions | undefined, QueryKey>) => {
   const isAuthenticated = useIsAuthenticated();
-  return useQuery<UserPermissions | undefined, RequestResponse>([USER_PERMISSIONS_QUERY_KEY], () => (isAuthenticated ? API.getUserPermissions() : undefined));
+  return useQuery<UserPermissions | undefined, RequestResponse>(
+    [USER_PERMISSIONS_QUERY_KEY],
+    () => (isAuthenticated ? API.getUserPermissions() : undefined),
+    options,
+  );
 };
 
 export const useUserBadges = (userId?: User['user_id']) =>
@@ -191,8 +195,11 @@ export const useDeclineUser = (): UseMutationResult<RequestResponse, RequestResp
   });
 };
 
-export const useHavePermission = (apps: Array<PermissionApp>) => {
-  const { data, isLoading } = useUserPermissions();
+export const useHavePermission = (
+  apps: Array<PermissionApp>,
+  options?: UseQueryOptions<UserPermissions | undefined, RequestResponse, UserPermissions | undefined, QueryKey>,
+) => {
+  const { data, isLoading } = useUserPermissions(options);
   return { allowAccess: isLoading ? false : Boolean(apps.some((app) => data?.permissions[app].write)), isLoading };
 };
 

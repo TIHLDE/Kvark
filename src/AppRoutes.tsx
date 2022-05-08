@@ -61,7 +61,7 @@ type AuthRouteProps = {
 export const AuthRoute = ({ apps = [], element }: AuthRouteProps) => {
   const setLogInRedirectURL = useSetRedirectUrl();
   const isAuthenticated = useIsAuthenticated();
-  const { allowAccess, isLoading } = useHavePermission(apps);
+  const { allowAccess, isLoading } = useHavePermission(apps, { enabled: Boolean(apps.length) });
 
   if (!isAuthenticated) {
     setLogInRedirectURL(window.location.pathname);
