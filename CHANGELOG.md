@@ -13,6 +13,10 @@
 ---
 
 ## Neste versjon
+
+- ✨ **Arrangementer**. Bruker ny logikk for prioritering. Kan nå prioritere grupper.
+- ⚡ **Brukere**. Fjernet lagring av klasse og studie, dette finnes nå gjennom medlemskap.
+
 ## Versjon 2022.05.06
 
 - ✨ **Spørreskjemaer**. Administartor kan sortere spørreskjema-spørsmål i rekkefølgen som ønskes.
