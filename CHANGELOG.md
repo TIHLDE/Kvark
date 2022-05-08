@@ -13,6 +13,7 @@
 ---
 
 ## Neste versjon
+## Versjon 2022.05.08
 
 - ✨ **Arrangementer**. Bruker ny logikk for prioritering. Kan nå prioritere grupper.
 - ⚡ **Brukere**. Fjernet lagring av klasse og studie, dette finnes nå gjennom medlemskap.
