@@ -1,6 +1,6 @@
 import { EventFormType, FormFieldType, FormResourceType } from 'types/Enums';
-import { EventCompact } from 'types/Event';
-import { Group } from 'types/Group';
+import { EventList } from 'types/Event';
+import { BaseGroup } from 'types/Group';
 import { UserBase } from 'types/User';
 
 // -----------------------------------------------------------
@@ -17,12 +17,12 @@ export interface FormBase {
 
 export interface EventForm extends FormBase {
   type: EventFormType;
-  event: EventCompact;
+  event: EventList;
   resource_type: FormResourceType.EVENT_FORM;
 }
 
 export interface GroupForm extends FormBase {
-  group: Group;
+  group: BaseGroup;
   resource_type: FormResourceType.GROUP_FORM;
   can_submit_multiple: boolean;
   only_for_group_members: boolean;

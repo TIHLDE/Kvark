@@ -13,6 +13,10 @@
 ---
 
 ## Neste versjon
+
+- ✨ **Arrangementer**. Bruker ny logikk for prioritering. Kan nå prioritere grupper.
+- ⚡ **Brukere**. Fjernet lagring av klasse og studie, dette finnes nå gjennom medlemskap.
+
 ## Versjon 2022.05.06
 
 - ⚡ **Arrangementer**. Kopiere navn og epost til arrangement deltagere til utklippstavla.

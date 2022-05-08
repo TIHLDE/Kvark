@@ -4,12 +4,12 @@ import { Box, ButtonBase, Divider, Skeleton, Stack, Theme, Typography } from '@m
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 
-import { Group } from 'types';
+import { GroupList } from 'types';
 
 import Paper from 'components/layout/Paper';
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 export type GroupItemProps = {
-  group: Group;
+  group: GroupList;
   background?: keyof Theme['palette']['background'];
 };
 

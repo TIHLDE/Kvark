@@ -157,7 +157,7 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser, ...props }
             })}`}</Typography>
           </div>
           {fine.reason && (
-            <Paper sx={{ p: 2 }}>
+            <Paper sx={{ px: 2, py: 1 }}>
               <Typography component='p' variant='subtitle2'>
                 Begrunnelse:
               </Typography>
@@ -168,7 +168,7 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser, ...props }
             <Box alt='Bildebevis' component='img' loading='lazy' src={fine.image} sx={{ borderRadius: 1, maxWidth: 600, m: 'auto', width: '100%' }} />
           )}
           {fine.defense && (
-            <Paper sx={{ p: 2 }}>
+            <Paper sx={{ px: 2, py: 1 }}>
               <Typography component='p' variant='subtitle2'>
                 Forsvar fra den tiltalte:
               </Typography>
