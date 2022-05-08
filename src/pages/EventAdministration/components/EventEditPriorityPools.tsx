@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import { useMemo } from 'react';
 
-import { GroupList, PriorityPoolMutate } from 'types';
+import { BaseGroup, PriorityPoolMutate } from 'types';
 import { GroupType } from 'types/Enums';
 
 import { useGroupsByType } from 'hooks/Group';
@@ -42,7 +42,7 @@ const EventEditPriorityPools = ({ priorityPools, setPriorityPools }: EventEditPr
   const addPriorityPool = () => setPriorityPools((prev) => [...prev, { groups: [] }]);
   const removePriorityPool = (index: number) => setPriorityPools((prev) => prev.filter((_, i) => i !== index));
 
-  type GroupOption = { type: 'header'; header: string } | { type: 'group'; group: GroupList };
+  type GroupOption = { type: 'header'; header: string } | { type: 'group'; group: BaseGroup };
   const groupOptions = useMemo<Array<GroupOption>>(() => {
     const array: Array<GroupOption> = [];
     if (BOARD_GROUPS.length) {
@@ -72,7 +72,7 @@ const EventEditPriorityPools = ({ priorityPools, setPriorityPools }: EventEditPr
     return array;
   }, [BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS, STUDYGROUPS, STUDYYEARGROUPS]);
 
-  const getGroupName = (slug: GroupList['slug']) => {
+  const getGroupName = (slug: BaseGroup['slug']) => {
     const group = data.find((group) => group.slug === slug);
     return group ? (group.type === GroupType.STUDYYEAR ? `${group.name}-kullet` : group.name) : 'Ukjent';
   };

@@ -1,6 +1,6 @@
 import { Grid, Typography } from '@mui/material';
 
-import { Group } from 'types';
+import { GroupList } from 'types';
 
 import { useGroupsByType } from 'hooks/Group';
 import { useIsAuthenticated } from 'hooks/User';
@@ -16,7 +16,7 @@ const GroupsOverview = () => {
   const { BOARD_GROUPS, SUB_GROUPS, COMMITTEES, INTERESTGROUPS, OTHER_GROUPS, error, isLoading } = useGroupsByType({ overview: true });
 
   type CollectionProps = {
-    groups: Array<Group>;
+    groups: Array<GroupList>;
     title: string;
   };
 

@@ -5,7 +5,7 @@ import { makeStyles } from 'makeStyles';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { Event, EventMutate, Group, GroupList, PriorityPool, PriorityPoolMutate } from 'types';
+import { BaseGroup, Event, EventMutate, Group, PriorityPool, PriorityPoolMutate } from 'types';
 import { GroupType, MembershipType } from 'types/Enums';
 
 import { useCategories } from 'hooks/Categories';
@@ -131,7 +131,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const { data: user } = useUser();
   const { data: groups, BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS } = useGroupsByType();
 
-  type GroupOption = { type: 'header'; header: string } | { type: 'group'; group: GroupList };
+  type GroupOption = { type: 'header'; header: string } | { type: 'group'; group: BaseGroup };
   const groupOptions = useMemo<Array<GroupOption>>(() => {
     if (!permissions) {
       return [];

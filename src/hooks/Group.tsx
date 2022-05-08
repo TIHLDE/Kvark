@@ -13,6 +13,7 @@ import {
   GroupForm,
   GroupLaw,
   GroupLawMutate,
+  GroupList,
   GroupMutate,
   GroupUserFine,
   PaginationResponse,
@@ -55,7 +56,7 @@ export const useUpdateGroup = (): UseMutationResult<Group, RequestResponse, Grou
   });
 };
 
-export const useGroups = (filters?: any) => useQuery<Group[], RequestResponse>(GROUPS_QUERY_KEYS.list(filters), () => API.getGroups({ ...filters }));
+export const useGroups = (filters?: any) => useQuery<GroupList[], RequestResponse>(GROUPS_QUERY_KEYS.list(filters), () => API.getGroups({ ...filters }));
 export const useStudyGroups = (filters?: any) => useGroups({ ...filters, type: GroupType.STUDY });
 export const useStudyyearGroups = (filters?: any) => useGroups({ ...filters, type: GroupType.STUDYYEAR });
 

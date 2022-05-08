@@ -1,5 +1,5 @@
 import { UserSubmission } from 'types/Form';
-import { Group, GroupList } from 'types/Group';
+import { BaseGroup, Group } from 'types/Group';
 import { Permissions } from 'types/Misc';
 import { UserList } from 'types/User';
 
@@ -18,7 +18,7 @@ export type Event = {
   end_registration_at: string;
   evaluation: string | null;
   expired: boolean;
-  organizer: Group | null;
+  organizer: BaseGroup | null;
   id: number;
   image?: string;
   image_alt?: string;
@@ -42,7 +42,7 @@ export type Event = {
 
 export type EventMutate = Partial<Omit<Event, 'organizer' | 'priority_pools'>> &
   Pick<Event, 'end_date' | 'title' | 'start_date'> & {
-    organizer: Group['slug'] | null;
+    organizer: BaseGroup['slug'] | null;
     priority_pools: Array<PriorityPoolMutate>;
   };
 
@@ -56,11 +56,11 @@ export type EventFavorite = {
 };
 
 export type PriorityPool = {
-  groups: Array<GroupList>;
+  groups: Array<BaseGroup>;
 };
 
 export type PriorityPoolMutate = {
-  groups: Array<GroupList['slug']>;
+  groups: Array<BaseGroup['slug']>;
 };
 
 export type Registration = {

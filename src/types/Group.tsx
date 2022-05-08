@@ -6,23 +6,27 @@ export type GroupPermissions = Permissions & {
   group_form: boolean;
 };
 
-export type Group = {
+export type BaseGroup = {
   name: string;
   slug: string;
-  description: string;
-  contact_email: string | null;
   type: GroupType;
-  leader: UserBase | UserList | null;
-  permissions: GroupPermissions;
-  fines_admin: UserBase | UserList | null;
-  fines_activated: boolean;
-  fine_info: string;
   image: string | null;
   image_alt: string | null;
   viewer_is_member: boolean;
 };
 
-export type GroupList = Pick<Group, 'name' | 'slug' | 'type' | 'viewer_is_member' | 'image' | 'image_alt'>;
+export type GroupList = BaseGroup & {
+  contact_email: string | null;
+  leader: UserBase | UserList | null;
+};
+
+export type Group = GroupList & {
+  description: string;
+  permissions: GroupPermissions;
+  fines_admin: UserBase | UserList | null;
+  fines_activated: boolean;
+  fine_info: string;
+};
 
 export type GroupMutate = Partial<Omit<Group, 'fines_admin' | 'permissions' | 'type' | 'viewer_is_member'>> &
   Pick<Group, 'slug'> & {
@@ -32,7 +36,7 @@ export type GroupMutate = Partial<Omit<Group, 'fines_admin' | 'permissions' | 't
 export type Membership = {
   user: UserBase | UserList;
   membership_type: MembershipType;
-  group: GroupList;
+  group: BaseGroup;
   created_at: string;
 };
 

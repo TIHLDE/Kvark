@@ -29,6 +29,7 @@ import {
   GroupForm,
   GroupLaw,
   GroupLawMutate,
+  GroupList,
   GroupMutate,
   GroupUserFine,
   JobPost,
@@ -284,7 +285,7 @@ export default {
     IFetch<MembershipHistory>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${MEMBERSHIP_HISTORIES_ENDPOINT}/${id}/`, data }),
 
   // Group
-  getGroups: (filters?: any) => IFetch<Group[]>({ method: 'GET', url: `${GROUPS_ENDPOINT}/`, data: filters || {} }),
+  getGroups: (filters?: any) => IFetch<GroupList[]>({ method: 'GET', url: `${GROUPS_ENDPOINT}/`, data: filters || {} }),
   getGroup: (slug: Group['slug']) => IFetch<Group>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/` }),
   updateGroup: (slug: Group['slug'], data: GroupMutate) => IFetch<Group>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${slug}/`, data }),
 
