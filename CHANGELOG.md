@@ -13,6 +13,9 @@
 ---
 
 ## Neste versjon
+
+- ⚡ **Arrangementer**. Forbedret visning av prioriterte. Oversetter nå kull til klassetrinn der det er mulig.
+
 ## Versjon 2022.05.08
 
 - ✨ **Arrangementer**. Bruker ny logikk for prioritering. Kan nå prioritere grupper.
