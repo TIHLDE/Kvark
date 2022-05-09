@@ -18,6 +18,7 @@ import Paper from 'components/layout/Paper';
 import Tabs from 'components/layout/Tabs';
 import { PrimaryTopBox } from 'components/layout/TopBox';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import { AlertOnce } from 'components/miscellaneous/UserInformation';
 import Page from 'components/navigation/Page';
 
 type QrScanProps = {
@@ -25,22 +26,21 @@ type QrScanProps = {
 };
 
 const QrScan = ({ onScan }: QrScanProps) => {
+  const [scanned, setScanned] = useState<string | undefined>(undefined);
+  const val = useDebounce(scanned, 500);
   const [previousScanned, setPreviousScanned] = useState<string | undefined>(undefined);
-  const [shouldScan, setShouldScan] = useState(true);
   const videoTag = useRef<HTMLVideoElement>();
   const qrScanner = useRef<QrScanner | null>(null);
 
-  const onDecode = async (result: QrScanner.ScanResult) => {
-    if (result.data !== previousScanned && shouldScan) {
-      setShouldScan(false);
-      try {
-        await onScan(result.data);
-        setPreviousScanned(result.data);
-      } finally {
-        setShouldScan(true);
-      }
+  const onDecode = (result: QrScanner.ScanResult) => setScanned(result.data);
+
+  useEffect(() => {
+    if (!val || val === previousScanned) {
+      return;
     }
-  };
+    setPreviousScanned(val);
+    onScan(val);
+  }, [val, previousScanned]);
 
   useEffect(() => {
     if (videoTag.current && qrScanner.current === null) {
@@ -65,6 +65,7 @@ const QrScan = ({ onScan }: QrScanProps) => {
         objectFit: 'cover',
         aspectRatio: '1',
         width: '100%',
+        // Fallback-height if aspect-ratio isn't supported
         '@supports not (aspect-ratio: 1)': { height: 400 },
       }}
     />
@@ -103,7 +104,7 @@ const EventRegistration = () => {
   const updateRegistration = useUpdateEventRegistration(Number(id));
   const showSnackbar = useSnackbar();
   const registrationsTab = { value: 'registrations', label: 'Navn', icon: NameIcon };
-  const qrTab = { value: 'qr', label: 'QR-kode', icon: QRIcon };
+  const qrTab = { value: 'qr', label: 'QR-SKANNER', icon: QRIcon };
   const tabs = [registrationsTab, qrTab];
   const [tab, setTab] = useState(registrationsTab.value);
   const registrations = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
@@ -131,14 +132,17 @@ const EventRegistration = () => {
     <Page banner={<PrimaryTopBox />} options={{ title: `${event?.title || 'Laster arrangement...'} - Registrering` }}>
       <Paper sx={{ maxWidth: (theme) => theme.breakpoints.values.md, margin: 'auto', position: 'relative', left: 0, right: 0, top: -60 }}>
         {(updateRegistration.isLoading || isFetching || isLoading) && (
-          <LinearProgress sx={{ position: 'absolute', top: 0, left: (theme) => theme.spacing(1), right: (theme) => theme.spacing(1) }} />
+          <LinearProgress color='warning' sx={{ position: 'absolute', top: 0, left: (theme) => theme.spacing(1), right: (theme) => theme.spacing(1) }} />
         )}
-        <Typography align='center' variant='h2'>
-          {event?.title || ''}
+        <Typography align='center' component='h1' variant='h2'>
+          {event?.title || 'Laster arrangement...'}
         </Typography>
         <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
         {tab === registrationsTab.value && (
           <>
+            <AlertOnce cookieKey='EventRegistrationQrScan' severity='info' sx={{ mt: 1 }} variant='outlined'>
+              Prøv gjerne ut QR-skanneren! Den er blitt forbedret og skal nå fungere raskt slik at innslipp går raskere.
+            </AlertOnce>
             <TextField fullWidth label='Søk' margin='normal' onChange={(e) => setSearch(e.target.value)} type='Søk' variant='outlined' />
             {!isLoading && !registrations.length && (
               <NotFoundIndicator header={search ? `Ingen påmeldte med navn som inneholder "${search}"` : 'Ingen påmeldte'} />
