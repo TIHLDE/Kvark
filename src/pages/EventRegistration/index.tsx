@@ -1,7 +1,8 @@
 import QRIcon from '@mui/icons-material/QrCodeScannerRounded';
 import NameIcon from '@mui/icons-material/TextFieldsRounded';
-import { Checkbox, FormControlLabel, LinearProgress, List, TextField, Theme, Typography, useMediaQuery } from '@mui/material';
-import { ChangeEvent, lazy, Suspense, useMemo, useState } from 'react';
+import { Box, Checkbox, FormControlLabel, LinearProgress, List, TextField, Theme, Typography, useMediaQuery } from '@mui/material';
+import QrScanner from 'qr-scanner';
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Registration } from 'types';
@@ -19,7 +20,56 @@ import { PrimaryTopBox } from 'components/layout/TopBox';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import Page from 'components/navigation/Page';
 
-const QrReader = lazy(() => import('react-qr-reader'));
+type QrScanProps = {
+  onScan: (userId: string) => Promise<Registration>;
+};
+
+const QrScan = ({ onScan }: QrScanProps) => {
+  const [previousScanned, setPreviousScanned] = useState<string | undefined>(undefined);
+  const [shouldScan, setShouldScan] = useState(true);
+  const videoTag = useRef<HTMLVideoElement>();
+  const qrScanner = useRef<QrScanner | null>(null);
+
+  const onDecode = async (result: QrScanner.ScanResult) => {
+    if (result.data !== previousScanned && shouldScan) {
+      setShouldScan(false);
+      try {
+        await onScan(result.data);
+        setPreviousScanned(result.data);
+      } finally {
+        setShouldScan(true);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (videoTag.current && qrScanner.current === null) {
+      qrScanner.current = new QrScanner(videoTag.current, onDecode, {
+        highlightScanRegion: true,
+        highlightCodeOutline: true,
+      });
+      qrScanner.current.start();
+    }
+    return () => {
+      qrScanner.current?.destroy();
+    };
+  }, []);
+
+  return (
+    <Box
+      component='video'
+      muted
+      ref={videoTag}
+      sx={{
+        background: ({ palette }) => palette.background.default,
+        objectFit: 'cover',
+        aspectRatio: '1',
+        width: '100%',
+        '@supports not (aspect-ratio: 1)': { height: 400 },
+      }}
+    />
+  );
+};
 
 export type ParticipantCardProps = {
   user: Registration;
@@ -47,7 +97,6 @@ const ParticipantCard = ({ user, updateAttendedStatus }: ParticipantCardProps) =
 const EventRegistration = () => {
   const { id } = useParams();
   const { data: event, isError } = useEventById(Number(id));
-  const [previousScanned, setPreviousScanned] = useState<string | undefined>(undefined);
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 500);
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading } = useEventRegistrations(Number(id), { is_on_wait: false, search: debouncedSearch });
@@ -58,15 +107,6 @@ const EventRegistration = () => {
   const tabs = [registrationsTab, qrTab];
   const [tab, setTab] = useState(registrationsTab.value);
   const registrations = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
-
-  const handleQrScan = (userId: string | null) => {
-    if (!updateRegistration.isLoading && userId && userId !== previousScanned) {
-      updateAttendedStatus(userId, true);
-      setPreviousScanned(userId);
-    }
-  };
-
-  const handleQrError = () => showSnackbar('En ukjent feil har oppstått, sjekk at vi har tilgang til å bruke kameraet', 'warning');
 
   const updateAttendedStatus = async (userId: string, attendedStatus: boolean) =>
     updateRegistration.mutateAsync(
@@ -82,13 +122,6 @@ const EventRegistration = () => {
         onError: (error) => showSnackbar(error.detail, 'error'),
       },
     );
-
-  const isiOSDevice = useMemo(
-    () =>
-      ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(navigator.platform) ||
-      (navigator.userAgent.includes('Mac') && 'ontouchend' in document),
-    [],
-  );
 
   if (isError || (event && !event.sign_up)) {
     return <Http404 />;
@@ -119,14 +152,7 @@ const EventRegistration = () => {
             </Pagination>
           </>
         )}
-        {tab === qrTab.value && (
-          <>
-            <Suspense fallback={null}>
-              <QrReader onError={handleQrError} onScan={handleQrScan} resolution={800} showViewFinder={true} style={{ width: '100%' }} />
-            </Suspense>
-            {!isiOSDevice && <Typography sx={{ fontStyle: 'italic', mt: 2 }}>QR-scanning på iOS støttes kun i Safari</Typography>}
-          </>
-        )}
+        {tab === qrTab.value && <QrScan onScan={async (userId) => updateAttendedStatus(userId, true)} />}
       </Paper>
     </Page>
   );
