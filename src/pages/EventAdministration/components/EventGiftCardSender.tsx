@@ -48,7 +48,7 @@ const EventGiftCardSender = ({ eventId }: EventFileSenderProps) => {
         onClose={() => setDialogOpen(false)}
         open={dialogOpen}
         titleText='Send gavekort til deltagere'>
-        <FileUploader files={files} fileTypes={['application/pdf']} setFiles={setFiles} title='Last opp eller dra gavekort hit.' />
+        <FileUploader files={files} fileTypes={{ 'application/pdf': ['.pdf'] }} setFiles={setFiles} title='Last opp eller dra gavekort hit.' />
         <Button disabled={files.length < 1 || sendEmail.isLoading} fullWidth onClick={submit} variant='contained'>
           Send Gavekort
         </Button>
