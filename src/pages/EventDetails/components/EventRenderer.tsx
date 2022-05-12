@@ -330,7 +330,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           )}
           {!data.can_cause_strikes && (
             <Alert severity='info' variant='outlined'>
-              Dette arrangementet gir ikke prikker om du melder deg av for sent eller møter opp
+              Dette arrangementet gir ikke prikker om du melder deg av for sent eller ikke møter opp
             </Alert>
           )}
         </>
