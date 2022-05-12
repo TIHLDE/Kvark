@@ -15,7 +15,7 @@ import { useAnalytics } from 'hooks/Utils';
 
 import Paper from 'components/layout/Paper';
 
-import EventsCalendarPopover from './EventsCalendarPopover';
+import EventsCalendarPopover from 'pages/Landing/components/EventsCalendarPopover';
 
 type Filters = {
   start_range?: string;
