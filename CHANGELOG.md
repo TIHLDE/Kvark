@@ -13,6 +13,7 @@
 ---
 
 ## Neste versjon
+## Versjon 2022.05.12
 
 - ✨ **Bruker**. Lagt til knapp i innstillinger for å endre passord.
 - ⚡ **Arrangementer**. Forbedret visning av prioriterte. Oversetter nå kull til klassetrinn der det er mulig.
