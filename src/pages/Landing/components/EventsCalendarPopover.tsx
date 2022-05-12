@@ -13,7 +13,7 @@ const DetailsHeader = styled(Typography)({
   fontSize: '1.5rem',
 });
 
-export type PopoverProps = {
+export type EventsCalendarPopoverProps = {
   id: number;
 };
 
