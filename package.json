@@ -37,7 +37,7 @@
     "react-linkify": "^1.0.0-alpha",
     "react-markdown": "^8.0.0",
     "react-palette": "^1.0.1",
-    "react-query": "^3.38.1",
+    "react-query": "^3.39.0",
     "react-router-dom": "^6.3.0",
     "slugify": "^1.6.3",
     "tss-react": "^3.6.0",
