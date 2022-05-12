@@ -1,40 +1,21 @@
 import CloseIcon from '@mui/icons-material/CloseRounded';
-import { Button, Dialog, DialogContent, DialogTitle, IconButton, Slide, Typography } from '@mui/material';
-import { TransitionProps } from '@mui/material/transitions';
-import { makeStyles } from 'makeStyles';
-import { forwardRef, FunctionComponent, ReactElement, Ref, useState } from 'react';
+import { Button, ButtonProps, Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material';
+import { FunctionComponent, useState } from 'react';
 
-const useStyles = makeStyles()((theme) => ({
-  appBar: {
-    margin: 0,
-    padding: theme.spacing(2),
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.text.primary,
-  },
-  container: {
-    padding: theme.spacing(2),
-    background: theme.palette.background.default,
-  },
-}));
-
-export type RendererPreviewProps<Type> = {
-  className?: string;
+export type RendererPreviewProps<Type> = ButtonProps & {
+  /** Function to be runned to get the data which can be passed to the renderer-component */
   getContent: () => Type;
+  /** Component which renders a preview of the given content */
   renderer: FunctionComponent<{ preview: boolean; data: Type }>;
 };
 
-const RendererPreview = <Type extends unknown>({ className, getContent, renderer: Renderer }: RendererPreviewProps<Type>) => {
-  const { classes } = useStyles();
+/**
+ * Preview content. Generic which means that is supports all types as long as it has a component
+ * which can be passed the data to preview through the `data`-prop and a `preview`-prop set to `true`.
+ */
+const RendererPreview = <Type extends unknown>({ getContent, renderer: Renderer, ...props }: RendererPreviewProps<Type>) => {
   const [content, setContent] = useState<Type | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-
-  const Transition = forwardRef(function Transition(props: TransitionProps & { children: ReactElement }, ref: Ref<unknown>) {
-    return <Slide direction='up' ref={ref} {...props} />;
-  });
 
   const handleClickOpen = () => {
     setContent(getContent());
@@ -43,18 +24,23 @@ const RendererPreview = <Type extends unknown>({ className, getContent, renderer
 
   return (
     <>
-      <Button className={className || ''} onClick={handleClickOpen} variant='outlined'>
+      <Button variant='outlined' {...props} onClick={handleClickOpen}>
         Forhåndsvis
       </Button>
       {isOpen && content && (
-        <Dialog fullWidth maxWidth='lg' onClose={() => setIsOpen(false)} open={isOpen} TransitionComponent={Transition}>
-          <DialogTitle className={classes.appBar}>
+        <Dialog fullWidth maxWidth='lg' onClose={() => setIsOpen(false)} open={isOpen}>
+          <DialogTitle sx={{ p: 2 }}>
             <Typography variant='h3'>Forhåndsvisning</Typography>
-            <IconButton aria-label='close' className={classes.closeButton} color='inherit' edge='start' onClick={() => setIsOpen(false)}>
+            <IconButton
+              aria-label='Lukk forhåndsvisning'
+              color='inherit'
+              edge='start'
+              onClick={() => setIsOpen(false)}
+              sx={{ position: 'absolute', right: ({ spacing }) => spacing(1), top: ({ spacing }) => spacing(1), color: ({ palette }) => palette.text.primary }}>
               <CloseIcon />
             </IconButton>
           </DialogTitle>
-          <DialogContent className={classes.container}>
+          <DialogContent sx={{ p: 2, background: ({ palette }) => palette.background.default }}>
             <Renderer data={content} preview />
           </DialogContent>
         </Dialog>

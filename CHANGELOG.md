@@ -13,6 +13,12 @@
 ---
 
 ## Neste versjon
+## Versjon 2022.05.12
+
+- ✨ **Bruker**. Lagt til knapp i innstillinger for å endre passord.
+- ⚡ **Arrangementer**. Forbedret visning av prioriterte. Oversetter nå kull til klassetrinn der det er mulig.
+- ⚡ **Arrangementer**. Forbedret QR-scanning
+
 ## Versjon 2022.05.08
 
 - ✨ **Arrangementer**. Bruker ny logikk for prioritering. Kan nå prioritere grupper.
@@ -57,6 +63,7 @@
 
 ## Versjon 2022.03.01
 
+- ✨ **Kalender**. Brukere kan klikke på et arrangement i kalenderen for å se generell informasjon uten å måtte gå til arrangementsiden.
 - ✨ **Spørreskjema**. Bli varslet på epost ved nye svar på gruppe-spørreskjemaer.
 - ✨ **Grupper**. Se hver gruppes arrangementer.
 

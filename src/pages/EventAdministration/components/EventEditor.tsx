@@ -1,7 +1,6 @@
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import { Accordion, AccordionDetails, AccordionSummary, Collapse, Grid, LinearProgress, ListSubheader, MenuItem, Stack, Typography } from '@mui/material';
+import { SafetyDividerRounded } from '@mui/icons-material';
+import { Collapse, Grid, LinearProgress, ListSubheader, MenuItem, Stack, styled } from '@mui/material';
 import { addHours, parseISO, setHours, startOfHour, subDays } from 'date-fns';
-import { makeStyles } from 'makeStyles';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
@@ -24,28 +23,17 @@ import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import { ImageUpload } from 'components/inputs/Upload';
+import { StandaloneExpand } from 'components/layout/Expand';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
 import { ShowMoreText, ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
 
-const useStyles = makeStyles()((theme) => ({
-  grid: {
-    display: 'grid',
-    gridGap: theme.spacing(2),
-    gridTemplateColumns: '1fr 1fr',
-    [theme.breakpoints.down('md')]: {
-      gridGap: 0,
-      gridTemplateColumns: '1fr',
-    },
-  },
-  margin: {
-    margin: theme.spacing(2, 0, 1),
-    borderRadius: theme.shape.borderRadius,
-    overflow: 'hidden',
-  },
-  expansionPanel: {
-    border: '1px solid ' + theme.palette.divider,
-    background: theme.palette.background.smoke,
+const Row = styled(Stack)(({ theme }) => ({
+  gap: 0,
+  flexDirection: 'column',
+  [theme.breakpoints.up('md')]: {
+    gap: theme.spacing(2),
+    flexDirection: 'row',
   },
 }));
 
@@ -78,7 +66,6 @@ type FormValues = Pick<
 type GroupOption = { type: 'header'; header: string } | { type: 'group'; group: BaseGroup };
 
 const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
-  const { classes } = useStyles();
   const { data, isLoading } = useEventById(eventId || -1);
   const createEvent = useCreateEvent();
   const updateEvent = useUpdateEvent(eventId || -1);
@@ -259,11 +246,11 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     <>
       <form onSubmit={handleSubmit(submit)}>
         <Grid container direction='column' wrap='nowrap'>
-          <div className={classes.grid}>
+          <Row>
             <TextField formState={formState} label='Tittel' {...register('title', { required: 'Gi arrangementet en tittel' })} required />
             <TextField formState={formState} label='Sted' {...register('location', { required: 'Oppgi et sted for arrangementet' })} required />
-          </div>
-          <div className={classes.grid}>
+          </Row>
+          <Row>
             <DatePicker
               control={control}
               formState={formState}
@@ -288,10 +275,10 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               }}
               type='date-time'
             />
-          </div>
+          </Row>
           <Bool control={control} formState={formState} label='Åpen for påmelding' name='sign_up' type='switch' />
           <Collapse in={watchSignUp}>
-            <div className={classes.grid}>
+            <Row>
               <DatePicker
                 control={control}
                 formState={formState}
@@ -317,8 +304,8 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 }}
                 type='date-time'
               />
-            </div>
-            <div className={classes.grid}>
+            </Row>
+            <Row>
               <DatePicker
                 control={control}
                 formState={formState}
@@ -357,17 +344,10 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 })}
                 required={watchSignUp}
               />
-            </div>
-            <div className={classes.margin}>
-              <Accordion className={classes.expansionPanel}>
-                <AccordionSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='priorities-header'>
-                  <Typography>Prioriteringer</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <EventEditPriorityPools priorityPools={priorityPools} setPriorityPools={setPriorityPools} />
-                </AccordionDetails>
-              </Accordion>
-            </div>
+            </Row>
+            <StandaloneExpand icon={<SafetyDividerRounded />} primary='Prioriteringer' sx={{ my: 1 }}>
+              <EventEditPriorityPools priorityPools={priorityPools} setPriorityPools={setPriorityPools} />
+            </StandaloneExpand>
             <Stack>
               <Bool
                 control={control}
@@ -419,7 +399,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           <MarkdownEditor formState={formState} {...register('description', { required: 'Gi arrangementet en beskrivelse' })} required />
           <ImageUpload formState={formState} label='Velg bilde' ratio='21:9' register={register('image')} setValue={setValue} watch={watch} />
           <TextField formState={formState} label='Bildetekst' {...register('image_alt')} />
-          <div className={classes.grid}>
+          <Row>
             {groupOptions.length > 0 && (
               <Select
                 control={control}
@@ -460,16 +440,13 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 ))}
               </Select>
             )}
-          </div>
-          <RendererPreview className={classes.margin} getContent={getEventPreview} renderer={EventRenderer} />
-          <SubmitButton
-            className={classes.margin}
-            disabled={isLoading || createEvent.isLoading || updateEvent.isLoading || deleteEvent.isLoading}
-            formState={formState}>
+          </Row>
+          <RendererPreview getContent={getEventPreview} renderer={EventRenderer} sx={{ my: 2 }} />
+          <SubmitButton disabled={isLoading || createEvent.isLoading || updateEvent.isLoading || deleteEvent.isLoading} formState={formState}>
             {eventId ? 'Oppdater arrangement' : 'Opprett arrangement'}
           </SubmitButton>
           {eventId !== null && (
-            <Stack direction={{ xs: 'column', md: 'row' }} gap={3} sx={{ mt: 2, mb: 1 }}>
+            <Row sx={{ mt: 2 }}>
               <VerifyDialog
                 closeText='Ikke steng arrangementet'
                 color='warning'
@@ -487,7 +464,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 titleText='Er du sikker?'>
                 Slett
               </VerifyDialog>
-            </Stack>
+            </Row>
           )}
         </Grid>
       </form>

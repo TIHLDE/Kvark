@@ -50,6 +50,23 @@ export const getStrikesDelayedRegistrationHours = (numberOfStrikes: number) => {
 };
 
 /**
+ * Transforms a studyyear to the more readable current class.
+ * In 2023, the users which started in 2022, the class is shown as `1. klasse` before the summer and `2. klasse` after the summer.
+ * @param studyyear The studyyear
+ * @param study Optional study. Used to take eventual DigSam-membership into account.
+ * @returns `1. klasse` or `Startet i 2022`
+ */
+export const getStudyyearAsClass = (studyyear: UserBase['studyyear']['group'], study?: UserBase['study']['group']) => {
+  const STUDYYEAR = Number(studyyear.name);
+  const CURRENT_YEAR = getYear(new Date());
+  const diff = CURRENT_YEAR - STUDYYEAR + (isAfterDateOfYear(6, 15) ? 1 : 0);
+  if (diff <= 3) {
+    return `${study?.slug === Study.DIGSAM ? diff + 3 : diff}. klasse`;
+  }
+  return `Startet i ${STUDYYEAR}`;
+};
+
+/**
  * Get the user's affiliation as a string.
  *
  * July 15th, users are "moved" up a class as it's the middle of the summer.
@@ -59,24 +76,15 @@ export const getStrikesDelayedRegistrationHours = (numberOfStrikes: number) => {
  * Users which started for more than 3 years ago and does not study DigSam is shown as "Startet i <start-year>".
  *
  * @param user the user
- * @returns `Dataingeniør - 2. klasse` or `Dataingeniør - Startet i 2017`
+ * @returns `Dataingeniør - 2. klasse` or `Dataingeniør - Startet i 2020`
  */
 export const getUserAffiliation = (user: UserBase, includeStudy = true, includeStudyyear = true): string => {
-  const getStudyyear = (groupName: UserBase['studyyear']['group']['name']) => {
-    const STUDYYEAR = Number(groupName);
-    const CURRENT_YEAR = getYear(new Date());
-    const diff = CURRENT_YEAR - STUDYYEAR + (isAfterDateOfYear(6, 15) ? 1 : 0);
-    if ((user.study.group?.name === Study.DIGSAM && diff <= 5) || diff <= 3) {
-      return `${diff}. klasse`;
-    }
-    return `Startet i ${STUDYYEAR}`;
-  };
   const info = [];
+  if (includeStudyyear) {
+    info.push(user.studyyear.group ? getStudyyearAsClass(user.studyyear.group, user.study.group) : 'Ukjent kull');
+  }
   if (includeStudy) {
     info.push(user.study.group?.name || 'Ukjent studie');
-  }
-  if (includeStudyyear) {
-    info.push(user.studyyear.group?.name ? getStudyyear(user.studyyear.group.name) : 'Ukjent kull');
   }
   return info.join(' - ');
 };
