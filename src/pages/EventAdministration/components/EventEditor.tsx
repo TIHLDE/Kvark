@@ -1,20 +1,19 @@
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import { Accordion, AccordionDetails, AccordionSummary, Collapse, Grid, LinearProgress, ListSubheader, MenuItem, Stack, Typography } from '@mui/material';
+import { SafetyDividerRounded } from '@mui/icons-material';
+import { Collapse, Grid, LinearProgress, ListSubheader, MenuItem, Stack, styled } from '@mui/material';
 import { addHours, parseISO, setHours, startOfHour, subDays } from 'date-fns';
-import { makeStyles } from 'makeStyles';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { Event, EventRequired, Group, RegistrationPriority } from 'types';
-import { GroupType } from 'types/Enums';
+import { BaseGroup, Event, EventMutate, Group, PriorityPool, PriorityPoolMutate } from 'types';
+import { GroupType, MembershipType } from 'types/Enums';
 
 import { useCategories } from 'hooks/Categories';
 import { useCreateEvent, useDeleteEvent, useEventById, useUpdateEvent } from 'hooks/Event';
 import { useGroupsByType } from 'hooks/Group';
 import { useSnackbar } from 'hooks/Snackbar';
-import { useUser, useUserGroups } from 'hooks/User';
+import { useUser, useUserMemberships, useUserPermissions } from 'hooks/User';
 
-import EventRegistrationPriorities from 'pages/EventAdministration/components/EventRegistrationPriorities';
+import EventEditPriorityPools from 'pages/EventAdministration/components/EventEditPriorityPools';
 import EventRenderer from 'pages/EventDetails/components/EventRenderer';
 
 import Bool from 'components/inputs/Bool';
@@ -24,28 +23,17 @@ import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import { ImageUpload } from 'components/inputs/Upload';
+import { StandaloneExpand } from 'components/layout/Expand';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
 import { ShowMoreText, ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
 
-const useStyles = makeStyles()((theme) => ({
-  grid: {
-    display: 'grid',
-    gridGap: theme.spacing(2),
-    gridTemplateColumns: '1fr 1fr',
-    [theme.breakpoints.down('md')]: {
-      gridGap: 0,
-      gridTemplateColumns: '1fr',
-    },
-  },
-  margin: {
-    margin: theme.spacing(2, 0, 1),
-    borderRadius: theme.shape.borderRadius,
-    overflow: 'hidden',
-  },
-  expansionPanel: {
-    border: '1px solid ' + theme.palette.divider,
-    background: theme.palette.background.smoke,
+const Row = styled(Stack)(({ theme }) => ({
+  gap: 0,
+  flexDirection: 'column',
+  [theme.breakpoints.up('md')]: {
+    gap: theme.spacing(2),
+    flexDirection: 'row',
   },
 }));
 
@@ -75,39 +63,23 @@ type FormValues = Pick<
   start_date: Date;
   start_registration_at: Date;
 };
-const DEFAULT_PRIORITIES = [
-  { user_class: 1, user_study: 1 },
-  { user_class: 1, user_study: 2 },
-  { user_class: 1, user_study: 3 },
-  { user_class: 1, user_study: 6 },
-  { user_class: 2, user_study: 1 },
-  { user_class: 2, user_study: 2 },
-  { user_class: 2, user_study: 3 },
-  { user_class: 2, user_study: 6 },
-  { user_class: 3, user_study: 1 },
-  { user_class: 3, user_study: 2 },
-  { user_class: 3, user_study: 3 },
-  { user_class: 3, user_study: 6 },
-  { user_class: 4, user_study: 4 },
-  { user_class: 5, user_study: 4 },
-];
+type GroupOption = { type: 'header'; header: string } | { type: 'group'; group: BaseGroup };
 
 const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
-  const { classes } = useStyles();
   const { data, isLoading } = useEventById(eventId || -1);
   const createEvent = useCreateEvent();
   const updateEvent = useUpdateEvent(eventId || -1);
   const deleteEvent = useDeleteEvent(eventId || -1);
   const showSnackbar = useSnackbar();
 
-  const [regPriorities, setRegPriorities] = useState<Array<RegistrationPriority>>([]);
+  const [priorityPools, setPriorityPools] = useState<Array<PriorityPoolMutate>>([]);
   const { handleSubmit, register, watch, control, formState, getValues, reset, setValue } = useForm<FormValues>();
   const watchSignUp = watch('sign_up');
   const { data: categories = [] } = useCategories();
 
   const setValues = useCallback(
     (newValues: Event | null) => {
-      setRegPriorities(newValues?.registration_priorities || DEFAULT_PRIORITIES);
+      setPriorityPools(newValues?.priority_pools.map((pool) => ({ groups: pool.groups.map((group) => group.slug) })) || []);
       reset({
         category: newValues?.category || 1,
         description: newValues?.description || '',
@@ -141,37 +113,40 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     setValues(data || null);
   }, [data, setValues]);
 
-  const { data: userGroups = [] } = useUserGroups();
+  const { data: permissions } = useUserPermissions();
+  const { data: userGroups } = useUserMemberships();
+  const memberships = useMemo(() => (userGroups ? userGroups.pages.map((page) => page.results).flat() : []), [userGroups]);
   const { data: user } = useUser();
   const { data: groups, BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS } = useGroupsByType();
-  const groupOptions = useMemo(() => {
-    type GroupOption = { type: 'header'; header: string } | { type: 'group'; disabled: boolean; group: Group };
-    const hasGroupAccess = (group: Group) =>
-      group.permissions.write ||
-      userGroups.some(
-        (userGroup) =>
-          userGroup.slug === group.slug &&
-          ([GroupType.COMMITTEE, GroupType.INTERESTGROUP].includes(group.type) ? user && userGroup.leader?.user_id === user?.user_id : true),
-      );
-    const array: Array<GroupOption> = [];
-    if (BOARD_GROUPS.length) {
-      array.push({ type: 'header', header: 'Hovedorgan' });
-      BOARD_GROUPS.forEach((group) => array.push({ type: 'group', group, disabled: !hasGroupAccess(group) }));
+
+  const groupOptions = useMemo<Array<GroupOption>>(() => {
+    if (!permissions) {
+      return [];
     }
-    if (SUB_GROUPS.length) {
-      array.push({ type: 'header', header: 'Undergrupper' });
-      SUB_GROUPS.forEach((group) => array.push({ type: 'group', group, disabled: !hasGroupAccess(group) }));
+    if (permissions.permissions.event.write_all) {
+      const array: Array<GroupOption> = [];
+      if (BOARD_GROUPS.length) {
+        array.push({ type: 'header', header: 'Hovedorgan' });
+        BOARD_GROUPS.forEach((group) => array.push({ type: 'group', group }));
+      }
+      if (SUB_GROUPS.length) {
+        array.push({ type: 'header', header: 'Undergrupper' });
+        SUB_GROUPS.forEach((group) => array.push({ type: 'group', group }));
+      }
+      if (COMMITTEES.length) {
+        array.push({ type: 'header', header: 'Komitéer' });
+        COMMITTEES.forEach((group) => array.push({ type: 'group', group }));
+      }
+      if (INTERESTGROUPS.length) {
+        array.push({ type: 'header', header: 'Interessegrupper' });
+        INTERESTGROUPS.forEach((group) => array.push({ type: 'group', group }));
+      }
+      return array;
     }
-    if (COMMITTEES.length) {
-      array.push({ type: 'header', header: 'Komitéer' });
-      COMMITTEES.forEach((group) => array.push({ type: 'group', group, disabled: !hasGroupAccess(group) }));
-    }
-    if (INTERESTGROUPS.length) {
-      array.push({ type: 'header', header: 'Interessegrupper' });
-      INTERESTGROUPS.forEach((group) => array.push({ type: 'group', group, disabled: !hasGroupAccess(group) }));
-    }
-    return array;
-  }, [userGroups, user, BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS]);
+    return memberships
+      .filter((membership) => membership.membership_type === MembershipType.LEADER || [GroupType.BOARD, GroupType.SUBGROUP].includes(membership.group.type))
+      .map((membership) => ({ type: 'group', group: membership.group }));
+  }, [memberships, permissions, user, BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS]);
 
   const getEventPreview = (): Event => {
     const values = getValues();
@@ -179,7 +154,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       ...values,
       organizer: groups?.find((g) => g.slug === values.organizer) || null,
       list_count: 0,
-      registration_priorities: regPriorities,
+      priority_pools: priorityPools.map((pool) => ({ groups: pool.groups.map((group) => groups?.find((g) => g.slug === group)) })) as Array<PriorityPool>,
       waiting_list_count: 0,
       end_date: values.end_date.toJSON(),
       end_registration_at: values.end_registration_at.toJSON(),
@@ -202,7 +177,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   };
 
   const closeEvent = async () => {
-    await updateEvent.mutate({ ...data, closed: true } as EventRequired, {
+    await updateEvent.mutate({ closed: true } as EventMutate, {
       onSuccess: () => {
         showSnackbar('Arrangementet ble stengt', 'success');
       },
@@ -215,13 +190,13 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const submit: SubmitHandler<FormValues> = async (data) => {
     const event = {
       ...data,
-      registration_priorities: regPriorities,
+      priority_pools: priorityPools,
       end_date: data.end_date.toJSON(),
       end_registration_at: data.end_registration_at.toJSON(),
       sign_off_deadline: data.sign_off_deadline.toJSON(),
       start_date: data.start_date.toJSON(),
       start_registration_at: data.start_registration_at.toJSON(),
-    } as EventRequired;
+    } as EventMutate;
     if (eventId) {
       await updateEvent.mutate(event, {
         onSuccess: () => {
@@ -271,11 +246,11 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     <>
       <form onSubmit={handleSubmit(submit)}>
         <Grid container direction='column' wrap='nowrap'>
-          <div className={classes.grid}>
+          <Row>
             <TextField formState={formState} label='Tittel' {...register('title', { required: 'Gi arrangementet en tittel' })} required />
             <TextField formState={formState} label='Sted' {...register('location', { required: 'Oppgi et sted for arrangementet' })} required />
-          </div>
-          <div className={classes.grid}>
+          </Row>
+          <Row>
             <DatePicker
               control={control}
               formState={formState}
@@ -300,10 +275,10 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               }}
               type='date-time'
             />
-          </div>
+          </Row>
           <Bool control={control} formState={formState} label='Åpen for påmelding' name='sign_up' type='switch' />
           <Collapse in={watchSignUp}>
-            <div className={classes.grid}>
+            <Row>
               <DatePicker
                 control={control}
                 formState={formState}
@@ -329,8 +304,8 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 }}
                 type='date-time'
               />
-            </div>
-            <div className={classes.grid}>
+            </Row>
+            <Row>
               <DatePicker
                 control={control}
                 formState={formState}
@@ -369,17 +344,10 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 })}
                 required={watchSignUp}
               />
-            </div>
-            <div className={classes.margin}>
-              <Accordion className={classes.expansionPanel}>
-                <AccordionSummary aria-controls='priorities' expandIcon={<ExpandMoreIcon />} id='priorities-header'>
-                  <Typography>Prioriterte</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <EventRegistrationPriorities defaultPriorities={DEFAULT_PRIORITIES} priorities={regPriorities} setPriorities={setRegPriorities} />
-                </AccordionDetails>
-              </Accordion>
-            </div>
+            </Row>
+            <StandaloneExpand icon={<SafetyDividerRounded />} primary='Prioriteringer' sx={{ my: 1 }}>
+              <EventEditPriorityPools priorityPools={priorityPools} setPriorityPools={setPriorityPools} />
+            </StandaloneExpand>
             <Stack>
               <Bool
                 control={control}
@@ -387,7 +355,10 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 label={
                   <>
                     Påmelding kun for prioriterte
-                    <ShowMoreTooltip>Bestemmer om kun prioriterte brukere skal kunne melde seg på arrangementet.</ShowMoreTooltip>
+                    <ShowMoreTooltip>
+                      Bestemmer om kun prioriterte brukere skal kunne melde seg på arrangementet. Hvis bryteren er skrudd på kan kun brukere som er medlem av
+                      minst én prioriteringsgruppe melde seg på dette arrangementet.
+                    </ShowMoreTooltip>
                   </>
                 }
                 name='only_allow_prioritized'
@@ -428,7 +399,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           <MarkdownEditor formState={formState} {...register('description', { required: 'Gi arrangementet en beskrivelse' })} required />
           <ImageUpload formState={formState} label='Velg bilde' ratio='21:9' register={register('image')} setValue={setValue} watch={watch} />
           <TextField formState={formState} label='Bildetekst' {...register('image_alt')} />
-          <div className={classes.grid}>
+          <Row>
             {groupOptions.length > 0 && (
               <Select
                 control={control}
@@ -441,13 +412,14 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                   </ShowMoreText>
                 }
                 label='Arrangør (Gruppe)'
-                name='organizer'>
-                {data && !data.organizer && <MenuItem value=''>Ingen</MenuItem>}
+                name='organizer'
+                required
+                rules={{ required: 'Du må velge en arrangør' }}>
                 {groupOptions.map((option) =>
                   option.type === 'header' ? (
                     <ListSubheader key={option.header}>{option.header}</ListSubheader>
                   ) : (
-                    <MenuItem disabled={option.disabled} key={option.group.slug} value={option.group.slug}>
+                    <MenuItem key={option.group.slug} value={option.group.slug}>
                       {option.group.name}
                     </MenuItem>
                   ),
@@ -468,16 +440,13 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 ))}
               </Select>
             )}
-          </div>
-          <RendererPreview className={classes.margin} getContent={getEventPreview} renderer={EventRenderer} />
-          <SubmitButton
-            className={classes.margin}
-            disabled={isLoading || createEvent.isLoading || updateEvent.isLoading || deleteEvent.isLoading}
-            formState={formState}>
+          </Row>
+          <RendererPreview getContent={getEventPreview} renderer={EventRenderer} sx={{ my: 2 }} />
+          <SubmitButton disabled={isLoading || createEvent.isLoading || updateEvent.isLoading || deleteEvent.isLoading} formState={formState}>
             {eventId ? 'Oppdater arrangement' : 'Opprett arrangement'}
           </SubmitButton>
           {eventId !== null && (
-            <Stack direction={{ xs: 'column', md: 'row' }} gap={3} sx={{ mt: 2, mb: 1 }}>
+            <Row sx={{ mt: 2 }}>
               <VerifyDialog
                 closeText='Ikke steng arrangementet'
                 color='warning'
@@ -495,7 +464,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 titleText='Er du sikker?'>
                 Slett
               </VerifyDialog>
-            </Stack>
+            </Row>
           )}
         </Grid>
       </form>

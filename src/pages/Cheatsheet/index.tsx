@@ -5,10 +5,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import URLS from 'URLS';
 import { getUserStudyShort } from 'utils';
 
-import { Study } from 'types/Enums';
+import { CheatsheetStudy } from 'types/Enums';
 
 import { useCheatsheet } from 'hooks/Cheatsheet';
-import { useUser } from 'hooks/User';
 import { useInterval } from 'hooks/Utils';
 
 import Files from 'pages/Cheatsheet/components/Files';
@@ -32,27 +31,26 @@ const FilterContainer = styled('div')(({ theme }) => ({
 const Cheetsheet = () => {
   const { studyId, classId } = useParams();
   const navigate = useNavigate();
-  const { data: user } = useUser();
   const [input, setInput] = useState('');
   const [search, setSearch] = useState('');
 
-  const getStudy = useCallback((): Study | undefined => {
+  const getStudy = useCallback((): CheatsheetStudy | undefined => {
     if (!studyId) {
       return undefined;
     }
     switch (studyId.toLowerCase()) {
       case 'dataing':
-        return Study.DATAING;
+        return CheatsheetStudy.DATAING;
       case 'digfor':
-        return Study.DIGFOR;
+        return CheatsheetStudy.DIGFOR;
       case 'digsec':
-        return Study.DIGSEC;
+        return CheatsheetStudy.DIGSEC;
       case 'digsam':
-        return Study.DIGSAM;
+        return CheatsheetStudy.DIGSAM;
       case 'info':
-        return Study.INFO;
+        return CheatsheetStudy.INFO;
       default:
-        return Study.DATAING;
+        return CheatsheetStudy.DATAING;
     }
   }, [studyId]);
 
@@ -60,7 +58,7 @@ const Cheetsheet = () => {
     return classId ? Number(classId) : undefined;
   }, [classId]);
 
-  const { data, hasNextPage, fetchNextPage, isLoading } = useCheatsheet(getStudy() || Study.DATAING, getClass() || 1, { search: search });
+  const { data, hasNextPage, fetchNextPage, isLoading } = useCheatsheet(getStudy() || CheatsheetStudy.DATAING, getClass() || 1, { search: search });
   const files = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   const isURLValid = useCallback(() => {
@@ -69,34 +67,26 @@ const Cheetsheet = () => {
     if (
       studyClass &&
       study &&
-      ((study === Study.DIGSAM && [4, 5].includes(studyClass)) ||
-        ([Study.DATAING, Study.DIGFOR, Study.DIGSEC, Study.INFO].includes(study) && [1, 2, 3].includes(studyClass)))
+      ((study === CheatsheetStudy.DIGSAM && [4, 5].includes(studyClass)) ||
+        ([CheatsheetStudy.DATAING, CheatsheetStudy.DIGFOR, CheatsheetStudy.DIGSEC, CheatsheetStudy.INFO].includes(study) && [1, 2, 3].includes(studyClass)))
     ) {
       return true;
     }
     return false;
   }, [getClass, getStudy]);
 
-  const goToUserCheatsheet = useCallback(() => {
-    if (user && 1 <= user.user_study && user.user_study <= 4 && user.user_class > 0) {
-      navigate(`${URLS.cheatsheet}${getUserStudyShort(user.user_study)}/${user.user_class}/`, { replace: true });
-    } else {
-      navigate(`${URLS.cheatsheet}${getUserStudyShort(1)}/1/`, { replace: true });
-    }
-  }, [user, navigate]);
-
   useEffect(() => {
     const study = getStudy();
     const studyClass = getClass();
     if (!study || !studyClass || !isURLValid()) {
-      goToUserCheatsheet();
+      navigate(`${URLS.cheatsheet}${getUserStudyShort(1)}/1/`, { replace: true });
     }
-  }, [getStudy, getClass, isURLValid, goToUserCheatsheet, search]);
+  }, [getStudy, getClass, isURLValid, search]);
 
-  const setStudyChoice = (newStudy: Study) => {
+  const setStudyChoice = (newStudy: CheatsheetStudy) => {
     setInput('');
     setSearch('');
-    if (newStudy !== getStudy() && newStudy === Study.DIGSAM) {
+    if (newStudy !== getStudy() && newStudy === CheatsheetStudy.DIGSAM) {
       if (![4, 5].includes(Number(classId))) {
         navigate(`${URLS.cheatsheet}${newStudy}/4/`);
       } else {
@@ -153,12 +143,12 @@ const Cheetsheet = () => {
           <TextField
             fullWidth
             label='Studie'
-            onChange={(e) => setStudyChoice(e.target.value as Study)}
+            onChange={(e) => setStudyChoice(e.target.value as CheatsheetStudy)}
             select
             sx={{ gridArea: 'filterStudy' }}
-            value={getStudy() || Study.DATAING}
+            value={getStudy() || CheatsheetStudy.DATAING}
             variant='outlined'>
-            {[Study.DATAING, Study.DIGFOR, Study.DIGSEC, Study.DIGSAM, Study.INFO].map((i) => (
+            {[CheatsheetStudy.DATAING, CheatsheetStudy.DIGFOR, CheatsheetStudy.DIGSEC, CheatsheetStudy.DIGSAM, CheatsheetStudy.INFO].map((i) => (
               <MenuItem key={i} value={i}>
                 {i}
               </MenuItem>
@@ -172,7 +162,7 @@ const Cheetsheet = () => {
             sx={{ gridArea: 'filterClass' }}
             value={classId || 1}
             variant='outlined'>
-            {(getStudy() === Study.DIGSAM ? [4, 5] : [1, 2, 3]).map((i) => (
+            {(getStudy() === CheatsheetStudy.DIGSAM ? [4, 5] : [1, 2, 3]).map((i) => (
               <MenuItem key={i} value={i}>
                 {String(i).concat('. klasse')}
               </MenuItem>

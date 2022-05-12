@@ -2,20 +2,30 @@ import { GroupType, MembershipType } from 'types/Enums';
 import { Permissions } from 'types/Misc';
 import { UserBase, UserList } from 'types/User';
 
-export type Group = {
+export type GroupPermissions = Permissions & {
+  group_form: boolean;
+};
+
+export type BaseGroup = {
   name: string;
   slug: string;
-  description: string;
-  contact_email: string | null;
   type: GroupType;
-  leader: UserBase | UserList | null;
-  permissions: Permissions;
-  fines_admin: UserBase | UserList | null;
-  fines_activated: boolean;
-  fine_info: string;
   image: string | null;
   image_alt: string | null;
   viewer_is_member: boolean;
+};
+
+export type GroupList = BaseGroup & {
+  contact_email: string | null;
+  leader: UserBase | UserList | null;
+};
+
+export type Group = GroupList & {
+  description: string;
+  permissions: GroupPermissions;
+  fines_admin: UserBase | UserList | null;
+  fines_activated: boolean;
+  fine_info: string;
 };
 
 export type GroupMutate = Partial<Omit<Group, 'fines_admin' | 'permissions' | 'type' | 'viewer_is_member'>> &
@@ -23,18 +33,22 @@ export type GroupMutate = Partial<Omit<Group, 'fines_admin' | 'permissions' | 't
     fines_admin?: string | null;
   };
 
-export type GroupList = Pick<Group, 'description' | 'name' | 'slug' | 'type' | 'contact_email' | 'image' | 'image_alt'>;
-
 export type Membership = {
   user: UserBase | UserList;
   membership_type: MembershipType;
-  group: Group;
+  group: BaseGroup;
+  created_at: string;
 };
 
-export type MembershipHistory = Membership & {
+export type MembershipWithoutUser = Omit<Membership, 'user'>;
+
+export type MembershipHistory = Pick<Membership, 'group' | 'user' | 'membership_type'> & {
+  id: string;
   start_date: string;
   end_date: string;
 };
+
+export type MembershipHistoryMutate = Pick<MembershipHistory, 'end_date' | 'start_date' | 'membership_type'>;
 
 export type GroupLaw = {
   id: string;
@@ -54,6 +68,7 @@ export type GroupFine = {
   payed: boolean;
   description: string;
   reason: string;
+  defense: string;
   image: string | null;
   created_by: UserBase;
   created_at: string;
@@ -64,6 +79,8 @@ export type GroupFineCreate = Pick<GroupFine, 'amount' | 'description' | 'image'
 };
 
 export type GroupFineMutate = Partial<Pick<GroupFine, 'reason' | 'amount' | 'image' | 'payed' | 'approved'>>;
+
+export type GroupFineDefenseMutate = Pick<GroupFine, 'defense'>;
 
 export type GroupFineBatchMutate = {
   fine_ids: Array<GroupFine['id']>;
