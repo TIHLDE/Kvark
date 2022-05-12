@@ -17,7 +17,7 @@ export type EventsCalendarPopoverProps = {
   id: number;
 };
 
-const EventsCalendarPopover = ({ id }: PopoverProps) => {
+const EventsCalendarPopover = ({ id }: EventsCalendarPopoverProps) => {
   const { data } = useEventById(Number(id));
 
   return (
