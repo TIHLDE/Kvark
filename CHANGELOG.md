@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ⚡ **Arrangementer**. Forbedret visning av prioriterte. Oversetter nå kull til klassetrinn der det er mulig.
 - ⚡ **Arrangementer**. Forbedret QR-scanning
 
 ## Versjon 2022.05.08
