@@ -46,7 +46,7 @@ const GalleryDetails = () => {
           </HavePermission>
         </Banner>
       }
-      options={{ title: data?.title || 'Laster galleri...', gutterTop: false, filledTopbar: true, lightColor: 'blue' }}>
+      options={{ title: data?.title || 'Laster galleri...' }}>
       {data ? (
         <>
           <Helmet>
