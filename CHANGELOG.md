@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ✨ **Bruker**. Lagt til knapp i innstillinger for å endre passord.
 - ⚡ **Arrangementer**. Forbedret QR-scanning
 
 ## Versjon 2022.05.08
