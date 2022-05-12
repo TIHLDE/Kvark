@@ -62,6 +62,7 @@
 
 ## Versjon 2022.03.01
 
+- ✨ **Kalender**. Brukere kan klikke på et arrangement i kalenderen for å se generell informasjon uten å måtte gå til arrangementsiden.
 - ✨ **Spørreskjema**. Bli varslet på epost ved nye svar på gruppe-spørreskjemaer.
 - ✨ **Grupper**. Se hver gruppes arrangementer.
 
