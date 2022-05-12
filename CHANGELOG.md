@@ -13,6 +13,9 @@
 ---
 
 ## Neste versjon
+
+- ⚡ **Arrangementer**. Forbedret QR-scanning
+
 ## Versjon 2022.05.08
 
 - ✨ **Arrangementer**. Bruker ny logikk for prioritering. Kan nå prioritere grupper.
