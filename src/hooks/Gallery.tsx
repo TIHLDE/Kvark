@@ -3,7 +3,7 @@ import { useInfiniteQuery, useMutation, UseMutationResult, useQuery, useQueryCli
 
 import { Gallery, GalleryRequired, PaginationResponse, Picture, PictureRequired, RequestResponse } from 'types';
 
-import API from 'api/api';
+import { GALLERY_API } from 'api/gallery';
 
 export const GALLERY_QUERY_KEYS = {
   all: ['gallery'] as const,
@@ -17,12 +17,12 @@ export const GALLERY_QUERY_KEYS = {
 };
 
 export const useGalleryById = (gallerySlug: Gallery['slug']) =>
-  useQuery<Gallery, RequestResponse>(GALLERY_QUERY_KEYS.detail(gallerySlug), () => API.getGallery(gallerySlug));
+  useQuery<Gallery, RequestResponse>(GALLERY_QUERY_KEYS.detail(gallerySlug), () => GALLERY_API.getGallery(gallerySlug));
 
 export const useGalleries = (filters?: any) =>
   useInfiniteQuery<PaginationResponse<Gallery>, RequestResponse>(
     GALLERY_QUERY_KEYS.list(filters),
-    ({ pageParam = 1 }) => API.getGallerys({ ...filters, page: pageParam }),
+    ({ pageParam = 1 }) => GALLERY_API.getGallerys({ ...filters, page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.next,
     },
@@ -30,7 +30,7 @@ export const useGalleries = (filters?: any) =>
 
 export const useCreateGallery = (): UseMutationResult<Gallery, RequestResponse, GalleryRequired, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((newGallery: GalleryRequired) => API.createGallery(newGallery), {
+  return useMutation((newGallery: GalleryRequired) => GALLERY_API.createGallery(newGallery), {
     onSuccess: (data) => {
       queryClient.invalidateQueries(GALLERY_QUERY_KEYS.list());
       queryClient.setQueryData(GALLERY_QUERY_KEYS.detail(data.slug), data);
@@ -40,7 +40,7 @@ export const useCreateGallery = (): UseMutationResult<Gallery, RequestResponse, 
 
 export const useUpdateGallery = (gallerySlug: Gallery['slug']): UseMutationResult<Gallery, RequestResponse, GalleryRequired, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((updatedGallery) => API.updateGallery(gallerySlug, updatedGallery), {
+  return useMutation((updatedGallery) => GALLERY_API.updateGallery(gallerySlug, updatedGallery), {
     onSuccess: (data) => {
       queryClient.invalidateQueries(GALLERY_QUERY_KEYS.list());
       queryClient.setQueryData(GALLERY_QUERY_KEYS.detail(gallerySlug), data);
@@ -50,7 +50,7 @@ export const useUpdateGallery = (gallerySlug: Gallery['slug']): UseMutationResul
 
 export const useDeleteGallery = (gallerySlug: Gallery['slug']): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation(() => API.deleteGallery(gallerySlug), {
+  return useMutation(() => GALLERY_API.deleteGallery(gallerySlug), {
     onSuccess: () => queryClient.invalidateQueries(GALLERY_QUERY_KEYS.list()),
   });
 };
@@ -58,20 +58,20 @@ export const useDeleteGallery = (gallerySlug: Gallery['slug']): UseMutationResul
 export const useGalleryPictures = (gallerySlug: Gallery['slug']) =>
   useInfiniteQuery<PaginationResponse<Picture>, RequestResponse>(
     GALLERY_QUERY_KEYS.pictures.list(gallerySlug),
-    ({ pageParam = 1 }) => API.getGalleryPictures(gallerySlug, { page: pageParam }),
+    ({ pageParam = 1 }) => GALLERY_API.getGalleryPictures(gallerySlug, { page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.next,
     },
   );
 
 export const usePictureById = (gallerySlug: Gallery['slug'], pictureId: Picture['id']) =>
-  useQuery<Picture, RequestResponse>(GALLERY_QUERY_KEYS.pictures.detail(gallerySlug, pictureId), () => API.getPicture(gallerySlug, pictureId));
+  useQuery<Picture, RequestResponse>(GALLERY_QUERY_KEYS.pictures.detail(gallerySlug, pictureId), () => GALLERY_API.getPicture(gallerySlug, pictureId));
 
 export const useUploadPictures = (
   gallerySlug: Gallery['slug'],
 ): UseMutationResult<RequestResponse, RequestResponse, { files: File | File[] | Blob }, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((files) => API.createPicture(gallerySlug, files.files), {
+  return useMutation((files) => GALLERY_API.createPicture(gallerySlug, files.files), {
     onSuccess: () => queryClient.invalidateQueries(GALLERY_QUERY_KEYS.pictures.all(gallerySlug)),
   });
 };
@@ -81,7 +81,7 @@ export const useUpdatePicture = (
   pictureId: Picture['id'],
 ): UseMutationResult<Picture, RequestResponse, PictureRequired, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((updatedPicture) => API.updatePicture(gallerySlug, pictureId, updatedPicture), {
+  return useMutation((updatedPicture) => GALLERY_API.updatePicture(gallerySlug, pictureId, updatedPicture), {
     onSuccess: (data) => {
       queryClient.invalidateQueries(GALLERY_QUERY_KEYS.pictures.all(gallerySlug));
       queryClient.setQueryData(GALLERY_QUERY_KEYS.pictures.detail(gallerySlug, pictureId), data);
@@ -94,7 +94,7 @@ export const useDeletePicture = (
   pictureId: Picture['id'],
 ): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation(() => API.deletePicture(gallerySlug, pictureId), {
+  return useMutation(() => GALLERY_API.deletePicture(gallerySlug, pictureId), {
     onSuccess: () => queryClient.invalidateQueries(GALLERY_QUERY_KEYS.pictures.all(gallerySlug)),
   });
 };

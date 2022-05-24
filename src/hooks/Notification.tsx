@@ -3,7 +3,7 @@ import { InfiniteData, QueryKey, useInfiniteQuery, UseInfiniteQueryOptions, useQ
 
 import { Notification, PaginationResponse, RequestResponse } from 'types';
 
-import API from 'api/api';
+import { NOTIFICATIONS_API } from 'api/notifications';
 
 import { USER_QUERY_KEY } from 'hooks/User';
 
@@ -32,7 +32,7 @@ export const useNotifications = (
 
   return useInfiniteQuery<PaginationResponse<Notification>, RequestResponse>(
     [NOTIFICATION_QUERY_KEY],
-    ({ pageParam = 1 }) => API.getNotifications({ page: pageParam }),
+    ({ pageParam = 1 }) => NOTIFICATIONS_API.getNotifications({ page: pageParam }),
     {
       ...options,
       getNextPageParam: (lastPage) => lastPage.next,
@@ -44,7 +44,7 @@ export const useNotifications = (
           .filter((not) => !not.read);
         // If some not read notifications exists, mark them as read
         if (notifications.length) {
-          await Promise.allSettled(notifications.map((notification) => API.updateNotification(notification.id, { read: true })));
+          await Promise.allSettled(notifications.map((notification) => NOTIFICATIONS_API.updateNotification(notification.id, { read: true })));
           const newPagesArray = data.pages.map((page) => ({ ...page, results: page.results.map((val) => ({ ...val, read: true })) }));
           queryClient.invalidateQueries([USER_QUERY_KEY]);
           // Update the NewQueryData-variable.

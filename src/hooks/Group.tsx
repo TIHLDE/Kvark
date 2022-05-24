@@ -22,7 +22,7 @@ import {
 } from 'types';
 import { GroupType } from 'types/Enums';
 
-import API from 'api/api';
+import { GROUP_API } from 'api/group';
 
 export const GROUPS_QUERY_KEYS = {
   all: ['groups'] as const,
@@ -43,12 +43,12 @@ export const GROUPS_QUERY_KEYS = {
 };
 
 export const useGroup = (slug: Group['slug'], options?: UseQueryOptions<Group, RequestResponse, Group, QueryKey>) =>
-  useQuery<Group, RequestResponse>(GROUPS_QUERY_KEYS.detail(slug), () => API.getGroup(slug), options);
+  useQuery<Group, RequestResponse>(GROUPS_QUERY_KEYS.detail(slug), () => GROUP_API.getGroup(slug), options);
 
 export const useUpdateGroup = (): UseMutationResult<Group, RequestResponse, GroupMutate, unknown> => {
   const queryClient = useQueryClient();
 
-  return useMutation((group) => API.updateGroup(group.slug, group), {
+  return useMutation((group) => GROUP_API.updateGroup(group.slug, group), {
     onSuccess: (data) => {
       queryClient.invalidateQueries(GROUPS_QUERY_KEYS.all);
       queryClient.setQueryData(GROUPS_QUERY_KEYS.detail(data.slug), data);
@@ -56,7 +56,7 @@ export const useUpdateGroup = (): UseMutationResult<Group, RequestResponse, Grou
   });
 };
 
-export const useGroups = (filters?: any) => useQuery<GroupList[], RequestResponse>(GROUPS_QUERY_KEYS.list(filters), () => API.getGroups({ ...filters }));
+export const useGroups = (filters?: any) => useQuery<GroupList[], RequestResponse>(GROUPS_QUERY_KEYS.list(filters), () => GROUP_API.getGroups({ ...filters }));
 export const useStudyGroups = (filters?: any) => useGroups({ ...filters, type: GroupType.STUDY });
 export const useStudyyearGroups = (filters?: any) => useGroups({ ...filters, type: GroupType.STUDYYEAR });
 
@@ -79,12 +79,12 @@ export const useGroupsByType = (filters?: any) => {
 };
 
 export const useGroupLaws = (groupSlug: Group['slug'], options?: UseQueryOptions<Array<GroupLaw>, RequestResponse, Array<GroupLaw>, QueryKey>) =>
-  useQuery<Array<GroupLaw>, RequestResponse>(GROUPS_QUERY_KEYS.laws(groupSlug), () => API.getGroupLaws(groupSlug), options);
+  useQuery<Array<GroupLaw>, RequestResponse>(GROUPS_QUERY_KEYS.laws(groupSlug), () => GROUP_API.getGroupLaws(groupSlug), options);
 
 export const useCreateGroupLaw = (groupSlug: Group['slug']): UseMutationResult<GroupLaw, RequestResponse, GroupLawMutate, unknown> => {
   const queryClient = useQueryClient();
 
-  return useMutation((data) => API.createGroupLaw(groupSlug, data), {
+  return useMutation((data) => GROUP_API.createGroupLaw(groupSlug, data), {
     onSuccess: () => queryClient.invalidateQueries(GROUPS_QUERY_KEYS.laws(groupSlug)),
   });
 };
@@ -92,7 +92,7 @@ export const useCreateGroupLaw = (groupSlug: Group['slug']): UseMutationResult<G
 export const useUpdateGroupLaw = (groupSlug: Group['slug'], lawId: GroupLaw['id']): UseMutationResult<GroupLaw, RequestResponse, GroupLawMutate, unknown> => {
   const queryClient = useQueryClient();
 
-  return useMutation((data) => API.updateGroupLaw(groupSlug, lawId, data), {
+  return useMutation((data) => GROUP_API.updateGroupLaw(groupSlug, lawId, data), {
     onSuccess: () => queryClient.invalidateQueries(GROUPS_QUERY_KEYS.laws(groupSlug)),
   });
 };
@@ -100,7 +100,7 @@ export const useUpdateGroupLaw = (groupSlug: Group['slug'], lawId: GroupLaw['id'
 export const useDeleteGroupLaw = (groupSlug: Group['slug'], lawId: GroupLaw['id']): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
   const queryClient = useQueryClient();
 
-  return useMutation(() => API.deleteGroupLaw(groupSlug, lawId), {
+  return useMutation(() => GROUP_API.deleteGroupLaw(groupSlug, lawId), {
     onSuccess: () => queryClient.invalidateQueries(GROUPS_QUERY_KEYS.laws(groupSlug)),
   });
 };
@@ -112,7 +112,7 @@ export const useGroupFines = (
 ) =>
   useInfiniteQuery<PaginationResponse<GroupFine>, RequestResponse>(
     GROUPS_QUERY_KEYS.fines.list(groupSlug, filters),
-    ({ pageParam = 1 }) => API.getGroupFines(groupSlug, { ...filters, page: pageParam }),
+    ({ pageParam = 1 }) => GROUP_API.getGroupFines(groupSlug, { ...filters, page: pageParam }),
     {
       ...options,
       getNextPageParam: (lastPage) => lastPage.next,
@@ -120,7 +120,7 @@ export const useGroupFines = (
   );
 
 export const useGroupFinesStatistics = (slug: Group['slug'], options?: UseQueryOptions<GroupFineStatistics, RequestResponse, GroupFineStatistics, QueryKey>) =>
-  useQuery<GroupFineStatistics, RequestResponse>(GROUPS_QUERY_KEYS.fines.statistics(slug), () => API.getGroupFinesStatistics(slug), options);
+  useQuery<GroupFineStatistics, RequestResponse>(GROUPS_QUERY_KEYS.fines.statistics(slug), () => GROUP_API.getGroupFinesStatistics(slug), options);
 
 export const useGroupUserFines = (
   groupSlug: Group['slug'],
@@ -130,7 +130,7 @@ export const useGroupUserFines = (
 ) =>
   useInfiniteQuery<PaginationResponse<GroupFine>, RequestResponse>(
     GROUPS_QUERY_KEYS.fines.userFines(groupSlug, userId, filters),
-    ({ pageParam = 1 }) => API.getGroupUserFines(groupSlug, userId, { ...filters, page: pageParam }),
+    ({ pageParam = 1 }) => GROUP_API.getGroupUserFines(groupSlug, userId, { ...filters, page: pageParam }),
     {
       ...options,
       getNextPageParam: (lastPage) => lastPage.next,
@@ -150,7 +150,7 @@ export const useGroupUsersFines = (
 ) =>
   useInfiniteQuery<PaginationResponse<GroupUserFine>, RequestResponse>(
     GROUPS_QUERY_KEYS.fines.usersFines(groupSlug, filters),
-    ({ pageParam = 1 }) => API.getGroupUsersFines(groupSlug, { ...filters, page: pageParam }),
+    ({ pageParam = 1 }) => GROUP_API.getGroupUsersFines(groupSlug, { ...filters, page: pageParam }),
     {
       ...options,
       getNextPageParam: (lastPage) => lastPage.next,
@@ -160,7 +160,7 @@ export const useGroupUsersFines = (
 export const useCreateGroupFine = (groupSlug: Group['slug']): UseMutationResult<GroupFine, RequestResponse, GroupFineCreate, unknown> => {
   const queryClient = useQueryClient();
 
-  return useMutation((data) => API.createGroupFine(groupSlug, data), {
+  return useMutation((data) => GROUP_API.createGroupFine(groupSlug, data), {
     onSuccess: () => queryClient.invalidateQueries(GROUPS_QUERY_KEYS.fines.all(groupSlug)),
   });
 };
@@ -171,7 +171,7 @@ export const useUpdateGroupFine = (
 ): UseMutationResult<GroupFine, RequestResponse, GroupFineMutate, unknown> => {
   const queryClient = useQueryClient();
 
-  return useMutation((data) => API.updateGroupFine(groupSlug, fineId, data), {
+  return useMutation((data) => GROUP_API.updateGroupFine(groupSlug, fineId, data), {
     onSuccess: () => queryClient.invalidateQueries(GROUPS_QUERY_KEYS.fines.all(groupSlug)),
   });
 };
@@ -182,7 +182,7 @@ export const useUpdateGroupFineDefense = (
 ): UseMutationResult<GroupFine, RequestResponse, GroupFineDefenseMutate, unknown> => {
   const queryClient = useQueryClient();
 
-  return useMutation((data) => API.updateGroupFineDefense(groupSlug, fineId, data), {
+  return useMutation((data) => GROUP_API.updateGroupFineDefense(groupSlug, fineId, data), {
     onSuccess: () => queryClient.invalidateQueries(GROUPS_QUERY_KEYS.fines.all(groupSlug)),
   });
 };
@@ -190,7 +190,7 @@ export const useUpdateGroupFineDefense = (
 export const useBatchUpdateGroupFine = (groupSlug: Group['slug']): UseMutationResult<RequestResponse, RequestResponse, GroupFineBatchMutate, unknown> => {
   const queryClient = useQueryClient();
 
-  return useMutation((data) => API.batchUpdateGroupFine(groupSlug, data), {
+  return useMutation((data) => GROUP_API.batchUpdateGroupFine(groupSlug, data), {
     onSuccess: () => queryClient.invalidateQueries(GROUPS_QUERY_KEYS.fines.all(groupSlug)),
   });
 };
@@ -201,7 +201,7 @@ export const useBatchUpdateUserGroupFines = (
 ): UseMutationResult<RequestResponse, RequestResponse, GroupFineMutate, unknown> => {
   const queryClient = useQueryClient();
 
-  return useMutation((data) => API.batchUpdateUserGroupFines(groupSlug, userId, data), {
+  return useMutation((data) => GROUP_API.batchUpdateUserGroupFines(groupSlug, userId, data), {
     onSuccess: () => queryClient.invalidateQueries(GROUPS_QUERY_KEYS.fines.all(groupSlug)),
   });
 };
@@ -212,10 +212,10 @@ export const useDeleteGroupFine = (
 ): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
   const queryClient = useQueryClient();
 
-  return useMutation(() => API.deleteGroupFine(groupSlug, fineId), {
+  return useMutation(() => GROUP_API.deleteGroupFine(groupSlug, fineId), {
     onSuccess: () => queryClient.invalidateQueries(GROUPS_QUERY_KEYS.fines.all(groupSlug)),
   });
 };
 
 export const useGroupForms = (groupSlug: string) =>
-  useQuery<Array<GroupForm>, RequestResponse>(GROUPS_QUERY_KEYS.forms.all(groupSlug), () => API.getGroupForms(groupSlug));
+  useQuery<Array<GroupForm>, RequestResponse>(GROUPS_QUERY_KEYS.forms.all(groupSlug), () => GROUP_API.getGroupForms(groupSlug));

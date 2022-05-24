@@ -3,7 +3,7 @@ import { useMutation, UseMutationResult, useQuery, useQueryClient } from 'react-
 import { Form, FormCreate, FormStatistics, FormUpdate, PaginationResponse, RequestResponse, SelectFieldSubmission, Submission, UserSubmission } from 'types';
 import { FormFieldType, FormResourceType } from 'types/Enums';
 
-import API from 'api/api';
+import { FORM_API } from 'api/form';
 
 import { EVENT_QUERY_KEYS } from 'hooks/Event';
 import { GROUPS_QUERY_KEYS } from 'hooks/Group';
@@ -16,14 +16,16 @@ export const STATISTICS_QUERY_KEY = 'statistics';
 export const TEMPLATE_QUERY_KEY = 'templates';
 
 export const useFormById = (formId: string) =>
-  useQuery<Form, RequestResponse>([FORM_QUERY_KEY, formId], () => API.getForm(formId), { enabled: formId !== '-' });
+  useQuery<Form, RequestResponse>([FORM_QUERY_KEY, formId], () => FORM_API.getForm(formId), { enabled: formId !== '-' });
 export const useFormStatisticsById = (formId: string) =>
-  useQuery<FormStatistics, RequestResponse>([FORM_QUERY_KEY, formId, STATISTICS_QUERY_KEY], () => API.getFormStatistics(formId), { enabled: formId !== '-' });
-export const useFormTemplates = () => useQuery<Array<Form>, RequestResponse>([FORM_QUERY_KEY, TEMPLATE_QUERY_KEY], () => API.getFormTemplates(), {});
+  useQuery<FormStatistics, RequestResponse>([FORM_QUERY_KEY, formId, STATISTICS_QUERY_KEY], () => FORM_API.getFormStatistics(formId), {
+    enabled: formId !== '-',
+  });
+export const useFormTemplates = () => useQuery<Array<Form>, RequestResponse>([FORM_QUERY_KEY, TEMPLATE_QUERY_KEY], () => FORM_API.getFormTemplates(), {});
 
 export const useCreateForm = (): UseMutationResult<Form, RequestResponse, FormCreate, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((newForm) => API.createForm(newForm), {
+  return useMutation((newForm) => FORM_API.createForm(newForm), {
     onSuccess: (data) => {
       if (data.resource_type === FormResourceType.FORM) {
         queryClient.invalidateQueries([FORM_QUERY_KEY]);
@@ -41,7 +43,7 @@ export const useCreateForm = (): UseMutationResult<Form, RequestResponse, FormCr
 
 export const useUpdateForm = (formId: string): UseMutationResult<Form, RequestResponse, FormUpdate, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((updatedForm: FormUpdate) => API.updateForm(formId, updatedForm), {
+  return useMutation((updatedForm: FormUpdate) => FORM_API.updateForm(formId, updatedForm), {
     onSuccess: (data) => {
       if (data.resource_type === FormResourceType.EVENT_FORM) {
         queryClient.invalidateQueries(EVENT_QUERY_KEYS.detail(data.event.id));
@@ -59,7 +61,7 @@ export const useUpdateForm = (formId: string): UseMutationResult<Form, RequestRe
 export const useDeleteForm = (formId: string): UseMutationResult<RequestResponse, RequestResponse, undefined, unknown> => {
   const queryClient = useQueryClient();
   const showSnackbar = useSnackbar();
-  return useMutation(() => API.deleteForm(formId), {
+  return useMutation(() => FORM_API.deleteForm(formId), {
     onSuccess: (response) => {
       showSnackbar(response.detail, 'success');
       const data = queryClient.getQueryData<Form>([FORM_QUERY_KEY, formId]);
@@ -81,7 +83,7 @@ export const useDeleteForm = (formId: string): UseMutationResult<RequestResponse
 export const useFormSubmissions = (formId: string, page: number) =>
   useQuery<PaginationResponse<UserSubmission>, RequestResponse>(
     [FORM_QUERY_KEY, formId, SUBMISSIONS_QUERY_KEY, { page }],
-    () => API.getSubmissions(formId, { page }),
+    () => FORM_API.getSubmissions(formId, { page }),
     {
       enabled: formId !== '-',
       keepPreviousData: true,
@@ -90,7 +92,7 @@ export const useFormSubmissions = (formId: string, page: number) =>
 
 export const useCreateSubmission = (formId: string): UseMutationResult<Submission, RequestResponse, Submission, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((submission) => API.createSubmission(formId, submission), {
+  return useMutation((submission) => FORM_API.createSubmission(formId, submission), {
     onSuccess: () => {
       const data = queryClient.getQueryData<Form>([FORM_QUERY_KEY, formId]);
       if (data?.resource_type === FormResourceType.EVENT_FORM) {

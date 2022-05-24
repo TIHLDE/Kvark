@@ -3,7 +3,7 @@ import { QueryKey, useInfiniteQuery, UseInfiniteQueryOptions, useMutation, UseMu
 
 import { Badge, BadgeCategory, BadgeLeaderboard, BadgesOverallLeaderboard, PaginationResponse, RequestResponse } from 'types';
 
-import API from 'api/api';
+import { BADGES_API } from 'api/badges';
 
 import { USER_BADGES_QUERY_KEY } from 'hooks/User';
 
@@ -22,7 +22,7 @@ export const BADGES_QUERY_KEYS = {
 };
 
 export const useBadge = (badgeId: Badge['id'], options?: UseQueryOptions<Badge, RequestResponse, Badge, QueryKey>) =>
-  useQuery<Badge, RequestResponse>(BADGES_QUERY_KEYS.badge.detail(badgeId), () => API.getBadge(badgeId), options);
+  useQuery<Badge, RequestResponse>(BADGES_QUERY_KEYS.badge.detail(badgeId), () => BADGES_API.getBadge(badgeId), options);
 
 export const useBadges = (
   filters?: any,
@@ -30,7 +30,7 @@ export const useBadges = (
 ) =>
   useInfiniteQuery<PaginationResponse<Badge>, RequestResponse>(
     BADGES_QUERY_KEYS.list(filters),
-    ({ pageParam = 1 }) => API.getBadges({ ...filters, page: pageParam }),
+    ({ pageParam = 1 }) => BADGES_API.getBadges({ ...filters, page: pageParam }),
     {
       ...options,
       getNextPageParam: (lastPage) => lastPage.next,
@@ -39,7 +39,7 @@ export const useBadges = (
 
 export const useCreateBadge = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((flag) => API.createUserBadge({ flag }), {
+  return useMutation((flag) => BADGES_API.createUserBadge({ flag }), {
     onSuccess: () => {
       queryClient.invalidateQueries([USER_BADGES_QUERY_KEY]);
     },
@@ -58,7 +58,7 @@ export const useBadgeCategories = (
 ) =>
   useInfiniteQuery<PaginationResponse<BadgeCategory>, RequestResponse>(
     BADGES_QUERY_KEYS.categories.list(filters),
-    ({ pageParam = 1 }) => API.getBadgeCategories({ ...filters, page: pageParam }),
+    ({ pageParam = 1 }) => BADGES_API.getBadgeCategories({ ...filters, page: pageParam }),
     {
       ...options,
       getNextPageParam: (lastPage) => lastPage.next,
@@ -78,7 +78,7 @@ export const useBadgeLeaderboard = (
 ) =>
   useInfiniteQuery<PaginationResponse<BadgeLeaderboard>, RequestResponse>(
     BADGES_QUERY_KEYS.badge.leaderboard(badgeId, filters),
-    ({ pageParam = 1 }) => API.getBadgeLeaderboard(badgeId, { ...filters, page: pageParam }),
+    ({ pageParam = 1 }) => BADGES_API.getBadgeLeaderboard(badgeId, { ...filters, page: pageParam }),
     {
       ...options,
       getNextPageParam: (lastPage) => lastPage.next,
@@ -97,7 +97,7 @@ export const useBadgesOverallLeaderboard = (
 ) =>
   useInfiniteQuery<PaginationResponse<BadgesOverallLeaderboard>, RequestResponse>(
     BADGES_QUERY_KEYS.overallLeaderboard(filters),
-    ({ pageParam = 1 }) => API.getOverallBadgesLeaderboard({ ...filters, page: pageParam }),
+    ({ pageParam = 1 }) => BADGES_API.getOverallBadgesLeaderboard({ ...filters, page: pageParam }),
     {
       ...options,
       getNextPageParam: (lastPage) => lastPage.next,
@@ -105,4 +105,4 @@ export const useBadgesOverallLeaderboard = (
   );
 
 export const useBadgeCategory = (badgeCategoryId: BadgeCategory['id'], options?: UseQueryOptions<BadgeCategory, RequestResponse, BadgeCategory, QueryKey>) =>
-  useQuery<BadgeCategory, RequestResponse>(BADGES_QUERY_KEYS.categories.detail(badgeCategoryId), () => API.getBadgeCategory(badgeCategoryId), options);
+  useQuery<BadgeCategory, RequestResponse>(BADGES_QUERY_KEYS.categories.detail(badgeCategoryId), () => BADGES_API.getBadgeCategory(badgeCategoryId), options);

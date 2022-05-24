@@ -14,7 +14,7 @@ import {
   User,
 } from 'types';
 
-import API from 'api/api';
+import { EVENT_API } from 'api/event';
 
 import { FORM_QUERY_KEY } from 'hooks/Form';
 import { NOTIFICATION_QUERY_KEY } from 'hooks/Notification';
@@ -36,12 +36,12 @@ export const EVENT_QUERY_KEYS = {
 };
 
 export const useEventById = (eventId: Event['id']) =>
-  useQuery<Event, RequestResponse>(EVENT_QUERY_KEYS.detail(eventId), () => API.getEvent(eventId), { enabled: eventId !== -1 });
+  useQuery<Event, RequestResponse>(EVENT_QUERY_KEYS.detail(eventId), () => EVENT_API.getEvent(eventId), { enabled: eventId !== -1 });
 
 export const useEvents = (filters?: any) =>
   useInfiniteQuery<PaginationResponse<EventList>, RequestResponse>(
     EVENT_QUERY_KEYS.list(filters),
-    ({ pageParam = 1 }) => API.getEvents({ ...filters, page: pageParam }),
+    ({ pageParam = 1 }) => EVENT_API.getEvents({ ...filters, page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.next,
     },
@@ -50,7 +50,7 @@ export const useEvents = (filters?: any) =>
 export const useEventsWhereIsAdmin = (filters?: any) =>
   useInfiniteQuery<PaginationResponse<EventList>, RequestResponse>(
     EVENT_QUERY_KEYS.list_admin(filters),
-    ({ pageParam = 1 }) => API.getEventsWhereIsAdmin({ ...filters, page: pageParam }),
+    ({ pageParam = 1 }) => EVENT_API.getEventsWhereIsAdmin({ ...filters, page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.next,
     },
@@ -58,7 +58,7 @@ export const useEventsWhereIsAdmin = (filters?: any) =>
 
 export const useCreateEvent = (): UseMutationResult<Event, RequestResponse, EventMutate, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((newEvent: EventMutate) => API.createEvent(newEvent), {
+  return useMutation((newEvent: EventMutate) => EVENT_API.createEvent(newEvent), {
     onSuccess: (data) => {
       queryClient.invalidateQueries(EVENT_QUERY_KEYS.all);
       queryClient.setQueryData(EVENT_QUERY_KEYS.detail(data.id), data);
@@ -68,7 +68,7 @@ export const useCreateEvent = (): UseMutationResult<Event, RequestResponse, Even
 
 export const useUpdateEvent = (eventId: Event['id']): UseMutationResult<Event, RequestResponse, EventMutate, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((updatedEvent: EventMutate) => API.updateEvent(eventId, updatedEvent), {
+  return useMutation((updatedEvent: EventMutate) => EVENT_API.updateEvent(eventId, updatedEvent), {
     onSuccess: (data) => {
       queryClient.invalidateQueries(EVENT_QUERY_KEYS.all);
       queryClient.setQueryData(EVENT_QUERY_KEYS.detail(eventId), data);
@@ -78,17 +78,17 @@ export const useUpdateEvent = (eventId: Event['id']): UseMutationResult<Event, R
 
 export const useDeleteEvent = (eventId: Event['id']): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation(() => API.deleteEvent(eventId), {
+  return useMutation(() => EVENT_API.deleteEvent(eventId), {
     onSuccess: () => queryClient.invalidateQueries(EVENT_QUERY_KEYS.all),
   });
 };
 
 export const useEventIsFavorite = (eventId: Event['id']) =>
-  useQuery<EventFavorite, RequestResponse>(EVENT_QUERY_KEYS.favorite(eventId), () => API.getEventIsFavorite(eventId), { enabled: eventId !== -1 });
+  useQuery<EventFavorite, RequestResponse>(EVENT_QUERY_KEYS.favorite(eventId), () => EVENT_API.getEventIsFavorite(eventId), { enabled: eventId !== -1 });
 
 export const useEventSetIsFavorite = (eventId: Event['id']): UseMutationResult<EventFavorite, RequestResponse, EventFavorite, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((eventFavorite) => API.setEventIsFavorite(eventId, eventFavorite), {
+  return useMutation((eventFavorite) => EVENT_API.setEventIsFavorite(eventId, eventFavorite), {
     onSuccess: (data) => {
       queryClient.setQueryData(EVENT_QUERY_KEYS.favorite(eventId), data);
     },
@@ -96,15 +96,15 @@ export const useEventSetIsFavorite = (eventId: Event['id']): UseMutationResult<E
 };
 
 export const useSendGiftCardsToAttendees = (eventId: number): UseMutationResult<RequestResponse, RequestResponse, { files: File | File[] | Blob }, unknown> =>
-  useMutation(({ files }) => API.sendGiftCardsToAttendees(eventId, files));
+  useMutation(({ files }) => EVENT_API.sendGiftCardsToAttendees(eventId, files));
 
 export const useNotifyEventRegistrations = (
   eventId: Event['id'],
 ): UseMutationResult<RequestResponse, RequestResponse, { title: string; message: string }, unknown> =>
-  useMutation(({ title, message }) => API.notifyEventRegistrations(eventId, title, message));
+  useMutation(({ title, message }) => EVENT_API.notifyEventRegistrations(eventId, title, message));
 
 export const useEventStatistics = (eventId: Event['id']) =>
-  useQuery<EventStatistics, RequestResponse>(EVENT_QUERY_KEYS.statistics(eventId), () => API.getEventStatistics(eventId));
+  useQuery<EventStatistics, RequestResponse>(EVENT_QUERY_KEYS.statistics(eventId), () => EVENT_API.getEventStatistics(eventId));
 
 export const useEventRegistrations = (
   eventId: Event['id'],
@@ -119,7 +119,7 @@ export const useEventRegistrations = (
 ) =>
   useInfiniteQuery<PaginationResponse<Registration>, RequestResponse>(
     EVENT_QUERY_KEYS.registrations.list(eventId, filters),
-    ({ pageParam = 1 }) => API.getEventRegistrations(eventId, { ...filters, page: pageParam }),
+    ({ pageParam = 1 }) => EVENT_API.getEventRegistrations(eventId, { ...filters, page: pageParam }),
     {
       ...options,
       getNextPageParam: (lastPage) => lastPage.next,
@@ -143,7 +143,7 @@ export const usePublicEventRegistrations = (
 ) =>
   useInfiniteQuery<PaginationResponse<PublicRegistration>, RequestResponse>(
     EVENT_QUERY_KEYS.public_registrations(eventId),
-    ({ pageParam = 1 }) => API.getPublicEventRegistrations(eventId, { page: pageParam }),
+    ({ pageParam = 1 }) => EVENT_API.getPublicEventRegistrations(eventId, { page: pageParam }),
     {
       ...options,
       getNextPageParam: (lastPage) => lastPage.next,
@@ -151,14 +151,14 @@ export const usePublicEventRegistrations = (
   );
 
 export const useEventRegistration = (eventId: Event['id'], userId: User['user_id']) =>
-  useQuery<Registration, RequestResponse>(EVENT_QUERY_KEYS.registrations.detail(eventId, userId), () => API.getRegistration(eventId, userId), {
+  useQuery<Registration, RequestResponse>(EVENT_QUERY_KEYS.registrations.detail(eventId, userId), () => EVENT_API.getRegistration(eventId, userId), {
     enabled: userId !== '',
     retry: false,
   });
 
 export const useCreateEventRegistration = (eventId: Event['id']): UseMutationResult<Registration, RequestResponse, Partial<Registration>, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((newRegistration: Partial<Registration>) => API.createRegistration(eventId, newRegistration), {
+  return useMutation((newRegistration: Partial<Registration>) => EVENT_API.createRegistration(eventId, newRegistration), {
     onSuccess: (data) => {
       const formId = queryClient.getQueryData<Event>(EVENT_QUERY_KEYS.detail(eventId))?.survey;
       if (formId) {
@@ -185,7 +185,7 @@ export const useUpdateEventRegistration = (
   unknown
 > => {
   const queryClient = useQueryClient();
-  return useMutation(({ registration, userId }) => API.updateRegistration(eventId, registration, userId), {
+  return useMutation(({ registration, userId }) => EVENT_API.updateRegistration(eventId, registration, userId), {
     onSuccess: (data) => {
       queryClient.invalidateQueries(EVENT_QUERY_KEYS.registrations.list(eventId));
       queryClient.invalidateQueries([USER_EVENTS_QUERY_KEY]);
@@ -196,7 +196,7 @@ export const useUpdateEventRegistration = (
 
 export const useDeleteEventRegistration = (eventId: Event['id']): UseMutationResult<RequestResponse, RequestResponse, User['user_id'], unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((userId) => API.deleteRegistration(eventId, userId), {
+  return useMutation((userId) => EVENT_API.deleteRegistration(eventId, userId), {
     onSuccess: () => {
       const formId = queryClient.getQueryData<Event>(EVENT_QUERY_KEYS.detail(eventId))?.survey;
       if (formId) {

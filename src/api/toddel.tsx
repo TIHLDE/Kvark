@@ -2,7 +2,7 @@ import { PaginationResponse, RequestResponse, Toddel, ToddelMutate } from 'types
 
 import { IFetch } from 'api/fetch';
 
-export const TODDEL_ENDPOINT = 'toddel';
+import { TODDEL_ENDPOINT } from './api';
 
 export const TODDEL_API = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

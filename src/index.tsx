@@ -15,7 +15,7 @@ import { broadcastQueryClient } from 'react-query/broadcastQueryClient-experimen
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { BrowserRouter } from 'react-router-dom';
 
-import API from 'api/api';
+import { BADGES_API } from 'api/badges';
 
 import { MiscProvider } from 'hooks/Misc';
 import { SnackbarProvider } from 'hooks/Snackbar';
@@ -95,7 +95,7 @@ console.log(
 );
 const rickroll = () => {
   const RICKROLLED_BADGE_ID = '372e3278-3d8f-4c0e-a83a-f693804f8cbb';
-  API.createUserBadge({ flag: RICKROLLED_BADGE_ID }).catch(() => null);
+  BADGES_API.createUserBadge({ flag: RICKROLLED_BADGE_ID }).catch(() => null);
   window.gtag('event', 'rickrolled', {
     event_category: 'easter-egg',
     event_label: 'Rickrolled in the console',
