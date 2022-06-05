@@ -1,6 +1,6 @@
 import { CheatsheetType, Study, WarningType } from 'types/Enums';
 
-export type Banner = {
+export type InfoBanner = {
   id: string;
   image?: string;
   image_alt?: string;

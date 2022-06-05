@@ -4,7 +4,6 @@ import {
   BadgeCategory,
   BadgeLeaderboard,
   BadgesOverallLeaderboard,
-  Banner,
   Category,
   Cheatsheet,
   CompaniesEmail,
@@ -31,6 +30,7 @@ import {
   GroupLawMutate,
   GroupMutate,
   GroupUserFine,
+  InfoBanner,
   JobPost,
   JobPostRequired,
   LoginRequestResponse,
@@ -104,12 +104,14 @@ export default {
   forgotPassword: (email: string) =>
     IFetch<RequestResponse>({ method: 'POST', url: `${AUTH_ENDPOINT}/rest-auth/password/reset/`, data: { email: email }, withAuth: false }),
 
-  //  Banner
-  getBanners: (filters?: any) => IFetch<PaginationResponse<Banner>>({ method: 'GET', url: BANNER_ENDPOINT, data: filters || {} }),
-  getVisibleBanners: (filters?: any) => IFetch<Array<Banner>>({ method: 'GET', url: `${BANNER_ENDPOINT}/visible`, data: filters || {} }),
-  createBanner: (item: Banner) => IFetch<Banner>({ method: 'POST', url: BANNER_ENDPOINT, data: item }),
-  updateBanner: (bannerId: Banner['id'], item: Partial<Banner>) => IFetch<Banner>({ method: 'PUT', url: `${BANNER_ENDPOINT}/${bannerId}/`, data: item }),
-  deleteBanner: (bannerId: Banner['id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${BANNER_ENDPOINT}/${bannerId}/` }),
+  // InfoBanner
+  getInfoBanners: (filters?: any) => IFetch<PaginationResponse<InfoBanner>>({ method: 'GET', url: BANNER_ENDPOINT, data: filters || {} }),
+  getInfoBanner: (bannerId: InfoBanner['id']) => IFetch<InfoBanner>({ method: 'GET', url: `${BANNER_ENDPOINT}/${bannerId}/` }),
+  getVisibleInfoBanners: (filters?: any) => IFetch<Array<InfoBanner>>({ method: 'GET', url: `${BANNER_ENDPOINT}/visible`, data: filters || {} }),
+  createInfoBanner: (item: InfoBanner) => IFetch<InfoBanner>({ method: 'POST', url: BANNER_ENDPOINT, data: item }),
+  updateInfoBanner: (bannerId: InfoBanner['id'], item: Partial<InfoBanner>) =>
+    IFetch<InfoBanner>({ method: 'PUT', url: `${BANNER_ENDPOINT}/${bannerId}/`, data: item }),
+  deleteInfoBanner: (bannerId: InfoBanner['id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${BANNER_ENDPOINT}/${bannerId}/` }),
 
   // Events
   getEvent: (eventId: Event['id']) => IFetch<Event>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/` }),
