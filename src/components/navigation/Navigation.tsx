@@ -125,7 +125,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
       {
         items: [
           { text: 'Wiki', to: URLS.wiki },
-          { text: 'Töddel', to: URLS.toddel },
+          { text: 'TÖDDEL', to: URLS.toddel },
           { text: 'Ny student', to: URLS.newStudent },
           { text: 'Gruppeoversikt', to: URLS.groups.index },
           { text: 'Fondet', to: 'https://fondet.tihlde.org', external: true },

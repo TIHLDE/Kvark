@@ -1,17 +1,15 @@
-import { Button, Divider, Theme, useMediaQuery } from '@mui/material';
+import { Button, Divider, MenuItem, Theme, useMediaQuery } from '@mui/material';
 import { makeStyles } from 'makeStyles';
 import { Fragment, useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { argsToParams } from 'utils';
 
-import { UserClass } from 'types/Enums';
-
 import { useJobPosts } from 'hooks/JobPost';
-import { useUser } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
 import Bool from 'components/inputs/Bool';
+import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import Banner from 'components/layout/Banner';
@@ -61,19 +59,17 @@ const useStyles = makeStyles()((theme) => ({
 
 type FormState = {
   search?: string;
-  classes?: boolean | undefined | UserClass[];
+  classes?: string | 'all';
   expired: boolean;
 };
 
 const JobPosts = () => {
-  const { data: user } = useUser();
   const { event } = useAnalytics();
   const getInitialFilters = useCallback((): FormState => {
     const params = new URLSearchParams(location.search);
     const expired = params.get('expired') ? Boolean(params.get('expired') === 'true') : false;
     const search = params.get('search') || undefined;
-    const classesParam = params.get('classes');
-    const classes = classesParam ? [Number(classesParam)] : undefined;
+    const classes = params.get('classes') || undefined;
     return { classes, expired, search };
   }, []);
   const { classes } = useStyles();
@@ -87,7 +83,7 @@ const JobPosts = () => {
   const resetFilters = () => {
     setValue('search', '');
     setValue('expired', false);
-    setValue('classes', undefined);
+    setValue('classes', '');
 
     setFilters({ expired: false });
 
@@ -99,7 +95,7 @@ const JobPosts = () => {
     const filters = {
       search: data.search,
       expired: data.expired,
-      classes: data.classes && user ? [user.user_class] : undefined,
+      classes: data.classes !== 'all' ? data.classes : undefined,
     };
     setFilters(filters);
     navigate(`${location.pathname}${argsToParams(filters)}`, { replace: true });
@@ -111,7 +107,14 @@ const JobPosts = () => {
   const SearchForm = () => (
     <form onSubmit={handleSubmit(search)}>
       <TextField disabled={isFetching} formState={formState} label='Søk' {...register('search')} />
-      {user && <Bool control={control} formState={formState} label='Relevant år' name='classes' type='switch' />}
+      <Select control={control} formState={formState} label='Årstrinn' name='classes'>
+        <MenuItem value='all'>Alle</MenuItem>
+        {[...Array(5).keys()].map((cls) => (
+          <MenuItem key={cls} value={cls + 1}>
+            {cls + 1}
+          </MenuItem>
+        ))}
+      </Select>
       <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
       <SubmitButton disabled={isFetching} formState={formState}>
         Søk

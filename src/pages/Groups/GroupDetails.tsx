@@ -76,10 +76,19 @@ const GroupDetails = () => {
           <IconButton component={Link} to={URLS.groups.index}>
             <ArrowBackIcon />
           </IconButton>
+          {/* TODO: fjern div rundt AspectRatioImg når flere nettlesere støtter aspect-ratio i css - https://caniuse.com/mdn-css_properties_aspect-ratio */}
           <Box sx={{ display: 'block', height: { xs: 45, md: 70 }, width: { xs: 45, md: 70 } }}>
-            <AspectRatioImg alt={data?.image_alt || ''} borderRadius ratio={1} src={data?.image || ''} />
+            <AspectRatioImg
+              alt={data?.image_alt || ''}
+              borderRadius
+              ratio={1}
+              src={data?.image || ''}
+              sx={{ height: { xs: 45, md: 70 }, width: { xs: 45, md: 70 } }}
+            />
           </Box>
-          <Typography variant='h1'>{data.name}</Typography>
+          <Typography sx={{ wordBreak: 'break-word' }} variant='h1'>
+            {data.name}
+          </Typography>
         </Stack>
         {hasWriteAcccess && <GroupAdmin group={data} />}
       </Stack>

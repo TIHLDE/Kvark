@@ -1,10 +1,12 @@
 import CheckBoxIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded';
 import ClearIcon from '@mui/icons-material/ClearRounded';
 import DeleteIcon from '@mui/icons-material/DeleteOutlineRounded';
+import DragHandleIcon from '@mui/icons-material/DragHandleRounded';
 import RadioButtonIcon from '@mui/icons-material/RadioButtonUncheckedRounded';
-import { Button, Checkbox, FormControlLabel, Grow, IconButton, TextField, Tooltip, Typography } from '@mui/material';
+import { Button, Checkbox, FormControlLabel, Grow, IconButton, Stack, TextField, Tooltip, Typography } from '@mui/material';
 import { makeStyles } from 'makeStyles';
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
+import { useDrag, useDrop, XYCoord } from 'react-dnd';
 
 import { SelectFormField, TextFormField } from 'types';
 import { FormFieldType } from 'types/Enums';
@@ -37,14 +39,64 @@ const useStyles = makeStyles()((theme) => ({
 }));
 
 export type FieldEditorProps = {
+  index: number;
   field: TextFormField | SelectFormField;
   updateField: (newField: TextFormField | SelectFormField) => void;
+  moveField: (dragIndex: number, hoverIndex: number) => void;
   removeField: () => void;
   disabled?: boolean;
 };
 
-const FieldEditor = ({ field, updateField, removeField, disabled = false }: FieldEditorProps) => {
+interface DragItem {
+  index: number;
+  id: string;
+  type: string;
+}
+
+const FieldEditor = ({ moveField, index, field, updateField, removeField, disabled = false }: FieldEditorProps) => {
   const { classes, cx } = useStyles();
+  const ref = useRef<HTMLDivElement>(null);
+  const [{ isDragging }, drag, preview] = useDrag({
+    type: 'Field',
+    item: (id) => ({ id, index }),
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const [{ handlerId }, drop] = useDrop<DragItem, void, { handlerId: string | symbol | null }>({
+    accept: 'Field',
+    collect(monitor) {
+      return {
+        handlerId: monitor.getHandlerId(),
+      };
+    },
+    hover(item: DragItem, monitor) {
+      if (!ref.current) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = index;
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+
+      moveField(dragIndex, hoverIndex);
+
+      item.index = hoverIndex;
+    },
+  });
 
   const addFieldOption = () => {
     if (field.type !== FormFieldType.TEXT_ANSWER && !disabled) {
@@ -78,15 +130,18 @@ const FieldEditor = ({ field, updateField, removeField, disabled = false }: Fiel
   }, [field]);
 
   const TypeIcon = useMemo(() => (field.type === FormFieldType.SINGLE_SELECT ? RadioButtonIcon : CheckBoxIcon), [field]);
-
+  drop(drag(ref));
   return (
-    <Paper className={classes.root} noPadding>
+    <Paper className={classes.root} data-handler-id={handlerId} noPadding ref={preview} sx={{ opacity: isDragging ? 0.5 : 1 }}>
       <div className={classes.row}>
-        <Tooltip placement='top-start' title={description}>
-          <Typography sx={{ color: (theme) => theme.palette.text[disabled ? 'disabled' : 'primary'] }} variant='subtitle1'>
-            {title}
-          </Typography>
-        </Tooltip>
+        <Stack direction='row' gap={1} ref={ref} sx={{ cursor: 'pointer' }}>
+          <DragHandleIcon />
+          <Tooltip placement='top-start' title={description}>
+            <Typography sx={{ color: (theme) => theme.palette.text[disabled ? 'disabled' : 'primary'] }} variant='subtitle1'>
+              {title}
+            </Typography>
+          </Tooltip>
+        </Stack>
         <FormControlLabel
           className={classes.checkbox}
           control={<Checkbox checked={field.required} onChange={(e) => updateField({ ...field, required: e.target.checked })} />}

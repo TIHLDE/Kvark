@@ -44,7 +44,7 @@ const PictureUpload = ({ slug }: PictureUploadProps) => {
         Legg til bilder
       </BannerButton>
       <Dialog onClose={() => setOpen(false)} open={open} titleText={'Last opp bilde'}>
-        <FileUploader files={files} fileTypes={['image/jpeg', 'image/png']} setFiles={setFiles} title='Last opp eller dra bilder hit.' />
+        <FileUploader files={files} fileTypes={{ 'image/jpeg': ['.jpeg'], 'image/png': ['.png'] }} setFiles={setFiles} title='Last opp eller dra bilder hit.' />
         <Button disabled={files.length < 1 || upload.isLoading} fullWidth onClick={submit} sx={{ mt: 2 }} variant='contained'>
           Last opp bilder
         </Button>

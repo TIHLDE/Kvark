@@ -1,10 +1,10 @@
-import { EventCompact } from 'types';
+import { EventList } from 'types';
 export type GalleryRequired = Partial<Gallery> & Pick<Gallery, 'title'>;
 export type PictureRequired = Partial<Picture> & Pick<Picture, 'image'>;
 
 export type Gallery = {
   title: string;
-  event?: EventCompact;
+  event?: EventList;
   image: string;
   slug: string;
   image_alt: string;

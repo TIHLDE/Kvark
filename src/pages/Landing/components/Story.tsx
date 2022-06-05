@@ -1,15 +1,11 @@
 import { Button, Skeleton, Typography } from '@mui/material';
-import { parseISO } from 'date-fns';
 import { makeStyles } from 'makeStyles';
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import URLS from 'URLS';
-import { formatDate, urlEncode } from 'utils';
+import { urlEncode } from 'utils';
 
-import { EventCompact, JobPost, News } from 'types';
-
-import { useAnalytics } from 'hooks/Utils';
-
-import StoryPopup from 'components/story/StoryPopup';
+import { EventList, JobPost, News } from 'types';
 
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
 
@@ -104,32 +100,25 @@ const useStyles = makeStyles<Pick<StoryProps, 'fadeColor'>>()((theme, props) => 
     height: 1,
     flex: '0 0 auto',
   },
-  skeleton: {
-    margin: 'auto',
-  },
 }));
 
 export type StoryItem = {
   link: string;
   title: string;
-  description?: string;
   image?: string;
-  topText?: string;
+  typeText: string;
 };
 
 export type StoryProps = {
-  items: Array<EventCompact | News | JobPost>;
+  items: Array<EventList | News | JobPost>;
   fadeColor?: string;
 };
 
 const Story = ({ items, fadeColor }: StoryProps) => {
   const { classes } = useStyles({ fadeColor });
-  const storyId = new URLSearchParams(location.search).get('story');
-  const [popupOpen, setPopupOpen] = useState(Boolean(storyId));
-  const [selectedItem, setSelectedItem] = useState(Number(storyId));
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const instanceOfEvent = (object: any): object is EventCompact => 'start_date' in object;
+  const instanceOfEvent = (object: any): object is EventList => 'start_date' in object;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const instanceOfNews = (object: any): object is News => 'header' in object;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -146,22 +135,19 @@ const Story = ({ items, fadeColor }: StoryProps) => {
         newItems.push({
           ...newItem,
           link: `${URLS.events}${item.id}/${urlEncode(item.title)}/`,
-          description: `Sted: ${item.location} \n Når: ${formatDate(parseISO(item.start_date))}`,
-          topText: 'Arrangement',
+          typeText: 'Arr.',
         });
       } else if (instanceOfJobPost(item)) {
         newItems.push({
           ...newItem,
           link: `${URLS.jobposts}${item.id}/${urlEncode(item.title)}/`,
-          description: `Bedrift: ${item.company} \n ${item.is_continuously_hiring ? 'Fortløpende opptak' : `Når: ${formatDate(parseISO(item.deadline))}`}`,
-          topText: 'Annonse',
+          typeText: 'Ann.',
         });
       } else if (instanceOfNews(item)) {
         newItems.push({
           ...newItem,
           link: `${URLS.news}${item.id}/${urlEncode(item.title)}/`,
-          description: `${item.header}`,
-          topText: 'Nyhet',
+          typeText: 'Nyh.',
         });
       }
     });
@@ -170,22 +156,30 @@ const Story = ({ items, fadeColor }: StoryProps) => {
 
   type StoryItemProps = {
     item: StoryItem;
-    index: number;
   };
 
-  const StoryItem = ({ item, index }: StoryItemProps) => {
+  const StoryItem = ({ item }: StoryItemProps) => {
     const { classes } = useStyles({});
     const [imgUrl, setImgUrl] = useState(item.image || TIHLDELOGO);
-    const { event } = useAnalytics();
-    const openStory = () => {
-      event('open', 'stories', `Open "${item.title}" story`);
-      setSelectedItem(index);
-      setPopupOpen(true);
-    };
     return (
       <div className={classes.story}>
-        <Button className={classes.imgButton} onClick={openStory} variant='outlined'>
+        <Button className={classes.imgButton} component={Link} sx={{ position: 'relative' }} to={item.link} variant='outlined'>
           <img alt={item.title} className={classes.image} loading='lazy' onError={() => setImgUrl(TIHLDELOGO)} src={imgUrl} />
+          <Typography
+            sx={{
+              position: 'absolute',
+              bottom: ({ spacing }) => spacing(0.5),
+              left: ({ spacing }) => spacing(0.5),
+              color: ({ palette }) => palette.text.primary,
+              lineHeight: 1,
+              p: 0.25,
+              borderRadius: '4px',
+              fontSize: '0.65rem',
+              background: ({ palette }) => palette.background.paper,
+            }}
+            variant='caption'>
+            {item.typeText}
+          </Typography>
         </Button>
         <Typography className={classes.text} variant='body2'>
           {item.title}
@@ -198,11 +192,10 @@ const Story = ({ items, fadeColor }: StoryProps) => {
     <div className={classes.root}>
       <div className={classes.stories}>
         {storyItems.map((item, index) => (
-          <StoryItem index={index} item={item} key={index} />
+          <StoryItem item={item} key={index} />
         ))}
         <div className={classes.filler} />
       </div>
-      <StoryPopup items={storyItems} onClose={() => setPopupOpen(false)} open={popupOpen} selectedItem={selectedItem} />
     </div>
   );
 };
@@ -216,7 +209,7 @@ export const StoryLoading = ({ fadeColor }: Pick<StoryProps, 'fadeColor'>) => {
         {Array.from({ length: 7 }).map((i, index) => (
           <div className={classes.story} key={index}>
             <Skeleton className={classes.imgButton} variant='rectangular' />
-            <Skeleton className={classes.skeleton} width='80%' />
+            <Skeleton sx={{ m: 'auto' }} width='80%' />
           </div>
         ))}
       </div>

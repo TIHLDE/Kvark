@@ -2,8 +2,8 @@ import { format, getYear, isAfter, isBefore, parseISO, subMinutes } from 'date-f
 import nbLocale from 'date-fns/locale/nb';
 import slugify from 'slugify';
 
-import { Event, GroupLaw, SelectFormField, SelectFormFieldOption, TextFormField } from 'types';
-import { FormFieldType, JobPostType, MembershipType, StrikeReason, UserClass, UserStudy } from 'types/Enums';
+import { Event, GroupLaw, SelectFormField, SelectFormFieldOption, TextFormField, UserBase } from 'types';
+import { FormFieldType, JobPostType, MembershipType, StrikeReason, Study, UserClass, UserStudy } from 'types/Enums';
 
 export const isAfterDateOfYear = (month: number, date: number) => isAfter(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
 export const isBeforeDateOfYear = (month: number, date: number) => isBefore(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
@@ -47,6 +47,46 @@ export const getStrikesDelayedRegistrationHours = (numberOfStrikes: number) => {
     return 3;
   }
   return 12;
+};
+
+/**
+ * Transforms a studyyear to the more readable current class.
+ * In 2023, the users which started in 2022, the class is shown as `1. klasse` before the summer and `2. klasse` after the summer.
+ * @param studyyear The studyyear
+ * @param study Optional study. Used to take eventual DigSam-membership into account.
+ * @returns `1. klasse` or `Startet i 2022`
+ */
+export const getStudyyearAsClass = (studyyear: UserBase['studyyear']['group'], study?: UserBase['study']['group']) => {
+  const STUDYYEAR = Number(studyyear.name);
+  const CURRENT_YEAR = getYear(new Date());
+  const diff = CURRENT_YEAR - STUDYYEAR + (isAfterDateOfYear(6, 15) ? 1 : 0);
+  if (diff <= 3) {
+    return `${study?.slug === Study.DIGSAM ? diff + 3 : diff}. klasse`;
+  }
+  return `Startet i ${STUDYYEAR}`;
+};
+
+/**
+ * Get the user's affiliation as a string.
+ *
+ * July 15th, users are "moved" up a class as it's the middle of the summer.
+ * Ex.: In May 2022, a user in Dataingeniør which started in 2020 is in "2. klasse".
+ * In August 2022 the same user is in "3. klasse".
+ *
+ * Users which started for more than 3 years ago and does not study DigSam is shown as "Startet i <start-year>".
+ *
+ * @param user the user
+ * @returns `Dataingeniør - 2. klasse` or `Dataingeniør - Startet i 2020`
+ */
+export const getUserAffiliation = (user: UserBase, includeStudy = true, includeStudyyear = true): string => {
+  const info = [];
+  if (includeStudyyear) {
+    info.push(user.studyyear.group ? getStudyyearAsClass(user.studyyear.group, user.study.group) : 'Ukjent kull');
+  }
+  if (includeStudy) {
+    info.push(user.study.group?.name || 'Ukjent studie');
+  }
+  return info.join(' - ');
 };
 
 /**
@@ -117,9 +157,6 @@ export const getUserClass = (userClass: UserClass) => {
       return 'Ukjent klasse';
   }
 };
-
-export const USER_CLASSES = [UserClass.FIRST, UserClass.SECOND, UserClass.THIRD, UserClass.FOURTH, UserClass.FIFTH, UserClass.ALUMNI];
-export const USER_STUDIES = [UserStudy.DATAING, UserStudy.DIGFOR, UserStudy.DIGSEC, UserStudy.DIGSAM, UserStudy.DRIFT, UserStudy.INFO];
 
 /**
  * Get jobpost type as text
