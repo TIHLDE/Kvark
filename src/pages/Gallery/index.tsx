@@ -41,19 +41,19 @@ const Galleries = () => {
         </Banner>
       }
       options={{ title: 'Galleri' }}>
-      {isLoading && <GalleryListItemLoading />}
-      {!isLoading && !galleries.length && <NotFoundIndicator header='Fant ingen galleri' />}
-      {error && <Paper>{error.detail}</Paper>}
-      {data !== undefined && (
-        <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-          <GalleryGrid>
+      <GalleryGrid>
+        {isLoading && <GalleryListItemLoading />}
+        {!isLoading && !galleries.length && <NotFoundIndicator header='Fant ingen galleri' />}
+        {error && <Paper>{error.detail}</Paper>}
+        {data !== undefined && (
+          <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
             {galleries.map((galleryItem) => (
               <GalleryListItem gallery={galleryItem} key={galleryItem.slug} />
             ))}
-          </GalleryGrid>
-        </Pagination>
-      )}
-      {isFetching && <GalleryListItemLoading />}
+          </Pagination>
+        )}
+        {isFetching && <GalleryListItemLoading />}
+      </GalleryGrid>
     </Page>
   );
 };
