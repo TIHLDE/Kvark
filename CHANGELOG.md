@@ -13,6 +13,9 @@
 ---
 
 ## Neste versjon
+
+- 🦟 **Galleri**. Fikset bug som hindret opplasting av bilder.
+
 ## Versjon 2022.05.12
 
 - ✨ **Bruker**. Lagt til knapp i innstillinger for å endre passord.
