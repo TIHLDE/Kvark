@@ -75,7 +75,7 @@ const NewStudentBox = () => {
             component='a'
             endIcon={<OpenInNewIcon />}
             fullWidth
-            href='https://s.tihlde.org/fadderuka-paamelding'
+            href='https://docs.google.com/forms/d/e/1FAIpQLSfapUHizfkU3sgxVg9EqUbkjPL1ey8OUO1UBZ-Z2mZpbGPQsA/viewform?usp=sf_link'
             onClick={fadderukaSignupAnalytics}
             rel='noopener noreferrer'
             target='_blank'
