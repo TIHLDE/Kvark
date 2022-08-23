@@ -682,10 +682,10 @@
     prop-types "^15.8.1"
     react-is "^17.0.2"
 
-"@mui/icons-material@^5.6.1":
-  version "5.6.1"
-  resolved "https://registry.yarnpkg.com/@mui/icons-material/-/icons-material-5.6.1.tgz#421e2b73992349abb07f8f03074d7e56e20bf7ba"
-  integrity sha512-I1x8u+FRLOmoJpRJASMx9UG+jZrSkNLyRQmBXivQQwXu3m3iasMoaKYhhI0J18t8+FWktbkNTp63oEUHE9Gw0Q==
+"@mui/icons-material@^5.10.2":
+  version "5.10.2"
+  resolved "https://registry.yarnpkg.com/@mui/icons-material/-/icons-material-5.10.2.tgz#26e0a1ff1586f68e18ba1786bb8ba30ffd94475d"
+  integrity sha512-p7ku+43JeKRz0ONGzPZbRXZRbE7vCKP1Cr8l/Yj9sUIGVQ6CM/m37u6udacJZkDXD+G2FoxJPixrVvvjx6f64w==
   dependencies:
     "@babel/runtime" "^7.17.2"
 
