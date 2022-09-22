@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- 🦟 **Galleri**. Fikset bug som skapte duplisering av gallerier ved endring.
 - 🦟 **Galleri**. Fikset bug som hindret opplasting av bilder.
 
 ## Versjon 2022.05.12
