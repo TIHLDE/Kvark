@@ -61,8 +61,8 @@ const GalleryEditor = ({ id }: GalleryEditorProps) => {
         onSuccess: () => {
           showSnackbar('Galleriet ble oppdatert', 'success');
         },
-        onError: (e, data) => {
-          showSnackbar(data.slug + ' ' + e.detail, 'error');
+        onError: (e) => {
+          showSnackbar(e.detail, 'error');
         },
       },
     );
