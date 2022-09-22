@@ -20,7 +20,7 @@ export type GalleryEditorProps = {
   id: Gallery['id'];
 };
 
-type FormValues = Omit<Gallery, 'id'>;
+type FormValues = Omit<Gallery, 'id' | 'slug'>;
 
 const GalleryEditor = ({ id }: GalleryEditorProps) => {
   const { data } = useGalleryById(id);
@@ -32,7 +32,6 @@ const GalleryEditor = ({ id }: GalleryEditorProps) => {
   const setValues = useCallback(
     (newValues: Gallery | null) => {
       reset({
-        slug: '_',
         image: newValues?.image || '',
         title: newValues?.title || '',
         description: newValues?.description || '',
@@ -57,7 +56,7 @@ const GalleryEditor = ({ id }: GalleryEditorProps) => {
 
   const submit: SubmitHandler<FormValues> = async (data) => {
     await editGallery.mutate(
-      { ...data, id },
+      { ...data, slug: '_', id },
       {
         onSuccess: () => {
           showSnackbar('Galleriet ble oppdatert', 'success');
