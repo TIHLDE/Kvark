@@ -66,7 +66,7 @@ const UserSearch = <FormValues extends FieldValues>({
           disableCloseOnSelect={multiple}
           filterOptions={(x) => x}
           freeSolo
-          getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
+          getOptionLabel={(option) => (typeof option === 'string' ? option : `${option.first_name} ${option.last_name}`)}
           inputValue={search}
           isOptionEqualToValue={(option, value) => option.user_id === value.user_id}
           loading={isLoading}

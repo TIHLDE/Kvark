@@ -3,7 +3,7 @@ import { Button, IconButton, ListItem, ListItemText, Skeleton, Stack, Theme, Typ
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import URLS from 'URLS';
-import { getUserClass, getUserStudyShort } from 'utils';
+import { getUserAffiliation } from 'utils';
 
 import { UserList } from 'types';
 
@@ -99,10 +99,10 @@ const PersonListItem = ({ user, is_TIHLDE_member = true }: PersonListItemProps) 
       }}
       onExpand={setExpanded}
       primary={`${user.first_name} ${user.last_name}`}
-      secondary={!mdDown && `${getUserClass(user.user_class)} ${getUserStudyShort(user.user_study)}`}
+      secondary={!mdDown && getUserAffiliation(user)}
       sx={{ mb: 1 }}>
       <div>
-        {mdDown && <Typography variant='subtitle1'>{`${getUserClass(user.user_class)} ${getUserStudyShort(user.user_study)}`}</Typography>}
+        {mdDown && <Typography variant='subtitle1'>{getUserAffiliation(user)}</Typography>}
         <Typography variant='subtitle1'>{`Brukernavn: ${user.user_id}`}</Typography>
         <Typography variant='subtitle1'>
           Epost: <a href={`mailto:${user.email}`}>{user.email}</a>

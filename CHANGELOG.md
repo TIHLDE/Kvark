@@ -13,6 +13,36 @@
 ---
 
 ## Neste versjon
+
+- 🦟 **Galleri**. Fikset bug som hindret opplasting av bilder.
+
+## Versjon 2022.05.12
+
+- ✨ **Bruker**. Lagt til knapp i innstillinger for å endre passord.
+- ⚡ **Arrangementer**. Forbedret visning av prioriterte. Oversetter nå kull til klassetrinn der det er mulig.
+- ⚡ **Arrangementer**. Forbedret QR-scanning
+
+## Versjon 2022.05.08
+
+- ✨ **Arrangementer**. Bruker ny logikk for prioritering. Kan nå prioritere grupper.
+- ⚡ **Brukere**. Fjernet lagring av klasse og studie, dette finnes nå gjennom medlemskap.
+
+## Versjon 2022.05.06
+
+- ⚡ **Arrangementer**. Kopiere navn og epost til arrangement deltagere til utklippstavla.
+- ✨ **Spørreskjemaer**. Administartor kan sortere spørreskjema-spørsmål i rekkefølgen som ønskes.
+
+## Versjon 2022.05.03
+
+- ✨ **Ny bruker**. Brukere kan velge kull-tilhørighet.
+- ⚡ **Arrangementer**. Tillat Promo å redigere alle arrangementer.
+- ✨ **Bøter**. Det er mulig å legge til forsvar av mottatte bøter
+
+## Versjon 2022.04.29
+
+- ✨ **Medlemskap**. Gruppe-admin kan nå redigere tidligere medlemskap.
+- ✨ **Profil**. Det er mulig å se brukeres tidligere medlemskap, samt rolle i dem.
+
 ## Versjon 2022.04.21
 
 - ✨ **Botsystem**. Legg til bilder som bevis på bøter.
@@ -36,6 +66,7 @@
 
 ## Versjon 2022.03.01
 
+- ✨ **Kalender**. Brukere kan klikke på et arrangement i kalenderen for å se generell informasjon uten å måtte gå til arrangementsiden.
 - ✨ **Spørreskjema**. Bli varslet på epost ved nye svar på gruppe-spørreskjemaer.
 - ✨ **Grupper**. Se hver gruppes arrangementer.
 

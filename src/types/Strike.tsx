@@ -1,5 +1,5 @@
 import { StrikeReason } from 'types/Enums';
-import { EventCompact } from 'types/Event';
+import { EventList } from 'types/Event';
 import { UserBase } from 'types/User';
 
 export type Strike = {
@@ -9,7 +9,7 @@ export type Strike = {
   expires_at: string;
   created_at: string;
   creator?: UserBase | null;
-  event: EventCompact;
+  event: EventList;
 };
 
 export type StrikeList = Strike & {
@@ -18,6 +18,6 @@ export type StrikeList = Strike & {
 
 export type StrikeCreate = Pick<Strike, 'description' | 'strike_size'> & {
   user_id: UserBase['user_id'];
-  event_id?: EventCompact['id'];
+  event_id?: EventList['id'];
   enum?: StrikeReason;
 };

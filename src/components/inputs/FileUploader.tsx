@@ -2,7 +2,7 @@ import { CloseRounded, FileUploadRounded, GridViewRounded, ListRounded } from '@
 import { Box, Grid, IconButton, List, ListItem, ListItemIcon, ListItemText, Paper, Stack, Typography } from '@mui/material';
 import { makeStyles } from 'makeStyles';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
+import { DropzoneOptions, useDropzone } from 'react-dropzone';
 
 const useStyles = makeStyles()((theme) => ({
   fileUploader: {
@@ -72,7 +72,7 @@ const GridFileItem = ({ index, deleteFile, file }: GridFileItemProps) => {
 };
 
 export type FileUploaderProps = {
-  fileTypes: ('application/pdf' | 'image/jpeg' | 'image/png')[];
+  fileTypes: DropzoneOptions['accept'];
   files: File[];
   title: string;
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
@@ -82,18 +82,11 @@ const FileUploader = ({ fileTypes, files, setFiles, title }: FileUploaderProps) 
   const { classes } = useStyles();
   const [view, setView] = useState('list');
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    setFiles((prev) => [...prev, ...Array.from(acceptedFiles)]);
-  }, []);
+  const onDrop = useCallback((acceptedFiles: File[]) => setFiles((prev) => [...prev, ...Array.from(acceptedFiles)]), []);
 
-  const deleteFile = (index: number) => {
-    setFiles(files.filter((item, i) => i !== index));
-  };
+  const deleteFile = (index: number) => setFiles(files.filter((_, i) => i !== index));
 
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    accept: fileTypes.join(','),
-  });
+  const { getRootProps, getInputProps } = useDropzone({ onDrop, accept: fileTypes });
 
   return (
     <>

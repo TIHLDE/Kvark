@@ -18,7 +18,7 @@ import { useSnackbar } from 'hooks/Snackbar';
 import { useUser } from 'hooks/User';
 import { useAnalytics, useInterval } from 'hooks/Utils';
 
-import EventPriorities from 'pages/EventDetails/components/EventPriorities';
+import EventPriorityPools from 'pages/EventDetails/components/EventPriorityPools';
 import EventPublicRegistrationsList from 'pages/EventDetails/components/EventPublicRegistrationsList';
 import EventRegistration from 'pages/EventDetails/components/EventRegistration';
 import { EventsSubscription } from 'pages/Profile/components/ProfileEvents';
@@ -224,10 +224,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         </Button>
       );
     }
-    const is_prioritized =
-      data.registration_priorities.some((priority) => priority.user_class === user.user_class && priority.user_study === user.user_study) &&
-      (data.enforces_previous_strikes ? user.number_of_strikes < 3 : true);
-    if (data.only_allow_prioritized && data.registration_priorities.length > 0 && !is_prioritized) {
+
+    const is_prioritized = data.priority_pools.some((pool) => pool.groups.filter((group) => !group.viewer_is_member).length === 0);
+    if (data.only_allow_prioritized && data.priority_pools.length > 0 && !is_prioritized) {
       return (
         <Button disabled fullWidth variant='contained'>
           Kun åpent for prioriterte
@@ -311,10 +310,10 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               </>
             )}
           </DetailsPaper>
-          {Boolean(data.registration_priorities.length) && (
+          {Boolean(data.priority_pools.length) && (
             <DetailsPaper noPadding>
               <DetailsHeader variant='h2'>Prioritert</DetailsHeader>
-              <EventPriorities priorities={data.registration_priorities} />
+              <EventPriorityPools priorityPools={data.priority_pools} />
             </DetailsPaper>
           )}
           {data.enforces_previous_strikes ? (
@@ -331,7 +330,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           )}
           {!data.can_cause_strikes && (
             <Alert severity='info' variant='outlined'>
-              Dette arrangementet gir ikke prikker
+              Dette arrangementet gir ikke prikker om du melder deg av for sent eller ikke møter opp
             </Alert>
           )}
         </>
