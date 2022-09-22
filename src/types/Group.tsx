@@ -99,6 +99,6 @@ export type GroupFineStatistics = {
 };
 
 export type GroupMemberStatistics = {
-  classes: Array<{ user_class: UserClass; amount: number }>;
-  studies: Array<{ user_study: UserStudy; amount: number }>;
+  studyyears: Array<{ studyyear: Group['name']; amount: number }>;
+  studies: Array<{ study: Group['name']; amount: number }>;
 };

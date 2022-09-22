@@ -33,12 +33,11 @@ const GroupStatistics = ({ slug }: GroupStatisticsProps) => {
   return (
     <>
       <Stack direction={{ md: 'column' }} gap={1}>
-        <Typography>Hei hei test!</Typography>
         <Box sx={{ width: '100%' }}>
           <Typography>Klasse:</Typography>
           <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
-            {data.classes.map((cls) => (
-              <Stat key={cls.user_class} label={getUserClass(cls.user_class)} number={cls.amount} />
+            {data.studyyears.map((studyyear) => (
+              <Stat key={studyyear.studyyear} label={studyyear.studyyear} number={studyyear.amount} />
             ))}
           </Stack>
         </Box>
@@ -46,7 +45,7 @@ const GroupStatistics = ({ slug }: GroupStatisticsProps) => {
           <Typography>Studie:</Typography>
           <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
             {data.studies.map((study) => (
-              <Stat key={study.user_study} label={getUserStudyShort(study.user_study)} number={study.amount} />
+              <Stat key={study.study} label={study.study} number={study.amount} />
             ))}
           </Stack>
         </Box>
