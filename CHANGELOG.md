@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- ⚡ **Analyse**. Fjernet google analytics.
 - 🦟 **Galleri**. Fikset bug som hindret opplasting av bilder.
 
 ## Versjon 2022.05.12
