@@ -21,7 +21,6 @@ import { MiscProvider } from 'hooks/Misc';
 import { SnackbarProvider } from 'hooks/Snackbar';
 import { ThemeProvider } from 'hooks/Theme';
 
-import MessageGDPR from 'components/miscellaneous/MessageGDPR';
 import Navigation from 'components/navigation/Navigation';
 
 export const muiCache = createCache({ key: 'mui', prepend: true });
@@ -66,7 +65,6 @@ export const Application = () => (
     <BrowserRouter>
       <Navigation>
         <AppRoutes />
-        <MessageGDPR />
       </Navigation>
     </BrowserRouter>
   </Providers>
@@ -96,10 +94,6 @@ console.log(
 const rickroll = () => {
   const RICKROLLED_BADGE_ID = '372e3278-3d8f-4c0e-a83a-f693804f8cbb';
   API.createUserBadge({ flag: RICKROLLED_BADGE_ID }).catch(() => null);
-  window.gtag('event', 'rickrolled', {
-    event_category: 'easter-egg',
-    event_label: 'Rickrolled in the console',
-  });
   window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
 };
 

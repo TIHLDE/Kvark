@@ -47,12 +47,6 @@ const CropperWrapper = styled('div')({
   maxHeight: '90vh',
 });
 
-const analytics = () =>
-  window.gtag('event', 'upload', {
-    event_category: 'file-upload',
-    event_label: `Uploaded file`,
-  });
-
 export type ImageUploadProps<FormValues extends FieldValues = FieldValues> = ButtonProps &
   Pick<UseFormReturn<FormValues>, 'formState' | 'watch' | 'setValue'> & {
     register: UseFormRegisterReturn;
@@ -83,6 +77,9 @@ export const GenericImageUpload = <FormValues extends FieldValues>({
   const [zoom, setZoom] = useState(1);
   const [imageFile, setImageFile] = useState<File | undefined>(undefined);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+
+  const { event } = useAnalytics();
+
   const ratioFloat = ratio
     ?.split(':')
     .map(Number)
@@ -134,7 +131,7 @@ export const GenericImageUpload = <FormValues extends FieldValues>({
       const compressedImage = await compressImage(file as File, { maxSizeMB: 0.8, maxWidthOrHeight: 1500 });
       const newFile = blobToFile(compressedImage, file instanceof File ? file.name : imageFile?.name || '', imageFile?.type || file.type || '');
       const data = await API.uploadFile(newFile);
-      analytics();
+      event('upload', 'file-upload', 'Uploaded file');
       setValue(name, data.url as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>);
     } catch (e) {
       showSnackbar(e.detail, 'error');
@@ -213,13 +210,15 @@ export const FormFileUpload = <FormValues extends FieldValues>({
   const showSnackbar = useSnackbar();
   const url = watch(name);
   const [isLoading, setIsLoading] = useState(false);
+  const { event } = useAnalytics();
+
   const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setIsLoading(true);
       try {
         const data = await API.uploadFile(file);
-        analytics();
+        event('upload', 'file-upload', 'Uploaded file');
         setValue(name, data.url as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>);
         showSnackbar('Filen ble lastet opp, husk å trykk lagre', 'info');
       } catch (e) {
@@ -272,7 +271,7 @@ export const FileUpload = <FormValues extends FieldValues>({ label = 'Last opp f
       setIsLoading(true);
       try {
         const data = await Promise.all(Array.from(files).map((file) => API.uploadFile(file)));
-        analytics();
+        event('upload', 'file-upload', 'Uploaded file');
         setUploaded(data.map((file) => file.url));
         showSnackbar('Filen(e) ble lastet opp', 'info');
       } catch (e) {
