@@ -14,14 +14,7 @@ import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import GroupStatistics from '../components/GroupStatistics';
 
 const GroupInfo = () => {
-  const { allowAccess: isAdmin } = useHavePermission([
-    PermissionApp.EVENT,
-    PermissionApp.JOBPOST,
-    PermissionApp.NEWS,
-    PermissionApp.USER,
-    PermissionApp.STRIKE,
-    PermissionApp.GROUP,
-  ]);
+  const { allowAccess: isAdmin } = useHavePermission([PermissionApp.GROUP]);
   const isAuthenticated = useIsAuthenticated();
   const { slug } = useParams<'slug'>();
   const { data: group, isLoading } = useGroup(slug || '-');
@@ -30,7 +23,7 @@ const GroupInfo = () => {
   }
   return (
     <>
-      {isAdmin ? <GroupStatistics slug={group.slug} /> : null}
+      {isAdmin && <GroupStatistics slug={group.slug} />}
       {(group.description || group.contact_email) && (
         <>
           <MarkdownRenderer value={`${group.description}${group.contact_email ? ` \n\n Kontakt: ${group.contact_email}` : ''}`} />

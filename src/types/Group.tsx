@@ -1,4 +1,4 @@
-import { GroupType, MembershipType, UserClass, UserStudy } from 'types/Enums';
+import { GroupType, MembershipType } from 'types/Enums';
 import { Permissions } from 'types/Misc';
 import { UserBase, UserList } from 'types/User';
 
