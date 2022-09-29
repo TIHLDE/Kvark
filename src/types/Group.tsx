@@ -97,3 +97,8 @@ export type GroupFineStatistics = {
   approved_and_not_payed: number;
   not_approved: number;
 };
+
+export type GroupMemberStatistics = {
+  studyyears: Array<{ studyyear: Group['name']; amount: number }>;
+  studies: Array<{ study: Group['name']; amount: number }>;
+};
