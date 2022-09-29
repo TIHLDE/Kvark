@@ -167,8 +167,8 @@ const SignUp = () => {
               type='password'
             />
           </Stack>
-          <Typography gutterBottom variant='body2'>
-            OBS: Når du har klikket &quot;Opprett bruker&quot; må vi godkjenne deg før du får logge inn. Les mer om hvorfor lengre ned.
+          <Typography gutterBottom my={1} textAlign={'center'} variant='body2'>
+            Etter du har opprettet bruker må vi fortsatt godkjenne deg før du kan logge inn!
           </Typography>
           <SubmitButton disabled={createUser.isLoading} formState={formState}>
             Opprett bruker
@@ -180,11 +180,10 @@ const SignUp = () => {
             Hvorfor må vi godkjenne deg?
           </Button>
           <Collapse in={faqOpen}>
-            <Typography variant='body2'>
-              {`For å unngå at vi får mange brukere som ikke er reelle TIHLDE-medlemmer, må vi aktivere nye brukere før de får logge inn. Det kan ta noen timer
-              før noen av oss i Index eller HS får verifisert brukeren din. Hvis det haster eller tar mer enn 24 timer kan du sende en melding til TIHLDE på `}
-              <a href='https://m.me/tihlde' rel='noopener noreferrer' target='_blank'>
-                Messenger
+            <Typography m={1} variant='body2'>
+              {`For å unngå at vi får mange brukere som ikke er reelle TIHLDE-medlemmer, må vi aktivere nye brukere før de får logge inn. For å få aktivert brukeren din kan du ta kontakt med `}
+              <a href='mailto:teknologiminister@tihlde.org' rel='noopener noreferrer' target='_blank'>
+                Teknologiminister
               </a>
               .
             </Typography>
