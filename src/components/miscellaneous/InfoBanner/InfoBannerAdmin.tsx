@@ -33,6 +33,7 @@ export type BannerEditorProps = {
   bannerId: string | null;
   goToBanner: (newBanner: number | null) => void;
 };
+
 const InfoBannerEditor = ({ bannerId, goToBanner }: BannerEditorProps) => {
   const showSnackbar = useSnackbar();
   const { classes } = useStyles();
