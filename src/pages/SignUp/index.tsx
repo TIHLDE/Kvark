@@ -126,7 +126,7 @@ const SignUp = () => {
             <Select
               control={control}
               formState={formState}
-              helperText='Hvilket år begynte du på studiet ditt? Hvis du går DigSam: trekk fra 3. Ex.: Du begynte på DigSam i 2022, velg da 2019.'
+              helperText='Hvilket år begynte du på studiet ditt? Om du går DigSam, trekk fra 3 år i tillegg.'
               label='Kull'
               name='class'
               required
