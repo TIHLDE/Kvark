@@ -14,6 +14,7 @@
 
 ## Neste versjon
 
+- 🦟 **Signup**. Oppdaterte informasjon og rettet stavefeil.
 - 🦟 **Galleri**. Fikset bug som hindret opplasting av bilder.
 
 ## Versjon 2022.05.12
