@@ -30,6 +30,7 @@ import {
   GroupLaw,
   GroupLawMutate,
   GroupList,
+  GroupMemberStatistics,
   GroupMutate,
   GroupUserFine,
   JobPost,
@@ -288,6 +289,7 @@ export default {
   // Group
   getGroups: (filters?: any) => IFetch<GroupList[]>({ method: 'GET', url: `${GROUPS_ENDPOINT}/`, data: filters || {} }),
   getGroup: (slug: Group['slug']) => IFetch<Group>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/` }),
+  getGroupStatistics: (slug: Group['slug']) => IFetch<GroupMemberStatistics>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/statistics/` }),
   updateGroup: (slug: Group['slug'], data: GroupMutate) => IFetch<Group>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${slug}/`, data }),
 
   // Group laws

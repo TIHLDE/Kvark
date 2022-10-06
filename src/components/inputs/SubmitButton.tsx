@@ -12,7 +12,7 @@ const SubmitButton = <FormValues extends FieldValues>({ formState, children, dis
       </Button>
       {isError && (
         <FormHelperText error sx={{ textAlign: 'center' }}>
-          Det er en eller feil i skjemaet som må rettes
+          Det er en eller flere feil i skjemaet som må rettes
         </FormHelperText>
       )}
     </>

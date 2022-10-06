@@ -133,7 +133,6 @@ export const useAnalytics = () => {
    * @param label - Useful for categorizing events, eg 'Ny-student'
    */
   const event = useCallback((action: string, category: string, label: string) => {
-    window.gtag('event', action, { event_category: category, event_label: label });
     trackEvent(category, { props: { action, label } });
   }, []);
 
