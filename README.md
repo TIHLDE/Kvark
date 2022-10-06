@@ -64,10 +64,10 @@ VITE_API_URL=YOUR_API_URL_HERE
 
 ## ❤ Contributing
 
-The Kvark frontend is an open source project build on voluntary work.
+The Kvark frontend is an open source project built on voluntary work.
 We are committed to a fully transparent development process
 and highly appreciate any contributions.
-Whether you are helping us fixing bugs, proposing new feature, improving our documentation
+Whether you are helping us fixing bugs, proposing new features, improving our documentation
 or spreading the word - **we would love to have you as part of the community**.
 
 ## 🤝 Found a bug? Missing a specific feature?
