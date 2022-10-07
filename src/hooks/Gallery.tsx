@@ -48,16 +48,6 @@ export const useUpdateGallery = (galleryId: Gallery['id']): UseMutationResult<Ga
   });
 };
 
-// export const useUpdateNews = (id: number): UseMutationResult<News, RequestResponse, NewsRequired, unknown> => {
-//   const queryClient = useQueryClient();
-//   return useMutation((updatedNewsItem: NewsRequired) => API.putNewsItem(id, updatedNewsItem), {
-//     onSuccess: (data) => {
-//       queryClient.invalidateQueries(EXPORT_QUERY_KEY);
-//       queryClient.setQueryData([EXPORT_QUERY_KEY, id], data);
-//     },
-//   });
-// };
-
 export const useDeleteGallery = (galleryId: Gallery['id']): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
   const queryClient = useQueryClient();
   return useMutation(() => API.deleteGallery(galleryId), {
