@@ -1,5 +1,5 @@
 import Masonry from '@mui/lab/Masonry';
-import { ImageList, ImageListItem, Skeleton, Theme, useMediaQuery } from '@mui/material';
+import { ImageList, ImageListItem, ImageListItemBar, Skeleton, Theme, useMediaQuery } from '@mui/material';
 import { useMemo, useState } from 'react';
 
 import { Gallery, Picture } from 'types';
@@ -44,6 +44,7 @@ const GalleryRenderer = ({ id }: GalleryRendererProps) => {
           {pictures.map((image) => (
             <ImageListItem component='button' key={image.id} onClick={() => setSelectedImgId(image.id)} sx={{ cursor: 'pointer', border: 'none' }}>
               <img alt={image.image_alt} loading='lazy' src={image.image} />
+              {image.title && <ImageListItemBar subtitle={image.description} title={image.title} />}
             </ImageListItem>
           ))}
         </Masonry>
