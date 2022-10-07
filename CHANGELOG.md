@@ -14,6 +14,45 @@
 
 ## Neste versjon
 
+- ⚡ **Analyse**. Fjernet google analytics.
+- ⚡ **Arrangementer**. Endret påmeldingsfrist-tekst fra "Slutt:" til "Stenger:".
+- 🦟 **Signup**. Oppdaterte informasjon og rettet stavefeil.
+- 🦟 **Galleri**. Fikset bug som skapte duplisering av gallerier ved endring.
+- 🦟 **Galleri**. Fikset bug som hindret opplasting av bilder.
+
+## Versjon 2022.05.12
+
+- ✨ **Bruker**. Lagt til knapp i innstillinger for å endre passord.
+- ⚡ **Arrangementer**. Forbedret visning av prioriterte. Oversetter nå kull til klassetrinn der det er mulig.
+- ⚡ **Arrangementer**. Forbedret QR-scanning
+
+## Versjon 2022.05.08
+
+- ✨ **Arrangementer**. Bruker ny logikk for prioritering. Kan nå prioritere grupper.
+- ⚡ **Brukere**. Fjernet lagring av klasse og studie, dette finnes nå gjennom medlemskap.
+
+## Versjon 2022.05.06
+
+- ⚡ **Arrangementer**. Kopiere navn og epost til arrangement deltagere til utklippstavla.
+- ✨ **Spørreskjemaer**. Administartor kan sortere spørreskjema-spørsmål i rekkefølgen som ønskes.
+
+## Versjon 2022.05.03
+
+- ✨ **Ny bruker**. Brukere kan velge kull-tilhørighet.
+- ⚡ **Arrangementer**. Tillat Promo å redigere alle arrangementer.
+- ✨ **Bøter**. Det er mulig å legge til forsvar av mottatte bøter
+
+## Versjon 2022.04.29
+
+- ✨ **Medlemskap**. Gruppe-admin kan nå redigere tidligere medlemskap.
+- ✨ **Profil**. Det er mulig å se brukeres tidligere medlemskap, samt rolle i dem.
+
+## Versjon 2022.04.21
+
+- ✨ **Botsystem**. Legg til bilder som bevis på bøter.
+
+## Versjon 2022.03.24
+
 - ⚡ **Spørreskjemaer**. Spørreskjemaer som kan besvares flere ganger blir nå tømt når de besvares.
 - ✨ **Töddel**. Lagt til Töddel som egen side på nettsiden med mulighet for å åpne alle publikasjonene deres.
 - ✨ **Arrangementer**. Marker arrangementer som favoritter og motta varsel ved påmeldingsstart.
@@ -21,6 +60,7 @@
 - ✨ **Galleri**. Lagt til digitalt fotoalbum for arrangementer.
 - 🎨 **Botsystem**. Endret tittelen på enkelte knapper slik at de beskriver hva knappen gjør.
 - ⚡ **Hovedorgan**. Tilrettelagt for gruppe til Forvalitningsgruppen og De Eldstes Råd.
+- ⚡ **Stories**. Tar deg nå rett til ressursen.
 
 ## Versjon 2022.03.13
 
@@ -30,6 +70,7 @@
 
 ## Versjon 2022.03.01
 
+- ✨ **Kalender**. Brukere kan klikke på et arrangement i kalenderen for å se generell informasjon uten å måtte gå til arrangementsiden.
 - ✨ **Spørreskjema**. Bli varslet på epost ved nye svar på gruppe-spørreskjemaer.
 - ✨ **Grupper**. Se hver gruppes arrangementer.
 

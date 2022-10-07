@@ -1,21 +1,16 @@
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import Button from '@mui/material/Button';
-import Collapse from '@mui/material/Collapse';
-import LinearProgress from '@mui/material/LinearProgress';
-import MenuItem from '@mui/material/MenuItem';
-import Typography from '@mui/material/Typography';
+import { Button, Collapse, LinearProgress, MenuItem, Stack, Typography } from '@mui/material';
 import { EMAIL_REGEX } from 'constant';
-import { makeStyles } from 'makeStyles';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import URLS from 'URLS';
-import { getUserClass, getUserStudyLong } from 'utils';
 
 import { UserCreate } from 'types';
 
 import { useConfetti } from 'hooks/Confetti';
+import { useStudyGroups, useStudyyearGroups } from 'hooks/Group';
 import { useRedirectUrl, useSetRedirectUrl } from 'hooks/Misc';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useCreateUser } from 'hooks/User';
@@ -29,47 +24,15 @@ import { SecondaryTopBox } from 'components/layout/TopBox';
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import Page from 'components/navigation/Page';
 
-const useStyles = makeStyles()((theme) => ({
-  paper: {
-    maxWidth: theme.breakpoints.values.md,
-    margin: 'auto',
-    position: 'relative',
-    left: 0,
-    right: 0,
-    top: -60,
-  },
-  logo: {
-    height: 30,
-    width: 'auto',
-    marginBottom: theme.spacing(1),
-  },
-  progress: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-  },
-  button: {
-    marginTop: theme.spacing(2),
-  },
-  double: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gridGap: theme.spacing(1),
-    [theme.breakpoints.down('sm')]: {
-      gridTemplateColumns: '1fr',
-    },
-  },
-}));
-
 type SignUpData = UserCreate & {
   password_verify: string;
 };
 
 const SignUp = () => {
-  const { classes } = useStyles();
   const { run } = useConfetti();
   const { event } = useAnalytics();
+  const { data: studies } = useStudyGroups();
+  const { data: studyyears } = useStudyyearGroups();
   const navigate = useNavigate();
   const createUser = useCreateUser();
   const showSnackbar = useSnackbar();
@@ -79,14 +42,6 @@ const SignUp = () => {
   const [faqOpen, setFaqOpen] = useState(false);
 
   const onSignUp = async (data: SignUpData) => {
-    if (getUserStudyLong(data.user_study) === 'Digital samhandling' && ![4, 5].includes(data.user_class)) {
-      setError('user_class', { message: 'Digital samhandling har kun 4 og 5 klasse' });
-      return;
-    }
-    if (!(getUserStudyLong(data.user_study) === 'Digital samhandling') && [4, 5].includes(data.user_class)) {
-      setError('user_class', { message: `${getUserStudyLong(data.user_study)} har ikke 4 og 5 klasse` });
-      return;
-    }
     if (data.password !== data.password_verify) {
       setError('password', { message: 'Passordene må være like' });
       setError('password_verify', { message: 'Passordene må være like' });
@@ -98,11 +53,9 @@ const SignUp = () => {
       first_name: data.first_name,
       last_name: data.last_name,
       email: data.email,
-      user_class: data.user_class,
-      user_study: data.user_study,
       password: data.password,
-      class: null,
-      study: null,
+      class: data.class,
+      study: data.study,
     };
     createUser.mutate(userData, {
       onSuccess: () => {
@@ -119,12 +72,12 @@ const SignUp = () => {
 
   return (
     <Page banner={<SecondaryTopBox />} options={{ title: 'Ny bruker' }}>
-      <Paper className={classes.paper}>
-        {createUser.isLoading && <LinearProgress className={classes.progress} />}
-        <TihldeLogo className={classes.logo} darkColor='white' lightColor='blue' size='large' />
+      <Paper sx={{ maxWidth: 'md', margin: 'auto', position: 'relative', left: 0, right: 0, top: -60 }}>
+        {createUser.isLoading && <LinearProgress sx={{ position: 'absolute', top: 0, left: 0, right: 0 }} />}
+        <TihldeLogo darkColor='white' lightColor='blue' size='large' sx={{ height: 30, width: 'auto', mb: 1 }} />
         <Typography variant='h3'>Opprett bruker</Typography>
-        <form onSubmit={handleSubmit(onSignUp)}>
-          <div className={classes.double}>
+        <Stack component='form' onSubmit={handleSubmit(onSignUp)}>
+          <Stack direction={{ xs: 'column', sm: 'row' }} gap={1}>
             <TextField
               disabled={createUser.isLoading}
               formState={formState}
@@ -139,10 +92,11 @@ const SignUp = () => {
               {...register('last_name', { required: 'Feltet er påkrevd' })}
               required
             />
-          </div>
+          </Stack>
           <TextField
             disabled={createUser.isLoading}
             formState={formState}
+            helperText='Ditt brukernavn på NTNU'
             label='Feide brukernavn'
             {...register('user_id', { required: 'Feltet er påkrevd', validate: (value) => !value.includes('@') || 'Brukernavn må være uten @stud.ntnu.no' })}
             required
@@ -161,23 +115,30 @@ const SignUp = () => {
             required
             type='email'
           />
-          <div className={classes.double}>
-            <Select control={control} formState={formState} label='Studie' name='user_study' required rules={{ required: 'Feltet er påkrevd' }}>
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <MenuItem key={i} value={i}>
-                  {getUserStudyLong(i)}
+          <Stack direction={{ xs: 'column', sm: 'row' }} gap={1}>
+            <Select control={control} formState={formState} label='Studie' name='study' required rules={{ required: 'Feltet er påkrevd' }}>
+              {studies?.map((study) => (
+                <MenuItem key={study.slug} value={study.slug}>
+                  {study.name}
                 </MenuItem>
               ))}
             </Select>
-            <Select control={control} formState={formState} label='Klasse' name='user_class' required rules={{ required: 'Feltet er påkrevd' }}>
-              {[1, 2, 3, 4, 5].map((i) => (
-                <MenuItem key={i} value={i}>
-                  {getUserClass(i)}
+            <Select
+              control={control}
+              formState={formState}
+              helperText='Hvilket år begynte du på studiet ditt? Om du går DigSam, trekk fra 3 år i tillegg.'
+              label='Kull'
+              name='class'
+              required
+              rules={{ required: 'Feltet er påkrevd' }}>
+              {studyyears?.map((study) => (
+                <MenuItem key={study.slug} value={study.slug}>
+                  {study.name}
                 </MenuItem>
               ))}
             </Select>
-          </div>
-          <div className={classes.double}>
+          </Stack>
+          <Stack direction={{ xs: 'column', sm: 'row' }} gap={1}>
             <TextField
               disabled={createUser.isLoading}
               formState={formState}
@@ -205,35 +166,29 @@ const SignUp = () => {
               required
               type='password'
             />
-          </div>
-          <Typography variant='body2'>
-            OBS: Når du har klikket &quot;Opprett bruker&quot; må vi godkjenne deg før du får logge inn. Les mer om hvorfor lengre ned.
+          </Stack>
+          <Typography gutterBottom my={1} textAlign={'center'} variant='body2'>
+            Etter du har opprettet bruker må vi fortsatt godkjenne deg før du kan logge inn!
           </Typography>
-          <SubmitButton className={classes.button} disabled={createUser.isLoading} formState={formState}>
+          <SubmitButton disabled={createUser.isLoading} formState={formState}>
             Opprett bruker
           </SubmitButton>
-          <Button className={classes.button} component={Link} disabled={createUser.isLoading} fullWidth to={URLS.login}>
+          <Button component={Link} disabled={createUser.isLoading} fullWidth sx={{ my: 1 }} to={URLS.login}>
             Logg inn
           </Button>
-          <Button
-            className={classes.button}
-            endIcon={faqOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-            fullWidth
-            onClick={() => setFaqOpen((oldState) => !oldState)}
-            variant='outlined'>
+          <Button endIcon={faqOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />} fullWidth onClick={() => setFaqOpen((oldState) => !oldState)} variant='outlined'>
             Hvorfor må vi godkjenne deg?
           </Button>
           <Collapse in={faqOpen}>
-            <Typography className={classes.button} variant='body2'>
-              {`For å unngå at vi får mange brukere som ikke er reelle TIHLDE-medlemmer, må vi aktivere nye brukere før de får logge inn. Det kan ta noen timer
-              før noen av oss i Index eller HS får verifisert brukeren din. Hvis det haster eller tar mer enn 24 timer kan du sende en melding til TIHLDE på `}
-              <a href='https://m.me/tihlde' rel='noopener noreferrer' target='_blank'>
-                Messenger
+            <Typography m={1} variant='body2'>
+              {`For å unngå at vi får mange brukere som ikke er reelle TIHLDE-medlemmer, må vi aktivere nye brukere før de får logge inn. For å få aktivert brukeren din kan du ta kontakt med `}
+              <a href='mailto:teknologiminister@tihlde.org' rel='noopener noreferrer' target='_blank'>
+                Teknologiminister
               </a>
               .
             </Typography>
           </Collapse>
-        </form>
+        </Stack>
       </Paper>
     </Page>
   );

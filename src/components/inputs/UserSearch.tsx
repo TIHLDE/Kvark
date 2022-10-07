@@ -65,13 +65,16 @@ const UserSearch = <FormValues extends FieldValues>({
         <Autocomplete
           disableCloseOnSelect={multiple}
           filterOptions={(x) => x}
-          getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
+          freeSolo
+          getOptionLabel={(option) => (typeof option === 'string' ? option : `${option.first_name} ${option.last_name}`)}
+          inputValue={search}
           isOptionEqualToValue={(option, value) => option.user_id === value.user_id}
           loading={isLoading}
           loadingText='Laster...'
           multiple={multiple}
           noOptionsText='Fant ingen brukere'
           onChange={(_, user) => onChange(user)}
+          onInputChange={(_, newVal) => setSearch(newVal)}
           options={options?.[0] || []}
           renderInput={(params) => (
             <TextField
@@ -88,7 +91,6 @@ const UserSearch = <FormValues extends FieldValues>({
               variant='outlined'
               {...props}
               {...params}
-              onChange={(e) => setSearch(e.target.value)}
             />
           )}
           renderOption={(props, option, { selected }) => (

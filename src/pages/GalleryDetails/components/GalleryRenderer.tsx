@@ -7,6 +7,8 @@ import { useGalleryPictures } from 'hooks/Gallery';
 
 import PictureDialog from 'pages/GalleryDetails/components/PictureDialog';
 
+import Pagination from 'components/layout/Pagination';
+
 export const GalleryRendererLoading = () => {
   const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
@@ -23,11 +25,11 @@ export const GalleryRendererLoading = () => {
 };
 
 export type GalleryRendererProps = {
-  slug: Gallery['slug'];
+  id: Gallery['id'];
 };
 
-const GalleryRenderer = ({ slug }: GalleryRendererProps) => {
-  const { data } = useGalleryPictures(slug);
+const GalleryRenderer = ({ id }: GalleryRendererProps) => {
+  const { data, hasNextPage, fetchNextPage, isFetching } = useGalleryPictures(id);
   const pictures = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   const [selectedImgId, setSelectedImgId] = useState<Picture['id'] | null>(null);
   const selectedImg = useMemo(() => pictures.find((picture) => picture.id === selectedImgId), [selectedImgId, pictures]);
@@ -36,14 +38,16 @@ const GalleryRenderer = ({ slug }: GalleryRendererProps) => {
 
   return (
     <>
-      <ImageList cols={mdDown ? 1 : lgUp ? 3 : 2} gap={8} variant='masonry'>
-        {pictures.map((image) => (
-          <ImageListItem component='button' key={image.id} onClick={() => setSelectedImgId(image.id)} sx={{ cursor: 'pointer', border: 'none' }}>
-            <img alt={image.image_alt} loading='lazy' src={image.image} />
-          </ImageListItem>
-        ))}
-      </ImageList>
-      {selectedImg && <PictureDialog gallerySlug={slug} onClose={() => setSelectedImgId(null)} picture={selectedImg} />}
+      <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
+        <ImageList cols={mdDown ? 1 : lgUp ? 3 : 2} gap={8} variant='masonry'>
+          {pictures.map((image) => (
+            <ImageListItem component='button' key={image.id} onClick={() => setSelectedImgId(image.id)} sx={{ cursor: 'pointer', border: 'none' }}>
+              <img alt={image.image_alt} loading='lazy' src={image.image} />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      </Pagination>
+      {selectedImg && <PictureDialog galleryId={id} onClose={() => setSelectedImgId(null)} picture={selectedImg} />}
     </>
   );
 };

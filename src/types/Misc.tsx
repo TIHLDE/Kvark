@@ -1,4 +1,4 @@
-import { CheatsheetType, Study, WarningType } from 'types/Enums';
+import { CheatsheetStudy, CheatsheetType, WarningType } from 'types/Enums';
 
 export type InfoBanner = {
   id: string;
@@ -17,7 +17,7 @@ export interface Cheatsheet {
   grade: number;
   id: string;
   official: boolean;
-  study: Study;
+  study: CheatsheetStudy;
   title: string;
   type: CheatsheetType;
   url: string;
@@ -57,6 +57,7 @@ export interface PaginationResponse<T> {
 export interface Permissions {
   write: boolean;
   read: boolean;
+  write_all?: boolean;
   destroy?: boolean;
 }
 

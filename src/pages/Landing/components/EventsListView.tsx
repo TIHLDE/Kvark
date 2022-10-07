@@ -1,6 +1,6 @@
 import { Stack, styled, Theme, Typography, useMediaQuery } from '@mui/material';
 
-import { EventCompact } from 'types';
+import { EventList } from 'types';
 import { Groups } from 'types/Enums';
 
 import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
@@ -17,7 +17,7 @@ const Text = styled(Typography)(({ theme }) => ({
 }));
 
 export type EventsListViewProps = {
-  events: Array<EventCompact>;
+  events: Array<EventList>;
   isLoading?: boolean;
 };
 

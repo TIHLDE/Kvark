@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import { Checkbox, Collapse, Divider, ListItem, ListItemAvatar, ListItemButton, ListItemText, Stack, Tooltip, Typography } from '@mui/material';
 import parseISO from 'date-fns/parseISO';
 import { useEffect, useState } from 'react';
-import { formatDate, getUserClass, getUserStudyShort } from 'utils';
+import { formatDate, getUserAffiliation } from 'utils';
 
 import { Registration } from 'types';
 
@@ -104,7 +104,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
           </ListItemAvatar>
           <ListItemText
             primary={`${registration.user_info.first_name} ${registration.user_info.last_name}`}
-            secondary={`${getUserClass(registration.user_info.user_class)} - ${getUserStudyShort(registration.user_info.user_study)}${
+            secondary={`${getUserAffiliation(registration.user_info)}${
               registration.user_info.allergy !== '' ? `\nAllergier: ${registration.user_info.allergy}` : ''
             }${!registration.allow_photo ? `\nVil ikke bli tatt bilde av` : ''}`}
           />

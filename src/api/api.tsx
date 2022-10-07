@@ -8,9 +8,9 @@ import {
   Cheatsheet,
   CompaniesEmail,
   Event,
-  EventCompact,
   EventFavorite,
-  EventRequired,
+  EventList,
+  EventMutate,
   EventStatistics,
   FileUploadResponse,
   Form,
@@ -18,16 +18,19 @@ import {
   FormStatistics,
   FormUpdate,
   Gallery,
-  GalleryRequired,
+  GalleryCreate,
   Group,
   GroupFine,
   GroupFineBatchMutate,
   GroupFineCreate,
+  GroupFineDefenseMutate,
   GroupFineMutate,
   GroupFineStatistics,
   GroupForm,
   GroupLaw,
   GroupLawMutate,
+  GroupList,
+  GroupMemberStatistics,
   GroupMutate,
   GroupUserFine,
   InfoBanner,
@@ -36,6 +39,7 @@ import {
   LoginRequestResponse,
   Membership,
   MembershipHistory,
+  MembershipHistoryMutate,
   News,
   NewsRequired,
   Notification,
@@ -51,6 +55,8 @@ import {
   Submission,
   User,
   UserCreate,
+  UserNotificationSetting,
+  UserNotificationSettingChoice,
   UserPermissions,
   UserSubmission,
   Warning,
@@ -59,7 +65,7 @@ import {
   WikiRequired,
   WikiTree,
 } from 'types';
-import { MembershipType, Study } from 'types/Enums';
+import { CheatsheetStudy, MembershipType } from 'types/Enums';
 
 import { IFetch } from 'api/fetch';
 
@@ -84,6 +90,7 @@ export const MEMBERSHIPS_ENDPOINT = 'memberships';
 export const MEMBERSHIP_HISTORIES_ENDPOINT = 'membership-histories';
 export const NEWS_ENDPOINT = 'news';
 export const NOTIFICATIONS_ENDPOINT = 'notifications';
+export const NOTIFICATION_SETTINGS_ENDPOINT = 'notification-settings';
 export const WIKI_ENDPOINT = 'pages';
 export const SHORT_LINKS_ENDPOINT = 'short-links';
 export const STRIKES_ENDPOINT = 'strikes';
@@ -116,10 +123,10 @@ export default {
   // Events
   getEvent: (eventId: Event['id']) => IFetch<Event>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/` }),
   getEventStatistics: (eventId: Event['id']) => IFetch<EventStatistics>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/statistics/` }),
-  getEvents: (filters?: any) => IFetch<PaginationResponse<EventCompact>>({ method: 'GET', url: `${EVENTS_ENDPOINT}/`, data: filters || {} }),
-  getEventsWhereIsAdmin: (filters?: any) => IFetch<PaginationResponse<EventCompact>>({ method: 'GET', url: `${EVENTS_ENDPOINT}/admin/`, data: filters || {} }),
-  createEvent: (item: EventRequired) => IFetch<Event>({ method: 'POST', url: `${EVENTS_ENDPOINT}/`, data: item }),
-  updateEvent: (eventId: Event['id'], item: Partial<Event>) => IFetch<Event>({ method: 'PUT', url: `${EVENTS_ENDPOINT}/${String(eventId)}/`, data: item }),
+  getEvents: (filters?: any) => IFetch<PaginationResponse<EventList>>({ method: 'GET', url: `${EVENTS_ENDPOINT}/`, data: filters || {} }),
+  getEventsWhereIsAdmin: (filters?: any) => IFetch<PaginationResponse<EventList>>({ method: 'GET', url: `${EVENTS_ENDPOINT}/admin/`, data: filters || {} }),
+  createEvent: (item: EventMutate) => IFetch<Event>({ method: 'POST', url: `${EVENTS_ENDPOINT}/`, data: item }),
+  updateEvent: (eventId: Event['id'], item: EventMutate) => IFetch<Event>({ method: 'PUT', url: `${EVENTS_ENDPOINT}/${String(eventId)}/`, data: item }),
   deleteEvent: (eventId: Event['id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${EVENTS_ENDPOINT}/${String(eventId)}/` }),
   notifyEventRegistrations: (eventId: Event['id'], title: string, message: string) =>
     IFetch<RequestResponse>({ method: 'POST', url: `${EVENTS_ENDPOINT}/${String(eventId)}/notify/`, data: { title, message } }),
@@ -181,19 +188,27 @@ export default {
   getUserBadges: (userId?: User['user_id'], filters?: any) =>
     IFetch<PaginationResponse<Badge>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${BADGES_ENDPOINT}/`, data: filters || {} }),
   getUserEvents: (userId?: User['user_id'], filters?: any) =>
-    IFetch<PaginationResponse<EventCompact>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${EVENTS_ENDPOINT}/`, data: filters || {} }),
+    IFetch<PaginationResponse<EventList>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${EVENTS_ENDPOINT}/`, data: filters || {} }),
   getUserForms: (filters?: any) =>
     IFetch<PaginationResponse<Form>>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/${FORMS_ENDPOINT}/`, data: filters || {} }),
-  getUserGroups: (userId?: User['user_id']) => IFetch<Array<Group>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${GROUPS_ENDPOINT}/` }),
+  getUserMemberships: (userId?: User['user_id']) =>
+    IFetch<PaginationResponse<Membership>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${MEMBERSHIPS_ENDPOINT}/` }),
+  getUserMembershipHistories: (userId?: User['user_id']) =>
+    IFetch<PaginationResponse<MembershipHistory>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${MEMBERSHIP_HISTORIES_ENDPOINT}/` }),
+  getUserStrikes: (userId?: User['user_id']) =>
+    IFetch<Array<Strike>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${STRIKES_ENDPOINT}/` }),
   getUsers: (filters?: any) => IFetch<PaginationResponse<User>>({ method: 'GET', url: `${USERS_ENDPOINT}/`, data: filters || {} }),
-  updateUserData: (userName: string, item: Partial<User>) => IFetch<User>({ method: 'PUT', url: `${USERS_ENDPOINT}/${userName}/`, data: item }),
-  activateUser: (userName: string) => IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/activate/`, data: { user_id: userName } }),
-  declineUser: (userName: string, reason: string) =>
+  updateUserData: (userName: User['user_id'], item: Partial<User>) => IFetch<User>({ method: 'PUT', url: `${USERS_ENDPOINT}/${userName}/`, data: item }),
+  getUserNotificationSettings: () => IFetch<Array<UserNotificationSetting>>({ method: 'GET', url: `${NOTIFICATION_SETTINGS_ENDPOINT}/` }),
+  updateUserNotificationSettings: (data: UserNotificationSetting) =>
+    IFetch<Array<UserNotificationSetting>>({ method: 'POST', url: `${NOTIFICATION_SETTINGS_ENDPOINT}/`, data }),
+  getUserNotificationSettingChoices: () => IFetch<Array<UserNotificationSettingChoice>>({ method: 'GET', url: `${NOTIFICATION_SETTINGS_ENDPOINT}/choices/` }),
+  slackConnect: (slackCode: string) => IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/slack/`, data: { code: slackCode } }),
+  activateUser: (userName: User['user_id']) => IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/activate/`, data: { user_id: userName } }),
+  declineUser: (userName: User['user_id'], reason: string) =>
     IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/decline/`, data: { user_id: userName, reason } }),
   exportUserData: () => IFetch<RequestResponse>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/data/` }),
   deleteUser: (userId?: User['user_id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/` }),
-  getUserStrikes: (userId?: User['user_id']) =>
-    IFetch<Array<Strike>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${STRIKES_ENDPOINT}/` }),
 
   // Notifications
   getNotifications: (filters?: any) => IFetch<PaginationResponse<Notification>>({ method: 'GET', url: `${NOTIFICATIONS_ENDPOINT}/`, data: filters || {} }),
@@ -206,22 +221,23 @@ export default {
   deleteShortLink: (slug: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${SHORT_LINKS_ENDPOINT}/${slug}/` }),
 
   // Gallery
-  getGallery: (gallerySlug: string) => IFetch<Gallery>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${gallerySlug}/` }),
-  getGallerys: (filters?: any) => IFetch<PaginationResponse<Gallery>>({ method: 'GET', url: `${GALLERY_ENDPOINT}/`, data: filters || {} }),
-  createGallery: (item: GalleryRequired) => IFetch<Gallery>({ method: 'POST', url: `${GALLERY_ENDPOINT}/`, data: item }),
-  updateGallery: (gallerySlug: string, item: Partial<Gallery>) => IFetch<Gallery>({ method: 'PUT', url: `${GALLERY_ENDPOINT}/${gallerySlug}/`, data: item }),
-  deleteGallery: (gallerySlug: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${GALLERY_ENDPOINT}/${gallerySlug}/` }),
+  getGallery: (id: Gallery['id']) => IFetch<Gallery>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${id}/` }),
+  getGalleries: (filters?: any) => IFetch<PaginationResponse<Gallery>>({ method: 'GET', url: `${GALLERY_ENDPOINT}/`, data: filters || {} }),
+  createGallery: (item: GalleryCreate) => IFetch<Gallery>({ method: 'POST', url: `${GALLERY_ENDPOINT}/`, data: item }),
+  updateGallery: (id: Gallery['id'], item: Partial<Gallery>) => IFetch<Gallery>({ method: 'PUT', url: `${GALLERY_ENDPOINT}/${id}/`, data: item }),
+  deleteGallery: (id: Gallery['id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${GALLERY_ENDPOINT}/${id}/` }),
 
   // Picture
-  getGalleryPictures: (gallerySlug: string, filters?: any) =>
-    IFetch<PaginationResponse<Picture>>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${gallerySlug}/${PICTURE_ENDPOINT}/`, data: filters || {} }),
-  getPicture: (gallerySlug: string, id: string) => IFetch<Picture>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${gallerySlug}/${PICTURE_ENDPOINT}/${id}` }),
-  createPicture: (gallerySlug: string, files: File | File[] | Blob) =>
-    IFetch<RequestResponse>({ method: 'POST', url: `${GALLERY_ENDPOINT}/${gallerySlug}/${PICTURE_ENDPOINT}/`, file: files }),
-  updatePicture: (gallerySlug: string, id: string, item: Partial<Picture>) =>
-    IFetch<Picture>({ method: 'PUT', url: `${GALLERY_ENDPOINT}/${gallerySlug}/${PICTURE_ENDPOINT}/${id}/`, data: item }),
-  deletePicture: (gallerySlug: string, id: string) =>
-    IFetch<RequestResponse>({ method: 'DELETE', url: `${GALLERY_ENDPOINT}/${gallerySlug}/${PICTURE_ENDPOINT}/${id}` }),
+  getGalleryPictures: (galleryId: Gallery['id'], filters?: any) =>
+    IFetch<PaginationResponse<Picture>>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${galleryId}/${PICTURE_ENDPOINT}/`, data: filters || {} }),
+  getPicture: (galleryId: Gallery['id'], pictureId: Picture['id']) =>
+    IFetch<Picture>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${galleryId}/${PICTURE_ENDPOINT}/${pictureId}` }),
+  createPicture: (galleryId: Gallery['id'], files: File | File[] | Blob) =>
+    IFetch<RequestResponse>({ method: 'POST', url: `${GALLERY_ENDPOINT}/${galleryId}/${PICTURE_ENDPOINT}/`, file: files }),
+  updatePicture: (galleryId: Gallery['id'], pictureId: Picture['id'], item: Partial<Picture>) =>
+    IFetch<Picture>({ method: 'PUT', url: `${GALLERY_ENDPOINT}/${galleryId}/${PICTURE_ENDPOINT}/${pictureId}/`, data: item }),
+  deletePicture: (galleryId: Gallery['id'], pictureId: Picture['id']) =>
+    IFetch<RequestResponse>({ method: 'DELETE', url: `${GALLERY_ENDPOINT}/${galleryId}/${PICTURE_ENDPOINT}/${pictureId}` }),
 
   // Strikes
   createStrike: (item: StrikeCreate) => IFetch<Strike>({ method: 'POST', url: `${STRIKES_ENDPOINT}/`, data: item }),
@@ -229,8 +245,8 @@ export default {
   getStrikes: (filters?: any) => IFetch<PaginationResponse<StrikeList>>({ method: 'GET', url: `${STRIKES_ENDPOINT}/`, data: filters || {} }),
 
   // Cheatsheet
-  getCheatsheets: (study: Study, grade: number, filters?: any) => {
-    const tempStudy = study === Study.DIGSEC ? 'DIGINC' : study;
+  getCheatsheets: (study: CheatsheetStudy, grade: number, filters?: any) => {
+    const tempStudy = study === CheatsheetStudy.DIGSEC ? 'DIGINC' : study;
     return IFetch<PaginationResponse<Cheatsheet>>({
       method: 'GET',
       url: `${CHEATSHEETS_ENDPOINT}/${tempStudy.toUpperCase()}/${String(grade)}/files/`,
@@ -262,20 +278,29 @@ export default {
     IFetch<BadgeCategory>({ method: 'GET', url: `${BADGES_ENDPOINT}/${BADGE_CATEGORIES_ENDPOINT}/${badgeCategoryId}/` }),
 
   // Membership
-  getMemberships: (slug: string, filters?: any) =>
-    IFetch<PaginationResponse<Membership>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/${MEMBERSHIPS_ENDPOINT}/`, data: filters || {} }),
-  getMembershipsHistories: (slug: string, filters?: any) =>
-    IFetch<PaginationResponse<MembershipHistory>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/${MEMBERSHIP_HISTORIES_ENDPOINT}/`, data: filters || {} }),
-  createMembership: (slug: string, userId: string) =>
-    IFetch<Membership>({ method: 'POST', url: `${GROUPS_ENDPOINT}/${slug}/${MEMBERSHIPS_ENDPOINT}/`, data: { user: { user_id: userId } } }),
-  deleteMembership: (slug: string, userId: string) =>
-    IFetch<RequestResponse>({ method: 'DELETE', url: `${GROUPS_ENDPOINT}/${slug}/${MEMBERSHIPS_ENDPOINT}/${userId}/` }),
-  updateMembership: (slug: string, userId: string, data: { membership_type: MembershipType }) =>
-    IFetch<Membership>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${slug}/${MEMBERSHIPS_ENDPOINT}/${userId}/`, data }),
+  getMemberships: (groupSlug: Group['slug'], filters?: any) =>
+    IFetch<PaginationResponse<Membership>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${groupSlug}/${MEMBERSHIPS_ENDPOINT}/`, data: filters || {} }),
+  getMembershipsHistories: (groupSlug: Group['slug'], filters?: any) =>
+    IFetch<PaginationResponse<MembershipHistory>>({
+      method: 'GET',
+      url: `${GROUPS_ENDPOINT}/${groupSlug}/${MEMBERSHIP_HISTORIES_ENDPOINT}/`,
+      data: filters || {},
+    }),
+  createMembership: (groupSlug: Group['slug'], userId: User['user_id']) =>
+    IFetch<Membership>({ method: 'POST', url: `${GROUPS_ENDPOINT}/${groupSlug}/${MEMBERSHIPS_ENDPOINT}/`, data: { user: { user_id: userId } } }),
+  deleteMembership: (groupSlug: Group['slug'], userId: User['user_id']) =>
+    IFetch<RequestResponse>({ method: 'DELETE', url: `${GROUPS_ENDPOINT}/${groupSlug}/${MEMBERSHIPS_ENDPOINT}/${userId}/` }),
+  updateMembership: (groupSlug: Group['slug'], userId: User['user_id'], data: { membership_type: MembershipType }) =>
+    IFetch<Membership>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${MEMBERSHIPS_ENDPOINT}/${userId}/`, data }),
+  deleteMembershipHistory: (groupSlug: Group['slug'], id: MembershipHistory['id']) =>
+    IFetch<RequestResponse>({ method: 'DELETE', url: `${GROUPS_ENDPOINT}/${groupSlug}/${MEMBERSHIP_HISTORIES_ENDPOINT}/${id}/` }),
+  updateMembershipHistory: (groupSlug: Group['slug'], id: MembershipHistory['id'], data: MembershipHistoryMutate) =>
+    IFetch<MembershipHistory>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${MEMBERSHIP_HISTORIES_ENDPOINT}/${id}/`, data }),
 
   // Group
-  getGroups: () => IFetch<Group[]>({ method: 'GET', url: `${GROUPS_ENDPOINT}/` }),
+  getGroups: (filters?: any) => IFetch<GroupList[]>({ method: 'GET', url: `${GROUPS_ENDPOINT}/`, data: filters || {} }),
   getGroup: (slug: Group['slug']) => IFetch<Group>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/` }),
+  getGroupStatistics: (slug: Group['slug']) => IFetch<GroupMemberStatistics>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/statistics/` }),
   updateGroup: (slug: Group['slug'], data: GroupMutate) => IFetch<Group>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${slug}/`, data }),
 
   // Group laws
@@ -308,6 +333,8 @@ export default {
     IFetch<GroupFine>({ method: 'POST', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/`, data }),
   updateGroupFine: (groupSlug: Group['slug'], fineId: GroupFine['id'], data: GroupFineMutate) =>
     IFetch<GroupFine>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/${fineId}/`, data }),
+  updateGroupFineDefense: (groupSlug: Group['slug'], fineId: GroupFine['id'], data: GroupFineDefenseMutate) =>
+    IFetch<GroupFine>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/${fineId}/defense/`, data }),
   batchUpdateGroupFine: (groupSlug: Group['slug'], data: GroupFineBatchMutate) =>
     IFetch<RequestResponse>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/batch-update/`, data }),
   batchUpdateUserGroupFines: (groupSlug: Group['slug'], userId: User['user_id'], data: GroupFineMutate) =>

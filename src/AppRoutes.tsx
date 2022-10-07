@@ -23,6 +23,7 @@ import News from 'pages/News';
 import NewsDetails from 'pages/NewsDetails';
 import NewStudent from 'pages/NewStudent';
 import Profile from 'pages/Profile';
+import { SlackConnectPage } from 'pages/Profile/components/ProfileSettings/NotificationSettings';
 
 import Page from 'components/navigation/Page';
 
@@ -53,21 +54,31 @@ const Toddel = lazy(() => import('pages/Toddel'));
 const UserAdmin = lazy(() => import('pages/UserAdmin'));
 
 type AuthRouteProps = {
+  /** List of permissions where the user must have access through at least one of them to be given access */
   apps?: Array<PermissionApp>;
+  /** The element to render if have permission */
   element: ReactElement;
 };
 
+/**
+ * Protects a route with permission checks. If `apps` is empty or not present, all authenticated users are given access.
+ */
 export const AuthRoute = ({ apps = [], element }: AuthRouteProps) => {
   const setLogInRedirectURL = useSetRedirectUrl();
   const isAuthenticated = useIsAuthenticated();
-  const { allowAccess, isLoading } = useHavePermission(apps);
+  const { allowAccess, isLoading } = useHavePermission(apps, { enabled: Boolean(apps.length) });
 
-  if (isLoading) {
-    return <Page />;
-  } else if (!isAuthenticated) {
+  if (!isAuthenticated) {
     setLogInRedirectURL(window.location.pathname);
     return <Navigate to={URLS.login} />;
-  } else if (allowAccess || !apps.length) {
+  }
+  if (!apps.length) {
+    return element;
+  }
+  if (isLoading) {
+    return <Page />;
+  }
+  if (allowAccess) {
     return element;
   }
   return <Navigate to={URLS.landing} />;
@@ -80,13 +91,11 @@ const AppRoutes = () => {
   useEffect(() => event('page_view', window.location.href, window.location.pathname), [location]);
 
   useEffect(() => {
-    const { enableAutoPageviews, enableAutoOutboundTracking } = Plausible({ domain: PLAUSIBLE_DOMAIN });
+    const { enableAutoPageviews } = Plausible({ domain: PLAUSIBLE_DOMAIN });
     const cleanupPageViews = enableAutoPageviews();
-    const cleanupOutboundTracking = enableAutoOutboundTracking();
 
     return () => {
       cleanupPageViews();
-      cleanupOutboundTracking();
     };
   }, []);
 
@@ -125,7 +134,7 @@ const AppRoutes = () => {
           <Route element={<JobPosts />} index />
         </Route>
         <Route path={URLS.gallery}>
-          <Route element={<GalleryDetails />} path=':slug/*' />
+          <Route element={<GalleryDetails />} path=':id/*' />
           <Route element={<Gallery />} index />
         </Route>
         <Route element={<Wiki />} path={`${URLS.wiki}*`} />
@@ -134,6 +143,7 @@ const AppRoutes = () => {
           <Route element={<News />} index />
         </Route>
 
+        <Route element={<SlackConnectPage />} path='slack/' />
         <Route element={<AuthRoute element={<Profile />} />} path={URLS.profile}>
           <Route element={<Profile />} path=':userId/' />
         </Route>

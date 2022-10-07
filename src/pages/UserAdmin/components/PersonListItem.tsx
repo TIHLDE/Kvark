@@ -1,36 +1,22 @@
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
-import {
-  Button,
-  Collapse,
-  Divider,
-  IconButton,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Skeleton,
-  Stack,
-  Theme,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
+import { Button, IconButton, ListItem, ListItemText, Skeleton, Stack, Theme, Typography, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import URLS from 'URLS';
-import { getUserClass, getUserStudyShort } from 'utils';
+import { getUserAffiliation } from 'utils';
 
 import { UserList } from 'types';
 
 import { useSnackbar } from 'hooks/Snackbar';
 import { useActivateUser, useDeclineUser, useUser } from 'hooks/User';
 
-import ProfileSettings from 'pages/Profile/components/ProfileSettings';
+import UserDeleteDialog from 'pages/Profile/components/ProfileSettings/UserDeleteDialog';
+import UserSettings from 'pages/Profile/components/ProfileSettings/UserSettings';
 
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import Dialog from 'components/layout/Dialog';
+import { StandaloneExpand } from 'components/layout/Expand';
 import Paper from 'components/layout/Paper';
 import Avatar from 'components/miscellaneous/Avatar';
 
@@ -100,47 +86,44 @@ const PersonListItem = ({ user, is_TIHLDE_member = true }: PersonListItemProps) 
     });
 
   return (
-    <Paper bgColor='smoke' noOverflow noPadding sx={{ mb: 1 }}>
-      <ListItem
-        disablePadding
-        onClick={() => setExpanded((prev) => !prev)}
-        secondaryAction={
+    <StandaloneExpand
+      bgColor='smoke'
+      expanded={expanded}
+      icon={<Avatar sx={{ mr: 2 }} user={user} />}
+      listItemProps={{
+        secondaryAction: (
           <IconButton component='a' href={`${URLS.profile}${user.user_id}/`} rel='noopener noreferrer' target='_blank'>
             <OpenInNewIcon />
           </IconButton>
-        }>
-        <ListItemButton>
-          <Avatar sx={{ mr: 2 }} user={user} />
-          <ListItemText
-            primary={`${user.first_name} ${user.last_name}`}
-            secondary={!mdDown && `${getUserClass(user.user_class)} ${getUserStudyShort(user.user_study)}`}
-          />
-          <ListItemIcon sx={{ minWidth: 45 }}>{expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}</ListItemIcon>
-        </ListItemButton>
-      </ListItem>
-      <Collapse in={expanded} mountOnEnter unmountOnExit>
-        <Divider />
-        <Stack spacing={1} sx={{ p: 2 }}>
-          <div>
-            {mdDown && <Typography variant='subtitle1'>{`${getUserClass(user.user_class)} ${getUserStudyShort(user.user_study)}`}</Typography>}
-            <Typography variant='subtitle1'>{`Brukernavn: ${user.user_id}`}</Typography>
-            <Typography variant='subtitle1'>
-              Epost: <a href={`mailto:${user.email}`}>{user.email}</a>
-            </Typography>
-          </div>
-          {is_TIHLDE_member ? (
-            data && <ProfileSettings isAdmin user={data} />
-          ) : (
-            <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
-              <Button fullWidth onClick={activate} variant='outlined'>
-                Legg til medlem
-              </Button>
-              <DeclineUser user={user} />
-            </Stack>
-          )}
+        ),
+      }}
+      onExpand={setExpanded}
+      primary={`${user.first_name} ${user.last_name}`}
+      secondary={!mdDown && getUserAffiliation(user)}
+      sx={{ mb: 1 }}>
+      <div>
+        {mdDown && <Typography variant='subtitle1'>{getUserAffiliation(user)}</Typography>}
+        <Typography variant='subtitle1'>{`Brukernavn: ${user.user_id}`}</Typography>
+        <Typography variant='subtitle1'>
+          Epost: <a href={`mailto:${user.email}`}>{user.email}</a>
+        </Typography>
+      </div>
+      {is_TIHLDE_member ? (
+        data && (
+          <>
+            <UserSettings isAdmin user={data} />
+            <UserDeleteDialog isAdmin user={data} />
+          </>
+        )
+      ) : (
+        <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
+          <Button fullWidth onClick={activate} variant='outlined'>
+            Legg til medlem
+          </Button>
+          <DeclineUser user={user} />
         </Stack>
-      </Collapse>
-    </Paper>
+      )}
+    </StandaloneExpand>
   );
 };
 

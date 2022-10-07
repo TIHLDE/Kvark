@@ -18,15 +18,15 @@ import Banner from 'components/layout/Banner';
 import Page from 'components/navigation/Page';
 
 const GalleryDetails = () => {
-  const { slug } = useParams();
-  const { data, isError } = useGalleryById(String(slug));
+  const { id } = useParams<'id'>();
+  const { data, isError } = useGalleryById(String(id));
   const navigate = useNavigate();
 
   useEffect(() => {
     if (data) {
-      navigate(`${URLS.gallery}${slug}/`, { replace: true });
+      navigate(`${URLS.gallery}${id}/`, { replace: true });
     }
-  }, [slug, data, navigate]);
+  }, [id, data, navigate]);
 
   if (isError) {
     return <Http404 />;
@@ -39,14 +39,14 @@ const GalleryDetails = () => {
           <HavePermission apps={[PermissionApp.PICTURE]}>
             {data && (
               <Stack gap={1}>
-                <PictureUpload slug={data.slug} />
-                <GalleryEditorDialog slug={data.slug} />
+                <PictureUpload id={data.id} />
+                <GalleryEditorDialog id={data.id} />
               </Stack>
             )}
           </HavePermission>
         </Banner>
       }
-      options={{ title: data?.title || 'Laster galleri...', gutterTop: false, filledTopbar: true, lightColor: 'blue' }}>
+      options={{ title: data?.title || 'Laster galleri...' }}>
       {data ? (
         <>
           <Helmet>
@@ -55,7 +55,7 @@ const GalleryDetails = () => {
             <meta content={window.location.href} property='og:url' />
             <meta content={data.image} property='og:image' />
           </Helmet>
-          <GalleryRenderer slug={data.slug} />
+          <GalleryRenderer id={data.id} />
         </>
       ) : (
         <GalleryRendererLoading />

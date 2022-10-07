@@ -1,92 +1,80 @@
 import { Mail } from '@mui/icons-material';
 import MembersIcon from '@mui/icons-material/PersonRounded';
-import { ButtonBase, Divider, Skeleton, Stack, Theme, Typography } from '@mui/material';
-import { makeStyles } from 'makeStyles';
+import { Box, ButtonBase, Divider, Skeleton, Stack, Theme, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 
-import { Group } from 'types';
+import { GroupList } from 'types';
 
 import Paper from 'components/layout/Paper';
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
-
-const useStyles = makeStyles()((theme) => ({
-  container: {
-    width: '100%',
-    height: '100%',
-    minHeight: 90,
-    justifyContent: 'flex-start',
-  },
-  icon: {
-    [theme.breakpoints.down('md')]: {
-      fontSize: '1rem',
-    },
-  },
-  text: {
-    marginLeft: theme.spacing(1),
-    fontSize: '0.8rem',
-  },
-}));
-
 export type GroupItemProps = {
-  group: Group;
+  group: GroupList;
   background?: keyof Theme['palette']['background'];
 };
 
-const GroupItem = ({ group, background = 'paper' }: GroupItemProps) => {
-  const { classes } = useStyles();
-
-  return (
-    <Paper noOverflow noPadding sx={{ background: (theme) => theme.palette.background[background] }}>
-      <ButtonBase className={classes.container} component={Link} focusRipple to={URLS.groups.details(group.slug)}>
-        <Stack alignItems='center' direction='row' divider={<Divider flexItem orientation='vertical' />} gap={1} justifyContent='flex-start' sx={{ pl: 1 }}>
+const GroupItem = ({ group, background = 'paper' }: GroupItemProps) => (
+  <Paper noOverflow noPadding sx={{ background: (theme) => theme.palette.background[background] }}>
+    <ButtonBase
+      component={Link}
+      focusRipple
+      sx={{ width: '100%', height: '100%', minHeight: 90, justifyContent: 'flex-start' }}
+      to={URLS.groups.details(group.slug)}>
+      <Stack
+        alignItems='center'
+        direction='row'
+        divider={<Divider flexItem orientation='vertical' />}
+        gap={1}
+        justifyContent='flex-start'
+        sx={{ pl: 1, overflow: 'hidden' }}>
+        {/* TODO: fjern div rundt AspectRatioImg når flere nettlesere støtter aspect-ratio i css - https://caniuse.com/mdn-css_properties_aspect-ratio */}
+        <Box sx={{ display: 'block', height: 70, width: 70 }}>
           <AspectRatioImg alt={group?.image_alt || ''} borderRadius ratio={1} src={group?.image || ''} sx={{ width: 70, height: 70 }} />
-          <Stack>
-            <Typography variant='h3'>{group.name}</Typography>
-            {group.leader && (
-              <Stack alignItems='center' direction='row'>
-                <MembersIcon className={classes.icon} />
-                <Typography className={classes.text}>
-                  {group.leader.first_name} {group.leader.last_name}
-                </Typography>
-              </Stack>
-            )}
-            {group.contact_email && (
-              <Stack alignItems='center' direction='row'>
-                <Mail className={classes.icon} />
-                <Typography className={classes.text}>{group.contact_email}</Typography>
-              </Stack>
-            )}
-          </Stack>
+        </Box>
+        <Stack>
+          <Typography sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} variant='h3'>
+            {group.name}
+          </Typography>
+          {group.leader && (
+            <Stack alignItems='center' direction='row'>
+              <MembersIcon sx={{ fontSize: { xs: '1rem', md: '1.5rem' } }} />
+              <Typography sx={{ fontSize: '0.8rem', ml: 1 }}>
+                {group.leader.first_name} {group.leader.last_name}
+              </Typography>
+            </Stack>
+          )}
+          {group.contact_email && (
+            <Stack alignItems='center' direction='row'>
+              <Mail sx={{ fontSize: { xs: '1rem', md: '1.5rem' } }} />
+              <Typography sx={{ fontSize: '0.8rem', ml: 1 }}>{group.contact_email}</Typography>
+            </Stack>
+          )}
         </Stack>
-      </ButtonBase>
-    </Paper>
-  );
-};
+      </Stack>
+    </ButtonBase>
+  </Paper>
+);
 
 export default GroupItem;
 
-export const GroupItemLoading = ({ background = 'paper' }: Pick<GroupItemProps, 'background'>) => {
-  const { classes } = useStyles();
-  return (
-    <Paper noOverflow noPadding sx={{ background: (theme) => theme.palette.background[background] }}>
-      <ButtonBase className={classes.container} focusRipple>
-        <Stack alignItems='center' direction='row' divider={<Divider flexItem orientation='vertical' />} gap={1} justifyContent='flex-start' sx={{ pl: 1 }}>
-          <AspectRatioLoading sx={{ width: 70, height: 70 }} />
-          <Stack>
-            <Skeleton width={100} />
+export const GroupItemLoading = ({ background = 'paper' }: Pick<GroupItemProps, 'background'>) => (
+  <Paper noOverflow noPadding sx={{ background: (theme) => theme.palette.background[background] }}>
+    <ButtonBase focusRipple sx={{ width: '100%', height: '100%', minHeight: 90, justifyContent: 'flex-start' }}>
+      <Stack alignItems='center' direction='row' divider={<Divider flexItem orientation='vertical' />} gap={1} justifyContent='flex-start' sx={{ pl: 1 }}>
+        <AspectRatioLoading sx={{ width: 70, height: 70 }} />
+        <Stack>
+          <Skeleton width={100} />
 
-            <Stack direction='row'>
-              <MembersIcon className={classes.icon} />
-              <Skeleton className={classes.text} width={120} />
-            </Stack>
-            <Stack direction='row'>
-              <Mail className={classes.icon} />
-              <Skeleton className={classes.text} width={120} />
-            </Stack>
+          <Stack direction='row'>
+            <MembersIcon sx={{ fontSize: { xs: '1rem', md: '1.5rem' } }} />
+            <Skeleton sx={{ fontSize: '0.8rem', ml: 1 }} width={120} />
+          </Stack>
+          <Stack direction='row'>
+            <Mail sx={{ fontSize: { xs: '1rem', md: '1.5rem' } }} />
+            <Skeleton sx={{ fontSize: '0.8rem', ml: 1 }} width={120} />
           </Stack>
         </Stack>
-      </ButtonBase>
-    </Paper>
-  );
-};
+      </Stack>
+    </ButtonBase>
+  </Paper>
+);

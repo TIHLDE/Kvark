@@ -1,90 +1,73 @@
-import { MenuItem, TextField } from '@mui/material';
-import { makeStyles } from 'makeStyles';
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { MenuItem, Stack } from '@mui/material';
+import { useMemo } from 'react';
+import { useForm } from 'react-hook-form';
 
+import { Group } from 'types';
+
+import { useStudyGroups, useStudyyearGroups } from 'hooks/Group';
 import { useUsers } from 'hooks/User';
+import { useDebounce } from 'hooks/Utils';
 
 import UserStrikeListItem from 'pages/StrikeAdmin/components/UserStrikeListItem';
 import { PersonListItemLoading } from 'pages/UserAdmin/components/PersonListItem';
 
+import Select from 'components/inputs/Select';
+import TextField from 'components/inputs/TextField';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
-const useStyles = makeStyles()((theme) => ({
-  filterContainer: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gridGap: theme.spacing(1),
-    margin: theme.spacing(2, 0, 1),
-    [theme.breakpoints.down('lg')]: {
-      gridTemplateColumns: '1fr',
-    },
-  },
-}));
-
-const USER_CLASSES = ['Alle', '1. klasse', '2. klasse', '3. klasse', '4. klasse', '5. klasse', 'Alumni'];
-const USER_STUDIES = ['Alle', 'Dataing', 'DigFor', 'DigSec', 'DigSam', 'Drift', 'Info'];
+type Filters = {
+  study: Group['slug'] | 'all';
+  studyyear: Group['slug'] | 'all';
+  search: string;
+};
 
 const UserStrikeList = () => {
-  const { classes } = useStyles();
-  const [userClassChoice, setUserClassChoice] = useState(0);
-  const [userStudyChoice, setUserStudyChoice] = useState(0);
-  const [search, setSearch] = useState('');
-  const [searchInput, setSearchInput] = useState('');
-  const filters = useMemo(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const filters: Record<string, any> = {};
-    if (searchInput !== '') {
-      filters.search = searchInput;
-    }
-    if (userStudyChoice !== 0) {
-      filters.user_study = userStudyChoice;
-    }
-    if (userClassChoice !== 0) {
-      filters.user_class = userClassChoice === 6 ? -1 : userClassChoice;
-    }
-    return filters;
-  }, [userClassChoice, userStudyChoice, searchInput]);
-
+  const { data: studies = [] } = useStudyGroups();
+  const { data: studyyears = [] } = useStudyyearGroups();
+  const { formState, control, watch, register } = useForm<Filters>({ defaultValues: { studyyear: 'all', study: 'all', search: '' } });
+  const watchFilters = watch();
+  const formFilters = useMemo(
+    () => ({
+      studyyear: watchFilters.studyyear === 'all' ? undefined : watchFilters.studyyear,
+      study: watchFilters.study === 'all' ? undefined : watchFilters.study,
+      search: watchFilters.search === '' ? undefined : watchFilters.search,
+    }),
+    [watchFilters],
+  );
+  const filters = useDebounce(formFilters, 500);
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useUsers({ has_active_strikes: true, ...filters });
-  const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setSearchInput(search), 500);
-    return () => clearTimeout(timer);
-  }, [search]);
+  const users = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   return (
     <>
-      <div className={classes.filterContainer}>
-        <TextField fullWidth label='Klasser' onChange={(e) => setUserClassChoice(Number(e.target.value))} select value={userClassChoice} variant='outlined'>
-          {USER_CLASSES.map((value, index) => (
-            <MenuItem key={index} value={index}>
-              {value}
+      <Stack direction={{ xs: 'column', md: 'row' }} gap={{ xs: 0, md: 2 }}>
+        <Select control={control} formState={formState} label='Klasser' name='studyyear'>
+          <MenuItem value='all'>Alle</MenuItem>
+          {studyyears.map((group) => (
+            <MenuItem key={group.slug} value={group.slug}>
+              {`Brukere som startet i ${group.name}`}
             </MenuItem>
           ))}
-        </TextField>
-        <TextField fullWidth label='Studie' onChange={(e) => setUserStudyChoice(Number(e.target.value))} select value={userStudyChoice} variant='outlined'>
-          {USER_STUDIES.map((value, index) => (
-            <MenuItem key={index} value={index}>
-              {value}
+        </Select>
+        <Select control={control} formState={formState} label='Studier' name='study'>
+          <MenuItem value='all'>Alle</MenuItem>
+          {studies.map((group) => (
+            <MenuItem key={group.slug} value={group.slug}>
+              {group.name}
             </MenuItem>
           ))}
-        </TextField>
-        <TextField fullWidth label='Søk' onChange={(e) => setSearch(e.target.value)} placeholder='Skriv her' value={search} variant='outlined' />
-      </div>
+        </Select>
+        <TextField formState={formState} label='Søk' {...register('search')} />
+      </Stack>
       {isLoading && <PersonListItemLoading />}
-      {isEmpty && <NotFoundIndicator header='Fant ingen brukere' />}
+      {!isLoading && !users.length && <NotFoundIndicator header='Fant ingen brukere' />}
       {error && <Paper>{error.detail}</Paper>}
       {data !== undefined && (
         <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-          {data.pages.map((page, i) => (
-            <Fragment key={i}>
-              {page.results.map((user) => (
-                <UserStrikeListItem key={user.user_id} user={user} />
-              ))}
-            </Fragment>
+          {users.map((user) => (
+            <UserStrikeListItem key={user.user_id} user={user} />
           ))}
         </Pagination>
       )}

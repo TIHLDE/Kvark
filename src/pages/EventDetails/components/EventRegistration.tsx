@@ -1,5 +1,4 @@
 import AllergyIcon from '@mui/icons-material/FastfoodRounded';
-import HomeIcon from '@mui/icons-material/HomeRounded';
 import MailIcon from '@mui/icons-material/MailOutlineRounded';
 import PersonIcon from '@mui/icons-material/PersonOutlineRounded';
 import SchoolIcon from '@mui/icons-material/SchoolRounded';
@@ -7,7 +6,7 @@ import { Box, Checkbox, FormControlLabel, IconProps, Typography } from '@mui/mat
 import { ComponentType, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import URLS from 'URLS';
-import { getUserStudyShort, shortDownString } from 'utils';
+import { getUserAffiliation, shortDownString } from 'utils';
 
 import { Event, Submission, User } from 'types';
 
@@ -106,8 +105,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
           <Paper sx={{ my: 1 }}>
             <ListItem icon={PersonIcon} text={`Navn: ${user.first_name} ${user.last_name}`} />
             <ListItem icon={MailIcon} text={`Epost: ${user.email}`} />
-            <ListItem icon={SchoolIcon} text={`Studieprogram: ${getUserStudyShort(user.user_study)}`} />
-            <ListItem icon={HomeIcon} text={`Klasse: ${user.user_class}`} />
+            <ListItem icon={SchoolIcon} text={`Tilhørighet: ${getUserAffiliation(user)}`} />
             <ListItem icon={AllergyIcon} text={`Allergier: ${allergy}`} />
           </Paper>
           {form !== undefined && (

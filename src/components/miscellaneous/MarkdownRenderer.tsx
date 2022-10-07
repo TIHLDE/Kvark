@@ -39,10 +39,6 @@ export const Heading = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(1),
   color: theme.palette.text.primary,
   wordBreak: 'break-word',
-  overflowWrap: 'anywhere',
-  '@supports not (overflow-wrap: anywhere)': {
-    hyphens: 'auto',
-  },
 }));
 
 export const ExpandList = styled('div')(({ theme }) => ({
