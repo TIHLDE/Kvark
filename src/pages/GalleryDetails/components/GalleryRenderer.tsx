@@ -1,5 +1,5 @@
 import Masonry from '@mui/lab/Masonry';
-import { ImageList, ImageListItem, ImageListItemBar, Skeleton, Theme, useMediaQuery } from '@mui/material';
+import { ImageListItem, ImageListItemBar, Skeleton, Theme, useMediaQuery } from '@mui/material';
 import { useMemo, useState } from 'react';
 
 import { Gallery, Picture } from 'types';
@@ -15,13 +15,13 @@ export const GalleryRendererLoading = () => {
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
 
   return (
-    <ImageList cols={mdDown ? 1 : lgUp ? 3 : 2} gap={8} variant='masonry'>
+    <Masonry columns={mdDown ? 1 : lgUp ? 3 : 2} spacing={1}>
       {Array.from(Array(6)).map((_, i) => (
         <ImageListItem key={i} sx={{ border: 'none', width: '100%' }}>
           <Skeleton height={150} sx={{ borderRadius: (theme) => `${theme.shape.borderRadius}px` }} variant='rectangular' width='100%' />
         </ImageListItem>
       ))}
-    </ImageList>
+    </Masonry>
   );
 };
 
