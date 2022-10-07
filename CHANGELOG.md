@@ -15,6 +15,7 @@
 ## Neste versjon
 
 - ⚡ **Arrangementer**. Endret påmeldingsfrist-tekst fra "Slutt:" til "Stenger:".
+- 🎨 **Galleri**. Visning av bilder i galleriet har blitt smått endret.
 - 🦟 **Galleri**. Fikset bug som skapte duplisering av gallerier ved endring.
 - 🦟 **Galleri**. Fikset bug som hindret opplasting av bilder.
 
