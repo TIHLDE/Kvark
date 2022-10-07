@@ -1,3 +1,4 @@
+import CloseIcon from '@mui/icons-material/Close';
 import ExpandIcon from '@mui/icons-material/ExpandMoreRounded';
 import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
 import { useTheme } from '@mui/material';
@@ -61,6 +62,10 @@ const useStyles = makeStyles()((theme) => ({
     height: 32,
     width: 'auto',
     margin: theme.spacing(2, 'auto', 0, 2),
+  },
+  closeSidebar: {
+    width: '80%',
+    margin: theme.spacing(3, 'auto', 0),
   },
 }));
 
@@ -133,6 +138,7 @@ const Sidebar = ({ items, onClose, open }: SidebarProps) => {
   return (
     <Drawer anchor='bottom' classes={{ paper: classes.sidebar }} onClose={onClose} open={open} style={{ zIndex: theme.zIndex.drawer }}>
       <TihldeLogo className={classes.logo} darkColor='white' lightColor='white' size='large' />
+      <Button className={classes.closeSidebar} endIcon={<CloseIcon />} onClick={() => onClose()} variant='contained' />
       <div className={classes.root}>
         {items.map((item, i) => (
           <SidebarItem key={i} {...item} onClose={onClose} />
