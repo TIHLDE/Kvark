@@ -17,7 +17,7 @@
 - ⚡ **Analyse**. Fjernet google analytics.
 - ⚡ **Arrangementer**. Endret påmeldingsfrist-tekst fra "Slutt:" til "Stenger:".
 - 🦟 **Signup**. Oppdaterte informasjon og rettet stavefeil.
-- 🎨 **Galleri**. Visning av bilder i galleriet har blitt smått endret.
+- 🎨 **Galleri**. Visning av bilder i galleriet har blitt endret.
 - 🦟 **Galleri**. Fikset bug som skapte duplisering av gallerier ved endring.
 - 🦟 **Galleri**. Fikset bug som hindret opplasting av bilder.
 
