@@ -48,7 +48,7 @@ const Galleries = () => {
         {data !== undefined && (
           <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
             {galleries.map((galleryItem) => (
-              <GalleryListItem gallery={galleryItem} key={galleryItem.slug} />
+              <GalleryListItem gallery={galleryItem} key={galleryItem.id} />
             ))}
           </Pagination>
         )}

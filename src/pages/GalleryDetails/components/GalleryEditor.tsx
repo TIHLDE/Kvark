@@ -17,15 +17,15 @@ import Dialog from 'components/layout/Dialog';
 import VerifyDialog from 'components/layout/VerifyDialog';
 
 export type GalleryEditorProps = {
-  slug: Gallery['slug'];
+  id: Gallery['id'];
 };
 
-type FormValues = Omit<Gallery, 'id' | 'created_at' | 'updated_at'>;
+type FormValues = Omit<Gallery, 'id' | 'slug'>;
 
-const GalleryEditor = ({ slug }: GalleryEditorProps) => {
-  const { data } = useGalleryById(slug);
-  const editGallery = useUpdateGallery(slug);
-  const deleteGallery = useDeleteGallery(slug);
+const GalleryEditor = ({ id }: GalleryEditorProps) => {
+  const { data } = useGalleryById(id);
+  const editGallery = useUpdateGallery(id);
+  const deleteGallery = useDeleteGallery(id);
   const showSnackbar = useSnackbar();
   const navigate = useNavigate();
   const { handleSubmit, register, formState, reset, watch, setValue } = useForm<FormValues>();
@@ -56,7 +56,7 @@ const GalleryEditor = ({ slug }: GalleryEditorProps) => {
 
   const submit: SubmitHandler<FormValues> = async (data) => {
     await editGallery.mutate(
-      { ...data, slug },
+      { ...data, slug: '_', id },
       {
         onSuccess: () => {
           showSnackbar('Galleriet ble oppdatert', 'success');
@@ -84,7 +84,7 @@ const GalleryEditor = ({ slug }: GalleryEditorProps) => {
   );
 };
 
-const GalleryEditorDialog = ({ slug }: GalleryEditorProps) => {
+const GalleryEditorDialog = ({ id }: GalleryEditorProps) => {
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -92,7 +92,7 @@ const GalleryEditorDialog = ({ slug }: GalleryEditorProps) => {
         Rediger galleri
       </BannerButton>
       <Dialog onClose={() => setOpen(false)} open={open} titleText='Rediger galleri'>
-        <GalleryEditor slug={slug} />
+        <GalleryEditor id={id} />
       </Dialog>
     </>
   );

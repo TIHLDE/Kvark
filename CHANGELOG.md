@@ -14,7 +14,10 @@
 
 ## Neste versjon
 
+- ⚡ **Analyse**. Fjernet google analytics.
 - ⚡ **Arrangementer**. Endret påmeldingsfrist-tekst fra "Slutt:" til "Stenger:".
+- 🦟 **Signup**. Oppdaterte informasjon og rettet stavefeil.
+- 🦟 **Galleri**. Fikset bug som skapte duplisering av gallerier ved endring.
 - 🦟 **Galleri**. Fikset bug som hindret opplasting av bilder.
 
 ## Versjon 2022.05.12
