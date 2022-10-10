@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import URLS from 'URLS';
 
-import { Gallery, GalleryRequired } from 'types';
+import { Gallery, GalleryCreate } from 'types';
 
 import { useCreateGallery } from 'hooks/Gallery';
 import { useSnackbar } from 'hooks/Snackbar';
@@ -15,7 +15,7 @@ import { ImageUpload } from 'components/inputs/Upload';
 import { BannerButton } from 'components/layout/Banner';
 import Dialog from 'components/layout/Dialog';
 
-type FormValues = Omit<Gallery, 'slug'>;
+type FormValues = Omit<Gallery, 'id' | 'slug'>;
 
 const CreateGallery = () => {
   const { handleSubmit, register, watch, formState, setValue } = useForm<FormValues>();
@@ -27,11 +27,11 @@ const CreateGallery = () => {
     const gallery = {
       ...data,
       slug: '_',
-    } as GalleryRequired;
+    } as GalleryCreate;
     await createGallery.mutate(gallery, {
       onSuccess: (data) => {
         showSnackbar('Galleriet ble lagt til', 'success');
-        navigate(`${URLS.gallery}${data.slug}/`);
+        navigate(`${URLS.gallery}${data.id}/`);
       },
       onError: (e) => {
         showSnackbar(e.detail, 'error');

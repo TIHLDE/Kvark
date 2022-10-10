@@ -25,11 +25,11 @@ export const GalleryRendererLoading = () => {
 };
 
 export type GalleryRendererProps = {
-  slug: Gallery['slug'];
+  id: Gallery['id'];
 };
 
-const GalleryRenderer = ({ slug }: GalleryRendererProps) => {
-  const { data, hasNextPage, fetchNextPage, isFetching } = useGalleryPictures(slug);
+const GalleryRenderer = ({ id }: GalleryRendererProps) => {
+  const { data, hasNextPage, fetchNextPage, isFetching } = useGalleryPictures(id);
   const pictures = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   const [selectedImgId, setSelectedImgId] = useState<Picture['id'] | null>(null);
   const selectedImg = useMemo(() => pictures.find((picture) => picture.id === selectedImgId), [selectedImgId, pictures]);
@@ -47,7 +47,7 @@ const GalleryRenderer = ({ slug }: GalleryRendererProps) => {
           ))}
         </ImageList>
       </Pagination>
-      {selectedImg && <PictureDialog gallerySlug={slug} onClose={() => setSelectedImgId(null)} picture={selectedImg} />}
+      {selectedImg && <PictureDialog galleryId={id} onClose={() => setSelectedImgId(null)} picture={selectedImg} />}
     </>
   );
 };
