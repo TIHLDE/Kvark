@@ -134,7 +134,7 @@ const AppRoutes = () => {
           <Route element={<JobPosts />} index />
         </Route>
         <Route path={URLS.gallery}>
-          <Route element={<GalleryDetails />} path=':slug/*' />
+          <Route element={<GalleryDetails />} path=':id/*' />
           <Route element={<Gallery />} index />
         </Route>
         <Route element={<Wiki />} path={`${URLS.wiki}*`} />

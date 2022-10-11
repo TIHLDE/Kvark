@@ -17,15 +17,15 @@ type FormValues = Omit<Picture, 'id' | 'created_at' | 'updated_at'>;
 
 export type PictureEditorDialogProps = {
   pictureId: Picture['id'];
-  gallerySlug: Gallery['slug'];
+  galleryId: Gallery['id'];
   onClose: () => void;
 };
 
-const PictureEditorDialog = ({ gallerySlug, pictureId, onClose }: PictureEditorDialogProps) => {
+const PictureEditorDialog = ({ galleryId, pictureId, onClose }: PictureEditorDialogProps) => {
   const [open, setOpen] = useState(false);
-  const { data } = usePictureById(gallerySlug, pictureId);
-  const editPicture = useUpdatePicture(gallerySlug, pictureId);
-  const deletePicture = useDeletePicture(gallerySlug, pictureId);
+  const { data } = usePictureById(galleryId, pictureId);
+  const editPicture = useUpdatePicture(galleryId, pictureId);
+  const deletePicture = useDeletePicture(galleryId, pictureId);
   const showSnackbar = useSnackbar();
   const { handleSubmit, register, formState, reset } = useForm<FormValues>();
   const setValues = useCallback(
