@@ -20,6 +20,7 @@
 - 🎨 **Galleri**. Visning av bilder i galleriet har blitt endret.
 - 🦟 **Galleri**. Fikset bug som skapte duplisering av gallerier ved endring.
 - 🦟 **Galleri**. Fikset bug som hindret opplasting av bilder.
+- 🎨 **Arrangementer**. Fjernet boks som sa at arrangementet ikke ga prikker.
 
 ## Versjon 2022.05.12
 
