@@ -13,6 +13,9 @@
 ---
 
 ## Neste versjon
+
+- ⚡ **Deling**. Arrangementer og nyheter vil få riktig bilde ved deling.
+
 ## Versjon 2022.10.13
 
 - ⚡ **Analyse**. Fjernet google analytics.
