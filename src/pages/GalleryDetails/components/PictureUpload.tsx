@@ -12,12 +12,12 @@ import { BannerButton } from 'components/layout/Banner';
 import Dialog from 'components/layout/Dialog';
 
 export type PictureUploadProps = {
-  slug: Gallery['slug'];
+  id: Gallery['id'];
 };
 
-const PictureUpload = ({ slug }: PictureUploadProps) => {
+const PictureUpload = ({ id }: PictureUploadProps) => {
   const [open, setOpen] = useState(false);
-  const upload = useUploadPictures(slug);
+  const upload = useUploadPictures(id);
   const [files, setFiles] = useState<File[]>([]);
   const showSnackbar = useSnackbar();
 

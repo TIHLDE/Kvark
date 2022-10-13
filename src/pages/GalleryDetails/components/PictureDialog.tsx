@@ -12,10 +12,10 @@ import Paper from 'components/layout/Paper';
 export type PictureDialogProps = Omit<DialogProps, 'open'> & {
   onClose: () => void;
   picture: Picture;
-  gallerySlug: string;
+  galleryId: string;
 };
 
-const PictureDialog = ({ gallerySlug, picture, onClose, ...props }: PictureDialogProps) => {
+const PictureDialog = ({ galleryId, picture, onClose, ...props }: PictureDialogProps) => {
   const { allowAccess } = useHavePermission([PermissionApp.PICTURE]);
   return (
     <Dialog aria-describedby='picture-description' aria-labelledby='picture-title' maxWidth='lg' {...props} onClose={onClose} open>
@@ -38,7 +38,7 @@ const PictureDialog = ({ gallerySlug, picture, onClose, ...props }: PictureDialo
               </Typography>
             )}
           </div>
-          {allowAccess && <PictureEditorDialog gallerySlug={gallerySlug} onClose={onClose} pictureId={picture.id} />}
+          {allowAccess && <PictureEditorDialog galleryId={galleryId} onClose={onClose} pictureId={picture.id} />}
         </Stack>
       )}
     </Dialog>

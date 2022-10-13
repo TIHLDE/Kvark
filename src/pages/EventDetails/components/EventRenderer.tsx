@@ -306,7 +306,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             ) : (
               <>
                 {isFuture(userStartRegistrationDate) && <DetailContent info={formatDate(startRegistrationDate)} title='Start:' />}
-                {isPast(userStartRegistrationDate) && isFuture(endRegistrationDate) && <DetailContent info={formatDate(endRegistrationDate)} title='Slutt:' />}
+                {isPast(userStartRegistrationDate) && isFuture(endRegistrationDate) && (
+                  <DetailContent info={formatDate(endRegistrationDate)} title='Stenger:' />
+                )}
               </>
             )}
           </DetailsPaper>
@@ -326,11 +328,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           ) : (
             <Alert severity='info' variant='outlined'>
               Dette arrangementet håndhever ikke aktive prikker
-            </Alert>
-          )}
-          {!data.can_cause_strikes && (
-            <Alert severity='info' variant='outlined'>
-              Dette arrangementet gir ikke prikker om du melder deg av for sent eller ikke møter opp
             </Alert>
           )}
         </>
