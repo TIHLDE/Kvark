@@ -13,6 +13,7 @@
 ---
 
 ## Neste versjon
+## Versjon 2022.10.13
 
 - ⚡ **Analyse**. Fjernet google analytics.
 - ⚡ **Arrangementer**. Endret påmeldingsfrist-tekst fra "Slutt:" til "Stenger:".
