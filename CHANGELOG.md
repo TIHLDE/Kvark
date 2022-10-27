@@ -13,6 +13,9 @@
 ---
 
 ## Neste versjon
+
+- ✨ **Arrangementer**. Påmelding på arrangementer med ett klikk.
+
 ## Versjon 2022.10.13
 
 - ⚡ **Analyse**. Fjernet google analytics.
