@@ -1,7 +1,7 @@
 import CalendarIcon from '@mui/icons-material/EventRounded';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import FavoriteFilledIcon from '@mui/icons-material/FavoriteRounded';
-import { Alert, Button, Collapse, IconButton, IconButtonProps, Skeleton, Stack, styled, Theme, Tooltip, Typography, useMediaQuery } from '@mui/material';
+import { Alert, Button, IconButton, IconButtonProps, Skeleton, Stack, styled, Theme, Tooltip, Typography, useMediaQuery } from '@mui/material';
 import { addHours, formatDistanceToNowStrict, isFuture, isPast, parseISO, subHours } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
 import { useState } from 'react';
@@ -12,7 +12,8 @@ import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 
 import { Event, Registration } from 'types';
 
 import { useCategories } from 'hooks/Categories';
-import { useDeleteEventRegistration, useEventIsFavorite, useEventRegistration, useEventSetIsFavorite } from 'hooks/Event';
+import { useConfetti } from 'hooks/Confetti';
+import { useCreateEventRegistration, useDeleteEventRegistration, useEventIsFavorite, useEventRegistration, useEventSetIsFavorite } from 'hooks/Event';
 import { useSetRedirectUrl } from 'hooks/Misc';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useUser } from 'hooks/User';
@@ -20,7 +21,6 @@ import { useAnalytics, useInterval } from 'hooks/Utils';
 
 import EventPriorityPools from 'pages/EventDetails/components/EventPriorityPools';
 import EventPublicRegistrationsList from 'pages/EventDetails/components/EventPublicRegistrationsList';
-import EventRegistration from 'pages/EventDetails/components/EventRegistration';
 import { EventsSubscription } from 'pages/Profile/components/ProfileEvents';
 
 import FormUserAnswers from 'components/forms/FormUserAnswers';
@@ -53,11 +53,6 @@ export type EventRendererProps = {
   preview?: boolean;
 };
 
-enum Views {
-  Info,
-  Apply,
-}
-
 const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const { event } = useAnalytics();
   const { data: user } = useUser();
@@ -66,7 +61,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const setLogInRedirectURL = useSetRedirectUrl();
   const showSnackbar = useSnackbar();
   const { data: categories = [] } = useCategories();
-  const [view, setView] = useState<Views>(Views.Info);
   const startDate = parseISO(data.start_date);
   const endDate = parseISO(data.end_date);
   const strikesDelayedRegistrationHours = user ? getStrikesDelayedRegistrationHours(user.number_of_strikes) : 0;
@@ -76,12 +70,30 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const signOffDeadlineDate = parseISO(data.sign_off_deadline);
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
+  const { run } = useConfetti();
+  const createRegistration = useCreateEventRegistration(data.id);
+
+  const signUp = async () => {
+    createRegistration.mutate(
+      {},
+      {
+        onSuccess: () => {
+          run();
+          showSnackbar('Påmeldingen var vellykket', 'success');
+          event('registered', 'event-registration', `Registered for event: ${data.title}`);
+        },
+        onError: (e) => {
+          showSnackbar(e.detail, 'error');
+        },
+      },
+    );
+  };
+
   const signOff = async () => {
     if (user) {
       deleteRegistration.mutate(user.user_id, {
         onSuccess: (response) => {
           showSnackbar(response.detail, 'success');
-          setView(Views.Info);
           event('unregistered', 'event-registration', `Unregistered for event: ${data.title}`);
         },
         onError: (e) => {
@@ -217,13 +229,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     if (isPast(endRegistrationDate)) {
       return null;
     }
-    if (view === Views.Apply) {
-      return (
-        <Button fullWidth onClick={() => setView(Views.Info)} variant='outlined'>
-          Se beskrivelse
-        </Button>
-      );
-    }
 
     const is_prioritized = data.priority_pools.some((pool) => pool.groups.filter((group) => !group.viewer_is_member).length === 0);
     if (data.only_allow_prioritized && data.priority_pools.length > 0 && !is_prioritized) {
@@ -236,7 +241,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     return (
       <>
         <HasUnansweredEvaluations />
-        <Button disabled={user?.unanswered_evaluations_count > 0} fullWidth onClick={() => setView(Views.Apply)} variant='contained'>
+        <Button disabled={user?.unanswered_evaluations_count > 0} fullWidth onClick={() => signUp()} variant='contained'>
           Meld deg på
         </Button>
       </>
@@ -360,12 +365,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h1'>
             {data.title}
           </Typography>
-          <Collapse in={view === Views.Info || Boolean(registration) || preview}>
-            <MarkdownRenderer value={data.description} />
-          </Collapse>
-          <Collapse in={view === Views.Apply && !registration && !preview} mountOnEnter>
-            {user && <EventRegistration event={data} user={user} />}
-          </Collapse>
+          <MarkdownRenderer value={data.description} />
         </ContentPaper>
       </Stack>
     </Stack>
