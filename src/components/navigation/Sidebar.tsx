@@ -1,7 +1,7 @@
 import CloseIcon from '@mui/icons-material/Close';
 import ExpandIcon from '@mui/icons-material/ExpandMoreRounded';
 import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
-import { useTheme } from '@mui/material';
+import { IconButton, useTheme } from '@mui/material';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import Drawer from '@mui/material/Drawer';
@@ -58,14 +58,25 @@ const useStyles = makeStyles()((theme) => ({
   expanded: {
     transform: 'rotate(180deg)',
   },
+  topWrapper: {
+    height: '32',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: theme.spacing(2),
+  },
   logo: {
     height: 32,
     width: 'auto',
-    margin: theme.spacing(2, 'auto', 0, 2),
+    display: 'inline-block',
+    margin: '',
   },
   closeSidebar: {
-    width: '80%',
-    margin: theme.spacing(3, 'auto', 0),
+    height: '32',
+    aspectRatio: '1',
+    display: 'inline-flex',
+    verticalAlign: 'top',
+    alignItems: 'center',
   },
 }));
 
@@ -137,8 +148,12 @@ const Sidebar = ({ items, onClose, open }: SidebarProps) => {
   const theme = useTheme();
   return (
     <Drawer anchor='bottom' classes={{ paper: classes.sidebar }} onClose={onClose} open={open} style={{ zIndex: theme.zIndex.drawer }}>
-      <TihldeLogo className={classes.logo} darkColor='white' lightColor='white' size='large' />
-      <Button className={classes.closeSidebar} endIcon={<CloseIcon />} onClick={() => onClose()} variant='contained' />
+      <div className={classes.topWrapper}>
+        <TihldeLogo className={classes.logo} darkColor='white' lightColor='white' size='large' sx={{ flexShrink: 1 }} />
+        <IconButton className={classes.closeSidebar} onClick={() => onClose()}>
+          <CloseIcon />
+        </IconButton>
+      </div>
       <div className={classes.root}>
         {items.map((item, i) => (
           <SidebarItem key={i} {...item} onClose={onClose} />
