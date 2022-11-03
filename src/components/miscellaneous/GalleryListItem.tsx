@@ -19,14 +19,14 @@ const GalleryListItem = ({ gallery, sx }: GalleryListItemProps) => (
       focusRipple
       sx={{ borderRadius: (theme) => `${theme.shape.borderRadius}px`, display: 'block' }}
       tabIndex={-1}
-      to={`${URLS.gallery}${gallery.slug}/`}>
+      to={`${URLS.gallery}${gallery.id}/`}>
       <AspectRatioImg alt={gallery.image_alt || gallery.title} borderRadius className={touchRippleClasses.root} ratio={16 / 9} src={gallery.image} />
     </ButtonBase>
     <ButtonBase
       component={Link}
       focusRipple
       sx={{ borderRadius: (theme) => `${theme.shape.borderRadius}px`, width: '80%', margin: '-40px auto 0', position: 'relative', display: 'block' }}
-      to={`${URLS.gallery}${gallery.slug}/`}>
+      to={`${URLS.gallery}${gallery.id}/`}>
       <Paper elevation={0} sx={{ textAlign: 'center', p: 1, width: '100%' }}>
         <Typography
           sx={{ fontSize: { xs: '1.4rem', md: '1.5rem' }, textTransform: 'none', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}
