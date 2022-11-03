@@ -41,7 +41,6 @@ const Landing = () => {
       </Smoke>
       <Section maxWidth='lg'>
         <Typography align='center' gutterBottom variant='h2'>
-          asd
           Arrangementer
           <IconButton component={Link} onClick={openEventsAnalytics} sx={{ ml: 1 }} to={URLS.events}>
             <ArrowIcon />
