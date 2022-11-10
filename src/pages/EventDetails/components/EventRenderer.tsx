@@ -1,10 +1,10 @@
 import CalendarIcon from '@mui/icons-material/EventRounded';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import FavoriteFilledIcon from '@mui/icons-material/FavoriteRounded';
-import { Alert, Button, IconButton, IconButtonProps, Skeleton, Stack, styled, Theme, Tooltip, Typography, useMediaQuery } from '@mui/material';
+import { Alert, Button, Checkbox, IconButton, IconButtonProps, Skeleton, Stack, styled, Theme, Tooltip, Typography, useMediaQuery } from '@mui/material';
 import { addHours, formatDistanceToNowStrict, isFuture, isPast, parseISO, subHours } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 'utils';
@@ -13,7 +13,14 @@ import { Event, Registration } from 'types';
 
 import { useCategories } from 'hooks/Categories';
 import { useConfetti } from 'hooks/Confetti';
-import { useCreateEventRegistration, useDeleteEventRegistration, useEventIsFavorite, useEventRegistration, useEventSetIsFavorite } from 'hooks/Event';
+import {
+  useCreateEventRegistration,
+  useDeleteEventRegistration,
+  useEventIsFavorite,
+  useEventRegistration,
+  useEventSetIsFavorite,
+  useUpdateEventRegistration,
+} from 'hooks/Event';
 import { useSetRedirectUrl } from 'hooks/Misc';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useUser } from 'hooks/User';
@@ -69,9 +76,36 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const endRegistrationDate = parseISO(data.end_registration_at);
   const signOffDeadlineDate = parseISO(data.sign_off_deadline);
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
+  const updateRegistration = useUpdateEventRegistration(data.id);
+  const [allowPhoto, setAllowPhoto] = useState(true);
 
   const { run } = useConfetti();
+
   const createRegistration = useCreateEventRegistration(data.id);
+
+  const handleImageRuleChange = async () => {
+    updateRegistration.mutate(
+      { userId: user?.user_id || '', registration: { allow_photo: !allowPhoto } },
+      {
+        onSuccess: (newRegistration) => {
+          if (newRegistration.allow_photo === true) {
+            showSnackbar('Du tillater bilder på dette arrangementet', 'success');
+            setAllowPhoto(true);
+          } else {
+            showSnackbar('Du tillater IKKE bilder på dawndwand', 'success');
+            setAllowPhoto(false);
+          }
+        },
+        onError: () => {
+          showSnackbar('Endringen ble ikke registrert', 'error');
+        },
+      },
+    );
+  };
+
+  useEffect(() => {
+    setAllowPhoto(registration?.allow_photo || true);
+  }, [registration]);
 
   const signUp = async () => {
     createRegistration.mutate(
@@ -342,6 +376,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   );
 
   const addToCalendarAnalytics = () => event('add-to-calendar', 'event', `Event: ${data.title}`);
+  const handleUpdatePhotoConset = (event: React.ChangeEvent<HTMLInputElement>) => {
+    updateRegistration.mutate({ registration: { allow_photo: allowPhoto }, userId: registration.user_info.user_id });
+  };
 
   return (
     <Stack direction={{ xs: 'column-reverse', lg: 'row' }} gap={1} sx={{ mt: { xs: 1, lg: 2 } }}>
@@ -356,6 +393,12 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           <Button component={Link} fullWidth to={`${URLS.eventAdmin}${data.id}/`} variant='outlined'>
             Endre arrangement
           </Button>
+        )}
+        {registration && (
+          <Stack alignItems='center' direction='row'>
+            <Checkbox checked={allowPhoto} onChange={() => handleImageRuleChange()} value='Test' />
+            <Typography>Godkjenner å bli tatt bilde av</Typography>
+          </Stack>
         )}
       </Stack>
       <Stack gap={1} sx={{ width: '100%' }}>
