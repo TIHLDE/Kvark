@@ -65,7 +65,7 @@ const FormAdmin = ({ formId }: FormAdminProps) => {
         variant='scrollable'>
         <Tab label='Innstillinger' {...a11yProps(0)} />
         <Tab label='Spørsmål' {...a11yProps(1)} />
-        <Tab label='Statestikk' {...a11yProps(2)} />
+        <Tab label='Statistikk' {...a11yProps(2)} />
         <Tab label='Alle svar' {...a11yProps(3)} />
       </Tabs>
       <>
