@@ -376,9 +376,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   );
 
   const addToCalendarAnalytics = () => event('add-to-calendar', 'event', `Event: ${data.title}`);
-  const handleUpdatePhotoConset = (event: React.ChangeEvent<HTMLInputElement>) => {
-    updateRegistration.mutate({ registration: { allow_photo: allowPhoto }, userId: registration.user_info.user_id });
-  };
 
   return (
     <Stack direction={{ xs: 'column-reverse', lg: 'row' }} gap={1} sx={{ mt: { xs: 1, lg: 2 } }}>
