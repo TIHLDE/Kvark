@@ -89,10 +89,10 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       {
         onSuccess: (newRegistration) => {
           if (newRegistration.allow_photo === true) {
-            showSnackbar('Du tillater bilder på dette arrangementet', 'success');
+            showSnackbar('Du tillater å bli tatt bilde av', 'success');
             setAllowPhoto(true);
           } else {
-            showSnackbar('Du tillater IKKE bilder på dawndwand', 'success');
+            showSnackbar('Du tillater ikke å bli tatt bilde av', 'success');
             setAllowPhoto(false);
           }
         },
