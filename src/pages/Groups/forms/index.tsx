@@ -5,7 +5,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import OnlyMembersIcon from '@mui/icons-material/GroupsRounded';
 import OpenIcon from '@mui/icons-material/LockOpenRounded';
 import ViewIcon from '@mui/icons-material/PreviewRounded';
-import { Button, Collapse, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Tooltip, Typography } from '@mui/material';
+import SettingsIcon from '@mui/icons-material/SettingsRounded';
+import { Alert, Button, Collapse, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Tooltip } from '@mui/material';
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import URLS from 'URLS';
@@ -16,7 +17,6 @@ import { useGroup, useGroupForms } from 'hooks/Group';
 
 import AddGroupFormDialog from 'pages/Groups/forms/AddGroupFormDialog';
 
-import FormAdmin from 'components/forms/FormAdmin';
 import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import ShareButton from 'components/miscellaneous/ShareButton';
@@ -49,11 +49,12 @@ const GroupFormAdminListItem = ({ form }: { form: GroupForm }) => {
       </ListItem>
       <Collapse in={expanded} mountOnEnter unmountOnExit>
         <Divider />
-        <Stack gap={1} sx={{ p: 1 }}>
-          {!form.is_open_for_submissions && (
-            <Typography variant='body2'>{`Du må åpne spørreskjemaet for innsending i "Skjema-innstillinger" for å kunne svare på og dele skjemaet`}</Typography>
-          )}
+        <Stack gap={2} sx={{ p: 1 }}>
+          {!form.is_open_for_submissions && <Alert severity='info'>Du må åpne spørreskjemaet for innsending for å kunne svare på og dele skjemaet.</Alert>}
           <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
+            <Button component={Link} endIcon={<SettingsIcon />} fullWidth to={`${URLS.form}admin/${form.id}/`} variant='outlined'>
+              Administrer
+            </Button>
             <Button
               component={Link}
               disabled={!form.is_open_for_submissions}
@@ -65,7 +66,6 @@ const GroupFormAdminListItem = ({ form }: { form: GroupForm }) => {
             </Button>
             <ShareButton disabled={!form.is_open_for_submissions} fullWidth shareId={form.id} shareType='form' title={form.title} />
           </Stack>
-          <FormAdmin formId={form.id} />
         </Stack>
       </Collapse>
     </Paper>

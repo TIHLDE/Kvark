@@ -13,6 +13,10 @@
 ---
 
 ## Neste versjon
+
+- 🎨 **Skjema**. Gruppe-skjema administrering er mer oversiktlig.
+- ⚡ **Skjema**. Filtrering på besvarte spørsmål.
+
 ## Versjon 2022.10.13
 
 - ⚡ **Analyse**. Fjernet google analytics.

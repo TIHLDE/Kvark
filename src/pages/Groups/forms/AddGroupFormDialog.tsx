@@ -2,6 +2,8 @@ import AddIcon from '@mui/icons-material/AddRounded';
 import { Button, ButtonProps } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import URLS from 'URLS';
 
 import { Group, GroupFormCreate } from 'types';
 import { FormResourceType } from 'types/Enums';
@@ -21,7 +23,9 @@ const AddGroupFormDialog = ({ groupSlug, ...props }: AddGroupFormDialogProps) =>
   const [dialogOpen, setDialogOpen] = useState(false);
   const createGroupForm = useCreateForm();
   const showSnackbar = useSnackbar();
-  const { register, formState, handleSubmit, reset } = useForm<Pick<GroupFormCreate, 'title'>>();
+  const navigate = useNavigate();
+
+  const { register, formState, handleSubmit } = useForm<Pick<GroupFormCreate, 'title'>>();
 
   const submit = (data: Pick<GroupFormCreate, 'title'>) => {
     const newForm: GroupFormCreate = {
@@ -31,10 +35,9 @@ const AddGroupFormDialog = ({ groupSlug, ...props }: AddGroupFormDialogProps) =>
       fields: [],
     };
     createGroupForm.mutate(newForm, {
-      onSuccess: () => {
-        showSnackbar('Lovparagrafen ble opprettet', 'success');
-        setDialogOpen(false);
-        reset();
+      onSuccess: (form) => {
+        showSnackbar(`Skjemaet ble opprettet`, 'success');
+        navigate(`${URLS.form}admin/${form.id}`);
       },
       onError: (e) => showSnackbar(e.detail, 'error'),
     });
