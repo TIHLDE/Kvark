@@ -16,6 +16,7 @@
 
 - 🎨 **Skjema**. Gruppe-skjema administrering er mer oversiktlig.
 - ⚡ **Skjema**. Filtrering på besvarte spørsmål.
+- 🎨 **Designendringer**. Flytter bildet øverst på stillingsannonser.
 
 ## Versjon 2022.10.13
 
