@@ -15,6 +15,9 @@
 ## Neste versjon
 
 - ✨ **Arrangementer**. Påmelding på arrangementer med ett klikk.
+- 🎨 **Skjema**. Gruppe-skjema administrering er mer oversiktlig.
+- ⚡ **Skjema**. Filtrering på besvarte spørsmål.
+
 
 ## Versjon 2022.10.13
 
@@ -24,6 +27,7 @@
 - 🦟 **Galleri**. Fikset bug som skapte duplisering av gallerier ved endring.
 - 🦟 **Galleri**. Fikset bug som hindret opplasting av bilder.
 - 🎨 **Arrangementer**. Fjernet boks som sa at arrangementet ikke ga prikker.
+- 🦟 **Kalender**. Fikset bug som gjorde arrangementene for store i kalenderen.
 
 ## Versjon 2022.05.12
 

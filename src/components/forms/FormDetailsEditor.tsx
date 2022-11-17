@@ -1,6 +1,7 @@
 import { TextField as MuiTextField, Stack } from '@mui/material';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { removeIdsFromFields } from 'utils';
 
 import { EventForm, Form, FormCreate, GroupForm, GroupFormUpdate, TemplateForm } from 'types';
@@ -21,13 +22,22 @@ export type FormDetailsEditorProps = {
 
 const DeleteFormButton = ({ form }: FormDetailsEditorProps) => {
   const deleteForm = useDeleteForm(form.id);
+  const navigate = useNavigate();
+  const showSnackbar = useSnackbar();
+
+  const deleteFormHandler = () =>
+    deleteForm.mutate(undefined, {
+      onSuccess: (data) => {
+        showSnackbar(data.detail, 'success');
+        navigate(-1);
+      },
+      onError: (e) => {
+        showSnackbar(e.detail, 'error');
+      },
+    });
 
   return (
-    <VerifyDialog
-      color='error'
-      contentText='Sletting av skjema kan ikke reverseres.'
-      disabled={deleteForm.isLoading}
-      onConfirm={() => deleteForm.mutate(undefined)}>
+    <VerifyDialog color='error' contentText='Sletting av skjema kan ikke reverseres.' disabled={deleteForm.isLoading} onConfirm={deleteFormHandler}>
       Slett spørreskjema
     </VerifyDialog>
   );
@@ -123,10 +133,12 @@ const GroupFormDetailsEditor = ({ form }: GroupFormDetailsEditorProps) => {
           name='only_for_group_members'
           type='checkbox'
         />
-        <SubmitButton disabled={updateForm.isLoading} formState={formState} sx={{ mb: 1 }}>
-          Lagre
-        </SubmitButton>
-        <DeleteFormButton form={form} />
+        <Stack direction={{ xs: 'column', sm: 'row' }} gap={2} sx={{ mb: 1, mt: 3 }}>
+          <SubmitButton disabled={updateForm.isLoading} formState={formState}>
+            Lagre
+          </SubmitButton>
+          <DeleteFormButton form={form} />
+        </Stack>
       </Stack>
     </>
   );
@@ -159,25 +171,27 @@ const EventFormDetailsEditor = ({ form }: EventFormDetailsEditorProps) => {
     });
   };
   return (
-    <Stack gap={1}>
-      <VerifyDialog
-        contentText='Når du lager en mal så kan du enkelt bruke feltene i dette skjemaet i andre skjemaer senere. Gi malen en passende tittel.'
-        dialogChildren={
-          <MuiTextField
-            disabled={false}
-            fullWidth
-            label='Tittel'
-            margin='normal'
-            onChange={(e) => setFormtemplateName(e.target.value)}
-            value={formtemplateName}
-          />
-        }
-        onConfirm={saveAsTemplate}
-        title='Lagre som mal'>
-        Lagre som mal
-      </VerifyDialog>
-      <DeleteFormButton form={form} />
-    </Stack>
+    <>
+      <Stack direction={{ xs: 'column', sm: 'row' }} gap={1}>
+        <VerifyDialog
+          contentText='Når du lager en mal så kan du enkelt bruke feltene i dette skjemaet i andre skjemaer senere. Gi malen en passende tittel.'
+          dialogChildren={
+            <MuiTextField
+              disabled={false}
+              fullWidth
+              label='Tittel'
+              margin='normal'
+              onChange={(e) => setFormtemplateName(e.target.value)}
+              value={formtemplateName}
+            />
+          }
+          onConfirm={saveAsTemplate}
+          title='Lagre som mal'>
+          Lagre som mal
+        </VerifyDialog>
+        <DeleteFormButton form={form} />
+      </Stack>
+    </>
   );
 };
 
