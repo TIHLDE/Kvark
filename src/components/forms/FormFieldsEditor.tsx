@@ -135,7 +135,7 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
       <Popper anchorEl={buttonAnchorRef.current} open={addButtonOpen} role={undefined} transition>
         {({ TransitionProps }) => (
           <Grow {...TransitionProps}>
-            <Paper>
+            <Paper sx={{ boxShadow: '0px 24px 48px 0 rgba(0,0,0,0.16)' }} variant='outlined'>
               <ClickAwayListener onClickAway={() => setAddButtonOpen(false)}>
                 <MenuList id='menu-list-grow'>
                   <MenuItem onClick={() => addField(FormFieldType.TEXT_ANSWER)}>Tekstspørsmål</MenuItem>
