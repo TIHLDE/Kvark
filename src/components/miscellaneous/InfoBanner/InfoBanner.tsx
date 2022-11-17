@@ -15,15 +15,7 @@ const Banner = () => {
     return (
       <Paper sx={{ mx: 2, mb: 2 }}>
         <Stack alignItems='center' gap={1}>
-          {banner.image && (
-            <AspectRatioImg
-              alt={banner.image_alt || banner.title}
-              borderRadius
-              className={touchRippleClasses.root}
-              src={banner.image}
-              sx={{ maxWidth: '80%' }}
-            />
-          )}
+          {banner.image && <AspectRatioImg alt={banner.image_alt || banner.title} borderRadius className={touchRippleClasses.root} src={banner.image} />}
           <Typography align='center' gutterBottom variant='h2'>
             {banner.title}
           </Typography>
