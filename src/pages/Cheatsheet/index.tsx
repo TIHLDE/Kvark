@@ -1,4 +1,4 @@
-import { MenuItem, styled, TextField } from '@mui/material';
+import { Button, MenuItem, styled, TextField } from '@mui/material';
 import { getDay, getHours } from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -131,6 +131,18 @@ const Cheetsheet = () => {
       : liveCheatingAmount;
   }, [liveCheatingAmount]);
 
+  const generateCheatSheetMail = () => {
+    const emailTo = 'index@tihlde.org';
+    const subject = 'Kokebokforslag fra bruker';
+    const emailBody =
+      'Hei, ærede Indexere! %0d%0a' +
+      'Jeg har et bidrag til kokeboka, som jeg veldig gjerne vil at dere skal ta en titt på. %0d%0a %0d%0a' +
+      '(Legg til filer som vedlegg på denne eposten) %0d%0a %0d%0a' +
+      'Med vennlig hilsen %0d%0a' +
+      '*Fyll inn navnet ditt her*';
+    document.location = 'mailto:' + emailTo + '?subject=' + subject + '&body=' + emailBody;
+  };
+
   useEffect(() => setLiveCheatingAmount(generateLiveCheatingAmount()), []);
   useInterval(() => setLiveCheatingAmount(generateLiveCheatingAmount()), 20000);
 
@@ -138,6 +150,9 @@ const Cheetsheet = () => {
     <Page
       banner={<Banner text={`${getStudy()} - ${getClass()}. klasse\n**${liveCheatingAmount}** brukere koker akkurat nå`} title='Kokeboka' />}
       options={{ title: `${getStudy()} - ${getClass()}. klasse - Kokeboka` }}>
+      <Button onClick={generateCheatSheetMail} sx={{ mb: 2 }} variant='contained'>
+        Bidra til kokeboka!
+      </Button>
       <Paper sx={{ mb: 2 }}>
         <FilterContainer>
           <TextField

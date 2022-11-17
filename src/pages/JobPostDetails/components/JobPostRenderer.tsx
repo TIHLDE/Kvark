@@ -54,20 +54,20 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
 
   return (
     <div className={classes.grid}>
-      <Paper>
-        <Typography gutterBottom variant='caption'>
-          Publisert: {publishedAt}
-        </Typography>
-        <Typography className={classes.title} gutterBottom variant='h1'>
-          {data.title}
-        </Typography>
-        <MarkdownRenderer value={data.ingress || ''} />
-        <MarkdownRenderer value={data.body} />
-      </Paper>
+      <div className={classes.infoBox}>
+        <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
+        <Paper>
+          <Typography gutterBottom variant='caption'>
+            Publisert: {publishedAt}
+          </Typography>
+          <Typography className={classes.title} gutterBottom variant='h1'>
+            {data.title}
+          </Typography>
+          <MarkdownRenderer value={data.ingress || ''} />
+          <MarkdownRenderer value={data.body} />
+        </Paper>
+      </div>
       <div>
-        <div className={classes.infoBox}>
-          <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
-        </div>
         <Paper className={classes.infoBox}>
           <DetailContent info={data.company} title='Bedrift: ' />
           <DetailContent info={data.is_continuously_hiring ? 'Fortløpende opptak' : deadline} title='Søknadsfrist: ' />

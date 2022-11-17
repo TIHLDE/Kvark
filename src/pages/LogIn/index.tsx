@@ -22,6 +22,7 @@ const useStyles = makeStyles()((theme) => ({
     maxWidth: theme.breakpoints.values.sm,
     margin: 'auto',
     position: 'relative',
+    overflow: 'hidden',
     left: 0,
     right: 0,
     top: -60,
@@ -33,7 +34,7 @@ const useStyles = makeStyles()((theme) => ({
   },
   progress: {
     position: 'absolute',
-    top: 0,
+    top: -1,
     left: 0,
     right: 0,
   },
