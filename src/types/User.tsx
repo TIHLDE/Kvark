@@ -19,6 +19,8 @@ export type User = {
   unanswered_evaluations_count: number;
   number_of_strikes: number;
   public_event_registrations: boolean;
+  accepts_event_rules: boolean;
+  allows_photo_by_default: boolean;
   slack_user_id: string;
   study: MembershipWithoutUser;
   studyyear: MembershipWithoutUser;

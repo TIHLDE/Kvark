@@ -1,5 +1,6 @@
 import { MenuItem, Stack, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 import { User } from 'types';
 
@@ -19,7 +20,19 @@ export type UserSettingsProps = {
   isAdmin?: boolean;
 };
 
-type FormData = Pick<User, 'first_name' | 'last_name' | 'email' | 'image' | 'gender' | 'allergy' | 'tool' | 'public_event_registrations'>;
+type FormData = Pick<
+  User,
+  | 'first_name'
+  | 'last_name'
+  | 'email'
+  | 'image'
+  | 'gender'
+  | 'allergy'
+  | 'tool'
+  | 'public_event_registrations'
+  | 'accepts_event_rules'
+  | 'allows_photo_by_default'
+>;
 
 export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
   const { event } = useAnalytics();
@@ -58,25 +71,6 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
           <TextField disabled={updateUser.isLoading} formState={formState} label='Epost' {...register('email')} />
         </Stack>
       )}
-      <Bool
-        control={control}
-        disabled={updateUser.isLoading}
-        formState={formState}
-        label={
-          <>
-            Offentlige arrangementspåmeldinger
-            <ShowMoreTooltip>
-              Bestemmer:
-              <br />
-              1. Om du skal stå oppført med navnet ditt eller være anonym i deltagerlister på arrangementer.
-              <br />
-              2. Om arrangement-kalenderen din skal være aktivert og mulig å abonnere på.
-            </ShowMoreTooltip>
-          </>
-        }
-        name='public_event_registrations'
-        type='switch'
-      />
       <ImageUpload formState={formState} label='Velg profilbilde' ratio='1:1' register={register('image')} setValue={setValue} watch={watch} />
       <Stack direction={['column', 'row']} gap={[0, 1]}>
         <Select control={control} disabled={updateUser.isLoading} formState={formState} label='Kjønn' name='gender'>
@@ -93,8 +87,49 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
         label='Dine allergier'
         multiline
         {...register('allergy')}
-        minRows={3}
+        minRows={1}
       />
+      <Stack>
+        <Bool
+          control={control}
+          disabled={updateUser.isLoading}
+          formState={formState}
+          label={
+            <>
+              Offentlige arrangementspåmeldinger
+              <ShowMoreTooltip>
+                Bestemmer:
+                <br />
+                1. Om du skal stå oppført med navnet ditt eller være anonym i deltagerlister på arrangementer.
+                <br />
+                2. Om arrangement-kalenderen din skal være aktivert og mulig å abonnere på.
+              </ShowMoreTooltip>
+            </>
+          }
+          name='public_event_registrations'
+          type='checkbox'
+        />
+        <Bool
+          control={control}
+          disabled={updateUser.isLoading}
+          formState={formState}
+          label={
+            <>
+              Aksepterer <Link to='/wiki/annet/arrangementsregler/'>arrangementreglene</Link>
+            </>
+          }
+          name='accepts_event_rules'
+          type='checkbox'
+        />
+        <Bool
+          control={control}
+          disabled={updateUser.isLoading}
+          formState={formState}
+          label='Jeg godtar at bilder av meg kan deles på TIHLDE sine plattformer'
+          name='allows_photo_by_default'
+          type='checkbox'
+        />
+      </Stack>
       <SubmitButton disabled={updateUser.isLoading} formState={formState}>
         Lagre
       </SubmitButton>
