@@ -349,7 +349,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         {Boolean(user) && <EventsSubscription />}
         {!preview && data.permissions.write && (
           <Button component={Link} fullWidth to={`${URLS.eventAdmin}${data.id}/`} variant='outlined'>
-            Endre arrangement
+            Administrer arrangement
           </Button>
         )}
       </Stack>

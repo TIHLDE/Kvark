@@ -100,7 +100,7 @@ const EventAdministration = () => {
             </Alert>
           )}
           <Typography className={classes.header} variant='h2'>
-            {eventId ? 'Endre arrangement' : 'Nytt arrangement'}
+            {eventId ? 'Administrer arrangement' : 'Nytt arrangement'}
           </Typography>
           <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
           <Paper>
