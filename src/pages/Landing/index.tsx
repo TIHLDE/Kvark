@@ -12,7 +12,7 @@ import StoriesView from 'pages/Landing/components/StoriesView';
 import Wave from 'pages/Landing/components/Wave';
 
 import Container from 'components/layout/Container';
-import InfoBanner from 'components/miscellaneous/InfoBanner';
+import InfoBanner from 'components/miscellaneous/InfoBanner/InfoBanner';
 import Page from 'components/navigation/Page';
 
 const Section = styled(Container)(({ theme }) => ({

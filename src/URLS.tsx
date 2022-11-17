@@ -58,6 +58,7 @@ const URLS = {
   eventAdmin: '/admin/arrangementer/',
   jobpostsAdmin: '/admin/karriere/',
   newsAdmin: '/admin/nyheter/',
+  bannerAdmin: '/admin/bannere/',
 };
 
 export default URLS;

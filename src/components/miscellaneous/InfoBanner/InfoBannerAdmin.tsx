@@ -1,105 +1,64 @@
-// import { Stack } from '@mui/material';
-// import Grid from '@mui/material/Grid';
-// import LinearProgress from '@mui/material/LinearProgress';
-// import { isError } from '@sentry/utils';
-// import { reset } from 'canvas-confetti';
-// import { makeStyles } from 'makeStyles';
-// import { useCallback, useEffect, useMemo } from 'react';
-// import { useForm } from 'react-hook-form';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
+import { Stack, Typography } from '@mui/material';
+import { parseISO } from 'date-fns/esm';
+import { makeStyles } from 'makeStyles';
+import { useMemo } from 'react';
+import { formatDate } from 'utils';
 
-// import { InfoBanner } from 'types';
+import { useInfoBanners } from 'hooks/InfoBanner';
 
-// import { useCreateInfoBanner, useDeleteInfoBanner, useInfoBanner, useInfoBanners, useUpdateInfoBanner } from 'hooks/InfoBanner';
-// import { useSnackbar } from 'hooks/Snackbar';
+import { StandaloneExpand } from 'components/layout/Expand';
+import Pagination from 'components/layout/Pagination';
+import Paper from 'components/layout/Paper';
+import { PrimaryTopBox } from 'components/layout/TopBox';
+import Page from 'components/navigation/Page';
 
-// const useStyles = makeStyles()((theme) => ({
-//   grid: {
-//     display: 'grid',
-//     gridGap: theme.spacing(2),
-//     gridTemplateColumns: '1fr 1fr',
-//     [theme.breakpoints.down('md')]: {
-//       gridGap: 0,
-//       gridTemplateColumns: '1fr',
-//     },
-//   },
-//   margin: {
-//     margin: theme.spacing(2, 0, 1),
-//     borderRadius: theme.shape.borderRadius,
-//     overflow: 'hidden',
-//   },
-// }));
+import InfoBannerAdminItem from './InfoBannerAdminItem';
 
-// export type BannerEditorProps = {
-//   bannerId: string | null;
-//   goToBanner: (newBanner: number | null) => void;
-// };
+const InfoBannerAdmin = () => {
+  const { data, hasNextPage, fetchNextPage, isFetching } = useInfoBanners();
+  const banners = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
-// const InfoBannerEditor = ({ bannerId, goToBanner }: BannerEditorProps) => {
-//   const showSnackbar = useSnackbar();
-//   const { classes } = useStyles();
-//   const { control, handleSubmit, register, formState, getValues, reset, watch, setValue } = useForm<InfoBanner>();
-//   const { data = [], isError, isLoading } = useInfoBanners();
-//   const createBanner = useCreateInfoBanner();
-//   const updateBanner = useUpdateInfoBanner(bannerId || '');
-//   const deleteBanner = useDeleteInfoBanner(bannerId || '');
-//   const isUpdating = useMemo(
-//     () => createBanner.isLoading || updateBanner.isLoading || deleteBanner.isLoading,
-//     [createBanner.isLoading, updateBanner.isLoading, deleteBanner.isLoading],
-//   );
+  return (
+    <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
+      <Stack gap={1}>
+        <StandaloneExpand icon={<AddRoundedIcon />} primary={`Opprett ny banner`} secondary={`Opprett et nytt informasjons banner.`}>
+          <InfoBannerAdminItem banner_id={''} />
+        </StandaloneExpand>
+        {banners.map((banner) => (
+          <StandaloneExpand
+            icon={<InfoRoundedIcon />}
+            key={banner.visible_from}
+            primary={`Endre informasjon om ${banner.title}?`}
+            secondary={`Vises fra ${formatDate(parseISO(banner.visible_from))} til ${formatDate(parseISO(banner.visible_until))}`}>
+            <InfoBannerAdminItem banner_id={banner.id} />
+          </StandaloneExpand>
+        ))}
+      </Stack>
+    </Pagination>
+  );
+};
+const useStyles = makeStyles()(() => ({
+  content: {
+    margin: '-60px auto 60px',
+    position: 'relative',
+  },
+}));
 
-//   useEffect(() => {
-//     !isError || goToBanner(null);
-//   }, [isError]);
+const CreateInfoBannerAdminDialog = () => {
+  const { classes } = useStyles();
 
-//   const setValues = useCallback(
-//     (newValues: InfoBanner | null) => {
-//       reset({
-//         title: newValues?.title || '',
-//         image: newValues?.image || '',
-//         image_alt: newValues?.image_alt || '',
-//         description: newValues?.description || '',
-//         url: newValues?.url || '',
-//         visiblefrom: newValues?.visiblefrom || '',
-//         visibleuntil: newValues?.visibleuntil || '',
-//       });
-//     },
-//     [reset],
-//   );
+  return (
+    <Page banner={<PrimaryTopBox />} options={{ title: 'Banner admin' }}>
+      <Paper className={classes.content}>
+        <Typography marginBottom={3} variant='h1'>
+          Banner admin
+        </Typography>
+        <InfoBannerAdmin />
+      </Paper>
+    </Page>
+  );
+};
 
-//   const submit = async (data: InfoBanner) => {
-//     bannerId
-//       ? updateBanner.mutate(
-//           { ...data },
-//           {
-//             onSuccess: () => {
-//               showSnackbar('Info banneret ble oppdatert', 'success');
-//             },
-//             onError: (err) => {
-//               showSnackbar(err.detail, 'error');
-//             },
-//           },
-//         )
-//       : createBanner.mutate(
-//           { ...data },
-//           {
-//             onSuccess: () => {
-//               showSnackbar('Info banneret ble opprettet', 'success');
-//             },
-//             onError: (err) => {
-//               showSnackbar(err.detail, 'error');
-//             },
-//           },
-//         );
-//   };
-
-//   if (isLoading) {
-//     return <LinearProgress />;
-//   }
-
-//   return null;
-//   // <div>
-//   //   <Stack component={List} disablePadding gap={1}>
-//   //     {data !== undefined && data.map((banner) => <GroupFormAdminListItem form={form} key={form.id} />)}
-//   //   </Stack>
-//   // </div>
-// };
+export default CreateInfoBannerAdminDialog;

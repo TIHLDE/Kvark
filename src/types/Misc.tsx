@@ -7,8 +7,8 @@ export type InfoBanner = {
   title: string;
   description: string;
   url?: string;
-  visiblefrom: string;
-  visibleuntil: string;
+  visible_from: string;
+  visible_until: string;
 };
 
 export interface Cheatsheet {

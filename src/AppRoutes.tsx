@@ -25,6 +25,7 @@ import NewStudent from 'pages/NewStudent';
 import Profile from 'pages/Profile';
 import { SlackConnectPage } from 'pages/Profile/components/ProfileSettings/NotificationSettings';
 
+import InfoBannerAdmin from 'components/miscellaneous/InfoBanner/InfoBannerAdmin';
 import Page from 'components/navigation/Page';
 
 const Gallery = lazy(() => import('pages/Gallery'));
@@ -152,6 +153,9 @@ const AppRoutes = () => {
         <Route element={<AuthRoute element={<Cheatsheet />} />} path={`${URLS.cheatsheet}*`} />
         <Route element={<AuthRoute element={<ShortLinks />} />} path={URLS.shortLinks} />
 
+        <Route element={<AuthRoute apps={[PermissionApp.BANNERS]} element={<InfoBannerAdmin />} />} path={URLS.bannerAdmin}>
+          <Route element={<InfoBannerAdmin />} />
+        </Route>
         <Route element={<AuthRoute apps={[PermissionApp.JOBPOST]} element={<JobPostAdministration />} />} path={URLS.jobpostsAdmin}>
           <Route element={<JobPostAdministration />} path=':jobPostId/' />
         </Route>

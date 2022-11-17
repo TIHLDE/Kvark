@@ -115,7 +115,7 @@ export default {
   getInfoBanners: (filters?: any) => IFetch<PaginationResponse<InfoBanner>>({ method: 'GET', url: BANNER_ENDPOINT, data: filters || {} }),
   getInfoBanner: (bannerId: InfoBanner['id']) => IFetch<InfoBanner>({ method: 'GET', url: `${BANNER_ENDPOINT}/${bannerId}/` }),
   getVisibleInfoBanners: (filters?: any) => IFetch<Array<InfoBanner>>({ method: 'GET', url: `${BANNER_ENDPOINT}/visible`, data: filters || {} }),
-  createInfoBanner: (item: InfoBanner) => IFetch<InfoBanner>({ method: 'POST', url: BANNER_ENDPOINT, data: item }),
+  createInfoBanner: (item: InfoBanner) => IFetch<InfoBanner>({ method: 'POST', url: `${BANNER_ENDPOINT}/`, data: item }),
   updateInfoBanner: (bannerId: InfoBanner['id'], item: Partial<InfoBanner>) =>
     IFetch<InfoBanner>({ method: 'PUT', url: `${BANNER_ENDPOINT}/${bannerId}/`, data: item }),
   deleteInfoBanner: (bannerId: InfoBanner['id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${BANNER_ENDPOINT}/${bannerId}/` }),
