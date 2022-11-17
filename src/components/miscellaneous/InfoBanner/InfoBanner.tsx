@@ -19,7 +19,7 @@ const Banner = () => {
           <Typography align='center' gutterBottom variant='h2'>
             {banner.title}
           </Typography>
-          <Typography align='center'>{banner.description}</Typography>
+          <Typography>{banner.description}</Typography>
           {banner.url && (
             <Button component='a' fullWidth href={banner.url} sx={{ mt: 1 }} variant='outlined'>
               Åpne link
