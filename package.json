@@ -77,6 +77,6 @@
     "vite-plugin-checker": "^0.4.2",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-svgr": "^2.1.0",
-    "vite-tsconfig-paths": "^3.4.1"
+    "vite-tsconfig-paths": "^4.0.0"
   }
 }
