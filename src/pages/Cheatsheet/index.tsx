@@ -1,3 +1,5 @@
+import AddRounded from '@mui/icons-material/AddRounded';
+import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import { Button, MenuItem, styled, TextField } from '@mui/material';
 import { getDay, getHours } from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -12,7 +14,7 @@ import { useInterval } from 'hooks/Utils';
 
 import Files from 'pages/Cheatsheet/components/Files';
 
-import Banner from 'components/layout/Banner';
+import Banner, { BannerButton } from 'components/layout/Banner';
 import Paper from 'components/layout/Paper';
 import Page from 'components/navigation/Page';
 
@@ -145,14 +147,15 @@ const Cheetsheet = () => {
 
   useEffect(() => setLiveCheatingAmount(generateLiveCheatingAmount()), []);
   useInterval(() => setLiveCheatingAmount(generateLiveCheatingAmount()), 20000);
-
   return (
     <Page
-      banner={<Banner text={`${getStudy()} - ${getClass()}. klasse\n**${liveCheatingAmount}** brukere koker akkurat nå`} title='Kokeboka' />}
-      options={{ title: `${getStudy()} - ${getClass()}. klasse - Kokeboka` }}>
-      <Button onClick={generateCheatSheetMail} sx={{ mb: 2 }} variant='contained'>
-        Bidra til kokeboka!
-      </Button>
+      banner={
+        <Banner title='Kokeboka'>
+          <BannerButton endIcon={<OpenInNewRoundedIcon />} onClick={generateCheatSheetMail} sx={{ mb: 2, width: '250px' }} variant='outlined'>
+            Bidra til kokeboka!
+          </BannerButton>
+        </Banner>
+      }>
       <Paper sx={{ mb: 2 }}>
         <FilterContainer>
           <TextField

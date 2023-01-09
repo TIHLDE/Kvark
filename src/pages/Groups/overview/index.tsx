@@ -34,7 +34,6 @@ const GroupsOverview = () => {
       </Grid>
     </>
   );
-
   return (
     <>
       <Typography gutterBottom variant='h1'>

@@ -18,6 +18,7 @@
 - ⚡ **Skjema**. Filtrering på besvarte spørsmål.
 - 🎨 **Designendringer**. Flytter bildet øverst på stillingsannonser.
 - 🎨 **Designendringer**. "Endre Arrangement" btn endret til "Administrer arrangement"
+- 🎨 **Designendringer**. "Endret design og posisjon av knapp for bidrag til kokeboka"
 
 ## Versjon 2022.10.13
 
