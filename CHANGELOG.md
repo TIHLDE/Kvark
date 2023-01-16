@@ -15,6 +15,9 @@
 ## Neste versjon
 
 - ✨ **Bannere**. Tidsbegrensede bannere kan nå opprettes.
+
+## Versjon 2022.11.17
+
 - ✨ **Arrangementer**. Påmelding på arrangementer med ett klikk.
 - 🎨 **Skjema**. Gruppe-skjema administrering er mer oversiktlig.
 - ⚡ **Skjema**. Filtrering på besvarte spørsmål.

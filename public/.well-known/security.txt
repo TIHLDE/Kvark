@@ -1,0 +1,4 @@
+Contact: mailto:index@tihlde.org
+Expires: 2028-01-03T23:00:00.000Z
+Preferred-Languages: en,no
+Canonical: https://tihlde.org/.well-known/security.txt
