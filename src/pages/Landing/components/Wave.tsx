@@ -2,7 +2,7 @@ import { keyframes } from '@emotion/react';
 import SignupIcon from '@mui/icons-material/AddRounded';
 import LoginIcon from '@mui/icons-material/LoginRounded';
 import ProfileIcon from '@mui/icons-material/PersonOutlineRounded';
-import { Button, Typography } from '@mui/material';
+import { Button, Paper, Typography } from '@mui/material';
 import { differenceInDays, intervalToDuration } from 'date-fns';
 import { makeStyles } from 'makeStyles';
 import { Link } from 'react-router-dom';
@@ -193,7 +193,7 @@ const Wave = () => {
               </>
             )}
           </div>
-          <Typography color='white' fontSize={14} fontWeight={500} pt={2} textAlign='center'>
+          <Typography color='white' fontSize={16} fontWeight={600} pt={3} textAlign='center'>
             {differenceInDays(new Date('2023-03-20'), new Date())} dager igjen!
           </Typography>
         </div>
