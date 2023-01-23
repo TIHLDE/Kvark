@@ -194,7 +194,7 @@ const Wave = () => {
             )}
           </div>
           <Typography color='white' fontSize={16} fontWeight={600} pt={3} textAlign='center'>
-            {differenceInDays(new Date('2023-03-20'), new Date())} dager igjen!
+            {differenceInDays(new Date('2023-03-20'), new Date())} dager til!
           </Typography>
         </div>
         {/* Show snow if between November 15th and February 1st */}
