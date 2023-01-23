@@ -3,7 +3,7 @@ import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import { Stack, Typography } from '@mui/material';
 import { parseISO } from 'date-fns/esm';
 import { makeStyles } from 'makeStyles';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { formatDate } from 'utils';
 
 import { useInfoBanners } from 'hooks/InfoBanner';
@@ -19,12 +19,18 @@ import InfoBannerAdminItem from './InfoBannerAdminItem';
 const InfoBannerAdmin = () => {
   const { data, hasNextPage, fetchNextPage, isFetching } = useInfoBanners();
   const banners = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const [isExpanded, setExpanded] = useState(false);
 
   return (
     <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
       <Stack gap={1}>
-        <StandaloneExpand icon={<AddRoundedIcon />} primary={`Opprett ny banner`} secondary={`Opprett et nytt informasjons banner.`}>
-          <InfoBannerAdminItem banner_id={''} />
+        <StandaloneExpand
+          expanded={isExpanded}
+          icon={<AddRoundedIcon />}
+          onExpand={(expanded) => setExpanded(expanded)}
+          primary={`Opprett ny banner`}
+          secondary={`Opprett et nytt informasjons banner.`}>
+          <InfoBannerAdminItem bannerId={''} onClose={() => setExpanded(false)} />
         </StandaloneExpand>
         {banners.map((banner) => (
           <StandaloneExpand
@@ -32,7 +38,7 @@ const InfoBannerAdmin = () => {
             key={banner.visible_from}
             primary={`Endre informasjon om ${banner.title}?`}
             secondary={`Vises fra ${formatDate(parseISO(banner.visible_from))} til ${formatDate(parseISO(banner.visible_until))}`}>
-            <InfoBannerAdminItem banner_id={banner.id} />
+            <InfoBannerAdminItem bannerId={banner.id} onClose={() => null} />
           </StandaloneExpand>
         ))}
       </Stack>

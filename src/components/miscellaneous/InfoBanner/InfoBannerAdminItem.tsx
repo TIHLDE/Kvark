@@ -15,7 +15,12 @@ import { ImageUpload } from 'components/inputs/Upload';
 import VerifyDialog from 'components/layout/VerifyDialog';
 
 export type InfoBannerAdminItemProps = {
-  banner_id: string | null;
+  bannerId: string | null;
+  onClose: () => void;
+};
+
+export type InfoBannerDeleteProps = {
+  bannerId: string | null;
 };
 
 const Row = styled(Stack)(({ theme }) => ({
@@ -27,9 +32,9 @@ const Row = styled(Stack)(({ theme }) => ({
   },
 }));
 
-const InfoBannerDeleteDialog = ({ banner_id }: InfoBannerAdminItemProps) => {
+const InfoBannerDeleteDialog = ({ bannerId }: InfoBannerDeleteProps) => {
   const showSnackbar = useSnackbar();
-  const deleteBanner = useDeleteInfoBanner(banner_id || '');
+  const deleteBanner = useDeleteInfoBanner(bannerId || '');
   const remove = async () =>
     deleteBanner.mutate(null, {
       onSuccess: () => {
@@ -43,7 +48,7 @@ const InfoBannerDeleteDialog = ({ banner_id }: InfoBannerAdminItemProps) => {
       color='error'
       dialogChildren={
         <>
-          <Button color='error' fullWidth onClick={remove} variant='outlined'>
+          <Button color='error' fullWidth onClick={remove} sx={{ mt: 2, mb: 0 }} variant='outlined'>
             Slett banner
           </Button>
         </>
@@ -58,10 +63,10 @@ const InfoBannerDeleteDialog = ({ banner_id }: InfoBannerAdminItemProps) => {
 
 type FormData = Pick<InfoBanner, 'title' | 'description' | 'image_alt' | 'image' | 'url'> & { visible_from: Date; visible_until: Date };
 
-export const InfoBannerAdminItem = ({ banner_id }: InfoBannerAdminItemProps) => {
+export const InfoBannerAdminItem = ({ bannerId, onClose }: InfoBannerAdminItemProps) => {
   const showSnackbar = useSnackbar();
-  const { data } = useInfoBanner(banner_id || '');
-  const updateBanner = useUpdateInfoBanner(banner_id || '');
+  const { data } = useInfoBanner(bannerId || '');
+  const updateBanner = useUpdateInfoBanner(bannerId || '');
   const createBanner = useCreateInfoBanner();
 
   const { register, handleSubmit, formState, control, setValue, getValues, reset, watch } = useForm<FormData>();
@@ -100,7 +105,7 @@ export const InfoBannerAdminItem = ({ banner_id }: InfoBannerAdminItemProps) => 
       visible_from: data.visible_from.toJSON(),
       visible_until: data.visible_until.toJSON(),
     } as InfoBanner;
-    if (banner_id) {
+    if (bannerId) {
       updateBanner.mutate(infoBanner, {
         onSuccess: () => {
           showSnackbar('Banneret ble oppdatert.', 'success');
@@ -113,6 +118,7 @@ export const InfoBannerAdminItem = ({ banner_id }: InfoBannerAdminItemProps) => 
       createBanner.mutate(infoBanner, {
         onSuccess: () => {
           showSnackbar('Banneret ble opprettet.', 'success');
+          onClose();
           reset();
         },
         onError: (e) => {
@@ -151,13 +157,13 @@ export const InfoBannerAdminItem = ({ banner_id }: InfoBannerAdminItemProps) => 
         />
       </Row>
       <TextField disabled={updateBanner.isLoading} formState={formState} label='URL' multiline {...register('url')} />
-      <TextField disabled={updateBanner.isLoading} formState={formState} label='Beskrivelse' multiline {...register('description')} minRows={2} />
+      <TextField disabled={updateBanner.isLoading} formState={formState} label='Beskrivelse' multiline required {...register('description')} minRows={2} />
       <ImageUpload formState={formState} label='Velg bilde' ratio='21:9' register={register('image')} setValue={setValue} watch={watch} />
       <TextField disabled={updateBanner.isLoading} formState={formState} label='Alternativ bildetekst' {...register('image_alt')} />
       <SubmitButton disabled={updateBanner.isLoading} formState={formState}>
         Lagre
       </SubmitButton>
-      {banner_id && <InfoBannerDeleteDialog banner_id={banner_id} />}
+      {bannerId && <InfoBannerDeleteDialog bannerId={bannerId} />}
     </form>
   );
 };
