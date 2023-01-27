@@ -78,6 +78,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
   const updateRegistration = useUpdateEventRegistration(data.id);
   const [allowPhoto, setAllowPhoto] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { run } = useConfetti();
 
@@ -108,6 +109,10 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   }, [registration]);
 
   const signUp = async () => {
+    if (isLoading) {
+      return;
+    }
+    setIsLoading(true);
     createRegistration.mutate(
       {},
       {
@@ -118,6 +123,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         },
         onError: (e) => {
           showSnackbar(e.detail, 'error');
+        },
+        onSettled: () => {
+          setIsLoading(false);
         },
       },
     );
@@ -275,7 +283,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     return (
       <>
         <HasUnansweredEvaluations />
-        <Button disabled={user?.unanswered_evaluations_count > 0} fullWidth onClick={() => signUp()} variant='contained'>
+        <Button disabled={user?.unanswered_evaluations_count > 0 || isLoading} fullWidth onClick={() => signUp()} variant='contained'>
           Meld deg på
         </Button>
       </>
