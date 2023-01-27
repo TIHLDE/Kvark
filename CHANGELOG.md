@@ -13,7 +13,7 @@
 ---
 
 ## Neste versjon
-
+- 🦟 **Arrangementer**. En kan nå kun trykke på påmelding knappen en gang, dette eliminerer problemet med mange mails/meldinger.
 
 ## Versjon 2022.11.17
 
