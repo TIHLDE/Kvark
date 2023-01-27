@@ -74,7 +74,7 @@ Det legger mye vekt på praktisk utvikling av systemer og programmer, og student
 Etter selve presentasjonen reiser vi sammen ned til en resturant for bespisning og mingling med bedriftsrepresentantene.
 Vi kan også tilrettelegge for speed intervjuer dersom dette er ønskelig.`,
     instatakeover: `Ved insta-takeover får bedriften ta over instagrammen vår en hel dag. Dere vil få muligheten til å fremme bedriften på valgfri måte, og nå ut direkte til studentene.`,
-    trip2023: `Høsten 2023 så skal TIHLDE gjennomføre bedriftsekskursjon til Oslo med 60 av studentene våre. Dette er en god mulighet for bedriften å vise fram sine lokaler, og bli bedre kjent med studentene. Etter selve besøket så legger vi til rette for bespisning og mingling`,
+    trip2023: `Høsten 2023 så skal TIHLDE gjennomføre bedriftsekskursjon til Oslo med 60 av studentene våre. Dette er en god mulighet for bedriften å vise fram sine lokaler, og bli bedre kjent med studentene. Etter selve besøket så legger vi til rette for bespisning og mingling.`,
   };
 
   return (
