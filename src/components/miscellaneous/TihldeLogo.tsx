@@ -112,6 +112,11 @@ const TihldeLogo = ({ size, darkColor, lightColor, className, sx }: TihldeLogoPr
       </g>
       {/* Show snow if between December 1st and January 6th */}
       {(isAfterDateOfYear(11, 1) || isBeforeDateOfYear(0, 6)) && <Santa />}
+      {size === 'large' && (
+        <text fontSize={150} fontWeight={600} style={{ fill: 'WHITE', transformOrigin: 'center', userSelect: 'none', textDecoration: 'none' }} x={1820} y={450}>
+          30 år!
+        </text>
+      )}
     </Svg>
   );
 };
