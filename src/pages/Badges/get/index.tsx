@@ -1,5 +1,5 @@
 import { Button, Stack, TextField } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useCreateBadge } from 'hooks/Badge';
@@ -10,6 +10,7 @@ const BadgesGet = () => {
   const [flag, setFlag] = useState<string>(badgeId ? badgeId : '');
   const createUserBadge = useCreateBadge();
   const showSnackbar = useSnackbar();
+
   const submit = () => {
     const formatedId = flag.replace(/flag{/gi, '').replace(/}/gi, '');
     createUserBadge.mutate(formatedId, {
@@ -20,6 +21,12 @@ const BadgesGet = () => {
       onError: (e) => showSnackbar(e.detail, 'error'),
     });
   };
+
+  useEffect(() => {
+    if (badgeId) {
+      submit();
+    }
+  }, [badgeId]);
 
   return (
     <Stack direction={{ xs: 'column', md: 'row' }} gap={2} sx={{ mt: 1 }}>
