@@ -1,11 +1,13 @@
 import { Button, Stack, TextField } from '@mui/material';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { useCreateBadge } from 'hooks/Badge';
 import { useSnackbar } from 'hooks/Snackbar';
 
 const BadgesGet = () => {
-  const [flag, setFlag] = useState<string>('');
+  const { badgeId } = useParams();
+  const [flag, setFlag] = useState<string>(badgeId ? badgeId : '');
   const createUserBadge = useCreateBadge();
   const showSnackbar = useSnackbar();
   const submit = () => {
