@@ -19,7 +19,7 @@ const BadgeCategoryItem = ({ badgeCategory }: BadgeItemProps) => (
           alt={badgeCategory.name}
           ratio={1}
           src={badgeCategory.image || ''}
-          sx={{ height: 100, borderRadius: (theme) => `${theme.shape.borderRadius}px`, mr: 1 }}
+          sx={{ width: 100, borderRadius: (theme) => `${theme.shape.borderRadius}px`, mr: 1 }}
         />
       </ListItemIcon>
       <ListItemText primary={badgeCategory.name} secondary={badgeCategory.description} />
