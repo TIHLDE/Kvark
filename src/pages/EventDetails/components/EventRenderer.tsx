@@ -1,7 +1,21 @@
 import CalendarIcon from '@mui/icons-material/EventRounded';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import FavoriteFilledIcon from '@mui/icons-material/FavoriteRounded';
-import { Alert, Button, Checkbox, IconButton, IconButtonProps, Skeleton, Stack, styled, Theme, Tooltip, Typography, useMediaQuery } from '@mui/material';
+import {
+  Alert,
+  Button,
+  Checkbox,
+  CircularProgress,
+  IconButton,
+  IconButtonProps,
+  Skeleton,
+  Stack,
+  styled,
+  Theme,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import { addHours, formatDistanceToNowStrict, isFuture, isPast, parseISO, subHours } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
 import { useEffect, useState } from 'react';
@@ -78,6 +92,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
   const updateRegistration = useUpdateEventRegistration(data.id);
   const [allowPhoto, setAllowPhoto] = useState(true);
+  const [isLoadingSignUp, setIsLoadingSignUp] = useState(false);
 
   const { run } = useConfetti();
 
@@ -108,6 +123,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   }, [registration]);
 
   const signUp = async () => {
+    setIsLoadingSignUp(true);
     createRegistration.mutate(
       {},
       {
@@ -118,6 +134,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         },
         onError: (e) => {
           showSnackbar(e.detail, 'error');
+        },
+        onSettled: () => {
+          setIsLoadingSignUp(false);
         },
       },
     );
@@ -275,8 +294,8 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     return (
       <>
         <HasUnansweredEvaluations />
-        <Button disabled={user?.unanswered_evaluations_count > 0} fullWidth onClick={() => signUp()} variant='contained'>
-          Meld deg på
+        <Button disabled={user?.unanswered_evaluations_count > 0 || isLoadingSignUp} fullWidth onClick={() => signUp()} variant='contained'>
+          {!isLoadingSignUp ? 'Meld deg på' : <CircularProgress />}
         </Button>
       </>
     );
