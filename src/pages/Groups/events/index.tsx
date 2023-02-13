@@ -20,7 +20,7 @@ const GroupEvents = () => {
 
   return (
     <Stack>
-      <Button component={Link} to='/admin/arrangementer' fullWidth startIcon={<AddIcon />} sx={{ mt: 1 }} variant='outlined'>
+      <Button component={Link} fullWidth startIcon={<AddIcon />} sx={{ mt: 1 }} to='/admin/arrangementer' variant='outlined'>
         Nytt arrangement
       </Button>
       {isLoading && <EventListItemLoading />}
