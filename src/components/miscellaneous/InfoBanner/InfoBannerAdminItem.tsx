@@ -16,7 +16,7 @@ import VerifyDialog from 'components/layout/VerifyDialog';
 
 export type InfoBannerAdminItemProps = {
   bannerId: string | null;
-  onClose: () => void;
+  onClose?: () => void;
 };
 
 export type InfoBannerDeleteProps = {
@@ -118,7 +118,9 @@ export const InfoBannerAdminItem = ({ bannerId, onClose }: InfoBannerAdminItemPr
       createBanner.mutate(infoBanner, {
         onSuccess: () => {
           showSnackbar('Banneret ble opprettet.', 'success');
-          onClose();
+          if (onClose !== undefined) {
+            onClose();
+          }
           reset();
         },
         onError: (e) => {
@@ -137,6 +139,11 @@ export const InfoBannerAdminItem = ({ bannerId, onClose }: InfoBannerAdminItemPr
           formState={formState}
           label='Start'
           name='visible_from'
+          onDateChange={() => {
+            if (getValues().visible_until < getValues().visible_from) {
+              setValue('visible_until', getValues().visible_from);
+            }
+          }}
           required
           rules={{ required: 'Feltet er påkrevd' }}
           type='date-time'
