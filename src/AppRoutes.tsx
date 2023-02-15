@@ -125,7 +125,10 @@ const AppRoutes = () => {
             <Route element={<BadgesOverallLeaderboard />} index />
             <Route element={<BadgeCategoriesList />} path={URLS.badges.category_relative} />
             <Route element={<BadgesList />} path={URLS.badges.public_badges_relative} />
-            <Route element={<BadgesGet />} path={URLS.badges.get_badge_relative} />
+            <Route path={URLS.badges.get_badge_relative}>
+              <Route element={<AuthRoute element={<BadgesGet />} />} index />
+              <Route element={<AuthRoute element={<BadgesGet />} />} path=':badgeId' />
+            </Route>
           </Route>
           <Route element={<BadgeCategory />} path={`${URLS.badges.category_relative}:categoryId/*`}>
             <Route element={<BadgesCategoryLeaderboard />} index />

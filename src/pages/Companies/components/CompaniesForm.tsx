@@ -62,7 +62,7 @@ const CompaniesForm = () => {
   };
 
   const semesters = useMemo(() => [...Array(4).keys()].map(getSemester), []);
-  const types = ['Bedriftspresentasjon', 'Kurs/Workshop', 'Bedriftsbesøk', 'Annonse', 'Insta-takeover', 'Annet'];
+  const types = ['Bedriftspresentasjon', 'Kurs/Workshop', 'Bedriftsbesøk', 'Annonse', 'Insta-takeover', 'Bedriftsekskursjon', 'Annet'];
 
   return (
     <Paper>
