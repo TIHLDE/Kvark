@@ -43,7 +43,7 @@ const Appointment = ({ children, data }: AppointmentProps) => {
   const getColor = (event: EventList) => theme.palette.colors[event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase() ? 'nok_event' : 'other_event'];
   return (
     <>
-      <Button onClick={handleClick} sx={{ width: '100%', height: '100%', textAlign: 'left', textTransform: 'none' }}>
+      <Button onClick={handleClick} sx={{ minWidth: '40px', width: '100%', height: '100%', textAlign: 'left', textTransform: 'none' }}>
         <Appointments.Appointment data={data} draggable={false} resources={[]} style={{ backgroundColor: getColor(data as unknown as EventList) }}>
           {children}
         </Appointments.Appointment>

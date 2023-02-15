@@ -1,10 +1,24 @@
 import CalendarIcon from '@mui/icons-material/EventRounded';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import FavoriteFilledIcon from '@mui/icons-material/FavoriteRounded';
-import { Alert, Button, Collapse, IconButton, IconButtonProps, Skeleton, Stack, styled, Theme, Tooltip, Typography, useMediaQuery } from '@mui/material';
+import {
+  Alert,
+  Button,
+  Checkbox,
+  CircularProgress,
+  IconButton,
+  IconButtonProps,
+  Skeleton,
+  Stack,
+  styled,
+  Theme,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import { addHours, formatDistanceToNowStrict, isFuture, isPast, parseISO, subHours } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 'utils';
@@ -12,7 +26,15 @@ import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 
 import { Event, Registration } from 'types';
 
 import { useCategories } from 'hooks/Categories';
-import { useDeleteEventRegistration, useEventIsFavorite, useEventRegistration, useEventSetIsFavorite } from 'hooks/Event';
+import { useConfetti } from 'hooks/Confetti';
+import {
+  useCreateEventRegistration,
+  useDeleteEventRegistration,
+  useEventIsFavorite,
+  useEventRegistration,
+  useEventSetIsFavorite,
+  useUpdateEventRegistration,
+} from 'hooks/Event';
 import { useSetRedirectUrl } from 'hooks/Misc';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useUser } from 'hooks/User';
@@ -20,7 +42,6 @@ import { useAnalytics, useInterval } from 'hooks/Utils';
 
 import EventPriorityPools from 'pages/EventDetails/components/EventPriorityPools';
 import EventPublicRegistrationsList from 'pages/EventDetails/components/EventPublicRegistrationsList';
-import EventRegistration from 'pages/EventDetails/components/EventRegistration';
 import { EventsSubscription } from 'pages/Profile/components/ProfileEvents';
 
 import FormUserAnswers from 'components/forms/FormUserAnswers';
@@ -53,11 +74,6 @@ export type EventRendererProps = {
   preview?: boolean;
 };
 
-enum Views {
-  Info,
-  Apply,
-}
-
 const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const { event } = useAnalytics();
   const { data: user } = useUser();
@@ -66,7 +82,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const setLogInRedirectURL = useSetRedirectUrl();
   const showSnackbar = useSnackbar();
   const { data: categories = [] } = useCategories();
-  const [view, setView] = useState<Views>(Views.Info);
   const startDate = parseISO(data.start_date);
   const endDate = parseISO(data.end_date);
   const strikesDelayedRegistrationHours = user ? getStrikesDelayedRegistrationHours(user.number_of_strikes) : 0;
@@ -75,13 +90,63 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const endRegistrationDate = parseISO(data.end_registration_at);
   const signOffDeadlineDate = parseISO(data.sign_off_deadline);
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
+  const updateRegistration = useUpdateEventRegistration(data.id);
+  const [allowPhoto, setAllowPhoto] = useState(true);
+  const [isLoadingSignUp, setIsLoadingSignUp] = useState(false);
+
+  const { run } = useConfetti();
+
+  const createRegistration = useCreateEventRegistration(data.id);
+
+  const handleImageRuleChange = async () => {
+    updateRegistration.mutate(
+      { userId: user?.user_id || '', registration: { allow_photo: !allowPhoto } },
+      {
+        onSuccess: (newRegistration) => {
+          if (newRegistration.allow_photo === true) {
+            showSnackbar('Du tillater å bli tatt bilde av', 'success');
+            setAllowPhoto(true);
+          } else {
+            showSnackbar('Du tillater ikke å bli tatt bilde av', 'success');
+            setAllowPhoto(false);
+          }
+        },
+        onError: () => {
+          showSnackbar('Endringen ble ikke registrert', 'error');
+        },
+      },
+    );
+  };
+
+  useEffect(() => {
+    setAllowPhoto(registration?.allow_photo || true);
+  }, [registration]);
+
+  const signUp = async () => {
+    setIsLoadingSignUp(true);
+    createRegistration.mutate(
+      {},
+      {
+        onSuccess: () => {
+          run();
+          showSnackbar('Påmeldingen var vellykket', 'success');
+          event('registered', 'event-registration', `Registered for event: ${data.title}`);
+        },
+        onError: (e) => {
+          showSnackbar(e.detail, 'error');
+        },
+        onSettled: () => {
+          setIsLoadingSignUp(false);
+        },
+      },
+    );
+  };
 
   const signOff = async () => {
     if (user) {
       deleteRegistration.mutate(user.user_id, {
         onSuccess: (response) => {
           showSnackbar(response.detail, 'success');
-          setView(Views.Info);
           event('unregistered', 'event-registration', `Unregistered for event: ${data.title}`);
         },
         onError: (e) => {
@@ -217,13 +282,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     if (isPast(endRegistrationDate)) {
       return null;
     }
-    if (view === Views.Apply) {
-      return (
-        <Button fullWidth onClick={() => setView(Views.Info)} variant='outlined'>
-          Se beskrivelse
-        </Button>
-      );
-    }
 
     const is_prioritized = data.priority_pools.some((pool) => pool.groups.filter((group) => !group.viewer_is_member).length === 0);
     if (data.only_allow_prioritized && data.priority_pools.length > 0 && !is_prioritized) {
@@ -236,8 +294,8 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     return (
       <>
         <HasUnansweredEvaluations />
-        <Button disabled={user?.unanswered_evaluations_count > 0} fullWidth onClick={() => setView(Views.Apply)} variant='contained'>
-          Meld deg på
+        <Button disabled={user?.unanswered_evaluations_count > 0 || isLoadingSignUp} fullWidth onClick={() => signUp()} variant='contained'>
+          {!isLoadingSignUp ? 'Meld deg på' : <CircularProgress />}
         </Button>
       </>
     );
@@ -349,8 +407,14 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         {Boolean(user) && <EventsSubscription />}
         {!preview && data.permissions.write && (
           <Button component={Link} fullWidth to={`${URLS.eventAdmin}${data.id}/`} variant='outlined'>
-            Endre arrangement
+            Administrér arrangement
           </Button>
+        )}
+        {registration && (
+          <Stack alignItems='center' direction='row'>
+            <Checkbox checked={allowPhoto} onChange={() => handleImageRuleChange()} value='Test' />
+            <Typography>Godkjenner å bli tatt bilde av</Typography>
+          </Stack>
         )}
       </Stack>
       <Stack gap={1} sx={{ width: '100%' }}>
@@ -360,12 +424,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h1'>
             {data.title}
           </Typography>
-          <Collapse in={view === Views.Info || Boolean(registration) || preview}>
-            <MarkdownRenderer value={data.description} />
-          </Collapse>
-          <Collapse in={view === Views.Apply && !registration && !preview} mountOnEnter>
-            {user && <EventRegistration event={data} user={user} />}
-          </Collapse>
+          <MarkdownRenderer value={data.description} />
         </ContentPaper>
       </Stack>
     </Stack>

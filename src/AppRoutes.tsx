@@ -42,6 +42,7 @@ const EventAdministration = lazy(() => import('pages/EventAdministration'));
 const EventRegistration = lazy(() => import('pages/EventRegistration'));
 const ForgotPassword = lazy(() => import('pages/ForgotPassword'));
 const Form = lazy(() => import('pages/Form'));
+const FormAdmin = lazy(() => import('pages/Form/FormAdmin'));
 const Http404 = lazy(() => import('pages/Http404'));
 const JobPostAdministration = lazy(() => import('pages/JobPostAdministration'));
 const LogIn = lazy(() => import('pages/LogIn'));
@@ -111,7 +112,10 @@ const AppRoutes = () => {
         </Route>
         <Route element={<Companies />} path={URLS.company} />
         <Route element={<Toddel />} path={URLS.toddel} />
-        <Route element={<AuthRoute element={<Form />} />} path={`${URLS.form}:id/`} />
+        <Route path={URLS.form}>
+          <Route element={<AuthRoute element={<Form />} />} path={`:id/`} />
+          <Route element={<AuthRoute apps={[PermissionApp.GROUP]} element={<FormAdmin />} />} path={`admin/:id/`} />
+        </Route>
         <Route element={<Groups />} path={`${URLS.groups.index}*`}>
           <Route element={<GroupsOverview />} index />
           <Route element={<GroupDetails />} path=':slug/*' />
@@ -121,7 +125,10 @@ const AppRoutes = () => {
             <Route element={<BadgesOverallLeaderboard />} index />
             <Route element={<BadgeCategoriesList />} path={URLS.badges.category_relative} />
             <Route element={<BadgesList />} path={URLS.badges.public_badges_relative} />
-            <Route element={<BadgesGet />} path={URLS.badges.get_badge_relative} />
+            <Route path={URLS.badges.get_badge_relative}>
+              <Route element={<AuthRoute element={<BadgesGet />} />} index />
+              <Route element={<AuthRoute element={<BadgesGet />} />} path=':badgeId' />
+            </Route>
           </Route>
           <Route element={<BadgeCategory />} path={`${URLS.badges.category_relative}:categoryId/*`}>
             <Route element={<BadgesCategoryLeaderboard />} index />
