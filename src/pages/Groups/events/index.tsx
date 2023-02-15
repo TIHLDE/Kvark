@@ -1,6 +1,8 @@
+import AddIcon from '@mui/icons-material/EditRounded';
 import { Stack } from '@mui/material';
+import { Button } from '@mui/material';
 import { useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { useEvents } from 'hooks/Event';
 import { useGroup } from 'hooks/Group';
@@ -18,6 +20,9 @@ const GroupEvents = () => {
 
   return (
     <Stack>
+      <Button component={Link} fullWidth startIcon={<AddIcon />} sx={{ mt: 1 }} to='/admin/arrangementer' variant='outlined'>
+        Nytt arrangement
+      </Button>
       {isLoading && <EventListItemLoading />}
       {!isLoading && !events.length && <NotFoundIndicator header={`${group?.name} har ingen kommende arrangementer`} />}
       {error && <Paper>{error.detail}</Paper>}
