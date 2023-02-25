@@ -12,11 +12,12 @@ import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
 import { useIsAuthenticated } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
-import TihldeLogo from 'components/miscellaneous/TihldeLogo';
+// import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 
 import { ReactComponent as WaveBottom } from 'assets/img/waves/wave-bottom.svg';
 import { ReactComponent as WaveMid } from 'assets/img/waves/wave-mid.svg';
 import { ReactComponent as WaveTop } from 'assets/img/waves/wave-top.svg';
+import { ReactComponent as TihldeJubLogoSvg } from 'assets/icons/logo_jub.svg';
 
 const moveWave = keyframes`
   0% {
@@ -152,7 +153,7 @@ const Wave = () => {
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.content}>
-          <TihldeLogo className={classes.logo} darkColor='white' lightColor='white' size='large' />
+          <TihldeJubLogoSvg style={{ color: 'white', marginLeft: 'auto', marginRight: 'auto', display: 'block', height: 'auto', width: "70vw", maxWidth: 400 }} />
           <Typography align='center' className={classes.contentText} variant='body1'>
             Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Digital samhandling og
             Informasjonsbehandling ved NTNU
