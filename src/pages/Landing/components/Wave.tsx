@@ -202,7 +202,7 @@ const Wave = () => {
               width: 'fit-content',
               margin: 'auto',
               display: 'block',
-              marginTop: '20px',
+              marginTop: '10px',
             }}>
             <Button endIcon={<OpenInNew />} href='https://jubileum.tihlde.org/' variant='contained'>
               Til Jubileumssiden
