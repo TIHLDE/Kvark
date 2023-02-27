@@ -1,4 +1,5 @@
 import { keyframes } from '@emotion/react';
+import { OpenInNew } from '@mui/icons-material';
 import SignupIcon from '@mui/icons-material/AddRounded';
 import LoginIcon from '@mui/icons-material/LoginRounded';
 import ProfileIcon from '@mui/icons-material/PersonOutlineRounded';
@@ -17,7 +18,6 @@ import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import { ReactComponent as WaveBottom } from 'assets/img/waves/wave-bottom.svg';
 import { ReactComponent as WaveMid } from 'assets/img/waves/wave-mid.svg';
 import { ReactComponent as WaveTop } from 'assets/img/waves/wave-top.svg';
-import { OpenInNew } from '@mui/icons-material';
 
 const moveWave = keyframes`
   0% {
@@ -204,7 +204,7 @@ const Wave = () => {
               display: 'block',
               marginTop: '20px',
             }}>
-            <Button href='https://jubileum.tihlde.org/' endIcon={<OpenInNew />} variant='contained'>
+            <Button endIcon={<OpenInNew />} href='https://jubileum.tihlde.org/' variant='contained'>
               Til Jubileumssiden
             </Button>
           </Box>
