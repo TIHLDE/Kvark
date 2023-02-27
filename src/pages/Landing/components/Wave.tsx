@@ -39,14 +39,14 @@ const useStyles = makeStyles()((theme) => ({
     margin: 'unset',
     width: '100%',
     maxWidth: 'none',
-    height: 500,
+    height: 600,
   },
   container: {
     overflow: 'hidden',
     margin: 'auto',
     position: 'absolute',
     width: '100%',
-    height: 500,
+    height: 600,
     background: `linear-gradient(20deg, ${theme.palette.colors.gradient.main.bottom} 20%, ${theme.palette.colors.gradient.main.top} 80%)`,
   },
   content: {
@@ -202,9 +202,9 @@ const Wave = () => {
               width: 'fit-content',
               margin: 'auto',
               display: 'block',
-              mt: '1',
+              marginTop: '20px',
             }}>
-            <Button href='https://jubileum.tihlde.org/' startIcon={<OpenInNew />} variant='contained'>
+            <Button href='https://jubileum.tihlde.org/' endIcon={<OpenInNew />} variant='contained'>
               Til Jubileumssiden
             </Button>
           </Box>
