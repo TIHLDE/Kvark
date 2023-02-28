@@ -58,6 +58,7 @@ const URLS = {
   eventAdmin: '/admin/arrangementer/',
   jobpostsAdmin: '/admin/karriere/',
   newsAdmin: '/admin/nyheter/',
+  jubilee: 'jubileum.tihlde.org/',
 };
 
 export default URLS;
