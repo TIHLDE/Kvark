@@ -6,9 +6,11 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 
-import TihldeLogo from 'components/miscellaneous/TihldeLogo';
+//import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import { NavigationItem, NavigationOptions } from 'components/navigation/Navigation';
 import ProfileTopbarButton from 'components/navigation/ProfileTopbarButton';
+
+import { ReactComponent as TihldeJubLogoSvg } from 'assets/icons/logo_jub.svg';
 
 const useStyles = makeStyles()((theme) => ({
   appBar: {
@@ -193,7 +195,7 @@ const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => 
     return (
       <div className={classes.topbarMobile}>
         <Link aria-label='Til forsiden' to={URLS.landing}>
-          <TihldeLogo className={classes.logo} darkColor={colorOnDark} lightColor={colorOnLight} size='large' />
+          <TihldeJubLogoSvg style={{ color: 'white', margin: '3px', height: 40, width: 'auto', marginTop: 'auto', marginBottom: 'auto', display: 'block' }} />
         </Link>
         <ProfileTopbarButton darkColor={colorOnDark} lightColor={colorOnLight} />
       </div>
@@ -204,7 +206,7 @@ const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => 
       <AppBar className={cx(classes.appBar, isOnTop ? classes.fancyAppBar : classes.backdrop)} elevation={isOnTop ? 0 : 1} position='fixed'>
         <Toolbar className={classes.toolbar} disableGutters>
           <Link aria-label='Til forsiden' to={URLS.landing}>
-            <TihldeLogo className={classes.logo} darkColor={colorOnDark} lightColor={colorOnLight} size='large' />
+            <TihldeJubLogoSvg style={{ color: 'white', margin: '3px', height: 40, width: 'auto', marginTop: 'auto', marginBottom: 'auto', display: 'block' }} />
           </Link>
           <div className={cx(classes.items, (theme.palette.mode === 'light' ? colorOnLight : colorOnDark) !== 'white' && !filledTopbar && classes.black)}>
             {items.map((item, i) => (
