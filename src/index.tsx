@@ -6,6 +6,7 @@ import { CacheProvider } from '@emotion/react';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { CssBaseline } from '@mui/material';
+import { Analytics } from '@vercel/analytics/react';
 import AppRoutes from 'AppRoutes';
 import { SHOW_NEW_STUDENT_INFO } from 'constant';
 import { ReactNode } from 'react';
@@ -65,6 +66,7 @@ export const Application = () => (
     <BrowserRouter>
       <Navigation>
         <AppRoutes />
+        <Analytics />
       </Navigation>
     </BrowserRouter>
   </Providers>
