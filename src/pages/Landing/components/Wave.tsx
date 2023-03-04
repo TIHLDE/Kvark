@@ -207,7 +207,7 @@ const Wave = () => {
               display: 'block',
               marginTop: '10px',
             }}>
-            <Button endIcon={<OpenInNew />} href='https://jubileum.tihlde.org/' variant='contained'>
+            <Button endIcon={<OpenInNew />} href='https://jubileum.tihlde.org/' target={'_blank'} variant='contained'>
               Til Jubileumssiden
             </Button>
           </Box>
