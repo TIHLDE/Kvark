@@ -17,6 +17,7 @@
 - 🦟 **Arrangementer**. En kan nå kun trykke på påmelding knappen en gang, dette eliminerer problemet med mange mails/meldinger.
 - ✨ **Arrangementer**. Opprettelse av arrangement på "gruppe"-sider.
 - 🎨 **URL-forkorter**. Forbedret visningen av feilmeldinger.
+- 🦟 **Linker**. Link til arrangementsreglene fra profilinnstillingene fungerer nå.
 
 ## Versjon 2022.11.17
 
