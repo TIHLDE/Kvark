@@ -16,6 +16,7 @@
 - ✨ **Badge**. Bades kan erverves gjennom en lenke.
 - 🦟 **Arrangementer**. En kan nå kun trykke på påmelding knappen en gang, dette eliminerer problemet med mange mails/meldinger.
 - ✨ **Arrangementer**. Opprettelse av arrangement på "gruppe"-sider.
+- 🎨 **URL-forkorter**. Forbedret visningen av feilmeldinger.
 
 ## Versjon 2022.11.17
 
