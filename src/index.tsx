@@ -68,6 +68,7 @@ export const Application = () => (
     <BrowserRouter>
       <Navigation>
         <AppRoutes />
+        <Analytics />
       </Navigation>
     </BrowserRouter>
   </Providers>
