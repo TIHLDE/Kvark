@@ -12,7 +12,7 @@
 
 ---
 
-## Neste versjon
+## Versjon 2023.7.03
 
 - ✨ **Analyse**. Lagrer grunnleggende statestikk om bruk av nettsiden.
 - ✨ **Badge**. Bades kan erverves gjennom en lenke.
