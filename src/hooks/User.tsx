@@ -200,7 +200,7 @@ export const useHavePermission = (
   options?: UseQueryOptions<UserPermissions | undefined, RequestResponse, UserPermissions | undefined, QueryKey>,
 ) => {
   const { data, isLoading } = useUserPermissions(options);
-  return { allowAccess: isLoading ? false : Boolean(apps.some((app) => data?.permissions[app].write)), isLoading };
+  return { allowAccess: isLoading ? false : Boolean(apps.some((app) => data?.permissions[app].write || data?.permissions[app].write_all)), isLoading };
 };
 
 export type HavePermissionProps = {
