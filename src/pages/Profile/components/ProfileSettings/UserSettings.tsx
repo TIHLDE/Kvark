@@ -115,7 +115,7 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
           formState={formState}
           label={
             <>
-              Aksepterer <Link to='/wiki/annet/arrangementsregler/'>arrangementreglene</Link>
+              Aksepterer <Link to='/wiki/arrangementsregler/'>arrangementreglene</Link>
             </>
           }
           name='accepts_event_rules'
