@@ -13,6 +13,8 @@
 ---
 
 ## Neste versjon
+
+- ✨ **Analyse**. Lagrer grunnleggende statestikk om bruk av nettsiden.
 - ✨ **Badge**. Bades kan erverves gjennom en lenke.
 - 🦟 **Arrangementer**. En kan nå kun trykke på påmelding knappen en gang, dette eliminerer problemet med mange mails/meldinger.
 - ✨ **Arrangementer**. Opprettelse av arrangement på "gruppe"-sider.
@@ -25,7 +27,6 @@
 - 🎨 **Skjema**. Gruppe-skjema administrering er mer oversiktlig.
 - ⚡ **Skjema**. Filtrering på besvarte spørsmål.
 - 🎨 **Designendringer**. Flytter bildet øverst på stillingsannonser.
-
 
 ## Versjon 2022.10.13
 
