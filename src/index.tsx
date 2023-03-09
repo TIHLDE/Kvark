@@ -6,7 +6,7 @@ import { CacheProvider } from '@emotion/react';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { CssBaseline } from '@mui/material';
-import { Analytics } from '@vercel/analytics/react';
+import { inject } from '@vercel/analytics';
 import AppRoutes from 'AppRoutes';
 import { SHOW_NEW_STUDENT_INFO } from 'constant';
 import { ReactNode } from 'react';
@@ -25,6 +25,8 @@ import { ThemeProvider } from 'hooks/Theme';
 import Navigation from 'components/navigation/Navigation';
 
 export const muiCache = createCache({ key: 'mui', prepend: true });
+
+inject(); // inject analytics Vercel
 
 export const Providers = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient({
@@ -66,7 +68,6 @@ export const Application = () => (
     <BrowserRouter>
       <Navigation>
         <AppRoutes />
-        <Analytics />
       </Navigation>
     </BrowserRouter>
   </Providers>
