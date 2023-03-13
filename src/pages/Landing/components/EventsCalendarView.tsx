@@ -85,7 +85,7 @@ const EventsCalendarView = ({ category }: EventsCalendarViewProps) => {
     setFilters({ end_range: lastDay.toJSON(), start_range: firstDay.toJSON() });
   }, [currentDate]);
 
-  // (hack) fetch all events in the set timespan
+  // fetch all events in the set timespan
   useEffect(() => {
     if (data?.pages[data.pages.length - 1].next) {
       fetchNextPage();
