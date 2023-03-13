@@ -1,7 +1,7 @@
 import { AppointmentModel, ViewState } from '@devexpress/dx-react-scheduler';
 import { Appointments, DateNavigator, MonthView, Scheduler, Toolbar } from '@devexpress/dx-react-scheduler-material-ui';
 import { Button, ClickAwayListener, Popper, useTheme } from '@mui/material';
-import { endOfMonth, parseISO, startOfMonth } from 'date-fns';
+import { addDays, endOfMonth, parseISO, startOfMonth } from 'date-fns';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { Category, EventList } from 'types';
@@ -73,7 +73,7 @@ const EventsCalendarView = ({ category }: EventsCalendarViewProps) => {
   const { event } = useAnalytics();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [filters, setFilters] = useState<Filters>();
-  const { data } = useEvents({ category, ...filters });
+  const { data, fetchNextPage } = useEvents({ category, ...filters });
   const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   useEffect(() => {
     event('open', 'calendar', 'Open calendar on landing page');
@@ -81,9 +81,17 @@ const EventsCalendarView = ({ category }: EventsCalendarViewProps) => {
 
   useEffect(() => {
     const firstDay = startOfMonth(currentDate);
-    const lastDay = endOfMonth(currentDate);
+    const lastDay = addDays(endOfMonth(currentDate), 7);
     setFilters({ end_range: lastDay.toJSON(), start_range: firstDay.toJSON() });
   }, [currentDate]);
+
+  // (hack) fetch all events in the set timespan
+  useEffect(() => {
+    if (data?.pages[data.pages.length - 1].next) {
+      fetchNextPage();
+    }
+  }, [events]);
+
   const displayedEvents = useMemo(
     () =>
       events.map(
