@@ -1,4 +1,5 @@
 import ExpandIcon from '@mui/icons-material/ExpandMoreRounded';
+import { useLocation } from 'react-router-dom';
 import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
 import { AppBar, Button, Grow, MenuItem, MenuList, Paper, Popper, Toolbar, useMediaQuery, useTheme } from '@mui/material';
 import { makeStyles } from 'makeStyles';
@@ -12,10 +13,14 @@ import ProfileTopbarButton from 'components/navigation/ProfileTopbarButton';
 
 import { ReactComponent as TihldeJubLogoSvg } from 'assets/icons/logo_jub.svg';
 
+
+
+
+
 const useStyles = makeStyles()((theme) => ({
   appBar: {
     boxSizing: 'border-box',
-    backgroundColor: theme.palette.colors.gradient.main.top,
+    backgroundColor: theme.palette.mode === 'dark' ? 'white' : theme.palette.colors.gradient.main.top,
     color: theme.palette.text.primary,
     flexGrow: 1,
     zIndex: theme.zIndex.drawer + 2,
@@ -112,6 +117,7 @@ const useStyles = makeStyles()((theme) => ({
 }));
 
 const TopBarItem = (props: NavigationItem) => {
+  const location = useLocation();
   const { classes, cx } = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   const buttonAnchorRef = useRef<HTMLButtonElement>(null);
@@ -178,6 +184,9 @@ const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => 
   const theme = useTheme();
   const [scrollLength, setScrollLength] = useState(0);
   const lgDown = useMediaQuery(theme.breakpoints.down('lg'));
+  
+  const location = useLocation();
+ 
 
   const handleScroll = () => setScrollLength(window.pageYOffset);
 
@@ -190,12 +199,22 @@ const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => 
   const shouldOverrideColorProp = useMemo(() => !lgDown && (filledTopbar || !isOnTop), [lgDown, isOnTop, filledTopbar]);
   const colorOnDark = useMemo(() => (darkColor && !shouldOverrideColorProp ? darkColor : 'white'), [darkColor, shouldOverrideColorProp]);
   const colorOnLight = useMemo(() => (lightColor && !shouldOverrideColorProp ? lightColor : 'white'), [lightColor, shouldOverrideColorProp]);
+  const isLogoWhiteOnLight = useMemo(() => {
+    if (theme.palette.mode === 'light') {
+      const arrangementPattern = /^\/arrangementer\/\d+/;
+      if (arrangementPattern.test(location.pathname)) return true;
+      const profilPattern = /^\/profil\//;
+      if(profilPattern.test(location.pathname)) return true;
+      return false;
+    }
+    return false;
+  }, [location.pathname, theme.palette.mode]);
 
   if (lgDown) {
     return (
       <div className={classes.topbarMobile}>
         <Link aria-label='Til forsiden' to={URLS.landing}>
-          <TihldeJubLogoSvg style={{ color: 'white', margin: '3px', height: 40, width: 'auto', marginTop: 'auto', marginBottom: 'auto', display: 'block' }} />
+          <TihldeJubLogoSvg style={{ color: isLogoWhiteOnLight ? '#1c458a' : "white", margin: '3px', height: 40, width: 'auto', marginTop: 'auto', marginBottom: 'auto', display: 'block'  }} />
         </Link>
         <ProfileTopbarButton darkColor={colorOnDark} lightColor={colorOnLight} />
       </div>
@@ -206,7 +225,7 @@ const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => 
       <AppBar className={cx(classes.appBar, isOnTop ? classes.fancyAppBar : classes.backdrop)} elevation={isOnTop ? 0 : 1} position='fixed'>
         <Toolbar className={classes.toolbar} disableGutters>
           <Link aria-label='Til forsiden' to={URLS.landing}>
-            <TihldeJubLogoSvg style={{ color: 'white', margin: '3px', height: 40, width: 'auto', marginTop: 'auto', marginBottom: 'auto', display: 'block' }} />
+            <TihldeJubLogoSvg style={{ color: isLogoWhiteOnLight ? '#1c458a' : 'white', margin: '3px', height: 40, width: 'auto', marginTop: 'auto', marginBottom: 'auto', display: 'block'  }} />
           </Link>
           <div className={cx(classes.items, (theme.palette.mode === 'light' ? colorOnLight : colorOnDark) !== 'white' && !filledTopbar && classes.black)}>
             {items.map((item, i) => (

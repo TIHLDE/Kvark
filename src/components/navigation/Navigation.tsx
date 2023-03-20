@@ -39,7 +39,7 @@ export type NavigationOptions = {
   gutterTop: boolean;
   title: string;
   darkColor: 'white' | 'blue' | 'black';
-  lightColor: 'white' | 'blue' | 'black';
+  lightColor: 'white' | 'blue' | 'black' | '#1c458a';
 };
 
 export type SetNavigationOptions = Partial<NavigationOptions>;
