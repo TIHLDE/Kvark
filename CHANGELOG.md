@@ -12,9 +12,6 @@
 
 ---
 
-## Neste versjon
-
-
 ## Versjon 2023.03.13
 
 - 🦟 **Kalender**. Henter alle arrangementer i måneden kalenderen viser.
