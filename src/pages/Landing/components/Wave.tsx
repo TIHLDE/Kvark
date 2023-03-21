@@ -197,9 +197,6 @@ const Wave = () => {
               </>
             )}
           </div>
-          <Typography color='white' fontSize={16} fontWeight={600} pt={3} textAlign='center'>
-            {differenceInDays(new Date('2023-03-20'), new Date())} dager til!
-          </Typography>
           <Box
             sx={{
               width: 'fit-content',
