@@ -4,7 +4,6 @@ import SignupIcon from '@mui/icons-material/AddRounded';
 import LoginIcon from '@mui/icons-material/LoginRounded';
 import ProfileIcon from '@mui/icons-material/PersonOutlineRounded';
 import { Box, Button, Typography } from '@mui/material';
-import { differenceInDays } from 'date-fns';
 import { makeStyles } from 'makeStyles';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
