@@ -196,17 +196,6 @@ const Wave = () => {
               </>
             )}
           </div>
-          <Box
-            sx={{
-              width: 'fit-content',
-              margin: 'auto',
-              display: 'block',
-              marginTop: '10px',
-            }}>
-            <Button endIcon={<OpenInNew />} href='https://jubileum.tihlde.org/' target={'_blank'} variant='contained'>
-              Til Jubileumssiden
-            </Button>
-          </Box>
         </div>
         {/* Show snow if between November 15th and February 1st */}
         {(isAfterDateOfYear(10, 15) || isBeforeDateOfYear(1, 1)) && (
