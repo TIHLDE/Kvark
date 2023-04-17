@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { ifError } from 'assert';
+
 import {
   Badge,
   BadgeCategory,
@@ -38,12 +40,12 @@ import {
   LoginRequestResponse,
   Membership,
   MembershipHistory,
-  paidHistory,
   MembershipHistoryMutate,
   News,
   NewsRequired,
   Notification,
   PaginationResponse,
+  paidHistory,
   Picture,
   PublicRegistration,
   Registration,
@@ -68,7 +70,6 @@ import {
 import { CheatsheetStudy, MembershipType } from 'types/Enums';
 
 import { IFetch } from 'api/fetch';
-import { ifError } from 'assert';
 
 export const AUTH_ENDPOINT = 'auth';
 export const BADGES_ENDPOINT = 'badges';
@@ -200,10 +201,9 @@ export default {
     IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/decline/`, data: { user_id: userName, reason } }),
   exportUserData: () => IFetch<RequestResponse>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/data/` }),
   deleteUser: (userId?: User['user_id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/` }),
-  
-  getUserPaidHistories: (userId?: User['user_id']) =>
-  IFetch<PaginationResponse<paidHistory>>({method: 'GET',url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${MEMBERSHIP_HISTORIES_ENDPOINT}`}),
 
+  getUserPaidHistories: (userId?: User['user_id']) =>
+    IFetch<PaginationResponse<paidHistory>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${MEMBERSHIP_HISTORIES_ENDPOINT}` }),
 
   // Notifications
   getNotifications: (filters?: any) => IFetch<PaginationResponse<Notification>>({ method: 'GET', url: `${NOTIFICATIONS_ENDPOINT}/`, data: filters || {} }),

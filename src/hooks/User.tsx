@@ -73,9 +73,7 @@ export const useUserBadges = (userId?: User['user_id']) =>
   );
 
 export const useUserPaidHistory = (userId?: User['user_id']) =>
-useInfiniteQuery<PaginationResponse<paidHistory>,RequestResponse>([USER_PAID_HISTORY_QUERY_KEY, userId],() =>
-    API.getUserPaidHistories(userId),
-);
+  useInfiniteQuery<PaginationResponse<paidHistory>, RequestResponse>([USER_PAID_HISTORY_QUERY_KEY, userId], () => API.getUserPaidHistories(userId));
 
 export const useUserEvents = (userId?: User['user_id']) => {
   return useInfiniteQuery<PaginationResponse<EventList>, RequestResponse>(

@@ -1,7 +1,6 @@
 import CalendarIcon from '@mui/icons-material/EventRounded';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import FavoriteFilledIcon from '@mui/icons-material/FavoriteRounded';
-import CountdownTimer from 'components/countdown/CountdownTimer';
 import {
   Alert,
   Button,
@@ -46,6 +45,7 @@ import EventPriorityPools from 'pages/EventDetails/components/EventPriorityPools
 import EventPublicRegistrationsList from 'pages/EventDetails/components/EventPublicRegistrationsList';
 import { EventsSubscription } from 'pages/Profile/components/ProfileEvents';
 
+import CountdownTimer from 'components/countdown/CountdownTimer';
 import FormUserAnswers from 'components/forms/FormUserAnswers';
 import Expand from 'components/layout/Expand';
 import Paper from 'components/layout/Paper';
@@ -77,8 +77,8 @@ const DisplayCountdown: React.FC = () => {
       <h1>Countdown Timer</h1>
       <CountdownTimer />
     </div>
-  )
-}
+  );
+};
 
 export type EventRendererProps = {
   data: Event;
@@ -129,7 +129,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       },
     );
   };
-
 
   useEffect(() => data.paid_information && setIsPaidEvent(true), []);
 
@@ -196,8 +195,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               {`Du er ${registration.has_attended ? 'deltatt' : 'meldt'} på arrangementet! Men du må huske å betale`}
             </Alert>
 
-
-    
             {registration.survey_submission.answers.length > 0 && (
               <div>
                 <Expand flat header='Påmeldingsspørsmål'>
@@ -436,14 +433,24 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         {lgDown && <Info />}
         {registration && isPaidEvent ? (
-        <ContentPaper>
-          <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h2' align='center'>
-                Gjenstående tid
+          <ContentPaper>
+            <Typography
+              align='center'
+              gutterBottom
+              sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }}
+              variant='h2'>
+              Gjenstående tid
               <CountdownTimer />
-              <img width='40%' onClick={() => 2} src="https://raw.githubusercontent.com/vippsas/vipps-design-guidelines/fd670b41ac52715c11b8f7826732ca48eb71cca9/images/style.svg"/>
-          </Typography>
-        </ContentPaper>
-        ) : <></>}
+              <img
+                onClick={() => 2}
+                src='https://raw.githubusercontent.com/vippsas/vipps-design-guidelines/fd670b41ac52715c11b8f7826732ca48eb71cca9/images/style.svg'
+                width='40%'
+              />
+            </Typography>
+          </ContentPaper>
+        ) : (
+          <></>
+        )}
         <ContentPaper>
           <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h1'>
             {data.title}

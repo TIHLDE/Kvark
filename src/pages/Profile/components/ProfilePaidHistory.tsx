@@ -16,7 +16,9 @@ const ProfilePaidHistory = () => {
 
   return (
     <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere badges' nextPage={() => fetchNextPage()}>
-      {!isLoading && !PaidItems.length && <NotFoundIndicator header='Fant ingen betalingshistorikk' subtitle={`${userId ? 'Brukeren' : 'Du'} har ingen betalinger enda`} />}
+      {!isLoading && !PaidItems.length && (
+        <NotFoundIndicator header='Fant ingen betalingshistorikk' subtitle={`${userId ? 'Brukeren' : 'Du'} har ingen betalinger enda`} />
+      )}
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' }, gap: 1, mb: 1 }}>
         {isLoading && (
           <>
@@ -25,7 +27,7 @@ const ProfilePaidHistory = () => {
           </>
         )}
         {PaidItems.map((paidHistory) => (
-          <PaidItem paidHistory={paidHistory} key={paidHistory.id} />
+          <PaidItem key={paidHistory.id} paidHistory={paidHistory} />
         ))}
       </Box>
     </Pagination>

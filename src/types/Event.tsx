@@ -11,9 +11,9 @@ export type Category = {
 };
 
 export type PaidInformation = {
-  price: number,
-  paytime: number
-}
+  price: number;
+  paytime: number;
+};
 
 export type Event = {
   closed: boolean;

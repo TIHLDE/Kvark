@@ -1,14 +1,16 @@
 import { SafetyDividerRounded } from '@mui/icons-material';
+import { TimePicker } from '@mui/lab';
 import { Box, Collapse, Grid, LinearProgress, ListSubheader, MenuItem, Stack, styled } from '@mui/material';
+import { FormGroup } from '@mui/material';
+import { FormControlLabel } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
+import { getValue } from '@mui/system';
 import { addHours, parseISO, setHours, startOfHour, subDays } from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { BaseGroup, Event, EventMutate, Group, PriorityPool, PriorityPoolMutate } from 'types';
 import { GroupType, MembershipType } from 'types/Enums';
-import Checkbox from '@mui/material/Checkbox';
-import { FormGroup } from '@mui/material';
-import { FormControlLabel } from '@mui/material';
 
 import { useCategories } from 'hooks/Categories';
 import { useCreateEvent, useDeleteEvent, useEventById, useUpdateEvent } from 'hooks/Event';
@@ -25,14 +27,12 @@ import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
+import { formatMinutes } from 'components/inputs/TimePicker';
 import { ImageUpload } from 'components/inputs/Upload';
 import { StandaloneExpand } from 'components/layout/Expand';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
 import { ShowMoreText, ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
-import { getValue } from '@mui/system';
-import { TimePicker } from '@mui/lab';
-import { formatMinutes } from 'components/inputs/TimePicker';
 
 const Row = styled(Stack)(({ theme }) => ({
   gap: 0,
@@ -108,6 +108,9 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         only_allow_prioritized: newValues ? newValues.only_allow_prioritized : false,
         can_cause_strikes: newValues ? newValues.can_cause_strikes : true,
         enforces_previous_strikes: newValues ? newValues.enforces_previous_strikes : true,
+        is_paid_event: newValues?.paid_information ? true : false,
+        price: newValues?.paid_information?.price,
+        paytime: newValues?.paid_information?.paytime
       });
       if (!newValues) {
         setTimeout(() => updateDates(new Date()), 10);
@@ -198,20 +201,38 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   };
 
   const submit: SubmitHandler<FormValues> = async (data) => {
-    const event = {
-      ...data,
-      priority_pools: priorityPools,
-      end_date: data.end_date.toJSON(),
-      end_registration_at: data.end_registration_at.toJSON(),
-      sign_off_deadline: data.sign_off_deadline.toJSON(),
-      start_date: data.start_date.toJSON(),
-      start_registration_at: data.start_registration_at.toJSON(),
-      is_paid_event: data.is_paid_event,
-      paid_information: {
-        price: data.price,
-        paytime: formatMinutes(data.paytime ? data.paytime : 0)
-      }
-    } as unknown as EventMutate;
+
+    let event;
+  
+    if (data.is_paid_event) {
+      event = {
+        ...data,
+        priority_pools: priorityPools,
+        end_date: data.end_date.toJSON(),
+        end_registration_at: data.end_registration_at.toJSON(),
+        sign_off_deadline: data.sign_off_deadline.toJSON(),
+        start_date: data.start_date.toJSON(),
+        start_registration_at: data.start_registration_at.toJSON(),
+        is_paid_event: data.is_paid_event,
+        paid_information: {
+          price: data.price ? data.price : 0,
+          paytime:  formatMinutes(data.paytime ? data.paytime : 0)
+        }
+      } as unknown as EventMutate;
+    } else {
+      event = {
+        ...data,
+        priority_pools: priorityPools,
+        end_date: data.end_date.toJSON(),
+        end_registration_at: data.end_registration_at.toJSON(),
+        sign_off_deadline: data.sign_off_deadline.toJSON(),
+        start_date: data.start_date.toJSON(),
+        start_registration_at: data.start_registration_at.toJSON(),
+        is_paid_event: data.is_paid_event
+      } as unknown as EventMutate;
+    }
+
+    console.log(event)
     if (eventId) {
       await updateEvent.mutate(event, {
         onSuccess: () => {
@@ -464,8 +485,8 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               <>
                 Betalt arrangement
                 <ShowMoreTooltip>
-                  Bestemmer om brukere skal kunne motta prikker ved å være påmeldt dette arrangementet. Hvis bryteren er skrudd av vil deltagere ikke få
-                  prikk for ikke oppmøte eller for sen avmelding.
+                  Bestemmer om brukere skal kunne motta prikker ved å være påmeldt dette arrangementet. Hvis bryteren er skrudd av vil deltagere ikke få prikk
+                  for ikke oppmøte eller for sen avmelding.
                 </ShowMoreTooltip>
               </>
             }
@@ -474,12 +495,16 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           />
 
           {watchPaidEvent && (
-            
             <Box>
-              <TextField type="number" formState={formState} label='Pris' {...register('price', { required: 'Gi arrangementet en pris' })} />
-              <TextField placeholder="Skriv inn antall minuttter" type="number" formState={formState} label='Betalingsfrist' {...register('paytime', { required: 'Gi arrangementet en betalingsfrist i minutter' })} />
+              <TextField formState={formState} label='Pris' type='number' {...register('price', { required: 'Gi arrangementet en pris' })} />
+              <TextField
+                formState={formState}
+                label='Betalingsfrist'
+                placeholder='Skriv inn antall minuttter'
+                type='number'
+                {...register('paytime', { required: 'Gi arrangementet en betalingsfrist i minutter' })}
+              />
             </Box>
-
           )}
 
           <RendererPreview getContent={getEventPreview} renderer={EventRenderer} sx={{ my: 2 }} />

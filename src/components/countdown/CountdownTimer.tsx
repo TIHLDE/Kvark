@@ -1,5 +1,5 @@
-import React, { useState, useEffect, createContext } from 'react';
 import { addHours } from 'date-fns';
+import React, { createContext, useEffect, useState } from 'react';
 
 const CountdownContext = createContext({});
 
@@ -22,11 +22,7 @@ const CountdownProvider: React.FC = ({ children }) => {
     };
   }, []);
 
-  return (
-    <CountdownContext.Provider value={{ timeLeft }}>
-      {children}
-    </CountdownContext.Provider>
-  );
+  return <CountdownContext.Provider value={{ timeLeft }}>{children}</CountdownContext.Provider>;
 };
 
 const CountdownTimer: React.FC = () => {

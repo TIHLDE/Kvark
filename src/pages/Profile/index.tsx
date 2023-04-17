@@ -3,10 +3,10 @@ import EventIcon from '@mui/icons-material/DateRangeRounded';
 import BadgesIcon from '@mui/icons-material/EmojiEventsRounded';
 import LogOutIcon from '@mui/icons-material/ExitToAppRounded';
 import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
+import PaidIcon from '@mui/icons-material/Paid';
 import GroupsIcon from '@mui/icons-material/PeopleOutlineRounded';
 import SettingsIcon from '@mui/icons-material/TuneRounded';
 import WorkspacesIcon from '@mui/icons-material/WorkspacesRounded';
-import PaidIcon from '@mui/icons-material/Paid';
 import {
   Badge,
   Box,
@@ -39,9 +39,9 @@ import ProfileBadges from 'pages/Profile/components/ProfileBadges';
 import ProfileEvents from 'pages/Profile/components/ProfileEvents';
 import ProfileForms from 'pages/Profile/components/ProfileForms';
 import ProfileGroups from 'pages/Profile/components/ProfileGroups';
+import ProfilePaidHistory from 'pages/Profile/components/ProfilePaidHistory';
 import ProfileSettings from 'pages/Profile/components/ProfileSettings';
 import ProfileStrikes from 'pages/Profile/components/ProfileStrikes';
-import ProfilePaidHistory from 'pages/Profile/components/ProfilePaidHistory';
 
 import Paper from 'components/layout/Paper';
 import Avatar from 'components/miscellaneous/Avatar';
@@ -79,7 +79,7 @@ const Profile = () => {
     logOut();
   };
 
-  const paidHistoryTab: NavListItem = {label: 'Betalingshistorikk', icon: PaidIcon};
+  const paidHistoryTab: NavListItem = { label: 'Betalingshistorikk', icon: PaidIcon };
   const eventTab: NavListItem = { label: 'Arrangementer', icon: EventIcon };
   const badgesTab: NavListItem = { label: 'Badges', icon: BadgesIcon };
   const groupsTab: NavListItem = { label: 'Medlemskap', icon: GroupsIcon };
