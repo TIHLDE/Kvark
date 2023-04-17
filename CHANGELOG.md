@@ -12,6 +12,10 @@
 
 ---
 
+## versjon 2023 04.17
+
+- ⚡ **Ny student**. Viser ny-student boks på forsiden fra 1.april.
+
 ## Versjon 2023.03.13
 
 - 🦟 **Kalender**. Henter alle arrangementer i måneden kalenderen viser.
