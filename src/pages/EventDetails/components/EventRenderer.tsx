@@ -1,6 +1,7 @@
 import CalendarIcon from '@mui/icons-material/EventRounded';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import FavoriteFilledIcon from '@mui/icons-material/FavoriteRounded';
+import CountdownTimer from 'components/countdown/CountdownTimer';
 import {
   Alert,
   Button,
@@ -11,6 +12,7 @@ import {
   Skeleton,
   Stack,
   styled,
+  SvgIcon,
   Theme,
   Tooltip,
   Typography,
@@ -68,6 +70,15 @@ const ContentPaper = styled(Paper)({
 const DetailsHeader = styled(Typography)({
   fontSize: '1.5rem',
 });
+
+const DisplayCountdown: React.FC = () => {
+  return (
+    <div>
+      <h1>Countdown Timer</h1>
+      <CountdownTimer />
+    </div>
+  )
+}
 
 export type EventRendererProps = {
   data: Event;
@@ -177,12 +188,12 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           </>
         ) : (
           <>
-            <Alert severity='success' variant='outlined'>
-              {`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}
+            <Alert icon severity='warning' variant='outlined'>
+              {`Du er ${registration.has_attended ? 'deltatt' : 'meldt'} på arrangementet! Men du må huske å betale`}
             </Alert>
-            <QRButton fullWidth qrValue={registration.user_info.user_id} subtitle={`${registration.user_info.first_name} ${registration.user_info.last_name}`}>
-              Påmeldingsbevis
-            </QRButton>
+
+
+    
             {registration.survey_submission.answers.length > 0 && (
               <div>
                 <Expand flat header='Påmeldingsspørsmål'>
@@ -420,6 +431,15 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       <Stack gap={1} sx={{ width: '100%' }}>
         <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         {lgDown && <Info />}
+        {registration && (
+        <ContentPaper>
+        <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h2' align='center'>
+              Gjenstående tid
+            <CountdownTimer></CountdownTimer>
+            <img width='40%' onClick={() => 2} src="https://raw.githubusercontent.com/vippsas/vipps-design-guidelines/fd670b41ac52715c11b8f7826732ca48eb71cca9/images/style.svg"/>
+        </Typography>
+        </ContentPaper>
+        )}
         <ContentPaper>
           <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h1'>
             {data.title}

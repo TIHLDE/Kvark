@@ -6,6 +6,9 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { BaseGroup, Event, EventMutate, Group, PriorityPool, PriorityPoolMutate } from 'types';
 import { GroupType, MembershipType } from 'types/Enums';
+import Checkbox from '@mui/material/Checkbox';
+import { FormGroup } from '@mui/material';
+import { FormControlLabel } from '@mui/material';
 
 import { useCategories } from 'hooks/Categories';
 import { useCreateEvent, useDeleteEvent, useEventById, useUpdateEvent } from 'hooks/Event';
@@ -27,6 +30,7 @@ import { StandaloneExpand } from 'components/layout/Expand';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
 import { ShowMoreText, ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
+import { getValue } from '@mui/system';
 
 const Row = styled(Stack)(({ theme }) => ({
   gap: 0,
@@ -49,6 +53,7 @@ type FormValues = Pick<
   | 'description'
   | 'image'
   | 'image_alt'
+  | 'paid_event'
   | 'limit'
   | 'location'
   | 'sign_up'
@@ -75,6 +80,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const [priorityPools, setPriorityPools] = useState<Array<PriorityPoolMutate>>([]);
   const { handleSubmit, register, watch, control, formState, getValues, reset, setValue } = useForm<FormValues>();
   const watchSignUp = watch('sign_up');
+  const watchPaidEvent = watch('paid_event')
   const { data: categories = [] } = useCategories();
 
   const setValues = useCallback(
@@ -441,6 +447,29 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               </Select>
             )}
           </Row>
+
+          <Bool
+            control={control}
+            formState={formState}
+            label={
+              <>
+                Betalt arrangement
+                <ShowMoreTooltip>
+                  Bestemmer om brukere skal kunne motta prikker ved å være påmeldt dette arrangementet. Hvis bryteren er skrudd av vil deltagere ikke få
+                  prikk for ikke oppmøte eller for sen avmelding.
+                </ShowMoreTooltip>
+              </>
+            }
+            name='paid_event'
+            type='checkbox'
+          />
+
+          {watchPaidEvent && (
+            
+            <TextField type="number" formState={formState} label='Pris' {...register('title', { required: 'Gi arrangementet en pris' })} />
+
+          )}
+
           <RendererPreview getContent={getEventPreview} renderer={EventRenderer} sx={{ my: 2 }} />
           <SubmitButton disabled={isLoading || createEvent.isLoading || updateEvent.isLoading || deleteEvent.isLoading} formState={formState}>
             {eventId ? 'Oppdater arrangement' : 'Opprett arrangement'}
@@ -448,12 +477,12 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           {eventId !== null && (
             <Row sx={{ mt: 2 }}>
               <VerifyDialog
-                closeText='Ikke steng arrangementet'
+                closeText='Hei'
                 color='warning'
                 contentText='Å stenge et arrangement kan ikke reverseres. Eventuell på- og avmelding vil bli stoppet.'
                 disabled={data?.closed}
                 onConfirm={closeEvent}
-                titleText='Er du sikker?'>
+                titleText='Test?'>
                 Steng
               </VerifyDialog>
               <VerifyDialog

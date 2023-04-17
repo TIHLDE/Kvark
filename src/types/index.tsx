@@ -1,4 +1,5 @@
 export * from 'types/Badge';
+export * from 'types/paidHistory';
 export * from 'types/Event';
 export * from 'types/Form';
 export * from 'types/Misc';

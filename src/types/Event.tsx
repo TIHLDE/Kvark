@@ -13,6 +13,7 @@ export type Category = {
 export type Event = {
   closed: boolean;
   category: number;
+  paid_event?: boolean;
   description: string;
   end_date: string;
   end_registration_at: string;

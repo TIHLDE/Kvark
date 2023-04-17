@@ -4,7 +4,7 @@ import { QueryKey, useInfiniteQuery, useMutation, UseMutationResult, useQuery, u
 import { useNavigate } from 'react-router-dom';
 import URLS from 'URLS';
 
-import type {
+import {
   Badge,
   EventList,
   Form,
@@ -12,6 +12,7 @@ import type {
   Membership,
   MembershipHistory,
   PaginationResponse,
+  paidHistory,
   RequestResponse,
   Strike,
   User,
@@ -28,6 +29,7 @@ import { getCookie, removeCookie, setCookie } from 'api/cookie';
 
 export const USER_QUERY_KEY = 'user';
 export const USER_BADGES_QUERY_KEY = 'user_badges';
+export const USER_PAID_HISTORY_QUERY_KEY = 'user_paid_history';
 export const USER_EVENTS_QUERY_KEY = 'user_events';
 export const USER_MEMBERSHIPS_QUERY_KEY = 'user_memberships';
 export const USER_MEMBERSHIP_HISTORIES_QUERY_KEY = 'user_membership_histories';
@@ -69,6 +71,11 @@ export const useUserBadges = (userId?: User['user_id']) =>
       getNextPageParam: (lastPage) => lastPage.next,
     },
   );
+
+export const useUserPaidHistory = (userId?: User['user_id']) =>
+useInfiniteQuery<PaginationResponse<paidHistory>,RequestResponse>([USER_PAID_HISTORY_QUERY_KEY, userId],() =>
+    API.getUserPaidHistories(userId),
+);
 
 export const useUserEvents = (userId?: User['user_id']) => {
   return useInfiniteQuery<PaginationResponse<EventList>, RequestResponse>(
