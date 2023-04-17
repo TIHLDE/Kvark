@@ -104,6 +104,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const updateRegistration = useUpdateEventRegistration(data.id);
   const [allowPhoto, setAllowPhoto] = useState(true);
   const [isLoadingSignUp, setIsLoadingSignUp] = useState(false);
+  const [isPaidEvent, setIsPaidEvent] = useState(false);
 
   const { run } = useConfetti();
 
@@ -128,6 +129,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       },
     );
   };
+
+
+  useEffect(() => data.paid_information && setIsPaidEvent(true), []);
 
   useEffect(() => {
     setAllowPhoto(registration?.allow_photo || true);
@@ -431,15 +435,15 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       <Stack gap={1} sx={{ width: '100%' }}>
         <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         {lgDown && <Info />}
-        {registration && (
+        {registration && isPaidEvent ? (
         <ContentPaper>
-        <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h2' align='center'>
-              Gjenstående tid
-            <CountdownTimer></CountdownTimer>
-            <img width='40%' onClick={() => 2} src="https://raw.githubusercontent.com/vippsas/vipps-design-guidelines/fd670b41ac52715c11b8f7826732ca48eb71cca9/images/style.svg"/>
-        </Typography>
+          <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h2' align='center'>
+                Gjenstående tid
+              <CountdownTimer />
+              <img width='40%' onClick={() => 2} src="https://raw.githubusercontent.com/vippsas/vipps-design-guidelines/fd670b41ac52715c11b8f7826732ca48eb71cca9/images/style.svg"/>
+          </Typography>
         </ContentPaper>
-        )}
+        ) : <></>}
         <ContentPaper>
           <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h1'>
             {data.title}

@@ -10,10 +10,18 @@ export type Category = {
   updated_at: string;
 };
 
+export type PaidInformation = {
+  price: number,
+  paytime: number
+}
+
 export type Event = {
   closed: boolean;
   category: number;
-  paid_event?: boolean;
+  price?: number;
+  paytime?: number;
+  is_paid_event: boolean;
+  paid_information?: PaidInformation;
   description: string;
   end_date: string;
   end_registration_at: string;

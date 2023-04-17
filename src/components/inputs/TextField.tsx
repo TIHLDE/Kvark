@@ -35,7 +35,7 @@ const GenericTextField = <FormValues extends FieldValues>(
   );
 };
 
-const TextField = forwardRef(GenericTextField) as <FormValues>(
+const TextField = forwardRef(GenericTextField) as <FormValues extends FieldValues>(
   props: TextFieldProps<FormValues> & { ref?: React.ForwardedRef<HTMLDivElement> },
 ) => ReturnType<typeof GenericTextField>;
 

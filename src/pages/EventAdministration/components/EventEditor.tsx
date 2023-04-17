@@ -1,5 +1,5 @@
 import { SafetyDividerRounded } from '@mui/icons-material';
-import { Collapse, Grid, LinearProgress, ListSubheader, MenuItem, Stack, styled } from '@mui/material';
+import { Box, Collapse, Grid, LinearProgress, ListSubheader, MenuItem, Stack, styled } from '@mui/material';
 import { addHours, parseISO, setHours, startOfHour, subDays } from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -31,6 +31,8 @@ import VerifyDialog from 'components/layout/VerifyDialog';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
 import { ShowMoreText, ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
 import { getValue } from '@mui/system';
+import { TimePicker } from '@mui/lab';
+import { formatMinutes } from 'components/inputs/TimePicker';
 
 const Row = styled(Stack)(({ theme }) => ({
   gap: 0,
@@ -53,7 +55,9 @@ type FormValues = Pick<
   | 'description'
   | 'image'
   | 'image_alt'
-  | 'paid_event'
+  | 'is_paid_event'
+  | 'price'
+  | 'paytime'
   | 'limit'
   | 'location'
   | 'sign_up'
@@ -80,7 +84,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const [priorityPools, setPriorityPools] = useState<Array<PriorityPoolMutate>>([]);
   const { handleSubmit, register, watch, control, formState, getValues, reset, setValue } = useForm<FormValues>();
   const watchSignUp = watch('sign_up');
-  const watchPaidEvent = watch('paid_event')
+  const watchPaidEvent = watch('is_paid_event');
   const { data: categories = [] } = useCategories();
 
   const setValues = useCallback(
@@ -202,7 +206,12 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       sign_off_deadline: data.sign_off_deadline.toJSON(),
       start_date: data.start_date.toJSON(),
       start_registration_at: data.start_registration_at.toJSON(),
-    } as EventMutate;
+      is_paid_event: data.is_paid_event,
+      paid_information: {
+        price: data.price,
+        paytime: formatMinutes(data.paytime ? data.paytime : 0)
+      }
+    } as unknown as EventMutate;
     if (eventId) {
       await updateEvent.mutate(event, {
         onSuccess: () => {
@@ -460,13 +469,16 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 </ShowMoreTooltip>
               </>
             }
-            name='paid_event'
+            name='is_paid_event'
             type='checkbox'
           />
 
           {watchPaidEvent && (
             
-            <TextField type="number" formState={formState} label='Pris' {...register('title', { required: 'Gi arrangementet en pris' })} />
+            <Box>
+              <TextField type="number" formState={formState} label='Pris' {...register('price', { required: 'Gi arrangementet en pris' })} />
+              <TextField placeholder="Skriv inn antall minuttter" type="number" formState={formState} label='Betalingsfrist' {...register('paytime', { required: 'Gi arrangementet en betalingsfrist i minutter' })} />
+            </Box>
 
           )}
 
