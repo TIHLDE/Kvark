@@ -8,6 +8,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
 import SportsIcon from '@mui/icons-material/SportsSoccerRounded';
 import VolunteerIcon from '@mui/icons-material/VolunteerActivismRounded';
 import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Stack, Typography } from '@mui/material';
+import { SHOW_FADDERUKA_INFO } from 'constant';
 import { makeStyles } from 'makeStyles';
 import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
@@ -99,18 +100,20 @@ const NewStudent = () => {
         <Banner
           text='Hei og velkommen til TIHLDE. Vi i TIHLDE vil gjerne ønske deg velkommen til Trondheim og vil at du skal bli kjent med både byen og dine medstudenter, derfor arrangerer vi fadderuka for dere. Her kan du finne info om fadderuka, verv og idrett i TIHLDE, samt ofte stilte spørsmål og svar.'
           title='Ny student'>
-          <BannerButton
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            component='a'
-            endIcon={<OpenInNewIcon />}
-            href='https://s.tihlde.org/fadderuka-paamelding'
-            onClick={fadderukaSignupAnalytics}
-            rel='noopener noreferrer'
-            target='_blank'
-            variant='outlined'>
-            Meld deg på fadderuka
-          </BannerButton>
+          {SHOW_FADDERUKA_INFO && (
+            <BannerButton
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              component='a'
+              endIcon={<OpenInNewIcon />}
+              href='https://s.tihlde.org/fadderuka-paamelding'
+              onClick={fadderukaSignupAnalytics}
+              rel='noopener noreferrer'
+              target='_blank'
+              variant='outlined'>
+              Meld deg på fadderuka
+            </BannerButton>
+          )}
           {!isAuthenticated && (
             <Paper sx={{ background: 'transparent', borderColor: (theme) => theme.palette.common.white }}>
               <Typography gutterBottom sx={{ color: (theme) => theme.palette.common.white }}>
