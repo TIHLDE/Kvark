@@ -48,7 +48,7 @@ const NewStudentBox = () => {
     }
   }, [user, isAuthenticated]);
 
-  if (!SHOW_NEW_STUDENT_INFO || header === '' || !shouldShowBox) {
+  if (!SHOW_NEW_STUDENT_INFO || header === '' || !shouldShowBox || (isAuthenticated && SHOW_NEW_STUDENT_INFO && !SHOW_FADDERUKA_INFO)) {
     return null;
   }
 
