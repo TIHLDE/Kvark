@@ -130,6 +130,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     );
   };
 
+  useEffect(() => console.log(data), [])
   useEffect(() => data.paid_information && setIsPaidEvent(true), []);
 
   useEffect(() => {

@@ -42,6 +42,62 @@ export type TimePickerProps<FormValues extends FieldValues = FieldValues> = Text
     onTimeChange?: (time?: Date) => void;
   };
 
+const TimePicker = <FormValues extends FieldValues>({
+  type,
+  name,
+  label,
+  control,
+  formState,
+  rules = {},
+  defaultValue = '',
+  timeProps,
+  onTimeChange,
+  helperText,
+  ...props
+}: TimePickerProps<FormValues>) => {
+  const { [name]: fieldError } = formState.errors;
+  const error = fieldError as FieldError;
+  const Picker = MuiTimePicker;
+  return (
+    <Controller
+      control={control}
+      defaultValue={defaultValue as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>}
+      name={name}
+      render={({ field }) => (
+        <Picker
+          {...field}
+          {...timeProps}
+          label={label}
+          ampm={false}
+          onChange={(e) => {
+            field.onChange(e);
+            if (onTimeChange) {
+              onTimeChange(e as unknown as Date);
+            }
+          }}
+          renderInput={(params) => (
+            <MuiTextField
+              margin='normal'
+              variant='outlined'
+              {...params}
+              error={Boolean(error)}
+              helperText={
+                <>
+                  {error?.message}
+                  {helperText && Boolean(error) && <br />}
+                  {helperText}
+                </>
+              }
+              {...props}
+            />
+          )}
+        />
+      )}
+      rules={rules}
+    />
+  );
+};
+
 const DatePicker = <FormValues extends FieldValues>({
   type,
   name,
@@ -99,4 +155,4 @@ const DatePicker = <FormValues extends FieldValues>({
   );
 };
 
-export default DatePicker;
+export default TimePicker;

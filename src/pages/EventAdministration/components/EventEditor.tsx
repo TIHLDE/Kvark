@@ -1,12 +1,11 @@
-import { SafetyDividerRounded } from '@mui/icons-material';
-import { TimePicker } from '@mui/lab';
-import { Box, Collapse, Grid, LinearProgress, ListSubheader, MenuItem, Stack, styled } from '@mui/material';
+import { SafetyDividerRounded, ViewColumn } from '@mui/icons-material';
+import { Box, Collapse, Grid, LinearProgress, ListSubheader, MenuItem, Stack, TextFieldProps, styled } from '@mui/material';
 import { FormGroup } from '@mui/material';
 import { FormControlLabel } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import { getValue } from '@mui/system';
 import { addHours, parseISO, setHours, startOfHour, subDays } from 'date-fns';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { JSXElementConstructor, ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { BaseGroup, Event, EventMutate, Group, PriorityPool, PriorityPoolMutate } from 'types';
@@ -23,6 +22,7 @@ import EventRenderer from 'pages/EventDetails/components/EventRenderer';
 
 import Bool from 'components/inputs/Bool';
 import DatePicker from 'components/inputs/DatePicker';
+import TimePicker from 'components/inputs/TimePicker';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
@@ -108,9 +108,9 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         only_allow_prioritized: newValues ? newValues.only_allow_prioritized : false,
         can_cause_strikes: newValues ? newValues.can_cause_strikes : true,
         enforces_previous_strikes: newValues ? newValues.enforces_previous_strikes : true,
-        is_paid_event: newValues?.paid_information ? true : false,
+        is_paid_event: Boolean(newValues?.paid_information),
         price: newValues?.paid_information?.price,
-        paytime: newValues?.paid_information?.paytime
+        paytime: newValues?.paid_information?.paytime,
       });
       if (!newValues) {
         setTimeout(() => updateDates(new Date()), 10);
@@ -119,10 +119,25 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     [reset],
   );
 
+  const isPaidEvent = () => {
+    if (data) {
+      if (!data.paid_information) data.is_paid_event = false;
+      else {
+        data.is_paid_event = true;
+        const date = new Date();
+        const paytime = String(data.paid_information.paytime).split(":");
+        date.setHours(Number(paytime[0]));
+        date.setMinutes(Number(paytime[1]));
+        data.paid_information.paytime = date; 
+      }
+    }
+  }
+  
   /**
    * Update the form-data when the opened event changes
    */
   useEffect(() => {
+    isPaidEvent();
     setValues(data || null);
   }, [data, setValues]);
 
@@ -178,6 +193,10 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   };
 
   const remove = async () => {
+    if (data) {
+      if (data.paid_information) data.is_paid_event = true;
+      else data.is_paid_event = false;
+    }
     deleteEvent.mutate(null, {
       onSuccess: (data) => {
         showSnackbar(data.detail, 'success');
@@ -201,9 +220,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   };
 
   const submit: SubmitHandler<FormValues> = async (data) => {
-
     let event;
-  
     if (data.is_paid_event) {
       event = {
         ...data,
@@ -216,8 +233,8 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         is_paid_event: data.is_paid_event,
         paid_information: {
           price: data.price ? data.price : 0,
-          paytime:  formatMinutes(data.paytime ? data.paytime : 0)
-        }
+          paytime: data.paytime ? data.paytime.toTimeString().split(" ")[0] : "00:00",
+        },
       } as unknown as EventMutate;
     } else {
       event = {
@@ -228,11 +245,9 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         sign_off_deadline: data.sign_off_deadline.toJSON(),
         start_date: data.start_date.toJSON(),
         start_registration_at: data.start_registration_at.toJSON(),
-        is_paid_event: data.is_paid_event
+        is_paid_event: data.is_paid_event,
       } as unknown as EventMutate;
     }
-
-    console.log(event)
     if (eventId) {
       await updateEvent.mutate(event, {
         onSuccess: () => {
@@ -266,7 +281,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const updateDates = (start?: Date) => {
     if (start && start instanceof Date && !isNaN(start.valueOf())) {
       const getDate = (daysBefore: number, hour: number) =>
-        startOfHour(setHours(subDays(start, daysBefore), daysBefore === 0 ? Math.min(hour, start.getHours()) : hour));
+      startOfHour(setHours(subDays(start, daysBefore), daysBefore === 0 ? Math.min(hour, start.getHours()) : hour));
       setValue('start_registration_at', getDate(7, 12));
       setValue('end_registration_at', getDate(0, 12));
       setValue('sign_off_deadline', getDate(1, 12));
@@ -495,16 +510,23 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           />
 
           {watchPaidEvent && (
-            <Box>
-              <TextField formState={formState} label='Pris' type='number' {...register('price', { required: 'Gi arrangementet en pris' })} />
-              <TextField
-                formState={formState}
-                label='Betalingsfrist'
-                placeholder='Skriv inn antall minuttter'
-                type='number'
-                {...register('paytime', { required: 'Gi arrangementet en betalingsfrist i minutter' })}
+            <Row>
+              <TextField 
+                formState={formState} 
+                label='Pris' 
+                type='number' 
+                {...register('price', { required: 'Gi arrangementet en pris' })} 
+                required={watchPaidEvent}
               />
-            </Box>
+              <TimePicker 
+                control={control}
+                formState={formState}
+                label={"Betalingsfrist"}
+                name="paytime"
+                required={watchPaidEvent}
+                type="time"
+              />
+            </Row>
           )}
 
           <RendererPreview getContent={getEventPreview} renderer={EventRenderer} sx={{ my: 2 }} />
