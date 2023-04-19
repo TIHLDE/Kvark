@@ -1,5 +1,5 @@
 import { SafetyDividerRounded, ViewColumn } from '@mui/icons-material';
-import { Box, Collapse, Grid, LinearProgress, ListSubheader, MenuItem, Stack, TextFieldProps, styled } from '@mui/material';
+import { Box, Collapse, Grid, LinearProgress, ListSubheader, MenuItem, Stack, styled, TextFieldProps } from '@mui/material';
 import { FormGroup } from '@mui/material';
 import { FormControlLabel } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
@@ -22,11 +22,11 @@ import EventRenderer from 'pages/EventDetails/components/EventRenderer';
 
 import Bool from 'components/inputs/Bool';
 import DatePicker from 'components/inputs/DatePicker';
-import TimePicker from 'components/inputs/TimePicker';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
+import TimePicker from 'components/inputs/TimePicker';
 import { formatMinutes } from 'components/inputs/TimePicker';
 import { ImageUpload } from 'components/inputs/Upload';
 import { StandaloneExpand } from 'components/layout/Expand';
@@ -121,18 +121,19 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
 
   const isPaidEvent = () => {
     if (data) {
-      if (!data.paid_information) data.is_paid_event = false;
-      else {
+      if (!data.paid_information) {
+        data.is_paid_event = false;
+      } else {
         data.is_paid_event = true;
         const date = new Date();
-        const paytime = String(data.paid_information.paytime).split(":");
+        const paytime = String(data.paid_information.paytime).split(':');
         date.setHours(Number(paytime[0]));
         date.setMinutes(Number(paytime[1]));
-        data.paid_information.paytime = date; 
+        data.paid_information.paytime = date;
       }
     }
-  }
-  
+  };
+
   /**
    * Update the form-data when the opened event changes
    */
@@ -194,8 +195,11 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
 
   const remove = async () => {
     if (data) {
-      if (data.paid_information) data.is_paid_event = true;
-      else data.is_paid_event = false;
+      if (data.paid_information) {
+        data.is_paid_event = true;
+      } else {
+        data.is_paid_event = false;
+      }
     }
     deleteEvent.mutate(null, {
       onSuccess: (data) => {
@@ -233,7 +237,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         is_paid_event: data.is_paid_event,
         paid_information: {
           price: data.price ? data.price : 0,
-          paytime: data.paytime ? data.paytime.toTimeString().split(" ")[0] : "00:00",
+          paytime: data.paytime ? data.paytime.toTimeString().split(' ')[0] : '00:00',
         },
       } as unknown as EventMutate;
     } else {
@@ -281,7 +285,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const updateDates = (start?: Date) => {
     if (start && start instanceof Date && !isNaN(start.valueOf())) {
       const getDate = (daysBefore: number, hour: number) =>
-      startOfHour(setHours(subDays(start, daysBefore), daysBefore === 0 ? Math.min(hour, start.getHours()) : hour));
+        startOfHour(setHours(subDays(start, daysBefore), daysBefore === 0 ? Math.min(hour, start.getHours()) : hour));
       setValue('start_registration_at', getDate(7, 12));
       setValue('end_registration_at', getDate(0, 12));
       setValue('sign_off_deadline', getDate(1, 12));
@@ -511,21 +515,14 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
 
           {watchPaidEvent && (
             <Row>
-              <TextField 
-                formState={formState} 
-                label='Pris' 
-                type='number' 
-                {...register('price', { required: 'Gi arrangementet en pris' })} 
-                required={watchPaidEvent}
-              />
-              <TimePicker 
-                control={control}
+              <TextField
                 formState={formState}
-                label={"Betalingsfrist"}
-                name="paytime"
+                label='Pris'
+                type='number'
+                {...register('price', { required: 'Gi arrangementet en pris' })}
                 required={watchPaidEvent}
-                type="time"
               />
+              <TimePicker control={control} formState={formState} label={'Betalingsfrist'} name='paytime' required={watchPaidEvent} type='time' />
             </Row>
           )}
 

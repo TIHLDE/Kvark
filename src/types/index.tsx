@@ -11,3 +11,4 @@ export * from 'types/User';
 export * from 'types/Gallery';
 export * from 'types/Toddel';
 export * from 'types/Wiki';
+export * from 'types/Order';

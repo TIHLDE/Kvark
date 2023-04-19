@@ -67,8 +67,8 @@ const TimePicker = <FormValues extends FieldValues>({
         <Picker
           {...field}
           {...timeProps}
-          label={label}
           ampm={false}
+          label={label}
           onChange={(e) => {
             field.onChange(e);
             if (onTimeChange) {

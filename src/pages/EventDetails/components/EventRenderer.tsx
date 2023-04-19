@@ -34,6 +34,7 @@ import {
   useEventIsFavorite,
   useEventRegistration,
   useEventSetIsFavorite,
+  useOrder,
   useUpdateEventRegistration,
 } from 'hooks/Event';
 import { useSetRedirectUrl } from 'hooks/Misc';
@@ -71,15 +72,6 @@ const DetailsHeader = styled(Typography)({
   fontSize: '1.5rem',
 });
 
-const DisplayCountdown: React.FC = () => {
-  return (
-    <div>
-      <h1>Countdown Timer</h1>
-      <CountdownTimer />
-    </div>
-  );
-};
-
 export type EventRendererProps = {
   data: Event;
   preview?: boolean;
@@ -89,6 +81,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const { event } = useAnalytics();
   const { data: user } = useUser();
   const { data: registration } = useEventRegistration(data.id, preview || !user ? '' : user.user_id);
+  const { data: order } = useOrder(data.id, user?.user_id || "");
   const deleteRegistration = useDeleteEventRegistration(data.id);
   const setLogInRedirectURL = useSetRedirectUrl();
   const showSnackbar = useSnackbar();
@@ -130,12 +123,13 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     );
   };
 
-  useEffect(() => console.log(data), [])
+  useEffect(() => console.log(data), [data]);
   useEffect(() => data.paid_information && setIsPaidEvent(true), []);
 
   useEffect(() => {
     setAllowPhoto(registration?.allow_photo || true);
   }, [registration]);
+
 
   const signUp = async () => {
     setIsLoadingSignUp(true);
@@ -192,9 +186,17 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           </>
         ) : (
           <>
-            <Alert icon severity='warning' variant='outlined'>
-              {`Du er ${registration.has_attended ? 'deltatt' : 'meldt'} på arrangementet! Men du må huske å betale`}
-            </Alert>
+            {
+              isPaidEvent
+                ?
+                <Alert icon severity='warning' variant='outlined'>
+                  {`Du er ${registration.has_attended ? 'deltatt' : 'meldt'} på arrangementet! Men du må huske å betale`}
+                </Alert>
+                :
+                <Alert icon severity="success" variant='outlined'>
+                  {`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}
+                </Alert>
+            }
 
             {registration.survey_submission.answers.length > 0 && (
               <div>
@@ -433,22 +435,23 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       <Stack gap={1} sx={{ width: '100%' }}>
         <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         {lgDown && <Info />}
-        {registration && isPaidEvent ? (
-          <ContentPaper>
-            <Typography
-              align='center'
-              gutterBottom
-              sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }}
-              variant='h2'>
-              Gjenstående tid
-              <CountdownTimer />
-              <img
-                onClick={() => 2}
-                src='https://raw.githubusercontent.com/vippsas/vipps-design-guidelines/fd670b41ac52715c11b8f7826732ca48eb71cca9/images/style.svg'
-                width='40%'
-              />
-            </Typography>
-          </ContentPaper>
+        {registration && order && isPaidEvent ? (
+          // <ContentPaper>
+          //   <Typography
+          //     align='center'
+          //     gutterBottom
+          //     sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }}
+          //     variant='h2'>
+          //     Gjenstående tid
+          //     <CountdownTimer />
+          //     <img
+          //       onClick={() => 2}
+          //       src='https://raw.githubusercontent.com/vippsas/vipps-design-guidelines/fd670b41ac52715c11b8f7826732ca48eb71cca9/images/style.svg'
+          //       width='40%'
+          //     />
+          //   </Typography>
+          // </ContentPaper>
+          <CountdownTimer payment_link={order.payment_link} expire_date={order.expire_date} />
         ) : (
           <></>
         )}

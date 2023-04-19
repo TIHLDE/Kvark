@@ -1,50 +1,83 @@
-import { addHours } from 'date-fns';
-import React, { createContext, useEffect, useState } from 'react';
+import styled from "@emotion/styled";
+import { Link, Typography } from "@mui/material";
+import Paper from "components/layout/Paper";
+import vipps from "../../../public/img/vipps.svg";
+import React, { useEffect, useState } from "react";
 
-const CountdownContext = createContext({});
+const ContentPaper = styled(Paper)({
+    height: 'fit-content',
+    overflowX: 'auto'
+});
 
-const CountdownProvider: React.FC = ({ children }) => {
-  const [timeLeft, setTimeLeft] = useState(3600);
+const getTimeDifference = (time: Date) => {
+    const now = new Date();
+    const myDate = new Date(time);
 
-  useEffect(() => {
-    const endTime = addHours(new Date(), 1);
-    const intervalId = setInterval(() => {
-      const now = new Date();
-      const distance = endTime.getTime() - now.getTime();
+    return myDate.getTime() - now.getTime();
 
-      if (distance >= 0) {
-        setTimeLeft(Math.floor(distance / 1000));
-      }
-    }, 1000);
 
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
+}
 
-  return <CountdownContext.Provider value={{ timeLeft }}>{children}</CountdownContext.Provider>;
-};
+const convertTime = (milliseconds: number) => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    
+    return `${hours}:${minutes}:${seconds}`;
+}
 
-const CountdownTimer: React.FC = () => {
-  const { timeLeft } = React.useContext(CountdownContext);
+interface Order {
+    payment_link: string,
+    expire_date: Date
+}
 
-  const hours = Math.floor(timeLeft / 3600);
-  const minutes = Math.floor((timeLeft % 3600) / 60);
-  const seconds = timeLeft % 60;
+const CountdownTimer: React.FC<Order> = ({ payment_link, expire_date }) => {
 
-  return (
-    <div>
-      {hours.toString().padStart(2, '0')}:{minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
-    </div>
-  );
-};
+    const [timeLeft, setTimeLeft] = useState("");
 
-const App: React.FC = () => {
-  return (
-    <CountdownProvider>
-      <CountdownTimer />
-    </CountdownProvider>
-  );
-};
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const distance = getTimeDifference(expire_date);
+        
+            if (distance >= 0) {
+                setTimeLeft(convertTime(distance));
+            }
+            }, 1000);
+        
+            return () => {
+            clearInterval(interval);
+        };
+    }, []);
 
-export default App;
+    return (
+        <ContentPaper>
+            <Typography
+                align='center'
+                gutterBottom
+                sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }}
+                variant='h2'
+            >
+                Gjenstående tid
+            </Typography>
+            <Typography
+                align="center"
+                sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }}
+                variant='h2'
+            >
+                { timeLeft }
+            </Typography>
+            <Link
+                href={payment_link}
+            >
+                <img 
+                    width="40%"
+                    src={vipps} 
+                    alt="Betaling med vipps" 
+                />
+            </Link>
+        </ContentPaper>
+    );
+}
+
+export default CountdownTimer;
