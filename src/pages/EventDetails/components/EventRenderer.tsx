@@ -23,7 +23,7 @@ import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 'utils';
 
-import { Event, Registration } from 'types';
+import { Event, Order, Registration, RequestResponse } from 'types';
 
 import API from 'api/api';
 
@@ -135,7 +135,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     const getNewOrder = async () => {
       if (user && registration && mounted) {
         setIsOrderLoading(true);
-        const newOrderInfo: any = await API.getOrder(data.id, user.user_id);
+        const newOrderInfo = await API.getOrder(data.id, user.user_id);
         setOrder(newOrderInfo);
         setIsOrderLoading(false);
       }
