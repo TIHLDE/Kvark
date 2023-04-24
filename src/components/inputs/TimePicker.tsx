@@ -1,9 +1,3 @@
-import {
-  DatePicker as MuiDatePicker,
-  DatePickerProps as MuiDatePickerProps,
-  DateTimePicker as MuiDateTimePicker,
-  DateTimePickerProps as MuiDateTimePickerProps,
-} from '@mui/lab';
 import { TimePicker as MuiTimePicker, TimePickerProps as MuiTimePickerProps } from '@mui/lab';
 import { TextField as MuiTextField, TextFieldProps } from '@mui/material';
 import { Controller, FieldError, FieldValues, Path, PathValue, RegisterOptions, UnpackNestedValue, UseFormReturn } from 'react-hook-form';
@@ -18,17 +12,6 @@ export function formatMinutes(minutes: number): string {
   const minutesStr = remainingMinutes < 10 ? `0${remainingMinutes}` : `${remainingMinutes}`;
   return `${hoursStr}:${minutesStr}`;
 }
-
-export type DatePickerProps<FormValues extends FieldValues = FieldValues> = TextFieldProps &
-  Pick<UseFormReturn<FormValues>, 'formState' | 'control'> & {
-    name: Path<FormValues>;
-    rules?: RegisterOptions;
-    label: string;
-    defaultValue?: string;
-    dateProps?: Partial<MuiDatePickerProps> & Partial<MuiDateTimePickerProps>;
-    type: 'date' | 'date-time';
-    onDateChange?: (date?: Date) => void;
-  };
 
 export type TimePickerProps<FormValues extends FieldValues = FieldValues> = TextFieldProps &
   Pick<UseFormReturn<FormValues>, 'formState' | 'control'> & {
