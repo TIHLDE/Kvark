@@ -81,7 +81,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const { event } = useAnalytics();
   const { data: user } = useUser();
   const { data: registration } = useEventRegistration(data.id, preview || !user ? '' : user.user_id);
-  const orderInfo = useOrder(data.id, user?.user_id || '');
   const deleteRegistration = useDeleteEventRegistration(data.id);
   const setLogInRedirectURL = useSetRedirectUrl();
   const showSnackbar = useSnackbar();
@@ -98,6 +97,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const [allowPhoto, setAllowPhoto] = useState(true);
   const [isLoadingSignUp, setIsLoadingSignUp] = useState(false);
   const [isPaidEvent, setIsPaidEvent] = useState(false);
+  const [isRegistrationPaid, setIsRegistrationPaid] = useState(false);
 
   const { run } = useConfetti();
 
@@ -123,10 +123,12 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     );
   };
 
+
   useEffect(() => data.paid_information && setIsPaidEvent(true), []);
 
   useEffect(() => {
     setAllowPhoto(registration?.allow_photo || true);
+    registration?.has_paid_order && setIsRegistrationPaid(true);
   }, [registration]);
 
   const signUp = async () => {
@@ -184,7 +186,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           </>
         ) : (
           <>
-            {isPaidEvent ? (
+            {isPaidEvent && !isRegistrationPaid ? (
               <Alert icon severity='warning' variant='outlined'>
                 {`Du er ${registration.has_attended ? 'deltatt' : 'meldt'} på arrangementet! Men du må huske å betale`}
               </Alert>
@@ -431,7 +433,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       <Stack gap={1} sx={{ width: '100%' }}>
         <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         {lgDown && <Info />}
-        {registration && isPaidEvent ? <CountdownTimer expire_date={registration.order.expire_date} payment_link={registration.order.payment_link} /> : <></>}
+        {registration && isPaidEvent && !isRegistrationPaid 
+          ? <CountdownTimer expire_date={registration.order.expire_date} payment_link={registration.order.payment_link} /> 
+          : <></>}
         <ContentPaper>
           <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h1'>
             {data.title}

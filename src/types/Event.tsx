@@ -84,6 +84,7 @@ export type Registration = {
   has_unanswered_evaluation: boolean;
   user_info: UserList;
   order: Order;
+  has_paid_order?: boolean;
 };
 
 export type PublicRegistration = {
