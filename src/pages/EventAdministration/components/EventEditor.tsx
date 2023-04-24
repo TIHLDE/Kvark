@@ -1,11 +1,7 @@
-import { SafetyDividerRounded, ViewColumn } from '@mui/icons-material';
-import { Box, Collapse, Grid, LinearProgress, ListSubheader, MenuItem, Stack, styled, TextFieldProps } from '@mui/material';
-import { FormGroup } from '@mui/material';
-import { FormControlLabel } from '@mui/material';
-import Checkbox from '@mui/material/Checkbox';
-import { getValue } from '@mui/system';
+import { SafetyDividerRounded } from '@mui/icons-material';
+import { Collapse, Grid, LinearProgress, ListSubheader, MenuItem, Stack, styled } from '@mui/material';
 import { addHours, parseISO, setHours, startOfHour, subDays } from 'date-fns';
-import { JSXElementConstructor, ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { BaseGroup, Event, EventMutate, Group, PriorityPool, PriorityPoolMutate } from 'types';
@@ -27,7 +23,6 @@ import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import TimePicker from 'components/inputs/TimePicker';
-import { formatMinutes } from 'components/inputs/TimePicker';
 import { ImageUpload } from 'components/inputs/Upload';
 import { StandaloneExpand } from 'components/layout/Expand';
 import VerifyDialog from 'components/layout/VerifyDialog';

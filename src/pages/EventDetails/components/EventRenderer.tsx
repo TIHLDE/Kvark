@@ -11,7 +11,6 @@ import {
   Skeleton,
   Stack,
   styled,
-  SvgIcon,
   Theme,
   Tooltip,
   Typography,
@@ -25,6 +24,8 @@ import URLS from 'URLS';
 import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 'utils';
 
 import { Event, Registration } from 'types';
+
+import API from 'api/api';
 
 import { useCategories } from 'hooks/Categories';
 import { useConfetti } from 'hooks/Confetti';
@@ -54,7 +55,6 @@ import VerifyDialog from 'components/layout/VerifyDialog';
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import QRButton from 'components/miscellaneous/QRButton';
 import ShareButton from 'components/miscellaneous/ShareButton';
 
 const DetailsPaper = styled(Paper)(({ theme }) => ({
@@ -81,7 +81,10 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const { event } = useAnalytics();
   const { data: user } = useUser();
   const { data: registration } = useEventRegistration(data.id, preview || !user ? '' : user.user_id);
-  const { data: order } = useOrder(data.id, user?.user_id || "");
+  // const [order, setOrder] = useState<Order>();
+  const orderInfo = useOrder(data.id, user?.user_id || '');
+  const [order, setOrder] = useState<any>(orderInfo);
+  const [isOrderLoading, setIsOrderLoading] = useState(false);
   const deleteRegistration = useDeleteEventRegistration(data.id);
   const setLogInRedirectURL = useSetRedirectUrl();
   const showSnackbar = useSnackbar();
@@ -123,13 +126,25 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     );
   };
 
-  useEffect(() => console.log(data), [data]);
   useEffect(() => data.paid_information && setIsPaidEvent(true), []);
 
   useEffect(() => {
     setAllowPhoto(registration?.allow_photo || true);
-  }, [registration]);
 
+    let mounted = true;
+    const getNewOrder = async () => {
+      if (user && registration && mounted) {
+        setIsOrderLoading(true);
+        const newOrderInfo: any = await API.getOrder(data.id, user.user_id);
+        setOrder(newOrderInfo);
+        setIsOrderLoading(false);
+      }
+    };
+
+    getNewOrder();
+
+    mounted = false;
+  }, [registration]);
 
   const signUp = async () => {
     setIsLoadingSignUp(true);
@@ -186,17 +201,15 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           </>
         ) : (
           <>
-            {
-              isPaidEvent
-                ?
-                <Alert icon severity='warning' variant='outlined'>
-                  {`Du er ${registration.has_attended ? 'deltatt' : 'meldt'} på arrangementet! Men du må huske å betale`}
-                </Alert>
-                :
-                <Alert icon severity="success" variant='outlined'>
-                  {`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}
-                </Alert>
-            }
+            {isPaidEvent ? (
+              <Alert icon severity='warning' variant='outlined'>
+                {`Du er ${registration.has_attended ? 'deltatt' : 'meldt'} på arrangementet! Men du må huske å betale`}
+              </Alert>
+            ) : (
+              <Alert icon severity='success' variant='outlined'>
+                {`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}
+              </Alert>
+            )}
 
             {registration.survey_submission.answers.length > 0 && (
               <div>
@@ -435,7 +448,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       <Stack gap={1} sx={{ width: '100%' }}>
         <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         {lgDown && <Info />}
-        {registration && order && isPaidEvent ? (
+        {registration && order && !isOrderLoading && isPaidEvent ? (
           // <ContentPaper>
           //   <Typography
           //     align='center'
@@ -451,7 +464,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           //     />
           //   </Typography>
           // </ContentPaper>
-          <CountdownTimer payment_link={order.payment_link} expire_date={order.expire_date} />
+          <CountdownTimer expire_date={order?.expire_date} payment_link={order?.payment_link} />
         ) : (
           <></>
         )}

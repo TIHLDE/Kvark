@@ -1,4 +1,4 @@
-import { Box, ListItemButton, ListItemButtonProps, Skeleton, Stack, Typography } from '@mui/material';
+import { ListItemButton, ListItemButtonProps, Skeleton, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 

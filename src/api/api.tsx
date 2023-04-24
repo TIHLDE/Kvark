@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ifError } from 'assert';
 
 import {
   Badge,
@@ -133,7 +132,8 @@ export default {
     IFetch<EventFavorite>({ method: 'PUT', url: `${EVENTS_ENDPOINT}/${String(eventId)}/favorite/`, data }),
 
   // Event order
-  getOrder: (eventId: Event["id"], userId: User["user_id"]) => IFetch<Order>({ method: "GET", url: `${ORDER_ENPOINT}`, data: { user_id: userId, event: eventId } }),
+  getOrder: (eventId: Event['id'], userId: User['user_id']) =>
+    IFetch<Order>({ method: 'GET', url: `${ORDER_ENPOINT}`, data: { user_id: userId, event: eventId } }),
 
   // Event registrations
   getRegistration: (eventId: Event['id'], userId: User['user_id']) =>

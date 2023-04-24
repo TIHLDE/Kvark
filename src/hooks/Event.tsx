@@ -22,7 +22,7 @@ import { NOTIFICATION_QUERY_KEY } from 'hooks/Notification';
 import { USER_EVENTS_QUERY_KEY, USER_QUERY_KEY } from 'hooks/User';
 
 export const EVENT_QUERY_KEYS = {
-  payment: ["payment/order"] as const,
+  payment: ['payment/order'] as const,
   all: ['event'] as const,
   list: (filters?: any) => [...EVENT_QUERY_KEYS.all, 'list', ...(filters ? [filters] : [])] as const,
   list_admin: (filters?: any) => [...EVENT_QUERY_KEYS.all, 'admin_list', ...(filters ? [filters] : [])] as const,
@@ -35,15 +35,14 @@ export const EVENT_QUERY_KEYS = {
     list: (eventId: Event['id'], filters?: any) => [...EVENT_QUERY_KEYS.registrations.all(eventId), 'list', ...(filters ? [filters] : [])] as const,
     detail: (eventId: Event['id'], userId: User['user_id']) => [...EVENT_QUERY_KEYS.registrations.all(eventId), userId] as const,
   },
-  order: (eventId: Event["id"], userId: User["user_id"]) => [...EVENT_QUERY_KEYS.payment, eventId, userId] as const
+  order: (eventId: Event['id'], userId: User['user_id']) => [...EVENT_QUERY_KEYS.payment, eventId, userId] as const,
 };
 
 export const useEventById = (eventId: Event['id']) =>
   useQuery<Event, RequestResponse>(EVENT_QUERY_KEYS.detail(eventId), () => API.getEvent(eventId), { enabled: eventId !== -1 });
 
-export const useOrder = (eventId: Event["id"], userId: User["user_id"]) => 
+export const useOrder = (eventId: Event['id'], userId: User['user_id']) =>
   useQuery<Order, RequestResponse>(EVENT_QUERY_KEYS.order(eventId, userId), () => API.getOrder(eventId, userId));
-
 
 export const useEvents = (filters?: any) =>
   useInfiniteQuery<PaginationResponse<EventList>, RequestResponse>(

@@ -14,7 +14,6 @@ import { Controller, FieldError, FieldValues, Path, PathValue, RegisterOptions, 
 export function formatMinutes(minutes: number): string {
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = minutes % 60;
-  const remainingHours = minutes % 60;
   const hoursStr = hours < 10 ? `0${hours}` : `${hours}`;
   const minutesStr = remainingMinutes < 10 ? `0${remainingMinutes}` : `${remainingMinutes}`;
   return `${hoursStr}:${minutesStr}`;
@@ -43,7 +42,6 @@ export type TimePickerProps<FormValues extends FieldValues = FieldValues> = Text
   };
 
 const TimePicker = <FormValues extends FieldValues>({
-  type,
   name,
   label,
   control,
@@ -73,63 +71,6 @@ const TimePicker = <FormValues extends FieldValues>({
             field.onChange(e);
             if (onTimeChange) {
               onTimeChange(e as unknown as Date);
-            }
-          }}
-          renderInput={(params) => (
-            <MuiTextField
-              margin='normal'
-              variant='outlined'
-              {...params}
-              error={Boolean(error)}
-              helperText={
-                <>
-                  {error?.message}
-                  {helperText && Boolean(error) && <br />}
-                  {helperText}
-                </>
-              }
-              {...props}
-            />
-          )}
-        />
-      )}
-      rules={rules}
-    />
-  );
-};
-
-const DatePicker = <FormValues extends FieldValues>({
-  type,
-  name,
-  label,
-  control,
-  formState,
-  rules = {},
-  defaultValue = '',
-  dateProps,
-  onDateChange,
-  helperText,
-  ...props
-}: DatePickerProps<FormValues>) => {
-  const { [name]: fieldError } = formState.errors;
-  const error = fieldError as FieldError;
-  const Picker = type === 'date' ? MuiDatePicker : MuiDateTimePicker;
-  return (
-    <Controller
-      control={control}
-      defaultValue={defaultValue as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>}
-      name={name}
-      render={({ field }) => (
-        <Picker
-          {...field}
-          {...dateProps}
-          ampm={false}
-          inputFormat={type === 'date' ? 'dd/MM/yyyy' : 'dd/MM/yyyy HH:mm'}
-          label={label}
-          onChange={(e) => {
-            field.onChange(e);
-            if (onDateChange) {
-              onDateChange(e as Date | undefined);
             }
           }}
           renderInput={(params) => (

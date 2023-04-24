@@ -25,26 +25,22 @@ const CountdownProvider: React.FC = ({ children }) => {
   return <CountdownContext.Provider value={{ timeLeft }}>{children}</CountdownContext.Provider>;
 };
 
-const CountDownTimer: React.FC = () => {
-  const { timeLeft } = React.useContext(CountdownContext);
+// const CountDownTimer: React.FC = () => {
+//   // const { timeLeft } = React.useContext(CountdownContext);
 
-  const hours = Math.floor(timeLeft / 3600);
-  const minutes = Math.floor((timeLeft % 3600) / 60);
-  const seconds = timeLeft % 60;
+//   // const hours = Math.floor(timeLeft / 3600);
+//   // const minutes = Math.floor((timeLeft % 3600) / 60);
+//   // const seconds = timeLeft % 60;
 
-  return (
-    <div>
-      {hours.toString().padStart(2, '0')}:{minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
-    </div>
-  );
-};
+//   // return (
+//   //   <div>
+//   //     {hours.toString().padStart(2, '0')}:{minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
+//   //   </div>
+//   // );
+// };
 
 const App: React.FC = () => {
-  return (
-    <CountdownProvider>
-      <CountDownTimer />
-    </CountdownProvider>
-  );
+  return <CountdownProvider>{/* <CountDownTimer /> */}</CountdownProvider>;
 };
 
 export default App;
