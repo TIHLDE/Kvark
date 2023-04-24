@@ -2,6 +2,7 @@ import { UserSubmission } from 'types/Form';
 import { BaseGroup, Group } from 'types/Group';
 import { Permissions } from 'types/Misc';
 import { UserList } from 'types/User';
+import { Order } from './Order';
 
 export type Category = {
   created_at: string;
@@ -81,6 +82,7 @@ export type Registration = {
   survey_submission: UserSubmission;
   has_unanswered_evaluation: boolean;
   user_info: UserList;
+  order: Order;
 };
 
 export type PublicRegistration = {

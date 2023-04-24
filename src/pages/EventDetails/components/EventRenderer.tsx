@@ -81,10 +81,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const { event } = useAnalytics();
   const { data: user } = useUser();
   const { data: registration } = useEventRegistration(data.id, preview || !user ? '' : user.user_id);
-  // const [order, setOrder] = useState<Order>();
   const orderInfo = useOrder(data.id, user?.user_id || '');
-  const [order, setOrder] = useState<any>(orderInfo);
-  const [isOrderLoading, setIsOrderLoading] = useState(false);
   const deleteRegistration = useDeleteEventRegistration(data.id);
   const setLogInRedirectURL = useSetRedirectUrl();
   const showSnackbar = useSnackbar();
@@ -130,20 +127,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
 
   useEffect(() => {
     setAllowPhoto(registration?.allow_photo || true);
-
-    let mounted = true;
-    const getNewOrder = async () => {
-      if (user && registration && mounted) {
-        setIsOrderLoading(true);
-        const newOrderInfo = await API.getOrder(data.id, user.user_id);
-        setOrder(newOrderInfo);
-        setIsOrderLoading(false);
-      }
-    };
-
-    getNewOrder();
-
-    mounted = false;
   }, [registration]);
 
   const signUp = async () => {
@@ -448,23 +431,8 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       <Stack gap={1} sx={{ width: '100%' }}>
         <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         {lgDown && <Info />}
-        {registration && order && !isOrderLoading && isPaidEvent ? (
-          // <ContentPaper>
-          //   <Typography
-          //     align='center'
-          //     gutterBottom
-          //     sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }}
-          //     variant='h2'>
-          //     Gjenstående tid
-          //     <CountdownTimer />
-          //     <img
-          //       onClick={() => 2}
-          //       src='https://raw.githubusercontent.com/vippsas/vipps-design-guidelines/fd670b41ac52715c11b8f7826732ca48eb71cca9/images/style.svg'
-          //       width='40%'
-          //     />
-          //   </Typography>
-          // </ContentPaper>
-          <CountdownTimer expire_date={order?.expire_date} payment_link={order?.payment_link} />
+        {registration && isPaidEvent ? (
+          <CountdownTimer expire_date={registration.order.expire_date} payment_link={registration.order.payment_link} />
         ) : (
           <></>
         )}
