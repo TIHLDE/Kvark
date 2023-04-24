@@ -2,6 +2,7 @@ import { UserSubmission } from 'types/Form';
 import { BaseGroup, Group } from 'types/Group';
 import { Permissions } from 'types/Misc';
 import { UserList } from 'types/User';
+
 import { Order } from './Order';
 
 export type Category = {

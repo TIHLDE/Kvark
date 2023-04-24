@@ -431,11 +431,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       <Stack gap={1} sx={{ width: '100%' }}>
         <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         {lgDown && <Info />}
-        {registration && isPaidEvent ? (
-          <CountdownTimer expire_date={registration.order.expire_date} payment_link={registration.order.payment_link} />
-        ) : (
-          <></>
-        )}
+        {registration && isPaidEvent ? <CountdownTimer expire_date={registration.order.expire_date} payment_link={registration.order.payment_link} /> : <></>}
         <ContentPaper>
           <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h1'>
             {data.title}
