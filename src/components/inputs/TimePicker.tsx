@@ -2,9 +2,6 @@ import { TimePicker as MuiTimePicker, TimePickerProps as MuiTimePickerProps } fr
 import { TextField as MuiTextField, TextFieldProps } from '@mui/material';
 import { Controller, FieldError, FieldValues, Path, PathValue, RegisterOptions, UnpackNestedValue, UseFormReturn } from 'react-hook-form';
 
-// TODO: finish TimePicker component
-
-// for now, use this function
 export function formatMinutes(minutes: number): string {
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = minutes % 60;
@@ -39,6 +36,20 @@ const TimePicker = <FormValues extends FieldValues>({
   const { [name]: fieldError } = formState.errors;
   const error = fieldError as FieldError;
   const Picker = MuiTimePicker;
+
+  const customRules: RegisterOptions = {
+    ...rules,
+    validate: (value) => {
+      const time = new Date(value);
+      const hours = time.getHours();
+      const minutes = time.getMinutes();
+      if ((hours === 12 && minutes > 0) || hours > 12) {
+        return 'Tiden kan ikke overstige 12 timer';
+      }
+      return true;
+    },
+  };
+
   return (
     <Controller
       control={control}
@@ -74,7 +85,7 @@ const TimePicker = <FormValues extends FieldValues>({
           )}
         />
       )}
-      rules={rules}
+      rules={customRules}
     />
   );
 };
