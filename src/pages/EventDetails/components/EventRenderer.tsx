@@ -23,7 +23,7 @@ import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 'utils';
 
-import { Event, Order, Registration, RequestResponse } from 'types';
+import { Event, Registration } from 'types';
 
 import API from 'api/api';
 
