@@ -52,6 +52,8 @@ const CountdownTimer: React.FC<Order> = ({ payment_link, expire_date }) => {
 
       if (distance && distance >= 0) {
         setTimeLeft(convertTime(distance));
+      } else {
+        window.location.reload();
       }
     }, 1000);
 

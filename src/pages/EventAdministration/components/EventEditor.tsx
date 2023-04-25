@@ -219,7 +219,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   };
 
   const submit: SubmitHandler<FormValues> = async (data) => {
-    let event;    
+    let event;
     if (data.is_paid_event) {
       event = {
         ...data,
@@ -248,7 +248,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       } as unknown as EventMutate;
     }
     if (eventId) {
-      console.log(event)
+      console.log(event);
       await updateEvent.mutate(event, {
         onSuccess: () => {
           showSnackbar('Arrangementet ble oppdatert', 'success');
