@@ -127,7 +127,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
 
   useEffect(() => {
     setAllowPhoto(registration?.allow_photo || true);
-    console.log(registration)
+    console.log(registration);
     registration?.has_paid_order && setIsRegistrationPaid(true);
   }, [registration]);
 
