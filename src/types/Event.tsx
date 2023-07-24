@@ -14,14 +14,14 @@ export type Category = {
 
 export type PaidInformation = {
   price: number;
-  paytime: Date;
+  paytime: string;
 };
 
 export type Event = {
   closed: boolean;
   category: number;
   price?: number;
-  paytime?: Date;
+  paytime?: string | Date;
   is_paid_event: boolean;
   paid_information?: PaidInformation;
   description: string;

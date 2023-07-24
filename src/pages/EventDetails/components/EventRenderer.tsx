@@ -25,8 +25,6 @@ import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 
 
 import { Event, Registration } from 'types';
 
-import API from 'api/api';
-
 import { useCategories } from 'hooks/Categories';
 import { useConfetti } from 'hooks/Confetti';
 import {
@@ -35,7 +33,6 @@ import {
   useEventIsFavorite,
   useEventRegistration,
   useEventSetIsFavorite,
-  useOrder,
   useUpdateEventRegistration,
 } from 'hooks/Event';
 import { useSetRedirectUrl } from 'hooks/Misc';
@@ -127,7 +124,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
 
   useEffect(() => {
     setAllowPhoto(registration?.allow_photo || true);
-    console.log(registration);
     registration?.has_paid_order && setIsRegistrationPaid(true);
   }, [registration]);
 

@@ -132,7 +132,7 @@ export default {
     IFetch<EventFavorite>({ method: 'PUT', url: `${EVENTS_ENDPOINT}/${String(eventId)}/favorite/`, data }),
 
   // Event order
-  getOrder: (eventId: Event['id'], userId: User['user_id']) =>
+  getEventPaymentOrder: (eventId: Event['id'], userId: User['user_id']) =>
     IFetch<Order>({ method: 'GET', url: `${ORDER_ENPOINT}`, data: { user_id: userId, event: eventId } }),
 
   // Event registrations
@@ -206,9 +206,6 @@ export default {
     IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/decline/`, data: { user_id: userName, reason } }),
   exportUserData: () => IFetch<RequestResponse>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/data/` }),
   deleteUser: (userId?: User['user_id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/` }),
-
-  getUserPaidHistories: (userId?: User['user_id']) =>
-    IFetch<PaginationResponse<paidHistory>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${MEMBERSHIP_HISTORIES_ENDPOINT}` }),
 
   // Notifications
   getNotifications: (filters?: any) => IFetch<PaginationResponse<Notification>>({ method: 'GET', url: `${NOTIFICATIONS_ENDPOINT}/`, data: filters || {} }),

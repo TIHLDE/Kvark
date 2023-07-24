@@ -3,7 +3,6 @@ import EventIcon from '@mui/icons-material/DateRangeRounded';
 import BadgesIcon from '@mui/icons-material/EmojiEventsRounded';
 import LogOutIcon from '@mui/icons-material/ExitToAppRounded';
 import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
-import PaidIcon from '@mui/icons-material/Paid';
 import GroupsIcon from '@mui/icons-material/PeopleOutlineRounded';
 import SettingsIcon from '@mui/icons-material/TuneRounded';
 import WorkspacesIcon from '@mui/icons-material/WorkspacesRounded';
@@ -39,7 +38,6 @@ import ProfileBadges from 'pages/Profile/components/ProfileBadges';
 import ProfileEvents from 'pages/Profile/components/ProfileEvents';
 import ProfileForms from 'pages/Profile/components/ProfileForms';
 import ProfileGroups from 'pages/Profile/components/ProfileGroups';
-import ProfilePaidHistory from 'pages/Profile/components/ProfilePaidHistory';
 import ProfileSettings from 'pages/Profile/components/ProfileSettings';
 import ProfileStrikes from 'pages/Profile/components/ProfileStrikes';
 
@@ -79,7 +77,6 @@ const Profile = () => {
     logOut();
   };
 
-  const paidHistoryTab: NavListItem = { label: 'Betalingshistorikk', icon: PaidIcon };
   const eventTab: NavListItem = { label: 'Arrangementer', icon: EventIcon };
   const badgesTab: NavListItem = { label: 'Badges', icon: BadgesIcon };
   const groupsTab: NavListItem = { label: 'Medlemskap', icon: GroupsIcon };
@@ -90,7 +87,7 @@ const Profile = () => {
   const logoutTab: NavListItem = { label: 'Logg ut', icon: LogOutIcon, onClick: logout, iconProps: { sx: { color: (theme) => theme.palette.error.main } } };
   const tabs: Array<NavListItem> = userId
     ? [badgesTab, groupsTab]
-    : [paidHistoryTab, eventTab, badgesTab, groupsTab, strikesTab, formsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
+    : [eventTab, badgesTab, groupsTab, strikesTab, formsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
 
   const [tab, setTab] = useState(userId ? badgesTab.label : eventTab.label);
 
@@ -175,9 +172,6 @@ const Profile = () => {
         <Box sx={{ overflowX: 'auto' }}>
           <Collapse in={tab === eventTab.label}>
             <ProfileEvents />
-          </Collapse>
-          <Collapse in={tab === paidHistoryTab.label}>
-            <ProfilePaidHistory />
           </Collapse>
           <Collapse in={tab === badgesTab.label} mountOnEnter>
             <ProfileBadges />
