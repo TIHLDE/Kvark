@@ -12,6 +12,10 @@
 
 ---
 
+## Nyeste versjon
+
+- 🦟 **Arrangement**. Knapp for å opprette arrangemnt på gruppesiden vises kun for admins.
+
 ## versjon 2023 04.17
 
 - ⚡ **Ny student**. Viser ny-student boks på forsiden fra 1.april.
