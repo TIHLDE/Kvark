@@ -50,4 +50,4 @@ const IS_BEFORE_SEPTEMBER_5TH = isBeforeDateOfYear(8, 5);
  */
 export const SHOW_NEW_STUDENT_INFO = IS_AFTER_APRIL_1ST && IS_BEFORE_SEPTEMBER_5TH;
 
-export const SHOW_FADDERUKA_INFO = isAfterDateOfYear(6, 20) && isAfterDateOfYear(8, 1);
+export const SHOW_FADDERUKA_INFO = isAfterDateOfYear(6, 20) && isBeforeDateOfYear(8, 1);
