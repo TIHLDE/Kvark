@@ -1,10 +1,8 @@
 import { keyframes } from '@emotion/react';
-import { OpenInNew } from '@mui/icons-material';
 import SignupIcon from '@mui/icons-material/AddRounded';
 import LoginIcon from '@mui/icons-material/LoginRounded';
 import ProfileIcon from '@mui/icons-material/PersonOutlineRounded';
-import { Box, Button, Typography } from '@mui/material';
-import { differenceInDays } from 'date-fns';
+import { Button, Typography } from '@mui/material';
 import { makeStyles } from 'makeStyles';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
@@ -197,20 +195,6 @@ const Wave = () => {
               </>
             )}
           </div>
-          <Typography color='white' fontSize={16} fontWeight={600} pt={3} textAlign='center'>
-            {differenceInDays(new Date('2023-03-20'), new Date())} dager til!
-          </Typography>
-          <Box
-            sx={{
-              width: 'fit-content',
-              margin: 'auto',
-              display: 'block',
-              marginTop: '10px',
-            }}>
-            <Button endIcon={<OpenInNew />} href='https://jubileum.tihlde.org/' target={'_blank'} variant='contained'>
-              Til Jubileumssiden
-            </Button>
-          </Box>
         </div>
         {/* Show snow if between November 15th and February 1st */}
         {(isAfterDateOfYear(10, 15) || isBeforeDateOfYear(1, 1)) && (
