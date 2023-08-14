@@ -1,5 +1,3 @@
-import { PLAUSIBLE_DOMAIN } from 'constant';
-import Plausible from 'plausible-tracker';
 import { lazy, ReactElement, Suspense, useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import URLS from 'URLS';
@@ -90,15 +88,6 @@ const AppRoutes = () => {
   const { event } = useAnalytics();
 
   useEffect(() => event('page_view', window.location.href, window.location.pathname), [location]);
-
-  useEffect(() => {
-    const { enableAutoPageviews } = Plausible({ domain: PLAUSIBLE_DOMAIN });
-    const cleanupPageViews = enableAutoPageviews();
-
-    return () => {
-      cleanupPageViews();
-    };
-  }, []);
 
   return (
     <Suspense fallback={<Page options={{ title: 'Laster...', filledTopbar: true }} />}>

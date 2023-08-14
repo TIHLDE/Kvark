@@ -1,11 +1,6 @@
 import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
 
 /**
- * Plausible analytics-domain
- */
-export const PLAUSIBLE_DOMAIN = import.meta.env.VITE_PLAUSIBLE_ANALYTICS;
-
-/**
  * Url to backend
  */
 export const TIHLDE_API_URL = import.meta.env.VITE_API_URL;
