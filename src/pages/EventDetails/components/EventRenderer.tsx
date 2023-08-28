@@ -93,6 +93,8 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const updateRegistration = useUpdateEventRegistration(data.id);
   const [allowPhoto, setAllowPhoto] = useState(true);
   const [isLoadingSignUp, setIsLoadingSignUp] = useState(false);
+
+  // TODO: do we need these useStates?
   const [isPaidEvent, setIsPaidEvent] = useState(false);
   const [isRegistrationPaid, setIsRegistrationPaid] = useState(false);
 
