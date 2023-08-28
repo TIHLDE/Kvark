@@ -33,7 +33,7 @@ export const EVENT_QUERY_KEYS = {
     all: (eventId: Event['id']) => [...EVENT_QUERY_KEYS.detail(eventId), 'registrations'] as const,
     list: (eventId: Event['id'], filters?: any) => [...EVENT_QUERY_KEYS.registrations.all(eventId), 'list', ...(filters ? [filters] : [])] as const,
     detail: (eventId: Event['id'], userId: User['user_id']) => [...EVENT_QUERY_KEYS.registrations.all(eventId), userId] as const,
-  }
+  },
 };
 
 export const useEventById = (eventId: Event['id']) =>

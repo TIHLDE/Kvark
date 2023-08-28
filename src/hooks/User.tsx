@@ -71,7 +71,6 @@ export const useUserBadges = (userId?: User['user_id']) =>
     },
   );
 
-
 export const useUserEvents = (userId?: User['user_id']) => {
   return useInfiniteQuery<PaginationResponse<EventList>, RequestResponse>(
     [USER_EVENTS_QUERY_KEY, userId],

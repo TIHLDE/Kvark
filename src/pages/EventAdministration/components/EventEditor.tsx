@@ -106,7 +106,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         enforces_previous_strikes: newValues ? newValues.enforces_previous_strikes : true,
         is_paid_event: Boolean(newValues?.paid_information),
         price: newValues?.paid_information?.price,
-        paytime: newValues?.paid_information?.paytime && parse(newValues?.paid_information.paytime, "HH:mm:ss", new Date()),
+        paytime: newValues?.paid_information?.paytime && parse(newValues?.paid_information.paytime, 'HH:mm:ss', new Date()),
       });
       if (!newValues) {
         setTimeout(() => updateDates(new Date()), 10);
@@ -198,17 +198,17 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
 
   const submit: SubmitHandler<FormValues> = async (data) => {
     const event = {
-        ...data,
-        priority_pools: priorityPools,
-        end_date: data.end_date.toJSON(),
-        end_registration_at: data.end_registration_at.toJSON(),
-        sign_off_deadline: data.sign_off_deadline.toJSON(),
-        start_date: data.start_date.toJSON(),
-        start_registration_at: data.start_registration_at.toJSON(),
-        is_paid_event: data.is_paid_event,
-        paid_information: {
-          price: data.price,
-          paytime: data.paytime && format(new Date(data.paytime), "HH:mm")
+      ...data,
+      priority_pools: priorityPools,
+      end_date: data.end_date.toJSON(),
+      end_registration_at: data.end_registration_at.toJSON(),
+      sign_off_deadline: data.sign_off_deadline.toJSON(),
+      start_date: data.start_date.toJSON(),
+      start_registration_at: data.start_registration_at.toJSON(),
+      is_paid_event: data.is_paid_event,
+      paid_information: {
+        price: data.price,
+        paytime: data.paytime && format(new Date(data.paytime), 'HH:mm'),
       },
     } as EventMutate;
     if (eventId) {
@@ -462,9 +462,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
             label={
               <>
                 Betalt arrangement
-                <ShowMoreTooltip>
-                  Bestemmer om arrangementet skal kreve betaling eller ikke.
-                </ShowMoreTooltip>
+                <ShowMoreTooltip>Bestemmer om arrangementet skal kreve betaling eller ikke.</ShowMoreTooltip>
               </>
             }
             name='is_paid_event'
@@ -480,14 +478,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 {...register('price', { required: 'Gi arrangementet en pris' })}
                 required={watchPaidEvent}
               />
-              <TimePicker 
-                control={control} 
-                formState={formState} 
-                label={'Betalingstid'} 
-                name='paytime' 
-                required={watchPaidEvent} 
-                type='time' 
-              />
+              <TimePicker control={control} formState={formState} label={'Betalingstid'} name='paytime' required={watchPaidEvent} type='time' />
             </Row>
           )}
 

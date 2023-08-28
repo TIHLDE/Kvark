@@ -123,7 +123,6 @@ export const usePersistedState = <T extends unknown>(key: string, defaultValue: 
 };
 
 export const useAnalytics = () => {
-
   /**
    * Create an event for tracking behaviour on the site.
    * @param category - The object that was interacted with, eg 'Video'
