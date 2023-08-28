@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { Link, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { millisecondsToHours, millisecondsToMinutes, millisecondsToSeconds } from 'date-fns';
 
 import Paper from 'components/layout/Paper';
 
@@ -11,6 +12,7 @@ const ContentPaper = styled(Paper)({
   overflowX: 'auto',
 });
 
+// TODO: write to date-fns
 const getTimeDifference = (time?: Date) => {
   if (!time) {
     return;
@@ -22,28 +24,21 @@ const getTimeDifference = (time?: Date) => {
   return myDate.getTime() - now.getTime();
 };
 
+// TODO: write this nicer. can milliseconds me undefined? 
 const convertTime = (milliseconds?: number) => {
   if (!milliseconds) {
     return;
   }
 
-  const totalSeconds = Math.floor(milliseconds / 1000);
-  const tempHours = Math.floor(totalSeconds / 3600);
-  const hours = tempHours < 10 ? `0${tempHours}` : tempHours.toString();
-  const tempMinutes = Math.floor((totalSeconds % 3600) / 60);
-  const minutes = tempMinutes < 10 ? `0${tempMinutes}` : tempMinutes.toString();
-  const tempSeconds = totalSeconds % 60;
-  const seconds = tempSeconds < 10 ? `0${tempSeconds}` : tempSeconds.toString();
-
-  return `${hours}:${minutes}:${seconds}`;
+  return `${millisecondsToHours(milliseconds)}:${millisecondsToMinutes(milliseconds)}:${millisecondsToSeconds(milliseconds)}`;
 };
 
-interface Order {
+type Order = {
   payment_link?: string;
   expire_date?: Date;
-}
+};
 
-const CountdownTimer: React.FC<Order> = ({ payment_link, expire_date }) => {
+const CountdownTimer = ({ payment_link, expire_date }: Order) => {
   const [timeLeft, setTimeLeft] = useState(convertTime(getTimeDifference(expire_date)));
 
   useEffect(() => {
@@ -53,6 +48,7 @@ const CountdownTimer: React.FC<Order> = ({ payment_link, expire_date }) => {
       if (distance && distance > 0) {
         setTimeLeft(convertTime(distance));
       } else {
+        // Invalidate react query key for this event
         window.location.reload();
       }
     }, 1000);

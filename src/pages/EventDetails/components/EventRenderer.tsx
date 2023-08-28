@@ -44,7 +44,7 @@ import EventPriorityPools from 'pages/EventDetails/components/EventPriorityPools
 import EventPublicRegistrationsList from 'pages/EventDetails/components/EventPublicRegistrationsList';
 import { EventsSubscription } from 'pages/Profile/components/ProfileEvents';
 
-import CountdownTimer from 'components/countdown/CountdownTimer';
+import CountdownTimer from 'components/miscellaneous/CountdownTimer';
 import FormUserAnswers from 'components/forms/FormUserAnswers';
 import Expand from 'components/layout/Expand';
 import Paper from 'components/layout/Paper';
@@ -191,7 +191,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
                 {`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}
               </Alert>
             )}
-
+            {/** TODO: Legge tilbake funksjonaliteten som var her */}
             {registration.survey_submission.answers.length > 0 && (
               <div>
                 <Expand flat header='Påmeldingsspørsmål'>

@@ -488,6 +488,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           </SubmitButton>
           {eventId !== null && (
             <Row sx={{ mt: 2 }}>
+              {/* TODO: fikse trikti tekst her*/}
               <VerifyDialog
                 closeText='Hei'
                 color='warning'

@@ -45,7 +45,6 @@ import {
   Notification,
   Order,
   PaginationResponse,
-  paidHistory,
   Picture,
   PublicRegistration,
   Registration,
