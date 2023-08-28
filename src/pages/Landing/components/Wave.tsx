@@ -1,9 +1,8 @@
 import { keyframes } from '@emotion/react';
-import { OpenInNew } from '@mui/icons-material';
 import SignupIcon from '@mui/icons-material/AddRounded';
 import LoginIcon from '@mui/icons-material/LoginRounded';
 import ProfileIcon from '@mui/icons-material/PersonOutlineRounded';
-import { Box, Button, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { makeStyles } from 'makeStyles';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
@@ -196,17 +195,6 @@ const Wave = () => {
               </>
             )}
           </div>
-          <Box
-            sx={{
-              width: 'fit-content',
-              margin: 'auto',
-              display: 'block',
-              marginTop: '10px',
-            }}>
-            <Button endIcon={<OpenInNew />} href='https://jubileum.tihlde.org/' target={'_blank'} variant='contained'>
-              Til Jubileumssiden
-            </Button>
-          </Box>
         </div>
         {/* Show snow if between November 15th and February 1st */}
         {(isAfterDateOfYear(10, 15) || isBeforeDateOfYear(1, 1)) && (

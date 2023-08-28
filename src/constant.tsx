@@ -1,11 +1,6 @@
 import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
 
 /**
- * Plausible analytics-domain
- */
-export const PLAUSIBLE_DOMAIN = import.meta.env.VITE_PLAUSIBLE_ANALYTICS;
-
-/**
  * Url to backend
  */
 export const TIHLDE_API_URL = import.meta.env.VITE_API_URL;
@@ -40,7 +35,7 @@ export const EMAIL_REGEX = RegExp(
 /**
  * The results from Samordna Opptak is usually given at July 20th each year
  */
-const IS_AFTER_JULY_20TH = isAfterDateOfYear(6, 20);
+const IS_AFTER_APRIL_1ST = isAfterDateOfYear(3, 1);
 /**
  * Fadderuka is usually finished by September 5th
  */
@@ -48,4 +43,6 @@ const IS_BEFORE_SEPTEMBER_5TH = isBeforeDateOfYear(8, 5);
 /**
  * Whether the new student-page and its belonging info-box at the landing-page should be shown or not
  */
-export const SHOW_NEW_STUDENT_INFO = IS_AFTER_JULY_20TH && IS_BEFORE_SEPTEMBER_5TH;
+export const SHOW_NEW_STUDENT_INFO = IS_AFTER_APRIL_1ST && IS_BEFORE_SEPTEMBER_5TH;
+
+export const SHOW_FADDERUKA_INFO = isAfterDateOfYear(6, 20) && isBeforeDateOfYear(8, 1);
