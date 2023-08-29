@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Link, Typography } from '@mui/material';
+import { differenceInMilliseconds, intervalToDuration } from 'date-fns';
 import { useEffect, useState } from 'react';
-import { millisecondsToHours, millisecondsToMinutes, millisecondsToSeconds } from 'date-fns';
 
 import Paper from 'components/layout/Paper';
 
@@ -12,7 +12,6 @@ const ContentPaper = styled(Paper)({
   overflowX: 'auto',
 });
 
-// TODO: write to date-fns
 const getTimeDifference = (time?: Date) => {
   if (!time) {
     return;
@@ -21,16 +20,19 @@ const getTimeDifference = (time?: Date) => {
   const now = new Date();
   const myDate = new Date(time);
 
-  return myDate.getTime() - now.getTime();
+  return differenceInMilliseconds(myDate, now);
 };
 
-// TODO: write this nicer. can milliseconds me undefined? 
 const convertTime = (milliseconds?: number) => {
   if (!milliseconds) {
     return;
   }
+  const duration = intervalToDuration({ start: 0, end: milliseconds });
+  const hours = duration.hours?.toString().padStart(2, '0');
+  const minutes = duration.minutes?.toString().padStart(2, '0');
+  const seconds = duration.seconds?.toString().padStart(2, '0');
 
-  return `${millisecondsToHours(milliseconds)}:${millisecondsToMinutes(milliseconds)}:${millisecondsToSeconds(milliseconds)}`;
+  return `${hours}:${minutes}:${seconds}`;
 };
 
 type Order = {
@@ -48,7 +50,6 @@ const CountdownTimer = ({ payment_link, expire_date }: Order) => {
       if (distance && distance > 0) {
         setTimeLeft(convertTime(distance));
       } else {
-        // Invalidate react query key for this event
         window.location.reload();
       }
     }, 1000);

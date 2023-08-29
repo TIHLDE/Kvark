@@ -44,14 +44,15 @@ import EventPriorityPools from 'pages/EventDetails/components/EventPriorityPools
 import EventPublicRegistrationsList from 'pages/EventDetails/components/EventPublicRegistrationsList';
 import { EventsSubscription } from 'pages/Profile/components/ProfileEvents';
 
-import CountdownTimer from 'components/miscellaneous/CountdownTimer';
 import FormUserAnswers from 'components/forms/FormUserAnswers';
 import Expand from 'components/layout/Expand';
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
+import CountdownTimer from 'components/miscellaneous/CountdownTimer';
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
+import QRButton from 'components/miscellaneous/QRButton';
 import ShareButton from 'components/miscellaneous/ShareButton';
 
 const DetailsPaper = styled(Paper)(({ theme }) => ({
@@ -94,10 +95,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const [allowPhoto, setAllowPhoto] = useState(true);
   const [isLoadingSignUp, setIsLoadingSignUp] = useState(false);
 
-  // TODO: do we need these useStates?
-  const [isPaidEvent, setIsPaidEvent] = useState(false);
-  const [isRegistrationPaid, setIsRegistrationPaid] = useState(false);
-
   const { run } = useConfetti();
 
   const createRegistration = useCreateEventRegistration(data.id);
@@ -122,11 +119,8 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     );
   };
 
-  useEffect(() => data.paid_information && setIsPaidEvent(true), []);
-
   useEffect(() => {
     setAllowPhoto(registration?.allow_photo || true);
-    registration?.has_paid_order && setIsRegistrationPaid(true);
   }, [registration]);
 
   const signUp = async () => {
@@ -184,16 +178,23 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           </>
         ) : (
           <>
-            {isPaidEvent && !isRegistrationPaid ? (
+            {data.paid_information && !registration.has_paid_order ? (
               <Alert icon severity='warning' variant='outlined'>
                 {`Du er ${registration.has_attended ? 'deltatt' : 'meldt'} på arrangementet! Men du må huske å betale`}
               </Alert>
             ) : (
-              <Alert icon severity='success' variant='outlined'>
-                {`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}
-              </Alert>
+              <>
+                <Alert icon severity='success' variant='outlined'>
+                  {`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}
+                </Alert>
+                <QRButton
+                  fullWidth
+                  qrValue={registration.user_info.user_id}
+                  subtitle={`${registration.user_info.first_name} ${registration.user_info.last_name}`}>
+                  Påmeldingsbevis
+                </QRButton>
+              </>
             )}
-            {/** TODO: Legge tilbake funksjonaliteten som var her */}
             {registration.survey_submission.answers.length > 0 && (
               <div>
                 <Expand flat header='Påmeldingsspørsmål'>
@@ -431,7 +432,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       <Stack gap={1} sx={{ width: '100%' }}>
         <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         {lgDown && <Info />}
-        {registration && isPaidEvent && !isRegistrationPaid ? (
+        {registration && data.paid_information && !registration.has_paid_order ? (
           <CountdownTimer expire_date={registration.order.expire_date} payment_link={registration.order.payment_link} />
         ) : (
           <></>

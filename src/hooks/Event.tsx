@@ -7,7 +7,6 @@ import {
   EventList,
   EventMutate,
   EventStatistics,
-  Order,
   PaginationResponse,
   PublicRegistration,
   Registration,

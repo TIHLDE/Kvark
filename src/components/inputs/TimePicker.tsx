@@ -2,15 +2,6 @@ import { TimePicker as MuiTimePicker, TimePickerProps as MuiTimePickerProps } fr
 import { TextField as MuiTextField, TextFieldProps } from '@mui/material';
 import { Controller, FieldError, FieldValues, Path, PathValue, RegisterOptions, UnpackNestedValue, UseFormReturn } from 'react-hook-form';
 
-// TODO: write to date-fns
-export function formatMinutes(minutes: number): string {
-  const hours = Math.floor(minutes / 60);
-  const remainingMinutes = minutes % 60;
-  const hoursStr = hours < 10 ? `0${hours}` : `${hours}`;
-  const minutesStr = remainingMinutes < 10 ? `0${remainingMinutes}` : `${remainingMinutes}`;
-  return `${hoursStr}:${minutesStr}`;
-}
-
 export type TimePickerProps<FormValues extends FieldValues = FieldValues> = TextFieldProps &
   Pick<UseFormReturn<FormValues>, 'formState' | 'control'> & {
     name: Path<FormValues>;
