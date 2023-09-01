@@ -1,7 +1,7 @@
 import { UserSubmission } from 'types/Form';
 import { BaseGroup, Group } from 'types/Group';
 import { Permissions } from 'types/Misc';
-import { UserList } from 'types/User';
+import { User, UserList } from 'types/User';
 
 export type Category = {
   created_at: string;
@@ -38,6 +38,7 @@ export type Event = {
   can_cause_strikes: boolean;
   enforces_previous_strikes: boolean;
   only_allow_prioritized: boolean;
+  contact_person?: User;
 };
 
 export type EventMutate = Partial<Omit<Event, 'organizer' | 'priority_pools'>> &

@@ -23,6 +23,7 @@ import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import { ImageUpload } from 'components/inputs/Upload';
+import UserSearch from 'components/inputs/UserSearch';
 import { StandaloneExpand } from 'components/layout/Expand';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
@@ -55,6 +56,7 @@ type FormValues = Pick<
   | 'title'
   | 'can_cause_strikes'
   | 'enforces_previous_strikes'
+  | 'contact_person'
 > & {
   end_date: Date;
   end_registration_at: Date;
@@ -98,6 +100,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         only_allow_prioritized: newValues ? newValues.only_allow_prioritized : false,
         can_cause_strikes: newValues ? newValues.can_cause_strikes : true,
         enforces_previous_strikes: newValues ? newValues.enforces_previous_strikes : true,
+        contact_person: newValues?.contact_person || undefined,
       });
       if (!newValues) {
         setTimeout(() => updateDates(new Date()), 10);
@@ -161,6 +164,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       sign_off_deadline: values.sign_off_deadline.toJSON(),
       start_date: values.start_date.toJSON(),
       start_registration_at: values.start_registration_at.toJSON(),
+      contact_person: values.contact_person,
     } as Event;
   };
 
@@ -196,6 +200,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       sign_off_deadline: data.sign_off_deadline.toJSON(),
       start_date: data.start_date.toJSON(),
       start_registration_at: data.start_registration_at.toJSON(),
+      contact_person: data.contact_person?.user_id || undefined,
     } as EventMutate;
     if (eventId) {
       await updateEvent.mutate(event, {
@@ -441,6 +446,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               </Select>
             )}
           </Row>
+          <UserSearch control={control} formState={formState} label={'Kontaktperson'} name='contact_person' />
           <RendererPreview getContent={getEventPreview} renderer={EventRenderer} sx={{ my: 2 }} />
           <SubmitButton disabled={isLoading || createEvent.isLoading || updateEvent.isLoading || deleteEvent.isLoading} formState={formState}>
             {eventId ? 'Oppdater arrangement' : 'Opprett arrangement'}
