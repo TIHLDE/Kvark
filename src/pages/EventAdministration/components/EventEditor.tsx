@@ -100,7 +100,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         only_allow_prioritized: newValues ? newValues.only_allow_prioritized : false,
         can_cause_strikes: newValues ? newValues.can_cause_strikes : true,
         enforces_previous_strikes: newValues ? newValues.enforces_previous_strikes : true,
-        contact_person: newValues?.contact_person || undefined,
+        contact_person: newValues?.contact_person || null,
       });
       if (!newValues) {
         setTimeout(() => updateDates(new Date()), 10);
@@ -200,7 +200,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       sign_off_deadline: data.sign_off_deadline.toJSON(),
       start_date: data.start_date.toJSON(),
       start_registration_at: data.start_registration_at.toJSON(),
-      contact_person: data.contact_person?.user_id || undefined,
+      contact_person: data.contact_person?.user_id || null,
     } as EventMutate;
     if (eventId) {
       await updateEvent.mutate(event, {

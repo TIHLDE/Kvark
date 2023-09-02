@@ -38,7 +38,7 @@ export type Event = {
   can_cause_strikes: boolean;
   enforces_previous_strikes: boolean;
   only_allow_prioritized: boolean;
-  contact_person?: User;
+  contact_person: User | null;
 };
 
 export type EventMutate = Partial<Omit<Event, 'organizer' | 'priority_pools'>> &
