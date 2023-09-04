@@ -38,7 +38,7 @@
 
 ## 🚀 Getting started
 
-Kvark requires Node 16.x or higher and pnpm.
+Kvark requires Node 18.x or higher and pnpm.
 
 ```
 # Setup a local repository
