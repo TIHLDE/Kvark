@@ -111,8 +111,8 @@ dependencies:
     specifier: ^1.6.3
     version: 1.6.3
   tss-react:
-    specifier: ^3.6.0
-    version: 3.6.0(@emotion/react@11.9.0)(react@17.0.2)
+    specifier: ^4.9.0
+    version: 4.9.0(@emotion/react@11.9.0)(react@17.0.2)
   universal-cookie:
     specifier: ^6.1.0
     version: 6.1.0
@@ -4721,11 +4721,15 @@ packages:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
     dev: false
 
-  /tss-react@3.6.0(@emotion/react@11.9.0)(react@17.0.2):
-    resolution: {integrity: sha512-mtQ8VL0btMVZZtax5gwaGU+jSBdKtbYMLVCLGB26Bi+BcOI0GQ6GTn1EaeK1nSgN5qbe6FL0zEOC6qoY+8+MEg==}
+  /tss-react@4.9.0(@emotion/react@11.9.0)(react@17.0.2):
+    resolution: {integrity: sha512-dgqNSR9J0+NxvdwzXoKo2HxGGu2sg0UikLnPumGNLa9CSPVcL6ZNu23CJwxPaMvRnQC8NRyNbUN3pBCS9AWwRA==}
     peerDependencies:
       '@emotion/react': ^11.4.1
-      react: ^16.8.0 || ^17.0.2
+      '@emotion/server': ^11.4.0
+      react: ^16.8.0 || ^17.0.2 || ^18.0.0
+    peerDependenciesMeta:
+      '@emotion/server':
+        optional: true
     dependencies:
       '@emotion/cache': 11.11.0
       '@emotion/react': 11.9.0(@babel/core@7.22.15)(@types/react@17.0.37)(react@17.0.2)
