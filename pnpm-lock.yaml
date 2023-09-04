@@ -14,6 +14,9 @@ dependencies:
   '@devexpress/dx-react-scheduler-material-ui':
     specifier: ^3.0.0-beta.2
     version: 3.0.0-beta.2(@devexpress/dx-react-core@3.0.0-beta.2)(@devexpress/dx-react-scheduler@3.0.0-beta.2)(@devexpress/dx-scheduler-core@3.0.0-beta.2)(@emotion/react@11.9.0)(@emotion/styled@11.8.1)(@mui/icons-material@5.10.6)(@mui/lab@5.0.0-alpha.60)(@mui/material@5.10.7)(@mui/styles@5.14.7)(moment@2.29.4)(react@17.0.2)
+  '@emotion/cache':
+    specifier: ^11.11.0
+    version: 11.11.0
   '@emotion/react':
     specifier: ^11.9.0
     version: 11.9.0(@babel/core@7.22.15)(@types/react@17.0.37)(react@17.0.2)
