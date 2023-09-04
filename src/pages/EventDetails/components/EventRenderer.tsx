@@ -359,7 +359,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               {user && <EventPublicRegistrationsList eventId={data.id} sx={{ position: 'absolute', right: ({ spacing }) => spacing(-1) }} />}
               <DetailsHeader variant='h2'>Påmelding</DetailsHeader>
             </Stack>
-            <DetailContent info={`${data.list_count}/${data.limit}`} title='Påmeldte:' />
+            <DetailContent info={`${data.list_count}/${data.limit === 0 ? '∞' : data.limit}`} title='Påmeldte:' />
             <DetailContent info={String(data.waiting_list_count)} title='Venteliste:' />
             {registration && isFuture(signOffDeadlineDate) ? (
               <DetailContent info={formatDate(signOffDeadlineDate)} title='Avmeldingsfrist:' />
