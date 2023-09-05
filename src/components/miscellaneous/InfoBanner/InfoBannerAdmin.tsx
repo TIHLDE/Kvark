@@ -1,7 +1,9 @@
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import { Button, Stack, styled, Typography } from '@mui/material';
+import { formatDistance } from 'date-fns';
 import { parseISO } from 'date-fns/esm';
+import nbLocale from 'date-fns/locale/nb';
 import { makeStyles } from 'makeStyles';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -60,31 +62,38 @@ const InfoBannerAdmin = () => {
   const banners = useMemo(() => (bannerData ? bannerData.pages.map((page) => page.results).flat() : []), [bannerData]);
 
   return (
-    <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-      <Row sx={{ mb: 2 }}>
-        <form onChange={handleSubmit(searchWithFilters)}>
+    <>
+      <Row sx={{ mb: 2, gap: 2 }}>
+        <Typography>Bannere brukes for å gi en felles informasjon til alle som besøker nettsiden.</Typography>
+        <form onChange={handleSubmit(searchWithFilters)} style={{ display: 'none' }}>
           <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
           <Bool control={control} formState={formState} label='Kun aktive' name='only_active' type='switch' />
         </form>
         <Button onClick={() => setOpen(true)} startIcon={<AddRoundedIcon />} variant='outlined'>
           Nytt banner
         </Button>
-        <Dialog onClose={() => setOpen(false)} open={open} titleText='Nytt banner'>
-          <InfoBannerAdminItem onClose={() => setOpen(false)} />
-        </Dialog>
       </Row>
-      <Stack gap={1}>
-        {banners.map((banner) => (
-          <StandaloneExpand
-            icon={<InfoRoundedIcon />}
-            key={banner.visible_from}
-            primary={`Endre informasjon om ${banner.title}?`}
-            secondary={`Vises fra ${formatDate(parseISO(banner.visible_from))} til ${formatDate(parseISO(banner.visible_until))}`}>
-            <InfoBannerAdminItem bannerId={banner.id} />
-          </StandaloneExpand>
-        ))}
-      </Stack>
-    </Pagination>
+      <Dialog onClose={() => setOpen(false)} open={open} titleText='Nytt banner'>
+        <InfoBannerAdminItem onClose={() => setOpen(false)} />
+      </Dialog>
+      <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
+        <Stack gap={1}>
+          {banners.map((banner) => (
+            <StandaloneExpand
+              icon={<InfoRoundedIcon />}
+              key={banner.visible_from}
+              primary={`Endre informasjon om ${banner.title}?`}
+              secondary={`Sluttet ${formatDistance(parseISO(banner.visible_until), new Date(), {
+                includeSeconds: true,
+                addSuffix: true,
+                locale: nbLocale,
+              })}. Vises på forsiden fra ${formatDate(parseISO(banner.visible_from))} til ${formatDate(parseISO(banner.visible_until))}.`}>
+              <InfoBannerAdminItem bannerId={banner.id} />
+            </StandaloneExpand>
+          ))}
+        </Stack>
+      </Pagination>
+    </>
   );
 };
 const useStyles = makeStyles()(() => ({
