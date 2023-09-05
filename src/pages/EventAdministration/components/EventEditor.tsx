@@ -488,14 +488,13 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           </SubmitButton>
           {eventId !== null && (
             <Row sx={{ mt: 2 }}>
-              {/* TODO: fikse trikti tekst her*/}
               <VerifyDialog
-                closeText='Hei'
+                closeText='Ikke steng arrangementet'
                 color='warning'
                 contentText='Å stenge et arrangement kan ikke reverseres. Eventuell på- og avmelding vil bli stoppet.'
                 disabled={data?.closed}
                 onConfirm={closeEvent}
-                titleText='Test?'>
+                titleText='Er du sikker?'>
                 Steng
               </VerifyDialog>
               <VerifyDialog

@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { Link, Typography } from '@mui/material';
-import { differenceInMilliseconds, intervalToDuration } from 'date-fns';
+import { differenceInMilliseconds, formatDistance } from 'date-fns';
+import { nb } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
 
 import Paper from 'components/layout/Paper';
@@ -27,12 +28,13 @@ const convertTime = (milliseconds?: number) => {
   if (!milliseconds) {
     return;
   }
-  const duration = intervalToDuration({ start: 0, end: milliseconds });
-  const hours = duration.hours?.toString().padStart(2, '0');
-  const minutes = duration.minutes?.toString().padStart(2, '0');
-  const seconds = duration.seconds?.toString().padStart(2, '0');
 
-  return `${hours}:${minutes}:${seconds}`;
+  const now = new Date();
+
+  return formatDistance(now, new Date(now.getTime() + milliseconds), {
+    includeSeconds: true,
+    locale: nb,
+  });
 };
 
 type Order = {
