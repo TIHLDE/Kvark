@@ -97,7 +97,13 @@ const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
         event('delete', 'short-link', `Delete ${shortLink.name}`);
       },
       onError: (e) => {
-        showSnackbar(e.detail, 'error');
+        const msg: { name: Array<string>; url: Array<string> } = typeof e.detail === 'string' ? JSON.parse(e.detail) : e.detail;
+
+        if (msg.name.length > 0) {
+          showSnackbar(msg.name[0], 'error');
+        } else {
+          showSnackbar('Kunne ikke slette lenken', 'error');
+        }
       },
     });
   };
@@ -145,8 +151,13 @@ const ShortLinks = () => {
         event('create', 'short-link', `Created ${data.name}`);
       },
       onError: (e) => {
-        setError('name', { message: typeof e.detail === 'string' ? e.detail : JSON.stringify(e.detail) });
-        showSnackbar(e.detail, 'error');
+        const msg: { name: Array<string>; url: Array<string> } = typeof e.detail === 'string' ? JSON.parse(e.detail) : e.detail;
+
+        if (msg.name.length > 0) {
+          setError('name', { message: msg.name[0] });
+        } else {
+          showSnackbar('En ukjent feil oppstod', 'error');
+        }
       },
     });
   };

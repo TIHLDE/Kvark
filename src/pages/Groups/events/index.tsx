@@ -6,6 +6,7 @@ import { Link, useParams } from 'react-router-dom';
 
 import { useEvents } from 'hooks/Event';
 import { useGroup } from 'hooks/Group';
+import { useUserPermissions } from 'hooks/User';
 
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
@@ -14,15 +15,18 @@ import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
 const GroupEvents = () => {
   const { slug } = useParams<'slug'>();
+  const { data: permissions } = useUserPermissions();
   const { data: group } = useGroup(slug || '-');
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents({ organizer: slug });
   const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   return (
     <Stack>
-      <Button component={Link} fullWidth startIcon={<AddIcon />} sx={{ mt: 1 }} to='/admin/arrangementer' variant='outlined'>
-        Nytt arrangement
-      </Button>
+      {permissions?.permissions.event.write && (
+        <Button component={Link} fullWidth startIcon={<AddIcon />} sx={{ mt: 1 }} to='/admin/arrangementer' variant='outlined'>
+          Nytt arrangement
+        </Button>
+      )}
       {isLoading && <EventListItemLoading />}
       {!isLoading && !events.length && <NotFoundIndicator header={`${group?.name} har ingen kommende arrangementer`} />}
       {error && <Paper>{error.detail}</Paper>}

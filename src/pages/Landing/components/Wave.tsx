@@ -3,7 +3,6 @@ import SignupIcon from '@mui/icons-material/AddRounded';
 import LoginIcon from '@mui/icons-material/LoginRounded';
 import ProfileIcon from '@mui/icons-material/PersonOutlineRounded';
 import { Button, Typography } from '@mui/material';
-import { differenceInDays } from 'date-fns';
 import { makeStyles } from 'makeStyles';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
@@ -12,8 +11,9 @@ import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
 import { useIsAuthenticated } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
-import TihldeLogo from 'components/miscellaneous/TihldeLogo';
+// import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 
+import { ReactComponent as TihldeJubLogoSvg } from 'assets/icons/logo_jub.svg';
 import { ReactComponent as WaveBottom } from 'assets/img/waves/wave-bottom.svg';
 import { ReactComponent as WaveMid } from 'assets/img/waves/wave-mid.svg';
 import { ReactComponent as WaveTop } from 'assets/img/waves/wave-top.svg';
@@ -38,14 +38,14 @@ const useStyles = makeStyles()((theme) => ({
     margin: 'unset',
     width: '100%',
     maxWidth: 'none',
-    height: 500,
+    height: 600,
   },
   container: {
     overflow: 'hidden',
     margin: 'auto',
     position: 'absolute',
     width: '100%',
-    height: 500,
+    height: 600,
     background: `linear-gradient(20deg, ${theme.palette.colors.gradient.main.bottom} 20%, ${theme.palette.colors.gradient.main.top} 80%)`,
   },
   content: {
@@ -152,7 +152,9 @@ const Wave = () => {
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.content}>
-          <TihldeLogo className={classes.logo} darkColor='white' lightColor='white' size='large' />
+          <TihldeJubLogoSvg
+            style={{ color: 'white', marginLeft: 'auto', marginRight: 'auto', display: 'block', height: 'auto', width: '70vw', maxWidth: 400 }}
+          />
           <Typography align='center' className={classes.contentText} variant='body1'>
             Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Digital samhandling og
             Informasjonsbehandling ved NTNU
@@ -193,9 +195,6 @@ const Wave = () => {
               </>
             )}
           </div>
-          <Typography color='white' fontSize={16} fontWeight={600} pt={3} textAlign='center'>
-            {differenceInDays(new Date('2023-03-20'), new Date())} dager til!
-          </Typography>
         </div>
         {/* Show snow if between November 15th and February 1st */}
         {(isAfterDateOfYear(10, 15) || isBeforeDateOfYear(1, 1)) && (

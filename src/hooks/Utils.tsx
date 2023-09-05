@@ -1,5 +1,4 @@
-import { PLAUSIBLE_DOMAIN } from 'constant';
-import Plausible from 'plausible-tracker';
+import va from '@vercel/analytics';
 import { EffectCallback, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { getCookie, setCookie } from 'api/cookie';
@@ -124,8 +123,6 @@ export const usePersistedState = <T extends unknown>(key: string, defaultValue: 
 };
 
 export const useAnalytics = () => {
-  const { trackEvent } = Plausible({ domain: PLAUSIBLE_DOMAIN });
-
   /**
    * Create an event for tracking behaviour on the site.
    * @param category - The object that was interacted with, eg 'Video'
@@ -133,7 +130,7 @@ export const useAnalytics = () => {
    * @param label - Useful for categorizing events, eg 'Ny-student'
    */
   const event = useCallback((action: string, category: string, label: string) => {
-    trackEvent(category, { props: { action, label } });
+    va.track(category, { action, label });
   }, []);
 
   return useMemo(() => {

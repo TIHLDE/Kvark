@@ -95,7 +95,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const [isLoadingSignUp, setIsLoadingSignUp] = useState(false);
 
   const { run } = useConfetti();
-
   const createRegistration = useCreateEventRegistration(data.id);
 
   const handleImageRuleChange = async () => {
@@ -349,6 +348,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         <DetailContent info={data.location} title='Sted:' />
         <DetailContent info={categories.find((c) => c.id === data.category)?.text || 'Laster...'} title='Hva:' />
         {data.organizer && <DetailContent info={<Link to={URLS.groups.details(data.organizer.slug)}>{data.organizer.name}</Link>} title='Arrangør:' />}
+        {data.contact_person && (
+          <DetailContent info={<Link to={`${URLS.profile}${data.contact_person?.user_id}/`}>{data.contact_person?.user_id}</Link>} title='Kontaktperson' />
+        )}
       </DetailsPaper>
       {data.sign_up && (
         <>
@@ -357,7 +359,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               {user && <EventPublicRegistrationsList eventId={data.id} sx={{ position: 'absolute', right: ({ spacing }) => spacing(-1) }} />}
               <DetailsHeader variant='h2'>Påmelding</DetailsHeader>
             </Stack>
-            <DetailContent info={`${data.list_count}/${data.limit}`} title='Påmeldte:' />
+            <DetailContent info={`${data.list_count}/${data.limit === 0 ? '∞' : data.limit}`} title='Påmeldte:' />
             <DetailContent info={String(data.waiting_list_count)} title='Venteliste:' />
             {registration && isFuture(signOffDeadlineDate) ? (
               <DetailContent info={formatDate(signOffDeadlineDate)} title='Avmeldingsfrist:' />

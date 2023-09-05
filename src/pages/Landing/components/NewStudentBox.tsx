@@ -2,7 +2,7 @@ import OpenIcon from '@mui/icons-material/ArrowForwardRounded';
 import CloseIcon from '@mui/icons-material/CloseRounded';
 import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
 import { Button, Stack, styled, Typography } from '@mui/material';
-import { SHOW_NEW_STUDENT_INFO } from 'constant';
+import { SHOW_FADDERUKA_INFO, SHOW_NEW_STUDENT_INFO } from 'constant';
 import { getYear } from 'date-fns';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
@@ -48,7 +48,7 @@ const NewStudentBox = () => {
     }
   }, [user, isAuthenticated]);
 
-  if (!SHOW_NEW_STUDENT_INFO || header === '' || !shouldShowBox) {
+  if (!SHOW_NEW_STUDENT_INFO || header === '' || !shouldShowBox || (isAuthenticated && SHOW_NEW_STUDENT_INFO && !SHOW_FADDERUKA_INFO)) {
     return null;
   }
 
@@ -71,17 +71,19 @@ const NewStudentBox = () => {
           <Button component={Link} endIcon={<OpenIcon />} fullWidth to={URLS.newStudent} variant='contained'>
             Nye studenter
           </Button>
-          <Button
-            component='a'
-            endIcon={<OpenInNewIcon />}
-            fullWidth
-            href='https://s.tihlde.org/fadderuka-paamelding'
-            onClick={fadderukaSignupAnalytics}
-            rel='noopener noreferrer'
-            target='_blank'
-            variant='outlined'>
-            Meld deg på fadderuka
-          </Button>
+          {SHOW_FADDERUKA_INFO && (
+            <Button
+              component='a'
+              endIcon={<OpenInNewIcon />}
+              fullWidth
+              href='https://s.tihlde.org/fadderuka-paamelding'
+              onClick={fadderukaSignupAnalytics}
+              rel='noopener noreferrer'
+              target='_blank'
+              variant='outlined'>
+              Meld deg på fadderuka
+            </Button>
+          )}
         </Stack>
       )}
       {isAuthenticated && (
