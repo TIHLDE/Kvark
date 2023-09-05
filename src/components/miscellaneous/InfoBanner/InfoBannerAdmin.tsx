@@ -7,10 +7,7 @@ import nbLocale from 'date-fns/locale/nb';
 import { makeStyles } from 'makeStyles';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import URLS from 'URLS';
 import { formatDate } from 'utils';
-import { argsToParams } from 'utils';
 
 import { useInfoBanners } from 'hooks/InfoBanner';
 
@@ -25,8 +22,8 @@ import Page from 'components/navigation/Page';
 import InfoBannerAdminItem from './InfoBannerAdminItem';
 
 type Filters = {
-  expired: boolean;
-  only_active: boolean;
+  is_visible: boolean;
+  is_expired: boolean;
 };
 
 const Row = styled(Stack)(({ theme }) => ({
@@ -42,32 +39,22 @@ const Row = styled(Stack)(({ theme }) => ({
 
 const InfoBannerAdmin = () => {
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-
-  const getInitialFilters = useMemo((): Filters => {
-    const params = new URLSearchParams(location.search);
-    const expired = params.get('expired') ? Boolean(params.get('expired') === 'true') : false;
-    const only_active = params.get('only_active') ? Boolean(params.get('only_active') === 'true') : false;
-    return { expired, only_active };
-  }, []);
-
-  const [filters, setFilters] = useState<Filters>(getInitialFilters);
-  const { control, handleSubmit, formState } = useForm<Filters>({ defaultValues: getInitialFilters });
+  const [filters, setFilters] = useState<Filters>({ is_visible: false, is_expired: false });
+  const { control, handleSubmit, formState } = useForm<Filters>({ defaultValues: { is_visible: false, is_expired: false } });
 
   const searchWithFilters = (data: Filters) => {
-    setFilters(data);
-    navigate(`${URLS.bannerAdmin}${argsToParams(data)}`);
+    setFilters({ is_visible: data.is_visible, is_expired: data.is_expired });
   };
   const { data: bannerData, hasNextPage, fetchNextPage, isFetching } = useInfoBanners(filters);
   const banners = useMemo(() => (bannerData ? bannerData.pages.map((page) => page.results).flat() : []), [bannerData]);
 
   return (
     <>
-      <Row sx={{ mb: 2, gap: 2 }}>
-        <Typography>Bannere brukes for å gi en felles informasjon til alle som besøker nettsiden.</Typography>
-        <form onChange={handleSubmit(searchWithFilters)} style={{ display: 'none' }}>
-          <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
-          <Bool control={control} formState={formState} label='Kun aktive' name='only_active' type='switch' />
+      <Typography>Bannere brukes for å gi en felles informasjon til alle som besøker nettsiden.</Typography>
+      <Row sx={{ mb: 2, gap: 2, mt: 1 }}>
+        <form onChange={handleSubmit(searchWithFilters)}>
+          <Bool control={control} formState={formState} label='Se aktive' name='is_visible' type='switch' />
+          <Bool control={control} formState={formState} label='Se tidligere' name='is_expired' type='switch' />
         </form>
         <Button onClick={() => setOpen(true)} startIcon={<AddRoundedIcon />} variant='outlined'>
           Nytt banner
@@ -83,7 +70,7 @@ const InfoBannerAdmin = () => {
               icon={<InfoRoundedIcon />}
               key={banner.visible_from}
               primary={`Endre informasjon om ${banner.title}?`}
-              secondary={`Sluttet ${formatDistance(parseISO(banner.visible_until), new Date(), {
+              secondary={`Aktiv ${formatDistance(parseISO(banner.visible_until), new Date(), {
                 includeSeconds: true,
                 addSuffix: true,
                 locale: nbLocale,
