@@ -3,9 +3,10 @@ import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import { Button, Stack, styled, Typography } from '@mui/material';
 import { parseISO } from 'date-fns/esm';
 import { makeStyles } from 'makeStyles';
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import URLS from 'URLS';
 import { formatDate } from 'utils';
 import { argsToParams } from 'utils';
 
@@ -41,27 +42,27 @@ const InfoBannerAdmin = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
-  const getInitialFilters = useCallback((): Filters => {
+  const getInitialFilters = useMemo((): Filters => {
     const params = new URLSearchParams(location.search);
     const expired = params.get('expired') ? Boolean(params.get('expired') === 'true') : false;
     const only_active = params.get('only_active') ? Boolean(params.get('only_active') === 'true') : false;
     return { expired, only_active };
   }, []);
 
-  const [filters, setFilters] = useState<Filters>(getInitialFilters());
-  const { control, handleSubmit, formState } = useForm<Filters>({ defaultValues: getInitialFilters() });
+  const [filters, setFilters] = useState<Filters>(getInitialFilters);
+  const { control, handleSubmit, formState } = useForm<Filters>({ defaultValues: getInitialFilters });
 
-  const search = (data: Filters) => {
+  const searchWithFilters = (data: Filters) => {
     setFilters(data);
-    navigate(`${location.pathname}${argsToParams(data)}`, { replace: true });
+    navigate(`${URLS.bannerAdmin}${argsToParams(data)}`);
   };
-  const { data, hasNextPage, fetchNextPage, isFetching } = useInfoBanners(filters);
-  const banners = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const { data: bannerData, hasNextPage, fetchNextPage, isFetching } = useInfoBanners(filters);
+  const banners = useMemo(() => (bannerData ? bannerData.pages.map((page) => page.results).flat() : []), [bannerData]);
 
   return (
     <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
       <Row sx={{ mb: 2 }}>
-        <form onChange={handleSubmit(search)}>
+        <form onChange={handleSubmit(searchWithFilters)}>
           <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
           <Bool control={control} formState={formState} label='Kun aktive' name='only_active' type='switch' />
         </form>
@@ -69,7 +70,7 @@ const InfoBannerAdmin = () => {
           Nytt banner
         </Button>
         <Dialog onClose={() => setOpen(false)} open={open} titleText='Nytt banner'>
-          <InfoBannerAdminItem bannerId={''} onClose={() => setOpen(false)} />
+          <InfoBannerAdminItem onClose={() => setOpen(false)} />
         </Dialog>
       </Row>
       <Stack gap={1}>

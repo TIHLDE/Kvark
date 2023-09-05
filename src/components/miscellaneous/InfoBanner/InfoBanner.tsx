@@ -1,7 +1,5 @@
 import { Button, Stack, touchRippleClasses, Typography } from '@mui/material';
 
-import { InfoBanner } from 'types';
-
 import { useVisibleInfoBanners } from 'hooks/InfoBanner';
 
 import Paper from 'components/layout/Paper';
@@ -10,7 +8,7 @@ import AspectRatioImg from '../AspectRatioImg';
 
 const Banner = () => {
   const { data: banners = [] } = useVisibleInfoBanners();
-  const banner: InfoBanner | undefined = banners[0];
+  const banner = banners.shift();
   if (banner) {
     return (
       <Paper sx={{ mx: 2, mb: 2 }}>

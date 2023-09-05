@@ -15,7 +15,7 @@ import { ImageUpload } from 'components/inputs/Upload';
 import VerifyDialog from 'components/layout/VerifyDialog';
 
 export type InfoBannerAdminItemProps = {
-  bannerId: string | null;
+  bannerId?: string;
   onClose?: () => void;
 };
 
@@ -47,11 +47,9 @@ const InfoBannerDeleteDialog = ({ bannerId }: InfoBannerDeleteProps) => {
     <VerifyDialog
       color='error'
       dialogChildren={
-        <>
-          <Button color='error' fullWidth onClick={remove} sx={{ mt: 2, mb: 0 }} variant='outlined'>
-            Slett banner
-          </Button>
-        </>
+        <Button color='error' fullWidth onClick={remove} sx={{ mt: 2, mb: 0 }} variant='outlined'>
+          Slett banner
+        </Button>
       }
       fullWidth
       sx={{ mt: 1 }}
@@ -163,7 +161,14 @@ export const InfoBannerAdminItem = ({ bannerId, onClose }: InfoBannerAdminItemPr
           type='date-time'
         />
       </Row>
-      <TextField disabled={updateBanner.isLoading} formState={formState} label='URL' multiline {...register('url')} />
+      <TextField
+        disabled={updateBanner.isLoading}
+        formState={formState}
+        label='URL'
+        multiline
+        {...register('url')}
+        helperText='F,eks: https://tihlde.org eller https://nrk.no'
+      />
       <TextField disabled={updateBanner.isLoading} formState={formState} label='Beskrivelse' multiline required {...register('description')} minRows={2} />
       <ImageUpload formState={formState} label='Velg bilde' ratio='21:9' register={register('image')} setValue={setValue} watch={watch} />
       <TextField disabled={updateBanner.isLoading} formState={formState} label='Alternativ bildetekst' {...register('image_alt')} />
