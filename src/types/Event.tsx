@@ -3,6 +3,8 @@ import { BaseGroup, Group } from 'types/Group';
 import { Permissions } from 'types/Misc';
 import { User, UserList } from 'types/User';
 
+import { Order } from './Order';
+
 export type Category = {
   created_at: string;
   id: number;
@@ -10,9 +12,18 @@ export type Category = {
   updated_at: string;
 };
 
+export type PaidInformation = {
+  price: number;
+  paytime: string;
+};
+
 export type Event = {
   closed: boolean;
   category: number;
+  price?: number;
+  paytime?: string | Date;
+  is_paid_event: boolean;
+  paid_information?: PaidInformation;
   description: string;
   end_date: string;
   end_registration_at: string;
@@ -73,6 +84,8 @@ export type Registration = {
   survey_submission: UserSubmission;
   has_unanswered_evaluation: boolean;
   user_info: UserList;
+  order: Order;
+  has_paid_order?: boolean;
 };
 
 export type PublicRegistration = {

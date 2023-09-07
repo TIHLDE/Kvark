@@ -17,6 +17,9 @@
 - ✨ **Tracking**. Bruker Vecel events til å tracke brukerens aktivitet på nettsiden.
 - 🦟 **Arrangement**. Knapp for å opprette arrangemnt på gruppesiden vises kun for admins.
 
+## versjon 2023.09.7
+- ✨ **Vipps betaling**. Vipps betaling på arrangementer, der bruker blir kastet ut hvis ikke betalt innen frist.
+
 ## versjon 2023 04.17
 
 - ⚡ **Ny student**. Viser ny-student boks på forsiden fra 1.april.
