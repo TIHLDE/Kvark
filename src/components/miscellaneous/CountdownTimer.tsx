@@ -38,8 +38,8 @@ const convertTime = (milliseconds?: number) => {
 };
 
 type Order = {
+  expire_date: Date;
   payment_link?: string;
-  expire_date?: Date;
 };
 
 const CountdownTimer = ({ payment_link, expire_date }: Order) => {
