@@ -24,6 +24,7 @@ import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import TimePicker from 'components/inputs/TimePicker';
 import { ImageUpload } from 'components/inputs/Upload';
+import UserSearch from 'components/inputs/UserSearch';
 import { StandaloneExpand } from 'components/layout/Expand';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
@@ -59,6 +60,7 @@ type FormValues = Pick<
   | 'title'
   | 'can_cause_strikes'
   | 'enforces_previous_strikes'
+  | 'contact_person'
 > & {
   end_date: Date;
   end_registration_at: Date;
@@ -107,6 +109,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         is_paid_event: Boolean(newValues?.paid_information),
         price: newValues?.paid_information?.price,
         paytime: newValues?.paid_information?.paytime && parse(newValues?.paid_information.paytime, 'HH:mm:ss', new Date()),
+        contact_person: newValues?.contact_person || null,
       });
       if (!newValues) {
         setTimeout(() => updateDates(new Date()), 10);
@@ -170,6 +173,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       sign_off_deadline: values.sign_off_deadline.toJSON(),
       start_date: values.start_date.toJSON(),
       start_registration_at: values.start_registration_at.toJSON(),
+      contact_person: values.contact_person,
     } as Event;
   };
 
@@ -210,6 +214,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         price: data.price,
         paytime: data.paytime && format(new Date(data.paytime), 'HH:mm'),
       },
+      contact_person: data.contact_person?.user_id || null,
     } as EventMutate;
     if (eventId) {
       await updateEvent.mutate(event, {
@@ -455,7 +460,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               </Select>
             )}
           </Row>
-
           <Bool
             control={control}
             formState={formState}
@@ -481,7 +485,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               <TimePicker control={control} formState={formState} label={'Betalingstid'} name='paytime' required={watchPaidEvent} type='time' />
             </Row>
           )}
-
+          <UserSearch control={control} formState={formState} label={'Kontaktperson'} name='contact_person' />
           <RendererPreview getContent={getEventPreview} renderer={EventRenderer} sx={{ my: 2 }} />
           <SubmitButton disabled={isLoading || createEvent.isLoading || updateEvent.isLoading || deleteEvent.isLoading} formState={formState}>
             {eventId ? 'Oppdater arrangement' : 'Opprett arrangement'}

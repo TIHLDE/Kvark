@@ -38,7 +38,7 @@
 
 ## 🚀 Getting started
 
-Kvark requires Node 14.x or higher and Yarn.
+Kvark requires Node 18.x or higher and pnpm.
 
 ```
 # Setup a local repository
@@ -46,12 +46,12 @@ git clone https://github.com/tihlde/Kvark.git
 cd Kvark
 
 # If this is your first time running the application
-yarn
+pnpm install
 
 # Thats it!
 ```
 
-From now on it's enough to run `yarn start` to run the application.
+From now on it's enough to run `pnpm start` to run the application.
 
 #### ⚙ Configuration
 
@@ -75,7 +75,7 @@ or spreading the word - **we would love to have you as part of the community**.
 Feel free to file a new issue with a respective title and description
 on the the [tihlde/Kvark](https://github.com/tihlde/Kvark/issues) repository.
 If you already found a solution to your problem, we would love to review your pull request!
-Please format your code with prettier, you can use `yarn format` to fix fixable problems.
+Please format your code with prettier, you can use `pnpm format` to fix fixable problems.
 If you open the workspace-file in VSCode, the code will be formatted automatically on save.
 
 ## 📫 Contact
