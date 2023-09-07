@@ -14,7 +14,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.8",
     "@mui/lab": "^5.0.0-alpha.60",
-    "@mui/material": "^5.10.7",
+    "@mui/material": "^5.14.8",
     "@vercel/analytics": "1.0.2",
     "browser-image-compression": "^2.0.0",
     "canvas-confetti": "^1.6.0",
