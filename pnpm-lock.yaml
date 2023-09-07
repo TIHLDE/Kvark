@@ -84,8 +84,8 @@ dependencies:
     specifier: ^14.2.1
     version: 14.2.1(react@17.0.2)
   react-easy-crop:
-    specifier: ^4.2.0
-    version: 4.2.0(react-dom@17.0.2)(react@17.0.2)
+    specifier: ^5.0.1
+    version: 5.0.1(react-dom@17.0.2)(react@17.0.2)
   react-helmet:
     specifier: ^6.1.0
     version: 6.1.0(react@17.0.2)
@@ -4186,8 +4186,8 @@ packages:
       react: 17.0.2
     dev: false
 
-  /react-easy-crop@4.2.0(react-dom@17.0.2)(react@17.0.2):
-    resolution: {integrity: sha512-NJdeG6JPlOvXPNcQlmyEyjuseTiZVDa0M5X6BwTxSPR30MG3ROsSHKeGl5SQdI3TfmsoEgvl7MbM+AjFGj+faw==}
+  /react-easy-crop@5.0.1(react-dom@17.0.2)(react@17.0.2):
+    resolution: {integrity: sha512-Tt6zJHpR/eaFI5ZUB18nYsCciwKtKAafBA5DqWJChtTswS7LAXGqu+IF2qiPLsqUbILXHsw9Q7E1/xM/KUcXEg==}
     peerDependencies:
       react: '>=16.4.0'
       react-dom: '>=16.4.0'
