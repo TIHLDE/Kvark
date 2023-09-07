@@ -19,7 +19,7 @@
 
 ## versjon 2023.09.7
 
-- ⚡ **Scroll til toppen". Siden blir scrollet opp til toppen ved navigering til ny side.
+- ⚡ **Scroll til toppen**. Siden blir scrollet opp til toppen ved navigering til ny side.
 
 ## versjon 2023 04.17
 
