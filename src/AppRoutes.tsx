@@ -24,6 +24,7 @@ import Profile from 'pages/Profile';
 import { SlackConnectPage } from 'pages/Profile/components/ProfileSettings/NotificationSettings';
 
 import Page from 'components/navigation/Page';
+import ScrollToTop from 'components/navigation/ScrollToTop';
 
 const Gallery = lazy(() => import('pages/Gallery'));
 const GalleryDetails = lazy(() => import('pages/GalleryDetails'));
@@ -91,6 +92,7 @@ const AppRoutes = () => {
 
   return (
     <Suspense fallback={<Page options={{ title: 'Laster...', filledTopbar: true }} />}>
+      <ScrollToTop />
       <Routes>
         <Route element={<Landing />} index />
         <Route element={<NewStudent />} path={URLS.newStudent} />
