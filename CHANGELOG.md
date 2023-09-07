@@ -17,6 +17,10 @@
 - ✨ **Tracking**. Bruker Vecel events til å tracke brukerens aktivitet på nettsiden.
 - 🦟 **Arrangement**. Knapp for å opprette arrangemnt på gruppesiden vises kun for admins.
 
+## versjon 2023.09.7
+
+- ⚡ **Scroll til toppen". Siden blir scrollet opp til toppen ved navigering til ny side.
+
 ## versjon 2023 04.17
 
 - ⚡ **Ny student**. Viser ny-student boks på forsiden fra 1.april.
