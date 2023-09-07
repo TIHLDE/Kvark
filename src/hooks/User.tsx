@@ -28,7 +28,6 @@ import { getCookie, removeCookie, setCookie } from 'api/cookie';
 
 export const USER_QUERY_KEY = 'user';
 export const USER_BADGES_QUERY_KEY = 'user_badges';
-export const USER_PAID_HISTORY_QUERY_KEY = 'user_paid_history';
 export const USER_EVENTS_QUERY_KEY = 'user_events';
 export const USER_MEMBERSHIPS_QUERY_KEY = 'user_memberships';
 export const USER_MEMBERSHIP_HISTORIES_QUERY_KEY = 'user_membership_histories';
