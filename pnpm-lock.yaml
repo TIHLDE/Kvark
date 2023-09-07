@@ -69,8 +69,8 @@ dependencies:
     specifier: ^17.0.2
     version: 17.0.2
   react-cool-dimensions:
-    specifier: ^2.0.7
-    version: 2.0.7(react@17.0.2)
+    specifier: ^3.0.1
+    version: 3.0.1(react@17.0.2)
   react-dnd:
     specifier: ^16.0.1
     version: 16.0.1(@types/node@20.5.9)(@types/react@17.0.37)(react@17.0.2)
@@ -4129,8 +4129,8 @@ packages:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
     dev: true
 
-  /react-cool-dimensions@2.0.7(react@17.0.2):
-    resolution: {integrity: sha512-z1VwkAAJ5d8QybDRuYIXTE41RxGr5GYsv1bQhbOBE8cMfoZQZpcF0odL64vdgrQVzat2jayedj1GoYi80FWcbA==}
+  /react-cool-dimensions@3.0.1(react@17.0.2):
+    resolution: {integrity: sha512-DUsDB5WUN1Qh6fJJlBtqFKCktrZCPRYcVn8NTeM6hP/5AhZNjDOa2sC2Dg0EM3WUObPDNV5nFLA34vHQfahUeg==}
     peerDependencies:
       react: '>= 16.8.0'
     dependencies:
