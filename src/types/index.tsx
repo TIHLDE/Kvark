@@ -1,4 +1,5 @@
 export * from 'types/Badge';
+export * from 'types/paidHistory';
 export * from 'types/Event';
 export * from 'types/Form';
 export * from 'types/Misc';
@@ -10,3 +11,4 @@ export * from 'types/User';
 export * from 'types/Gallery';
 export * from 'types/Toddel';
 export * from 'types/Wiki';
+export * from 'types/Order';

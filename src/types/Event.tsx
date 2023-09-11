@@ -1,7 +1,9 @@
 import { UserSubmission } from 'types/Form';
 import { BaseGroup, Group } from 'types/Group';
 import { Permissions } from 'types/Misc';
-import { UserList } from 'types/User';
+import { User, UserList } from 'types/User';
+
+import { Order } from './Order';
 
 export type Category = {
   created_at: string;
@@ -10,9 +12,18 @@ export type Category = {
   updated_at: string;
 };
 
+export type PaidInformation = {
+  price: number;
+  paytime: string;
+};
+
 export type Event = {
   closed: boolean;
   category: number;
+  price?: number;
+  paytime?: string | Date;
+  is_paid_event: boolean;
+  paid_information?: PaidInformation;
   description: string;
   end_date: string;
   end_registration_at: string;
@@ -38,6 +49,7 @@ export type Event = {
   can_cause_strikes: boolean;
   enforces_previous_strikes: boolean;
   only_allow_prioritized: boolean;
+  contact_person: User | null;
 };
 
 export type EventMutate = Partial<Omit<Event, 'organizer' | 'priority_pools'>> &
@@ -72,6 +84,8 @@ export type Registration = {
   survey_submission: UserSubmission;
   has_unanswered_evaluation: boolean;
   user_info: UserList;
+  order: Order;
+  has_paid_order?: boolean;
 };
 
 export type PublicRegistration = {
