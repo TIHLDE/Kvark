@@ -77,7 +77,7 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
           </Paper>
         </Stack>
         <Stack alignItems='flex-end' sx={{ marginTop: 2 }}>
-            <ShareButton shareId={data.id} shareType='news' title={data.title} />
+          <ShareButton shareId={data.id} shareType='news' title={data.title} />
         </Stack>
       </Container>
     </div>
