@@ -18,6 +18,8 @@ import { ImageUpload } from 'components/inputs/Upload';
 import UserSearch from 'components/inputs/UserSearch';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {
@@ -41,19 +43,21 @@ export type NewsEditorProps = {
   goToNews: (newNews: number | null) => void;
 };
 
-type FormValues = Pick<News, 'title' | 'header' | 'body' | 'image' | 'image_alt' | 'creator'>;
+type FormValues = Pick<News, 'title' | 'header' | 'body' | 'image' | 'image_alt' | 'creator'> & {
+  allowEmojis: boolean;
+};
 
 const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
   const showSnackbar = useSnackbar();
   const { classes } = useStyles();
-  const { control, handleSubmit, register, formState, getValues, reset, watch, setValue } = useForm<FormValues>();
+  const { control, handleSubmit, register, formState, getValues, reset, watch } = useForm<FormValues>();
   const { data, isError, isLoading } = useNewsById(newsId || -1);
   const createNews = useCreateNews();
   const updateNews = useUpdateNews(newsId || -1);
   const deleteNews = useDeleteNews(newsId || -1);
   const isUpdating = useMemo(
     () => createNews.isLoading || updateNews.isLoading || deleteNews.isLoading,
-    [createNews.isLoading, updateNews.isLoading, deleteNews.isLoading],
+    [createNews.isLoading, updateNews.isLoading, deleteNews.isLoading]
   );
 
   useEffect(() => {
@@ -69,9 +73,10 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
         body: newValues?.body || '',
         image: newValues?.image || '',
         image_alt: newValues?.image_alt || '',
+        allowEmojis: newValues?.allowEmojis ?? false
       });
     },
-    [reset],
+    [reset]
   );
 
   useEffect(() => {
@@ -82,14 +87,6 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
     }
   }, [data, setValues]);
 
-  const getNewsPreview = () => {
-    return {
-      ...getValues(),
-      created_at: new Date().toJSON(),
-      id: 1,
-      updated_at: new Date().toJSON(),
-    };
-  };
   const remove = async () => {
     deleteNews.mutate(null, {
       onSuccess: (data) => {
@@ -101,63 +98,65 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
       },
     });
   };
+
   const submit = async (data: FormValues) => {
+    const payload = {
+      ...data,
+      creator: data.creator?.user_id || null,
+    };
     newsId
-      ? updateNews.mutate(
-          { ...data, creator: data.creator?.user_id || null },
-          {
-            onSuccess: () => {
-              showSnackbar('Nyheten ble oppdatert', 'success');
-            },
-            onError: (err) => {
-              showSnackbar(err.detail, 'error');
-            },
+      ? updateNews.mutate(payload, {
+          onSuccess: () => {
+            showSnackbar('Nyheten ble oppdatert', 'success');
           },
-        )
-      : createNews.mutate(
-          { ...data, creator: data.creator?.user_id || null },
-          {
-            onSuccess: (newNewsItem) => {
-              showSnackbar('Nyheten ble opprettet', 'success');
-              goToNews(newNewsItem.id);
-            },
-            onError: (err) => {
-              showSnackbar(err.detail, 'error');
-            },
+          onError: (err) => {
+            showSnackbar(err.detail, 'error');
           },
-        );
+        })
+      : createNews.mutate(payload, {
+          onSuccess: (newNewsItem) => {
+            showSnackbar('Nyheten ble opprettet', 'success');
+            goToNews(newNewsItem.id);
+          },
+          onError: (err) => {
+            showSnackbar(err.detail, 'error');
+          },
+        });
   };
 
   if (isLoading) {
     return <LinearProgress />;
   }
+
   return (
     <>
       <form onSubmit={handleSubmit(submit)}>
         <Grid container direction='column' wrap='nowrap'>
           <TextField formState={formState} label='Tittel' {...register('title', { required: 'Feltet er påkrevd' })} required />
           <TextField formState={formState} label='Header' {...register('header', { required: 'Feltet er påkrevd' })} required />
-          <UserSearch control={control} formState={formState} label='Forfatter' name='creator' />
-          <MarkdownEditor formState={formState} label='Innhold' {...register('body', { required: 'Gi nyheten et innhold' })} required />
-          <ImageUpload formState={formState} label='Velg bilde' ratio='21:9' register={register('image')} setValue={setValue} watch={watch} />
-          <TextField formState={formState} label='Alternativ bildetekst' {...register('image_alt')} />
-          <RendererPreview className={classes.margin} getContent={getNewsPreview} renderer={NewsRenderer} />
-          <SubmitButton className={classes.margin} disabled={isUpdating} formState={formState}>
-            {newsId ? 'Oppdater nyhet' : 'Opprett nyhet'}
+          <ImageUpload formState={formState} label='Bilde' {...register('image')} />
+          <TextField formState={formState} label='Bildealt' {...register('image_alt')} />
+          <UserSearch formState={formState} label='Opprettet av' {...register('creator')} />
+          <MarkdownEditor formState={formState} {...register('body', { required: 'Feltet er påkrevd' })} required />
+          <FormControlLabel
+            control={<Checkbox {...register('allowEmojis')} />}
+            label='Tillat emojis'
+          />
+          <SubmitButton formState={formState} className={classes.margin}>
+            {newsId ? 'Oppdater' : 'Opprett'}
           </SubmitButton>
-          {Boolean(newsId) && (
-            <VerifyDialog
-              className={classes.margin}
-              closeText='Ikke slett nyheten'
-              color='error'
-              contentText='Sletting av nyheten kan ikke reverseres.'
-              onConfirm={remove}
-              titleText='Er du sikker?'>
-              Slett
-            </VerifyDialog>
-          )}
         </Grid>
       </form>
+      {newsId && (
+        <VerifyDialog
+          onClose={() => {}}
+          onConfirm={remove}
+          title='Slett nyhet'
+          description='Er du sikker på at du vil slette denne nyheten? Dette vil også slette alle kommentarene tilknyttet nyheten.'
+        >
+          Slett
+        </VerifyDialog>
+      )}
     </>
   );
 };
