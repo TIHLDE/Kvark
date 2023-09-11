@@ -71,11 +71,13 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
                 </>
               )}
             </Typography>
-            <ShareButton shareId={data.id} shareType='news' title={data.title} />
           </Stack>
           <Paper>
             <MarkdownRenderer value={data.body} />
           </Paper>
+        </Stack>
+        <Stack alignItems='flex-end' sx={{ marginTop: 2 }}>
+            <ShareButton shareId={data.id} shareType='news' title={data.title} />
         </Stack>
       </Container>
     </div>
