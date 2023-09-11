@@ -13,6 +13,7 @@
 ---
 
 ## Neste versjon
+## Versjon 2023.09.11
 
 - ✨ **Tracking**. Bruker Vecel events til å tracke brukerens aktivitet på nettsiden.
 - 🦟 **Arrangement**. Knapp for å opprette arrangemnt på gruppesiden vises kun for admins.
