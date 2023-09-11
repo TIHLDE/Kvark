@@ -22,6 +22,7 @@ const TimePicker = <FormValues extends FieldValues>({
   timeProps,
   onTimeChange,
   helperText,
+  disabled = false,
   ...props
 }: TimePickerProps<FormValues>) => {
   const { [name]: fieldError } = formState.errors;
@@ -51,6 +52,7 @@ const TimePicker = <FormValues extends FieldValues>({
           {...field}
           {...timeProps}
           ampm={false}
+          disabled={disabled}
           label={label}
           onChange={(e) => {
             field.onChange(e);

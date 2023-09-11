@@ -363,6 +363,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         {data.contact_person && (
           <DetailContent info={<Link to={`${URLS.profile}${data.contact_person?.user_id}/`}>{data.contact_person?.user_id}</Link>} title='Kontaktperson' />
         )}
+        {data.paid_information && <DetailContent info={data.paid_information.price + ' kr'} title='Pris:' />}
       </DetailsPaper>
       {data.sign_up && (
         <>

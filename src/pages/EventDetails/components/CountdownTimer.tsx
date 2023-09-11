@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
-import { Link, Typography } from '@mui/material';
-import { differenceInMilliseconds, formatDistance } from 'date-fns';
+import { Box, Typography } from '@mui/material';
+import { differenceInMilliseconds, formatDistance, formatDistanceStrict } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
 import { useQueryClient } from 'react-query';
+import { Link } from 'react-router-dom';
 
 import { Event, User } from 'types';
 
@@ -36,8 +37,7 @@ const convertTime = (milliseconds?: number) => {
 
   const now = new Date();
 
-  return formatDistance(now, new Date(now.getTime() + milliseconds), {
-    includeSeconds: true,
+  return formatDistanceStrict(new Date(now.getTime() + milliseconds), now, {
     locale: nb,
   });
 };
@@ -69,23 +69,15 @@ const CountdownTimer = ({ user_id, event_id, payment_link, expire_date }: Order)
     };
   }, []);
 
-  const goToPayment = () => {
-    queryClient.invalidateQueries(EVENT_QUERY_KEYS.registrations.detail(event_id, user_id));
-    window.location.replace(payment_link || '');
-  };
-
   return (
     <ContentPaper>
-      <Typography align='center' gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h2'>
-        Gjenstående tid
-      </Typography>
-      <Typography align='center' sx={{ color: (theme) => theme.palette.text.primary, fontSize: '1.8rem', wordWrap: 'break-word', pb: 4 }} variant='h2'>
-        {timeLeft}
-      </Typography>
-      <Typography align='center'>
-        <Link onClick={goToPayment}>
-          <img alt='Betal med vipps' src={VIPPS} width={'45%'} />
+      <Box sx={{ textAlign: 'center', p: 2 }}>
+        <Link to={payment_link || '/'}>
+          <img alt='Betal med vipps' src={VIPPS} />
         </Link>
+      </Box>
+      <Typography align='center' sx={{ color: (theme) => theme.palette.text.primary }}>
+        Betal innen {timeLeft} for å beholde plassen på arrangementet.
       </Typography>
     </ContentPaper>
   );

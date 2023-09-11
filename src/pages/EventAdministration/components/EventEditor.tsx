@@ -174,6 +174,9 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       start_date: values.start_date.toJSON(),
       start_registration_at: values.start_registration_at.toJSON(),
       contact_person: values.contact_person,
+      paid_information: {
+        price: values?.price,
+      },
     } as Event;
   };
 
@@ -480,9 +483,18 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 label='Pris'
                 type='number'
                 {...register('price', { required: 'Gi arrangementet en pris' })}
+                disabled={Boolean(data?.paid_information?.price)}
                 required={watchPaidEvent}
               />
-              <TimePicker control={control} formState={formState} label={'Betalingstid'} name='paytime' required={watchPaidEvent} type='time' />
+              <TimePicker
+                control={control}
+                disabled={Boolean(data?.paid_information?.paytime)}
+                formState={formState}
+                label={'Betalingstid'}
+                name='paytime'
+                required={watchPaidEvent}
+                type='time'
+              />
             </Row>
           )}
           <UserSearch control={control} formState={formState} label={'Kontaktperson'} name='contact_person' />
