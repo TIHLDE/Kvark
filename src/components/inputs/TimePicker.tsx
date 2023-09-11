@@ -9,7 +9,6 @@ export type TimePickerProps<FormValues extends FieldValues = FieldValues> = Text
     label: string;
     defaultValue?: string;
     timeProps?: Partial<MuiTimePickerProps>;
-    type?: 'time';
     onTimeChange?: (time?: Date) => void;
   };
 
@@ -23,7 +22,6 @@ const TimePicker = <FormValues extends FieldValues>({
   timeProps,
   onTimeChange,
   helperText,
-  type = 'time',
   ...props
 }: TimePickerProps<FormValues>) => {
   const { [name]: fieldError } = formState.errors;
