@@ -1,3 +1,5 @@
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import LinearProgress from '@mui/material/LinearProgress';
 import { makeStyles } from 'makeStyles';
@@ -18,8 +20,6 @@ import { ImageUpload } from 'components/inputs/Upload';
 import UserSearch from 'components/inputs/UserSearch';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {
@@ -57,7 +57,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
   const deleteNews = useDeleteNews(newsId || -1);
   const isUpdating = useMemo(
     () => createNews.isLoading || updateNews.isLoading || deleteNews.isLoading,
-    [createNews.isLoading, updateNews.isLoading, deleteNews.isLoading]
+    [createNews.isLoading, updateNews.isLoading, deleteNews.isLoading],
   );
 
   useEffect(() => {
@@ -73,10 +73,10 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
         body: newValues?.body || '',
         image: newValues?.image || '',
         image_alt: newValues?.image_alt || '',
-        allowEmojis: newValues?.allowEmojis ?? false
+        allowEmojis: newValues?.allowEmojis ?? false,
       });
     },
-    [reset]
+    [reset],
   );
 
   useEffect(() => {
@@ -138,22 +138,18 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
           <TextField formState={formState} label='Bildealt' {...register('image_alt')} />
           <UserSearch formState={formState} label='Opprettet av' {...register('creator')} />
           <MarkdownEditor formState={formState} {...register('body', { required: 'Feltet er påkrevd' })} required />
-          <FormControlLabel
-            control={<Checkbox {...register('allowEmojis')} />}
-            label='Tillat emojis'
-          />
-          <SubmitButton formState={formState} className={classes.margin}>
+          <FormControlLabel control={<Checkbox {...register('allowEmojis')} />} label='Tillat emojis' />
+          <SubmitButton className={classes.margin} formState={formState}>
             {newsId ? 'Oppdater' : 'Opprett'}
           </SubmitButton>
         </Grid>
       </form>
       {newsId && (
         <VerifyDialog
+          description='Er du sikker på at du vil slette denne nyheten? Dette vil også slette alle kommentarene tilknyttet nyheten.'
           onClose={() => {}}
           onConfirm={remove}
-          title='Slett nyhet'
-          description='Er du sikker på at du vil slette denne nyheten? Dette vil også slette alle kommentarene tilknyttet nyheten.'
-        >
+          title='Slett nyhet'>
           Slett
         </VerifyDialog>
       )}
