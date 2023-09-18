@@ -10,3 +10,8 @@ export type Order = {
   expire_date: Date;
   payment_link: string;
 };
+
+export type OrderList = Pick<
+  Order,
+  'event_id' | 'status' | 'payment_link'
+>;
