@@ -213,10 +213,12 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       start_date: data.start_date.toJSON(),
       start_registration_at: data.start_registration_at.toJSON(),
       is_paid_event: data.is_paid_event,
-      paid_information: {
-        price: data.price,
-        paytime: data.paytime && format(new Date(data.paytime), 'HH:mm'),
-      },
+      paid_information: data.is_paid_event
+        ? {
+            price: data.price,
+            paytime: data.paytime && format(new Date(data.paytime), 'HH:mm'),
+          }
+        : undefined,
       contact_person: data.contact_person?.user_id || null,
     } as EventMutate;
     if (eventId) {
@@ -482,7 +484,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 formState={formState}
                 label='Pris'
                 type='number'
-                {...register('price', { required: 'Gi arrangementet en pris' })}
+                {...register('price', { required: watchPaidEvent ? 'Feltet er påkrevd' : undefined })}
                 disabled={Boolean(data?.paid_information?.price)}
                 required={watchPaidEvent}
               />

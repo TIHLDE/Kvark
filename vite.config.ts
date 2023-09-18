@@ -24,6 +24,9 @@ export default defineConfig(({ mode }) => {
   };
 
   return {
+    server: {
+      port: 3000,
+    },
     esbuild: {
       treeShaking: true,
       jsxInject: mode === 'production' ? `import React from 'react'` : undefined,
