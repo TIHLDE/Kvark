@@ -40,6 +40,7 @@ import { useSnackbar } from 'hooks/Snackbar';
 import { useUser } from 'hooks/User';
 import { useAnalytics, useInterval } from 'hooks/Utils';
 
+import CountdownTimer from 'pages/EventDetails/components/CountdownTimer';
 import EventPriorityPools from 'pages/EventDetails/components/EventPriorityPools';
 import EventPublicRegistrationsList from 'pages/EventDetails/components/EventPublicRegistrationsList';
 import { EventsSubscription } from 'pages/Profile/components/ProfileEvents';
@@ -49,7 +50,6 @@ import Expand from 'components/layout/Expand';
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
-import CountdownTimer from 'components/miscellaneous/CountdownTimer';
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import QRButton from 'components/miscellaneous/QRButton';
@@ -363,6 +363,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         {data.contact_person && (
           <DetailContent info={<Link to={`${URLS.profile}${data.contact_person?.user_id}/`}>{data.contact_person?.user_id}</Link>} title='Kontaktperson' />
         )}
+        {data.paid_information && <DetailContent info={data.paid_information.price + ' kr'} title='Pris:' />}
       </DetailsPaper>
       {data.sign_up && (
         <>
@@ -435,7 +436,12 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         {lgDown && <Info />}
         {registration && data.paid_information && !registration.has_paid_order && (
-          <CountdownTimer expire_date={registration.order.expire_date} payment_link={registration.order.payment_link} />
+          <CountdownTimer
+            event_id={data.id}
+            expire_date={registration.order.expire_date}
+            payment_link={registration.order.payment_link}
+            user_id={registration.user_info.user_id}
+          />
         )}
         <ContentPaper>
           <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h1'>
