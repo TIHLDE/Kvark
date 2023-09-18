@@ -106,7 +106,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         only_allow_prioritized: newValues ? newValues.only_allow_prioritized : false,
         can_cause_strikes: newValues ? newValues.can_cause_strikes : true,
         enforces_previous_strikes: newValues ? newValues.enforces_previous_strikes : true,
-        is_paid_event: Boolean(newValues?.paid_information),
+        is_paid_event: newValues?.is_paid_event || false,
         price: newValues?.paid_information?.price,
         paytime: newValues?.paid_information?.paytime && parse(newValues?.paid_information.paytime, 'HH:mm:ss', new Date()),
         contact_person: newValues?.contact_person || null,
@@ -473,10 +473,10 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               </>
             }
             name='is_paid_event'
-            type='checkbox'
+            type='switch'
           />
 
-          {watchPaidEvent && (
+          <Collapse in={watchPaidEvent}>
             <Row>
               <TextField
                 formState={formState}
@@ -496,7 +496,8 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 type='time'
               />
             </Row>
-          )}
+          </Collapse>
+
           <UserSearch control={control} formState={formState} label={'Kontaktperson'} name='contact_person' />
           <RendererPreview getContent={getEventPreview} renderer={EventRenderer} sx={{ my: 2 }} />
           <SubmitButton disabled={isLoading || createEvent.isLoading || updateEvent.isLoading || deleteEvent.isLoading} formState={formState}>
