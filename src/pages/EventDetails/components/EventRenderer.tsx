@@ -436,7 +436,16 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         {lgDown && <Info />}
         {registration && data.paid_information && !registration.has_paid_order && (
+<<<<<<< HEAD
           <CountdownTimer expire_date={registration.order.expire_date} payment_link={registration.order.payment_link} />
+=======
+          <CountdownTimer
+            event_id={data.id}
+            expire_date={registration.order.expire_date}
+            payment_link={registration.order.payment_link}
+            user_id={registration.user_info.user_id}
+          />
+>>>>>>> origin/master
         )}
         <ContentPaper>
           <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h1'>
