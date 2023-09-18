@@ -213,19 +213,12 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       start_date: data.start_date.toJSON(),
       start_registration_at: data.start_registration_at.toJSON(),
       is_paid_event: data.is_paid_event,
-<<<<<<< HEAD
       paid_information: data.is_paid_event
         ? {
           price: data.price,
           paytime: data.paytime && format(new Date(data.paytime), 'HH:mm'),
         }
         : undefined,
-=======
-      paid_information: {
-        price: data.price,
-        paytime: data.paytime && format(new Date(data.paytime), 'HH:mm'),
-      },
->>>>>>> origin/master
       contact_person: data.contact_person?.user_id || null,
     } as EventMutate;
     if (eventId) {
@@ -482,76 +475,59 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               </>
             }
             name='is_paid_event'
-<<<<<<< HEAD
             type='switch'
           />
 
           <Collapse in={watchPaidEvent}>
-=======
-            type='checkbox'
-          />
+            <Row>
+              <TextField
+                formState={formState}
+                label='Pris'
+                type='number'
+                {...register('price', { required: watchPaidEvent ? 'Feltet er påkrevd' : undefined })}
+                disabled={Boolean(data?.paid_information?.price)}
+                required={watchPaidEvent}
+              />
+              <TimePicker
+                control={control}
+                disabled={Boolean(data?.paid_information?.paytime)}
+                formState={formState}
+                label={'Betalingstid'}
+                name='paytime'
+                required={watchPaidEvent}
+                type='time'
+              />
+            </Row>
+          </Collapse>
 
-          {watchPaidEvent && (
->>>>>>> origin/master
-              <Row>
-                <TextField
-                  formState={formState}
-                  label='Pris'
-                  type='number'
-<<<<<<< HEAD
-                  {...register('price', { required: watchPaidEvent ? 'Feltet er påkrevd' : undefined })}
-=======
-                {...register('price', { required: 'Gi arrangementet en pris' })}
->>>>>>> origin/master
-                  disabled={Boolean(data?.paid_information?.price)}
-                  required={watchPaidEvent}
-                />
-                <TimePicker
-                  control={control}
-                  disabled={Boolean(data?.paid_information?.paytime)}
-                  formState={formState}
-                  label={'Betalingstid'}
-                  name='paytime'
-                  required={watchPaidEvent}
-                  type='time'
-                />
-              </Row>
-<<<<<<< HEAD
-          </Collapse >
-
-=======
-          )}
->>>>>>> origin/master
           <UserSearch control={control} formState={formState} label={'Kontaktperson'} name='contact_person' />
           <RendererPreview getContent={getEventPreview} renderer={EventRenderer} sx={{ my: 2 }} />
           <SubmitButton disabled={isLoading || createEvent.isLoading || updateEvent.isLoading || deleteEvent.isLoading} formState={formState}>
             {eventId ? 'Oppdater arrangement' : 'Opprett arrangement'}
           </SubmitButton>
-{
-  eventId !== null && (
-    <Row sx={{ mt: 2 }}>
-      <VerifyDialog
-        closeText='Ikke steng arrangementet'
-        color='warning'
-        contentText='Å stenge et arrangement kan ikke reverseres. Eventuell på- og avmelding vil bli stoppet.'
-        disabled={data?.closed}
-        onConfirm={closeEvent}
-        titleText='Er du sikker?'>
-        Steng
-      </VerifyDialog>
-      <VerifyDialog
-        closeText='Ikke slett arrangementet'
-        color='error'
-        contentText='Sletting av arrangementer kan ikke reverseres.'
-        onConfirm={remove}
-        titleText='Er du sikker?'>
-        Slett
-      </VerifyDialog>
-    </Row>
-  )
-}
-        </Grid >
-      </form >
+          {eventId !== null && (
+            <Row sx={{ mt: 2 }}>
+              <VerifyDialog
+                closeText='Ikke steng arrangementet'
+                color='warning'
+                contentText='Å stenge et arrangement kan ikke reverseres. Eventuell på- og avmelding vil bli stoppet.'
+                disabled={data?.closed}
+                onConfirm={closeEvent}
+                titleText='Er du sikker?'>
+                Steng
+              </VerifyDialog>
+              <VerifyDialog
+                closeText='Ikke slett arrangementet'
+                color='error'
+                contentText='Sletting av arrangementer kan ikke reverseres.'
+                onConfirm={remove}
+                titleText='Er du sikker?'>
+                Slett
+              </VerifyDialog>
+            </Row>
+          )}
+        </Grid>
+      </form>
     </>
   );
 };
