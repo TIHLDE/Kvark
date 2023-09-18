@@ -11,6 +11,7 @@ import type {
   LoginRequestResponse,
   Membership,
   MembershipHistory,
+  OrderList,
   PaginationResponse,
   RequestResponse,
   Strike,
@@ -74,6 +75,16 @@ export const useUserEvents = (userId?: User['user_id']) => {
   return useInfiniteQuery<PaginationResponse<EventList>, RequestResponse>(
     [USER_EVENTS_QUERY_KEY, userId],
     ({ pageParam = 1 }) => API.getUserEvents(userId, { page: pageParam }),
+    {
+      getNextPageParam: (lastPage) => lastPage.next,
+    },
+  );
+};
+
+export const useUserPaymentOrders = (userId?: User['user_id']) => {
+  return useInfiniteQuery<PaginationResponse<OrderList>, RequestResponse>(
+    [],
+    ({ pageParam = 1 }) => "",
     {
       getNextPageParam: (lastPage) => lastPage.next,
     },
