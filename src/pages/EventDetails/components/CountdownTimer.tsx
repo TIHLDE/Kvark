@@ -1,15 +1,9 @@
 import styled from '@emotion/styled';
-
 import { Box, Typography } from '@mui/material';
-import { differenceInMilliseconds, formatDistance, formatDistanceStrict } from 'date-fns';
+import { differenceInMilliseconds, formatDistanceStrict } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
-import { useQueryClient } from 'react-query';
 import { Link } from 'react-router-dom';
-
-import { Event, User } from 'types';
-
-import { EVENT_QUERY_KEYS } from 'hooks/Event';
 
 import Paper from 'components/layout/Paper';
 
@@ -44,15 +38,12 @@ const convertTime = (milliseconds?: number) => {
 };
 
 type Order = {
-  user_id: User['user_id'];
-  event_id: Event['id'];
   expire_date: Date;
   payment_link?: string;
 };
 
-const CountdownTimer = ({ user_id, event_id, payment_link, expire_date }: Order) => {
+const CountdownTimer = ({ payment_link, expire_date }: Order) => {
   const [timeLeft, setTimeLeft] = useState(convertTime(getTimeDifference(expire_date)));
-  const queryClient = useQueryClient();
 
   useEffect(() => {
     const interval = setInterval(() => {

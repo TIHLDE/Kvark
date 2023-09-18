@@ -106,7 +106,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         only_allow_prioritized: newValues ? newValues.only_allow_prioritized : false,
         can_cause_strikes: newValues ? newValues.can_cause_strikes : true,
         enforces_previous_strikes: newValues ? newValues.enforces_previous_strikes : true,
-        is_paid_event: Boolean(newValues?.paid_information),
+        is_paid_event: newValues?.is_paid_event || false,
         price: newValues?.paid_information?.price,
         paytime: newValues?.paid_information?.paytime && parse(newValues?.paid_information.paytime, 'HH:mm:ss', new Date()),
         contact_person: newValues?.contact_person || null,
@@ -213,10 +213,12 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       start_date: data.start_date.toJSON(),
       start_registration_at: data.start_registration_at.toJSON(),
       is_paid_event: data.is_paid_event,
-      paid_information: {
-        price: data.price,
-        paytime: data.paytime && format(new Date(data.paytime), 'HH:mm'),
-      },
+      paid_information: data.is_paid_event
+        ? {
+            price: data.price,
+            paytime: data.paytime && format(new Date(data.paytime), 'HH:mm'),
+          }
+        : undefined,
       contact_person: data.contact_person?.user_id || null,
     } as EventMutate;
     if (eventId) {
@@ -473,16 +475,16 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               </>
             }
             name='is_paid_event'
-            type='checkbox'
+            type='switch'
           />
 
-          {watchPaidEvent && (
+          <Collapse in={watchPaidEvent}>
             <Row>
               <TextField
                 formState={formState}
                 label='Pris'
                 type='number'
-                {...register('price', { required: 'Gi arrangementet en pris' })}
+                {...register('price', { required: watchPaidEvent ? 'Feltet er påkrevd' : undefined })}
                 disabled={Boolean(data?.paid_information?.price)}
                 required={watchPaidEvent}
               />
@@ -496,7 +498,8 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 type='time'
               />
             </Row>
-          )}
+          </Collapse>
+
           <UserSearch control={control} formState={formState} label={'Kontaktperson'} name='contact_person' />
           <RendererPreview getContent={getEventPreview} renderer={EventRenderer} sx={{ my: 2 }} />
           <SubmitButton disabled={isLoading || createEvent.isLoading || updateEvent.isLoading || deleteEvent.isLoading} formState={formState}>
