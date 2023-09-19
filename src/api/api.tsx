@@ -78,6 +78,7 @@ export const CATEGORIES_ENDPOINT = 'categories';
 export const CHEATSHEETS_ENDPOINT = 'cheatsheets';
 export const EVENTS_ENDPOINT = 'events';
 export const ORDER_ENPOINT = 'payment/order';
+export const ORDER_PAYMENT_ENDPOINT = 'payment_orders';
 export const EVENT_REGISTRATIONS_ENDPOINT = 'registrations';
 export const FORMS_ENDPOINT = 'forms';
 export const GALLERY_ENDPOINT = 'galleries';
@@ -185,6 +186,8 @@ export default {
     IFetch<PaginationResponse<Badge>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${BADGES_ENDPOINT}/`, data: filters || {} }),
   getUserEvents: (userId?: User['user_id'], filters?: any) =>
     IFetch<PaginationResponse<EventList>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${EVENTS_ENDPOINT}/`, data: filters || {} }),
+  getUserPaymentOrders: (userId?: User['user_id'], filters?: any) => 
+    IFetch<PaginationResponse<Order>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${ORDER_PAYMENT_ENDPOINT}/`, data: filters || {} }),
   getUserForms: (filters?: any) =>
     IFetch<PaginationResponse<Form>>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/${FORMS_ENDPOINT}/`, data: filters || {} }),
   getUserMemberships: (userId?: User['user_id']) =>

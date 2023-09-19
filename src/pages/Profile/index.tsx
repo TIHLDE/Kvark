@@ -45,6 +45,7 @@ import Paper from 'components/layout/Paper';
 import Avatar from 'components/miscellaneous/Avatar';
 import QRButton from 'components/miscellaneous/QRButton';
 import Page from 'components/navigation/Page';
+import ProfilePaymentOrders from './components/ProfilePaymentOrders';
 
 const Content = styled('div')(({ theme }) => ({
   display: 'grid',
@@ -78,6 +79,7 @@ const Profile = () => {
   };
 
   const eventTab: NavListItem = { label: 'Arrangementer', icon: EventIcon };
+  const paymentOrdersTab: NavListItem = { label: 'Betalingsordre', icon: EventIcon };
   const badgesTab: NavListItem = { label: 'Badges', icon: BadgesIcon };
   const groupsTab: NavListItem = { label: 'Medlemskap', icon: GroupsIcon };
   const formsTab: NavListItem = { label: 'Spørreskjemaer', icon: FormsIcon, badge: user?.unanswered_evaluations_count };
@@ -87,7 +89,7 @@ const Profile = () => {
   const logoutTab: NavListItem = { label: 'Logg ut', icon: LogOutIcon, onClick: logout, iconProps: { sx: { color: (theme) => theme.palette.error.main } } };
   const tabs: Array<NavListItem> = userId
     ? [badgesTab, groupsTab]
-    : [eventTab, badgesTab, groupsTab, strikesTab, formsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
+    : [eventTab, paymentOrdersTab, badgesTab, groupsTab, strikesTab, formsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
 
   const [tab, setTab] = useState(userId ? badgesTab.label : eventTab.label);
 
@@ -172,6 +174,9 @@ const Profile = () => {
         <Box sx={{ overflowX: 'auto' }}>
           <Collapse in={tab === eventTab.label}>
             <ProfileEvents />
+          </Collapse>
+          <Collapse in={tab === paymentOrdersTab.label} mountOnEnter>
+            <ProfilePaymentOrders />
           </Collapse>
           <Collapse in={tab === badgesTab.label} mountOnEnter>
             <ProfileBadges />
