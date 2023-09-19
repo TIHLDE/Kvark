@@ -51,6 +51,7 @@ const SignUp = lazy(() => import('pages/SignUp'));
 const StrikeAdmin = lazy(() => import('pages/StrikeAdmin'));
 const Toddel = lazy(() => import('pages/Toddel'));
 const UserAdmin = lazy(() => import('pages/UserAdmin'));
+const PaymentOrderAdmin = lazy(() => import('pages/Payment'));
 
 type AuthRouteProps = {
   /** List of permissions where the user must have access through at least one of them to be given access */
@@ -158,6 +159,7 @@ const AppRoutes = () => {
           <Route element={<NewsAdministration />} path=':newsId/' />
         </Route>
         <Route element={<AuthRoute apps={[PermissionApp.USER]} element={<UserAdmin />} />} path={URLS.userAdmin} />
+        <Route element={<AuthRoute apps={[PermissionApp.USER]} element={<PaymentOrderAdmin />} />} path={URLS.paymentOrderAdmin} />
         <Route element={<AuthRoute apps={[PermissionApp.STRIKE]} element={<StrikeAdmin />} />} path={URLS.strikeAdmin} />
 
         <Route element={<LogIn />} path={URLS.login} />
