@@ -186,7 +186,7 @@ export default {
     IFetch<PaginationResponse<Badge>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${BADGES_ENDPOINT}/`, data: filters || {} }),
   getUserEvents: (userId?: User['user_id'], filters?: any) =>
     IFetch<PaginationResponse<EventList>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${EVENTS_ENDPOINT}/`, data: filters || {} }),
-  getUserPaymentOrders: (userId?: User['user_id'], filters?: any) => 
+  getUserPaymentOrders: (userId?: User['user_id'], filters?: any) =>
     IFetch<PaginationResponse<Order>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${ORDER_PAYMENT_ENDPOINT}/`, data: filters || {} }),
   getUserForms: (filters?: any) =>
     IFetch<PaginationResponse<Form>>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/${FORMS_ENDPOINT}/`, data: filters || {} }),

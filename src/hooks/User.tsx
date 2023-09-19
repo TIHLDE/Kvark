@@ -84,11 +84,12 @@ export const useUserEvents = (userId?: User['user_id']) => {
 
 export const useUserPaymentOrders = (userId?: User['user_id']) => {
   return useInfiniteQuery<PaginationResponse<OrderList>, RequestResponse>(
-    [USER_PAYMENT_ORDERS_QUERY_KEY, userId], 
+    [USER_PAYMENT_ORDERS_QUERY_KEY, userId],
     ({ pageParam = 1 }) => API.getUserPaymentOrders(userId, { page: pageParam }),
     {
-    getNextPageParam: (lastPage) => lastPage.next,
-  });
+      getNextPageParam: (lastPage) => lastPage.next,
+    },
+  );
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
