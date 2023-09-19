@@ -1,13 +1,13 @@
-import { Box, Divider, ListItemButton, Skeleton, Stack, Theme, Typography } from "@mui/material";
+import { Box, Divider, ListItemButton, Skeleton, Stack, Theme, Typography } from '@mui/material';
+import { parseISO } from 'date-fns';
+import { Link } from 'react-router-dom';
+import URLS from 'URLS';
+import { formatDate, getJobpostType, urlEncode } from 'utils';
 
-import Paper, { PaperProps } from "components/layout/Paper";
-import AspectRatioImg from "components/miscellaneous/AspectRatioImg";
-import { parseISO } from "date-fns";
-import { Link } from "react-router-dom";
+import { JobPost } from 'types';
 
-import { JobPost } from "types";
-import URLS from "URLS";
-import { formatDate, getJobpostType, urlEncode } from "utils";
+import Paper, { PaperProps } from 'components/layout/Paper';
+import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
 
 export type JobPostListItemProps = {
   jobPost: JobPost;
@@ -70,7 +70,7 @@ export default JobPostListItem;
 export const JobPostListItemLoading = ({ sx }: Pick<JobPostListItemProps, 'sx'>) => (
   <ListItemButton sx={{ p: 0, overflow: 'hidden', borderRadius: (theme) => `${theme.shape.borderRadius}px` }}>
     <Paper noOverflow noPadding sx={{ width: '100%', ...sx }}>
-      <Skeleton height={141.8} sx={{ borderRadius: getUpperBorderRadius }} variant="rectangular"'} width="100%"'} />
+      <Skeleton height={141.8} sx={{ borderRadius: getUpperBorderRadius }} variant={'rectangular'} width={'100%'} />
       <Stack direction='row' gap={1} justifyContent='space-between' sx={{ width: '100%', p: { xs: 1.5, md: 2 } }}>
         <Box sx={{ minWidth: 0 }}>
           <Typography sx={{ fontSize: { xs: '1.4rem', md: '1.5rem' } }} variant='h2'>
