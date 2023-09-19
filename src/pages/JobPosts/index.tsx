@@ -138,7 +138,7 @@ const JobPosts = () => {
               {data.pages.map((page, i) => (
                 <Fragment key={i}>
                   {page.results.map((jobPost) => (
-                    <JobPostListItem jobpost={jobPost} key={jobPost.id} />
+                    <JobPostListItem jobPost={jobPost} key={jobPost.id} />
                   ))}
                 </Fragment>
               ))}

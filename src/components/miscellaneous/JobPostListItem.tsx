@@ -3,8 +3,6 @@ import { parseISO } from 'date-fns';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { formatDate, getJobpostType, urlEncode } from 'utils';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 
 import { JobPost } from 'types';
 
@@ -12,21 +10,21 @@ import Paper, { PaperProps } from 'components/layout/Paper';
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 
 export type JobPostListItemProps = {
-  jobpost: JobPost;
+  jobPost: JobPost;
   sx?: PaperProps['sx'];
 };
 
-const JobPostListItem = ({ jobpost, sx }: JobPostListItemProps) => (
+const JobPostListItem = ({ jobPost, sx }: JobPostListItemProps) => (
   <ListItemButton
     component={Link}
     focusRipple
     sx={{ p: 0, overflow: 'hidden', borderRadius: (theme) => `${theme.shape.borderRadius}px`, ...sx }}
-    to={`${URLS.jobposts}${jobpost.id}/${urlEncode(jobpost.title)}/`}>
+    to={`${URLS.jobposts}${jobPost.id}/${urlEncode(jobPost.title)}/`}>
     <Paper noOverflow noPadding sx={{ width: '100%' }}>
       <div style={{ display: 'block' }}>
         <AspectRatioImg
-          alt={jobpost.image_alt || jobpost.title}
-          src={jobpost.image}
+          alt={jobPost.image_alt || jobPost.title}
+          src={jobPost.image}
           sx={{ height: 'auto', width: '100%', objectFit: 'cover', borderRadius: (theme) => `${Number(theme.shape.borderRadius) / 2}px` }}
         />
       </div>
@@ -35,28 +33,27 @@ const JobPostListItem = ({ jobpost, sx }: JobPostListItemProps) => (
           <Typography
             sx={{ fontSize: { xs: '1.4rem', md: '1.5rem' }, textTransform: 'none', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}
             variant='h2'>
-            {jobpost.title}
+            {jobPost.title}
           </Typography>
-          <Typography variant='caption'>{`${jobpost.company} • ${jobpost.location}`}</Typography>
+          <Typography variant='caption'>{`${jobPost.company} • ${jobPost.location}`}</Typography>
         </Box>
-        {/* TODO: fjern div rundt AspectRatioImg når flere nettlesere støtter aspect-ratio i css - https://caniuse.com/mdn-css_properties_aspect-ratio */}
       </Stack>
       <Divider />
       <Box sx={{ display: 'grid', py: 1, gridTemplateColumns: 'repeat(3, 1fr)' }}>
         <Typography align='center' variant='body2'>
           <b>Type</b>
           <br />
-          {getJobpostType(jobpost.job_type)}
+          {getJobpostType(jobPost.job_type)}
         </Typography>
         <Typography align='center' variant='body2'>
           <b>Årstrinn</b>
           <br />
-          {`${jobpost.class_start === jobpost.class_end ? `${jobpost.class_start}.` : `${jobpost.class_start}. - ${jobpost.class_end}.`}`}
+          {`${jobPost.class_start === jobPost.class_end ? `${jobPost.class_start}.` : `${jobPost.class_start}. - ${jobPost.class_end}.`}`}
         </Typography>
         <Typography align='center' variant='body2'>
           <b>Frist</b>
           <br />
-          {jobpost.is_continuously_hiring ? 'Fortløpende' : formatDate(parseISO(jobpost.deadline), { time: false })}
+          {jobPost.is_continuously_hiring ? 'Fortløpende' : formatDate(parseISO(jobPost.deadline), { time: false })}
         </Typography>
       </Box>
     </Paper>
