@@ -1,5 +1,5 @@
 import { BoxProps, Skeleton, styled } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
 
@@ -21,26 +21,6 @@ const Img = styled('img', { shouldForwardProp: (prop) => prop !== 'borderRadius'
   width: '100%',
   '&:not([src*=".jpg"])': {
     background: theme.palette.common.white,
-  },
-}));
-
-// TODO: fjern når flere nettlesere støtter aspect-ratio i css - https://caniuse.com/mdn-css_properties_aspect-ratio
-const AspectRatioPolyfill = styled('div', { shouldForwardProp: (prop) => prop !== 'ratio' })<Pick<AspectRatioImgProps, 'ratio'>>(({ ratio }) => ({
-  position: 'relative',
-  width: '100%',
-  '&::before': {
-    height: 0,
-    content: '""',
-    display: 'block',
-    paddingBottom: `calc(100% / ( ${ratio} ))`,
-  },
-  '& > img': {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
   },
 }));
 
