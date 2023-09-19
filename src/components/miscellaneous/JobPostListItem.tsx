@@ -21,13 +21,11 @@ const JobPostListItem = ({ jobPost, sx }: JobPostListItemProps) => (
     sx={{ p: 0, overflow: 'hidden', borderRadius: (theme) => `${theme.shape.borderRadius}px`, ...sx }}
     to={`${URLS.jobposts}${jobPost.id}/${urlEncode(jobPost.title)}/`}>
     <Paper noOverflow noPadding sx={{ width: '100%' }}>
-      <div style={{ display: 'block' }}>
-        <AspectRatioImg
-          alt={jobPost.image_alt || jobPost.title}
-          src={jobPost.image}
-          sx={{ height: 'auto', width: '100%', objectFit: 'cover', borderRadius: (theme) => `${Number(theme.shape.borderRadius) / 2}px` }}
-        />
-      </div>
+      <AspectRatioImg
+        alt={jobPost.image_alt || jobPost.title}
+        src={jobPost.image}
+        sx={{ height: 'auto', width: '100%', objectFit: 'cover', borderRadius: (theme) => `${Number(theme.shape.borderRadius) / 2}px` }}
+      />
       <Stack direction='row' gap={1} justifyContent='space-between' sx={{ width: '100%', p: { xs: 1.5, md: 2 } }}>
         <Box sx={{ minWidth: 0 }}>
           <Typography
