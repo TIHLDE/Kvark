@@ -35,7 +35,7 @@ const useStyles = makeStyles()((theme) => ({
   list: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    gap: theme.spacing(1),
+    gap: theme.spacing(2),
     [theme.breakpoints.down('lg')]: {
       order: 1,
     },
@@ -137,8 +137,8 @@ const JobPosts = () => {
             <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
               {data.pages.map((page, i) => (
                 <Fragment key={i}>
-                  {page.results.map((jobpost) => (
-                    <JobPostListItem jobpost={jobpost} key={jobpost.id} />
+                  {page.results.map((jobPost) => (
+                    <JobPostListItem jobpost={jobPost} key={jobPost.id} />
                   ))}
                 </Fragment>
               ))}
