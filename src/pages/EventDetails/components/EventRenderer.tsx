@@ -217,9 +217,8 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           <>
             <VerifyDialog
               color='error'
-              contentText={`Om du melder deg på igjen vil du havne på bunnen av en eventuell venteliste. ${
-                unregisteringGivesStrike ? 'Du vil også få 1 prikk for å melde deg av etter avmeldingsfristen.' : ''
-              }`}
+              contentText={`Om du melder deg på igjen vil du havne på bunnen av en eventuell venteliste. ${unregisteringGivesStrike ? 'Du vil også få 1 prikk for å melde deg av etter avmeldingsfristen.' : ''
+                }`}
               fullWidth
               onConfirm={signOff}
               variant='outlined'>
