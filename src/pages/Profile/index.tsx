@@ -45,6 +45,7 @@ import Paper from 'components/layout/Paper';
 import Avatar from 'components/miscellaneous/Avatar';
 import QRButton from 'components/miscellaneous/QRButton';
 import Page from 'components/navigation/Page';
+
 import ProfilePaymentOrders from './components/ProfilePaymentOrders';
 
 const Content = styled('div')(({ theme }) => ({
