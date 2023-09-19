@@ -65,6 +65,13 @@ const Admin = () => {
       secondary: 'Opprett, endre og slett arrangementer',
     },
     {
+      apps: [PermissionApp.USER],
+      icon: EventIcon,
+      to: URLS.paymentOrderAdmin,
+      primary: 'Betalingsordre',
+      secondary: 'Se og søk etter betalingsordre',
+    },
+    {
       apps: [PermissionApp.GROUP],
       icon: GroupsIcon,
       to: URLS.groups.index,

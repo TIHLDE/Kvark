@@ -56,6 +56,7 @@ const URLS = {
   userAdmin: '/admin/brukere/',
   strikeAdmin: '/admin/prikker/',
   eventAdmin: '/admin/arrangementer/',
+  paymentOrderAdmin: '/admin/betalingsordre/',
   jobpostsAdmin: '/admin/karriere/',
   newsAdmin: '/admin/nyheter/',
   jubilee: 'jubileum.tihlde.org/',
