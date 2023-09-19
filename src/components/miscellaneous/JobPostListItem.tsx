@@ -1,18 +1,20 @@
-import { Box, Divider, ListItemButton, Skeleton, Stack, Typography } from '@mui/material';
-import { parseISO } from 'date-fns';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-import { formatDate, getJobpostType, urlEncode } from 'utils';
+import { Box, Divider, ListItemButton, Skeleton, Stack, Theme, Typography } from "@mui/material";
 
-import { JobPost } from 'types';
+import Paper, { PaperProps } from "components/layout/Paper";
+import AspectRatioImg from "components/miscellaneous/AspectRatioImg";
+import { parseISO } from "date-fns";
+import { Link } from "react-router-dom";
 
-import Paper, { PaperProps } from 'components/layout/Paper';
-import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
+import { JobPost } from "types";
+import URLS from "URLS";
+import { formatDate, getJobpostType, urlEncode } from "utils";
 
 export type JobPostListItemProps = {
   jobPost: JobPost;
   sx?: PaperProps['sx'];
 };
+
+const getUpperBorderRadius = (theme: Theme) => `${Number(theme.shape.borderRadius) / 2}px ${Number(theme.shape.borderRadius) / 2}px 0 0`;
 
 const JobPostListItem = ({ jobPost, sx }: JobPostListItemProps) => (
   <ListItemButton
@@ -24,7 +26,12 @@ const JobPostListItem = ({ jobPost, sx }: JobPostListItemProps) => (
       <AspectRatioImg
         alt={jobPost.image_alt || jobPost.title}
         src={jobPost.image}
-        sx={{ height: 'auto', width: '100%', objectFit: 'cover', borderRadius: (theme) => `${Number(theme.shape.borderRadius) / 2}px` }}
+        sx={{
+          height: 'auto',
+          width: '100%',
+          objectFit: 'cover',
+          borderRadius: getUpperBorderRadius,
+        }}
       />
       <Stack direction='row' gap={1} justifyContent='space-between' sx={{ width: '100%', p: { xs: 1.5, md: 2 } }}>
         <Box sx={{ minWidth: 0 }}>
@@ -63,6 +70,7 @@ export default JobPostListItem;
 export const JobPostListItemLoading = ({ sx }: Pick<JobPostListItemProps, 'sx'>) => (
   <ListItemButton sx={{ p: 0, overflow: 'hidden', borderRadius: (theme) => `${theme.shape.borderRadius}px` }}>
     <Paper noOverflow noPadding sx={{ width: '100%', ...sx }}>
+      <Skeleton height={141.8} sx={{ borderRadius: getUpperBorderRadius }} variant="rectangular"'} width="100%"'} />
       <Stack direction='row' gap={1} justifyContent='space-between' sx={{ width: '100%', p: { xs: 1.5, md: 2 } }}>
         <Box sx={{ minWidth: 0 }}>
           <Typography sx={{ fontSize: { xs: '1.4rem', md: '1.5rem' } }} variant='h2'>
@@ -72,7 +80,6 @@ export const JobPostListItemLoading = ({ sx }: Pick<JobPostListItemProps, 'sx'>)
             <Skeleton width={100} />
           </Typography>
         </Box>
-        <AspectRatioLoading sx={{ height: 45, width: 'auto' }} />
       </Stack>
       <Divider />
       <Box sx={{ display: 'grid', py: 1, gridTemplateColumns: 'repeat(3, 1fr)' }}>
