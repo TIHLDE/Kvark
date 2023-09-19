@@ -1,7 +1,7 @@
 import { BoxProps, Skeleton, styled } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
+import TIHLDE_LOGO from 'assets/img/TihldeBackground.jpg';
 
 export type AspectRatioImgProps = {
   alt: string;
@@ -25,10 +25,14 @@ const Img = styled('img', { shouldForwardProp: (prop) => prop !== 'borderRadius'
 }));
 
 const AspectRatioImg = ({ alt, borderRadius, className, ratio = 21 / 9, src, sx }: AspectRatioImgProps) => {
-  const [imgUrl, setImgUrl] = useState(src || TIHLDELOGO);
+  const [imgUrl, setImgUrl] = useState(src || TIHLDE_LOGO);
+
+  useEffect(() => {
+    setImgUrl(src || TIHLDE_LOGO);
+  }, [src]);
 
   return (
-    <Img alt={alt} borderRadius={borderRadius} className={className} loading='lazy' onError={() => setImgUrl(TIHLDELOGO)} ratio={ratio} src={imgUrl} sx={sx} />
+    <Img alt={alt} borderRadius={borderRadius} className={className} loading='lazy' onError={() => setImgUrl(TIHLDE_LOGO)} ratio={ratio} src={imgUrl} sx={sx} />
   );
 };
 
