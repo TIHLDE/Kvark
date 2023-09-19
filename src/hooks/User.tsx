@@ -30,6 +30,7 @@ import { getCookie, removeCookie, setCookie } from 'api/cookie';
 export const USER_QUERY_KEY = 'user';
 export const USER_BADGES_QUERY_KEY = 'user_badges';
 export const USER_EVENTS_QUERY_KEY = 'user_events';
+export const USER_PAYMENT_ORDERS_QUERY_KEY = 'user_payment_orders';
 export const USER_MEMBERSHIPS_QUERY_KEY = 'user_memberships';
 export const USER_MEMBERSHIP_HISTORIES_QUERY_KEY = 'user_membership_histories';
 export const USER_FORMS_QUERY_KEY = 'user_forms';
@@ -83,12 +84,11 @@ export const useUserEvents = (userId?: User['user_id']) => {
 
 export const useUserPaymentOrders = (userId?: User['user_id']) => {
   return useInfiniteQuery<PaginationResponse<OrderList>, RequestResponse>(
-    [],
-    ({ pageParam = 1 }) => "",
+    [USER_PAYMENT_ORDERS_QUERY_KEY, userId], 
+    ({ pageParam = 1 }) => API.getUserPaymentOrders(userId, { page: pageParam }),
     {
-      getNextPageParam: (lastPage) => lastPage.next,
-    },
-  );
+    getNextPageParam: (lastPage) => lastPage.next,
+  });
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
