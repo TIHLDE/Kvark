@@ -3,6 +3,8 @@ import { parseISO } from 'date-fns';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { formatDate, getJobpostType, urlEncode } from 'utils';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 
 import { JobPost } from 'types';
 
@@ -21,6 +23,13 @@ const JobPostListItem = ({ jobpost, sx }: JobPostListItemProps) => (
     sx={{ p: 0, overflow: 'hidden', borderRadius: (theme) => `${theme.shape.borderRadius}px`, ...sx }}
     to={`${URLS.jobposts}${jobpost.id}/${urlEncode(jobpost.title)}/`}>
     <Paper noOverflow noPadding sx={{ width: '100%' }}>
+      <div style={{ display: 'block' }}>
+        <AspectRatioImg
+          alt={jobpost.image_alt || jobpost.title}
+          src={jobpost.image}
+          sx={{ height: 'auto', width: '100%', objectFit: 'cover', borderRadius: (theme) => `${Number(theme.shape.borderRadius) / 2}px` }}
+        />
+      </div>
       <Stack direction='row' gap={1} justifyContent='space-between' sx={{ width: '100%', p: { xs: 1.5, md: 2 } }}>
         <Box sx={{ minWidth: 0 }}>
           <Typography
@@ -31,13 +40,6 @@ const JobPostListItem = ({ jobpost, sx }: JobPostListItemProps) => (
           <Typography variant='caption'>{`${jobpost.company} • ${jobpost.location}`}</Typography>
         </Box>
         {/* TODO: fjern div rundt AspectRatioImg når flere nettlesere støtter aspect-ratio i css - https://caniuse.com/mdn-css_properties_aspect-ratio */}
-        <div style={{ display: 'block', height: 45, width: (45 / 9) * 21 }}>
-          <AspectRatioImg
-            alt={jobpost.image_alt || jobpost.title}
-            src={jobpost.image}
-            sx={{ height: 45, width: 'auto', borderRadius: (theme) => `${Number(theme.shape.borderRadius) / 2}px` }}
-          />
-        </div>
       </Stack>
       <Divider />
       <Box sx={{ display: 'grid', py: 1, gridTemplateColumns: 'repeat(3, 1fr)' }}>
