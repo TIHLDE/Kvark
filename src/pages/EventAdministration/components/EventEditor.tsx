@@ -215,9 +215,9 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       is_paid_event: data.is_paid_event,
       paid_information: data.is_paid_event
         ? {
-          price: data.price,
-          paytime: data.paytime && format(new Date(data.paytime), 'HH:mm'),
-        }
+            price: data.price,
+            paytime: data.paytime && format(new Date(data.paytime), 'HH:mm'),
+          }
         : undefined,
       contact_person: data.contact_person?.user_id || null,
     } as EventMutate;
