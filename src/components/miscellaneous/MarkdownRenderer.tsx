@@ -72,7 +72,7 @@ export const EventCard = ({ id }: { id: Event['id'] }) => {
 };
 export const JobPostCard = ({ id }: { id: JobPost['id'] }) => {
   const { data } = useJobPostById(id);
-  return data ? <JobPostListItem jobpost={data} sx={{ mb: 1 }} /> : <JobPostListItemLoading sx={{ mb: 1 }} />;
+  return data ? <JobPostListItem jobPost={data} sx={{ mb: 1 }} /> : <JobPostListItemLoading sx={{ mb: 1 }} />;
 };
 export const NewsCard = ({ id }: { id: News['id'] }) => {
   const { data } = useNewsById(id);
