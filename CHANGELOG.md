@@ -13,6 +13,9 @@
 ---
 
 ## Neste versjon
+
+- 👷**Karriere**. Karrieresiden er nå mer oversiktlig og brukervennlig.
+
 ## Versjon 2023.09.11
 
 - ✨ **Tracking**. Bruker Vecel events til å tracke brukerens aktivitet på nettsiden.
