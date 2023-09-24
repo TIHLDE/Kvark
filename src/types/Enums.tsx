@@ -117,3 +117,13 @@ export enum StrikeReason {
   BAD_BEHAVIOR = 'BAD_BEHAVIOR',
   EVAL_FORM = 'EVAL_FORM',
 }
+
+export enum OrderPaymentStatus {
+  INITIATE = 'INITIATE',
+  RESERVE = 'RESERVE',
+  CAPTURE = 'CAPTURE',
+  REFUND = 'REFUND',
+  CANCEL = 'CANCEL',
+  SALE = 'SALE',
+  VOID = 'VOID',
+}

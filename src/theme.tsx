@@ -25,6 +25,15 @@ declare module '@mui/material/styles/createPalette' {
       tihlde: string;
       nok_event: string;
       other_event: string;
+      payment_order: {
+        initiate: string;
+        reserve: string;
+        capture: string;
+        refund: string;
+        cancel: string;
+        sale: string;
+        void: string;
+      };
       gradient: {
         main: {
           top: string;
@@ -59,6 +68,15 @@ declare module '@mui/material/styles/createPalette' {
       tihlde: string;
       nok_event: string;
       other_event: string;
+      payment_order: {
+        initiate: string;
+        reserve: string;
+        capture: string;
+        refund: string;
+        cancel: string;
+        sale: string;
+        void: string;
+      };
       gradient: {
         main: {
           top: string;
@@ -194,6 +212,15 @@ export const getTheme = (theme: ThemeTypes, prefersDarkMode: boolean) => {
         tihlde: '#1c458a',
         nok_event: get<string>({ light: '#83C4F8', dark: '#83C4F8' }),
         other_event: get<string>({ light: '#FFA675', dark: '#FFA675' }),
+        payment_order: {
+          initiate: get<string>({ light: '#FFA675', dark: '#FFA675' }),
+          reserve: get<string>({ light: '#388e3c', dark: '#388e3c' }),
+          capture: get<string>({ light: '#83C4F8', dark: '#83C4F8' }),
+          refund: get<string>({ light: '#FFA675', dark: '#FFA675' }),
+          cancel: get<string>({ light: '#b20101', dark: '#ff6060' }),
+          sale: get<string>({ light: '#388e3c', dark: '#388e3c' }),
+          void: get<string>({ light: '#83C4F8', dark: '#83C4F8' }),
+        },
         gradient: {
           main: {
             top: get<string>({ light: '#16356e', dark: '#0d2339' }),
