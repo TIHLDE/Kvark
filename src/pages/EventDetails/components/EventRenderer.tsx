@@ -217,8 +217,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           <>
             <VerifyDialog
               color='error'
-              contentText={`Om du melder deg på igjen vil du havne på bunnen av en eventuell venteliste. ${unregisteringGivesStrike ? 'Du vil også få 1 prikk for å melde deg av etter avmeldingsfristen.' : ''
-                }`}
+              contentText={`Om du melder deg på igjen vil du havne på bunnen av en eventuell venteliste. ${
+                unregisteringGivesStrike ? 'Du vil også få 1 prikk for å melde deg av etter avmeldingsfristen.' : ''
+              }`}
               fullWidth
               onConfirm={signOff}
               variant='outlined'>
@@ -360,7 +361,10 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         <DetailContent info={categories.find((c) => c.id === data.category)?.text || 'Laster...'} title='Hva:' />
         {data.organizer && <DetailContent info={<Link to={URLS.groups.details(data.organizer.slug)}>{data.organizer.name}</Link>} title='Arrangør:' />}
         {data.contact_person && (
-          <DetailContent info={<Link to={`${URLS.profile}${data.contact_person?.user_id}/`}>{data.contact_person?.user_id}</Link>} title='Kontaktperson' />
+          <DetailContent
+            info={<Link to={`${URLS.profile}${data.contact_person?.user_id}/`}>{`${data.contact_person?.first_name} ${data.contact_person?.last_name}`}</Link>}
+            title='Kontaktperson'
+          />
         )}
         {data.paid_information && <DetailContent info={data.paid_information.price + ' kr'} title='Pris:' />}
       </DetailsPaper>
