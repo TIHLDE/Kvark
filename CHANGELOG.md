@@ -13,6 +13,11 @@
 ---
 
 ## Neste versjon
+
+## versjon 2023.24.09
+
+- 🎨 **Fult navn**. Kontaktperson på arrangementer vil nå bli vist med fult navn.
+
 ## Versjon 2023.09.11
 
 - ✨ **Tracking**. Bruker Vecel events til å tracke brukerens aktivitet på nettsiden.
