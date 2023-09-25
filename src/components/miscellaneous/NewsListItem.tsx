@@ -38,20 +38,20 @@ const NewsListItem = ({ news, sx }: NewsListItemProps) => (
         sx={{ borderRadius: (theme) => `${theme.shape.borderRadius}px`, width: '80%', margin: '-40px auto 0', position: 'relative', display: 'block' }}
         to={`${URLS.news}${news.id}/${urlEncode(news.title)}/`}>
         <div>
-        <Paper elevation={0} sx={{ textAlign: 'center', p: 1, width: '100%' }}>
-          <Typography
-            sx={{ fontSize: { xs: '1.4rem', md: '1.5rem' }, textTransform: 'none', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}
-            variant='h2'>
-            {news.title}
-          </Typography>
-          <Typography variant='caption'>{formatDate(parseISO(news.created_at), { time: false })}</Typography>
-          <Typography sx={{ overflow: 'hidden', WebkitLineClamp: 2, display: '-webkit-box', WebkitBoxOrient: 'vertical' }} variant='body2'>
-            {news.header}
-          </Typography>
-        </Paper>
-        <Stack sx={{ maxWidth: '100px', marginLeft: 'auto'}}>
-        <EmojiPaper>👩, 👨, 👨</EmojiPaper>
-        </Stack>
+          <Paper elevation={0} sx={{ textAlign: 'center', p: 1, width: '100%' }}>
+            <Typography
+              sx={{ fontSize: { xs: '1.4rem', md: '1.5rem' }, textTransform: 'none', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}
+              variant='h2'>
+              {news.title}
+            </Typography>
+            <Typography variant='caption'>{formatDate(parseISO(news.created_at), { time: false })}</Typography>
+            <Typography sx={{ overflow: 'hidden', WebkitLineClamp: 2, display: '-webkit-box', WebkitBoxOrient: 'vertical' }} variant='body2'>
+              {news.header}
+            </Typography>
+          </Paper>
+          <Stack sx={{ maxWidth: '100px', marginLeft: 'auto' }}>
+            <EmojiPaper>👩, 👨, 👨</EmojiPaper>
+          </Stack>
         </div>
       </ButtonBase>
     </Box>
