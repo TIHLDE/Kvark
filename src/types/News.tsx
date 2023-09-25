@@ -15,4 +15,5 @@ export type News = {
   body: string;
   image?: string;
   image_alt?: string;
+  allowEmojis?: boolean;
 };

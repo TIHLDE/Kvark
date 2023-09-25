@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import URLS from 'URLS';
 
+import { useUnicode } from 'hooks/Emojis';
 import { useNews } from 'hooks/News';
 
 import NewsEditor from 'pages/NewsAdministration/components/NewsEditor';
@@ -43,6 +44,8 @@ const NewsAdministration = () => {
   const navigateTab = { value: 'navigate', label: 'Se nyhet', icon: OpenIcon };
   const tabs = newsId ? [editTab, navigateTab] : [editTab];
   const [tab, setTab] = useState(editTab.value);
+  const { data } = useUnicode();
+  console.log('very nice ' + JSON.stringify(data, null, 2));
 
   const goToNews = (newNews: number | null) => {
     if (newNews) {
