@@ -13,6 +13,7 @@
 ---
 
 ## Neste versjon
+## Versjon 2023.09.25
 
 ## versjon 2023.24.09
 
