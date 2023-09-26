@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 import { differenceInMilliseconds, formatDistanceStrict } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
-import { useQueryClient } from 'react-query';
+/* import { useQueryClient } from 'react-query'; */
 import { Link } from 'react-router-dom';
 
 import { Event, User } from 'types';
