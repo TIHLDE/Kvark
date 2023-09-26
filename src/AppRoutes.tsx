@@ -51,6 +51,7 @@ const SignUp = lazy(() => import('pages/SignUp'));
 const StrikeAdmin = lazy(() => import('pages/StrikeAdmin'));
 const Toddel = lazy(() => import('pages/Toddel'));
 const UserAdmin = lazy(() => import('pages/UserAdmin'));
+const Wrapped = lazy(() => import('pages/wrapped'));
 
 type AuthRouteProps = {
   /** List of permissions where the user must have access through at least one of them to be given access */
@@ -147,6 +148,7 @@ const AppRoutes = () => {
         <Route element={<AuthRoute element={<Cheatsheet />} />} path={`${URLS.cheatsheet}:studyId/:classId/`} />
         <Route element={<AuthRoute element={<Cheatsheet />} />} path={`${URLS.cheatsheet}*`} />
         <Route element={<AuthRoute element={<ShortLinks />} />} path={URLS.shortLinks} />
+        <Route element={<AuthRoute element={<Wrapped />} />} path={URLS.wrapped} />
 
         <Route element={<AuthRoute apps={[PermissionApp.JOBPOST]} element={<JobPostAdministration />} />} path={URLS.jobpostsAdmin}>
           <Route element={<JobPostAdministration />} path=':jobPostId/' />
