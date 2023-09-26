@@ -1,14 +1,12 @@
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { Box, BoxProps, CircularProgress, Divider, IconButton, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 import Page from 'components/navigation/Page';
 
+import Dots from './components/slides/Dots';
 import Events from './components/slides/Events';
 import Welcome from './components/slides/Welcome';
-import { useEffect, useState } from 'react';
-import Dots from './components/slides/Dots';
-
-export interface SlideProps {}
 
 const Wrapped = () => {
   return (
@@ -54,7 +52,9 @@ const Player = () => {
   };
 
   const decrementSlide = () => {
-    if (slide < 1) return;
+    if (slide < 1) {
+      return;
+    }
     setSlide(slide - 1);
   };
 
@@ -70,24 +70,24 @@ const Player = () => {
         position: 'relative',
       }}>
       <IconButton
+        onClick={decrementSlide}
         sx={{
           ':hover': {
             transform: 'translateX(-.1rem)',
           },
           transition: 'transform 150ms ease-in-out',
-        }}
-        onClick={decrementSlide}>
+        }}>
         <ArrowBack />
       </IconButton>
-      <WrappedViewport slide={slide} percentage={progress} />
+      <WrappedViewport percentage={progress} slide={slide} />
       <IconButton
+        onClick={incrementSlide}
         sx={{
           ':hover': {
             transform: 'translateX(.1rem)',
           },
           transition: 'transform 150ms ease-in-out',
-        }}
-        onClick={incrementSlide}>
+        }}>
         <ArrowForward />
       </IconButton>
     </Box>
@@ -161,8 +161,8 @@ const WrappedViewport = ({ slide, percentage, sx, ...props }: WrappedViewportPro
       {...props}>
       <PlaybackBar
         percentage={percentage}
-        slides={slides.length}
         slide={slide}
+        slides={slides.length}
         sx={{
           position: 'absolute',
           top: 0,

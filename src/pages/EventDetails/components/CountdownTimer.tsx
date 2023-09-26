@@ -47,9 +47,9 @@ type Order = {
   payment_link?: string;
 };
 
-const CountdownTimer = ({ user_id, event_id, payment_link, expire_date }: Order) => {
+const CountdownTimer = ({ /* user_id, event_id, */ payment_link, expire_date }: Order) => {
   const [timeLeft, setTimeLeft] = useState(convertTime(getTimeDifference(expire_date)));
-  const queryClient = useQueryClient();
+  /* const queryClient = useQueryClient(); */
 
   useEffect(() => {
     const interval = setInterval(() => {

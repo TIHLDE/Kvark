@@ -1,4 +1,4 @@
-import { Box, BoxProps, keyframes, Typography, useTheme } from '@mui/material';
+import { Box, BoxProps, keyframes, Typography } from '@mui/material';
 import { useEffect } from 'react';
 
 import { useConfetti } from 'hooks/Confetti';

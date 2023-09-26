@@ -5,7 +5,7 @@ import WrappedSchaffold from '../WrappedSchaffold';
 const Dots = () => {
   return (
     <WrappedSchaffold spacing='medium' variant='vertical'>
-      <Typography textTransform={'uppercase'} variant='h2' sx={{ width: '90%' }}>
+      <Typography sx={{ width: '90%' }} textTransform={'uppercase'} variant='h2'>
         I løpet av semesteret har du fått
       </Typography>
 
