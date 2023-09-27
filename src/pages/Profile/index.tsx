@@ -6,6 +6,7 @@ import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
 import GroupsIcon from '@mui/icons-material/PeopleOutlineRounded';
 import SettingsIcon from '@mui/icons-material/TuneRounded';
 import WorkspacesIcon from '@mui/icons-material/WorkspacesRounded';
+import PaymentIcon from '@mui/icons-material/Payment';
 import {
   Badge,
   Box,
@@ -80,7 +81,7 @@ const Profile = () => {
   };
 
   const eventTab: NavListItem = { label: 'Arrangementer', icon: EventIcon };
-  const paymentOrdersTab: NavListItem = { label: 'Betalingsordre', icon: EventIcon };
+  const paymentOrdersTab: NavListItem = { label: 'Betalingsordre', icon: PaymentIcon };
   const badgesTab: NavListItem = { label: 'Badges', icon: BadgesIcon };
   const groupsTab: NavListItem = { label: 'Medlemskap', icon: GroupsIcon };
   const formsTab: NavListItem = { label: 'Spørreskjemaer', icon: FormsIcon, badge: user?.unanswered_evaluations_count };

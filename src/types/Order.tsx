@@ -5,7 +5,7 @@ export type Order = {
   access: string[];
   order_id: string;
   user_id: User['user_id'];
-  event: Event['id'];
+  event: Event;
   status: string;
   expire_date: Date;
   payment_link: string;
