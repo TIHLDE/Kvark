@@ -10,12 +10,9 @@ export type CommentProps = ButtonProps & {
 };
 
 const ShareButton = (props: CommentProps) => {
-  const onClick = () => setIsCommentDialogOpen(true);
-
-  const onClose = () => setIsCommentDialogOpen(false);
-
   const [isCommentDialogOpen, setIsCommentDialogOpen] = useState(false);
-
+  const onClick = () => setIsCommentDialogOpen(true);
+  const onClose = () => setIsCommentDialogOpen(false);
   return (
     <>
       <Button endIcon={<AddCommentIcon />} onClick={onClick} variant='outlined' {...props}>

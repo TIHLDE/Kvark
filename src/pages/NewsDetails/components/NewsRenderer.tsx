@@ -16,7 +16,8 @@ import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/Asp
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import ShareButton from 'components/miscellaneous/ShareButton';
 
-import CommentButton from '../../../components/miscellaneous/CommentButton';
+import CommentButton from '../../../components/miscellaneous/Comment/CommentButton';
+import CommentSection from '../../../components/miscellaneous/Comment/CommentSection';
 
 const TopContainer = styled('div', { shouldForwardProp: (prop) => prop !== 'bgColor' })<{ bgColor?: React.CSSProperties['backgroundColor'] }>(
   ({ theme, bgColor }) => ({
@@ -81,6 +82,7 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
           <Paper>
             <MarkdownRenderer value={data.body} />
           </Paper>
+          <CommentSection />
         </Stack>
       </Container>
     </div>
