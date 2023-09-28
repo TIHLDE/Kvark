@@ -3,10 +3,10 @@ import EventIcon from '@mui/icons-material/DateRangeRounded';
 import BadgesIcon from '@mui/icons-material/EmojiEventsRounded';
 import LogOutIcon from '@mui/icons-material/ExitToAppRounded';
 import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
+import PaymentIcon from '@mui/icons-material/Payment';
 import GroupsIcon from '@mui/icons-material/PeopleOutlineRounded';
 import SettingsIcon from '@mui/icons-material/TuneRounded';
 import WorkspacesIcon from '@mui/icons-material/WorkspacesRounded';
-import PaymentIcon from '@mui/icons-material/Payment';
 import {
   Badge,
   Box,

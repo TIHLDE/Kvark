@@ -21,11 +21,9 @@ const ProfilePaymentOrders = () => {
         <></>
       ) : (
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' }, gap: 1, mb: 1 }}>
-            {
-              paymentOrders?.map((order) => {
-                return <PaymentOrderItem key={order.order_id} order={order} />;
-              })
-            }
+          {paymentOrders?.map((order) => {
+            return <PaymentOrderItem key={order.order_id} order={order} />;
+          })}
         </Box>
       )}
     </Stack>

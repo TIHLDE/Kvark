@@ -1,39 +1,37 @@
 import { Box, ListItemButton, ListItemButtonProps, Skeleton, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
-import VIPPSLOGO from 'assets/img/vippsLogo.svg';
-
-import { OrderList } from 'types';
 import { urlEncode } from 'utils';
 
-import Paper from 'components/layout/Paper';
+import { OrderList } from 'types';
 import { OrderPaymentStatus } from 'types/Enums';
+
+import Paper from 'components/layout/Paper';
+
+import VIPPSLOGO from 'assets/img/vippsLogo.svg';
 
 type PaymentOrderItemProps = Pick<ListItemButtonProps, 'sx'> & {
   order: OrderList;
 };
 
 const PaymentOrderItem = ({ order, sx }: PaymentOrderItemProps) => {
-
   const getStatusText = () => {
-
     switch (order.status) {
       case OrderPaymentStatus.SALE:
-        return "Orderen er betalt. Trykk for å se arrangementet."
-      
+        return 'Orderen er betalt. Trykk for å se arrangementet.';
+
       case OrderPaymentStatus.INITIATE:
-        return "Du har enda ikke betalt. Trykk for å betale."
-      
+        return 'Du har enda ikke betalt. Trykk for å betale.';
+
       case OrderPaymentStatus.REFUND:
-        return "Din betaling blir refundert innen kort tid."
-      
+        return 'Din betaling blir refundert innen kort tid.';
+
       case OrderPaymentStatus.CANCEL:
-        return "Din ordre er kansellert."
+        return 'Din ordre er kansellert.';
       default:
         break;
     }
-
-  }
+  };
 
   return (
     <ListItemButton
@@ -47,8 +45,8 @@ const PaymentOrderItem = ({ order, sx }: PaymentOrderItemProps) => {
           <Typography sx={{ fontWeight: 'bold' }} variant='h3'>
             {order.event.title}
           </Typography>
-          <Typography variant='body2' sx={{ fontSize: '1rem', fontStyle: 'italic', mt: 1.5 }}>
-            { getStatusText() }
+          <Typography sx={{ fontSize: '1rem', fontStyle: 'italic', mt: 1.5 }} variant='body2'>
+            {getStatusText()}
           </Typography>
           {/* <Typography sx={{ fontSize: '0.7rem', fontStyle: 'italic', fontWeight: 'bold', mt: 0.5 }} variant='subtitle2'>
             Ervervet av{' '}
@@ -59,7 +57,7 @@ const PaymentOrderItem = ({ order, sx }: PaymentOrderItemProps) => {
         </Stack>
       </Stack>
     </ListItemButton>
-  )
+  );
 };
 
 export default PaymentOrderItem;
