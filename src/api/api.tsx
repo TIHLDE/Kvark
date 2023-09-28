@@ -99,6 +99,7 @@ export const SUBMISSIONS_ENDPOINT = 'submissions';
 export const USERS_ENDPOINT = 'users';
 export const WARNINGS_ENDPOINT = 'warnings';
 export const EMOJI_ENDPOINT = 'emojis';
+const REACTION_ENDPOINT = `${EMOJI_ENDPOINT}/reaction`;
 
 export default {
   // Auth
@@ -178,7 +179,15 @@ export default {
   createNewsItem: (item: NewsRequired) => IFetch<News>({ method: 'POST', url: `${NEWS_ENDPOINT}/`, data: item }),
   putNewsItem: (id: number, item: NewsRequired) => IFetch<News>({ method: 'PUT', url: `${NEWS_ENDPOINT}/${String(id)}/`, data: item }),
   deleteNewsItem: (id: number) => IFetch<RequestResponse>({ method: 'DELETE', url: `${NEWS_ENDPOINT}/${String(id)}/` }),
+
+  // Emojis
   fetchUnicode: () => IFetch<any>({ method: 'GET', url: `${EMOJI_ENDPOINT}/unicode/` }),
+  addEmoji: (emoji: string, newsId: number, userId?: User['user_id']) =>
+    IFetch<RequestResponse>({ method: 'POST', url: `${REACTION_ENDPOINT}/`, data: { user_id: userId, emoji: emoji, content_type: 'news', object_id: newsId } }),
+  deleteEmoji: (emojiId: string, newsId: number, userId?: User['user_id']) =>
+    IFetch<RequestResponse>({ method: 'DELETE', url: `${EMOJI_ENDPOINT}/`, data: { user_id: userId, emoji_id: emojiId, news_id: newsId } }),
+  changeEmoji: (emojiId: string, newsId: number, reactionId: string, userId?: User['user_id']) =>
+    IFetch<RequestResponse>({ method: 'PUT', url: `${REACTION_ENDPOINT}/${reactionId}/`, data: { user_id: userId, news_id: newsId, emoji_id: emojiId } }),
 
   // User
   getUserData: (userId?: User['user_id']) => IFetch<User>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/` }),
