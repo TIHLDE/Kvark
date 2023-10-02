@@ -90,8 +90,8 @@ dependencies:
     specifier: ^6.1.0
     version: 6.1.0(react@17.0.2)
   react-hook-form:
-    specifier: ^7.31.1
-    version: 7.31.1(react@17.0.2)
+    specifier: ^7.47.0
+    version: 7.47.0(react@17.0.2)
   react-linkify:
     specifier: ^1.0.0-alpha
     version: 1.0.0-alpha
@@ -4241,8 +4241,8 @@ packages:
       react-side-effect: 2.1.2(react@17.0.2)
     dev: false
 
-  /react-hook-form@7.31.1(react@17.0.2):
-    resolution: {integrity: sha512-QjtjZ8r8KtEBWWpcXLyQordCraTFxILtyQpaz5KLLxN2YzcC+FZ9LLtOnNGuOnzZo9gCoB+viK3ZHV9Mb2htmQ==}
+  /react-hook-form@7.47.0(react@17.0.2):
+    resolution: {integrity: sha512-F/TroLjTICipmHeFlMrLtNLceO2xr1jU3CyiNla5zdwsGUGu2UOxxR4UyJgLlhMwLW/Wzp4cpJ7CPfgJIeKdSg==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18
