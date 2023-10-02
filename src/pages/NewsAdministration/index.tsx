@@ -44,11 +44,6 @@ const NewsAdministration = () => {
   const navigateTab = { value: 'navigate', label: 'Se nyhet', icon: OpenIcon };
   const tabs = newsId ? [editTab, navigateTab] : [editTab];
   const [tab, setTab] = useState(editTab.value);
-  console.log('newsId: ' + newsId);
-  const { data } = getEmojies();
-
-  console.log(data);
-  console.log(addReaction(':1st_place_medal:', Number(newsId), 'index'));
 
   const goToNews = (newNews: number | null) => {
     if (newNews) {

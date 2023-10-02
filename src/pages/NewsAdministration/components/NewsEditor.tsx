@@ -4,7 +4,7 @@ import FormGroup from '@mui/material/FormGroup';
 import Grid from '@mui/material/Grid';
 import LinearProgress from '@mui/material/LinearProgress';
 import { makeStyles } from 'makeStyles';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { News } from 'types';
@@ -51,6 +51,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
   const { classes } = useStyles();
   const { control, handleSubmit, register, formState, getValues, reset, watch, setValue } = useForm<FormValues>();
   const { data, isError, isLoading } = useNewsById(newsId || -1);
+  const showEmojiAllowed = data?.emojis_allowed;
   const createNews = useCreateNews();
   const updateNews = useUpdateNews(newsId || -1);
   const deleteNews = useDeleteNews(newsId || -1);
@@ -58,6 +59,18 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
     () => createNews.isLoading || updateNews.isLoading || deleteNews.isLoading,
     [createNews.isLoading, updateNews.isLoading, deleteNews.isLoading],
   );
+
+  const [checkboxState, setCheckboxState] = useState(false);
+
+  useEffect(() => {
+    setCheckboxState(!!showEmojiAllowed);
+  }, [showEmojiAllowed]);
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isChecked = e.target.checked;
+    setValue('emojis_allowed', isChecked);
+    setCheckboxState(isChecked);
+  };
 
   useEffect(() => {
     !isError || goToNews(null);
@@ -151,12 +164,12 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
           <FormGroup>
             <FormControlLabel
               control={
-                <Checkbox
+                  <Checkbox
                   {...register('emojis_allowed')}
-                  checked={watch('emojis_allowed')}
+                  checked={checkboxState}
                   color='primary'
                   name='allowEmojis'
-                  onChange={(e) => setValue('emojis_allowed', e.target.checked)}
+                  onChange={handleCheckboxChange}
                 />
               }
               label='Tillatt Emojis'

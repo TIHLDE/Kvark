@@ -12,13 +12,14 @@ export const getEmojies = () => {
 
 export const addReaction = (emoji: string, newsId: number, userId?: User['user_id']) => {
   console.log('addReaction' + emoji + newsId + userId);
-  return API.addEmoji(emoji, newsId);
+  return API.addEmoji(emoji, newsId, userId);
 };
 
-export const deleteEmoji = (emoji: string, newsId: number, userId?: User['user_id']) => {
-  return API.deleteEmoji(emoji, newsId, userId);
+export const deleteEmoji = (reaction_id: string) => {
+  console.log('deleteEmoji' + reaction_id);
+  return API.deleteEmoji(reaction_id);
 };
 
-export const changeEmoji = (emoji: string, newsId: number, reactionId: string, userId?: User['user_id']) => {
-  return API.changeEmoji(emoji, newsId, reactionId, userId);
+export const changeEmoji = (reaction_id: string, emoji: string, newsId: number, userId?: User['user_id']) => {
+  return API.changeEmoji(reaction_id, emoji, newsId, userId);
 };

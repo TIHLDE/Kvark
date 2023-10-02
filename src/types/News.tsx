@@ -5,6 +5,14 @@ export type NewsRequired = Omit<Partial<News>, 'creator'> &
     creator: UserBase['user_id'] | null;
   };
 
+export type Reaction = {
+  content_type: number;
+  emoji: string;
+  object_id: number;
+  reaction_id: string;
+  user: string;
+};
+
 export type News = {
   id: number;
   created_at: string;
@@ -16,4 +24,5 @@ export type News = {
   image?: string;
   image_alt?: string;
   emojis_allowed?: boolean;
+  reactions?: Reaction[];
 };
