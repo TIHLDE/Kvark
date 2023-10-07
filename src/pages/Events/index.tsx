@@ -9,6 +9,8 @@ import Banner from 'components/layout/Banner';
 import Tabs from 'components/layout/Tabs';
 import Page from 'components/navigation/Page';
 
+import CommentSection from '../../components/miscellaneous/Comment/CommentSection';
+
 const EventsCalendarView = lazy(() => import(/* webpackChunkName: "events_calendar" */ 'pages/Landing/components/EventsCalendarView'));
 
 const Events = () => {
@@ -28,6 +30,7 @@ const Events = () => {
           <EventsCalendarView />
         </Suspense>
       </Collapse>
+      <CommentSection />
     </Page>
   );
 };
