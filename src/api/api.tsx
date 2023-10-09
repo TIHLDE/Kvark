@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import {
   Badge,
   BadgeCategory,
@@ -43,6 +44,7 @@ import {
   News,
   NewsRequired,
   Notification,
+  Order,
   PaginationResponse,
   Picture,
   PublicRegistration,
@@ -77,6 +79,7 @@ export const BANNER_ENDPOINT = 'banners';
 export const CATEGORIES_ENDPOINT = 'categories';
 export const CHEATSHEETS_ENDPOINT = 'cheatsheets';
 export const EVENTS_ENDPOINT = 'events';
+export const ORDER_ENPOINT = 'payment/order';
 export const EVENT_REGISTRATIONS_ENDPOINT = 'registrations';
 export const FORMS_ENDPOINT = 'forms';
 export const GALLERY_ENDPOINT = 'galleries';
@@ -137,6 +140,10 @@ export default {
   getEventIsFavorite: (eventId: Event['id']) => IFetch<EventFavorite>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/favorite/` }),
   setEventIsFavorite: (eventId: Event['id'], data: EventFavorite) =>
     IFetch<EventFavorite>({ method: 'PUT', url: `${EVENTS_ENDPOINT}/${String(eventId)}/favorite/`, data }),
+
+  // Event order
+  getEventPaymentOrder: (eventId: Event['id'], userId: User['user_id']) =>
+    IFetch<Order>({ method: 'GET', url: `${ORDER_ENPOINT}`, data: { user_id: userId, event: eventId } }),
 
   // Event registrations
   getRegistration: (eventId: Event['id'], userId: User['user_id']) =>

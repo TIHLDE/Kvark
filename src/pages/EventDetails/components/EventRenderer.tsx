@@ -40,6 +40,7 @@ import { useSnackbar } from 'hooks/Snackbar';
 import { useUser } from 'hooks/User';
 import { useAnalytics, useInterval } from 'hooks/Utils';
 
+import CountdownTimer from 'pages/EventDetails/components/CountdownTimer';
 import EventPriorityPools from 'pages/EventDetails/components/EventPriorityPools';
 import EventPublicRegistrationsList from 'pages/EventDetails/components/EventPublicRegistrationsList';
 import { EventsSubscription } from 'pages/Profile/components/ProfileEvents';
@@ -176,12 +177,23 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           </>
         ) : (
           <>
-            <Alert severity='success' variant='outlined'>
-              {`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}
-            </Alert>
-            <QRButton fullWidth qrValue={registration.user_info.user_id} subtitle={`${registration.user_info.first_name} ${registration.user_info.last_name}`}>
-              Påmeldingsbevis
-            </QRButton>
+            {data.paid_information && !registration.has_paid_order ? (
+              <Alert icon severity='warning' variant='outlined'>
+                {`Du er ${registration.has_attended ? 'deltatt' : 'meldt'} på arrangementet! Men du må huske å betale`}
+              </Alert>
+            ) : (
+              <>
+                <Alert icon severity='success' variant='outlined'>
+                  {`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}
+                </Alert>
+                <QRButton
+                  fullWidth
+                  qrValue={registration.user_info.user_id}
+                  subtitle={`${registration.user_info.first_name} ${registration.user_info.last_name}`}>
+                  Påmeldingsbevis
+                </QRButton>
+              </>
+            )}
             {registration.survey_submission.answers.length > 0 && (
               <div>
                 <Expand flat header='Påmeldingsspørsmål'>
@@ -349,8 +361,12 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         <DetailContent info={categories.find((c) => c.id === data.category)?.text || 'Laster...'} title='Hva:' />
         {data.organizer && <DetailContent info={<Link to={URLS.groups.details(data.organizer.slug)}>{data.organizer.name}</Link>} title='Arrangør:' />}
         {data.contact_person && (
-          <DetailContent info={<Link to={`${URLS.profile}${data.contact_person?.user_id}/`}>{data.contact_person?.user_id}</Link>} title='Kontaktperson' />
+          <DetailContent
+            info={<Link to={`${URLS.profile}${data.contact_person?.user_id}/`}>{`${data.contact_person?.first_name} ${data.contact_person?.last_name}`}</Link>}
+            title='Kontaktperson'
+          />
         )}
+        {data.paid_information && <DetailContent info={data.paid_information.price + ' kr'} title='Pris:' />}
       </DetailsPaper>
       {data.sign_up && (
         <>
@@ -422,6 +438,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       <Stack gap={1} sx={{ width: '100%' }}>
         <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         {lgDown && <Info />}
+        {registration && data.paid_information && !registration.has_paid_order && (
+          <CountdownTimer expire_date={registration.order.expire_date} payment_link={registration.order.payment_link} />
+        )}
         <ContentPaper>
           <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h1'>
             {data.title}

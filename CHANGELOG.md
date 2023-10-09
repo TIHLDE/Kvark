@@ -10,13 +10,21 @@
 
 ### 🎨 - Designendringer
 
----
-
 ## Neste versjon
 - ✨ **Bannere**. Tidsbegrensede bannere kan nå opprettes.
-- ✨ **Badge**. Bades kan erverves gjennom en lenke.
+
+## versjon 2023.24.09
+
+- 🎨 **Fult navn**. Kontaktperson på arrangementer vil nå bli vist med fult navn.
+- 👷 **Karriere**. Karrieresiden er nå mer oversiktlig og brukervennlig.
+
+## Versjon 2023.09.11
+
 - ✨ **Tracking**. Bruker Vecel events til å tracke brukerens aktivitet på nettsiden.
 - 🦟 **Arrangement**. Knapp for å opprette arrangemnt på gruppesiden vises kun for admins.
+
+## versjon 2023.09.7
+- ✨ **Vipps betaling**. Vipps betaling på arrangementer, der bruker blir kastet ut hvis ikke betalt innen frist.
 
 ## versjon 2023 04.17
 

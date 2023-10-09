@@ -1,10 +1,10 @@
 import { SafetyDividerRounded } from '@mui/icons-material';
 import { Collapse, Grid, LinearProgress, ListSubheader, MenuItem, Stack, styled } from '@mui/material';
-import { addHours, parseISO, setHours, startOfHour, subDays } from 'date-fns';
+import { addHours, format, parse, parseISO, setHours, startOfHour, subDays } from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { BaseGroup, Event, EventMutate, Group, PriorityPool, PriorityPoolMutate } from 'types';
+import { BaseGroup, Event, EventMutate, Group, PaidInformation, PriorityPool, PriorityPoolMutate } from 'types';
 import { GroupType, MembershipType } from 'types/Enums';
 
 import { useCategories } from 'hooks/Categories';
@@ -22,6 +22,7 @@ import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
+import TimePicker from 'components/inputs/TimePicker';
 import { ImageUpload } from 'components/inputs/Upload';
 import UserSearch from 'components/inputs/UserSearch';
 import { StandaloneExpand } from 'components/layout/Expand';
@@ -50,6 +51,9 @@ type FormValues = Pick<
   | 'description'
   | 'image'
   | 'image_alt'
+  | 'is_paid_event'
+  | 'price'
+  | 'paytime'
   | 'limit'
   | 'location'
   | 'sign_up'
@@ -64,6 +68,7 @@ type FormValues = Pick<
   sign_off_deadline: Date;
   start_date: Date;
   start_registration_at: Date;
+  paid_information?: PaidInformation;
 };
 type GroupOption = { type: 'header'; header: string } | { type: 'group'; group: BaseGroup };
 
@@ -77,6 +82,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const [priorityPools, setPriorityPools] = useState<Array<PriorityPoolMutate>>([]);
   const { handleSubmit, register, watch, control, formState, getValues, reset, setValue } = useForm<FormValues>();
   const watchSignUp = watch('sign_up');
+  const watchPaidEvent = watch('is_paid_event');
   const { data: categories = [] } = useCategories();
 
   const setValues = useCallback(
@@ -100,6 +106,9 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         only_allow_prioritized: newValues ? newValues.only_allow_prioritized : false,
         can_cause_strikes: newValues ? newValues.can_cause_strikes : true,
         enforces_previous_strikes: newValues ? newValues.enforces_previous_strikes : true,
+        is_paid_event: newValues?.is_paid_event || false,
+        price: newValues?.paid_information?.price,
+        paytime: newValues?.paid_information?.paytime && parse(newValues?.paid_information.paytime, 'HH:mm:ss', new Date()),
         contact_person: newValues?.contact_person || null,
       });
       if (!newValues) {
@@ -165,6 +174,9 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       start_date: values.start_date.toJSON(),
       start_registration_at: values.start_registration_at.toJSON(),
       contact_person: values.contact_person,
+      paid_information: {
+        price: values?.price,
+      },
     } as Event;
   };
 
@@ -200,6 +212,13 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       sign_off_deadline: data.sign_off_deadline.toJSON(),
       start_date: data.start_date.toJSON(),
       start_registration_at: data.start_registration_at.toJSON(),
+      is_paid_event: data.is_paid_event,
+      paid_information: data.is_paid_event
+        ? {
+            price: data.price,
+            paytime: data.paytime && format(new Date(data.paytime), 'HH:mm'),
+          }
+        : undefined,
       contact_person: data.contact_person?.user_id || null,
     } as EventMutate;
     if (eventId) {
@@ -446,6 +465,41 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               </Select>
             )}
           </Row>
+          <Bool
+            control={control}
+            formState={formState}
+            label={
+              <>
+                Betalt arrangement
+                <ShowMoreTooltip>Bestemmer om arrangementet skal kreve betaling eller ikke.</ShowMoreTooltip>
+              </>
+            }
+            name='is_paid_event'
+            type='switch'
+          />
+
+          <Collapse in={watchPaidEvent}>
+            <Row>
+              <TextField
+                formState={formState}
+                label='Pris'
+                type='number'
+                {...register('price', { required: watchPaidEvent ? 'Feltet er påkrevd' : undefined })}
+                disabled={Boolean(data?.paid_information?.price)}
+                required={watchPaidEvent}
+              />
+              <TimePicker
+                control={control}
+                disabled={Boolean(data?.paid_information?.paytime)}
+                formState={formState}
+                label={'Betalingstid'}
+                name='paytime'
+                required={watchPaidEvent}
+                type='time'
+              />
+            </Row>
+          </Collapse>
+
           <UserSearch control={control} formState={formState} label={'Kontaktperson'} name='contact_person' />
           <RendererPreview getContent={getEventPreview} renderer={EventRenderer} sx={{ my: 2 }} />
           <SubmitButton disabled={isLoading || createEvent.isLoading || updateEvent.isLoading || deleteEvent.isLoading} formState={formState}>
