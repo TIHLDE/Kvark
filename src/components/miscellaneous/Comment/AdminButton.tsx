@@ -7,6 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import * as React from 'react';
 import { useState } from 'react';
 
+import { useSnackbar } from '../../../hooks/Snackbar';
 import ConfirmDialog from '../ConfirmDialog';
 import useStyles from './styles';
 import { CommentDispatchContext } from './temp/reducer';
@@ -26,6 +27,7 @@ export default function AdminButton(props: AdminButtonProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const { classes } = useStyles();
+  const snackbar = useSnackbar();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -52,6 +54,7 @@ export default function AdminButton(props: AdminButtonProps) {
         commentId: props.comment.id,
       },
     });
+    snackbar('Kommentaren ble slettet', 'info');
   };
 
   const handleConfirmFlag = () => {
@@ -62,6 +65,7 @@ export default function AdminButton(props: AdminButtonProps) {
         commentId: props.comment.id,
       },
     });
+    snackbar('Kommentaren ble rapportert', 'info');
   };
 
   return (
