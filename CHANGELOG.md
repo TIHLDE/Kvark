@@ -10,9 +10,8 @@
 
 ### 🎨 - Designendringer
 
----
-
 ## Neste versjon
+- ✨ **Bannere**. Tidsbegrensede bannere kan nå opprettes.
 
 ## versjon 2023.24.09
 
