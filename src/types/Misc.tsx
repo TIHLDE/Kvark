@@ -9,6 +9,8 @@ export type InfoBanner = {
   url?: string;
   visible_from: string;
   visible_until: string;
+  is_visible: boolean;
+  is_expired: boolean;
 };
 
 export interface Cheatsheet {

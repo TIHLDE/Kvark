@@ -69,12 +69,17 @@ const InfoBannerAdmin = () => {
             <StandaloneExpand
               icon={<InfoRoundedIcon />}
               key={banner.visible_from}
-              primary={`Endre informasjon om ${banner.title}?`}
-              secondary={`Aktiv ${formatDistance(parseISO(banner.visible_until), new Date(), {
-                includeSeconds: true,
-                addSuffix: true,
-                locale: nbLocale,
-              })}. Vises på forsiden fra ${formatDate(parseISO(banner.visible_from))} til ${formatDate(parseISO(banner.visible_until))}.`}>
+              primary={`Banner: "${banner.title}"?`}
+              secondary={`Aktiv ${
+                banner.is_visible
+                  ? 'nå'
+                  : formatDistance(parseISO(banner.visible_until), new Date(), {
+                      includeSeconds: true,
+                      addSuffix: true,
+                      locale: nbLocale,
+                    })
+              }. Vises på forsiden fra ${formatDate(parseISO(banner.visible_from))} til ${formatDate(parseISO(banner.visible_until))}.`}
+              sx={{ borderColor: (theme) => (banner.is_visible ? theme.palette.colors.tihlde : null) }}>
               <InfoBannerAdminItem bannerId={banner.id} />
             </StandaloneExpand>
           ))}
