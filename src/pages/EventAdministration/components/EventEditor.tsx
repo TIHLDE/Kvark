@@ -467,6 +467,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           </Row>
           <Bool
             control={control}
+            disabled={Boolean(data?.is_paid_event)}
             formState={formState}
             label={
               <>
