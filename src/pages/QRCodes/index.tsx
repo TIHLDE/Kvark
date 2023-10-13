@@ -81,7 +81,7 @@ const QRCodeItem = ({ qrCode }: { qrCode: QRCode }) => {
         event('delete', 'qr-code', `Delete ${qrCode.name}`);
       },
       onError: (e) => {
-        console.log(e)
+        console.log(e);
         const msg: { name: Array<string>; url: Array<string> } = typeof e.detail === 'string' ? JSON.parse(e.detail) : e.detail;
 
         if (msg.name.length > 0) {
@@ -101,16 +101,8 @@ const QRCodeItem = ({ qrCode }: { qrCode: QRCode }) => {
       <div className={classes.row}>
         <Box alt='QR kode' component='img' loading='lazy' src={qrCode.image} sx={{ objectFit: 'contain', px: 1, width: 200, height: 200 }} />
         <div>
-          <Button 
-            endIcon={<FileDownloadIcon />}
-            fullWidth
-          >
-            <Box
-              component='a'
-              href={qrCode.image}
-              target='_blank'
-              sx={{ textDecoration: 'none' }}
-            >
+          <Button endIcon={<FileDownloadIcon />} fullWidth>
+            <Box component='a' href={qrCode.image} sx={{ textDecoration: 'none' }} target='_blank'>
               Last ned
             </Box>
           </Button>
@@ -148,7 +140,7 @@ const QRCodes = () => {
       },
       onError: (e) => {
         if (typeof e.detail === 'object' && 'url' in e.detail) {
-          showSnackbar(e.detail['url'][0], 'error')
+          showSnackbar(e.detail['url'][0], 'error');
         } else {
           showSnackbar(e.detail, 'error');
         }
