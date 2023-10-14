@@ -71,17 +71,16 @@ const QRCodeItem = ({ qrCode }: { qrCode: QRCode }) => {
   const { classes } = useStyles();
   const { event } = useAnalytics();
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
-  const deleteQRCode = useDeleteQRCode(qrCode.id);
+  const deleteQRCode = useDeleteQRCode(qrCode.id || -1);
   const showSnackbar = useSnackbar();
 
-  const remove = () => {
+  const remove = async () => {
     deleteQRCode.mutate(null, {
       onSuccess: () => {
         showSnackbar('QR koden ble slettet', 'success');
         event('delete', 'qr-code', `Delete ${qrCode.name}`);
       },
       onError: (e) => {
-        console.log(e);
         const msg: { name: Array<string>; url: Array<string> } = typeof e.detail === 'string' ? JSON.parse(e.detail) : e.detail;
 
         if (msg.name.length > 0) {
@@ -129,7 +128,7 @@ const QRCodes = () => {
   const { data, error, isFetching } = useQRCodes();
   const createQRCode = useCreateQRCode();
   const showSnackbar = useSnackbar();
-  const { register, formState, handleSubmit, setError, reset } = useForm<QRCode>();
+  const { register, formState, handleSubmit, reset } = useForm<QRCode>();
 
   const create = (data: QRCode) => {
     createQRCode.mutate(data, {

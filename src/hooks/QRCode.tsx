@@ -19,9 +19,9 @@ export const useCreateQRCode = (): UseMutationResult<QRCode, RequestResponse, QR
   });
 };
 
-export const useDeleteQRCode = (qrCodeId: QRCode['id']): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
+export const useDeleteQRCode = (id: number): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation(() => API.deleteQRCode(qrCodeId), {
+  return useMutation(() => API.deleteQRCode(id), {
     onSuccess: () => {
       queryClient.invalidateQueries(QR_CODE_QUERY_KEY);
     },
