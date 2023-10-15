@@ -167,7 +167,18 @@ const QRCodes = () => {
             <form onSubmit={handleSubmit(create)}>
               <Typography variant='h2'>Ny QR kode</Typography>
               <TextField disabled={isFetching} formState={formState} label='Navn' {...register('name', { required: 'Navn må fylles ut' })} required />
-              <TextField disabled={isFetching} formState={formState} label='URL' {...register('url', { required: 'Du må oppgi en link' })} required />
+              <TextField
+                disabled={isFetching}
+                formState={formState}
+                label='URL'
+                {...register('url', {
+                  required: 'Du må oppgi en link',
+                  validate: {
+                    isURL: (value) => value?.startsWith('https://') || 'Linken må starte med https://',
+                  },
+                })}
+                required
+              />
               <SubmitButton disabled={isFetching} formState={formState}>
                 Opprett
               </SubmitButton>
