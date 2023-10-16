@@ -1,11 +1,11 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide } from "@mui/material";
-import { TransitionProps } from "@mui/material/transitions";
-import React, { useContext } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide } from '@mui/material';
+import { TransitionProps } from '@mui/material/transitions';
+import React, { useContext } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
-import TextField from "../../inputs/TextField";
-import { CommentDispatchContext } from "./temp/reducer";
-import { Comment, FormValues } from "./types";
+import TextField from '../../inputs/TextField';
+import { CommentDispatchContext } from './temp/reducer';
+import { Comment, FormValues } from './types';
 
 interface CommentDialogProps {
   open: boolean;
@@ -20,7 +20,11 @@ const Transition = React.forwardRef(function Transition(
   },
   ref: React.Ref<unknown>,
 ) {
-  return <Slide direction='up' ref={ref} {...props} />;
+  return (
+    <Slide direction='up' ref={ref} {...props}>
+      {props.children}
+    </Slide>
+  );
 });
 
 /**
@@ -66,12 +70,11 @@ export default function CommentDialog({ open, onClose, comment, indentation }: C
             fullWidth
             minRows={2}
             multiline
-            name='body'
             sx={(theme) => ({
               paddingX: theme.spacing(1),
             })}
-            variant"'outline"'
-            {...(register"body"'), { required: true })}
+            variant={'outlined'}
+            {...register('body', { required: true })}
             required
           />
         </DialogContent>
