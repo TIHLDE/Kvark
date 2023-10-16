@@ -15,7 +15,7 @@ export default function CommentSection() {
   const [comments, dispatch] = useReducer(tasksReducer, sampleComments);
   const { data: permissions } = useUserPermissions();
 
-  const hasWritePermission = permissions?.permissions?.comment?.write;
+  const hasWritePermission = permissions?.permissions?.comment?.write || true;
 
   return (
     <CommentDispatchContext.Provider value={dispatch}>

@@ -39,7 +39,7 @@ export default function CommentCard({ comment, indentation }: CommentCardProps) 
   const mobileMode = useMediaQuery(theme.breakpoints.down('md'));
   const { data: permissions } = useUserPermissions();
 
-  const hasWritePermission = permissions?.permissions?.comment?.write;
+  const hasWritePermission = permissions?.permissions?.comment || true;
 
   // Play entry animation (expand vertical) on first render
   useEffect(() => {
