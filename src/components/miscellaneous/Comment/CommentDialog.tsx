@@ -1,11 +1,11 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide } from '@mui/material';
-import { TransitionProps } from '@mui/material/transitions';
-import React, { useContext } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide } from "@mui/material";
+import { TransitionProps } from "@mui/material/transitions";
+import React, { useContext } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
-import TextField from '../../inputs/TextField';
-import { CommentDispatchContext } from './temp/reducer';
-import { Comment, FormValues } from './types';
+import TextField from "../../inputs/TextField";
+import { CommentDispatchContext } from "./temp/reducer";
+import { Comment, FormValues } from "./types";
 
 interface CommentDialogProps {
   open: boolean;
@@ -70,8 +70,8 @@ export default function CommentDialog({ open, onClose, comment, indentation }: C
             sx={(theme) => ({
               paddingX: theme.spacing(1),
             })}
-            variant='outlined'
-            {...(register('body'), { required: true })}
+            variant"'outline"'
+            {...(register"body"'), { required: true })}
             required
           />
         </DialogContent>
