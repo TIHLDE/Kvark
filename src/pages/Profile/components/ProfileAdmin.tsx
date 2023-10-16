@@ -1,6 +1,7 @@
 import ArrowIcon from '@mui/icons-material/ArrowForwardRounded';
 import NewsIcon from '@mui/icons-material/DescriptionRounded';
 import GroupsIcon from '@mui/icons-material/GroupRounded';
+import InfoIcon from '@mui/icons-material/InfoRounded';
 import UsersIcon from '@mui/icons-material/PermIdentityRounded';
 import EventIcon from '@mui/icons-material/TodayRounded';
 import JobPostIcon from '@mui/icons-material/WorkOutlineRounded';
@@ -98,6 +99,13 @@ const Admin = () => {
       to: URLS.strikeAdmin,
       primary: 'Prikker',
       secondary: 'Se og slett prikker',
+    },
+    {
+      apps: [PermissionApp.BANNERS],
+      icon: InfoIcon,
+      to: URLS.bannerAdmin,
+      primary: 'Bannere',
+      secondary: 'Opprett, endre og slett bannere',
     },
   ];
 

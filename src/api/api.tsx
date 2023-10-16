@@ -34,6 +34,7 @@ import {
   GroupMemberStatistics,
   GroupMutate,
   GroupUserFine,
+  InfoBanner,
   JobPost,
   JobPostRequired,
   LoginRequestResponse,
@@ -74,6 +75,7 @@ export const AUTH_ENDPOINT = 'auth';
 export const BADGES_ENDPOINT = 'badges';
 export const BADGES_LEADERBOARD_ENDPOINT = 'leaderboard';
 export const BADGE_CATEGORIES_ENDPOINT = 'categories';
+export const BANNER_ENDPOINT = 'banners';
 export const CATEGORIES_ENDPOINT = 'categories';
 export const CHEATSHEETS_ENDPOINT = 'cheatsheets';
 export const EVENTS_ENDPOINT = 'events';
@@ -111,6 +113,15 @@ export default {
     }),
   forgotPassword: (email: string) =>
     IFetch<RequestResponse>({ method: 'POST', url: `${AUTH_ENDPOINT}/rest-auth/password/reset/`, data: { email: email }, withAuth: false }),
+
+  // InfoBanner
+  getInfoBanners: (filters?: any) => IFetch<PaginationResponse<InfoBanner>>({ method: 'GET', url: BANNER_ENDPOINT, data: filters || {} }),
+  getInfoBanner: (bannerId: InfoBanner['id']) => IFetch<InfoBanner>({ method: 'GET', url: `${BANNER_ENDPOINT}/${bannerId}/` }),
+  getVisibleInfoBanners: (filters?: any) => IFetch<Array<InfoBanner>>({ method: 'GET', url: `${BANNER_ENDPOINT}/visible`, data: filters || {} }),
+  createInfoBanner: (item: InfoBanner) => IFetch<InfoBanner>({ method: 'POST', url: `${BANNER_ENDPOINT}/`, data: item }),
+  updateInfoBanner: (bannerId: InfoBanner['id'], item: Partial<InfoBanner>) =>
+    IFetch<InfoBanner>({ method: 'PUT', url: `${BANNER_ENDPOINT}/${bannerId}/`, data: item }),
+  deleteInfoBanner: (bannerId: InfoBanner['id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${BANNER_ENDPOINT}/${bannerId}/` }),
 
   // Events
   getEvent: (eventId: Event['id']) => IFetch<Event>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/` }),
