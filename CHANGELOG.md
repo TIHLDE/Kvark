@@ -11,6 +11,8 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+
+- ✨ **Arrangement**. Du kan nå se hvilken plass du har på ventelisten.
 - ✨ **Bannere**. Tidsbegrensede bannere kan nå opprettes.
 
 ## versjon 2023.24.09
