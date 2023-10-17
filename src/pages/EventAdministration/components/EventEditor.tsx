@@ -467,6 +467,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           </Row>
           <Bool
             control={control}
+            disabled={data?.list_count ? data.list_count > 0 : false}
             formState={formState}
             label={
               <>
@@ -476,7 +477,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
             }
             name='is_paid_event'
             type='switch'
-            disabled={data?.list_count ? data.list_count > 0 : false}
           />
 
           <Collapse in={watchPaidEvent}>

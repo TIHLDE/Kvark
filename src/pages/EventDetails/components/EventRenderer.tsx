@@ -146,8 +146,12 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     if (user) {
       deleteRegistration.mutate(user.user_id, {
         onSuccess: (response) => {
-          showSnackbar(response.detail, 'success');
-          event('unregistered', 'event-registration', `Unregistered for event: ${data.title}`);
+          if (registration?.has_paid_order) {
+            showSnackbar('Du har blitt meldt av arrangementet, og vil få refundert pengene innen kort tid', 'success');
+          } else {
+            showSnackbar(response.detail, 'success');
+            event('unregistered', 'event-registration', `Unregistered for event: ${data.title}`);
+          }
         },
         onError: (e) => {
           showSnackbar(e.detail, 'error');
@@ -438,8 +442,8 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       <Stack gap={1} sx={{ width: '100%' }}>
         <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
         {lgDown && <Info />}
-        {registration && data.paid_information && !registration.has_paid_order && (
-          <CountdownTimer expire_date={registration.order.expire_date} payment_link={registration.order.payment_link} />
+        {registration && data.paid_information && !registration.has_paid_order && !registration.is_on_wait && (
+          <CountdownTimer event_id={data.id} payment_expiredate={registration.payment_expiredate} />
         )}
         <ContentPaper>
           <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h1'>
