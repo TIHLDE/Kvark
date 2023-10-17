@@ -13,6 +13,10 @@
 ## Neste versjon
 - ✨ **Bannere**. Tidsbegrensede bannere kan nå opprettes.
 
+## versjon 2023.17.10
+
+- 🦟 **Vipps betaling**. Diverse bugs i betalingsløsningen er nå fikset.
+
 ## versjon 2023.24.09
 
 - 🎨 **Fult navn**. Kontaktperson på arrangementer vil nå bli vist med fult navn.
