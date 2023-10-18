@@ -11,11 +11,9 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
-- ✨ **Bannere**. Tidsbegrensede bannere kan nå opprettes.
-
-## versjon 2023.17.10
 
 - 🦟 **Vipps betaling**. Diverse bugs i betalingsløsningen er nå fikset.
+- ✨ **Bannere**. Tidsbegrensede bannere kan nå opprettes.
 
 ## versjon 2023.24.09
 
