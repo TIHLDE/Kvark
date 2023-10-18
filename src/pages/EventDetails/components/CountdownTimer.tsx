@@ -79,6 +79,10 @@ const CountdownTimer = ({ payment_expiredate, event_id }: Registration) => {
     });
   };
 
+  if (new Date(payment_expiredate) <= new Date()) {
+    return null;
+  }
+
   return (
     <ContentPaper>
       <Box sx={{ textAlign: 'center', p: 2 }}>
