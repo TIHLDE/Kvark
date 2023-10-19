@@ -11,6 +11,8 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+
+- ⚡ **Kalender**. Kalender pop-up viser viser infromasjonen bedre.
 - ✨ **Bannere**. Tidsbegrensede bannere kan nå opprettes.
 
 ## versjon 2023.24.09
