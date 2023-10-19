@@ -31,8 +31,8 @@ const EventsCalendarPopover = ({ id }: EventsCalendarPopoverProps) => {
           {data.sign_up &&
             (
               <>
-                <DetailContent info={`${data.list_count}${data.limit && "/"+data.limit}`} title='Påmeldte:' />
-                {data.waiting_list_count && <DetailContent info={String(data.waiting_list_count)} title='Venteliste:' />}
+                <DetailContent info={`${data.list_count}${data.limit > 0 && "/"+data.limit}`} title='Påmeldte:' />
+                {data.waiting_list_count > 0 && <DetailContent info={String(data.waiting_list_count)} title='Venteliste:' />}
               </>
             )
           }
