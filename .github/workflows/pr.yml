@@ -25,4 +25,4 @@ jobs:
         run: pnpm lint
 
       - name: Check formating
-        run: pnpm prettier:format
+        run: pnpm prettier:check
