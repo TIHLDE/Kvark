@@ -52,6 +52,10 @@ const CountdownTimer = ({ payment_expiredate, event_id }: Registration) => {
   const showSnackbar = useSnackbar();
 
   useEffect(() => {
+    if (new Date(payment_expiredate) < new Date()) {
+      return;
+    }
+
     const interval = setInterval(() => {
       const distance = getTimeDifference(payment_expiredate);
 
