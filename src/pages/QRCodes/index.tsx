@@ -5,6 +5,8 @@ import { makeStyles } from 'makeStyles';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { QRCodeCanvas, QRCodeSVG } from 'qrcode.react';
+
 import { QRCode } from 'types';
 
 import { useCreateQRCode, useDeleteQRCode, useQRCodes } from 'hooks/QRCode';
@@ -81,35 +83,54 @@ const QRCodeItem = ({ qrCode }: { qrCode: QRCode }) => {
         event('delete', 'qr-code', `Delete ${qrCode.name}`);
       },
       onError: (e) => {
-        const msg: { name: Array<string>; url: Array<string> } = typeof e.detail === 'string' ? JSON.parse(e.detail) : e.detail;
-
-        if (msg.name.length > 0) {
-          showSnackbar(msg.name[0], 'error');
-        } else {
-          showSnackbar('Kunne ikke slette QR koden', 'error');
-        }
+        showSnackbar(e.detail, 'error');
       },
     });
   };
+
+  const download = () => {
+    const canvas = document.getElementById(qrCode.id.toString()) as HTMLCanvasElement;
+    if (canvas) {
+      const image = canvas.toDataURL('image/png');
+
+      const link = document.createElement('a');
+
+      link.download = `${qrCode.name}.png`;
+
+      link.href = image;
+
+      link.click();
+    }
+  }
 
   return (
     <Paper className={classes.qrCode}>
       <Typography className={classes.header} variant='h3'>
         {qrCode.name}
       </Typography>
-      <div className={classes.row}>
-        <Box alt='QR kode' component='img' loading='lazy' src={qrCode.image} sx={{ objectFit: 'contain', px: 1, width: 200, height: 200 }} />
+        <Box
+          padding={2}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            margin: 'auto',
+          }}
+        >
+          <QRCodeCanvas
+            id={qrCode.id.toString()}
+            value={qrCode.content} 
+            size={256}
+          />
+        </Box>
         <div>
-          <Button endIcon={<FileDownloadIcon />} fullWidth>
-            <Box component='a' href={qrCode.image} sx={{ textDecoration: 'none' }} target='_blank'>
-              Last ned
-            </Box>
+          <Button endIcon={<FileDownloadIcon />} fullWidth onClick={download}>
+            Last ned
           </Button>
           <Button color='error' endIcon={<DeleteIcon />} fullWidth onClick={() => setRemoveDialogOpen(true)}>
-            Slett QR
+            Slett QR kode
           </Button>
         </div>
-      </div>
       <Dialog
         confirmText='Ja, jeg er sikker'
         contentText='Denne QR koden vil ikke lenger være tilgjenglig for deg selv og andre.'
@@ -138,11 +159,7 @@ const QRCodes = () => {
         event('create', 'qr-code', `Created ${data.name}`);
       },
       onError: (e) => {
-        if (typeof e.detail === 'object' && 'url' in e.detail) {
-          showSnackbar(e.detail['url'][0], 'error');
-        } else {
-          showSnackbar(e.detail, 'error');
-        }
+        showSnackbar(e.detail, 'error');
       },
     });
   };
@@ -170,12 +187,9 @@ const QRCodes = () => {
               <TextField
                 disabled={isFetching}
                 formState={formState}
-                label='URL'
-                {...register('url', {
-                  required: 'Du må oppgi en link',
-                  validate: {
-                    isURL: (value) => value?.startsWith('https://') || 'Linken må starte med https://',
-                  },
+                label='Content'
+                {...register('content', {
+                  required: 'Du må oppgi tekst eller en link'
                 })}
                 required
               />

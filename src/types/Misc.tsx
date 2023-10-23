@@ -84,6 +84,5 @@ export interface QRCode {
   id: number;
   created_at: string;
   name: string;
-  url?: string;
-  image?: string;
+  content: string;
 }
