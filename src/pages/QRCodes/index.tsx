@@ -2,10 +2,9 @@ import DeleteIcon from '@mui/icons-material/DeleteRounded';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { Box, Button, Typography } from '@mui/material';
 import { makeStyles } from 'makeStyles';
+import { QRCodeCanvas, QRCodeSVG } from 'qrcode.react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-
-import { QRCodeCanvas, QRCodeSVG } from 'qrcode.react';
 
 import { QRCode } from 'types';
 
@@ -101,36 +100,31 @@ const QRCodeItem = ({ qrCode }: { qrCode: QRCode }) => {
 
       link.click();
     }
-  }
+  };
 
   return (
     <Paper className={classes.qrCode}>
       <Typography className={classes.header} variant='h3'>
         {qrCode.name}
       </Typography>
-        <Box
-          padding={2}
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            margin: 'auto',
-          }}
-        >
-          <QRCodeCanvas
-            id={qrCode.id.toString()}
-            value={qrCode.content} 
-            size={256}
-          />
-        </Box>
-        <div>
-          <Button endIcon={<FileDownloadIcon />} fullWidth onClick={download}>
-            Last ned
-          </Button>
-          <Button color='error' endIcon={<DeleteIcon />} fullWidth onClick={() => setRemoveDialogOpen(true)}>
-            Slett QR kode
-          </Button>
-        </div>
+      <Box
+        padding={2}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          margin: 'auto',
+        }}>
+        <QRCodeCanvas id={qrCode.id.toString()} size={256} value={qrCode.content} />
+      </Box>
+      <div>
+        <Button endIcon={<FileDownloadIcon />} fullWidth onClick={download}>
+          Last ned
+        </Button>
+        <Button color='error' endIcon={<DeleteIcon />} fullWidth onClick={() => setRemoveDialogOpen(true)}>
+          Slett QR kode
+        </Button>
+      </div>
       <Dialog
         confirmText='Ja, jeg er sikker'
         contentText='Denne QR koden vil ikke lenger være tilgjenglig for deg selv og andre.'
@@ -189,7 +183,7 @@ const QRCodes = () => {
                 formState={formState}
                 label='Content'
                 {...register('content', {
-                  required: 'Du må oppgi tekst eller en link'
+                  required: 'Du må oppgi tekst eller en link',
                 })}
                 required
               />
