@@ -26,15 +26,6 @@ import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 
 import { Event, Registration } from 'types';
 
 import { useCategories } from 'hooks/Categories';
-
-import Paper from 'components/layout/Paper';
-import VerifyDialog from 'components/layout/VerifyDialog';
-import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
-import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
-import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import QRButton from 'components/miscellaneous/QRButton';
-import ShareButton from 'components/miscellaneous/ShareButton';
-
 import { useConfetti } from 'hooks/Confetti';
 import {
   useCreateEventRegistration,
@@ -53,8 +44,16 @@ import CountdownTimer from 'pages/EventDetails/components/CountdownTimer';
 import EventPriorityPools from 'pages/EventDetails/components/EventPriorityPools';
 import EventPublicRegistrationsList from 'pages/EventDetails/components/EventPublicRegistrationsList';
 import { EventsSubscription } from 'pages/Profile/components/ProfileEvents';
+
 import FormUserAnswers from 'components/forms/FormUserAnswers';
 import Expand from 'components/layout/Expand';
+import Paper from 'components/layout/Paper';
+import VerifyDialog from 'components/layout/VerifyDialog';
+import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
+import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
+import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
+import QRButton from 'components/miscellaneous/QRButton';
+import ShareButton from 'components/miscellaneous/ShareButton';
 
 const DetailsPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1, 2),
