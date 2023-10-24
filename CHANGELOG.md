@@ -13,6 +13,7 @@
 ## Neste versjon
 
 - ✨ **Arrangement**. Du kan nå se hvilken plass du har på ventelisten.
+- ⚡ **Kalender**. Kalender pop-up viser viser infromasjonen bedre.
 - ✨ **Bannere**. Tidsbegrensede bannere kan nå opprettes.
 
 ## versjon 2023.24.09

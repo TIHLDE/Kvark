@@ -24,13 +24,17 @@ const EventsCalendarPopover = ({ id }: EventsCalendarPopoverProps) => {
     <Stack component={Paper} gap={1} sx={{ minWidth: 210, py: 1, px: 2 }}>
       {data && (
         <>
-          <DetailsHeader variant='h2'>Detaljer</DetailsHeader>
+          <DetailsHeader variant='h2'>{data.title}</DetailsHeader>
           <DetailContent info={formatDate(parseISO(data.start_date))} title='Fra:' />
           <DetailContent info={formatDate(parseISO(data.end_date))} title='Til:' />
           <DetailContent info={data.location} title='Sted:' />
-          <DetailsHeader variant='h2'>Påmelding</DetailsHeader>
-          <DetailContent info={`${data.list_count}/${data.limit}`} title='Påmeldte:' />
-          <DetailContent info={String(data.waiting_list_count)} title='Venteliste:' />
+          {data.sign_up && (
+            <>
+              <DetailContent info={`${data.list_count}${data.limit > 0 && '/' + data.limit}`} title='Påmeldte:' />
+              {data.waiting_list_count > 0 && <DetailContent info={String(data.waiting_list_count)} title='Venteliste:' />}
+            </>
+          )}
+
           <Link to={`${URLS.events}${data.id}/${urlEncode(data.title)}/`}>Til arrangement</Link>
         </>
       )}
