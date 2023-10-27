@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
-import { differenceInMilliseconds, formatDistanceStrict } from 'date-fns';
+import { differenceInMilliseconds, formatDistanceStrict, minutesToMilliseconds } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
 
@@ -18,22 +18,17 @@ const ContentPaper = styled(Paper)({
   overflowX: 'auto',
 });
 
-const getTimeDifference = (time?: Date) => {
-  if (!time) {
-    return;
-  }
-
+const getTimeDifference = (time: Date) => {
   const now = new Date();
   const myDate = new Date(time);
 
-  return differenceInMilliseconds(myDate, now);
+  // Add 10 minutes so that the user has time to pay
+  const addedTime = minutesToMilliseconds(10);
+
+  return differenceInMilliseconds(new Date(myDate.getTime() + addedTime), now);
 };
 
-const convertTime = (milliseconds?: number) => {
-  if (!milliseconds) {
-    return;
-  }
-
+const convertTime = (milliseconds: number) => {
   const now = new Date();
 
   return formatDistanceStrict(new Date(now.getTime() + milliseconds), now, {
@@ -47,7 +42,10 @@ type Registration = {
 };
 
 const CountdownTimer = ({ payment_expiredate, event_id }: Registration) => {
-  const [timeLeft, setTimeLeft] = useState(convertTime(getTimeDifference(payment_expiredate)));
+  // Remove 10 minutes for displaying the actual time left
+  const removedTime = minutesToMilliseconds(10);
+
+  const [timeLeft, setTimeLeft] = useState(convertTime(getTimeDifference(payment_expiredate) - removedTime));
   const createPaymentOrder = useCreatePaymentOrder();
   const showSnackbar = useSnackbar();
 
@@ -60,7 +58,7 @@ const CountdownTimer = ({ payment_expiredate, event_id }: Registration) => {
       const distance = getTimeDifference(payment_expiredate);
 
       if (distance && distance > 0) {
-        setTimeLeft(convertTime(distance));
+        setTimeLeft(convertTime(distance - removedTime));
       } else {
         window.location.reload();
       }
@@ -84,7 +82,15 @@ const CountdownTimer = ({ payment_expiredate, event_id }: Registration) => {
   };
 
   if (new Date(payment_expiredate) <= new Date()) {
-    return null;
+    return (
+      <ContentPaper>
+        <Box sx={{ textAlign: 'center', p: 2 }}>
+          <Typography sx={{ color: (theme) => theme.palette.text.primary }}>
+            Betalingstiden har gått ut. Det er ikke lenger mulig å betale for dette arrangementet. Du vil bli satt på venteliste innen kort tid.
+          </Typography>
+        </Box>
+      </ContentPaper>
+    );
   }
 
   return (
