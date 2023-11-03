@@ -9,14 +9,14 @@ import { useSnackbar } from 'hooks/Snackbar';
 import UserSearch from 'components/inputs/UserSearch';
 import Dialog from 'components/layout/Dialog';
 
-import { User } from '../../../types';
+import { UserBase } from '../../../types';
 
 export type EventMessageSenderProps = ButtonProps & {
   eventId: number;
 };
 
 type FormValues = {
-  user: User;
+  user: UserBase;
 };
 
 const EventUserRegistrator = ({ eventId, ...props }: EventMessageSenderProps) => {
@@ -43,12 +43,12 @@ const EventUserRegistrator = ({ eventId, ...props }: EventMessageSenderProps) =>
       </Button>
       <Dialog
         confirmText='Legg til'
-        contentText='Send en melding på epost og et varsel til de påmeldte deltagerne.'
+        contentText='Legg til ønsket person som deltager på arrangementet.'
         onClose={() => setDialogOpen(false)}
         onConfirm={handleSubmit(submit)}
         open={dialogOpen}
-        titleText='Send melding til påmeldte'>
-        <UserSearch control={control} formState={formState} label={'Person'} name='user' />
+        titleText='Legg til deltager'>
+        <UserSearch control={control} formState={formState} label={'Person'} multiple={false} name='user' />
       </Dialog>
     </>
   );
