@@ -7,6 +7,8 @@ import {
   BadgesOverallLeaderboard,
   Category,
   Cheatsheet,
+  Comment,
+  CommentCreate,
   CompaniesEmail,
   Event,
   EventFavorite,
@@ -100,6 +102,7 @@ export const STRIKES_ENDPOINT = 'strikes';
 export const SUBMISSIONS_ENDPOINT = 'submissions';
 export const USERS_ENDPOINT = 'users';
 export const WARNINGS_ENDPOINT = 'warnings';
+export const COMMENTS_ENDPOINT = 'comments';
 
 export default {
   // Auth
@@ -362,4 +365,8 @@ export default {
 
   // File-upload
   uploadFile: (file: File | Blob) => IFetch<FileUploadResponse>({ method: 'POST', url: 'upload/', file }),
+
+  // Comments
+  createComment: (data: CommentCreate) => IFetch<Comment>({ method: 'POST', url: `${COMMENTS_ENDPOINT}/`, data }),
+  // getComments: (filters?: any) => IFetch<Array<Comment>>({ method: 'GET', url: `${COMMENTS_ENDPOINT}/`, data: filters || {} }),
 };

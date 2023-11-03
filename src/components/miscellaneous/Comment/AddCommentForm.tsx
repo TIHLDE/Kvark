@@ -3,41 +3,35 @@ import { IconButton } from '@mui/material';
 import { useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import { useCreateComment } from '../../../hooks/Comments';
+import { CommentContentType } from '../../../types';
 import TextField from '../../inputs/TextField';
 import useStyles from './styles';
 import { CommentDispatchContext } from './temp/reducer';
 import { FormValues } from './types';
 
+interface AddCommentFormProps {
+  content_type: CommentContentType;
+  content_id: string;
+}
+
 /**
  * Form for adding a comment
  * Is placed at the top of the comment section
  */
-export default function AddCommentForm() {
+export default function AddCommentForm({ content_type, content_id }: AddCommentFormProps) {
   const { classes, theme } = useStyles();
   const { handleSubmit, register, formState, setValue } = useForm<FormValues>();
-  const dispatch = useContext(CommentDispatchContext);
+  const { mutateAsync } = useCreateComment();
 
   const submit: SubmitHandler<FormValues> = async (values) => {
     if (values.body.length) {
-      dispatch({
-        type: 'add',
-        payload: {
-          comment: {
-            author: {
-              first_name: 'Mori',
-              image: '',
-              last_name: 'Morille',
-              user_id: '123',
-            },
-            body: values.body,
-            children: [],
-            created_at: new Date(),
-            id: Math.random() * 1000,
-            indentation_level: 0,
-            parent_id: null,
-            updated_at: new Date(),
-          },
-        },
+      // Add the comment
+      await mutateAsync({
+        body: values.body,
+        parent: null,
+        content_id,
+        content_type,
       });
       setValue('body', '');
     }
