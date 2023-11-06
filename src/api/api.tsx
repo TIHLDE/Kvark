@@ -185,12 +185,7 @@ export default {
   addEmoji: (emoji: string, newsId: number, userId?: User['user_id']) =>
     IFetch<RequestResponse>({ method: 'POST', url: `${REACTION_ENDPOINT}/`, data: { user: userId, emoji: emoji, content_type: 'news', object_id: newsId } }),
   deleteEmoji: (reaction_id: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${EMOJI_ENDPOINT}/reaction/${reaction_id}/` }),
-  changeEmoji: (reaction_id: string, emoji: string, newsId: number, userId?: User['user_id']) =>
-    IFetch<RequestResponse>({
-      method: 'PUT',
-      url: `${EMOJI_ENDPOINT}/reaction/${reaction_id}/`,
-      data: { user: userId, emoji: emoji, content_type: 'news', object_id: newsId },
-    }),
+  changeEmoji: (reaction_id: string, emoji: string, newsId: number, userId?: User['user_id']) => IFetch<RequestResponse>({method: 'PUT',url: `${EMOJI_ENDPOINT}/reaction/${reaction_id}/`,data: {emoji: emoji},}),
 
   // User
   getUserData: (userId?: User['user_id']) => IFetch<User>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/` }),

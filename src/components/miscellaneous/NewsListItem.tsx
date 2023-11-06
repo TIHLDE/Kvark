@@ -5,15 +5,20 @@ import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { formatDate, urlEncode } from 'utils';
+import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import '../../assets/css/popover.css';
+
+
 
 import { News, Reaction } from 'types';
 
-import { addReaction, changeEmoji, deleteEmoji, getEmojies } from 'hooks/Emojis';
+import { addReaction, changeEmoji, deleteEmoji } from 'hooks/Emojis';
 import { useCreateNews, useDeleteNews, useNewsById, useUpdateNews } from 'hooks/News';
 import { useUser } from 'hooks/User';
 
 import Paper from 'components/layout/Paper';
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
+import React from 'react';
 
 export type NewsListItemProps = {
   news: News;
@@ -28,17 +33,21 @@ const EmojiPaper = styled(Paper)(({ theme }) => ({
 
 const NewsListItem = ({ news, sx }: NewsListItemProps) => {
   const user = useUser();
-  type EmojiListType = Record<string, string>;
   const { data: newsDetails, isLoading: newsDetailsLoading } = useNewsById(news.id);
   console.log(newsDetails);
-  const { data: emojiList } = getEmojies() as { data: EmojiListType | undefined };
 
   const showEmojiPaper = !newsDetailsLoading && newsDetails?.emojis_allowed;
+  const anchorRef = React.useRef(null);
+
 
   const [openEmojiList, setOpenEmojiList] = useState(false);
   const [popoverMode, setPopoverMode] = useState<'ALL_REACTIONS' | 'EMOJI_LIST'>('EMOJI_LIST');
   const [openAllReactions, setOpenAllReactions] = useState(false);
-  const [showExistingReactions, setShowExistingReactions] = useState(false);
+
+  const onEmojiClick = (emojiData: EmojiClickData, event: MouseEvent) => {
+    const clickedEmoji = emojiData.emoji;
+    handleEmojiClick(clickedEmoji);
+};
 
 
   const groupedReactions: Record<string, number> = newsDetails?.reactions?.reduce((acc, reaction) => {
@@ -83,19 +92,17 @@ const NewsListItem = ({ news, sx }: NewsListItemProps) => {
 
   const handleEmojiClick = (clickedEmoji: string) => {
     const userReaction = user.data?.user_id
-      ? newsDetails?.reactions?.find((r) => {
-          return r.user === user.data?.user_id;
-        })
+      ? newsDetails?.reactions?.find((r) => r.user === user.data?.user_id)
       : undefined;
 
+
     if (userReaction) {
-      const user_id = user.data?.user_id;
-      editEmoji(userReaction.reaction_id, clickedEmoji, news.id, user_id);
+      console.log(editEmoji(userReaction.reaction_id, clickedEmoji, news.id, user.data?.user_id));
     } else {
       addReaction(clickedEmoji, news.id, user.data?.user_id);
     }
 
-    handleCloseEmojiList();
+    setOpenEmojiList(false);
   };
 
   const editEmoji = (reaction_id: string, emoji: string, newsId: number, user_id: any) => {
@@ -192,70 +199,69 @@ const NewsListItem = ({ news, sx }: NewsListItemProps) => {
             )}
           </div>
         </ButtonBase>
-        <Button onClick={handleOpenEmojiList}>+</Button>
-        <Button onClick={handleOpenAllReactions}>Se mer</Button>
-        <Popover
-          anchorOrigin={{
-            vertical: 'center',
-            horizontal: 'center',
-          }}
-          anchorPosition={{ top: window.innerHeight / 2, left: window.innerWidth / 2 }}
-          anchorReference='anchorPosition'
-          onClose={handleCloseEmojiList}
-          open={openEmojiList}
-          PaperProps={{
-            style: {
-              width: '70%',
-              maxHeight: '50vh',
-              overflowY: 'auto',
-            },
-          }}
-          transformOrigin={{
-            vertical: 'center',
-            horizontal: 'center',
-          }}
-        >
-          <Grid container spacing={1}>
-            {popoverMode === 'EMOJI_LIST' && emojiList && 
-              Object.keys(emojiList).map((emoji, index) => (
-                <Grid item key={index} onClick={() => handleEmojiClick(emoji)} style={{ textAlign: 'center', cursor: 'pointer' }} xs={1}>
-                  {emoji}
-                </Grid>
-              ))
-            }
-            {popoverMode === 'ALL_REACTIONS' && 
-              top5Reactions.map((emoji, index) => (
-                <Grid item key={index} onClick={() => {
-                  const userReactionWithThisEmoji = user.data?.user_id
-                    ? newsDetails?.reactions?.find((r) => r.user === user.data?.user_id && r.emoji === emoji)
-                    : undefined;
-                  if (userReactionWithThisEmoji) {
-                    if (emoji === userReactedEmoji) {
-                      deleteReaction(userReactionWithThisEmoji.reaction_id);
-                    } else {
-                      editEmoji(userReactionWithThisEmoji.reaction_id, emoji, news.id, user.data?.user_id);
-                    }
-                  } else {
-                    handleEmojiClick(emoji);
-                  }
-                }} 
-                style={{ 
-                  textAlign: 'center',
-                  cursor: 'pointer',
-                  backgroundColor: emoji === userReactedEmoji ? "grey" : "transparent",
-                  boxShadow: emoji === userReactedEmoji ? "0px 2px 5px rgba(0, 0, 0, 0.1)" : "none", 
-                  padding: "5px", 
-                  borderRadius: "4px", 
-                  marginRight: "5px"
-                }} 
-                xs={1}
-                >
-                  {emoji} {groupedReactions[emoji]}
-                </Grid>
-              ))
-            }
-          </Grid>
-        </Popover>
+            <Popover
+                anchorEl={anchorRef.current}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+                transformOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+                onClose={handleCloseEmojiList}
+                open={openEmojiList}
+                PaperProps={{
+                    className: popoverMode === 'ALL_REACTIONS' ? "popoverPaperAllReactions" : "",
+                    style: popoverMode === 'EMOJI_LIST'
+                        ? {
+                            width: 'auto',
+                            maxHeight: 'auto',
+                            overflowY: 'auto',
+                        }
+                        : popoverMode === 'ALL_REACTIONS'
+                            ? {
+                            }
+                            : {}
+                }}
+            >
+                <Grid container spacing={1}>
+                    {popoverMode === 'EMOJI_LIST' && (
+                      <EmojiPicker onEmojiClick={onEmojiClick} />
+                    )}
+                    {popoverMode === 'ALL_REACTIONS' && 
+                        top5Reactions.map((emoji, index) => (
+                    <Grid item key={index} onClick={() => {
+                      const userReactionWithThisEmoji = user.data?.user_id
+                        ? newsDetails?.reactions?.find((r) => r.user === user.data?.user_id && r.emoji === emoji)
+                        : undefined;
+                      if (userReactionWithThisEmoji) {
+                        if (emoji === userReactedEmoji) {
+                          deleteReaction(userReactionWithThisEmoji.reaction_id);
+                        } else {
+                          editEmoji(userReactionWithThisEmoji.reaction_id, emoji, news.id, user.data?.user_id);
+                        }
+                      } else {
+                        handleEmojiClick(emoji);
+                      }
+                    }} 
+                    style={{ 
+                      textAlign: 'center',
+                      cursor: 'pointer',
+                      backgroundColor: emoji === userReactedEmoji ? "grey" : "transparent",
+                      boxShadow: emoji === userReactedEmoji ? "0px 2px 5px rgba(0, 0, 0, 0.1)" : "none", 
+                      padding: "5px", 
+                      borderRadius: "4px", 
+                      marginRight: "5px",
+                    }} 
+                    xs={1}
+                    >
+                      {emoji} {groupedReactions[emoji]}
+                    </Grid>
+                  ))
+                }
+              </Grid>
+            </Popover>
       </Box>
     </Box>
   );
