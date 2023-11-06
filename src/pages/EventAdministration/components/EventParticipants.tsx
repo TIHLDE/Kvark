@@ -16,6 +16,8 @@ import Participant from 'pages/EventAdministration/components/Participant';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 
+import EventUserRegistrator from './EventUserRegistrator';
+
 type RegistrationsProps = {
   onWait?: boolean;
   eventId: Event['id'];
@@ -147,6 +149,7 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={1} sx={{ mb: 1 }}>
           <EventMessageSender eventId={eventId} />
           <EventGiftCardSender eventId={eventId} />
+          <EventUserRegistrator eventId={eventId} />
         </Stack>
         <Registrations eventId={eventId} />
         <Registrations eventId={eventId} onWait />
