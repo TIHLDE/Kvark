@@ -161,6 +161,10 @@ export default {
   deleteRegistration: (eventId: Event['id'], userId: User['user_id']) =>
     IFetch<RequestResponse>({ method: 'DELETE', url: `${EVENTS_ENDPOINT}/${String(eventId)}/${EVENT_REGISTRATIONS_ENDPOINT}/${userId}/` }),
 
+  // Event registrations admin
+  createRegistrationAdmin: (eventId: Event['id'], userId: User['user_id']) =>
+    IFetch<Registration>({ method: 'POST', url: `${EVENTS_ENDPOINT}/${eventId}/${EVENT_REGISTRATIONS_ENDPOINT}/add/`, data: { user: userId } }),
+
   // Forms
   getForm: (formId: string) => IFetch<Form>({ method: 'GET', url: `${FORMS_ENDPOINT}/${formId}/` }),
   getFormTemplates: () => IFetch<Array<Form>>({ method: 'GET', url: `${FORMS_ENDPOINT}/` }),

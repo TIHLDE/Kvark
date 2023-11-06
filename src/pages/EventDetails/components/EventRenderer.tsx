@@ -156,16 +156,16 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     }
   };
 
-  type RegistrationInfoProps = { registration: Registration };
+  type RegistrationInfoProps = { registration: Registration; event: Event };
 
-  const RegistrationInfo = ({ registration }: RegistrationInfoProps) => {
+  const RegistrationInfo = ({ registration, event }: RegistrationInfoProps) => {
     const unregisteringGivesStrike = isPast(signOffDeadlineDate) && !registration.is_on_wait && data.can_cause_strikes;
     return (
       <>
         {registration.is_on_wait ? (
           <>
             <Alert severity='info' variant='outlined'>
-              Du står på ventelisten, vi gir deg beskjed hvis du får plass
+              Du står på plass {registration.wait_queue_number}/{event.waiting_list_count} på ventelisten, vi gir deg beskjed hvis du får plass
             </Alert>
             {registration.survey_submission.answers.length > 0 && (
               <div>
@@ -288,7 +288,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       ) : null;
     }
     if (registration) {
-      return <RegistrationInfo registration={registration} />;
+      return <RegistrationInfo event={data} registration={registration} />;
     }
     if (isPast(endRegistrationDate)) {
       return null;

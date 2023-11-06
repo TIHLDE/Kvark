@@ -86,6 +86,7 @@ export type Registration = {
   user_info: UserList;
   order: Order;
   has_paid_order?: boolean;
+  wait_queue_number?: number;
 };
 
 export type PublicRegistration = {
