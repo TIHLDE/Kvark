@@ -12,6 +12,7 @@
 
 ## Neste versjon
 
+## versjon 2023.06.11
 - ✨ **Arrangement**. Du kan nå se hvilken plass du har på ventelisten.
 - ✨ **Arrangement**. Admins kan nå manuelt legge til deltagere på et arrangement.
 - ⚡ **Kalender**. Kalender pop-up viser viser infromasjonen bedre.
