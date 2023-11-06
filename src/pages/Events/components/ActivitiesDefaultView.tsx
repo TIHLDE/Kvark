@@ -1,17 +1,15 @@
-import { Button, Divider, MenuItem, Stack, Theme, useMediaQuery } from '@mui/material';
+import { Button, Divider, Stack, Theme, useMediaQuery } from '@mui/material';
 import { makeStyles } from 'makeStyles';
 import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { argsToParams } from 'utils';
 
-import { useCategories } from 'hooks/Categories';
 import { useEvents } from 'hooks/Event';
 import { useIsAuthenticated } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
 import Bool from 'components/inputs/Bool';
-import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import Expand from 'components/layout/Expand';
@@ -55,29 +53,28 @@ const useStyles = makeStyles()((theme) => ({
 }));
 
 type Filters = {
+  activity: boolean;
   search?: string;
-  category?: string;
   open_for_sign_up?: boolean;
   user_favorite?: boolean;
   expired: boolean;
 };
 
-const EventsDefaultView = () => {
+const ActivitiesDefaultView = () => {
   const isAuthenticated = useIsAuthenticated();
   const { event } = useAnalytics();
   const getInitialFilters = useCallback((): Filters => {
     const params = new URLSearchParams(location.search);
+    const activity = true;
     const expired = params.get('expired') ? Boolean(params.get('expired') === 'true') : false;
     const open_for_sign_up = params.get('open_for_sign_up') ? Boolean(params.get('open_for_sign_up') === 'true') : undefined;
     const user_favorite = params.get('user_favorite') ? Boolean(params.get('user_favorite') === 'true') : undefined;
-    const category = params.get('category') || undefined;
     const search = params.get('search') || undefined;
-    return { expired, category, search, open_for_sign_up, user_favorite };
+    return { activity, expired, search, open_for_sign_up, user_favorite };
   }, []);
   const { classes } = useStyles();
   const navigate = useNavigate();
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
-  const { data: categories = [] } = useCategories();
   const [filters, setFilters] = useState<Filters>(getInitialFilters());
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents(filters);
   const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
@@ -85,11 +82,10 @@ const EventsDefaultView = () => {
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 
   const resetFilters = () => {
-    setValue('category', '');
     setValue('search', '');
     setValue('expired', false);
     setValue('user_favorite', false);
-    setFilters({ expired: false, open_for_sign_up: false, user_favorite: false });
+    setFilters({ activity: true, expired: false, open_for_sign_up: false, user_favorite: false });
     navigate(`${location.pathname}${argsToParams({ expired: false })}`, { replace: true });
   };
 
@@ -105,17 +101,6 @@ const EventsDefaultView = () => {
   const SearchForm = () => (
     <form onSubmit={handleSubmit(search)}>
       <TextField disabled={isFetching} formState={formState} label='Søk' margin='none' {...register('search')} />
-      {Boolean(categories.length) && (
-        <Select control={control} formState={formState} label='Kategori' name='category'>
-          {categories
-            .filter((category) => category.text !== 'Aktivitet')
-            .map((value, index) => (
-              <MenuItem key={index} value={value.id}>
-                {value.text}
-              </MenuItem>
-            ))}
-        </Select>
-      )}
       <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
       <Bool control={control} formState={formState} label='Kun med åpen påmelding' name='open_for_sign_up' type='switch' />
       {isAuthenticated && <Bool control={control} formState={formState} label='Favoritter' name='user_favorite' type='switch' />}
@@ -163,4 +148,4 @@ const EventsDefaultView = () => {
   );
 };
 
-export default EventsDefaultView;
+export default ActivitiesDefaultView;
