@@ -63,7 +63,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
   const [checkboxState, setCheckboxState] = useState(false);
 
   useEffect(() => {
-    setCheckboxState(!!showEmojiAllowed);
+    setCheckboxState(Boolean(showEmojiAllowed));
   }, [showEmojiAllowed]);
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -163,15 +163,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
           <TextField formState={formState} label='Alternativ bildetekst' {...register('image_alt')} />
           <FormGroup>
             <FormControlLabel
-              control={
-                  <Checkbox
-                  {...register('emojis_allowed')}
-                  checked={checkboxState}
-                  color='primary'
-                  name='allowEmojis'
-                  onChange={handleCheckboxChange}
-                />
-              }
+              control={<Checkbox {...register('emojis_allowed')} checked={checkboxState} color='primary' name='allowEmojis' onChange={handleCheckboxChange} />}
               label='Tillatt Emojis'
             />
           </FormGroup>
