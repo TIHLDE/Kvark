@@ -17,7 +17,7 @@ const Text = styled(Typography)(({ theme }) => ({
   p: 0.5,
 }));
 
-const NO_OF_EVENTS_TO_SHOW = 3;
+const NO_OF_EVENTS_TO_SHOW = 6;
 const NO_OF_EVENTS_TO_SHOW_MD_DOWN = 4;
 
 type Filters = {
