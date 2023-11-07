@@ -7,6 +7,8 @@ import EventListItem, { EventListItemLoading } from 'components/miscellaneous/Ev
 
 const Container = styled('div')(({ theme }) => ({
   display: 'grid',
+  alignItems: 'self-start',
+  gridTemplateColumns: '1fr 1fr',
   gap: theme.spacing(1),
 }));
 
@@ -58,15 +60,15 @@ const ActivityEventsListView = () => {
 
   return (
     <Container>
-      <Stack gap={1}>
-        {data?.pages[0]?.results.length ? (
-          data?.pages[0]?.results.slice(0, NO_OF_EVENTS_TO_SHOW).map((event) => <EventListItem event={event} key={event.id} />)
-        ) : (
+      {data?.pages[0].results.length ? (
+        data?.pages[0]?.results.slice(0, NO_OF_EVENTS_TO_SHOW).map((event) => <EventListItem event={event} key={event.id} />)
+      ) : (
+        <Stack gap={1}>
           <Text align='center' variant='subtitle1'>
             Ingen kommende aktiviteter
           </Text>
-        )}
-      </Stack>
+        </Stack>
+      )}
     </Container>
   );
 };
