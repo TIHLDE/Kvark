@@ -1,7 +1,7 @@
 import CloudSyncIcon from '@mui/icons-material/CloudSyncRounded';
-import { Alert, Stack, Typography } from '@mui/material';
+import { Alert, Stack, Tab, Theme, ToggleButton, ToggleButtonGroup, Typography, useMediaQuery } from '@mui/material';
 import { TIHLDE_API_URL } from 'constant';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import { USERS_ENDPOINT } from 'api/api';
 
@@ -50,9 +50,26 @@ const ProfileEvents = () => {
   const { data, hasNextPage, fetchNextPage, isFetching } = useUserEvents();
   const events = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
 
+  const [tab, setTab] = useState<'present' | 'expired'>('present');
+  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
+
+
   return (
     <Stack gap={1}>
       <EventsSubscription />
+
+      <ToggleButtonGroup
+            aria-label='Botoversikt'
+            color='primary'
+            exclusive
+            fullWidth={!lgUp}
+            onChange={(_, newVal: 'present' | 'expired' | null) => setTab((prev) => (newVal ? newVal : prev))}
+            size='small'
+            value={tab}>
+        <ToggleButton value='present'>Arrangementer</ToggleButton>
+        <ToggleButton value='expired'>Tidligere</ToggleButton>
+        </ToggleButtonGroup>
+
       {!data ? (
         <EventListItemLoading />
       ) : !events.length ? (
