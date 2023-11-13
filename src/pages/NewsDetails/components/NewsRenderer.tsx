@@ -11,8 +11,7 @@ import { formatDate } from 'utils';
 import { News, Reaction } from 'types';
 import { PermissionApp } from 'types/Enums';
 
-import { addReaction, changeEmoji, deleteEmoji, getEmojies } from 'hooks/Emojis';
-import { useNewsById } from 'hooks/News';
+import { addReaction, changeReaction, deleteReaction } from 'hooks/Emojis';
 import { HavePermission, useUser } from 'hooks/User';
 
 import Container from 'components/layout/Container';
@@ -48,7 +47,6 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
   const { data: palette } = usePalette(data?.image || '');
   const user = useUser();
   type EmojiListType = Record<string, string>;
-  const { data: emojiList } = getEmojies() as { data: EmojiListType | undefined };
 
   const showEmojiPaper = data?.emojis_allowed;
 
@@ -116,11 +114,11 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
   };
 
   const editEmoji = (reaction_id: string, emoji: string, news_id: number, user_id: any) => {
-    changeEmoji(reaction_id, emoji, news_id, user_id);
+    changeReaction(reaction_id, emoji, news_id, user_id);
   };
 
-  const deleteReaction = (reaction_id: string) => {
-    console.log(deleteEmoji(reaction_id));
+  const deleteEmoji = (reaction_id: string) => {
+    deleteReaction(reaction_id);
   };
 
   return (
@@ -145,7 +143,7 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
               </Button>
             </HavePermission>
           )}
-          <Stack alignItems='center' direction='row' justifyContent='space-between'>
+          <Stack direction='row' justifyContent='space-between' alignItems='center'>
             <Typography variant='body2'>
               Publisert: {formatDate(parseISO(data.created_at), { time: false })}
               {data.creator && (
@@ -159,50 +157,63 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
               )}
             </Typography>
 
-            {showEmojiPaper && (
-              <Stack sx={{ maxWidth: '1000px', marginLeft: 'auto', display: 'flex', flexDirection: 'row-reverse' }}>
-                <EmojiPaper>
-                  {top5Reactions.map((emoji, index) => {
-                    const userReactionWithThisEmoji = user.data?.user_id
-                      ? data?.reactions?.find((r) => r.user === user.data?.user_id && r.emoji === emoji)
-                      : undefined;
-                    return (
-                      <span
-                        key={index}
-                        onClick={() => {
-                          if (userReactionWithThisEmoji) {
-                            if (emoji === userReactedEmoji) {
-                              deleteReaction(userReactionWithThisEmoji.reaction_id);
-                            } else {
-                              editEmoji(userReactionWithThisEmoji.reaction_id, emoji, data.id, user.data?.user_id);
-                            }
-                          } else {
-                            handleEmojiClick(emoji);
-                          }
-                        }}
-                        style={{
-                          cursor: 'pointer',
-                          backgroundColor: emoji === userReactedEmoji ? 'grey' : 'transparent',
-                          boxShadow: emoji === userReactedEmoji ? '0px 2px 5px rgba(0, 0, 0, 0.1)' : 'none',
-                          padding: '5px',
-                          borderRadius: '4px',
-                          marginRight: '5px',
-                        }}>
-                        {emoji} ({groupedReactions[emoji]})
-                      </span>
-                    );
-                  })}
-                </EmojiPaper>
-              </Stack>
-            )}
           </Stack>
-          {data?.emojis_allowed && (
-            <>
-              <Button onClick={handleOpenEmojiList} ref={anchorRef}>
-                +
-              </Button>
-              <Button onClick={handleOpenAllReactions}>Se mer</Button>
-            </>
+          {showEmojiPaper && (
+            <Stack sx={{ maxWidth: '1000px', marginLeft: 'auto', display: 'flex', flexDirection: 'row-reverse' }}>
+              <Stack direction="row" spacing={1}>
+              {data?.emojis_allowed && (
+                <>
+                  <Button 
+                    onClick={() => {
+                      handleOpenEmojiList();
+                    }} 
+                    ref={anchorRef}
+                  >
+                    +
+                  </Button>
+                  <Button 
+                    onClick={() => {
+                      handleOpenAllReactions();
+                    }}
+                  >
+                    Se mer
+                  </Button>
+                </>
+              )}
+            </Stack>
+              <EmojiPaper>
+                {top5Reactions.map((emoji, index) => {
+                  const userReactionWithThisEmoji = user.data?.user_id
+                    ? data?.reactions?.find((r) => r.user === user.data?.user_id && r.emoji === emoji)
+                    : undefined;
+                  return (
+                    <span
+                      key={index}
+                      onClick={() => {
+                        if (userReactionWithThisEmoji) {
+                          if (emoji === userReactedEmoji) {
+                            deleteEmoji(userReactionWithThisEmoji.reaction_id);
+                          } else {
+                            editEmoji(userReactionWithThisEmoji.reaction_id, emoji, data.id, user.data?.user_id);
+                          }
+                        } else {
+                          handleEmojiClick(emoji);
+                        }
+                      }}
+                      style={{
+                        cursor: 'pointer',
+                        backgroundColor: emoji === userReactedEmoji ? 'grey' : 'transparent',
+                        boxShadow: emoji === userReactedEmoji ? '0px 2px 5px rgba(0, 0, 0, 0.1)' : 'none',
+                        padding: '5px',
+                        borderRadius: '4px',
+                        marginRight: '5px',
+                      }}>
+                      {emoji} ({groupedReactions[emoji]})
+                    </span>
+                  );
+                })}
+              </EmojiPaper>
+            </Stack>
           )}
           <Popover
             anchorEl={anchorRef.current}
@@ -214,55 +225,47 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
             open={openEmojiList}
             PaperProps={{
               className: popoverMode === 'ALL_REACTIONS' ? 'popoverPaperAllReactions' : '',
-              style:
-                popoverMode === 'EMOJI_LIST'
-                  ? {
-                      width: 'auto',
-                      maxHeight: 'auto',
-                      overflowY: 'auto',
-                    }
-                  : popoverMode === 'ALL_REACTIONS'
-                  ? {}
-                  : {},
+              style: popoverMode === 'EMOJI_LIST'
+                ? {
+                  width: 'auto',
+                  maxHeight: 'auto',
+                  overflowY: 'auto',
+                }
+                : {},
             }}
             transformOrigin={{
               vertical: 'bottom',
               horizontal: 'center',
-            }}>
+            }}
+          >
             <Grid container spacing={1}>
               {popoverMode === 'EMOJI_LIST' && <EmojiPicker onEmojiClick={onEmojiClick} />}
-              {popoverMode === 'ALL_REACTIONS' &&
-                top5Reactions.map((emoji, index) => (
+              {popoverMode === 'ALL_REACTIONS' && 
+                data?.reactions?.map((reaction, index) => (
                   <Grid
                     item
                     key={index}
-                    onClick={() => {
+                    onClick={(event) => {
+                      event.stopPropagation();
                       const userReactionWithThisEmoji = user.data?.user_id
-                        ? data?.reactions?.find((r) => r.user === user.data?.user_id && r.emoji === emoji)
+                        ? data?.reactions?.find((r) => r.user === user.data?.user_id && r.emoji === reaction.emoji)
                         : undefined;
                       if (userReactionWithThisEmoji) {
-                        if (emoji === userReactedEmoji) {
-                          deleteReaction(userReactionWithThisEmoji.reaction_id);
+                        if (reaction.emoji === userReactedEmoji) {
+                          deleteEmoji(userReactionWithThisEmoji.reaction_id);
                         } else {
-                          editEmoji(userReactionWithThisEmoji.reaction_id, emoji, data.id, user.data?.user_id);
+                          editEmoji(userReactionWithThisEmoji.reaction_id, reaction.emoji, data.id, user.data?.user_id);
                         }
                       } else {
-                        handleEmojiClick(emoji);
+                        handleEmojiClick(reaction.emoji);
                       }
                     }}
-                    style={{
-                      textAlign: 'center',
-                      cursor: 'pointer',
-                      backgroundColor: emoji === userReactedEmoji ? 'grey' : 'transparent',
-                      boxShadow: emoji === userReactedEmoji ? '0px 2px 5px rgba(0, 0, 0, 0.1)' : 'none',
-                      padding: '5px',
-                      borderRadius: '4px',
-                      marginRight: '5px',
-                    }}
-                    xs={1}>
-                    {emoji} ({groupedReactions[emoji]})
+                    xs={2}
+                  >
+                    {reaction.emoji}
                   </Grid>
-                ))}
+                ))
+              }
             </Grid>
           </Popover>
           <Paper>
@@ -275,7 +278,7 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
       </Container>
     </div>
   );
-};
+};  
 
 export default NewsRenderer;
 

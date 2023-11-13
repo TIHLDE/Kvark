@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import URLS from 'URLS';
 
-import { addReaction, getEmojies } from 'hooks/Emojis';
 import { useNews } from 'hooks/News';
 
 import NewsEditor from 'pages/NewsAdministration/components/NewsEditor';

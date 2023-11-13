@@ -7,11 +7,13 @@ import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { formatDate, urlEncode } from 'utils';
 import '../../assets/css/popover.css';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+
 
 import { News, Reaction } from 'types';
 
-import { addReaction, changeEmoji, deleteEmoji } from 'hooks/Emojis';
-import { useCreateNews, useDeleteNews, useNewsById, useUpdateNews } from 'hooks/News';
+import { addReaction, changeReaction, deleteReaction, useAddReaction, useChangeReaction, useDeleteReaction} from 'hooks/Emojis';
+import { useNewsById} from 'hooks/News';
 import { useUser } from 'hooks/User';
 
 import Paper from 'components/layout/Paper';
@@ -35,12 +37,16 @@ const NewsListItem = ({ news, sx }: NewsListItemProps) => {
   const { data: newsDetails, isLoading: newsDetailsLoading } = useNewsById(news.id);
   console.log(newsDetails);
 
+  const addReaction = useAddReaction(news.id);
+  const editReaction = useChangeReaction(news.id);  
+  const deleteReaction = useDeleteReaction(news.id);
+
   const showEmojiPaper = !newsDetailsLoading && newsDetails?.emojis_allowed;
   const anchorRef = React.useRef(null);
 
   const [openEmojiList, setOpenEmojiList] = useState(false);
   const [popoverMode, setPopoverMode] = useState<'ALL_REACTIONS' | 'EMOJI_LIST'>('EMOJI_LIST');
-  const [openAllReactions, setOpenAllReactions] = useState(false);
+  
 
   const onEmojiClick = (emojiData: EmojiClickData, event: MouseEvent) => {
     const clickedEmoji = emojiData.emoji;
@@ -68,44 +74,37 @@ const NewsListItem = ({ news, sx }: NewsListItemProps) => {
     top5Reactions.push(userReactedEmoji);
   }
 
-  const handleOpenEmojiList = () => {
-    setPopoverMode('EMOJI_LIST');
-    setOpenEmojiList(true);
-  };
-
   const handleCloseEmojiList = () => {
     setOpenEmojiList(false);
   };
 
-  const handleOpenAllReactions = () => {
-    setPopoverMode('ALL_REACTIONS');
-    setOpenEmojiList(true);
-  };
-
-  const handleCloseAllReactions = () => {
-    setOpenAllReactions(false);
-  };
-
   const handleEmojiClick = (clickedEmoji: string) => {
+
     const userReaction = user.data?.user_id ? newsDetails?.reactions?.find((r) => r.user === user.data?.user_id) : undefined;
 
     if (userReaction) {
-      console.log(editEmoji(userReaction.reaction_id, clickedEmoji, news.id, user.data?.user_id));
+      const editReactionHandler = () => editReaction.mutate({ reaction_id: userReaction.reaction_id, emoji: clickedEmoji, userId: user.data?.user_id });
+      editReactionHandler();
     } else {
-      addReaction(clickedEmoji, news.id, user.data?.user_id);
+      const addReactionHandler = () => addReaction.mutate({emoji: clickedEmoji, userId: user.data?.user_id});
+      addReactionHandler();
     }
 
     setOpenEmojiList(false);
   };
 
-  const editEmoji = (reaction_id: string, emoji: string, newsId: number, user_id: any) => {
-    changeEmoji(reaction_id, emoji, news.id, user.data?.user_id);
+  const editEmoji = (reaction_id: string, emoji: string, user_id: any) => {
+    const editReactionHandler = () => editReaction.mutate({ reaction_id: reaction_id, emoji: emoji, userId: user.data?.user_id });
+    editReactionHandler();
   };
 
-  const deleteReaction = (reaction_id: string) => {
-    console.log(deleteEmoji(reaction_id));
+  const deleteEmoji = (reaction_id: string) => {
+    const deleteReactionHandler = () => deleteReaction.mutate(reaction_id);
+    deleteReactionHandler();
   };
 
+
+  
   return (
     <Box sx={{ height: 'fit-content', overflow: 'hidden', ...sx }}>
       <ButtonBase
@@ -163,12 +162,14 @@ const NewsListItem = ({ news, sx }: NewsListItemProps) => {
                     return (
                       <span
                         key={index}
-                        onClick={() => {
+                        onClick={(event) => {
+                          event.preventDefault();
+                          event.stopPropagation();
                           if (userReactionWithThisEmoji) {
                             if (emoji === userReactedEmoji) {
-                              deleteReaction(userReactionWithThisEmoji.reaction_id);
+                              deleteEmoji(userReactionWithThisEmoji.reaction_id);
                             } else {
-                              editEmoji(userReactionWithThisEmoji.reaction_id, emoji, news.id, user.data?.user_id);
+                              editEmoji(userReactionWithThisEmoji.reaction_id, emoji, user.data?.user_id);
                             }
                           } else {
                             handleEmojiClick(emoji);
@@ -181,6 +182,7 @@ const NewsListItem = ({ news, sx }: NewsListItemProps) => {
                           padding: '5px',
                           borderRadius: '4px',
                           marginRight: '5px',
+                          zIndex: 1000,
                         }}>
                         {emoji} {groupedReactions[emoji]}
                       </span>
@@ -223,15 +225,17 @@ const NewsListItem = ({ news, sx }: NewsListItemProps) => {
                 <Grid
                   item
                   key={index}
-                  onClick={() => {
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
                     const userReactionWithThisEmoji = user.data?.user_id
                       ? newsDetails?.reactions?.find((r) => r.user === user.data?.user_id && r.emoji === emoji)
                       : undefined;
                     if (userReactionWithThisEmoji) {
                       if (emoji === userReactedEmoji) {
-                        deleteReaction(userReactionWithThisEmoji.reaction_id);
+                        deleteEmoji(userReactionWithThisEmoji.reaction_id);
                       } else {
-                        editEmoji(userReactionWithThisEmoji.reaction_id, emoji, news.id, user.data?.user_id);
+                        editEmoji(userReactionWithThisEmoji.reaction_id, emoji, user.data?.user_id);
                       }
                     } else {
                       handleEmojiClick(emoji);
