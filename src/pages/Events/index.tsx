@@ -30,7 +30,6 @@ const Events = () => {
           <EventsCalendarView />
         </Suspense>
       </Collapse>
-      <CommentSection />
     </Page>
   );
 };

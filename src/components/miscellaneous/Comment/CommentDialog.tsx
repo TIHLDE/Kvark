@@ -3,9 +3,9 @@ import { TransitionProps } from '@mui/material/transitions';
 import React, { useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import { Comment } from '../../../types';
 import TextField from '../../inputs/TextField';
-import { CommentDispatchContext } from './temp/reducer';
-import { Comment, FormValues } from './types';
+import { FormValues } from './types';
 
 interface CommentDialogProps {
   open: boolean;
@@ -33,11 +33,10 @@ const Transition = React.forwardRef(function Transition(
  */
 export default function CommentDialog({ open, onClose, comment, indentation }: CommentDialogProps) {
   const { handleSubmit, register, formState } = useForm<FormValues>();
-  const dispatch = useContext(CommentDispatchContext);
 
   const submit: SubmitHandler<FormValues> = async (values) => {
     onClose();
-    dispatch({
+    /* dispatch({
       type: 'reply',
       payload: {
         parentId: comment.id,
@@ -57,7 +56,7 @@ export default function CommentDialog({ open, onClose, comment, indentation }: C
           updated_at: new Date(),
         },
       },
-    });
+    }); */
   };
 
   return (

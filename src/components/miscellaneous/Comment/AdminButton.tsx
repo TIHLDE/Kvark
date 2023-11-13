@@ -8,10 +8,9 @@ import * as React from 'react';
 import { useState } from 'react';
 
 import { useSnackbar } from '../../../hooks/Snackbar';
+import { Comment } from '../../../types';
 import ConfirmDialog from '../ConfirmDialog';
 import useStyles from './styles';
-import { CommentDispatchContext } from './temp/reducer';
-import { Comment } from './types';
 
 interface AdminButtonProps {
   comment: Comment;
@@ -34,8 +33,6 @@ export default function AdminButton(props: AdminButtonProps) {
   };
   const handleClose = () => setAnchorEl(null);
 
-  const dispatch = React.useContext(CommentDispatchContext);
-
   const handleFlag = () => {
     setIsFlagDialogOpen(true);
     handleClose();
@@ -48,23 +45,22 @@ export default function AdminButton(props: AdminButtonProps) {
 
   const handleConfirmDelete = () => {
     setIsDeleteDialogOpen(false);
-    dispatch({
+    /* dispatch({
       type: 'delete',
       payload: {
         commentId: props.comment.id,
-      },
-    });
+      }, */
     snackbar('Kommentaren ble slettet', 'info');
   };
 
   const handleConfirmFlag = () => {
     setIsFlagDialogOpen(false);
-    dispatch({
+    /* dispatch({
       type: 'flag',
       payload: {
         commentId: props.comment.id,
       },
-    });
+    }); */
     snackbar('Kommentaren ble rapportert', 'info');
   };
 

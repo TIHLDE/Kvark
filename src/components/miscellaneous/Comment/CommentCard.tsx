@@ -6,15 +6,15 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { useUserPermissions } from '../../../hooks/User';
+import { Comment } from '../../../types';
 import { getTimeSince } from '../../../utils';
 import TextField from '../../inputs/TextField';
 import Avatar from '../Avatar';
 import AdminButton from './AdminButton';
 import CommentDialog from './CommentDialog';
 import useStyles, { INDENTATION_SPACING } from './styles';
-import { CommentDispatchContext } from './temp/reducer';
 import { LocalThreadLine, ThreadLine } from './ThreadLine';
-import { Comment, FormValues } from './types';
+import { FormValues } from './types';
 
 export interface CommentCardProps {
   /** The comment object to display */
@@ -35,7 +35,6 @@ export default function CommentCard({ comment, indentation }: CommentCardProps) 
   const [formSpacing, setFormSpacing] = useState('0px');
   const [isCommentDialogOpen, setIsCommentDialogOpen] = useState(false);
   const [entryAnimation, setentryAnimation] = useState(false);
-  const dispatch = useContext(CommentDispatchContext);
   const mobileMode = useMediaQuery(theme.breakpoints.down('md'));
   const { data: permissions } = useUserPermissions();
 
@@ -90,7 +89,7 @@ export default function CommentCard({ comment, indentation }: CommentCardProps) 
   };
 
   const submit: SubmitHandler<FormValues> = async (values) => {
-    dispatch({
+    /* dispatch({
       type: 'reply',
       payload: {
         parentId: comment.id,
@@ -110,7 +109,7 @@ export default function CommentCard({ comment, indentation }: CommentCardProps) 
           updated_at: new Date(),
         },
       },
-    });
+    }); */
     setValue('body', '');
     setIsExpanded(false);
     setIsCommentDialogOpen(false);
@@ -127,13 +126,11 @@ export default function CommentCard({ comment, indentation }: CommentCardProps) 
         <Card className={classes.card} variant='outlined'>
           <div className={classes.header}>
             <Avatar sx={{ width: 32, height: 32, fontSize: 14 }} user={comment.author} />
-            <Typography variant='body1'>
-              {comment.flagged ? '[flagged as child predator]' : `${comment.author.first_name} ${comment.author.last_name}`}
-            </Typography>
-            <Typography variant='caption'>{getTimeSince(comment.created_at)}</Typography>
+            <Typography variant='body1'>{`${comment.author.first_name} ${comment.author.last_name}`}</Typography>
+            <Typography variant='caption'>{getTimeSince(new Date(comment.created_at))}</Typography>
           </div>
           <div className={classes.body} style={{ marginRight: formSpacing }}>
-            <Typography variant={'body1'}>{comment.flagged ? '[flagged as child predator]' : comment.body}</Typography>
+            <Typography variant={'body1'}>{comment.body}</Typography>
           </div>
           <Collapse
             className={classes.collapser}

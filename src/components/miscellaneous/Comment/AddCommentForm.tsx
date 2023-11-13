@@ -1,13 +1,11 @@
 import SendIcon from '@mui/icons-material/Send';
 import { IconButton } from '@mui/material';
-import { useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { useCreateComment } from '../../../hooks/Comments';
 import { CommentContentType } from '../../../types';
 import TextField from '../../inputs/TextField';
 import useStyles from './styles';
-import { CommentDispatchContext } from './temp/reducer';
 import { FormValues } from './types';
 
 interface AddCommentFormProps {

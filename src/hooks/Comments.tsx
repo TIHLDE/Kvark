@@ -1,6 +1,6 @@
 import { QueryKey, useInfiniteQuery, UseInfiniteQueryOptions, useMutation, UseMutationResult, useQueryClient } from 'react-query';
 
-import { Comment, CommentCreate, PaginationResponse, RequestResponse } from 'types';
+import { Comment, CommentCreate, CommentUpdate, PaginationResponse, RequestResponse } from 'types';
 
 import API from 'api/api';
 
@@ -22,6 +22,13 @@ export const useComments = (
 export const useCreateComment = (): UseMutationResult<Comment, RequestResponse, CommentCreate, unknown> => {
   const queryClient = useQueryClient();
   return useMutation((data) => API.createComment(data), {
+    onSuccess: () => queryClient.invalidateQueries(COMMENTS_QUERY_KEY),
+  });
+};
+
+export const useUpdateComment = (id: Comment['id']): UseMutationResult<Comment, RequestResponse, CommentUpdate, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation((data) => API.updateComment(id, data), {
     onSuccess: () => queryClient.invalidateQueries(COMMENTS_QUERY_KEY),
   });
 };

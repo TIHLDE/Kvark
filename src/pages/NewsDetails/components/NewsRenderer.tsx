@@ -80,7 +80,7 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
           <Paper>
             <MarkdownRenderer value={data.body} />
           </Paper>
-          <CommentSection />
+          <CommentSection comments={data.comments ?? []} contentId={data.id.toString()} type='news' />
         </Stack>
       </Container>
     </div>

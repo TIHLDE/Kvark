@@ -88,6 +88,8 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
       created_at: new Date().toJSON(),
       id: 1,
       updated_at: new Date().toJSON(),
+      comments: [],
+      allow_comments: false,
     };
   };
   const remove = async () => {

@@ -9,6 +9,7 @@ import {
   Cheatsheet,
   Comment,
   CommentCreate,
+  CommentUpdate,
   CompaniesEmail,
   Event,
   EventFavorite,
@@ -368,5 +369,6 @@ export default {
 
   // Comments
   createComment: (data: CommentCreate) => IFetch<Comment>({ method: 'POST', url: `${COMMENTS_ENDPOINT}/`, data }),
-  // getComments: (filters?: any) => IFetch<Array<Comment>>({ method: 'GET', url: `${COMMENTS_ENDPOINT}/`, data: filters || {} }),
+  updateComment: (id: Comment['id'], data: CommentUpdate) => IFetch<Comment>({ method: 'PUT', url: `${COMMENTS_ENDPOINT}/${id}/`, data }),
+  deleteComment: (id: Comment['id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${COMMENTS_ENDPOINT}/${id}/` }),
 };
