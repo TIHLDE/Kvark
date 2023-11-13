@@ -1,8 +1,9 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
-import React, { useContext } from 'react';
+import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import { useCreateComment } from '../../../hooks/Comments';
 import { Comment } from '../../../types';
 import TextField from '../../inputs/TextField';
 import { FormValues } from './types';
@@ -31,32 +32,18 @@ const Transition = React.forwardRef(function Transition(
  * Simple dialog for commenting on a comment
  * Used in mobile view for better space
  */
-export default function CommentDialog({ open, onClose, comment, indentation }: CommentDialogProps) {
+export default function CommentDialog({ open, onClose, comment }: CommentDialogProps) {
   const { handleSubmit, register, formState } = useForm<FormValues>();
+  const { mutateAsync } = useCreateComment();
 
   const submit: SubmitHandler<FormValues> = async (values) => {
+    await mutateAsync({
+      body: values.body,
+      parent: comment.id,
+      content_id: comment.content_id,
+      content_type: comment.content_type,
+    });
     onClose();
-    /* dispatch({
-      type: 'reply',
-      payload: {
-        parentId: comment.id,
-        comment: {
-          author: {
-            first_name: 'Mori',
-            image: '',
-            last_name: 'Morille',
-            user_id: '123',
-          },
-          body: values.body,
-          children: [],
-          created_at: new Date(),
-          id: Math.random() * 1000,
-          indentation_level: indentation + 1,
-          parent_id: comment.id,
-          updated_at: new Date(),
-        },
-      },
-    }); */
   };
 
   return (

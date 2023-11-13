@@ -1,23 +1,10 @@
-import { QueryKey, useInfiniteQuery, UseInfiniteQueryOptions, useMutation, UseMutationResult, useQueryClient } from 'react-query';
+import { useMutation, UseMutationResult, useQueryClient } from 'react-query';
 
-import { Comment, CommentCreate, CommentUpdate, PaginationResponse, RequestResponse } from 'types';
+import { Comment, CommentCreate, CommentUpdate, RequestResponse } from 'types';
 
 import API from 'api/api';
 
 export const COMMENTS_QUERY_KEY = 'comments';
-
-export const useComments = (
-  options?: UseInfiniteQueryOptions<PaginationResponse<Comment>, RequestResponse, PaginationResponse<Comment>, PaginationResponse<Comment>, QueryKey>,
-) => {
-  /*   return useInfiniteQuery<PaginationResponse<Comment>, RequestResponse>(
-    TODDEL_QUERY_KEYS.all,
-    ({ pageParam = 1 }) => getComments({ page: pageParam }),
-    {
-      ...options,
-      getNextPageParam: (lastPage) => lastPage.next,
-    },
-  ); */
-};
 
 export const useCreateComment = (): UseMutationResult<Comment, RequestResponse, CommentCreate, unknown> => {
   const queryClient = useQueryClient();
@@ -29,6 +16,13 @@ export const useCreateComment = (): UseMutationResult<Comment, RequestResponse, 
 export const useUpdateComment = (id: Comment['id']): UseMutationResult<Comment, RequestResponse, CommentUpdate, unknown> => {
   const queryClient = useQueryClient();
   return useMutation((data) => API.updateComment(id, data), {
+    onSuccess: () => queryClient.invalidateQueries(COMMENTS_QUERY_KEY),
+  });
+};
+
+export const useDeleteComment = (id: Comment['id']): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation(() => API.deleteComment(id), {
     onSuccess: () => queryClient.invalidateQueries(COMMENTS_QUERY_KEY),
   });
 };

@@ -3,8 +3,11 @@ import { IconButton } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { useCreateComment } from '../../../hooks/Comments';
+import { useUser } from '../../../hooks/User';
 import { CommentContentType } from '../../../types';
 import TextField from '../../inputs/TextField';
+import ProfileTopbarButton from '../../navigation/ProfileTopbarButton';
+import Avatar from '../Avatar';
 import useStyles from './styles';
 import { FormValues } from './types';
 
@@ -21,6 +24,7 @@ export default function AddCommentForm({ content_type, content_id }: AddCommentF
   const { classes, theme } = useStyles();
   const { handleSubmit, register, formState, setValue } = useForm<FormValues>();
   const { mutateAsync } = useCreateComment();
+  const { data: user } = useUser();
 
   const submit: SubmitHandler<FormValues> = async (values) => {
     if (values.body.length) {
@@ -37,6 +41,7 @@ export default function AddCommentForm({ content_type, content_id }: AddCommentF
 
   return (
     <form className={classes.topForm} onSubmit={handleSubmit(submit)} style={{ marginRight: theme.spacing(2), marginLeft: theme.spacing(0) }}>
+      {user && <Avatar user={user} />}
       <TextField
         formState={formState}
         inputProps={{ style: { height: 27 } }}

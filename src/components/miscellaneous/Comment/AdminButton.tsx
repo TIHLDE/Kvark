@@ -7,6 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import * as React from 'react';
 import { useState } from 'react';
 
+import { useDeleteComment } from '../../../hooks/Comments';
 import { useSnackbar } from '../../../hooks/Snackbar';
 import { Comment } from '../../../types';
 import ConfirmDialog from '../ConfirmDialog';
@@ -24,6 +25,7 @@ export default function AdminButton(props: AdminButtonProps) {
   const [isFlagDialogOpen, setIsFlagDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const { mutateAsync: deleteAsync } = useDeleteComment(props.comment.id);
   const open = Boolean(anchorEl);
   const { classes } = useStyles();
   const snackbar = useSnackbar();
@@ -43,24 +45,15 @@ export default function AdminButton(props: AdminButtonProps) {
     handleClose();
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     setIsDeleteDialogOpen(false);
-    /* dispatch({
-      type: 'delete',
-      payload: {
-        commentId: props.comment.id,
-      }, */
+    await deleteAsync(null);
     snackbar('Kommentaren ble slettet', 'info');
   };
 
   const handleConfirmFlag = () => {
     setIsFlagDialogOpen(false);
-    /* dispatch({
-      type: 'flag',
-      payload: {
-        commentId: props.comment.id,
-      },
-    }); */
+    // TODO add flagging logic
     snackbar('Kommentaren ble rapportert', 'info');
   };
 
