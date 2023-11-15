@@ -6,12 +6,14 @@ export type NewsRequired = Omit<Partial<News>, 'creator'> &
   };
 
 export type Reaction = {
-  content_type: number;
+  content_type: string;
   emoji: string;
   object_id: number;
   reaction_id: string;
-  user: string;
+  user?: UserBase['user_id'];
 };
+
+export type ReactionMutate = Pick<Reaction, 'emoji' | 'content_type' | 'object_id'>;
 
 export type News = {
   id: number;

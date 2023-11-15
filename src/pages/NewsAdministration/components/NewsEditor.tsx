@@ -164,7 +164,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
           <FormGroup>
             <FormControlLabel
               control={<Checkbox {...register('emojis_allowed')} checked={checkboxState} color='primary' name='allowEmojis' onChange={handleCheckboxChange} />}
-              label='Tillatt Emojis'
+              label='Tillatt reaksjoner'
             />
           </FormGroup>
           <RendererPreview className={classes.margin} getContent={getNewsPreview} renderer={NewsRenderer} />

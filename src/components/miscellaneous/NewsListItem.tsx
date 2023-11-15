@@ -9,11 +9,10 @@ import { formatDate, urlEncode } from 'utils';
 import '../../assets/css/popover.css';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
-
 import { News, Reaction } from 'types';
 
-import { addReaction, changeReaction, deleteReaction, useAddReaction, useChangeReaction, useDeleteReaction} from 'hooks/Emojis';
-import { useNewsById} from 'hooks/News';
+import { useNewsById } from 'hooks/News';
+import { useSnackbar } from 'hooks/Snackbar';
 import { useUser } from 'hooks/User';
 
 import Paper from 'components/layout/Paper';
@@ -35,23 +34,14 @@ const EmojiPaper = styled(Paper)(({ theme }) => ({
 const NewsListItem = ({ news, sx }: NewsListItemProps) => {
   const user = useUser();
   const { data: newsDetails, isLoading: newsDetailsLoading } = useNewsById(news.id);
-  console.log(newsDetails);
 
-  const addReaction = useAddReaction(news.id);
-  const editReaction = useChangeReaction(news.id);  
-  const deleteReaction = useDeleteReaction(news.id);
+  const showSnackbar = useSnackbar();
 
   const showEmojiPaper = !newsDetailsLoading && newsDetails?.emojis_allowed;
   const anchorRef = React.useRef(null);
 
   const [openEmojiList, setOpenEmojiList] = useState(false);
   const [popoverMode, setPopoverMode] = useState<'ALL_REACTIONS' | 'EMOJI_LIST'>('EMOJI_LIST');
-  
-
-  const onEmojiClick = (emojiData: EmojiClickData, event: MouseEvent) => {
-    const clickedEmoji = emojiData.emoji;
-    handleEmojiClick(clickedEmoji);
-  };
 
   const groupedReactions: Record<string, number> =
     newsDetails?.reactions?.reduce((acc, reaction) => {
@@ -78,33 +68,6 @@ const NewsListItem = ({ news, sx }: NewsListItemProps) => {
     setOpenEmojiList(false);
   };
 
-  const handleEmojiClick = (clickedEmoji: string) => {
-
-    const userReaction = user.data?.user_id ? newsDetails?.reactions?.find((r) => r.user === user.data?.user_id) : undefined;
-
-    if (userReaction) {
-      const editReactionHandler = () => editReaction.mutate({ reaction_id: userReaction.reaction_id, emoji: clickedEmoji, userId: user.data?.user_id });
-      editReactionHandler();
-    } else {
-      const addReactionHandler = () => addReaction.mutate({emoji: clickedEmoji, userId: user.data?.user_id});
-      addReactionHandler();
-    }
-
-    setOpenEmojiList(false);
-  };
-
-  const editEmoji = (reaction_id: string, emoji: string, user_id: any) => {
-    const editReactionHandler = () => editReaction.mutate({ reaction_id: reaction_id, emoji: emoji, userId: user.data?.user_id });
-    editReactionHandler();
-  };
-
-  const deleteEmoji = (reaction_id: string) => {
-    const deleteReactionHandler = () => deleteReaction.mutate(reaction_id);
-    deleteReactionHandler();
-  };
-
-
-  
   return (
     <Box sx={{ height: 'fit-content', overflow: 'hidden', ...sx }}>
       <ButtonBase
@@ -152,45 +115,6 @@ const NewsListItem = ({ news, sx }: NewsListItemProps) => {
                 {news.header}
               </Typography>
             </Paper>
-            {showEmojiPaper && (
-              <Stack sx={{ maxWidth: '1000px', marginLeft: 'auto', display: 'flex', flexDirection: 'row-reverse' }}>
-                <EmojiPaper>
-                  {top5Reactions.map((emoji, index) => {
-                    const userReactionWithThisEmoji = user.data?.user_id
-                      ? newsDetails?.reactions?.find((r) => r.user === user.data?.user_id && r.emoji === emoji)
-                      : undefined;
-                    return (
-                      <span
-                        key={index}
-                        onClick={(event) => {
-                          event.preventDefault();
-                          event.stopPropagation();
-                          if (userReactionWithThisEmoji) {
-                            if (emoji === userReactedEmoji) {
-                              deleteEmoji(userReactionWithThisEmoji.reaction_id);
-                            } else {
-                              editEmoji(userReactionWithThisEmoji.reaction_id, emoji, user.data?.user_id);
-                            }
-                          } else {
-                            handleEmojiClick(emoji);
-                          }
-                        }}
-                        style={{
-                          cursor: 'pointer',
-                          backgroundColor: emoji === userReactedEmoji ? 'grey' : 'transparent',
-                          boxShadow: emoji === userReactedEmoji ? '0px 2px 5px rgba(0, 0, 0, 0.1)' : 'none',
-                          padding: '5px',
-                          borderRadius: '4px',
-                          marginRight: '5px',
-                          zIndex: 1000,
-                        }}>
-                        {emoji} {groupedReactions[emoji]}
-                      </span>
-                    );
-                  })}
-                </EmojiPaper>
-              </Stack>
-            )}
           </div>
         </ButtonBase>
         <Popover
@@ -217,45 +141,7 @@ const NewsListItem = ({ news, sx }: NewsListItemProps) => {
           transformOrigin={{
             vertical: 'bottom',
             horizontal: 'center',
-          }}>
-          <Grid container spacing={1}>
-            {popoverMode === 'EMOJI_LIST' && <EmojiPicker onEmojiClick={onEmojiClick} />}
-            {popoverMode === 'ALL_REACTIONS' &&
-              top5Reactions.map((emoji, index) => (
-                <Grid
-                  item
-                  key={index}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    const userReactionWithThisEmoji = user.data?.user_id
-                      ? newsDetails?.reactions?.find((r) => r.user === user.data?.user_id && r.emoji === emoji)
-                      : undefined;
-                    if (userReactionWithThisEmoji) {
-                      if (emoji === userReactedEmoji) {
-                        deleteEmoji(userReactionWithThisEmoji.reaction_id);
-                      } else {
-                        editEmoji(userReactionWithThisEmoji.reaction_id, emoji, user.data?.user_id);
-                      }
-                    } else {
-                      handleEmojiClick(emoji);
-                    }
-                  }}
-                  style={{
-                    textAlign: 'center',
-                    cursor: 'pointer',
-                    backgroundColor: emoji === userReactedEmoji ? 'grey' : 'transparent',
-                    boxShadow: emoji === userReactedEmoji ? '0px 2px 5px rgba(0, 0, 0, 0.1)' : 'none',
-                    padding: '5px',
-                    borderRadius: '4px',
-                    marginRight: '5px',
-                  }}
-                  xs={1}>
-                  {emoji} {groupedReactions[emoji]}
-                </Grid>
-              ))}
-          </Grid>
-        </Popover>
+          }}></Popover>
       </Box>
     </Box>
   );

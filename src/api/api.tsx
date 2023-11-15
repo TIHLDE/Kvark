@@ -47,6 +47,8 @@ import {
   PaginationResponse,
   Picture,
   PublicRegistration,
+  Reaction,
+  ReactionMutate,
   Registration,
   RequestResponse,
   ShortLink,
@@ -99,7 +101,6 @@ export const SUBMISSIONS_ENDPOINT = 'submissions';
 export const USERS_ENDPOINT = 'users';
 export const WARNINGS_ENDPOINT = 'warnings';
 export const EMOJI_ENDPOINT = 'emojis';
-
 
 export default {
   // Auth
@@ -180,12 +181,11 @@ export default {
   putNewsItem: (id: number, item: NewsRequired) => IFetch<News>({ method: 'PUT', url: `${NEWS_ENDPOINT}/${String(id)}/`, data: item }),
   deleteNewsItem: (id: number) => IFetch<RequestResponse>({ method: 'DELETE', url: `${NEWS_ENDPOINT}/${String(id)}/` }),
 
-  // Emojis
-  addEmoji: (emoji: string, newsId: number, userId?: User['user_id']) =>
-    IFetch<RequestResponse>({ method: 'POST', url: `${EMOJI_ENDPOINT}/reactions/`, data: { user: userId, emoji: emoji, content_type: 'news', object_id: newsId } }),
-  deleteEmoji: (reaction_id: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${EMOJI_ENDPOINT}/reactions/${reaction_id}/` }),
-  changeEmoji: (reaction_id: string, emoji: string, newsId: number, userId?: User['user_id']) =>
-    IFetch<RequestResponse>({ method: 'PUT', url: `${EMOJI_ENDPOINT}/reactions/${reaction_id}/`, data: { emoji: emoji } }),
+  // EmojiReactions
+  createReaction: (item: ReactionMutate) => IFetch<Reaction>({ method: 'POST', url: `${EMOJI_ENDPOINT}/reactions/`, data: item }),
+  deleteReaction: (reactionId: Reaction['reaction_id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${EMOJI_ENDPOINT}/reactions/${reactionId}/` }),
+  updateReaction: (reactionId: Reaction['reaction_id'], item: ReactionMutate) =>
+    IFetch<Reaction>({ method: 'PUT', url: `${EMOJI_ENDPOINT}/reactions/${reactionId}/`, data: item }),
 
   // User
   getUserData: (userId?: User['user_id']) => IFetch<User>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/` }),
