@@ -12,7 +12,11 @@ import { useSnackbar } from 'hooks/Snackbar';
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 
-const QRCodeItem = (qrCode: QRCode) => {
+export type QRCodeItemProps = {
+  qrCode: QRCode;
+};
+
+const QRCodeItem = ({ qrCode }: QRCodeItemProps) => {
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   const deleteQRCode = useDeleteQRCode(qrCode.id || -1);
   const showSnackbar = useSnackbar();
