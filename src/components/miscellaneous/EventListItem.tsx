@@ -81,8 +81,6 @@ const EventListItem = ({ event, sx }: EventListItemProps) => {
   const { observe, width } = useDimensions();
   const theme = useTheme();
 
-  const getColor = () => theme.palette.colors[event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase() ? 'nok_event' : 'other_event'];
-
   const [height, titleFontSize, contentFontSize] = useMemo(() => {
     if (width < 400) {
       return [68, 18, 13];
@@ -96,6 +94,18 @@ const EventListItem = ({ event, sx }: EventListItemProps) => {
 
   const { data: categories = [] } = useCategories();
   const categoryLabel = `${event.organizer ? `${event.organizer.name} | ` : ''}${categories.find((c) => c.id === event.category)?.text || 'Laster...'}`;
+
+  const getColor = () => {
+    if (categories.find((c) => c.id === event.category)?.text === 'Aktivitet') {
+      return theme.palette.colors.activity_event;
+    }
+
+    if (event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase()) {
+      return theme.palette.colors.nok_event;
+    }
+
+    return theme.palette.colors.other_event;
+  };
 
   return (
     <EventListItemButton
