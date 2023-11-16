@@ -12,6 +12,10 @@
 
 ## Neste versjon
 
+## versjon 2023.17.11
+- ✨ **QR kode**. Du kan nå generere dine egne QR kode.
+- ✨ **Aktiviteter**. Det kan nå opprettes aktiviteter for interessegrupper. 
+
 ## versjon 2023.06.11
 - ✨ **Arrangement**. Du kan nå se hvilken plass du har på ventelisten.
 - ✨ **Arrangement**. Admins kan nå manuelt legge til deltagere på et arrangement.
