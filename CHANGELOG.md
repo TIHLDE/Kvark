@@ -18,6 +18,9 @@
 - ⚡ **Kalender**. Kalender pop-up viser viser infromasjonen bedre.
 - ✨ **Bannere**. Tidsbegrensede bannere kan nå opprettes.
 
+## versjon 2023.14.10
+- ✨ **QR-kode generator**. Brukere kan nå generere sine egne QR koder fra en url.
+
 ## versjon 2023.24.09
 
 - 🎨 **Fult navn**. Kontaktperson på arrangementer vil nå bli vist med fult navn.
