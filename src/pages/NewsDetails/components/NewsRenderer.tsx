@@ -1,25 +1,21 @@
-import { Box, Button, Grid, Popover, Skeleton, Stack, styled, Typography } from '@mui/material';
+import { Button, Skeleton, Stack, styled, Typography } from '@mui/material';
 import parseISO from 'date-fns/parseISO';
-import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
-import { useState } from 'react';
 import React from 'react';
 import { usePalette } from 'react-palette';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { formatDate } from 'utils';
 
-import { News, Reaction } from 'types';
+import { News } from 'types';
 import { PermissionApp } from 'types/Enums';
 
-import { useCreateReaction, useDeleteReaction, useUpdateReaction } from 'hooks/EmojiReaction';
-import { useSnackbar } from 'hooks/Snackbar';
-import { HavePermission, useUser } from 'hooks/User';
+import { HavePermission } from 'hooks/User';
 
 import Container from 'components/layout/Container';
 import Paper from 'components/layout/Paper';
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import { ReactionHandler } from 'components/miscellaneous/ReactionHandler';
+import { ReactionHandler } from 'components/miscellaneous/reactions/ReactionHandler';
 import ShareButton from 'components/miscellaneous/ShareButton';
 
 const TopContainer = styled('div', { shouldForwardProp: (prop) => prop !== 'bgColor' })<{ bgColor?: React.CSSProperties['backgroundColor'] }>(
@@ -35,126 +31,12 @@ const TopContainer = styled('div', { shouldForwardProp: (prop) => prop !== 'bgCo
   }),
 );
 
-const EmojiPaper = styled(Paper)(({ theme }) => ({
-  padding: '8px',
-  borderRadius: '8px',
-  backgroundColor: theme.palette.background.paper,
-}));
-
 export type NewsRendererProps = {
   data: News;
   preview?: boolean;
 };
 const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
   const { data: palette } = usePalette(data?.image || '');
-  const user = useUser();
-  type EmojiListType = Record<string, string>;
-
-  const createReaction = useCreateReaction();
-  const deleteReaction = useDeleteReaction(data.id);
-  const updateReaction = useUpdateReaction();
-
-  const showSnackbar = useSnackbar();
-
-  const showEmojiPaper = data?.emojis_allowed;
-
-  const [openEmojiList, setOpenEmojiList] = useState(false);
-  const [popoverMode, setPopoverMode] = useState<'ALL_REACTIONS' | 'EMOJI_LIST'>('EMOJI_LIST');
-  const anchorRef = React.useRef(null);
-
-  const [openAllReactions, setOpenAllReactions] = useState(false);
-  const [showExistingReactions, setShowExistingReactions] = useState(false);
-
-  const groupedReactions: Record<string, number> =
-    data?.reactions?.reduce((acc, reaction) => {
-      acc[reaction.emoji] = (acc[reaction.emoji] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>) || {};
-
-  const top5Reactions: string[] = Object.entries(groupedReactions)
-    .sort(([, a], [, b]) => b - a)
-    .slice(0, 5)
-    .map(([emoji]) => emoji);
-
-  const onEmojiClick = (emojiData: EmojiClickData, event: MouseEvent) => {
-    const clickedEmoji = emojiData.emoji;
-    handleEmojiClick(clickedEmoji);
-  };
-
-  const userReaction: Reaction | undefined = user.data?.user_id ? data?.reactions?.find((r) => r.user === user.data?.user_id.toString()) : undefined;
-
-  const userReactedEmoji: string | undefined = userReaction?.emoji;
-
-  const isUserReactionInTop5: boolean = top5Reactions.includes(userReactedEmoji || '');
-
-  if (!isUserReactionInTop5 && userReactedEmoji) {
-    top5Reactions.push(userReactedEmoji);
-  }
-
-  const handleOpenEmojiList = () => {
-    setPopoverMode('EMOJI_LIST');
-    setOpenEmojiList(true);
-  };
-
-  const handleCloseEmojiList = () => {
-    setOpenEmojiList(false);
-  };
-
-  const handleOpenAllReactions = () => {
-    setPopoverMode('ALL_REACTIONS');
-    setOpenEmojiList(true);
-  };
-
-  const handleCloseAllReactions = () => {
-    setOpenAllReactions(false);
-  };
-
-  const handleEmojiClick = (clickedEmoji: string) => {
-    const userReaction = user.data?.user_id ? data?.reactions?.find((r) => r.user === user.data?.user_id) : undefined;
-
-    if (userReaction) {
-      updateReactionEmoji(userReaction.reaction_id, clickedEmoji);
-    } else {
-      createReaction.mutate(
-        { emoji: clickedEmoji, content_type: 'news', object_id: data.id },
-        {
-          onSuccess: () => {
-            showSnackbar('Reaksjon lagt til', 'success');
-          },
-          onError: (e) => {
-            showSnackbar(e.detail, 'error');
-          },
-        },
-      );
-    }
-
-    setOpenEmojiList(false);
-  };
-
-  const updateReactionEmoji = (reaction_id: string, emoji: string) => {
-    updateReaction.mutate(
-      { reaction_id: reaction_id, emoji: emoji, content_type: 'news', object_id: data.id },
-      {
-        onSuccess: () => {
-          showSnackbar('Reaksjon oppdatert', 'success');
-        },
-        onError: (e) => {
-          showSnackbar(e.detail, 'error');
-        },
-      },
-    );
-  };
-
-  const deleteReactionEmoji = (reaction_id: string) => {
-    deleteReaction.mutate(reaction_id, {
-      onSuccess: () => {
-        showSnackbar('Reaksjon fjernet', 'success');
-      },
-      onError: (e) => {
-        showSnackbar(e.detail, 'error');
-      },
-    });
-  };
 
   return (
     <div>
@@ -179,22 +61,23 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
             </HavePermission>
           )}
           <Stack alignItems='center' direction='row' justifyContent='space-between'>
-            <Typography variant='body2'>
-              Publisert: {formatDate(parseISO(data.created_at), { time: false })}
-              {data.creator && (
-                <>
-                  <br />
-                  Forfatter:{' '}
-                  <Link to={`${URLS.profile}${data.creator.user_id}/`}>
-                    {data.creator.first_name} {data.creator.last_name}
-                  </Link>
-                </>
-              )}
-            </Typography>
+            <Stack alignItems='center' direction='row' justifyContent='space-between'>
+              <Typography variant='body2'>
+                Publisert: {formatDate(parseISO(data.created_at), { time: false })}
+                {data.creator && (
+                  <>
+                    <br />
+                    Forfatter:{' '}
+                    <Link to={`${URLS.profile}${data.creator.user_id}/`}>
+                      {data.creator.first_name} {data.creator.last_name}
+                    </Link>
+                  </>
+                )}
+              </Typography>
+            </Stack>
+
+            {data?.emojis_allowed && <ReactionHandler data={data} />}
           </Stack>
-
-          {data?.emojis_allowed && <ReactionHandler data={data} />}
-
           <Paper>
             <MarkdownRenderer value={data.body} />
           </Paper>

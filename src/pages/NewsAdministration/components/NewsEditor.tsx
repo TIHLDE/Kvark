@@ -92,7 +92,6 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
   );
 
   useEffect(() => {
-    console.log(data);
     if (data) {
       setValues(data);
     } else {
@@ -125,7 +124,6 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
           { ...data, creator: data.creator?.user_id || null },
           {
             onSuccess: () => {
-              console.log(data.emojis_allowed + 'oppdatert nyhet');
               showSnackbar('Nyheten ble oppdatert', 'success');
             },
             onError: (err) => {
@@ -137,7 +135,6 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
           { ...data, creator: data.creator?.user_id || null },
           {
             onSuccess: (newNewsItem) => {
-              console.log(data.emojis_allowed + 'opprettet nyhet');
               showSnackbar('Nyheten ble opprettet', 'success');
               goToNews(newNewsItem.id);
             },

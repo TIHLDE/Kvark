@@ -15,6 +15,11 @@ export type Reaction = {
 
 export type ReactionMutate = Pick<Reaction, 'emoji' | 'content_type' | 'object_id'>;
 
+export type Emoji = {
+  emoji: string;
+  count: number;
+};
+
 export type News = {
   id: number;
   created_at: string;

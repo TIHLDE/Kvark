@@ -15,7 +15,7 @@ export const useCreateReaction = (): UseMutationResult<Reaction, RequestResponse
   });
 };
 
-export const useDeleteReaction = (objectId: Reaction['object_id']): UseMutationResult<RequestResponse, RequestResponse, Reaction['reaction_id'], unknown> => {
+export const useDeleteReaction = (): UseMutationResult<RequestResponse, RequestResponse, Reaction['reaction_id'], unknown> => {
   const queryClient = useQueryClient();
   return useMutation((reactionId: Reaction['reaction_id']) => API.deleteReaction(reactionId), {
     onSuccess: () => {
@@ -27,7 +27,7 @@ export const useDeleteReaction = (objectId: Reaction['object_id']): UseMutationR
 export const useUpdateReaction = (): UseMutationResult<Reaction, RequestResponse, Reaction, unknown> => {
   const queryClient = useQueryClient();
   return useMutation((updatedReaction: Reaction) => API.updateReaction(updatedReaction.reaction_id, updatedReaction), {
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries(EXPORT_QUERY_KEY);
     },
   });

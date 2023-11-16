@@ -1,7 +1,7 @@
 import { styled } from '@mui/material';
 import { useMemo } from 'react';
 
-import { useNews, useNewsById } from 'hooks/News';
+import { useNews } from 'hooks/News';
 
 import Banner from 'components/layout/Banner';
 import Pagination from 'components/layout/Pagination';
@@ -35,7 +35,9 @@ const News = () => {
         {error && <Paper>{error.detail}</Paper>}
         {data !== undefined && (
           <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-            {news.map((newsItem) => (console.log(newsItem), (<NewsListItem key={newsItem.id} news={newsItem} />)))}
+            {news.map((newsItem) => (
+              <NewsListItem key={newsItem.id} news={newsItem} />
+            ))}
           </Pagination>
         )}
         {isFetching && <NewsListItemLoading />}
