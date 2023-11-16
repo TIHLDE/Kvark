@@ -79,3 +79,10 @@ export interface Warning {
   type: WarningType;
   updated_at: string;
 }
+
+export interface QRCode {
+  id: number;
+  created_at: string;
+  name: string;
+  content: string;
+}
