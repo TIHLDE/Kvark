@@ -12,7 +12,7 @@ import { useSnackbar } from 'hooks/Snackbar';
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 
-const QRCodeItem = ({ qrCode }: { qrCode: QRCode }) => {
+const QRCodeItem = (qrCode: QRCode) => {
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   const deleteQRCode = useDeleteQRCode(qrCode.id || -1);
   const showSnackbar = useSnackbar();
@@ -29,7 +29,7 @@ const QRCodeItem = ({ qrCode }: { qrCode: QRCode }) => {
   };
 
   const download = () => {
-    const canvas = document.getElementById(qrCode.id.toString()) as HTMLCanvasElement;
+    const canvas = document.getElementById(qrCode.id.toString()) as HTMLCanvasElement | null;
 
     if (canvas) {
       const image = canvas.toDataURL('image/png');
