@@ -50,6 +50,7 @@ export type Event = {
   enforces_previous_strikes: boolean;
   only_allow_prioritized: boolean;
   contact_person: User | null;
+  emojis_allowed: boolean;
 };
 
 export type EventMutate = Partial<Omit<Event, 'organizer' | 'priority_pools'>> &

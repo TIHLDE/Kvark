@@ -61,6 +61,7 @@ type FormValues = Pick<
   | 'can_cause_strikes'
   | 'enforces_previous_strikes'
   | 'contact_person'
+  | 'emojis_allowed'
 > & {
   end_date: Date;
   end_registration_at: Date;
@@ -110,6 +111,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         price: newValues?.paid_information?.price,
         paytime: newValues?.paid_information?.paytime && parse(newValues?.paid_information.paytime, 'HH:mm:ss', new Date()),
         contact_person: newValues?.contact_person || null,
+        emojis_allowed: newValues?.emojis_allowed || false,
       });
       if (!newValues) {
         setTimeout(() => updateDates(new Date()), 10);
@@ -174,6 +176,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       start_date: values.start_date.toJSON(),
       start_registration_at: values.start_registration_at.toJSON(),
       contact_person: values.contact_person,
+      emojis_allowed: values.emojis_allowed,
       paid_information: {
         price: values?.price,
       },
@@ -218,6 +221,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         paytime: data.paytime && format(new Date(data.paytime), 'HH:mm'),
       },
       contact_person: data.contact_person?.user_id || null,
+      emojis_allowed: data.emojis_allowed,
     } as EventMutate;
     if (eventId) {
       await updateEvent.mutate(event, {
@@ -497,6 +501,18 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               />
             </Row>
           )}
+          <Bool 
+            control={control}
+            formState={formState}
+            label={
+              <>
+                Tillat reaksjoner
+                <ShowMoreTooltip>Bestemmer om en bruker skal kunne reagere med emojier.</ShowMoreTooltip>
+              </>
+            }
+            name='emojis_allowed'
+            type='checkbox'
+          />
           <UserSearch control={control} formState={formState} label={'Kontaktperson'} name='contact_person' />
           <RendererPreview getContent={getEventPreview} renderer={EventRenderer} sx={{ my: 2 }} />
           <SubmitButton disabled={isLoading || createEvent.isLoading || updateEvent.isLoading || deleteEvent.isLoading} formState={formState}>
