@@ -1,6 +1,6 @@
 import { Stack, styled } from '@mui/material';
 
-import { News } from 'types';
+import { Event, News } from 'types';
 
 import Paper from 'components/layout/Paper';
 
@@ -15,19 +15,20 @@ const EmojiPaper = styled(Paper)(({ theme }) => ({
 }));
 
 export type ReactionHandlerProps = {
-  data: News;
+  data: News | Event;
+  content_type: 'news' | 'event';
 };
 
-export const ReactionHandler = ({ data }: ReactionHandlerProps) => {
+export const ReactionHandler = ({ data, content_type }: ReactionHandlerProps) => {
   return (
     <Stack alignItems='center' direction='row' spacing={1}>
       {data.reactions?.length ? (
         <EmojiPaper>
-          <EmojiShowcase data={data} />
+          <EmojiShowcase content_type={content_type} data={data} />
         </EmojiPaper>
       ) : null}
-      <EmojiPickerHandler data={data} />
-      <EmojiShowAll data={data} />
+      <EmojiPickerHandler content_type={content_type} data={data} />
+      <EmojiShowAll content_type={content_type} data={data} />
     </Stack>
   );
 };

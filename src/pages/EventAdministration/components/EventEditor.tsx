@@ -501,7 +501,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               />
             </Row>
           )}
-          <Bool 
+          <Bool
             control={control}
             formState={formState}
             label={

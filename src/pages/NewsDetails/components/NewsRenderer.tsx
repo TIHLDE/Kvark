@@ -76,7 +76,7 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
               </Typography>
             </Stack>
 
-            {data?.emojis_allowed && <ReactionHandler data={data} />}
+            {data?.emojis_allowed && <ReactionHandler content_type='news' data={data} />}
           </Stack>
           <Paper>
             <MarkdownRenderer value={data.body} />

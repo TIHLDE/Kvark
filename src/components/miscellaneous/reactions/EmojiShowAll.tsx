@@ -7,7 +7,7 @@ import Dialog from 'components/layout/Dialog';
 import { EmojiItem } from './EmojiItem';
 import { ReactionHandlerProps } from './ReactionHandler';
 
-export const EmojiShowAll = ({ data }: ReactionHandlerProps) => {
+export const EmojiShowAll = ({ data, content_type }: ReactionHandlerProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
   const openDialog = () => setOpen(true);
@@ -35,7 +35,7 @@ export const EmojiShowAll = ({ data }: ReactionHandlerProps) => {
       <Dialog onClose={closeDialog} open={open} titleText={`Alle reaksjoner (${data.reactions?.length})`}>
         <Grid columns={2} container gap={2}>
           {topEmojiCollections.map((emoji, index) => (
-            <EmojiItem data={data} emoji={emoji} key={index} />
+            <EmojiItem content_type={content_type} data={data} emoji={emoji} key={index} />
           ))}
         </Grid>
       </Dialog>

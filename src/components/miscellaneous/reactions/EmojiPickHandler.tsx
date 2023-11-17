@@ -9,7 +9,7 @@ import { useUser } from 'hooks/User';
 
 import { ReactionHandlerProps } from './ReactionHandler';
 
-export const EmojiPickerHandler = ({ data }: ReactionHandlerProps) => {
+export const EmojiPickerHandler = ({ data, content_type }: ReactionHandlerProps) => {
   const user = useUser();
   const showSnackbar = useSnackbar();
 
@@ -26,7 +26,7 @@ export const EmojiPickerHandler = ({ data }: ReactionHandlerProps) => {
 
     if (userReaction) {
       updateReaction.mutate(
-        { reaction_id: userReaction.reaction_id, emoji: emoji.emoji, content_type: 'news', object_id: data.id },
+        { reaction_id: userReaction.reaction_id, emoji: emoji.emoji, content_type: content_type, object_id: data.id },
         {
           onSuccess: () => {
             showSnackbar('Reaksjon oppdatert', 'success');
@@ -40,7 +40,7 @@ export const EmojiPickerHandler = ({ data }: ReactionHandlerProps) => {
       );
     } else {
       createReaction.mutate(
-        { emoji: emoji.emoji, content_type: 'news', object_id: data.id },
+        { emoji: emoji.emoji, content_type: content_type, object_id: data.id },
         {
           onSuccess: () => {
             showSnackbar('Reaksjon lagt til', 'success');

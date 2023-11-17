@@ -53,8 +53,8 @@ import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/Asp
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import QRButton from 'components/miscellaneous/QRButton';
-import ShareButton from 'components/miscellaneous/ShareButton';
 import { ReactionHandler } from 'components/miscellaneous/reactions/ReactionHandler';
+import ShareButton from 'components/miscellaneous/ShareButton';
 
 const DetailsPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1, 2),
@@ -437,8 +437,8 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
 
         {data.emojis_allowed && (
-          <Stack direction="row-reverse">
-            <ReactionHandler data={data} />
+          <Stack direction='row-reverse'>
+            <ReactionHandler content_type='event' data={data} />
           </Stack>
         )}
 

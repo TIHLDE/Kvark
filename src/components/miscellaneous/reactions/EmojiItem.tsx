@@ -1,21 +1,22 @@
 import { Button, Stack, Typography } from '@mui/material';
 
-import { Emoji, News } from 'types';
+import { Emoji, Event, News } from 'types';
 
 import { useCreateReaction, useDeleteReaction, useUpdateReaction } from 'hooks/EmojiReaction';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useUser } from 'hooks/User';
 
 export type EmojiItemProps = {
-  data: News;
+  data: News | Event;
   emoji: Emoji;
+  content_type: 'news' | 'event';
 };
 
-export const EmojiItem = ({ data, emoji }: EmojiItemProps) => {
+export const EmojiItem = ({ data, emoji, content_type }: EmojiItemProps) => {
   const user = useUser();
   const showSnackbar = useSnackbar();
 
-  const deleteReaction = useDeleteReaction(data.id);
+  const deleteReaction = useDeleteReaction();
   const createReaction = useCreateReaction();
   const updateReaction = useUpdateReaction();
 
@@ -35,7 +36,7 @@ export const EmojiItem = ({ data, emoji }: EmojiItemProps) => {
 
     if (reaction) {
       updateReaction.mutate(
-        { reaction_id: reaction.reaction_id, emoji: emoji, content_type: 'news', object_id: data.id },
+        { reaction_id: reaction.reaction_id, emoji: emoji, content_type: content_type, object_id: data.id },
         {
           onSuccess: () => {
             showSnackbar('Reaksjon oppdatert', 'success');
@@ -47,7 +48,7 @@ export const EmojiItem = ({ data, emoji }: EmojiItemProps) => {
       );
     } else {
       createReaction.mutate(
-        { emoji: emoji, content_type: 'news', object_id: data.id },
+        { emoji: emoji, content_type: content_type, object_id: data.id },
         {
           onSuccess: () => {
             showSnackbar('Reaksjon lagt til', 'success');
