@@ -14,7 +14,6 @@ export const EmojiShowAll = ({ data, content_type }: ReactionHandlerProps) => {
   const closeDialog = () => setOpen(false);
 
   const emojiCollections: Record<string, number> = {};
-
   data?.reactions?.forEach((r) => {
     emojiCollections[r.emoji] = (emojiCollections[r.emoji] || 0) + 1;
   });
@@ -29,7 +28,7 @@ export const EmojiShowAll = ({ data, content_type }: ReactionHandlerProps) => {
   return (
     <Container>
       <Button onClick={openDialog} variant='outlined'>
-        <ArrowOutwardIcon />
+        <ArrowOutwardIcon fontSize='small' />
       </Button>
 
       <Dialog onClose={closeDialog} open={open} titleText={`Alle reaksjoner (${data.reactions?.length})`}>

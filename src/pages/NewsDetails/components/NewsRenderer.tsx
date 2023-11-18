@@ -60,7 +60,7 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
               </Button>
             </HavePermission>
           )}
-          <Stack alignItems='center' direction='row' justifyContent='space-between'>
+          <Stack alignItems='center' justifyContent='space-between' sx={{ flexDirection: { xs: 'column', md: 'row' }, gap: { xs: '12px', md: '0px' } }}>
             <Stack alignItems='center' direction='row' justifyContent='space-between'>
               <Typography variant='body2'>
                 Publisert: {formatDate(parseISO(data.created_at), { time: false })}
@@ -75,7 +75,6 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
                 )}
               </Typography>
             </Stack>
-
             {data?.emojis_allowed && <ReactionHandler content_type='news' data={data} />}
           </Stack>
           <Paper>

@@ -58,7 +58,7 @@ export const EmojiPickerHandler = ({ data, content_type }: ReactionHandlerProps)
   return (
     <Container>
       <Button onClick={openPopover} variant='outlined'>
-        <AddReactionOutlinedIcon />
+        <AddReactionOutlinedIcon fontSize='small' />
       </Button>
 
       <MuiDialog onClose={closePopover} open={open}>

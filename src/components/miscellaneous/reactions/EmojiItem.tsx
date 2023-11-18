@@ -67,8 +67,8 @@ export const EmojiItem = ({ data, emoji, content_type }: EmojiItemProps) => {
     return (
       <Button onClick={() => handleDelete(userReaction.reaction_id)} variant='outlined'>
         <Stack direction='row' spacing={0.5}>
-          <Typography>{emoji.emoji}</Typography>
-          <Typography fontSize={12}>{emoji.count}</Typography>
+          <Typography sx={{ fontSize: { xs: 14, md: 16 } }}>{emoji.emoji}</Typography>
+          <Typography sx={{ fontSize: { xs: 10, md: 12 } }}>{emoji.count}</Typography>
         </Stack>
       </Button>
     );
