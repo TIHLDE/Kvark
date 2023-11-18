@@ -173,6 +173,15 @@ export const useCreateEventRegistration = (eventId: Event['id']): UseMutationRes
   });
 };
 
+export const useCreateEventRegistrationAdmin = (eventId: Event['id']): UseMutationResult<Registration, RequestResponse, User['user_id'], unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation((userId: User['user_id']) => API.createRegistrationAdmin(eventId, userId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(EVENT_QUERY_KEYS.registrations.all(eventId));
+    },
+  });
+};
+
 export const useUpdateEventRegistration = (
   eventId: Event['id'],
 ): UseMutationResult<

@@ -5,8 +5,6 @@ import { nb } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Event, User } from 'types';
-
 import Paper from 'components/layout/Paper';
 
 import VIPPS from 'assets/img/vipps.svg';
@@ -40,8 +38,6 @@ const convertTime = (milliseconds?: number) => {
 };
 
 type Order = {
-  user_id: User['user_id'];
-  event_id: Event['id'];
   expire_date: Date;
   payment_link?: string;
 };
