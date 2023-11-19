@@ -502,19 +502,18 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 type='time'
               />
             </Row>
-          )}
-          <Bool
-            control={control}
-            formState={formState}
-            label={
-              <>
-                Tillat reaksjoner
-                <ShowMoreTooltip>Bestemmer om en bruker skal kunne reagere med emojier.</ShowMoreTooltip>
-              </>
-            }
-            name='emojis_allowed'
-            type='checkbox'
-          />
+            <Bool
+              control={control}
+              formState={formState}
+              label={
+                <>
+                  Tillat reaksjoner
+                  <ShowMoreTooltip>Bestemmer om en bruker skal kunne reagere med emojier.</ShowMoreTooltip>
+                </>
+              }
+              name='emojis_allowed'
+              type='checkbox'
+            />
           </Collapse>
 
           <UserSearch control={control} formState={formState} label={'Kontaktperson'} name='contact_person' />
