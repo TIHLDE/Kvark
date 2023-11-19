@@ -436,7 +436,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       <Stack gap={1} sx={{ width: '100%' }}>
         <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
 
-        {data.emojis_allowed && (
+        {data.emojis_allowed && user && (
           <Stack direction='row-reverse'>
             <ReactionHandler content_type='event' data={data} />
           </Stack>

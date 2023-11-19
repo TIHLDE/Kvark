@@ -32,7 +32,7 @@ export const EmojiItem = ({ data, emoji, content_type }: EmojiItemProps) => {
   };
 
   const handleCreate = (emoji: string) => {
-    const reaction = user.data?.user_id ? data?.reactions?.find((r) => r.user === user.data?.user_id) : null;
+    const reaction = user.data?.user_id ? data?.reactions?.find((r) => r.user?.user_id === user.data?.user_id) : null;
 
     if (reaction) {
       updateReaction.mutate(
@@ -61,7 +61,7 @@ export const EmojiItem = ({ data, emoji, content_type }: EmojiItemProps) => {
     }
   };
 
-  const userReaction = user.data?.user_id ? data?.reactions?.find((r) => r.user === user.data?.user_id && r.emoji === emoji.emoji) : null;
+  const userReaction = user.data?.user_id ? data?.reactions?.find((r) => r.user?.user_id === user.data?.user_id && r.emoji === emoji.emoji) : null;
 
   if (userReaction) {
     return (

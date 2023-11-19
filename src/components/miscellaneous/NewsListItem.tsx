@@ -3,7 +3,6 @@ import { parseISO } from 'date-fns';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { formatDate, urlEncode } from 'utils';
-import '../../assets/css/popover.css';
 
 import { News } from 'types';
 
@@ -21,51 +20,29 @@ const NewsListItem = ({ news, sx }: NewsListItemProps) => {
       <ButtonBase
         component={Link}
         focusRipple
+        // TODO: fjern display: block når flere nettlesere støtter aspect-ratio i css - https://caniuse.com/mdn-css_properties_aspect-ratio
         sx={{ borderRadius: (theme) => `${theme.shape.borderRadius}px`, display: 'block' }}
         tabIndex={-1}
         to={`${URLS.news}${news.id}/${urlEncode(news.title)}/`}>
         <AspectRatioImg alt={news.image_alt || news.title} borderRadius className={touchRippleClasses.root} src={news.image} />
       </ButtonBase>
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <ButtonBase
-          component={Link}
-          focusRipple
-          sx={{
-            borderRadius: (theme) => `${theme.shape.borderRadius}px`,
-            width: '80%',
-            margin: '-40px auto 0',
-            position: 'relative',
-            display: 'block',
-          }}
-          to={`${URLS.news}${news.id}/${urlEncode(news.title)}/`}>
-          <div>
-            <Paper elevation={0} sx={{ textAlign: 'center', p: 1, width: '100%' }}>
-              <Typography
-                sx={{
-                  fontSize: { xs: '1.4rem', md: '1.5rem' },
-                  textTransform: 'none',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                }}
-                variant='h2'>
-                {news.title}
-              </Typography>
-              <Typography variant='caption'>{formatDate(parseISO(news.created_at), { time: false })}</Typography>
-              <Typography
-                sx={{
-                  overflow: 'hidden',
-                  WebkitLineClamp: 2,
-                  display: '-webkit-box',
-                  WebkitBoxOrient: 'vertical',
-                }}
-                variant='body2'>
-                {news.header}
-              </Typography>
-            </Paper>
-          </div>
-        </ButtonBase>
-      </Box>
+      <ButtonBase
+        component={Link}
+        focusRipple
+        sx={{ borderRadius: (theme) => `${theme.shape.borderRadius}px`, width: '80%', margin: '-40px auto 0', position: 'relative', display: 'block' }}
+        to={`${URLS.news}${news.id}/${urlEncode(news.title)}/`}>
+        <Paper elevation={0} sx={{ textAlign: 'center', p: 1, width: '100%' }}>
+          <Typography
+            sx={{ fontSize: { xs: '1.4rem', md: '1.5rem' }, textTransform: 'none', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}
+            variant='h2'>
+            {news.title}
+          </Typography>
+          <Typography variant='caption'>{formatDate(parseISO(news.created_at), { time: false })}</Typography>
+          <Typography sx={{ overflow: 'hidden', WebkitLineClamp: 2, display: '-webkit-box', WebkitBoxOrient: 'vertical' }} variant='body2'>
+            {news.header}
+          </Typography>
+        </Paper>
+      </ButtonBase>
     </Box>
   );
 };

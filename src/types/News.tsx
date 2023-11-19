@@ -10,7 +10,7 @@ export type Reaction = {
   emoji: string;
   object_id: number;
   reaction_id: string;
-  user?: UserBase['user_id'];
+  user?: Pick<UserBase, 'user_id' | 'first_name' | 'last_name' | 'image'>;
 };
 
 export type ReactionMutate = Pick<Reaction, 'emoji' | 'content_type' | 'object_id'>;

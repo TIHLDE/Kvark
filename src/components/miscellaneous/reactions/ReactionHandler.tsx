@@ -28,7 +28,7 @@ export const ReactionHandler = ({ data, content_type }: ReactionHandlerProps) =>
         </EmojiPaper>
       ) : null}
       <EmojiPickerHandler content_type={content_type} data={data} />
-      <EmojiShowAll content_type={content_type} data={data} />
+      <EmojiShowAll {...data} />
     </Stack>
   );
 };

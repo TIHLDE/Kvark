@@ -22,7 +22,7 @@ export const EmojiPickerHandler = ({ data, content_type }: ReactionHandlerProps)
   const closePopover = () => setOpen(false);
 
   const handleEmojiPick = (emoji: EmojiClickData) => {
-    const userReaction = user.data?.user_id ? data?.reactions?.find((r) => r.user === user.data?.user_id) : null;
+    const userReaction = user.data?.user_id ? data?.reactions?.find((r) => r.user?.user_id === user.data?.user_id) : null;
 
     if (userReaction) {
       updateReaction.mutate(

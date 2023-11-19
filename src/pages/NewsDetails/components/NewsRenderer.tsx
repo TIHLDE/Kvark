@@ -9,7 +9,7 @@ import { formatDate } from 'utils';
 import { News } from 'types';
 import { PermissionApp } from 'types/Enums';
 
-import { HavePermission } from 'hooks/User';
+import { HavePermission, useUser } from 'hooks/User';
 
 import Container from 'components/layout/Container';
 import Paper from 'components/layout/Paper';
@@ -37,6 +37,7 @@ export type NewsRendererProps = {
 };
 const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
   const { data: palette } = usePalette(data?.image || '');
+  const { data: user } = useUser();
 
   return (
     <div>
@@ -75,7 +76,7 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
                 )}
               </Typography>
             </Stack>
-            {data?.emojis_allowed && <ReactionHandler content_type='news' data={data} />}
+            {data?.emojis_allowed && user && <ReactionHandler content_type='news' data={data} />}
           </Stack>
           <Paper>
             <MarkdownRenderer value={data.body} />
