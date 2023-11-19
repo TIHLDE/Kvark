@@ -1,24 +1,22 @@
-import { Button, Divider, MenuItem, Theme, useMediaQuery } from '@mui/material';
+import { Button, Divider, Stack, Theme, useMediaQuery } from '@mui/material';
 import { makeStyles } from 'makeStyles';
-import { Fragment, useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { argsToParams } from 'utils';
 
-import { useJobPosts } from 'hooks/JobPost';
+import { useEvents } from 'hooks/Event';
+import { useIsAuthenticated } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
 import Bool from 'components/inputs/Bool';
-import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
-import Banner from 'components/layout/Banner';
 import Expand from 'components/layout/Expand';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
-import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
+import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Page from 'components/navigation/Page';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {
@@ -34,13 +32,10 @@ const useStyles = makeStyles()((theme) => ({
   },
   list: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: theme.spacing(2),
+    gridTemplateColumns: '1fr',
+    gap: theme.spacing(1),
     [theme.breakpoints.down('lg')]: {
       order: 1,
-    },
-    [theme.breakpoints.down('md')]: {
-      gridTemplateColumns: '1fr',
     },
   },
   settings: {
@@ -57,48 +52,47 @@ const useStyles = makeStyles()((theme) => ({
   },
 }));
 
-type FormState = {
+type Filters = {
+  activity: boolean;
   search?: string;
-  classes?: string | 'all';
+  open_for_sign_up?: boolean;
+  user_favorite?: boolean;
   expired: boolean;
 };
 
-const JobPosts = () => {
+const ActivitiesDefaultView = () => {
+  const isAuthenticated = useIsAuthenticated();
   const { event } = useAnalytics();
-  const getInitialFilters = useCallback((): FormState => {
+  const getInitialFilters = useCallback((): Filters => {
     const params = new URLSearchParams(location.search);
+    const activity = true;
     const expired = params.get('expired') ? Boolean(params.get('expired') === 'true') : false;
+    const open_for_sign_up = params.get('open_for_sign_up') ? Boolean(params.get('open_for_sign_up') === 'true') : undefined;
+    const user_favorite = params.get('user_favorite') ? Boolean(params.get('user_favorite') === 'true') : undefined;
     const search = params.get('search') || undefined;
-    const classes = params.get('classes') || undefined;
-    return { classes, expired, search };
+    return { activity, expired, search, open_for_sign_up, user_favorite };
   }, []);
   const { classes } = useStyles();
   const navigate = useNavigate();
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
-  const [filters, setFilters] = useState<FormState>(getInitialFilters());
-  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useJobPosts(filters);
-  const { register, control, handleSubmit, setValue, formState } = useForm<FormState>({ defaultValues: getInitialFilters() });
+  const [filters, setFilters] = useState<Filters>(getInitialFilters());
+  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents(filters);
+  const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const { register, control, handleSubmit, setValue, formState } = useForm<Filters>({ defaultValues: getInitialFilters() });
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 
   const resetFilters = () => {
     setValue('search', '');
     setValue('expired', false);
-    setValue('classes', '');
-
-    setFilters({ expired: false });
-
+    setValue('user_favorite', false);
+    setFilters({ activity: true, expired: false, open_for_sign_up: false, user_favorite: false });
     navigate(`${location.pathname}${argsToParams({ expired: false })}`, { replace: true });
   };
 
-  const search = (data: FormState) => {
-    event('search', 'jobposts', JSON.stringify(data));
-    const filters = {
-      search: data.search,
-      expired: data.expired,
-      classes: data.classes !== 'all' ? data.classes : undefined,
-    };
-    setFilters(filters);
-    navigate(`${location.pathname}${argsToParams(filters)}`, { replace: true });
+  const search = (data: Filters) => {
+    event('search', 'events', JSON.stringify(data));
+    setFilters(data);
+    navigate(`${location.pathname}${argsToParams(data)}`, { replace: true });
     !lgDown || setSearchFormExpanded((prev) => !prev);
   };
 
@@ -106,16 +100,10 @@ const JobPosts = () => {
 
   const SearchForm = () => (
     <form onSubmit={handleSubmit(search)}>
-      <TextField disabled={isFetching} formState={formState} label='Søk' {...register('search')} />
-      <Select control={control} formState={formState} label='Årstrinn' name='classes'>
-        <MenuItem value='all'>Alle</MenuItem>
-        {[...Array(5).keys()].map((cls) => (
-          <MenuItem key={cls} value={cls + 1}>
-            {cls + 1}
-          </MenuItem>
-        ))}
-      </Select>
+      <TextField disabled={isFetching} formState={formState} label='Søk' margin='none' {...register('search')} />
       <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
+      <Bool control={control} formState={formState} label='Kun med åpen påmelding' name='open_for_sign_up' type='switch' />
+      {isAuthenticated && <Bool control={control} formState={formState} label='Favoritter' name='user_favorite' type='switch' />}
       <SubmitButton disabled={isFetching} formState={formState}>
         Søk
       </SubmitButton>
@@ -127,24 +115,22 @@ const JobPosts = () => {
   );
 
   return (
-    <Page banner={<Banner title='Karriere' />} options={{ title: 'Karriere' }}>
+    <>
       <div className={classes.grid}>
         <div className={classes.list}>
-          {isLoading && <JobPostListItemLoading />}
-          {isEmpty && <NotFoundIndicator header='Fant ingen annonser' />}
+          {isLoading && <EventListItemLoading />}
+          {isEmpty && <NotFoundIndicator header='Fant ingen arrangementer' />}
           {error && <Paper>{error.detail}</Paper>}
           {data !== undefined && (
             <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-              {data.pages.map((page, i) => (
-                <Fragment key={i}>
-                  {page.results.map((jobPost) => (
-                    <JobPostListItem jobPost={jobPost} key={jobPost.id} />
-                  ))}
-                </Fragment>
-              ))}
+              <Stack gap={1}>
+                {events.map((event) => (
+                  <EventListItem event={event} key={event.id} />
+                ))}
+              </Stack>
             </Pagination>
           )}
-          {isFetching && <JobPostListItemLoading />}
+          {isFetching && <EventListItemLoading />}
         </div>
         {lgDown ? (
           <div>
@@ -158,8 +144,8 @@ const JobPosts = () => {
           </Paper>
         )}
       </div>
-    </Page>
+    </>
   );
 };
 
-export default JobPosts;
+export default ActivitiesDefaultView;

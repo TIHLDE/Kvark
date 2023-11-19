@@ -157,16 +157,16 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     }
   };
 
-  type RegistrationInfoProps = { registration: Registration };
+  type RegistrationInfoProps = { registration: Registration; event: Event };
 
-  const RegistrationInfo = ({ registration }: RegistrationInfoProps) => {
+  const RegistrationInfo = ({ registration, event }: RegistrationInfoProps) => {
     const unregisteringGivesStrike = isPast(signOffDeadlineDate) && !registration.is_on_wait && data.can_cause_strikes;
     return (
       <>
         {registration.is_on_wait ? (
           <>
             <Alert severity='info' variant='outlined'>
-              Du står på ventelisten, vi gir deg beskjed hvis du får plass
+              Du står på plass {registration.wait_queue_number}/{event.waiting_list_count} på ventelisten, vi gir deg beskjed hvis du får plass
             </Alert>
             {registration.survey_submission.answers.length > 0 && (
               <div>
@@ -289,7 +289,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       ) : null;
     }
     if (registration) {
-      return <RegistrationInfo registration={registration} />;
+      return <RegistrationInfo event={data} registration={registration} />;
     }
     if (isPast(endRegistrationDate)) {
       return null;
@@ -362,7 +362,10 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         <DetailContent info={categories.find((c) => c.id === data.category)?.text || 'Laster...'} title='Hva:' />
         {data.organizer && <DetailContent info={<Link to={URLS.groups.details(data.organizer.slug)}>{data.organizer.name}</Link>} title='Arrangør:' />}
         {data.contact_person && (
-          <DetailContent info={<Link to={`${URLS.profile}${data.contact_person?.user_id}/`}>{data.contact_person?.user_id}</Link>} title='Kontaktperson' />
+          <DetailContent
+            info={<Link to={`${URLS.profile}${data.contact_person?.user_id}/`}>{`${data.contact_person?.first_name} ${data.contact_person?.last_name}`}</Link>}
+            title='Kontaktperson'
+          />
         )}
         {data.paid_information && <DetailContent info={data.paid_information.price + ' kr'} title='Pris:' />}
       </DetailsPaper>
@@ -444,12 +447,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
 
         {lgDown && <Info />}
         {registration && data.paid_information && !registration.has_paid_order && (
-          <CountdownTimer
-            event_id={data.id}
-            expire_date={registration.order.expire_date}
-            payment_link={registration.order.payment_link}
-            user_id={registration.user_info.user_id}
-          />
+          <CountdownTimer expire_date={registration.order.expire_date} payment_link={registration.order.payment_link} />
         )}
         <ContentPaper>
           <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h1'>

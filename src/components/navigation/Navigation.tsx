@@ -142,6 +142,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
             items: [
               { text: 'Kokebok', to: URLS.cheatsheet },
               { text: 'Link-forkorter', to: URLS.shortLinks },
+              { text: 'QR koder', to: URLS.qrCodes },
               { text: 'Badges ledertavler', to: URLS.badges.index },
               { text: 'Galleri', to: URLS.gallery },
             ],

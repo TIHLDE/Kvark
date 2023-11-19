@@ -7,6 +7,7 @@ import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { Category, EventList } from 'types';
 import { Groups } from 'types/Enums';
 
+import { useCategories } from 'hooks/Categories';
 import { useEvents } from 'hooks/Event';
 import { useAnalytics } from 'hooks/Utils';
 
@@ -40,7 +41,19 @@ const Appointment = ({ children, data }: AppointmentProps) => {
     setAnchorEl(null);
   };
 
-  const getColor = (event: EventList) => theme.palette.colors[event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase() ? 'nok_event' : 'other_event'];
+  const { data: categories = [] } = useCategories();
+
+  const getColor = (event: EventList) => {
+    if (categories.find((c) => c.id === event.category)?.text === 'Aktivitet') {
+      return theme.palette.colors.activity_event;
+    }
+
+    if (event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase()) {
+      return theme.palette.colors.nok_event;
+    }
+
+    return theme.palette.colors.other_event;
+  };
   return (
     <>
       <Button onClick={handleClick} sx={{ minWidth: '40px', width: '100%', height: '100%', textAlign: 'left', textTransform: 'none' }}>

@@ -88,6 +88,7 @@ const EventsDefaultView = () => {
     setValue('category', '');
     setValue('search', '');
     setValue('expired', false);
+    setValue('user_favorite', false);
     setFilters({ expired: false, open_for_sign_up: false, user_favorite: false });
     navigate(`${location.pathname}${argsToParams({ expired: false })}`, { replace: true });
   };
@@ -106,11 +107,13 @@ const EventsDefaultView = () => {
       <TextField disabled={isFetching} formState={formState} label='Søk' margin='none' {...register('search')} />
       {Boolean(categories.length) && (
         <Select control={control} formState={formState} label='Kategori' name='category'>
-          {categories.map((value, index) => (
-            <MenuItem key={index} value={value.id}>
-              {value.text}
-            </MenuItem>
-          ))}
+          {categories
+            .filter((category) => category.text !== 'Aktivitet')
+            .map((value, index) => (
+              <MenuItem key={index} value={value.id}>
+                {value.text}
+              </MenuItem>
+            ))}
         </Select>
       )}
       <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
