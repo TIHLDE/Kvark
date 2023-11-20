@@ -15,9 +15,9 @@ import { useAnalytics } from 'hooks/Utils';
 
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 
-import { ReactComponent as WaveBottom } from 'assets/img/waves/wave-bottom.svg';
-import { ReactComponent as WaveMid } from 'assets/img/waves/wave-mid.svg';
-import { ReactComponent as WaveTop } from 'assets/img/waves/wave-top.svg';
+import WaveBottom from 'assets/img/waves/wave-bottom.svg?react';
+import WaveMid from 'assets/img/waves/wave-mid.svg?react';
+import WaveTop from 'assets/img/waves/wave-top.svg?react';
 
 const moveWave = keyframes`
   0% {
