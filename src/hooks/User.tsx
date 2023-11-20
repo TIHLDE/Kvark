@@ -70,10 +70,10 @@ export const useUserBadges = (userId?: User['user_id']) =>
     },
   );
 
-export const useUserEvents = (userId?: User['user_id']) => {
+export const useUserEvents = (userId?: User['user_id'], expired?: boolean) => {
   return useInfiniteQuery<PaginationResponse<EventList>, RequestResponse>(
-    [USER_EVENTS_QUERY_KEY, userId],
-    ({ pageParam = 1 }) => API.getUserEvents(userId, { page: pageParam }),
+    [USER_EVENTS_QUERY_KEY, userId, expired],
+    ({ pageParam = 1 }) => API.getUserEvents(userId, { page: pageParam, expired: expired }),
     {
       getNextPageParam: (lastPage) => lastPage.next,
     },

@@ -1,5 +1,5 @@
 import CloudSyncIcon from '@mui/icons-material/CloudSyncRounded';
-import { Alert, Stack, Tab, Theme, ToggleButton, ToggleButtonGroup, Typography, useMediaQuery } from '@mui/material';
+import { Alert, Stack, Theme, ToggleButton, ToggleButtonGroup, Typography, useMediaQuery } from '@mui/material';
 import { TIHLDE_API_URL } from 'constant';
 import { useMemo, useState } from 'react';
 
@@ -47,28 +47,45 @@ export const EventsSubscription = () => {
 };
 
 const ProfileEvents = () => {
-  const { data, hasNextPage, fetchNextPage, isFetching } = useUserEvents();
+  const [tab, setTab] = useState<'present' | 'expired'>('present');
+  const { data, hasNextPage, fetchNextPage, isFetching } = useUserEvents(undefined, tab !== 'present');
   const events = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
 
-  const [tab, setTab] = useState<'present' | 'expired'>('present');
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
-
 
   return (
     <Stack gap={1}>
       <EventsSubscription />
 
       <ToggleButtonGroup
-            aria-label='Botoversikt'
-            color='primary'
-            exclusive
-            fullWidth={!lgUp}
-            onChange={(_, newVal: 'present' | 'expired' | null) => setTab((prev) => (newVal ? newVal : prev))}
-            size='small'
-            value={tab}>
-        <ToggleButton value='present'>Arrangementer</ToggleButton>
-        <ToggleButton value='expired'>Tidligere</ToggleButton>
-        </ToggleButtonGroup>
+        aria-label='Botoversikt'
+        color='primary'
+        exclusive
+        fullWidth={!lgUp}
+        onChange={(_, newVal: 'present' | 'expired' | null) => setTab((prev) => (newVal ? newVal : prev))}
+        size='medium'
+        style={{
+          display: 'flex',
+          width: '100%',
+        }}
+        value={tab}>
+        <ToggleButton
+          style={{
+            width: '100%',
+            fontSize: '0.9rem',
+          }}
+          value='present'>
+          Kommende arrangementer
+        </ToggleButton>
+        <ToggleButton
+          style={{
+            width: '100%',
+            fontSize: '0.9rem',
+          }}
+          value='expired'>
+          Tidligere arrangementer
+        </ToggleButton>
+      </ToggleButtonGroup>
 
       {!data ? (
         <EventListItemLoading />
@@ -76,7 +93,9 @@ const ProfileEvents = () => {
         <NotFoundIndicator header='Fant ingen arrangementer' subtitle='Du er ikke påmeldt noen kommende arrangementer' />
       ) : (
         <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere arrangementer' nextPage={() => fetchNextPage()}>
-          {events?.map((event) => !event.expired && <EventListItem event={event} key={event.id} />)}
+          {events?.map((event) => (
+            <EventListItem event={event} key={event.id} />
+          ))}
         </Pagination>
       )}
     </Stack>
