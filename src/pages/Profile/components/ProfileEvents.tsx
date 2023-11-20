@@ -58,7 +58,7 @@ const ProfileEvents = () => {
       <EventsSubscription />
 
       <ToggleButtonGroup
-        aria-label='Botoversikt'
+        aria-label='Arrangementer'
         color='primary'
         exclusive
         fullWidth={!lgUp}
