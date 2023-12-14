@@ -53,6 +53,9 @@ dependencies:
   delayed-scroll-restoration-polyfill:
     specifier: ^0.1.1
     version: 0.1.1
+  emoji-picker-react:
+    specifier: ^4.5.6
+    version: 4.5.6(react@17.0.2)
   history:
     specifier: ^5.3.0
     version: 5.3.0
@@ -2662,6 +2665,15 @@ packages:
 
   /electron-to-chromium@1.4.588:
     resolution: {integrity: sha512-soytjxwbgcCu7nh5Pf4S2/4wa6UIu+A3p03U2yVr53qGxi1/VTR3ENI+p50v+UxqqZAfl48j3z55ud7VHIOr9w==}
+
+  /emoji-picker-react@4.5.6(react@17.0.2):
+    resolution: {integrity: sha512-1dLsV04WQifRpD92/wHhgsJbNg7FQoHWPaiDyU+AEtmq3umUhVTs/8ZzhdoU2HvThg3hK3hRcBn3nRJHjBjWkQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
+    dependencies:
+      react: 17.0.2
+    dev: false
 
   /entities@4.5.0:
     resolution: {integrity: sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==}

@@ -3,6 +3,7 @@ import { BaseGroup, Group } from 'types/Group';
 import { Permissions } from 'types/Misc';
 import { User, UserList } from 'types/User';
 
+import { Reaction } from './News';
 import { Order } from './Order';
 
 export type Category = {
@@ -50,6 +51,8 @@ export type Event = {
   enforces_previous_strikes: boolean;
   only_allow_prioritized: boolean;
   contact_person: User | null;
+  emojis_allowed: boolean;
+  reactions: Reaction[];
 };
 
 export type EventMutate = Partial<Omit<Event, 'organizer' | 'priority_pools'>> &
