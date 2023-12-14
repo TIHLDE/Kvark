@@ -60,6 +60,7 @@ type Filters = {
   open_for_sign_up?: boolean;
   user_favorite?: boolean;
   expired: boolean;
+  activity?: boolean;
 };
 
 const EventsDefaultView = () => {
@@ -72,7 +73,8 @@ const EventsDefaultView = () => {
     const user_favorite = params.get('user_favorite') ? Boolean(params.get('user_favorite') === 'true') : undefined;
     const category = params.get('category') || undefined;
     const search = params.get('search') || undefined;
-    return { expired, category, search, open_for_sign_up, user_favorite };
+    const activity = false;
+    return { expired, category, search, open_for_sign_up, user_favorite, activity };
   }, []);
   const { classes } = useStyles();
   const navigate = useNavigate();
