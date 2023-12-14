@@ -1,6 +1,6 @@
 import { Stack, styled } from '@mui/material';
 
-import { Event, News } from 'types';
+import { ContentType } from 'types/ContentType';
 
 import Paper from 'components/layout/Paper';
 
@@ -15,7 +15,7 @@ const EmojiPaper = styled(Paper)(({ theme }) => ({
 }));
 
 export type ReactionHandlerProps = {
-  data: News | Event;
+  data: ContentType;
   content_type: 'news' | 'event';
 };
 

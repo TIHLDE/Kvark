@@ -2,14 +2,14 @@ import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import { Button, Collapse, Container } from '@mui/material';
 import { useState } from 'react';
 
-import { Event, News } from 'types';
+import { ContentType } from 'types/ContentType';
 
 import Dialog from 'components/layout/Dialog';
 import Tabs from 'components/layout/Tabs';
 
 import { ReactionListItem } from './ReactionListItem';
 
-export const EmojiShowAll = (data: News | Event) => {
+export const EmojiShowAll = (data: ContentType) => {
   const [open, setOpen] = useState<boolean>(false);
 
   const openDialog = () => setOpen(true);
