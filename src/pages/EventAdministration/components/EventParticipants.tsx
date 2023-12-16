@@ -54,6 +54,7 @@ const Registrations = ({ onWait = false, eventId }: RegistrationsProps) => {
     return registrations
       .map((registration) => {
         const data: string[] = [];
+        data.push(registration.user_info.user_id);
         names && data.push(`${registration.user_info.first_name} ${registration.user_info.last_name}`);
         emails && data.push(registration.user_info.email);
         return data.join(',');
