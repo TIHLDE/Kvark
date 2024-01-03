@@ -3,6 +3,10 @@ import { Divider, Typography } from '@mui/material';
 import Page from 'components/navigation/Page';
 import Player from './components/Player';
 
+/**
+ * Fetch all statistics within this file as well.
+ */
+
 const Wrapped = () => {
   return (
     <Page options={{ gutterTop: true }}>

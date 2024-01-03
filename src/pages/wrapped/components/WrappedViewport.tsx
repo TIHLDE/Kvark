@@ -1,8 +1,8 @@
 import { Box, BoxProps, CircularProgress } from '@mui/material';
 import PlaybackBar from './PlaybackBar';
 import Welcome from './slides/Welcome';
-import Events from 'pages/Events';
 import Dots from './slides/Dots';
+import Events from './slides/Events';
 
 const slides = [Welcome, Events, Dots];
 
