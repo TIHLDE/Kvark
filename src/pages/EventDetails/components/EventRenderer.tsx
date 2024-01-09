@@ -446,8 +446,8 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         )}
 
         {lgDown && <Info />}
-        {registration && data.paid_information && !registration.has_paid_order && (
-          <CountdownTimer expire_date={registration.order.expire_date} payment_link={registration.order.payment_link} />
+        {registration && data.paid_information && !registration.has_paid_order && !registration.is_on_wait && (
+          <CountdownTimer event_id={data.id} payment_expiredate={registration.payment_expiredate} />
         )}
         <ContentPaper>
           <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h1'>

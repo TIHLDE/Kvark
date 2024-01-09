@@ -12,6 +12,8 @@
 
 ## Neste versjon
 
+- 🦟 **Vipps betaling**. Diverse bugs i betalingsløsningen er nå fikset.
+
 ## versjon 2023.17.11
 - ✨ **QR kode**. Du kan nå generere dine egne QR kode.
 - ✨ **Aktiviteter**. Det kan nå opprettes aktiviteter for interessegrupper. 

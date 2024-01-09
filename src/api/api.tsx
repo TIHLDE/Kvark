@@ -104,6 +104,7 @@ export const STRIKES_ENDPOINT = 'strikes';
 export const SUBMISSIONS_ENDPOINT = 'submissions';
 export const USERS_ENDPOINT = 'users';
 export const WARNINGS_ENDPOINT = 'warnings';
+export const PAYMENT_ENDPOINT = 'payments';
 export const EMOJI_ENDPOINT = 'emojis';
 
 export default {
@@ -166,6 +167,8 @@ export default {
   deleteRegistration: (eventId: Event['id'], userId: User['user_id']) =>
     IFetch<RequestResponse>({ method: 'DELETE', url: `${EVENTS_ENDPOINT}/${String(eventId)}/${EVENT_REGISTRATIONS_ENDPOINT}/${userId}/` }),
 
+  // Payments
+  createPaymentOrder: (item: Partial<Order>) => IFetch<Order>({ method: 'POST', url: `${PAYMENT_ENDPOINT}/`, data: item }),
   // Event registrations admin
   createRegistrationAdmin: (eventId: Event['id'], userId: User['user_id']) =>
     IFetch<Registration>({ method: 'POST', url: `${EVENTS_ENDPOINT}/${eventId}/${EVENT_REGISTRATIONS_ENDPOINT}/add/`, data: { user: userId } }),

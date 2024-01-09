@@ -471,6 +471,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           </Row>
           <Bool
             control={control}
+            disabled={Boolean(data?.list_count && data?.list_count > 0)}
             formState={formState}
             label={
               <>
