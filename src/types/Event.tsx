@@ -2,9 +2,8 @@ import { UserSubmission } from 'types/Form';
 import { BaseGroup, Group } from 'types/Group';
 import { Permissions } from 'types/Misc';
 import { User, UserList } from 'types/User';
-import { Reaction } from './News';
-import { Order } from './Order';
 
+import { Reaction } from './News';
 
 export type Category = {
   created_at: string;
