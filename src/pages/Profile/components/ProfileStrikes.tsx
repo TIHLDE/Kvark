@@ -18,7 +18,7 @@ function ProfileStrikes() {
           Informasjon om prikksystemet finner du i <Link to={URLS.eventRules}>arrangementsreglene</Link>.{' '}
           {Boolean(data.length) && (
             <span>
-              Uenig i en prikk? Send epost til <a href='mailto:bedpres@tihlde.org'>bedpres@tihlde.org</a>.
+              Uenig i en prikk? Send epost til <a href='mailto:naeringslivsminister@tihlde.org'>naeringslivsminister@tihlde.org</a>.
             </span>
           )}
         </Typography>
