@@ -53,6 +53,7 @@ import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/Asp
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import QRButton from 'components/miscellaneous/QRButton';
+import { ReactionHandler } from 'components/miscellaneous/reactions/ReactionHandler';
 import ShareButton from 'components/miscellaneous/ShareButton';
 
 const DetailsPaper = styled(Paper)(({ theme }) => ({
@@ -156,16 +157,16 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     }
   };
 
-  type RegistrationInfoProps = { registration: Registration };
+  type RegistrationInfoProps = { registration: Registration; event: Event };
 
-  const RegistrationInfo = ({ registration }: RegistrationInfoProps) => {
+  const RegistrationInfo = ({ registration, event }: RegistrationInfoProps) => {
     const unregisteringGivesStrike = isPast(signOffDeadlineDate) && !registration.is_on_wait && data.can_cause_strikes;
     return (
       <>
         {registration.is_on_wait ? (
           <>
             <Alert severity='info' variant='outlined'>
-              Du står på ventelisten, vi gir deg beskjed hvis du får plass
+              Du står på plass {registration.wait_queue_number}/{event.waiting_list_count} på ventelisten, vi gir deg beskjed hvis du får plass
             </Alert>
             {registration.survey_submission.answers.length > 0 && (
               <div>
@@ -288,7 +289,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       ) : null;
     }
     if (registration) {
-      return <RegistrationInfo registration={registration} />;
+      return <RegistrationInfo event={data} registration={registration} />;
     }
     if (isPast(endRegistrationDate)) {
       return null;
@@ -437,6 +438,13 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       </Stack>
       <Stack gap={1} sx={{ width: '100%' }}>
         <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
+
+        {data.emojis_allowed && user && (
+          <Stack direction='row-reverse'>
+            <ReactionHandler content_type='event' data={data} />
+          </Stack>
+        )}
+
         {lgDown && <Info />}
         {registration && data.paid_information && !registration.has_paid_order && !registration.is_on_wait && (
           <CountdownTimer event_id={data.id} payment_expiredate={registration.payment_expiredate} />

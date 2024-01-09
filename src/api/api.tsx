@@ -48,6 +48,9 @@ import {
   PaginationResponse,
   Picture,
   PublicRegistration,
+  QRCode,
+  Reaction,
+  ReactionMutate,
   Registration,
   RequestResponse,
   ShortLink,
@@ -96,11 +99,13 @@ export const NOTIFICATIONS_ENDPOINT = 'notifications';
 export const NOTIFICATION_SETTINGS_ENDPOINT = 'notification-settings';
 export const WIKI_ENDPOINT = 'pages';
 export const SHORT_LINKS_ENDPOINT = 'short-links';
+export const QR_CODE_ENDPOINT = 'qr-codes';
 export const STRIKES_ENDPOINT = 'strikes';
 export const SUBMISSIONS_ENDPOINT = 'submissions';
 export const USERS_ENDPOINT = 'users';
 export const WARNINGS_ENDPOINT = 'warnings';
 export const PAYMENT_ENDPOINT = 'payments';
+export const EMOJI_ENDPOINT = 'emojis';
 
 export default {
   // Auth
@@ -164,6 +169,9 @@ export default {
 
   // Payments
   createPaymentOrder: (item: Partial<Order>) => IFetch<Order>({ method: 'POST', url: `${PAYMENT_ENDPOINT}/`, data: item }),
+  // Event registrations admin
+  createRegistrationAdmin: (eventId: Event['id'], userId: User['user_id']) =>
+    IFetch<Registration>({ method: 'POST', url: `${EVENTS_ENDPOINT}/${eventId}/${EVENT_REGISTRATIONS_ENDPOINT}/add/`, data: { user: userId } }),
 
   // Forms
   getForm: (formId: string) => IFetch<Form>({ method: 'GET', url: `${FORMS_ENDPOINT}/${formId}/` }),
@@ -192,6 +200,12 @@ export default {
   createNewsItem: (item: NewsRequired) => IFetch<News>({ method: 'POST', url: `${NEWS_ENDPOINT}/`, data: item }),
   putNewsItem: (id: number, item: NewsRequired) => IFetch<News>({ method: 'PUT', url: `${NEWS_ENDPOINT}/${String(id)}/`, data: item }),
   deleteNewsItem: (id: number) => IFetch<RequestResponse>({ method: 'DELETE', url: `${NEWS_ENDPOINT}/${String(id)}/` }),
+
+  // EmojiReactions
+  createReaction: (item: ReactionMutate) => IFetch<Reaction>({ method: 'POST', url: `${EMOJI_ENDPOINT}/reactions/`, data: item }),
+  deleteReaction: (reactionId: Reaction['reaction_id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${EMOJI_ENDPOINT}/reactions/${reactionId}/` }),
+  updateReaction: (reactionId: Reaction['reaction_id'], item: ReactionMutate) =>
+    IFetch<Reaction>({ method: 'PUT', url: `${EMOJI_ENDPOINT}/reactions/${reactionId}/`, data: item }),
 
   // User
   getUserData: (userId?: User['user_id']) => IFetch<User>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/` }),
@@ -230,6 +244,11 @@ export default {
   getShortLinks: (filters?: any) => IFetch<Array<ShortLink>>({ method: 'GET', url: `${SHORT_LINKS_ENDPOINT}/`, data: filters || {} }),
   createShortLink: (item: ShortLink) => IFetch<ShortLink>({ method: 'POST', url: `${SHORT_LINKS_ENDPOINT}/`, data: item }),
   deleteShortLink: (slug: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${SHORT_LINKS_ENDPOINT}/${slug}/` }),
+
+  // QR codes
+  getQRCodes: (filters?: any) => IFetch<Array<QRCode>>({ method: 'GET', url: `${QR_CODE_ENDPOINT}/`, data: filters || {} }),
+  createQRCode: (item: QRCode) => IFetch<QRCode>({ method: 'POST', url: `${QR_CODE_ENDPOINT}/`, data: item }),
+  deleteQRCode: (id: number) => IFetch<RequestResponse>({ method: 'DELETE', url: `${QR_CODE_ENDPOINT}/${String(id)}/` }),
 
   // Gallery
   getGallery: (id: Gallery['id']) => IFetch<Gallery>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${id}/` }),

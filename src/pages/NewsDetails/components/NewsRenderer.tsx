@@ -1,5 +1,6 @@
 import { Button, Skeleton, Stack, styled, Typography } from '@mui/material';
 import parseISO from 'date-fns/parseISO';
+import React from 'react';
 import { usePalette } from 'react-palette';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
@@ -8,12 +9,13 @@ import { formatDate } from 'utils';
 import { News } from 'types';
 import { PermissionApp } from 'types/Enums';
 
-import { HavePermission } from 'hooks/User';
+import { HavePermission, useUser } from 'hooks/User';
 
 import Container from 'components/layout/Container';
 import Paper from 'components/layout/Paper';
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
+import { ReactionHandler } from 'components/miscellaneous/reactions/ReactionHandler';
 import ShareButton from 'components/miscellaneous/ShareButton';
 
 const TopContainer = styled('div', { shouldForwardProp: (prop) => prop !== 'bgColor' })<{ bgColor?: React.CSSProperties['backgroundColor'] }>(
@@ -35,6 +37,7 @@ export type NewsRendererProps = {
 };
 const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
   const { data: palette } = usePalette(data?.image || '');
+  const { data: user } = useUser();
 
   return (
     <div>
@@ -58,24 +61,29 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
               </Button>
             </HavePermission>
           )}
-          <Stack alignItems='center' direction='row' justifyContent='space-between'>
-            <Typography variant='body2'>
-              Publisert: {formatDate(parseISO(data.created_at), { time: false })}
-              {data.creator && (
-                <>
-                  <br />
-                  Forfatter:{' '}
-                  <Link to={`${URLS.profile}${data.creator.user_id}/`}>
-                    {data.creator.first_name} {data.creator.last_name}
-                  </Link>
-                </>
-              )}
-            </Typography>
-            <ShareButton shareId={data.id} shareType='news' title={data.title} />
+          <Stack alignItems='center' justifyContent='space-between' sx={{ flexDirection: { xs: 'column', md: 'row' }, gap: { xs: '12px', md: '0px' } }}>
+            <Stack alignItems='center' direction='row' justifyContent='space-between'>
+              <Typography variant='body2'>
+                Publisert: {formatDate(parseISO(data.created_at), { time: false })}
+                {data.creator && (
+                  <>
+                    <br />
+                    Forfatter:{' '}
+                    <Link to={`${URLS.profile}${data.creator.user_id}/`}>
+                      {data.creator.first_name} {data.creator.last_name}
+                    </Link>
+                  </>
+                )}
+              </Typography>
+            </Stack>
+            {data?.emojis_allowed && user && <ReactionHandler content_type='news' data={data} />}
           </Stack>
           <Paper>
             <MarkdownRenderer value={data.body} />
           </Paper>
+        </Stack>
+        <Stack alignItems='flex-end' sx={{ marginTop: 2 }}>
+          <ShareButton shareId={data.id} shareType='news' title={data.title} />
         </Stack>
       </Container>
     </div>

@@ -13,7 +13,19 @@
 ## Neste versjon
 
 - 🦟 **Vipps betaling**. Diverse bugs i betalingsløsningen er nå fikset.
+
+## versjon 2023.17.11
+- ✨ **QR kode**. Du kan nå generere dine egne QR kode.
+- ✨ **Aktiviteter**. Det kan nå opprettes aktiviteter for interessegrupper. 
+
+## versjon 2023.06.11
+- ✨ **Arrangement**. Du kan nå se hvilken plass du har på ventelisten.
+- ✨ **Arrangement**. Admins kan nå manuelt legge til deltagere på et arrangement.
+- ⚡ **Kalender**. Kalender pop-up viser viser infromasjonen bedre.
 - ✨ **Bannere**. Tidsbegrensede bannere kan nå opprettes.
+
+## versjon 2023.14.10
+- ✨ **QR-kode generator**. Brukere kan nå generere sine egne QR koder fra en url.
 
 ## versjon 2023.24.09
 
@@ -26,6 +38,7 @@
 - 🦟 **Arrangement**. Knapp for å opprette arrangemnt på gruppesiden vises kun for admins.
 
 ## versjon 2023.09.7
+
 - ✨ **Vipps betaling**. Vipps betaling på arrangementer, der bruker blir kastet ut hvis ikke betalt innen frist.
 
 ## versjon 2023 04.17
