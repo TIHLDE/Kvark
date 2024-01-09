@@ -146,12 +146,8 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     if (user) {
       deleteRegistration.mutate(user.user_id, {
         onSuccess: (response) => {
-          if (registration?.has_paid_order) {
-            showSnackbar('Du har blitt meldt av arrangementet, og vil få refundert pengene innen kort tid', 'success');
-          } else {
-            showSnackbar(response.detail, 'success');
-            event('unregistered', 'event-registration', `Unregistered for event: ${data.title}`);
-          }
+          showSnackbar(response.detail, 'success');
+          event('unregistered', 'event-registration', `Unregistered for event: ${data.title}`);
         },
         onError: (e) => {
           showSnackbar(e.detail, 'error');

@@ -76,7 +76,7 @@ const CountdownTimer = ({ payment_expiredate, event_id }: Registration) => {
         window.location.replace(payment_link || '');
       },
       onError: () => {
-        showSnackbar('Det skjedde en feil med oppretting betalingsordre.', 'error');
+        showSnackbar('Det skjedde en feil med oppretting av betalingsordre.', 'error');
       },
     });
   };
