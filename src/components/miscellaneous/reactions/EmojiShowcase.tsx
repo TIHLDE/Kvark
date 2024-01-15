@@ -29,7 +29,7 @@ export const EmojiShowcase = ({ data, content_type }: ReactionHandlerProps) => {
         />
         {topEmojiCollections
           .filter((emoji) => emoji.emoji !== userEmoji)
-          .slice(0, 2)
+          .slice(0, 1)
           .map((emoji, index) => (
             <EmojiItem content_type={content_type} data={data} emoji={emoji} key={index} />
           ))}
@@ -39,7 +39,7 @@ export const EmojiShowcase = ({ data, content_type }: ReactionHandlerProps) => {
 
   return (
     <Stack direction='row' spacing={1}>
-      {topEmojiCollections.slice(0, 3).map((emoji, index) => (
+      {topEmojiCollections.slice(0, 2).map((emoji, index) => (
         <EmojiItem content_type={content_type} data={data} emoji={emoji} key={index} />
       ))}
     </Stack>
