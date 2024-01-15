@@ -12,6 +12,13 @@
 
 ## Neste versjon
 
+## Versjon 2023.15.01
+- 🦟 **Vipps betaling**. Diverse bugs i betalingsløsningen er nå fikset.
+- ✨ **Reaksjoner**. Det er nå mulig å reagere på arrangementer og nyheter med emojier.
+- 🎨 **Prikk info**. Mail for kontakt for prikk, er nå endret.
+- 🎨 **Bedriftsekskursjon info**. Info på kort om bedriftsekskursjon er nå endret.
+- ✨ **Mine arrangementer**. En bruker kan nå se sine tidligere arrangementer.
+
 ## versjon 2023.17.11
 - ✨ **QR kode**. Du kan nå generere dine egne QR kode.
 - ✨ **Aktiviteter**. Det kan nå opprettes aktiviteter for interessegrupper. 

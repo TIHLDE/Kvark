@@ -2,7 +2,7 @@ import CelebrationIcon from '@mui/icons-material/Celebration';
 import DateRange from '@mui/icons-material/DateRangeRounded';
 import Reorder from '@mui/icons-material/ReorderRounded';
 import { Collapse, Skeleton, styled } from '@mui/material';
-import { lazy, Suspense, useState } from 'react';
+import { lazy, Suspense, useCallback, useState } from 'react';
 
 import { useEvents } from 'hooks/Event';
 
@@ -15,8 +15,17 @@ import ActivityEventsListView from './ActivityEventsListView';
 
 const EventsCalendarView = lazy(() => import('pages/Landing/components/EventsCalendarView'));
 
+type Filters = {
+  activity: boolean;
+};
+
 const EventsView = () => {
-  const { data, isLoading } = useEvents();
+  const getInitialFilters = useCallback((): Filters => {
+    const activity = false;
+    return { activity };
+  }, []);
+  const [filters] = useState<Filters>(getInitialFilters());
+  const { data, isLoading } = useEvents(filters);
   const listTab = { value: 'list', label: 'Liste', icon: Reorder };
   const calendarTab = { value: 'calendar', label: 'Kalender', icon: DateRange };
   const activityTab = { value: 'activity', label: 'Aktiviteter', icon: CelebrationIcon };

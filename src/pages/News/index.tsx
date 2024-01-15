@@ -12,6 +12,7 @@ import Page from 'components/navigation/Page';
 
 const NewsGrid = styled('div')(({ theme }) => ({
   display: 'grid',
+  marginBottom: theme.spacing(2),
   gridTemplateColumns: '1fr 1fr 1fr',
   gridGap: theme.spacing(1),
   [theme.breakpoints.down('lg')]: {

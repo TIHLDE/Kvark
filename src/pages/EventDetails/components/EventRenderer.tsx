@@ -53,6 +53,7 @@ import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/Asp
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import QRButton from 'components/miscellaneous/QRButton';
+import { ReactionHandler } from 'components/miscellaneous/reactions/ReactionHandler';
 import ShareButton from 'components/miscellaneous/ShareButton';
 
 const DetailsPaper = styled(Paper)(({ theme }) => ({
@@ -437,9 +438,16 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       </Stack>
       <Stack gap={1} sx={{ width: '100%' }}>
         <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
+
+        {data.emojis_allowed && user && (
+          <Stack direction='row-reverse'>
+            <ReactionHandler content_type='event' data={data} />
+          </Stack>
+        )}
+
         {lgDown && <Info />}
-        {registration && data.paid_information && !registration.has_paid_order && (
-          <CountdownTimer expire_date={registration.order.expire_date} payment_link={registration.order.payment_link} />
+        {registration && data.paid_information && !registration.has_paid_order && !registration.is_on_wait && (
+          <CountdownTimer event_id={data.id} payment_expiredate={registration.payment_expiredate} />
         )}
         <ContentPaper>
           <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h1'>
