@@ -1,12 +1,13 @@
 import styled from '@emotion/styled';
-import { Box, Typography } from '@mui/material';
-import { differenceInMilliseconds, formatDistanceStrict } from 'date-fns';
+import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import { differenceInMilliseconds, formatDistanceStrict, minutesToMilliseconds } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
-/* import { useQueryClient } from 'react-query'; */
-import { Link } from 'react-router-dom';
 
-import { Event, User } from 'types';
+import { Event, Order } from 'types';
+
+import { useCreatePaymentOrder } from 'hooks/Payment';
+import { useSnackbar } from 'hooks/Snackbar';
 
 import Paper from 'components/layout/Paper';
 
@@ -17,22 +18,17 @@ const ContentPaper = styled(Paper)({
   overflowX: 'auto',
 });
 
-const getTimeDifference = (time?: Date) => {
-  if (!time) {
-    return;
-  }
-
+const getTimeDifference = (time: Date) => {
   const now = new Date();
   const myDate = new Date(time);
 
-  return differenceInMilliseconds(myDate, now);
+  // Add 10 minutes so that the user has time to pay
+  const addedTime = minutesToMilliseconds(10);
+
+  return differenceInMilliseconds(new Date(myDate.getTime() + addedTime), now);
 };
 
-const convertTime = (milliseconds?: number) => {
-  if (!milliseconds) {
-    return;
-  }
-
+const convertTime = (milliseconds: number) => {
   const now = new Date();
 
   return formatDistanceStrict(new Date(now.getTime() + milliseconds), now, {
@@ -40,23 +36,29 @@ const convertTime = (milliseconds?: number) => {
   });
 };
 
-type Order = {
-  user_id: User['user_id'];
+type Registration = {
+  payment_expiredate: Date;
   event_id: Event['id'];
-  expire_date: Date;
-  payment_link?: string;
 };
 
-const CountdownTimer = ({ /* user_id, event_id, */ payment_link, expire_date }: Order) => {
-  const [timeLeft, setTimeLeft] = useState(convertTime(getTimeDifference(expire_date)));
-  /* const queryClient = useQueryClient(); */
+const CountdownTimer = ({ payment_expiredate, event_id }: Registration) => {
+  // Remove 10 minutes for displaying the actual time left
+  const removedTime = minutesToMilliseconds(10);
+
+  const [timeLeft, setTimeLeft] = useState(convertTime(getTimeDifference(payment_expiredate) - removedTime));
+  const createPaymentOrder = useCreatePaymentOrder();
+  const showSnackbar = useSnackbar();
 
   useEffect(() => {
+    if (new Date(payment_expiredate) < new Date()) {
+      return;
+    }
+
     const interval = setInterval(() => {
-      const distance = getTimeDifference(expire_date);
+      const distance = getTimeDifference(payment_expiredate);
 
       if (distance && distance > 0) {
-        setTimeLeft(convertTime(distance));
+        setTimeLeft(convertTime(distance - removedTime));
       } else {
         window.location.reload();
       }
@@ -67,12 +69,36 @@ const CountdownTimer = ({ /* user_id, event_id, */ payment_link, expire_date }: 
     };
   }, []);
 
+  const create = (data: Partial<Order>) => {
+    createPaymentOrder.mutate(data, {
+      onSuccess: (data) => {
+        const payment_link = data.payment_link;
+        window.location.replace(payment_link || '');
+      },
+      onError: () => {
+        showSnackbar('Det skjedde en feil med oppretting av betalingsordre.', 'error');
+      },
+    });
+  };
+
+  if (new Date(payment_expiredate) <= new Date()) {
+    return (
+      <ContentPaper>
+        <Box sx={{ textAlign: 'center', p: 2 }}>
+          <Typography sx={{ color: (theme) => theme.palette.text.primary }}>
+            Betalingstiden har gått ut. Det er ikke lenger mulig å betale for dette arrangementet. Du vil bli satt på venteliste innen kort tid.
+          </Typography>
+        </Box>
+      </ContentPaper>
+    );
+  }
+
   return (
     <ContentPaper>
       <Box sx={{ textAlign: 'center', p: 2 }}>
-        <Link to={payment_link || '/'}>
-          <img alt='Betal med vipps' src={VIPPS} />
-        </Link>
+        <Button disabled={createPaymentOrder.isLoading} onClick={() => create({ event: event_id })}>
+          {createPaymentOrder.isLoading ? <CircularProgress /> : <img alt='Betal med vipps' src={VIPPS} />}
+        </Button>
       </Box>
       <Typography align='center' sx={{ color: (theme) => theme.palette.text.primary }}>
         Betal innen {timeLeft} for å beholde plassen på arrangementet.

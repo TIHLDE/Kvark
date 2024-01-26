@@ -1,5 +1,18 @@
 import { CheatsheetStudy, CheatsheetType, WarningType } from 'types/Enums';
 
+export type InfoBanner = {
+  id: string;
+  image?: string;
+  image_alt?: string;
+  title: string;
+  description: string;
+  url?: string;
+  visible_from: string;
+  visible_until: string;
+  is_visible: boolean;
+  is_expired: boolean;
+};
+
 export interface Cheatsheet {
   course: string;
   creator: string;
@@ -65,4 +78,11 @@ export interface Warning {
   text: string;
   type: WarningType;
   updated_at: string;
+}
+
+export interface QRCode {
+  id: number;
+  created_at: string;
+  name: string;
+  content: string;
 }

@@ -14,7 +14,7 @@ import { useAnalytics } from 'hooks/Utils';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 
-import { ReactComponent as GitHub } from 'assets/icons/github.svg';
+import GitHub from 'assets/icons/github.svg?react';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {

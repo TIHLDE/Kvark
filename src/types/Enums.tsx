@@ -59,6 +59,7 @@ export enum PermissionApp {
   PICTURE = 'picture',
   FORMS = 'form',
   TODDEL = 'toddel',
+  BANNERS = 'banner',
 }
 
 export enum Groups {

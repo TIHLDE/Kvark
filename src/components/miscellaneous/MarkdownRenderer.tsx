@@ -1,5 +1,6 @@
 import { Divider, Skeleton, styled, Typography } from '@mui/material';
 import { createElement, lazy, ReactNode, Suspense, useMemo } from 'react';
+import rehypeRaw from 'rehype-raw';
 
 import { Event, JobPost, News } from 'types';
 
@@ -72,7 +73,7 @@ export const EventCard = ({ id }: { id: Event['id'] }) => {
 };
 export const JobPostCard = ({ id }: { id: JobPost['id'] }) => {
   const { data } = useJobPostById(id);
-  return data ? <JobPostListItem jobpost={data} sx={{ mb: 1 }} /> : <JobPostListItemLoading sx={{ mb: 1 }} />;
+  return data ? <JobPostListItem jobPost={data} sx={{ mb: 1 }} /> : <JobPostListItemLoading sx={{ mb: 1 }} />;
 };
 export const NewsCard = ({ id }: { id: News['id'] }) => {
   const { data } = useNewsById(id);
@@ -163,7 +164,12 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
           ))}
         </>
       }>
-      <ReactMarkdown components={components}>{value || ''}</ReactMarkdown>
+      <ReactMarkdown
+        components={components}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        rehypePlugins={[rehypeRaw] as any}>
+        {value || ''}
+      </ReactMarkdown>
     </Suspense>
   );
 };

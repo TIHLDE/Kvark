@@ -53,12 +53,14 @@ const URLS = {
   profile: '/profil/',
   signup: '/ny-bruker/',
   shortLinks: '/linker/',
+  qrCodes: '/qr-koder/',
   gallery: '/galleri/',
   userAdmin: '/admin/brukere/',
   strikeAdmin: '/admin/prikker/',
   eventAdmin: '/admin/arrangementer/',
   jobpostsAdmin: '/admin/karriere/',
   newsAdmin: '/admin/nyheter/',
+  bannerAdmin: '/admin/bannere/',
   jubilee: 'jubileum.tihlde.org/',
 };
 

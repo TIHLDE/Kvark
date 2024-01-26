@@ -60,6 +60,7 @@ type Filters = {
   open_for_sign_up?: boolean;
   user_favorite?: boolean;
   expired: boolean;
+  activity?: boolean;
 };
 
 const EventsDefaultView = () => {
@@ -72,7 +73,8 @@ const EventsDefaultView = () => {
     const user_favorite = params.get('user_favorite') ? Boolean(params.get('user_favorite') === 'true') : undefined;
     const category = params.get('category') || undefined;
     const search = params.get('search') || undefined;
-    return { expired, category, search, open_for_sign_up, user_favorite };
+    const activity = false;
+    return { expired, category, search, open_for_sign_up, user_favorite, activity };
   }, []);
   const { classes } = useStyles();
   const navigate = useNavigate();
@@ -88,6 +90,7 @@ const EventsDefaultView = () => {
     setValue('category', '');
     setValue('search', '');
     setValue('expired', false);
+    setValue('user_favorite', false);
     setFilters({ expired: false, open_for_sign_up: false, user_favorite: false });
     navigate(`${location.pathname}${argsToParams({ expired: false })}`, { replace: true });
   };
@@ -106,11 +109,13 @@ const EventsDefaultView = () => {
       <TextField disabled={isFetching} formState={formState} label='Søk' margin='none' {...register('search')} />
       {Boolean(categories.length) && (
         <Select control={control} formState={formState} label='Kategori' name='category'>
-          {categories.map((value, index) => (
-            <MenuItem key={index} value={value.id}>
-              {value.text}
-            </MenuItem>
-          ))}
+          {categories
+            .filter((category) => category.text !== 'Aktivitet')
+            .map((value, index) => (
+              <MenuItem key={index} value={value.id}>
+                {value.text}
+              </MenuItem>
+            ))}
         </Select>
       )}
       <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />

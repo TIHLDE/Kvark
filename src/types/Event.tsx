@@ -3,7 +3,7 @@ import { BaseGroup, Group } from 'types/Group';
 import { Permissions } from 'types/Misc';
 import { User, UserList } from 'types/User';
 
-import { Order } from './Order';
+import { Reaction } from './News';
 
 export type Category = {
   created_at: string;
@@ -50,6 +50,8 @@ export type Event = {
   enforces_previous_strikes: boolean;
   only_allow_prioritized: boolean;
   contact_person: User | null;
+  emojis_allowed: boolean;
+  reactions: Reaction[];
 };
 
 export type EventMutate = Partial<Omit<Event, 'organizer' | 'priority_pools'>> &
@@ -84,8 +86,9 @@ export type Registration = {
   survey_submission: UserSubmission;
   has_unanswered_evaluation: boolean;
   user_info: UserList;
-  order: Order;
+  payment_expiredate: Date;
   has_paid_order?: boolean;
+  wait_queue_number?: number;
 };
 
 export type PublicRegistration = {

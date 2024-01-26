@@ -23,6 +23,7 @@ import NewStudent from 'pages/NewStudent';
 import Profile from 'pages/Profile';
 import { SlackConnectPage } from 'pages/Profile/components/ProfileSettings/NotificationSettings';
 
+import InfoBannerAdmin from 'components/miscellaneous/InfoBanner/InfoBannerAdmin';
 import Page from 'components/navigation/Page';
 
 const Gallery = lazy(() => import('pages/Gallery'));
@@ -47,6 +48,7 @@ const LogIn = lazy(() => import('pages/LogIn'));
 const NewsAdministration = lazy(() => import('pages/NewsAdministration'));
 const Wiki = lazy(() => import('pages/Wiki'));
 const ShortLinks = lazy(() => import('pages/ShortLinks'));
+const QRCodes = lazy(() => import('pages/QRCodes'));
 const SignUp = lazy(() => import('pages/SignUp'));
 const StrikeAdmin = lazy(() => import('pages/StrikeAdmin'));
 const Toddel = lazy(() => import('pages/Toddel'));
@@ -148,8 +150,14 @@ const AppRoutes = () => {
         <Route element={<AuthRoute element={<Cheatsheet />} />} path={`${URLS.cheatsheet}:studyId/:classId/`} />
         <Route element={<AuthRoute element={<Cheatsheet />} />} path={`${URLS.cheatsheet}*`} />
         <Route element={<AuthRoute element={<ShortLinks />} />} path={URLS.shortLinks} />
+
         <Route element={<AuthRoute element={<Wrapped />} />} path={URLS.wrapped} />
 
+        <Route element={<AuthRoute element={<QRCodes />} />} path={URLS.qrCodes} />
+
+        <Route element={<AuthRoute apps={[PermissionApp.BANNERS]} element={<InfoBannerAdmin />} />} path={URLS.bannerAdmin}>
+          <Route element={<InfoBannerAdmin />} />
+        </Route>
         <Route element={<AuthRoute apps={[PermissionApp.JOBPOST]} element={<JobPostAdministration />} />} path={URLS.jobpostsAdmin}>
           <Route element={<JobPostAdministration />} path=':jobPostId/' />
         </Route>

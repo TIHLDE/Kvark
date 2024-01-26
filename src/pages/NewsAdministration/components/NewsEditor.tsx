@@ -1,7 +1,10 @@
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
 import Grid from '@mui/material/Grid';
 import LinearProgress from '@mui/material/LinearProgress';
 import { makeStyles } from 'makeStyles';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { News } from 'types';
@@ -41,13 +44,14 @@ export type NewsEditorProps = {
   goToNews: (newNews: number | null) => void;
 };
 
-type FormValues = Pick<News, 'title' | 'header' | 'body' | 'image' | 'image_alt' | 'creator'>;
+type FormValues = Pick<News, 'title' | 'header' | 'body' | 'image' | 'image_alt' | 'creator' | 'emojis_allowed'>;
 
 const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
   const showSnackbar = useSnackbar();
   const { classes } = useStyles();
   const { control, handleSubmit, register, formState, getValues, reset, watch, setValue } = useForm<FormValues>();
   const { data, isError, isLoading } = useNewsById(newsId || -1);
+  const showEmojiAllowed = data?.emojis_allowed;
   const createNews = useCreateNews();
   const updateNews = useUpdateNews(newsId || -1);
   const deleteNews = useDeleteNews(newsId || -1);
@@ -55,6 +59,18 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
     () => createNews.isLoading || updateNews.isLoading || deleteNews.isLoading,
     [createNews.isLoading, updateNews.isLoading, deleteNews.isLoading],
   );
+
+  const [checkboxState, setCheckboxState] = useState(false);
+
+  useEffect(() => {
+    setCheckboxState(Boolean(showEmojiAllowed));
+  }, [showEmojiAllowed]);
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isChecked = e.target.checked;
+    setValue('emojis_allowed', isChecked);
+    setCheckboxState(isChecked);
+  };
 
   useEffect(() => {
     !isError || goToNews(null);
@@ -69,6 +85,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
         body: newValues?.body || '',
         image: newValues?.image || '',
         image_alt: newValues?.image_alt || '',
+        emojis_allowed: newValues?.emojis_allowed || false,
       });
     },
     [reset],
@@ -141,6 +158,12 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
           <MarkdownEditor formState={formState} label='Innhold' {...register('body', { required: 'Gi nyheten et innhold' })} required />
           <ImageUpload formState={formState} label='Velg bilde' ratio='21:9' register={register('image')} setValue={setValue} watch={watch} />
           <TextField formState={formState} label='Alternativ bildetekst' {...register('image_alt')} />
+          <FormGroup>
+            <FormControlLabel
+              control={<Checkbox {...register('emojis_allowed')} checked={checkboxState} color='primary' name='allowEmojis' onChange={handleCheckboxChange} />}
+              label='Tillatt reaksjoner'
+            />
+          </FormGroup>
           <RendererPreview className={classes.margin} getContent={getNewsPreview} renderer={NewsRenderer} />
           <SubmitButton className={classes.margin} disabled={isUpdating} formState={formState}>
             {newsId ? 'Oppdater nyhet' : 'Opprett nyhet'}

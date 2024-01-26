@@ -61,6 +61,7 @@ type FormValues = Pick<
   | 'can_cause_strikes'
   | 'enforces_previous_strikes'
   | 'contact_person'
+  | 'emojis_allowed'
 > & {
   end_date: Date;
   end_registration_at: Date;
@@ -106,10 +107,11 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         only_allow_prioritized: newValues ? newValues.only_allow_prioritized : false,
         can_cause_strikes: newValues ? newValues.can_cause_strikes : true,
         enforces_previous_strikes: newValues ? newValues.enforces_previous_strikes : true,
-        is_paid_event: Boolean(newValues?.paid_information),
+        is_paid_event: newValues?.is_paid_event || false,
         price: newValues?.paid_information?.price,
         paytime: newValues?.paid_information?.paytime && parse(newValues?.paid_information.paytime, 'HH:mm:ss', new Date()),
         contact_person: newValues?.contact_person || null,
+        emojis_allowed: newValues?.emojis_allowed || false,
       });
       if (!newValues) {
         setTimeout(() => updateDates(new Date()), 10);
@@ -174,6 +176,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       start_date: values.start_date.toJSON(),
       start_registration_at: values.start_registration_at.toJSON(),
       contact_person: values.contact_person,
+      emojis_allowed: values.emojis_allowed,
       paid_information: {
         price: values?.price,
       },
@@ -213,11 +216,14 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       start_date: data.start_date.toJSON(),
       start_registration_at: data.start_registration_at.toJSON(),
       is_paid_event: data.is_paid_event,
-      paid_information: {
-        price: data.price,
-        paytime: data.paytime && format(new Date(data.paytime), 'HH:mm'),
-      },
+      paid_information: data.is_paid_event
+        ? {
+            price: data.price,
+            paytime: data.paytime && format(new Date(data.paytime), 'HH:mm'),
+          }
+        : undefined,
       contact_person: data.contact_person?.user_id || null,
+      emojis_allowed: data.emojis_allowed,
     } as EventMutate;
     if (eventId) {
       await updateEvent.mutate(event, {
@@ -465,6 +471,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
           </Row>
           <Bool
             control={control}
+            disabled={Boolean(data?.list_count && data?.list_count > 0)}
             formState={formState}
             label={
               <>
@@ -473,16 +480,16 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               </>
             }
             name='is_paid_event'
-            type='checkbox'
+            type='switch'
           />
 
-          {watchPaidEvent && (
+          <Collapse in={watchPaidEvent}>
             <Row>
               <TextField
                 formState={formState}
                 label='Pris'
                 type='number'
-                {...register('price', { required: 'Gi arrangementet en pris' })}
+                {...register('price', { required: watchPaidEvent ? 'Feltet er påkrevd' : undefined })}
                 disabled={Boolean(data?.paid_information?.price)}
                 required={watchPaidEvent}
               />
@@ -496,7 +503,21 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 type='time'
               />
             </Row>
-          )}
+          </Collapse>
+
+          <Bool
+            control={control}
+            formState={formState}
+            label={
+              <>
+                Tillat reaksjoner
+                <ShowMoreTooltip>Bestemmer om en bruker skal kunne reagere med emojier.</ShowMoreTooltip>
+              </>
+            }
+            name='emojis_allowed'
+            type='switch'
+          />
+
           <UserSearch control={control} formState={formState} label={'Kontaktperson'} name='contact_person' />
           <RendererPreview getContent={getEventPreview} renderer={EventRenderer} sx={{ my: 2 }} />
           <SubmitButton disabled={isLoading || createEvent.isLoading || updateEvent.isLoading || deleteEvent.isLoading} formState={formState}>
