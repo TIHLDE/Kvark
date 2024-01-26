@@ -13,7 +13,9 @@
     },
     "editor.formatOnSave": true,
     "eslint.validate": ["html", "javascript", "javascriptreact", "typescript", "typescriptreact"],
-    "editor.codeActionsOnSave": { "source.fixAll.eslint": true }
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
   },
   "extensions": {
     "recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
