@@ -1,16 +1,19 @@
 import { Divider, Typography } from '@mui/material';
 
 import Page from 'components/navigation/Page';
+
 import Player from './components/Player';
+import { useFetchWrapped } from 'hooks/Wrapped';
 
 /**
  * Fetch all statistics within this file as well.
  */
 
 const Wrapped = () => {
+  const { data, error, isLoading } = useFetchWrapped(new Date().getFullYear());
   return (
     <Page options={{ gutterTop: true }}>
-      <Player />
+      {isLoading ? 'Laster inn TIHLDE WRAPPED!' : <Player />}
 
       <Divider
         sx={{

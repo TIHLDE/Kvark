@@ -71,6 +71,7 @@ import {
   WikiTree,
 } from 'types';
 import { CheatsheetStudy, MembershipType } from 'types/Enums';
+import { WrappedStats } from 'types/Wrapped';
 
 import { IFetch } from 'api/fetch';
 
@@ -106,6 +107,7 @@ export const USERS_ENDPOINT = 'users';
 export const WARNINGS_ENDPOINT = 'warnings';
 export const PAYMENT_ENDPOINT = 'payments';
 export const EMOJI_ENDPOINT = 'emojis';
+export const WRAPPED_ENDPOINT = 'wrapped';
 
 export default {
   // Auth
@@ -385,4 +387,7 @@ export default {
 
   // File-upload
   uploadFile: (file: File | Blob) => IFetch<FileUploadResponse>({ method: 'POST', url: 'upload/', file }),
+
+  // Wrapped
+  getWrappedStats: (year: number) => IFetch<WrappedStats>({ method: 'GET', url: `${WRAPPED_ENDPOINT}/stats/${year}/` }),
 };
