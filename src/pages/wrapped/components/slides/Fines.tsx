@@ -1,10 +1,13 @@
 import { Box, Typography } from '@mui/material';
 
 import WrappedSchaffold from '../WrappedSchaffold';
+import { MainSlideProps } from './utils/types';
 
-const Dots = () => {
+const Fines = ({ data }: MainSlideProps) => {
+  const fines = data?.fines_received ?? 0;
+  const finesPerc = data?.fines_percentile ?? 0;
   return (
-    <WrappedSchaffold spacing='medium' variant='vertical'>
+    <WrappedSchaffold spacing='large' variant='vertical'>
       <Typography sx={{ width: '90%' }} textTransform={'uppercase'} variant='h2'>
         I løpet av semesteret har du fått
       </Typography>
@@ -18,18 +21,20 @@ const Dots = () => {
           justifyContent: 'center',
         }}>
         <Typography fontSize={70} variant='h2'>
-          15
+          {data?.fines_received}
         </Typography>
         <Typography textTransform={'uppercase'} variant='h2'>
-          Prikker
+          {fines === 0 || fines > 1 ? 'bøter' : 'bot'}
         </Typography>
       </Box>
 
       <Typography fontSize={20} textAlign={'center'} textTransform={'uppercase'} variant='h2'>
-        Oida.
+        {finesPerc < 0.3
+          ? `Det var da ikke så mye. Det har seg faktisk sånn at ${(1 - finesPerc) * 100}% av TIHLDEs medlemmer har mer enn deg.`
+          : `Akkurat som det skal være! Det er mer enn ${finesPerc * 100}% av alle TIHLDEs medlemmer.`}
       </Typography>
     </WrappedSchaffold>
   );
 };
 
-export default Dots;
+export default Fines;

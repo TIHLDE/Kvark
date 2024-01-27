@@ -1,11 +1,14 @@
 import { Box, BoxProps, CircularProgress } from '@mui/material';
+import React from 'react';
+
+import { WrappedStats } from 'types/Wrapped';
 
 import PlaybackBar from './PlaybackBar';
-import Dots from './slides/Dots';
 import Events from './slides/Events';
+import Fines from './slides/Fines';
 import Welcome from './slides/Welcome';
 
-const slides = [Welcome, Events, Dots];
+const slides = [Welcome, Events, Fines];
 
 interface WrappedViewportProps extends BoxProps {
   /** The slide number */
@@ -13,10 +16,16 @@ interface WrappedViewportProps extends BoxProps {
 
   /** A number between 0 and 100, representing the playback progress of the slide */
   percentage: number;
+
+  /** The full wrapped statistics data object. Each slide must parse
+   * out its own relevant information.
+   */
+  data?: WrappedStats;
 }
 
-const WrappedViewport = ({ slide, percentage, sx, ...props }: WrappedViewportProps) => {
+const WrappedViewport = ({ data, slide, percentage, sx, ...props }: WrappedViewportProps) => {
   const loading = false;
+  const Component = slides[Math.min(slide, slides.length - 1)];
 
   return (
     <Box
@@ -43,7 +52,7 @@ const WrappedViewport = ({ slide, percentage, sx, ...props }: WrappedViewportPro
           width: '90%',
         }}
       />
-      {loading ? <CircularProgress /> : slides[Math.min(slide, slides.length - 1)]()}
+      {loading ? <CircularProgress /> : <Component data={data} />}
     </Box>
   );
 };

@@ -2,15 +2,21 @@ import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { Box, IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
 
+import { WrappedStats } from 'types/Wrapped';
+
 import WrappedViewport from './WrappedViewport';
 
-const Player = () => {
+interface PlayerProps {
+  data?: WrappedStats;
+}
+
+const Player = ({ data }: PlayerProps) => {
   const [slide, setSlide] = useState(0);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const intervalCallback = () => {
-      setProgress(progress + 1);
+      setProgress(progress + 0);
 
       if (progress >= 100) {
         setSlide(slide + 1);
@@ -46,6 +52,7 @@ const Player = () => {
         alignItems: 'center',
         margin: 'auto',
         position: 'relative',
+        userSelect: 'none',
       }}>
       <IconButton
         onClick={decrementSlide}
@@ -57,7 +64,7 @@ const Player = () => {
         }}>
         <ArrowBack />
       </IconButton>
-      <WrappedViewport percentage={progress} slide={slide} />
+      <WrappedViewport data={data} percentage={progress} slide={slide} />
       <IconButton
         onClick={incrementSlide}
         sx={{

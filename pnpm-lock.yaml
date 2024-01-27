@@ -74,6 +74,9 @@ dependencies:
   react-cool-dimensions:
     specifier: ^3.0.1
     version: 3.0.1(react@17.0.2)
+  react-countup:
+    specifier: ^6.5.0
+    version: 6.5.0(react@17.0.2)
   react-dnd:
     specifier: ^16.0.1
     version: 16.0.1(@types/node@20.6.3)(@types/react@17.0.37)(react@17.0.2)
@@ -2566,6 +2569,10 @@ packages:
       typescript: 4.6.2
     dev: true
 
+  /countup.js@2.8.0:
+    resolution: {integrity: sha512-f7xEhX0awl4NOElHulrl4XRfKoNH3rB+qfNSZZyjSZhaAoUk6elvhH+MNxMmlmuUJ2/QNTWPSA7U4mNtIAKljQ==}
+    dev: false
+
   /cross-spawn@7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
     engines: {node: '>= 8'}
@@ -4548,6 +4555,15 @@ packages:
     peerDependencies:
       react: '>= 16.8.0'
     dependencies:
+      react: 17.0.2
+    dev: false
+
+  /react-countup@6.5.0(react@17.0.2):
+    resolution: {integrity: sha512-26JFHbUHsHxu8SetkJwWVIUEkaNnrj4P9msxNGC8tS4hGr1bngRzbwtJYOgXD2G/ItjaKJ3JfYKd85sw7qRVeA==}
+    peerDependencies:
+      react: '>= 16.3.0'
+    dependencies:
+      countup.js: 2.8.0
       react: 17.0.2
     dev: false
 

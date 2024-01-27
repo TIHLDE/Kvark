@@ -17,6 +17,8 @@ const PlaybackBar = ({ percentage, slide, slides, sx, ...props }: PlaybackBarPro
         gridTemplateRows: 'auto',
         gridAutoFlow: 'column',
         alignItems: 'center',
+        zIndex: 2,
+        opacity: 0.3,
         ...sx,
       }}
       {...props}>
@@ -25,7 +27,7 @@ const PlaybackBar = ({ percentage, slide, slides, sx, ...props }: PlaybackBarPro
           bgcolor={index <= slide ? 'unset' : 'primary.main'}
           key={index}
           sx={{
-            background: index === slide ? `linear-gradient(90deg, green ${percentage}%, red ${percentage}%)` : index < slide ? 'green' : 'red',
+            background: index === slide ? `linear-gradient(90deg, #001328 ${percentage}%, #2c69d8 ${percentage}%)` : index < slide ? '#001328' : '#2c69d8',
             borderRadius: 1,
             width: 'auto',
             height: '0.2rem',

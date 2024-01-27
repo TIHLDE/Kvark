@@ -5,6 +5,7 @@ import { useConfetti } from 'hooks/Confetti';
 
 import WrappedLogo from '../WrappedLogo';
 import WrappedSchaffold from '../WrappedSchaffold';
+import { MainSlideProps } from './utils/types';
 
 const slideIn = keyframes`
   0%{
@@ -30,7 +31,7 @@ const pulsate = keyframes`
     }
 `;
 
-const Welcome = () => {
+const Welcome = ({ data }: MainSlideProps) => {
   const confetti = useConfetti();
 
   useEffect(() => {
@@ -100,7 +101,7 @@ const Welcome = () => {
         textAlign={'center'}
         textTransform={'uppercase'}
         variant='h2'>
-        Klar til å lære mer om semesteret som har vært?
+        Klar til å lære mer om året som har vært?
       </Typography>
     </WrappedSchaffold>
   );
