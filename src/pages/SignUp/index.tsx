@@ -104,6 +104,7 @@ const SignUp = () => {
           <TextField
             disabled={createUser.isLoading}
             formState={formState}
+            helperText='Benytt en mail du sjekker regelmessig'
             label='E-post'
             {...register('email', {
               required: 'Feltet er påkrevd',
