@@ -1,4 +1,5 @@
-import { Button, MenuItem, styled, TextField } from '@mui/material';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import { MenuItem, styled, TextField } from '@mui/material';
 import { getDay, getHours } from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -13,6 +14,7 @@ import { useInterval } from 'hooks/Utils';
 import Files from 'pages/Cheatsheet/components/Files';
 
 import Banner from 'components/layout/Banner';
+import { BannerButton } from 'components/layout/Banner';
 import Paper from 'components/layout/Paper';
 import Page from 'components/navigation/Page';
 
@@ -148,11 +150,17 @@ const Cheetsheet = () => {
 
   return (
     <Page
-      banner={<Banner text={`${getStudy()} - ${getClass()}. klasse\n**${liveCheatingAmount}** brukere koker akkurat nå`} title='Kokeboka' />}
+      banner={
+        <Banner text={`${getStudy()} - ${getClass()}. klasse\n**${liveCheatingAmount}** brukere koker akkurat nå`} title='Kokeboka'>
+          <BannerButton
+            endIcon={<MailOutlineIcon />} // Adding the EmailIcon as the end icon
+            onClick={generateCheatSheetMail}
+            variant='outlined'>
+            Bidra til kokeboka!
+          </BannerButton>
+        </Banner>
+      }
       options={{ title: `${getStudy()} - ${getClass()}. klasse - Kokeboka` }}>
-      <Button onClick={generateCheatSheetMail} sx={{ mb: 2 }} variant='contained'>
-        Bidra til kokeboka!
-      </Button>
       <Paper sx={{ mb: 2 }}>
         <FilterContainer>
           <TextField
