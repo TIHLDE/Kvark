@@ -1,5 +1,6 @@
 import AdminIcon from '@mui/icons-material/AdminPanelSettingsRounded';
 import EventIcon from '@mui/icons-material/DateRangeRounded';
+import Edit from '@mui/icons-material/Edit';
 import BadgesIcon from '@mui/icons-material/EmojiEventsRounded';
 import LogOutIcon from '@mui/icons-material/ExitToAppRounded';
 import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
@@ -9,7 +10,9 @@ import WorkspacesIcon from '@mui/icons-material/WorkspacesRounded';
 import {
   Badge,
   Box,
+  Button,
   Collapse,
+  Grid,
   List,
   ListItem,
   ListItemButton,
@@ -45,6 +48,9 @@ import Paper from 'components/layout/Paper';
 import Avatar from 'components/miscellaneous/Avatar';
 import QRButton from 'components/miscellaneous/QRButton';
 import Page from 'components/navigation/Page';
+
+import Bio from './components/Bio';
+import EditBioButton from './components/BioEditor/EditBioButton';
 
 const Content = styled('div')(({ theme }) => ({
   display: 'grid',
@@ -125,32 +131,47 @@ const Profile = () => {
   return (
     <Page options={{ title: 'Profil', gutterTop: true, lightColor: 'blue' }}>
       <Stack component={Paper} direction={{ xs: 'column', md: 'row' }} gap={1} sx={{ p: 2, mt: 1 }}>
-        <Stack direction='row' gap={1} sx={{ flex: 1 }}>
-          <Avatar sx={{ width: { xs: 70, md: 140 }, height: { xs: 70, md: 140 }, fontSize: { xs: '1.8rem', md: '3rem' } }} user={user} />
-          {user && user.first_name ? (
-            <Stack sx={{ m: 'auto', mx: 1, flex: 1 }}>
-              <Typography
-                sx={{ wordBreak: 'break-word', fontSize: { xs: '1.6rem', md: '3rem' } }}
-                variant='h1'>{`${user.first_name} ${user.last_name}`}</Typography>
-              <Typography sx={{ wordBreak: 'break-word' }} variant='subtitle1'>
-                {user.user_id} | <a href={`mailto:${user.email}`}>{user.email}</a>
-              </Typography>
-              <Typography sx={{ wordBreak: 'break-word' }} variant='subtitle1'>
-                {getUserAffiliation(user)}
-              </Typography>
-            </Stack>
-          ) : (
-            <Stack sx={{ m: 'auto', mx: 1, flex: 1 }}>
-              <Skeleton sx={{ fontSize: { xs: '1.8rem', md: '3rem' } }} variant='text' width={230} />
-              <Skeleton variant='text' width={170} />
-            </Stack>
+        <Box
+          sx={{
+            display: 'grid',
+            flex: 1,
+            gridTemplateColumns: 'min-content auto',
+            gap: 1,
+          }}>
+          <Box>
+            <Avatar sx={{ width: { xs: 70, md: 140 }, height: { xs: 70, md: 140 }, fontSize: { xs: '1.8rem', md: '3rem' } }} user={user} />
+          </Box>
+          <Box>
+            {user && user.first_name ? (
+              <Stack sx={{ m: 'auto', mx: 1, flex: 1 }}>
+                <Typography
+                  sx={{ wordBreak: 'break-word', fontSize: { xs: '1.6rem', md: '3rem' } }}
+                  variant='h1'>{`${user.first_name} ${user.last_name}`}</Typography>
+                <Typography sx={{ wordBreak: 'break-word' }} variant='subtitle1'>
+                  {user.user_id} | <a href={`mailto:${user.email}`}>{user.email}</a>
+                </Typography>
+                <Typography sx={{ wordBreak: 'break-word' }} variant='subtitle1'>
+                  {getUserAffiliation(user)}
+                </Typography>
+              </Stack>
+            ) : (
+              <Stack sx={{ m: 'auto', mx: 1, flex: 1 }}>
+                <Skeleton sx={{ fontSize: { xs: '1.8rem', md: '3rem' } }} variant='text' width={230} />
+                <Skeleton variant='text' width={170} />
+              </Stack>
+            )}
+          </Box>
+          <Box />
+          <Bio bio={user?.user_bio} />
+        </Box>
+        <Stack gap={1}>
+          {!userId && user && (
+            <QRButton qrValue={user.user_id} subtitle={`${user.first_name} ${user.last_name}`}>
+              Medlemsbevis
+            </QRButton>
           )}
+          <EditBioButton />
         </Stack>
-        {!userId && user && (
-          <QRButton qrValue={user.user_id} subtitle={`${user.first_name} ${user.last_name}`} sx={{ mb: 'auto' }}>
-            Medlemsbevis
-          </QRButton>
-        )}
       </Stack>
       <Content>
         <Stack spacing={1}>
