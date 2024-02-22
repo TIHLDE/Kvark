@@ -36,14 +36,14 @@ const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug, ...props }:
 
   const { register, formState, handleSubmit, control, watch, setValue, getValues } = useForm<FormValues>({
     defaultValues: {
-      description: laws?.filter((l) => Boolean(l.description))[0].id,
+      description: laws?.filter((l) => Boolean(l.description))[0]?.id,
       amount: 1,
     },
   });
 
   // Set the default value of the law paragraph field once the data loads
   useEffect(() => {
-    setValue('description', laws?.filter((l) => Boolean(l.description))[0].id ?? '');
+    setValue('description', laws?.filter((l) => Boolean(l.description))[0]?.id ?? '');
   }, [laws]);
 
   const selectedLaw = watch('description');
