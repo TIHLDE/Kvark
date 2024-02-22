@@ -1,6 +1,6 @@
 import { SafetyDividerRounded } from '@mui/icons-material';
 import { Collapse, Grid, LinearProgress, ListSubheader, MenuItem, Stack, styled } from '@mui/material';
-import { addHours, format, parse, parseISO, setHours, startOfHour, subDays } from 'date-fns';
+import { addHours, parseISO, setHours, startOfHour, subDays } from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
@@ -22,7 +22,6 @@ import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
-import TimePicker from 'components/inputs/TimePicker';
 import { ImageUpload } from 'components/inputs/Upload';
 import UserSearch from 'components/inputs/UserSearch';
 import { StandaloneExpand } from 'components/layout/Expand';
@@ -109,7 +108,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         enforces_previous_strikes: newValues ? newValues.enforces_previous_strikes : true,
         is_paid_event: newValues?.is_paid_event || false,
         price: newValues?.paid_information?.price,
-        paytime: newValues?.paid_information?.paytime && parse(newValues?.paid_information.paytime, 'HH:mm:ss', new Date()),
+        paytime: '02:00',
         contact_person: newValues?.contact_person || null,
         emojis_allowed: newValues?.emojis_allowed || false,
       });
@@ -219,7 +218,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       paid_information: data.is_paid_event
         ? {
             price: data.price,
-            paytime: data.paytime && format(new Date(data.paytime), 'HH:mm'),
+            paytime: '02:00',
           }
         : undefined,
       contact_person: data.contact_person?.user_id || null,
@@ -492,15 +491,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 {...register('price', { required: watchPaidEvent ? 'Feltet er påkrevd' : undefined })}
                 disabled={Boolean(data?.paid_information?.price)}
                 required={watchPaidEvent}
-              />
-              <TimePicker
-                control={control}
-                disabled={Boolean(data?.paid_information?.paytime)}
-                formState={formState}
-                label={'Betalingstid'}
-                name='paytime'
-                required={watchPaidEvent}
-                type='time'
               />
             </Row>
           </Collapse>
