@@ -1,5 +1,5 @@
 import AddIcon from '@mui/icons-material/AddRounded';
-import { Fab, FabProps, ListSubheader, MenuItem } from '@mui/material';
+import { Card, Fab, FabProps, ListSubheader, MenuItem } from '@mui/material';
 import { forwardRef, Ref, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { formatLawHeader } from 'utils';
@@ -17,6 +17,7 @@ import TextField from 'components/inputs/TextField';
 import { ImageUpload } from 'components/inputs/Upload';
 import UserSearch from 'components/inputs/UserSearch';
 import Dialog from 'components/layout/Dialog';
+import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 
 export type AddFineDialogProps = FabProps & {
   groupSlug: Group['slug'];
@@ -32,7 +33,18 @@ const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug, ...props }:
   const { data: laws } = useGroupLaws(groupSlug, { enabled: dialogOpen });
   const createFine = useCreateGroupFine(groupSlug);
   const showSnackbar = useSnackbar();
-  const { register, formState, handleSubmit, control, watch, setValue } = useForm<FormValues>();
+
+  const { register, formState, handleSubmit, control, watch, setValue, getValues } = useForm<FormValues>({
+    defaultValues: {
+      description: laws?.filter((l) => Boolean(l.description))[0].id,
+      amount: 1,
+    },
+  });
+
+  // Set the default value of the law paragraph field once the data loads
+  useEffect(() => {
+    setValue('description', laws?.filter((l) => Boolean(l.description))[0].id ?? '');
+  }, [laws]);
 
   const selectedLaw = watch('description');
 
@@ -87,31 +99,21 @@ const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug, ...props }:
                 multiple
                 name='user'
               />
-              <Select
-                control={control}
-                defaultValue={laws.filter((l) => Boolean(l.description))[0].id}
-                formState={formState}
-                label='Lovbrudd'
-                name='description'
-                required>
-                {laws.map((law) =>
-                  law.description ? (
-                    <MenuItem key={law.id} sx={{ whiteSpace: 'break-spaces' }} value={law.id}>
-                      {formatLawHeader(law)}
-                    </MenuItem>
-                  ) : (
-                    <ListSubheader key={law.id}>{formatLawHeader(law)}</ListSubheader>
-                  ),
-                )}
-              </Select>
-              <TextField
-                defaultValue={1}
-                formState={formState}
-                inputProps={{ type: 'number' }}
-                label='Forslag til antall bøter'
-                {...register('amount')}
-                required
-              />
+              <Card elevation={3} sx={{ p: 2 }} variant='elevation'>
+                <Select control={control} formState={formState} label='Lovbrudd' name='description' required>
+                  {laws.map((law) =>
+                    law.description ? (
+                      <MenuItem key={law.id} sx={{ whiteSpace: 'break-spaces' }} value={law.id}>
+                        {formatLawHeader(law)}
+                      </MenuItem>
+                    ) : (
+                      <ListSubheader key={law.id}>{formatLawHeader(law)}</ListSubheader>
+                    ),
+                  )}
+                </Select>
+                <MarkdownRenderer value={laws.find((law) => law.id === getValues().description)?.description ?? ''} />
+              </Card>
+              <TextField formState={formState} inputProps={{ type: 'number' }} label='Forslag til antall bøter' {...register('amount')} required />
               <MarkdownEditor formState={formState} label='Begrunnelse' {...register('reason')} />
               <ImageUpload formState={formState} label='Bildebevis (Valgfritt)' register={register('image')} setValue={setValue} watch={watch} />
               <SubmitButton disabled={createFine.isLoading} formState={formState} sx={{ mt: 2 }}>
