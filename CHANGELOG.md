@@ -11,6 +11,7 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+- ⚡ **Bøter**. Man kan nå se paragrafbeskrivelsen når man legger inn en ny bot.
 
 ## Versjon 2023.07.02
 - 🎨 **Vipps betaling**. Brukere kan nå ikke sette nedbetalingstid selv. 2 timer er konstant tid.
