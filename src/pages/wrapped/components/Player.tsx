@@ -16,7 +16,7 @@ const Player = ({ data }: PlayerProps) => {
 
   useEffect(() => {
     const intervalCallback = () => {
-      setProgress(progress + 0);
+      setProgress(progress + 0.75);
 
       if (progress >= 100) {
         setSlide(slide + 1);

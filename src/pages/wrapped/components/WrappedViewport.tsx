@@ -4,11 +4,15 @@ import React from 'react';
 import { WrappedStats } from 'types/Wrapped';
 
 import PlaybackBar from './PlaybackBar';
+import AdminIntro from './slides/Admin/AdminIntro';
+import CreatedEvents from './slides/Admin/CreatedEvents';
+import Dots from './slides/Dots';
+import EndCard from './slides/EndCard';
 import Events from './slides/Events';
 import Fines from './slides/Fines';
 import Welcome from './slides/Welcome';
 
-const slides = [Welcome, Events, Fines];
+const slides = [Welcome, Events, Fines, Dots, AdminIntro, CreatedEvents, EndCard];
 
 interface WrappedViewportProps extends BoxProps {
   /** The slide number */
