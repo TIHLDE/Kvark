@@ -16,6 +16,9 @@
 ## Versjon 2023.07.02
 - 🎨 **Vipps betaling**. Brukere kan nå ikke sette nedbetalingstid selv. 2 timer er konstant tid.
 
+## Versjon 2023.07.02
+- 🎨 **Vipps betaling**. Brukere kan nå ikke sette nedbetalingstid selv. 2 timer er konstant tid.
+
 ## Versjon 2023.15.01
 - 🦟 **Vipps betaling**. Diverse bugs i betalingsløsningen er nå fikset.
 - ✨ **Reaksjoner**. Det er nå mulig å reagere på arrangementer og nyheter med emojier.
