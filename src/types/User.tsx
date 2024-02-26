@@ -24,7 +24,7 @@ export type User = {
   slack_user_id: string;
   study: MembershipWithoutUser;
   studyyear: MembershipWithoutUser;
-  user_bio: 
+  user_bio: any; // @eslint-disable-line
 };
 
 export type UserBase = Pick<User, 'user_id' | 'first_name' | 'last_name' | 'image' | 'email' | 'gender' | 'study' | 'studyyear'>;

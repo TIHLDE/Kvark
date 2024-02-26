@@ -170,7 +170,7 @@ const Profile = () => {
               Medlemsbevis
             </QRButton>
           )}
-          <EditBioButton />
+          <EditBioButton bioValue='jhhh' />
         </Stack>
       </Stack>
       <Content>
