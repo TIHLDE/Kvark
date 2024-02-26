@@ -2,8 +2,8 @@ import Edit from '@mui/icons-material/Edit';
 import { Button, Dialog } from '@mui/material';
 import { ButtonProps, styled, Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
-import BioEditor from './BioEditor';
 
+import BioEditor from './BioEditor';
 
 export type BioButtonProps = ButtonProps & {
   bioValue: string;
@@ -22,13 +22,8 @@ const EditBioButton = ({ bioValue, subtitle, children, ...props }: BioButtonProp
         {children}
       </Button>
 
-      <Dialog
-        fullWidth
-        maxWidth='md'
-        onClose={() => setShowEditBio(false)}
-        open={showEditBio}
-        >
-          <BioEditor />
+      <Dialog fullWidth maxWidth='md' onClose={() => setShowEditBio(false)} open={showEditBio}>
+        <BioEditor />
       </Dialog>
     </>
   );
