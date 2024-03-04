@@ -1,6 +1,7 @@
 import { PermissionApp } from 'types/Enums';
 import { Group, MembershipWithoutUser } from 'types/Group';
 import { Permissions } from 'types/Misc';
+import { UserBio } from 'types/UserBio';
 
 export type LoginRequestResponse = {
   token: string;
@@ -24,7 +25,7 @@ export type User = {
   slack_user_id: string;
   study: MembershipWithoutUser;
   studyyear: MembershipWithoutUser;
-  user_bio: any; // @eslint-disable-line
+  bio: UserBio;
 };
 
 export type UserBase = Pick<User, 'user_id' | 'first_name' | 'last_name' | 'image' | 'email' | 'gender' | 'study' | 'studyyear'>;
