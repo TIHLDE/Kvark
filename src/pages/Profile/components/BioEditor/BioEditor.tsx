@@ -1,5 +1,5 @@
 import { Rowing } from '@mui/icons-material';
-import { Grid, Stack, TextField, Typography } from '@mui/material';
+import { Grid, Button, Stack, TextField, Typography,InputAdornment} from '@mui/material';
 import Box from '@mui/material/Box';
 import { register } from 'module';
 import { useForm } from 'react-hook-form';
@@ -11,33 +11,52 @@ import Page from 'components/navigation/Page';
 
 type Biodata = {
   description: string;
-  gitlab: string;
+  github: string;
   linkedIn: string;
 };
 
 const UserBioForm = () => {
-  const { register, formState, handleSubmit, setError } = useForm<Biodata>();
+  const {formState, handleSubmit, register} = useForm<Biodata>();
+
 
   const onSave = async (data: Biodata) => {};
 
   return (
     <form onSubmit={handleSubmit(onSave)}>
-      <Typography sx={{ pb: 3 }} variant='h2'>
-        Rediger profil
+      <Typography 
+        sx={{ pb: 3 }} 
+        variant='h2'>
+        Redigér bio
       </Typography>
-      <TextField fullWidth label='Beskrivelse' sx={{ pb: 2 }} />
-      <TextField fullWidth label='GitHub' sx={{ pb: 2 }} />
-      <TextField fullWidth label='LinkedIn' sx={{ pb: 2 }} />
-      <SubmitButton formState={formState}>Lagre</SubmitButton>
+      <TextField 
+        fullWidth 
+        label='Biografi' 
+        sx={{ pb: 2 }} 
+        inputProps = {{maxLength:500}}
+        multiline
+        rows = {6}
+      />   
+      <TextField 
+        fullWidth 
+        label='GitHub (URL)' 
+        sx={{ pb: 2 }}
+     />
+      <TextField 
+        fullWidth 
+        label='LinkedIn (URL)' 
+        sx={{ pb: 2 }} />
+      <SubmitButton disabled={formState.isSubmitting} formState={formState}>
+        Lagre
+      </SubmitButton>
     </form>
   );
 };
-
 const ProfileEditor = () => {
   return (
-    <Stack component={Paper} direction={{ xs: 'column', md: 'row' }} gap={1} sx={{ p: 2, m: 1 }} variant='elevation'>
+    <Stack component={Paper} direction={{ xs: 'column', md: 'row' }} gap={2} sx={{ p: 3, m: 2 }} variant='elevation'>
       <UserBioForm />
     </Stack>
+    
   );
 };
 
