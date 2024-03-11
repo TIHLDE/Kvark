@@ -1,11 +1,12 @@
-import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
-import { Button, Collapse, Container } from '@mui/material';
+import { Collapse, Container } from '@mui/material';
+import { ListIcon } from 'lucide-react';
 import { useState } from 'react';
 
 import { ContentType } from 'types/ContentType';
 
 import Dialog from 'components/layout/Dialog';
 import Tabs from 'components/layout/Tabs';
+import { Button } from 'components/ui/button';
 
 import { ReactionListItem } from './ReactionListItem';
 
@@ -45,8 +46,8 @@ export const EmojiShowAll = (data: ContentType) => {
 
   return (
     <Container>
-      <Button onClick={openDialog} variant='outlined'>
-        <ArrowOutwardIcon fontSize='small' />
+      <Button onClick={openDialog} size='icon' variant='outline'>
+        <ListIcon />
       </Button>
 
       <Dialog onClose={closeDialog} open={open}>

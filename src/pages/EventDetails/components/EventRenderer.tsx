@@ -306,7 +306,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     return (
       <>
         <HasUnansweredEvaluations />
-        <Button disabled={user?.unanswered_evaluations_count > 0 || isLoadingSignUp} fullWidth onClick={() => signUp()} variant='contained'>
+        <Button disabled={user?.unanswered_evaluations_count > 0 || isLoadingSignUp} fullWidth onClick={() => signUp()} variant='outlined'>
           {!isLoadingSignUp ? 'Meld deg på' : <CircularProgress />}
         </Button>
       </>

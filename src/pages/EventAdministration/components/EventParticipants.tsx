@@ -45,6 +45,13 @@ const Registrations = ({ onWait = false, eventId }: RegistrationsProps) => {
         : [],
     [data, showOnlyNotAttended],
   );
+
+  const sortedRegistrations = registrations.sort((a, b) => {
+    const waitA = a.wait_queue_number ?? Number.MAX_SAFE_INTEGER;
+    const waitB = b.wait_queue_number ?? Number.MAX_SAFE_INTEGER;
+    return waitA - waitB;
+  });
+
   const showSnackbar = useSnackbar();
 
   const getRegistrationDetails = ({ names, emails }: RegistrationsCopyDetails) => {
@@ -92,7 +99,7 @@ const Registrations = ({ onWait = false, eventId }: RegistrationsProps) => {
           </Stack>
           <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
             <List dense disablePadding>
-              {registrations.map((registration) => (
+              {sortedRegistrations.map((registration) => (
                 <Participant eventId={eventId} key={registration.registration_id} registration={registration} />
               ))}
             </List>
