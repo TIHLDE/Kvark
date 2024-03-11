@@ -1,5 +1,5 @@
 import { Collapse, Container } from '@mui/material';
-import { ExpandIcon } from 'lucide-react';
+import { ListIcon } from 'lucide-react';
 import { useState } from 'react';
 
 import { ContentType } from 'types/ContentType';
@@ -47,7 +47,7 @@ export const EmojiShowAll = (data: ContentType) => {
   return (
     <Container>
       <Button onClick={openDialog} size='icon' variant='outline'>
-        <ExpandIcon />
+        <ListIcon />
       </Button>
 
       <Dialog onClose={closeDialog} open={open}>
