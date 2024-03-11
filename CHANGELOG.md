@@ -11,12 +11,14 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+
+## Versjon 2024.11.03
 - ⚡ **Bøter**. Man kan nå se paragrafbeskrivelsen når man legger inn en ny bot.
 
-## Versjon 2023.07.02
+## Versjon 2024.07.02
 - 🎨 **Vipps betaling**. Brukere kan nå ikke sette nedbetalingstid selv. 2 timer er konstant tid.
 
-## Versjon 2023.15.01
+## Versjon 2024.15.01
 - 🦟 **Vipps betaling**. Diverse bugs i betalingsløsningen er nå fikset.
 - ✨ **Reaksjoner**. Det er nå mulig å reagere på arrangementer og nyheter med emojier.
 - 🎨 **Prikk info**. Mail for kontakt for prikk, er nå endret.
