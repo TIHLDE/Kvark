@@ -1,5 +1,4 @@
-import AddIcon from '@mui/icons-material/AddRounded';
-import { Card, Fab, FabProps, ListSubheader, MenuItem } from '@mui/material';
+import { Card, FabProps, ListSubheader, MenuItem } from '@mui/material';
 import { forwardRef, Ref, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { formatLawHeader } from 'utils';
@@ -18,6 +17,8 @@ import { ImageUpload } from 'components/inputs/Upload';
 import UserSearch from 'components/inputs/UserSearch';
 import Dialog from 'components/layout/Dialog';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
+import { Button } from 'components/ui/button';
+import { PlusIcon } from 'lucide-react';
 
 export type AddFineDialogProps = FabProps & {
   groupSlug: Group['slug'];
@@ -123,10 +124,9 @@ const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug, ...props }:
           )}
         </Dialog>
       )}
-      <Fab color='primary' variant='extended' {...props} onClick={() => setDialogOpen(true)} ref={ref}>
-        <AddIcon sx={{ mr: 1 }} />
-        Ny bot
-      </Fab>
+      <Button onClick={() => setDialogOpen(true)} ref={ref}>
+        <PlusIcon className='mr-1 h-4 w-4' /> Ny bot
+      </Button>
     </>
   );
 });
