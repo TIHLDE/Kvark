@@ -1,6 +1,5 @@
 import ShareIcon from '@mui/icons-material/ShareRounded';
 import {
-  Button,
   ButtonProps,
   FormHelperText,
   IconButton,
@@ -9,9 +8,11 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
+  Button as MuiButton,
   styled,
   Typography,
 } from '@mui/material';
+import { CloudUploadIcon } from 'lucide-react';
 import { forwardRef, useCallback, useState } from 'react';
 import Cropper from 'react-easy-crop';
 import { FieldError, FieldValues, Path, PathValue, UnpackNestedValue, UseFormRegisterReturn, UseFormReturn } from 'react-hook-form';
@@ -24,6 +25,7 @@ import { useAnalytics, useShare } from 'hooks/Utils';
 import { blobToFile, getCroppedImgAsBlob, readFile } from 'components/inputs/ImageUploadUtils';
 import Dialog from 'components/layout/Dialog';
 import Paper, { PaperProps } from 'components/layout/Paper';
+import { Button } from 'components/ui/button';
 
 const UploadPaper = styled(Paper)(({ theme }) => ({
   display: 'grid',
@@ -62,8 +64,6 @@ export const GenericImageUpload = <FormValues extends FieldValues>({
   formState,
   label = 'Last opp fil',
   ratio,
-  paperProps,
-  ...props
 }: ImageUploadProps<FormValues>) => {
   const name = register.name as Path<FormValues>;
   const { [name]: fieldError } = formState.errors;
@@ -140,24 +140,40 @@ export const GenericImageUpload = <FormValues extends FieldValues>({
   };
   return (
     <>
-      <UploadPaper {...paperProps}>
-        {url && <Img loading='lazy' src={url as string} />}
-        <div>
-          <input hidden {...register} />
-          <input accept='image/*' hidden id='image-upload-button' onChange={onSelect} type='file' />
-          <label htmlFor='image-upload-button'>
-            <Button component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
-              {label}
-            </Button>
-          </label>
-        </div>
+      <div className='space-y-2 py-4'>
+        {url ? (
+          <Img loading='lazy' src={url as string} />
+        ) : (
+          <div className='flex items-center justify-center w-full'>
+            <label
+              className={
+                isLoading
+                  ? 'cursor-default'
+                  : 'cursor-pointer' +
+                    ` flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg bg-background hover:bg-secondary dark:hover:border-gray-600`
+              }
+              htmlFor='image-upload-button'>
+              <div className='flex flex-col items-center justify-center pt-5 pb-6 space-y-4'>
+                <CloudUploadIcon className='w-10 h-10 text-gray-400 dark:text-gray-300 stroke-[1.5]' />
+                <p className='mb-2 text-sm text-gray-500 dark:text-gray-400 font-semibold'>{label}</p>
+              </div>
+              <input disabled={isLoading} hidden {...register} />
+              <input accept='image/*' disabled={isLoading} hidden id='image-upload-button' onChange={onSelect} type='file' />
+            </label>
+          </div>
+        )}
         {Boolean(error) && <FormHelperText error>{error?.message}</FormHelperText>}
         {url && (
-          <Button color='error' disabled={isLoading} fullWidth onClick={() => setValue(name, '' as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>)}>
+          <Button
+            className='w-full font-semibold'
+            disabled={isLoading}
+            onClick={() => setValue(name, '' as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>)}
+            size='lg'
+            variant='destructive'>
             Fjern bilde
           </Button>
         )}
-      </UploadPaper>
+      </div>
       <Dialog
         closeText='Avbryt'
         confirmText='Ferdig'
@@ -241,16 +257,20 @@ export const FormFileUpload = <FormValues extends FieldValues>({
         <input hidden {...register} />
         <input accept={accept} hidden id='file-upload-button' onChange={upload} type='file' />
         <label htmlFor='file-upload-button'>
-          <Button component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
+          <MuiButton component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
             {label}
-          </Button>
+          </MuiButton>
         </label>
       </div>
       {Boolean(error) && <FormHelperText error>{error?.message}</FormHelperText>}
       {url && (
-        <Button color='error' disabled={isLoading} fullWidth onClick={() => setValue(name, '' as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>)}>
+        <MuiButton
+          color='error'
+          disabled={isLoading}
+          fullWidth
+          onClick={() => setValue(name, '' as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>)}>
           Fjern fil
-        </Button>
+        </MuiButton>
       )}
     </UploadPaper>
   );
@@ -321,9 +341,9 @@ export const FileUpload = <FormValues extends FieldValues>({ label = 'Last opp f
       <div>
         <input accept={accept} hidden id='files-upload-button' multiple onChange={upload} type='file' />
         <label htmlFor='files-upload-button'>
-          <Button component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
+          <MuiButton component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
             {label}
-          </Button>
+          </MuiButton>
         </label>
       </div>
     </UploadPaper>
