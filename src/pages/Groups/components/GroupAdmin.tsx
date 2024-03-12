@@ -55,7 +55,14 @@ const GroupAdmin = ({ group }: UpdateGroupModalProps) => {
         <form onSubmit={handleSubmit(submit)}>
           <TextField formState={formState} label='Gruppenavn' {...register('name', { required: 'Gruppen må ha et navn' })} required />
 
-          <ImageUpload formState={formState} label='Velg bilde' ratio='1:1' register={register('image')} setValue={setValue} watch={watch} />
+          <ImageUpload
+            formState={formState}
+            label='Trykk for å velge bilde eller dra bilde over'
+            ratio='1:1'
+            register={register('image')}
+            setValue={setValue}
+            watch={watch}
+          />
           <MarkdownEditor formState={formState} label='Gruppebeskrivelse' {...register('description')} />
           <TextField
             formState={formState}

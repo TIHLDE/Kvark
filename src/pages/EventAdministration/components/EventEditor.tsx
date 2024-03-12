@@ -424,7 +424,14 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
             </Stack>
           </Collapse>
           <MarkdownEditor formState={formState} {...register('description', { required: 'Gi arrangementet en beskrivelse' })} required />
-          <ImageUpload formState={formState} label='Velg bilde' ratio='21:9' register={register('image')} setValue={setValue} watch={watch} />
+          <ImageUpload
+            formState={formState}
+            label='Trykk for å velge bilde eller dra bilde over'
+            ratio='21:9'
+            register={register('image')}
+            setValue={setValue}
+            watch={watch}
+          />
           <TextField formState={formState} label='Bildetekst' {...register('image_alt')} />
           <Row>
             {groupOptions.length > 0 && (

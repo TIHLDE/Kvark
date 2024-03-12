@@ -6,7 +6,7 @@ import UsersIcon from '@mui/icons-material/PermIdentityRounded';
 import EventIcon from '@mui/icons-material/TodayRounded';
 import JobPostIcon from '@mui/icons-material/WorkOutlineRounded';
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
-import { Avatar, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
+import { Avatar, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import { makeStyles } from 'makeStyles';
 import { ComponentType } from 'react';
 import { Link } from 'react-router-dom';
@@ -16,7 +16,6 @@ import { PermissionApp } from 'types/Enums';
 
 import { HavePermission } from 'hooks/User';
 
-import { FileUpload } from 'components/inputs/Upload';
 import Paper from 'components/layout/Paper';
 
 const useStyles = makeStyles()((theme) => ({
@@ -114,13 +113,13 @@ const Admin = () => {
       {cards.map((card, i) => (
         <Card key={i} {...card} />
       ))}
-      <Paper className={classes.list}>
+      {/* <Paper className={classes.list}>
         <Typography variant='h3'>Filopplastning</Typography>
         <Typography variant='subtitle2'>
           Last opp filer og få en link du kan dele med andre. Bruk <Link to={URLS.shortLinks}>link-forkorteren</Link> hvis du vil ha enda kortere linker.
         </Typography>
         <FileUpload />
-      </Paper>
+      </Paper> */}
     </List>
   );
 };
