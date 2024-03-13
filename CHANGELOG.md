@@ -11,6 +11,7 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+## Versjon 2024.03.13
 
 ## Versjon 2023.07.02
 - 🎨 **Vipps betaling**. Brukere kan nå ikke sette nedbetalingstid selv. 2 timer er konstant tid.
