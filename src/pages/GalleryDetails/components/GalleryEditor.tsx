@@ -72,7 +72,7 @@ const GalleryEditor = ({ id }: GalleryEditorProps) => {
     <form onSubmit={handleSubmit(submit)}>
       <TextField formState={formState} label='Tittel' {...register('title')} />
       <TextField formState={formState} label='Beskrivelse' {...register('description')} />
-      <ImageUpload formState={formState} label='Trykk for å velge bilde eller dra bilde over' register={register('image')} setValue={setValue} watch={watch} />
+      <ImageUpload formState={formState} label='Velg bilde' register={register('image')} setValue={setValue} watch={watch} />
       <TextField formState={formState} label='Bildetekst' {...register('image_alt')} />
       <SubmitButton formState={formState} sx={{ my: 2 }}>
         Oppdater galleri

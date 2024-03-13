@@ -156,14 +156,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
           <TextField formState={formState} label='Header' {...register('header', { required: 'Feltet er påkrevd' })} required />
           <UserSearch control={control} formState={formState} label='Forfatter' name='creator' />
           <MarkdownEditor formState={formState} label='Innhold' {...register('body', { required: 'Gi nyheten et innhold' })} required />
-          <ImageUpload
-            formState={formState}
-            label='Trykk for å velge bilde eller dra bilde over'
-            ratio='21:9'
-            register={register('image')}
-            setValue={setValue}
-            watch={watch}
-          />
+          <ImageUpload formState={formState} label='Velg bilde' ratio='21:9' register={register('image')} setValue={setValue} watch={watch} />
           <TextField formState={formState} label='Alternativ bildetekst' {...register('image_alt')} />
           <FormGroup>
             <FormControlLabel
