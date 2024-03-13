@@ -170,14 +170,7 @@ export const InfoBannerAdminItem = ({ bannerId, onClose }: InfoBannerAdminItemPr
         helperText='F,eks: https://tihlde.org eller https://nrk.no'
       />
       <TextField disabled={updateBanner.isLoading} formState={formState} label='Beskrivelse' multiline required {...register('description')} minRows={2} />
-      <ImageUpload
-        formState={formState}
-        label='Trykk for å velge bilde eller dra bilde over'
-        ratio='21:9'
-        register={register('image')}
-        setValue={setValue}
-        watch={watch}
-      />
+      <ImageUpload formState={formState} label='Velg bilde' ratio='21:9' register={register('image')} setValue={setValue} watch={watch} />
       <TextField disabled={updateBanner.isLoading} formState={formState} label='Alternativ bildetekst' {...register('image_alt')} />
       <SubmitButton disabled={updateBanner.isLoading} formState={formState}>
         Lagre

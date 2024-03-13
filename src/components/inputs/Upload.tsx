@@ -150,7 +150,7 @@ export const GenericImageUpload = <FormValues extends FieldValues>({
                 isLoading
                   ? 'cursor-default'
                   : 'cursor-pointer' +
-                    ` flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg bg-background hover:bg-secondary dark:hover:border-gray-600`
+                    ` flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg bg-background md:hover:bg-secondary md:dark:hover:border-gray-600`
               }
               htmlFor='image-upload-button'>
               <div className='flex flex-col items-center justify-center pt-5 pb-6 space-y-4'>
