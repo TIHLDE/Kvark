@@ -1,4 +1,5 @@
 import { Skeleton, styled } from '@mui/material';
+import { Separator } from '@radix-ui/react-separator';
 import { createElement, lazy, ReactNode, Suspense, useMemo } from 'react';
 import rehypeRaw from 'rehype-raw';
 
@@ -12,7 +13,6 @@ import Expand from 'components/layout/Expand';
 import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
 import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
 import NewsListItem, { NewsListItemLoading } from 'components/miscellaneous/NewsListItem';
-import { Separator } from '@radix-ui/react-separator';
 
 const ReactMarkdown = lazy(() => import('react-markdown'));
 
@@ -118,10 +118,14 @@ const components: any = {
   h3: ({ children }: { children: ReactNode[] }) => <h1 className='text-2xl font-bold'>{children}</h1>,
   ol: ({ children }: { children: ReactNode[]; ordered: boolean }) => <ol className='ml-2 list-inside list-decimal'>{children}</ol>,
   ul: ({ children }: { children: ReactNode[]; ordered: boolean }) => <ul className='ml-2 list-inside list-disc'>{children}</ul>,
-  li: ({ children, checked }: { children: ReactNode[]; checked: boolean; }) => 
+  li: ({ children, checked }: { children: ReactNode[]; checked: boolean }) =>
     createElement('li', {}, checked ? createElement('input', { type: 'checkbox', checked, readOnly: true }) : null, children),
   p: ({ children }: { children: ReactNode[] }) => <p>{children}</p>,
-  a: ({ children, href }: { children: ReactNode[]; href: string }) => <a className='underline text-blue-500 dark:text-indigo-300' href={href}>{children}</a>,
+  a: ({ children, href }: { children: ReactNode[]; href: string }) => (
+    <a className='underline text-blue-500 dark:text-indigo-300' href={href}>
+      {children}
+    </a>
+  ),
   hr: () => <Separator className='my-1' />,
   img: ({ alt, src }: { alt: string; src: string }) => <Image alt={alt} loading='lazy' src={src} />,
 };

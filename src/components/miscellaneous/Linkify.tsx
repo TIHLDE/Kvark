@@ -8,7 +8,7 @@ const InternalLink = styled(Link)({ color: 'inherit' });
 
 const Linkify = (props: Props) => (
   <ReactLinkify
-    componentDecorator={(href, text) => (isExternalURL(href) ? <a className='underline text-blue-500' href={href}>{text}</a> : <Link className='text-red-500' to={href}>{text}</Link>)}
+    componentDecorator={(href, text) => (isExternalURL(href) ? <NativeLink href={href}>{text}</NativeLink> : <InternalLink to={href}>{text}</InternalLink>)}
     {...props}
   />
 );
