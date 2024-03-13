@@ -3,7 +3,6 @@ import {
   Alert,
   AlertTitle,
   Box,
-  Button,
   Checkbox,
   Chip,
   FormControl,
@@ -27,6 +26,7 @@ import { useGroupsByType } from 'hooks/Group';
 import { useUser } from 'hooks/User';
 
 import { ShowMoreText } from 'components/miscellaneous/UserInformation';
+import { Button } from 'components/ui/button';
 
 export type EventEditPriorityPoolsProps = {
   priorityPools: Array<PriorityPoolMutate>;
@@ -132,7 +132,7 @@ Om du for eksempel vil prioritere ${user?.studyyear.group?.name}-kullet til Data
           </Tooltip>
         </Stack>
       ))}
-      <Button onClick={addPriorityPool} variant='contained'>
+      <Button className='font-semibold' onClick={addPriorityPool} size='lg' type='button'>
         Legg til prioriteringsgruppe
       </Button>
     </Stack>

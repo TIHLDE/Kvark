@@ -117,7 +117,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
           <div>
             <Typography variant='subtitle1'>{`Epost: ${registration.user_info.email}`}</Typography>
             <Typography variant='subtitle1'>{`Påmeldt: ${formatDate(parseISO(registration.created_at))}`}</Typography>
-            <Typography variant='subtitle1'>{`Ventelistenummer: ${registration.wait_queue_number}`}</Typography>
+            {registration.wait_queue_number !== null && <Typography variant='subtitle1'>{`Ventelistenummer: ${registration.wait_queue_number}`}</Typography>}
           </div>
           <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
             {registration.is_on_wait && event && event.list_count >= event.limit ? (

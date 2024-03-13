@@ -32,6 +32,9 @@ dependencies:
   '@mui/material':
     specifier: ^5.14.9
     version: 5.14.9(@emotion/react@11.9.0)(@emotion/styled@11.11.0)(@types/react@17.0.37)(react-dom@17.0.2)(react@17.0.2)
+  '@radix-ui/react-separator':
+    specifier: ^1.0.3
+    version: 1.0.3(@types/react-dom@17.0.11)(@types/react@17.0.37)(react-dom@17.0.2)(react@17.0.2)
   '@radix-ui/react-slot':
     specifier: ^1.0.2
     version: 1.0.2(@types/react@17.0.37)(react@17.0.2)
@@ -1447,7 +1450,7 @@ packages:
       '@mui/types': 7.2.9(@types/react@17.0.37)
       '@mui/utils': 5.14.18(@types/react@17.0.37)(react@17.0.2)
       '@types/react': 17.0.37
-      clsx: 2.0.0
+      clsx: 2.1.0
       csstype: 3.1.2
       hoist-non-react-statics: 3.3.2
       jss: 10.10.0
