@@ -12,8 +12,8 @@ import { useUser } from 'hooks/User';
 import Dialog from 'components/layout/Dialog';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
-import Avatar from 'components/miscellaneous/Avatar';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
 
 export type EventPublicRegistrationsListProps = IconButtonProps & {
   eventId: Event['id'];
@@ -47,14 +47,20 @@ const EventPublicRegistrationsList = ({ eventId, ...props }: EventPublicRegistra
                   {registration.user_info ? (
                     <ListItemButton component={Link} to={`${URLS.profile}${registration.user_info.user_id}/`}>
                       <ListItemAvatar>
-                        <Avatar user={registration.user_info} />
+                        <Avatar className='mr-4'>
+                          <AvatarImage alt={registration.user_info.first_name} src={registration.user_info.image} />
+                          <AvatarFallback>{registration.user_info.first_name[0] + registration.user_info.last_name[0]}</AvatarFallback>
+                        </Avatar>
                       </ListItemAvatar>
                       <ListItemText primary={`${registration.user_info.first_name} ${registration.user_info.last_name}`} />
                     </ListItemButton>
                   ) : (
                     <Stack direction='row' sx={{ alignItems: 'center', px: 2, py: 0.5 }}>
                       <ListItemAvatar>
-                        <Avatar user={{ first_name: '?', last_name: '', image: '' }} />
+                        <Avatar className='mr-4'>
+                          <AvatarImage alt='?' src={''} />
+                          <AvatarFallback>?</AvatarFallback>
+                        </Avatar>
                       </ListItemAvatar>
                       <ListItemText primary='Anonym' />
                     </Stack>

@@ -1,6 +1,6 @@
-import PersonOutlineIcon from '@mui/icons-material/PersonRounded';
 import LightIcon from '@mui/icons-material/WbSunnyRounded';
-import { Button, IconButton, Theme, useTheme } from '@mui/material';
+import { IconButton, Theme, useTheme } from '@mui/material';
+import { UserRoundIcon } from 'lucide-react';
 import { makeStyles } from 'makeStyles';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -10,10 +10,10 @@ import { useSetRedirectUrl } from 'hooks/Misc';
 import { useUser } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
-import Avatar from 'components/miscellaneous/Avatar';
 import ThemeSettings from 'components/miscellaneous/ThemeSettings';
 import { NavigationOptions } from 'components/navigation/Navigation';
 import TopbarNotifications from 'components/navigation/TopbarNotifications';
+import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
 
 const useStyles = makeStyles<ProfileTopbarButtonProps>()((theme, props) => ({
   themeButton: {
@@ -46,32 +46,31 @@ const ProfileTopbarButton = (props: ProfileTopbarButtonProps) => {
   const analytics = (page: string) => event(`go-to-${page}`, 'topbar-profile-button', `Go to ${page}`);
 
   return (
-    <div>
+    <div className='flex items-center'>
       {Boolean(user) && <TopbarNotifications color={getColor(props, theme)} />}
       <ThemeSettings onClose={() => setShowThemeSettings(false)} open={showThemeSettings} />
       <IconButton aria-label='Endre tema' className={classes.themeButton} onClick={() => setShowThemeSettings(true)}>
         <LightIcon className={classes.themeSettingsIcon} />
       </IconButton>
       {user ? (
-        <Button
-          aria-label='Til profilen'
-          component={Link}
-          onClick={URLS.profile === location.pathname ? () => location.reload() : () => analytics('profile')}
-          to={URLS.profile}>
-          <Avatar user={user} />
-        </Button>
+        <Link className='pl-2' onClick={URLS.profile === location.pathname ? () => location.reload() : () => analytics('profile')} to={URLS.profile}>
+          <Avatar>
+            <AvatarImage alt={user.first_name} src={user.image} />
+            <AvatarFallback>
+              {user.first_name[0]}
+              {user.last_name[0]}
+            </AvatarFallback>
+          </Avatar>
+        </Link>
       ) : (
-        <IconButton
-          aria-label='Logg inn'
-          className={classes.menuButton}
-          component={Link}
+        <Link
           onClick={() => {
             setLogInRedirectURL(window.location.pathname);
             analytics('log-in');
           }}
           to={URLS.login}>
-          <PersonOutlineIcon />
-        </IconButton>
+          <UserRoundIcon className='text-white stroke-[1.5px]' />
+        </Link>
       )}
     </div>
   );
