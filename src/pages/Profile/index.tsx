@@ -6,23 +6,7 @@ import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
 import GroupsIcon from '@mui/icons-material/PeopleOutlineRounded';
 import SettingsIcon from '@mui/icons-material/TuneRounded';
 import WorkspacesIcon from '@mui/icons-material/WorkspacesRounded';
-import {
-  Badge,
-  Box,
-  Collapse,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemButtonProps,
-  ListItemIcon,
-  ListItemProps,
-  ListItemText,
-  Skeleton,
-  Stack,
-  styled,
-  SvgIconProps,
-  Typography,
-} from '@mui/material';
+import { ListItemProps, SvgIconProps } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getUserAffiliation } from 'utils';
@@ -41,22 +25,12 @@ import ProfileGroups from 'pages/Profile/components/ProfileGroups';
 import ProfileSettings from 'pages/Profile/components/ProfileSettings';
 import ProfileStrikes from 'pages/Profile/components/ProfileStrikes';
 
-import Paper from 'components/layout/Paper';
-import QRButton from 'components/miscellaneous/QRButton';
+import { ShadQRButton } from 'components/miscellaneous/QRButton';
 import Page from 'components/navigation/Page';
 import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
-
-const Content = styled('div')(({ theme }) => ({
-  display: 'grid',
-  gridTemplateColumns: '250px 1fr',
-  gridGap: theme.spacing(1),
-  alignItems: 'self-start',
-  marginTop: theme.spacing(1),
-  marginBottom: theme.spacing(3),
-  [theme.breakpoints.down('md')]: {
-    gridTemplateColumns: '1fr',
-  },
-}));
+import { Button } from 'components/ui/button';
+import { Card, CardContent } from 'components/ui/card';
+import { Skeleton } from 'components/ui/skeleton';
 
 const Profile = () => {
   const { userId } = useParams();
@@ -94,28 +68,31 @@ const Profile = () => {
   useEffect(() => setTab(userId ? badgesTab.label : eventTab.label), [userId]);
   useEffect(() => event('change-tab', 'profile', `Changed tab to: ${tab}`), [tab]);
 
-  type NavListItem = ListItemProps &
-    Pick<ListItemButtonProps, 'onClick'> & {
-      label: string;
-      icon: React.ComponentType<SvgIconProps>;
-      badge?: string | number;
-      iconProps?: SvgIconProps;
-    };
+  type NavListItem = ListItemProps & {
+    label: string;
+    icon: React.ComponentType<SvgIconProps>;
+    onClick?: () => void;
+    badge?: string | number;
+    iconProps?: SvgIconProps;
+  };
 
-  const NavListItem = ({ label, icon: Icon, onClick, badge, iconProps, ...props }: NavListItem) => (
-    <ListItem disableGutters disablePadding {...props}>
-      <ListItemButton
-        onClick={onClick ? onClick : () => setTab(label)}
-        selected={tab === label}
-        sx={{ borderRadius: ({ shape }) => `${shape.borderRadius}px` }}>
-        <ListItemIcon sx={{ minWidth: { xs: 32, sm: 40 } }}>
-          <Badge badgeContent={badge} color='error'>
-            <Icon color={tab === label ? 'primary' : 'inherit'} {...iconProps} />
-          </Badge>
-        </ListItemIcon>
-        <ListItemText primary={label} />
-      </ListItemButton>
-    </ListItem>
+  const NavListItem = ({ label, icon: Icon, onClick }: NavListItem) => (
+    // <ListItem disableGutters disablePadding {...props}>
+    //   <ListItemButton
+    //     onClick={onClick ? onClick : () => setTab(label)}
+    //     selected={tab === label}
+    //     sx={{ borderRadius: ({ shape }) => `${shape.borderRadius}px` }}>
+    //     <ListItemIcon sx={{ minWidth: { xs: 32, sm: 40 } }}>
+    //       <Badge badgeContent={badge} color='error'>
+    //         <Icon color={tab === label ? 'primary' : 'inherit'} {...iconProps} />
+    //       </Badge>
+    //     </ListItemIcon>
+    //     <ListItemText primary={label} />
+    //   </ListItemButton>
+    // </ListItem>
+    <Button className='flex justify-start text-md' onClick={onClick ? onClick : () => setTab(label)} variant={tab === label ? 'outline' : 'ghost'}>
+      <Icon className='mr-2 stroke-[1.5px]' /> {label}
+    </Button>
   );
 
   if (isError) {
@@ -124,83 +101,70 @@ const Profile = () => {
 
   return (
     <Page options={{ title: 'Profil', gutterTop: true, lightColor: 'blue' }}>
-      <Stack component={Paper} direction={{ xs: 'column', md: 'row' }} gap={1} sx={{ p: 2, mt: 1 }}>
-        <Stack direction='row' gap={1} sx={{ flex: 1 }}>
-          {user && (
-            <Avatar className='w-[70px] h-[70px] md:w-[140px] md:h-[140px] text-[1.8rem] md:text-[3rem]'>
-              <AvatarImage alt={user.first_name} src={user.image} />
-              <AvatarFallback>
-                {user.first_name[0]}
-                {user.last_name[0]}
-              </AvatarFallback>
-            </Avatar>
+      <Card className='my-4'>
+        <CardContent className='p-4 space-y-4 md:flex md:justify-between md:space-y-0'>
+          <div className='flex items-center space-x-2'>
+            {user && (
+              <Avatar className='w-[70px] h-[70px] md:w-[140px] md:h-[140px] text-[1.8rem] md:text-[3rem]'>
+                <AvatarImage alt={user.first_name} src={user.image} />
+                <AvatarFallback>
+                  {user.first_name[0]}
+                  {user.last_name[0]}
+                </AvatarFallback>
+              </Avatar>
+            )}
+            {user && user.first_name ? (
+              <div className='px-2 space-y-1 break-words'>
+                <h1 className='text-2xl md:text-5xl font-semibold'>{`${user.first_name} ${user.last_name}`}</h1>
+                <h1>
+                  {user.user_id} | <a href={`mailto:${user.email}`}>{user.email}</a>
+                </h1>
+                <h1>{getUserAffiliation(user)}</h1>
+              </div>
+            ) : (
+              <div className='flex items-center mx-2 space-x-2'>
+                <Skeleton className='w-[120px] h-[120px] rounded-full' />
+                <div className='space-y-2'>
+                  <Skeleton className='w-[230px] h-5' />
+                  <Skeleton className='w-[170px] h-5' />
+                </div>
+              </div>
+            )}
+          </div>
+          {!userId && user && (
+            <ShadQRButton qrValue={user.user_id} subtitle={`${user.first_name} ${user.last_name}`}>
+              Medlemsbevis
+            </ShadQRButton>
           )}
-          {user && user.first_name ? (
-            <Stack sx={{ m: 'auto', mx: 1, flex: 1 }}>
-              <Typography
-                sx={{ wordBreak: 'break-word', fontSize: { xs: '1.6rem', md: '3rem' } }}
-                variant='h1'>{`${user.first_name} ${user.last_name}`}</Typography>
-              <Typography sx={{ wordBreak: 'break-word' }} variant='subtitle1'>
-                {user.user_id} | <a href={`mailto:${user.email}`}>{user.email}</a>
-              </Typography>
-              <Typography sx={{ wordBreak: 'break-word' }} variant='subtitle1'>
-                {getUserAffiliation(user)}
-              </Typography>
-            </Stack>
-          ) : (
-            <Stack sx={{ m: 'auto', mx: 1, flex: 1 }}>
-              <Skeleton sx={{ fontSize: { xs: '1.8rem', md: '3rem' } }} variant='text' width={230} />
-              <Skeleton variant='text' width={170} />
-            </Stack>
-          )}
-        </Stack>
-        {!userId && user && (
-          <QRButton qrValue={user.user_id} subtitle={`${user.first_name} ${user.last_name}`} sx={{ mb: 'auto' }}>
-            Medlemsbevis
-          </QRButton>
-        )}
-      </Stack>
-      <Content>
-        <Stack spacing={1}>
-          <Paper noOverflow noPadding>
-            <List aria-label='Profil innholdsliste' disablePadding sx={{ display: 'grid', gridTemplateColumns: { xs: '50% 50%', md: '1fr' } }}>
+        </CardContent>
+      </Card>
+      <div className='grid grid-cols-1 md:grid-cols-4 md:gap-x-4 pb-4'>
+        <div className='space-y-4 col-span-1 mb-4 md:mb-0'>
+          <Card>
+            <CardContent className='p-0 grid grid-cols-2 md:grid-cols-1'>
               {tabs.map((tab) => (
                 <NavListItem {...tab} key={tab.label} />
               ))}
-            </List>
-          </Paper>
+            </CardContent>
+          </Card>
           {!userId && (
-            <Paper noOverflow noPadding>
-              <List aria-label='Logg ut' disablePadding>
+            <Card>
+              <CardContent className='p-0 grid grid-cols-1'>
                 <NavListItem {...logoutTab} />
-              </List>
-            </Paper>
+              </CardContent>
+            </Card>
           )}
-        </Stack>
-        <Box sx={{ overflowX: 'auto' }}>
-          <Collapse in={tab === eventTab.label}>
-            <ProfileEvents />
-          </Collapse>
-          <Collapse in={tab === badgesTab.label} mountOnEnter>
-            <ProfileBadges />
-          </Collapse>
-          <Collapse in={tab === groupsTab.label} mountOnEnter>
-            <ProfileGroups />
-          </Collapse>
-          <Collapse in={tab === formsTab.label} mountOnEnter>
-            <ProfileForms />
-          </Collapse>
-          <Collapse in={tab === strikesTab.label} mountOnEnter>
-            <ProfileStrikes />
-          </Collapse>
-          <Collapse in={tab === settingsTab.label} mountOnEnter>
-            {user && <ProfileSettings user={user} />}
-          </Collapse>
-          <Collapse in={tab === adminTab.label} mountOnEnter>
-            <ProfileAdmin />
-          </Collapse>
-        </Box>
-      </Content>
+        </div>
+        <div className='col-span-3'>
+          {tab === eventTab.label && <ProfileEvents />}
+          {tab === badgesTab.label && <ProfileBadges />}
+          {tab === groupsTab.label && <ProfileGroups />}
+          {tab === formsTab.label && <ProfileForms />}
+          {tab === strikesTab.label && <ProfileStrikes />}
+          {tab === settingsTab.label && user && <ProfileSettings user={user} />}
+          {tab === adminTab.label && <ProfileAdmin />}
+        </div>
+      </div>
     </Page>
   );
 };
