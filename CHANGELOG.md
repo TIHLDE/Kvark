@@ -11,6 +11,10 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+- 🎨 **Tema**. Endret til shadcn komponenter for å endre tema.
+- 🦟 **Markdown**. Fikset markdown bug.
+- 🎨 **Bildeopplastning**. Endret komponent for å laste opp bilder.
+- 🎨 **Admin filopplastning**. Fjernet mulighet for admin å laste opp bilder.
 
 ## Versjon 2023.07.02
 - 🎨 **Vipps betaling**. Brukere kan nå ikke sette nedbetalingstid selv. 2 timer er konstant tid.
