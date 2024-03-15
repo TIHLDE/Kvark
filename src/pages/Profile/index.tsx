@@ -42,9 +42,9 @@ import ProfileSettings from 'pages/Profile/components/ProfileSettings';
 import ProfileStrikes from 'pages/Profile/components/ProfileStrikes';
 
 import Paper from 'components/layout/Paper';
-import Avatar from 'components/miscellaneous/Avatar';
 import QRButton from 'components/miscellaneous/QRButton';
 import Page from 'components/navigation/Page';
+import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
 
 const Content = styled('div')(({ theme }) => ({
   display: 'grid',
@@ -126,7 +126,15 @@ const Profile = () => {
     <Page options={{ title: 'Profil', gutterTop: true, lightColor: 'blue' }}>
       <Stack component={Paper} direction={{ xs: 'column', md: 'row' }} gap={1} sx={{ p: 2, mt: 1 }}>
         <Stack direction='row' gap={1} sx={{ flex: 1 }}>
-          <Avatar sx={{ width: { xs: 70, md: 140 }, height: { xs: 70, md: 140 }, fontSize: { xs: '1.8rem', md: '3rem' } }} user={user} />
+          {user && (
+            <Avatar className='w-[70px] h-[70px] md:w-[140px] md:h-[140px] text-[1.8rem] md:text-[3rem]'>
+              <AvatarImage alt={user.first_name} src={user.image} />
+              <AvatarFallback>
+                {user.first_name[0]}
+                {user.last_name[0]}
+              </AvatarFallback>
+            </Avatar>
+          )}
           {user && user.first_name ? (
             <Stack sx={{ m: 'auto', mx: 1, flex: 1 }}>
               <Typography

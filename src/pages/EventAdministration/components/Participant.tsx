@@ -16,9 +16,9 @@ import { useUserStrikes } from 'hooks/User';
 
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
-import Avatar from 'components/miscellaneous/Avatar';
 import StrikeCreateDialog from 'components/miscellaneous/StrikeCreateDialog';
 import StrikeListItem from 'components/miscellaneous/StrikeListItem';
+import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
 
 export type ParticipantProps = {
   eventId: number;
@@ -100,7 +100,10 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
         }>
         <ListItemButton onClick={() => setExpanded((prev) => !prev)}>
           <ListItemAvatar>
-            <Avatar user={registration.user_info} />
+            <Avatar>
+              <AvatarImage alt={registration.user_info.first_name} src={registration.user_info.image} />
+              <AvatarFallback>{registration.user_info.first_name[0] + registration.user_info.last_name[0]}</AvatarFallback>
+            </Avatar>
           </ListItemAvatar>
           <ListItemText
             primary={`${registration.user_info.first_name} ${registration.user_info.last_name}`}
