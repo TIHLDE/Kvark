@@ -18,7 +18,7 @@ import TextField from 'components/inputs/TextField';
 import Dialog from 'components/layout/Dialog';
 import { StandaloneExpand } from 'components/layout/Expand';
 import Paper from 'components/layout/Paper';
-import Avatar from 'components/miscellaneous/Avatar';
+import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
 
 type FormValues = {
   reason: string;
@@ -89,7 +89,12 @@ const PersonListItem = ({ user, is_TIHLDE_member = true }: PersonListItemProps) 
     <StandaloneExpand
       bgColor='smoke'
       expanded={expanded}
-      icon={<Avatar sx={{ mr: 2 }} user={user} />}
+      icon={
+        <Avatar className='mr-4'>
+          <AvatarImage alt={user.first_name} src={user.image} />
+          <AvatarFallback>{user.first_name[0] + user.last_name[0]}</AvatarFallback>
+        </Avatar>
+      }
       listItemProps={{
         secondaryAction: (
           <IconButton component='a' href={`${URLS.profile}${user.user_id}/`} rel='noopener noreferrer' target='_blank'>
