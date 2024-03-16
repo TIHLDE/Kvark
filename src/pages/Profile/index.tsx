@@ -1,12 +1,5 @@
-import AdminIcon from '@mui/icons-material/AdminPanelSettingsRounded';
-import EventIcon from '@mui/icons-material/DateRangeRounded';
-import BadgesIcon from '@mui/icons-material/EmojiEventsRounded';
-import LogOutIcon from '@mui/icons-material/ExitToAppRounded';
-import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
-import GroupsIcon from '@mui/icons-material/PeopleOutlineRounded';
-import SettingsIcon from '@mui/icons-material/TuneRounded';
-import WorkspacesIcon from '@mui/icons-material/WorkspacesRounded';
 import { ListItemProps, SvgIconProps } from '@mui/material';
+import { BadgeIcon, CalendarDaysIcon, FileQuestionIcon, GripIcon, LogOutIcon, LucideIcon, SettingsIcon, ShieldCheckIcon, UsersIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getUserAffiliation } from 'utils';
@@ -51,13 +44,13 @@ const Profile = () => {
     logOut();
   };
 
-  const eventTab: NavListItem = { label: 'Arrangementer', icon: EventIcon };
-  const badgesTab: NavListItem = { label: 'Badges', icon: BadgesIcon };
-  const groupsTab: NavListItem = { label: 'Medlemskap', icon: GroupsIcon };
-  const formsTab: NavListItem = { label: 'Spørreskjemaer', icon: FormsIcon, badge: user?.unanswered_evaluations_count };
+  const eventTab: NavListItem = { label: 'Arrangementer', icon: CalendarDaysIcon };
+  const badgesTab: NavListItem = { label: 'Badges', icon: BadgeIcon };
+  const groupsTab: NavListItem = { label: 'Medlemskap', icon: UsersIcon };
+  const formsTab: NavListItem = { label: 'Spørreskjemaer', icon: FileQuestionIcon, badge: user?.unanswered_evaluations_count };
   const settingsTab: NavListItem = { label: 'Innstillinger', icon: SettingsIcon };
-  const adminTab: NavListItem = { label: 'Admin', icon: AdminIcon };
-  const strikesTab: NavListItem = { label: 'Prikker', icon: WorkspacesIcon };
+  const adminTab: NavListItem = { label: 'Admin', icon: ShieldCheckIcon };
+  const strikesTab: NavListItem = { label: 'Prikker', icon: GripIcon };
   const logoutTab: NavListItem = { label: 'Logg ut', icon: LogOutIcon, onClick: logout, iconProps: { sx: { color: (theme) => theme.palette.error.main } } };
   const tabs: Array<NavListItem> = userId
     ? [badgesTab, groupsTab]
@@ -70,7 +63,7 @@ const Profile = () => {
 
   type NavListItem = ListItemProps & {
     label: string;
-    icon: React.ComponentType<SvgIconProps>;
+    icon: LucideIcon;
     onClick?: () => void;
     badge?: string | number;
     iconProps?: SvgIconProps;
@@ -100,7 +93,7 @@ const Profile = () => {
   }
 
   return (
-    <Page options={{ title: 'Profil', gutterTop: true, lightColor: 'blue' }}>
+    <Page options={{ title: 'Profil', gutterTop: true }}>
       <Card className='my-4'>
         <CardContent className='p-4 space-y-4 md:flex md:justify-between md:space-y-0'>
           <div className='flex items-center space-x-2'>

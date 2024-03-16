@@ -1,4 +1,4 @@
-import { Stack, Theme, ToggleButton, ToggleButtonGroup, useMediaQuery } from '@mui/material';
+import { Stack } from '@mui/material';
 import { TIHLDE_API_URL } from 'constant';
 import { CalendarPlusIcon, ChevronDownIcon, ChevronRightIcon, InfoIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
@@ -84,41 +84,26 @@ const ProfileEvents = () => {
   const { data, hasNextPage, fetchNextPage, isFetching } = useUserEvents(undefined, tab !== 'present');
   const events = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
 
-  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
-
   return (
     <Stack gap={1}>
       <EventsSubscription />
 
-      <ToggleButtonGroup
-        aria-label='Arrangementer'
-        color='primary'
-        exclusive
-        fullWidth={!lgUp}
-        onChange={(_, newVal: 'present' | 'expired' | null) => setTab((prev) => (newVal ? newVal : prev))}
-        size='medium'
-        style={{
-          display: 'flex',
-          width: '100%',
-        }}
-        value={tab}>
-        <ToggleButton
-          style={{
-            width: '100%',
-            fontSize: '0.9rem',
-          }}
-          value='present'>
+      <div className='grid grid-cols-1 space-y-2 md:space-y-0 md:flex md:items-center md:justify-center md:space-x-4'>
+        <Button
+          className={`w-full md:text-md ${tab === 'present' ? 'bg-white dark:bg-secondary' : ''}`}
+          onClick={() => setTab('present')}
+          size='lg'
+          variant='outline'>
           Kommende arrangementer
-        </ToggleButton>
-        <ToggleButton
-          style={{
-            width: '100%',
-            fontSize: '0.9rem',
-          }}
-          value='expired'>
+        </Button>
+        <Button
+          className={`w-full md:text-md ${tab === 'expired' ? 'bg-white dark:bg-secondary' : ''}`}
+          onClick={() => setTab('expired')}
+          size='lg'
+          variant='outline'>
           Tidligere arrangementer
-        </ToggleButton>
-      </ToggleButtonGroup>
+        </Button>
+      </div>
 
       {!data ? (
         <EventListItemLoading />

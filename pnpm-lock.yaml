@@ -50,6 +50,12 @@ dependencies:
   '@radix-ui/react-slot':
     specifier: ^1.0.2
     version: 1.0.2(@types/react@17.0.37)(react@17.0.2)
+  '@radix-ui/react-toggle':
+    specifier: ^1.0.3
+    version: 1.0.3(react-dom@17.0.2)(react@17.0.2)
+  '@radix-ui/react-toggle-group':
+    specifier: ^1.0.4
+    version: 1.0.4(react-dom@17.0.2)(react@17.0.2)
   '@vercel/analytics':
     specifier: 1.0.2
     version: 1.0.2
@@ -3082,6 +3088,31 @@ packages:
       react-dom: 17.0.2(react@17.0.2)
     dev: false
 
+  /@radix-ui/react-toggle-group@1.0.4(react-dom@17.0.2)(react@17.0.2):
+    resolution: {integrity: sha512-Uaj/M/cMyiyT9Bx6fOZO0SAG4Cls0GptBWiBmBxofmDbNVnYYoyRWj/2M/6VCi/7qcXFWnHhRUfdfZFvvkuu8A==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.24.0
+      '@radix-ui/primitive': 1.0.1
+      '@radix-ui/react-context': 1.0.1(react@17.0.2)
+      '@radix-ui/react-direction': 1.0.1(react@17.0.2)
+      '@radix-ui/react-primitive': 1.0.3(react-dom@17.0.2)(react@17.0.2)
+      '@radix-ui/react-roving-focus': 1.0.4(react-dom@17.0.2)(react@17.0.2)
+      '@radix-ui/react-toggle': 1.0.3(react-dom@17.0.2)(react@17.0.2)
+      '@radix-ui/react-use-controllable-state': 1.0.1(react@17.0.2)
+      react: 17.0.2
+      react-dom: 17.0.2(react@17.0.2)
+    dev: false
+
   /@radix-ui/react-toggle@1.0.3(@types/react-dom@17.0.11)(@types/react@17.0.37)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-Pkqg3+Bc98ftZGsl60CLANXQBBQ4W3mTFS9EJvNxKMZ7magklKV69/id1mlAlOFDDfHvlCms0fx8fA4CMKDJHg==}
     peerDependencies:
@@ -3101,6 +3132,27 @@ packages:
       '@radix-ui/react-use-controllable-state': 1.0.1(@types/react@17.0.37)(react@17.0.2)
       '@types/react': 17.0.37
       '@types/react-dom': 17.0.11
+      react: 17.0.2
+      react-dom: 17.0.2(react@17.0.2)
+    dev: false
+
+  /@radix-ui/react-toggle@1.0.3(react-dom@17.0.2)(react@17.0.2):
+    resolution: {integrity: sha512-Pkqg3+Bc98ftZGsl60CLANXQBBQ4W3mTFS9EJvNxKMZ7magklKV69/id1mlAlOFDDfHvlCms0fx8fA4CMKDJHg==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.24.0
+      '@radix-ui/primitive': 1.0.1
+      '@radix-ui/react-primitive': 1.0.3(react-dom@17.0.2)(react@17.0.2)
+      '@radix-ui/react-use-controllable-state': 1.0.1(react@17.0.2)
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
     dev: false
