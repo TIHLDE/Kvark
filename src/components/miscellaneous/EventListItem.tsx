@@ -1,6 +1,6 @@
 import CategoryIcon from '@mui/icons-material/CategoryRounded';
 import DateIcon from '@mui/icons-material/DateRangeRounded';
-import { alpha, Button as MuiButton, ButtonProps, Grid, ListItemProps, Skeleton, Stack, styled, SvgIconTypeMap, Typography, useTheme } from '@mui/material';
+import { alpha, ButtonProps, Grid, ListItemProps, Button as MuiButton, Skeleton, Stack, styled, SvgIconTypeMap, Typography, useTheme } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { parseISO } from 'date-fns';
 import { useMemo } from 'react';
@@ -109,20 +109,10 @@ const EventListItem = ({ event, sx }: EventListItemProps) => {
   };
 
   return (
-    <Card
-      className={`${getColor()}`}
-      ref={observe}
-    >
+    <Card className={`${getColor()}`} ref={observe}>
       <CardContent className='p-0.5'>
-        <Link
-          className='flex items-center space-x-4'
-          to={`${URLS.events}${event.id}/${urlEncode(event.title)}/`}
-        >
-          <img 
-            className='w-1/3 h-20 object-cover rounded-l-md'
-            alt={event.image_alt || event.title}
-            src={event.image}
-          />
+        <Link className='flex items-center space-x-4' to={`${URLS.events}${event.id}/${urlEncode(event.title)}/`}>
+          <img alt={event.image_alt || event.title} className='w-1/3 h-20 object-cover rounded-l-md' src={event.image} />
         </Link>
       </CardContent>
     </Card>
