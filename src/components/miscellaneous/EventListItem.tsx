@@ -80,7 +80,7 @@ const Divider = styled('div')(({ theme }) => ({
 
 const EventListItem = ({ event, sx }: EventListItemProps) => {
   const { observe, width } = useDimensions();
-  const theme = useTheme();
+  // const theme = useTheme();
 
   const [height, titleFontSize, contentFontSize] = useMemo(() => {
     if (width < 400) {
