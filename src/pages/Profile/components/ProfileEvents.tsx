@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import { TIHLDE_API_URL } from 'constant';
 import { CalendarPlusIcon, ChevronDownIcon, ChevronRightIcon, InfoIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
@@ -85,7 +84,7 @@ const ProfileEvents = () => {
   const events = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
 
   return (
-    <Stack gap={1}>
+    <div className='space-y-2'>
       <EventsSubscription />
 
       <div className='grid grid-cols-1 space-y-2 md:space-y-0 md:flex md:items-center md:justify-center md:space-x-4'>
@@ -116,7 +115,7 @@ const ProfileEvents = () => {
           ))}
         </Pagination>
       )}
-    </Stack>
+    </div>
   );
 };
 
