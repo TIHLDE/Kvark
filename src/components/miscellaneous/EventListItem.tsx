@@ -1,6 +1,6 @@
 import CategoryIcon from '@mui/icons-material/CategoryRounded';
 import DateIcon from '@mui/icons-material/DateRangeRounded';
-import { alpha, Button, ButtonProps, Grid, ListItemProps, Skeleton, Stack, styled, SvgIconTypeMap, Typography, useTheme } from '@mui/material';
+import { alpha, Button as MuiButton, ButtonProps, Grid, ListItemProps, Skeleton, Stack, styled, SvgIconTypeMap, Typography, useTheme } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { parseISO } from 'date-fns';
 import { useMemo } from 'react';
@@ -15,6 +15,7 @@ import { Groups } from 'types/Enums';
 import { useCategories } from 'hooks/Categories';
 
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
+import { Card, CardContent } from 'components/ui/card';
 
 type EventInfoContentProps = {
   icon?: OverridableComponent<SvgIconTypeMap<unknown, 'svg'>>;
@@ -38,7 +39,7 @@ export type EventListItemProps = {
   sx?: ListItemProps['sx'];
 };
 
-const EventListItemButton = styled(Button, { shouldForwardProp: (prop) => prop !== 'borderColor' })<
+const EventListItemButton = styled(MuiButton, { shouldForwardProp: (prop) => prop !== 'borderColor' })<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ButtonProps<any, { component?: any }> & { borderColor: string }
 >(({ theme, borderColor }) => ({
@@ -97,15 +98,35 @@ const EventListItem = ({ event, sx }: EventListItemProps) => {
 
   const getColor = () => {
     if (categories.find((c) => c.id === event.category)?.text === 'Aktivitet') {
-      return theme.palette.colors.activity_event;
+      return 'border-[#9778ce] dark:border-[#7e57c2]';
     }
 
     if (event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase()) {
-      return theme.palette.colors.nok_event;
+      return 'border-[#83C4F8] dark:border-[#83C4F8]';
     }
 
-    return theme.palette.colors.other_event;
+    return 'border-[#FFA675] dark:border-[#FFA675]';
   };
+
+  return (
+    <Card
+      className={`${getColor()}`}
+      ref={observe}
+    >
+      <CardContent className='p-0.5'>
+        <Link
+          className='flex items-center space-x-4'
+          to={`${URLS.events}${event.id}/${urlEncode(event.title)}/`}
+        >
+          <img 
+            className='w-1/3 h-20 object-cover rounded-l-md'
+            alt={event.image_alt || event.title}
+            src={event.image}
+          />
+        </Link>
+      </CardContent>
+    </Card>
+  );
 
   return (
     <EventListItemButton
