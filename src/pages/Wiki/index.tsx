@@ -89,7 +89,7 @@ const Wiki = () => {
           <WikiNavigator />
           {data && (
             <>
-              <ShareButton fullWidth shareId={data.path} shareType='pages' title={data.title} />
+              <ShareButton shareId={data.path} shareType='pages' title={data.title} />
               <WikiAdmin page={data} />
             </>
           )}

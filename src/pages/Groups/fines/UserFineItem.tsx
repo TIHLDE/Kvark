@@ -17,7 +17,7 @@ import { useFinesFilter } from 'pages/Groups/fines/FinesContext';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
-import Avatar from 'components/miscellaneous/Avatar';
+import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
 
 export type UserFineItemProps = Pick<FineItemProps, 'groupSlug' | 'isAdmin'> & {
   userFine: GroupUserFine;
@@ -57,7 +57,10 @@ const UserFineItem = ({ userFine, groupSlug, isAdmin }: UserFineItemProps) => {
   return (
     <Paper noOverflow noPadding>
       <ListItem button dense onClick={() => setExpanded((prev) => !prev)}>
-        <Avatar sx={{ mr: 2 }} user={userFine.user} />
+        <Avatar className='mr-4'>
+          <AvatarImage alt={userFine.user.first_name} src={userFine.user.image} />
+          <AvatarFallback>{userFine.user.first_name[0] + userFine.user.last_name[0]}</AvatarFallback>
+        </Avatar>
         <ListItemText primary={`${userFine.user.first_name} ${userFine.user.last_name}`} />
         <Typography sx={{ fontWeight: 'bold', ml: 1, mr: 3 }} variant='h3'>
           {userFine.fines_amount}

@@ -1,36 +1,18 @@
-import { styled, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
-import { MouseEvent as ReactMouseEvent, useState } from 'react';
-import { themesDetails, ThemeTypes } from 'theme';
+import { MoonStarIcon, SunIcon } from 'lucide-react';
+import { useState } from 'react';
+import { ThemeTypes } from 'theme';
 
 import { useThemeSettings } from 'hooks/Theme';
 import { useAnalytics } from 'hooks/Utils';
 
-import Dialog from 'components/layout/Dialog';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from 'components/ui/dropdown-menu';
 
-const ThemeDialog = styled(Dialog)({
-  '& .MuiPaper-root': {
-    maxWidth: '250px',
-  },
-});
-const ButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-  background: theme.palette.background.smoke,
-}));
-const ButtonText = styled(Typography)(({ theme }) => ({
-  margin: theme.spacing(0, 1),
-  color: theme.palette.text.secondary,
-}));
-
-export type ThemeSettingsProps = {
-  open: boolean;
-  onClose: () => void;
-};
-
-const ThemeSettings = ({ open, onClose }: ThemeSettingsProps) => {
+const ThemeSettings = () => {
   const { event } = useAnalytics();
   const themeSettings = useThemeSettings();
   const [themeName, setThemeName] = useState(themeSettings.getThemeFromStorage());
 
-  const changeTheme = (e: ReactMouseEvent<HTMLElement, MouseEvent>, newThemeName: ThemeTypes) => {
+  const changeTheme = (newThemeName: ThemeTypes) => {
     if (newThemeName) {
       setThemeName(newThemeName);
       themeSettings.set(newThemeName);
@@ -39,19 +21,20 @@ const ThemeSettings = ({ open, onClose }: ThemeSettingsProps) => {
   };
 
   return (
-    <ThemeDialog maxWidth={false} onClose={onClose} open={open}>
-      <Typography align='center' gutterBottom variant='h2'>
-        Tema
-      </Typography>
-      <ButtonGroup aria-label='Tema' exclusive fullWidth onChange={changeTheme} orientation='vertical' value={themeName}>
-        {themesDetails.map((theme) => (
-          <ToggleButton aria-label={theme.name} key={theme.key} value={theme.key}>
-            <theme.icon />
-            <ButtonText variant='subtitle2'>{theme.name}</ButtonText>
-          </ToggleButton>
-        ))}
-      </ButtonGroup>
-    </ThemeDialog>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        {themeName === 'light' ? (
+          <SunIcon className='cursor-pointer stroke-[1.5px] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-white' />
+        ) : (
+          <MoonStarIcon className='cursor-pointer stroke-[1.5px] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 text-white' />
+        )}
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align='end'>
+        <DropdownMenuItem onClick={() => changeTheme('light')}>Lyst</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => changeTheme('dark')}>Mørkt</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => changeTheme('automatic')}>Automatisk</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 

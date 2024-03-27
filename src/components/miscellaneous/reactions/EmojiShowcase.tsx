@@ -1,5 +1,3 @@
-import { Stack } from '@mui/material';
-
 import { useUser } from 'hooks/User';
 
 import { EmojiItem } from './EmojiItem';
@@ -21,7 +19,7 @@ export const EmojiShowcase = ({ data, content_type }: ReactionHandlerProps) => {
 
   if (userEmoji) {
     return (
-      <Stack direction='row' spacing={1}>
+      <div className='flex items-center space-x-1'>
         <EmojiItem
           content_type={content_type}
           data={data}
@@ -29,19 +27,18 @@ export const EmojiShowcase = ({ data, content_type }: ReactionHandlerProps) => {
         />
         {topEmojiCollections
           .filter((emoji) => emoji.emoji !== userEmoji)
-          .slice(0, 2)
+          .slice(0, 3)
           .map((emoji, index) => (
             <EmojiItem content_type={content_type} data={data} emoji={emoji} key={index} />
           ))}
-      </Stack>
+      </div>
     );
   }
-
   return (
-    <Stack direction='row' spacing={1}>
-      {topEmojiCollections.slice(0, 3).map((emoji, index) => (
+    <div className='flex items-center space-x-1'>
+      {topEmojiCollections.slice(0, 4).map((emoji, index) => (
         <EmojiItem content_type={content_type} data={data} emoji={emoji} key={index} />
       ))}
-    </Stack>
+    </div>
   );
 };
