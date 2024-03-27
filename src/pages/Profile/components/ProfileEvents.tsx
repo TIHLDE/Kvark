@@ -1,5 +1,8 @@
 import { TIHLDE_API_URL } from 'constant';
 import { CalendarPlusIcon, ChevronDownIcon, ChevronRightIcon, InfoIcon } from 'lucide-react';
+import { Stack, Theme, ToggleButton, ToggleButtonGroup, useMediaQuery } from '@mui/material';
+import { TIHLDE_API_URL } from 'constant';
+import { CalendarPlusIcon, InfoIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 import { USERS_ENDPOINT } from 'api/api';
@@ -13,29 +16,17 @@ import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import { Alert, AlertDescription, AlertTitle } from 'components/ui/alert';
 import { Button } from 'components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from 'components/ui/collapsible';
+import { Alert, AlertDescription } from 'components/ui/alert';
+import Expandable from 'components/ui/expandable';
 
 export const EventsSubscription = () => {
   const { data: user } = useUser();
   const [isOpen, setOpen] = useState<boolean>(false);
 
   return (
-    <Collapsible className='w-full bg-white dark:bg-inherit border border-secondary rounded-md' onOpenChange={setOpen} open={isOpen}>
-      <CollapsibleTrigger asChild>
-        <Button
-          className='py-8 w-full rounded-t-md rounded-b-none bg-white dark:bg-inherit dark:hover:bg-secondary border-none flex justify-between items-center'
-          variant='outline'>
-          <div className='flex items-center space-x-4'>
-            <CalendarPlusIcon className='stroke-[1.5px]' />
-            <div className='text-start'>
-              <h1>Kalender-abonnement</h1>
-              <h1 className='text-sm'>Påmeldinger rett inn i kalenderen</h1>
-            </div>
-          </div>
-          <div>{isOpen ? <ChevronDownIcon className='stroke-[1.5px]' /> : <ChevronRightIcon className='stroke-[1.5px]' />}</div>
-        </Button>
-      </CollapsibleTrigger>
-      <CollapsibleContent className='border border-t-secondary border-b-0 border-x-0 p-4'>
-        <h1 className='text-sm pb-2'>
+    <Expandable description='Påmeldinger rett inn i kalenderen' icon={<CalendarPlusIcon className='stroke-[1.5px]' />} title='Kalender-abonnement'>
+      <div className='space-y-4'>
+        <h1 className='text-sm'>
           Du kan abonnere på din arrangement-kalender slik at nye påmeldinger kommer automatisk inn i kalenderen din. Kopier URLen under og åpne{' '}
           <a
             className='underline text-blue-500 dark:text-indigo-300'
@@ -67,14 +58,15 @@ export const EventsSubscription = () => {
         {!user ? null : user.public_event_registrations ? (
           <Pre>{`${TIHLDE_API_URL}${USERS_ENDPOINT}/${user.user_id}/events.ics`}</Pre>
         ) : (
-          <Alert className='space-x-4'>
+          <Alert variant='destructive'>
             <InfoIcon className='stroke-[1.5px]' />
-            <AlertTitle>Du har skrudd av offentlige arrangementspåmeldinger.</AlertTitle>
-            <AlertDescription>Du må skru det på i profilen for å kunne abonnere på din arrangement-kalender.</AlertDescription>
+            <AlertDescription>
+              Du har skrudd av offentlige arrangementspåmeldinger. Du må skru det på i profilen for å kunne abonnere på din arrangement-kalender.
+            </AlertDescription>
           </Alert>
         )}
-      </CollapsibleContent>
-    </Collapsible>
+      </div>
+    </Expandable>
   );
 };
 
