@@ -11,7 +11,12 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
-## Versjon 2024.03.13
+- 🎨 **Tema**. Endret til shadcn komponenter for å endre tema.
+- 🦟 **Markdown**. Fikset markdown bug.
+- 🎨 **Bildeopplastning**. Endret komponent for å laste opp bilder.
+- 🎨 **Admin filopplastning**. Fjernet mulighet for admin å laste opp bilder.
+- 🎨 **Arrangement view**. Endret design til shadcn på arrangement view.
+- 🎨 **Profilside**. Endret design for profilside til bruker.
 
 ## Versjon 2023.07.02
 - 🎨 **Vipps betaling**. Brukere kan nå ikke sette nedbetalingstid selv. 2 timer er konstant tid.

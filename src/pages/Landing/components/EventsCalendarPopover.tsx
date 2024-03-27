@@ -35,7 +35,9 @@ const EventsCalendarPopover = ({ id }: EventsCalendarPopoverProps) => {
             </>
           )}
 
-          <Link to={`${URLS.events}${data.id}/${urlEncode(data.title)}/`}>Til arrangement</Link>
+          <Link className='underline text-blue-500 dark:text-indigo-300' to={`${URLS.events}${data.id}/${urlEncode(data.title)}/`}>
+            Til arrangement
+          </Link>
         </>
       )}
     </Stack>

@@ -1,5 +1,3 @@
-import styled from '@emotion/styled';
-import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { differenceInMilliseconds, formatDistanceStrict, minutesToMilliseconds } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
@@ -9,14 +7,11 @@ import { Event, Order } from 'types';
 import { useCreatePaymentOrder } from 'hooks/Payment';
 import { useSnackbar } from 'hooks/Snackbar';
 
-import Paper from 'components/layout/Paper';
+import LoadingSpinnner from 'components/miscellaneous/LoadingSpinner';
+import { Button } from 'components/ui/button';
+import { Card, CardContent } from 'components/ui/card';
 
 import VIPPS from 'assets/img/vipps.svg';
-
-const ContentPaper = styled(Paper)({
-  height: 'fit-content',
-  overflowX: 'auto',
-});
 
 const getTimeDifference = (time: Date) => {
   const now = new Date();
@@ -83,27 +78,23 @@ const CountdownTimer = ({ payment_expiredate, event_id }: Registration) => {
 
   if (new Date(payment_expiredate) <= new Date()) {
     return (
-      <ContentPaper>
-        <Box sx={{ textAlign: 'center', p: 2 }}>
-          <Typography sx={{ color: (theme) => theme.palette.text.primary }}>
-            Betalingstiden har gått ut. Det er ikke lenger mulig å betale for dette arrangementet. Du vil bli satt på venteliste innen kort tid.
-          </Typography>
-        </Box>
-      </ContentPaper>
+      <Card>
+        <CardContent className='py-8 text-center space-y-4'>
+          <h1>Betalingstiden har gått ut. Det er ikke lenger mulig å betale for dette arrangementet. Du vil bli satt på venteliste innen kort tid.</h1>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
-    <ContentPaper>
-      <Box sx={{ textAlign: 'center', p: 2 }}>
-        <Button disabled={createPaymentOrder.isLoading} onClick={() => create({ event: event_id })}>
-          {createPaymentOrder.isLoading ? <CircularProgress /> : <img alt='Betal med vipps' src={VIPPS} />}
+    <Card>
+      <CardContent className='py-8 text-center space-y-4'>
+        <Button className='hover:bg-inherit' disabled={createPaymentOrder.isLoading} onClick={() => create({ event: event_id })} variant='ghost'>
+          {createPaymentOrder.isLoading ? <LoadingSpinnner /> : <img alt='Betal med vipps' src={VIPPS} />}
         </Button>
-      </Box>
-      <Typography align='center' sx={{ color: (theme) => theme.palette.text.primary }}>
-        Betal innen {timeLeft} for å beholde plassen på arrangementet.
-      </Typography>
-    </ContentPaper>
+        <h1>Betal innen {timeLeft} for å beholde plassen på arrangementet.</h1>
+      </CardContent>
+    </Card>
   );
 };
 

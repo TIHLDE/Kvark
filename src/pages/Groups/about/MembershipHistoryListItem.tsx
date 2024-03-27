@@ -22,7 +22,7 @@ import SubmitButton from 'components/inputs/SubmitButton';
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
-import Avatar from 'components/miscellaneous/Avatar';
+import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
 
 export type MembershipHistoryListItemProps = {
   membership: MembershipHistory;
@@ -67,7 +67,10 @@ const MembershipHistoryListItem = ({ membership, isAdmin }: MembershipHistoryLis
         secondaryAction={isAdmin && <IconButton onClick={() => setExpanded((prev) => !prev)}>{expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}</IconButton>}>
         <ListItemButton component={Link} to={`${URLS.profile}${user.user_id}/`}>
           <ListItemAvatar>
-            <Avatar user={user} />
+            <Avatar>
+              <AvatarImage alt={user.first_name} src={user.image} />
+              <AvatarFallback>{user.first_name[0] + user.last_name[0]}</AvatarFallback>
+            </Avatar>
           </ListItemAvatar>
           <ListItemText
             primary={`${user.first_name} ${user.last_name}`}
