@@ -1,4 +1,3 @@
-import { Stack, Theme, ToggleButton, ToggleButtonGroup, useMediaQuery } from '@mui/material';
 import { TIHLDE_API_URL } from 'constant';
 import { CalendarPlusIcon, InfoIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
@@ -12,6 +11,7 @@ import EventListItem, { EventListItemLoading } from 'components/miscellaneous/Ev
 import { Pre } from 'components/miscellaneous/MarkdownRenderer';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import { Alert, AlertDescription } from 'components/ui/alert';
+import { Button } from 'components/ui/button';
 import Expandable from 'components/ui/expandable';
 
 export const EventsSubscription = () => {
@@ -52,7 +52,7 @@ export const EventsSubscription = () => {
         {!user ? null : user.public_event_registrations ? (
           <Pre>{`${TIHLDE_API_URL}${USERS_ENDPOINT}/${user.user_id}/events.ics`}</Pre>
         ) : (
-          <Alert variant='destructive'>
+          <Alert>
             <InfoIcon className='stroke-[1.5px]' />
             <AlertDescription>
               Du har skrudd av offentlige arrangementspåmeldinger. Du må skru det på i profilen for å kunne abonnere på din arrangement-kalender.
@@ -69,41 +69,26 @@ const ProfileEvents = () => {
   const { data, hasNextPage, fetchNextPage, isFetching } = useUserEvents(undefined, tab !== 'present');
   const events = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
 
-  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
-
   return (
-    <Stack gap={1}>
+    <div className='space-y-2'>
       <EventsSubscription />
 
-      <ToggleButtonGroup
-        aria-label='Arrangementer'
-        color='primary'
-        exclusive
-        fullWidth={!lgUp}
-        onChange={(_, newVal: 'present' | 'expired' | null) => setTab((prev) => (newVal ? newVal : prev))}
-        size='medium'
-        style={{
-          display: 'flex',
-          width: '100%',
-        }}
-        value={tab}>
-        <ToggleButton
-          style={{
-            width: '100%',
-            fontSize: '0.9rem',
-          }}
-          value='present'>
+      <div className='grid grid-cols-1 space-y-2 md:space-y-0 md:flex md:items-center md:justify-center md:space-x-4'>
+        <Button
+          className={`w-full md:text-md ${tab === 'present' ? 'bg-white dark:bg-secondary' : ''}`}
+          onClick={() => setTab('present')}
+          size='lg'
+          variant='outline'>
           Kommende arrangementer
-        </ToggleButton>
-        <ToggleButton
-          style={{
-            width: '100%',
-            fontSize: '0.9rem',
-          }}
-          value='expired'>
+        </Button>
+        <Button
+          className={`w-full md:text-md ${tab === 'expired' ? 'bg-white dark:bg-secondary' : ''}`}
+          onClick={() => setTab('expired')}
+          size='lg'
+          variant='outline'>
           Tidligere arrangementer
-        </ToggleButton>
-      </ToggleButtonGroup>
+        </Button>
+      </div>
 
       {!data ? (
         <EventListItemLoading />
@@ -116,7 +101,7 @@ const ProfileEvents = () => {
           ))}
         </Pagination>
       )}
-    </Stack>
+    </div>
   );
 };
 

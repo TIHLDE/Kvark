@@ -1,4 +1,3 @@
-import ArrowIcon from '@mui/icons-material/ArrowForwardRounded';
 import NewsIcon from '@mui/icons-material/DescriptionRounded';
 import GroupsIcon from '@mui/icons-material/GroupRounded';
 import InfoIcon from '@mui/icons-material/InfoRounded';
@@ -6,8 +5,7 @@ import UsersIcon from '@mui/icons-material/PermIdentityRounded';
 import EventIcon from '@mui/icons-material/TodayRounded';
 import JobPostIcon from '@mui/icons-material/WorkOutlineRounded';
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
-import { Avatar, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
-import { makeStyles } from 'makeStyles';
+import { ChevronRightIcon } from 'lucide-react';
 import { ComponentType } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
@@ -16,22 +14,9 @@ import { PermissionApp } from 'types/Enums';
 
 import { HavePermission } from 'hooks/User';
 
-import Paper from 'components/layout/Paper';
-
-const useStyles = makeStyles()((theme) => ({
-  list: {
-    display: 'grid',
-    gridGap: theme.spacing(1),
-  },
-  avatar: {
-    background: theme.palette.primary.main,
-    color: theme.palette.primary.contrastText,
-  },
-}));
+import { Card, CardContent } from 'components/ui/card';
 
 const Admin = () => {
-  const { classes } = useStyles();
-
   type CardProps = {
     apps: PermissionApp[];
     to: string;
@@ -40,19 +25,22 @@ const Admin = () => {
     icon: ComponentType;
   };
 
-  const Card = ({ apps, icon: Icon, to, primary, secondary }: CardProps) => (
+  const AdminCard = ({ apps, icon: Icon, to, primary, secondary }: CardProps) => (
     <HavePermission apps={apps}>
-      <Paper noOverflow noPadding>
-        <ListItem button component={Link} to={to}>
-          <ListItemAvatar>
-            <Avatar className={classes.avatar}>
+      <Card className='hover:bg-secondary'>
+        <CardContent className='p-0'>
+          <Link className='flex items-center justify-between p-2 w-full' to={to}>
+            <div className='flex items-center space-x-4'>
               <Icon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary={primary} secondary={secondary} />
-          <ArrowIcon />
-        </ListItem>
-      </Paper>
+              <div>
+                <h1>{primary}</h1>
+                <h1 className='text-sm'>{secondary}</h1>
+              </div>
+            </div>
+            <ChevronRightIcon className='stroke-[1.5px]' />
+          </Link>
+        </CardContent>
+      </Card>
     </HavePermission>
   );
 
@@ -109,9 +97,9 @@ const Admin = () => {
   ];
 
   return (
-    <List className={classes.list} disablePadding>
+    <ul className='space-y-2'>
       {cards.map((card, i) => (
-        <Card key={i} {...card} />
+        <AdminCard key={i} {...card} />
       ))}
       {/* <Paper className={classes.list}>
         <Typography variant='h3'>Filopplastning</Typography>
@@ -120,7 +108,7 @@ const Admin = () => {
         </Typography>
         <FileUpload />
       </Paper> */}
-    </List>
+    </ul>
   );
 };
 
