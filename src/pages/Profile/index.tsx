@@ -155,7 +155,7 @@ const Profile = () => {
           )}
         </Stack>
         {!userId && user && (
-          <QRButton qrValue={user.user_id} subtitle={`${user.first_name} ${user.last_name}`} sx={{ mb: 'auto' }}>
+          <QRButton qrValue={user.user_id} subtitle={`${user.first_name} ${user.last_name}`}>
             Medlemsbevis
           </QRButton>
         )}
