@@ -1,9 +1,9 @@
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import FavoriteFilledIcon from '@mui/icons-material/FavoriteRounded';
-import { Alert, IconButton, IconButtonProps, Button as MuiButton, Skeleton, Stack, styled, Theme, Tooltip, useMediaQuery } from '@mui/material';
+import { IconButton, IconButtonProps, Button as MuiButton, Skeleton, Stack, styled, Theme, Tooltip, useMediaQuery } from '@mui/material';
 import { addHours, formatDistanceToNowStrict, isFuture, isPast, parseISO, subHours } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, HandCoinsIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
@@ -42,9 +42,12 @@ import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import QRButton from 'components/miscellaneous/QRButton';
 import { ReactionHandler } from 'components/miscellaneous/reactions/ReactionHandler';
 import ShareButton from 'components/miscellaneous/ShareButton';
+import { Alert, AlertDescription } from 'components/ui/alert';
 import { Button } from 'components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
 import { Checkbox } from 'components/ui/checkbox';
+
+import TIHLDE_LOGO from 'assets/img/TihldeBackground.jpg';
 
 const DetailsPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1, 2),
@@ -151,8 +154,10 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       <>
         {registration.is_on_wait ? (
           <>
-            <Alert severity='info' variant='outlined'>
-              Du står på plass {registration.wait_queue_number}/{event.waiting_list_count} på ventelisten, vi gir deg beskjed hvis du får plass
+            <Alert>
+              <AlertDescription>
+                Du står på plass {registration.wait_queue_number}/{event.waiting_list_count} på ventelisten, vi gir deg beskjed hvis du får plass
+              </AlertDescription>
             </Alert>
             {registration.survey_submission.answers.length > 0 && (
               <div>
@@ -165,18 +170,16 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         ) : (
           <>
             {data.paid_information && !registration.has_paid_order ? (
-              <Alert icon severity='warning' variant='outlined'>
-                {`Du er ${registration.has_attended ? 'deltatt' : 'meldt'} på arrangementet! Men du må huske å betale`}
+              <Alert variant='warning'>
+                <HandCoinsIcon className='stroke-[1.5px]' />
+                <AlertDescription>Du er meldt på arrangementet! Men du må huske å betale</AlertDescription>
               </Alert>
             ) : (
               <>
-                <Alert icon severity='success' variant='outlined'>
-                  {`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}
+                <Alert variant='success'>
+                  <AlertDescription>{`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}</AlertDescription>
                 </Alert>
-                <QRButton
-                  fullWidth
-                  qrValue={registration.user_info.user_id}
-                  subtitle={`${registration.user_info.first_name} ${registration.user_info.last_name}`}>
+                <QRButton qrValue={registration.user_info.user_id} subtitle={`${registration.user_info.first_name} ${registration.user_info.last_name}`}>
                   Påmeldingsbevis
                 </QRButton>
               </>
@@ -190,8 +193,10 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             )}
             {registration.has_unanswered_evaluation && (
               <>
-                <Alert severity='warning' variant='outlined'>
-                  Du har ikke svart på evalueringen av dette arrangementet. Du må svare på den før du kan melde deg på flere arrangementer.
+                <Alert variant='warning'>
+                  <AlertDescription>
+                    Du har ikke svart på evalueringen av dette arrangementet. Du må svare på den før du kan melde deg på flere arrangementer.
+                  </AlertDescription>
                 </Alert>
                 <MuiButton component={Link} fullWidth to={`${URLS.form}${data.evaluation}/`} variant='contained'>
                   Svar på evaluering
@@ -213,14 +218,16 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               Meld deg av
             </VerifyDialog>
             {unregisteringGivesStrike && (
-              <Alert severity='info' variant='outlined'>
-                Avmeldingsfristen har passert. Du kan allikevel melde deg av frem til 2 timer før arrangementsstart, men du vil da få 1 prikk.
+              <Alert>
+                <AlertDescription>
+                  Avmeldingsfristen har passert. Du kan allikevel melde deg av frem til 2 timer før arrangementsstart, men du vil da få 1 prikk.
+                </AlertDescription>
               </Alert>
             )}
           </>
         ) : (
-          <Alert severity='info' variant='outlined'>
-            Det er ikke lenger mulig å melde seg av arrangementet
+          <Alert>
+            <AlertDescription>Det er ikke lenger mulig å melde seg av arrangementet</AlertDescription>
           </Alert>
         )}
       </>
@@ -229,8 +236,10 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
 
   const HasUnansweredEvaluations = () =>
     user?.unanswered_evaluations_count ? (
-      <Alert severity='error' variant='outlined'>
-        {`Du må svare på ${user.unanswered_evaluations_count} ubesvarte evalueringsskjemaer før du kan melde deg på flere arrangementer. Du finner dine ubesvarte evalueringsskjemaer under "Spørreskjemaer" i profilen.`}
+      <Alert variant='destructive'>
+        <AlertDescription>
+          {`Du må svare på ${user.unanswered_evaluations_count} ubesvarte evalueringsskjemaer før du kan melde deg på flere arrangementer. Du finner dine ubesvarte evalueringsskjemaer under "Spørreskjemaer" i profilen.`}
+        </AlertDescription>
       </Alert>
     ) : null;
 
@@ -252,8 +261,8 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     }
     if (data.closed) {
       return (
-        <Alert severity='warning' variant='outlined'>
-          Dette arrangementet er stengt. Det er derfor ikke mulig å melde seg av eller på.
+        <Alert variant='warning'>
+          <AlertDescription>Dette arrangementet er stengt. Det er derfor ikke mulig å melde seg av eller på.</AlertDescription>
         </Alert>
       );
     }
@@ -405,13 +414,15 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           {data.enforces_previous_strikes ? (
             strikesDelayedRegistrationHours > 0 &&
             isFuture(userStartRegistrationDate) && (
-              <Alert severity='warning' variant='outlined'>
-                Du har {user?.number_of_strikes} prikker og må dermed vente {strikesDelayedRegistrationHours} timer før du kan melde deg på
+              <Alert variant='warning'>
+                <AlertDescription>
+                  Du har {user?.number_of_strikes} prikker og må dermed vente {strikesDelayedRegistrationHours} timer før du kan melde deg på
+                </AlertDescription>
               </Alert>
             )
           ) : (
-            <Alert severity='info' variant='outlined'>
-              Dette arrangementet håndhever ikke aktive prikker
+            <Alert>
+              <AlertDescription>Dette arrangementet håndhever ikke aktive prikker</AlertDescription>
             </Alert>
           )}
         </>
@@ -447,7 +458,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         )}
       </div>
       <div className='space-y-2 w-full'>
-        <img alt={data.image_alt || data.title} className='rounded-md' src={data.image} />
+        <img alt={data.image_alt || data.title} className='rounded-md aspect-video' src={data.image || TIHLDE_LOGO} />
 
         {data.emojis_allowed && user && (
           <div className='flex justify-end'>

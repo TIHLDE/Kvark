@@ -1,9 +1,10 @@
-import QrCodeIcon from '@mui/icons-material/QrCodeRounded';
-import { Button, ButtonProps, styled, Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { styled, Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { QrCodeIcon } from 'lucide-react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { useState } from 'react';
 
 import Dialog from 'components/layout/Dialog';
+import { Button } from 'components/ui/button';
 
 const Qr = styled(QRCodeCanvas)(({ theme }) => ({
   padding: theme.spacing(4, 3),
@@ -15,19 +16,21 @@ const Qr = styled(QRCodeCanvas)(({ theme }) => ({
   objectFit: 'contain',
 }));
 
-export type QRButtonProps = ButtonProps & {
+export type QRButtonProps = {
+  children: React.ReactNode;
   qrValue: string;
   subtitle?: string;
 };
 
-const QRButton = ({ qrValue, subtitle, children, ...props }: QRButtonProps) => {
+const QRButton = ({ qrValue, subtitle, children }: QRButtonProps) => {
   const [showQR, setShowQR] = useState(false);
   const theme = useTheme();
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
   return (
     <>
-      <Button endIcon={<QrCodeIcon />} variant='outlined' {...props} onClick={() => setShowQR(true)}>
+      <Button className='w-full' onClick={() => setShowQR(true)} size='lg' variant='outline'>
+        <QrCodeIcon className='stroke-[1.5px] mr-2' />
         {children}
       </Button>
       <Dialog
