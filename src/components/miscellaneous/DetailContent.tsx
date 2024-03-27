@@ -1,4 +1,4 @@
-import { Skeleton, Typography } from '@mui/material';
+import { Skeleton } from '@mui/material';
 import { ReactNode } from 'react';
 
 export type DetailContentProps = {
@@ -7,9 +7,9 @@ export type DetailContentProps = {
 };
 
 const DetailContent = ({ title, info }: DetailContentProps) => (
-  <Typography variant='subtitle1'>
+  <h1>
     <b>{title}</b> {info}
-  </Typography>
+  </h1>
 );
 
 export default DetailContent;

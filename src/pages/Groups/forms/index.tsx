@@ -64,7 +64,7 @@ const GroupFormAdminListItem = ({ form }: { form: GroupForm }) => {
               variant='outlined'>
               Svar på/se skjema
             </Button>
-            <ShareButton disabled={!form.is_open_for_submissions} fullWidth shareId={form.id} shareType='form' title={form.title} />
+            <ShareButton shareId={form.id} shareType='form' title={form.title} />
           </Stack>
         </Stack>
       </Collapse>
