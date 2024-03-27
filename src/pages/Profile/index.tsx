@@ -18,7 +18,7 @@ import ProfileGroups from 'pages/Profile/components/ProfileGroups';
 import ProfileSettings from 'pages/Profile/components/ProfileSettings';
 import ProfileStrikes from 'pages/Profile/components/ProfileStrikes';
 
-import { ShadQRButton } from 'components/miscellaneous/QRButton';
+import { QRButton } from 'components/miscellaneous/QRButton';
 import Page from 'components/navigation/Page';
 import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
 import { Button } from 'components/ui/button';
@@ -70,19 +70,6 @@ const Profile = () => {
   };
 
   const NavListItem = ({ label, icon: Icon, onClick }: NavListItem) => (
-    // <ListItem disableGutters disablePadding {...props}>
-    //   <ListItemButton
-    //     onClick={onClick ? onClick : () => setTab(label)}
-    //     selected={tab === label}
-    //     sx={{ borderRadius: ({ shape }) => `${shape.borderRadius}px` }}>
-    //     <ListItemIcon sx={{ minWidth: { xs: 32, sm: 40 } }}>
-    //       <Badge badgeContent={badge} color='error'>
-    //         <Icon color={tab === label ? 'primary' : 'inherit'} {...iconProps} />
-    //       </Badge>
-    //     </ListItemIcon>
-    //     <ListItemText primary={label} />
-    //   </ListItemButton>
-    // </ListItem>
     <Button className='flex justify-start text-md' onClick={onClick ? onClick : () => setTab(label)} variant={tab === label ? 'outline' : 'ghost'}>
       <Icon className='mr-2 stroke-[1.5px]' /> {label}
     </Button>
@@ -125,9 +112,9 @@ const Profile = () => {
             )}
           </div>
           {!userId && user && (
-            <ShadQRButton qrValue={user.user_id} subtitle={`${user.first_name} ${user.last_name}`}>
+            <QRButton className='w-full md:w-auto' qrValue={user.user_id} subtitle={`${user.first_name} ${user.last_name}`}>
               Medlemsbevis
-            </ShadQRButton>
+            </QRButton>
           )}
         </CardContent>
       </Card>

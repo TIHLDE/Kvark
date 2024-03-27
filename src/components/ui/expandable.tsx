@@ -2,6 +2,7 @@ import { ReactNode, useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
 import { Button } from "./button";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
+import { cn } from "lib/utils";
 
 
 type ExpandableProps = {
@@ -9,21 +10,22 @@ type ExpandableProps = {
     description: string;
     icon: ReactNode;
     children: ReactNode;
+    className?: string;
 };
 
-const Expandable = ({ title, description, icon, children }: ExpandableProps) => {
+const Expandable = ({ title, description, icon, children, className }: ExpandableProps) => {
     const [expanded, setExpanded] = useState<boolean>(false);
 
     return (
-        <Collapsible className='w-full bg-white dark:bg-inherit border border-secondary rounded-md' onOpenChange={setExpanded} open={expanded}>
+        <Collapsible className={cn('w-full bg-white dark:bg-inherit border border-secondary rounded-md', className)} onOpenChange={setExpanded} open={expanded}>
             <CollapsibleTrigger asChild>
                 <Button
-                    className='py-8 w-full rounded-t-md rounded-b-none bg-white dark:bg-inherit dark:hover:bg-secondary border-none flex justify-between items-center'
+                    className='whitespace-normal py-8 w-full rounded-t-md rounded-b-none bg-white dark:bg-inherit dark:hover:bg-secondary border-none flex justify-between items-center rounded-md'
                     variant='outline'
                 >
                     <div className='flex items-center space-x-4'>
                         { icon }
-                        <div className='text-start'>
+                        <div className='text-start break-words'>
                             <h1>{ title }</h1>
                             <h1 className='text-sm'>{ description }</h1>
                         </div>

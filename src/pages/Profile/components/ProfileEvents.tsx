@@ -1,7 +1,4 @@
 import { TIHLDE_API_URL } from 'constant';
-import { CalendarPlusIcon, ChevronDownIcon, ChevronRightIcon, InfoIcon } from 'lucide-react';
-import { Stack, Theme, ToggleButton, ToggleButtonGroup, useMediaQuery } from '@mui/material';
-import { TIHLDE_API_URL } from 'constant';
 import { CalendarPlusIcon, InfoIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
@@ -13,15 +10,12 @@ import Pagination from 'components/layout/Pagination';
 import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
 import { Pre } from 'components/miscellaneous/MarkdownRenderer';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import { Alert, AlertDescription, AlertTitle } from 'components/ui/alert';
-import { Button } from 'components/ui/button';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from 'components/ui/collapsible';
 import { Alert, AlertDescription } from 'components/ui/alert';
+import { Button } from 'components/ui/button';
 import Expandable from 'components/ui/expandable';
 
 export const EventsSubscription = () => {
   const { data: user } = useUser();
-  const [isOpen, setOpen] = useState<boolean>(false);
 
   return (
     <Expandable description='Påmeldinger rett inn i kalenderen' icon={<CalendarPlusIcon className='stroke-[1.5px]' />} title='Kalender-abonnement'>
@@ -58,7 +52,7 @@ export const EventsSubscription = () => {
         {!user ? null : user.public_event_registrations ? (
           <Pre>{`${TIHLDE_API_URL}${USERS_ENDPOINT}/${user.user_id}/events.ics`}</Pre>
         ) : (
-          <Alert variant='destructive'>
+          <Alert>
             <InfoIcon className='stroke-[1.5px]' />
             <AlertDescription>
               Du har skrudd av offentlige arrangementspåmeldinger. Du må skru det på i profilen for å kunne abonnere på din arrangement-kalender.

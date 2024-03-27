@@ -1,61 +1,23 @@
-import MuiQrCodeIcon from '@mui/icons-material/QrCodeRounded';
-import { ButtonProps, Button as MuiButton, styled, Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { styled, Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { cn } from 'lib/utils';
 import { QrCodeIcon } from 'lucide-react';
 import { QRCodeCanvas } from 'qrcode.react';
-import { useState } from 'react';
 
-import Dialog from 'components/layout/Dialog';
 import { Button } from 'components/ui/button';
-
-const Qr = styled(QRCodeCanvas)(({ theme }) => ({
-  padding: theme.spacing(4, 3),
-  display: 'block',
-  margin: '0 auto',
-  height: 'auto !important',
-  width: '100% !important',
-  maxHeight: 350,
-  objectFit: 'contain',
-}));
+import { Dialog, DialogContent, DialogTrigger } from 'components/ui/dialog';
 
 export type QRButtonProps = {
   children: React.ReactNode;
   qrValue: string;
+  className?: string;
   subtitle?: string;
 };
 
-const QRButton = ({ qrValue, subtitle, children }: QRButtonProps) => {
-  const [showQR, setShowQR] = useState(false);
-  const theme = useTheme();
-  const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
-
-  return (
-    <>
-      <Button className='w-full' onClick={() => setShowQR(true)} size='lg' variant='outline'>
-        <QrCodeIcon className='stroke-[1.5px] mr-2' />
-        {children}
-      <MuiDialog
-        fullScreen={lgDown}
-        onClose={() => setShowQR(false)}
-        open={showQR}
-        sx={{ '& .MuiPaper-root': { backgroundColor: (theme) => theme.palette.common.white } }}>
-        <Qr bgColor={theme.palette.common.white} fgColor={theme.palette.common.black} size={1000} value={qrValue} />
-        {subtitle && (
-          <Typography align='center' sx={{ my: 0.25, color: (theme) => theme.palette.common.black }} variant='h3'>
-            {subtitle}
-          </Typography>
-        )}
-      </MuiDialog>
-    </>
-  );
-};
-
-export const ShadQRButton = ({ qrValue, subtitle, children }: QRButtonProps) => {
+export const QRButton = ({ qrValue, subtitle, className, children }: QRButtonProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className='w-full md:w-auto' size='lg' variant='outline'>
-          <QrCodeIcon className='mr-2 h-4 w-4' /> {children}
+        <Button className={cn('w-full', className)} size='lg' variant='outline'>
+          <QrCodeIcon className='mr-2 stroke-[1.5px]' /> {children}
         </Button>
       </DialogTrigger>
       <DialogContent>
