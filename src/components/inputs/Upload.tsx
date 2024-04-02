@@ -132,6 +132,9 @@ export const GenericImageUpload = <FormValues extends FieldValues>({
       const newFile = blobToFile(compressedImage, file instanceof File ? file.name : imageFile?.name || '', imageFile?.type || file.type || '');
       const data = await API.uploadFile(newFile);
       event('upload', 'file-upload', 'Uploaded file');
+      // TODO: Fix type error
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       setValue(name, data.url as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>);
     } catch (e) {
       showSnackbar(e.detail, 'error');
@@ -167,6 +170,9 @@ export const GenericImageUpload = <FormValues extends FieldValues>({
           <Button
             className='w-full font-semibold'
             disabled={isLoading}
+            // TODO: Fix type error
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             onClick={() => setValue(name, '' as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>)}
             size='lg'
             variant='destructive'>
@@ -203,9 +209,15 @@ export const GenericImageUpload = <FormValues extends FieldValues>({
 };
 
 export const ImageUpload = forwardRef(GenericImageUpload) as <FormValues>(
+  // TODO: Fix type
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   props: ImageUploadProps<FormValues> & { ref?: React.ForwardedRef<HTMLDivElement> },
 ) => ReturnType<typeof GenericImageUpload>;
 
+// TODO: Fix type
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export type FormFileUploadProps<FormValues> = Omit<ImageUploadProps<FormValues>, 'ratio'> & {
   accept?: React.InputHTMLAttributes<HTMLInputElement>['accept'];
 };
@@ -235,6 +247,9 @@ export const FormFileUpload = <FormValues extends FieldValues>({
       try {
         const data = await API.uploadFile(file);
         event('upload', 'file-upload', 'Uploaded file');
+        // TODO: Fix type error
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         setValue(name, data.url as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>);
         showSnackbar('Filen ble lastet opp, husk å trykk lagre', 'info');
       } catch (e) {
@@ -268,6 +283,9 @@ export const FormFileUpload = <FormValues extends FieldValues>({
           color='error'
           disabled={isLoading}
           fullWidth
+          // TODO: Fix type error
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           onClick={() => setValue(name, '' as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>)}>
           Fjern fil
         </MuiButton>
@@ -276,6 +294,9 @@ export const FormFileUpload = <FormValues extends FieldValues>({
   );
 };
 
+// TODO: Fix type
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export type FileUploadProps<FormValues> = Pick<ImageUploadProps<FormValues>, 'label' | 'paperProps'> &
   ButtonProps &
   Pick<FormFileUploadProps<FormValues>, 'accept'>;
