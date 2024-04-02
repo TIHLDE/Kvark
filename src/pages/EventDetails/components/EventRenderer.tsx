@@ -42,6 +42,7 @@ import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import QRButton from 'components/miscellaneous/QRButton';
 import { ReactionHandler } from 'components/miscellaneous/reactions/ReactionHandler';
 import ShareButton from 'components/miscellaneous/ShareButton';
+import UpdatedAgo from 'components/miscellaneous/UpdatedAgo';
 import { Alert, AlertDescription } from 'components/ui/alert';
 import { Button } from 'components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
@@ -458,7 +459,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         )}
       </div>
       <div className='space-y-2 w-full'>
-        <img alt={data.image_alt || data.title} className='rounded-md aspect-video' src={data.image || TIHLDE_LOGO} />
+        <img alt={data.image_alt || data.title} className='rounded-md aspect-auto mx-auto' src={data.image || TIHLDE_LOGO} />
 
         {data.emojis_allowed && user && (
           <div className='flex justify-end'>
@@ -478,6 +479,8 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             <MarkdownRenderer value={data.description} />
           </CardContent>
         </Card>
+
+        {data.updated_at && <UpdatedAgo updatedAt={data.updated_at} />}
       </div>
     </div>
   );
