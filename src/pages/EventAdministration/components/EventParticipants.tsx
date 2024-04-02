@@ -21,6 +21,7 @@ import EventUserRegistrator from './EventUserRegistrator';
 type RegistrationsProps = {
   onWait?: boolean;
   eventId: Event['id'];
+  needsSorting?: boolean;
 };
 
 type RegistrationsCopyDetails = {
@@ -28,7 +29,7 @@ type RegistrationsCopyDetails = {
   emails: boolean;
 };
 
-const Registrations = ({ onWait = false, eventId }: RegistrationsProps) => {
+const Registrations = ({ onWait = false, eventId, needsSorting = false }: RegistrationsProps) => {
   const [showOnlyNotAttended, setShowOnlyNotAttended] = useState(false);
   const { data, hasNextPage, isFetching, isLoading, fetchNextPage } = useEventRegistrations(eventId, { is_on_wait: onWait });
   const { register, handleSubmit } = useForm({
@@ -45,6 +46,17 @@ const Registrations = ({ onWait = false, eventId }: RegistrationsProps) => {
         : [],
     [data, showOnlyNotAttended],
   );
+
+  let sortedRegistrations = registrations;
+
+  if (needsSorting) {
+    sortedRegistrations = registrations.sort((a, b) => {
+      const waitA = a.wait_queue_number ?? Number.MAX_SAFE_INTEGER;
+      const waitB = b.wait_queue_number ?? Number.MAX_SAFE_INTEGER;
+      return waitA - waitB;
+    });
+  }
+
   const showSnackbar = useSnackbar();
 
   const getRegistrationDetails = ({ names, emails }: RegistrationsCopyDetails) => {
@@ -92,7 +104,7 @@ const Registrations = ({ onWait = false, eventId }: RegistrationsProps) => {
           </Stack>
           <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
             <List dense disablePadding>
-              {registrations.map((registration) => (
+              {sortedRegistrations.map((registration) => (
                 <Participant eventId={eventId} key={registration.registration_id} registration={registration} />
               ))}
             </List>
@@ -138,6 +150,8 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
     return <LinearProgress />;
   }
 
+  const needsSorting = data && data.priority_pools && data.priority_pools.length > 0;
+
   return (
     <>
       <Typography variant='h2'>{data?.title || 'Laster...'}</Typography>
@@ -153,7 +167,7 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
           <EventUserRegistrator eventId={eventId} />
         </Stack>
         <Registrations eventId={eventId} />
-        <Registrations eventId={eventId} onWait />
+        <Registrations eventId={eventId} needsSorting={needsSorting} onWait />
       </div>
     </>
   );

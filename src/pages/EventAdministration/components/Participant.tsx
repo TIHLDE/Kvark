@@ -16,9 +16,9 @@ import { useUserStrikes } from 'hooks/User';
 
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
-import Avatar from 'components/miscellaneous/Avatar';
 import StrikeCreateDialog from 'components/miscellaneous/StrikeCreateDialog';
 import StrikeListItem from 'components/miscellaneous/StrikeListItem';
+import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
 
 export type ParticipantProps = {
   eventId: number;
@@ -100,7 +100,10 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
         }>
         <ListItemButton onClick={() => setExpanded((prev) => !prev)}>
           <ListItemAvatar>
-            <Avatar user={registration.user_info} />
+            <Avatar>
+              <AvatarImage alt={registration.user_info.first_name} src={registration.user_info.image} />
+              <AvatarFallback>{registration.user_info.first_name[0] + registration.user_info.last_name[0]}</AvatarFallback>
+            </Avatar>
           </ListItemAvatar>
           <ListItemText
             primary={`${registration.user_info.first_name} ${registration.user_info.last_name}`}
@@ -117,6 +120,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
           <div>
             <Typography variant='subtitle1'>{`Epost: ${registration.user_info.email}`}</Typography>
             <Typography variant='subtitle1'>{`Påmeldt: ${formatDate(parseISO(registration.created_at))}`}</Typography>
+            {registration.wait_queue_number !== null && <Typography variant='subtitle1'>{`Ventelistenummer: ${registration.wait_queue_number}`}</Typography>}
           </div>
           <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
             {registration.is_on_wait && event && event.list_count >= event.limit ? (

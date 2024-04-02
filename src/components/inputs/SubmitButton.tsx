@@ -7,7 +7,7 @@ const SubmitButton = <FormValues extends FieldValues>({ formState, children, dis
   const isError = Boolean((Array.isArray(Object.keys(formState.errors)) ? Object.keys(formState.errors) : []).length);
   return (
     <>
-      <Button disabled={disabled} fullWidth type='submit' variant='contained' {...props}>
+      <Button disabled={disabled} fullWidth type='submit' variant='outlined' {...props}>
         {children}
       </Button>
       {isError && (

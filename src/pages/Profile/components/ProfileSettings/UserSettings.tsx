@@ -9,7 +9,7 @@ import { useUpdateUser } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
 import Bool from 'components/inputs/Bool';
-import Select from 'components/inputs/Select';
+import MuiSelect from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
 import { ImageUpload } from 'components/inputs/Upload';
@@ -72,12 +72,13 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
         </Stack>
       )}
       <ImageUpload formState={formState} label='Velg profilbilde' ratio='1:1' register={register('image')} setValue={setValue} watch={watch} />
+
       <Stack direction={['column', 'row']} gap={[0, 1]}>
-        <Select control={control} disabled={updateUser.isLoading} formState={formState} label='Kjønn' name='gender'>
+        <MuiSelect control={control} disabled={updateUser.isLoading} formState={formState} label='Kjønn' name='gender'>
           <MenuItem value={1}>Mann</MenuItem>
           <MenuItem value={2}>Kvinne</MenuItem>
           <MenuItem value={3}>Annet</MenuItem>
-        </Select>
+        </MuiSelect>
       </Stack>
       <TextField disabled={updateUser.isLoading} formState={formState} label='Kjøkkenredskap' {...register('tool')} />
       <TextField

@@ -1,4 +1,4 @@
-import { Avatar, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, MenuItem, Stack, Tooltip, Typography } from '@mui/material';
+import { List, ListItem, ListItemAvatar, ListItemButton, ListItemText, MenuItem, Stack, Tooltip, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { InfiniteQueryObserverResult, QueryKey, UseInfiniteQueryOptions } from 'react-query';
@@ -13,6 +13,7 @@ import Select from 'components/inputs/Select';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
 
 export type BadgesLeaderboard = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -77,12 +78,13 @@ export const BadgesLeaderboard = ({ useHook, filters, options }: BadgesLeaderboa
         <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
           <Stack component={List} gap={1}>
             {leaderboardEntries.map((entry, index) => (
-              <ListItem component={Paper} disablePadding key={entry.user.user_id} noOverflow noPadding>
+              <ListItem component={Paper} disablePadding key={index} noOverflow noPadding>
                 <ListItemButton component={Link} to={`${URLS.profile}${entry.user.user_id}/`}>
                   <ListItemAvatar>
                     <Tooltip arrow title='Rangering basert på din filtrering'>
                       <Avatar>
-                        <Typography variant='h3'>{index + 1}</Typography>
+                        <AvatarImage alt={entry.user.first_name} src={entry.user.image} />
+                        <AvatarFallback>{entry.user.first_name[0] + entry.user.last_name[0]}</AvatarFallback>
                       </Avatar>
                     </Tooltip>
                   </ListItemAvatar>
