@@ -364,6 +364,9 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 inputProps={{ inputMode: 'numeric' }}
                 label='Antall plasser'
                 {...register('limit', {
+                  // TODO: Fix type
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
                   pattern: { value: RegExp(/^[0-9]*$/), message: 'Skriv inn et heltall som 0 eller høyere' },
                   valueAsNumber: true,
                   min: { value: 0, message: 'Antall plasser må være 0 eller høyere' },

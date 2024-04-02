@@ -1,5 +1,4 @@
 import { Skeleton, styled } from '@mui/material';
-import { Separator } from '@radix-ui/react-separator';
 import { createElement, lazy, ReactNode, Suspense, useMemo } from 'react';
 import rehypeRaw from 'rehype-raw';
 
@@ -13,6 +12,7 @@ import Expand from 'components/layout/Expand';
 import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
 import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
 import NewsListItem, { NewsListItemLoading } from 'components/miscellaneous/NewsListItem';
+import { Separator } from 'components/ui/separator';
 
 const ReactMarkdown = lazy(() => import('react-markdown'));
 
@@ -126,7 +126,7 @@ const components: any = {
       {children}
     </a>
   ),
-  hr: () => <Separator className='my-1' />,
+  hr: () => <Separator className='my-2' />,
   img: ({ alt, src }: { alt: string; src: string }) => <Image alt={alt} loading='lazy' src={src} />,
 };
 

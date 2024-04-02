@@ -11,7 +11,7 @@ export type ReactionHandlerProps = {
 
 export const ReactionHandler = ({ data, content_type }: ReactionHandlerProps) => {
   return (
-    <div className='flex items-center space-x-2'>
+    <div className='flex items-center space-x-2 justify-end'>
       {data.reactions?.length ? <EmojiShowcase content_type={content_type} data={data} /> : null}
       <EmojiPickerHandler content_type={content_type} data={data} />
       <EmojiShowAll {...data} />
