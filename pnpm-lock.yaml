@@ -142,7 +142,7 @@ dependencies:
     version: 6.1.0(react@17.0.2)
   react-hook-form:
     specifier: ^7.31.1
-    version: 7.31.1(react@17.0.2)
+    version: 7.51.2(react@17.0.2)
   react-linkify:
     specifier: ^1.0.0-alpha
     version: 1.0.0-alpha
@@ -6313,8 +6313,8 @@ packages:
       react-side-effect: 2.1.2(react@17.0.2)
     dev: false
 
-  /react-hook-form@7.31.1(react@17.0.2):
-    resolution: {integrity: sha512-QjtjZ8r8KtEBWWpcXLyQordCraTFxILtyQpaz5KLLxN2YzcC+FZ9LLtOnNGuOnzZo9gCoB+viK3ZHV9Mb2htmQ==}
+  /react-hook-form@7.51.2(react@17.0.2):
+    resolution: {integrity: sha512-y++lwaWjtzDt/XNnyGDQy6goHskFualmDlf+jzEZvjvz6KWDf7EboL7pUvRCzPTJd0EOPpdekYaQLEvvG6m6HA==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18
