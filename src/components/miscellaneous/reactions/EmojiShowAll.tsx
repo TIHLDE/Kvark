@@ -1,4 +1,4 @@
-import { Collapse, Container } from '@mui/material';
+import { Collapse } from '@mui/material';
 import { ListIcon } from 'lucide-react';
 import { useState } from 'react';
 
@@ -45,7 +45,7 @@ export const EmojiShowAll = (data: ContentType) => {
   const [tab, setTab] = useState<string>('all');
 
   return (
-    <Container>
+    <div>
       <Button onClick={openDialog} size='icon' variant='outline'>
         <ListIcon />
       </Button>
@@ -67,6 +67,6 @@ export const EmojiShowAll = (data: ContentType) => {
           </Collapse>
         ))}
       </Dialog>
-    </Container>
+    </div>
   );
 };

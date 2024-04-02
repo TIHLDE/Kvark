@@ -1,4 +1,4 @@
-import { Container, Dialog as MuiDialog } from '@mui/material';
+import { Dialog as MuiDialog } from '@mui/material';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 import { SmilePlusIcon } from 'lucide-react';
 import { useState } from 'react';
@@ -58,7 +58,7 @@ export const EmojiPickerHandler = ({ data, content_type }: ReactionHandlerProps)
   };
 
   return (
-    <Container>
+    <div>
       <Button onClick={openPopover} size='icon' variant='outline'>
         <SmilePlusIcon />
       </Button>
@@ -66,6 +66,6 @@ export const EmojiPickerHandler = ({ data, content_type }: ReactionHandlerProps)
       <MuiDialog onClose={closePopover} open={open}>
         <EmojiPicker onEmojiClick={handleEmojiPick} />
       </MuiDialog>
-    </Container>
+    </div>
   );
 };
