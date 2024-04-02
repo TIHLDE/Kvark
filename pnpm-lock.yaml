@@ -6439,8 +6439,6 @@ packages:
       use-sidecar: 1.1.2(@types/react@17.0.37)(react@17.0.2)
     dev: false
 
-  /react-router-dom@6.15.0(react-dom@17.0.2)(react@17.0.2):
-    resolution: {integrity: sha512-aR42t0fs7brintwBGAv2+mGlCtgtFQeOzK0BM1/OiqEzRejOZtpMZepvgkscpMUnKb8YO84G7s3LsHnnDNonbQ==}
   /react-router-dom@6.22.3(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-7ZILI7HjcE+p31oQvwbokjk6OA/bnFxrhJ19n82Ex9Ph8fNAq+Hm/7KchpMGlTgWhUxRHMMCut+vEtNpWpowKw==}
     engines: {node: '>=14.0.0'}
