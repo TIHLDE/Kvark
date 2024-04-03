@@ -13,7 +13,7 @@ dependencies:
     version: 3.0.0-beta.2(@devexpress/dx-core@3.0.0-beta.2)(@devexpress/dx-react-core@3.0.0-beta.2)(moment@2.29.4)(react-dom@17.0.2)(react@17.0.2)
   '@devexpress/dx-react-scheduler-material-ui':
     specifier: ^3.0.0-beta.2
-    version: 3.0.0-beta.2(@devexpress/dx-react-core@3.0.0-beta.2)(@devexpress/dx-react-scheduler@3.0.0-beta.2)(@devexpress/dx-scheduler-core@3.0.0-beta.2)(@emotion/react@11.11.4)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.8)(@mui/lab@5.0.0-alpha.60)(@mui/material@5.14.9)(@mui/styles@5.14.18)(moment@2.29.4)(react@17.0.2)
+    version: 3.0.0-beta.2(@devexpress/dx-react-core@3.0.0-beta.2)(@devexpress/dx-react-scheduler@3.0.0-beta.2)(@devexpress/dx-scheduler-core@3.0.0-beta.2)(@emotion/react@11.11.4)(@emotion/styled@11.11.0)(@mui/icons-material@5.15.14)(@mui/lab@5.0.0-alpha.60)(@mui/material@5.14.9)(@mui/styles@5.14.18)(moment@2.29.4)(react@17.0.2)
   '@emotion/cache':
     specifier: ^11.11.0
     version: 11.11.0
@@ -24,8 +24,8 @@ dependencies:
     specifier: ^11.11.0
     version: 11.11.0(@emotion/react@11.11.4)(@types/react@17.0.37)(react@17.0.2)
   '@mui/icons-material':
-    specifier: ^5.14.8
-    version: 5.14.8(@mui/material@5.14.9)(@types/react@17.0.37)(react@17.0.2)
+    specifier: ^5.15.14
+    version: 5.15.14(@mui/material@5.14.9)(@types/react@17.0.37)(react@17.0.2)
   '@mui/lab':
     specifier: ^5.0.0-alpha.60
     version: 5.0.0-alpha.60(@emotion/react@11.11.4)(@emotion/styled@11.11.0)(@mui/material@5.14.9)(@types/react@17.0.37)(date-fns@2.30.0)(moment@2.29.4)(react-dom@17.0.2)(react@17.0.2)
@@ -617,7 +617,7 @@ packages:
       react-dom: 17.0.2(react@17.0.2)
     dev: false
 
-  /@devexpress/dx-react-scheduler-material-ui@3.0.0-beta.2(@devexpress/dx-react-core@3.0.0-beta.2)(@devexpress/dx-react-scheduler@3.0.0-beta.2)(@devexpress/dx-scheduler-core@3.0.0-beta.2)(@emotion/react@11.11.4)(@emotion/styled@11.11.0)(@mui/icons-material@5.14.8)(@mui/lab@5.0.0-alpha.60)(@mui/material@5.14.9)(@mui/styles@5.14.18)(moment@2.29.4)(react@17.0.2):
+  /@devexpress/dx-react-scheduler-material-ui@3.0.0-beta.2(@devexpress/dx-react-core@3.0.0-beta.2)(@devexpress/dx-react-scheduler@3.0.0-beta.2)(@devexpress/dx-scheduler-core@3.0.0-beta.2)(@emotion/react@11.11.4)(@emotion/styled@11.11.0)(@mui/icons-material@5.15.14)(@mui/lab@5.0.0-alpha.60)(@mui/material@5.14.9)(@mui/styles@5.14.18)(moment@2.29.4)(react@17.0.2):
     resolution: {integrity: sha512-yFP8TsMduwvyLfUL70j6kTK3SQvLKrTBqi9Ze2GXloWveoqvPqmtZ3MxeLL20KuoHk8SBPjDJgTOA9LapJm60g==}
     peerDependencies:
       '@devexpress/dx-react-core': 3.0.0-beta.2
@@ -638,7 +638,7 @@ packages:
       '@devexpress/dx-scheduler-core': 3.0.0-beta.2(@devexpress/dx-core@3.0.0-beta.2)
       '@emotion/react': 11.11.4(@types/react@17.0.37)(react@17.0.2)
       '@emotion/styled': 11.11.0(@emotion/react@11.11.4)(@types/react@17.0.37)(react@17.0.2)
-      '@mui/icons-material': 5.14.8(@mui/material@5.14.9)(@types/react@17.0.37)(react@17.0.2)
+      '@mui/icons-material': 5.15.14(@mui/material@5.14.9)(@types/react@17.0.37)(react@17.0.2)
       '@mui/lab': 5.0.0-alpha.60(@emotion/react@11.11.4)(@emotion/styled@11.11.0)(@mui/material@5.14.9)(@types/react@17.0.37)(date-fns@2.30.0)(moment@2.29.4)(react-dom@17.0.2)(react@17.0.2)
       '@mui/material': 5.14.9(@emotion/react@11.11.4)(@emotion/styled@11.11.0)(@types/react@17.0.37)(react-dom@17.0.2)(react@17.0.2)
       '@mui/styles': 5.14.18(@types/react@17.0.37)(react@17.0.2)
@@ -1289,8 +1289,8 @@ packages:
     resolution: {integrity: sha512-JAU/R5hM3l2zP1Q4KnioDRhq5V3vZ4mmjEZ+TwARDb2xFhg3p59McacQuzkSu0sUHJnH9aJos36+hU5sPQBcFQ==}
     dev: false
 
-  /@mui/icons-material@5.14.8(@mui/material@5.14.9)(@types/react@17.0.37)(react@17.0.2):
-    resolution: {integrity: sha512-YXcReLydTuNWb1/PxduAH5LgnHNH6spSQBaA0JOz9HD4J+vwst0IanAQgsXy9KKCJSjCsHywE3DB8X+w/b4eeQ==}
+  /@mui/icons-material@5.15.14(@mui/material@5.14.9)(@types/react@17.0.37)(react@17.0.2):
+    resolution: {integrity: sha512-vj/51k7MdFmt+XVw94sl30SCvGx6+wJLsNYjZRgxhS6y3UtnWnypMOsm3Kmg8TN+P0dqwsjy4/fX7B1HufJIhw==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       '@mui/material': ^5.0.0
@@ -1300,7 +1300,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.22.15
+      '@babel/runtime': 7.24.0
       '@mui/material': 5.14.9(@emotion/react@11.11.4)(@emotion/styled@11.11.0)(@types/react@17.0.37)(react-dom@17.0.2)(react@17.0.2)
       '@types/react': 17.0.37
       react: 17.0.2
