@@ -1,5 +1,3 @@
-import AddIcon from '@mui/icons-material/Add';
-import { Button } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -11,6 +9,8 @@ import { useSnackbar } from 'hooks/Snackbar';
 import SubmitButton from 'components/inputs/SubmitButton';
 import UserSearch from 'components/inputs/UserSearch';
 import Dialog from 'components/layout/Dialog';
+import { Button } from 'components/ui/button';
+import { PlusIcon } from 'lucide-react';
 
 export type AddMemberModalProps = {
   groupSlug: string;
@@ -47,8 +47,12 @@ const AddGroupMember = ({ groupSlug }: AddMemberModalProps) => {
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)} startIcon={<AddIcon />} sx={{ height: 'auto' }} variant='outlined'>
-        Legg til
+      <Button
+        onClick={() => setIsOpen(true)}
+        variant='outline'
+        size='sm'
+      >
+        <PlusIcon className='mr-2 w-5 h-5 stroke-[1.5px]' /> Legg til
       </Button>
       <Dialog onClose={() => setIsOpen(false)} open={isOpen} titleText='Legg til medlem'>
         <form onSubmit={handleSubmit(onSubmit)}>

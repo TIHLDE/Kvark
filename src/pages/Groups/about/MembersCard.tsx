@@ -16,6 +16,7 @@ import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
+import { Button } from 'components/ui/button';
 
 export type MembersCardProps = {
   groupSlug: Group['slug'];
@@ -44,42 +45,45 @@ const MembersCard = ({ groupSlug }: MembersCardProps) => {
   }
 
   return (
-    <>
-      <Stack gap={2}>
-        {leader && (
-          <Stack gap={1}>
-            <Typography variant='h3'>Leder:</Typography>
-            <ListItem component={Paper} disablePadding noOverflow noPadding>
-              <ListItemButton component={Link} to={`${URLS.profile}${leader.user_id}/`}>
-                <ListItemAvatar>
-                  <Avatar>
+    <div className='space-y-4'>
+      {leader && (
+        <div className='space-y-2'>
+            <h1 className='text-xl font-semibold'>
+              Leder:
+            </h1>
+            <Button asChild className='bg-inherit flex justify-start w-full py-8' variant='outline'>
+              <Link className='flex items-center space-x-4' to={`${URLS.profile}${leader.user_id}/`}>
+                <Avatar>
                     <AvatarImage alt={leader.first_name} src={leader.image} />
                     <AvatarFallback>{leader.first_name[0] + leader.last_name[0]}</AvatarFallback>
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={`${leader.first_name} ${leader.last_name}`} />
-              </ListItemButton>
-            </ListItem>
-          </Stack>
-        )}
-        {isAuthenticated && (
-          <Stack gap={1}>
-            <Stack alignItems='center' direction='row' gap={1} justifyContent='space-between'>
-              <Typography variant='h3'>Medlemmer:</Typography>
-              {hasWriteAcccess && <AddGroupMember groupSlug={groupSlug} />}
-            </Stack>
-            <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
-              <Stack gap={1}>
-                {memberships.map((membership) => (
-                  <MembershipListItem isAdmin={hasWriteAcccess} key={membership.user.user_id} membership={membership} />
-                ))}
-              </Stack>
-              {!memberships.length && <NotFoundIndicator header='Denne gruppen har ingen medlemmer' />}
-            </Pagination>
-          </Stack>
-        )}
-      </Stack>
-    </>
+                </Avatar>
+                <h1 >
+                  {`${leader.first_name} ${leader.last_name}`}
+                </h1>
+              </Link>
+            </Button>
+        </div>
+      )}
+
+      {isAuthenticated && (
+        <div className='space-y-2'>
+          <div className='flex items-center justify-between'>
+            <h1 className='text-xl font-semibold'>
+              Medlemmer:
+            </h1>
+            {hasWriteAcccess && <AddGroupMember groupSlug={groupSlug} />}
+          </div>
+          <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
+            <div className='space-y-2'>
+              {memberships.map((membership) => (
+                <MembershipListItem isAdmin={hasWriteAcccess} key={membership.user.user_id} membership={membership} />
+              ))} 
+            </div>
+            {!memberships.length && <NotFoundIndicator header='Denne gruppen har ingen medlemmer' />}
+          </Pagination>
+        </div>
+      )}
+    </div>
   );
 };
 
