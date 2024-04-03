@@ -3,7 +3,7 @@ import FavoriteFilledIcon from '@mui/icons-material/FavoriteRounded';
 import { IconButton, IconButtonProps, Button as MuiButton, Skeleton, Stack, styled, Theme, Tooltip, useMediaQuery } from '@mui/material';
 import { addHours, formatDistanceToNowStrict, isFuture, isPast, parseISO, subHours } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
-import { CalendarIcon, HandCoinsIcon } from 'lucide-react';
+import { CalendarIcon, HandCoinsIcon, PencilIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
@@ -438,7 +438,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     <div className='flex flex-col-reverse lg:flex-row gap-1 lg:gap-2 lg:mt-2'>
       <div className='w-full lg:max-w-[335px] space-y-2'>
         {!lgDown && <Info />}
-        <ShareButton shareId={data.id} shareType='event' title={data.title} />
         <Button className='flex items-center space-x-2 w-full' size='lg' variant='outline'>
           <CalendarIcon className='stroke-[1.5px] w-5 h-5' />
           <a href={getICSFromEvent(data)} onClick={addToCalendarAnalytics}>
@@ -446,11 +445,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           </a>
         </Button>
         {Boolean(user) && <EventsSubscription />}
-        {!preview && data.permissions.write && (
-          <Button className='w-full' size='lg' variant='outline'>
-            <Link to={`${URLS.eventAdmin}${data.id}/`}>Administrér arrangement</Link>
-          </Button>
-        )}
         {registration && (
           <div className='flex justify-center items-center space-x-2 mt-2'>
             <Checkbox checked={allowPhoto} onCheckedChange={handleImageRuleChange} />
@@ -461,11 +455,20 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       <div className='space-y-2 w-full'>
         <img alt={data.image_alt || data.title} className='rounded-md aspect-auto mx-auto' src={data.image || TIHLDE_LOGO} />
 
-        {data.emojis_allowed && user && (
-          <div className='flex justify-end'>
-            <ReactionHandler content_type='event' data={data} />
+        <div className='space-y-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between'>
+          <div className='flex items-center space-x-2'>
+            <ShareButton shareId={data.id} shareType='event' title={data.title} />
+            {!preview && data.permissions.write && (
+              <Button className='w-full flex items-center space-x-2' size='lg' variant='outline'>
+                <PencilIcon className='w-4 h-4 md:w-5 md:h-5 stroke-[1.5px]' />
+                <Link className='text-sm md:text-md' to={`${URLS.eventAdmin}${data.id}/`}>
+                  Endre arrangement
+                </Link>
+              </Button>
+            )}
           </div>
-        )}
+          {!preview && data.emojis_allowed && user && <ReactionHandler content_type='event' data={data} />}
+        </div>
 
         {lgDown && <Info />}
         {registration && data.paid_information && !registration.has_paid_order && !registration.is_on_wait && (
