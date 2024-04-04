@@ -7,7 +7,7 @@ import { useSetRedirectUrl } from 'hooks/Misc';
 import { useUser } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
-import ThemeSettings from 'components/miscellaneous/ThemeSettings';
+// import ThemeSettings from 'components/miscellaneous/ThemeSettings';
 import { NavigationOptions } from 'components/navigation/Navigation';
 import TopbarNotifications from 'components/navigation/TopbarNotifications';
 import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
@@ -30,7 +30,7 @@ const ProfileTopbarButton = (props: ProfileTopbarButtonProps) => {
   return (
     <div className='flex items-center space-x-2'>
       {Boolean(user) && <TopbarNotifications color={getColor(props, theme)} />}
-      <ThemeSettings />
+      {/* TODO: Add when navbar is fixed <ThemeSettings /> */}
       {user ? (
         <Link onClick={URLS.profile === location.pathname ? () => location.reload() : () => analytics('profile')} to={URLS.profile}>
           <Avatar className='ml-2'>

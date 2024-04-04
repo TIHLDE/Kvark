@@ -61,13 +61,15 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
             {!preview && (
               <HavePermission apps={[PermissionApp.NEWS]}>
                 <Button className='w-full flex items-center space-x-2' size='lg' variant='outline'>
-                  <PencilIcon className='w-5 h-5 stroke-[1.5px]' />
-                  <Link to={`${URLS.newsAdmin}${data.id}/`}>Endre nyhet</Link>
+                  <PencilIcon className='w-4 h-4 md:w-5 md:h-5 stroke-[1.5px]' />
+                  <Link className='text-sm md:text-md' to={`${URLS.newsAdmin}${data.id}/`}>
+                    Endre nyhet
+                  </Link>
                 </Button>
               </HavePermission>
             )}
           </div>
-          {data?.emojis_allowed && user && <ReactionHandler content_type='news' data={data} />}
+          {!preview && data?.emojis_allowed && user && <ReactionHandler content_type='news' data={data} />}
         </div>
 
         <Separator className='bg-secondary-foreground dark:bg-border' />

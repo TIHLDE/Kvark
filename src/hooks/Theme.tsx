@@ -18,6 +18,14 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const [selectedTheme, setSelectedTheme] = useState<ThemeTypes>('automatic');
 
+  // TODO: Remove this when lightmode is fixed
+  useEffect(() => {
+    const root = window.document.documentElement;
+    root.classList.remove('light', 'dark');
+    root.classList.add('dark');
+    setCookie(SELECTED_THEME, 'dark');
+  }, []);
+
   const getThemeType = useCallback((name: ThemeTypes | string | undefined) => {
     if (themes.includes(name as ThemeTypes)) {
       return name as ThemeTypes;
