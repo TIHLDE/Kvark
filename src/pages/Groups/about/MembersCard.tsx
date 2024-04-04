@@ -48,36 +48,30 @@ const MembersCard = ({ groupSlug }: MembersCardProps) => {
     <div className='space-y-4'>
       {leader && (
         <div className='space-y-2'>
-            <h1 className='text-xl font-semibold'>
-              Leder:
-            </h1>
-            <Button asChild className='bg-inherit flex justify-start w-full py-8' variant='outline'>
-              <Link className='flex items-center space-x-4' to={`${URLS.profile}${leader.user_id}/`}>
-                <Avatar>
-                    <AvatarImage alt={leader.first_name} src={leader.image} />
-                    <AvatarFallback>{leader.first_name[0] + leader.last_name[0]}</AvatarFallback>
-                </Avatar>
-                <h1 >
-                  {`${leader.first_name} ${leader.last_name}`}
-                </h1>
-              </Link>
-            </Button>
+          <h1 className='text-xl font-semibold'>Leder:</h1>
+          <Button asChild className='bg-inherit flex justify-start w-full py-8' variant='outline'>
+            <Link className='flex items-center space-x-4' to={`${URLS.profile}${leader.user_id}/`}>
+              <Avatar>
+                <AvatarImage alt={leader.first_name} src={leader.image} />
+                <AvatarFallback>{leader.first_name[0] + leader.last_name[0]}</AvatarFallback>
+              </Avatar>
+              <h1>{`${leader.first_name} ${leader.last_name}`}</h1>
+            </Link>
+          </Button>
         </div>
       )}
 
       {isAuthenticated && (
         <div className='space-y-2'>
           <div className='flex items-center justify-between'>
-            <h1 className='text-xl font-semibold'>
-              Medlemmer:
-            </h1>
+            <h1 className='text-xl font-semibold'>Medlemmer:</h1>
             {hasWriteAcccess && <AddGroupMember groupSlug={groupSlug} />}
           </div>
           <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere medlemmer' nextPage={() => fetchNextPage()}>
             <div className='space-y-2'>
               {memberships.map((membership) => (
                 <MembershipListItem isAdmin={hasWriteAcccess} key={membership.user.user_id} membership={membership} />
-              ))} 
+              ))}
             </div>
             {!memberships.length && <NotFoundIndicator header='Denne gruppen har ingen medlemmer' />}
           </Pagination>
