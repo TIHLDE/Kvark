@@ -22,7 +22,7 @@ const GroupInfo = () => {
     return null;
   }
   return (
-    <>
+    <div className='space-y-4'>
       {isAdmin && <GroupStatistics slug={group.slug} />}
       {(group.description || group.contact_email) && (
         <>
@@ -32,7 +32,7 @@ const GroupInfo = () => {
       )}
       <MembersCard groupSlug={group.slug} />
       {isAuthenticated && <MembersHistoryCard groupSlug={group.slug} />}
-    </>
+    </div>
   );
 };
 export default GroupInfo;
