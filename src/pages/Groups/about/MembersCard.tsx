@@ -1,4 +1,4 @@
-import { ListItem, ListItemAvatar, ListItemButton, ListItemText, Skeleton, Stack, Typography } from '@mui/material';
+import { Skeleton, Stack } from '@mui/material';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
@@ -13,7 +13,6 @@ import AddGroupMember from 'pages/Groups/about/AddGroupMember';
 import MembershipListItem from 'pages/Groups/about/MembershipListItem';
 
 import Pagination from 'components/layout/Pagination';
-import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
 import { Button } from 'components/ui/button';
