@@ -11,6 +11,8 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+
+## Versjon 2023.10.04
 - 🎨 **Footer**. La til NITO logo i footer under "samarbeid"
 
 ## Versjon 2023.02.04
