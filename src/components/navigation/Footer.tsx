@@ -13,6 +13,7 @@ import SNAPCHAT from 'assets/icons/snapchat.svg';
 import TWITTER from 'assets/icons/twitter.svg';
 import VERCEL from 'assets/icons/vercel.svg';
 import MAINSPONSOR from 'assets/img/mainSponsor.png';
+import NITO from 'assets/img/nito.png';
 
 const Footer = () => {
   const { event } = useAnalytics();
@@ -82,6 +83,9 @@ const Footer = () => {
           </div>
           <a href='https://vercel.com/?utm_source=kvark&utm_campaign=oss' rel='noopener noreferrer' target='_blank'>
             <img alt='Vercel' className='mx-auto' loading='lazy' src={VERCEL} width={150} />
+          </a>
+          <a href='https://www.nito.no/' rel='noopener noreferrer' target='_blank'>
+            <img alt='NITO' className='w-20 md:w-28 mx-auto mt-4' loading='lazy' src={NITO} width={150} />
           </a>
         </div>
       </div>
