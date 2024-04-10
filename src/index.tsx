@@ -10,7 +10,7 @@ import { inject } from '@vercel/analytics';
 import { Analytics } from '@vercel/analytics/react';
 import AppRoutes from 'AppRoutes';
 import { SHOW_NEW_STUDENT_INFO } from 'constant';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 import { render } from 'react-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { broadcastQueryClient } from 'react-query/broadcastQueryClient-experimental';
@@ -65,38 +65,17 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const Application = () => {
-  const [isShortCutMenuOpen, setShortCutMenuOpen] = useState<boolean>(false);
-
-  useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      if ((event.key === 'k' || event.key === 'K') && (event.metaKey || event.ctrlKey)) {
-        event.preventDefault();
-        setShortCutMenuOpen(!isShortCutMenuOpen);
-      }
-    };
-
-    // Attach the event listener to the document
-    document.addEventListener('keydown', handleKeyPress);
-
-    // Cleanup the event listener on component unmount
-    return () => {
-      document.removeEventListener('keydown', handleKeyPress);
-    };
-  }, [isShortCutMenuOpen]);
-
-  return (
-    <Providers>
-      <BrowserRouter>
-        <Navigation>
-          <ShortCutMenu isOpen={isShortCutMenuOpen} setOpen={setShortCutMenuOpen} />
-          <AppRoutes />
-          <Analytics />
-        </Navigation>
-      </BrowserRouter>
-    </Providers>
-  );
-};
+export const Application = () => (
+  <Providers>
+    <BrowserRouter>
+      <Navigation>
+        <ShortCutMenu />
+        <AppRoutes />
+        <Analytics />
+      </Navigation>
+    </BrowserRouter>
+  </Providers>
+);
 
 console.log(
   `%c
