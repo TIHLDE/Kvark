@@ -11,10 +11,9 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
-- 🎨 **Tema**. Endret til shadcn komponenter for å endre tema.
-- 🦟 **Markdown**. Fikset markdown bug.
-- 🎨 **Bildeopplastning**. Endret komponent for å laste opp bilder.
-- 🎨 **Admin filopplastning**. Fjernet mulighet for admin å laste opp bilder.
+
+## Versjon 2023.10.04
+- 🎨 **Footer**. La til NITO logo i footer under "samarbeid"
 
 ## Versjon 2023.02.04
 - 🎨 **Tema**. Endret til shadcn komponenter for å endre tema.
