@@ -93,6 +93,7 @@ export const GROUP_FINES_ENDPOINT = 'fines';
 export const JOBPOSTS_ENDPOINT = 'jobposts';
 export const ME_ENDPOINT = 'me';
 export const MEMBERSHIPS_ENDPOINT = 'memberships';
+export const MEMBERSHIPS_WITH_FINES_ENDPOINT = 'memberships-with-fines';
 export const MEMBERSHIP_HISTORIES_ENDPOINT = 'membership-histories';
 export const NEWS_ENDPOINT = 'news';
 export const NOTIFICATIONS_ENDPOINT = 'notifications';
@@ -217,6 +218,8 @@ export default {
   getUserForms: (filters?: any) =>
     IFetch<PaginationResponse<Form>>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/${FORMS_ENDPOINT}/`, data: filters || {} }),
   getUserMemberships: (userId?: User['user_id']) =>
+    IFetch<PaginationResponse<Membership>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${MEMBERSHIPS_ENDPOINT}/` }),
+  getUserMembershipsWithFines: (userId?: User['user_id']) =>
     IFetch<PaginationResponse<Membership>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${MEMBERSHIPS_ENDPOINT}/` }),
   getUserMembershipHistories: (userId?: User['user_id']) =>
     IFetch<PaginationResponse<MembershipHistory>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${MEMBERSHIP_HISTORIES_ENDPOINT}/` }),

@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { useParams } from 'react-router-dom';
 
 import { useUserMemberships } from 'hooks/User';
 
@@ -9,8 +8,7 @@ import ShortCutLink from './Item';
 import ShortCutSectionWrapper from './SectionWrapper';
 
 const ShortCutMembership = ({ setOpen }: Pick<ShortCutMenuProps, 'setOpen'>) => {
-  const { userId } = useParams();
-  const { data, isLoading } = useUserMemberships(userId);
+  const { data, isLoading } = useUserMemberships();
   const memberships = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   return (
