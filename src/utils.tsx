@@ -357,3 +357,10 @@ export const removeIdsFromFields = (fields: Array<TextFormField | SelectFormFiel
   });
   return newFields;
 };
+
+/**
+ * Navigate user to external URL in new tab
+ *
+ * @param url The URL to navigate to
+ */
+export const navigateToExternalURL = (url: string) => window.open(url, '_blank');

@@ -11,6 +11,7 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+- ✨ **Shortcuts**. La til meny med shortcuts.
 
 ## Versjon 2023.10.04
 - 🎨 **Footer**. La til NITO logo i footer under "samarbeid"
