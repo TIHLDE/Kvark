@@ -11,6 +11,8 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+
+## Versjon 2023.11.04
 - ✨ **Shortcuts**. La til meny med shortcuts.
 
 ## Versjon 2023.10.04
