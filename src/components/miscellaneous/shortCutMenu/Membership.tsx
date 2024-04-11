@@ -16,6 +16,7 @@ const ShortCutMembership = ({ setOpen }: Pick<ShortCutMenuProps, 'setOpen'>) => 
   return (
     <ShortCutSectionWrapper title='Mine Medlemskap'>
       {isLoading && <LoadingSpinnner />}
+      {!isLoading && memberships.length === 0 && <p className='text-sm'>Du er ikke medlem av noen grupper.</p>}
       {memberships.map((membership, index) => (
         <ShortCutLink key={index} path={`/grupper/${membership.group.slug}`} setOpen={setOpen} title={membership.group.name} />
       ))}

@@ -1,10 +1,15 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
+import { PermissionApp } from 'types/Enums';
+
+import { useHavePermission, useIsAuthenticated } from 'hooks/User';
+
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from 'components/ui/dialog';
 import { ScrollArea } from 'components/ui/scroll-area';
 import { Separator } from 'components/ui/separator';
 
 import ShortCutAdmin from './Admin';
+import ShortCutLogout from './Logout';
 import ShortCutMembership from './Membership';
 import ShortCutNavigation, { ShortCutExternalNavigation } from './Navigation';
 import generateHotKeys from './shortcuts';
@@ -17,7 +22,22 @@ export type ShortCutMenuProps = {
 const ShortCutMenu = () => {
   const [isOpen, setOpen] = useState<boolean>(false);
 
+  const { allowAccess: isAdmin } = useHavePermission([
+    PermissionApp.EVENT,
+    PermissionApp.JOBPOST,
+    PermissionApp.NEWS,
+    PermissionApp.USER,
+    PermissionApp.STRIKE,
+    PermissionApp.GROUP,
+  ]);
+  const isAuthenticated = useIsAuthenticated();
+
   useEffect(() => {
+    if (!isAuthenticated) {
+      setOpen(false);
+      return;
+    }
+
     // Attach the event listener to the document
     document.addEventListener('keydown', (event: KeyboardEvent) => generateHotKeys(event, setOpen, isOpen));
 
@@ -25,7 +45,11 @@ const ShortCutMenu = () => {
     return () => {
       document.removeEventListener('keydown', (event: KeyboardEvent) => generateHotKeys(event, setOpen, isOpen));
     };
-  }, [isOpen]);
+  }, [isOpen, isAuthenticated]);
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <Dialog onOpenChange={setOpen} open={isOpen}>
@@ -39,13 +63,19 @@ const ShortCutMenu = () => {
           <div className='space-y-4'>
             <ShortCutMembership setOpen={setOpen} />
             <Separator />
-            <ShortCutAdmin setOpen={setOpen} />
-            <Separator />
+            {isAdmin && (
+              <>
+                <ShortCutAdmin setOpen={setOpen} />
+                <Separator />
+              </>
+            )}
             <ShortCutTools setOpen={setOpen} />
             <Separator />
             <ShortCutNavigation setOpen={setOpen} />
             <Separator />
             <ShortCutExternalNavigation setOpen={setOpen} />
+            <Separator />
+            <ShortCutLogout setOpen={setOpen} />
           </div>
         </ScrollArea>
       </DialogContent>

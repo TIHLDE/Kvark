@@ -1,4 +1,4 @@
-import { ArrowRight, SquareArrowOutUpRight } from 'lucide-react';
+import { Link as LinkIcon, SquareArrowOutUpRight } from 'lucide-react';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -19,7 +19,7 @@ const ShortCutLink = ({ title, path, setOpen, external, hotKey }: MenuItemProps)
       target={external ? '_blank' : ''}
       to={path}>
       <div className='flex items-center'>
-        {!external ? <ArrowRight className='mr-2 w-4 h-4 stroke-[1.5px]' /> : <SquareArrowOutUpRight className='mr-2 w-4 h-4 stroke-[1.5px]' />} {title}
+        {!external ? <LinkIcon className='mr-2 w-4 h-4 stroke-[1.5px]' /> : <SquareArrowOutUpRight className='mr-2 w-4 h-4 stroke-[1.5px]' />} {title}
       </div>
       {hotKey && hotKey}
     </Link>
