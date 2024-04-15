@@ -3,13 +3,15 @@ import { Button, Grid, InputAdornment, Stack, TextField, Typography } from '@mui
 import Box from '@mui/material/Box';
 import { register } from 'module';
 import { useForm } from 'react-hook-form';
-import { useUserBio, useUpdateUserBio, useDeleteUserBio, useCreateUserBio } from 'hooks/UserBio';
+
+import { UserBioCreate } from 'types';
+
+import { useCreateUserBio, useDeleteUserBio, useUpdateUserBio, useUserBio } from 'hooks/UserBio';
 
 import SubmitButton from 'components/inputs/SubmitButton';
 import Paper from 'components/layout/Paper';
 import { SecondaryTopBox } from 'components/layout/TopBox';
 import Page from 'components/navigation/Page';
-import { UserBioCreate } from 'types';
 
 type Biodata = {
   description: string;
@@ -21,7 +23,7 @@ export type UserBioProps = {
   userBioId: number;
 };
 
-const UserBioForm = ({userBioId}: UserBioProps) => {
+const UserBioForm = ({ userBioId }: UserBioProps) => {
   const { formState, handleSubmit, register } = useForm<Biodata>();
 
   const createUserBio = useCreateUserBio();
@@ -30,13 +32,11 @@ const UserBioForm = ({userBioId}: UserBioProps) => {
   const getUserBio = useUserBio(userBioId);
 
   const onSave = async (data: Biodata) => {
-    
     updateUserBio.mutate(data, {
       onSuccess: () => {
-        alert("asdadadsadadsada")
-      } 
-    })
-    
+        alert('asdadadsadadsada');
+      },
+    });
   };
 
   return (
