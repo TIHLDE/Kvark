@@ -1,4 +1,4 @@
-import { Box, Button, SvgIcon, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import URLS from 'URLS';
@@ -8,9 +8,11 @@ import { User, UserNotificationSetting, UserNotificationSettingChoice } from 'ty
 import { useSnackbar } from 'hooks/Snackbar';
 import { useSlackConnect, useUpdateUserNotificationSettings, useUser, useUserNotificationSettingChoices, useUserNotificationSettings } from 'hooks/User';
 
-import { Switch } from 'components/inputs/Bool';
-import Paper, { PaperProps } from 'components/layout/Paper';
+import Paper from 'components/layout/Paper';
 import Page from 'components/navigation/Page';
+import { Button } from 'components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
+import { Switch } from 'components/ui/switch';
 
 export const SlackConnectPage = () => {
   const [searchParams] = useSearchParams();
@@ -48,8 +50,8 @@ export const SlackConnectPage = () => {
             : 'Ugyldig lenke'}
         </Typography>
         {(!loading || !searchParams.get('code')) && (
-          <Button component={Link} to={URLS.landing} variant='outlined'>
-            Gå til forsiden
+          <Button variant='outline'>
+            <Link to={URLS.landing}>Gå til forsiden</Link>
           </Button>
         )}
       </Paper>
@@ -57,45 +59,51 @@ export const SlackConnectPage = () => {
   );
 };
 
-export const ConnectWithSlack = (props: PaperProps) => {
+type ConnectWithSlackProps = {
+  className?: string;
+};
+
+export const ConnectWithSlack = ({ className }: ConnectWithSlackProps) => {
   const { data } = useUser();
   if (!data || data.slack_user_id) {
     return null;
   }
+
   return (
-    <Paper {...props}>
-      <Typography variant='h3'>Koble til Slack</Typography>
-      <Typography gutterBottom>
-        Hvis du har en Slack-konto i TIHLDE sin Slack kan du koble den til din konto på TIHLDE.org. Da kan du motta varsler fra oss i Slack. Du kan selv
-        bestemme hvilke varsler du vil motta hvor i varslingsinnstillingene.
-      </Typography>
-      <Button
-        component='a'
-        fullWidth
-        href={`https://slack.com/openid/connect/authorize?scope=openid&response_type=code&redirect_uri=${window.location.origin}/slack&client_id=${
-          import.meta.env.VITE_SLACK_CLIENT_ID
-        }`}
-        startIcon={
-          <SvgIcon viewBox='0 0 122.8 122.8'>
-            <path
-              d='M25.8 77.6c0 7.1-5.8 12.9-12.9 12.9S0 84.7 0 77.6s5.8-12.9 12.9-12.9h12.9v12.9zm6.5 0c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9v32.3c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V77.6z'
-              fill='#e01e5a'></path>
-            <path
-              d='M45.2 25.8c-7.1 0-12.9-5.8-12.9-12.9S38.1 0 45.2 0s12.9 5.8 12.9 12.9v12.9H45.2zm0 6.5c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H12.9C5.8 58.1 0 52.3 0 45.2s5.8-12.9 12.9-12.9h32.3z'
-              fill='#36c5f0'></path>
-            <path
-              d='M97 45.2c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9-5.8 12.9-12.9 12.9H97V45.2zm-6.5 0c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V12.9C64.7 5.8 70.5 0 77.6 0s12.9 5.8 12.9 12.9v32.3z'
-              fill='#2eb67d'></path>
-            <path
-              d='M77.6 97c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9-12.9-5.8-12.9-12.9V97h12.9zm0-6.5c-7.1 0-12.9-5.8-12.9-12.9s5.8-12.9 12.9-12.9h32.3c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H77.6z'
-              fill='#ecb22e'></path>
-          </SvgIcon>
-        }
-        target='_blank'
-        variant='outlined'>
-        Koble til din Slack-bruker
-      </Button>
-    </Paper>
+    <Card className={className}>
+      <CardHeader>
+        <CardTitle>Koble til Slack</CardTitle>
+        <CardDescription>
+          Hvis du har en Slack-konto i TIHLDE sin Slack kan du koble den til din konto på TIHLDE.org. Da kan du motta varsler fra oss i Slack. Du kan selv
+          bestemme hvilke varsler du vil motta hvor i varslingsinnstillingene.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Button className='w-full' size='lg' variant='outline'>
+          <Link
+            className='flex items-center'
+            to={`https://slack.com/openid/connect/authorize?scope=openid&response_type=code&redirect_uri=${window.location.origin}/slack&client_id=${
+              import.meta.env.VITE_SLACK_CLIENT_ID
+            }`}>
+            <svg className='w-5 h-5 mr-2' viewBox='0 0 122.8 122.8' xmlns='http://www.w3.org/2000/svg'>
+              <path
+                d='M25.8 77.6c0 7.1-5.8 12.9-12.9 12.9S0 84.7 0 77.6s5.8-12.9 12.9-12.9h12.9v12.9zm6.5 0c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9v32.3c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V77.6z'
+                fill='#e01e5a'></path>
+              <path
+                d='M45.2 25.8c-7.1 0-12.9-5.8-12.9-12.9S38.1 0 45.2 0s12.9 5.8 12.9 12.9v12.9H45.2zm0 6.5c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H12.9C5.8 58.1 0 52.3 0 45.2s5.8-12.9 12.9-12.9h32.3z'
+                fill='#36c5f0'></path>
+              <path
+                d='M97 45.2c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9-5.8 12.9-12.9 12.9H97V45.2zm-6.5 0c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V12.9C64.7 5.8 70.5 0 77.6 0s12.9 5.8 12.9 12.9v32.3z'
+                fill='#2eb67d'></path>
+              <path
+                d='M77.6 97c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9-12.9-5.8-12.9-12.9V97h12.9zm0-6.5c-7.1 0-12.9-5.8-12.9-12.9s5.8-12.9 12.9-12.9h32.3c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H77.6z'
+                fill='#ecb22e'></path>
+            </svg>
+            Koble til din Slack-bruker
+          </Link>
+        </Button>
+      </CardContent>
+    </Card>
   );
 };
 
@@ -134,12 +142,18 @@ const NotificationSetting = ({ choice, notificationSettings, user }: Notificatio
   };
 
   return (
-    <>
-      <Typography sx={{ alignSelf: 'center' }}>{choice.label}</Typography>
-      <Switch checked={setting.email} onChange={(e) => toggleSetting('email', e.target.checked)} sx={{ m: 'auto' }} />
-      <Switch checked={setting.website} onChange={(e) => toggleSetting('website', e.target.checked)} sx={{ m: 'auto' }} />
-      <Switch checked={setting.slack} disabled={!user.slack_user_id} onChange={(e) => toggleSetting('slack', e.target.checked)} sx={{ m: 'auto' }} />
-    </>
+    <tr>
+      <td className='text-sm md:text-md p-2'>{choice.label}</td>
+      <td className='text-center p-2'>
+        <Switch checked={setting.email} onCheckedChange={(checked) => toggleSetting('email', checked)} />
+      </td>
+      <td className='text-center p-2'>
+        <Switch checked={setting.website} onCheckedChange={(checked) => toggleSetting('website', checked)} />
+      </td>
+      <td className='text-center p-2'>
+        <Switch checked={setting.slack} disabled={!user.slack_user_id} onCheckedChange={(checked) => toggleSetting('slack', checked)} />
+      </td>
+    </tr>
   );
 };
 
@@ -153,23 +167,19 @@ export const UserNotificationSettings = ({ user }: UserNotificationSettingsProps
 
   return (
     <>
-      <ConnectWithSlack sx={{ mb: 2 }} />
-      <Typography gutterBottom variant='body2'>
-        For å være sikker på at du mottar nødvendig informasjon må du velge minst én informasjonskanal for hver type varsel
-      </Typography>
-      <Box sx={{ overflow: 'auto', display: 'grid', gridTemplateColumns: '1fr repeat(3, auto)', gap: 1 }}>
-        <Typography sx={{ fontWeight: 'bold' }}>Type</Typography>
-        <Typography align='center' sx={{ fontWeight: 'bold', minWidth: 75 }}>
-          Epost
-        </Typography>
-        <Typography align='center' sx={{ fontWeight: 'bold', minWidth: 75 }}>
-          Nettsiden
-        </Typography>
-        <Typography align='center' sx={{ fontWeight: 'bold', minWidth: 75 }}>
-          Slack
-        </Typography>
-        {data && choices.map((choice) => <NotificationSetting choice={choice} key={choice.notification_type} notificationSettings={data} user={user} />)}
-      </Box>
+      <ConnectWithSlack className='mb-4' />
+      <p className='text-sm mb-4'>For å være sikker på at du mottar nødvendig informasjon må du velge minst én informasjonskanal for hver type varsel</p>
+      <table className='w-full'>
+        <thead>
+          <th className='text-sm md:text-md w-3/5 text-start p-1'>Type</th>
+          <th className='text-sm md:text-md flex-auto p-1'>Epost</th>
+          <th className='text-sm md:text-md flex-auto p-1'>Nettsiden</th>
+          <th className='text-sm md:text-md flex-auto p-1'>Slack</th>
+        </thead>
+        <tbody>
+          {data && choices.map((choice) => <NotificationSetting choice={choice} key={choice.notification_type} notificationSettings={data} user={user} />)}
+        </tbody>
+      </table>
     </>
   );
 };

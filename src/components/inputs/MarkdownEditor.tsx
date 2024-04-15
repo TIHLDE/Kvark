@@ -37,6 +37,22 @@ const guide = `
 
   ___
 
+  ## **Mellomrom**
+
+  Tekst før mellomrom
+
+  &nbsp;  
+
+  Tekst etter mellomrom
+
+  ~~~
+  &nbsp;
+  Det må være to mellomrom etter &nbsp; for at det skal fungere
+  (&nbsp;  )
+  ~~~
+
+  ___
+
   ## **Link og bilde**
 
   [tihlde.org](https://tihlde.org)

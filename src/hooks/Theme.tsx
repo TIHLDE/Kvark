@@ -1,7 +1,7 @@
 import { useMediaQuery } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { SELECTED_THEME } from 'constant';
-import { createContext, ReactNode, useCallback, useContext, useLayoutEffect, useState } from 'react';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useLayoutEffect, useState } from 'react';
 
 import { getCookie, setCookie } from 'api/cookie';
 
@@ -18,6 +18,14 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const [selectedTheme, setSelectedTheme] = useState<ThemeTypes>('automatic');
 
+  // TODO: Remove this when lightmode is fixed
+  useEffect(() => {
+    const root = window.document.documentElement;
+    root.classList.remove('light', 'dark');
+    root.classList.add('dark');
+    setCookie(SELECTED_THEME, 'dark');
+  }, []);
+
   const getThemeType = useCallback((name: ThemeTypes | string | undefined) => {
     if (themes.includes(name as ThemeTypes)) {
       return name as ThemeTypes;
@@ -25,6 +33,20 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
       return undefined;
     }
   }, []);
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    root.classList.remove('light', 'dark');
+
+    if (selectedTheme === 'automatic') {
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
+      root.classList.add(systemTheme);
+      return;
+    }
+
+    root.classList.add(selectedTheme);
+  }, [selectedTheme]);
 
   const updateTheme = useCallback(
     (newTheme: ThemeTypes | string | undefined) => {

@@ -1,7 +1,4 @@
-import { Rowing } from '@mui/icons-material';
-import { Button, Grid, InputAdornment, Stack, TextField, Typography } from '@mui/material';
-import Box from '@mui/material/Box';
-import { register } from 'module';
+import { Stack, TextField, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
 import { UserBioCreate } from 'types';
@@ -10,8 +7,6 @@ import { useCreateUserBio, useDeleteUserBio, useUpdateUserBio, useUserBio } from
 
 import SubmitButton from 'components/inputs/SubmitButton';
 import Paper from 'components/layout/Paper';
-import { SecondaryTopBox } from 'components/layout/TopBox';
-import Page from 'components/navigation/Page';
 
 type Biodata = {
   description: string;
@@ -32,6 +27,7 @@ const UserBioForm = ({ userBioId }: UserBioProps) => {
   const getUserBio = useUserBio(userBioId);
 
   const onSave = async (data: Biodata) => {
+    console.log(data);
     updateUserBio.mutate(data, {
       onSuccess: () => {
         alert('asdadadsadadsada');

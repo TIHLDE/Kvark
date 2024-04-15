@@ -1,4 +1,4 @@
-import { Divider, Skeleton, styled, Typography } from '@mui/material';
+import { Skeleton, styled } from '@mui/material';
 import { createElement, lazy, ReactNode, Suspense, useMemo } from 'react';
 import rehypeRaw from 'rehype-raw';
 
@@ -11,35 +11,16 @@ import { useNewsById } from 'hooks/News';
 import Expand from 'components/layout/Expand';
 import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
 import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
-import Linkify from 'components/miscellaneous/Linkify';
 import NewsListItem, { NewsListItemLoading } from 'components/miscellaneous/NewsListItem';
+import { Separator } from 'components/ui/separator';
 
 const ReactMarkdown = lazy(() => import('react-markdown'));
-
-export const Ol = styled('ol')(({ theme }) => ({
-  listStylePosition: 'inside',
-  marginLeft: theme.spacing(1),
-}));
-export const Ul = styled('ul')(({ theme }) => ({
-  listStylePosition: 'inside',
-  marginLeft: theme.spacing(1),
-}));
-export const Li = styled('li')(({ theme }) => ({
-  fontSize: theme.typography.body1.fontSize,
-  wordBreak: 'break-word',
-}));
 
 export const InlineCode = styled('code')(({ theme }) => ({
   padding: theme.spacing(0.5, 1),
   color: theme.palette.text.primary,
   borderRadius: theme.shape.borderRadius,
   background: theme.palette.action.selected,
-}));
-
-export const Heading = styled(Typography)(({ theme }) => ({
-  marginBottom: theme.spacing(1),
-  color: theme.palette.text.primary,
-  wordBreak: 'break-word',
 }));
 
 export const ExpandList = styled('div')(({ theme }) => ({
@@ -132,19 +113,20 @@ const components: any = {
   blockquote: ({ children }: { children: ReactNode[] }) => <Blockquote>{children}</Blockquote>,
   code: CodeBlock,
   pre: ({ children }: { children: ReactNode[] }) => children,
-  h1: ({ children }: { children: ReactNode[] }) => <Heading variant='h2'>{children}</Heading>,
-  h2: ({ children }: { children: ReactNode[] }) => <Heading variant='h3'>{children}</Heading>,
-  h3: ({ children }: { children: ReactNode[] }) => <Heading variant='h3'>{children}</Heading>,
-  ol: ({ children }: { children: ReactNode[]; ordered: boolean }) => <Ol>{children}</Ol>,
-  ul: ({ children }: { children: ReactNode[]; ordered: boolean }) => <Ul>{children}</Ul>,
+  h1: ({ children }: { children: ReactNode[] }) => <h1 className='text-3xl font-bold'>{children}</h1>,
+  h2: ({ children }: { children: ReactNode[] }) => <h1 className='text-2xl font-bold'>{children}</h1>,
+  h3: ({ children }: { children: ReactNode[] }) => <h1 className='text-2xl font-bold'>{children}</h1>,
+  ol: ({ children }: { children: ReactNode[]; ordered: boolean }) => <ol className='ml-2 list-inside list-decimal'>{children}</ol>,
+  ul: ({ children }: { children: ReactNode[]; ordered: boolean }) => <ul className='ml-2 list-inside list-disc'>{children}</ul>,
   li: ({ children, checked }: { children: ReactNode[]; checked: boolean }) =>
-    createElement(Li, {}, checked ? createElement('input', { type: 'checkbox', checked, readOnly: true }) : null, children),
-  p: ({ children }: { children: ReactNode[] }) => (
-    <Linkify>
-      <Heading variant='body1'>{children}</Heading>
-    </Linkify>
+    createElement('li', {}, checked ? createElement('input', { type: 'checkbox', checked, readOnly: true }) : null, children),
+  p: ({ children }: { children: ReactNode[] }) => <p>{children}</p>,
+  a: ({ children, href }: { children: ReactNode[]; href: string }) => (
+    <a className='underline text-blue-500 dark:text-indigo-300' href={href}>
+      {children}
+    </a>
   ),
-  hr: () => <Divider sx={{ my: 1 }} />,
+  hr: () => <Separator className='my-2' />,
   img: ({ alt, src }: { alt: string; src: string }) => <Image alt={alt} loading='lazy' src={src} />,
 };
 

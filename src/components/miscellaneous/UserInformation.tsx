@@ -11,7 +11,7 @@ export type ShowMoreTextProps = {
 };
 
 export const ShowMoreText = ({ children, variant = 'caption', sx = [] }: ShowMoreTextProps) => {
-  const [showAll, setShowAll] = useState(false);
+  const [showAll, setShowAll] = useState<boolean>(false);
   return (
     <Box
       component='span'

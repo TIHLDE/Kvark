@@ -60,7 +60,12 @@ const URLS = {
   jobpostsAdmin: '/admin/karriere/',
   newsAdmin: '/admin/nyheter/',
   bannerAdmin: '/admin/bannere/',
-  jubilee: 'jubileum.tihlde.org/',
+  jubilee: 'https://jubileum.tihlde.org/',
+  fondet: 'https://fondet.tihlde.org/',
+  kontRes: 'https://kontres.tihlde.org/',
+  github: 'https://github.com/TIHLDE',
+  pythons: 'https://pythons.tihlde.org/',
+  pythonsLadies: 'https://pythons-damer.tihlde.org/',
 };
 
 export default URLS;

@@ -1,4 +1,4 @@
-import { Box, Divider, Stack, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -9,6 +9,7 @@ import MembershipItem, { MembershipItemLoading } from 'pages/Profile/components/
 
 import Pagination from 'components/layout/Pagination';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import { Separator } from 'components/ui/separator';
 
 const Memberships = () => {
   const { userId } = useParams();
@@ -51,13 +52,17 @@ const MembershipHistories = () => {
 };
 
 const ProfileMemberships = () => (
-  <Stack gap={1}>
-    <Typography variant='h3'>Aktive medlemskap</Typography>
-    <Memberships />
-    <Divider />
-    <Typography variant='h3'>Tidligere medlemskap</Typography>
-    <MembershipHistories />
-  </Stack>
+  <div className='space-y-6'>
+    <div className='space-y-2'>
+      <h1 className='text-xl font-semibold'>Aktive medlemskap</h1>
+      <Memberships />
+    </div>
+    <Separator />
+    <div className='space-y-2'>
+      <h1 className='text-xl font-semibold'>Tidligere medlemskap</h1>
+      <MembershipHistories />
+    </div>
+  </div>
 );
 
 export default ProfileMemberships;

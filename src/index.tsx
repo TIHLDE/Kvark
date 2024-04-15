@@ -23,6 +23,7 @@ import { MiscProvider } from 'hooks/Misc';
 import { SnackbarProvider } from 'hooks/Snackbar';
 import { ThemeProvider } from 'hooks/Theme';
 
+import ShortCutMenu from 'components/miscellaneous/shortCutMenu';
 import Navigation from 'components/navigation/Navigation';
 
 export const muiCache = createCache({ key: 'mui', prepend: true });
@@ -68,6 +69,7 @@ export const Application = () => (
   <Providers>
     <BrowserRouter>
       <Navigation>
+        <ShortCutMenu />
         <AppRoutes />
         <Analytics />
       </Navigation>
