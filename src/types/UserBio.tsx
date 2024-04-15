@@ -1,5 +1,5 @@
 export type UserBio = {
-  id: string;
+  id: number;
   description: string;
   gitHub_link: string;
   linkedIn_link: string;

@@ -67,6 +67,7 @@ const Content = styled('div')(({ theme }) => ({
 const Profile = () => {
   const { userId } = useParams();
   const { data: user, isError } = useUser(userId);
+  //legg til bio
   const { event } = useAnalytics();
   const logOut = useLogout();
   const { allowAccess: isAdmin } = useHavePermission([

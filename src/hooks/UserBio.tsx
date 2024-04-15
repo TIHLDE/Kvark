@@ -15,9 +15,9 @@ export const useCreateUserBio = (): UseMutationResult<UserBio, RequestResponse, 
   });
 };
 
-export const useUpdateUserBio = (userBioId: UserBio['id']): UseMutationResult<UserBio, RequestResponse, UserBio, unknown> => {
+export const useUpdateUserBio = (userBioId: UserBio['id']): UseMutationResult<Partial<UserBio>, RequestResponse, Partial<UserBio>, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((updatedUserBio: UserBio) => API.updateUserBio(userBioId, updatedUserBio), {
+  return useMutation((updatedUserBio: Partial<UserBio>) => API.updateUserBio(userBioId, updatedUserBio), {
     onSuccess: (data) => {
       queryClient.setQueryData([USER_BIO_QUERY_KEY], data);
     },
