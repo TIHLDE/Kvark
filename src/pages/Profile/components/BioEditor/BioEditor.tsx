@@ -1,60 +1,138 @@
-import { Stack, TextField, Typography } from '@mui/material';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import { UserBioCreate } from 'types';
+import { UserBio } from 'types';
 
-import { useCreateUserBio, useDeleteUserBio, useUpdateUserBio, useUserBio } from 'hooks/UserBio';
+import { useSnackbar } from 'hooks/Snackbar';
+import { useCreateUserBio, useUpdateUserBio } from 'hooks/UserBio';
 
-import SubmitButton from 'components/inputs/SubmitButton';
-import Paper from 'components/layout/Paper';
+import { Button } from 'components/ui/button';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
+import { Input } from 'components/ui/input';
+import { Textarea } from 'components/ui/textarea';
 
-type Biodata = {
-  description: string;
-  github: string;
-  linkedIn: string;
-};
+const formSchema = z.object({
+  description: z
+    .string()
+    .max(500, {
+      message: 'Maks 500 tegn',
+    })
+    .optional()
+    .or(z.literal('')),
+  gitHub_link: z
+    .string()
+    .url({
+      message: 'Ugyldig URL',
+    })
+    .max(300, {
+      message: 'Maks 300 tegn',
+    })
+    .optional()
+    .or(z.literal('')),
+  linkedIn_link: z
+    .string()
+    .url({
+      message: 'Ugyldig URL',
+    })
+    .max(300, {
+      message: 'Maks 300 tegn',
+    })
+    .optional()
+    .or(z.literal('')),
+});
 
 export type UserBioProps = {
-  userBioId: number;
+  userBio: UserBio;
+  setOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-const UserBioForm = ({ userBioId }: UserBioProps) => {
-  const { formState, handleSubmit, register } = useForm<Biodata>();
-
+const UserBioForm = ({ userBio, setOpen }: UserBioProps) => {
+  const showSnackbar = useSnackbar();
   const createUserBio = useCreateUserBio();
-  const updateUserBio = useUpdateUserBio(userBioId);
-  const deleteUserBio = useDeleteUserBio(userBioId);
-  const getUserBio = useUserBio(userBioId);
+  const updateUserBio = useUpdateUserBio(userBio ? userBio.id : 0);
 
-  const onSave = async (data: Biodata) => {
-    console.log(data);
-    updateUserBio.mutate(data, {
-      onSuccess: () => {
-        alert('asdadadsadadsada');
-      },
-    });
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      description: userBio ? userBio.description : '',
+      gitHub_link: userBio ? userBio.gitHub_link : '',
+      linkedIn_link: userBio ? userBio.linkedIn_link : '',
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    if (!userBio) {
+      createUserBio.mutate(values, {
+        onSuccess: () => {
+          showSnackbar('Profilbio ble opprettet', 'success');
+          setOpen(false);
+        },
+      });
+    } else {
+      updateUserBio.mutate(values, {
+        onSuccess: () => {
+          showSnackbar('Profilbio ble oppdatert', 'success');
+          setOpen(false);
+        },
+      });
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSave)}>
-      <Typography sx={{ pb: 3 }} variant='h2'>
-        Redigér bio
-      </Typography>
-      <TextField fullWidth inputProps={{ maxLength: 500 }} label='Biografi' multiline rows={6} sx={{ pb: 2 }} />
-      <TextField fullWidth label='GitHub (URL)' sx={{ pb: 2 }} />
-      <TextField fullWidth label='LinkedIn (URL)' sx={{ pb: 2 }} />
-      <SubmitButton disabled={formState.isSubmitting} formState={formState}>
-        Lagre
-      </SubmitButton>
-    </form>
-  );
-};
-const ProfileEditor = () => {
-  return (
-    <Stack component={Paper} direction={{ xs: 'column', md: 'row' }} gap={2} sx={{ p: 3, m: 2 }} variant='elevation'>
-      <UserBioForm />
-    </Stack>
+    <Form {...form}>
+      <form className='space-y-8' onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name='description'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Beskrivelse</FormLabel>
+              <FormControl>
+                <Textarea className='resize-none h-[100px]' placeholder='Beskrivelse' {...field} />
+              </FormControl>
+              <FormDescription>En kort beskrivelse av deg.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='gitHub_link'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>GitHub</FormLabel>
+              <FormControl>
+                <Input placeholder='https://github.com/TIHLDE' {...field} />
+              </FormControl>
+              <FormDescription>Din GitHub profil.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='linkedIn_link'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>LinkedIn</FormLabel>
+              <FormControl>
+                <Input placeholder='https://linkedin.com/TIHLDE' {...field} />
+              </FormControl>
+              <FormDescription>Din LinkedIn profil.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button size='lg' type='submit'>
+          {!userBio ? 'Opprett' : 'Oppdater'}
+        </Button>
+      </form>
+    </Form>
   );
 };
 
-export default ProfileEditor;
+export default UserBioForm;

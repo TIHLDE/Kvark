@@ -108,7 +108,7 @@ export const USERS_ENDPOINT = 'users';
 export const WARNINGS_ENDPOINT = 'warnings';
 export const PAYMENT_ENDPOINT = 'payments';
 export const EMOJI_ENDPOINT = 'emojis';
-export const BIO_ENDPOINT = 'user-bios';
+export const BIO_ENDPOINT = 'user-bios/';
 
 export default {
   // Auth
@@ -391,7 +391,7 @@ export default {
 
   // User bio
   createUserBio: (data: UserBioCreate) => IFetch<UserBio>({ method: 'POST', url: `${BIO_ENDPOINT}`, data }),
-  updateUserBio: (id: UserBio['id'], data: Partial<UserBio>) => IFetch<UserBio>({ method: 'PUT', url: `${BIO_ENDPOINT}/${id}`, data }),
-  deleteUserBio: (id: UserBio['id']) => IFetch<UserBio>({ method: 'DELETE', url: `${BIO_ENDPOINT}/${id}` }),
-  getUserBio: (id: UserBio['id']) => IFetch<UserBio>({ method: 'GET', url: `${BIO_ENDPOINT}/${id}` }),
+  updateUserBio: (id: UserBio['id'], data: Partial<UserBio>) => IFetch<UserBio>({ method: 'PUT', url: `${BIO_ENDPOINT}${id}/`, data }),
+  deleteUserBio: (id: UserBio['id']) => IFetch<UserBio>({ method: 'DELETE', url: `${BIO_ENDPOINT}${id}/` }),
+  getUserBio: (id: UserBio['id'] | null) => IFetch<UserBio>({ method: 'GET', url: `${BIO_ENDPOINT}${id}/` }),
 };
