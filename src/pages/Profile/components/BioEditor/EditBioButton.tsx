@@ -1,6 +1,6 @@
 import Edit from '@mui/icons-material/Edit';
 import { Button, Dialog } from '@mui/material';
-import { ButtonProps, styled, Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { ButtonProps } from '@mui/material';
 import { useState } from 'react';
 
 import BioEditor from './BioEditor';
@@ -12,8 +12,6 @@ export type BioButtonProps = ButtonProps & {
 
 const EditBioButton = ({ bioValue, subtitle, children, ...props }: BioButtonProps) => {
   const [showEditBio, setShowEditBio] = useState(false);
-  const theme = useTheme();
-  const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
   return (
     <>

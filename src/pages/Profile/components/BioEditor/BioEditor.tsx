@@ -1,13 +1,8 @@
-import { Rowing } from '@mui/icons-material';
-import { Button, Grid, InputAdornment, Stack, TextField, Typography } from '@mui/material';
-import Box from '@mui/material/Box';
-import { register } from 'module';
+import { Stack, TextField, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
 import SubmitButton from 'components/inputs/SubmitButton';
 import Paper from 'components/layout/Paper';
-import { SecondaryTopBox } from 'components/layout/TopBox';
-import Page from 'components/navigation/Page';
 
 type Biodata = {
   description: string;
@@ -16,9 +11,11 @@ type Biodata = {
 };
 
 const UserBioForm = () => {
-  const { formState, handleSubmit, register } = useForm<Biodata>();
+  const { formState, handleSubmit } = useForm<Biodata>();
 
-  const onSave = async (data: Biodata) => {};
+  const onSave = async (data: Biodata) => {
+    console.log(data);
+  };
 
   return (
     <form onSubmit={handleSubmit(onSave)}>
