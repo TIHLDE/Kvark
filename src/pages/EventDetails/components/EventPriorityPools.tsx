@@ -1,4 +1,3 @@
-import { Stack, Typography } from '@mui/material';
 import { useCallback } from 'react';
 import { getStudyyearAsClass } from 'utils';
 
@@ -7,8 +6,8 @@ import { GroupType } from 'types/Enums';
 
 import { useUser } from 'hooks/User';
 
-import Paper from 'components/layout/Paper';
 import { ShowMoreText } from 'components/miscellaneous/UserInformation';
+import { Card, CardContent } from 'components/ui/card';
 
 export type EventPriorityPoolsProps = {
   priorityPools: Array<PriorityPool>;
@@ -28,11 +27,13 @@ const EventPriorityPools = ({ priorityPools }: EventPriorityPoolsProps) => {
   }, []);
 
   return (
-    <Stack gap={0.5}>
+    <div className='space-y-2'>
       {priorityPools.map((pool, index) => (
-        <Stack alignItems='center' component={Paper} direction='row' gap={1} key={index} sx={{ position: 'relative', py: 0.5, px: 1, borderRadius: 0.5 }}>
-          <Typography variant='body2'>{getGroupsString(pool.groups)}</Typography>
-        </Stack>
+        <Card className='rounded-sm' key={index}>
+          <CardContent className='py-1 px-2'>
+            <h1 className='text-xs'>{getGroupsString(pool.groups)}</h1>
+          </CardContent>
+        </Card>
       ))}
       <ShowMoreText sx={{ mt: 1 }} variant='caption'>
         <b>Hvem er prioritert?</b>
@@ -43,7 +44,7 @@ Hvis du er prioritert og har plass på arrangementet, kan du ikke miste plassen.
 
 Med "-kullet" menes året du startet på studiet. ${user ? `Du er for eksempel en del av ${user.studyyear.group?.name}-kullet.` : ''}`}
       </ShowMoreText>
-    </Stack>
+    </div>
   );
 };
 

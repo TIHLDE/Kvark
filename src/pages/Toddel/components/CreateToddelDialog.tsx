@@ -52,6 +52,9 @@ const CreateToddelDialog = () => {
             inputProps={{ inputMode: 'numeric' }}
             label='Utgave'
             {...register('edition', {
+              // TODO: Fix type
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
               pattern: { value: RegExp(/^[0-9]*$/), message: 'Skriv inn et heltall som 0 eller høyere' },
               valueAsNumber: true,
               min: { value: 0, message: 'Utgaven må være over 0' },

@@ -1,11 +1,13 @@
-import AddReactionOutlinedIcon from '@mui/icons-material/AddReactionOutlined';
-import { Button, Container, Dialog as MuiDialog } from '@mui/material';
+import { Dialog as MuiDialog } from '@mui/material';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import { SmilePlusIcon } from 'lucide-react';
 import { useState } from 'react';
 
 import { useCreateReaction, useUpdateReaction } from 'hooks/EmojiReaction';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useUser } from 'hooks/User';
+
+import { Button } from 'components/ui/button';
 
 import { ReactionHandlerProps } from './ReactionHandler';
 
@@ -56,14 +58,14 @@ export const EmojiPickerHandler = ({ data, content_type }: ReactionHandlerProps)
   };
 
   return (
-    <Container>
-      <Button onClick={openPopover} variant='outlined'>
-        <AddReactionOutlinedIcon fontSize='small' />
+    <div>
+      <Button onClick={openPopover} size='icon' variant='outline'>
+        <SmilePlusIcon />
       </Button>
 
       <MuiDialog onClose={closePopover} open={open}>
         <EmojiPicker onEmojiClick={handleEmojiPick} />
       </MuiDialog>
-    </Container>
+    </div>
   );
 };

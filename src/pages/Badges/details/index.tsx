@@ -12,9 +12,9 @@ import BadgeCategoryItem from 'pages/Badges/components/BadgeCategoryItem';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import { PrimaryTopBox } from 'components/layout/TopBox';
-import Avatar from 'components/miscellaneous/Avatar';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import Page from 'components/navigation/Page';
+import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
 
 const BadgeDetails = () => {
   const { badgeId } = useParams<'badgeId'>();
@@ -67,7 +67,10 @@ const BadgeDetails = () => {
                 <ListItem component={Paper} disablePadding key={entry.user.user_id} noOverflow noPadding>
                   <ListItemButton component={Link} to={`${URLS.profile}${entry.user.user_id}/`}>
                     <ListItemAvatar>
-                      <Avatar user={entry.user} />
+                      <Avatar>
+                        <AvatarImage alt={entry.user.first_name} src={entry.user.image} />
+                        <AvatarFallback>{entry.user.first_name[0] + entry.user.last_name[0]}</AvatarFallback>
+                      </Avatar>
                     </ListItemAvatar>
                     <ListItemText
                       primary={`${entry.user.first_name} ${entry.user.last_name}`}

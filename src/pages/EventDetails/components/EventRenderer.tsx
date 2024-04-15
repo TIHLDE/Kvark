@@ -1,23 +1,9 @@
-import CalendarIcon from '@mui/icons-material/EventRounded';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import FavoriteFilledIcon from '@mui/icons-material/FavoriteRounded';
-import {
-  Alert,
-  Button,
-  Checkbox,
-  CircularProgress,
-  IconButton,
-  IconButtonProps,
-  Skeleton,
-  Stack,
-  styled,
-  Theme,
-  Tooltip,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
+import { IconButton, IconButtonProps, Button as MuiButton, Skeleton, Stack, styled, Theme, Tooltip, useMediaQuery } from '@mui/material';
 import { addHours, formatDistanceToNowStrict, isFuture, isPast, parseISO, subHours } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
+import { CalendarIcon, HandCoinsIcon, PencilIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
@@ -49,12 +35,20 @@ import FormUserAnswers from 'components/forms/FormUserAnswers';
 import Expand from 'components/layout/Expand';
 import Paper from 'components/layout/Paper';
 import VerifyDialog from 'components/layout/VerifyDialog';
-import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
+import { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
+import LoadingSpinnner from 'components/miscellaneous/LoadingSpinner';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import QRButton from 'components/miscellaneous/QRButton';
 import { ReactionHandler } from 'components/miscellaneous/reactions/ReactionHandler';
 import ShareButton from 'components/miscellaneous/ShareButton';
+import UpdatedAgo from 'components/miscellaneous/UpdatedAgo';
+import { Alert, AlertDescription } from 'components/ui/alert';
+import { Button } from 'components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
+import { Checkbox } from 'components/ui/checkbox';
+
+import TIHLDE_LOGO from 'assets/img/TihldeBackground.jpg';
 
 const DetailsPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1, 2),
@@ -65,10 +59,6 @@ const DetailsPaper = styled(Paper)(({ theme }) => ({
 const ContentPaper = styled(Paper)({
   height: 'fit-content',
   overflowX: 'auto',
-});
-
-const DetailsHeader = styled(Typography)({
-  fontSize: '1.5rem',
 });
 
 export type EventRendererProps = {
@@ -165,8 +155,10 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       <>
         {registration.is_on_wait ? (
           <>
-            <Alert severity='info' variant='outlined'>
-              Du står på plass {registration.wait_queue_number}/{event.waiting_list_count} på ventelisten, vi gir deg beskjed hvis du får plass
+            <Alert>
+              <AlertDescription>
+                Du står på plass {registration.wait_queue_number}/{event.waiting_list_count} på ventelisten, vi gir deg beskjed hvis du får plass
+              </AlertDescription>
             </Alert>
             {registration.survey_submission.answers.length > 0 && (
               <div>
@@ -179,18 +171,16 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
         ) : (
           <>
             {data.paid_information && !registration.has_paid_order ? (
-              <Alert icon severity='warning' variant='outlined'>
-                {`Du er ${registration.has_attended ? 'deltatt' : 'meldt'} på arrangementet! Men du må huske å betale`}
+              <Alert variant='warning'>
+                <HandCoinsIcon className='stroke-[1.5px]' />
+                <AlertDescription>Du er meldt på arrangementet! Men du må huske å betale</AlertDescription>
               </Alert>
             ) : (
               <>
-                <Alert icon severity='success' variant='outlined'>
-                  {`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}
+                <Alert variant='success'>
+                  <AlertDescription>{`Du har ${registration.has_attended ? 'deltatt' : 'plass'} på arrangementet!`}</AlertDescription>
                 </Alert>
-                <QRButton
-                  fullWidth
-                  qrValue={registration.user_info.user_id}
-                  subtitle={`${registration.user_info.first_name} ${registration.user_info.last_name}`}>
+                <QRButton qrValue={registration.user_info.user_id} subtitle={`${registration.user_info.first_name} ${registration.user_info.last_name}`}>
                   Påmeldingsbevis
                 </QRButton>
               </>
@@ -204,12 +194,14 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             )}
             {registration.has_unanswered_evaluation && (
               <>
-                <Alert severity='warning' variant='outlined'>
-                  Du har ikke svart på evalueringen av dette arrangementet. Du må svare på den før du kan melde deg på flere arrangementer.
+                <Alert variant='warning'>
+                  <AlertDescription>
+                    Du har ikke svart på evalueringen av dette arrangementet. Du må svare på den før du kan melde deg på flere arrangementer.
+                  </AlertDescription>
                 </Alert>
-                <Button component={Link} fullWidth to={`${URLS.form}${data.evaluation}/`} variant='contained'>
+                <MuiButton component={Link} fullWidth to={`${URLS.form}${data.evaluation}/`} variant='contained'>
                   Svar på evaluering
-                </Button>
+                </MuiButton>
               </>
             )}
           </>
@@ -227,14 +219,16 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               Meld deg av
             </VerifyDialog>
             {unregisteringGivesStrike && (
-              <Alert severity='info' variant='outlined'>
-                Avmeldingsfristen har passert. Du kan allikevel melde deg av frem til 2 timer før arrangementsstart, men du vil da få 1 prikk.
+              <Alert>
+                <AlertDescription>
+                  Avmeldingsfristen har passert. Du kan allikevel melde deg av frem til 2 timer før arrangementsstart, men du vil da få 1 prikk.
+                </AlertDescription>
               </Alert>
             )}
           </>
         ) : (
-          <Alert severity='info' variant='outlined'>
-            Det er ikke lenger mulig å melde seg av arrangementet
+          <Alert>
+            <AlertDescription>Det er ikke lenger mulig å melde seg av arrangementet</AlertDescription>
           </Alert>
         )}
       </>
@@ -243,8 +237,10 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
 
   const HasUnansweredEvaluations = () =>
     user?.unanswered_evaluations_count ? (
-      <Alert severity='error' variant='outlined'>
-        {`Du må svare på ${user.unanswered_evaluations_count} ubesvarte evalueringsskjemaer før du kan melde deg på flere arrangementer. Du finner dine ubesvarte evalueringsskjemaer under "Spørreskjemaer" i profilen.`}
+      <Alert variant='destructive'>
+        <AlertDescription>
+          {`Du må svare på ${user.unanswered_evaluations_count} ubesvarte evalueringsskjemaer før du kan melde deg på flere arrangementer. Du finner dine ubesvarte evalueringsskjemaer under "Spørreskjemaer" i profilen.`}
+        </AlertDescription>
       </Alert>
     ) : null;
 
@@ -266,8 +262,8 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     }
     if (data.closed) {
       return (
-        <Alert severity='warning' variant='outlined'>
-          Dette arrangementet er stengt. Det er derfor ikke mulig å melde seg av eller på.
+        <Alert variant='warning'>
+          <AlertDescription>Dette arrangementet er stengt. Det er derfor ikke mulig å melde seg av eller på.</AlertDescription>
         </Alert>
       );
     }
@@ -275,7 +271,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       return (
         <>
           <HasUnansweredEvaluations />
-          <Button disabled fullWidth variant='contained'>
+          <Button className='w-full' disabled size='lg' variant='outline'>
             {`Påmelding åpner ${notOpenText}`}
           </Button>
         </>
@@ -283,8 +279,10 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     }
     if (!user) {
       return isFuture(endRegistrationDate) ? (
-        <Button component={Link} fullWidth onClick={() => setLogInRedirectURL(window.location.pathname)} to={URLS.login} variant='contained'>
-          Logg inn for å melde deg på
+        <Button className='w-full' size='lg' variant='default'>
+          <Link onClick={() => setLogInRedirectURL(window.location.pathname)} to={URLS.login}>
+            Logg inn for å melde deg på
+          </Link>
         </Button>
       ) : null;
     }
@@ -298,7 +296,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     const is_prioritized = data.priority_pools.some((pool) => pool.groups.filter((group) => !group.viewer_is_member).length === 0);
     if (data.only_allow_prioritized && data.priority_pools.length > 0 && !is_prioritized) {
       return (
-        <Button disabled fullWidth variant='contained'>
+        <Button className='w-full' disabled size='lg' variant='outline'>
           Kun åpent for prioriterte
         </Button>
       );
@@ -306,8 +304,8 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     return (
       <>
         <HasUnansweredEvaluations />
-        <Button disabled={user?.unanswered_evaluations_count > 0 || isLoadingSignUp} fullWidth onClick={() => signUp()} variant='contained'>
-          {!isLoadingSignUp ? 'Meld deg på' : <CircularProgress />}
+        <Button className='w-full' disabled={user?.unanswered_evaluations_count > 0 || isLoadingSignUp} onClick={() => signUp()} size='lg'>
+          {!isLoadingSignUp ? 'Meld deg på' : <LoadingSpinnner />}
         </Button>
       </>
     );
@@ -351,60 +349,81 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
 
   const Info = () => (
     <>
-      <DetailsPaper noPadding>
-        <Stack direction='row' gap={1} justifyContent='space-between' sx={{ position: 'relative' }}>
-          {user && !preview && <Favorite eventId={data.id} sx={{ position: 'absolute', right: ({ spacing }) => spacing(-1) }} />}
-          <DetailsHeader variant='h2'>Detaljer</DetailsHeader>
-        </Stack>
-        <DetailContent info={formatDate(startDate)} title='Fra:' />
-        <DetailContent info={formatDate(endDate)} title='Til:' />
-        <DetailContent info={data.location} title='Sted:' />
-        <DetailContent info={categories.find((c) => c.id === data.category)?.text || 'Laster...'} title='Hva:' />
-        {data.organizer && <DetailContent info={<Link to={URLS.groups.details(data.organizer.slug)}>{data.organizer.name}</Link>} title='Arrangør:' />}
-        {data.contact_person && (
-          <DetailContent
-            info={<Link to={`${URLS.profile}${data.contact_person?.user_id}/`}>{`${data.contact_person?.first_name} ${data.contact_person?.last_name}`}</Link>}
-            title='Kontaktperson'
-          />
-        )}
-        {data.paid_information && <DetailContent info={data.paid_information.price + ' kr'} title='Pris:' />}
-      </DetailsPaper>
+      <Card>
+        <CardHeader className='py-1 px-4'>
+          <CardTitle className='flex items-center justify-between'>
+            <h1>Detaljer</h1>
+            {user && !preview && <Favorite eventId={data.id} />}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className='py-2 px-4 space-y-3'>
+          <DetailContent info={formatDate(startDate)} title='Fra:' />
+          <DetailContent info={formatDate(endDate)} title='Til:' />
+          <DetailContent info={data.location} title='Sted:' />
+          <DetailContent info={categories.find((c) => c.id === data.category)?.text || 'Laster...'} title='Hva:' />
+          {data.organizer && <DetailContent info={<Link to={URLS.groups.details(data.organizer.slug)}>{data.organizer.name}</Link>} title='Arrangør:' />}
+          {data.contact_person && (
+            <DetailContent
+              info={
+                <Link
+                  className='text-blue-500 dark:text-indigo-300'
+                  to={`${URLS.profile}${data.contact_person?.user_id}/`}>{`${data.contact_person?.first_name} ${data.contact_person?.last_name}`}</Link>
+              }
+              title='Kontaktperson:'
+            />
+          )}
+          {data.paid_information && <DetailContent info={data.paid_information.price + ' kr'} title='Pris:' />}
+        </CardContent>
+      </Card>
       {data.sign_up && (
         <>
-          <DetailsPaper noPadding>
-            <Stack direction='row' gap={1} justifyContent='space-between' sx={{ position: 'relative' }}>
-              {user && <EventPublicRegistrationsList eventId={data.id} sx={{ position: 'absolute', right: ({ spacing }) => spacing(-1) }} />}
-              <DetailsHeader variant='h2'>Påmelding</DetailsHeader>
-            </Stack>
-            <DetailContent info={`${data.list_count}/${data.limit === 0 ? '∞' : data.limit}`} title='Påmeldte:' />
-            <DetailContent info={String(data.waiting_list_count)} title='Venteliste:' />
-            {registration && isFuture(signOffDeadlineDate) ? (
-              <DetailContent info={formatDate(signOffDeadlineDate)} title='Avmeldingsfrist:' />
-            ) : (
-              <>
-                {isFuture(userStartRegistrationDate) && <DetailContent info={formatDate(startRegistrationDate)} title='Start:' />}
-                {isPast(userStartRegistrationDate) && isFuture(endRegistrationDate) && (
-                  <DetailContent info={formatDate(endRegistrationDate)} title='Stenger:' />
-                )}
-              </>
-            )}
-          </DetailsPaper>
+          <Card>
+            <CardHeader className='py-1 px-4'>
+              <CardTitle className='flex items-center justify-between'>
+                <h1>Påmelding</h1>
+                {user && <EventPublicRegistrationsList eventId={data.id} />}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className='py-2 px-4 space-y-3'>
+              <DetailContent info={`${data.list_count}/${data.limit === 0 ? '∞' : data.limit}`} title='Påmeldte:' />
+              <DetailContent info={String(data.waiting_list_count)} title='Venteliste:' />
+              {registration && isFuture(signOffDeadlineDate) ? (
+                <DetailContent info={formatDate(signOffDeadlineDate)} title='Avmeldingsfrist:' />
+              ) : (
+                <>
+                  {isFuture(userStartRegistrationDate) && <DetailContent info={formatDate(startRegistrationDate)} title='Start:' />}
+                  {isPast(userStartRegistrationDate) && isFuture(endRegistrationDate) && (
+                    <DetailContent info={formatDate(endRegistrationDate)} title='Stenger:' />
+                  )}
+                </>
+              )}
+            </CardContent>
+          </Card>
+
           {Boolean(data.priority_pools.length) && (
-            <DetailsPaper noPadding>
-              <DetailsHeader variant='h2'>Prioritert</DetailsHeader>
-              <EventPriorityPools priorityPools={data.priority_pools} />
-            </DetailsPaper>
+            <Card>
+              <CardHeader className='py-3 px-4'>
+                <CardTitle>
+                  <h1>Prioritert</h1>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className='py-2 px-4'>
+                <EventPriorityPools priorityPools={data.priority_pools} />
+              </CardContent>
+            </Card>
           )}
           {data.enforces_previous_strikes ? (
             strikesDelayedRegistrationHours > 0 &&
             isFuture(userStartRegistrationDate) && (
-              <Alert severity='warning' variant='outlined'>
-                Du har {user?.number_of_strikes} prikker og må dermed vente {strikesDelayedRegistrationHours} timer før du kan melde deg på
+              <Alert variant='warning'>
+                <AlertDescription>
+                  Du har {user?.number_of_strikes} prikker og må dermed vente {strikesDelayedRegistrationHours} timer før du kan melde deg på
+                </AlertDescription>
               </Alert>
             )
           ) : (
-            <Alert severity='info' variant='outlined'>
-              Dette arrangementet håndhever ikke aktive prikker
+            <Alert>
+              <AlertDescription>Dette arrangementet håndhever ikke aktive prikker</AlertDescription>
             </Alert>
           )}
         </>
@@ -416,47 +435,57 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const addToCalendarAnalytics = () => event('add-to-calendar', 'event', `Event: ${data.title}`);
 
   return (
-    <Stack direction={{ xs: 'column-reverse', lg: 'row' }} gap={1} sx={{ mt: { xs: 1, lg: 2 } }}>
-      <Stack gap={1} sx={{ width: '100%', maxWidth: { lg: 335 } }}>
+    <div className='flex flex-col-reverse lg:flex-row gap-1 lg:gap-2 lg:mt-2'>
+      <div className='w-full lg:max-w-[335px] space-y-2'>
         {!lgDown && <Info />}
-        <ShareButton shareId={data.id} shareType='event' title={data.title} />
-        <Button component='a' endIcon={<CalendarIcon />} href={getICSFromEvent(data)} onClick={addToCalendarAnalytics} variant='outlined'>
-          Legg til i kalender
+        <Button className='flex items-center space-x-2 w-full' size='lg' variant='outline'>
+          <CalendarIcon className='stroke-[1.5px] w-5 h-5' />
+          <a href={getICSFromEvent(data)} onClick={addToCalendarAnalytics}>
+            Legg til i kalender
+          </a>
         </Button>
         {Boolean(user) && <EventsSubscription />}
-        {!preview && data.permissions.write && (
-          <Button component={Link} fullWidth to={`${URLS.eventAdmin}${data.id}/`} variant='outlined'>
-            Administrér arrangement
-          </Button>
-        )}
         {registration && (
-          <Stack alignItems='center' direction='row'>
-            <Checkbox checked={allowPhoto} onChange={() => handleImageRuleChange()} value='Test' />
-            <Typography>Godkjenner å bli tatt bilde av</Typography>
-          </Stack>
+          <div className='flex justify-center items-center space-x-2 mt-2'>
+            <Checkbox checked={allowPhoto} onCheckedChange={handleImageRuleChange} />
+            <h1>Godkjenner å bli tatt bilde av</h1>
+          </div>
         )}
-      </Stack>
-      <Stack gap={1} sx={{ width: '100%' }}>
-        <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
+      </div>
+      <div className='space-y-2 w-full'>
+        <img alt={data.image_alt || data.title} className='rounded-md aspect-auto mx-auto' src={data.image || TIHLDE_LOGO} />
 
-        {data.emojis_allowed && user && (
-          <Stack direction='row-reverse'>
-            <ReactionHandler content_type='event' data={data} />
-          </Stack>
-        )}
+        <div className='space-y-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between'>
+          <div className='flex items-center space-x-2'>
+            <ShareButton shareId={data.id} shareType='event' title={data.title} />
+            {!preview && data.permissions.write && (
+              <Button className='w-full flex items-center space-x-2' size='lg' variant='outline'>
+                <PencilIcon className='w-4 h-4 md:w-5 md:h-5 stroke-[1.5px]' />
+                <Link className='text-sm md:text-md' to={`${URLS.eventAdmin}${data.id}/`}>
+                  Endre arrangement
+                </Link>
+              </Button>
+            )}
+          </div>
+          {!preview && data.emojis_allowed && user && <ReactionHandler content_type='event' data={data} />}
+        </div>
 
         {lgDown && <Info />}
         {registration && data.paid_information && !registration.has_paid_order && !registration.is_on_wait && (
           <CountdownTimer event_id={data.id} payment_expiredate={registration.payment_expiredate} />
         )}
-        <ContentPaper>
-          <Typography gutterBottom sx={{ color: (theme) => theme.palette.text.primary, fontSize: '2.4rem', wordWrap: 'break-word' }} variant='h1'>
-            {data.title}
-          </Typography>
-          <MarkdownRenderer value={data.description} />
-        </ContentPaper>
-      </Stack>
-    </Stack>
+        <Card>
+          <CardHeader className='pt-6 pb-2 px-6'>
+            <CardTitle className='text-4xl break-words'>{data.title}</CardTitle>
+          </CardHeader>
+          <CardContent className='py-2 px-6'>
+            <MarkdownRenderer value={data.description} />
+          </CardContent>
+        </Card>
+
+        {data.updated_at && <UpdatedAgo updatedAt={data.updated_at} />}
+      </div>
+    </div>
   );
 };
 

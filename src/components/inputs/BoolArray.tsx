@@ -4,6 +4,9 @@ import { Controller, FieldError, Path, PathValue, RegisterOptions, UnpackNestedV
 import { Switch } from 'components/inputs/Bool';
 
 export type BoolArrayProps<OptionType, FormValues> = Pick<FormControlLabelProps, 'label' | 'disabled'> &
+  // TODO: Fix type
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   Pick<UseFormReturn<FormValues>, 'formState' | 'control' | 'getValues'> & {
     name: Path<FormValues>;
     helperText?: string;
@@ -71,7 +74,12 @@ const BoolArray = <OptionType, FormValues>({
       </FormLabel>
       <FormGroup>
         <Controller
+          // TODO: Fix type
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           control={control}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           defaultValue={defaultValue as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>}
           name={name}
           render={({ field }) => (

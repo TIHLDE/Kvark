@@ -40,7 +40,7 @@ const Dialog = ({
       <DialogActions>
         <Button onClick={onCancel || onClose}>{closeText || 'Lukk'}</Button>
         {onConfirm && (
-          <Button disabled={disabled} onClick={onConfirm || onCancel} variant='contained'>
+          <Button disabled={disabled} onClick={onConfirm || onCancel} variant='outlined'>
             {confirmText || 'OK'}
           </Button>
         )}

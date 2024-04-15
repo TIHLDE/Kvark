@@ -14,8 +14,8 @@ import MembershipListItem from 'pages/Groups/about/MembershipListItem';
 
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
-import Avatar from 'components/miscellaneous/Avatar';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
 
 export type MembersCardProps = {
   groupSlug: Group['slug'];
@@ -52,7 +52,10 @@ const MembersCard = ({ groupSlug }: MembersCardProps) => {
             <ListItem component={Paper} disablePadding noOverflow noPadding>
               <ListItemButton component={Link} to={`${URLS.profile}${leader.user_id}/`}>
                 <ListItemAvatar>
-                  <Avatar user={leader} />
+                  <Avatar>
+                    <AvatarImage alt={leader.first_name} src={leader.image} />
+                    <AvatarFallback>{leader.first_name[0] + leader.last_name[0]}</AvatarFallback>
+                  </Avatar>
                 </ListItemAvatar>
                 <ListItemText primary={`${leader.first_name} ${leader.last_name}`} />
               </ListItemButton>
