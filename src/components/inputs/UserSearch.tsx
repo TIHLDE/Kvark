@@ -9,6 +9,8 @@ import { Group, UserBase } from 'types';
 import { useUsers } from 'hooks/User';
 import { useDebounce } from 'hooks/Utils';
 
+import MultiSelect from 'components/ui/multi-select';
+
 export type UserSearchProps<FormValues extends FieldValues = FieldValues> = TextFieldProps &
   Pick<UseFormReturn<FormValues>, 'formState' | 'control'> & {
     name: Path<FormValues>;
@@ -112,6 +114,27 @@ const UserSearch = <FormValues extends FieldValues>({
         />
       )}
       rules={rules}
+    />
+  );
+};
+
+type ShadUserSearchProps = {
+  inGroup?: Group['slug'];
+};
+
+export const ShadUserSearch = ({ inGroup }: ShadUserSearchProps) => {
+  const [search, setSearch] = useState('');
+  const debouncedSearch = useDebounce(search, 150);
+
+  const { data, isLoading } = useUsers({ search: debouncedSearch || undefined, in_group: inGroup });
+  const options = data?.pages.map((page) => page.results);
+
+  return (
+    <MultiSelect
+      options={options?.[0].map((user) => ({ label: `${user.first_name} ${user.last_name}`, value: user.user_id }))}
+      placeholder='Søk etter bruker...'
+      setValue={setSearch}
+      value={search}
     />
   );
 };

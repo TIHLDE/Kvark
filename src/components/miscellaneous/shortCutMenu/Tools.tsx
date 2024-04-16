@@ -1,8 +1,9 @@
 import { ShortCutMenuProps } from '.';
 import ShortCutLink from './Item';
 import ShortCutSectionWrapper from './SectionWrapper';
+import ShortCutAddFine from './tools/Fine';
 
-const ShortCutTools = ({ setOpen }: Pick<ShortCutMenuProps, 'setOpen'>) => {
+const ShortCutTools = ({ setOpen, setTab }: ShortCutMenuProps) => {
   const links = [
     {
       title: 'Link-forkorter',
@@ -16,6 +17,7 @@ const ShortCutTools = ({ setOpen }: Pick<ShortCutMenuProps, 'setOpen'>) => {
 
   return (
     <ShortCutSectionWrapper title='Verktøy'>
+      <ShortCutAddFine setTab={setTab} />
       {links.map((link, index) => (
         <ShortCutLink key={index} setOpen={setOpen} {...link} />
       ))}
