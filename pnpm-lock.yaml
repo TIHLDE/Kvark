@@ -188,6 +188,9 @@ dependencies:
   universal-cookie:
     specifier: ^6.1.0
     version: 6.1.0
+  zod:
+    specifier: ^3.22.4
+    version: 3.22.4
 
 devDependencies:
   '@types/canvas-confetti':
@@ -1968,19 +1971,6 @@ packages:
       react: 17.0.2
     dev: false
 
-  /@radix-ui/react-compose-refs@1.0.1(react@17.0.2):
-    resolution: {integrity: sha512-fDSBgd44FKHa1FRMU59qBMPFcl2PZE+2nmqunj+BWFyYYjnhIDWL2ItDs3rrbJDQOtzt5nIebLCQc4QRfz6LJw==}
-    peerDependencies:
-      '@types/react': '*'
-      react: ^16.8 || ^17.0 || ^18.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.24.0
-      react: 17.0.2
-    dev: false
-
   /@radix-ui/react-context-menu@2.1.5(@types/react-dom@17.0.11)(@types/react@17.0.37)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-R5XaDj06Xul1KGb+WP8qiOh7tKJNz2durpLBXAGZjSVtctcRFCuEvy2gtMwRJGePwQQE5nV77gs4FwRi8T+r2g==}
     peerDependencies:
@@ -2018,19 +2008,6 @@ packages:
     dependencies:
       '@babel/runtime': 7.24.0
       '@types/react': 17.0.37
-      react: 17.0.2
-    dev: false
-
-  /@radix-ui/react-context@1.0.1(react@17.0.2):
-    resolution: {integrity: sha512-ebbrdFoYTcuZ0v4wG5tedGnp9tzcV8awzsxYph7gXUyvnNLuTIcCk1q17JEbnVhXAKG9oX3KtchwiMIAYp9NLg==}
-    peerDependencies:
-      '@types/react': '*'
-      react: ^16.8 || ^17.0 || ^18.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.24.0
       react: 17.0.2
     dev: false
 
@@ -2599,26 +2576,6 @@ packages:
       react-dom: 17.0.2(react@17.0.2)
     dev: false
 
-  /@radix-ui/react-presence@1.0.1(react-dom@17.0.2)(react@17.0.2):
-    resolution: {integrity: sha512-UXLW4UAbIY5ZjcvzjfRFo5gxva8QirC9hF7wRE4U5gz+TP0DbRk+//qyuAQ1McDxBt1xNMBTaciFGvEmJvAZCg==}
-    peerDependencies:
-      '@types/react': '*'
-      '@types/react-dom': '*'
-      react: ^16.8 || ^17.0 || ^18.0
-      react-dom: ^16.8 || ^17.0 || ^18.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-      '@types/react-dom':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.24.0
-      '@radix-ui/react-compose-refs': 1.0.1(react@17.0.2)
-      '@radix-ui/react-use-layout-effect': 1.0.1(react@17.0.2)
-      react: 17.0.2
-      react-dom: 17.0.2(react@17.0.2)
-    dev: false
-
   /@radix-ui/react-primitive@1.0.3(@types/react-dom@17.0.11)(@types/react@17.0.37)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-yi58uVyoAcK/Nq1inRY56ZSjKypBNKTa/1mcL8qdl6oJeEaDbOldlzrGn7P6Q3Id5d+SYNGc5AJgc4vGhjs5+g==}
     peerDependencies:
@@ -2636,25 +2593,6 @@ packages:
       '@radix-ui/react-slot': 1.0.2(@types/react@17.0.37)(react@17.0.2)
       '@types/react': 17.0.37
       '@types/react-dom': 17.0.11
-      react: 17.0.2
-      react-dom: 17.0.2(react@17.0.2)
-    dev: false
-
-  /@radix-ui/react-primitive@1.0.3(react-dom@17.0.2)(react@17.0.2):
-    resolution: {integrity: sha512-yi58uVyoAcK/Nq1inRY56ZSjKypBNKTa/1mcL8qdl6oJeEaDbOldlzrGn7P6Q3Id5d+SYNGc5AJgc4vGhjs5+g==}
-    peerDependencies:
-      '@types/react': '*'
-      '@types/react-dom': '*'
-      react: ^16.8 || ^17.0 || ^18.0
-      react-dom: ^16.8 || ^17.0 || ^18.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-      '@types/react-dom':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.24.0
-      '@radix-ui/react-slot': 1.0.2(react@17.0.2)
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
     dev: false
@@ -2877,20 +2815,6 @@ packages:
       react: 17.0.2
     dev: false
 
-  /@radix-ui/react-slot@1.0.2(react@17.0.2):
-    resolution: {integrity: sha512-YeTpuq4deV+6DusvVUW4ivBgnkHwECUu0BiN43L5UCDFgdhsRUWAghhTF5MbvNTPzmiFOx90asDSUjWuCNapwg==}
-    peerDependencies:
-      '@types/react': '*'
-      react: ^16.8 || ^17.0 || ^18.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.24.0
-      '@radix-ui/react-compose-refs': 1.0.1(react@17.0.2)
-      react: 17.0.2
-    dev: false
-
   /@radix-ui/react-switch@1.0.3(@types/react-dom@17.0.11)(@types/react@17.0.37)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-mxm87F88HyHztsI7N+ZUmEoARGkC22YVW5CaC+Byc+HRpuvCrOBPTAnXgf+tZ/7i0Sg/eOePGdMhUKhPaQEqow==}
     peerDependencies:
@@ -3101,19 +3025,6 @@ packages:
       react: 17.0.2
     dev: false
 
-  /@radix-ui/react-use-callback-ref@1.0.1(react@17.0.2):
-    resolution: {integrity: sha512-D94LjX4Sp0xJFVaoQOd3OO9k7tpBYNOXdVhkltUbGv2Qb9OXdrg/CpsjlZv7ia14Sylv398LswWBVVu5nqKzAQ==}
-    peerDependencies:
-      '@types/react': '*'
-      react: ^16.8 || ^17.0 || ^18.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.24.0
-      react: 17.0.2
-    dev: false
-
   /@radix-ui/react-use-controllable-state@1.0.1(@types/react@17.0.37)(react@17.0.2):
     resolution: {integrity: sha512-Svl5GY5FQeN758fWKrjM6Qb7asvXeiZltlT4U2gVfl8Gx5UAv2sMR0LWo8yhsIZh2oQ0eFdZ59aoOOMV7b47VA==}
     peerDependencies:
@@ -3183,19 +3094,6 @@ packages:
     dependencies:
       '@babel/runtime': 7.24.0
       '@types/react': 17.0.37
-      react: 17.0.2
-    dev: false
-
-  /@radix-ui/react-use-layout-effect@1.0.1(react@17.0.2):
-    resolution: {integrity: sha512-v/5RegiJWYdoCvMnITBkNNx6bCj20fiaJnWtRkU18yITptraXjffz5Qbn05uOiQnOvi+dbkznkoaMltz1GnszQ==}
-    peerDependencies:
-      '@types/react': '*'
-      react: ^16.8 || ^17.0 || ^18.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.24.0
       react: 17.0.2
     dev: false
 
@@ -8171,6 +8069,10 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zod@3.22.4:
+    resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+    dev: false
 
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
