@@ -31,7 +31,7 @@
     "@radix-ui/react-toggle-group": "^1.0.4",
     "@vercel/analytics": "1.1.4",
     "browser-image-compression": "^2.0.0",
-    "canvas-confetti": "^1.6.0",
+    "canvas-confetti": "^1.9.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "constate": "^3.3.0",
@@ -78,7 +78,7 @@
     "prepare": "husky install"
   },
   "devDependencies": {
-    "@types/canvas-confetti": "^1.6.0",
+    "@types/canvas-confetti": "^1.6.4",
     "@types/node": "^20.6.3",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
