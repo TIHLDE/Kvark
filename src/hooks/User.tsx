@@ -95,7 +95,9 @@ export const useUserMemberships = (userId?: User['user_id']) =>
   useInfiniteQuery<PaginationResponse<Membership>, RequestResponse>([USER_MEMBERSHIPS_QUERY_KEY, userId], () => API.getUserMemberships(userId));
 
 export const useUserMembershipsWithFines = (userId?: User['user_id']) =>
-  useInfiniteQuery<PaginationResponse<Membership>, RequestResponse>([USER_MEMBERSHIPS_WITH_FINES_QUERY_KEY, userId], () => API.getUserMembershipsWithFines(userId));
+  useInfiniteQuery<PaginationResponse<Membership>, RequestResponse>([USER_MEMBERSHIPS_WITH_FINES_QUERY_KEY, userId], () =>
+    API.getUserMembershipsWithFines(userId),
+  );
 
 export const useUserMembershipHistories = (userId?: User['user_id']) =>
   useInfiniteQuery<PaginationResponse<MembershipHistory>, RequestResponse>([USER_MEMBERSHIP_HISTORIES_QUERY_KEY, userId], () =>

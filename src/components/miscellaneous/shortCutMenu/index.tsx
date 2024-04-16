@@ -13,8 +13,8 @@ import ShortCutLogout from './Logout';
 import ShortCutMembership from './Membership';
 import ShortCutNavigation, { ShortCutExternalNavigation } from './Navigation';
 import generateHotKeys from './shortcuts';
-import ShortCutTools from './Tools';
 import ShortCutFineTab from './tabs/Fine';
+import ShortCutTools from './Tools';
 
 export type ShortCutMenuProps = {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -57,29 +57,27 @@ const ShortCutMenu = () => {
   return (
     <Dialog onOpenChange={setOpen} open={isOpen}>
       <DialogContent>
-      { tab === 'Menu' &&
-        <>
-          <DialogHeader>
-            <DialogTitle>Hurtigtaster</DialogTitle>
-            <DialogDescription>Et utvalg av hurtigtaster for å navigere på TIHLDE siden.</DialogDescription>
-          </DialogHeader>
-          <Separator />
-          <ScrollArea className='h-[350px]'>
-            <div className='space-y-4 pr-3'>
-              <ShortCutMembership setOpen={setOpen} />
-              {isAdmin && <ShortCutAdmin setOpen={setOpen} />}
-              <ShortCutTools setOpen={setOpen} setTab={setTab} />
-              <ShortCutNavigation setOpen={setOpen} />
-              <ShortCutExternalNavigation setOpen={setOpen} />
-              <ShortCutLogout setOpen={setOpen} />
-            </div>
-          </ScrollArea>
-        </>
-      }
+        {tab === 'Menu' && (
+          <>
+            <DialogHeader>
+              <DialogTitle>Hurtigtaster</DialogTitle>
+              <DialogDescription>Et utvalg av hurtigtaster for å navigere på TIHLDE siden.</DialogDescription>
+            </DialogHeader>
+            <Separator />
+            <ScrollArea className='h-[350px]'>
+              <div className='space-y-4 pr-3'>
+                <ShortCutMembership setOpen={setOpen} />
+                {isAdmin && <ShortCutAdmin setOpen={setOpen} />}
+                <ShortCutTools setOpen={setOpen} setTab={setTab} />
+                <ShortCutNavigation setOpen={setOpen} />
+                <ShortCutExternalNavigation setOpen={setOpen} />
+                <ShortCutLogout setOpen={setOpen} />
+              </div>
+            </ScrollArea>
+          </>
+        )}
 
-      { tab === 'Fine' &&
-        <ShortCutFineTab />
-      }
+        {tab === 'Fine' && <ShortCutFineTab />}
       </DialogContent>
     </Dialog>
   );
