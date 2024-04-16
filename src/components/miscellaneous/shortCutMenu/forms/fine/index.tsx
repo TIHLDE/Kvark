@@ -7,9 +7,9 @@ import { useUserMembershipsWithFines } from 'hooks/User';
 
 import UserSearch from 'components/inputs/UserSearch';
 import { Form } from 'components/ui/form';
+import { Combobox } from 'components/ui/multi-select';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 import { Skeleton } from 'components/ui/skeleton';
-import { Combobox } from 'components/ui/multi-select';
 
 type FormValues = Omit<GroupFineCreate, 'user'> & {
   user: Array<UserBase>;
@@ -42,36 +42,36 @@ const ShortCutFineForm = () => {
 
   return (
     <>
-    <Form {...form}>
-      <form className='space-y-8' onSubmit={form.handleSubmit(submit)}>
-        <Select onValueChange={(value) => setGroup(value)}>
-          <SelectTrigger>
-            <SelectValue placeholder='Velg en gruppe' />
-          </SelectTrigger>
-          <SelectContent>
-            {memberships.map((membership, index) => (
-              <SelectItem key={index} value={membership.group.slug}>
-                {membership.group.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        {!group && <h1 className='text-center text-muted-foreground'>Velg en gruppe for å fortsette</h1>}
+      <Form {...form}>
+        <form className='space-y-8' onSubmit={form.handleSubmit(submit)}>
+          <Select onValueChange={(value) => setGroup(value)}>
+            <SelectTrigger>
+              <SelectValue placeholder='Velg en gruppe' />
+            </SelectTrigger>
+            <SelectContent>
+              {memberships.map((membership, index) => (
+                <SelectItem key={index} value={membership.group.slug}>
+                  {membership.group.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {!group && <h1 className='text-center text-muted-foreground'>Velg en gruppe for å fortsette</h1>}
 
-        {group && (
-          <UserSearch
-            control={form.control}
-            formState={form.formState}
-            helperText='Du kan velge flere personer'
-            inGroup={group}
-            label='Hvem har begått et lovbrudd?'
-            multiple
-            name='user'
-          />
-        )}
-      </form>
-    </Form>
-    <Combobox options={[{label: '2', value: '2'}]} multiple clearable />
+          {group && (
+            <UserSearch
+              control={form.control}
+              formState={form.formState}
+              helperText='Du kan velge flere personer'
+              inGroup={group}
+              label='Hvem har begått et lovbrudd?'
+              multiple
+              name='user'
+            />
+          )}
+        </form>
+      </Form>
+      <Combobox clearable multiple options={[{ label: '2', value: '2' }]} />
     </>
   );
 };
