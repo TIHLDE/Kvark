@@ -12,6 +12,9 @@
 
 ## Neste versjon
 
+## Versjon 2024.16.04
+- ✨ **Brukerbio**. Bruker kan nå lage en bio.
+
 ## Versjon 2023.11.04
 - ✨ **Shortcuts**. La til meny med shortcuts.
 
