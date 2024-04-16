@@ -5,9 +5,9 @@ import { GroupFineCreate, UserBase } from 'types';
 
 import { useUserMembershipsWithFines } from 'hooks/User';
 
-import UserSearch from 'components/inputs/UserSearch';
+import { ShadUserSearch } from 'components/inputs/UserSearch';
 import { Form } from 'components/ui/form';
-import { Combobox } from 'components/ui/multi-select';
+import MultiSelect from 'components/ui/multi-select';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 import { Skeleton } from 'components/ui/skeleton';
 
@@ -58,20 +58,9 @@ const ShortCutFineForm = () => {
           </Select>
           {!group && <h1 className='text-center text-muted-foreground'>Velg en gruppe for å fortsette</h1>}
 
-          {group && (
-            <UserSearch
-              control={form.control}
-              formState={form.formState}
-              helperText='Du kan velge flere personer'
-              inGroup={group}
-              label='Hvem har begått et lovbrudd?'
-              multiple
-              name='user'
-            />
-          )}
+          {group && <ShadUserSearch inGroup={group} />}
         </form>
       </Form>
-      <Combobox clearable multiple options={[{ label: '2', value: '2' }]} />
     </>
   );
 };
