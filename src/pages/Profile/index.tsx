@@ -23,11 +23,15 @@ import Page from 'components/navigation/Page';
 import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
 import { Button } from 'components/ui/button';
 import { Card, CardContent } from 'components/ui/card';
+import { Separator } from 'components/ui/separator';
 import { Skeleton } from 'components/ui/skeleton';
+
+import EditBioButton from './components/BioEditor/EditBioButton';
 
 const Profile = () => {
   const { userId } = useParams();
   const { data: user, isError } = useUser(userId);
+  //legg til bio
   const { event } = useAnalytics();
   const logOut = useLogout();
   const { allowAccess: isAdmin } = useHavePermission([
@@ -82,8 +86,8 @@ const Profile = () => {
   return (
     <Page options={{ title: 'Profil', gutterTop: true }}>
       <Card className='my-4'>
-        <CardContent className='p-4 space-y-4 md:flex md:justify-between md:space-y-0'>
-          <div className='flex items-center space-x-2'>
+        <CardContent className='p-4 space-y-4 md:flex md:justify-between md:space-x-12 md:space-y-0'>
+          <div className='flex md:items-center space-x-2'>
             {user && (
               <Avatar className='w-[70px] h-[70px] md:w-[140px] md:h-[140px] text-[1.8rem] md:text-[3rem]'>
                 <AvatarImage alt={user.first_name} src={user.image} />
@@ -100,6 +104,28 @@ const Profile = () => {
                   {user.user_id} | <a href={`mailto:${user.email}`}>{user.email}</a>
                 </h1>
                 <h1>{getUserAffiliation(user)}</h1>
+                {user.bio && (
+                  <div className='space-y-2'>
+                    <Separator />
+                    <p className='text-sm md:text-md'>{user.bio.description}</p>
+                    {user.bio.gitHub_link && (
+                      <p>
+                        <span className='font-semibold'>GitHub:</span>{' '}
+                        <a className='underline' href={user.bio.gitHub_link} rel='noreferrer' target='_blank'>
+                          {user.bio.gitHub_link}
+                        </a>
+                      </p>
+                    )}
+                    {user.bio.linkedIn_link && (
+                      <p>
+                        <span className='font-semibold'>LinkedIn:</span>{' '}
+                        <a className='underline' href={user.bio.linkedIn_link} rel='noreferrer' target='_blank'>
+                          {user.bio.linkedIn_link}
+                        </a>
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
             ) : (
               <div className='flex items-center mx-2 space-x-2'>
@@ -112,9 +138,12 @@ const Profile = () => {
             )}
           </div>
           {!userId && user && (
-            <QRButton className='w-full md:w-auto' qrValue={user.user_id} subtitle={`${user.first_name} ${user.last_name}`}>
-              Medlemsbevis
-            </QRButton>
+            <div className='flex flex-col space-y-2'>
+              <QRButton className='w-full md:w-auto' qrValue={user.user_id} subtitle={`${user.first_name} ${user.last_name}`}>
+                Medlemsbevis
+              </QRButton>
+              <EditBioButton userBio={user.bio} />
+            </div>
           )}
         </CardContent>
       </Card>
