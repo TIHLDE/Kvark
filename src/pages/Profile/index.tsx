@@ -1,5 +1,17 @@
 import { ListItemProps, SvgIconProps } from '@mui/material';
-import { BadgeIcon, CalendarDaysIcon, FileQuestionIcon, GripIcon, LogOutIcon, LucideIcon, SettingsIcon, ShieldCheckIcon, UsersIcon } from 'lucide-react';
+import {
+  BadgeIcon,
+  CalendarDaysIcon,
+  FileQuestionIcon,
+  GithubIcon,
+  GripIcon,
+  LogOutIcon,
+  LucideIcon,
+  SettingsIcon,
+  ShieldCheckIcon,
+  UsersIcon,
+} from 'lucide-react';
+import { Github, Linkedin } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getUserAffiliation } from 'utils';
@@ -27,6 +39,9 @@ import { Separator } from 'components/ui/separator';
 import { Skeleton } from 'components/ui/skeleton';
 
 import EditBioButton from './components/BioEditor/EditBioButton';
+
+// TODO: Ikke sentrer avatar bildet
+// TODO: IsLoading på rediger knapp - se useState from 'react'
 
 const Profile = () => {
   const { userId } = useParams();
@@ -112,7 +127,7 @@ const Profile = () => {
                       <p>
                         <span className='font-semibold'>GitHub:</span>{' '}
                         <a className='underline' href={user.bio.gitHub_link} rel='noreferrer' target='_blank'>
-                          {user.bio.gitHub_link}
+                          <Github />
                         </a>
                       </p>
                     )}
@@ -120,7 +135,7 @@ const Profile = () => {
                       <p>
                         <span className='font-semibold'>LinkedIn:</span>{' '}
                         <a className='underline' href={user.bio.linkedIn_link} rel='noreferrer' target='_blank'>
-                          {user.bio.linkedIn_link}
+                          <Linkedin />
                         </a>
                       </p>
                     )}
