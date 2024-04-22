@@ -3,6 +3,8 @@ import { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { useState } from 'react';
+
 import { UserBio } from 'types';
 
 import { useSnackbar } from 'hooks/Snackbar';
@@ -11,7 +13,11 @@ import { useCreateUserBio, useUpdateUserBio } from 'hooks/UserBio';
 import { Button } from 'components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
 import { Input } from 'components/ui/input';
+import { ScrollArea } from 'components/ui/scroll-area';
 import { Textarea } from 'components/ui/textarea';
+
+import LoadingSpinner from 'components/miscellaneous/LoadingSpinner';
+
 
 const formSchema = z.object({
   description: z
@@ -52,6 +58,8 @@ const UserBioForm = ({ userBio, setOpen }: UserBioProps) => {
   const showSnackbar = useSnackbar();
   const createUserBio = useCreateUserBio();
   const updateUserBio = useUpdateUserBio(userBio ? userBio.id : 0);
+  const [isLoadingSave, setIsLoadingSave] = useState(false);
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -63,12 +71,16 @@ const UserBioForm = ({ userBio, setOpen }: UserBioProps) => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
+    setIsLoadingSave(true)
     if (!userBio) {
       createUserBio.mutate(values, {
         onSuccess: () => {
           showSnackbar('Profilbio ble opprettet', 'success');
           setOpen(false);
         },
+        onSettled: () => {
+          setIsLoadingSave(false)
+        }
       });
     } else {
       updateUserBio.mutate(values, {
@@ -81,57 +93,60 @@ const UserBioForm = ({ userBio, setOpen }: UserBioProps) => {
   };
 
   return (
-    <Form {...form}>
-      <form className='space-y-8' onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name='description'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Beskrivelse</FormLabel>
-              <FormControl>
-                <Textarea className='resize-none h-[100px]' placeholder='Beskrivelse' {...field} />
-              </FormControl>
-              <FormDescription>En kort beskrivelse av deg.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='gitHub_link'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>GitHub</FormLabel>
-              <FormControl>
-                <Input placeholder='https://github.com/TIHLDE' {...field} />
-              </FormControl>
-              <FormDescription>Din GitHub profil.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    <ScrollArea className='rounded-md'>
+      <Form {...form}>
+        <form className='space-y-8' onSubmit={form.handleSubmit(onSubmit)}>
+          <FormField
+            control={form.control}
+            name='description'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Beskrivelse</FormLabel>
+                <FormControl>
+                  <Textarea className='resize-none h-[100px]' placeholder='Beskrivelse' {...field} />
+                </FormControl>
+                <FormDescription>En kort beskrivelse av deg.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='gitHub_link'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>GitHub</FormLabel>
+                <FormControl>
+                  <Input placeholder='https://github.com/TIHLDE' {...field} />
+                </FormControl>
+                <FormDescription>Din GitHub profil.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name='linkedIn_link'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>LinkedIn</FormLabel>
-              <FormControl>
-                <Input placeholder='https://linkedin.com/TIHLDE' {...field} />
-              </FormControl>
-              <FormDescription>Din LinkedIn profil.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name='linkedIn_link'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>LinkedIn</FormLabel>
+                <FormControl>
+                  <Input placeholder='https://linkedin.com/TIHLDE' {...field} />
+                </FormControl>
+                <FormDescription>Din LinkedIn profil.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <Button size='lg' type='submit'>
-          {!userBio ? 'Opprett' : 'Oppdater'}
-        </Button>
-      </form>
-    </Form>
+          <Button size='lg' type='submit'>
+            {!isLoadingSave ? 'Lagre' : <LoadingSpinner />}
+          </Button>
+
+        </form>
+      </Form>
+    </ScrollArea>
   );
 };
 
