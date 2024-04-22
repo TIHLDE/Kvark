@@ -1,23 +1,20 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Dispatch, SetStateAction } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-
-import { useState } from 'react';
 
 import { UserBio } from 'types';
 
 import { useSnackbar } from 'hooks/Snackbar';
 import { useCreateUserBio, useUpdateUserBio } from 'hooks/UserBio';
 
+import LoadingSpinner from 'components/miscellaneous/LoadingSpinner';
 import { Button } from 'components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
 import { Input } from 'components/ui/input';
 import { ScrollArea } from 'components/ui/scroll-area';
 import { Textarea } from 'components/ui/textarea';
-
-import LoadingSpinner from 'components/miscellaneous/LoadingSpinner';
-
 
 const formSchema = z.object({
   description: z
@@ -60,7 +57,6 @@ const UserBioForm = ({ userBio, setOpen }: UserBioProps) => {
   const updateUserBio = useUpdateUserBio(userBio ? userBio.id : 0);
   const [isLoadingSave, setIsLoadingSave] = useState(false);
 
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -71,7 +67,7 @@ const UserBioForm = ({ userBio, setOpen }: UserBioProps) => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    setIsLoadingSave(true)
+    setIsLoadingSave(true);
     if (!userBio) {
       createUserBio.mutate(values, {
         onSuccess: () => {
@@ -79,8 +75,8 @@ const UserBioForm = ({ userBio, setOpen }: UserBioProps) => {
           setOpen(false);
         },
         onSettled: () => {
-          setIsLoadingSave(false)
-        }
+          setIsLoadingSave(false);
+        },
       });
     } else {
       updateUserBio.mutate(values, {
@@ -143,7 +139,6 @@ const UserBioForm = ({ userBio, setOpen }: UserBioProps) => {
           <Button size='lg' type='submit'>
             {!isLoadingSave ? 'Lagre' : <LoadingSpinner />}
           </Button>
-
         </form>
       </Form>
     </ScrollArea>
