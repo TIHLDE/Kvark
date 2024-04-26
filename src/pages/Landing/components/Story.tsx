@@ -93,7 +93,6 @@ const useStyles = makeStyles<Pick<StoryProps, 'fadeColor'>>()((theme, props) => 
     objectPosition: 'center',
     margin: 'auto',
     display: 'block',
-    background: theme.palette.common.white,
   },
   filler: {
     width: theme.spacing(2),
