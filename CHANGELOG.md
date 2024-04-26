@@ -11,6 +11,7 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+## Versjon 2024.04.26
 
 ## Versjon 2024.16.04
 - ✨ **Brukerbio**. Bruker kan nå lage en bio.
