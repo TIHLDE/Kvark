@@ -19,9 +19,7 @@ const Img = styled('img', { shouldForwardProp: (prop) => prop !== 'borderRadius'
   aspectRatio: ratio ? String(ratio) : '21 / 9',
   objectFit: 'cover',
   width: '100%',
-  '&:not([src*=".jpg"])': {
-    background: theme.palette.common.white,
-  },
+  '&:not([src*=".jpg"])': {},
 }));
 
 const AspectRatioImg = ({ alt, borderRadius, className, ratio = 21 / 9, src, sx }: AspectRatioImgProps) => {
