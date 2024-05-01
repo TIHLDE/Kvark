@@ -12,6 +12,9 @@
 
 ## Neste versjon
 
+## Versjon 2024.01.05
+- ⚡ **Påmelding**. Bruker kan ikke lenger se meld deg av knappen for et arrangement hvis bruker har betalt.
+
 ## Versjon 2024.16.04
 - ✨ **Brukerbio**. Bruker kan nå lage en bio.
 

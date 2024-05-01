@@ -206,7 +206,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             )}
           </>
         )}
-        {isFuture(subHours(parseISO(data.start_date), 2)) ? (
+        {isFuture(subHours(parseISO(data.start_date), 2)) && !registration.has_paid_order ? (
           <>
             <VerifyDialog
               color='error'
