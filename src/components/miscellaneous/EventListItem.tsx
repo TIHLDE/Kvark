@@ -10,9 +10,7 @@ import URLS from 'URLS';
 import { formatDate, urlEncode } from 'utils';
 
 import { EventList } from 'types';
-import { Groups } from 'types/Enums';
-
-import { useCategories } from 'hooks/Categories';
+import { Category, Groups } from 'types/Enums';
 
 import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 
@@ -92,15 +90,18 @@ const EventListItem = ({ event, sx }: EventListItemProps) => {
     return [110, 22, 17];
   }, [width]);
 
-  const { data: categories = [] } = useCategories();
-  const categoryLabel = `${event.organizer ? `${event.organizer.name} | ` : ''}${categories.find((c) => c.id === event.category)?.text || 'Laster...'}`;
+  const categoryLabel = `${event.organizer ? `${event.organizer.name} | ` : ''}${event.category?.text || 'Laster...'}`;
 
   const getColor = () => {
-    if (categories.find((c) => c.id === event.category)?.text === 'Aktivitet') {
+    if (event.category?.text === 'Aktivitet') {
       return theme.palette.colors.activity_event;
     }
 
-    if (event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase()) {
+    if (
+      event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase() ||
+      event.category?.text.toLowerCase() === Category.COMPRES ||
+      event.category?.text.toLowerCase() === Category.COURSE
+    ) {
       return theme.palette.colors.nok_event;
     }
 

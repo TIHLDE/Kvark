@@ -13,6 +13,7 @@
 ## Neste versjon
 
 ## Versjon 2024.01.05
+- ⚡**Arrangement**. Et arrangement vil nå være markert og sortert etter kategori i tillegg til ansvarlig gruppe.
 - ⚡ **Påmelding**. Bruker kan ikke lenger se meld deg av knappen for et arrangement hvis bruker har betalt.
 
 ## Versjon 2024.16.04
