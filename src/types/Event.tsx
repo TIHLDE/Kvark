@@ -19,7 +19,7 @@ export type PaidInformation = {
 
 export type Event = {
   closed: boolean;
-  category: Pick<Category, 'id' | 'text'> | number;
+  category: number;
   price?: number;
   paytime?: string | Date;
   is_paid_event: boolean;
@@ -62,8 +62,10 @@ export type EventMutate = Partial<Omit<Event, 'organizer' | 'priority_pools'>> &
 
 export type EventList = Pick<
   Event,
-  'category' | 'end_date' | 'expired' | 'organizer' | 'id' | 'image' | 'image_alt' | 'location' | 'title' | 'start_date' | 'updated_at'
->;
+  'end_date' | 'expired' | 'organizer' | 'id' | 'image' | 'image_alt' | 'location' | 'title' | 'start_date' | 'updated_at'
+> & {
+  category: Pick<Category, 'id' | 'text'>;
+};
 
 export type EventFavorite = {
   is_favorite: boolean;

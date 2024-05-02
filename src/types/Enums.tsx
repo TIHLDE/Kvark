@@ -122,4 +122,5 @@ export enum StrikeReason {
 export enum Category {
   COMPRES = 'bedpres',
   COURSE = 'kurs',
+  ACTIVITY = 'aktivitet',
 }

@@ -93,7 +93,7 @@ const EventListItem = ({ event, sx }: EventListItemProps) => {
   const categoryLabel = `${event.organizer ? `${event.organizer.name} | ` : ''}${event.category?.text || 'Laster...'}`;
 
   const getColor = () => {
-    if (event.category?.text === 'Aktivitet') {
+    if (event.category?.text === Category.ACTIVITY) {
       return theme.palette.colors.activity_event;
     }
 
