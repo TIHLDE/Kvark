@@ -19,7 +19,7 @@ export type PaidInformation = {
 
 export type Event = {
   closed: boolean;
-  category: Pick<Category, 'id' | 'text'>;
+  category: Pick<Category, 'id' | 'text'> | number;
   price?: number;
   paytime?: string | Date;
   is_paid_event: boolean;
