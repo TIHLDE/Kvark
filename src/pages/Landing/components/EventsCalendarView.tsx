@@ -5,9 +5,8 @@ import { addDays, endOfMonth, parseISO, startOfMonth } from 'date-fns';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { Category, EventList } from 'types';
-import { Groups } from 'types/Enums';
+import { Category as CategoryEnum, Groups } from 'types/Enums';
 
-import { useCategories } from 'hooks/Categories';
 import { useEvents } from 'hooks/Event';
 import { useAnalytics } from 'hooks/Utils';
 
@@ -41,14 +40,16 @@ const Appointment = ({ children, data }: AppointmentProps) => {
     setAnchorEl(null);
   };
 
-  const { data: categories = [] } = useCategories();
-
   const getColor = (event: EventList) => {
-    if (categories.find((c) => c.id === event.category)?.text === 'Aktivitet') {
+    if (event.category?.text === CategoryEnum.ACTIVITY) {
       return theme.palette.colors.activity_event;
     }
 
-    if (event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase()) {
+    if (
+      event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase() ||
+      event.category?.text.toLowerCase() === CategoryEnum.COMPRES ||
+      event.category?.text.toLowerCase() === CategoryEnum.COURSE
+    ) {
       return theme.palette.colors.nok_event;
     }
 

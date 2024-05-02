@@ -118,3 +118,9 @@ export enum StrikeReason {
   BAD_BEHAVIOR = 'BAD_BEHAVIOR',
   EVAL_FORM = 'EVAL_FORM',
 }
+
+export enum Category {
+  COMPRES = 'bedpres',
+  COURSE = 'kurs',
+  ACTIVITY = 'aktivitet',
+}

@@ -2,7 +2,7 @@ import { Skeleton, styled } from '@mui/material';
 import { createElement, lazy, ReactNode, Suspense, useMemo } from 'react';
 import rehypeRaw from 'rehype-raw';
 
-import { Event, JobPost, News } from 'types';
+import { Event, EventList, JobPost, News } from 'types';
 
 import { useEventById } from 'hooks/Event';
 import { useJobPostById } from 'hooks/JobPost';
@@ -50,7 +50,7 @@ export const Image = styled('img')(({ theme }) => ({
 
 export const EventCard = ({ id }: { id: Event['id'] }) => {
   const { data } = useEventById(id);
-  return data ? <EventListItem event={data} sx={{ mb: 1 }} /> : <EventListItemLoading sx={{ mb: 1 }} />;
+  return data ? <EventListItem event={data as unknown as EventList} sx={{ mb: 1 }} /> : <EventListItemLoading sx={{ mb: 1 }} />;
 };
 export const JobPostCard = ({ id }: { id: JobPost['id'] }) => {
   const { data } = useJobPostById(id);

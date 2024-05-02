@@ -1,7 +1,7 @@
 import { Stack, styled, Theme, Typography, useMediaQuery } from '@mui/material';
 
 import { EventList } from 'types';
-import { Groups } from 'types/Enums';
+import { Category, Groups } from 'types/Enums';
 
 import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
 
@@ -66,8 +66,24 @@ const EventsListView = ({ events, isLoading = false }: EventsListViewProps) => {
     );
   }
 
-  const getNokEvents = () => events.filter((event) => event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase()).slice(0, NO_OF_EVENTS_TO_SHOW);
-  const getOtherEvents = () => events.filter((event) => event.organizer?.slug.toLowerCase() !== Groups.NOK.toLowerCase()).slice(0, NO_OF_EVENTS_TO_SHOW);
+  const getNokEvents = () =>
+    events
+      .filter(
+        (event) =>
+          event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase() ||
+          event.category?.text.toLowerCase() === 'bedpres' ||
+          event.category?.text.toLowerCase() === 'kurs',
+      )
+      .slice(0, NO_OF_EVENTS_TO_SHOW);
+  const getOtherEvents = () =>
+    events
+      .filter(
+        (event) =>
+          event.organizer?.slug.toLowerCase() !== Groups.NOK.toLowerCase() &&
+          event.category?.text.toLowerCase() !== Category.COMPRES &&
+          event.category?.text.toLowerCase() !== Category.COURSE,
+      )
+      .slice(0, NO_OF_EVENTS_TO_SHOW);
 
   return (
     <Container>
