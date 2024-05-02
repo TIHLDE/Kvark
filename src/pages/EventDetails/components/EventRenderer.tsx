@@ -11,7 +11,6 @@ import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 
 
 import { Event, Registration } from 'types';
 
-import { useCategories } from 'hooks/Categories';
 import { useConfetti } from 'hooks/Confetti';
 import {
   useCreateEventRegistration,
@@ -73,7 +72,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const deleteRegistration = useDeleteEventRegistration(data.id);
   const setLogInRedirectURL = useSetRedirectUrl();
   const showSnackbar = useSnackbar();
-  const { data: categories = [] } = useCategories();
   const startDate = parseISO(data.start_date);
   const endDate = parseISO(data.end_date);
   const strikesDelayedRegistrationHours = user ? getStrikesDelayedRegistrationHours(user.number_of_strikes) : 0;
@@ -360,7 +358,13 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           <DetailContent info={formatDate(startDate)} title='Fra:' />
           <DetailContent info={formatDate(endDate)} title='Til:' />
           <DetailContent info={data.location} title='Sted:' />
-          <DetailContent info={categories.find((c) => c.id === data.category)?.text || 'Laster...'} title='Hva:' />
+          <DetailContent
+            // TODO: Fix Event types
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            info={data.category?.text || 'Laster...'}
+            title='Hva:'
+          />
           {data.organizer && <DetailContent info={<Link to={URLS.groups.details(data.organizer.slug)}>{data.organizer.name}</Link>} title='Arrangør:' />}
           {data.contact_person && (
             <DetailContent
