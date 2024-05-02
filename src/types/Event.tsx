@@ -60,10 +60,17 @@ export type EventMutate = Partial<Omit<Event, 'organizer' | 'priority_pools'>> &
     priority_pools: Array<PriorityPoolMutate>;
   };
 
-export type EventList = Pick<
-  Event,
-  'end_date' | 'expired' | 'organizer' | 'id' | 'image' | 'image_alt' | 'location' | 'title' | 'start_date' | 'updated_at'
-> & {
+export type EventList = {
+  end_date: string;
+  expired: boolean;
+  organizer: BaseGroup | null;
+  id: number;
+  image?: string;
+  image_alt?: string;
+  location: string;
+  title: string;
+  start_date: string;
+  updated_at: string;
   category: Pick<Category, 'id' | 'text'>;
 };
 
