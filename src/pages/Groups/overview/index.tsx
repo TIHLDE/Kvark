@@ -8,10 +8,8 @@ import { useIsAuthenticated } from 'hooks/User';
 import GroupItem, { GroupItemLoading } from 'pages/Groups/overview/GroupItem';
 
 import Paper from 'components/layout/Paper';
-import { useSetNavigationOptions } from 'components/navigation/Navigation';
 
 const GroupsOverview = () => {
-  useSetNavigationOptions({ title: 'Gruppeoversikt' });
   const isAuthenticated = useIsAuthenticated();
   const { BOARD_GROUPS, SUB_GROUPS, COMMITTEES, INTERESTGROUPS, OTHER_GROUPS, error, isLoading } = useGroupsByType({ overview: true });
 

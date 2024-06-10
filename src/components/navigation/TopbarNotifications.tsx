@@ -112,7 +112,7 @@ const NotificationItemLoading = () => (
   </Paper>
 );
 
-const NotificationsTopbar = ({ color }: NotificationsTopbarProps) => {
+const NotificationsTopbar = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const { data: user } = useUser();
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useNotifications({ enabled: showNotifications });
@@ -152,7 +152,7 @@ const NotificationsTopbar = ({ color }: NotificationsTopbarProps) => {
 
   return (
     <>
-      <IconButton aria-label='Vis varslinger' onClick={() => setShowNotifications((prev) => !prev)} ref={buttonAnchorRef} sx={{ color: color }}>
+      <IconButton aria-label='Vis varslinger' onClick={() => setShowNotifications((prev) => !prev)} ref={buttonAnchorRef}>
         <Badge badgeContent={user?.unread_notifications} color='error'>
           {showNotifications ? <CloseRoundedIcon /> : <NotificationReadIcon />}
         </Badge>

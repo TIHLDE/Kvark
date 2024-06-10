@@ -22,13 +22,11 @@ import GroupLaws from 'pages/Groups/laws';
 
 import { RouterTabs } from 'components/layout/Tabs';
 import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
-import { useSetNavigationOptions } from 'components/navigation/Navigation';
 
 const GroupDetails = () => {
   const { slug } = useParams<'slug'>();
   const isAuthenticated = useIsAuthenticated();
   const { data, isLoading: isLoadingGroup, isError } = useGroup(slug || '-');
-  useSetNavigationOptions({ title: `Gruppe - ${data?.name || 'Laster...'}` });
 
   const hasWriteAcccess = Boolean(data?.permissions.write);
   const isMemberOfGroup = Boolean(data?.viewer_is_member);
