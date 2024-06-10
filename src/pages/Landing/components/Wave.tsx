@@ -153,7 +153,7 @@ const Wave = () => {
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.content}>
-          <TihldeLogo className={classes.logo} darkColor='white' lightColor='white' size='large' />
+          <TihldeLogo className={classes.logo} size='large' />
           <Typography align='center' className={classes.contentText} variant='body1'>
             Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Digital samhandling og
             Informasjonsbehandling ved NTNU

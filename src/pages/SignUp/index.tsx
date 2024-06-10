@@ -74,7 +74,7 @@ const SignUp = () => {
     <Page banner={<SecondaryTopBox />} options={{ title: 'Ny bruker' }}>
       <Paper sx={{ maxWidth: 'md', margin: 'auto', position: 'relative', left: 0, right: 0, top: -60 }}>
         {createUser.isLoading && <LinearProgress sx={{ position: 'absolute', top: 0, left: 0, right: 0 }} />}
-        <TihldeLogo darkColor='white' lightColor='blue' size='large' sx={{ height: 30, width: 'auto', mb: 1 }} />
+        <TihldeLogo size='large' />
         <Typography variant='h3'>Opprett bruker</Typography>
         <Stack component='form' onSubmit={handleSubmit(onSignUp)}>
           <Stack direction={{ xs: 'column', sm: 'row' }} gap={1}>

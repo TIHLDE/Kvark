@@ -82,7 +82,7 @@ const LogIn = () => {
     <Page banner={<SecondaryTopBox />} options={{ title: 'Logg inn' }}>
       <Paper className={classes.paper}>
         {logIn.isLoading && <LinearProgress className={classes.progress} />}
-        <TihldeLogo className={classes.logo} darkColor='white' lightColor='blue' size='large' />
+        <TihldeLogo className={classes.logo} size='large' />
         <Typography variant='h3'>Logg inn</Typography>
         <form onSubmit={handleSubmit(onLogin)}>
           <TextField
