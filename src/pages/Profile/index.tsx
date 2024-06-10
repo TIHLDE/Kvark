@@ -19,7 +19,6 @@ import ProfileSettings from 'pages/Profile/components/ProfileSettings';
 import ProfileStrikes from 'pages/Profile/components/ProfileStrikes';
 
 import { QRButton } from 'components/miscellaneous/QRButton';
-import Page from 'components/navigation/Page';
 import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
 import { Button } from 'components/ui/button';
 import { Card, CardContent } from 'components/ui/card';
@@ -84,7 +83,7 @@ const Profile = () => {
   }
 
   return (
-    <Page options={{ title: 'Profil', gutterTop: true }}>
+    <div className='px-2 md:px-8 mt-20'>
       <Card className='my-4'>
         <CardContent className='p-4 space-y-4 md:flex md:justify-between md:space-x-12 md:space-y-0'>
           <div className='flex md:items-center space-x-2'>
@@ -174,7 +173,7 @@ const Profile = () => {
           {tab === adminTab.label && <ProfileAdmin />}
         </div>
       </div>
-    </Page>
+    </div>
   );
 };
 

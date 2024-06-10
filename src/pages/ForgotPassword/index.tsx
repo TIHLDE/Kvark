@@ -70,7 +70,7 @@ const ForgotPassword = () => {
     <Page banner={<SecondaryTopBox />} options={{ title: 'Glemt passord' }}>
       <Paper className={classes.paper}>
         {forgotPassword.isLoading && <LinearProgress className={classes.progress} />}
-        <TihldeLogo className={classes.logo} darkColor='white' lightColor='blue' size='large' />
+        <TihldeLogo className={classes.logo} size='large' />
         <Typography variant='h3'>Glemt passord</Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextField

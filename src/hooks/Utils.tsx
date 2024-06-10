@@ -130,7 +130,6 @@ export const useAnalytics = () => {
    * @param label - Useful for categorizing events, eg 'Ny-student'
    */
   const event = useCallback((action: string, category: string, label: string) => {
-    // TODO: track not found on va error
     va.track(category, { action, label });
   }, []);
 

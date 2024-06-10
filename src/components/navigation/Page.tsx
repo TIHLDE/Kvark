@@ -1,7 +1,7 @@
 import { ReactElement, ReactNode, useEffect } from 'react';
 
 import Container, { ContainerProps } from 'components/layout/Container';
-import { SetNavigationOptions, useSetNavigationOptions } from 'components/navigation/Navigation';
+import { SetNavigationOptions } from 'components/navigation/Navigation';
 export type PageProps = {
   children?: ReactNode;
   banner?: ReactElement;
@@ -10,7 +10,6 @@ export type PageProps = {
 };
 
 const Page = ({ options, maxWidth = 'xl', banner, children }: PageProps) => {
-  useSetNavigationOptions(options);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
