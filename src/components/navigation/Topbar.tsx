@@ -72,12 +72,16 @@ const Topbar = ({ items }: TopbarProps) => {
 
   if (!isMediumScreen) {
     return (
-      <div className='absolute top-0 left-0 right-0 z-30 p-2 flex justify-between items-center'>
+      <header
+        className={cn(
+          'fixed z-30 w-full top-0 transition-all duration-150 p-2 flex items-center justify-between',
+          !isOnTop && 'border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60',
+        )}>
         <Link aria-label='Til forsiden' to={URLS.landing}>
           <TihldeLogo className='h-[24px] w-auto ml-0' size='large' />{' '}
         </Link>
         <ProfileTopbarButton />
-      </div>
+      </header>
     );
   }
 
