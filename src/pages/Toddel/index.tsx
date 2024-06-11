@@ -1,19 +1,13 @@
 import { styled } from '@mui/material';
 import { useMemo } from 'react';
 
-import { PermissionApp } from 'types/Enums';
-
 import { useToddels } from 'hooks/Toddel';
-import { HavePermission } from 'hooks/User';
 
-import CreateToddelDialog from 'pages/Toddel/components/CreateToddelDialog';
 import ToddelListItem, { ToddelListItemLoading } from 'pages/Toddel/components/ToddelListItem';
 
-import Banner from 'components/layout/Banner';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Page from 'components/navigation/Page';
 
 const ToddelGrid = styled('div')(({ theme }) => ({
   display: 'grid',
@@ -34,15 +28,17 @@ const ToddelPage = () => {
   const toddels = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   return (
-    <Page
-      banner={
-        <Banner text='Linjeforeningsbladet til TIHLDE' title='TÖDDEL'>
-          <HavePermission apps={[PermissionApp.TODDEL]}>
-            <CreateToddelDialog />
-          </HavePermission>
-        </Banner>
-      }
-      options={{ title: 'TÖDDEL' }}>
+    // TODO: Add 'add new' button when migration is done
+    // <Page
+    //   banner={
+    //     <Banner text='Linjeforeningsbladet til TIHLDE' title='TÖDDEL'>
+    //       <HavePermission apps={[PermissionApp.TODDEL]}>
+    //         <CreateToddelDialog />
+    //       </HavePermission>
+    //     </Banner>
+    //   }
+    //   options={{ title: 'TÖDDEL' }}>
+    <div className='w-full px-2 md:px-12 mt-40'>
       <ToddelGrid>
         {isLoading && <ToddelListItemLoading />}
         {!isLoading && !toddels.length && <NotFoundIndicator header='Fant ingen publikasjoner' />}
@@ -56,7 +52,7 @@ const ToddelPage = () => {
         )}
         {isFetching && <ToddelListItemLoading />}
       </ToddelGrid>
-    </Page>
+    </div>
   );
 };
 

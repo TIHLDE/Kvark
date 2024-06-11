@@ -9,9 +9,7 @@ import { useBadgeCategory } from 'hooks/Badge';
 
 import Paper from 'components/layout/Paper';
 import { RouterTabs } from 'components/layout/Tabs';
-import { PrimaryTopBox } from 'components/layout/TopBox';
 import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
-import Page from 'components/navigation/Page';
 
 const BadgeCategory = () => {
   const { categoryId } = useParams<'categoryId'>();
@@ -21,7 +19,7 @@ const BadgeCategory = () => {
   const tabs = [leaderboardTab, badgesTab];
 
   return (
-    <Page banner={<PrimaryTopBox />} options={{ title: data?.name || 'Laster...' }}>
+    <div className='max-w-5xl w-full mx-auto px-2 mt-32'>
       <Paper sx={{ margin: '-60px auto 60px', position: 'relative' }}>
         <Stack direction='row' gap={1} sx={{ alignItems: 'center', flex: 1 }}>
           <Box sx={{ display: 'block', height: { xs: 45, md: 70 }, width: { xs: 45, md: 70 } }}>
@@ -34,7 +32,7 @@ const BadgeCategory = () => {
           <Outlet />
         </Suspense>
       </Paper>
-    </Page>
+    </div>
   );
 };
 

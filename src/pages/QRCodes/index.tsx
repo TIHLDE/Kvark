@@ -9,10 +9,8 @@ import { useAnalytics } from 'hooks/Utils';
 
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
-import Banner from 'components/layout/Banner';
 import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Page from 'components/navigation/Page';
 
 import QRCodeItem from './components/QRCodeItem';
 
@@ -37,7 +35,7 @@ const QRCodes = () => {
   };
 
   return (
-    <Page banner={<Banner text='Opprett, se og slett dine QR koder' title='QR-koder' />} options={{ title: 'QR koder' }}>
+    <div className='w-full px-2 md:px-12 mt-40 mx-auto'>
       <Stack direction={{ xs: 'column-reverse', lg: 'row' }} gap={1} sx={{ mt: { xs: 1, lg: 2 } }}>
         <Grid columns={{ xs: 1, sm: 2 }} container gap={2} sx={{ mb: 2, justifyContent: { xs: 'center', md: 'start' } }}>
           {error && <Paper>{error.detail}</Paper>}
@@ -70,7 +68,7 @@ const QRCodes = () => {
           </form>
         </Paper>
       </Stack>
-    </Page>
+    </div>
   );
 };
 

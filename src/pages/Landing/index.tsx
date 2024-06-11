@@ -13,7 +13,6 @@ import Wave from 'pages/Landing/components/Wave';
 
 import Container from 'components/layout/Container';
 import InfoBanner from 'components/miscellaneous/InfoBanner/InfoBanner';
-import Page from 'components/navigation/Page';
 
 const Section = styled(Container)(({ theme }) => ({
   paddingTop: theme.spacing(2),
@@ -33,7 +32,8 @@ const Landing = () => {
   const openNewsAnalytics = () => event('go-to-all-news', 'news-list-view', `Go to all news`);
 
   return (
-    <Page banner={<Wave />} maxWidth={false} options={{ title: 'Forsiden' }}>
+    <div>
+      <Wave />
       <Smoke>
         <Section maxWidth='lg' sx={{ px: { xs: 0, lg: 2 } }}>
           <NewStudentBox />
@@ -61,7 +61,7 @@ const Landing = () => {
           <NewsListView />
         </Section>
       </Smoke>
-    </Page>
+    </div>
   );
 };
 

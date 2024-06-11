@@ -1,19 +1,14 @@
-import SignupIcon from '@mui/icons-material/ArrowForwardRounded';
 import CalendarIcon from '@mui/icons-material/DateRangeRounded';
 import EventIcon from '@mui/icons-material/EventRounded';
 import ListIcon from '@mui/icons-material/FormatListBulletedRounded';
 import FaqIcon from '@mui/icons-material/HelpOutlineRounded';
 import AboutIcon from '@mui/icons-material/InfoRounded';
-import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
 import SportsIcon from '@mui/icons-material/SportsSoccerRounded';
 import VolunteerIcon from '@mui/icons-material/VolunteerActivismRounded';
 import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Stack, Typography } from '@mui/material';
-import { SHOW_FADDERUKA_INFO } from 'constant';
 import { makeStyles } from 'makeStyles';
 import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
 
 import { useEvents } from 'hooks/Event';
 import { useIsAuthenticated } from 'hooks/User';
@@ -22,7 +17,6 @@ import { useWikiPage } from 'hooks/Wiki';
 
 import EventsCalendarView from 'pages/Landing/components/EventsCalendarView';
 
-import Banner, { BannerButton } from 'components/layout/Banner';
 import Expand from 'components/layout/Expand';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
@@ -30,7 +24,6 @@ import Tabs from 'components/layout/Tabs';
 import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Page from 'components/navigation/Page';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {
@@ -95,41 +88,8 @@ const NewStudent = () => {
   const createUserAnalytics = (page: string) => event('go-to-sign-up', 'new-student', `Go to ${page}`);
 
   return (
-    <Page
-      banner={
-        <Banner
-          text='Hei og velkommen til TIHLDE. Vi i TIHLDE vil gjerne ønske deg velkommen til Trondheim og vil at du skal bli kjent med både byen og dine medstudenter, derfor arrangerer vi fadderuka for dere. Her kan du finne info om fadderuka, verv og idrett i TIHLDE, samt ofte stilte spørsmål og svar.'
-          title='Ny student'>
-          {SHOW_FADDERUKA_INFO && (
-            <BannerButton
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              component='a'
-              endIcon={<OpenInNewIcon />}
-              href='https://s.tihlde.org/fadderuka-paamelding'
-              onClick={fadderukaSignupAnalytics}
-              rel='noopener noreferrer'
-              target='_blank'
-              variant='outlined'>
-              Meld deg på fadderuka
-            </BannerButton>
-          )}
-          {!isAuthenticated && (
-            <Paper sx={{ background: 'transparent', borderColor: (theme) => theme.palette.common.white }}>
-              <Typography gutterBottom sx={{ color: (theme) => theme.palette.common.white }}>
-                Hei! Hvis du er ny student i TIHLDE anbefaler vi deg å opprette bruker på nettsiden ASAP! Da får du muligheten til å melde deg på arrangementer,
-                få badges, se kokeboka og mer 🎉
-              </Typography>
-              {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-              {/* @ts-ignore */}
-              <BannerButton component={Link} endIcon={<SignupIcon />} onClick={createUserAnalytics} to={URLS.signup} variant='outlined'>
-                Opprett bruker her
-              </BannerButton>
-            </Paper>
-          )}
-        </Banner>
-      }
-      options={{ title: 'Ny student' }}>
+    // TODO: This will get fixed when Embret recreates the 'Ny student' page
+    <div className='w-full px-2 md:px-12 mt-40'>
       <div className={cx(classes.grid, classes.root)}>
         <Paper noOverflow noPadding sx={{ position: { lg: 'sticky' }, top: { lg: 75 } }}>
           <List disablePadding>
@@ -218,7 +178,7 @@ const NewStudent = () => {
           </Collapse>
         </div>
       </div>
-    </Page>
+    </div>
   );
 };
 

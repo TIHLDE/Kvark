@@ -10,8 +10,6 @@ import Http404 from 'pages/Http404';
 
 import FormAdminComponent from 'components/forms/FormAdmin';
 import Paper from 'components/layout/Paper';
-import { PrimaryTopBox } from 'components/layout/TopBox';
-import Page from 'components/navigation/Page';
 
 const FormPage = () => {
   const { id } = useParams<'id'>();
@@ -27,7 +25,7 @@ const FormPage = () => {
   }
 
   return (
-    <Page banner={<PrimaryTopBox />} options={{ title: `${form?.title || 'Laster spørreskjema...'} - Spørreskjema` }}>
+    <div className='max-w-5xl w-full mx-auto mt-32 px-2'>
       <Paper
         sx={{
           maxWidth: (theme) => theme.breakpoints.values.md,
@@ -53,7 +51,7 @@ const FormPage = () => {
           )}
         </Stack>
       </Paper>
-    </Page>
+    </div>
   );
 };
 

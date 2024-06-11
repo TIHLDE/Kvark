@@ -19,8 +19,6 @@ import Http404 from 'pages/Http404';
 import FormView from 'components/forms/FormView';
 import SubmitButton from 'components/inputs/SubmitButton';
 import Paper from 'components/layout/Paper';
-import { PrimaryTopBox } from 'components/layout/TopBox';
-import Page from 'components/navigation/Page';
 
 const FormPage = () => {
   const { run } = useConfetti();
@@ -93,7 +91,7 @@ const FormPage = () => {
   const canAnswerForm = Boolean(form && (!form.viewer_has_answered || (form.resource_type === FormResourceType.GROUP_FORM && form.can_submit_multiple)));
 
   return (
-    <Page banner={<PrimaryTopBox />} options={{ title: `${form?.title || 'Laster spørreskjema...'} - Spørreskjema` }}>
+    <div className='max-w-5xl w-full mx-auto mt-32 px-2'>
       <Paper
         sx={{
           maxWidth: (theme) => theme.breakpoints.values.md,
@@ -151,7 +149,7 @@ const FormPage = () => {
           </Typography>
         )}
       </Paper>
-    </Page>
+    </div>
   );
 };
 

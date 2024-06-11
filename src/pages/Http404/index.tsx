@@ -4,8 +4,6 @@ import URLS from 'URLS';
 
 import { useIsAuthenticated } from 'hooks/User';
 
-import Page from 'components/navigation/Page';
-
 import http404img from 'assets/img/http404.gif';
 import http404ropeImg from 'assets/img/http404rope.gif';
 
@@ -30,7 +28,7 @@ const Http404 = ({ title = 'Kunne ikke finne siden' }: Http404Props) => {
   const isAuthenticated = useIsAuthenticated();
 
   return (
-    <Page options={{ filledTopbar: true, title: '404', lightColor: 'blue', gutterTop: true }}>
+    <div className='max-w-5xl w-full px-2 mx-auto mt-20'>
       {isAuthenticated ? (
         <Img alt='404' loading='lazy' src={http404ropeImg} />
       ) : (
@@ -47,7 +45,7 @@ const Http404 = ({ title = 'Kunne ikke finne siden' }: Http404Props) => {
           Rapporter til Index
         </Button>
       </Buttons>
-    </Page>
+    </div>
   );
 };
 

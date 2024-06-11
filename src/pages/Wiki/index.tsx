@@ -11,14 +11,11 @@ import { useWikiPage } from 'hooks/Wiki';
 import GroupItem from 'pages/Groups/overview/GroupItem';
 import WikiAdmin from 'pages/Wiki/components/WikiAdmin';
 import WikiNavigator from 'pages/Wiki/components/WikiNavigator';
-import WikiSearch from 'pages/Wiki/components/WikiSearch';
 import Index from 'pages/Wiki/specials/Index';
 
-import Banner from 'components/layout/Banner';
 import Paper from 'components/layout/Paper';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import ShareButton from 'components/miscellaneous/ShareButton';
-import Page from 'components/navigation/Page';
 
 const Root = styled('div')(({ theme }) => ({
   display: 'grid',
@@ -69,13 +66,15 @@ const Wiki = () => {
   }, [navigate, location.pathname, data]);
 
   return (
-    <Page
-      banner={
-        <Banner title={isLoading ? <Skeleton width={300} /> : error ? 'Noe gikk galt' : data?.title}>
-          <WikiSearch />
-        </Banner>
-      }
-      options={{ title: data ? data.title : 'Laster side...' }}>
+    // TODO: Add WikiSearch component when migration is done
+    // <Page
+    //   banner={
+    //     <Banner title={isLoading ? <Skeleton width={300} /> : error ? 'Noe gikk galt' : data?.title}>
+    //       <WikiSearch />
+    //     </Banner>
+    //   }
+    //   options={{ title: data ? data.title : 'Laster side...' }}>
+    <div className='w-full px-2 md:px-12 mt-40'>
       <Breadcrumbs aria-label='Posisjon i wiki' maxItems={4}>
         {levels.slice(0, levels.length - 1).map((level, i) => (
           <Typography component={Link} key={i} sx={{ textDecoration: 'none', textTransform: 'capitalize' }} to={`/${levels.slice(0, i + 1).join('/')}`}>
@@ -121,7 +120,7 @@ const Wiki = () => {
           )
         )}
       </Root>
-    </Page>
+    </div>
   );
 };
 

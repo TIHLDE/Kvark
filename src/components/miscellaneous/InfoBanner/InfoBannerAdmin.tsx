@@ -16,8 +16,6 @@ import Dialog from 'components/layout/Dialog';
 import { StandaloneExpand } from 'components/layout/Expand';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
-import { PrimaryTopBox } from 'components/layout/TopBox';
-import Page from 'components/navigation/Page';
 
 import InfoBannerAdminItem from './InfoBannerAdminItem';
 
@@ -99,14 +97,14 @@ const CreateInfoBannerAdminDialog = () => {
   const { classes } = useStyles();
 
   return (
-    <Page banner={<PrimaryTopBox />} options={{ title: 'Banner admin' }}>
+    <div className='max-w-3xl w-full mt-40 mx-auto px-2'>
       <Paper className={classes.content}>
         <Typography marginBottom={3} variant='h1'>
           Banner admin
         </Typography>
         <InfoBannerAdmin />
       </Paper>
-    </Page>
+    </div>
   );
 };
 

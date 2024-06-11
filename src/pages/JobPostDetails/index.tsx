@@ -9,8 +9,6 @@ import { useJobPostById } from 'hooks/JobPost';
 import Http404 from 'pages/Http404';
 import JobPostRenderer, { JobPostRendererLoading } from 'pages/JobPostDetails/components/JobPostRenderer';
 
-import Page from 'components/navigation/Page';
-
 function JobPostDetails() {
   const { id } = useParams();
   const { data, isLoading, isError } = useJobPostById(Number(id));
@@ -30,7 +28,7 @@ function JobPostDetails() {
   }
 
   return (
-    <Page options={{ title: data ? data.title : 'Laster annonse...', gutterTop: true, filledTopbar: true, lightColor: 'blue' }}>
+    <div className='w-full px-2 md:px-12 mt-20'>
       {isLoading ? (
         <JobPostRendererLoading />
       ) : (
@@ -46,7 +44,7 @@ function JobPostDetails() {
           </>
         )
       )}
-    </Page>
+    </div>
   );
 }
 

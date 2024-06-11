@@ -1,4 +1,3 @@
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import { MenuItem, styled, TextField } from '@mui/material';
 import { getDay, getHours } from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -13,10 +12,7 @@ import { useInterval } from 'hooks/Utils';
 
 import Files from 'pages/Cheatsheet/components/Files';
 
-import Banner from 'components/layout/Banner';
-import { BannerButton } from 'components/layout/Banner';
 import Paper from 'components/layout/Paper';
-import Page from 'components/navigation/Page';
 
 const FilterContainer = styled('div')(({ theme }) => ({
   display: 'grid',
@@ -149,18 +145,20 @@ const Cheetsheet = () => {
   useInterval(() => setLiveCheatingAmount(generateLiveCheatingAmount()), 20000);
 
   return (
-    <Page
-      banner={
-        <Banner text={`${getStudy()} - ${getClass()}. klasse\n**${liveCheatingAmount}** brukere koker akkurat nå`} title='Kokeboka'>
-          <BannerButton
-            endIcon={<MailOutlineIcon />} // Adding the EmailIcon as the end icon
-            onClick={generateCheatSheetMail}
-            variant='outlined'>
-            Bidra til kokeboka!
-          </BannerButton>
-        </Banner>
-      }
-      options={{ title: `${getStudy()} - ${getClass()}. klasse - Kokeboka` }}>
+    // TODO: Add back the banner when the new migration is done
+    // <Page
+    //   banner={
+    //     <Banner text={`${getStudy()} - ${getClass()}. klasse\n**${liveCheatingAmount}** brukere koker akkurat nå`} title='Kokeboka'>
+    //       <BannerButton
+    //         endIcon={<MailOutlineIcon />} // Adding the EmailIcon as the end icon
+    //         onClick={generateCheatSheetMail}
+    //         variant='outlined'>
+    //         Bidra til kokeboka!
+    //       </BannerButton>
+    //     </Banner>
+    //   }
+    // options={{ title: `${getStudy()} - ${getClass()}. klasse - Kokeboka` }}>
+    <div className='w-full max-w-5xl mt-40 px-2 mx-auto'>
       <Paper sx={{ mb: 2 }}>
         <FilterContainer>
           <TextField
@@ -195,7 +193,7 @@ const Cheetsheet = () => {
         </FilterContainer>
         <Files files={files} getNextPage={fetchNextPage} hasNextPage={hasNextPage} isLoading={isLoading} />
       </Paper>
-    </Page>
+    </div>
   );
 };
 

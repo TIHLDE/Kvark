@@ -17,12 +17,9 @@ import { useAnalytics, useShare } from 'hooks/Utils';
 
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
-import { FileUpload } from 'components/inputs/Upload';
-import Banner from 'components/layout/Banner';
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Page from 'components/navigation/Page';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {
@@ -163,7 +160,7 @@ const ShortLinks = () => {
   };
 
   return (
-    <Page banner={<Banner text='Opprett, se og slett dine korte linker' title='Link-forkorter' />} options={{ title: 'Link-forkorter' }}>
+    <div className='w-full px-2 md:px-12 mt-40'>
       <div className={classes.grid}>
         <div className={classes.list}>
           {error && <Paper>{error.detail}</Paper>}
@@ -200,16 +197,9 @@ const ShortLinks = () => {
               </SubmitButton>
             </form>
           </Paper>
-          <Paper>
-            <Typography variant='h3'>Filopplastning</Typography>
-            <Typography variant='subtitle2'>
-              Last opp filer og få en link du kan dele med andre. Bruk link-forkorteren hvis du vil ha enda kortere linker.
-            </Typography>
-            <FileUpload />
-          </Paper>
         </div>
       </div>
-    </Page>
+    </div>
   );
 };
 

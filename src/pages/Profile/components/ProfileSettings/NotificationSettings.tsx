@@ -1,63 +1,60 @@
-import { Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import URLS from 'URLS';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { User, UserNotificationSetting, UserNotificationSettingChoice } from 'types';
 
 import { useSnackbar } from 'hooks/Snackbar';
-import { useSlackConnect, useUpdateUserNotificationSettings, useUser, useUserNotificationSettingChoices, useUserNotificationSettings } from 'hooks/User';
+import { useUpdateUserNotificationSettings, useUser, useUserNotificationSettingChoices, useUserNotificationSettings } from 'hooks/User';
 
-import Paper from 'components/layout/Paper';
-import Page from 'components/navigation/Page';
 import { Button } from 'components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
 import { Switch } from 'components/ui/switch';
 
-export const SlackConnectPage = () => {
-  const [searchParams] = useSearchParams();
-  const slackConnect = useSlackConnect();
-  const showSnackbar = useSnackbar();
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+// TODO: Find out if this is needed
+// export const SlackConnectPage = () => {
+//   const [searchParams] = useSearchParams();
+//   const slackConnect = useSlackConnect();
+//   const showSnackbar = useSnackbar();
+//   const navigate = useNavigate();
+//   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const code = searchParams.get('code');
-    if (!code) {
-      return;
-    }
-    slackConnect.mutate(code, {
-      onSuccess: (data) => {
-        showSnackbar(data.detail, 'success');
-        navigate(URLS.profile);
-      },
-      onError: (e) => {
-        showSnackbar(e.detail, 'error');
-        setLoading(false);
-      },
-    });
-  }, [searchParams]);
+//   useEffect(() => {
+//     const code = searchParams.get('code');
+//     if (!code) {
+//       return;
+//     }
+//     slackConnect.mutate(code, {
+//       onSuccess: (data) => {
+//         showSnackbar(data.detail, 'success');
+//         navigate(URLS.profile);
+//       },
+//       onError: (e) => {
+//         showSnackbar(e.detail, 'error');
+//         setLoading(false);
+//       },
+//     });
+//   }, [searchParams]);
 
-  return (
-    <Page options={{ title: 'Slack-tilkobling', gutterTop: true }}>
-      <Paper>
-        <Typography variant='h1'>Slack-tilkobling</Typography>
-        <Typography gutterBottom variant='body1'>
-          {searchParams.get('code')
-            ? loading
-              ? 'Kobler din Slack-konto til din TIHLDE-konto...'
-              : 'Noe gikk galt, vi kunne ikke koble sammen din Slack- og TIHLDE-konto.'
-            : 'Ugyldig lenke'}
-        </Typography>
-        {(!loading || !searchParams.get('code')) && (
-          <Button variant='outline'>
-            <Link to={URLS.landing}>Gå til forsiden</Link>
-          </Button>
-        )}
-      </Paper>
-    </Page>
-  );
-};
+//   return (
+//     <Page options={{ title: 'Slack-tilkobling', gutterTop: true }}>
+//       <Paper>
+//         <Typography variant='h1'>Slack-tilkobling</Typography>
+//         <Typography gutterBottom variant='body1'>
+//           {searchParams.get('code')
+//             ? loading
+//               ? 'Kobler din Slack-konto til din TIHLDE-konto...'
+//               : 'Noe gikk galt, vi kunne ikke koble sammen din Slack- og TIHLDE-konto.'
+//             : 'Ugyldig lenke'}
+//         </Typography>
+//         {(!loading || !searchParams.get('code')) && (
+//           <Button variant='outline'>
+//             <Link to={URLS.landing}>Gå til forsiden</Link>
+//           </Button>
+//         )}
+//       </Paper>
+//     </Page>
+//   );
+// };
 
 type ConnectWithSlackProps = {
   className?: string;

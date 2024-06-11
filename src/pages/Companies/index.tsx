@@ -1,4 +1,3 @@
-import SendIcon from '@mui/icons-material/SendRounded';
 import { Typography } from '@mui/material';
 import { makeStyles } from 'makeStyles';
 import { useRef } from 'react';
@@ -9,10 +8,8 @@ import { UserStudy } from 'types/Enums';
 
 import CompaniesForm from 'pages/Companies/components/CompaniesForm';
 
-import Banner, { BannerButton } from 'components/layout/Banner';
 import Container from 'components/layout/Container';
 import InfoCard from 'components/layout/InfoCard';
-import Page from 'components/navigation/Page';
 
 import Image from 'assets/img/glad.jpg';
 
@@ -78,16 +75,18 @@ Vi kan også tilrettelegge for speed intervjuer dersom dette er ønskelig.`,
   };
 
   return (
-    <Page
-      banner={
-        <Banner text='**Alle arrangementer kan gjennomføres digitalt**' title='For Bedrifter'>
-          <BannerButton onClick={scrollToForm} startIcon={<SendIcon />} variant='outlined'>
-            Send oss en melding
-          </BannerButton>
-        </Banner>
-      }
-      maxWidth={false}
-      options={{ title: 'For bedrifter' }}>
+    // TODO: Add banner back when the new migration is done
+    // <Page
+    //   banner={
+    //     <Banner text='**Alle arrangementer kan gjennomføres digitalt**' title='For Bedrifter'>
+    //       <BannerButton onClick={scrollToForm} startIcon={<SendIcon />} variant='outlined'>
+    //         Send oss en melding
+    //       </BannerButton>
+    //     </Banner>
+    //   }
+    //   maxWidth={false}
+    //   options={{ title: 'For bedrifter' }}>
+    <div className='max-w-5xl w-full mx-auto mt-40 px-2'>
       <Container className={classes.section}>
         <Typography align='center' gutterBottom variant='h2'>
           Vi tilbyr
@@ -126,7 +125,7 @@ Vi kan også tilrettelegge for speed intervjuer dersom dette er ønskelig.`,
           <InfoCard header='Om TIHLDE' imageClass={classes.imageClass} src={Image} text={text.aboutUs} />
         </Container>
       </div>
-    </Page>
+    </div>
   );
 };
 

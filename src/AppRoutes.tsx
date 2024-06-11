@@ -21,10 +21,8 @@ import News from 'pages/News';
 import NewsDetails from 'pages/NewsDetails';
 import NewStudent from 'pages/NewStudent';
 import Profile from 'pages/Profile';
-import { SlackConnectPage } from 'pages/Profile/components/ProfileSettings/NotificationSettings';
 
 import InfoBannerAdmin from 'components/miscellaneous/InfoBanner/InfoBannerAdmin';
-import Page from 'components/navigation/Page';
 
 const Gallery = lazy(() => import('pages/Gallery'));
 const GalleryDetails = lazy(() => import('pages/GalleryDetails'));
@@ -77,7 +75,7 @@ export const AuthRoute = ({ apps = [], element }: AuthRouteProps) => {
     return element;
   }
   if (isLoading) {
-    return <Page />;
+    return <div className='w-full min-h-screen' />;
   }
   if (allowAccess) {
     return element;
@@ -92,7 +90,7 @@ const AppRoutes = () => {
   useEffect(() => event('page_view', window.location.href, window.location.pathname), [location]);
 
   return (
-    <Suspense fallback={<Page options={{ title: 'Laster...', filledTopbar: true }} />}>
+    <Suspense fallback={<div className='w-full min-h-screen' />}>
       <Routes>
         <Route element={<Landing />} index />
         <Route element={<NewStudent />} path={URLS.newStudent} />
@@ -141,7 +139,8 @@ const AppRoutes = () => {
           <Route element={<News />} index />
         </Route>
 
-        <Route element={<SlackConnectPage />} path='slack/' />
+        {/* TODO: Find out if this page is in use */}
+        {/* <Route element={<SlackConnectPage />} path='slack/' /> */}
         <Route element={<AuthRoute element={<Profile />} />} path={URLS.profile}>
           <Route element={<Profile />} path=':userId/' />
         </Route>

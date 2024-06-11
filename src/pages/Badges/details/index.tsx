@@ -11,9 +11,7 @@ import BadgeCategoryItem from 'pages/Badges/components/BadgeCategoryItem';
 
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
-import { PrimaryTopBox } from 'components/layout/TopBox';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Page from 'components/navigation/Page';
 import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
 
 const BadgeDetails = () => {
@@ -24,7 +22,7 @@ const BadgeDetails = () => {
   const leaderboardEntries = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   return (
-    <Page banner={<PrimaryTopBox />} options={{ title: badge?.title || 'Laster...' }}>
+    <div className='px-2 mx-auto mt-40 max-w-5xl w-full'>
       <Paper sx={{ margin: '-60px auto 60px', position: 'relative' }}>
         {badge && (
           <Stack direction='row' gap={1} sx={{ mb: 1, alignItems: 'center', flex: 1 }}>
@@ -83,7 +81,7 @@ const BadgeDetails = () => {
           </Pagination>
         )}
       </Paper>
-    </Page>
+    </div>
   );
 };
 
