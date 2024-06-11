@@ -10,8 +10,6 @@ import { useNewsById } from 'hooks/News';
 import Http404 from 'pages/Http404';
 import NewsRenderer, { NewsRendererLoading } from 'pages/NewsDetails/components/NewsRenderer';
 
-import Page from 'components/navigation/Page';
-
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
 
 const NewsDetails = () => {
@@ -33,7 +31,7 @@ const NewsDetails = () => {
   }
 
   return (
-    <Page maxWidth={false} options={{ title: data ? data.title : 'Laster nyhet...' }}>
+    <div>
       {data && (
         <Helmet>
           <meta content={data.title} property='og:title' />
@@ -43,7 +41,7 @@ const NewsDetails = () => {
         </Helmet>
       )}
       <Box sx={{ pb: 2 }}>{isLoading ? <NewsRendererLoading /> : data !== undefined && <NewsRenderer data={data} />}</Box>
-    </Page>
+    </div>
   );
 };
 

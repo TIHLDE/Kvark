@@ -6,9 +6,7 @@ import { lazy, Suspense, useState } from 'react';
 
 import EventsDefaultView from 'pages/Events/components/EventsDefaultView';
 
-import Banner from 'components/layout/Banner';
 import Tabs from 'components/layout/Tabs';
-import Page from 'components/navigation/Page';
 
 import ActivitiesDefaultView from './components/ActivitiesDefaultView';
 
@@ -22,7 +20,7 @@ const Events = () => {
   const [tab, setTab] = useState(listTab.value);
 
   return (
-    <Page banner={<Banner title='Arrangementer' />} options={{ title: 'Arrangementer' }}>
+    <div className='mt-20 w-full px-2 md:px-12'>
       <Tabs selected={tab} setSelected={setTab} sx={{ width: 'fit-content', mb: 1 }} tabs={tabs} />
       <Collapse in={tab === listTab.value}>
         <EventsDefaultView />
@@ -35,7 +33,7 @@ const Events = () => {
           <EventsCalendarView />
         </Suspense>
       </Collapse>
-    </Page>
+    </div>
   );
 };
 

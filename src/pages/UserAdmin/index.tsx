@@ -17,9 +17,7 @@ import TextField from 'components/inputs/TextField';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import Tabs from 'components/layout/Tabs';
-import { PrimaryTopBox } from 'components/layout/TopBox';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Page from 'components/navigation/Page';
 
 type Filters = {
   study: Group['slug'] | 'all';
@@ -55,7 +53,7 @@ const UserAdmin = () => {
   ${watchFilters.study !== 'all' ? studies.find((study) => study.slug === watchFilters.study)?.name : ''}`;
 
   return (
-    <Page banner={<PrimaryTopBox />} options={{ title: 'Brukeradmin' }}>
+    <div className='max-w-6xl w-full px-2 mt-40 mx-auto'>
       <Paper sx={{ margin: '-60px auto 60px', position: 'relative' }}>
         <Typography variant='h1'>Brukeradmin</Typography>
         <Typography>{membersAmount}</Typography>
@@ -90,7 +88,7 @@ const UserAdmin = () => {
           </Pagination>
         )}
       </Paper>
-    </Page>
+    </div>
   );
 };
 

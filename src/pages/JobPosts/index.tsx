@@ -12,13 +12,11 @@ import Bool from 'components/inputs/Bool';
 import Select from 'components/inputs/Select';
 import SubmitButton from 'components/inputs/SubmitButton';
 import TextField from 'components/inputs/TextField';
-import Banner from 'components/layout/Banner';
 import Expand from 'components/layout/Expand';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Page from 'components/navigation/Page';
 
 const useStyles = makeStyles()((theme) => ({
   grid: {
@@ -127,7 +125,7 @@ const JobPosts = () => {
   );
 
   return (
-    <Page banner={<Banner title='Karriere' />} options={{ title: 'Karriere' }}>
+    <div className='w-full px-2 md:px-12 mt-20'>
       <div className={classes.grid}>
         <div className={classes.list}>
           {isLoading && <JobPostListItemLoading />}
@@ -158,7 +156,7 @@ const JobPosts = () => {
           </Paper>
         )}
       </div>
-    </Page>
+    </div>
   );
 };
 

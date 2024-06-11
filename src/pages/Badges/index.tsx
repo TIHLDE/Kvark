@@ -9,8 +9,6 @@ import URLS from 'URLS';
 
 import Paper from 'components/layout/Paper';
 import { RouterTabs } from 'components/layout/Tabs';
-import { PrimaryTopBox } from 'components/layout/TopBox';
-import Page from 'components/navigation/Page';
 
 const Badges = () => {
   const leaderboardTab = { to: URLS.badges.index, label: 'Ledertavle', icon: LeaderboardIcon };
@@ -20,7 +18,7 @@ const Badges = () => {
   const tabs = [leaderboardTab, badgesTab, categoriesTab, getTab];
 
   return (
-    <Page banner={<PrimaryTopBox />} options={{ title: 'Badges' }}>
+    <div className='px-2 max-w-5xl mt-40 w-full mx-auto'>
       <Paper sx={{ margin: '-60px auto 60px', position: 'relative' }}>
         <Typography variant='h1'>Badges</Typography>
         <RouterTabs tabs={tabs} />
@@ -28,7 +26,7 @@ const Badges = () => {
           <Outlet />
         </Suspense>
       </Paper>
-    </Page>
+    </div>
   );
 };
 

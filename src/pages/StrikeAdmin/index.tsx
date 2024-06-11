@@ -9,8 +9,6 @@ import UserStrikeList from 'pages/StrikeAdmin/components/UserStrikeList';
 
 import Paper from 'components/layout/Paper';
 import Tabs from 'components/layout/Tabs';
-import { PrimaryTopBox } from 'components/layout/TopBox';
-import Page from 'components/navigation/Page';
 
 const useStyles = makeStyles()(() => ({
   content: {
@@ -27,13 +25,13 @@ const StrikeAdmin = () => {
   const [tab, setTab] = useState(strikesTab.value);
 
   return (
-    <Page banner={<PrimaryTopBox />} options={{ title: 'Prikker admin' }}>
+    <div className='max-w-5xl w-full px-2 mt-40 mx-auto'>
       <Paper className={classes.content}>
         <Typography variant='h1'>Prikker admin</Typography>
         <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
         {tab === strikesTab.value ? <UserStrikeList /> : <AllStrikesList />}
       </Paper>
-    </Page>
+    </div>
   );
 };
 

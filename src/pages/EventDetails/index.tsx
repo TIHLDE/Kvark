@@ -11,7 +11,6 @@ import EventRenderer, { EventRendererLoading } from 'pages/EventDetails/componen
 import Http404 from 'pages/Http404';
 
 import Container from 'components/layout/Container';
-import Page from 'components/navigation/Page';
 
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
 
@@ -34,7 +33,7 @@ const EventDetails = () => {
   }
 
   return (
-    <Page maxWidth={false} options={{ lightColor: 'blue', title: `${data ? data.title : 'Laster arrangement...'}` }}>
+    <div>
       {data && (
         <Helmet>
           <meta content={data.title} property='og:title' />
@@ -46,7 +45,7 @@ const EventDetails = () => {
       <Box sx={{ background: (theme) => theme.palette.background.paper, minHeight: '101vh', pt: 8, pb: 1 }}>
         <Container sx={{ px: { xl: 9, lg: 5 } }}>{isLoading ? <EventRendererLoading /> : data !== undefined && <EventRenderer data={data} />}</Container>
       </Box>
-    </Page>
+    </div>
   );
 };
 

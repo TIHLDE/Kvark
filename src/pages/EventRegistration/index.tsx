@@ -16,10 +16,8 @@ import Http404 from 'pages/Http404';
 import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import Tabs from 'components/layout/Tabs';
-import { PrimaryTopBox } from 'components/layout/TopBox';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import { AlertOnce } from 'components/miscellaneous/UserInformation';
-import Page from 'components/navigation/Page';
 
 type QrScanProps = {
   onScan: (userId: string) => Promise<Registration>;
@@ -129,7 +127,7 @@ const EventRegistration = () => {
   }
 
   return (
-    <Page banner={<PrimaryTopBox />} options={{ title: `${event?.title || 'Laster arrangement...'} - Registrering` }}>
+    <div className='max-w-4xl px-2 w-full mx-auto mt-40'>
       <Paper sx={{ maxWidth: (theme) => theme.breakpoints.values.md, margin: 'auto', position: 'relative', left: 0, right: 0, top: -60 }}>
         {(updateRegistration.isLoading || isFetching || isLoading) && (
           <LinearProgress color='warning' sx={{ position: 'absolute', top: 0, left: (theme) => theme.spacing(1), right: (theme) => theme.spacing(1) }} />
@@ -158,7 +156,7 @@ const EventRegistration = () => {
         )}
         {tab === qrTab.value && <QrScan onScan={async (userId) => updateAttendedStatus(userId, true)} />}
       </Paper>
-    </Page>
+    </div>
   );
 };
 

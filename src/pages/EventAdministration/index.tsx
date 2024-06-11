@@ -4,23 +4,19 @@ import OpenIcon from '@mui/icons-material/OpenInBrowserRounded';
 import ParticipantsIcon from '@mui/icons-material/PeopleRounded';
 import RegisterIcon from '@mui/icons-material/PlaylistAddCheckRounded';
 import { Alert, Collapse, Typography } from '@mui/material';
-import { parseISO } from 'date-fns';
 import { makeStyles } from 'makeStyles';
 import { useEffect, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import URLS from 'URLS';
-import { formatDate } from 'utils';
 
-import { useEventById, useEventsWhereIsAdmin } from 'hooks/Event';
+import { useEventById } from 'hooks/Event';
 
 import EventEditor from 'pages/EventAdministration/components/EventEditor';
 import EventFormAdmin from 'pages/EventAdministration/components/EventFormAdmin';
 import EventParticipants from 'pages/EventAdministration/components/EventParticipants';
 
 import Paper from 'components/layout/Paper';
-import SidebarList from 'components/layout/SidebarList';
 import Tabs from 'components/layout/Tabs';
-import Page from 'components/navigation/Page';
 
 const useStyles = makeStyles()((theme) => ({
   root: {
@@ -79,19 +75,21 @@ const EventAdministration = () => {
   }, [tab, isLoading]);
 
   return (
-    <Page
-      maxWidth={false}
-      options={{ lightColor: 'blue', filledTopbar: true, gutterBottom: true, gutterTop: true, noFooter: true, title: 'Admin arrangementer' }}>
-      <SidebarList
-        descKey='start_date'
-        formatDesc={(desc) => formatDate(parseISO(desc))}
-        idKey='id'
-        onItemClick={(id: number | null) => goToEvent(id || null)}
-        selectedItemId={Number(eventId)}
-        title='Arrangementer'
-        titleKey='title'
-        useHook={useEventsWhereIsAdmin}
-      />
+    // TODO: Add SidebarList when migration is done
+    // <Page
+    //   maxWidth={false}
+    //   options={{ lightColor: 'blue', filledTopbar: true, gutterBottom: true, gutterTop: true, noFooter: true, title: 'Admin arrangementer' }}>
+    //   <SidebarList
+    //     descKey='start_date'
+    //     formatDesc={(desc) => formatDate(parseISO(desc))}
+    //     idKey='id'
+    //     onItemClick={(id: number | null) => goToEvent(id || null)}
+    //     selectedItemId={Number(eventId)}
+    //     title='Arrangementer'
+    //     titleKey='title'
+    //     useHook={useEventsWhereIsAdmin}
+    //   />
+    <div className='w-full px-2 md:px-12 mt-20'>
       <div className={classes.root}>
         <div className={classes.content}>
           {event && event.closed && (
@@ -118,7 +116,7 @@ const EventAdministration = () => {
           </Paper>
         </div>
       </div>
-    </Page>
+    </div>
   );
 };
 

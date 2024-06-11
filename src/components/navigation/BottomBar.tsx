@@ -27,22 +27,22 @@ const BottomBar = ({ items }: BottomBarProps) => {
 
   const actions: Array<Item> = [
     {
-      icon: <Logo className='w-auto h-8' size='small' />,
+      icon: <Logo className='w-auto h-5' size='small' />,
       text: 'Hjem',
       to: URLS.landing,
     },
     {
-      icon: <Calendar className='h-8 stroke-[1.5px] mx-auto' />,
+      icon: <Calendar className='h-5 stroke-[1.5px] mx-auto' />,
       text: 'Arrangementer',
       to: URLS.events,
     },
     {
-      icon: <Newspaper className='h-8 stroke-[1.5px] mx-auto' />,
+      icon: <Newspaper className='h-5 stroke-[1.5px] mx-auto' />,
       text: 'Nyheter',
       to: URLS.news,
     },
     {
-      icon: <BriefcaseBusiness className='h-8 stroke-[1.5px] mx-auto' />,
+      icon: <BriefcaseBusiness className='h-5 stroke-[1.5px] mx-auto' />,
       text: 'Karriere',
       to: URLS.jobposts,
     },
@@ -50,19 +50,19 @@ const BottomBar = ({ items }: BottomBarProps) => {
 
   return (
     <div className='fixed w-full z-30 rounded-t-md border-t bottom-0 left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
-      <div className='flex items-center justify-between px-8 py-6'>
+      <div className='flex items-center justify-between px-8 py-2'>
         {actions.map((action, index) => (
           <Link className='text-center' key={index} to={action.to}>
             {action.icon}
-            <p className='text-sm'>{action.text}</p>
+            <p className='text-xs'>{action.text}</p>
           </Link>
         ))}
 
         <Drawer onOpenChange={setMenuOpen} open={menuOpen}>
           <DrawerTrigger asChild>
             <div className='text-center'>
-              <Menu className='mx-auto h-8 stroke-[1.5px]' />
-              <p className='text-sm'>Meny</p>
+              <Menu className='mx-auto h-5 stroke-[1.5px]' />
+              <p className='text-xs'>Meny</p>
             </div>
           </DrawerTrigger>
           <DrawerContent>

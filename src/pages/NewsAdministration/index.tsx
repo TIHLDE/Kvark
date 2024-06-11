@@ -6,14 +6,10 @@ import { useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import URLS from 'URLS';
 
-import { useNews } from 'hooks/News';
-
 import NewsEditor from 'pages/NewsAdministration/components/NewsEditor';
 
 import Paper from 'components/layout/Paper';
-import SidebarList from 'components/layout/SidebarList';
 import Tabs from 'components/layout/Tabs';
-import Page from 'components/navigation/Page';
 
 const useStyles = makeStyles()((theme) => ({
   root: {
@@ -54,17 +50,19 @@ const NewsAdministration = () => {
   };
 
   return (
-    <Page maxWidth={false} options={{ lightColor: 'blue', filledTopbar: true, gutterBottom: true, gutterTop: true, noFooter: true, title: 'Admin nyheter' }}>
-      <SidebarList
-        descKey='header'
-        idKey='id'
-        noExpired
-        onItemClick={(id: number | null) => goToNews(id || null)}
-        selectedItemId={Number(newsId)}
-        title='Nyheter'
-        titleKey='title'
-        useHook={useNews}
-      />
+    // TODO: Add SidebarList when migration is done
+    // <Page maxWidth={false} options={{ lightColor: 'blue', filledTopbar: true, gutterBottom: true, gutterTop: true, noFooter: true, title: 'Admin nyheter' }}>
+    //   <SidebarList
+    //     descKey='header'
+    //     idKey='id'
+    //     noExpired
+    //     onItemClick={(id: number | null) => goToNews(id || null)}
+    //     selectedItemId={Number(newsId)}
+    //     title='Nyheter'
+    //     titleKey='title'
+    //     useHook={useNews}
+    //   />
+    <div className='w-full px-2 md:px-12 mt-20'>
       <div className={classes.root}>
         <div className={classes.content}>
           <Typography className={classes.header} variant='h2'>
@@ -79,7 +77,7 @@ const NewsAdministration = () => {
           </Paper>
         </div>
       </div>
-    </Page>
+    </div>
   );
 };
 
