@@ -11,7 +11,8 @@ import { Analytics } from '@vercel/analytics/react';
 import AppRoutes from 'AppRoutes';
 import { SHOW_NEW_STUDENT_INFO } from 'constant';
 import { ReactNode } from 'react';
-import { render } from 'react-dom';
+// import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { broadcastQueryClient } from 'react-query/broadcastQueryClient-experimental';
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -25,6 +26,7 @@ import { ThemeProvider } from 'hooks/Theme';
 
 import ShortCutMenu from 'components/miscellaneous/shortCutMenu';
 import Navigation from 'components/navigation/Navigation';
+import { Toaster } from 'components/ui/sonner';
 
 export const muiCache = createCache({ key: 'mui', prepend: true });
 
@@ -72,6 +74,7 @@ export const Application = () => (
         <ShortCutMenu />
         <AppRoutes />
         <Analytics />
+        <Toaster />
       </Navigation>
     </BrowserRouter>
   </Providers>
@@ -107,4 +110,7 @@ const rickroll = () => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).badge = rickroll;
 
-render(<Application />, document.getElementById('root'));
+const container = document.getElementById('root');
+const root = createRoot(container!);
+root.render(<Application />);
+// render(<Application />, document.getElementById('root'));

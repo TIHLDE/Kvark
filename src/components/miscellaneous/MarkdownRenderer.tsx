@@ -1,4 +1,4 @@
-import { Skeleton, styled } from '@mui/material';
+import { styled } from '@mui/material';
 import { createElement, lazy, ReactNode, Suspense, useMemo } from 'react';
 import rehypeRaw from 'rehype-raw';
 
@@ -13,6 +13,7 @@ import EventListItem, { EventListItemLoading } from 'components/miscellaneous/Ev
 import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
 import NewsListItem, { NewsListItemLoading } from 'components/miscellaneous/NewsListItem';
 import { Separator } from 'components/ui/separator';
+import { Skeleton } from 'components/ui/skeleton';
 
 const ReactMarkdown = lazy(() => import('react-markdown'));
 
@@ -142,7 +143,7 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
       fallback={
         <>
           {skeletonWidthArray.map((width, index) => (
-            <Skeleton height={38} key={index} width={`${width}%`} />
+            <Skeleton className={`h-[38px] w-[${width}%]`} key={index} />
           ))}
         </>
       }>
