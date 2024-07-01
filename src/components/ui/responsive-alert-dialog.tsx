@@ -10,14 +10,14 @@ type ResponsiveAlertDialogProps = {
     trigger: React.ReactNode;
     title?: string;
     description?: string;
-    action: MouseEventHandler<HTMLButtonElement> | undefined;
+    action: MouseEventHandler<HTMLButtonElement>;
 };
 
 const ResponsiveAlertDialog = ({
-    trigger,
-    title,
-    description,
-    action
+  trigger,
+  title,
+  description,
+  action
 }: ResponsiveAlertDialogProps) => {
   const [open, setOpen] = useState<boolean>(false)
   const isDesktop = useMediaQuery(MEDIUM_SCREEN);
@@ -65,7 +65,10 @@ const ResponsiveAlertDialog = ({
             Avbryt
         </Button>
         <Button
-            onClick={action}
+            onClick={(e) => {
+              action(e);
+              setOpen(false);
+            }}
         >
             Bekreft
         </Button>

@@ -22,7 +22,7 @@ const NewsAdministration = () => {
   };
 
   return (
-    <Page className='max-w-5xl mx-auto'>
+    <Page className='max-w-6xl mx-auto'>
       <div className='space-y-6'>
         <div className='space-y-4 md:space-y-0 md:flex items-center justify-between'>
           <h1 className='font-bold text-4xl md:text-5xl'>{newsId ? 'Endre nyhet' : 'Ny nyhet'}</h1>

@@ -1,56 +1,24 @@
-import { Button, Divider, Stack, Theme, useMediaQuery } from '@mui/material';
-import { makeStyles } from 'makeStyles';
+import { Search } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { argsToParams } from 'utils';
+import { z } from 'zod';
 
 import { useEvents } from 'hooks/Event';
+import useMediaQuery, { LARGE_SCREEN } from 'hooks/MediaQuery';
 import { useIsAuthenticated } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
-import Bool from 'components/inputs/Bool';
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import Expand from 'components/layout/Expand';
-import Pagination from 'components/layout/Pagination';
-import Paper from 'components/layout/Paper';
 import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-
-const useStyles = makeStyles()((theme) => ({
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: '3fr 1fr',
-    gridGap: theme.spacing(2),
-    alignItems: 'self-start',
-    paddingBottom: theme.spacing(2),
-
-    [theme.breakpoints.down('lg')]: {
-      gridTemplateColumns: '1fr',
-    },
-  },
-  list: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gap: theme.spacing(1),
-    [theme.breakpoints.down('lg')]: {
-      order: 1,
-    },
-  },
-  settings: {
-    display: 'grid',
-    gridGap: theme.spacing(1),
-    position: 'sticky',
-    top: 80,
-
-    [theme.breakpoints.down('lg')]: {
-      order: 0,
-      position: 'static',
-      top: 0,
-    },
-  },
-}));
+import { Button, PaginateButton } from 'components/ui/button';
+import { Card, CardContent } from 'components/ui/card';
+import Expandable from 'components/ui/expandable';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
+import { Input } from 'components/ui/input';
+import { Separator } from 'components/ui/separator';
+import { Switch } from 'components/ui/switch';
 
 type Filters = {
   activity: boolean;
@@ -59,6 +27,14 @@ type Filters = {
   user_favorite?: boolean;
   expired: boolean;
 };
+
+const formSchema = z.object({
+  activity: z.boolean(),
+  search: z.string().optional(),
+  open_for_sign_up: z.boolean().optional(),
+  user_favorite: z.boolean().optional(),
+  expired: z.boolean(),
+});
 
 const ActivitiesDefaultView = () => {
   const isAuthenticated = useIsAuthenticated();
@@ -72,79 +48,148 @@ const ActivitiesDefaultView = () => {
     const search = params.get('search') || undefined;
     return { activity, expired, search, open_for_sign_up, user_favorite };
   }, []);
-  const { classes } = useStyles();
   const navigate = useNavigate();
-  const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
+  const isDesktop = useMediaQuery(LARGE_SCREEN);
   const [filters, setFilters] = useState<Filters>(getInitialFilters());
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents(filters);
   const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
-  const { register, control, handleSubmit, setValue, formState } = useForm<Filters>({ defaultValues: getInitialFilters() });
+  const form = useForm<z.infer<typeof formSchema>>({ defaultValues: getInitialFilters() });
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 
   const resetFilters = () => {
-    setValue('search', '');
-    setValue('expired', false);
-    setValue('user_favorite', false);
+    form.setValue('search', '');
+    form.setValue('expired', false);
+    form.setValue('user_favorite', false);
     setFilters({ activity: true, expired: false, open_for_sign_up: false, user_favorite: false });
     navigate(`${location.pathname}${argsToParams({ expired: false })}`, { replace: true });
   };
 
-  const search = (data: Filters) => {
-    event('search', 'events', JSON.stringify(data));
-    setFilters(data);
-    navigate(`${location.pathname}${argsToParams(data)}`, { replace: true });
-    !lgDown || setSearchFormExpanded((prev) => !prev);
+  const search = (values: z.infer<typeof formSchema>) => {
+    event('search', 'events', JSON.stringify(values));
+    setFilters(values);
+    navigate(`${location.pathname}${argsToParams(values)}`, { replace: true });
+    isDesktop || setSearchFormExpanded((prev) => !prev);
   };
 
-  const [searchFormExpanded, setSearchFormExpanded] = useState(false);
+  const [searchFormExpanded, setSearchFormExpanded] = useState<boolean>(false);
 
   const SearchForm = () => (
-    <form onSubmit={handleSubmit(search)}>
-      <TextField disabled={isFetching} formState={formState} label='Søk' margin='none' {...register('search')} />
-      <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
-      <Bool control={control} formState={formState} label='Kun med åpen påmelding' name='open_for_sign_up' type='switch' />
-      {isAuthenticated && <Bool control={control} formState={formState} label='Favoritter' name='user_favorite' type='switch' />}
-      <SubmitButton disabled={isFetching} formState={formState}>
-        Søk
-      </SubmitButton>
-      <Divider sx={{ my: 1 }} />
-      <Button color='error' fullWidth onClick={resetFilters} variant='outlined'>
+    <Form {...form}>
+      <form className='space-y-4' onSubmit={form.handleSubmit(search)}>
+        <FormField
+          control={form.control}
+          name='search'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Søk</FormLabel>
+              <FormControl>
+                <Input {...field} placeholder='Skriv her...' />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className='space-y-2'>
+          <FormField
+            control={form.control}
+            name='expired'
+            render={({ field }) => (
+              <FormItem className='flex flex-row items-center justify-between rounded-md border p-2'>
+                <div className='space-y-0.5'>
+                  <FormLabel className='text-sm'>Tidligere</FormLabel>
+                  <FormDescription>Vis tidligere arrangementer</FormDescription>
+                </div>
+                <FormControl>
+                  <Switch checked={field.value} onCheckedChange={field.onChange} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='open_for_sign_up'
+            render={({ field }) => (
+              <FormItem className='flex flex-row items-center justify-between rounded-md border p-2'>
+                <div className='space-y-0.5'>
+                  <FormLabel className='text-sm'>Åpen påmelding</FormLabel>
+                  <FormDescription>Vis kun arrangementer med åpen påmelding</FormDescription>
+                </div>
+                <FormControl>
+                  <Switch checked={field.value} onCheckedChange={field.onChange} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          {isAuthenticated && (
+            <FormField
+              control={form.control}
+              name='user_favorite'
+              render={({ field }) => (
+                <FormItem className='flex flex-row items-center justify-between rounded-md border p-2'>
+                  <div className='space-y-0.5'>
+                    <FormLabel className='text-sm'>Favoritter</FormLabel>
+                    <FormDescription>Vis kun dine favoritter</FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch checked={field.value} onCheckedChange={field.onChange} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          )}
+        </div>
+
+        <Button className='w-full' disabled={isFetching} type='submit'>
+          Søk
+        </Button>
+      </form>
+
+      <Separator className='my-4' />
+
+      <Button className='w-full' onClick={resetFilters} variant='destructive'>
         Tilbakestill
       </Button>
-    </form>
+    </Form>
   );
 
   return (
-    <>
-      <div className={classes.grid}>
-        <div className={classes.list}>
-          {isLoading && <EventListItemLoading />}
-          {isEmpty && <NotFoundIndicator header='Fant ingen arrangementer' />}
-          {error && <Paper>{error.detail}</Paper>}
-          {data !== undefined && (
-            <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-              <Stack gap={1}>
-                {events.map((event) => (
-                  <EventListItem event={event} key={event.id} />
-                ))}
-              </Stack>
-            </Pagination>
-          )}
-          {isFetching && <EventListItemLoading />}
-        </div>
-        {lgDown ? (
-          <div>
-            <Expand expanded={searchFormExpanded} flat header='Filtrering' onChange={() => setSearchFormExpanded((prev) => !prev)}>
-              <SearchForm />
-            </Expand>
+    <div className='grid lg:grid-cols-[4fr,2fr] items-start gap-4'>
+      <div>
+        {isLoading && <EventListItemLoading />}
+        {isEmpty && <NotFoundIndicator header='Fant ingen arrangementer' />}
+        {error && <h1 className='text-center mt-8'>{error.detail}</h1>}
+        {data !== undefined && (
+          <div className='space-y-2'>
+            {events.map((event, index) => (
+              <EventListItem event={event} key={index} size='large' />
+            ))}
           </div>
+        )}
+        {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
+      </div>
+
+      <div className='-order-1 lg:order-2'>
+        {isDesktop ? (
+          <Card>
+            <CardContent className='p-4'>
+              <SearchForm />
+            </CardContent>
+          </Card>
         ) : (
-          <Paper className={classes.settings}>
+          <Expandable
+            description='Filtrer arrangementer'
+            icon={<Search className='w-5 h-5 stroke-[1.5px]' />}
+            onOpenChange={setSearchFormExpanded}
+            open={searchFormExpanded}
+            title='Søk'>
             <SearchForm />
-          </Paper>
+          </Expandable>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

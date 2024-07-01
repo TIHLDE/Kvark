@@ -11,13 +11,9 @@ const DeleteNews = ({ newsId, deleteNews }: DeleteNewsProps) => {
     return null;
   }
 
-  const handleDelete = async () => {
-    await deleteNews();
-  };
-
   return (
     <ResponsiveAlertDialog
-      action={handleDelete}
+      action={deleteNews}
       description='Er du sikker på at du vil slette nyheten? Dette kan ikke angres.'
       title='Slett nyhet?'
       trigger={

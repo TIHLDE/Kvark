@@ -44,7 +44,7 @@ const RendererPreview = <Type extends unknown>({ getContent, renderer: Renderer 
         {!content && <h1 className='text-center'>Ingen innhold å forhåndsvise</h1>}
 
         {content && (
-          <ScrollArea className='h-[60vh] w-full'>
+          <ScrollArea className='h-[60vh] w-full pr-4'>
             <Renderer data={content} preview />
           </ScrollArea>
         )}

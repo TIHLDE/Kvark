@@ -2,6 +2,7 @@ import useMediaQuery, { MEDIUM_SCREEN } from "hooks/MediaQuery"
 import { useState } from "react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./dialog";
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "./drawer";
+import { cn } from "lib/utils";
 
 
 type ResponsiveDialogProps = {
@@ -11,6 +12,7 @@ type ResponsiveDialogProps = {
     description?: string;
     open?: boolean;
     onOpenChange?: (open: boolean) => void;
+    className?: string;
 };
 
 const ResponsiveDialog = ({
@@ -19,7 +21,8 @@ const ResponsiveDialog = ({
     title,
     description,
     open,
-    onOpenChange
+    onOpenChange,
+    className
 }: ResponsiveDialogProps) => {
   const [defaultOpen, setDefaultOpen] = useState<boolean>(false);
   const isDesktop = useMediaQuery(MEDIUM_SCREEN);
@@ -33,7 +36,7 @@ const ResponsiveDialog = ({
         <DialogTrigger asChild>
             { trigger }
         </DialogTrigger>
-        <DialogContent className='w-full max-w-4xl'>
+        <DialogContent className={cn('w-full max-w-4xl', className)}>
             <DialogHeader>
                 <DialogTitle>{title}</DialogTitle>
                 <DialogDescription>{description}</DialogDescription>
@@ -53,7 +56,7 @@ const ResponsiveDialog = ({
       <DrawerTrigger asChild>
         { trigger }
       </DrawerTrigger>
-      <DrawerContent className='pb-6'>
+      <DrawerContent className='pb-6 pl-4'>
         <DrawerHeader>
             <DrawerTitle>{title}</DrawerTitle>
             <DrawerDescription>{description}</DrawerDescription>

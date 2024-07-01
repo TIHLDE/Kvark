@@ -12,7 +12,7 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-import { CloudUploadIcon } from 'lucide-react';
+import { CloudUploadIcon, FilePlus } from 'lucide-react';
 import { forwardRef, useCallback, useState } from 'react';
 import Cropper from 'react-easy-crop';
 import { FieldError, FieldValues, Path, PathValue, UseFormRegisterReturn, UseFormReturn } from 'react-hook-form';
@@ -94,7 +94,7 @@ export const FormImageUpload = <TFormValues extends FieldValues>({ form, name, l
     setImageFile(undefined);
   };
 
-  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+  const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
 
@@ -142,6 +142,7 @@ export const FormImageUpload = <TFormValues extends FieldValues>({ form, name, l
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       form.setValue(name, data.url);
+      toast.success('Bilde ble lastet opp');
     } catch (e) {
       toast.error(e.detail);
     } finally {
@@ -183,15 +184,7 @@ export const FormImageUpload = <TFormValues extends FieldValues>({ form, name, l
         <div className='flex items-center justify-between'>
           <Label>Valgt bilde</Label>
 
-          <Button
-            disabled={isLoading}
-            // TODO: Fix type error
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            onClick={removeImg}
-            size='sm'
-            type='button'
-            variant='destructive'>
+          <Button disabled={isLoading} onClick={removeImg} size='sm' type='button' variant='destructive'>
             Fjern bilde
           </Button>
         </div>
@@ -262,7 +255,7 @@ export const GenericImageUpload = <FormValues extends FieldValues>({
     setImageFile(undefined);
   };
 
-  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+  const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
 
@@ -384,30 +377,22 @@ export const ImageUpload = forwardRef(GenericImageUpload) as <FormValues>(
   props: ImageUploadProps<FormValues> & { ref?: React.ForwardedRef<HTMLDivElement> },
 ) => ReturnType<typeof GenericImageUpload>;
 
-// TODO: Fix type
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export type FormFileUploadProps<FormValues> = Omit<ImageUploadProps<FormValues>, 'ratio'> & {
-  accept?: React.InputHTMLAttributes<HTMLInputElement>['accept'];
+type FormFileUploadProps<TFormValues extends FieldValues> = {
+  form: UseFormReturn<TFormValues>;
+  name: Path<TFormValues>;
+  label?: string;
+  accept?: string;
 };
 
-export const FormFileUpload = <FormValues extends FieldValues>({
-  register,
-  watch,
-  setValue,
-  formState,
-  label = 'Last opp fil',
-  paperProps,
-  accept,
-  ...props
-}: FormFileUploadProps<FormValues>) => {
-  const name = register.name as Path<FormValues>;
-  const { [name]: fieldError } = formState.errors;
-  const error = fieldError as FieldError;
-  const showSnackbar = useSnackbar();
-  const url = watch(name);
-  const [isLoading, setIsLoading] = useState(false);
-  const { event } = useAnalytics();
+export const FormFileUpload = <TFormValues extends FieldValues>({ form, name, label, accept }: FormFileUploadProps<TFormValues>) => {
+  const url = form.watch(name);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const removeFile = () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    form.setValue(name, '');
+  };
 
   const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -415,52 +400,62 @@ export const FormFileUpload = <FormValues extends FieldValues>({
       setIsLoading(true);
       try {
         const data = await API.uploadFile(file);
-        event('upload', 'file-upload', 'Uploaded file');
-        // TODO: Fix type error
+
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        setValue(name, data.url as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>);
-        showSnackbar('Filen ble lastet opp, husk å trykk lagre', 'info');
+        form.setValue(name, data.url);
+        toast.success('Filen ble opplastet');
       } catch (e) {
-        showSnackbar(e.detail, 'error');
+        toast.error(e.detail || 'Det oppstod en feil');
       }
       setIsLoading(false);
     }
   };
-  return (
-    <UploadPaper {...paperProps}>
-      {url && (
-        <Typography>
-          Fil:{' '}
-          <Typography component='a' href={url as string} sx={{ wordBreak: 'break-word' }}>
-            {url as string}
-          </Typography>
-        </Typography>
-      )}
-      <div>
-        <input hidden {...register} />
-        <input accept={accept} hidden id='file-upload-button' onChange={upload} type='file' />
-        <label htmlFor='file-upload-button'>
-          <MuiButton component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
-            {label}
-          </MuiButton>
+
+  const FileDisplay = () => {
+    return (
+      <div className='space-y-2'>
+        <div className='flex items-center justify-between'>
+          <Label>Valgt fil</Label>
+
+          <Button disabled={isLoading} onClick={removeFile} size='sm' type='button' variant='destructive'>
+            Fjern fil
+          </Button>
+        </div>
+        <div className='p-2 rounded-md border'>
+          <p>{url}</p>
+        </div>
+      </div>
+    );
+  };
+
+  const UploadButton = () => {
+    return (
+      <div className='flex items-center justify-center w-full'>
+        <label
+          className={
+            isLoading
+              ? 'cursor-default'
+              : 'cursor-pointer' +
+                ` flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg bg-background md:hover:bg-secondary md:dark:hover:border-gray-600`
+          }
+          htmlFor='file-upload-button'>
+          <div className='flex flex-col items-center justify-center pt-5 pb-6 space-y-4'>
+            <FilePlus className='w-10 h-10 text-gray-400 dark:text-gray-300 stroke-[1.5]' />
+            <p className='mb-2 text-sm text-gray-500 dark:text-gray-400 font-semibold'>{label}</p>
+          </div>
+          <input disabled={isLoading} hidden {...form.register} />
+          <input accept={accept} disabled={isLoading} hidden id='file-upload-button' onChange={upload} type='file' />
         </label>
       </div>
-      {Boolean(error) && <FormHelperText error>{error?.message}</FormHelperText>}
-      {url && (
-        <MuiButton
-          color='error'
-          disabled={isLoading}
-          fullWidth
-          // TODO: Fix type error
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          onClick={() => setValue(name, '' as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>)}>
-          Fjern fil
-        </MuiButton>
-      )}
-    </UploadPaper>
-  );
+    );
+  };
+
+  if (url) {
+    return <FileDisplay />;
+  }
+
+  return <UploadButton />;
 };
 
 // TODO: Fix type

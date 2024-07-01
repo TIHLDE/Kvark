@@ -1,4 +1,5 @@
-import { Breadcrumbs, Skeleton, Stack, styled, Typography } from '@mui/material';
+import { Stack, styled, Typography } from '@mui/material';
+import { Slash } from 'lucide-react';
 import { useEffect, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import URLS, { WIKI_URLS } from 'URLS';
@@ -16,18 +17,12 @@ import Index from 'pages/Wiki/specials/Index';
 import Paper from 'components/layout/Paper';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import ShareButton from 'components/miscellaneous/ShareButton';
+import Page from 'components/navigation/Page';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from 'components/ui/breadcrumb';
+import { Card, CardContent } from 'components/ui/card';
+import { Skeleton } from 'components/ui/skeleton';
 
-const Root = styled('div')(({ theme }) => ({
-  display: 'grid',
-  gridGap: theme.spacing(2),
-  gridTemplateColumns: '300px 1fr',
-  margin: theme.spacing(1, 0, 2),
-  alignItems: 'self-start',
-  [theme.breakpoints.down('lg')]: {
-    gridGap: theme.spacing(1),
-    gridTemplateColumns: '1fr',
-  },
-}));
+import WikiSearch from './components/WikiSearch';
 
 const Content = styled('div', { shouldForwardProp: (prop) => prop !== 'data' })<{ data?: WikiPage }>(({ theme, data }) => ({
   display: 'grid',
@@ -66,25 +61,36 @@ const Wiki = () => {
   }, [navigate, location.pathname, data]);
 
   return (
-    // TODO: Add WikiSearch component when migration is done
-    // <Page
-    //   banner={
-    //     <Banner title={isLoading ? <Skeleton width={300} /> : error ? 'Noe gikk galt' : data?.title}>
-    //       <WikiSearch />
-    //     </Banner>
-    //   }
-    //   options={{ title: data ? data.title : 'Laster side...' }}>
-    <div className='w-full px-2 md:px-12 mt-40'>
-      <Breadcrumbs aria-label='Posisjon i wiki' maxItems={4}>
-        {levels.slice(0, levels.length - 1).map((level, i) => (
-          <Typography component={Link} key={i} sx={{ textDecoration: 'none', textTransform: 'capitalize' }} to={`/${levels.slice(0, i + 1).join('/')}`}>
-            {level.replace(/-/gi, ' ')}
-          </Typography>
-        ))}
-        <Typography>{data?.title}</Typography>
-      </Breadcrumbs>
-      <Root>
-        <Stack gap={1}>
+    <Page>
+      <div className='space-y-4 md:space-y-0 md:flex md:items-center md:justify-between pb-12'>
+        <div className='space-y-2'>
+          <h1 className='text-4xl md:text-5xl font-bold'>TIHLDE Wiki</h1>
+          <p className='md:text-lg text-muted-foreground'>Her finner du all tilgjengelig informasjon om TIHLDE.</p>
+        </div>
+
+        <WikiSearch />
+      </div>
+
+      <Breadcrumb>
+        <BreadcrumbList>
+          {levels.slice(0, levels.length - 1).map((level, index) => (
+            <>
+              <BreadcrumbItem key={index}>
+                <BreadcrumbLink asChild>
+                  <Link to={`/${levels.slice(0, index + 1).join('/')}`}>{level.replace(/-/gi, ' ')}</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator>
+                <Slash />
+              </BreadcrumbSeparator>
+            </>
+          ))}
+          <BreadcrumbItem>{data?.title.toLowerCase()}</BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
+      <div className='grid gap-6 lg:grid-cols-[.4fr_1fr]'>
+        <div className='space-y-2'>
           <WikiNavigator />
           {data && (
             <>
@@ -92,17 +98,24 @@ const Wiki = () => {
               <WikiAdmin page={data} />
             </>
           )}
-        </Stack>
+        </div>
         {isLoading ? (
-          <Paper>
-            <Skeleton height={50} variant='text' width='40%' />
-            <Skeleton height={30} variant='text' />
-            <Skeleton height={30} variant='text' />
-          </Paper>
+          <Card className='h-[60vh]'>
+            <CardContent className='p-4 space-y-6'>
+              <Skeleton className='w-full h-12' />
+              <Skeleton className='w-full h-44' />
+              <div className='w-full flex items-center space-x-6'>
+                <Skeleton className='w-full h-20' />
+                <Skeleton className='w-full h-20' />
+              </div>
+            </CardContent>
+          </Card>
         ) : error ? (
-          <Paper>
-            <Typography>{error.detail}</Typography>
-          </Paper>
+          <Card className='h-[60vh]'>
+            <CardContent className='p-4 flex items-center justify-center h-full'>
+              <h1 className='text-xl font-bold'>{error.detail}</h1>
+            </CardContent>
+          </Card>
         ) : (
           data !== undefined && (
             <Content data={data}>
@@ -119,8 +132,8 @@ const Wiki = () => {
             </Content>
           )
         )}
-      </Root>
-    </div>
+      </div>
+    </Page>
   );
 };
 

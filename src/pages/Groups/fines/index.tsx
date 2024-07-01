@@ -1,4 +1,3 @@
-import { Box, Collapse, List, MenuItem, Stack, TextField, Theme, ToggleButton, ToggleButtonGroup, Typography, useMediaQuery } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -6,15 +5,15 @@ import { useGroup, useGroupFines, useGroupFinesStatistics, useGroupUsersFines } 
 import { useMemberships } from 'hooks/Membership';
 import { useUser } from 'hooks/User';
 
-import AddFineDialog from 'pages/Groups/fines/AddFineDialog';
-import FineBatchUpdateDialog from 'pages/Groups/fines/FineBatchUpdateDialog';
 import FineItem from 'pages/Groups/fines/FineItem';
 import { useClearCheckedFines, useFinesFilter, useSetFinesFilter } from 'pages/Groups/fines/FinesContext';
 import UserFineItem from 'pages/Groups/fines/UserFineItem';
 
-import Pagination from 'components/layout/Pagination';
-import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import { PaginateButton } from 'components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs';
 
 const PAYED_STATES = [
   { value: true, label: 'Betalt' },
@@ -33,9 +32,8 @@ const Fines = () => {
   const { data: user } = useUser();
   const { data: group } = useGroup(slug || '-');
   const { data: members } = useMemberships(slug || '-');
-  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
 
-  const [tab, setTab] = useState<'all' | 'users'>('all');
+  const [tab, setTab] = useState<string>('all');
   const finesFilter = useFinesFilter();
   const setFinesFilter = useSetFinesFilter();
   const clearCheckedFines = useClearCheckedFines();
@@ -61,119 +59,102 @@ const Fines = () => {
   }
 
   return (
-    <Stack direction={{ xs: 'column', lg: 'row-reverse' }} gap={{ xs: 2, lg: 1 }}>
-      <Paper sx={{ width: { xs: '100%', lg: 270 }, p: 1, alignSelf: 'self-start' }}>
-        <Typography gutterBottom variant='h3'>
-          Statistikk
-        </Typography>
-        <Typography sx={{ fontWeight: 'bold' }} variant='body1'>
-          Totalt
-        </Typography>
-        <Typography sx={{ ml: 1 }} variant='body2'>
-          Ikke godkjent: <b>{statistics?.not_approved}</b>
-        </Typography>
-        <Typography sx={{ ml: 1 }} variant='body2'>
-          Godkjent, ikke betalt: <b>{statistics?.approved_and_not_payed}</b>
-        </Typography>
-        <Typography gutterBottom sx={{ ml: 1 }} variant='body2'>
-          Betalt: <b>{statistics?.payed}</b>
-        </Typography>
-        <Typography sx={{ fontWeight: 'bold' }} variant='body1'>
-          Snitt per medlem
-        </Typography>
-        <Typography sx={{ ml: 1 }} variant='body2'>
-          Ikke godkjent: <b>{((statistics?.not_approved || 0) / (members?.pages[0].count || 1)).toFixed(1)}</b>
-        </Typography>
-        <Typography sx={{ ml: 1 }} variant='body2'>
-          Godkjent, ikke betalt: <b>{((statistics?.approved_and_not_payed || 0) / (members?.pages[0].count || 1)).toFixed(1)}</b>
-        </Typography>
-        <Typography sx={{ ml: 1 }} variant='body2'>
-          Betalt: <b>{((statistics?.payed || 0) / (members?.pages[0].count || 1)).toFixed(1)}</b>
-        </Typography>
-      </Paper>
-      <Box sx={{ width: '100%' }}>
-        <Stack direction={{ xs: 'column', lg: 'row-reverse' }} gap={1} justifyContent='space-between'>
-          <Stack direction='row' gap={1}>
-            <TextField
-              fullWidth
-              label='Godkjent'
-              onChange={({ target: { value } }) =>
-                setFinesFilter((prev) => ({ ...prev, approved: value === 'true' ? true : value === 'false' ? false : undefined }))
-              }
-              select
-              size='small'
-              sx={{ minWidth: [undefined, 150] }}
-              value={String(finesFilter.approved)}>
-              {APPROVED_STATES.map((option) => (
-                <MenuItem key={option.label} value={String(option.value)}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              fullWidth
-              label='Betalt'
-              onChange={({ target: { value } }) =>
-                setFinesFilter((prev) => ({ ...prev, payed: value === 'true' ? true : value === 'false' ? false : undefined }))
-              }
-              select
-              size='small'
-              sx={{ minWidth: [undefined, 150] }}
-              value={String(finesFilter.payed)}>
-              {PAYED_STATES.map((option) => (
-                <MenuItem key={option.label} value={String(option.value)}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Stack>
-          <ToggleButtonGroup
-            aria-label='Botoversikt'
-            color='primary'
-            exclusive
-            fullWidth={!lgUp}
-            onChange={(_, newVal: 'all' | 'users' | null) => setTab((prev) => (newVal ? newVal : prev))}
-            size='small'
-            value={tab}>
-            <ToggleButton value='all'>Alle bøter</ToggleButton>
-            <ToggleButton value='users'>Bøter per medlem</ToggleButton>
-          </ToggleButtonGroup>
-        </Stack>
-        <Stack
-          gap={1}
-          sx={{
-            position: 'fixed',
-            zIndex: 1,
-            bottom: (theme) => ({ xs: theme.spacing(12), lg: theme.spacing(2) }),
-            right: (theme) => theme.spacing(2),
-          }}>
-          {isAdmin && <FineBatchUpdateDialog groupSlug={group.slug} size={lgUp ? 'large' : 'medium'} />}
-          <AddFineDialog groupSlug={group.slug} size={lgUp ? 'large' : 'medium'} />
-        </Stack>
-        <Collapse in={tab === 'all'} mountOnEnter>
-          <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-            {!isLoading && !fines.length && <NotFoundIndicator header='Fant ingen bøter' subtitle='Du finner kanskje bøter med en annen filtrering' />}
-            <Stack component={List} gap={1}>
-              {fines.map((fine) => (
-                <FineItem fine={fine} groupSlug={group.slug} isAdmin={isAdmin} key={fine.id} />
-              ))}
-            </Stack>
-          </Pagination>
-        </Collapse>
-        <Collapse in={tab === 'users'} mountOnEnter>
-          <Pagination fullWidth hasNextPage={userFinesHasNextPage} isLoading={userFinesIsFetching} nextPage={() => userFinesFetchNextPage()}>
-            {!userFinesIsLoading && !userFines.length && (
-              <NotFoundIndicator header='Fant ingen bøter' subtitle='Du finner kanskje bøter med en annen filtrering' />
-            )}
-            <Stack component={List} gap={1}>
-              {userFines.map((userFine) => (
-                <UserFineItem groupSlug={group.slug} isAdmin={isAdmin} key={userFine.user.user_id} userFine={userFine} />
-              ))}
-            </Stack>
-          </Pagination>
-        </Collapse>
-      </Box>
-    </Stack>
+    <div className='lg:flex lg:items-start lg:gap-8 space-y-8 lg:space-y-0'>
+      <Card className='lg:order-2 lg:max-w-xs w-full'>
+        <CardHeader>
+          <CardTitle>Statistikk</CardTitle>
+        </CardHeader>
+        <CardContent className='space-y-2'>
+          <div>
+            <h1 className='text-lg font-bold'>Totalt</h1>
+            <p className='text-sm'>
+              Ikke godkjent: <b>{statistics?.not_approved}</b>
+            </p>
+            <p className='text-sm'>
+              Godkjent, ikke betalt: <b>{statistics?.approved_and_not_payed}</b>
+            </p>
+            <p className='text-sm'>
+              Betalt: <b>{statistics?.payed}</b>
+            </p>
+          </div>
+
+          <div>
+            <h1 className='text-lg font-bold'>Snitt per medlem</h1>
+            <p className='text-sm'>
+              Ikke godkjent: <b>{((statistics?.not_approved || 0) / (members?.pages[0].count || 1)).toFixed(1)}</b>
+            </p>
+            <p className='text-sm'>
+              Godkjent, ikke betalt: <b>{((statistics?.approved_and_not_payed || 0) / (members?.pages[0].count || 1)).toFixed(1)}</b>
+            </p>
+            <p className='text-sm'>
+              Betalt: <b>{((statistics?.payed || 0) / (members?.pages[0].count || 1)).toFixed(1)}</b>
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Tabs className='w-full space-y-6' defaultValue='all' onValueChange={setTab} value={tab}>
+        <div className='space-y-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between'>
+          <TabsList>
+            <TabsTrigger value='all'>Alle bøter</TabsTrigger>
+            <TabsTrigger value='users'>Bøter per medlem</TabsTrigger>
+          </TabsList>
+
+          <div className='flex items-center space-x-2'>
+            <Select
+              defaultValue='none'
+              onValueChange={(value) => setFinesFilter((prev) => ({ ...prev, approved: value === 'true' ? true : value === 'false' ? false : undefined }))}>
+              <SelectTrigger className='w-[150px]'>
+                <SelectValue placeholder='Sorter etter' />
+              </SelectTrigger>
+              <SelectContent>
+                {APPROVED_STATES.map((option) => (
+                  <SelectItem key={option.label} value={option.value?.toString() || 'none'}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select
+              defaultValue='false'
+              onValueChange={(value) => setFinesFilter((prev) => ({ ...prev, payed: value === 'true' ? true : value === 'false' ? false : undefined }))}>
+              <SelectTrigger className='w-[150px]'>
+                <SelectValue placeholder='Sorter etter' />
+              </SelectTrigger>
+              <SelectContent>
+                {PAYED_STATES.map((option) => (
+                  <SelectItem key={option.label} value={option.value?.toString() || 'none'}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        <TabsContent value='all'>
+          {!isLoading && !fines.length && <NotFoundIndicator header='Fant ingen bøter' subtitle='Du finner kanskje bøter med en annen filtrering' />}
+          <div className='space-y-2'>
+            {fines.map((fine) => (
+              <FineItem fine={fine} groupSlug={group.slug} isAdmin={isAdmin} key={fine.id} />
+            ))}
+          </div>
+          {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
+        </TabsContent>
+        <TabsContent value='users'>
+          {!userFinesIsLoading && !userFines.length && (
+            <NotFoundIndicator header='Fant ingen bøter' subtitle='Du finner kanskje bøter med en annen filtrering' />
+          )}
+          <div className='space-y-2'>
+            {userFines.map((userFine) => (
+              <UserFineItem groupSlug={group.slug} isAdmin={isAdmin} key={userFine.user.user_id} userFine={userFine} />
+            ))}
+          </div>
+          {userFinesHasNextPage && <PaginateButton className='w-full mt-4' isLoading={userFinesIsFetching} nextPage={userFinesFetchNextPage} />}
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 };
 

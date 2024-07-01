@@ -1,4 +1,3 @@
-import { Divider } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
 import { PermissionApp } from 'types/Enums';
@@ -10,6 +9,7 @@ import MembersCard from 'pages/Groups/about/MembersCard';
 import MembersHistoryCard from 'pages/Groups/about/MembersHistoryCard';
 
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
+import { Separator } from 'components/ui/separator';
 
 import GroupStatistics from '../components/GroupStatistics';
 
@@ -27,7 +27,7 @@ const GroupInfo = () => {
       {(group.description || group.contact_email) && (
         <>
           <MarkdownRenderer value={`${group.description}${group.contact_email ? ` \n\n Kontakt: ${group.contact_email}` : ''}`} />
-          <Divider sx={{ my: 2 }} />
+          <Separator className='my-2' />
         </>
       )}
       <MembersCard groupSlug={group.slug} />

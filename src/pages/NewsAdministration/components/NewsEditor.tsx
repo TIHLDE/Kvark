@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import LinearProgress from '@mui/material/LinearProgress';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -22,6 +21,7 @@ import { Input } from 'components/ui/input';
 import { Switch } from 'components/ui/switch';
 
 import DeleteNews from './DeleteNews';
+import NewsEditorSkeleton from './NewsEditorSkeleton';
 
 export type NewsEditorProps = {
   newsId: number | null;
@@ -86,7 +86,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
             goToNews(data.id);
           },
           onError: (e) => {
-            toast.error('Det skjedde en feil under oppretting av nyheten');
+            toast.error(e.detail);
           },
         },
       );
@@ -98,7 +98,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
             toast.success('Nyheten ble oppdatert');
           },
           onError: (e) => {
-            toast.error('Det skjedde en feil under oppdatering av nyheten');
+            toast.error(e.detail);
           },
         },
       );
@@ -147,8 +147,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
   };
 
   if (isLoading) {
-    // TODO: Add skeleton loader
-    return <LinearProgress />;
+    return <NewsEditorSkeleton />;
   }
 
   return (

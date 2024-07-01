@@ -23,9 +23,9 @@ const StoriesView = () => {
   );
 
   if (isNewsLoading || isJobPostsLoading || isEventsLoading) {
-    return <StoryLoading fadeColor={theme.palette.background.smoke} />;
+    return <StoryLoading />;
   } else {
-    return <Story fadeColor={theme.palette.background.smoke} items={items} />;
+    return <Story items={items} />;
   }
 };
 

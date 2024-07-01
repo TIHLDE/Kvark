@@ -2,8 +2,9 @@ import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 
 import { cn } from 'lib/utils'
-import { Loader2 } from 'lucide-react'
+import { ArrowLeft, Loader2 } from 'lucide-react'
 import { forwardRef } from 'react'
+import { Link } from 'react-router-dom'
 
 const buttonVariants = cva(
   'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
@@ -61,7 +62,6 @@ type PaginateButtonProps = {
   className?: string;
 };
 
-
 const PaginateButton = ({
   nextPage,
   isLoading,
@@ -81,4 +81,23 @@ const PaginateButton = ({
   );
 };
 
-export { Button, buttonVariants, PaginateButton }
+type GoBackButton = {
+  url: string;
+};
+
+const GoBackButton = ({ url }: GoBackButton) => {
+  return (
+    <Button
+      asChild
+      className='text-black dark:text-white'
+      variant='ghost'
+      size='icon'
+    >
+      <Link to={url}>
+        <ArrowLeft className='w-6 h-6' />
+      </Link>
+    </Button>
+  );
+};
+
+export { Button, buttonVariants, PaginateButton, GoBackButton }

@@ -1,8 +1,7 @@
-import { MenuItem, Stack } from '@mui/material';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-
-import { Group } from 'types';
+import { z } from 'zod';
 
 import { useStudyGroups, useStudyyearGroups } from 'hooks/Group';
 import { useUsers } from 'hooks/User';
@@ -11,23 +10,28 @@ import { useDebounce } from 'hooks/Utils';
 import UserStrikeListItem from 'pages/StrikeAdmin/components/UserStrikeListItem';
 import { PersonListItemLoading } from 'pages/UserAdmin/components/PersonListItem';
 
-import Select from 'components/inputs/Select';
-import TextField from 'components/inputs/TextField';
-import Pagination from 'components/layout/Pagination';
-import Paper from 'components/layout/Paper';
+import FormInput from 'components/inputs/Input';
+import { FormSelect } from 'components/inputs/Select';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import { PaginateButton } from 'components/ui/button';
+import { Form } from 'components/ui/form';
 
-type Filters = {
-  study: Group['slug'] | 'all';
-  studyyear: Group['slug'] | 'all';
-  search: string;
-};
+const formSchema = z.object({
+  study: z.string().optional(),
+  studyyear: z.string().optional(),
+  search: z.string().optional(),
+});
 
 const UserStrikeList = () => {
   const { data: studies = [] } = useStudyGroups();
   const { data: studyyears = [] } = useStudyyearGroups();
-  const { formState, control, watch, register } = useForm<Filters>({ defaultValues: { studyyear: 'all', study: 'all', search: '' } });
-  const watchFilters = watch();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: { studyyear: 'all', study: 'all', search: '' },
+  });
+
+  const watchFilters = form.watch();
   const formFilters = useMemo(
     () => ({
       studyyear: watchFilters.studyyear === 'all' ? undefined : watchFilters.studyyear,
@@ -41,37 +45,38 @@ const UserStrikeList = () => {
   const users = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   return (
-    <>
-      <Stack direction={{ xs: 'column', md: 'row' }} gap={{ xs: 0, md: 2 }}>
-        <Select control={control} formState={formState} label='Klasser' name='studyyear'>
-          <MenuItem value='all'>Alle</MenuItem>
-          {studyyears.map((group) => (
-            <MenuItem key={group.slug} value={group.slug}>
-              {`Brukere som startet i ${group.name}`}
-            </MenuItem>
-          ))}
-        </Select>
-        <Select control={control} formState={formState} label='Studier' name='study'>
-          <MenuItem value='all'>Alle</MenuItem>
-          {studies.map((group) => (
-            <MenuItem key={group.slug} value={group.slug}>
-              {group.name}
-            </MenuItem>
-          ))}
-        </Select>
-        <TextField formState={formState} label='Søk' {...register('search')} />
-      </Stack>
+    <div className='space-y-4'>
+      <Form {...form}>
+        <form className='space-y-2 lg:space-y-0 lg:flex lg:items-center lg:space-x-2'>
+          <FormSelect
+            form={form}
+            label='Klasser'
+            name='studyyear'
+            options={[{ label: 'Alle', value: 'all' }, ...studyyears.map((group) => ({ label: `Brukere som startet i ${group.name}`, value: group.slug }))]}
+          />
+
+          <FormSelect
+            form={form}
+            label='Studier'
+            name='study'
+            options={[{ label: 'Alle', value: 'all' }, ...studies.map((group) => ({ label: group.name, value: group.slug }))]}
+          />
+
+          <FormInput form={form} label='Søk' name='search' />
+        </form>
+      </Form>
       {isLoading && <PersonListItemLoading />}
       {!isLoading && !users.length && <NotFoundIndicator header='Fant ingen brukere' />}
-      {error && <Paper>{error.detail}</Paper>}
+      {error && <h1 className='text-center mt-4'>{error.detail}</h1>}
       {data !== undefined && (
-        <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
+        <div className='space-y-2'>
           {users.map((user) => (
             <UserStrikeListItem key={user.user_id} user={user} />
           ))}
-        </Pagination>
+        </div>
       )}
-    </>
+      {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
+    </div>
   );
 };
 

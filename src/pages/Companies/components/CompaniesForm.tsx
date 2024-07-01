@@ -1,8 +1,9 @@
-import { Divider, Stack } from '@mui/material';
-import { EMAIL_REGEX } from 'constant';
+import { zodResolver } from '@hookform/resolvers/zod';
 import addMonths from 'date-fns/addMonths';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 import { CompaniesEmail } from 'types';
 
@@ -11,39 +12,66 @@ import API from 'api/api';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useAnalytics } from 'hooks/Utils';
 
-import BoolArray from 'components/inputs/BoolArray';
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import Paper from 'components/layout/Paper';
+import FormInput from 'components/inputs/Input';
+import FormMultiCheckbox from 'components/inputs/MultiCheckbox';
+import FormTextarea from 'components/inputs/Textarea';
+import { Button } from 'components/ui/button';
+import { Card, CardContent } from 'components/ui/card';
+import { Form } from 'components/ui/form';
+import { Separator } from 'components/ui/separator';
 
-type CompaniesEmailFormValues = Omit<CompaniesEmail, 'time' | 'type'> & {
-  time: Array<{ label: string }>;
-  type: Array<{ label: string }>;
-};
+const formSchema = z.object({
+  bedrift: z.string().min(1, { message: 'Feltet er påkrevd' }),
+  kontaktperson: z.string().min(1, { message: 'Feltet er påkrevd' }),
+  epost: z.string().email({ message: 'Ugyldig e-post' }),
+  time: z.array(z.string()).refine((value) => value.some((item) => item), {
+    message: 'Du må velge minst ett semester',
+  }),
+  type: z.array(z.string()).refine((value) => value.some((item) => item), {
+    message: 'Du må velge minst en type arrangement',
+  }),
+  comment: z.string().optional(),
+});
 
 const CompaniesForm = () => {
   const { event } = useAnalytics();
   const showSnackbar = useSnackbar();
-  const [isLoading, setIsLoading] = useState(false);
-  const { register, control, handleSubmit, formState, getValues, reset, setError } = useForm<CompaniesEmailFormValues>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const submitForm = async (data: CompaniesEmailFormValues) => {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      bedrift: '',
+      kontaktperson: '',
+      epost: '',
+      time: [],
+      type: [],
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (isLoading) {
       return;
     }
     setIsLoading(true);
     try {
       const companyData: CompaniesEmail = {
-        ...data,
-        time: data.time.map((t) => t.label),
-        type: data.type.map((t) => t.label),
+        info: {
+          bedrift: values.bedrift,
+          kontaktperson: values.kontaktperson,
+          epost: values.epost,
+        },
+        time: values.time,
+        type: values.type,
+        comment: values.comment || '',
       };
       const response = await API.emailForm(companyData);
-      event('submit-form', 'companies', `Company: ${data.info.bedrift}`);
+      event('submit-form', 'companies', `Company: ${values.bedrift}`);
       showSnackbar(response.detail, 'success');
-      reset({ info: { bedrift: '', kontaktperson: '', epost: '' }, comment: '', time: [], type: [] } as CompaniesEmailFormValues);
+      toast.success(response.detail);
+      form.reset();
     } catch (e) {
-      setError('info.bedrift', { message: e.detail || 'Noe gikk galt' });
+      form.setError('bedrift', { message: e.detail || 'Noe gikk galt' });
     } finally {
       setIsLoading(false);
     }
@@ -65,62 +93,33 @@ const CompaniesForm = () => {
   const types = ['Bedriftspresentasjon', 'Kurs/Workshop', 'Bedriftsbesøk', 'Annonse', 'Insta-takeover', 'Bedriftsekskursjon', 'Annet'];
 
   return (
-    <Paper>
-      <form onSubmit={handleSubmit(submitForm)}>
-        <TextField disabled={isLoading} formState={formState} label='Bedrift' {...register('info.bedrift', { required: 'Feltet er påkrevd' })} required />
-        <TextField
-          disabled={isLoading}
-          formState={formState}
-          label='Kontaktperson'
-          {...register('info.kontaktperson', { required: 'Feltet er påkrevd' })}
-          required
-        />
-        <TextField
-          disabled={isLoading}
-          formState={formState}
-          label='Epost'
-          {...register('info.epost', {
-            required: 'Feltet er påkrevd',
-            pattern: {
-              value: EMAIL_REGEX,
-              message: 'Ugyldig e-post',
-            },
-          })}
-          required
-          type='email'
-        />
-        <Divider />
-        <Stack direction={{ xs: 'column', md: 'row' }} spacing={1} sx={{ p: 2 }}>
-          <BoolArray
-            control={control}
-            formState={formState}
-            getValues={getValues}
-            label='Semester'
-            name='time'
-            optionLabelKey='label'
-            options={semesters.map((s) => ({ label: s }))}
-            optionValueKey='label'
-            type='checkbox'
-          />
-          <BoolArray
-            control={control}
-            formState={formState}
-            getValues={getValues}
-            label='Arrangementer'
-            name='type'
-            optionLabelKey='label'
-            options={types.map((t) => ({ label: t }))}
-            optionValueKey='label'
-            type='checkbox'
-          />
-        </Stack>
-        <Divider />
-        <TextField disabled={isLoading} formState={formState} label='Kommentar' multiline {...register('comment')} rows={3} />
-        <SubmitButton disabled={isLoading} formState={formState}>
-          Send inn
-        </SubmitButton>
-      </form>
-    </Paper>
+    <Card>
+      <CardContent className='p-4'>
+        <Form {...form}>
+          <form className='space-y-8' onSubmit={form.handleSubmit(onSubmit)}>
+            <div className='space-y-4 lg:space-y-0 lg:flex lg:space-x-4'>
+              <FormInput form={form} label='Bedrift' name='bedrift' required />
+              <FormInput form={form} label='Kontaktperson' name='kontaktperson' required />
+              <FormInput form={form} label='Epost' name='epost' required type='email' />
+            </div>
+
+            <Separator />
+
+            <div className='space-y-4 lg:space-y-0 lg:flex lg:space-x-4'>
+              <FormMultiCheckbox form={form} items={semesters} label='Semester' name='time' required />
+
+              <FormMultiCheckbox form={form} items={types} label='Arrangementer' name='type' required />
+            </div>
+
+            <FormTextarea form={form} label='Kommentar' name='comment' />
+
+            <Button className='w-full' disabled={isLoading}>
+              {isLoading ? 'Sender inn...' : 'Send inn'}
+            </Button>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   );
 };
 

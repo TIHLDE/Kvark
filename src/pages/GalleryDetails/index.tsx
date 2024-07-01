@@ -42,6 +42,8 @@ const GalleryDetails = () => {
     <div className='w-full px-2 md:px-12 mt-40'>
       {data ? (
         <>
+          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+          {/* @ts-ignore */}
           <Helmet>
             <meta content={data.title} property='og:title' />
             <meta content='website' property='og:type' />

@@ -21,7 +21,7 @@ const NewsList = () => {
       description='Her kan du se en oversikt over alle nyhetene som er lagt til i systemet.'
       onOpenChange={setOpen}
       open={open}
-      title='Nyhetsoversikt'
+      title='Nyheter'
       trigger={
         <Button size='icon' variant='outline'>
           <List className='w-6 h-6' />
@@ -58,7 +58,7 @@ type ListItemProps = {
 
 const ListItem = ({ item, setOpen }: ListItemProps) => {
   return (
-    <Button asChild className='block w-full rounded-md border h-auto' variant='outline'>
+    <Button asChild className='block w-full rounded-md border h-auto text-black dark:text-white' variant='outline'>
       <Link className='flex items-center justify-between' onClick={() => setOpen(false)} to={`${URLS.newsAdmin}${item.id}/`}>
         <div>
           <h1 className='text-lg'>{item.title}</h1>

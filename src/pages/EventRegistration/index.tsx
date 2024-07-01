@@ -1,23 +1,25 @@
-import QRIcon from '@mui/icons-material/QrCodeScannerRounded';
-import NameIcon from '@mui/icons-material/TextFieldsRounded';
-import { Box, Checkbox, FormControlLabel, LinearProgress, List, TextField, Theme, Typography, useMediaQuery } from '@mui/material';
+import { CheckedState } from '@radix-ui/react-checkbox';
+import { ListChecks, QrCode } from 'lucide-react';
 import QrScanner from 'qr-scanner';
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import { Registration } from 'types';
 
 import { useEventById, useEventRegistrations, useUpdateEventRegistration } from 'hooks/Event';
-import { useSnackbar } from 'hooks/Snackbar';
 import { useDebounce } from 'hooks/Utils';
 
 import Http404 from 'pages/Http404';
 
-import Pagination from 'components/layout/Pagination';
-import Paper from 'components/layout/Paper';
-import Tabs from 'components/layout/Tabs';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import { AlertOnce } from 'components/miscellaneous/UserInformation';
+import Page from 'components/navigation/Page';
+import { PaginateButton } from 'components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
+import { Checkbox } from 'components/ui/checkbox';
+import { Input } from 'components/ui/input';
+import { Label } from 'components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs';
 
 type QrScanProps = {
   onScan: (userId: string) => Promise<Registration>;
@@ -54,18 +56,11 @@ const QrScan = ({ onScan }: QrScanProps) => {
   }, []);
 
   return (
-    <Box
-      component='video'
-      muted
+    <video
+      className='object-cover aspect-square w-full h-[400px]'
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       ref={videoTag}
-      sx={{
-        background: ({ palette }) => palette.background.default,
-        objectFit: 'cover',
-        aspectRatio: '1',
-        width: '100%',
-        // Fallback-height if aspect-ratio isn't supported
-        '@supports not (aspect-ratio: 1)': { height: 400 },
-      }}
     />
   );
 };
@@ -77,19 +72,26 @@ export type ParticipantCardProps = {
 
 const ParticipantCard = ({ user, updateAttendedStatus }: ParticipantCardProps) => {
   const [checkedState, setCheckedState] = useState(user.has_attended);
-  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
-  const onCheck = async (e: ChangeEvent<HTMLInputElement>) => {
-    setCheckedState(e.target.checked);
-    updateAttendedStatus(user.user_info.user_id, e.target.checked);
+  const onCheck = async (checked: CheckedState) => {
+    setCheckedState(Boolean(checked));
+    updateAttendedStatus(user.user_info.user_id, Boolean(checked));
   };
+
   return (
-    <Paper sx={{ py: 0.5, px: 2, mb: 1, display: 'flex' }}>
-      <Typography sx={{ fontWeight: 'bold', fontSize: '17px', width: '100%', margin: 'auto' }}>
-        {`${user.user_info.first_name} ${user.user_info.last_name}`}
-      </Typography>
-      <FormControlLabel control={<Checkbox checked={checkedState} onChange={onCheck} />} label={!mdDown ? 'Ankommet' : ''} labelPlacement='start' />
-    </Paper>
+    <div className='p-4 flex items-center justify-between rounded-md border'>
+      <h1>{`${user.user_info.first_name} ${user.user_info.last_name}`}</h1>
+      <div className='items-top flex space-x-2'>
+        <Checkbox checked={checkedState} id={user.user_info.user_id} onCheckedChange={onCheck} />
+        <div className='grid leading-none'>
+          <label
+            className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer'
+            htmlFor={user.user_info.user_id}>
+            Ankommet
+          </label>
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -100,25 +102,22 @@ const EventRegistration = () => {
   const debouncedSearch = useDebounce(search, 500);
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading } = useEventRegistrations(Number(id), { is_on_wait: false, search: debouncedSearch });
   const updateRegistration = useUpdateEventRegistration(Number(id));
-  const showSnackbar = useSnackbar();
-  const registrationsTab = { value: 'registrations', label: 'Navn', icon: NameIcon };
-  const qrTab = { value: 'qr', label: 'QR-SKANNER', icon: QRIcon };
-  const tabs = [registrationsTab, qrTab];
-  const [tab, setTab] = useState(registrationsTab.value);
   const registrations = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   const updateAttendedStatus = async (userId: string, attendedStatus: boolean) =>
     updateRegistration.mutateAsync(
       { registration: { has_attended: attendedStatus }, userId: userId },
       {
-        onSuccess: (registration) =>
-          showSnackbar(
+        onSuccess: (registration) => {
+          toast.success(
             attendedStatus
               ? `${registration.user_info.first_name} ${registration.user_info.last_name} er registrert ankommet!`
               : `Vi har fjernet ankommet-statusen til ${registration.user_info.first_name} ${registration.user_info.last_name}`,
-            attendedStatus ? 'success' : 'info',
-          ),
-        onError: (error) => showSnackbar(error.detail, 'error'),
+          );
+        },
+        onError: (error) => {
+          toast.error(error.detail);
+        },
       },
     );
 
@@ -127,36 +126,47 @@ const EventRegistration = () => {
   }
 
   return (
-    <div className='max-w-4xl px-2 w-full mx-auto mt-40'>
-      <Paper sx={{ maxWidth: (theme) => theme.breakpoints.values.md, margin: 'auto', position: 'relative', left: 0, right: 0, top: -60 }}>
-        {(updateRegistration.isLoading || isFetching || isLoading) && (
-          <LinearProgress color='warning' sx={{ position: 'absolute', top: 0, left: (theme) => theme.spacing(1), right: (theme) => theme.spacing(1) }} />
-        )}
-        <Typography align='center' component='h1' variant='h2'>
-          {event?.title || 'Laster arrangement...'}
-        </Typography>
-        <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
-        {tab === registrationsTab.value && (
-          <>
-            <AlertOnce cookieKey='EventRegistrationQrScan' severity='info' sx={{ mt: 1 }} variant='outlined'>
-              Prøv gjerne ut QR-skanneren! Den er blitt forbedret og skal nå fungere raskt slik at innslipp går raskere.
-            </AlertOnce>
-            <TextField fullWidth label='Søk' margin='normal' onChange={(e) => setSearch(e.target.value)} type='Søk' variant='outlined' />
-            {!isLoading && !registrations.length && (
-              <NotFoundIndicator header={search ? `Ingen påmeldte med navn som inneholder "${search}"` : 'Ingen påmeldte'} />
-            )}
-            <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-              <List dense disablePadding>
+    <Page className='max-w-2xl w-full mx-auto'>
+      <Card>
+        <CardHeader>
+          <CardTitle>{event?.title || 'Laster arrangement...'}</CardTitle>
+        </CardHeader>
+        <CardContent className='space-y-2'>
+          <Tabs defaultValue='registrations'>
+            <TabsList>
+              <TabsTrigger value='registrations'>
+                <ListChecks className='w-5 h-5 mr-2 stroke-[1.5px]' />
+                Navn
+              </TabsTrigger>
+              <TabsTrigger value='qr'>
+                <QrCode className='w-5 h-5 mr-2 stroke-[1.5px]' />
+                QR-skanner
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent className='space-y-4' value='registrations'>
+              <div>
+                <Label>Søk</Label>
+                <Input onChange={(e) => setSearch(e.target.value)} placeholder='Søk etter navn' value={search} />
+              </div>
+              {!isLoading && !registrations.length && (
+                <NotFoundIndicator header={search ? `Ingen påmeldte med navn som inneholder "${search}"` : 'Ingen påmeldte'} />
+              )}
+
+              <div className='space-y-2'>
                 {registrations.map((registration) => (
                   <ParticipantCard key={registration.registration_id} updateAttendedStatus={updateAttendedStatus} user={registration} />
                 ))}
-              </List>
-            </Pagination>
-          </>
-        )}
-        {tab === qrTab.value && <QrScan onScan={async (userId) => updateAttendedStatus(userId, true)} />}
-      </Paper>
-    </div>
+              </div>
+
+              {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
+            </TabsContent>
+            <TabsContent value='qr'>
+              <QrScan onScan={async (userId) => updateAttendedStatus(userId, true)} />
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
+    </Page>
   );
 };
 

@@ -56,6 +56,8 @@ export const Providers = ({ children }: { children: ReactNode }) => {
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <CssBaseline enableColorScheme />
           <QueryClientProvider client={queryClient}>
+            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+            {/* @ts-ignore */}
             <MiscProvider>
               <SnackbarProvider>{children}</SnackbarProvider>
             </MiscProvider>
@@ -111,6 +113,5 @@ const rickroll = () => {
 (window as any).badge = rickroll;
 
 const container = document.getElementById('root');
-const root = createRoot(container!);
-root.render(<Application />);
-// render(<Application />, document.getElementById('root'));
+const root = container && createRoot(container);
+root && root.render(<Application />);
