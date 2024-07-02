@@ -1,10 +1,5 @@
-import EditIcon from '@mui/icons-material/EditRounded';
-import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
-import OpenIcon from '@mui/icons-material/OpenInBrowserRounded';
-import ParticipantsIcon from '@mui/icons-material/PeopleRounded';
-import RegisterIcon from '@mui/icons-material/PlaylistAddCheckRounded';
 import { ChevronRight, CircleHelp, ListChecks, Pencil, Plus, Users } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import URLS from 'URLS';
 
@@ -24,21 +19,13 @@ import EventList from './components/EventList';
 const EventAdministration = () => {
   const navigate = useNavigate();
   const { eventId } = useParams();
-  const { data: event, isLoading, isError } = useEventById(eventId ? Number(eventId) : -1);
-  const editTab = { value: 'edit', label: eventId ? 'Endre' : 'Skriv', icon: EditIcon };
-  const participantsTab = { value: 'participants', label: 'Deltagere', icon: ParticipantsIcon };
-  const formsTab = { value: 'forms', label: 'Spørsmål', icon: FormsIcon };
-  const registerTab = { value: 'register', label: 'Registrering', icon: RegisterIcon };
-  const navigateTab = { value: 'navigate', label: 'Se arrangement', icon: OpenIcon };
-  const tabs = eventId ? [editTab, ...(event?.sign_up ? [participantsTab, formsTab, registerTab] : []), navigateTab] : [editTab];
-  const [tab, setTab] = useState(editTab.value);
+  const { data: event, isError } = useEventById(eventId ? Number(eventId) : -1);
   const isDesktop = useMediaQuery(MEDIUM_SCREEN);
 
   const goToEvent = (newEvent: number | null) => {
     if (newEvent) {
       navigate(`${URLS.eventAdmin}${newEvent}/`);
     } else {
-      setTab(editTab.value);
       navigate(URLS.eventAdmin);
     }
   };
@@ -51,12 +38,6 @@ const EventAdministration = () => {
       goToEvent(null);
     }
   }, [isError, event]);
-
-  useEffect(() => {
-    if (!isLoading && !tabs.some((t) => t.value === tab)) {
-      setTab(tabs[0].value);
-    }
-  }, [tab, isLoading]);
 
   const RegisterButton = () => (
     <Button asChild className='px-2 md:px-4' variant='outline'>

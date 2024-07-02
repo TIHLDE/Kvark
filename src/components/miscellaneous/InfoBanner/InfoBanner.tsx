@@ -20,7 +20,7 @@ const Banner = () => {
 
           {!isLoading && (
             <>
-              <AspectRatioImg alt={banner.image_alt || banner.title} borderRadius src={banner.image} />
+              <AspectRatioImg alt={banner.image_alt || banner.title} className='rounded-md' src={banner.image} />
               <h1 className='text-center text-2xl font-bold'>{banner.title}</h1>
               <p className='text-center'>{banner.description}</p>
 

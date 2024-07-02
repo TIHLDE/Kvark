@@ -77,10 +77,10 @@ const EventListItem = ({ event, size }: EventListItemProps) => {
 
 export default EventListItem;
 
-export const EventListItemLoading = () => {
+export const EventListItemLoading = ({ length = 6 }: { length?: number }) => {
   return (
     <div className='space-y-2'>
-      {Array.from({ length: 6 }).map((_, index) => (
+      {Array.from({ length: length }).map((_, index) => (
         <div className='bg-card rounded-md border w-full p-2 flex items-center space-x-4' key={index}>
           <Skeleton className='w-1/3 h-20' />
           <div className='space-y-2 w-full'>

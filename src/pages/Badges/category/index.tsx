@@ -1,4 +1,3 @@
-import { Box, Stack, Typography } from '@mui/material';
 import { BarChart2, LucideIcon, Trophy } from 'lucide-react';
 import { Suspense } from 'react';
 import { Link, Outlet, useParams } from 'react-router-dom';
@@ -6,9 +5,6 @@ import URLS from 'URLS';
 
 import { useBadgeCategory } from 'hooks/Badge';
 
-import Paper from 'components/layout/Paper';
-import { RouterTabs } from 'components/layout/Tabs';
-import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
 import Page from 'components/navigation/Page';
 import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
 
@@ -49,23 +45,6 @@ const BadgeCategory = () => {
         </CardContent>
       </Card>
     </Page>
-  );
-
-  return (
-    <div className='max-w-5xl w-full mx-auto px-2 mt-32'>
-      <Paper sx={{ margin: '-60px auto 60px', position: 'relative' }}>
-        <Stack direction='row' gap={1} sx={{ alignItems: 'center', flex: 1 }}>
-          <Box sx={{ display: 'block', height: { xs: 45, md: 70 }, width: { xs: 45, md: 70 } }}>
-            <AspectRatioImg alt={data?.image_alt || ''} borderRadius ratio={1} src={data?.image || ''} />
-          </Box>
-          <Typography variant='h1'>{data?.name}</Typography>
-        </Stack>
-        <RouterTabs tabs={tabs} />
-        <Suspense fallback={null}>
-          <Outlet />
-        </Suspense>
-      </Paper>
-    </div>
   );
 };
 

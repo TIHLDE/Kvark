@@ -110,7 +110,7 @@ const MultiSelect = ({ onChange, options, setSearch }: Props) => {
                         e.preventDefault();
                         e.stopPropagation();
                       }}
-                      onSelect={(_value) => {
+                      onSelect={() => {
                         setInputValue('');
                         setSelected((prev) => [...prev, option]);
                       }}>

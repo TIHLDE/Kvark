@@ -6,12 +6,10 @@ import { USERS_ENDPOINT } from 'api/api';
 
 import { useUser, useUserEvents } from 'hooks/User';
 
-import Pagination from 'components/layout/Pagination';
 import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
-import { Pre } from 'components/miscellaneous/MarkdownRenderer';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import { Alert, AlertDescription } from 'components/ui/alert';
-import { Button } from 'components/ui/button';
+import { Button, PaginateButton } from 'components/ui/button';
 import Expandable from 'components/ui/expandable';
 
 export const EventsSubscription = () => {
@@ -50,7 +48,7 @@ export const EventsSubscription = () => {
           oppdateres kun daglig.
         </h1>
         {!user ? null : user.public_event_registrations ? (
-          <Pre>{`${TIHLDE_API_URL}${USERS_ENDPOINT}/${user.user_id}/events.ics`}</Pre>
+          <pre className='bg-card rounded-md p-2 overflow-x-auto'>{`${TIHLDE_API_URL}${USERS_ENDPOINT}/${user.user_id}/events.ics`}</pre>
         ) : (
           <Alert>
             <InfoIcon className='stroke-[1.5px]' />
@@ -95,12 +93,13 @@ const ProfileEvents = () => {
       ) : !events.length ? (
         <NotFoundIndicator header='Fant ingen arrangementer' subtitle='Du er ikke påmeldt noen kommende arrangementer' />
       ) : (
-        <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere arrangementer' nextPage={() => fetchNextPage()}>
+        <div className='space-y-2'>
           {events?.map((event) => (
             <EventListItem event={event} key={event.id} size='medium' />
           ))}
-        </Pagination>
+        </div>
       )}
+      {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
     </div>
   );
 };

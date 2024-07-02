@@ -13,7 +13,7 @@ export type GroupItemProps = {
 
 const GroupItem = ({ group }: GroupItemProps) => (
   <Link className='flex space-x-4 text-black dark:text-white rounded-md bg-card border p-1 hover:border-primary' to={URLS.groups.details(group.slug)}>
-    <AspectRatioImg alt={group?.image_alt || ''} className='w-[80px] h-[80px] rounded-md' ratio={1} src={group?.image || ''} />
+    <AspectRatioImg alt={group?.image_alt || ''} className='w-[80px] h-[80px] rounded-md ratio-[1]' src={group?.image || ''} />
 
     <div>
       <h1 className='text-lg font-bold'>{group.name}</h1>

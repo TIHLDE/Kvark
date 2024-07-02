@@ -1,11 +1,4 @@
-import NewsIcon from '@mui/icons-material/DescriptionRounded';
-import GroupsIcon from '@mui/icons-material/GroupRounded';
-import InfoIcon from '@mui/icons-material/InfoRounded';
-import UsersIcon from '@mui/icons-material/PermIdentityRounded';
-import EventIcon from '@mui/icons-material/TodayRounded';
-import JobPostIcon from '@mui/icons-material/WorkOutlineRounded';
-import WorkspacesIcon from '@mui/icons-material/Workspaces';
-import { ChevronRightIcon } from 'lucide-react';
+import { Boxes, BriefcaseBusiness, Calendar, ChevronRightIcon, Grip, Info, Newspaper, Users } from 'lucide-react';
 import { ComponentType } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
@@ -47,49 +40,49 @@ const Admin = () => {
   const cards: Array<CardProps> = [
     {
       apps: [PermissionApp.EVENT],
-      icon: EventIcon,
+      icon: Calendar,
       to: URLS.eventAdmin,
       primary: 'Arrangementer',
       secondary: 'Opprett, endre og slett arrangementer',
     },
     {
       apps: [PermissionApp.GROUP],
-      icon: GroupsIcon,
+      icon: Boxes,
       to: URLS.groups.index,
       primary: 'Grupper',
       secondary: 'Se og endre grupper',
     },
     {
       apps: [PermissionApp.JOBPOST],
-      icon: JobPostIcon,
+      icon: BriefcaseBusiness,
       to: URLS.jobpostsAdmin,
       primary: 'Jobbannonser',
       secondary: 'Opprett, endre og slett jobbannonser',
     },
     {
       apps: [PermissionApp.USER],
-      icon: UsersIcon,
+      icon: Users,
       to: URLS.userAdmin,
       primary: 'Medlemmer',
       secondary: 'Aktiver, rediger og søk etter medlemmer',
     },
     {
       apps: [PermissionApp.NEWS],
-      icon: NewsIcon,
+      icon: Newspaper,
       to: URLS.newsAdmin,
       primary: 'Nyheter',
       secondary: 'Opprett, endre og slett nyheter',
     },
     {
       apps: [PermissionApp.STRIKE],
-      icon: WorkspacesIcon,
+      icon: Grip,
       to: URLS.strikeAdmin,
       primary: 'Prikker',
       secondary: 'Se og slett prikker',
     },
     {
       apps: [PermissionApp.BANNERS],
-      icon: InfoIcon,
+      icon: Info,
       to: URLS.bannerAdmin,
       primary: 'Bannere',
       secondary: 'Opprett, endre og slett bannere',
@@ -101,13 +94,6 @@ const Admin = () => {
       {cards.map((card, i) => (
         <AdminCard key={i} {...card} />
       ))}
-      {/* <Paper className={classes.list}>
-        <Typography variant='h3'>Filopplastning</Typography>
-        <Typography variant='subtitle2'>
-          Last opp filer og få en link du kan dele med andre. Bruk <Link to={URLS.shortLinks}>link-forkorteren</Link> hvis du vil ha enda kortere linker.
-        </Typography>
-        <FileUpload />
-      </Paper> */}
     </ul>
   );
 };

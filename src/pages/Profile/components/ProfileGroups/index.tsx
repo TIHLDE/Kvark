@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -7,7 +6,6 @@ import { useUserMembershipHistories, useUserMemberships } from 'hooks/User';
 import MembershipHistoryItem, { MembershipHistoryItemLoading } from 'pages/Profile/components/ProfileGroups/MembershipHistoryItem';
 import MembershipItem, { MembershipItemLoading } from 'pages/Profile/components/ProfileGroups/MembershipItem';
 
-import Pagination from 'components/layout/Pagination';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import { PaginateButton } from 'components/ui/button';
 import { Separator } from 'components/ui/separator';

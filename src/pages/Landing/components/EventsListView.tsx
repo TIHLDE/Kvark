@@ -1,20 +1,9 @@
-import { Stack, styled, Theme, Typography, useMediaQuery } from '@mui/material';
-
 import { EventList } from 'types';
 import { Category, Groups } from 'types/Enums';
 
+import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
+
 import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
-
-const Container = styled('div')(({ theme }) => ({
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr',
-  gap: theme.spacing(1),
-}));
-
-const Text = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.secondary,
-  p: 0.5,
-}));
 
 export type EventsListViewProps = {
   events: Array<EventList>;
@@ -25,44 +14,34 @@ const NO_OF_EVENTS_TO_SHOW = 3;
 const NO_OF_EVENTS_TO_SHOW_MD_DOWN = 4;
 
 const EventsListView = ({ events, isLoading = false }: EventsListViewProps) => {
-  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
+  const isDesktop = useMediaQuery(MEDIUM_SCREEN);
 
-  if (isLoading && mdDown) {
+  if (isLoading && !isDesktop) {
     return (
-      <Stack gap={1} sx={{ alignSelf: 'start' }}>
-        <EventListItemLoading />
-        <EventListItemLoading />
-        <EventListItemLoading />
-      </Stack>
+      <div className='space-y-2'>
+        <EventListItemLoading length={3} />
+      </div>
     );
   } else if (isLoading) {
     return (
-      <Container>
-        <Stack gap={1} sx={{ alignSelf: 'start' }}>
-          <EventListItemLoading />
-          <EventListItemLoading />
-          <EventListItemLoading />
-        </Stack>
-        <Stack gap={1} sx={{ alignSelf: 'start' }}>
-          <EventListItemLoading />
-          <EventListItemLoading />
-          <EventListItemLoading />
-        </Stack>
-      </Container>
+      <div className='grid grid-cols-2 gap-2'>
+        <div className='space-y-2'>
+          <EventListItemLoading length={3} />
+        </div>
+        <div className='space-y-2'>
+          <EventListItemLoading length={3} />
+        </div>
+      </div>
     );
   } else if (!events.length) {
+    return <h1 className='text-center'>Ingen kommende arrangementer</h1>;
+  } else if (!isDesktop) {
     return (
-      <Text align='center' variant='subtitle1'>
-        Ingen kommende arrangementer
-      </Text>
-    );
-  } else if (mdDown) {
-    return (
-      <Stack gap={1}>
+      <div className='space-y-2'>
         {events.slice(0, NO_OF_EVENTS_TO_SHOW_MD_DOWN).map((event) => (
           <EventListItem event={event} key={event.id} size='small' />
         ))}
-      </Stack>
+      </div>
     );
   }
 
@@ -86,26 +65,22 @@ const EventsListView = ({ events, isLoading = false }: EventsListViewProps) => {
       .slice(0, NO_OF_EVENTS_TO_SHOW);
 
   return (
-    <Container>
-      <Stack gap={1} sx={{ alignSelf: 'start' }}>
+    <div className='grid grid-cols-2 gap-2'>
+      <div className='space-y-2'>
         {getNokEvents().length ? (
           getNokEvents().map((event) => <EventListItem event={event} key={event.id} size='small' />)
         ) : (
-          <Text align='center' variant='subtitle1'>
-            Ingen kommende bedpres eller kurs
-          </Text>
+          <h1 className='text-center'>Ingen kommende bedpres eller kurs</h1>
         )}
-      </Stack>
-      <Stack gap={1} sx={{ alignSelf: 'start' }}>
+      </div>
+      <div className='space-y-2'>
         {getOtherEvents().length ? (
           getOtherEvents().map((event) => <EventListItem event={event} key={event.id} size='small' />)
         ) : (
-          <Text align='center' variant='subtitle1'>
-            Ingen kommende sosiale eller andre arrangementer
-          </Text>
+          <h1 className='text-center'>Ingen kommende sosiale eller andre arrangementer</h1>
         )}
-      </Stack>
-    </Container>
+      </div>
+    </div>
   );
 };
 

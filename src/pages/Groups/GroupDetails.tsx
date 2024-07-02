@@ -80,13 +80,7 @@ const GroupDetails = () => {
           <div className='flex items-center space-x-4'>
             <GoBackButton url={URLS.groups.index} />
             <div className='flex items-center space-x-2'>
-              <AspectRatioImg
-                alt={data?.image_alt || ''}
-                borderRadius
-                className='h-[45px] w-[45px] md:h-[70px] md:w-[70px]'
-                ratio={1}
-                src={data?.image || ''}
-              />
+              <AspectRatioImg alt={data?.image_alt || ''} className='h-[45px] w-[45px] md:h-[70px] md:w-[70px] rounded-md' src={data?.image || ''} />
               <h1 className='text-3xl md:text-5xl font-bold'>{data.name}</h1>
             </div>
           </div>

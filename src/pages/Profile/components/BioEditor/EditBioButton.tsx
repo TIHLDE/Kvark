@@ -1,4 +1,3 @@
-import { ButtonProps } from '@mui/material';
 import { Pencil } from 'lucide-react';
 import { useState } from 'react';
 
@@ -10,7 +9,7 @@ import { ScrollArea } from 'components/ui/scroll-area';
 
 import UserBioForm from './BioEditor';
 
-export type BioButtonProps = ButtonProps & {
+export type BioButtonProps = {
   userBio: UserBio;
 };
 

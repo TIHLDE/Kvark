@@ -8,7 +8,7 @@ import { cn } from "lib/utils";
 type ExpandableProps = {
     title: ReactNode;
     description?: string;
-    icon: ReactNode;
+    icon?: ReactNode;
     children: ReactNode;
     extra?: ReactNode;
     className?: string;

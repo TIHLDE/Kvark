@@ -24,7 +24,7 @@ const WikiSearch = () => {
     }
     return filters;
   }, [debouncedSearch]);
-  const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useWikiSearch(filters);
+  const { data, hasNextPage, fetchNextPage, isLoading } = useWikiSearch(filters);
   const pages = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
   const [open, setOpen] = useState(false);
 

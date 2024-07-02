@@ -1,21 +1,9 @@
-import { Stack, styled, Theme, Typography, useMediaQuery } from '@mui/material';
 import { useCallback, useState } from 'react';
 
 import { useEvents } from 'hooks/Event';
+import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
 
 import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
-
-const Container = styled('div')(({ theme }) => ({
-  display: 'grid',
-  alignItems: 'self-start',
-  gridTemplateColumns: '1fr 1fr',
-  gap: theme.spacing(1),
-}));
-
-const Text = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.secondary,
-  p: 0.5,
-}));
 
 const NO_OF_EVENTS_TO_SHOW = 6;
 const NO_OF_EVENTS_TO_SHOW_MD_DOWN = 4;
@@ -25,7 +13,8 @@ type Filters = {
 };
 
 const ActivityEventsListView = () => {
-  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
+  const isDesktop = useMediaQuery(MEDIUM_SCREEN);
+
   const getInitialFilters = useCallback((): Filters => {
     const activity = true;
     return { activity };
@@ -36,40 +25,32 @@ const ActivityEventsListView = () => {
 
   if (isLoading) {
     return (
-      <Stack gap={1}>
-        <EventListItemLoading />
-        <EventListItemLoading />
-        <EventListItemLoading />
-      </Stack>
+      <div className='space-y-2'>
+        <EventListItemLoading length={3} />
+      </div>
     );
   } else if (!data?.pages[0]?.results.length) {
+    return <h1 className='text-center'>Ingen kommende arrangementer</h1>;
+  } else if (!isDesktop) {
     return (
-      <Text align='center' variant='subtitle1'>
-        Ingen kommende arrangementer
-      </Text>
-    );
-  } else if (mdDown) {
-    return (
-      <Stack gap={1}>
+      <div className='space-y-2'>
         {data?.pages[0]?.results.slice(0, NO_OF_EVENTS_TO_SHOW_MD_DOWN).map((event) => (
           <EventListItem event={event} key={event.id} size='small' />
         ))}
-      </Stack>
+      </div>
     );
   }
 
   return (
-    <Container>
+    <div className='grid grid-cols-2 gap-2'>
       {data?.pages[0].results.length ? (
         data?.pages[0]?.results.slice(0, NO_OF_EVENTS_TO_SHOW).map((event) => <EventListItem event={event} key={event.id} size='small' />)
       ) : (
-        <Stack gap={1}>
-          <Text align='center' variant='subtitle1'>
-            Ingen kommende aktiviteter
-          </Text>
-        </Stack>
+        <div className='space-y-2'>
+          <h1 className='text-center'>Ingen kommende aktiviteter</h1>
+        </div>
       )}
-    </Container>
+    </div>
   );
 };
 

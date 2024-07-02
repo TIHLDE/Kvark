@@ -33,7 +33,7 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
   return (
     <div className='grid lg:grid-cols-[3fr,1fr] gap-4 items-start'>
       <div className='space-y-4'>
-        <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
+        <AspectRatioImg alt={data.image_alt || data.title} className='rounded-md' src={data.image} />
 
         <Card>
           <CardHeader>

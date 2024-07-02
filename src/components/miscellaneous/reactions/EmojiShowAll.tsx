@@ -1,5 +1,4 @@
 import { ListIcon } from 'lucide-react';
-import { useState } from 'react';
 
 import { ContentType } from 'types/ContentType';
 

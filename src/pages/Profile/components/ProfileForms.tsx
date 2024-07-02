@@ -10,7 +10,6 @@ import { EventFormType, FormResourceType } from 'types/Enums';
 
 import { useUserForms } from 'hooks/User';
 
-import Pagination from 'components/layout/Pagination';
 import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 
@@ -30,7 +29,7 @@ const ProfileForms = () => {
     return <NotFoundIndicator header='Fant ingen spørreskjemaer' subtitle='Du har ingen spørreskjemaer du må svare på' />;
   } else {
     return (
-      <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere spørreskjemaer' nextPage={() => fetchNextPage()}>
+      <div className='space-y-2'>
         <Typography sx={{ px: 2, py: 1 }} variant='subtitle2'>
           Du må svare på følgende spørreskjemaer før du kan melde deg på arrangementer igjen
         </Typography>
@@ -56,7 +55,7 @@ const ProfileForms = () => {
             </ListItemButton>
           </Paper>
         ))}
-      </Pagination>
+      </div>
     );
   }
 };

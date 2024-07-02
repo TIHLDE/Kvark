@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -44,7 +43,7 @@ const NewsDetails = () => {
           <meta content={data.image || 'https://tihlde.org' + TIHLDELOGO} property='og:image' />
         </Helmet>
       )}
-      <Box sx={{ pb: 2 }}>{isLoading ? <NewsRendererLoading /> : data !== undefined && <NewsRenderer data={data} />}</Box>
+      <div className='pb-4'>{isLoading ? <NewsRendererLoading /> : data !== undefined && <NewsRenderer data={data} />}</div>
     </Page>
   );
 };

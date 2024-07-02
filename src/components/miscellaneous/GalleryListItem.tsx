@@ -19,7 +19,7 @@ const GalleryListItem = ({ gallery }: GalleryListItemProps) => (
         {gallery.description && <CardDescription>{gallery.description}</CardDescription>}
       </CardHeader>
       <CardContent>
-        <AspectRatioImg alt={gallery.image_alt || gallery.title} className='rounded-md' ratio={16 / 9} src={gallery.image} />
+        <AspectRatioImg alt={gallery.image_alt || gallery.title} className='rounded-md' src={gallery.image} />
       </CardContent>
     </Card>
   </Link>

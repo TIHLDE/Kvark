@@ -1,4 +1,3 @@
-import { useTheme } from '@mui/material';
 import { useMemo } from 'react';
 
 import { useEvents } from 'hooks/Event';
@@ -10,7 +9,6 @@ import Story, { StoryLoading } from 'pages/Landing/components/Story';
 const STORIES_TO_DISPLAY = 10;
 
 const StoriesView = () => {
-  const theme = useTheme();
   const { data: news, isLoading: isNewsLoading } = useNews();
   const { data: jobposts, isLoading: isJobPostsLoading } = useJobPosts();
   const { data: events, isLoading: isEventsLoading } = useEvents();
