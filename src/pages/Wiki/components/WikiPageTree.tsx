@@ -88,11 +88,11 @@ const WikiPageTree = ({ selectedNode, setSelectedNode, page }: WikiPageTreeProps
 
   const createNodes = (node: WikiTree, parentPath: string): TreeDataItem => {
     const id = `${parentPath}${node.slug}${node.slug === '' ? '' : '/'}`;
-    
+
     return {
       id,
       title: node.title,
-      children: node.children.map((childNode: WikiTree) => createNodes(childNode, id))
+      children: node.children.map((childNode: WikiTree) => createNodes(childNode, id)),
     };
   };
 

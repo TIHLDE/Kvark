@@ -59,10 +59,10 @@ const UpdateWikiPage = ({ page }: UpdateWikiPageProps) => {
       ...page,
       ...values,
       slug: urlEncode(values.title),
-      path: treeNode === '/' ? '' : treeNode
+      path: treeNode === '/' ? '' : treeNode,
     };
 
-    console.log(data)
+    console.log(data);
     updatePage.mutate(
       { ...page, ...values, slug: urlEncode(values.title), path: treeNode === '/' ? '' : treeNode },
       {
