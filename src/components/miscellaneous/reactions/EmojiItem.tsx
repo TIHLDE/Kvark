@@ -1,7 +1,8 @@
+import { toast } from 'sonner';
+
 import { Emoji, Event, News } from 'types';
 
 import { useCreateReaction, useDeleteReaction, useUpdateReaction } from 'hooks/EmojiReaction';
-import { useSnackbar } from 'hooks/Snackbar';
 import { useUser } from 'hooks/User';
 
 import { Button } from 'components/ui/button';
@@ -14,7 +15,6 @@ export type EmojiItemProps = {
 
 export const EmojiItem = ({ data, emoji, content_type }: EmojiItemProps) => {
   const user = useUser();
-  const showSnackbar = useSnackbar();
 
   const deleteReaction = useDeleteReaction();
   const createReaction = useCreateReaction();
@@ -23,10 +23,10 @@ export const EmojiItem = ({ data, emoji, content_type }: EmojiItemProps) => {
   const handleDelete = (reaction_id: string) => {
     deleteReaction.mutate(reaction_id, {
       onSuccess: () => {
-        showSnackbar('Reaksjon fjernet', 'success');
+        toast.success('Reaksjon fjernet');
       },
       onError: (e) => {
-        showSnackbar(e.detail, 'error');
+        toast.error(e.detail);
       },
     });
   };
@@ -39,10 +39,10 @@ export const EmojiItem = ({ data, emoji, content_type }: EmojiItemProps) => {
         { reaction_id: reaction.reaction_id, emoji: emoji, content_type: content_type, object_id: data.id },
         {
           onSuccess: () => {
-            showSnackbar('Reaksjon oppdatert', 'success');
+            toast.success('Reaksjon oppdatert');
           },
           onError: (e) => {
-            showSnackbar(e.detail, 'error');
+            toast.error(e.detail);
           },
         },
       );
@@ -51,10 +51,10 @@ export const EmojiItem = ({ data, emoji, content_type }: EmojiItemProps) => {
         { emoji: emoji, content_type: content_type, object_id: data.id },
         {
           onSuccess: () => {
-            showSnackbar('Reaksjon lagt til', 'success');
+            toast.success('Reaksjon lagt til');
           },
           onError: (e) => {
-            showSnackbar(e.detail, 'error');
+            toast.error(e.detail);
           },
         },
       );

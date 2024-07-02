@@ -1,8 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material';
-
 import { useGroupStatistics } from 'hooks/Group';
-
-import Paper from 'components/layout/Paper';
 
 export type GroupStatisticsProps = {
   slug: string;
@@ -14,12 +10,10 @@ type StatProps = {
 };
 
 const Stat = ({ label, number }: StatProps) => (
-  <Paper bgColor='smoke' noPadding sx={{ textAlign: 'center', width: '100%' }}>
-    <Typography variant='subtitle2'>{label}</Typography>
-    <Typography sx={{ fontSize: '2.1rem' }} variant='h3'>
-      {number}
-    </Typography>
-  </Paper>
+  <div className='p-4 rounded-md border text-center'>
+    <h1 className='text-2xl font-bold'>{number}</h1>
+    <p className='text-xs lg:text-base text-muted-foreground'>{label}</p>
+  </div>
 );
 
 const GroupStatistics = ({ slug }: GroupStatisticsProps) => {
@@ -30,24 +24,24 @@ const GroupStatistics = ({ slug }: GroupStatisticsProps) => {
   }
 
   return (
-    <Stack direction={{ md: 'column' }} gap={1}>
-      <Box sx={{ width: '100%' }}>
-        <Typography>Klasse:</Typography>
-        <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
+    <div className='space-y-2'>
+      <div className='space-y-1'>
+        <h1>Klasse:</h1>
+        <div className='grid grid-cols-2 lg:grid-cols-3 gap-4'>
           {data.studyyears.map((studyyear) => (
             <Stat key={studyyear.studyyear} label={studyyear.studyyear} number={studyyear.amount} />
           ))}
-        </Stack>
-      </Box>
-      <Box sx={{ width: '100%' }}>
-        <Typography>Studie:</Typography>
-        <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
+        </div>
+      </div>
+      <div className='space-y-1'>
+        <h1>Studie:</h1>
+        <div className='grid grid-cols-2 lg:grid-cols-3 gap-4'>
           {data.studies.map((study) => (
             <Stat key={study.study} label={study.study} number={study.amount} />
           ))}
-        </Stack>
-      </Box>
-    </Stack>
+        </div>
+      </div>
+    </div>
   );
 };
 

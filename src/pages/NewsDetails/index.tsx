@@ -10,6 +10,8 @@ import { useNewsById } from 'hooks/News';
 import Http404 from 'pages/Http404';
 import NewsRenderer, { NewsRendererLoading } from 'pages/NewsDetails/components/NewsRenderer';
 
+import Page from 'components/navigation/Page';
+
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
 
 const NewsDetails = () => {
@@ -31,8 +33,10 @@ const NewsDetails = () => {
   }
 
   return (
-    <div>
+    <Page>
       {data && (
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         <Helmet>
           <meta content={data.title} property='og:title' />
           <meta content='website' property='og:type' />
@@ -41,7 +45,7 @@ const NewsDetails = () => {
         </Helmet>
       )}
       <Box sx={{ pb: 2 }}>{isLoading ? <NewsRendererLoading /> : data !== undefined && <NewsRenderer data={data} />}</Box>
-    </div>
+    </Page>
   );
 };
 

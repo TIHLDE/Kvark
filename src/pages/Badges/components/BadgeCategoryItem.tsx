@@ -1,10 +1,8 @@
-import { ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 
 import { BadgeCategory } from 'types';
 
-import Paper from 'components/layout/Paper';
 import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
 
 export type BadgeItemProps = {
@@ -12,19 +10,15 @@ export type BadgeItemProps = {
 };
 
 const BadgeCategoryItem = ({ badgeCategory }: BadgeItemProps) => (
-  <ListItem component={Paper} disablePadding key={badgeCategory.id} noOverflow noPadding>
-    <ListItemButton component={Link} to={URLS.badges.category_leaderboard(badgeCategory.id)}>
-      <ListItemIcon>
-        <AspectRatioImg
-          alt={badgeCategory.name}
-          ratio={1}
-          src={badgeCategory.image || ''}
-          sx={{ width: 100, borderRadius: (theme) => `${theme.shape.borderRadius}px`, mr: 1 }}
-        />
-      </ListItemIcon>
-      <ListItemText primary={badgeCategory.name} secondary={badgeCategory.description} />
-    </ListItemButton>
-  </ListItem>
+  <Link
+    className='px-4 py-2 rounded-md border bg-card flex items-center space-x-2 hover:bg-border transition-all duration-150'
+    to={URLS.badges.category_leaderboard(badgeCategory.id)}>
+    <AspectRatioImg alt={badgeCategory.name} className='w-[100px] rounded-md' ratio={1} src={badgeCategory.image || ''} />
+    <div>
+      <h1 className='text-lg font-semibold text-black dark:text-white'>{badgeCategory.name}</h1>
+      <p className='text-sm text-muted-foreground'>{badgeCategory.description}</p>
+    </div>
+  </Link>
 );
 
 export default BadgeCategoryItem;

@@ -1,76 +1,119 @@
-import SendIcon from '@mui/icons-material/SendRounded';
-import { Button, ButtonProps } from '@mui/material';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Mail } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 import { useNotifyEventRegistrations } from 'hooks/Event';
-import { useSnackbar } from 'hooks/Snackbar';
+import useMediaQuery, { SMALL_SCREEN } from 'hooks/MediaQuery';
 
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import Dialog from 'components/layout/Dialog';
+import { Button } from 'components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
+import { Input } from 'components/ui/input';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
+import { Textarea } from 'components/ui/textarea';
 
-export type EventMessageSenderProps = ButtonProps & {
+export type EventMessageSenderProps = {
   eventId: number;
 };
 
-type FormValues = {
-  title: string;
-  message: string;
-};
+const formSchema = z.object({
+  title: z.string().min(1, { message: 'Oppgi en tittel' }),
+  message: z.string().min(1, { message: 'Oppgi en melding' }),
+});
 
-const EventMessageSender = ({ eventId, ...props }: EventMessageSenderProps) => {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const showSnackbar = useSnackbar();
-  const { register, formState, handleSubmit, reset } = useForm<FormValues>();
+const EventMessageSender = ({ eventId }: EventMessageSenderProps) => {
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const notify = useNotifyEventRegistrations(eventId);
+  const isTablet = useMediaQuery(SMALL_SCREEN);
 
-  const submit = (data: FormValues) => {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: '',
+      message: '',
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     if (notify.isLoading) {
       return;
     }
     notify.mutate(
-      { title: data.title, message: data.message },
+      { title: values.title, message: values.message },
       {
-        onSuccess: (data) => {
-          showSnackbar(data.detail, 'success');
-          reset();
+        onSuccess: (values) => {
+          toast.success(values.detail);
+          form.reset();
           setDialogOpen(false);
         },
         onError: (error) => {
-          showSnackbar(error.detail, 'error');
+          toast.error(error.detail);
         },
       },
     );
   };
 
+  const SmallOpenButton = (
+    <Button size='icon' variant='secondary'>
+      <Mail className='w-5 h-5 stroke-[1.5px]' />
+    </Button>
+  );
+
+  const OpenButton = (
+    <Button variant='secondary'>
+      <Mail className='mr-2 w-5 h-5 stroke-[1.5px]' />
+      Send epost
+    </Button>
+  );
+
   return (
-    <>
-      <Button endIcon={<SendIcon />} fullWidth variant='outlined' {...props} onClick={() => setDialogOpen(true)}>
-        Send epost til deltagere
-      </Button>
-      <Dialog
-        contentText='Send en melding på epost og et varsel til de påmeldte deltagerne.'
-        onClose={() => setDialogOpen(false)}
-        open={dialogOpen}
-        titleText='Send melding til påmeldte'>
-        <form onSubmit={handleSubmit(submit)}>
-          <TextField formState={formState} label='Tittel' {...register('title', { required: 'Oppgi en tittel' })} required />
-          <TextField
-            formState={formState}
-            label='Melding'
-            maxRows={10}
-            minRows={3}
-            multiline
-            {...register('message', { required: 'Oppgi en melding' })}
-            required
+    <ResponsiveDialog
+      className='max-w-2xl w-full'
+      description='Send en melding på epost og et varsel til de påmeldte deltagerne.'
+      onOpenChange={setDialogOpen}
+      open={dialogOpen}
+      title='Send melding til påmeldte'
+      trigger={!isTablet ? SmallOpenButton : OpenButton}>
+      <Form {...form}>
+        <form className='space-y-4 px-4' onSubmit={form.handleSubmit(onSubmit)}>
+          <FormField
+            name='title'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Tittel <span className='text-red-300'>*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder='Skriv her...' />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <SubmitButton disabled={notify.isLoading} formState={formState}>
-            Send melding
-          </SubmitButton>
+
+          <FormField
+            name='message'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Melding <span className='text-red-300'>*</span>
+                </FormLabel>
+                <FormControl>
+                  <Textarea {...field} placeholder='Skriv her...' />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button className='w-full' disabled={notify.isLoading} type='submit'>
+            {notify.isLoading ? 'Sender melding...' : 'Send melding'}
+          </Button>
         </form>
-      </Dialog>
-    </>
+      </Form>
+    </ResponsiveDialog>
   );
 };
 

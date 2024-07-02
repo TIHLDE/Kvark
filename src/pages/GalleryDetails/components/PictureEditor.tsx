@@ -1,19 +1,17 @@
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import { IconButton } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Pencil } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 import { Gallery, Picture } from 'types';
 
 import { useDeletePicture, usePictureById, useUpdatePicture } from 'hooks/Gallery';
-import { useSnackbar } from 'hooks/Snackbar';
 
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import Dialog from 'components/layout/Dialog';
-import VerifyDialog from 'components/layout/VerifyDialog';
-
-type FormValues = Omit<Picture, 'id' | 'created_at' | 'updated_at'>;
+import FormInput from 'components/inputs/Input';
+import { Button } from 'components/ui/button';
+import { Form } from 'components/ui/form';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
 
 export type PictureEditorDialogProps = {
   pictureId: Picture['id'];
@@ -21,67 +19,80 @@ export type PictureEditorDialogProps = {
   onClose: () => void;
 };
 
+const formSchema = z.object({
+  title: z.string().max(100, { message: 'Tittelen kan ikke være lengre enn 100 tegn' }).optional(),
+  description: z.string().optional(),
+  image_alt: z.string().optional(),
+});
+
 const PictureEditorDialog = ({ galleryId, pictureId, onClose }: PictureEditorDialogProps) => {
-  const [open, setOpen] = useState(false);
   const { data } = usePictureById(galleryId, pictureId);
   const editPicture = useUpdatePicture(galleryId, pictureId);
   const deletePicture = useDeletePicture(galleryId, pictureId);
-  const showSnackbar = useSnackbar();
-  const { handleSubmit, register, formState, reset } = useForm<FormValues>();
-  const setValues = useCallback(
-    (newValues: Picture | null) => {
-      reset({
-        title: newValues?.title || '',
-        description: newValues?.description || '',
-        image_alt: newValues?.image_alt || '',
-      });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: data?.title || '',
+      description: data?.description || '',
+      image_alt: data?.image_alt || '',
     },
-    [reset],
-  );
+  });
 
-  useEffect(() => {
-    setValues(data || null);
-  }, [data, setValues]);
-
-  const remove = async () =>
+  const remove = () =>
     deletePicture.mutate(null, {
       onSuccess: () => {
-        showSnackbar('Bildet ble slettet', 'success');
-        setOpen(false);
+        toast.success('Bildet ble slettet');
         onClose();
       },
-      onError: (e) => showSnackbar(e.detail, 'error'),
+      onError: (e) => {
+        toast.error(e.detail);
+      },
     });
 
-  const submit: SubmitHandler<FormValues> = async (data) =>
-    editPicture.mutate(data, {
-      onSuccess: () => {
-        showSnackbar('Bildet ble oppdatert', 'success');
-        setOpen(false);
+  const onSubmit = (values: z.infer<typeof formSchema>) =>
+    editPicture.mutate(
+      {
+        ...values,
+        image: data?.image || '',
       },
-      onError: (e) => showSnackbar(e.detail, 'error'),
-    });
+      {
+        onSuccess: () => {
+          toast.success('Bildet ble oppdatert');
+        },
+        onError: (e) => {
+          toast.error(e.detail);
+        },
+      },
+    );
+
+  const OpenButton = (
+    <Button className='w-full'>
+      <Pencil className='mr-2 w-5 h-5' />
+      Rediger bilde
+    </Button>
+  );
 
   return (
-    <>
-      <IconButton onClick={() => setOpen(true)}>
-        <EditRoundedIcon />
-      </IconButton>
-      <Dialog onClose={() => setOpen(false)} open={open} titleText='Rediger bilde'>
-        <form onSubmit={handleSubmit(submit)}>
-          <TextField formState={formState} label='Tittel' {...register('title')} />
-          <TextField formState={formState} inputProps={{ maxLength: 100 }} label='Beskrivelse' {...register('description')} />
-          <TextField formState={formState} label='Bildetekst' {...register('image_alt')} />
-          <input hidden value={data?.image} {...register('image')} />
-          <SubmitButton formState={formState} sx={{ my: 2 }}>
-            Oppdater bilde
-          </SubmitButton>
-          <VerifyDialog closeText='Avbryt' color='error' contentText='Fjerning av bilder kan ikke reverseres.' onConfirm={remove}>
-            Fjern bilde fra galleri
-          </VerifyDialog>
+    <ResponsiveDialog description='Endre tittel, beskrivelse og bildetekst.' title='Rediger bilde' trigger={OpenButton}>
+      <Form {...form}>
+        <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
+          <FormInput form={form} label='Tittel' name='title' />
+
+          <FormInput form={form} label='Beskrivelse' name='description' />
+
+          <FormInput form={form} label='Bildetekst' name='image_alt' />
+
+          <Button className='w-full' type='submit'>
+            {editPicture.isLoading ? 'Oppdaterer bilde...' : 'Oppdater bilde'}
+          </Button>
+
+          <Button className='w-full' onClick={remove} type='button' variant='destructive'>
+            {deletePicture.isLoading ? 'Sletter bilde...' : 'Slett bilde'}
+          </Button>
         </form>
-      </Dialog>
-    </>
+      </Form>
+    </ResponsiveDialog>
   );
 };
 

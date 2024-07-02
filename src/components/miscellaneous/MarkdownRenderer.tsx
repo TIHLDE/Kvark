@@ -1,4 +1,4 @@
-import { Skeleton, styled } from '@mui/material';
+import { styled } from '@mui/material';
 import { createElement, lazy, ReactNode, Suspense, useMemo } from 'react';
 import rehypeRaw from 'rehype-raw';
 
@@ -13,6 +13,7 @@ import EventListItem, { EventListItemLoading } from 'components/miscellaneous/Ev
 import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
 import NewsListItem, { NewsListItemLoading } from 'components/miscellaneous/NewsListItem';
 import { Separator } from 'components/ui/separator';
+import { Skeleton } from 'components/ui/skeleton';
 
 const ReactMarkdown = lazy(() => import('react-markdown'));
 
@@ -50,15 +51,15 @@ export const Image = styled('img')(({ theme }) => ({
 
 export const EventCard = ({ id }: { id: Event['id'] }) => {
   const { data } = useEventById(id);
-  return data ? <EventListItem event={data as unknown as EventList} sx={{ mb: 1 }} /> : <EventListItemLoading sx={{ mb: 1 }} />;
+  return data ? <EventListItem event={data as unknown as EventList} size='medium' /> : <EventListItemLoading />;
 };
 export const JobPostCard = ({ id }: { id: JobPost['id'] }) => {
   const { data } = useJobPostById(id);
-  return data ? <JobPostListItem jobPost={data} sx={{ mb: 1 }} /> : <JobPostListItemLoading sx={{ mb: 1 }} />;
+  return data ? <JobPostListItem jobPost={data} /> : <JobPostListItemLoading />;
 };
 export const NewsCard = ({ id }: { id: News['id'] }) => {
   const { data } = useNewsById(id);
-  return data ? <NewsListItem news={data} sx={{ mb: 1 }} /> : <NewsListItemLoading sx={{ mb: 1 }} />;
+  return data ? <NewsListItem news={data} /> : <NewsListItemLoading />;
 };
 
 export enum LanguageTypes {
@@ -140,11 +141,11 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
   return (
     <Suspense
       fallback={
-        <>
+        <div className='space-y-2'>
           {skeletonWidthArray.map((width, index) => (
-            <Skeleton height={38} key={index} width={`${width}%`} />
+            <Skeleton className={`h-[38px] w-[${width}%]`} key={index} />
           ))}
-        </>
+        </div>
       }>
       <ReactMarkdown
         components={components}

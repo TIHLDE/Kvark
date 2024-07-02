@@ -1,9 +1,8 @@
 import va from '@vercel/analytics';
 import { EffectCallback, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 import { getCookie, setCookie } from 'api/cookie';
-
-import { useSnackbar } from 'hooks/Snackbar';
 
 export const useInterval = (callback: EffectCallback, msDelay: number | null) => {
   const savedCallback = useRef<EffectCallback>();
@@ -50,8 +49,7 @@ export const useDebounce = <Type extends unknown>(value: Type, delay: number) =>
  * @param fallbackSnackbar Text to be displayed in a snackbar when copied to clipboard if the Web Share API isn't supported
  */
 export const useShare = (shareData: globalThis.ShareData, fallbackSnackbar?: string, onShare?: () => void) => {
-  const showSnackbar = useSnackbar();
-  const [hasShared, setShared] = useState(false);
+  const [hasShared, setShared] = useState<boolean>(false);
 
   useEffect(() => {
     if (hasShared) {
@@ -70,7 +68,7 @@ export const useShare = (shareData: globalThis.ShareData, fallbackSnackbar?: str
     const hasCopied = copyToClipboard(text);
     setShared(hasCopied);
     if (fallbackSnackbar && !noSnackbar) {
-      showSnackbar(fallbackSnackbar, 'info');
+      toast.success(fallbackSnackbar);
     }
   };
 

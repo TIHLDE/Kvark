@@ -177,7 +177,7 @@ export const useCreateEventRegistrationAdmin = (eventId: Event['id']): UseMutati
   const queryClient = useQueryClient();
   return useMutation((userId: User['user_id']) => API.createRegistrationAdmin(eventId, userId), {
     onSuccess: () => {
-      queryClient.invalidateQueries(EVENT_QUERY_KEYS.registrations.all(eventId));
+      queryClient.invalidateQueries(EVENT_QUERY_KEYS.all);
     },
   });
 };
@@ -199,6 +199,7 @@ export const useUpdateEventRegistration = (
       queryClient.invalidateQueries(EVENT_QUERY_KEYS.registrations.list(eventId));
       queryClient.invalidateQueries([USER_EVENTS_QUERY_KEY]);
       queryClient.setQueryData(EVENT_QUERY_KEYS.registrations.detail(eventId, data.user_info.user_id), data);
+      queryClient.invalidateQueries(EVENT_QUERY_KEYS.all);
     },
   });
 };
@@ -214,6 +215,7 @@ export const useDeleteEventRegistration = (eventId: Event['id']): UseMutationRes
       queryClient.removeQueries(EVENT_QUERY_KEYS.registrations.all(eventId));
       queryClient.invalidateQueries(EVENT_QUERY_KEYS.detail(eventId));
       queryClient.invalidateQueries([USER_EVENTS_QUERY_KEY]);
+      queryClient.invalidateQueries(EVENT_QUERY_KEYS.all);
     },
   });
 };

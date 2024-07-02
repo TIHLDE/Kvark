@@ -86,3 +86,8 @@ export interface QRCode {
   name: string;
   content: string;
 }
+
+export interface CreateQRCode {
+  name: string;
+  content: string;
+}

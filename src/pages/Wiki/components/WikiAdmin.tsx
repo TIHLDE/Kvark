@@ -1,11 +1,11 @@
 import AddIcon from '@mui/icons-material/AddRounded';
 import RightIcon from '@mui/icons-material/ChevronRightRounded';
-import EditIcon from '@mui/icons-material/EditRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
 import { TreeItem, TreeView } from '@mui/lab';
-import { Button, Collapse, Divider, LinearProgress, Typography } from '@mui/material';
+import { Collapse, Divider, LinearProgress, Typography } from '@mui/material';
 import parseISO from 'date-fns/parseISO';
+import { Edit, Pencil } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -25,6 +25,10 @@ import TextField from 'components/inputs/TextField';
 import { ImageUpload } from 'components/inputs/Upload';
 import Dialog from 'components/layout/Dialog';
 import Paper from 'components/layout/Paper';
+import { Button } from 'components/ui/button';
+
+import CreateWikiPage from './CreateWikiPage';
+import UpdateWikiPage from './UpdateWikiPage';
 
 type ITreeProps = IPagesAdminProps & {
   selectedNode: string;
@@ -54,9 +58,9 @@ const Tree = ({ selectedNode, setSelectedNode, page }: ITreeProps) => {
   } else if (data) {
     return (
       <Paper noPadding sx={{ mt: 1, mb: 2 }}>
-        <Button endIcon={viewTree ? <ExpandLessIcon /> : <ExpandMoreIcon />} fullWidth onClick={() => setViewTree((prev) => !prev)}>
+        {/* <Button endIcon={viewTree ? <ExpandLessIcon /> : <ExpandMoreIcon />} fullWidth onClick={() => setViewTree((prev) => !prev)}>
           Flytt siden
-        </Button>
+        </Button> */}
         <Collapse in={viewTree}>
           <Typography align='center' sx={{ my: 1 }} variant='subtitle2'>
             Trykk på mappen du vil flytte denne siden til
@@ -77,151 +81,122 @@ const Tree = ({ selectedNode, setSelectedNode, page }: ITreeProps) => {
   }
 };
 
-type IFormProps = IPagesAdminProps & {
-  mode: Modes;
-  closeDialog: () => void;
-};
+// const Form = ({ closeDialog, mode, page }: IFormProps) => {
+//   const parentPath = page.path.slice(0, page.path.length - page.slug.length - 1);
+//   const createPage = useCreateWikiPage();
+//   const updatePage = useUpdateWikiPage(page.path);
+//   const deletePage = useDeleteWikiPage(page.path);
+//   const { register, formState, handleSubmit, watch, setValue } = useForm<FormData>(mode === Modes.EDIT ? { defaultValues: page } : {});
+//   const navigate = useNavigate();
+//   const showSnackbar = useSnackbar();
+//   const [treeNode, setTreeNode] = useState(parentPath);
+//   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+//   const [isLoading, setIsLoading] = useState(false);
 
-type FormData = Pick<WikiPage, 'title' | 'content' | 'image' | 'image_alt'>;
+//   const submit = async (data: FormData) => {
+//     if (isLoading) {
+//       return;
+//     }
+//     setIsLoading(true);
+//     if (mode === Modes.EDIT) {
+//       await updatePage.mutate(
+//         { ...page, ...data, slug: urlEncode(data.title), path: treeNode === '/' ? '' : treeNode },
+//         {
+//           onSuccess: (data) => {
+//             showSnackbar('Siden ble oppdatert', 'success');
+//             closeDialog();
+//             navigate(`${URLS.wiki}${data.path}`);
+//           },
+//           onError: (e) => {
+//             showSnackbar(e.detail, 'error');
+//           },
+//         },
+//       );
+//     } else {
+//       await createPage.mutate(
+//         { ...data, slug: urlEncode(data.title), path: page.path },
+//         {
+//           onSuccess: (data) => {
+//             showSnackbar('Siden ble opprettet', 'success');
+//             closeDialog();
+//             navigate(`${URLS.wiki}${data.path}`);
+//           },
+//           onError: (e) => {
+//             showSnackbar(e.detail, 'error');
+//           },
+//         },
+//       );
+//     }
+//     setIsLoading(false);
+//   };
 
-const Form = ({ closeDialog, mode, page }: IFormProps) => {
-  const parentPath = page.path.slice(0, page.path.length - page.slug.length - 1);
-  const createPage = useCreateWikiPage();
-  const updatePage = useUpdateWikiPage(page.path);
-  const deletePage = useDeleteWikiPage(page.path);
-  const { register, formState, handleSubmit, watch, setValue } = useForm<FormData>(mode === Modes.EDIT ? { defaultValues: page } : {});
-  const navigate = useNavigate();
-  const showSnackbar = useSnackbar();
-  const [treeNode, setTreeNode] = useState(parentPath);
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+//   const handleDeletePage = async () => {
+//     await deletePage.mutate(null, {
+//       onSuccess: (data) => {
+//         showSnackbar(data.detail, 'success');
+//         setShowDeleteDialog(false);
+//         closeDialog();
+//         navigate(`${URLS.wiki}${parentPath}`);
+//       },
+//       onError: (e) => {
+//         showSnackbar(e.detail, 'error');
+//       },
+//     });
+//   };
 
-  const submit = async (data: FormData) => {
-    if (isLoading) {
-      return;
-    }
-    setIsLoading(true);
-    if (mode === Modes.EDIT) {
-      await updatePage.mutate(
-        { ...page, ...data, slug: urlEncode(data.title), path: treeNode === '/' ? '' : treeNode },
-        {
-          onSuccess: (data) => {
-            showSnackbar('Siden ble oppdatert', 'success');
-            closeDialog();
-            navigate(`${URLS.wiki}${data.path}`);
-          },
-          onError: (e) => {
-            showSnackbar(e.detail, 'error');
-          },
-        },
-      );
-    } else {
-      await createPage.mutate(
-        { ...data, slug: urlEncode(data.title), path: page.path },
-        {
-          onSuccess: (data) => {
-            showSnackbar('Siden ble opprettet', 'success');
-            closeDialog();
-            navigate(`${URLS.wiki}${data.path}`);
-          },
-          onError: (e) => {
-            showSnackbar(e.detail, 'error');
-          },
-        },
-      );
-    }
-    setIsLoading(false);
-  };
-
-  const handleDeletePage = async () => {
-    await deletePage.mutate(null, {
-      onSuccess: (data) => {
-        showSnackbar(data.detail, 'success');
-        setShowDeleteDialog(false);
-        closeDialog();
-        navigate(`${URLS.wiki}${parentPath}`);
-      },
-      onError: (e) => {
-        showSnackbar(e.detail, 'error');
-      },
-    });
-  };
-
-  return (
-    <>
-      <form onSubmit={handleSubmit(submit)}>
-        <TextField disabled={isLoading} formState={formState} label='Tittel' {...register('title', { required: 'Feltet er påkrevd' })} required />
-        <MarkdownEditor formState={formState} {...register('content')} />
-        <ImageUpload formState={formState} label='Velg bilde' register={register('image')} setValue={setValue} watch={watch} />
-        <TextField disabled={isLoading} formState={formState} label='Bildetekst' {...register('image_alt')} />
-        {mode === Modes.EDIT && <Tree page={page} selectedNode={treeNode} setSelectedNode={setTreeNode} />}
-        <SubmitButton disabled={isLoading} formState={formState}>
-          {mode === Modes.EDIT ? 'Lagre' : 'Opprett'}
-        </SubmitButton>
-        {mode === Modes.EDIT && (
-          <>
-            <Button
-              color='error'
-              disabled={isLoading || Boolean(page.children.length)}
-              fullWidth
-              onClick={() => setShowDeleteDialog(true)}
-              sx={{ mt: 2 }}
-              variant='outlined'>
-              Slett side
-            </Button>
-            {Boolean(page.children.length) && (
-              <Typography align='center' variant='body2'>
-                Du kan ikke slette en side som har undersider. Slett eller flytt undersidene først. (Evt snakk med Index)
-              </Typography>
-            )}
-            <Dialog confirmText='Slett' onClose={() => setShowDeleteDialog(false)} onConfirm={handleDeletePage} open={showDeleteDialog} titleText='Slett side'>
-              Er du helt sikker på at du vil slette denne siden?
-            </Dialog>
-            <Divider sx={{ my: 2 }} />
-            <Typography variant='caption'>Opprettet: {formatDate(parseISO(page.created_at))}</Typography>
-            <br />
-            <Typography variant='caption'>Sist oppdatert: {formatDate(parseISO(page.updated_at))}</Typography>
-          </>
-        )}
-      </form>
-    </>
-  );
-};
+//   return (
+//     <>
+//       <form onSubmit={handleSubmit(submit)}>
+//         <TextField disabled={isLoading} formState={formState} label='Tittel' {...register('title', { required: 'Feltet er påkrevd' })} required />
+//         <MarkdownEditor formState={formState} {...register('content')} />
+//         <ImageUpload formState={formState} label='Velg bilde' register={register('image')} setValue={setValue} watch={watch} />
+//         <TextField disabled={isLoading} formState={formState} label='Bildetekst' {...register('image_alt')} />
+//         {mode === Modes.EDIT && <Tree page={page} selectedNode={treeNode} setSelectedNode={setTreeNode} />}
+//         <SubmitButton disabled={isLoading} formState={formState}>
+//           {mode === Modes.EDIT ? 'Lagre' : 'Opprett'}
+//         </SubmitButton>
+//         {mode === Modes.EDIT && (
+//           <>
+//             {/* <Button
+//               color='error'
+//               disabled={isLoading || Boolean(page.children.length)}
+//               fullWidth
+//               onClick={() => setShowDeleteDialog(true)}
+//               sx={{ mt: 2 }}
+//               variant='outlined'>
+//               Slett side
+//             </Button> */}
+//             {Boolean(page.children.length) && (
+//               <Typography align='center' variant='body2'>
+//                 Du kan ikke slette en side som har undersider. Slett eller flytt undersidene først. (Evt snakk med Index)
+//               </Typography>
+//             )}
+//             <Dialog confirmText='Slett' onClose={() =>
+//setShowDeleteDialog(false)} onConfirm={handleDeletePage} open={showDeleteDialog} titleText='Slett side'>
+//               Er du helt sikker på at du vil slette denne siden?
+//             </Dialog>
+//             <Divider sx={{ my: 2 }} />
+//             <Typography variant='caption'>Opprettet: {formatDate(parseISO(page.created_at))}</Typography>
+//             <br />
+//             <Typography variant='caption'>Sist oppdatert: {formatDate(parseISO(page.updated_at))}</Typography>
+//           </>
+//         )}
+//       </form>
+//     </>
+//   );
+// };
 
 export type IPagesAdminProps = {
   page: WikiPage;
 };
-enum Modes {
-  CREATE,
-  EDIT,
-}
 
 const WikiAdmin = ({ page }: IPagesAdminProps) => {
-  const [showDialog, setShowDialog] = useState(false);
-  const [mode, setMode] = useState(Modes.CREATE);
-
-  const edit = () => {
-    setMode(Modes.EDIT);
-    setShowDialog(true);
-  };
-  const create = () => {
-    setMode(Modes.CREATE);
-    setShowDialog(true);
-  };
-
   return (
     <HavePermission apps={[PermissionApp.PAGE]}>
-      {page.path !== '' && (
-        <Button endIcon={<EditIcon />} fullWidth onClick={edit} variant='outlined'>
-          Rediger side
-        </Button>
-      )}
-      <Button endIcon={<AddIcon />} fullWidth onClick={create} variant='outlined'>
-        Ny underside
-      </Button>
-      <Dialog onClose={() => setShowDialog(false)} open={showDialog} titleText={mode === Modes.EDIT ? 'Rediger side' : 'Opprett side'}>
-        <Form closeDialog={() => setShowDialog(false)} mode={mode} page={page} />
-      </Dialog>
+      <div className='w-full space-y-2 flex flex-col'>
+        {page.path !== '' && <UpdateWikiPage page={page} />}
+        <CreateWikiPage page={page} />
+      </div>
     </HavePermission>
   );
 };

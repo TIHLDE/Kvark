@@ -1,101 +1,116 @@
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import { useCallback, useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Pencil } from 'lucide-react';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import URLS from 'URLS';
+import { z } from 'zod';
 
 import { Gallery } from 'types';
 
 import { useDeleteGallery, useGalleryById, useUpdateGallery } from 'hooks/Gallery';
-import { useSnackbar } from 'hooks/Snackbar';
 
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import { ImageUpload } from 'components/inputs/Upload';
-import { BannerButton } from 'components/layout/Banner';
-import Dialog from 'components/layout/Dialog';
-import VerifyDialog from 'components/layout/VerifyDialog';
+import FormInput from 'components/inputs/Input';
+import FormTextarea from 'components/inputs/Textarea';
+import { FormImageUpload } from 'components/inputs/Upload';
+import { Button } from 'components/ui/button';
+import { Form } from 'components/ui/form';
+import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
+import { ScrollArea } from 'components/ui/scroll-area';
 
 export type GalleryEditorProps = {
   id: Gallery['id'];
 };
 
-type FormValues = Omit<Gallery, 'id' | 'slug'>;
+const formSchema = z.object({
+  title: z.string({ required_error: 'Feltet er påkrevd' }).min(1, { message: 'Gi galleriet en tittel' }),
+  description: z.string().optional(),
+  image: z.string().optional(),
+  image_alt: z.string().optional(),
+});
 
 const GalleryEditor = ({ id }: GalleryEditorProps) => {
   const { data } = useGalleryById(id);
   const editGallery = useUpdateGallery(id);
   const deleteGallery = useDeleteGallery(id);
-  const showSnackbar = useSnackbar();
   const navigate = useNavigate();
-  const { handleSubmit, register, formState, reset, watch, setValue } = useForm<FormValues>();
-  const setValues = useCallback(
-    (newValues: Gallery | null) => {
-      reset({
-        image: newValues?.image || '',
-        title: newValues?.title || '',
-        description: newValues?.description || '',
-        image_alt: newValues?.image_alt || '',
-      });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: data?.title || '',
+      description: data?.description || '',
+      image: data?.image || '',
+      image_alt: data?.image_alt || '',
     },
-    [reset],
-  );
+  });
 
-  useEffect(() => {
-    setValues(data || null);
-  }, [data, setValues]);
-
-  const remove = async () =>
+  const remove = () =>
     deleteGallery.mutate(null, {
       onSuccess: () => {
-        showSnackbar('Galleriet ble slettet', 'success');
+        toast.error('Galleriet ble slettet');
         navigate(URLS.gallery);
       },
-      onError: (e) => showSnackbar(e.detail, 'error'),
+      onError: (e) => {
+        toast.error(e.detail);
+      },
     });
 
-  const submit: SubmitHandler<FormValues> = async (data) => {
-    await editGallery.mutate(
-      { ...data, slug: '_', id },
-      {
-        onSuccess: () => {
-          showSnackbar('Galleriet ble oppdatert', 'success');
-        },
-        onError: (e) => {
-          showSnackbar(e.detail, 'error');
-        },
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    const data = {
+      ...values,
+      slug: '_',
+    };
+    editGallery.mutate(data, {
+      onSuccess: () => {
+        toast.success('Galleriet ble oppdatert');
       },
-    );
+      onError: (e) => {
+        toast.error(e.detail);
+      },
+    });
   };
 
+  const OpenButton = (
+    <Button variant='outline'>
+      <Pencil className='w-5 h-5 mr-2' />
+      Rediger galleri
+    </Button>
+  );
+
   return (
-    <form onSubmit={handleSubmit(submit)}>
-      <TextField formState={formState} label='Tittel' {...register('title')} />
-      <TextField formState={formState} label='Beskrivelse' {...register('description')} />
-      <ImageUpload formState={formState} label='Velg bilde' register={register('image')} setValue={setValue} watch={watch} />
-      <TextField formState={formState} label='Bildetekst' {...register('image_alt')} />
-      <SubmitButton formState={formState} sx={{ my: 2 }}>
-        Oppdater galleri
-      </SubmitButton>
-      <VerifyDialog closeText='Avbryt' color='error' contentText='Sletting av galleri kan ikke reverseres.' onConfirm={remove}>
-        Slett galleri
-      </VerifyDialog>
-    </form>
+    <ResponsiveDialog description='Endre tittel, beskrivelse og bilde.' title='Oppdater galleri' trigger={OpenButton}>
+      <ScrollArea className='h-[60vh]'>
+        <Form {...form}>
+          <form className='space-y-6 pl-2 pb-6' onSubmit={form.handleSubmit(onSubmit)}>
+            <FormInput form={form} label='Tittel' name='title' required />
+
+            <FormTextarea form={form} label='Beskrivelse' name='description' />
+
+            <FormImageUpload form={form} label='Cover-bilde' name='image' />
+
+            <FormInput form={form} label='Bildetekst' name='image_alt' />
+
+            <Button className='w-full' disabled={editGallery.isLoading} type='submit'>
+              Oppdater galleri
+            </Button>
+
+            <ResponsiveAlertDialog
+              action={remove}
+              description='Er du sikker på at du vil slette galleriet?'
+              title='Slett galleri'
+              trigger={
+                <Button className='w-full' variant='destructive'>
+                  Slett galleri
+                </Button>
+              }
+            />
+          </form>
+        </Form>
+      </ScrollArea>
+    </ResponsiveDialog>
   );
 };
 
-const GalleryEditorDialog = ({ id }: GalleryEditorProps) => {
-  const [open, setOpen] = useState(false);
-  return (
-    <>
-      <BannerButton endIcon={<EditRoundedIcon />} onClick={() => setOpen(true)} variant='outlined'>
-        Rediger galleri
-      </BannerButton>
-      <Dialog onClose={() => setOpen(false)} open={open} titleText='Rediger galleri'>
-        <GalleryEditor id={id} />
-      </Dialog>
-    </>
-  );
-};
-
-export default GalleryEditorDialog;
+export default GalleryEditor;

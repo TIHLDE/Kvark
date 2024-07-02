@@ -1,24 +1,27 @@
-import { Button, Stack, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import { useCreateBadge } from 'hooks/Badge';
-import { useSnackbar } from 'hooks/Snackbar';
+
+import { Button } from 'components/ui/button';
+import { Input } from 'components/ui/input';
 
 const BadgesGet = () => {
   const { badgeId } = useParams();
   const [flag, setFlag] = useState<string>(badgeId ? badgeId : '');
   const createUserBadge = useCreateBadge();
-  const showSnackbar = useSnackbar();
 
   const submit = () => {
     const formatedId = flag.replace(/flag{/gi, '').replace(/}/gi, '');
     createUserBadge.mutate(formatedId, {
-      onSuccess: (data) => {
-        showSnackbar(data.detail, 'success');
+      onSuccess: () => {
+        toast.success('Badge ervervet');
         setFlag('');
       },
-      onError: (e) => showSnackbar(e.detail, 'error'),
+      onError: (e) => {
+        toast.error(e.detail || 'Noe gikk galt');
+      },
     });
   };
 
@@ -29,20 +32,12 @@ const BadgesGet = () => {
   }, [badgeId]);
 
   return (
-    <Stack direction={{ xs: 'column', md: 'row' }} gap={2} sx={{ mt: 1 }}>
-      <TextField
-        fullWidth
-        helperText='flag{xxx-xxx-xxx-xxx-xxx}'
-        id='ctf-flag-input'
-        label='Send inn flagg'
-        onChange={(event) => setFlag(event.target.value)}
-        value={flag}
-        variant='outlined'
-      />
-      <Button onClick={submit} sx={{ height: { md: 56 }, minWidth: 120 }} variant='contained'>
+    <div className='mt-4 flex items-center space-x-4'>
+      <Input className='w-full' onChange={(event) => setFlag(event.target.value)} placeholder='flag{xxx-xxx-xxx-xxx-xxx}' value={flag} />
+      <Button onClick={submit} size='sm'>
         Send inn
       </Button>
-    </Stack>
+    </div>
   );
 };
 

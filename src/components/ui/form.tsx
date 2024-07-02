@@ -11,7 +11,7 @@ import {
 
 import { cn } from "lib/utils"
 import { Label } from "components/ui/label"
-import { createContext, forwardRef, useContext } from "react"
+import { createContext, forwardRef, useContext, useId } from "react"
 
 const Form = FormProvider
 
@@ -75,7 +75,7 @@ const FormItem = forwardRef<
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
   // TODO: Generate a real ID when updated to React 18
-  const id = 'random-id-since-we-dont-have-a-real-one-yet'
+  const id = useId();
 
   return (
     <FormItemContext.Provider value={{ id }}>

@@ -1,5 +1,4 @@
-import ArrowIcon from '@mui/icons-material/ArrowForwardRounded';
-import { IconButton, styled, Typography } from '@mui/material';
+import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 
@@ -11,20 +10,8 @@ import NewStudentBox from 'pages/Landing/components/NewStudentBox';
 import StoriesView from 'pages/Landing/components/StoriesView';
 import Wave from 'pages/Landing/components/Wave';
 
-import Container from 'components/layout/Container';
 import InfoBanner from 'components/miscellaneous/InfoBanner/InfoBanner';
-
-const Section = styled(Container)(({ theme }) => ({
-  paddingTop: theme.spacing(2),
-  paddingBottom: theme.spacing(2),
-  [theme.breakpoints.down('lg')]: {
-    paddingTop: theme.spacing(1.5),
-  },
-}));
-
-const Smoke = styled('div')(({ theme }) => ({
-  backgroundColor: theme.palette.background.smoke,
-}));
+import { Button } from 'components/ui/button';
 
 const Landing = () => {
   const { event } = useAnalytics();
@@ -34,33 +21,37 @@ const Landing = () => {
   return (
     <div>
       <Wave />
-      <Smoke>
-        <Section maxWidth='lg' sx={{ px: { xs: 0, lg: 2 } }}>
+      <div className='bg-[#f2f2f2] dark:bg-[#071a2d]'>
+        <div className='max-w-5xl w-full mx-auto py-4 space-y-8 px-4'>
           <NewStudentBox />
           <InfoBanner />
           <StoriesView />
-        </Section>
-      </Smoke>
-      <Section maxWidth='lg'>
-        <Typography align='center' gutterBottom variant='h2'>
-          Arrangementer
-          <IconButton component={Link} onClick={openEventsAnalytics} sx={{ ml: 1 }} to={URLS.events}>
-            <ArrowIcon />
-          </IconButton>
-        </Typography>
+        </div>
+      </div>
+      <div className='max-w-5xl w-full mx-auto py-4 space-y-6 px-4'>
+        <div className='flex items-center justify-center space-x-2'>
+          <h1 className='text-3xl font-bold'>Arrangementer</h1>
+          <Button asChild className='text-black dark:text-white' onClick={openEventsAnalytics} size='icon' variant='ghost'>
+            <Link to={URLS.events}>
+              <ArrowRight className='w-5 h-5' />
+            </Link>
+          </Button>
+        </div>
         <EventsView />
-      </Section>
-      <Smoke>
-        <Section maxWidth='lg'>
-          <Typography align='center' gutterBottom variant='h2'>
-            Nyheter
-            <IconButton component={Link} onClick={openNewsAnalytics} sx={{ ml: 1 }} to={URLS.news}>
-              <ArrowIcon />
-            </IconButton>
-          </Typography>
+      </div>
+      <div className='bg-[#f2f2f2] dark:bg-[#071a2d]'>
+        <div className='max-w-5xl w-full mx-auto py-4 space-y-6 px-4'>
+          <div className='flex items-center justify-center space-x-2'>
+            <h1 className='text-3xl font-bold'>Nyheter</h1>
+            <Button asChild className='text-black dark:text-white' onClick={openNewsAnalytics} size='icon' variant='ghost'>
+              <Link to={URLS.news}>
+                <ArrowRight className='w-5 h-5' />
+              </Link>
+            </Button>
+          </div>
           <NewsListView />
-        </Section>
-      </Smoke>
+        </div>
+      </div>
     </div>
   );
 };

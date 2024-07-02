@@ -1,5 +1,5 @@
-import Delete from '@mui/icons-material/DeleteRounded';
 import { parseISO } from 'date-fns';
+import { Trash } from 'lucide-react';
 import { formatDate } from 'utils';
 
 import { Strike, UserBase } from 'types';
@@ -7,9 +7,10 @@ import { Strike, UserBase } from 'types';
 import { useDeleteStrike } from 'hooks/Strike';
 import { useUserPermissions } from 'hooks/User';
 
-import VerifyDialog from 'components/layout/VerifyDialog';
 import EventListItem from 'components/miscellaneous/EventListItem';
+import { Button } from 'components/ui/button';
 import Expandable from 'components/ui/expandable';
+import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
 
 export type StrikeProps = {
   strike: Strike;
@@ -30,18 +31,26 @@ const StrikeListItem = ({ strike, user, displayUserInfo = false }: StrikeProps) 
       icon={<h1 className='text-xl font-semibold'>{strike.strike_size}</h1>}
       title={primaryText}>
       <div className='space-y-2'>
-        <div>
+        <div className='text-sm'>
           {permissions?.permissions.strike.read && Boolean(strike.creator) && (
             <h1>{`Opprettet av: ${strike.creator?.first_name} ${strike.creator?.last_name}`}</h1>
           )}
           <h1>{`Opprettet: ${formatDate(parseISO(strike.created_at))}`}</h1>
           {displayUserInfo && <h1>{`Begrunnelse: ${strike.description}`}</h1>}
         </div>
-        {strike.event !== undefined && <EventListItem event={strike.event} />}
+        {strike.event !== undefined && <EventListItem event={strike.event} size='large' />}
         {permissions?.permissions.strike.destroy && (
-          <VerifyDialog color='error' contentText={`Er du sikker på at du vil slette denne prikken?`} onConfirm={deleteHandler} startIcon={<Delete />}>
-            Slett prikk
-          </VerifyDialog>
+          <ResponsiveAlertDialog
+            action={deleteHandler}
+            description='Er du sikker på at du vil slette denne prikken?'
+            title='Slett prikk'
+            trigger={
+              <Button className='w-full' variant='destructive'>
+                <Trash className='w-5 h-5 stroke-[1.5px]' />
+                Slett prikk
+              </Button>
+            }
+          />
         )}
       </div>
     </Expandable>

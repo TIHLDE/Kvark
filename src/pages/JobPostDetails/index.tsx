@@ -9,6 +9,8 @@ import { useJobPostById } from 'hooks/JobPost';
 import Http404 from 'pages/Http404';
 import JobPostRenderer, { JobPostRendererLoading } from 'pages/JobPostDetails/components/JobPostRenderer';
 
+import Page from 'components/navigation/Page';
+
 function JobPostDetails() {
   const { id } = useParams();
   const { data, isLoading, isError } = useJobPostById(Number(id));
@@ -28,12 +30,14 @@ function JobPostDetails() {
   }
 
   return (
-    <div className='w-full px-2 md:px-12 mt-20'>
+    <Page>
       {isLoading ? (
         <JobPostRendererLoading />
       ) : (
         data !== undefined && (
           <>
+            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+            {/* @ts-ignore */}
             <Helmet>
               <meta content={data.title} property='og:title' />
               <meta content='website' property='og:type' />
@@ -44,7 +48,7 @@ function JobPostDetails() {
           </>
         )
       )}
-    </div>
+    </Page>
   );
 }
 

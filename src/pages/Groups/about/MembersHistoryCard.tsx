@@ -1,4 +1,3 @@
-import { Skeleton, Stack, Typography } from '@mui/material';
 import { useMemo } from 'react';
 
 import { Group } from 'types';
@@ -8,7 +7,8 @@ import { useMembershipHistories } from 'hooks/Membership';
 
 import MembershipHistoryListItem from 'pages/Groups/about/MembershipHistoryListItem';
 
-import Pagination from 'components/layout/Pagination';
+import { PaginateButton } from 'components/ui/button';
+import { Skeleton } from 'components/ui/skeleton';
 
 export type MembersHistoryCardProps = {
   groupSlug: Group['slug'];
@@ -22,15 +22,14 @@ const MembersHistoryCard = ({ groupSlug }: MembersHistoryCardProps) => {
 
   if (isLoading) {
     return (
-      <Stack spacing={1}>
-        <Skeleton height={45} width={160} />
-        <Skeleton width={120} />
-        <Skeleton height={45} width={190} />
-        <Skeleton width={140} />
-        <Skeleton width={150} />
-        <Skeleton width={130} />
-        <Skeleton width={160} />
-      </Stack>
+      <div className='space-y-2'>
+        <Skeleton className='h-12 w-full' />
+        <Skeleton className='h-12 w-full' />
+        <Skeleton className='h-12 w-full' />
+        <Skeleton className='h-12 w-full' />
+        <Skeleton className='h-12 w-full' />
+        <Skeleton className='h-12 w-full' />
+      </div>
     );
   }
 
@@ -39,16 +38,15 @@ const MembersHistoryCard = ({ groupSlug }: MembersHistoryCardProps) => {
   }
 
   return (
-    <Stack gap={1} sx={{ mt: 1 }}>
-      {Boolean(data?.pages?.length) && <Typography variant='h3'>Medlemshistorikk:</Typography>}
-      <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere tidligere medlemmer' nextPage={() => fetchNextPage()}>
-        <Stack gap={1}>
-          {prevMemberships.map((membership) => (
-            <MembershipHistoryListItem isAdmin={hasWriteAcccess} key={membership.id} membership={membership} />
-          ))}
-        </Stack>
-      </Pagination>
-    </Stack>
+    <div className='space-y-2'>
+      {Boolean(data?.pages?.length) && <h1 className='text-xl font-bold'>Medlemshistorikk:</h1>}
+      <div className='space-y-2'>
+        {prevMemberships.map((membership) => (
+          <MembershipHistoryListItem isAdmin={hasWriteAcccess} key={membership.id} membership={membership} />
+        ))}
+      </div>
+      {hasNextPage && <PaginateButton isLoading={isFetching} nextPage={fetchNextPage} />}
+    </div>
   );
 };
 

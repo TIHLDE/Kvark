@@ -1,33 +1,29 @@
-import DeleteIcon from '@mui/icons-material/DeleteRounded';
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import { Box, Button, Typography } from '@mui/material';
+import { Download, Trash } from 'lucide-react';
 import { QRCodeCanvas } from 'qrcode.react';
-import { useState } from 'react';
+import { toast } from 'sonner';
 
 import { QRCode } from 'types';
 
 import { useDeleteQRCode } from 'hooks/QRCode';
-import { useSnackbar } from 'hooks/Snackbar';
 
-import Dialog from 'components/layout/Dialog';
-import Paper from 'components/layout/Paper';
+import { Button } from 'components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
+import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
 
 export type QRCodeItemProps = {
   qrCode: QRCode;
 };
 
 const QRCodeItem = ({ qrCode }: QRCodeItemProps) => {
-  const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   const deleteQRCode = useDeleteQRCode(qrCode.id || -1);
-  const showSnackbar = useSnackbar();
 
-  const remove = async () => {
+  const handleDelete = () => {
     deleteQRCode.mutate(null, {
       onSuccess: () => {
-        showSnackbar('QR koden ble slettet', 'success');
+        toast.success('QR koden ble slettet');
       },
       onError: (e) => {
-        showSnackbar(e.detail, 'error');
+        toast.error(e.detail);
       },
     });
   };
@@ -49,37 +45,34 @@ const QRCodeItem = ({ qrCode }: QRCodeItemProps) => {
   };
 
   return (
-    <Paper>
-      <Typography align='center' variant='h3'>
-        {qrCode.name}
-      </Typography>
-      <Box
-        padding={2}
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          margin: 'auto',
-        }}>
-        <QRCodeCanvas id={qrCode.id.toString()} size={256} value={qrCode.content} />
-      </Box>
-      <div>
-        <Button endIcon={<FileDownloadIcon />} fullWidth onClick={download}>
-          Last ned
-        </Button>
-        <Button color='error' endIcon={<DeleteIcon />} fullWidth onClick={() => setRemoveDialogOpen(true)}>
-          Slett QR kode
-        </Button>
-      </div>
-      <Dialog
-        confirmText='Ja, jeg er sikker'
-        contentText='Denne QR koden vil ikke lenger være tilgjenglig for deg selv og andre.'
-        onClose={() => setRemoveDialogOpen(false)}
-        onConfirm={remove}
-        open={removeDialogOpen}
-        titleText='Er du sikker?'
-      />
-    </Paper>
+    <Card>
+      <CardHeader>
+        <CardTitle>{qrCode.name}</CardTitle>
+      </CardHeader>
+      <CardContent className='space-y-4'>
+        <div>
+          <QRCodeCanvas id={qrCode.id.toString()} size={256} value={qrCode.content} />
+        </div>
+
+        <div className='space-y-2'>
+          <Button className='w-full' onClick={download}>
+            <Download className='w-5 h-5 stroke-[1.5px] mr-2' />
+            Last ned
+          </Button>
+          <ResponsiveAlertDialog
+            action={handleDelete}
+            description='Denne QR koden vil ikke lenger være tilgjenglig for deg selv og andre.'
+            title='Er du sikker?'
+            trigger={
+              <Button className='w-full' variant='destructive'>
+                <Trash className='w-5 h-5 stroke-[1.5px] mr-2' />
+                Slett QR kode
+              </Button>
+            }
+          />
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

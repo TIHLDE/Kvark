@@ -1,60 +1,16 @@
-import DocumentIcon from '@mui/icons-material/DescriptionRounded';
-import LinkIcon from '@mui/icons-material/LinkRounded';
-import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
-import VerifiedIcon from '@mui/icons-material/VerifiedUserRounded';
-import { Divider, List, ListItemButton, Theme, Tooltip, Typography, useMediaQuery } from '@mui/material';
-import { makeStyles } from 'makeStyles';
+import { ExternalLink, File, Link, ShieldCheck } from 'lucide-react';
 import { Fragment } from 'react';
 
 import { Cheatsheet } from 'types';
 import { CheatsheetType } from 'types/Enums';
 
-import { useAnalytics } from 'hooks/Utils';
+import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
 
-import Pagination from 'components/layout/Pagination';
-import Paper from 'components/layout/Paper';
+import { PaginateButton } from 'components/ui/button';
+import { Separator } from 'components/ui/separator';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from 'components/ui/tooltip';
 
 import GitHub from 'assets/icons/github.svg?react';
-
-const useStyles = makeStyles()((theme) => ({
-  grid: {
-    display: 'grid',
-    width: '100%',
-    gridGap: theme.spacing(2),
-    gridTemplateColumns: '26px 4fr 2fr 3fr',
-    [theme.breakpoints.down('lg')]: {
-      gridTemplateColumns: '26px 1fr 1fr',
-      gridGap: theme.spacing(1),
-    },
-  },
-  filesHeaderContainer: {
-    textAlign: 'left',
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-  },
-  filesHeader: {
-    fontWeight: 'bold',
-  },
-  listItem: {
-    marginBottom: 0,
-    borderRadius: 0,
-    border: 'none',
-  },
-  icon: {
-    fill: theme.palette.text.secondary,
-    height: 26,
-    width: 26,
-  },
-  verified: {
-    fill: theme.palette.success.dark,
-    height: 22,
-    width: 22,
-    margin: `auto 0 auto ${theme.spacing(0.5)}`,
-  },
-  flex: {
-    display: 'flex',
-  },
-}));
 
 export type FilesProps = {
   files: Array<Cheatsheet>;
@@ -64,99 +20,88 @@ export type FilesProps = {
 };
 
 const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
-  const { classes, cx } = useStyles();
-  const { event } = useAnalytics();
-  const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
+  const isDesktop = useMediaQuery(MEDIUM_SCREEN);
 
   const Icon = ({ cheatsheet }: { cheatsheet: Cheatsheet }) => {
     if (cheatsheet.type === CheatsheetType.FILE) {
-      return (
-        <Tooltip title='Fil'>
-          <DocumentIcon className={classes.icon} />
-        </Tooltip>
-      );
+      return <File />;
     } else if (cheatsheet.type === CheatsheetType.GITHUB) {
-      return (
-        <Tooltip title='GitHub'>
-          <GitHub className={classes.icon} />
-        </Tooltip>
-      );
+      return <GitHub />;
     } else if (cheatsheet.type === CheatsheetType.LINK) {
-      return (
-        <Tooltip title='Link'>
-          <LinkIcon className={classes.icon} />
-        </Tooltip>
-      );
+      return <Link />;
     } else {
-      return (
-        <Tooltip title='Annet'>
-          <OpenInNewIcon className={classes.icon} />
-        </Tooltip>
-      );
+      return <ExternalLink />;
     }
   };
 
-  const onOpenFile = (file: Cheatsheet) => event('open', 'cheatsheet', `Opened ${file.title}, ${file.course}`);
-
   return (
-    <>
-      <div className={cx(classes.grid, classes.filesHeaderContainer)}>
-        <div></div>
-        <Typography className={classes.filesHeader} variant='subtitle1'>
-          Tittel:
-        </Typography>
-        {!lgDown && (
-          <Typography className={classes.filesHeader} variant='subtitle1'>
-            Av:
-          </Typography>
-        )}
-        <Typography className={classes.filesHeader} variant='subtitle1'>
-          Fag:
-        </Typography>
+    <div>
+      <div className='flex items-center justify-between'>
+        <h1 className='text-start w-full'>Tittel:</h1>
+        {isDesktop && <h1 className='text-start w-full'>Av:</h1>}
+        <h1 className='text-start w-full'>Fag:</h1>
       </div>
-      <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isLoading} nextPage={getNextPage}>
-        {files.length ? (
-          <List aria-label='Filer'>
-            {files.map((file, index) => (
-              <Fragment key={index}>
-                <Divider />
-                <Paper className={classes.listItem} noPadding>
-                  <ListItemButton component='a' href={file.url} onClick={() => onOpenFile(file)} rel='noopener noreferrer' target='_blank'>
-                    <div className={classes.grid}>
-                      <Icon cheatsheet={file} />
-                      <Typography variant='subtitle1'>
-                        <strong>{file.title}</strong>
-                      </Typography>
-                      {!lgDown && (
-                        <div className={classes.flex}>
-                          <Typography variant='subtitle1'>{file.creator}</Typography>
-                          {file.official && (
-                            <Tooltip title='Laget av NTNU'>
-                              <VerifiedIcon className={cx(classes.icon, classes.verified)} />
-                            </Tooltip>
-                          )}
-                        </div>
-                      )}
-                      <div className={classes.flex}>
-                        <Typography variant='subtitle1'>{file.course}</Typography>
-                        {file.official && lgDown && (
-                          <Tooltip title='Laget av NTNU'>
-                            <VerifiedIcon className={cx(classes.icon, classes.verified)} />
-                          </Tooltip>
-                        )}
-                      </div>
-                    </div>
-                  </ListItemButton>
-                </Paper>
-                {index === files.length - 1 && <Divider />}
-              </Fragment>
-            ))}
-          </List>
-        ) : (
-          <Typography align='center'>Fant ingen oppskrifter</Typography>
-        )}
-      </Pagination>
-    </>
+
+      <Separator className='my-2' />
+
+      {!files.length && <h1 className='text-center pt-4'>Fant ingen oppskrifter</h1>}
+
+      {files.length > 0 && (
+        <div className='space-y-2'>
+          {files.map((file, index) => (
+            <Fragment key={index}>
+              <a
+                className='flex items-center justify-between px-3 py-2 rounded-md hover:bg-muted text-black dark:text-white'
+                href={file.url}
+                rel='noopener noreferrer'
+                target='_blank'>
+                <div className='flex items-center space-x-2 justify-start w-full'>
+                  <Icon cheatsheet={file} />
+                  <p>{file.title}</p>
+                </div>
+
+                {isDesktop && (
+                  <div className='flex items-center space-x-2 justify-start w-full'>
+                    <h1>{file.creator}</h1>
+                    {file.official && (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <ShieldCheck />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Laget av NTNU</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
+                  </div>
+                )}
+
+                <div className='flex items-center space-x-2 justify-start w-full'>
+                  <h1>{file.course}</h1>
+                  {file.official && isDesktop && (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <ShieldCheck />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Laget av NTNU</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )}
+                </div>
+              </a>
+              {index !== files.length - 1 && <Separator />}
+            </Fragment>
+          ))}
+        </div>
+      )}
+
+      {hasNextPage && <PaginateButton className='mt-2 w-full' isLoading={isLoading} nextPage={getNextPage} />}
+    </div>
   );
 };
 

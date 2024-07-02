@@ -1,14 +1,15 @@
-import CloseIcon from '@mui/icons-material/CloseRounded';
-import { Dialog, DialogContent, DialogTitle, IconButton, styled, Typography } from '@mui/material';
-import { forwardRef, useState } from 'react';
-import { FieldValues } from 'react-hook-form';
+import { cn } from 'lib/utils';
+import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
-import TextField, { TextFieldProps } from 'components/inputs/TextField';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
+import { Button } from 'components/ui/button';
+import { FormControl, FormField, FormItem, FormMessage } from 'components/ui/form';
+import { Label } from 'components/ui/label';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
+import { ScrollArea } from 'components/ui/scroll-area';
+import { Textarea } from 'components/ui/textarea';
 
 const guide = `
-  *Markdown* er en vanlig måte å formatere tekst på nettet og brukes også tihlde.org. Her følger en rekke eksempler på hvordan du kan legge inn overskrifter, lister, linker, bilder, osv. ved hjelp av vanlig Markdown. I tillegg kan du vise arrangement-, nyhet- og jobbannonse-kort, samt en utvid-boks.
-
   ___
 
   ## **Overskrifter**
@@ -196,62 +197,46 @@ const guide = `
   ~~~
   `;
 
-const CloseButton = styled(IconButton)(({ theme }) => ({
-  position: 'absolute',
-  right: theme.spacing(1),
-  top: theme.spacing(1),
-  color: theme.palette.text.primary,
-}));
-
-const HelpText = styled('span')(({ theme }) => ({
-  color: theme.palette.text.secondary,
-  cursor: 'pointer',
-  textDecoration: 'underline',
-}));
-
-const GenericMarkdownEditor = <FormValues extends FieldValues>(props: TextFieldProps<FormValues>, ref: React.ForwardedRef<HTMLDivElement>) => {
-  const [helpDialogOpen, setHelpDialogOpen] = useState(false);
-
-  const HelperText = () => (
-    <>
-      <HelpText onClick={() => setHelpDialogOpen(true)}>Hvordan formaterer jeg teksten?</HelpText>
-      {Boolean(props.helperText) && <>{props.helperText}</>}
-    </>
-  );
-
-  return (
-    <>
-      <TextField
-        {...props}
-        error={Boolean(props.error)}
-        fullWidth
-        helperText={<HelperText />}
-        label={props.label || 'Beskrivelse'}
-        margin='normal'
-        maxRows={25}
-        minRows={5}
-        multiline
-        ref={ref}
-      />
-      {helpDialogOpen && (
-        <Dialog aria-labelledby='format-dialog-title' fullWidth maxWidth='md' onClose={() => setHelpDialogOpen(false)} open={helpDialogOpen}>
-          <DialogTitle id='format-dialog-title' sx={{ p: 2, m: 0 }}>
-            <Typography variant='h3'>Formaterings-guide</Typography>
-            <CloseButton aria-label='close' onClick={() => setHelpDialogOpen(false)}>
-              <CloseIcon />
-            </CloseButton>
-          </DialogTitle>
-          <DialogContent sx={{ p: 2 }}>
-            <MarkdownRenderer value={guide} />
-          </DialogContent>
-        </Dialog>
-      )}
-    </>
-  );
+type MarkdownEditorProps<TFormValues extends FieldValues> = {
+  form: UseFormReturn<TFormValues>;
+  name: Path<TFormValues>;
+  label: string;
+  required?: boolean;
+  className?: string;
 };
 
-const MarkdownEditor = forwardRef(GenericMarkdownEditor) as <FormValues>(
-  props: TextFieldProps<FormValues> & { ref?: React.ForwardedRef<HTMLDivElement> },
-) => ReturnType<typeof GenericMarkdownEditor>;
+const MarkdownEditor = <TFormValues extends FieldValues>({ form, name, label, required, className }: MarkdownEditorProps<TFormValues>) => {
+  return (
+    <div>
+      <FormField
+        control={form.control}
+        name={name}
+        render={({ field }) => (
+          <FormItem>
+            <Label>
+              {label} {required && <span className='text-red-300'>*</span>}
+            </Label>
+            <FormControl>
+              <Textarea className={cn('w-full h-[200px] md:h-[300px]', className)} placeholder='Skriv innhold her...' {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <ResponsiveDialog
+        description='Markdown er en vanlig måte å formatere tekst på nettet og brukes også på tihlde.org. Her følger en rekke eksempler på hvordan du kan legge inn overskrifter, lister, linker, bilder, osv. ved hjelp av vanlig Markdown. I tillegg kan du vise arrangement-, nyhet- og jobbannonse-kort, samt en utvid-boks.'
+        title='Formaterings-guide'
+        trigger={
+          <Button className='justify-start' variant='link'>
+            Hvordan formaterer jeg teksten?
+          </Button>
+        }>
+        <ScrollArea className='w-full h-[60vh] pr-4'>
+          <MarkdownRenderer value={guide} />
+        </ScrollArea>
+      </ResponsiveDialog>
+    </div>
+  );
+};
 
 export default MarkdownEditor;

@@ -1,13 +1,14 @@
 import { Outlet } from 'react-router-dom';
 
-import Paper from 'components/layout/Paper';
+import Page from 'components/navigation/Page';
+import { Card } from 'components/ui/card';
 
 const Groups = () => (
-  <div className='w-full px-2 md:px-12 mt-40'>
-    <Paper sx={{ margin: '-60px auto 60px', position: 'relative', minHeight: 200 }}>
+  <Page className='max-w-6xl mx-auto'>
+    <Card>
       <Outlet />
-    </Paper>
-  </div>
+    </Card>
+  </Page>
 );
 
 export default Groups;

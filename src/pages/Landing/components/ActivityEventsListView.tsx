@@ -52,7 +52,7 @@ const ActivityEventsListView = () => {
     return (
       <Stack gap={1}>
         {data?.pages[0]?.results.slice(0, NO_OF_EVENTS_TO_SHOW_MD_DOWN).map((event) => (
-          <EventListItem event={event} key={event.id} />
+          <EventListItem event={event} key={event.id} size='small' />
         ))}
       </Stack>
     );
@@ -61,7 +61,7 @@ const ActivityEventsListView = () => {
   return (
     <Container>
       {data?.pages[0].results.length ? (
-        data?.pages[0]?.results.slice(0, NO_OF_EVENTS_TO_SHOW).map((event) => <EventListItem event={event} key={event.id} />)
+        data?.pages[0]?.results.slice(0, NO_OF_EVENTS_TO_SHOW).map((event) => <EventListItem event={event} key={event.id} size='small' />)
       ) : (
         <Stack gap={1}>
           <Text align='center' variant='subtitle1'>

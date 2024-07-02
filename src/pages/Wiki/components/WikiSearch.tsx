@@ -1,15 +1,16 @@
-import PageIcon from '@mui/icons-material/SubjectRounded';
-import { Collapse, List, ListItem, ListItemButton, ListItemIcon, ListItemText, TextField, Typography } from '@mui/material';
-import { useMemo, useState } from 'react';
+import { ChevronRight, FileText, Loader2, Search } from 'lucide-react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+
+import { WikiChildren } from 'types';
 
 import { useAnalytics, useDebounce } from 'hooks/Utils';
 import { useWikiSearch } from 'hooks/Wiki';
 
-import { BannerButton } from 'components/layout/Banner';
-import Dialog from 'components/layout/Dialog';
-import Pagination from 'components/layout/Pagination';
-import Paper from 'components/layout/Paper';
+import { Button, PaginateButton } from 'components/ui/button';
+import { Input } from 'components/ui/input';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
+import { ScrollArea } from 'components/ui/scroll-area';
 
 const WikiSearch = () => {
   const { event } = useAnalytics();
@@ -26,45 +27,64 @@ const WikiSearch = () => {
   const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useWikiSearch(filters);
   const pages = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
   const [open, setOpen] = useState(false);
-  const toggle = () => setOpen((prev) => !prev);
 
   return (
-    <>
-      <BannerButton onClick={toggle} variant='outlined'>
-        Søk
-      </BannerButton>
-      <Dialog onClose={toggle} open={open}>
-        <TextField autoFocus fullWidth label='Søk i Wiki' onChange={(e) => setSearch(e.target.value)} sx={{ mb: 1 }} value={search} variant='outlined' />
-        <Collapse in={Boolean(pages.length && !isLoading)}>
-          <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere sider' nextPage={() => fetchNextPage()}>
-            <Paper noOverflow noPadding>
-              <List disablePadding>
-                {pages.map((page, i) => (
-                  <ListItem disablePadding divider={pages.length - 1 !== i} key={page.path}>
-                    <ListItemButton component={Link} onClick={toggle} to={page.path}>
-                      <ListItemIcon>
-                        <PageIcon />
-                      </ListItemIcon>
-                      <ListItemText primary={page.title} />
-                    </ListItemButton>
-                  </ListItem>
-                ))}
-              </List>
-            </Paper>
-          </Pagination>
-        </Collapse>
-        <Collapse in={Boolean(!pages.length && debouncedSearch.length && !isLoading)}>
-          <Typography align='center' variant='subtitle2'>
-            Fant ingen sider som inneholder det du leter etter
-          </Typography>
-        </Collapse>
-        <Collapse in={Boolean(!debouncedSearch.length)}>
-          <Typography align='center' variant='subtitle2'>
-            {`Søk etter innhold for å se resultater, for eks: "Lambo"`}
-          </Typography>
-        </Collapse>
-      </Dialog>
-    </>
+    <ResponsiveDialog
+      className='w-full max-w-2xl'
+      description='Søk etter ord eller setninger for å finne sider i Wiki. Eks: "Lambo"'
+      onOpenChange={setOpen}
+      open={open}
+      title='Søk i Wiki'
+      trigger={
+        <Button className='text-lg' size='lg'>
+          <Search className='mr-2 w-5 h-5 stroke-[1.5px]' />
+          Søk
+        </Button>
+      }>
+      <div className='px-2 py-4 space-y-8'>
+        <Input onChange={(e) => setSearch(e.target.value)} placeholder='Søk...' value={search} />
+
+        <ScrollArea className='h-[50vh] pr-4'>
+          {isLoading && pages.length === 0 && (
+            <div className='flex justify-center mt-12 items-center'>
+              <Loader2 className='w-6 h-6 mr-2 animate-spin' />
+              <h1>Søker...</h1>
+            </div>
+          )}
+
+          {!isLoading && pages.length === 0 && debouncedSearch.length > 0 && (
+            <h1 className='text-center mt-12'>Fant ingen sider som inneholder det du leter etter</h1>
+          )}
+
+          <div className='space-y-2 pb-6'>
+            {pages.map((page, index) => (
+              <PageListItem key={index} page={page} setOpen={setOpen} />
+            ))}
+            {hasNextPage && <PaginateButton className='w-full' isLoading={isLoading} nextPage={fetchNextPage} />}
+          </div>
+        </ScrollArea>
+      </div>
+    </ResponsiveDialog>
+  );
+};
+
+type PageListItemProps = {
+  page: WikiChildren;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+};
+
+const PageListItem = ({ page, setOpen }: PageListItemProps) => {
+  return (
+    <Button asChild className='block w-full rounded-md border h-auto' variant='outline'>
+      <Link className='flex items-center justify-between' onClick={() => setOpen(false)} to={page.path}>
+        <div className='flex items-center space-x-2'>
+          <FileText className='w-6 h-6' />
+          <h1 className='text-lg'>{page.title}</h1>
+        </div>
+
+        <ChevronRight className='w-5 h-5 stroke-[1.5px]' />
+      </Link>
+    </Button>
   );
 };
 

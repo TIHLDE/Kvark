@@ -1,45 +1,31 @@
-import { Grid, LinearProgress, MenuItem } from '@mui/material';
-import { EMAIL_REGEX } from 'constant';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { parseISO } from 'date-fns';
-import { makeStyles } from 'makeStyles';
 import { useCallback, useEffect, useMemo } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { getJobpostType } from 'utils';
+import { z } from 'zod';
 
 import { JobPost } from 'types';
 import { JobPostType } from 'types/Enums';
 
 import { useCreateJobPost, useDeleteJobPost, useJobPostById, useUpdateJobPost } from 'hooks/JobPost';
-import { useSnackbar } from 'hooks/Snackbar';
 
 import JobPostRenderer from 'pages/JobPostDetails/components/JobPostRenderer';
 
-import Bool from 'components/inputs/Bool';
-import DatePicker from 'components/inputs/DatePicker';
+import DateTimePicker from 'components/inputs/DateTimePicker';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
-import Select from 'components/inputs/Select';
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import { ImageUpload } from 'components/inputs/Upload';
-import VerifyDialog from 'components/layout/VerifyDialog';
+import { FormImageUpload } from 'components/inputs/Upload';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
+import { Button } from 'components/ui/button';
+import { Card, CardContent } from 'components/ui/card';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
+import { Input } from 'components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
+import { Switch } from 'components/ui/switch';
 
-const useStyles = makeStyles()((theme) => ({
-  grid: {
-    display: 'grid',
-    gridGap: theme.spacing(2),
-    gridTemplateColumns: '1fr 1fr',
-    [theme.breakpoints.down('md')]: {
-      gridGap: 0,
-      gridTemplateColumns: '1fr',
-    },
-  },
-  margin: {
-    margin: theme.spacing(2, 0, 1),
-    borderRadius: theme.shape.borderRadius,
-    overflow: 'hidden',
-  },
-}));
+import DeleteJobPost from './DeleteJobPost';
+import JobPostFormSkeleton from './JobPostFormSkeleton';
 
 const years = [1, 2, 3, 4, 5];
 
@@ -48,37 +34,57 @@ export type EventEditorProps = {
   goToJobPost: (newJobPost: number | null) => void;
 };
 
-type FormValues = Pick<
-  JobPost,
-  | 'body'
-  | 'company'
-  | 'email'
-  | 'ingress'
-  | 'image'
-  | 'image_alt'
-  | 'link'
-  | 'location'
-  | 'title'
-  | 'is_continuously_hiring'
-  | 'job_type'
-  | 'class_start'
-  | 'class_end'
-> & {
-  deadline: Date;
-};
+const formSchema = z
+  .object({
+    body: z.string().min(1, { message: 'Gi annonsen en beskrivelse' }),
+    company: z.string().min(1, { message: 'Du må oppgi en bedrift' }),
+    email: z.string().email({ message: 'Ugyldig e-post' }).optional().or(z.literal('')),
+    ingress: z.string(),
+    image: z.string(),
+    image_alt: z.string(),
+    link: z.string().url({ message: 'Ugyldig URL' }).optional().or(z.literal('')),
+    location: z.string(),
+    title: z.string().min(1, { message: 'En tittel er påkrevd' }),
+    is_continuously_hiring: z.boolean(),
+    job_type: z.nativeEnum(JobPostType),
+    class_start: z.string(),
+    class_end: z.string(),
+    deadline: z.date(),
+  })
+  .refine((data) => parseInt(data.class_start) <= parseInt(data.class_end), {
+    message: '"Fra årstrinn" må være mindre eller lik "Til årstrinn"',
+    path: ['class_start'],
+  });
 
 const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
-  const { classes } = useStyles();
   const { data, isLoading, isError } = useJobPostById(jobpostId || -1);
   const createJobPost = useCreateJobPost();
   const updateJobPost = useUpdateJobPost(jobpostId || -1);
   const deleteJobPost = useDeleteJobPost(jobpostId || -1);
-  const showSnackbar = useSnackbar();
-  const { handleSubmit, control, register, formState, getValues, reset, setValue, watch } = useForm<FormValues>();
   const isUpdating = useMemo(
     () => createJobPost.isLoading || updateJobPost.isLoading || deleteJobPost.isLoading,
     [createJobPost.isLoading, updateJobPost.isLoading, deleteJobPost.isLoading],
   );
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      body: '',
+      company: '',
+      deadline: new Date(),
+      email: '',
+      image: '',
+      image_alt: '',
+      ingress: '',
+      is_continuously_hiring: false,
+      link: '',
+      location: '',
+      title: '',
+      job_type: JobPostType.OTHER,
+      class_start: years[0].toString(),
+      class_end: years[years.length - 1].toString(),
+    },
+  });
 
   useEffect(() => {
     !isError || goToJobPost(null);
@@ -86,7 +92,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
 
   const setValues = useCallback(
     (newValues: JobPost | null) => {
-      reset({
+      form.reset({
         body: newValues?.body || '',
         company: newValues?.company || '',
         deadline: newValues?.deadline ? parseISO(newValues?.deadline) : new Date(),
@@ -99,11 +105,11 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
         location: newValues?.location || '',
         title: newValues?.title || '',
         job_type: newValues?.job_type || JobPostType.OTHER,
-        class_start: newValues?.class_start || years[0],
-        class_end: newValues?.class_end || years[years.length - 1],
+        class_start: newValues?.class_start.toString() || years[0].toString(),
+        class_end: newValues?.class_end.toString() || years[years.length - 1].toString(),
       });
     },
-    [reset],
+    [form.reset],
   );
 
   useEffect(() => {
@@ -114,52 +120,65 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
     }
   }, [data, setValues]);
 
-  const getJobPostPreview = () => {
+  const getJobPostPreview = (): JobPost | null => {
+    const title = form.getValues('title');
+    const company = form.getValues('company');
+    const location = form.getValues('location');
+    const body = form.getValues('body');
+
+    if (!title && !company && !location && !body) {
+      return null;
+    }
+
     return {
-      ...getValues(),
+      ...form.getValues(),
       created_at: new Date().toJSON(),
       id: 1,
       expired: false,
       updated_at: new Date().toJSON(),
-      deadline: getValues().deadline.toJSON(),
+      deadline: form.getValues().deadline.toJSON(),
+      class_start: parseInt(form.getValues('class_start')),
+      class_end: parseInt(form.getValues('class_end')),
+      link: form.getValues('link') || '',
+      email: form.getValues('email') || '',
     };
   };
 
   const remove = async () => {
     deleteJobPost.mutate(null, {
       onSuccess: (data) => {
-        showSnackbar(data.detail, 'success');
+        toast.success(data.detail);
         goToJobPost(null);
       },
       onError: (e) => {
-        showSnackbar(e.detail, 'error');
+        toast.error(e.detail);
       },
     });
   };
 
-  const submit: SubmitHandler<FormValues> = async (data) => {
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     if (jobpostId) {
-      await updateJobPost.mutate(
-        { ...data, deadline: data.deadline.toJSON() },
+      updateJobPost.mutate(
+        { ...values, deadline: values.deadline.toJSON(), class_start: parseInt(values.class_start), class_end: parseInt(values.class_end) },
         {
           onSuccess: () => {
-            showSnackbar('Annonsen ble oppdatert', 'success');
+            toast.success('Annonsen ble oppdatert');
           },
           onError: (e) => {
-            showSnackbar(e.detail, 'error');
+            toast.error(e.detail);
           },
         },
       );
     } else {
-      await createJobPost.mutate(
-        { ...data, deadline: data.deadline.toJSON() },
+      createJobPost.mutate(
+        { ...values, deadline: values.deadline.toJSON(), class_start: parseInt(values.class_start), class_end: parseInt(values.class_end) },
         {
           onSuccess: (newJobPost) => {
-            showSnackbar('Annonsen ble opprettet', 'success');
+            toast.success('Annonsen ble opprettet');
             goToJobPost(newJobPost.id);
           },
           onError: (e) => {
-            showSnackbar(e.detail, 'error');
+            toast.error(e.detail);
           },
         },
       );
@@ -167,100 +186,238 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
   };
 
   if (isLoading) {
-    return <LinearProgress />;
+    return <JobPostFormSkeleton />;
   }
 
   return (
-    <>
-      <form onSubmit={handleSubmit(submit)}>
-        <Grid container direction='column' wrap='nowrap'>
-          <div className={classes.grid}>
-            <TextField formState={formState} label='Tittel' {...register('title', { required: 'En tittel er påkrevd' })} required />
-            <TextField formState={formState} label='Sted' {...register('location', { required: 'Et sted er påkrevd' })} required />
-          </div>
-          <TextField formState={formState} label='Ingress' {...register('ingress')} />
-          <MarkdownEditor formState={formState} {...register('body', { required: 'Gi annonsen en beskrivelse' })} required />
-          <Bool control={control} formState={formState} label='Fortløpende opptak?' name='is_continuously_hiring' type='checkbox' />
-          <div className={classes.grid}>
-            <DatePicker
-              control={control}
-              formState={formState}
-              label='Utløpsdato'
-              name='deadline'
-              required
-              rules={{ required: 'Feltet er påkrevd' }}
-              type='date-time'
-            />
-            <TextField formState={formState} label='Link' {...register('link')} />
-          </div>
-          <ImageUpload formState={formState} label='Velg logo' ratio='21:9' register={register('image')} setValue={setValue} watch={watch} />
-          <TextField formState={formState} label='Alternativ bildetekst' {...register('image_alt')} />
-          <div className={classes.grid}>
-            <TextField formState={formState} label='Bedrift' {...register('company', { required: 'Du må oppgi en bedrift' })} required />
-            <TextField
-              formState={formState}
-              label='E-post'
-              {...register('email', {
-                pattern: {
-                  value: EMAIL_REGEX,
-                  message: 'Ugyldig e-post',
-                },
-              })}
-              type='email'
-            />
-          </div>
-          <div className={classes.grid}>
-            <div className={classes.grid}>
-              <Select
-                control={control}
-                formState={formState}
-                label='Fra årstrinn'
-                name='class_start'
-                rules={{
-                  validate: {
-                    wrongOrder: (value) => value <= getValues().class_end || '"Fra årstrinn" må være mindre eller lik "Til årstrinn"',
-                  },
-                }}>
-                {years.map((value) => (
-                  <MenuItem key={value} value={value}>
-                    {`${value}`}
-                  </MenuItem>
-                ))}
-              </Select>
-              <Select control={control} formState={formState} label='Til årstrinn' name='class_end'>
-                {years.map((value) => (
-                  <MenuItem key={value} value={value}>
-                    {`${value}`}
-                  </MenuItem>
-                ))}
-              </Select>
+    <Card>
+      <CardContent className='py-6'>
+        <Form {...form}>
+          <form className='space-y-6' onSubmit={form.handleSubmit(onSubmit)}>
+            <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
+              <FormField
+                control={form.control}
+                name='title'
+                render={({ field }) => (
+                  <FormItem className='w-full'>
+                    <FormLabel>
+                      Tittel <span className='text-red-300'>*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder='Skriv her...' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='location'
+                render={({ field }) => (
+                  <FormItem className='w-full'>
+                    <FormLabel>
+                      Sted <span className='text-red-300'>*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder='Skriv her...' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            <Select control={control} formState={formState} label='Stillingstype' name='job_type'>
-              {(Object.keys(JobPostType) as Array<JobPostType>).map((jobPostTypeEnum) => (
-                <MenuItem key={jobPostTypeEnum} value={jobPostTypeEnum}>
-                  {getJobpostType(jobPostTypeEnum)}
-                </MenuItem>
-              ))}
-            </Select>
-          </div>
-          <RendererPreview className={classes.margin} getContent={getJobPostPreview} renderer={JobPostRenderer} />
-          <SubmitButton className={classes.margin} disabled={isUpdating} formState={formState}>
-            {jobpostId ? 'Oppdater annonse' : 'Opprett annonse'}
-          </SubmitButton>
-          {Boolean(jobpostId) && (
-            <VerifyDialog
-              className={classes.margin}
-              closeText='Ikke slett annonsen'
-              color='error'
-              contentText='Sletting av annonser kan ikke reverseres.'
-              onConfirm={remove}
-              titleText='Er du sikker?'>
-              Slett
-            </VerifyDialog>
-          )}
-        </Grid>
-      </form>
-    </>
+
+            <FormField
+              control={form.control}
+              name='ingress'
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabel>Ingress</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Skriv her...' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <MarkdownEditor form={form} label='Innhold' name='body' required />
+
+            <FormField
+              control={form.control}
+              name='is_continuously_hiring'
+              render={({ field }) => (
+                <FormItem className='space-x-16 md:space-x-0 flex flex-row items-center justify-between rounded-md border p-4'>
+                  <div className='space-y-0.5'>
+                    <FormLabel className='text-base'>Fortløpende opptak?</FormLabel>
+                    <FormDescription>Huk av om annonsen er fortløpende opptak.</FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch checked={field.value} onCheckedChange={field.onChange} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
+              <DateTimePicker form={form} label='Utløpsdato' name='deadline' required />
+
+              <FormField
+                control={form.control}
+                name='link'
+                render={({ field }) => (
+                  <FormItem className='w-full'>
+                    <FormLabel>Link</FormLabel>
+                    <FormControl>
+                      <Input placeholder='Skriv her...' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormImageUpload form={form} label='Velg logo' name='image' ratio='21:9' />
+
+            <FormField
+              control={form.control}
+              name='image_alt'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Alternativ bildetekst</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Skriv her...' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
+              <FormField
+                control={form.control}
+                name='company'
+                render={({ field }) => (
+                  <FormItem className='w-full'>
+                    <FormLabel>
+                      Bedrift <span className='text-red-300'>*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder='Skriv her...' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='email'
+                render={({ field }) => (
+                  <FormItem className='w-full'>
+                    <FormLabel>E-post</FormLabel>
+                    <FormControl>
+                      <Input placeholder='Skriv her...' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
+              <div className='w-full flex space-x-4'>
+                <FormField
+                  control={form.control}
+                  name='class_start'
+                  render={({ field }) => (
+                    <FormItem className='w-full'>
+                      <FormLabel>Fra årstrinn</FormLabel>
+                      <Select defaultValue={field.value} onValueChange={field.onChange}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={field.value} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {years.map((value) => (
+                            <SelectItem key={value} value={value.toString()}>
+                              {value}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='class_end'
+                  render={({ field }) => (
+                    <FormItem className='w-full'>
+                      <FormLabel>Til årstrinn</FormLabel>
+                      <Select defaultValue={field.value} onValueChange={field.onChange}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={field.value} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {years.map((value) => (
+                            <SelectItem key={value} value={value.toString()}>
+                              {value}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <FormField
+                control={form.control}
+                name='job_type'
+                render={({ field }) => (
+                  <FormItem className='w-full'>
+                    <FormLabel>Stillingstype</FormLabel>
+                    <Select defaultValue={field.value} onValueChange={field.onChange}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder={field.value} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {(Object.keys(JobPostType) as Array<JobPostType>).map((value) => (
+                          <SelectItem key={value} value={value}>
+                            {getJobpostType(value)}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className='space-y-2 md:flex md:items-center md:justify-end md:space-x-4 md:space-y-0 pt-6'>
+              <DeleteJobPost deleteJobPost={remove} jobPostId={jobpostId} />
+
+              <RendererPreview getContent={getJobPostPreview} renderer={JobPostRenderer} />
+
+              <Button className='w-full md:w-40 block' disabled={isUpdating} type='submit'>
+                {jobpostId ? 'Oppdater annonse' : 'Opprett annonse'}
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   );
 };
 

@@ -1,17 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { UserBio } from 'types';
 
-import { useSnackbar } from 'hooks/Snackbar';
 import { useCreateUserBio, useUpdateUserBio } from 'hooks/UserBio';
 
+import FormInput from 'components/inputs/Input';
+import FormTextarea from 'components/inputs/Textarea';
 import { Button } from 'components/ui/button';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import { Textarea } from 'components/ui/textarea';
+import { Form } from 'components/ui/form';
 
 const formSchema = z.object({
   description: z
@@ -49,7 +49,6 @@ export type UserBioProps = {
 };
 
 const UserBioForm = ({ userBio, setOpen }: UserBioProps) => {
-  const showSnackbar = useSnackbar();
   const createUserBio = useCreateUserBio();
   const updateUserBio = useUpdateUserBio(userBio ? userBio.id : 0);
 
@@ -66,15 +65,21 @@ const UserBioForm = ({ userBio, setOpen }: UserBioProps) => {
     if (!userBio) {
       createUserBio.mutate(values, {
         onSuccess: () => {
-          showSnackbar('Profilbio ble opprettet', 'success');
+          toast.success('Profilbio ble opprettet');
           setOpen(false);
+        },
+        onError: (e) => {
+          toast.error(e.detail);
         },
       });
     } else {
       updateUserBio.mutate(values, {
         onSuccess: () => {
-          showSnackbar('Profilbio ble oppdatert', 'success');
+          toast.success('Profilbio ble oppdatert');
           setOpen(false);
+        },
+        onError: (e) => {
+          toast.error(e.detail);
         },
       });
     }
@@ -82,52 +87,14 @@ const UserBioForm = ({ userBio, setOpen }: UserBioProps) => {
 
   return (
     <Form {...form}>
-      <form className='space-y-8' onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name='description'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Beskrivelse</FormLabel>
-              <FormControl>
-                <Textarea className='resize-none h-[100px]' placeholder='Beskrivelse' {...field} />
-              </FormControl>
-              <FormDescription>En kort beskrivelse av deg.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='gitHub_link'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>GitHub</FormLabel>
-              <FormControl>
-                <Input placeholder='https://github.com/TIHLDE' {...field} />
-              </FormControl>
-              <FormDescription>Din GitHub profil.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <form className='space-y-6 px-4 pb-6' onSubmit={form.handleSubmit(onSubmit)}>
+        <FormTextarea description='En kort beskrivelse av deg.' form={form} label='Beskrivelse' name='description' />
 
-        <FormField
-          control={form.control}
-          name='linkedIn_link'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>LinkedIn</FormLabel>
-              <FormControl>
-                <Input placeholder='https://linkedin.com/TIHLDE' {...field} />
-              </FormControl>
-              <FormDescription>Din LinkedIn profil.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <FormInput description='Din GitHub profil.' form={form} label='GitHub' name='gitHub_link' />
 
-        <Button size='lg' type='submit'>
+        <FormInput description='Din LinkedIn profil.' form={form} label='LinkedIn' name='linkedIn_link' />
+
+        <Button className='w-full' type='submit'>
           {!userBio ? 'Opprett' : 'Oppdater'}
         </Button>
       </form>

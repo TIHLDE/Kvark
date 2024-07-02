@@ -1,4 +1,4 @@
-import { Alert, Box } from '@mui/material';
+import { Info } from 'lucide-react';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -6,9 +6,9 @@ import { useBadges } from 'hooks/Badge';
 
 import BadgeItem, { BadgeItemLoading } from 'pages/Badges/components/BadgeItem';
 
-import Pagination from 'components/layout/Pagination';
-import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import { Alert, AlertDescription, AlertTitle } from 'components/ui/alert';
+import { PaginateButton } from 'components/ui/button';
 
 export const BadgesList = () => {
   const { categoryId } = useParams<'categoryId'>();
@@ -16,23 +16,27 @@ export const BadgesList = () => {
   const badges = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   return (
-    <>
-      <Alert severity='info' sx={{ my: 1 }} variant='outlined'>
-        Her vises kun offentlige badges. Det kan finnes andre badges som er mulig å få, men som ikke vises her for å hindre at det blir for lett å finne dem.
+    <div className='mt-4 space-y-4'>
+      <Alert>
+        <Info className='w-5 h-5' />
+        <AlertTitle>Her vises kun offentlige badges</AlertTitle>
+        <AlertDescription>
+          Det kan finnes andre badges som er mulig å få, men som ikke vises her for å hindre at det blir for lett å finne dem.
+        </AlertDescription>
       </Alert>
+
       {isLoading && <BadgeItemLoading />}
       {!isLoading && !badges.length && <NotFoundIndicator header='Fant ingen offentlige badges' />}
-      {error && <Paper>{error.detail}</Paper>}
+      {error && <h1 className='text-center mt-4'>{error.detail}</h1>}
       {data !== undefined && (
-        <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 1, mb: 1 }}>
-            {badges.map((badge) => (
-              <BadgeItem badge={badge} key={badge.id} />
-            ))}
-          </Box>
-        </Pagination>
+        <div className='w-full grid lg:grid-cols-2 gap-4'>
+          {badges.map((badge, index) => (
+            <BadgeItem badge={badge} key={index} />
+          ))}
+        </div>
       )}
-    </>
+      {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
+    </div>
   );
 };
 

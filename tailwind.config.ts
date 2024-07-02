@@ -85,12 +85,20 @@ module.exports = {
           from: { height: "var(--radix-collapsible-content-height)" },
           to: { height: "0" },
         },
+        "move-wave": {
+          '0%, 100%': { transform: 'translateX(0) translateZ(0) scaleY(1)' },
+          '50%': { transform: 'translateX(-25%) translateZ(0) scaleY(0.55)' },
+          '100%': { transform: 'translateX(-50%) translateZ(0) scaleY(1)' }
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "collapsible-down": "collapsible-down 0.2s ease-out",
         "collapsible-up": "collapsible-up 0.2s ease-out",
+        "wave-top": "move-wave 60s linear infinite alternate",
+        "wave-middle": "move-wave 20s linear infinite alternate",
+        "wave-bottom": "move-wave 25s linear infinite alternate",
       },
     },
   },

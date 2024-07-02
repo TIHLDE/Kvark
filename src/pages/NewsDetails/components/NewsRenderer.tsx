@@ -32,7 +32,7 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
 
   return (
     <div>
-      <div className='px-4 mx-auto max-w-4xl w-full pt-24 pb-10'>
+      <div className='px-4 mx-auto max-w-4xl w-full pb-10'>
         <div className='space-y-2'>
           <h1 className='text-2xl break-words lg:text-4xl font-semibold'>{data.title}</h1>
           <h1 className='break-words lg:text-lg'>{data.header}</h1>

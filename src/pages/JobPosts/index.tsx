@@ -1,65 +1,33 @@
-import { Button, Divider, MenuItem, Theme, useMediaQuery } from '@mui/material';
-import { makeStyles } from 'makeStyles';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Fragment, useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { argsToParams } from 'utils';
+import { z } from 'zod';
 
 import { useJobPosts } from 'hooks/JobPost';
 import { useAnalytics } from 'hooks/Utils';
 
-import Bool from 'components/inputs/Bool';
-import Select from 'components/inputs/Select';
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import Expand from 'components/layout/Expand';
-import Pagination from 'components/layout/Pagination';
-import Paper from 'components/layout/Paper';
 import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-
-const useStyles = makeStyles()((theme) => ({
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: '3fr 1fr',
-    gridGap: theme.spacing(2),
-    alignItems: 'self-start',
-    paddingBottom: theme.spacing(2),
-
-    [theme.breakpoints.down('lg')]: {
-      gridTemplateColumns: '1fr',
-    },
-  },
-  list: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: theme.spacing(2),
-    [theme.breakpoints.down('lg')]: {
-      order: 1,
-    },
-    [theme.breakpoints.down('md')]: {
-      gridTemplateColumns: '1fr',
-    },
-  },
-  settings: {
-    display: 'grid',
-    gridGap: theme.spacing(1),
-    position: 'sticky',
-    top: 80,
-
-    [theme.breakpoints.down('lg')]: {
-      order: 0,
-      position: 'static',
-      top: 0,
-    },
-  },
-}));
+import Page from 'components/navigation/Page';
+import { Button, PaginateButton } from 'components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
+import { Input } from 'components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
+import { Switch } from 'components/ui/switch';
 
 type FormState = {
   search?: string;
   classes?: string | 'all';
   expired: boolean;
 };
+
+const formSchema = z.object({
+  search: z.string().optional(),
+  classes: z.string().optional(),
+  expired: z.boolean(),
+});
 
 const JobPosts = () => {
   const { event } = useAnalytics();
@@ -70,93 +38,135 @@ const JobPosts = () => {
     const classes = params.get('classes') || undefined;
     return { classes, expired, search };
   }, []);
-  const { classes } = useStyles();
   const navigate = useNavigate();
-  const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
   const [filters, setFilters] = useState<FormState>(getInitialFilters());
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useJobPosts(filters);
-  const { register, control, handleSubmit, setValue, formState } = useForm<FormState>({ defaultValues: getInitialFilters() });
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: getInitialFilters(),
+  });
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 
   const resetFilters = () => {
-    setValue('search', '');
-    setValue('expired', false);
-    setValue('classes', '');
+    form.setValue('search', '');
+    form.setValue('expired', false);
+    form.setValue('classes', '');
 
     setFilters({ expired: false });
 
     navigate(`${location.pathname}${argsToParams({ expired: false })}`, { replace: true });
   };
 
-  const search = (data: FormState) => {
-    event('search', 'jobposts', JSON.stringify(data));
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    event('search', 'jobposts', JSON.stringify(values));
     const filters = {
-      search: data.search,
-      expired: data.expired,
-      classes: data.classes !== 'all' ? data.classes : undefined,
+      search: values.search,
+      expired: values.expired,
+      classes: values.classes !== 'all' ? values.classes : undefined,
     };
     setFilters(filters);
     navigate(`${location.pathname}${argsToParams(filters)}`, { replace: true });
-    !lgDown || setSearchFormExpanded((prev) => !prev);
   };
 
-  const [searchFormExpanded, setSearchFormExpanded] = useState(false);
-
   const SearchForm = () => (
-    <form onSubmit={handleSubmit(search)}>
-      <TextField disabled={isFetching} formState={formState} label='Søk' {...register('search')} />
-      <Select control={control} formState={formState} label='Årstrinn' name='classes'>
-        <MenuItem value='all'>Alle</MenuItem>
-        {[...Array(5).keys()].map((cls) => (
-          <MenuItem key={cls} value={cls + 1}>
-            {cls + 1}
-          </MenuItem>
-        ))}
-      </Select>
-      <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
-      <SubmitButton disabled={isFetching} formState={formState}>
-        Søk
-      </SubmitButton>
-      <Divider sx={{ my: 1 }} />
-      <Button color='error' fullWidth onClick={resetFilters} variant='outlined'>
-        Tilbakestill
-      </Button>
-    </form>
+    <Form {...form}>
+      <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name='search'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Søk</FormLabel>
+              <FormControl>
+                <Input {...field} placeholder='Skriv her...' />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='classes'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Årstrinn</FormLabel>
+              <Select defaultValue={field.value} onValueChange={field.onChange}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder='Velg et årstrinn' />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value='all'>Alle</SelectItem>
+                  {[...Array(5).keys()].map((cls, index) => (
+                    <SelectItem key={index} value={(cls + 1).toString()}>
+                      {cls + 1}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='expired'
+          render={({ field }) => (
+            <FormItem className='flex space-x-2'>
+              <FormControl>
+                <Switch checked={field.value} onCheckedChange={field.onChange} />
+              </FormControl>
+              <FormLabel>Tidligere</FormLabel>
+            </FormItem>
+          )}
+        />
+
+        <div className='space-y-2'>
+          <Button className='w-full' type='submit'>
+            {isFetching ? 'Søker...' : 'Søk'}
+          </Button>
+
+          <Button className='w-full' onClick={resetFilters} variant='secondary'>
+            Tilbakestill
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 
   return (
-    <div className='w-full px-2 md:px-12 mt-20'>
-      <div className={classes.grid}>
-        <div className={classes.list}>
+    <Page className='space-y-8'>
+      <div>
+        <h1 className='text-3xl md:text-5xl font-bold'>Karriere</h1>
+      </div>
+      <div className='grid lg:grid-cols-[3fr,1fr] gap-4 items-start'>
+        <div>
           {isLoading && <JobPostListItemLoading />}
           {isEmpty && <NotFoundIndicator header='Fant ingen annonser' />}
-          {error && <Paper>{error.detail}</Paper>}
+          {error && <h1>{error.detail}</h1>}
           {data !== undefined && (
-            <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-              {data.pages.map((page, i) => (
-                <Fragment key={i}>
-                  {page.results.map((jobPost) => (
-                    <JobPostListItem jobPost={jobPost} key={jobPost.id} />
-                  ))}
-                </Fragment>
-              ))}
-            </Pagination>
+            <div className='space-y-4'>
+              <div className='grid lg:grid-cols-2 gap-4'>
+                {data.pages.map((page, index) => (
+                  <Fragment key={index}>
+                    {page.results.map((jobPost) => (
+                      <JobPostListItem jobPost={jobPost} key={jobPost.id} />
+                    ))}
+                  </Fragment>
+                ))}
+              </div>
+              {hasNextPage && <PaginateButton className='w-full' isLoading={isFetching} nextPage={fetchNextPage} />}
+            </div>
           )}
-          {isFetching && <JobPostListItemLoading />}
         </div>
-        {lgDown ? (
-          <div>
-            <Expand expanded={searchFormExpanded} flat header='Filtrering' onChange={() => setSearchFormExpanded((prev) => !prev)}>
-              <SearchForm />
-            </Expand>
-          </div>
-        ) : (
-          <Paper className={classes.settings}>
-            <SearchForm />
-          </Paper>
-        )}
+        <div className='border rounded-md bg-card p-4'>
+          <SearchForm />
+        </div>
       </div>
-    </div>
+    </Page>
   );
 };
 

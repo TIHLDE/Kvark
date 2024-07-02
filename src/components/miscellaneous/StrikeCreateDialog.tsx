@@ -1,98 +1,157 @@
-import { Button, ButtonProps, MenuItem } from '@mui/material';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { getStrikeReasonAsText } from 'utils';
+import { z } from 'zod';
 
-import { Event, StrikeCreate, User } from 'types';
+import { Event, User } from 'types';
 import { StrikeReason } from 'types/Enums';
 
 import { useCreateStrike } from 'hooks/Strike';
 
-import Select from 'components/inputs/Select';
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import Dialog from 'components/layout/Dialog';
+import { Button } from 'components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
+import { Input } from 'components/ui/input';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
+import { Textarea } from 'components/ui/textarea';
 
 export type StrikeCreateDialogProps = {
   userId: User['user_id'];
   eventId: Event['id'];
-} & ButtonProps;
-
-type FormData = Pick<StrikeCreate, 'description' | 'strike_size'> & {
-  strike_enum: StrikeReason | 'custom';
 };
 
-const StrikeCreateDialog = ({ userId, eventId, ...props }: StrikeCreateDialogProps) => {
+const formSchema = z
+  .object({
+    strike_size: z.number().int().positive(),
+    strike_enum: z.union([z.nativeEnum(StrikeReason), z.literal('custom')]),
+    description: z.string().optional(),
+  })
+  .superRefine((values, ctx) => {
+    if (values.strike_enum === 'custom' && !values.description) {
+      ctx.addIssue({ path: ['description'], message: 'En begrunnelse er påkrevd', code: 'custom' });
+    }
+  });
+
+const StrikeCreateDialog = ({ userId, eventId }: StrikeCreateDialogProps) => {
   const createStrike = useCreateStrike();
   const [open, setOpen] = useState(false);
-  const { register, formState, control, handleSubmit, setError, watch } = useForm<FormData>({
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: { strike_size: 1, strike_enum: StrikeReason.LATE },
   });
-  const selectedEnum = watch('strike_enum');
 
-  const onSubmit = async (data: FormData) => {
+  const selectedEnum = form.watch('strike_enum');
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     const baseStrikeInfo = { user_id: userId, event_id: eventId };
     createStrike.mutate(
       {
-        ...(data.strike_enum === 'custom' ? {} : { enum: data.strike_enum }),
-        description: data.description,
-        strike_size: Number(data.strike_size),
+        ...(values.strike_enum === 'custom' ? {} : { enum: values.strike_enum }),
+        description: values.description || '',
+        strike_size: Number(values.strike_size),
         ...baseStrikeInfo,
       },
       {
         onSuccess: () => {
+          toast.success('Prikken ble opprettet');
+          form.reset();
           setOpen(false);
         },
         onError: (e) => {
-          setError('strike_enum', { message: e.detail });
+          form.setError('strike_enum', { message: e.detail });
         },
       },
     );
   };
 
   const CREATE_DESCRIPTION = `Deltagere på arrangementer får automatisk prikk for følgende:
-- Avmelding etter avmeldingsfrist (umiddelbart)
-- Møtte ikke opp (kl. 12:00 dagen etter arrangementsslutt)
-`;
+    - Avmelding etter avmeldingsfrist (umiddelbart)
+    - Møtte ikke opp (kl. 12:00 dagen etter arrangementsslutt)
+  `;
+
+  const OpenButton = (
+    <Button className='w-full' variant='outline'>
+      Opprett ny prikk
+    </Button>
+  );
 
   return (
-    <>
-      <Button fullWidth variant='outlined' {...props} onClick={() => setOpen(true)}></Button>
-      <Dialog contentText={CREATE_DESCRIPTION} maxWidth='md' onClose={() => setOpen(false)} open={open} titleText='Opprett prikk'>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Select control={control} formState={formState} label='Begrunnelse' name='strike_enum'>
-            {(Object.keys(StrikeReason) as Array<StrikeReason>).map((strikeEnum) => (
-              <MenuItem key={strikeEnum} sx={{ whiteSpace: 'break-spaces' }} value={strikeEnum}>
-                {getStrikeReasonAsText(strikeEnum)}
-              </MenuItem>
-            ))}
-            <MenuItem value='custom'>Egendefinert begrunnelse</MenuItem>
-          </Select>
+    <ResponsiveDialog
+      className='max-w-2xl w-full'
+      description={CREATE_DESCRIPTION}
+      onOpenChange={setOpen}
+      open={open}
+      title='Opprett prikk'
+      trigger={OpenButton}>
+      <Form {...form}>
+        <form className='px-2 space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
+          <FormField
+            control={form.control}
+            name='strike_enum'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Begrunnelse</FormLabel>
+                <Select defaultValue={field.value} onValueChange={field.onChange}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder='Select a verified email to display' />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {(Object.keys(StrikeReason) as Array<StrikeReason>).map((strikeEnum) => (
+                      <SelectItem key={strikeEnum} value={strikeEnum}>
+                        {getStrikeReasonAsText(strikeEnum)}
+                      </SelectItem>
+                    ))}
+                    <SelectItem value='custom'>Egendefinert begrunnelse</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           {selectedEnum === 'custom' && (
             <>
-              <TextField
-                disabled={createStrike.isLoading}
-                formState={formState}
-                label='Antall prikker'
-                {...register('strike_size', { required: 'Antall prikker er påkrevd' })}
-                required
-                type='number'
+              <FormField
+                control={form.control}
+                name='strike_size'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Antall prikker</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder='0' type='number' />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              <TextField
-                disabled={createStrike.isLoading}
-                formState={formState}
-                label='Begrunnelse'
-                {...register('description', { required: 'En begrunnelse er påkrevd' })}
-                required
+
+              <FormField
+                control={form.control}
+                name='description'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Begrunnelse</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} placeholder='Skriv her' />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </>
           )}
-          <SubmitButton disabled={createStrike.isLoading} formState={formState}>
-            Opprett prikk
-          </SubmitButton>
+
+          <Button className='w-full' disabled={createStrike.isLoading} type='submit'>
+            {createStrike.isLoading ? 'Oppretter prikk...' : 'Opprett prikk'}
+          </Button>
         </form>
-      </Dialog>
-    </>
+      </Form>
+    </ResponsiveDialog>
   );
 };
 

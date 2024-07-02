@@ -1,5 +1,6 @@
-import { Skeleton } from '@mui/material';
 import { ReactNode } from 'react';
+
+import { Skeleton } from 'components/ui/skeleton';
 
 export type DetailContentProps = {
   title: string | ReactNode;
@@ -14,4 +15,4 @@ const DetailContent = ({ title, info }: DetailContentProps) => (
 
 export default DetailContent;
 
-export const DetailContentLoading = () => <DetailContent info={<Skeleton height={30} width={140} />} title={<Skeleton height={30} width={80} />} />;
+export const DetailContentLoading = () => <DetailContent info={<Skeleton className='w-full h-12' />} title={<Skeleton className='w-3/4 h-12' />} />;

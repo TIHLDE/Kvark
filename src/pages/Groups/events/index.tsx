@@ -1,6 +1,3 @@
-import AddIcon from '@mui/icons-material/EditRounded';
-import { Stack } from '@mui/material';
-import { Button } from '@mui/material';
 import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
@@ -8,10 +5,9 @@ import { useEvents } from 'hooks/Event';
 import { useGroup } from 'hooks/Group';
 import { useUserPermissions } from 'hooks/User';
 
-import Pagination from 'components/layout/Pagination';
-import Paper from 'components/layout/Paper';
 import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import { Button, PaginateButton } from 'components/ui/button';
 
 const GroupEvents = () => {
   const { slug } = useParams<'slug'>();
@@ -21,26 +17,24 @@ const GroupEvents = () => {
   const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   return (
-    <Stack>
+    <div>
       {permissions?.permissions.event.write && (
-        <Button component={Link} fullWidth startIcon={<AddIcon />} sx={{ mt: 1 }} to='/admin/arrangementer' variant='outlined'>
-          Nytt arrangement
+        <Button asChild className='w-full mb-4 text-black dark:text-white' variant='outline'>
+          <Link to='/admin/arrangementer'>Nytt arrangement</Link>
         </Button>
       )}
       {isLoading && <EventListItemLoading />}
       {!isLoading && !events.length && <NotFoundIndicator header={`${group?.name} har ingen kommende arrangementer`} />}
-      {error && <Paper>{error.detail}</Paper>}
+      {error && <h1 className='text-center mt-4 text-muted-foreground'>{error.detail}</h1>}
       {data !== undefined && (
-        <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-          <Stack gap={1}>
-            {events.map((event) => (
-              <EventListItem event={event} key={event.id} />
-            ))}
-          </Stack>
-        </Pagination>
+        <div className='space-y-2'>
+          {events.map((event) => (
+            <EventListItem event={event} key={event.id} size='large' />
+          ))}
+        </div>
       )}
-      {isFetching && <EventListItemLoading />}
-    </Stack>
+      {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
+    </div>
   );
 };
 

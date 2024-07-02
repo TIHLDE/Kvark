@@ -1,57 +1,45 @@
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
-import Grid from '@mui/material/Grid';
-import LinearProgress from '@mui/material/LinearProgress';
-import { makeStyles } from 'makeStyles';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 import { News } from 'types';
 
 import { useCreateNews, useDeleteNews, useNewsById, useUpdateNews } from 'hooks/News';
-import { useSnackbar } from 'hooks/Snackbar';
 
 import NewsRenderer from 'pages/NewsDetails/components/NewsRenderer';
 
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import { ImageUpload } from 'components/inputs/Upload';
-import UserSearch from 'components/inputs/UserSearch';
-import VerifyDialog from 'components/layout/VerifyDialog';
+import { FormImageUpload } from 'components/inputs/Upload';
+import { SingleUserSearch } from 'components/inputs/UserSearch';
 import RendererPreview from 'components/miscellaneous/RendererPreview';
+import { Button } from 'components/ui/button';
+import { Card, CardContent } from 'components/ui/card';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
+import { Input } from 'components/ui/input';
+import { Switch } from 'components/ui/switch';
 
-const useStyles = makeStyles()((theme) => ({
-  grid: {
-    display: 'grid',
-    gridGap: theme.spacing(2),
-    gridTemplateColumns: '1fr 1fr',
-    [theme.breakpoints.down('md')]: {
-      gridGap: 0,
-      gridTemplateColumns: '1fr',
-    },
-  },
-  margin: {
-    margin: theme.spacing(2, 0, 1),
-    borderRadius: theme.shape.borderRadius,
-    overflow: 'hidden',
-  },
-}));
+import DeleteNews from './DeleteNews';
+import NewsEditorSkeleton from './NewsEditorSkeleton';
 
 export type NewsEditorProps = {
   newsId: number | null;
   goToNews: (newNews: number | null) => void;
 };
 
-type FormValues = Pick<News, 'title' | 'header' | 'body' | 'image' | 'image_alt' | 'creator' | 'emojis_allowed'>;
+const formSchema = z.object({
+  title: z.string().min(1, { message: 'Tittelen kan ikke være tom' }),
+  header: z.string().min(1, { message: 'Header kan ikke være tom' }),
+  body: z.string().min(1, { message: 'Innholdet kan ikke være tomt' }),
+  image: z.string(),
+  image_alt: z.string(),
+  creator: z.object({ user_id: z.string() }).nullable(),
+  emojis_allowed: z.boolean(),
+});
 
 const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
-  const showSnackbar = useSnackbar();
-  const { classes } = useStyles();
-  const { control, handleSubmit, register, formState, getValues, reset, watch, setValue } = useForm<FormValues>();
   const { data, isError, isLoading } = useNewsById(newsId || -1);
-  const showEmojiAllowed = data?.emojis_allowed;
   const createNews = useCreateNews();
   const updateNews = useUpdateNews(newsId || -1);
   const deleteNews = useDeleteNews(newsId || -1);
@@ -60,25 +48,22 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
     [createNews.isLoading, updateNews.isLoading, deleteNews.isLoading],
   );
 
-  const [checkboxState, setCheckboxState] = useState(false);
-
-  useEffect(() => {
-    setCheckboxState(Boolean(showEmojiAllowed));
-  }, [showEmojiAllowed]);
-
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const isChecked = e.target.checked;
-    setValue('emojis_allowed', isChecked);
-    setCheckboxState(isChecked);
-  };
-
-  useEffect(() => {
-    !isError || goToNews(null);
-  }, [isError]);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: '',
+      header: '',
+      creator: null,
+      body: '',
+      image: '',
+      image_alt: '',
+      emojis_allowed: false,
+    },
+  });
 
   const setValues = useCallback(
     (newValues: News | null) => {
-      reset({
+      form.reset({
         title: newValues?.title || '',
         header: newValues?.header || '',
         creator: newValues?.creator || null,
@@ -88,8 +73,41 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
         emojis_allowed: newValues?.emojis_allowed || false,
       });
     },
-    [reset],
+    [form.reset],
   );
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    if (!newsId) {
+      createNews.mutate(
+        { ...values, creator: values.creator?.user_id || null },
+        {
+          onSuccess: (data) => {
+            toast.success('Nyheten ble opprettet');
+            goToNews(data.id);
+          },
+          onError: (e) => {
+            toast.error(e.detail);
+          },
+        },
+      );
+    } else {
+      updateNews.mutate(
+        { ...values, creator: values.creator?.user_id || null },
+        {
+          onSuccess: () => {
+            toast.success('Nyheten ble oppdatert');
+          },
+          onError: (e) => {
+            toast.error(e.detail);
+          },
+        },
+      );
+    }
+  };
+
+  useEffect(() => {
+    !isError || goToNews(null);
+  }, [isError]);
 
   useEffect(() => {
     if (data) {
@@ -99,89 +117,126 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
     }
   }, [data, setValues]);
 
-  const getNewsPreview = () => {
+  const getNewsPreview = (): News | null => {
+    const title = form.getValues('title');
+    const header = form.getValues('header');
+    const body = form.getValues('body');
+
+    if (!title && !header && !body) {
+      return null;
+    }
+
     return {
-      ...getValues(),
+      ...form.getValues(),
       created_at: new Date().toJSON(),
       id: 1,
       updated_at: new Date().toJSON(),
-    };
+    } as News;
   };
+
   const remove = async () => {
     deleteNews.mutate(null, {
       onSuccess: (data) => {
-        showSnackbar(data.detail, 'success');
+        toast.success(data.detail);
         goToNews(null);
       },
       onError: (e) => {
-        showSnackbar(e.detail, 'error');
+        toast.error(e.detail);
       },
     });
   };
-  const submit = async (data: FormValues) => {
-    newsId
-      ? updateNews.mutate(
-          { ...data, creator: data.creator?.user_id || null },
-          {
-            onSuccess: () => {
-              showSnackbar('Nyheten ble oppdatert', 'success');
-            },
-            onError: (err) => {
-              showSnackbar(err.detail, 'error');
-            },
-          },
-        )
-      : createNews.mutate(
-          { ...data, creator: data.creator?.user_id || null },
-          {
-            onSuccess: (newNewsItem) => {
-              showSnackbar('Nyheten ble opprettet', 'success');
-              goToNews(newNewsItem.id);
-            },
-            onError: (err) => {
-              showSnackbar(err.detail, 'error');
-            },
-          },
-        );
-  };
 
   if (isLoading) {
-    return <LinearProgress />;
+    return <NewsEditorSkeleton />;
   }
+
   return (
-    <>
-      <form onSubmit={handleSubmit(submit)}>
-        <Grid container direction='column' wrap='nowrap'>
-          <TextField formState={formState} label='Tittel' {...register('title', { required: 'Feltet er påkrevd' })} required />
-          <TextField formState={formState} label='Header' {...register('header', { required: 'Feltet er påkrevd' })} required />
-          <UserSearch control={control} formState={formState} label='Forfatter' name='creator' />
-          <MarkdownEditor formState={formState} label='Innhold' {...register('body', { required: 'Gi nyheten et innhold' })} required />
-          <ImageUpload formState={formState} label='Velg bilde' ratio='21:9' register={register('image')} setValue={setValue} watch={watch} />
-          <TextField formState={formState} label='Alternativ bildetekst' {...register('image_alt')} />
-          <FormGroup>
-            <FormControlLabel
-              control={<Checkbox {...register('emojis_allowed')} checked={checkboxState} color='primary' name='allowEmojis' onChange={handleCheckboxChange} />}
-              label='Tillatt reaksjoner'
+    <Card>
+      <CardContent className='py-6'>
+        <Form {...form}>
+          <form className='space-y-6' onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name='title'
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabel>
+                    Tittel <span className='text-red-300'>*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder='Skriv her...' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </FormGroup>
-          <RendererPreview className={classes.margin} getContent={getNewsPreview} renderer={NewsRenderer} />
-          <SubmitButton className={classes.margin} disabled={isUpdating} formState={formState}>
-            {newsId ? 'Oppdater nyhet' : 'Opprett nyhet'}
-          </SubmitButton>
-          {Boolean(newsId) && (
-            <VerifyDialog
-              className={classes.margin}
-              closeText='Ikke slett nyheten'
-              color='error'
-              contentText='Sletting av nyheten kan ikke reverseres.'
-              onConfirm={remove}
-              titleText='Er du sikker?'>
-              Slett
-            </VerifyDialog>
-          )}
-        </Grid>
-      </form>
-    </>
+
+            <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
+              <FormField
+                control={form.control}
+                name='header'
+                render={({ field }) => (
+                  <FormItem className='w-full'>
+                    <FormLabel>
+                      Header <span className='text-red-300'>*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder='Skriv her...' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <SingleUserSearch className='w-[800px]' form={form} label='Forfatter' name='creator' />
+            </div>
+
+            <MarkdownEditor form={form} label='Innhold' name='body' required />
+
+            <FormImageUpload form={form} label='Velg bilde' name='image' ratio='21:9' />
+
+            <FormField
+              control={form.control}
+              name='image_alt'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Alternativ bildetekst</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Skriv her...' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='emojis_allowed'
+              render={({ field }) => (
+                <FormItem className='space-x-16 md:space-x-0 flex flex-row items-center justify-between rounded-md border p-4'>
+                  <div className='space-y-0.5'>
+                    <FormLabel className='text-base'>Reaksjoner</FormLabel>
+                    <FormDescription>La brukere reagere på nyheten med emojis</FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch checked={field.value} onCheckedChange={field.onChange} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <div className='space-y-2 md:flex md:items-center md:justify-end md:space-x-4 md:space-y-0 pt-6'>
+              <DeleteNews deleteNews={remove} newsId={newsId} />
+
+              <RendererPreview getContent={getNewsPreview} renderer={NewsRenderer} />
+              <Button className='w-full md:w-40 block' disabled={isUpdating} type='submit'>
+                {newsId ? 'Oppdater nyhet' : 'Opprett nyhet'}
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   );
 };
 

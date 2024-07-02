@@ -60,7 +60,7 @@ const EventsListView = ({ events, isLoading = false }: EventsListViewProps) => {
     return (
       <Stack gap={1}>
         {events.slice(0, NO_OF_EVENTS_TO_SHOW_MD_DOWN).map((event) => (
-          <EventListItem event={event} key={event.id} />
+          <EventListItem event={event} key={event.id} size='small' />
         ))}
       </Stack>
     );
@@ -89,7 +89,7 @@ const EventsListView = ({ events, isLoading = false }: EventsListViewProps) => {
     <Container>
       <Stack gap={1} sx={{ alignSelf: 'start' }}>
         {getNokEvents().length ? (
-          getNokEvents().map((event) => <EventListItem event={event} key={event.id} />)
+          getNokEvents().map((event) => <EventListItem event={event} key={event.id} size='small' />)
         ) : (
           <Text align='center' variant='subtitle1'>
             Ingen kommende bedpres eller kurs
@@ -98,7 +98,7 @@ const EventsListView = ({ events, isLoading = false }: EventsListViewProps) => {
       </Stack>
       <Stack gap={1} sx={{ alignSelf: 'start' }}>
         {getOtherEvents().length ? (
-          getOtherEvents().map((event) => <EventListItem event={event} key={event.id} />)
+          getOtherEvents().map((event) => <EventListItem event={event} key={event.id} size='small' />)
         ) : (
           <Text align='center' variant='subtitle1'>
             Ingen kommende sosiale eller andre arrangementer

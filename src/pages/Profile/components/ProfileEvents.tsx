@@ -97,7 +97,7 @@ const ProfileEvents = () => {
       ) : (
         <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere arrangementer' nextPage={() => fetchNextPage()}>
           {events?.map((event) => (
-            <EventListItem event={event} key={event.id} />
+            <EventListItem event={event} key={event.id} size='medium' />
           ))}
         </Pagination>
       )}

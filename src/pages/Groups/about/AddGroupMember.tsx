@@ -1,71 +1,79 @@
-import AddIcon from '@mui/icons-material/Add';
-import { Button } from '@mui/material';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-
-import { UserBase } from 'types';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 import { useCreateMembership } from 'hooks/Membership';
-import { useSnackbar } from 'hooks/Snackbar';
 
-import SubmitButton from 'components/inputs/SubmitButton';
-import UserSearch from 'components/inputs/UserSearch';
-import Dialog from 'components/layout/Dialog';
+import { SingleUserSearch } from 'components/inputs/UserSearch';
+import { Button } from 'components/ui/button';
+import { Form } from 'components/ui/form';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
 
 export type AddMemberModalProps = {
   groupSlug: string;
 };
 
-type FormData = {
-  user?: UserBase;
-};
+const formSchema = z.object({
+  user: z.object(
+    {
+      user_id: z.string(),
+    },
+    { required_error: 'Du må velge en bruker' },
+  ),
+});
 
 const AddGroupMember = ({ groupSlug }: AddMemberModalProps) => {
-  const { control, handleSubmit, formState } = useForm<FormData>();
-  const showSnackbar = useSnackbar();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const createMembership = useCreateMembership();
-  const [isOpen, setIsOpen] = useState(false);
 
-  const onSubmit = (formData: FormData) => {
-    if (!formData.user) {
-      showSnackbar('Du har ikke valgt et medlem', 'warning');
-      return;
-    }
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+  });
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     createMembership.mutate(
-      { groupSlug: groupSlug, userId: formData.user.user_id },
+      { groupSlug: groupSlug, userId: values.user.user_id },
       {
         onSuccess: () => {
-          showSnackbar('Medlem lagt til', 'success');
+          form.reset();
           setIsOpen(false);
+          toast.success('Medlem lagt til');
         },
         onError: (e) => {
-          showSnackbar(e.detail, 'error');
+          toast.error(e.detail);
         },
       },
     );
   };
 
+  const OpenButton = (
+    <Button variant='outline'>
+      <Plus className='mr-2 w-5 h-5 stroke-[1.5px]' />
+      Legg til
+    </Button>
+  );
+
   return (
-    <>
-      <Button onClick={() => setIsOpen(true)} startIcon={<AddIcon />} sx={{ height: 'auto' }} variant='outlined'>
-        Legg til
-      </Button>
-      <Dialog onClose={() => setIsOpen(false)} open={isOpen} titleText='Legg til medlem'>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <UserSearch
-            autoFocus
-            control={control}
-            formState={formState}
-            helperText='Brukeren vil motta en epost/varsel om at de er lagt til i gruppen.'
-            label='Søk etter bruker'
-            name='user'
-          />
-          <SubmitButton disabled={createMembership.isLoading} formState={formState}>
-            Legg til medlem
-          </SubmitButton>
+    <ResponsiveDialog
+      className='w-full max-w-md'
+      description='Brukeren vil motta en epost/varsel om at de er lagt til i gruppen.'
+      onOpenChange={setIsOpen}
+      open={isOpen}
+      title='Legg til medlem'
+      trigger={OpenButton}>
+      <Form {...form}>
+        <form className='px-2 space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
+          <SingleUserSearch form={form} label='Søk etter bruker' name='user' />
+
+          <Button className='w-full' disabled={createMembership.isLoading}>
+            {createMembership.isLoading ? 'Legger til...' : 'Legg til medlem'}
+          </Button>
         </form>
-      </Dialog>
-    </>
+      </Form>
+    </ResponsiveDialog>
   );
 };
 
