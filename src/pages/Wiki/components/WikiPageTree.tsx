@@ -6,7 +6,7 @@ import { WikiPage, WikiTree } from 'types';
 import { useWikiTree } from 'hooks/Wiki';
 
 import Expandable from 'components/ui/expandable';
-import { Tree } from 'components/ui/tree';
+import { Tree, TreeDataItem } from 'components/ui/tree';
 
 type WikiPageTreeProps = {
   selectedNode: string;
@@ -14,76 +14,94 @@ type WikiPageTreeProps = {
   page: WikiPage;
 };
 
-const data = [
-  { id: '1', name: 'Unread' },
-  { id: '2', name: 'Threads' },
-  {
-    id: '3',
-    name: 'Chat Rooms',
-    children: [
-      { id: 'c1', name: 'General' },
-      { id: 'c2', name: 'Random' },
-      { id: 'c3', name: 'Open Source Projects' },
-    ],
-  },
-  {
-    id: '4',
-    name: 'Direct Messages',
-    children: [
-      {
-        id: 'd1',
-        name: 'Alice',
-        children: [
-          { id: 'd11', name: 'Alice2', icon: Layout },
-          { id: 'd12', name: 'Bob2' },
-          { id: 'd13', name: 'Charlie2' },
-        ],
-      },
-      { id: 'd2', name: 'Bob', icon: Layout },
-      { id: 'd3', name: 'Charlie' },
-    ],
-  },
-  {
-    id: '5',
-    name: 'Direct Messages',
-    children: [
-      {
-        id: 'e1',
-        name: 'Alice',
-        children: [
-          { id: 'e11', name: 'Alice2' },
-          { id: 'e12', name: 'Bob2' },
-          { id: 'e13', name: 'Charlie2' },
-        ],
-      },
-      { id: 'e2', name: 'Bob' },
-      { id: 'e3', name: 'Charlie' },
-    ],
-  },
-  {
-    id: '6',
-    name: 'Direct Messages',
-    children: [
-      {
-        id: 'f1',
-        name: 'Alice',
-        children: [
-          { id: 'f11', name: 'Alice2' },
-          { id: 'f12', name: 'Bob2' },
-          { id: 'f13', name: 'Charlie2' },
-        ],
-      },
-      { id: 'f2', name: 'Bob' },
-      { id: 'f3', name: 'Charlie' },
-    ],
-  },
-];
+// const data = [
+//   { id: '1', name: 'Unread' },
+//   { id: '2', name: 'Threads' },
+//   {
+//     id: '3',
+//     name: 'Chat Rooms',
+//     children: [
+//       { id: 'c1', name: 'General' },
+//       { id: 'c2', name: 'Random' },
+//       { id: 'c3', name: 'Open Source Projects' },
+//     ],
+//   },
+//   {
+//     id: '4',
+//     name: 'Direct Messages',
+//     children: [
+//       {
+//         id: 'd1',
+//         name: 'Alice',
+//         children: [
+//           { id: 'd11', name: 'Alice2', icon: Layout },
+//           { id: 'd12', name: 'Bob2' },
+//           { id: 'd13', name: 'Charlie2' },
+//         ],
+//       },
+//       { id: 'd2', name: 'Bob', icon: Layout },
+//       { id: 'd3', name: 'Charlie' },
+//     ],
+//   },
+//   {
+//     id: '5',
+//     name: 'Direct Messages',
+//     children: [
+//       {
+//         id: 'e1',
+//         name: 'Alice',
+//         children: [
+//           { id: 'e11', name: 'Alice2' },
+//           { id: 'e12', name: 'Bob2' },
+//           { id: 'e13', name: 'Charlie2' },
+//         ],
+//       },
+//       { id: 'e2', name: 'Bob' },
+//       { id: 'e3', name: 'Charlie' },
+//     ],
+//   },
+//   {
+//     id: '6',
+//     name: 'Direct Messages',
+//     children: [
+//       {
+//         id: 'f1',
+//         name: 'Alice',
+//         children: [
+//           { id: 'f11', name: 'Alice2' },
+//           { id: 'f12', name: 'Bob2' },
+//           { id: 'f13', name: 'Charlie2' },
+//         ],
+//       },
+//       { id: 'f2', name: 'Bob' },
+//       { id: 'f3', name: 'Charlie' },
+//     ],
+//   },
+// ];
 
 const WikiPageTree = ({ selectedNode, setSelectedNode, page }: WikiPageTreeProps) => {
   const { data, error, isLoading } = useWikiTree();
   const [viewTree, setViewTree] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [content, setContent] = useState<string>('Admin Page');
+  const [nodes, setNodes] = useState<TreeDataItem[]>([]);
+
+  const createNodes = (node: WikiTree, parentPath: string): TreeDataItem => {
+    const id = `${parentPath}${node.slug}${node.slug === '' ? '' : '/'}`;
+    
+    return {
+      id,
+      title: node.title,
+      children: node.children.map((childNode: WikiTree) => createNodes(childNode, id))
+    };
+  };
+
+  useEffect(() => {
+    if (data) {
+      const treeData = createNodes(data, '');
+      setNodes([treeData]);
+    }
+  }, [data]);
 
   const renderTree = (node: WikiTree, parentPath: string) => {
     const id = `${parentPath}${node.slug}${node.slug === '' ? '' : '/'}`;
@@ -127,10 +145,10 @@ const WikiPageTree = ({ selectedNode, setSelectedNode, page }: WikiPageTreeProps
             </div> */}
       <Tree
         className='flex-shrink-0 w-full h-[260px]'
-        data={[data]}
+        data={[createNodes(data, '')]}
         folderIcon={Folder}
         itemIcon={Workflow}
-        onSelectChange={(item) => setContent(item?.title ?? '')}
+        onSelectChange={(item) => setSelectedNode(item?.id || '')}
       />
     </Expandable>
   );

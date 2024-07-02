@@ -6,7 +6,7 @@ import { ScrollArea } from "./scroll-area";
 import useResizeObserver from "use-resize-observer";
 
 interface TreeDataItem {
-  slug: string;
+  id: string;
   title: string;
   icon?: LucideIcon,
   children?: TreeDataItem[];
@@ -35,7 +35,7 @@ const Tree = forwardRef<
   const [selectedItemId, setSelectedItemId] = useState<string | undefined>(initialSlelectedItemId)
 
   const handleSelectChange = useCallback((item: TreeDataItem | undefined) => {
-    setSelectedItemId(item?.slug);
+    setSelectedItemId(item?.id);
     if (onSelectChange) {
       onSelectChange(item)
     }
@@ -54,13 +54,13 @@ const Tree = forwardRef<
       if (items instanceof Array) {
         // eslint-disable-next-line @typescript-eslint/prefer-for-of
         for (let i = 0; i < items.length; i++) {
-          ids.push(items[i]!.slug);
+          ids.push(items[i]!.id);
           if (walkTreeItems(items[i]!, targetId) && !expandAll) {
             return true;
           }
           if (!expandAll) ids.pop();
         }
-      } else if (!expandAll && items.slug === targetId) {
+      } else if (!expandAll && items.id === targetId) {
         return true;
       } else if (items.children) {
         return walkTreeItems(items.children, targetId)
@@ -111,14 +111,14 @@ const TreeItem = forwardRef<
     <div ref={ref} role="tree" className={className} {...props}><ul>
       {data instanceof Array ? (
         data.map((item) => (
-          <li key={item.slug}>
+          <li key={item.id}>
             {item.children ? (
               <AccordionPrimitive.Root type="multiple" defaultValue={expandedItemIds}>
-                <AccordionPrimitive.Item value={item.slug}>
+                <AccordionPrimitive.Item value={item.id}>
                   <AccordionTrigger
                     className={cn(
                       "px-2 hover:before:opacity-100 before:absolute before:left-0 before:w-full before:opacity-0 before:bg-muted/80 before:h-[1.75rem] before:-z-10",
-                      selectedItemId === item.slug && "before:opacity-100 before:bg-accent text-accent-foreground before:border-l-2 before:border-l-accent-foreground/50 dark:before:border-0"
+                      selectedItemId === item.id && "before:opacity-100 before:bg-accent text-accent-foreground before:border-l-2 before:border-l-accent-foreground/50 dark:before:border-0"
                     )}
                     onClick={() => handleSelectChange(item)}
                   >

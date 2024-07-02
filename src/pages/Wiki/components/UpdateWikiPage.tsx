@@ -55,6 +55,14 @@ const UpdateWikiPage = ({ page }: UpdateWikiPageProps) => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
+    const data = {
+      ...page,
+      ...values,
+      slug: urlEncode(values.title),
+      path: treeNode === '/' ? '' : treeNode
+    };
+
+    console.log(data)
     updatePage.mutate(
       { ...page, ...values, slug: urlEncode(values.title), path: treeNode === '/' ? '' : treeNode },
       {
