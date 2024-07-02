@@ -1,37 +1,30 @@
-import GithubIcon from '@mui/icons-material/CodeRounded';
-import ContactMailIcon from '@mui/icons-material/ContactMail';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import { Box, Grid, Typography } from '@mui/material';
+import { Github, Mail, Slack } from 'lucide-react';
 
-import Paper from 'components/layout/Paper';
+import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
 
 const LINKS = [
-  { link: 'https://tihlde.slack.com/archives/C01CJ0EQCFM', label: 'Kontakt oss på Slack', icon: ContactMailIcon },
-  { link: 'mailto:index@tihlde.org', label: 'Kontakt oss med epost', icon: MailOutlineIcon },
-  { link: 'https://github.com/TIHLDE/Kvark/issues/new/choose', label: 'Lag et issue i Github', icon: GithubIcon },
+  { link: 'https://tihlde.slack.com/archives/C01CJ0EQCFM', label: 'Kontakt oss på Slack', icon: Slack },
+  { link: 'mailto:index@tihlde.org', label: 'Kontakt oss med epost', icon: Mail },
+  { link: 'https://github.com/TIHLDE/Kvark/issues/new/choose', label: 'Lag et issue i Github', icon: Github },
 ];
 
 const ErrorCard = () => {
   return (
-    <Paper>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Box alignItems='center' display='flex' flexWrap='wrap'>
-            <Typography variant='h2'>Feil på siden?</Typography>
-          </Box>
-        </Grid>
+    <Card>
+      <CardHeader>
+        <CardTitle>Feil på siden?</CardTitle>
+      </CardHeader>
+      <CardContent>
         {LINKS.map((link, index) => (
-          <Grid item key={index} xs={12}>
-            <Box alignItems='center' display='flex' flexWrap='wrap'>
-              <link.icon sx={{ mr: (theme) => theme.spacing(1) }} />
-              <a href={link.link} rel='noopener noreferrer' target='_blank'>
-                {link.label}
-              </a>
-            </Box>
-          </Grid>
+          <div className='flex items-center space-x-2' key={index}>
+            <link.icon className='w-5 h-5' />
+            <a className='underline' href={link.link} rel='noopener noreferrer' target='_blank'>
+              {link.label}
+            </a>
+          </div>
         ))}
-      </Grid>
-    </Paper>
+      </CardContent>
+    </Card>
   );
 };
 

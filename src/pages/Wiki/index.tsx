@@ -1,10 +1,8 @@
-import { Stack, styled, Typography } from '@mui/material';
+import { cn } from 'lib/utils';
 import { Slash } from 'lucide-react';
 import { useEffect, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import URLS, { WIKI_URLS } from 'URLS';
-
-import { WikiPage } from 'types';
 
 import { useGroups } from 'hooks/Group';
 import { useWikiPage } from 'hooks/Wiki';
@@ -14,7 +12,6 @@ import WikiAdmin from 'pages/Wiki/components/WikiAdmin';
 import WikiNavigator from 'pages/Wiki/components/WikiNavigator';
 import Index from 'pages/Wiki/specials/Index';
 
-import Paper from 'components/layout/Paper';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import ShareButton from 'components/miscellaneous/ShareButton';
 import Page from 'components/navigation/Page';
@@ -23,27 +20,6 @@ import { Card, CardContent } from 'components/ui/card';
 import { Skeleton } from 'components/ui/skeleton';
 
 import WikiSearch from './components/WikiSearch';
-
-const Content = styled('div', { shouldForwardProp: (prop) => prop !== 'data' })<{ data?: WikiPage }>(({ theme, data }) => ({
-  display: 'grid',
-  gridGap: theme.spacing(2),
-  gridTemplateColumns: data?.image ? '1fr 350px' : '1fr',
-  alignItems: 'self-start',
-  [theme.breakpoints.down('xl')]: {
-    gridTemplateColumns: '1fr',
-  },
-  [theme.breakpoints.down('lg')]: {
-    gridGap: theme.spacing(1),
-  },
-}));
-
-const Image = styled('img')(({ theme }) => ({
-  width: '100%',
-  maxHeight: 350,
-  objectFit: 'cover',
-  border: `1px solid ${theme.palette.divider}`,
-  borderRadius: theme.shape.borderRadius,
-}));
 
 const Wiki = () => {
   const location = useLocation();
@@ -89,7 +65,7 @@ const Wiki = () => {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className='grid gap-6 lg:grid-cols-[.4fr_1fr]'>
+      <div className='grid gap-6 lg:grid-cols-[.4fr_1fr] mt-2'>
         <div className='space-y-2'>
           <WikiNavigator />
           {data && (
@@ -118,18 +94,18 @@ const Wiki = () => {
           </Card>
         ) : (
           data !== undefined && (
-            <Content data={data}>
-              <Stack gap={{ xs: 1, lg: 2 }}>
-                {Boolean(data.content.trim().length) && (
-                  <Paper>
-                    <MarkdownRenderer value={data.content} />
-                  </Paper>
-                )}
-                {path === WIKI_URLS.ABOUT_INDEX && <Index />}
-                {group && <GroupItem group={group} />}
-              </Stack>
-              {data.image && <Image alt={data.image_alt || data.title} loading='lazy' src={data.image} />}
-            </Content>
+            <div className={cn('grid gap-4', data.image && 'lg:grid-cols[1fr,350px]')}>
+              {Boolean(data.content.trim().length) && (
+                <div className='p-4 rounded-md border bg-card'>
+                  <MarkdownRenderer value={data.content} />
+                </div>
+              )}
+              {path === WIKI_URLS.ABOUT_INDEX && <Index />}
+              {group && <GroupItem group={group} />}
+              {data.image && (
+                <img alt={data.image_alt || data.title} className='w-full max-h-[350px] object-cover rounded-md' loading='lazy' src={data.image} />
+              )}
+            </div>
           )
         )}
       </div>
