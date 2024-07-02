@@ -1,4 +1,4 @@
-import { Box, Dialog, DialogProps, Stack, Typography } from '@mui/material';
+import { useState } from 'react';
 
 import { Picture } from 'types';
 import { PermissionApp } from 'types/Enums';
@@ -7,41 +7,27 @@ import { useHavePermission } from 'hooks/User';
 
 import PictureEditorDialog from 'pages/GalleryDetails/components/PictureEditor';
 
-import Paper from 'components/layout/Paper';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
 
-export type PictureDialogProps = Omit<DialogProps, 'open'> & {
-  onClose: () => void;
+export type PictureDialogProps = {
   picture: Picture;
   galleryId: string;
 };
 
-const PictureDialog = ({ galleryId, picture, onClose, ...props }: PictureDialogProps) => {
+const PictureDialog = ({ galleryId, picture }: PictureDialogProps) => {
+  const [open, setOpen] = useState<boolean>(false);
   const { allowAccess } = useHavePermission([PermissionApp.PICTURE]);
+
+  const Image = <img alt={picture.image_alt} className='w-full object-cover rounded-md cursor-pointer' key={picture.id} loading='lazy' src={picture.image} />;
+
   return (
-    <Dialog aria-describedby='picture-description' aria-labelledby='picture-title' maxWidth='lg' {...props} onClose={onClose} open>
-      <Box alt={picture.description} component='img' src={picture.image} sx={{ display: 'block', maxWidth: '100%', maxHeight: '80vh', margin: 'auto' }} />
-      {(allowAccess || picture.title || picture.description) && (
-        <Stack
-          component={Paper}
-          direction='row'
-          gap={1}
-          sx={{ borderTopLeftRadius: 0, borderTopRightRadius: 0, p: 2, alignItems: 'center', justifyContent: 'space-between' }}>
-          <div>
-            {Boolean(picture.title) && (
-              <Typography id='picture-title' variant='h3'>
-                {picture.title}
-              </Typography>
-            )}
-            {Boolean(picture.description) && (
-              <Typography id='picture-description' variant='body1'>
-                {picture.description}
-              </Typography>
-            )}
-          </div>
-          {allowAccess && <PictureEditorDialog galleryId={galleryId} onClose={onClose} pictureId={picture.id} />}
-        </Stack>
-      )}
-    </Dialog>
+    <ResponsiveDialog description={picture.description} onOpenChange={setOpen} open={open} title={picture.title} trigger={Image}>
+      <div className='space-y-4'>
+        <img alt={picture.image_alt} className='w-full object-cover rounded-md' loading='lazy' src={picture.image} />
+
+        {allowAccess && <PictureEditorDialog galleryId={galleryId} onClose={() => setOpen(false)} pictureId={picture.id} />}
+      </div>
+    </ResponsiveDialog>
   );
 };
 

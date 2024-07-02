@@ -13,7 +13,8 @@ import {
   Typography,
 } from '@mui/material';
 import { CloudUploadIcon, FilePlus } from 'lucide-react';
-import { forwardRef, useCallback, useState } from 'react';
+import { Dispatch, forwardRef, SetStateAction, useCallback, useState } from 'react';
+import { DropzoneOptions, useDropzone } from 'react-dropzone';
 import Cropper from 'react-easy-crop';
 import { FieldError, FieldValues, Path, PathValue, UseFormRegisterReturn, UseFormReturn } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -59,6 +60,36 @@ export type ImageUploadProps<FormValues extends FieldValues = FieldValues> = But
     ratio?: `${number}:${number}`;
     paperProps?: PaperProps;
   };
+
+type FormImageMultipleUploadProps = {
+  fileTypes: DropzoneOptions['accept'];
+  setFiles: Dispatch<SetStateAction<File[]>>;
+  label?: string;
+};
+
+// File multiple upload
+export const FileMultipleUpload = ({ fileTypes, setFiles, label = 'Velg eller dra filer hit' }: FormImageMultipleUploadProps) => {
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    setFiles((prev) => [...prev, ...Array.from(acceptedFiles)]);
+  }, []);
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop, accept: fileTypes });
+
+  return (
+    <div {...getRootProps()} className='flex items-center justify-center w-full'>
+      <label
+        className='cursor-pointer flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg bg-background md:hover:bg-secondary md:dark:hover:border-gray-600'
+        htmlFor='image-upload-button'>
+        <div className='flex flex-col items-center justify-center pt-5 pb-6 space-y-4'>
+          <CloudUploadIcon className='w-10 h-10 text-gray-400 dark:text-gray-300 stroke-[1.5]' />
+          <p className='mb-2 text-sm text-gray-500 dark:text-gray-400 font-semibold'>{label}</p>
+        </div>
+        <input hidden />
+        <input {...getInputProps()} hidden id='file-multiple-upload-button' />
+      </label>
+    </div>
+  );
+};
 
 type FormImageUploadProps<TFormValues extends FieldValues> = {
   form: UseFormReturn<TFormValues>;

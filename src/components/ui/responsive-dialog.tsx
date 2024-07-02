@@ -56,7 +56,7 @@ const ResponsiveDialog = ({
       <DrawerTrigger asChild>
         { trigger }
       </DrawerTrigger>
-      <DrawerContent className='pb-6 pl-4'>
+      <DrawerContent className='pb-6 px-2'>
         <DrawerHeader>
             <DrawerTitle>{title}</DrawerTitle>
             <DrawerDescription>{description}</DrawerDescription>
