@@ -112,7 +112,7 @@ const TreeItem = forwardRef<
       {data instanceof Array ? (
         data.map((item) => (
           <li key={item.id}>
-            {item.children ? (
+            {item.children?.length ? (
               <AccordionPrimitive.Root type="multiple" defaultValue={expandedItemIds}>
                 <AccordionPrimitive.Item value={item.id}>
                   <AccordionTrigger
@@ -138,7 +138,7 @@ const TreeItem = forwardRef<
                   </AccordionTrigger>
                   <AccordionContent className="pl-6">
                     <TreeItem
-                      data={item.children ? item.children : item}
+                      data={item.children.length ? item.children : item}
                       selectedItemId={selectedItemId}
                       handleSelectChange={handleSelectChange}
                       expandedItemIds={expandedItemIds}

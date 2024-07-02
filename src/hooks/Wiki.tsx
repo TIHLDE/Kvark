@@ -38,6 +38,7 @@ export const useUpdateWikiPage = (path: string): UseMutationResult<WikiPage, Req
   return useMutation((updatedPage: WikiRequired) => API.updateWikiPage(path, updatedPage), {
     onSuccess: (data) => {
       queryClient.invalidateQueries(WIKI_QUERY_KEY);
+      queryClient.invalidateQueries(WIKI_QUERY_KEY_TREE);
       queryClient.setQueryData([WIKI_QUERY_KEY, data.path], data);
     },
   });
