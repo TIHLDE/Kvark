@@ -7,7 +7,7 @@ import { cn } from "lib/utils";
 
 type ExpandableProps = {
     title: ReactNode;
-    description?: string;
+    description?: ReactNode;
     icon?: ReactNode;
     children: ReactNode;
     extra?: ReactNode;
@@ -46,7 +46,10 @@ const Expandable = ({
                                 ? <h1>{ title }</h1>
                                 : title
                             }
-                            {description && <h1 className='text-sm'>{ description }</h1>}
+                            {typeof description === 'string'
+                                ? <h1 className='text-sm'>{ description }</h1>
+                                : description
+                            }
                         </div>
                     </div>
                     <div className='flex items-center space-x-4'>

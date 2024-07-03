@@ -1,7 +1,7 @@
-import React from "react";
 import { Period, TimePickerType, getArrowByType, getDateByType, setDateByType } from "./utils";
 import { Input } from "../input";
 import { cn } from "lib/utils";
+import { forwardRef, useEffect, useMemo, useState } from "react";
 
 
 export interface TimePickerInputProps
@@ -14,7 +14,7 @@ export interface TimePickerInputProps
   onLeftFocus?: () => void;
 }
 
-const TimePickerInput = React.forwardRef<
+const TimePickerInput = forwardRef<
   HTMLInputElement,
   TimePickerInputProps
 >(
@@ -37,14 +37,14 @@ const TimePickerInput = React.forwardRef<
     },
     ref
   ) => {
-    const [flag, setFlag] = React.useState<boolean>(false);
-    const [prevIntKey, setPrevIntKey] = React.useState<string>("0");
+    const [flag, setFlag] = useState<boolean>(false);
+    const [prevIntKey, setPrevIntKey] = useState<string>("0");
 
     /**
      * allow the user to enter the second digit within 2 seconds
      * otherwise start again with entering first digit
      */
-    React.useEffect(() => {
+    useEffect(() => {
       if (flag) {
         const timer = setTimeout(() => {
           setFlag(false);
@@ -54,7 +54,7 @@ const TimePickerInput = React.forwardRef<
       }
     }, [flag]);
 
-    const calculatedValue = React.useMemo(() => {
+    const calculatedValue = useMemo(() => {
       return getDateByType(date, picker);
     }, [date, picker]);
 

@@ -21,7 +21,6 @@ import { BrowserRouter } from 'react-router-dom';
 import API from 'api/api';
 
 import { MiscProvider } from 'hooks/Misc';
-import { SnackbarProvider } from 'hooks/Snackbar';
 import { ThemeProvider } from 'hooks/Theme';
 
 import ShortCutMenu from 'components/miscellaneous/shortCutMenu';
@@ -58,9 +57,7 @@ export const Providers = ({ children }: { children: ReactNode }) => {
           <QueryClientProvider client={queryClient}>
             {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
             {/* @ts-ignore */}
-            <MiscProvider>
-              <SnackbarProvider>{children}</SnackbarProvider>
-            </MiscProvider>
+            <MiscProvider>{children}</MiscProvider>
             <ReactQueryDevtools />
           </QueryClientProvider>
         </LocalizationProvider>

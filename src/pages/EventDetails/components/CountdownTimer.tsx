@@ -1,11 +1,11 @@
 import { differenceInMilliseconds, formatDistanceStrict, minutesToMilliseconds } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 import { Event, Order } from 'types';
 
 import { useCreatePaymentOrder } from 'hooks/Payment';
-import { useSnackbar } from 'hooks/Snackbar';
 
 import LoadingSpinnner from 'components/miscellaneous/LoadingSpinner';
 import { Button } from 'components/ui/button';
@@ -42,7 +42,6 @@ const CountdownTimer = ({ payment_expiredate, event_id }: Registration) => {
 
   const [timeLeft, setTimeLeft] = useState(convertTime(getTimeDifference(payment_expiredate) - removedTime));
   const createPaymentOrder = useCreatePaymentOrder();
-  const showSnackbar = useSnackbar();
 
   useEffect(() => {
     if (new Date(payment_expiredate) < new Date()) {
@@ -71,7 +70,7 @@ const CountdownTimer = ({ payment_expiredate, event_id }: Registration) => {
         window.location.replace(payment_link || '');
       },
       onError: () => {
-        showSnackbar('Det skjedde en feil med oppretting av betalingsordre.', 'error');
+        toast.error('Det skjedde en feil med oppretting av betalingsordre.');
       },
     });
   };

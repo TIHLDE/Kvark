@@ -17,7 +17,7 @@ import { getUserAffiliation } from 'utils';
 
 import { PermissionApp } from 'types/Enums';
 
-import { useHavePermission, useUser } from 'hooks/User';
+import { useHavePermission, useLogout, useUser } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
 import Http404 from 'pages/Http404';
@@ -43,6 +43,7 @@ const Profile = () => {
   const { userId } = useParams();
   const { data: user, isError } = useUser(userId);
   const { event } = useAnalytics();
+  const logout = useLogout();
   const { allowAccess: isAdmin } = useHavePermission([
     PermissionApp.EVENT,
     PermissionApp.JOBPOST,
@@ -67,7 +68,10 @@ const Profile = () => {
   const [tab, setTab] = useState(userId ? badgesTab.label : eventTab.label);
 
   useEffect(() => setTab(userId ? badgesTab.label : eventTab.label), [userId]);
-  useEffect(() => event('change-tab', 'profile', `Changed tab to: ${tab}`), [tab]);
+  useEffect(() => {
+    event('change-tab', 'profile', `Changed tab to: ${tab}`);
+    tab === logoutTab.label && logout();
+  }, [tab]);
 
   type NavListItem = {
     label: string;

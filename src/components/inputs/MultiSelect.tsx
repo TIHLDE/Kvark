@@ -14,9 +14,10 @@ interface Props {
   options: MultiSelectOption[];
   onChange?: (values: { value: string; label: string }[]) => void;
   setSearch?: Dispatch<SetStateAction<string>>;
+  placeholder?: string;
 }
 
-const MultiSelect = ({ onChange, options, setSearch }: Props) => {
+const MultiSelect = ({ onChange, options, setSearch, placeholder = 'Velg bruker...' }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState<boolean>(false);
   const [selected, setSelected] = useState<MultiSelectOption[]>([]);
@@ -90,7 +91,7 @@ const MultiSelect = ({ onChange, options, setSearch }: Props) => {
               setInputValue(value);
               setSearch?.(value);
             }}
-            placeholder='Velg bruker...'
+            placeholder={placeholder}
             ref={inputRef}
             value={inputValue}
           />

@@ -1,13 +1,23 @@
 import { useMutation, UseMutationResult, useQuery, useQueryClient } from 'react-query';
 
-import { Form, FormCreate, FormStatistics, FormUpdate, PaginationResponse, RequestResponse, SelectFieldSubmission, Submission, UserSubmission } from 'types';
+import {
+  Form,
+  FormCreate,
+  FormStatistics,
+  FormUpdate,
+  PaginationResponse,
+  RequestResponse,
+  SelectFieldSubmission,
+  Submission,
+  TextFieldSubmission,
+  UserSubmission,
+} from 'types';
 import { FormFieldType, FormResourceType } from 'types/Enums';
 
 import API from 'api/api';
 
 import { EVENT_QUERY_KEYS } from 'hooks/Event';
 import { GROUPS_QUERY_KEYS } from 'hooks/Group';
-import { useSnackbar } from 'hooks/Snackbar';
 import { USER_FORMS_QUERY_KEY, USER_QUERY_KEY } from 'hooks/User';
 
 export const FORM_QUERY_KEY = 'form';
@@ -58,10 +68,8 @@ export const useUpdateForm = (formId: string): UseMutationResult<Form, RequestRe
 
 export const useDeleteForm = (formId: string): UseMutationResult<RequestResponse, RequestResponse, undefined, unknown> => {
   const queryClient = useQueryClient();
-  const showSnackbar = useSnackbar();
   return useMutation(() => API.deleteForm(formId), {
-    onSuccess: (response) => {
-      showSnackbar(response.detail, 'success');
+    onSuccess: () => {
       const data = queryClient.getQueryData<Form>([FORM_QUERY_KEY, formId]);
       if (data?.resource_type === FormResourceType.EVENT_FORM) {
         queryClient.invalidateQueries(EVENT_QUERY_KEYS.detail(data.event.id));
@@ -71,9 +79,6 @@ export const useDeleteForm = (formId: string): UseMutationResult<RequestResponse
       }
       queryClient.invalidateQueries([FORM_QUERY_KEY, TEMPLATE_QUERY_KEY]);
       queryClient.removeQueries([FORM_QUERY_KEY, formId]);
-    },
-    onError: (e) => {
-      showSnackbar(e.detail, 'error');
     },
   });
 };
@@ -113,6 +118,18 @@ export const validateSubmissionInput = (submission: Submission, form: Form) => {
       const ans = answer as SelectFieldSubmission;
       if (!ans.selected_options || !ans.selected_options.length) {
         throw new Error(`answers.${index}.selected_options`);
+      }
+    }
+  });
+};
+
+export const validateSubmissionTextInput = (submission: Submission, form: Form) => {
+  submission.answers?.forEach((answer, index) => {
+    const field = form.fields.find((field) => field.id === answer.field.id);
+    if (field && field.type === FormFieldType.TEXT_ANSWER && field.required) {
+      const ans = answer as TextFieldSubmission;
+      if (!ans.answer_text) {
+        throw new Error(`answers.${index}.answer_text`);
       }
     }
   });

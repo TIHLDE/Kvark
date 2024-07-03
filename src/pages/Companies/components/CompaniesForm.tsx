@@ -9,7 +9,6 @@ import { CompaniesEmail } from 'types';
 
 import API from 'api/api';
 
-import { useSnackbar } from 'hooks/Snackbar';
 import { useAnalytics } from 'hooks/Utils';
 
 import FormInput from 'components/inputs/Input';
@@ -35,7 +34,6 @@ const formSchema = z.object({
 
 const CompaniesForm = () => {
   const { event } = useAnalytics();
-  const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -67,7 +65,6 @@ const CompaniesForm = () => {
       };
       const response = await API.emailForm(companyData);
       event('submit-form', 'companies', `Company: ${values.bedrift}`);
-      showSnackbar(response.detail, 'success');
       toast.success(response.detail);
       form.reset();
     } catch (e) {

@@ -1,4 +1,5 @@
 import { cn } from 'lib/utils';
+import { useEffect } from 'react';
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
 import { Checkbox } from 'components/ui/checkbox';
@@ -7,13 +8,16 @@ import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessa
 type FormMultiCheckboxProps<TFormValues extends FieldValues> = {
   form: UseFormReturn<TFormValues>;
   name: Path<TFormValues>;
-  items: string[];
+  items: string[] | { value: string; label: string }[];
   label: string;
   type?: string;
   description?: string;
   placeholder?: string;
   required?: boolean;
   className?: string;
+  multiple?: boolean;
+  disabled?: boolean;
+  defaultValue?: string;
 };
 
 const FormMultiCheckbox = <TFormValues extends FieldValues>({
@@ -24,7 +28,25 @@ const FormMultiCheckbox = <TFormValues extends FieldValues>({
   description,
   required,
   className,
+  defaultValue,
+  disabled = false,
+  multiple = true,
 }: FormMultiCheckboxProps<TFormValues>) => {
+  useEffect(() => {
+    const value = form.getValues(name);
+    if (!value || (Array.isArray(value) && !value.length)) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      form.setValue(name, []);
+    }
+
+    if (defaultValue && (!value || (Array.isArray(value) && !value.length))) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      form.setValue(name, [defaultValue]);
+    }
+  }, [form.getValues(name)]);
+
   return (
     <FormField
       control={form.control}
@@ -43,25 +65,30 @@ const FormMultiCheckbox = <TFormValues extends FieldValues>({
               key={index}
               name={name}
               render={({ field }) => {
+                const itemValue = typeof item === 'object' ? item.value : item;
                 return (
                   <FormItem className='flex flex-row items-start space-x-3 space-y-0'>
                     <FormControl>
                       <Checkbox
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore
-                        checked={field.value?.includes(item)}
+                        checked={field.value?.includes(typeof item === 'object' ? item.value : item)}
+                        disabled={disabled}
                         onCheckedChange={(checked) => {
-                          return checked
-                            ? field.onChange([...field.value, item])
-                            : field.onChange(
-                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                // @ts-ignore
-                                field.value?.filter((value: string) => value !== item),
-                              );
+                          const newValue = field.value.filter((value: string) => value !== itemValue);
+                          if (checked) {
+                            if (multiple) {
+                              newValue.push(itemValue);
+                            } else {
+                              newValue[0] = itemValue;
+                            }
+                          }
+
+                          return field.onChange(newValue);
                         }}
                       />
                     </FormControl>
-                    <FormLabel className='font-normal'>{item}</FormLabel>
+                    <FormLabel className='font-normal'>{typeof item === 'object' ? item.label : item}</FormLabel>
                   </FormItem>
                 );
               }}
