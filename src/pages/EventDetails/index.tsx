@@ -32,7 +32,7 @@ const EventDetails = () => {
   }
 
   return (
-    <Page className='max-w-6xl mx-auto'>
+    <Page>
       {data && (
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore

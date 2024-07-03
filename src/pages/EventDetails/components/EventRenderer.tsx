@@ -30,7 +30,6 @@ import EventPublicRegistrationsList from 'pages/EventDetails/components/EventPub
 import { EventsSubscription } from 'pages/Profile/components/ProfileEvents';
 
 import FormUserAnswers from 'components/forms/FormUserAnswers';
-import Expand from 'components/layout/Expand';
 import DetailContent from 'components/miscellaneous/DetailContent';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import QRButton from 'components/miscellaneous/QRButton';
@@ -41,6 +40,7 @@ import { Alert, AlertDescription } from 'components/ui/alert';
 import { Button } from 'components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
 import { Checkbox } from 'components/ui/checkbox';
+import Expandable from 'components/ui/expandable';
 import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
 import { Skeleton } from 'components/ui/skeleton';
 
@@ -145,9 +145,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             </Alert>
             {registration.survey_submission.answers.length > 0 && (
               <div>
-                <Expand flat header='Dine svar på spørsmål'>
+                <Expandable title='Dine svar på spørsmål'>
                   <FormUserAnswers submission={registration.survey_submission} />
-                </Expand>
+                </Expandable>
               </div>
             )}
           </>
@@ -170,9 +170,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             )}
             {registration.survey_submission.answers.length > 0 && (
               <div>
-                <Expand flat header='Påmeldingsspørsmål'>
+                <Expandable title='Påmeldingsspørsmål'>
                   <FormUserAnswers submission={registration.survey_submission} />
-                </Expand>
+                </Expandable>
               </div>
             )}
             {registration.has_unanswered_evaluation && (

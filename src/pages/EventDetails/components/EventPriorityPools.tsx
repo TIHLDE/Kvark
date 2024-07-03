@@ -6,8 +6,8 @@ import { GroupType } from 'types/Enums';
 
 import { useUser } from 'hooks/User';
 
-import { ShowMoreText } from 'components/miscellaneous/UserInformation';
 import { Card, CardContent } from 'components/ui/card';
+import Expandable from 'components/ui/expandable';
 
 export type EventPriorityPoolsProps = {
   priorityPools: Array<PriorityPool>;
@@ -35,15 +35,16 @@ const EventPriorityPools = ({ priorityPools }: EventPriorityPoolsProps) => {
           </CardContent>
         </Card>
       ))}
-      <ShowMoreText sx={{ mt: 1 }} variant='caption'>
-        <b>Hvem er prioritert?</b>
-        {`
-Boksene ovenfor viser dette arrangementets prioriteringsgrupper. Du er prioritert om du er medlem av alle gruppene i én av prioriteringsgruppene. Rekkefølgen til gruppene har ingenting å si.
+      <Expandable title='Hvordan fungerer prioritering?'>
+        <p className='text-sm text-muted-foreground'>
+          {`
+            Boksene ovenfor viser dette arrangementets prioriteringsgrupper. Du er prioritert om du er medlem av alle gruppene i én av prioriteringsgruppene. Rekkefølgen til gruppene har ingenting å si.
 
-Hvis du er prioritert og har plass på arrangementet, kan du ikke miste plassen. Hvis du ikke er prioritert og får plass til arrangementet, kan du miste plassen din om en annen som er prioritert melder seg på.
+            Hvis du er prioritert og har plass på arrangementet, kan du ikke miste plassen. Hvis du ikke er prioritert og får plass til arrangementet, kan du miste plassen din om en annen som er prioritert melder seg på.
 
-Med "-kullet" menes året du startet på studiet. ${user ? `Du er for eksempel en del av ${user.studyyear.group?.name}-kullet.` : ''}`}
-      </ShowMoreText>
+            Med "-kullet" menes året du startet på studiet. ${user ? `Du er for eksempel en del av ${user.studyyear.group?.name}-kullet.` : ''}`}
+        </p>
+      </Expandable>
     </div>
   );
 };

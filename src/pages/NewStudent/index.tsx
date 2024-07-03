@@ -11,7 +11,6 @@ import { useWikiPage } from 'hooks/Wiki';
 
 import EventsCalendarView from 'pages/Landing/components/EventsCalendarView';
 
-import Paper from 'components/layout/Paper';
 import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
@@ -130,7 +129,7 @@ const NewStudent = () => {
                   subtitle='Ingen arrangementer tilknyttet fadderuka er publisert enda. Kom tilbake senere!'
                 />
               )}
-              {error && <Paper>{error.detail}</Paper>}
+              {error && <h1 className='text-center'>{error.detail}</h1>}
               {data !== undefined && (
                 <div className='space-y-2'>
                   {events.map((event) => (

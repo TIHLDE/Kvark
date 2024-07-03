@@ -51,17 +51,17 @@ export const Providers = ({ children }: { children: ReactNode }) => {
 
   return (
     <CacheProvider value={muiCache}>
-      <ThemeProvider>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <CssBaseline enableColorScheme />
-          <QueryClientProvider client={queryClient}>
-            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-            {/* @ts-ignore */}
-            <MiscProvider>{children}</MiscProvider>
-            <ReactQueryDevtools />
-          </QueryClientProvider>
-        </LocalizationProvider>
-      </ThemeProvider>
+      {/* <ThemeProvider> */}
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <CssBaseline enableColorScheme />
+        <QueryClientProvider client={queryClient}>
+          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+          {/* @ts-ignore */}
+          <MiscProvider>{children}</MiscProvider>
+          <ReactQueryDevtools />
+        </QueryClientProvider>
+      </LocalizationProvider>
+      {/* </ThemeProvider> */}
     </CacheProvider>
   );
 };

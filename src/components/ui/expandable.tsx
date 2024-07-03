@@ -36,7 +36,7 @@ const Expandable = ({
         >
             <CollapsibleTrigger asChild>
                 <Button
-                    className={cn('whitespace-normal py-8 w-full rounded-t-md rounded-b-none bg-white dark:bg-inherit dark:hover:bg-secondary border-none flex justify-between items-center rounded-sm', expanded && 'rounded-b-none' )}
+                    className={cn('whitespace-normal py-6 w-full rounded-t-md rounded-b-none bg-white dark:bg-inherit dark:hover:bg-secondary border-none flex justify-between items-center rounded-sm', expanded && 'rounded-b-none' )}
                     variant='outline'
                 >
                     <div className='flex items-center space-x-4'>
