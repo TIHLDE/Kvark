@@ -1,7 +1,5 @@
 import { format, getYear, isAfter, isBefore, parseISO, subMinutes } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import slugify from 'slugify';
 
 import { Event, GroupLaw, SelectFormField, SelectFormFieldOption, TextFormField, UserBase } from 'types';

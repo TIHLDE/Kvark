@@ -21,6 +21,7 @@ import { ThemeProvider } from 'hooks/Theme';
 
 import ShortCutMenu from 'components/miscellaneous/shortCutMenu';
 import Navigation from 'components/navigation/Navigation';
+import ScrollToTop from 'components/navigation/ScrollToTop';
 import { Toaster } from 'components/ui/sonner';
 
 export const cache = createCache({ key: 'tihlde-cache', prepend: true });
@@ -62,6 +63,7 @@ export const Providers = ({ children }: { children: ReactNode }) => {
 export const Application = () => (
   <Providers>
     <BrowserRouter>
+      <ScrollToTop />
       <Navigation>
         <ShortCutMenu />
         <AppRoutes />
