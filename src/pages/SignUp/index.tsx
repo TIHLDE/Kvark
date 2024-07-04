@@ -14,6 +14,7 @@ import { useRedirectUrl, useSetRedirectUrl } from 'hooks/Misc';
 import { useCreateUser } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
+import Page from 'components/navigation/Page';
 import { Alert, AlertDescription, AlertTitle } from 'components/ui/alert';
 import { Button, buttonVariants } from 'components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
@@ -89,8 +90,8 @@ const SignUp = () => {
   };
 
   return (
-    <div className='px-2 md:px-8 mt-32 pb-20 flex items-center justify-center'>
-      <Card className='max-w-3xl w-full'>
+    <Page>
+      <Card className='max-w-3xl w-full mx-auto'>
         <CardHeader>
           <CardTitle>Opprett bruker</CardTitle>
           <CardDescription>Opprett en bruker for å få tilgang til TIHLDE sine tjenester</CardDescription>
@@ -290,7 +291,7 @@ const SignUp = () => {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </Page>
   );
 };
 

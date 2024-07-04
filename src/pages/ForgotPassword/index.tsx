@@ -8,6 +8,7 @@ import { z } from 'zod';
 import { useForgotPassword } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
+import Page from 'components/navigation/Page';
 import { Button, buttonVariants } from 'components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
@@ -41,8 +42,8 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className='px-2 md:px-8 mt-32 flex items-center justify-center'>
-      <Card className='max-w-lg w-full'>
+    <Page>
+      <Card className='max-w-lg w-full mx-auto'>
         <CardHeader>
           <CardTitle>Glemt passord?</CardTitle>
           <CardDescription>Skriv inn din e-postadresse for å motta en e-post med et nytt passord.</CardDescription>
@@ -83,7 +84,7 @@ const ForgotPassword = () => {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </Page>
   );
 };
 

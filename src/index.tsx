@@ -13,6 +13,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { broadcastQueryClient } from 'react-query/broadcastQueryClient-experimental';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { BrowserRouter } from 'react-router-dom';
+import { ScrollToTop } from 'utils';
 
 import API from 'api/api';
 
@@ -62,6 +63,7 @@ export const Providers = ({ children }: { children: ReactNode }) => {
 export const Application = () => (
   <Providers>
     <BrowserRouter>
+      <ScrollToTop />
       <Navigation>
         <ShortCutMenu />
         <AppRoutes />

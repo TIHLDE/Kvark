@@ -1,5 +1,7 @@
 import { format, getYear, isAfter, isBefore, parseISO, subMinutes } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import slugify from 'slugify';
 
 import { Event, GroupLaw, SelectFormField, SelectFormFieldOption, TextFormField, UserBase } from 'types';
@@ -364,3 +366,15 @@ export const removeIdsFromFields = (fields: Array<TextFormField | SelectFormFiel
  * @param url The URL to navigate to
  */
 export const navigateToExternalURL = (url: string) => window.open(url, '_blank');
+
+/**
+ * Scroll user to top of page
+ *
+ */
+export const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => scrollTo(0, 0), [pathname]);
+
+  return null;
+};
