@@ -8,6 +8,7 @@ import { useRedirectUrl, useSetRedirectUrl } from 'hooks/Misc';
 import { useLogin } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
+import Page from 'components/navigation/Page';
 import { Button, buttonVariants } from 'components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
@@ -50,8 +51,8 @@ const LogIn = () => {
   };
 
   return (
-    <div className='px-2 md:px-8 mt-32 flex items-center justify-center'>
-      <Card className='max-w-lg w-full'>
+    <Page>
+      <Card className='max-w-lg w-full mx-auto'>
         <CardHeader>
           <CardTitle>Logg inn</CardTitle>
           <CardDescription>Logg inn med ditt TIHLDE brukernavn og passord</CardDescription>
@@ -108,7 +109,7 @@ const LogIn = () => {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </Page>
   );
 };
 

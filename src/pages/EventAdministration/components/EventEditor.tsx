@@ -53,7 +53,7 @@ type GroupOption =
 
 const formSchema = z
   .object({
-    category: z.number(),
+    category: z.string({ required_error: 'Du må velge en kategori' }).min(1, { message: 'Du må velge en kategori' }),
     description: z.string().min(1, { message: 'Beskrivelsen kan ikke være tom' }),
     end_date: z.date(),
     end_registration_at: z.date(),
@@ -117,7 +117,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      category: data?.category || -1,
+      category: data?.category.toString() || '',
       description: data?.description || '',
       end_date: data?.end_date ? parseISO(data.end_date) : new Date(),
       end_registration_at: data?.end_registration_at ? parseISO(data.end_registration_at) : new Date(),
@@ -149,7 +149,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       setPriorityPools(newValues?.priority_pools.map((pool) => ({ groups: pool.groups.map((group) => group.slug) })) || []);
       const category = newValues?.category as unknown as Category;
       form.reset({
-        category: category?.id || 1,
+        category: category?.id.toString() || '',
         description: newValues?.description || '',
         end_date: newValues?.end_date ? parseISO(newValues.end_date) : new Date(),
         end_registration_at: newValues?.end_registration_at ? parseISO(newValues.end_registration_at) : new Date(),
@@ -232,6 +232,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     const values = form.getValues();
     return {
       ...values,
+      category: parseInt(values.category),
       organizer: groups?.find((g) => g.slug === values.organizer) || null,
       list_count: 0,
       priority_pools: priorityPools.map((pool) => ({ groups: pool.groups.map((group) => groups?.find((g) => g.slug === group)) })) as Array<PriorityPool>,
@@ -333,16 +334,16 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     }
   };
 
-  const getCategoryValue = (value: number): string => {
-    const category = categories.find((category) => category.id === value);
+  const getCategoryValue = (value: string): string => {
+    const category = categories.find((category) => category.id === parseInt(value));
     if (category) {
       return category.id.toString();
     }
     return '';
   };
 
-  const getCategoryName = (value: number): string => {
-    const category = categories.find((category) => category.id === value);
+  const getCategoryName = (value: string): string => {
+    const category = categories.find((category) => category.id === parseInt(value));
     if (category) {
       return category.text;
     }
@@ -547,7 +548,10 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                     <FormLabel>
                       Kategori <span className='text-red-300'>*</span>
                     </FormLabel>
-                    <Select defaultValue={getCategoryValue(field.value)} onValueChange={(value) => field.onChange(parseInt(value))}>
+                    <Select
+                      // defaultValue={getCategoryValue(field.value)} onValueChange={(value) => field.onChange(parseInt(value))}
+                      defaultValue={getCategoryValue(field.value)}
+                      onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder={getCategoryName(field.value)} />

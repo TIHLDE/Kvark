@@ -80,15 +80,15 @@ const NewStudent = () => {
               Hei! Hvis du er ny student i TIHLDE anbefaler vi deg å opprette bruker på nettsiden ASAP! Da får du muligheten til å melde deg på arrangementer,
               få badges, se kokeboka og mer 🎉
             </p>
-            <div className='flex items-center space-x-2'>
-              <Button asChild>
+            <div className='space-y-2 lg:space-y-0 lg:flex lg:items-center lg:space-x-2'>
+              <Button asChild className='w-full'>
                 <Link onClick={() => createUserAnalytics('ny-bruker')} to={'/ny-bruker/'}>
                   Registrer deg her
                 </Link>
               </Button>
 
-              {!SHOW_FADDERUKA_INFO && (
-                <Button asChild className='text-black dark:text-white' variant='outline'>
+              {SHOW_FADDERUKA_INFO && (
+                <Button asChild className='text-black dark:text-white w-full' variant='outline'>
                   <a href='https://s.tihlde.org/fadderuka-paamelding' onClick={fadderukaSignupAnalytics} rel='noopener noreferrer' target='_blank'>
                     Meld deg på fadderuka
                     <ArrowUpRightFromSquare className='ml-2 w-5 h-5 stroke-[1.5px]' />
