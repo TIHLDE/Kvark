@@ -56,14 +56,14 @@ const NewStudentBox = () => {
       <p className='text-center'>{text}</p>
       {header === HEADER.NEW_STUDENT && (
         <div className='space-y-2 md:space-y-0 md:flex md:items-center md:space-x-4 md:justify-center pt-4 pb-2'>
-          <Button asChild>
+          <Button asChild className='w-full'>
             <Link to={URLS.newStudent}>
               Nye studenter
               <ArrowRight className='ml-2 w-5 h-5 stroke-[1.5px]' />
             </Link>
           </Button>
           {SHOW_FADDERUKA_INFO && (
-            <Button asChild variant='outline'>
+            <Button asChild className='w-full' variant='outline'>
               <a href='https://s.tihlde.org/fadderuka-paamelding' onClick={fadderukaSignupAnalytics} rel='noopener noreferrer' target='_blank'>
                 Meld deg på fadderuka
                 <ArrowUpRightFromSquare className='ml-2 w-5 h-5 stroke-[1.5px]' />

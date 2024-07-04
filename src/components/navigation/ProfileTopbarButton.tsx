@@ -38,7 +38,7 @@ const ProfileTopbarButton = () => {
             analytics('log-in');
           }}
           to={URLS.login}>
-          <UserRoundIcon className='text-white stroke-[1.5px]' />
+          <UserRoundIcon className='dark:text-white w-[1.2rem] h-[1.2rem] stroke-[1.5px]' />
         </Link>
       )}
     </div>

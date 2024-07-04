@@ -24,14 +24,14 @@ const EventListItem = ({ event, size }: EventListItemProps) => {
 
   const [width, titleFontSize, contentFontSize] = useMemo(() => {
     if (size === 'small') {
-      return ['w-[150px]', 'text-sm md:text-base', 'text-xs md:text-sm'];
+      return ['w-[100px] lg:w-[150px]', 'text-sm md:text-base', 'text-xs md:text-sm'];
     }
 
     if (size === 'medium') {
-      return ['w-[200px]', 'text-base md:text-lg', 'text-sm md:text-base'];
+      return ['w-[150px] lg:w-[200px]', 'text-base md:text-lg', 'text-sm md:text-base'];
     }
 
-    return ['w-[200px] lg:w-[250px]', 'text-sm md:text-lg', 'text-xs md:text-base'];
+    return ['w-[150px] md:w-[200px] lg:w-[250px]', 'text-sm md:text-lg', 'text-xs md:text-base'];
   }, [size]);
 
   const categoryLabel = `${event.organizer ? `${event.organizer.name} | ` : ''}${event.category?.text || 'Laster...'}`;
@@ -56,7 +56,7 @@ const EventListItem = ({ event, size }: EventListItemProps) => {
     <Link
       className={`w-full p-1 rounded-md border bg-card flex space-x-2 md:space-x-6 transition-all duration-150 ${getBorderColor()}`}
       to={`${URLS.events}${event.id}/${urlEncode(event.title)}/`}>
-      <AspectRatioImg alt={event.image_alt || event.title} className={`rounded-l-sm ${width}`} src={event.image} />
+      <AspectRatioImg alt={event.image_alt || event.title} className={cn('rounded-l-sm', width)} src={event.image} />
 
       <div className='py-2 space-y-1'>
         <h1 className={cn(titleFontSize, 'font-bold text-black dark:text-white')}>{event.title}</h1>

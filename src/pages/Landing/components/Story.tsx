@@ -1,14 +1,13 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { urlEncode } from 'utils';
 
 import { EventList, JobPost, News } from 'types';
 
+import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
 import { ScrollArea, ScrollBar } from 'components/ui/scroll-area';
 import { Skeleton } from 'components/ui/skeleton';
-
-import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
 
 export type StoryItem = {
   link: string;
@@ -64,18 +63,10 @@ const Story = ({ items }: StoryProps) => {
   };
 
   const StoryItem = ({ item }: StoryItemProps) => {
-    const [imgUrl, setImgUrl] = useState(item.image || TIHLDELOGO);
-
     return (
       <div className='space-y-2 max-w-[110px] w-full'>
         <Link className='relative block' to={item.link}>
-          <img
-            alt={item.title}
-            className='w-full h-full rounded-md object-cover object-center m-auto block border border-primary/70 hover:border-primary'
-            loading='lazy'
-            onError={() => setImgUrl(TIHLDELOGO)}
-            src={imgUrl}
-          />
+          <AspectRatioImg alt={item.title} src={item.image} />
           <div className='absolute bottom-0.5 left-0.5 p-1 rounded-sm bg-card text-white bg-opacity-70'>
             <p className='text-[8px]'>{item.typeText}</p>
           </div>
