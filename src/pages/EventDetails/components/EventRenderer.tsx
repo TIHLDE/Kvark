@@ -448,7 +448,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           <div className='flex items-center space-x-2'>
             <ShareButton shareId={data.id} shareType='event' title={data.title} />
             {!preview && data.permissions.write && (
-              <Button className='w-full flex items-center space-x-2' size='lg' variant='outline'>
+              <Button className='w-full flex items-center space-x-2' variant='outline'>
                 <PencilIcon className='w-4 h-4 md:w-5 md:h-5 stroke-[1.5px]' />
                 <Link className='text-sm md:text-md text-black dark:text-white' to={`${URLS.eventAdmin}${data.id}/`}>
                   Endre arrangement

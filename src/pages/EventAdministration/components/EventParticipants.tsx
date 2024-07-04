@@ -224,11 +224,10 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
 
   return (
     <Card>
-      <CardHeader className='flex flex-row justify-between items-center'>
+      <CardHeader className='space-y-2 lg:space-y-0 flex lg:flex-row lg:justify-between lg:items-center'>
         <CardTitle>{data?.title || 'Laster...'}</CardTitle>
         <div className='flex items-center space-x-2'>
           <EventMessageSender eventId={eventId} />
-          {/* TODO: Add if needed: <EventGiftCardSender /> */}
           <EventUserRegistrator eventId={eventId} />
         </div>
       </CardHeader>

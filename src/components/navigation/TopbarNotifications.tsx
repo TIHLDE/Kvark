@@ -1,5 +1,4 @@
 import parseISO from 'date-fns/parseISO';
-import { cn } from 'lib/utils';
 import { Bell, BellRing, ChevronDown, ChevronUp, SquareArrowOutUpRight, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -40,11 +39,10 @@ const NotificationItem = ({ notification, setShowNotifications }: NotificationIt
 
   return (
     <Collapsible className='rounded-md border bg-inherit' onOpenChange={setShowDescription} open={showDescription}>
-      <div className={cn('w-full', notification.link && 'flex items-center')}>
-        <CollapsibleTrigger
-          className={cn('flex items-center justify-between w-full hover:bg-border py-2 px-4 rounded-tl-sm cursor-pointer', notification.link && 'pr-0')}>
+      <div className='w-full'>
+        <CollapsibleTrigger className='flex items-center justify-between w-full hover:bg-border py-2 px-4 rounded-tl-sm cursor-pointer'>
           <div className='flex items-center space-x-6'>
-            <Icon className='w-5 h-5 stroke-[1.5px]' />
+            <Icon className='h-[1.2rem] w-[1.2rem] stroke-[1.5px]' />
             <div className='text-start'>
               <h1 className='text-sm'>{notification.title}</h1>
               <p className='text-xs text-muted-foreground'>{getTimeSince(parseISO(notification.created_at))}</p>
@@ -52,17 +50,17 @@ const NotificationItem = ({ notification, setShowNotifications }: NotificationIt
           </div>
           <ExpandIcon className='w-5 h-5 stroke-[1.5px]' />
         </CollapsibleTrigger>
-
-        {notification.link && (
-          <Button asChild className='mx-1' size='icon' variant='ghost'>
-            <Link onClick={linkOnClick} to={notification.link}>
-              <SquareArrowOutUpRight className='w-5 h-5 stroke-[1.5px]' />
-            </Link>
-          </Button>
-        )}
       </div>
       <CollapsibleContent>
         <p className='text-sm border-t p-2'>{notification.description}</p>
+        {notification.link && (
+          <Button asChild className='w-full rounded-t-none' variant='secondary'>
+            <Link onClick={linkOnClick} to={notification.link}>
+              <SquareArrowOutUpRight className='h-[1.2rem] w-[1.2rem] stroke-[1.5px] mr-2' />
+              Les mer
+            </Link>
+          </Button>
+        )}
       </CollapsibleContent>
     </Collapsible>
   );
@@ -88,7 +86,7 @@ const NotificationsTopbar = () => {
     return (
       <Drawer onOpenChange={setShowNotifications} open={showNotifications}>
         <DrawerTrigger asChild>
-          <Button size='icon' variant='ghost'>
+          <Button className='dark:text-white' size='icon' variant='ghost'>
             {!showNotifications ? user && user.unread_notifications > 0 ? <BellRing className='animate-pulse' /> : <Bell /> : <X />}
           </Button>
         </DrawerTrigger>
@@ -117,8 +115,16 @@ const NotificationsTopbar = () => {
   return (
     <Popover onOpenChange={setShowNotifications} open={showNotifications}>
       <PopoverTrigger asChild>
-        <Button size='icon' variant='ghost'>
-          {!showNotifications ? user && user.unread_notifications > 0 ? <BellRing className='animate-pulse' /> : <Bell /> : <X />}
+        <Button className='dark:text-white' size='icon' variant='ghost'>
+          {!showNotifications ? (
+            user && user.unread_notifications > 0 ? (
+              <BellRing className='animate-pulse h-[1.2rem] w-[1.2rem]' />
+            ) : (
+              <Bell className='h-[1.2rem] w-[1.2rem]' />
+            )
+          ) : (
+            <X className='h-[1.2rem] w-[1.2rem]' />
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className='w-[600px]'>

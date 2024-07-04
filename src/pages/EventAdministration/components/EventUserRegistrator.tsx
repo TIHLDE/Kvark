@@ -66,10 +66,10 @@ const EventUserRegistrator = ({ eventId }: EventMessageSenderProps) => {
   return (
     <ResponsiveDialog
       className='max-w-2xl w-full'
-      description='Send en melding på epost og et varsel til de påmeldte deltagerne.'
+      description='Legg til deltager til arrangementet'
       onOpenChange={setDialogOpen}
       open={dialogOpen}
-      title='Send melding til påmeldte'
+      title='Legg til deltager'
       trigger={!isTablet ? SmallOpenButton : OpenButton}>
       <Form {...form}>
         <form className='space-y-4 px-4' onSubmit={form.handleSubmit(onSubmit)}>

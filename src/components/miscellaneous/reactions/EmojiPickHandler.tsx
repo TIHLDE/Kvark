@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { useCreateReaction, useUpdateReaction } from 'hooks/EmojiReaction';
+import { useTheme } from 'hooks/Theme';
 import { useUser } from 'hooks/User';
 
 import { Button } from 'components/ui/button';
@@ -15,6 +16,8 @@ export const EmojiPickerHandler = ({ data, content_type }: ReactionHandlerProps)
   const user = useUser();
   const createReaction = useCreateReaction();
   const updateReaction = useUpdateReaction();
+
+  const { theme } = useTheme();
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -64,7 +67,7 @@ export const EmojiPickerHandler = ({ data, content_type }: ReactionHandlerProps)
   return (
     <ResponsiveDialog className='w-auto p-2' onOpenChange={setOpen} open={open} title='Reager' trigger={OpenButton}>
       <div className='w-full flex justify-center'>
-        <EmojiPicker onEmojiClick={handleEmojiPick} theme={Theme.AUTO} />
+        <EmojiPicker onEmojiClick={handleEmojiPick} theme={theme === 'dark' ? Theme.DARK : Theme.LIGHT} />
       </div>
     </ResponsiveDialog>
   );

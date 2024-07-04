@@ -65,7 +65,7 @@ const Wiki = () => {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className='grid gap-6 lg:grid-cols-[.4fr_1fr] mt-2'>
+      <div className='grid gap-6 lg:grid-cols-[.4fr_1fr] items-start mt-2'>
         <div className='space-y-2'>
           <WikiNavigator />
           {data && (

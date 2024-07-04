@@ -90,7 +90,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
         <title>TIHLDE</title>
       </Helmet>
       <Topbar items={items} />
-      <main className='min-h-[101vh]'>{children}</main>
+      <main className='bg-background text-black dark:text-white min-h-[101vh]'>{children}</main>
       <Footer />
       {!isMediumScreen && <BottomBar items={items} />}
     </>

@@ -1,3 +1,4 @@
+import { cn } from 'lib/utils';
 import {
   BadgeIcon,
   CalendarDaysIcon,
@@ -81,7 +82,10 @@ const Profile = () => {
   };
 
   const NavListItem = ({ label, icon: Icon, onClick }: NavListItem) => (
-    <Button className='flex justify-start text-md' onClick={onClick ? onClick : () => setTab(label)} variant={tab === label ? 'outline' : 'ghost'}>
+    <Button
+      className={cn('flex justify-start text-md border-none rounded-none', tab === label && 'bg-accent')}
+      onClick={onClick ? onClick : () => setTab(label)}
+      variant={tab === label ? 'outline' : 'ghost'}>
       <Icon className='mr-2 stroke-[1.5px]' /> {label}
     </Button>
   );

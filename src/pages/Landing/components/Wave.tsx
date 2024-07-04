@@ -21,9 +21,9 @@ const Wave = () => {
 
   return (
     <div className='w-full h-[600px]'>
-      <div className='overflow-hidden absolute w-full h-[600px] bg-gradient-to-tr from-indigo-900 to-background'>
+      <div className='overflow-hidden absolute w-full h-[600px] bg-gradient-to-tr from-indigo-200 to-white dark:from-indigo-900 dark:to-background'>
         <div className='max-w-[920px] relative z-20 pt-[150px] px-[15px] pb-[100px] m-auto'>
-          <TihldeLogo className='w-[70vw] max-w-[450px] min-w-[250px] max-h-[90px]' size='large' />
+          <TihldeLogo className='w-[70vw] max-w-[450px] min-w-[250px] max-h-[90px] text-primary' size='large' />
           <h1 className='text-center md:text-lg py-2'>
             Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Digital samhandling og
             Informasjonsbehandling ved NTNU

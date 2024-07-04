@@ -54,7 +54,7 @@ const EventListItem = ({ event, size }: EventListItemProps) => {
 
   return (
     <Link
-      className={`w-full p-1 rounded-md border flex space-x-2 md:space-x-6 bg-inherit transition-all duration-150 ${getBorderColor()}`}
+      className={`w-full p-1 rounded-md border bg-card flex space-x-2 md:space-x-6 transition-all duration-150 ${getBorderColor()}`}
       to={`${URLS.events}${event.id}/${urlEncode(event.title)}/`}>
       <AspectRatioImg alt={event.image_alt || event.title} className={`rounded-l-sm ${width}`} src={event.image} />
 

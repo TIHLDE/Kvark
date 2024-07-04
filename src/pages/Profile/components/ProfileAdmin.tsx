@@ -1,5 +1,4 @@
-import { Boxes, BriefcaseBusiness, Calendar, ChevronRightIcon, Grip, Info, Newspaper, Users } from 'lucide-react';
-import { ComponentType } from 'react';
+import { Boxes, BriefcaseBusiness, Calendar, ChevronRightIcon, Grip, Info, LucideIcon, Newspaper, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 
@@ -15,7 +14,7 @@ const Admin = () => {
     to: string;
     primary: string;
     secondary: string;
-    icon: ComponentType;
+    icon: LucideIcon;
   };
 
   const AdminCard = ({ apps, icon: Icon, to, primary, secondary }: CardProps) => (
@@ -24,7 +23,7 @@ const Admin = () => {
         <CardContent className='p-0'>
           <Link className='flex items-center justify-between p-2 w-full' to={to}>
             <div className='flex items-center space-x-4'>
-              <Icon />
+              <Icon className='w-5 h-5 stroke-[1.5px]' />
               <div>
                 <h1>{primary}</h1>
                 <h1 className='text-sm'>{secondary}</h1>
