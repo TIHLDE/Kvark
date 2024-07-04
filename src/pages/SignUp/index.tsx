@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Info } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import URLS from 'URLS';
 import { z } from 'zod';
 
@@ -10,7 +11,6 @@ import { UserCreate } from 'types';
 import { useConfetti } from 'hooks/Confetti';
 import { useStudyGroups, useStudyyearGroups } from 'hooks/Group';
 import { useRedirectUrl, useSetRedirectUrl } from 'hooks/Misc';
-import { useSnackbar } from 'hooks/Snackbar';
 import { useCreateUser } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
@@ -47,7 +47,6 @@ const SignUp = () => {
   const { data: studyyears } = useStudyyearGroups();
   const navigate = useNavigate();
   const createUser = useCreateUser();
-  const showSnackbar = useSnackbar();
   const setLogInRedirectURL = useSetRedirectUrl();
   const redirectURL = useRedirectUrl();
 
@@ -84,7 +83,7 @@ const SignUp = () => {
         navigate(redirectURL || URLS.login);
       },
       onError: (e) => {
-        showSnackbar(e.detail, 'error');
+        toast.error(e.detail);
       },
     });
   };

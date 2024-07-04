@@ -1,19 +1,22 @@
-import EditIcon from '@mui/icons-material/EditRounded';
-import { Divider, IconButton, ListItem, ListItemSecondaryAction, ListItemText, Typography } from '@mui/material';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Pencil } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { formatLawHeader } from 'utils';
+import { z } from 'zod';
 
-import { Group, GroupLaw, GroupLawMutate } from 'types';
+import { Group, GroupLaw } from 'types';
 
 import { useDeleteGroupLaw, useUpdateGroupLaw } from 'hooks/Group';
-import { useSnackbar } from 'hooks/Snackbar';
 
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import Dialog from 'components/layout/Dialog';
-import Paper from 'components/layout/Paper';
-import VerifyDialog from 'components/layout/VerifyDialog';
+import FormInput from 'components/inputs/Input';
+import FormTextarea from 'components/inputs/Textarea';
+import { Button } from 'components/ui/button';
+import { Form } from 'components/ui/form';
+import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
+import { ScrollArea } from 'components/ui/scroll-area';
 
 export type LawItemProps = {
   groupSlug: Group['slug'];
@@ -21,107 +24,128 @@ export type LawItemProps = {
   isAdmin?: boolean;
 };
 
+const formSchema = z.object({
+  amount: z.string(),
+  description: z.string().optional(),
+  paragraph: z.string(),
+  title: z.string().min(1, { message: 'Tittel er påkrevd' }),
+});
+
 const LawItem = ({ law, groupSlug, isAdmin = false }: LawItemProps) => {
   const [editOpen, setEditOpen] = useState(false);
   const deleteLaw = useDeleteGroupLaw(groupSlug, law.id);
   const updateLaw = useUpdateGroupLaw(groupSlug, law.id);
-  const showSnackbar = useSnackbar();
-  const { register, formState, handleSubmit, watch } = useForm<GroupLawMutate>({ defaultValues: { ...law } });
-  const values = watch();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      amount: law.amount.toString(),
+      description: law.description || '',
+      paragraph: law.paragraph.toString(),
+      title: law.title,
+    },
+  });
 
   const handleDeleteLaw = () =>
     deleteLaw.mutate(null, {
-      onSuccess: (data) => showSnackbar(data.detail, 'success'),
-      onError: (e) => showSnackbar(e.detail, 'error'),
+      onSuccess: () => {
+        toast.success('Lovparagrafen ble slettet');
+        setEditOpen(false);
+      },
+      onError: (e) => {
+        toast.error(e.detail);
+      },
     });
 
-  const submit = (data: GroupLawMutate) =>
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    const data = {
+      amount: parseInt(values.amount),
+      description: values.description || '',
+      paragraph: parseFloat(values.paragraph),
+      title: values.title,
+    };
     updateLaw.mutate(data, {
-      onSuccess: () => showSnackbar('Lovparagrafen ble oppdatert', 'success'),
-      onError: (e) => showSnackbar(e.detail, 'error'),
+      onSuccess: () => {
+        toast.success('Lovparagrafen ble oppdatert');
+      },
+      onError: (e) => {
+        toast.error(e.detail);
+      },
     });
+  };
+
+  const OpenButton = (
+    <Button size='icon' variant='ghost'>
+      <Pencil className='w-5 h-5' />
+    </Button>
+  );
 
   return (
-    <>
-      {isAdmin && (
-        <Dialog onClose={() => setEditOpen(false)} open={editOpen} titleText='Endre lovparagraf'>
-          <form onSubmit={handleSubmit(submit)}>
-            <TextField
-              formState={formState}
-              helperText='Heltall for overskrift. Maks 2 siffer på hver side av komma'
-              inputProps={{ inputMode: 'numeric', pattern: '^[0-9]{1,2}(.[0-9]{1,2})?$' }}
-              label='Paragraf'
-              placeholder='For eks.: 12.01'
-              {...register('paragraph', {
-                required: 'Hvilken paragraf',
-                valueAsNumber: true,
-              })}
-              required
-            />
-            <TextField
-              formState={formState}
-              helperText='For eks.: Forsentkomming'
-              label='Tittel'
-              {...register('title', { required: 'Navngi paragrafen' })}
-              required
-            />
-            <TextField
-              formState={formState}
-              helperText='La stå tom for å ikke kunne velges ved botgivning'
-              label='Beskrivelse'
-              maxRows={4}
-              minRows={2}
-              multiline
-              {...register('description')}
-            />
-            <TextField
-              formState={formState}
-              helperText='Brukes for å forhåndsutfylle antall bøter når det lages en ny'
-              inputProps={{ type: 'number' }}
-              label='Veiledende antall bøter'
-              {...register('amount')}
-              required
-            />
-            <SubmitButton disabled={updateLaw.isLoading} formState={formState} sx={{ mt: 2 }}>
-              Oppdater lovparagraf
-            </SubmitButton>
-          </form>
-          <VerifyDialog color='error' onConfirm={handleDeleteLaw} sx={{ mt: 2 }} titleText={`Slett lovparagrafen?`}>
-            Slett lovparagraf
-          </VerifyDialog>
-          <Divider sx={{ my: 2 }} />
-          <Typography gutterBottom>Forhåndsvisning:</Typography>
-          <Paper noPadding sx={{ px: 2, py: 1 }}>
-            <LawItem groupSlug={groupSlug} law={{ ...values, id: '-' }} />
-          </Paper>
-        </Dialog>
-      )}
-      <ListItem disablePadding>
-        <ListItemText
-          primary={
-            <Typography sx={{ fontFamily: 'Century Schoolbook, Georgia, serif', fontWeight: 'bold' }} variant={law.paragraph % 1 !== 0 ? 'subtitle1' : 'h3'}>
-              {formatLawHeader(law)}
-            </Typography>
-          }
-          secondary={
-            Boolean(law.description) && (
-              <Typography sx={{ whiteSpace: 'break-spaces' }} variant='body2'>
-                {law.description}
-                <br />
-                <i>Bøter: {law.amount}</i>
-              </Typography>
-            )
-          }
-        />
-        {isAdmin && (
-          <ListItemSecondaryAction>
-            <IconButton onClick={() => setEditOpen(true)}>
-              <EditIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
+    <div className='w-full flex justify-between items-center'>
+      <div>
+        <h1 className={`${law.paragraph % 1 === 0 ? 'text-xl font-bold' : ''}`}>{formatLawHeader(law)}</h1>
+
+        {Boolean(law.description) && (
+          <h1 className='break-words text-sm text-muted-foreground'>
+            {law.description}
+            <br />
+            <i>Bøter: {law.amount}</i>
+          </h1>
         )}
-      </ListItem>
-    </>
+      </div>
+
+      {isAdmin && (
+        <ResponsiveDialog
+          description='Endre en lovparagraf for gruppen'
+          onOpenChange={setEditOpen}
+          open={editOpen}
+          title='Endre lovparagraf'
+          trigger={OpenButton}>
+          <ScrollArea className='h-[60vh]'>
+            <Form {...form}>
+              <form className='space-y-6 pb-6 px-2' onSubmit={form.handleSubmit(onSubmit)}>
+                <FormInput
+                  description='Heltall for overskrift. Maks 2 siffer på hver side av komma'
+                  form={form}
+                  label='Paragraf'
+                  name='paragraph'
+                  required
+                  type='number'
+                />
+
+                <FormInput description='For eks.: Forsentkomming' form={form} label='Tittel' name='title' required />
+
+                <FormTextarea description='La stå tom for å ikke kunne velges ved botgivning' form={form} label='Beskrivelse' name='description' />
+
+                <FormInput
+                  description='Brukes for å forhåndsutfylle antall bøter når det lages en ny'
+                  form={form}
+                  label='Veiledende antall bøter'
+                  name='amount'
+                  required
+                  type='number'
+                />
+
+                <Button className='w-full' disabled={updateLaw.isLoading} type='submit'>
+                  {updateLaw.isLoading ? 'Oppdaterer...' : 'Oppdater'}
+                </Button>
+
+                <ResponsiveAlertDialog
+                  action={handleDeleteLaw}
+                  description='Er du sikker på at du vil slette denne lovparagrafen?'
+                  title='Slett lovparagrafen?'
+                  trigger={
+                    <Button className='w-full' variant='destructive'>
+                      Slett lovparagraf
+                    </Button>
+                  }
+                />
+              </form>
+            </Form>
+          </ScrollArea>
+        </ResponsiveDialog>
+      )}
+    </div>
   );
 };
 

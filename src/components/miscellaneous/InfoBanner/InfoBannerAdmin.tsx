@@ -1,110 +1,106 @@
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
-import { Button, Stack, styled, Typography } from '@mui/material';
-import { formatDistance } from 'date-fns';
-import { parseISO } from 'date-fns/esm';
-import nbLocale from 'date-fns/locale/nb';
-import { makeStyles } from 'makeStyles';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { formatDate } from 'utils';
+import { z } from 'zod';
 
 import { useInfoBanners } from 'hooks/InfoBanner';
 
-import Bool from 'components/inputs/Bool';
-import Dialog from 'components/layout/Dialog';
-import { StandaloneExpand } from 'components/layout/Expand';
-import Pagination from 'components/layout/Pagination';
-import Paper from 'components/layout/Paper';
+import Page from 'components/navigation/Page';
+import { PaginateButton } from 'components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
+import { Form, FormControl, FormField, FormItem } from 'components/ui/form';
+import { Label } from 'components/ui/label';
+import { Switch } from 'components/ui/switch';
 
-import InfoBannerAdminItem from './InfoBannerAdminItem';
+import InfoBannerItem, { InfoBannerForm } from './InfoBannerAdminItem';
 
 type Filters = {
   is_visible: boolean;
   is_expired: boolean;
 };
 
-const Row = styled(Stack)(({ theme }) => ({
-  gap: 0,
-  flexDirection: 'column',
-  width: '100%',
-  [theme.breakpoints.up('md')]: {
-    gap: theme.spacing(2),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-}));
+const formSchema = z.object({
+  is_visible: z.boolean(),
+  is_expired: z.boolean(),
+});
 
 const InfoBannerAdmin = () => {
-  const [open, setOpen] = useState(false);
   const [filters, setFilters] = useState<Filters>({ is_visible: false, is_expired: false });
-  const { control, handleSubmit, formState } = useForm<Filters>({ defaultValues: { is_visible: false, is_expired: false } });
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: { is_visible: false, is_expired: false },
+  });
 
-  const searchWithFilters = (data: Filters) => {
-    setFilters({ is_visible: data.is_visible, is_expired: data.is_expired });
+  const searchWithFilters = (values: z.infer<typeof formSchema>) => {
+    setFilters({ is_visible: values.is_visible, is_expired: values.is_expired });
   };
   const { data: bannerData, hasNextPage, fetchNextPage, isFetching } = useInfoBanners(filters);
   const banners = useMemo(() => (bannerData ? bannerData.pages.map((page) => page.results).flat() : []), [bannerData]);
 
   return (
-    <>
-      <Typography>Bannere brukes for å gi en felles informasjon til alle som besøker nettsiden.</Typography>
-      <Row sx={{ mb: 2, gap: 2, mt: 1 }}>
-        <form onChange={handleSubmit(searchWithFilters)}>
-          <Bool control={control} formState={formState} label='Se aktive' name='is_visible' type='switch' />
-          <Bool control={control} formState={formState} label='Se tidligere' name='is_expired' type='switch' />
-        </form>
-        <Button onClick={() => setOpen(true)} startIcon={<AddRoundedIcon />} variant='outlined'>
-          Nytt banner
-        </Button>
-      </Row>
-      <Dialog onClose={() => setOpen(false)} open={open} titleText='Nytt banner'>
-        <InfoBannerAdminItem onClose={() => setOpen(false)} />
-      </Dialog>
-      <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-        <Stack gap={1}>
-          {banners.map((banner) => (
-            <StandaloneExpand
-              icon={<InfoRoundedIcon />}
-              key={banner.visible_from}
-              primary={`Banner: "${banner.title}"?`}
-              secondary={`Aktiv ${
-                banner.is_visible
-                  ? 'nå'
-                  : formatDistance(parseISO(banner.visible_until), new Date(), {
-                      includeSeconds: true,
-                      addSuffix: true,
-                      locale: nbLocale,
-                    })
-              }. Vises på forsiden fra ${formatDate(parseISO(banner.visible_from))} til ${formatDate(parseISO(banner.visible_until))}.`}
-              sx={{ borderColor: (theme) => (banner.is_visible ? theme.palette.colors.tihlde : null) }}>
-              <InfoBannerAdminItem bannerId={banner.id} />
-            </StandaloneExpand>
-          ))}
-        </Stack>
-      </Pagination>
-    </>
+    <div className='space-y-4'>
+      <div className='flex items-center justify-between'>
+        <Form {...form}>
+          <form className='flex items-center space-x-4' onChange={form.handleSubmit(searchWithFilters)}>
+            <FormField
+              control={form.control}
+              name='is_visible'
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <div className='flex space-x-2 items-center'>
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                      <Label>Se aktive</Label>
+                    </div>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='is_expired'
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <div className='flex space-x-2 items-center'>
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                      <Label>Se tidligere</Label>
+                    </div>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
+
+        <InfoBannerForm />
+      </div>
+
+      <div className='space-y-2'>
+        {banners.map((banner, index) => (
+          <InfoBannerItem banner={banner} key={index} />
+        ))}
+      </div>
+
+      {hasNextPage && <PaginateButton className='w-full' isLoading={isFetching} nextPage={fetchNextPage} />}
+    </div>
   );
 };
-const useStyles = makeStyles()(() => ({
-  content: {
-    margin: '-60px auto 60px',
-    position: 'relative',
-  },
-}));
 
 const CreateInfoBannerAdminDialog = () => {
-  const { classes } = useStyles();
-
   return (
-    <div className='max-w-3xl w-full mt-40 mx-auto px-2'>
-      <Paper className={classes.content}>
-        <Typography marginBottom={3} variant='h1'>
-          Banner admin
-        </Typography>
-        <InfoBannerAdmin />
-      </Paper>
-    </div>
+    <Page className='max-w-5xl w-full mx-auto'>
+      <Card>
+        <CardHeader>
+          <CardTitle>Banner admin</CardTitle>
+          <CardDescription>Bannere brukes for å gi en felles informasjon til alle som besøker nettsiden.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <InfoBannerAdmin />
+        </CardContent>
+      </Card>
+    </Page>
   );
 };
 

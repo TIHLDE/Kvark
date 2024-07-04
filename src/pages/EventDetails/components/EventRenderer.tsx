@@ -1,11 +1,10 @@
-import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteBorderRounded';
-import FavoriteFilledIcon from '@mui/icons-material/FavoriteRounded';
-import { IconButton, IconButtonProps, Button as MuiButton, Skeleton, Stack, styled, Theme, Tooltip, useMediaQuery } from '@mui/material';
 import { addHours, formatDistanceToNowStrict, isFuture, isPast, parseISO, subHours } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
-import { CalendarIcon, HandCoinsIcon, PencilIcon } from 'lucide-react';
+import { cn } from 'lib/utils';
+import { CalendarIcon, HandCoinsIcon, Heart, LoaderCircle, PencilIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 import URLS from 'URLS';
 import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 'utils';
 
@@ -20,8 +19,8 @@ import {
   useEventSetIsFavorite,
   useUpdateEventRegistration,
 } from 'hooks/Event';
+import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
 import { useSetRedirectUrl } from 'hooks/Misc';
-import { useSnackbar } from 'hooks/Snackbar';
 import { useUser } from 'hooks/User';
 import { useAnalytics, useInterval } from 'hooks/Utils';
 
@@ -31,12 +30,7 @@ import EventPublicRegistrationsList from 'pages/EventDetails/components/EventPub
 import { EventsSubscription } from 'pages/Profile/components/ProfileEvents';
 
 import FormUserAnswers from 'components/forms/FormUserAnswers';
-import Expand from 'components/layout/Expand';
-import Paper from 'components/layout/Paper';
-import VerifyDialog from 'components/layout/VerifyDialog';
-import { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
-import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
-import LoadingSpinnner from 'components/miscellaneous/LoadingSpinner';
+import DetailContent from 'components/miscellaneous/DetailContent';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import QRButton from 'components/miscellaneous/QRButton';
 import { ReactionHandler } from 'components/miscellaneous/reactions/ReactionHandler';
@@ -46,19 +40,11 @@ import { Alert, AlertDescription } from 'components/ui/alert';
 import { Button } from 'components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
 import { Checkbox } from 'components/ui/checkbox';
+import Expandable from 'components/ui/expandable';
+import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
+import { Skeleton } from 'components/ui/skeleton';
 
 import TIHLDE_LOGO from 'assets/img/TihldeBackground.jpg';
-
-const DetailsPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(1, 2),
-  display: 'grid',
-  gap: theme.spacing(1),
-}));
-
-const ContentPaper = styled(Paper)({
-  height: 'fit-content',
-  overflowX: 'auto',
-});
 
 export type EventRendererProps = {
   data: Event;
@@ -71,7 +57,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const { data: registration } = useEventRegistration(data.id, preview || !user ? '' : user.user_id);
   const deleteRegistration = useDeleteEventRegistration(data.id);
   const setLogInRedirectURL = useSetRedirectUrl();
-  const showSnackbar = useSnackbar();
   const startDate = parseISO(data.start_date);
   const endDate = parseISO(data.end_date);
   const strikesDelayedRegistrationHours = user ? getStrikesDelayedRegistrationHours(user.number_of_strikes) : 0;
@@ -79,9 +64,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const userStartRegistrationDate = addHours(startRegistrationDate, data.enforces_previous_strikes ? strikesDelayedRegistrationHours : 0);
   const endRegistrationDate = parseISO(data.end_registration_at);
   const signOffDeadlineDate = parseISO(data.sign_off_deadline);
-  const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
   const updateRegistration = useUpdateEventRegistration(data.id);
-  const [allowPhoto, setAllowPhoto] = useState(true);
+  const isDesktop = useMediaQuery(MEDIUM_SCREEN);
+  const [allowPhoto, setAllowPhoto] = useState<boolean>(true);
   const [isLoadingSignUp, setIsLoadingSignUp] = useState(false);
 
   const { run } = useConfetti();
@@ -93,15 +78,15 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       {
         onSuccess: (newRegistration) => {
           if (newRegistration.allow_photo === true) {
-            showSnackbar('Du tillater å bli tatt bilde av', 'success');
+            toast.success('Du tillater å bli tatt bilde av');
             setAllowPhoto(true);
           } else {
-            showSnackbar('Du tillater ikke å bli tatt bilde av', 'success');
+            toast.success('Du tillater ikke å bli tatt bilde av');
             setAllowPhoto(false);
           }
         },
         onError: () => {
-          showSnackbar('Endringen ble ikke registrert', 'error');
+          toast.error('Endringen ble ikke registrert');
         },
       },
     );
@@ -118,11 +103,11 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       {
         onSuccess: () => {
           run();
-          showSnackbar('Påmeldingen var vellykket', 'success');
+          toast.success('Påmeldingen var vellykket');
           event('registered', 'event-registration', `Registered for event: ${data.title}`);
         },
         onError: (e) => {
-          showSnackbar(e.detail, 'error');
+          toast.error(e.detail);
         },
         onSettled: () => {
           setIsLoadingSignUp(false);
@@ -135,11 +120,11 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     if (user) {
       deleteRegistration.mutate(user.user_id, {
         onSuccess: (response) => {
-          showSnackbar(response.detail, 'success');
+          toast.success(response.detail);
           event('unregistered', 'event-registration', `Unregistered for event: ${data.title}`);
         },
         onError: (e) => {
-          showSnackbar(e.detail, 'error');
+          toast.error(e.detail);
         },
       });
     }
@@ -160,9 +145,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             </Alert>
             {registration.survey_submission.answers.length > 0 && (
               <div>
-                <Expand flat header='Dine svar på spørsmål'>
+                <Expandable title='Dine svar på spørsmål'>
                   <FormUserAnswers submission={registration.survey_submission} />
-                </Expand>
+                </Expandable>
               </div>
             )}
           </>
@@ -185,9 +170,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             )}
             {registration.survey_submission.answers.length > 0 && (
               <div>
-                <Expand flat header='Påmeldingsspørsmål'>
+                <Expandable title='Påmeldingsspørsmål'>
                   <FormUserAnswers submission={registration.survey_submission} />
-                </Expand>
+                </Expandable>
               </div>
             )}
             {registration.has_unanswered_evaluation && (
@@ -197,25 +182,25 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
                     Du har ikke svart på evalueringen av dette arrangementet. Du må svare på den før du kan melde deg på flere arrangementer.
                   </AlertDescription>
                 </Alert>
-                <MuiButton component={Link} fullWidth to={`${URLS.form}${data.evaluation}/`} variant='contained'>
-                  Svar på evaluering
-                </MuiButton>
+                <Button asChild className='w-full text-black dark:text-white'>
+                  <Link to={`${URLS.form}${data.evaluation}/`}>Svar på evaluering</Link>
+                </Button>
               </>
             )}
           </>
         )}
         {isFuture(subHours(parseISO(data.start_date), 2)) && !registration.has_paid_order ? (
           <>
-            <VerifyDialog
-              color='error'
-              contentText={`Om du melder deg på igjen vil du havne på bunnen av en eventuell venteliste. ${
-                unregisteringGivesStrike ? 'Du vil også få 1 prikk for å melde deg av etter avmeldingsfristen.' : ''
-              }`}
-              fullWidth
-              onConfirm={signOff}
-              variant='outlined'>
-              Meld deg av
-            </VerifyDialog>
+            <ResponsiveAlertDialog
+              action={signOff}
+              description='Om du melder deg av arrangementet vil du miste plassen din og eventuelt havne på venteliste om det er en. Du vil også få 1 prikk for å melde deg av etter avmeldingsfristen.'
+              title='Meld deg av arrangementet'
+              trigger={
+                <Button className='w-full' variant='destructive'>
+                  Meld deg av
+                </Button>
+              }
+            />
             {unregisteringGivesStrike && (
               <Alert>
                 <AlertDescription>
@@ -303,17 +288,17 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       <>
         <HasUnansweredEvaluations />
         <Button className='w-full' disabled={user?.unanswered_evaluations_count > 0 || isLoadingSignUp} onClick={() => signUp()} size='lg'>
-          {!isLoadingSignUp ? 'Meld deg på' : <LoadingSpinnner />}
+          {!isLoadingSignUp ? 'Meld deg på' : <LoaderCircle className='w-5 h-5 animate-spin' />}
         </Button>
       </>
     );
   };
 
-  type FavoriteProps = IconButtonProps & {
+  type FavoriteProps = {
     eventId: Event['id'];
   };
 
-  const Favorite = ({ eventId, ...props }: FavoriteProps) => {
+  const Favorite = ({ eventId }: FavoriteProps) => {
     const { data: favorite } = useEventIsFavorite(eventId);
     const updateFavorite = useEventSetIsFavorite(eventId);
     const toggleFavorite = (isFavorite: boolean) => {
@@ -321,25 +306,25 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
       updateFavorite.mutate(
         { is_favorite: isFavorite },
         {
-          onSuccess: (data) =>
-            showSnackbar(
+          onSuccess: (data) => {
+            toast.success(
               data.is_favorite
                 ? 'Arrangementet er nå en av dine favoritter. Du kan finne dine favoritter med filtrering på arrangement-siden. Vi vil varsle deg ved påmeldingsstart.'
                 : 'Arrangementet er ikke lenger en av dine favoritter',
-              data.is_favorite ? 'success' : 'info',
-            ),
-          onError: (e) => showSnackbar(e.detail, 'error'),
+            );
+          },
+          onError: (e) => {
+            toast.error(e.detail);
+          },
         },
       );
     };
 
     if (favorite) {
       return (
-        <Tooltip title={favorite.is_favorite ? 'Fjern favorittmarkering' : 'Merk som favoritt'}>
-          <IconButton {...props} onClick={() => toggleFavorite(!favorite.is_favorite)}>
-            {favorite.is_favorite ? <FavoriteFilledIcon color='error' /> : <FavoriteOutlinedIcon />}
-          </IconButton>
-        </Tooltip>
+        <Button onClick={() => toggleFavorite(!favorite.is_favorite)} size='icon' variant='ghost'>
+          <Heart className={cn('w-5 h-5 stroke-[1.5px]', favorite.is_favorite && 'text-red-500')} />
+        </Button>
       );
     }
     return null;
@@ -441,7 +426,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   return (
     <div className='flex flex-col-reverse lg:flex-row gap-1 lg:gap-2 lg:mt-2'>
       <div className='w-full lg:max-w-[335px] space-y-2'>
-        {!lgDown && <Info />}
+        {isDesktop && <Info />}
         <Button className='flex items-center space-x-2 w-full' size='lg' variant='outline'>
           <CalendarIcon className='stroke-[1.5px] w-5 h-5' />
           <a href={getICSFromEvent(data)} onClick={addToCalendarAnalytics}>
@@ -463,9 +448,9 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           <div className='flex items-center space-x-2'>
             <ShareButton shareId={data.id} shareType='event' title={data.title} />
             {!preview && data.permissions.write && (
-              <Button className='w-full flex items-center space-x-2' size='lg' variant='outline'>
+              <Button className='w-full flex items-center space-x-2' variant='outline'>
                 <PencilIcon className='w-4 h-4 md:w-5 md:h-5 stroke-[1.5px]' />
-                <Link className='text-sm md:text-md' to={`${URLS.eventAdmin}${data.id}/`}>
+                <Link className='text-sm md:text-md text-black dark:text-white' to={`${URLS.eventAdmin}${data.id}/`}>
                   Endre arrangement
                 </Link>
               </Button>
@@ -474,7 +459,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           {!preview && data.emojis_allowed && user && <ReactionHandler content_type='event' data={data} />}
         </div>
 
-        {lgDown && <Info />}
+        {!isDesktop && <Info />}
         {registration && data.paid_information && !registration.has_paid_order && !registration.is_on_wait && (
           <CountdownTimer event_id={data.id} payment_expiredate={registration.payment_expiredate} />
         )}
@@ -496,28 +481,16 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
 export default EventRenderer;
 
 export const EventRendererLoading = () => (
-  <Stack direction={{ xs: 'column-reverse', lg: 'row' }} gap={1} sx={{ mt: { xs: 1, lg: 2 } }}>
-    <Stack gap={1} sx={{ width: '100%', maxWidth: { lg: 335 } }}>
-      <DetailsPaper noPadding>
-        <DetailContentLoading />
-        <DetailContentLoading />
-        <DetailContentLoading />
-      </DetailsPaper>
-      <DetailsPaper noPadding>
-        <DetailContentLoading />
-        <DetailContentLoading />
-      </DetailsPaper>
-    </Stack>
-    <Stack gap={1} sx={{ width: '100%' }}>
-      <AspectRatioLoading borderRadius />
-      <ContentPaper>
-        <Skeleton height={80} width='60%' />
-        <Skeleton height={40} width={250} />
-        <Skeleton height={40} width='80%' />
-        <Skeleton height={40} width='85%' />
-        <Skeleton height={40} width='75%' />
-        <Skeleton height={40} width='90%' />
-      </ContentPaper>
-    </Stack>
-  </Stack>
+  <div className='flex flex-col-reverse lg:flex-row gap-1 lg:gap-2 lg:mt-2'>
+    <div className='w-full lg:max-w-[335px] space-y-2'>
+      <Skeleton className='w-full h-60' />
+      <Skeleton className='w-full h-32' />
+      <Skeleton className='w-full h-20' />
+    </div>
+
+    <div className='space-y-2 w-full'>
+      <Skeleton className='w-full h-96' />
+      <Skeleton className='w-full h-60' />
+    </div>
+  </div>
 );

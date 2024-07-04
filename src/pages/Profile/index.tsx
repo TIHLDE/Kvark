@@ -1,5 +1,17 @@
-import { ListItemProps, SvgIconProps } from '@mui/material';
-import { BadgeIcon, CalendarDaysIcon, FileQuestionIcon, GripIcon, LogOutIcon, LucideIcon, SettingsIcon, ShieldCheckIcon, UsersIcon } from 'lucide-react';
+import { cn } from 'lib/utils';
+import {
+  BadgeIcon,
+  CalendarDaysIcon,
+  FileQuestionIcon,
+  Github,
+  GripIcon,
+  Linkedin,
+  LogOutIcon,
+  LucideIcon,
+  SettingsIcon,
+  ShieldCheckIcon,
+  UsersIcon,
+} from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getUserAffiliation } from 'utils';
@@ -19,6 +31,7 @@ import ProfileSettings from 'pages/Profile/components/ProfileSettings';
 import ProfileStrikes from 'pages/Profile/components/ProfileStrikes';
 
 import { QRButton } from 'components/miscellaneous/QRButton';
+import Page from 'components/navigation/Page';
 import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
 import { Button } from 'components/ui/button';
 import { Card, CardContent } from 'components/ui/card';
@@ -30,9 +43,8 @@ import EditBioButton from './components/BioEditor/EditBioButton';
 const Profile = () => {
   const { userId } = useParams();
   const { data: user, isError } = useUser(userId);
-  //legg til bio
   const { event } = useAnalytics();
-  const logOut = useLogout();
+  const logout = useLogout();
   const { allowAccess: isAdmin } = useHavePermission([
     PermissionApp.EVENT,
     PermissionApp.JOBPOST,
@@ -42,11 +54,6 @@ const Profile = () => {
     PermissionApp.GROUP,
   ]);
 
-  const logout = () => {
-    event('log-out', 'profile', 'Logged out');
-    logOut();
-  };
-
   const eventTab: NavListItem = { label: 'Arrangementer', icon: CalendarDaysIcon };
   const badgesTab: NavListItem = { label: 'Badges', icon: BadgeIcon };
   const groupsTab: NavListItem = { label: 'Medlemskap', icon: UsersIcon };
@@ -54,7 +61,7 @@ const Profile = () => {
   const settingsTab: NavListItem = { label: 'Innstillinger', icon: SettingsIcon };
   const adminTab: NavListItem = { label: 'Admin', icon: ShieldCheckIcon };
   const strikesTab: NavListItem = { label: 'Prikker', icon: GripIcon };
-  const logoutTab: NavListItem = { label: 'Logg ut', icon: LogOutIcon, onClick: logout, iconProps: { sx: { color: (theme) => theme.palette.error.main } } };
+  const logoutTab: NavListItem = { label: 'Logg ut', icon: LogOutIcon };
   const tabs: Array<NavListItem> = userId
     ? [badgesTab, groupsTab]
     : [eventTab, badgesTab, groupsTab, strikesTab, formsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];
@@ -62,18 +69,23 @@ const Profile = () => {
   const [tab, setTab] = useState(userId ? badgesTab.label : eventTab.label);
 
   useEffect(() => setTab(userId ? badgesTab.label : eventTab.label), [userId]);
-  useEffect(() => event('change-tab', 'profile', `Changed tab to: ${tab}`), [tab]);
+  useEffect(() => {
+    event('change-tab', 'profile', `Changed tab to: ${tab}`);
+    tab === logoutTab.label && logout();
+  }, [tab]);
 
-  type NavListItem = ListItemProps & {
+  type NavListItem = {
     label: string;
     icon: LucideIcon;
     onClick?: () => void;
     badge?: string | number;
-    iconProps?: SvgIconProps;
   };
 
   const NavListItem = ({ label, icon: Icon, onClick }: NavListItem) => (
-    <Button className='flex justify-start text-md' onClick={onClick ? onClick : () => setTab(label)} variant={tab === label ? 'outline' : 'ghost'}>
+    <Button
+      className={cn('flex justify-start text-md border-none rounded-none', tab === label && 'bg-accent')}
+      onClick={onClick ? onClick : () => setTab(label)}
+      variant={tab === label ? 'outline' : 'ghost'}>
       <Icon className='mr-2 stroke-[1.5px]' /> {label}
     </Button>
   );
@@ -83,10 +95,10 @@ const Profile = () => {
   }
 
   return (
-    <div className='px-2 md:px-8 mt-20'>
-      <Card className='my-4'>
+    <Page>
+      <Card className='mb-4'>
         <CardContent className='p-4 space-y-4 md:flex md:justify-between md:space-x-12 md:space-y-0'>
-          <div className='flex md:items-center space-x-2'>
+          <div className='flex space-x-2'>
             {user && (
               <Avatar className='w-[70px] h-[70px] md:w-[140px] md:h-[140px] text-[1.8rem] md:text-[3rem]'>
                 <AvatarImage alt={user.first_name} src={user.image} />
@@ -107,22 +119,22 @@ const Profile = () => {
                   <div className='space-y-2'>
                     <Separator />
                     <p className='text-sm md:text-md'>{user.bio.description}</p>
-                    {user.bio.gitHub_link && (
-                      <p>
-                        <span className='font-semibold'>GitHub:</span>{' '}
-                        <a className='underline' href={user.bio.gitHub_link} rel='noreferrer' target='_blank'>
-                          {user.bio.gitHub_link}
-                        </a>
-                      </p>
-                    )}
-                    {user.bio.linkedIn_link && (
-                      <p>
-                        <span className='font-semibold'>LinkedIn:</span>{' '}
-                        <a className='underline' href={user.bio.linkedIn_link} rel='noreferrer' target='_blank'>
-                          {user.bio.linkedIn_link}
-                        </a>
-                      </p>
-                    )}
+                    <div className='flex items-center space-x-1'>
+                      {user.bio.gitHub_link && (
+                        <Button asChild className='text-black dark:text-white' size='icon' variant='outline'>
+                          <a className='underline' href={user.bio.gitHub_link} rel='noreferrer' target='_blank'>
+                            <Github className='w-5 h-5 stroke-[1.5px]' />
+                          </a>
+                        </Button>
+                      )}
+                      {user.bio.linkedIn_link && (
+                        <Button asChild className='text-black dark:text-white' size='icon' variant='outline'>
+                          <a className='underline' href={user.bio.gitHub_link} rel='noreferrer' target='_blank'>
+                            <Linkedin className='w-5 h-5 stroke-[1.5px]' />
+                          </a>
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
@@ -173,7 +185,7 @@ const Profile = () => {
           {tab === adminTab.label && <ProfileAdmin />}
         </div>
       </div>
-    </div>
+    </Page>
   );
 };
 

@@ -6,31 +6,54 @@ import { cn } from "lib/utils";
 
 
 type ExpandableProps = {
-    title: string;
-    description: string;
-    icon: ReactNode;
+    title: ReactNode;
+    description?: ReactNode;
+    icon?: ReactNode;
     children: ReactNode;
+    extra?: ReactNode;
     className?: string;
+    open?: boolean;
+    onOpenChange?: (open: boolean) => void;
 };
 
-const Expandable = ({ title, description, icon, children, className }: ExpandableProps) => {
+const Expandable = ({
+    title,
+    description,
+    icon,
+    extra,
+    children,
+    className,
+    open,
+    onOpenChange,
+}: ExpandableProps) => {
     const [expanded, setExpanded] = useState<boolean>(false);
 
     return (
-        <Collapsible className={cn('w-full bg-white dark:bg-inherit border border-secondary rounded-md', className)} onOpenChange={setExpanded} open={expanded}>
+        <Collapsible
+            className={cn('w-full bg-white dark:bg-inherit border border-secondary rounded-md', className)}
+            onOpenChange={onOpenChange || setExpanded}
+            open={open || expanded}
+        >
             <CollapsibleTrigger asChild>
                 <Button
-                    className='whitespace-normal py-8 w-full rounded-t-md rounded-b-none bg-white dark:bg-inherit dark:hover:bg-secondary border-none flex justify-between items-center rounded-md'
+                    className={cn('whitespace-normal py-8 w-full rounded-t-md rounded-b-none bg-white dark:bg-inherit dark:hover:bg-secondary border-none flex justify-between items-center rounded-sm', expanded && 'rounded-b-none' )}
                     variant='outline'
                 >
                     <div className='flex items-center space-x-4'>
                         { icon }
                         <div className='text-start break-words'>
-                            <h1>{ title }</h1>
-                            <h1 className='text-sm'>{ description }</h1>
+                            {typeof title === 'string'
+                                ? <h1 className='text-sm md:text-base'>{ title }</h1>
+                                : title
+                            }
+                            {typeof description === 'string'
+                                ? <h1 className='text-xs md:text-sm'>{ description }</h1>
+                                : description
+                            }
                         </div>
                     </div>
-                    <div>
+                    <div className='flex items-center space-x-4'>
+                        { extra }
                         {expanded ? <ChevronDownIcon className='stroke-[1.5px]' /> : <ChevronRightIcon className='stroke-[1.5px]' />}
                     </div>
                 </Button>

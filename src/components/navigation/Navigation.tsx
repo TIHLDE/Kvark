@@ -84,11 +84,13 @@ const NavigationContent = ({ children }: NavigationProps) => {
 
   return (
     <>
+      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      {/* @ts-ignore */}
       <Helmet>
         <title>TIHLDE</title>
       </Helmet>
       <Topbar items={items} />
-      <main className='min-h-[101vh]'>{children}</main>
+      <main className='bg-background text-black dark:text-white min-h-[101vh]'>{children}</main>
       <Footer />
       {!isMediumScreen && <BottomBar items={items} />}
     </>

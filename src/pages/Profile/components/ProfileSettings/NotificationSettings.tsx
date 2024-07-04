@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import { User, UserNotificationSetting, UserNotificationSettingChoice } from 'types';
 
-import { useSnackbar } from 'hooks/Snackbar';
 import { useUpdateUserNotificationSettings, useUser, useUserNotificationSettingChoices, useUserNotificationSettings } from 'hooks/User';
 
 import { Button } from 'components/ui/button';
@@ -14,7 +14,6 @@ import { Switch } from 'components/ui/switch';
 // export const SlackConnectPage = () => {
 //   const [searchParams] = useSearchParams();
 //   const slackConnect = useSlackConnect();
-//   const showSnackbar = useSnackbar();
 //   const navigate = useNavigate();
 //   const [loading, setLoading] = useState(true);
 
@@ -25,11 +24,9 @@ import { Switch } from 'components/ui/switch';
 //     }
 //     slackConnect.mutate(code, {
 //       onSuccess: (data) => {
-//         showSnackbar(data.detail, 'success');
 //         navigate(URLS.profile);
 //       },
 //       onError: (e) => {
-//         showSnackbar(e.detail, 'error');
 //         setLoading(false);
 //       },
 //     });
@@ -110,7 +107,6 @@ type NotificationSettingProps = UserNotificationSettingsProps & {
 };
 
 const NotificationSetting = ({ choice, notificationSettings, user }: NotificationSettingProps) => {
-  const showSnackbar = useSnackbar();
   const setUserNotificationSetting = useUpdateUserNotificationSettings();
   const [setting, setSetting] = useState<UserNotificationSetting>(
     notificationSettings.find((setting) => setting.notification_type === choice.notification_type) || {
@@ -125,14 +121,16 @@ const NotificationSetting = ({ choice, notificationSettings, user }: Notificatio
     const oldSetting = setting;
     const newSetting = { ...setting, [key]: checked };
     if (!newSetting.email && !newSetting.slack && !newSetting.website) {
-      showSnackbar('Du må velge minst ett alternativ', 'warning');
+      toast.error('Du må velge minst ett alternativ');
       return;
     }
     setSetting(newSetting);
     setUserNotificationSetting.mutate(newSetting, {
-      onSuccess: () => showSnackbar('Innstillingen ble oppdatert', 'success'),
+      onSuccess: () => {
+        toast.success('Innstillingene ble oppdatert');
+      },
       onError: (e) => {
-        showSnackbar(e.detail, 'error');
+        toast.error(e.detail);
         setSetting(oldSetting);
       },
     });

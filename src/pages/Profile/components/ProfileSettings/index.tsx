@@ -1,8 +1,8 @@
 import { BellPlusIcon, CloudDownloadIcon, KeyRoundIcon, TrashIcon, UserCogIcon } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { User } from 'types';
 
-import { useSnackbar } from 'hooks/Snackbar';
 import { useExportUserData, useForgotPassword } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
@@ -19,22 +19,27 @@ export type ProfileSettingsProps = {
 
 const ProfileSettings = ({ user }: ProfileSettingsProps) => {
   const { event } = useAnalytics();
-  const showSnackbar = useSnackbar();
   const forgotPassword = useForgotPassword();
   const exportUserData = useExportUserData();
   const runExportUserdata = () =>
     exportUserData.mutate(undefined, {
       onSuccess: (data) => {
         event('export-data', 'profile', 'Exported user data');
-        showSnackbar(data.detail, 'success');
+        toast.success(data.detail);
       },
-      onError: (e) => showSnackbar(e.detail, 'error'),
+      onError: (e) => {
+        toast.error(e.detail);
+      },
     });
 
   const resetPassword = () => {
     forgotPassword.mutate(user.email, {
-      onSuccess: () => showSnackbar('Vi har sendt deg en epost med link til en side der du kan endre passordet ditt', 'success'),
-      onError: (e) => showSnackbar(e.detail, 'error'),
+      onSuccess: () => {
+        toast.success('Vi har sendt deg en epost med link til en side der du kan endre passordet ditt');
+      },
+      onError: (e) => {
+        toast.error(e.detail);
+      },
     });
   };
 

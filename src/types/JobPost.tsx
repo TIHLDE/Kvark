@@ -19,6 +19,6 @@ export interface JobPost {
   updated_at: string;
   is_continuously_hiring: boolean;
   job_type: JobPostType;
-  class_start: number;
-  class_end: number;
+  class_start: number | string;
+  class_end: number | string;
 }

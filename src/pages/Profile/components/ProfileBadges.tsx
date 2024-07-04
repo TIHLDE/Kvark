@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -6,8 +5,8 @@ import { useUserBadges } from 'hooks/User';
 
 import BadgeItem, { BadgeItemLoading } from 'pages/Badges/components/BadgeItem';
 
-import Pagination from 'components/layout/Pagination';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import { PaginateButton } from 'components/ui/button';
 
 const ProfileBadges = () => {
   const { userId } = useParams();
@@ -15,20 +14,16 @@ const ProfileBadges = () => {
   const badges = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
 
   return (
-    <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} label='Last flere badges' nextPage={() => fetchNextPage()}>
+    <div>
       {!isLoading && !badges.length && <NotFoundIndicator header='Fant ingen badges' subtitle={`${userId ? 'Brukeren' : 'Du'} har ingen badges enda`} />}
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' }, gap: 1, mb: 1 }}>
-        {isLoading && (
-          <>
-            <BadgeItemLoading />
-            <BadgeItemLoading />
-          </>
-        )}
+      {isLoading && <BadgeItemLoading />}
+      <div className='grid lg:grid-cols-2 gap-2'>
         {badges.map((badge) => (
           <BadgeItem badge={badge} key={badge.id} />
         ))}
-      </Box>
-    </Pagination>
+      </div>
+      {hasNextPage && <PaginateButton className='mt-4 w-full' isLoading={isFetching} nextPage={fetchNextPage} />}
+    </div>
   );
 };
 

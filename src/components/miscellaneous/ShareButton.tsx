@@ -38,7 +38,7 @@ const ShareButton = ({ shareId, title, shareType }: ShareProps) => {
   );
 
   return (
-    <Button className='w-full flex items-center space-x-2' disabled={hasShared} onClick={share} size='lg' variant='outline'>
+    <Button className='w-full flex items-center space-x-2' disabled={hasShared} onClick={share} variant='outline'>
       <Share2Icon className='w-4 h-4 md:w-5 md:h-5 stroke-[1.5px]' />
       <h1 className='text-sm md:text-md'>{hasShared ? 'Delt!' : 'Del'}</h1>
     </Button>

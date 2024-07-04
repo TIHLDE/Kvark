@@ -1,6 +1,6 @@
 import { cn } from 'lib/utils';
 import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import URLS from 'URLS';
 
 import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
@@ -19,6 +19,8 @@ import {
 } from 'components/ui/navigation-menu';
 
 const TopBarItem = (props: NavigationItem) => {
+  const location = useLocation();
+
   if (props.type === 'link') {
     const selected = location.pathname === props.to;
 
@@ -28,7 +30,7 @@ const TopBarItem = (props: NavigationItem) => {
           <NavigationMenuLink
             className={cn(
               'group inline-flex w-max items-center justify-center rounded-md text-sm font-medium transition-colors dark:text-white/80 dark:hover:text-white disabled:pointer-events-none disabled:opacity-50 data-[state=open]:text-white/80',
-              selected && 'dark:text-white',
+              selected && 'dark:text-white text-muted-foreground font-bold',
             )}>
             {props.text}
           </NavigationMenuLink>
@@ -78,7 +80,7 @@ const Topbar = ({ items }: TopbarProps) => {
           !isOnTop && 'border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60',
         )}>
         <Link aria-label='Til forsiden' to={URLS.landing}>
-          <TihldeLogo className='h-[24px] w-auto ml-0' size='large' />{' '}
+          <TihldeLogo className='h-[24px] w-auto ml-0 text-primary' size='large' />{' '}
         </Link>
         <ProfileTopbarButton />
       </header>
@@ -90,11 +92,12 @@ const Topbar = ({ items }: TopbarProps) => {
       <header
         className={cn(
           'fixed z-30 w-full top-0 transition-all duration-150',
-          !isOnTop && 'border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60',
+          !isOnTop &&
+            'border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-card/60  dark:supports-[backdrop-filter]:bg-background/60',
         )}>
         <nav className='flex items-center justify-between py-3 px-8'>
           <Link aria-label='Til forsiden' to={URLS.landing}>
-            <TihldeLogo className='h-[28px] w-auto ml-0' size='large' />{' '}
+            <TihldeLogo className='h-[28px] w-auto ml-0 text-primary' size='large' />{' '}
           </Link>
           <NavigationMenu>
             <NavigationMenuList>

@@ -1,10 +1,8 @@
-import { Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
-
 import { FormFieldType } from 'types/Enums';
 
 import { useFormStatisticsById } from 'hooks/Form';
 
-import Paper from 'components/layout/Paper';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from 'components/ui/table';
 
 export type EventFormEditorProps = {
   formId: string | null;
@@ -13,48 +11,40 @@ export type EventFormEditorProps = {
 const FormStatistics = ({ formId }: EventFormEditorProps) => {
   const { data, isLoading } = useFormStatisticsById(formId || '-');
   if (isLoading) {
-    return <Typography>Laster statistikken</Typography>;
+    return <h1 className='text-center'>Laster statistikken</h1>;
   } else if (!data) {
-    return <Typography>Du må opprette et skjema for å se statistikken for det</Typography>;
+    return <h1 className='text-center'>Du må opprette et skjema for å se statistikken for det</h1>;
   } else if (!data.statistics.length) {
-    return <Typography>Dette skjemaet har ingen flervalgsspørsmål</Typography>;
+    return <h1 className='text-center'>Dette skjemaet har ingen flervalgsspørsmål</h1>;
   }
 
   return (
-    <Stack gap={1}>
-      {data.statistics.map((stat) => (
-        <TableContainer component={Paper} key={stat.id} noPadding>
-          <Table aria-label={`Statistikk for ${stat.title}`} size='small' sx={{ minWidth: 250 }}>
-            <TableHead>
+    <div className='space-y-2'>
+      {data.statistics.map((stat, index) => (
+        <div className='rounded-md border' key={index}>
+          <Table>
+            <TableHeader>
               <TableRow>
-                <TableCell sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>{`${stat.title}${stat.required ? ' *' : ''} (${
-                  stat.type === FormFieldType.MULTIPLE_SELECT ? 'Avkrysningsspørsmål' : 'Flervalgsspørsmål'
-                })`}</TableCell>
-                <Tooltip placement='top-end' title='Totalt antall som har valgt alternativet'>
-                  <TableCell align='right' sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>
-                    Antall
-                  </TableCell>
-                </Tooltip>
-                <Tooltip placement='top-end' title='Prosent av totalt antall som har valgt alternativet'>
-                  <TableCell align='right' sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>
-                    Prosent
-                  </TableCell>
-                </Tooltip>
+                <TableHead>
+                  {`${stat.title}${stat.required ? ' *' : ''} (${stat.type === FormFieldType.MULTIPLE_SELECT ? 'Avkrysningsspørsmål' : 'Flervalgsspørsmål'})`}
+                </TableHead>
+                <TableHead className='w-[150px]'>Antall</TableHead>
+                <TableHead className='w-[150px]'>Prosent</TableHead>
               </TableRow>
-            </TableHead>
+            </TableHeader>
             <TableBody>
-              {stat.options.map((option) => (
-                <TableRow key={option.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              {stat.options.map((option, index) => (
+                <TableRow key={index}>
                   <TableCell>{option.title}</TableCell>
-                  <TableCell align='right'>{option.answer_amount} stk</TableCell>
-                  <TableCell align='right'>{option.answer_percentage.toFixed(2)} %</TableCell>
+                  <TableCell className='w-[150px]'>{option.answer_amount} stk</TableCell>
+                  <TableCell className='w-[150px]'>{option.answer_percentage.toFixed(2)} %</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-        </TableContainer>
+        </div>
       ))}
-    </Stack>
+    </div>
   );
 };
 

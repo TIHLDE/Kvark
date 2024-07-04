@@ -1,4 +1,3 @@
-import { Skeleton, Stack } from '@mui/material';
 import parseISO from 'date-fns/parseISO';
 import { PencilIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -10,15 +9,13 @@ import { PermissionApp } from 'types/Enums';
 
 import { HavePermission, useUser } from 'hooks/User';
 
-import Container from 'components/layout/Container';
-import Paper from 'components/layout/Paper';
-import { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import { ReactionHandler } from 'components/miscellaneous/reactions/ReactionHandler';
 import ShareButton from 'components/miscellaneous/ShareButton';
 import UpdatedAgo from 'components/miscellaneous/UpdatedAgo';
 import { Button } from 'components/ui/button';
 import { Separator } from 'components/ui/separator';
+import { Skeleton } from 'components/ui/skeleton';
 
 import TIHLDE_LOGO from 'assets/img/TihldeBackground.jpg';
 
@@ -32,7 +29,7 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
 
   return (
     <div>
-      <div className='px-4 mx-auto max-w-4xl w-full pt-24 pb-10'>
+      <div className='px-4 mx-auto max-w-4xl w-full pb-10'>
         <div className='space-y-2'>
           <h1 className='text-2xl break-words lg:text-4xl font-semibold'>{data.title}</h1>
           <h1 className='break-words lg:text-lg'>{data.header}</h1>
@@ -85,24 +82,8 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
 export default NewsRenderer;
 
 export const NewsRendererLoading = () => (
-  <div>
-    <div className='px-4 mx-auto max-w-4xl w-full pt-24 pb-10'>
-      <Container maxWidth='lg' sx={{ px: { xs: 3, md: 5 } }}>
-        <Skeleton height={80} width='60%' />
-        <Skeleton height={40} width={250} />
-      </Container>
-    </div>
-    <Container maxWidth='lg' sx={{ mt: { xs: -13, lg: -18 } }}>
-      <Stack gap={1}>
-        <AspectRatioLoading borderRadius />
-        <Skeleton height={40} width={250} />
-        <Paper>
-          <Skeleton width='80%' />
-          <Skeleton width='85%' />
-          <Skeleton width='75%' />
-          <Skeleton width='90%' />
-        </Paper>
-      </Stack>
-    </Container>
+  <div className='space-y-4'>
+    <Skeleton className='h-60' />
+    <Skeleton className='h-96' />
   </div>
 );

@@ -1,22 +1,23 @@
-import { Dialog as MuiDialog } from '@mui/material';
-import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import EmojiPicker, { EmojiClickData, Theme } from 'emoji-picker-react';
 import { SmilePlusIcon } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 import { useCreateReaction, useUpdateReaction } from 'hooks/EmojiReaction';
-import { useSnackbar } from 'hooks/Snackbar';
+import { useTheme } from 'hooks/Theme';
 import { useUser } from 'hooks/User';
 
 import { Button } from 'components/ui/button';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
 
 import { ReactionHandlerProps } from './ReactionHandler';
 
 export const EmojiPickerHandler = ({ data, content_type }: ReactionHandlerProps) => {
   const user = useUser();
-  const showSnackbar = useSnackbar();
-
   const createReaction = useCreateReaction();
   const updateReaction = useUpdateReaction();
+
+  const { theme } = useTheme();
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -31,11 +32,11 @@ export const EmojiPickerHandler = ({ data, content_type }: ReactionHandlerProps)
         { reaction_id: userReaction.reaction_id, emoji: emoji.emoji, content_type: content_type, object_id: data.id },
         {
           onSuccess: () => {
-            showSnackbar('Reaksjon oppdatert', 'success');
+            toast.success('Reaksjon oppdatert');
             closePopover();
           },
           onError: (e) => {
-            showSnackbar(e.detail, 'error');
+            toast.error(e.detail);
             closePopover();
           },
         },
@@ -45,11 +46,11 @@ export const EmojiPickerHandler = ({ data, content_type }: ReactionHandlerProps)
         { emoji: emoji.emoji, content_type: content_type, object_id: data.id },
         {
           onSuccess: () => {
-            showSnackbar('Reaksjon lagt til', 'success');
+            toast.success('Reaksjon lagt til');
             closePopover();
           },
           onError: (e) => {
-            showSnackbar(e.detail, 'error');
+            toast.error(e.detail);
             closePopover();
           },
         },
@@ -57,15 +58,17 @@ export const EmojiPickerHandler = ({ data, content_type }: ReactionHandlerProps)
     }
   };
 
-  return (
-    <div>
-      <Button onClick={openPopover} size='icon' variant='outline'>
-        <SmilePlusIcon />
-      </Button>
+  const OpenButton = (
+    <Button onClick={openPopover} size='icon' variant='outline'>
+      <SmilePlusIcon />
+    </Button>
+  );
 
-      <MuiDialog onClose={closePopover} open={open}>
-        <EmojiPicker onEmojiClick={handleEmojiPick} />
-      </MuiDialog>
-    </div>
+  return (
+    <ResponsiveDialog className='w-auto p-2' onOpenChange={setOpen} open={open} title='Reager' trigger={OpenButton}>
+      <div className='w-full flex justify-center'>
+        <EmojiPicker onEmojiClick={handleEmojiPick} theme={theme === 'dark' ? Theme.DARK : Theme.LIGHT} />
+      </div>
+    </ResponsiveDialog>
   );
 };

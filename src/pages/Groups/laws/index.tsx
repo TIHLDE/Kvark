@@ -1,4 +1,4 @@
-import { List } from '@mui/material';
+import { Scale } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 
 import { useGroup, useGroupLaws } from 'hooks/Group';
@@ -7,9 +7,9 @@ import { useUser } from 'hooks/User';
 import AddLawDialog from 'pages/Groups/laws/AddLawDialog';
 import LawItem from 'pages/Groups/laws/LawItem';
 
-import Expand from 'components/layout/Expand';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import Expandable from 'components/ui/expandable';
 
 const GroupLaws = () => {
   const { slug } = useParams<'slug'>();
@@ -26,21 +26,19 @@ const GroupLaws = () => {
   return (
     <>
       {group.fine_info && (
-        <div>
-          <Expand flat header='Praktiske detaljer'>
-            <MarkdownRenderer value={group.fine_info} />
-          </Expand>
-        </div>
+        <Expandable icon={<Scale className='w-5 h-5 stroke-[1.5px]' />} title='Praktiske detaljer'>
+          <MarkdownRenderer value={group.fine_info} />
+        </Expandable>
       )}
       {isAdmin && <AddLawDialog groupSlug={group.slug} />}
-      <List>
+      <div className='space-y-2'>
         {!laws.length && (
           <NotFoundIndicator header='Gruppen har ingen lover' subtitle={isAdmin ? 'Lag en ny lov slik at medlemmene i gruppen kan gi bøter' : undefined} />
         )}
         {laws.map((law) => (
           <LawItem groupSlug={group.slug} isAdmin={isAdmin} key={law.id} law={law} />
         ))}
-      </List>
+      </div>
     </>
   );
 };

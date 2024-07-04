@@ -1,10 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 import URLS from 'URLS';
 import { z } from 'zod';
 
-import { useSnackbar } from 'hooks/Snackbar';
 import { useForgotPassword } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
@@ -20,7 +20,6 @@ const formSchema = z.object({
 const ForgotPassword = () => {
   const { event } = useAnalytics();
   const forgotPassword = useForgotPassword();
-  const showSnackbar = useSnackbar();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -32,7 +31,7 @@ const ForgotPassword = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     forgotPassword.mutate(values.email, {
       onSuccess: (data) => {
-        showSnackbar(data.detail, 'success');
+        toast.success(data.detail);
         event('forgot-password', 'auth', 'Forgot password');
       },
       onError: (e) => {

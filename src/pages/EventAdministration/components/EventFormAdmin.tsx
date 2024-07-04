@@ -1,6 +1,6 @@
-import { Button, LinearProgress, Stack, Typography } from '@mui/material';
+import { BookCopy } from 'lucide-react';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { removeIdsFromFields } from 'utils';
 
 import { EventFormCreate, Form, FormCreate } from 'types';
@@ -8,14 +8,14 @@ import { EventFormType, FormResourceType } from 'types/Enums';
 
 import { useEventById } from 'hooks/Event';
 import { useCreateForm, useDeleteForm, useFormById, useFormTemplates } from 'hooks/Form';
-import { useSnackbar } from 'hooks/Snackbar';
 
 import FormAdmin from 'components/forms/FormAdmin';
 import FormFieldsEditor from 'components/forms/FormFieldsEditor';
-import FormView from 'components/forms/FormView';
-import Expand from 'components/layout/Expand';
-import VerifyDialog from 'components/layout/VerifyDialog';
-import { ShowMoreText } from 'components/miscellaneous/UserInformation';
+import { FormViewTemplate } from 'components/forms/FormView';
+import { Button } from 'components/ui/button';
+import Expandable from 'components/ui/expandable';
+import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
+import { Skeleton } from 'components/ui/skeleton';
 
 export type EventFormAdminProps = {
   eventId: number;
@@ -33,12 +33,10 @@ type FormTemplatePreviewType = Omit<EventFormEditorProps, 'formId'> & {
 
 const FormTemplatePreview = ({ formtemplate, eventId, formType }: FormTemplatePreviewType) => {
   const deleteForm = useDeleteForm(formtemplate.id || '-');
-  const { register, formState, getValues, control } = useForm<Form['fields']>();
   const [isEditing, setIsEditing] = useState(false);
   const createForm = useCreateForm();
-  const showSnackbar = useSnackbar();
 
-  const onCreateFormFromTemplate = async () => {
+  const onCreateFormFromTemplate = () => {
     const newForm: EventFormCreate = {
       title: String(eventId),
       type: formType,
@@ -48,11 +46,11 @@ const FormTemplatePreview = ({ formtemplate, eventId, formType }: FormTemplatePr
       template: false,
     };
     createForm.mutate(newForm, {
-      onSuccess: (data) => {
-        showSnackbar(data.title, 'success');
+      onSuccess: () => {
+        toast.success('Malen ble brukt til å opprette et nytt skjema.');
       },
       onError: (e) => {
-        showSnackbar(e.detail, 'error');
+        toast.error(e.detail);
       },
     });
   };
@@ -60,36 +58,39 @@ const FormTemplatePreview = ({ formtemplate, eventId, formType }: FormTemplatePr
   const onDeleteForm = () => {
     deleteForm.mutate(undefined, {
       onSuccess: (data) => {
-        showSnackbar(data.detail, 'success');
+        toast.success(data.detail);
       },
       onError: (e) => {
-        showSnackbar(e.detail, 'error');
+        toast.error(e.detail);
       },
     });
   };
+
   return (
-    <Expand flat header={formtemplate.title}>
+    <Expandable title={formtemplate.title}>
       {isEditing ? (
         <FormFieldsEditor canEditTitle={true} form={formtemplate} onSave={() => setIsEditing(false)} />
       ) : (
-        <>
-          <FormView control={control} disabled={true} form={formtemplate} formState={formState} getValues={getValues} register={register} />
-          <Stack gap={1}>
-            <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
-              <Button color='primary' fullWidth onClick={() => setIsEditing(true)} variant='outlined'>
-                Rediger malen
-              </Button>
-              <VerifyDialog color='error' contentText='Å slette en mal kan ikke reverseres.' onConfirm={onDeleteForm} titleText='Er du sikker?'>
-                Slett malen
-              </VerifyDialog>
-            </Stack>
-            <Button fullWidth onClick={onCreateFormFromTemplate} variant='outlined'>
+        <div className='space-y-4'>
+          <FormViewTemplate form={formtemplate} />
+          <div className='space-y-2 md:space-y-0 md:flex md:items-center md:space-x-2'>
+            <ResponsiveAlertDialog
+              action={onDeleteForm}
+              description='Å slette en mal kan ikke reverseres.'
+              title='Er du sikker?'
+              trigger={
+                <Button className='w-full' variant='destructive'>
+                  Slett malen
+                </Button>
+              }
+            />
+            <Button className='w-full' onClick={onCreateFormFromTemplate}>
               Bruk denne malen
             </Button>
-          </Stack>
-        </>
+          </div>
+        </div>
       )}
-    </Expand>
+    </Expandable>
   );
 };
 
@@ -97,12 +98,11 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
   const { data: event, isLoading } = useEventById(eventId);
 
   if (isLoading || !event) {
-    return <LinearProgress />;
+    return <Skeleton className='h-96' />;
   }
 
   const FormTemplatesList = ({ formType }: Pick<EventFormEditorProps, 'formType'>) => {
     const createForm = useCreateForm();
-    const showSnackbar = useSnackbar();
     const { data: formtemplates = [] } = useFormTemplates();
     const [isCreatingForm, setIsCreatingTemplate] = useState(false);
     const [formtemplateId, setFormtemplateId] = useState('-');
@@ -119,12 +119,12 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
     const onCreateTemplate = () => {
       createForm.mutate(newFormTemplateCreate, {
         onSuccess: (data) => {
-          showSnackbar(`Malen med navn "${data.title} ble opprettet"`, 'success');
+          toast.success(`Malen med navn "${data.title} ble opprettet"`);
           setFormtemplateId(data.id);
           setIsCreatingTemplate(true);
         },
         onError: (e) => {
-          showSnackbar(e.detail, 'error');
+          toast.error(e.detail);
         },
       });
     };
@@ -134,17 +134,16 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
         {isCreatingForm ? (
           <>{!isLoading && !isError && form && <FormFieldsEditor canEditTitle={true} form={form} onSave={() => setIsCreatingTemplate(false)} />}</>
         ) : (
-          <>
-            <Typography gutterBottom variant='body2'>
-              Bruk en ferdiglagd mal som utgangspunkt når du oppretter ett skjema.
-            </Typography>
-            {formtemplates.map((formtemplate) => (
-              <FormTemplatePreview eventId={eventId} formtemplate={formtemplate} formType={formType} key={formtemplate.id} />
-            ))}
-            <Button onClick={onCreateTemplate} sx={{ mt: 1 }} variant='contained'>
+          <div className='space-y-4'>
+            <div className='space-y-2'>
+              {formtemplates.map((formtemplate) => (
+                <FormTemplatePreview eventId={eventId} formtemplate={formtemplate} formType={formType} key={formtemplate.id} />
+              ))}
+            </div>
+            <Button className='w-full' onClick={onCreateTemplate}>
               Lag ny mal
             </Button>
-          </>
+          </div>
         )}
       </>
     );
@@ -169,36 +168,43 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
 
     return (
       <>
-        <Button fullWidth onClick={onCreate} variant='outlined'>
+        <Button className='w-full' onClick={onCreate}>
           Opprett {formType === EventFormType.SURVEY ? 'påmeldingsskjema' : 'evalueringsskjema'}
         </Button>
-        <Expand flat header='Bruk en mal' sx={{ mt: 1 }} TransitionProps={{ mountOnEnter: true }}>
+        <Expandable
+          description='Velg en mal for å bruke som utgangspunkt når du oppretter ett skjema.'
+          icon={<BookCopy className='w-5 h-5' />}
+          title='Bruk en mal'>
           <FormTemplatesList formType={formType} />
-        </Expand>
+        </Expandable>
       </>
     );
   };
 
   return (
-    <Stack gap={2}>
-      <div>
-        <Typography variant='h3'>Spørsmål ved påmelding</Typography>
-        <ShowMoreText sx={{ mb: 1 }}>
-          Deltagere som melder seg på dette arrangementet vil måtte svare på disse spørsmålene først. Deltagerne kan la være å svare på spørsmål som ikke er
-          &quot;Påkrevd&quot;.
-        </ShowMoreText>
+    <div className='space-y-4'>
+      <div className='space-y-2'>
+        <div className='space-y-1'>
+          <h1 className='font-bold'>Spørsmål ved påmelding</h1>
+          <p className='text-xs'>
+            Deltagere som melder seg på dette arrangementet vil måtte svare på disse spørsmålene først. Deltagerne kan la være å svare på spørsmål som ikke er
+            &quot;Påkrevd&quot;.
+          </p>
+        </div>
         {event.survey ? <FormAdmin formId={event.survey} /> : <EventFormEditor formType={EventFormType.SURVEY} />}
       </div>
-      <div>
-        <Typography variant='h3'>Evalueringsspørsmål</Typography>
-        <ShowMoreText sx={{ mb: 1 }}>
-          Deltagerne som deltar på dette arrangementet <b>må</b> svare på disse spørsmålene før de kan melde seg på andre arrangementer. Blokkeringen av
-          påmelding trer i kraft når deltageren blir markert som &quot;Ankommet&quot;, og forsvinner med en gang deltageren har svart på evalueringsskjemaet.
-          Deltagerne vil motta epost med påminnelse om å svare på skjemaet kl 12.00 dagen etter arrangementet.
-        </ShowMoreText>
+      <div className='space-y-2'>
+        <div className='space-y-1'>
+          <h1 className='font-bold'>Evalueringsspørsmål</h1>
+          <p className='text-xs'>
+            Deltagerne som deltar på dette arrangementet <b>må</b> svare på disse spørsmålene før de kan melde seg på andre arrangementer. Blokkeringen av
+            påmelding trer i kraft når deltageren blir markert som &quot;Ankommet&quot;, og forsvinner med en gang deltageren har svart på evalueringsskjemaet.
+            Deltagerne vil motta epost med påminnelse om å svare på skjemaet kl 12.00 dagen etter arrangementet.
+          </p>
+        </div>
         {event.evaluation ? <FormAdmin formId={event.evaluation} /> : <EventFormEditor formType={EventFormType.EVALUATION} />}
       </div>
-    </Stack>
+    </div>
   );
 };
 

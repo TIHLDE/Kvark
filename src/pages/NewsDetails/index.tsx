@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -9,6 +8,8 @@ import { useNewsById } from 'hooks/News';
 
 import Http404 from 'pages/Http404';
 import NewsRenderer, { NewsRendererLoading } from 'pages/NewsDetails/components/NewsRenderer';
+
+import Page from 'components/navigation/Page';
 
 import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
 
@@ -31,8 +32,10 @@ const NewsDetails = () => {
   }
 
   return (
-    <div>
+    <Page>
       {data && (
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         <Helmet>
           <meta content={data.title} property='og:title' />
           <meta content='website' property='og:type' />
@@ -40,8 +43,8 @@ const NewsDetails = () => {
           <meta content={data.image || 'https://tihlde.org' + TIHLDELOGO} property='og:image' />
         </Helmet>
       )}
-      <Box sx={{ pb: 2 }}>{isLoading ? <NewsRendererLoading /> : data !== undefined && <NewsRenderer data={data} />}</Box>
-    </div>
+      <div className='pb-4'>{isLoading ? <NewsRendererLoading /> : data !== undefined && <NewsRenderer data={data} />}</div>
+    </Page>
   );
 };
 
