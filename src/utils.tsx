@@ -366,15 +366,3 @@ export const removeIdsFromFields = (fields: Array<TextFormField | SelectFormFiel
  * @param url The URL to navigate to
  */
 export const navigateToExternalURL = (url: string) => window.open(url, '_blank');
-
-/**
- * Scroll user to top of page
- *
- */
-export const ScrollToTop = () => {
-  const { pathname } = useLocation();
-
-  useEffect(() => scrollTo(0, 0), [pathname]);
-
-  return null;
-};
