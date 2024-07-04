@@ -1,33 +1,65 @@
-import CategoryIcon from '@mui/icons-material/CategoryRounded';
-import BadgesIcon from '@mui/icons-material/EmojiEventsRounded';
-import GetBadgeIcon from '@mui/icons-material/GetAppRounded';
-import LeaderboardIcon from '@mui/icons-material/LeaderboardRounded';
-import { Typography } from '@mui/material';
+import { BarChart2, CirclePlus, LucideIcon, Shapes, Trophy } from 'lucide-react';
 import { Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import URLS from 'URLS';
 
-import Paper from 'components/layout/Paper';
-import { RouterTabs } from 'components/layout/Tabs';
-import { PrimaryTopBox } from 'components/layout/TopBox';
+import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
+
 import Page from 'components/navigation/Page';
+import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
+import { ScrollArea, ScrollBar } from 'components/ui/scroll-area';
 
 const Badges = () => {
-  const leaderboardTab = { to: URLS.badges.index, label: 'Ledertavle', icon: LeaderboardIcon };
-  const badgesTab = { to: URLS.badges.public_badges(), label: 'Offentlige badges', icon: BadgesIcon };
-  const categoriesTab = { to: URLS.badges.categories(), label: 'Kategorier', icon: CategoryIcon };
-  const getTab = { to: URLS.badges.get_badge(), label: 'Erverv badge', icon: GetBadgeIcon };
+  const location = useLocation();
+
+  const isDesktop = useMediaQuery(MEDIUM_SCREEN);
+
+  const leaderboardTab = { to: URLS.badges.index, label: 'Ledertavle', icon: BarChart2 };
+  const badgesTab = { to: URLS.badges.public_badges(), label: 'Offentlige badges', icon: Trophy };
+  const categoriesTab = { to: URLS.badges.categories(), label: 'Kategorier', icon: Shapes };
+  const getTab = { to: URLS.badges.get_badge(), label: 'Erverv badge', icon: CirclePlus };
   const tabs = [leaderboardTab, badgesTab, categoriesTab, getTab];
 
+  const TabLink = ({ to, label, Icon }: { to: string; label: string; Icon?: LucideIcon }) => (
+    <Link
+      className={`flex items-center space-x-2 p-2 ${location.pathname === to ? 'text-black dark:text-white border-b border-primary' : 'text-muted-foreground'}`}
+      to={to}>
+      {Icon && <Icon className='w-5 h-5 stroke-[1.5px]' />}
+      <h1>{label}</h1>
+    </Link>
+  );
+
   return (
-    <Page banner={<PrimaryTopBox />} options={{ title: 'Badges' }}>
-      <Paper sx={{ margin: '-60px auto 60px', position: 'relative' }}>
-        <Typography variant='h1'>Badges</Typography>
-        <RouterTabs tabs={tabs} />
-        <Suspense fallback={null}>
-          <Outlet />
-        </Suspense>
-      </Paper>
+    <Page className='max-w-5xl mx-auto pt-40'>
+      <Card>
+        <CardHeader>
+          <CardTitle>Badges</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {!isDesktop && (
+            <ScrollArea className='w-full whitespace-nowrap p-0'>
+              <div className='flex w-max space-x-4'>
+                {tabs.map((tab, index) => (
+                  <TabLink key={index} {...tab} Icon={tab.icon} />
+                ))}
+              </div>
+              <ScrollBar orientation='horizontal' />
+            </ScrollArea>
+          )}
+
+          {isDesktop && (
+            <div className='flex items-center space-x-4'>
+              {tabs.map((tab, index) => (
+                <TabLink key={index} {...tab} Icon={tab.icon} />
+              ))}
+            </div>
+          )}
+
+          <Suspense fallback={null}>
+            <Outlet />
+          </Suspense>
+        </CardContent>
+      </Card>
     </Page>
   );
 };

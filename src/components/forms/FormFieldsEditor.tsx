@@ -1,16 +1,20 @@
-import { Button, ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper, Stack, TextField, Typography } from '@mui/material';
 import update from 'immutability-helper';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { toast } from 'sonner';
 
 import { Form, SelectFormField, TextFormField } from 'types';
 import { FormFieldType } from 'types/Enums';
 
 import { useFormSubmissions, useUpdateForm } from 'hooks/Form';
-import { useSnackbar } from 'hooks/Snackbar';
 
 import FieldEditor from 'components/forms/FieldEditor';
+import { Button } from 'components/ui/button';
+import { Input } from 'components/ui/input';
+import { Label } from 'components/ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover';
+import { Separator } from 'components/ui/separator';
 export type FormFieldsEditorProps = {
   form: Form;
   onSave?: () => void;
@@ -22,10 +26,8 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
   const updateForm = useUpdateForm(form.id);
   const disabledFromSubmissions = (submissions ? Boolean(submissions.count) : true) && !isSubmissionsLoading;
   const disabled = updateForm.isLoading || isSubmissionsLoading || disabledFromSubmissions;
-  const showSnackbar = useSnackbar();
   const [fields, setFields] = useState<Array<TextFormField | SelectFormField>>(form.fields);
   const [addButtonOpen, setAddButtonOpen] = useState(false);
-  const buttonAnchorRef = useRef(null);
   const [formTitle, setFormTitle] = useState(form.title);
 
   useEffect(() => setFields(form.fields), [form]);
@@ -80,7 +82,7 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
     if (disabled) {
       return;
     }
-    setFields((prev) => prev.filter((field, i) => i !== index));
+    setFields((prev) => prev.filter((_, i) => i !== index));
   };
 
   const save = () => {
@@ -91,13 +93,13 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
       { title: formTitle, fields: fields, resource_type: form.resource_type },
       {
         onSuccess: () => {
-          showSnackbar('Spørsmålene ble oppdatert', 'success');
+          toast.success('Spørsmålene ble oppdatert');
           if (onSave) {
             onSave();
           }
         },
         onError: (e) => {
-          showSnackbar(e.detail, 'error');
+          toast.error(e.detail);
         },
       },
     );
@@ -105,13 +107,14 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
 
   return (
     <>
-      <Stack gap={1}>
-        {canEditTitle && <TextField label='Malen sitt navn' onChange={(e) => setFormTitle(e.target.value)} type='text' value={formTitle} />}
-        {disabledFromSubmissions && (
-          <Typography gutterBottom variant='body2'>
-            Du kan ikke endre spørsmålene etter at noen har svart på dem
-          </Typography>
+      <div className='space-y-2'>
+        {canEditTitle && (
+          <div className='space-y-1'>
+            <Label>Malen sitt navn</Label>
+            <Input onChange={(e) => setFormTitle(e.target.value)} value={formTitle} />
+          </div>
         )}
+        {disabledFromSubmissions && <h1 className='text-center'>Du kan ikke endre spørsmålene etter at noen har svart på dem</h1>}
         <DndProvider backend={HTML5Backend}>
           {fields.map((field, index) => (
             <FieldEditor
@@ -125,28 +128,47 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
             />
           ))}
         </DndProvider>
-        <Button disabled={disabled} fullWidth onClick={() => setAddButtonOpen(true)} ref={buttonAnchorRef} variant='outlined'>
-          Nytt spørsmål
-        </Button>
-        <Button disabled={disabled} fullWidth onClick={save} variant='contained'>
-          Lagre
-        </Button>
-      </Stack>
-      <Popper anchorEl={buttonAnchorRef.current} open={addButtonOpen} role={undefined} transition>
-        {({ TransitionProps }) => (
-          <Grow {...TransitionProps}>
-            <Paper sx={{ boxShadow: '0px 24px 48px 0 rgba(0,0,0,0.16)' }} variant='outlined'>
-              <ClickAwayListener onClickAway={() => setAddButtonOpen(false)}>
-                <MenuList id='menu-list-grow'>
-                  <MenuItem onClick={() => addField(FormFieldType.TEXT_ANSWER)}>Tekstspørsmål</MenuItem>
-                  <MenuItem onClick={() => addField(FormFieldType.SINGLE_SELECT)}>Flervalgsspørsmål</MenuItem>
-                  <MenuItem onClick={() => addField(FormFieldType.MULTIPLE_SELECT)}>Avkrysningsspørsmål</MenuItem>
-                </MenuList>
-              </ClickAwayListener>
-            </Paper>
-          </Grow>
-        )}
-      </Popper>
+        <div className='flex items-center space-x-2'>
+          <Popover onOpenChange={setAddButtonOpen} open={addButtonOpen}>
+            <PopoverTrigger asChild>
+              <Button className='w-full' disabled={disabled} variant='outline'>
+                Nytt spørsmål
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className='space-y-2'>
+              <h1>Legg til spørsmål</h1>
+              <Separator />
+              <p
+                className='px-2 py-1 rounded-md cursor-pointer hover:bg-border transition-all duration-150'
+                onClick={() => {
+                  addField(FormFieldType.TEXT_ANSWER);
+                  setAddButtonOpen(false);
+                }}>
+                Tekstspørsmål
+              </p>
+              <p
+                className='px-2 py-1 rounded-md cursor-pointer hover:bg-border transition-all duration-150'
+                onClick={() => {
+                  addField(FormFieldType.SINGLE_SELECT);
+                  setAddButtonOpen(false);
+                }}>
+                Flervalgsspørsmål
+              </p>
+              <p
+                className='px-2 py-1 rounded-md cursor-pointer hover:bg-border transition-all duration-150'
+                onClick={() => {
+                  addField(FormFieldType.MULTIPLE_SELECT);
+                  setAddButtonOpen(false);
+                }}>
+                Avkrysningsspørsmål
+              </p>
+            </PopoverContent>
+          </Popover>
+          <Button className='w-full' disabled={disabled} onClick={save}>
+            Lagre
+          </Button>
+        </div>
+      </div>
     </>
   );
 };

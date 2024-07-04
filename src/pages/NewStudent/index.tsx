@@ -1,19 +1,8 @@
-import SignupIcon from '@mui/icons-material/ArrowForwardRounded';
-import CalendarIcon from '@mui/icons-material/DateRangeRounded';
-import EventIcon from '@mui/icons-material/EventRounded';
-import ListIcon from '@mui/icons-material/FormatListBulletedRounded';
-import FaqIcon from '@mui/icons-material/HelpOutlineRounded';
-import AboutIcon from '@mui/icons-material/InfoRounded';
-import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
-import SportsIcon from '@mui/icons-material/SportsSoccerRounded';
-import VolunteerIcon from '@mui/icons-material/VolunteerActivismRounded';
-import { Collapse, List, ListItemButton, ListItemIcon, ListItemText, Stack, Typography } from '@mui/material';
 import { SHOW_FADDERUKA_INFO } from 'constant';
-import { makeStyles } from 'makeStyles';
-import { useEffect, useMemo, useState } from 'react';
+import { ArrowUpRightFromSquare, Award, Calendar, CircleHelp, HandHeart, Info, List } from 'lucide-react';
+import { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
-import URLS from 'URLS';
 
 import { useEvents } from 'hooks/Event';
 import { useIsAuthenticated } from 'hooks/User';
@@ -22,31 +11,15 @@ import { useWikiPage } from 'hooks/Wiki';
 
 import EventsCalendarView from 'pages/Landing/components/EventsCalendarView';
 
-import Banner, { BannerButton } from 'components/layout/Banner';
-import Expand from 'components/layout/Expand';
-import Pagination from 'components/layout/Pagination';
-import Paper from 'components/layout/Paper';
-import Tabs from 'components/layout/Tabs';
 import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import Page from 'components/navigation/Page';
-
-const useStyles = makeStyles()((theme) => ({
-  grid: {
-    display: 'grid',
-    gridGap: theme.spacing(2),
-  },
-  root: {
-    gridTemplateColumns: '300px 1fr',
-    margin: theme.spacing(1, 0, 2),
-    alignItems: 'self-start',
-    [theme.breakpoints.down('lg')]: {
-      gridGap: theme.spacing(1),
-      gridTemplateColumns: '1fr',
-    },
-  },
-}));
+import { Button, PaginateButton } from 'components/ui/button';
+import { Card, CardContent } from 'components/ui/card';
+import Expandable from 'components/ui/expandable';
+import { ScrollArea, ScrollBar } from 'components/ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs';
 
 const FADDERUKA_EVENT_CATEGORY = 10;
 
@@ -60,30 +33,25 @@ type VolunteerGroupProps = {
 const VolunteerGroup = ({ url, title }: VolunteerGroupProps) => {
   const { data } = useWikiPage(url);
   return (
-    <Expand flat header={title}>
+    <Expandable description='Les mer' icon={<HandHeart className='w-5 h-5 stroke-[1.5px]' />} title={title}>
       <MarkdownRenderer value={data?.content || ''} />
-    </Expand>
+    </Expandable>
   );
 };
 
 const NewStudent = () => {
-  const { classes, cx } = useStyles();
   const { event } = useAnalytics();
   const isAuthenticated = useIsAuthenticated();
-  const eventsTab = { value: 'events', label: 'Fadderuka - arrangementer', icon: EventIcon };
-  const faqTab = { value: 'faq', label: 'FAQ', icon: FaqIcon };
-  const volunteerTab = { value: 'volunteer', label: 'Verv', icon: VolunteerIcon };
-  const sportsTab = { value: 'sports', label: 'Idrett', icon: SportsIcon };
-  const aboutTab = { value: 'about', label: 'Om TIHLDE.org', icon: AboutIcon };
+  const eventsTab = { value: 'events', label: 'Fadderuka', icon: Calendar };
+  const faqTab = { value: 'faq', label: 'FAQ', icon: CircleHelp };
+  const volunteerTab = { value: 'volunteer', label: 'Verv', icon: HandHeart };
+  const sportsTab = { value: 'sports', label: 'Idrett', icon: Award };
+  const aboutTab = { value: 'about', label: 'Om TIHLDE', icon: Info };
   const tabs = [eventsTab, faqTab, volunteerTab, sportsTab, aboutTab];
-  const [tab, setTab] = useState(eventsTab.value);
 
-  useEffect(() => event('change-tab', 'new-student', `Changed tab to: ${tab}`), [tab]);
-
-  const eventsListView = { value: 'list', label: 'Liste', icon: ListIcon };
-  const eventsCalendarView = { value: 'calendar', label: 'Kalender', icon: CalendarIcon };
+  const eventsListView = { value: 'list', label: 'Liste', icon: List };
+  const eventsCalendarView = { value: 'calendar', label: 'Kalender', icon: Calendar };
   const eventTabs = [eventsListView, eventsCalendarView];
-  const [eventTab, setEventTab] = useState(eventsListView.value);
 
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents({ category: FADDERUKA_EVENT_CATEGORY });
   const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
@@ -95,58 +63,65 @@ const NewStudent = () => {
   const createUserAnalytics = (page: string) => event('go-to-sign-up', 'new-student', `Go to ${page}`);
 
   return (
-    <Page
-      banner={
-        <Banner
-          text='Hei og velkommen til TIHLDE. Vi i TIHLDE vil gjerne ønske deg velkommen til Trondheim og vil at du skal bli kjent med både byen og dine medstudenter, derfor arrangerer vi fadderuka for dere. Her kan du finne info om fadderuka, verv og idrett i TIHLDE, samt ofte stilte spørsmål og svar.'
-          title='Ny student'>
-          {SHOW_FADDERUKA_INFO && (
-            <BannerButton
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              component='a'
-              endIcon={<OpenInNewIcon />}
-              href='https://s.tihlde.org/fadderuka-paamelding'
-              onClick={fadderukaSignupAnalytics}
-              rel='noopener noreferrer'
-              target='_blank'
-              variant='outlined'>
-              Meld deg på fadderuka
-            </BannerButton>
-          )}
-          {!isAuthenticated && (
-            <Paper sx={{ background: 'transparent', borderColor: (theme) => theme.palette.common.white }}>
-              <Typography gutterBottom sx={{ color: (theme) => theme.palette.common.white }}>
-                Hei! Hvis du er ny student i TIHLDE anbefaler vi deg å opprette bruker på nettsiden ASAP! Da får du muligheten til å melde deg på arrangementer,
-                få badges, se kokeboka og mer 🎉
-              </Typography>
-              {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-              {/* @ts-ignore */}
-              <BannerButton component={Link} endIcon={<SignupIcon />} onClick={createUserAnalytics} to={URLS.signup} variant='outlined'>
-                Opprett bruker her
-              </BannerButton>
-            </Paper>
-          )}
-        </Banner>
-      }
-      options={{ title: 'Ny student' }}>
-      <div className={cx(classes.grid, classes.root)}>
-        <Paper noOverflow noPadding sx={{ position: { lg: 'sticky' }, top: { lg: 75 } }}>
-          <List disablePadding>
-            {tabs.map((tabItem) => (
-              <ListItemButton key={tabItem.value} onClick={() => setTab(tabItem.value)} selected={tab === tabItem.value}>
-                <ListItemIcon>
-                  <tabItem.icon />
-                </ListItemIcon>
-                <ListItemText primary={tabItem.label} />
-              </ListItemButton>
+    <Page className='space-y-12'>
+      <div className='space-y-4 lg:flex lg:items-center lg:justify-between lg:space-y-0'>
+        <div className='space-y-1'>
+          <h1 className='text-3xl lg:text-5xl font-bold'>Ny student</h1>
+          <p className='max-w-2xl w-full text-muted-foreground text-sm md:text-base'>
+            Hei og velkommen til TIHLDE. Vi i TIHLDE vil gjerne ønske deg velkommen til Trondheim og vil at du skal bli kjent med både byen og dine
+            medstudenter, derfor arrangerer vi fadderuka for dere. Her kan du finne info om fadderuka, verv og idrett i TIHLDE, samt ofte stilte spørsmål og
+            svar. Vi gleder oss til å bli kjent med deg! 🎉
+          </p>
+        </div>
+
+        {!isAuthenticated && (
+          <div className='p-4 border dark:border-white rounded-md max-w-md w-full space-y-2'>
+            <p className='text-sm'>
+              Hei! Hvis du er ny student i TIHLDE anbefaler vi deg å opprette bruker på nettsiden ASAP! Da får du muligheten til å melde deg på arrangementer,
+              få badges, se kokeboka og mer 🎉
+            </p>
+            <div className='flex items-center space-x-2'>
+              <Button asChild>
+                <Link onClick={() => createUserAnalytics('ny-bruker')} to={'/ny-bruker/'}>
+                  Registrer deg her
+                </Link>
+              </Button>
+
+              {!SHOW_FADDERUKA_INFO && (
+                <Button asChild className='text-black dark:text-white' variant='outline'>
+                  <a href='https://s.tihlde.org/fadderuka-paamelding' onClick={fadderukaSignupAnalytics} rel='noopener noreferrer' target='_blank'>
+                    Meld deg på fadderuka
+                    <ArrowUpRightFromSquare className='ml-2 w-5 h-5 stroke-[1.5px]' />
+                  </a>
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+      <Tabs className='space-y-4' defaultValue='events'>
+        <ScrollArea className='w-full whitespace-nowrap p-0'>
+          <TabsList>
+            {tabs.map((tab, index) => (
+              <TabsTrigger key={index} value={tab.value}>
+                <tab.icon className='w-5 h-5 mr-2' />
+                {tab.label}
+              </TabsTrigger>
             ))}
-          </List>
-        </Paper>
-        <div>
-          <Collapse in={tab === eventsTab.value}>
-            <Tabs selected={eventTab} setSelected={setEventTab} sx={{ ml: 2 }} tabs={eventTabs} />
-            <Collapse in={eventTab === eventsListView.value}>
+          </TabsList>
+          <ScrollBar orientation='horizontal' />
+        </ScrollArea>
+        <TabsContent value='events'>
+          <Tabs defaultValue='list'>
+            <TabsList>
+              {eventTabs.map((tab, index) => (
+                <TabsTrigger key={index} value={tab.value}>
+                  <tab.icon className='w-5 h-5 mr-2' />
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            <TabsContent value='list'>
               {isLoading && <EventListItemLoading />}
               {!events.length && !isLoading && (
                 <NotFoundIndicator
@@ -154,70 +129,70 @@ const NewStudent = () => {
                   subtitle='Ingen arrangementer tilknyttet fadderuka er publisert enda. Kom tilbake senere!'
                 />
               )}
-              {error && <Paper>{error.detail}</Paper>}
+              {error && <h1 className='text-center'>{error.detail}</h1>}
               {data !== undefined && (
-                <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-                  <Stack gap={1}>
-                    {events.map((event) => (
-                      <EventListItem event={event} key={event.id} />
-                    ))}
-                  </Stack>
-                </Pagination>
+                <div className='space-y-2'>
+                  {events.map((event) => (
+                    <EventListItem event={event} key={event.id} size='large' />
+                  ))}
+                </div>
               )}
-              {isFetching && <EventListItemLoading />}
-            </Collapse>
-            <Collapse in={eventTab === eventsCalendarView.value}>
+              {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
+            </TabsContent>
+            <TabsContent value='calendar'>
               <EventsCalendarView category={FADDERUKA_EVENT_CATEGORY} />
-            </Collapse>
-          </Collapse>
-          <Collapse in={tab === faqTab.value} mountOnEnter>
-            <Paper sx={{ p: 2 }}>
+            </TabsContent>
+          </Tabs>
+        </TabsContent>
+        <TabsContent value='faq'>
+          <Card>
+            <CardContent className='px-6 py-4'>
               <MarkdownRenderer value={faqPage?.content || ''} />
-            </Paper>
-          </Collapse>
-          <Collapse in={tab === volunteerTab.value} mountOnEnter>
-            <Paper sx={{ p: 2 }}>
-              <Typography gutterBottom variant='h2'>
-                Bli med som frivillig i TIHLDE
-              </Typography>
-              <Typography gutterBottom>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value='volunteer'>
+          <Card>
+            <CardContent className='px-6 py-4 space-y-2'>
+              <h1 className='text-xl md:selection:text-3xl font-bold'>Bli med som frivillig i TIHLDE</h1>
+              <p>
                 Som frivillig i TIHLDE får du være med på mye gøy og blir kjent med kule folk! Vi har 5 undergrupper og 5 komitéer som jobber for medlemmene
                 våre. Her kan du lese mer om hva hver undergruppe/komité jobber med og hvordan du kan søke om å bli med i en eller flere.
-              </Typography>
-              <Typography gutterBottom variant='h3'>
-                Undergrupper:
-              </Typography>
-              <div>
+              </p>
+              <h1 className='text-lg font-bold'>Undergrupper:</h1>
+              <div className='space-y-2'>
                 <VolunteerGroup title='Index' url='tihlde/undergrupper/index/' />
                 <VolunteerGroup title='Drift' url='tihlde/undergrupper/drift/' />
                 <VolunteerGroup title='Næringsliv og Kurs' url='tihlde/undergrupper/nringsliv-og-kurs/' />
                 <VolunteerGroup title='Promo' url='tihlde/undergrupper/promo/' />
                 <VolunteerGroup title='Sosialen' url='tihlde/undergrupper/sosialen/' />
               </div>
-              <Typography gutterBottom sx={{ mt: 1 }} variant='h3'>
-                Komitéer:
-              </Typography>
-              <div>
+              <h1 className='text-lg font-bold'>Komitéer:</h1>
+              <div className='space-y-2'>
                 <VolunteerGroup title='FadderKom' url='tihlde/komiteer/fadderkom/' />
                 <VolunteerGroup title='JenteKom' url='tihlde/komiteer/jentekom/' />
                 <VolunteerGroup title='KontKom' url='tihlde/komiteer/kontkom/' />
                 <VolunteerGroup title='Redaksjonen' url='tihlde/komiteer/redaksjonen/' />
                 <VolunteerGroup title='TurTorial' url='tihlde/komiteer/turtorial/' />
               </div>
-            </Paper>
-          </Collapse>
-          <Collapse in={tab === sportsTab.value} mountOnEnter>
-            <Paper sx={{ p: 2 }}>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value='sports'>
+          <Card>
+            <CardContent className='px-6 py-4'>
               <MarkdownRenderer value={sportsText?.content || ''} />
-            </Paper>
-          </Collapse>
-          <Collapse in={tab === aboutTab.value} mountOnEnter>
-            <Paper sx={{ p: 2 }}>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value='about'>
+          <Card>
+            <CardContent className='px-6 py-4'>
               <MarkdownRenderer value={aboutText} />
-            </Paper>
-          </Collapse>
-        </div>
-      </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </Page>
   );
 };

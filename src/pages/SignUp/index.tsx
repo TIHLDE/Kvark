@@ -1,32 +1,44 @@
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import { Button, Collapse, LinearProgress, MenuItem, Stack, Typography } from '@mui/material';
-import { EMAIL_REGEX } from 'constant';
-import { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Info } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import URLS from 'URLS';
+import { z } from 'zod';
 
 import { UserCreate } from 'types';
 
 import { useConfetti } from 'hooks/Confetti';
 import { useStudyGroups, useStudyyearGroups } from 'hooks/Group';
 import { useRedirectUrl, useSetRedirectUrl } from 'hooks/Misc';
-import { useSnackbar } from 'hooks/Snackbar';
 import { useCreateUser } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
-import Select from 'components/inputs/Select';
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import Paper from 'components/layout/Paper';
-import { SecondaryTopBox } from 'components/layout/TopBox';
-import TihldeLogo from 'components/miscellaneous/TihldeLogo';
-import Page from 'components/navigation/Page';
+import { Alert, AlertDescription, AlertTitle } from 'components/ui/alert';
+import { Button, buttonVariants } from 'components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
+import { Input } from 'components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 
-type SignUpData = UserCreate & {
-  password_verify: string;
-};
+const formSchema = z
+  .object({
+    class: z.string().min(1, { message: 'Feltet er påkrevd' }),
+    email: z.string().email('Ugyldig e-post').min(1, { message: 'Feltet er påkrevd' }),
+    first_name: z.string().min(1, { message: 'Feltet er påkrevd' }),
+    last_name: z.string().min(1, { message: 'Feltet er påkrevd' }),
+    study: z.string().min(1, { message: 'Feltet er påkrevd' }),
+    user_id: z
+      .string()
+      .min(1, { message: 'Feltet er påkrevd' })
+      .refine((value) => !value.includes('@'), { message: 'Brukernavn må være uten @stud.ntnu.no' }),
+    password: z.string().min(8, { message: 'Minimum 8 karakterer' }),
+    password_verify: z.string().min(8, { message: 'Minimum 8 karakterer' }),
+  })
+  .refine((data) => data.password === data.password_verify, {
+    message: 'Passordene må være like',
+    path: ['password_verify'],
+  });
 
 const SignUp = () => {
   const { run } = useConfetti();
@@ -35,28 +47,34 @@ const SignUp = () => {
   const { data: studyyears } = useStudyyearGroups();
   const navigate = useNavigate();
   const createUser = useCreateUser();
-  const showSnackbar = useSnackbar();
-  const { handleSubmit, formState, control, getValues, setError, register } = useForm<SignUpData>();
   const setLogInRedirectURL = useSetRedirectUrl();
   const redirectURL = useRedirectUrl();
-  const [faqOpen, setFaqOpen] = useState(false);
 
-  const onSignUp = async (data: SignUpData) => {
-    if (data.password !== data.password_verify) {
-      setError('password', { message: 'Passordene må være like' });
-      setError('password_verify', { message: 'Passordene må være like' });
-      return;
-    }
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      class: '',
+      email: '',
+      first_name: '',
+      last_name: '',
+      study: '',
+      user_id: '',
+      password: '',
+      password_verify: '',
+    },
+  });
 
+  const onSignUp = async (values: z.infer<typeof formSchema>) => {
     const userData: UserCreate = {
-      user_id: data.user_id.toLowerCase(),
-      first_name: data.first_name,
-      last_name: data.last_name,
-      email: data.email,
-      password: data.password,
-      class: data.class,
-      study: data.study,
+      user_id: values.user_id.toLowerCase(),
+      first_name: values.first_name,
+      last_name: values.last_name,
+      email: values.email,
+      password: values.password,
+      class: values.class,
+      study: values.study,
     };
+
     createUser.mutate(userData, {
       onSuccess: () => {
         run();
@@ -65,133 +83,214 @@ const SignUp = () => {
         navigate(redirectURL || URLS.login);
       },
       onError: (e) => {
-        showSnackbar(e.detail, 'error');
+        toast.error(e.detail);
       },
     });
   };
 
   return (
-    <Page banner={<SecondaryTopBox />} options={{ title: 'Ny bruker' }}>
-      <Paper sx={{ maxWidth: 'md', margin: 'auto', position: 'relative', left: 0, right: 0, top: -60 }}>
-        {createUser.isLoading && <LinearProgress sx={{ position: 'absolute', top: 0, left: 0, right: 0 }} />}
-        <TihldeLogo darkColor='white' lightColor='blue' size='large' sx={{ height: 30, width: 'auto', mb: 1 }} />
-        <Typography variant='h3'>Opprett bruker</Typography>
-        <Stack component='form' onSubmit={handleSubmit(onSignUp)}>
-          <Stack direction={{ xs: 'column', sm: 'row' }} gap={1}>
-            <TextField
-              disabled={createUser.isLoading}
-              formState={formState}
-              label='Fornavn'
-              {...register('first_name', { required: 'Feltet er påkrevd' })}
-              required
-            />
-            <TextField
-              disabled={createUser.isLoading}
-              formState={formState}
-              label='Etternavn'
-              {...register('last_name', { required: 'Feltet er påkrevd' })}
-              required
-            />
-          </Stack>
-          <TextField
-            disabled={createUser.isLoading}
-            formState={formState}
-            helperText='Ditt brukernavn på NTNU'
-            label='Feide brukernavn'
-            {...register('user_id', { required: 'Feltet er påkrevd', validate: (value) => !value.includes('@') || 'Brukernavn må være uten @stud.ntnu.no' })}
-            required
-          />
-          <TextField
-            disabled={createUser.isLoading}
-            formState={formState}
-            helperText='Benytt en mail du sjekker regelmessig'
-            label='E-post'
-            {...register('email', {
-              required: 'Feltet er påkrevd',
-              pattern: {
-                value: EMAIL_REGEX,
-                message: 'Ugyldig e-post',
-              },
-            })}
-            required
-            type='email'
-          />
-          <Stack direction={{ xs: 'column', sm: 'row' }} gap={1}>
-            <Select control={control} formState={formState} label='Studie' name='study' required rules={{ required: 'Feltet er påkrevd' }}>
-              {studies?.map((study) => (
-                <MenuItem key={study.slug} value={study.slug}>
-                  {study.name}
-                </MenuItem>
-              ))}
-            </Select>
-            <Select
-              control={control}
-              formState={formState}
-              helperText='Hvilket år begynte du på studiet ditt? Om du går DigSam, trekk fra 3 år i tillegg.'
-              label='Kull'
-              name='class'
-              required
-              rules={{ required: 'Feltet er påkrevd' }}>
-              {studyyears?.map((study) => (
-                <MenuItem key={study.slug} value={study.slug}>
-                  {study.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </Stack>
-          <Stack direction={{ xs: 'column', sm: 'row' }} gap={1}>
-            <TextField
-              disabled={createUser.isLoading}
-              formState={formState}
-              label='Passord'
-              {...register('password', {
-                required: 'Feltet er påkrevd',
-                minLength: {
-                  value: 8,
-                  message: 'Minimum 8 karakterer',
-                },
-              })}
-              required
-              type='password'
-            />
-            <TextField
-              disabled={createUser.isLoading}
-              formState={formState}
-              label='Gjenta passord'
-              {...register('password_verify', {
-                required: 'Feltet er påkrevd',
-                validate: {
-                  passordEqual: (value) => value === getValues().password || 'Passordene er ikke like',
-                },
-              })}
-              required
-              type='password'
-            />
-          </Stack>
-          <Typography gutterBottom my={1} textAlign={'center'} variant='body2'>
-            Etter du har opprettet bruker må vi fortsatt godkjenne deg før du kan logge inn!
-          </Typography>
-          <SubmitButton disabled={createUser.isLoading} formState={formState}>
-            Opprett bruker
-          </SubmitButton>
-          <Button component={Link} disabled={createUser.isLoading} fullWidth sx={{ my: 1 }} to={URLS.login}>
-            Logg inn
-          </Button>
-          <Button endIcon={faqOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />} fullWidth onClick={() => setFaqOpen((oldState) => !oldState)} variant='outlined'>
-            Hvorfor må vi godkjenne deg?
-          </Button>
-          <Collapse in={faqOpen}>
-            <Typography m={1} variant='body2'>
-              {`For å unngå at vi får mange brukere som ikke er reelle TIHLDE-medlemmer, må vi aktivere nye brukere før de får logge inn. For å få aktivert brukeren din kan du ta kontakt med `}
-              <a href='mailto:teknologiminister@tihlde.org' rel='noopener noreferrer' target='_blank'>
-                Teknologiminister
-              </a>
-              .
-            </Typography>
-          </Collapse>
-        </Stack>
-      </Paper>
-    </Page>
+    <div className='px-2 md:px-8 mt-32 pb-20 flex items-center justify-center'>
+      <Card className='max-w-3xl w-full'>
+        <CardHeader>
+          <CardTitle>Opprett bruker</CardTitle>
+          <CardDescription>Opprett en bruker for å få tilgang til TIHLDE sine tjenester</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form className='space-y-6' onSubmit={form.handleSubmit(onSignUp)}>
+              <div className='flex space-x-4'>
+                <FormField
+                  control={form.control}
+                  name='first_name'
+                  render={({ field }) => (
+                    <FormItem className='w-full'>
+                      <FormLabel>
+                        Fornavn <span className='text-red-300'>*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder='Skriv her...' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='last_name'
+                  render={({ field }) => (
+                    <FormItem className='w-full'>
+                      <FormLabel>
+                        Etternavn <span className='text-red-300'>*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder='Skriv her...' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className='flex space-x-4'>
+                <FormField
+                  control={form.control}
+                  name='user_id'
+                  render={({ field }) => (
+                    <FormItem className='w-full'>
+                      <FormLabel>
+                        Feide brukernavn <span className='text-red-300'>*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder='Skriv her...' {...field} />
+                      </FormControl>
+                      <FormDescription className='text-xs'>Ditt brukernavn på NTNU</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='email'
+                  render={({ field }) => (
+                    <FormItem className='w-full'>
+                      <FormLabel>
+                        Epost <span className='text-red-300'>*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder='Skriv her...' type='email' {...field} />
+                      </FormControl>
+                      <FormDescription className='text-xs'>Benytt en epost du sjekker regelmessig</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className='flex space-x-4'>
+                <FormField
+                  control={form.control}
+                  name='study'
+                  render={({ field }) => (
+                    <FormItem className='w-full'>
+                      <FormLabel>
+                        Studie <span className='text-red-300'>*</span>
+                      </FormLabel>
+                      <Select defaultValue={field.value} onValueChange={(value) => field.onChange(value)}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder='Velg studie' />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {studies?.map((study, index) => (
+                            <SelectItem key={index} value={study.slug}>
+                              {study.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='class'
+                  render={({ field }) => (
+                    <FormItem className='w-full'>
+                      <FormLabel>
+                        Kull <span className='text-red-300'>*</span>
+                      </FormLabel>
+                      <Select defaultValue={field.value} onValueChange={(value) => field.onChange(value)}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder='Velg kull' />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {studyyears?.map((year, index) => (
+                            <SelectItem key={index} value={year.slug}>
+                              {year.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormDescription className='text-xs'>
+                        Hvilket år begynte du på studiet ditt? Om du går DigTrans, trekk fra 3 år i tillegg.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className='flex space-x-4'>
+                <FormField
+                  control={form.control}
+                  name='password'
+                  render={({ field }) => (
+                    <FormItem className='w-full'>
+                      <FormLabel>
+                        Passord <span className='text-red-300'>*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder='Skriv her...' type='password' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='password_verify'
+                  render={({ field }) => (
+                    <FormItem className='w-full'>
+                      <FormLabel>
+                        Gjenta passord <span className='text-red-300'>*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder='Skriv her...' type='password' {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <Alert variant='warning'>
+                <Info className='w-4 h-4' />
+                <AlertTitle className='pb-4'>Etter du har opprettet bruker må vi fortsatt godkjenne deg før du kan logge inn!</AlertTitle>
+                <AlertDescription>
+                  For å unngå at vi får mange brukere som ikke er reelle TIHLDE-medlemmer, må vi aktivere nye brukere før de får logge inn. For å få aktivert
+                  brukeren din kan du ta kontakt med{' '}
+                  <a className='text-blue-500 hover:underline' href='mailto:hs@tihlde.org' rel='noopener noreferrer' target='_blank'>
+                    hs@tihlde.org
+                  </a>
+                </AlertDescription>
+              </Alert>
+
+              <Button className='w-full' disabled={createUser.isLoading} size='lg' type='submit'>
+                {createUser.isLoading ? 'Oppretter bruker...' : 'Opprett bruker'}
+              </Button>
+            </form>
+          </Form>
+
+          <div className='flex items-center justify-center space-x-12 mt-6'>
+            <Link className={buttonVariants({ variant: 'link' })} to={URLS.forgotPassword}>
+              Glemt passord?
+            </Link>
+
+            <Link className={buttonVariants({ variant: 'link' })} to={URLS.login}>
+              Logg inn
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

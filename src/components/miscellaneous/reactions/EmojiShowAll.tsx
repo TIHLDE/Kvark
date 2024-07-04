@@ -1,21 +1,15 @@
-import { Collapse } from '@mui/material';
 import { ListIcon } from 'lucide-react';
-import { useState } from 'react';
 
 import { ContentType } from 'types/ContentType';
 
-import Dialog from 'components/layout/Dialog';
-import Tabs from 'components/layout/Tabs';
 import { Button } from 'components/ui/button';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
+import { ScrollArea, ScrollBar } from 'components/ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs';
 
 import { ReactionListItem } from './ReactionListItem';
 
 export const EmojiShowAll = (data: ContentType) => {
-  const [open, setOpen] = useState<boolean>(false);
-
-  const openDialog = () => setOpen(true);
-  const closeDialog = () => setOpen(false);
-
   const emojiCollections: Record<string, number> = {};
   data?.reactions?.forEach((r) => {
     emojiCollections[r.emoji] = (emojiCollections[r.emoji] || 0) + 1;
@@ -42,31 +36,40 @@ export const EmojiShowAll = (data: ContentType) => {
     }),
   );
 
-  const [tab, setTab] = useState<string>('all');
+  const OpenButton = (
+    <Button size='icon' variant='outline'>
+      <ListIcon />
+    </Button>
+  );
 
   return (
-    <div>
-      <Button onClick={openDialog} size='icon' variant='outline'>
-        <ListIcon />
-      </Button>
-
-      <Dialog onClose={closeDialog} open={open}>
-        <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
-        <Collapse in={tab === 'all'} mountOnEnter>
+    <ResponsiveDialog className='max-w-xl' title='Reaksjoner' trigger={OpenButton}>
+      <Tabs className='space-y-8' defaultValue='all'>
+        <ScrollArea className='w-full whitespace-nowrap p-0'>
+          <TabsList>
+            {tabs.map((tab, index) => (
+              <TabsTrigger key={index} value={tab.value}>
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          <ScrollBar orientation='horizontal' />
+        </ScrollArea>
+        <TabsContent value='all'>
           {data?.reactions?.map((reaction, index) => (
             <ReactionListItem key={index} {...reaction} />
           ))}
-        </Collapse>
+        </TabsContent>
         {tabs.slice(1).map((reactionTab, index) => (
-          <Collapse in={tab === reactionTab.value} key={index} mountOnEnter>
+          <TabsContent className='space-y-2' key={index} value={reactionTab.value}>
             {data?.reactions
               ?.filter((reaction) => reaction.emoji === reactionTab.value)
               .map((reaction, index) => (
                 <ReactionListItem key={index} {...reaction} />
               ))}
-          </Collapse>
+          </TabsContent>
         ))}
-      </Dialog>
-    </div>
+      </Tabs>
+    </ResponsiveDialog>
   );
 };

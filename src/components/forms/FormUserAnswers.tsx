@@ -1,11 +1,9 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-
 import { SelectFieldSubmission, SelectFormField, TextFieldSubmission, TextFormField, UserSubmission } from 'types';
 import { FormFieldType } from 'types/Enums';
 
 import { useFormById } from 'hooks/Form';
 
-import Paper from 'components/layout/Paper';
+import { Table, TableBody, TableCell, TableHead, TableRow } from 'components/ui/table';
 
 export type FormUserAnswersProps = {
   submission: UserSubmission;
@@ -14,9 +12,9 @@ export type FormUserAnswersProps = {
 const FormUserAnswers = ({ submission }: FormUserAnswersProps) => {
   const { data: form, isLoading } = useFormById(submission.form);
   if (isLoading) {
-    return <Typography>Laster statistikken</Typography>;
+    return <h1 className='text-center'>Laster statistikken</h1>;
   } else if (!form) {
-    return <Typography>Kunne ikke finne spørsmålene</Typography>;
+    return <h1 className='text-center'>Kunne ikke finne spørsmålene</h1>;
   }
 
   const getFieldAnswer = (field: TextFormField | SelectFormField) => {
@@ -31,26 +29,24 @@ const FormUserAnswers = ({ submission }: FormUserAnswersProps) => {
   };
 
   return (
-    <TableContainer component={Paper} noPadding>
-      <Table aria-label={`Svar for ${form.title}`} size='small' sx={{ minWidth: 250 }}>
+    <div className='p-4 rounded-md border bg-card'>
+      <Table>
         <TableHead>
           <TableRow>
-            <TableCell sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>Spørsmål</TableCell>
-            <TableCell align='right' sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>
-              Svar
-            </TableCell>
+            <TableCell>Spørsmål</TableCell>
+            <TableCell>Svar</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {form.fields.map((field) => (
-            <TableRow key={field.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+            <TableRow key={field.id}>
               <TableCell>{`${field.title}${field.required ? ' *' : ''}`}</TableCell>
-              <TableCell align='right'>{getFieldAnswer(field)}</TableCell>
+              <TableCell>{getFieldAnswer(field)}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-    </TableContainer>
+    </div>
   );
 };
 

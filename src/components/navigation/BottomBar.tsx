@@ -1,148 +1,120 @@
-import CloseIcon from '@mui/icons-material/CloseRounded';
-import EventIcon from '@mui/icons-material/EventRounded';
-import MenuIcon from '@mui/icons-material/MenuRounded';
-import NewsIcon from '@mui/icons-material/NewReleasesRounded';
-import JobPostIcon from '@mui/icons-material/WorkOutlineRounded';
-import { BottomNavigation, BottomNavigationAction, SvgIcon } from '@mui/material';
-import { makeStyles } from 'makeStyles';
-import { ComponentType, useEffect, useMemo, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { BriefcaseBusiness, Calendar, Menu, Newspaper } from 'lucide-react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 
-import { useAnalytics } from 'hooks/Utils';
+import { useIsAuthenticated } from 'hooks/User';
 
-import Paper from 'components/layout/Paper';
 import Logo from 'components/miscellaneous/TihldeLogo';
+import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import { NavigationItem } from 'components/navigation/Navigation';
-import Sidebar from 'components/navigation/Sidebar';
-
-const useStyles = makeStyles()((theme) => ({
-  root: {
-    position: 'fixed',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    zIndex: theme.zIndex.drawer + 1,
-    borderBottomRightRadius: 0,
-    borderBottomLeftRadius: 0,
-    borderTopLeftRadius: theme.shape.borderRadius,
-    borderTopRightRadius: theme.shape.borderRadius,
-    ...theme.palette.blurred,
-    ...theme.palette.transparent,
-    background: `${theme.palette.background.paper}aa`,
-    overflow: 'hidden',
-    color: theme.palette.text.secondary,
-    '& .Mui-selected': {
-      color: theme.palette.text.primary,
-    },
-  },
-  bottombar: {
-    height: 80,
-    background: 'transparent',
-    padding: theme.spacing(1, 0, 3),
-  },
-  action: {
-    color: theme.palette.text.secondary,
-    padding: 12,
-    minWidth: 50,
-  },
-  selected: {
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '0.8rem !important',
-    },
-  },
-  label: {
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '0.7rem',
-    },
-  },
-}));
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from 'components/ui/accordion';
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from 'components/ui/drawer';
 
 type Item = {
-  icon: ComponentType<{ className?: string }>;
+  icon: JSX.Element;
   text: string;
   to: string;
 };
-
-const MainLogo = () => <SvgIcon component={Logo} darkColor='white' lightColor='black' size='small' sx={{ color: 'currentColor' }} />;
-const MENU_TAB_KEY = 'menu';
 
 export type BottomBarProps = {
   items: Array<NavigationItem>;
 };
 
 const BottomBar = ({ items }: BottomBarProps) => {
-  const { event } = useAnalytics();
-  const { classes } = useStyles();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [menuOpen, setMenuOpen] = useState(false);
-  const location = useLocation();
-  const actions = useMemo<Array<Item>>(
-    () => [
-      {
-        icon: MainLogo,
-        text: 'Hjem',
-        to: URLS.landing,
-      },
-      {
-        icon: EventIcon,
-        text: 'Arrangementer',
-        to: URLS.events,
-      },
-      {
-        icon: NewsIcon,
-        text: 'Nyheter',
-        to: URLS.news,
-      },
-      {
-        icon: JobPostIcon,
-        text: 'Karriere',
-        to: URLS.jobposts,
-      },
-    ],
-    [],
-  );
-  useEffect(() => {
-    setMenuOpen(false);
-    setTab(location.pathname);
-  }, [location]);
-  const [tab, setTab] = useState(location.pathname);
+  const isAuthenticated = useIsAuthenticated();
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
-  const toggleMenu = () => {
-    if (!menuOpen) {
-      event('menu', 'bottom-bar', 'Open menu');
-    }
-    setMenuOpen((prev) => !prev);
-  };
+  const actions: Array<Item> = [
+    {
+      icon: <Logo className='w-auto h-5' size='small' />,
+      text: 'Hjem',
+      to: URLS.landing,
+    },
+    {
+      icon: <Calendar className='h-5 stroke-[1.5px] mx-auto' />,
+      text: 'Arrangementer',
+      to: URLS.events,
+    },
+    {
+      icon: <Newspaper className='h-5 stroke-[1.5px] mx-auto' />,
+      text: 'Nyheter',
+      to: URLS.news,
+    },
+    {
+      icon: <BriefcaseBusiness className='h-5 stroke-[1.5px] mx-auto' />,
+      text: 'Karriere',
+      to: URLS.jobposts,
+    },
+  ];
 
   return (
-    <Paper className={classes.root} noPadding>
-      <BottomNavigation
-        className={classes.bottombar}
-        onChange={(event, newValue) => (actions.some((item) => item.to === newValue) ? setTab(newValue) : null)}
-        showLabels
-        value={tab}>
-        {actions.map(({ text, to, icon: Icon }, i) => (
-          <BottomNavigationAction
-            classes={{ root: classes.action, selected: classes.selected, label: classes.label }}
-            component={Link}
-            icon={<Icon />}
-            key={i}
-            label={text}
-            to={to}
-            value={to}
-          />
+    <div className='fixed w-full z-30 rounded-t-md border-t bottom-0 left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
+      <div className='flex items-center justify-between px-8 py-2'>
+        {actions.map((action, index) => (
+          <Link className='text-center' key={index} to={action.to}>
+            {action.icon}
+            <p className='text-xs'>{action.text}</p>
+          </Link>
         ))}
-        <BottomNavigationAction
-          classes={{ root: classes.action, selected: classes.selected, label: classes.label }}
-          icon={menuOpen ? <CloseIcon /> : <MenuIcon />}
-          label='Meny'
-          onClick={toggleMenu}
-          value={MENU_TAB_KEY}
-        />
-      </BottomNavigation>
-      <Sidebar items={items} onClose={() => setMenuOpen(false)} open={menuOpen} />
-    </Paper>
+
+        <Drawer onOpenChange={setMenuOpen} open={menuOpen}>
+          <DrawerTrigger asChild>
+            <div className='text-center'>
+              <Menu className='mx-auto h-5 stroke-[1.5px]' />
+              <p className='text-xs'>Meny</p>
+            </div>
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>
+                <TihldeLogo className='w-auto h-12' size='small' />
+              </DrawerTitle>
+            </DrawerHeader>
+            <Accordion className='px-8 space-y-4 mb-32 text-xl' collapsible type='single'>
+              <div className='space-y-4 pb-4'>
+                {items.map((item, index) => (
+                  <div key={index}>
+                    {item.type === 'link' && (
+                      <Link onClick={() => setMenuOpen(false)} to={item.to}>
+                        {item.text}
+                      </Link>
+                    )}
+
+                    {item.type === 'dropdown' && (
+                      <AccordionItem className='border-none' value={index.toString()}>
+                        <AccordionTrigger className='py-0 data-[state=open]:pb-2'>{item.text}</AccordionTrigger>
+                        <AccordionContent>
+                          <div className='space-y-2 px-2 text-lg'>
+                            {item.items.map((subItem, subIndex) => (
+                              <Link className='block' key={subIndex} onClick={() => setMenuOpen(false)} to={subItem.to}>
+                                {subItem.title}
+                              </Link>
+                            ))}
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {isAuthenticated && (
+                <Link onClick={() => setMenuOpen(false)} to={URLS.profile}>
+                  Min profil
+                </Link>
+              )}
+
+              {!isAuthenticated && (
+                <Link onClick={() => setMenuOpen(false)} to={URLS.login}>
+                  Logg inn
+                </Link>
+              )}
+            </Accordion>
+          </DrawerContent>
+        </Drawer>
+      </div>
+    </div>
   );
 };
 

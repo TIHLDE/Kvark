@@ -1,5 +1,3 @@
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import { MenuItem, styled, TextField } from '@mui/material';
 import { getDay, getHours } from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -13,22 +11,10 @@ import { useInterval } from 'hooks/Utils';
 
 import Files from 'pages/Cheatsheet/components/Files';
 
-import Banner from 'components/layout/Banner';
-import { BannerButton } from 'components/layout/Banner';
-import Paper from 'components/layout/Paper';
 import Page from 'components/navigation/Page';
-
-const FilterContainer = styled('div')(({ theme }) => ({
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr 1fr',
-  gridTemplateAreas: '"filterStudy filterClass filterSearch"',
-  gap: theme.spacing(1),
-  paddingBottom: theme.spacing(2),
-  [theme.breakpoints.down('lg')]: {
-    gridTemplateColumns: '1fr 1fr',
-    gridTemplateAreas: '"filterStudy filterClass" "filterSearch filterSearch"',
-  },
-}));
+import { Card, CardContent } from 'components/ui/card';
+import { Input } from 'components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 
 const Cheetsheet = () => {
   const { studyId, classId } = useParams();
@@ -47,8 +33,8 @@ const Cheetsheet = () => {
         return CheatsheetStudy.DIGFOR;
       case 'digsec':
         return CheatsheetStudy.DIGSEC;
-      case 'digsam':
-        return CheatsheetStudy.DIGSAM;
+      case 'digtrans':
+        return CheatsheetStudy.DIGTRANS;
       case 'info':
         return CheatsheetStudy.INFO;
       default:
@@ -69,7 +55,7 @@ const Cheetsheet = () => {
     if (
       studyClass &&
       study &&
-      ((study === CheatsheetStudy.DIGSAM && [4, 5].includes(studyClass)) ||
+      ((study === CheatsheetStudy.DIGTRANS && [4, 5].includes(studyClass)) ||
         ([CheatsheetStudy.DATAING, CheatsheetStudy.DIGFOR, CheatsheetStudy.DIGSEC, CheatsheetStudy.INFO].includes(study) && [1, 2, 3].includes(studyClass)))
     ) {
       return true;
@@ -88,7 +74,7 @@ const Cheetsheet = () => {
   const setStudyChoice = (newStudy: CheatsheetStudy) => {
     setInput('');
     setSearch('');
-    if (newStudy !== getStudy() && newStudy === CheatsheetStudy.DIGSAM) {
+    if (newStudy !== getStudy() && newStudy === CheatsheetStudy.DIGTRANS) {
       if (![4, 5].includes(Number(classId))) {
         navigate(`${URLS.cheatsheet}${newStudy}/4/`);
       } else {
@@ -133,68 +119,56 @@ const Cheetsheet = () => {
       : liveCheatingAmount;
   }, [liveCheatingAmount]);
 
-  const generateCheatSheetMail = () => {
-    const emailTo = 'index@tihlde.org';
-    const subject = 'Kokebokforslag fra bruker';
-    const emailBody =
-      'Hei, ærede Indexere! %0d%0a' +
-      'Jeg har et bidrag til kokeboka, som jeg veldig gjerne vil at dere skal ta en titt på. %0d%0a %0d%0a' +
-      '(Legg til filer som vedlegg på denne eposten) %0d%0a %0d%0a' +
-      'Med vennlig hilsen %0d%0a' +
-      '*Fyll inn navnet ditt her*';
-    document.location = 'mailto:' + emailTo + '?subject=' + subject + '&body=' + emailBody;
-  };
-
   useEffect(() => setLiveCheatingAmount(generateLiveCheatingAmount()), []);
   useInterval(() => setLiveCheatingAmount(generateLiveCheatingAmount()), 20000);
 
   return (
-    <Page
-      banner={
-        <Banner text={`${getStudy()} - ${getClass()}. klasse\n**${liveCheatingAmount}** brukere koker akkurat nå`} title='Kokeboka'>
-          <BannerButton
-            endIcon={<MailOutlineIcon />} // Adding the EmailIcon as the end icon
-            onClick={generateCheatSheetMail}
-            variant='outlined'>
-            Bidra til kokeboka!
-          </BannerButton>
-        </Banner>
-      }
-      options={{ title: `${getStudy()} - ${getClass()}. klasse - Kokeboka` }}>
-      <Paper sx={{ mb: 2 }}>
-        <FilterContainer>
-          <TextField
-            fullWidth
-            label='Studie'
-            onChange={(e) => setStudyChoice(e.target.value as CheatsheetStudy)}
-            select
-            sx={{ gridArea: 'filterStudy' }}
-            value={getStudy() || CheatsheetStudy.DATAING}
-            variant='outlined'>
-            {[CheatsheetStudy.DATAING, CheatsheetStudy.DIGFOR, CheatsheetStudy.DIGSEC, CheatsheetStudy.DIGSAM, CheatsheetStudy.INFO].map((i) => (
-              <MenuItem key={i} value={i}>
-                {i}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            fullWidth
-            label='Klasse'
-            onChange={(e) => setClassChoice(Number(e.target.value))}
-            select
-            sx={{ gridArea: 'filterClass' }}
-            value={classId || 1}
-            variant='outlined'>
-            {(getStudy() === CheatsheetStudy.DIGSAM ? [4, 5] : [1, 2, 3]).map((i) => (
-              <MenuItem key={i} value={i}>
-                {String(i).concat('. klasse')}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField fullWidth label='Søk' onChange={(e) => setInput(e.target.value)} sx={{ gridArea: 'filterSearch' }} value={input} variant='outlined' />
-        </FilterContainer>
-        <Files files={files} getNextPage={fetchNextPage} hasNextPage={hasNextPage} isLoading={isLoading} />
-      </Paper>
+    <Page className='space-y-8 max-w-5xl w-full mx-auto'>
+      <div className='space-y-2'>
+        <h1 className='text-3xl md:text-5xl font-bold'>Kokeboka</h1>
+        <div>
+          <p>
+            {getStudy()} - {getClass()}. klasse
+          </p>
+          <p>{liveCheatingAmount} brukere koker akkurat nå</p>
+        </div>
+      </div>
+
+      <Card>
+        <CardContent className='p-4 space-y-4'>
+          <div className='flex items-center justify-between space-x-4'>
+            <Select defaultValue={getStudy() || CheatsheetStudy.DATAING} onValueChange={(value) => setStudyChoice(value as CheatsheetStudy)}>
+              <SelectTrigger>
+                <SelectValue placeholder={CheatsheetStudy.DATAING} />
+              </SelectTrigger>
+              <SelectContent>
+                {[CheatsheetStudy.DATAING, CheatsheetStudy.DIGFOR, CheatsheetStudy.DIGSEC, CheatsheetStudy.DIGTRANS, CheatsheetStudy.INFO].map((i) => (
+                  <SelectItem key={i} value={i}>
+                    {i}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select defaultValue={classId || '1'} onValueChange={(value) => setClassChoice(Number(value))}>
+              <SelectTrigger>
+                <SelectValue placeholder='Årstrinn' />
+              </SelectTrigger>
+              <SelectContent>
+                {(getStudy() === CheatsheetStudy.DIGTRANS ? [4, 5] : [1, 2, 3]).map((i) => (
+                  <SelectItem key={i} value={i.toString()}>
+                    {String(i).concat('. klasse')}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Input onChange={(e) => setInput(e.target.value)} placeholder='Søk' value={input} />
+          </div>
+
+          <Files files={files} getNextPage={fetchNextPage} hasNextPage={hasNextPage} isLoading={isLoading} />
+        </CardContent>
+      </Card>
     </Page>
   );
 };

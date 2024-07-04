@@ -1,40 +1,49 @@
-import CelebrationIcon from '@mui/icons-material/Celebration';
-import DateRange from '@mui/icons-material/DateRangeRounded';
-import Reorder from '@mui/icons-material/ReorderRounded';
-import { Collapse, Skeleton } from '@mui/material';
-import { lazy, Suspense, useState } from 'react';
+import { Calendar, List, PartyPopper } from 'lucide-react';
+import { lazy, Suspense } from 'react';
 
 import EventsDefaultView from 'pages/Events/components/EventsDefaultView';
 
-import Banner from 'components/layout/Banner';
-import Tabs from 'components/layout/Tabs';
 import Page from 'components/navigation/Page';
+import { Skeleton } from 'components/ui/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs';
 
 import ActivitiesDefaultView from './components/ActivitiesDefaultView';
 
 const EventsCalendarView = lazy(() => import(/* webpackChunkName: "events_calendar" */ 'pages/Landing/components/EventsCalendarView'));
 
 const Events = () => {
-  const listTab = { value: 'list', label: 'Liste', icon: Reorder };
-  const activityTab = { value: 'activity', label: 'Aktiviteter', icon: CelebrationIcon };
-  const calendarTab = { value: 'calendar', label: 'Kalender', icon: DateRange };
-  const tabs = [listTab, activityTab, calendarTab];
-  const [tab, setTab] = useState(listTab.value);
-
   return (
-    <Page banner={<Banner title='Arrangementer' />} options={{ title: 'Arrangementer' }}>
-      <Tabs selected={tab} setSelected={setTab} sx={{ width: 'fit-content', mb: 1 }} tabs={tabs} />
-      <Collapse in={tab === listTab.value}>
-        <EventsDefaultView />
-      </Collapse>
-      <Collapse in={tab === activityTab.value}>
-        <ActivitiesDefaultView />
-      </Collapse>
-      <Collapse in={tab === calendarTab.value} mountOnEnter>
-        <Suspense fallback={<Skeleton height={695} variant='rectangular' />}>
-          <EventsCalendarView />
-        </Suspense>
-      </Collapse>
+    <Page className='space-y-8'>
+      <div>
+        <h1 className='text-3xl md:text-5xl font-bold'>Arrangementer</h1>
+      </div>
+      <Tabs defaultValue='list'>
+        <TabsList>
+          <TabsTrigger value='list'>
+            <List className='mr-2 w-5 h-5 stroke-[1.5px]' />
+            Liste
+          </TabsTrigger>
+          <TabsTrigger value='activity'>
+            <PartyPopper className='mr-2 w-5 h-5 stroke-[1.5px]' />
+            Aktiviteter
+          </TabsTrigger>
+          <TabsTrigger value='calendar'>
+            <Calendar className='mr-2 w-5 h-5 stroke-[1.5px]' />
+            Kalender
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value='list'>
+          <EventsDefaultView />
+        </TabsContent>
+        <TabsContent value='activity'>
+          <ActivitiesDefaultView />
+        </TabsContent>
+        <TabsContent value='calendar'>
+          <Suspense fallback={<Skeleton className='w-full h-96' />}>
+            <EventsCalendarView />
+          </Suspense>
+        </TabsContent>
+      </Tabs>
     </Page>
   );
 };

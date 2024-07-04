@@ -27,7 +27,7 @@ export const useCreateWikiPage = (): UseMutationResult<WikiPage, RequestResponse
   const queryClient = useQueryClient();
   return useMutation((newPage: WikiRequired) => API.createWikiPage(newPage), {
     onSuccess: (data) => {
-      invalidate(queryClient);
+      queryClient.invalidateQueries(WIKI_QUERY_KEY);
       queryClient.setQueryData([WIKI_QUERY_KEY, data.path], data);
     },
   });
@@ -37,7 +37,8 @@ export const useUpdateWikiPage = (path: string): UseMutationResult<WikiPage, Req
   const queryClient = useQueryClient();
   return useMutation((updatedPage: WikiRequired) => API.updateWikiPage(path, updatedPage), {
     onSuccess: (data) => {
-      invalidate(queryClient);
+      queryClient.invalidateQueries(WIKI_QUERY_KEY);
+      queryClient.invalidateQueries(WIKI_QUERY_KEY_TREE);
       queryClient.setQueryData([WIKI_QUERY_KEY, data.path], data);
     },
   });

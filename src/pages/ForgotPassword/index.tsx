@@ -1,101 +1,89 @@
-import Button from '@mui/material/Button';
-import LinearProgress from '@mui/material/LinearProgress';
-import Typography from '@mui/material/Typography';
-import { EMAIL_REGEX } from 'constant';
-import { makeStyles } from 'makeStyles';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 import URLS from 'URLS';
+import { z } from 'zod';
 
-import { useSnackbar } from 'hooks/Snackbar';
 import { useForgotPassword } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import Paper from 'components/layout/Paper';
-import { SecondaryTopBox } from 'components/layout/TopBox';
-import TihldeLogo from 'components/miscellaneous/TihldeLogo';
-import Page from 'components/navigation/Page';
+import { Button, buttonVariants } from 'components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
+import { Input } from 'components/ui/input';
 
-const useStyles = makeStyles()((theme) => ({
-  paper: {
-    maxWidth: theme.breakpoints.values.sm,
-    margin: 'auto',
-    position: 'relative',
-    left: 0,
-    right: 0,
-    top: -60,
-  },
-  logo: {
-    height: 30,
-    width: 'auto',
-    marginBottom: theme.spacing(1),
-  },
-  progress: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-  },
-  button: {
-    marginTop: theme.spacing(2),
-  },
-}));
-
-type FormData = {
-  email: string;
-};
+const formSchema = z.object({
+  email: z.string().email('Ugyldig e-post').min(1, { message: 'Feltet er påkrevd' }),
+});
 
 const ForgotPassword = () => {
-  const { classes } = useStyles();
   const { event } = useAnalytics();
   const forgotPassword = useForgotPassword();
-  const showSnackbar = useSnackbar();
-  const { register, formState, handleSubmit, setError } = useForm<FormData>();
 
-  const onSubmit = async (data: FormData) => {
-    forgotPassword.mutate(data.email, {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: '',
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    forgotPassword.mutate(values.email, {
       onSuccess: (data) => {
-        showSnackbar(data.detail, 'success');
+        toast.success(data.detail);
         event('forgot-password', 'auth', 'Forgot password');
       },
       onError: (e) => {
-        setError('email', { message: e.detail });
+        form.setError('email', { message: e.detail });
       },
     });
   };
 
   return (
-    <Page banner={<SecondaryTopBox />} options={{ title: 'Glemt passord' }}>
-      <Paper className={classes.paper}>
-        {forgotPassword.isLoading && <LinearProgress className={classes.progress} />}
-        <TihldeLogo className={classes.logo} darkColor='white' lightColor='blue' size='large' />
-        <Typography variant='h3'>Glemt passord</Typography>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <TextField
-            disabled={forgotPassword.isLoading}
-            formState={formState}
-            label='Epost'
-            {...register('email', {
-              required: 'Feltet er påkrevd',
-              pattern: {
-                value: EMAIL_REGEX,
-                message: 'Ugyldig e-post',
-              },
-            })}
-            required
-            type='email'
-          />
-          <SubmitButton className={classes.button} disabled={forgotPassword.isLoading} formState={formState}>
-            Få nytt passord
-          </SubmitButton>
-          <Button className={classes.button} component={Link} disabled={forgotPassword.isLoading} fullWidth to={URLS.login}>
-            Logg inn
-          </Button>
-        </form>
-      </Paper>
-    </Page>
+    <div className='px-2 md:px-8 mt-32 flex items-center justify-center'>
+      <Card className='max-w-lg w-full'>
+        <CardHeader>
+          <CardTitle>Glemt passord?</CardTitle>
+          <CardDescription>Skriv inn din e-postadresse for å motta en e-post med et nytt passord.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form className='space-y-6' onSubmit={form.handleSubmit(onSubmit)}>
+              <FormField
+                control={form.control}
+                name='email'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Epost <span className='text-red-300'>*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder='Skriv her...' type='email' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button className='w-full' disabled={forgotPassword.isLoading} size='lg' type='submit'>
+                {forgotPassword.isLoading ? 'Henter nytt passord...' : 'Få nytt passord'}
+              </Button>
+            </form>
+          </Form>
+
+          <div className='flex items-center justify-center space-x-12 mt-6'>
+            <Link className={buttonVariants({ variant: 'link' })} to={URLS.login}>
+              Logg inn
+            </Link>
+
+            <Link className={buttonVariants({ variant: 'link' })} to={URLS.signup}>
+              Opprett bruker
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

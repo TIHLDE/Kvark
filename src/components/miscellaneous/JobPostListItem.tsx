@@ -1,4 +1,3 @@
-import { Box, Divider, ListItemButton, Skeleton, Stack, Theme, Typography } from '@mui/material';
 import { parseISO } from 'date-fns';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
@@ -6,90 +5,60 @@ import { formatDate, getJobpostType, urlEncode } from 'utils';
 
 import { JobPost } from 'types';
 
-import Paper, { PaperProps } from 'components/layout/Paper';
 import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
+import { Skeleton } from 'components/ui/skeleton';
 
 export type JobPostListItemProps = {
   jobPost: JobPost;
-  sx?: PaperProps['sx'];
 };
 
-const getUpperBorderRadius = (theme: Theme) => `${Number(theme.shape.borderRadius) / 2}px ${Number(theme.shape.borderRadius) / 2}px 0 0`;
+const JobPostListItem = ({ jobPost }: JobPostListItemProps) => (
+  <Link className='border rounded-md bg-card space-y-4 text-black dark:text-white' to={`${URLS.jobposts}${jobPost.id}/${urlEncode(jobPost.title)}/`}>
+    <AspectRatioImg alt={jobPost.image_alt || jobPost.title} className='rounded-t-sm' src={jobPost.image} />
 
-const JobPostListItem = ({ jobPost, sx }: JobPostListItemProps) => (
-  <ListItemButton
-    component={Link}
-    focusRipple
-    sx={{ p: 0, overflow: 'hidden', borderRadius: (theme) => `${theme.shape.borderRadius}px`, ...sx }}
-    to={`${URLS.jobposts}${jobPost.id}/${urlEncode(jobPost.title)}/`}>
-    <Paper noOverflow noPadding sx={{ width: '100%' }}>
-      <AspectRatioImg
-        alt={jobPost.image_alt || jobPost.title}
-        src={jobPost.image}
-        sx={{
-          height: 'auto',
-          width: '100%',
-          objectFit: 'cover',
-          borderRadius: getUpperBorderRadius,
-        }}
-      />
-      <Stack direction='row' gap={1} justifyContent='space-between' sx={{ width: '100%', p: { xs: 1.5, md: 2 } }}>
-        <Box sx={{ minWidth: 0 }}>
-          <Typography
-            sx={{ fontSize: { xs: '1.4rem', md: '1.5rem' }, textTransform: 'none', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}
-            variant='h2'>
-            {jobPost.title}
-          </Typography>
-          <Typography variant='caption'>{`${jobPost.company} • ${jobPost.location}`}</Typography>
-        </Box>
-      </Stack>
-      <Divider />
-      <Box sx={{ display: 'grid', py: 1, gridTemplateColumns: 'repeat(3, 1fr)' }}>
-        <Typography align='center' variant='body2'>
-          <b>Type</b>
-          <br />
-          {getJobpostType(jobPost.job_type)}
-        </Typography>
-        <Typography align='center' variant='body2'>
-          <b>Årstrinn</b>
-          <br />
+    <div>
+      <div className='px-6'>
+        <h1 className='text-xl font-bold whitespace-nowrap text-ellipsis overflow-hidden'>{jobPost.title}</h1>
+        <p className='text-muted-foreground text-sm'>
+          {jobPost.company} • {jobPost.location}
+        </p>
+      </div>
+    </div>
+
+    <div className='border-t py-2 px-6 flex items-center justify-between'>
+      <div className='text-center'>
+        <h1 className='font-bold'>Type</h1>
+        <h1 className='text-sm'>{getJobpostType(jobPost.job_type)}</h1>
+      </div>
+
+      <div className='text-center'>
+        <h1 className='font-bold'>Årstrinn</h1>
+        <h1 className='text-sm'>
           {`${jobPost.class_start === jobPost.class_end ? `${jobPost.class_start}.` : `${jobPost.class_start}. - ${jobPost.class_end}.`}`}
-        </Typography>
-        <Typography align='center' variant='body2'>
-          <b>Frist</b>
-          <br />
-          {jobPost.is_continuously_hiring ? 'Fortløpende' : formatDate(parseISO(jobPost.deadline), { time: false })}
-        </Typography>
-      </Box>
-    </Paper>
-  </ListItemButton>
+        </h1>
+      </div>
+
+      <div className='text-center'>
+        <h1 className='font-bold'>Frist</h1>
+        <h1 className='text-sm'>{jobPost.is_continuously_hiring ? 'Fortløpende' : formatDate(parseISO(jobPost.deadline), { time: false })}</h1>
+      </div>
+    </div>
+  </Link>
 );
 
 export default JobPostListItem;
 
-export const JobPostListItemLoading = ({ sx }: Pick<JobPostListItemProps, 'sx'>) => (
-  <ListItemButton sx={{ p: 0, overflow: 'hidden', borderRadius: (theme) => `${theme.shape.borderRadius}px` }}>
-    <Paper noOverflow noPadding sx={{ width: '100%', ...sx }}>
-      <Skeleton height={141.8} sx={{ borderRadius: getUpperBorderRadius }} variant={'rectangular'} width={'100%'} />
-      <Stack direction='row' gap={1} justifyContent='space-between' sx={{ width: '100%', p: { xs: 1.5, md: 2 } }}>
-        <Box sx={{ minWidth: 0 }}>
-          <Typography sx={{ fontSize: { xs: '1.4rem', md: '1.5rem' } }} variant='h2'>
-            <Skeleton width={150} />
-          </Typography>
-          <Typography variant='caption'>
-            <Skeleton width={100} />
-          </Typography>
-        </Box>
-      </Stack>
-      <Divider />
-      <Box sx={{ display: 'grid', py: 1, gridTemplateColumns: 'repeat(3, 1fr)' }}>
-        {Array.from(Array(3).keys()).map((i) => (
-          <Typography align='center' key={i} variant='body2'>
-            <Skeleton height={15} sx={{ margin: '2px auto' }} width={40} />
-            <Skeleton height={15} sx={{ margin: '2px auto' }} width={55} />
-          </Typography>
-        ))}
-      </Box>
-    </Paper>
-  </ListItemButton>
+export const JobPostListItemLoading = () => (
+  <div className='grid lg:grid-cols-2 gap-4'>
+    {Array.from(Array(6).keys()).map((index) => (
+      <div className='rounded-md bg-card space-y-2 p-4' key={index}>
+        <Skeleton className='h-60 w-full' />
+
+        <div className='space-y-2'>
+          <Skeleton className='h-6 w-3/4' />
+          <Skeleton className='h-4 w-1/2' />
+        </div>
+      </div>
+    ))}
+  </div>
 );

@@ -8,7 +8,7 @@ export enum CheatsheetStudy {
   DATAING = 'Dataing',
   DIGFOR = 'DigFor',
   DIGSEC = 'DigSec',
-  DIGSAM = 'DigSam',
+  DIGTRANS = 'DigTrans',
   INFO = 'Info',
 }
 

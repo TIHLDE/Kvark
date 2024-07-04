@@ -1,75 +1,136 @@
-import { Grid, Stack, Typography } from '@mui/material';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Plus } from 'lucide-react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-
-import { QRCode } from 'types';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import URLS from 'URLS';
+import { z } from 'zod';
 
 import { useCreateQRCode, useQRCodes } from 'hooks/QRCode';
-import { useSnackbar } from 'hooks/Snackbar';
-import { useAnalytics } from 'hooks/Utils';
 
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import Banner from 'components/layout/Banner';
-import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import Page from 'components/navigation/Page';
+import { Button } from 'components/ui/button';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
+import { Input } from 'components/ui/input';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
 
 import QRCodeItem from './components/QRCodeItem';
 
-const QRCodes = () => {
-  const { event } = useAnalytics();
-  const { data, error, isFetching } = useQRCodes();
-  const createQRCode = useCreateQRCode();
-  const showSnackbar = useSnackbar();
-  const { register, formState, handleSubmit, reset } = useForm<QRCode>();
+const formSchema = z.object({
+  name: z.string().min(1, { message: 'Navn må fylles ut' }),
+  content: z.string().min(1, { message: 'Innhold må fylles ut' }).url({ message: 'Ugyldig URL' }),
+});
 
-  const create = (data: QRCode) => {
-    createQRCode.mutate(data, {
+const QRCodes = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const navigate = useNavigate();
+
+  const { data, error } = useQRCodes();
+  const createQRCode = useCreateQRCode();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: '',
+      content: '',
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    createQRCode.mutate(values, {
       onSuccess: () => {
-        showSnackbar('QR koden ble opprettet', 'success');
-        reset();
-        event('create', 'qr-code', `Created ${data.name}`);
+        toast.success('QR koden ble opprettet');
+        form.reset();
+        navigate(URLS.qrCodes);
+        setIsOpen(false);
       },
       onError: (e) => {
-        showSnackbar(e.detail, 'error');
+        toast.error(e.detail);
       },
     });
   };
 
-  return (
-    <Page banner={<Banner text='Opprett, se og slett dine QR koder' title='QR-koder' />} options={{ title: 'QR koder' }}>
-      <Stack direction={{ xs: 'column-reverse', lg: 'row' }} gap={1} sx={{ mt: { xs: 1, lg: 2 } }}>
-        <Grid columns={{ xs: 1, sm: 2 }} container gap={2} sx={{ mb: 2, justifyContent: { xs: 'center', md: 'start' } }}>
-          {error && <Paper>{error.detail}</Paper>}
-          {data !== undefined && (
-            <>
-              {!data.length && <NotFoundIndicator header='Fant ingen QR koder' />}
-              {data.map((qrCode) => (
-                <QRCodeItem key={qrCode.id} qrCode={qrCode} />
-              ))}
-            </>
-          )}
-        </Grid>
+  const CreateButton = (
+    <Button>
+      <Plus className='w-5 h-5 stroke-[1.5px] mr-2' />
+      Opprett ny kode
+    </Button>
+  );
 
-        <Paper sx={{ alignSelf: 'start', mb: { xs: 1 } }}>
-          <form onSubmit={handleSubmit(create)}>
-            <Typography variant='h2'>Ny QR kode</Typography>
-            <TextField disabled={isFetching} formState={formState} label='Navn' {...register('name', { required: 'Navn må fylles ut' })} required />
-            <TextField
-              disabled={isFetching}
-              formState={formState}
-              label='Innhold'
-              {...register('content', {
-                required: 'Du må oppgi tekst eller en link',
-              })}
-              required
-            />
-            <SubmitButton disabled={isFetching} formState={formState}>
-              Opprett
-            </SubmitButton>
-          </form>
-        </Paper>
-      </Stack>
+  return (
+    <Page className='space-y-12'>
+      <div className='space-y-4 md:space-y-0 w-full md:flex md:justify-between md:items-center'>
+        <div className='space-y-2'>
+          <h1 className='text-3xl md:text-5xl font-bold'>QR koder</h1>
+          <p className='text-muted-foreground'>Opprett og administrer QR koder</p>
+        </div>
+
+        <ResponsiveDialog
+          className='max-w-lg'
+          description='Opprett en ny QR kode'
+          onOpenChange={setIsOpen}
+          open={isOpen}
+          title='Ny QR kode'
+          trigger={CreateButton}>
+          <Form {...form}>
+            <form className='space-y-6 px-2' onSubmit={form.handleSubmit(onSubmit)}>
+              <FormField
+                control={form.control}
+                name='name'
+                render={({ field }) => (
+                  <FormItem className='w-full'>
+                    <FormLabel>
+                      Navn <span className='text-red-300'>*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder='Skriv her...' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='content'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Innhold <span className='text-red-300'>*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder='Skriv her...' {...field} />
+                    </FormControl>
+                    <FormDescription>En link eller tekst som QR koden skal lede til</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button className='w-full' disabled={createQRCode.isLoading} type='submit'>
+                {createQRCode.isLoading ? 'Oppretter...' : 'Opprett'}
+              </Button>
+            </form>
+          </Form>
+        </ResponsiveDialog>
+      </div>
+
+      <div className='w-full'>
+        {error && <h1 className='text-center'>{error.detail}</h1>}
+        {data !== undefined && (
+          <>
+            {!data.length && <NotFoundIndicator header='Fant ingen QR koder' />}
+            <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+              {data.map((qrCode, index) => (
+                <QRCodeItem key={index} qrCode={qrCode} />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
     </Page>
   );
 };

@@ -1,6 +1,4 @@
-import SendIcon from '@mui/icons-material/SendRounded';
-import { Typography } from '@mui/material';
-import { makeStyles } from 'makeStyles';
+import { Mail } from 'lucide-react';
 import { useRef } from 'react';
 import URLS from 'URLS';
 import { getUserStudyLong } from 'utils';
@@ -9,50 +7,11 @@ import { UserStudy } from 'types/Enums';
 
 import CompaniesForm from 'pages/Companies/components/CompaniesForm';
 
-import Banner, { BannerButton } from 'components/layout/Banner';
-import Container from 'components/layout/Container';
 import InfoCard from 'components/layout/InfoCard';
 import Page from 'components/navigation/Page';
-
-import Image from 'assets/img/glad.jpg';
-
-const useStyles = makeStyles()((theme) => ({
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    margin: '0 auto',
-    gridGap: theme.spacing(2),
-    justifyContent: 'center',
-    [theme.breakpoints.down('md')]: {
-      gridGap: theme.spacing(1),
-      gridTemplateColumns: '1fr',
-    },
-  },
-  gridWide: {
-    [theme.breakpoints.up('md')]: {
-      gridColumn: 'span 2',
-    },
-  },
-  section: {
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(4),
-  },
-  imageClass: {
-    width: 400,
-    maxWidth: 'none',
-    maxHeight: 'none',
-    height: 'auto',
-    [theme.breakpoints.down('lg')]: {
-      width: '100%',
-    },
-  },
-  smoke: {
-    backgroundColor: theme.palette.background.smoke,
-  },
-}));
+import { Button } from 'components/ui/button';
 
 const Companies = () => {
-  const { classes } = useStyles();
   const formRef = useRef<HTMLDivElement>(null);
 
   const scrollToForm = () => {
@@ -78,53 +37,49 @@ Vi kan også tilrettelegge for speed intervjuer dersom dette er ønskelig.`,
   };
 
   return (
-    <Page
-      banner={
-        <Banner text='**Alle arrangementer kan gjennomføres digitalt**' title='For Bedrifter'>
-          <BannerButton onClick={scrollToForm} startIcon={<SendIcon />} variant='outlined'>
-            Send oss en melding
-          </BannerButton>
-        </Banner>
-      }
-      maxWidth={false}
-      options={{ title: 'For bedrifter' }}>
-      <Container className={classes.section}>
-        <Typography align='center' gutterBottom variant='h2'>
-          Vi tilbyr
-        </Typography>
-        <div className={classes.grid}>
-          <InfoCard header='Bedriftspresentasjon' justifyText text={text.companies} />
-          <InfoCard header='Kurs / Workshop' justifyText text={text.course} />
-          <InfoCard header='Bedriftsbesøk' justifyText text={text.companyTrips} />
-          <InfoCard header='Annonse' justifyText text={text.ads} />
-          <InfoCard header='Insta-takeover' justifyText text={text.instatakeover} />
-          <InfoCard header='Bedriftsekskursjon' justifyText text={text.trip} />
+    <Page className='space-y-12'>
+      <div className='space-y-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between'>
+        <div className='space-y-2'>
+          <h1 className='text-3xl lg:text-5xl font-bold'>For bedrifter</h1>
+          <p className='text-muted-foreground'>Alle arrangementer kan gjennomføres digitalt</p>
         </div>
-      </Container>
-      <div className={classes.smoke}>
-        <Container className={classes.section}>
-          <Typography align='center' gutterBottom variant='h2'>
-            Studier
-          </Typography>
-          <div className={classes.grid}>
-            <InfoCard header={getUserStudyLong(UserStudy.DATAING)} justifyText text={text.dataing} />
-            <InfoCard header={getUserStudyLong(UserStudy.DIGSEC)} justifyText text={text.digsec} />
-            <InfoCard header={getUserStudyLong(UserStudy.DIGFOR)} justifyText text={text.digfor} />
-            <InfoCard header={getUserStudyLong(UserStudy.DIGSAM)} justifyText text={text.digsam} />
-            <InfoCard className={classes.gridWide} header={getUserStudyLong(UserStudy.INFO)} justifyText text={text.info} />
-          </div>
-        </Container>
+
+        <Button onClick={scrollToForm}>
+          <Mail className='mr-2 h-5 w-5 stroke-[1.5px]' />
+          Send oss en melding
+        </Button>
       </div>
-      <Container className={classes.section} ref={formRef}>
-        <Typography align='center' gutterBottom variant='h2'>
-          Meld interesse
-        </Typography>
-        <CompaniesForm />
-      </Container>
-      <div className={classes.smoke}>
-        <Container className={classes.section}>
-          <InfoCard header='Om TIHLDE' imageClass={classes.imageClass} src={Image} text={text.aboutUs} />
-        </Container>
+
+      <div className='space-y-8'>
+        <div className='space-y-2'>
+          <h1 className='text-2xl'>Vi tilbyr</h1>
+          <div className='grid lg:grid-cols-2 gap-4'>
+            <InfoCard header='Bedriftspresentasjon' text={text.companies} />
+            <InfoCard header='Kurs / Workshop' text={text.course} />
+            <InfoCard header='Bedriftsbesøk' text={text.companyTrips} />
+            <InfoCard header='Annonse' text={text.ads} />
+            <InfoCard header='Insta-takeover' text={text.instatakeover} />
+            <InfoCard header='Bedriftsekskursjon' text={text.trip} />
+          </div>
+        </div>
+
+        <div className='space-y-2'>
+          <h1 className='text-2xl'>Studier</h1>
+          <div className='grid lg:grid-cols-2 gap-4'>
+            <InfoCard header={getUserStudyLong(UserStudy.DATAING)} text={text.dataing} />
+            <InfoCard header={getUserStudyLong(UserStudy.DIGSEC)} text={text.digsec} />
+            <InfoCard header={getUserStudyLong(UserStudy.DIGFOR)} text={text.digfor} />
+            <InfoCard header={getUserStudyLong(UserStudy.DIGSAM)} text={text.digsam} />
+            <InfoCard header={getUserStudyLong(UserStudy.INFO)} text={text.info} />
+          </div>
+        </div>
+
+        <div className='space-y-2' ref={formRef}>
+          <h1 className='text-2xl'>Meld interesse</h1>
+          <CompaniesForm />
+        </div>
+
+        <InfoCard header='Om TIHLDE' text={text.aboutUs} />
       </div>
     </Page>
   );

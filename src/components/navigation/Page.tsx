@@ -1,25 +1,17 @@
-import { ReactElement, ReactNode, useEffect } from 'react';
+import { cn } from 'lib/utils';
+import { useEffect } from 'react';
 
-import Container, { ContainerProps } from 'components/layout/Container';
-import { SetNavigationOptions, useSetNavigationOptions } from 'components/navigation/Navigation';
-export type PageProps = {
-  children?: ReactNode;
-  banner?: ReactElement;
-  maxWidth?: ContainerProps['maxWidth'];
-  options?: SetNavigationOptions;
+type PageProps = {
+  children: React.ReactNode;
+  className?: string;
 };
 
-const Page = ({ options, maxWidth = 'xl', banner, children }: PageProps) => {
-  useSetNavigationOptions(options);
+const Page = ({ children, className }: PageProps) => {
   useEffect(() => {
-    window.scrollTo(0, 0);
+    scrollTo(0, 0);
   }, []);
-  return (
-    <>
-      {banner}
-      {maxWidth === false ? children : <Container maxWidth={maxWidth}>{children || <></>}</Container>}
-    </>
-  );
+
+  return <div className={cn('w-full py-20 md:py-28 px-4 md:px-12', className)}>{children}</div>;
 };
 
 export default Page;

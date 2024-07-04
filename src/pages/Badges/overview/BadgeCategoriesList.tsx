@@ -1,13 +1,11 @@
-import { List, Stack } from '@mui/material';
 import { useMemo } from 'react';
 
 import { useBadgeCategories } from 'hooks/Badge';
 
 import BadgeCategoryItem from 'pages/Badges/components/BadgeCategoryItem';
 
-import Pagination from 'components/layout/Pagination';
-import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import { PaginateButton } from 'components/ui/button';
 
 export const BadgeCategoriesList = () => {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useBadgeCategories();
@@ -15,17 +13,16 @@ export const BadgeCategoriesList = () => {
 
   return (
     <>
-      {!isLoading && !badgeCategories && <NotFoundIndicator header='Fant ingen badge kategorier' />}
-      {error && <Paper>{error.detail}</Paper>}
+      {!isLoading && !badgeCategories.length && <NotFoundIndicator header='Fant ingen badge kategorier' />}
+      {error && <h1 className='text-center mt-4'>{error.detail}</h1>}
       {data !== undefined && (
-        <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-          <Stack component={List} gap={1}>
-            {badgeCategories.map((badgeCategory) => (
-              <BadgeCategoryItem badgeCategory={badgeCategory} key={badgeCategory.id} />
-            ))}
-          </Stack>
-        </Pagination>
+        <div className='space-y-2 mt-4'>
+          {badgeCategories.map((badgeCategory) => (
+            <BadgeCategoryItem badgeCategory={badgeCategory} key={badgeCategory.id} />
+          ))}
+        </div>
       )}
+      {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
     </>
   );
 };

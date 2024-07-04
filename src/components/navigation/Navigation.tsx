@@ -1,36 +1,14 @@
-import { Alert, Snackbar as MaterialSnackbar, styled, Theme, useMediaQuery, useTheme } from '@mui/material';
 import { SHOW_NEW_STUDENT_INFO } from 'constant';
-import constate from 'constate';
-import { ReactNode, useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import URLS from 'URLS';
 
-import { WarningType } from 'types/Enums';
-
+import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
 import { useIsAuthenticated } from 'hooks/User';
-import { useWarnings } from 'hooks/Warnings';
 
-import Linkify from 'components/miscellaneous/Linkify';
 import BottomBar from 'components/navigation/BottomBar';
 import Footer from 'components/navigation/Footer';
 import Topbar from 'components/navigation/Topbar';
-
-const Snackbar = styled(MaterialSnackbar)(({ theme }) => ({
-  maxWidth: `calc(100% - ${theme.spacing(2)})`,
-  width: theme.breakpoints.values.lg,
-  top: '70px !important',
-  [theme.breakpoints.down('lg')]: {
-    position: 'absolute',
-  },
-}));
-
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'gutterTop' && prop !== 'gutterBottom' })<
-  Pick<NavigationOptions, 'gutterTop' | 'gutterBottom'>
->(({ gutterTop, gutterBottom }) => ({
-  minHeight: '101vh',
-  ...(gutterTop && { paddingTop: 60 }),
-  ...(gutterBottom && { paddingBottom: 80 }),
-}));
 
 export type NavigationOptions = {
   noFooter: boolean;
@@ -43,54 +21,6 @@ export type NavigationOptions = {
 };
 
 export type SetNavigationOptions = Partial<NavigationOptions>;
-
-const DEFAULT_OPTIONS: NavigationOptions = {
-  darkColor: 'white',
-  lightColor: 'white',
-  noFooter: false,
-  filledTopbar: false,
-  title: 'TIHLDE',
-  gutterBottom: false,
-  gutterTop: false,
-};
-
-const useNavigationContext = () => {
-  const [navigationOptions, setNavigationOptions] = useState<NavigationOptions>(DEFAULT_OPTIONS);
-  const options = useMemo(() => navigationOptions, [navigationOptions]);
-  const setOptions = useCallback(
-    (options?: SetNavigationOptions) =>
-      setNavigationOptions({
-        darkColor: options?.darkColor || DEFAULT_OPTIONS.darkColor,
-        lightColor: options?.lightColor || DEFAULT_OPTIONS.lightColor,
-        filledTopbar: options?.filledTopbar || DEFAULT_OPTIONS.filledTopbar,
-        gutterBottom: options?.gutterBottom || DEFAULT_OPTIONS.gutterBottom,
-        gutterTop: options?.gutterTop || DEFAULT_OPTIONS.gutterTop,
-        noFooter: options?.noFooter || DEFAULT_OPTIONS.noFooter,
-        title: options?.title ? `${options?.title} · TIHLDE` : DEFAULT_OPTIONS.title,
-      }),
-    [],
-  );
-  const reset = useCallback(() => setNavigationOptions(DEFAULT_OPTIONS), []);
-  return { setOptions, reset, options };
-};
-
-const [NavigationProvider, useSetOptions, useGetNavigationOptions, useResetOptions] = constate(
-  useNavigationContext,
-  (value) => value.setOptions,
-  (value) => value.options,
-  (value) => value.reset,
-);
-
-export const useSetNavigationOptions = (options?: SetNavigationOptions) => {
-  const setOptions = useSetOptions();
-  const resetOptions = useResetOptions();
-  useLayoutEffect(() => {
-    setOptions(options);
-    return () => {
-      resetOptions();
-    };
-  }, [options]);
-};
 
 export type NavigationProps = {
   children?: ReactNode;
@@ -108,27 +38,24 @@ export type NavigationItem =
         external?: boolean;
         text: string;
         to: string;
+        title: string;
       }[];
       text: string;
       type: 'dropdown';
     };
 
 const NavigationContent = ({ children }: NavigationProps) => {
-  const { data: warnings = [], closeWarning } = useWarnings();
   const isAuthenticated = useIsAuthenticated();
-  const { title, darkColor, lightColor, filledTopbar, noFooter, gutterBottom, gutterTop } = useGetNavigationOptions();
-  const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
-  const theme = useTheme();
+  const isMediumScreen = useMediaQuery(MEDIUM_SCREEN);
 
   const items = useMemo<Array<NavigationItem>>(
     () => [
       {
         items: [
-          { text: 'Wiki', to: URLS.wiki },
-          { text: 'TÖDDEL', to: URLS.toddel },
-          { text: 'Ny student', to: URLS.newStudent },
-          { text: 'Gruppeoversikt', to: URLS.groups.index },
-          { text: 'Fondet', to: URLS.fondet, external: true },
+          { title: 'Wiki', text: 'Her finner du all tilgjengelig informasjon om TIHLDE', to: URLS.wiki },
+          { title: 'TÖDDEL', text: 'TIHLDE sitt eget studentblad', to: URLS.toddel },
+          { title: 'Gruppeoversikt', text: 'Få oversikt over alle verv og grupper', to: URLS.groups.index },
+          { title: 'Fondet', text: 'Se hvordan det ligger an med fondet vårt', to: URLS.fondet, external: true },
         ],
         text: 'Generelt',
         type: 'dropdown',
@@ -140,12 +67,12 @@ const NavigationContent = ({ children }: NavigationProps) => {
       isAuthenticated
         ? {
             items: [
-              { text: 'Kokebok', to: URLS.cheatsheet },
-              { text: 'Link-forkorter', to: URLS.shortLinks },
-              { text: 'QR koder', to: URLS.qrCodes },
-              { text: 'Badges ledertavler', to: URLS.badges.index },
-              { text: 'Galleri', to: URLS.gallery },
-              { text: 'Kontres', to: URLS.kontRes, external: true },
+              { title: 'Kokebok', text: 'Få hjelp til dine øvinger', to: URLS.cheatsheet },
+              { title: 'Link-forkorter', text: 'Forkort linker til å peke mot TIHLDE', to: URLS.shortLinks },
+              { title: 'QR koder', text: 'Generer dine egne QR koder', to: URLS.qrCodes },
+              { title: 'Badges ledertavler', text: 'Se hvem som har flest badges', to: URLS.badges.index },
+              { title: 'Galleri', text: 'Se alle bilder fra TIHLDE sine arrangementer', to: URLS.gallery },
+              { title: 'Kontres', text: 'Reserver kontoret eller tilhørende utstyr', to: URLS.kontRes, external: true },
             ],
             text: 'For medlemmer',
             type: 'dropdown',
@@ -155,35 +82,21 @@ const NavigationContent = ({ children }: NavigationProps) => {
     [isAuthenticated],
   );
 
-  const warning = useMemo(() => (warnings.length ? warnings[warnings.length - 1] : undefined), [warnings]);
-
   return (
     <>
+      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      {/* @ts-ignore */}
       <Helmet>
-        <title>{title}</title>
-        <meta content={theme.palette.colors.gradient.main.top} name='theme-color' />
+        <title>TIHLDE</title>
       </Helmet>
-      <Topbar darkColor={darkColor} filledTopbar={filledTopbar} items={items} lightColor={lightColor} />
-      {warning && (
-        <Snackbar anchorOrigin={{ horizontal: 'center', vertical: 'top' }} key={warning.id} open>
-          <Alert elevation={6} onClose={() => closeWarning(warning.id)} severity={warning.type === WarningType.MESSAGE ? 'info' : 'warning'} variant='filled'>
-            <Linkify>{warning.text}</Linkify>
-          </Alert>
-        </Snackbar>
-      )}
-      <Main gutterBottom={gutterBottom} gutterTop={gutterTop}>
-        {children}
-      </Main>
-      {!noFooter && <Footer />}
-      {lgDown && <BottomBar items={items} />}
+      <Topbar items={items} />
+      <main className='bg-background text-black dark:text-white min-h-[101vh]'>{children}</main>
+      <Footer />
+      {!isMediumScreen && <BottomBar items={items} />}
     </>
   );
 };
 
-const Navigation = ({ children }: NavigationProps) => (
-  <NavigationProvider>
-    <NavigationContent>{children}</NavigationContent>
-  </NavigationProvider>
-);
+const Navigation = ({ children }: NavigationProps) => <NavigationContent>{children}</NavigationContent>;
 
 export default Navigation;

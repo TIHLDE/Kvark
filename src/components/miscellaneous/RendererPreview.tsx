@@ -1,10 +1,12 @@
-import CloseIcon from '@mui/icons-material/CloseRounded';
-import { Button, ButtonProps, Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material';
 import { FunctionComponent, useState } from 'react';
 
-export type RendererPreviewProps<Type> = ButtonProps & {
+import { Button } from 'components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 'components/ui/dialog';
+import { ScrollArea } from 'components/ui/scroll-area';
+
+export type RendererPreviewProps<Type> = {
   /** Function to be runned to get the data which can be passed to the renderer-component */
-  getContent: () => Type;
+  getContent: () => Type | null;
   /** Component which renders a preview of the given content */
   renderer: FunctionComponent<{ preview: boolean; data: Type }>;
 };
@@ -13,39 +15,40 @@ export type RendererPreviewProps<Type> = ButtonProps & {
  * Preview content. Generic which means that is supports all types as long as it has a component
  * which can be passed the data to preview through the `data`-prop and a `preview`-prop set to `true`.
  */
-const RendererPreview = <Type extends unknown>({ getContent, renderer: Renderer, ...props }: RendererPreviewProps<Type>) => {
+const RendererPreview = <Type extends unknown>({ getContent, renderer: Renderer }: RendererPreviewProps<Type>) => {
   const [content, setContent] = useState<Type | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClickOpen = () => {
+    if (isOpen) {
+      return setIsOpen(false);
+    }
+
     setContent(getContent());
     setIsOpen(true);
   };
 
   return (
-    <>
-      <Button variant='outlined' {...props} onClick={handleClickOpen}>
-        Forhåndsvis
-      </Button>
-      {isOpen && content && (
-        <Dialog fullWidth maxWidth='lg' onClose={() => setIsOpen(false)} open={isOpen}>
-          <DialogTitle sx={{ p: 2 }}>
-            <Typography variant='h3'>Forhåndsvisning</Typography>
-            <IconButton
-              aria-label='Lukk forhåndsvisning'
-              color='inherit'
-              edge='start'
-              onClick={() => setIsOpen(false)}
-              sx={{ position: 'absolute', right: ({ spacing }) => spacing(1), top: ({ spacing }) => spacing(1), color: ({ palette }) => palette.text.primary }}>
-              <CloseIcon />
-            </IconButton>
-          </DialogTitle>
-          <DialogContent sx={{ p: 2, background: ({ palette }) => palette.background.default }}>
+    <Dialog onOpenChange={handleClickOpen} open={isOpen}>
+      <DialogTrigger asChild>
+        <Button className='block w-full md:w-40' type='button' variant='secondary'>
+          Forhåndsvis
+        </Button>
+      </DialogTrigger>
+      <DialogContent className='max-w-5xl w-full h-[75vh]'>
+        <DialogHeader>
+          <DialogTitle>Forhåndsvisning</DialogTitle>
+        </DialogHeader>
+
+        {!content && <h1 className='text-center'>Ingen innhold å forhåndsvise</h1>}
+
+        {content && (
+          <ScrollArea className='h-[60vh] w-full pr-4'>
             <Renderer data={content} preview />
-          </DialogContent>
-        </Dialog>
-      )}
-    </>
+          </ScrollArea>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 };
 

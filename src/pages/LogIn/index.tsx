@@ -1,70 +1,41 @@
-import Button from '@mui/material/Button';
-import LinearProgress from '@mui/material/LinearProgress';
-import Typography from '@mui/material/Typography';
-import { makeStyles } from 'makeStyles';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import URLS from 'URLS';
+import { z } from 'zod';
 
 import { useRedirectUrl, useSetRedirectUrl } from 'hooks/Misc';
 import { useLogin } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import Paper from 'components/layout/Paper';
-import { SecondaryTopBox } from 'components/layout/TopBox';
-import TihldeLogo from 'components/miscellaneous/TihldeLogo';
-import Page from 'components/navigation/Page';
+import { Button, buttonVariants } from 'components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
+import { Input } from 'components/ui/input';
 
-const useStyles = makeStyles()((theme) => ({
-  paper: {
-    maxWidth: theme.breakpoints.values.sm,
-    margin: 'auto',
-    position: 'relative',
-    overflow: 'hidden',
-    left: 0,
-    right: 0,
-    top: -60,
-  },
-  logo: {
-    height: 30,
-    width: 'auto',
-    marginBottom: theme.spacing(1),
-  },
-  progress: {
-    position: 'absolute',
-    top: -1,
-    left: 0,
-    right: 0,
-  },
-  buttons: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gridGap: theme.spacing(1),
-  },
-  button: {
-    marginTop: theme.spacing(2),
-  },
-}));
-
-type LoginData = {
-  username: string;
-  password: string;
-};
+const formSchema = z.object({
+  username: z.string().min(1, { message: 'Brukernavn er påkrevd' }),
+  password: z.string().min(1, { message: 'Passorde er påkrevd' }),
+});
 
 const LogIn = () => {
-  const { classes } = useStyles();
   const navigate = useNavigate();
   const { event } = useAnalytics();
   const logIn = useLogin();
   const setLogInRedirectURL = useSetRedirectUrl();
   const redirectURL = useRedirectUrl();
-  const { register, formState, handleSubmit, setError } = useForm<LoginData>();
 
-  const onLogin = async (data: LoginData) => {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: '',
+      password: '',
+    },
+  });
+
+  const onLogin = async (values: z.infer<typeof formSchema>) => {
     logIn.mutate(
-      { username: data.username, password: data.password },
+      { username: values.username, password: values.password },
       {
         onSuccess: () => {
           event('login', 'auth', `Logged in`);
@@ -72,51 +43,72 @@ const LogIn = () => {
           navigate(redirectURL || URLS.landing);
         },
         onError: (e) => {
-          setError('password', { message: e.detail || 'Noe gikk galt' });
+          form.setError('username', { message: e.detail || 'Noe gikk galt' });
         },
       },
     );
   };
 
   return (
-    <Page banner={<SecondaryTopBox />} options={{ title: 'Logg inn' }}>
-      <Paper className={classes.paper}>
-        {logIn.isLoading && <LinearProgress className={classes.progress} />}
-        <TihldeLogo className={classes.logo} darkColor='white' lightColor='blue' size='large' />
-        <Typography variant='h3'>Logg inn</Typography>
-        <form onSubmit={handleSubmit(onLogin)}>
-          <TextField
-            disabled={logIn.isLoading}
-            formState={formState}
-            label='Brukernavn'
-            {...register('username', {
-              required: 'Feltet er påkrevd',
-              validate: (value: string) => (value.includes('@') ? 'Bruk Feide-brukernavn, ikke epost' : undefined),
-            })}
-            required
-          />
-          <TextField
-            disabled={logIn.isLoading}
-            formState={formState}
-            label='Passord'
-            {...register('password', { required: 'Feltet er påkrevd' })}
-            required
-            type='password'
-          />
-          <SubmitButton className={classes.button} disabled={logIn.isLoading} formState={formState}>
-            Logg inn
-          </SubmitButton>
-          <div className={classes.buttons}>
-            <Button className={classes.button} component={Link} disabled={logIn.isLoading} fullWidth to={URLS.forgotPassword}>
+    <div className='px-2 md:px-8 mt-32 flex items-center justify-center'>
+      <Card className='max-w-lg w-full'>
+        <CardHeader>
+          <CardTitle>Logg inn</CardTitle>
+          <CardDescription>Logg inn med ditt TIHLDE brukernavn og passord</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form className='space-y-6' onSubmit={form.handleSubmit(onLogin)}>
+              <FormField
+                control={form.control}
+                name='username'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Brukernavn <span className='text-red-300'>*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder='Skriv her...' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='password'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Passord <span className='text-red-300'>*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder='Skriv her...' type='password' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button className='w-full' disabled={logIn.isLoading} size='lg' type='submit'>
+                {logIn.isLoading ? 'Logger inn...' : 'Logg inn'}
+              </Button>
+            </form>
+          </Form>
+
+          <div className='flex items-center justify-center space-x-12 mt-6'>
+            <Link className={buttonVariants({ variant: 'link' })} to={URLS.forgotPassword}>
               Glemt passord?
-            </Button>
-            <Button className={classes.button} component={Link} disabled={logIn.isLoading} fullWidth to={URLS.signup}>
+            </Link>
+
+            <Link className={buttonVariants({ variant: 'link' })} to={URLS.signup}>
               Opprett bruker
-            </Button>
+            </Link>
           </div>
-        </form>
-      </Paper>
-    </Page>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

@@ -8,6 +8,7 @@ import {
   Category,
   Cheatsheet,
   CompaniesEmail,
+  CreateQRCode,
   Event,
   EventFavorite,
   EventList,
@@ -250,7 +251,7 @@ export default {
 
   // QR codes
   getQRCodes: (filters?: any) => IFetch<Array<QRCode>>({ method: 'GET', url: `${QR_CODE_ENDPOINT}/`, data: filters || {} }),
-  createQRCode: (item: QRCode) => IFetch<QRCode>({ method: 'POST', url: `${QR_CODE_ENDPOINT}/`, data: item }),
+  createQRCode: (item: CreateQRCode) => IFetch<QRCode>({ method: 'POST', url: `${QR_CODE_ENDPOINT}/`, data: item }),
   deleteQRCode: (id: number) => IFetch<RequestResponse>({ method: 'DELETE', url: `${QR_CODE_ENDPOINT}/${String(id)}/` }),
 
   // Gallery

@@ -1,4 +1,3 @@
-import { Stack, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -9,9 +8,8 @@ import { useFormById } from 'hooks/Form';
 import Http404 from 'pages/Http404';
 
 import FormAdminComponent from 'components/forms/FormAdmin';
-import Paper from 'components/layout/Paper';
-import { PrimaryTopBox } from 'components/layout/TopBox';
 import Page from 'components/navigation/Page';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
 
 const FormPage = () => {
   const { id } = useParams<'id'>();
@@ -27,32 +25,14 @@ const FormPage = () => {
   }
 
   return (
-    <Page banner={<PrimaryTopBox />} options={{ title: `${form?.title || 'Laster spørreskjema...'} - Spørreskjema` }}>
-      <Paper
-        sx={{
-          maxWidth: (theme) => theme.breakpoints.values.md,
-          margin: 'auto',
-          position: 'relative',
-          left: 0,
-          right: 0,
-          top: -60,
-        }}>
-        <Stack direction='column' gap={2}>
-          <Typography textAlign='center' variant='h2'>
-            Administrer skjema
-          </Typography>
-          <Typography fontWeight={600} textAlign='center'>
-            {title}
-          </Typography>
-          {form && id ? (
-            <FormAdminComponent formId={id} />
-          ) : (
-            <Typography align='center' variant='h2'>
-              Laster spørreskjema...
-            </Typography>
-          )}
-        </Stack>
-      </Paper>
+    <Page className='max-w-5xl mx-auto'>
+      <Card>
+        <CardHeader>
+          <CardTitle>Administrer skjema</CardTitle>
+          <CardDescription>{title}</CardDescription>
+        </CardHeader>
+        <CardContent>{form && id ? <FormAdminComponent formId={id} /> : <h1 className='text-center'>Laster spørreskjema...</h1>}</CardContent>
+      </Card>
     </Page>
   );
 };

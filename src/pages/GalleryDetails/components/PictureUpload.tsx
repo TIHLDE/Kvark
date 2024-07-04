@@ -1,25 +1,24 @@
-import { UploadRounded } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { UploadCloud, X } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 import { Gallery } from 'types';
 
 import { useUploadPictures } from 'hooks/Gallery';
-import { useSnackbar } from 'hooks/Snackbar';
 
-import FileUploader from 'components/inputs/FileUploader';
-import { BannerButton } from 'components/layout/Banner';
-import Dialog from 'components/layout/Dialog';
+import { FileMultipleUpload } from 'components/inputs/Upload';
+import { Button } from 'components/ui/button';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
+import { ScrollArea } from 'components/ui/scroll-area';
 
 export type PictureUploadProps = {
   id: Gallery['id'];
 };
 
 const PictureUpload = ({ id }: PictureUploadProps) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   const upload = useUploadPictures(id);
   const [files, setFiles] = useState<File[]>([]);
-  const showSnackbar = useSnackbar();
 
   const submit = () => {
     if (upload.isLoading || !files) {
@@ -29,27 +28,52 @@ const PictureUpload = ({ id }: PictureUploadProps) => {
       { files },
       {
         onSuccess: (data) => {
-          showSnackbar(data.detail, 'success');
+          toast.success(data.detail);
           setOpen(false);
           setFiles([]);
         },
-        onError: (error) => showSnackbar(error.detail, 'error'),
+        onError: (e) => {
+          toast.error(e.detail);
+        },
       },
     );
   };
 
+  const PictureView = () => (
+    <div className='grid grid-cols-2 md:grid-cols-3 gap-4'>
+      {files.map((file, index) => (
+        <div className='relative' key={index}>
+          <Button className='absolute top-2 right-2' onClick={() => setFiles(files.filter((_, i) => i !== index))} size='icon' variant='ghost'>
+            <X className='w-5 h-5 stroke-[1.5px]' />
+          </Button>
+          <img alt={file.name} className='h-32 w-full object-cover rounded-md' src={URL.createObjectURL(file)} />
+        </div>
+      ))}
+    </div>
+  );
+
+  const OpenButton = (
+    <Button variant='outline'>
+      <UploadCloud className='mr-2 w-5 h-5' />
+      Last opp bilder
+    </Button>
+  );
+
   return (
-    <>
-      <BannerButton endIcon={<UploadRounded />} onClick={() => setOpen(true)} variant='outlined'>
-        Legg til bilder
-      </BannerButton>
-      <Dialog onClose={() => setOpen(false)} open={open} titleText={'Last opp bilde'}>
-        <FileUploader files={files} fileTypes={{ 'image/jpeg': ['.jpeg'], 'image/png': ['.png'] }} setFiles={setFiles} title='Last opp eller dra bilder hit.' />
-        <Button disabled={files.length < 1 || upload.isLoading} fullWidth onClick={submit} sx={{ mt: 2 }} variant='contained'>
-          Last opp bilder
-        </Button>
-      </Dialog>
-    </>
+    <ResponsiveDialog description='Last opp bilder til galleriet.' onOpenChange={setOpen} open={open} title='Last opp bilder' trigger={OpenButton}>
+      <ScrollArea className='h-[60vh]'>
+        <div className='space-y-4'>
+          <FileMultipleUpload fileTypes={{ 'image/jpeg': ['.jpeg'], 'image/png': ['.png'] }} label='Last opp eller dra bilder hit' setFiles={setFiles} />
+
+          <PictureView />
+
+          <Button className='w-full' disabled={files.length < 1 || upload.isLoading} onClick={submit}>
+            {upload.isLoading ? 'Laster opp...' : 'Last opp bilder'}
+          </Button>
+        </div>
+      </ScrollArea>
+    </ResponsiveDialog>
   );
 };
+
 export default PictureUpload;

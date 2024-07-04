@@ -30,12 +30,14 @@ function JobPostDetails() {
   }
 
   return (
-    <Page options={{ title: data ? data.title : 'Laster annonse...', gutterTop: true, filledTopbar: true, lightColor: 'blue' }}>
+    <Page>
       {isLoading ? (
         <JobPostRendererLoading />
       ) : (
         data !== undefined && (
           <>
+            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+            {/* @ts-ignore */}
             <Helmet>
               <meta content={data.title} property='og:title' />
               <meta content='website' property='og:type' />
