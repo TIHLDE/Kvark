@@ -12,23 +12,31 @@
 
 ## Neste versjon
 
+- ✨ **Endringslogg**. La til en ny side for å se endringsloggene til Kvark og Lepton
+
 ## Versjon 2024.04.07
+
 - 🎨 **Design**. MUI er fjernet fra prosjektet, og TailwindCSS og Shadcn/ui er implementert.
 
 ## Versjon 2024.01.05
+
 - ⚡**Arrangement**. Et arrangement vil nå være markert og sortert etter kategori i tillegg til ansvarlig gruppe.
 - ⚡ **Påmelding**. Bruker kan ikke lenger se meld deg av knappen for et arrangement hvis bruker har betalt.
 
 ## Versjon 2024.16.04
+
 - ✨ **Brukerbio**. Bruker kan nå lage en bio.
 
 ## Versjon 2023.11.04
+
 - ✨ **Shortcuts**. La til meny med shortcuts.
 
 ## Versjon 2023.10.04
+
 - 🎨 **Footer**. La til NITO logo i footer under "samarbeid"
 
 ## Versjon 2023.02.04
+
 - 🎨 **Tema**. Endret til shadcn komponenter for å endre tema.
 - 🦟 **Markdown**. Fikset markdown bug.
 - 🎨 **Bildeopplastning**. Endret komponent for å laste opp bilder.
@@ -38,15 +46,19 @@
 - 🎨 **Nyhet view**. Endret design til shadcn på nyhet view.
 
 ## Versjon 2023.07.02
+
 - 🎨 **Vipps betaling**. Brukere kan nå ikke sette nedbetalingstid selv. 2 timer er konstant tid.
 
 ## Versjon 2024.11.03
+
 - ⚡ **Bøter**. Man kan nå se paragrafbeskrivelsen når man legger inn en ny bot.
 
 ## Versjon 2024.07.02
+
 - 🎨 **Vipps betaling**. Brukere kan nå ikke sette nedbetalingstid selv. 2 timer er konstant tid.
 
 ## Versjon 2024.15.01
+
 - 🦟 **Vipps betaling**. Diverse bugs i betalingsløsningen er nå fikset.
 - ✨ **Reaksjoner**. Det er nå mulig å reagere på arrangementer og nyheter med emojier.
 - 🎨 **Prikk info**. Mail for kontakt for prikk, er nå endret.
@@ -54,16 +66,19 @@
 - ✨ **Mine arrangementer**. En bruker kan nå se sine tidligere arrangementer.
 
 ## versjon 2023.17.11
+
 - ✨ **QR kode**. Du kan nå generere dine egne QR kode.
-- ✨ **Aktiviteter**. Det kan nå opprettes aktiviteter for interessegrupper. 
+- ✨ **Aktiviteter**. Det kan nå opprettes aktiviteter for interessegrupper.
 
 ## versjon 2023.06.11
+
 - ✨ **Arrangement**. Du kan nå se hvilken plass du har på ventelisten.
 - ✨ **Arrangement**. Admins kan nå manuelt legge til deltagere på et arrangement.
 - ⚡ **Kalender**. Kalender pop-up viser viser infromasjonen bedre.
 - ✨ **Bannere**. Tidsbegrensede bannere kan nå opprettes.
 
 ## versjon 2023.14.10
+
 - ✨ **QR-kode generator**. Brukere kan nå generere sine egne QR koder fra en url.
 
 ## versjon 2023.24.09
