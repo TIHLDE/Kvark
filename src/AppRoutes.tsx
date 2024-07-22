@@ -8,6 +8,7 @@ import { useSetRedirectUrl } from 'hooks/Misc';
 import { useHavePermission, useIsAuthenticated } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
+import Changelog from 'pages/Changelog';
 import Companies from 'pages/Companies';
 import EventDetails from 'pages/EventDetails';
 import Events from 'pages/Events';
@@ -168,6 +169,8 @@ const AppRoutes = () => {
         <Route element={<LogIn />} path={URLS.login} />
         <Route element={<ForgotPassword />} path={URLS.forgotPassword} />
         <Route element={<SignUp />} path={URLS.signup} />
+
+        <Route element={<Changelog />} path={URLS.changelog} />
 
         <Route element={<Http404 />} path='*' />
       </Routes>
