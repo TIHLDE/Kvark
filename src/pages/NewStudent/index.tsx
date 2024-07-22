@@ -89,7 +89,7 @@ const NewStudent = () => {
         <h1 className='text-center text-3xl lg:text-6xl font-bold max-w-3xl mb-4'>
           Velkommen til <br /> linjeforeningen TIHLDE!
         </h1>
-        <p className='text-slate-300  max-w-2xl mb-8'>
+        <p className='dark:text-slate-300 text-slate-700  max-w-2xl mb-8'>
           Her finner du nyttig info om hvordan linjeforeningen og fadderuka fungerer. Om du er ny student kan du melde deg på under. Du burde også lage deg en
           bruker om du ikke har gjort dette allerede.
         </p>
@@ -106,11 +106,11 @@ const NewStudent = () => {
           </a>
         </div>
       </div>
-      <div className='bg-slate-950/30 border items-center py-24 px-16 rounded-3xl z-10 relative grid grid-cols-1 md:grid-cols-2 gap-12'>
+      <div className='bg-black/5 dark:bg-slate-950/30 border items-center py-24 px-16 rounded-3xl z-10 relative grid grid-cols-1 md:grid-cols-2 gap-12'>
         <div>
           <h2 className='md:text-sm text-xs text-sky-500'>Ditt første møte med TIHLDE</h2>
           <h2 className='text-3xl md:text-5xl font-bold'>Fadderuka</h2>
-          <p className='text-slate-300 my-4'>
+          <p className='text-slate-700 dark:text-slate-300 my-4'>
             Fadderuka er en gyllen mulighet til å bli kjent med medstudenter og med linjeforeningen. Fadderuka varer fra uka før skolestart til en uke inn i
             semesteret, som i år er fra 12. - 28. August. Meld deg på her for å få plass!
           </p>
@@ -142,7 +142,7 @@ const NewStudent = () => {
       </div>
       <div className='max-w-5xl mx-auto py-44'>
         <h2 className='text-sm text-sky-500 mb-2'>Hva er egentlig TIHLDE?</h2>
-        <p className='text-slate-400 text-lg md:text-3xl leading-relaxed'>
+        <p className='dark:text-slate-400 text-slate-800 font-normal text-lg md:text-3xl leading-relaxed'>
           “TIHLDE (Trondheim IngeniørHøgskoles Linjeforening for Dannede EDBere) er linjeforeningen for bachelorstudiene Dataingeniør, Digital infrastruktur og
           cybersikkerhet, Digital forretningsutvikling, samt masterstudiet Digital transformasjon og det nettbaserte studiet Informasjonsbehandling.”
         </p>
@@ -151,7 +151,7 @@ const NewStudent = () => {
         <h2 className='text-xl md:text-5xl font-semibold max-w-5xl mx-auto'>
           TIHLDE er drevet av frivillige studenter - bli kjent med de forskjellige vervene
         </h2>
-        <p className='text-slate-300 max-w-lg mt-6 mx-auto pb-12'>
+        <p className='text-slate-700 dark:text-slate-300 max-w-lg mt-6 mx-auto pb-12'>
           Inntaksrunder skjer rett etter fadderuka, men her er det kamp om plassene så det gjelder å lever en god søknad.
         </p>
         {Boolean(BOARD_GROUPS.length) && <Collection groups={BOARD_GROUPS} title='Hovedorgan' />}
@@ -176,11 +176,11 @@ const NewStudent = () => {
         <div className=' max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-4 '>
           {contacts.map((contact, index) => (
             <a
-              className='rounded-lg w-64 flex flex-col items-center self-center justify-self-center bg-white/5 border border-white/5 p-6'
+              className='rounded-lg w-64 flex flex-col items-center self-center justify-self-center bg-white/50 dark:bg-white/5 border border-black/5 dark:border-white/5  p-6'
               href={contact.url}
               key={index}>
               {<contact.icon className='h-32 w-32 mb-4' />}
-              <p className='text-slate-300'>{contact.text}</p>
+              <p className='dark:text-slate-300 text-slate-700'>{contact.text}</p>
             </a>
           ))}
         </div>
