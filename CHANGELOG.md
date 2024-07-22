@@ -11,7 +11,9 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
--- ✨ **Endringslogg**. La til en ny side for å se endringsloggene til Kvark og Lepton
+
+## Versjon 2024.22.07
+- ✨ **Endringslogg**. La til en ny side for å se endringsloggene til Kvark og Lepton
 
 ## Versjon 2024.04.07
 - 🎨 **Design**. MUI er fjernet fra prosjektet, og TailwindCSS og Shadcn/ui er implementert.
