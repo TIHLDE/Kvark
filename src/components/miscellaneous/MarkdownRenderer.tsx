@@ -100,9 +100,10 @@ const components: any = {
 
 export type MarkdownRendererProps = {
   value?: string;
+  className?: string;
 };
 
-const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
+const MarkdownRenderer = ({ value, className }: MarkdownRendererProps) => {
   const skeletonWidthArray = useMemo(() => Array.from({ length: (value?.length || 100) / 90 + 1 }).map(() => 50 + 40 * Math.random()), [value]);
 
   return (
@@ -115,6 +116,7 @@ const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
         </div>
       }>
       <ReactMarkdown
+        className={className}
         components={components}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         rehypePlugins={[rehypeRaw] as any}>
