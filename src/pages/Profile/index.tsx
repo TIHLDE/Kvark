@@ -129,7 +129,7 @@ const Profile = () => {
                       )}
                       {user.bio.linkedIn_link && (
                         <Button asChild className='text-black dark:text-white' size='icon' variant='outline'>
-                          <a className='underline' href={user.bio.gitHub_link} rel='noreferrer' target='_blank'>
+                          <a className='underline' href={user.bio.linkedIn_link} rel='noreferrer' target='_blank'>
                             <Linkedin className='w-5 h-5 stroke-[1.5px]' />
                           </a>
                         </Button>

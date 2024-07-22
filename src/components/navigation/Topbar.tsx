@@ -43,7 +43,7 @@ const TopBarItem = (props: NavigationItem) => {
     <NavigationMenuItem>
       <NavigationMenuTrigger>{props.text}</NavigationMenuTrigger>
       <NavigationMenuContent>
-        <ul className='grid gap-3 p-6 grid-cols-2 md:w-[400px] lg:w-[500px]'>
+        <ul className='grid gap-3 p-6 grid-cols-2 lg:grid-cols-3 md:w-[400px] lg:w-[600px]'>
           {props.items.map((item, index) => (
             <NavigationMenuListItem href={item.to} key={index} title={item.title}>
               {item.text}
