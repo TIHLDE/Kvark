@@ -3,8 +3,8 @@ import ErrorCard from 'pages/Wiki/specials/Index/ErrorCard';
 
 import InfoCard from 'components/layout/InfoCard';
 
-const FRONTEND_URL = 'https://raw.githubusercontent.com/TIHLDE/Kvark/master/CHANGELOG.md';
-const BACKEND_URL = 'https://raw.githubusercontent.com/TIHLDE/Lepton/master/CHANGELOG.md';
+export const FRONTEND_URL = 'https://raw.githubusercontent.com/TIHLDE/Kvark/master/CHANGELOG.md';
+export const BACKEND_URL = 'https://raw.githubusercontent.com/TIHLDE/Lepton/master/CHANGELOG.md';
 
 const AboutIndex = () => (
   <>
