@@ -66,6 +66,7 @@ const URLS = {
   github: 'https://github.com/TIHLDE',
   pythons: 'https://pythons.tihlde.org/',
   pythonsLadies: 'https://pythons-damer.tihlde.org/',
+  changelog: '/endringslogg',
 };
 
 export default URLS;
