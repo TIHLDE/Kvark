@@ -73,6 +73,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
               { title: 'Badges ledertavler', text: 'Se hvem som har flest badges', to: URLS.badges.index },
               { title: 'Galleri', text: 'Se alle bilder fra TIHLDE sine arrangementer', to: URLS.gallery },
               { title: 'Kontres', text: 'Reserver kontoret eller tilhørende utstyr', to: URLS.kontRes, external: true },
+              { title: 'Endringslogg', text: 'Se changeloggen til denne nettsiden', to: URLS.changelog },
             ],
             text: 'For medlemmer',
             type: 'dropdown',
