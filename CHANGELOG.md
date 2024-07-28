@@ -11,6 +11,7 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+- 🎨 **Ny student**. Ny student side er redesignet.
 
 ## Versjon 2024.04.07
 - 🎨 **Design**. MUI er fjernet fra prosjektet, og TailwindCSS og Shadcn/ui er implementert.
