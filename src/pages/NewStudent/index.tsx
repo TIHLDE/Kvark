@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
 import useMediaQuery, { LARGE_SCREEN, MEDIUM_SCREEN } from 'hooks/MediaQuery';
+import { useIsAuthenticated } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
 import Page from 'components/navigation/Page';
@@ -15,6 +16,7 @@ import GroupItem from '../Groups/overview/GroupItem';
 
 const NewStudent = () => {
   const { event } = useAnalytics();
+  const isAuthenticated = useIsAuthenticated();
 
   const isDesktop = useMediaQuery(LARGE_SCREEN);
   const isTablet = useMediaQuery(MEDIUM_SCREEN);
@@ -66,8 +68,8 @@ const NewStudent = () => {
             </Button>
           </a>
           <Button asChild variant={'outline'}>
-            <Link to='/ny-bruker'>
-              opprett Bruker <ArrowRight className='h-4' />
+            <Link to={isAuthenticated ? '/logg-inn' : '/ny-bruker'}>
+              {isAuthenticated ? 'Logg inn' : 'Opprett Bruker'} <ArrowRight className='h-4' />
             </Link>
           </Button>
         </div>
