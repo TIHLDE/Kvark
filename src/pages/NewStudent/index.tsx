@@ -86,8 +86,11 @@ const NewStudent = () => {
                 Meld meg på!
               </a>
             </Button>
+            <Button asChild className='bg-sky-500 text-white font-semibold'>
+              <Link to='/arrangementer/?&expired=false&category=10&activity=false'>Hva skjer i Fadderuka?</Link>
+            </Button>
             <Button asChild variant='ghost'>
-              <Link to='/arrangementer'>
+              <Link to='/wiki/ny-student/'>
                 Les mer <ArrowRight className='h-4' />
               </Link>
             </Button>
@@ -120,7 +123,7 @@ const NewStudent = () => {
           TIHLDE er drevet av frivillige studenter - bli kjent med de forskjellige vervene
         </h2>
         <p className='text-slate-700 dark:text-slate-300 max-w-lg mt-6 mx-auto pb-12'>
-          Inntaksrunder skjer rett etter fadderuka, men her er det kamp om plassene så det gjelder å levere en god søknad.
+          Inntaksrunder skjer rett etter fadderuka. Du blir kalt inn på intverju ved å sende søknad.
         </p>
         <div className='space-y-16'>
           {Boolean(BOARD_GROUPS.length) && <Collection groups={BOARD_GROUPS} title='Hovedorgan' />}
