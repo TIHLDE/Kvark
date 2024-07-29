@@ -74,6 +74,7 @@
   },
   "scripts": {
     "start": "vite --host",
+    "dev": "vite --host --port 3000",
     "check": "tsc",
     "build": "tsc && vite build",
     "preview": "vite preview",

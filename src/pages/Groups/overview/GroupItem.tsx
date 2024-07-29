@@ -13,10 +13,10 @@ export type GroupItemProps = {
 
 const GroupItem = ({ group }: GroupItemProps) => (
   <Link className='flex space-x-4 text-black dark:text-white rounded-md bg-card border p-1 hover:border-primary' to={URLS.groups.details(group.slug)}>
-    <AspectRatioImg alt={group?.image_alt || ''} className='w-[80px] h-[80px] rounded-md ratio-[1]' src={group?.image || ''} />
+    <AspectRatioImg alt={group?.image_alt || ''} className='w-[60px] h-[60px] lg:w-[80px] lg:h-[80px] rounded-md ratio-[1]' src={group?.image || ''} />
 
-    <div>
-      <h1 className='text-lg font-bold'>{group.name}</h1>
+    <div className='flex flex-col flex-1 overflow-hidden'>
+      <h1 className='text-ellipsis md:text-lg font-bold text-start'>{group.name}</h1>
       {group.leader && (
         <div className='flex items-center space-x-1'>
           <User className='w-4 h-4 stroke-[1.5px]' />
@@ -26,9 +26,9 @@ const GroupItem = ({ group }: GroupItemProps) => (
         </div>
       )}
       {group.contact_email && (
-        <div className='flex items-center space-x-1'>
+        <div className='flex items-center space-x-1 w-full overflow-hidden'>
           <Mail className='w-4 h-4 stroke-[1.5px]' />
-          <p className='text-sm'>{group.contact_email}</p>
+          <p className='text-sm overflow-hidden whitespace-nowrap text-ellipsis'>{group.contact_email}</p>
         </div>
       )}
     </div>

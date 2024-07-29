@@ -18,12 +18,12 @@ const ProfileTopbarButton = () => {
   const analytics = (page: string) => event(`go-to-${page}`, 'topbar-profile-button', `Go to ${page}`);
 
   return (
-    <div className='flex items-center space-x-2'>
+    <div className='flex items-center space-x-1'>
       {Boolean(user) && <TopbarNotifications />}
       <ThemeSettings />
       {user ? (
         <Link onClick={URLS.profile === location.pathname ? () => location.reload() : () => analytics('profile')} to={URLS.profile}>
-          <Avatar className='ml-2'>
+          <Avatar>
             <AvatarImage alt={user.first_name} src={user.image} />
             <AvatarFallback>
               {user.first_name[0]}

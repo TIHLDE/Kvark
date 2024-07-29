@@ -87,7 +87,15 @@ const NotificationsTopbar = () => {
       <Drawer onOpenChange={setShowNotifications} open={showNotifications}>
         <DrawerTrigger asChild>
           <Button className='dark:text-white' size='icon' variant='ghost'>
-            {!showNotifications ? user && user.unread_notifications > 0 ? <BellRing className='animate-pulse' /> : <Bell /> : <X />}
+            {!showNotifications ? (
+              user && user.unread_notifications > 0 ? (
+                <BellRing className='animate-pulse w-[1.2rem] h-[1.2rem] stroke-[1.5px]' />
+              ) : (
+                <Bell className='w-[1.2rem] h-[1.2rem] stroke-[1.5px]' />
+              )
+            ) : (
+              <X />
+            )}
           </Button>
         </DrawerTrigger>
 
