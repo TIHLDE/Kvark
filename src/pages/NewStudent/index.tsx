@@ -68,8 +68,8 @@ const NewStudent = () => {
             </Button>
           </a>
           <Button asChild variant={'outline'}>
-            <Link to={isAuthenticated ? '/logg-inn' : '/ny-bruker'}>
-              {isAuthenticated ? 'Logg inn' : 'Opprett Bruker'} <ArrowRight className='h-4' />
+            <Link to={isAuthenticated ? '/profil' : '/ny-bruker'}>
+              {isAuthenticated ? 'Se profil' : 'Opprett Bruker'} <ArrowRight className='h-4' />
             </Link>
           </Button>
         </div>
