@@ -11,7 +11,12 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+
+## Versjon 2024.29.07
 - 🎨 **Ny student**. Ny student side er redesignet.
+
+## Versjon 2024.22.07
+- ✨ **Endringslogg**. La til en ny side for å se endringsloggene til Kvark og Lepton
 
 ## Versjon 2024.22.07
 - ✨ **Endringslogg**. La til en ny side for å se endringsloggene til Kvark og Lepton
