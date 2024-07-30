@@ -110,6 +110,7 @@ export const WARNINGS_ENDPOINT = 'warnings';
 export const PAYMENT_ENDPOINT = 'payments';
 export const EMOJI_ENDPOINT = 'emojis';
 export const BIO_ENDPOINT = 'user-bios/';
+export const FEIDE_ENDPOINT = 'feide/';
 
 export default {
   // Auth
@@ -238,6 +239,9 @@ export default {
     IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/decline/`, data: { user_id: userName, reason } }),
   exportUserData: () => IFetch<RequestResponse>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/data/` }),
   deleteUser: (userId?: User['user_id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/` }),
+
+  // Feide
+  feideAuthenticate: (code: string) => IFetch<RequestResponse>({ method: 'POST', url: FEIDE_ENDPOINT, data: { code }, withAuth: false }),
 
   // Notifications
   getNotifications: (filters?: any) => IFetch<PaginationResponse<Notification>>({ method: 'GET', url: `${NOTIFICATIONS_ENDPOINT}/`, data: filters || {} }),
